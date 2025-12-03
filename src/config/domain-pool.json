@@ -1,0 +1,156 @@
+{
+  "version": "5.6.0",
+  "total_domains": 150,
+  "categories": {
+    "tech": {
+      "domains": [
+        { "name": "techcrunch.com", "endpoint": "https://techcrunch.com/feed/", "type": "rss", "trust_score": 0.95 },
+        { "name": "arstechnica.com", "endpoint": "https://feeds.arstechnica.com/arstechnica/index", "type": "rss", "trust_score": 0.92 },
+        { "name": "wired.com", "endpoint": "https://www.wired.com/feed/rss", "type": "rss", "trust_score": 0.90 },
+        { "name": "theverge.com", "endpoint": "https://www.theverge.com/rss/index.xml", "type": "rss", "trust_score": 0.89 },
+        { "name": "venturebeat.com", "endpoint": "https://venturebeat.com/feed/", "type": "rss", "trust_score": 0.87 },
+        { "name": "zdnet.com", "endpoint": "https://www.zdnet.com/news/rss.xml", "type": "rss", "trust_score": 0.85 },
+        { "name": "engadget.com", "endpoint": "https://www.engadget.com/rss.xml", "type": "rss", "trust_score": 0.84 },
+        { "name": "cnet.com", "endpoint": "https://www.cnet.com/rss/news/", "type": "rss", "trust_score": 0.83 },
+        { "name": "hacker-news", "endpoint": "https://hnrss.org/frontpage", "type": "rss", "trust_score": 0.94 },
+        { "name": "dev.to", "endpoint": "https://dev.to/feed", "type": "rss", "trust_score": 0.81 },
+        { "name": "smashingmagazine.com", "endpoint": "https://www.smashingmagazine.com/feed/", "type": "rss", "trust_score": 0.88 },
+        { "name": "css-tricks.com", "endpoint": "https://css-tricks.com/feed/", "type": "rss", "trust_score": 0.86 },
+        { "name": "a11yproject.com", "endpoint": "https://www.a11yproject.com/feed.xml", "type": "rss", "trust_score": 0.91 },
+        { "name": "webdesignernews.com", "endpoint": "https://www.webdesignernews.com/feed", "type": "rss", "trust_score": 0.79 },
+        { "name": "thenewstack.io", "endpoint": "https://thenewstack.io/feed/", "type": "rss", "trust_score": 0.82 },
+        { "name": "infoq.com", "endpoint": "https://feed.infoq.com/", "type": "rss", "trust_score": 0.85 },
+        { "name": "dzone.com", "endpoint": "https://feeds.dzone.com/home", "type": "rss", "trust_score": 0.77 },
+        { "name": "sitepoint.com", "endpoint": "https://www.sitepoint.com/feed/", "type": "rss", "trust_score": 0.80 },
+        { "name": "alistapart.com", "endpoint": "https://alistapart.com/main/feed/", "type": "rss", "trust_score": 0.93 },
+        { "name": "codrops.com", "endpoint": "https://tympanus.net/codrops/feed/", "type": "rss", "trust_score": 0.84 }
+      ]
+    },
+    "ai": {
+      "domains": [
+        { "name": "openai.com/blog", "endpoint": "https://openai.com/blog/rss/", "type": "rss", "trust_score": 0.98 },
+        { "name": "deepmind.com", "endpoint": "https://deepmind.google/discover/blog/rss.xml", "type": "rss", "trust_score": 0.97 },
+        { "name": "anthropic.com", "endpoint": "https://www.anthropic.com/news/rss", "type": "rss", "trust_score": 0.96 },
+        { "name": "machinelearningmastery.com", "endpoint": "https://machinelearningmastery.com/feed/", "type": "rss", "trust_score": 0.86 },
+        { "name": "towardsdatascience.com", "endpoint": "https://towardsdatascience.com/feed", "type": "rss", "trust_score": 0.84 },
+        { "name": "distill.pub", "endpoint": "https://distill.pub/rss.xml", "type": "rss", "trust_score": 0.95 },
+        { "name": "aiweirdness.com", "endpoint": "https://www.aiweirdness.com/rss/", "type": "rss", "trust_score": 0.78 },
+        { "name": "import-ai", "endpoint": "https://jack-clark.net/feed/", "type": "rss", "trust_score": 0.89 },
+        { "name": "paperswithcode.com", "endpoint": "https://paperswithcode.com/feed.xml", "type": "rss", "trust_score": 0.92 },
+        { "name": "mlops.community", "endpoint": "https://mlops.community/feed/", "type": "rss", "trust_score": 0.81 }
+      ]
+    },
+    "economy": {
+      "domains": [
+        { "name": "bloomberg.com/technology", "endpoint": "https://www.bloomberg.com/feed/podcast/hello-world", "type": "rss", "trust_score": 0.91 },
+        { "name": "reuters.com/technology", "endpoint": "https://www.reutersagency.com/feed/?taxonomy=best-topics&post_type=best", "type": "rss", "trust_score": 0.93 },
+        { "name": "wsj.com/tech", "endpoint": "https://feeds.a.dj.com/rss/RSSWSJD.xml", "type": "rss", "trust_score": 0.92 },
+        { "name": "ft.com/technology", "endpoint": "https://www.ft.com/technology?format=rss", "type": "rss", "trust_score": 0.90 },
+        { "name": "economist.com/technology", "endpoint": "https://www.economist.com/technology/rss.xml", "type": "rss", "trust_score": 0.94 },
+        { "name": "forbes.com/technology", "endpoint": "https://www.forbes.com/innovation/feed/", "type": "rss", "trust_score": 0.85 },
+        { "name": "inc.com", "endpoint": "https://www.inc.com/rss/", "type": "rss", "trust_score": 0.82 },
+        { "name": "fastcompany.com", "endpoint": "https://www.fastcompany.com/latest/rss", "type": "rss", "trust_score": 0.86 },
+        { "name": "businessinsider.com", "endpoint": "https://www.businessinsider.com/rss", "type": "rss", "trust_score": 0.80 },
+        { "name": "cnbc.com/technology", "endpoint": "https://www.cnbc.com/id/19854910/device/rss/rss.html", "type": "rss", "trust_score": 0.87 }
+      ]
+    },
+    "science": {
+      "domains": [
+        { "name": "nature.com", "endpoint": "http://feeds.nature.com/nature/rss/current", "type": "rss", "trust_score": 0.98 },
+        { "name": "science.org", "endpoint": "https://www.science.org/rss/news_current.xml", "type": "rss", "trust_score": 0.97 },
+        { "name": "scientificamerican.com", "endpoint": "http://rss.sciam.com/ScientificAmerican-Global", "type": "rss", "trust_score": 0.95 },
+        { "name": "newscientist.com", "endpoint": "https://www.newscientist.com/subject/technology/feed/", "type": "rss", "trust_score": 0.91 },
+        { "name": "popsci.com", "endpoint": "https://www.popsci.com/feed/", "type": "rss", "trust_score": 0.84 },
+        { "name": "mit.edu/news", "endpoint": "https://news.mit.edu/rss/feed", "type": "rss", "trust_score": 0.96 },
+        { "name": "stanford.edu/news", "endpoint": "https://news.stanford.edu/feed/", "type": "rss", "trust_score": 0.95 },
+        { "name": "arxiv.org/cs", "endpoint": "http://export.arxiv.org/rss/cs", "type": "rss", "trust_score": 0.99 },
+        { "name": "phys.org", "endpoint": "https://phys.org/rss-feed/", "type": "rss", "trust_score": 0.88 },
+        { "name": "quantamagazine.org", "endpoint": "https://api.quantamagazine.org/feed/", "type": "rss", "trust_score": 0.93 }
+      ]
+    },
+    "security": {
+      "domains": [
+        { "name": "krebsonsecurity.com", "endpoint": "https://krebsonsecurity.com/feed/", "type": "rss", "trust_score": 0.96 },
+        { "name": "schneier.com", "endpoint": "https://www.schneier.com/blog/atom.xml", "type": "rss", "trust_score": 0.98 },
+        { "name": "threatpost.com", "endpoint": "https://threatpost.com/feed/", "type": "rss", "trust_score": 0.90 },
+        { "name": "darkreading.com", "endpoint": "https://www.darkreading.com/rss_simple.asp", "type": "rss", "trust_score": 0.89 },
+        { "name": "securityweek.com", "endpoint": "https://www.securityweek.com/feed/", "type": "rss", "trust_score": 0.87 },
+        { "name": "bleepingcomputer.com", "endpoint": "https://www.bleepingcomputer.com/feed/", "type": "rss", "trust_score": 0.88 },
+        { "name": "thehackernews.com", "endpoint": "https://feeds.feedburner.com/TheHackersNews", "type": "rss", "trust_score": 0.85 },
+        { "name": "cyberscoop.com", "endpoint": "https://www.cyberscoop.com/feed/", "type": "rss", "trust_score": 0.86 },
+        { "name": "portswigger.net", "endpoint": "https://portswigger.net/blog/rss", "type": "rss", "trust_score": 0.92 },
+        { "name": "owasp.org", "endpoint": "https://owasp.org/blog/feed.xml", "type": "rss", "trust_score": 0.94 }
+      ]
+    },
+    "market": {
+      "domains": [
+        { "name": "crunchbase.com/news", "endpoint": "https://news.crunchbase.com/feed/", "type": "rss", "trust_score": 0.91 },
+        { "name": "saastr.com", "endpoint": "https://www.saastr.com/feed/", "type": "rss", "trust_score": 0.84 },
+        { "name": "product-hunt", "endpoint": "https://www.producthunt.com/feed", "type": "rss", "trust_score": 0.82 },
+        { "name": "ycombinator.com", "endpoint": "https://blog.ycombinator.com/feed/", "type": "rss", "trust_score": 0.95 },
+        { "name": "a16z.com", "endpoint": "https://a16z.com/feed/", "type": "rss", "trust_score": 0.93 },
+        { "name": "sequoiacap.com", "endpoint": "https://www.sequoiacap.com/feed/", "type": "rss", "trust_score": 0.92 },
+        { "name": "bvp.com", "endpoint": "https://www.bvp.com/feed", "type": "rss", "trust_score": 0.88 },
+        { "name": "firstround.com", "endpoint": "https://review.firstround.com/feed", "type": "rss", "trust_score": 0.90 },
+        { "name": "bothsides table.com", "endpoint": "https://bothsidesofthetable.com/feed", "type": "rss", "trust_score": 0.87 },
+        { "name": "forentrepreneurs.com", "endpoint": "https://www.forentrepreneurs.com/feed/", "type": "rss", "trust_score": 0.89 }
+      ]
+    },
+    "design": {
+      "domains": [
+        { "name": "nngroup.com", "endpoint": "https://www.nngroup.com/feed/rss/", "type": "rss", "trust_score": 0.96 },
+        { "name": "uxdesign.cc", "endpoint": "https://uxdesign.cc/feed", "type": "rss", "trust_score": 0.86 },
+        { "name": "uxbooth.com", "endpoint": "https://www.uxbooth.com/feed/", "type": "rss", "trust_score": 0.83 },
+        { "name": "uxmatters.com", "endpoint": "https://www.uxmatters.com/index.xml", "type": "rss", "trust_score": 0.84 },
+        { "name": "designbetter.co", "endpoint": "https://www.designbetter.co/feed", "type": "rss", "trust_score": 0.88 },
+        { "name": "usability.gov", "endpoint": "https://www.usability.gov/feed.xml", "type": "rss", "trust_score": 0.92 },
+        { "name": "designmodo.com", "endpoint": "https://designmodo.com/feed/", "type": "rss", "trust_score": 0.79 },
+        { "name": "webdesignerdepot.com", "endpoint": "https://www.webdesignerdepot.com/feed/", "type": "rss", "trust_score": 0.81 },
+        { "name": "awwwards.com", "endpoint": "https://www.awwwards.com/blog/feed/", "type": "rss", "trust_score": 0.85 },
+        { "name": "designernews.co", "endpoint": "https://www.designernews.co/?format=rss", "type": "rss", "trust_score": 0.80 }
+      ]
+    },
+    "cloud": {
+      "domains": [
+        { "name": "aws.amazon.com/blogs", "endpoint": "https://aws.amazon.com/blogs/aws/feed/", "type": "rss", "trust_score": 0.97 },
+        { "name": "cloud.google.com/blog", "endpoint": "https://cloudblog.withgoogle.com/rss/", "type": "rss", "trust_score": 0.96 },
+        { "name": "azure.microsoft.com/blog", "endpoint": "https://azurecomcdn.azureedge.net/blog/feed/", "type": "rss", "trust_score": 0.95 },
+        { "name": "vercel.com/blog", "endpoint": "https://vercel.com/blog/rss.xml", "type": "rss", "trust_score": 0.90 },
+        { "name": "netlify.com/blog", "endpoint": "https://www.netlify.com/blog/index.xml", "type": "rss", "trust_score": 0.89 },
+        { "name": "railway.app/blog", "endpoint": "https://blog.railway.app/rss.xml", "type": "rss", "trust_score": 0.87 },
+        { "name": "supabase.com/blog", "endpoint": "https://supabase.com/blog/rss.xml", "type": "rss", "trust_score": 0.92 },
+        { "name": "digitalocean.com", "endpoint": "https://www.digitalocean.com/blog/feed.xml", "type": "rss", "trust_score": 0.88 },
+        { "name": "heroku.com/blog", "endpoint": "https://blog.heroku.com/feed", "type": "rss", "trust_score": 0.86 },
+        { "name": "cloudflare.com/blog", "endpoint": "https://blog.cloudflare.com/rss/", "type": "rss", "trust_score": 0.93 }
+      ]
+    },
+    "devops": {
+      "domains": [
+        { "name": "kubernetes.io/blog", "endpoint": "https://kubernetes.io/feed.xml", "type": "rss", "trust_score": 0.96 },
+        { "name": "docker.com/blog", "endpoint": "https://www.docker.com/blog/feed/", "type": "rss", "trust_score": 0.94 },
+        { "name": "circleci.com/blog", "endpoint": "https://circleci.com/blog/feed.xml", "type": "rss", "trust_score": 0.87 },
+        { "name": "github.blog", "endpoint": "https://github.blog/feed/", "type": "rss", "trust_score": 0.95 },
+        { "name": "gitlab.com/blog", "endpoint": "https://about.gitlab.com/atom.xml", "type": "rss", "trust_score": 0.92 },
+        { "name": "devops.com", "endpoint": "https://devops.com/feed/", "type": "rss", "trust_score": 0.83 },
+        { "name": "chef.io/blog", "endpoint": "https://www.chef.io/blog/feed", "type": "rss", "trust_score": 0.85 },
+        { "name": "puppet.com/blog", "endpoint": "https://puppet.com/blog/rss.xml", "type": "rss", "trust_score": 0.84 },
+        { "name": "ansible.com/blog", "endpoint": "https://www.ansible.com/blog/rss.xml", "type": "rss", "trust_score": 0.88 },
+        { "name": "terraform.io/blog", "endpoint": "https://www.hashicorp.com/blog/products/terraform/feed.xml", "type": "rss", "trust_score": 0.91 }
+      ]
+    },
+    "sustainability": {
+      "domains": [
+        { "name": "greenbiz.com", "endpoint": "https://www.greenbiz.com/feed", "type": "rss", "trust_score": 0.88 },
+        { "name": "sustainablebrands.com", "endpoint": "https://sustainablebrands.com/rss/articles", "type": "rss", "trust_score": 0.85 },
+        { "name": "theclimategroup.org", "endpoint": "https://www.theclimategroup.org/rss.xml", "type": "rss", "trust_score": 0.90 },
+        { "name": "wri.org", "endpoint": "https://www.wri.org/feed", "type": "rss", "trust_score": 0.92 },
+        { "name": "edf.org/blog", "endpoint": "https://www.edf.org/rss.xml", "type": "rss", "trust_score": 0.89 },
+        { "name": "greentech-media", "endpoint": "https://www.greentechmedia.com/rss", "type": "rss", "trust_score": 0.87 },
+        { "name": "cleantechnica.com", "endpoint": "https://cleantechnica.com/feed/", "type": "rss", "trust_score": 0.83 },
+        { "name": "renewablesnow.com", "endpoint": "https://renewablesnow.com/rss/", "type": "rss", "trust_score": 0.84 },
+        { "name": "carbon-brief", "endpoint": "https://www.carbonbrief.org/feed/", "type": "rss", "trust_score": 0.91 },
+        { "name": "climatecentral.org", "endpoint": "https://www.climatecentral.org/feed", "type": "rss", "trust_score": 0.90 }
+      ]
+    }
+  }
+}

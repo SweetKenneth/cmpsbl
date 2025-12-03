@@ -1,0 +1,80 @@
+# PromptFluid.com robots.txt - 2026 SEO Optimized
+# https://promptfluid.com/robots.txt
+
+User-agent: *
+Allow: /
+
+# Priority crawl paths - WordPress Plugin focused
+Crawl-delay: 0.5
+
+# Sitemap
+Sitemap: https://promptfluid.com/sitemap.xml
+
+# Block admin and internal areas
+Disallow: /dashboard
+Disallow: /auth
+Disallow: /admin
+Disallow: /api/
+Disallow: /*?*
+Disallow: /*.json$
+Disallow: /settings
+Disallow: /diagnostics
+Disallow: /repair
+Disallow: /deployment
+
+# Allow important pages
+Allow: /blog/
+Allow: /about
+Allow: /solutions
+Allow: /products/
+Allow: /projects/
+
+# AI search crawlers (2026) - Allow with reasonable delays
+User-agent: GPTBot
+Crawl-delay: 5
+Allow: /blog/
+Allow: /about
+Allow: /solutions
+
+User-agent: ChatGPT-User
+Crawl-delay: 5
+Allow: /blog/
+Allow: /about
+Allow: /solutions
+
+User-agent: Google-Extended
+Crawl-delay: 5
+Allow: /blog/
+Allow: /about
+Allow: /solutions
+
+User-agent: CCBot
+Crawl-delay: 10
+Allow: /blog/
+Allow: /about
+Allow: /solutions
+
+User-agent: anthropic-ai
+Crawl-delay: 5
+Allow: /blog/
+Allow: /about
+Allow: /solutions
+
+User-agent: Claude-Web
+Crawl-delay: 5
+Allow: /blog/
+Allow: /about
+Allow: /solutions
+
+# Standard crawlers
+User-agent: bingbot
+Crawl-delay: 0.5
+Allow: /
+
+User-agent: Googlebot
+Crawl-delay: 0.5
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /assets/
+Allow: /images/

@@ -1,0 +1,25 @@
+<svg width="200" height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7A5FFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#01C9E8;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Fluid P symbol -->
+  <path d="M20 10 Q35 10 35 25 Q35 40 20 40 L20 50" 
+        stroke="url(#logoGradient)" 
+        stroke-width="4" 
+        fill="none" 
+        stroke-linecap="round"/>
+  
+  <!-- Text -->
+  <text x="50" y="35" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="url(#logoGradient)">
+    PromptFluid
+  </text>
+  
+  <!-- Tagline -->
+  <text x="50" y="50" font-family="Arial, sans-serif" font-size="10" fill="#888">
+    AI That Flows
+  </text>
+</svg>

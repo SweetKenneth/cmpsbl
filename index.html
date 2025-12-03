@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/pwa-icon-512.png" />
+    
+    <link rel="preload" as="image" href="/promptfluid-logo.png" type="image/png" fetchpriority="high" />
+    
+    <!-- Early connection hints for critical domains -->
+    <link rel="preconnect" href="https://spobyzaevtmijcwbqzmv.supabase.co" crossorigin />
+    <link rel="dns-prefetch" href="https://spobyzaevtmijcwbqzmv.supabase.co" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" /></noscript>
+    
+    <title>PromptFluid Vision | AI Security Administration</title>
+    <meta name="description" content="PromptFluid Vision - Advanced AI security monitoring and administration platform. AI that flows." />
+    <meta name="author" content="PromptFluid" />
+    <meta name="theme-color" content="#7A5FFF" />
+    
+    <!-- Canonical URL - tells search engines the authoritative URL -->
+    <link rel="canonical" href="https://promptfluid.com/" />
+
+    <!-- Default Open Graph tags (overridden by page-level SEO component) -->
+    <meta property="og:title" content="PromptFluid Vision | AI Security Administration" />
+    <meta property="og:description" content="Advanced AI security monitoring and administration platform. AI that flows." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://www.promptfluid.com/og-default.jpg" />
+    <meta property="og:image:width" content="1920" />
+    <meta property="og:image:height" content="1920" />
+    <meta property="og:site_name" content="PromptFluid" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@promptfluid" />
+    <meta name="twitter:creator" content="@promptfluid" />
+    <meta name="twitter:image" content="https://www.promptfluid.com/og-default.jpg" />
+    
+    <!-- Google tag (gtag.js) - Deferred to improve TTI -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-88CLWS1QHK');
+      
+      // Load GA after page is interactive
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(function() {
+          var script = document.createElement('script');
+          script.async = true;
+          script.src = 'https://www.googletagmanager.com/gtag/js?id=G-88CLWS1QHK';
+          document.head.appendChild(script);
+        });
+      } else {
+        setTimeout(function() {
+          var script = document.createElement('script');
+          script.async = true;
+          script.src = 'https://www.googletagmanager.com/gtag/js?id=G-88CLWS1QHK';
+          document.head.appendChild(script);
+        }, 100);
+      }
+    </script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  
+  <url>
+    <loc>https://promptfluid.com/</loc>
+    <lastmod>2025-01-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/blog</loc>
+    <lastmod>2025-01-31</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/blog/wordpress-bot-defense</loc>
+    <lastmod>2025-01-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+    <image:image>
+      <image:loc>https://promptfluid.com/assets/blog/wordpress-bot-defense.jpg</image:loc>
+      <image:title>WordPress Bot Defense AI Security</image:title>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/blog/top-security-plugins-2025</loc>
+    <lastmod>2025-01-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://promptfluid.com/assets/blog/top-security-plugins-2025.jpg</image:loc>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/blog/ai-cybersecurity-evolution-2025</loc>
+    <lastmod>2025-01-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://promptfluid.com/assets/blog/ai-cybersecurity-evolution-2025.jpg</image:loc>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/blog/ai-hackers-underground-2025</loc>
+    <lastmod>2025-01-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <image:image>
+      <image:loc>https://promptfluid.com/assets/blog/ai-hackers-underground-2025.jpg</image:loc>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/blog/ai-automation-trends-2025</loc>
+    <lastmod>2025-01-31</lastmod>
+    <priority>0.80</priority>
+    <image:image>
+      <image:loc>https://promptfluid.com/assets/blog/ai-automation-trends-2025.jpg</image:loc>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/blog/ai-business-operations-2025</loc>
+    <lastmod>2025-01-31</lastmod>
+    <priority>0.80</priority>
+    <image:image>
+      <image:loc>https://promptfluid.com/assets/blog/ai-business-operations-2025.jpg</image:loc>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/blog/wordpress-accessibility-guide</loc>
+    <lastmod>2025-01-31</lastmod>
+    <priority>0.90</priority>
+    <image:image>
+      <image:loc>https://promptfluid.com/assets/blog/wordpress-accessibility-guide.jpg</image:loc>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/blog/wcag-2-2-wordpress-changes</loc>
+    <lastmod>2025-01-31</lastmod>
+    <priority>0.80</priority>
+    <image:image>
+      <image:loc>https://promptfluid.com/assets/blog/wcag-2-2-wordpress-changes.jpg</image:loc>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/blog/automated-accessibility-fixes-wordpress</loc>
+    <lastmod>2025-01-31</lastmod>
+    <priority>0.80</priority>
+    <image:image>
+      <image:loc>https://promptfluid.com/assets/blog/automated-accessibility-fixes.jpg</image:loc>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/blog/cmptbl-mission</loc>
+    <lastmod>2025-01-31</lastmod>
+    <priority>0.80</priority>
+    <image:image>
+      <image:loc>https://promptfluid.com/assets/blog/cmptbl-mission-accessibility.jpg</image:loc>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/blog/ai-product-comparison-2025</loc>
+    <lastmod>2025-01-31</lastmod>
+    <priority>0.80</priority>
+    <image:image>
+      <image:loc>https://promptfluid.com/assets/blog/ai-product-comparison-2025.jpg</image:loc>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/blog/promptfluid-market-disruptor</loc>
+    <lastmod>2025-01-31</lastmod>
+    <priority>0.80</priority>
+    <image:image>
+      <image:loc>https://promptfluid.com/assets/blog/promptfluid-market-disruptor.jpg</image:loc>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/blog/product-roadmap-2025</loc>
+    <lastmod>2025-01-31</lastmod>
+    <priority>0.80</priority>
+    <image:image>
+      <image:loc>https://promptfluid.com/assets/blog/product-roadmap-2025.jpg</image:loc>
+    </image:image>
+  </url>
+
+</urlset>

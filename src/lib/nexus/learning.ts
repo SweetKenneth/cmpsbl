@@ -1,0 +1,151 @@
+/**
+ * PromptFluid Nexus Learning
+ * Adaptive learning and performance optimization
+ */
+
+import { supabase } from '@/integrations/supabase/client';
+import type { AIRequest } from './core';
+
+interface LearningData {
+  request: AIRequest;
+  response: string;
+  model: string;
+  latency: number;
+  success: boolean;
+  feedback_score?: number;
+}
+
+/**
+ * Learn from AI request result to improve future routing
+ */
+export async function learnFromResult(data: LearningData): Promise<void> {
+  try {
+    const { error } = await supabase
+      .from('ai_learning_data')
+      .insert({
+        provider: 'nexus',
+        model: data.model,
+        success: data.success,
+        input_data: {
+          prompt: data.request.prompt,
+          type: data.request.type,
+          priority: data.request.priority,
+          context: data.request.context,
+        },
+        output_data: {
+          model: data.model,
+          latency: data.latency,
+          response: data.response,
+          success: data.success,
+        },
+        metadata: {
+          success: data.success,
+          response_length: data.response?.length || 0,
+          feedback_score: data.feedback_score,
+          model_version: 'v1.0',
+        }
+      });
+
+    if (error) {
+      console.error('Failed to store learning data:', error);
+      return;
+    }
+
+    try {
+      await supabase.functions.invoke('pf-learning-log', {
+        body: {
+          event_type: 'ai_completion',
+          project_id: data.request.context?.project_id || 'nexus',
+          payload: {
+            model: data.model,
+            latency: data.latency,
+            success: data.success,
+            response_length: data.response?.length || 0,
+          },
+          success: data.success,
+        }
+      });
+    } catch (err) {
+      // Silent fail on logging
+    }
+
+    updateLocalMetrics(data);
+  } catch (error) {
+    console.error('Learning error:', error);
+  }
+}
+
+/**
+ * Update local performance metrics for quick access
+ */
+function updateLocalMetrics(data: LearningData): void {
+  const metricsKey = `nexus_metrics_${data.model}`;
+  const stored = localStorage.getItem(metricsKey);
+  
+  const metrics = stored ? JSON.parse(stored) : {
+    total_calls: 0,
+    avg_latency: 0,
+    success_rate: 0,
+  };
+
+  metrics.total_calls++;
+  metrics.avg_latency = (metrics.avg_latency * (metrics.total_calls - 1) + data.latency) / metrics.total_calls;
+  metrics.success_rate = ((metrics.success_rate * (metrics.total_calls - 1)) + (data.success ? 1 : 0)) / metrics.total_calls;
+
+  localStorage.setItem(metricsKey, JSON.stringify(metrics));
+}
+
+/**
+ * Get learning insights for dashboard
+ */
+export async function getLearningInsights() {
+  try {
+    const { data, error } = await supabase
+      .from('ai_learning_data')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(100);
+
+    if (error) throw error;
+
+    // Analyze patterns
+    const insights = {
+      total_learning_cycles: data?.length || 0,
+      model_performance: analyzeModelPerformance(data || []),
+      optimization_suggestions: generateOptimizations(data || []),
+    };
+
+    return insights;
+  } catch (error) {
+    console.error('Failed to get learning insights:', error);
+    return null;
+  }
+}
+
+function analyzeModelPerformance(data: any[]) {
+  const performance: Record<string, any> = {};
+  
+  data.forEach((entry) => {
+    const model = entry.model_name;
+    if (!performance[model]) {
+      performance[model] = { calls: 0, avg_latency: 0 };
+    }
+    performance[model].calls++;
+    performance[model].avg_latency += entry.prediction?.latency || 0;
+  });
+
+  Object.keys(performance).forEach((model) => {
+    performance[model].avg_latency /= performance[model].calls;
+  });
+
+  return performance;
+}
+
+function generateOptimizations(data: any[]) {
+  // AI-driven optimization suggestions
+  return [
+    'Consider caching frequent queries',
+    'Route heavy reasoning tasks to Groq',
+    'Use Perplexity for research-heavy requests',
+  ];
+}

@@ -1,0 +1,183 @@
+/**
+ * PromptFluid Vision Admin - 2026 Design Tokens
+ * Liquid Intelligence UI System
+ */
+
+:root {
+  /* === Neural Gradients === */
+  --gradient-neural-primary: linear-gradient(135deg, 
+    hsl(var(--primary)) 0%, 
+    hsl(var(--primary) / 0.8) 50%, 
+    hsl(271, 91%, 65%) 100%);
+  
+  --gradient-neural-secondary: linear-gradient(135deg,
+    hsl(188, 98%, 46%) 0%,
+    hsl(200, 98%, 56%) 50%,
+    hsl(212, 98%, 66%) 100%);
+  
+  --gradient-neural-ambient: radial-gradient(ellipse at top,
+    hsl(var(--primary) / 0.15) 0%,
+    transparent 50%);
+  
+  --gradient-neural-glow: radial-gradient(circle at center,
+    hsl(var(--primary) / 0.4) 0%,
+    transparent 70%);
+  
+  --gradient-success: linear-gradient(135deg,
+    hsl(142, 76%, 36%) 0%,
+    hsl(142, 76%, 46%) 100%);
+  
+  --gradient-warning: linear-gradient(135deg,
+    hsl(38, 92%, 50%) 0%,
+    hsl(48, 96%, 53%) 100%);
+  
+  --gradient-danger: linear-gradient(135deg,
+    hsl(0, 84%, 60%) 0%,
+    hsl(0, 72%, 51%) 100%);
+  
+  --gradient-liquid-flow: linear-gradient(120deg,
+    hsl(var(--primary)) 0%,
+    hsl(271, 91%, 65%) 25%,
+    hsl(188, 98%, 46%) 50%,
+    hsl(271, 91%, 65%) 75%,
+    hsl(var(--primary)) 100%);
+
+  /* === Glass Effects === */
+  --glass-bg: hsl(var(--background) / 0.6);
+  --glass-border: hsl(var(--border) / 0.2);
+  --glass-shadow: 0 8px 32px 0 hsl(var(--primary) / 0.1);
+  --glass-blur: blur(16px);
+  
+  --glass-card-bg: hsl(var(--card) / 0.7);
+  --glass-card-border: hsl(var(--border) / 0.3);
+  --glass-card-shadow: 0 4px 16px 0 hsl(var(--primary) / 0.08);
+
+  /* === Neural Glow Effects === */
+  --glow-primary: 0 0 20px hsl(var(--primary) / 0.5),
+                  0 0 40px hsl(var(--primary) / 0.3),
+                  0 0 60px hsl(var(--primary) / 0.1);
+  
+  --glow-secondary: 0 0 20px hsl(188, 98%, 46% / 0.5),
+                    0 0 40px hsl(188, 98%, 46% / 0.3);
+  
+  --glow-success: 0 0 20px hsl(142, 76%, 46% / 0.5);
+  --glow-warning: 0 0 20px hsl(38, 92%, 50% / 0.5);
+  --glow-danger: 0 0 20px hsl(0, 84%, 60% / 0.5);
+
+  /* === Depth Layers === */
+  --depth-1: 0 1px 3px hsl(var(--foreground) / 0.05);
+  --depth-2: 0 4px 12px hsl(var(--foreground) / 0.08);
+  --depth-3: 0 8px 24px hsl(var(--foreground) / 0.12);
+  --depth-4: 0 16px 48px hsl(var(--foreground) / 0.16);
+  
+  /* === Fluid Motion Curves === */
+  --ease-fluid: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-elastic: cubic-bezier(0.68, -0.6, 0.32, 1.6);
+  --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  
+  /* === Spacing Scale === */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+  
+  /* === Border Radius === */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+  
+  /* === Typography === */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 2rem;
+  --font-size-4xl: 2.5rem;
+  
+  /* === Transitions === */
+  --transition-fast: 150ms var(--ease-fluid);
+  --transition-base: 300ms var(--ease-fluid);
+  --transition-slow: 500ms var(--ease-smooth);
+  
+  /* === Z-Index Scale === */
+  --z-base: 0;
+  --z-dropdown: 1000;
+  --z-sticky: 1100;
+  --z-fixed: 1200;
+  --z-modal-backdrop: 1300;
+  --z-modal: 1400;
+  --z-popover: 1500;
+  --z-tooltip: 1600;
+}
+
+/* === Utility Classes === */
+.glass-card {
+  background: var(--glass-card-bg);
+  border: 1px solid var(--glass-card-border);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-card-shadow);
+}
+
+.glass-panel {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
+}
+
+.glow-primary {
+  box-shadow: var(--glow-primary);
+}
+
+.glow-secondary {
+  box-shadow: var(--glow-secondary);
+}
+
+.gradient-text {
+  background: var(--gradient-neural-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.neural-border {
+  position: relative;
+}
+
+.neural-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--gradient-neural-primary);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.liquid-flow {
+  background: var(--gradient-liquid-flow);
+  background-size: 200% 200%;
+  animation: liquidFlow 8s ease infinite;
+}
+
+@keyframes liquidFlow {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}

@@ -1,0 +1,301 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Admin System 2026 - Liquid Intelligence UI */
+@import './styles/admin/design-tokens.css';
+@import './styles/admin/animations.css';
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here.
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 195 100% 50%;
+    --primary-variant: 265 85% 55%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 35 100% 55%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 85%;
+    --input: 240 5.9% 90%;
+    --ring: 195 100% 50%;
+    --radius: 1rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 195 100% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 195 100% 50%;
+    
+    --gradient-fluid: linear-gradient(135deg, hsl(195 100% 50%), hsl(265 85% 55%), hsl(330 100% 60%));
+    --gradient-primary: linear-gradient(135deg, hsl(195 100% 50%), hsl(265 85% 55%));
+    --gradient-accent: linear-gradient(135deg, hsl(265 85% 55%), hsl(330 100% 60%));
+    --gradient-warm: linear-gradient(135deg, hsl(330 100% 60%), hsl(35 100% 55%));
+    --gradient-mesh: radial-gradient(at 0% 0%, hsl(195 100% 50% / 0.2) 0px, transparent 50%),
+                     radial-gradient(at 100% 0%, hsl(265 85% 55% / 0.2) 0px, transparent 50%),
+                     radial-gradient(at 100% 100%, hsl(330 100% 60% / 0.2) 0px, transparent 50%),
+                     radial-gradient(at 0% 100%, hsl(35 100% 55% / 0.2) 0px, transparent 50%);
+    --shadow-glow: 0 0 60px hsl(195 100% 50% / 0.4);
+    --shadow-glow-lg: 0 20px 80px hsl(195 100% 50% / 0.3);
+    --shadow-elegant: 0 10px 40px -10px hsl(195 100% 50% / 0.3);
+    
+    /* Enhanced Transitions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --transition-elastic: all 0.6s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+  }
+
+  .dark {
+    --background: 240 15% 8%;
+    --foreground: 0 0% 98%;
+    --card: 240 12% 12%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 12% 10%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 195 100% 50%;
+    --primary-variant: 265 85% 55%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 10% 20%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 10% 18%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 35 100% 55%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 8% 22%;
+    --input: 240 8% 20%;
+    --ring: 195 100% 50%;
+    --sidebar-background: 240 12% 10%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 195 100% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 10% 20%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 240 8% 22%;
+    --sidebar-ring: 195 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html, body {
+    @apply overflow-x-hidden;
+    max-width: 100vw;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-card/40 backdrop-blur-xl border border-border/50;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+
+  .glass-hover {
+    @apply transition-all duration-300 hover:bg-card/60 hover:border-primary/30;
+    transition: var(--transition-smooth);
+  }
+  
+  .glass-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px 0 rgba(14, 165, 233, 0.3), 
+                0 0 20px rgba(14, 165, 233, 0.2);
+  }
+
+  .glow-text {
+    /* Ensure gradient text clips correctly across all browsers (iOS Safari fix) */
+    @apply text-transparent;
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-variant)), hsl(var(--accent)));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block; /* prevent full-width gradient bars on block elements */
+    animation: textGlow 3s ease-in-out infinite;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.6s ease-out;
+  }
+  
+  .animate-slide-in-left {
+    animation: slideInLeft 0.6s ease-out;
+  }
+  
+  .animate-scale-in {
+    animation: scaleIn 0.5s ease-out;
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite;
+  }
+  
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  /* Interactive micro-interactions */
+  .interactive-scale {
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .interactive-scale:hover {
+    transform: scale(1.05);
+  }
+  
+  .interactive-scale:active {
+    transform: scale(0.98);
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes glow {
+    0%, 100% {
+      filter: drop-shadow(0 0 8px hsl(195 100% 50% / 0.5));
+    }
+    50% {
+      filter: drop-shadow(0 0 20px hsl(195 100% 50% / 0.9));
+    }
+  }
+  
+  @keyframes textGlow {
+    0%, 100% {
+      filter: drop-shadow(0 0 8px hsl(195 100% 50% / 0.6));
+      opacity: 1;
+    }
+    50% {
+      filter: drop-shadow(0 0 20px hsl(195 100% 50% / 0.8));
+      opacity: 0.9;
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  
+  /* Grid Background Pattern */
+  .bg-grid-white\/5 {
+    background-image: 
+      linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  
+  /* Gradient Mesh Background */
+  .gradient-mesh {
+    background: var(--gradient-mesh);
+  }
+  
+  /* Smooth Scroll */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Enhanced Card Hover Effects */
+  .card-hover-glow {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .card-hover-glow:hover {
+    box-shadow: 0 0 40px rgba(14, 165, 233, 0.2),
+                0 0 80px rgba(14, 165, 233, 0.1),
+                inset 0 0 20px rgba(14, 165, 233, 0.05);
+  }
+  
+  /* Gradient Text Animation */
+  @keyframes gradientShift {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+  
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradientShift 3s ease infinite;
+  }
+  
+  /* Hide Scrollbar */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+  }
+}
