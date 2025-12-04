@@ -551,6 +551,39 @@ export type Database = {
         }
         Relationships: []
       }
+      brain_memories: {
+        Row: {
+          confidence: number | null
+          content: string
+          created_at: string | null
+          id: string
+          memory_type: string
+          metadata: Json | null
+          source: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          confidence?: number | null
+          content: string
+          created_at?: string | null
+          id?: string
+          memory_type: string
+          metadata?: Json | null
+          source?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          confidence?: number | null
+          content?: string
+          created_at?: string | null
+          id?: string
+          memory_type?: string
+          metadata?: Json | null
+          source?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       brain_memory_cold: {
         Row: {
           archived_at: string | null

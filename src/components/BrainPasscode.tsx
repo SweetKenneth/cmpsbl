@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Brain, Lock } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
 
 interface BrainPasscodeProps {
   children: React.ReactNode;
@@ -29,13 +28,20 @@ export function BrainPasscode({ children }: BrainPasscodeProps) {
         return;
       }
 
-      // Check if user has admin or developer role
-      const { data: hasAdminRole } = await supabase.rpc('has_role', {
-        _user_id: user.id,
-        _role: 'admin'
-      });
+      // Direct table query - most reliable method (matches useAdminAuth)
+      const { data, error } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .eq('role', 'admin')
+        .maybeSingle();
 
-      setIsAuthorized(hasAdminRole || false);
+      if (error) {
+        console.error('Admin check error:', error);
+        setIsAuthorized(false);
+      } else {
+        setIsAuthorized(!!data);
+      }
     } catch (error) {
       console.error('Authorization check failed:', error);
       setIsAuthorized(false);

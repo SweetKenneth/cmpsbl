@@ -1,1 +1,28 @@
 project_id = "bxodolqqczjuahwdrswy"
+
+[functions.pf-brain-seed-cascade]
+verify_jwt = false
+
+[functions.pf-brain-learning-cycle]
+verify_jwt = false
+
+[functions.pf-brain-initialize]
+verify_jwt = false
+
+[functions.pf-brain-learn]
+verify_jwt = false
+
+[functions.pf-learning-log]
+verify_jwt = false
+
+[functions.pf-reflex-analytics]
+verify_jwt = false
+
+[functions.pf-research-fetch]
+verify_jwt = false
+
+[functions.pf-research-verify]
+verify_jwt = false
+
+[functions.pf-system-verify]
+verify_jwt = false
