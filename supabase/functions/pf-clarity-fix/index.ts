@@ -60,7 +60,7 @@ serve(async (req) => {
             return match;
           }
         );
-        fixedHtml = fixedHtml.replace(/<\/h1>/gi, (match, offset) => {
+        fixedHtml = fixedHtml.replace(/<\/h1>/gi, (match: string, offset: number) => {
           const position = html.substring(0, offset).split('<h1').length - 1;
           return position > 0 ? '</h2>' : match;
         });
@@ -83,7 +83,7 @@ serve(async (req) => {
   } catch (error) {
     console.error("Auto-fix error:", error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: error instanceof Error ? error.message : 'Unknown error' }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }

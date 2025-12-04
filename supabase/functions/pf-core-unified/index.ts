@@ -39,7 +39,7 @@ serve(async (req) => {
           result.system = { status: 'operational', config: config || {} };
         } catch (e) {
           result.status = 'error';
-          result.message = e.message;
+          result.message = e instanceof Error ? e.message : 'Unknown error';
         }
         break;
 
@@ -52,7 +52,7 @@ serve(async (req) => {
           result.settings = settings || {};
         } catch (e) {
           result.status = 'error';
-          result.message = e.message;
+          result.message = e instanceof Error ? e.message : 'Unknown error';
         }
         break;
 
@@ -62,7 +62,7 @@ serve(async (req) => {
           result.usage = { total_calls: usage?.length || 0, records: usage || [] };
         } catch (e) {
           result.status = 'error';
-          result.message = e.message;
+          result.message = e instanceof Error ? e.message : 'Unknown error';
         }
         break;
 
@@ -75,7 +75,7 @@ serve(async (req) => {
           result.keys = keys || [];
         } catch (e) {
           result.status = 'error';
-          result.message = e.message;
+          result.message = e instanceof Error ? e.message : 'Unknown error';
         }
         break;
 
@@ -85,7 +85,7 @@ serve(async (req) => {
           result.subscription = sub || { tier: 'free' };
         } catch (e) {
           result.status = 'error';
-          result.message = e.message;
+          result.message = e instanceof Error ? e.message : 'Unknown error';
         }
         break;
 
@@ -98,7 +98,7 @@ serve(async (req) => {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: error.message, status: 'failed' }), {
+    return new Response(JSON.stringify({ error: error instanceof Error ? error.message : 'Unknown error', status: 'failed' }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });

@@ -104,6 +104,7 @@ import DeploymentManager from "./pages/admin/DeploymentManager";
 import DiagnosticsConsole from "./pages/admin/DiagnosticsConsole";
 import SystemSettings from "./pages/admin/SystemSettings";
 import AccessControlManagement from "./pages/admin/AccessControlManagement";
+import { AdminRoute } from "./components/admin/AdminRoute";
 
 // Legacy pages removed - all functionality moved to /admin/* routes
 const FreeAIResources = lazy(() => import("./pages/resources/FreeAIResources"));
@@ -285,21 +286,21 @@ const App = () => {
           
             <Route path="/auth" element={<Auth />} />
             
-            {/* New Admin System Routes (2026) - Eager loaded */}
-            <Route path="/admin/dashboard" element={<ProtectedRoute><OverviewDashboard /></ProtectedRoute>} />
-            <Route path="/admin/vision" element={<ProtectedRoute><VisionControlDashboard /></ProtectedRoute>} />
-            <Route path="/admin/defense" element={<ProtectedRoute><DefenseControlDashboard /></ProtectedRoute>} />
-            <Route path="/admin/projects" element={<ProtectedRoute><ProjectsControlDashboard /></ProtectedRoute>} />
-            <Route path="/admin/clarity" element={<ProtectedRoute><ClarityControlDashboard /></ProtectedRoute>} />
+            {/* New Admin System Routes (2026) - Using AdminRoute for proper admin auth */}
+            <Route path="/admin/dashboard" element={<AdminRoute><OverviewDashboard /></AdminRoute>} />
+            <Route path="/admin/vision" element={<AdminRoute><VisionControlDashboard /></AdminRoute>} />
+            <Route path="/admin/defense" element={<AdminRoute><DefenseControlDashboard /></AdminRoute>} />
+            <Route path="/admin/projects" element={<AdminRoute><ProjectsControlDashboard /></AdminRoute>} />
+            <Route path="/admin/clarity" element={<AdminRoute><ClarityControlDashboard /></AdminRoute>} />
             
-            {/* Admin Management Routes (2026) - Eager loaded */}
-            <Route path="/admin/users" element={<ProtectedRoute><UserManagement /></ProtectedRoute>} />
-            <Route path="/admin/api-keys" element={<ProtectedRoute><ApiKeysManagement /></ProtectedRoute>} />
-            <Route path="/admin/access-control" element={<ProtectedRoute><AccessControlManagement /></ProtectedRoute>} />
-            <Route path="/admin/billing" element={<ProtectedRoute><BillingManagement /></ProtectedRoute>} />
-            <Route path="/admin/deployment" element={<ProtectedRoute><DeploymentManager /></ProtectedRoute>} />
-            <Route path="/admin/diagnostics" element={<ProtectedRoute><DiagnosticsConsole /></ProtectedRoute>} />
-            <Route path="/admin/settings" element={<ProtectedRoute><SystemSettings /></ProtectedRoute>} />
+            {/* Admin Management Routes (2026) - Using AdminRoute for proper admin auth */}
+            <Route path="/admin/users" element={<AdminRoute><UserManagement /></AdminRoute>} />
+            <Route path="/admin/api-keys" element={<AdminRoute><ApiKeysManagement /></AdminRoute>} />
+            <Route path="/admin/access-control" element={<AdminRoute><AccessControlManagement /></AdminRoute>} />
+            <Route path="/admin/billing" element={<AdminRoute><BillingManagement /></AdminRoute>} />
+            <Route path="/admin/deployment" element={<AdminRoute><DeploymentManager /></AdminRoute>} />
+            <Route path="/admin/diagnostics" element={<AdminRoute><DiagnosticsConsole /></AdminRoute>} />
+            <Route path="/admin/settings" element={<AdminRoute><SystemSettings /></AdminRoute>} />
             
             {/* System Control Route */}
             <Route path="/system" element={<System />} />

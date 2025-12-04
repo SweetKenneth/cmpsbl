@@ -47,7 +47,7 @@ Deno.serve(async (req) => {
       results.tests.push({
         name: 'Cascade Persona',
         status: 'failed',
-        error: e.message
+        error: e instanceof Error ? e.message : 'Unknown error'
       });
     }
 
@@ -69,7 +69,7 @@ Deno.serve(async (req) => {
       results.tests.push({
         name: 'Brain Policy',
         status: 'failed',
-        error: e.message
+        error: e instanceof Error ? e.message : 'Unknown error'
       });
     }
 
@@ -92,7 +92,7 @@ Deno.serve(async (req) => {
       results.tests.push({
         name: 'Brain Memory Hot',
         status: 'failed',
-        error: e.message
+        error: e instanceof Error ? e.message : 'Unknown error'
       });
     }
 
@@ -115,7 +115,7 @@ Deno.serve(async (req) => {
       results.tests.push({
         name: 'Actions Queue',
         status: 'failed',
-        error: e.message
+        error: e instanceof Error ? e.message : 'Unknown error'
       });
     }
 
@@ -138,7 +138,7 @@ Deno.serve(async (req) => {
       results.tests.push({
         name: 'Brain Events',
         status: 'failed',
-        error: e.message
+        error: e instanceof Error ? e.message : 'Unknown error'
       });
     }
 
@@ -166,7 +166,7 @@ Deno.serve(async (req) => {
       results.tests.push({
         name: 'Test Event Insert',
         status: 'failed',
-        error: e.message
+        error: e instanceof Error ? e.message : 'Unknown error'
       });
     }
 
@@ -196,8 +196,8 @@ Deno.serve(async (req) => {
     console.error('❌ Brain test cycle error:', error);
     return new Response(
       JSON.stringify({ 
-        error: error.message,
-        stack: error.stack,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined,
         timestamp: new Date().toISOString()
       }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

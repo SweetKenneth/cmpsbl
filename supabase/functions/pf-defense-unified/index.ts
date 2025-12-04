@@ -28,7 +28,7 @@ serve(async (req) => {
           result.analysis = analysis;
         } catch (e) {
           result.status = 'error';
-          result.message = e.message;
+          result.message = e instanceof Error ? e.message : 'Unknown error';
         }
         break;
 
@@ -38,7 +38,7 @@ serve(async (req) => {
           result.detection = indicators;
         } catch (e) {
           result.status = 'error';
-          result.message = e.message;
+          result.message = e instanceof Error ? e.message : 'Unknown error';
         }
         break;
 
@@ -48,7 +48,7 @@ serve(async (req) => {
           result.report = { bots_detected: bots?.length || 0, blocked: bots?.filter(b => b.action === 'block').length || 0, period: '24h' };
         } catch (e) {
           result.status = 'error';
-          result.message = e.message;
+          result.message = e instanceof Error ? e.message : 'Unknown error';
         }
         break;
 
@@ -58,7 +58,7 @@ serve(async (req) => {
           result.intelligence = { threats, total: threats.length, critical: threats.filter(t => t.severity === 'high').length };
         } catch (e) {
           result.status = 'error';
-          result.message = e.message;
+          result.message = e instanceof Error ? e.message : 'Unknown error';
         }
         break;
 
@@ -68,7 +68,7 @@ serve(async (req) => {
           result.rule = rule;
         } catch (e) {
           result.status = 'error';
-          result.message = e.message;
+          result.message = e instanceof Error ? e.message : 'Unknown error';
         }
         break;
 
@@ -81,7 +81,7 @@ serve(async (req) => {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: error.message, status: 'failed' }), {
+    return new Response(JSON.stringify({ error: error instanceof Error ? error.message : 'Unknown error', status: 'failed' }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
