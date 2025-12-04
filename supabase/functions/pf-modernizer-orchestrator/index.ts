@@ -130,7 +130,7 @@ serve(async (req) => {
           .from('modernizer_jobs')
           .update({ 
             job_status: 'failed',
-            error_message: err.message 
+            error_message: err instanceof Error ? err.message : 'Unknown error' 
           })
           .eq('id', job.id);
       }
@@ -148,7 +148,7 @@ serve(async (req) => {
     });
   } catch (error) {
     console.error('Orchestrator error:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    return new Response(JSON.stringify({ error: error instanceof Error ? error.message : 'Unknown error' }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });

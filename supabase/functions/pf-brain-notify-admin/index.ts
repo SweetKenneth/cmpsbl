@@ -46,7 +46,7 @@ serve(async (req) => {
 
     if (fetchError) throw fetchError;
 
-    if (!intents || intents.length === 0) {
+    if (!intents?.length) {
       console.log('✅ No pending reflection requests');
       return new Response(
         JSON.stringify({ success: true, message: 'No pending intents' }),
@@ -54,7 +54,7 @@ serve(async (req) => {
       );
     }
 
-    const intent = intents[0];
+    const intent = intents![0];
     console.log(`📧 Sending reflection request: ${intent.topic} (priority: ${intent.priority})`);
 
     // Compose email

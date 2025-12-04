@@ -73,7 +73,7 @@ serve(async (req) => {
           };
         } catch (e) {
           result.status = 'error';
-          result.message = e.message;
+          result.message = e instanceof Error ? e.message : 'Unknown error';
         }
         break;
 
@@ -88,7 +88,7 @@ serve(async (req) => {
           result.data = data;
         } catch (e) {
           result.status = 'error';
-          result.message = e.message;
+          result.message = e instanceof Error ? e.message : 'Unknown error';
         }
         break;
 
@@ -104,7 +104,7 @@ serve(async (req) => {
           result.users = profiles;
         } catch (e) {
           result.status = 'error';
-          result.message = e.message;
+          result.message = e instanceof Error ? e.message : 'Unknown error';
         }
         break;
 
@@ -122,7 +122,7 @@ serve(async (req) => {
           result.data = data;
         } catch (e) {
           result.status = 'error';
-          result.message = e.message;
+          result.message = e instanceof Error ? e.message : 'Unknown error';
         }
         break;
 
@@ -137,7 +137,7 @@ serve(async (req) => {
           result.api_keys = data;
         } catch (e) {
           result.status = 'error';
-          result.message = e.message;
+          result.message = e instanceof Error ? e.message : 'Unknown error';
         }
         break;
 
@@ -153,7 +153,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Management unified error:', error);
     return new Response(JSON.stringify({ 
-      error: error.message,
+      error: error instanceof Error ? error.message : 'Unknown error',
       status: 'failed'
     }), {
       status: 500,

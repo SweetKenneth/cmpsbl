@@ -62,7 +62,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Quota reset error:', error);
     return new Response(JSON.stringify({ 
-      error: error.message,
+      error: error instanceof Error ? error.message : 'Unknown error',
       timestamp: new Date().toISOString()
     }), {
       status: 500,

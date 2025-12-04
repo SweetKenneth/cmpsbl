@@ -46,7 +46,7 @@ serve(async (req) => {
 Business: ${brandProfile?.name || 'Company'}
 Industry: ${brandProfile?.industry || 'General'}
 Target Audience: ${brandProfile?.targetAudience || 'General consumers'}
-${competitors?.length > 0 ? `Competitors: ${competitors.join(', ')}` : ''}
+${competitors && competitors.length > 0 ? `Competitors: ${competitors.join(', ')}` : ''}
 ${recentMetrics ? `Recent Performance: ${JSON.stringify(recentMetrics)}` : ''}
 
 Conduct a comprehensive SWOT analysis:
