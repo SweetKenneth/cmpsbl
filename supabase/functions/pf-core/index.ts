@@ -67,22 +67,22 @@ serve(async (req) => {
       }
 
       case 'get_stats': {
-        const { data: memoryCount } = await supabaseClient
+        const { count: memoryCount } = await supabaseClient
           .from('brain_memories')
           .select('id', { count: 'exact', head: true });
 
-        const { data: learningCount } = await supabaseClient
+        const { count: learningCount } = await supabaseClient
           .from('learning_logs')
           .select('id', { count: 'exact', head: true });
 
-        const { data: defenseCount } = await supabaseClient
+        const { count: defenseCount } = await supabaseClient
           .from('defense_analytics')
           .select('id', { count: 'exact', head: true });
 
         const stats = {
-          total_memories: memoryCount?.count || 0,
-          total_learning_events: learningCount?.count || 0,
-          total_defense_events: defenseCount?.count || 0,
+          total_memories: memoryCount || 0,
+          total_learning_events: learningCount || 0,
+          total_defense_events: defenseCount || 0,
           timestamp: new Date().toISOString(),
         };
 

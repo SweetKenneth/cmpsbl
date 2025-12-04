@@ -772,8 +772,8 @@ serve(async (req) => {
 
     // Run all applicable WCAG checks
     const allIssues: WCAGIssue[] = [];
-    const levelOrder = { A: 1, AA: 2, AAA: 3 };
-    const targetLevel = levelOrder[wcag_level];
+    const levelOrder: Record<string, number> = { A: 1, AA: 2, AAA: 3 };
+    const targetLevel = levelOrder[wcag_level] || 2;
 
     for (const rule of WCAG_RULES) {
       if (levelOrder[rule.level] <= targetLevel) {
@@ -832,7 +832,7 @@ serve(async (req) => {
   } catch (error) {
     console.error("Scan error:", error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: error instanceof Error ? error.message : 'Unknown error' }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }

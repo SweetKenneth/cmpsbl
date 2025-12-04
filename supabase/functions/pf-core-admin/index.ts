@@ -23,17 +23,17 @@ serve(async (req) => {
 
     switch (action) {
       case 'get_system_overview': {
-        const { data: memoryCount } = await supabaseClient
+        const { count: memoryCount } = await supabaseClient
           .from('brain_memories')
           .select('id', { count: 'exact', head: true });
 
-        const { data: logsCount } = await supabaseClient
+        const { count: logsCount } = await supabaseClient
           .from('learning_logs')
           .select('id', { count: 'exact', head: true });
 
         const overview = {
-          total_memories: memoryCount?.count || 0,
-          total_logs: logsCount?.count || 0,
+          total_memories: memoryCount || 0,
+          total_logs: logsCount || 0,
           system_version: '1.0.0',
           uptime: '100%',
           active_modules: ['brain', 'defense', 'nexus', 'marketing', 'access'],

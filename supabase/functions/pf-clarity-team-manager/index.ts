@@ -45,7 +45,8 @@ serve(async (req) => {
       }
 
       case 'invite_member': {
-        const { data: invitedUser } = await supabase.auth.admin.getUserByEmail(member_email);
+        const { data: usersData } = await supabase.auth.admin.listUsers();
+        const invitedUser = usersData?.users?.find(u => u.email === member_email);
         
         if (!invitedUser) {
           return new Response(JSON.stringify({ error: 'User not found' }), {
@@ -58,7 +59,7 @@ serve(async (req) => {
           .from('pf_clarity_team_members')
           .insert({
             team_id,
-            user_id: invitedUser.user.id,
+            user_id: invitedUser.id,
             role: member_role,
             invited_by: user.id,
           })
@@ -148,7 +149,7 @@ serve(async (req) => {
     }
   } catch (error) {
     console.error('Team manager error:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    return new Response(JSON.stringify({ error: error instanceof Error ? error.message : 'Unknown error' }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
