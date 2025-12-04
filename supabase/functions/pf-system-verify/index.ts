@@ -47,7 +47,7 @@ serve(async (req) => {
       } catch (err) {
         results[table] = {
           exists: false,
-          error: err.message
+          error: err instanceof Error ? err.message : 'Unknown error'
         };
       }
     }
@@ -68,7 +68,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('System verification error:', error);
     return new Response(JSON.stringify({ 
-      error: error.message,
+      error: error instanceof Error ? error.message : 'Unknown error',
       timestamp: new Date().toISOString(),
     }), {
       status: 500,
