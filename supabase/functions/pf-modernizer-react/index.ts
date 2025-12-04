@@ -104,7 +104,7 @@ Return ONLY valid JSON, no explanations.`;
 
   } catch (error) {
     console.error('React build error:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    return new Response(JSON.stringify({ error: error instanceof Error ? error.message : 'Unknown error' }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });

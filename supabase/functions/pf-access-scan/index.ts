@@ -75,11 +75,21 @@ serve(async (req) => {
     );
 
     // Create scan record
-    const { data: scan } = await supabase
+    const { data: scan, error: scanError } = await supabase
       .from('accessibility_scans')
-      .insert({ url: validatedUrl.href, wcag_level: wcagLevel, scan_depth: scanDepth, scan_status: 'processing' })
+      .insert({ 
+        domain: validatedUrl.href, 
+        wcag_level: wcagLevel, 
+        scan_status: 'processing',
+        metadata: { scan_depth: scanDepth }
+      })
       .select()
       .single();
+
+    if (scanError || !scan) {
+      console.error('[Access Scan] Failed to create scan record:', scanError);
+      throw new Error('Failed to create scan record');
+    }
 
     // Fetch page with timeout
     const pageResponse = await fetch(validatedUrl.href, {

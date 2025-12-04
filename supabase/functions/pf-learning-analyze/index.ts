@@ -68,7 +68,7 @@ serve(async (req) => {
     }
 
     const mostCommonEvent = Object.entries(analysis.event_types)
-      .sort(([,a], [,b]) => b - a)[0];
+      .sort(([,a], [,b]) => (b as number) - (a as number))[0];
     
     if (mostCommonEvent) {
       insights.push({

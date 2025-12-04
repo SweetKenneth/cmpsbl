@@ -85,7 +85,7 @@ serve(async (req) => {
           .eq('id', schedule_id)
           .single();
 
-        if (!schedule || schedule.pf_clarity_sites?.user_id !== user.id) {
+        if (!schedule || (schedule.pf_clarity_sites as any)?.user_id !== user.id) {
           return new Response(JSON.stringify({ error: 'Schedule not found' }), {
             status: 404,
             headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -131,7 +131,7 @@ serve(async (req) => {
           .eq('id', schedule_id)
           .single();
 
-        if (!schedule || schedule.pf_clarity_sites?.user_id !== user.id) {
+        if (!schedule || (schedule.pf_clarity_sites as any)?.user_id !== user.id) {
           return new Response(JSON.stringify({ error: 'Schedule not found' }), {
             status: 404,
             headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -191,7 +191,7 @@ serve(async (req) => {
     }
   } catch (error) {
     console.error('Schedule manager error:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    return new Response(JSON.stringify({ error: error instanceof Error ? error.message : 'Unknown error' }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });

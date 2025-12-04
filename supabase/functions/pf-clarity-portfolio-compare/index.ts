@@ -47,12 +47,12 @@ serve(async (req) => {
 
         const siteStats = [];
         for (const site of sites || []) {
-          const latestScan = site.pf_clarity_scans?.[0];
+          const latestScan = site.pf_clarity_scans?.[0] as { id?: string; compliance_score?: number; status?: string; created_at?: string } | undefined;
           
           const { data: issues } = await supabase
             .from('pf_clarity_issues')
             .select('severity, scan_id')
-            .eq('scan_id', latestScan?.id || '');
+            .eq('scan_id', (latestScan as any)?.id || '');
 
           const criticalCount = issues?.filter(i => i.severity === 'critical').length || 0;
 
@@ -150,7 +150,7 @@ serve(async (req) => {
     }
   } catch (error) {
     console.error('Portfolio compare error:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    return new Response(JSON.stringify({ error: error instanceof Error ? error.message : 'Unknown error' }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
