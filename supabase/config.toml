@@ -1,5 +1,11 @@
 project_id = "bxodolqqczjuahwdrswy"
 
+[functions.pf-brain-orchestrator]
+verify_jwt = false
+
+[functions.pf-defense-full-scan]
+verify_jwt = false
+
 [functions.pf-brain-seed-cascade]
 verify_jwt = false
 

@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { Wand2, Code, CheckCircle, Loader2, Copy } from 'lucide-react';
+import { Wand2, Code, CheckCircle, Loader2, Copy, Download, Printer, FileText } from 'lucide-react';
 
 export default function ClarityFixSuggestions() {
   const { scanId } = useParams();
@@ -14,6 +14,7 @@ export default function ClarityFixSuggestions() {
   const [loading, setLoading] = useState(false);
   const [generating, setGenerating] = useState<Record<string, boolean>>({});
   const { toast } = useToast();
+  const printRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (scanId) {
@@ -96,26 +97,191 @@ export default function ClarityFixSuggestions() {
     toast({ title: 'Code copied to clipboard' });
   };
 
+  const copyAllFixes = () => {
+    const allFixes = issues
+      .filter(issue => suggestions[issue.id]?.suggested_code)
+      .map(issue => {
+        const sug = suggestions[issue.id];
+        return `/* Issue: ${issue.issue_type.replace(/_/g, ' ').toUpperCase()} */
+/* Severity: ${issue.severity} */
+/* ${issue.description} */
+
+${sug.suggested_code}
+
+/* ---------------------------------------- */`;
+      })
+      .join('\n\n');
+
+    navigator.clipboard.writeText(allFixes);
+    toast({ title: 'All fixes copied to clipboard' });
+  };
+
+  const downloadFixes = () => {
+    const content = issues
+      .map(issue => {
+        const sug = suggestions[issue.id];
+        return `================================================================================
+ISSUE: ${issue.issue_type.replace(/_/g, ' ').toUpperCase()}
+Severity: ${issue.severity}
+Element: ${issue.element_selector || 'N/A'}
+--------------------------------------------------------------------------------
+Description:
+${issue.description}
+
+${sug ? `Explanation:
+${sug.explanation}
+
+Suggested Fix:
+\`\`\`
+${sug.suggested_code || 'No code suggestion available'}
+\`\`\`
+
+Confidence: ${sug.confidence_score}%
+` : 'No fix suggestion generated yet.'}
+================================================================================
+`;
+      })
+      .join('\n\n');
+
+    const header = `CLARITY ACCESSIBILITY FIX REPORT
+Scan ID: ${scanId}
+Generated: ${new Date().toLocaleString()}
+Total Issues: ${issues.length}
+Issues with Fixes: ${Object.keys(suggestions).length}
+
+================================================================================
+
+`;
+
+    const blob = new Blob([header + content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `clarity-fixes-${scanId?.substring(0, 8)}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    toast({ title: 'Fixes downloaded as text file' });
+  };
+
+  const printFixes = () => {
+    const printContent = `
+      <html>
+        <head>
+          <title>Clarity Accessibility Fixes</title>
+          <style>
+            body { font-family: system-ui, -apple-system, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+            h1 { color: #333; border-bottom: 2px solid #7A5FFF; padding-bottom: 10px; }
+            .issue { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 8px; page-break-inside: avoid; }
+            .issue-header { display: flex; justify-content: space-between; margin-bottom: 10px; }
+            .severity-critical { color: #dc2626; }
+            .severity-warning { color: #f59e0b; }
+            .severity-info { color: #3b82f6; }
+            pre { background: #f5f5f5; padding: 15px; border-radius: 4px; overflow-x: auto; font-size: 12px; }
+            .explanation { background: #f0f9ff; padding: 10px; border-radius: 4px; margin: 10px 0; }
+          </style>
+        </head>
+        <body>
+          <h1>Clarity Accessibility Fix Report</h1>
+          <p>Scan ID: ${scanId}</p>
+          <p>Generated: ${new Date().toLocaleString()}</p>
+          <p>Total Issues: ${issues.length} | Issues with Fixes: ${Object.keys(suggestions).length}</p>
+          
+          ${issues.map(issue => {
+            const sug = suggestions[issue.id];
+            return `
+              <div class="issue">
+                <div class="issue-header">
+                  <strong>${issue.issue_type.replace(/_/g, ' ').toUpperCase()}</strong>
+                  <span class="severity-${issue.severity}">${issue.severity.toUpperCase()}</span>
+                </div>
+                <p>${issue.description}</p>
+                ${sug ? `
+                  <div class="explanation">
+                    <strong>Explanation:</strong> ${sug.explanation}
+                  </div>
+                  ${sug.suggested_code ? `
+                    <strong>Suggested Fix:</strong>
+                    <pre>${sug.suggested_code.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
+                  ` : ''}
+                ` : '<p><em>No fix suggestion generated</em></p>'}
+              </div>
+            `;
+          }).join('')}
+        </body>
+      </html>
+    `;
+
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.write(printContent);
+      printWindow.document.close();
+      printWindow.print();
+    }
+  };
+
+  const hasSuggestions = Object.keys(suggestions).length > 0;
+
   return (
     <div className="container mx-auto p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Fix Suggestions</h1>
-        <Button onClick={generateAllFixes} disabled={loading}>
-          {loading ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Generating...
-            </>
-          ) : (
-            <>
-              <Wand2 className="mr-2 h-4 w-4" />
-              Generate All Fixes
-            </>
-          )}
-        </Button>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold">Fix Suggestions</h1>
+          <p className="text-muted-foreground mt-1">
+            AI-generated accessibility fixes ready to copy and apply
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Button onClick={generateAllFixes} disabled={loading}>
+            {loading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Generating...
+              </>
+            ) : (
+              <>
+                <Wand2 className="mr-2 h-4 w-4" />
+                Generate All Fixes
+              </>
+            )}
+          </Button>
+        </div>
       </div>
 
-      <div className="space-y-4">
+      {/* Export Actions */}
+      {hasSuggestions && (
+        <Card className="bg-primary/5 border-primary/20">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg flex items-center gap-2">
+              <FileText className="h-5 w-5 text-primary" />
+              Export Fixes
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-3">
+              <Button variant="outline" onClick={copyAllFixes}>
+                <Copy className="mr-2 h-4 w-4" />
+                Copy All Code
+              </Button>
+              <Button variant="outline" onClick={downloadFixes}>
+                <Download className="mr-2 h-4 w-4" />
+                Download Report
+              </Button>
+              <Button variant="outline" onClick={printFixes}>
+                <Printer className="mr-2 h-4 w-4" />
+                Print Report
+              </Button>
+            </div>
+            <p className="text-xs text-muted-foreground mt-3">
+              Export all {Object.keys(suggestions).length} fix suggestions for your development team
+            </p>
+          </CardContent>
+        </Card>
+      )}
+
+      <div className="space-y-4" ref={printRef}>
         {issues.map((issue) => {
           const suggestion = suggestions[issue.id];
           const isGenerating = generating[issue.id];
