@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Brain, Activity, AlertTriangle, TrendingUp, Zap, Database } from "lucide-react";
 import { toast } from "sonner";
+import RecentLearningEvents from "@/components/vision/RecentLearningEvents";
 
 export default function BrainML() {
   const [overview, setOverview] = useState<any>(null);
@@ -347,6 +348,9 @@ export default function BrainML() {
             </div>
           </TabsContent>
         </Tabs>
+
+        {/* Recent Learning Events */}
+        <RecentLearningEvents />
 
         {/* API Documentation */}
         <Card className="p-6 border-primary/20">
