@@ -698,6 +698,48 @@ export type Database = {
         }
         Relationships: []
       }
+      brain_orchestrator_state: {
+        Row: {
+          auto_heal_attempts: number | null
+          created_at: string | null
+          current_phase: string | null
+          cycles_completed: number | null
+          health_score: number | null
+          id: string
+          last_cycle_at: string | null
+          last_email_at: string | null
+          metadata: Json | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          auto_heal_attempts?: number | null
+          created_at?: string | null
+          current_phase?: string | null
+          cycles_completed?: number | null
+          health_score?: number | null
+          id?: string
+          last_cycle_at?: string | null
+          last_email_at?: string | null
+          metadata?: Json | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          auto_heal_attempts?: number | null
+          created_at?: string | null
+          current_phase?: string | null
+          cycles_completed?: number | null
+          health_score?: number | null
+          id?: string
+          last_cycle_at?: string | null
+          last_email_at?: string | null
+          metadata?: Json | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       brain_persona: {
         Row: {
           communication_style: string | null
@@ -1664,6 +1706,33 @@ export type Database = {
           started_at?: string | null
           status?: string | null
           total_calls?: number | null
+        }
+        Relationships: []
+      }
+      learning_logs: {
+        Row: {
+          content: string | null
+          created_at: string | null
+          id: string
+          metadata: Json | null
+          source: string
+          success: boolean | null
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          source: string
+          success?: boolean | null
+        }
+        Update: {
+          content?: string | null
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          source?: string
+          success?: boolean | null
         }
         Relationships: []
       }
