@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { AdminSidebar } from "./AdminSidebar";
+import { UnifiedAdminSidebar } from "./UnifiedAdminSidebar";
 import { AdminHeader } from "./AdminHeader";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AdminErrorBoundary } from "./ErrorBoundary";
@@ -27,7 +27,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
             />
           </div>
 
-          <AdminSidebar />
+          <UnifiedAdminSidebar />
 
           <div className="flex-1 flex flex-col relative">
             <AdminHeader />
