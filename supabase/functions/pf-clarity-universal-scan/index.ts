@@ -744,11 +744,17 @@ serve(async (req) => {
   }
 
   try {
-    const { scan_id, url, wcag_level = "AA", auto_fix = false } = await req.json();
+    const body = await req.json();
+    // Support both formats: { scan_id, url } OR { site_url, public_mode }
+    const scan_id = body.scan_id;
+    const url = body.url || body.site_url;
+    const wcag_level = body.wcag_level || "AA";
+    const auto_fix = body.auto_fix || false;
+    const public_mode = body.public_mode || false;
 
-    if (!scan_id || !url) {
+    if (!url) {
       return new Response(
-        JSON.stringify({ error: "scan_id and url are required" }),
+        JSON.stringify({ error: "url or site_url is required" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
@@ -758,13 +764,36 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    // Update scan status to scanning
-    await supabase
-      .from("pf_clarity_scans")
-      .update({ status: "scanning", started_at: new Date().toISOString() })
-      .eq("id", scan_id);
+    let effectiveScanId = scan_id;
 
-    console.log(`Scanning ${url} for WCAG ${wcag_level} compliance`);
+    // For public mode without scan_id, create a new scan record
+    if (!scan_id && public_mode) {
+      const { data: newScan, error: createError } = await supabase
+        .from("accessibility_scans")
+        .insert({
+          domain: url,
+          scan_status: "scanning",
+          wcag_level,
+          metadata: { public_mode: true }
+        })
+        .select()
+        .single();
+
+      if (createError) {
+        console.error("Failed to create scan record:", createError);
+        // Continue without a scan record for public mode
+      } else {
+        effectiveScanId = newScan?.id;
+      }
+    } else if (scan_id) {
+      // Update existing scan status to scanning
+      await supabase
+        .from("pf_clarity_scans")
+        .update({ status: "scanning", started_at: new Date().toISOString() })
+        .eq("id", scan_id);
+    }
+
+    console.log(`Scanning ${url} for WCAG ${wcag_level} compliance (public_mode: ${public_mode})`);
 
     // Fetch page content
     const pageResponse = await fetch(url, { headers: { "User-Agent": "PromptFluid-Clarity/4.1.0" } });
@@ -788,37 +817,58 @@ serve(async (req) => {
     const autoFixableCount = allIssues.filter(i => i.auto_fixable).length;
     const complianceScore = Math.max(0, 100 - (criticalCount * 10 + warningCount * 5));
 
-    // Insert issues into database
-    const issueInserts = allIssues.map(issue => ({
-      scan_id,
-      ...issue,
-      status: auto_fix && issue.auto_fixable ? "auto_fixed" : "open",
-    }));
+    // Insert issues into database (only if we have a scan_id)
+    if (effectiveScanId) {
+      const issueInserts = allIssues.map(issue => ({
+        scan_id: effectiveScanId,
+        ...issue,
+        status: auto_fix && issue.auto_fixable ? "auto_fixed" : "open",
+      }));
 
-    if (issueInserts.length > 0) {
-      await supabase.from("pf_clarity_issues").insert(issueInserts);
+      if (issueInserts.length > 0) {
+        try {
+          await supabase.from("pf_clarity_issues").insert(issueInserts);
+        } catch (e) {
+          console.log("Could not insert issues (table may not exist):", e);
+        }
+      }
     }
 
-    // Update scan with results
-    await supabase
-      .from("pf_clarity_scans")
-      .update({
-        status: "completed",
-        total_checks: WCAG_RULES.filter(r => levelOrder[r.level] <= targetLevel).length,
-        issues_found: allIssues.length,
-        issues_critical: criticalCount,
-        issues_warning: warningCount,
-        issues_auto_fixed: auto_fix ? autoFixableCount : 0,
-        issues_pending_review: allIssues.length - (auto_fix ? autoFixableCount : 0),
-        compliance_score: complianceScore,
-        completed_at: new Date().toISOString(),
-      })
-      .eq("id", scan_id);
+    // Update scan with results based on mode
+    if (public_mode && effectiveScanId) {
+      // Update accessibility_scans for public mode
+      await supabase
+        .from("accessibility_scans")
+        .update({
+          scan_status: "completed",
+          score: complianceScore,
+          issues: allIssues,
+          completed_at: new Date().toISOString(),
+        })
+        .eq("id", effectiveScanId);
+    } else if (scan_id) {
+      // Update pf_clarity_scans for authenticated mode
+      await supabase
+        .from("pf_clarity_scans")
+        .update({
+          status: "completed",
+          total_checks: WCAG_RULES.filter(r => levelOrder[r.level] <= targetLevel).length,
+          issues_found: allIssues.length,
+          issues_critical: criticalCount,
+          issues_warning: warningCount,
+          issues_auto_fixed: auto_fix ? autoFixableCount : 0,
+          issues_pending_review: allIssues.length - (auto_fix ? autoFixableCount : 0),
+          compliance_score: complianceScore,
+          completed_at: new Date().toISOString(),
+        })
+        .eq("id", scan_id);
+    }
 
     return new Response(
       JSON.stringify({
         success: true,
-        scan_id,
+        scan_id: effectiveScanId || null,
+        url,
         total_checks: WCAG_RULES.filter(r => levelOrder[r.level] <= targetLevel).length,
         issues_found: allIssues.length,
         issues_critical: criticalCount,
@@ -826,6 +876,7 @@ serve(async (req) => {
         issues_auto_fixed: auto_fix ? autoFixableCount : 0,
         issues_pending_review: allIssues.length - (auto_fix ? autoFixableCount : 0),
         compliance_score: complianceScore,
+        issues: public_mode ? allIssues : undefined,
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
