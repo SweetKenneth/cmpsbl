@@ -371,13 +371,13 @@ export default function Index() {
             
             <Button 
               size="lg" 
-              onClick={() => navigate('/scan')}
+              onClick={() => window.open("https://cmptbl.promptfluid.com", "_blank")}
               variant="default"
               className="group text-lg px-8 py-6 shadow-glow hover:shadow-glow-lg transition-all duration-300 animate-pulse"
             >
               <span className="flex items-center gap-2">
                 <Accessibility className="w-5 h-5" />
-                Run a Free Accessibility Scan
+                Free Accessibility Scan
               </span>
             </Button>
           </div>

@@ -68,57 +68,9 @@ export default function ClarityProduct() {
     "First unified accessibility + security monitoring platform"
   ];
 
-  const pricingTiers = [
-    {
-      name: "Free",
-      price: "$0",
-      period: "/mo",
-      description: "Perfect for small sites and personal projects",
-      features: [
-        "Up to 10 pages scanned",
-        "Basic accessibility reports",
-        "Manual fix suggestions",
-        "WCAG 2.2 Level A compliance",
-        "Email support"
-      ],
-      cta: "Download Free",
-      highlighted: false
-    },
-    {
-      name: "Pro",
-      price: "$29",
-      period: "/mo",
-      description: "For professionals and growing businesses",
-      features: [
-        "Unlimited page scanning",
-        "AI-powered automated fixes",
-        "WCAG 2.2 Level AA + AAA",
-        "Scheduled scans (daily/weekly)",
-        "Priority support",
-        "API access",
-        "Custom reporting"
-      ],
-      cta: "Coming Q2 2025",
-      highlighted: true
-    },
-    {
-      name: "Enterprise",
-      price: "Custom",
-      period: "",
-      description: "For agencies and large organizations",
-      features: [
-        "Everything in Pro",
-        "Multi-site management",
-        "White-label options",
-        "Dedicated accessibility specialist",
-        "Custom AI training",
-        "SLA guarantees",
-        "24/7 priority support"
-      ],
-      cta: "Contact Sales",
-      highlighted: false
-    }
-  ];
+  const openCMPTBL = () => {
+    window.open("https://cmptbl.promptfluid.com", "_blank");
+  };
 
   const roadmapPhases = [
     {
@@ -305,51 +257,37 @@ export default function ClarityProduct() {
             </div>
           </section>
 
-          {/* Pricing */}
+          {/* Free for All Mission */}
           <section className="py-20 px-4 bg-gradient-to-b from-muted/20 to-background">
-            <div className="container mx-auto max-w-6xl">
-              <div className="text-center mb-12">
-                <h2 className="text-4xl font-bold mb-4">Simple, Transparent Pricing</h2>
-                <p className="text-lg text-muted-foreground">
-                  Affordable accessibility for organizations of all sizes
+            <div className="container mx-auto max-w-4xl">
+              <div className="text-center p-8 md:p-12 rounded-2xl bg-gradient-to-br from-primary/10 via-primary-variant/5 to-accent/10 border border-primary/20">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/20 border border-primary/30 mb-6">
+                  <Sparkles className="w-4 h-4 text-primary" />
+                  <span className="text-sm font-medium">Our Mission</span>
+                </div>
+                
+                <h2 className="text-4xl font-bold mb-4">Accessibility is Free For All</h2>
+                <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+                  We believe accessibility should never be locked behind a paywall. 
+                  Scan your website, get AI-powered fixes, and make the web work for everyone — 
+                  100% free, forever.
                 </p>
-              </div>
-
-              <div className="grid md:grid-cols-3 gap-8">
-                {pricingTiers.map((tier) => (
-                  <div
-                    key={tier.name}
-                    className={`p-8 rounded-xl border transition-all ${
-                      tier.highlighted
-                        ? 'border-primary bg-primary/5 shadow-glow scale-105'
-                        : 'border-border/50 glass hover:border-primary/30'
-                    }`}
-                  >
-                    <h3 className="text-2xl font-bold mb-2">{tier.name}</h3>
-                    <div className="flex items-baseline gap-2 mb-4">
-                      <span className="text-4xl font-bold text-primary">{tier.price}</span>
-                      <span className="text-muted-foreground">{tier.period}</span>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-6">{tier.description}</p>
-                    
-                    <ul className="space-y-3 mb-8">
-                      {tier.features.map((feature, idx) => (
-                        <li key={idx} className="flex items-start gap-2">
-                          <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                          <span className="text-sm text-foreground/80">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-
-                    <Button
-                      className="w-full"
-                      variant={tier.highlighted ? "default" : "outline"}
-                      onClick={tier.name === "Free" ? handleDownload : undefined}
-                    >
-                      {tier.cta}
-                    </Button>
-                  </div>
-                ))}
+                
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button size="lg" onClick={openCMPTBL} className="shadow-glow hover:shadow-glow-lg">
+                    <Globe className="mr-2 h-5 w-5" />
+                    Free Accessibility Scan
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                  <Button size="lg" variant="outline" onClick={handleDownload}>
+                    <Download className="mr-2 h-5 w-5" />
+                    Download WordPress Plugin
+                  </Button>
+                </div>
+                
+                <p className="text-sm text-muted-foreground mt-6">
+                  No signup required • Unlimited scans • AI-powered fixes included
+                </p>
               </div>
             </div>
           </section>

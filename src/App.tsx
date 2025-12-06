@@ -132,6 +132,7 @@ const PromptFluidRipple = lazy(() => import("./pages/blog/promptfluid-ripple-net
 const PromptFluidAccess = lazy(() => import("./pages/blog/promptfluid-access-identity-billing"));
 const PromptFluidNexus = lazy(() => import("./pages/blog/promptfluid-nexus-api-gateway"));
 const AISystemsThatDreamPressRelease = lazy(() => import("./pages/blog/ai-systems-that-dream-press-release"));
+const AccessibilityFreeForAll = lazy(() => import("./pages/blog/accessibility-free-for-all"));
 
 // Lazy load product info pages
 const VisionInfo = lazy(() => import("./pages/products/VisionInfo"));
@@ -460,6 +461,7 @@ const App = () => {
           <Route path="/blog/promptfluid-nexus-api-gateway" element={<PromptFluidNexus />} />
           <Route path="/blog/ai-systems-that-dream-press-release" element={<AISystemsThatDreamPressRelease />} />
           <Route path="/blog/promptfluid-first-ai-dreaming-systems" element={<AISystemsThatDreamPressRelease />} />
+          <Route path="/blog/accessibility-free-for-all" element={<Suspense fallback={<PageLoader />}><AccessibilityFreeForAll /></Suspense>} />
           
           <Route path="*" element={<NotFound />} />
         </Routes>
