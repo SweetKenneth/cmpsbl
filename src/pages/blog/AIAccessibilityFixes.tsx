@@ -274,7 +274,7 @@ export default function AutomatedAccessibilityFixes() {
 
               <h3>Cost Comparison</h3>
               <p>
-                Professional accessibility audit and remediation typically costs $3,000-$15,000 for a medium-sized WordPress site. AI-powered automation reduces this to $0-$348/year (free tier or Pro subscription at $29/mo), representing 95-99% cost reduction.
+                Professional accessibility audit and remediation typically costs $3,000-$15,000 for a medium-sized WordPress site. With PromptFluid's commitment to making accessibility free for all, these tools are now 100% free — because accessibility should never be locked behind a paywall.
               </p>
 
               <h2>The Automated Accessibility Workflow</h2>

@@ -581,9 +581,9 @@ export default function Index() {
               </div>
             </div>
 
-            {/* PromptFluid Clarity - Live on Fiverr */}
+            {/* PromptFluid Clarity - Free Accessibility */}
             <div
-              onClick={() => navigate('/projects/clarity')}
+              onClick={() => window.open("https://cmptbl.promptfluid.com", "_blank")}
               className="group relative p-8 rounded-3xl glass border-2 border-blue-500/30 hover:border-blue-500/50 cursor-pointer transition-all duration-300 hover:shadow-elegant overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-teal-500/10 to-green-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
