@@ -12,9 +12,9 @@ User Request → pf-nexus-router → free-tier-router → [6 Free Providers] →
 ```
 
 ## Supported Providers (in fallback order)
-1. **Google AI Studio** (gemini-2.5-flash-lite) - Primary
+1. **Groq** (llama-3.3-70b-versatile) - PRIMARY
 2. **Cerebras** (llama-3.3-70b) - Secondary
-3. **Groq** (llama-3.3-70b-versatile) - Tertiary
+3. **Google AI Studio** (gemini-2.0-flash) - Tertiary
 4. **Together AI** (llama-3.1-70b-turbo)
 5. **DeepSeek** (deepseek-chat)
 6. **Hyperbolic** (llama-3.1-70b) - Last resort

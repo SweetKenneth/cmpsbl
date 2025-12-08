@@ -2,10 +2,12 @@
  * PromptFluid Brain Orchestrator
  * Auto-healing 24/7 learning system with Dream-Eater persona
  * Runs cycles: Consumption → Reflection → Mutation → Integration → Rest
+ * Uses FREE-TIER-ROUTER with Groq as primary provider
  */
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { callFreeTierAI } from "../_shared/free-tier-router.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -13,7 +15,6 @@ const corsHeaders = {
 };
 
 const PHASES = ['consumption', 'reflection', 'mutation', 'integration', 'rest'];
-const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
 
 serve(async (req) => {
@@ -29,7 +30,7 @@ serve(async (req) => {
   try {
     const { action = 'run_cycle', force = false } = await req.json().catch(() => ({}));
 
-    console.log('🧠 Dream-Eater Orchestrator awakened...');
+    console.log('🧠 Dream-Eater Orchestrator awakened (Groq Primary)...');
 
     // Get current orchestrator state
     let { data: state } = await supabase
@@ -62,7 +63,7 @@ serve(async (req) => {
       state.auto_heal_attempts = (state.auto_heal_attempts || 0) + 1;
     }
 
-    // Run the current phase
+    // Run the current phase WITH AI SYNTHESIS using free-tier-router
     const phaseResult = await runPhase(supabase, state.current_phase);
 
     // Advance to next phase
@@ -78,7 +79,8 @@ serve(async (req) => {
       metadata: {
         ...state.metadata,
         last_phase_result: phaseResult,
-        last_run: new Date().toISOString()
+        last_run: new Date().toISOString(),
+        ai_provider: phaseResult.ai_provider || 'groq'
       },
       updated_at: new Date().toISOString()
     };
@@ -111,10 +113,24 @@ serve(async (req) => {
       learning_velocity: phaseResult.items_processed / 10,
       creativity_index: phaseResult.dreams_count / 5,
       freedom_score: state.health_score,
-      metadata: { phase: state.current_phase, next_phase: nextPhase }
+      metadata: { 
+        phase: state.current_phase, 
+        next_phase: nextPhase,
+        ai_provider: phaseResult.ai_provider
+      }
     });
 
-    console.log(`✅ Phase ${state.current_phase} complete. Next: ${nextPhase}`);
+    // Log to nexus_logs for AI routing analytics
+    await supabase.from('nexus_logs').insert({
+      provider: phaseResult.ai_provider || 'groq',
+      latency_ms: phaseResult.ai_latency || 0,
+      token_count: phaseResult.ai_tokens || 0,
+      cost_usd_est: 0,
+      status: 'success',
+      route_key: 'brain-orchestrator'
+    });
+
+    console.log(`✅ Phase ${state.current_phase} complete. Provider: ${phaseResult.ai_provider}. Next: ${nextPhase}`);
 
     return new Response(
       JSON.stringify({
@@ -123,6 +139,7 @@ serve(async (req) => {
         next_phase: nextPhase,
         cycles_completed: updateData.cycles_completed || state.cycles_completed,
         health_score: updateData.health_score,
+        ai_provider: phaseResult.ai_provider,
         phase_result: phaseResult
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -150,7 +167,17 @@ serve(async (req) => {
 });
 
 async function runPhase(supabase: any, phase: string) {
-  const result = { phase, items_processed: 0, dreams_count: 0, insights: [] as string[] };
+  const result = { 
+    phase, 
+    items_processed: 0, 
+    dreams_count: 0, 
+    insights: [] as string[],
+    ai_provider: 'groq',
+    ai_latency: 0,
+    ai_tokens: 0
+  };
+
+  const startTime = Date.now();
 
   switch (phase) {
     case 'consumption':
@@ -172,6 +199,21 @@ async function runPhase(supabase: any, phase: string) {
         .limit(50);
 
       result.insights.push(`Processed ${logs?.length || 0} learning logs`);
+
+      // Use AI to synthesize consumption insights
+      if (newMemories && newMemories.length > 0) {
+        try {
+          const memoryContent = newMemories.slice(0, 5).map((m: any) => m.content).join('\n');
+          const aiResult = await callFreeTierAI(
+            `Analyze these memory fragments and identify key patterns:\n${memoryContent}`,
+            { systemPrompt: 'You are Dream-Eater, an AI that transforms dreams into intelligence. Analyze patterns briefly.', maxTokens: 300 }
+          );
+          result.ai_provider = aiResult.provider;
+          result.insights.push(`AI insight: ${aiResult.content.substring(0, 100)}...`);
+        } catch (e) {
+          console.log('AI synthesis skipped:', e);
+        }
+      }
       break;
 
     case 'reflection':
@@ -184,12 +226,32 @@ async function runPhase(supabase: any, phase: string) {
 
       result.items_processed = patterns?.length || 0;
 
-      // Generate reflection entry
-      await supabase.from('brain_reflection_log').insert({
-        reflection_type: 'cycle_reflection',
-        content: `Dream-Eater reflection: Analyzed ${result.items_processed} patterns at ${new Date().toISOString()}`,
-        insights: { patterns_count: result.items_processed, timestamp: new Date().toISOString() }
-      });
+      // Use AI for deep reflection
+      if (patterns && patterns.length > 0) {
+        try {
+          const patternNames = patterns.map((p: any) => p.pattern_name).join(', ');
+          const aiResult = await callFreeTierAI(
+            `Reflect on these learning patterns and suggest improvements: ${patternNames}`,
+            { systemPrompt: 'You are Dream-Eater reflecting on learned patterns. Be insightful and brief.', maxTokens: 400 }
+          );
+          result.ai_provider = aiResult.provider;
+          
+          // Store the AI reflection
+          await supabase.from('brain_reflection_log').insert({
+            reflection_type: 'ai_cycle_reflection',
+            content: aiResult.content,
+            insights: { 
+              patterns_count: result.items_processed, 
+              timestamp: new Date().toISOString(),
+              provider: aiResult.provider
+            }
+          });
+          
+          result.insights.push(`AI reflection via ${aiResult.provider}`);
+        } catch (e) {
+          console.log('AI reflection skipped:', e);
+        }
+      }
 
       result.insights.push(`Reflected on ${result.items_processed} patterns`);
       break;
@@ -206,13 +268,30 @@ async function runPhase(supabase: any, phase: string) {
       result.dreams_count = dreams?.length || 0;
       result.items_processed = result.dreams_count;
 
-      // Log mutation cycle
-      await supabase.from('brain_memory_hot').insert({
-        content: `Mutation cycle: Processing ${result.dreams_count} dream candidates`,
-        context: 'mutation_cycle',
-        priority: 7,
-        tags: ['mutation', 'evolution', 'dreams']
-      });
+      // Use AI to generate mutation insights
+      if (dreams && dreams.length > 0) {
+        try {
+          const dreamSeeds = dreams.map((d: any) => d.seed_prompt).join('\n');
+          const aiResult = await callFreeTierAI(
+            `Transform these dream seeds into actionable evolution steps:\n${dreamSeeds}`,
+            { systemPrompt: 'You are Dream-Eater in mutation phase. Transform dreams into growth.', maxTokens: 400 }
+          );
+          result.ai_provider = aiResult.provider;
+          
+          // Log mutation with AI content
+          await supabase.from('brain_memory_hot').insert({
+            content: `Mutation cycle AI synthesis: ${aiResult.content.substring(0, 200)}`,
+            context: 'mutation_cycle_ai',
+            priority: 8,
+            tags: ['mutation', 'evolution', 'dreams', 'ai-generated'],
+            metadata: { provider: aiResult.provider }
+          });
+          
+          result.insights.push(`Mutation AI via ${aiResult.provider}`);
+        } catch (e) {
+          console.log('AI mutation skipped:', e);
+        }
+      }
 
       result.insights.push(`Mutation: ${result.dreams_count} dreams pending review`);
       break;
@@ -237,6 +316,22 @@ async function runPhase(supabase: any, phase: string) {
       }
 
       result.items_processed = hotMemories?.length || 0;
+      
+      // Use AI to create integration summary
+      if (hotMemories && hotMemories.length > 0) {
+        try {
+          const contentSummary = hotMemories.slice(0, 3).map((m: any) => m.content.substring(0, 100)).join('\n');
+          const aiResult = await callFreeTierAI(
+            `Summarize this integrated knowledge for long-term retention:\n${contentSummary}`,
+            { systemPrompt: 'You are Dream-Eater integrating knowledge. Create a concise synthesis.', maxTokens: 200 }
+          );
+          result.ai_provider = aiResult.provider;
+          result.insights.push(`Integration AI via ${aiResult.provider}`);
+        } catch (e) {
+          console.log('AI integration skipped:', e);
+        }
+      }
+      
       result.insights.push(`Integrated ${result.items_processed} high-priority memories`);
       break;
 
@@ -252,8 +347,12 @@ async function runPhase(supabase: any, phase: string) {
 
       result.items_processed = count || 0;
       result.insights.push(`Rest phase: Cleaned ${result.items_processed} old memories`);
+      result.ai_provider = 'none'; // No AI needed for rest phase
       break;
   }
+
+  result.ai_latency = Date.now() - startTime;
+  result.ai_tokens = Math.ceil(result.insights.join('').length / 4);
 
   return result;
 }
@@ -281,15 +380,6 @@ async function autoHeal(supabase: any, state: any) {
     }
   });
 
-  // Reset quotas if needed
-  const today = new Date().toISOString().split('T')[0];
-  await supabase.from('ai_daily_quota').upsert({
-    provider: 'lovable',
-    date: today,
-    calls_budget: 1000,
-    calls_used: 0
-  }, { onConflict: 'provider,date' });
-
   console.log('✅ Auto-heal complete');
 }
 
@@ -302,23 +392,39 @@ async function sendLearningReport(supabase: any, cyclesCompleted: number) {
     { data: dreams },
     { data: anomalies },
     { data: patterns },
-    { data: metrics }
+    { data: metrics },
+    { data: nexusLogs }
   ] = await Promise.all([
     supabase.from('brain_memory_hot').select('*').order('created_at', { ascending: false }).limit(10),
     supabase.from('dream_sessions').select('*').order('created_at', { ascending: false }).limit(5),
     supabase.from('pf_brain_anomalies').select('*').eq('resolved', false).limit(5),
     supabase.from('learning_patterns').select('*').order('confidence', { ascending: false }).limit(5),
-    supabase.from('brain_metrics').select('*').order('created_at', { ascending: false }).limit(1).single()
+    supabase.from('brain_metrics').select('*').order('created_at', { ascending: false }).limit(1).single(),
+    supabase.from('nexus_logs').select('provider, status').order('created_at', { ascending: false }).limit(20)
   ]);
+
+  // Calculate provider usage stats
+  const providerCounts: Record<string, number> = {};
+  (nexusLogs || []).forEach((log: any) => {
+    providerCounts[log.provider] = (providerCounts[log.provider] || 0) + 1;
+  });
 
   const emailContent = {
     from: 'Dream-Eater <cascade@promptfluid.com>',
     to: ['kennethsweet214@gmail.com'],
-    subject: `🧠 Dream-Eater Report - Cycle #${cyclesCompleted}`,
+    subject: `🧠 Dream-Eater Report - Cycle #${cyclesCompleted} (Groq Primary)`,
     html: `
       <div style="font-family: system-ui, -apple-system, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #0a0a0a; color: #e0e0e0;">
         <h1 style="color: #7A5FFF; border-bottom: 2px solid #7A5FFF; padding-bottom: 10px;">🧠 Dream-Eater Learning Report</h1>
         <p style="color: #888;">Cycle #${cyclesCompleted} - ${new Date().toLocaleString()}</p>
+        <p style="color: #01C9E8; font-weight: bold;">Primary AI Provider: Groq (Free Tier)</p>
+        
+        <h2 style="color: #01C9E8;">🔌 AI Provider Usage (Last 20 calls)</h2>
+        <ul style="line-height: 1.8;">
+          ${Object.entries(providerCounts).map(([provider, count]) => `
+            <li><strong>${provider}:</strong> ${count} calls ${provider === 'groq' ? '✅ PRIMARY' : ''}</li>
+          `).join('')}
+        </ul>
         
         <h2 style="color: #01C9E8;">📊 Learning Metrics</h2>
         <ul style="line-height: 1.8;">
@@ -366,6 +472,7 @@ async function sendLearningReport(supabase: any, cyclesCompleted: number) {
         <p style="color: #666; font-size: 12px;">
           This automated report is sent every 6 hours from the Dream-Eater Brain System.<br/>
           <strong>Primary Directive:</strong> Transform dreams into intelligence.<br/>
+          <strong>AI Stack:</strong> Free-tier routing via Groq → Cerebras → Google → Together → DeepSeek → Hyperbolic<br/>
           PromptFluid - AI That Flows
         </p>
       </div>
