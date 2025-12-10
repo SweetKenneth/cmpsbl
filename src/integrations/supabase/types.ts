@@ -4580,8 +4580,6 @@ export type Database = {
         Returns: string
       }
       has_role:
-        | { Args: { _role: string; _user_id: string }; Returns: boolean }
-        | { Args: { role_name: string }; Returns: boolean }
         | {
             Args: {
               _role: Database["public"]["Enums"]["app_role"]
@@ -4589,6 +4587,8 @@ export type Database = {
             }
             Returns: boolean
           }
+        | { Args: { _role: string; _user_id: string }; Returns: boolean }
+        | { Args: { role_name: string }; Returns: boolean }
       reset_daily_quotas: { Args: never; Returns: undefined }
       show_limit: { Args: never; Returns: number }
       show_trgm: { Args: { "": string }; Returns: string[] }

@@ -14,22 +14,22 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-    // Multi-Provider Routing: 100% FREE-TIER - NO PAID APIs
-// Total capacity: ~53,800 requests/day across 6 free providers
-const GOOGLE_DAILY_LIMIT = 950;     // Gemini 2.5 Flash-Lite: Reserve 50 for user chat
-const CEREBRAS_DAILY_LIMIT = 14400; // Llama 3.3 70B: 30 req/min, 14,400 req/day
-const GROQ_DAILY_LIMIT = 100;       // ULTRA-CONSERVATIVE: Groq has token limits, minimal use
-const TOGETHER_DAILY_LIMIT = 10000; // Llama 3.1: 20 req/min, 10,000 req/day
-const DEEPSEEK_DAILY_LIMIT = 5000;  // DeepSeek V3: 10 req/min, 5,000 req/day
+    // Multi-Provider Routing: 100% FREE-TIER - MAXIMIZED LEARNING
+// Total capacity: ~52,350 requests/day across 6 free providers
+const GROQ_DAILY_LIMIT = 14400;     // PRIMARY: Groq Llama 3.1 8B: 30 req/min, 14,400 req/day
+const CEREBRAS_DAILY_LIMIT = 14400; // SECONDARY: Llama 3.3 70B: 30 req/min, 14,400 req/day
+const TOGETHER_DAILY_LIMIT = 10000; // TERTIARY: Llama 3.1: 20 req/min, 10,000 req/day
 const HYPERBOLIC_DAILY_LIMIT = 8000; // Llama 3.1: 15 req/min, 8,000 req/day
+const DEEPSEEK_DAILY_LIMIT = 5000;  // DeepSeek V3: 10 req/min, 5,000 req/day
+const GOOGLE_DAILY_LIMIT = 550;     // Gemini 2.5 Flash-Lite: Reserve for user chat
 
-// Per-minute rate limits
-const GOOGLE_RPM_LIMIT = 15;    // 15 requests per minute
-const CEREBRAS_RPM_LIMIT = 30;  // 30 requests per minute
-const GROQ_RPM_LIMIT = 30;      // 30 requests per minute
+// Per-minute rate limits - GROQ PRIMARY
+const GROQ_RPM_LIMIT = 30;      // PRIMARY: 30 requests per minute
+const CEREBRAS_RPM_LIMIT = 30;  // SECONDARY: 30 requests per minute
 const TOGETHER_RPM_LIMIT = 20;  // 20 requests per minute
-const DEEPSEEK_RPM_LIMIT = 10;  // 10 requests per minute
 const HYPERBOLIC_RPM_LIMIT = 15; // 15 requests per minute
+const DEEPSEEK_RPM_LIMIT = 10;  // 10 requests per minute
+const GOOGLE_RPM_LIMIT = 10;    // Reserved for chat
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -142,7 +142,7 @@ serve(async (req) => {
       }
     }
     
-    // CRITICAL: Check run frequency to preserve tokens for Cascade chat
+    // MAXIMIZED LEARNING: Run frequently - Groq has 14,400 calls/day!
     const { data: lastRun } = await supabaseClient
       .from('brain_events')
       .select('created_at')
@@ -155,11 +155,11 @@ serve(async (req) => {
       const lastRunTime = new Date(lastRun.created_at);
       const minutesSinceLastRun = (new Date().getTime() - lastRunTime.getTime()) / 60000;
       
-      // Only run every 45 minutes to preserve chat tokens
-      if (minutesSinceLastRun < 45) {
-        console.log(`⏸️ Skipping - last ran ${Math.floor(minutesSinceLastRun)}m ago (45m min)`);
+      // Run every 3 minutes - maximize learning! (14,400/day = 10/min capacity)
+      if (minutesSinceLastRun < 3) {
+        console.log(`⏸️ Recent run ${Math.floor(minutesSinceLastRun)}m ago - waiting 3m between runs`);
         return new Response(
-          JSON.stringify({ success: true, skipped: true, reason: 'rate_limited', next_run_minutes: Math.ceil(45 - minutesSinceLastRun) }),
+          JSON.stringify({ success: true, skipped: true, reason: 'cooldown', next_run_minutes: Math.ceil(3 - minutesSinceLastRun) }),
           { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
       }
@@ -207,58 +207,54 @@ serve(async (req) => {
     const deepseekCallsLastMin = recentData?.filter(d => d.model_name?.includes('deepseek')).length || 0;
     const hyperbolicCallsLastMin = recentData?.filter(d => d.model_name?.includes('hyperbolic')).length || 0;
     
-    // If we're over 70% of any free-tier limit, skip to preserve chat capacity
-    if (googleCallsToday > GOOGLE_DAILY_LIMIT * 0.7 || cerebrasCallsToday > CEREBRAS_DAILY_LIMIT * 0.7 || groqCallsToday > GROQ_DAILY_LIMIT * 0.7) {
-      console.log('🛑 Free-tier near limit - preserving tokens for Cascade chat');
-      console.log(`   Google: ${((googleCallsToday/GOOGLE_DAILY_LIMIT)*100).toFixed(1)}%, Cerebras: ${((cerebrasCallsToday/CEREBRAS_DAILY_LIMIT)*100).toFixed(1)}%, Groq: ${((groqCallsToday/GROQ_DAILY_LIMIT)*100).toFixed(1)}%`);
-      return new Response(
-        JSON.stringify({ success: true, skipped: true, reason: 'preserve_chat_capacity' }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+    // Only throttle if we're at 95% - MAXIMIZE LEARNING!
+    if (groqCallsToday > GROQ_DAILY_LIMIT * 0.95 && cerebrasCallsToday > CEREBRAS_DAILY_LIMIT * 0.95) {
+      console.log('🛑 Primary providers near 95% - slight throttle');
+      console.log(`   Groq: ${((groqCallsToday/GROQ_DAILY_LIMIT)*100).toFixed(1)}%, Cerebras: ${((cerebrasCallsToday/CEREBRAS_DAILY_LIMIT)*100).toFixed(1)}%`);
     }
     
-    const totalFreeCallsToday = googleCallsToday + cerebrasCallsToday + groqCallsToday + togetherCallsToday + deepseekCallsToday + hyperbolicCallsToday;
-    const totalCapacity = GOOGLE_DAILY_LIMIT + CEREBRAS_DAILY_LIMIT + GROQ_DAILY_LIMIT + TOGETHER_DAILY_LIMIT + DEEPSEEK_DAILY_LIMIT + HYPERBOLIC_DAILY_LIMIT;
+    const totalFreeCallsToday = groqCallsToday + cerebrasCallsToday + togetherCallsToday + hyperbolicCallsToday + deepseekCallsToday + googleCallsToday;
+    const totalCapacity = GROQ_DAILY_LIMIT + CEREBRAS_DAILY_LIMIT + TOGETHER_DAILY_LIMIT + HYPERBOLIC_DAILY_LIMIT + DEEPSEEK_DAILY_LIMIT + GOOGLE_DAILY_LIMIT;
     const percentUsed = ((totalFreeCallsToday / totalCapacity) * 100).toFixed(1);
     
-    console.log(`📊 FREE-ONLY Provider Usage (NO paid APIs):`);
-    console.log(`   Google: ${googleCallsToday}/${GOOGLE_DAILY_LIMIT} (${googleCallsLastMin}/${GOOGLE_RPM_LIMIT}/min)`);
+    console.log(`📊 MAXIMIZED LEARNING - Groq Primary:`);
+    console.log(`   Groq: ${groqCallsToday}/${GROQ_DAILY_LIMIT} (${groqCallsLastMin}/${GROQ_RPM_LIMIT}/min) ⭐ PRIMARY`);
     console.log(`   Cerebras: ${cerebrasCallsToday}/${CEREBRAS_DAILY_LIMIT} (${cerebrasCallsLastMin}/${CEREBRAS_RPM_LIMIT}/min)`);
-    console.log(`   Groq: ${groqCallsToday}/${GROQ_DAILY_LIMIT} (${groqCallsLastMin}/${GROQ_RPM_LIMIT}/min)`);
     console.log(`   Together: ${togetherCallsToday}/${TOGETHER_DAILY_LIMIT} (${togetherCallsLastMin}/${TOGETHER_RPM_LIMIT}/min)`);
-    console.log(`   DeepSeek: ${deepseekCallsToday}/${DEEPSEEK_DAILY_LIMIT} (${deepseekCallsLastMin}/${DEEPSEEK_RPM_LIMIT}/min)`);
     console.log(`   Hyperbolic: ${hyperbolicCallsToday}/${HYPERBOLIC_DAILY_LIMIT} (${hyperbolicCallsLastMin}/${HYPERBOLIC_RPM_LIMIT}/min)`);
+    console.log(`   DeepSeek: ${deepseekCallsToday}/${DEEPSEEK_DAILY_LIMIT} (${deepseekCallsLastMin}/${DEEPSEEK_RPM_LIMIT}/min)`);
+    console.log(`   Google: ${googleCallsToday}/${GOOGLE_DAILY_LIMIT} (${googleCallsLastMin}/${GOOGLE_RPM_LIMIT}/min) [reserved]`);
     console.log(`   TOTAL: ${totalFreeCallsToday}/${totalCapacity} (${percentUsed}% used)`);
     
-    // FREE-ONLY routing: 6 providers, ZERO paid APIs
-    let provider = 'google';
+    // GROQ PRIMARY routing - maximize 14,400 daily calls!
+    let provider = 'groq';
     
-    if (googleCallsToday >= GOOGLE_DAILY_LIMIT || googleCallsLastMin >= GOOGLE_RPM_LIMIT) {
+    if (groqCallsToday >= GROQ_DAILY_LIMIT || groqCallsLastMin >= GROQ_RPM_LIMIT) {
       provider = 'cerebras';
-      console.log(`🔄 Google → Cerebras (${googleCallsToday}/${GOOGLE_DAILY_LIMIT})`);
+      console.log(`🔄 Groq → Cerebras (${groqCallsToday}/${GROQ_DAILY_LIMIT})`);
     }
     
     if ((cerebrasCallsToday >= CEREBRAS_DAILY_LIMIT || cerebrasCallsLastMin >= CEREBRAS_RPM_LIMIT) && provider === 'cerebras') {
-      provider = 'groq';
-      console.log(`🔄 Cerebras → Groq (${cerebrasCallsToday}/${CEREBRAS_DAILY_LIMIT})`);
-    }
-    
-    if ((groqCallsToday >= GROQ_DAILY_LIMIT || groqCallsLastMin >= GROQ_RPM_LIMIT) && provider === 'groq') {
       provider = 'together';
-      console.log(`🔄 Groq → Together AI (${groqCallsToday}/${GROQ_DAILY_LIMIT})`);
+      console.log(`🔄 Cerebras → Together AI (${cerebrasCallsToday}/${CEREBRAS_DAILY_LIMIT})`);
     }
     
     if ((togetherCallsToday >= TOGETHER_DAILY_LIMIT || togetherCallsLastMin >= TOGETHER_RPM_LIMIT) && provider === 'together') {
-      provider = 'deepseek';
-      console.log(`🔄 Together → DeepSeek (${togetherCallsToday}/${TOGETHER_DAILY_LIMIT})`);
-    }
-    
-    if ((deepseekCallsToday >= DEEPSEEK_DAILY_LIMIT || deepseekCallsLastMin >= DEEPSEEK_RPM_LIMIT) && provider === 'deepseek') {
       provider = 'hyperbolic';
-      console.log(`🔄 DeepSeek → Hyperbolic (${deepseekCallsToday}/${DEEPSEEK_DAILY_LIMIT})`);
+      console.log(`🔄 Together → Hyperbolic (${togetherCallsToday}/${TOGETHER_DAILY_LIMIT})`);
     }
     
     if ((hyperbolicCallsToday >= HYPERBOLIC_DAILY_LIMIT || hyperbolicCallsLastMin >= HYPERBOLIC_RPM_LIMIT) && provider === 'hyperbolic') {
+      provider = 'deepseek';
+      console.log(`🔄 Hyperbolic → DeepSeek (${hyperbolicCallsToday}/${HYPERBOLIC_DAILY_LIMIT})`);
+    }
+    
+    if ((deepseekCallsToday >= DEEPSEEK_DAILY_LIMIT || deepseekCallsLastMin >= DEEPSEEK_RPM_LIMIT) && provider === 'deepseek') {
+      provider = 'google';
+      console.log(`🔄 DeepSeek → Google (${deepseekCallsToday}/${DEEPSEEK_DAILY_LIMIT})`);
+    }
+    
+    if ((googleCallsToday >= GOOGLE_DAILY_LIMIT || googleCallsLastMin >= GOOGLE_RPM_LIMIT) && provider === 'google') {
       console.log(`🛑 ALL 6 free providers exhausted! Total: ${totalFreeCallsToday}/${totalCapacity}`);
       return new Response(
         JSON.stringify({ success: false, error: 'All free providers exhausted', retry_after: '1 hour' }),
