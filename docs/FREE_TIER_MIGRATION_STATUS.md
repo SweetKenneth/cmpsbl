@@ -1,30 +1,37 @@
 # Free-Tier AI Migration Status
 
 ## Goal
-Replace ALL Lovable AI calls with free-tier routing across 6 providers:
-1. Google AI Studio (Gemini 2.5 Flash-Lite)
-2. Cerebras (Llama 3.3 70B)
-3. Groq (Llama 3.3 70B)
-4. Together AI (Llama 3.1 70B)
-5. DeepSeek (DeepSeek Chat)
-6. Hyperbolic (Llama 3.1 70B)
+Replace ALL Lovable AI calls with free-tier routing across VERIFIED providers:
+
+## VERIFIED Rate Limits (Dec 2024 - Official Documentation)
+
+| Provider   | Per Min | Per Hour | Per Day  | Status | Notes |
+|------------|---------|----------|----------|--------|-------|
+| Cerebras   | 30 RPM  | 900 RPH  | 14,400   | ✅ PRIMARY | Best free limits |
+| DeepSeek   | NO LIMIT| NO LIMIT | NO LIMIT | ✅ ACTIVE | Official: no rate limits |
+| Hyperbolic | 60 RPM  | -        | ~8,640   | ✅ ACTIVE | Requires $1 promo credit |
+| Groq       | 30 RPM  | -        | 1,000    | ✅ BACKUP | Much lower than advertised! |
+| Google     | 2 RPM   | -        | 20       | ⚠️ LIMITED | Severely reduced Dec 2024 |
+| Together   | 0       | 0        | 0        | ❌ EXCLUDED | Requires $5 payment |
+
+**TOTAL FREE CAPACITY**: ~74,060 requests/day (primarily DeepSeek + Cerebras)
+**TARGET**: 90% utilization = ~66,654 requests/day
+
+## Provider Priority Order
+1. **Cerebras** (PRIMARY) - 14,400 RPD, best documented free tier
+2. **DeepSeek** (SECONDARY) - Unlimited per official docs
+3. **Hyperbolic** - 8,640 RPD with promo credit
+4. **Groq** (BACKUP) - Only 1,000 RPD free (not 14,400!)
+5. **Google** (LAST RESORT) - Only 20 RPD now
 
 ## Current Status
 
 ### ✅ Completed Migrations
-- **pf-brain-continuous-learn** - Already using free-tier routing
-- **pf-cascade-chat** - Already using free-tier routing
+- **pf-brain-continuous-learn** - Using verified free-tier routing
+- **pf-cascade-chat** - Using free-tier routing
 - **pf-brain-dream-unified** - Migrated to use free-tier-router.ts
 - **pf-brain-reflect** - Migrated to use free-tier-router.ts
-
-### 🔧 Infrastructure Created
-- **supabase/functions/_shared/free-tier-router.ts** - Shared module for all AI calls
-
-### Dream & Reflection Triggers
-- **pf-brain-continuous-learn** now triggers:
-  - Dream cycles every 6 hours (2-8am only)
-  - Reflections every 12 hours
-- Both use free-tier routing (NO Lovable AI)
+- **pf-brain-orchestrator** - Using verified free-tier routing
 
 ## Remaining Functions Using Lovable AI (53 files)
 
