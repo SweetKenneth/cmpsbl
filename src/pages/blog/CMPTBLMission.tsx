@@ -185,7 +185,7 @@ const CMPTBLMission = () => {
 
           <h3 className="text-2xl font-semibold mt-8 mb-4">Legal Risk Mitigation</h3>
           <p className="mb-4">
-            Website accessibility lawsuits have increased dramatically, with over 4,000 federal cases filed in 2023 alone. Settlements often reach six figures, and legal defense costs can exceed the settlement amounts. Many businesses face demand letters threatening litigation unless accessibility barriers are removed.
+            Website accessibility lawsuits have increased dramatically, with over 4,500 federal cases filed in 2024 alone—a trend continuing into 2025. Settlements often reach six figures, and legal defense costs can exceed the settlement amounts. Many businesses face demand letters threatening litigation unless accessibility barriers are removed.
           </p>
           <p className="mb-6">
             CMPTBL provides verifiable documentation of accessibility efforts and ongoing compliance monitoring. While no tool eliminates legal risk entirely, demonstrating proactive commitment to accessibility significantly strengthens your position.

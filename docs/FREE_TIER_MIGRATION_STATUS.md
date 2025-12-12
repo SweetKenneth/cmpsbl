@@ -1,37 +1,46 @@
 # Free-Tier AI Migration Status
 
 ## Goal
-Replace ALL Lovable AI calls with free-tier routing across VERIFIED providers:
+Route AI calls across multiple providers with smart per-min/hour/day limits.
 
-## VERIFIED Rate Limits (Dec 2024 - Official Documentation)
+## RATE LIMITS (Dec 2024 - Verified)
 
-| Provider   | Per Min | Per Hour | Per Day  | Status | Notes |
-|------------|---------|----------|----------|--------|-------|
-| Cerebras   | 30 RPM  | 900 RPH  | 14,400   | ✅ PRIMARY | Best free limits |
-| DeepSeek   | NO LIMIT| NO LIMIT | NO LIMIT | ✅ ACTIVE | Official: no rate limits |
-| Hyperbolic | 60 RPM  | -        | ~8,640   | ✅ ACTIVE | Requires $1 promo credit |
-| Groq       | 30 RPM  | -        | 1,000    | ✅ BACKUP | Much lower than advertised! |
-| Google     | 2 RPM   | -        | 20       | ⚠️ LIMITED | Severely reduced Dec 2024 |
-| Together   | 0       | 0        | 0        | ❌ EXCLUDED | Requires $5 payment |
+| Provider   | Per Min | Per Hour | Per Day  | Tier | Notes |
+|------------|---------|----------|----------|------|-------|
+| Cerebras   | 30 RPM  | 900 RPH  | 14,400   | FREE | llama-3.3-70b |
+| Together   | 10 RPM  | 600 RPH  | 14,400   | $5   | Llama 3.1 70B |
+| Hyperbolic | 60 RPM  | 3,600    | 86,400   | $5   | Llama 3.1 70B |
+| DeepSeek   | 20 RPM  | 600 RPH  | 5,000    | FREE | Conservative cap |
+| Groq       | 30 RPM  | 500 RPH  | 1,000    | FREE | llama-3.3-70b |
+| Google     | 2 RPM   | 20 RPH   | 50       | FREE | Severely reduced |
 
-**TOTAL FREE CAPACITY**: ~74,060 requests/day (primarily DeepSeek + Cerebras)
-**TARGET**: 90% utilization = ~66,654 requests/day
+**TOTAL CAPACITY**: ~121,250 requests/day
+**TARGET**: 90% utilization = ~109,125 requests/day = ~75 RPM max
 
 ## Provider Priority Order
-1. **Cerebras** (PRIMARY) - 14,400 RPD, best documented free tier
-2. **DeepSeek** (SECONDARY) - Unlimited per official docs
-3. **Hyperbolic** - 8,640 RPD with promo credit
-4. **Groq** (BACKUP) - Only 1,000 RPD free (not 14,400!)
-5. **Google** (LAST RESORT) - Only 20 RPD now
+1. **Cerebras** (PRIMARY) - Best free tier
+2. **Together** ($5 deposit tier)
+3. **Hyperbolic** ($5 deposit tier - highest daily)
+4. **DeepSeek** (Conservative limits)
+5. **Groq** (Low daily limit)
+6. **Google** (Last resort - heavily limited)
+
+## Smart Routing Features
+- Per-minute limit checks (85% threshold)
+- Per-hour limit checks (85% threshold)  
+- Per-day limit checks (90% threshold)
+- Automatic failover to next provider
+- 2 request buffer per-minute safety margin
 
 ## Current Status
 
-### ✅ Completed Migrations
-- **pf-brain-continuous-learn** - Using verified free-tier routing
-- **pf-cascade-chat** - Using free-tier routing
-- **pf-brain-dream-unified** - Migrated to use free-tier-router.ts
-- **pf-brain-reflect** - Migrated to use free-tier-router.ts
-- **pf-brain-orchestrator** - Using verified free-tier routing
+### ✅ Active Providers
+- **Cerebras** - Using free-tier (14.4K/day)
+- **Together** - $5 deposit tier (14.4K/day)
+- **Hyperbolic** - $5 deposit tier (86.4K/day)
+- **DeepSeek** - Capped at 5K/day for reliability
+- **Groq** - Free tier (1K/day)
+- **Google** - Severely limited (50/day)
 
 ## Remaining Functions Using Lovable AI (53 files)
 
