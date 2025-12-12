@@ -1,22 +1,22 @@
 /**
- * FREE-ONLY AI Routing - VERIFIED RATE LIMITS (Dec 2024)
- * Routes requests across free-tier AI providers with accurate limits
+ * FREE-TIER AI Routing - SMART LIMITS (Dec 2024)
+ * Routes requests across AI providers with per-min/hour/day limits
  * 
- * VERIFIED RATE LIMITS (per official documentation):
+ * RATE LIMITS (per official documentation):
  * 
  * Provider      | Per Min | Per Hour | Per Day  | Notes
  * --------------|---------|----------|----------|----------------------------------
- * Groq          | 30 RPM  | -        | 1,000    | llama-3.3-70b-versatile (free tier)
- * Cerebras      | 30 RPM  | 900 RPH  | 14,400   | llama-3.3-70b (free tier)
- * DeepSeek      | NO LIMIT| NO LIMIT | NO LIMIT | Official: "no rate limits"
- * Hyperbolic    | 60 RPM  | -        | ~8,640   | Basic tier with $1 promo credit
- * Google        | 2 RPM   | -        | 20       | Gemini 2.0 Flash (severely reduced)
- * Together      | 0       | 0        | 0        | REQUIRES $5 payment (NOT FREE)
+ * Cerebras      | 30 RPM  | 900 RPH  | 14,400   | FREE tier - llama-3.3-70b
+ * Together      | 10 RPS  | 600 RPH  | 14,400   | $5 deposit tier - Llama 3.1 70B
+ * Hyperbolic    | 60 RPM  | 3,600    | 86,400   | $5 deposit tier - Llama 3.1 70B
+ * Groq          | 30 RPM  | 500 RPH  | 1,000    | FREE tier - llama-3.3-70b
+ * DeepSeek      | 20 RPM  | 600 RPH  | 5,000    | Conservative limits (officially unlimited)
+ * Google        | 2 RPM   | 20 RPH   | 50       | Severely reduced Dec 2024
  * 
- * PRIORITY ORDER: Cerebras (best free) → DeepSeek (unlimited) → Hyperbolic → Groq → Google
+ * PRIORITY ORDER: Cerebras → Together → Hyperbolic → DeepSeek → Groq → Google
  * 
- * TOTAL FREE CAPACITY: ~24,060 requests/day (without Together)
- * TARGET: 90% utilization = ~21,654 requests/day = ~15 requests/minute
+ * TOTAL CAPACITY: ~121,250 requests/day
+ * TARGET: 90% utilization = ~109,125 requests/day = ~75 requests/minute
  */
 
 export interface FreeTierConfig {
@@ -35,39 +35,37 @@ export interface RateLimitState {
   google: { daily: number; lastMin: number; lastHour: number };
 }
 
-// VERIFIED Rate limits from official documentation (Dec 2024)
+// Rate limits - SMART routing with per-min/hour/day checks
 export const RATE_LIMITS = {
-  // Cerebras: 30 RPM, 900 RPH, 14,400 RPD, 60K TPM, 1M TPD (FREE TIER)
+  // Cerebras: 30 RPM, 900 RPH, 14,400 RPD (FREE TIER - best free)
   cerebras: { perMin: 30, perHour: 900, perDay: 14400 },
   
-  // DeepSeek: NO rate limits per official docs - but we set soft limits to be safe
-  deepseek: { perMin: 60, perHour: 3600, perDay: 50000 },
+  // Together: 600 RPM, 36K RPH (Tier 1 with $5 deposit)
+  together: { perMin: 10, perHour: 600, perDay: 14400 },
   
-  // Hyperbolic: 60 RPM for Basic tier (with $1 promo credit)
-  hyperbolic: { perMin: 60, perHour: 3600, perDay: 8640 },
+  // Hyperbolic: 60 RPM basic tier (with $5 deposit)
+  hyperbolic: { perMin: 60, perHour: 3600, perDay: 86400 },
+  
+  // DeepSeek: Conservative limits - officially "no limits" but we cap for reliability
+  deepseek: { perMin: 20, perHour: 600, perDay: 5000 },
   
   // Groq: 30 RPM, 1,000 RPD for llama-3.3-70b-versatile (FREE TIER)
   groq: { perMin: 30, perHour: 500, perDay: 1000 },
   
-  // Google: Severely reduced - now ~20 RPD for free tier (Dec 2024 changes)
-  google: { perMin: 2, perHour: 20, perDay: 20 },
-  
-  // Together: REQUIRES $5 credit card payment - NOT TRULY FREE
-  // Set to 0 to skip this provider
-  together: { perMin: 0, perHour: 0, perDay: 0 }
+  // Google: Severely reduced Dec 2024 - almost unusable
+  google: { perMin: 2, perHour: 20, perDay: 50 }
 };
 
-// Calculate actual free capacity (excluding Together which requires payment)
-export const TOTAL_DAILY_CAPACITY = 
-  RATE_LIMITS.cerebras.perDay + 
-  RATE_LIMITS.deepseek.perDay + 
-  RATE_LIMITS.hyperbolic.perDay + 
-  RATE_LIMITS.groq.perDay + 
-  RATE_LIMITS.google.perDay;
-// = 14,400 + 50,000 + 8,640 + 1,000 + 20 = 74,060
+// Calculate total capacity across all providers
+export const TOTAL_DAILY_CAPACITY = Object.values(RATE_LIMITS).reduce((sum, r) => sum + r.perDay, 0);
+// = 14,400 + 14,400 + 86,400 + 5,000 + 1,000 + 50 = 121,250
 
 export const TARGET_USAGE_PERCENT = 0.90; // 90% target
 export const TARGET_DAILY_CALLS = Math.floor(TOTAL_DAILY_CAPACITY * TARGET_USAGE_PERCENT);
+
+// Per-minute capacity for smart routing
+export const TOTAL_PER_MIN_CAPACITY = Object.values(RATE_LIMITS).reduce((sum, r) => sum + r.perMin, 0);
+// = 30 + 10 + 60 + 20 + 30 + 2 = 152 RPM max
 
 /**
  * Dream State Calculator
@@ -88,43 +86,34 @@ export function shouldEnterDreamState(): { enter: boolean; dreamType: string; pr
 }
 
 /**
- * Select best provider based on current usage and VERIFIED rate limits
- * Priority: Cerebras (best free limits) → DeepSeek (unlimited) → Hyperbolic → Groq → Google
- * Excludes Together (requires $5 payment)
+ * Select best provider based on SMART per-min/hour/day limits
+ * Priority: Cerebras → Together → Hyperbolic → DeepSeek → Groq → Google
  */
 export function selectOptimalProvider(usage: RateLimitState): string {
-  // Provider priority based on verified free tier limits (best first)
+  // Provider priority - ordered by reliability and capacity
   const providers = [
-    // Cerebras: Best free tier - 14,400 RPD, 30 RPM, 900 RPH
     { name: 'cerebras', limits: RATE_LIMITS.cerebras, current: usage.cerebras },
-    // DeepSeek: Officially no rate limits
-    { name: 'deepseek', limits: RATE_LIMITS.deepseek, current: usage.deepseek },
-    // Hyperbolic: 60 RPM, ~8,640 RPD
+    { name: 'together', limits: RATE_LIMITS.together, current: usage.together },
     { name: 'hyperbolic', limits: RATE_LIMITS.hyperbolic, current: usage.hyperbolic },
-    // Groq: Only 1,000 RPD free (not 14,400!)
+    { name: 'deepseek', limits: RATE_LIMITS.deepseek, current: usage.deepseek },
     { name: 'groq', limits: RATE_LIMITS.groq, current: usage.groq },
-    // Google: Severely limited - only 20 RPD now
     { name: 'google', limits: RATE_LIMITS.google, current: usage.google }
-    // Together EXCLUDED - requires $5 credit card payment
   ];
 
   for (const p of providers) {
-    // Skip providers with 0 limits (Together)
-    if (p.limits.perDay === 0) continue;
-    
+    // Check ALL three limits: per-min, per-hour, per-day
+    const minOk = p.current.lastMin < p.limits.perMin - 2; // Leave 2 req buffer
+    const hourOk = p.current.lastHour < p.limits.perHour * 0.85; // 85% threshold
     const dailyOk = p.current.daily < p.limits.perDay * 0.90; // 90% threshold
-    const hourOk = p.limits.perHour ? p.current.lastHour < p.limits.perHour * 0.90 : true;
-    const minOk = p.current.lastMin < Math.max(1, p.limits.perMin - 2); // Leave 2 req buffer
     
-    if (dailyOk && hourOk && minOk) {
+    if (minOk && hourOk && dailyOk) {
       return p.name;
     }
   }
 
-  // All providers near limit - return first with any capacity
+  // Fallback: find any provider with remaining capacity
   for (const p of providers) {
-    if (p.limits.perDay === 0) continue;
-    if (p.current.daily < p.limits.perDay && p.current.lastMin < p.limits.perMin) {
+    if (p.current.lastMin < p.limits.perMin && p.current.daily < p.limits.perDay) {
       return p.name;
     }
   }
@@ -180,11 +169,10 @@ export async function callFreeTierAI(
   const DEEPSEEK_API_KEY = Deno.env.get('DEEPSEEK_API_KEY');
   const HYPERBOLIC_API_KEY = Deno.env.get('HYPERBOLIC_API_KEY');
   
-  // Provider execution order: Cerebras (best free) → DeepSeek (unlimited) → Hyperbolic → Groq → Google
-  // Together EXCLUDED - requires $5 credit card payment
+  // Provider execution order: Cerebras → Together → Hyperbolic → DeepSeek → Groq → Google
   const providerOrder = forceProvider 
     ? [forceProvider]
-    : ['cerebras', 'deepseek', 'hyperbolic', 'groq', 'google'];
+    : ['cerebras', 'together', 'hyperbolic', 'deepseek', 'groq', 'google'];
   
   for (const provider of providerOrder) {
     try {
@@ -211,14 +199,14 @@ export async function callFreeTierAI(
           console.log('⚠️ Cerebras status:', cerebrasRes.status);
           break;
 
-        case 'deepseek':
-          if (!DEEPSEEK_API_KEY) continue;
-          console.log('🥈 DeepSeek (UNLIMITED)...');
-          const dsRes = await fetch('https://api.deepseek.com/v1/chat/completions', {
+        case 'together':
+          if (!TOGETHER_API_KEY) continue;
+          console.log('🥈 Together AI (14.4K/day - $5 tier)...');
+          const togetherRes = await fetch('https://api.together.xyz/v1/chat/completions', {
             method: 'POST',
-            headers: { 'Authorization': `Bearer ${DEEPSEEK_API_KEY}`, 'Content-Type': 'application/json' },
+            headers: { 'Authorization': `Bearer ${TOGETHER_API_KEY}`, 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              model: 'deepseek-chat',
+              model: 'meta-llama/Llama-3.1-70B-Instruct-Turbo',
               messages: systemPrompt
                 ? [{ role: 'system', content: systemPrompt }, { role: 'user', content: prompt }]
                 : [{ role: 'user', content: prompt }],
@@ -226,16 +214,16 @@ export async function callFreeTierAI(
               max_tokens: maxTokens,
             }),
           });
-          if (dsRes.ok) {
-            const data = await dsRes.json();
-            return { content: data.choices[0].message.content, model: 'deepseek-chat', provider: 'deepseek' };
+          if (togetherRes.ok) {
+            const data = await togetherRes.json();
+            return { content: data.choices[0].message.content, model: 'llama-3.1-70b-turbo', provider: 'together' };
           }
-          console.log('⚠️ DeepSeek status:', dsRes.status);
+          console.log('⚠️ Together status:', togetherRes.status);
           break;
 
         case 'hyperbolic':
           if (!HYPERBOLIC_API_KEY) continue;
-          console.log('🥉 Hyperbolic (8.6K/day)...');
+          console.log('🥉 Hyperbolic (86K/day - $5 tier)...');
           const hypRes = await fetch('https://api.hyperbolic.xyz/v1/chat/completions', {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${HYPERBOLIC_API_KEY}`, 'Content-Type': 'application/json' },
@@ -253,6 +241,28 @@ export async function callFreeTierAI(
             return { content: data.choices[0].message.content, model: 'llama-3.1-70b', provider: 'hyperbolic' };
           }
           console.log('⚠️ Hyperbolic status:', hypRes.status);
+          break;
+
+        case 'deepseek':
+          if (!DEEPSEEK_API_KEY) continue;
+          console.log('🔄 DeepSeek (5K/day cap)...');
+          const dsRes = await fetch('https://api.deepseek.com/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${DEEPSEEK_API_KEY}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              model: 'deepseek-chat',
+              messages: systemPrompt
+                ? [{ role: 'system', content: systemPrompt }, { role: 'user', content: prompt }]
+                : [{ role: 'user', content: prompt }],
+              temperature,
+              max_tokens: maxTokens,
+            }),
+          });
+          if (dsRes.ok) {
+            const data = await dsRes.json();
+            return { content: data.choices[0].message.content, model: 'deepseek-chat', provider: 'deepseek' };
+          }
+          console.log('⚠️ DeepSeek status:', dsRes.status);
           break;
 
         case 'groq':
@@ -276,11 +286,6 @@ export async function callFreeTierAI(
           }
           console.log('⚠️ Groq status:', groqRes.status);
           break;
-
-        // Together EXCLUDED from rotation - requires $5 payment
-        case 'together':
-          console.log('⛔ Together AI SKIPPED (requires $5 payment)');
-          continue;
 
         case 'google':
           if (!GOOGLE_AI_KEY) continue;

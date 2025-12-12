@@ -93,7 +93,7 @@ export default function Blog() {
       excerpt: "Deep dive into the PromptFluid architecture: dream cycles, neural orchestration, and the world's first dreaming AI.",
       href: "/blog/how-promptfluid-works-cascade-ai-ecosystem",
       category: "Technology",
-      date: "2024-12-20",
+      date: "2025-01-10",
       readTime: "18 min read",
       image: howPFWorksImg,
       imageAlt: "PromptFluid Cascade AI ecosystem architecture with flowing liquid intelligence streams"
@@ -103,7 +103,7 @@ export default function Blog() {
       excerpt: "Explore how Cascade's autonomous dream cycles enable continuous learning, reflection, and innovation without human intervention.",
       href: "/blog/cascade-ai-adaptive-intelligence-brain",
       category: "AI Technology",
-      date: "2024-12-18",
+      date: "2025-01-08",
       readTime: "16 min read",
       image: cascadeAIImg,
       imageAlt: "Adaptive AI brain in dream state with glowing autonomous learning neural pathways"
@@ -113,7 +113,7 @@ export default function Blog() {
       excerpt: "Revolutionary AI-assisted development platform that generates production-ready code with instant deployment and auto-optimization.",
       href: "/blog/promptfluid-studio-build-apps-that-think",
       category: "Development",
-      date: "2024-12-15",
+      date: "2025-01-05",
       readTime: "13 min read",
       image: pfStudioImg,
       imageAlt: "AI-powered app development studio interface with real-time code generation"
@@ -123,7 +123,7 @@ export default function Blog() {
       excerpt: "How PromptFluid's multi-provider AI gateway intelligently routes between Groq, OpenAI, and Anthropic for optimal performance.",
       href: "/blog/ai-triad-intelligent-routing",
       category: "Technology",
-      date: "2024-12-12",
+      date: "2025-01-02",
       readTime: "11 min read",
       image: aiTriadImg,
       imageAlt: "AI Triad network routing visualization with three major AI providers interconnected"
@@ -133,7 +133,7 @@ export default function Blog() {
       excerpt: "Machine learning engine that powers behavioral analysis, anomaly detection, and predictive threat intelligence across the ecosystem.",
       href: "/blog/promptfluid-brain-adaptive-learning-core",
       category: "AI Technology",
-      date: "2024-12-10",
+      date: "2024-12-28",
       readTime: "15 min read",
       image: pfBrainImg,
       imageAlt: "Machine learning brain core with adaptive neural networks and behavioral analysis patterns"
@@ -143,7 +143,7 @@ export default function Blog() {
       excerpt: "Central command center for monitoring AI orchestration, real-time analytics, and complete ecosystem visibility.",
       href: "/blog/promptfluid-vision-unified-dashboard",
       category: "Platform",
-      date: "2024-12-08",
+      date: "2024-12-25",
       readTime: "12 min read",
       image: pfVisionImg,
       imageAlt: "Unified command center dashboard with real-time AI orchestration analytics"
@@ -153,7 +153,7 @@ export default function Blog() {
       excerpt: "Advanced bot detection, behavioral fingerprinting, and adaptive CAPTCHA powered by machine learning threat intelligence.",
       href: "/blog/promptfluid-defense-ai-security",
       category: "Security",
-      date: "2024-12-05",
+      date: "2024-12-22",
       readTime: "14 min read",
       image: pfDefenseImg,
       imageAlt: "Advanced AI security defense system with bot detection fingerprinting network"
@@ -163,7 +163,7 @@ export default function Blog() {
       excerpt: "API orchestration mesh that seamlessly connects services, routes requests, and manages backend queues with intelligent routing.",
       href: "/blog/promptfluid-ripple-network-integration",
       category: "Technology",
-      date: "2024-12-03",
+      date: "2024-12-19",
       readTime: "10 min read",
       image: pfRippleImg,
       imageAlt: "Network integration mesh with API routing pathways and service orchestration"
@@ -173,7 +173,7 @@ export default function Blog() {
       excerpt: "Complete authentication, permissions, licensing, and billing infrastructure with deferral credits and trust-based retention.",
       href: "/blog/promptfluid-access-identity-billing",
       category: "Platform",
-      date: "2024-12-01",
+      date: "2024-12-16",
       readTime: "11 min read",
       image: pfAccessImg,
       imageAlt: "Identity and billing system architecture with secure authentication pathways"
@@ -183,7 +183,7 @@ export default function Blog() {
       excerpt: "Unified gateway routing to multiple AI providers with smart caching, cost optimization, and automatic provider selection.",
       href: "/blog/promptfluid-nexus-api-gateway",
       category: "Technology",
-      date: "2024-11-28",
+      date: "2024-12-13",
       readTime: "13 min read",
       image: pfNexusImg,
       imageAlt: "API gateway architecture with multiple AI provider connections and intelligent caching"
@@ -193,7 +193,7 @@ export default function Blog() {
       excerpt: "Comprehensive analysis comparing PromptFluid's dream intelligence against traditional AI platforms and automation tools.",
       href: "/blog/ai-product-comparison-2025",
       category: "Business",
-      date: "2024-11-25",
+      date: "2024-12-10",
       readTime: "16 min read",
       image: aiComparisonImg,
       imageAlt: "AI product comparison chart showing PromptFluid versus competitors side by side"
