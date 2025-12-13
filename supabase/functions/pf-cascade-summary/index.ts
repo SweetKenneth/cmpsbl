@@ -42,10 +42,19 @@ serve(async (req) => {
       .order('created_at', { ascending: false })
       .limit(20);
 
+    // Get recent dream sessions
+    const { data: recentDreams } = await sb
+      .from('dream_log')
+      .select('content, mode, created_at')
+      .gte('created_at', sixHoursAgo)
+      .order('created_at', { ascending: false })
+      .limit(5);
+
     // Summarize learning
     const learningCount = recentLearning?.length || 0;
+    const dreamCount = recentDreams?.length || 0;
     const topicsCovered = recentLearning
-      ?.map(l => l.input_data?.context?.topic)
+      ?.map(l => (l.input_data as any)?.topic || (l.input_data as any)?.context?.topic)
       .filter(Boolean)
       .slice(0, 5) || [];
 
@@ -80,16 +89,31 @@ serve(async (req) => {
           <h2 style="margin-top: 0;">📚 Learning Progress</h2>
           <ul>
             <li><strong>${learningCount}</strong> learning cycles completed</li>
+            <li><strong>${dreamCount}</strong> dream states entered</li>
             <li><strong>${lovableCalls}/1000</strong> Lovable AI calls today</li>
-            <li><strong>${groqCalls}/530</strong> Groq calls today</li>
+            <li><strong>${(todayUsage?.length || 0) - lovableCalls}</strong> Free-tier AI calls today</li>
           </ul>
         </div>
+
+        ${dreamCount > 0 ? `
+        <div style="background: #1a1a2e; color: #fff; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h3 style="margin-top: 0; color: #a78bfa;">🌙 Dream States (${dreamCount})</h3>
+          <ul style="color: #e0e0e0;">
+            ${(recentDreams || []).slice(0, 3).map((d: any) => `
+              <li style="margin-bottom: 10px;">
+                <strong>${d.mode}</strong>: ${d.content?.slice(0, 150)}...
+                <br/><span style="font-size: 12px; color: #888;">${new Date(d.created_at).toLocaleString()}</span>
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+        ` : ''}
 
         ${topicsCovered.length > 0 ? `
         <div style="background: #fff; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px; margin: 20px 0;">
           <h3>🎯 Topics Explored</h3>
           <ul>
-            ${topicsCovered.map(topic => `<li>${topic}</li>`).join('')}
+            ${topicsCovered.map((topic: string) => `<li>${topic}</li>`).join('')}
           </ul>
         </div>
         ` : ''}
@@ -121,7 +145,7 @@ serve(async (req) => {
         body: JSON.stringify({
           from: 'Cascade AI <onboarding@resend.dev>',
           to: ['kennethsweet214@gmail.com'],
-          subject: `🧠 Cascade Update: ${learningCount} cycles, ${lovableCalls + groqCalls} AI calls`,
+          subject: `🧠 Cascade Update: ${learningCount} cycles, ${dreamCount} dreams, ${(todayUsage?.length || 0)} AI calls`,
           html: emailHtml,
         }),
       });

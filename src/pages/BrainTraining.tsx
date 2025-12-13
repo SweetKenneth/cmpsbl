@@ -167,11 +167,11 @@ export default function BrainTraining() {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => navigate('/nexus-brain')}
+            onClick={() => navigate('/admin/vision')}
             className="w-fit"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Nexus Brain
+            Back to Vision Control
           </Button>
           <div>
             <h1 className="text-3xl font-bold glow-text mb-2">Upload Training Data</h1>

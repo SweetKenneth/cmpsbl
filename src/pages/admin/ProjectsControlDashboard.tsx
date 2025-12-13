@@ -73,8 +73,11 @@ export default function ProjectsControlDashboard() {
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <h3 className="text-lg font-semibold">{project.name}</h3>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Last activity: {formatDistanceToNow(new Date(project.last_activity), { addSuffix: true })}
+                  <p className="text-xs text-muted-foreground mt-1">{project.description}</p>
+                  <p className="text-sm text-muted-foreground mt-2">
+                    {project.events_count > 0 
+                      ? `${project.events_count} events • Last activity: ${formatDistanceToNow(new Date(project.last_activity), { addSuffix: true })}`
+                      : 'No recent activity'}
                   </p>
                 </div>
                 <Badge 
@@ -90,10 +93,10 @@ export default function ProjectsControlDashboard() {
               <div className="space-y-3">
                 <div>
                   <div className="flex items-center justify-between text-sm mb-2">
-                    <span className="text-muted-foreground">Health Score</span>
+                    <span className="text-muted-foreground">Success Rate (7d)</span>
                     <span className="font-medium">{project.health_score}%</span>
                   </div>
-                  <Progress value={project.health_score} />
+                  <Progress value={project.health_score} className={project.health_score < 70 ? "[&>div]:bg-yellow-500" : ""} />
                 </div>
               </div>
 

@@ -1,6 +1,5 @@
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { StatCard } from "@/components/admin/ui/StatCard";
-import { MetricChart } from "@/components/admin/ui/MetricChart";
 import { useCascadeStatus } from "@/hooks/admin/useCascadeStatus";
 import { Brain, Zap, Database, Activity, AlertCircle, CheckCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -8,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { ActionButton } from "@/components/admin/ui/ActionButton";
 import { toast } from "sonner";
+import RecentLearningEvents from "@/components/vision/RecentLearningEvents";
 
 export default function VisionControlDashboard() {
   const { data: cascade, isLoading } = useCascadeStatus();
@@ -196,29 +196,8 @@ export default function VisionControlDashboard() {
           </Card>
         </div>
 
-        {/* Recent Learning Events */}
-        <Card className="glass-card border border-border/50 p-6 animate-fade-in-up stagger-8">
-          <h3 className="text-lg font-semibold mb-4">Recent Learning Events</h3>
-          <div className="space-y-2">
-            {[
-              { event: "Pattern recognized", detail: "High correlation between user signup and feature usage", time: "5 min ago" },
-              { event: "Model updated", detail: "Threat detection accuracy improved to 98.5%", time: "1 hour ago" },
-              { event: "Memory compressed", detail: "Moved 45 hot memories to cold storage", time: "3 hours ago" },
-              { event: "Insight generated", detail: "Identified potential cost optimization opportunity", time: "5 hours ago" },
-            ].map((item, index) => (
-              <div key={index} className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted/30 transition-colors">
-                <div className="w-2 h-2 rounded-full bg-primary mt-2 animate-pulse-glow" />
-                <div className="flex-1">
-                  <div className="flex items-center justify-between">
-                    <span className="font-medium text-sm">{item.event}</span>
-                    <span className="text-xs text-muted-foreground">{item.time}</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-1">{item.detail}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Card>
+        {/* Recent Learning Events - Real Data */}
+        <RecentLearningEvents />
       </div>
     </AdminLayout>
   );

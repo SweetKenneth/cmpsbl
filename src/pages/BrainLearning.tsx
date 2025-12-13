@@ -17,21 +17,41 @@ export default function BrainLearning() {
 
   const fetchLearningData = async () => {
     try {
-      const [patternsRes, queriesRes] = await Promise.all([
+      const [patternsRes, queriesRes, learningDataRes] = await Promise.all([
         supabase
           .from('learning_patterns')
           .select('*')
-          .order('confidence_score', { ascending: false })
+          .order('confidence', { ascending: false })
           .limit(10),
         supabase
           .from('learning_queries')
           .select('*')
           .eq('status', 'done')
           .order('created_at', { ascending: false })
+          .limit(10),
+        supabase
+          .from('ai_learning_data')
+          .select('*')
+          .order('created_at', { ascending: false })
           .limit(10)
       ]);
 
-      if (patternsRes.data) setLearningPatterns(patternsRes.data);
+      // Use learning_patterns if available, otherwise use ai_learning_data
+      if (patternsRes.data && patternsRes.data.length > 0) {
+        setLearningPatterns(patternsRes.data);
+      } else if (learningDataRes.data && learningDataRes.data.length > 0) {
+        // Transform ai_learning_data to pattern format
+        const patterns = learningDataRes.data.map(d => ({
+          id: d.id,
+          pattern_type: d.model || 'learning',
+          description: `Learned from ${d.provider}: ${d.model_name || d.model}`,
+          confidence: d.success ? 0.85 : 0.3,
+          application_count: 1,
+          created_at: d.created_at
+        }));
+        setLearningPatterns(patterns);
+      }
+      
       if (queriesRes.data) setInsights(queriesRes.data);
     } catch (error) {
       console.error('Error fetching learning data:', error);
@@ -114,7 +134,7 @@ export default function BrainLearning() {
                   <div className="flex items-start justify-between mb-2">
                     <h3 className="font-semibold">{pattern.pattern_type}</h3>
                     <span className="text-sm px-2 py-1 rounded-full bg-primary/20 text-primary">
-                      {Math.round((pattern.confidence_score || 0) * 100)}% confidence
+                      {Math.round((pattern.confidence || pattern.confidence_score || 0) * 100)}% confidence
                     </span>
                   </div>
                   <p className="text-sm text-muted-foreground mb-2">
