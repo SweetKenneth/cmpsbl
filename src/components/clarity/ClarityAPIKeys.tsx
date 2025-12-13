@@ -131,14 +131,15 @@ export function ClarityAPIKeys() {
           </p>
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           <Input
             placeholder="Key name (e.g., Production API)"
             value={newKeyName}
             onChange={(e) => setNewKeyName(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && createKey()}
+            className="flex-1"
           />
-          <Button onClick={createKey}>
+          <Button onClick={createKey} className="w-full sm:w-auto">
             <Plus className="w-4 h-4 mr-2" />
             Create
           </Button>
@@ -155,17 +156,17 @@ export function ClarityAPIKeys() {
             {apiKeys.map((key) => (
               <div
                 key={key.id}
-                className="flex items-center justify-between p-4 rounded-lg border bg-card"
+                className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 rounded-lg border bg-card gap-3"
               >
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-medium">{key.key_name}</span>
+                  <div className="flex flex-wrap items-center gap-2 mb-1">
+                    <span className="font-medium text-sm sm:text-base truncate">{key.key_name}</span>
                     {key.temp && (
                       <Badge variant="secondary" className="text-xs">New - Copy Now!</Badge>
                     )}
                   </div>
-                  <div className="flex items-center gap-2">
-                    <code className="text-sm font-mono bg-muted px-2 py-1 rounded">
+                  <div className="flex items-center gap-2 overflow-x-auto">
+                    <code className="text-xs sm:text-sm font-mono bg-muted px-2 py-1 rounded whitespace-nowrap">
                       {visibleKeys.has(key.id) 
                         ? (key.metadata?.key_prefix || key.api_key_hash?.substring(0, 11))
                         : (key.metadata?.key_prefix?.substring(0, 11) || key.api_key_hash?.substring(0, 11)) + "••••••••"}
@@ -174,6 +175,7 @@ export function ClarityAPIKeys() {
                       variant="ghost"
                       size="sm"
                       onClick={() => toggleKeyVisibility(key.id)}
+                      className="flex-shrink-0"
                     >
                       {visibleKeys.has(key.id) ? (
                         <EyeOff className="w-3 h-3" />
@@ -186,7 +188,7 @@ export function ClarityAPIKeys() {
                     Created: {new Date(key.created_at).toLocaleDateString()}
                   </p>
                 </div>
-                <div className="flex items-center gap-2 ml-4">
+                <div className="flex items-center gap-2 self-end sm:self-center">
                   <Button
                     variant="ghost"
                     size="sm"
@@ -209,15 +211,15 @@ export function ClarityAPIKeys() {
           </div>
         )}
 
-        <div className="bg-muted/30 rounded-lg p-4 text-sm">
+        <div className="bg-muted/30 rounded-lg p-3 sm:p-4 text-sm">
           <p className="font-medium mb-2">API Documentation</p>
-          <code className="block bg-background p-3 rounded text-xs overflow-x-auto">
-            POST https://hxgbibtkftocyrnuzxwd.supabase.co/functions/v1/pf-clarity-api/scan
-            <br />
-            Headers: x-api-key: clf_your_key_here
-            <br />
-            Body: {JSON.stringify({ site_url: "https://example.com" })}
-          </code>
+          <div className="bg-background p-2 sm:p-3 rounded text-xs overflow-x-auto">
+            <code className="block whitespace-pre-wrap break-all sm:whitespace-nowrap">
+              POST https://bxodolqqczjuahwdrswy.supabase.co/functions/v1/pf-clarity-api/scan{'\n'}
+              Headers: x-api-key: clf_your_key_here{'\n'}
+              Body: {JSON.stringify({ site_url: "https://example.com" })}
+            </code>
+          </div>
         </div>
       </div>
     </Card>

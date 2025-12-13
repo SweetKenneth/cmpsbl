@@ -7,6 +7,8 @@ export interface Project {
   status: string;
   last_activity: string;
   health_score: number;
+  description: string;
+  events_count: number;
 }
 
 export function useProjects() {
@@ -20,29 +22,31 @@ export function useProjects() {
         .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString())
         .order('created_at', { ascending: false });
 
-      // Map modules to projects
+      // Map modules to projects with descriptions
       const modules = [
-        { id: 'vision', name: 'PromptFluid Vision', module: 'vision' },
-        { id: 'defense', name: 'Defense Shield', module: 'defense' },
-        { id: 'clarity', name: 'Clarity Scanner', module: 'clarity' },
-        { id: 'studio', name: 'Studio Builder', module: 'studio' },
-        { id: 'nexus', name: 'Nexus Gateway', module: 'nexus' },
-        { id: 'brain', name: 'Brain Core', module: 'brain' },
+        { id: 'vision', name: 'PromptFluid Vision', module: 'vision', description: 'AI monitoring & learning dashboard' },
+        { id: 'defense', name: 'Defense Shield', module: 'defense', description: 'Threat detection & bot prevention' },
+        { id: 'clarity', name: 'Clarity Scanner', module: 'clarity', description: 'WCAG accessibility compliance' },
+        { id: 'studio', name: 'Studio Builder', module: 'studio', description: 'AI-powered site generation' },
+        { id: 'nexus', name: 'Nexus Gateway', module: 'nexus', description: 'API routing & orchestration' },
+        { id: 'brain', name: 'Brain Core', module: 'brain', description: 'Continuous learning engine' },
       ];
 
       const projects: Project[] = modules.map(proj => {
         const projectEvents = events?.filter(e => e.module === proj.module) || [];
         const lastEvent = projectEvents[0];
         const successRate = projectEvents.length > 0
-          ? (projectEvents.filter(e => e.outcome === 'success').length / projectEvents.length) * 100
+          ? (projectEvents.filter(e => e.outcome === 'success' || e.outcome === 'completed').length / projectEvents.length) * 100
           : 100;
 
         return {
           id: proj.id,
           name: proj.name,
+          description: proj.description,
           status: projectEvents.length > 0 ? 'active' : 'idle',
           last_activity: lastEvent?.created_at || new Date().toISOString(),
           health_score: Math.round(successRate),
+          events_count: projectEvents.length,
         };
       });
 

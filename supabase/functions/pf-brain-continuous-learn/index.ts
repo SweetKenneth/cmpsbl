@@ -104,11 +104,11 @@ serve(async (req) => {
           temperature: 0.8 // Higher creativity in dreams
         });
         
-        await supabase.from('cascade_dreams').insert({
-          dream_type: dreamState.dreamType,
-          content: dreamResult.content,
-          intensity: dreamState.probability,
-          metadata: { provider: dreamResult.provider, model: dreamResult.model }
+        await supabase.from('dream_log').insert({
+          content: `Dream insight: ${dreamResult.content.slice(0, 2000)}`,
+          mode: dreamState.dreamType,
+          seed: Math.floor(Math.random() * 1000000),
+          metadata: { provider: dreamResult.provider, model: dreamResult.model, type: 'creative_insight' }
         });
         
         console.log(`✨ Dream cycle complete via ${dreamResult.provider}`);

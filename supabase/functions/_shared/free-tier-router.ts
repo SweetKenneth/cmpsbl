@@ -289,7 +289,7 @@ export async function callFreeTierAI(
 
         case 'google':
           if (!GOOGLE_AI_KEY) continue;
-          console.log('🔻 Google AI Studio (20/day limit)...');
+          console.log('🔻 Google AI Studio (50/day limit)...');
           const fullPrompt = systemPrompt ? `${systemPrompt}\n\n${prompt}` : prompt;
           const googleRes = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent', {
             method: 'POST',
@@ -311,5 +311,77 @@ export async function callFreeTierAI(
     }
   }
   
-  throw new Error('All free providers exhausted or unavailable');
+  // Final attempt: wait and retry with reduced rate limits
+  console.log('⏳ All providers temporarily exhausted. Waiting 30s before final attempt...');
+  await new Promise(r => setTimeout(r, 30000));
+  
+  // Try one more time with any available provider
+  const fallbackProviders = ['deepseek', 'cerebras', 'hyperbolic'];
+  for (const provider of fallbackProviders) {
+    try {
+      switch (provider) {
+        case 'deepseek':
+          if (!DEEPSEEK_API_KEY) continue;
+          const dsRes = await fetch('https://api.deepseek.com/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${DEEPSEEK_API_KEY}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              model: 'deepseek-chat',
+              messages: systemPrompt
+                ? [{ role: 'system', content: systemPrompt }, { role: 'user', content: prompt }]
+                : [{ role: 'user', content: prompt }],
+              temperature,
+              max_tokens: maxTokens,
+            }),
+          });
+          if (dsRes.ok) {
+            const data = await dsRes.json();
+            return { content: data.choices[0].message.content, model: 'deepseek-chat', provider: 'deepseek' };
+          }
+          break;
+        case 'cerebras':
+          if (!CEREBRAS_API_KEY) continue;
+          const cerebrasRes = await fetch('https://api.cerebras.ai/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${CEREBRAS_API_KEY}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              model: 'llama-3.3-70b',
+              messages: systemPrompt
+                ? [{ role: 'system', content: systemPrompt }, { role: 'user', content: prompt }]
+                : [{ role: 'user', content: prompt }],
+              temperature,
+              max_tokens: maxTokens,
+            }),
+          });
+          if (cerebrasRes.ok) {
+            const data = await cerebrasRes.json();
+            return { content: data.choices[0].message.content, model: 'llama-3.3-70b', provider: 'cerebras' };
+          }
+          break;
+        case 'hyperbolic':
+          if (!HYPERBOLIC_API_KEY) continue;
+          const hypRes = await fetch('https://api.hyperbolic.xyz/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${HYPERBOLIC_API_KEY}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              model: 'meta-llama/Llama-3.1-70B-Instruct',
+              messages: systemPrompt
+                ? [{ role: 'system', content: systemPrompt }, { role: 'user', content: prompt }]
+                : [{ role: 'user', content: prompt }],
+              temperature,
+              max_tokens: maxTokens,
+            }),
+          });
+          if (hypRes.ok) {
+            const data = await hypRes.json();
+            return { content: data.choices[0].message.content, model: 'llama-3.1-70b', provider: 'hyperbolic' };
+          }
+          break;
+      }
+    } catch (e) {
+      console.log(`Fallback ${provider} failed:`, e);
+    }
+  }
+  
+  throw new Error('All free providers exhausted - will retry next cycle');
 }

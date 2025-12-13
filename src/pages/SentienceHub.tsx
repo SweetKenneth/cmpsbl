@@ -71,11 +71,21 @@ export default function SentienceHub() {
     queryKey: ['resilience-ledger'],
     queryFn: async () => {
       const { data } = await supabase
-        .from('resilience_ledger')
+        .from('brain_sensory_events')
         .select('*')
         .order('created_at', { ascending: false })
         .limit(5);
       return (data || []) as any[];
+    }
+  });
+
+  const { data: feedbackCount } = useQuery({
+    queryKey: ['feedback-count'],
+    queryFn: async () => {
+      const { count } = await supabase
+        .from('brain_feedback')
+        .select('*', { count: 'exact', head: true });
+      return count || 0;
     }
   });
 
@@ -203,7 +213,7 @@ export default function SentienceHub() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">12</div>
+              <div className="text-2xl font-bold">{feedbackCount || 0}</div>
               <p className="text-xs text-muted-foreground">corrections</p>
             </CardContent>
           </Card>
