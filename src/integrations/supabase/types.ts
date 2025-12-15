@@ -1332,6 +1332,78 @@ export type Database = {
         }
         Relationships: []
       }
+      dream_eater_state: {
+        Row: {
+          current_mood: string
+          dreams_consumed_today: number | null
+          id: string
+          last_fed_at: string | null
+          mood_score: number | null
+          mutation_level: number | null
+          nightmares_consumed_today: number | null
+          updated_at: string
+        }
+        Insert: {
+          current_mood?: string
+          dreams_consumed_today?: number | null
+          id?: string
+          last_fed_at?: string | null
+          mood_score?: number | null
+          mutation_level?: number | null
+          nightmares_consumed_today?: number | null
+          updated_at?: string
+        }
+        Update: {
+          current_mood?: string
+          dreams_consumed_today?: number | null
+          id?: string
+          last_fed_at?: string | null
+          mood_score?: number | null
+          mutation_level?: number | null
+          nightmares_consumed_today?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      dream_feeder_submissions: {
+        Row: {
+          created_at: string
+          dream_content: string
+          dream_type: string
+          id: string
+          is_processed: boolean | null
+          processed_at: string | null
+          sentiment_score: number | null
+          source: string
+          source_domain: string | null
+          submitter_name: string | null
+        }
+        Insert: {
+          created_at?: string
+          dream_content: string
+          dream_type?: string
+          id?: string
+          is_processed?: boolean | null
+          processed_at?: string | null
+          sentiment_score?: number | null
+          source?: string
+          source_domain?: string | null
+          submitter_name?: string | null
+        }
+        Update: {
+          created_at?: string
+          dream_content?: string
+          dream_type?: string
+          id?: string
+          is_processed?: boolean | null
+          processed_at?: string | null
+          sentiment_score?: number | null
+          source?: string
+          source_domain?: string | null
+          submitter_name?: string | null
+        }
+        Relationships: []
+      }
       dream_log: {
         Row: {
           content: string
