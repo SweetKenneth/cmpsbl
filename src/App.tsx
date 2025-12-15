@@ -176,6 +176,7 @@ import CascadeGovernance from "./pages/CascadeGovernance";
 import BrainHub from "./pages/BrainHub";
 import InvestorsPublic from "./pages/InvestorsPublic";
 import Blog from "./pages/Blog";
+import FeedDreamEater from "./pages/FeedDreamEater";
 
 const queryClient = new QueryClient();
 
@@ -462,6 +463,9 @@ const App = () => {
           <Route path="/blog/ai-systems-that-dream-press-release" element={<AISystemsThatDreamPressRelease />} />
           <Route path="/blog/promptfluid-first-ai-dreaming-systems" element={<AISystemsThatDreamPressRelease />} />
           <Route path="/blog/accessibility-free-for-all" element={<Suspense fallback={<PageLoader />}><AccessibilityFreeForAll /></Suspense>} />
+          
+          {/* Public Dream-Eater Feeding Page */}
+          <Route path="/feed-dream-eater" element={<FeedDreamEater />} />
           
           <Route path="*" element={<NotFound />} />
         </Routes>

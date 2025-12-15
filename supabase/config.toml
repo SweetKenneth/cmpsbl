@@ -32,3 +32,6 @@ verify_jwt = false
 
 [functions.pf-system-verify]
 verify_jwt = false
+
+[functions.dream-feeder-api]
+verify_jwt = false
