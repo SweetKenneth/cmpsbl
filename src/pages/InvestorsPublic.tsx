@@ -35,7 +35,7 @@ export default function InvestorsPublic() {
     {
       icon: FileText,
       title: "Product Portfolio",
-      description: "Reflex Bot Sniper (security), Clarity (accessibility), Dream Eater (experimental AI) — three distinct products."
+      description: "Reflex Bot Sniper (security), Clarity (accessibility), and Dream Eater—the world's first autonomous dreaming AI (whitepaper & proof on GitHub)."
     }
   ];
 
@@ -75,8 +75,11 @@ export default function InvestorsPublic() {
             </span>
           </h1>
           
-          <p className="text-xl text-muted-foreground mb-8">
-            Building AI-powered tools for WordPress security and web accessibility. Early-stage startup with products in development and one founder committed to execution.
+          <p className="text-xl text-muted-foreground mb-4">
+            Building AI-powered tools for WordPress security and web accessibility. Home of the <a href="https://github.com/SweetKenneth/SimNap-Dreaming-AI-Whitepaper" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">world's first autonomous dreaming AI</a>.
+          </p>
+          <p className="text-muted-foreground mb-8">
+            Early-stage startup with products in development and one founder committed to execution.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

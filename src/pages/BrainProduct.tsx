@@ -224,7 +224,7 @@ export default function BrainProduct() {
                 </h1>
 
                 <p className="text-2xl text-primary font-medium mb-4">
-                  Experimental Dreaming AI
+                  <a href="https://github.com/SweetKenneth/SimNap-Dreaming-AI-Whitepaper" target="_blank" rel="noopener noreferrer" className="hover:underline">World's First Autonomous Dreaming AI</a>
                 </p>
 
                 <p className="text-lg text-muted-foreground leading-relaxed mb-8">
