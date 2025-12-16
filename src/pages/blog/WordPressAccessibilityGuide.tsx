@@ -340,8 +340,8 @@ export default function ClarityPillarPost() {
               <h3>PromptFluid Clarity</h3>
               <p>
                 <strong>Best for:</strong> Sites needing automated fixes with minimal technical expertise<br/>
-                <strong>Pricing:</strong> Free for up to 10 pages, Pro at $29/mo<br/>
-                <strong>Standout features:</strong> AI-powered automated remediation, contextual alt text generation, continuous compliance monitoring, one-click fixes
+                <strong>Pricing:</strong> 100% Free (no limits)<br/>
+                <strong>Standout features:</strong> AI-powered automated remediation, contextual alt text generation, continuous compliance monitoring, one-click fixes, zero-cost operation through free-tier AI providers
               </p>
 
               <h3>WP Accessibility</h3>

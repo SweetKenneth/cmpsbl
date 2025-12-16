@@ -57,7 +57,7 @@ const AITriadExplained = () => {
             <div className="relative w-full h-[400px] rounded-xl overflow-hidden mb-8">
               <img 
                 src={heroImage} 
-                alt="Six interconnected AI nodes with intelligent data routing streams flowing between Groq, Cerebras, Together AI, DeepSeek, and Hyperbolic free-tier providers"
+                alt="Six interconnected AI nodes with intelligent data routing streams flowing between Groq, Cerebras, Google AI Studio, Together AI, DeepSeek, and Hyperbolic free-tier providers"
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent"></div>

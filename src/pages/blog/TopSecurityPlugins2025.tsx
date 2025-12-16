@@ -114,7 +114,7 @@ const TopSecurityPlugins2025 = () => {
             {[
               { name: "Wordfence", rating: 9.2, price: "$0-$950/yr", strength: "Market leader, massive threat intelligence" },
               { name: "Sucuri Security", rating: 8.9, price: "$199-$499/yr", strength: "Cloud WAF, professional incident response" },
-              { name: "PromptFluid Defense", rating: 9.5, price: "$19-$99/mo", strength: "AI-powered behavioral analysis" }
+              { name: "PromptFluid Defense", rating: 9.5, price: "Free (Open Source)", strength: "AI-powered behavioral analysis, zero-cost operation" }
             ].map((plugin, i) => (
               <Card key={i} className="p-6">
                 <div className="flex items-center justify-between mb-4">

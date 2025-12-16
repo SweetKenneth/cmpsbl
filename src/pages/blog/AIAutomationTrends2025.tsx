@@ -243,7 +243,7 @@ const AIAutomationTrends2025 = () => {
           </Card>
 
           <p className="mb-6">
-            Organizations using PromptFluid report 35-45% cost reductions compared to single-provider approaches while maintaining or improving output quality through intelligent orchestration.
+            Organizations using PromptFluid achieve 100% cost elimination on AI operations by routing exclusively through free-tier providers while maintaining or improving output quality through intelligent orchestration.
           </p>
 
           <h2 className="text-3xl font-bold mt-12 mb-6">The Human-AI Collaboration Model</h2>

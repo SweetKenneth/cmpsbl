@@ -151,7 +151,7 @@ export default function Solutions() {
       icon: Brain,
       name: "PromptFluid Brain",
       tagline: "Intelligent System Orchestration",
-      description: "Central AI engine that coordinates between all modules, learns from usage patterns, and auto-optimizes performance. Routes through Groq, Cerebras, Together AI, DeepSeek, and Hyperbolic—all free-tier providers.",
+      description: "Central AI engine that coordinates between all modules, learns from usage patterns, and auto-optimizes performance. Routes through Groq, Cerebras, Google AI Studio, Together AI, DeepSeek, and Hyperbolic—all free-tier providers.",
       features: [
         "Multi-AI orchestration (6 free-tier providers)",
         "Adaptive learning from system behavior",
@@ -160,7 +160,7 @@ export default function Solutions() {
         "Performance optimization recommendations",
         "Smart routing and load balancing"
       ],
-      metrics: ["5 AI Models", "Real-time Learning", "Auto-Optimization"],
+      metrics: ["6 AI Providers", "Real-time Learning", "Auto-Optimization"],
       link: "/brain"
     },
     {
