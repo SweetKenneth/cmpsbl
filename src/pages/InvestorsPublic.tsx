@@ -20,7 +20,7 @@ export default function InvestorsPublic() {
     {
       icon: Rocket,
       title: "First Mover Advantage",
-      description: "World's first AI with autonomous dream cycles. Multiple WordPress.org submissions with 2.5K+ installs."
+      description: "World's first AI with autonomous dream cycles. Multiple WordPress.org submissions live with active users."
     },
     {
       icon: DollarSign,
