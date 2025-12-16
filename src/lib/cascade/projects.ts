@@ -78,8 +78,8 @@ export const cascadeProjects: CascadeProject[] = [
     notes: 'Primary stack integration. Uses E2B for sandboxed execution.'
   },
   {
-    id: 'cmptbl-engine',
-    name: 'CMPTBL Accessibility Engine',
+    id: 'clarity-engine',
+    name: 'Clarity Accessibility Engine',
     stack: 'TypeScript + Node.js + WCAG 2.1 AA/AAA + axe-core',
     description: 'Core accessibility scanning and remediation engine powering Clarity products.',
     notes: 'Must maintain WCAG compliance. Performance-critical scanning loops.'

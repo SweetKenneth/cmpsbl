@@ -583,7 +583,7 @@ export default function Index() {
 
             {/* PromptFluid Clarity - 100% FREE Accessibility */}
             <div
-              onClick={() => window.open("https://cmptbl.promptfluid.com", "_blank")}
+              onClick={() => window.open("https://clarity.promptfluid.com", "_blank")}
               className="group relative p-8 rounded-3xl glass border-2 border-green-500/30 hover:border-green-500/50 cursor-pointer transition-all duration-300 hover:shadow-elegant overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 via-teal-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />

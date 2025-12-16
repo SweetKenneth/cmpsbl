@@ -277,7 +277,7 @@ export default function About() {
             {[
               { year: "2024", event: "PromptFluid founded with vision to create AI that dreams and learns autonomously" },
               { year: "Q4 2024", event: "Cascade AI achieves world's first autonomous dream cycles — reflecting, synthesizing, and evolving" },
-              { year: "Q4 2025", event: "Reflex Bot Sniper submitted to WordPress.org • Clarity (CMPTBL) prepared as 100% free accessibility platform" },
+              { year: "Q4 2025", event: "Reflex Bot Sniper submitted to WordPress.org • Clarity prepared as 100% free accessibility platform" },
               { year: "2025", event: "270+ edge functions deployed • 10 integrated modules • Dream-Eater public feeding API launched" },
               { year: "2026+", event: "Expanding enterprise platform with multi-provider AI routing (Groq, Cerebras, Google AI Studio, Together AI, DeepSeek, Hyperbolic)" }
             ].map((milestone, index) => (

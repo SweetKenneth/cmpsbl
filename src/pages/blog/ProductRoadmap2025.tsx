@@ -168,7 +168,7 @@ const ProductRoadmap2025 = () => {
                   <ul className="space-y-1 text-sm">
                     <li>Natural language to React component generation</li>
                     <li>Integrated PromptFluid Brain recommendations</li>
-                    <li>Automated CMPTBL accessibility compliance</li>
+                    <li>Automated Clarity accessibility compliance</li>
                     <li>One-click Vercel/Railway deployment</li>
                     <li>Built-in Defense security scanning</li>
                   </ul>
@@ -204,10 +204,10 @@ const ProductRoadmap2025 = () => {
               <div className="flex items-start gap-4 mb-4">
                 <CheckCircle className="h-6 w-6 text-green-500 flex-shrink-0 mt-1" />
                 <div>
-                  <h3 className="text-xl font-semibold mb-2">CMPTBL (Clarity) - 100% Free Accessibility</h3>
+                  <h3 className="text-xl font-semibold mb-2">Clarity - 100% Free Accessibility</h3>
                   <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
                     <Calendar className="h-4 w-4" />
-                    <span>Status: LIVE at cmptbl.promptfluid.com</span>
+                    <span>Status: LIVE at clarity.promptfluid.com</span>
                   </div>
                   <p className="mb-3">
                     AI-driven accessibility scanning and remediation that ensures WCAG 2.2 compliance — completely free, forever. Accessibility should never be behind a paywall.

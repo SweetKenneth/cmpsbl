@@ -418,8 +418,15 @@ export function PublicNav() {
                 </div>
               ))}
 
-              {/* About & Contact */}
+              {/* Investors & About */}
               <div className="pt-4 border-t border-border/50 space-y-4">
+                <Link
+                  to="/investors"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="font-bold text-primary hover:underline block text-lg"
+                >
+                  ⭐ Investors
+                </Link>
                 <Link
                   to="/about"
                   onClick={() => setMobileMenuOpen(false)}
