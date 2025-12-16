@@ -157,15 +157,15 @@ export default function RippleInfo() {
             </div>
             <div>
               <div className="text-4xl font-bold bg-gradient-to-r from-primary-variant to-accent bg-clip-text text-transparent mb-2">
-                85%
+                100%
               </div>
-              <div className="text-muted-foreground">Cost Reduction</div>
+              <div className="text-muted-foreground">Zero AI Costs</div>
             </div>
             <div>
               <div className="text-4xl font-bold bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent mb-2">
-                3.2x
+                6
               </div>
-              <div className="text-muted-foreground">ROI Improvement</div>
+              <div className="text-muted-foreground">AI Providers Integrated</div>
             </div>
           </div>
         </div>

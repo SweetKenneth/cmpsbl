@@ -377,9 +377,9 @@ export default function TheFirsts() {
                   </tbody>
                 </table>
               </div>
-              <p className="mt-6"><strong>Total current valuation:</strong> <em>$1.8M–$3.5M (November 2025, pre-revenue)</em></p>
+              <p className="mt-6"><strong>Total current valuation:</strong> <em>$1.8M–$3.5M (December 2025, pre-revenue)</em></p>
               <p className="text-sm text-muted-foreground mt-2">
-                <strong>Key value drivers:</strong> Complete database infrastructure (100%), 59 production edge functions, three revenue-ready WordPress plugins, 
+                <strong>Key value drivers:</strong> Complete database infrastructure (80+ tables), 270+ production edge functions, three revenue-ready WordPress plugins, 
                 world's first dreaming AI (Cascade), and patent-pending Dream Cycle Intelligence technology.
               </p>
               <p className="text-sm text-muted-foreground mt-4">
