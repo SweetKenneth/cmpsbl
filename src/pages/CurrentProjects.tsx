@@ -27,8 +27,8 @@ export default function CurrentProjects() {
       href: "/projects/defense",
       gradient: "from-purple-500 via-blue-500 to-cyan-500",
       version: "v1.0.0",
-      downloads: "2.5K+",
-      rating: "4.9/5.0"
+      downloads: "Pending",
+      rating: "Pre-launch"
     },
     {
       id: "studio",
@@ -49,8 +49,8 @@ export default function CurrentProjects() {
       href: "/products/studio",
       gradient: "from-pink-500 via-purple-500 to-indigo-500",
       version: "v0.9.2",
-      downloads: "1.2K+",
-      rating: "4.7/5.0"
+      downloads: "Beta",
+      rating: "In Development"
     },
     {
       id: "brain",

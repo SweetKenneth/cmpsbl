@@ -251,8 +251,8 @@ const DefenseLegalServices = () => {
                   <p className="text-sm text-muted-foreground">Increase in cyber insurance premiums after breach</p>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-primary mb-2">$19/mo</div>
-                  <p className="text-sm text-muted-foreground">Starting cost for PromptFluid Defense protection</p>
+                  <div className="text-3xl font-bold text-primary mb-2">$0/mo</div>
+                  <p className="text-sm text-muted-foreground">PromptFluid Defense protection (free-tier AI)</p>
                 </div>
               </div>
               

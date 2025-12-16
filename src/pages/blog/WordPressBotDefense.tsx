@@ -844,7 +844,7 @@ const WordPressBotDefense = () => {
               <Card className="p-6 text-center">
                 <Brain className="h-12 w-12 text-primary mx-auto mb-3" />
                 <h4 className="font-bold mb-2">AI-First, Not AI-Washed</h4>
-                <p className="text-sm text-muted-foreground">Real machine learning models (Groq, Cerebras, Together AI) analyzing behavior, not just "smart rules" renamed as AI</p>
+                <p className="text-sm text-muted-foreground">Real machine learning via 6 free-tier providers (Groq, Cerebras, Google AI Studio, Together AI, DeepSeek, Hyperbolic) analyzing behavior—not just "smart rules" renamed as AI</p>
               </Card>
               <Card className="p-6 text-center">
                 <Shield className="h-12 w-12 text-primary mx-auto mb-3" />
@@ -1153,7 +1153,7 @@ const WordPressBotDefense = () => {
             </ul>
 
             <p className="mb-4">
-              <strong>The mid-market is where PromptFluid Defense shines:</strong> sites that need sophisticated AI-powered protection without enterprise pricing. Our WordPress plugin launches soon on WordPress.org, bringing behavioral AI to the masses at $19-$99/month.
+              <strong>The mid-market is where PromptFluid Defense shines:</strong> sites that need sophisticated AI-powered protection without enterprise pricing. Our WordPress plugin is available on WordPress.org, bringing behavioral AI to the masses at zero cost through our free-tier provider network.
             </p>
 
             <div className="flex flex-wrap gap-4 justify-center py-8">
