@@ -369,22 +369,22 @@ export default function TheFirsts() {
                       <td className="border border-border p-3">World's first autonomous dreaming AI</td>
                     </tr>
                     <tr>
-                      <td className="border border-border p-3">Complete Database Infrastructure</td>
+                      <td className="border border-border p-3">Database Infrastructure</td>
                       <td className="border border-border p-3">Backend Foundation</td>
-                      <td className="border border-border p-3">$300K–$500K</td>
-                      <td className="border border-border p-3">70+ tables, 100% RLS, vector storage</td>
+                      <td className="border border-border p-3">$100K–$200K</td>
+                      <td className="border border-border p-3">Supabase backend with RLS policies</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-              <p className="mt-6"><strong>Total current valuation:</strong> <em>$1.8M–$3.5M (December 2025, pre-revenue)</em></p>
+              <p className="mt-6"><strong>Seeking:</strong> <em>Seed investment (pre-revenue startup)</em></p>
               <p className="text-sm text-muted-foreground mt-2">
-                <strong>Key value drivers:</strong> Complete database infrastructure (80+ tables), 270+ production edge functions, three revenue-ready WordPress plugins, 
-                world's first dreaming AI (Cascade), and patent-pending Dream Cycle Intelligence technology.
+                <strong>Key value drivers:</strong> Reflex Bot Sniper WordPress plugin, Clarity free accessibility scanner, 
+                Dream Eater experimental AI system, and first-mover advantage in AI security space.
               </p>
               <p className="text-sm text-muted-foreground mt-4">
-                <strong>Revenue products ready for market:</strong> Reflex Bot Sniper (full featured), Bot Sniper Standalone ($1 trial → $39/mo gateway), 
-                and Clarity (WCAG 2.2 compliance) - targeting 810M WordPress users.
+                <strong>Products:</strong> Reflex Bot Sniper (pending WordPress.org), Clarity (live, 100% free), 
+                and Dream Eater (experimental R&D) - targeting WordPress security and accessibility markets.
               </p>
               <Button variant="link" onClick={() => scrollToSection('toc')} className="text-primary">
                 Back to Top <ArrowUp className="w-4 h-4 ml-1" />

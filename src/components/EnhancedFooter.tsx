@@ -69,10 +69,10 @@ export function EnhancedFooter() {
         <div className="border-t border-border/50 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-center md:text-left">
             <p className="text-sm text-muted-foreground mb-1">
-              © 2025 PromptFluid™ — AI-Powered Security & Intelligent Automation
+              © 2025 PromptFluid™ — AI Security & Accessibility
             </p>
             <p className="text-xs text-muted-foreground max-w-2xl">
-              Building the world's first AI that dreams. Products pending WordPress.org approval.
+              Reflex Bot Sniper pending WordPress.org approval. Clarity is 100% free forever.
             </p>
           </div>
           <div className="flex items-center gap-4 text-xs text-muted-foreground">

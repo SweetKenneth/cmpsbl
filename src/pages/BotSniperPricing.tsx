@@ -36,19 +36,29 @@ export default function BotSniperPricing() {
   };
 
   return (
-    <div className="min-h-screen bg-background p-6">
-      <div className="max-w-6xl mx-auto space-y-8">
-        {/* Header */}
-        <div className="text-center space-y-4">
-          <Button variant="ghost" size="sm" onClick={() => navigate('/bot-sniper')}>
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Dashboard
-          </Button>
-          <h1 className="text-4xl font-bold">Choose Your Plan</h1>
-          <p className="text-xl text-muted-foreground">
-            Start protecting your site from malicious bots today
+    <div className="min-h-screen bg-background">
+      {/* Status Banner */}
+      <section className="bg-amber-500/10 border-b border-amber-500/20 py-3 px-6">
+        <div className="max-w-6xl mx-auto text-center">
+          <p className="text-sm text-amber-600 font-medium">
+            ⏳ Pending WordPress.org Approval — Pricing shown is planned pricing for launch
           </p>
         </div>
+      </section>
+
+      <div className="p-6">
+        <div className="max-w-6xl mx-auto space-y-8">
+          {/* Header */}
+          <div className="text-center space-y-4">
+            <Button variant="ghost" size="sm" onClick={() => navigate('/bot-sniper')}>
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back
+            </Button>
+            <h1 className="text-4xl font-bold">Planned Pricing</h1>
+            <p className="text-xl text-muted-foreground">
+              Pricing available when plugin launches on WordPress.org
+            </p>
+          </div>
 
         {/* Pricing Cards */}
         <div className="grid md:grid-cols-2 gap-8">
@@ -198,6 +208,7 @@ export default function BotSniperPricing() {
             </table>
           </div>
         </Card>
+        </div>
       </div>
     </div>
   );
