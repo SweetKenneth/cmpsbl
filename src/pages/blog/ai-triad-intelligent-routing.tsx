@@ -57,7 +57,7 @@ const AITriadExplained = () => {
             <div className="relative w-full h-[400px] rounded-xl overflow-hidden mb-8">
               <img 
                 src={heroImage} 
-                alt="Three interconnected AI nodes with intelligent data routing streams flowing between Groq, OpenAI, and Anthropic providers with glowing network connections"
+                alt="Six interconnected AI nodes with intelligent data routing streams flowing between Groq, Cerebras, Together AI, DeepSeek, and Hyperbolic free-tier providers"
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent"></div>
@@ -153,7 +153,7 @@ const AITriadExplained = () => {
             </p>
 
             <p className="text-lg leading-relaxed mb-6">
-              This isn't static configuration—Cascade continuously learns which routing strategies produce the best outcomes. If Groq performs exceptionally well on a specific task category, future similar tasks route to Groq more frequently. If OpenAI delivers superior results despite higher costs for certain workflows, Cascade adjusts routing to prioritize quality where it matters most.
+              This isn't static configuration—Cascade continuously learns which routing strategies produce the best outcomes. If Groq performs exceptionally well on a specific task category, future similar tasks route to Groq more frequently. If Cerebras delivers superior results for certain workflows, Cascade adjusts routing to prioritize quality where it matters most.
             </p>
 
             <h2 className="text-3xl font-bold mb-4">Zero-Cost Through Intelligence</h2>
