@@ -10,32 +10,32 @@ export default function InvestorsPublic() {
   const navigate = useNavigate();
 
   const metrics = [
-    { icon: Users, label: "Products Live", value: "5+", color: "text-blue-500" },
-    { icon: TrendingUp, label: "Development Stage", value: "Active", color: "text-green-500" },
-    { icon: Award, label: "Edge Functions", value: "270+", color: "text-purple-500" },
-    { icon: Target, label: "Market Position", value: "First Mover", color: "text-orange-500" }
+    { icon: Users, label: "Core Products", value: "3", color: "text-blue-500" },
+    { icon: TrendingUp, label: "Stage", value: "Seed", color: "text-green-500" },
+    { icon: Award, label: "Founded", value: "2024", color: "text-purple-500" },
+    { icon: Target, label: "Team", value: "Founder", color: "text-orange-500" }
   ];
 
   const highlights = [
     {
       icon: Rocket,
-      title: "First Mover Advantage",
-      description: "World's first AI with autonomous dream cycles. WordPress.org plugins submitted and pending approval."
+      title: "Market Entry Strategy",
+      description: "Reflex Bot Sniper pending WordPress.org approval. Clarity accessibility scanner is live and 100% free."
     },
     {
       icon: DollarSign,
-      title: "Multiple Revenue Streams",
-      description: "WordPress plugins, SaaS subscriptions, API licensing, and enterprise contracts."
+      title: "Revenue Model",
+      description: "Freemium SaaS for Bot Sniper with premium tiers. Clarity remains free to build brand awareness."
     },
     {
       icon: BarChart,
-      title: "Proven Technology",
-      description: "Complete infrastructure with 270+ edge functions, 80+ database tables, full production deployment."
+      title: "Technical Foundation",
+      description: "Full-stack Lovable Cloud infrastructure with edge functions, database, and AI integrations ready for scale."
     },
     {
       icon: FileText,
-      title: "IP Portfolio",
-      description: "Proprietary AI architecture, dream cycle intelligence, behavioral analysis systems, and adaptive learning models."
+      title: "Product Portfolio",
+      description: "Reflex Bot Sniper (security), Clarity (accessibility), Dream Eater (experimental AI) — three distinct products."
     }
   ];
 
@@ -71,12 +71,12 @@ export default function InvestorsPublic() {
           
           <h1 className="text-5xl md:text-6xl font-bold mb-6">
             <span className="bg-gradient-to-r from-primary via-primary-variant to-accent bg-clip-text text-transparent">
-              Invest in the AI That Dreams
+              Seeking Seed Investment
             </span>
           </h1>
           
           <p className="text-xl text-muted-foreground mb-8">
-            Join us in building the world's first AI ecosystem with autonomous dream intelligence. Revolutionary technology with proven traction and multiple revenue streams.
+            Building AI-powered tools for WordPress security and web accessibility. Early-stage startup with products in development and one founder committed to execution.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
