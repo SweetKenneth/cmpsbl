@@ -8,6 +8,15 @@ export default function BotSniperHome() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/80">
+      {/* Status Banner */}
+      <section className="bg-amber-500/10 border-b border-amber-500/20 py-3 px-6">
+        <div className="max-w-6xl mx-auto text-center">
+          <p className="text-sm text-amber-600 font-medium">
+            ⏳ Pending WordPress.org Approval — Join the waitlist to be notified when we launch
+          </p>
+        </div>
+      </section>
+
       {/* Hero Section */}
       <section className="pt-20 pb-16 px-6">
         <div className="max-w-6xl mx-auto text-center space-y-6">
@@ -23,44 +32,44 @@ export default function BotSniperHome() {
           </h1>
           
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Real-time AI detection that identifies and blocks bot traffic with 99% accuracy. 
-            Protect your site from scraping, credential stuffing, and automated attacks.
+            AI-powered detection that identifies and blocks bot traffic. 
+            Protect your WordPress site from scraping, credential stuffing, and automated attacks.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-            <Button size="lg" onClick={() => navigate('/auth')} className="text-lg px-8">
-              Start Free Trial
+            <Button size="lg" onClick={() => navigate('/contact')} className="text-lg px-8">
+              Join Waitlist
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
-            <Button size="lg" variant="outline" onClick={() => navigate('/bot-sniper/pricing')} className="text-lg px-8">
-              View Pricing
+            <Button size="lg" variant="outline" onClick={() => navigate('/projects/defense')} className="text-lg px-8">
+              Learn More
             </Button>
           </div>
 
           <p className="text-sm text-muted-foreground pt-2">
-            3-day free trial • No credit card required • Cancel anytime
+            Pending WordPress.org approval • Pricing shown is planned pricing
           </p>
         </div>
       </section>
 
-      {/* Stats Bar */}
+      {/* Features Highlight */}
       <section className="py-12 px-6 bg-muted/30">
         <div className="max-w-6xl mx-auto grid md:grid-cols-4 gap-8 text-center">
           <div>
-            <p className="text-4xl font-bold text-primary">99%</p>
-            <p className="text-muted-foreground mt-1">Detection Accuracy</p>
+            <p className="text-4xl font-bold text-primary">AI</p>
+            <p className="text-muted-foreground mt-1">Behavioral Analysis</p>
           </div>
           <div>
-            <p className="text-4xl font-bold text-primary">&lt;50ms</p>
-            <p className="text-muted-foreground mt-1">Response Time</p>
+            <p className="text-4xl font-bold text-primary">Real-time</p>
+            <p className="text-muted-foreground mt-1">Threat Detection</p>
           </div>
           <div>
-            <p className="text-4xl font-bold text-primary">10M+</p>
-            <p className="text-muted-foreground mt-1">Threats Blocked</p>
+            <p className="text-4xl font-bold text-primary">Adaptive</p>
+            <p className="text-muted-foreground mt-1">CAPTCHA System</p>
           </div>
           <div>
-            <p className="text-4xl font-bold text-primary">24/7</p>
-            <p className="text-muted-foreground mt-1">Protection</p>
+            <p className="text-4xl font-bold text-primary">WordPress</p>
+            <p className="text-muted-foreground mt-1">Native Plugin</p>
           </div>
         </div>
       </section>

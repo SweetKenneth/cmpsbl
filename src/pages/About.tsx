@@ -275,11 +275,11 @@ export default function About() {
           <h2 className="text-3xl font-bold mb-12 text-center">Our Journey</h2>
           <div className="space-y-6">
             {[
-              { year: "2024", event: "PromptFluid founded with vision to create AI that dreams and learns autonomously" },
-              { year: "Q4 2024", event: "Cascade AI achieves world's first autonomous dream cycles — reflecting, synthesizing, and evolving" },
-              { year: "Q4 2025", event: "Reflex Bot Sniper submitted to WordPress.org • Clarity prepared as 100% free accessibility platform" },
-              { year: "2025", event: "270+ edge functions deployed • 10 integrated modules • Dream-Eater public feeding API launched" },
-              { year: "2026+", event: "Expanding enterprise platform with multi-provider AI routing (Groq, Cerebras, Google AI Studio, Together AI, DeepSeek, Hyperbolic)" }
+              { year: "2024", event: "PromptFluid founded with vision to build AI-powered security and accessibility tools" },
+              { year: "Q4 2024", event: "Development begins on Reflex Bot Sniper and Dream Eater experimental AI" },
+              { year: "2025", event: "Reflex submitted to WordPress.org • Clarity launched as 100% free accessibility scanner" },
+              { year: "2025", event: "Dream Eater public feeding API opened • Seeking seed investment" },
+              { year: "2026+", event: "WordPress.org approval • Enterprise sales • Team expansion" }
             ].map((milestone, index) => (
               <div 
                 key={index}

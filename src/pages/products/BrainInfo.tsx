@@ -195,9 +195,9 @@ export default function BrainInfo() {
           <div className="grid md:grid-cols-2 gap-8">
             <Card className="p-6 border-primary/30">
               <CheckCircle className="w-8 h-8 text-primary mb-4" />
-              <h3 className="text-xl font-semibold mb-2">World's First Dreaming AI</h3>
+              <h3 className="text-xl font-semibold mb-2">Experimental Dream AI</h3>
               <p className="text-muted-foreground">
-                Unique dream cycle capabilities generate insights, strategies, and creative solutions that traditional AI cannot produce. Patent-pending architecture.
+                Dream Eater explores autonomous learning through simulated "dream cycles"—an experimental approach to AI that reflects and learns during idle periods.
               </p>
             </Card>
 
