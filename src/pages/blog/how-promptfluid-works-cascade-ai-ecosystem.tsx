@@ -132,9 +132,9 @@ const HowPromptFluidWorks = () => {
                   <h4 className="text-xl font-semibold mb-2 text-primary">2. Seamless Orchestration</h4>
                   <p className="text-muted-foreground leading-relaxed">
                     Instead of juggling multiple disconnected AI platforms, PromptFluid orchestrates intelligence across 
-                    specialized providers. Cascade routes reasoning tasks to Groq's lightning-fast inference, creative 
-                    synthesis to OpenAI, ethical structure to Anthropic, and research queries to Perplexity—all 
-                    transparently and automatically. You interact with one system; Cascade handles the complexity.
+135:                     specialized providers. Cascade routes tasks through Groq's lightning-fast inference, Together AI for 
+136:                     complex reasoning, Hyperbolic for creative tasks, DeepSeek for technical analysis, and Cerebras for 
+137:                     high-throughput operations—all transparently and automatically. You interact with one system; Cascade handles the complexity.
                   </p>
                 </div>
 
