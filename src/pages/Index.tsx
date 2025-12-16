@@ -90,7 +90,7 @@ export default function Index() {
       tagline: "AI Gateway",
       description: "Unified API gateway routing to Groq, Cerebras, Together AI, DeepSeek, and Hyperbolic. Smart provider selection with automatic failover—100% free-tier.",
       href: "/products/nexus",
-      features: ["Multi-provider Support", "Smart Caching", "Cost Optimization"],
+      features: ["Multi-provider Support", "Smart Caching", "Zero-Cost Operation"],
       status: "Active"
     },
     {

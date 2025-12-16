@@ -136,7 +136,7 @@ const PromptFluidNexus = () => {
               This separation of concerns enables both systems to excel at their specializations. Cascade focuses on intelligence and learning. Nexus focuses on operational reliability and performance. Together, they create an AI infrastructure that's both smart and robust.
             </p>
 
-            <h2 className="text-3xl font-bold mb-4 mt-12">Cost Optimization Through Caching</h2>
+            <h2 className="text-3xl font-bold mb-4 mt-12">Efficiency Through Intelligent Caching</h2>
 
             <div className="bg-card border border-border rounded-lg p-8 my-8">
               <div className="grid md:grid-cols-3 gap-6 text-center">

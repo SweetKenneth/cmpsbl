@@ -111,9 +111,9 @@ const PromptFluidVision = () => {
               </div>
 
               <div className="bg-gradient-to-r from-accent/10 to-transparent border-l-4 border-accent p-6 rounded-r-lg">
-                <h3 className="text-2xl font-bold mb-3">Cost Optimization Dashboard</h3>
+                <h3 className="text-2xl font-bold mb-3">Usage & Efficiency Dashboard</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  Vision breaks down AI spending by provider, task type, and time period. Identify which operations consume the most tokens, compare costs across similar workflows, and spot opportunities for optimization. Brain's learning recommendations appear here, suggesting routing changes that could reduce costs without quality degradation.
+                  Vision tracks AI usage across free-tier providers by task type and time period. Monitor which operations consume the most tokens, compare efficiency across similar workflows, and ensure optimal provider distribution. Brain's learning recommendations appear here, suggesting routing changes that improve quality and response times while maintaining zero-cost operation.
                 </p>
               </div>
 
@@ -190,14 +190,14 @@ const PromptFluidVision = () => {
               <div className="border-l-4 border-muted-foreground/30 pl-6">
                 <h3 className="text-xl font-bold mb-2">Custom Dashboard Builder (Q3 2025)</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  Create personalized views by dragging and dropping widgets, charts, and metrics. Save custom dashboards for different use cases—daily operations, executive reviews, security audits, or cost optimization sessions. Share dashboard templates across teams.
+                  Create personalized views by dragging and dropping widgets, charts, and metrics. Save custom dashboards for different use cases—daily operations, executive reviews, security audits, or efficiency analysis sessions. Share dashboard templates across teams.
                 </p>
               </div>
 
               <div className="border-l-4 border-muted-foreground/30 pl-6">
                 <h3 className="text-xl font-bold mb-2">AI-Powered Insights & Recommendations (Q3 2025)</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  Vision will leverage Brain to automatically identify optimization opportunities, detect anomalies, and suggest configuration improvements. Natural language query interface lets you ask questions like "Why did API costs increase last week?" and receive detailed, actionable analysis.
+                  Vision will leverage Brain to automatically identify optimization opportunities, detect anomalies, and suggest configuration improvements. Natural language query interface lets you ask questions like "Which provider is fastest for reasoning tasks?" and receive detailed, actionable analysis.
                 </p>
               </div>
 

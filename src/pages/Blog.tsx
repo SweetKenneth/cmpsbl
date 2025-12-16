@@ -180,7 +180,7 @@ export default function Blog() {
     },
     {
       title: "PromptFluid Nexus: API Gateway Architecture",
-      excerpt: "Unified gateway routing to multiple AI providers with smart caching, cost optimization, and automatic provider selection.",
+      excerpt: "Unified gateway routing to multiple free-tier AI providers with smart caching, zero-cost operation, and automatic provider selection.",
       href: "/blog/promptfluid-nexus-api-gateway",
       category: "Technology",
       date: "2024-12-13",

@@ -221,12 +221,12 @@ const AIProductComparison2025 = () => {
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-3">PromptFluid Orchestration</h4>
+                <h4 className="font-semibold mb-3">PromptFluid Free-Tier Network</h4>
                 <ul className="space-y-2 text-sm">
-                  <li>Cost: $0.018 per request average (40% savings)</li>
-                  <li>Response time: 1.5-3 seconds</li>
+                  <li>Cost: $0.00 per request (100% free)</li>
+                  <li>Response time: 0.5-2 seconds (Groq LPU)</li>
                   <li>Accuracy: 91% resolution rate</li>
-                  <li>Downtime impact: &lt;5% (automatic failover)</li>
+                  <li>Downtime impact: &lt;1% (6-provider failover)</li>
                 </ul>
               </div>
             </div>
@@ -245,10 +245,10 @@ const AIProductComparison2025 = () => {
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-3">PromptFluid Orchestration</h4>
+                <h4 className="font-semibold mb-3">PromptFluid Free-Tier Network</h4>
                 <ul className="space-y-2 text-sm">
-                  <li>Cost: $0.09 per article (25% savings)</li>
-                  <li>Generation time: 38 seconds</li>
+                  <li>Cost: $0.00 per article (100% free)</li>
+                  <li>Generation time: 30 seconds</li>
                   <li>Editorial quality: 88% publish-ready</li>
                   <li>Creative variance: High (multi-model synthesis)</li>
                 </ul>
@@ -269,10 +269,10 @@ const AIProductComparison2025 = () => {
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-3">PromptFluid Orchestration</h4>
+                <h4 className="font-semibold mb-3">PromptFluid Free-Tier Network</h4>
                 <ul className="space-y-2 text-sm">
-                  <li>Cost: $0.06 per analysis (25% savings)</li>
-                  <li>Processing time: 9 seconds</li>
+                  <li>Cost: $0.00 per analysis (100% free)</li>
+                  <li>Processing time: 8 seconds</li>
                   <li>Insight accuracy: 89%</li>
                   <li>Integration effort: Low (universal API)</li>
                 </ul>
