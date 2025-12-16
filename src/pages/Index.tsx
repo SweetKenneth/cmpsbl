@@ -185,7 +185,7 @@ export default function Index() {
           },
           "numberOfEmployees": {
             "@type": "QuantitativeValue",
-            "value": "10"
+            "value": "1"
           },
           "knowsAbout": [
             "Artificial Intelligence",

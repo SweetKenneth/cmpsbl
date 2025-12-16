@@ -177,10 +177,10 @@ export default function DefenseProduct() {
   ];
 
   const stats = [
-    { label: "Threats Blocked", value: "1.2M+", icon: Shield },
-    { label: "Active Installs", value: "2.5K+", icon: Download },
+    { label: "Threats Blocked", value: "47K+", icon: Shield },
+    { label: "Status", value: "Live", icon: Download },
     { label: "Detection Accuracy", value: "99.2%", icon: Activity },
-    { label: "Average Rating", value: "4.9/5", icon: Star }
+    { label: "Target Rating", value: "4.9/5", icon: Star }
   ];
 
   return (
