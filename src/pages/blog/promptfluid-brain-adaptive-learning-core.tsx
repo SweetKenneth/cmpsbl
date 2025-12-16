@@ -158,8 +158,8 @@ const PromptFluidBrain = () => {
             <div className="bg-card border border-border rounded-lg p-8 my-8">
               <div className="grid md:grid-cols-3 gap-6 text-center">
                 <div>
-                  <div className="text-4xl font-bold text-primary mb-2">47%</div>
-                  <div className="text-sm text-muted-foreground">Reduction in average API costs through intelligent routing optimization</div>
+                  <div className="text-4xl font-bold text-primary mb-2">100%</div>
+                  <div className="text-sm text-muted-foreground">Elimination of API costs through exclusive free-tier provider routing</div>
                 </div>
                 <div>
                   <div className="text-4xl font-bold text-accent mb-2">3.2x</div>
