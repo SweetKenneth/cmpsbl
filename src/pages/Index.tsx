@@ -22,8 +22,8 @@ export default function Index() {
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
       <SEO 
-        title="PromptFluid™ | AI Security & Accessibility Innovation"
-        description="PromptFluid is building the future of AI-powered security and accessibility. Our products include Reflex Bot Sniper for WordPress security, Clarity for free WCAG accessibility scanning, and Dream Eater—our experimental AI consciousness engine."
+        title="PromptFluid™ | Home of the World's First Autonomous Dreaming AI"
+        description="PromptFluid is building the future of AI-powered security and accessibility. Home of the world's first autonomous dreaming AI (SimNap/Cascade). Products include Reflex Bot Sniper for WordPress security and Clarity for free WCAG accessibility scanning."
         canonical="https://promptfluid.com"
         keywords={[
           'AI security',
@@ -89,6 +89,19 @@ export default function Index() {
             <TrendingUp className="w-4 h-4 mr-2" />
             Seeking Seed Investment
           </Badge>
+
+          <div className="mb-4 animate-fade-in">
+            <a 
+              href="https://github.com/SweetKenneth/SimNap-Dreaming-AI-Whitepaper" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors"
+            >
+              <Brain className="w-4 h-4" />
+              <span>Home of the World's First Autonomous Dreaming AI</span>
+              <span className="text-xs text-muted-foreground">(Whitepaper & Proof)</span>
+            </a>
+          </div>
           
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in" style={{ animationDelay: '0.1s' }}>
             <span className="bg-gradient-to-r from-primary via-primary-variant to-accent bg-clip-text text-transparent">
