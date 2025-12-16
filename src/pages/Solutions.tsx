@@ -151,11 +151,11 @@ export default function Solutions() {
       icon: Brain,
       name: "PromptFluid Brain",
       tagline: "Intelligent System Orchestration",
-      description: "Central AI engine that coordinates between all modules, learns from usage patterns, and auto-optimizes performance. Integrates with Groq, Anthropic, Perplexity, and DeepSeek for multi-model intelligence and adaptive decision-making.",
+      description: "Central AI engine that coordinates between all modules, learns from usage patterns, and auto-optimizes performance. Routes through Groq, Cerebras, Together AI, DeepSeek, and Hyperbolic—all free-tier providers.",
       features: [
-        "Multi-AI orchestration (Groq, Anthropic, Perplexity)",
+        "Multi-AI orchestration (6 free-tier providers)",
         "Adaptive learning from system behavior",
-        "Automatic cost optimization across AI providers",
+        "Zero-cost AI operations",
         "Predictive threat analysis and mitigation",
         "Performance optimization recommendations",
         "Smart routing and load balancing"

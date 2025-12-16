@@ -126,10 +126,10 @@ export default function Documentation() {
             <h2 className="text-2xl font-bold mb-4">Integrations</h2>
             <div className="grid gap-4">
               {[
-                { name: "Groq", desc: "Fast reasoning and logic processing" },
-                { name: "OpenAI", desc: "Creation and synthesis tasks" },
-                { name: "Anthropic", desc: "Ethics and structured analysis" },
-                { name: "Lovable AI", desc: "Gemini & GPT unified gateway" },
+                { name: "Groq", desc: "Primary inference with Llama 3.3-70B" },
+                { name: "Cerebras", desc: "High-performance secondary fallback" },
+                { name: "Together AI", desc: "Llama 3.1-70B turbo for complex tasks" },
+                { name: "DeepSeek", desc: "Extended coverage and redundancy" },
               ].map((integration) => (
                 <div key={integration.name} className="p-4 border rounded-lg">
                   <h4 className="font-semibold">{integration.name}</h4>

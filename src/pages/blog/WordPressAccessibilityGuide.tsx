@@ -313,7 +313,7 @@ export default function ClarityPillarPost() {
                   </li>
                   <li className="flex items-start gap-2">
                     <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <span>First to use multi-model AI (Groq + OpenAI + Anthropic) for accessibility</span>
+                    <span>First to use multi-model AI (Groq + Cerebras + Together AI) for accessibility</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />

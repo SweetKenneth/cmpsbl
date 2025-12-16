@@ -88,7 +88,7 @@ export default function Index() {
       icon: Globe,
       title: "PromptFluid Nexus",
       tagline: "AI Gateway",
-      description: "Unified API gateway routing to OpenAI, Anthropic, Groq, and more. Smart provider selection, caching, and cost optimization.",
+      description: "Unified API gateway routing to Groq, Cerebras, Together AI, DeepSeek, and Hyperbolic. Smart provider selection with automatic failover—100% free-tier.",
       href: "/products/nexus",
       features: ["Multi-provider Support", "Smart Caching", "Cost Optimization"],
       status: "Active"

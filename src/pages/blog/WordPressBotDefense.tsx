@@ -844,7 +844,7 @@ const WordPressBotDefense = () => {
               <Card className="p-6 text-center">
                 <Brain className="h-12 w-12 text-primary mx-auto mb-3" />
                 <h4 className="font-bold mb-2">AI-First, Not AI-Washed</h4>
-                <p className="text-sm text-muted-foreground">Real machine learning models (Groq, OpenAI, Anthropic) analyzing behavior, not just "smart rules" renamed as AI</p>
+                <p className="text-sm text-muted-foreground">Real machine learning models (Groq, Cerebras, Together AI) analyzing behavior, not just "smart rules" renamed as AI</p>
               </Card>
               <Card className="p-6 text-center">
                 <Shield className="h-12 w-12 text-primary mx-auto mb-3" />
@@ -890,35 +890,35 @@ const WordPressBotDefense = () => {
               </Card>
 
               <Card className="p-6 bg-primary/5">
-                <h4 className="text-xl font-bold mb-3">The AI Triad Architecture</h4>
+                <h4 className="text-xl font-bold mb-3">The Free-Tier Provider Architecture</h4>
                 <p className="mb-4">
-                  Instead of relying on a single AI provider, PromptFluid uses <strong>three specialized AI engines simultaneously</strong>:
+                  Instead of relying on expensive paid APIs, PromptFluid uses <strong>free-tier AI providers</strong> for zero-cost operation:
                 </p>
                 <div className="space-y-3">
                   <div className="flex gap-3">
                     <div className="bg-primary text-primary-foreground rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0 font-bold">G</div>
                     <div>
-                      <h5 className="font-bold">Groq → Reasoning & Logic</h5>
-                      <p className="text-sm text-muted-foreground">Ultra-fast inference for real-time decision making. Analyzes behavioral patterns and fingerprint inconsistencies.</p>
+                      <h5 className="font-bold">Groq → Primary Inference</h5>
+                      <p className="text-sm text-muted-foreground">Ultra-fast Llama 3.3-70B inference for real-time decision making. Analyzes behavioral patterns and fingerprint inconsistencies.</p>
                     </div>
                   </div>
                   <div className="flex gap-3">
-                    <div className="bg-primary text-primary-foreground rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0 font-bold">O</div>
+                    <div className="bg-primary text-primary-foreground rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0 font-bold">C</div>
                     <div>
-                      <h5 className="font-bold">OpenAI → Synthesis & Context</h5>
-                      <p className="text-sm text-muted-foreground">Contextual understanding of attack patterns. Generates human-readable threat reports and adapts challenge mechanisms.</p>
+                      <h5 className="font-bold">Cerebras → High-Performance Fallback</h5>
+                      <p className="text-sm text-muted-foreground">Secondary Llama 3.3-70B provider ensures continuous operation when primary is unavailable.</p>
                     </div>
                   </div>
                   <div className="flex gap-3">
-                    <div className="bg-primary text-primary-foreground rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0 font-bold">A</div>
+                    <div className="bg-primary text-primary-foreground rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0 font-bold">T</div>
                     <div>
-                      <h5 className="font-bold">Anthropic → Ethics & Structure</h5>
-                      <p className="text-sm text-muted-foreground">Ensures false positive minimization. Validates decisions for fairness and prevents bias against legitimate edge-case users.</p>
+                      <h5 className="font-bold">Together AI → Complex Reasoning</h5>
+                      <p className="text-sm text-muted-foreground">Llama 3.1-70B turbo for deeper analysis. Validates decisions and prevents false positives against legitimate users.</p>
                     </div>
                   </div>
                 </div>
                 <p className="text-sm mt-4 p-3 bg-background rounded">
-                  <strong>Real-world impact:</strong> Using multiple AI models creates redundancy and catches edge cases that any single model might miss. When Groq flags suspicious behavior, Anthropic validates to prevent false positives.
+                  <strong>Real-world impact:</strong> Using multiple free-tier AI providers creates redundancy and catches edge cases that any single model might miss—all at $0 operational cost.
                 </p>
               </Card>
 

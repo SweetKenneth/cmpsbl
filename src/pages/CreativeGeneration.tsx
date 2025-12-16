@@ -68,7 +68,7 @@ const CreativeGeneration = () => {
             <CardHeader>
               <CardTitle>Text Generation</CardTitle>
               <CardDescription>
-                Powered by Groq, OpenAI, and Anthropic with smart routing
+                Powered by Groq, Cerebras, and Together AI with smart routing
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">

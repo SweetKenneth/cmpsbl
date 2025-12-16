@@ -218,22 +218,22 @@ export default function AutomatedAccessibilityFixes() {
                   <div className="flex items-start gap-3">
                     <Brain className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                     <div>
-                      <strong className="block mb-1">OpenAI (Creativity Layer)</strong>
-                      <span className="text-muted-foreground">Generates natural, contextual alt text and descriptions</span>
+                      <strong className="block mb-1">Cerebras (Fallback Layer)</strong>
+                      <span className="text-muted-foreground">High-performance secondary inference for reliability</span>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <Brain className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                     <div>
-                      <strong className="block mb-1">Anthropic (Logic Layer)</strong>
+                      <strong className="block mb-1">Together AI (Reasoning Layer)</strong>
                       <span className="text-muted-foreground">Validates fixes for correctness and WCAG compliance</span>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <Brain className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                     <div>
-                      <strong className="block mb-1">Perplexity (Research Layer)</strong>
-                      <span className="text-muted-foreground">Provides grounded context from current accessibility guidelines</span>
+                      <strong className="block mb-1">DeepSeek (Extended Coverage)</strong>
+                      <span className="text-muted-foreground">Additional redundancy for continuous operation</span>
                     </div>
                   </div>
                 </div>

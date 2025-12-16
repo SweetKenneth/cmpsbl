@@ -24,13 +24,13 @@ export async function routeToBestModel(request: AIRequest): Promise<ModelExecuto
   // Model selection logic based on use case
   switch (type) {
     case 'research':
-      return getPerplexityExecutor();
+      return getTogetherExecutor();
     
     case 'reasoning':
       return getGroqExecutor();
     
     case 'refinement':
-      return getAnthropicExecutor();
+      return getCerebrasExecutor();
     
     case 'generation':
       return getGroqExecutor();
@@ -40,17 +40,17 @@ export async function routeToBestModel(request: AIRequest): Promise<ModelExecuto
   }
 }
 
-function getPerplexityExecutor(): ModelExecutor {
+function getTogetherExecutor(): ModelExecutor {
   return {
-    model: 'perplexity/sonar',
+    model: 'together/llama-3.1-70b-turbo',
     execute: async (prompt: string, context?: Record<string, any>) => {
-      // Perplexity integration for research-heavy tasks
-      // In production, this would call the Perplexity API
+      // Together AI for complex reasoning tasks
+      // In production, this would call via pf-nexus-router
       return {
         success: true,
-        content: `[Perplexity Response] ${prompt}`,
+        content: `[Together AI Response] ${prompt}`,
         confidence: 0.9,
-        metadata: { source: 'perplexity' },
+        metadata: { source: 'together' },
       };
     },
   };
@@ -58,10 +58,10 @@ function getPerplexityExecutor(): ModelExecutor {
 
 function getGroqExecutor(): ModelExecutor {
   return {
-    model: 'groq/llama-3.1',
+    model: 'groq/llama-3.3-70b',
     execute: async (prompt: string, context?: Record<string, any>) => {
-      // Groq integration for fast reasoning
-      // In production, this would call via Supabase Edge Function
+      // Groq for fast inference (primary provider)
+      // In production, this would call via pf-nexus-router
       return {
         success: true,
         content: `[Groq Response] ${prompt}`,
@@ -72,17 +72,17 @@ function getGroqExecutor(): ModelExecutor {
   };
 }
 
-function getAnthropicExecutor(): ModelExecutor {
+function getCerebrasExecutor(): ModelExecutor {
   return {
-    model: 'anthropic/claude-sonnet',
+    model: 'cerebras/llama-3.3-70b',
     execute: async (prompt: string, context?: Record<string, any>) => {
-      // Anthropic integration for refinement
-      // In production, this would call via Supabase Edge Function
+      // Cerebras for refinement (secondary provider)
+      // In production, this would call via pf-nexus-router
       return {
         success: true,
-        content: `[Anthropic Response] ${prompt}`,
+        content: `[Cerebras Response] ${prompt}`,
         confidence: 0.95,
-        metadata: { source: 'anthropic' },
+        metadata: { source: 'cerebras' },
       };
     },
   };
