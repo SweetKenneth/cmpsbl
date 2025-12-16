@@ -13,37 +13,37 @@ export default function Roadmap() {
       items: [
         {
           icon: Shield,
-          title: "PromptFluid Defense - WordPress Plugin",
-          description: "AI-powered bot detection and threat intelligence for WordPress. Advanced behavioral analysis, adaptive CAPTCHA, and real-time threat blocking. Launching on WordPress.org.",
-          status: "Launch Ready",
+          title: "PromptFluid Reflex (Bot Sniper) - WordPress Plugin",
+          description: "AI-powered bot detection and threat intelligence for WordPress. Behavioral analysis, adaptive CAPTCHA, and real-time threat blocking. Currently pending WordPress.org approval.",
+          status: "Pending Approval",
           technologies: ["Machine Learning", "Behavioral Analysis", "Fingerprinting", "PHP", "React"]
         },
         {
           icon: Brain,
-          title: "Autonomous Learning Engine",
-          description: "Self-improving AI that learns from every interaction. Adapts security patterns, optimizes performance, and predicts threats before they materialize.",
-          status: "Active Development",
-          technologies: ["Neural Networks", "Vector Embeddings", "Reinforcement Learning"]
+          title: "Dream Eater - Experimental AI",
+          description: "Experimental AI system exploring autonomous dream cycles and self-reflection concepts. Early stage research and development.",
+          status: "Experimental",
+          technologies: ["AI Orchestration", "Scheduled Tasks", "Pattern Recognition"]
         }
       ]
     },
     {
       period: "Q2 2025",
-      status: "Planned",
+      status: "In Progress",
       items: [
-        {
-          icon: Zap,
-          title: "Rapid Application Builder",
-          description: "Transform ideas into production applications in minutes. AI-assisted development with automatic security, optimization, and deployment built-in.",
-          status: "Design Phase",
-          technologies: ["React", "Next.js", "AI Code Generation", "Vercel Edge"]
-        },
         {
           icon: Accessibility,
           title: "Clarity Accessibility Suite",
-          description: "100% free WCAG compliance scanning and AI-powered fixes. Already live at clarity.promptfluid.com with WordPress plugin.",
+          description: "100% free WCAG compliance scanning and AI-powered fixes. Live at clarity.promptfluid.com — accessibility should never be behind a paywall.",
           status: "Live",
           technologies: ["Computer Vision", "NLP", "WCAG 2.2", "ARIA"]
+        },
+        {
+          icon: Zap,
+          title: "AI Provider Network",
+          description: "Intelligent routing across free-tier AI providers (Groq, Cerebras, Together AI, DeepSeek, Hyperbolic, Google AI Studio) for zero-cost AI operations.",
+          status: "Active Development",
+          technologies: ["API Gateway", "Load Balancing", "Free-tier Optimization"]
         }
       ]
     },
@@ -91,13 +91,14 @@ export default function Roadmap() {
 
   const statusColors = {
     "Live": "text-emerald-500 bg-emerald-500/10 border-emerald-500/20",
-    "Launch Ready": "text-green-500 bg-green-500/10 border-green-500/20",
+    "Pending Approval": "text-amber-500 bg-amber-500/10 border-amber-500/20",
     "Active Development": "text-blue-500 bg-blue-500/10 border-blue-500/20",
     "Design Phase": "text-purple-500 bg-purple-500/10 border-purple-500/20",
     "Research": "text-orange-500 bg-orange-500/10 border-orange-500/20",
     "Concept": "text-yellow-500 bg-yellow-500/10 border-yellow-500/20",
     "Planning": "text-cyan-500 bg-cyan-500/10 border-cyan-500/20",
-    "Roadmap": "text-pink-500 bg-pink-500/10 border-pink-500/20"
+    "Roadmap": "text-pink-500 bg-pink-500/10 border-pink-500/20",
+    "Experimental": "text-purple-400 bg-purple-400/10 border-purple-400/20"
   };
 
   return (
