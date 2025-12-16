@@ -303,7 +303,7 @@ const AIAutomationTrends2025 = () => {
               <div>
                 <h3 className="text-2xl font-bold mb-3">Ready to Automate Intelligently?</h3>
                 <p className="mb-4">
-                  PromptFluid brings together multi-agent orchestration, adaptive learning, security-first architecture, and cost optimization in a unified platform designed for the automation future.
+                  PromptFluid brings together multi-agent orchestration, adaptive learning, security-first architecture, and zero-cost AI operation in a unified platform designed for the automation future.
                 </p>
                 <p className="text-muted-foreground">
                   Explore how adaptive intelligence can transform your operations without the complexity and risk of building custom AI infrastructure.

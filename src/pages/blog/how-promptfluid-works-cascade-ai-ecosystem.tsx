@@ -433,7 +433,7 @@ const HowPromptFluidWorks = () => {
               </p>
               <p className="text-muted-foreground leading-relaxed">
                 Vision provides complete visibility into your PromptFluid ecosystem. Monitor Brain activity in real-time, 
-                review learning patterns, analyze API usage across the Triad, and control all platform modules from a 
+                review learning patterns, analyze API usage across the free-tier provider network, and control all platform modules from a 
                 single interface. Vision transforms raw operational data into actionable insights, showing you exactly 
                 how your AI infrastructure performs and where optimizations can be made.
               </p>
@@ -622,9 +622,9 @@ const HowPromptFluidWorks = () => {
             </div>
 
             <p className="text-lg leading-relaxed">
-              The beauty of the Triad is that you never need to think about which provider to use—Cascade makes these 
-              decisions automatically based on task analysis, current API availability, cost optimization, and historical 
-              performance data. The result is intelligent routing that maximizes quality while minimizing costs, all 
+              The beauty of the free-tier provider network is that you never need to think about which provider to use—Cascade makes these 
+              decisions automatically based on task analysis, current API availability, performance optimization, and historical 
+              performance data. The result is intelligent routing that maximizes quality at zero cost, all 
               happening transparently behind the scenes.
             </p>
           </section>

@@ -107,12 +107,12 @@ const ProductRoadmap2025 = () => {
                     <span>Status: Internal Testing (March 2025)</span>
                   </div>
                   <p className="mb-3">
-                    Intelligent routing layer that distributes AI tasks across Groq, Together, Hyperbolic, DeepSeek, Cerebras, and other free-tier providers based on performance and cost optimization.
+                    Intelligent routing layer that distributes AI tasks across Groq, Together, Hyperbolic, DeepSeek, Cerebras, and other free-tier providers based on performance and zero-cost operation.
                   </p>
                   <h4 className="font-semibold text-sm mb-2">Key Features:</h4>
                   <ul className="space-y-1 text-sm">
                     <li>Dynamic provider selection with automatic failover</li>
-                    <li>Real-time cost tracking and optimization</li>
+                    <li>Real-time usage tracking and efficiency metrics</li>
                     <li>Response caching and deduplication</li>
                     <li>Performance monitoring and analytics</li>
                     <li>Custom routing rules per use case</li>
@@ -274,7 +274,7 @@ const ProductRoadmap2025 = () => {
                     <li>Video generation and editing</li>
                     <li>Brand consistency enforcement</li>
                     <li>Asset library with AI tagging</li>
-                    <li>Cost optimization across providers</li>
+                    <li>Zero-cost operation across providers</li>
                   </ul>
                 </div>
               </div>
@@ -321,12 +321,12 @@ const ProductRoadmap2025 = () => {
                     <span>Estimated: October 2025</span>
                   </div>
                   <p className="mb-3">
-                    Centralized command center providing visibility into all PromptFluid services, usage analytics, cost optimization, and system health monitoring.
+                    Centralized command center providing visibility into all PromptFluid services, usage analytics, efficiency monitoring, and system health monitoring.
                   </p>
                   <h4 className="font-semibold text-sm mb-2">Planned Features:</h4>
                   <ul className="space-y-1 text-sm">
                     <li>Real-time system telemetry and alerts</li>
-                    <li>Cost analysis and budget forecasting</li>
+                    <li>Usage analysis and efficiency reporting</li>
                     <li>Team collaboration and permissions</li>
                     <li>Audit logging and compliance reporting</li>
                     <li>Custom dashboards and widgets</li>
