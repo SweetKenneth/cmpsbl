@@ -144,7 +144,7 @@ export default function Contact() {
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
-                    <span className="text-muted-foreground">Technical documentation: <a href="https://docs.promptfluid.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">docs.promptfluid.com</a></span>
+                    <span className="text-muted-foreground">Technical documentation: Available on request</span>
                   </li>
                 </ul>
               </div>
