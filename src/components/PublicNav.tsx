@@ -28,7 +28,7 @@ export function PublicNav() {
     "PromptFluid Technology": [
       { name: "How PromptFluid Works", href: "/blog/how-promptfluid-works-cascade-ai-ecosystem" },
       { name: "Cascade AI Intelligence", href: "/blog/cascade-ai-adaptive-intelligence-brain" },
-      { name: "AI Triad Routing Explained", href: "/blog/ai-triad-intelligent-routing" },
+      { name: "Free-Tier Provider Network", href: "/blog/ai-triad-intelligent-routing" },
     ],
     "Product Deep Dives": [
       { name: "PromptFluid Brain Guide", href: "/blog/promptfluid-brain-adaptive-learning-core" },

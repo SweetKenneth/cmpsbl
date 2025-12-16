@@ -545,13 +545,13 @@ const HowPromptFluidWorks = () => {
             </div>
           </section>
 
-          {/* Section 4: The AI Triad */}
+          {/* Section 4: Free-Tier Provider Network */}
           <section className="mb-16">
-            <h2 className="text-4xl font-bold mb-6 text-foreground">The AI Triad: Intelligent Provider Orchestration</h2>
+            <h2 className="text-4xl font-bold mb-6 text-foreground">Free-Tier Provider Network: Intelligent Provider Orchestration</h2>
             
             <p className="text-lg leading-relaxed mb-6">
               One of Cascade AI's most powerful capabilities is orchestrating multiple specialized AI providers through 
-              what we call <Link to="/blog/ai-triad-intelligent-routing" className="text-primary hover:underline">the AI Triad</Link>. 
+              <Link to="/blog/ai-triad-intelligent-routing" className="text-primary hover:underline">the free-tier provider network</Link>. 
               Rather than forcing all tasks through a single model, Cascade intelligently routes requests based on the 
               nature of the work, cost considerations, and performance requirements.
             </p>

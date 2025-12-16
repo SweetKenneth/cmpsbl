@@ -56,7 +56,7 @@ const PromptFluidNexus = () => {
               PromptFluid Nexus: The AI Orchestration Gateway
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Explore Nexus, the intelligent API gateway that routes AI tasks to optimal providers, manages caching strategies, and orchestrates the AI Triad for maximum performance and cost efficiency.
+              Explore Nexus, the intelligent API gateway that routes AI tasks to optimal free-tier providers, manages caching strategies, and orchestrates the provider network for maximum performance at zero cost.
             </p>
           </header>
 
