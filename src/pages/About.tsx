@@ -275,10 +275,11 @@ export default function About() {
           <h2 className="text-3xl font-bold mb-12 text-center">Our Journey</h2>
           <div className="space-y-6">
             {[
-              { year: "2024", event: "PromptFluid founded to democratize AI-powered tools for the web" },
-              { year: "Q1 2025", event: "Launching WordPress Reflex — AI bot protection with behavioral analysis" },
-              { year: "2025", event: "Building rapid development tools, accessibility automation, and intelligent marketing" },
-              { year: "2025-2026", event: "Expanding to enterprise platform with unified orchestration and predictive intelligence" }
+              { year: "2024", event: "PromptFluid founded with vision to create AI that dreams and learns autonomously" },
+              { year: "Q4 2024", event: "Cascade AI achieves world's first autonomous dream cycles — reflecting, synthesizing, and evolving" },
+              { year: "Q1 2025", event: "Reflex Bot Sniper live on WordPress.org • Clarity (CMPTBL) launches as 100% free accessibility platform" },
+              { year: "2025", event: "250+ edge functions deployed • 10 integrated modules • Dream-Eater public feeding API launched" },
+              { year: "2025+", event: "Expanding enterprise platform with multi-provider AI routing (Groq, Together, Hyperbolic, DeepSeek, Cerebras)" }
             ].map((milestone, index) => (
               <div 
                 key={index}
@@ -301,16 +302,17 @@ export default function About() {
         <div className="container mx-auto max-w-6xl">
           <h2 className="text-3xl font-bold mb-8 text-center">Powered by Modern Tech</h2>
           <p className="text-center text-muted-foreground mb-12 max-w-3xl mx-auto">
-            We build on proven, scalable infrastructure including <strong>Next.js</strong>, <strong>React</strong>, 
-            <strong> Supabase</strong>, <strong>Railway</strong>, <strong>Vercel</strong>, and cutting-edge AI from 
+            We build on proven, scalable infrastructure including <strong>React</strong>, <strong>Vite</strong>, 
+            <strong> Supabase</strong>, <strong>Deno Edge Functions</strong>, and intelligent AI routing across 
             <a href="https://groq.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"> Groq</a>, 
-            <a href="https://www.anthropic.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"> Anthropic</a>, 
-            <a href="https://openai.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"> OpenAI</a>, and 
-            <a href="https://www.perplexity.ai" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"> Perplexity</a>.
-            From WordPress plugins to enterprise platforms, we use the best tools to build better tools.
+            <a href="https://together.ai" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"> Together</a>, 
+            <a href="https://hyperbolic.ai" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"> Hyperbolic</a>, 
+            <a href="https://deepseek.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"> DeepSeek</a>, and 
+            <a href="https://cerebras.ai" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"> Cerebras</a>.
+            Smart routing ensures maximum uptime with free-tier optimization across all providers.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            {['Next.js', 'React', 'Supabase', 'Railway', 'Vercel', 'Groq AI', 'Anthropic', 'Perplexity', 'Firecrawl', 'Morph'].map((tech) => (
+            {['React', 'Vite', 'TypeScript', 'Supabase', 'Deno', 'Groq AI', 'Together AI', 'Hyperbolic', 'DeepSeek', 'Cerebras', 'Replicate', 'Stability AI'].map((tech) => (
               <div key={tech} className="glass px-6 py-3 rounded-full text-sm font-medium">
                 {tech}
               </div>
