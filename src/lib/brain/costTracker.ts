@@ -7,17 +7,18 @@ import { supabase } from '@/integrations/supabase/client';
 
 export interface ModelCost {
   model: string;
-  provider: 'groq' | 'anthropic' | 'openai' | 'lovable';
+  provider: 'groq' | 'cerebras' | 'together' | 'deepseek' | 'hyperbolic';
   costPerToken: number;
   avgLatency: number;
   successRate: number;
 }
 
 export const MODEL_COSTS: ModelCost[] = [
-  { model: 'lovable/gemini-2.5-flash', provider: 'lovable', costPerToken: 0.0000005, avgLatency: 300, successRate: 0.98 },
-  { model: 'groq/llama-3.1-70b', provider: 'groq', costPerToken: 0.00000059, avgLatency: 200, successRate: 0.95 },
-  { model: 'anthropic/claude-sonnet-4', provider: 'anthropic', costPerToken: 0.000003, avgLatency: 800, successRate: 0.99 },
-  { model: 'openai/gpt-4o', provider: 'openai', costPerToken: 0.0000025, avgLatency: 600, successRate: 0.97 },
+  { model: 'groq/llama-3.3-70b', provider: 'groq', costPerToken: 0, avgLatency: 150, successRate: 0.98 },
+  { model: 'cerebras/llama-3.3-70b', provider: 'cerebras', costPerToken: 0, avgLatency: 200, successRate: 0.96 },
+  { model: 'together/llama-3.1-70b-turbo', provider: 'together', costPerToken: 0, avgLatency: 250, successRate: 0.95 },
+  { model: 'deepseek/deepseek-chat', provider: 'deepseek', costPerToken: 0, avgLatency: 300, successRate: 0.94 },
+  { model: 'hyperbolic/llama-3.1-70b', provider: 'hyperbolic', costPerToken: 0, avgLatency: 350, successRate: 0.92 },
 ];
 
 /**
@@ -28,13 +29,13 @@ export function getCheapestModel(
   requiresSearch: boolean = false
 ): ModelCost {
   if (requiresSearch) {
-    return MODEL_COSTS.find(m => m.provider === 'lovable') || MODEL_COSTS[0];
+    return MODEL_COSTS.find(m => m.provider === 'together') || MODEL_COSTS[0];
   }
   
   const complexityMap = {
-    low: ['lovable', 'groq'],
-    medium: ['lovable', 'groq', 'openai'],
-    high: ['anthropic', 'openai'],
+    low: ['groq', 'cerebras'],
+    medium: ['groq', 'cerebras', 'together'],
+    high: ['together', 'deepseek', 'hyperbolic'],
   };
   
   const viableProviders = complexityMap[complexity];

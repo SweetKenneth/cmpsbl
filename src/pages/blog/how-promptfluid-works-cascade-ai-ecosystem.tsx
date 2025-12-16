@@ -486,10 +486,10 @@ const HowPromptFluidWorks = () => {
                 <strong>Role:</strong> API Gateway and Orchestration Mesh
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                Nexus is the routing intelligence that connects Cascade to external AI providers. When Cascade determines 
-                that a task should go to Groq, OpenAI, Anthropic, or Perplexity, Nexus handles the actual API calls, 
-                manages rate limits, implements fallback strategies, and caches responses to optimize costs. Nexus is 
-                the invisible infrastructure layer that makes seamless AI orchestration possible.
+                Nexus is the routing intelligence that connects Cascade to free-tier AI providers. When Cascade determines 
+                that a task should go to Groq, Cerebras, Together AI, DeepSeek, or Hyperbolic, Nexus handles the actual API calls, 
+                manages rate limits, implements fallback strategies, and caches responses. Nexus is 
+                the invisible infrastructure layer that makes seamless AI orchestration possible—at zero cost.
               </p>
             </div>
 
@@ -576,48 +576,47 @@ const HowPromptFluidWorks = () => {
               <div className="bg-gradient-to-r from-accent/10 to-transparent border-l-4 border-accent p-6 rounded-r-lg">
                 <h3 className="text-xl font-bold mb-3 flex items-center gap-3">
                   <Sparkles className="w-6 h-6 text-accent" />
-                  OpenAI: Creative Synthesis
+                  Cerebras: High-Performance Fallback
                 </h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  <strong>Specialty:</strong> Creative generation, complex synthesis, nuanced understanding
+                  <strong>Specialty:</strong> Secondary inference, redundancy, load balancing
                 </p>
                 <p className="text-muted-foreground leading-relaxed mt-2">
-                  OpenAI's models excel at creative tasks, complex synthesis, and nuanced language understanding. When 
-                  Cascade needs to generate compelling content, solve open-ended problems, or handle ambiguous requests, 
-                  OpenAI becomes the primary provider. Their models bring creativity and flexibility to PromptFluid's 
-                  capabilities, especially in Studio's application building and content generation workflows.
+                  Cerebras provides Llama 3.3-70B as a high-performance secondary option. When Groq is unavailable or 
+                  rate-limited, Cascade seamlessly routes to Cerebras without any degradation in quality. This ensures 
+                  continuous operation and high availability for PromptFluid's AI capabilities.
                 </p>
               </div>
 
               <div className="bg-gradient-to-r from-primary/10 to-transparent border-l-4 border-primary p-6 rounded-r-lg">
                 <h3 className="text-xl font-bold mb-3 flex items-center gap-3">
                   <Brain className="w-6 h-6 text-primary" />
-                  Anthropic: Ethical Structure
+                  Together AI: Complex Reasoning
                 </h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  <strong>Specialty:</strong> Ethical reasoning, structured thinking, safety-conscious outputs
+                  <strong>Specialty:</strong> Llama 3.1-70B turbo for deep analysis and complex tasks
                 </p>
                 <p className="text-muted-foreground leading-relaxed mt-2">
-                  Anthropic's Claude models bring constitutional AI principles to PromptFluid, ensuring outputs align 
-                  with ethical guidelines and maintain appropriate structure. Cascade routes to Anthropic when tasks 
-                  require careful consideration of implications, well-structured documentation, or adherence to safety 
-                  guidelines. This is particularly important in Defense's threat assessment and Access's policy enforcement.
+                  Together AI's Llama 3.1-70B turbo excels at complex reasoning, multi-step analysis, and tasks requiring 
+                  deeper understanding. Cascade routes to Together AI when tasks require careful consideration of 
+                  implications or well-structured outputs. This is particularly important in Defense's threat assessment 
+                  and Access's policy enforcement.
                 </p>
               </div>
 
               <div className="bg-gradient-to-r from-accent/10 to-transparent border-l-4 border-accent p-6 rounded-r-lg">
                 <h3 className="text-xl font-bold mb-3 flex items-center gap-3">
                   <Network className="w-6 h-6 text-accent" />
-                  Perplexity: Grounded Research
+                  DeepSeek & Hyperbolic: Extended Coverage
                 </h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  <strong>Specialty:</strong> Real-time research, cited information, factual grounding
+                  <strong>Specialty:</strong> Additional redundancy, global availability, cost-free operation
                 </p>
                 <p className="text-muted-foreground leading-relaxed mt-2">
-                  When Cascade needs current information, factual verification, or research-backed context, Perplexity 
-                  provides the grounding layer. Rather than hallucinating information, Perplexity searches and cites 
-                  real sources, ensuring accuracy in research-heavy tasks. This is essential for Studio's technical 
-                  documentation generation and Brain's knowledge base expansion.
+                  DeepSeek (deepseek-chat) and Hyperbolic (Llama 3.1-70B) provide extended coverage and maximum 
+                  redundancy. When primary providers are unavailable, Cascade routes to these providers to ensure 
+                  continuous operation. This multi-layered approach guarantees PromptFluid never experiences AI 
+                  downtime—all while maintaining $0 operational costs.
                 </p>
               </div>
             </div>
@@ -661,8 +660,8 @@ const HowPromptFluidWorks = () => {
                 <p className="text-muted-foreground leading-relaxed mb-4">
                   A marketing team needs to generate blog posts, social media content, and product descriptions 
                   consistently. They provide brand guidelines and target keywords to Cascade through Vision's interface. 
-                  Cascade routes creative writing tasks to OpenAI for engaging narratives, fact-checking claims through 
-                  Perplexity for accuracy, and uses Groq for rapid title and summary generation.
+                  Cascade routes creative writing tasks to Groq for rapid generation, uses Together AI for complex 
+                  narrative structure, and leverages Cerebras for rapid title and summary generation.
                 </p>
                 <p className="text-muted-foreground leading-relaxed">
                   As Brain observes which content performs well (tracked through analytics integrations), it adapts 
@@ -676,7 +675,7 @@ const HowPromptFluidWorks = () => {
                 <p className="text-muted-foreground leading-relaxed mb-4">
                   An online platform experiences suspicious traffic patterns. Defense, powered by Cascade's behavioral 
                   analysis, identifies bot signatures through device fingerprinting and interaction anomalies. Rather 
-                  than simple rule-based blocking, Defense uses Anthropic's reasoning to evaluate threat levels, 
+                  than simple rule-based blocking, Defense uses Together AI's reasoning to evaluate threat levels, 
                   considering context that might indicate legitimate users versus malicious actors.
                 </p>
                 <p className="text-muted-foreground leading-relaxed">
@@ -689,11 +688,10 @@ const HowPromptFluidWorks = () => {
               <div className="bg-card border border-border rounded-lg p-6">
                 <h3 className="text-2xl font-semibold mb-4">Cost-Optimized AI Operations</h3>
                 <p className="text-muted-foreground leading-relaxed mb-4">
-                  A startup needs powerful AI capabilities but has limited budget. Cascade's cost optimization 
-                  automatically routes simple queries to faster, cheaper providers (Groq) while reserving expensive 
-                  models (OpenAI's most advanced) for complex tasks that genuinely require them. Nexus implements 
-                  caching strategies to avoid redundant API calls, and Brain identifies opportunities to batch similar 
-                  requests.
+                  A startup needs powerful AI capabilities but has limited budget. Cascade's zero-cost architecture 
+                  routes all queries through free-tier providers (Groq, Cerebras, Together AI, DeepSeek, Hyperbolic), 
+                  eliminating AI operational costs entirely. Nexus implements caching strategies to avoid redundant API 
+                  calls, and Brain identifies opportunities to batch similar requests.
                 </p>
                 <p className="text-muted-foreground leading-relaxed">
                   Vision's analytics show exactly where AI spending occurs, allowing the startup to make informed 
@@ -936,9 +934,9 @@ const HowPromptFluidWorks = () => {
                 to="/blog/ai-triad-intelligent-routing" 
                 className="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors"
               >
-                <h3 className="text-lg font-semibold mb-2">The AI Triad Explained</h3>
+                <h3 className="text-lg font-semibold mb-2">Free-Tier Provider Network</h3>
                 <p className="text-sm text-muted-foreground">
-                  Learn how Cascade intelligently routes tasks across Groq, OpenAI, Anthropic, and Perplexity for optimal results.
+                  Learn how Cascade intelligently routes tasks across Groq, Cerebras, Together AI, DeepSeek, and Hyperbolic for optimal results at zero cost.
                 </p>
               </Link>
             </div>

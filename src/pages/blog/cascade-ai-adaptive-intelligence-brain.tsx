@@ -213,9 +213,9 @@ const CascadeAIDeepDive = () => {
                 to="/blog/ai-triad-intelligent-routing" 
                 className="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors"
               >
-                <h3 className="text-lg font-semibold mb-2">The AI Triad</h3>
+                <h3 className="text-lg font-semibold mb-2">Free-Tier Provider Network</h3>
                 <p className="text-sm text-muted-foreground">
-                  Learn how Cascade routes tasks intelligently across Groq, OpenAI, Anthropic, and Perplexity.
+                  Learn how Cascade routes tasks intelligently across Groq, Cerebras, Together AI, DeepSeek, and Hyperbolic.
                 </p>
               </Link>
             </div>

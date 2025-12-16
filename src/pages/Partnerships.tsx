@@ -8,9 +8,9 @@ export default function Partnerships() {
     { name: "Railway", status: "active", type: "Infrastructure", integration: "Complete", logo: "🚂" },
     { name: "Supabase", status: "active", type: "Database", integration: "Complete", logo: "⚡" },
     { name: "Groq", status: "active", type: "AI Provider", integration: "Complete", logo: "🧠" },
-    { name: "OpenAI", status: "active", type: "AI Provider", integration: "Complete", logo: "🤖" },
-    { name: "Anthropic", status: "active", type: "AI Provider", integration: "Complete", logo: "🎯" },
-    { name: "Stripe", status: "pending", type: "Payments", integration: "In Progress", logo: "💳" },
+    { name: "Cerebras", status: "active", type: "AI Provider", integration: "Complete", logo: "🤖" },
+    { name: "Together AI", status: "active", type: "AI Provider", integration: "Complete", logo: "🎯" },
+    { name: "DeepSeek", status: "active", type: "AI Provider", integration: "Complete", logo: "💡" },
   ];
 
   const opportunities = [

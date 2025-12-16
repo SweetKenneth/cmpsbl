@@ -65,12 +65,12 @@ const PromptFluidMarketDisruptor = () => {
             The current AI market operates under assumptions that increasingly fail to serve real-world needs. Organizations face a fragmented landscape where no single solution addresses their full requirements, forcing them into complex integrations and vendor dependencies that limit agility and increase costs.
           </p>
 
-          <h3 className="text-2xl font-semibold mt-8 mb-4">Single-Provider Lock-In Creates Risk</h3>
+          <h3 className="text-2xl font-semibold mt-8 mb-4">Paid API Lock-In Creates Risk</h3>
           <p className="mb-4">
-            Most AI implementations hard-code dependencies to a specific provider—OpenAI, Anthropic, or Google. This creates multiple points of failure:
+            Most AI implementations hard-code dependencies to expensive providers—OpenAI, Anthropic, or Google. This creates multiple points of failure:
           </p>
           <ul className="list-disc pl-6 mb-6 space-y-2">
-            <li>Pricing changes directly impact operational costs with no recourse</li>
+            <li>Monthly AI costs can spiral to thousands of dollars</li>
             <li>API outages halt critical business functions completely</li>
             <li>Model limitations become your limitations</li>
             <li>Innovation is constrained by provider roadmap priorities</li>
@@ -135,40 +135,41 @@ const PromptFluidMarketDisruptor = () => {
             PromptFluid's Nexus layer abstracts provider-specific APIs into a unified interface that enables true portability and optimization across the entire AI landscape.
           </p>
 
-          <h3 className="text-2xl font-semibold mt-8 mb-4">The AI Triad: Intelligent Model Selection</h3>
+          <h3 className="text-2xl font-semibold mt-8 mb-4">Free-Tier Provider Network: Zero-Cost AI</h3>
           <p className="mb-4">
-            Rather than forcing users to choose a single provider, PromptFluid routes tasks across multiple specialized models:
+            Rather than forcing users to pay expensive API costs, PromptFluid routes tasks across free-tier providers:
           </p>
           <ul className="list-disc pl-6 mb-6 space-y-2">
-            <li><strong className="text-primary">Groq:</strong> Ultra-fast reasoning for time-sensitive logic processing</li>
-            <li><strong className="text-primary">OpenAI:</strong> Creative synthesis and complex multimodal generation</li>
-            <li><strong className="text-primary">Anthropic:</strong> Ethical reasoning and safety-critical analysis</li>
-            <li><strong className="text-primary">Perplexity:</strong> Grounded research with real-time data integration</li>
+            <li><strong className="text-primary">Groq:</strong> Primary inference with Llama 3.3-70B for ultra-fast processing</li>
+            <li><strong className="text-primary">Cerebras:</strong> High-performance secondary fallback with Llama 3.3-70B</li>
+            <li><strong className="text-primary">Together AI:</strong> Llama 3.1-70B turbo for complex reasoning tasks</li>
+            <li><strong className="text-primary">DeepSeek:</strong> Extended coverage with deepseek-chat</li>
+            <li><strong className="text-primary">Hyperbolic:</strong> Final fallback with Llama 3.1-70B</li>
           </ul>
 
           <p className="mb-6">
-            This approach delivers better results at lower cost because each task flows to the model best suited for it. Organizations stop paying premium pricing for simple tasks while ensuring complex work gets routed to the most capable systems.
+            This approach delivers excellent results at zero cost because each task flows to the optimal free-tier provider. Organizations eliminate AI operational costs entirely while ensuring continuous operation through automatic failover.
           </p>
 
           <Card className="p-6 mb-6 bg-card/50">
-            <h4 className="font-semibold mb-4">Designed for Cost Efficiency</h4>
+            <h4 className="font-semibold mb-4">Designed for Zero Cost</h4>
             <p className="mb-4">
-              PromptFluid's intelligent routing is architected to reduce AI costs by up to 40% compared to single-provider approaches. The platform's multi-model orchestration ensures:
+              PromptFluid's intelligent routing eliminates AI costs entirely through exclusive use of free-tier providers:
             </p>
             <ul className="space-y-2 text-sm">
-              <li>Simple queries → efficient models (GPT-3.5, Claude Haiku)</li>
-              <li>Complex reasoning → premium models only when needed</li>
-              <li>Batch processing → queued for off-peak pricing</li>
-              <li>Redundant requests → served from cache (zero API cost)</li>
+              <li>All queries → free-tier Llama models</li>
+              <li>Complex reasoning → Together AI (free tier)</li>
+              <li>Automatic failover → 6 providers for 99.9% uptime</li>
+              <li>Redundant requests → served from cache (zero API calls)</li>
             </ul>
           </Card>
 
           <h3 className="text-2xl font-semibold mt-8 mb-4">Automatic Failover and Resilience</h3>
           <p className="mb-4">
-            When OpenAI experiences an outage (as happens periodically), applications built on PromptFluid automatically route to alternative providers without service interruption. Users experience no downtime while single-provider applications go completely dark.
+            When any provider experiences an outage, applications built on PromptFluid automatically route to alternative free-tier providers without service interruption. Users experience no downtime while single-provider applications go completely dark.
           </p>
           <p className="mb-6">
-            This resilience isn't just operational—it's strategic. Organizations maintain leverage in vendor negotiations because they aren't dependent on any single provider. Pricing increases or unfavorable terms can be mitigated by shifting load to competitors.
+            This resilience is built into the architecture with 6 free-tier providers. Organizations maintain continuous operation regardless of individual provider status.
           </p>
 
           <h2 className="text-3xl font-bold mt-12 mb-6">Disruption Vector 2: Security as Foundation</h2>
@@ -215,7 +216,7 @@ const PromptFluidMarketDisruptor = () => {
 
           <h3 className="text-2xl font-semibold mt-8 mb-4">Routing Intelligence</h3>
           <p className="mb-4">
-            The Brain tracks which models perform best for different task categories. If Anthropic consistently delivers better results for legal document analysis while OpenAI excels at marketing copy, the routing layer learns these preferences automatically.
+            The Brain tracks which providers perform best for different task categories. If Groq consistently delivers faster results while Together AI excels at complex reasoning, the routing layer learns these preferences automatically.
           </p>
           <p className="mb-6">
             This creates a continuously optimizing system that gets smarter without manual tuning. Organizations benefit from accumulated wisdom rather than starting fresh with each new project or team member.
@@ -234,12 +235,12 @@ const PromptFluidMarketDisruptor = () => {
             Established AI providers face structural constraints that prevent them from matching PromptFluid's approach even if they recognize its advantages.
           </p>
 
-          <h3 className="text-2xl font-semibold mt-8 mb-4">Provider Lock-In Is Their Business Model</h3>
+          <h3 className="text-2xl font-semibold mt-8 mb-4">Paid Providers Want Your Money</h3>
           <p className="mb-4">
-            OpenAI, Anthropic, and Google have no incentive to enable multi-provider orchestration. Their business models depend on locking customers into their specific platforms. Building escape hatches would cannibalize their core revenue.
+            OpenAI, Anthropic, and Google have no incentive to enable free-tier alternatives. Their business models depend on charging per-token pricing. PromptFluid disrupts this by routing exclusively through free-tier providers.
           </p>
           <p className="mb-6">
-            PromptFluid benefits from provider competition rather than being threatened by it. Better performance or pricing from any provider improves the platform for all users.
+            PromptFluid eliminates AI operational costs entirely rather than optimizing them. Organizations keep 100% of what they'd otherwise spend on API fees.
           </p>
 
           <h3 className="text-2xl font-semibold mt-8 mb-4">Security Isn't Their Core Competency</h3>

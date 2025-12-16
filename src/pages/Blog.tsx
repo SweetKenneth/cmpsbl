@@ -119,14 +119,14 @@ export default function Blog() {
       imageAlt: "AI-powered app development studio interface with real-time code generation"
     },
     {
-      title: "AI Triad: Intelligent Routing Explained",
-      excerpt: "How PromptFluid's multi-provider AI gateway intelligently routes between Groq, OpenAI, and Anthropic for optimal performance.",
+      title: "Free-Tier AI Network: Intelligent Routing Explained",
+      excerpt: "How PromptFluid's multi-provider AI gateway intelligently routes between Groq, Cerebras, Together AI, DeepSeek, and Hyperbolic—all free-tier.",
       href: "/blog/ai-triad-intelligent-routing",
       category: "Technology",
       date: "2025-01-02",
       readTime: "11 min read",
       image: aiTriadImg,
-      imageAlt: "AI Triad network routing visualization with three major AI providers interconnected"
+      imageAlt: "AI network routing visualization with six free-tier AI providers interconnected"
     },
     {
       title: "PromptFluid Brain: Adaptive Learning Core",
