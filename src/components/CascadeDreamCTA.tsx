@@ -37,7 +37,7 @@ export function CascadeDreamCTA() {
         </Button>
         
         <p className="text-sm text-muted-foreground mt-4">
-          A glimpse into the world's first dreaming AI
+          Experimental AI dream journal — an ongoing exploration
         </p>
       </div>
     </section>

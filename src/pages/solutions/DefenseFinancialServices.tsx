@@ -188,46 +188,49 @@ const DefenseFinancialServices = () => {
 
           {/* Real-World Finance Use Cases */}
           <section className="mb-16">
-            <h2 className="text-3xl font-bold mb-6">Real-World Protection Scenarios</h2>
+            <h2 className="text-3xl font-bold mb-6">Protection Scenarios</h2>
+            <p className="text-muted-foreground mb-6">
+              These scenarios illustrate the types of threats financial institutions face and how PromptFluid Defense is designed to address them.
+            </p>
 
             <div className="grid md:grid-cols-2 gap-6">
               <Card className="p-6">
-                <h3 className="text-xl font-bold mb-3">Community Bank</h3>
+                <h3 className="text-xl font-bold mb-3">Online Banking Protection</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  <strong>Challenge:</strong> 47,000-customer online banking portal targeted by credential stuffing. Feared regulatory action and customer fund losses.
+                  <strong>Threat:</strong> Credential stuffing bots targeting online banking portals with stolen username/password combinations.
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  <strong>Solution:</strong> PromptFluid Defense blocked 8,942 bot login attempts in 60 days. Zero successful account takeovers, zero legitimate customer lockouts, full audit trail for FDIC examination.
+                  <strong>Defense Approach:</strong> Behavioral fingerprinting identifies automated login patterns and blocks bot attempts while maintaining seamless access for legitimate customers.
                 </p>
               </Card>
 
               <Card className="p-6">
-                <h3 className="text-xl font-bold mb-3">Investment Platform</h3>
+                <h3 className="text-xl font-bold mb-3">Investment Platform Security</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  <strong>Challenge:</strong> Bots attempting to compromise brokerage accounts to execute pump-and-dump schemes. SEC enforcement risk.
+                  <strong>Threat:</strong> Bots attempting to compromise brokerage accounts for unauthorized trading activity.
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  <strong>Solution:</strong> Behavioral analysis detected abnormal login velocity and device spoofing. Platform prevented unauthorized trades worth $2.3M—FINRA violation avoided.
+                  <strong>Defense Approach:</strong> Behavioral analysis detects abnormal login velocity and device spoofing to help prevent unauthorized account access.
                 </p>
               </Card>
 
               <Card className="p-6">
-                <h3 className="text-xl font-bold mb-3">Payment Processor</h3>
+                <h3 className="text-xl font-bold mb-3">Payment Processing Protection</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  <strong>Challenge:</strong> Bots testing 15,000 stolen credit cards per day through merchant accounts. Chargeback tsunami imminent.
+                  <strong>Threat:</strong> Bots testing stolen credit cards through merchant accounts, leading to chargebacks.
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  <strong>Solution:</strong> Device fingerprinting eliminated 99.1% of card testing attempts. Processor avoided $186K in chargeback fees and maintained PCI DSS compliance certification.
+                  <strong>Defense Approach:</strong> Device fingerprinting identifies card testing patterns to help prevent fraudulent transactions before they complete.
                 </p>
               </Card>
 
               <Card className="p-6">
-                <h3 className="text-xl font-bold mb-3">Digital Wallet Service</h3>
+                <h3 className="text-xl font-bold mb-3">Account Fraud Prevention</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  <strong>Challenge:</strong> Bots creating thousands of fake accounts to exploit new user signup bonuses. $340K in fraudulent payouts in one month.
+                  <strong>Threat:</strong> Bots creating fake accounts to exploit signup bonuses and promotional offers.
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  <strong>Solution:</strong> Multi-factor behavioral correlation detected bulk account creation patterns. Service eliminated 97% of bonus fraud while maintaining customer onboarding speed.
+                  <strong>Defense Approach:</strong> Multi-factor behavioral correlation detects bulk account creation patterns while maintaining smooth onboarding for legitimate customers.
                 </p>
               </Card>
             </div>

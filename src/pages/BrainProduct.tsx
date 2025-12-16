@@ -177,8 +177,8 @@ export default function BrainProduct() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted/20">
       <SEO 
-        title="Cascade — World's First Dreaming AI | PromptFluid"
-        description="Meet Cascade, the world's first AI with autonomous dream capabilities. FluidMind Neural Core with dream cycle intelligence, shared dream protocol, and persona adaptation for revolutionary AI learning."
+        title="Cascade — Experimental Dreaming AI | PromptFluid"
+        description="Meet Cascade, an experimental AI exploring autonomous dream capabilities. FluidMind Neural Core with dream cycle concepts and persona adaptation."
         canonical="https://promptfluid.com/projects/brain"
         keywords={[
           'machine learning security',

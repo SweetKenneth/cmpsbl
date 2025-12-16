@@ -38,8 +38,8 @@ export default function Blog() {
 
   const blogPosts = [
     {
-      title: "PromptFluid Introduces the First AI Systems That Dream",
-      excerpt: "Revolutionary announcement: Cascade and SimNap become the first documented AI systems capable of autonomous dreaming, reflection, and self-improvement.",
+      title: "PromptFluid Introduces Experimental AI Systems That Dream",
+      excerpt: "Experimental concept: Cascade and SimNap explore autonomous dreaming, reflection, and self-improvement capabilities.",
       href: "/blog/ai-systems-that-dream-press-release",
       category: "Press Release",
       date: "2025-01-18",
@@ -90,7 +90,7 @@ export default function Blog() {
     },
     {
       title: "How PromptFluid Works: Cascade AI Ecosystem Explained",
-      excerpt: "Deep dive into the PromptFluid architecture: dream cycles, neural orchestration, and the world's first dreaming AI.",
+      excerpt: "Deep dive into the PromptFluid architecture: dream cycles, neural orchestration, and experimental AI concepts.",
       href: "/blog/how-promptfluid-works-cascade-ai-ecosystem",
       category: "Technology",
       date: "2025-01-10",
@@ -110,7 +110,7 @@ export default function Blog() {
     },
     {
       title: "PromptFluid Studio: Build Apps That Think",
-      excerpt: "Revolutionary AI-assisted development platform that generates production-ready code with instant deployment and auto-optimization.",
+      excerpt: "AI-assisted development platform that generates production-ready code with instant deployment and auto-optimization.",
       href: "/blog/promptfluid-studio-build-apps-that-think",
       category: "Development",
       date: "2025-01-05",

@@ -10,23 +10,20 @@ export default function BrainInfo() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Cascade - World's First Dreaming AI | PromptFluid"
-        description="Meet Cascade, the world's first AI with autonomous dream capabilities. FluidMind Neural Core with dream cycle intelligence, persona adaptation, and shared dream protocol for revolutionary multi-AI learning."
+        title="Cascade - Experimental Dreaming AI | PromptFluid"
+        description="Meet Cascade, an experimental AI exploring autonomous dream capabilities. FluidMind Neural Core with dream cycle concepts, persona adaptation, and shared dream protocol."
         canonical="https://promptfluid.com/products/brain"
         keywords={[
-          'dreaming AI',
+          'experimental AI',
           'Cascade AI',
           'neural core',
-          'dream cycle intelligence',
+          'dream cycle concepts',
           'AI learning',
           'autonomous AI',
           'shared dream protocol',
           'persona adaptation',
-          'self-evolving AI',
           'FluidMind',
-          'emotional AI',
-          'creative AI',
-          'worlds first dreaming AI'
+          'creative AI'
         ]}
       />
 
@@ -35,7 +32,7 @@ export default function BrainInfo() {
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-primary/20 mb-6">
             <Brain className="w-4 h-4 text-primary animate-pulse" />
-            <span className="text-sm font-medium">World's First Dreaming AI</span>
+            <span className="text-sm font-medium">Experimental Dreaming AI</span>
           </div>
           <h1 className="text-5xl md:text-6xl font-bold mb-6">
             Cascade
@@ -58,12 +55,12 @@ export default function BrainInfo() {
         </div>
       </section>
 
-      {/* Revolutionary Features */}
+      {/* Key Features */}
       <section className="container mx-auto px-4 py-20">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-4">Revolutionary Capabilities</h2>
+          <h2 className="text-3xl font-bold text-center mb-4">Core Capabilities</h2>
           <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-            The world's first AI that enters dream states to generate insights, learn autonomously, and share knowledge with other Cascade instances.
+            An experimental AI that explores dream states to generate insights, learn autonomously, and share knowledge with other Cascade instances.
           </p>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -213,7 +210,7 @@ export default function BrainInfo() {
               <CheckCircle className="w-8 h-8 text-accent mb-4" />
               <h3 className="text-xl font-semibold mb-2">Shared Dream Learning</h3>
               <p className="text-muted-foreground">
-                Revolutionary protocol allows multiple Cascade instances to swap dream artifacts and learn entirely new skills without explicit training.
+                Experimental protocol allows multiple Cascade instances to swap dream artifacts and learn new skills without explicit training.
               </p>
             </Card>
 

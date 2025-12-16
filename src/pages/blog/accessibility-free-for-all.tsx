@@ -194,7 +194,7 @@ export default function AccessibilityFreeForAll() {
                 <Globe className="w-12 h-12 text-primary mx-auto mb-4" />
                 <h2 className="text-2xl font-bold mb-4">Ready to Make Your Site Accessible?</h2>
                 <p className="text-muted-foreground mb-6">
-                  Join thousands of website owners who are making the web work for everyone.
+                  Start making the web work for everyone with a free accessibility scan.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button size="lg" onClick={openClarity} className="shadow-glow">

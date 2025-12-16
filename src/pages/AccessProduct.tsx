@@ -279,7 +279,7 @@ export default function AccessProduct() {
             Ready to Make Your Site Accessible?
           </h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Join thousands of website owners making the web work for everyone. 
+            Start making the web work for everyone. 
             It's free. It's fast. It's the right thing to do.
           </p>
           <Button size="lg" onClick={openClarity} className="shadow-glow hover:shadow-glow-lg">
