@@ -270,7 +270,7 @@ const DefenseFinancialServices = () => {
           <section className="text-center py-12 px-6 bg-gradient-to-br from-primary/5 to-accent/5 rounded-lg">
             <h2 className="text-3xl font-bold mb-4">Secure Your Institution and Your Customers</h2>
             <p className="text-lg text-muted-foreground mb-6 max-w-2xl mx-auto">
-              Join banks, credit unions, and fintech platforms trusting PromptFluid Defense to stop AI-powered bot attacks while maintaining seamless customer experiences.
+              PromptFluid Defense stops AI-powered bot attacks while maintaining seamless customer experiences. Coming soon to WordPress.org.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link to="/contact">

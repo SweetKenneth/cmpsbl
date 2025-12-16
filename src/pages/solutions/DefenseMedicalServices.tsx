@@ -270,7 +270,7 @@ const DefenseMedicalServices = () => {
           <section className="text-center py-12 px-6 bg-gradient-to-br from-primary/5 to-accent/5 rounded-lg">
             <h2 className="text-3xl font-bold mb-4">Protect Your Patients and Your Practice</h2>
             <p className="text-lg text-muted-foreground mb-6 max-w-2xl mx-auto">
-              Join healthcare providers nationwide trusting PromptFluid Defense to stop AI bot attacks while maintaining HIPAA compliance and patient accessibility.
+              PromptFluid Defense stops AI bot attacks while maintaining HIPAA compliance and patient accessibility. Coming soon to WordPress.org.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link to="/contact">

@@ -272,7 +272,7 @@ const DefenseLegalServices = () => {
           <section className="text-center py-12 px-6 bg-gradient-to-br from-primary/5 to-accent/5 rounded-lg">
             <h2 className="text-3xl font-bold mb-4">Protect Your Practice and Your Clients</h2>
             <p className="text-lg text-muted-foreground mb-6 max-w-2xl mx-auto">
-              Join law firms across Texas, Florida, and California trusting PromptFluid Defense to stop AI-powered bot attacks without disrupting legitimate client access.
+              PromptFluid Defense stops AI-powered bot attacks without disrupting legitimate client access. Coming soon to WordPress.org.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link to="/contact">

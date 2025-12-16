@@ -1153,7 +1153,7 @@ const WordPressBotDefense = () => {
             </ul>
 
             <p className="mb-4">
-              <strong>The mid-market is where PromptFluid Defense shines:</strong> sites that need sophisticated AI-powered protection without enterprise pricing. Our WordPress plugin is available on WordPress.org, bringing behavioral AI to the masses at zero cost through our free-tier provider network.
+              <strong>The mid-market is where PromptFluid Defense shines:</strong> sites that need sophisticated AI-powered protection without enterprise pricing. Our WordPress plugin is pending WordPress.org approval, bringing behavioral AI to the masses at zero cost through our free-tier provider network.
             </p>
 
             <div className="flex flex-wrap gap-4 justify-center py-8">

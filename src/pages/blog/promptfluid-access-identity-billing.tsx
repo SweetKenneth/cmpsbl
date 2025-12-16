@@ -106,7 +106,7 @@ const PromptFluidAccess = () => {
                   <h3 className="text-2xl font-bold m-0">Flexible Billing System</h3>
                 </div>
                 <p className="text-muted-foreground leading-relaxed">
-                  Access manages subscription tiers from $19 Starter plans to custom Enterprise pricing. Token-based billing tracks AI usage, build operations, and storage consumption. Deferral credits enable temporary service continuation when payments fail—users maintain access during the 7-day grace period while Access attempts resolution.
+                  Access manages subscription tiers from free starter plans to custom Enterprise pricing. Token-based billing tracks AI usage, build operations, and storage consumption. Deferral credits enable temporary service continuation when payments fail—users maintain access during the 7-day grace period while Access attempts resolution.
                 </p>
               </div>
 
@@ -152,27 +152,29 @@ const PromptFluidAccess = () => {
               <div className="space-y-6">
                 <div className="border-b border-border pb-4">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-lg font-semibold">Starter - $19/month</span>
-                    <span className="text-sm text-muted-foreground">3-day free trial</span>
+                    <span className="text-lg font-semibold">Starter - Free</span>
+                    <span className="text-sm text-muted-foreground">Always free</span>
                   </div>
                   <p className="text-sm text-muted-foreground">Basic builder access, limited AI spins, essential integrations</p>
                 </div>
                 <div className="border-b border-border pb-4">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-lg font-semibold">Pro - $49/month</span>
-                    <span className="text-sm text-primary">Most Popular</span>
+                    <span className="text-lg font-semibold">Pro - Usage-Based</span>
+                    <span className="text-sm text-primary">Planned</span>
                   </div>
                   <p className="text-sm text-muted-foreground">Unlimited projects, API access, early feature previews</p>
                 </div>
                 <div className="border-b border-border pb-4">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-lg font-semibold">Studio - $99/month</span>
+                    <span className="text-lg font-semibold">Studio - Usage-Based</span>
+                    <span className="text-sm text-muted-foreground">Planned</span>
                   </div>
                   <p className="text-sm text-muted-foreground">Team collaboration, private instances, priority builds</p>
                 </div>
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-lg font-semibold">Enterprise - Custom</span>
+                    <span className="text-sm text-muted-foreground">Planned</span>
                   </div>
                   <p className="text-sm text-muted-foreground">White-label deployment, private models, full integration support</p>
                 </div>

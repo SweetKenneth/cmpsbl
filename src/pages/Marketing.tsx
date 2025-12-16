@@ -99,9 +99,9 @@ export default function Marketing() {
           <h3 className="text-xl font-semibold mb-4">Content Calendar</h3>
           <div className="space-y-3">
             {[
-              { date: "Nov 25", title: "AI Trends 2026 Blog Post", status: "Scheduled" },
-              { date: "Nov 27", title: "Product Update Newsletter", status: "Draft" },
-              { date: "Dec 01", title: "Case Study: Enterprise Client", status: "In Review" },
+              { date: "Dec 20", title: "AI Trends 2026 Blog Post", status: "Planned" },
+              { date: "Dec 22", title: "Product Update Newsletter", status: "Draft" },
+              { date: "Jan 05", title: "Feature Spotlight", status: "Planned" },
             ].map((item, i) => (
               <div key={i} className="flex items-center justify-between p-3 border rounded-lg">
                 <div className="flex items-center gap-3">
