@@ -7,14 +7,14 @@ import { Heart, Accessibility, ArrowRight, CheckCircle } from 'lucide-react';
 export default function ClaritySubscription() {
   const navigate = useNavigate();
 
-  const openCMPTBL = () => {
-    window.open("https://cmptbl.promptfluid.com", "_blank");
+  const openClarity = () => {
+    window.open("https://clarity.promptfluid.com", "_blank");
   };
 
-  // Redirect to CMPTBL after a brief delay showing the message
+  // Redirect to Clarity after a brief delay showing the message
   useEffect(() => {
     const timer = setTimeout(() => {
-      window.open("https://cmptbl.promptfluid.com", "_blank");
+      window.open("https://clarity.promptfluid.com", "_blank");
     }, 3000);
     return () => clearTimeout(timer);
   }, []);
@@ -49,14 +49,14 @@ export default function ClaritySubscription() {
             ))}
           </div>
           
-          <Button size="lg" onClick={openCMPTBL} className="shadow-glow hover:shadow-glow-lg">
+          <Button size="lg" onClick={openClarity} className="shadow-glow hover:shadow-glow-lg">
             <Accessibility className="w-5 h-5 mr-2" />
             Go to Free Scanner
             <ArrowRight className="w-5 h-5 ml-2" />
           </Button>
           
           <p className="text-sm text-muted-foreground mt-6">
-            Redirecting to CMPTBL.promptfluid.com...
+            Redirecting to clarity.promptfluid.com...
           </p>
 
           <div className="mt-8 pt-8 border-t">

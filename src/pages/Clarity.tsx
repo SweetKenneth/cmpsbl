@@ -8,8 +8,8 @@ import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { Link } from "react-router-dom";
 
 const Clarity = () => {
-  const openCMPTBL = () => {
-    window.open("https://cmptbl.promptfluid.com", "_blank");
+  const openClarity = () => {
+    window.open("https://clarity.promptfluid.com", "_blank");
   };
 
   return (
@@ -53,7 +53,7 @@ const Clarity = () => {
               completely free, forever.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" onClick={openCMPTBL} className="shadow-glow hover:shadow-glow-lg">
+              <Button size="lg" onClick={openClarity} className="shadow-glow hover:shadow-glow-lg">
                 <Accessibility className="w-4 h-4 mr-2" />
                 Free Accessibility Scan
                 <ArrowRight className="w-4 h-4 ml-2" />
@@ -118,7 +118,7 @@ const Clarity = () => {
                 </div>
                 <h3 className="text-xl font-bold mb-2">Scan Your Site</h3>
                 <p className="text-muted-foreground">
-                  Enter any URL. CMPTBL analyzes your entire site for WCAG 2.2 compliance in seconds.
+                  Enter any URL. Clarity analyzes your entire site for WCAG 2.2 compliance in seconds.
                 </p>
               </Card>
 
@@ -164,7 +164,7 @@ const Clarity = () => {
                 <Zap className="w-12 h-12 text-primary mb-4" />
                 <h3 className="text-2xl font-bold mb-3">Real Code Fixes</h3>
                 <p className="text-muted-foreground">
-                  Unlike overlays that just hide problems, CMPTBL actually fixes your HTML/DOM.
+                  Unlike overlays that just hide problems, Clarity actually fixes your HTML/DOM.
                 </p>
               </Card>
 
@@ -200,7 +200,7 @@ const Clarity = () => {
               Join thousands of website owners making the web work for everyone. 
               It's free. It's fast. It's the right thing to do.
             </p>
-            <Button size="lg" onClick={openCMPTBL} className="shadow-glow hover:shadow-glow-lg">
+            <Button size="lg" onClick={openClarity} className="shadow-glow hover:shadow-glow-lg">
               <Accessibility className="w-5 h-5 mr-2" />
               Start Free Scan Now
               <ArrowRight className="w-5 h-5 ml-2" />

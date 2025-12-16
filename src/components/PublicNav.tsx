@@ -45,7 +45,7 @@ export function PublicNav() {
       { name: "Product Roadmap 2025", href: "/blog/product-roadmap-2025" },
       { name: "AI Automation Trends", href: "/blog/ai-automation-trends-2025" },
       { name: "AI in Business Operations", href: "/blog/ai-business-operations-2025" },
-      { name: "CMPTBL Accessibility Mission", href: "/blog/cmptbl-mission" },
+      { name: "Clarity Accessibility Mission", href: "/blog/clarity-accessibility-mission" },
     ],
   };
 
@@ -297,6 +297,14 @@ export function PublicNav() {
               )}
             </div>
 
+            {/* Investors - Prominent */}
+            <Link
+              to="/investors"
+              className="text-primary hover:text-primary/80 transition-colors text-sm font-bold px-4 py-2"
+            >
+              Investors
+            </Link>
+
             {/* About */}
             <Link
               to="/about"
@@ -311,14 +319,6 @@ export function PublicNav() {
               className="text-foreground/80 hover:text-primary transition-colors text-sm font-medium px-4 py-2"
             >
               Blog
-            </Link>
-
-            {/* The Firsts */}
-            <Link
-              to="/pillars/promptfluid-the-firsts"
-              className="text-foreground/80 hover:text-primary transition-colors text-sm font-medium px-4 py-2"
-            >
-              The Firsts
             </Link>
 
             {/* Contact */}

@@ -239,9 +239,9 @@ export default function Blog() {
       imageAlt: "Business operations transformation with AI integration and workflow automation"
     },
     {
-      title: "CMPTBL Mission: Making the Web Accessible for All",
+      title: "Clarity Mission: Making the Web Accessible for All",
       excerpt: "Our commitment to universal web accessibility through AI-powered WCAG compliance and automated remediation systems.",
-      href: "/blog/cmptbl-mission",
+      href: "/blog/clarity-accessibility-mission",
       category: "Accessibility",
       date: "2024-11-12",
       readTime: "11 min read",

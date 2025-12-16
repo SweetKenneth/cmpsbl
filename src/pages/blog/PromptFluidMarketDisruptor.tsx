@@ -371,8 +371,8 @@ const PromptFluidMarketDisruptor = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/blog/cmptbl-accessibility-mission" className="text-primary hover:underline">
-                    CMPTBL Accessibility Mission
+                  <Link to="/blog/clarity-accessibility-mission" className="text-primary hover:underline">
+                    Clarity Accessibility Mission
                   </Link>
                 </li>
               </ul>

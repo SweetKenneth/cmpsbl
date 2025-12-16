@@ -77,7 +77,7 @@ export default function Index() {
     },
     {
       icon: Accessibility,
-      title: "PromptFluid Clarity (CMPTBL)",
+      title: "PromptFluid Clarity",
       tagline: "100% Free Accessibility",
       description: "Completely free WCAG 2.2 compliance scanning and AI-powered fixes. Accessibility should never be behind a paywall—we made it free for everyone.",
       href: "/products/access",
@@ -371,7 +371,7 @@ export default function Index() {
             
             <Button 
               size="lg" 
-              onClick={() => window.open("https://cmptbl.promptfluid.com", "_blank")}
+              onClick={() => window.open("https://clarity.promptfluid.com", "_blank")}
               variant="default"
               className="group text-lg px-8 py-6 shadow-glow hover:shadow-glow-lg transition-all duration-300 animate-pulse"
             >
