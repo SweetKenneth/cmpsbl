@@ -11,8 +11,8 @@ export default function InvestorsPublic() {
 
   const metrics = [
     { icon: Users, label: "Products Live", value: "5+", color: "text-blue-500" },
-    { icon: TrendingUp, label: "Growth Rate", value: "340%", color: "text-green-500" },
-    { icon: Award, label: "Edge Functions", value: "268+", color: "text-purple-500" },
+    { icon: TrendingUp, label: "Development Stage", value: "Active", color: "text-green-500" },
+    { icon: Award, label: "Edge Functions", value: "270+", color: "text-purple-500" },
     { icon: Target, label: "Market Position", value: "First Mover", color: "text-orange-500" }
   ];
 
@@ -30,7 +30,7 @@ export default function InvestorsPublic() {
     {
       icon: BarChart,
       title: "Proven Technology",
-      description: "Complete infrastructure with 268+ edge functions, 84+ database tables, full production deployment."
+      description: "Complete infrastructure with 270+ edge functions, 80+ database tables, full production deployment."
     },
     {
       icon: FileText,

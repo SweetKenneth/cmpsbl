@@ -5,9 +5,9 @@ import { TrendingUp, Download, FileText, BarChart3, DollarSign } from "lucide-re
 export default function Investors() {
   const metrics = [
     { label: "Products Live", value: "5+", trend: "Active" },
-    { label: "Edge Functions", value: "268+", trend: "Deployed" },
-    { label: "Database Tables", value: "84+", trend: "Production" },
-    { label: "AI Providers", value: "5", trend: "Integrated" },
+    { label: "Edge Functions", value: "270+", trend: "Deployed" },
+    { label: "Database Tables", value: "80+", trend: "Production" },
+    { label: "AI Providers", value: "6", trend: "Integrated" },
   ];
 
   const documents = [

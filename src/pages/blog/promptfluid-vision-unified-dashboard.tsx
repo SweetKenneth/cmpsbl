@@ -74,7 +74,7 @@ const PromptFluidVision = () => {
             </p>
 
             <p className="text-lg leading-relaxed">
-              Unlike fragmented monitoring tools that require jumping between multiple interfaces, Vision unifies operational visibility. One dashboard shows the complete state of your AI infrastructure—from <Link to="/blog/cascade-ai-adaptive-intelligence-brain" className="text-primary hover:underline">Cascade AI</Link> routing decisions to API cost breakdowns to user engagement metrics.
+              Unlike fragmented monitoring tools that require jumping between multiple interfaces, Vision unifies operational visibility. One dashboard shows the complete state of your AI infrastructure—from <Link to="/blog/cascade-ai-adaptive-intelligence-brain" className="text-primary hover:underline">Cascade AI</Link> routing decisions to usage analytics to user engagement metrics.
             </p>
 
             <h2 className="text-3xl font-bold mb-4 mt-12">Current Dashboard Features</h2>
@@ -135,7 +135,7 @@ const PromptFluidVision = () => {
             <h2 className="text-3xl font-bold mb-4 mt-12">Analytics That Drive Decisions</h2>
 
             <p className="text-lg leading-relaxed mb-6">
-              Vision doesn't just display metrics—it provides context and recommendations. When API costs spike, Vision identifies which endpoints or workflows drove the increase. When Studio build times slow, Vision correlates the degradation with specific dependency changes or AI model performance issues.
+              Vision doesn't just display metrics—it provides context and recommendations. When usage patterns shift unexpectedly, Vision identifies which endpoints or workflows drove the change. When Studio build times slow, Vision correlates the degradation with specific dependency changes or AI model performance issues.
             </p>
 
             <p className="text-lg leading-relaxed mb-6">
