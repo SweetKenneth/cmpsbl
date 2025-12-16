@@ -146,6 +146,6 @@ function generateOptimizations(data: any[]) {
   return [
     'Consider caching frequent queries',
     'Route heavy reasoning tasks to Groq',
-    'Use Perplexity for research-heavy requests',
+    'Use Together AI for complex multi-step requests',
   ];
 }

@@ -354,11 +354,11 @@ export default function BrainML() {
 
         {/* API Documentation */}
         <Card className="p-6 border-primary/20">
-          <h3 className="text-lg font-semibold mb-4">Brain ML API Endpoints</h3>
+          <h3 className="text-lg font-semibold mb-4">Brain ML Edge Functions</h3>
           <div className="space-y-2 text-sm font-mono">
-            <p className="text-muted-foreground">POST https://api.promptfluid.com/pf-brain-ml-train</p>
-            <p className="text-muted-foreground">POST https://api.promptfluid.com/pf-brain-ml-predict</p>
-            <p className="text-muted-foreground">GET https://api.promptfluid.com/pf-brain-ml-analyze</p>
+            <p className="text-muted-foreground">POST /functions/v1/pf-brain-ml-train</p>
+            <p className="text-muted-foreground">POST /functions/v1/pf-brain-ml-predict</p>
+            <p className="text-muted-foreground">GET /functions/v1/pf-brain-ml-analyze</p>
           </div>
           <div className="mt-4 p-4 bg-destructive/10 rounded-lg border border-destructive/20">
             <p className="text-xs text-destructive font-semibold mb-2">⚖️ LEGAL NOTICE</p>
