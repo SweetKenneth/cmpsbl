@@ -162,10 +162,10 @@ export default function StudioProduct() {
   ];
 
   const stats = [
-    { label: "Beta Waitlist", value: "5.2K+", icon: Star },
-    { label: "Components Ready", value: "200+", icon: Layers },
-    { label: "Avg Build Time", value: "<5min", icon: Zap },
-    { label: "Code Quality Score", value: "98/100", icon: Code2 }
+    { label: "Status", value: "Planned", icon: Star },
+    { label: "Components Target", value: "200+", icon: Layers },
+    { label: "Target Build Time", value: "<5min", icon: Zap },
+    { label: "Target Quality Score", value: "98/100", icon: Code2 }
   ];
 
   return (
@@ -494,7 +494,7 @@ export default function StudioProduct() {
               </span>
             </h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Join 5,200+ developers on the waitlist. Get early access to Studio when we launch in Q2 2026.
+              Join the waitlist for early access to Studio when we launch in Q2 2026.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" onClick={handleWaitlist} className="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500">

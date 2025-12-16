@@ -154,8 +154,8 @@ export default function ThreatFeed() {
             <Card className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground">Protected Sites</p>
-                  <p className="text-3xl font-bold">10,247</p>
+                  <p className="text-sm text-muted-foreground">System Status</p>
+                  <p className="text-3xl font-bold">Active</p>
                 </div>
                 <Activity className="h-8 w-8 text-primary" />
               </div>

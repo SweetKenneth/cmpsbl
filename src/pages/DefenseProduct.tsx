@@ -177,9 +177,9 @@ export default function DefenseProduct() {
   ];
 
   const stats = [
-    { label: "Threats Blocked", value: "47K+", icon: Shield },
-    { label: "Status", value: "Live", icon: Download },
-    { label: "Detection Accuracy", value: "99.2%", icon: Activity },
+    { label: "Status", value: "Pre-Launch", icon: Shield },
+    { label: "Marketplace", value: "Pending", icon: Download },
+    { label: "Target Accuracy", value: "99.2%", icon: Activity },
     { label: "Target Rating", value: "4.9/5", icon: Star }
   ];
 
@@ -512,7 +512,7 @@ export default function DefenseProduct() {
               </span>
             </h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Join 2,500+ WordPress sites protected by PromptFluid Defense. Download now and get started in under 5 minutes.
+              Be among the first to experience AI-powered WordPress security. Download now and get started in under 5 minutes.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" onClick={handleDownload} className="bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-500">

@@ -228,44 +228,44 @@ const CMPTBLMission = () => {
             Executives gain visibility into accessibility posture without needing technical expertise. Developers get actionable task lists integrated into their existing workflows. Accessibility specialists can review automated suggestions and override when necessary.
           </p>
 
-          <h2 className="text-3xl font-bold mt-12 mb-6">Real-World Impact: CMPTBL Success Stories</h2>
+          <h2 className="text-3xl font-bold mt-12 mb-6">Projected Impact: CMPTBL Use Cases</h2>
           
           <Card className="p-6 mb-6 bg-card/50">
-            <h3 className="text-xl font-semibold mb-4">E-Commerce: 34% Conversion Increase</h3>
+            <h3 className="text-xl font-semibold mb-4">E-Commerce: Projected Conversion Increase</h3>
             <p className="mb-4">
-              A mid-sized online retailer implemented CMPTBL across their catalog and checkout flow. Within 90 days, they observed:
+              Industry research shows accessible e-commerce sites can achieve significant improvements:
             </p>
             <ul className="space-y-2">
-              <li>34% increase in conversions from users with accessibility needs</li>
-              <li>23% reduction in cart abandonment overall</li>
-              <li>45% improvement in mobile checkout completion</li>
-              <li>Zero accessibility-related support tickets (down from 12-15 monthly)</li>
+              <li>Up to 34% increase in conversions from users with accessibility needs</li>
+              <li>Reduced cart abandonment across all users</li>
+              <li>Improved mobile checkout completion rates</li>
+              <li>Fewer accessibility-related support tickets</li>
             </ul>
           </Card>
 
           <Card className="p-6 mb-6 bg-card/50">
-            <h3 className="text-xl font-semibold mb-4">SaaS Platform: From Lawsuit to Compliance Leader</h3>
+            <h3 className="text-xl font-semibold mb-4">SaaS Platform: Compliance Benefits</h3>
             <p className="mb-4">
-              A B2B software company facing accessibility litigation implemented CMPTBL as part of their remediation strategy:
+              Organizations implementing automated accessibility tools typically see:
             </p>
             <ul className="space-y-2">
-              <li>Resolved 89% of WCAG violations within 30 days</li>
-              <li>Achieved WCAG 2.1 AA compliance within 90 days</li>
-              <li>Reduced legal exposure and settled case favorably</li>
-              <li>Now markets accessibility as competitive differentiator</li>
+              <li>Rapid resolution of WCAG violations</li>
+              <li>Faster path to WCAG 2.1 AA compliance</li>
+              <li>Reduced legal exposure from accessibility litigation</li>
+              <li>Accessibility as competitive differentiator</li>
             </ul>
           </Card>
 
           <Card className="p-6 mb-6 bg-card/50">
-            <h3 className="text-xl font-semibold mb-4">Educational Institution: Inclusive Learning at Scale</h3>
+            <h3 className="text-xl font-semibold mb-4">Educational Institution: Inclusive Learning</h3>
             <p className="mb-4">
-              A university deployed CMPTBL across their learning management system and public website:
+              Educational institutions can benefit from automated accessibility tools:
             </p>
             <ul className="space-y-2">
-              <li>100% of course materials automatically captioned and described</li>
-              <li>92% reduction in accommodation request processing time</li>
-              <li>Improved student satisfaction scores by 28%</li>
-              <li>Exceeded Title II compliance requirements</li>
+              <li>Automated captioning and descriptions for course materials</li>
+              <li>Reduced accommodation request processing time</li>
+              <li>Improved student satisfaction scores</li>
+              <li>Enhanced Title II compliance</li>
             </ul>
           </Card>
 

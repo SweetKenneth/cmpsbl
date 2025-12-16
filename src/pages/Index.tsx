@@ -250,7 +250,7 @@ export default function Index() {
             "name": "Is PromptFluid Reflex Bot Sniper free?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes! PromptFluid Reflex offers a free tier with core AI-powered bot protection features. Premium plans add advanced threat intelligence, priority support, and enterprise-grade security features for high-traffic sites. It's currently available on WordPress.org."
+              "text": "Yes! PromptFluid Reflex offers a free tier with core AI-powered bot protection features. Premium plans add advanced threat intelligence, priority support, and enterprise-grade security features for high-traffic sites. Currently pending WordPress.org approval."
             }
           }, {
             "@type": "Question",
@@ -337,7 +337,7 @@ export default function Index() {
           </p>
           
           <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-3xl mx-auto animate-fade-in leading-relaxed" style={{ animationDelay: '0.25s' }}>
-            From WordPress security to enterprise automation, our <strong className="text-foreground">10 integrated modules</strong> form a complete ecosystem that learns, adapts, and flows naturally. <strong className="text-foreground">100% infrastructure complete</strong>. Multiple products live in production. Zero technical debt.
+            From WordPress security to enterprise automation, our <strong className="text-foreground">10 integrated modules</strong> form a complete ecosystem that learns, adapts, and flows naturally. <strong className="text-foreground">100% infrastructure complete</strong>. Products ready for market launch. Zero technical debt.
           </p>
           
           <div className="flex items-center justify-center gap-6 mb-12 text-sm text-muted-foreground animate-fade-in" style={{ animationDelay: '0.3s' }}>
