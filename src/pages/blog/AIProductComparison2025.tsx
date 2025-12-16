@@ -173,16 +173,18 @@ const AIProductComparison2025 = () => {
 
           <h3 className="text-2xl font-semibold mt-8 mb-4">PromptFluid's Adaptive Intelligence Architecture</h3>
           <p className="mb-4">
-            <Link to="/solutions" className="text-primary hover:underline">PromptFluid</Link> pioneered the concept of adaptive AI orchestration through its Nexus routing layer. Rather than forcing users to choose between providers, the platform intelligently distributes tasks across OpenAI, Anthropic, Google, and specialized models based on multiple factors:
+            <Link to="/solutions" className="text-primary hover:underline">PromptFluid</Link> pioneered the concept of adaptive AI orchestration through its Nexus routing layer. Rather than forcing users to pay premium API costs, the platform intelligently distributes tasks across free-tier AI providers based on multiple factors:
           </p>
 
           <Card className="p-6 mb-6 bg-gradient-to-br from-primary/5 to-primary-glow/5 border-primary/20">
-            <h4 className="font-semibold mb-4 text-lg">The AI Triad: Dynamic Model Selection</h4>
+            <h4 className="font-semibold mb-4 text-lg">Free-Tier Provider Network: Zero-Cost AI</h4>
             <ul className="space-y-3">
-              <li><strong className="text-primary">Groq:</strong> Ultra-fast reasoning and logic processing with sub-second response times</li>
-              <li><strong className="text-primary">OpenAI:</strong> Creative synthesis, complex generation, and multimodal tasks</li>
-              <li><strong className="text-primary">Anthropic:</strong> Structured analysis, safety-critical decisions, and ethical reasoning</li>
-              <li><strong className="text-primary">Perplexity:</strong> Real-time research, grounded fact-checking, and current events</li>
+              <li><strong className="text-primary">Groq:</strong> Ultra-fast inference with Llama 3.3-70B for sub-second response times</li>
+              <li><strong className="text-primary">Cerebras:</strong> High-performance Llama 3.3-70B as secondary fallback</li>
+              <li><strong className="text-primary">Google AI Studio:</strong> Gemini 2.0 Flash for versatile processing</li>
+              <li><strong className="text-primary">Together AI:</strong> Llama 3.1-70B turbo for complex reasoning</li>
+              <li><strong className="text-primary">DeepSeek:</strong> DeepSeek-chat for efficient general tasks</li>
+              <li><strong className="text-primary">Hyperbolic:</strong> Llama 3.1-70B as final fallback option</li>
             </ul>
           </Card>
 
@@ -190,15 +192,15 @@ const AIProductComparison2025 = () => {
             The <Link to="/products/brain" className="text-primary hover:underline">PromptFluid Brain</Link> continuously learns from every interaction, identifying which models perform best for specific task types. This creates a self-improving system that becomes more efficient and accurate over time without manual intervention.
           </p>
 
-          <h3 className="text-2xl font-semibold mt-8 mb-4">Cost Optimization Through Intelligent Routing</h3>
+          <h3 className="text-2xl font-semibold mt-8 mb-4">Cost Elimination Through Free-Tier Routing</h3>
           <p className="mb-4">
-            One of the most compelling advantages of multi-model orchestration is automatic cost optimization. PromptFluid's <Link to="/products/ripple" className="text-primary hover:underline">Ripple network integrator</Link> analyzes task requirements and routes requests to the most cost-effective provider capable of delivering quality results:
+            The most compelling advantage of PromptFluid's approach is complete cost elimination. The <Link to="/products/ripple" className="text-primary hover:underline">Ripple network integrator</Link> analyzes task requirements and routes requests exclusively to free-tier providers:
           </p>
           <ul className="list-disc pl-6 mb-6 space-y-2">
-            <li>Simple queries route to efficient models like GPT-3.5 Turbo or Claude Haiku</li>
-            <li>Complex reasoning tasks escalate to premium models only when necessary</li>
-            <li>Batch processing automatically queues low-priority tasks for off-peak pricing</li>
-            <li>Cached responses eliminate redundant API calls entirely</li>
+            <li>All queries route through Groq's free tier as the primary provider</li>
+            <li>Automatic failover to Cerebras, Google AI Studio, or Together AI when needed</li>
+            <li>DeepSeek and Hyperbolic provide additional redundancy</li>
+            <li>$0 monthly AI costs regardless of usage volume</li>
           </ul>
 
           <h2 className="text-3xl font-bold mt-12 mb-6">Real-World Performance Comparison</h2>
