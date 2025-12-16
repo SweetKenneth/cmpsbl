@@ -77,12 +77,12 @@ export default function Index() {
     },
     {
       icon: Accessibility,
-      title: "PromptFluid Access (Clarity)",
-      tagline: "Universal Design",
-      description: "Automated WCAG compliance and accessibility auditing. Make your web presence welcoming to everyone, powered by AI analysis.",
+      title: "PromptFluid Clarity (CMPTBL)",
+      tagline: "100% Free Accessibility",
+      description: "Completely free WCAG 2.2 compliance scanning and AI-powered fixes. Accessibility should never be behind a paywall—we made it free for everyone.",
       href: "/products/access",
-      features: ["WCAG Compliance", "Auto-remediation", "Accessibility Scoring"],
-      status: "Live on Fiverr"
+      features: ["100% Free Forever", "AI Auto-Fix", "86+ WCAG Checks"],
+      status: "100% Free"
     },
     {
       icon: Globe,
@@ -581,30 +581,30 @@ export default function Index() {
               </div>
             </div>
 
-            {/* PromptFluid Clarity - Free Accessibility */}
+            {/* PromptFluid Clarity - 100% FREE Accessibility */}
             <div
               onClick={() => window.open("https://cmptbl.promptfluid.com", "_blank")}
-              className="group relative p-8 rounded-3xl glass border-2 border-blue-500/30 hover:border-blue-500/50 cursor-pointer transition-all duration-300 hover:shadow-elegant overflow-hidden"
+              className="group relative p-8 rounded-3xl glass border-2 border-green-500/30 hover:border-green-500/50 cursor-pointer transition-all duration-300 hover:shadow-elegant overflow-hidden"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-teal-500/10 to-green-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 via-teal-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               <div className="relative z-10">
                 <div className="flex items-start justify-between mb-4">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-teal-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-500 to-teal-500 flex items-center justify-center group-hover:scale-110 transition-transform">
                     <Accessibility className="w-8 h-8 text-white" />
                   </div>
-                  <Badge className="bg-blue-500/10 text-blue-500 border-blue-500/20">
-                    Generating Revenue
+                  <Badge className="bg-green-500/10 text-green-500 border-green-500/20">
+                    100% FREE Forever
                   </Badge>
                 </div>
                 <h3 className="text-2xl font-bold mb-2 group-hover:text-primary transition-colors">
                   PromptFluid Clarity
                 </h3>
-                <p className="text-lg text-primary font-medium mb-3">AI Accessibility Services</p>
+                <p className="text-lg text-green-500 font-medium mb-3">Free AI Accessibility</p>
                 <p className="text-muted-foreground mb-6">
-                  WCAG 2.2 compliance auditing and remediation. Active Fiverr gig with paying clients. WordPress plugin queued for launch.
+                  100% free WCAG 2.2 compliance scanning and AI-powered auto-fixes. No signup, no credit card, no premium tiers. Accessibility is a right, not a privilege.
                 </p>
                 <div className="flex items-center gap-2 text-primary group-hover:gap-3 transition-all">
-                  <span className="font-medium">View Project</span>
+                  <span className="font-medium">Free Scan Now</span>
                   <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
