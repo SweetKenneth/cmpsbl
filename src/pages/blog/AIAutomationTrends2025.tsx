@@ -93,7 +93,7 @@ const AIAutomationTrends2025 = () => {
           </Card>
 
           <p className="mb-6">
-            <Link to="/solutions" className="text-primary hover:underline">PromptFluid's architecture</Link> is designed around this multi-agent approach through its free-tier provider network—Groq for fast inference, Cerebras for fallback, Together AI for complex reasoning, DeepSeek and Hyperbolic for extended coverage. Each task is routed to the provider best suited for it, enabling high-quality outcomes at zero cost.
+            <Link to="/solutions" className="text-primary hover:underline">PromptFluid's architecture</Link> is designed around this multi-agent approach through its free-tier provider network—Groq for fast inference, Cerebras for fallback, Google AI Studio for multimodal tasks, Together AI for complex reasoning, DeepSeek and Hyperbolic for extended coverage. Each task is routed to the provider best suited for it, enabling high-quality outcomes at zero cost.
           </p>
 
           <h3 className="text-2xl font-semibold mt-8 mb-4">Real-World Application: Content Production Pipeline</h3>

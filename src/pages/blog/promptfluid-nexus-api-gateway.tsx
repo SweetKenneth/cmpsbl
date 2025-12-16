@@ -278,7 +278,7 @@ const PromptFluidNexus = () => {
               >
                 <h3 className="text-lg font-semibold mb-2">Free-Tier Provider Network</h3>
                 <p className="text-sm text-muted-foreground">
-                  Learn how Nexus orchestrates Groq, Cerebras, Together AI, DeepSeek, and Hyperbolic providers.
+                  Learn how Nexus orchestrates Groq, Cerebras, Google AI Studio, Together AI, DeepSeek, and Hyperbolic providers.
                 </p>
               </Link>
             </div>

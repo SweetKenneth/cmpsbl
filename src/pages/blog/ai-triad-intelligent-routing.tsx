@@ -11,16 +11,16 @@ const AITriadExplained = () => {
         <title>Free-Tier Provider Network: Understanding PromptFluid's Intelligent Routing System</title>
         <meta 
           name="description" 
-          content="Learn how PromptFluid's Cascade AI intelligently routes tasks across Groq, Together AI, Hyperbolic, DeepSeek, and Cerebras for optimal results at zero cost." 
+          content="Learn how PromptFluid's Cascade AI intelligently routes tasks across Groq, Together AI, Hyperbolic, DeepSeek, Cerebras, and Google AI Studio for optimal results at zero cost." 
         />
-        <meta name="keywords" content="AI routing, intelligent orchestration, Groq, Together AI, Hyperbolic, DeepSeek, Cerebras, Cascade AI, free-tier AI" />
+        <meta name="keywords" content="AI routing, intelligent orchestration, Groq, Together AI, Hyperbolic, DeepSeek, Cerebras, Google AI Studio, Cascade AI, free-tier AI" />
         <link rel="canonical" href="https://www.promptfluid.com/blog/ai-triad-intelligent-routing" />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "TechArticle",
             "headline": "Free-Tier Provider Network: Understanding PromptFluid's Intelligent Routing System",
-            "description": "Learn how PromptFluid's Cascade AI intelligently routes tasks across Groq, Together AI, Hyperbolic, DeepSeek, and Cerebras for optimal results at zero cost.",
+            "description": "Learn how PromptFluid's Cascade AI intelligently routes tasks across Groq, Together AI, Hyperbolic, DeepSeek, Cerebras, and Google AI Studio for optimal results at zero cost.",
             "author": {
               "@type": "Person",
               "name": "Kenneth E Sweet Jr",
@@ -67,7 +67,7 @@ const AITriadExplained = () => {
               Free-Tier Provider Network: Understanding Intelligent Routing
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Discover how Cascade AI orchestrates free-tier AI providers—Groq, Together AI, Hyperbolic, DeepSeek, and Cerebras—to deliver optimal results at zero cost.
+              Discover how Cascade AI orchestrates free-tier AI providers—Groq, Together AI, Hyperbolic, DeepSeek, Cerebras, and Google AI Studio—to deliver optimal results at zero cost.
             </p>
             
             <AuthorBio publishDate="2025-08-20" readTime="11 min read" />
@@ -78,7 +78,7 @@ const AITriadExplained = () => {
               Most AI platforms lock you into a single provider, forcing you to use premium models for everything regardless of task complexity. PromptFluid's <Link to="/blog/cascade-ai-adaptive-intelligence-brain" className="text-primary hover:underline">Cascade AI</Link> takes a fundamentally different approach: intelligent routing across specialized providers, ensuring each task goes to the most appropriate model based on requirements, performance, and cost.
             </p>
 
-            <h2 className="text-3xl font-bold mb-6 mt-12">The Five Pillars of Free-Tier AI Routing</h2>
+            <h2 className="text-3xl font-bold mb-6 mt-12">The Six Pillars of Free-Tier AI Routing</h2>
 
             <div className="space-y-8 my-12">
               <div className="bg-gradient-to-r from-primary/10 to-transparent border-l-4 border-primary p-6 rounded-r-lg">
@@ -143,6 +143,19 @@ const AITriadExplained = () => {
                 </p>
                 <p className="text-muted-foreground leading-relaxed">
                   When volume matters, Cerebras handles high-throughput operations efficiently. Batch processing, bulk analysis, and parallel task execution all route through Cerebras for maximum efficiency.
+                </p>
+              </div>
+
+              <div className="bg-gradient-to-r from-accent/10 to-transparent border-l-4 border-accent p-6 rounded-r-lg">
+                <div className="flex items-center gap-3 mb-4">
+                  <Search className="w-8 h-8 text-accent" />
+                  <h3 className="text-2xl font-bold m-0">Google AI Studio: Multimodal Intelligence</h3>
+                </div>
+                <p className="text-muted-foreground leading-relaxed mb-3">
+                  <strong>Specialty:</strong> Multimodal reasoning, vision tasks, complex analysis
+                </p>
+                <p className="text-muted-foreground leading-relaxed">
+                  Google AI Studio provides access to Gemini models through its free tier, excelling at multimodal tasks combining text and image understanding. Cascade routes vision-related tasks, complex document analysis, and tasks requiring reasoning across multiple input types to Google AI Studio.
                 </p>
               </div>
             </div>

@@ -487,7 +487,7 @@ const HowPromptFluidWorks = () => {
               </p>
               <p className="text-muted-foreground leading-relaxed">
                 Nexus is the routing intelligence that connects Cascade to free-tier AI providers. When Cascade determines 
-                that a task should go to Groq, Cerebras, Together AI, DeepSeek, or Hyperbolic, Nexus handles the actual API calls, 
+                that a task should go to Groq, Cerebras, Google AI Studio, Together AI, DeepSeek, or Hyperbolic, Nexus handles the actual API calls, 
                 manages rate limits, implements fallback strategies, and caches responses. Nexus is 
                 the invisible infrastructure layer that makes seamless AI orchestration possible—at zero cost.
               </p>
@@ -689,7 +689,7 @@ const HowPromptFluidWorks = () => {
                 <h3 className="text-2xl font-semibold mb-4">Cost-Optimized AI Operations</h3>
                 <p className="text-muted-foreground leading-relaxed mb-4">
                   A startup needs powerful AI capabilities but has limited budget. Cascade's zero-cost architecture 
-                  routes all queries through free-tier providers (Groq, Cerebras, Together AI, DeepSeek, Hyperbolic), 
+                  routes all queries through free-tier providers (Groq, Cerebras, Google AI Studio, Together AI, DeepSeek, Hyperbolic), 
                   eliminating AI operational costs entirely. Nexus implements caching strategies to avoid redundant API 
                   calls, and Brain identifies opportunities to batch similar requests.
                 </p>
@@ -936,7 +936,7 @@ const HowPromptFluidWorks = () => {
               >
                 <h3 className="text-lg font-semibold mb-2">Free-Tier Provider Network</h3>
                 <p className="text-sm text-muted-foreground">
-                  Learn how Cascade intelligently routes tasks across Groq, Cerebras, Together AI, DeepSeek, and Hyperbolic for optimal results at zero cost.
+                  Learn how Cascade intelligently routes tasks across Groq, Cerebras, Google AI Studio, Together AI, DeepSeek, and Hyperbolic for optimal results at zero cost.
                 </p>
               </Link>
             </div>

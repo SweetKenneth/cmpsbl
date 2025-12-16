@@ -100,7 +100,7 @@ export async function getNexusStatus() {
   
   return {
     active: cached >= 0 && total >= 0,
-    models: ['groq', 'cerebras', 'together', 'deepseek', 'hyperbolic'],
+    models: ['groq', 'cerebras', 'google-ai-studio', 'together', 'deepseek', 'hyperbolic'],
     uptime: total > 0 ? ((total - (await getFailedRequests())) / total * 100) : 100,
     cached_responses: cached,
     total_requests: total,
