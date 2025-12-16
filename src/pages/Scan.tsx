@@ -8,8 +8,8 @@ import { Accessibility, CheckCircle, Zap, Shield, Clock, TrendingUp, ArrowRight,
 import { Link } from "react-router-dom";
 
 export default function ScanPage() {
-  const openCMPTBL = () => {
-    window.open("https://cmptbl.promptfluid.com", "_blank");
+  const openClarity = () => {
+    window.open("https://clarity.promptfluid.com", "_blank");
   };
 
   return (
@@ -77,11 +77,11 @@ export default function ScanPage() {
                 <Accessibility className="w-16 h-16 text-primary mx-auto mb-4" />
                 <h2 className="text-2xl font-bold mb-4">Start Your Free Accessibility Scan</h2>
                 <p className="text-muted-foreground mb-6">
-                  Click below to open CMPTBL — our free accessibility scanning platform.
+                  Click below to open Clarity — our free accessibility scanning platform.
                 </p>
                 <Button 
                   size="lg" 
-                  onClick={openCMPTBL}
+                  onClick={openClarity}
                   className="shadow-glow hover:shadow-glow-lg text-lg px-8 py-6"
                 >
                   <Accessibility className="w-5 h-5 mr-2" />
@@ -136,7 +136,7 @@ export default function ScanPage() {
                 </div>
                 <h3 className="text-lg font-semibold mb-2">Scan Instantly</h3>
                 <p className="text-muted-foreground">
-                  Enter any website URL. CMPTBL analyzes your entire site for WCAG 2.2 AA/AAA compliance in seconds.
+                  Enter any website URL. Clarity analyzes your entire site for WCAG 2.2 AA/AAA compliance in seconds.
                 </p>
               </Card>
               <Card className="p-6">
@@ -160,7 +160,7 @@ export default function ScanPage() {
             </div>
 
             <div>
-              <h3 className="text-2xl font-bold mb-6 text-center">What Makes CMPTBL Different?</h3>
+              <h3 className="text-2xl font-bold mb-6 text-center">What Makes Clarity Different?</h3>
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
@@ -173,7 +173,7 @@ export default function ScanPage() {
                   <CheckCircle className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
                   <div>
                     <h4 className="font-semibold mb-1">Real Code Fixes</h4>
-                    <p className="text-sm text-muted-foreground">No overlays or widgets—CMPTBL repairs your actual source code for permanent accessibility.</p>
+                    <p className="text-sm text-muted-foreground">No overlays or widgets—Clarity repairs your actual source code for permanent accessibility.</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
@@ -205,7 +205,7 @@ export default function ScanPage() {
               Join thousands of website owners making the web work for everyone. 
               It's free. It's fast. It's the right thing to do.
             </p>
-            <Button size="lg" onClick={openCMPTBL} className="shadow-glow hover:shadow-glow-lg">
+            <Button size="lg" onClick={openClarity} className="shadow-glow hover:shadow-glow-lg">
               <Accessibility className="w-5 h-5 mr-2" />
               Start Free Scan Now
               <ArrowRight className="w-5 h-5 ml-2" />

@@ -5,8 +5,8 @@ import { SEO } from "@/components/SEO";
 import { Link } from "react-router-dom";
 
 export default function ClarityProduct() {
-  const openCMPTBL = () => {
-    window.open("https://cmptbl.promptfluid.com", "_blank");
+  const openClarity = () => {
+    window.open("https://clarity.promptfluid.com", "_blank");
   };
 
   const features = [
@@ -103,7 +103,7 @@ export default function ClarityProduct() {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                   <Button 
                     size="lg" 
-                    onClick={openCMPTBL}
+                    onClick={openClarity}
                     className="shadow-glow hover:shadow-glow-lg"
                   >
                     <Accessibility className="mr-2 h-5 w-5" />
@@ -214,7 +214,7 @@ export default function ClarityProduct() {
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button size="lg" onClick={openCMPTBL} className="shadow-glow hover:shadow-glow-lg">
+                  <Button size="lg" onClick={openClarity} className="shadow-glow hover:shadow-glow-lg">
                     <Accessibility className="mr-2 h-5 w-5" />
                     Start Free Scan
                     <ArrowRight className="ml-2 h-4 w-4" />

@@ -41,7 +41,7 @@ export default function Roadmap() {
         {
           icon: Accessibility,
           title: "Clarity Accessibility Suite",
-          description: "100% free WCAG compliance scanning and AI-powered fixes. Already live at cmptbl.promptfluid.com with WordPress plugin.",
+          description: "100% free WCAG compliance scanning and AI-powered fixes. Already live at clarity.promptfluid.com with WordPress plugin.",
           status: "Live",
           technologies: ["Computer Vision", "NLP", "WCAG 2.2", "ARIA"]
         }

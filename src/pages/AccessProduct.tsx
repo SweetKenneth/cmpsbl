@@ -6,8 +6,8 @@ import { Link } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 
 export default function AccessProduct() {
-  const openCMPTBL = () => {
-    window.open("https://cmptbl.promptfluid.com", "_blank");
+  const openClarity = () => {
+    window.open("https://clarity.promptfluid.com", "_blank");
   };
 
   const features = [
@@ -107,7 +107,7 @@ export default function AccessProduct() {
                 <div className="flex flex-col sm:flex-row gap-4 mb-8">
                   <Button 
                     size="lg" 
-                    onClick={openCMPTBL}
+                    onClick={openClarity}
                     className="group bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500 hover:shadow-glow-lg text-lg"
                   >
                     <Accessibility className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform" />
@@ -282,7 +282,7 @@ export default function AccessProduct() {
             Join thousands of website owners making the web work for everyone. 
             It's free. It's fast. It's the right thing to do.
           </p>
-          <Button size="lg" onClick={openCMPTBL} className="shadow-glow hover:shadow-glow-lg">
+          <Button size="lg" onClick={openClarity} className="shadow-glow hover:shadow-glow-lg">
             <Accessibility className="w-5 h-5 mr-2" />
             Start Free Accessibility Scan
             <ArrowRight className="w-4 h-4 ml-2" />

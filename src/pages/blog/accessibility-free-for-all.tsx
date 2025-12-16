@@ -8,8 +8,8 @@ import { Heart, Accessibility, ArrowRight, CheckCircle, Users, Globe, Sparkles }
 import { Link } from "react-router-dom";
 
 export default function AccessibilityFreeForAll() {
-  const openCMPTBL = () => {
-    window.open("https://cmptbl.promptfluid.com", "_blank");
+  const openClarity = () => {
+    window.open("https://clarity.promptfluid.com", "_blank");
   };
 
   return (
@@ -67,9 +67,9 @@ export default function AccessibilityFreeForAll() {
                 <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
                   No signups. No credit cards. No "freemium" limitations. Just real accessibility tools that work.
                 </p>
-                <Button size="lg" onClick={openCMPTBL} className="shadow-glow hover:shadow-glow-lg">
+                <Button size="lg" onClick={openClarity} className="shadow-glow hover:shadow-glow-lg">
                   <Accessibility className="w-5 h-5 mr-2" />
-                  Start Free Scan at CMPTBL
+                  Start Free Scan at Clarity
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </div>
@@ -133,7 +133,7 @@ export default function AccessibilityFreeForAll() {
               <h2 className="text-3xl font-bold mt-12 mb-6">What We're Doing Differently</h2>
 
               <p className="text-lg leading-relaxed mb-6">
-                At PromptFluid, we've built <strong>CMPTBL</strong> — a completely free accessibility scanning and 
+                At PromptFluid, we've built <strong>Clarity</strong> — a completely free accessibility scanning and 
                 remediation platform. Here's what you get:
               </p>
 
@@ -197,7 +197,7 @@ export default function AccessibilityFreeForAll() {
                   Join thousands of website owners who are making the web work for everyone.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button size="lg" onClick={openCMPTBL} className="shadow-glow">
+                  <Button size="lg" onClick={openClarity} className="shadow-glow">
                     <Accessibility className="w-5 h-5 mr-2" />
                     Free Accessibility Scan
                   </Button>
