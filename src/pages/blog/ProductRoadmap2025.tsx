@@ -107,7 +107,7 @@ const ProductRoadmap2025 = () => {
                     <span>Status: Internal Testing (March 2025)</span>
                   </div>
                   <p className="mb-3">
-                    Intelligent routing layer that distributes AI tasks across OpenAI, Anthropic, Groq, and specialized models based on performance and cost optimization.
+                    Intelligent routing layer that distributes AI tasks across Groq, Together, Hyperbolic, DeepSeek, Cerebras, and other free-tier providers based on performance and cost optimization.
                   </p>
                   <h4 className="font-semibold text-sm mb-2">Key Features:</h4>
                   <ul className="space-y-1 text-sm">
@@ -200,24 +200,24 @@ const ProductRoadmap2025 = () => {
               </div>
             </Card>
 
-            <Card className="p-6 bg-card/50 border-l-4 border-l-primary-glow">
+            <Card className="p-6 bg-card/50 border-l-4 border-l-green-500">
               <div className="flex items-start gap-4 mb-4">
-                <Clock className="h-6 w-6 text-primary-glow flex-shrink-0 mt-1" />
+                <CheckCircle className="h-6 w-6 text-green-500 flex-shrink-0 mt-1" />
                 <div>
-                  <h3 className="text-xl font-semibold mb-2">CMPTBL Automated Accessibility</h3>
+                  <h3 className="text-xl font-semibold mb-2">CMPTBL (Clarity) - 100% Free Accessibility</h3>
                   <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
                     <Calendar className="h-4 w-4" />
-                    <span>Estimated: June 2025</span>
+                    <span>Status: LIVE at cmptbl.promptfluid.com</span>
                   </div>
                   <p className="mb-3">
-                    AI-driven accessibility scanning and remediation that ensures WCAG 2.1 AA compliance automatically across web properties.
+                    AI-driven accessibility scanning and remediation that ensures WCAG 2.2 compliance — completely free, forever. Accessibility should never be behind a paywall.
                   </p>
-                  <h4 className="font-semibold text-sm mb-2">Core Features:</h4>
+                  <h4 className="font-semibold text-sm mb-2">Live Features:</h4>
                   <ul className="space-y-1 text-sm">
-                    <li>Automated alt text generation for images</li>
-                    <li>Semantic structure analysis and recommendations</li>
+                    <li>86+ automated WCAG checks</li>
+                    <li>AI-powered automated fixes</li>
+                    <li>Semantic structure analysis</li>
                     <li>Keyboard navigation verification</li>
-                    <li>Screen reader compatibility testing</li>
                     <li>Continuous compliance monitoring</li>
                   </ul>
                 </div>
