@@ -11,7 +11,7 @@ const AIProductComparison2025 = () => {
     <div className="min-h-screen bg-background">
       <SEO
         title="AI Platform Comparison 2025: Paid APIs vs Free-Tier Provider Networks | Complete Analysis"
-        description="In-depth comparison of AI platform approaches in 2025. Discover how PromptFluid's free-tier provider network eliminates AI costs through intelligent routing across Groq, Cerebras, Together AI, DeepSeek, and Hyperbolic."
+        description="In-depth comparison of AI platform approaches in 2025. Discover how PromptFluid's free-tier provider network eliminates AI costs through intelligent routing across Groq, Cerebras, Google AI Studio, Together AI, DeepSeek, and Hyperbolic."
         canonical="https://www.promptfluid.com/blog/ai-platform-comparison-2025"
         keywords={[
           "AI platform comparison",

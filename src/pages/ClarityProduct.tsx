@@ -45,7 +45,7 @@ export default function ClarityProduct() {
   const industryFirsts = [
     "First 100% free accessibility scanning and fixing platform",
     "First WordPress accessibility plugin with AI-powered auto-fix",
-    "First to use multi-model AI (Groq + Together + Hyperbolic + DeepSeek + Cerebras) for WCAG compliance",
+    "First to use multi-model AI (Groq + Together + Hyperbolic + DeepSeek + Cerebras + Google AI Studio) for WCAG compliance",
     "First real-time learning from accessibility patterns across installations",
     "First to generate contextual alt text using Cascade AI"
   ];

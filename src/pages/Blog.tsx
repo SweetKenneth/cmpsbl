@@ -120,7 +120,7 @@ export default function Blog() {
     },
     {
       title: "Free-Tier AI Network: Intelligent Routing Explained",
-      excerpt: "How PromptFluid's multi-provider AI gateway intelligently routes between Groq, Cerebras, Together AI, DeepSeek, and Hyperbolic—all free-tier.",
+      excerpt: "How PromptFluid's multi-provider AI gateway intelligently routes between Groq, Cerebras, Google AI Studio, Together AI, DeepSeek, and Hyperbolic—all free-tier.",
       href: "/blog/ai-triad-intelligent-routing",
       category: "Technology",
       date: "2025-01-02",

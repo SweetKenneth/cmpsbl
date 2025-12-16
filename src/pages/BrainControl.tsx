@@ -135,11 +135,11 @@ export default function BrainControl() {
         <Card className="p-6 space-y-4">
           <h3 className="text-xl font-semibold">About the Brain</h3>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>✅ <strong>Free-Tier AI Routing:</strong> Groq → Cerebras → DeepSeek → Hyperbolic</li>
+            <li>✅ <strong>Free-Tier AI Routing:</strong> Groq → Cerebras → Google AI Studio → DeepSeek → Together AI → Hyperbolic</li>
             <li>✅ <strong>Dual-Memory System:</strong> Hot (90-day) + Cold (infinite) storage</li>
             <li>✅ <strong>Adaptive Learning:</strong> Semantic recall and pattern recognition</li>
             <li>✅ <strong>Nightly Reflections:</strong> Meta-learning and system optimization</li>
-            <li>✅ <strong>Cost-Aware Routing:</strong> Automatically selects cheapest viable AI provider</li>
+            <li>✅ <strong>Zero-Cost Routing:</strong> Routes exclusively through free-tier AI providers</li>
           </ul>
         </Card>
       </div>

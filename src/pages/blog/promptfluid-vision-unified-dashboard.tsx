@@ -96,7 +96,7 @@ const PromptFluidVision = () => {
                   <h3 className="text-2xl font-bold m-0">AI Performance Analytics</h3>
                 </div>
                 <p className="text-muted-foreground leading-relaxed">
-                  Track how <Link to="/blog/ai-triad-intelligent-routing" className="text-primary hover:underline">free-tier providers</Link> perform across different task types. Vision shows which models deliver the best results for specific workflows, average response times per provider, cost per request, and quality scores based on user feedback and Brain evaluations.
+                  Track how <Link to="/blog/ai-triad-intelligent-routing" className="text-primary hover:underline">free-tier providers</Link> perform across different task types. Vision shows which models deliver the best results for specific workflows, average response times per provider, token usage per request, and quality scores based on user feedback and Brain evaluations.
                 </p>
               </div>
 
@@ -163,7 +163,7 @@ const PromptFluidVision = () => {
                   <span className="text-sm text-primary font-semibold">✓ Live</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="font-semibold">Cost Analytics</span>
+                  <span className="font-semibold">Usage Analytics</span>
                   <span className="text-sm text-accent font-semibold">Beta</span>
                 </div>
                 <div className="flex items-center justify-between">
@@ -204,7 +204,7 @@ const PromptFluidVision = () => {
               <div className="border-l-4 border-muted-foreground/30 pl-6">
                 <h3 className="text-xl font-bold mb-2">Automated Workflow Orchestration (Q4 2025)</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  Define automation rules that trigger based on Vision metrics. Automatically scale infrastructure when queue depths exceed thresholds, rotate API providers when costs spike, or trigger security lockdowns when Defense detects coordinated attacks. Vision becomes not just an observation tool but an autonomous operations platform.
+                  Define automation rules that trigger based on Vision metrics. Automatically scale infrastructure when queue depths exceed thresholds, rotate API providers when latency increases, or trigger security lockdowns when Defense detects coordinated attacks. Vision becomes not just an observation tool but an autonomous operations platform.
                 </p>
               </div>
 

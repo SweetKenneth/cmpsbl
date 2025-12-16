@@ -12,7 +12,6 @@ serve(async (req) => {
 
   try {
     const { content_type, topic, tone = 'professional', length = 'medium' } = await req.json();
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
 
     console.log(`✍️ Generating ${content_type} content about: ${topic}`);
 
@@ -26,23 +25,30 @@ serve(async (req) => {
 
     const prompt = prompts[content_type as keyof typeof prompts] || `Create marketing content about "${topic}". Tone: ${tone}.`;
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    // Route through Nexus (free-tier provider network)
+    const response = await fetch(`${Deno.env.get('SUPABASE_URL')}/functions/v1/pf-nexus-router`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')}`
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [{ role: 'user', content: prompt }],
+        prompt,
+        systemPrompt: 'You are a professional marketing content writer. Create engaging, high-quality content.',
+        temperature: 0.7,
+        maxTokens: 2000,
+        metadata: { routeKey: 'pf-marketing-content' }
       }),
     });
 
     const data = await response.json();
-    const content = data.choices[0].message.content;
+    
+    if (!response.ok) {
+      throw new Error(data.error || 'Nexus routing failed');
+    }
 
     return new Response(
-      JSON.stringify({ success: true, content, content_type, topic }),
+      JSON.stringify({ success: true, content: data.content, content_type, topic, provider: data.provider }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (error) {
