@@ -38,20 +38,19 @@ export function EnhancedFooter() {
             <ul className="space-y-2.5 text-sm text-muted-foreground">
               <li><Link to="/blog" className="block py-1 hover:text-primary transition-colors touch-manipulation">Blog</Link></li>
               <li><Link to="/roadmap" className="block py-1 hover:text-primary transition-colors touch-manipulation">Product Roadmap</Link></li>
-              <li><Link to="/solutions" className="block py-1 hover:text-primary transition-colors touch-manipulation">Solutions</Link></li>
-              <li><Link to="/documentation" className="block py-1 hover:text-primary transition-colors touch-manipulation">Documentation</Link></li>
-              <li><Link to="/threat-feed" className="block py-1 hover:text-primary transition-colors touch-manipulation">Threat Feed</Link></li>
+              <li><Link to="/solutions" className="block py-1 hover:text-primary transition-colors touch-manipulation">Solutions & Pricing</Link></li>
+              <li><Link to="/scan" className="block py-1 hover:text-primary transition-colors touch-manipulation font-medium text-primary">Free Scan →</Link></li>
             </ul>
           </div>
 
-          {/* Technology */}
+          {/* Learn */}
           <div>
-            <h4 className="font-semibold mb-4 text-sm text-foreground">Technology</h4>
+            <h4 className="font-semibold mb-4 text-sm text-foreground">Learn</h4>
             <ul className="space-y-2.5 text-sm text-muted-foreground">
               <li><Link to="/blog/how-promptfluid-works-cascade-ai-ecosystem" className="block py-1 hover:text-primary transition-colors touch-manipulation">How It Works</Link></li>
               <li><Link to="/blog/cascade-ai-adaptive-intelligence-brain" className="block py-1 hover:text-primary transition-colors touch-manipulation">Cascade AI</Link></li>
-              <li><Link to="/blog/ai-triad-intelligent-routing" className="block py-1 hover:text-primary transition-colors touch-manipulation">Provider Network</Link></li>
               <li><Link to="/blog/clarity-accessibility-mission" className="block py-1 hover:text-primary transition-colors touch-manipulation">Clarity Mission</Link></li>
+              <li><Link to="/blog/product-roadmap-2025" className="block py-1 hover:text-primary transition-colors touch-manipulation">2025 Vision</Link></li>
             </ul>
           </div>
 
@@ -70,20 +69,16 @@ export function EnhancedFooter() {
         <div className="border-t border-border/50 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-center md:text-left">
             <p className="text-sm text-muted-foreground mb-1">
-              © 2025 PromptFluid™ — AI-Powered Security & Intelligent Automation Ecosystem
+              © 2025 PromptFluid™ — AI-Powered Security & Intelligent Automation
             </p>
             <p className="text-xs text-muted-foreground max-w-2xl">
-              Building the world's first AI that dreams. Multiple products pending WordPress.org approval.
+              Building the world's first AI that dreams. Products pending WordPress.org approval.
             </p>
           </div>
           <div className="flex items-center gap-4 text-xs text-muted-foreground">
-            <Link to="/" className="py-2 hover:text-primary transition-colors touch-manipulation">Home</Link>
+            <Link to="/privacy" className="py-2 hover:text-primary transition-colors touch-manipulation">Privacy</Link>
             <span>•</span>
-            <Link to="/investors" className="py-2 hover:text-primary transition-colors touch-manipulation">Investors</Link>
-            <span>•</span>
-            <Link to="/about" className="py-2 hover:text-primary transition-colors touch-manipulation">About</Link>
-            <span>•</span>
-            <Link to="/contact" className="py-2 hover:text-primary transition-colors touch-manipulation">Contact</Link>
+            <Link to="/terms" className="py-2 hover:text-primary transition-colors touch-manipulation">Terms</Link>
             <span>•</span>
             <Link to="/auth" className="py-2 hover:text-primary transition-colors touch-manipulation text-muted-foreground/60">Employee Login</Link>
           </div>

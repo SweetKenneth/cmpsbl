@@ -332,10 +332,10 @@ export function PublicNav() {
 
           <div className="flex items-center gap-3">
             <Button
-              onClick={() => navigate("/auth")}
+              onClick={() => navigate("/investors")}
               className="shadow-glow hover:shadow-glow-lg"
             >
-              Get Started
+              Learn More
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
             <button
