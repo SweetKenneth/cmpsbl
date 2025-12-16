@@ -170,7 +170,7 @@ export default function About() {
                   The system learns and adapts continuously, getting smarter with every threat it encounters.
                 </p>
                 <p className="text-muted-foreground leading-relaxed">
-                  Built by security engineers with Fortune 500 experience, Reflex brings enterprise-grade protection to WordPress 
+                  Built with a focus on making advanced security accessible, Reflex brings intelligent protection to WordPress 
                   sites of all sizes. It's the first product in our ecosystem—and it's just the beginning.
                 </p>
               </div>

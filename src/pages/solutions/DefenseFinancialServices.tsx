@@ -108,7 +108,7 @@ const DefenseFinancialServices = () => {
                   <div className="flex-1">
                     <h3 className="text-xl font-bold mb-2">Real-Time ATO Prevention</h3>
                     <p className="text-muted-foreground mb-4">
-                      Behavioral AI analyzes 40+ signals per login attempt—detecting credential stuffing bots before they succeed. When a single IP tests 500 username/password combinations, we block it instantly while legitimate customers never experience friction.
+                      Behavioral AI analyzes multiple signals per login attempt—detecting credential stuffing bots before they succeed. When suspicious patterns emerge from repeated login attempts, the system blocks them while legitimate customers continue without friction.
                     </p>
                     <ul className="space-y-2 text-sm">
                       <li className="flex items-start gap-2">

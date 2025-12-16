@@ -224,7 +224,7 @@ export default function BrainProduct() {
                 </h1>
 
                 <p className="text-2xl text-primary font-medium mb-4">
-                  World's First Dreaming AI
+                  Experimental Dreaming AI
                 </p>
 
                 <p className="text-lg text-muted-foreground leading-relaxed mb-8">
@@ -492,7 +492,7 @@ export default function BrainProduct() {
               </span>
             </h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              See how PromptFluid Brain learns from 50M+ threat patterns to protect your applications with unmatched accuracy.
+              See how PromptFluid Brain uses adaptive learning to analyze patterns and protect your applications.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" onClick={handleAccess} className="bg-gradient-to-r from-cyan-500 via-teal-500 to-green-500">

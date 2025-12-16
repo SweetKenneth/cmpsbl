@@ -103,7 +103,7 @@ export default function AutomatedAccessibilityFixes() {
                 <div className="grid md:grid-cols-2 gap-3 text-sm">
                   <div className="flex items-start gap-2">
                     <Zap className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                    <span><strong>Alt text generation:</strong> 95% accuracy with AI</span>
+                    <span><strong>Alt text generation:</strong> High accuracy with AI</span>
                   </div>
                   <div className="flex items-start gap-2">
                     <Zap className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
@@ -111,11 +111,11 @@ export default function AutomatedAccessibilityFixes() {
                   </div>
                   <div className="flex items-start gap-2">
                     <Zap className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                    <span><strong>Heading hierarchy:</strong> 90% automatable</span>
+                    <span><strong>Heading hierarchy:</strong> Highly automatable</span>
                   </div>
                   <div className="flex items-start gap-2">
                     <Zap className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                    <span><strong>Form labels:</strong> 85% automatable</span>
+                    <span><strong>Form labels:</strong> Mostly automatable</span>
                   </div>
                   <div className="flex items-start gap-2">
                     <Zap className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
@@ -253,23 +253,23 @@ export default function AutomatedAccessibilityFixes() {
 
               <h2>Real-World Performance: Automated vs. Manual Fixes</h2>
               <p>
-                How does automated accessibility remediation compare to traditional manual fixes in practice? Here are real metrics from PromptFluid Clarity deployments:
+                How does automated accessibility remediation compare to traditional manual fixes in practice? Here are general estimates based on AI accessibility tools:
               </p>
 
               <h3>Time Savings</h3>
               <ul>
-                <li><strong>Manual alt text:</strong> 2-3 minutes per image → <strong>Automated:</strong> 5 seconds per image (96% faster)</li>
-                <li><strong>Manual contrast fixes:</strong> 15-30 minutes per violation → <strong>Automated:</strong> Instant (100% faster)</li>
-                <li><strong>Manual heading fixes:</strong> 10-20 minutes per page → <strong>Automated:</strong> 30 seconds per page (97% faster)</li>
-                <li><strong>Full site audit + fix:</strong> 40-80 hours manual → <strong>Automated:</strong> 2-4 hours (95% faster)</li>
+                <li><strong>Alt text:</strong> Manual writing takes minutes per image → Automated generation takes seconds</li>
+                <li><strong>Contrast fixes:</strong> Manual adjustment takes time → Automated fixes are instant</li>
+                <li><strong>Heading fixes:</strong> Manual review per page → Automated analysis in seconds</li>
+                <li><strong>Full site audit:</strong> Manual audits take days → Automated scans complete in hours</li>
               </ul>
 
-              <h3>Accuracy Comparison</h3>
+              <h3>Accuracy Expectations</h3>
               <ul>
-                <li><strong>Alt text quality:</strong> 95% of AI-generated alt text meets WCAG standards without editing</li>
-                <li><strong>Contrast adjustments:</strong> 100% accuracy in meeting WCAG ratios</li>
-                <li><strong>Structural fixes:</strong> 90% accuracy for heading hierarchy and semantic HTML</li>
-                <li><strong>Form labels:</strong> 85% accuracy in proper label association</li>
+                <li><strong>Alt text quality:</strong> AI-generated alt text often meets WCAG standards with minimal editing</li>
+                <li><strong>Contrast adjustments:</strong> Mathematical calculations ensure accurate WCAG ratio compliance</li>
+                <li><strong>Structural fixes:</strong> Good accuracy for heading hierarchy and semantic HTML</li>
+                <li><strong>Form labels:</strong> Reliable label association for most form elements</li>
               </ul>
 
               <h3>Cost Comparison</h3>

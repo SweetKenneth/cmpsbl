@@ -112,11 +112,11 @@ const AIBusinessOperations2025 = () => {
                   <li><strong>Quality Assurance:</strong> Review 100% of customer interactions for compliance, tone, and effectiveness rather than sampling</li>
                 </ul>
                 <div className="mt-4 p-4 bg-background/50 rounded">
-                  <p className="font-semibold mb-2">Typical Results:</p>
+                  <p className="font-semibold mb-2">Industry Benchmarks (varies by implementation):</p>
                   <ul className="space-y-1 text-xs">
-                    <li>60-80% of inquiries resolved without human involvement</li>
-                    <li>Average response time reduced from hours to seconds</li>
-                    <li>Support costs reduced 40-50% while improving satisfaction</li>
+                    <li>Many routine inquiries can be resolved without human involvement</li>
+                    <li>Response times can improve significantly for common questions</li>
+                    <li>Potential for meaningful cost reduction when implemented well</li>
                   </ul>
                 </div>
               </div>
@@ -187,11 +187,11 @@ const AIBusinessOperations2025 = () => {
                   <li><strong>Reporting Automation:</strong> Generate financial reports, variance analyses, and executive summaries on demand</li>
                 </ul>
                 <div className="mt-4 p-4 bg-background/50 rounded">
-                  <p className="font-semibold mb-2">Typical Results:</p>
+                  <p className="font-semibold mb-2">Industry Benchmarks (varies by implementation):</p>
                   <ul className="space-y-1 text-xs">
-                    <li>70-90% reduction in invoice processing time</li>
-                    <li>Fraud detection rate improvement of 3-5x</li>
-                    <li>Month-end close accelerated by 40-60%</li>
+                    <li>Significant reduction in invoice processing time</li>
+                    <li>Improved fraud detection capabilities</li>
+                    <li>Faster month-end close processes</li>
                   </ul>
                 </div>
               </div>
