@@ -136,11 +136,11 @@ export default function Contact() {
                 <ul className="space-y-3">
                   <li className="flex items-start gap-2">
                     <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
-                    <span className="text-muted-foreground">Response time: Within 24 hours</span>
+                    <span className="text-muted-foreground">Response time: Within 24-48 hours</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
-                    <span className="text-muted-foreground">Support hours: 24/7 for enterprise customers</span>
+                    <span className="text-muted-foreground">Founder-led support for all inquiries</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
