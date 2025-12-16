@@ -110,9 +110,10 @@ export default function BrainProduct() {
         "✅ Behavioral analysis models (84+ tables)",
         "✅ Training data collection system with Brain console",
         "✅ Initial API framework (268+ edge functions)",
-        "✅ Deep thinking engine (o3 reasoning model)",
-        "✅ Autonomous research (17,280 Perplexity calls/day)",
-        "✅ Knowledge graph building with semantic triples"
+        "✅ Deep thinking engine with multi-provider routing",
+        "✅ Free-tier AI routing (Groq, Together, Hyperbolic, DeepSeek, Cerebras)",
+        "✅ Dream cycle intelligence with autonomous learning",
+        "✅ Dream-Eater feeding API for public submissions"
       ]
     },
     {

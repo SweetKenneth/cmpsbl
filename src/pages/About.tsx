@@ -36,7 +36,7 @@ export default function About() {
             },
             "numberOfEmployees": {
               "@type": "QuantitativeValue",
-              "value": "5-10"
+              "value": "1"
             },
             "slogan": "AI That Flows",
             "description": "Enterprise AI-powered WordPress security and intelligent automation platform"
