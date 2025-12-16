@@ -46,7 +46,7 @@ export default function Index() {
       description: "AI-powered threat detection for WordPress and enterprise. Behavioral analysis, bot sniping, and real-time protection that evolves with threats.",
       href: "/products/defense",
       features: ["Bot Sniper Technology", "Behavioral Fingerprinting", "Adaptive CAPTCHA"],
-      status: "Live on WordPress.org"
+      status: "Pending WordPress.org"
     },
     {
       icon: Sparkles,
@@ -552,19 +552,19 @@ export default function Index() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {/* PromptFluid Reflex Bot Sniper - Live on WordPress.org */}
+            {/* PromptFluid Reflex Bot Sniper - Pending WordPress.org */}
             <div
               onClick={() => navigate('/projects/defense')}
-              className="group relative p-8 rounded-3xl glass border-2 border-green-500/30 hover:border-green-500/50 cursor-pointer transition-all duration-300 hover:shadow-glow overflow-hidden"
+              className="group relative p-8 rounded-3xl glass border-2 border-amber-500/30 hover:border-amber-500/50 cursor-pointer transition-all duration-300 hover:shadow-glow overflow-hidden"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 via-blue-500/10 to-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-blue-500/10 to-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               <div className="relative z-10">
                 <div className="flex items-start justify-between mb-4">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-500 to-cyan-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-cyan-500 flex items-center justify-center group-hover:scale-110 transition-transform">
                     <Shield className="w-8 h-8 text-white" />
                   </div>
-                  <Badge className="bg-green-500/10 text-green-500 border-green-500/20">
-                    Live on WordPress.org
+                  <Badge className="bg-amber-500/10 text-amber-500 border-amber-500/20">
+                    Pending WordPress.org
                   </Badge>
                 </div>
                 <h3 className="text-2xl font-bold mb-2 group-hover:text-primary transition-colors">
