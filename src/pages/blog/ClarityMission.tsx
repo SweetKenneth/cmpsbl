@@ -6,20 +6,20 @@ import { ArrowLeft, Heart, Users, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 import heroImage from "@/assets/blog/cmptbl-mission-accessibility.jpg";
 
-const CMPTBLMission = () => {
+const ClarityMission = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="CMPTBL: Making the Digital World Accessible for Everyone | PromptFluid"
-        description="Discover CMPTBL's mission to eliminate digital barriers through AI-powered accessibility. Learn how PromptFluid is revolutionizing WCAG compliance and creating inclusive web experiences."
-        canonical="https://www.promptfluid.com/blog/cmptbl-accessibility-mission"
+        title="PromptFluid Clarity: Making the Digital World Accessible for Everyone | PromptFluid"
+        description="Discover Clarity's mission to eliminate digital barriers through AI-powered accessibility. Learn how PromptFluid is revolutionizing WCAG compliance and creating inclusive web experiences."
+        canonical="https://www.promptfluid.com/blog/clarity-accessibility-mission"
         keywords={[
           "web accessibility",
           "WCAG compliance",
           "AI accessibility tools",
           "digital inclusion",
           "accessible web design",
-          "CMPTBL accessibility",
+          "PromptFluid Clarity",
           "ADA compliance software",
           "automated accessibility testing"
         ]}
@@ -46,10 +46,10 @@ const CMPTBLMission = () => {
           </div>
           
           <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent">
-            CMPTBL: The Mission to Make Every Digital Experience Accessible
+            PromptFluid Clarity: The Mission to Make Every Digital Experience Accessible
           </h1>
           <p className="text-xl text-muted-foreground">
-            How PromptFluid's CMPTBL module is using AI to eliminate digital barriers and create truly inclusive web experiences for everyone
+            How PromptFluid's Clarity module is using AI to eliminate digital barriers and create truly inclusive web experiences for everyone
           </p>
           
           <AuthorBio publishDate="2025-10-16" readTime="12 min read" />
@@ -57,7 +57,7 @@ const CMPTBLMission = () => {
 
         <section className="prose prose-lg max-w-none mb-12">
           <p className="lead text-xl mb-8">
-            Over 1 billion people worldwide live with some form of disability. Yet the digital world remains frustratingly inaccessible to millions. CMPTBL exists to change that reality through adaptive AI that makes accessibility automatic, comprehensive, and sustainable.
+            Over 1 billion people worldwide live with some form of disability. Yet the digital world remains frustratingly inaccessible to millions. Clarity exists to change that reality through adaptive AI that makes accessibility automatic, comprehensive, and sustainable.
           </p>
 
           <h2 className="text-3xl font-bold mt-12 mb-6">The Accessibility Crisis Nobody Talks About</h2>
@@ -112,18 +112,18 @@ const CMPTBLMission = () => {
             The reality has been far different. Many overlay solutions create new accessibility barriers, interfere with legitimate assistive technologies, and provide false security to organizations that believe they're compliant when significant issues remain. The National Federation of the Blind and other advocacy groups have actively opposed these approaches.
           </p>
 
-          <h2 className="text-3xl font-bold mt-12 mb-6">The CMPTBL Difference: Adaptive Accessibility Intelligence</h2>
+          <h2 className="text-3xl font-bold mt-12 mb-6">The Clarity Difference: Adaptive Accessibility Intelligence</h2>
           <p className="mb-6">
-            CMPTBL takes a fundamentally different approach to accessibility. Rather than treating compliance as a one-time checklist or attempting to patch problems with client-side JavaScript, CMPTBL integrates deeply into the development workflow and continuously ensures accessibility at the source.
+            Clarity takes a fundamentally different approach to accessibility. Rather than treating compliance as a one-time checklist or attempting to patch problems with client-side JavaScript, Clarity integrates deeply into the development workflow and continuously ensures accessibility at the source.
           </p>
 
           <Card className="p-8 bg-gradient-to-br from-primary/10 to-primary-glow/10 border-primary/20 mb-8">
             <div className="flex items-start gap-4 mb-6">
               <Zap className="h-8 w-8 text-primary flex-shrink-0 mt-1" />
               <div>
-                <h3 className="text-2xl font-bold mb-3">How CMPTBL Works</h3>
+                <h3 className="text-2xl font-bold mb-3">How Clarity Works</h3>
                 <p className="text-muted-foreground">
-                  CMPTBL combines real-time scanning, AI-powered remediation, and continuous monitoring to maintain WCAG compliance automatically
+                  Clarity combines real-time scanning, AI-powered remediation, and continuous monitoring to maintain WCAG compliance automatically
                 </p>
               </div>
             </div>
@@ -148,7 +148,7 @@ const CMPTBLMission = () => {
 
           <h3 className="text-2xl font-semibold mt-8 mb-4">Real-Time Alt Text Generation</h3>
           <p className="mb-4">
-            One of the most common accessibility failures is missing or inadequate image alternative text. Writing effective alt text requires understanding both image content and context. CMPTBL's AI vision model analyzes images in context to generate descriptive, appropriate alt text automatically.
+            One of the most common accessibility failures is missing or inadequate image alternative text. Writing effective alt text requires understanding both image content and context. Clarity's AI vision model analyzes images in context to generate descriptive, appropriate alt text automatically.
           </p>
           <p className="mb-6">
             The system understands the difference between decorative images that should have empty alt text and meaningful images requiring descriptions. It identifies text within images that should be extracted and considers the surrounding content to ensure descriptions are relevant to the page's purpose.
@@ -156,15 +156,15 @@ const CMPTBLMission = () => {
 
           <h3 className="text-2xl font-semibold mt-8 mb-4">Semantic Structure Analysis</h3>
           <p className="mb-4">
-            Screen readers rely on proper document structure to help users navigate content efficiently. CMPTBL analyzes page hierarchy, identifies structural issues like heading level skips or missing landmarks, and provides specific recommendations for improvement.
+            Screen readers rely on proper document structure to help users navigate content efficiently. Clarity analyzes page hierarchy, identifies structural issues like heading level skips or missing landmarks, and provides specific recommendations for improvement.
           </p>
           <p className="mb-6">
-            Unlike simple rule-based validators, CMPTBL understands intent. It recognizes when visual styling creates semantic meaning that isn't reflected in the HTML structure and recommends changes that preserve the visual design while making it accessible.
+            Unlike simple rule-based validators, Clarity understands intent. It recognizes when visual styling creates semantic meaning that isn't reflected in the HTML structure and recommends changes that preserve the visual design while making it accessible.
           </p>
 
           <h3 className="text-2xl font-semibold mt-8 mb-4">Keyboard Navigation Optimization</h3>
           <p className="mb-4">
-            Many users navigate entirely via keyboard due to motor disabilities or assistive technology requirements. CMPTBL automatically tests keyboard navigation flows, identifies interactive elements that aren't keyboard accessible, and detects focus management issues.
+            Many users navigate entirely via keyboard due to motor disabilities or assistive technology requirements. Clarity automatically tests keyboard navigation flows, identifies interactive elements that aren't keyboard accessible, and detects focus management issues.
           </p>
           <p className="mb-6">
             The system goes beyond basic tab order validation to ensure complex interactions like modals, dropdowns, and custom widgets function properly with keyboard-only navigation. It identifies focus traps, missing skip links, and unclear focus indicators.
@@ -188,7 +188,7 @@ const CMPTBLMission = () => {
             Website accessibility lawsuits have increased dramatically, with over 4,500 federal cases filed in 2024 alone—a trend continuing into 2025. Settlements often reach six figures, and legal defense costs can exceed the settlement amounts. Many businesses face demand letters threatening litigation unless accessibility barriers are removed.
           </p>
           <p className="mb-6">
-            CMPTBL provides verifiable documentation of accessibility efforts and ongoing compliance monitoring. While no tool eliminates legal risk entirely, demonstrating proactive commitment to accessibility significantly strengthens your position.
+            Clarity provides verifiable documentation of accessibility efforts and ongoing compliance monitoring. While no tool eliminates legal risk entirely, demonstrating proactive commitment to accessibility significantly strengthens your position.
           </p>
 
           <h3 className="text-2xl font-semibold mt-8 mb-4">SEO and Search Performance</h3>
@@ -199,14 +199,14 @@ const CMPTBLMission = () => {
             Sites with strong accessibility tend to have better crawlability, clearer content organization, and improved mobile experiences. These factors directly impact search visibility and organic traffic growth.
           </p>
 
-          <h2 className="text-3xl font-bold mt-12 mb-6">CMPTBL Integration with PromptFluid Ecosystem</h2>
+          <h2 className="text-3xl font-bold mt-12 mb-6">Clarity Integration with PromptFluid Ecosystem</h2>
           <p className="mb-6">
-            CMPTBL doesn't operate in isolation. As part of the <Link to="/solutions" className="text-primary hover:underline">PromptFluid ecosystem</Link>, it benefits from and contributes to the broader adaptive intelligence platform.
+            Clarity doesn't operate in isolation. As part of the <Link to="/solutions" className="text-primary hover:underline">PromptFluid ecosystem</Link>, it benefits from and contributes to the broader adaptive intelligence platform.
           </p>
 
           <h3 className="text-2xl font-semibold mt-8 mb-4">Studio Integration: Accessible by Default</h3>
           <p className="mb-4">
-            PromptFluid Studio automatically incorporates CMPTBL recommendations when building new sites and applications. Every generated component includes proper semantic structure, ARIA attributes, and keyboard navigation support from the start.
+            PromptFluid Studio automatically incorporates Clarity recommendations when building new sites and applications. Every generated component includes proper semantic structure, ARIA attributes, and keyboard navigation support from the start.
           </p>
           <p className="mb-6">
             This "accessible by default" approach eliminates the need for expensive remediation later. Developers can customize and extend without breaking accessibility because the foundation is solid.
@@ -217,7 +217,7 @@ const CMPTBLMission = () => {
             The PromptFluid Brain learns from every accessibility scan and remediation. It identifies patterns specific to your industry, content types, and design approaches. Over time, recommendations become increasingly tailored and accurate.
           </p>
           <p className="mb-6">
-            When developers accept or modify CMPTBL suggestions, the system learns these preferences and applies them to future recommendations. This creates a continuously improving accessibility intelligence that becomes more valuable with use.
+            When developers accept or modify Clarity suggestions, the system learns these preferences and applies them to future recommendations. This creates a continuously improving accessibility intelligence that becomes more valuable with use.
           </p>
 
           <h3 className="text-2xl font-semibold mt-8 mb-4">Vision Dashboard: Accessibility Insights</h3>
@@ -228,7 +228,7 @@ const CMPTBLMission = () => {
             Executives gain visibility into accessibility posture without needing technical expertise. Developers get actionable task lists integrated into their existing workflows. Accessibility specialists can review automated suggestions and override when necessary.
           </p>
 
-          <h2 className="text-3xl font-bold mt-12 mb-6">Projected Impact: CMPTBL Use Cases</h2>
+          <h2 className="text-3xl font-bold mt-12 mb-6">Projected Impact: Clarity Use Cases</h2>
           
           <Card className="p-6 mb-6 bg-card/50">
             <h3 className="text-xl font-semibold mb-4">E-Commerce: Projected Conversion Increase</h3>
@@ -271,11 +271,11 @@ const CMPTBLMission = () => {
 
           <h2 className="text-3xl font-bold mt-12 mb-6">The Future of Inclusive Technology</h2>
           <p className="mb-6">
-            CMPTBL represents a fundamental shift in how we approach digital accessibility. Instead of treating accessibility as a separate concern addressed through audits and remediation, it becomes an inherent property of the development process itself.
+            Clarity represents a fundamental shift in how we approach digital accessibility. Instead of treating accessibility as a separate concern addressed through audits and remediation, it becomes an inherent property of the development process itself.
           </p>
 
           <p className="mb-6">
-            As AI capabilities continue advancing, CMPTBL will enable even more sophisticated accessibility features. Automatic audio description generation for video content. Real-time simplification of complex text for cognitive accessibility. Personalized interface adaptations based on individual user needs and preferences.
+            As AI capabilities continue advancing, Clarity will enable even more sophisticated accessibility features. Automatic audio description generation for video content. Real-time simplification of complex text for cognitive accessibility. Personalized interface adaptations based on individual user needs and preferences.
           </p>
 
           <Card className="p-8 bg-gradient-to-br from-primary/10 to-primary-glow/10 border-primary/20 mt-12">
@@ -284,18 +284,18 @@ const CMPTBLMission = () => {
               <div>
                 <h3 className="text-2xl font-bold mb-3">Our Commitment</h3>
                 <p className="text-muted-foreground mb-4">
-                  CMPTBL exists because we believe digital experiences should be accessible to everyone, regardless of ability. Accessibility isn't a feature or compliance checkbox—it's a fundamental human right in our increasingly digital world.
+                  Clarity exists because we believe digital experiences should be accessible to everyone, regardless of ability. Accessibility isn't a feature or compliance checkbox—it's a fundamental human right in our increasingly digital world.
                 </p>
                 <p className="text-muted-foreground">
-                  Every person excluded from digital experiences loses opportunities for education, employment, commerce, and connection. CMPTBL is our contribution to building a more inclusive digital future.
+                  Every person excluded from digital experiences loses opportunities for education, employment, commerce, and connection. Clarity is our contribution to building a more inclusive digital future.
                 </p>
               </div>
             </div>
           </Card>
 
-          <h2 className="text-3xl font-bold mt-12 mb-6">Getting Started with CMPTBL</h2>
+          <h2 className="text-3xl font-bold mt-12 mb-6">Getting Started with Clarity</h2>
           <p className="mb-6">
-            CMPTBL is currently in active development as part of the PromptFluid platform. Organizations interested in early access can contact us to help shape the future of automated accessibility.
+            Clarity is currently in active development as part of the PromptFluid platform. Organizations interested in early access can contact us to help shape the future of automated accessibility.
           </p>
 
           <div className="grid md:grid-cols-2 gap-6 mt-8">
@@ -374,4 +374,4 @@ const CMPTBLMission = () => {
   );
 };
 
-export default CMPTBLMission;
+export default ClarityMission;

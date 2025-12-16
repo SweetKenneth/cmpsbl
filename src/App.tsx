@@ -116,7 +116,7 @@ const TopSecurityPlugins2025 = lazy(() => import("./pages/blog/TopSecurityPlugin
 const AICybersecurityEvolution2025 = lazy(() => import("./pages/blog/AICybersecurityEvolution2025"));
 const AIHackersUnderground2025 = lazy(() => import("./pages/blog/AIHackersUnderground2025"));
 const AIProductComparison2025 = lazy(() => import("./pages/blog/AIProductComparison2025"));
-const CMPTBLMission = lazy(() => import("./pages/blog/CMPTBLMission"));
+const ClarityMission = lazy(() => import("./pages/blog/ClarityMission"));
 const PromptFluidMarketDisruptor = lazy(() => import("./pages/blog/PromptFluidMarketDisruptor"));
 const ProductRoadmap2025 = lazy(() => import("./pages/blog/ProductRoadmap2025"));
 const AIAutomationTrends2025 = lazy(() => import("./pages/blog/AIAutomationTrends2025"));
@@ -445,7 +445,8 @@ const App = () => {
           <Route path="/blog/ai-cybersecurity-evolution-2025" element={<AICybersecurityEvolution2025 />} />
           <Route path="/blog/ai-hackers-underground-2025" element={<AIHackersUnderground2025 />} />
           <Route path="/blog/ai-product-comparison-2025" element={<AIProductComparison2025 />} />
-          <Route path="/blog/cmptbl-mission" element={<CMPTBLMission />} />
+          <Route path="/blog/clarity-accessibility-mission" element={<ClarityMission />} />
+          <Route path="/blog/cmptbl-mission" element={<Navigate to="/blog/clarity-accessibility-mission" replace />} />
           <Route path="/blog/promptfluid-market-disruptor" element={<PromptFluidMarketDisruptor />} />
           <Route path="/blog/product-roadmap-2025" element={<ProductRoadmap2025 />} />
           <Route path="/blog/ai-automation-trends-2025" element={<AIAutomationTrends2025 />} />

@@ -8,8 +8,8 @@ interface FreeAccessibilityCTAProps {
 }
 
 export function FreeAccessibilityCTA({ variant = "full" }: FreeAccessibilityCTAProps) {
-  const openCMPTBL = () => {
-    window.open("https://cmptbl.promptfluid.com", "_blank");
+  const openClarity = () => {
+    window.open("https://clarity.promptfluid.com", "_blank");
   };
 
   if (variant === "compact") {
@@ -23,7 +23,7 @@ export function FreeAccessibilityCTA({ variant = "full" }: FreeAccessibilityCTAP
               <p className="text-sm text-muted-foreground">The way it should be.</p>
             </div>
           </div>
-          <Button onClick={openCMPTBL} className="shadow-glow whitespace-nowrap">
+          <Button onClick={openClarity} className="shadow-glow whitespace-nowrap">
             Scan Free
             <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
@@ -55,7 +55,7 @@ export function FreeAccessibilityCTA({ variant = "full" }: FreeAccessibilityCTAP
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" onClick={openCMPTBL} className="shadow-glow hover:shadow-glow-lg">
+            <Button size="lg" onClick={openClarity} className="shadow-glow hover:shadow-glow-lg">
               <Accessibility className="w-5 h-5 mr-2" />
               Free Accessibility Scan
               <ArrowRight className="w-4 h-4 ml-2" />
