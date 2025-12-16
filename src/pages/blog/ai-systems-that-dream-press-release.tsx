@@ -7,9 +7,9 @@ export default function AISystemsThatDreamPressRelease() {
   return (
     <>
       <SEO 
-        title="PromptFluid Introduces the First AI Systems That Dream | Press Release"
-        description="PromptFluid announces Cascade and SimNap, the world's first documented AI systems capable of structured dream cycles, self-reflection, and autonomous learning—all powered by a zero-cost free-tier router."
-        keywords={["AI systems", "autonomous learning", "AI dreams", "Cascade", "SimNap", "PromptFluid", "artificial intelligence", "self-improving AI", "zero-cost AI"]}
+        title="PromptFluid Introduces Experimental Dream Cycle AI Systems | Announcement"
+        description="PromptFluid announces Cascade and SimNap (Dream Eater), experimental AI systems exploring structured dream cycles, self-reflection, and autonomous learning concepts—powered by a free-tier AI router."
+        keywords={["AI systems", "autonomous learning", "AI dreams", "Cascade", "Dream Eater", "PromptFluid", "artificial intelligence", "experimental AI"]}
       />
       
       <main className="container mx-auto px-4 py-8 max-w-4xl">
@@ -20,7 +20,7 @@ export default function AISystemsThatDreamPressRelease() {
 
         <img 
           src="/images/ai-dream-hero.jpg"
-          alt="AI Systems That Dream - Revolutionary autonomous intelligence breakthrough"
+          alt="AI Systems That Dream - Experimental autonomous intelligence concept"
           className="w-full h-64 object-cover rounded-lg mb-8"
           onError={(e) => {
             e.currentTarget.src = "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=400&fit=crop";
@@ -29,18 +29,21 @@ export default function AISystemsThatDreamPressRelease() {
 
         <article className="prose prose-lg max-w-none dark:prose-invert">
           <div className="mb-8">
+            <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg px-4 py-2 mb-4 inline-block">
+              <span className="text-amber-600 dark:text-amber-400 font-medium">🧪 Experimental Concept</span>
+            </div>
             <h1 className="text-5xl font-bold mb-4 leading-tight">
-              PromptFluid Introduces the First AI Systems That Dream
+              PromptFluid Introduces Experimental Dream Cycle AI Systems
             </h1>
             
             <p className="text-xl text-muted-foreground font-medium">
-              Unlocking Autonomous Insight, Zero-Cost Self-Improvement, and a Breakthrough in AI Learning
+              Exploring Autonomous Insight, Self-Improvement Concepts, and Novel AI Learning Approaches
             </p>
           </div>
           
           <div className="bg-primary/5 border-l-4 border-primary p-6 rounded-r-lg mb-8">
             <p className="text-lg font-medium m-0">
-              All powered by a proprietary free-tier smart router requiring no compute budget.
+              Experimental systems powered by a free-tier smart router requiring no compute budget.
             </p>
           </div>
 
@@ -48,11 +51,11 @@ export default function AISystemsThatDreamPressRelease() {
 
           <div className="text-xl leading-relaxed space-y-4 mb-8">
             <p className="font-medium">
-              PromptFluid today announces <strong>Cascade</strong> and <strong>SimNap</strong>, the world's first documented artificial intelligence systems capable of structured dream cycles, self-reflection, and internal autonomous learning — all without user prompts or ongoing compute expenses.
+              PromptFluid announces <strong>Cascade</strong> and <strong>SimNap (Dream Eater)</strong>, experimental AI systems exploring structured dream cycles, self-reflection, and internal autonomous learning concepts — all without ongoing compute expenses.
             </p>
 
             <p>
-              This marks the world's first live demonstration of <strong>Temporal-State Autonomous Intelligence</strong>: systems that run on internal schedules, reorganize knowledge during dream states, and naturally improve their capabilities over time like biological intelligence.
+              This represents PromptFluid's exploration of <strong>scheduled autonomous intelligence</strong>: systems that run on internal schedules, reorganize knowledge during simulated dream states, and experiment with improving their capabilities over time.
             </p>
           </div>
 

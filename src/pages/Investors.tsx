@@ -4,17 +4,16 @@ import { TrendingUp, Download, FileText, BarChart3, DollarSign } from "lucide-re
 
 export default function Investors() {
   const metrics = [
-    { label: "Products Live", value: "5+", trend: "Active" },
-    { label: "Edge Functions", value: "270+", trend: "Deployed" },
-    { label: "Database Tables", value: "80+", trend: "Production" },
-    { label: "AI Providers", value: "6", trend: "Integrated" },
+    { label: "Core Products", value: "3", trend: "In Development" },
+    { label: "Founded", value: "2024", trend: "Seed Stage" },
+    { label: "AI Providers", value: "6", trend: "Free-Tier" },
+    { label: "Team Size", value: "1", trend: "Founder" },
   ];
 
   const documents = [
-    { name: "Pitch Deck Q4 2025", date: "2025-11-15", type: "PDF" },
-    { name: "Financial Statement Oct 2025", date: "2025-11-01", type: "PDF" },
-    { name: "Product Roadmap 2026", date: "2025-10-20", type: "PDF" },
-    { name: "Market Analysis Report", date: "2025-10-15", type: "PDF" },
+    { name: "Pitch Deck", date: "Available on request", type: "PDF" },
+    { name: "Product Roadmap", date: "Available on request", type: "PDF" },
+    { name: "Technical Overview", date: "Available on request", type: "PDF" },
   ];
 
   return (
@@ -23,7 +22,7 @@ export default function Investors() {
         <TrendingUp className="w-8 h-8 text-primary" />
         <div>
           <h1 className="text-3xl font-bold">Investor Relations</h1>
-          <p className="text-muted-foreground">Financial metrics and investor documents</p>
+          <p className="text-muted-foreground">Seed stage investment opportunity</p>
         </div>
       </div>
 
@@ -34,8 +33,8 @@ export default function Investors() {
               <p className="text-sm text-muted-foreground">{metric.label}</p>
               <p className="text-3xl font-bold text-foreground">{metric.value}</p>
               <div className="flex items-center gap-1">
-                <TrendingUp className="w-4 h-4 text-green-500" />
-                <span className="text-sm text-green-500 font-medium">{metric.trend}</span>
+                <TrendingUp className="w-4 h-4 text-primary" />
+                <span className="text-sm text-primary font-medium">{metric.trend}</span>
               </div>
             </div>
           </Card>
@@ -45,35 +44,35 @@ export default function Investors() {
       <Card className="p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-2xl font-bold">Executive Summary</h2>
-            <p className="text-muted-foreground">Q4 2025 Performance</p>
+            <h2 className="text-2xl font-bold">Investment Opportunity</h2>
+            <p className="text-muted-foreground">Seeking Seed Funding</p>
           </div>
           <Button>
             <Download className="w-4 h-4 mr-2" />
-            Download Full Report
+            Request Materials
           </Button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="p-4 border rounded-lg">
             <BarChart3 className="w-8 h-8 text-primary mb-2" />
-            <h3 className="font-semibold mb-1">Revenue Growth</h3>
+            <h3 className="font-semibold mb-1">Market Opportunity</h3>
             <p className="text-sm text-muted-foreground">
-              Consistent 20%+ MoM growth with strong customer acquisition
+              WordPress security and web accessibility markets with significant growth potential
             </p>
           </div>
           <div className="p-4 border rounded-lg">
             <DollarSign className="w-8 h-8 text-green-500 mb-2" />
-            <h3 className="font-semibold mb-1">Unit Economics</h3>
+            <h3 className="font-semibold mb-1">Revenue Model</h3>
             <p className="text-sm text-muted-foreground">
-              CAC payback in 4.2 months with 82% gross margin
+              Freemium SaaS with premium tiers for Bot Sniper; Clarity remains free forever
             </p>
           </div>
           <div className="p-4 border rounded-lg">
             <TrendingUp className="w-8 h-8 text-blue-500 mb-2" />
-            <h3 className="font-semibold mb-1">Market Position</h3>
+            <h3 className="font-semibold mb-1">Product Status</h3>
             <p className="text-sm text-muted-foreground">
-              Leading AI orchestration platform with unique Brain technology
+              Reflex Bot Sniper pending WordPress.org; Clarity live and free; Dream Eater experimental
             </p>
           </div>
         </div>

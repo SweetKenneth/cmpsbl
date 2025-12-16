@@ -42,12 +42,12 @@ export default function ClarityProduct() {
     }
   ];
 
-  const industryFirsts = [
-    "First 100% free accessibility scanning and fixing platform",
-    "First WordPress accessibility plugin with AI-powered auto-fix",
-    "First to use multi-model AI (Groq + Together + Hyperbolic + DeepSeek + Cerebras + Google AI Studio) for WCAG compliance",
-    "First real-time learning from accessibility patterns across installations",
-    "First to generate contextual alt text using Cascade AI"
+  const industryHighlights = [
+    "100% free accessibility scanning and fixing — no premium tiers",
+    "WordPress accessibility plugin with AI-powered auto-fix capabilities",
+    "Multi-model AI integration (Groq, Together AI, Hyperbolic, DeepSeek, Cerebras, Google AI Studio)",
+    "Continuous learning from accessibility patterns",
+    "Contextual alt text generation using AI vision models"
   ];
 
   return (
@@ -154,24 +154,24 @@ export default function ClarityProduct() {
             </div>
           </section>
 
-          {/* Industry Firsts */}
+          {/* Key Highlights */}
           <section className="py-20 px-4 bg-gradient-to-b from-background to-muted/20">
             <div className="container mx-auto max-w-6xl">
               <div className="text-center mb-12">
-                <h2 className="text-4xl font-bold mb-4">Industry Firsts</h2>
+                <h2 className="text-4xl font-bold mb-4">Key Highlights</h2>
                 <p className="text-lg text-muted-foreground">
-                  Pioneering free accessibility automation with AI
+                  What makes Clarity different
                 </p>
               </div>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {industryFirsts.map((first, idx) => (
+                {industryHighlights.map((highlight, idx) => (
                   <div key={idx} className="p-6 rounded-xl glass border border-primary/20 hover:border-primary/40 transition-all">
                     <div className="flex items-start gap-3">
                       <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
                         <Sparkles className="w-4 h-4 text-primary" />
                       </div>
-                      <p className="text-sm text-foreground/80">{first}</p>
+                      <p className="text-sm text-foreground/80">{highlight}</p>
                     </div>
                   </div>
                 ))}

@@ -197,7 +197,7 @@ const Clarity = () => {
               Ready to Make Your Site Accessible?
             </h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Join thousands of website owners making the web work for everyone. 
+              Make the web work for everyone with free accessibility scanning and AI-powered fixes.
               It's free. It's fast. It's the right thing to do.
             </p>
             <Button size="lg" onClick={openClarity} className="shadow-glow hover:shadow-glow-lg">
