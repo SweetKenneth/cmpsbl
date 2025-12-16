@@ -1,6 +1,6 @@
 /**
- * PromptFluid Perplexity Manager
- * Adaptive quota management with header-aware throttling
+ * PromptFluid Provider Manager
+ * Adaptive quota management with header-aware throttling for free-tier providers
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -28,7 +28,7 @@ export interface UsageLogEntry {
 }
 
 /**
- * Parse quota information from Perplexity API response headers
+ * Parse quota information from provider API response headers
  */
 export function getQuotaFromHeaders(headers: Headers): QuotaStatus {
   const remaining = parseInt(headers.get('X-RateLimit-Remaining') || '1000', 10);
@@ -141,7 +141,7 @@ export async function enforceDailyBudget(category: QueryCategory): Promise<boole
     const { data, error } = await supabase
       .from('ai_daily_quota')
       .select('calls_used, calls_budget')
-      .eq('provider', 'perplexity')
+      .eq('provider', 'groq')
       .eq('date', new Date().toISOString().split('T')[0])
       .maybeSingle();
     
@@ -170,7 +170,7 @@ export async function getQuotaStatus(category: QueryCategory): Promise<{
     const { data } = await supabase
       .from('ai_daily_quota')
       .select('calls_used, calls_budget')
-      .eq('provider', 'perplexity')
+      .eq('provider', 'groq')
       .eq('date', new Date().toISOString().split('T')[0])
       .maybeSingle();
     
@@ -203,14 +203,14 @@ export function shouldUseFallback(remaining: number): boolean {
 /**
  * Get fallback provider based on query type
  */
-export function getFallbackProvider(category: QueryCategory): 'groq' | 'anthropic' | 'openai' {
+export function getFallbackProvider(category: QueryCategory): 'groq' | 'cerebras' | 'together' {
   switch (category) {
     case 'learn':
-      return 'groq'; // Fast reasoning for learning
+      return 'groq'; // Fast inference for learning
     case 'user':
-      return 'anthropic'; // High quality for user queries
+      return 'together'; // Complex reasoning for user queries
     case 'reserve':
-      return 'openai'; // Balanced fallback
+      return 'cerebras'; // Reliable fallback
     default:
       return 'groq';
   }

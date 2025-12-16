@@ -190,9 +190,9 @@ export default function ThreatFeed() {
           </div>
 
           <div className="bg-muted/50 p-4 rounded-lg mb-4">
-            <p className="font-mono text-sm mb-2">Base URL:</p>
+            <p className="font-mono text-sm mb-2">Edge Function:</p>
             <code className="text-primary">
-              https://api.promptfluid.com/pf-defense-threat-feed
+              /functions/v1/pf-defense-threat-feed
             </code>
           </div>
 

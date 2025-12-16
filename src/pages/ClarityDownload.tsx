@@ -5,6 +5,7 @@ import { SEO } from "@/components/SEO";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function ClarityDownload() {
   const { toast } = useToast();
@@ -198,10 +199,8 @@ export default function ClarityDownload() {
               <h2 className="text-3xl font-bold mb-8 text-center">Documentation & Support</h2>
               
               <div className="grid md:grid-cols-3 gap-6">
-                <a
-                  href="https://docs.promptfluid.com/clarity/getting-started"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  to="/solutions"
                   className="p-6 rounded-xl glass border border-border/50 hover:border-primary/50 transition-all group"
                 >
                   <Code className="w-10 h-10 text-primary mb-4 group-hover:scale-110 transition-transform" />
@@ -210,14 +209,12 @@ export default function ClarityDownload() {
                     Quick start guide and configuration
                   </p>
                   <span className="text-primary text-sm flex items-center gap-1">
-                    Read Guide <ExternalLink className="w-4 h-4" />
+                    View Solutions <ExternalLink className="w-4 h-4" />
                   </span>
-                </a>
+                </Link>
 
-                <a
-                  href="https://docs.promptfluid.com/clarity/features"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  to="/products/clarity"
                   className="p-6 rounded-xl glass border border-border/50 hover:border-primary/50 transition-all group"
                 >
                   <Zap className="w-10 h-10 text-primary mb-4 group-hover:scale-110 transition-transform" />
@@ -228,12 +225,10 @@ export default function ClarityDownload() {
                   <span className="text-primary text-sm flex items-center gap-1">
                     View Features <ExternalLink className="w-4 h-4" />
                   </span>
-                </a>
+                </Link>
 
-                <a
-                  href="https://github.com/promptfluid/clarity/issues"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  to="/contact"
                   className="p-6 rounded-xl glass border border-border/50 hover:border-primary/50 transition-all group"
                 >
                   <Shield className="w-10 h-10 text-primary mb-4 group-hover:scale-110 transition-transform" />
@@ -242,9 +237,9 @@ export default function ClarityDownload() {
                     Report issues and get help
                   </p>
                   <span className="text-primary text-sm flex items-center gap-1">
-                    Support Forum <ExternalLink className="w-4 h-4" />
+                    Contact Us <ExternalLink className="w-4 h-4" />
                   </span>
-                </a>
+                </Link>
               </div>
             </div>
           </section>
