@@ -79,7 +79,7 @@ const PromptFluidNexus = () => {
 
             <p className="text-lg leading-relaxed">
               Unlike simple API proxies, Nexus actively manages the autonomous AI lifecycle. It routes simple tasks to 
-              Groq's ultra-fast free-tier and complex reasoning to premium free-tier models from OpenRouter and HuggingFace. 
+              Groq's ultra-fast free-tier and complex reasoning to Together AI, Hyperbolic, DeepSeek, and Cerebras. 
               This surgical precision means <Link to="/blog/cascade-ai-adaptive-intelligence-brain" className="text-primary hover:underline">Cascade</Link> can execute 48 orchestration cycles daily without 
               any costs—continuously learning, building, and evolving the PromptFluid repository.
             </p>
@@ -129,7 +129,7 @@ const PromptFluidNexus = () => {
             </p>
 
             <p className="text-lg leading-relaxed mb-6">
-              When Cascade determines that a specific prompt works better on OpenAI than Groq, it updates routing weights. Nexus respects these weights while maintaining operational intelligence—if OpenAI is currently experiencing high latency or rate limiting, Nexus temporarily shifts traffic even when Cascade prefers OpenAI, ensuring consistent user experience.
+              When Cascade determines that a specific prompt works better on Together AI than Groq, it updates routing weights. Nexus respects these weights while maintaining operational intelligence—if Together AI is currently experiencing high latency or rate limiting, Nexus temporarily shifts traffic even when Cascade prefers Together AI, ensuring consistent user experience.
             </p>
 
             <p className="text-lg leading-relaxed">
@@ -149,8 +149,8 @@ const PromptFluidNexus = () => {
                   <div className="text-sm text-muted-foreground">Average response time for cache hits vs 1.2s for API calls</div>
                 </div>
                 <div>
-                  <div className="text-4xl font-bold text-primary mb-2">$4.2K</div>
-                  <div className="text-sm text-muted-foreground">Average monthly savings per user through Nexus optimizations</div>
+                  <div className="text-4xl font-bold text-primary mb-2">$0</div>
+                  <div className="text-sm text-muted-foreground">Monthly AI costs through free-tier provider routing</div>
                 </div>
               </div>
             </div>
@@ -212,7 +212,7 @@ const PromptFluidNexus = () => {
               <div className="border-l-4 border-muted-foreground/30 pl-6">
                 <h3 className="text-xl font-bold mb-2">Model Version Management (Q2 2025)</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  Nexus will track multiple versions of each provider's models, automatically testing new versions in controlled deployments before promoting to production. When OpenAI releases GPT-5.1, Nexus will route test traffic, compare performance against GPT-5, and gradually shift production load once validated.
+                  Nexus will track multiple versions of each provider's models, automatically testing new versions in controlled deployments before promoting to production. When providers release new models, Nexus will route test traffic, compare performance, and gradually shift production load once validated.
                 </p>
               </div>
 

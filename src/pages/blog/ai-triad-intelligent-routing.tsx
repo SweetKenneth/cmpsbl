@@ -11,16 +11,16 @@ const AITriadExplained = () => {
         <title>The AI Triad: Understanding PromptFluid's Intelligent Routing System</title>
         <meta 
           name="description" 
-          content="Learn how PromptFluid's Cascade AI intelligently routes tasks across Groq, OpenAI, Anthropic, and Perplexity for optimal results and cost efficiency." 
+          content="Learn how PromptFluid's Cascade AI intelligently routes tasks across Groq, Together AI, Hyperbolic, DeepSeek, and Cerebras for optimal results at zero cost." 
         />
-        <meta name="keywords" content="AI Triad, intelligent routing, Groq, OpenAI, Anthropic, Perplexity, AI orchestration, Cascade AI" />
+        <meta name="keywords" content="AI routing, intelligent orchestration, Groq, Together AI, Hyperbolic, DeepSeek, Cerebras, Cascade AI, free-tier AI" />
         <link rel="canonical" href="https://www.promptfluid.com/blog/ai-triad-intelligent-routing" />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "TechArticle",
             "headline": "The AI Triad: Understanding PromptFluid's Intelligent Routing System",
-            "description": "Learn how PromptFluid's Cascade AI intelligently routes tasks across Groq, OpenAI, Anthropic, and Perplexity for optimal results and cost efficiency.",
+            "description": "Learn how PromptFluid's Cascade AI intelligently routes tasks across Groq, Together AI, Hyperbolic, DeepSeek, and Cerebras for optimal results at zero cost.",
             "author": {
               "@type": "Person",
               "name": "Kenneth E Sweet Jr",
@@ -67,7 +67,7 @@ const AITriadExplained = () => {
               The AI Triad: Understanding Intelligent Routing
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Discover how Cascade AI orchestrates specialized AI providers—Groq, OpenAI, Anthropic, and Perplexity—to deliver optimal results while maximizing cost efficiency.
+              Discover how Cascade AI orchestrates free-tier AI providers—Groq, Together AI, Hyperbolic, DeepSeek, and Cerebras—to deliver optimal results at zero cost.
             </p>
             
             <AuthorBio publishDate="2025-08-20" readTime="11 min read" />
@@ -78,7 +78,7 @@ const AITriadExplained = () => {
               Most AI platforms lock you into a single provider, forcing you to use premium models for everything regardless of task complexity. PromptFluid's <Link to="/blog/cascade-ai-adaptive-intelligence-brain" className="text-primary hover:underline">Cascade AI</Link> takes a fundamentally different approach: intelligent routing across specialized providers, ensuring each task goes to the most appropriate model based on requirements, performance, and cost.
             </p>
 
-            <h2 className="text-3xl font-bold mb-6 mt-12">The Four Pillars of the Triad</h2>
+            <h2 className="text-3xl font-bold mb-6 mt-12">The Five Pillars of Free-Tier AI Routing</h2>
 
             <div className="space-y-8 my-12">
               <div className="bg-gradient-to-r from-primary/10 to-transparent border-l-4 border-primary p-6 rounded-r-lg">
@@ -97,39 +97,52 @@ const AITriadExplained = () => {
               <div className="bg-gradient-to-r from-accent/10 to-transparent border-l-4 border-accent p-6 rounded-r-lg">
                 <div className="flex items-center gap-3 mb-4">
                   <Sparkles className="w-8 h-8 text-accent" />
-                  <h3 className="text-2xl font-bold m-0">OpenAI: Creative Synthesis</h3>
+                  <h3 className="text-2xl font-bold m-0">Together AI: Complex Reasoning</h3>
                 </div>
                 <p className="text-muted-foreground leading-relaxed mb-3">
-                  <strong>Specialty:</strong> Creative generation, complex synthesis, nuanced understanding
+                  <strong>Specialty:</strong> Complex reasoning, creative synthesis, nuanced understanding
                 </p>
                 <p className="text-muted-foreground leading-relaxed">
-                  When tasks require creativity, OpenAI takes the lead. Complex content generation, open-ended problem solving, and nuanced language understanding all leverage OpenAI's models. Cascade routes creative writing, architectural decisions in Studio, and any workflow requiring synthesis of diverse concepts to OpenAI. It's the creative heart of the Triad.
+                  When tasks require deep reasoning, Together AI takes the lead. Complex problem solving, architectural decisions, and nuanced language understanding all leverage Together's models. Cascade routes creative writing, architectural decisions in Studio, and workflows requiring synthesis of diverse concepts to Together AI.
                 </p>
               </div>
 
               <div className="bg-gradient-to-r from-primary/10 to-transparent border-l-4 border-primary p-6 rounded-r-lg">
                 <div className="flex items-center gap-3 mb-4">
                   <Brain className="w-8 h-8 text-primary" />
-                  <h3 className="text-2xl font-bold m-0">Anthropic: Ethical Structure</h3>
+                  <h3 className="text-2xl font-bold m-0">Hyperbolic: Creative Tasks</h3>
                 </div>
                 <p className="text-muted-foreground leading-relaxed mb-3">
-                  <strong>Specialty:</strong> Ethical reasoning, structured thinking, safety-conscious outputs
+                  <strong>Specialty:</strong> Creative generation, content creation, exploratory thinking
                 </p>
                 <p className="text-muted-foreground leading-relaxed">
-                  Anthropic's Claude brings constitutional AI principles to PromptFluid, ensuring outputs align with ethical guidelines while maintaining strong structure. Cascade routes to Anthropic for policy enforcement in Access, threat assessment nuance in Defense, and any task requiring careful consideration of implications and adherence to safety principles.
+                  Hyperbolic excels at creative tasks requiring imagination and novelty. Cascade routes content generation, brainstorming, and any task requiring creative exploration to Hyperbolic's free-tier models.
                 </p>
               </div>
 
               <div className="bg-gradient-to-r from-accent/10 to-transparent border-l-4 border-accent p-6 rounded-r-lg">
                 <div className="flex items-center gap-3 mb-4">
-                  <Search className="w-8 h-8 text-accent" />
-                  <h3 className="text-2xl font-bold m-0">Perplexity: Grounded Research</h3>
+                  <Network className="w-8 h-8 text-accent" />
+                  <h3 className="text-2xl font-bold m-0">DeepSeek: Technical Analysis</h3>
                 </div>
                 <p className="text-muted-foreground leading-relaxed mb-3">
-                  <strong>Specialty:</strong> Real-time research, cited information, factual grounding
+                  <strong>Specialty:</strong> Code analysis, technical documentation, structured outputs
                 </p>
                 <p className="text-muted-foreground leading-relaxed">
-                  When accuracy matters and current information is essential, Perplexity provides the research layer. Rather than generating potentially incorrect information, Perplexity searches real sources and provides citations. Cascade uses Perplexity for technical documentation research in Studio, expanding Brain's knowledge base with verified information, and any workflow requiring factual accuracy with provenance.
+                  DeepSeek provides excellent technical analysis and code understanding. Cascade routes code review, technical documentation, and structured output generation to DeepSeek's specialized models.
+                </p>
+              </div>
+
+              <div className="bg-gradient-to-r from-primary/10 to-transparent border-l-4 border-primary p-6 rounded-r-lg">
+                <div className="flex items-center gap-3 mb-4">
+                  <Zap className="w-8 h-8 text-primary" />
+                  <h3 className="text-2xl font-bold m-0">Cerebras: High-Throughput Operations</h3>
+                </div>
+                <p className="text-muted-foreground leading-relaxed mb-3">
+                  <strong>Specialty:</strong> Batch processing, high-volume tasks, parallel operations
+                </p>
+                <p className="text-muted-foreground leading-relaxed">
+                  When volume matters, Cerebras handles high-throughput operations efficiently. Batch processing, bulk analysis, and parallel task execution all route through Cerebras for maximum efficiency.
                 </p>
               </div>
             </div>
@@ -143,9 +156,9 @@ const AITriadExplained = () => {
               This isn't static configuration—Cascade continuously learns which routing strategies produce the best outcomes. If Groq performs exceptionally well on a specific task category, future similar tasks route to Groq more frequently. If OpenAI delivers superior results despite higher costs for certain workflows, Cascade adjusts routing to prioritize quality where it matters most.
             </p>
 
-            <h2 className="text-3xl font-bold mb-4">Cost Optimization Through Intelligence</h2>
+            <h2 className="text-3xl font-bold mb-4">Zero-Cost Through Intelligence</h2>
             <p className="text-lg leading-relaxed">
-              The Triad's most significant advantage is cost optimization without quality sacrifice. By routing simple tasks to faster, cheaper providers and reserving premium models for complex work, Cascade typically reduces AI spending by 40-60% compared to using top-tier models universally. Smart caching through Nexus prevents redundant API calls, and batching similar requests maximizes efficiency. You get enterprise-grade capabilities at startup-friendly costs—all managed transparently by Cascade.
+              The free-tier routing system's most significant advantage is zero-cost AI operations. By intelligently routing tasks to free-tier providers based on their strengths, Cascade eliminates AI spending entirely while maintaining quality. Smart caching through Nexus prevents redundant API calls, and batching similar requests maximizes efficiency. You get enterprise-grade capabilities at zero cost—all managed transparently by Cascade.
             </p>
           </section>
 
