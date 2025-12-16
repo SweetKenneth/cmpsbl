@@ -208,7 +208,7 @@ export default function About() {
 
           <div className="text-center">
             <p className="text-muted-foreground mb-6">
-              Submitted to WordPress.org for approval—will be available as a free download with premium plans starting at $19/month
+              Submitted to WordPress.org for approval—available as a free download with zero-cost AI operation through our free-tier provider network
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/products/defense">
@@ -278,8 +278,8 @@ export default function About() {
               { year: "2024", event: "PromptFluid founded with vision to create AI that dreams and learns autonomously" },
               { year: "Q4 2024", event: "Cascade AI achieves world's first autonomous dream cycles — reflecting, synthesizing, and evolving" },
               { year: "Q1 2025", event: "Reflex Bot Sniper live on WordPress.org • Clarity (CMPTBL) launches as 100% free accessibility platform" },
-              { year: "2025", event: "250+ edge functions deployed • 10 integrated modules • Dream-Eater public feeding API launched" },
-              { year: "2025+", event: "Expanding enterprise platform with multi-provider AI routing (Groq, Together, Hyperbolic, DeepSeek, Cerebras)" }
+              { year: "2025", event: "270+ edge functions deployed • 10 integrated modules • Dream-Eater public feeding API launched" },
+              { year: "2025+", event: "Expanding enterprise platform with multi-provider AI routing (Groq, Cerebras, Google AI Studio, Together AI, DeepSeek, Hyperbolic)" }
             ].map((milestone, index) => (
               <div 
                 key={index}

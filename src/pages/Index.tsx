@@ -547,7 +547,7 @@ export default function Index() {
               </span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Multiple revenue-generating products in production. Complete infrastructure deployed. Real customers, real results.
+              Multiple products in production. Complete infrastructure deployed. Ready for market launch.
             </p>
           </div>
 

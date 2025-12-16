@@ -131,7 +131,7 @@ const PromptFluidBrain = () => {
               <div className="bg-gradient-to-r from-accent/10 to-transparent border-l-4 border-accent p-6 rounded-r-lg">
                 <h3 className="text-2xl font-bold mb-3">Zero-Cost AI Routing (Free-Tier Stack)</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  Brain intelligently splits tasks between free-tier providers (Groq, Together AI, Hyperbolic, DeepSeek, Cerebras) 
+                  Brain intelligently splits tasks between free-tier providers (Groq, Cerebras, Google AI Studio, Together AI, DeepSeek, Hyperbolic) 
                   for complex reasoning and fast inference. This optimization eliminates AI costs 
                   entirely while maintaining exceptional quality. The savings compound—every dollar saved can fund more 
                   infrastructure improvements.

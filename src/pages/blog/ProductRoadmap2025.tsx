@@ -107,7 +107,7 @@ const ProductRoadmap2025 = () => {
                     <span>Status: Internal Testing (March 2025)</span>
                   </div>
                   <p className="mb-3">
-                    Intelligent routing layer that distributes AI tasks across Groq, Together, Hyperbolic, DeepSeek, Cerebras, and other free-tier providers based on performance and zero-cost operation.
+                    Intelligent routing layer that distributes AI tasks across Groq, Cerebras, Google AI Studio, Together AI, DeepSeek, and Hyperbolic—all free-tier providers—based on performance and zero-cost operation.
                   </p>
                   <h4 className="font-semibold text-sm mb-2">Key Features:</h4>
                   <ul className="space-y-1 text-sm">
