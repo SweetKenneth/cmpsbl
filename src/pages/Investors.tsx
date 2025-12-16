@@ -4,10 +4,10 @@ import { TrendingUp, Download, FileText, BarChart3, DollarSign } from "lucide-re
 
 export default function Investors() {
   const metrics = [
-    { label: "Monthly Recurring Revenue", value: "$47.2K", trend: "+23%" },
-    { label: "Active Users", value: "1,247", trend: "+18%" },
-    { label: "Customer Retention", value: "94.3%", trend: "+5%" },
-    { label: "Gross Margin", value: "82%", trend: "+2%" },
+    { label: "Products Live", value: "5+", trend: "Active" },
+    { label: "Edge Functions", value: "268+", trend: "Deployed" },
+    { label: "Database Tables", value: "84+", trend: "Production" },
+    { label: "AI Providers", value: "5", trend: "Integrated" },
   ];
 
   const documents = [

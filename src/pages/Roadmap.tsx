@@ -40,9 +40,9 @@ export default function Roadmap() {
         },
         {
           icon: Accessibility,
-          title: "Universal Accessibility Suite",
-          description: "Automated WCAG compliance, intelligent alt-text generation, and inclusive design tools. Making every website accessible to everyone.",
-          status: "Research",
+          title: "Clarity Accessibility Suite",
+          description: "100% free WCAG compliance scanning and AI-powered fixes. Already live at cmptbl.promptfluid.com with WordPress plugin.",
+          status: "Live",
           technologies: ["Computer Vision", "NLP", "WCAG 2.2", "ARIA"]
         }
       ]
@@ -56,7 +56,7 @@ export default function Roadmap() {
           title: "AI Marketing Studio",
           description: "Autonomous content generation, SEO optimization, competitor analysis, and campaign management. Marketing that thinks for itself.",
           status: "Concept",
-          technologies: ["GPT-4", "Claude", "SEO AI", "Market Intelligence"]
+          technologies: ["Free-tier AI Routing", "SEO AI", "Market Intelligence"]
         },
         {
           icon: Globe,
@@ -90,6 +90,7 @@ export default function Roadmap() {
   ];
 
   const statusColors = {
+    "Live": "text-emerald-500 bg-emerald-500/10 border-emerald-500/20",
     "Launch Ready": "text-green-500 bg-green-500/10 border-green-500/20",
     "Active Development": "text-blue-500 bg-blue-500/10 border-blue-500/20",
     "Design Phase": "text-purple-500 bg-purple-500/10 border-purple-500/20",
