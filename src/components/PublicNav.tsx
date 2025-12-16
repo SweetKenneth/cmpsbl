@@ -19,33 +19,25 @@ export function PublicNav() {
   ];
 
   const resources = {
-    "WordPress Security": [
+    "Security Insights": [
       { name: "WordPress Bot Defense Guide", href: "/blog/wordpress-bot-defense" },
       { name: "Top Security Plugins 2025", href: "/blog/top-security-plugins-2025" },
       { name: "AI Cybersecurity Evolution", href: "/blog/ai-cybersecurity-evolution-2025" },
-      { name: "AI Hackers Underground 2025", href: "/blog/ai-hackers-underground-2025" },
     ],
-    "PromptFluid Technology": [
+    "Technology": [
       { name: "How PromptFluid Works", href: "/blog/how-promptfluid-works-cascade-ai-ecosystem" },
       { name: "Cascade AI Intelligence", href: "/blog/cascade-ai-adaptive-intelligence-brain" },
-      { name: "Free-Tier Provider Network", href: "/blog/ai-triad-intelligent-routing" },
-    ],
-    "Product Deep Dives": [
-      { name: "PromptFluid Brain Guide", href: "/blog/promptfluid-brain-adaptive-learning-core" },
-      { name: "PromptFluid Defense Security", href: "/blog/promptfluid-defense-ai-security" },
-      { name: "PromptFluid Studio Builder", href: "/blog/promptfluid-studio-build-apps-that-think" },
-      { name: "PromptFluid Vision Dashboard", href: "/blog/promptfluid-vision-unified-dashboard" },
-      { name: "PromptFluid Ripple Network", href: "/blog/promptfluid-ripple-network-integration" },
-      { name: "PromptFluid Access Identity", href: "/blog/promptfluid-access-identity-billing" },
-      { name: "PromptFluid Nexus Gateway", href: "/blog/promptfluid-nexus-api-gateway" },
-    ],
-    "Business & Insights": [
-      { name: "AI Product Comparison 2025", href: "/blog/ai-product-comparison-2025" },
-      { name: "Market Disruptor Analysis", href: "/blog/promptfluid-market-disruptor" },
-      { name: "Product Roadmap 2025", href: "/blog/product-roadmap-2025" },
-      { name: "AI Automation Trends", href: "/blog/ai-automation-trends-2025" },
-      { name: "AI in Business Operations", href: "/blog/ai-business-operations-2025" },
       { name: "Clarity Accessibility Mission", href: "/blog/clarity-accessibility-mission" },
+    ],
+    "Products": [
+      { name: "Reflex Security", href: "/blog/promptfluid-defense-ai-security" },
+      { name: "Brain Learning Core", href: "/blog/promptfluid-brain-adaptive-learning-core" },
+      { name: "Studio App Builder", href: "/blog/promptfluid-studio-build-apps-that-think" },
+    ],
+    "Business": [
+      { name: "AI Product Comparison 2025", href: "/blog/ai-product-comparison-2025" },
+      { name: "Product Roadmap 2025", href: "/blog/product-roadmap-2025" },
+      { name: "Market Analysis", href: "/blog/promptfluid-market-disruptor" },
     ],
   };
 
