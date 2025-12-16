@@ -153,9 +153,9 @@ export default function StudioInfo() {
             </div>
             <div>
               <div className="text-4xl font-bold bg-gradient-to-r from-primary-variant to-accent bg-clip-text text-transparent mb-2">
-                98%
+                High
               </div>
-              <div className="text-muted-foreground">Lighthouse Score</div>
+              <div className="text-muted-foreground">Performance Target</div>
             </div>
             <div>
               <div className="text-4xl font-bold bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent mb-2">

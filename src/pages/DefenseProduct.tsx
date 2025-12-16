@@ -309,17 +309,18 @@ export default function DefenseProduct() {
                   </div>
 
                   <div className="space-y-4">
+                    <p className="text-xs text-muted-foreground mb-2">Demo visualization</p>
                     <div className="flex items-center justify-between p-4 rounded-lg bg-muted/30">
-                      <span className="text-sm font-medium">Threats Blocked Today</span>
-                      <span className="text-xl font-bold text-green-500">247</span>
+                      <span className="text-sm font-medium">Threats Blocked</span>
+                      <span className="text-xl font-bold text-green-500">--</span>
                     </div>
                     <div className="flex items-center justify-between p-4 rounded-lg bg-muted/30">
-                      <span className="text-sm font-medium">Bot Detection Rate</span>
-                      <span className="text-xl font-bold text-blue-500">99.2%</span>
+                      <span className="text-sm font-medium">Detection Status</span>
+                      <span className="text-xl font-bold text-blue-500">Active</span>
                     </div>
                     <div className="flex items-center justify-between p-4 rounded-lg bg-muted/30">
-                      <span className="text-sm font-medium">False Positives</span>
-                      <span className="text-xl font-bold text-purple-500">0.3%</span>
+                      <span className="text-sm font-medium">System Health</span>
+                      <span className="text-xl font-bold text-purple-500">Good</span>
                     </div>
                   </div>
 

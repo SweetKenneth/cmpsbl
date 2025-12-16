@@ -283,11 +283,11 @@ export default function RippleProduct() {
                     </div>
                     <div className="p-4 rounded-lg bg-muted/30">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-medium">Active Webhooks</span>
-                        <span className="text-xs text-blue-500">Live monitoring</span>
+                        <span className="text-sm font-medium">Webhook Status</span>
+                        <span className="text-xs text-blue-500">Demo</span>
                       </div>
-                      <div className="text-2xl font-bold">99.99%</div>
-                      <div className="text-xs text-muted-foreground">delivery rate</div>
+                      <div className="text-2xl font-bold">Active</div>
+                      <div className="text-xs text-muted-foreground">monitoring enabled</div>
                     </div>
                     <div className="p-4 rounded-lg bg-muted/30">
                       <div className="flex items-center justify-between mb-2">

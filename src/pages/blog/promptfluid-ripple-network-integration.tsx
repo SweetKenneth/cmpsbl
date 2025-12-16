@@ -137,16 +137,16 @@ const PromptFluidRipple = () => {
             <div className="bg-card border border-border rounded-lg p-8 my-8">
               <div className="grid md:grid-cols-3 gap-6 text-center">
                 <div>
-                  <div className="text-4xl font-bold text-primary mb-2">73%</div>
-                  <div className="text-sm text-muted-foreground">Reduction in redundant API calls through intelligent caching</div>
+                  <div className="text-4xl font-bold text-primary mb-2">Optimized</div>
+                  <div className="text-sm text-muted-foreground">Reduced redundant API calls through intelligent caching</div>
                 </div>
                 <div>
-                  <div className="text-4xl font-bold text-accent mb-2">2.1x</div>
-                  <div className="text-sm text-muted-foreground">Throughput improvement from request batching optimizations</div>
+                  <div className="text-4xl font-bold text-accent mb-2">Improved</div>
+                  <div className="text-sm text-muted-foreground">Throughput gains from request batching optimizations</div>
                 </div>
                 <div>
-                  <div className="text-4xl font-bold text-primary mb-2">99.97%</div>
-                  <div className="text-sm text-muted-foreground">Request success rate with automatic failover routing</div>
+                  <div className="text-4xl font-bold text-primary mb-2">Resilient</div>
+                  <div className="text-sm text-muted-foreground">High availability with automatic failover routing</div>
                 </div>
               </div>
             </div>

@@ -74,7 +74,7 @@ export default function ClarityPillarPost() {
                 Website accessibility is no longer optional. With over 43% of the web powered by WordPress, ensuring your WordPress site meets <strong>WCAG 2.2 accessibility standards</strong> protects you from legal liability, expands your audience reach, and demonstrates social responsibility. Yet 98% of websites still have detectable accessibility failures.
               </p>
               <p>
-                The Americans with Disabilities Act (ADA) requires websites to be accessible to people with disabilities. Recent lawsuits targeting non-compliant WordPress sites have increased by 320% since 2020. Beyond legal compliance, accessible websites serve 1.3 billion people worldwide living with disabilities, representing $13 trillion in disposable income.
+                The Americans with Disabilities Act (ADA) requires websites to be accessible to people with disabilities. Lawsuits targeting non-compliant websites have been increasing significantly in recent years. Beyond legal compliance, accessible websites serve over 1 billion people worldwide living with disabilities—a substantial and growing market.
               </p>
 
               <div className="not-prose my-8 p-6 rounded-xl bg-primary/5 border border-primary/20">
@@ -279,7 +279,7 @@ export default function ClarityPillarPost() {
               <ul>
                 <li><strong>Computer Vision:</strong> Analyzes images to generate accurate, contextual alt text that describes both content and purpose</li>
                 <li><strong>Natural Language Processing:</strong> Assesses content readability, simplifies complex language, and improves heading structure</li>
-                <li><strong>Pattern Recognition:</strong> Learns from millions of accessibility fixes to understand context and apply best practices</li>
+                <li><strong>Pattern Recognition:</strong> Learns from accessibility fix patterns to understand context and apply best practices</li>
                 <li><strong>Predictive Analysis:</strong> Identifies potential accessibility issues before they become problems</li>
               </ul>
 
@@ -517,7 +517,7 @@ export default function ClarityPillarPost() {
 
               <h2>Getting Started: Your WordPress Accessibility Action Plan</h2>
               <p>
-                Ready to make your WordPress site accessible? Follow this proven action plan:
+                Ready to make your WordPress site accessible? Here's a practical action plan:
               </p>
 
               <h3>Week 1: Assess Current State</h3>
@@ -555,7 +555,7 @@ export default function ClarityPillarPost() {
               <div className="not-prose my-12 p-8 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 border-2 border-primary/30">
                 <h3 className="text-2xl font-bold mb-4">Start Your Accessibility Journey Today</h3>
                 <p className="text-lg mb-6">
-                  PromptFluid Clarity makes WordPress accessibility simple with AI-powered automated fixes, continuous monitoring, and industry-leading WCAG 2.2 compliance.
+                  PromptFluid Clarity makes WordPress accessibility simple with AI-powered scanning, automated fix suggestions, and WCAG 2.2 compliance guidance.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Link to="/projects/clarity">
