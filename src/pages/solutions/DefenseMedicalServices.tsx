@@ -186,48 +186,51 @@ const DefenseMedicalServices = () => {
             </div>
           </section>
 
-          {/* Real-World Healthcare Use Cases */}
+          {/* Protection Scenarios */}
           <section className="mb-16">
-            <h2 className="text-3xl font-bold mb-6">Real-World Protection Scenarios</h2>
+            <h2 className="text-3xl font-bold mb-6">Protection Scenarios</h2>
+            <p className="text-muted-foreground mb-6">
+              These scenarios illustrate the types of threats healthcare organizations face and how PromptFluid Defense is designed to address them.
+            </p>
 
             <div className="grid md:grid-cols-2 gap-6">
               <Card className="p-6">
-                <h3 className="text-xl font-bold mb-3">Multi-Specialty Clinic</h3>
+                <h3 className="text-xl font-bold mb-3">Patient Portal Protection</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  <strong>Challenge:</strong> 18,000-patient portal targeted by credential stuffing bots. Feared HIPAA breach notification and OCR penalties.
+                  <strong>Threat:</strong> Credential stuffing bots testing stolen username/password combinations against patient portals.
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  <strong>Solution:</strong> PromptFluid Defense blocked 2,347 bot login attempts in 45 days. Zero successful breaches, zero patient friction, full audit trail for compliance.
+                  <strong>Defense Approach:</strong> Behavioral fingerprinting identifies bot patterns and blocks automated login attempts before they succeed, while maintaining smooth access for legitimate patients.
                 </p>
               </Card>
 
               <Card className="p-6">
-                <h3 className="text-xl font-bold mb-3">Telemedicine Platform</h3>
+                <h3 className="text-xl font-bold mb-3">Telemedicine Fraud Prevention</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  <strong>Challenge:</strong> Bots creating fake patient profiles to obtain controlled substance prescriptions. DEA audit risk.
+                  <strong>Threat:</strong> Bots creating fake patient profiles to exploit telemedicine services.
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  <strong>Solution:</strong> Behavioral fingerprinting detected automated account creation patterns. Platform eliminated 97% of fraudulent prescription requests while maintaining patient accessibility.
+                  <strong>Defense Approach:</strong> Behavioral fingerprinting detects automated account creation patterns to help prevent fraudulent registrations.
                 </p>
               </Card>
 
               <Card className="p-6">
-                <h3 className="text-xl font-bold mb-3">Dental Practice Group</h3>
+                <h3 className="text-xl font-bold mb-3">Appointment Scheduler Protection</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  <strong>Challenge:</strong> Online appointment scheduler overwhelmed by bot spam—150+ fake bookings per week blocking real patient access.
+                  <strong>Threat:</strong> Bot spam overwhelming online appointment schedulers with fake bookings.
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  <strong>Solution:</strong> AI detection eliminated 99.4% of bot bookings without affecting elderly patients or those using assistive technology. Recovered $47K in lost scheduling revenue.
+                  <strong>Defense Approach:</strong> AI detection identifies bot traffic patterns without affecting accessibility for elderly patients or those using assistive technology.
                 </p>
               </Card>
 
               <Card className="p-6">
-                <h3 className="text-xl font-bold mb-3">Regional Hospital System</h3>
+                <h3 className="text-xl font-bold mb-3">EHR Integration Security</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  <strong>Challenge:</strong> Epic MyChart integration vulnerable to bots scraping patient demographics and insurance data for identity theft rings.
+                  <strong>Threat:</strong> Bots attempting to scrape patient demographics from EHR portals.
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  <strong>Solution:</strong> Device fingerprinting detected same "devices" accessing 400+ unrelated patient records. Stopped massive data exfiltration attempt—OCR breach notification avoided.
+                  <strong>Defense Approach:</strong> Device fingerprinting identifies unusual access patterns across patient records to help detect potential data exfiltration attempts.
                 </p>
               </Card>
             </div>

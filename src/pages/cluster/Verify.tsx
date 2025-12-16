@@ -31,7 +31,7 @@ export default function Verify() {
         {JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Article",
-          "headline": "Verify: World's First AI Plugin Certification & Auto-Fix",
+          "headline": "Verify: AI Plugin Certification & Auto-Fix",
           "description": "Upload, sandbox, scan, and auto-fix WordPress plugins without installing them—then download the patched build.",
           "image": ogImage,
           "datePublished": "2025-11-04",
@@ -63,7 +63,7 @@ export default function Verify() {
               <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 Verify
               </h1>
-              <p className="text-xl text-muted-foreground">World's First AI Plugin Certification & Auto-Fix</p>
+              <p className="text-xl text-muted-foreground">AI Plugin Certification & Auto-Fix (Planned)</p>
             </div>
           </div>
 

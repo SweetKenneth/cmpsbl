@@ -198,7 +198,7 @@ export default function ClarityPillarPost() {
 
               <h2>Common WordPress Accessibility Issues and Fixes</h2>
               <p>
-                Based on analysis of over 10,000 WordPress sites, these are the most common accessibility barriers and their solutions:
+                Based on industry research and common patterns, these are the most frequent accessibility barriers and their solutions:
               </p>
 
               <h3>Issue 1: Missing or Poor Alt Text</h3>

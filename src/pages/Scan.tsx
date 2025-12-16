@@ -202,7 +202,7 @@ export default function ScanPage() {
           <Card className="max-w-3xl mx-auto p-8 md:p-12 bg-gradient-to-br from-primary/10 via-primary-variant/5 to-accent/10 border-primary/20 text-center">
             <h2 className="text-3xl font-bold mb-4">Ready to Make Your Site Accessible?</h2>
             <p className="text-lg text-muted-foreground mb-8">
-              Join thousands of website owners making the web work for everyone. 
+              Start making the web work for everyone. 
               It's free. It's fast. It's the right thing to do.
             </p>
             <Button size="lg" onClick={openClarity} className="shadow-glow hover:shadow-glow-lg">

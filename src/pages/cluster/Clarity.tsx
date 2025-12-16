@@ -69,8 +69,8 @@ export default function Clarity() {
           <div className="prose prose-lg dark:prose-invert max-w-none space-y-8">
             <section>
               <p className="text-xl text-muted-foreground leading-relaxed mb-6">
-                Clarity is the world's first AI accessibility scanner that doesn't just audit—it repairs. 
-                No overlays, no band-aids. Real code fixes delivered in real time, ensuring your site stays 
+                Clarity is an AI accessibility scanner that doesn't just audit—it repairs. 
+                No overlays, no band-aids. Real code fixes help your site stay 
                 WCAG 2.2 compliant without manual intervention.
               </p>
             </section>

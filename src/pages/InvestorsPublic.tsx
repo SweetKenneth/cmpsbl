@@ -43,7 +43,7 @@ export default function InvestorsPublic() {
     <div className="min-h-screen bg-background">
       <SEO 
         title="Investors — PromptFluid Funding Opportunities"
-        description="Invest in the world's first dreaming AI. Revolutionary technology, multiple revenue streams, first-mover advantage in AI-powered automation and security."
+        description="Invest in PromptFluid's experimental AI technology. Multiple product lines including Bot Sniper security and Clarity accessibility tools."
         canonical="https://promptfluid.com/investors"
         keywords={[
           'AI startup investment',

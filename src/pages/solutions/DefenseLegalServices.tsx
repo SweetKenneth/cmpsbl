@@ -186,48 +186,51 @@ const DefenseLegalServices = () => {
             </div>
           </section>
 
-          {/* Real-World Legal Use Cases */}
+          {/* Protection Scenarios */}
           <section className="mb-16">
-            <h2 className="text-3xl font-bold mb-6">Real-World Protection Scenarios</h2>
+            <h2 className="text-3xl font-bold mb-6">Protection Scenarios</h2>
+            <p className="text-muted-foreground mb-6">
+              These scenarios illustrate the types of threats legal practices face and how PromptFluid Defense is designed to address them.
+            </p>
 
             <div className="grid md:grid-cols-2 gap-6">
               <Card className="p-6">
-                <h3 className="text-xl font-bold mb-3">Personal Injury Firm</h3>
+                <h3 className="text-xl font-bold mb-3">Client Portal Protection</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  <strong>Challenge:</strong> Client portal with 2,400 active cases. Bots attempting to scrape settlement amounts and medical records for competing firms.
+                  <strong>Threat:</strong> Bots attempting to scrape sensitive case information from client portals.
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  <strong>Solution:</strong> PromptFluid Defense successfully blocked hundreds of scraping attempts without a single false positive. Attorneys never knew bots were attacking—clients experienced zero friction.
+                  <strong>Defense Approach:</strong> Behavioral fingerprinting identifies automated scraping patterns while maintaining seamless access for legitimate clients.
                 </p>
               </Card>
 
               <Card className="p-6">
-                <h3 className="text-xl font-bold mb-3">Corporate Law Practice</h3>
+                <h3 className="text-xl font-bold mb-3">Document Security</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  <strong>Challenge:</strong> M&A data room with confidential acquisition documents. Concern about competitor firms using bots to monitor deal activity.
+                  <strong>Threat:</strong> Automated systems monitoring confidential data rooms for deal activity.
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  <strong>Solution:</strong> Behavioral fingerprinting detected subtle bot access patterns. Firm received real-time alerts when automated systems accessed sensitive folders, preventing information leakage.
+                  <strong>Defense Approach:</strong> Behavioral fingerprinting detects bot access patterns and provides alerts when automated systems access sensitive areas.
                 </p>
               </Card>
 
               <Card className="p-6">
-                <h3 className="text-xl font-bold mb-3">Immigration Law Office</h3>
+                <h3 className="text-xl font-bold mb-3">Intake Form Protection</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  <strong>Challenge:</strong> Online intake forms targeted by bots submitting fake consultations, overwhelming staff with spam.
+                  <strong>Threat:</strong> Bots submitting fake consultations through online intake forms.
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  <strong>Solution:</strong> AI-powered detection eliminated 99.2% of bot submissions while maintaining WCAG accessibility for clients with disabilities—critical for ethical compliance.
+                  <strong>Defense Approach:</strong> AI-powered detection identifies bot submissions while maintaining WCAG accessibility for clients with disabilities.
                 </p>
               </Card>
 
               <Card className="p-6">
-                <h3 className="text-xl font-bold mb-3">Family Law Firm</h3>
+                <h3 className="text-xl font-bold mb-3">Access Monitoring</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  <strong>Challenge:</strong> Custody case portal vulnerable to opposing parties using bots to monitor document uploads and communication timestamps.
+                  <strong>Threat:</strong> Unauthorized automated monitoring of case portals and document activity.
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  <strong>Solution:</strong> Device fingerprinting detected when the same "device" accessed multiple unrelated cases—exposing bot surveillance. Firm strengthened authentication and caught unethical opposition tactics.
+                  <strong>Defense Approach:</strong> Device fingerprinting detects when the same device accesses multiple unrelated cases, helping identify suspicious surveillance activity.
                 </p>
               </Card>
             </div>

@@ -14,13 +14,14 @@ interface NetworkNode {
 }
 
 export default function RippleNetwork() {
+  // Demo/placeholder data - not real metrics
   const [nodes] = useState<NetworkNode[]>([
-    { id: '1', name: 'Nexus Gateway', status: 'active', requests: 12847, latency: 45, uptime: '99.98%' },
-    { id: '2', name: 'Groq Router', status: 'active', requests: 8234, latency: 32, uptime: '99.95%' },
-    { id: '3', name: 'Cerebras Router', status: 'active', requests: 6543, latency: 67, uptime: '99.99%' },
-    { id: '4', name: 'Together AI Router', status: 'active', requests: 4321, latency: 89, uptime: '99.97%' },
-    { id: '5', name: 'DeepSeek Router', status: 'idle', requests: 892, latency: 108, uptime: '99.94%' },
-    { id: '6', name: 'Defense Engine', status: 'active', requests: 15678, latency: 23, uptime: '99.99%' },
+    { id: '1', name: 'Nexus Gateway', status: 'active', requests: 0, latency: 45, uptime: 'Demo' },
+    { id: '2', name: 'Groq Router', status: 'idle', requests: 0, latency: 32, uptime: 'Demo' },
+    { id: '3', name: 'Cerebras Router', status: 'idle', requests: 0, latency: 67, uptime: 'Demo' },
+    { id: '4', name: 'Together AI Router', status: 'idle', requests: 0, latency: 89, uptime: 'Demo' },
+    { id: '5', name: 'DeepSeek Router', status: 'idle', requests: 0, latency: 108, uptime: 'Demo' },
+    { id: '6', name: 'Defense Engine', status: 'idle', requests: 0, latency: 23, uptime: 'Demo' },
   ]);
 
   const totalRequests = nodes.reduce((sum, node) => sum + node.requests, 0);
