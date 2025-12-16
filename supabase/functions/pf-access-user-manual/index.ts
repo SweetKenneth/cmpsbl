@@ -1,6 +1,6 @@
 /**
  * PromptFluid Access User Manual Generator
- * Generates comprehensive CMPTBL accessibility documentation
+ * Generates comprehensive Clarity accessibility documentation
  */
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
@@ -16,9 +16,9 @@ serve(async (req) => {
   }
 
   try {
-    const manualContent = `# CMPTBL User Manual
+    const manualContent = `# PromptFluid Clarity User Manual
 **Complete Guide to Web Accessibility Compliance**
-Version 2.0.0 | Last Updated: ${new Date().toLocaleDateString()}
+Version 3.0.0 | Last Updated: ${new Date().toLocaleDateString()}
 
 ---
 
@@ -46,21 +46,21 @@ Version 2.0.0 | Last Updated: ${new Date().toLocaleDateString()}
 
 ## Section 1: Getting Started
 
-### What is CMPTBL?
+### What is PromptFluid Clarity?
 
-CMPTBL (Compatible) is an AI-powered web accessibility compliance platform that helps businesses achieve and maintain WCAG 2.2 compliance automatically.
+PromptFluid Clarity is an AI-powered web accessibility compliance platform that helps businesses achieve and maintain WCAG 2.2 compliance automatically. It's part of the PromptFluid ecosystem and integrates seamlessly with PromptFluid Brain for intelligent fix suggestions.
 
 **Key Features:**
 - Automated WCAG 2.2 scanning (Levels A, AA, AAA)
-- AI-powered fix generation
+- AI-powered fix generation via PromptFluid Brain
 - Real-time compliance monitoring
 - Accessibility badge certification
 - Multi-platform integration
 
 ### Quick Start (5 Minutes)
 
-1. **Sign Up**: Create your account at https://cmptbl.com
-2. **Add Your Site**: Enter your website URL
+1. **Visit**: Go to https://clarity.promptfluid.com
+2. **Enter URL**: Enter your website URL
 3. **Run First Scan**: Click "Scan Now" for instant analysis
 4. **Review Results**: See compliance score and violations
 5. **Apply AI Fixes**: Let AI generate and apply fixes
@@ -198,7 +198,7 @@ AI provides:
 ### Installation
 
 \`\`\`
-1. Download CMPTBL WordPress Plugin
+1. Download PromptFluid Clarity WordPress Plugin
 2. Upload to /wp-content/plugins/
 3. Activate plugin in WordPress Admin
 4. Enter API key from dashboard
@@ -230,7 +230,7 @@ AI provides:
 
 \`\`\`
 1. Visit Shopify App Store
-2. Search "CMPTBL Accessibility"
+2. Search "PromptFluid Clarity"
 3. Click "Add App"
 4. Authorize permissions
 5. Complete setup wizard
@@ -260,19 +260,19 @@ AI provides:
 ### NPM Installation
 
 \`\`\`bash
-npm install @cmptbl/react
+npm install @promptfluid/clarity-react
 \`\`\`
 
 ### React Component Usage
 
 \`\`\`jsx
-import { CMPTBLProvider, useAccessibility } from '@cmptbl/react';
+import { ClarityProvider, useAccessibility } from '@promptfluid/clarity-react';
 
 function App() {
   return (
-    <CMPTBLProvider apiKey="your-api-key">
+    <ClarityProvider apiKey="your-api-key">
       <YourApp />
-    </CMPTBLProvider>
+    </ClarityProvider>
   );
 }
 
@@ -291,15 +291,15 @@ function MyComponent() {
 
 \`\`\`jsx
 // app/layout.js
-import { CMPTBLProvider } from '@cmptbl/react';
+import { ClarityProvider } from '@promptfluid/clarity-react';
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <CMPTBLProvider apiKey={process.env.CMPTBL_API_KEY}>
+        <ClarityProvider apiKey={process.env.CLARITY_API_KEY}>
           {children}
-        </CMPTBLProvider>
+        </ClarityProvider>
       </body>
     </html>
   );
@@ -314,9 +314,9 @@ export default function RootLayout({ children }) {
 
 \`\`\`html
 <!-- Add before </body> tag -->
-<script src="https://cdn.cmptbl.com/scanner.js"></script>
+<script src="https://cdn.clarity.promptfluid.com/scanner.js"></script>
 <script>
-  CMPTBL.init({
+  Clarity.init({
     apiKey: 'your-api-key',
     scanOnLoad: true,
     autoFix: false
@@ -327,7 +327,7 @@ export default function RootLayout({ children }) {
 ### Configuration Options
 
 \`\`\`javascript
-CMPTBL.init({
+Clarity.init({
   apiKey: 'your-api-key',
   scanOnLoad: true,        // Scan when page loads
   autoFix: false,          // Don't auto-apply fixes
@@ -344,7 +344,7 @@ CMPTBL.init({
 ### Authentication
 
 \`\`\`bash
-curl -X POST https://api.cmptbl.com/v1/scan \\
+curl -X POST https://api.clarity.promptfluid.com/v1/scan \\
   -H "Authorization: Bearer YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{"url": "https://example.com"}'
@@ -396,7 +396,7 @@ Define organization-specific standards:
 ### Embedding Badge
 
 \`\`\`html
-<img src="https://badge.cmptbl.com/YOUR_SITE_ID" 
+<img src="https://badge.clarity.promptfluid.com/YOUR_SITE_ID" 
      alt="WCAG 2.2 Level AA Compliant">
 \`\`\`
 
@@ -430,10 +430,10 @@ Define organization-specific standards:
 
 ### Contact Support
 
-- **Email:** support@cmptbl.com
+- **Email:** support@promptfluid.com
 - **Live Chat:** Available in dashboard
-- **Documentation:** https://docs.cmptbl.com
-- **Community:** https://community.cmptbl.com
+- **Documentation:** https://docs.promptfluid.com/clarity
+- **Community:** https://community.promptfluid.com
 
 ### Additional Resources
 
@@ -466,11 +466,11 @@ Define organization-specific standards:
 
 ## Conclusion
 
-CMPTBL makes web accessibility simple, automated, and maintainable. Start your journey to full WCAG 2.2 compliance today.
+PromptFluid Clarity makes web accessibility simple, automated, and maintainable. Start your journey to full WCAG 2.2 compliance today.
 
-**Need Help?** Contact support@cmptbl.com
+**Need Help?** Contact support@promptfluid.com
 
-**© ${new Date().getFullYear()} CMPTBL (PromptFluid Access) - All Rights Reserved**
+**© ${new Date().getFullYear()} PromptFluid Clarity - All Rights Reserved**
 `;
 
     return new Response(
@@ -478,7 +478,7 @@ CMPTBL makes web accessibility simple, automated, and maintainable. Start your j
         success: true,
         manual: manualContent,
         format: 'markdown',
-        version: '2.0.0',
+        version: '3.0.0',
         generated_at: new Date().toISOString()
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

@@ -17,7 +17,7 @@ const CASCADE_KNOWLEDGE = {
   system_awareness: {
     ecosystem_components: [
       "PromptFluid (primary AI ecosystem + brand)",
-      "CMPTBL (accessibility compliance engine)",
+      "Clarity (accessibility compliance engine)",
       "Reflex Bot Sniper (anti-bot system)",
       "BulletSites (web design + SEO platform)",
       "SimNap (dream-cycle AI and mythos engine)",
@@ -56,7 +56,7 @@ const CASCADE_KNOWLEDGE = {
     ]
   },
   product_intelligence: {
-    cmptbl: {
+    clarity: {
       purpose: "Automated WCAG compliance and accessibility enhancements.",
       integrations: ["WordPress", "Shopify", "Next.js", "React", "API mode"]
     },

@@ -66,7 +66,7 @@ Campaign management, content generation, analytics
 - ✅ Performance insights
 - ✅ Email marketing integration
 
-### **5. Access (CMPTBL) Module** (13 functions)
+### **5. Access (Clarity) Module** (13 functions)
 Accessibility compliance, WCAG scanning, remediation
 - ✅ Automated accessibility scanning
 - ✅ Alt-text generation
