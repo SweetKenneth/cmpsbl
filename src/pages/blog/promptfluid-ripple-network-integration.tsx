@@ -259,7 +259,7 @@ const PromptFluidRipple = () => {
                 to="/blog/ai-triad-intelligent-routing" 
                 className="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors"
               >
-                <h3 className="text-lg font-semibold mb-2">AI Triad Routing</h3>
+                <h3 className="text-lg font-semibold mb-2">Free-Tier Provider Routing</h3>
                 <p className="text-sm text-muted-foreground">
                   Learn how Nexus and Ripple work together to route AI and non-AI requests optimally.
                 </p>

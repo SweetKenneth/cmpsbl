@@ -8,7 +8,7 @@ const AITriadExplained = () => {
   return (
     <>
       <Helmet>
-        <title>The AI Triad: Understanding PromptFluid's Intelligent Routing System</title>
+        <title>Free-Tier Provider Network: Understanding PromptFluid's Intelligent Routing System</title>
         <meta 
           name="description" 
           content="Learn how PromptFluid's Cascade AI intelligently routes tasks across Groq, Together AI, Hyperbolic, DeepSeek, and Cerebras for optimal results at zero cost." 
@@ -19,7 +19,7 @@ const AITriadExplained = () => {
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "TechArticle",
-            "headline": "The AI Triad: Understanding PromptFluid's Intelligent Routing System",
+            "headline": "Free-Tier Provider Network: Understanding PromptFluid's Intelligent Routing System",
             "description": "Learn how PromptFluid's Cascade AI intelligently routes tasks across Groq, Together AI, Hyperbolic, DeepSeek, and Cerebras for optimal results at zero cost.",
             "author": {
               "@type": "Person",
@@ -50,7 +50,7 @@ const AITriadExplained = () => {
             <span className="mx-2">/</span>
             <Link to="/blog" className="hover:text-primary transition-colors">Blog</Link>
             <span className="mx-2">/</span>
-            <span className="text-foreground">AI Triad</span>
+            <span className="text-foreground">Free-Tier Provider Network</span>
           </nav>
 
           <header className="mb-12">
@@ -64,7 +64,7 @@ const AITriadExplained = () => {
             </div>
             
             <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent leading-tight">
-              The AI Triad: Understanding Intelligent Routing
+              Free-Tier Provider Network: Understanding Intelligent Routing
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
               Discover how Cascade AI orchestrates free-tier AI providers—Groq, Together AI, Hyperbolic, DeepSeek, and Cerebras—to deliver optimal results at zero cost.
@@ -165,7 +165,7 @@ const AITriadExplained = () => {
           <section className="bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 border border-primary/30 rounded-lg p-8 text-center mb-12">
             <h3 className="text-2xl font-bold mb-4">Experience Intelligent Routing</h3>
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              See how the AI Triad delivers optimal results while optimizing costs automatically through Cascade's intelligent orchestration.
+              See how the free-tier provider network delivers optimal results while eliminating costs automatically through Cascade's intelligent orchestration.
             </p>
             <Link 
               to="/" 
@@ -185,7 +185,7 @@ const AITriadExplained = () => {
               >
                 <h3 className="text-lg font-semibold mb-2">How PromptFluid Works</h3>
                 <p className="text-sm text-muted-foreground">
-                  Discover the complete ecosystem that leverages the AI Triad for seamless intelligence delivery.
+                  Discover the complete ecosystem that leverages the free-tier provider network for seamless intelligence delivery.
                 </p>
               </Link>
 

@@ -96,7 +96,7 @@ const PromptFluidVision = () => {
                   <h3 className="text-2xl font-bold m-0">AI Performance Analytics</h3>
                 </div>
                 <p className="text-muted-foreground leading-relaxed">
-                  Track how <Link to="/blog/ai-triad-intelligent-routing" className="text-primary hover:underline">AI Triad</Link> providers perform across different task types. Vision shows which models deliver the best results for specific workflows, average response times per provider, cost per request, and quality scores based on user feedback and Brain evaluations.
+                  Track how <Link to="/blog/ai-triad-intelligent-routing" className="text-primary hover:underline">free-tier providers</Link> perform across different task types. Vision shows which models deliver the best results for specific workflows, average response times per provider, cost per request, and quality scores based on user feedback and Brain evaluations.
                 </p>
               </div>
 

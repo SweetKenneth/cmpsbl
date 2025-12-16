@@ -60,7 +60,7 @@ export function EnhancedFooter() {
             <ul className="space-y-2.5 text-sm text-muted-foreground">
               <li><Link to="/blog/how-promptfluid-works-cascade-ai-ecosystem" className="block py-1 hover:text-primary transition-colors touch-manipulation">How It Works</Link></li>
               <li><Link to="/blog/cascade-ai-adaptive-intelligence-brain" className="block py-1 hover:text-primary transition-colors touch-manipulation">Cascade AI</Link></li>
-              <li><Link to="/blog/ai-triad-intelligent-routing" className="block py-1 hover:text-primary transition-colors touch-manipulation">AI Triad</Link></li>
+              <li><Link to="/blog/ai-triad-intelligent-routing" className="block py-1 hover:text-primary transition-colors touch-manipulation">Provider Network</Link></li>
               <li><Link to="/blog/promptfluid-brain-adaptive-learning-core" className="block py-1 hover:text-primary transition-colors touch-manipulation">Brain Core</Link></li>
               <li><Link to="/blog/ai-automation-trends-2025" className="block py-1 hover:text-primary transition-colors touch-manipulation">Automation Trends</Link></li>
             </ul>

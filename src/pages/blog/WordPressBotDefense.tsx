@@ -1013,7 +1013,7 @@ const WordPressBotDefense = () => {
                 <div className="text-3xl font-bold text-primary mb-4">$99<span className="text-base font-normal text-muted-foreground">/mo</span></div>
                 <ul className="space-y-2 text-sm mb-4">
                   <li>• Unlimited WordPress sites</li>
-                  <li>• Full AI Triad access</li>
+                  <li>• Full free-tier provider access</li>
                   <li>• Priority threat intelligence</li>
                   <li>• White-label options</li>
                   <li>• Unlimited data retention</li>
