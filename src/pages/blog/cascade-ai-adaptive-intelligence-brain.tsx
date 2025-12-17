@@ -95,7 +95,7 @@ const CascadeAIDeepDive = () => {
                 <div className="flex gap-4">
                   <Brain className="w-10 h-10 text-primary flex-shrink-0" />
                   <div>
-                    <h3 className="text-xl font-semibold mb-2">Continuous Learning Cycle (1,350 calls/day)</h3>
+                    <h3 className="text-xl font-semibold mb-2">Continuous Learning Cycle</h3>
                     <p className="text-muted-foreground">
                       Studies React/Vite/TypeScript architecture patterns, modern development conventions, component 
                       design principles, and code generation strategies. Learns primarily from internal knowledge cache 
@@ -107,7 +107,7 @@ const CascadeAIDeepDive = () => {
                 <div className="flex gap-4">
                   <Database className="w-10 h-10 text-accent flex-shrink-0" />
                   <div>
-                    <h3 className="text-xl font-semibold mb-2">Auto Research Cycle (1,800 calls/day)</h3>
+                    <h3 className="text-xl font-semibold mb-2">Auto Research Cycle</h3>
                     <p className="text-muted-foreground">
                       Investigates advanced techniques, emerging libraries, and cutting-edge development patterns. 
                       While Continuous Learning focuses on mastering existing knowledge, Auto Research discovers new 
@@ -119,7 +119,7 @@ const CascadeAIDeepDive = () => {
                 <div className="flex gap-4">
                   <TrendingUp className="w-10 h-10 text-primary flex-shrink-0" />
                   <div>
-                    <h3 className="text-xl font-semibold mb-2">Deep Think Cycle (1,020 calls/day)</h3>
+                    <h3 className="text-xl font-semibold mb-2">Deep Think Cycle</h3>
                     <p className="text-muted-foreground">
                       Tackles complex architectural decisions, multi-step reasoning challenges, and optimization problems 
                       requiring extended inference. Uses premium free-tier models for powerful reasoning to solve problems 
@@ -131,7 +131,7 @@ const CascadeAIDeepDive = () => {
                 <div className="flex gap-4">
                   <Activity className="w-10 h-10 text-accent flex-shrink-0" />
                   <div>
-                    <h3 className="text-xl font-semibold mb-2">Reflection & Synthesis (850 calls/day)</h3>
+                    <h3 className="text-xl font-semibold mb-2">Reflection & Synthesis</h3>
                     <p className="text-muted-foreground">
                       Connects insights across all brain cycles, identifies emergent patterns, and generates strategic 
                       improvements. Reflection finds the hidden connections between code quality, user satisfaction, and 

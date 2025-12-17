@@ -107,9 +107,9 @@ export default function BrainProduct() {
       items: [
         "✅ Phase 1: Core ML infrastructure (DUOS architecture)",
         "✅ Database schema with vector storage (pgvector)",
-        "✅ Behavioral analysis models (80+ tables)",
+        "✅ Behavioral analysis models (database schema)",
         "✅ Training data collection system with Brain console",
-        "✅ Initial API framework (270+ edge functions)",
+        "✅ Initial API framework (edge functions)",
         "✅ Deep thinking engine with multi-provider routing",
         "✅ Free-tier AI routing (Groq, Cerebras, Together AI, DeepSeek, Hyperbolic, Google AI Studio)",
         "✅ Dream cycle intelligence with autonomous learning",

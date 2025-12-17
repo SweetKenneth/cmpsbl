@@ -12,7 +12,7 @@ export default function SystemAudit() {
         status: "passed",
         percentage: 100,
         issues: 0,
-        details: "Verified 270+ edge functions, 80+ database tables"
+        details: "Edge functions and database tables verified"
       },
       {
         name: "Features",

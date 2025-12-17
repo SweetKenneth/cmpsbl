@@ -145,7 +145,7 @@ const FreeAIResources = () => {
               <li><strong>Speed optimization:</strong> Groq and Cerebras for sub-second latency requirements</li>
               <li><strong>Volume distribution:</strong> Together AI and Hyperbolic handle bulk learning workloads</li>
               <li><strong>Specialized tasks:</strong> Google AI Studio for vision, DeepSeek for reasoning</li>
-              <li><strong>Failover resilience:</strong> 6+ providers ensure 99.9% uptime with zero cost</li>
+              <li><strong>Failover resilience:</strong> Multiple providers ensure high availability</li>
             </ul>
             <p className="pt-2 text-sm italic">
               This approach enables Cascade to learn continuously while maintaining responsive chat functionality — a multi-provider orchestration strategy that maximizes free-tier value.

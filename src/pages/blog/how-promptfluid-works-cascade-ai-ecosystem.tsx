@@ -186,7 +186,7 @@ const HowPromptFluidWorks = () => {
                 <div className="bg-card border border-border rounded-lg p-4">
                   <div className="flex justify-between items-center mb-2">
                     <span className="font-semibold">Continuous Learning</span>
-                    <span className="text-sm text-primary">1,350 calls/day</span>
+                    <span className="text-sm text-primary">Active</span>
                   </div>
                   <p className="text-sm text-muted-foreground">
                     Studies React/Vite/TypeScript patterns, modern architecture, and development best practices to 
@@ -196,7 +196,7 @@ const HowPromptFluidWorks = () => {
                 <div className="bg-card border border-border rounded-lg p-4">
                   <div className="flex justify-between items-center mb-2">
                     <span className="font-semibold">Auto Research</span>
-                    <span className="text-sm text-primary">1,800 calls/day</span>
+                    <span className="text-sm text-primary">Active</span>
                   </div>
                   <p className="text-sm text-muted-foreground">
                     Investigates advanced techniques, new libraries, and emerging patterns to stay cutting-edge
@@ -205,7 +205,7 @@ const HowPromptFluidWorks = () => {
                 <div className="bg-card border border-border rounded-lg p-4">
                   <div className="flex justify-between items-center mb-2">
                     <span className="font-semibold">Deep Think</span>
-                    <span className="text-sm text-primary">1,020 calls/day</span>
+                    <span className="text-sm text-primary">Active</span>
                   </div>
                   <p className="text-sm text-muted-foreground">
                     Complex problem-solving and architectural decisions requiring deep reasoning
@@ -214,7 +214,7 @@ const HowPromptFluidWorks = () => {
                 <div className="bg-card border border-border rounded-lg p-4">
                   <div className="flex justify-between items-center mb-2">
                     <span className="font-semibold">Learning Core</span>
-                    <span className="text-sm text-primary">1,130 calls/day</span>
+                    <span className="text-sm text-primary">Active</span>
                   </div>
                   <p className="text-sm text-muted-foreground">
                     Processes outcomes, identifies patterns, and updates internal knowledge models
@@ -223,7 +223,7 @@ const HowPromptFluidWorks = () => {
                 <div className="bg-card border border-border rounded-lg p-4">
                   <div className="flex justify-between items-center mb-2">
                     <span className="font-semibold">Reflection & Synthesis</span>
-                    <span className="text-sm text-primary">850 calls/day</span>
+                    <span className="text-sm text-primary">Active</span>
                   </div>
                   <p className="text-sm text-muted-foreground">
                     Connects insights across cycles, finds emergent patterns, generates strategic improvements
@@ -232,7 +232,7 @@ const HowPromptFluidWorks = () => {
                 <div className="bg-card border border-border rounded-lg p-4">
                   <div className="flex justify-between items-center mb-2">
                     <span className="font-semibold">Analytics & Insights</span>
-                    <span className="text-sm text-primary">1,020 calls/day</span>
+                    <span className="text-sm text-primary">Active</span>
                   </div>
                   <p className="text-sm text-muted-foreground">
                     Monitors system health, tracks learning progress, identifies optimization opportunities
@@ -241,7 +241,7 @@ const HowPromptFluidWorks = () => {
                 <div className="bg-card border border-border rounded-lg p-4">
                   <div className="flex justify-between items-center mb-2">
                     <span className="font-semibold">Graph Building</span>
-                    <span className="text-sm text-primary">680 calls/day</span>
+                    <span className="text-sm text-primary">Active</span>
                   </div>
                   <p className="text-sm text-muted-foreground">
                     Creates conceptual maps of code relationships, dependencies, and architectural patterns
@@ -250,7 +250,7 @@ const HowPromptFluidWorks = () => {
                 <div className="bg-card border border-border rounded-lg p-4">
                   <div className="flex justify-between items-center mb-2">
                     <span className="font-semibold">Forecasting</span>
-                    <span className="text-sm text-primary">450 calls/day</span>
+                    <span className="text-sm text-primary">Active</span>
                   </div>
                   <p className="text-sm text-muted-foreground">
                     Predicts needed capabilities, anticipates technical debt, plans future improvements
@@ -259,7 +259,7 @@ const HowPromptFluidWorks = () => {
                 <div className="bg-card border border-border rounded-lg p-4">
                   <div className="flex justify-between items-center mb-2">
                     <span className="font-semibold">Memory Optimization</span>
-                    <span className="text-sm text-primary">340 calls/day</span>
+                    <span className="text-sm text-primary">Active</span>
                   </div>
                   <p className="text-sm text-muted-foreground">
                     Compresses knowledge, archives old data, maintains hot memory for instant recall

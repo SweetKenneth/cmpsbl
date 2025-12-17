@@ -157,7 +157,7 @@ const PromptFluidMarketDisruptor = () => {
             <ul className="space-y-2 text-sm">
               <li>All queries → free-tier Llama models</li>
               <li>Complex reasoning → Together AI (free tier)</li>
-              <li>Automatic failover → 6 providers for 99.9% uptime</li>
+              <li>Automatic failover → Multiple providers for high availability</li>
               <li>Redundant requests → served from cache (zero API calls)</li>
             </ul>
           </Card>
