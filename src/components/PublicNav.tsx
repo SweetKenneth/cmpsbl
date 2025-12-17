@@ -348,7 +348,7 @@ export function PublicNav() {
             className="fixed inset-0 z-[9998] lg:hidden bg-black/80 backdrop-blur-md"
             onClick={() => setMobileMenuOpen(false)}
           />
-          <div className="fixed top-20 left-0 right-0 bottom-0 z-[9999] lg:hidden bg-gray-900/95 border-t border-border/50 overflow-y-auto text-white">
+          <div className="fixed top-20 left-0 right-0 bottom-0 z-[9999] lg:hidden bg-[#1a1a2e] border-t border-white/10 overflow-y-auto">
             <div className="p-6 space-y-6">
               {/* Free Scan - Highlighted Mobile */}
               <Link
@@ -370,7 +370,7 @@ export function PublicNav() {
                       <Link
                         to={product.href}
                         onClick={() => setMobileMenuOpen(false)}
-                        className="text-sm text-white/80 hover:text-primary transition-colors block"
+                        className="text-sm text-white hover:text-primary transition-colors block"
                       >
                         {product.name}
                       </Link>
@@ -400,7 +400,7 @@ export function PublicNav() {
                         <Link
                           to={link.href}
                           onClick={() => setMobileMenuOpen(false)}
-                          className="text-sm text-white/80 hover:text-primary transition-colors block"
+                          className="text-sm text-white hover:text-primary transition-colors block"
                         >
                           {link.name}
                         </Link>
