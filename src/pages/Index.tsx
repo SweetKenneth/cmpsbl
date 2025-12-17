@@ -80,8 +80,23 @@ export default function Index() {
         {/* Hero Section - Investor Focused */}
         <section className="relative z-10 container mx-auto px-4 pt-0 pb-20 -mt-[111px]" aria-labelledby="hero-heading">
           <div className="max-w-5xl mx-auto text-center">
+            {/* Logo */}
+            <div className="flex justify-center mb-0 -mt-[100px] animate-fade-in">
+              <img 
+                src="/promptfluid-logo.png" 
+                alt="PromptFluid logo" 
+                width="400"
+                height="300"
+                fetchPriority="high"
+                loading="eager"
+                className="w-[70%] max-w-2xl h-auto"
+              />
+            </div>
+            
+            <h1 id="hero-heading" className="sr-only">PromptFluid - Home of the World's First Autonomous Dreaming AI</h1>
+            
             {/* Primary Claim - Verified Fact */}
-            <div className="mb-0 -mt-[100px] relative z-10 animate-fade-in">
+            <div className="mb-8 -mt-[80px] relative z-10 animate-fade-in">
               <a 
                 href="https://github.com/SweetKenneth/SimNap-Dreaming-AI-Whitepaper" 
                 target="_blank" 
@@ -107,21 +122,6 @@ export default function Index() {
                   </p>
                 </div>
               </a>
-            </div>
-
-            <h1 id="hero-heading" className="sr-only">PromptFluid - Home of the World's First Autonomous Dreaming AI</h1>
-            
-            {/* Logo */}
-            <div className="flex justify-center mb-8 -mt-[80px] animate-fade-in">
-              <img 
-                src="/promptfluid-logo.png" 
-                alt="PromptFluid logo" 
-                width="400"
-                height="300"
-                fetchPriority="high"
-                loading="eager"
-                className="w-[70%] max-w-2xl h-auto"
-              />
             </div>
 
             {/* Hero Image - World's First Dreaming AI */}
