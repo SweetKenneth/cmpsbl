@@ -10,6 +10,18 @@ export default function InvestorPackets() {
   const [generating, setGenerating] = useState(false);
   const [lastPacket, setLastPacket] = useState<any>(null);
 
+  const downloadText = (content: string, filename?: string) => {
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename || `investor-packet-${Date.now()}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  };
+
   const generatePacket = async () => {
     setGenerating(true);
     try {
@@ -77,7 +89,18 @@ export default function InvestorPackets() {
                 <CardContent className="pt-6 space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="font-semibold">Latest Packet</span>
-                    <Button variant="outline" size="sm">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        if (!lastPacket?.content) {
+                          toast.error('No downloadable content returned');
+                          return;
+                        }
+                        downloadText(lastPacket.content, lastPacket.filename);
+                      }}
+                      disabled={!lastPacket?.content}
+                    >
                       <Download className="h-4 w-4 mr-2" />
                       Download
                     </Button>
@@ -86,7 +109,9 @@ export default function InvestorPackets() {
                     <p><strong>Valuation:</strong> ${lastPacket.valuation?.toLocaleString()}</p>
                     <p><strong>Revenue:</strong> ${lastPacket.revenue?.toFixed(2)}</p>
                     <p><strong>Installs:</strong> {lastPacket.installs}</p>
-                    <p className="text-muted-foreground">{lastPacket.path}</p>
+                    {lastPacket.filename ? (
+                      <p className="text-muted-foreground">{lastPacket.filename}</p>
+                    ) : null}
                   </div>
                 </CardContent>
               </Card>

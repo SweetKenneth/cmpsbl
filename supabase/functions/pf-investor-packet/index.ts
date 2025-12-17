@@ -61,36 +61,18 @@ Next Milestone: $10K MRR
     `.trim();
 
     const filename = `investor-packet-${Date.now()}.txt`;
-    const encoder = new TextEncoder();
-    const data = encoder.encode(packetContent);
 
-    // Upload to storage
-    const { data: uploadData, error: uploadError } = await supabase.storage
-      .from('investor-packets')
-      .upload(filename, data, { contentType: 'text/plain' });
-
-    if (uploadError) throw uploadError;
-
-    // Record in database
-    const { error: dbError } = await supabase
-      .from("investor_packets")
-      .insert({
-        valuation: currentValuation,
-        summary: `Auto-generated packet - ${totalInstalls} installs, $${totalRevenue.toFixed(2)} revenue`,
-        file_path: uploadData.path
-      });
-
-    if (dbError) throw dbError;
-
-    console.log('Investor packet generated:', uploadData.path);
-
+    // Return the content directly so public pages can download without auth/storage.
     return new Response(
-      JSON.stringify({ 
-        success: true, 
-        path: uploadData.path,
+      JSON.stringify({
+        success: true,
+        filename,
+        content: packetContent,
         valuation: currentValuation,
         revenue: totalRevenue,
-        installs: totalInstalls
+        installs: totalInstalls,
+        activations: totalActivations,
+        generated_at: new Date().toISOString(),
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );

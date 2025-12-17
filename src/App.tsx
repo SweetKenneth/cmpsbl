@@ -396,8 +396,11 @@ const App = () => {
           {/* Public Investors Page */}
           <Route path="/investors" element={<InvestorsPublic />} />
           
+          {/* Investor Packets */}
+          <Route path="/investor-packets" element={<Navigate to="/investors" replace />} />
+          <Route path="/admin/investor-packets" element={<ProtectedRoute><AppLayout><InvestorPackets /></AppLayout></ProtectedRoute>} />
+          
           {/* Protected Business Pages - Admin Only */}
-          <Route path="/investor-packets" element={<ProtectedRoute><AppLayout><InvestorPackets /></AppLayout></ProtectedRoute>} />
           <Route path="/partnerships" element={<ProtectedRoute><AppLayout><Partnerships /></AppLayout></ProtectedRoute>} />
           <Route path="/marketing" element={<ProtectedRoute><AppLayout><Marketing /></AppLayout></ProtectedRoute>} />
           
