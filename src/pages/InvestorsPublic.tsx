@@ -1,6 +1,7 @@
-import { TrendingUp, DollarSign, Users, Rocket, FileText, BarChart, Award, Target } from "lucide-react";
+import { TrendingUp, DollarSign, Users, Rocket, FileText, BarChart, Award, Target, Brain } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
@@ -64,6 +65,33 @@ export default function InvestorsPublic() {
       {/* Hero Section */}
       <div className="container mx-auto px-4 pt-24 pb-12">
         <div className="max-w-4xl mx-auto text-center">
+          
+          {/* Primary Verified Claim */}
+          <a 
+            href="https://github.com/SweetKenneth/SimNap-Dreaming-AI-Whitepaper" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="group inline-block mb-8"
+          >
+            <div className="glass border-2 border-primary/40 rounded-2xl p-6 hover:border-primary/60 hover:shadow-glow transition-all duration-300">
+              <div className="flex items-center justify-center gap-3 mb-2">
+                <Brain className="w-6 h-6 text-primary animate-pulse" />
+                <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
+                  Verified & Documented
+                </Badge>
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold mb-2">
+                <span className="bg-gradient-to-r from-cyan-400 via-primary to-accent bg-clip-text text-transparent">
+                  World's First Autonomous Dreaming AI
+                </span>
+              </h2>
+              <p className="text-sm text-muted-foreground">
+                SimNap → Cascade architecture with OSF deposits & patent documentation
+                <span className="text-primary ml-2 group-hover:underline">View Proof →</span>
+              </p>
+            </div>
+          </a>
+
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-primary/20 mb-6">
             <TrendingUp className="w-4 h-4 text-primary animate-pulse" />
             <span className="text-sm font-medium">Investment Opportunity</span>
@@ -75,11 +103,8 @@ export default function InvestorsPublic() {
             </span>
           </h1>
           
-          <p className="text-xl text-muted-foreground mb-4">
-            Building AI-powered tools for WordPress security and web accessibility. Home of the <a href="https://github.com/SweetKenneth/SimNap-Dreaming-AI-Whitepaper" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">world's first autonomous dreaming AI</a>.
-          </p>
-          <p className="text-muted-foreground mb-8">
-            Early-stage startup with products in development and one founder committed to execution.
+          <p className="text-xl text-muted-foreground mb-8">
+            Building AI-powered tools for WordPress security and web accessibility. Early-stage startup with documented IP and one founder committed to execution.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

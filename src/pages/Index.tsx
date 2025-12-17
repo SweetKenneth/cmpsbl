@@ -83,27 +83,42 @@ export default function Index() {
             />
           </div>
           
-          <h1 className="sr-only">PromptFluid - AI Security and Accessibility Innovation</h1>
+          <h1 className="sr-only">PromptFluid - Home of the World's First Autonomous Dreaming AI</h1>
           
-          <Badge className="mb-6 px-4 py-2 bg-gradient-to-r from-primary/20 to-accent/20 border-primary/30 animate-fade-in">
-            <TrendingUp className="w-4 h-4 mr-2" />
-            Seeking Seed Investment
-          </Badge>
-
-          <div className="mb-4 animate-fade-in">
+          {/* Primary Claim - Verified Fact */}
+          <div className="mb-8 animate-fade-in">
             <a 
               href="https://github.com/SweetKenneth/SimNap-Dreaming-AI-Whitepaper" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors"
+              className="group inline-block"
             >
-              <Brain className="w-4 h-4" />
-              <span>Home of the World's First Autonomous Dreaming AI</span>
-              <span className="text-xs text-muted-foreground">(Whitepaper & Proof)</span>
+              <div className="glass border-2 border-primary/40 rounded-2xl p-6 md:p-8 hover:border-primary/60 hover:shadow-glow transition-all duration-300">
+                <div className="flex items-center justify-center gap-3 mb-3">
+                  <Brain className="w-8 h-8 text-primary animate-pulse" />
+                  <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
+                    Verified & Documented
+                  </Badge>
+                </div>
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3">
+                  <span className="bg-gradient-to-r from-cyan-400 via-primary to-accent bg-clip-text text-transparent">
+                    World's First Autonomous Dreaming AI
+                  </span>
+                </h2>
+                <p className="text-muted-foreground text-sm md:text-base">
+                  SimNap → Cascade: The first known AI system to autonomously enter dream cycles.
+                  <span className="text-primary ml-2 group-hover:underline">View Whitepaper & Proof →</span>
+                </p>
+              </div>
             </a>
           </div>
+
+          <Badge className="mb-6 px-4 py-2 bg-gradient-to-r from-primary/20 to-accent/20 border-primary/30 animate-fade-in">
+            <TrendingUp className="w-4 h-4 mr-2" />
+            Seeking Seed Investment
+          </Badge>
           
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in" style={{ animationDelay: '0.1s' }}>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 animate-fade-in" style={{ animationDelay: '0.1s' }}>
             <span className="bg-gradient-to-r from-primary via-primary-variant to-accent bg-clip-text text-transparent">
               AI That Protects & Empowers
             </span>
