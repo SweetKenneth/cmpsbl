@@ -85,11 +85,11 @@ export default function Index() {
               <img 
                 src="/promptfluid-logo.png" 
                 alt="PromptFluid logo" 
-                width="700"
-                height="525"
+                width="400"
+                height="300"
                 fetchPriority="high"
                 loading="eager"
-                className="w-[40%] max-w-md h-auto"
+                className="w-[70%] max-w-2xl h-auto"
               />
             </div>
             
