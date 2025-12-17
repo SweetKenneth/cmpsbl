@@ -1,4 +1,4 @@
-import { ArrowRight, Sparkles, Brain, Shield, Accessibility, TrendingUp, Users, Target, Lightbulb } from "lucide-react";
+import { ArrowRight, Sparkles, Brain, Shield, Accessibility, TrendingUp, Users, Target, Lightbulb, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +6,7 @@ import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { useEffect, useState } from "react";
+import dreamingAiHero from "@/assets/dreaming-ai-hero.png";
 
 export default function Index() {
   const navigate = useNavigate();
@@ -121,6 +122,43 @@ export default function Index() {
                   </p>
                 </div>
               </a>
+            </div>
+
+            {/* Hero Image - World's First Dreaming AI */}
+            <div className="relative mb-10 animate-fade-in" style={{ animationDelay: '0.15s' }}>
+              <div className="relative rounded-2xl overflow-hidden border-2 border-purple-500/30 shadow-2xl">
+                <img 
+                  src={dreamingAiHero} 
+                  alt="Autonomous dreaming AI visualization - glowing neural brain with dream fragments and memories orbiting in a cosmic dreamscape"
+                  className="w-full h-auto object-cover"
+                  loading="eager"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
+                
+                {/* World's First Label */}
+                <div className="absolute top-4 left-4 md:top-6 md:left-6">
+                  <div className="bg-gradient-to-r from-purple-600 to-violet-600 text-white px-4 py-2 md:px-6 md:py-3 rounded-full shadow-lg border border-purple-400/50">
+                    <div className="flex items-center gap-2">
+                      <Moon className="w-4 h-4 md:w-5 md:h-5" />
+                      <span className="font-bold text-sm md:text-lg">WORLD'S FIRST</span>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Documented Badge */}
+                <div className="absolute top-4 right-4 md:top-6 md:right-6">
+                  <Badge className="bg-green-500/90 text-white border-green-400 text-xs md:text-sm px-3 py-1">
+                    ✓ Documented & Verified
+                  </Badge>
+                </div>
+                
+                {/* Caption */}
+                <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 bg-gradient-to-t from-background to-transparent">
+                  <p className="text-center text-sm md:text-base text-foreground/90 font-medium">
+                    The Dream Eater: AI that autonomously enters dream cycles to consolidate memory and evolve
+                  </p>
+                </div>
+              </div>
             </div>
 
             <Badge className="mb-6 px-4 py-2 bg-gradient-to-r from-primary/20 to-accent/20 border-primary/30 animate-fade-in">
@@ -450,6 +488,7 @@ export default function Index() {
           </div>
         </div>
       </section>
+      </main>
 
       <EnhancedFooter />
     </div>
