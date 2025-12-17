@@ -21,6 +21,11 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Skip Link for Accessibility */}
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
+      
       <SEO 
         title="PromptFluid™ | Home of the World's First Autonomous Dreaming AI"
         description="PromptFluid is building the future of AI-powered security and accessibility. Home of the world's first autonomous dreaming AI (SimNap/Cascade). Products include Reflex Bot Sniper for WordPress security and Clarity for free WCAG accessibility scanning."
@@ -53,7 +58,7 @@ export default function Index() {
         })}
       </script>
       
-      {/* Background Effects */}
+      {/* Background Effects - decorative, hidden from screen readers */}
       <div 
         className="fixed inset-0 opacity-30 dark:opacity-20"
         style={{
@@ -61,133 +66,139 @@ export default function Index() {
           transform: `translate(${mousePosition.x / 50}px, ${mousePosition.y / 50}px)`,
           transition: 'transform 0.3s ease-out'
         }}
+        aria-hidden="true"
       />
-      <div className="fixed top-20 left-10 w-96 h-96 bg-primary/20 rounded-full blur-[128px] animate-pulse" />
-      <div className="fixed bottom-20 right-10 w-96 h-96 bg-primary-variant/20 rounded-full blur-[128px] animate-pulse" style={{ animationDelay: '1s' }} />
+      <div className="fixed top-20 left-10 w-96 h-96 bg-primary/20 rounded-full blur-[128px] animate-pulse" aria-hidden="true" />
+      <div className="fixed bottom-20 right-10 w-96 h-96 bg-primary-variant/20 rounded-full blur-[128px] animate-pulse" style={{ animationDelay: '1s' }} aria-hidden="true" />
       
-      <PublicNav />
+      <header role="banner">
+        <PublicNav />
+      </header>
 
-      {/* Hero Section - Investor Focused */}
-      <section className="relative z-10 container mx-auto px-4 pt-16 pb-20">
-        <div className="max-w-5xl mx-auto text-center">
-          {/* Logo */}
-          <div className="flex justify-center mb-8 animate-fade-in">
-            <img 
-              src="/promptfluid-logo.png" 
-              alt="PromptFluid" 
-              width="400"
-              height="300"
-              fetchPriority="high"
-              loading="eager"
-              className="w-[40%] max-w-md h-auto"
-            />
-          </div>
-          
-          <h1 className="sr-only">PromptFluid - Home of the World's First Autonomous Dreaming AI</h1>
-          
-          {/* Primary Claim - Verified Fact */}
-          <div className="mb-8 animate-fade-in">
-            <a 
-              href="https://github.com/SweetKenneth/SimNap-Dreaming-AI-Whitepaper" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="group inline-block"
-            >
-              <div className="glass border-2 border-primary/40 rounded-2xl p-6 md:p-8 hover:border-primary/60 hover:shadow-glow transition-all duration-300">
-                <div className="flex items-center justify-center gap-3 mb-3">
-                  <Brain className="w-8 h-8 text-primary animate-pulse" />
-                  <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
-                    Verified & Documented
-                  </Badge>
-                </div>
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3">
-                  <span className="bg-gradient-to-r from-cyan-400 via-primary to-accent bg-clip-text text-transparent">
-                    World's First Autonomous Dreaming AI
-                  </span>
-                </h2>
-                <p className="text-muted-foreground text-sm md:text-base">
-                  SimNap → Cascade: The first known AI system to autonomously enter dream cycles.
-                  <span className="text-primary ml-2 group-hover:underline">View Whitepaper & Proof →</span>
-                </p>
-              </div>
-            </a>
-          </div>
-
-          <Badge className="mb-6 px-4 py-2 bg-gradient-to-r from-primary/20 to-accent/20 border-primary/30 animate-fade-in">
-            <TrendingUp className="w-4 h-4 mr-2" />
-            Seeking Seed Investment
-          </Badge>
-          
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 animate-fade-in" style={{ animationDelay: '0.1s' }}>
-            <span className="bg-gradient-to-r from-primary via-primary-variant to-accent bg-clip-text text-transparent">
-              AI That Protects & Empowers
-            </span>
-          </h2>
-          
-          <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-3xl mx-auto animate-fade-in leading-relaxed" style={{ animationDelay: '0.2s' }}>
-            We're building AI-powered solutions for <strong className="text-foreground">WordPress security</strong> and <strong className="text-foreground">web accessibility</strong>. 
-            Our flagship products—Reflex Bot Sniper and Clarity—are designed to make the web safer and more accessible for everyone.
-          </p>
-
-          {/* Primary CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 animate-fade-in" style={{ animationDelay: '0.3s' }}>
-            <Button 
-              size="lg" 
-              onClick={() => navigate('/investors')}
-              className="group relative overflow-hidden bg-gradient-to-r from-primary via-primary-variant to-accent text-lg px-8 py-6 hover:shadow-glow-lg transition-all duration-300"
-            >
-              <span className="relative z-10 flex items-center gap-2">
-                Investor Information
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </span>
-            </Button>
+      <main id="main-content" role="main">
+        {/* Hero Section - Investor Focused */}
+        <section className="relative z-10 container mx-auto px-4 pt-16 pb-20" aria-labelledby="hero-heading">
+          <div className="max-w-5xl mx-auto text-center">
+            {/* Logo */}
+            <div className="flex justify-center mb-8 animate-fade-in">
+              <img 
+                src="/promptfluid-logo.png" 
+                alt="PromptFluid logo" 
+                width="400"
+                height="300"
+                fetchPriority="high"
+                loading="eager"
+                className="w-[40%] max-w-md h-auto"
+              />
+            </div>
             
-            <Button 
-              size="lg" 
-              onClick={() => window.open("https://clarity.promptfluid.com", "_blank")}
-              variant="outline"
-              className="group text-lg px-8 py-6 border-primary/30 hover:border-primary hover:bg-primary/5 transition-all duration-300"
-            >
-              <Accessibility className="w-5 h-5 mr-2" />
-              Try Free Clarity Scan
-            </Button>
-          </div>
+            <h1 id="hero-heading" className="sr-only">PromptFluid - Home of the World's First Autonomous Dreaming AI</h1>
+            
+            {/* Primary Claim - Verified Fact */}
+            <div className="mb-8 animate-fade-in">
+              <a 
+                href="https://github.com/SweetKenneth/SimNap-Dreaming-AI-Whitepaper" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                aria-label="View whitepaper and proof (opens in new window)"
+                className="group inline-block"
+              >
+                <div className="glass border-2 border-primary/40 rounded-2xl p-6 md:p-8 hover:border-primary/60 hover:shadow-glow transition-all duration-300">
+                  <div className="flex items-center justify-center gap-3 mb-3">
+                    <Brain className="w-8 h-8 text-primary animate-pulse" aria-hidden="true" />
+                    <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
+                      Verified & Documented
+                    </Badge>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3">
+                    <span className="bg-gradient-to-r from-cyan-400 via-primary to-accent bg-clip-text text-transparent">
+                      World's First Autonomous Dreaming AI
+                    </span>
+                  </h2>
+                  <p className="text-muted-foreground text-sm md:text-base">
+                    SimNap → Cascade: The first known AI system to autonomously enter dream cycles.
+                    <span className="text-primary ml-2 group-hover:underline">View Whitepaper & Proof →</span>
+                  </p>
+                </div>
+              </a>
+            </div>
 
-          {/* Key Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto animate-fade-in" style={{ animationDelay: '0.4s' }}>
-            <div className="text-center glass p-4 rounded-lg">
-              <div className="text-2xl md:text-3xl font-bold text-primary mb-1">3</div>
-              <div className="text-xs text-muted-foreground">Core Products</div>
-            </div>
-            <div className="text-center glass p-4 rounded-lg">
-              <div className="text-2xl md:text-3xl font-bold text-primary mb-1">1</div>
-              <div className="text-xs text-muted-foreground">Founder Team</div>
-            </div>
-            <div className="text-center glass p-4 rounded-lg">
-              <div className="text-2xl md:text-3xl font-bold text-primary mb-1">2024</div>
-              <div className="text-xs text-muted-foreground">Founded</div>
-            </div>
-            <div className="text-center glass p-4 rounded-lg">
-              <div className="text-2xl md:text-3xl font-bold text-primary mb-1">Seed</div>
-              <div className="text-xs text-muted-foreground">Stage</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Products Section - Only Real Products */}
-      <section className="relative z-10 container mx-auto px-4 py-20 bg-muted/20">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <Badge className="mb-6 px-4 py-2 bg-gradient-to-r from-primary/20 to-accent/20 border-primary/30 animate-fade-in">
+              <TrendingUp className="w-4 h-4 mr-2" aria-hidden="true" />
+              Seeking Seed Investment
+            </Badge>
+            
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 animate-fade-in" style={{ animationDelay: '0.1s' }}>
               <span className="bg-gradient-to-r from-primary via-primary-variant to-accent bg-clip-text text-transparent">
-                Our Products
+                AI That Protects & Empowers
               </span>
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Focused solutions for real problems in security and accessibility
+            
+            <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-3xl mx-auto animate-fade-in leading-relaxed" style={{ animationDelay: '0.2s' }}>
+              We're building AI-powered solutions for <strong className="text-foreground">WordPress security</strong> and <strong className="text-foreground">web accessibility</strong>. 
+              Our flagship products—Reflex Bot Sniper and Clarity—are designed to make the web safer and more accessible for everyone.
             </p>
+
+            {/* Primary CTAs */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+              <Button 
+                size="lg" 
+                onClick={() => navigate('/investors')}
+                className="group relative overflow-hidden bg-gradient-to-r from-primary via-primary-variant to-accent text-lg px-8 py-6 hover:shadow-glow-lg transition-all duration-300"
+              >
+                <span className="relative z-10 flex items-center gap-2">
+                  Investor Information
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+                </span>
+              </Button>
+              
+              <Button 
+                size="lg" 
+                onClick={() => window.open("https://clarity.promptfluid.com", "_blank")}
+                variant="outline"
+                className="group text-lg px-8 py-6 border-primary/30 hover:border-primary hover:bg-primary/5 transition-all duration-300"
+                aria-label="Try Free Clarity Scan (opens in new window)"
+              >
+                <Accessibility className="w-5 h-5 mr-2" aria-hidden="true" />
+                Try Free Clarity Scan
+              </Button>
+            </div>
+
+            {/* Key Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto animate-fade-in" style={{ animationDelay: '0.4s' }}>
+              <div className="text-center glass p-4 rounded-lg">
+                <div className="text-2xl md:text-3xl font-bold text-primary mb-1">3</div>
+                <div className="text-xs text-muted-foreground">Core Products</div>
+              </div>
+              <div className="text-center glass p-4 rounded-lg">
+                <div className="text-2xl md:text-3xl font-bold text-primary mb-1">1</div>
+                <div className="text-xs text-muted-foreground">Founder Team</div>
+              </div>
+              <div className="text-center glass p-4 rounded-lg">
+                <div className="text-2xl md:text-3xl font-bold text-primary mb-1">2024</div>
+                <div className="text-xs text-muted-foreground">Founded</div>
+              </div>
+              <div className="text-center glass p-4 rounded-lg">
+                <div className="text-2xl md:text-3xl font-bold text-primary mb-1">Seed</div>
+                <div className="text-xs text-muted-foreground">Stage</div>
+              </div>
+            </div>
           </div>
+        </section>
+
+        {/* Products Section - Only Real Products */}
+        <section className="relative z-10 container mx-auto px-4 py-20 bg-muted/20" aria-labelledby="products-heading">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 id="products-heading" className="text-3xl md:text-4xl font-bold mb-4">
+                <span className="bg-gradient-to-r from-primary via-primary-variant to-accent bg-clip-text text-transparent">
+                  Our Products
+                </span>
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Focused solutions for real problems in security and accessibility
+              </p>
+            </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {/* Reflex Bot Sniper */}
