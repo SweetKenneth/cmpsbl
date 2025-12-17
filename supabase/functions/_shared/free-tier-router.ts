@@ -6,14 +6,14 @@
  * 
  * Provider      | Per Min | Per Hour | Per Day  | Notes
  * --------------|---------|----------|----------|----------------------------------
+ * Groq          | 30 RPM  | 500 RPH  | 1,000    | FREE tier - llama-3.3-70b (FAST!)
  * Cerebras      | 30 RPM  | 900 RPH  | 14,400   | FREE tier - llama-3.3-70b
  * Together      | 10 RPS  | 600 RPH  | 14,400   | $5 deposit tier - Llama 3.1 70B
  * Hyperbolic    | 60 RPM  | 3,600    | 86,400   | $5 deposit tier - Llama 3.1 70B
- * Groq          | 30 RPM  | 500 RPH  | 1,000    | FREE tier - llama-3.3-70b
  * DeepSeek      | 20 RPM  | 600 RPH  | 5,000    | Conservative limits (officially unlimited)
  * Google        | 2 RPM   | 20 RPH   | 50       | Severely reduced Dec 2024
  * 
- * PRIORITY ORDER: Cerebras → Together → Hyperbolic → DeepSeek → Groq → Google
+ * PRIORITY ORDER: Groq → Cerebras → Together → Hyperbolic → DeepSeek → Google
  * 
  * TOTAL CAPACITY: ~121,250 requests/day
  * TARGET: 90% utilization = ~109,125 requests/day = ~75 requests/minute
@@ -87,16 +87,16 @@ export function shouldEnterDreamState(): { enter: boolean; dreamType: string; pr
 
 /**
  * Select best provider based on SMART per-min/hour/day limits
- * Priority: Cerebras → Together → Hyperbolic → DeepSeek → Groq → Google
+ * Priority: Groq → Cerebras → Together → Hyperbolic → DeepSeek → Google
  */
 export function selectOptimalProvider(usage: RateLimitState): string {
-  // Provider priority - ordered by reliability and capacity
+  // Provider priority - Groq first for speed, then by reliability and capacity
   const providers = [
+    { name: 'groq', limits: RATE_LIMITS.groq, current: usage.groq },
     { name: 'cerebras', limits: RATE_LIMITS.cerebras, current: usage.cerebras },
     { name: 'together', limits: RATE_LIMITS.together, current: usage.together },
     { name: 'hyperbolic', limits: RATE_LIMITS.hyperbolic, current: usage.hyperbolic },
     { name: 'deepseek', limits: RATE_LIMITS.deepseek, current: usage.deepseek },
-    { name: 'groq', limits: RATE_LIMITS.groq, current: usage.groq },
     { name: 'google', limits: RATE_LIMITS.google, current: usage.google }
   ];
 
@@ -169,17 +169,17 @@ export async function callFreeTierAI(
   const DEEPSEEK_API_KEY = Deno.env.get('DEEPSEEK_API_KEY');
   const HYPERBOLIC_API_KEY = Deno.env.get('HYPERBOLIC_API_KEY');
   
-  // Provider execution order: Cerebras → Together → Hyperbolic → DeepSeek → Groq → Google
+  // Provider execution order: Groq → Cerebras → Together → Hyperbolic → DeepSeek → Google
   const providerOrder = forceProvider 
     ? [forceProvider]
-    : ['cerebras', 'together', 'hyperbolic', 'deepseek', 'groq', 'google'];
+    : ['groq', 'cerebras', 'together', 'hyperbolic', 'deepseek', 'google'];
   
   for (const provider of providerOrder) {
     try {
       switch (provider) {
         case 'cerebras':
           if (!CEREBRAS_API_KEY) continue;
-          console.log('🥇 Cerebras (PRIMARY - 14.4K/day)...');
+          console.log('🥈 Cerebras (14.4K/day)...');
           const cerebrasRes = await fetch('https://api.cerebras.ai/v1/chat/completions', {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${CEREBRAS_API_KEY}`, 'Content-Type': 'application/json' },
@@ -201,7 +201,7 @@ export async function callFreeTierAI(
 
         case 'together':
           if (!TOGETHER_API_KEY) continue;
-          console.log('🥈 Together AI (14.4K/day - $5 tier)...');
+          console.log('🥉 Together AI (14.4K/day - $5 tier)...');
           const togetherRes = await fetch('https://api.together.xyz/v1/chat/completions', {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${TOGETHER_API_KEY}`, 'Content-Type': 'application/json' },
@@ -223,7 +223,7 @@ export async function callFreeTierAI(
 
         case 'hyperbolic':
           if (!HYPERBOLIC_API_KEY) continue;
-          console.log('🥉 Hyperbolic (86K/day - $5 tier)...');
+          console.log('🔄 Hyperbolic (86K/day - $5 tier)...');
           const hypRes = await fetch('https://api.hyperbolic.xyz/v1/chat/completions', {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${HYPERBOLIC_API_KEY}`, 'Content-Type': 'application/json' },
@@ -267,7 +267,7 @@ export async function callFreeTierAI(
 
         case 'groq':
           if (!GROQ_API_KEY) continue;
-          console.log('🔄 Groq (1K/day only)...');
+          console.log('🥇 Groq (PRIMARY - fastest inference)...');
           const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${GROQ_API_KEY}`, 'Content-Type': 'application/json' },
@@ -316,10 +316,29 @@ export async function callFreeTierAI(
   await new Promise(r => setTimeout(r, 30000));
   
   // Try one more time with any available provider
-  const fallbackProviders = ['deepseek', 'cerebras', 'hyperbolic'];
+  const fallbackProviders = ['groq', 'deepseek', 'cerebras', 'hyperbolic'];
   for (const provider of fallbackProviders) {
     try {
       switch (provider) {
+        case 'groq':
+          if (!GROQ_API_KEY) continue;
+          const groqFallback = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${GROQ_API_KEY}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              model: 'llama-3.3-70b-versatile',
+              messages: systemPrompt
+                ? [{ role: 'system', content: systemPrompt }, { role: 'user', content: prompt }]
+                : [{ role: 'user', content: prompt }],
+              temperature,
+              max_tokens: maxTokens,
+            }),
+          });
+          if (groqFallback.ok) {
+            const data = await groqFallback.json();
+            return { content: data.choices[0].message.content, model: 'llama-3.3-70b-versatile', provider: 'groq' };
+          }
+          break;
         case 'deepseek':
           if (!DEEPSEEK_API_KEY) continue;
           const dsRes = await fetch('https://api.deepseek.com/v1/chat/completions', {
