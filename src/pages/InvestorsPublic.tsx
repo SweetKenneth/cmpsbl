@@ -1,4 +1,4 @@
-import { TrendingUp, DollarSign, Users, Rocket, FileText, BarChart, Award, Target, Brain } from "lucide-react";
+import { TrendingUp, DollarSign, Users, Rocket, FileText, BarChart, Award, Target, Brain, Download, Loader2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -6,9 +6,39 @@ import { useNavigate } from "react-router-dom";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { SEO } from "@/components/SEO";
+import { supabase } from "@/integrations/supabase/client";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export default function InvestorsPublic() {
   const navigate = useNavigate();
+  const [downloading, setDownloading] = useState(false);
+
+  const handleDownloadDeck = async () => {
+    setDownloading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('pf-investor-packet', {
+        method: 'POST'
+      });
+      
+      if (error) throw error;
+      
+      toast.success("Investor packet generated!", {
+        description: `Valuation: $${data.valuation?.toLocaleString() || 'N/A'}`
+      });
+      
+      // If there's a file path, we could fetch it from storage
+      // For now, show the generated data
+      console.log('Investor packet data:', data);
+    } catch (err) {
+      console.error('Error generating packet:', err);
+      toast.error("Failed to generate packet", {
+        description: "Please try again or contact us directly."
+      });
+    } finally {
+      setDownloading(false);
+    }
+  };
 
   const metrics = [
     { icon: Users, label: "Core Products", value: "3", color: "text-blue-500" },
@@ -118,10 +148,15 @@ export default function InvestorsPublic() {
             <Button 
               size="lg"
               variant="outline"
-              onClick={() => navigate('/investor-packets')}
+              onClick={handleDownloadDeck}
+              disabled={downloading}
             >
-              <FileText className="w-5 h-5 mr-2" />
-              Download Investor Deck
+              {downloading ? (
+                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+              ) : (
+                <Download className="w-5 h-5 mr-2" />
+              )}
+              {downloading ? "Generating..." : "Download Investor Deck"}
             </Button>
           </div>
         </div>
@@ -178,9 +213,15 @@ export default function InvestorsPublic() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
               size="lg"
-              onClick={() => navigate('/investor-packets')}
+              onClick={handleDownloadDeck}
+              disabled={downloading}
             >
-              Access Investor Materials
+              {downloading ? (
+                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+              ) : (
+                <Download className="w-5 h-5 mr-2" />
+              )}
+              {downloading ? "Generating..." : "Access Investor Materials"}
             </Button>
             <Button 
               size="lg"
