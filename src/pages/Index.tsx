@@ -6,7 +6,7 @@ import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { useEffect, useState } from "react";
-import dreamingAiHero from "@/assets/dreaming-ai-hero.png";
+
 
 export default function Index() {
   const navigate = useNavigate();
@@ -99,7 +99,7 @@ export default function Index() {
             <div className="relative mb-8 -mt-[80px] animate-fade-in">
               <div className="relative rounded-2xl overflow-hidden border-2 border-purple-500/30 shadow-2xl">
                 <img 
-                  src={dreamingAiHero} 
+                  src="/dreaming-ai-hero.png" 
                   alt="Autonomous dreaming AI visualization - glowing neural brain with dream fragments and memories orbiting in a cosmic dreamscape"
                   width="1920"
                   height="1080"
