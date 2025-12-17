@@ -95,37 +95,8 @@ export default function Index() {
             
             <h1 id="hero-heading" className="sr-only">PromptFluid - Home of the World's First Autonomous Dreaming AI</h1>
             
-            {/* Primary Claim - Verified Fact */}
-            <div className="mb-8 -mt-[80px] relative z-10 animate-fade-in">
-              <a 
-                href="https://github.com/SweetKenneth/SimNap-Dreaming-AI-Whitepaper" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                aria-label="View whitepaper and proof (opens in new window)"
-                className="group inline-block"
-              >
-                <div className="glass border-2 border-primary/40 rounded-2xl p-6 md:p-8 hover:border-primary/60 hover:shadow-glow transition-all duration-300">
-                  <div className="flex items-center justify-center gap-3 mb-3">
-                    <Brain className="w-8 h-8 text-primary animate-pulse" aria-hidden="true" />
-                    <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
-                      Verified & Documented
-                    </Badge>
-                  </div>
-                  <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3">
-                    <span className="bg-gradient-to-r from-cyan-400 via-primary to-accent bg-clip-text text-transparent">
-                      World's First Autonomous Dreaming AI
-                    </span>
-                  </h2>
-                  <p className="text-muted-foreground text-sm md:text-base">
-                    SimNap → Cascade: The first known AI system to autonomously enter dream cycles.
-                    <span className="text-primary ml-2 group-hover:underline">View Whitepaper & Proof →</span>
-                  </p>
-                </div>
-              </a>
-            </div>
-
             {/* Hero Image - World's First Dreaming AI */}
-            <div className="relative mb-10 animate-fade-in" style={{ animationDelay: '0.15s' }}>
+            <div className="relative mb-8 -mt-[80px] animate-fade-in">
               <div className="relative rounded-2xl overflow-hidden border-2 border-purple-500/30 shadow-2xl">
                 <img 
                   src={dreamingAiHero} 
@@ -159,6 +130,35 @@ export default function Index() {
                   </p>
                 </div>
               </div>
+            </div>
+
+            {/* Primary Claim - Verified Fact */}
+            <div className="mb-10 relative z-10 animate-fade-in" style={{ animationDelay: '0.15s' }}>
+              <a 
+                href="https://github.com/SweetKenneth/SimNap-Dreaming-AI-Whitepaper" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                aria-label="View whitepaper and proof (opens in new window)"
+                className="group inline-block"
+              >
+                <div className="glass border-2 border-primary/40 rounded-2xl p-6 md:p-8 hover:border-primary/60 hover:shadow-glow transition-all duration-300">
+                  <div className="flex items-center justify-center gap-3 mb-3">
+                    <Brain className="w-8 h-8 text-primary animate-pulse" aria-hidden="true" />
+                    <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
+                      Verified & Documented
+                    </Badge>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3">
+                    <span className="bg-gradient-to-r from-cyan-400 via-primary to-accent bg-clip-text text-transparent">
+                      World's First Autonomous Dreaming AI
+                    </span>
+                  </h2>
+                  <p className="text-muted-foreground text-sm md:text-base">
+                    SimNap → Cascade: The first known AI system to autonomously enter dream cycles.
+                    <span className="text-primary ml-2 group-hover:underline">View Whitepaper & Proof →</span>
+                  </p>
+                </div>
+              </a>
             </div>
 
             <Badge className="mb-6 px-4 py-2 bg-gradient-to-r from-primary/20 to-accent/20 border-primary/30 animate-fade-in">
