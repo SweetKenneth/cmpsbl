@@ -35,3 +35,6 @@ verify_jwt = false
 
 [functions.dream-feeder-api]
 verify_jwt = false
+
+[functions.pf-investor-packet]
+verify_jwt = false
