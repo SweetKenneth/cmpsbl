@@ -69,8 +69,8 @@ export default function Index() {
         }}
         aria-hidden="true"
       />
-      <div className="fixed top-20 left-10 w-96 h-96 bg-primary/20 rounded-full blur-[128px] animate-pulse" aria-hidden="true" />
-      <div className="fixed bottom-20 right-10 w-96 h-96 bg-primary-variant/20 rounded-full blur-[128px] animate-pulse" style={{ animationDelay: '1s' }} aria-hidden="true" />
+      <div className="hidden md:block fixed top-20 left-10 w-96 h-96 bg-primary/20 rounded-full blur-[128px] animate-pulse" aria-hidden="true" />
+      <div className="hidden md:block fixed bottom-20 right-10 w-96 h-96 bg-primary-variant/20 rounded-full blur-[128px] animate-pulse" style={{ animationDelay: '1s' }} aria-hidden="true" />
       
       <header role="banner">
         <PublicNav />
