@@ -105,6 +105,7 @@ export default function Index() {
                   height="1080"
                   className="w-full h-auto object-cover"
                   loading="eager"
+                  fetchPriority="high"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
                 
