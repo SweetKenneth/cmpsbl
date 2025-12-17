@@ -81,7 +81,7 @@ export default function Index() {
         <section className="relative z-10 container mx-auto px-4 pt-0 pb-20 -mt-[111px]" aria-labelledby="hero-heading">
           <div className="max-w-5xl mx-auto text-center">
             {/* Logo */}
-            <div className="flex justify-center mb-0 -mt-[100px] animate-fade-in">
+            <div className="flex justify-center mb-0 -mt-[75px] animate-fade-in">
               <img 
                 src="/promptfluid-logo.png" 
                 alt="PromptFluid logo" 
