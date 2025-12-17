@@ -104,7 +104,7 @@ export default function Index() {
                   width="1920"
                   height="1080"
                   sizes="(max-width: 768px) 100vw, 700px"
-                  className="w-full h-auto object-cover"
+                  className="w-full h-auto object-cover aspect-video"
                   loading="eager"
                   fetchPriority="high"
                 />
