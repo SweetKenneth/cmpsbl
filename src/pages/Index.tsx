@@ -103,6 +103,7 @@ export default function Index() {
                   alt="Autonomous dreaming AI visualization - glowing neural brain with dream fragments and memories orbiting in a cosmic dreamscape"
                   width="1920"
                   height="1080"
+                  sizes="(max-width: 768px) 100vw, 700px"
                   className="w-full h-auto object-cover"
                   loading="eager"
                   fetchPriority="high"
