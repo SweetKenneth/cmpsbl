@@ -24,8 +24,8 @@ export default function InvestorsPublic() {
       if (error) throw error;
       if (!data?.content) throw new Error('Packet content missing');
 
-      const filename = data.filename || `investor-packet-${Date.now()}.txt`;
-      const blob = new Blob([data.content], { type: 'text/plain;charset=utf-8' });
+      const filename = data.filename || `investor-packet-${Date.now()}.html`;
+      const blob = new Blob([data.content], { type: 'text/html;charset=utf-8' });
       const url = URL.createObjectURL(blob);
 
       const a = document.createElement('a');

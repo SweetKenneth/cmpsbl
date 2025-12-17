@@ -10,12 +10,12 @@ export default function InvestorPackets() {
   const [generating, setGenerating] = useState(false);
   const [lastPacket, setLastPacket] = useState<any>(null);
 
-  const downloadText = (content: string, filename?: string) => {
-    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+  const downloadHTML = (content: string, filename?: string) => {
+    const blob = new Blob([content], { type: 'text/html;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = filename || `investor-packet-${Date.now()}.txt`;
+    a.download = filename || `investor-packet-${Date.now()}.html`;
     document.body.appendChild(a);
     a.click();
     a.remove();
@@ -35,7 +35,7 @@ export default function InvestorPackets() {
 
       // Auto-download immediately if content is returned
       if (data?.content) {
-        downloadText(data.content, data.filename);
+        downloadHTML(data.content, data.filename);
         toast.success('Investor packet generated and downloaded');
       } else {
         toast.success('Investor packet generated successfully');
@@ -104,7 +104,7 @@ export default function InvestorPackets() {
                           toast.error('No downloadable content returned');
                           return;
                         }
-                        downloadText(lastPacket.content, lastPacket.filename);
+                        downloadHTML(lastPacket.content, lastPacket.filename);
                       }}
                       disabled={!lastPacket?.content}
                     >
