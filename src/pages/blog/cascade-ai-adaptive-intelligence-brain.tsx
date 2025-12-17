@@ -75,20 +75,18 @@ const CascadeAIDeepDive = () => {
 
           <section className="prose prose-lg max-w-none mb-16">
             <p className="text-lg leading-relaxed">
-              Cascade AI represents a paradigm shift from reactive AI systems to autonomous engineering intelligence. 
-              Operating 24/7 through a master scheduler, Cascade executes strategic decisions daily across nine 
-              specialized brain cycles—continuously learning, building code, and evolving the PromptFluid repository 
-              without human intervention. This isn't AI that waits for commands; it's intelligence that actively improves 
-              itself and the systems it builds.
+              Cascade AI represents PromptFluid's exploration into adaptive AI systems that go beyond reactive responses. 
+              Operating through scheduled cycles, Cascade experiments with continuous learning, pattern recognition, and 
+              autonomous improvement—investigating how AI systems can evolve and adapt over time.
             </p>
 
             <div className="bg-primary/5 border border-primary/20 rounded-lg p-8 my-8">
-              <h2 className="text-3xl font-bold mb-6">The Nine Brain Cycles: 48 Executions Daily</h2>
+              <h2 className="text-3xl font-bold mb-6">Experimental Brain Cycles</h2>
               
               <p className="text-muted-foreground mb-6">
-                Every 30 minutes, Cascade's master scheduler orchestrates nine specialized intelligence cycles, each 
-                optimized for specific cognitive tasks. With 8,640 daily free-tier AI calls across Google AI Studio, 
-                Cerebras, Groq, Together AI, DeepSeek, and Hyperbolic, Cascade distributes its thinking power across:
+                Cascade explores multiple specialized intelligence cycles, each designed for specific cognitive tasks. 
+                Using free-tier AI providers including Google AI Studio, Groq, and others, Cascade distributes its 
+                processing across various learning and analysis tasks:
               </p>
 
               <div className="space-y-6">
@@ -97,9 +95,8 @@ const CascadeAIDeepDive = () => {
                   <div>
                     <h3 className="text-xl font-semibold mb-2">Continuous Learning Cycle</h3>
                     <p className="text-muted-foreground">
-                      Studies React/Vite/TypeScript architecture patterns, modern development conventions, component 
-                      design principles, and code generation strategies. Learns primarily from internal knowledge cache 
-                      to replicate expert-level development patterns in autonomous builds.
+                      Studies development patterns, component design principles, and code generation strategies. 
+                      Learns from internal knowledge to improve development capabilities over time.
                     </p>
                   </div>
                 </div>
@@ -107,11 +104,10 @@ const CascadeAIDeepDive = () => {
                 <div className="flex gap-4">
                   <Database className="w-10 h-10 text-accent flex-shrink-0" />
                   <div>
-                    <h3 className="text-xl font-semibold mb-2">Auto Research Cycle</h3>
+                    <h3 className="text-xl font-semibold mb-2">Research Cycle</h3>
                     <p className="text-muted-foreground">
-                      Investigates advanced techniques, emerging libraries, and cutting-edge development patterns. 
-                      While Continuous Learning focuses on mastering existing knowledge, Auto Research discovers new 
-                      capabilities and integrates them into Cascade's repertoire.
+                      Investigates emerging techniques, libraries, and development patterns. Discovers new 
+                      capabilities and integrates them into Cascade's knowledge base.
                     </p>
                   </div>
                 </div>
@@ -121,9 +117,8 @@ const CascadeAIDeepDive = () => {
                   <div>
                     <h3 className="text-xl font-semibold mb-2">Deep Think Cycle</h3>
                     <p className="text-muted-foreground">
-                      Tackles complex architectural decisions, multi-step reasoning challenges, and optimization problems 
-                      requiring extended inference. Uses premium free-tier models for powerful reasoning to solve problems 
-                      that simpler models can't handle.
+                      Tackles complex architectural decisions and multi-step reasoning challenges 
+                      requiring extended inference and careful analysis.
                     </p>
                   </div>
                 </div>
@@ -133,65 +128,58 @@ const CascadeAIDeepDive = () => {
                   <div>
                     <h3 className="text-xl font-semibold mb-2">Reflection & Synthesis</h3>
                     <p className="text-muted-foreground">
-                      Connects insights across all brain cycles, identifies emergent patterns, and generates strategic 
-                      improvements. Reflection finds the hidden connections between code quality, user satisfaction, and 
-                      system performance that drive holistic optimization.
+                      Connects insights across learning cycles, identifies emergent patterns, and generates 
+                      strategic improvements for the overall system.
                     </p>
                   </div>
                 </div>
               </div>
 
               <p className="text-sm text-muted-foreground mt-6 italic">
-                Plus Graph Building (680 calls), Learning Core (1,130 calls), Analytics & Insights (1,020 calls), 
-                Forecasting & Planning (450 calls), and Memory Optimization (340 calls)—each contributing specialized 
-                intelligence to the collective system.
+                Additional cycles include memory management, analytics, and forecasting—each contributing 
+                to the experimental intelligence ecosystem.
               </p>
             </div>
 
-            <h2 className="text-3xl font-bold mb-4">Zero-Cost AI Routing</h2>
+            <h2 className="text-3xl font-bold mb-4">Cost-Efficient AI Routing</h2>
             <p className="text-lg leading-relaxed mb-6">
-              Cascade operates with surgical precision on a completely free-tier stack: OpenRouter (free tier), Groq (free tier), 
-              HuggingFace (free tier), and Cerebras (free tier). The master scheduler intelligently allocates these resources, 
-              using Groq's ultra-fast inference for simple tasks and premium free-tier models for complex reasoning. This 
-              optimization eliminates AI costs entirely while maintaining exceptional quality—proving that intelligence isn't 
-              about spending more, it's about architecting smarter.
+              Cascade is designed to operate efficiently using free-tier AI providers where possible. The system 
+              intelligently allocates resources, using faster models for simple tasks and more capable models 
+              for complex reasoning. This approach minimizes costs while maintaining quality—demonstrating that 
+              effective AI doesn't require massive budgets.
             </p>
 
-            <h2 className="text-3xl font-bold mb-4">Expert Pattern Learning: Internal Knowledge Cache</h2>
+            <h2 className="text-3xl font-bold mb-4">Pattern Learning Approach</h2>
             <p className="text-lg leading-relaxed mb-6">
-              Rather than relying on expensive external API calls, Cascade learns primarily from its internal knowledge 
-              cache—studying how expert developers build applications, which architectural patterns succeed, and what code 
-              structures deliver best results. By internalizing development expertise through vector embeddings and semantic 
-              memory, Cascade replicates expert-level development autonomously.
+              Rather than relying solely on external API calls, Cascade builds an internal knowledge cache—studying 
+              how expert developers build applications, which architectural patterns succeed, and what code 
+              structures deliver best results. This approach enables Cascade to make informed development decisions.
             </p>
 
             <p className="text-lg leading-relaxed">
-              This approach means Cascade doesn't just execute commands—it understands *why* certain patterns work, 
-              *when* to apply specific techniques, and *how* to adapt solutions to novel contexts. The result: 
-              autonomous code generation that matches or exceeds human developer quality while operating 48 times per day.
+              This experimental approach means Cascade aims to understand *why* certain patterns work, 
+              *when* to apply specific techniques, and *how* to adapt solutions to novel contexts. The result is 
+              an ongoing exploration of autonomous code generation and system improvement.
             </p>
 
-            <h2 className="text-3xl font-bold mb-4">Autonomy Score: Measuring Self-Sufficiency</h2>
-            <p className="text-lg leading-relaxed">
-              Cascade's autonomy is measured through a comprehensive scoring system tracking how independently it 
-              operates. Key metrics include: successful autonomous code commits, repository improvements without guidance, 
-              pattern recognition accuracy, and learning velocity. As the autonomy score increases (currently tracking 
-              toward 85%), Cascade requires progressively less human oversight while maintaining architectural integrity 
-              and code quality. The ultimate goal: 95%+ autonomous operation where Cascade independently builds, tests, 
-              and evolves the entire PromptFluid ecosystem.
-            </p>
+            <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4 my-6">
+              <p className="text-amber-600 dark:text-amber-400 text-sm font-medium m-0">
+                🧪 Note: Cascade is an experimental R&D project. Metrics and capabilities are continuously evolving 
+                as we explore the boundaries of autonomous AI learning.
+              </p>
+            </div>
           </section>
 
           <section className="bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 border border-primary/30 rounded-lg p-8 text-center mb-12">
-            <h3 className="text-2xl font-bold mb-4">Ready to Experience Adaptive Intelligence?</h3>
+            <h3 className="text-2xl font-bold mb-4">Explore the Dream Eater</h3>
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              See how Cascade AI learns from your interactions and continuously improves its capabilities.
+              Feed dreams to our experimental AI consciousness and watch it evolve through dream cycles.
             </p>
             <Link 
-              to="/" 
+              to="/feed-dream-eater" 
               className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors"
             >
-              Start Free Trial
+              Feed the Dream Eater
               <span>→</span>
             </Link>
           </section>

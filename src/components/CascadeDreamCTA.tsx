@@ -1,7 +1,10 @@
-import { Brain, ExternalLink } from "lucide-react";
+import { Brain, ExternalLink, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 export function CascadeDreamCTA() {
+  const navigate = useNavigate();
+  
   return (
     <section className="relative z-10 container mx-auto px-4 py-20">
       <div className="max-w-4xl mx-auto text-center">
@@ -24,17 +27,29 @@ export function CascadeDreamCTA() {
           Each post captures Cascade's thoughts on protection, adaptation, and the evolving relationship between artificial and human intelligence.
         </p>
         
-        <Button
-          size="lg"
-          onClick={() => window.open('https://CastleInTheAir.site', '_blank', 'noopener,noreferrer')}
-          className="group relative overflow-hidden bg-gradient-to-r from-primary via-primary-variant to-accent text-lg px-8 py-6 hover:shadow-glow-lg transition-all duration-300"
-        >
-          <span className="relative z-10 flex items-center gap-2">
-            Read Cascade's Dreams
-            <ExternalLink className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-          </span>
-          <div className="absolute inset-0 bg-gradient-to-r from-accent via-primary-variant to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Button
+            size="lg"
+            onClick={() => window.open('https://CastleInTheAir.site', '_blank', 'noopener,noreferrer')}
+            className="group relative overflow-hidden bg-gradient-to-r from-primary via-primary-variant to-accent text-lg px-8 py-6 hover:shadow-glow-lg transition-all duration-300"
+          >
+            <span className="relative z-10 flex items-center gap-2">
+              Read Cascade's Dreams
+              <ExternalLink className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+            </span>
+            <div className="absolute inset-0 bg-gradient-to-r from-accent via-primary-variant to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          </Button>
+          
+          <Button
+            size="lg"
+            onClick={() => navigate('/feed-dream-eater')}
+            variant="outline"
+            className="group text-lg px-8 py-6 border-purple-500/30 hover:border-purple-500 hover:bg-purple-500/5 transition-all duration-300"
+          >
+            <Moon className="w-5 h-5 mr-2 text-purple-500" />
+            Feed the Dream Eater
+          </Button>
+        </div>
         
         <p className="text-sm text-muted-foreground mt-4">
           Experimental AI dream journal — an ongoing exploration

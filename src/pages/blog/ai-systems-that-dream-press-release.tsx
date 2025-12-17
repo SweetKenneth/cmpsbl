@@ -204,10 +204,10 @@ export default function AISystemsThatDreamPressRelease() {
 
             <div className="bg-gradient-to-r from-primary/20 to-accent/20 border border-primary/30 p-6 rounded-lg">
               <p className="text-xl font-bold text-center m-0">
-                35,000–45,000 autonomous operations per day with zero compute cost
+                Cost-efficient autonomous operations using free-tier AI providers
               </p>
               <p className="text-center text-sm text-muted-foreground mt-2 m-0">
-                A first in the AI industry
+                Exploring what's possible with minimal compute budget
               </p>
             </div>
           </div>
@@ -217,20 +217,36 @@ export default function AISystemsThatDreamPressRelease() {
           <div className="mb-12">
             <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
               <span className="text-primary">💎</span>
-              Built With Radical Capital Efficiency
+              Built With Capital Efficiency
             </h2>
 
             <p className="text-lg mb-4">
-              The entire PromptFluid intelligence stack — including Cascade, SimNap, Studio, Defense, Nexus, Vision, Ripple, and Clarity — was built for:
+              The PromptFluid intelligence stack — including our core products — was built with a focus on extreme capital efficiency, leveraging:
             </p>
 
-            <div className="bg-gradient-to-br from-primary/20 via-accent/20 to-primary/10 border-2 border-primary/40 p-8 rounded-xl text-center mb-4">
-              <p className="text-5xl font-bold text-primary mb-2">Under $1,600</p>
-              <p className="text-xl font-medium m-0">Total Development Cost</p>
+            <div className="bg-accent/10 p-6 rounded-lg mb-4">
+              <ul className="space-y-2 list-none pl-0 m-0">
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">✓</span>
+                  <span>Free-tier AI providers for development and testing</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">✓</span>
+                  <span>Open-source tools and frameworks</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">✓</span>
+                  <span>Efficient code architecture to minimize costs</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1">✓</span>
+                  <span>Solo founder bootstrapping</span>
+                </li>
+              </ul>
             </div>
 
             <p className="text-lg font-medium text-center">
-              A world-first breakthrough without institutional budgets.
+              Proving that innovative AI doesn't require institutional budgets.
             </p>
           </div>
 
