@@ -146,7 +146,7 @@ const navSections: NavSection[] = [
     title: "Business & Resources",
     items: [
       { name: "Market Portal", href: "/market-portal", icon: DollarSign },
-      { name: "Investor Packets", href: "/investor-packets", icon: Briefcase },
+      { name: "Investor Packets", href: "/admin/investor-packets", icon: Briefcase },
       { name: "WordPress Plugin", href: "/projects/defense", icon: Download },
       { name: "Roadmap", href: "/roadmap", icon: Map },
     ],

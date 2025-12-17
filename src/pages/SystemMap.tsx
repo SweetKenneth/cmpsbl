@@ -82,7 +82,7 @@ const allRoutes: FeatureRoute[] = [
   
   // Business & Resources
   { name: "Market Portal", path: "/market-portal", description: "Marketplace", category: "Business & Resources", icon: DollarSign, status: "live" },
-  { name: "Investor Packets", path: "/investor-packets", description: "Investment docs", category: "Business & Resources", icon: Briefcase, status: "live" },
+  { name: "Investor Packets", path: "/admin/investor-packets", description: "Investment docs", category: "Business & Resources", icon: Briefcase, status: "live" },
   { name: "WordPress Plugin", path: "/projects/defense", description: "WP security plugin", category: "Business & Resources", icon: Download, status: "live" },
   { name: "Roadmap", path: "/roadmap", description: "Product roadmap", category: "Business & Resources", icon: Map, status: "live" },
   

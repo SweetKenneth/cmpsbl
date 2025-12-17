@@ -20,19 +20,28 @@ export default function InvestorsPublic() {
       const { data, error } = await supabase.functions.invoke('pf-investor-packet', {
         method: 'POST'
       });
-      
+
       if (error) throw error;
-      
-      toast.success("Investor packet generated!", {
-        description: `Valuation: $${data.valuation?.toLocaleString() || 'N/A'}`
+      if (!data?.content) throw new Error('Packet content missing');
+
+      const filename = data.filename || `investor-packet-${Date.now()}.txt`;
+      const blob = new Blob([data.content], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+
+      toast.success("Investor deck downloaded", {
+        description: data.valuation ? `Valuation: $${Number(data.valuation).toLocaleString()}` : undefined,
       });
-      
-      // If there's a file path, we could fetch it from storage
-      // For now, show the generated data
-      console.log('Investor packet data:', data);
     } catch (err) {
       console.error('Error generating packet:', err);
-      toast.error("Failed to generate packet", {
+      toast.error("Failed to download investor deck", {
         description: "Please try again or contact us directly."
       });
     } finally {
