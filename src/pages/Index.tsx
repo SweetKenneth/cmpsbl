@@ -78,7 +78,7 @@ export default function Index() {
 
       <main id="main-content" role="main">
         {/* Hero Section - Investor Focused */}
-        <section className="relative z-10 container mx-auto px-4 pt-0 pb-20 -mt-[111px]" aria-labelledby="hero-heading">
+        <section className="relative z-10 container mx-auto px-4 pt-0 pb-20 -mt-[211px]" aria-labelledby="hero-heading">
           <div className="max-w-5xl mx-auto text-center">
             {/* Logo */}
             <div className="flex justify-center mb-8 -mt-[100px] animate-fade-in">
