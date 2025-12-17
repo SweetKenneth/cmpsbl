@@ -32,7 +32,14 @@ export default function InvestorPackets() {
       if (error) throw error;
 
       setLastPacket(data);
-      toast.success('Investor packet generated successfully');
+
+      // Auto-download immediately if content is returned
+      if (data?.content) {
+        downloadText(data.content, data.filename);
+        toast.success('Investor packet generated and downloaded');
+      } else {
+        toast.success('Investor packet generated successfully');
+      }
     } catch (error) {
       console.error('Failed to generate packet:', error);
       toast.error('Failed to generate investor packet');
