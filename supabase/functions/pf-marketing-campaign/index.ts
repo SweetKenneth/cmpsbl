@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
+import { callFreeTierAI } from "../_shared/free-tier-router.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -38,11 +39,6 @@ serve(async (req) => {
     }
 
     const { headline, offer, promoType, cta, description, brandProfile } = validation.data;
-    
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) {
-      throw new Error("LOVABLE_API_KEY is not configured");
-    }
 
     console.log('Generating campaign content for:', { headline, brand: brandProfile?.name });
 
@@ -56,25 +52,7 @@ BRAND CONTEXT:
 ` : '';
 
     // Generate captions
-    const captionsResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [
-          {
-            role: "system",
-            content: `You are a marketing copywriter creating compelling ad copy.
-${brandContext}
-
-Generate engaging, conversion-focused copy that matches the brand voice.`
-          },
-          {
-            role: "user",
-            content: `Create 3 ad captions (short, medium, long) for this campaign:
+    const captionsPrompt = `Create 3 ad captions (short, medium, long) for this campaign:
             
 Headline: ${headline}
 Offer: ${offer || 'None'}
@@ -87,47 +65,35 @@ Return ONLY a JSON object:
   "short": "30-50 word caption with emoji",
   "medium": "75-100 word caption with emoji",
   "long": "150-200 word caption with emoji and structure"
-}`
-          }
-        ],
-      }),
+}`;
+
+    const captionsResult = await callFreeTierAI(captionsPrompt, {
+      systemPrompt: `You are a marketing copywriter creating compelling ad copy.
+${brandContext}
+
+Generate engaging, conversion-focused copy that matches the brand voice.`,
+      temperature: 0.8,
+      maxTokens: 1000
     });
 
-    if (!captionsResponse.ok) {
-      throw new Error(`Caption generation failed: ${captionsResponse.status}`);
-    }
-
-    const captionsData = await captionsResponse.json();
-    const captionsText = captionsData.choices[0].message.content;
-    const captions = JSON.parse(captionsText.replace(/```json\n?/g, '').replace(/```\n?/g, ''));
+    const captions = JSON.parse(captionsResult.content.replace(/```json\n?/g, '').replace(/```\n?/g, ''));
 
     // Generate hashtags
-    const hashtagsResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [
-          {
-            role: "user",
-            content: `Generate 15 relevant hashtags for this campaign: ${headline}. Industry: ${brandProfile?.industry || 'general'}. Mix popular and niche tags. Return as JSON array: {"hashtags": ["tag1", "tag2", ...]}`
-          }
-        ],
-      }),
+    const hashtagsPrompt = `Generate 15 relevant hashtags for this campaign: ${headline}. Industry: ${brandProfile?.industry || 'general'}. Mix popular and niche tags. Return as JSON array: {"hashtags": ["tag1", "tag2", ...]}`;
+
+    const hashtagsResult = await callFreeTierAI(hashtagsPrompt, {
+      temperature: 0.7,
+      maxTokens: 500
     });
 
-    const hashtagsData = await hashtagsResponse.json();
-    const hashtagsText = hashtagsData.choices[0].message.content;
-    const hashtags = JSON.parse(hashtagsText.replace(/```json\n?/g, '').replace(/```\n?/g, '')).hashtags;
+    const hashtags = JSON.parse(hashtagsResult.content.replace(/```json\n?/g, '').replace(/```\n?/g, '')).hashtags;
 
     return new Response(
       JSON.stringify({
         captions,
         hashtags,
-        success: true
+        success: true,
+        provider: captionsResult.provider
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );

@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
+import { callFreeTierAI } from "../_shared/free-tier-router.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -36,11 +37,6 @@ serve(async (req) => {
     const { researchType, topic, brandProfile } = validation.data;
     
     console.log('Market research request:', { researchType, topic });
-
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY not configured');
-    }
 
     const brandContext = brandProfile ? `
 COMPANY: ${brandProfile.name}
@@ -113,41 +109,18 @@ Provide:
 
     const prompt = researchPrompts[researchType] || researchPrompts.demand;
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-pro',
-        messages: [
-          {
-            role: 'system',
-            content: 'You are a market research analyst providing professional, data-driven insights. Format responses in clear markdown with actionable recommendations.'
-          },
-          {
-            role: 'user',
-            content: prompt
-          }
-        ],
-        temperature: 0.7,
-        max_tokens: 2500
-      })
+    const result = await callFreeTierAI(prompt, {
+      systemPrompt: 'You are a market research analyst providing professional, data-driven insights. Format responses in clear markdown with actionable recommendations.',
+      temperature: 0.7,
+      maxTokens: 2500
     });
-
-    if (!response.ok) {
-      throw new Error(`Research failed: ${response.status}`);
-    }
-
-    const data = await response.json();
-    const insights = data.choices[0].message.content;
 
     return new Response(
       JSON.stringify({ 
-        insights,
+        insights: result.content,
         researchType,
         topic,
+        provider: result.provider,
         timestamp: new Date().toISOString()
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

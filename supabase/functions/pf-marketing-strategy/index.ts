@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { callFreeTierAI } from "../_shared/free-tier-router.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -12,7 +13,6 @@ serve(async (req) => {
 
   try {
     const { business_description, target_audience, budget, goals } = await req.json();
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
 
     console.log('📈 Generating marketing strategy');
 
@@ -30,29 +30,14 @@ Provide:
 5. KPIs to track
 6. Quick wins (actions to take immediately)`;
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          { 
-            role: 'system', 
-            content: 'You are a strategic marketing consultant. Provide actionable, data-driven marketing strategies.',
-          },
-          { role: 'user', content: prompt },
-        ],
-      }),
+    const result = await callFreeTierAI(prompt, {
+      systemPrompt: 'You are a strategic marketing consultant. Provide actionable, data-driven marketing strategies.',
+      temperature: 0.7,
+      maxTokens: 2000
     });
 
-    const data = await response.json();
-    const strategy = data.choices[0].message.content;
-
     return new Response(
-      JSON.stringify({ success: true, strategy }),
+      JSON.stringify({ success: true, strategy: result.content, provider: result.provider }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (error) {

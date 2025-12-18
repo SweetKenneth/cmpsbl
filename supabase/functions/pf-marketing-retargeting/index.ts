@@ -4,6 +4,7 @@
  */
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { callFreeTierAI } from "../_shared/free-tier-router.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -19,11 +20,6 @@ serve(async (req) => {
     const { segmentType, campaignData, businessGoal, brandProfile } = await req.json();
     
     console.log('Retargeting planner:', { segmentType, businessGoal });
-
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY not configured');
-    }
 
     const brandContext = brandProfile ? `
 BRAND: ${brandProfile.name}
@@ -78,38 +74,16 @@ Return JSON:
   }
 }`;
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          {
-            role: 'system',
-            content: 'You are a retargeting expert. Create intelligent multi-step sequences that convert abandoned visitors. Return ONLY valid JSON.'
-          },
-          {
-            role: 'user',
-            content: userPrompt
-          }
-        ],
-        temperature: 0.7
-      })
+    const result = await callFreeTierAI(userPrompt, {
+      systemPrompt: 'You are a retargeting expert. Create intelligent multi-step sequences that convert abandoned visitors. Return ONLY valid JSON.',
+      temperature: 0.7,
+      maxTokens: 2000
     });
 
-    if (!response.ok) {
-      throw new Error(`Retargeting plan failed: ${response.status}`);
-    }
-
-    const data = await response.json();
-    const resultText = data.choices[0].message.content;
-    const plan = JSON.parse(resultText.replace(/```json\n?/g, '').replace(/```\n?/g, ''));
+    const plan = JSON.parse(result.content.replace(/```json\n?/g, '').replace(/```\n?/g, ''));
 
     return new Response(
-      JSON.stringify({ success: true, ...plan }),
+      JSON.stringify({ success: true, provider: result.provider, ...plan }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 

@@ -4,6 +4,7 @@
  */
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { callFreeTierAI } from "../_shared/free-tier-router.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -19,11 +20,6 @@ serve(async (req) => {
     const { campaignType, targetAudience, currentHeadline, optimizationGoal, brandProfile } = await req.json();
     
     console.log('Landing page optimizer:', { campaignType, optimizationGoal });
-
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY not configured');
-    }
 
     const brandContext = brandProfile ? `
 BRAND: ${brandProfile.name}
@@ -72,38 +68,16 @@ Return JSON:
   "optimizationTips": ["string (5-7 actionable tips)"]
 }`;
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          {
-            role: 'system',
-            content: 'You are a conversion rate optimization expert. Create high-converting landing page variants using psychology and copywriting best practices. Return ONLY valid JSON.'
-          },
-          {
-            role: 'user',
-            content: userPrompt
-          }
-        ],
-        temperature: 0.8
-      })
+    const result = await callFreeTierAI(userPrompt, {
+      systemPrompt: 'You are a conversion rate optimization expert. Create high-converting landing page variants using psychology and copywriting best practices. Return ONLY valid JSON.',
+      temperature: 0.8,
+      maxTokens: 2500
     });
 
-    if (!response.ok) {
-      throw new Error(`Optimization failed: ${response.status}`);
-    }
-
-    const data = await response.json();
-    const resultText = data.choices[0].message.content;
-    const optimization = JSON.parse(resultText.replace(/```json\n?/g, '').replace(/```\n?/g, ''));
+    const optimization = JSON.parse(result.content.replace(/```json\n?/g, '').replace(/```\n?/g, ''));
 
     return new Response(
-      JSON.stringify({ success: true, ...optimization }),
+      JSON.stringify({ success: true, provider: result.provider, ...optimization }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 

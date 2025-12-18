@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
+import { callFreeTierAI } from "../_shared/free-tier-router.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -85,41 +86,13 @@ Provide recommended challenge adjustments as JSON:
   "confidence": 0-100
 }`;
 
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          {
-            role: 'system',
-            content: 'You are an AI security optimizer. Provide balanced recommendations in JSON format.'
-          },
-          {
-            role: 'user',
-            content: adjustmentPrompt
-          }
-        ],
-        response_format: { type: 'json_object' }
-      }),
+    const result = await callFreeTierAI(adjustmentPrompt, {
+      systemPrompt: 'You are an AI security optimizer. Provide balanced recommendations in JSON format.',
+      temperature: 0.3,
+      maxTokens: 800
     });
 
-    if (!aiResponse.ok) {
-      if (aiResponse.status === 429) {
-        return new Response(
-          JSON.stringify({ error: 'Rate limit exceeded' }),
-          { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-      throw new Error(`AI adjustment failed: ${aiResponse.status}`);
-    }
-
-    const aiData = await aiResponse.json();
-    const recommendations = JSON.parse(aiData.choices[0].message.content);
+    const recommendations = JSON.parse(result.content.replace(/```json\n?/g, '').replace(/```\n?/g, ''));
 
     // Log learning data
     await supabaseClient.from('learning_logs').insert({
@@ -136,7 +109,8 @@ Provide recommended challenge adjustments as JSON:
       JSON.stringify({
         success: true,
         recommendations,
-        current_stats: { totalEvents, challengedEvents, blockedEvents, avgRiskScore }
+        current_stats: { totalEvents, challengedEvents, blockedEvents, avgRiskScore },
+        provider: result.provider
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
