@@ -1069,6 +1069,36 @@ export type Database = {
         }
         Relationships: []
       }
+      cascade_dreams: {
+        Row: {
+          blog_posted: string | null
+          created_at: string | null
+          dream_text: string
+          id: string
+          insight: string | null
+          mood: string | null
+          timestamp: string | null
+        }
+        Insert: {
+          blog_posted?: string | null
+          created_at?: string | null
+          dream_text: string
+          id?: string
+          insight?: string | null
+          mood?: string | null
+          timestamp?: string | null
+        }
+        Update: {
+          blog_posted?: string | null
+          created_at?: string | null
+          dream_text?: string
+          id?: string
+          insight?: string | null
+          mood?: string | null
+          timestamp?: string | null
+        }
+        Relationships: []
+      }
       causal_traces: {
         Row: {
           confidence: number | null

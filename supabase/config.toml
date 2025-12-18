@@ -47,3 +47,15 @@ verify_jwt = false
 
 [functions.pf-dream-mode]
 verify_jwt = false
+
+[functions.pf-brain-auto-heal]
+verify_jwt = false
+
+[functions.pf-cascade-chat]
+verify_jwt = false
+
+[functions.pf-brain-synthesize]
+verify_jwt = false
+
+[functions.pf-brain-monitor]
+verify_jwt = false
