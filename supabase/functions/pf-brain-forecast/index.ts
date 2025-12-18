@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { callFreeTierAI } from "../_shared/free-tier-router.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -55,40 +56,19 @@ serve(async (req) => {
       analysis_window: '7 days',
     };
 
-    // Call Lovable AI for probabilistic reasoning
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) throw new Error('LOVABLE_API_KEY not configured');
+    const result = await callFreeTierAI(
+      `Based on these signals, generate 3 strategic forecasts for PromptFluid over the next 3-6 months. Return ONLY a JSON array with objects containing: hypothesis, probability (0-1), supporting_factors (array of strings), confidence (0-1), projection_window.
 
-    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [{
-          role: 'system',
-          content: 'You are Cascade, PromptFluid\'s strategic forecasting AI. Analyze trends and generate probabilistic forecasts for business opportunities and risks.'
-        }, {
-          role: 'user',
-          content: `Based on these signals, generate 3 strategic forecasts for PromptFluid over the next 3-6 months. Return ONLY a JSON array with objects containing: hypothesis, probability (0-1), supporting_factors (array of strings), confidence (0-1), projection_window.
+Context: ${JSON.stringify(context, null, 2)}`,
+      {
+        systemPrompt: 'You are Cascade, PromptFluid\'s strategic forecasting AI. Analyze trends and generate probabilistic forecasts for business opportunities and risks.',
+        temperature: 0.6,
+        maxTokens: 1000
+      }
+    );
 
-Context: ${JSON.stringify(context, null, 2)}`
-        }],
-        max_tokens: 1000,
-      }),
-    });
-
-    if (!aiResponse.ok) {
-      throw new Error(`AI request failed: ${aiResponse.status}`);
-    }
-
-    const aiData = await aiResponse.json();
-    const aiText = aiData.choices[0].message.content;
-    
     // Parse forecasts from AI response
-    const jsonMatch = aiText.match(/\[[\s\S]*\]/);
+    const jsonMatch = result.content.match(/\[[\s\S]*\]/);
     if (!jsonMatch) {
       throw new Error('No valid JSON array in AI response');
     }
@@ -119,7 +99,8 @@ Context: ${JSON.stringify(context, null, 2)}`
       project_id: 'cascade',
       payload: { 
         forecasts_count: forecasts.length,
-        high_prob_count: forecasts.filter((f: any) => f.probability > 0.7).length
+        high_prob_count: forecasts.filter((f: any) => f.probability > 0.7).length,
+        provider: result.provider
       },
       success: true,
     });
@@ -128,6 +109,7 @@ Context: ${JSON.stringify(context, null, 2)}`
       JSON.stringify({ 
         success: true, 
         forecasts,
+        provider: result.provider,
         message: 'Forecasting cycle complete'
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

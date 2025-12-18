@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
+import { callFreeTierAI } from "../_shared/free-tier-router.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -33,11 +34,6 @@ serve(async (req) => {
     }
 
     const { brandProfile, competitors, recentMetrics } = validation.data;
-
-    const apiKey = Deno.env.get('LOVABLE_API_KEY');
-    if (!apiKey) {
-      throw new Error('LOVABLE_API_KEY not configured');
-    }
 
     const period = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
@@ -92,31 +88,15 @@ Return as structured JSON:
   "strategicScore": 75
 }`;
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          { role: 'system', content: 'You are a strategic business analyst.' },
-          { role: 'user', content: swotPrompt }
-        ]
-      })
+    const result = await callFreeTierAI(swotPrompt, {
+      systemPrompt: 'You are a strategic business analyst.',
+      temperature: 0.7
     });
 
-    if (!response.ok) {
-      throw new Error(`SWOT generation failed: ${response.status}`);
-    }
-
-    const data = await response.json();
-    const resultText = data.choices[0].message.content;
-    const swotAnalysis = JSON.parse(resultText.replace(/```json\n?/g, '').replace(/```\n?/g, ''));
+    const swotAnalysis = JSON.parse(result.content.replace(/```json\n?/g, '').replace(/```\n?/g, ''));
 
     return new Response(
-      JSON.stringify(swotAnalysis),
+      JSON.stringify({ ...swotAnalysis, provider: result.provider }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 

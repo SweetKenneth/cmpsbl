@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1";
+import { callFreeTierAI } from "../_shared/free-tier-router.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -77,11 +78,6 @@ serve(async (req) => {
         JSON.stringify({ error: "Access to internal resources not allowed" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
-    }
-
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) {
-      throw new Error("LOVABLE_API_KEY not configured");
     }
 
     // PromptFluid SEO Intelligence: Comprehensive audit prompt
@@ -162,38 +158,14 @@ serve(async (req) => {
 
 Provide realistic scores (most sites: 60-85). Focus on actionable insights.`;
 
-    const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [
-          { role: "system", content: systemPrompt },
-          {
-            role: "user",
-            content: `Perform comprehensive SEO analysis for: ${url}
-
-Analyze all aspects: technical SEO, performance, content quality, and accessibility. Provide specific, actionable recommendations.`
-          }
-        ],
-      }),
-    });
-
-    if (!aiResponse.ok) {
-      const errorText = await aiResponse.text();
-      console.error("AI API error:", aiResponse.status, errorText);
-      throw new Error("SEO analysis failed");
-    }
-
-    const aiData = await aiResponse.json();
-    const content = aiData.choices?.[0]?.message?.content || "";
+    const result = await callFreeTierAI(
+      `Perform comprehensive SEO analysis for: ${url}\n\nAnalyze all aspects: technical SEO, performance, content quality, and accessibility. Provide specific, actionable recommendations.`,
+      { systemPrompt, temperature: 0.5 }
+    );
 
     let auditData;
     try {
-      const jsonMatch = content.match(/\{[\s\S]*\}/);
+      const jsonMatch = result.content.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         auditData = JSON.parse(jsonMatch[0]);
       } else {
@@ -247,6 +219,7 @@ Analyze all aspects: technical SEO, performance, content quality, and accessibil
       JSON.stringify({
         url,
         ...auditData,
+        provider: result.provider,
         timestamp: new Date().toISOString(),
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }

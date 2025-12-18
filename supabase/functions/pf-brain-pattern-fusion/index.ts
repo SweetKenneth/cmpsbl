@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { callFreeTierAI } from "../_shared/free-tier-router.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -36,29 +37,15 @@ Process:
 
 Return JSON: { domain_1_patterns: [], domain_2_patterns: [], fusion_concepts: [], novel_solutions: [], best_solution: { solution: "", originality_score: 0, implementation: "" } }`;
 
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-5',
-        messages: [
-          { role: 'system', content: 'You are a pattern fusion specialist. Combine insights from different fields to create innovative solutions.' },
-          { role: 'user', content: fusionPrompt }
-        ],
-      }),
+    const result = await callFreeTierAI(fusionPrompt, {
+      systemPrompt: 'You are a pattern fusion specialist. Combine insights from different fields to create innovative solutions.',
+      temperature: 0.7
     });
 
-    const data = await response.json();
     let fusion;
     
     try {
-      const text = data.choices[0].message.content;
-      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      const jsonMatch = result.content.match(/\{[\s\S]*\}/);
       fusion = jsonMatch ? JSON.parse(jsonMatch[0]) : {
         domain_1_patterns: [],
         domain_2_patterns: [],
@@ -80,14 +67,14 @@ Return JSON: { domain_1_patterns: [], domain_2_patterns: [], fusion_concepts: []
     await supabase.from('brain_events').insert({
       module: 'pattern_fusion',
       event_type: 'domains_merged',
-      data: { problem, domain_1, domain_2, fusion },
+      data: { problem, domain_1, domain_2, fusion, provider: result.provider },
       outcome: 'fused',
     });
 
     console.log(`✅ Pattern fusion complete: ${fusion.best_solution.originality_score}% originality`);
 
     return new Response(
-      JSON.stringify({ success: true, fusion }),
+      JSON.stringify({ success: true, fusion, provider: result.provider }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (error) {

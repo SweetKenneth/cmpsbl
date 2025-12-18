@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1";
+import { callFreeTierAI } from "../_shared/free-tier-router.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -7,7 +8,7 @@ const corsHeaders = {
 };
 
 const DAILY_CALL_LIMIT = 900;
-const QUOTA_THRESHOLD = 0.05; // 5% remaining quota
+const QUOTA_THRESHOLD = 0.05;
 
 async function checkQuotaRemaining(sb: any): Promise<number> {
   const today = new Date().toISOString().split('T')[0];
@@ -30,56 +31,33 @@ async function generateFollowUpQuery(sb: any, originalQuery: any, result: string
     return;
   }
 
-  // Generate contextual follow-up using Lovable AI
-  const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-  if (!LOVABLE_API_KEY) {
-    console.log('⚠️ No LOVABLE_API_KEY, skipping auto-query');
-    return;
-  }
-
   try {
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [
-          {
-            role: "system",
-            content: "Generate ONE focused follow-up research question based on the original query and result. Return only the question, no explanation."
-          },
-          {
-            role: "user",
-            content: `Original query: "${originalQuery.query}"\n\nResult confidence: ${confidence}\n\nGenerate a follow-up question to deepen understanding.`
-          }
-        ],
-      }),
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      const followUpQuery = data.choices?.[0]?.message?.content?.trim();
-      
-      if (followUpQuery) {
-        await sb.from('learning_queries').insert({
-          source: 'auto',
-          topic: originalQuery.topic,
-          query: followUpQuery,
-          weight: 0.8,
-          status: 'queued',
-          parent_id: originalQuery.id,
-          context: {
-            origin: 'auto_generated',
-            parent_topic: originalQuery.topic,
-            parent_confidence: confidence,
-            generated_at: new Date().toISOString()
-          }
-        });
-        console.log(`✨ Generated follow-up query for ${originalQuery.topic}`);
+    const aiResult = await callFreeTierAI(
+      `Original query: "${originalQuery.query}"\n\nResult confidence: ${confidence}\n\nGenerate a follow-up question to deepen understanding.`,
+      {
+        systemPrompt: 'Generate ONE focused follow-up research question based on the original query and result. Return only the question, no explanation.',
+        temperature: 0.5
       }
+    );
+
+    const followUpQuery = aiResult.content.trim();
+    
+    if (followUpQuery) {
+      await sb.from('learning_queries').insert({
+        source: 'auto',
+        topic: originalQuery.topic,
+        query: followUpQuery,
+        weight: 0.8,
+        status: 'queued',
+        parent_id: originalQuery.id,
+        context: {
+          origin: 'auto_generated',
+          parent_topic: originalQuery.topic,
+          parent_confidence: confidence,
+          generated_at: new Date().toISOString()
+        }
+      });
+      console.log(`✨ Generated follow-up query for ${originalQuery.topic}`);
     }
   } catch (error) {
     console.error('Failed to generate follow-up:', error);
@@ -147,7 +125,6 @@ serve(async (req) => {
     // Select next batch with context awareness
     const limit = Math.min(40, remaining);
     
-    // Detect synergy: check if any user queries match predictive queries
     const { data: predictiveQueries } = await sb
       .from('learning_queries')
       .select('*')
@@ -212,16 +189,13 @@ serve(async (req) => {
 
     for (const query of batch) {
       try {
-        // Simulate processing with confidence scoring
-        const mockConfidence = 0.5 + Math.random() * 0.5; // 0.5-1.0 for demo
+        const mockConfidence = 0.5 + Math.random() * 0.5;
         confidences.push(mockConfidence);
         
-        // Update query with confidence
         await sb.from('learning_queries')
           .update({ confidence: mockConfidence })
           .eq('id', query.id);
 
-        // Auto-generate follow-up if confidence is good
         if (mockConfidence >= 0.4) {
           await generateFollowUpQuery(sb, query, 'mock result', mockConfidence);
           autoQueriesGenerated++;
