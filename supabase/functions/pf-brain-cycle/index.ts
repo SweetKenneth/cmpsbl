@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1";
+import { callFreeTierAI } from "../_shared/free-tier-router.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -7,8 +8,6 @@ const corsHeaders = {
 };
 
 // Budget configuration
-const GROQ_SOFT_CAP_USD = 0.80;
-const GROQ_HARD_CAP_USD = 1.00;
 const MAX_CALLS_PER_DAY = 900;
 const CALLS_PER_CYCLE = 9;
 
@@ -53,8 +52,6 @@ serve(async (req) => {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const perplexityKey = Deno.env.get('PERPLEXITY_API_KEY');
-    const groqKey = Deno.env.get('GROQ_API_KEY');
-    const lovableKey = Deno.env.get('LOVABLE_API_KEY');
 
     const supabaseClient = createClient(supabaseUrl, supabaseKey);
 
@@ -67,19 +64,15 @@ serve(async (req) => {
       .select('*')
       .eq('date', today);
 
-    let groqSpendToday = 0;
     let totalCallsToday = 0;
     
     if (budgetData) {
       for (const record of budgetData) {
         totalCallsToday += record.calls_made || 0;
-        if (record.metadata?.groq_spend_usd) {
-          groqSpendToday += record.metadata.groq_spend_usd;
-        }
       }
     }
 
-    console.log(`📊 Budget status: ${totalCallsToday}/${MAX_CALLS_PER_DAY} calls, $${groqSpendToday.toFixed(2)}/$${GROQ_HARD_CAP_USD} Groq spend`);
+    console.log(`📊 Budget status: ${totalCallsToday}/${MAX_CALLS_PER_DAY} calls`);
 
     // Check hard cap
     if (totalCallsToday >= MAX_CALLS_PER_DAY) {
@@ -93,10 +86,6 @@ serve(async (req) => {
       });
     }
 
-    if (groqSpendToday >= GROQ_HARD_CAP_USD) {
-      console.log('⚠️ Groq hard cap reached. Perplexity-only mode.');
-    }
-
     // Get current creativity ratio (FreedomScore)
     const { data: freedomData } = await supabaseClient
       .from('brain_meta_feedback')
@@ -105,7 +94,7 @@ serve(async (req) => {
       .limit(1)
       .single();
 
-    let creativityRatio = 0.15; // Default
+    let creativityRatio = 0.15;
     if (freedomData?.metadata?.creativity_ratio) {
       creativityRatio = freedomData.metadata.creativity_ratio;
     }
@@ -137,20 +126,16 @@ serve(async (req) => {
     
     console.log(`📚 Learning topic: ${topic} (${selectedCategory})`);
 
-    // 9-call cycle execution
+    // Cycle execution
     const cycleResults = {
       topic,
       category: selectedCategory,
       creativity_ratio: creativityRatio,
       calls_made: 0,
-      cost_usd: 0,
       sources: [] as string[],
       insights: [] as string[],
       next_query: '',
     };
-
-    let canUseGroq = groqSpendToday < GROQ_HARD_CAP_USD;
-    const softCapReached = groqSpendToday >= GROQ_SOFT_CAP_USD;
 
     // Call 1: Perplexity seed query
     if (perplexityKey) {
@@ -182,69 +167,23 @@ serve(async (req) => {
       }
     }
 
-    // Call 2-3: Extract and micro-reason (use Lovable if Groq capped)
-    const reasoningModel = canUseGroq && !softCapReached ? 'groq' : 'lovable';
-    
-    if (reasoningModel === 'groq' && groqKey) {
-      try {
-        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${groqKey}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            model: 'llama-3.3-70b-versatile',
-            messages: [
-              { role: 'system', content: 'You are Cascade, PromptFluid Brain. Extract key insights and reason about applications.' },
-              { role: 'user', content: `Analyze: ${cycleResults.insights[0] || topic}` }
-            ],
-            max_tokens: 300,
-            temperature: creativityRatio,
-          }),
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          const reasoning = data.choices[0]?.message?.content || '';
-          cycleResults.insights.push(reasoning.slice(0, 200));
-          cycleResults.sources.push('groq_reasoning');
-          cycleResults.calls_made++;
-          cycleResults.cost_usd += 0.005; // ~$0.005 per Groq call
-          console.log('✅ Call 2-3: Groq micro reasoning completed');
+    // Call 2-3: Extract and micro-reason using free tier router
+    try {
+      const result = await callFreeTierAI(
+        `Analyze: ${cycleResults.insights[0] || topic}`,
+        {
+          systemPrompt: 'You are Cascade, PromptFluid Brain. Extract key insights and reason about applications.',
+          temperature: creativityRatio,
+          maxTokens: 300
         }
-      } catch (error) {
-        console.error('❌ Groq reasoning failed:', error);
-      }
-    } else if (lovableKey) {
-      try {
-        const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${lovableKey}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            model: 'google/gemini-2.5-flash',
-            messages: [
-              { role: 'system', content: 'You are Cascade, PromptFluid Brain. Extract key insights.' },
-              { role: 'user', content: `Analyze: ${cycleResults.insights[0] || topic}` }
-            ],
-            max_tokens: 300,
-          }),
-        });
+      );
 
-        if (response.ok) {
-          const data = await response.json();
-          const reasoning = data.choices[0]?.message?.content || '';
-          cycleResults.insights.push(reasoning.slice(0, 200));
-          cycleResults.sources.push('lovable_reasoning');
-          cycleResults.calls_made++;
-          console.log('✅ Call 2-3: Lovable reasoning completed (Groq capped)');
-        }
-      } catch (error) {
-        console.error('❌ Lovable reasoning failed:', error);
-      }
+      cycleResults.insights.push(result.content.slice(0, 200));
+      cycleResults.sources.push(`${result.provider}_reasoning`);
+      cycleResults.calls_made++;
+      console.log(`✅ Call 2-3: ${result.provider} micro reasoning completed`);
+    } catch (error) {
+      console.error('❌ Reasoning call failed:', error);
     }
 
     // Generate next query with creativity ratio
@@ -284,7 +223,6 @@ serve(async (req) => {
         calls_made: totalCallsToday + cycleResults.calls_made,
         calls_budget: MAX_CALLS_PER_DAY,
         metadata: {
-          groq_spend_usd: groqSpendToday + cycleResults.cost_usd,
           creativity_ratio: creativityRatio,
         },
       }, {
@@ -311,7 +249,6 @@ serve(async (req) => {
         cycle: cycleResults,
         budget: {
           total_calls: totalCallsToday + cycleResults.calls_made,
-          groq_spend: groqSpendToday + cycleResults.cost_usd,
         },
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

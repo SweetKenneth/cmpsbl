@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { callFreeTierAI } from "../_shared/free-tier-router.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -44,30 +45,15 @@ Provide:
 
 Return JSON only with: { clarity, accuracy, aesthetics, completeness, overall, improvements: [], revised_output: null or string }`;
 
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    
-    const critiqueResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          { role: 'system', content: 'You are Cascade\'s self-review system. Provide honest, constructive critique in JSON format.' },
-          { role: 'user', content: critiquePrompt }
-        ],
-        temperature: 0.5,
-      }),
+    const result = await callFreeTierAI(critiquePrompt, {
+      systemPrompt: 'You are Cascade\'s self-review system. Provide honest, constructive critique in JSON format.',
+      temperature: 0.5
     });
 
-    const critiqueData = await critiqueResponse.json();
     let critique;
     
     try {
-      const critiqueText = critiqueData.choices[0].message.content;
-      const jsonMatch = critiqueText.match(/\{[\s\S]*\}/);
+      const jsonMatch = result.content.match(/\{[\s\S]*\}/);
       critique = jsonMatch ? JSON.parse(jsonMatch[0]) : {
         clarity: 75,
         accuracy: 75,
@@ -99,7 +85,7 @@ Return JSON only with: { clarity, accuracy, aesthetics, completeness, overall, i
 
     // Step 3: Store feedback for learning
     await supabase.from('brain_meta_feedback').insert({
-      thought_id: null, // Can link to specific thoughts if available
+      thought_id: null,
       validator: 'cascade_self_critique',
       accuracy_score: critique.accuracy / 100,
       confidence: critique.overall / 100,
@@ -117,6 +103,7 @@ Return JSON only with: { clarity, accuracy, aesthetics, completeness, overall, i
         critique,
         needs_revision: needsRevision,
         revised: critique.revised_output !== null,
+        provider: result.provider,
       },
       outcome: needsRevision ? 'revision_required' : 'approved',
     });
@@ -130,6 +117,7 @@ Return JSON only with: { clarity, accuracy, aesthetics, completeness, overall, i
         needs_revision: needsRevision,
         final_output: critique.revised_output || output,
         quality_passed: !needsRevision,
+        provider: result.provider,
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );

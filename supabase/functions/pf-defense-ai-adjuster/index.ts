@@ -6,6 +6,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
+import { callFreeTierAI } from "../_shared/free-tier-router.ts";
 
 // Schema for scheduled cron job (no input expected)
 const AdjusterSchema = z.object({
@@ -66,12 +67,6 @@ serve(async (req) => {
     const solvedChallenges = challenges?.filter(c => c.status === 'solved').length || 0;
     const successRate = totalChallenges > 0 ? (solvedChallenges / totalChallenges) * 100 : 0;
 
-    // Use AI to determine optimal settings
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY not configured');
-    }
-
     const adjustmentPrompt = `Analyze challenge difficulty settings based on threat intelligence:
 
 Current Threat Level: ${latestThreat.threat_level}
@@ -99,35 +94,12 @@ Return ONLY a JSON object:
   "reasoning": "Brief explanation"
 }`;
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          {
-            role: 'system',
-            content: 'You are a cybersecurity AI optimizing bot defense challenge difficulty. Respond with pure JSON only.'
-          },
-          {
-            role: 'user',
-            content: adjustmentPrompt
-          }
-        ],
-        temperature: 0.3
-      })
+    const result = await callFreeTierAI(adjustmentPrompt, {
+      systemPrompt: 'You are a cybersecurity AI optimizing bot defense challenge difficulty. Respond with pure JSON only.',
+      temperature: 0.3
     });
 
-    if (!response.ok) {
-      throw new Error(`AI request failed: ${response.status}`);
-    }
-
-    const data = await response.json();
-    const aiResponse = data.choices[0].message.content;
-    const recommendations = JSON.parse(aiResponse.replace(/```json\n?/g, '').replace(/```\n?/g, ''));
+    const recommendations = JSON.parse(result.content.replace(/```json\n?/g, '').replace(/```\n?/g, ''));
 
     // Apply recommendations to defense settings
     const { error: updateError } = await supabaseClient
@@ -149,6 +121,7 @@ Return ONLY a JSON object:
       JSON.stringify({
         success: true,
         recommendations,
+        provider: result.provider,
         threat_context: {
           level: latestThreat.threat_level,
           confidence: latestThreat.confidence_score,

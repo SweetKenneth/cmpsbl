@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1';
 import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
+import { callFreeTierAI } from "../_shared/free-tier-router.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -65,8 +66,6 @@ serve(async (req) => {
       currentUrl
     };
 
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    
     let prompt = '';
     if (action === 'suggest_fixes') {
       prompt = `Based on this accessibility profile, suggest 3-5 personalized improvements for ${currentUrl || 'this site'}:
@@ -85,33 +84,16 @@ Provide: {needs: [], patterns: [], recommendations: [], suggestedSites: []}`;
 Question: ${action}`;
     }
 
-    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          { role: 'system', content: 'You are an accessibility AI providing personalized recommendations. Always respond with valid JSON when requested.' },
-          { role: 'user', content: prompt }
-        ],
-      }),
+    const result = await callFreeTierAI(prompt, {
+      systemPrompt: 'You are an accessibility AI providing personalized recommendations. Always respond with valid JSON when requested.',
+      temperature: 0.6
     });
-
-    if (!aiResponse.ok) {
-      throw new Error('AI request failed');
-    }
-
-    const aiData = await aiResponse.json();
-    const recommendation = aiData.choices[0].message.content;
 
     let parsedRecommendation;
     try {
-      parsedRecommendation = JSON.parse(recommendation);
+      parsedRecommendation = JSON.parse(result.content.replace(/```json\n?/g, '').replace(/```\n?/g, ''));
     } catch {
-      parsedRecommendation = { text: recommendation };
+      parsedRecommendation = { text: result.content };
     }
 
     if (profile) {
@@ -128,6 +110,7 @@ Question: ${action}`;
       JSON.stringify({
         success: true,
         recommendations: parsedRecommendation,
+        provider: result.provider,
         context: {
           profileExists: !!profile,
           totalFixes: recentFixes?.length || 0,

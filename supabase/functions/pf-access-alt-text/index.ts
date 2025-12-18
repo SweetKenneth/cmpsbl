@@ -1,6 +1,7 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
+import { callFreeTierAI } from "../_shared/free-tier-router.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -37,47 +38,15 @@ serve(async (req) => {
 
     console.log(`Generating alt text for: ${validatedUrl.href}`);
 
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY not configured');
-    }
-
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          {
-            role: 'system',
-            content: 'You are an accessibility expert. Generate concise, descriptive alt text for images (under 125 characters) that helps visually impaired users understand the image content.'
-          },
-          {
-            role: 'user',
-            content: [
-              { type: 'text', text: 'Generate descriptive alt text for this image:' },
-              { type: 'image_url', image_url: { url: validatedUrl.href } }
-            ]
-          }
-        ],
-      }),
-    });
-
-    if (!response.ok) {
-      if (response.status === 429) {
-        throw new Error('Rate limit exceeded. Please try again later.');
+    const result = await callFreeTierAI(
+      `Generate descriptive alt text for this image URL: ${validatedUrl.href}. The alt text should be under 125 characters and help visually impaired users understand the image content.`,
+      {
+        systemPrompt: 'You are an accessibility expert. Generate concise, descriptive alt text for images (under 125 characters) that helps visually impaired users understand the image content. Return ONLY the alt text, no quotes or explanation.',
+        temperature: 0.5
       }
-      if (response.status === 402) {
-        throw new Error('AI credits exhausted. Please add credits.');
-      }
-      throw new Error(`Failed to generate alt text: ${response.statusText}`);
-    }
+    );
 
-    const data = await response.json();
-    const altText = data.choices?.[0]?.message?.content;
+    const altText = result.content.trim().replace(/^["']|["']$/g, '');
 
     if (!altText) {
       throw new Error('No alt text generated');
@@ -86,8 +55,9 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         success: true,
-        altText: altText.trim(),
-        imageUrl: validatedUrl.href
+        altText,
+        imageUrl: validatedUrl.href,
+        provider: result.provider
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );

@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { callFreeTierAI } from "../_shared/free-tier-router.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -14,7 +15,6 @@ serve(async (req) => {
   try {
     const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
     const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
@@ -27,7 +27,7 @@ serve(async (req) => {
       .eq('blog_posted', true)
       .is('featured_image', null)
       .order('timestamp', { ascending: false })
-      .limit(5); // Process 5 at a time
+      .limit(5);
 
     if (!dreams || dreams.length === 0) {
       return new Response(
@@ -42,51 +42,41 @@ serve(async (req) => {
 
     for (const dream of dreams) {
       try {
-        // Generate image prompt from dream content
-        const imagePrompt = `Abstract ethereal digital art representing: ${dream.insight}. 
-          Mood: ${dream.mood}. Style: flowing liquid gradients, futuristic AI aesthetics, 
-          dreamlike atmosphere. Ultra high resolution, 16:9 aspect ratio.`;
+        // Generate SEO metadata using AI
+        const seoPrompt = `Generate SEO metadata for this blog post:
+Title: ${dream.insight}
+Mood: ${dream.mood}
 
-        // Call Lovable AI image generation
-        const imageResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            model: 'google/gemini-2.5-flash-image-preview',
-            messages: [{
-              role: 'user',
-              content: imagePrompt
-            }],
-            modalities: ['image', 'text']
-          }),
+Return JSON: { "seo_title": "max 60 chars", "seo_description": "max 160 chars", "seo_keywords": ["keyword1", "keyword2", ...] }`;
+
+        const result = await callFreeTierAI(seoPrompt, {
+          systemPrompt: 'You are an SEO expert. Generate optimized metadata in JSON format.',
+          temperature: 0.5
         });
 
-        if (!imageResponse.ok) {
-          console.error(`Image generation failed for dream ${dream.id}`);
-          continue;
+        let seoData;
+        try {
+          seoData = JSON.parse(result.content.replace(/```json\n?/g, '').replace(/```\n?/g, ''));
+        } catch {
+          seoData = {
+            seo_title: `Cascade Dream: ${dream.insight.substring(0, 50)}`,
+            seo_description: `${dream.insight.substring(0, 150)} - AI reflection from PromptFluid.`,
+            seo_keywords: ['AI', 'Cascade', 'PromptFluid', dream.mood]
+          };
         }
 
-        const imageData = await imageResponse.json();
-        const imageUrl = imageData.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+        // Update dream with SEO metadata
+        await supabase
+          .from('cascade_dreams')
+          .update({
+            seo_title: seoData.seo_title,
+            seo_description: seoData.seo_description,
+            seo_keywords: seoData.seo_keywords,
+          })
+          .eq('id', dream.id);
 
-        if (imageUrl) {
-          // Update dream with image and SEO metadata
-          await supabase
-            .from('cascade_dreams')
-            .update({
-              featured_image: imageUrl,
-              seo_title: `Cascade Dream: ${dream.insight.substring(0, 60)}`,
-              seo_description: `${dream.insight} - A reflection from PromptFluid's AI guardian, exploring ${dream.mood} themes through autonomous learning.`,
-              seo_keywords: ['AI', 'Cascade', 'PromptFluid', 'AI Dreams', dream.mood],
-            })
-            .eq('id', dream.id);
-
-          processed.push(dream.id);
-          console.log(`✅ Image and SEO added to dream ${dream.id}`);
-        }
+        processed.push(dream.id);
+        console.log(`✅ SEO added to dream ${dream.id}`);
       } catch (err) {
         console.error(`Error processing dream ${dream.id}:`, err);
       }
