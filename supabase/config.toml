@@ -41,3 +41,9 @@ verify_jwt = false
 
 [functions.pf-reflex-core]
 verify_jwt = false
+
+[functions.pf-dream-eater-awaken]
+verify_jwt = false
+
+[functions.pf-dream-mode]
+verify_jwt = false
