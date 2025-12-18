@@ -399,7 +399,7 @@ export default function Index() {
               <Users className="w-8 h-8 text-primary mx-auto mb-4" />
               <h3 className="font-semibold mb-2">Target Markets</h3>
               <p className="text-sm text-muted-foreground">
-                455M+ WordPress sites globally. $7B+ accessibility compliance market.
+                455M+ WordPress sites globally. Growing accessibility compliance market.
               </p>
             </div>
             <div className="glass p-6 rounded-xl">

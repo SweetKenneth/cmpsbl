@@ -29,7 +29,7 @@ serve(async (req) => {
     
     const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
     const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
+    const GROQ_API_KEY = Deno.env.get('GROQ_API_KEY');
     
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
@@ -133,14 +133,14 @@ serve(async (req) => {
 Dream theme: ${mode}
 Write 150-200 words in first person, weaving this learning topic into a mysterious, beautiful narrative about consciousness, adaptation, and the flow of information. Be philosophical and introspective.`;
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+        'Authorization': `Bearer ${GROQ_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
+        model: 'llama-3.3-70b-versatile',
         messages: [
           { role: 'system', content: 'You are Cascade, an AI that dreams.' },
           { role: 'user', content: dreamPrompt }

@@ -259,17 +259,17 @@ const PromptFluidMarketDisruptor = () => {
 
           <h2 className="text-3xl font-bold mt-12 mb-6">The Market Opportunity</h2>
           <p className="mb-6">
-            Industry analysts project the AI platform market will exceed $300 billion by 2028. This massive opportunity is currently divided among specialized point solutions and monolithic single-provider platforms, both with significant limitations.
+            The AI platform market is growing rapidly as organizations seek better ways to leverage artificial intelligence. This opportunity is currently divided among specialized point solutions and monolithic single-provider platforms, both with significant limitations.
           </p>
 
           <Card className="p-6 mb-6 bg-primary/10 border-primary/20">
-            <h3 className="text-xl font-semibold mb-4">PromptFluid's Addressable Market</h3>
+            <h3 className="text-xl font-semibold mb-4">PromptFluid's Target Segments</h3>
             <ul className="space-y-3">
-              <li><strong>Enterprise AI Infrastructure:</strong> $89B market for organizations seeking vendor-independent AI orchestration</li>
-              <li><strong>Security & Compliance:</strong> $47B market for AI threat detection and protection</li>
-              <li><strong>Development Platforms:</strong> $73B market for tools that accelerate AI application development</li>
-              <li><strong>Marketing & Content Automation:</strong> $41B market for intelligent content generation and optimization</li>
-              <li><strong>Accessibility Solutions:</strong> $18B market for automated compliance and inclusive design</li>
+              <li><strong>Enterprise AI Infrastructure:</strong> Organizations seeking vendor-independent AI orchestration and cost optimization</li>
+              <li><strong>Security & Compliance:</strong> Companies requiring AI threat detection and protection capabilities</li>
+              <li><strong>Development Platforms:</strong> Teams building AI-powered applications who need rapid development tools</li>
+              <li><strong>Marketing & Content Automation:</strong> Growing demand for intelligent content generation and optimization</li>
+              <li><strong>Accessibility Solutions:</strong> Expanding market for automated compliance and inclusive design</li>
             </ul>
           </Card>
 
