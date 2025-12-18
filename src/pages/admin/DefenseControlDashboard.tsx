@@ -133,7 +133,7 @@ export default function DefenseControlDashboard() {
           
           <StatCard
             title="Active Rules"
-            value={47}
+            value={threats?.activeRules || 0}
             icon={Shield}
             variant="success"
             loading={isLoading}

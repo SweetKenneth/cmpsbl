@@ -3,99 +3,124 @@ import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, RefreshCw } from 'lucide-react';
+import { RefreshCw, Brain, Zap, Shield, Eye } from 'lucide-react';
 import { format } from 'date-fns';
+import type { Json } from '@/integrations/supabase/types';
 
-type ThoughtStatus = 'sent' | 'pending' | 'failed';
-
-interface CascadeThought {
+interface BrainEvent {
   id: string;
-  content: string | null;
-  thought_type: string | null;
-  model: string | null;
+  event_type: string;
+  module: string;
+  outcome: string | null;
   created_at: string;
-  metadata: Record<string, any> | null;
+  data: Json | null;
 }
 
 export function CascadeActivityFeed() {
-  const [thoughts, setThoughts] = useState<CascadeThought[]>([]);
+  const [events, setEvents] = useState<BrainEvent[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchThoughts = async () => {
+  const fetchEvents = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('brain_events')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(20);
+    
+    if (!error && data) {
+      setEvents(data);
+    }
     setLoading(false);
-    // Cascade tables not configured
   };
 
   useEffect(() => {
-    fetchThoughts();
+    fetchEvents();
+    
+    // Real-time subscription
+    const channel = supabase
+      .channel('brain-events-feed')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'brain_events' },
+        (payload) => {
+          setEvents(prev => [payload.new as BrainEvent, ...prev].slice(0, 20));
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
-  const getTypeBadge = (type: string | null) => {
-    if (!type) return <Badge variant="secondary">Unknown</Badge>;
-    if (type === 'reflection') return <Badge className="bg-green-500">✅ Reflection</Badge>;
-    if (type === 'insight') return <Badge className="bg-blue-500">💡 Insight</Badge>;
-    if (type === 'analysis') return <Badge className="bg-purple-500">🔍 Analysis</Badge>;
-    return <Badge variant="secondary">{type}</Badge>;
+  const getModuleIcon = (module: string) => {
+    switch (module.toLowerCase()) {
+      case 'defense': return <Shield className="w-4 h-4 text-red-400" />;
+      case 'clarity': return <Eye className="w-4 h-4 text-blue-400" />;
+      case 'brain': return <Brain className="w-4 h-4 text-purple-400" />;
+      default: return <Zap className="w-4 h-4 text-yellow-400" />;
+    }
+  };
+
+  const getOutcomeBadge = (outcome: string | null) => {
+    if (!outcome) return <Badge variant="secondary">Pending</Badge>;
+    if (outcome === 'success') return <Badge className="bg-green-500/20 text-green-500">Success</Badge>;
+    if (outcome === 'failed') return <Badge className="bg-red-500/20 text-red-500">Failed</Badge>;
+    return <Badge variant="secondary">{outcome}</Badge>;
   };
 
   return (
-    <Card>
+    <Card className="glass-card border border-border/50">
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle>🧠 Cascade Activity Feed</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <Brain className="w-5 h-5 text-primary" />
+              Cascade Activity Feed
+            </CardTitle>
             <CardDescription>
-              Real-time autonomous thought dispatch monitoring
+              Real-time system events
             </CardDescription>
           </div>
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={fetchThoughts}
-              disabled={loading}
-            >
-              <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => window.open('https://supabase.com/dashboard/project/hxgbibtkftocyrnuzxwd/editor', '_blank')}
-            >
-              <ExternalLink className="h-4 w-4" />
-            </Button>
-          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={fetchEvents}
+            disabled={loading}
+          >
+            <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+          </Button>
         </div>
       </CardHeader>
       <CardContent>
-        {loading && thoughts.length === 0 ? (
+        {loading && events.length === 0 ? (
           <div className="text-center py-8 text-muted-foreground">
-            Loading...
+            Loading events...
           </div>
-        ) : thoughts.length === 0 ? (
+        ) : events.length === 0 ? (
           <div className="text-center py-8 text-muted-foreground">
-            No thoughts yet. Waiting for first dispatch cycle...
+            No events recorded yet.
           </div>
         ) : (
-          <div className="space-y-3">
-            {thoughts.map((thought) => (
+          <div className="space-y-2 max-h-[400px] overflow-y-auto">
+            {events.map((event) => (
               <div
-                key={thought.id}
-                className="border rounded-lg p-3 hover:bg-accent/50 transition-colors"
+                key={event.id}
+                className="flex items-center justify-between p-3 rounded-lg hover:bg-muted/30 transition-colors border border-border/30"
               >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex-1 min-w-0">
-                    <h4 className="font-semibold text-sm truncate">
-                      {thought.content?.substring(0, 100) || 'No content'}...
-                    </h4>
-                    <div className="flex flex-wrap gap-2 mt-1 text-xs text-muted-foreground">
-                      <span>{format(new Date(thought.created_at), 'MMM dd, HH:mm')}</span>
-                      {thought.model && <span>• {thought.model}</span>}
-                    </div>
+                <div className="flex items-center gap-3">
+                  {getModuleIcon(event.module)}
+                  <div>
+                    <span className="font-medium text-sm">{event.event_type}</span>
+                    <p className="text-xs text-muted-foreground">{event.module}</p>
                   </div>
-                  <div className="flex-shrink-0">
-                    {getTypeBadge(thought.thought_type)}
-                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  {getOutcomeBadge(event.outcome)}
+                  <span className="text-xs text-muted-foreground">
+                    {format(new Date(event.created_at), 'HH:mm:ss')}
+                  </span>
                 </div>
               </div>
             ))}
