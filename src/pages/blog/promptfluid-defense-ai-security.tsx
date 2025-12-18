@@ -142,21 +142,21 @@ const PromptFluidDefense = () => {
               Ripple coordinates Defense across distributed deployments, sharing threat intelligence between instances. When one deployment blocks a coordinated attack, all other instances immediately gain awareness, creating a collective defense network stronger than any individual node.
             </p>
 
-            <h2 className="text-3xl font-bold mb-4 mt-12">Real-World Protection Metrics</h2>
+            <h2 className="text-3xl font-bold mb-4 mt-12">Design Goals</h2>
 
             <div className="bg-card border border-border rounded-lg p-8 my-8">
               <div className="grid md:grid-cols-3 gap-6 text-center">
                 <div>
-                  <div className="text-4xl font-bold text-primary mb-2">99.3%</div>
-                  <div className="text-sm text-muted-foreground">Bot detection accuracy with minimal false positives</div>
+                  <div className="text-4xl font-bold text-primary mb-2">High</div>
+                  <div className="text-sm text-muted-foreground">Target accuracy with behavioral fingerprinting</div>
                 </div>
                 <div>
-                  <div className="text-4xl font-bold text-accent mb-2">87%</div>
-                  <div className="text-sm text-muted-foreground">Reduction in fraudulent account creation attempts</div>
+                  <div className="text-4xl font-bold text-accent mb-2">Minimal</div>
+                  <div className="text-sm text-muted-foreground">False positives through AI learning</div>
                 </div>
                 <div>
-                  <div className="text-4xl font-bold text-primary mb-2">&lt;12ms</div>
-                  <div className="text-sm text-muted-foreground">Average latency added to legitimate requests</div>
+                  <div className="text-4xl font-bold text-primary mb-2">Low</div>
+                  <div className="text-sm text-muted-foreground">Latency impact on legitimate requests</div>
                 </div>
               </div>
             </div>

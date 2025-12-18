@@ -4,6 +4,7 @@
  */
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { callFreeTierAI } from "../_shared/free-tier-router.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -19,11 +20,6 @@ serve(async (req) => {
     const { goal, audience, context, industry } = await req.json();
     
     console.log('Research insights:', { goal, audience, industry });
-
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY not configured');
-    }
 
     const researchPrompt = `You are a marketing research analyst. Provide research-backed insights for a campaign.
 
@@ -73,39 +69,16 @@ Provide strategic insights:
 
 Return comprehensive JSON with all insights and specific recommendations.`;
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          {
-            role: 'system',
-            content: 'You are a marketing research expert. Provide actionable, research-backed insights in JSON format.'
-          },
-          {
-            role: 'user',
-            content: researchPrompt
-          }
-        ],
-        temperature: 0.7,
-        max_tokens: 2500
-      })
+    const result = await callFreeTierAI(researchPrompt, {
+      systemPrompt: 'You are a marketing research expert. Provide actionable, research-backed insights in JSON format.',
+      temperature: 0.7,
+      maxTokens: 2500
     });
 
-    if (!response.ok) {
-      throw new Error(`Research failed: ${response.status}`);
-    }
-
-    const data = await response.json();
-    const resultText = data.choices[0].message.content;
-    const insights = JSON.parse(resultText.replace(/```json\n?/g, '').replace(/```\n?/g, ''));
+    const insights = JSON.parse(result.content.replace(/```json\n?/g, '').replace(/```\n?/g, ''));
 
     return new Response(
-      JSON.stringify({ success: true, ...insights }),
+      JSON.stringify({ success: true, provider: result.provider, ...insights }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 

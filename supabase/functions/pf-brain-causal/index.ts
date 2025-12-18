@@ -5,6 +5,7 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1";
+import { callFreeTierAI } from "../_shared/free-tier-router.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -47,12 +48,6 @@ serve(async (req) => {
       .order('created_at', { ascending: false })
       .limit(20);
 
-    // Use Lovable AI for causal reasoning
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) {
-      throw new Error("LOVABLE_API_KEY not configured");
-    }
-
     const causalPrompt = `Analyze this query and related events to infer causal relationships:
 
 Query: "${query.query}"
@@ -65,37 +60,18 @@ HYPOTHESIS: [clear statement]
 CONFIDENCE: [0.0-1.0]
 EVIDENCE: [key supporting points]`;
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [
-          {
-            role: "system",
-            content: "You are a causal reasoning expert. Analyze patterns and infer likely causes with confidence scores."
-          },
-          { role: "user", content: causalPrompt }
-        ],
-      }),
+    const result = await callFreeTierAI(causalPrompt, {
+      systemPrompt: "You are a causal reasoning expert. Analyze patterns and infer likely causes with confidence scores.",
+      temperature: 0.3,
+      maxTokens: 800
     });
 
-    if (!response.ok) {
-      throw new Error(`AI API error: ${response.status}`);
-    }
-
-    const data = await response.json();
-    const result = data.choices?.[0]?.message?.content || '';
-
     // Parse response (simplified)
-    const hypothesisMatch = result.match(/HYPOTHESIS:\s*(.+?)(?=CONFIDENCE:|$)/s);
-    const confidenceMatch = result.match(/CONFIDENCE:\s*([\d.]+)/);
-    const evidenceMatch = result.match(/EVIDENCE:\s*(.+?)$/s);
+    const hypothesisMatch = result.content.match(/HYPOTHESIS:\s*(.+?)(?=CONFIDENCE:|$)/s);
+    const confidenceMatch = result.content.match(/CONFIDENCE:\s*([\d.]+)/);
+    const evidenceMatch = result.content.match(/EVIDENCE:\s*(.+?)$/s);
 
-    const hypothesis = hypothesisMatch?.[1]?.trim() || result.substring(0, 200);
+    const hypothesis = hypothesisMatch?.[1]?.trim() || result.content.substring(0, 200);
     const confidence = parseFloat(confidenceMatch?.[1] || '0.5');
     const evidence = evidenceMatch?.[1]?.trim() || 'Analysis based on system patterns';
 
@@ -122,7 +98,8 @@ EVIDENCE: [key supporting points]`;
         trace_id: trace.id,
         hypothesis,
         confidence,
-        validation_status: trace.validation_status
+        validation_status: trace.validation_status,
+        provider: result.provider
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
