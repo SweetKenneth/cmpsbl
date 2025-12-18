@@ -6,6 +6,7 @@ interface ThreatMetrics {
   threatLevel: "low" | "medium" | "high" | "critical";
   eventsToday: number;
   eventsBlocked: number;
+  activeRules: number;
   topThreats: {
     type: string;
     count: number;
@@ -58,12 +59,30 @@ export function useThreatMetrics() {
         .sort((a, b) => b.count - a.count)
         .slice(0, 5);
 
+      // Get active defense rules count
+      const { count: activeRules } = await supabase
+        .from("defense_rules")
+        .select("*", { count: "exact", head: true })
+        .eq("is_active", true);
+
+      // Get IP reputation stats
+      const { data: ipStats } = await supabase
+        .from("ip_reputation")
+        .select("score");
+      
+      const ipReputation = {
+        trusted: ipStats?.filter(ip => ip.score >= 70).length || 0,
+        suspicious: ipStats?.filter(ip => ip.score >= 30 && ip.score < 70).length || 0,
+        blocked: ipStats?.filter(ip => ip.score < 30).length || 0,
+      };
+
       return {
         threatLevel,
         eventsToday: eventsToday || 0,
         eventsBlocked: blocked,
+        activeRules: activeRules || 0,
         topThreats,
-        ipReputation: { blocked: 0, suspicious: 0, trusted: 0 },
+        ipReputation,
         recentEvents: events?.slice(0, 10).map(e => ({
           id: e.id,
           timestamp: e.detected_at,
