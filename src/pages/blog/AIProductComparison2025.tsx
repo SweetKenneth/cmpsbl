@@ -200,7 +200,7 @@ const AIProductComparison2025 = () => {
             <li>All queries route through Groq's free tier as the primary provider</li>
             <li>Automatic failover to Cerebras, Google AI Studio, or Together AI when needed</li>
             <li>DeepSeek and Hyperbolic provide additional redundancy</li>
-            <li>$0 monthly AI costs regardless of usage volume</li>
+            <li>Zero monthly AI costs through free-tier provider routing</li>
           </ul>
 
           <h2 className="text-3xl font-bold mt-12 mb-6">Real-World Performance Comparison</h2>
