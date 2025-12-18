@@ -5,14 +5,14 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { useEffect, lazy, Suspense, useState } from "react";
-import { Sidebar } from "./components/Sidebar";
+import { useEffect, lazy, Suspense, useState, ReactNode } from "react";
 import { Header } from "./components/Header";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { SEOProvider } from "@/contexts/SEOContext";
 import { installDefenseSystem } from "./utils/defenseInit";
 import { CascadeChat } from "./components/CascadeChat";
 import { initializeBrainSystem } from "./lib/initializeBrain";
+import { AdminLayout } from "./components/admin/AdminLayout";
 
 // Scroll to top on route change
 const ScrollToTop = () => {
@@ -187,20 +187,9 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
-const AppLayout = ({ children }: { children: React.ReactNode }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  return (
-    <div className="flex min-h-screen w-full">
-      <Sidebar isOpen={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} />
-      <div className="flex-1 flex flex-col lg:ml-0">
-        <Header onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
-          {children}
-        </main>
-      </div>
-    </div>
-  );
+// AdminPageWrapper: wraps pages that don't have their own AdminLayout with the unified admin layout
+const AdminPageWrapper = ({ children }: { children: ReactNode }) => {
+  return <AdminLayout>{children}</AdminLayout>;
 };
 
 const App = () => {
@@ -249,7 +238,7 @@ const App = () => {
           <Route path="/bot-sniper/pricing" element={<BotSniperPricing />} />
           
           {/* Modernizer Product */}
-          <Route path="/modernizer" element={<ProtectedRoute><AppLayout><Modernizer /></AppLayout></ProtectedRoute>} />
+          <Route path="/modernizer" element={<AdminRoute><AdminPageWrapper><Modernizer /></AdminPageWrapper></AdminRoute>} />
           
           {/* Clarity Product */}
           <Route path="/clarity" element={<Clarity />} />
@@ -364,59 +353,59 @@ const App = () => {
           <Route path="/products/access" element={<AccessInfo />} />
           
           {/* Brain Training Console */}
-          <Route path="/brain/training" element={<ProtectedRoute><AppLayout><BrainTraining /></AppLayout></ProtectedRoute>} />
+          <Route path="/brain/training" element={<AdminRoute><AdminPageWrapper><BrainTraining /></AdminPageWrapper></AdminRoute>} />
           
           {/* Brain Hub Portal */}
           <Route path="/brain-hub" element={<BrainHub />} />
           
           {/* Creative Generation */}
-          <Route path="/creative-generation" element={<ProtectedRoute><AppLayout><CreativeGeneration /></AppLayout></ProtectedRoute>} />
+          <Route path="/creative-generation" element={<AdminRoute><AdminPageWrapper><CreativeGeneration /></AdminPageWrapper></AdminRoute>} />
           
           {/* Prompt Merger */}
-          <Route path="/prompt-merger" element={<ProtectedRoute><AppLayout><PromptMerger /></AppLayout></ProtectedRoute>} />
+          <Route path="/prompt-merger" element={<AdminRoute><AdminPageWrapper><PromptMerger /></AdminPageWrapper></AdminRoute>} />
           
           {/* Brain Learning */}
-          <Route path="/brain-learning" element={<ProtectedRoute><AppLayout><BrainLearning /></AppLayout></ProtectedRoute>} />
+          <Route path="/brain-learning" element={<AdminRoute><AdminPageWrapper><BrainLearning /></AdminPageWrapper></AdminRoute>} />
           
           {/* Cascade Mindmap */}
-          <Route path="/cascade-mindmap" element={<ProtectedRoute><AppLayout><CascadeMindmap /></AppLayout></ProtectedRoute>} />
+          <Route path="/cascade-mindmap" element={<AdminRoute><AdminPageWrapper><CascadeMindmap /></AdminPageWrapper></AdminRoute>} />
           
           {/* Sentience Hub v4.0 */}
-          <Route path="/sentience-hub" element={<ProtectedRoute><AppLayout><SentienceHub /></AppLayout></ProtectedRoute>} />
+          <Route path="/sentience-hub" element={<AdminRoute><AdminPageWrapper><SentienceHub /></AdminPageWrapper></AdminRoute>} />
           
           {/* Learning Intelligence */}
-          <Route path="/learning-intelligence" element={<ProtectedRoute><AppLayout><LearningIntelligence /></AppLayout></ProtectedRoute>} />
+          <Route path="/learning-intelligence" element={<AdminRoute><AdminPageWrapper><LearningIntelligence /></AdminPageWrapper></AdminRoute>} />
           
           {/* Marketing Studio */}
-          <Route path="/marketing-studio" element={<ProtectedRoute><AppLayout><MarketingStudio /></AppLayout></ProtectedRoute>} />
+          <Route path="/marketing-studio" element={<AdminRoute><AdminPageWrapper><MarketingStudio /></AdminPageWrapper></AdminRoute>} />
           
           {/* Reflex Admin Keys */}
-          <Route path="/admin/reflex-keys" element={<ProtectedRoute><AppLayout><ReflexKeys /></AppLayout></ProtectedRoute>} />
+          <Route path="/admin/reflex-keys" element={<AdminRoute><AdminPageWrapper><ReflexKeys /></AdminPageWrapper></AdminRoute>} />
           
           {/* Public Investors Page */}
           <Route path="/investors" element={<InvestorsPublic />} />
           
           {/* Investor Packets */}
           <Route path="/investor-packets" element={<Navigate to="/investors" replace />} />
-          <Route path="/admin/investor-packets" element={<ProtectedRoute><AppLayout><InvestorPackets /></AppLayout></ProtectedRoute>} />
+          <Route path="/admin/investor-packets" element={<AdminRoute><AdminPageWrapper><InvestorPackets /></AdminPageWrapper></AdminRoute>} />
           
           {/* Protected Business Pages - Admin Only */}
-          <Route path="/partnerships" element={<ProtectedRoute><AppLayout><Partnerships /></AppLayout></ProtectedRoute>} />
-          <Route path="/marketing" element={<ProtectedRoute><AppLayout><Marketing /></AppLayout></ProtectedRoute>} />
+          <Route path="/partnerships" element={<AdminRoute><AdminPageWrapper><Partnerships /></AdminPageWrapper></AdminRoute>} />
+          <Route path="/marketing" element={<AdminRoute><AdminPageWrapper><Marketing /></AdminPageWrapper></AdminRoute>} />
           
           {/* Brain Analytics */}
-          <Route path="/brain-analytics" element={<ProtectedRoute><AppLayout><BrainAnalytics /></AppLayout></ProtectedRoute>} />
+          <Route path="/brain-analytics" element={<AdminRoute><AdminPageWrapper><BrainAnalytics /></AdminPageWrapper></AdminRoute>} />
           
           {/* Admin System Pages - Moved to /admin */}
-          <Route path="/admin/system-health" element={<ProtectedRoute><AppLayout><SystemHealth /></AppLayout></ProtectedRoute>} />
-          <Route path="/admin/system-map" element={<ProtectedRoute><AppLayout><SystemMap /></AppLayout></ProtectedRoute>} />
-          <Route path="/admin/system-initializer" element={<ProtectedRoute><AppLayout><SystemInitializer /></AppLayout></ProtectedRoute>} />
-          <Route path="/admin/cascade-status" element={<ProtectedRoute><AppLayout><CascadeStatus /></AppLayout></ProtectedRoute>} />
-          <Route path="/admin/cascade-dreams" element={<ProtectedRoute><AppLayout><CascadeDreams /></AppLayout></ProtectedRoute>} />
-          <Route path="/admin/cascade-governance" element={<ProtectedRoute><AppLayout><CascadeGovernance /></AppLayout></ProtectedRoute>} />
-          <Route path="/admin/audit" element={<ProtectedRoute><AppLayout><Audit /></AppLayout></ProtectedRoute>} />
-          <Route path="/admin/creative-studio" element={<ProtectedRoute><AppLayout><CreativeStudio /></AppLayout></ProtectedRoute>} />
-          <Route path="/admin/nexus" element={<ProtectedRoute><AppLayout><NexusAdmin /></AppLayout></ProtectedRoute>} />
+          <Route path="/admin/system-health" element={<AdminRoute><AdminPageWrapper><SystemHealth /></AdminPageWrapper></AdminRoute>} />
+          <Route path="/admin/system-map" element={<AdminRoute><AdminPageWrapper><SystemMap /></AdminPageWrapper></AdminRoute>} />
+          <Route path="/admin/system-initializer" element={<AdminRoute><AdminPageWrapper><SystemInitializer /></AdminPageWrapper></AdminRoute>} />
+          <Route path="/admin/cascade-status" element={<AdminRoute><AdminPageWrapper><CascadeStatus /></AdminPageWrapper></AdminRoute>} />
+          <Route path="/admin/cascade-dreams" element={<AdminRoute><AdminPageWrapper><CascadeDreams /></AdminPageWrapper></AdminRoute>} />
+          <Route path="/admin/cascade-governance" element={<AdminRoute><AdminPageWrapper><CascadeGovernance /></AdminPageWrapper></AdminRoute>} />
+          <Route path="/admin/audit" element={<AdminRoute><AdminPageWrapper><Audit /></AdminPageWrapper></AdminRoute>} />
+          <Route path="/admin/creative-studio" element={<AdminRoute><AdminPageWrapper><CreativeStudio /></AdminPageWrapper></AdminRoute>} />
+          <Route path="/admin/nexus" element={<AdminRoute><AdminPageWrapper><NexusAdmin /></AdminPageWrapper></AdminRoute>} />
           
           {/* Legacy system route redirects */}
           <Route path="/system-health" element={<Navigate to="/admin/system-health" replace />} />
@@ -428,9 +417,9 @@ const App = () => {
           <Route path="/audit" element={<Navigate to="/admin/audit" replace />} />
           
           {/* Billing & Subscriptions - Moved to Admin */}
-          <Route path="/admin/billing-management" element={<ProtectedRoute><AppLayout><Billing /></AppLayout></ProtectedRoute>} />
-          <Route path="/admin/subscriptions" element={<ProtectedRoute><AppLayout><Subscriptions /></AppLayout></ProtectedRoute>} />
-          <Route path="/admin/access-control-legacy" element={<ProtectedRoute><AppLayout><AccessControl /></AppLayout></ProtectedRoute>} />
+          <Route path="/admin/billing-management" element={<AdminRoute><AdminPageWrapper><Billing /></AdminPageWrapper></AdminRoute>} />
+          <Route path="/admin/subscriptions" element={<AdminRoute><AdminPageWrapper><Subscriptions /></AdminPageWrapper></AdminRoute>} />
+          <Route path="/admin/access-control-legacy" element={<AdminRoute><AdminPageWrapper><AccessControl /></AdminPageWrapper></AdminRoute>} />
           
           {/* Legacy billing redirects */}
           <Route path="/billing" element={<Navigate to="/admin/billing-management" replace />} />
@@ -438,9 +427,9 @@ const App = () => {
           <Route path="/access-control" element={<Navigate to="/admin/access-control" replace />} />
           
           {/* Public Documentation & Network Pages */}
-          <Route path="/ripple-network" element={<ProtectedRoute><AppLayout><RippleNetwork /></AppLayout></ProtectedRoute>} />
+          <Route path="/ripple-network" element={<AdminRoute><AdminPageWrapper><RippleNetwork /></AdminPageWrapper></AdminRoute>} />
           <Route path="/documentation" element={<Documentation />} />
-          <Route path="/threat-feed" element={<ProtectedRoute><AppLayout><ThreatFeed /></AppLayout></ProtectedRoute>} />
+          <Route path="/threat-feed" element={<AdminRoute><AdminPageWrapper><ThreatFeed /></AdminPageWrapper></AdminRoute>} />
           
           {/* Blog Posts */}
           <Route path="/blog/wordpress-bot-defense" element={<WordPressBotDefense />} />
