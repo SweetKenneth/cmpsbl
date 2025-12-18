@@ -169,105 +169,23 @@ export async function callFreeTierAI(
   const DEEPSEEK_API_KEY = Deno.env.get('DEEPSEEK_API_KEY');
   const HYPERBOLIC_API_KEY = Deno.env.get('HYPERBOLIC_API_KEY');
   
+  // GROQ IS PRIMARY - fastest inference, always try first
   // Provider execution order: Groq → Cerebras → Together → Hyperbolic → DeepSeek → Google
   const providerOrder = forceProvider 
     ? [forceProvider]
     : ['groq', 'cerebras', 'together', 'hyperbolic', 'deepseek', 'google'];
   
+  const errors: string[] = [];
+  
   for (const provider of providerOrder) {
     try {
       switch (provider) {
-        case 'cerebras':
-          if (!CEREBRAS_API_KEY) continue;
-          console.log('🥈 Cerebras (14.4K/day)...');
-          const cerebrasRes = await fetch('https://api.cerebras.ai/v1/chat/completions', {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${CEREBRAS_API_KEY}`, 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              model: 'llama-3.3-70b',
-              messages: systemPrompt
-                ? [{ role: 'system', content: systemPrompt }, { role: 'user', content: prompt }]
-                : [{ role: 'user', content: prompt }],
-              temperature,
-              max_tokens: maxTokens,
-            }),
-          });
-          if (cerebrasRes.ok) {
-            const data = await cerebrasRes.json();
-            return { content: data.choices[0].message.content, model: 'llama-3.3-70b', provider: 'cerebras' };
-          }
-          console.log('⚠️ Cerebras status:', cerebrasRes.status);
-          break;
-
-        case 'together':
-          if (!TOGETHER_API_KEY) continue;
-          console.log('🥉 Together AI (14.4K/day - $5 tier)...');
-          const togetherRes = await fetch('https://api.together.xyz/v1/chat/completions', {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${TOGETHER_API_KEY}`, 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              model: 'meta-llama/Llama-3.1-70B-Instruct-Turbo',
-              messages: systemPrompt
-                ? [{ role: 'system', content: systemPrompt }, { role: 'user', content: prompt }]
-                : [{ role: 'user', content: prompt }],
-              temperature,
-              max_tokens: maxTokens,
-            }),
-          });
-          if (togetherRes.ok) {
-            const data = await togetherRes.json();
-            return { content: data.choices[0].message.content, model: 'llama-3.1-70b-turbo', provider: 'together' };
-          }
-          console.log('⚠️ Together status:', togetherRes.status);
-          break;
-
-        case 'hyperbolic':
-          if (!HYPERBOLIC_API_KEY) continue;
-          console.log('🔄 Hyperbolic (86K/day - $5 tier)...');
-          const hypRes = await fetch('https://api.hyperbolic.xyz/v1/chat/completions', {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${HYPERBOLIC_API_KEY}`, 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              model: 'meta-llama/Llama-3.1-70B-Instruct',
-              messages: systemPrompt
-                ? [{ role: 'system', content: systemPrompt }, { role: 'user', content: prompt }]
-                : [{ role: 'user', content: prompt }],
-              temperature,
-              max_tokens: maxTokens,
-            }),
-          });
-          if (hypRes.ok) {
-            const data = await hypRes.json();
-            return { content: data.choices[0].message.content, model: 'llama-3.1-70b', provider: 'hyperbolic' };
-          }
-          console.log('⚠️ Hyperbolic status:', hypRes.status);
-          break;
-
-        case 'deepseek':
-          if (!DEEPSEEK_API_KEY) continue;
-          console.log('🔄 DeepSeek (5K/day cap)...');
-          const dsRes = await fetch('https://api.deepseek.com/v1/chat/completions', {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${DEEPSEEK_API_KEY}`, 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              model: 'deepseek-chat',
-              messages: systemPrompt
-                ? [{ role: 'system', content: systemPrompt }, { role: 'user', content: prompt }]
-                : [{ role: 'user', content: prompt }],
-              temperature,
-              max_tokens: maxTokens,
-            }),
-          });
-          if (dsRes.ok) {
-            const data = await dsRes.json();
-            return { content: data.choices[0].message.content, model: 'deepseek-chat', provider: 'deepseek' };
-          }
-          console.log('⚠️ DeepSeek status:', dsRes.status);
-          break;
-
         case 'groq':
-          if (!GROQ_API_KEY) continue;
-          console.log('🥇 Groq (PRIMARY - fastest inference)...');
+          if (!GROQ_API_KEY) {
+            errors.push('groq: no API key');
+            continue;
+          }
+          console.log('🥇 GROQ PRIMARY - fastest inference...');
           const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${GROQ_API_KEY}`, 'Content-Type': 'application/json' },
@@ -282,84 +200,20 @@ export async function callFreeTierAI(
           });
           if (groqRes.ok) {
             const data = await groqRes.json();
+            console.log('✅ Groq success');
             return { content: data.choices[0].message.content, model: 'llama-3.3-70b-versatile', provider: 'groq' };
           }
-          console.log('⚠️ Groq status:', groqRes.status);
+          const groqErr = await groqRes.text();
+          errors.push(`groq: ${groqRes.status} - ${groqErr.substring(0, 100)}`);
+          console.log('⚠️ Groq failed:', groqRes.status);
           break;
 
-        case 'google':
-          if (!GOOGLE_AI_KEY) continue;
-          console.log('🔻 Google AI Studio (50/day limit)...');
-          const fullPrompt = systemPrompt ? `${systemPrompt}\n\n${prompt}` : prompt;
-          const googleRes = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'x-goog-api-key': GOOGLE_AI_KEY },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: fullPrompt }] }],
-              generationConfig: { temperature, maxOutputTokens: maxTokens }
-            }),
-          });
-          if (googleRes.ok) {
-            const data = await googleRes.json();
-            return { content: data.candidates[0].content.parts[0].text, model: 'gemini-2.0-flash', provider: 'google' };
-          }
-          console.log('⚠️ Google status:', googleRes.status);
-          break;
-      }
-    } catch (e) {
-      console.log(`${provider} failed, trying next...`, e);
-    }
-  }
-  
-  // Final attempt: wait and retry with reduced rate limits
-  console.log('⏳ All providers temporarily exhausted. Waiting 30s before final attempt...');
-  await new Promise(r => setTimeout(r, 30000));
-  
-  // Try one more time with any available provider
-  const fallbackProviders = ['groq', 'deepseek', 'cerebras', 'hyperbolic'];
-  for (const provider of fallbackProviders) {
-    try {
-      switch (provider) {
-        case 'groq':
-          if (!GROQ_API_KEY) continue;
-          const groqFallback = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${GROQ_API_KEY}`, 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              model: 'llama-3.3-70b-versatile',
-              messages: systemPrompt
-                ? [{ role: 'system', content: systemPrompt }, { role: 'user', content: prompt }]
-                : [{ role: 'user', content: prompt }],
-              temperature,
-              max_tokens: maxTokens,
-            }),
-          });
-          if (groqFallback.ok) {
-            const data = await groqFallback.json();
-            return { content: data.choices[0].message.content, model: 'llama-3.3-70b-versatile', provider: 'groq' };
-          }
-          break;
-        case 'deepseek':
-          if (!DEEPSEEK_API_KEY) continue;
-          const dsRes = await fetch('https://api.deepseek.com/v1/chat/completions', {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${DEEPSEEK_API_KEY}`, 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              model: 'deepseek-chat',
-              messages: systemPrompt
-                ? [{ role: 'system', content: systemPrompt }, { role: 'user', content: prompt }]
-                : [{ role: 'user', content: prompt }],
-              temperature,
-              max_tokens: maxTokens,
-            }),
-          });
-          if (dsRes.ok) {
-            const data = await dsRes.json();
-            return { content: data.choices[0].message.content, model: 'deepseek-chat', provider: 'deepseek' };
-          }
-          break;
         case 'cerebras':
-          if (!CEREBRAS_API_KEY) continue;
+          if (!CEREBRAS_API_KEY) {
+            errors.push('cerebras: no API key');
+            continue;
+          }
+          console.log('🥈 Cerebras fallback...');
           const cerebrasRes = await fetch('https://api.cerebras.ai/v1/chat/completions', {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${CEREBRAS_API_KEY}`, 'Content-Type': 'application/json' },
@@ -374,11 +228,44 @@ export async function callFreeTierAI(
           });
           if (cerebrasRes.ok) {
             const data = await cerebrasRes.json();
+            console.log('✅ Cerebras success');
             return { content: data.choices[0].message.content, model: 'llama-3.3-70b', provider: 'cerebras' };
           }
+          errors.push(`cerebras: ${cerebrasRes.status}`);
           break;
+
+        case 'together':
+          if (!TOGETHER_API_KEY) {
+            errors.push('together: no API key');
+            continue;
+          }
+          console.log('🥉 Together AI fallback...');
+          const togetherRes = await fetch('https://api.together.xyz/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${TOGETHER_API_KEY}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              model: 'meta-llama/Llama-3.1-70B-Instruct-Turbo',
+              messages: systemPrompt
+                ? [{ role: 'system', content: systemPrompt }, { role: 'user', content: prompt }]
+                : [{ role: 'user', content: prompt }],
+              temperature,
+              max_tokens: maxTokens,
+            }),
+          });
+          if (togetherRes.ok) {
+            const data = await togetherRes.json();
+            console.log('✅ Together success');
+            return { content: data.choices[0].message.content, model: 'llama-3.1-70b-turbo', provider: 'together' };
+          }
+          errors.push(`together: ${togetherRes.status}`);
+          break;
+
         case 'hyperbolic':
-          if (!HYPERBOLIC_API_KEY) continue;
+          if (!HYPERBOLIC_API_KEY) {
+            errors.push('hyperbolic: no API key');
+            continue;
+          }
+          console.log('🔄 Hyperbolic fallback...');
           const hypRes = await fetch('https://api.hyperbolic.xyz/v1/chat/completions', {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${HYPERBOLIC_API_KEY}`, 'Content-Type': 'application/json' },
@@ -393,14 +280,69 @@ export async function callFreeTierAI(
           });
           if (hypRes.ok) {
             const data = await hypRes.json();
+            console.log('✅ Hyperbolic success');
             return { content: data.choices[0].message.content, model: 'llama-3.1-70b', provider: 'hyperbolic' };
           }
+          errors.push(`hyperbolic: ${hypRes.status}`);
+          break;
+
+        case 'deepseek':
+          if (!DEEPSEEK_API_KEY) {
+            errors.push('deepseek: no API key');
+            continue;
+          }
+          console.log('🔄 DeepSeek fallback...');
+          const dsRes = await fetch('https://api.deepseek.com/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${DEEPSEEK_API_KEY}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              model: 'deepseek-chat',
+              messages: systemPrompt
+                ? [{ role: 'system', content: systemPrompt }, { role: 'user', content: prompt }]
+                : [{ role: 'user', content: prompt }],
+              temperature,
+              max_tokens: maxTokens,
+            }),
+          });
+          if (dsRes.ok) {
+            const data = await dsRes.json();
+            console.log('✅ DeepSeek success');
+            return { content: data.choices[0].message.content, model: 'deepseek-chat', provider: 'deepseek' };
+          }
+          errors.push(`deepseek: ${dsRes.status}`);
+          break;
+
+        case 'google':
+          if (!GOOGLE_AI_KEY) {
+            errors.push('google: no API key');
+            continue;
+          }
+          console.log('🔻 Google AI Studio fallback...');
+          const fullPrompt = systemPrompt ? `${systemPrompt}\n\n${prompt}` : prompt;
+          const googleRes = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-goog-api-key': GOOGLE_AI_KEY },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: fullPrompt }] }],
+              generationConfig: { temperature, maxOutputTokens: maxTokens }
+            }),
+          });
+          if (googleRes.ok) {
+            const data = await googleRes.json();
+            console.log('✅ Google success');
+            return { content: data.candidates[0].content.parts[0].text, model: 'gemini-2.0-flash', provider: 'google' };
+          }
+          errors.push(`google: ${googleRes.status}`);
           break;
       }
     } catch (e) {
-      console.log(`Fallback ${provider} failed:`, e);
+      const errMsg = e instanceof Error ? e.message : 'unknown';
+      errors.push(`${provider}: exception - ${errMsg}`);
+      console.log(`${provider} exception:`, errMsg);
     }
   }
   
-  throw new Error('All free providers exhausted - will retry next cycle');
+  // All providers failed - log and throw with details
+  console.error('❌ All providers failed:', errors);
+  throw new Error(`All free providers exhausted. Errors: ${errors.join('; ')}`);
 }
