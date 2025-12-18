@@ -6,6 +6,7 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
+import { callFreeTierAI } from "../_shared/free-tier-router.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -61,11 +62,7 @@ serve(async (req) => {
 
     const { issue, scanId, htmlContext } = validation.data;
 
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) throw new Error('LOVABLE_API_KEY not configured');
-
     const complexity = getFixComplexity(issue.type);
-    const model = complexity === 'easy' ? 'google/gemini-2.5-flash' : 'google/gemini-2.5-pro';
 
     let userPrompt = '';
     switch (issue.type) {
@@ -88,29 +85,12 @@ serve(async (req) => {
         userPrompt = `Generate fix for: ${issue.title}. ${issue.description}. WCAG: ${issue.wcag}. Return ONLY the fixed code.`;
     }
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model,
-        messages: [
-          { role: 'system', content: 'You are an accessibility expert. Generate clean, minimal code fixes. Return ONLY the fixed code, no explanations or markdown.' },
-          { role: 'user', content: userPrompt }
-        ],
-      }),
+    const result = await callFreeTierAI(userPrompt, {
+      systemPrompt: 'You are an accessibility expert. Generate clean, minimal code fixes. Return ONLY the fixed code, no explanations or markdown.',
+      temperature: 0.3
     });
 
-    if (!response.ok) {
-      if (response.status === 429) throw new Error('Rate limit exceeded');
-      if (response.status === 402) throw new Error('AI credits exhausted');
-      throw new Error('Failed to generate fix');
-    }
-
-    const data = await response.json();
-    const generatedFix = data.choices?.[0]?.message?.content?.trim();
+    const generatedFix = result.content.trim();
     if (!generatedFix) throw new Error('No fix generated');
 
     const cleanedFix = generatedFix
@@ -119,13 +99,13 @@ serve(async (req) => {
       .replace(/```\n?/g, '')
       .trim();
 
-    console.log(`[Access Fix] Generated ${complexity} fix using ${model}`);
+    console.log(`[Access Fix] Generated ${complexity} fix`);
 
     return new Response(JSON.stringify({ 
       success: true,
       fix: cleanedFix,
       complexity,
-      model,
+      provider: result.provider,
       explanation: getFixExplanation(issue.type)
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }

@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { callFreeTierAI } from "../_shared/free-tier-router.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -36,29 +37,15 @@ Detect:
 
 Return JSON: { emotional_state: {}, urgency_level: "", tone_preference: "", response_pacing: "", empathy_required: 0, modulation_advice: "" }`;
 
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-5',
-        messages: [
-          { role: 'system', content: 'You are an emotional intelligence analyzer. Detect tone, urgency, and emotional state from text.' },
-          { role: 'user', content: emotionalPrompt }
-        ],
-      }),
+    const result = await callFreeTierAI(emotionalPrompt, {
+      systemPrompt: 'You are an emotional intelligence analyzer. Detect tone, urgency, and emotional state from text.',
+      temperature: 0.5
     });
 
-    const data = await response.json();
     let emotional_model;
     
     try {
-      const text = data.choices[0].message.content;
-      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      const jsonMatch = result.content.match(/\{[\s\S]*\}/);
       emotional_model = jsonMatch ? JSON.parse(jsonMatch[0]) : {
         emotional_state: { calm: 70 },
         urgency_level: 'medium',
@@ -82,14 +69,14 @@ Return JSON: { emotional_state: {}, urgency_level: "", tone_preference: "", resp
     await supabase.from('brain_events').insert({
       module: 'emotional_modeling',
       event_type: 'tone_detected',
-      data: { user_message, emotional_model },
+      data: { user_message, emotional_model, provider: result.provider },
       outcome: 'modeled',
     });
 
     console.log(`✅ Emotional model: ${emotional_model.urgency_level} urgency, ${emotional_model.empathy_required}% empathy needed`);
 
     return new Response(
-      JSON.stringify({ success: true, emotional_model }),
+      JSON.stringify({ success: true, emotional_model, provider: result.provider }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (error) {
