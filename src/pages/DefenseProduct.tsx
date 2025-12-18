@@ -41,7 +41,7 @@ export default function DefenseProduct() {
     {
       icon: Brain,
       title: "AI Bot Detection",
-      description: "Behavioral analysis engine detects human vs. bot patterns with 99.2% accuracy"
+      description: "Behavioral analysis engine detects human vs. bot patterns with high accuracy"
     },
     {
       icon: Lock,
@@ -179,8 +179,8 @@ export default function DefenseProduct() {
   const stats = [
     { label: "Status", value: "Pre-Launch", icon: Shield },
     { label: "Marketplace", value: "Pending", icon: Download },
-    { label: "Target Accuracy", value: "99.2%", icon: Activity },
-    { label: "Target Rating", value: "4.9/5", icon: Star }
+    { label: "Target Accuracy", value: "High", icon: Activity },
+    { label: "Target Rating", value: "4.5+/5", icon: Star }
   ];
 
   return (

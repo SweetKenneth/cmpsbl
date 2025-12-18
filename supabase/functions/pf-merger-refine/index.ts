@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { callFreeTierAI } from "../_shared/free-tier-router.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -16,11 +17,6 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
-
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY not configured');
-    }
 
     const { project_id, feedback_score, feedback_text, sections_to_refine } = await req.json();
 
@@ -73,18 +69,7 @@ serve(async (req) => {
     const nextVersion = (currentVersion.data?.[0]?.version || 0) + 1;
 
     // AI-powered analysis and refinement suggestions
-    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'anthropic/claude-4.5-sonnet',
-        messages: [
-          {
-            role: 'system',
-            content: `You are an expert MVP refinement analyzer for PromptFluid Merger.
+    const refinementPrompt = `You are an expert MVP refinement analyzer for PromptFluid Merger.
 
 Analyze the project and provide refinement suggestions for: ${sectionsToRefine.join(', ')}
 
@@ -94,11 +79,7 @@ Consider:
 - Original intent: ${project.pf_merger_fusions?.pf_merger_intents?.intent}
 - Current build status: ${project.build_status}
 
-Return JSON with specific, actionable improvements.`
-          },
-          {
-            role: 'user',
-            content: `Analyze this project and suggest refinements:
+Analyze this project and suggest refinements:
 
 Project: ${project.project_name}
 Intent: ${project.pf_merger_fusions?.pf_merger_intents?.intent}
@@ -107,55 +88,29 @@ Current Status: ${project.build_status}
 Feedback Score: ${feedback_score || 'N/A'}
 Feedback: ${feedback_text || 'None provided'}
 
-Sections to refine: ${sectionsToRefine.join(', ')}`
-          }
-        ],
-        tools: [
-          {
-            type: "function",
-            function: {
-              name: "suggest_refinements",
-              description: "Suggest specific refinements for MVP sections",
-              parameters: {
-                type: "object",
-                properties: {
-                  refinements: {
-                    type: "array",
-                    items: {
-                      type: "object",
-                      properties: {
-                        section: { type: "string" },
-                        issue: { type: "string" },
-                        suggestion: { type: "string" },
-                        priority: { type: "string", enum: ["high", "medium", "low"] },
-                        estimated_impact: { type: "number", minimum: 0, maximum: 100 }
-                      }
-                    }
-                  },
-                  overall_quality_assessment: { type: "string" },
-                  expected_improvement_score: { type: "number", minimum: 0, maximum: 100 }
-                },
-                required: ["refinements", "overall_quality_assessment"]
-              }
-            }
-          }
-        ],
-        tool_choice: { type: "function", function: { name: "suggest_refinements" } }
-      }),
+Sections to refine: ${sectionsToRefine.join(', ')}
+
+Return JSON with:
+{
+  "refinements": [
+    {
+      "section": "string",
+      "issue": "string",
+      "suggestion": "string",
+      "priority": "high|medium|low",
+      "estimated_impact": 0-100
+    }
+  ],
+  "overall_quality_assessment": "string",
+  "expected_improvement_score": 0-100
+}`;
+
+    const result = await callFreeTierAI(refinementPrompt, {
+      systemPrompt: 'You are an expert MVP refinement analyzer. Return specific, actionable improvements in JSON format.',
+      temperature: 0.6
     });
 
-    if (!aiResponse.ok) {
-      throw new Error(`AI refinement analysis failed: ${aiResponse.status}`);
-    }
-
-    const aiData = await aiResponse.json();
-    const toolCall = aiData.choices?.[0]?.message?.tool_calls?.[0];
-    
-    if (!toolCall) {
-      throw new Error('No refinement suggestions returned');
-    }
-
-    const refinements = JSON.parse(toolCall.function.arguments);
+    const refinements = JSON.parse(result.content.replace(/```json\n?/g, '').replace(/```\n?/g, ''));
 
     // Store refinement history
     for (const section of sectionsToRefine) {
@@ -205,7 +160,8 @@ Sections to refine: ${sectionsToRefine.join(', ')}`
           project_id,
           feedback_score,
           refinements: refinements.refinements,
-          expected_improvement: refinements.expected_improvement_score
+          expected_improvement: refinements.expected_improvement_score,
+          provider: result.provider
         },
         outcome: 'refinement_suggested'
       });
@@ -220,6 +176,7 @@ Sections to refine: ${sectionsToRefine.join(', ')}`
         refinements: refinements.refinements,
         overall_assessment: refinements.overall_quality_assessment,
         expected_improvement: refinements.expected_improvement_score,
+        provider: result.provider,
         message: 'Refinement analysis completed. Suggestions stored for implementation.'
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
