@@ -38,3 +38,6 @@ verify_jwt = false
 
 [functions.pf-investor-packet]
 verify_jwt = false
+
+[functions.pf-reflex-core]
+verify_jwt = false
