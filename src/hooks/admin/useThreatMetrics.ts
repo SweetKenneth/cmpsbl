@@ -23,6 +23,7 @@ interface ThreatMetrics {
     type: string;
     ip: string;
     action: string;
+    threat_score: number;
   }[];
 }
 
@@ -32,79 +33,79 @@ export function useThreatMetrics() {
   const query = useQuery({
     queryKey: ["threat-metrics"],
     queryFn: async (): Promise<ThreatMetrics> => {
-      // Use real security events table
-      const today = new Date().toISOString().split("T")[0];
-      const { count: eventsToday, data: events } = await supabase
-        .from("pf_security_events")
-        .select("*", { count: "exact" })
-        .gte("detected_at", today)
-        .limit(100);
-      
-      const blocked = events?.filter(e => e.action_taken === 'block').length || 0;
+      // Call the unified Reflex core for stats
+      const { data: statsData, error: statsError } = await supabase.functions.invoke('pf-reflex-core', {
+        body: { action: 'stats' }
+      });
 
-      // Calculate threat level based on event count
-      let threatLevel: "low" | "medium" | "high" | "critical" = "low";
-      if (eventsToday && eventsToday > 100) threatLevel = "critical";
-      else if (eventsToday && eventsToday > 50) threatLevel = "high";
-      else if (eventsToday && eventsToday > 20) threatLevel = "medium";
+      // Get recent events
+      const { data: eventsData } = await supabase.functions.invoke('pf-reflex-core', {
+        body: { action: 'recent_events', limit: 20 }
+      });
 
-      // Aggregate top threats
-      const threatCounts = events?.reduce((acc, e) => {
-        acc[e.event_type] = (acc[e.event_type] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>) || {};
-      
+      // Get top threats from recent events
+      const { data: threatFeed } = await supabase.functions.invoke('pf-reflex-core', {
+        body: { action: 'threat_feed', limit: 100 }
+      });
+
+      // Aggregate top threats by type
+      const threatCounts: Record<string, { count: number; severity: string }> = {};
+      (threatFeed?.events || []).forEach((e: any) => {
+        const type = e.event_type || 'unknown';
+        if (!threatCounts[type]) {
+          threatCounts[type] = { count: 0, severity: e.threat_score >= 70 ? 'high' : e.threat_score >= 40 ? 'medium' : 'low' };
+        }
+        threatCounts[type].count++;
+      });
+
       const topThreats = Object.entries(threatCounts)
-        .map(([type, count]) => ({ type, count, severity: 'medium' }))
+        .map(([type, data]) => ({ type, count: data.count, severity: data.severity }))
         .sort((a, b) => b.count - a.count)
         .slice(0, 5);
 
-      // Get active defense rules count
-      const { count: activeRules } = await supabase
-        .from("defense_rules")
-        .select("*", { count: "exact", head: true })
-        .eq("is_active", true);
-
-      // Get IP reputation stats
-      const { data: ipStats } = await supabase
-        .from("ip_reputation")
-        .select("score");
+      const stats = statsData?.stats || {};
       
-      const ipReputation = {
-        trusted: ipStats?.filter(ip => ip.score >= 70).length || 0,
-        suspicious: ipStats?.filter(ip => ip.score >= 30 && ip.score < 70).length || 0,
-        blocked: ipStats?.filter(ip => ip.score < 30).length || 0,
-      };
-
       return {
-        threatLevel,
-        eventsToday: eventsToday || 0,
-        eventsBlocked: blocked,
-        activeRules: activeRules || 0,
+        threatLevel: stats.threat_level || 'low',
+        eventsToday: stats.events_today || 0,
+        eventsBlocked: stats.blocked_today || 0,
+        activeRules: stats.active_rules || 0,
         topThreats,
-        ipReputation,
-        recentEvents: events?.slice(0, 10).map(e => ({
+        ipReputation: stats.ip_reputation || { blocked: 0, suspicious: 0, trusted: 0 },
+        recentEvents: (eventsData?.events || []).map((e: any) => ({
           id: e.id,
-          timestamp: e.detected_at,
-          type: e.event_type,
-          ip: e.ip_address || 'N/A',
-          action: e.action_taken,
-        })) || [],
+          timestamp: e.timestamp,
+          type: e.type,
+          ip: e.ip || 'N/A',
+          action: e.action,
+          threat_score: e.threat_score || 0
+        }))
       };
     },
     refetchInterval: 10000,
   });
 
-  // Real-time subscription for threat events
+  // Real-time subscription for security events
   useEffect(() => {
     const channel = supabase
-      .channel("threat-metrics-changes")
+      .channel("defense-events-realtime")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "pf_security_events",
+        },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ["threat-metrics"] });
+        }
+      )
       .on(
         "postgres_changes",
         {
           event: "*",
           schema: "public",
-          table: "pf_security_events",
+          table: "defense_rules",
         },
         () => {
           queryClient.invalidateQueries({ queryKey: ["threat-metrics"] });
