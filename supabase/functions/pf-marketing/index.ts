@@ -72,6 +72,15 @@ serve(async (req) => {
         });
       }
 
+      case 'chat': {
+        // Return a helpful response for chat - the dedicated pf-marketing-chat function handles AI chat
+        return new Response(JSON.stringify({
+          success: true,
+          reply: 'For AI-powered marketing chat, please use the dedicated marketing chat endpoint.',
+          suggestion: 'Use pf-marketing-chat for conversational AI features.'
+        }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      }
+
       default:
         throw new Error(`Unknown action: ${action}`);
     }
