@@ -109,10 +109,10 @@ serve(async (req) => {
     }
 
     const project = VALID_PROJECTS[projectId];
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
+    const GROQ_API_KEY = Deno.env.get('GROQ_API_KEY');
 
-    if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY is not configured');
+    if (!GROQ_API_KEY) {
+      throw new Error('GROQ_API_KEY is not configured');
     }
 
     // Build the user prompt with project context
@@ -132,14 +132,14 @@ Generate the patch specification now.`;
     console.log(`🛠️ [CASCADE-CODER] Generating patch for ${projectId}`);
     console.log(`📝 Request: ${request.substring(0, 100)}...`);
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+        'Authorization': `Bearer ${GROQ_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
+        model: 'llama-3.3-70b-versatile',
         messages: [
           { role: 'system', content: CODER_SYSTEM_PROMPT },
           { role: 'user', content: userPrompt }
@@ -155,15 +155,9 @@ Generate the patch specification now.`;
           { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
       }
-      if (response.status === 402) {
-        return new Response(
-          JSON.stringify({ error: 'Payment required. Please add credits to your Lovable AI workspace.' }),
-          { status: 402, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
       const errorText = await response.text();
-      console.error('AI Gateway error:', response.status, errorText);
-      throw new Error(`AI Gateway error: ${response.status}`);
+      console.error('AI error:', response.status, errorText);
+      throw new Error(`AI error: ${response.status}`);
     }
 
     const data = await response.json();

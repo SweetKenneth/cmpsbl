@@ -34,32 +34,9 @@ serve(async (req) => {
 
     console.log(`📡 Sensory ingestion from ${source}`);
 
-    // Generate embeddings using Lovable AI
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    let embeddings = null;
-
-    if (LOVABLE_API_KEY && payload.text) {
-      try {
-        const embResp = await fetch("https://ai.gateway.lovable.dev/v1/embeddings", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${LOVABLE_API_KEY}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            model: "text-embedding-ada-002",
-            input: payload.text.substring(0, 8000)
-          }),
-        });
-
-        if (embResp.ok) {
-          const embData = await embResp.json();
-          embeddings = embData.data?.[0]?.embedding;
-        }
-      } catch (e) {
-        console.error('Embedding generation failed:', e);
-      }
-    }
+    // Embeddings disabled - requires paid API
+    // TODO: Re-enable when embedding API is configured
+    const embeddings = null;
 
     // Simple anomaly detection (temporal drift check)
     const { data: recentEvents } = await sb
