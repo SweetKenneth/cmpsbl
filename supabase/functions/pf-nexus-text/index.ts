@@ -14,13 +14,44 @@ const TextGenerationSchema = z.object({
   project_id: z.string().uuid().optional(),
 });
 
+async function callFreeTierAI(systemPrompt: string, userPrompt: string): Promise<string> {
+  const GROQ_API_KEY = Deno.env.get('GROQ_API_KEY');
+  if (!GROQ_API_KEY) {
+    throw new Error('GROQ_API_KEY not configured');
+  }
+
+  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${GROQ_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: 'llama-3.3-70b-versatile',
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: userPrompt }
+      ],
+      temperature: 0.7,
+      max_tokens: 4000,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`AI request failed: ${response.status} - ${errorText}`);
+  }
+
+  const data = await response.json();
+  return data.choices[0].message.content;
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    // Authenticate user
     const authHeader = req.headers.get('Authorization');
     if (!authHeader) {
       return new Response(
@@ -43,11 +74,9 @@ serve(async (req) => {
       );
     }
 
-    // Validate input
     const body = await req.json();
     const validated = TextGenerationSchema.parse(body);
-    const { prompt, type, tone, project_id } = validated;
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
+    const { prompt, type, tone } = validated;
 
     console.log('✍️ Generating text:', type || 'general');
 
@@ -65,33 +94,10 @@ serve(async (req) => {
       systemPrompt += ` Use a ${tone} tone.`;
     }
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: prompt }
-        ],
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to generate text: ${response.status}`);
-    }
-
-    const data = await response.json();
-    const generatedText = data.choices[0].message.content;
+    const generatedText = await callFreeTierAI(systemPrompt, prompt);
 
     return new Response(
-      JSON.stringify({ 
-        success: true, 
-        text: generatedText 
-      }),
+      JSON.stringify({ success: true, text: generatedText }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (error) {
