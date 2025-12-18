@@ -3906,6 +3906,189 @@ export type Database = {
         }
         Relationships: []
       }
+      pf_merger_fusions: {
+        Row: {
+          actual_cost: number | null
+          blueprint_ref: string | null
+          created_at: string | null
+          estimated_cost: number | null
+          fusion_output: Json | null
+          id: string
+          intent_id: string | null
+          model_used: string | null
+          status: string | null
+        }
+        Insert: {
+          actual_cost?: number | null
+          blueprint_ref?: string | null
+          created_at?: string | null
+          estimated_cost?: number | null
+          fusion_output?: Json | null
+          id?: string
+          intent_id?: string | null
+          model_used?: string | null
+          status?: string | null
+        }
+        Update: {
+          actual_cost?: number | null
+          blueprint_ref?: string | null
+          created_at?: string | null
+          estimated_cost?: number | null
+          fusion_output?: Json | null
+          id?: string
+          intent_id?: string | null
+          model_used?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pf_merger_fusions_intent_id_fkey"
+            columns: ["intent_id"]
+            isOneToOne: false
+            referencedRelation: "pf_merger_intents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pf_merger_intents: {
+        Row: {
+          complexity_score: number | null
+          created_at: string | null
+          id: string
+          parsed_requirements: Json | null
+          prompt_text: string
+          status: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          complexity_score?: number | null
+          created_at?: string | null
+          id?: string
+          parsed_requirements?: Json | null
+          prompt_text: string
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          complexity_score?: number | null
+          created_at?: string | null
+          id?: string
+          parsed_requirements?: Json | null
+          prompt_text?: string
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      pf_merger_metrics: {
+        Row: {
+          api_calls_made: number | null
+          build_time_ms: number | null
+          component_count: number | null
+          created_at: string | null
+          id: string
+          lines_of_code: number | null
+          project_id: string | null
+          tokens_used: number | null
+        }
+        Insert: {
+          api_calls_made?: number | null
+          build_time_ms?: number | null
+          component_count?: number | null
+          created_at?: string | null
+          id?: string
+          lines_of_code?: number | null
+          project_id?: string | null
+          tokens_used?: number | null
+        }
+        Update: {
+          api_calls_made?: number | null
+          build_time_ms?: number | null
+          component_count?: number | null
+          created_at?: string | null
+          id?: string
+          lines_of_code?: number | null
+          project_id?: string | null
+          tokens_used?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pf_merger_metrics_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "pf_mvp_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pf_mvp_projects: {
+        Row: {
+          build_logs: Json | null
+          build_status: string | null
+          completed_at: string | null
+          created_at: string | null
+          current_phase: string | null
+          deploy_url: string | null
+          deployed_at: string | null
+          error_message: string | null
+          feedback_score: number | null
+          fusion_id: string | null
+          github_repo: string | null
+          id: string
+          preview_url: string | null
+          progress_percentage: number | null
+          project_name: string
+          user_id: string | null
+        }
+        Insert: {
+          build_logs?: Json | null
+          build_status?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          current_phase?: string | null
+          deploy_url?: string | null
+          deployed_at?: string | null
+          error_message?: string | null
+          feedback_score?: number | null
+          fusion_id?: string | null
+          github_repo?: string | null
+          id?: string
+          preview_url?: string | null
+          progress_percentage?: number | null
+          project_name: string
+          user_id?: string | null
+        }
+        Update: {
+          build_logs?: Json | null
+          build_status?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          current_phase?: string | null
+          deploy_url?: string | null
+          deployed_at?: string | null
+          error_message?: string | null
+          feedback_score?: number | null
+          fusion_id?: string | null
+          github_repo?: string | null
+          id?: string
+          preview_url?: string | null
+          progress_percentage?: number | null
+          project_name?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pf_mvp_projects_fusion_id_fkey"
+            columns: ["fusion_id"]
+            isOneToOne: false
+            referencedRelation: "pf_merger_fusions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       pf_security_events: {
         Row: {
           action_taken: string
