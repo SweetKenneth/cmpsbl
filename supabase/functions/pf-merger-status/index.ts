@@ -17,9 +17,12 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    const url = new URL(req.url);
-    const project_id = url.searchParams.get('project_id');
-    const user_id = url.searchParams.get('user_id');
+    // Read from request body (how supabase.functions.invoke sends data)
+    const body = await req.json().catch(() => ({}));
+    const project_id = body.project_id;
+    const user_id = body.user_id;
+
+    console.log('Status request:', { project_id, user_id });
 
     if (!project_id && !user_id) {
       return new Response(
