@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Linkedin, Twitter, Facebook, Github } from "lucide-react";
+import founderPhoto from "@/assets/founder-kenneth-sweet.png";
 
 interface AuthorBioProps {
   publishDate: string;
@@ -11,7 +12,7 @@ export function AuthorBio({ publishDate, readTime }: AuthorBioProps) {
     <Card className="p-6 my-8 bg-gradient-to-br from-primary/5 via-background to-accent/5 border-primary/20">
       <div className="flex flex-col md:flex-row gap-6 items-start">
         <img 
-          src="/images/kenneth.jpg"
+          src={founderPhoto}
           alt="Kenneth E. Sweet Jr. - Founder of PromptFluid and Creator of Cascade AI" 
           className="w-24 h-24 rounded-full object-cover ring-2 ring-primary/20"
           width="96"
