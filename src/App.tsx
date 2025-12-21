@@ -106,9 +106,12 @@ import SystemSettings from "./pages/admin/SystemSettings";
 import AccessControlManagement from "./pages/admin/AccessControlManagement";
 import { AdminRoute } from "./components/admin/AdminRoute";
 
+// Legal pages
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
+
 // Legacy pages removed - all functionality moved to /admin/* routes
 const FreeAIResources = lazy(() => import("./pages/resources/FreeAIResources"));
-
 
 // Lazy load blog pages
 const WordPressBotDefense = lazy(() => import("./pages/blog/WordPressBotDefense"));
@@ -215,6 +218,8 @@ const App = () => {
             <Route path="/solutions" element={<Solutions />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
             <Route path="/roadmap" element={<Roadmap />} />
             <Route path="/projects" element={<CurrentProjects />} />
             <Route path="/projects/defense" element={<DefenseProduct />} />

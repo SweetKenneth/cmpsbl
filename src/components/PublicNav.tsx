@@ -9,6 +9,7 @@ export function PublicNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
+    { name: "Home", href: "/" },
     { name: "Products", href: "/projects" },
     { name: "Solutions", href: "/solutions" },
     { name: "Blog", href: "/blog" },
