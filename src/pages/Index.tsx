@@ -5,7 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
-import heroImage from "@/assets/hero/ai-robotics-lab.jpg";
+import heroImage from "@/assets/hero/earth-operations-center.jpg";
 import officeImage from "@/assets/hero/tech-office-mountains.jpg";
 import teamImage from "@/assets/hero/team-collaboration.jpg";
 
@@ -109,7 +109,7 @@ export default function Index() {
         <section className="relative w-full h-[80vh] min-h-[600px]" aria-labelledby="hero-heading">
           <img 
             src={heroImage}
-            alt="Advanced AI robotics laboratory with neural network visualization and holographic displays representing PromptFluid's autonomous systems technology"
+            alt="Dark engineering control room with panoramic windows showing Earth's curvature and atmosphere, control consoles with system data in foreground representing PromptFluid's operational infrastructure"
             className="absolute inset-0 w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
