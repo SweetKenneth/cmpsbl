@@ -1,4 +1,4 @@
-import { ArrowRight, Monitor, Shield, Accessibility, Check, Activity, Server, Brain, Cpu, Lock, Zap, ExternalLink } from "lucide-react";
+import { ArrowRight, Shield, Accessibility, Activity, Server, Brain, Eye, Wrench, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
@@ -9,28 +9,80 @@ import { EnhancedFooter } from "@/components/EnhancedFooter";
 export default function Index() {
   const navigate = useNavigate();
 
+  const shippedSystems = [
+    {
+      id: "rckbl",
+      name: "RCKBL",
+      subtitle: "Rockable Defense",
+      description: "Complete website defense against hackers, viruses, and bots. Born from reverse-engineering our own stealth bot technology into one of the most effective bot sniping systems available. WordPress plugin included.",
+      badge: "Live",
+      badgeColor: "system-amber",
+      icon: Shield,
+      link: "/projects/defense"
+    },
+    {
+      id: "rndrbl",
+      name: "RNDRBL",
+      subtitle: "Renderable",
+      description: "Web accessibility browser with built-in layover control panel. Enables people with disabilities to browse their favorite sites with the features they require.",
+      badge: "Running",
+      badgeColor: "system-green",
+      icon: Eye,
+      link: "/projects/accessibility"
+    },
+    {
+      id: "ptchbl",
+      name: "PTCHBL",
+      subtitle: "Patchable",
+      description: "Free WCAG scanner that tests websites for accessibility issues, then applies AI to fix 45 of 86 WCAG compliance functions. Inclusion should never be behind a paywall.",
+      badge: "Free",
+      badgeColor: "system-green",
+      icon: Accessibility,
+      externalLink: "https://PTCHBL.com"
+    },
+    {
+      id: "splcbl",
+      name: "SPLCBL",
+      subtitle: "Spliceable",
+      description: "WordPress plugin compliance checker. Upload your plugin and scan for common WordPress.org submission issues before the official review process.",
+      badge: "Free",
+      badgeColor: "system-green",
+      icon: Wrench,
+      link: "/projects/spliceable"
+    },
+    {
+      id: "cascade",
+      name: "Cascade",
+      subtitle: "Autonomous AI",
+      description: "The first autonomous AI that reflects on memories through internal simulation cycles we call dreaming. World first documented with proof released on Zenodo and OSF.",
+      badge: "Deployed",
+      badgeColor: "primary",
+      icon: Brain,
+      link: "/projects/brain"
+    },
+    {
+      id: "nexus",
+      name: "AI Nexus",
+      subtitle: "Multi-Provider Gateway",
+      description: "Intelligent AI routing across 20+ LLMs and API providers with automatic fallback chains and cost optimization.",
+      badge: "Running",
+      badgeColor: "primary",
+      icon: Server,
+      link: "/projects/nexus"
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-background">
-      {/* Skip Link for Accessibility */}
-      <a href="#main-content" className="skip-link">
-        Skip to main content
-      </a>
+      <a href="#main-content" className="skip-link">Skip to main content</a>
       
       <SEO 
         title="PromptFluid | Applied AI Infrastructure"
         description="PromptFluid is an applied AI company focused on autonomous systems, infrastructure tooling, and experimental interfaces that scale."
         canonical="https://promptfluid.com"
-        keywords={[
-          'AI infrastructure',
-          'autonomous systems',
-          'AI security',
-          'accessibility compliance',
-          'WordPress security',
-          'WCAG scanning'
-        ]}
+        keywords={['AI infrastructure', 'autonomous systems', 'AI security', 'accessibility compliance', 'WordPress security', 'WCAG scanning']}
       />
       
-      {/* Structured Data */}
       <script type="application/ld+json">
         {JSON.stringify({
           "@context": "https://schema.org",
@@ -38,12 +90,8 @@ export default function Index() {
           "name": "PromptFluid",
           "url": "https://promptfluid.com",
           "description": "Applied AI company focused on autonomous systems and infrastructure tooling",
-          "foundingDate": "2024",
-          "founders": [{
-            "@type": "Person",
-            "name": "Kenneth E Sweet Jr",
-            "jobTitle": "Founder"
-          }]
+          "foundingDate": "2009",
+          "founders": [{ "@type": "Person", "name": "Kenneth E Sweet Jr", "jobTitle": "Founder" }]
         })}
       </script>
       
@@ -56,7 +104,7 @@ export default function Index() {
         {/* ═══════════════════════════════════════════════════════════════
             HERO SECTION 
         ═══════════════════════════════════════════════════════════════ */}
-        <section className="relative z-10 container mx-auto px-4 pt-20 md:pt-32 pb-20" aria-labelledby="hero-heading">
+        <section className="relative z-10 container mx-auto px-4 pt-20 md:pt-32 pb-16" aria-labelledby="hero-heading">
           <div className="max-w-4xl mx-auto">
             <h1 id="hero-heading" className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground tracking-tight">
               We build intelligence that keeps working.
@@ -68,9 +116,7 @@ export default function Index() {
 
             <Button 
               size="lg" 
-              onClick={() => {
-                document.getElementById('shipped-systems')?.scrollIntoView({ behavior: 'smooth' });
-              }}
+              onClick={() => document.getElementById('shipped-systems')?.scrollIntoView({ behavior: 'smooth' })}
               className="group bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-8 py-6"
             >
               <span className="flex items-center gap-2">
@@ -78,6 +124,30 @@ export default function Index() {
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </span>
             </Button>
+          </div>
+        </section>
+
+        {/* ═══════════════════════════════════════════════════════════════
+            EARTH WINDOW - CITY VIEW
+        ═══════════════════════════════════════════════════════════════ */}
+        <section className="relative w-full h-[60vh] md:h-[70vh] overflow-hidden">
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: `url('https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1920&q=80')`,
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
+          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />
+          <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-background to-transparent" />
+          
+          {/* Quote overlay */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <blockquote className="text-center max-w-3xl px-8">
+              <p className="text-2xl md:text-4xl font-light text-white drop-shadow-lg leading-relaxed">
+                "Real systems. Grounded infrastructure. Built to last."
+              </p>
+            </blockquote>
           </div>
         </section>
 
@@ -93,11 +163,11 @@ export default function Index() {
 
               <ul className="space-y-4 mb-10">
                 {[
-                  { icon: Cpu, text: "Autonomous system orchestration" },
-                  { icon: Activity, text: "Internal simulation and evaluation cycles" },
+                  { icon: Activity, text: "Autonomous system orchestration" },
+                  { icon: Brain, text: "Internal simulation and evaluation cycles" },
                   { icon: Accessibility, text: "Accessibility and compliance engines" },
                   { icon: Shield, text: "Security, verification, and detection systems" },
-                  { icon: Monitor, text: "Experimental interfaces for complex tools" },
+                  { icon: Eye, text: "Experimental interfaces for complex tools" },
                 ].map((item, index) => (
                   <li key={index} className="flex items-start gap-4 text-lg text-foreground/90">
                     <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -113,6 +183,21 @@ export default function Index() {
               </p>
             </div>
           </div>
+        </section>
+
+        {/* ═══════════════════════════════════════════════════════════════
+            EARTH WINDOW - INDUSTRIAL TREES
+        ═══════════════════════════════════════════════════════════════ */}
+        <section className="relative w-full h-[50vh] overflow-hidden">
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: `url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1920&q=80')`,
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background opacity-80" />
+          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent" />
+          <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background to-transparent" />
         </section>
 
         {/* ═══════════════════════════════════════════════════════════════
@@ -156,169 +241,67 @@ export default function Index() {
               </p>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {/* Reflex Bot Sniper */}
-                <div
-                  onClick={() => navigate('/projects/defense')}
-                  className="group bg-card border border-border rounded-lg p-6 cursor-pointer hover:border-[hsl(var(--system-amber))]/50 transition-all duration-200 hover:shadow-elegant"
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="w-12 h-12 rounded-lg bg-[hsl(var(--system-amber))]/10 flex items-center justify-center">
-                      <Shield className="w-6 h-6 text-[hsl(var(--system-amber))]" />
+                {shippedSystems.map((system) => (
+                  <div
+                    key={system.id}
+                    onClick={() => system.externalLink ? window.open(system.externalLink, "_blank") : navigate(system.link || '')}
+                    className={`group bg-card border border-border rounded-lg p-6 cursor-pointer hover:border-[hsl(var(--${system.badgeColor}))]/50 transition-all duration-200 hover:shadow-elegant`}
+                  >
+                    <div className="flex items-start justify-between mb-4">
+                      <div className={`w-12 h-12 rounded-lg bg-[hsl(var(--${system.badgeColor}))]/10 flex items-center justify-center`}>
+                        <system.icon className={`w-6 h-6 text-[hsl(var(--${system.badgeColor}))]`} />
+                      </div>
+                      <Badge variant="outline" className={`text-xs border-[hsl(var(--${system.badgeColor}))]/30 text-[hsl(var(--${system.badgeColor}))]`}>
+                        {system.badge}
+                      </Badge>
                     </div>
-                    <Badge variant="outline" className="text-xs border-[hsl(var(--system-amber))]/30 text-[hsl(var(--system-amber))]">
-                      Live
-                    </Badge>
+                    
+                    <h3 className="text-lg font-semibold mb-1 text-foreground group-hover:text-primary transition-colors">
+                      {system.name}
+                    </h3>
+                    <p className="text-xs text-muted-foreground mb-2">{system.subtitle}</p>
+                    <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
+                      {system.description}
+                    </p>
+                    
+                    <div className="flex items-center gap-2 text-sm text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span>{system.externalLink ? 'Visit' : 'Learn more'}</span>
+                      {system.externalLink ? <ExternalLink className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
+                    </div>
                   </div>
-                  
-                  <h3 className="text-lg font-semibold mb-2 text-foreground group-hover:text-primary transition-colors">
-                    Reflex Bot Sniper
-                  </h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    WordPress security plugin with behavioral fingerprinting and real-time threat detection.
-                  </p>
-                  
-                  <div className="flex items-center gap-2 text-sm text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-                    <span>Learn more</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </div>
-                </div>
+                ))}
+              </div>
 
-                {/* Clarity */}
-                <div
-                  onClick={() => window.open("https://clarity.promptfluid.com", "_blank")}
-                  className="group bg-card border border-border rounded-lg p-6 cursor-pointer hover:border-[hsl(var(--system-green))]/50 transition-all duration-200 hover:shadow-elegant"
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="w-12 h-12 rounded-lg bg-[hsl(var(--system-green))]/10 flex items-center justify-center">
-                      <Accessibility className="w-6 h-6 text-[hsl(var(--system-green))]" />
-                    </div>
-                    <Badge variant="outline" className="text-xs border-[hsl(var(--system-green))]/30 text-[hsl(var(--system-green))]">
-                      Running
-                    </Badge>
-                  </div>
-                  
-                  <h3 className="text-lg font-semibold mb-2 text-foreground group-hover:text-[hsl(var(--system-green))] transition-colors">
-                    Clarity
-                  </h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Free WCAG 2.2 accessibility scanner with AI-powered fix suggestions. No signup required.
-                  </p>
-                  
-                  <div className="flex items-center gap-2 text-sm text-[hsl(var(--system-green))] opacity-0 group-hover:opacity-100 transition-opacity">
-                    <span>Try free scan</span>
-                    <ExternalLink className="w-4 h-4" />
-                  </div>
-                </div>
-
-                {/* Cascade */}
-                <div
-                  onClick={() => navigate('/projects/brain')}
-                  className="group bg-card border border-border rounded-lg p-6 cursor-pointer hover:border-primary/50 transition-all duration-200 hover:shadow-elegant"
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                      <Brain className="w-6 h-6 text-primary" />
-                    </div>
-                    <Badge variant="outline" className="text-xs border-primary/30 text-primary">
-                      Deployed
-                    </Badge>
-                  </div>
-                  
-                  <h3 className="text-lg font-semibold mb-2 text-foreground group-hover:text-primary transition-colors">
-                    Cascade
-                  </h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Autonomous orchestration engine with internal simulation cycles and memory consolidation.
-                  </p>
-                  
-                  <div className="flex items-center gap-2 text-sm text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-                    <span>View details</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </div>
-                </div>
-
-                {/* Modernizer */}
-                <div
-                  onClick={() => navigate('/projects/modernizer')}
-                  className="group bg-card border border-border rounded-lg p-6 cursor-pointer hover:border-primary/50 transition-all duration-200 hover:shadow-elegant"
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                      <Zap className="w-6 h-6 text-primary" />
-                    </div>
-                    <Badge variant="outline" className="text-xs border-primary/30 text-primary">
-                      Live
-                    </Badge>
-                  </div>
-                  
-                  <h3 className="text-lg font-semibold mb-2 text-foreground group-hover:text-primary transition-colors">
-                    Modernizer
-                  </h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    AI-powered website rebuilder. Extracts and transforms legacy sites into modern React applications.
-                  </p>
-                  
-                  <div className="flex items-center gap-2 text-sm text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-                    <span>Learn more</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </div>
-                </div>
-
-                {/* AI Nexus */}
-                <div
-                  onClick={() => navigate('/projects/nexus')}
-                  className="group bg-card border border-border rounded-lg p-6 cursor-pointer hover:border-primary/50 transition-all duration-200 hover:shadow-elegant"
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                      <Server className="w-6 h-6 text-primary" />
-                    </div>
-                    <Badge variant="outline" className="text-xs border-primary/30 text-primary">
-                      Running
-                    </Badge>
-                  </div>
-                  
-                  <h3 className="text-lg font-semibold mb-2 text-foreground group-hover:text-primary transition-colors">
-                    AI Nexus
-                  </h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Multi-provider AI routing system with fallback chains and cost optimization.
-                  </p>
-                  
-                  <div className="flex items-center gap-2 text-sm text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-                    <span>View details</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </div>
-                </div>
-
-                {/* Infrastructure Dashboard */}
-                <div
-                  onClick={() => navigate('/admin')}
-                  className="group bg-card border border-border rounded-lg p-6 cursor-pointer hover:border-primary/50 transition-all duration-200 hover:shadow-elegant"
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                      <Monitor className="w-6 h-6 text-primary" />
-                    </div>
-                    <Badge variant="outline" className="text-xs border-muted-foreground/30 text-muted-foreground">
-                      Internal
-                    </Badge>
-                  </div>
-                  
-                  <h3 className="text-lg font-semibold mb-2 text-foreground group-hover:text-primary transition-colors">
-                    Control Dashboard
-                  </h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Unified monitoring and control interface for all PromptFluid systems.
-                  </p>
-                  
-                  <div className="flex items-center gap-2 text-sm text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-                    <span>Access</span>
-                    <Lock className="w-4 h-4" />
-                  </div>
-                </div>
+              {/* Track Record */}
+              <div className="mt-12 bg-card border border-border rounded-lg p-6 md:p-8">
+                <p className="text-lg text-foreground/90 leading-relaxed">
+                  <span className="font-semibold">100+ projects shipped</span> over 15 years—sites, apps, web apps, and enterprise software. Most for customers, some for growth and exploration. We design from concept to working software to polished enterprise-grade systems. <span className="text-muted-foreground">We're closers. We ship real systems.</span>
+                </p>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* ═══════════════════════════════════════════════════════════════
+            EARTH WINDOW - OFFICE VIEW
+        ═══════════════════════════════════════════════════════════════ */}
+        <section className="relative w-full h-[60vh] overflow-hidden">
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: `url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80')`,
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background opacity-60" />
+          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />
+          <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-background to-transparent" />
+          
+          <div className="absolute inset-0 flex items-center justify-center">
+            <blockquote className="text-center max-w-3xl px-8">
+              <p className="text-2xl md:text-4xl font-light text-white drop-shadow-lg leading-relaxed">
+                "Building from concept to deployed system—every time."
+              </p>
+            </blockquote>
           </div>
         </section>
 
@@ -366,7 +349,6 @@ export default function Index() {
                 Some PromptFluid systems explore non-traditional interfaces for interacting with complex tools.
               </p>
 
-              {/* The Settlers Story Card */}
               <div className="bg-card border border-border rounded-lg p-6 md:p-8">
                 <Badge variant="outline" className="mb-4 text-xs border-[hsl(var(--system-amber))]/40 text-[hsl(var(--system-amber))] bg-[hsl(var(--system-amber))]/5">
                   Fictional Interface / Lore Experiment
@@ -385,7 +367,7 @@ export default function Index() {
                 
                 <Button 
                   variant="outline"
-                  onClick={() => window.open("https://castleintheair.site", "_blank")}
+                  onClick={() => window.open("https://XCTBL.com", "_blank")}
                   className="group border-border hover:border-primary hover:bg-primary/5"
                 >
                   <span className="flex items-center gap-2">
@@ -396,6 +378,21 @@ export default function Index() {
               </div>
             </div>
           </div>
+        </section>
+
+        {/* ═══════════════════════════════════════════════════════════════
+            EARTH WINDOW - STREET TREES
+        ═══════════════════════════════════════════════════════════════ */}
+        <section className="relative w-full h-[50vh] overflow-hidden">
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: `url('https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=1920&q=80')`,
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background opacity-70" />
+          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />
+          <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-background to-transparent" />
         </section>
 
         {/* ═══════════════════════════════════════════════════════════════
