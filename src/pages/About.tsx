@@ -7,6 +7,7 @@ import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import heroImage from "@/assets/hero/sustainable-architecture.jpg";
 import teamImage from "@/assets/hero/team-collaboration.jpg";
+import founderPhoto from "@/assets/founder-kenneth-sweet.png";
 export default function About() {
   const products = [
     { icon: Shield, name: "RCKBL", description: "Complete website defense against bots and threats" },
@@ -69,24 +70,35 @@ export default function About() {
         </div>
       </section>
 
-      {/* Mission Section */}
+      {/* Founder Section */}
       <section className="py-16 px-4 bg-muted/30">
         <div className="container mx-auto max-w-4xl">
           <div className="bg-card border border-border rounded-lg p-8 md:p-12">
-            <h2 className="text-3xl font-bold mb-6 text-foreground">About</h2>
-            <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-              I build systems that start as abstract ideas and end up running on their own.
-            </p>
-            <p className="text-muted-foreground leading-relaxed mb-6">
-              PromptFluid began as a focused effort to make AI tools actually useful—security that adapts, accessibility that's free, and interfaces that handle complexity without exposing it.
-            </p>
-            <p className="text-muted-foreground leading-relaxed mb-6">
-              Everything here is built to work without supervision. The goal is infrastructure that improves itself over time.
-            </p>
-            <div className="pt-6 border-t border-border">
-              <p className="text-sm text-muted-foreground">
-                <span className="font-medium text-foreground">Kenneth E Sweet Jr</span> — Founder
-              </p>
+            <div className="flex flex-col md:flex-row gap-8 items-start">
+              <img 
+                src={founderPhoto}
+                alt="Kenneth E. Sweet Jr. - Founder of PromptFluid"
+                className="w-32 h-32 rounded-full object-cover ring-4 ring-primary/20 flex-shrink-0"
+              />
+              <div className="flex-1">
+                <h2 className="text-3xl font-bold mb-4 text-foreground">About the Founder</h2>
+                <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+                  I build systems that start as abstract ideas and end up running on their own.
+                </p>
+                <p className="text-muted-foreground leading-relaxed mb-6">
+                  PromptFluid began as a focused effort to make AI tools actually useful—security that adapts, accessibility that's free, and interfaces that handle complexity without exposing it.
+                </p>
+                <p className="text-muted-foreground leading-relaxed mb-6">
+                  Everything here is built to work without supervision. The goal is infrastructure that improves itself over time.
+                </p>
+                <blockquote className="border-l-4 border-primary pl-6 my-6 italic text-foreground/90">
+                  "AI should amplify human capability, not replace human judgment. We build systems that think alongside you, not instead of you."
+                </blockquote>
+                <div className="pt-6 border-t border-border">
+                  <p className="text-foreground font-semibold">Kenneth E Sweet Jr</p>
+                  <p className="text-sm text-muted-foreground">Founder & Security Engineer</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

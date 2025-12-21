@@ -218,6 +218,84 @@ export type Database = {
         }
         Relationships: []
       }
+      auto_blog_posts: {
+        Row: {
+          category: string
+          content: string
+          created_at: string
+          excerpt: string | null
+          id: string
+          published_at: string | null
+          slug: string
+          status: string
+          title: string
+          topic_seed: string | null
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          content: string
+          created_at?: string
+          excerpt?: string | null
+          id?: string
+          published_at?: string | null
+          slug: string
+          status?: string
+          title: string
+          topic_seed?: string | null
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          content?: string
+          created_at?: string
+          excerpt?: string | null
+          id?: string
+          published_at?: string | null
+          slug?: string
+          status?: string
+          title?: string
+          topic_seed?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      auto_blog_schedule: {
+        Row: {
+          category: string
+          completed_at: string | null
+          created_at: string
+          error_message: string | null
+          id: string
+          retry_count: number | null
+          scheduled_at: string
+          status: string
+          topic: string
+        }
+        Insert: {
+          category: string
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          retry_count?: number | null
+          scheduled_at: string
+          status?: string
+          topic: string
+        }
+        Update: {
+          category?: string
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          retry_count?: number | null
+          scheduled_at?: string
+          status?: string
+          topic?: string
+        }
+        Relationships: []
+      }
       bot_sniper_api_keys: {
         Row: {
           api_key_hash: string

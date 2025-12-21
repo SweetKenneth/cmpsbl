@@ -1,4 +1,4 @@
-import { FileText, Calendar, ArrowRight, Search, Sparkles } from "lucide-react";
+import { FileText, Calendar, ArrowRight, Search, Sparkles, Bot } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -6,7 +6,8 @@ import { Link } from "react-router-dom";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { SEO } from "@/components/SEO";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 // Blog post images
 import wpBotDefenseImg from "@/assets/blog/wordpress-bot-defense.jpg";
@@ -35,6 +36,29 @@ import autoAccessibilityImg from "@/assets/blog/automated-accessibility-fixes.jp
 
 export default function Blog() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [autoPosts, setAutoPosts] = useState<Array<{
+    id: string;
+    title: string;
+    slug: string;
+    excerpt: string;
+    category: string;
+    published_at: string;
+  }>>([]);
+
+  // Fetch auto-generated posts
+  useEffect(() => {
+    const fetchAutoPosts = async () => {
+      const { data } = await supabase
+        .from("auto_blog_posts")
+        .select("id, title, slug, excerpt, category, published_at")
+        .eq("status", "published")
+        .order("published_at", { ascending: false })
+        .limit(20);
+      
+      if (data) setAutoPosts(data);
+    };
+    fetchAutoPosts();
+  }, []);
 
   const blogPosts = [
     {
@@ -221,7 +245,7 @@ export default function Blog() {
         
         <div className="absolute inset-0 flex items-center justify-center">
           <blockquote className="text-center max-w-3xl px-8">
-            <p className="text-2xl md:text-4xl font-light text-white drop-shadow-lg">
+            <p className="text-2xl md:text-4xl font-light text-foreground drop-shadow-lg">
               "We document what we build. We share what we learn."
             </p>
           </blockquote>
@@ -329,6 +353,34 @@ export default function Blog() {
               </Link>
             ))}
           </div>
+
+          {/* Auto-Generated Posts Section */}
+          {autoPosts.length > 0 && (
+            <div className="mt-16">
+              <div className="flex items-center gap-3 mb-8">
+                <Bot className="h-5 w-5 text-primary" />
+                <h2 className="text-xl font-semibold text-foreground">AI-Generated Insights</h2>
+              </div>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {autoPosts.map((post) => (
+                  <Link key={post.id} to={`/blog/auto/${post.slug}`}>
+                    <Card className="group h-full p-6 bg-card border-border hover:border-primary/40 transition-all">
+                      <Badge variant="outline" className="mb-3 text-xs border-primary/30 text-primary">
+                        {post.category}
+                      </Badge>
+                      <h3 className="text-lg font-semibold mb-2 text-foreground group-hover:text-primary transition-colors line-clamp-2">
+                        {post.title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground mb-4 line-clamp-3">{post.excerpt}</p>
+                      <span className="text-xs text-muted-foreground">
+                        {new Date(post.published_at).toLocaleDateString()}
+                      </span>
+                    </Card>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
