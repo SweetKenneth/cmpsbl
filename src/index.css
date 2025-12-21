@@ -12,83 +12,97 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    /* EARTHSIDE Theme - Grounded, Technical, Interior */
+    --background: 0 0% 98%;
+    --foreground: 220 15% 15%;
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card-foreground: 220 15% 15%;
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 195 100% 50%;
-    --primary-variant: 265 85% 55%;
+    --popover-foreground: 220 15% 15%;
+    --primary: 210 60% 45%;
+    --primary-variant: 200 50% 40%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 35 100% 55%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84.2% 60.2%;
+    --secondary: 220 10% 94%;
+    --secondary-foreground: 220 15% 20%;
+    --muted: 220 10% 92%;
+    --muted-foreground: 220 10% 45%;
+    --accent: 45 90% 50%;
+    --accent-foreground: 220 15% 10%;
+    --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 85%;
-    --input: 240 5.9% 90%;
-    --ring: 195 100% 50%;
-    --radius: 1rem;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 195 100% 50%;
+    --border: 220 10% 85%;
+    --input: 220 10% 90%;
+    --ring: 210 60% 45%;
+    --radius: 0.5rem;
+    --sidebar-background: 220 15% 96%;
+    --sidebar-foreground: 220 15% 25%;
+    --sidebar-primary: 210 60% 45%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 195 100% 50%;
+    --sidebar-accent: 220 10% 92%;
+    --sidebar-accent-foreground: 220 15% 20%;
+    --sidebar-border: 220 10% 88%;
+    --sidebar-ring: 210 60% 45%;
     
-    --gradient-fluid: linear-gradient(135deg, hsl(195 100% 50%), hsl(265 85% 55%), hsl(330 100% 60%));
-    --gradient-primary: linear-gradient(135deg, hsl(195 100% 50%), hsl(265 85% 55%));
-    --gradient-accent: linear-gradient(135deg, hsl(265 85% 55%), hsl(330 100% 60%));
-    --gradient-warm: linear-gradient(135deg, hsl(330 100% 60%), hsl(35 100% 55%));
-    --gradient-mesh: radial-gradient(at 0% 0%, hsl(195 100% 50% / 0.2) 0px, transparent 50%),
-                     radial-gradient(at 100% 0%, hsl(265 85% 55% / 0.2) 0px, transparent 50%),
-                     radial-gradient(at 100% 100%, hsl(330 100% 60% / 0.2) 0px, transparent 50%),
-                     radial-gradient(at 0% 100%, hsl(35 100% 55% / 0.2) 0px, transparent 50%);
-    --shadow-glow: 0 0 60px hsl(195 100% 50% / 0.4);
-    --shadow-glow-lg: 0 20px 80px hsl(195 100% 50% / 0.3);
-    --shadow-elegant: 0 10px 40px -10px hsl(195 100% 50% / 0.3);
+    /* Earthside specific */
+    --system-green: 145 65% 42%;
+    --system-amber: 38 92% 50%;
     
-    /* Enhanced Transitions */
+    --gradient-fluid: linear-gradient(135deg, hsl(210 60% 45%), hsl(200 50% 40%));
+    --gradient-primary: linear-gradient(135deg, hsl(210 60% 45%), hsl(200 50% 40%));
+    --gradient-accent: linear-gradient(135deg, hsl(200 50% 40%), hsl(145 65% 42%));
+    --gradient-warm: linear-gradient(135deg, hsl(38 92% 50%), hsl(25 85% 55%));
+    --gradient-mesh: radial-gradient(at 0% 0%, hsl(210 60% 45% / 0.08) 0px, transparent 50%),
+                     radial-gradient(at 100% 0%, hsl(200 50% 40% / 0.08) 0px, transparent 50%),
+                     radial-gradient(at 100% 100%, hsl(145 65% 42% / 0.06) 0px, transparent 50%),
+                     radial-gradient(at 0% 100%, hsl(38 92% 50% / 0.06) 0px, transparent 50%);
+    --shadow-glow: 0 0 40px hsl(210 60% 45% / 0.15);
+    --shadow-glow-lg: 0 20px 60px hsl(210 60% 45% / 0.12);
+    --shadow-elegant: 0 4px 20px -4px hsl(220 15% 15% / 0.12);
+    
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     --transition-elastic: all 0.6s cubic-bezier(0.68, -0.6, 0.32, 1.6);
   }
 
   .dark {
-    --background: 240 15% 8%;
-    --foreground: 0 0% 98%;
-    --card: 240 12% 12%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 12% 10%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 195 100% 50%;
-    --primary-variant: 265 85% 55%;
+    /* EARTHSIDE Dark - Charcoal/Graphite */
+    --background: 220 20% 10%;
+    --foreground: 0 0% 95%;
+    --card: 220 18% 14%;
+    --card-foreground: 0 0% 95%;
+    --popover: 220 18% 12%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 210 55% 55%;
+    --primary-variant: 200 45% 50%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 240 10% 20%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 10% 18%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 35 100% 55%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
+    --secondary: 220 15% 20%;
+    --secondary-foreground: 0 0% 92%;
+    --muted: 220 15% 18%;
+    --muted-foreground: 220 10% 60%;
+    --accent: 45 85% 55%;
+    --accent-foreground: 220 15% 10%;
+    --destructive: 0 60% 45%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 8% 22%;
-    --input: 240 8% 20%;
-    --ring: 195 100% 50%;
-    --sidebar-background: 240 12% 10%;
-    --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 195 100% 50%;
+    --border: 220 15% 22%;
+    --input: 220 15% 18%;
+    --ring: 210 55% 55%;
+    --sidebar-background: 220 18% 12%;
+    --sidebar-foreground: 0 0% 92%;
+    --sidebar-primary: 210 55% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 10% 20%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 240 8% 22%;
-    --sidebar-ring: 195 100% 50%;
+    --sidebar-accent: 220 15% 20%;
+    --sidebar-accent-foreground: 0 0% 92%;
+    --sidebar-border: 220 15% 22%;
+    --sidebar-ring: 210 55% 55%;
+    
+    /* Earthside specific */
+    --system-green: 145 60% 48%;
+    --system-amber: 38 88% 55%;
+    
+    --gradient-mesh: radial-gradient(at 0% 0%, hsl(210 55% 55% / 0.1) 0px, transparent 50%),
+                     radial-gradient(at 100% 0%, hsl(200 45% 50% / 0.08) 0px, transparent 50%),
+                     radial-gradient(at 100% 100%, hsl(145 60% 48% / 0.06) 0px, transparent 50%),
+                     radial-gradient(at 0% 100%, hsl(38 88% 55% / 0.05) 0px, transparent 50%);
   }
 }
 
