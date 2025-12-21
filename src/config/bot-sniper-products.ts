@@ -2,7 +2,7 @@
  * RCKBL (Rockable) Stripe Product Configuration
  */
 
-export const BOT_SNIPER_PRODUCTS = {
+export const RCKBL_PRODUCTS = {
   base: {
     monthly: {
       price_id: 'price_1SOMBzQ7FtTiAL4aGf0eVISx', // Update after Stripe product creation
@@ -28,7 +28,7 @@ export const BOT_SNIPER_PRODUCTS = {
       promo_first_month: 100, // $1 first month
       features: [
         'Unlimited bot detection requests',
-        'Everything in Bot Sniper Base',
+        'Everything in RCKBL Base',
         'WAF (Web Application Firewall)',
         'Malware scanning & removal',
         'File integrity monitoring',

@@ -60,7 +60,7 @@ export default function Blog() {
     },
     {
       title: "Top Security Plugins for WordPress in 2025",
-      excerpt: "Comprehensive comparison of the best WordPress security plugins, featuring PromptFluid Reflex Bot Sniper.",
+      excerpt: "Comprehensive comparison of the best WordPress security plugins, featuring RCKBL (Rockable).",
       href: "/blog/top-security-plugins-2025",
       category: "Security",
       date: "2025-01-10",

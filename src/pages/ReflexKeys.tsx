@@ -10,7 +10,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-const ReflexKeys = () => {
+const RCKBLKeys = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
@@ -125,8 +125,8 @@ const ReflexKeys = () => {
       <div className="flex items-center gap-3 mb-6">
         <Shield className="w-8 h-8 text-primary" />
         <div>
-          <h1 className="text-3xl font-bold">Reflex Admin Keys</h1>
-          <p className="text-muted-foreground">Generate unlimited testing API keys for Reflex Bot Sniper</p>
+          <h1 className="text-3xl font-bold">RCKBL Admin Keys</h1>
+          <p className="text-muted-foreground">Generate unlimited testing API keys for RCKBL (Rockable)</p>
         </div>
       </div>
 
@@ -205,7 +205,7 @@ const ReflexKeys = () => {
               </Button>
             </div>
             <p className="text-sm text-muted-foreground">
-              Save this key securely. It grants unlimited access to all Reflex features.
+              Save this key securely. It grants unlimited access to all RCKBL features.
             </p>
           </div>
         )}
@@ -236,4 +236,4 @@ const ReflexKeys = () => {
   );
 };
 
-export default ReflexKeys;
+export default RCKBLKeys;

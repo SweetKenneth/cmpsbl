@@ -7,7 +7,7 @@ import { Shield, TrendingUp, AlertTriangle, Activity } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
-export default function BotSniper() {
+export default function RCKBL() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [stats, setStats] = useState<any>(null);
@@ -44,7 +44,7 @@ export default function BotSniper() {
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <Card className="p-8 max-w-md text-center">
           <Shield className="w-16 h-16 mx-auto mb-4 text-primary" />
-          <h1 className="text-2xl font-bold mb-2">Bot Sniper</h1>
+          <h1 className="text-2xl font-bold mb-2">RCKBL (Rockable)</h1>
           <p className="text-muted-foreground mb-6">
             Detect and block malicious bots with AI-powered precision
           </p>
@@ -72,7 +72,7 @@ export default function BotSniper() {
           <div>
             <h1 className="text-3xl font-bold flex items-center gap-3">
               <Shield className="w-8 h-8 text-primary" />
-              Bot Sniper Dashboard
+              RCKBL Dashboard
             </h1>
             <p className="text-muted-foreground mt-1">
               Real-time bot detection and threat intelligence
@@ -98,7 +98,7 @@ export default function BotSniper() {
                   Start Protecting Your Site Today
                 </h3>
                 <p className="text-muted-foreground">
-                  Bot Sniper Base: $9/mo • 10,000 requests/month • Full bot detection
+                  RCKBL Base: $9/mo • 10,000 requests/month • Full bot detection
                 </p>
               </div>
               <Button onClick={() => navigate('/bot-sniper/pricing')}>

@@ -6,12 +6,12 @@ import { ArrowLeft, Heart, Users, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 import heroImage from "@/assets/blog/cmptbl-mission-accessibility.jpg";
 
-const ClarityMission = () => {
+const PTCHBLMission = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="PromptFluid Clarity: Making the Digital World Accessible for Everyone | PromptFluid"
-        description="Discover Clarity's mission to eliminate digital barriers through AI-powered accessibility. Learn how PromptFluid is revolutionizing WCAG compliance and creating inclusive web experiences."
+        title="PTCHBL (Patchable): Making the Digital World Accessible for Everyone | PromptFluid"
+        description="Discover PTCHBL's mission to eliminate digital barriers through AI-powered accessibility. Learn how PromptFluid is revolutionizing WCAG compliance and creating inclusive web experiences."
         canonical="https://www.promptfluid.com/blog/clarity-accessibility-mission"
         keywords={[
           "web accessibility",
@@ -19,7 +19,7 @@ const ClarityMission = () => {
           "AI accessibility tools",
           "digital inclusion",
           "accessible web design",
-          "PromptFluid Clarity",
+          "PTCHBL Patchable",
           "ADA compliance software",
           "automated accessibility testing"
         ]}
@@ -46,10 +46,10 @@ const ClarityMission = () => {
           </div>
           
           <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent">
-            PromptFluid Clarity: The Mission to Make Every Digital Experience Accessible
+            PTCHBL (Patchable): The Mission to Make Every Digital Experience Accessible
           </h1>
           <p className="text-xl text-muted-foreground">
-            How PromptFluid's Clarity module is using AI to eliminate digital barriers and create truly inclusive web experiences for everyone
+            How PromptFluid's PTCHBL module is using AI to eliminate digital barriers and create truly inclusive web experiences for everyone
           </p>
           
           <AuthorBio publishDate="2025-10-16" readTime="12 min read" />
@@ -57,7 +57,7 @@ const ClarityMission = () => {
 
         <section className="prose prose-lg max-w-none mb-12">
           <p className="lead text-xl mb-8">
-            Over 1 billion people worldwide live with some form of disability. Yet the digital world remains frustratingly inaccessible to millions. Clarity exists to change that reality through adaptive AI that makes accessibility automatic, comprehensive, and sustainable.
+            Over 1 billion people worldwide live with some form of disability. Yet the digital world remains frustratingly inaccessible to millions. PTCHBL exists to change that reality through adaptive AI that makes accessibility automatic, comprehensive, and sustainable.
           </p>
 
           <h2 className="text-3xl font-bold mt-12 mb-6">The Accessibility Crisis Nobody Talks About</h2>
@@ -374,4 +374,4 @@ const ClarityMission = () => {
   );
 };
 
-export default ClarityMission;
+export default PTCHBLMission;

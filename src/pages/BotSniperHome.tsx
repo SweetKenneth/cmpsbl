@@ -8,7 +8,7 @@ import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { SEO } from "@/components/SEO";
 
-export default function BotSniperHome() {
+export default function RCKBLHome() {
   const navigate = useNavigate();
 
   const features = [
@@ -175,7 +175,7 @@ export default function BotSniperHome() {
           
           <div className="grid md:grid-cols-2 gap-6">
             <Card className="p-8 bg-card border-border">
-              <h3 className="text-2xl font-bold mb-4 text-foreground">Bot Sniper Base</h3>
+              <h3 className="text-2xl font-bold mb-4 text-foreground">RCKBL Base</h3>
               <div className="flex items-baseline gap-2 mb-6">
                 <span className="text-4xl font-bold text-foreground">$9</span>
                 <span className="text-muted-foreground">/month</span>

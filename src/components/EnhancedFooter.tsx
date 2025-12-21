@@ -23,8 +23,8 @@ export function EnhancedFooter() {
           <div>
             <h4 className="font-semibold mb-4 text-sm text-foreground">Products</h4>
             <ul className="space-y-2.5 text-sm text-muted-foreground">
-              <li><Link to="/projects/defense" className="block py-1 hover:text-primary transition-colors touch-manipulation">PromptFluid Reflex</Link></li>
-              <li><Link to="/projects/clarity" className="block py-1 hover:text-primary transition-colors touch-manipulation">PromptFluid Clarity</Link></li>
+              <li><Link to="/projects/defense" className="block py-1 hover:text-primary transition-colors touch-manipulation">RCKBL (Rockable)</Link></li>
+              <li><Link to="/projects/clarity" className="block py-1 hover:text-primary transition-colors touch-manipulation">PTCHBL (Patchable)</Link></li>
               <li><Link to="/projects/brain" className="block py-1 hover:text-primary transition-colors touch-manipulation">PromptFluid Brain</Link></li>
               <li><Link to="/projects/studio" className="block py-1 hover:text-primary transition-colors touch-manipulation">PromptFluid Studio</Link></li>
               <li><Link to="/projects/ripple" className="block py-1 hover:text-primary transition-colors touch-manipulation">PromptFluid Ripple</Link></li>
@@ -49,7 +49,7 @@ export function EnhancedFooter() {
             <ul className="space-y-2.5 text-sm text-muted-foreground">
               <li><Link to="/blog/how-promptfluid-works-cascade-ai-ecosystem" className="block py-1 hover:text-primary transition-colors touch-manipulation">How It Works</Link></li>
               <li><Link to="/blog/cascade-ai-adaptive-intelligence-brain" className="block py-1 hover:text-primary transition-colors touch-manipulation">Cascade AI</Link></li>
-              <li><Link to="/blog/clarity-accessibility-mission" className="block py-1 hover:text-primary transition-colors touch-manipulation">Clarity Mission</Link></li>
+              <li><Link to="/blog/clarity-accessibility-mission" className="block py-1 hover:text-primary transition-colors touch-manipulation">PTCHBL Mission</Link></li>
               <li><Link to="/blog/product-roadmap-2025" className="block py-1 hover:text-primary transition-colors touch-manipulation">2025 Vision</Link></li>
             </ul>
           </div>

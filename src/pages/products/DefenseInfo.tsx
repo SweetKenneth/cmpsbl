@@ -10,9 +10,9 @@ export default function DefenseInfo() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="PromptFluid Reflex — AI-Powered WordPress Security"
+        title="RCKBL (Rockable) — AI-Powered WordPress Security"
         description="Enterprise WordPress security powered by AI. Stop bots, malware, brute force attacks, and unauthorized changes with adaptive intelligence that learns and evolves."
-        canonical="https://promptfluid.com/products/reflex"
+        canonical="https://promptfluid.com/products/rckbl"
         keywords={[
           'bot detection software',
           'AI security monitoring',
@@ -32,7 +32,7 @@ export default function DefenseInfo() {
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-primary/20 mb-6">
             <Shield className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium">PromptFluid Reflex</span>
+            <span className="text-sm font-medium">RCKBL (Rockable)</span>
           </div>
           <h1 className="text-5xl md:text-6xl font-bold mb-6">
             Adaptive WordPress Security.
@@ -158,7 +158,7 @@ export default function DefenseInfo() {
         <div className="max-w-3xl mx-auto text-center glass p-12 rounded-2xl">
           <h2 className="text-3xl font-bold mb-4">Ready to Secure Your WordPress Site?</h2>
           <p className="text-muted-foreground mb-6">
-            Protect your WordPress site with PromptFluid Reflex today.
+            Protect your WordPress site with RCKBL (Rockable) today.
           </p>
           <Button size="lg" onClick={() => navigate('/auth')} className="group">
             Get Started Now
