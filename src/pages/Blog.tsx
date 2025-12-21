@@ -33,6 +33,7 @@ import cmptblMissionImg from "@/assets/blog/cmptbl-mission-accessibility.jpg";
 import wpAccessibilityImg from "@/assets/blog/wordpress-accessibility-guide.jpg";
 import wcag22Img from "@/assets/blog/wcag-2-2-wordpress-changes.jpg";
 import autoAccessibilityImg from "@/assets/blog/automated-accessibility-fixes.jpg";
+import earthWindowImage from "@/assets/hero/earth-window-station-2.jpg";
 
 export default function Blog() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -235,17 +236,18 @@ export default function Blog() {
 
       {/* Earth Window */}
       <section className="relative w-full h-[50vh] overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80')`,
-          }}
+        <img 
+          src={earthWindowImage}
+          alt="Orbital observation deck overlooking Earth from space"
+          className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
+        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background to-transparent" />
         
         <div className="absolute inset-0 flex items-center justify-center">
           <blockquote className="text-center max-w-3xl px-8">
-            <p className="text-2xl md:text-4xl font-light text-foreground drop-shadow-lg">
+            <p className="text-2xl md:text-5xl font-bold text-white [text-shadow:_0_4px_24px_rgba(0,0,0,0.8)]">
               "We document what we build. We share what we learn."
             </p>
           </blockquote>
@@ -312,12 +314,12 @@ export default function Blog() {
 
       {/* Second Earth Window */}
       <section className="relative w-full h-[40vh] overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=1920&q=80')`,
-          }}
+        <img 
+          src={earthWindowImage}
+          alt="Orbital observation deck overlooking Earth from space"
+          className="absolute inset-0 w-full h-full object-cover"
         />
+        <div className="absolute inset-0 bg-black/30" />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background opacity-70" />
       </section>
 

@@ -6,7 +6,7 @@ import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import heroImage from "@/assets/hero/sustainable-architecture.jpg";
-import teamImage from "@/assets/hero/team-collaboration.jpg";
+import earthWindowImage from "@/assets/hero/earth-window-station-1.jpg";
 import founderPhoto from "@/assets/founder-kenneth-sweet.png";
 export default function About() {
   const products = [
@@ -107,17 +107,17 @@ export default function About() {
       {/* Earth Window */}
       <section className="relative w-full h-[50vh] overflow-hidden">
         <img 
-          src={teamImage}
-          alt="Collaborative team working in modern open workspace with natural lighting"
+          src={earthWindowImage}
+          alt="Space station control room with panoramic view of Earth from orbit"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background opacity-70" />
+        <div className="absolute inset-0 bg-black/40" />
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />
         <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-background to-transparent" />
         
         <div className="absolute inset-0 flex items-center justify-center">
           <blockquote className="text-center max-w-3xl px-8">
-            <p className="text-2xl md:text-4xl font-light text-foreground drop-shadow-lg">
+            <p className="text-2xl md:text-5xl font-bold text-white [text-shadow:_0_4px_24px_rgba(0,0,0,0.8)]">
               "100+ projects shipped. We're closers."
             </p>
           </blockquote>
