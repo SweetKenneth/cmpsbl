@@ -60,7 +60,7 @@ export default function Clarity() {
             </div>
             <div>
               <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                Clarity
+                PTCHBL (Patchable)
               </h1>
               <p className="text-xl text-muted-foreground">AI Accessibility That Repairs Code</p>
             </div>
@@ -69,7 +69,7 @@ export default function Clarity() {
           <div className="prose prose-lg dark:prose-invert max-w-none space-y-8">
             <section>
               <p className="text-xl text-muted-foreground leading-relaxed mb-6">
-                Clarity is an AI accessibility scanner that doesn't just audit—it repairs. 
+                PTCHBL (Patchable) is an AI accessibility scanner that doesn't just audit—it repairs. 
                 No overlays, no band-aids. Real code fixes help your site stay 
                 WCAG 2.2 compliant without manual intervention.
               </p>
@@ -200,7 +200,7 @@ export default function Clarity() {
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <Link to="/cluster/verify-worlds-first-ai-plugin-certification" className="flex items-center justify-between p-4 bg-background rounded-lg border border-border hover:border-primary transition-colors group">
-                  <span className="font-semibold">Verify — Plugin Certification</span>
+                  <span className="font-semibold">SPLCBL (Spliceable) — Plugin Certification</span>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <Link to="/cluster/studio-autonomous-site-generator" className="flex items-center justify-between p-4 bg-background rounded-lg border border-border hover:border-primary transition-colors group">

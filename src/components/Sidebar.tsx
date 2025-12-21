@@ -65,7 +65,7 @@ const navSections: NavSection[] = [
       { name: "Vision Control", href: "/admin/vision", icon: Brain },
       { name: "Defense Shield", href: "/admin/defense", icon: Shield },
       { name: "Projects", href: "/admin/projects", icon: Briefcase },
-      { name: "Clarity", href: "/admin/clarity", icon: Eye },
+      { name: "PTCHBL", href: "/admin/clarity", icon: Eye },
     ],
   },
   {
@@ -96,7 +96,7 @@ const navSections: NavSection[] = [
       { name: "Threat Feed", href: "/threat-feed", icon: Zap },
       { name: "Security Rules", href: "/rules", icon: FileText },
       { name: "Red Team", href: "/red-team", icon: Microscope },
-      { name: "Reflex Keys", href: "/admin/reflex-keys", icon: Key },
+      { name: "RCKBL Keys", href: "/admin/reflex-keys", icon: Key },
     ],
   },
   {

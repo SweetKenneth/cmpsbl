@@ -15,7 +15,7 @@ const Clarity = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="PTCHBL Clarity — Free AI Accessibility Scanner | WCAG Auto-Fix"
+        title="PTCHBL (Patchable) — Free AI Accessibility Scanner | WCAG Auto-Fix"
         description="100% free accessibility scanning and AI-powered fixes. Scan any website for WCAG 2.2 compliance and fix issues automatically. Accessibility should never be behind a paywall."
         canonical="https://www.promptfluid.com/clarity"
         keywords={[
@@ -47,7 +47,7 @@ const Clarity = () => {
             </Badge>
             
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground">
-              PTCHBL Clarity
+              PTCHBL (Patchable)
             </h1>
             
             <p className="text-2xl font-bold mb-4 text-foreground">
@@ -147,7 +147,7 @@ const Clarity = () => {
               </div>
               <h3 className="text-xl font-bold mb-2 text-foreground">Scan Your Site</h3>
               <p className="text-muted-foreground">
-                Enter any URL. Clarity analyzes your entire site for WCAG 2.2 compliance in seconds.
+                Enter any URL. PTCHBL analyzes your entire site for WCAG 2.2 compliance in seconds.
               </p>
             </Card>
 
@@ -192,7 +192,7 @@ const Clarity = () => {
                 <Zap className="w-10 h-10 text-primary mb-4" />
                 <h3 className="text-xl font-bold mb-2 text-foreground">Real Code Fixes</h3>
                 <p className="text-muted-foreground">
-                  Unlike overlays that just hide problems, Clarity actually fixes your HTML/DOM.
+                  Unlike overlays that just hide problems, PTCHBL actually fixes your HTML/DOM.
                 </p>
               </Card>
 

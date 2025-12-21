@@ -1,5 +1,5 @@
 /**
- * Bot Sniper Stripe Product Configuration
+ * RCKBL (Rockable) Stripe Product Configuration
  */
 
 export const BOT_SNIPER_PRODUCTS = {

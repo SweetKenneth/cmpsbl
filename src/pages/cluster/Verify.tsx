@@ -61,7 +61,7 @@ export default function Verify() {
             </div>
             <div>
               <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                Verify
+                SPLCBL (Spliceable)
               </h1>
               <p className="text-xl text-muted-foreground">AI Plugin Certification & Auto-Fix (Planned)</p>
             </div>
@@ -69,7 +69,7 @@ export default function Verify() {
 
           <div className="prose prose-lg dark:prose-invert max-w-none space-y-8">
             <section>
-              <h2 className="text-3xl font-bold mb-4">What Verify Does</h2>
+              <h2 className="text-3xl font-bold mb-4">What SPLCBL Does</h2>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
@@ -119,7 +119,7 @@ export default function Verify() {
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <Link to="/cluster/clarity-ai-accessibility-and-autofix" className="flex items-center justify-between p-4 bg-background rounded-lg border border-border hover:border-primary transition-colors group">
-                  <span className="font-semibold">Clarity — AI Accessibility</span>
+                  <span className="font-semibold">PTCHBL (Patchable) — AI Accessibility</span>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <Link to="/cluster/studio-autonomous-site-generator" className="flex items-center justify-between p-4 bg-background rounded-lg border border-border hover:border-primary transition-colors group">

@@ -6,9 +6,9 @@ export interface CascadeInsight {
   emerging_pattern: string;
   recommended_action: string;
   ecosystem_health: {
-    clarity: { status: string; score: number };
-    verify: { status: string; score: number };
-    reflex: { status: string; score: number };
+    ptchbl: { status: string; score: number };
+    splcbl: { status: string; score: number };
+    rckbl: { status: string; score: number };
     studio: { status: string; score: number };
     nexus: { status: string; score: number };
     defense: { status: string; score: number };
@@ -27,7 +27,7 @@ export function useInsights() {
         .order('created_at', { ascending: false });
 
       // Get component health from events
-      const modules = ['clarity', 'verify', 'reflex', 'studio', 'nexus', 'defense'];
+      const modules = ['ptchbl', 'splcbl', 'rckbl', 'studio', 'nexus', 'defense'];
       const ecosystemHealth = modules.reduce((acc, module) => {
         const moduleEvents = events?.filter(e => e.module === module) || [];
         const successRate = moduleEvents.length > 0 
@@ -65,8 +65,8 @@ export function useInsights() {
           : "System operating within normal parameters",
         recommended_action: ecosystemHealth.defense?.score < 80 
           ? "Review Defense module performance and threat detection accuracy"
-          : ecosystemHealth.clarity?.score < 80
-          ? "Optimize Clarity scanning efficiency"
+          : ecosystemHealth.ptchbl?.score < 80
+          ? "Optimize PTCHBL scanning efficiency"
           : "All systems performing optimally - continue monitoring",
         ecosystem_health: ecosystemHealth
       };

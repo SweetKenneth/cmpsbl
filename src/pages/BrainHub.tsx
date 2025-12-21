@@ -68,7 +68,7 @@ export default function BrainHub() {
     },
     {
       icon: FileText,
-      title: "Reflex Keys",
+      title: "RCKBL Keys",
       description: "Manage API keys, access tokens, and authentication credentials for Brain modules.",
       href: "/admin/reflex-keys",
       status: "Admin",

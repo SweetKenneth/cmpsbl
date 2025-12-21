@@ -67,7 +67,7 @@ export default function Auth() {
                 <CardHeader>
                   <CardTitle>Welcome Back</CardTitle>
                   <CardDescription>
-                    Sign in to access your PromptFluid Reflex dashboard
+                    Sign in to access your PromptFluid dashboard
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -111,7 +111,7 @@ export default function Auth() {
                 <CardHeader>
                   <CardTitle>Create Account</CardTitle>
                   <CardDescription>
-                    Get started with PromptFluid Reflex
+                    Get started with PromptFluid
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">

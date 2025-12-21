@@ -14,7 +14,7 @@ export default function Roadmap() {
       items: [
         {
           icon: Shield,
-          title: "PromptFluid Reflex (Bot Sniper) - WordPress Plugin",
+          title: "RCKBL (Rockable) - WordPress Plugin",
           description: "AI-powered bot detection and threat intelligence for WordPress. Behavioral analysis, adaptive CAPTCHA, and real-time threat blocking. Currently pending WordPress.org approval.",
           status: "Pending Approval",
           technologies: ["Machine Learning", "Behavioral Analysis", "Fingerprinting", "PHP", "React"]
@@ -34,8 +34,8 @@ export default function Roadmap() {
       items: [
         {
           icon: Accessibility,
-          title: "Clarity Accessibility Suite",
-          description: "100% free WCAG compliance scanning and AI-powered fixes. Live at clarity.promptfluid.com — accessibility should never be behind a paywall.",
+          title: "PTCHBL (Patchable) Accessibility Suite",
+          description: "100% free WCAG compliance scanning and AI-powered fixes. Live at PTCHBL.com — accessibility should never be behind a paywall.",
           status: "Live",
           technologies: ["Computer Vision", "NLP", "WCAG 2.2", "ARIA"]
         },
