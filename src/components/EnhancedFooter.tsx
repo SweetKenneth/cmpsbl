@@ -4,6 +4,17 @@ export function EnhancedFooter() {
   return (
     <footer className="relative z-20 py-16 px-4 border-t border-border bg-background" role="contentinfo">
       <div className="container mx-auto max-w-6xl">
+        {/* Logo at Top */}
+        <div className="mb-12">
+          <Link to="/" className="inline-block">
+            <img 
+              src="/favicon.png" 
+              alt="PromptFluid" 
+              className="h-12 w-12"
+            />
+          </Link>
+        </div>
+
         {/* Main Footer Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-12">
           {/* Company */}
@@ -143,6 +154,13 @@ export function EnhancedFooter() {
               Terms
             </Link>
           </div>
+        </div>
+
+        {/* Made with Love */}
+        <div className="mt-8 text-center">
+          <p className="text-sm text-muted-foreground">
+            Made by humans who care ❤️
+          </p>
         </div>
       </div>
     </footer>

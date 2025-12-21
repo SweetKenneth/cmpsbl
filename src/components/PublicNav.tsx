@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logo from "@/assets/promptfluid-logo.png";
 
 export function PublicNav() {
   const navigate = useNavigate();
@@ -22,9 +23,11 @@ export function PublicNav() {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3" aria-label="PromptFluid Home">
-            <h1 className="text-2xl md:text-3xl font-bold text-foreground">
-              PromptFluid
-            </h1>
+            <img 
+              src={logo} 
+              alt="PromptFluid" 
+              className="h-8 md:h-10 w-auto"
+            />
           </Link>
 
           {/* Desktop Menu */}
