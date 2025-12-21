@@ -11,8 +11,8 @@ export default function Solutions() {
     {
       icon: Shield,
       name: "RCKBL Defense",
-      tagline: "Complete Website Security",
-      description: "Born from reverse-engineering our own stealth bot technology. Complete protection against hackers, viruses, and bots with WordPress plugin included.",
+      tagline: "Enterprise Website Security",
+      description: "Enterprise-grade security born from reverse-engineering our own stealth bot technology. Provides comprehensive protection against automated threats, credential stuffing, and malicious actors with adaptive behavioral analysis.",
       features: [
         "AI-powered bot detection",
         "Behavioral fingerprinting",
@@ -22,13 +22,29 @@ export default function Solutions() {
         "Device reputation scoring"
       ],
       metrics: ["Live", "WordPress Ready", "Enterprise Grade"],
-      link: "/projects/defense"
+      link: "https://promptfluid.com/projects/defense"
+    },
+    {
+      icon: Globe,
+      name: "RNDRBL Browser",
+      tagline: "Accessibility-First Technology",
+      description: "Accessibility-first browser technology with an integrated control panel that enables users with disabilities to customize their browsing experience in real-time. Removes barriers between users and the web.",
+      features: [
+        "Real-time layover controls",
+        "Disability-specific features",
+        "Universal compatibility",
+        "Browser extension",
+        "Customizable interface",
+        "Instant adjustments"
+      ],
+      metrics: ["Running", "Inclusive", "Universal"],
+      link: "https://RNDRBL.com"
     },
     {
       icon: Globe,
       name: "PTCHBL Accessibility",
       tagline: "Free WCAG Scanner",
-      description: "Free WCAG scanner that tests websites for accessibility issues, then applies AI to fix 45 of 86 WCAG compliance functions. Inclusion should never be behind a paywall.",
+      description: "Free-forever WCAG compliance scanner with AI-powered remediation. Automatically detects and fixes 45 of 86 WCAG accessibility functions. We believe inclusion should never be behind a paywall.",
       features: [
         "Free WCAG 2.2 scanning",
         "AI-powered auto-fixes",
@@ -44,7 +60,7 @@ export default function Solutions() {
       icon: Brain,
       name: "Cascade AI",
       tagline: "Autonomous Dreaming AI",
-      description: "The first autonomous AI that reflects on memories through internal simulation cycles we call dreaming. World first documented with proof on Zenodo and OSF.",
+      description: "World's first documented autonomous AI with internal memory reflection cycles—a process we call dreaming. Published proof of concept on Zenodo and OSF with full architectural transparency.",
       features: [
         "Memory reflection cycles",
         "Autonomous learning",
@@ -54,13 +70,13 @@ export default function Solutions() {
         "Documented & verified"
       ],
       metrics: ["World First", "Documented", "Deployed"],
-      link: "/projects/brain"
+      link: "https://promptfluid.com/projects/brain"
     },
     {
       icon: Zap,
       name: "AI Nexus",
       tagline: "Multi-Provider Gateway",
-      description: "Intelligent AI routing across 20+ LLMs and API providers with automatic fallback chains and cost optimization.",
+      description: "Unified AI infrastructure routing across 20+ LLM providers with intelligent load balancing, automatic failover, and cost optimization. The operational spine of our AI ecosystem.",
       features: [
         "20+ AI providers",
         "Automatic fallbacks",
@@ -70,13 +86,13 @@ export default function Solutions() {
         "Zero-downtime switching"
       ],
       metrics: ["20+ Providers", "Running", "Optimized"],
-      link: "/projects/nexus"
+      link: "https://promptfluid.com/blog/ai-triad-intelligent-routing"
     },
     {
       icon: Code,
       name: "SPLCBL Validator",
       tagline: "WordPress Plugin Checker",
-      description: "Upload your WordPress plugin and scan for common WordPress.org submission issues before the official review process.",
+      description: "Pre-submission validation tool for WordPress plugin developers. Scans your plugin against WordPress.org compliance requirements before official review, reducing rejection rates and accelerating time to market.",
       features: [
         "Pre-submission scanning",
         "Common issue detection",
@@ -86,13 +102,13 @@ export default function Solutions() {
         "Detailed reports"
       ],
       metrics: ["Free", "Developer Tool", "Pre-Launch"],
-      link: "/projects/spliceable"
+      link: "https://SPLCBL.com"
     },
     {
       icon: Lock,
       name: "XCTBL Space",
       tagline: "Lore-Wrapped SaaS Suite",
-      description: "Software suite wrapped in fictional lore. Custom OAuth login system connecting tools across interconnected worlds. Fiction-framed, but every tool is 100% real.",
+      description: "Immersive SaaS platform wrapped in fictional world-building. Features custom OAuth authentication connecting real, functional tools across interconnected narrative experiences. Entertainment meets enterprise.",
       features: [
         "Custom OAuth system",
         "Interconnected tools",
