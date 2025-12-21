@@ -1,356 +1,257 @@
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Shield, Globe, Zap, Brain, ArrowRight, CheckCircle, Code, Lock, Gauge } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { SEO } from "@/components/SEO";
 
 export default function Solutions() {
-  useEffect(() => {
-    document.title = "PromptFluid Reflex WordPress Security Plugin | AI Bot Protection & Threat Detection 2025";
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute('content', 'Download PromptFluid Reflex—advanced AI-powered WordPress security plugin. Behavioral bot detection, DDoS protection, and machine learning threat intelligence. Free download available.');
-    }
-    
-    const metaKeywords = document.querySelector('meta[name="keywords"]');
-    if (metaKeywords) {
-      metaKeywords.setAttribute('content', 'WordPress security plugin 2025, AI bot detection, PromptFluid Reflex, WordPress firewall, DDoS protection WordPress, brute force prevention, behavioral analysis security, WordPress malware protection, bot sniper plugin, anti-bot WordPress, threat intelligence plugin, WordPress vulnerability scanner, real-time security monitoring');
-    }
-
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.text = JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "PromptFluid Reflex Bot Sniper Defense",
-      "alternateName": "PromptFluid Defense WordPress Plugin",
-      "applicationCategory": "SecurityApplication",
-      "operatingSystem": "WordPress 5.0+",
-      "description": "AI-powered WordPress security plugin with real-time bot detection, behavioral analysis, and machine learning threat intelligence.",
-      "offers": {
-        "@type": "AggregateOffer",
-        "lowPrice": "0",
-        "highPrice": "99",
-        "priceCurrency": "USD",
-        "offerCount": "4",
-        "availability": "https://schema.org/PreOrder"
-      },
-      "featureList": [
-        "AI-powered bot detection",
-        "Real-time behavioral analysis",
-        "Adaptive CAPTCHA system",
-        "Machine learning threat intelligence",
-        "DDoS protection & rate limiting",
-        "Brute force attack prevention",
-        "Device fingerprinting"
-      ],
-      "screenshot": "https://promptfluid.com/reflex-screenshot.png",
-      "softwareVersion": "1.0.0",
-      "author": {
-        "@type": "Organization",
-        "name": "PromptFluid"
-      }
-    });
-    document.head.appendChild(script);
-    
-    // Add FAQ Schema
-    const faqScript = document.createElement('script');
-    faqScript.type = 'application/ld+json';
-    faqScript.text = JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [{
-        "@type": "Question",
-        "name": "What is PromptFluid Reflex?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "PromptFluid Reflex is an AI-powered WordPress security plugin that uses behavioral analysis and machine learning to detect and block bot attacks. It protects against credential stuffing, DDoS attacks, brute force attempts, and malicious traffic. Currently pending WordPress.org approval."
-        }
-      }, {
-        "@type": "Question",
-        "name": "How is Reflex different from Wordfence or Sucuri?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Unlike Wordfence and Sucuri which rely on signature-based detection and IP blacklists, Reflex uses behavioral AI to analyze visitor patterns in real-time. This approach is designed to catch sophisticated bots that bypass traditional security."
-        }
-      }, {
-        "@type": "Question",
-        "name": "Is PromptFluid Reflex available?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Reflex is currently pending WordPress.org approval. Once approved, it will offer a free tier with core bot protection features. Premium plans will add advanced features for high-traffic sites."
-        }
-      }]
-    });
-    document.head.appendChild(faqScript);
-
-    return () => {
-      if (script.parentNode) script.parentNode.removeChild(script);
-      if (faqScript.parentNode) faqScript.parentNode.removeChild(faqScript);
-    };
-  }, []);
-
   const solutions = [
     {
       icon: Shield,
-      name: "PromptFluid Reflex (Bot Sniper)",
-      tagline: "AI-Powered Bot Protection — Pending WordPress.org",
-      description: "WordPress security plugin with AI-powered bot detection, behavioral analysis, CAPTCHA, and device fingerprinting. Designed to protect WordPress sites from automated attacks, credential stuffing, and malicious traffic.",
+      name: "RCKBL Defense",
+      tagline: "Complete Website Security",
+      description: "Born from reverse-engineering our own stealth bot technology. Complete protection against hackers, viruses, and bots with WordPress plugin included.",
       features: [
         "AI-powered bot detection",
-        "Adaptive CAPTCHA with verification",
-        "Device fingerprinting and reputation scoring",
-        "Behavioral analysis and anomaly detection",
-        "Threat intelligence integration",
-        "Real-time blocking"
+        "Behavioral fingerprinting",
+        "Real-time threat blocking",
+        "WordPress plugin ready",
+        "Adaptive CAPTCHA system",
+        "Device reputation scoring"
       ],
-      metrics: ["Pending Approval", "Free Tier Planned", "Premium Tiers"],
-      link: "/bot-sniper"
+      metrics: ["Live", "WordPress Ready", "Enterprise Grade"],
+      link: "/projects/defense"
     },
     {
       icon: Globe,
-      name: "PromptFluid Access",
-      tagline: "Universal Web Accessibility Compliance",
-      description: "Automated accessibility testing, remediation, and monitoring to ensure WCAG 2.1 AA/AAA compliance. Makes your websites inclusive and accessible to all users including those with disabilities, while reducing legal risk and expanding your audience.",
+      name: "PTCHBL Accessibility",
+      tagline: "Free WCAG Scanner",
+      description: "Free WCAG scanner that tests websites for accessibility issues, then applies AI to fix 45 of 86 WCAG compliance functions. Inclusion should never be behind a paywall.",
       features: [
-        "Automated WCAG 2.1 compliance scanning",
-        "Screen reader compatibility testing",
-        "Keyboard navigation validation",
-        "Color contrast and typography analysis",
-        "Aria label and semantic HTML verification",
-        "Real-time accessibility scoring"
+        "Free WCAG 2.2 scanning",
+        "AI-powered auto-fixes",
+        "45/86 compliance functions",
+        "No signup required",
+        "Instant results",
+        "Developer-friendly reports"
       ],
-      metrics: ["WCAG 2.1 AA/AAA", "508 Compliant", "ADA Ready"],
-      link: "/accessibility"
-    },
-    {
-      icon: Code,
-      name: "PromptFluid Sites",
-      tagline: "Instant Commercial Website Builder",
-      description: "Deploy production-ready websites in minutes with AI-generated content, optimized SEO, and integrated security. Perfect for agencies, freelancers, and businesses needing fast, professional web presence with zero infrastructure management.",
-      features: [
-        "AI-powered content generation",
-        "SEO optimization with schema markup",
-        "Integrated Defense and Access modules",
-        "One-click deployment to global CDN",
-        "Custom domain support",
-        "Built-in analytics and monitoring"
-      ],
-      metrics: ["<5min Deploy", "100 Lighthouse", "Auto SSL"],
-      link: "/deployment"
+      metrics: ["100% Free", "AI-Powered", "WCAG 2.2"],
+      link: "https://PTCHBL.com"
     },
     {
       icon: Brain,
-      name: "PromptFluid Brain",
-      tagline: "Intelligent System Orchestration",
-      description: "Central AI engine that coordinates between all modules, learns from usage patterns, and auto-optimizes performance. Routes through Groq, Cerebras, Google AI Studio, Together AI, DeepSeek, and Hyperbolic—all free-tier providers.",
+      name: "Cascade AI",
+      tagline: "Autonomous Dreaming AI",
+      description: "The first autonomous AI that reflects on memories through internal simulation cycles we call dreaming. World first documented with proof on Zenodo and OSF.",
       features: [
-        "Multi-AI orchestration (6 free-tier providers)",
-        "Adaptive learning from system behavior",
-        "Zero-cost AI operations",
-        "Predictive threat analysis and mitigation",
-        "Performance optimization recommendations",
-        "Smart routing and load balancing"
+        "Memory reflection cycles",
+        "Autonomous learning",
+        "Internal simulation",
+        "Pattern synthesis",
+        "Self-improvement loops",
+        "Documented & verified"
       ],
-      metrics: ["6 AI Providers", "Real-time Learning", "Auto-Optimization"],
-      link: "/brain"
+      metrics: ["World First", "Documented", "Deployed"],
+      link: "/projects/brain"
     },
     {
       icon: Zap,
-      name: "PromptFluid Vision",
-      tagline: "Unified Admin & Monitoring Dashboard",
-      description: "Centralized control panel for managing all PromptFluid modules. Real-time monitoring, analytics, customer management, API key generation, diagnostics, and system health tracking in one beautiful, responsive interface.",
+      name: "AI Nexus",
+      tagline: "Multi-Provider Gateway",
+      description: "Intelligent AI routing across 20+ LLMs and API providers with automatic fallback chains and cost optimization.",
       features: [
-        "Real-time system monitoring",
-        "Customer and tenant management",
-        "API key generation and management",
-        "Security event logging and analysis",
-        "Performance metrics and analytics",
-        "Remote diagnostics and repair tools"
+        "20+ AI providers",
+        "Automatic fallbacks",
+        "Cost optimization",
+        "Smart routing",
+        "Load balancing",
+        "Zero-downtime switching"
       ],
-      metrics: ["Single Dashboard", "Real-time Data", "Multi-tenant"],
-      link: "/dashboard"
+      metrics: ["20+ Providers", "Running", "Optimized"],
+      link: "/projects/nexus"
+    },
+    {
+      icon: Code,
+      name: "SPLCBL Validator",
+      tagline: "WordPress Plugin Checker",
+      description: "Upload your WordPress plugin and scan for common WordPress.org submission issues before the official review process.",
+      features: [
+        "Pre-submission scanning",
+        "Common issue detection",
+        "Compliance checking",
+        "Free for developers",
+        "Instant results",
+        "Detailed reports"
+      ],
+      metrics: ["Free", "Developer Tool", "Pre-Launch"],
+      link: "/projects/spliceable"
     },
     {
       icon: Lock,
-      name: "Enterprise Security Suite",
-      tagline: "Comprehensive Protection Ecosystem",
-      description: "Complete security stack combining Defense, automated updates, remote diagnostics, self-healing capabilities, and emergency response protocols. Monitors threats 24/7 and automatically applies patches and fixes.",
+      name: "XCTBL Space",
+      tagline: "Lore-Wrapped SaaS Suite",
+      description: "Software suite wrapped in fictional lore. Custom OAuth login system connecting tools across interconnected worlds. Fiction-framed, but every tool is 100% real.",
       features: [
-        "24/7 automated threat monitoring",
-        "Self-healing and auto-repair systems",
-        "Remote diagnostics and emergency shutdown",
-        "Automatic security patch deployment",
-        "Vulnerability scanning and remediation",
-        "Compliance reporting and audit logs"
+        "Custom OAuth system",
+        "Interconnected tools",
+        "Fictional interface",
+        "Real functionality",
+        "Multi-world navigation",
+        "Entertainment layer"
       ],
-      metrics: ["24/7 Monitoring", "Auto-Patching", "Zero-Day Protection"],
-      link: "/health"
+      metrics: ["Live", "Experimental", "Functional"],
+      link: "https://XCTBL.com"
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background/95 to-secondary/5">
-      {/* Navigation */}
+    <div className="min-h-screen bg-background">
+      <SEO 
+        title="Solutions — PromptFluid Products & Services"
+        description="Explore PromptFluid's product suite: RCKBL security, PTCHBL accessibility, Cascade AI, AI Nexus, and more. Real systems that ship."
+        canonical="https://promptfluid.com/solutions"
+        keywords={['AI solutions', 'WordPress security', 'accessibility tools', 'AI gateway', 'autonomous AI']}
+      />
+      
       <PublicNav />
       
-      {/* Hero */}
-      <header className="relative overflow-hidden py-20 px-4">
-        <div className="absolute inset-0 bg-gradient-to-r from-secondary/10 via-primary/10 to-secondary/10 animate-gradient"></div>
-        <div className="container mx-auto max-w-6xl relative z-10">
+      {/* Hero with Earth Window */}
+      <section className="relative w-full">
+        <div 
+          className="absolute inset-0 h-[50vh] bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1920&q=80')`,
+          }}
+        />
+        <div className="absolute inset-0 h-[50vh] bg-gradient-to-b from-background/80 via-background/40 to-background" />
+        
+        <div className="relative container mx-auto px-4 pt-32 pb-16 max-w-4xl">
           <nav className="mb-12">
             <Link to="/" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary transition-colors">
               ← Back to Home
             </Link>
           </nav>
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 glow-text">
-            Solutions That <span className="gradient-text">Scale</span>
+          
+          <Badge variant="outline" className="mb-6 border-primary/30 text-primary">
+            <Gauge className="w-3 h-3 mr-2" />
+            Product Suite
+          </Badge>
+          
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground">
+            Solutions That Ship
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl">
-            Comprehensive AI-powered platform modules for security, accessibility, deployment, and intelligent automation. 
-            Everything you need to build, protect, and optimize modern web applications.
+            Real products. Real infrastructure. Built to work without supervision. 100+ projects shipped over 15 years.
           </p>
         </div>
-      </header>
+      </section>
 
       {/* Solutions Grid */}
       <section className="py-16 px-4">
-        <div className="container mx-auto max-w-7xl">
-          <div className="space-y-16">
+        <div className="container mx-auto max-w-6xl">
+          <div className="space-y-8">
             {solutions.map((solution, index) => (
-              <article 
+              <div 
                 key={solution.name}
-                className="glass glass-hover p-8 md:p-12 rounded-2xl animate-fade-in"
-                style={{ animationDelay: `${index * 100}ms` }}
+                className="bg-card border border-border rounded-lg p-8 md:p-10 hover:border-primary/30 transition-all"
               >
                 <div className="grid md:grid-cols-2 gap-8">
                   <div>
-                    <solution.icon className="w-16 h-16 text-primary mb-4 animate-glow" />
-                    <h2 className="text-3xl font-bold mb-2">{solution.name}</h2>
-                    <p className="text-lg text-primary mb-4">{solution.tagline}</p>
+                    <div className="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                      <solution.icon className="w-7 h-7 text-primary" />
+                    </div>
+                    <h2 className="text-2xl font-bold mb-2 text-foreground">{solution.name}</h2>
+                    <p className="text-lg text-primary font-medium mb-4">{solution.tagline}</p>
                     <p className="text-muted-foreground leading-relaxed mb-6">
                       {solution.description}
                     </p>
                     <div className="flex flex-wrap gap-2 mb-6">
                       {solution.metrics.map((metric) => (
-                        <span key={metric} className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
+                        <Badge key={metric} variant="outline" className="text-xs">
                           {metric}
-                        </span>
+                        </Badge>
                       ))}
                     </div>
-                    <Link to={solution.link}>
-                      <Button className="bg-primary hover:bg-primary/80 text-white">
-                        Explore {solution.name.split(' ')[1]}
-                        <ArrowRight className="w-4 h-4 ml-2" />
-                      </Button>
-                    </Link>
+                    {solution.link.startsWith('http') ? (
+                      <a href={solution.link} target="_blank" rel="noopener noreferrer">
+                        <Button className="bg-primary hover:bg-primary/90">
+                          Visit Site
+                          <ArrowRight className="w-4 h-4 ml-2" />
+                        </Button>
+                      </a>
+                    ) : (
+                      <Link to={solution.link}>
+                        <Button className="bg-primary hover:bg-primary/90">
+                          Learn More
+                          <ArrowRight className="w-4 h-4 ml-2" />
+                        </Button>
+                      </Link>
+                    )}
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold mb-4">Key Features</h3>
+                    <h3 className="text-lg font-semibold mb-4 text-foreground">Key Features</h3>
                     <ul className="space-y-3">
                       {solution.features.map((feature) => (
                         <li key={feature} className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
+                          <CheckCircle className="w-5 h-5 text-[hsl(var(--system-green))] flex-shrink-0 mt-0.5" />
                           <span className="text-muted-foreground">{feature}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
                 </div>
-              </article>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Integration Section */}
+      {/* Earth Window */}
+      <section className="relative w-full h-[50vh] overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1920&q=80')`,
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background opacity-70" />
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-background to-transparent" />
+        
+        <div className="absolute inset-0 flex items-center justify-center">
+          <blockquote className="text-center max-w-3xl px-8">
+            <p className="text-2xl md:text-4xl font-light text-white drop-shadow-lg">
+              "We're closers. We ship real systems."
+            </p>
+          </blockquote>
+        </div>
+      </section>
+
+      {/* CTA */}
       <section className="py-16 px-4 bg-muted/30">
-        <div className="container mx-auto max-w-6xl text-center">
-          <Gauge className="w-16 h-16 text-primary mx-auto mb-6 animate-glow" />
-          <h2 className="text-4xl font-bold mb-6">Integrated Platform</h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            PromptFluid products are designed to work together. Protect your WordPress site with Reflex, 
-            ensure accessibility with Clarity, and explore experimental AI with Dream Eater.
-          </p>
-          <Link to="/contact">
-            <Button size="lg" className="bg-primary hover:bg-primary/80 text-white">
-              Contact Us
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
-          </Link>
-        </div>
-      </section>
-
-      {/* SEO Content Section */}
-      <section className="py-16 px-4">
-        <div className="container mx-auto max-w-4xl">
-          <h2 className="text-3xl font-bold mb-6">WordPress Security Plugin Solutions</h2>
-          <div className="prose prose-lg dark:prose-invert max-w-none">
-            <p className="text-muted-foreground leading-relaxed mb-4">
-              <strong>PromptFluid Reflex (Bot Sniper)</strong> represents a new approach to <a href="/blog/wordpress-bot-defense" className="text-primary hover:underline">WordPress security plugins</a>. Unlike traditional security solutions that rely on signature-based detection, our plugin uses machine learning and behavioral analysis to identify and block sophisticated threats.
-            </p>
-            <p className="text-muted-foreground leading-relaxed mb-4">
-              Our security plugin is designed to protect against major attack vectors including DDoS floods, brute force login attempts, SQL injection, cross-site scripting (XSS), and <a href="/blog/ai-hackers-underground-2025" className="text-primary hover:underline">AI-powered automated attacks</a>. The threat detection system analyzes behavioral patterns, device fingerprints, and network traffic to distinguish legitimate users from malicious bots.
-            </p>
-            <h3 className="text-2xl font-semibold mt-8 mb-4">PromptFluid Reflex vs Other WordPress Security Plugins</h3>
-            <p className="text-muted-foreground leading-relaxed mb-4">
-              When comparing <a href="/blog/top-security-plugins-2025" className="text-primary hover:underline">top WordPress security plugins</a>, PromptFluid Reflex takes an AI-first approach. While plugins like Wordfence, Sucuri, and iThemes Security offer firewall protection, Reflex is designed with adaptive machine learning that can evolve with emerging threats.
-            </p>
-            <div className="grid md:grid-cols-2 gap-6 my-8">
-              <div className="p-6 glass rounded-xl">
-                <h4 className="text-lg font-semibold mb-3">Traditional Security Plugins</h4>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li>• Signature-based detection (reactive)</li>
-                  <li>• IP blacklist reliance</li>
-                  <li>• Manual rule configuration required</li>
-                  <li>• Limited bot detection capabilities</li>
-                </ul>
-              </div>
-              <div className="p-6 glass rounded-xl border-2 border-primary/50">
-                <h4 className="text-lg font-semibold mb-3 text-primary">PromptFluid Reflex (AI-Powered)</h4>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li>• Machine learning threat detection (proactive)</li>
-                  <li>• Behavioral analysis approach</li>
-                  <li>• Automatic rule adaptation</li>
-                  <li>• Advanced behavioral bot analysis</li>
-                </ul>
-              </div>
-            </div>
-            <p className="text-muted-foreground leading-relaxed mb-4">
-              Learn more about <a href="/blog/ai-cybersecurity-evolution-2025" className="text-primary hover:underline">how AI is transforming cybersecurity</a> and why behavioral analysis represents the future of WordPress protection.
-            </p>
-            <p className="text-sm text-muted-foreground italic">
-              Note: Reflex Bot Sniper is currently pending WordPress.org approval. Join the waitlist to be notified when it's available.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer CTA */}
-      <section className="py-16 px-4 bg-gradient-to-r from-primary/10 via-secondary/10 to-primary/10">
         <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Secure Your WordPress Site?</h2>
+          <h2 className="text-3xl font-bold mb-4 text-foreground">Ready to Build Together?</h2>
           <p className="text-xl text-muted-foreground mb-8">
-            PromptFluid Defense is currently pending WordPress.org approval. Be among the first to experience AI-powered WordPress security.
+            100+ projects shipped over 15 years. Let's add yours to the list.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/auth">
-              <Button size="lg" className="bg-primary hover:bg-primary/80 text-white">
-                Start Free Trial
+            <Link to="/investors">
+              <Button size="lg" className="bg-primary hover:bg-primary/90">
+                Investor Information
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </Link>
             <Link to="/contact">
               <Button size="lg" variant="outline">
-                Contact Sales
+                Contact Team
               </Button>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Footer Links */}
       <EnhancedFooter />
     </div>
   );

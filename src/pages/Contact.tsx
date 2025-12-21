@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Mail, MessageSquare, Send, CheckCircle } from "lucide-react";
+import { Mail, MessageSquare, Send, CheckCircle, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { SEO } from "@/components/SEO";
 
 export default function Contact() {
   const { toast } = useToast();
@@ -18,48 +20,10 @@ export default function Contact() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  useEffect(() => {
-    document.title = "Contact PromptFluid | WordPress Security Support & Enterprise Sales";
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute('content', 'Contact PromptFluid for WordPress security plugin support, enterprise bot protection inquiries, and AI-powered threat detection solutions. Get in touch with our security experts for demos and technical assistance.');
-    }
-    
-    // Add keywords meta
-    const metaKeywords = document.querySelector('meta[name="keywords"]');
-    if (metaKeywords) {
-      metaKeywords.setAttribute('content', 'WordPress security contact, bot protection support, security plugin help, enterprise WordPress security, AI security demo, threat detection inquiries');
-    }
-
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.text = JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "ContactPage",
-      "name": "Contact PromptFluid",
-      "description": "Get in touch with PromptFluid for support and inquiries",
-      "provider": {
-        "@type": "Organization",
-        "name": "PromptFluid",
-        "contactPoint": {
-          "@type": "ContactPoint",
-        "contactType": "Customer Service",
-        "email": "PromptFluid@gmail.com"
-        }
-      }
-    });
-    document.head.appendChild(script);
-
-    return () => {
-      if (script.parentNode) script.parentNode.removeChild(script);
-    };
-  }, []);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
     setTimeout(() => {
       toast({
         title: "Message Sent!",
@@ -78,38 +42,56 @@ export default function Contact() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background/95 to-primary/5">
-      {/* Navigation */}
+    <div className="min-h-screen bg-background">
+      <SEO 
+        title="Contact PromptFluid | Get in Touch"
+        description="Contact PromptFluid for support, enterprise inquiries, and partnership opportunities. Founder-led support for all inquiries."
+        canonical="https://promptfluid.com/contact"
+        keywords={['contact PromptFluid', 'AI support', 'enterprise inquiries', 'partnership']}
+      />
+      
       <PublicNav />
       
-      {/* Hero */}
-      <header className="relative overflow-hidden py-20 px-4">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-secondary/10 to-primary/10 animate-gradient"></div>
-        <div className="container mx-auto max-w-6xl relative z-10">
+      {/* Hero with Earth Window */}
+      <section className="relative w-full">
+        <div 
+          className="absolute inset-0 h-[50vh] bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80')`,
+          }}
+        />
+        <div className="absolute inset-0 h-[50vh] bg-gradient-to-b from-background/80 via-background/40 to-background" />
+        
+        <div className="relative container mx-auto px-4 pt-32 pb-16 max-w-4xl">
           <nav className="mb-12">
             <Link to="/" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary transition-colors">
               ← Back to Home
             </Link>
           </nav>
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 glow-text">
-            Let's <span className="gradient-text">Connect</span>
+          
+          <Badge variant="outline" className="mb-6 border-primary/30 text-primary">
+            <Mail className="w-3 h-3 mr-2" />
+            Get in Touch
+          </Badge>
+          
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground">
+            Let's Connect
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl">
-            Have questions about PromptFluid? Want to discuss enterprise solutions? 
-            We're here to help you transform your development workflow.
+            Have questions about PromptFluid? Want to discuss investment or enterprise solutions? We're here to help.
           </p>
         </div>
-      </header>
+      </section>
 
       {/* Contact Form Section */}
       <section className="py-16 px-4">
         <div className="container mx-auto max-w-5xl">
           <div className="grid md:grid-cols-2 gap-12">
             {/* Contact Info */}
-            <div className="space-y-8">
-              <div className="glass glass-hover p-8 rounded-xl">
-                <Mail className="w-12 h-12 text-primary mb-4 animate-glow" />
-                <h2 className="text-2xl font-bold mb-4">Contact Us</h2>
+            <div className="space-y-6">
+              <div className="bg-card border border-border rounded-lg p-8">
+                <Mail className="w-10 h-10 text-primary mb-4" />
+                <h2 className="text-2xl font-bold mb-4 text-foreground">Contact Us</h2>
                 <div className="space-y-4">
                   <div>
                     <p className="text-muted-foreground mb-2">Phone:</p>
@@ -120,9 +102,7 @@ export default function Contact() {
                   </div>
                   
                   <div>
-                    <p className="text-muted-foreground mb-2">
-                      For all inquiries including support, sales, and partnerships:
-                    </p>
+                    <p className="text-muted-foreground mb-2">Email:</p>
                     <a href="mailto:PromptFluid@gmail.com" className="text-primary hover:underline text-lg font-medium">
                       PromptFluid@gmail.com
                     </a>
@@ -130,30 +110,27 @@ export default function Contact() {
                 </div>
               </div>
 
-              <div className="glass glass-hover p-8 rounded-xl">
-                <MessageSquare className="w-12 h-12 text-primary mb-4 animate-glow" />
-                <h2 className="text-2xl font-bold mb-4">Quick Answers</h2>
+              <div className="bg-card border border-border rounded-lg p-8">
+                <MessageSquare className="w-10 h-10 text-primary mb-4" />
+                <h2 className="text-2xl font-bold mb-4 text-foreground">Quick Answers</h2>
                 <ul className="space-y-3">
                   <li className="flex items-start gap-2">
-                    <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
+                    <CheckCircle className="w-5 h-5 text-[hsl(var(--system-green))] flex-shrink-0 mt-0.5" />
                     <span className="text-muted-foreground">Response time: Within 24-48 hours</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
+                    <CheckCircle className="w-5 h-5 text-[hsl(var(--system-green))] flex-shrink-0 mt-0.5" />
                     <span className="text-muted-foreground">Founder-led support for all inquiries</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
-                    <span className="text-muted-foreground">Technical documentation: Available on request</span>
+                    <CheckCircle className="w-5 h-5 text-[hsl(var(--system-green))] flex-shrink-0 mt-0.5" />
+                    <span className="text-muted-foreground">Technical docs available on request</span>
                   </li>
                 </ul>
               </div>
 
-              <div className="glass glass-hover p-8 rounded-xl">
-                <h3 className="text-xl font-bold mb-4">Connect With Us</h3>
-                <p className="text-muted-foreground mb-4">
-                  Follow PromptFluid on social media for updates, insights, and community discussions:
-                </p>
+              <div className="bg-card border border-border rounded-lg p-8">
+                <h3 className="text-xl font-bold mb-4 text-foreground">Connect With Us</h3>
                 <div className="space-y-2">
                   <a href="https://twitter.com/promptfluid" target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">
                     Twitter/X
@@ -169,11 +146,11 @@ export default function Contact() {
             </div>
 
             {/* Contact Form */}
-            <div className="glass glass-hover p-8 rounded-xl">
-              <h2 className="text-2xl font-bold mb-6">Send Us a Message</h2>
+            <div className="bg-card border border-border rounded-lg p-8">
+              <h2 className="text-2xl font-bold mb-6 text-foreground">Send Us a Message</h2>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium mb-2">
+                  <label htmlFor="name" className="block text-sm font-medium mb-2 text-foreground">
                     Name *
                   </label>
                   <Input
@@ -189,7 +166,7 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-2">
+                  <label htmlFor="email" className="block text-sm font-medium mb-2 text-foreground">
                     Email *
                   </label>
                   <Input
@@ -205,7 +182,7 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label htmlFor="company" className="block text-sm font-medium mb-2">
+                  <label htmlFor="company" className="block text-sm font-medium mb-2 text-foreground">
                     Company
                   </label>
                   <Input
@@ -220,7 +197,7 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium mb-2">
+                  <label htmlFor="message" className="block text-sm font-medium mb-2 text-foreground">
                     Message *
                   </label>
                   <Textarea
@@ -237,7 +214,7 @@ export default function Contact() {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-primary hover:bg-primary/80 text-white"
+                  className="w-full bg-primary hover:bg-primary/90"
                 >
                   {isSubmitting ? (
                     "Sending..."
@@ -254,23 +231,35 @@ export default function Contact() {
         </div>
       </section>
 
+      {/* Earth Window */}
+      <section className="relative w-full h-[40vh] overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&q=80')`,
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background opacity-60" />
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background to-transparent" />
+      </section>
+
       {/* Enterprise CTA */}
       <section className="py-16 px-4 bg-muted/30">
         <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl font-bold mb-4">Enterprise Solutions</h2>
+          <h2 className="text-3xl font-bold mb-4 text-foreground">Enterprise Solutions</h2>
           <p className="text-lg text-muted-foreground mb-8">
-            Need custom integrations, dedicated support, or on-premise deployment? 
-            Our enterprise team is ready to build a solution that fits your organization.
+            Need custom integrations, dedicated support, or investment discussions? Our team is ready.
           </p>
-          <Link to="/solutions">
-            <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/10">
-              Explore Enterprise Options
+          <Link to="/investors">
+            <Button size="lg" variant="outline">
+              Investor Information
+              <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </Link>
         </div>
       </section>
 
-      {/* Footer */}
       <EnhancedFooter />
     </div>
   );

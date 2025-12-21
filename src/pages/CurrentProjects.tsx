@@ -1,266 +1,245 @@
-import { Shield, Zap, Globe, Brain, ArrowRight, Code2, Sparkles } from "lucide-react";
+import { Shield, Zap, Brain, ArrowRight, Eye, Wrench, Server, Sparkles, Accessibility } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { useNavigate, Link } from "react-router-dom";
 import { SEO } from "@/components/SEO";
+import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
 
 export default function CurrentProjects() {
   const navigate = useNavigate();
 
   const projects = [
     {
-      id: "defense",
-      name: "PromptFluid Reflex",
-      tagline: "AI-Powered WordPress Security",
-      description: "Stop sophisticated bot attacks with behavioral AI. Advanced threat detection that learns from your site's patterns to protect against credential stuffing, spam bots, and automated attacks.",
+      id: "rckbl",
+      name: "RCKBL",
+      tagline: "Complete Website Defense",
+      description: "Born from reverse-engineering our own stealth bot technology into enterprise-grade security. Complete protection against hackers, viruses, and bots. WordPress plugin ready.",
       icon: Shield,
       status: "Live",
-      statusColor: "bg-green-500",
-      features: [
-        "AI bot detection with behavioral analysis",
-        "Real-time threat blocking",
-        "Smart learning system",
-        "File integrity monitoring",
-        "Web application firewall",
-        "Malware scanner"
-      ],
-      href: "/projects/defense",
-      gradient: "from-purple-500 via-blue-500 to-cyan-500",
-      version: "v1.0.0",
-      downloads: "Pending",
-      rating: "Pre-launch"
+      statusColor: "bg-[hsl(var(--system-green))]",
+      features: ["AI bot detection", "Behavioral fingerprinting", "Real-time blocking", "WordPress plugin", "Adaptive CAPTCHA", "Device scoring"],
+      href: "/projects/defense"
     },
     {
-      id: "studio",
-      name: "PromptFluid Studio",
-      tagline: "Rapid Application Builder",
-      description: "Transform ideas into production-ready applications in minutes. AI-assisted development with automatic deployment, security, and optimization built-in.",
-      icon: Code2,
-      status: "Beta",
-      statusColor: "bg-blue-500",
-      features: [
-        "AI-powered code generation",
-        "Instant deployment",
-        "Automatic optimization",
-        "Built-in security",
-        "Component library",
-        "Real-time preview"
-      ],
-      href: "/products/studio",
-      gradient: "from-pink-500 via-purple-500 to-indigo-500",
-      version: "v0.9.2",
-      downloads: "Beta",
-      rating: "In Development"
+      id: "rndrbl",
+      name: "RNDRBL",
+      tagline: "Accessibility Browser",
+      description: "Web accessibility browser with built-in layover control panel. Enables people with disabilities to browse their favorite sites with the features they require.",
+      icon: Eye,
+      status: "Running",
+      statusColor: "bg-[hsl(var(--system-green))]",
+      features: ["Layover controls", "Customizable features", "Disability support", "Browser extension", "Real-time adjustments", "Universal compatibility"],
+      href: "/projects/renderable"
     },
     {
-      id: "brain",
-      name: "PromptFluid Brain",
-      tagline: "Adaptive AI Orchestration",
-      description: "The intelligence layer that powers the entire ecosystem. Machine learning models that analyze patterns, predict threats, and optimize system performance automatically.",
+      id: "ptchbl",
+      name: "PTCHBL",
+      tagline: "Free WCAG Scanner",
+      description: "Free WCAG scanner that tests websites for accessibility issues, then applies AI to fix 45 of 86 WCAG compliance functions. Inclusion should never be behind a paywall.",
+      icon: Accessibility,
+      status: "Free",
+      statusColor: "bg-[hsl(var(--system-green))]",
+      features: ["WCAG 2.2 scanning", "AI-powered fixes", "45/86 functions", "No signup required", "Instant results", "Developer reports"],
+      href: "https://PTCHBL.com",
+      external: true
+    },
+    {
+      id: "splcbl",
+      name: "SPLCBL",
+      tagline: "WordPress Plugin Validator",
+      description: "Upload your WordPress plugin and scan for common WordPress.org submission issues before the official review process. Free for all developers.",
+      icon: Wrench,
+      status: "Free",
+      statusColor: "bg-[hsl(var(--system-green))]",
+      features: ["Pre-submission scan", "Issue detection", "Compliance check", "Free for all", "Instant results", "Detailed reports"],
+      href: "/projects/spliceable"
+    },
+    {
+      id: "cascade",
+      name: "Cascade",
+      tagline: "Autonomous Dreaming AI",
+      description: "The first autonomous AI that reflects on memories through internal simulation cycles we call dreaming. World first documented with proof on Zenodo and OSF.",
       icon: Brain,
+      status: "Deployed",
+      statusColor: "bg-primary",
+      features: ["Memory reflection", "Dream cycles", "Autonomous learning", "Self-improvement", "Pattern synthesis", "Verified proof"],
+      href: "/projects/brain"
+    },
+    {
+      id: "nexus",
+      name: "AI Nexus",
+      tagline: "Multi-Provider Gateway",
+      description: "Intelligent AI routing across 20+ LLMs and API providers with automatic fallback chains and cost optimization.",
+      icon: Server,
+      status: "Running",
+      statusColor: "bg-primary",
+      features: ["20+ providers", "Auto fallbacks", "Cost optimization", "Smart routing", "Load balancing", "Zero downtime"],
+      href: "/projects/nexus"
+    },
+    {
+      id: "xctbl",
+      name: "XCTBL Space",
+      tagline: "Lore-Wrapped SaaS Suite",
+      description: "Software suite wrapped in fictional lore. Custom OAuth login system connecting tools across interconnected worlds. Fiction-framed, but every tool is 100% real and functional.",
+      icon: Sparkles,
       status: "Live",
-      statusColor: "bg-green-500",
-      features: [
-        "ML-powered threat detection",
-        "Behavioral pattern analysis",
-        "Anomaly detection",
-        "Predictive intelligence",
-        "Auto-remediation",
-        "Continuous learning"
-      ],
-      href: "/brain-ml",
-      gradient: "from-cyan-500 via-teal-500 to-green-500",
-      version: "v2.1.0",
-      downloads: "Internal",
-      rating: "Enterprise"
-    },
-    {
-      id: "ripple",
-      name: "PromptFluid Ripple",
-      tagline: "Network Integration Hub",
-      description: "Unified platform where all tools communicate seamlessly. API orchestration, service mesh, and real-time data flow between all PromptFluid products.",
-      icon: Zap,
-      status: "Alpha",
-      statusColor: "bg-yellow-500",
-      features: [
-        "API gateway & routing",
-        "Service mesh integration",
-        "Real-time webhooks",
-        "Queue management",
-        "Event streaming",
-        "Cross-product sync"
-      ],
-      href: "/products/ripple",
-      gradient: "from-orange-500 via-red-500 to-pink-500",
-      version: "v0.5.1",
-      downloads: "Internal",
-      rating: "Alpha"
-    },
-    {
-      id: "access",
-      name: "PromptFluid Access",
-      tagline: "Universal Accessibility Platform",
-      description: "Make the web accessible to everyone. Automated WCAG compliance, screen reader optimization, and tools that ensure your applications work for all users.",
-      icon: Globe,
-      status: "Coming Soon",
-      statusColor: "bg-gray-500",
-      features: [
-        "Automated WCAG compliance",
-        "Screen reader optimization",
-        "Keyboard navigation",
-        "Color contrast analyzer",
-        "Alt text generation",
-        "Accessibility reports"
-      ],
-      href: "/products/access",
-      gradient: "from-indigo-500 via-violet-500 to-purple-500",
-      version: "v0.1.0",
-      downloads: "TBA",
-      rating: "Preview"
+      statusColor: "bg-[hsl(var(--system-amber))]",
+      features: ["Custom OAuth", "Interconnected tools", "Fictional interface", "Real functionality", "Multi-world nav", "Entertainment layer"],
+      href: "https://XCTBL.com",
+      external: true
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-muted/20">
+    <div className="min-h-screen bg-background">
       <SEO 
-        title="Current Projects | PromptFluid™ — Building the Future"
-        description="Explore PromptFluid's ecosystem of AI-powered tools: Reflex (WordPress security), Studio (app builder), Brain (ML orchestration), Ripple (integration hub), and Access (accessibility platform)."
+        title="Current Projects — PromptFluid Shipped Systems"
+        description="Explore PromptFluid's ecosystem of shipped products: RCKBL, RNDRBL, PTCHBL, SPLCBL, Cascade, AI Nexus, and XCTBL Space. Real systems that work."
         canonical="https://promptfluid.com/projects"
-        keywords={[
-          'PromptFluid projects',
-          'AI security tools',
-          'WordPress protection',
-          'rapid app development',
-          'ML orchestration',
-          'API integration platform',
-          'web accessibility tools',
-          'intelligent software ecosystem',
-          'AI-powered products',
-          'developer tools'
-        ]}
+        keywords={['PromptFluid projects', 'AI security', 'accessibility tools', 'WordPress plugins', 'autonomous AI']}
       />
 
-      {/* Header */}
-      <div className="container mx-auto px-4 py-8">
-        <Link to="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mb-8">
-          <ArrowRight className="w-4 h-4 rotate-180" />
-          <span>Back to Home</span>
-        </Link>
+      <PublicNav />
 
-        <div className="max-w-4xl mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-primary/20 mb-6">
-            <Sparkles className="w-4 h-4 text-primary animate-pulse" />
-            <span className="text-sm font-medium">Our Ecosystem</span>
-          </div>
+      {/* Hero with Earth Window */}
+      <section className="relative w-full">
+        <div 
+          className="absolute inset-0 h-[50vh] bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80')`,
+          }}
+        />
+        <div className="absolute inset-0 h-[50vh] bg-gradient-to-b from-background/80 via-background/40 to-background" />
+        
+        <div className="relative container mx-auto px-4 pt-32 pb-16">
+          <nav className="mb-12">
+            <Link to="/" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary transition-colors">
+              ← Back to Home
+            </Link>
+          </nav>
 
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">
-            <span className="bg-gradient-to-r from-primary via-primary-variant to-accent bg-clip-text text-transparent">
+          <div className="max-w-4xl">
+            <Badge variant="outline" className="mb-6 border-primary/30 text-primary">
+              <Sparkles className="w-3 h-3 mr-2" />
+              Shipped Systems
+            </Badge>
+
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground">
               Current Projects
-            </span>
-          </h1>
+            </h1>
 
-          <p className="text-xl text-muted-foreground leading-relaxed">
-            Explore the PromptFluid ecosystem — intelligent tools that work together to secure, build, and optimize your applications. 
-            From WordPress security to AI orchestration, each project is designed to flow seamlessly into your workflow.
-          </p>
+            <p className="text-xl text-muted-foreground leading-relaxed">
+              Seven live products. 100+ projects shipped over 15 years. Real, operational, and independently verifiable.
+            </p>
+          </div>
         </div>
+      </section>
 
-        {/* Projects Grid */}
-        <div className="grid gap-8 max-w-7xl">
-          {projects.map((project, index) => (
+      {/* Projects Grid */}
+      <section className="container mx-auto px-4 py-16">
+        <div className="max-w-6xl mx-auto space-y-6">
+          {projects.map((project) => (
             <Card 
               key={project.id}
-              className="group p-8 glass border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-elegant cursor-pointer overflow-hidden relative"
-              onClick={() => navigate(project.href)}
-              style={{ animationDelay: `${index * 0.1}s` }}
+              className="group p-8 bg-card border-border hover:border-primary/40 transition-all cursor-pointer"
+              onClick={() => project.external ? window.open(project.href, "_blank") : navigate(project.href)}
             >
-              {/* Background Gradient */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
-
-              <div className="relative z-10 flex flex-col lg:flex-row gap-8">
-                {/* Left: Icon & Status */}
+              <div className="flex flex-col lg:flex-row gap-8">
+                {/* Icon & Status */}
                 <div className="flex-shrink-0">
-                  <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${project.gradient} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                    <project.icon className="w-10 h-10 text-white" />
+                  <div className="w-16 h-16 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                    <project.icon className="w-8 h-8 text-primary" />
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className={`w-2 h-2 rounded-full ${project.statusColor} animate-pulse`} />
+                    <div className={`w-2 h-2 rounded-full ${project.statusColor}`} />
                     <span className="text-sm font-medium text-muted-foreground">{project.status}</span>
                   </div>
                 </div>
 
-                {/* Middle: Details */}
+                {/* Details */}
                 <div className="flex-1">
-                  <h2 className="text-3xl font-bold mb-2 group-hover:text-primary transition-colors">
+                  <h2 className="text-2xl font-bold mb-1 text-foreground group-hover:text-primary transition-colors">
                     {project.name}
                   </h2>
-                  <p className="text-lg text-primary font-medium mb-4">{project.tagline}</p>
+                  <p className="text-primary font-medium mb-3">{project.tagline}</p>
                   <p className="text-muted-foreground leading-relaxed mb-6">
                     {project.description}
                   </p>
 
                   {/* Features Grid */}
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2 mb-6">
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2">
                     {project.features.map((feature, i) => (
                       <div key={i} className="flex items-center gap-2 text-sm">
-                        <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${project.gradient}`} />
+                        <div className="w-1.5 h-1.5 rounded-full bg-primary" />
                         <span className="text-muted-foreground">{feature}</span>
                       </div>
                     ))}
                   </div>
-
-                  {/* Meta Info */}
-                  <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-                    <div>
-                      <span className="font-medium">Version:</span> {project.version}
-                    </div>
-                    <div>
-                      <span className="font-medium">Downloads:</span> {project.downloads}
-                    </div>
-                    <div>
-                      <span className="font-medium">Rating:</span> {project.rating}
-                    </div>
-                  </div>
                 </div>
 
-                {/* Right: CTA */}
+                {/* CTA */}
                 <div className="flex-shrink-0 flex items-center">
                   <Button 
-                    className="group/btn"
+                    variant="outline"
                     onClick={(e) => {
                       e.stopPropagation();
-                      navigate(project.href);
+                      project.external ? window.open(project.href, "_blank") : navigate(project.href);
                     }}
                   >
-                    <span>View Project</span>
-                    <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
+                    <span>{project.external ? 'Visit' : 'View'}</span>
+                    <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 </div>
               </div>
             </Card>
           ))}
         </div>
+      </section>
 
-        {/* CTA Section */}
-        <div className="mt-20 max-w-4xl mx-auto text-center p-12 rounded-3xl glass border border-primary/20">
-          <h2 className="text-4xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-primary via-primary-variant to-accent bg-clip-text text-transparent">
-              Want to Contribute?
-            </span>
+      {/* Earth Window */}
+      <section className="relative w-full h-[50vh] overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=1920&q=80')`,
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background opacity-70" />
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-background to-transparent" />
+        
+        <div className="absolute inset-0 flex items-center justify-center">
+          <blockquote className="text-center max-w-3xl px-8">
+            <p className="text-2xl md:text-4xl font-light text-white drop-shadow-lg">
+              "From concept to deployed system—every time."
+            </p>
+          </blockquote>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-16 px-4 bg-muted/30">
+        <div className="container mx-auto max-w-4xl text-center">
+          <h2 className="text-3xl font-bold mb-4 text-foreground">
+            Want to Build Together?
           </h2>
           <p className="text-lg text-muted-foreground mb-8">
-            PromptFluid is building the future of intelligent software. Join our developer community and help shape the next generation of AI-powered tools.
+            100+ projects shipped over 15 years. Join us.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" onClick={() => navigate('/contact')}>
-              Get in Touch
+            <Button size="lg" onClick={() => navigate('/investors')} className="bg-primary hover:bg-primary/90">
+              Investor Information
             </Button>
-            <Button size="lg" variant="outline" onClick={() => navigate('/about')}>
-              Learn More
+            <Button size="lg" variant="outline" onClick={() => navigate('/contact')}>
+              Contact Team
             </Button>
           </div>
         </div>
-      </div>
+      </section>
+
+      <EnhancedFooter />
     </div>
   );
 }
