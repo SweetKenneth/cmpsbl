@@ -69,10 +69,10 @@ export function EnhancedFooter() {
         <div className="border-t border-border/50 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-center md:text-left">
             <p className="text-sm text-muted-foreground mb-1">
-              © 2025 PromptFluid™ — AI Security & Accessibility
+              © 2025 PromptFluid™ — Applied AI Infrastructure
             </p>
-            <p className="text-xs text-muted-foreground max-w-2xl">
-              Reflex Bot Sniper pending WordPress.org approval. Clarity is 100% free forever.
+            <p className="text-xs text-muted-foreground/70 max-w-3xl">
+              Narrative interfaces and fictional storylines are used for experiential design only. All underlying systems and tools are real and independently verifiable.
             </p>
           </div>
           <div className="flex items-center gap-4 text-xs text-muted-foreground">
