@@ -19,14 +19,14 @@ export function PublicNav() {
   return (
     <>
       {/* Desktop Navigation */}
-      <nav className="relative z-[10000] container mx-auto px-4 py-6" role="navigation" aria-label="Main navigation">
+      <nav className="relative z-[10000] container mx-auto px-4 py-4 md:py-6" role="navigation" aria-label="Main navigation">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3" aria-label="PromptFluid Home">
             <img 
               src={logo} 
               alt="PromptFluid" 
-              className="h-12 sm:h-14 md:h-12 w-auto"
+              className="h-[72px] lg:h-14 w-auto"
             />
           </Link>
 
