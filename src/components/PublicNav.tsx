@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logo from "@/assets/promptfluid-logo.png";
+import logo from "@/assets/promptfluid-logo-cropped.png";
 
 export function PublicNav() {
   const navigate = useNavigate();
@@ -19,16 +19,23 @@ export function PublicNav() {
   return (
     <>
       {/* Desktop Navigation */}
-      <nav className="relative z-[10000] container mx-auto px-4 py-4 md:py-6" role="navigation" aria-label="Main navigation">
+      <nav
+        className="relative z-[10000] container mx-auto px-4 py-[5px] md:py-4"
+        role="navigation"
+        aria-label="Main navigation"
+      >
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3" aria-label="PromptFluid Home">
-            <img 
-              src={logo} 
-              alt="PromptFluid" 
-              className="h-[200px] lg:h-14 w-auto"
+            <img
+              src={logo}
+              alt="PromptFluid logo"
+              className="h-10 lg:h-14 w-auto object-contain"
             />
           </Link>
+
+          {/* Desktop Menu */}
+          <div className="hidden lg:flex items-center gap-8">
 
           {/* Desktop Menu */}
           <div className="hidden lg:flex items-center gap-8">
@@ -83,7 +90,7 @@ export function PublicNav() {
             aria-hidden="true"
           />
           <div 
-            className="fixed top-20 left-0 right-0 z-[9999] lg:hidden bg-background border-t border-border shadow-lg"
+            className="fixed top-16 left-0 right-0 z-[9999] lg:hidden bg-background border-t border-border shadow-lg"
             role="dialog"
             aria-modal="true"
           >
