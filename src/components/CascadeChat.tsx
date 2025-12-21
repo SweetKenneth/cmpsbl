@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from "react";
-import { MessageCircle, X, Send, Sparkles } from "lucide-react";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { MessageCircle, X, Send, Sparkles, RefreshCw, Wifi, WifiOff } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,18 +11,32 @@ interface Message {
   content: string;
   imageUrl?: string;
   generatedText?: string;
+  provider?: string;
+  healthScore?: number;
+}
+
+interface ConnectionState {
+  status: 'connected' | 'degraded' | 'disconnected';
+  lastSuccess: number | null;
+  retryCount: number;
 }
 
 export function CascadeChat() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: '✨ Hello! I\'m Cascade AI.\n\nHow can I help you discover the perfect PromptFluid solution today?' }
+    { role: 'assistant', content: '✨ Hello! I\'m Cascade AI v2.0\n\nHow can I help you discover the perfect PromptFluid solution today?' }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [mode, setMode] = useState<'customer_service' | 'admin'>('customer_service');
   const [showMenu, setShowMenu] = useState(true);
+  const [connection, setConnection] = useState<ConnectionState>({
+    status: 'connected',
+    lastSuccess: null,
+    retryCount: 0
+  });
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { user } = useAuth();
 
   const scrollToBottom = () => {
@@ -32,6 +46,56 @@ export function CascadeChat() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Cleanup retry timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (retryTimeoutRef.current) {
+        clearTimeout(retryTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  // Self-healing connection recovery
+  const attemptRecovery = useCallback(async () => {
+    if (connection.retryCount >= 3) {
+      setConnection(prev => ({ ...prev, status: 'disconnected' }));
+      toast.error('Connection issues', {
+        description: 'Unable to reach Cascade. Please try again later.'
+      });
+      return;
+    }
+
+    console.log(`🔄 Attempting connection recovery (attempt ${connection.retryCount + 1})...`);
+    
+    try {
+      // Ping the function with a health check
+      const { data, error } = await supabase.functions.invoke('pf-cascade-chat', {
+        body: {
+          message: 'ping',
+          userEmail: user?.email || 'anonymous',
+          conversationHistory: []
+        }
+      });
+
+      if (!error && data?.success) {
+        setConnection({
+          status: 'connected',
+          lastSuccess: Date.now(),
+          retryCount: 0
+        });
+        toast.success('Connection restored', {
+          description: 'Cascade is back online.'
+        });
+      }
+    } catch (e) {
+      setConnection(prev => ({
+        ...prev,
+        retryCount: prev.retryCount + 1,
+        status: 'degraded'
+      }));
+    }
+  }, [connection.retryCount, user?.email]);
 
   const sendMessage = async (messageText?: string) => {
     const userMessage = messageText || input.trim();
@@ -53,6 +117,13 @@ export function CascadeChat() {
 
       if (error) throw error;
 
+      // Update connection state on success
+      setConnection({
+        status: 'connected',
+        lastSuccess: Date.now(),
+        retryCount: 0
+      });
+
       if (data.mode) {
         setMode(data.mode);
       }
@@ -61,7 +132,9 @@ export function CascadeChat() {
         role: 'assistant', 
         content: data.reply,
         imageUrl: data.imageUrl,
-        generatedText: data.generatedText
+        generatedText: data.generatedText,
+        provider: data.provider,
+        healthScore: data.healthScore
       }]);
 
       if (data.isAdmin) {
@@ -69,15 +142,43 @@ export function CascadeChat() {
           description: 'Cascade recognizes you, Kenneth.'
         });
       }
+
+      // Show provider info for admins
+      if (data.provider && mode === 'admin') {
+        console.log(`📡 Response via ${data.provider} (health: ${data.healthScore}%)`);
+      }
+
     } catch (error: any) {
       console.error('Chat error:', error);
-      toast.error('Failed to send message', {
-        description: error.message || 'Please try again'
+      
+      // Update connection state and attempt recovery
+      setConnection(prev => ({
+        status: 'degraded',
+        lastSuccess: prev.lastSuccess,
+        retryCount: prev.retryCount + 1
+      }));
+
+      // Show graceful error with retry option
+      toast.error('Message delivery issue', {
+        description: 'Cascade is gathering thoughts. Retrying...',
+        action: {
+          label: 'Retry Now',
+          onClick: () => sendMessage(userMessage)
+        }
       });
+
+      // Add graceful fallback message
       setMessages(prev => [...prev, { 
         role: 'assistant', 
-        content: 'I apologize, but I encountered an error. Please try again.' 
+        content: '🌙 I\'m experiencing a brief moment of reflection. Let me try again...',
+        provider: 'fallback'
       }]);
+
+      // Schedule automatic retry
+      retryTimeoutRef.current = setTimeout(() => {
+        attemptRecovery();
+      }, 3000);
+
     } finally {
       setIsLoading(false);
     }
@@ -111,11 +212,36 @@ export function CascadeChat() {
     },
     {
       icon: "🎯",
-      title: "See Capabilities",
-      description: "Explore what I can do",
-      prompt: "What are all the things you can help me with?"
+      title: "See Products",
+      description: "Explore what we ship",
+      prompt: "Tell me about RCKBL, PTCHBL, RNDRBL, SPLCBL, and XCTBL Space"
     }
   ];
+
+  // Connection status indicator
+  const ConnectionIndicator = () => {
+    const colors = {
+      connected: 'bg-[hsl(var(--system-green))]',
+      degraded: 'bg-[hsl(var(--system-amber))]',
+      disconnected: 'bg-destructive'
+    };
+
+    return (
+      <div className="flex items-center gap-1">
+        <div className={`w-2 h-2 rounded-full ${colors[connection.status]} ${connection.status === 'degraded' ? 'animate-pulse' : ''}`} />
+        {connection.status === 'disconnected' && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="w-6 h-6"
+            onClick={attemptRecovery}
+          >
+            <RefreshCw className="w-3 h-3" />
+          </Button>
+        )}
+      </div>
+    );
+  };
 
   if (!isOpen) {
     return (
@@ -123,8 +249,12 @@ export function CascadeChat() {
         onClick={() => setIsOpen(true)}
         className="fixed bottom-6 right-6 rounded-full w-16 h-16 shadow-glow-lg z-50 bg-gradient-to-r from-primary via-primary-variant to-accent hover:scale-110 transition-transform"
         size="icon"
+        aria-label="Open Cascade AI chat"
       >
         <MessageCircle className="w-6 h-6" />
+        {connection.status !== 'connected' && (
+          <span className="absolute -top-1 -right-1 w-4 h-4 bg-[hsl(var(--system-amber))] rounded-full animate-pulse" />
+        )}
       </Button>
     );
   }
@@ -136,10 +266,16 @@ export function CascadeChat() {
         <div className="flex items-center gap-2">
           <Sparkles className="w-5 h-5 text-primary animate-pulse" />
           <div>
-            <h3 className="font-semibold">Cascade AI</h3>
-            <p className="text-xs text-muted-foreground">
-              {mode === 'admin' ? 'Admin Mode' : 'Customer Service'}
-            </p>
+            <div className="flex items-center gap-2">
+              <h3 className="font-semibold">Cascade AI</h3>
+              <span className="text-[10px] px-1.5 py-0.5 rounded bg-primary/20 text-primary">v2.0</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <p className="text-xs text-muted-foreground">
+                {mode === 'admin' ? 'Admin Mode' : 'Customer Service'}
+              </p>
+              <ConnectionIndicator />
+            </div>
           </div>
         </div>
         <Button
@@ -163,7 +299,9 @@ export function CascadeChat() {
               className={`max-w-[85%] rounded-2xl px-5 py-3 ${
                 msg.role === 'user'
                   ? 'bg-primary text-primary-foreground shadow-glow'
-                  : 'bg-muted/80 text-foreground backdrop-blur-sm'
+                  : msg.provider === 'fallback' 
+                    ? 'bg-muted/60 text-foreground/70 border border-border/50'
+                    : 'bg-muted/80 text-foreground backdrop-blur-sm'
               }`}
             >
               {msg.imageUrl && (
@@ -182,6 +320,17 @@ export function CascadeChat() {
                 </div>
               )}
               <p className="text-[1.05rem] leading-relaxed whitespace-pre-wrap">{msg.content}</p>
+              {/* Admin: show provider badge */}
+              {mode === 'admin' && msg.provider && msg.provider !== 'fallback' && (
+                <div className="mt-2 flex items-center gap-1 text-[10px] text-muted-foreground">
+                  <span className="px-1.5 py-0.5 rounded bg-primary/10">{msg.provider}</span>
+                  {msg.healthScore && (
+                    <span className="px-1.5 py-0.5 rounded bg-[hsl(var(--system-green))]/10">
+                      {msg.healthScore}%
+                    </span>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         ))}
@@ -232,17 +381,23 @@ export function CascadeChat() {
             onKeyPress={handleKeyPress}
             placeholder="Ask Cascade anything..."
             className="flex-1"
-            disabled={isLoading}
+            disabled={isLoading || connection.status === 'disconnected'}
           />
           <Button
             onClick={() => sendMessage()}
-            disabled={!input.trim() || isLoading}
+            disabled={!input.trim() || isLoading || connection.status === 'disconnected'}
             size="icon"
             className="bg-gradient-to-r from-primary to-primary-variant"
           >
             <Send className="w-4 h-4" />
           </Button>
         </div>
+        {connection.status === 'disconnected' && (
+          <p className="text-xs text-destructive mt-2 flex items-center gap-1">
+            <WifiOff className="w-3 h-3" />
+            Connection lost. Click retry to reconnect.
+          </p>
+        )}
       </div>
     </div>
   );
