@@ -1,221 +1,202 @@
-import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
-import { Network, Zap, Brain, Sparkles, Search } from "lucide-react";
+import { SEO } from "@/components/SEO";
 import { AuthorBio } from "@/components/AuthorBio";
+import { Link } from "react-router-dom";
+import { Network, Zap, Brain, Sparkles, Search, ArrowLeft } from "lucide-react";
+import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
 import heroImage from "@/assets/blog/ai-triad-routing.jpg";
 
 const AITriadExplained = () => {
   return (
-    <>
-      <Helmet>
-        <title>Free-Tier Provider Network: Understanding PromptFluid's Intelligent Routing System</title>
-        <meta 
-          name="description" 
-          content="Learn how PromptFluid's Cascade AI intelligently routes tasks across Groq, Together AI, Hyperbolic, DeepSeek, Cerebras, and Google AI Studio for optimal results at zero cost." 
+    <div className="min-h-screen bg-background">
+      <SEO 
+        title="Free-Tier Provider Network: Intelligent Routing System"
+        description="How Cascade AI routes tasks across Groq, Together AI, Hyperbolic, DeepSeek, Cerebras, and Google AI Studio for optimal results at zero cost."
+        keywords={["AI routing", "intelligent orchestration", "Groq", "Together AI", "Cascade AI", "free-tier AI"]}
+      />
+      
+      <PublicNav />
+
+      {/* Hero Section */}
+      <section className="relative z-10 container mx-auto px-4 pt-20 md:pt-32 pb-12">
+        <div className="max-w-4xl mx-auto">
+          <Link to="/blog" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary mb-8 transition-colors">
+            <ArrowLeft className="w-4 h-4" />
+            Back to Research
+          </Link>
+          
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground tracking-tight">
+            Free-Tier Provider Network
+          </h1>
+          
+          <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
+            How Cascade AI orchestrates free-tier providers—Groq, Together AI, Hyperbolic, DeepSeek, Cerebras, and Google AI Studio—for optimal results at zero cost.
+          </p>
+
+          <AuthorBio publishDate="2025-08-20" readTime="11 min read" />
+        </div>
+      </section>
+
+      {/* Hero Image */}
+      <section className="relative w-full h-[50vh] overflow-hidden">
+        <img 
+          src={heroImage} 
+          alt="AI nodes with intelligent data routing streams"
+          className="w-full h-full object-cover"
         />
-        <meta name="keywords" content="AI routing, intelligent orchestration, Groq, Together AI, Hyperbolic, DeepSeek, Cerebras, Google AI Studio, Cascade AI, free-tier AI" />
-        <link rel="canonical" href="https://www.promptfluid.com/blog/ai-triad-intelligent-routing" />
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "TechArticle",
-            "headline": "Free-Tier Provider Network: Understanding PromptFluid's Intelligent Routing System",
-            "description": "Learn how PromptFluid's Cascade AI intelligently routes tasks across Groq, Together AI, Hyperbolic, DeepSeek, Cerebras, and Google AI Studio for optimal results at zero cost.",
-            "author": {
-              "@type": "Person",
-              "name": "Kenneth E Sweet Jr",
-              "jobTitle": "Founder & Security Engineer"
-            },
-            "publisher": {
-              "@type": "Organization",
-              "name": "PromptFluid",
-              "logo": {
-                "@type": "ImageObject",
-                "url": "https://www.promptfluid.com/logo.png"
-              }
-            },
-            "datePublished": "2025-08-20",
-            "mainEntityOfPage": {
-              "@type": "WebPage",
-              "@id": "https://www.promptfluid.com/blog/ai-triad-intelligent-routing"
-            }
-          })}
-        </script>
-      </Helmet>
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
+      </section>
 
-      <main className="min-h-screen bg-gradient-to-b from-background via-background/95 to-primary/5">
-        <article className="container mx-auto px-4 py-16 max-w-4xl">
-          <nav className="mb-8 text-sm text-muted-foreground">
-            <Link to="/" className="hover:text-primary transition-colors">Home</Link>
-            <span className="mx-2">/</span>
-            <Link to="/blog" className="hover:text-primary transition-colors">Blog</Link>
-            <span className="mx-2">/</span>
-            <span className="text-foreground">Free-Tier Provider Network</span>
-          </nav>
-
-          <header className="mb-12">
-            <div className="relative w-full h-[400px] rounded-xl overflow-hidden mb-8">
-              <img 
-                src={heroImage} 
-                alt="Six interconnected AI nodes with intelligent data routing streams flowing between Groq, Cerebras, Google AI Studio, Together AI, DeepSeek, and Hyperbolic free-tier providers"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent"></div>
+      {/* Content */}
+      <article className="container mx-auto px-4 py-16">
+        <div className="max-w-3xl mx-auto">
+          
+          <section className="mb-16">
+            <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
+              <p>
+                Most AI platforms lock you into a single provider, forcing premium models for everything regardless of task complexity.
+              </p>
+              
+              <p>
+                Cascade AI takes a different approach: intelligent routing across specialized providers. Each task goes to the most appropriate model based on requirements, performance, and cost.
+              </p>
             </div>
+          </section>
+
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold mb-8 text-foreground">
+              The Six Pillars of Free-Tier Routing
+            </h2>
             
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent leading-tight">
-              Free-Tier Provider Network: Understanding Intelligent Routing
-            </h1>
-            <p className="text-xl text-muted-foreground leading-relaxed">
-              Discover how Cascade AI orchestrates free-tier AI providers—Groq, Together AI, Hyperbolic, DeepSeek, Cerebras, and Google AI Studio—to deliver optimal results at zero cost.
-            </p>
-            
-            <AuthorBio publishDate="2025-08-20" readTime="11 min read" />
-          </header>
-
-          <section className="prose prose-lg max-w-none mb-16">
-            <p className="text-lg leading-relaxed">
-              Most AI platforms lock you into a single provider, forcing you to use premium models for everything regardless of task complexity. PromptFluid's <Link to="/blog/cascade-ai-adaptive-intelligence-brain" className="text-primary hover:underline">Cascade AI</Link> takes a fundamentally different approach: intelligent routing across specialized providers, ensuring each task goes to the most appropriate model based on requirements, performance, and cost.
-            </p>
-
-            <h2 className="text-3xl font-bold mb-6 mt-12">The Six Pillars of Free-Tier AI Routing</h2>
-
-            <div className="space-y-8 my-12">
-              <div className="bg-gradient-to-r from-primary/10 to-transparent border-l-4 border-primary p-6 rounded-r-lg">
-                <div className="flex items-center gap-3 mb-4">
-                  <Zap className="w-8 h-8 text-primary" />
-                  <h3 className="text-2xl font-bold m-0">Groq: Lightning-Fast Reasoning</h3>
-                </div>
-                <p className="text-muted-foreground leading-relaxed mb-3">
-                  <strong>Specialty:</strong> Logical reasoning, structured problem-solving, rapid inference
-                </p>
+            <div className="space-y-8">
+              <div className="border-l-4 border-primary pl-6">
+                <h3 className="text-xl font-bold mb-2 flex items-center gap-2 text-foreground">
+                  <Zap className="h-5 w-5 text-primary" />
+                  Groq — Lightning-Fast Reasoning
+                </h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  Groq's custom LPU (Language Processing Unit) architecture delivers inference speeds orders of magnitude faster than traditional GPU-based systems. Cascade routes to Groq when speed is critical—real-time classification, rapid decision trees, and logical analysis where milliseconds matter. Perfect for Studio's code analysis, Defense's threat detection, and any workflow requiring immediate intelligent responses.
+                  Custom LPU architecture delivers inference speeds orders of magnitude faster than GPU-based systems. Cascade routes here when speed is critical.
                 </p>
               </div>
 
-              <div className="bg-gradient-to-r from-accent/10 to-transparent border-l-4 border-accent p-6 rounded-r-lg">
-                <div className="flex items-center gap-3 mb-4">
-                  <Sparkles className="w-8 h-8 text-accent" />
-                  <h3 className="text-2xl font-bold m-0">Together AI: Complex Reasoning</h3>
-                </div>
-                <p className="text-muted-foreground leading-relaxed mb-3">
-                  <strong>Specialty:</strong> Complex reasoning, creative synthesis, nuanced understanding
-                </p>
+              <div className="border-l-4 border-primary pl-6">
+                <h3 className="text-xl font-bold mb-2 flex items-center gap-2 text-foreground">
+                  <Sparkles className="h-5 w-5 text-primary" />
+                  Together AI — Complex Reasoning
+                </h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  When tasks require deep reasoning, Together AI takes the lead. Complex problem solving, architectural decisions, and nuanced language understanding all leverage Together's models. Cascade routes creative writing, architectural decisions in Studio, and workflows requiring synthesis of diverse concepts to Together AI.
+                  Deep reasoning, creative synthesis, nuanced understanding. Cascade routes architectural decisions and complex problem solving here.
                 </p>
               </div>
 
-              <div className="bg-gradient-to-r from-primary/10 to-transparent border-l-4 border-primary p-6 rounded-r-lg">
-                <div className="flex items-center gap-3 mb-4">
-                  <Brain className="w-8 h-8 text-primary" />
-                  <h3 className="text-2xl font-bold m-0">Hyperbolic: Creative Tasks</h3>
-                </div>
-                <p className="text-muted-foreground leading-relaxed mb-3">
-                  <strong>Specialty:</strong> Creative generation, content creation, exploratory thinking
-                </p>
+              <div className="border-l-4 border-primary pl-6">
+                <h3 className="text-xl font-bold mb-2 flex items-center gap-2 text-foreground">
+                  <Brain className="h-5 w-5 text-primary" />
+                  Hyperbolic — Creative Tasks
+                </h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  Hyperbolic excels at creative tasks requiring imagination and novelty. Cascade routes content generation, brainstorming, and any task requiring creative exploration to Hyperbolic's free-tier models.
+                  Content generation, brainstorming, exploratory thinking. Tasks requiring imagination and novelty route here.
                 </p>
               </div>
 
-              <div className="bg-gradient-to-r from-accent/10 to-transparent border-l-4 border-accent p-6 rounded-r-lg">
-                <div className="flex items-center gap-3 mb-4">
-                  <Network className="w-8 h-8 text-accent" />
-                  <h3 className="text-2xl font-bold m-0">DeepSeek: Technical Analysis</h3>
-                </div>
-                <p className="text-muted-foreground leading-relaxed mb-3">
-                  <strong>Specialty:</strong> Code analysis, technical documentation, structured outputs
-                </p>
+              <div className="border-l-4 border-primary pl-6">
+                <h3 className="text-xl font-bold mb-2 flex items-center gap-2 text-foreground">
+                  <Network className="h-5 w-5 text-primary" />
+                  DeepSeek — Technical Analysis
+                </h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  DeepSeek provides excellent technical analysis and code understanding. Cascade routes code review, technical documentation, and structured output generation to DeepSeek's specialized models.
+                  Code analysis, technical documentation, structured outputs. Specialized models for engineering workflows.
                 </p>
               </div>
 
-              <div className="bg-gradient-to-r from-primary/10 to-transparent border-l-4 border-primary p-6 rounded-r-lg">
-                <div className="flex items-center gap-3 mb-4">
-                  <Zap className="w-8 h-8 text-primary" />
-                  <h3 className="text-2xl font-bold m-0">Cerebras: High-Throughput Operations</h3>
-                </div>
-                <p className="text-muted-foreground leading-relaxed mb-3">
-                  <strong>Specialty:</strong> Batch processing, high-volume tasks, parallel operations
-                </p>
+              <div className="border-l-4 border-primary pl-6">
+                <h3 className="text-xl font-bold mb-2 flex items-center gap-2 text-foreground">
+                  <Zap className="h-5 w-5 text-primary" />
+                  Cerebras — High-Throughput Operations
+                </h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  When volume matters, Cerebras handles high-throughput operations efficiently. Batch processing, bulk analysis, and parallel task execution all route through Cerebras for maximum efficiency.
+                  Batch processing, bulk analysis, parallel task execution. Maximum efficiency at volume.
                 </p>
               </div>
 
-              <div className="bg-gradient-to-r from-accent/10 to-transparent border-l-4 border-accent p-6 rounded-r-lg">
-                <div className="flex items-center gap-3 mb-4">
-                  <Search className="w-8 h-8 text-accent" />
-                  <h3 className="text-2xl font-bold m-0">Google AI Studio: Multimodal Intelligence</h3>
-                </div>
-                <p className="text-muted-foreground leading-relaxed mb-3">
-                  <strong>Specialty:</strong> Multimodal reasoning, vision tasks, complex analysis
-                </p>
+              <div className="border-l-4 border-primary pl-6">
+                <h3 className="text-xl font-bold mb-2 flex items-center gap-2 text-foreground">
+                  <Search className="h-5 w-5 text-primary" />
+                  Google AI Studio — Multimodal Intelligence
+                </h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  Google AI Studio provides access to Gemini models through its free tier, excelling at multimodal tasks combining text and image understanding. Cascade routes vision-related tasks, complex document analysis, and tasks requiring reasoning across multiple input types to Google AI Studio.
+                  Gemini models for vision tasks, complex document analysis, and reasoning across multiple input types.
                 </p>
               </div>
             </div>
-
-            <h2 className="text-3xl font-bold mb-4">How Cascade Decides</h2>
-            <p className="text-lg leading-relaxed mb-6">
-              Routing decisions happen in milliseconds through multi-factor analysis. Cascade evaluates task characteristics (creative vs. logical, time-sensitive vs. quality-focused), historical performance data (which provider handled similar tasks most effectively), current API availability and rate limits, and cost considerations balanced against quality requirements.
-            </p>
-
-            <p className="text-lg leading-relaxed mb-6">
-              This isn't static configuration—Cascade continuously learns which routing strategies produce the best outcomes. If Groq performs exceptionally well on a specific task category, future similar tasks route to Groq more frequently. If Cerebras delivers superior results for certain workflows, Cascade adjusts routing to prioritize quality where it matters most.
-            </p>
-
-            <h2 className="text-3xl font-bold mb-4">Zero-Cost Through Intelligence</h2>
-            <p className="text-lg leading-relaxed">
-              The free-tier routing system's most significant advantage is zero-cost AI operations. By intelligently routing tasks to free-tier providers based on their strengths, Cascade eliminates AI spending entirely while maintaining quality. Smart caching through Nexus prevents redundant API calls, and batching similar requests maximizes efficiency. You get enterprise-grade capabilities at zero cost—all managed transparently by Cascade.
-            </p>
           </section>
 
-          <section className="bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 border border-primary/30 rounded-lg p-8 text-center mb-12">
-            <h3 className="text-2xl font-bold mb-4">Experience Intelligent Routing</h3>
-            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              See how the free-tier provider network delivers optimal results while eliminating costs automatically through Cascade's intelligent orchestration.
-            </p>
-            <Link 
-              to="/" 
-              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors"
-            >
-              Start Free Trial
-              <span>→</span>
-            </Link>
+          {/* Quote Break */}
+          <section className="my-16 py-12 border-y border-border">
+            <blockquote className="text-2xl md:text-3xl font-light text-center text-foreground">
+              "You interact with one system. Cascade handles the complexity."
+            </blockquote>
           </section>
 
-          <section>
-            <h2 className="text-2xl font-bold mb-6 border-t border-border pt-8">Related Articles</h2>
-            <div className="grid md:grid-cols-2 gap-6">
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold mb-6 text-foreground">
+              How Cascade Decides
+            </h2>
+            
+            <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
+              <p>
+                Routing decisions happen in milliseconds through multi-factor analysis: task characteristics, historical performance data, current API availability, and cost considerations balanced against quality requirements.
+              </p>
+              
+              <p>
+                This isn't static configuration. Cascade continuously learns which routing strategies produce the best outcomes. If Groq performs exceptionally well on a specific task category, future similar tasks route there more frequently.
+              </p>
+            </div>
+          </section>
+
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold mb-6 text-foreground">
+              Zero-Cost Through Intelligence
+            </h2>
+            
+            <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
+              <p>
+                By intelligently routing tasks to free-tier providers based on their strengths, Cascade eliminates AI spending entirely while maintaining quality.
+              </p>
+              
+              <p>
+                Smart caching prevents redundant API calls. Batching similar requests maximizes efficiency. Enterprise-grade capabilities at zero cost—all managed transparently.
+              </p>
+            </div>
+          </section>
+
+          {/* Related */}
+          <section className="bg-card border border-border rounded-lg p-8">
+            <h3 className="text-xl font-bold mb-6 text-foreground">Related Research</h3>
+            <div className="grid gap-4">
               <Link 
                 to="/blog/how-promptfluid-works-cascade-ai-ecosystem" 
-                className="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors"
+                className="block p-4 border border-border rounded-lg hover:border-primary/40 transition-colors"
               >
-                <h3 className="text-lg font-semibold mb-2">How PromptFluid Works</h3>
-                <p className="text-sm text-muted-foreground">
-                  Discover the complete ecosystem that leverages the free-tier provider network for seamless intelligence delivery.
-                </p>
+                <h4 className="font-semibold text-foreground mb-1">How PromptFluid Works</h4>
+                <p className="text-sm text-muted-foreground">The complete ecosystem leveraging the free-tier network.</p>
               </Link>
 
               <Link 
                 to="/blog/cascade-ai-adaptive-intelligence-brain" 
-                className="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors"
+                className="block p-4 border border-border rounded-lg hover:border-primary/40 transition-colors"
               >
-                <h3 className="text-lg font-semibold mb-2">Cascade AI Deep Dive</h3>
-                <p className="text-sm text-muted-foreground">
-                  Explore the learning mechanisms that enable intelligent routing decisions.
-                </p>
+                <h4 className="font-semibold text-foreground mb-1">Cascade AI Deep Dive</h4>
+                <p className="text-sm text-muted-foreground">The learning mechanisms enabling intelligent routing.</p>
               </Link>
             </div>
           </section>
-        </article>
-      </main>
-    </>
+
+        </div>
+      </article>
+
+      <EnhancedFooter />
+    </div>
   );
 };
 

@@ -1,311 +1,191 @@
 import { SEO } from "@/components/SEO";
 import { AuthorBio } from "@/components/AuthorBio";
 import { Link } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Brain, Zap, Sparkles } from "lucide-react";
+import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { Badge } from "@/components/ui/badge";
 
 export default function AISystemsThatDreamPressRelease() {
   return (
-    <>
+    <div className="min-h-screen bg-background">
       <SEO 
-        title="PromptFluid Introduces Experimental Dream Cycle AI Systems | Announcement"
-        description="PromptFluid announces Cascade and SimNap (Dream Eater), experimental AI systems exploring structured dream cycles, self-reflection, and autonomous learning concepts—powered by a free-tier AI router."
-        keywords={["AI systems", "autonomous learning", "AI dreams", "Cascade", "Dream Eater", "PromptFluid", "artificial intelligence", "experimental AI"]}
+        title="PromptFluid Introduces Experimental Dream Cycle AI Systems"
+        description="Cascade and SimNap explore structured dream cycles, self-reflection, and autonomous learning—powered by a free-tier AI router."
+        keywords={["AI systems", "autonomous learning", "AI dreams", "Cascade", "Dream Eater", "PromptFluid"]}
       />
       
-      <main className="container mx-auto px-4 py-8 max-w-4xl">
-        <Link to="/blog" className="inline-flex items-center text-primary hover:text-primary/80 mb-6">
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Blog
-        </Link>
+      <PublicNav />
 
-        <img 
-          src="/images/ai-dream-hero.jpg"
-          alt="AI Systems That Dream - Experimental autonomous intelligence concept"
-          className="w-full h-64 object-cover rounded-lg mb-8"
-          onError={(e) => {
-            e.currentTarget.src = "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=400&fit=crop";
-          }}
-        />
+      {/* Hero Section */}
+      <section className="relative z-10 container mx-auto px-4 pt-20 md:pt-32 pb-12">
+        <div className="max-w-4xl mx-auto">
+          <Link to="/blog" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary mb-8 transition-colors">
+            <ArrowLeft className="w-4 h-4" />
+            Back to Research
+          </Link>
 
-        <article className="prose prose-lg max-w-none dark:prose-invert">
-          <div className="mb-8">
-            <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg px-4 py-2 mb-4 inline-block">
-              <span className="text-amber-600 dark:text-amber-400 font-medium">🧪 Experimental Concept</span>
-            </div>
-            <h1 className="text-5xl font-bold mb-4 leading-tight">
-              PromptFluid Introduces Experimental Dream Cycle AI Systems
-            </h1>
-            
-            <p className="text-xl text-muted-foreground font-medium">
-              Exploring Autonomous Insight, Self-Improvement Concepts, and Novel AI Learning Approaches
-            </p>
-          </div>
+          <Badge variant="outline" className="mb-6 border-amber-500/30 text-amber-500">
+            Experimental Research
+          </Badge>
           
-          <div className="bg-primary/5 border-l-4 border-primary p-6 rounded-r-lg mb-8">
-            <p className="text-lg font-medium m-0">
-              Experimental systems powered by a free-tier smart router requiring no compute budget.
-            </p>
-          </div>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground tracking-tight">
+            Experimental Dream Cycle AI Systems
+          </h1>
+          
+          <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
+            Exploring autonomous insight, self-improvement concepts, and novel AI learning approaches.
+          </p>
 
           <AuthorBio publishDate="2025-11-17" readTime="5 min read" />
+        </div>
+      </section>
 
-          <div className="text-xl leading-relaxed space-y-4 mb-8">
-            <p className="font-medium">
-              PromptFluid announces <strong>Cascade</strong> and <strong>SimNap (Dream Eater)</strong>, experimental AI systems exploring structured dream cycles, self-reflection, and internal autonomous learning concepts — all without ongoing compute expenses.
+      {/* Earth Window */}
+      <section className="relative w-full h-[50vh] overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1920&q=80')`,
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
+        
+        <div className="absolute inset-0 flex items-center justify-center">
+          <blockquote className="text-center max-w-3xl px-8">
+            <p className="text-2xl md:text-4xl font-light text-white drop-shadow-lg">
+              "Systems that think, reflect, dream, and improve themselves."
             </p>
+          </blockquote>
+        </div>
+      </section>
 
-            <p>
-              This represents PromptFluid's exploration of <strong>scheduled autonomous intelligence</strong>: systems that run on internal schedules, reorganize knowledge during simulated dream states, and experiment with improving their capabilities over time.
-            </p>
-          </div>
+      {/* Content */}
+      <article className="container mx-auto px-4 py-16">
+        <div className="max-w-3xl mx-auto">
+          
+          <section className="mb-16">
+            <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
+              <p className="text-xl">
+                PromptFluid announces <strong className="text-foreground">Cascade</strong> and <strong className="text-foreground">SimNap (Dream Eater)</strong>, experimental AI systems exploring structured dream cycles, self-reflection, and internal autonomous learning—all without ongoing compute expenses.
+              </p>
 
-          <hr className="my-12 border-t-2 border-primary/20" />
-
-          <div className="mb-12">
-            <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
-              <span className="text-primary">⚡</span>
-              Cascade — The Autonomous Ecosystem Analyst
-            </h2>
-
-            <p className="text-lg mb-6">
-              Cascade was built to support complex multi-module systems and technical platforms.
-            </p>
-
-            <div className="bg-accent/10 p-6 rounded-lg mb-6">
-              <h3 className="text-xl font-semibold mb-4">Its autonomous dream cycles generate:</h3>
-              <ul className="space-y-2 list-none pl-0">
-                <li className="flex items-start gap-3">
-                  <span className="text-primary mt-1">✓</span>
-                  <span>Infrastructure optimizations</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-primary mt-1">✓</span>
-                  <span>Routing insights</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-primary mt-1">✓</span>
-                  <span>System efficiency improvements</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-primary mt-1">✓</span>
-                  <span>Code-pattern predictions</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-primary mt-1">✓</span>
-                  <span>Vulnerability detection</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-primary mt-1">✓</span>
-                  <span>Daily operational summaries</span>
-                </li>
-              </ul>
-            </div>
-
-            <p className="text-lg">
-              Cascade restructures internal knowledge every night, adapting itself based on real usage patterns across development, security, routing, and technical workflows.
-            </p>
-          </div>
-
-          <hr className="my-12 border-t-2 border-primary/20" />
-
-          <div className="mb-12">
-            <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
-              <span className="text-primary">💼</span>
-              SimNap — The Multi-Niche Business Intelligence Partner
-            </h2>
-
-            <p className="text-lg mb-6">
-              SimNap is not an engineering optimizer — it's a business strategist designed to analyze any commercial environment.
-            </p>
-
-            <div className="bg-accent/10 p-6 rounded-lg mb-6">
-              <h3 className="text-xl font-semibold mb-4">SimNap's autonomous dream cycles produce:</h3>
-              <ul className="space-y-2 list-none pl-0">
-                <li className="flex items-start gap-3">
-                  <span className="text-primary mt-1">✓</span>
-                  <span>New product concepts</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-primary mt-1">✓</span>
-                  <span>Competitor intelligence</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-primary mt-1">✓</span>
-                  <span>Market-gap predictions</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-primary mt-1">✓</span>
-                  <span>Unexplored revenue verticals</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-primary mt-1">✓</span>
-                  <span>Cross-industry opportunity mapping</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-primary mt-1">✓</span>
-                  <span>Long-term strategy blueprints</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-primary mt-1">✓</span>
-                  <span>Operational improvements for any business</span>
-                </li>
-              </ul>
-            </div>
-
-            <p className="text-lg mb-4">
-              Its architecture uses hot/warm/cold memory tiers, enabling long-range pattern-building and temporal continuity across days, weeks, and months.
-            </p>
-
-            <div className="bg-primary/10 border border-primary/30 p-5 rounded-lg">
-              <p className="text-lg font-bold m-0">
-                Where Cascade improves systems, SimNap improves businesses.
+              <p>
+                This represents PromptFluid's exploration of scheduled autonomous intelligence: systems that run on internal schedules, reorganize knowledge during simulated dream states, and experiment with improving their capabilities over time.
               </p>
             </div>
-          </div>
+          </section>
 
-          <hr className="my-12 border-t-2 border-primary/20" />
-
-          <div className="mb-12">
-            <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
-              <span className="text-primary">🚀</span>
-              Powered by a Zero-Cost AI Router
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold mb-6 flex items-center gap-3 text-foreground">
+              <Zap className="h-8 w-8 text-primary" />
+              Cascade — The Ecosystem Analyst
             </h2>
-
-            <p className="text-lg mb-6">
-              Both agents run entirely on PromptFluid's free-tier routing engine, which dynamically selects the best zero-cost model based on:
-            </p>
             
-            <div className="grid md:grid-cols-2 gap-4 mb-6">
-              <div className="bg-accent/10 p-4 rounded-lg">
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl">⚡</span>
-                  <span className="font-semibold">Latency</span>
-                </div>
-              </div>
-              <div className="bg-accent/10 p-4 rounded-lg">
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl">🧠</span>
-                  <span className="font-semibold">Reasoning depth</span>
-                </div>
-              </div>
-              <div className="bg-accent/10 p-4 rounded-lg">
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl">📊</span>
-                  <span className="font-semibold">Prior success rate</span>
-                </div>
-              </div>
-              <div className="bg-accent/10 p-4 rounded-lg">
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl">🎯</span>
-                  <span className="font-semibold">Task complexity</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-r from-primary/20 to-accent/20 border border-primary/30 p-6 rounded-lg">
-              <p className="text-xl font-bold text-center m-0">
-                Cost-efficient autonomous operations using free-tier AI providers
+            <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
+              <p>
+                Cascade supports complex multi-module systems and technical platforms. Its autonomous dream cycles generate infrastructure optimizations, routing insights, system efficiency improvements, and vulnerability detection.
               </p>
-              <p className="text-center text-sm text-muted-foreground mt-2 m-0">
-                Exploring what's possible with minimal compute budget
+              
+              <p>
+                Every night, Cascade restructures internal knowledge, adapting based on real usage patterns across development, security, routing, and technical workflows.
               </p>
             </div>
-          </div>
+          </section>
 
-          <hr className="my-12 border-t-2 border-primary/20" />
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold mb-6 flex items-center gap-3 text-foreground">
+              <Brain className="h-8 w-8 text-primary" />
+              SimNap — Business Intelligence Partner
+            </h2>
+            
+            <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
+              <p>
+                SimNap isn't an engineering optimizer—it's a business strategist designed to analyze any commercial environment.
+              </p>
+              
+              <p>
+                Its dream cycles produce new product concepts, competitor intelligence, market-gap predictions, unexplored revenue verticals, and long-term strategy blueprints.
+              </p>
+              
+              <p>
+                The architecture uses hot/warm/cold memory tiers, enabling long-range pattern-building and temporal continuity across days, weeks, and months.
+              </p>
+            </div>
+          </section>
 
-          <div className="mb-12">
-            <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
-              <span className="text-primary">💎</span>
+          {/* Quote Break */}
+          <section className="my-16 py-12 border-y border-border">
+            <blockquote className="text-2xl md:text-3xl font-light text-center text-foreground">
+              "Where Cascade improves systems, SimNap improves businesses."
+            </blockquote>
+          </section>
+
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold mb-6 flex items-center gap-3 text-foreground">
+              <Sparkles className="h-8 w-8 text-primary" />
+              Zero-Cost AI Router
+            </h2>
+            
+            <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
+              <p>
+                Both agents run entirely on PromptFluid's free-tier routing engine, which dynamically selects the best zero-cost model based on latency, reasoning depth, prior success rate, and task complexity.
+              </p>
+              
+              <p>
+                The result: cost-efficient autonomous operations using free-tier AI providers. Exploring what's possible with minimal compute budget.
+              </p>
+            </div>
+          </section>
+
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold mb-6 text-foreground">
               Built With Capital Efficiency
             </h2>
-
-            <p className="text-lg mb-4">
-              The PromptFluid intelligence stack — including our core products — was built with a focus on extreme capital efficiency, leveraging:
-            </p>
-
-            <div className="bg-accent/10 p-6 rounded-lg mb-4">
-              <ul className="space-y-2 list-none pl-0 m-0">
-                <li className="flex items-start gap-3">
-                  <span className="text-primary mt-1">✓</span>
-                  <span>Free-tier AI providers for development and testing</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-primary mt-1">✓</span>
-                  <span>Open-source tools and frameworks</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-primary mt-1">✓</span>
-                  <span>Efficient code architecture to minimize costs</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-primary mt-1">✓</span>
-                  <span>Solo founder bootstrapping</span>
-                </li>
-              </ul>
-            </div>
-
-            <p className="text-lg font-medium text-center">
-              Proving that innovative AI doesn't require institutional budgets.
-            </p>
-          </div>
-
-          <hr className="my-12 border-t-2 border-primary/20" />
-
-          <div className="mb-12">
-            <h2 className="text-3xl font-bold mb-6">Founder Statement</h2>
-
-            <blockquote className="border-l-4 border-primary bg-accent/5 p-6 rounded-r-lg">
-              <p className="text-xl italic leading-relaxed mb-4">
-                "Artificial intelligence shouldn't wait on a prompt. It should think, reflect, dream, and improve itself — just like we do. Cascade and SimNap prove that's possible today, and they do it with zero compute cost."
+            
+            <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
+              <p>
+                The PromptFluid intelligence stack was built with extreme capital efficiency: free-tier AI providers, open-source tools, efficient architecture, and solo founder bootstrapping.
               </p>
-              <footer className="text-lg font-semibold">
-                — Kenneth E Sweet Jr, Founder, PromptFluid
-              </footer>
-            </blockquote>
-          </div>
-
-          <hr className="my-12 border-t-2 border-primary/20" />
-
-          <div className="mb-12">
-            <h2 className="text-3xl font-bold mb-6">About PromptFluid</h2>
-
-            <p className="text-lg">
-              PromptFluid builds autonomous intelligence systems capable of learning, dreaming, planning, and evolving independently. Its technologies enable self-improving ecosystems, business intelligence agents, and cost-efficient AI operations with no compute budget required.
-            </p>
-          </div>
-
-          <hr className="my-12 border-t-2 border-primary/20" />
-
-          <div className="bg-accent/10 p-8 rounded-lg">
-            <h2 className="text-2xl font-bold mb-6">Media Contact</h2>
-
-            <div className="space-y-3">
-              <p className="text-lg font-bold m-0">Kenneth E Sweet Jr</p>
-              <p className="text-muted-foreground m-0">Founder, PromptFluid</p>
               
-              <div className="space-y-2 pt-4">
-                <p className="flex items-center gap-3 m-0">
-                  <span>📧</span>
-                  <a href="mailto:promptfluid@gmail.com" className="text-primary hover:underline">
-                    promptfluid@gmail.com
-                  </a>
-                </p>
-                <p className="flex items-center gap-3 m-0">
-                  <span>📞</span>
-                  <span>(760) FLUID-AI</span>
-                </p>
-                <p className="flex items-center gap-3 m-0">
-                  <span>🌐</span>
-                  <a href="https://PromptFluid.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                    https://PromptFluid.com
-                  </a>
-                </p>
-              </div>
+              <p className="font-medium text-foreground">
+                Proving that innovative AI doesn't require institutional budgets.
+              </p>
             </div>
-          </div>
-        </article>
-      </main>
-    </>
+          </section>
+
+          {/* Founder Quote */}
+          <section className="bg-card border border-border rounded-lg p-8 mb-16">
+            <blockquote className="text-xl italic text-foreground mb-4 leading-relaxed">
+              "Artificial intelligence shouldn't wait on a prompt. It should think, reflect, dream, and improve itself—just like we do. Cascade and SimNap prove that's possible today, and they do it with zero compute cost."
+            </blockquote>
+            <footer className="text-muted-foreground">
+              — Kenneth E Sweet Jr, Founder
+            </footer>
+          </section>
+
+          {/* Contact */}
+          <section className="bg-muted/30 border border-border rounded-lg p-8">
+            <h3 className="text-xl font-bold mb-4 text-foreground">Contact</h3>
+            <div className="space-y-2 text-muted-foreground">
+              <p>Kenneth E Sweet Jr — Founder, PromptFluid</p>
+              <p>
+                <a href="mailto:promptfluid@gmail.com" className="text-primary hover:underline">
+                  promptfluid@gmail.com
+                </a>
+              </p>
+              <p>
+                <a href="https://PromptFluid.com" className="text-primary hover:underline">
+                  PromptFluid.com
+                </a>
+              </p>
+            </div>
+          </section>
+
+        </div>
+      </article>
+
+      <EnhancedFooter />
+    </div>
   );
 }
