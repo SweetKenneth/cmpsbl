@@ -5,7 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { SEO } from "@/components/SEO";
-
+import heroImage from "@/assets/hero/data-center-infrastructure.jpg";
+import securityImage from "@/assets/hero/security-operations.jpg";
 export default function Solutions() {
   const solutions = [
     {
@@ -86,11 +87,10 @@ export default function Solutions() {
       
       {/* Hero with Earth Window */}
       <section className="relative w-full">
-        <div 
-          className="absolute inset-0 h-[50vh] bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1920&q=80')`,
-          }}
+        <img 
+          src={heroImage}
+          alt="Modern data center infrastructure with server racks and blue lighting representing PromptFluid's enterprise-grade systems"
+          className="absolute inset-0 w-full h-[50vh] object-cover"
         />
         <div className="absolute inset-0 h-[50vh] bg-gradient-to-b from-background/80 via-background/40 to-background" />
         
@@ -177,11 +177,10 @@ export default function Solutions() {
 
       {/* Earth Window */}
       <section className="relative w-full h-[50vh] overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1920&q=80')`,
-          }}
+        <img 
+          src={securityImage}
+          alt="Security operations center with monitoring displays representing real-time threat detection"
+          className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background opacity-70" />
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />
@@ -189,7 +188,7 @@ export default function Solutions() {
         
         <div className="absolute inset-0 flex items-center justify-center">
           <blockquote className="text-center max-w-3xl px-8">
-            <p className="text-2xl md:text-4xl font-light text-white drop-shadow-lg">
+            <p className="text-2xl md:text-4xl font-light text-foreground drop-shadow-lg">
               "We're closers. We ship real systems."
             </p>
           </blockquote>

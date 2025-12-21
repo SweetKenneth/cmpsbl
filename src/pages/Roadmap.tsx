@@ -5,7 +5,8 @@ import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { Badge } from "@/components/ui/badge";
-
+import heroImage from "@/assets/hero/product-roadmap.jpg";
+import neuralImage from "@/assets/hero/neural-network-abstract.jpg";
 export default function Roadmap() {
   const quarters = [
     {
@@ -126,11 +127,10 @@ export default function Roadmap() {
 
       {/* Hero with Earth Window */}
       <section className="relative w-full">
-        <div 
-          className="absolute inset-0 h-[60vh] bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80')`,
-          }}
+        <img 
+          src={heroImage}
+          alt="Product roadmap visualization with timeline and milestones representing PromptFluid's strategic direction"
+          className="absolute inset-0 w-full h-[60vh] object-cover"
         />
         <div className="absolute inset-0 h-[60vh] bg-gradient-to-b from-background/80 via-background/40 to-background" />
         
@@ -236,11 +236,10 @@ export default function Roadmap() {
 
       {/* Earth Window */}
       <section className="relative w-full h-[50vh] overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=1920&q=80')`,
-          }}
+        <img 
+          src={neuralImage}
+          alt="Abstract neural network visualization representing future AI capabilities"
+          className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background opacity-70" />
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />
@@ -248,7 +247,7 @@ export default function Roadmap() {
         
         <div className="absolute inset-0 flex items-center justify-center">
           <blockquote className="text-center max-w-3xl px-8">
-            <p className="text-2xl md:text-4xl font-light text-white drop-shadow-lg">
+            <p className="text-2xl md:text-4xl font-light text-foreground drop-shadow-lg">
               "Technology that works for everyone."
             </p>
           </blockquote>

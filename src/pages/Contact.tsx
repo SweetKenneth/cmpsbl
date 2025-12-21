@@ -9,6 +9,8 @@ import { useToast } from "@/hooks/use-toast";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { SEO } from "@/components/SEO";
+import heroImage from "@/assets/hero/team-collaboration.jpg";
+import accessibilityImage from "@/assets/hero/accessibility-technology.jpg";
 
 export default function Contact() {
   const { toast } = useToast();
@@ -54,11 +56,10 @@ export default function Contact() {
       
       {/* Hero with Earth Window */}
       <section className="relative w-full">
-        <div 
-          className="absolute inset-0 h-[50vh] bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80')`,
-          }}
+        <img 
+          src={heroImage}
+          alt="Collaborative team working together in modern tech workspace"
+          className="absolute inset-0 w-full h-[50vh] object-cover"
         />
         <div className="absolute inset-0 h-[50vh] bg-gradient-to-b from-background/80 via-background/40 to-background" />
         
@@ -233,11 +234,10 @@ export default function Contact() {
 
       {/* Earth Window */}
       <section className="relative w-full h-[40vh] overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&q=80')`,
-          }}
+        <img 
+          src={accessibilityImage}
+          alt="Accessibility technology interface with universal design elements"
+          className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background opacity-60" />
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent" />
