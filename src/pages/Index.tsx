@@ -14,27 +14,27 @@ export default function Index() {
       id: "rckbl",
       name: "RCKBL",
       subtitle: "Rockable Defense",
-      description: "Complete website defense against hackers, viruses, and bots. Born from reverse-engineering our own stealth bot technology into one of the most effective bot sniping systems available. WordPress plugin included.",
+      description: "Enterprise-grade website security born from reverse-engineering our own stealth bot technology. Provides comprehensive protection against automated threats, credential stuffing, and malicious actors with adaptive behavioral analysis.",
       badge: "Live",
       badgeColor: "system-amber",
       icon: Shield,
-      link: "/projects/defense"
+      externalLink: "https://promptfluid.com/projects/defense"
     },
     {
       id: "rndrbl",
       name: "RNDRBL",
       subtitle: "Renderable",
-      description: "Web accessibility browser with built-in layover control panel. Enables people with disabilities to browse their favorite sites with the features they require.",
+      description: "Accessibility-first browser technology with an integrated control panel that enables users with disabilities to customize their browsing experience in real-time. Removes barriers between users and the web they deserve.",
       badge: "Running",
       badgeColor: "system-green",
       icon: Eye,
-      link: "/projects/accessibility"
+      externalLink: "https://RNDRBL.com"
     },
     {
       id: "ptchbl",
       name: "PTCHBL",
       subtitle: "Patchable",
-      description: "Free WCAG scanner that tests websites for accessibility issues, then applies AI to fix 45 of 86 WCAG compliance functions. Inclusion should never be behind a paywall.",
+      description: "Free-forever WCAG compliance scanner with AI-powered remediation. Automatically detects and fixes 45 of 86 WCAG accessibility functions. We believe inclusion should never be behind a paywall.",
       badge: "Free",
       badgeColor: "system-green",
       icon: Accessibility,
@@ -44,37 +44,37 @@ export default function Index() {
       id: "splcbl",
       name: "SPLCBL",
       subtitle: "Spliceable",
-      description: "WordPress plugin compliance checker. Upload your plugin and scan for common WordPress.org submission issues before the official review process.",
+      description: "Pre-submission validation tool for WordPress plugin developers. Scans your plugin against WordPress.org compliance requirements before official review, reducing rejection rates and accelerating time to market.",
       badge: "Free",
       badgeColor: "system-green",
       icon: Wrench,
-      link: "/projects/spliceable"
+      externalLink: "https://SPLCBL.com"
     },
     {
       id: "cascade",
       name: "Cascade",
       subtitle: "Autonomous AI",
-      description: "The first autonomous AI that reflects on memories through internal simulation cycles we call dreaming. World first documented with proof released on Zenodo and OSF.",
+      description: "World's first documented autonomous AI with internal memory reflection cycles—a process we call dreaming. Published proof of concept on Zenodo and OSF with full architectural transparency.",
       badge: "Deployed",
       badgeColor: "primary",
       icon: Brain,
-      link: "/projects/brain"
+      externalLink: "https://promptfluid.com/projects/brain"
     },
     {
       id: "nexus",
       name: "AI Nexus",
       subtitle: "Multi-Provider Gateway",
-      description: "Intelligent AI routing across 20+ LLMs and API providers with automatic fallback chains and cost optimization.",
+      description: "Unified AI infrastructure routing across 20+ LLM providers with intelligent load balancing, automatic failover, and cost optimization. The operational spine of our AI ecosystem.",
       badge: "Running",
       badgeColor: "primary",
       icon: Server,
-      link: "/projects/nexus"
+      externalLink: "https://promptfluid.com/blog/ai-triad-intelligent-routing"
     },
     {
       id: "xctbl",
       name: "XCTBL Space",
       subtitle: "Lore-Wrapped SaaS Suite",
-      description: "Software suite wrapped in fictional lore. Custom OAuth login system connecting tools across interconnected worlds. Fiction-framed, but every tool is 100% real and functional.",
+      description: "Immersive SaaS platform wrapped in fictional world-building. Features custom OAuth authentication connecting real, functional tools across interconnected narrative experiences. Entertainment meets enterprise.",
       badge: "Live",
       badgeColor: "system-amber",
       icon: Sparkles,
@@ -254,7 +254,7 @@ export default function Index() {
                 {shippedSystems.map((system) => (
                   <div
                     key={system.id}
-                    onClick={() => system.externalLink ? window.open(system.externalLink, "_blank") : navigate(system.link || '')}
+                    onClick={() => window.open(system.externalLink, "_blank")}
                     className={`group bg-card border border-border rounded-lg p-6 cursor-pointer hover:border-[hsl(var(--${system.badgeColor}))]/50 transition-all duration-200 hover:shadow-elegant`}
                   >
                     <div className="flex items-start justify-between mb-4">
@@ -275,8 +275,8 @@ export default function Index() {
                     </p>
                     
                     <div className="flex items-center gap-2 text-sm text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-                      <span>{system.externalLink ? 'Visit' : 'Learn more'}</span>
-                      {system.externalLink ? <ExternalLink className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
+                      <span>Visit</span>
+                      <ExternalLink className="w-4 h-4" />
                     </div>
                   </div>
                 ))}
