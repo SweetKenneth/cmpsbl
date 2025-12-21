@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logo from "@/assets/promptfluid-logo-final.png";
+import logo from "@/assets/promptfluid-logo.png";
 
 export function PublicNav() {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ export function PublicNav() {
     <>
       {/* Desktop Navigation */}
       <nav
-        className="relative z-[10000] container mx-auto px-4 py-[5px] md:py-4"
+        className="relative z-[10000] bg-black container mx-auto px-4 py-[5px] md:py-4"
         role="navigation"
         aria-label="Main navigation"
       >
@@ -43,7 +43,7 @@ export function PublicNav() {
                 className={`text-sm font-medium transition-colors ${
                   item.highlight 
                     ? "text-primary hover:text-primary/80" 
-                    : "text-foreground/70 hover:text-foreground"
+                    : "text-white/70 hover:text-white"
                 }`}
               >
                 {item.name}
@@ -68,11 +68,11 @@ export function PublicNav() {
             </Button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-lg hover:bg-muted transition-colors"
+              className="lg:hidden p-2 rounded-lg hover:bg-white/10 transition-colors"
               aria-label="Toggle menu"
               aria-expanded={mobileMenuOpen}
             >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {mobileMenuOpen ? <X className="w-5 h-5 text-white" /> : <Menu className="w-5 h-5 text-white" />}
             </button>
           </div>
         </div>
