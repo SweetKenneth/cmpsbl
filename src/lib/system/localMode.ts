@@ -92,19 +92,19 @@ async function initCascade(): Promise<ModuleState> {
 }
 
 /**
- * Initialize Clarity module (code quality, validation)
+ * Initialize PTCHBL module (code quality, validation)
  */
-async function initClarity(): Promise<ModuleState> {
+async function initPTCHBL(): Promise<ModuleState> {
   const state: ModuleState = {
-    name: 'Clarity',
+    name: 'PTCHBL',
     status: 'initializing',
     dependencies: [],
     initialized: false,
   };
 
   try {
-    localStorage.setItem('clarity_scans', '[]');
-    localStorage.setItem('clarity_mode', 'local');
+    localStorage.setItem('ptchbl_scans', '[]');
+    localStorage.setItem('ptchbl_mode', 'local');
 
     state.status = 'active';
     state.initialized = true;
@@ -116,19 +116,19 @@ async function initClarity(): Promise<ModuleState> {
 }
 
 /**
- * Initialize Reflex module (WordPress bot protection)
+ * Initialize RCKBL module (WordPress bot protection)
  */
-async function initReflex(): Promise<ModuleState> {
+async function initRCKBL(): Promise<ModuleState> {
   const state: ModuleState = {
-    name: 'Reflex',
+    name: 'RCKBL',
     status: 'initializing',
     dependencies: ['Defense'],
     initialized: false,
   };
 
   try {
-    localStorage.setItem('reflex_sniper_active', 'true');
-    localStorage.setItem('reflex_mode', 'local');
+    localStorage.setItem('rckbl_sniper_active', 'true');
+    localStorage.setItem('rckbl_mode', 'local');
 
     state.status = 'active';
     state.initialized = true;
@@ -197,13 +197,13 @@ async function buildDependencyGraph(): Promise<DependencyGraph> {
 
   // Initialize modules without dependencies first
   graph.Brain = await initBrain();
-  graph.Clarity = await initClarity();
+  graph.PTCHBL = await initPTCHBL();
   graph.Defense = await initDefense();
 
   // Initialize modules with dependencies
   graph.Cascade = await initCascade();
   graph.Nexus = await initNexus();
-  graph.Reflex = await initReflex();
+  graph.RCKBL = await initRCKBL();
 
   return graph;
 }
@@ -217,8 +217,8 @@ async function verifyInterModuleCommunication(graph: DependencyGraph): Promise<b
   // Verify Brain <-> Nexus
   verifications.brain_nexus = graph.Brain.initialized && graph.Nexus.initialized;
 
-  // Verify Defense <-> Reflex
-  verifications.defense_reflex = graph.Defense.initialized && graph.Reflex.initialized;
+  // Verify Defense <-> RCKBL
+  verifications.defense_rckbl = graph.Defense.initialized && graph.RCKBL.initialized;
 
   // Verify Brain <-> Cascade
   verifications.brain_cascade = graph.Brain.initialized && graph.Cascade.initialized;
@@ -276,7 +276,7 @@ export function getLocalModeStatus(): {
   const isLocal = localStorage.getItem('pf_local_mode') === 'true';
   const modules: string[] = [];
 
-  const moduleNames = ['Brain', 'Cascade', 'Clarity', 'Reflex', 'Defense', 'Nexus'];
+  const moduleNames = ['Brain', 'Cascade', 'PTCHBL', 'RCKBL', 'Defense', 'Nexus'];
   moduleNames.forEach(name => {
     const key = `${name.toLowerCase()}_mode`;
     if (localStorage.getItem(key) === 'local') {

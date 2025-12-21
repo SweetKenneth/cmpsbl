@@ -105,14 +105,14 @@ const TopSecurityPlugins2025 = () => {
           </div>
 
           <div className="mt-12 prose prose-lg max-w-none">
-            <h2>Upcoming: PromptFluid Reflex (Bot Sniper)</h2>
+            <h2>Upcoming: RCKBL (Rockable)</h2>
             <Card className="p-6 border-amber-500/30 bg-amber-500/5">
               <div className="flex items-center gap-2 text-amber-600 mb-4">
                 <Zap className="h-5 w-5" />
                 <span className="font-medium">Pending WordPress.org Approval</span>
               </div>
               <p className="text-muted-foreground mb-4">
-                PromptFluid Reflex is our upcoming AI-powered WordPress security plugin focused on behavioral bot detection. 
+                RCKBL (Rockable) is our upcoming AI-powered WordPress security plugin focused on behavioral bot detection. 
                 Currently pending WordPress.org review. Features planned include:
               </p>
               <ul className="space-y-2 text-sm text-muted-foreground">

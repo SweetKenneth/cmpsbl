@@ -145,7 +145,7 @@ export default function TheFirsts() {
               We are <strong>PromptFluid</strong>. Not a company that built tools—<strong>a current that built its own intelligence</strong>. In 2025, we treat AI as water: adaptive, reflective, uncontainable. Conversation becomes creation. Orchestration becomes the mind.
             </p>
             <p className="text-lg leading-relaxed mb-6">
-              Start here, then follow the river into our products: <Link to="/cluster/clarity-ai-accessibility-and-autofix" className="text-primary hover:underline">Clarity: accessible web repair</Link>, <Link to="/cluster/verify-worlds-first-ai-plugin-certification" className="text-primary hover:underline">Verify: plugin certification</Link>, <Link to="/cluster/studio-autonomous-site-generator" className="text-primary hover:underline">Studio: autonomous site generator</Link>, and <Link to="/" className="text-primary hover:underline">home</Link>.
+              Start here, then follow the river into our products: <Link to="/cluster/clarity-ai-accessibility-and-autofix" className="text-primary hover:underline">PTCHBL: accessible web repair</Link>, <Link to="/cluster/verify-worlds-first-ai-plugin-certification" className="text-primary hover:underline">SPLCBL: plugin certification</Link>, <Link to="/cluster/studio-autonomous-site-generator" className="text-primary hover:underline">Studio: autonomous site generator</Link>, and <Link to="/" className="text-primary hover:underline">home</Link>.
             </p>
           </section>
 
@@ -180,7 +180,7 @@ export default function TheFirsts() {
             <section id="july-2025-ai-that-repairs-the-web">
               <h2 className="text-3xl font-bold mb-4">July 2025 — AI That Repairs the Web</h2>
               <p><strong>Focus:</strong> AI accessibility, automated WCAG repair</p>
-              <p><strong>Clarity</strong> scans, repairs, and certifies sites for accessibility—no overlays. It rewrites HTML toward WCAG 2.2 while it scans.</p>
+              <p><strong>PTCHBL (Patchable)</strong> scans, repairs, and certifies sites for accessibility—no overlays. It rewrites HTML toward WCAG 2.2 while it scans.</p>
               <p><strong>Impact:</strong> Accessibility becomes baseline, not backlog.</p>
               <Button variant="link" onClick={() => scrollToSection('toc')} className="text-primary">
                 Back to Top <ArrowUp className="w-4 h-4 ml-1" />
@@ -207,7 +207,7 @@ export default function TheFirsts() {
 
             <section id="august-2025-the-shared-intelligence-loop">
               <h2 className="text-3xl font-bold mb-4">August 2025 — The Shared Intelligence Loop</h2>
-              <p>Verify sharpens Clarity; Clarity shapes Studio; Studio feeds Brain; Brain improves all.</p>
+              <p>SPLCBL sharpens PTCHBL; PTCHBL shapes Studio; Studio feeds Brain; Brain improves all.</p>
               <p><strong>Impact:</strong> Inter-process learning makes improvement continuous.</p>
               <Button variant="link" onClick={() => scrollToSection('toc')} className="text-primary">
                 Back to Top <ArrowUp className="w-4 h-4 ml-1" />
@@ -331,15 +331,15 @@ export default function TheFirsts() {
                       <th className="border border-border p-3 text-left">Contribution to Ecosystem</th>
                     </tr>
                   </thead>
-                  <tbody>
+                    <tbody>
                     <tr>
-                      <td className="border border-border p-3"><Link to="/cluster/verify-worlds-first-ai-plugin-certification" className="text-primary hover:underline">Verify</Link></td>
+                      <td className="border border-border p-3"><Link to="/cluster/verify-worlds-first-ai-plugin-certification" className="text-primary hover:underline">SPLCBL (Spliceable)</Link></td>
                       <td className="border border-border p-3">AI Security / Certification</td>
                       <td className="border border-border p-3">$300K–$500K</td>
                       <td className="border border-border p-3">Bot detection and plugin validation</td>
                     </tr>
                     <tr>
-                      <td className="border border-border p-3"><Link to="/cluster/clarity-ai-accessibility-and-autofix" className="text-primary hover:underline">Clarity</Link></td>
+                      <td className="border border-border p-3"><Link to="/cluster/clarity-ai-accessibility-and-autofix" className="text-primary hover:underline">PTCHBL (Patchable)</Link></td>
                       <td className="border border-border p-3">Accessibility / Compliance</td>
                       <td className="border border-border p-3">$200K–$400K</td>
                       <td className="border border-border p-3">WCAG 2.2 scanning operational</td>
@@ -351,7 +351,7 @@ export default function TheFirsts() {
                       <td className="border border-border p-3">Core features working, deployment pending</td>
                     </tr>
                     <tr>
-                      <td className="border border-border p-3">Reflex Defense (Bot Sniper)</td>
+                      <td className="border border-border p-3">RCKBL (Rockable)</td>
                       <td className="border border-border p-3">WordPress Security - Production Ready</td>
                       <td className="border border-border p-3">$400K–$800K</td>
                       <td className="border border-border p-3">Three WordPress plugins ready for market</td>
@@ -379,11 +379,11 @@ export default function TheFirsts() {
               </div>
               <p className="mt-6"><strong>Seeking:</strong> <em>Seed investment (pre-revenue startup)</em></p>
               <p className="text-sm text-muted-foreground mt-2">
-                <strong>Key value drivers:</strong> Reflex Bot Sniper WordPress plugin, Clarity free accessibility scanner, 
+                <strong>Key value drivers:</strong> RCKBL (Rockable) WordPress plugin, PTCHBL (Patchable) free accessibility scanner, 
                 Dream Eater experimental AI system, and first-mover advantage in AI security space.
               </p>
               <p className="text-sm text-muted-foreground mt-4">
-                <strong>Products:</strong> Reflex Bot Sniper (pending WordPress.org), Clarity (live, 100% free), 
+                <strong>Products:</strong> RCKBL (pending WordPress.org), PTCHBL (live, 100% free), 
                 and Dream Eater (experimental R&D) - targeting WordPress security and accessibility markets.
               </p>
               <Button variant="link" onClick={() => scrollToSection('toc')} className="text-primary">
@@ -402,11 +402,11 @@ export default function TheFirsts() {
               <h3 className="text-2xl font-bold mb-6">Continue the Flow →</h3>
               <div className="grid md:grid-cols-3 gap-4">
                 <Link to="/cluster/clarity-ai-accessibility-and-autofix" className="p-4 bg-background rounded-lg border border-border hover:border-primary transition-colors">
-                  <h4 className="font-semibold mb-2">Clarity</h4>
+                  <h4 className="font-semibold mb-2">PTCHBL (Patchable)</h4>
                   <p className="text-sm text-muted-foreground">AI Accessibility & Auto-Fix</p>
                 </Link>
                 <Link to="/cluster/verify-worlds-first-ai-plugin-certification" className="p-4 bg-background rounded-lg border border-border hover:border-primary transition-colors">
-                  <h4 className="font-semibold mb-2">Verify</h4>
+                  <h4 className="font-semibold mb-2">SPLCBL (Spliceable)</h4>
                   <p className="text-sm text-muted-foreground">AI Plugin Certification</p>
                 </Link>
                 <Link to="/cluster/studio-autonomous-site-generator" className="p-4 bg-background rounded-lg border border-border hover:border-primary transition-colors">
