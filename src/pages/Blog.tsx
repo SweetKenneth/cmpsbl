@@ -38,129 +38,129 @@ export default function Blog() {
 
   const blogPosts = [
     {
-      title: "PromptFluid Introduces Experimental AI Systems That Dream",
-      excerpt: "Experimental concept: Cascade and SimNap explore autonomous dreaming, reflection, and self-improvement capabilities.",
+      title: "Experimental AI Systems That Dream",
+      excerpt: "Cascade and SimNap explore autonomous dreaming, reflection, and self-improvement.",
       href: "/blog/ai-systems-that-dream-press-release",
-      category: "Press Release",
+      category: "Research",
       date: "2025-01-18",
-      readTime: "6 min read",
+      readTime: "6 min",
       image: cascadeAIImg,
       imageAlt: "Cascade AI autonomous dreaming system",
       featured: true
     },
     {
-      title: "WordPress Bot Defense: Complete Guide to AI-Powered Security",
-      excerpt: "Learn how to protect your WordPress site from sophisticated bot attacks using AI-powered behavioral analysis.",
+      title: "WordPress Bot Defense Guide",
+      excerpt: "Protect your site from sophisticated bot attacks with AI-powered behavioral analysis.",
       href: "/blog/wordpress-bot-defense",
       category: "Security",
       date: "2025-01-15",
-      readTime: "15 min read",
+      readTime: "15 min",
       image: wpBotDefenseImg,
       imageAlt: "WordPress security with AI protection"
     },
     {
-      title: "Top Security Plugins for WordPress in 2025",
-      excerpt: "Comprehensive comparison of the best WordPress security plugins, featuring RCKBL (Rockable).",
+      title: "Top Security Plugins 2025",
+      excerpt: "Comprehensive comparison of WordPress security plugins, featuring RCKBL.",
       href: "/blog/top-security-plugins-2025",
       category: "Security",
       date: "2025-01-10",
-      readTime: "12 min read",
+      readTime: "12 min",
       image: topSecurityPluginsImg,
       imageAlt: "WordPress security plugins comparison"
     },
     {
-      title: "AI Cybersecurity Evolution: What Changed in 2025",
-      excerpt: "Explore how artificial intelligence is revolutionizing cybersecurity with predictive threat detection.",
+      title: "AI Cybersecurity Evolution",
+      excerpt: "How artificial intelligence is revolutionizing predictive threat detection.",
       href: "/blog/ai-cybersecurity-evolution-2025",
       category: "AI Security",
       date: "2025-01-08",
-      readTime: "10 min read",
+      readTime: "10 min",
       image: aiCybersecurityImg,
       imageAlt: "AI cybersecurity evolution"
     },
     {
-      title: "AI Hackers Underground: The Dark Side of 2025",
-      excerpt: "Inside look at how malicious actors are weaponizing AI for sophisticated attacks.",
+      title: "AI Hackers Underground",
+      excerpt: "Inside look at how malicious actors weaponize AI for sophisticated attacks.",
       href: "/blog/ai-hackers-underground-2025",
-      category: "Threat Intelligence",
+      category: "Threat Intel",
       date: "2025-01-05",
-      readTime: "14 min read",
+      readTime: "14 min",
       image: aiHackersImg,
       imageAlt: "AI-powered cyber threats"
     },
     {
-      title: "How PromptFluid Works: Cascade AI Ecosystem Explained",
-      excerpt: "Deep dive into the PromptFluid architecture: dream cycles, neural orchestration, and experimental AI concepts.",
+      title: "How PromptFluid Works",
+      excerpt: "Deep dive: dream cycles, neural orchestration, and experimental AI concepts.",
       href: "/blog/how-promptfluid-works-cascade-ai-ecosystem",
       category: "Technology",
       date: "2025-01-10",
-      readTime: "18 min read",
+      readTime: "18 min",
       image: howPFWorksImg,
       imageAlt: "PromptFluid Cascade AI ecosystem"
     },
     {
-      title: "Cascade AI: Adaptive Intelligence Brain Deep Dive",
-      excerpt: "Explore how Cascade's autonomous dream cycles enable continuous learning and reflection.",
+      title: "Cascade AI: Adaptive Intelligence",
+      excerpt: "How autonomous dream cycles enable continuous learning and reflection.",
       href: "/blog/cascade-ai-adaptive-intelligence-brain",
       category: "AI Technology",
       date: "2025-01-08",
-      readTime: "16 min read",
+      readTime: "16 min",
       image: cascadeAIImg,
       imageAlt: "Adaptive AI brain in dream state"
     },
     {
-      title: "PromptFluid Studio: Build Apps That Think",
-      excerpt: "AI-assisted development platform that generates production-ready code with instant deployment.",
+      title: "PromptFluid Studio",
+      excerpt: "AI-assisted development platform generating production-ready code.",
       href: "/blog/promptfluid-studio-build-apps-that-think",
       category: "Development",
       date: "2025-01-05",
-      readTime: "13 min read",
+      readTime: "13 min",
       image: pfStudioImg,
       imageAlt: "AI-powered app development studio"
     },
     {
-      title: "Free-Tier AI Network: Intelligent Routing Explained",
-      excerpt: "How PromptFluid's multi-provider AI gateway routes between 20+ providers—all optimized for cost.",
+      title: "Free-Tier AI Routing",
+      excerpt: "Multi-provider gateway optimized for cost and performance.",
       href: "/blog/ai-triad-intelligent-routing",
       category: "Technology",
       date: "2025-01-02",
-      readTime: "11 min read",
+      readTime: "11 min",
       image: aiTriadImg,
       imageAlt: "AI network routing visualization"
     },
     {
-      title: "PromptFluid Brain: Adaptive Learning Core",
-      excerpt: "Machine learning engine powering behavioral analysis and predictive threat intelligence.",
+      title: "Adaptive Learning Core",
+      excerpt: "Machine learning engine powering behavioral analysis and threat intelligence.",
       href: "/blog/promptfluid-brain-adaptive-learning-core",
       category: "AI Technology",
       date: "2024-12-28",
-      readTime: "15 min read",
+      readTime: "15 min",
       image: pfBrainImg,
       imageAlt: "Machine learning brain core"
     },
     {
-      title: "PromptFluid Vision: Unified Dashboard Guide",
-      excerpt: "Central command center for monitoring AI orchestration and real-time analytics.",
+      title: "Unified Dashboard Guide",
+      excerpt: "Central command for monitoring AI orchestration and analytics.",
       href: "/blog/promptfluid-vision-unified-dashboard",
       category: "Platform",
       date: "2024-12-25",
-      readTime: "12 min read",
+      readTime: "12 min",
       image: pfVisionImg,
       imageAlt: "Unified command center dashboard"
     },
     {
-      title: "PromptFluid Defense: AI Security Deep Dive",
-      excerpt: "Advanced bot detection, behavioral fingerprinting, and adaptive security powered by ML.",
+      title: "AI Security Deep Dive",
+      excerpt: "Advanced bot detection, behavioral fingerprinting, and adaptive security.",
       href: "/blog/promptfluid-defense-ai-security",
       category: "Security",
       date: "2024-12-22",
-      readTime: "14 min read",
+      readTime: "14 min",
       image: pfDefenseImg,
       imageAlt: "AI security defense system"
     }
   ];
 
-  const categories = ["All", "Security", "AI Technology", "Technology", "Platform", "Business", "Accessibility", "Development"];
+  const categories = ["All", "Security", "AI Technology", "Technology", "Platform", "Research", "Development"];
   const [selectedCategory, setSelectedCategory] = useState("All");
 
   const filteredPosts = blogPosts.filter(post => {
@@ -176,63 +176,67 @@ export default function Blog() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Blog — PromptFluid AI Security & Technology Insights"
-        description="Expert articles on AI security, WordPress protection, accessibility automation, and intelligent orchestration."
+        title="Blog — PromptFluid AI & Security Insights"
+        description="Research and insights on AI security, autonomous systems, WordPress protection, and intelligent orchestration."
         canonical="https://promptfluid.com/blog"
-        keywords={['AI security blog', 'WordPress security articles', 'AI automation insights', 'cybersecurity blog']}
+        keywords={['AI security blog', 'WordPress security', 'AI automation', 'cybersecurity research']}
       />
       
       <PublicNav />
 
-      {/* Hero with Earth Window */}
-      <section className="relative w-full">
-        <div 
-          className="absolute inset-0 h-[50vh] bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80')`,
-          }}
-        />
-        <div className="absolute inset-0 h-[50vh] bg-gradient-to-b from-background/80 via-background/40 to-background" />
-        
-        <div className="relative container mx-auto px-4 pt-32 pb-16">
-          <div className="max-w-4xl mx-auto text-center">
-            <Badge variant="outline" className="mb-6 border-primary/30 text-primary">
-              <FileText className="w-3 h-3 mr-2" />
-              Knowledge Hub
-            </Badge>
-            
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground">
-              PromptFluid Blog
-            </h1>
-            
-            <p className="text-xl text-muted-foreground mb-8">
-              Insights on AI security, autonomous systems, WordPress protection, and the future of infrastructure.
-            </p>
+      {/* Hero Section */}
+      <section className="relative z-10 container mx-auto px-4 pt-20 md:pt-32 pb-16">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground tracking-tight">
+            Research & Insights
+          </h1>
+          
+          <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-3xl leading-relaxed">
+            Documentation of what we're building, what we've learned, and where the field is headed.
+          </p>
 
-            {/* Search */}
-            <div className="relative max-w-xl mx-auto">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-              <Input
-                type="text"
-                placeholder="Search articles..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-12 py-6 text-lg"
-              />
-            </div>
+          {/* Search */}
+          <div className="relative max-w-xl">
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search articles..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-12 py-6 text-lg bg-card border-border"
+            />
           </div>
         </div>
       </section>
 
+      {/* Earth Window */}
+      <section className="relative w-full h-[50vh] overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80')`,
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
+        
+        <div className="absolute inset-0 flex items-center justify-center">
+          <blockquote className="text-center max-w-3xl px-8">
+            <p className="text-2xl md:text-4xl font-light text-white drop-shadow-lg">
+              "We document what we build. We share what we learn."
+            </p>
+          </blockquote>
+        </div>
+      </section>
+
       {/* Categories */}
-      <section className="border-y border-border bg-muted/30">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex flex-wrap gap-2 justify-center">
+      <section className="container mx-auto px-4 py-8">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-wrap gap-2">
             {categories.map((category) => (
               <Badge
                 key={category}
                 variant={selectedCategory === category ? "default" : "outline"}
-                className="cursor-pointer hover:bg-primary/20 transition-colors"
+                className="cursor-pointer hover:bg-primary/20 transition-colors text-sm py-2 px-4"
                 onClick={() => setSelectedCategory(category)}
               >
                 {category}
@@ -244,11 +248,11 @@ export default function Blog() {
 
       {/* Featured Post */}
       {featuredPost && selectedCategory === "All" && !searchQuery && (
-        <section className="container mx-auto px-4 py-16">
+        <section className="container mx-auto px-4 py-12">
           <div className="max-w-6xl mx-auto">
             <div className="flex items-center gap-3 mb-8">
-              <Sparkles className="h-6 w-6 text-primary" />
-              <h2 className="text-2xl font-bold text-foreground">Featured</h2>
+              <Sparkles className="h-5 w-5 text-primary" />
+              <h2 className="text-xl font-semibold text-foreground">Featured</h2>
             </div>
             
             <Link to={featuredPost.href}>
@@ -261,19 +265,17 @@ export default function Blog() {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   </div>
-                  <div className="p-8 flex flex-col justify-center">
+                  <div className="p-8 md:p-12 flex flex-col justify-center">
                     <Badge variant="outline" className="w-fit mb-4 border-primary/30 text-primary">
                       {featuredPost.category}
                     </Badge>
                     <h3 className="text-2xl md:text-3xl font-bold mb-4 text-foreground group-hover:text-primary transition-colors">
                       {featuredPost.title}
                     </h3>
-                    <p className="text-muted-foreground mb-6">{featuredPost.excerpt}</p>
+                    <p className="text-muted-foreground mb-6 leading-relaxed">{featuredPost.excerpt}</p>
                     <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                      <span className="flex items-center gap-1">
-                        <Calendar className="w-4 h-4" />
-                        {featuredPost.date}
-                      </span>
+                      <span>{featuredPost.date}</span>
+                      <span>·</span>
                       <span>{featuredPost.readTime}</span>
                     </div>
                   </div>
@@ -284,7 +286,7 @@ export default function Blog() {
         </section>
       )}
 
-      {/* Earth Window */}
+      {/* Second Earth Window */}
       <section className="relative w-full h-[40vh] overflow-hidden">
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -293,22 +295,12 @@ export default function Blog() {
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background opacity-70" />
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent" />
-        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background to-transparent" />
-        
-        <div className="absolute inset-0 flex items-center justify-center">
-          <blockquote className="text-center max-w-3xl px-8">
-            <p className="text-2xl md:text-4xl font-light text-white drop-shadow-lg">
-              "Knowledge is the foundation of every system we build."
-            </p>
-          </blockquote>
-        </div>
       </section>
 
       {/* Blog Posts Grid */}
       <section className="container mx-auto px-4 py-16">
         <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {regularPosts.map((post) => (
               <Link key={post.href} to={post.href}>
                 <Card className="group h-full overflow-hidden bg-card border-border hover:border-primary/40 transition-all">
@@ -326,10 +318,10 @@ export default function Blog() {
                     <h3 className="text-lg font-semibold mb-2 text-foreground group-hover:text-primary transition-colors line-clamp-2">
                       {post.title}
                     </h3>
-                    <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{post.excerpt}</p>
+                    <p className="text-sm text-muted-foreground mb-4 line-clamp-2 leading-relaxed">{post.excerpt}</p>
                     <div className="flex items-center gap-3 text-xs text-muted-foreground">
                       <span>{post.date}</span>
-                      <span>•</span>
+                      <span>·</span>
                       <span>{post.readTime}</span>
                     </div>
                   </div>
