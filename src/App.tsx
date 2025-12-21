@@ -53,34 +53,34 @@ import Analytics from "./pages/Analytics";
 import BrainControl from "./pages/BrainControl";
 import CascadeControl from "./pages/CascadeControl";
 import CascadeCoder from "./pages/CascadeCoder";
-import BotSniper from "./pages/BotSniper";
-import BotSniperAnalytics from "./pages/BotSniperAnalytics";
-import BotSniperSettings from "./pages/BotSniperSettings";
-import BotSniperPricing from './pages/BotSniperPricing';
-import BotSniperHome from './pages/BotSniperHome';
+import RCKBL from "./pages/BotSniper";
+import RCKBLAnalytics from "./pages/BotSniperAnalytics";
+import RCKBLSettings from "./pages/BotSniperSettings";
+import RCKBLPricing from './pages/BotSniperPricing';
+import RCKBLHome from './pages/BotSniperHome';
 import Modernizer from "./pages/Modernizer";
-import Clarity from "./pages/Clarity";
+import PTCHBL from "./pages/Clarity";
 import Scan from "./pages/Scan";
-import ClarityDashboard from "./pages/ClarityDashboard";
-import ClarityAddSite from "./pages/ClarityAddSite";
-import ClarityScanDetails from "./pages/ClarityScanDetails";
-import ClaritySiteSettings from "./pages/ClaritySiteSettings";
-import ClaritySubscription from "./pages/ClaritySubscription";
-import ClarityNotificationSettings from "./pages/ClarityNotificationSettings";
-import ClarityApiKeys from "./pages/ClarityApiKeys";
-import ClarityWebhooks from "./pages/ClarityWebhooks";
-import ClarityTeams from "./pages/ClarityTeams";
-import ClarityAdmin from "./pages/ClarityAdmin";
-import ClaritySchedules from "./pages/ClaritySchedules";
-import ClarityTrends from "./pages/ClarityTrends";
-import ClarityReports from "./pages/ClarityReports";
-import ClarityFixSuggestions from "./pages/ClarityFixSuggestions";
-import ClarityPortfolio from "./pages/ClarityPortfolio";
-import ClarityWhitelabel from "./pages/ClarityWhitelabel";
-import ClarityClients from "./pages/ClarityClients";
-import ClarityWidget from "./pages/ClarityWidget";
-import ClarityCertifications from "./pages/ClarityCertifications";
-import ClarityExtension from "./pages/ClarityExtension";
+import PTCHBLDashboard from "./pages/ClarityDashboard";
+import PTCHBLAddSite from "./pages/ClarityAddSite";
+import PTCHBLScanDetails from "./pages/ClarityScanDetails";
+import PTCHBLSiteSettings from "./pages/ClaritySiteSettings";
+import PTCHBLSubscription from "./pages/ClaritySubscription";
+import PTCHBLNotificationSettings from "./pages/ClarityNotificationSettings";
+import PTCHBLApiKeys from "./pages/ClarityApiKeys";
+import PTCHBLWebhooks from "./pages/ClarityWebhooks";
+import PTCHBLTeams from "./pages/ClarityTeams";
+import PTCHBLAdmin from "./pages/ClarityAdmin";
+import PTCHBLSchedules from "./pages/ClaritySchedules";
+import PTCHBLTrends from "./pages/ClarityTrends";
+import PTCHBLReports from "./pages/ClarityReports";
+import PTCHBLFixSuggestions from "./pages/ClarityFixSuggestions";
+import PTCHBLPortfolio from "./pages/ClarityPortfolio";
+import PTCHBLWhitelabel from "./pages/ClarityWhitelabel";
+import PTCHBLClients from "./pages/ClarityClients";
+import PTCHBLWidget from "./pages/ClarityWidget";
+import PTCHBLCertifications from "./pages/ClarityCertifications";
+import PTCHBLExtension from "./pages/ClarityExtension";
 import WordPressAccessibilityGuide from "./pages/blog/WordPressAccessibilityGuide";
 import WCAG22Changes from "./pages/blog/WCAG22Changes";
 import AIAccessibilityFixes from "./pages/blog/AIAccessibilityFixes";
@@ -116,7 +116,7 @@ const TopSecurityPlugins2025 = lazy(() => import("./pages/blog/TopSecurityPlugin
 const AICybersecurityEvolution2025 = lazy(() => import("./pages/blog/AICybersecurityEvolution2025"));
 const AIHackersUnderground2025 = lazy(() => import("./pages/blog/AIHackersUnderground2025"));
 const AIProductComparison2025 = lazy(() => import("./pages/blog/AIProductComparison2025"));
-const ClarityMission = lazy(() => import("./pages/blog/ClarityMission"));
+const PTCHBLMission = lazy(() => import("./pages/blog/ClarityMission"));
 const PromptFluidMarketDisruptor = lazy(() => import("./pages/blog/PromptFluidMarketDisruptor"));
 const ProductRoadmap2025 = lazy(() => import("./pages/blog/ProductRoadmap2025"));
 const AIAutomationTrends2025 = lazy(() => import("./pages/blog/AIAutomationTrends2025"));
@@ -151,7 +151,7 @@ const LearningIntelligence = lazy(() => import("./pages/LearningIntelligence"));
 const MarketingStudio = lazy(() => import("./pages/MarketingStudio"));
 const ThreatFeed = lazy(() => import("./pages/ThreatFeed"));
 const BrainML = lazy(() => import("./pages/BrainML"));
-const ReflexKeys = lazy(() => import("./pages/ReflexKeys"));
+const RCKBLKeys = lazy(() => import("./pages/ReflexKeys"));
 import InvestorPackets from "./pages/InvestorPackets";
 import BrainAnalytics from "./pages/BrainAnalytics";
 import CascadeMindmap from "./pages/CascadeMindmap";
@@ -230,39 +230,39 @@ const App = () => {
           <Route path="/cascade" element={<CascadeControl />} />
           <Route path="/cascade/coder" element={<CascadeCoder />} />
           
-          {/* Bot Sniper Standalone Product */}
-          <Route path="/bot-sniper-home" element={<BotSniperHome />} />
-          <Route path="/bot-sniper" element={<BotSniper />} />
-          <Route path="/bot-sniper/analytics" element={<BotSniperAnalytics />} />
-          <Route path="/bot-sniper/settings" element={<BotSniperSettings />} />
-          <Route path="/bot-sniper/pricing" element={<BotSniperPricing />} />
+          {/* RCKBL (Rockable) Product */}
+          <Route path="/bot-sniper-home" element={<RCKBLHome />} />
+          <Route path="/bot-sniper" element={<RCKBL />} />
+          <Route path="/bot-sniper/analytics" element={<RCKBLAnalytics />} />
+          <Route path="/bot-sniper/settings" element={<RCKBLSettings />} />
+          <Route path="/bot-sniper/pricing" element={<RCKBLPricing />} />
           
           {/* Modernizer Product */}
           <Route path="/modernizer" element={<AdminRoute><AdminPageWrapper><Modernizer /></AdminPageWrapper></AdminRoute>} />
           
-          {/* Clarity Product */}
-          <Route path="/clarity" element={<Clarity />} />
+          {/* PTCHBL (Patchable) Product */}
+          <Route path="/clarity" element={<PTCHBL />} />
           <Route path="/scan" element={<Scan />} />
-          <Route path="/clarity/dashboard" element={<ProtectedRoute><ClarityDashboard /></ProtectedRoute>} />
-          <Route path="/clarity/add-site" element={<ProtectedRoute><ClarityAddSite /></ProtectedRoute>} />
-          <Route path="/clarity/scan/:scanId" element={<ProtectedRoute><ClarityScanDetails /></ProtectedRoute>} />
-          <Route path="/clarity/site/:siteId/settings" element={<ProtectedRoute><ClaritySiteSettings /></ProtectedRoute>} />
-          <Route path="/clarity/subscription" element={<ProtectedRoute><ClaritySubscription /></ProtectedRoute>} />
-          <Route path="/clarity/notifications" element={<ProtectedRoute><ClarityNotificationSettings /></ProtectedRoute>} />
-          <Route path="/clarity/api-keys" element={<ProtectedRoute><ClarityApiKeys /></ProtectedRoute>} />
-          <Route path="/clarity/webhooks" element={<ProtectedRoute><ClarityWebhooks /></ProtectedRoute>} />
-          <Route path="/clarity/teams" element={<ProtectedRoute><ClarityTeams /></ProtectedRoute>} />
-          <Route path="/clarity/admin" element={<ProtectedRoute><ClarityAdmin /></ProtectedRoute>} />
-          <Route path="/clarity/schedules" element={<ProtectedRoute><ClaritySchedules /></ProtectedRoute>} />
-          <Route path="/clarity/trends" element={<ProtectedRoute><ClarityTrends /></ProtectedRoute>} />
-          <Route path="/clarity/reports" element={<ProtectedRoute><ClarityReports /></ProtectedRoute>} />
-          <Route path="/clarity/scan/:scanId/fixes" element={<ProtectedRoute><ClarityFixSuggestions /></ProtectedRoute>} />
-          <Route path="/clarity/portfolio" element={<ProtectedRoute><ClarityPortfolio /></ProtectedRoute>} />
-          <Route path="/clarity/whitelabel" element={<ProtectedRoute><ClarityWhitelabel /></ProtectedRoute>} />
-          <Route path="/clarity/clients" element={<ProtectedRoute><ClarityClients /></ProtectedRoute>} />
-          <Route path="/clarity/widget" element={<ProtectedRoute><ClarityWidget /></ProtectedRoute>} />
-          <Route path="/clarity/certifications" element={<ProtectedRoute><ClarityCertifications /></ProtectedRoute>} />
-          <Route path="/clarity/extension" element={<ProtectedRoute><ClarityExtension /></ProtectedRoute>} />
+          <Route path="/clarity/dashboard" element={<ProtectedRoute><PTCHBLDashboard /></ProtectedRoute>} />
+          <Route path="/clarity/add-site" element={<ProtectedRoute><PTCHBLAddSite /></ProtectedRoute>} />
+          <Route path="/clarity/scan/:scanId" element={<ProtectedRoute><PTCHBLScanDetails /></ProtectedRoute>} />
+          <Route path="/clarity/site/:siteId/settings" element={<ProtectedRoute><PTCHBLSiteSettings /></ProtectedRoute>} />
+          <Route path="/clarity/subscription" element={<ProtectedRoute><PTCHBLSubscription /></ProtectedRoute>} />
+          <Route path="/clarity/notifications" element={<ProtectedRoute><PTCHBLNotificationSettings /></ProtectedRoute>} />
+          <Route path="/clarity/api-keys" element={<ProtectedRoute><PTCHBLApiKeys /></ProtectedRoute>} />
+          <Route path="/clarity/webhooks" element={<ProtectedRoute><PTCHBLWebhooks /></ProtectedRoute>} />
+          <Route path="/clarity/teams" element={<ProtectedRoute><PTCHBLTeams /></ProtectedRoute>} />
+          <Route path="/clarity/admin" element={<ProtectedRoute><PTCHBLAdmin /></ProtectedRoute>} />
+          <Route path="/clarity/schedules" element={<ProtectedRoute><PTCHBLSchedules /></ProtectedRoute>} />
+          <Route path="/clarity/trends" element={<ProtectedRoute><PTCHBLTrends /></ProtectedRoute>} />
+          <Route path="/clarity/reports" element={<ProtectedRoute><PTCHBLReports /></ProtectedRoute>} />
+          <Route path="/clarity/scan/:scanId/fixes" element={<ProtectedRoute><PTCHBLFixSuggestions /></ProtectedRoute>} />
+          <Route path="/clarity/portfolio" element={<ProtectedRoute><PTCHBLPortfolio /></ProtectedRoute>} />
+          <Route path="/clarity/whitelabel" element={<ProtectedRoute><PTCHBLWhitelabel /></ProtectedRoute>} />
+          <Route path="/clarity/clients" element={<ProtectedRoute><PTCHBLClients /></ProtectedRoute>} />
+          <Route path="/clarity/widget" element={<ProtectedRoute><PTCHBLWidget /></ProtectedRoute>} />
+          <Route path="/clarity/certifications" element={<ProtectedRoute><PTCHBLCertifications /></ProtectedRoute>} />
+          <Route path="/clarity/extension" element={<ProtectedRoute><PTCHBLExtension /></ProtectedRoute>} />
           
           <Route path="/blog/wordpress-accessibility-guide" element={<WordPressAccessibilityGuide />} />
           <Route path="/blog/wcag-2-2-wordpress-changes" element={<WCAG22Changes />} />
@@ -379,8 +379,8 @@ const App = () => {
           {/* Marketing Studio */}
           <Route path="/marketing-studio" element={<AdminRoute><AdminPageWrapper><MarketingStudio /></AdminPageWrapper></AdminRoute>} />
           
-          {/* Reflex Admin Keys */}
-          <Route path="/admin/reflex-keys" element={<AdminRoute><AdminPageWrapper><ReflexKeys /></AdminPageWrapper></AdminRoute>} />
+          {/* RCKBL Admin Keys */}
+          <Route path="/admin/reflex-keys" element={<AdminRoute><AdminPageWrapper><RCKBLKeys /></AdminPageWrapper></AdminRoute>} />
           
           {/* Public Investors Page */}
           <Route path="/investors" element={<InvestorsPublic />} />
@@ -437,7 +437,7 @@ const App = () => {
           <Route path="/blog/ai-cybersecurity-evolution-2025" element={<AICybersecurityEvolution2025 />} />
           <Route path="/blog/ai-hackers-underground-2025" element={<AIHackersUnderground2025 />} />
           <Route path="/blog/ai-product-comparison-2025" element={<AIProductComparison2025 />} />
-          <Route path="/blog/clarity-accessibility-mission" element={<ClarityMission />} />
+          <Route path="/blog/clarity-accessibility-mission" element={<PTCHBLMission />} />
           <Route path="/blog/cmptbl-mission" element={<Navigate to="/blog/clarity-accessibility-mission" replace />} />
           <Route path="/blog/promptfluid-market-disruptor" element={<PromptFluidMarketDisruptor />} />
           <Route path="/blog/product-roadmap-2025" element={<ProductRoadmap2025 />} />

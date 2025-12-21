@@ -11,11 +11,11 @@ export function PublicNav() {
   const [socialExpanded, setSocialExpanded] = useState(false);
 
   const products = [
-    { name: "PromptFluid Reflex", desc: "WordPress Security with Bot Sniper™", href: "/projects/defense" },
+    { name: "RCKBL (Rockable)", desc: "AI WordPress Security", href: "/projects/defense" },
     { name: "PromptFluid Brain", desc: "Adaptive Learning Core", href: "/projects/brain" },
     { name: "PromptFluid Studio", desc: "Rapid App Development", href: "/projects/studio" },
     { name: "PromptFluid Ripple", desc: "Network Integration", href: "/projects/ripple" },
-    { name: "PromptFluid Clarity", desc: "AI Accessibility Scanner", href: "/projects/clarity" },
+    { name: "PTCHBL (Patchable)", desc: "AI Accessibility Scanner", href: "/projects/clarity" },
   ];
 
   const resources = {
@@ -27,10 +27,10 @@ export function PublicNav() {
     "Technology": [
       { name: "How PromptFluid Works", href: "/blog/how-promptfluid-works-cascade-ai-ecosystem" },
       { name: "Cascade AI Intelligence", href: "/blog/cascade-ai-adaptive-intelligence-brain" },
-      { name: "Clarity Accessibility Mission", href: "/blog/clarity-accessibility-mission" },
+      { name: "PTCHBL Accessibility Mission", href: "/blog/clarity-accessibility-mission" },
     ],
     "Products": [
-      { name: "Reflex Security", href: "/blog/promptfluid-defense-ai-security" },
+      { name: "RCKBL Security", href: "/blog/promptfluid-defense-ai-security" },
       { name: "Brain Learning Core", href: "/blog/promptfluid-brain-adaptive-learning-core" },
       { name: "Studio App Builder", href: "/blog/promptfluid-studio-build-apps-that-think" },
     ],

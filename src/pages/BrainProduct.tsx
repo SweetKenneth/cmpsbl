@@ -137,7 +137,7 @@ export default function BrainProduct() {
       status: "Planned",
       items: [
         "Phase 3: Advanced multi-product intelligence",
-        "Cross-platform threat correlation (Reflex + Clarity + Core)",
+        "Cross-platform threat correlation (RCKBL + PTCHBL + Core)",
         "Federated learning network (global intelligence)",
         "Custom model training portal for enterprises",
         "Advanced visualization tools (threat maps)",

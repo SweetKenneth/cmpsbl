@@ -26,7 +26,7 @@ export default function DefenseProduct() {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'promptfluid-reflex-bot-sniper.zip';
+      link.download = 'promptfluid-rckbl-rockable.zip';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -144,7 +144,7 @@ export default function DefenseProduct() {
       status: "In Progress - WordPress.org Approval Pending",
       items: [
         "🔄 WordPress.org approval process active",
-        "🔄 PromptFluid Clarity (accessibility) submission queued",
+        "🔄 PTCHBL (Patchable) (accessibility) submission queued",
         "Advanced threat intelligence integration",
         "Custom rule builder for firewall",
         "Multi-site license management",
@@ -188,8 +188,8 @@ export default function DefenseProduct() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="RCKBL Reflex — AI-Powered WordPress Security | Official Download"
-        description="Download RCKBL Reflex: Advanced AI-powered bot protection for WordPress. Stop credential stuffing, spam bots, and automated attacks with behavioral analysis."
+        title="RCKBL (Rockable) — AI-Powered WordPress Security | Official Download"
+        description="Download RCKBL: Advanced AI-powered bot protection for WordPress. Stop credential stuffing, spam bots, and automated attacks with behavioral analysis."
         canonical="https://promptfluid.com/projects/defense"
         keywords={[
           'WordPress security plugin',
@@ -229,7 +229,7 @@ export default function DefenseProduct() {
 
                 <h1 className="text-5xl md:text-6xl font-bold mb-6">
                   <span className="bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-500 bg-clip-text text-transparent">
-                    PromptFluid Reflex
+                    RCKBL (Rockable)
                   </span>
                 </h1>
 
@@ -254,7 +254,7 @@ export default function DefenseProduct() {
                   <Button 
                     size="lg" 
                     variant="outline"
-                    onClick={() => window.open('https://wordpress.org/plugins/promptfluid-reflex/', '_blank')}
+                    onClick={() => window.open('https://wordpress.org/plugins/promptfluid-rckbl/', '_blank')}
                   >
                     <ExternalLink className="w-5 h-5 mr-2" />
                     WordPress.org
@@ -262,7 +262,7 @@ export default function DefenseProduct() {
                   <Button 
                     size="lg" 
                     variant="outline"
-                    onClick={() => window.open('https://github.com/promptfluid/reflex', '_blank')}
+                    onClick={() => window.open('https://github.com/promptfluid/rckbl', '_blank')}
                   >
                     <Github className="w-5 h-5 mr-2" />
                     GitHub

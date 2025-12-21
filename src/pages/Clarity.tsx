@@ -7,9 +7,9 @@ import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 
-const Clarity = () => {
-  const openClarity = () => {
-    window.open("https://clarity.promptfluid.com", "_blank");
+const PTCHBL = () => {
+  const openPTCHBL = () => {
+    window.open("https://patchable.promptfluid.com", "_blank");
   };
 
   return (
@@ -60,7 +60,7 @@ const Clarity = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" onClick={openClarity} className="bg-primary hover:bg-primary/90">
+              <Button size="lg" onClick={openPTCHBL} className="bg-primary hover:bg-primary/90">
                 <Accessibility className="w-4 h-4 mr-2" />
                 Free Accessibility Scan
                 <ArrowRight className="w-4 h-4 ml-2" />
@@ -226,7 +226,7 @@ const Clarity = () => {
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
             Make the web work for everyone with free accessibility scanning and AI-powered fixes. Free. Fast. The right thing to do.
           </p>
-          <Button size="lg" onClick={openClarity} className="bg-primary hover:bg-primary/90">
+          <Button size="lg" onClick={openPTCHBL} className="bg-primary hover:bg-primary/90">
             <Accessibility className="w-5 h-5 mr-2" />
             Start Free Scan Now
             <ArrowRight className="w-5 h-5 ml-2" />
@@ -242,4 +242,4 @@ const Clarity = () => {
   );
 };
 
-export default Clarity;
+export default PTCHBL;
