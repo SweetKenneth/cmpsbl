@@ -12,15 +12,8 @@ export default function Solutions() {
       icon: Shield,
       name: "RCKBL Defense",
       tagline: "Enterprise Website Security",
-      description: "Enterprise-grade security born from reverse-engineering our own stealth bot technology. Provides comprehensive protection against automated threats, credential stuffing, and malicious actors with adaptive behavioral analysis.",
-      features: [
-        "AI-powered bot detection",
-        "Behavioral fingerprinting",
-        "Real-time threat blocking",
-        "WordPress plugin ready",
-        "Adaptive CAPTCHA system",
-        "Device reputation scoring"
-      ],
+      description: "Bot defense born from reverse-engineering stealth technology. Behavioral analysis and real-time threat blocking for WordPress and enterprise sites.",
+      features: ["AI-powered bot detection", "Behavioral fingerprinting", "Real-time threat blocking", "WordPress plugin ready", "Adaptive CAPTCHA system", "Device reputation scoring"],
       metrics: ["Live", "WordPress Ready", "Enterprise Grade"],
       link: "https://promptfluid.com/projects/defense"
     },
@@ -28,15 +21,8 @@ export default function Solutions() {
       icon: Globe,
       name: "RNDRBL Browser",
       tagline: "Accessibility-First Technology",
-      description: "Accessibility-first browser technology with an integrated control panel that enables users with disabilities to customize their browsing experience in real-time. Removes barriers between users and the web.",
-      features: [
-        "Real-time layover controls",
-        "Disability-specific features",
-        "Universal compatibility",
-        "Browser extension",
-        "Customizable interface",
-        "Instant adjustments"
-      ],
+      description: "Browser technology with integrated control panel. Enables users with disabilities to customize their experience in real-time.",
+      features: ["Real-time layover controls", "Disability-specific features", "Universal compatibility", "Browser extension", "Customizable interface", "Instant adjustments"],
       metrics: ["Running", "Inclusive", "Universal"],
       link: "https://RNDRBL.com"
     },
@@ -44,15 +30,8 @@ export default function Solutions() {
       icon: Globe,
       name: "PTCHBL Accessibility",
       tagline: "Free WCAG Scanner",
-      description: "Free-forever WCAG compliance scanner with AI-powered remediation. Automatically detects and fixes 45 of 86 WCAG accessibility functions. We believe inclusion should never be behind a paywall.",
-      features: [
-        "Free WCAG 2.2 scanning",
-        "AI-powered auto-fixes",
-        "45/86 compliance functions",
-        "No signup required",
-        "Instant results",
-        "Developer-friendly reports"
-      ],
+      description: "Free WCAG scanner with AI-powered fixes. Detects and repairs 45 of 86 accessibility functions. Inclusion without paywalls.",
+      features: ["Free WCAG 2.2 scanning", "AI-powered auto-fixes", "45/86 compliance functions", "No signup required", "Instant results", "Developer-friendly reports"],
       metrics: ["100% Free", "AI-Powered", "WCAG 2.2"],
       link: "https://PTCHBL.com"
     },
@@ -60,15 +39,8 @@ export default function Solutions() {
       icon: Brain,
       name: "Cascade AI",
       tagline: "Autonomous Dreaming AI",
-      description: "World's first documented autonomous AI with internal memory reflection cycles—a process we call dreaming. Published proof of concept on Zenodo and OSF with full architectural transparency.",
-      features: [
-        "Memory reflection cycles",
-        "Autonomous learning",
-        "Internal simulation",
-        "Pattern synthesis",
-        "Self-improvement loops",
-        "Documented & verified"
-      ],
+      description: "First documented autonomous AI with memory reflection cycles—dreaming. Published and verified on Zenodo and OSF.",
+      features: ["Memory reflection cycles", "Autonomous learning", "Internal simulation", "Pattern synthesis", "Self-improvement loops", "Documented & verified"],
       metrics: ["World First", "Documented", "Deployed"],
       link: "https://promptfluid.com/projects/brain"
     },
@@ -76,15 +48,8 @@ export default function Solutions() {
       icon: Zap,
       name: "AI Nexus",
       tagline: "Multi-Provider Gateway",
-      description: "Unified AI infrastructure routing across 20+ LLM providers with intelligent load balancing, automatic failover, and cost optimization. The operational spine of our AI ecosystem.",
-      features: [
-        "20+ AI providers",
-        "Automatic fallbacks",
-        "Cost optimization",
-        "Smart routing",
-        "Load balancing",
-        "Zero-downtime switching"
-      ],
+      description: "Unified routing across 20+ LLM providers. Intelligent load balancing, automatic failover, and cost optimization.",
+      features: ["20+ AI providers", "Automatic fallbacks", "Cost optimization", "Smart routing", "Load balancing", "Zero-downtime switching"],
       metrics: ["20+ Providers", "Running", "Optimized"],
       link: "https://promptfluid.com/blog/ai-triad-intelligent-routing"
     },
@@ -92,15 +57,8 @@ export default function Solutions() {
       icon: Code,
       name: "SPLCBL Validator",
       tagline: "WordPress Plugin Checker",
-      description: "Pre-submission validation tool for WordPress plugin developers. Scans your plugin against WordPress.org compliance requirements before official review, reducing rejection rates and accelerating time to market.",
-      features: [
-        "Pre-submission scanning",
-        "Common issue detection",
-        "Compliance checking",
-        "Free for developers",
-        "Instant results",
-        "Detailed reports"
-      ],
+      description: "Pre-submission validator for WordPress plugins. Scans against WordPress.org requirements before official review.",
+      features: ["Pre-submission scanning", "Common issue detection", "Compliance checking", "Free for developers", "Instant results", "Detailed reports"],
       metrics: ["Free", "Developer Tool", "Pre-Launch"],
       link: "https://SPLCBL.com"
     },
@@ -108,15 +66,8 @@ export default function Solutions() {
       icon: Lock,
       name: "XCTBL Space",
       tagline: "Lore-Wrapped SaaS Suite",
-      description: "Immersive SaaS platform wrapped in fictional world-building. Features custom OAuth authentication connecting real, functional tools across interconnected narrative experiences. Entertainment meets enterprise.",
-      features: [
-        "Custom OAuth system",
-        "Interconnected tools",
-        "Fictional interface",
-        "Real functionality",
-        "Multi-world navigation",
-        "Entertainment layer"
-      ],
+      description: "Immersive SaaS with fictional world-building. Custom OAuth connecting real tools across narrative experiences.",
+      features: ["Custom OAuth system", "Interconnected tools", "Fictional interface", "Real functionality", "Multi-world navigation", "Entertainment layer"],
       metrics: ["Live", "Experimental", "Functional"],
       link: "https://XCTBL.com"
     }
