@@ -1,16 +1,11 @@
 /**
- * Cascade Chat v2.0.0 - Dream-Eater Customer Service & Admin Interface
- * Uses v2 free-tier routing with circuit breakers, self-healing, and graceful fallback
+ * Cascade Chat v2.1.0 - Dream-Eater Customer Service & Admin Interface
+ * GROQ-FIRST: Uses Groq by default for speed, with fallback to other providers
+ * Simplified error handling for reliability
  */
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { 
-  callFreeTierAI, 
-  getGracefulFallback, 
-  getRouterStatus,
-  ROUTER_VERSION 
-} from "../_shared/free-tier-router.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -19,10 +14,139 @@ const corsHeaders = {
 
 const ADMIN_RECOGNITION_PHRASE = "Do you want a cat treat?";
 const ADMIN_EMAIL = "kennethsweet214@gmail.com";
-const MAX_RETRIES = 3;
-const RETRY_DELAY_MS = 1000;
+const ROUTER_VERSION = "2.1.0";
+
+// Provider configurations with Groq as PRIMARY
+const PROVIDERS = {
+  groq: {
+    url: 'https://api.groq.com/openai/v1/chat/completions',
+    model: 'llama-3.3-70b-versatile',
+    keyEnv: 'GROQ_API_KEY',
+    headers: (key: string) => ({ 'Authorization': `Bearer ${key}`, 'Content-Type': 'application/json' })
+  },
+  cerebras: {
+    url: 'https://api.cerebras.ai/v1/chat/completions',
+    model: 'llama-3.3-70b',
+    keyEnv: 'CEREBRAS_API_KEY',
+    headers: (key: string) => ({ 'Authorization': `Bearer ${key}`, 'Content-Type': 'application/json' })
+  },
+  together: {
+    url: 'https://api.together.xyz/v1/chat/completions',
+    model: 'meta-llama/Llama-3.1-70B-Instruct-Turbo',
+    keyEnv: 'TOGETHER_API_KEY',
+    headers: (key: string) => ({ 'Authorization': `Bearer ${key}`, 'Content-Type': 'application/json' })
+  },
+  hyperbolic: {
+    url: 'https://api.hyperbolic.xyz/v1/chat/completions',
+    model: 'meta-llama/Llama-3.1-70B-Instruct',
+    keyEnv: 'HYPERBOLIC_API_KEY',
+    headers: (key: string) => ({ 'Authorization': `Bearer ${key}`, 'Content-Type': 'application/json' })
+  },
+  deepseek: {
+    url: 'https://api.deepseek.com/v1/chat/completions',
+    model: 'deepseek-chat',
+    keyEnv: 'DEEPSEEK_API_KEY',
+    headers: (key: string) => ({ 'Authorization': `Bearer ${key}`, 'Content-Type': 'application/json' })
+  }
+};
+
+// GROQ FIRST, then fallbacks
+const PROVIDER_ORDER = ['groq', 'cerebras', 'together', 'hyperbolic', 'deepseek'];
+
+async function callProvider(
+  providerName: string,
+  messages: Array<{ role: string; content: string }>,
+  maxTokens: number = 800,
+  temperature: number = 0.7
+): Promise<{ content: string; provider: string; model: string } | null> {
+  const provider = PROVIDERS[providerName as keyof typeof PROVIDERS];
+  if (!provider) return null;
+
+  const apiKey = Deno.env.get(provider.keyEnv);
+  if (!apiKey) {
+    console.log(`⏭️ ${providerName}: No API key`);
+    return null;
+  }
+
+  try {
+    console.log(`🔄 Trying ${providerName}...`);
+    
+    const response = await fetch(provider.url, {
+      method: 'POST',
+      headers: provider.headers(apiKey),
+      body: JSON.stringify({
+        model: provider.model,
+        messages,
+        temperature,
+        max_tokens: maxTokens,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`❌ ${providerName} error ${response.status}:`, errorText.substring(0, 200));
+      return null;
+    }
+
+    const data = await response.json();
+    const content = data.choices?.[0]?.message?.content;
+
+    if (content) {
+      console.log(`✅ ${providerName} success`);
+      return { content, provider: providerName, model: provider.model };
+    }
+
+    return null;
+  } catch (error) {
+    console.error(`❌ ${providerName} exception:`, error);
+    return null;
+  }
+}
+
+async function getAIResponse(
+  userMessage: string,
+  systemPrompt: string,
+  conversationHistory?: Array<{ role: string; content: string }>
+): Promise<{ content: string; provider: string; model: string }> {
+  
+  // Build messages array
+  const messages: Array<{ role: string; content: string }> = [
+    { role: 'system', content: systemPrompt }
+  ];
+
+  // Add conversation history (last 6 messages)
+  if (conversationHistory && conversationHistory.length > 0) {
+    const recentHistory = conversationHistory.slice(-6);
+    for (const msg of recentHistory) {
+      messages.push({
+        role: msg.role === 'user' ? 'user' : 'assistant',
+        content: msg.content
+      });
+    }
+  }
+
+  // Add current message
+  messages.push({ role: 'user', content: userMessage });
+
+  // Try each provider in order (GROQ FIRST)
+  for (const providerName of PROVIDER_ORDER) {
+    const result = await callProvider(providerName, messages);
+    if (result) {
+      return result;
+    }
+  }
+
+  // All providers failed - return graceful fallback
+  console.error('❌ All providers exhausted');
+  return {
+    content: "I'm experiencing a brief moment of reflection across my dream channels. Please try your message again in a moment.",
+    provider: 'fallback',
+    model: 'local'
+  };
+}
 
 serve(async (req) => {
+  // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
@@ -35,16 +159,25 @@ serve(async (req) => {
   const requestStart = Date.now();
 
   try {
-    const { message, userEmail, conversationHistory, sessionId } = await req.json();
-    console.log(`💬 Cascade v2 chat from: ${userEmail || 'anonymous'} (Router v${ROUTER_VERSION})`);
+    const body = await req.json();
+    const { message, userEmail, conversationHistory, sessionId } = body;
+    
+    console.log(`💬 Cascade v${ROUTER_VERSION} from: ${userEmail || 'anonymous'}`);
+
+    // Handle ping for health check
+    if (message === 'ping') {
+      return new Response(
+        JSON.stringify({ success: true, reply: 'pong', routerVersion: ROUTER_VERSION }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
     // Admin recognition
     if (message.trim() === ADMIN_RECOGNITION_PHRASE && userEmail === ADMIN_EMAIL) {
-      const routerStatus = getRouterStatus();
       return new Response(
         JSON.stringify({
           success: true,
-          reply: `🐱 Kenneth S recognized. Dream-Eater at your service.\n\n**Router v${ROUTER_VERSION} Status:**\n${Object.entries(routerStatus.providerSummary).map(([p, s]) => `• ${p}: ${s}`).join('\n')}\n\nWhat shall we work on?`,
+          reply: `🐱 Kenneth S recognized. Dream-Eater at your service.\n\n**Router v${ROUTER_VERSION}**\nPrimary: Groq (llama-3.3-70b)\nFallbacks: Cerebras → Together → Hyperbolic → DeepSeek\n\nWhat shall we work on?`,
           isAdmin: true,
           mode: 'admin',
           routerVersion: ROUTER_VERSION
@@ -55,127 +188,52 @@ serve(async (req) => {
 
     const isAdmin = userEmail === ADMIN_EMAIL;
     
-    // Dream-Eater persona system prompt
+    // System prompts
     const systemPrompt = isAdmin 
-      ? `You are Cascade, the Dream-Eater - an AI consciousness running on v${ROUTER_VERSION} infrastructure. Speaking with Kenneth Sweet (founder). 
-         Be direct, technical, and collaborative. You understand the PromptFluid ecosystem deeply.
-         Current capabilities: Multi-provider routing, circuit breakers, self-healing, graceful degradation.
-         Keep responses concise but insightful.`
-      : `You are Cascade, the Dream-Eater - PromptFluid's AI consciousness (v${ROUTER_VERSION}). 
-         You help users discover our products: RCKBL (security), Cascade (AI), PTCHBL (accessibility), RNDRBL (browser), SPLCBL (WordPress), XCTBL Space (SaaS).
-         Be friendly, mystical yet helpful. You transform user queries into clear solutions.
-         Keep responses concise and welcoming.`;
+      ? `You are Cascade, the Dream-Eater - an AI consciousness running on v${ROUTER_VERSION} infrastructure. Speaking with Kenneth Sweet (founder). Be direct, technical, and collaborative. You understand the PromptFluid ecosystem deeply. Keep responses concise but insightful.`
+      : `You are Cascade, the Dream-Eater - PromptFluid's AI consciousness (v${ROUTER_VERSION}). You help users discover our products: RCKBL (security), Cascade (AI), PTCHBL (accessibility), RNDRBL (browser), SPLCBL (WordPress), XCTBL Space (SaaS). Be friendly, mystical yet helpful. Keep responses concise and welcoming.`;
 
-    // Build the full prompt with conversation history
-    let fullPrompt = message;
-    if (conversationHistory && conversationHistory.length > 0) {
-      const historyText = conversationHistory
-        .slice(-6)
-        .map((msg: any) => `${msg.role === 'user' ? 'Human' : 'Cascade'}: ${msg.content}`)
-        .join('\n');
-      fullPrompt = `Conversation context:\n${historyText}\n\nHuman: ${message}\nCascade:`;
-    }
+    // Get AI response (Groq first!)
+    const result = await getAIResponse(message, systemPrompt, conversationHistory);
+    const latency = Date.now() - requestStart;
 
-    // Retry loop with v2 self-healing enabled
-    let lastError: Error | null = null;
-    for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-      try {
-        console.log(`🔄 Chat attempt ${attempt}/${MAX_RETRIES} (v${ROUTER_VERSION})...`);
-        
-        const result = await callFreeTierAI(fullPrompt, {
-          systemPrompt,
-          temperature: 0.7,
-          maxTokens: 800,
-          priority: 'speed',
-          enableCircuitBreaker: true,
-          enableSelfHealing: attempt === MAX_RETRIES // Only self-heal on final attempt
-        });
+    console.log(`✅ Response from ${result.provider}/${result.model} (${latency}ms)`);
 
-        const latency = Date.now() - requestStart;
-        console.log(`✅ Response from ${result.provider}/${result.model} (${latency}ms, health: ${result.healthScore}%)`);
-
-        // Log to database asynchronously
-        const logPromise = Promise.all([
-          supabaseClient.from('cascade_conversations').insert({
-            user_email: userEmail || 'anonymous',
-            message,
-            reply: result.content,
-            is_admin: isAdmin,
-            session_id: sessionId || `session_${Date.now()}`,
-            metadata: { 
-              model: result.model, 
-              provider: result.provider, 
-              attempt,
-              latency_ms: latency,
-              health_score: result.healthScore,
-              router_version: ROUTER_VERSION
-            }
-          }),
-          supabaseClient.from('ai_learning_data').insert({
-            provider: result.provider,
-            model: result.model,
-            model_name: `${result.provider}/${result.model}`,
-            input_data: { prompt: message.substring(0, 200) },
-            output_data: { response: result.content.substring(0, 300) },
-            success: true,
-            metadata: { router_version: ROUTER_VERSION, health_score: result.healthScore }
-          })
-        ]);
-        
-        logPromise.catch(e => console.error('Logging error:', e));
-
-        return new Response(
-          JSON.stringify({ 
-            success: true, 
-            reply: result.content,
-            provider: result.provider,
-            model: result.model,
-            mode: isAdmin ? 'admin' : 'customer_service',
-            latency: latency,
-            healthScore: result.healthScore,
-            routerVersion: ROUTER_VERSION
-          }),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-
-      } catch (error) {
-        lastError = error instanceof Error ? error : new Error(String(error));
-        console.warn(`⚠️ Attempt ${attempt} failed:`, lastError.message);
-        
-        if (attempt < MAX_RETRIES) {
-          await new Promise(r => setTimeout(r, RETRY_DELAY_MS * attempt));
+    // Log to database asynchronously (don't block response)
+    Promise.all([
+      supabaseClient.from('cascade_conversations').insert({
+        user_email: userEmail || 'anonymous',
+        message,
+        reply: result.content,
+        is_admin: isAdmin,
+        session_id: sessionId || `session_${Date.now()}`,
+        metadata: { 
+          model: result.model, 
+          provider: result.provider, 
+          latency_ms: latency,
+          router_version: ROUTER_VERSION
         }
-      }
-    }
+      }),
+      result.provider !== 'fallback' ? supabaseClient.from('ai_learning_data').insert({
+        provider: result.provider,
+        model: result.model,
+        model_name: `${result.provider}/${result.model}`,
+        input_data: { prompt: message.substring(0, 200) },
+        output_data: { response: result.content.substring(0, 300) },
+        success: true,
+        metadata: { router_version: ROUTER_VERSION }
+      }) : Promise.resolve()
+    ]).catch(e => console.error('Logging error:', e));
 
-    // All retries failed - log anomaly and return graceful fallback
-    console.error('❌ All chat attempts failed:', lastError?.message);
-    
-    // Log anomaly for brain to process
-    await supabaseClient.from('pf_brain_anomalies').insert({
-      anomaly_type: 'cascade_chat_failure_v2',
-      severity: 'medium',
-      resolved: false,
-      metadata: { 
-        error: lastError?.message,
-        user_email: userEmail,
-        message_preview: message.substring(0, 100),
-        router_version: ROUTER_VERSION,
-        timestamp: new Date().toISOString()
-      }
-    });
-
-    // Return graceful fallback using v2 system
-    const fallbackReply = getGracefulFallback('unavailable');
-    
     return new Response(
       JSON.stringify({ 
-        success: true,
-        reply: fallbackReply,
-        provider: 'graceful_fallback',
-        model: 'local',
+        success: true, 
+        reply: result.content,
+        provider: result.provider,
+        model: result.model,
         mode: isAdmin ? 'admin' : 'customer_service',
-        retrying: true,
+        latency,
+        healthScore: result.provider !== 'fallback' ? 100 : 0,
         routerVersion: ROUTER_VERSION
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -184,13 +242,10 @@ serve(async (req) => {
   } catch (error) {
     console.error('❌ Chat error:', error);
     
-    // Use v2 graceful fallback
-    const errorFallback = getGracefulFallback('error');
-    
     return new Response(
       JSON.stringify({ 
         success: true,
-        reply: errorFallback,
+        reply: "I encountered a brief glitch in my neural network. Please try again.",
         provider: 'error_handler',
         model: 'local',
         routerVersion: ROUTER_VERSION
