@@ -26,7 +26,7 @@ export function PublicNav() {
             <img 
               src={logo} 
               alt="PromptFluid" 
-              className="h-[72px] lg:h-14 w-auto"
+              className="h-[200px] lg:h-14 w-auto"
             />
           </Link>
 
