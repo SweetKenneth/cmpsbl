@@ -1069,6 +1069,39 @@ export type Database = {
         }
         Relationships: []
       }
+      cascade_conversations: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_admin: boolean | null
+          message: string
+          metadata: Json | null
+          reply: string | null
+          session_id: string | null
+          user_email: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_admin?: boolean | null
+          message: string
+          metadata?: Json | null
+          reply?: string | null
+          session_id?: string | null
+          user_email?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_admin?: boolean | null
+          message?: string
+          metadata?: Json | null
+          reply?: string | null
+          session_id?: string | null
+          user_email?: string | null
+        }
+        Relationships: []
+      }
       cascade_dreams: {
         Row: {
           blog_posted: string | null

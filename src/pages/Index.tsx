@@ -78,10 +78,10 @@ export default function Index() {
 
       <main id="main-content" role="main">
         {/* Hero Section - Investor Focused */}
-        <section className="relative z-10 container mx-auto px-4 pt-0 pb-20 -mt-[111px]" aria-labelledby="hero-heading">
+        <section className="relative z-10 container mx-auto px-4 pt-8 md:pt-16 pb-20" aria-labelledby="hero-heading">
           <div className="max-w-5xl mx-auto text-center">
-            {/* Logo */}
-            <div className="flex justify-center mb-0 -mt-[75px] animate-fade-in">
+            {/* Logo - smaller on desktop, larger on mobile */}
+            <div className="flex justify-center mb-4 md:mb-6 animate-fade-in">
               <img 
                 src="/promptfluid-logo.png" 
                 alt="PromptFluid logo" 
@@ -89,15 +89,15 @@ export default function Index() {
                 height="300"
                 fetchPriority="high"
                 loading="eager"
-                className="w-[70%] max-w-2xl h-auto"
+                className="w-[60%] max-w-[200px] md:max-w-[280px] h-auto"
               />
             </div>
             
             <h1 id="hero-heading" className="sr-only">PromptFluid - Home of the World's First Autonomous Dreaming AI</h1>
             
             {/* Hero Image - World's First Dreaming AI */}
-            <div className="relative mb-8 -mt-[80px] animate-fade-in">
-              <div className="relative rounded-2xl overflow-hidden border-2 border-purple-500/30 shadow-2xl">
+            <div className="relative mb-8 animate-fade-in">
+              <div className="relative rounded-2xl overflow-hidden border-2 border-purple-500/30 shadow-2xl max-w-4xl mx-auto">
                 <img 
                   src="/dreaming-ai-hero.png" 
                   alt="Autonomous dreaming AI visualization - glowing neural brain with dream fragments and memories orbiting in a cosmic dreamscape"
