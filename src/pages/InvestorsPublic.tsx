@@ -9,6 +9,9 @@ import { SEO } from "@/components/SEO";
 import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
 import { toast } from "sonner";
+import heroImage from "@/assets/hero/investor-meeting.jpg";
+import officeImage from "@/assets/hero/tech-office-mountains.jpg";
+import neuralImage from "@/assets/hero/neural-network-abstract.jpg";
 
 export default function InvestorsPublic() {
   const navigate = useNavigate();
@@ -108,11 +111,10 @@ export default function InvestorsPublic() {
 
       {/* Hero with Earth Window */}
       <section className="relative w-full">
-        <div 
-          className="absolute inset-0 h-[70vh] bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80')`,
-          }}
+        <img 
+          src={heroImage}
+          alt="Professional investor meeting in modern conference room with city skyline view"
+          className="absolute inset-0 w-full h-[70vh] object-cover"
         />
         <div className="absolute inset-0 h-[70vh] bg-gradient-to-b from-background/80 via-background/40 to-background" />
         
@@ -202,11 +204,10 @@ export default function InvestorsPublic() {
 
       {/* Earth Window - Industrial Area */}
       <section className="relative w-full h-[50vh] overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1920&q=80')`,
-          }}
+        <img 
+          src={officeImage}
+          alt="Modern tech office with floor-to-ceiling windows overlooking mountain landscape"
+          className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background opacity-70" />
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />
@@ -214,7 +215,7 @@ export default function InvestorsPublic() {
         
         <div className="absolute inset-0 flex items-center justify-center">
           <blockquote className="text-center max-w-3xl px-8">
-            <p className="text-2xl md:text-4xl font-light text-white drop-shadow-lg">
+            <p className="text-2xl md:text-4xl font-light text-foreground drop-shadow-lg">
               "We're closers. We ship real systems."
             </p>
           </blockquote>
@@ -290,11 +291,10 @@ export default function InvestorsPublic() {
 
       {/* Earth Window - Trees */}
       <section className="relative w-full h-[40vh] overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&q=80')`,
-          }}
+        <img 
+          src={neuralImage}
+          alt="Abstract neural network visualization representing AI infrastructure"
+          className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background opacity-60" />
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent" />

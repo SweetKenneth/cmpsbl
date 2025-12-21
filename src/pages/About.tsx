@@ -5,7 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
-
+import heroImage from "@/assets/hero/sustainable-architecture.jpg";
+import teamImage from "@/assets/hero/team-collaboration.jpg";
 export default function About() {
   const products = [
     { icon: Shield, name: "RCKBL", description: "Complete website defense against bots and threats" },
@@ -45,11 +46,10 @@ export default function About() {
       
       {/* Hero with Earth Window */}
       <section className="relative w-full">
-        <div 
-          className="absolute inset-0 h-[60vh] bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80')`,
-          }}
+        <img 
+          src={heroImage}
+          alt="Modern sustainable architecture with natural light, representing PromptFluid's grounded approach to building AI systems"
+          className="absolute inset-0 w-full h-[60vh] object-cover"
         />
         <div className="absolute inset-0 h-[60vh] bg-gradient-to-b from-background/80 via-background/40 to-background" />
         
@@ -94,11 +94,10 @@ export default function About() {
 
       {/* Earth Window */}
       <section className="relative w-full h-[50vh] overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1920&q=80')`,
-          }}
+        <img 
+          src={teamImage}
+          alt="Collaborative team working in modern open workspace with natural lighting"
+          className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background opacity-70" />
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />
@@ -106,7 +105,7 @@ export default function About() {
         
         <div className="absolute inset-0 flex items-center justify-center">
           <blockquote className="text-center max-w-3xl px-8">
-            <p className="text-2xl md:text-4xl font-light text-white drop-shadow-lg">
+            <p className="text-2xl md:text-4xl font-light text-foreground drop-shadow-lg">
               "100+ projects shipped. We're closers."
             </p>
           </blockquote>
