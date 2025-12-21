@@ -1,13 +1,18 @@
+import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { TrendingUp, Download, FileText, BarChart3, DollarSign } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { TrendingUp, Download, FileText, BarChart3, DollarSign, ArrowRight } from "lucide-react";
+import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { SEO } from "@/components/SEO";
 
 export default function Investors() {
   const metrics = [
-    { label: "Core Products", value: "3", trend: "In Development" },
+    { label: "Core Products", value: "6", trend: "Shipped" },
     { label: "Founded", value: "2024", trend: "Seed Stage" },
-    { label: "AI Providers", value: "6", trend: "Free-Tier" },
-    { label: "Team Size", value: "1", trend: "Founder" },
+    { label: "AI Providers", value: "20+", trend: "Integrated" },
+    { label: "Projects Shipped", value: "100+", trend: "15 Years" },
   ];
 
   const documents = [
@@ -17,91 +22,189 @@ export default function Investors() {
   ];
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex items-center gap-3 mb-6">
-        <TrendingUp className="w-8 h-8 text-primary" />
-        <div>
-          <h1 className="text-3xl font-bold">Investor Relations</h1>
-          <p className="text-muted-foreground">Seed stage investment opportunity</p>
-        </div>
-      </div>
+    <div className="min-h-screen bg-background">
+      <SEO 
+        title="Investor Relations — PromptFluid Seed Investment"
+        description="Invest in PromptFluid's applied AI infrastructure. 100+ projects shipped over 15 years. Six live products. Seeking seed investment."
+        canonical="https://promptfluid.com/investors"
+        keywords={['AI startup investment', 'venture capital', 'seed funding', 'AI infrastructure']}
+      />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {metrics.map((metric) => (
-          <Card key={metric.label} className="p-6">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">{metric.label}</p>
-              <p className="text-3xl font-bold text-foreground">{metric.value}</p>
-              <div className="flex items-center gap-1">
-                <TrendingUp className="w-4 h-4 text-primary" />
-                <span className="text-sm text-primary font-medium">{metric.trend}</span>
+      <PublicNav />
+
+      {/* Hero with Earth Window */}
+      <section className="relative w-full">
+        <div 
+          className="absolute inset-0 h-[50vh] bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80')`,
+          }}
+        />
+        <div className="absolute inset-0 h-[50vh] bg-gradient-to-b from-background/80 via-background/40 to-background" />
+        
+        <div className="relative container mx-auto px-4 pt-32 pb-16">
+          <nav className="mb-12">
+            <Link to="/" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary transition-colors">
+              ← Back to Home
+            </Link>
+          </nav>
+          
+          <div className="max-w-4xl">
+            <Badge variant="outline" className="mb-6 border-primary/30 text-primary">
+              <TrendingUp className="w-3 h-3 mr-2" />
+              Investment Opportunity
+            </Badge>
+            
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground">
+              Investor Relations
+            </h1>
+            
+            <p className="text-xl text-muted-foreground">
+              Seeking seed investment to scale AI-powered infrastructure for security, accessibility, and autonomous systems.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Metrics */}
+      <section className="border-y border-border bg-muted/30">
+        <div className="container mx-auto px-4 py-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-5xl mx-auto">
+            {metrics.map((metric, index) => (
+              <div key={index} className="text-center">
+                <p className="text-3xl font-bold text-foreground mb-1">{metric.value}</p>
+                <p className="text-sm text-muted-foreground">{metric.label}</p>
+                <div className="flex items-center justify-center gap-1 mt-2">
+                  <TrendingUp className="w-3 h-3 text-primary" />
+                  <span className="text-xs text-primary font-medium">{metric.trend}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Investment Opportunity */}
+      <section className="container mx-auto px-4 py-16">
+        <div className="max-w-6xl mx-auto">
+          <Card className="p-8 bg-card border-border">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-8">
+              <div>
+                <h2 className="text-2xl font-bold text-foreground">Investment Opportunity</h2>
+                <p className="text-muted-foreground">Seeking Seed Funding</p>
+              </div>
+              <Link to="/contact">
+                <Button className="bg-primary hover:bg-primary/90">
+                  <Download className="w-4 h-4 mr-2" />
+                  Request Materials
+                </Button>
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="p-6 bg-muted/30 border border-border rounded-lg">
+                <BarChart3 className="w-8 h-8 text-primary mb-3" />
+                <h3 className="font-semibold mb-2 text-foreground">Market Opportunity</h3>
+                <p className="text-sm text-muted-foreground">
+                  WordPress security and web accessibility markets with significant growth potential
+                </p>
+              </div>
+              <div className="p-6 bg-muted/30 border border-border rounded-lg">
+                <DollarSign className="w-8 h-8 text-[hsl(var(--system-green))] mb-3" />
+                <h3 className="font-semibold mb-2 text-foreground">Revenue Model</h3>
+                <p className="text-sm text-muted-foreground">
+                  Freemium SaaS with premium tiers for security; Accessibility tools remain free
+                </p>
+              </div>
+              <div className="p-6 bg-muted/30 border border-border rounded-lg">
+                <TrendingUp className="w-8 h-8 text-primary mb-3" />
+                <h3 className="font-semibold mb-2 text-foreground">Product Status</h3>
+                <p className="text-sm text-muted-foreground">
+                  Six live products. WordPress plugin ready. Cascade deployed. AI Nexus operational.
+                </p>
               </div>
             </div>
           </Card>
-        ))}
-      </div>
-
-      <Card className="p-6">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h2 className="text-2xl font-bold">Investment Opportunity</h2>
-            <p className="text-muted-foreground">Seeking Seed Funding</p>
-          </div>
-          <Button>
-            <Download className="w-4 h-4 mr-2" />
-            Request Materials
-          </Button>
         </div>
+      </section>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="p-4 border rounded-lg">
-            <BarChart3 className="w-8 h-8 text-primary mb-2" />
-            <h3 className="font-semibold mb-1">Market Opportunity</h3>
-            <p className="text-sm text-muted-foreground">
-              WordPress security and web accessibility markets with significant growth potential
+      {/* Earth Window */}
+      <section className="relative w-full h-[40vh] overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=1920&q=80')`,
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background opacity-70" />
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background to-transparent" />
+        
+        <div className="absolute inset-0 flex items-center justify-center">
+          <blockquote className="text-center max-w-3xl px-8">
+            <p className="text-2xl md:text-4xl font-light text-white drop-shadow-lg">
+              "We ship real systems."
             </p>
-          </div>
-          <div className="p-4 border rounded-lg">
-            <DollarSign className="w-8 h-8 text-green-500 mb-2" />
-            <h3 className="font-semibold mb-1">Revenue Model</h3>
-            <p className="text-sm text-muted-foreground">
-              Freemium SaaS with premium tiers for Bot Sniper; Clarity remains free forever
-            </p>
-          </div>
-          <div className="p-4 border rounded-lg">
-            <TrendingUp className="w-8 h-8 text-blue-500 mb-2" />
-            <h3 className="font-semibold mb-1">Product Status</h3>
-            <p className="text-sm text-muted-foreground">
-              Reflex Bot Sniper pending WordPress.org; Clarity live and free; Dream Eater experimental
-            </p>
+          </blockquote>
+        </div>
+      </section>
+
+      {/* Investor Documents */}
+      <section className="container mx-auto px-4 py-16">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-2xl font-bold mb-8 text-foreground">Investor Documents</h2>
+          <div className="space-y-4">
+            {documents.map((doc) => (
+              <Card key={doc.name} className="p-6 bg-card border-border hover:border-primary/40 transition-all">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 bg-primary/10 rounded-lg">
+                      <FileText className="w-6 h-6 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-foreground">{doc.name}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {doc.type} • {doc.date}
+                      </p>
+                    </div>
+                  </div>
+                  <Link to="/contact">
+                    <Button variant="outline" size="sm">
+                      Request
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  </Link>
+                </div>
+              </Card>
+            ))}
           </div>
         </div>
-      </Card>
+      </section>
 
-      <div className="space-y-4">
-        <h2 className="text-xl font-semibold">Investor Documents</h2>
-        {documents.map((doc) => (
-          <Card key={doc.name} className="p-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-primary/10 rounded-lg">
-                  <FileText className="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <p className="font-semibold">{doc.name}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {doc.type} • Updated {doc.date}
-                  </p>
-                </div>
-              </div>
-              <Button variant="outline" size="sm">
-                <Download className="w-4 h-4 mr-2" />
-                Download
+      {/* CTA */}
+      <section className="py-16 px-4 bg-muted/30">
+        <div className="container mx-auto max-w-4xl text-center">
+          <h2 className="text-3xl font-bold mb-4 text-foreground">Ready to Learn More?</h2>
+          <p className="text-lg text-muted-foreground mb-8">
+            Schedule a meeting to discuss partnership opportunities.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link to="/contact">
+              <Button size="lg" className="bg-primary hover:bg-primary/90">
+                Schedule Meeting
+                <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
-            </div>
-          </Card>
-        ))}
-      </div>
+            </Link>
+            <Link to="/investors-public">
+              <Button size="lg" variant="outline">
+                View Public Materials
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <EnhancedFooter />
     </div>
   );
 }
