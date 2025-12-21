@@ -1,4 +1,4 @@
-import { ArrowRight, Shield, Accessibility, Activity, Server, Brain, Eye, Wrench, ExternalLink } from "lucide-react";
+import { ArrowRight, Shield, Accessibility, Activity, Server, Brain, Eye, Wrench, ExternalLink, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
@@ -69,6 +69,16 @@ export default function Index() {
       badgeColor: "primary",
       icon: Server,
       link: "/projects/nexus"
+    },
+    {
+      id: "xctbl",
+      name: "XCTBL Space",
+      subtitle: "Lore-Wrapped SaaS Suite",
+      description: "Software suite wrapped in fictional lore. Custom OAuth login system connecting tools across interconnected worlds. Fiction-framed, but every tool is 100% real and functional.",
+      badge: "Live",
+      badgeColor: "system-amber",
+      icon: Sparkles,
+      externalLink: "https://XCTBL.com"
     }
   ];
 
