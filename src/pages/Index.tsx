@@ -141,6 +141,10 @@ export default function Index() {
                     </Button>
                   </Link>
                 </div>
+
+                <p className="mt-6 text-foreground/70 text-base">
+                  Start with a real system. Try <a href="https://PTCHBL.com" target="_blank" rel="noopener noreferrer" className="text-foreground hover:text-primary transition-colors">PTCHBL</a> or explore live infrastructure below.
+                </p>
               </div>
             </div>
           </div>
@@ -235,6 +239,9 @@ export default function Index() {
         <section id="shipped-systems" className="relative z-10 bg-muted/30 py-24" aria-labelledby="shipped-heading">
           <div className="container mx-auto px-4">
             <div className="max-w-5xl mx-auto">
+              <p className="text-sm text-muted-foreground mb-4">
+                Everything below is live, reachable, and running in production.
+              </p>
               <h2 id="shipped-heading" className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
                 Shipped Systems
               </h2>
