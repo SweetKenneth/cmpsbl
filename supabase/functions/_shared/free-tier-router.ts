@@ -1,41 +1,39 @@
 /**
- * FREE-TIER AI Routing v2.0.0 - SMART LIMITS + SELF-HEALING + GARDENING
+ * FREE-TIER AI Routing v2.1.0 - SMART LIMITS + SELF-HEALING + GARDENING
+ * 
+ * REDUCED TO 50% CAPACITY to slow brain learning and preserve user interactions
  * 
  * Routes requests across AI providers with:
- * - Per-min/hour/day limits with smart capacity planning
+ * - Per-min/hour/day limits at 50% of maximum
  * - Circuit breaker pattern for failing providers
  * - Self-healing with automatic recovery attempts
  * - Health scoring per provider
  * - Graceful degradation with intelligent fallbacks
- * - Gardening: periodic maintenance and optimization
+ * - GROQ FIRST priority for speed
  * 
- * RATE LIMITS (per official documentation):
+ * RATE LIMITS (50% OF OFFICIAL LIMITS):
  * 
  * Provider      | Per Min | Per Hour | Per Day  | Notes
  * --------------|---------|----------|----------|----------------------------------
- * Groq          | 30 RPM  | 500 RPH  | 1,000    | FREE tier - llama-3.3-70b (FAST!)
- * Cerebras      | 30 RPM  | 900 RPH  | 14,400   | FREE tier - llama-3.3-70b
- * Together      | 10 RPS  | 600 RPH  | 14,400   | $5 deposit tier - Llama 3.1 70B
- * Hyperbolic    | 60 RPM  | 3,600    | 86,400   | $5 deposit tier - Llama 3.1 70B
- * DeepSeek      | 20 RPM  | 600 RPH  | 5,000    | Conservative limits
- * Google        | 2 RPM   | 20 RPH   | 50       | Severely reduced Dec 2024
+ * Groq          | 15 RPM  | 250 RPH  | 500      | PRIMARY - llama-3.3-70b (FAST!)
+ * Cerebras      | 15 RPM  | 450 RPH  | 7,200    | FREE tier - llama-3.3-70b
+ * Together      | 5 RPS   | 300 RPH  | 7,200    | $5 deposit tier - Llama 3.1 70B
+ * Hyperbolic    | 30 RPM  | 1,800    | 43,200   | $5 deposit tier - Llama 3.1 70B
+ * DeepSeek      | 10 RPM  | 300 RPH  | 2,500    | Conservative limits
+ * Google        | 1 RPM   | 10 RPH   | 25       | Severely reduced
  * 
  * PRIORITY ORDER: Groq → Cerebras → Together → Hyperbolic → DeepSeek → Google
  * 
- * TOTAL CAPACITY: ~121,250 requests/day
- * TARGET: 90% utilization = ~109,125 requests/day = ~75 requests/minute
+ * TOTAL CAPACITY: ~60,625 requests/day (50% of max)
+ * TARGET: 90% utilization = ~54,562 requests/day = ~38 requests/minute
  * 
- * v2.0.0 CHANGELOG:
- * - Added circuit breaker pattern with configurable thresholds
- * - Added health scoring per provider (0-100)
- * - Added self-healing with automatic recovery probes
- * - Added graceful degradation tiers
- * - Added gardening functions for periodic maintenance
- * - Improved error classification and retry logic
- * - Added provider warmup and cooldown cycles
+ * v2.1.0 CHANGELOG:
+ * - REDUCED ALL LIMITS TO 50% to slow brain learning
+ * - GROQ set as primary provider for speed
+ * - Preserved self-healing and circuit breaker patterns
  */
 
-export const ROUTER_VERSION = "2.0.0";
+export const ROUTER_VERSION = "2.1.0";
 
 export interface FreeTierConfig {
   maxTokens?: number;
@@ -82,14 +80,15 @@ export interface RouterState {
 // CONFIGURATION CONSTANTS
 // ═══════════════════════════════════════════════════════════════
 
-// Rate limits - SMART routing with per-min/hour/day checks
+// Rate limits - REDUCED TO 50% of maximum to slow down learning
+// This preserves capacity for user interactions and prevents hitting limits
 export const RATE_LIMITS = {
-  cerebras: { perMin: 30, perHour: 900, perDay: 14400 },
-  together: { perMin: 10, perHour: 600, perDay: 14400 },
-  hyperbolic: { perMin: 60, perHour: 3600, perDay: 86400 },
-  deepseek: { perMin: 20, perHour: 600, perDay: 5000 },
-  groq: { perMin: 30, perHour: 500, perDay: 1000 },
-  google: { perMin: 2, perHour: 20, perDay: 50 }
+  cerebras: { perMin: 15, perHour: 450, perDay: 7200 },   // 50% of max
+  together: { perMin: 5, perHour: 300, perDay: 7200 },    // 50% of max
+  hyperbolic: { perMin: 30, perHour: 1800, perDay: 43200 }, // 50% of max
+  deepseek: { perMin: 10, perHour: 300, perDay: 2500 },   // 50% of max
+  groq: { perMin: 15, perHour: 250, perDay: 500 },        // 50% of max (PRIMARY)
+  google: { perMin: 1, perHour: 10, perDay: 25 }          // 50% of max
 };
 
 // Circuit breaker configuration
@@ -107,7 +106,7 @@ const SELF_HEALING = {
   recoveryThreshold: 2        // Successful probes needed to recover
 };
 
-// Graceful degradation tiers
+// Graceful degradation tiers - GROQ FIRST
 const DEGRADATION_TIERS = {
   tier1: ['groq', 'cerebras'],           // Primary: fastest, free
   tier2: ['together', 'hyperbolic'],     // Secondary: paid but reliable
@@ -115,7 +114,7 @@ const DEGRADATION_TIERS = {
   emergency: ['local_fallback']          // Emergency: no AI, graceful message
 };
 
-// Calculate total capacity
+// Calculate total capacity (now at 50%)
 export const TOTAL_DAILY_CAPACITY = Object.values(RATE_LIMITS).reduce((sum, r) => sum + r.perDay, 0);
 export const TARGET_USAGE_PERCENT = 0.90;
 export const TARGET_DAILY_CALLS = Math.floor(TOTAL_DAILY_CAPACITY * TARGET_USAGE_PERCENT);
