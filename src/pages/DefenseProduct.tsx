@@ -6,6 +6,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate, Link } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 import { toast } from "sonner";
+import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
 
 export default function DefenseProduct() {
   const navigate = useNavigate();
@@ -184,35 +186,33 @@ export default function DefenseProduct() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-muted/20">
+    <div className="min-h-screen bg-background">
       <SEO 
-        title="PromptFluid Reflex — AI-Powered WordPress Security | Official Download"
-        description="Download PromptFluid Reflex: Advanced AI-powered bot protection for WordPress. Stop credential stuffing, spam bots, and automated attacks with behavioral analysis. Free and Pro versions available."
-        canonical="https://promptfluid.com/projects/reflex"
+        title="RCKBL Reflex — AI-Powered WordPress Security | Official Download"
+        description="Download RCKBL Reflex: Advanced AI-powered bot protection for WordPress. Stop credential stuffing, spam bots, and automated attacks with behavioral analysis."
+        canonical="https://promptfluid.com/projects/defense"
         keywords={[
           'WordPress security plugin',
           'AI bot detection',
           'WordPress bot protection',
           'credential stuffing prevention',
-          'malware scanner WordPress',
-          'file integrity monitoring',
-          'WordPress firewall',
-          'brute force protection',
-          'behavioral analysis security',
-          'WordPress threat detection',
-          'download WordPress security',
-          'free WordPress security plugin',
-          'AI cybersecurity WordPress',
-          'WordPress defense system',
-          'automated attack prevention'
+          'malware scanner WordPress'
         ]}
       />
 
-      {/* Hero Section */}
-      <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-blue-500/10 to-cyan-500/10" />
+      <PublicNav />
+
+      {/* Hero with Earth Window */}
+      <section className="relative w-full">
+        <div 
+          className="absolute inset-0 h-[60vh] bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1920&q=80')`,
+          }}
+        />
+        <div className="absolute inset-0 h-[60vh] bg-gradient-to-b from-background/80 via-background/40 to-background" />
         
-        <div className="container mx-auto px-4 py-16 relative z-10">
+        <div className="container mx-auto px-4 pt-32 pb-16 relative z-10">
           <Link to="/projects" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mb-8">
             <ArrowRight className="w-4 h-4 rotate-180" />
             <span>Back to Projects</span>
@@ -338,7 +338,7 @@ export default function DefenseProduct() {
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Stats Bar */}
       <div className="border-y bg-muted/30">

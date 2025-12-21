@@ -6,6 +6,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate, Link } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 import { toast } from "sonner";
+import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
 
 export default function BrainProduct() {
   const navigate = useNavigate();
@@ -175,35 +177,33 @@ export default function BrainProduct() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-muted/20">
+    <div className="min-h-screen bg-background">
       <SEO 
-        title="Cascade — Experimental Dreaming AI | PromptFluid"
-        description="Meet Cascade, an experimental AI exploring autonomous dream capabilities. FluidMind Neural Core with dream cycle concepts and persona adaptation."
+        title="Cascade — Autonomous Dreaming AI | PromptFluid"
+        description="Meet Cascade, the world's first documented autonomous AI with memory reflection cycles. FluidMind Neural Core with dreaming capabilities."
         canonical="https://promptfluid.com/projects/brain"
         keywords={[
-          'machine learning security',
+          'autonomous AI',
+          'dreaming AI',
+          'machine learning',
           'AI threat detection',
-          'behavioral analysis AI',
-          'predictive intelligence',
-          'anomaly detection',
-          'adaptive security',
-          'ML orchestration',
-          'intelligent threat response',
-          'continuous learning AI',
-          'security automation',
-          'threat prediction',
-          'behavioral patterns',
-          'AI security platform',
-          'autonomous security',
-          'ML-powered protection'
+          'behavioral analysis'
         ]}
       />
 
-      {/* Hero Section */}
-      <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-teal-500/10 to-green-500/10" />
+      <PublicNav />
+
+      {/* Hero with Earth Window */}
+      <section className="relative w-full">
+        <div 
+          className="absolute inset-0 h-[60vh] bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80')`,
+          }}
+        />
+        <div className="absolute inset-0 h-[60vh] bg-gradient-to-b from-background/80 via-background/40 to-background" />
         
-        <div className="container mx-auto px-4 py-16 relative z-10">
+        <div className="container mx-auto px-4 pt-32 pb-16 relative z-10">
           <Link to="/projects" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mb-8">
             <ArrowRight className="w-4 h-4 rotate-180" />
             <span>Back to Projects</span>
@@ -315,7 +315,7 @@ export default function BrainProduct() {
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Stats Bar */}
       <div className="border-y bg-muted/30">

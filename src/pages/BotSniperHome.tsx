@@ -1,125 +1,145 @@
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Shield, Zap, TrendingUp, Check, ArrowRight, Activity } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Shield, Zap, TrendingUp, Check, ArrowRight, Activity } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { SEO } from "@/components/SEO";
 
 export default function BotSniperHome() {
   const navigate = useNavigate();
 
+  const features = [
+    {
+      icon: Shield,
+      title: "Behavioral Analysis",
+      description: "ML models detect bot patterns in real-time, analyzing velocity, signatures, and anomalies."
+    },
+    {
+      icon: Activity,
+      title: "IP Reputation",
+      description: "Dynamic scoring learns from historical data to identify repeat offenders."
+    },
+    {
+      icon: Zap,
+      title: "Instant Response",
+      description: "Sub-50ms detection enables real-time blocking without impacting UX."
+    },
+    {
+      icon: TrendingUp,
+      title: "Threat Intelligence",
+      description: "Analytics and classification help understand attack patterns."
+    },
+    {
+      icon: Shield,
+      title: "API-First",
+      description: "Simple REST API integrates with any stack in minutes."
+    },
+    {
+      icon: Activity,
+      title: "Adaptive Learning",
+      description: "Self-improving algorithms reduce false positives over time."
+    }
+  ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-background/80">
-      {/* Status Banner */}
-      <section className="bg-amber-500/10 border-b border-amber-500/20 py-3 px-6">
-        <div className="max-w-6xl mx-auto text-center">
-          <p className="text-sm text-amber-600 font-medium">
-            ⏳ Pending WordPress.org Approval — Join the waitlist to be notified when we launch
-          </p>
+    <div className="min-h-screen bg-background">
+      <SEO 
+        title="RCKBL Bot Sniper — AI-Powered WordPress Security"
+        description="Stop sophisticated bot attacks with AI-powered behavioral analysis. Credential stuffing, spam bots, and automated attacks blocked in real-time."
+        canonical="https://promptfluid.com/bot-sniper"
+        keywords={['WordPress security', 'bot detection', 'AI security', 'credential stuffing prevention']}
+      />
+
+      <PublicNav />
+
+      {/* Hero with Earth Window */}
+      <section className="relative w-full">
+        <div 
+          className="absolute inset-0 h-[70vh] bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1920&q=80')`,
+          }}
+        />
+        <div className="absolute inset-0 h-[70vh] bg-gradient-to-b from-background/80 via-background/40 to-background" />
+        
+        <div className="relative container mx-auto px-4 pt-32 pb-20">
+          <div className="max-w-4xl">
+            <Badge variant="outline" className="mb-6 border-[hsl(var(--system-amber))]/30 text-[hsl(var(--system-amber))]">
+              Pending WordPress.org Approval
+            </Badge>
+
+            <Badge variant="outline" className="mb-6 ml-2 border-primary/30 text-primary">
+              <Shield className="w-3 h-3 mr-2" />
+              AI-Powered Security
+            </Badge>
+            
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground">
+              Stop Malicious Bots Before They Strike
+            </h1>
+            
+            <p className="text-xl text-muted-foreground mb-8 max-w-3xl leading-relaxed">
+              AI-powered detection that identifies and blocks bot traffic. Protect your WordPress site from scraping, credential stuffing, and automated attacks.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
+              <Button size="lg" onClick={() => navigate('/contact')} className="bg-primary hover:bg-primary/90">
+                Join Waitlist
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+              <Button size="lg" variant="outline" onClick={() => navigate('/projects/defense')}>
+                Learn More
+              </Button>
+            </div>
+
+            <p className="text-sm text-muted-foreground">
+              Pending WordPress.org approval • Pricing shown is planned pricing
+            </p>
+          </div>
         </div>
       </section>
 
-      {/* Hero Section */}
-      <section className="pt-20 pb-16 px-6">
-        <div className="max-w-6xl mx-auto text-center space-y-6">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-            <Shield className="w-4 h-4" />
-            AI-Powered Bot Detection
-          </div>
-          
-          <h1 className="text-5xl md:text-6xl font-bold tracking-tight">
-            Stop Malicious Bots
-            <br />
-            <span className="text-primary">Before They Strike</span>
-          </h1>
-          
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            AI-powered detection that identifies and blocks bot traffic. 
-            Protect your WordPress site from scraping, credential stuffing, and automated attacks.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-            <Button size="lg" onClick={() => navigate('/contact')} className="text-lg px-8">
-              Join Waitlist
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
-            <Button size="lg" variant="outline" onClick={() => navigate('/projects/defense')} className="text-lg px-8">
-              Learn More
-            </Button>
-          </div>
-
-          <p className="text-sm text-muted-foreground pt-2">
-            Pending WordPress.org approval • Pricing shown is planned pricing
-          </p>
-        </div>
-      </section>
-
-      {/* Features Highlight */}
-      <section className="py-12 px-6 bg-muted/30">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-4 gap-8 text-center">
-          <div>
-            <p className="text-4xl font-bold text-primary">AI</p>
-            <p className="text-muted-foreground mt-1">Behavioral Analysis</p>
-          </div>
-          <div>
-            <p className="text-4xl font-bold text-primary">Real-time</p>
-            <p className="text-muted-foreground mt-1">Threat Detection</p>
-          </div>
-          <div>
-            <p className="text-4xl font-bold text-primary">Adaptive</p>
-            <p className="text-muted-foreground mt-1">CAPTCHA System</p>
-          </div>
-          <div>
-            <p className="text-4xl font-bold text-primary">WordPress</p>
-            <p className="text-muted-foreground mt-1">Native Plugin</p>
+      {/* Metrics Bar */}
+      <section className="border-y border-border bg-muted/30">
+        <div className="container mx-auto px-4 py-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-5xl mx-auto text-center">
+            <div>
+              <p className="text-3xl font-bold text-primary mb-1">AI</p>
+              <p className="text-sm text-muted-foreground">Behavioral Analysis</p>
+            </div>
+            <div>
+              <p className="text-3xl font-bold text-primary mb-1">Real-time</p>
+              <p className="text-sm text-muted-foreground">Threat Detection</p>
+            </div>
+            <div>
+              <p className="text-3xl font-bold text-primary mb-1">Adaptive</p>
+              <p className="text-sm text-muted-foreground">CAPTCHA System</p>
+            </div>
+            <div>
+              <p className="text-3xl font-bold text-primary mb-1">WordPress</p>
+              <p className="text-sm text-muted-foreground">Native Plugin</p>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Features Grid */}
-      <section className="py-20 px-6">
+      <section className="container mx-auto px-4 py-20">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Advanced Bot Detection</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">Advanced Bot Detection</h2>
             <p className="text-xl text-muted-foreground">
               AI-powered analysis that adapts to evolving threats
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: Shield,
-                title: 'Behavioral Analysis',
-                description: 'Advanced ML models detect bot patterns in real-time, analyzing request velocity, user agent signatures, and behavioral anomalies.'
-              },
-              {
-                icon: Activity,
-                title: 'IP Reputation Tracking',
-                description: 'Dynamic reputation scoring learns from historical data to identify repeat offenders and emerging threat sources.'
-              },
-              {
-                icon: Zap,
-                title: 'Instant Response',
-                description: 'Sub-50ms detection enables real-time blocking without impacting legitimate user experience.'
-              },
-              {
-                icon: TrendingUp,
-                title: 'Threat Intelligence',
-                description: 'Detailed analytics and threat classification help you understand attack patterns and optimize defenses.'
-              },
-              {
-                icon: Shield,
-                title: 'API-First Design',
-                description: 'Simple REST API integrates with any stack. Get up and running in minutes with comprehensive documentation.'
-              },
-              {
-                icon: Activity,
-                title: 'Adaptive Learning',
-                description: 'Self-improving detection algorithms that learn from your traffic patterns to reduce false positives.'
-              }
-            ].map((feature) => (
-              <Card key={feature.title} className="p-6 hover:shadow-lg transition-shadow">
-                <feature.icon className="w-12 h-12 text-primary mb-4" />
-                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {features.map((feature) => (
+              <Card key={feature.title} className="p-6 bg-card border-border hover:border-primary/40 transition-all">
+                <feature.icon className="w-10 h-10 text-primary mb-4" />
+                <h3 className="text-xl font-semibold mb-2 text-foreground">{feature.title}</h3>
                 <p className="text-muted-foreground">{feature.description}</p>
               </Card>
             ))}
@@ -127,52 +147,73 @@ export default function BotSniperHome() {
         </div>
       </section>
 
+      {/* Earth Window */}
+      <section className="relative w-full h-[50vh] overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80')`,
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background opacity-70" />
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-background to-transparent" />
+        
+        <div className="absolute inset-0 flex items-center justify-center">
+          <blockquote className="text-center max-w-3xl px-8">
+            <p className="text-2xl md:text-4xl font-light text-white drop-shadow-lg">
+              "Security that thinks for itself."
+            </p>
+          </blockquote>
+        </div>
+      </section>
+
       {/* Pricing Preview */}
-      <section className="py-20 px-6 bg-muted/30">
-        <div className="max-w-4xl mx-auto text-center space-y-8">
-          <h2 className="text-4xl font-bold">Simple, Transparent Pricing</h2>
+      <section className="container mx-auto px-4 py-20">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-12 text-foreground">Simple, Transparent Pricing</h2>
           
-          <div className="grid md:grid-cols-2 gap-6 mt-12">
-            <Card className="p-8">
-              <h3 className="text-2xl font-bold mb-4">Bot Sniper Base</h3>
+          <div className="grid md:grid-cols-2 gap-6">
+            <Card className="p-8 bg-card border-border">
+              <h3 className="text-2xl font-bold mb-4 text-foreground">Bot Sniper Base</h3>
               <div className="flex items-baseline gap-2 mb-6">
-                <span className="text-5xl font-bold">$9</span>
+                <span className="text-4xl font-bold text-foreground">$9</span>
                 <span className="text-muted-foreground">/month</span>
               </div>
-              <ul className="space-y-3 text-left mb-8">
-                {['10,000 requests/mo', 'Real-time detection', 'API access', 'Email support'].map((item) => (
+              <ul className="space-y-3 mb-8">
+                {["10,000 requests/mo", "Real-time detection", "API access", "Email support"].map((item) => (
                   <li key={item} className="flex items-center gap-2">
-                    <Check className="w-5 h-5 text-green-500" />
-                    <span>{item}</span>
+                    <Check className="w-5 h-5 text-[hsl(var(--system-green))]" />
+                    <span className="text-muted-foreground">{item}</span>
                   </li>
                 ))}
               </ul>
-              <Button className="w-full" onClick={() => navigate('/bot-sniper/pricing')}>
+              <Button className="w-full" variant="outline" onClick={() => navigate('/bot-sniper/pricing')}>
                 Get Started
               </Button>
             </Card>
 
-            <Card className="p-8 border-primary relative">
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium">
+            <Card className="p-8 bg-card border-primary relative">
+              <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground">
                 BEST VALUE
-              </div>
-              <h3 className="text-2xl font-bold mb-4">Full Suite</h3>
+              </Badge>
+              <h3 className="text-2xl font-bold mb-4 text-foreground">Full Suite</h3>
               <div className="space-y-1 mb-6">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-5xl font-bold">$1</span>
+                  <span className="text-4xl font-bold text-foreground">$1</span>
                   <span className="text-muted-foreground">first month</span>
                 </div>
                 <p className="text-sm text-muted-foreground">Then $39/mo</p>
               </div>
-              <ul className="space-y-3 text-left mb-8">
-                {['Unlimited requests', 'WAF protection', 'Malware scanning', 'Priority support'].map((item) => (
+              <ul className="space-y-3 mb-8">
+                {["Unlimited requests", "WAF protection", "Malware scanning", "Priority support"].map((item) => (
                   <li key={item} className="flex items-center gap-2">
                     <Check className="w-5 h-5 text-primary" />
-                    <span>{item}</span>
+                    <span className="text-muted-foreground">{item}</span>
                   </li>
                 ))}
               </ul>
-              <Button className="w-full" onClick={() => navigate('/bot-sniper/pricing')}>
+              <Button className="w-full bg-primary hover:bg-primary/90" onClick={() => navigate('/bot-sniper/pricing')}>
                 Upgrade to Full Suite
               </Button>
             </Card>
@@ -181,22 +222,22 @@ export default function BotSniperHome() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <Card className="p-12 bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20">
-            <h2 className="text-3xl font-bold mb-4">
-              Ready to Protect Your Site?
-            </h2>
-            <p className="text-xl text-muted-foreground mb-8">
-              Start your free 3-day trial today. No credit card required.
-            </p>
-            <Button size="lg" onClick={() => navigate('/auth')} className="text-lg px-8">
-              Start Free Trial
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
-          </Card>
+      <section className="py-16 px-4 bg-muted/30">
+        <div className="container mx-auto max-w-4xl text-center">
+          <h2 className="text-3xl font-bold mb-4 text-foreground">
+            Ready to Protect Your Site?
+          </h2>
+          <p className="text-lg text-muted-foreground mb-8">
+            Start your free 3-day trial. No credit card required.
+          </p>
+          <Button size="lg" onClick={() => navigate('/auth')} className="bg-primary hover:bg-primary/90">
+            Start Free Trial
+            <ArrowRight className="w-5 h-5 ml-2" />
+          </Button>
         </div>
       </section>
+
+      <EnhancedFooter />
     </div>
   );
 }
