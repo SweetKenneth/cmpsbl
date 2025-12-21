@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logo from "@/assets/promptfluid-logo-cropped.png";
+import logo from "@/assets/promptfluid-logo-final.png";
 
 export function PublicNav() {
   const navigate = useNavigate();
