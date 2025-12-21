@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { Badge } from "@/components/ui/badge";
 
 export default function Roadmap() {
   const quarters = [
@@ -102,7 +103,7 @@ export default function Roadmap() {
   };
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
+    <div className="min-h-screen bg-background">
       <SEO 
         title="2025-2026 Roadmap | PromptFluid™ — Building the Future of AI Tools"
         description="Explore PromptFluid's ambitious roadmap: AI-powered WordPress security, rapid application development, universal accessibility tools, intelligent marketing automation, and enterprise AI solutions. See what we're building to democratize technology."
@@ -121,86 +122,85 @@ export default function Roadmap() {
         ]}
       />
 
-      {/* Animated background */}
-      <div className="fixed inset-0 opacity-30 dark:opacity-20" style={{ background: 'var(--gradient-mesh)' }} />
-      <div className="fixed top-20 left-10 w-96 h-96 bg-primary/20 rounded-full blur-[128px] animate-pulse" />
-      <div className="fixed bottom-20 right-10 w-96 h-96 bg-primary-variant/20 rounded-full blur-[128px] animate-pulse" style={{ animationDelay: '1s' }} />
-
-      {/* Navigation */}
       <PublicNav />
 
-      {/* Header */}
-      <header className="relative z-10 container mx-auto px-4 py-20">
-        <nav className="mb-12">
-          <Link to="/" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary transition-colors">
-            ← Back to Home
-          </Link>
-        </nav>
+      {/* Hero with Earth Window */}
+      <section className="relative w-full">
+        <div 
+          className="absolute inset-0 h-[60vh] bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80')`,
+          }}
+        />
+        <div className="absolute inset-0 h-[60vh] bg-gradient-to-b from-background/80 via-background/40 to-background" />
+        
+        <div className="relative container mx-auto px-4 pt-32 pb-20">
+          <nav className="mb-12">
+            <Link to="/" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary transition-colors">
+              ← Back to Home
+            </Link>
+          </nav>
 
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-primary/20 mb-8 animate-fade-in">
-            <Sparkles className="w-4 h-4 text-primary animate-pulse" />
-            <span className="text-sm font-medium bg-gradient-to-r from-primary via-primary-variant to-accent bg-clip-text text-transparent">
+          <div className="max-w-4xl">
+            <Badge variant="outline" className="mb-6 border-primary/30 text-primary">
+              <Sparkles className="w-3 h-3 mr-2" />
               Building the Future
-            </span>
-          </div>
+            </Badge>
 
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-slide-up">
-            <span className="bg-gradient-to-r from-primary via-primary-variant to-accent bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground">
               2025-2026 Roadmap
-            </span>
-          </h1>
+            </h1>
 
-          <p className="text-xl md:text-2xl text-muted-foreground mb-8 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-            We're building intelligent tools that democratize technology—making enterprise-grade AI accessible to developers, 
-            agencies, and businesses of all sizes. Here's what's flowing through our development pipeline.
-          </p>
+            <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
+              We're building intelligent tools that democratize technology—making enterprise-grade AI accessible to developers, 
+              agencies, and businesses of all sizes.
+            </p>
 
-          <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground animate-fade-in" style={{ animationDelay: '0.4s' }}>
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-green-500" />
-              <span>2 Projects Launching Q1</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Clock className="w-4 h-4 text-blue-500" />
-              <span>6 In Development</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-purple-500" />
-              <span>8 Planned for 2025-2026</span>
+            <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-[hsl(var(--system-green))]" />
+                <span>2 Projects Launching Q1</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock className="w-4 h-4 text-primary" />
+                <span>6 In Development</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-[hsl(var(--system-amber))]" />
+                <span>8 Planned for 2025-2026</span>
+              </div>
             </div>
           </div>
         </div>
-      </header>
+      </section>
 
       {/* Roadmap Timeline */}
-      <section className="relative z-10 container mx-auto px-4 pb-20">
+      <section className="container mx-auto px-4 pb-20">
         <div className="max-w-6xl mx-auto space-y-16">
           {quarters.map((quarter, qIndex) => (
-            <div key={quarter.period} className="animate-fade-in" style={{ animationDelay: `${qIndex * 0.1}s` }}>
+            <div key={quarter.period}>
               {/* Quarter Header */}
               <div className="flex items-center gap-4 mb-8">
-                <div className="glass px-6 py-3 rounded-full border border-primary/20">
-                  <h2 className="text-2xl font-bold bg-gradient-to-r from-primary via-primary-variant to-accent bg-clip-text text-transparent">
+                <div className="px-6 py-3 rounded-full bg-card border border-border">
+                  <h2 className="text-2xl font-bold text-primary">
                     {quarter.period}
                   </h2>
                 </div>
-                <div className="h-px flex-1 bg-gradient-to-r from-primary/50 via-primary-variant/50 to-transparent" />
+                <div className="h-px flex-1 bg-border" />
                 <span className="text-sm text-muted-foreground uppercase tracking-wider">{quarter.status}</span>
               </div>
 
               {/* Quarter Items */}
               <div className="grid md:grid-cols-2 gap-6">
-                {quarter.items.map((item, iIndex) => (
+                {quarter.items.map((item) => (
                   <article
                     key={item.title}
-                    className="group p-8 rounded-2xl glass border border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-elegant"
-                    style={{ animationDelay: `${(qIndex * 0.1) + (iIndex * 0.05)}s` }}
+                    className="group p-8 rounded-lg bg-card border border-border hover:border-primary/40 transition-all"
                   >
                     {/* Icon & Status */}
                     <div className="flex items-start justify-between mb-6">
-                      <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary to-primary-variant flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
-                        <item.icon className="w-7 h-7 text-primary-foreground" />
+                      <div className="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                        <item.icon className="w-7 h-7 text-primary" />
                       </div>
                       <div className={`px-3 py-1 rounded-full border text-xs font-medium ${statusColors[item.status as keyof typeof statusColors]}`}>
                         {item.status}
@@ -208,7 +208,7 @@ export default function Roadmap() {
                     </div>
 
                     {/* Content */}
-                    <h3 className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors">
+                    <h3 className="text-xl font-semibold mb-3 text-foreground group-hover:text-primary transition-colors">
                       {item.title}
                     </h3>
                     <p className="text-muted-foreground leading-relaxed mb-4">
@@ -220,7 +220,7 @@ export default function Roadmap() {
                       {item.technologies.map((tech) => (
                         <span
                           key={tech}
-                          className="px-3 py-1 text-xs font-medium rounded-full bg-muted/50 text-muted-foreground border border-border/50"
+                          className="px-3 py-1 text-xs font-medium rounded-full bg-muted text-muted-foreground border border-border"
                         >
                           {tech}
                         </span>
@@ -234,28 +234,47 @@ export default function Roadmap() {
         </div>
       </section>
 
+      {/* Earth Window */}
+      <section className="relative w-full h-[50vh] overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=1920&q=80')`,
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background opacity-70" />
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-background to-transparent" />
+        
+        <div className="absolute inset-0 flex items-center justify-center">
+          <blockquote className="text-center max-w-3xl px-8">
+            <p className="text-2xl md:text-4xl font-light text-white drop-shadow-lg">
+              "Technology that works for everyone."
+            </p>
+          </blockquote>
+        </div>
+      </section>
+
       {/* Philosophy Section */}
-      <section className="relative z-10 container mx-auto px-4 py-20 bg-muted/30">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            <span className="bg-gradient-to-r from-primary via-primary-variant to-accent bg-clip-text text-transparent">
-              Our Development Philosophy
-            </span>
+      <section className="py-16 px-4 bg-muted/30">
+        <div className="container mx-auto max-w-4xl text-center">
+          <h2 className="text-3xl font-bold mb-6 text-foreground">
+            Our Development Philosophy
           </h2>
           <div className="grid md:grid-cols-3 gap-6 mt-12">
-            <div className="glass p-6 rounded-xl">
+            <div className="bg-card border border-border p-6 rounded-lg">
               <h3 className="font-semibold mb-2 text-primary">AI-First</h3>
               <p className="text-sm text-muted-foreground">
                 Every tool leverages cutting-edge AI to automate, optimize, and adapt to user needs.
               </p>
             </div>
-            <div className="glass p-6 rounded-xl">
+            <div className="bg-card border border-border p-6 rounded-lg">
               <h3 className="font-semibold mb-2 text-primary">Accessible</h3>
               <p className="text-sm text-muted-foreground">
                 Enterprise power with startup simplicity. Technology that works for everyone.
               </p>
             </div>
-            <div className="glass p-6 rounded-xl">
+            <div className="bg-card border border-border p-6 rounded-lg">
               <h3 className="font-semibold mb-2 text-primary">Integrated</h3>
               <p className="text-sm text-muted-foreground">
                 All our tools communicate seamlessly, creating a unified development experience.
@@ -266,48 +285,31 @@ export default function Roadmap() {
       </section>
 
       {/* CTA Section */}
-      <section className="relative z-10 container mx-auto px-4 py-20">
-        <div className="max-w-4xl mx-auto text-center p-12 md:p-16 rounded-3xl glass border border-primary/20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary-variant/10 to-accent/10" />
-          <div className="relative z-10">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              <span className="bg-gradient-to-r from-primary via-primary-variant to-accent bg-clip-text text-transparent">
-                Be Part of the Journey
-              </span>
-            </h2>
-            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Join early adopters shaping the future of intelligent software. Get exclusive access to new tools as we build them.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/auth">
-                <Button 
-                  size="lg"
-                  className="group relative overflow-hidden bg-gradient-to-r from-primary via-primary-variant to-accent text-lg px-8 py-6 hover:shadow-glow-lg transition-all duration-300"
-                >
-                  <span className="relative z-10 flex items-center gap-2">
-                    Get Early Access
-                    <Rocket className="w-5 h-5 group-hover:translate-y-[-4px] transition-transform" />
-                  </span>
-                </Button>
-              </Link>
-              <Link to="/about">
-                <Button 
-                  size="lg"
-                  variant="outline"
-                  className="group text-lg px-8 py-6 border-2 hover:border-primary hover:bg-primary/5 transition-all duration-300"
-                >
-                  <span className="flex items-center gap-2">
-                    Learn More
-                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </span>
-                </Button>
-              </Link>
-            </div>
+      <section className="py-20 px-4">
+        <div className="container mx-auto max-w-4xl text-center">
+          <h2 className="text-3xl font-bold mb-6 text-foreground">
+            Be Part of the Journey
+          </h2>
+          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+            Join early adopters shaping the future of intelligent software. Get exclusive access to new tools as we build them.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link to="/auth">
+              <Button size="lg" className="bg-primary hover:bg-primary/90">
+                Get Early Access
+                <Rocket className="w-5 h-5 ml-2" />
+              </Button>
+            </Link>
+            <Link to="/about">
+              <Button size="lg" variant="outline">
+                Learn More
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
       <EnhancedFooter />
     </div>
   );
