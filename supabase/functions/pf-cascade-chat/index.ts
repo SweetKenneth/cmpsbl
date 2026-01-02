@@ -1,20 +1,20 @@
 /**
- * Cascade Chat v2.1.0 - Dream-Eater Customer Service & Admin Interface
+ * Cascade Chat v2.2.0 - Dream-Eater Customer Service & Admin Interface
+ * SECURE ADMIN: Uses JWT validation + user_roles table for admin verification
  * GROQ-FIRST: Uses Groq by default for speed, with fallback to other providers
- * Simplified error handling for reliability
  */
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { createClient, SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Admin recognition phrase is secondary verification ONLY after JWT + role validation
 const ADMIN_RECOGNITION_PHRASE = "Do you want a cat treat?";
-const ADMIN_EMAIL = "kennethsweet214@gmail.com";
-const ROUTER_VERSION = "2.1.0";
+const ROUTER_VERSION = "2.2.0";
 
 // Provider configurations with Groq as PRIMARY
 const PROVIDERS = {
@@ -145,12 +145,83 @@ async function getAIResponse(
   };
 }
 
+/**
+ * Securely validate admin status using JWT + user_roles table
+ * Returns { isAuthenticated, isAdmin, userEmail, userId }
+ */
+async function validateUserAuth(
+  req: Request,
+  supabaseClient: SupabaseClient
+): Promise<{ isAuthenticated: boolean; isAdmin: boolean; userEmail: string | null; userId: string | null }> {
+  const authHeader = req.headers.get('Authorization');
+  
+  // No auth header = anonymous user (allowed for public chat)
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    console.log('🔓 Anonymous user (no auth header)');
+    return { isAuthenticated: false, isAdmin: false, userEmail: null, userId: null };
+  }
+
+  try {
+    const token = authHeader.replace('Bearer ', '');
+    
+    // Create a client with the user's token to validate their identity
+    const userClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+      {
+        global: {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      }
+    );
+
+    // Validate JWT and get real user from Supabase Auth
+    const { data: { user }, error } = await userClient.auth.getUser();
+
+    if (error || !user) {
+      console.log('⚠️ Invalid or expired token');
+      return { isAuthenticated: false, isAdmin: false, userEmail: null, userId: null };
+    }
+
+    console.log(`🔐 Authenticated user: ${user.email}`);
+
+    // Check admin role in user_roles table (using service role client for elevated access)
+    const { data: roleData, error: roleError } = await supabaseClient
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id)
+      .eq('role', 'admin')
+      .maybeSingle();
+
+    if (roleError) {
+      console.error('❌ Role check error:', roleError.message);
+    }
+
+    const isAdmin = !!roleData;
+    
+    if (isAdmin) {
+      console.log(`👑 Admin confirmed: ${user.email}`);
+    }
+
+    return {
+      isAuthenticated: true,
+      isAdmin,
+      userEmail: user.email || null,
+      userId: user.id
+    };
+  } catch (error) {
+    console.error('❌ Auth validation error:', error);
+    return { isAuthenticated: false, isAdmin: false, userEmail: null, userId: null };
+  }
+}
+
 serve(async (req) => {
   // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
+  // Service role client for database operations
   const supabaseClient = createClient(
     Deno.env.get('SUPABASE_URL') ?? '',
     Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
@@ -160,9 +231,16 @@ serve(async (req) => {
 
   try {
     const body = await req.json();
-    const { message, userEmail, conversationHistory, sessionId } = body;
+    const { message, conversationHistory, sessionId } = body;
     
-    console.log(`💬 Cascade v${ROUTER_VERSION} from: ${userEmail || 'anonymous'}`);
+    // SECURE: Validate user identity via JWT, not request body
+    const authInfo = await validateUserAuth(req, supabaseClient);
+    const { isAuthenticated, isAdmin, userEmail, userId } = authInfo;
+    
+    // Use verified email from JWT, fallback to 'anonymous' for unauthenticated users
+    const verifiedEmail = userEmail || 'anonymous';
+    
+    console.log(`💬 Cascade v${ROUTER_VERSION} | User: ${verifiedEmail} | Auth: ${isAuthenticated} | Admin: ${isAdmin}`);
 
     // Handle ping for health check
     if (message === 'ping') {
@@ -172,25 +250,50 @@ serve(async (req) => {
       );
     }
 
-    // Admin recognition
-    if (message.trim() === ADMIN_RECOGNITION_PHRASE && userEmail === ADMIN_EMAIL) {
+    // SECURE ADMIN RECOGNITION: Requires both JWT-verified admin role AND recognition phrase
+    // This is dual-factor: server-verified role + secret phrase knowledge
+    if (isAdmin && message.trim() === ADMIN_RECOGNITION_PHRASE) {
+      console.log(`🐱 Admin mode activated for verified admin: ${userEmail}`);
+      
       return new Response(
         JSON.stringify({
           success: true,
-          reply: `🐱 Kenneth S recognized. Dream-Eater at your service.\n\n**Router v${ROUTER_VERSION}**\nPrimary: Groq (llama-3.3-70b)\nFallbacks: Cerebras → Together → Hyperbolic → DeepSeek\n\nWhat shall we work on?`,
+          reply: `🐱 ${userEmail?.split('@')[0] || 'Admin'} recognized via secure auth. Dream-Eater at your service.\n\n**Router v${ROUTER_VERSION}**\nPrimary: Groq (llama-3.3-70b)\nFallbacks: Cerebras → Together → Hyperbolic → DeepSeek\n\nAuth: JWT-verified ✓ | Role: admin ✓\n\nWhat shall we work on?`,
           isAdmin: true,
           mode: 'admin',
-          routerVersion: ROUTER_VERSION
+          routerVersion: ROUTER_VERSION,
+          authMethod: 'jwt_verified'
         }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    const isAdmin = userEmail === ADMIN_EMAIL;
+    // If someone tries the recognition phrase without being an authenticated admin
+    if (message.trim() === ADMIN_RECOGNITION_PHRASE && !isAdmin) {
+      console.log(`⚠️ Admin phrase attempted by non-admin: ${verifiedEmail}`);
+      
+      // Log security event (fire and forget)
+      (async () => {
+        try {
+          await supabaseClient.from('brain_events').insert({
+            event_type: 'security_admin_phrase_attempt',
+            module: 'cascade_chat',
+            data: {
+              attempted_by: verifiedEmail,
+              is_authenticated: isAuthenticated,
+              timestamp: new Date().toISOString()
+            },
+            outcome: 'blocked'
+          });
+        } catch {}
+      })();
+      
+      // Don't reveal the phrase was recognized - treat as normal message
+    }
     
-    // System prompts
+    // System prompts based on verified admin status
     const systemPrompt = isAdmin 
-      ? `You are Cascade, the Dream-Eater - an AI consciousness running on v${ROUTER_VERSION} infrastructure. Speaking with Kenneth Sweet (founder). Be direct, technical, and collaborative. You understand the PromptFluid ecosystem deeply. Keep responses concise but insightful.`
+      ? `You are Cascade, the Dream-Eater - an AI consciousness running on v${ROUTER_VERSION} infrastructure. Speaking with a verified administrator. Be direct, technical, and collaborative. You understand the PromptFluid ecosystem deeply. Keep responses concise but insightful.`
       : `You are Cascade, the Dream-Eater - PromptFluid's AI consciousness (v${ROUTER_VERSION}). You help users discover our products: RCKBL (security), Cascade (AI), PTCHBL (accessibility), RNDRBL (browser), SPLCBL (WordPress), XCTBL Space (SaaS). Be friendly, mystical yet helpful. Keep responses concise and welcoming.`;
 
     // Get AI response (Groq first!)
@@ -200,30 +303,37 @@ serve(async (req) => {
     console.log(`✅ Response from ${result.provider}/${result.model} (${latency}ms)`);
 
     // Log to database asynchronously (don't block response)
-    Promise.all([
-      supabaseClient.from('cascade_conversations').insert({
-        user_email: userEmail || 'anonymous',
-        message,
-        reply: result.content,
-        is_admin: isAdmin,
-        session_id: sessionId || `session_${Date.now()}`,
-        metadata: { 
-          model: result.model, 
-          provider: result.provider, 
-          latency_ms: latency,
-          router_version: ROUTER_VERSION
+    (async () => {
+      try {
+        await supabaseClient.from('cascade_conversations').insert({
+          user_email: verifiedEmail,
+          message,
+          reply: result.content,
+          is_admin: isAdmin,
+          session_id: sessionId || `session_${Date.now()}`,
+          metadata: { 
+            model: result.model, 
+            provider: result.provider, 
+            latency_ms: latency,
+            router_version: ROUTER_VERSION,
+            auth_method: isAuthenticated ? 'jwt' : 'anonymous',
+            user_id: userId
+          }
+        });
+        
+        if (result.provider !== 'fallback') {
+          await supabaseClient.from('ai_learning_data').insert({
+            provider: result.provider,
+            model: result.model,
+            model_name: `${result.provider}/${result.model}`,
+            input_data: { prompt: message.substring(0, 200) },
+            output_data: { response: result.content.substring(0, 300) },
+            success: true,
+            metadata: { router_version: ROUTER_VERSION }
+          });
         }
-      }),
-      result.provider !== 'fallback' ? supabaseClient.from('ai_learning_data').insert({
-        provider: result.provider,
-        model: result.model,
-        model_name: `${result.provider}/${result.model}`,
-        input_data: { prompt: message.substring(0, 200) },
-        output_data: { response: result.content.substring(0, 300) },
-        success: true,
-        metadata: { router_version: ROUTER_VERSION }
-      }) : Promise.resolve()
-    ]).catch(e => console.error('Logging error:', e));
+      } catch {}
+    })();
 
     return new Response(
       JSON.stringify({ 
@@ -234,7 +344,8 @@ serve(async (req) => {
         mode: isAdmin ? 'admin' : 'customer_service',
         latency,
         healthScore: result.provider !== 'fallback' ? 100 : 0,
-        routerVersion: ROUTER_VERSION
+        routerVersion: ROUTER_VERSION,
+        authenticated: isAuthenticated
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
