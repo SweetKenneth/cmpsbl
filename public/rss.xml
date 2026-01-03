@@ -1,115 +1,149 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
   <channel>
-    <title>PromptFluid Blog - AI That Flows</title>
-    <description>Insights on AI-powered development, security, accessibility, and the future of intelligent automation from PromptFluid - where artificial intelligence, automation, and creativity merge seamlessly.</description>
-    <link>https://www.promptfluid.com/blog</link>
-    <atom:link href="https://www.promptfluid.com/rss.xml" rel="self" type="application/rss+xml" />
+    <title>PromptFluid Blog — AI Infrastructure &amp; Security</title>
+    <description>Applied AI insights on autonomous systems, WordPress security, accessibility compliance, and enterprise AI infrastructure. AI That Flows.</description>
+    <link>https://promptfluid.com/blog</link>
+    <atom:link href="https://promptfluid.com/rss.xml" rel="self" type="application/rss+xml"/>
     <language>en-us</language>
-    <lastBuildDate>Sat, 18 Jan 2025 00:00:00 GMT</lastBuildDate>
-    <pubDate>Sat, 18 Jan 2025 00:00:00 GMT</pubDate>
+    <copyright>© 2009-2026 PromptFluid. All rights reserved.</copyright>
+    <managingEditor>PromptFluid@gmail.com (Kenneth E Sweet Jr)</managingEditor>
+    <webMaster>PromptFluid@gmail.com</webMaster>
+    <pubDate>Fri, 03 Jan 2026 00:00:00 GMT</pubDate>
+    <lastBuildDate>Fri, 03 Jan 2026 00:00:00 GMT</lastBuildDate>
+    <category>Technology</category>
+    <category>Artificial Intelligence</category>
+    <category>WordPress Security</category>
+    <category>Web Accessibility</category>
     <ttl>60</ttl>
     <image>
-      <url>https://www.promptfluid.com/images/kenneth.jpg</url>
-      <title>PromptFluid</title>
-      <link>https://www.promptfluid.com</link>
+      <url>https://promptfluid.com/logo.png</url>
+      <title>PromptFluid Blog</title>
+      <link>https://promptfluid.com/blog</link>
+      <width>144</width>
+      <height>144</height>
     </image>
 
     <item>
       <title>PromptFluid Introduces the First AI Systems That Dream</title>
       <description>Revolutionary announcement: Cascade and SimNap become the first documented AI systems capable of autonomous dreaming, reflection, and self-improvement.</description>
-      <link>https://www.promptfluid.com/blog/ai-systems-that-dream-press-release</link>
-      <guid isPermaLink="true">https://www.promptfluid.com/blog/ai-systems-that-dream-press-release</guid>
+      <link>https://promptfluid.com/blog/ai-systems-that-dream-press-release</link>
+      <guid isPermaLink="true">https://promptfluid.com/blog/ai-systems-that-dream-press-release</guid>
       <pubDate>Sat, 18 Jan 2025 00:00:00 GMT</pubDate>
-      <dc:creator>Kenneth E. Sweet Jr.</dc:creator>
+      <dc:creator>Kenneth E Sweet Jr</dc:creator>
       <category>Press Release</category>
       <category>AI Innovation</category>
+      <media:content url="https://promptfluid.com/og-default.jpg" medium="image" type="image/jpeg"/>
     </item>
 
     <item>
       <title>WordPress Bot Defense: Complete Guide to AI-Powered Security</title>
       <description>Learn how to protect your WordPress site from sophisticated bot attacks using AI-powered behavioral analysis and machine learning.</description>
-      <link>https://www.promptfluid.com/blog/wordpress-bot-defense</link>
-      <guid isPermaLink="true">https://www.promptfluid.com/blog/wordpress-bot-defense</guid>
+      <link>https://promptfluid.com/blog/wordpress-bot-defense</link>
+      <guid isPermaLink="true">https://promptfluid.com/blog/wordpress-bot-defense</guid>
       <pubDate>Wed, 15 Jan 2025 00:00:00 GMT</pubDate>
-      <dc:creator>Kenneth E. Sweet Jr.</dc:creator>
+      <dc:creator>Kenneth E Sweet Jr</dc:creator>
       <category>Security</category>
       <category>WordPress</category>
+      <media:content url="https://promptfluid.com/assets/blog/wordpress-bot-defense.jpg" medium="image" type="image/jpeg"/>
     </item>
 
     <item>
       <title>Top Security Plugins for WordPress in 2025</title>
       <description>Comprehensive comparison of the best WordPress security plugins, featuring PromptFluid Reflex Bot Sniper and industry leaders.</description>
-      <link>https://www.promptfluid.com/blog/top-security-plugins-2025</link>
-      <guid isPermaLink="true">https://www.promptfluid.com/blog/top-security-plugins-2025</guid>
+      <link>https://promptfluid.com/blog/top-security-plugins-2025</link>
+      <guid isPermaLink="true">https://promptfluid.com/blog/top-security-plugins-2025</guid>
       <pubDate>Fri, 10 Jan 2025 00:00:00 GMT</pubDate>
-      <dc:creator>Kenneth E. Sweet Jr.</dc:creator>
+      <dc:creator>Kenneth E Sweet Jr</dc:creator>
       <category>Security</category>
       <category>WordPress</category>
+      <media:content url="https://promptfluid.com/assets/blog/top-security-plugins-2025.jpg" medium="image" type="image/jpeg"/>
     </item>
 
     <item>
       <title>AI Cybersecurity Evolution: What Changed in 2025</title>
       <description>Explore how artificial intelligence is revolutionizing cybersecurity with predictive threat detection and autonomous defense systems.</description>
-      <link>https://www.promptfluid.com/blog/ai-cybersecurity-evolution-2025</link>
-      <guid isPermaLink="true">https://www.promptfluid.com/blog/ai-cybersecurity-evolution-2025</guid>
+      <link>https://promptfluid.com/blog/ai-cybersecurity-evolution-2025</link>
+      <guid isPermaLink="true">https://promptfluid.com/blog/ai-cybersecurity-evolution-2025</guid>
       <pubDate>Wed, 08 Jan 2025 00:00:00 GMT</pubDate>
-      <dc:creator>Kenneth E. Sweet Jr.</dc:creator>
+      <dc:creator>Kenneth E Sweet Jr</dc:creator>
       <category>AI Security</category>
+      <media:content url="https://promptfluid.com/assets/blog/ai-cybersecurity-evolution-2025.jpg" medium="image" type="image/jpeg"/>
     </item>
 
     <item>
       <title>AI Hackers Underground: The Dark Side of 2025</title>
       <description>Inside look at how malicious actors are weaponizing AI for sophisticated attacks and what it means for security professionals.</description>
-      <link>https://www.promptfluid.com/blog/ai-hackers-underground-2025</link>
-      <guid isPermaLink="true">https://www.promptfluid.com/blog/ai-hackers-underground-2025</guid>
+      <link>https://promptfluid.com/blog/ai-hackers-underground-2025</link>
+      <guid isPermaLink="true">https://promptfluid.com/blog/ai-hackers-underground-2025</guid>
       <pubDate>Sun, 05 Jan 2025 00:00:00 GMT</pubDate>
-      <dc:creator>Kenneth E. Sweet Jr.</dc:creator>
+      <dc:creator>Kenneth E Sweet Jr</dc:creator>
       <category>Threat Intelligence</category>
+      <media:content url="https://promptfluid.com/assets/blog/ai-hackers-underground-2025.jpg" medium="image" type="image/jpeg"/>
+    </item>
+
+    <item>
+      <title>WordPress Accessibility Guide: WCAG 2.2 Compliance</title>
+      <description>Complete guide to making WordPress sites WCAG 2.2 compliant with automated scanning and one-click fixes.</description>
+      <link>https://promptfluid.com/blog/wordpress-accessibility-guide</link>
+      <guid isPermaLink="true">https://promptfluid.com/blog/wordpress-accessibility-guide</guid>
+      <pubDate>Fri, 31 Jan 2025 00:00:00 GMT</pubDate>
+      <dc:creator>Kenneth E Sweet Jr</dc:creator>
+      <category>Web Accessibility</category>
+      <category>WCAG Compliance</category>
+      <media:content url="https://promptfluid.com/assets/blog/wordpress-accessibility-guide.jpg" medium="image" type="image/jpeg"/>
     </item>
 
     <item>
       <title>How PromptFluid Works: The Cascade AI Ecosystem</title>
       <description>Deep dive into PromptFluid's architecture, from Brain to Vision to Defense, and how they work together to create adaptive AI.</description>
-      <link>https://www.promptfluid.com/blog/how-promptfluid-works-cascade-ai-ecosystem</link>
-      <guid isPermaLink="true">https://www.promptfluid.com/blog/how-promptfluid-works-cascade-ai-ecosystem</guid>
+      <link>https://promptfluid.com/blog/how-promptfluid-works-cascade-ai-ecosystem</link>
+      <guid isPermaLink="true">https://promptfluid.com/blog/how-promptfluid-works-cascade-ai-ecosystem</guid>
       <pubDate>Fri, 03 Jan 2025 00:00:00 GMT</pubDate>
-      <dc:creator>Kenneth E. Sweet Jr.</dc:creator>
+      <dc:creator>Kenneth E Sweet Jr</dc:creator>
       <category>Platform</category>
       <category>Architecture</category>
+      <media:content url="https://promptfluid.com/og-default.jpg" medium="image" type="image/jpeg"/>
     </item>
 
     <item>
       <title>Cascade AI: The Brain Behind Adaptive Intelligence</title>
       <description>Explore how Cascade's autonomous learning cycles enable true adaptive intelligence that evolves without human intervention.</description>
-      <link>https://www.promptfluid.com/blog/cascade-ai-adaptive-intelligence-brain</link>
-      <guid isPermaLink="true">https://www.promptfluid.com/blog/cascade-ai-adaptive-intelligence-brain</guid>
+      <link>https://promptfluid.com/blog/cascade-ai-adaptive-intelligence-brain</link>
+      <guid isPermaLink="true">https://promptfluid.com/blog/cascade-ai-adaptive-intelligence-brain</guid>
       <pubDate>Wed, 01 Jan 2025 00:00:00 GMT</pubDate>
-      <dc:creator>Kenneth E. Sweet Jr.</dc:creator>
+      <dc:creator>Kenneth E Sweet Jr</dc:creator>
       <category>AI Technology</category>
       <category>Platform</category>
+      <media:content url="https://promptfluid.com/og-default.jpg" medium="image" type="image/jpeg"/>
     </item>
 
     <item>
       <title>PromptFluid Studio: Build Apps That Think</title>
       <description>Discover how Studio uses Cascade AI to autonomously build and deploy applications from natural language descriptions.</description>
-      <link>https://www.promptfluid.com/blog/promptfluid-studio-build-apps-that-think</link>
-      <guid isPermaLink="true">https://www.promptfluid.com/blog/promptfluid-studio-build-apps-that-think</guid>
+      <link>https://promptfluid.com/blog/promptfluid-studio-build-apps-that-think</link>
+      <guid isPermaLink="true">https://promptfluid.com/blog/promptfluid-studio-build-apps-that-think</guid>
       <pubDate>Mon, 30 Dec 2024 00:00:00 GMT</pubDate>
-      <dc:creator>Kenneth E. Sweet Jr.</dc:creator>
+      <dc:creator>Kenneth E Sweet Jr</dc:creator>
       <category>Product</category>
       <category>Development</category>
+      <media:content url="https://promptfluid.com/og-default.jpg" medium="image" type="image/jpeg"/>
     </item>
 
     <item>
       <title>AI Triad: Intelligent Model Routing Explained</title>
       <description>Learn how PromptFluid's AI Triad optimizes costs while maximizing performance through intelligent routing across Groq, OpenAI, and Anthropic.</description>
-      <link>https://www.promptfluid.com/blog/ai-triad-intelligent-routing</link>
-      <guid isPermaLink="true">https://www.promptfluid.com/blog/ai-triad-intelligent-routing</guid>
+      <link>https://promptfluid.com/blog/ai-triad-intelligent-routing</link>
+      <guid isPermaLink="true">https://promptfluid.com/blog/ai-triad-intelligent-routing</guid>
       <pubDate>Fri, 27 Dec 2024 00:00:00 GMT</pubDate>
-      <dc:creator>Kenneth E. Sweet Jr.</dc:creator>
+      <dc:creator>Kenneth E Sweet Jr</dc:creator>
       <category>AI Technology</category>
       <category>Platform</category>
+      <media:content url="https://promptfluid.com/og-default.jpg" medium="image" type="image/jpeg"/>
     </item>
 
   </channel>

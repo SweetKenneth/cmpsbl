@@ -1,140 +1,245 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
+  <!-- HOMEPAGE - Highest Priority -->
   <url>
     <loc>https://promptfluid.com/</loc>
-    <lastmod>2025-01-31</lastmod>
+    <lastmod>2026-01-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://promptfluid.com/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://promptfluid.com/" />
+    <image:image>
+      <image:loc>https://promptfluid.com/og-default.jpg</image:loc>
+      <image:title>PromptFluid Applied AI Infrastructure Platform</image:title>
+      <image:caption>Enterprise AI platform with autonomous systems, security, and accessibility</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- ABOUT PAGE -->
+  <url>
+    <loc>https://promptfluid.com/about</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- SOLUTIONS PAGE -->
+  <url>
+    <loc>https://promptfluid.com/solutions</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- PRODUCTS INDEX -->
+  <url>
+    <loc>https://promptfluid.com/products</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- PRODUCT PAGES -->
+  <url>
+    <loc>https://promptfluid.com/products/defense</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
   </url>
   
   <url>
+    <loc>https://promptfluid.com/products/clarity</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/products/brain</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/products/modernizer</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/products/cascade</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/products/marketing</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  
+  <!-- BLOG INDEX - High Priority for Fresh Content -->
+  <url>
     <loc>https://promptfluid.com/blog</loc>
-    <lastmod>2025-01-31</lastmod>
+    <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.95</priority>
   </url>
   
+  <!-- BLOG POSTS - Security Category -->
   <url>
     <loc>https://promptfluid.com/blog/wordpress-bot-defense</loc>
-    <lastmod>2025-01-31</lastmod>
+    <lastmod>2026-01-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.90</priority>
     <image:image>
       <image:loc>https://promptfluid.com/assets/blog/wordpress-bot-defense.jpg</image:loc>
       <image:title>WordPress Bot Defense AI Security</image:title>
+      <image:caption>AI-powered bot detection and prevention for WordPress sites</image:caption>
     </image:image>
   </url>
   
   <url>
     <loc>https://promptfluid.com/blog/top-security-plugins-2025</loc>
-    <lastmod>2025-01-31</lastmod>
+    <lastmod>2026-01-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
     <image:image>
       <image:loc>https://promptfluid.com/assets/blog/top-security-plugins-2025.jpg</image:loc>
+      <image:title>Top WordPress Security Plugins 2025</image:title>
     </image:image>
   </url>
   
   <url>
     <loc>https://promptfluid.com/blog/ai-cybersecurity-evolution-2025</loc>
-    <lastmod>2025-01-31</lastmod>
+    <lastmod>2026-01-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
     <image:image>
       <image:loc>https://promptfluid.com/assets/blog/ai-cybersecurity-evolution-2025.jpg</image:loc>
+      <image:title>AI Cybersecurity Evolution 2025</image:title>
     </image:image>
   </url>
   
   <url>
     <loc>https://promptfluid.com/blog/ai-hackers-underground-2025</loc>
-    <lastmod>2025-01-31</lastmod>
+    <lastmod>2026-01-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
     <image:image>
       <image:loc>https://promptfluid.com/assets/blog/ai-hackers-underground-2025.jpg</image:loc>
+      <image:title>AI Hackers Underground 2025</image:title>
     </image:image>
   </url>
   
+  <!-- BLOG POSTS - AI & Automation Category -->
   <url>
     <loc>https://promptfluid.com/blog/ai-automation-trends-2025</loc>
-    <lastmod>2025-01-31</lastmod>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.80</priority>
     <image:image>
       <image:loc>https://promptfluid.com/assets/blog/ai-automation-trends-2025.jpg</image:loc>
+      <image:title>AI Automation Trends 2025</image:title>
     </image:image>
   </url>
   
   <url>
     <loc>https://promptfluid.com/blog/ai-business-operations-2025</loc>
-    <lastmod>2025-01-31</lastmod>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.80</priority>
     <image:image>
       <image:loc>https://promptfluid.com/assets/blog/ai-business-operations-2025.jpg</image:loc>
+      <image:title>AI Business Operations 2025</image:title>
     </image:image>
   </url>
   
+  <!-- BLOG POSTS - Accessibility Category -->
   <url>
     <loc>https://promptfluid.com/blog/wordpress-accessibility-guide</loc>
-    <lastmod>2025-01-31</lastmod>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.90</priority>
     <image:image>
       <image:loc>https://promptfluid.com/assets/blog/wordpress-accessibility-guide.jpg</image:loc>
+      <image:title>WordPress Accessibility Guide</image:title>
+      <image:caption>Complete WCAG 2.2 compliance guide for WordPress</image:caption>
     </image:image>
   </url>
   
   <url>
     <loc>https://promptfluid.com/blog/wcag-2-2-wordpress-changes</loc>
-    <lastmod>2025-01-31</lastmod>
-    <priority>0.80</priority>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
     <image:image>
       <image:loc>https://promptfluid.com/assets/blog/wcag-2-2-wordpress-changes.jpg</image:loc>
+      <image:title>WCAG 2.2 WordPress Changes</image:title>
     </image:image>
   </url>
   
   <url>
     <loc>https://promptfluid.com/blog/automated-accessibility-fixes-wordpress</loc>
-    <lastmod>2025-01-31</lastmod>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.80</priority>
     <image:image>
       <image:loc>https://promptfluid.com/assets/blog/automated-accessibility-fixes.jpg</image:loc>
+      <image:title>Automated Accessibility Fixes WordPress</image:title>
     </image:image>
   </url>
   
   <url>
     <loc>https://promptfluid.com/blog/clarity-accessibility-mission</loc>
-    <lastmod>2025-01-31</lastmod>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.80</priority>
     <image:image>
       <image:loc>https://promptfluid.com/assets/blog/clarity-accessibility-mission.jpg</image:loc>
+      <image:title>Clarity Accessibility Mission</image:title>
     </image:image>
   </url>
   
+  <!-- BLOG POSTS - Product & Company Category -->
   <url>
     <loc>https://promptfluid.com/blog/ai-product-comparison-2025</loc>
-    <lastmod>2025-01-31</lastmod>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.80</priority>
     <image:image>
       <image:loc>https://promptfluid.com/assets/blog/ai-product-comparison-2025.jpg</image:loc>
+      <image:title>AI Product Comparison 2025</image:title>
     </image:image>
   </url>
   
   <url>
     <loc>https://promptfluid.com/blog/promptfluid-market-disruptor</loc>
-    <lastmod>2025-01-31</lastmod>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.80</priority>
     <image:image>
       <image:loc>https://promptfluid.com/assets/blog/promptfluid-market-disruptor.jpg</image:loc>
+      <image:title>PromptFluid Market Disruptor</image:title>
     </image:image>
   </url>
   
   <url>
     <loc>https://promptfluid.com/blog/product-roadmap-2025</loc>
-    <lastmod>2025-01-31</lastmod>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.80</priority>
     <image:image>
       <image:loc>https://promptfluid.com/assets/blog/product-roadmap-2025.jpg</image:loc>
+      <image:title>Product Roadmap 2025</image:title>
     </image:image>
   </url>
 
