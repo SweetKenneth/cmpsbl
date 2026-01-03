@@ -42,6 +42,38 @@
     <meta name="twitter:creator" content="@promptfluid" />
     <meta name="twitter:image" content="https://www.promptfluid.com/og-default.jpg" />
     
+    <!-- Space Analytics Tracker -->
+    <script>
+      (function() {
+        const ENDPOINT = 'https://qxuamypoxrlhfeagmjlj.supabase.co/functions/v1/collect';
+        const sid = localStorage.getItem('space_sid') || crypto.randomUUID();
+        localStorage.setItem('space_sid', sid);
+        
+        window.spaceTrack = function(event, meta) {
+          navigator.sendBeacon(ENDPOINT, JSON.stringify({
+            event_name: event,
+            path: location.pathname,
+            referrer: document.referrer,
+            anon_session_id: sid,
+            domain: location.hostname,
+            meta: meta || {}
+          }));
+        };
+        
+        // Auto-track pageviews
+        spaceTrack('pageview');
+        
+        // SPA navigation support
+        let lastPath = location.pathname;
+        new MutationObserver(function() {
+          if (location.pathname !== lastPath) {
+            lastPath = location.pathname;
+            spaceTrack('pageview');
+          }
+        }).observe(document, { subtree: true, childList: true });
+      })();
+    </script>
+
     <!-- Google tag (gtag.js) - Deferred to improve TTI -->
     <script>
       window.dataLayer = window.dataLayer || [];
