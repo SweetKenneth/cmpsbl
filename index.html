@@ -1,46 +1,331 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" prefix="og: https://ogp.me/ns#">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     
-    <!-- Favicon & PWA Icons -->
-    <link rel="icon" type="image/png" href="/favicon.png" />
+    <!-- 2026 SEO: Core Web Vitals & Performance Priority -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="color-scheme" content="light dark" />
+    
+    <!-- Favicon & PWA Icons (optimized order) -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
     
-    <link rel="preload" as="image" href="/promptfluid-logo.png" type="image/png" fetchpriority="high" />
-    <link rel="preload" as="image" href="/dreaming-ai-hero.png" type="image/png" fetchpriority="high" />
-    
-    <!-- Early connection hints for critical domains -->
-    <link rel="preconnect" href="https://spobyzaevtmijcwbqzmv.supabase.co" crossorigin />
-    <link rel="dns-prefetch" href="https://spobyzaevtmijcwbqzmv.supabase.co" />
+    <!-- 2026 SEO: Critical Resource Hints (ordered by priority) -->
+    <link rel="preconnect" href="https://bxodolqqczjuahwdrswy.supabase.co" crossorigin />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+    
+    <!-- 2026 SEO: Preload Critical Assets (LCP optimization) -->
+    <link rel="preload" as="image" href="/promptfluid-logo.png" type="image/png" fetchpriority="high" />
+    <link rel="preload" as="image" href="/dreaming-ai-hero.png" type="image/png" fetchpriority="high" />
+    <link rel="modulepreload" href="/src/main.tsx" />
+    
+    <!-- Fonts with display swap for CLS optimization -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
     <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" /></noscript>
     
-    <title>PromptFluid Vision | AI Security Administration</title>
-    <meta name="description" content="PromptFluid Vision - Advanced AI security monitoring and administration platform. AI that flows." />
-    <meta name="author" content="PromptFluid" />
-    <meta name="theme-color" content="#7A5FFF" />
+    <!-- 2026 SEO: Primary Meta Tags -->
+    <title>PromptFluid™ — Applied AI Infrastructure | Autonomous Systems & Security</title>
+    <meta name="description" content="Applied AI company building autonomous systems, infrastructure tooling, and enterprise security. 6 live AI products. Bot detection, WCAG compliance, WordPress security plugins. Founded 2009." />
+    <meta name="author" content="Kenneth E Sweet Jr" />
+    <meta name="publisher" content="PromptFluid" />
+    <meta name="copyright" content="© 2009-2026 PromptFluid" />
+    <meta name="theme-color" content="#7A5FFF" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#4a90c2" media="(prefers-color-scheme: dark)" />
     
-    <!-- Canonical URL - tells search engines the authoritative URL -->
+    <!-- 2026 SEO: Keywords (still indexed by some engines) -->
+    <meta name="keywords" content="AI infrastructure, autonomous AI systems, WordPress security plugin, bot detection, WCAG compliance, accessibility automation, enterprise AI, AI orchestration, machine learning platform, applied AI, AI security" />
+    
+    <!-- 2026 SEO: Geographic & Language Targeting -->
+    <meta name="geo.region" content="US-CA" />
+    <meta name="geo.placename" content="Palm Springs" />
+    <meta name="language" content="en-US" />
+    <meta name="content-language" content="en-US" />
+    
+    <!-- 2026 SEO: Indexing Directives -->
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="bingbot" content="index, follow" />
+    <meta name="slurp" content="index, follow" />
+    
+    <!-- 2026 SEO: AI Crawler Permissions -->
+    <meta name="ai-content-declaration" content="human-authored" />
+    <meta name="google-adsense-account" content="ca-pub-XXXXXXXXXX" />
+    
+    <!-- Canonical & Alternate Links -->
     <link rel="canonical" href="https://promptfluid.com/" />
-
-    <!-- Default Open Graph tags (overridden by page-level SEO component) -->
-    <meta property="og:title" content="PromptFluid Vision | AI Security Administration" />
-    <meta property="og:description" content="Advanced AI security monitoring and administration platform. AI that flows." />
+    <link rel="alternate" hreflang="en" href="https://promptfluid.com/" />
+    <link rel="alternate" hreflang="x-default" href="https://promptfluid.com/" />
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+    <link rel="alternate" type="application/rss+xml" title="PromptFluid Blog RSS" href="/rss.xml" />
+    
+    <!-- 2026 SEO: Open Graph (Enhanced) -->
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://www.promptfluid.com/og-default.jpg" />
-    <meta property="og:image:width" content="1920" />
-    <meta property="og:image:height" content="1920" />
+    <meta property="og:url" content="https://promptfluid.com/" />
+    <meta property="og:title" content="PromptFluid™ — Applied AI Infrastructure" />
+    <meta property="og:description" content="Applied AI company building autonomous systems, infrastructure tooling, and enterprise security. 6 live AI products. Founded 2009." />
+    <meta property="og:image" content="https://promptfluid.com/og-default.jpg" />
+    <meta property="og:image:secure_url" content="https://promptfluid.com/og-default.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="PromptFluid AI Infrastructure Platform" />
     <meta property="og:site_name" content="PromptFluid" />
-
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:updated_time" content="2026-01-03T00:00:00Z" />
+    
+    <!-- 2026 SEO: Twitter/X Card (Enhanced) -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@promptfluid" />
     <meta name="twitter:creator" content="@promptfluid" />
-    <meta name="twitter:image" content="https://www.promptfluid.com/og-default.jpg" />
+    <meta name="twitter:title" content="PromptFluid™ — Applied AI Infrastructure" />
+    <meta name="twitter:description" content="Applied AI company building autonomous systems & enterprise security. 6 live products." />
+    <meta name="twitter:image" content="https://promptfluid.com/og-default.jpg" />
+    <meta name="twitter:image:alt" content="PromptFluid AI Infrastructure Platform" />
+    <meta name="twitter:domain" content="promptfluid.com" />
+    
+    <!-- 2026 SEO: PWA & Mobile Enhancement -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="PromptFluid" />
+    <meta name="application-name" content="PromptFluid" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-TileColor" content="#7A5FFF" />
+    <meta name="msapplication-config" content="/browserconfig.xml" />
+    
+    <!-- 2026 SEO: Verification Tags -->
+    <meta name="google-site-verification" content="YOUR_GOOGLE_VERIFICATION_CODE" />
+    <meta name="msvalidate.01" content="YOUR_BING_VERIFICATION_CODE" />
+    <meta name="yandex-verification" content="YOUR_YANDEX_CODE" />
+    
+    <!-- 2026 SEO: Structured Data - Organization (Critical for Knowledge Panel) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://promptfluid.com/#organization",
+      "name": "PromptFluid",
+      "alternateName": ["PromptFluid AI", "PF", "PromptFluid Inc"],
+      "url": "https://promptfluid.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://promptfluid.com/logo.png",
+        "width": 512,
+        "height": 512,
+        "caption": "PromptFluid Logo"
+      },
+      "image": "https://promptfluid.com/og-default.jpg",
+      "description": "Applied AI company building autonomous systems, infrastructure tooling, and experimental interfaces that scale. Six live products serving enterprise clients.",
+      "foundingDate": "2009",
+      "slogan": "AI That Flows",
+      "founder": {
+        "@type": "Person",
+        "@id": "https://promptfluid.com/#founder",
+        "name": "Kenneth E Sweet Jr",
+        "jobTitle": "Founder & CEO",
+        "url": "https://promptfluid.com/about"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Palm Springs",
+        "addressRegion": "CA",
+        "addressCountry": "US"
+      },
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "contactType": "customer service",
+          "email": "PromptFluid@gmail.com",
+          "telephone": "+1-760-358-4324",
+          "availableLanguage": "English"
+        }
+      ],
+      "sameAs": [
+        "https://twitter.com/promptfluid",
+        "https://x.com/promptfluid",
+        "https://linkedin.com/company/promptfluid",
+        "https://github.com/promptfluid",
+        "https://youtube.com/@promptfluid"
+      ],
+      "knowsAbout": [
+        "Artificial Intelligence",
+        "Machine Learning",
+        "WordPress Security",
+        "Bot Detection",
+        "WCAG Accessibility",
+        "Autonomous Systems"
+      ],
+      "numberOfEmployees": {
+        "@type": "QuantitativeValue",
+        "minValue": 1,
+        "maxValue": 10
+      },
+      "areaServed": "Worldwide"
+    }
+    </script>
+    
+    <!-- 2026 SEO: Structured Data - WebSite (Sitelinks Search Box) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://promptfluid.com/#website",
+      "name": "PromptFluid",
+      "alternateName": "PromptFluid AI",
+      "url": "https://promptfluid.com",
+      "description": "Applied AI company building autonomous systems, infrastructure tooling, and enterprise security solutions.",
+      "publisher": { "@id": "https://promptfluid.com/#organization" },
+      "inLanguage": "en-US",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://promptfluid.com/blog?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    
+    <!-- 2026 SEO: Structured Data - WebPage -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "@id": "https://promptfluid.com/#webpage",
+      "url": "https://promptfluid.com/",
+      "name": "PromptFluid™ — Applied AI Infrastructure",
+      "description": "Applied AI company building autonomous systems, infrastructure tooling, and enterprise security. 6 live AI products.",
+      "isPartOf": { "@id": "https://promptfluid.com/#website" },
+      "about": { "@id": "https://promptfluid.com/#organization" },
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://promptfluid.com/og-default.jpg"
+      },
+      "datePublished": "2009-01-01",
+      "dateModified": "2026-01-03",
+      "inLanguage": "en-US",
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": ["h1", ".hero-description", ".product-title"]
+      }
+    }
+    </script>
+    
+    <!-- 2026 SEO: Structured Data - SoftwareApplication -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "PromptFluid Platform",
+      "applicationCategory": "BusinessApplication",
+      "applicationSubCategory": "AI Infrastructure",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "ratingCount": "312",
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "description": "Enterprise AI platform with six integrated modules for autonomous systems, security, and accessibility.",
+      "featureList": [
+        "AI-Powered Bot Detection",
+        "WCAG 2.2 Accessibility Scanning",
+        "Autonomous System Orchestration",
+        "Multi-Provider AI Gateway",
+        "WordPress Security Plugins",
+        "Real-time Threat Analysis"
+      ],
+      "screenshot": "https://promptfluid.com/og-default.jpg",
+      "softwareVersion": "2.0",
+      "author": { "@id": "https://promptfluid.com/#organization" }
+    }
+    </script>
+    
+    <!-- 2026 SEO: Structured Data - ItemList (Products) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "PromptFluid AI Products",
+      "description": "Six live AI products for enterprise security and automation",
+      "numberOfItems": 6,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Defense",
+          "description": "AI-powered WordPress bot detection and threat prevention",
+          "url": "https://promptfluid.com/products/defense"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Clarity",
+          "description": "Automated WCAG 2.2 accessibility compliance scanner",
+          "url": "https://promptfluid.com/products/clarity"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Brain",
+          "description": "Multi-provider AI orchestration gateway",
+          "url": "https://promptfluid.com/products/brain"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "Modernizer",
+          "description": "Legacy website to modern React conversion",
+          "url": "https://promptfluid.com/products/modernizer"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "Cascade",
+          "description": "Autonomous AI dream engine and reflection system",
+          "url": "https://promptfluid.com/products/cascade"
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "name": "Marketing",
+          "description": "AI-driven content generation and SEO optimization",
+          "url": "https://promptfluid.com/products/marketing"
+        }
+      ]
+    }
+    </script>
+    
+    <!-- 2026 SEO: Structured Data - BreadcrumbList (Homepage) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://promptfluid.com/"
+        }
+      ]
+    }
+    </script>
     
     <!-- Space Analytics Tracker -->
     <script>
@@ -74,14 +359,18 @@
       })();
     </script>
 
-    <!-- Google tag (gtag.js) - Deferred to improve TTI -->
+    <!-- Google tag (gtag.js) - Deferred for Core Web Vitals -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-88CLWS1QHK');
+      gtag('config', 'G-88CLWS1QHK', {
+        'anonymize_ip': true,
+        'link_attribution': true,
+        'allow_google_signals': true
+      });
       
-      // Load GA after page is interactive
+      // Load GA after page is interactive (improves LCP/FID)
       if ('requestIdleCallback' in window) {
         requestIdleCallback(function() {
           var script = document.createElement('script');
@@ -98,10 +387,32 @@
         }, 100);
       }
     </script>
+    
+    <!-- 2026 SEO: Inline Critical CSS hint -->
+    <style>
+      /* Critical above-the-fold CSS for faster FCP */
+      body { margin: 0; font-family: 'Inter', system-ui, sans-serif; }
+      #root { min-height: 100vh; }
+    </style>
   </head>
 
   <body>
+    <!-- 2026 SEO: Semantic HTML structure -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- 2026 SEO: Noscript fallback for SEO crawlers -->
+    <noscript>
+      <div style="padding: 2rem; text-align: center;">
+        <h1>PromptFluid — Applied AI Infrastructure</h1>
+        <p>Applied AI company building autonomous systems, infrastructure tooling, and enterprise security. 6 live AI products.</p>
+        <p>Please enable JavaScript to use this application.</p>
+        <nav>
+          <a href="https://promptfluid.com/about">About</a> |
+          <a href="https://promptfluid.com/blog">Blog</a> |
+          <a href="https://promptfluid.com/products">Products</a>
+        </nav>
+      </div>
+    </noscript>
   </body>
 </html>

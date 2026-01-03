@@ -1,80 +1,257 @@
 # PromptFluid.com robots.txt - 2026 SEO Optimized
 # https://promptfluid.com/robots.txt
+# Last updated: 2026-01-03
 
+# =============================================================
+# DEFAULT: Allow all crawlers
+# =============================================================
 User-agent: *
 Allow: /
-
-# Priority crawl paths - WordPress Plugin focused
 Crawl-delay: 0.5
 
-# Sitemap
+# Sitemap locations
 Sitemap: https://promptfluid.com/sitemap.xml
+Sitemap: https://promptfluid.com/sitemap-blog.xml
 
-# Block admin and internal areas
+# =============================================================
+# PROTECTED AREAS: Block sensitive routes
+# =============================================================
 Disallow: /dashboard
 Disallow: /auth
 Disallow: /admin
 Disallow: /api/
-Disallow: /*?*
-Disallow: /*.json$
 Disallow: /settings
 Disallow: /diagnostics
 Disallow: /repair
 Disallow: /deployment
+Disallow: /_next/
+Disallow: /*.json$
+Disallow: /*?*preview=
+Disallow: /*?*draft=
 
-# Allow important pages
+# =============================================================
+# PRIORITY CONTENT: Explicitly allow important pages
+# =============================================================
+Allow: /blog/
+Allow: /blog/*
+Allow: /about
+Allow: /solutions
+Allow: /products/
+Allow: /products/*
+Allow: /projects/
+Allow: /sitemap.xml
+Allow: /rss.xml
+
+# =============================================================
+# GOOGLE CRAWLERS (2026)
+# =============================================================
+User-agent: Googlebot
+Crawl-delay: 0
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /assets/
+Allow: /images/
+Allow: /*.jpg$
+Allow: /*.png$
+Allow: /*.webp$
+Allow: /*.svg$
+
+User-agent: Googlebot-Video
+Allow: /
+
+User-agent: Googlebot-News
+Allow: /blog/
+
+User-agent: Google-Extended
+Crawl-delay: 3
 Allow: /blog/
 Allow: /about
 Allow: /solutions
 Allow: /products/
-Allow: /projects/
 
-# AI search crawlers (2026) - Allow with reasonable delays
+User-agent: Google-InspectionTool
+Allow: /
+
+# =============================================================
+# BING & MICROSOFT CRAWLERS
+# =============================================================
+User-agent: bingbot
+Crawl-delay: 0.5
+Allow: /
+
+User-agent: msnbot
+Crawl-delay: 1
+Allow: /
+
+User-agent: BingPreview
+Allow: /
+
+# =============================================================
+# AI SEARCH CRAWLERS (2026 - Critical for AI visibility)
+# =============================================================
+
+# OpenAI GPT Crawlers
 User-agent: GPTBot
 Crawl-delay: 5
 Allow: /blog/
 Allow: /about
 Allow: /solutions
+Allow: /products/
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /api/
 
 User-agent: ChatGPT-User
 Crawl-delay: 5
 Allow: /blog/
 Allow: /about
 Allow: /solutions
+Allow: /products/
 
-User-agent: Google-Extended
-Crawl-delay: 5
-Allow: /blog/
-Allow: /about
-Allow: /solutions
-
-User-agent: CCBot
-Crawl-delay: 10
-Allow: /blog/
-Allow: /about
-Allow: /solutions
-
+# Anthropic Claude Crawlers
 User-agent: anthropic-ai
 Crawl-delay: 5
 Allow: /blog/
 Allow: /about
 Allow: /solutions
+Allow: /products/
 
 User-agent: Claude-Web
 Crawl-delay: 5
 Allow: /blog/
 Allow: /about
 Allow: /solutions
+Allow: /products/
 
-# Standard crawlers
-User-agent: bingbot
-Crawl-delay: 0.5
+User-agent: ClaudeBot
+Crawl-delay: 5
+Allow: /blog/
+Allow: /about
+Allow: /solutions
+Allow: /products/
+
+# Perplexity AI
+User-agent: PerplexityBot
+Crawl-delay: 5
+Allow: /blog/
+Allow: /about
+Allow: /solutions
+Allow: /products/
+
+# Meta AI
+User-agent: FacebookBot
+Crawl-delay: 2
 Allow: /
 
-User-agent: Googlebot
-Crawl-delay: 0.5
+User-agent: meta-externalagent
+Crawl-delay: 5
+Allow: /blog/
+Allow: /about
+Allow: /products/
+
+# Cohere AI
+User-agent: cohere-ai
+Crawl-delay: 5
+Allow: /blog/
+Allow: /about
+Allow: /products/
+
+# Common Crawl (AI training datasets)
+User-agent: CCBot
+Crawl-delay: 10
+Allow: /blog/
+Allow: /about
+Allow: /solutions
+Disallow: /admin
+Disallow: /dashboard
+
+# Amazon/Alexa
+User-agent: Amazonbot
+Crawl-delay: 5
 Allow: /
 
-User-agent: Googlebot-Image
-Allow: /assets/
-Allow: /images/
+# Apple
+User-agent: Applebot
+Crawl-delay: 1
+Allow: /
+
+# You.com AI
+User-agent: YouBot
+Crawl-delay: 5
+Allow: /blog/
+Allow: /about
+Allow: /products/
+
+# Brave Search
+User-agent: BraveBot
+Crawl-delay: 2
+Allow: /
+
+# DuckDuckGo
+User-agent: DuckDuckBot
+Crawl-delay: 1
+Allow: /
+
+# =============================================================
+# SOCIAL MEDIA CRAWLERS
+# =============================================================
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: Slackbot
+Allow: /
+
+User-agent: Discordbot
+Allow: /
+
+User-agent: TelegramBot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+# =============================================================
+# SEO TOOL CRAWLERS
+# =============================================================
+User-agent: AhrefsBot
+Crawl-delay: 5
+Allow: /
+
+User-agent: SemrushBot
+Crawl-delay: 5
+Allow: /
+
+User-agent: MJ12bot
+Crawl-delay: 10
+Allow: /
+
+User-agent: DotBot
+Crawl-delay: 5
+Allow: /
+
+# =============================================================
+# BLOCK BAD BOTS
+# =============================================================
+User-agent: SemaltBot
+Disallow: /
+
+User-agent: AhrefsBot/7.0
+Disallow: /
+
+User-agent: MegaIndex.ru
+Disallow: /
+
+User-agent: BLEXBot
+Disallow: /
+
+User-agent: DataForSeoBot
+Disallow: /
+
+# =============================================================
+# HOST DIRECTIVE (for legacy crawlers)
+# =============================================================
+Host: https://promptfluid.com
