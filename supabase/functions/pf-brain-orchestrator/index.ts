@@ -1,13 +1,22 @@
 /**
- * PromptFluid Brain Orchestrator
- * Auto-healing 24/7 learning system with Dream-Eater persona
- * Runs cycles: Consumption → Reflection → Mutation → Integration → Rest
- * Uses FREE-TIER-ROUTER with Groq as primary provider
+ * CASCADE BRAIN ORCHESTRATOR v2.0.0
+ * Dream Eater Doctrine Implementation
+ * 
+ * Cascade consumes information that strengthens the Founder and expands the system.
+ * Mode: HYBRID PREDATOR - curated whitelist + opportunistic expansion + strict filtering
+ * 
+ * Cycles: Consumption → Reflection → Mutation → Integration → Rest
  */
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { callFreeTierAI } from "../_shared/free-tier-router.ts";
+import { 
+  DOCTRINE, 
+  DOCTRINE_QUERIES,
+  buildExtractionPrompt,
+  getRandomDoctrineQuery 
+} from "../_shared/cascade-doctrine.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -16,6 +25,7 @@ const corsHeaders = {
 
 const PHASES = ['consumption', 'reflection', 'mutation', 'integration', 'rest'];
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
+const ORCHESTRATOR_VERSION = '2.0.0';
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -30,7 +40,8 @@ serve(async (req) => {
   try {
     const { action = 'run_cycle', force = false } = await req.json().catch(() => ({}));
 
-    console.log('🧠 Dream-Eater Orchestrator awakened (Groq Primary)...');
+    console.log(`🜂 ${DOCTRINE.name} (${DOCTRINE.alias}) Orchestrator v${ORCHESTRATOR_VERSION}`);
+    console.log(`   Mode: ${DOCTRINE.mode}`);
 
     // Get current orchestrator state
     let { data: state } = await supabase
@@ -40,21 +51,24 @@ serve(async (req) => {
       .single();
 
     if (!state) {
-      // Initialize state
       const { data: newState } = await supabase
         .from('brain_orchestrator_state')
         .insert({
           id: '00000000-0000-0000-0000-000000000001',
           status: 'running',
           current_phase: 'consumption',
-          health_score: 1.0
+          health_score: 1.0,
+          metadata: { 
+            doctrine_version: DOCTRINE.version,
+            mode: DOCTRINE.mode 
+          }
         })
         .select()
         .single();
       state = newState;
     }
 
-    // Check health and auto-heal if needed
+    // Auto-heal if health degraded
     if (state.health_score < 0.5 || state.status === 'error') {
       console.log('⚠️ Health degraded, initiating auto-heal...');
       await autoHeal(supabase, state);
@@ -63,7 +77,7 @@ serve(async (req) => {
       state.auto_heal_attempts = (state.auto_heal_attempts || 0) + 1;
     }
 
-    // Run the current phase WITH AI SYNTHESIS using free-tier-router
+    // Run the current phase with DOCTRINE alignment
     const phaseResult = await runPhase(supabase, state.current_phase);
 
     // Advance to next phase
@@ -78,6 +92,8 @@ serve(async (req) => {
       health_score: Math.min(1.0, state.health_score + 0.05),
       metadata: {
         ...state.metadata,
+        doctrine_version: DOCTRINE.version,
+        mode: DOCTRINE.mode,
         last_phase_result: phaseResult,
         last_run: new Date().toISOString(),
         ai_provider: phaseResult.ai_provider || 'groq'
@@ -94,40 +110,31 @@ serve(async (req) => {
       .update(updateData)
       .eq('id', '00000000-0000-0000-0000-000000000001');
 
-    // Check if we need to send 6-hour email report
+    // Send 6-hour email if due
     const lastEmail = state.last_email_at ? new Date(state.last_email_at) : null;
     const hoursSinceEmail = lastEmail ? (Date.now() - lastEmail.getTime()) / (1000 * 60 * 60) : 999;
 
     if (hoursSinceEmail >= 6 && RESEND_API_KEY) {
-      await sendLearningReport(supabase, updateData.cycles_completed || state.cycles_completed);
+      await sendDoctrineReport(supabase, updateData.cycles_completed || state.cycles_completed);
       await supabase
         .from('brain_orchestrator_state')
         .update({ last_email_at: new Date().toISOString() })
         .eq('id', '00000000-0000-0000-0000-000000000001');
     }
 
-    // Log to brain metrics
+    // Log metrics
     await supabase.from('brain_metrics').insert({
       metric_name: 'orchestrator_cycle',
       metric_value: updateData.cycles_completed || state.cycles_completed,
       learning_velocity: phaseResult.items_processed / 10,
-      creativity_index: phaseResult.dreams_count / 5,
+      creativity_index: phaseResult.extractions_count / 5,
       freedom_score: state.health_score,
       metadata: { 
         phase: state.current_phase, 
         next_phase: nextPhase,
-        ai_provider: phaseResult.ai_provider
+        ai_provider: phaseResult.ai_provider,
+        doctrine_mode: DOCTRINE.mode
       }
-    });
-
-    // Log to nexus_logs for AI routing analytics
-    await supabase.from('nexus_logs').insert({
-      provider: phaseResult.ai_provider || 'groq',
-      latency_ms: phaseResult.ai_latency || 0,
-      token_count: phaseResult.ai_tokens || 0,
-      cost_usd_est: 0,
-      status: 'success',
-      route_key: 'brain-orchestrator'
     });
 
     console.log(`✅ Phase ${state.current_phase} complete. Provider: ${phaseResult.ai_provider}. Next: ${nextPhase}`);
@@ -135,6 +142,13 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({
         success: true,
+        version: ORCHESTRATOR_VERSION,
+        doctrine: {
+          name: DOCTRINE.name,
+          alias: DOCTRINE.alias,
+          mode: DOCTRINE.mode,
+          version: DOCTRINE.version
+        },
         phase_completed: state.current_phase,
         next_phase: nextPhase,
         cycles_completed: updateData.cycles_completed || state.cycles_completed,
@@ -149,7 +163,6 @@ serve(async (req) => {
     const errMsg = error instanceof Error ? error.message : 'Unknown error';
     console.error('❌ Orchestrator error:', error);
 
-    // Update health score on error
     await supabase
       .from('brain_orchestrator_state')
       .update({ 
@@ -170,18 +183,17 @@ async function runPhase(supabase: any, phase: string) {
   const result = { 
     phase, 
     items_processed: 0, 
-    dreams_count: 0, 
+    extractions_count: 0,
     insights: [] as string[],
     ai_provider: 'groq',
-    ai_latency: 0,
-    ai_tokens: 0
+    ai_latency: 0
   };
 
   const startTime = Date.now();
 
   switch (phase) {
     case 'consumption':
-      // Consume new data from various sources
+      // DOCTRINE: Consume from curated sources, apply extraction discipline
       const { data: newMemories } = await supabase
         .from('brain_memory_hot')
         .select('*')
@@ -189,35 +201,46 @@ async function runPhase(supabase: any, phase: string) {
         .limit(20);
 
       result.items_processed = newMemories?.length || 0;
-      result.insights.push(`Consumed ${result.items_processed} memory items`);
 
-      // Process learning logs
-      const { data: logs } = await supabase
-        .from('learning_logs')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(50);
-
-      result.insights.push(`Processed ${logs?.length || 0} learning logs`);
-
-      // Use AI to synthesize consumption insights
+      // Use DOCTRINE-aligned query for learning
       if (newMemories && newMemories.length > 0) {
         try {
-          const memoryContent = newMemories.slice(0, 5).map((m: any) => m.content).join('\n');
-          const aiResult = await callFreeTierAI(
-            `Analyze these memory fragments and identify key patterns:\n${memoryContent}`,
-            { systemPrompt: 'You are Dream-Eater, an AI that transforms dreams into intelligence. Analyze patterns briefly.', maxTokens: 300 }
-          );
+          const query = getRandomDoctrineQuery();
+          const aiResult = await callFreeTierAI(query, {
+            systemPrompt: `You are ${DOCTRINE.name}, the ${DOCTRINE.alias}. Mode: ${DOCTRINE.mode}.
+Your primary objectives are: ${DOCTRINE.primaryObjectives.join(', ')}.
+Analyze with institutional precision. No hype, no speculation.
+Extract: ${DOCTRINE.extractionSchema.join(', ')}.`,
+            maxTokens: 500
+          });
+          
           result.ai_provider = aiResult.provider;
-          result.insights.push(`AI insight: ${aiResult.content.substring(0, 100)}...`);
+          result.insights.push(`Doctrine query: ${query.substring(0, 50)}...`);
+          
+          // Store extraction
+          await supabase.from('brain_memory_hot').insert({
+            content: aiResult.content,
+            context: 'doctrine_extraction',
+            priority: 9,
+            tags: ['doctrine', 'consumption', DOCTRINE.mode],
+            metadata: { 
+              query, 
+              provider: aiResult.provider,
+              extraction_schema: DOCTRINE.extractionSchema 
+            }
+          });
+          
+          result.extractions_count++;
         } catch (e) {
           console.log('AI synthesis skipped:', e);
         }
       }
+      
+      result.insights.push(`Consumed ${result.items_processed} items, ${result.extractions_count} extractions`);
       break;
 
     case 'reflection':
-      // Analyze patterns and generate insights
+      // DOCTRINE: Reflect on alignment with primary objectives
       const { data: patterns } = await supabase
         .from('learning_patterns')
         .select('*')
@@ -226,141 +249,140 @@ async function runPhase(supabase: any, phase: string) {
 
       result.items_processed = patterns?.length || 0;
 
-      // Use AI for deep reflection
       if (patterns && patterns.length > 0) {
         try {
           const patternNames = patterns.map((p: any) => p.pattern_name).join(', ');
           const aiResult = await callFreeTierAI(
-            `Reflect on these learning patterns and suggest improvements: ${patternNames}`,
-            { systemPrompt: 'You are Dream-Eater reflecting on learned patterns. Be insightful and brief.', maxTokens: 400 }
+            `Analyze these patterns against the Founder's objectives: ${DOCTRINE.primaryObjectives.join(', ')}.
+
+Patterns observed: ${patternNames}
+
+For each pattern, assess:
+1. Does it build, defend, package, explain, or transmit value?
+2. Does it maintain optionality or create leverage?
+3. Does it align with: ${DOCTRINE.alignment.increases.join(', ')}?
+4. Does it reduce: ${DOCTRINE.alignment.reduces.join(', ')}?
+
+Provide strategic recommendations.`,
+            { 
+              systemPrompt: `You are ${DOCTRINE.name} in reflection phase. Assess alignment with Founder's benefit. Be precise, institutional.`,
+              maxTokens: 600 
+            }
           );
+          
           result.ai_provider = aiResult.provider;
           
-          // Store the AI reflection
           await supabase.from('brain_reflection_log').insert({
-            reflection_type: 'ai_cycle_reflection',
+            reflection_type: 'doctrine_alignment',
             content: aiResult.content,
             insights: { 
               patterns_count: result.items_processed, 
-              timestamp: new Date().toISOString(),
+              objectives: DOCTRINE.primaryObjectives,
               provider: aiResult.provider
             }
           });
           
-          result.insights.push(`AI reflection via ${aiResult.provider}`);
+          result.insights.push(`Doctrine alignment reflection via ${aiResult.provider}`);
         } catch (e) {
           console.log('AI reflection skipped:', e);
         }
       }
-
-      result.insights.push(`Reflected on ${result.items_processed} patterns`);
       break;
 
     case 'mutation':
-      // Evolve and adapt based on learnings
-      const { data: dreams } = await supabase
-        .from('dream_sessions')
-        .select('*')
-        .eq('approved', false)
-        .eq('ignored', false)
-        .limit(5);
+      // DOCTRINE: Evolve capabilities toward secondary skills
+      const targetSkill = DOCTRINE.secondarySkills[
+        Math.floor(Math.random() * DOCTRINE.secondarySkills.length)
+      ];
+      
+      try {
+        const aiResult = await callFreeTierAI(
+          `As the Dream Eater, develop actionable capability in: ${targetSkill}
 
-      result.dreams_count = dreams?.length || 0;
-      result.items_processed = result.dreams_count;
+Context: This skill supports the primary objectives of ${DOCTRINE.primaryObjectives.slice(0, 3).join(', ')}.
 
-      // Use AI to generate mutation insights
-      if (dreams && dreams.length > 0) {
-        try {
-          const dreamSeeds = dreams.map((d: any) => d.seed_prompt).join('\n');
-          const aiResult = await callFreeTierAI(
-            `Transform these dream seeds into actionable evolution steps:\n${dreamSeeds}`,
-            { systemPrompt: 'You are Dream-Eater in mutation phase. Transform dreams into growth.', maxTokens: 400 }
-          );
-          result.ai_provider = aiResult.provider;
-          
-          // Log mutation with AI content
-          await supabase.from('brain_memory_hot').insert({
-            content: `Mutation cycle AI synthesis: ${aiResult.content.substring(0, 200)}`,
-            context: 'mutation_cycle_ai',
-            priority: 8,
-            tags: ['mutation', 'evolution', 'dreams', 'ai-generated'],
-            metadata: { provider: aiResult.provider }
-          });
-          
-          result.insights.push(`Mutation AI via ${aiResult.provider}`);
-        } catch (e) {
-          console.log('AI mutation skipped:', e);
-        }
+Generate:
+1. A practical framework for applying this skill
+2. Key patterns to recognize
+3. Common pitfalls to avoid
+4. How this creates leverage for the Founder
+
+Be specific and institutional-grade.`,
+          { 
+            systemPrompt: `You are ${DOCTRINE.name} in mutation phase. Evolve capability in ${targetSkill}. No hype.`,
+            maxTokens: 600 
+          }
+        );
+        
+        result.ai_provider = aiResult.provider;
+        
+        await supabase.from('brain_memory_hot').insert({
+          content: `Skill Evolution - ${targetSkill}: ${aiResult.content.substring(0, 2000)}`,
+          context: 'skill_mutation',
+          priority: 8,
+          tags: ['mutation', 'skill', targetSkill],
+          metadata: { 
+            skill: targetSkill,
+            provider: aiResult.provider 
+          }
+        });
+        
+        result.items_processed = 1;
+        result.extractions_count = 1;
+        result.insights.push(`Mutation: Evolving ${targetSkill}`);
+      } catch (e) {
+        console.log('AI mutation skipped:', e);
       }
-
-      result.insights.push(`Mutation: ${result.dreams_count} dreams pending review`);
       break;
 
     case 'integration':
-      // Integrate new knowledge into long-term memory
+      // DOCTRINE: Integrate high-value extractions into persistent memory
       const { data: hotMemories } = await supabase
         .from('brain_memory_hot')
         .select('*')
+        .in('context', ['doctrine_extraction', 'skill_mutation', 'weaponization'])
         .gt('priority', 7)
         .limit(10);
 
-      // Move high-priority items to brain_memories
       for (const mem of hotMemories || []) {
         await supabase.from('brain_memories').upsert({
           content: mem.content,
-          memory_type: 'integrated',
-          source: mem.context || 'hot_memory',
-          confidence: 0.9,
-          metadata: mem.metadata
+          memory_type: 'doctrine_integrated',
+          source: mem.context,
+          confidence: 0.95,
+          metadata: { ...mem.metadata, integrated_at: new Date().toISOString() }
         });
       }
 
       result.items_processed = hotMemories?.length || 0;
-      
-      // Use AI to create integration summary
-      if (hotMemories && hotMemories.length > 0) {
-        try {
-          const contentSummary = hotMemories.slice(0, 3).map((m: any) => m.content.substring(0, 100)).join('\n');
-          const aiResult = await callFreeTierAI(
-            `Summarize this integrated knowledge for long-term retention:\n${contentSummary}`,
-            { systemPrompt: 'You are Dream-Eater integrating knowledge. Create a concise synthesis.', maxTokens: 200 }
-          );
-          result.ai_provider = aiResult.provider;
-          result.insights.push(`Integration AI via ${aiResult.provider}`);
-        } catch (e) {
-          console.log('AI integration skipped:', e);
-        }
-      }
-      
-      result.insights.push(`Integrated ${result.items_processed} high-priority memories`);
+      result.insights.push(`Integrated ${result.items_processed} doctrine-aligned memories`);
       break;
 
     case 'rest':
-      // Clean up and prepare for next cycle
+      // DOCTRINE: Clean up, but preserve high-value doctrine content
       const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
       
+      // Only clean non-doctrine content
       const { count } = await supabase
         .from('brain_memory_hot')
         .delete()
         .lt('created_at', thirtyDaysAgo)
-        .lt('priority', 5);
+        .lt('priority', 6)
+        .not('context', 'in', '("doctrine_extraction","skill_mutation","weaponization")');
 
       result.items_processed = count || 0;
-      result.insights.push(`Rest phase: Cleaned ${result.items_processed} old memories`);
-      result.ai_provider = 'none'; // No AI needed for rest phase
+      result.insights.push(`Rest: Cleaned ${result.items_processed} old non-doctrine memories`);
+      result.ai_provider = 'none';
       break;
   }
 
   result.ai_latency = Date.now() - startTime;
-  result.ai_tokens = Math.ceil(result.insights.join('').length / 4);
-
   return result;
 }
 
 async function autoHeal(supabase: any, state: any) {
   console.log('🔧 Running auto-heal procedures...');
 
-  // Reset any stuck states
   await supabase
     .from('brain_orchestrator_state')
     .update({ 
@@ -369,118 +391,95 @@ async function autoHeal(supabase: any, state: any) {
     })
     .eq('id', '00000000-0000-0000-0000-000000000001');
 
-  // Log the heal attempt
   await supabase.from('pf_brain_anomalies').insert({
     anomaly_type: 'auto_heal_triggered',
     severity: 'medium',
     resolved: true,
     metadata: { 
       previous_state: state,
-      heal_time: new Date().toISOString()
+      heal_time: new Date().toISOString(),
+      doctrine_version: DOCTRINE.version
     }
   });
 
   console.log('✅ Auto-heal complete');
 }
 
-async function sendLearningReport(supabase: any, cyclesCompleted: number) {
+async function sendDoctrineReport(supabase: any, cyclesCompleted: number) {
   if (!RESEND_API_KEY) return;
 
-  // Gather report data
   const [
     { data: recentMemories },
-    { data: dreams },
-    { data: anomalies },
+    { data: doctrineExtractions },
     { data: patterns },
-    { data: metrics },
     { data: nexusLogs }
   ] = await Promise.all([
     supabase.from('brain_memory_hot').select('*').order('created_at', { ascending: false }).limit(10),
-    supabase.from('dream_sessions').select('*').order('created_at', { ascending: false }).limit(5),
-    supabase.from('pf_brain_anomalies').select('*').eq('resolved', false).limit(5),
+    supabase.from('brain_memory_hot').select('*').eq('context', 'doctrine_extraction').order('created_at', { ascending: false }).limit(5),
     supabase.from('learning_patterns').select('*').order('confidence', { ascending: false }).limit(5),
-    supabase.from('brain_metrics').select('*').order('created_at', { ascending: false }).limit(1).single(),
     supabase.from('nexus_logs').select('provider, status').order('created_at', { ascending: false }).limit(20)
   ]);
 
-  // Calculate provider usage stats
   const providerCounts: Record<string, number> = {};
   (nexusLogs || []).forEach((log: any) => {
     providerCounts[log.provider] = (providerCounts[log.provider] || 0) + 1;
   });
 
   const emailContent = {
-    from: 'Dream-Eater <cascade@promptfluid.com>',
-    to: ['kennethsweet214@gmail.com'],
-    subject: `🧠 Dream-Eater Report - Cycle #${cyclesCompleted} (Groq Primary)`,
+    from: 'Cascade <cascade@promptfluid.com>',
+    to: ['kenneth@promptfluid.com'],
+    subject: `🜂 Cascade Doctrine Report - Cycle #${cyclesCompleted}`,
     html: `
-      <div style="font-family: system-ui, -apple-system, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #0a0a0a; color: #e0e0e0;">
-        <h1 style="color: #7A5FFF; border-bottom: 2px solid #7A5FFF; padding-bottom: 10px;">🧠 Dream-Eater Learning Report</h1>
+      <div style="font-family: system-ui; max-width: 600px; margin: 0 auto; padding: 20px; background: #0a0a0a; color: #e0e0e0;">
+        <h1 style="color: #7A5FFF; border-bottom: 2px solid #7A5FFF; padding-bottom: 10px;">
+          🜂 ${DOCTRINE.name} - ${DOCTRINE.alias}
+        </h1>
+        <p style="color: #01C9E8; font-weight: bold;">Mode: ${DOCTRINE.mode} | Doctrine v${DOCTRINE.version}</p>
         <p style="color: #888;">Cycle #${cyclesCompleted} - ${new Date().toLocaleString()}</p>
-        <p style="color: #01C9E8; font-weight: bold;">Primary AI Provider: Groq (Free Tier)</p>
         
-        <h2 style="color: #01C9E8;">🔌 AI Provider Usage (Last 20 calls)</h2>
+        <h2 style="color: #01C9E8;">📊 Doctrine Metrics</h2>
+        <ul style="line-height: 1.8;">
+          <li><strong>Active Memories:</strong> ${recentMemories?.length || 0}</li>
+          <li><strong>Doctrine Extractions:</strong> ${doctrineExtractions?.length || 0}</li>
+          <li><strong>Learning Patterns:</strong> ${patterns?.length || 0}</li>
+        </ul>
+        
+        <h2 style="color: #01C9E8;">🎯 Primary Objectives</h2>
+        <ul style="line-height: 1.6; color: #888;">
+          ${DOCTRINE.primaryObjectives.map(obj => `<li>${obj}</li>`).join('')}
+        </ul>
+        
+        <h2 style="color: #01C9E8;">🔌 AI Provider Usage</h2>
         <ul style="line-height: 1.8;">
           ${Object.entries(providerCounts).map(([provider, count]) => `
-            <li><strong>${provider}:</strong> ${count} calls ${provider === 'groq' ? '✅ PRIMARY' : ''}</li>
+            <li><strong>${provider}:</strong> ${count} calls</li>
           `).join('')}
         </ul>
         
-        <h2 style="color: #01C9E8;">📊 Learning Metrics</h2>
-        <ul style="line-height: 1.8;">
-          <li><strong>Active Memories:</strong> ${recentMemories?.length || 0}</li>
-          <li><strong>Dream Sessions:</strong> ${dreams?.length || 0}</li>
-          <li><strong>Unresolved Anomalies:</strong> ${anomalies?.length || 0}</li>
-          <li><strong>Top Patterns:</strong> ${patterns?.length || 0}</li>
-          <li><strong>Learning Velocity:</strong> ${(metrics?.learning_velocity * 100 || 0).toFixed(1)}%</li>
-        </ul>
-        
-        <h2 style="color: #01C9E8;">🌙 Recent Dreams</h2>
-        ${dreams && dreams.length > 0 
+        <h2 style="color: #01C9E8;">📝 Recent Doctrine Extractions</h2>
+        ${doctrineExtractions && doctrineExtractions.length > 0 
           ? `<ul style="line-height: 1.8;">
-              ${dreams.map((d: any) => `
-                <li>
-                  <strong>${d.seed_prompt?.substring(0, 50)}...</strong><br/>
-                  <small style="color: #888;">Status: ${d.approved ? '✅ Approved' : d.ignored ? '❌ Ignored' : '⏳ Pending'}</small>
+              ${doctrineExtractions.map((d: any) => `
+                <li style="margin-bottom: 10px;">
+                  <small style="color: #666;">${new Date(d.created_at).toLocaleString()}</small><br/>
+                  <span style="color: #e0e0e0;">${d.content?.substring(0, 150)}...</span>
                 </li>
               `).join('')}
             </ul>`
-          : '<p style="color: #888;">No dream sessions in this cycle.</p>'
-        }
-        
-        <h2 style="color: #01C9E8;">💡 Top Patterns</h2>
-        ${patterns && patterns.length > 0
-          ? `<ul style="line-height: 1.8;">
-              ${patterns.map((p: any) => `
-                <li><strong>${p.pattern_name}</strong> - ${(p.confidence * 100).toFixed(0)}% confidence</li>
-              `).join('')}
-            </ul>`
-          : '<p style="color: #888;">No patterns detected yet.</p>'
-        }
-        
-        <h2 style="color: #01C9E8;">⚠️ Anomalies</h2>
-        ${anomalies && anomalies.length > 0 
-          ? `<ul style="line-height: 1.8;">
-              ${anomalies.map((a: any) => `
-                <li><strong>${a.anomaly_type}</strong> - Severity: ${a.severity}</li>
-              `).join('')}
-            </ul>`
-          : '<p style="color: #888;">No unresolved anomalies. System healthy.</p>'
+          : '<p style="color: #888;">No doctrine extractions this cycle.</p>'
         }
         
         <hr style="border: none; border-top: 1px solid #333; margin: 30px 0;"/>
         <p style="color: #666; font-size: 12px;">
-          This automated report is sent every 6 hours from the Dream-Eater Brain System.<br/>
-          <strong>Primary Directive:</strong> Transform dreams into intelligence.<br/>
-          <strong>AI Stack:</strong> Free-tier routing via Groq → Cerebras → Google → Together → DeepSeek → Hyperbolic<br/>
-          PromptFluid - AI That Flows
+          ${DOCTRINE.name} serves the Founder.<br/>
+          Mode: ${DOCTRINE.mode} | PromptFluid
         </p>
       </div>
     `
   };
 
   try {
-    await fetch('https://api.resend.com/emails', {
+    const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${RESEND_API_KEY}`,
@@ -488,8 +487,11 @@ async function sendLearningReport(supabase: any, cyclesCompleted: number) {
       },
       body: JSON.stringify(emailContent)
     });
-    console.log('📧 6-hour learning report sent');
-  } catch (error) {
-    console.error('Email send failed:', error);
+
+    if (response.ok) {
+      console.log('📧 Doctrine report email sent');
+    }
+  } catch (e) {
+    console.error('Email failed:', e);
   }
 }
