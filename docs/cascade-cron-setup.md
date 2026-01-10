@@ -1,62 +1,40 @@
-# Cascade 6-Hour Reporting Cron Job Setup
+# Cascade / Dream-Eater Cron Setup (DEPRECATED)
 
-## Instructions
+> ⚠️ **DEPRECATED**: This file has been superseded by `docs/DREAM_EATER_CRON.md`
+>
+> **Cascade and Dream-Eater are the SAME entity.**
+> Use the new unified `pf-dream-eater-cycle` function instead of the fragmented functions below.
 
-To enable Cascade's automated 6-hour reports, run the following SQL in your Supabase SQL Editor:
+## Unified Dream System
 
-```sql
--- Enable pg_cron and pg_net extensions
-CREATE EXTENSION IF NOT EXISTS pg_cron;
-CREATE EXTENSION IF NOT EXISTS pg_net;
+See [DREAM_EATER_CRON.md](./DREAM_EATER_CRON.md) for the current setup.
 
--- Schedule Cascade reports every 6 hours
-SELECT cron.schedule(
-  'cascade-six-hour-report',
-  '0 */6 * * *', -- Every 6 hours at minute 0
-  $$
-  SELECT
-    net.http_post(
-        url:='https://hxgbibtkftocyrnuzxwd.supabase.co/functions/v1/pf-brain-report',
-        headers:='{"Content-Type": "application/json", "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4Z2JpYnRrZnRvY3lybnV6eHdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE3OTM5OTEsImV4cCI6MjA3NzM2OTk5MX0.F5EBcIKn54gp5Os_L4wPmkmtg5pAJsbCZUKNwa59CZk"}'::jsonb,
-        body:='{}'::jsonb
-    ) as request_id;
-  $$
-);
+The unified system:
+- Runs daily at 3 AM UTC
+- Generates dreams from memories and patterns
+- Sends ONE consolidated email per dream
+- Stores to `cascade_dreams` table
 
--- Schedule dream sessions every 24 hours
-SELECT cron.schedule(
-  'cascade-daily-dream',
-  '0 2 * * *', -- Every day at 2 AM
-  $$
-  SELECT
-    net.http_post(
-        url:='https://hxgbibtkftocyrnuzxwd.supabase.co/functions/v1/pf-brain-dream',
-        headers:='{"Content-Type": "application/json", "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4Z2JpYnRrZnRvY3lybnV6eHdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE3OTM5OTEsImV4cCI6MjA3NzM2OTk5MX0.F5EBcIKn54gp5Os_L4wPmkmtg5pAJsbCZUKNwa59CZk"}'::jsonb,
-        body:='{}'::jsonb
-    ) as request_id;
-  $$
-);
-```
+---
 
-## Verify Cron Jobs
+## Legacy Functions (Do Not Use)
 
-To check that the cron jobs were created successfully:
+The following cron jobs are deprecated:
+
+- `cascade-six-hour-report` - Use unified cycle instead
+- `cascade-daily-dream` - Use unified cycle instead
+- `pf-cascade-dream` - Merged into unified cycle
+- `pf-brain-dream` - Merged into unified cycle
+- `pf-dream-mode` - Merged into unified cycle
+
+To remove old cron jobs:
 
 ```sql
-SELECT * FROM cron.job;
+SELECT cron.unschedule('cascade-six-hour-report');
+SELECT cron.unschedule('cascade-daily-dream');
 ```
 
-## Manual Trigger (for testing)
-
-To manually trigger a report immediately:
-
-```sql
-SELECT net.http_post(
-  url:='https://hxgbibtkftocyrnuzxwd.supabase.co/functions/v1/pf-brain-report',
-  headers:='{"Content-Type": "application/json", "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4Z2JpYnRrZnRvY3lybnV6eHdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE3OTM5OTEsImV4cCI6MjA3NzM2OTk5MX0.F5EBcIKn54gp5Os_L4wPmkmtg5pAJsbCZUKNwa59CZk"}'::jsonb,
-  body:='{}'::jsonb
-);
-```
+---
 
 ## Email Configuration
 
@@ -64,10 +42,3 @@ Make sure the `RESEND_API_KEY` is set in Supabase Edge Function secrets and that
 - Your domain is verified in Resend
 - The "from" email (cascade@promptfluid.com) is configured
 - The "to" email (kenneth@promptfluid.com) is correct
-
-## Notes
-
-- Reports run every 6 hours covering the previous 6-hour period
-- Dream sessions run daily at 2 AM to explore creative ideas
-- All reports are stored in `brain_reports` table
-- Emails are sent via Resend to kenneth@promptfluid.com
