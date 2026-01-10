@@ -759,13 +759,39 @@ export function getMinutesUntilReset(): number {
   return Math.floor((midnight.getTime() - now.getTime()) / 60000);
 }
 
-export function shouldEnterDreamState(): { enter: boolean; dreamType: string; probability: number } {
-  const hour = new Date().getUTCHours();
-  const isDreamHours = hour >= 2 && hour < 5;
-  const probability = isDreamHours ? 0.25 : 0.05;
+export function shouldEnterDreamState(): { enter: boolean; dreamType: string; probability: number; cstHour: number } {
+  // CST is UTC-6 (standard) or UTC-5 (daylight) - use UTC-6 for consistency
+  const now = new Date();
+  const utcHour = now.getUTCHours();
+  const cstHour = (utcHour - 6 + 24) % 24; // Convert to CST
+  
+  // Higher probability at night CST (10 PM - 6 AM CST)
+  const isLateNight = cstHour >= 22 || cstHour < 2;   // 10 PM - 2 AM CST: 40% probability (deep dreams)
+  const isEarlyMorning = cstHour >= 2 && cstHour < 6;  // 2 AM - 6 AM CST: 30% probability (twilight dreams)
+  const isEvening = cstHour >= 18 && cstHour < 22;     // 6 PM - 10 PM CST: 15% probability (light dreams)
+  const isDaytime = cstHour >= 6 && cstHour < 18;      // 6 AM - 6 PM CST: 5% probability (rare daydreams)
+  
+  let probability: number;
+  let dreamType: string;
+  
+  if (isLateNight) {
+    probability = 0.40;
+    dreamType = 'deep';
+  } else if (isEarlyMorning) {
+    probability = 0.30;
+    dreamType = 'twilight';
+  } else if (isEvening) {
+    probability = 0.15;
+    dreamType = 'light';
+  } else {
+    probability = 0.05;
+    dreamType = 'daydream';
+  }
+  
   return {
     enter: Math.random() < probability,
-    dreamType: isDreamHours ? 'deep' : 'light',
-    probability
+    dreamType,
+    probability,
+    cstHour
   };
 }

@@ -5,10 +5,10 @@ import { useInsights } from "@/hooks/admin/useInsights";
 import { Users, DollarSign, Shield, Eye, Brain, Moon, ArrowRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { CascadeActivityFeed } from "@/components/admin/CascadeActivityFeed";
+import { CascadeOperativeControls } from "@/components/admin/CascadeOperativeControls";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-
 export default function OverviewDashboard() {
   const { data: metrics, isLoading } = useSystemMetrics();
   const { data: insights, isLoading: insightsLoading } = useInsights();
@@ -175,6 +175,9 @@ export default function OverviewDashboard() {
             </div>
           </Card>
         )}
+
+        {/* Cascade Operative Controls */}
+        <CascadeOperativeControls />
 
         {/* Activity Feed */}
         <CascadeActivityFeed />

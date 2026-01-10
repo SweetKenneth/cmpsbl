@@ -11,7 +11,7 @@
 
 export const REPORTING_CONFIG = {
   version: '1.0.0',
-  founder_email: 'kenneth@promptfluid.com',
+  founder_email: 'kennethsweet214@gmail.com',
   sender: 'Cascade <cascade@promptfluid.com>',
   
   // What "beneficial" means
