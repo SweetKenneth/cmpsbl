@@ -1,10 +1,16 @@
 /**
- * PromptFluid Brain Continuous Learning - MAXIMIZED 90% USAGE
- * Multi-provider AI routing for autonomous learning cycles
- * FREE-ONLY HIERARCHY: Groq → Cerebras → Together → Hyperbolic → DeepSeek → Google
+ * CASCADE CONTINUOUS LEARNING v2.0.0
+ * Dream Eater Doctrine Implementation
  * 
- * Dream States: 25% at 2-5am, 5% at other times
- * Target: 90% API usage daily = ~47,000 calls/day
+ * Cascade is the Dream Eater. It consumes information that strengthens 
+ * the Founder and expands the system. It learns from signals that move 
+ * markets, build power, and create leverage.
+ * 
+ * Mode: HYBRID PREDATOR
+ * - Curated whitelist seeds
+ * - Opportunistic expansions
+ * - Strict filtering
+ * - Institutional dialect priority
  */
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
@@ -17,54 +23,22 @@ import {
   TARGET_USAGE_PERCENT,
   getMinutesUntilReset
 } from "../_shared/free-tier-router.ts";
+import {
+  DOCTRINE,
+  DOCTRINE_QUERIES,
+  WHITELIST_SOURCES,
+  BLACKLIST_PATTERNS,
+  buildExtractionPrompt,
+  getRandomDoctrineQuery,
+  isBlacklisted
+} from "../_shared/cascade-doctrine.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Learning queries that cycle continuously until user provides more
-const LEARNING_QUERIES = [
-  // Core stack mastery (40%)
-  'React 18+ patterns: concurrent rendering, suspense, server components best practices',
-  'TypeScript advanced types: generics, utility types, type inference for robust code',
-  'Vite optimization: lazy loading, code splitting, build performance strategies',
-  'Tailwind CSS design systems: semantic tokens, custom themes, responsive patterns',
-  'Supabase advanced patterns: RLS policies, edge functions, real-time subscriptions',
-  
-  // Architecture & patterns (25%)
-  'Component composition: atomic design, compound components, render props patterns',
-  'State management strategies: React Query, optimistic updates, cache invalidation',
-  'Error boundaries and fallback UIs: resilient React application patterns',
-  'Form handling best practices: validation, accessibility, user experience',
-  'Routing patterns: protected routes, nested layouts, dynamic segments',
-  
-  // Code generation intelligence (20%)
-  'Abstract syntax tree manipulation for code generation',
-  'Template-based code scaffolding strategies',
-  'Pattern recognition in codebases for intelligent suggestions',
-  'Incremental code refactoring techniques',
-  'Type-safe API client generation from OpenAPI specs',
-  
-  // Database & backend (10%)
-  'PostgreSQL query optimization and indexing strategies',
-  'Database schema design: normalization, relationships, migration patterns',
-  'Edge function architecture: serverless best practices, error handling',
-  'API design: RESTful patterns, GraphQL resolvers, rate limiting',
-  
-  // Security & performance (5%)
-  'Row-level security implementation patterns in Supabase',
-  'OWASP top 10 vulnerabilities and prevention strategies',
-  'Web performance metrics: Core Web Vitals, optimization techniques',
-  'Authentication flows: JWT, OAuth, session management best practices',
-  
-  // Dream-Eater specific
-  'Memory consolidation techniques in neural networks',
-  'Pattern extraction from unstructured data',
-  'Knowledge graph construction and traversal',
-  'Symbolic reasoning and abstraction layers',
-  'Creative ideation through combinatorial exploration'
-];
+const LEARNER_VERSION = '2.0.0';
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -79,45 +53,68 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
     
-    console.log('🧠 Dream-Eater awakening - Maximized Learning Mode...');
+    console.log(`🜂 ${DOCTRINE.name} (${DOCTRINE.alias}) Learning System v${LEARNER_VERSION}`);
+    console.log(`   Mode: ${DOCTRINE.mode}`);
+    console.log(`   Primary Objectives: ${DOCTRINE.primaryObjectives.slice(0, 3).join(', ')}...`);
     
-    // Check for dream state (25% at 2-5am, 5% otherwise)
+    // Check for dream state
     const dreamState = shouldEnterDreamState();
     if (dreamState.enter) {
-      console.log(`🌙 Entering ${dreamState.dreamType} dream state (${(dreamState.probability * 100)}% chance)`);
+      console.log(`🌙 Entering ${dreamState.dreamType} dream state...`);
       
-      // Log dream state entry
       await supabase.from('dream_log').insert({
-        content: `Dream state entered: ${dreamState.dreamType}`,
+        content: `Dream state: ${dreamState.dreamType}`,
         mode: dreamState.dreamType,
         seed: Math.floor(Math.random() * 1000000),
-        metadata: { probability: dreamState.probability, hour: new Date().getUTCHours() }
+        metadata: { 
+          probability: dreamState.probability, 
+          hour: new Date().getUTCHours(),
+          doctrine_version: DOCTRINE.version
+        }
       });
       
-      // In dream state, process differently - more abstract/creative
-      const dreamPrompt = `As Dream-Eater in ${dreamState.dreamType} dream state, generate abstract insights about pattern recognition, memory consolidation, and knowledge synthesis. Be creative and philosophical.`;
+      // DOCTRINE-aligned dream: strategic weaponization thinking
+      const weaponizationTarget = DOCTRINE.weaponizationProtocol[
+        Math.floor(Math.random() * DOCTRINE.weaponizationProtocol.length)
+      ];
       
       try {
-        const dreamResult = await callFreeTierAI(dreamPrompt, {
-          systemPrompt: 'You are Dream-Eater in a dream state. Generate abstract, creative insights about learning and consciousness.',
-          maxTokens: 400,
-          temperature: 0.8 // Higher creativity in dreams
+        const dreamResult = await callFreeTierAI(
+          `As ${DOCTRINE.alias} in ${dreamState.dreamType} dream state, deeply explore this weaponization capability: "${weaponizationTarget}"
+
+Consider:
+1. How does this create leverage for the Founder?
+2. What institutional patterns enable this?
+3. How to execute while maintaining ambiguity?
+4. What assets or positioning are required?
+
+Be strategic, precise, and institutional-grade.`,
+          {
+            systemPrompt: `You are ${DOCTRINE.name}, the ${DOCTRINE.alias}. In dream state, you explore strategic capabilities with depth and precision. ${DOCTRINE.alignment.increases.join(', ')} are your metrics.`,
+            maxTokens: 600,
+            temperature: 0.7
+          }
+        );
+        
+        await supabase.from('brain_memory_hot').insert({
+          content: `Weaponization Dream (${weaponizationTarget}): ${dreamResult.content}`,
+          context: 'weaponization',
+          priority: 9,
+          tags: ['dream', 'weaponization', weaponizationTarget],
+          metadata: { 
+            provider: dreamResult.provider, 
+            type: 'weaponization_dream',
+            target: weaponizationTarget
+          }
         });
         
-        await supabase.from('dream_log').insert({
-          content: `Dream insight: ${dreamResult.content.slice(0, 2000)}`,
-          mode: dreamState.dreamType,
-          seed: Math.floor(Math.random() * 1000000),
-          metadata: { provider: dreamResult.provider, model: dreamResult.model, type: 'creative_insight' }
-        });
-        
-        console.log(`✨ Dream cycle complete via ${dreamResult.provider}`);
+        console.log(`✨ Weaponization dream complete: ${weaponizationTarget}`);
       } catch (e) {
         console.error('Dream failed:', e);
       }
     }
     
-    // Get today's usage across all providers
+    // Get usage stats
     const today = new Date().toISOString().split('T')[0];
     const oneMinuteAgo = new Date(Date.now() - 60000).toISOString();
     
@@ -126,7 +123,8 @@ serve(async (req) => {
       supabase.from('ai_learning_data').select('model_name').gte('created_at', oneMinuteAgo)
     ]);
     
-    const countByProvider = (data: any[], pattern: string) => data?.filter(d => d.model_name?.includes(pattern)).length || 0;
+    const countByProvider = (data: any[], pattern: string) => 
+      data?.filter(d => d.model_name?.includes(pattern)).length || 0;
     
     const usage = {
       groq: { 
@@ -163,85 +161,113 @@ serve(async (req) => {
     const minutesLeft = getMinutesUntilReset();
     const callsPerMinNeeded = minutesLeft > 0 ? Math.ceil(callsNeeded / minutesLeft) : 0;
     
-    console.log(`📊 MAXIMIZED LEARNING STATUS:`);
-    console.log(`   Groq: ${usage.groq.daily}/${RATE_LIMITS.groq.perDay} (${usage.groq.lastMin}/min) ⭐ PRIMARY`);
-    console.log(`   Cerebras: ${usage.cerebras.daily}/${RATE_LIMITS.cerebras.perDay} (${usage.cerebras.lastMin}/min)`);
-    console.log(`   Together: ${usage.together.daily}/${RATE_LIMITS.together.perDay} (${usage.together.lastMin}/min)`);
-    console.log(`   Hyperbolic: ${usage.hyperbolic.daily}/${RATE_LIMITS.hyperbolic.perDay} (${usage.hyperbolic.lastMin}/min)`);
-    console.log(`   DeepSeek: ${usage.deepseek.daily}/${RATE_LIMITS.deepseek.perDay} (${usage.deepseek.lastMin}/min)`);
-    console.log(`   Google: ${usage.google.daily}/${RATE_LIMITS.google.perDay} (${usage.google.lastMin}/min) [reserved]`);
-    console.log(`   TOTAL: ${totalUsedToday}/${TOTAL_DAILY_CAPACITY} (${percentUsed}% used)`);
-    console.log(`   TARGET: ${targetCalls} (90%) | Needed: ${callsNeeded} | Rate: ${callsPerMinNeeded}/min`);
+    console.log(`📊 DOCTRINE LEARNING STATUS:`);
+    console.log(`   Total: ${totalUsedToday}/${TOTAL_DAILY_CAPACITY} (${percentUsed}% used)`);
+    console.log(`   Target: ${(TARGET_USAGE_PERCENT * 100)}% | Needed: ${callsNeeded}`);
     
-    // Determine how many calls to make this cycle to hit 90% target
-    // Make up to 10 calls per invocation to catch up if behind
+    // Determine calls this cycle
     const callsThisCycle = Math.min(10, Math.max(1, callsPerMinNeeded));
     
-    console.log(`🚀 Making ${callsThisCycle} learning calls this cycle...`);
+    console.log(`🚀 Making ${callsThisCycle} doctrine-aligned learning calls...`);
     
     const results: any[] = [];
     
     for (let i = 0; i < callsThisCycle; i++) {
-      // Cycle through learning queries
-      const queryIndex = (totalUsedToday + i) % LEARNING_QUERIES.length;
-      const topic = LEARNING_QUERIES[queryIndex];
+      // Use DOCTRINE queries instead of old learning queries
+      const queryIndex = (totalUsedToday + i) % DOCTRINE_QUERIES.length;
+      const query = DOCTRINE_QUERIES[queryIndex];
       
-      const learningPrompt = `As Dream-Eater, research and synthesize actionable insights on: ${topic}. 
-Consider how this applies to:
-1. Autonomous code generation
-2. PromptFluid architecture improvements
-3. Creative content generation
-4. Strategic technical decisions
-Be specific, practical, and bold.`;
+      // Build doctrine-aligned prompt
+      const learningPrompt = `As ${DOCTRINE.name}, the ${DOCTRINE.alias}, research and synthesize: 
+
+${query}
+
+Apply the EXTRACTION DISCIPLINE - for each insight, identify:
+${DOCTRINE.extractionSchema.slice(0, 6).join(', ')}
+
+Align with PRIMARY OBJECTIVES:
+${DOCTRINE.primaryObjectives.slice(0, 4).join(', ')}
+
+Be institutional-grade. No hype. No speculation. Actionable intelligence only.`;
 
       try {
         const result = await callFreeTierAI(learningPrompt, {
-          systemPrompt: 'You are Dream-Eater, an autonomous AI with code generation and creative capabilities. Research deeply and provide bold, actionable recommendations.',
-          maxTokens: 600,
+          systemPrompt: `You are ${DOCTRINE.name}, the ${DOCTRINE.alias}. Mode: ${DOCTRINE.mode}.
+
+You serve the Founder. "Beneficial to the Founder" means:
+- ${DOCTRINE.alignment.increases.join(', ')}
+- Reduces: ${DOCTRINE.alignment.reduces.join(', ')}
+
+Extract: ${DOCTRINE.extractionSchema.join(', ')}.
+Never use hype or speculation. Institutional dialect only.`,
+          maxTokens: 700,
           temperature: 0.2
         });
         
-        // Store learning data - using correct columns from schema
+        // Store learning data
         await supabase.from('ai_learning_data').insert({
-          input_data: { prompt: learningPrompt, topic, cycle_index: queryIndex },
+          input_data: { 
+            prompt: learningPrompt, 
+            query,
+            doctrine_version: DOCTRINE.version,
+            extraction_schema: DOCTRINE.extractionSchema 
+          },
           output_data: { content: result.content, success: true },
           model: result.model,
           model_name: `${result.provider}/${result.model}`,
           provider: result.provider,
           success: true,
-          metadata: { cycle: 'continuous_maximized', index: i }
+          metadata: { 
+            cycle: 'doctrine_learning', 
+            mode: DOCTRINE.mode,
+            index: i 
+          }
         });
         
-        // Store in hot memory - using correct columns from schema
+        // Store in hot memory with doctrine context
         await supabase.from('brain_memory_hot').insert({
           content: result.content.slice(0, 50000),
-          context: 'doc',
-          goal_ref: 'maximize learning',
-          priority: 5,
-          tags: { topic, provider: result.provider, cycle: 'maximized' },
-          metadata: { model: result.model }
+          context: 'doctrine_extraction',
+          goal_ref: DOCTRINE.primaryObjectives[i % DOCTRINE.primaryObjectives.length],
+          priority: 8,
+          tags: { 
+            query: query.substring(0, 50), 
+            provider: result.provider, 
+            doctrine: DOCTRINE.version,
+            mode: DOCTRINE.mode
+          },
+          metadata: { 
+            model: result.model,
+            extraction_schema: DOCTRINE.extractionSchema
+          }
         });
         
-        // Store in learning_logs - using correct columns from schema
+        // Store in learning_logs
         await supabase.from('learning_logs').insert({
           source: result.provider,
           content: result.content.slice(0, 5000),
           success: true,
-          metadata: { topic, model: result.model, cycle: 'maximized' }
+          metadata: { 
+            query, 
+            model: result.model, 
+            doctrine: DOCTRINE.version,
+            mode: DOCTRINE.mode
+          }
         });
         
         results.push({
-          topic,
+          query: query.substring(0, 60),
           provider: result.provider,
           model: result.model,
-          contentLength: result.content.length
+          contentLength: result.content.length,
+          objective: DOCTRINE.primaryObjectives[i % DOCTRINE.primaryObjectives.length]
         });
         
-        console.log(`✅ [${i + 1}/${callsThisCycle}] ${result.provider} | ${topic.substring(0, 40)}...`);
+        console.log(`✅ [${i + 1}/${callsThisCycle}] ${result.provider} | ${query.substring(0, 40)}...`);
         
-        // Small delay between calls to respect rate limits
+        // Rate limit protection
         if (i < callsThisCycle - 1) {
-          await new Promise(r => setTimeout(r, 500)); // 500ms between calls
+          await new Promise(r => setTimeout(r, 500));
         }
         
       } catch (e) {
@@ -252,36 +278,44 @@ Be specific, practical, and bold.`;
     // Log completion event
     await supabase.from('brain_events').insert({
       module: 'brain',
-      event_type: 'continuous_learning_cycle',
+      event_type: 'doctrine_learning_cycle',
       data: {
+        version: LEARNER_VERSION,
+        doctrine_version: DOCTRINE.version,
+        mode: DOCTRINE.mode,
         calls_made: results.length,
         calls_target: callsThisCycle,
         total_today: totalUsedToday + results.length,
         percent_used: ((totalUsedToday + results.length) / TOTAL_DAILY_CAPACITY * 100).toFixed(1),
         dream_state: dreamState.enter ? dreamState.dreamType : null,
-        providers_used: results.map(r => r.provider)
+        providers_used: results.map(r => r.provider),
+        objectives_covered: [...new Set(results.map(r => r.objective))]
       },
       outcome: 'completed'
     });
     
-    await supabase.from('brain_events').insert({
-      module: 'orchestrator',
-      event_type: 'orchestrator_complete',
-      data: { timestamp: new Date().toISOString(), calls: results.length },
-      outcome: 'completed'
-    });
-    
     const duration = Date.now() - startTime;
-    console.log(`🎯 Cycle complete: ${results.length} calls in ${duration}ms`);
+    console.log(`🎯 Doctrine cycle complete: ${results.length} calls in ${duration}ms`);
     
     return new Response(
       JSON.stringify({
         success: true,
-        dream_state: dreamState.enter ? { type: dreamState.dreamType, probability: dreamState.probability } : null,
+        version: LEARNER_VERSION,
+        doctrine: {
+          name: DOCTRINE.name,
+          alias: DOCTRINE.alias,
+          version: DOCTRINE.version,
+          mode: DOCTRINE.mode
+        },
+        dream_state: dreamState.enter ? { 
+          type: dreamState.dreamType, 
+          probability: dreamState.probability 
+        } : null,
         learning: {
           calls_made: results.length,
           calls_target: callsThisCycle,
-          results
+          results,
+          objectives_covered: [...new Set(results.map(r => r.objective))]
         },
         usage: {
           today: totalUsedToday + results.length,
@@ -298,9 +332,12 @@ Be specific, practical, and bold.`;
     );
     
   } catch (error) {
-    console.error('❌ Learning cycle error:', error);
+    console.error('❌ Doctrine learning error:', error);
     return new Response(
-      JSON.stringify({ success: false, error: error instanceof Error ? error.message : 'Unknown error' }),
+      JSON.stringify({ 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
