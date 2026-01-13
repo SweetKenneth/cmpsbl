@@ -4,7 +4,7 @@
  * 
  * Unified control center for all substrate modules:
  * - Brain: Memory, learning, reflection
- * - Cascade: User-facing conversational interface
+ * - Decode: Intent decoding, chat, dreams
  * - Defense: Bot detection, threat analysis
  * - Nexus: Multi-provider AI routing
  * - Vision: Observability, metrics, health
@@ -37,7 +37,7 @@ interface SubstrateStatus {
 interface SubstrateMetrics {
   brain_memories: number;
   defense_events: number;
-  cascade_conversations: number;
+  decode_conversations: number;
 }
 
 export default function SubstrateDashboard() {
@@ -87,13 +87,13 @@ export default function SubstrateDashboard() {
       actions: ["query", "remember", "reflect", "reinforce", "dream"],
     },
     {
-      id: "cascade",
-      name: "Cascade",
-      description: "User-facing conversational interface",
+      id: "decode",
+      name: "Decode",
+      description: "Intent decoding, chat, dreams",
       icon: MessageSquare,
       color: "text-purple-500",
       bg: "bg-purple-500/10",
-      actions: ["chat", "learn"],
+      actions: ["chat", "dream", "propose", "status"],
     },
     {
       id: "defense",
@@ -220,8 +220,8 @@ export default function SubstrateDashboard() {
               <div className="flex items-center gap-4">
                 <MessageSquare className="w-8 h-8 text-purple-500" />
                 <div>
-                  <p className="text-2xl font-bold">{metrics.cascade_conversations.toLocaleString()}</p>
-                  <p className="text-sm text-muted-foreground">Cascade Conversations</p>
+                  <p className="text-2xl font-bold">{metrics.decode_conversations?.toLocaleString() || 0}</p>
+                  <p className="text-sm text-muted-foreground">Decode Conversations</p>
                 </div>
               </div>
             </Card>
@@ -326,7 +326,7 @@ export default function SubstrateDashboard() {
               <h3 className="font-semibold mb-2">Request Format</h3>
               <pre className="bg-muted/30 p-4 rounded-lg text-sm overflow-x-auto">
 {`{
-  "module": "brain" | "cascade" | "defense" | "nexus" | "vision",
+  "module": "brain" | "decode" | "defense" | "nexus" | "vision",
   "action": "<module-specific-action>",
   "data": { <action-parameters> }
 }`}
