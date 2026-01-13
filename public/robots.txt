@@ -13,6 +13,13 @@ Crawl-delay: 0.5
 Sitemap: https://promptfluid.com/sitemap.xml
 Sitemap: https://promptfluid.com/sitemap-blog.xml
 
+# 2026 SEO: LLM Context Files
+# These files provide structured data for AI crawlers
+Allow: /llms.txt
+Allow: /humans.txt
+Allow: /.well-known/ai-plugin.json
+Allow: /.well-known/security.txt
+
 # =============================================================
 # PROTECTED AREAS: Block sensitive routes
 # =============================================================

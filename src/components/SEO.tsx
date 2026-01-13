@@ -35,6 +35,45 @@ interface SEOProps {
     steps: Array<{ name: string; text: string; image?: string }>;
     totalTime?: string;
   };
+  // 2026 GEO (Generative Engine Optimization) props
+  entityType?: string;
+  expertise?: string[];
+  contentFreshness?: 'evergreen' | 'news' | 'dated';
+  topicCluster?: string;
+  relatedTopics?: string[];
+  // 2026 Local SEO
+  localBusiness?: {
+    name: string;
+    telephone?: string;
+    address?: {
+      streetAddress?: string;
+      addressLocality: string;
+      addressRegion: string;
+      postalCode: string;
+      addressCountry: string;
+    };
+    geo?: {
+      latitude: number;
+      longitude: number;
+    };
+    openingHours?: string;
+  };
+  // 2026 Event Schema
+  event?: {
+    name: string;
+    startDate: string;
+    endDate?: string;
+    location?: string;
+    description?: string;
+    organizer?: string;
+  };
+  // 2026 Review Schema
+  review?: {
+    itemReviewed: string;
+    rating: number;
+    author: string;
+    reviewBody?: string;
+  };
 }
 
 export function SEO({

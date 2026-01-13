@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- PromptFluid Blog Sitemap - 2026 SEO Optimized -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <!-- BLOG INDEX -->
+  <url>
+    <loc>https://promptfluid.com/blog</loc>
+    <lastmod>2026-01-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://promptfluid.com/blog" />
+  </url>
+  
+  <!-- SECURITY ARTICLES -->
+  <url>
+    <loc>https://promptfluid.com/blog/wordpress-bot-defense</loc>
+    <lastmod>2026-01-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+    <news:news>
+      <news:publication>
+        <news:name>PromptFluid Blog</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-01-10</news:publication_date>
+      <news:title>WordPress Bot Defense: AI-Powered Protection</news:title>
+      <news:keywords>WordPress, security, bot detection, AI</news:keywords>
+    </news:news>
+    <image:image>
+      <image:loc>https://promptfluid.com/og-default.jpg</image:loc>
+      <image:title>WordPress Bot Defense</image:title>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/blog/top-security-plugins-2025</loc>
+    <lastmod>2026-01-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/blog/ai-cybersecurity-evolution-2025</loc>
+    <lastmod>2026-01-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  
+  <!-- ACCESSIBILITY ARTICLES -->
+  <url>
+    <loc>https://promptfluid.com/blog/wordpress-accessibility-guide</loc>
+    <lastmod>2026-01-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+    <news:news>
+      <news:publication>
+        <news:name>PromptFluid Blog</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-01-08</news:publication_date>
+      <news:title>Complete WordPress Accessibility Guide 2026</news:title>
+      <news:keywords>WordPress, accessibility, WCAG, compliance</news:keywords>
+    </news:news>
+    <image:image>
+      <image:loc>https://promptfluid.com/og-default.jpg</image:loc>
+      <image:title>WordPress Accessibility Guide</image:title>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/blog/wcag-2-2-wordpress-changes</loc>
+    <lastmod>2026-01-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/blog/automated-accessibility-fixes-wordpress</loc>
+    <lastmod>2026-01-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  
+  <!-- AI ARTICLES -->
+  <url>
+    <loc>https://promptfluid.com/blog/ai-automation-trends-2025</loc>
+    <lastmod>2026-01-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/blog/ai-business-operations-2025</loc>
+    <lastmod>2026-01-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  
+  <!-- COMPANY ARTICLES -->
+  <url>
+    <loc>https://promptfluid.com/blog/promptfluid-market-disruptor</loc>
+    <lastmod>2026-01-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/blog/product-roadmap-2025</loc>
+    <lastmod>2026-01-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+</urlset>
