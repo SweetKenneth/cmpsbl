@@ -32,18 +32,20 @@ const PageLoader = () => (
   </div>
 );
 
-// Core public pages - eager loaded
+// Core pages - only Index eager loaded for LCP, rest lazy
 import Index from "./pages/Index";
-import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
-import Decode from "./pages/Decode";
-import FeedDreamEater from "./pages/FeedDreamEater";
-import Blog from "./pages/Blog";
-import Privacy from "./pages/Privacy";
-import Terms from "./pages/Terms";
-import InvestorsPublic from "./pages/InvestorsPublic";
-import SubstrateDashboard from "./pages/SubstrateDashboard";
-import Documentation from "./pages/Documentation";
+
+// Lazy load all other pages to reduce initial bundle
+const Auth = lazy(() => import("./pages/Auth"));
+const Decode = lazy(() => import("./pages/Decode"));
+const FeedDreamEater = lazy(() => import("./pages/FeedDreamEater"));
+const Blog = lazy(() => import("./pages/Blog"));
+const Privacy = lazy(() => import("./pages/Privacy"));
+const Terms = lazy(() => import("./pages/Terms"));
+const InvestorsPublic = lazy(() => import("./pages/InvestorsPublic"));
+const SubstrateDashboard = lazy(() => import("./pages/SubstrateDashboard"));
+const Documentation = lazy(() => import("./pages/Documentation"));
 
 // Lazy load blog posts
 const WordPressBotDefense = lazy(() => import("./pages/blog/WordPressBotDefense"));
