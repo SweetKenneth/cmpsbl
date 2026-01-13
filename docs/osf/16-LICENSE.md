@@ -1,11 +1,17 @@
-# PromptFluid License & Citation
+# promptfluid substrate — License & Citation
+
+## v2026.01 — Cognitive Orchestration Substrate for AI Systems
+
+promptfluid® is a cognitive orchestration substrate that provides routing, memory, learning cycles, observability, defense, and execution coordination for AI systems. It is model-agnostic, provider-agnostic, and runs on commodity cloud.
+
+---
 
 ## Document Metadata
 
 | Field | Value |
 |-------|-------|
 | Document ID | PF-LICENSE-001 |
-| Version | 1.0.0 |
+| Version | v2026.01 |
 | Last Updated | 2026-01-13 |
 
 ---
@@ -30,28 +36,48 @@ As required by WordPress.org for plugin distribution.
 
 ### BibTeX
 ```bibtex
-@software{promptfluid_2026,
-  author = {Sese, Kenneth},
-  title = {{PromptFluid Ecosystem: Open Source AI Orchestration Substrate}},
-  year = 2026,
-  publisher = {Zenodo},
-  version = {v1.0.0},
-  doi = {10.5281/zenodo.XXXXXXX},
-  url = {https://github.com/promptfluid/ecosystem}
+@software{promptfluid_substrate_2026,
+  author       = {Sweet Jr, Kenneth E},
+  title        = {{promptfluid substrate: Cognitive Orchestration Substrate for AI Systems}},
+  year         = 2026,
+  publisher    = {Zenodo},
+  version      = {v2026.01},
+  doi          = {10.5281/zenodo.XXXXXXX},
+  url          = {https://github.com/promptfluid/substrate}
 }
 ```
 
 ### APA
-Sese, K. (2026). *PromptFluid Ecosystem: Open Source AI Orchestration Substrate* (Version 1.0.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.XXXXXXX
+Sweet Jr, K. E. (2026). *promptfluid substrate: Cognitive Orchestration Substrate for AI Systems* (Version 2026.01) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.XXXXXXX
+
+### Chicago
+Sweet Jr, Kenneth E. "promptfluid substrate: Cognitive Orchestration Substrate for AI Systems." Version 2026.01. Zenodo, 2026. https://doi.org/10.5281/zenodo.XXXXXXX.
 
 ---
 
-## Contact
+## Ownership & Licensing Inquiries
 
-**Founder:** Kenneth E Sweet Jr  
-**Email:** promptfluid@gmail.com  
-**Website:** https://promptfluid.com
+promptfluid® is a registered trademark. For ownership inquiries, licensing arrangements, or enterprise partnerships:
+
+| Contact | Details |
+|---------|---------|
+| **Founder** | Kenneth E Sweet Jr |
+| **Email** | promptfluid@gmail.com |
+| **Phone** | (760) FLUID-AI |
+| **Web** | https://promptfluid.com |
 
 ---
 
-**Copyright © 2025-2026 PromptFluid. All rights reserved.**
+## Historical Context
+
+promptfluid follows in the tradition of foundational open-source substrates:
+
+- **Linux (1991):** Monolithic kernel released by Linus Torvalds, enabling decades of collaborative development
+- **Bitcoin (2009):** Distributed ledger protocol released by Satoshi Nakamoto, establishing trustless consensus
+- **promptfluid (2025-2026):** Cognitive orchestration substrate enabling persistent memory, autonomous learning, and multi-provider intelligence
+
+Like its predecessors, promptfluid is released as a substrate—a foundation upon which future developers, researchers, and organizations can build.
+
+---
+
+**Copyright © 2025-2026 promptfluid®. All rights reserved.**

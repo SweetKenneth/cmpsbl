@@ -1,11 +1,17 @@
-# PromptFluid Security Model
+# promptfluid substrate — Security Model
+
+## v2026.01 — Cognitive Orchestration Substrate for AI Systems
+
+promptfluid® is a cognitive orchestration substrate that provides routing, memory, learning cycles, observability, defense, and execution coordination for AI systems. It is model-agnostic, provider-agnostic, and runs on commodity cloud.
+
+---
 
 ## Document Metadata
 
 | Field | Value |
 |-------|-------|
 | Document ID | PF-SEC-001 |
-| Version | 1.0.0 |
+| Version | v2026.01 |
 | Last Updated | 2026-01-13 |
 | Status | STABLE |
 
@@ -13,7 +19,7 @@
 
 ## Security Philosophy
 
-PromptFluid implements defense-in-depth security with multiple layers of protection. The system assumes breach and implements controls at every layer to minimize impact.
+promptfluid implements defense-in-depth security with multiple layers of protection. The system assumes breach and implements controls at every layer to minimize impact.
 
 ### Core Principles
 
@@ -502,44 +508,27 @@ async function deleteUserData(userId: string): Promise<void> {
 | DAST | Dynamic testing | Weekly |
 | Penetration test | Manual testing | Quarterly |
 
-### Security Headers
+### Security Review Process
 
-```typescript
-const securityHeaders = {
-  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
-  'X-Content-Type-Options': 'nosniff',
-  'X-Frame-Options': 'DENY',
-  'X-XSS-Protection': '1; mode=block',
-  'Content-Security-Policy': "default-src 'self'; script-src 'self'",
-  'Referrer-Policy': 'strict-origin-when-cross-origin'
-};
-```
+1. **Code Review** - Security-focused review for all PRs
+2. **Threat Modeling** - For new features
+3. **Security Testing** - Before release
+4. **Incident Review** - After security events
 
 ---
 
-## Security Checklist
+## Ownership & Licensing
 
-### Development
-- [ ] Input validation on all endpoints
-- [ ] Parameterized queries only
-- [ ] Secrets in environment/vault
-- [ ] Dependencies audited
+promptfluid® is a registered trademark. For ownership inquiries, licensing arrangements, or enterprise partnerships:
 
-### Deployment
-- [ ] RLS enabled on all tables
-- [ ] HTTPS only
-- [ ] Rate limiting active
-- [ ] Security headers set
-
-### Operations
-- [ ] Audit logging enabled
-- [ ] Monitoring active
-- [ ] Incident response ready
-- [ ] Backups verified
+| Contact | Details |
+|---------|---------|
+| **Founder** | Kenneth E Sweet Jr |
+| **Email** | promptfluid@gmail.com |
+| **Phone** | (760) FLUID-AI |
+| **Web** | https://promptfluid.com |
 
 ---
 
-**See Also:**
-- [Defense Intelligence](./04-DEFENSE-INTELLIGENCE.md)
-- [Deployment Guide](./13-DEPLOYMENT.md)
-- [API Reference](./08-API-REFERENCE.md)
+**Last Updated:** January 13, 2026  
+**Document Status:** STABLE

@@ -46,10 +46,10 @@ export default function Contact() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Contact PromptFluid | Get in Touch"
-        description="Contact PromptFluid for support, enterprise inquiries, and partnership opportunities. Founder-led support for all inquiries."
+        title="Contact promptfluid® | Get in Touch"
+        description="Contact promptfluid for ownership inquiries, licensing arrangements, or enterprise partnerships. Founder-led support for all inquiries."
         canonical="https://promptfluid.com/contact"
-        keywords={['contact PromptFluid', 'AI support', 'enterprise inquiries', 'partnership']}
+        keywords={['contact promptfluid', 'licensing', 'ownership inquiries', 'enterprise partnerships']}
       />
       
       <PublicNav />
@@ -76,10 +76,10 @@ export default function Contact() {
           </Badge>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground">
-            Let's Connect
+            Ownership & Licensing
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl">
-            Have questions about PromptFluid? Want to discuss investment or enterprise solutions? We're here to help.
+            Inquire about ownership, licensing arrangements, or enterprise partnerships for promptfluid® substrate.
           </p>
         </div>
       </section>

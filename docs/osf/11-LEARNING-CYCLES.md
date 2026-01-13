@@ -1,11 +1,17 @@
-# PromptFluid Learning Cycles
+# promptfluid substrate — Learning Cycles
+
+## v2026.01 — Cognitive Orchestration Substrate for AI Systems
+
+promptfluid® is a cognitive orchestration substrate that provides routing, memory, learning cycles, observability, defense, and execution coordination for AI systems. It is model-agnostic, provider-agnostic, and runs on commodity cloud.
+
+---
 
 ## Document Metadata
 
 | Field | Value |
 |-------|-------|
 | Document ID | PF-LEARN-001 |
-| Version | 1.0.0 |
+| Version | v2026.01 |
 | Last Updated | 2026-01-13 |
 | Status | STABLE |
 
@@ -13,7 +19,7 @@
 
 ## Overview
 
-PromptFluid implements a multi-layered learning system that enables continuous knowledge acquisition, pattern recognition, and adaptive behavior. The system operates autonomously 24/7, ingesting information from multiple sources and transforming it into actionable intelligence.
+promptfluid implements a multi-layered learning system that enables continuous knowledge acquisition, pattern recognition, and adaptive behavior. The system operates autonomously 24/7, ingesting information from multiple sources and transforming it into actionable intelligence.
 
 ---
 
@@ -498,21 +504,32 @@ interface LearnResponse {
 ```typescript
 // POST /pf-brain-reflect
 interface ReflectRequest {
-  reflection_type: 'daily' | 'weekly' | 'on-demand';
-  focus_areas?: string[];
+  force?: boolean;
+  depth?: 'shallow' | 'deep';
 }
 
 interface ReflectResponse {
+  success: boolean;
   reflection_id: string;
-  summary: string;
-  insights: string[];
-  patterns_detected: number;
+  insights_count: number;
+  duration_ms: number;
 }
 ```
 
 ---
 
-**See Also:**
-- [Brain Substrate](./02-BRAIN-SUBSTRATE.md)
-- [Dream Protocol](./12-DREAM-PROTOCOL.md)
-- [Cascade Operative](./10-CASCADE-OPERATIVE.md)
+## Ownership & Licensing
+
+promptfluid® is a registered trademark. For ownership inquiries, licensing arrangements, or enterprise partnerships:
+
+| Contact | Details |
+|---------|---------|
+| **Founder** | Kenneth E Sweet Jr |
+| **Email** | promptfluid@gmail.com |
+| **Phone** | (760) FLUID-AI |
+| **Web** | https://promptfluid.com |
+
+---
+
+**Last Updated:** January 13, 2026  
+**Document Status:** STABLE

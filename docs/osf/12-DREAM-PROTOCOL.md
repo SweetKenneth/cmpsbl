@@ -1,11 +1,17 @@
-# PromptFluid Dream Protocol
+# promptfluid substrate — Dream Protocol
+
+## v2026.01 — Cognitive Orchestration Substrate for AI Systems
+
+promptfluid® is a cognitive orchestration substrate that provides routing, memory, learning cycles, observability, defense, and execution coordination for AI systems. It is model-agnostic, provider-agnostic, and runs on commodity cloud.
+
+---
 
 ## Document Metadata
 
 | Field | Value |
 |-------|-------|
 | Document ID | PF-DREAM-001 |
-| Version | 1.0.0 |
+| Version | v2026.01 |
 | Last Updated | 2026-01-13 |
 | Status | STABLE |
 
@@ -13,7 +19,7 @@
 
 ## Overview
 
-The Dream Protocol defines the autonomous creative and consolidation cycles of the PromptFluid Brain. Dreams serve multiple purposes: memory consolidation, creative exploration, pattern synthesis, and insight generation.
+The Dream Protocol defines the autonomous creative and consolidation cycles of the promptfluid Brain. Dreams serve multiple purposes: memory consolidation, creative exploration, pattern synthesis, and insight generation.
 
 Dreams are not random—they are structured processes that transform raw information into refined intelligence.
 
@@ -353,12 +359,12 @@ async function synthesizePatterns(dream: Dream): Promise<PatternSynthesis> {
 
 ```sql
 CREATE TABLE dream_log (
-  id UUID PRIMARY KEY,
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   seed INTEGER NOT NULL,
   mode VARCHAR NOT NULL,
   content TEXT NOT NULL,
   metadata JSONB,
-  created_at TIMESTAMPTZ
+  created_at TIMESTAMPTZ DEFAULT now()
 );
 ```
 
@@ -366,7 +372,7 @@ CREATE TABLE dream_log (
 
 ```sql
 CREATE TABLE dream_sessions (
-  id UUID PRIMARY KEY,
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   seed_prompt TEXT NOT NULL,
   outputs_json JSONB,
   tags TEXT[],
@@ -375,7 +381,7 @@ CREATE TABLE dream_sessions (
   approved_at TIMESTAMPTZ,
   ignored BOOLEAN,
   ignored_at TIMESTAMPTZ,
-  created_at TIMESTAMPTZ
+  created_at TIMESTAMPTZ DEFAULT now()
 );
 ```
 
@@ -383,13 +389,13 @@ CREATE TABLE dream_sessions (
 
 ```sql
 CREATE TABLE cascade_dreams (
-  id UUID PRIMARY KEY,
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   dream_text TEXT NOT NULL,
   mood VARCHAR,
   insight TEXT,
   blog_posted VARCHAR,
   timestamp TIMESTAMPTZ,
-  created_at TIMESTAMPTZ
+  created_at TIMESTAMPTZ DEFAULT now()
 );
 ```
 
@@ -500,12 +506,25 @@ interface DreamRequest {
 }
 
 interface DreamResponse {
+  success: boolean;
   dream_id: string;
-  dream_text: string;
-  mood: string;
+  dream_type: string;
+  content: string;
   insights: string[];
-  connections_made: number;
   duration_ms: number;
+}
+```
+
+### Get Dream State
+
+```typescript
+// GET /pf-brain-dream-state
+interface DreamStateResponse {
+  current_mood: string;
+  mood_score: number;
+  mutation_level: number;
+  dreams_today: number;
+  last_dream_at: string;
 }
 ```
 
@@ -513,125 +532,80 @@ interface DreamResponse {
 
 ```typescript
 // POST /pf-dream-feeder
-interface FeederRequest {
+interface SubmitDreamRequest {
   dream_content: string;
   dream_type: 'dream' | 'nightmare' | 'vision';
   submitter_name?: string;
 }
 
-interface FeederResponse {
+interface SubmitDreamResponse {
   success: boolean;
   submission_id: string;
-  processing_eta: string;
+  message: string;
 }
 ```
 
-### Get Dream State
+---
+
+## Shared Dream Artifacts
+
+Dreams that meet quality thresholds may be published:
+
+### Publishing Criteria
 
 ```typescript
-// GET /pf-dream-eater-state
-interface StateResponse {
-  current_mood: string;
-  mood_score: number;
-  mutation_level: number;
-  dreams_consumed_today: number;
-  last_fed_at: string;
-  next_dream_probability: number;
-}
+const PUBLISH_CRITERIA = {
+  min_insight_count: 3,
+  min_pattern_count: 2,
+  min_quality_score: 0.8,
+  requires_approval: true
+};
 ```
 
----
-
-## Dream Output Formats
-
-### Narrative Format
-
-```markdown
-## Dream Record — {timestamp}
-
-**Type:** Deep Dream  
-**Duration:** 45 minutes  
-**Mood:** Contemplative
-
-### Dream Narrative
-
-[Generated dream content with symbolic and abstract elements]
-
-### Insights Extracted
-
-1. [Insight 1]
-2. [Insight 2]
-
-### Connections Made
-
-- Memory A ↔ Memory B (relation: causes)
-- Pattern X ↔ Pattern Y (relation: correlates)
-
-### Consolidation Summary
-
-- Memories reviewed: 23
-- Edges reinforced: 12
-- New edges created: 5
-```
-
-### Structured Format
-
-```json
-{
-  "dream_id": "uuid",
-  "type": "deep",
-  "timestamp": "2026-01-13T02:30:00Z",
-  "duration_minutes": 45,
-  "mood": "contemplative",
-  "content": {
-    "narrative": "...",
-    "symbols": ["pattern", "synthesis", "emergence"],
-    "themes": ["consolidation", "connection"]
-  },
-  "outputs": {
-    "insights": ["insight1", "insight2"],
-    "patterns_detected": 3,
-    "memories_consolidated": 23,
-    "edges_created": 5,
-    "edges_reinforced": 12
-  },
-  "state_changes": {
-    "mood_shift": "+0.1",
-    "mutation_progress": "+1"
-  }
-}
-```
-
----
-
-## Monitoring & Metrics
-
-### Dream Metrics
-
-| Metric | Description | Target |
-|--------|-------------|--------|
-| dreams_per_day | Total dreams generated | 8-12 |
-| deep_dream_ratio | Proportion of deep dreams | 25-35% |
-| insight_per_dream | Average insights per dream | > 2 |
-| consolidation_rate | Memories consolidated per dream | > 15 |
-| mood_stability | Mood score variance | < 0.2 |
-
-### Health Indicators
+### Blog Integration
 
 ```typescript
-interface DreamHealth {
-  dreaming: boolean;
-  last_dream: Date;
-  dream_queue_depth: number;
-  mood_stability: number;
-  mutation_progress: number;
-  anomalies: string[];
+async function publishDreamToBlog(dream: Dream): Promise<PublishResult> {
+  // Generate blog post from dream
+  const post = await generateBlogPost(dream);
+  
+  // Store in auto_blog_posts
+  const { data } = await supabase
+    .from('auto_blog_posts')
+    .insert({
+      title: post.title,
+      content: post.content,
+      category: 'dreams',
+      slug: generateSlug(post.title),
+      status: 'published'
+    })
+    .select()
+    .single();
+  
+  // Update dream with blog reference
+  await supabase
+    .from('cascade_dreams')
+    .update({ blog_posted: data.id })
+    .eq('id', dream.id);
+  
+  return { success: true, post_id: data.id };
 }
 ```
 
 ---
 
-## See Also:
-- [Brain Substrate](./02-BRAIN-SUBSTRATE.md)
-- [Learning Cycles](./11-LEARNING-CYCLES.md)
-- [Cascade Operative](./10-CASCADE-OPERATIVE.md)
+## Ownership & Licensing
+
+promptfluid® is a registered trademark. For ownership inquiries, licensing arrangements, or enterprise partnerships:
+
+| Contact | Details |
+|---------|---------|
+| **Founder** | Kenneth E Sweet Jr |
+| **Email** | promptfluid@gmail.com |
+| **Phone** | (760) FLUID-AI |
+| **Web** | https://promptfluid.com |
+
+---
+
+**Last Updated:** January 13, 2026  
+**Document Status:** STABLE

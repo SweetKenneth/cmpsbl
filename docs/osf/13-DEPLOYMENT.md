@@ -1,11 +1,17 @@
-# PromptFluid Deployment Guide
+# promptfluid substrate — Deployment Guide
+
+## v2026.01 — Cognitive Orchestration Substrate for AI Systems
+
+promptfluid® is a cognitive orchestration substrate that provides routing, memory, learning cycles, observability, defense, and execution coordination for AI systems. It is model-agnostic, provider-agnostic, and runs on commodity cloud.
+
+---
 
 ## Document Metadata
 
 | Field | Value |
 |-------|-------|
 | Document ID | PF-DEPLOY-001 |
-| Version | 1.0.0 |
+| Version | v2026.01 |
 | Last Updated | 2026-01-13 |
 | Status | STABLE |
 
@@ -13,7 +19,7 @@
 
 ## Overview
 
-This guide covers the deployment of the PromptFluid ecosystem, including infrastructure requirements, environment configuration, and operational procedures.
+This guide covers the deployment of the promptfluid substrate, including infrastructure requirements, environment configuration, and operational procedures.
 
 ---
 
@@ -110,7 +116,7 @@ REPLICATE_API_TOKEN=r8_...
 
 # Application
 SITE_URL=https://yourdomain.com
-FOUNDER_EMAIL=your@email.com
+FOUNDER_EMAIL=promptfluid@gmail.com
 ```
 
 ### Frontend Environment
@@ -350,7 +356,7 @@ define('PROMPTFLUID_API_KEY', 'your-api-key');
 ```typescript
 // Configure alerts
 const ALERT_CONFIG = {
-  email: 'your@email.com',
+  email: 'promptfluid@gmail.com',
   thresholds: {
     error_rate: 0.05,      // 5% error rate
     latency_ms: 5000,      // 5 second latency
@@ -508,7 +514,18 @@ supabase functions serve pf-brain
 
 ---
 
-**See Also:**
-- [Security Model](./14-SECURITY-MODEL.md)
-- [API Reference](./08-API-REFERENCE.md)
-- [Architecture Overview](./01-ARCHITECTURE.md)
+## Ownership & Licensing
+
+promptfluid® is a registered trademark. For ownership inquiries, licensing arrangements, or enterprise partnerships:
+
+| Contact | Details |
+|---------|---------|
+| **Founder** | Kenneth E Sweet Jr |
+| **Email** | promptfluid@gmail.com |
+| **Phone** | (760) FLUID-AI |
+| **Web** | https://promptfluid.com |
+
+---
+
+**Last Updated:** January 13, 2026  
+**Document Status:** STABLE
