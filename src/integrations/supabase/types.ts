@@ -1725,6 +1725,36 @@ export type Database = {
         }
         Relationships: []
       }
+      edge_rate_limits: {
+        Row: {
+          created_at: string
+          function_name: string
+          id: string
+          identifier: string
+          request_count: number
+          updated_at: string
+          window_start: string
+        }
+        Insert: {
+          created_at?: string
+          function_name: string
+          id?: string
+          identifier: string
+          request_count?: number
+          updated_at?: string
+          window_start?: string
+        }
+        Update: {
+          created_at?: string
+          function_name?: string
+          id?: string
+          identifier?: string
+          request_count?: number
+          updated_at?: string
+          window_start?: string
+        }
+        Relationships: []
+      }
       ethical_approvals: {
         Row: {
           admin_decision_at: string | null
@@ -4578,6 +4608,39 @@ export type Database = {
         }
         Relationships: []
       }
+      security_audit_log: {
+        Row: {
+          client_ip: string | null
+          created_at: string
+          details: Json | null
+          event_type: string
+          function_name: string
+          id: string
+          risk_score: number | null
+          user_agent: string | null
+        }
+        Insert: {
+          client_ip?: string | null
+          created_at?: string
+          details?: Json | null
+          event_type: string
+          function_name: string
+          id?: string
+          risk_score?: number | null
+          user_agent?: string | null
+        }
+        Update: {
+          client_ip?: string | null
+          created_at?: string
+          details?: Json | null
+          event_type?: string
+          function_name?: string
+          id?: string
+          risk_score?: number | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       studio_applies: {
         Row: {
           artifact_url: string | null
@@ -5058,6 +5121,7 @@ export type Database = {
       check_modernizer_quota: { Args: { p_user_id: string }; Returns: boolean }
       cleanup_expired_cache: { Args: never; Returns: undefined }
       cleanup_old_daily_state: { Args: never; Returns: undefined }
+      cleanup_old_rate_limits: { Args: never; Returns: undefined }
       generate_bot_sniper_api_key: {
         Args: { p_key_name: string; p_user_id: string }
         Returns: string

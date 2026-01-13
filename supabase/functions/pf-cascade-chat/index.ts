@@ -1,11 +1,21 @@
 /**
- * Cascade Chat v2.2.0 - Dream-Eater Customer Service & Admin Interface
+ * Cascade Chat v2.3.0 - Dream-Eater Customer Service & Admin Interface
+ * HARDENED: Rate limiting, input sanitization, jailbreak detection
  * SECURE ADMIN: Uses JWT validation + user_roles table for admin verification
  * GROQ-FIRST: Uses Groq by default for speed, with fallback to other providers
  */
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient, SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import {
+  getClientIP,
+  getUserAgent,
+  sanitizeMessage,
+  checkRateLimit,
+  logSecurityEvent,
+  hasJailbreakPatterns,
+  SECURITY_LIMITS,
+} from '../_shared/security-utils.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -14,7 +24,13 @@ const corsHeaders = {
 
 // Admin recognition phrase is secondary verification ONLY after JWT + role validation
 const ADMIN_RECOGNITION_PHRASE = "Do you want a cat treat?";
-const ROUTER_VERSION = "2.2.0";
+const ROUTER_VERSION = "2.3.0";
+const FUNCTION_NAME = "pf-cascade-chat";
+
+// Rate limits
+const RATE_LIMIT = 20; // 20 requests per 5 minutes
+const RATE_LIMIT_WINDOW = 5;
+const MAX_MESSAGE_LENGTH = 2000;
 
 // Provider configurations with Groq as PRIMARY
 const PROVIDERS = {
@@ -228,10 +244,74 @@ serve(async (req) => {
   );
 
   const requestStart = Date.now();
+  const clientIP = getClientIP(req);
+  const userAgent = getUserAgent(req);
 
   try {
+    // ============ SECURITY: Rate Limiting ============
+    const rateLimit = await checkRateLimit(supabaseClient, clientIP, FUNCTION_NAME, RATE_LIMIT, RATE_LIMIT_WINDOW);
+    if (!rateLimit.allowed) {
+      await logSecurityEvent(supabaseClient, {
+        functionName: FUNCTION_NAME,
+        eventType: 'rate_limit',
+        clientIP,
+        userAgent,
+        details: { currentCount: rateLimit.currentCount, limit: rateLimit.limit },
+      });
+      return new Response(
+        JSON.stringify({ success: false, error: 'Rate limit exceeded. Please slow down.' }),
+        { 
+          status: 429, 
+          headers: { 
+            ...corsHeaders, 
+            'Content-Type': 'application/json',
+            'Retry-After': String(rateLimit.retryAfterSeconds || 60),
+          } 
+        }
+      );
+    }
+
     const body = await req.json();
-    const { message, conversationHistory, sessionId } = body;
+    let { message, conversationHistory, sessionId } = body;
+    
+    // ============ SECURITY: Input Validation & Sanitization ============
+    if (!message || typeof message !== 'string') {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Message is required' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Sanitize message
+    const sanitized = sanitizeMessage(message, MAX_MESSAGE_LENGTH);
+    message = sanitized.sanitized;
+
+    // Log jailbreak attempts but don't block (let AI handle it)
+    if (hasJailbreakPatterns(sanitized.original)) {
+      await logSecurityEvent(supabaseClient, {
+        functionName: FUNCTION_NAME,
+        eventType: 'jailbreak_attempt',
+        clientIP,
+        userAgent,
+        details: { messagePreview: sanitized.original.substring(0, 100), riskScore: sanitized.riskScore },
+        riskScore: sanitized.riskScore,
+      });
+    }
+
+    // Sanitize conversation history
+    if (conversationHistory && Array.isArray(conversationHistory)) {
+      conversationHistory = conversationHistory
+        .slice(-SECURITY_LIMITS.MAX_CONVERSATION_HISTORY)
+        .map((msg: any) => ({
+          role: msg.role === 'user' ? 'user' : 'assistant',
+          content: typeof msg.content === 'string' 
+            ? sanitizeMessage(msg.content, MAX_MESSAGE_LENGTH).sanitized 
+            : ''
+        }))
+        .filter((msg: any) => msg.content.length > 0);
+    } else {
+      conversationHistory = [];
+    }
     
     // SECURE: Validate user identity via JWT, not request body
     const authInfo = await validateUserAuth(req, supabaseClient);
@@ -240,7 +320,7 @@ serve(async (req) => {
     // Use verified email from JWT, fallback to 'anonymous' for unauthenticated users
     const verifiedEmail = userEmail || 'anonymous';
     
-    console.log(`💬 Cascade v${ROUTER_VERSION} | User: ${verifiedEmail} | Auth: ${isAuthenticated} | Admin: ${isAdmin}`);
+    console.log(`💬 Cascade v${ROUTER_VERSION} | User: ${verifiedEmail} | Auth: ${isAuthenticated} | Admin: ${isAdmin} | Risk: ${sanitized.riskScore}`);
 
     // Handle ping for health check
     if (message === 'ping') {
