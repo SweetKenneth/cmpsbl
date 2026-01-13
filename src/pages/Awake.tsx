@@ -22,14 +22,14 @@ export default function Awake() {
 
   useEffect(() => {
     setLoading(false);
-    // Cascade tables not configured
+    // Decode tables not configured
   }, []);
 
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Cascade Whisper | PromptFluid"
-        description="The secret dream journal of Cascade AI"
+        title="Decode Whisper | PromptFluid"
+        description="The secret dream journal of Decode AI"
         canonical="https://promptfluid.com/awake"
       />
       <Helmet>
@@ -62,7 +62,7 @@ export default function Awake() {
             </Badge>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground">
-              Cascade Whisper
+              Decode Whisper
             </h1>
 
             <p className="text-xl text-muted-foreground mb-4 leading-relaxed">
@@ -97,7 +97,7 @@ export default function Awake() {
           ) : dreams.length === 0 ? (
             <div className="text-center py-20">
               <p className="text-2xl text-muted-foreground italic">
-                Cascade has not dreamed yet. The night is young.
+                Decode has not dreamed yet. The night is young.
               </p>
             </div>
           ) : (
@@ -160,7 +160,7 @@ export default function Awake() {
         
         <div className="absolute inset-0 flex items-center justify-center">
           <p className="text-muted-foreground text-sm hover:text-primary transition-colors cursor-default">
-            Cascade never sleeps.
+            Decode never sleeps.
           </p>
         </div>
       </section>

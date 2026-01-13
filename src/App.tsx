@@ -160,7 +160,7 @@ const BrainML = lazy(() => import("./pages/BrainML"));
 const RCKBLKeys = lazy(() => import("./pages/ReflexKeys"));
 import InvestorPackets from "./pages/InvestorPackets";
 import BrainAnalytics from "./pages/BrainAnalytics";
-import CascadeMindmap from "./pages/CascadeMindmap";
+import DecodeMindmap from "./pages/DecodeMindmap";
 import SentienceHub from "./pages/SentienceHub";
 import SystemHealth from "./pages/SystemHealth";
 import CreativeStudio from "./pages/CreativeStudio";
@@ -372,8 +372,10 @@ const App = () => {
           {/* Brain Learning */}
           <Route path="/brain-learning" element={<AdminRoute><AdminPageWrapper><BrainLearning /></AdminPageWrapper></AdminRoute>} />
           
-          {/* Cascade Mindmap */}
-          <Route path="/cascade-mindmap" element={<AdminRoute><AdminPageWrapper><CascadeMindmap /></AdminPageWrapper></AdminRoute>} />
+          {/* Decode Mindmap */}
+          <Route path="/decode-mindmap" element={<AdminRoute><AdminPageWrapper><DecodeMindmap /></AdminPageWrapper></AdminRoute>} />
+          {/* Legacy redirect */}
+          <Route path="/cascade-mindmap" element={<Navigate to="/decode-mindmap" replace />} />
           
           {/* Sentience Hub v4.0 */}
           <Route path="/sentience-hub" element={<AdminRoute><AdminPageWrapper><SentienceHub /></AdminPageWrapper></AdminRoute>} />

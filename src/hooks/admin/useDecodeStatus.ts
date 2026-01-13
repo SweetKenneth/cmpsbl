@@ -2,7 +2,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect } from "react";
 
-interface CascadeStatus {
+interface DecodeStatus {
   neuralHealth: number;
   dreamCycleActive: boolean;
   lastDreamCycle: string;
@@ -18,12 +18,12 @@ interface CascadeStatus {
   }[];
 }
 
-export function useCascadeStatus() {
+export function useDecodeStatus() {
   const queryClient = useQueryClient();
   
   const query = useQuery({
-    queryKey: ["cascade-status"],
-    queryFn: async (): Promise<CascadeStatus> => {
+    queryKey: ["decode-status"],
+    queryFn: async (): Promise<DecodeStatus> => {
       // Get memory counts
       const { count: memoryHot } = await supabase
         .from("brain_memory_hot")
@@ -84,24 +84,24 @@ export function useCascadeStatus() {
     refetchInterval: 15000,
   });
 
-  // Real-time subscriptions for cascade status changes
+  // Real-time subscriptions for decode status changes
   useEffect(() => {
     const channel = supabase
-      .channel("cascade-status-changes")
+      .channel("decode-status-changes")
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "brain_memory_hot" },
-        () => queryClient.invalidateQueries({ queryKey: ["cascade-status"] })
+        () => queryClient.invalidateQueries({ queryKey: ["decode-status"] })
       )
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "brain_actions_queue" },
-        () => queryClient.invalidateQueries({ queryKey: ["cascade-status"] })
+        () => queryClient.invalidateQueries({ queryKey: ["decode-status"] })
       )
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "brain_cross_insights" },
-        () => queryClient.invalidateQueries({ queryKey: ["cascade-status"] })
+        () => queryClient.invalidateQueries({ queryKey: ["decode-status"] })
       )
       .subscribe();
 

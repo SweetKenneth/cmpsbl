@@ -1,6 +1,6 @@
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { StatCard } from "@/components/admin/ui/StatCard";
-import { useCascadeStatus } from "@/hooks/admin/useCascadeStatus";
+import { useDecodeStatus } from "@/hooks/admin/useDecodeStatus";
 import { Brain, Zap, Database, Activity, AlertCircle, CheckCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import RecentLearningEvents from "@/components/vision/RecentLearningEvents";
 
 export default function VisionControlDashboard() {
-  const { data: cascade, isLoading } = useCascadeStatus();
+  const { data: decode, isLoading } = useDecodeStatus();
 
   return (
     <AdminLayout>
@@ -18,17 +18,17 @@ export default function VisionControlDashboard() {
         {/* Hero Section */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold mb-2 gradient-text">Cascade Intelligence Control</h1>
+            <h1 className="text-3xl font-bold mb-2 gradient-text">Decode Intelligence Control</h1>
             <p className="text-muted-foreground">Neural orchestration and learning pipeline</p>
           </div>
           <ActionButton 
             icon={Zap} 
             variant="primary"
             onClick={() => {
-              toast.info("Syncing Cascade Brain - This may take a moment...");
+              toast.info("Syncing Decode Brain - This may take a moment...");
             }}
           >
-            Sync Cascade Brain
+            Sync Decode Brain
           </ActionButton>
         </div>
 
@@ -36,18 +36,18 @@ export default function VisionControlDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <StatCard
             title="Neural Health"
-            value={`${cascade?.neuralHealth || 0}%`}
+            value={`${decode?.neuralHealth || 0}%`}
             icon={Brain}
             variant="primary"
             loading={isLoading}
             className="animate-fade-in-up stagger-1"
           >
-            <Progress value={cascade?.neuralHealth || 0} className="mt-2" />
+            <Progress value={decode?.neuralHealth || 0} className="mt-2" />
           </StatCard>
           
           <StatCard
             title="Hot Memory"
-            value={cascade?.memoryHot || 0}
+            value={decode?.memoryHot || 0}
             change={{ value: "+8", trend: "up" }}
             icon={Database}
             variant="success"
@@ -57,7 +57,7 @@ export default function VisionControlDashboard() {
           
           <StatCard
             title="Learning Rate"
-            value={`${((cascade?.learningRate || 0) * 100).toFixed(1)}%`}
+            value={`${((decode?.learningRate || 0) * 100).toFixed(1)}%`}
             icon={Activity}
             variant="default"
             loading={isLoading}
@@ -66,7 +66,7 @@ export default function VisionControlDashboard() {
           
           <StatCard
             title="Pending Decisions"
-            value={cascade?.decisionsPending || 0}
+            value={decode?.decisionsPending || 0}
             icon={AlertCircle}
             variant="warning"
             loading={isLoading}
@@ -80,12 +80,12 @@ export default function VisionControlDashboard() {
             <div>
               <h3 className="text-lg font-semibold flex items-center gap-2">
                 Dream Cycle Status
-                <Badge variant={cascade?.dreamCycleActive ? "default" : "secondary"}>
-                  {cascade?.dreamCycleActive ? "Active" : "Idle"}
+                <Badge variant={decode?.dreamCycleActive ? "default" : "secondary"}>
+                  {decode?.dreamCycleActive ? "Active" : "Idle"}
                 </Badge>
               </h3>
               <p className="text-sm text-muted-foreground mt-1">
-                Last dream cycle: {cascade?.lastDreamCycle || "Never"}
+                Last dream cycle: {decode?.lastDreamCycle || "Never"}
               </p>
             </div>
             <ActionButton 
@@ -100,15 +100,15 @@ export default function VisionControlDashboard() {
 
           <div className="grid grid-cols-3 gap-4 mt-6">
             <div className="text-center p-4 rounded-lg bg-primary/5 border border-primary/20">
-              <div className="text-2xl font-bold text-primary">{cascade?.memoryHot || 0}</div>
+              <div className="text-2xl font-bold text-primary">{decode?.memoryHot || 0}</div>
               <div className="text-xs text-muted-foreground mt-1">Hot Memories</div>
             </div>
             <div className="text-center p-4 rounded-lg bg-muted/50">
-              <div className="text-2xl font-bold">{cascade?.memoryCold || 0}</div>
+              <div className="text-2xl font-bold">{decode?.memoryCold || 0}</div>
               <div className="text-xs text-muted-foreground mt-1">Cold Storage</div>
             </div>
             <div className="text-center p-4 rounded-lg bg-green-500/10 border border-green-500/20">
-              <div className="text-2xl font-bold text-green-500">{cascade?.insightsGenerated || 0}</div>
+              <div className="text-2xl font-bold text-green-500">{decode?.insightsGenerated || 0}</div>
               <div className="text-xs text-muted-foreground mt-1">Insights</div>
             </div>
           </div>
@@ -123,7 +123,7 @@ export default function VisionControlDashboard() {
             </h3>
             
             <div className="space-y-3">
-              {(cascade?.modules || []).map((module, index) => (
+              {(decode?.modules || []).map((module, index) => (
                 <div 
                   key={module.name} 
                   className="flex items-center justify-between p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
@@ -153,11 +153,11 @@ export default function VisionControlDashboard() {
               Decision Queue
             </h3>
             
-            {cascade?.decisionsPending === 0 ? (
+            {decode?.decisionsPending === 0 ? (
               <div className="text-center py-8 text-muted-foreground">
                 <CheckCircle className="w-12 h-12 mx-auto mb-2 text-green-500 animate-pulse" />
                 <p className="text-sm">No pending decisions</p>
-                <p className="text-xs mt-1">Cascade is running autonomously</p>
+                <p className="text-xs mt-1">Decode is running autonomously</p>
               </div>
             ) : (
               <div className="space-y-3">

@@ -14,7 +14,7 @@ import TemporalForecast from "@/components/vision/TemporalForecast";
 import MetaFeedback from "@/components/vision/MetaFeedback";
 import InsightFeed from "@/components/vision/InsightFeed";
 import DecisionCenter from "@/components/vision/DecisionCenter";
-import CascadeIdentity from "@/components/vision/CascadeIdentity";
+import DecodeIdentity from "@/components/vision/DecodeIdentity";
 import BrainActivationTest from "@/components/vision/BrainActivationTest";
 
 export default function BrainAnalytics() {
@@ -24,11 +24,11 @@ export default function BrainAnalytics() {
     <>
       <SEO 
         title="Brain Analytics | PromptFluid"
-        description="PromptFluid Brain Analytics - Monitor Cascade AI learning, memory patterns, and autonomous decision-making"
+        description="PromptFluid Brain Analytics - Monitor Decode AI learning, memory patterns, and autonomous decision-making"
       />
       <BrainPasscode>
         <div className="w-full max-w-7xl mx-auto space-y-6 px-3 sm:px-4">
-          <CascadeIdentity />
+          <DecodeIdentity />
         
         <Card className="p-4 sm:p-6 w-full">
           <h2 className="text-xl sm:text-2xl font-bold text-white mb-4">PromptFluid Brain Analytics</h2>
@@ -117,7 +117,7 @@ export default function BrainAnalytics() {
               <span className="text-green-400 font-semibold">✓ Active</span>
             </div>
             <div className="flex items-center justify-between p-3 rounded-lg bg-primary/5 border border-primary/20">
-              <span className="font-medium">CATALYST 1.0: Cascade Persona</span>
+              <span className="font-medium">CATALYST 1.0: Decode Persona</span>
               <span className="text-green-400 font-semibold">✓ Active</span>
             </div>
           </div>
