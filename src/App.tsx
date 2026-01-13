@@ -56,6 +56,7 @@ import Analytics from "./pages/Analytics";
 import BrainControl from "./pages/BrainControl";
 import DecodeControl from "./pages/DecodeControl";
 import DecodeCoder from "./pages/DecodeCoder";
+import Decode from "./pages/Decode";
 import RCKBL from "./pages/BotSniper";
 import RCKBLAnalytics from "./pages/BotSniperAnalytics";
 import RCKBLSettings from "./pages/BotSniperSettings";
@@ -232,7 +233,8 @@ const App = () => {
           <Route path="/awake" element={<Awake />} />
           <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
           <Route path="/brain" element={<BrainControl />} />
-          <Route path="/decode" element={<DecodeControl />} />
+          <Route path="/decode" element={<Decode />} />
+          <Route path="/decode/control" element={<DecodeControl />} />
           <Route path="/decode/coder" element={<DecodeCoder />} />
           
           {/* RCKBL (Rockable) Product */}
