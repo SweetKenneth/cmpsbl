@@ -24,7 +24,7 @@ interface ConnectionState {
 export function CascadeChat() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: '✨ Hello! I\'m Cascade AI v2.0\n\nHow can I help you discover the perfect PromptFluid solution today?' }
+    { role: 'assistant', content: '✨ Hello! I\'m Cascade — the user interface of the promptfluid® substrate.\n\nHow can I help you explore cognitive orchestration today?' }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -69,12 +69,10 @@ export function CascadeChat() {
     console.log(`🔄 Attempting connection recovery (attempt ${connection.retryCount + 1})...`);
     
     try {
-      // Ping the function with a health check
-      const { data, error } = await supabase.functions.invoke('pf-cascade-chat', {
+      // Ping the substrate for health check
+      const { data, error } = await supabase.functions.invoke('pf-substrate', {
         body: {
-          message: 'ping',
-          userEmail: user?.email || 'anonymous',
-          conversationHistory: []
+          module: 'status'
         }
       });
 
@@ -107,11 +105,16 @@ export function CascadeChat() {
     setShowMenu(false);
 
     try {
-      const { data, error } = await supabase.functions.invoke('pf-cascade-chat', {
+      // Use the unified substrate endpoint
+      const { data, error } = await supabase.functions.invoke('pf-substrate', {
         body: {
-          message: userMessage,
-          userEmail: user?.email || 'anonymous',
-          conversationHistory: messages
+          module: 'cascade',
+          action: 'chat',
+          data: {
+            message: userMessage,
+            conversationHistory: messages,
+            sessionId: `session_${Date.now()}`
+          }
         }
       });
 
@@ -267,12 +270,12 @@ export function CascadeChat() {
           <Sparkles className="w-5 h-5 text-primary animate-pulse" />
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="font-semibold">Cascade AI</h3>
-              <span className="text-[10px] px-1.5 py-0.5 rounded bg-primary/20 text-primary">v2.0</span>
+              <h3 className="font-semibold">Cascade</h3>
+              <span className="text-[10px] px-1.5 py-0.5 rounded bg-primary/20 text-primary">substrate</span>
             </div>
             <div className="flex items-center gap-2">
               <p className="text-xs text-muted-foreground">
-                {mode === 'admin' ? 'Admin Mode' : 'Customer Service'}
+                promptfluid® cognitive interface
               </p>
               <ConnectionIndicator />
             </div>

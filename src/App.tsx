@@ -180,6 +180,7 @@ import BrainHub from "./pages/BrainHub";
 import InvestorsPublic from "./pages/InvestorsPublic";
 import Blog from "./pages/Blog";
 import FeedDreamEater from "./pages/FeedDreamEater";
+import SubstrateDashboard from "./pages/SubstrateDashboard";
 
 const queryClient = new QueryClient();
 
@@ -464,6 +465,9 @@ const App = () => {
           
           {/* Public Dream-Eater Feeding Page */}
           <Route path="/feed-dream-eater" element={<FeedDreamEater />} />
+          
+          {/* Substrate Dashboard */}
+          <Route path="/substrate" element={<SubstrateDashboard />} />
           
           <Route path="*" element={<NotFound />} />
         </Routes>
