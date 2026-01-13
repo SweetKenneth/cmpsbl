@@ -1,8 +1,13 @@
+/**
+ * promptfluid® Cascade Chat
+ * v2026.01 — User-facing interface to the cognitive substrate
+ */
+
 import { useState, useRef, useEffect, useCallback } from "react";
-import { MessageCircle, X, Send, Sparkles, RefreshCw, Wifi, WifiOff } from "lucide-react";
+import { MessageCircle, X, Send, Sparkles, RefreshCw, WifiOff } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { supabase } from "@/integrations/supabase/client";
+import { cascade, substrate } from "@/lib/substrate";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 
@@ -69,14 +74,10 @@ export function CascadeChat() {
     console.log(`🔄 Attempting connection recovery (attempt ${connection.retryCount + 1})...`);
     
     try {
-      // Ping the substrate for health check
-      const { data, error } = await supabase.functions.invoke('pf-substrate', {
-        body: {
-          module: 'status'
-        }
-      });
+      // Use substrate client for health check
+      const response = await substrate.invoke({ module: 'cascade', action: 'status' });
 
-      if (!error && data?.success) {
+      if (response.success) {
         setConnection({
           status: 'connected',
           lastSuccess: Date.now(),
@@ -93,7 +94,7 @@ export function CascadeChat() {
         status: 'degraded'
       }));
     }
-  }, [connection.retryCount, user?.email]);
+  }, [connection.retryCount]);
 
   const sendMessage = async (messageText?: string) => {
     const userMessage = messageText || input.trim();
@@ -105,20 +106,12 @@ export function CascadeChat() {
     setShowMenu(false);
 
     try {
-      // Use the unified substrate endpoint
-      const { data, error } = await supabase.functions.invoke('pf-substrate', {
-        body: {
-          module: 'cascade',
-          action: 'chat',
-          data: {
-            message: userMessage,
-            conversationHistory: messages,
-            sessionId: `session_${Date.now()}`
-          }
-        }
-      });
+      // Use the substrate client directly
+      const response = await cascade.chat(userMessage, `session_${Date.now()}`);
 
-      if (error) throw error;
+      if (!response.success) throw new Error(response.error || 'Chat failed');
+
+      const data = response.data as any;
 
       // Update connection state on success
       setConnection({
@@ -127,27 +120,27 @@ export function CascadeChat() {
         retryCount: 0
       });
 
-      if (data.mode) {
+      if (data?.mode) {
         setMode(data.mode);
       }
 
       setMessages(prev => [...prev, { 
         role: 'assistant', 
-        content: data.reply,
-        imageUrl: data.imageUrl,
-        generatedText: data.generatedText,
-        provider: data.provider,
-        healthScore: data.healthScore
+        content: data?.reply || 'I received your message.',
+        imageUrl: data?.imageUrl,
+        generatedText: data?.generatedText,
+        provider: data?.provider,
+        healthScore: data?.healthScore
       }]);
 
-      if (data.isAdmin) {
+      if (data?.isAdmin) {
         toast.success('Admin mode activated', {
-          description: 'Cascade recognizes you, Kenneth.'
+          description: 'Cascade recognizes you.'
         });
       }
 
       // Show provider info for admins
-      if (data.provider && mode === 'admin') {
+      if (data?.provider && mode === 'admin') {
         console.log(`📡 Response via ${data.provider} (health: ${data.healthScore}%)`);
       }
 

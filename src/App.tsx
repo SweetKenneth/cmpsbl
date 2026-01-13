@@ -1,3 +1,8 @@
+/**
+ * promptfluid® — Cognitive Orchestration Substrate
+ * v2026.01 — Main Application Entry
+ */
+
 import SystemAudit from "./pages/SystemAudit";
 import System from "./pages/System";
 import { Toaster } from "@/components/ui/toaster";
@@ -5,13 +10,11 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { useEffect, lazy, Suspense, useState, ReactNode } from "react";
-import { Header } from "./components/Header";
+import { useEffect, lazy, Suspense, ReactNode } from "react";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { SEOProvider } from "@/contexts/SEOContext";
-import { installDefenseSystem } from "./utils/defenseInit";
+import { SubstrateProvider } from "./components/substrate/SubstrateProvider";
 import { CascadeChat } from "./components/CascadeChat";
-import { initializeBrainSystem } from "./lib/initializeBrain";
 import { AdminLayout } from "./components/admin/AdminLayout";
 
 // Scroll to top on route change
@@ -197,14 +200,10 @@ const AdminPageWrapper = ({ children }: { children: ReactNode }) => {
 };
 
 const App = () => {
-  useEffect(() => {
-    installDefenseSystem();
-    initializeBrainSystem();
-  }, []);
-
   return (
     <QueryClientProvider client={queryClient}>
     <SEOProvider>
+      <SubstrateProvider autoInit={true}>
       <TooltipProvider>
         <Toaster />
         <Sonner />
@@ -475,6 +474,7 @@ const App = () => {
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
+    </SubstrateProvider>
     </SEOProvider>
   </QueryClientProvider>
   );
