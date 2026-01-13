@@ -305,6 +305,53 @@ export default function InvestorsPublic() {
         </div>
       </section>
 
+      {/* Substrate Publication Section */}
+      <section className={`relative z-10 container mx-auto px-6 py-16 transition-all duration-1000 delay-550 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <Card className="p-8 bg-card/60 backdrop-blur border-border/50 max-w-5xl mx-auto">
+          <div className="flex items-center gap-3 mb-4">
+            <FileText className="w-6 h-6 text-primary" />
+            <Badge className="bg-primary/10 text-primary border-primary/30">
+              January 2026
+            </Badge>
+          </div>
+          
+          <h2 className="text-2xl md:text-3xl font-semibold mb-4 text-foreground">
+            Substrate Publication & Research Artifact
+          </h2>
+          
+          <p className="text-muted-foreground mb-6 leading-relaxed">
+            In January 2026, the promptfluid substrate was formally published as a research artifact 
+            and indexed under a persistent DOI. This positions the substrate not merely as a product, 
+            but as a standards-bearing cognitive architecture suitable for enterprise, interoperability 
+            frameworks, and academic collaboration.
+          </p>
+          
+          <ul className="space-y-3 mb-8">
+            <li className="flex items-start gap-3 text-muted-foreground">
+              <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 shrink-0" />
+              <span>Establishes substrate as a definable category object</span>
+            </li>
+            <li className="flex items-start gap-3 text-muted-foreground">
+              <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 shrink-0" />
+              <span>Enables academic + enterprise cross-validation</span>
+            </li>
+            <li className="flex items-start gap-3 text-muted-foreground">
+              <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 shrink-0" />
+              <span>Increases acquisition value by standardizing the spec surface</span>
+            </li>
+          </ul>
+          
+          <div className="flex flex-wrap gap-3">
+            <Button onClick={() => navigate('/publication')}>
+              View DOI
+            </Button>
+            <Button variant="outline" onClick={() => navigate('/substrate')}>
+              Technical Spec
+            </Button>
+          </div>
+        </Card>
+      </section>
+
       {/* CTA Section */}
       <section className={`relative z-10 container mx-auto px-6 py-20 transition-all duration-1000 delay-600 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="max-w-3xl mx-auto text-center">
