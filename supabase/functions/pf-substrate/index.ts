@@ -587,7 +587,7 @@ async function handleVision(
         metrics: {
           brain_memories: memoryCount || 0,
           defense_events: eventCount || 0,
-          cascade_conversations: conversationCount || 0,
+          decode_conversations: conversationCount || 0,
           timestamp: new Date().toISOString(),
         },
       }, headers);
@@ -595,7 +595,7 @@ async function handleVision(
 
     case "status": {
       // Vision status is same as health check
-      const checks = { brain: false, defense: false, cascade: false };
+      const checks = { brain: false, defense: false, decode: false };
 
       try {
         const { count } = await supabase.from("brain_memories").select("*", { count: "exact", head: true });
@@ -609,7 +609,7 @@ async function handleVision(
 
       try {
         const { count } = await supabase.from("cascade_conversations").select("*", { count: "exact", head: true });
-        checks.cascade = true;
+        checks.decode = true;
       } catch {}
 
       return jsonResponse({
