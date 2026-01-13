@@ -16,9 +16,9 @@ export function EnhancedFooter() {
             <Link to="/investors" className="hover:text-foreground transition-colors">
               Investors
             </Link>
-            <a href="mailto:promptfluid@gmail.com" className="hover:text-foreground transition-colors">
+            <Link to="/contact" className="hover:text-foreground transition-colors">
               Contact
-            </a>
+            </Link>
           </nav>
         </div>
       </div>
