@@ -5,7 +5,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Brain, MessageSquare, Shield, Zap, Eye } from 'lucide-react';
+import { Brain, MessageSquare, Shield, Zap, Eye, Moon, Settings } from 'lucide-react';
 import { SubstrateModule } from '@/lib/substrate';
 
 interface ModuleCardProps {
@@ -53,6 +53,18 @@ const moduleConfig: Record<SubstrateModule, {
     label: 'Vision',
     description: 'Observability, metrics',
     color: 'text-green-500',
+  },
+  dream: {
+    icon: Moon,
+    label: 'Dream',
+    description: 'Dream-Eater operations',
+    color: 'text-indigo-500',
+  },
+  system: {
+    icon: Settings,
+    label: 'System',
+    description: 'Administration, config',
+    color: 'text-gray-500',
   },
 };
 
