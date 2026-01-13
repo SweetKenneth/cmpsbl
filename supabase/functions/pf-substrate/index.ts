@@ -4,7 +4,7 @@
  * 
  * Modules:
  * - brain: Memory, learning cycles, reflection
- * - cascade: User-facing conversational interface
+ * - decode: Intent decoding, cognitive interface
  * - defense: Bot detection, threat analysis
  * - nexus: Multi-provider AI routing
  * - vision: Observability, metrics, health
@@ -78,8 +78,9 @@ serve(async (req) => {
       case "brain":
         return await handleBrain(supabase, action, params, corsHeaders);
       
-      case "cascade":
-        return await handleCascade(supabase, action, params, req, corsHeaders);
+      case "decode":
+      case "cascade": // backwards compatibility
+        return await handleDecode(supabase, action, params, req, corsHeaders);
       
       case "defense":
         return await handleDefense(supabase, action, params, corsHeaders);
@@ -97,7 +98,7 @@ serve(async (req) => {
             substrate: "promptfluid®",
             version: SUBSTRATE_VERSION,
             type: "Cognitive Orchestration Substrate",
-            modules: ["brain", "cascade", "defense", "nexus", "vision"],
+            modules: ["brain", "decode", "defense", "nexus", "vision"],
             status: "operational",
             timestamp: new Date().toISOString(),
             latency_ms: Date.now() - startTime,
@@ -250,11 +251,11 @@ async function handleBrain(
 }
 
 // ═══════════════════════════════════════════════════════════════
-// CASCADE MODULE — User-Facing Conversational Interface
+// DECODE MODULE — Intent Decoding & Cognitive Interface
 // ═══════════════════════════════════════════════════════════════
 
 // deno-lint-ignore no-explicit-any
-async function handleCascade(
+async function handleDecode(
   supabase: any,
   action: string,
   data: Record<string, any>,
@@ -265,7 +266,7 @@ async function handleCascade(
     case "chat": {
       const { message, conversationHistory = [], sessionId } = data;
       
-      const systemPrompt = `You are Cascade, the user-facing interface of the promptfluid® cognitive orchestration substrate. 
+      const systemPrompt = `You are Decode, the cognitive interface of the promptfluid® substrate. 
       
 promptfluid® provides routing, memory, learning cycles, observability, defense, and execution coordination for AI systems. It is model-agnostic, provider-agnostic, and runs on commodity cloud.
 
@@ -291,7 +292,7 @@ Be helpful, concise, and guide users to explore the substrate capabilities. Keep
     }
 
     case "learn": {
-      // Cascade learns from user interaction
+      // Decode learns from user interaction
       const { content, source = "user_interaction" } = data;
       
       const { data: memory, error } = await supabase
@@ -320,7 +321,7 @@ Be helpful, concise, and guide users to explore the substrate capabilities. Keep
 
       return jsonResponse({
         success: true,
-        module: "cascade",
+        module: "decode",
         stats: {
           conversations: conversationCount || 0,
           dreams: dreamCount || 0,
@@ -344,7 +345,7 @@ Be helpful, concise, and guide users to explore the substrate capabilities. Keep
     }
 
     default:
-      throw new Error(`Unknown cascade action: ${action}`);
+      throw new Error(`Unknown decode action: ${action}`);
   }
 }
 

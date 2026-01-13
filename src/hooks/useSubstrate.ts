@@ -51,14 +51,14 @@ export function useBrainRecall() {
   return useSubstrateMutation('brain', 'recall');
 }
 
-// Cascade hooks
-export function useCascadeStatus() {
-  return useSubstrateQuery('cascade', 'status', undefined, { refetchInterval: 30000 });
+// Decode hooks
+export function useDecodeStatus() {
+  return useSubstrateQuery('decode', 'status', undefined, { refetchInterval: 30000 });
 }
 
-export function useCascadeChat() {
+export function useDecodeChat() {
   const [messages, setMessages] = useState<Array<{ role: 'user' | 'assistant'; content: string }>>([]);
-  const mutation = useSubstrateMutation<{ reply: string }>('cascade', 'chat');
+  const mutation = useSubstrateMutation<{ reply: string }>('decode', 'chat');
 
   const sendMessage = useCallback(async (message: string, sessionId?: string) => {
     setMessages(prev => [...prev, { role: 'user', content: message }]);
@@ -81,8 +81,8 @@ export function useCascadeChat() {
   };
 }
 
-export function useCascadeDream() {
-  return useSubstrateMutation('cascade', 'dream');
+export function useDecodeDream() {
+  return useSubstrateMutation('decode', 'dream');
 }
 
 // Defense hooks
@@ -127,17 +127,17 @@ export function useVisionLogs(module?: SubstrateModule, limit?: number) {
 // Combined substrate health
 export function useSubstrateHealth() {
   const brain = useBrainStatus();
-  const cascade = useCascadeStatus();
+  const decode = useDecodeStatus();
   const defense = useDefenseStatus();
   const nexus = useNexusStatus();
   const vision = useVisionHealth();
 
-  const isLoading = brain.isLoading || cascade.isLoading || defense.isLoading || nexus.isLoading || vision.isLoading;
-  const isError = brain.isError || cascade.isError || defense.isError || nexus.isError || vision.isError;
+  const isLoading = brain.isLoading || decode.isLoading || defense.isLoading || nexus.isLoading || vision.isLoading;
+  const isError = brain.isError || decode.isError || defense.isError || nexus.isError || vision.isError;
 
   const modules = {
     brain: brain.data,
-    cascade: cascade.data,
+    decode: decode.data,
     defense: defense.data,
     nexus: nexus.data,
     vision: vision.data,
@@ -152,7 +152,7 @@ export function useSubstrateHealth() {
     healthScore,
     refetch: () => {
       brain.refetch();
-      cascade.refetch();
+      decode.refetch();
       defense.refetch();
       nexus.refetch();
       vision.refetch();

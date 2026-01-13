@@ -14,7 +14,7 @@ import { useEffect, lazy, Suspense, ReactNode } from "react";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { SEOProvider } from "@/contexts/SEOContext";
 import { SubstrateProvider } from "./components/substrate/SubstrateProvider";
-import { CascadeChat } from "./components/CascadeChat";
+import { DecodeChat } from "./components/CascadeChat";
 import { AdminLayout } from "./components/admin/AdminLayout";
 
 // Scroll to top on route change
@@ -210,7 +210,7 @@ const App = () => {
         <BrowserRouter>
           <ScrollToTop />
           <AuthProvider>
-          <CascadeChat />
+          <DecodeChat />
           <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<Index />} />

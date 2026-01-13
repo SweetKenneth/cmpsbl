@@ -31,7 +31,7 @@ const SubstrateContext = createContext<SubstrateContextType>({
   initialized: false,
   modules: {
     brain: defaultModuleStatus,
-    cascade: defaultModuleStatus,
+    decode: defaultModuleStatus,
     defense: defaultModuleStatus,
     nexus: defaultModuleStatus,
     vision: defaultModuleStatus,
@@ -53,7 +53,7 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
   const [initialized, setInitialized] = useState(false);
   const [modules, setModules] = useState<Record<SubstrateModule, ModuleStatus>>({
     brain: defaultModuleStatus,
-    cascade: defaultModuleStatus,
+    decode: defaultModuleStatus,
     defense: defaultModuleStatus,
     nexus: defaultModuleStatus,
     vision: defaultModuleStatus,
@@ -77,7 +77,7 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
   };
 
   const refresh = async () => {
-    const moduleList: SubstrateModule[] = ['brain', 'cascade', 'defense', 'nexus', 'vision'];
+    const moduleList: SubstrateModule[] = ['brain', 'decode', 'defense', 'nexus', 'vision'];
     const results = await Promise.all(moduleList.map(checkModule));
     
     const newModules = moduleList.reduce((acc, module, index) => {

@@ -20,13 +20,13 @@ export default function Index() {
       metrics: ["Memory Persistence", "Dream Cycles", "Pattern Learning"]
     },
     {
-      id: "cascade",
-      name: "Cascade",
-      tagline: "User Interface",
-      description: "Natural language interface that routes through the substrate. Context-aware responses powered by memory and real-time learning.",
+      id: "decode",
+      name: "Decode",
+      tagline: "Cognitive Interface",
+      description: "Natural language interface that decodes intent and routes through the substrate. Context-aware responses powered by memory and real-time learning.",
       icon: Sparkles,
       color: "primary",
-      metrics: ["Context Routing", "Intent Detection", "Session Memory"]
+      metrics: ["Intent Decoding", "Context Routing", "Session Memory"]
     },
     {
       id: "defense",
@@ -59,7 +59,7 @@ export default function Index() {
 
   const acquisitionHighlights = [
     { metric: "First", label: "AI Substrate Architecture", detail: "Category-defining" },
-    { metric: "5", label: "Integrated Modules", detail: "Brain • Cascade • Defense • Nexus • Vision" },
+    { metric: "5", label: "Integrated Modules", detail: "Brain • Decode • Defense • Nexus • Vision" },
     { metric: "100+", label: "Projects Shipped", detail: "15 years experience" },
     { metric: "Live", label: "Production Systems", detail: "Running infrastructure" },
   ];
