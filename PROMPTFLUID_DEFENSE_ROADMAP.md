@@ -299,8 +299,8 @@ The Defense Brain learning architecture becomes the foundation for:
 
 ## Contact & Support
 
-**Email:** PromptFluid@gmail.com  
-**Phone:** (760) 358-4324 | (760) FLUID-AI  
+**Email:** promptfluid@gmail.com  
+**Phone:** (760) FLUID-AI  
 **Website:** https://www.promptfluid.com/products/defense  
 **Documentation:** https://docs.promptfluid.com/defense
 

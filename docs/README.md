@@ -124,12 +124,12 @@ docs/
 - **Year 10 (2035):** $460M (Realistic scenario)
 
 ## 📞 Contact
-- **Email:** PromptFluid@gmail.com
+- **Email:** promptfluid@gmail.com
 - **Website:** https://www.promptfluid.com
-- **Phone:** (760) 358-4324
+- **Phone:** (760) FLUID-AI
 
 ---
 
 **Last Updated:** November 6, 2025  
-**Maintained By:** Kenneth Sese (Founder)  
+**Maintained By:** Kenneth E Sweet Jr (Founder)  
 **AI Architect:** Lovable (Project Documentation)

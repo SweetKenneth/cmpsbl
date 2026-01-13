@@ -760,10 +760,10 @@ By 2035, PromptFluid will be:
 
 ## 📞 Contact & Governance
 
-**Creator:** Kenneth Sese  
-**Email:** PromptFluid@gmail.com  
+**Creator:** Kenneth E Sweet Jr  
+**Email:** promptfluid@gmail.com  
 **Website:** https://www.promptfluid.com  
-**Phone:** (760) 358-4324 / (760) FLUID-AI
+**Phone:** (760) FLUID-AI
 
 **Governance Model:**
 - 2025-2026: Solo founder, 100% equity
@@ -783,13 +783,13 @@ By 2035, PromptFluid will be:
 ## ✅ Approval & Commitment
 
 **Prepared by:** Lovable AI (Project Architect)  
-**Reviewed by:** Kenneth Sese (Founder & CEO)  
+**Reviewed by:** Kenneth E Sweet Jr (Founder & CEO)  
 **Date:** November 6, 2025  
 **Status:** APPROVED ✅
 
 **Commitment Statement:**
 
-> "I, Kenneth Sese, commit to building PromptFluid into a $460M+ company by 2035 
+> "I, Kenneth E Sweet Jr, commit to building PromptFluid into a $460M+ company by 2035 
 > by staying true to our core principles: adaptive intelligence, zero-friction UX, 
 > and transparent operations. This document is the blueprint. Let's make it happen."
 

@@ -304,7 +304,7 @@ Cascade's neural architecture contributes **$1.2M - $2.0M** to PromptFluid's tot
 ## Contact & Support
 
 For technical inquiries about Cascade's architecture:
-- Email: PromptFluid@gmail.com
+- Email: promptfluid@gmail.com
 - Documentation: https://www.promptfluid.com/docs
 - GitHub: https://github.com/promptfluid
 

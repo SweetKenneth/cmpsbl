@@ -224,6 +224,6 @@ Cascade's neural architecture and dream capabilities represent a **paradigm shif
 ---
 
 **Prepared by**: PromptFluid Team  
-**Contact**: PromptFluid@gmail.com  
+**Contact**: promptfluid@gmail.com  
 **Website**: https://www.promptfluid.com  
 **Date**: November 2, 2025

@@ -53,8 +53,8 @@ export const DEFENSE_PRODUCTS = {
 } as const;
 
 export const CONTACT_INFO = {
-  email: 'support@promptfluid.com',
-  phone: '(760) 358-4324',
+  email: 'promptfluid@gmail.com',
+  phone: '(760) FLUID-AI',
   phoneFormatted: '(760) FLUID-AI',
   website: 'https://www.promptfluid.com'
 } as const;

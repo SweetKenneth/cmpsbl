@@ -94,7 +94,7 @@ zip -r bot-sniper-1.0.0.zip . -x "*.git*" -x "*.DS_Store" -x "SUBMISSION_GUIDE.m
    - **Plugin Name**: PromptFluid Bot Sniper
    - **Plugin URI**: https://www.promptfluid.com/bot-sniper
    - **Author**: PromptFluid
-   - **Author Email**: PromptFluid@gmail.com
+   - **Author Email**: promptfluid@gmail.com
 4. Submit for review
 
 ### Step 4: Await Review
@@ -172,10 +172,10 @@ Wait 15 minutes, then check:
 
 ## Support Channels
 
-- **Email**: PromptFluid@gmail.com
+- **Email**: promptfluid@gmail.com
 - **Support Forum**: https://wordpress.org/support/plugin/bot-sniper/
 - **Website**: https://www.promptfluid.com/support
-- **Phone**: (760) 358-4324
+- **Phone**: (760) FLUID-AI
 
 ## Future Versions
 
@@ -208,9 +208,9 @@ Wait 15 minutes, then check:
 ## Contact
 
 **Plugin Author**: PromptFluid
-**Email**: PromptFluid@gmail.com
+**Email**: promptfluid@gmail.com
 **Website**: https://www.promptfluid.com
-**Phone**: (760) 358-4324
+**Phone**: (760) FLUID-AI
 
 ---
 

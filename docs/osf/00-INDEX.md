@@ -63,7 +63,7 @@ The ecosystem represents a novel approach to persistent AI memory systems ("Drea
 
 ```bibtex
 @software{promptfluid_ecosystem_2026,
-  author       = {Sese, Kenneth},
+  author       = {Sweet Jr, Kenneth E},
   title        = {{PromptFluid Ecosystem: Open Source AI Orchestration Substrate}},
   year         = 2026,
   publisher    = {Zenodo},
@@ -75,11 +75,11 @@ The ecosystem represents a novel approach to persistent AI memory systems ("Drea
 
 ### APA
 
-Sese, K. (2026). *PromptFluid Ecosystem: Open Source AI Orchestration Substrate* (Version 1.0.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.XXXXXXX
+Sweet Jr, K. E. (2026). *PromptFluid Ecosystem: Open Source AI Orchestration Substrate* (Version 1.0.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.XXXXXXX
 
 ### Chicago
 
-Sese, Kenneth. "PromptFluid Ecosystem: Open Source AI Orchestration Substrate." Version 1.0.0. Zenodo, 2026. https://doi.org/10.5281/zenodo.XXXXXXX.
+Sweet Jr, Kenneth E. "PromptFluid Ecosystem: Open Source AI Orchestration Substrate." Version 1.0.0. Zenodo, 2026. https://doi.org/10.5281/zenodo.XXXXXXX.
 
 ---
 
@@ -111,8 +111,8 @@ Current Version: **1.0.0**
 
 | Role | Name | Contact |
 |------|------|---------|
-| Founder & Principal Author | Kenneth Sese | kenneth@promptfluid.com |
-| Documentation Lead | PromptFluid Team | docs@promptfluid.com |
+| Founder & Principal Author | Kenneth E Sweet Jr | promptfluid@gmail.com |
+| Documentation Lead | PromptFluid Team | promptfluid@gmail.com |
 
 ---
 

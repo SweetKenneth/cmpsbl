@@ -217,7 +217,7 @@ export default function ThreatFeed() {
                   All access is monitored and logged. IP addresses and request metadata are retained for legal purposes. This service operates under U.S. federal jurisdiction with additional state-level protections.
                 </p>
                 <p className="text-xs text-muted-foreground mt-2 pt-2 border-t border-destructive/20">
-                  <strong>Authorized access inquiries:</strong> PromptFluid@gmail.com
+                  <strong>Authorized access inquiries:</strong> promptfluid@gmail.com
                 </p>
               </div>
             </div>
@@ -286,7 +286,7 @@ export default function ThreatFeed() {
                 Get PromptFluid Defense
               </a>
               <a
-                href="mailto:PromptFluid@gmail.com"
+                href="mailto:promptfluid@gmail.com"
                 className="inline-flex items-center justify-center rounded-md border border-input bg-background px-6 py-3 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
               >
                 Contact Support

@@ -227,9 +227,9 @@ Each plugin includes:
 
 ## 📞 Contact
 
-**Founder:** Kenneth Sese  
-**Email:** PromptFluid@gmail.com  
-**Phone:** (760) 358-4324 / (760) FLUID-AI  
+**Founder:** Kenneth E Sweet Jr  
+**Email:** promptfluid@gmail.com  
+**Phone:** (760) FLUID-AI  
 **Website:** https://www.promptfluid.com  
 
 ---

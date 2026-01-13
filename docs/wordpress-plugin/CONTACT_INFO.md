@@ -2,7 +2,7 @@
 
 ## Official Contact Email
 
-**PromptFluid@gmail.com**
+**promptfluid@gmail.com**
 
 This email address is used for all WordPress.org plugin submissions and support:
 - PromptFluid Reflex Bot Sniper Defense
@@ -11,7 +11,7 @@ This email address is used for all WordPress.org plugin submissions and support:
 ## Other Contact Methods
 
 - **Website**: https://www.promptfluid.com
-- **Phone**: (760) 358-4324 / (760) FLUID-AI
+- **Phone**: (760) FLUID-AI
 - **Support Hours**: Monday-Friday, 9 AM - 5 PM PST
 
 ## What to Include in Support Emails
@@ -32,7 +32,7 @@ This email address is used for all WordPress.org plugin submissions and support:
 - Priority level
 
 ### For Security Issues:
-**IMPORTANT**: Do NOT post security vulnerabilities publicly. Email directly to PromptFluid@gmail.com with:
+**IMPORTANT**: Do NOT post security vulnerabilities publicly. Email directly to promptfluid@gmail.com with:
 - Detailed vulnerability description
 - Steps to reproduce
 - Potential impact assessment

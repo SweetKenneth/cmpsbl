@@ -90,7 +90,7 @@ export function SEO({
       '@id': 'https://promptfluid.com/#founder',
       name: 'Kenneth E Sweet Jr',
       jobTitle: 'Founder & CEO',
-      email: 'PromptFluid@gmail.com',
+      email: 'promptfluid@gmail.com',
       url: 'https://promptfluid.com/about'
     },
     address: {
@@ -116,7 +116,7 @@ export function SEO({
       {
         '@type': 'ContactPoint',
         contactType: 'customer service',
-        email: 'PromptFluid@gmail.com',
+        email: 'promptfluid@gmail.com',
         telephone: '+1-760-358-4324',
         availableLanguage: ['English'],
         areaServed: 'Worldwide'
@@ -124,7 +124,7 @@ export function SEO({
       {
         '@type': 'ContactPoint',
         contactType: 'sales',
-        email: 'PromptFluid@gmail.com',
+        email: 'promptfluid@gmail.com',
         availableLanguage: ['English']
       }
     ],

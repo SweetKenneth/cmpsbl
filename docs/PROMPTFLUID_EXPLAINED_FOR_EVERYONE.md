@@ -572,8 +572,8 @@ Once customer uses 3+ products (Clarity + Defense + Studio), switching cost too 
 
 **The Opportunity:** Get in now at $12M-$18M valuation before WordPress plugins go live and market discovers this exists.
 
-**Created by:** Kenneth (solo founder)  
-**Contact:** PromptFluid@gmail.com  
+**Created by:** Kenneth E Sweet Jr (solo founder)  
+**Contact:** promptfluid@gmail.com  
 **Built with:** AI (Lovable), conversation as creation methodology
 
 ---
