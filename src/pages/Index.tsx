@@ -91,11 +91,17 @@ export default function Index() {
 
       {/* Ambient Background Layers */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        {/* Animated orbs */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-primary/10 blur-[100px] animate-float" />
+        {/* Base gradient overlay for light mode contrast */}
+        <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-primary/5" />
+        
+        {/* Animated orbs - more subtle in light mode */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-primary/8 dark:bg-primary/15 blur-[120px] animate-float" />
         <div 
-          className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full bg-violet-500/10 blur-[80px] animate-float" 
-          style={{ animationDelay: '2s', animationDuration: '6s' }} 
+          className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full bg-violet-500/8 dark:bg-violet-500/12 blur-[100px] animate-float" 
+          style={{ animationDelay: '2s', animationDuration: '8s' }} 
+        />
+        <div 
+          className="absolute top-1/2 right-1/3 w-64 h-64 rounded-full bg-primary/5 dark:bg-primary/10 blur-[80px] animate-ambient-pulse" 
         />
       </div>
 
@@ -145,7 +151,7 @@ export default function Index() {
             
             {/* Ambient greeting */}
             <p 
-              className={`text-sm text-muted-foreground/60 mb-8 transition-all duration-1000 delay-300 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+              className={`text-sm text-muted-foreground mb-8 transition-all duration-1000 delay-300 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
             >
               {greeting}
             </p>
@@ -157,12 +163,12 @@ export default function Index() {
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-foreground mb-6 leading-[1.1]">
                 Where machines learn
                 <br />
-                <span className="font-medium bg-gradient-to-r from-primary via-violet-400 to-primary bg-clip-text text-transparent animate-gradient bg-[length:200%_auto]">
+                <span className="font-medium bg-gradient-to-r from-primary via-violet-500 to-primary bg-clip-text text-transparent animate-gradient bg-[length:200%_auto]">
                   to dream
                 </span>
               </h1>
               
-              <p className="text-lg text-muted-foreground max-w-md mx-auto leading-relaxed">
+              <p className="text-lg text-muted-foreground/80 max-w-md mx-auto leading-relaxed">
                 An exploration of cognitive architecture, memory, and the quiet space between 
                 intention and understanding.
               </p>
@@ -220,17 +226,17 @@ export default function Index() {
             <div 
               className={`mt-16 flex items-center justify-center gap-8 transition-all duration-1000 delay-1000 ${showInterface ? 'opacity-100' : 'opacity-0'}`}
             >
-              <div className="flex items-center gap-2 text-muted-foreground/40">
+              <div className="flex items-center gap-2 text-muted-foreground/60">
                 <Eye className="w-3 h-3" />
-                <span className="text-xs">Observing</span>
+                <span className="text-xs font-medium">Observing</span>
               </div>
-              <div className="flex items-center gap-2 text-muted-foreground/40">
+              <div className="flex items-center gap-2 text-muted-foreground/60">
                 <Moon className="w-3 h-3" />
-                <span className="text-xs">Dreaming</span>
+                <span className="text-xs font-medium">Dreaming</span>
               </div>
-              <div className="flex items-center gap-2 text-muted-foreground/40">
+              <div className="flex items-center gap-2 text-muted-foreground/60">
                 <Sparkles className="w-3 h-3" />
-                <span className="text-xs">Learning</span>
+                <span className="text-xs font-medium">Learning</span>
               </div>
             </div>
           </div>
@@ -240,18 +246,18 @@ export default function Index() {
         <footer 
           className={`container mx-auto px-6 py-8 transition-all duration-1000 delay-1200 ${showInterface ? 'opacity-100' : 'opacity-0'}`}
         >
-          <div className="flex items-center justify-between text-xs text-muted-foreground/40">
+          <div className="flex items-center justify-between text-xs text-muted-foreground/60">
             <span>© 2026 promptfluid®</span>
             <div className="flex items-center gap-4">
               <button 
                 onClick={() => navigate('/privacy')}
-                className="hover:text-muted-foreground transition-colors"
+                className="hover:text-foreground transition-colors"
               >
                 Privacy
               </button>
               <button 
                 onClick={() => navigate('/terms')}
-                className="hover:text-muted-foreground transition-colors"
+                className="hover:text-foreground transition-colors"
               >
                 Terms
               </button>
