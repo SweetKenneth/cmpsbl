@@ -10,6 +10,7 @@ import { Input } from "./ui/input";
 import { decode, substrate } from "@/lib/substrate";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
+import { useLocation } from "react-router-dom";
 
 interface Message {
   role: 'user' | 'assistant';
@@ -27,6 +28,7 @@ interface ConnectionState {
 }
 
 export function DecodeChat() {
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     { role: 'assistant', content: '✨ Hello! I\'m Decode — the cognitive interface of the promptfluid® substrate.\n\nHow can I help you explore cognitive orchestration today?' }
@@ -43,6 +45,12 @@ export function DecodeChat() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { user } = useAuth();
+
+  // Hide on homepage and decode page - these have their own UI
+  const hiddenPaths = ['/', '/decode'];
+  if (hiddenPaths.includes(location.pathname)) {
+    return null;
+  }
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
