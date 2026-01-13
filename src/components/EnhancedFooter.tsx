@@ -1,18 +1,24 @@
 import { Link } from "react-router-dom";
+import { Layers, Mail, Phone } from "lucide-react";
 
 export function EnhancedFooter() {
   return (
     <footer className="relative z-20 py-16 px-4 border-t border-border bg-background" role="contentinfo">
       <div className="container mx-auto max-w-6xl">
         {/* Logo at Top */}
-        <div className="mb-12">
-          <Link to="/" className="inline-block">
+        <div className="mb-12 flex items-center gap-3">
+          <Link to="/" className="inline-flex items-center gap-3">
             <img 
               src="/favicon.png" 
               alt="promptfluid" 
-              className="h-12 w-12"
+              className="h-10 w-10"
             />
+            <span className="text-lg font-semibold text-foreground">promptfluid<sup className="text-xs">®</sup></span>
           </Link>
+          <span className="hidden md:inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground border border-border rounded-full px-2 py-0.5">
+            <Layers className="w-3 h-3" />
+            The AI Substrate
+          </span>
         </div>
 
         {/* Main Footer Grid */}
@@ -22,18 +28,18 @@ export function EnhancedFooter() {
             <h4 className="font-semibold mb-5 text-sm text-foreground tracking-wide">Substrate</h4>
             <ul className="space-y-3 text-sm">
               <li>
+                <Link to="/substrate" className="text-primary font-medium hover:text-primary/80 transition-colors">
+                  Dashboard →
+                </Link>
+              </li>
+              <li>
                 <Link to="/about" className="text-muted-foreground hover:text-foreground transition-colors">
                   About
                 </Link>
               </li>
               <li>
-                <Link to="/investors" className="text-primary font-medium hover:text-primary/80 transition-colors">
-                  Investors
-                </Link>
-              </li>
-              <li>
-                <Link to="/roadmap" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Roadmap
+                <Link to="/investors" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Acquisition
                 </Link>
               </li>
               <li>
@@ -49,18 +55,18 @@ export function EnhancedFooter() {
             <h4 className="font-semibold mb-5 text-sm text-foreground tracking-wide">Modules</h4>
             <ul className="space-y-3 text-sm">
               <li>
+                <Link to="/projects/brain" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Brain
+                </Link>
+              </li>
+              <li>
                 <Link to="/projects/defense" className="text-muted-foreground hover:text-foreground transition-colors">
                   Defense
                 </Link>
               </li>
               <li>
                 <Link to="/projects/clarity" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Clarity
-                </Link>
-              </li>
-              <li>
-                <Link to="/projects/brain" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Brain
+                  Vision
                 </Link>
               </li>
               <li>
@@ -81,22 +87,40 @@ export function EnhancedFooter() {
                 </Link>
               </li>
               <li>
-                <Link to="/solutions" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Solutions
+                <Link to="/documentation" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Documentation
                 </Link>
               </li>
               <li>
-                <Link to="/scan" className="text-primary font-medium hover:text-primary/80 transition-colors">
-                  Free Scan →
-                </Link>
+                <a href="https://PTCHBL.com" target="_blank" rel="noopener noreferrer" className="text-primary font-medium hover:text-primary/80 transition-colors">
+                  Try PTCHBL Free →
+                </a>
               </li>
             </ul>
           </div>
 
-          {/* Connect */}
+          {/* Contact */}
           <div>
-            <h4 className="font-semibold mb-5 text-sm text-foreground tracking-wide">Connect</h4>
+            <h4 className="font-semibold mb-5 text-sm text-foreground tracking-wide">Contact</h4>
             <ul className="space-y-3 text-sm">
+              <li>
+                <a 
+                  href="mailto:promptfluid@gmail.com" 
+                  className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
+                >
+                  <Mail className="w-3 h-3" />
+                  Email
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="tel:7603584324" 
+                  className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
+                >
+                  <Phone className="w-3 h-3" />
+                  (760) FLUID-AI
+                </a>
+              </li>
               <li>
                 <a 
                   href="https://twitter.com/promptfluid" 
@@ -117,24 +141,6 @@ export function EnhancedFooter() {
                   LinkedIn
                 </a>
               </li>
-              <li>
-                <a 
-                  href="https://github.com/promptfluid" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  GitHub
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="tel:7603584324" 
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  (760) FLUID-AI
-                </a>
-              </li>
             </ul>
           </div>
         </div>
@@ -143,7 +149,7 @@ export function EnhancedFooter() {
         <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-center md:text-left">
             <p className="text-sm text-muted-foreground">
-              © 2025-2026 promptfluid® — Cognitive Orchestration Substrate
+              © 2025-2026 promptfluid® — The AI Orchestration Substrate
             </p>
           </div>
           <div className="flex items-center gap-6 text-sm text-muted-foreground">
@@ -156,10 +162,11 @@ export function EnhancedFooter() {
           </div>
         </div>
 
-        {/* Licensing Notice */}
-        <div className="mt-8 text-center">
-          <p className="text-xs text-muted-foreground">
-            For ownership inquiries or licensing: promptfluid@gmail.com
+        {/* Acquisition Notice */}
+        <div className="mt-8 p-4 rounded-lg bg-muted/30 border border-border text-center">
+          <p className="text-sm text-muted-foreground">
+            <span className="font-medium text-foreground">Acquisition inquiries:</span>{" "}
+            <a href="mailto:promptfluid@gmail.com" className="text-primary hover:underline">promptfluid@gmail.com</a>
           </p>
         </div>
       </div>
