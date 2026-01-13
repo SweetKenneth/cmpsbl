@@ -204,10 +204,16 @@ const FeedDreamEater = () => {
                 POST https://bxodolqqczjuahwdrswy.supabase.co/functions/v1/dream-feeder-api
               </code>
               <p className="text-xs text-muted-foreground mt-2">
-                See documentation for request format and authentication details.
+                Content-Type: application/json required. No HTML allowed. Max 2000 chars.
+                Research Mode: classifier tags may be applied.
               </p>
             </CardContent>
           </Card>
+
+          {/* Safety Notice */}
+          <p className="text-center text-xs text-muted-foreground mt-6 opacity-70">
+            User-submitted dreams are sanitized for safety. Certain content may be classified for research tags.
+          </p>
         </div>
       </div>
     </>

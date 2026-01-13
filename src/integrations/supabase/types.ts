@@ -1508,40 +1508,97 @@ export type Database = {
       }
       dream_feeder_submissions: {
         Row: {
+          classification_tags: string[] | null
           created_at: string
           dream_content: string
           dream_type: string
           id: string
           is_processed: boolean | null
+          is_sanitized: boolean | null
           processed_at: string | null
+          raw_content: string | null
           sentiment_score: number | null
           source: string
           source_domain: string | null
+          source_ip: string | null
           submitter_name: string | null
+          user_agent: string | null
         }
         Insert: {
+          classification_tags?: string[] | null
           created_at?: string
           dream_content: string
           dream_type?: string
           id?: string
           is_processed?: boolean | null
+          is_sanitized?: boolean | null
           processed_at?: string | null
+          raw_content?: string | null
           sentiment_score?: number | null
           source?: string
           source_domain?: string | null
+          source_ip?: string | null
           submitter_name?: string | null
+          user_agent?: string | null
         }
         Update: {
+          classification_tags?: string[] | null
           created_at?: string
           dream_content?: string
           dream_type?: string
           id?: string
           is_processed?: boolean | null
+          is_sanitized?: boolean | null
           processed_at?: string | null
+          raw_content?: string | null
           sentiment_score?: number | null
           source?: string
           source_domain?: string | null
+          source_ip?: string | null
           submitter_name?: string | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
+      dream_ingestion_audit: {
+        Row: {
+          classification_tags: string[] | null
+          created_at: string
+          dream_type: string | null
+          id: string
+          raw_text: string
+          rejection_reason: string
+          request_headers: Json | null
+          risk_score: number | null
+          sanitized_text: string | null
+          source_ip: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          classification_tags?: string[] | null
+          created_at?: string
+          dream_type?: string | null
+          id?: string
+          raw_text: string
+          rejection_reason: string
+          request_headers?: Json | null
+          risk_score?: number | null
+          sanitized_text?: string | null
+          source_ip?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          classification_tags?: string[] | null
+          created_at?: string
+          dream_type?: string | null
+          id?: string
+          raw_text?: string
+          rejection_reason?: string
+          request_headers?: Json | null
+          risk_score?: number | null
+          sanitized_text?: string | null
+          source_ip?: string | null
+          user_agent?: string | null
         }
         Relationships: []
       }
@@ -1569,6 +1626,36 @@ export type Database = {
           metadata?: Json | null
           mode?: string
           seed?: number
+        }
+        Relationships: []
+      }
+      dream_rate_limits: {
+        Row: {
+          created_at: string
+          id: string
+          identifier: string
+          identifier_type: string
+          request_count: number | null
+          updated_at: string
+          window_start: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          identifier: string
+          identifier_type: string
+          request_count?: number | null
+          updated_at?: string
+          window_start?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          identifier?: string
+          identifier_type?: string
+          request_count?: number | null
+          updated_at?: string
+          window_start?: string
         }
         Relationships: []
       }
