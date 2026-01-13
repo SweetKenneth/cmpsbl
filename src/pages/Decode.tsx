@@ -8,7 +8,7 @@
  */
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { ArrowLeft, Send, Sparkles, RefreshCw, Brain, Shield, Eye, Layers, Activity } from "lucide-react";
+import { ArrowLeft, Send, Sparkles, RefreshCw, Eye, Layers, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { decode, substrate } from "@/lib/substrate";
@@ -212,9 +212,8 @@ export default function Decode() {
   };
 
   const substrateLinks = [
-    { label: 'Brain', description: 'Memory substrate', icon: Brain, path: '/brain-hub' },
-    { label: 'Defense', description: 'Security layer', icon: Shield, path: '/bot-sniper' },
-    { label: 'Vision', description: 'Observability', icon: Eye, path: '/admin/dashboard' },
+    { label: 'Dream', description: 'Feed dreams', icon: Sparkles, path: '/feed-dream-eater' },
+    { label: 'Read', description: 'Blog', icon: Eye, path: '/blog' },
     { label: 'Substrate', description: 'Full view', icon: Layers, path: '/substrate' },
   ];
 
