@@ -388,11 +388,23 @@
       }
     </script>
     
-    <!-- 2026 SEO: Inline Critical CSS hint -->
+    <!-- 2026 SEO: Inline Critical CSS for faster FCP -->
     <style>
-      /* Critical above-the-fold CSS for faster FCP */
-      body { margin: 0; font-family: 'Inter', system-ui, sans-serif; }
-      #root { min-height: 100vh; }
+      /* Critical above-the-fold CSS - renders before JS loads */
+      :root { --bg: #0A0B10; --fg: #ffffff; --primary: #7A5FFF; }
+      *, *::before, *::after { box-sizing: border-box; }
+      body { margin: 0; font-family: 'Inter', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--fg); -webkit-font-smoothing: antialiased; }
+      #root { min-height: 100vh; display: flex; flex-direction: column; }
+      /* Skeleton loader for faster perceived FCP */
+      #root:empty::before {
+        content: '';
+        display: block;
+        width: 100%;
+        height: 64px;
+        background: linear-gradient(90deg, transparent, rgba(122,95,255,0.1), transparent);
+        animation: shimmer 1.5s infinite;
+      }
+      @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
     </style>
   </head>
 
