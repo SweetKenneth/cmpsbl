@@ -48,9 +48,7 @@ export function DecodeChat() {
 
   // Hide on homepage and decode page - these have their own UI
   const hiddenPaths = ['/', '/decode'];
-  if (hiddenPaths.includes(location.pathname)) {
-    return null;
-  }
+  const shouldHide = hiddenPaths.includes(location.pathname);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -68,6 +66,11 @@ export function DecodeChat() {
       }
     };
   }, []);
+
+  // Return null AFTER all hooks have been called
+  if (shouldHide) {
+    return null;
+  }
 
   // Self-healing connection recovery
   const attemptRecovery = useCallback(async () => {
