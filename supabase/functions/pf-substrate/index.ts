@@ -67,26 +67,28 @@ serve(async (req) => {
   );
 
   try {
-    const { module, action, data = {} } = await req.json();
+    const body = await req.json();
+    const { module, action, payload, data } = body;
+    const params = payload || data || {}; // Support both payload (client) and data (legacy)
 
     console.log(`⚡ substrate v${SUBSTRATE_VERSION} | ${module}/${action}`);
 
     // Route to appropriate module
     switch (module) {
       case "brain":
-        return await handleBrain(supabase, action, data, corsHeaders);
+        return await handleBrain(supabase, action, params, corsHeaders);
       
       case "cascade":
-        return await handleCascade(supabase, action, data, req, corsHeaders);
+        return await handleCascade(supabase, action, params, req, corsHeaders);
       
       case "defense":
-        return await handleDefense(supabase, action, data, corsHeaders);
+        return await handleDefense(supabase, action, params, corsHeaders);
       
       case "nexus":
-        return await handleNexus(action, data, corsHeaders);
+        return await handleNexus(supabase, action, params, corsHeaders);
       
       case "vision":
-        return await handleVision(supabase, action, data, corsHeaders);
+        return await handleVision(supabase, action, params, corsHeaders);
       
       case "status":
         return new Response(
@@ -307,6 +309,40 @@ Be helpful, concise, and guide users to explore the substrate capabilities. Keep
       return jsonResponse({ success: true, learned: true, memory_id: memory?.id }, headers);
     }
 
+    case "status": {
+      const { count: conversationCount } = await supabase
+        .from("cascade_conversations")
+        .select("*", { count: "exact", head: true });
+
+      const { count: dreamCount } = await supabase
+        .from("cascade_dreams")
+        .select("*", { count: "exact", head: true });
+
+      return jsonResponse({
+        success: true,
+        module: "cascade",
+        stats: {
+          conversations: conversationCount || 0,
+          dreams: dreamCount || 0,
+        },
+      }, headers);
+    }
+
+    case "dream": {
+      const { data: dream, error } = await supabase
+        .from("cascade_dreams")
+        .insert({
+          dream_text: "Autonomous dream cycle initiated",
+          mood: "contemplative",
+          insight: "Processing substrate patterns",
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+      return jsonResponse({ success: true, dream }, headers);
+    }
+
     default:
       throw new Error(`Unknown cascade action: ${action}`);
   }
@@ -435,7 +471,9 @@ async function handleDefense(
 // NEXUS MODULE — Multi-Provider AI Routing
 // ═══════════════════════════════════════════════════════════════
 
+// deno-lint-ignore no-explicit-any
 async function handleNexus(
+  supabase: any,
   action: string,
   data: Record<string, any>,
   headers: Record<string, string>
@@ -531,8 +569,6 @@ async function handleVision(
     }
 
     case "metrics": {
-      const today = new Date().toISOString().split("T")[0];
-      
       const { count: memoryCount } = await supabase
         .from("brain_memories")
         .select("*", { count: "exact", head: true });
@@ -553,6 +589,48 @@ async function handleVision(
           cascade_conversations: conversationCount || 0,
           timestamp: new Date().toISOString(),
         },
+      }, headers);
+    }
+
+    case "status": {
+      // Vision status is same as health check
+      const checks = { brain: false, defense: false, cascade: false };
+
+      try {
+        const { count } = await supabase.from("brain_memories").select("*", { count: "exact", head: true });
+        checks.brain = true;
+      } catch {}
+
+      try {
+        const { count } = await supabase.from("defense_events").select("*", { count: "exact", head: true });
+        checks.defense = true;
+      } catch {}
+
+      try {
+        const { count } = await supabase.from("cascade_conversations").select("*", { count: "exact", head: true });
+        checks.cascade = true;
+      } catch {}
+
+      return jsonResponse({
+        success: true,
+        module: "vision",
+        healthy: Object.values(checks).every(v => v),
+        checks,
+      }, headers);
+    }
+
+    case "logs": {
+      const { module: targetModule, limit = 20 } = data;
+      
+      const { data: events } = await supabase
+        .from("brain_events")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(limit as number);
+
+      return jsonResponse({
+        success: true,
+        logs: events || [],
       }, headers);
     }
 
