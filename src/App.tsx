@@ -12,7 +12,6 @@ import { useEffect, lazy, Suspense } from "react";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { SEOProvider } from "@/contexts/SEOContext";
 import { SubstrateProvider } from "./components/substrate/SubstrateProvider";
-import { DecodeChat } from "./components/DecodeChat";
 
 // Scroll to top on route change
 const ScrollToTop = () => {
@@ -99,7 +98,6 @@ const App = () => {
             <BrowserRouter>
               <ScrollToTop />
               <AuthProvider>
-                <DecodeChat />
                 <Suspense fallback={<PageLoader />}>
                   <Routes>
                     {/* Core Public Pages */}
