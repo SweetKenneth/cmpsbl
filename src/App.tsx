@@ -43,6 +43,7 @@ const Terms = lazy(() => import("./pages/Terms"));
 const InvestorsPublic = lazy(() => import("./pages/InvestorsPublic"));
 const SubstrateDashboard = lazy(() => import("./pages/SubstrateDashboard"));
 const Documentation = lazy(() => import("./pages/Documentation"));
+const Publication = lazy(() => import("./pages/Publication"));
 
 // Marketing / Info pages
 const About = lazy(() => import("./pages/About"));
@@ -107,6 +108,7 @@ const App = () => {
                     <Route path="/blog" element={<Blog />} />
                     <Route path="/investors" element={<InvestorsPublic />} />
                     <Route path="/substrate" element={<SubstrateDashboard />} />
+                    <Route path="/publication" element={<Publication />} />
                     <Route path="/documentation" element={<Documentation />} />
 
                     {/* Marketing / Info */}

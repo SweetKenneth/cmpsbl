@@ -6,7 +6,13 @@ export function EnhancedFooter() {
       <div className="container mx-auto max-w-6xl">
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
           <p>© 2025-2026 promptfluid®</p>
-          <nav className="flex items-center gap-6">
+          <nav className="flex flex-wrap items-center justify-center gap-4 md:gap-6">
+            <Link to="/substrate" className="hover:text-foreground transition-colors">
+              Substrate
+            </Link>
+            <Link to="/publication" className="hover:text-foreground transition-colors">
+              DOI
+            </Link>
             <Link to="/privacy" className="hover:text-foreground transition-colors">
               Privacy
             </Link>
