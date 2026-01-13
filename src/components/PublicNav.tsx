@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowRight, Menu, X } from "lucide-react";
+import { ArrowRight, Menu, X, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/promptfluid-logo.png";
 
@@ -9,11 +9,10 @@ export function PublicNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
-    { name: "Home", href: "/" },
+    { name: "Substrate", href: "/substrate", highlight: true },
     { name: "Modules", href: "/projects" },
-    { name: "Solutions", href: "/solutions" },
     { name: "Blog", href: "/blog" },
-    { name: "Investors", href: "/investors", highlight: true },
+    { name: "Investors", href: "/investors" },
     { name: "About", href: "/about" },
   ];
 
@@ -21,7 +20,7 @@ export function PublicNav() {
     <>
       {/* Desktop Navigation */}
       <nav
-        className="relative z-[10000] bg-black container mx-auto px-4 py-[5px] md:py-4"
+        className="relative z-[10000] bg-background/95 backdrop-blur-sm border-b border-border/50 container mx-auto px-4 py-3 md:py-4"
         role="navigation"
         aria-label="Main navigation"
       >
@@ -31,8 +30,12 @@ export function PublicNav() {
             <img
               src={logo}
               alt="promptfluid logo"
-              className="h-10 lg:h-14 w-auto object-contain"
+              className="h-8 lg:h-10 w-auto object-contain"
             />
+            <span className="hidden md:inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground border border-border rounded-full px-2 py-0.5">
+              <Layers className="w-3 h-3" />
+              substrate
+            </span>
           </Link>
 
           {/* Desktop Menu */}
@@ -44,7 +47,7 @@ export function PublicNav() {
                 className={`text-sm font-medium transition-colors ${
                   item.highlight 
                     ? "text-primary hover:text-primary/80" 
-                    : "text-white/70 hover:text-white"
+                    : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {item.name}
@@ -53,10 +56,10 @@ export function PublicNav() {
           </div>
 
           {/* CTA & Mobile Toggle */}
-          <div className="flex items-center gap-4">
-            <Link to="/scan" className="hidden sm:block">
-              <Button variant="outline" size="sm">
-                Free Scan
+          <div className="flex items-center gap-3">
+            <Link to="/investors" className="hidden sm:block">
+              <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+                Acquisition
               </Button>
             </Link>
             <Button
@@ -69,11 +72,11 @@ export function PublicNav() {
             </Button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-lg hover:bg-white/10 transition-colors"
+              className="lg:hidden p-2 rounded-lg hover:bg-muted transition-colors"
               aria-label="Toggle menu"
               aria-expanded={mobileMenuOpen}
             >
-              {mobileMenuOpen ? <X className="w-5 h-5 text-white" /> : <Menu className="w-5 h-5 text-white" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
@@ -88,7 +91,7 @@ export function PublicNav() {
             aria-hidden="true"
           />
           <div 
-            className="fixed top-16 left-0 right-0 z-[9999] lg:hidden bg-background border-t border-border shadow-lg"
+            className="fixed top-16 left-0 right-0 z-[9999] lg:hidden bg-background border-b border-border shadow-lg"
             role="dialog"
             aria-modal="true"
           >
@@ -110,9 +113,9 @@ export function PublicNav() {
                 ))}
                 
                 <div className="border-t border-border mt-4 pt-4 flex flex-col gap-3">
-                  <Link to="/scan" onClick={() => setMobileMenuOpen(false)}>
+                  <Link to="/investors" onClick={() => setMobileMenuOpen(false)}>
                     <Button variant="outline" className="w-full">
-                      Free Scan
+                      Acquisition Inquiry
                     </Button>
                   </Link>
                   <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>

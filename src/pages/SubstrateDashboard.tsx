@@ -11,7 +11,7 @@
  */
 
 import { useState, useEffect } from "react";
-import { Brain, Shield, MessageSquare, Zap, Eye, Activity, RefreshCw, CheckCircle2, AlertTriangle } from "lucide-react";
+import { Brain, Shield, MessageSquare, Zap, Eye, Activity, RefreshCw, CheckCircle2, AlertTriangle, Layers, ArrowRight, Network } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -22,6 +22,7 @@ import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { toast } from "sonner";
+import { Link } from "react-router-dom";
 
 interface SubstrateStatus {
   healthy: boolean;
@@ -134,25 +135,38 @@ export default function SubstrateDashboard() {
 
       <PublicNav />
 
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-12">
         {/* Header */}
-        <div className="mb-8">
+        <div className="max-w-6xl mx-auto mb-12">
+          <Badge variant="outline" className="mb-4 border-primary/30 text-primary">
+            <Layers className="w-3 h-3 mr-2" />
+            Live Infrastructure
+          </Badge>
           <div className="flex items-center gap-4 mb-4">
-            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-              <Activity className="w-6 h-6 text-primary" />
+            <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center">
+              <Activity className="w-7 h-7 text-primary" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold">promptfluid® substrate</h1>
+              <h1 className="text-4xl font-bold">promptfluid® substrate</h1>
               <p className="text-muted-foreground">v2026.01 — Cognitive Orchestration Substrate</p>
             </div>
           </div>
           
-          <p className="text-muted-foreground max-w-3xl">
-            A cognitive orchestration substrate that provides routing, memory, learning cycles, 
-            observability, defense, and execution coordination for AI systems. Model-agnostic. 
-            Provider-agnostic. Runs on commodity cloud.
+          <p className="text-lg text-muted-foreground max-w-3xl mb-6">
+            Unified control center for the AI orchestration substrate. All five modules accessible through one endpoint.
           </p>
+          
+          <div className="flex gap-3">
+            <Link to="/investors">
+              <Button variant="outline" size="sm" className="gap-2">
+                Acquisition Info
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </Link>
+          </div>
         </div>
+
+        <div className="max-w-6xl mx-auto">
 
         {/* Status Bar */}
         <Card className="p-6 mb-8 border-primary/20">
@@ -333,6 +347,7 @@ export default function SubstrateDashboard() {
             <span><strong>Phone:</strong> (760) FLUID-AI</span>
           </div>
         </Card>
+        </div>
       </main>
 
       <EnhancedFooter />
