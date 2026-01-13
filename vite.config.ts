@@ -15,7 +15,7 @@ export default defineConfig(({ mode }) => ({
     mode === "development" && componentTagger(),
     VitePWA({
       registerType: "autoUpdate",
-      injectRegister: "auto", // Inline SW registration to avoid render-blocking script trigger to test sw timing
+      injectRegister: false, // Disable auto-injection to manually defer SW registration
       includeAssets: ["favicon.png", "pwa-192x192.png", "pwa-512x512.png", "apple-touch-icon.png"],
       manifest: {
         name: "PromptFluid",
@@ -41,7 +41,6 @@ export default defineConfig(({ mode }) => ({
         ],
       },
       workbox: {
-        // Reduce initial SW overhead
         skipWaiting: true,
         clientsClaim: true,
       },
