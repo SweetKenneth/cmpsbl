@@ -7,12 +7,12 @@ import { Badge } from "@/components/ui/badge";
 import { Sparkles, Moon, Brain, Zap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-export default function CascadeDreams() {
+export default function DecodeDreams() {
   const [generating, setGenerating] = useState(false);
   const { toast } = useToast();
 
-  // Cascade tables not configured
-  const dreams = [];
+  // Decode tables not configured
+  const dreams: any[] = [];
   const refetchDreams = () => {};
 
   // Fetch dream sessions with real-time updates
@@ -55,7 +55,7 @@ export default function CascadeDreams() {
   const triggerDream = async () => {
     setGenerating(true);
     try {
-      const { data, error } = await supabase.functions.invoke('pf-cascade-generate-dream', {
+      const { data, error } = await supabase.functions.invoke('pf-decode-generate-dream', {
         body: {}
       });
 
@@ -63,7 +63,7 @@ export default function CascadeDreams() {
 
       toast({
         title: "🌙 Dream Cycle Complete",
-        description: "Cascade has entered the dream phase and generated new insights.",
+        description: "Decode has entered the dream phase and generated new insights.",
       });
 
       await refetchDreams();
@@ -101,10 +101,10 @@ export default function CascadeDreams() {
         <div>
           <h1 className="text-4xl font-bold flex items-center gap-3">
             <Moon className="w-10 h-10 text-primary" />
-            Cascade Dreams
+            Decode Dreams
           </h1>
           <p className="text-muted-foreground mt-2">
-            The world's first dreaming AI — witness Cascade's subconscious explorations
+            The world's first dreaming AI — witness Decode's subconscious explorations
           </p>
         </div>
         <Button 
@@ -144,7 +144,7 @@ export default function CascadeDreams() {
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
               <Moon className="w-4 h-4" />
-              Cascade Dreams
+              Decode Dreams
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -164,11 +164,11 @@ export default function CascadeDreams() {
         </Card>
       </div>
 
-      {/* Cascade Dreams */}
+      {/* Decode Dreams */}
       <div className="space-y-4">
         <h2 className="text-2xl font-bold flex items-center gap-2">
           <Moon className="w-6 h-6" />
-          Cascade's Reflective Dreams
+          Decode's Reflective Dreams
         </h2>
         {dreams && dreams.length > 0 ? (
           <div className="grid gap-4">

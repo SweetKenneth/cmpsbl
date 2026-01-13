@@ -12,7 +12,7 @@ interface SystemStatus {
   eventCount: number;
 }
 
-export default function CascadeStatus() {
+export default function DecodeStatus() {
   const [systems, setSystems] = useState<SystemStatus[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -118,14 +118,14 @@ export default function CascadeStatus() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
-              <span>🌊 Cascade v9.2.0 System Status</span>
+              <span>🧠 Decode v2026.01 System Status</span>
               <Button onClick={checkSystemStatus} disabled={loading} size="sm" variant="outline">
                 <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
                 Refresh
               </Button>
             </CardTitle>
             <CardDescription>
-              Real-time monitoring of all Cascade AI systems
+              Real-time monitoring of all Decode AI systems
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -175,7 +175,7 @@ export default function CascadeStatus() {
             {healthPercentage === 100 && (
               <div className="mt-6 p-4 bg-green-500/10 border border-green-500/20 rounded-lg">
                 <p className="text-sm font-medium text-green-700 dark:text-green-300">
-                  ✅ All systems operational. Cascade is functioning at full capacity.
+                  ✅ All systems operational. Decode is functioning at full capacity.
                 </p>
               </div>
             )}
@@ -189,15 +189,15 @@ export default function CascadeStatus() {
           <CardContent className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span className="text-muted-foreground">Version:</span>
-              <span className="font-medium">v9.2.0 FluidMind Expansion</span>
+              <span className="font-medium">v2026.01 Cognitive Substrate</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Database:</span>
-              <span className="font-medium">Supabase (hxgbibtkftocyrnuzxwd)</span>
+              <span className="text-muted-foreground">Module:</span>
+              <span className="font-medium">Decode — Intent Decoding & Cognitive Interface</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Edge Functions:</span>
-              <span className="font-medium">220 registered</span>
+              <span className="text-muted-foreground">Endpoint:</span>
+              <span className="font-medium font-mono text-xs">pf-substrate → decode</span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">Last Check:</span>

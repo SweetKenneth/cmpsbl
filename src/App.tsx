@@ -14,7 +14,7 @@ import { useEffect, lazy, Suspense, ReactNode } from "react";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { SEOProvider } from "@/contexts/SEOContext";
 import { SubstrateProvider } from "./components/substrate/SubstrateProvider";
-import { DecodeChat } from "./components/CascadeChat";
+import { DecodeChat } from "./components/DecodeChat";
 import { AdminLayout } from "./components/admin/AdminLayout";
 
 // Scroll to top on route change
@@ -54,8 +54,8 @@ import ClarityDownload from "./pages/ClarityDownload";
 import Awake from "./pages/Awake";
 import Analytics from "./pages/Analytics";
 import BrainControl from "./pages/BrainControl";
-import CascadeControl from "./pages/CascadeControl";
-import CascadeCoder from "./pages/CascadeCoder";
+import DecodeControl from "./pages/DecodeControl";
+import DecodeCoder from "./pages/DecodeCoder";
 import RCKBL from "./pages/BotSniper";
 import RCKBLAnalytics from "./pages/BotSniperAnalytics";
 import RCKBLSettings from "./pages/BotSniperSettings";
@@ -176,9 +176,9 @@ import Investors from "./pages/Investors";
 import Partnerships from "./pages/Partnerships";
 import Marketing from "./pages/Marketing";
 import SystemInitializer from "./pages/SystemInitializer";
-import CascadeStatus from "./pages/CascadeStatus";
-import CascadeDreams from "./pages/CascadeDreams";
-import CascadeGovernance from "./pages/CascadeGovernance";
+import DecodeStatus from "./pages/DecodeStatus";
+import DecodeDreams from "./pages/DecodeDreams";
+import DecodeGovernance from "./pages/DecodeGovernance";
 import BrainHub from "./pages/BrainHub";
 import InvestorsPublic from "./pages/InvestorsPublic";
 import Blog from "./pages/Blog";
@@ -232,8 +232,8 @@ const App = () => {
           <Route path="/awake" element={<Awake />} />
           <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
           <Route path="/brain" element={<BrainControl />} />
-          <Route path="/cascade" element={<CascadeControl />} />
-          <Route path="/cascade/coder" element={<CascadeCoder />} />
+          <Route path="/decode" element={<DecodeControl />} />
+          <Route path="/decode/coder" element={<DecodeCoder />} />
           
           {/* RCKBL (Rockable) Product */}
           <Route path="/bot-sniper-home" element={<RCKBLHome />} />
@@ -405,9 +405,9 @@ const App = () => {
           <Route path="/admin/system-health" element={<AdminRoute><AdminPageWrapper><SystemHealth /></AdminPageWrapper></AdminRoute>} />
           <Route path="/admin/system-map" element={<AdminRoute><AdminPageWrapper><SystemMap /></AdminPageWrapper></AdminRoute>} />
           <Route path="/admin/system-initializer" element={<AdminRoute><AdminPageWrapper><SystemInitializer /></AdminPageWrapper></AdminRoute>} />
-          <Route path="/admin/cascade-status" element={<AdminRoute><AdminPageWrapper><CascadeStatus /></AdminPageWrapper></AdminRoute>} />
-          <Route path="/admin/cascade-dreams" element={<AdminRoute><AdminPageWrapper><CascadeDreams /></AdminPageWrapper></AdminRoute>} />
-          <Route path="/admin/cascade-governance" element={<AdminRoute><AdminPageWrapper><CascadeGovernance /></AdminPageWrapper></AdminRoute>} />
+          <Route path="/admin/decode-status" element={<AdminRoute><AdminPageWrapper><DecodeStatus /></AdminPageWrapper></AdminRoute>} />
+          <Route path="/admin/decode-dreams" element={<AdminRoute><AdminPageWrapper><DecodeDreams /></AdminPageWrapper></AdminRoute>} />
+          <Route path="/admin/decode-governance" element={<AdminRoute><AdminPageWrapper><DecodeGovernance /></AdminPageWrapper></AdminRoute>} />
           <Route path="/admin/audit" element={<AdminRoute><AdminPageWrapper><Audit /></AdminPageWrapper></AdminRoute>} />
           <Route path="/admin/creative-studio" element={<AdminRoute><AdminPageWrapper><CreativeStudio /></AdminPageWrapper></AdminRoute>} />
           <Route path="/admin/nexus" element={<AdminRoute><AdminPageWrapper><NexusAdmin /></AdminPageWrapper></AdminRoute>} />
@@ -416,9 +416,9 @@ const App = () => {
           <Route path="/system-health" element={<Navigate to="/admin/system-health" replace />} />
           <Route path="/system-map" element={<Navigate to="/admin/system-map" replace />} />
           <Route path="/system-initializer" element={<Navigate to="/admin/system-initializer" replace />} />
-          <Route path="/cascade-status" element={<Navigate to="/admin/cascade-status" replace />} />
-          <Route path="/cascade-dreams" element={<Navigate to="/admin/cascade-dreams" replace />} />
-          <Route path="/cascade-governance" element={<Navigate to="/admin/cascade-governance" replace />} />
+          <Route path="/cascade-status" element={<Navigate to="/admin/decode-status" replace />} />
+          <Route path="/cascade-dreams" element={<Navigate to="/admin/decode-dreams" replace />} />
+          <Route path="/cascade-governance" element={<Navigate to="/admin/decode-governance" replace />} />
           <Route path="/audit" element={<Navigate to="/admin/audit" replace />} />
           
           {/* Billing & Subscriptions - Moved to Admin */}

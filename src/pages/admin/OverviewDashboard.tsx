@@ -4,8 +4,8 @@ import { useSystemMetrics } from "@/hooks/admin/useSystemMetrics";
 import { useInsights } from "@/hooks/admin/useInsights";
 import { Users, DollarSign, Shield, Eye, Brain, Moon, ArrowRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { CascadeActivityFeed } from "@/components/admin/CascadeActivityFeed";
-import { CascadeOperativeControls } from "@/components/admin/CascadeOperativeControls";
+import { DecodeActivityFeed } from "@/components/admin/DecodeActivityFeed";
+import { DecodeOperativeControls } from "@/components/admin/DecodeOperativeControls";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -176,11 +176,11 @@ export default function OverviewDashboard() {
           </Card>
         )}
 
-        {/* Cascade Operative Controls */}
-        <CascadeOperativeControls />
+        {/* Decode Operative Controls */}
+        <DecodeOperativeControls />
 
         {/* Activity Feed */}
-        <CascadeActivityFeed />
+        <DecodeActivityFeed />
       </div>
     </AdminLayout>
   );

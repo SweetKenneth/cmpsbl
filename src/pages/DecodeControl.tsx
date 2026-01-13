@@ -7,7 +7,7 @@ import { Brain, Zap, Mail, Moon, RefreshCw, Code2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 
-export default function CascadeControl() {
+export default function DecodeControl() {
   const [loading, setLoading] = useState<string | null>(null);
 
   const triggerFunction = async (functionName: string, body: any = {}) => {
@@ -36,15 +36,15 @@ export default function CascadeControl() {
     <div className="container mx-auto p-6 space-y-6">
       <div className="flex items-start justify-between">
         <div className="space-y-2">
-          <h1 className="text-4xl font-bold">Cascade Control Panel</h1>
+          <h1 className="text-4xl font-bold">Decode Control Panel</h1>
           <p className="text-muted-foreground">
-            Manually trigger Cascade's learning, dreaming, and reporting systems
+            Manually trigger Decode's learning, dreaming, and reporting systems
           </p>
         </div>
-        <Link to="/cascade/coder">
+        <Link to="/decode/coder">
           <Button variant="outline" className="gap-2">
             <Code2 className="h-4 w-4" />
-            Cascade Coder
+            Decode Coder
             <Badge variant="secondary" className="ml-1">Labs</Badge>
           </Button>
         </Link>
@@ -58,7 +58,7 @@ export default function CascadeControl() {
               Test Email System
             </CardTitle>
             <CardDescription>
-              Send a test email to kennethsweet214@gmail.com to verify Resend integration
+              Send a test email to verify Resend integration
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -121,7 +121,7 @@ export default function CascadeControl() {
               Dream Cycle
             </CardTitle>
             <CardDescription>
-              Force a dream cycle - Cascade's creative speculation and reflection
+              Force a dream cycle - Decode's creative speculation and reflection
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -163,12 +163,12 @@ export default function CascadeControl() {
           </CardHeader>
           <CardContent>
             <Button
-              onClick={() => triggerFunction("pf-cascade-summary")}
-              disabled={loading === "pf-cascade-summary"}
+              onClick={() => triggerFunction("pf-decode-summary")}
+              disabled={loading === "pf-decode-summary"}
               className="w-full"
               variant="outline"
             >
-              {loading === "pf-cascade-summary" ? (
+              {loading === "pf-decode-summary" ? (
                 <>
                   <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
                   Generating...
@@ -188,7 +188,7 @@ export default function CascadeControl() {
         <CardHeader>
           <CardTitle>System Status</CardTitle>
           <CardDescription>
-            Cascade is implemented but requires external scheduling. Use the buttons above to manually trigger operations.
+            Decode is implemented but requires external scheduling. Use the buttons above to manually trigger operations.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -213,7 +213,7 @@ export default function CascadeControl() {
               POST {import.meta.env.VITE_SUPABASE_URL}/functions/v1/pf-brain-continuous-learn
             </code>
             <code className="text-xs block bg-background p-2 rounded">
-              POST {import.meta.env.VITE_SUPABASE_URL}/functions/v1/pf-cascade-summary
+              POST {import.meta.env.VITE_SUPABASE_URL}/functions/v1/pf-decode-summary
             </code>
           </div>
         </CardContent>
