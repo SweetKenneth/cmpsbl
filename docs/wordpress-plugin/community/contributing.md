@@ -78,7 +78,7 @@ git checkout -b feature/your-feature-name
 * Always sanitize user inputs and validate data
 * Use WordPress nonces for forms
 * Follow WordPress security best practices
-* Report security vulnerabilities privately to PromptFluid@gmail.com
+* Report security vulnerabilities privately to promptfluid@gmail.com
 
 ## Testing
 
@@ -115,7 +115,7 @@ By contributing, you agree that your contributions will be licensed under the sa
 
 Feel free to reach out:
 
-* **Email**: PromptFluid@gmail.com
+* **Email**: promptfluid@gmail.com
 * **Website**: https://www.promptfluid.com/products/defense
 * **Issues**: Create an issue on GitHub
 

@@ -237,7 +237,7 @@ When releasing updates:
 
 - **WordPress.org Forums**: https://wordpress.org/support/forum/plugins-and-hacks/
 - **Plugin Review Team**: https://make.wordpress.org/plugins/
-- **PromptFluid Support**: PromptFluid@gmail.com
+- **PromptFluid Support**: promptfluid@gmail.com
 
 ---
 

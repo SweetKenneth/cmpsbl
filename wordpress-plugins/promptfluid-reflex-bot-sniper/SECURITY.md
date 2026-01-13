@@ -4,7 +4,7 @@
 
 If you discover a security vulnerability in PromptFluid Clarity, please email us at:
 
-**PromptFluid@gmail.com**
+**promptfluid@gmail.com**
 
 Please include:
 - Description of the vulnerability

@@ -766,7 +766,7 @@ response = supabase.functions.invoke(
 
 **Documentation:** https://docs.promptfluid.com  
 **API Status:** https://status.promptfluid.com  
-**Support Email:** PromptFluid@gmail.com
+**Support Email:** promptfluid@gmail.com
 
 ---
 

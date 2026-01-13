@@ -329,7 +329,7 @@ cd wordpress-plugin
 - **Updates**: Release monthly
 
 ### Need Help?
-- **PromptFluid**: PromptFluid@gmail.com
+- **PromptFluid**: promptfluid@gmail.com
 - **WordPress.org**: https://make.wordpress.org/plugins/
 - **Community**: #pluginreview on Slack
 

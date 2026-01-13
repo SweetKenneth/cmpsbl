@@ -48,8 +48,8 @@ Sese, K. (2026). *PromptFluid Ecosystem: Open Source AI Orchestration Substrate*
 
 ## Contact
 
-**Founder:** Kenneth Sese  
-**Email:** kenneth@promptfluid.com  
+**Founder:** Kenneth E Sweet Jr  
+**Email:** promptfluid@gmail.com  
 **Website:** https://promptfluid.com
 
 ---

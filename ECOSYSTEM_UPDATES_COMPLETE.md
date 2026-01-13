@@ -33,4 +33,4 @@
 
 **Status**: Ready for WordPress.org submission after Reflex approval
 
-**Contact**: PromptFluid@gmail.com
+**Contact**: promptfluid@gmail.com

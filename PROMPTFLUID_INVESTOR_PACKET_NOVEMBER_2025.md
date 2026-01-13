@@ -737,8 +737,8 @@ We're seeking strategic investors who understand:
 Founder & CEO, PromptFluid AI Technologies  
 
 **Website:** https://www.promptfluid.com  
-**Email:** hello@promptfluid.com  
-**LinkedIn:** [Connect on LinkedIn]
+**Email:** promptfluid@gmail.com  
+**Phone:** (760) FLUID-AI
 
 **Investment Deck:** Available upon request  
 **Technical Demo:** Live system walkthrough available  

@@ -453,8 +453,8 @@ PromptFluid has reached a critical milestone: **100% database infrastructure com
 
 ## 📞 Contact & Resources
 
-**Primary Contact:** PromptFluid@gmail.com  
-**Website:** https://www.promptfluid.com  
+**Primary Contact:** promptfluid@gmail.com  
+**Website:** https://www.promptfluid.com
 **WordPress Plugins:** Three plugins pending WordPress.org approval
 - Reflex Bot Sniper (full featured)
 - Bot Sniper Standalone ($1 → $39/mo)

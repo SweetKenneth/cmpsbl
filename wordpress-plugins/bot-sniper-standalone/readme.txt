@@ -112,9 +112,9 @@ Initial release of PromptFluid Bot Sniper. Start protecting your site today with
 
 == Support ==
 
-Email: PromptFluid@gmail.com
+Email: promptfluid@gmail.com
 Website: https://www.promptfluid.com
-Phone: (760) 358-4324
+Phone: (760) FLUID-AI
 Documentation: https://www.promptfluid.com/docs/bot-sniper
 
 == Privacy Policy ==

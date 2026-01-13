@@ -348,14 +348,14 @@ Cascade is the world's first commercially deployed AI with autonomous dream capa
 - ✅ AI Dream Reports automated (every 6 hours)
 - ✅ Dream Projection capability activated
 - ✅ Local Autonomy Protocol implemented
-- ✅ All emails updated to PromptFluid@gmail.com
+- ✅ All emails updated to promptfluid@gmail.com
 
 ---
 
 ## Contact & Support
 
-**Email**: PromptFluid@gmail.com  
-**Website**: https://www.promptfluid.com  
+**Email**: promptfluid@gmail.com  
+**Website**: https://www.promptfluid.com
 **Documentation**: https://www.promptfluid.com/docs
 
 ---

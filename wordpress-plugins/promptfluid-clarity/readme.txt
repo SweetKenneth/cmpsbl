@@ -124,10 +124,10 @@ Privacy Policy: https://www.promptfluid.com/privacy
 
 == Support ==
 
-For support inquiries, email: PromptFluid@gmail.com  
+For support inquiries, email: promptfluid@gmail.com  
 Support hours: Monday-Friday, 9 AM - 5 PM PST
 
 == Credits ==
 
-Developed by Kenneth Sese and the PromptFluid team.  
+Developed by Kenneth E Sweet Jr and the PromptFluid team.  
 Website: https://www.promptfluid.com
