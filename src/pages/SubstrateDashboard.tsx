@@ -16,7 +16,8 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { supabase } from "@/integrations/supabase/client";
+import { substrate } from "@/lib/substrate";
+import { useSubstrateContext } from "@/components/substrate/SubstrateProvider";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
@@ -39,34 +40,26 @@ interface SubstrateMetrics {
 }
 
 export default function SubstrateDashboard() {
+  const { initialized, modules: contextModules, overallHealth, refresh: contextRefresh } = useSubstrateContext();
   const [status, setStatus] = useState<SubstrateStatus | null>(null);
   const [metrics, setMetrics] = useState<SubstrateMetrics | null>(null);
   const [loading, setLoading] = useState(true);
 
   const fetchStatus = async () => {
     try {
-      const { data, error } = await supabase.functions.invoke("pf-substrate", {
-        body: { module: "status" },
-      });
+      // Use substrate client directly
+      const visionHealth = await substrate.vision.health();
+      const visionMetrics = await substrate.vision.metrics();
       
-      if (error) throw error;
-      
-      // Fetch vision health
-      const { data: visionData } = await supabase.functions.invoke("pf-substrate", {
-        body: { module: "vision", action: "health" },
-      });
-      
-      if (visionData) {
-        setStatus(visionData);
+      if (visionHealth.success && visionHealth.data) {
+        setStatus(visionHealth.data as unknown as SubstrateStatus);
       }
 
-      // Fetch metrics
-      const { data: metricsData } = await supabase.functions.invoke("pf-substrate", {
-        body: { module: "vision", action: "metrics" },
-      });
-      
-      if (metricsData?.metrics) {
-        setMetrics(metricsData.metrics);
+      if (visionMetrics.success && visionMetrics.data) {
+        const metricsData = visionMetrics.data as { metrics?: SubstrateMetrics };
+        if (metricsData.metrics) {
+          setMetrics(metricsData.metrics);
+        }
       }
     } catch (error) {
       console.error("Status fetch error:", error);
@@ -78,7 +71,7 @@ export default function SubstrateDashboard() {
 
   useEffect(() => {
     fetchStatus();
-    const interval = setInterval(fetchStatus, 30000); // Refresh every 30s
+    const interval = setInterval(fetchStatus, 30000);
     return () => clearInterval(interval);
   }, []);
 
