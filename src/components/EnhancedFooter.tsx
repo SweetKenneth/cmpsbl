@@ -11,7 +11,11 @@ export function EnhancedFooter() {
             <img 
               src="/favicon.png" 
               alt="promptfluid" 
+              width={40}
+              height={40}
               className="h-10 w-10"
+              loading="lazy"
+              decoding="async"
             />
             <span className="text-lg font-semibold text-foreground">promptfluid<sup className="text-xs">®</sup></span>
           </Link>
