@@ -1,11 +1,17 @@
-# PromptFluid Contribution Guidelines
+# promptfluid substrate — Contribution Guidelines
+
+## v2026.01 — Cognitive Orchestration Substrate for AI Systems
+
+promptfluid® is a cognitive orchestration substrate that provides routing, memory, learning cycles, observability, defense, and execution coordination for AI systems. It is model-agnostic, provider-agnostic, and runs on commodity cloud.
+
+---
 
 ## Document Metadata
 
 | Field | Value |
 |-------|-------|
 | Document ID | PF-CONTRIB-001 |
-| Version | 1.0.0 |
+| Version | v2026.01 |
 | Last Updated | 2026-01-13 |
 | Status | STABLE |
 
@@ -13,9 +19,9 @@
 
 ## Welcome
 
-Thank you for your interest in contributing to PromptFluid. This document outlines the contribution process, coding standards, and community guidelines.
+Thank you for your interest in contributing to promptfluid. This document outlines the contribution process, coding standards, and community guidelines.
 
-PromptFluid is released as a substrate—a foundation for future development. Like Linux and Bitcoin before it, we believe in the power of open collaboration to build something greater than any individual could achieve.
+promptfluid is released as a substrate—a foundation for future development. Like Linux and Bitcoin before it, we believe in the power of open collaboration to build something greater than any individual could achieve.
 
 ---
 
@@ -33,8 +39,8 @@ PromptFluid is released as a substrate—a foundation for future development. Li
 
 ```bash
 # Clone the repository
-git clone https://github.com/promptfluid/ecosystem.git
-cd ecosystem
+git clone https://github.com/promptfluid/substrate.git
+cd substrate
 
 # Install dependencies
 npm install
@@ -131,7 +137,7 @@ Any relevant information.
 ```bash
 # Fork the repository on GitHub
 # Clone your fork
-git clone https://github.com/YOUR_USERNAME/ecosystem.git
+git clone https://github.com/YOUR_USERNAME/substrate.git
 
 # Create a feature branch
 git checkout -b feature/your-feature-name
@@ -499,31 +505,47 @@ Description of return value.
 ### Communication Channels
 
 - **GitHub Issues** - Bug reports, feature requests
-- **GitHub Discussions** - General discussion
-- **Pull Requests** - Code contributions
+- **GitHub Discussions** - General questions, ideas
+- **Email** - promptfluid@gmail.com
 
 ---
 
-## Recognition
+## Contributor Recognition
 
 Contributors are recognized in:
 
 1. **CONTRIBUTORS.md** - All contributors listed
-2. **Release Notes** - Major contributions highlighted
-3. **Documentation** - Authors credited
+2. **Release Notes** - Significant contributions noted
+3. **Documentation** - Major contributions attributed
 
 ---
 
-## License
+## Licensing
 
-By contributing, you agree that your contributions will be licensed under:
+### Core Contributions
 
-- **Apache 2.0** - Core platform code
-- **GPL v2** - WordPress plugins
+Contributions to the core platform are licensed under **Apache License 2.0**.
+
+### WordPress Plugin Contributions
+
+Contributions to WordPress plugins are licensed under **GPL v2** as required by WordPress.org.
+
+By contributing, you agree to license your contributions under the applicable license.
 
 ---
 
-**See Also:**
-- [License](./16-LICENSE.md)
-- [Architecture](./01-ARCHITECTURE.md)
-- [Extension Guide](./09-EXTENSION-GUIDE.md)
+## Ownership & Licensing
+
+promptfluid® is a registered trademark. For ownership inquiries, licensing arrangements, or enterprise partnerships:
+
+| Contact | Details |
+|---------|---------|
+| **Founder** | Kenneth E Sweet Jr |
+| **Email** | promptfluid@gmail.com |
+| **Phone** | (760) FLUID-AI |
+| **Web** | https://promptfluid.com |
+
+---
+
+**Last Updated:** January 13, 2026  
+**Document Status:** STABLE

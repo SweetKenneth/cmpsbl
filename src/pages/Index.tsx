@@ -90,10 +90,10 @@ export default function Index() {
       <a href="#main-content" className="skip-link">Skip to main content</a>
       
       <SEO 
-        title="PromptFluid | Applied AI Infrastructure"
-        description="Applied AI company building autonomous systems, infrastructure tooling, and experimental interfaces. Six live products. 100+ projects shipped over 15 years."
+        title="promptfluid® | Cognitive Orchestration Substrate"
+        description="promptfluid is a cognitive orchestration substrate that provides routing, memory, learning cycles, observability, defense, and execution coordination for AI systems. Model-agnostic. Provider-agnostic. Runs on commodity cloud."
         canonical="https://promptfluid.com"
-        keywords={['AI infrastructure', 'autonomous systems', 'AI security', 'accessibility compliance', 'WordPress security', 'WCAG scanning']}
+        keywords={['cognitive orchestration', 'AI substrate', 'autonomous systems', 'AI routing', 'AI memory', 'learning cycles', 'observability', 'defense intelligence']}
         breadcrumbs={[{ name: 'Home', url: 'https://promptfluid.com' }]}
       />
       
@@ -119,11 +119,11 @@ export default function Index() {
             <div className="container mx-auto px-4">
               <div className="max-w-3xl">
                 <h1 id="hero-heading" className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground tracking-tight leading-[1.1]">
-                  We build intelligence that keeps working.
+                  promptfluid<sup className="text-lg">®</sup> substrate
                 </h1>
                 
                 <p className="text-lg md:text-xl text-foreground/80 mb-10 max-w-2xl leading-relaxed">
-                  PromptFluid is an applied AI company focused on autonomous systems, infrastructure tooling, and experimental interfaces that scale.
+                  A cognitive orchestration substrate that provides routing, memory, learning cycles, observability, defense, and execution coordination for AI systems. Model-agnostic. Provider-agnostic. Runs on commodity cloud.
                 </p>
 
                 <div className="flex flex-wrap gap-4">

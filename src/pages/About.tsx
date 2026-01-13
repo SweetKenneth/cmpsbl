@@ -21,10 +21,10 @@ export default function About() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="About PromptFluid | Applied AI Infrastructure"
-        description="Founded in 2009, PromptFluid builds autonomous systems and infrastructure tooling. 100+ projects shipped. Six live products."
+        title="About promptfluid® | Cognitive Orchestration Substrate"
+        description="promptfluid is a cognitive orchestration substrate that provides routing, memory, learning cycles, observability, defense, and execution coordination for AI systems."
         canonical="https://promptfluid.com/about"
-        keywords={['PromptFluid company', 'AI infrastructure', 'autonomous systems', 'accessibility tools', 'security systems']}
+        keywords={['promptfluid substrate', 'cognitive orchestration', 'AI infrastructure', 'autonomous systems', 'accessibility tools']}
       />
       
       <script type="application/ld+json">
@@ -62,10 +62,10 @@ export default function About() {
           </nav>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground">
-            Building Systems That Work
+            promptfluid<sup className="text-lg">®</sup> substrate
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed">
-            PromptFluid is an applied AI company focused on autonomous systems, infrastructure tooling, and experimental interfaces. We've been shipping software for over 15 years.
+            A cognitive orchestration substrate that provides routing, memory, learning cycles, observability, defense, and execution coordination for AI systems. Model-agnostic. Provider-agnostic. Runs on commodity cloud.
           </p>
         </div>
       </section>
@@ -86,7 +86,7 @@ export default function About() {
                   I build systems that start as abstract ideas and end up running on their own.
                 </p>
                 <p className="text-muted-foreground leading-relaxed mb-6">
-                  PromptFluid began as a focused effort to make AI tools actually useful—security that adapts, accessibility that's free, and interfaces that handle complexity without exposing it.
+                  promptfluid began as a focused effort to make AI orchestration actually useful—routing that adapts, memory that persists, and learning cycles that run autonomously.
                 </p>
                 <p className="text-muted-foreground leading-relaxed mb-6">
                   Everything here is built to work without supervision. The goal is infrastructure that improves itself over time.
