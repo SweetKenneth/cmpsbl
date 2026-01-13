@@ -46,17 +46,13 @@ export function DecodeChat() {
   const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { user } = useAuth();
 
-  // Hide on homepage and decode page - these have their own UI
-  const hiddenPaths = ['/', '/decode'];
-  const shouldHide = hiddenPaths.includes(location.pathname);
-
-  const scrollToBottom = () => {
+  const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  }, []);
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, scrollToBottom]);
 
   // Cleanup retry timeout on unmount
   useEffect(() => {
@@ -67,12 +63,7 @@ export function DecodeChat() {
     };
   }, []);
 
-  // Return null AFTER all hooks have been called
-  if (shouldHide) {
-    return null;
-  }
-
-  // Self-healing connection recovery
+  // Self-healing connection recovery - must be before any conditional returns
   const attemptRecovery = useCallback(async () => {
     if (connection.retryCount >= 3) {
       setConnection(prev => ({ ...prev, status: 'disconnected' }));
@@ -85,7 +76,6 @@ export function DecodeChat() {
     console.log(`🔄 Attempting connection recovery (attempt ${connection.retryCount + 1})...`);
     
     try {
-      // Use substrate client for health check
       const response = await substrate.invoke({ module: 'decode', action: 'status' });
 
       if (response.success) {
@@ -106,6 +96,12 @@ export function DecodeChat() {
       }));
     }
   }, [connection.retryCount]);
+
+  // Hide on homepage and decode page - return AFTER all hooks
+  const hiddenPaths = ['/', '/decode'];
+  if (hiddenPaths.includes(location.pathname)) {
+    return null;
+  }
 
   const sendMessage = async (messageText?: string) => {
     const userMessage = messageText || input.trim();
