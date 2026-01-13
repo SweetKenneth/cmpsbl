@@ -10,7 +10,7 @@ export function PublicNav() {
 
   const navItems = [
     { name: "Home", href: "/" },
-    { name: "Products", href: "/projects" },
+    { name: "Modules", href: "/projects" },
     { name: "Solutions", href: "/solutions" },
     { name: "Blog", href: "/blog" },
     { name: "Investors", href: "/investors", highlight: true },
@@ -27,10 +27,10 @@ export function PublicNav() {
       >
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3" aria-label="PromptFluid Home">
+          <Link to="/" className="flex items-center gap-3" aria-label="promptfluid Home">
             <img
               src={logo}
-              alt="PromptFluid logo"
+              alt="promptfluid logo"
               className="h-10 lg:h-14 w-auto object-contain"
             />
           </Link>
@@ -112,7 +112,7 @@ export function PublicNav() {
                 <div className="border-t border-border mt-4 pt-4 flex flex-col gap-3">
                   <Link to="/scan" onClick={() => setMobileMenuOpen(false)}>
                     <Button variant="outline" className="w-full">
-                      Free Accessibility Scan
+                      Free Scan
                     </Button>
                   </Link>
                   <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>
