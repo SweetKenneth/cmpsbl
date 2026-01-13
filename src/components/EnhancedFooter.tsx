@@ -37,45 +37,18 @@ export function EnhancedFooter() {
                 </Link>
               </li>
               <li>
-                <Link to="/about" className="text-muted-foreground hover:text-foreground transition-colors">
-                  About
-                </Link>
-              </li>
-              <li>
                 <Link to="/investors" className="text-muted-foreground hover:text-foreground transition-colors">
                   Acquisition
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Contact
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Modules */}
-          <div>
-            <h4 className="font-semibold mb-5 text-sm text-foreground tracking-wide">Modules</h4>
-            <ul className="space-y-3 text-sm">
-              <li>
-                <Link to="/projects/brain" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Brain
+                <Link to="/decode" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Decode
                 </Link>
               </li>
               <li>
-                <Link to="/projects/defense" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Defense
-                </Link>
-              </li>
-              <li>
-                <Link to="/projects/clarity" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Vision
-                </Link>
-              </li>
-              <li>
-                <Link to="/projects" className="text-primary font-medium hover:text-primary/80 transition-colors">
-                  All Modules →
+                <Link to="/documentation" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Documentation
                 </Link>
               </li>
             </ul>
@@ -91,14 +64,31 @@ export function EnhancedFooter() {
                 </Link>
               </li>
               <li>
-                <Link to="/documentation" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Documentation
+                <Link to="/feed-dream-eater" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Feed Dreams
                 </Link>
               </li>
               <li>
                 <a href="https://PTCHBL.com" target="_blank" rel="noopener noreferrer" className="text-primary font-medium hover:text-primary/80 transition-colors">
                   Try PTCHBL Free →
                 </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Legal */}
+          <div>
+            <h4 className="font-semibold mb-5 text-sm text-foreground tracking-wide">Legal</h4>
+            <ul className="space-y-3 text-sm">
+              <li>
+                <Link to="/privacy" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link to="/terms" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Terms of Service
+                </Link>
               </li>
             </ul>
           </div>
