@@ -4984,12 +4984,11 @@ export type Database = {
             Returns: boolean
           }
         | { Args: { _role: string; _user_id: string }; Returns: boolean }
-        | { Args: { role_name: string }; Returns: boolean }
       reset_daily_quotas: { Args: never; Returns: undefined }
       show_limit: { Args: never; Returns: number }
       show_trgm: { Args: { "": string }; Returns: string[] }
       update_ip_reputation: {
-        Args: { p_action: string; p_ip: string; p_risk_score: number }
+        Args: { p_action: string; p_ip: string; p_risk_score?: number }
         Returns: undefined
       }
     }
