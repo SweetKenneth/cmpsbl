@@ -1,89 +1,58 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { ArrowRight, Menu, X, Layers } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import logo from "@/assets/promptfluid-logo.png";
+import { Link } from "react-router-dom";
+import { Menu, X } from "lucide-react";
 
 export function PublicNav() {
-  const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
-    { name: "Substrate", href: "/substrate", highlight: true },
+    { name: "Substrate", href: "/substrate" },
     { name: "Modules", href: "/projects" },
     { name: "Blog", href: "/blog" },
-    { name: "Investors", href: "/investors" },
     { name: "About", href: "/about" },
   ];
 
   return (
     <>
-      {/* Desktop Navigation */}
       <nav
-        className="relative z-[10000] bg-background/95 backdrop-blur-sm border-b border-border/50 container mx-auto px-4 py-3 md:py-4"
+        className="relative z-[10000] bg-background/95 backdrop-blur-sm border-b border-border/50"
         role="navigation"
         aria-label="Main navigation"
       >
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-3" aria-label="promptfluid Home">
-            <img
-              src={logo}
-              alt="promptfluid logo"
-              width={116}
-              height={40}
-              className="h-8 lg:h-10 w-auto object-contain"
-              loading="eager"
-              decoding="async"
-              fetchPriority="high"
-            />
-            <span className="hidden md:inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground border border-border rounded-full px-2 py-0.5">
-              <Layers className="w-3 h-3" />
-              substrate
-            </span>
+        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+          {/* Minimal Text Logo */}
+          <Link to="/" className="text-lg font-semibold text-foreground tracking-tight">
+            promptfluid
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 to={item.href}
-                className={`text-sm font-medium transition-colors ${
-                  item.highlight 
-                    ? "text-primary hover:text-primary/80" 
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 {item.name}
               </Link>
             ))}
-          </div>
-
-          {/* CTA & Mobile Toggle */}
-          <div className="flex items-center gap-3">
-            <Link to="/investors" className="hidden sm:block">
-              <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
-                Acquisition
-              </Button>
-            </Link>
-            <Button
-              onClick={() => navigate("/contact")}
-              size="sm"
-              className="hidden sm:flex"
+            <Link
+              to="/contact"
+              className="text-sm font-medium text-primary hover:text-primary/80 transition-colors"
             >
               Contact
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-lg hover:bg-muted transition-colors"
-              aria-label="Toggle menu"
-              aria-expanded={mobileMenuOpen}
-            >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
+            </Link>
           </div>
+
+          {/* Mobile Toggle */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden p-2 rounded-lg hover:bg-muted transition-colors"
+            aria-label="Toggle menu"
+            aria-expanded={mobileMenuOpen}
+          >
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
         </div>
       </nav>
 
@@ -91,45 +60,34 @@ export function PublicNav() {
       {mobileMenuOpen && (
         <>
           <div
-            className="fixed inset-0 z-[9998] lg:hidden bg-background/80 backdrop-blur-sm"
+            className="fixed inset-0 z-[9998] md:hidden bg-background/80 backdrop-blur-sm"
             onClick={() => setMobileMenuOpen(false)}
             aria-hidden="true"
           />
           <div 
-            className="fixed top-16 left-0 right-0 z-[9999] lg:hidden bg-background border-b border-border shadow-lg"
+            className="fixed top-14 left-0 right-0 z-[9999] md:hidden bg-background border-b border-border shadow-lg"
             role="dialog"
             aria-modal="true"
           >
-            <div className="container mx-auto px-4 py-6">
-              <nav className="flex flex-col gap-2">
+            <div className="container mx-auto px-4 py-4">
+              <nav className="flex flex-col gap-1">
                 {navItems.map((item) => (
                   <Link
                     key={item.href}
                     to={item.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`py-3 px-4 rounded-lg text-base font-medium transition-colors ${
-                      item.highlight 
-                        ? "text-primary bg-primary/5" 
-                        : "text-foreground hover:bg-muted"
-                    }`}
+                    className="py-2.5 px-3 rounded-lg text-sm text-foreground hover:bg-muted transition-colors"
                   >
                     {item.name}
                   </Link>
                 ))}
-                
-                <div className="border-t border-border mt-4 pt-4 flex flex-col gap-3">
-                  <Link to="/investors" onClick={() => setMobileMenuOpen(false)}>
-                    <Button variant="outline" className="w-full">
-                      Acquisition Inquiry
-                    </Button>
-                  </Link>
-                  <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>
-                    <Button className="w-full">
-                      Contact Us
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
-                </div>
+                <Link
+                  to="/contact"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="py-2.5 px-3 rounded-lg text-sm font-medium text-primary hover:bg-primary/5 transition-colors"
+                >
+                  Contact
+                </Link>
               </nav>
             </div>
           </div>
