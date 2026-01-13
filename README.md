@@ -78,13 +78,12 @@ npm run dev
 
 | Document | Description |
 |----------|-------------|
-| [Architecture Overview](./docs/osf/01-ARCHITECTURE.md) | System topology and design |
-| [Brain Substrate](./docs/osf/02-BRAIN-SUBSTRATE.md) | Memory and learning specification |
-| [Nexus Routing](./docs/osf/03-NEXUS-ROUTING.md) | AI gateway documentation |
-| [Defense Intelligence](./docs/osf/04-DEFENSE-INTELLIGENCE.md) | Security layer |
-| [Extension Guide](./docs/osf/09-EXTENSION-GUIDE.md) | Building on promptfluid |
+| [USER-MANUAL.md](./docs/substrate/USER-MANUAL.md) | Complete API reference and examples |
+| [ARCHITECTURE.md](./docs/substrate/ARCHITECTURE.md) | System architecture |
+| [MODULE-ACTIONS-REGISTRY.md](./docs/substrate/MODULE-ACTIONS-REGISTRY.md) | 44 registered actions |
+| [DecodeRFC.md](./docs/substrate/DecodeRFC.md) | Decode interpreter RFC |
 
-**Complete Documentation:** [docs/osf/00-INDEX.md](./docs/osf/00-INDEX.md)
+**Complete Documentation:** [docs/substrate/](./docs/substrate/)
 
 ---
 
