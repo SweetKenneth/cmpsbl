@@ -63,7 +63,7 @@ export const adminNavConfig: NavGroup[] = [
       { id: "prompt-merger", label: "Prompt Merger", path: "/prompt-merger", icon: Combine, isNew: true },
       { id: "marketing-studio", label: "Marketing", path: "/marketing-studio", icon: Palette },
       { id: "sentience", label: "Sentience", path: "/sentience-hub", icon: Cpu },
-      { id: "cascade-mindmap", label: "Mindmap", path: "/cascade-mindmap", icon: Network },
+      { id: "decode-mindmap", label: "Mindmap", path: "/decode-mindmap", icon: Network },
     ],
   },
   {

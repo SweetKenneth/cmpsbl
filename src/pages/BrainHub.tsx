@@ -52,9 +52,9 @@ export default function BrainHub() {
     },
     {
       icon: GitBranch,
-      title: "Cascade Mindmap",
+      title: "Decode Mindmap",
       description: "Visualize AI decision trees, neural pathways, and knowledge graph connections.",
-      href: "/cascade-mindmap",
+      href: "/decode-mindmap",
       status: "Active",
       color: "from-orange-500 to-yellow-500"
     },
@@ -118,7 +118,7 @@ export default function BrainHub() {
 
           <Link to="/projects/brain">
             <Button size="lg" variant="outline">
-              Learn About Cascade Brain →
+              Learn About Decode Brain →
             </Button>
           </Link>
         </div>

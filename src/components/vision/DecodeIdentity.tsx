@@ -3,9 +3,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Brain, Shield, User, Zap } from "lucide-react";
 
-export default function CascadeIdentity() {
+export default function DecodeIdentity() {
   const { data: persona } = useQuery({
-    queryKey: ['cascade-persona'],
+    queryKey: ['decode-persona'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('brain_persona')
@@ -19,7 +19,7 @@ export default function CascadeIdentity() {
   });
 
   const { data: policy } = useQuery({
-    queryKey: ['cascade-policy'],
+    queryKey: ['decode-policy'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('brain_policy')
@@ -46,7 +46,7 @@ export default function CascadeIdentity() {
           <Brain className="h-6 w-6 text-primary" />
         </div>
         <div>
-          <h3 className="text-xl font-bold text-foreground">Cascade</h3>
+          <h3 className="text-xl font-bold text-foreground">Decode</h3>
           <p className="text-sm text-muted-foreground">{persona.role}</p>
         </div>
       </div>

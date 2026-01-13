@@ -7,10 +7,10 @@ import { ArrowLeft } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
-export default function CascadeMindmap() {
+export default function DecodeMindmap() {
   const navigate = useNavigate();
 
-  // Cascade tables not configured
+  // Decode tables not configured
   const knowledgeCore: any[] = [];
   const objectives: any[] = [];
   const memoryAnchors: any[] = [];
@@ -33,7 +33,7 @@ export default function CascadeMindmap() {
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Brain
           </Button>
-          <h1 className="text-3xl font-bold glow-text">Cascade Mindmap</h1>
+          <h1 className="text-3xl font-bold glow-text">Decode Mindmap</h1>
           <p className="text-muted-foreground">Executive cognition and knowledge graph visualization</p>
         </div>
       </div>
