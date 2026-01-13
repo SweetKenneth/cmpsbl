@@ -30,10 +30,10 @@ const moduleConfig: Record<SubstrateModule, {
     description: 'Memory, learning, reflection',
     color: 'text-purple-500',
   },
-  cascade: {
+  decode: {
     icon: MessageSquare,
-    label: 'Cascade',
-    description: 'User interaction, chat, dreams',
+    label: 'Decode',
+    description: 'Intent decoding, chat, dreams',
     color: 'text-blue-500',
   },
   defense: {

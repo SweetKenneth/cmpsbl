@@ -4,7 +4,7 @@
  * 
  * Unified API for all substrate modules:
  * - Brain: Memory, learning, reflection
- * - Cascade: User interaction, chat, dreams
+ * - Decode: Intent decoding, chat, dreams
  * - Defense: Security, bot detection, threats
  * - Nexus: AI routing, multi-provider
  * - Vision: Observability, metrics, health
@@ -12,7 +12,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 
-export type SubstrateModule = 'brain' | 'cascade' | 'defense' | 'nexus' | 'vision';
+export type SubstrateModule = 'brain' | 'decode' | 'defense' | 'nexus' | 'vision';
 
 export interface SubstrateRequest {
   module: SubstrateModule;
@@ -93,19 +93,19 @@ class SubstrateClient {
       this.invoke({ module: 'brain', action: 'status' }),
   };
 
-  // Cascade Module
-  cascade = {
+  // Decode Module — Intent Decoding & Cognitive Interface
+  decode = {
     chat: (message: string, sessionId?: string) =>
-      this.invoke({ module: 'cascade', action: 'chat', payload: { message, sessionId } }),
+      this.invoke({ module: 'decode', action: 'chat', payload: { message, sessionId } }),
     
     dream: () =>
-      this.invoke({ module: 'cascade', action: 'dream' }),
+      this.invoke({ module: 'decode', action: 'dream' }),
     
     propose: (idea: string) =>
-      this.invoke({ module: 'cascade', action: 'propose', payload: { idea } }),
+      this.invoke({ module: 'decode', action: 'propose', payload: { idea } }),
     
     status: () =>
-      this.invoke({ module: 'cascade', action: 'status' }),
+      this.invoke({ module: 'decode', action: 'status' }),
   };
 
   // Defense Module
@@ -158,7 +158,7 @@ export const substrate = SubstrateClient.getInstance();
 
 // Quick access functions
 export const brain = substrate.brain;
-export const cascade = substrate.cascade;
+export const decode = substrate.decode;
 export const defense = substrate.defense;
 export const nexus = substrate.nexus;
 export const vision = substrate.vision;

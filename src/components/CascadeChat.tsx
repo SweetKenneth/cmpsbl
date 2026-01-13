@@ -1,13 +1,13 @@
 /**
- * promptfluid® Cascade Chat
- * v2026.01 — User-facing interface to the cognitive substrate
+ * promptfluid® Decode Chat
+ * v2026.01 — User-facing cognitive interface to the substrate
  */
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { MessageCircle, X, Send, Sparkles, RefreshCw, WifiOff } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { cascade, substrate } from "@/lib/substrate";
+import { decode, substrate } from "@/lib/substrate";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 
@@ -26,10 +26,10 @@ interface ConnectionState {
   retryCount: number;
 }
 
-export function CascadeChat() {
+export function DecodeChat() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: '✨ Hello! I\'m Cascade — the user interface of the promptfluid® substrate.\n\nHow can I help you explore cognitive orchestration today?' }
+    { role: 'assistant', content: '✨ Hello! I\'m Decode — the cognitive interface of the promptfluid® substrate.\n\nHow can I help you explore cognitive orchestration today?' }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -66,7 +66,7 @@ export function CascadeChat() {
     if (connection.retryCount >= 3) {
       setConnection(prev => ({ ...prev, status: 'disconnected' }));
       toast.error('Connection issues', {
-        description: 'Unable to reach Cascade. Please try again later.'
+        description: 'Unable to reach Decode. Please try again later.'
       });
       return;
     }
@@ -75,7 +75,7 @@ export function CascadeChat() {
     
     try {
       // Use substrate client for health check
-      const response = await substrate.invoke({ module: 'cascade', action: 'status' });
+      const response = await substrate.invoke({ module: 'decode', action: 'status' });
 
       if (response.success) {
         setConnection({
@@ -84,7 +84,7 @@ export function CascadeChat() {
           retryCount: 0
         });
         toast.success('Connection restored', {
-          description: 'Cascade is back online.'
+          description: 'Decode is back online.'
         });
       }
     } catch (e) {
@@ -107,7 +107,7 @@ export function CascadeChat() {
 
     try {
       // Use the substrate client directly
-      const response = await cascade.chat(userMessage, `session_${Date.now()}`);
+      const response = await decode.chat(userMessage, `session_${Date.now()}`);
 
       if (!response.success) throw new Error(response.error || 'Chat failed');
 
@@ -135,7 +135,7 @@ export function CascadeChat() {
 
       if (data?.isAdmin) {
         toast.success('Admin mode activated', {
-          description: 'Cascade recognizes you.'
+          description: 'Decode recognizes you.'
         });
       }
 
@@ -156,7 +156,7 @@ export function CascadeChat() {
 
       // Show graceful error with retry option
       toast.error('Message delivery issue', {
-        description: 'Cascade is gathering thoughts. Retrying...',
+        description: 'Decode is gathering thoughts. Retrying...',
         action: {
           label: 'Retry Now',
           onClick: () => sendMessage(userMessage)
@@ -245,7 +245,7 @@ export function CascadeChat() {
         onClick={() => setIsOpen(true)}
         className="fixed bottom-6 right-6 rounded-full w-16 h-16 shadow-glow-lg z-50 bg-gradient-to-r from-primary via-primary-variant to-accent hover:scale-110 transition-transform"
         size="icon"
-        aria-label="Open Cascade AI chat"
+        aria-label="Open Decode AI chat"
       >
         <MessageCircle className="w-6 h-6" />
         {connection.status !== 'connected' && (
@@ -263,7 +263,7 @@ export function CascadeChat() {
           <Sparkles className="w-5 h-5 text-primary animate-pulse" />
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="font-semibold">Cascade</h3>
+              <h3 className="font-semibold">Decode</h3>
               <span className="text-[10px] px-1.5 py-0.5 rounded bg-primary/20 text-primary">substrate</span>
             </div>
             <div className="flex items-center gap-2">
@@ -375,7 +375,7 @@ export function CascadeChat() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Ask Cascade anything..."
+            placeholder="Ask Decode anything..."
             className="flex-1"
             disabled={isLoading || connection.status === 'disconnected'}
           />

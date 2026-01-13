@@ -14,7 +14,7 @@ export async function initializeSubstrate(): Promise<void> {
     console.log('⚡ Initializing promptfluid® substrate v2026.01...');
     
     // Ping each module to wake them up
-    const modules = ['brain', 'cascade', 'defense', 'nexus', 'vision'] as const;
+    const modules: ('brain' | 'decode' | 'defense' | 'nexus' | 'vision')[] = ['brain', 'decode', 'defense', 'nexus', 'vision'];
     
     const results = await Promise.allSettled(
       modules.map(module => 

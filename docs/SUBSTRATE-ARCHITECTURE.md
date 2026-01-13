@@ -32,13 +32,14 @@ Memory, learning, and reflection engine.
 | `dream` | Autonomous processing cycle |
 | `status` | Module health check |
 
-### 2. Cascade
-User-facing conversational interface.
+### 2. Decode
+Intent decoding and cognitive interface.
 
 | Action | Description |
 |--------|-------------|
-| `chat` | Process user message |
+| `chat` | Process user message with intent decoding |
 | `learn` | Learn from interaction |
+| `dream` | Autonomous dream cycle |
 | `status` | Module health check |
 
 ### 3. Defense
@@ -84,9 +85,9 @@ POST /functions/v1/pf-substrate
 ### Request Format
 ```json
 {
-  "module": "brain" | "cascade" | "defense" | "nexus" | "vision",
+  "module": "brain" | "decode" | "defense" | "nexus" | "vision",
   "action": "<action-name>",
-  "data": { <action-parameters> }
+  "payload": { <action-parameters> }
 }
 ```
 
@@ -105,11 +106,11 @@ POST /functions/v1/pf-substrate
 
 ### TypeScript/React
 ```typescript
-import { substrate, brain, cascade, defense, nexus, vision } from '@/lib/substrate';
+import { substrate, brain, decode, defense, nexus, vision } from '@/lib/substrate';
 
 // Direct module access
 await brain.learn('New information', 'user_input');
-await cascade.chat('Hello!', 'session_123');
+await decode.chat('Hello!', 'session_123');
 await defense.analyze({ fingerprint: {...} });
 await nexus.text('Generate a summary');
 await vision.health();
@@ -124,11 +125,11 @@ await substrate.invoke({
 
 ### React Hooks
 ```typescript
-import { useBrainStatus, useCascadeChat, useVisionHealth } from '@/hooks/useSubstrate';
+import { useBrainStatus, useDecodeChat, useVisionHealth } from '@/hooks/useSubstrate';
 
 function MyComponent() {
   const { data: health } = useVisionHealth();
-  const { messages, sendMessage } = useCascadeChat();
+  const { messages, sendMessage } = useDecodeChat();
   
   return <div>Health: {health?.healthScore}%</div>;
 }
@@ -145,8 +146,8 @@ function MyComponent() {
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
 │  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐        │
-│  │  Brain  │  │ Cascade │  │ Defense │  │  Nexus  │        │
-│  │ Memory  │  │  Chat   │  │  Bots   │  │ Router  │        │
+│  │  Brain  │  │ Decode  │  │ Defense │  │  Nexus  │        │
+│  │ Memory  │  │ Intent  │  │  Bots   │  │ Router  │        │
 │  └────┬────┘  └────┬────┘  └────┬────┘  └────┬────┘        │
 │       │            │            │            │              │
 │       └────────────┴────────────┴────────────┘              │
