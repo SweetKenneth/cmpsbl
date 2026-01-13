@@ -1,13 +1,14 @@
 /**
- * promptfluid® Decode — The Cognitive Interface
- * v2026.01 — A full-screen conversational experience
+ * promptfluid® Decode — The Interpreter Primitive
+ * v2026.01 — Human-Compatible Cognitive Interface
  * 
- * This is the primary entry point into the promptfluid ecosystem.
- * Decode is not a chatbot. It's an interface to cognitive architecture.
+ * Decode is NOT a chatbot, persona, agent, or assistant.
+ * Decode is a protocol surface that translates between human 
+ * language and substrate-structured cognition.
  */
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { ArrowLeft, Send, Sparkles, RefreshCw, Menu, X, Moon, Brain, Shield, Eye, Layers } from "lucide-react";
+import { ArrowLeft, Send, Sparkles, RefreshCw, Brain, Shield, Eye, Layers, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { decode, substrate } from "@/lib/substrate";
@@ -16,7 +17,7 @@ import { SEO } from "@/components/SEO";
 import { toast } from "sonner";
 
 interface Message {
-  role: 'user' | 'assistant' | 'system';
+  role: 'user' | 'interpreter' | 'system';
   content: string;
   timestamp?: Date;
   metadata?: {
@@ -32,21 +33,21 @@ interface ConnectionState {
   retryCount: number;
 }
 
-const AMBIENT_PROMPTS = [
-  "What exists in the space between thoughts?",
-  "Tell me what you remember...",
+// Epistemic prompts — questions that open doors
+const EPISTEMIC_PROMPTS = [
   "What patterns repeat in the noise?",
-  "How does forgetting serve us?",
-  "What do you see when you dream?",
+  "What exists in the space between thoughts?",
+  "How does forgetting serve understanding?",
+  "What do you observe when the light changes?",
+  "Where do questions come from?",
 ];
 
 export default function Decode() {
   const navigate = useNavigate();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [showMenu, setShowMenu] = useState(false);
-  const [ambientPrompt, setAmbientPrompt] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [epistemicPrompt, setEpistemicPrompt] = useState("");
   const [connection, setConnection] = useState<ConnectionState>({
     status: 'connected',
     lastSuccess: null,
@@ -57,7 +58,7 @@ export default function Decode() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Load initial message if coming from homepage
+  // Initialize with epistemic welcome
   useEffect(() => {
     const initialMessage = sessionStorage.getItem('decode_initial_message');
     const initialResponse = sessionStorage.getItem('decode_initial_response');
@@ -68,61 +69,53 @@ export default function Decode() {
         setMessages([
           { role: 'user', content: initialMessage, timestamp: new Date() },
           { 
-            role: 'assistant', 
-            content: response.reply || "I hear you. Let's explore this together.", 
+            role: 'interpreter', 
+            content: response.reply || "Interpretation received. Patterns forming.", 
             timestamp: new Date(),
-            metadata: { provider: response.provider }
+            metadata: { provider: response.provider, module: 'decode' }
           }
         ]);
         sessionStorage.removeItem('decode_initial_message');
         sessionStorage.removeItem('decode_initial_response');
       } catch (e) {
-        // Start fresh
-        setMessages([{
-          role: 'system',
-          content: "Welcome. I'm Decode — a cognitive interface. Share a thought, a question, or simply observe.",
-          timestamp: new Date()
-        }]);
+        initializeFresh();
       }
     } else {
-      // Fresh start with ambient welcome — poetic, not corporate
-      const hour = new Date().getHours();
-      let welcomeMessage = "You've arrived... somewhere between question and answer. I'm listening.";
-      
-      if (hour >= 22 || hour < 5) {
-        welcomeMessage = "The night brings different thoughts. Slower ones. What surfaces for you in the quiet?";
-      } else if (hour >= 5 && hour < 9) {
-        welcomeMessage = "Morning. The light changes how we see things... including ourselves. What's emerging?";
-      } else if (hour >= 17 && hour < 22) {
-        welcomeMessage = "Evening arrives. The space between today and tomorrow. What lingers?";
-      }
-      
-      setMessages([{
-        role: 'system',
-        content: welcomeMessage,
-        timestamp: new Date()
-      }]);
+      initializeFresh();
     }
 
-    // Set random ambient prompt
-    setAmbientPrompt(AMBIENT_PROMPTS[Math.floor(Math.random() * AMBIENT_PROMPTS.length)]);
+    setEpistemicPrompt(EPISTEMIC_PROMPTS[Math.floor(Math.random() * EPISTEMIC_PROMPTS.length)]);
   }, []);
 
-  // Scroll to bottom on new messages
+  const initializeFresh = () => {
+    const hour = new Date().getHours();
+    let welcome = "⟨ The interpreter surface is active. Share a thought, question, or observation. ⟩";
+    
+    if (hour >= 22 || hour < 5) {
+      welcome = "⟨ Night mode. The substrate processes differently in the dark. What surfaces for you? ⟩";
+    } else if (hour >= 5 && hour < 9) {
+      welcome = "⟨ Morning patterns. Fresh connections form. What emerges? ⟩";
+    } else if (hour >= 17 && hour < 22) {
+      welcome = "⟨ Evening. The space between day and night. What lingers? ⟩";
+    }
+    
+    setMessages([{
+      role: 'system',
+      content: welcome,
+      timestamp: new Date()
+    }]);
+  };
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
-      if (retryTimeoutRef.current) {
-        clearTimeout(retryTimeoutRef.current);
-      }
+      if (retryTimeoutRef.current) clearTimeout(retryTimeoutRef.current);
     };
   }, []);
 
-  // Auto-resize textarea
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto';
@@ -140,7 +133,7 @@ export default function Decode() {
       const response = await substrate.invoke({ module: 'decode', action: 'status' });
       if (response.success) {
         setConnection({ status: 'connected', lastSuccess: Date.now(), retryCount: 0 });
-        toast.success('Connection restored');
+        toast.success('Substrate connection restored');
       }
     } catch (e) {
       setConnection(prev => ({
@@ -151,9 +144,9 @@ export default function Decode() {
     }
   }, [connection.retryCount]);
 
-  const sendMessage = async (messageText?: string) => {
+  const interpret = async (messageText?: string) => {
     const userMessage = messageText || input.trim();
-    if (!userMessage || isLoading) return;
+    if (!userMessage || isProcessing) return;
 
     setInput('');
     const newUserMessage: Message = { 
@@ -162,22 +155,25 @@ export default function Decode() {
       timestamp: new Date() 
     };
     setMessages(prev => [...prev, newUserMessage]);
-    setIsLoading(true);
+    setIsProcessing(true);
 
     try {
       const startTime = Date.now();
-      const response = await decode.chat(userMessage, `session_${Date.now()}`);
+      const response = await decode.chat(userMessage, `interpret_${Date.now()}`);
 
-      if (!response.success) throw new Error(response.error || 'Request failed');
+      if (!response.success) throw new Error(response.error || 'Interpretation failed');
 
       const data = response.data as any;
       const processingTime = Date.now() - startTime;
 
       setConnection({ status: 'connected', lastSuccess: Date.now(), retryCount: 0 });
 
+      // Wrap in epistemic markers
+      const interpretedContent = `⟨ ${data?.reply || 'Pattern received.'} ⟩`;
+
       setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: data?.reply || 'I received your thought.',
+        role: 'interpreter',
+        content: interpretedContent,
         timestamp: new Date(),
         metadata: {
           provider: data?.provider,
@@ -187,7 +183,7 @@ export default function Decode() {
       }]);
 
     } catch (error: any) {
-      console.error('Decode error:', error);
+      console.error('Interpretation error:', error);
       
       setConnection(prev => ({
         status: 'degraded',
@@ -196,38 +192,37 @@ export default function Decode() {
       }));
 
       setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: 'A moment... something shifted. Let me find my way back to you.',
+        role: 'interpreter',
+        content: '⟨ A moment... the pattern shifted. Recalibrating. ⟩',
         timestamp: new Date(),
         metadata: { module: 'fallback' }
       }]);
 
       retryTimeoutRef.current = setTimeout(attemptRecovery, 3000);
     } finally {
-      setIsLoading(false);
+      setIsProcessing(false);
     }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      sendMessage();
+      interpret();
     }
   };
 
-  const navigationItems = [
-    { label: 'Brain', description: 'Memory & Learning', icon: Brain, path: '/brain-hub' },
-    { label: 'Dreams', description: 'Feed the Dream-Eater', icon: Moon, path: '/feed-dream-eater' },
-    { label: 'Defense', description: 'Protection Layer', icon: Shield, path: '/projects' },
-    { label: 'Vision', description: 'Observability', icon: Eye, path: '/admin' },
-    { label: 'Explore', description: 'All Modules', icon: Layers, path: '/substrate' },
+  const substrateLinks = [
+    { label: 'Brain', description: 'Memory substrate', icon: Brain, path: '/brain-hub' },
+    { label: 'Defense', description: 'Security layer', icon: Shield, path: '/bot-sniper' },
+    { label: 'Vision', description: 'Observability', icon: Eye, path: '/admin/dashboard' },
+    { label: 'Substrate', description: 'Full view', icon: Layers, path: '/substrate' },
   ];
 
   return (
     <div className="min-h-screen bg-background flex flex-col overflow-hidden">
       <SEO 
-        title="Decode | promptfluid®"
-        description="The cognitive interface. Ask anything, explore ideas, or simply observe the space between thoughts."
+        title="Decode — Interpreter Primitive | promptfluid®"
+        description="Decode is the substrate's interpreter primitive. It translates human ambiguity into substrate-structured cognition without asserting facts, agency, or execution authority."
       />
 
       {/* Ambient Background */}
@@ -256,47 +251,49 @@ export default function Decode() {
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-primary" />
               <span className="font-medium">Decode</span>
-              <div className={`w-1.5 h-1.5 rounded-full ${
-                connection.status === 'connected' ? 'bg-[hsl(var(--system-green))]' :
-                connection.status === 'degraded' ? 'bg-[hsl(var(--system-amber))] animate-pulse' :
+              <span className="text-[10px] text-muted-foreground/50 hidden sm:inline">
+                Interpreter Primitive
+              </span>
+              <div className={`w-1.5 h-1.5 rounded-full ml-2 ${
+                connection.status === 'connected' ? 'bg-emerald-500' :
+                connection.status === 'degraded' ? 'bg-amber-500 animate-pulse' :
                 'bg-destructive'
               }`} />
             </div>
           </div>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setShowMenu(!showMenu)}
-            className="text-muted-foreground hover:text-foreground"
-          >
-            {showMenu ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
-          </Button>
+          <div className="flex items-center gap-2">
+            {substrateLinks.map((item) => (
+              <Button
+                key={item.label}
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate(item.path)}
+                className="text-muted-foreground hover:text-foreground hidden md:flex gap-1"
+              >
+                <item.icon className="w-3 h-3" />
+                <span className="text-xs">{item.label}</span>
+              </Button>
+            ))}
+          </div>
         </div>
       </header>
 
-      {/* Navigation Drawer */}
-      {showMenu && (
-        <div className="relative z-30 border-b border-border/30 bg-card/80 backdrop-blur-xl animate-slide-up">
-          <div className="container mx-auto px-4 py-4">
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-              {navigationItems.map((item) => (
-                <button
-                  key={item.label}
-                  onClick={() => { navigate(item.path); setShowMenu(false); }}
-                  className="flex items-center gap-3 p-3 rounded-xl bg-muted/30 hover:bg-muted/50 border border-border/30 transition-all text-left group"
-                >
-                  <item.icon className="w-4 h-4 text-primary/60 group-hover:text-primary transition-colors" />
-                  <div>
-                    <p className="text-sm font-medium">{item.label}</p>
-                    <p className="text-xs text-muted-foreground">{item.description}</p>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
+      {/* Contract Indicator */}
+      <div className="relative z-10 border-b border-border/20 bg-muted/30 backdrop-blur-sm">
+        <div className="container mx-auto px-4 py-2 flex items-center justify-center gap-4 text-[10px] text-muted-foreground/60">
+          <span className="flex items-center gap-1">
+            <Activity className="w-3 h-3" />
+            Epistemic Layer Active
+          </span>
+          <span className="hidden sm:inline">•</span>
+          <span className="hidden sm:inline">No Identity Claims</span>
+          <span className="hidden sm:inline">•</span>
+          <span className="hidden sm:inline">No Agency Claims</span>
+          <span className="hidden sm:inline">•</span>
+          <span className="hidden sm:inline">Routing Authority Only</span>
         </div>
-      )}
+      </div>
 
       {/* Messages Area */}
       <div className="relative z-10 flex-1 overflow-y-auto">
@@ -318,23 +315,32 @@ export default function Decode() {
                 >
                   <p className="text-[15px] leading-relaxed whitespace-pre-wrap">{msg.content}</p>
                   
-                  {msg.metadata?.processing_time && msg.role === 'assistant' && (
-                    <p className="text-[10px] text-muted-foreground/50 mt-2">
-                      {msg.metadata.processing_time}ms
-                    </p>
+                  {msg.metadata?.processing_time && msg.role === 'interpreter' && (
+                    <div className="flex items-center gap-2 mt-2">
+                      <span className="text-[10px] text-muted-foreground/50">
+                        {msg.metadata.processing_time}ms
+                      </span>
+                      {msg.metadata.provider && (
+                        <span className="text-[10px] text-muted-foreground/30">
+                          via {msg.metadata.provider}
+                        </span>
+                      )}
+                    </div>
                   )}
                 </div>
               </div>
             ))}
 
-            {/* Loading indicator */}
-            {isLoading && (
+            {isProcessing && (
               <div className="flex justify-start animate-fade-in">
                 <div className="bg-card/60 backdrop-blur rounded-2xl px-5 py-4 border border-border/30">
-                  <div className="flex gap-1.5">
-                    <div className="w-2 h-2 bg-primary/40 rounded-full animate-bounce" />
-                    <div className="w-2 h-2 bg-primary/40 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
-                    <div className="w-2 h-2 bg-primary/40 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-muted-foreground">Interpreting</span>
+                    <div className="flex gap-1">
+                      <div className="w-1.5 h-1.5 bg-primary/40 rounded-full animate-bounce" />
+                      <div className="w-1.5 h-1.5 bg-primary/40 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
+                      <div className="w-1.5 h-1.5 bg-primary/40 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -348,13 +354,12 @@ export default function Decode() {
       {/* Input Area */}
       <div className="relative z-20 border-t border-border/30 bg-background/80 backdrop-blur-xl">
         <div className="container mx-auto px-4 py-4 max-w-3xl">
-          {/* Ambient prompt suggestion */}
           {messages.length <= 1 && !input && (
             <button
-              onClick={() => setInput(ambientPrompt)}
+              onClick={() => setInput(epistemicPrompt)}
               className="w-full text-left text-sm text-muted-foreground/50 hover:text-muted-foreground mb-3 transition-colors"
             >
-              <span className="italic">Try: "{ambientPrompt}"</span>
+              <span className="italic">Try: "{epistemicPrompt}"</span>
             </button>
           )}
 
@@ -364,15 +369,15 @@ export default function Decode() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyPress}
-              placeholder="What's on your mind..."
+              placeholder="Share a thought, question, or observation..."
               className="flex-1 min-h-[44px] max-h-[200px] resize-none border-border/30 bg-card/40 backdrop-blur focus-visible:ring-primary/30"
-              disabled={isLoading || connection.status === 'disconnected'}
+              disabled={isProcessing || connection.status === 'disconnected'}
               rows={1}
             />
             
             <Button
-              onClick={() => sendMessage()}
-              disabled={!input.trim() || isLoading || connection.status === 'disconnected'}
+              onClick={() => interpret()}
+              disabled={!input.trim() || isProcessing || connection.status === 'disconnected'}
               size="icon"
               className="h-11 w-11 rounded-xl bg-primary hover:bg-primary/90"
             >
@@ -382,15 +387,23 @@ export default function Decode() {
 
           {connection.status === 'disconnected' && (
             <div className="flex items-center gap-2 mt-3 text-xs text-destructive">
-              <span>Connection lost.</span>
+              <span>Substrate connection lost.</span>
               <button 
                 onClick={attemptRecovery}
                 className="flex items-center gap-1 underline"
               >
-                <RefreshCw className="w-3 h-3" /> Retry
+                <RefreshCw className="w-3 h-3" /> Reconnect
               </button>
             </div>
           )}
+        </div>
+
+        {/* Footer Attribution */}
+        <div className="container mx-auto px-4 py-2 border-t border-border/20">
+          <p className="text-[10px] text-center text-muted-foreground/40">
+            Decode is an interpreter primitive, not an agent. Output is epistemic, not assertive.
+            <span className="hidden sm:inline"> • promptfluid® Cognitive Orchestration Substrate v2026.01</span>
+          </p>
         </div>
       </div>
     </div>

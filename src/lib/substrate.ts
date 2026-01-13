@@ -4,10 +4,14 @@
  * 
  * Unified API for all substrate modules:
  * - Brain: Memory, learning, reflection
- * - Decode: Intent decoding, chat, dreams
+ * - Decode: Intent decoding, cognitive interface (Interpreter Primitive)
  * - Defense: Security, bot detection, threats
  * - Nexus: AI routing, multi-provider
  * - Vision: Observability, metrics, health
+ * 
+ * Decode is the substrate's interpreter primitive. It translates human
+ * ambiguity into substrate-structured cognition without asserting facts,
+ * agency, or execution authority.
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -75,7 +79,7 @@ class SubstrateClient {
     }
   }
 
-  // Brain Module
+  // Brain Module — Memory, Learning, Reflection
   brain = {
     learn: (content: string, source?: string) =>
       this.invoke({ module: 'brain', action: 'learn', payload: { content, source } }),
@@ -91,24 +95,48 @@ class SubstrateClient {
     
     status: () =>
       this.invoke({ module: 'brain', action: 'status' }),
+    
+    // Extended Brain methods for Decode contract
+    query: (query_text: string, limit?: number) =>
+      this.invoke({ module: 'brain', action: 'query', payload: { query_text, limit } }),
+    
+    remember: (content: string, memory_type: string, confidence?: number, metadata?: Record<string, unknown>) =>
+      this.invoke({ module: 'brain', action: 'remember', payload: { content, memory_type, confidence, metadata } }),
+    
+    reinforce: (memory_id: string, boost?: number) =>
+      this.invoke({ module: 'brain', action: 'reinforce', payload: { memory_id, boost } }),
+    
+    dream: () =>
+      this.invoke({ module: 'brain', action: 'dream' }),
   };
 
-  // Decode Module — Intent Decoding & Cognitive Interface
+  // Decode Module — Interpreter Primitive (NOT a chatbot, persona, or agent)
   decode = {
+    /** 
+     * Primary chat interface for cognitive interpretation
+     * NOTE: Decode is an interpreter, not an assistant
+     */
     chat: (message: string, sessionId?: string) =>
       this.invoke({ module: 'decode', action: 'chat', payload: { message, sessionId } }),
     
+    /** Initiate a dream cycle */
     dream: () =>
       this.invoke({ module: 'decode', action: 'dream' }),
     
+    /** Submit a proposal for substrate consideration */
     propose: (idea: string) =>
       this.invoke({ module: 'decode', action: 'propose', payload: { idea } }),
     
+    /** Learn from interaction */
+    learn: (content: string, source?: string) =>
+      this.invoke({ module: 'decode', action: 'learn', payload: { content, source } }),
+    
+    /** Get Decode module status */
     status: () =>
       this.invoke({ module: 'decode', action: 'status' }),
   };
 
-  // Defense Module
+  // Defense Module — Security & Threat Analysis
   defense = {
     analyze: (fingerprint: Record<string, unknown>, ip?: string) =>
       this.invoke({ module: 'defense', action: 'analyze', payload: { fingerprint, ip } }),
@@ -119,11 +147,14 @@ class SubstrateClient {
     rules: () =>
       this.invoke({ module: 'defense', action: 'rules' }),
     
+    reputation: (ip_address: string) =>
+      this.invoke({ module: 'defense', action: 'reputation', payload: { ip_address } }),
+    
     status: () =>
       this.invoke({ module: 'defense', action: 'status' }),
   };
 
-  // Nexus Module
+  // Nexus Module — Multi-Provider AI Routing
   nexus = {
     text: (prompt: string, model?: string) =>
       this.invoke({ module: 'nexus', action: 'text', payload: { prompt, model } }),
@@ -138,7 +169,7 @@ class SubstrateClient {
       this.invoke({ module: 'nexus', action: 'status' }),
   };
 
-  // Vision Module
+  // Vision Module — Observability & Metrics
   vision = {
     metrics: () =>
       this.invoke({ module: 'vision', action: 'metrics' }),
