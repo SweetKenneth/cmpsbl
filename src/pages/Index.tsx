@@ -33,9 +33,10 @@ export default function Index() {
     }
   }, []);
 
-  // Reveal interface after initial load
+  // Reveal interface immediately for better LCP, animations handle visual polish
   useEffect(() => {
-    const timer = setTimeout(() => setShowInterface(true), 600);
+    // Reduced delay for faster LCP - was 600ms, now 100ms
+    const timer = setTimeout(() => setShowInterface(true), 100);
     return () => clearTimeout(timer);
   }, []);
 
@@ -98,7 +99,7 @@ export default function Index() {
         <header className="container mx-auto px-6 py-8">
           <div className="flex items-center justify-between">
             <div 
-              className={`transition-all duration-700 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}
+              className={`transition-all duration-300 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}
             >
               <span className="text-lg font-medium tracking-tight text-foreground">
                 prompt<span className="text-primary">fluid</span>
@@ -107,7 +108,7 @@ export default function Index() {
             </div>
             
             <nav 
-              className={`flex items-center gap-4 transition-all duration-700 delay-100 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}
+              className={`flex items-center gap-4 transition-all duration-300 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}
             >
               <button 
                 onClick={() => navigate('/decode')}
@@ -135,16 +136,16 @@ export default function Index() {
         <div className="flex-1 flex items-center justify-center px-6">
           <div className="max-w-2xl w-full text-center">
             
-            {/* Ambient greeting */}
+            {/* Ambient greeting - reduced delay for faster paint */}
             <p 
-              className={`text-sm text-muted-foreground mb-8 transition-all duration-1000 delay-300 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+              className={`text-sm text-muted-foreground mb-8 transition-all duration-500 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
             >
               {greeting}
             </p>
 
-            {/* Core message - appears like it's breathing */}
+            {/* Core message - LCP optimized with minimal delay */}
             <div 
-              className={`mb-12 transition-all duration-1000 delay-500 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+              className={`mb-12 transition-all duration-500 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
             >
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-foreground mb-6 leading-[1.1]">
                 Where machines learn
@@ -162,7 +163,7 @@ export default function Index() {
 
             {/* The Interface - Decode Entry */}
             <div 
-              className={`transition-all duration-1000 delay-700 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+              className={`transition-all duration-500 delay-100 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
             >
               <div className="relative max-w-lg mx-auto">
                 {/* Glow effect */}
@@ -210,7 +211,7 @@ export default function Index() {
 
             {/* Minimal ambient indicator */}
             <div 
-              className={`mt-16 flex items-center justify-center transition-all duration-700 delay-400 ${showInterface ? 'opacity-100' : 'opacity-0'}`}
+              className={`mt-16 flex items-center justify-center transition-all duration-500 delay-100 ${showInterface ? 'opacity-100' : 'opacity-0'}`}
             >
               <div className="flex items-center gap-2 text-muted-foreground/50">
                 <Sparkles className="w-3 h-3 animate-ambient-pulse" />
@@ -222,7 +223,7 @@ export default function Index() {
 
         {/* Investor-Focused Footer */}
         <footer 
-          className={`container mx-auto px-6 py-8 transition-all duration-700 delay-500 ${showInterface ? 'opacity-100' : 'opacity-0'}`}
+          className={`container mx-auto px-6 py-8 transition-all duration-300 delay-100 ${showInterface ? 'opacity-100' : 'opacity-0'}`}
         >
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground/70">
             <span>© 2026 promptfluid®</span>
