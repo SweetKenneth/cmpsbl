@@ -35,6 +35,7 @@ export function PublicNav() {
               className="h-8 lg:h-10 w-auto object-contain"
               loading="eager"
               decoding="async"
+              fetchPriority="high"
             />
             <span className="hidden md:inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground border border-border rounded-full px-2 py-0.5">
               <Layers className="w-3 h-3" />
