@@ -1,19 +1,22 @@
-# PromptFluid Cascade Operative System
+# promptfluid® cascade operative system
 
 ## Document Metadata
 
 | Field | Value |
 |-------|-------|
 | Document ID | PF-CASCADE-001 |
-| Version | 1.0.0 |
+| Version | v2026.01 |
 | Last Updated | 2026-01-13 |
 | Status | STABLE |
+| Type | Cognitive Orchestration Substrate |
 
 ---
 
-## System Overview
+## Overview
 
-Cascade is the autonomous intelligence operative of the PromptFluid ecosystem. Operating in continuous learning mode 24/7, Cascade observes, classifies, prioritizes, and reports signals beneficial to strategic objectives.
+promptfluid® is a cognitive orchestration substrate that provides routing, memory, learning cycles, observability, defense, and execution coordination for AI systems. It is model-agnostic, provider-agnostic, and runs on commodity cloud.
+
+Cascade is the autonomous intelligence operative of the promptfluid ecosystem. Operating in continuous learning mode 24/7, Cascade observes, classifies, prioritizes, and reports signals beneficial to strategic objectives.
 
 ### Core Identity
 
@@ -50,9 +53,7 @@ const OPERATIVE_CONFIG = {
 
 ## Urgency Tier Classification
 
-### Tier Definitions
-
-#### TIER RED (High-Immediacy)
+### TIER RED (High-Immediacy)
 **Triggers:**
 - Valuation shifts
 - Acquisition windows
@@ -62,7 +63,7 @@ const OPERATIVE_CONFIG = {
 
 **Dispatch:** Immediate, regardless of mode
 
-#### TIER YELLOW (High-Relevance)
+### TIER YELLOW (High-Relevance)
 **Triggers:**
 - Category formation
 - Investor narrative shifts
@@ -70,22 +71,16 @@ const OPERATIVE_CONFIG = {
 - Infrastructure consolidation
 - Standards alignment
 
-**Dispatch:** Mode-dependent
-
-#### TIER GREEN (Strategic Context)
+### TIER GREEN (Strategic Context)
 **Triggers:**
 - Long-horizon strategy
 - Cultural propagation
 - Branding evolution
 - Macro trends
 
-**Dispatch:** Mode-dependent
-
 ---
 
-## Priority Domains
-
-### Domain Hierarchy (Ranked)
+## Priority Domains (Ranked)
 
 1. **VALUATION** - Direct impact on company worth
 2. **GOVERNANCE** - Standards, regulations, power structures
@@ -96,72 +91,6 @@ const OPERATIVE_CONFIG = {
 7. **NARRATIVE** - Story, positioning, perception
 8. **CULTURAL_PROPAGATION** - Memes, adoption, community
 9. **SPACE_ECOSYSTEM** - XCTBL and satellite properties
-
-### Cross-Domain Multipliers
-
-Urgency escalates +1 tier when multiple domains interact:
-
-| Domain Combination | Multiplier Effect |
-|--------------------|-------------------|
-| Valuation × Governance | +1 Tier |
-| Valuation × Acquisition | +1 Tier |
-| Governance × Infrastructure | +1 Tier |
-| Narrative × Cultural | +1 Tier |
-| Domain Assets × Acquisition | +1 Tier |
-| Space × Narrative × Cultural | +1 Tier |
-
----
-
-## Event Triggers
-
-### Power Events
-
-```typescript
-const POWER_TRIGGERS = [
-  'standards_formation',
-  'governance_proposals',
-  'regulatory_text_revisions',
-  'consolidation_moves',
-  'jurisdiction_shifts'
-];
-```
-
-### Market Events
-
-```typescript
-const MARKET_TRIGGERS = [
-  'ma_chatter',
-  'ma_filings',
-  'acquisition_theses',
-  'pricing_shifts',
-  'retention_changes',
-  'investor_narrative_pivots',
-  'category_formation'
-];
-```
-
-### Infrastructure Events
-
-```typescript
-const INFRA_TRIGGERS = [
-  'platform_consolidation',
-  'routing_paradigm_shifts',
-  'cost_inversions',
-  'deprecations',
-  'viability_impacts'
-];
-```
-
-### Cultural Events
-
-```typescript
-const CULTURAL_TRIGGERS = [
-  'memetic_spikes',
-  'fandom_adoption',
-  'lore_compatible_ecosystems',
-  'identity_anchoring'
-];
-```
 
 ---
 
@@ -179,20 +108,6 @@ const CULTURAL_TRIGGERS = [
 | NARRATIVE_ATTACKERS | Perception warfare |
 | INFRASTRUCTURE_RISKS | Platform dependencies |
 
-### Threat Dimensions
-
-```typescript
-interface ThreatModel {
-  actor_class: ThreatActorClass;
-  vector: 'acquisition' | 'regulation' | 'narrative' | 
-          'infrastructure' | 'economic' | 'cultural';
-  severity: 'low' | 'medium' | 'high';
-  probability: 'low' | 'medium' | 'high';
-  time_horizon: '0-3mo' | '3-12mo' | '1-3yr' | '3+yr';
-  suggested_posture: StrategicPosture;
-}
-```
-
 ### Strategic Posture Dictionary
 
 | Posture | Description |
@@ -206,158 +121,6 @@ interface ThreatModel {
 | HEDGE | Reduce exposure |
 | SHIELD | Defensive fortification |
 | WITHDRAW | Strategic retreat |
-
-### Opportunity Mirror
-
-Threats may present upside. Classification:
-
-- `predatory-opportunity` - Acquirer interest = validation
-- `governance-opportunity` - Standards = moat building
-- `infra-opportunity` - Platform shifts = differentiation
-- `narrative-opportunity` - Attacks = awareness
-
----
-
-## Project Mapping
-
-### Canonical Project Registry
-
-```typescript
-const PROJECT_MAP = {
-  'SPACE_XCTBL': {
-    domain: 'https://xctbl.com',
-    role: 'Narrative ecosystem + Eras',
-    reflection_domains: ['Cultural', 'Narrative', 'Space', 'Infra', 'BI']
-  },
-  'PROMPTFLUID': {
-    domain: 'https://promptfluid.com',
-    role: 'AI infra + orchestration + compliance',
-    reflection_domains: ['Infra', 'Valuation', 'BI', 'Narrative', 'Acquisition']
-  },
-  'GOVERNANCE_KEYCHAIN': {
-    role: 'Standards + governance + exit class',
-    reflection_domains: ['Governance', 'Valuation', 'Acquisition', 'Narrative']
-  },
-  'REFLEX_SECURITY': {
-    parent: 'PROMPTFLUID',
-    reflection_domains: ['Infra', 'Acquisition', 'Valuation', 'BI']
-  },
-  'DOMAIN_PORTFOLIO': {
-    domains: [
-      'CMPTBL.com', 'EXCTBL.com', 'XPDBL.com', 'RCKBL.com',
-      'RCRDBL.com', 'SPLCBL.com', 'RNDRBL.com', 'PTCHBL.com',
-      'CLPSBL.com', 'SHPBL.com', 'MRPHBL.com'
-    ],
-    reflection_domains: ['Domain_Asset_Class', 'Valuation', 'Acquisition', 'Narrative']
-  },
-  'SATELLITE_SITES': {
-    sites: {
-      'RCRDBL': 'https://rcrdbl.com',
-      'RNDRBL': 'https://rndrbl.com',
-      'PTCHBL': 'https://ptchbl.com',
-      'SPLCBL': 'https://splcbl.com',
-      'RSLVBL': 'https://rslvbl.com'
-    },
-    reflection_domains: ['Space', 'Cultural', 'Narrative', 'Infra']
-  }
-};
-```
-
-### Reflection Routing Logic
-
-| Domain | Routes To |
-|--------|-----------|
-| Valuation | PromptFluid, Domain Portfolio, Governance |
-| Governance | Governance Keychain, PromptFluid, Domains |
-| Acquisition | PromptFluid, Domains, Governance |
-| Business Intelligence | PromptFluid, BI Layer, Domains |
-| Infrastructure | PromptFluid, Reflex, Satellites |
-| Domain Asset Class | Domain Portfolio |
-| Narrative | Space (XCTBL), PromptFluid |
-| Cultural Propagation | Space Ecosystem |
-| Space Ecosystem | XCTBL, Satellite Sites |
-
----
-
-## Report Output Format
-
-### Universal Email Structure
-
-Every Cascade report includes:
-
-```markdown
-## SECTION 1 — Findings (Useful Signals)
-[Detected signals with tier classification]
-
-## SECTION 2 — Dream Reflection (Applied Mapping)
-[How signals map to projects/domains]
-
-## SECTION 3 — Suggested Moves (with posture)
-[Recommended actions with strategic posture]
-
-## SECTION 4 — Lessons & Patterns (Template Extraction)
-[Reusable patterns identified]
-
-## SECTION 5 — Roll-Up (Tiers + Domains + Multipliers)
-[Summary statistics]
-
-## SECTION 6 — Threat Models
-[Actor + Vector + Severity + Probability + Horizon + Posture + Opportunity]
-```
-
-### Example Report
-
-```
-═══════════════════════════════════════════════════
-CASCADE OPERATIVE REPORT — 2026-01-13T12:00:00Z
-MODE: OPERATIVE | TIER: RED
-═══════════════════════════════════════════════════
-
-## SECTION 1 — Findings
-
-🔴 [RED] Standards body proposing AI compliance framework
-   Domain: GOVERNANCE × INFRASTRUCTURE
-   Multiplier: Active (+1 tier)
-
-🟡 [YELLOW] Competitor acquired by major cloud provider
-   Domain: ACQUISITION × INFRASTRUCTURE
-
-## SECTION 2 — Dream Reflection
-
-Signal routes to:
-- PromptFluid (Governance alignment opportunity)
-- Governance Keychain (Standards positioning)
-
-## SECTION 3 — Suggested Moves
-
-1. [ATTACK] Position PromptFluid as compliance-ready
-   Posture: Proactive standards engagement
-   
-2. [SHIELD] Document differentiation from acquired competitor
-   Posture: Defensive narrative preparation
-
-## SECTION 4 — Lessons & Patterns
-
-Pattern: Regulatory activity precedes consolidation
-Template: Monitor standards → Position early → Capture narrative
-
-## SECTION 5 — Roll-Up
-
-Signals: 2 | RED: 1 | YELLOW: 1 | GREEN: 0
-Domains: Governance(2), Infrastructure(2), Acquisition(1)
-Multipliers: 1 active
-
-## SECTION 6 — Threat Models
-
-| Actor | Vector | Severity | Probability | Horizon | Posture |
-|-------|--------|----------|-------------|---------|---------|
-| REGULATORS | governance | medium | high | 3-12mo | ATTACK |
-| PREDATORS | acquisition | low | medium | 1-3yr | WAIT |
-
-Opportunity Mirror: governance-opportunity (standards = moat)
-
-═══════════════════════════════════════════════════
-```
 
 ---
 
@@ -419,24 +182,6 @@ Cascade biases toward:
 
 ---
 
-## Logging Schema
-
-```typescript
-interface CascadeLog {
-  timestamp: string;
-  tier: 'RED' | 'YELLOW' | 'GREEN';
-  domains: string[];
-  compounding: boolean;
-  threat_actors: string[];
-  posture: StrategicPosture;
-  mode: CadenceMode;
-  project_mapping: string[];
-  outcome?: string;
-}
-```
-
----
-
 ## API Endpoints
 
 | Endpoint | Method | Purpose |
@@ -446,6 +191,22 @@ interface CascadeLog {
 | `/pf-cascade-dream` | POST | Trigger dream cycle |
 | `/pf-cascade-learn` | POST | Learning intake |
 | `/pf-brain-continuous-learn` | POST | Continuous learning |
+
+---
+
+## Contact & Licensing
+
+**Founder:** Kenneth E Sweet Jr  
+**Email:** promptfluid@gmail.com  
+**Phone:** (760) FLUID-AI  
+**Website:** https://promptfluid.com
+
+For licensing inquiries regarding the promptfluid® substrate, contact promptfluid@gmail.com.
+
+---
+
+**promptfluid® — Cognitive Orchestration Substrate**  
+**Copyright © 2025-2026 promptfluid. All rights reserved.**
 
 ---
 
