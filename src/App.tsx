@@ -45,6 +45,13 @@ const InvestorsPublic = lazy(() => import("./pages/InvestorsPublic"));
 const SubstrateDashboard = lazy(() => import("./pages/SubstrateDashboard"));
 const Documentation = lazy(() => import("./pages/Documentation"));
 
+// Marketing / Info pages
+const About = lazy(() => import("./pages/About"));
+const Solutions = lazy(() => import("./pages/Solutions"));
+const Contact = lazy(() => import("./pages/Contact"));
+const CurrentProjects = lazy(() => import("./pages/CurrentProjects"));
+const Roadmap = lazy(() => import("./pages/Roadmap"));
+
 // Lazy load blog posts
 const WordPressBotDefense = lazy(() => import("./pages/blog/WordPressBotDefense"));
 const TopSecurityPlugins2025 = lazy(() => import("./pages/blog/TopSecurityPlugins2025"));
@@ -103,6 +110,13 @@ const App = () => {
                     <Route path="/investors" element={<InvestorsPublic />} />
                     <Route path="/substrate" element={<SubstrateDashboard />} />
                     <Route path="/documentation" element={<Documentation />} />
+
+                    {/* Marketing / Info */}
+                    <Route path="/about" element={<About />} />
+                    <Route path="/solutions" element={<Solutions />} />
+                    <Route path="/projects" element={<CurrentProjects />} />
+                    <Route path="/roadmap" element={<Roadmap />} />
+                    <Route path="/contact" element={<Contact />} />
                     
                     {/* Auth & Legal */}
                     <Route path="/auth" element={<Auth />} />
@@ -137,12 +151,7 @@ const App = () => {
                     <Route path="/blog/wcag-2-2-wordpress-changes" element={<WCAG22Changes />} />
                     <Route path="/blog/automated-accessibility-fixes-wordpress" element={<AIAccessibilityFixes />} />
                     
-                    {/* Legacy redirects to home */}
-                    <Route path="/about" element={<Navigate to="/" replace />} />
-                    <Route path="/solutions" element={<Navigate to="/" replace />} />
-                    <Route path="/contact" element={<Navigate to="/" replace />} />
-                    <Route path="/roadmap" element={<Navigate to="/" replace />} />
-                    <Route path="/projects" element={<Navigate to="/" replace />} />
+                    {/* Legacy redirects */}
                     <Route path="/admin/*" element={<Navigate to="/" replace />} />
                     <Route path="/dashboard" element={<Navigate to="/" replace />} />
                     <Route path="/brain" element={<Navigate to="/decode" replace />} />
