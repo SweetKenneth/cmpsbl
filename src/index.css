@@ -330,7 +330,21 @@ All colors MUST be HSL.
   
   .animate-gradient {
     background-size: 200% 200%;
-    animation: gradientShift 3s ease infinite;
+    animation: gradientShift 4s ease-in-out infinite;
+  }
+
+  /* Subtle pulse for ambient elements */
+  @keyframes ambientPulse {
+    0%, 100% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 0.6;
+    }
+  }
+  
+  .animate-ambient-pulse {
+    animation: ambientPulse 4s ease-in-out infinite;
   }
   
   /* Hide Scrollbar */
