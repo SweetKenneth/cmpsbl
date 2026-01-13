@@ -1,13 +1,10 @@
 /**
  * promptfluid® — The Gateway
  * v2026.01 — Where cognitive infrastructure begins
- * 
- * This is not a product page. This is an entry point.
- * Let visitors FEEL what this is before we tell them.
  */
 
 import { useState, useEffect, useRef } from "react";
-import { ArrowRight, Sparkles, Eye, Moon, Send } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +15,6 @@ export default function Index() {
   const navigate = useNavigate();
   const [input, setInput] = useState("");
   const [isAwakening, setIsAwakening] = useState(false);
-  const [hasInteracted, setHasInteracted] = useState(false);
   const [greeting, setGreeting] = useState("");
   const [showInterface, setShowInterface] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -27,11 +23,11 @@ export default function Index() {
   useEffect(() => {
     const hour = new Date().getHours();
     if (hour >= 5 && hour < 12) {
-      setGreeting("The morning light reveals new patterns.");
+      setGreeting("The morning reveals new patterns.");
     } else if (hour >= 12 && hour < 17) {
-      setGreeting("Clarity emerges in daylight.");
+      setGreeting("Clarity emerges.");
     } else if (hour >= 17 && hour < 21) {
-      setGreeting("As shadows lengthen, insights deepen.");
+      setGreeting("Shadows lengthen. Insights deepen.");
     } else {
       setGreeting("In darkness, we dream forward.");
     }
@@ -39,38 +35,28 @@ export default function Index() {
 
   // Reveal interface after initial load
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowInterface(true);
-    }, 800);
+    const timer = setTimeout(() => setShowInterface(true), 600);
     return () => clearTimeout(timer);
   }, []);
 
   const handleAwaken = async () => {
     if (!input.trim()) {
-      // No input - take them to the experience
       navigate('/decode');
       return;
     }
 
     setIsAwakening(true);
-    setHasInteracted(true);
 
     try {
-      // Start a conversation with Decode
       const response = await decode.chat(input, `visitor_${Date.now()}`);
-      
       if (response.success) {
-        // Store the conversation start and redirect
         sessionStorage.setItem('decode_initial_message', input);
         sessionStorage.setItem('decode_initial_response', JSON.stringify(response.data));
-        navigate('/decode');
-      } else {
-        navigate('/decode');
       }
     } catch (e) {
-      // On any error, still take them to the experience
-      navigate('/decode');
+      // Continue anyway
     }
+    navigate('/decode');
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -108,11 +94,11 @@ export default function Index() {
       {/* Main Content */}
       <main className="relative z-10 min-h-screen flex flex-col">
         
-        {/* Minimal Header */}
+        {/* Minimal Header — User-thinking UX */}
         <header className="container mx-auto px-6 py-8">
           <div className="flex items-center justify-between">
             <div 
-              className={`transition-all duration-1000 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}
+              className={`transition-all duration-700 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}
             >
               <span className="text-lg font-medium tracking-tight text-foreground">
                 prompt<span className="text-primary">fluid</span>
@@ -121,25 +107,25 @@ export default function Index() {
             </div>
             
             <nav 
-              className={`flex items-center gap-6 transition-all duration-1000 delay-200 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}
+              className={`flex items-center gap-4 transition-all duration-700 delay-100 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}
             >
               <button 
-                onClick={() => navigate('/about')}
+                onClick={() => navigate('/decode')}
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                About
+                Begin
+              </button>
+              <button 
+                onClick={() => navigate('/feed-dream-eater')}
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Dream
               </button>
               <button 
                 onClick={() => navigate('/blog')}
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                Writing
-              </button>
-              <button 
-                onClick={() => navigate('/investors')}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Investors
+                Read
               </button>
             </nav>
           </div>
@@ -222,33 +208,37 @@ export default function Index() {
               </div>
             </div>
 
-            {/* Ambient indicators */}
+            {/* Minimal ambient indicator */}
             <div 
-              className={`mt-16 flex items-center justify-center gap-8 transition-all duration-1000 delay-1000 ${showInterface ? 'opacity-100' : 'opacity-0'}`}
+              className={`mt-16 flex items-center justify-center transition-all duration-700 delay-400 ${showInterface ? 'opacity-100' : 'opacity-0'}`}
             >
-              <div className="flex items-center gap-2 text-muted-foreground/60">
-                <Eye className="w-3 h-3" />
-                <span className="text-xs font-medium">Observing</span>
-              </div>
-              <div className="flex items-center gap-2 text-muted-foreground/60">
-                <Moon className="w-3 h-3" />
-                <span className="text-xs font-medium">Dreaming</span>
-              </div>
-              <div className="flex items-center gap-2 text-muted-foreground/60">
-                <Sparkles className="w-3 h-3" />
-                <span className="text-xs font-medium">Learning</span>
+              <div className="flex items-center gap-2 text-muted-foreground/50">
+                <Sparkles className="w-3 h-3 animate-ambient-pulse" />
+                <span className="text-xs tracking-wide">Cognitive infrastructure</span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Minimal Footer */}
+        {/* Investor-Focused Footer */}
         <footer 
-          className={`container mx-auto px-6 py-8 transition-all duration-1000 delay-1200 ${showInterface ? 'opacity-100' : 'opacity-0'}`}
+          className={`container mx-auto px-6 py-8 transition-all duration-700 delay-500 ${showInterface ? 'opacity-100' : 'opacity-0'}`}
         >
-          <div className="flex items-center justify-between text-xs text-muted-foreground/60">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground/70">
             <span>© 2026 promptfluid®</span>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-6">
+              <button 
+                onClick={() => navigate('/investors')}
+                className="hover:text-foreground transition-colors font-medium"
+              >
+                Investors
+              </button>
+              <button 
+                onClick={() => navigate('/documentation')}
+                className="hover:text-foreground transition-colors"
+              >
+                Docs
+              </button>
               <button 
                 onClick={() => navigate('/privacy')}
                 className="hover:text-foreground transition-colors"
