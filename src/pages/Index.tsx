@@ -10,6 +10,8 @@ import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 import { decode } from "@/lib/substrate";
+import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
 
 export default function Index() {
   const navigate = useNavigate();
@@ -67,13 +69,16 @@ export default function Index() {
   };
 
   return (
-    <div className="h-[100dvh] bg-background overflow-hidden relative flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
       <SEO 
         title="promptfluid® | Think Different. Think Fluid."
         description="Where machines learn to dream. An exploration of cognitive architecture, autonomous learning, and the space between intention and understanding."
         canonical="https://promptfluid.com"
         keywords={['AI', 'cognitive architecture', 'autonomous systems', 'machine learning', 'dream-state computing']}
       />
+
+      {/* Shared Navigation */}
+      <PublicNav />
 
       {/* Ambient Background Layers */}
       <div className="fixed inset-0 pointer-events-none z-0">
@@ -85,141 +90,74 @@ export default function Index() {
         />
       </div>
 
-      {/* Main Content - Compact layout to avoid scroll */}
-      <main className="relative z-10 flex-1 flex flex-col">
-        
-        {/* Mobile-first Header */}
-        <header className="container mx-auto px-4 md:px-6 py-3 md:py-4">
-          <div className="flex items-center justify-between">
-            <div 
-              className={`transition-all duration-300 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}
-            >
-              <span className="text-base md:text-lg font-medium tracking-tight text-foreground">
-                prompt<span className="text-primary">fluid</span>
+      {/* Main Content */}
+      <main className="relative z-10 flex-1 flex items-center justify-center px-4 md:px-6 py-12 md:py-20">
+        <div className="max-w-2xl w-full text-center">
+          
+          {/* Ambient greeting */}
+          <p 
+            className={`text-xs md:text-sm text-muted-foreground mb-4 md:mb-6 transition-all duration-500 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+          >
+            {greeting}
+          </p>
+
+          {/* Core message */}
+          <div 
+            className={`mb-6 md:mb-8 transition-all duration-500 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+          >
+            <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-light tracking-tight text-foreground mb-3 md:mb-4 leading-[1.1]">
+              Where machines learn
+              <br />
+              <span className="font-medium bg-gradient-to-r from-primary via-violet-500 to-primary bg-clip-text text-transparent animate-gradient bg-[length:200%_auto]">
+                to dream
               </span>
-              <sup className="text-[10px] text-muted-foreground ml-0.5">®</sup>
-            </div>
+            </h1>
             
-            <nav 
-              className={`flex items-center gap-3 md:gap-4 transition-all duration-300 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}
-            >
-              <button 
-                onClick={() => navigate('/decode')}
-                className="text-xs md:text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Begin
-              </button>
-              <button 
-                onClick={() => navigate('/feed-dream-eater')}
-                className="text-xs md:text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Dream
-              </button>
-              <button 
-                onClick={() => navigate('/blog')}
-                className="text-xs md:text-sm text-muted-foreground hover:text-foreground transition-colors hidden sm:block"
-              >
-                Read
-              </button>
-            </nav>
-          </div>
-        </header>
-
-        {/* Central Experience - Compact for no-scroll */}
-        <div className="flex-1 flex items-center justify-center px-4 md:px-6">
-          <div className="max-w-2xl w-full text-center">
-            
-            {/* Ambient greeting */}
-            <p 
-              className={`text-xs md:text-sm text-muted-foreground mb-4 md:mb-6 transition-all duration-500 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
-            >
-              {greeting}
+            <p className="text-xs md:text-base text-muted-foreground/80 max-w-xs md:max-w-md mx-auto leading-relaxed">
+              An exploration of cognitive architecture and the space between 
+              intention and understanding.
             </p>
+          </div>
 
-            {/* Core message - Compact sizing */}
-            <div 
-              className={`mb-6 md:mb-8 transition-all duration-500 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-            >
-              <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-light tracking-tight text-foreground mb-3 md:mb-4 leading-[1.1]">
-                Where machines learn
-                <br />
-                <span className="font-medium bg-gradient-to-r from-primary via-violet-500 to-primary bg-clip-text text-transparent animate-gradient bg-[length:200%_auto]">
-                  to dream
-                </span>
-              </h1>
-              
-              <p className="text-xs md:text-base text-muted-foreground/80 max-w-xs md:max-w-md mx-auto leading-relaxed">
-                An exploration of cognitive architecture and the space between 
-                intention and understanding.
-              </p>
-            </div>
-
-            {/* The Interface - Decode Entry */}
-            <div 
-              className={`transition-all duration-500 delay-100 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-            >
-              <div className="relative max-w-md mx-auto">
-                <div className="relative flex items-center gap-2 p-1.5 md:p-2 rounded-xl md:rounded-2xl bg-card/40 backdrop-blur-xl border border-border/50 shadow-xl md:shadow-2xl">
-                  <Input
-                    ref={inputRef}
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    placeholder="Ask anything..."
-                    className="flex-1 border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 text-sm md:text-base placeholder:text-muted-foreground/50 h-9 md:h-11"
-                    disabled={isAwakening}
-                  />
-                  
-                  <Button
-                    onClick={handleAwaken}
-                    disabled={isAwakening}
-                    size="sm"
-                    className="rounded-lg md:rounded-xl px-3 md:px-4 h-8 md:h-10 bg-gradient-to-r from-primary to-violet-500 hover:opacity-90 transition-opacity"
-                  >
-                    {isAwakening ? (
-                      <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                    ) : (
-                      <>
-                        <span className="mr-1 text-xs md:text-sm">Enter</span>
-                        <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
-                      </>
-                    )}
-                  </Button>
-                </div>
+          {/* The Interface - Decode Entry */}
+          <div 
+            className={`transition-all duration-500 delay-100 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+          >
+            <div className="relative max-w-md mx-auto">
+              <div className="relative flex items-center gap-2 p-1.5 md:p-2 rounded-xl md:rounded-2xl bg-card/40 backdrop-blur-xl border border-border/50 shadow-xl md:shadow-2xl">
+                <Input
+                  ref={inputRef}
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  placeholder="Ask anything..."
+                  className="flex-1 border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 text-sm md:text-base placeholder:text-muted-foreground/50 h-9 md:h-11"
+                  disabled={isAwakening}
+                />
+                
+                <Button
+                  onClick={handleAwaken}
+                  disabled={isAwakening}
+                  size="sm"
+                  className="rounded-lg md:rounded-xl px-3 md:px-4 h-8 md:h-10 bg-gradient-to-r from-primary to-violet-500 hover:opacity-90 transition-opacity"
+                >
+                  {isAwakening ? (
+                    <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      <span className="mr-1 text-xs md:text-sm">Enter</span>
+                      <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
+                    </>
+                  )}
+                </Button>
               </div>
             </div>
           </div>
         </div>
-
-        {/* Footer - Compact */}
-        <footer 
-          className={`container mx-auto px-4 md:px-6 py-3 md:py-4 transition-all duration-300 delay-100 ${showInterface ? 'opacity-100' : 'opacity-0'}`}
-        >
-          <div className="flex flex-col items-center gap-2 md:flex-row md:justify-between text-[10px] md:text-xs text-muted-foreground/70">
-            <span>© 2026 promptfluid®</span>
-            <div className="flex items-center gap-3 md:gap-6 flex-wrap justify-center">
-              <button 
-                onClick={() => navigate('/investors')}
-                className="hover:text-foreground transition-colors font-medium"
-              >
-                Investors
-              </button>
-              <button 
-                onClick={() => navigate('/documentation')}
-                className="hover:text-foreground transition-colors"
-              >
-                Docs
-              </button>
-              <button 
-                onClick={() => navigate('/privacy')}
-                className="hover:text-foreground transition-colors"
-              >
-                Privacy
-              </button>
-            </div>
-          </div>
-        </footer>
       </main>
+
+      {/* Shared Footer */}
+      <EnhancedFooter />
     </div>
   );
 }
