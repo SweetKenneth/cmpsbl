@@ -388,23 +388,44 @@
       }
     </script>
     
-    <!-- 2026 SEO: Inline Critical CSS for faster FCP -->
+    <!-- 2026 SEO: Inline Critical CSS for faster FCP & Speed Index -->
     <style>
       /* Critical above-the-fold CSS - renders before JS loads */
       :root { --bg: #0A0B10; --fg: #ffffff; --primary: #7A5FFF; }
       *, *::before, *::after { box-sizing: border-box; }
-      body { margin: 0; font-family: 'Inter', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--fg); -webkit-font-smoothing: antialiased; }
+      html { scroll-behavior: smooth; }
+      body { margin: 0; font-family: 'Inter', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--fg); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
       #root { min-height: 100vh; display: flex; flex-direction: column; }
-      /* Skeleton loader for faster perceived FCP */
+      /* Enhanced skeleton loader for faster perceived Speed Index */
+      #root:empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background: var(--bg);
+      }
       #root:empty::before {
+        content: 'promptfluid';
+        display: block;
+        font-size: 1.25rem;
+        font-weight: 500;
+        letter-spacing: -0.025em;
+        color: var(--fg);
+        opacity: 0.9;
+        animation: pulse 1.5s ease-in-out infinite;
+      }
+      #root:empty::after {
         content: '';
         display: block;
-        width: 100%;
-        height: 64px;
-        background: linear-gradient(90deg, transparent, rgba(122,95,255,0.1), transparent);
-        animation: shimmer 1.5s infinite;
+        width: 120px;
+        height: 3px;
+        margin-top: 1rem;
+        background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        animation: shimmer 1.2s ease-in-out infinite;
       }
-      @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+      @keyframes shimmer { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } }
+      @keyframes pulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
     </style>
   </head>
 
