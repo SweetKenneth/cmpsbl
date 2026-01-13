@@ -1,16 +1,21 @@
 <?php
 /**
- * Plugin Name: PromptFluid Reflex – Bot Sniper
- * Plugin URI: https://www.promptfluid.com/products/reflex
- * Description: Full WordPress defense suite: WAF, malware scan, login guard, file integrity, and Smart Learning — featuring Bot Sniper™ behavioral analysis.
+ * Plugin Name: promptfluid® reflex – bot sniper
+ * Plugin URI: https://promptfluid.com/products/reflex
+ * Description: Defense intelligence substrate: WAF, malware scan, login guard, file integrity, and Smart Learning — part of the promptfluid® cognitive orchestration substrate.
  * Version: 1.5.7
- * Author: PromptFluid
- * Author URI: https://www.promptfluid.com
+ * Author: promptfluid®
+ * Author URI: https://promptfluid.com
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: promptfluid-reflex-bot-sniper
  * Requires at least: 5.8
  * Requires PHP: 7.4
+ * 
+ * promptfluid® is a cognitive orchestration substrate that provides routing, memory, learning cycles,
+ * observability, defense, and execution coordination for AI systems.
+ * 
+ * For licensing inquiries: promptfluid@gmail.com | (760) FLUID-AI
  */
 
 // If this file is called directly, abort.

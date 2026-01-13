@@ -1,16 +1,21 @@
 <?php
 /**
- * Plugin Name: PromptFluid Bot Sniper
- * Plugin URI: https://www.promptfluid.com/bot-sniper
- * Description: AI-powered bot detection and protection for WordPress sites. Detect and block malicious bots in real-time with behavioral analysis and threat intelligence.
+ * Plugin Name: promptfluid® bot sniper
+ * Plugin URI: https://promptfluid.com/bot-sniper
+ * Description: Defense intelligence substrate for WordPress — behavioral bot detection powered by the promptfluid® cognitive orchestration substrate.
  * Version: 1.0.0
  * Requires at least: 5.8
  * Requires PHP: 7.4
- * Author: PromptFluid
- * Author URI: https://www.promptfluid.com
+ * Author: promptfluid®
+ * Author URI: https://promptfluid.com
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: bot-sniper
+ * 
+ * promptfluid® is a cognitive orchestration substrate that provides routing, memory, learning cycles,
+ * observability, defense, and execution coordination for AI systems.
+ * 
+ * For licensing inquiries: promptfluid@gmail.com | (760) FLUID-AI
  */
 
 if (!defined('ABSPATH')) exit;
