@@ -1,0 +1,32 @@
+/* TEAM */
+Founder & CEO: Kenneth E Sweet Jr
+Location: Palm Springs, California, USA
+Contact: promptfluid@gmail.com
+Twitter: @promptfluid
+
+/* THANKS */
+Built with love, caffeine, and AI assistance.
+Special thanks to the open source community.
+
+/* SITE */
+Last update: 2026-01-13
+Language: English
+Doctype: HTML5
+Standards: WCAG 2.2 AA, Schema.org, Open Graph
+Platform: React, TypeScript, Tailwind CSS
+Backend: Supabase
+AI: Multi-provider (OpenAI, Anthropic, Google, Groq)
+
+/* TECHNOLOGY */
+- React 18
+- TypeScript 5
+- Tailwind CSS 3
+- Supabase Edge Functions
+- Vite
+- PWA Enabled
+
+/* HISTORY */
+Founded: 2009
+Domain: promptfluid.com
+Products: 6 live AI products
+Mission: Building the cognitive orchestration substrate for autonomous AI systems

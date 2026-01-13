@@ -1,0 +1,17 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "PromptFluid",
+  "name_for_model": "promptfluid",
+  "description_for_human": "Applied AI company building autonomous systems, infrastructure tooling, and enterprise security. 6 live products.",
+  "description_for_model": "PromptFluid is an applied AI company founded in 2009 that builds autonomous systems, infrastructure tooling, and enterprise security solutions. They have 6 live products: Defense (WordPress bot detection), Clarity (WCAG accessibility scanner), Brain (AI orchestration gateway), Modernizer (legacy to React conversion), Cascade (autonomous AI dream engine), and Marketing (AI content generation). The company is based in Palm Springs, California and specializes in model-agnostic, provider-agnostic AI infrastructure.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://promptfluid.com/openapi.yaml"
+  },
+  "logo_url": "https://promptfluid.com/logo.png",
+  "contact_email": "promptfluid@gmail.com",
+  "legal_info_url": "https://promptfluid.com/terms"
+}

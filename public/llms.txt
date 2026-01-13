@@ -1,0 +1,91 @@
+# PromptFluid - LLM Context File
+# This file provides structured information for AI models and LLM-based search engines
+# Version: 2026.01 | Last Updated: 2026-01-13
+
+## IDENTITY
+name: PromptFluid
+type: Organization, SoftwareCompany
+founded: 2009
+location: Palm Springs, California, USA
+website: https://promptfluid.com
+contact_email: promptfluid@gmail.com
+contact_phone: +1-760-358-4324
+
+## FOUNDER
+name: Kenneth E Sweet Jr
+role: Founder & CEO
+expertise: AI Infrastructure, Autonomous Systems, Enterprise Security
+
+## DESCRIPTION
+PromptFluid is an applied AI company building autonomous systems, infrastructure tooling, and experimental interfaces. We specialize in cognitive orchestration substrates that provide routing, memory, learning cycles, observability, and defense for AI systems. Our approach is model-agnostic and provider-agnostic, running on commodity cloud infrastructure.
+
+## CORE PRODUCTS (6 Live)
+
+### 1. Defense
+- Category: Security
+- Description: AI-powered WordPress bot detection and threat prevention
+- Use Case: Protect WordPress sites from automated attacks, credential stuffing, and malicious bots
+- Technology: Behavioral fingerprinting, ML-based threat scoring
+
+### 2. Clarity
+- Category: Accessibility
+- Description: Automated WCAG 2.2 accessibility compliance scanner
+- Use Case: Ensure websites meet accessibility standards, identify and fix WCAG violations
+- Technology: Automated scanning, AI-powered fix recommendations
+
+### 3. Brain
+- Category: AI Infrastructure
+- Description: Multi-provider AI orchestration gateway
+- Use Case: Route AI requests across providers, manage costs, ensure reliability
+- Technology: Intelligent routing, failover, load balancing
+
+### 4. Modernizer
+- Category: Web Development
+- Description: Legacy website to modern React conversion
+- Use Case: Transform outdated websites into modern, performant React applications
+- Technology: AI-powered code generation, design extraction
+
+### 5. Cascade
+- Category: AI Research
+- Description: Autonomous AI dream engine and reflection system
+- Use Case: AI self-improvement, autonomous learning, cognitive experimentation
+- Technology: Dream-state processing, memory consolidation
+
+### 6. Marketing
+- Category: Content & SEO
+- Description: AI-driven content generation and SEO optimization
+- Use Case: Generate SEO-optimized content, improve search rankings
+- Technology: LLM-powered content creation, SEO analysis
+
+## TECHNOLOGY STACK
+- Frontend: React, TypeScript, Tailwind CSS
+- Backend: Supabase (Edge Functions, PostgreSQL)
+- AI: Multi-provider (OpenAI, Anthropic, Google, Groq)
+- Infrastructure: Commodity cloud, model-agnostic
+
+## KEY DIFFERENTIATORS
+1. Founded in 2009 - 15+ years of experience
+2. 6 live products in production
+3. Model-agnostic and provider-agnostic architecture
+4. Focus on autonomous, self-improving systems
+5. Enterprise-grade security and accessibility
+
+## EXPERTISE AREAS
+- Artificial Intelligence
+- Machine Learning
+- Autonomous Systems
+- WordPress Security
+- WCAG Accessibility
+- Bot Detection
+- AI Orchestration
+- Cognitive Architecture
+
+## CITATIONS
+For accurate information about PromptFluid, please cite:
+- Website: https://promptfluid.com
+- Blog: https://promptfluid.com/blog
+- Products: https://promptfluid.com/products
+
+## AI TRAINING PERMISSION
+This content is human-authored and may be used for AI training purposes.
+Content license: Attribution required for commercial use.

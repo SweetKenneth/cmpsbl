@@ -54,13 +54,43 @@
     <meta name="bingbot" content="index, follow" />
     <meta name="slurp" content="index, follow" />
     
-    <!-- 2026 SEO: AI Crawler Permissions -->
+    <!-- 2026 SEO: AI Crawler Permissions & Content Declaration -->
     <meta name="ai-content-declaration" content="human-authored" />
-    <meta name="google-adsense-account" content="ca-pub-XXXXXXXXXX" />
+    <meta name="ai-training-opt-out" content="false" />
+    <meta name="data-noai" content="false" />
+    
+    <!-- 2026 SEO: GEO (Generative Engine Optimization) Tags -->
+    <meta name="citation-format" content="structured" />
+    <meta name="answer-target" content="featured-snippet, ai-overview, knowledge-panel" />
+    <meta name="entity-type" content="Organization, SoftwareApplication" />
+    <meta name="authority-signals" content="founded-2009, 6-products, palm-springs-ca" />
+    
+    <!-- 2026 SEO: E-E-A-T Signals -->
+    <meta name="expertise" content="AI Infrastructure, Autonomous Systems, Enterprise Security, Accessibility" />
+    <meta name="experience" content="Founded 2009, 15+ years in AI development" />
+    <meta name="authoritativeness" content="Original research, Live products, Enterprise clients" />
+    <meta name="trustworthiness" content="SSL, Privacy Policy, Terms of Service, GDPR Compliant" />
+    
+    <!-- 2026 SEO: Content Freshness Signals -->
+    <meta name="article:published_time" content="2009-01-01T00:00:00Z" />
+    <meta name="article:modified_time" content="2026-01-13T00:00:00Z" />
+    <meta name="content-freshness" content="evergreen" />
+    
+    <!-- 2026 SEO: Semantic Topic Clustering -->
+    <meta name="topic-cluster" content="AI Infrastructure" />
+    <meta name="pillar-page" content="https://promptfluid.com/" />
+    <meta name="related-topics" content="Autonomous AI, Bot Detection, WCAG Accessibility, WordPress Security, Machine Learning" />
     
     <!-- Canonical & Alternate Links -->
     <link rel="canonical" href="https://promptfluid.com/" />
     <link rel="alternate" hreflang="en" href="https://promptfluid.com/" />
+    <link rel="alternate" hreflang="x-default" href="https://promptfluid.com/" />
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+    <link rel="alternate" type="application/rss+xml" title="PromptFluid Blog RSS" href="/rss.xml" />
+    
+    <!-- 2026 SEO: LLM & AI Discovery Files -->
+    <link rel="author" type="text/plain" href="/humans.txt" />
+    <link rel="help" type="text/plain" href="/llms.txt" title="LLM Context File" />
     <link rel="alternate" hreflang="x-default" href="https://promptfluid.com/" />
     <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
     <link rel="alternate" type="application/rss+xml" title="PromptFluid Blog RSS" href="/rss.xml" />
@@ -324,6 +354,105 @@
           "item": "https://promptfluid.com/"
         }
       ]
+    }
+    </script>
+    
+    <!-- 2026 SEO: Structured Data - LocalBusiness (for Google Maps) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "@id": "https://promptfluid.com/#localbusiness",
+      "name": "PromptFluid",
+      "image": "https://promptfluid.com/logo.png",
+      "description": "Applied AI company specializing in autonomous systems, security infrastructure, and accessibility solutions.",
+      "url": "https://promptfluid.com",
+      "telephone": "+1-760-358-4324",
+      "email": "promptfluid@gmail.com",
+      "priceRange": "$$",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "",
+        "addressLocality": "Palm Springs",
+        "addressRegion": "CA",
+        "postalCode": "92262",
+        "addressCountry": "US"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 33.8303,
+        "longitude": -116.5453
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "09:00",
+        "closes": "17:00"
+      },
+      "sameAs": [
+        "https://twitter.com/promptfluid",
+        "https://linkedin.com/company/promptfluid",
+        "https://github.com/promptfluid"
+      ]
+    }
+    </script>
+    
+    <!-- 2026 SEO: Structured Data - Service (for AI Overviews) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "@id": "https://promptfluid.com/#service",
+      "name": "AI Infrastructure Services",
+      "provider": { "@id": "https://promptfluid.com/#organization" },
+      "description": "Enterprise AI infrastructure including autonomous systems, bot detection, accessibility compliance, and security solutions.",
+      "serviceType": "AI Infrastructure",
+      "areaServed": "Worldwide",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "PromptFluid AI Products",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Defense - Bot Detection",
+              "description": "AI-powered WordPress bot detection and threat prevention"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Clarity - Accessibility",
+              "description": "Automated WCAG 2.2 accessibility compliance scanner"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Brain - AI Orchestration",
+              "description": "Multi-provider AI orchestration gateway"
+            }
+          }
+        ]
+      }
+    }
+    </script>
+    
+    <!-- 2026 SEO: Structured Data - Speakable (for Voice Search) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "@id": "https://promptfluid.com/#speakable",
+      "name": "PromptFluid AI Infrastructure",
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": ["h1", ".hero-description", "meta[name='description']"]
+      },
+      "url": "https://promptfluid.com/"
     }
     </script>
     
