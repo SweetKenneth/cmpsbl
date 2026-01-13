@@ -90,6 +90,12 @@ serve(async (req) => {
       
       case "vision":
         return await handleVision(supabase, action, params, corsHeaders);
+
+      case "dream":
+        return await handleDream(supabase, action, params, corsHeaders);
+
+      case "system":
+        return await handleSystem(supabase, action, params, corsHeaders);
       
       case "status":
         return new Response(
@@ -98,7 +104,7 @@ serve(async (req) => {
             substrate: "promptfluid®",
             version: SUBSTRATE_VERSION,
             type: "Cognitive Orchestration Substrate",
-            modules: ["brain", "decode", "defense", "nexus", "vision"],
+            modules: ["brain", "decode", "defense", "nexus", "vision", "dream", "system"],
             status: "operational",
             timestamp: new Date().toISOString(),
             latency_ms: Date.now() - startTime,
@@ -245,6 +251,133 @@ async function handleBrain(
       }, headers);
     }
 
+    // ═══ STUB HANDLERS ═══
+    case "recall": {
+      const { query, limit = 10 } = data;
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        query,
+        limit,
+        message: "Recall stub - semantic memory retrieval pending",
+      }, headers);
+    }
+
+    case "synthesize": {
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        message: "Synthesize stub - insight synthesis from memories pending",
+      }, headers);
+    }
+
+    case "train": {
+      const { topic } = data;
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        topic,
+        message: "Train stub - active learning cycle pending",
+      }, headers);
+    }
+
+    case "optimize": {
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        message: "Optimize stub - memory compression/cleanup pending",
+      }, headers);
+    }
+
+    case "deep_think": {
+      const { query: thinkQuery, depth = 3 } = data;
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        query: thinkQuery,
+        depth,
+        message: "Deep think stub - extended reasoning mode pending",
+      }, headers);
+    }
+
+    case "hypothesis_test": {
+      const { hypothesis } = data;
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        hypothesis,
+        message: "Hypothesis test stub - prediction validation pending",
+      }, headers);
+    }
+
+    case "cognitive_cycle": {
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        message: "Cognitive cycle stub - full loop via pf-brain-cognitive-cycle",
+      }, headers);
+    }
+
+    case "continuous_learn": {
+      const { enabled } = data;
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        enabled,
+        message: "Continuous learn stub - 24/7 mode toggle pending",
+      }, headers);
+    }
+
+    case "forecast": {
+      const { metric, window = "7d" } = data;
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        metric,
+        window,
+        message: "Forecast stub - prediction generation pending",
+      }, headers);
+    }
+
+    case "graph_build": {
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        message: "Graph build stub - knowledge graph construction pending",
+      }, headers);
+    }
+
+    case "learn": {
+      const { content, source = "substrate" } = data;
+      const { data: memory, error } = await supabase
+        .from("brain_memories")
+        .insert({ content, memory_type: "learned", source, confidence: 0.7 })
+        .select()
+        .single();
+      if (error) throw error;
+      return jsonResponse({ success: true, learned: true, memory_id: memory?.id }, headers);
+    }
+
     default:
       throw new Error(`Unknown brain action: ${action}`);
   }
@@ -362,6 +495,53 @@ RESPONSES:
 
       if (error) throw error;
       return jsonResponse({ success: true, dream }, headers);
+    }
+
+    // ═══ STUB HANDLERS ═══
+    case "propose": {
+      const { idea } = data;
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        idea: (idea as string)?.substring(0, 100),
+        message: "Propose stub - proposal submission pending",
+      }, headers);
+    }
+
+    case "intent": {
+      const { message } = data;
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        input: (message as string)?.substring(0, 50),
+        message: "Intent decode stub - intent extraction pending",
+      }, headers);
+    }
+
+    case "reflect": {
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        message: "Decode reflect stub - conversation reflection pending",
+      }, headers);
+    }
+
+    case "summary": {
+      const { sessionId } = data;
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        sessionId,
+        message: "Summary stub - conversation summarization pending",
+      }, headers);
     }
 
     default:
@@ -483,6 +663,99 @@ async function handleDefense(
       }, headers);
     }
 
+    // ═══ STUB HANDLERS ═══
+    case "report": {
+      const { threatId } = data;
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        threatId,
+        message: "Threat report stub - detailed threat analysis pending",
+      }, headers);
+    }
+
+    case "rules": {
+      const { action: ruleAction } = data;
+      if (ruleAction === "list" || !ruleAction) {
+        const { data: rules } = await supabase
+          .from("defense_rules")
+          .select("*")
+          .eq("is_active", true)
+          .limit(50);
+        return jsonResponse({ success: true, rules: rules || [] }, headers);
+      }
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        ruleAction,
+        message: "Rules management stub - create/update/delete pending",
+      }, headers);
+    }
+
+    case "block": {
+      const { target, type } = data;
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        target,
+        type,
+        message: "Block stub - IP/fingerprint blocking pending",
+      }, headers);
+    }
+
+    case "unblock": {
+      const { target } = data;
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        target,
+        message: "Unblock stub - block removal pending",
+      }, headers);
+    }
+
+    case "threat_feed": {
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        message: "Threat feed stub - external intel integration pending",
+      }, headers);
+    }
+
+    case "rate_limit": {
+      const { endpoint, limit } = data;
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        endpoint,
+        limit,
+        message: "Rate limit stub - configuration pending",
+      }, headers);
+    }
+
+    case "anomaly": {
+      const { timeWindow = "1h" } = data;
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        timeWindow,
+        message: "Anomaly detection stub - pattern analysis pending",
+      }, headers);
+    }
+
     default:
       throw new Error(`Unknown defense action: ${action}`);
   }
@@ -532,6 +805,68 @@ async function handleNexus(
         module: "nexus",
         providers: available,
         routing_order: PROVIDER_ORDER,
+      }, headers);
+    }
+
+    // ═══ STUB HANDLERS ═══
+    case "text": {
+      const { prompt, model } = data;
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        model: model || "auto",
+        message: "Text generation stub - use route action or pf-nexus-text",
+      }, headers);
+    }
+
+    case "image": {
+      const { prompt, model } = data;
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        model: model || "auto",
+        message: "Image generation stub - use pf-nexus-image for full functionality",
+      }, headers);
+    }
+
+    case "video": {
+      const { prompt, model } = data;
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        model: model || "auto",
+        message: "Video generation stub - use pf-nexus-video for full functionality",
+      }, headers);
+    }
+
+    case "embed": {
+      const { text, model } = data;
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        model: model || "auto",
+        input_length: (text as string)?.length || 0,
+        message: "Embedding generation stub - vector encoding pending",
+      }, headers);
+    }
+
+    case "transcribe": {
+      const { audio_url } = data;
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        audio_url,
+        message: "Transcription stub - audio processing pending",
       }, headers);
     }
 
@@ -655,8 +990,353 @@ async function handleVision(
       }, headers);
     }
 
+    // ═══ STUB HANDLERS ═══
+    case "alert": {
+      const { severity, message } = data;
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        severity,
+        message: (message as string)?.substring(0, 100),
+        note: "Alert stub - notification system pending",
+      }, headers);
+    }
+
+    case "dashboard": {
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        message: "Dashboard stub - comprehensive metrics view pending",
+      }, headers);
+    }
+
+    case "trace": {
+      const { traceId } = data;
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        traceId,
+        message: "Trace stub - distributed tracing pending",
+      }, headers);
+    }
+
+    case "audit": {
+      const { entity, action: auditAction } = data;
+      const { data: logs } = await supabase
+        .from("audit_logs")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(50);
+      
+      return jsonResponse({
+        success: true,
+        logs: logs || [],
+        filters: { entity, action: auditAction },
+      }, headers);
+    }
+
     default:
       throw new Error(`Unknown vision action: ${action}`);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// DREAM MODULE — Dream-Eater Operations
+// ═══════════════════════════════════════════════════════════════
+
+// deno-lint-ignore no-explicit-any
+async function handleDream(
+  supabase: any,
+  action: string,
+  data: Record<string, any>,
+  headers: Record<string, string>
+) {
+  switch (action) {
+    case "cycle": {
+      // Redirect to dedicated function for full cycle
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        message: "Dream cycle: Use pf-dream-eater-cycle for full functionality",
+        action,
+      }, headers);
+    }
+
+    case "awaken": {
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        message: "Dream awaken: Use pf-dream-eater-awaken for full functionality",
+        action,
+      }, headers);
+    }
+
+    case "status": {
+      // Get Dream-Eater state
+      const { data: state } = await supabase
+        .from("dream_eater_state")
+        .select("*")
+        .limit(1)
+        .single();
+
+      const { count: dreamCount } = await supabase
+        .from("cascade_dreams")
+        .select("*", { count: "exact", head: true });
+
+      return jsonResponse({
+        success: true,
+        module: "dream",
+        state: state || { current_mood: "dormant", mutation_level: 0 },
+        total_dreams: dreamCount || 0,
+      }, headers);
+    }
+
+    case "feed": {
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        message: "Dream feed: Use dream-feeder-api for submissions",
+        action,
+      }, headers);
+    }
+
+    case "interpret": {
+      const { dream_text } = data;
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        input: { dream_text: (dream_text as string)?.substring(0, 50) },
+        message: "Dream interpretation stub - full logic pending",
+      }, headers);
+    }
+
+    case "mutation": {
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        message: "Mutation cycle stub - will trigger Dream-Eater evolution",
+      }, headers);
+    }
+
+    case "consume": {
+      const { dream_id } = data;
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        dream_id,
+        message: "Dream consumption stub - processes and transforms dreams",
+      }, headers);
+    }
+
+    case "reflect": {
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        message: "Dream reflection stub - contemplates processed dreams",
+      }, headers);
+    }
+
+    case "mood": {
+      const { mood } = data;
+      if (mood) {
+        // Set mood (stub)
+        return jsonResponse({
+          success: true,
+          ok: true,
+          placeholder: true,
+          action,
+          mood_set: mood,
+          message: "Mood update stub - full persistence pending",
+        }, headers);
+      }
+      // Get mood
+      const { data: state } = await supabase
+        .from("dream_eater_state")
+        .select("current_mood, mood_score")
+        .limit(1)
+        .single();
+
+      return jsonResponse({
+        success: true,
+        mood: state?.current_mood || "dormant",
+        mood_score: state?.mood_score || 0,
+      }, headers);
+    }
+
+    default:
+      throw new Error(`Unknown dream action: ${action}`);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SYSTEM MODULE — Administration & Configuration
+// ═══════════════════════════════════════════════════════════════
+
+// deno-lint-ignore no-explicit-any
+async function handleSystem(
+  supabase: any,
+  action: string,
+  data: Record<string, any>,
+  headers: Record<string, string>
+) {
+  switch (action) {
+    case "status": {
+      // Full system status
+      const checks = { brain: false, defense: false, decode: false, nexus: false };
+
+      try { await supabase.from("brain_memories").select("*", { count: "exact", head: true }); checks.brain = true; } catch {}
+      try { await supabase.from("defense_events").select("*", { count: "exact", head: true }); checks.defense = true; } catch {}
+      try { await supabase.from("cascade_conversations").select("*", { count: "exact", head: true }); checks.decode = true; } catch {}
+      
+      for (const config of Object.values(PROVIDERS)) {
+        if (Deno.env.get(config.keyEnv)) { checks.nexus = true; break; }
+      }
+
+      return jsonResponse({
+        success: true,
+        module: "system",
+        substrate: "promptfluid®",
+        version: SUBSTRATE_VERSION,
+        healthy: Object.values(checks).every(v => v),
+        checks,
+        timestamp: new Date().toISOString(),
+      }, headers);
+    }
+
+    case "health": {
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        message: "System health check stub - comprehensive diagnostics pending",
+      }, headers);
+    }
+
+    case "config": {
+      const { key, value } = data;
+      if (key && value !== undefined) {
+        return jsonResponse({
+          success: true,
+          ok: true,
+          placeholder: true,
+          action,
+          key,
+          message: "Config set stub - persistence pending",
+        }, headers);
+      }
+      // Get config
+      const { data: settings } = await supabase
+        .from("core_settings")
+        .select("*")
+        .limit(20);
+
+      return jsonResponse({
+        success: true,
+        settings: settings || [],
+      }, headers);
+    }
+
+    case "shutdown": {
+      const { confirm } = data;
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        confirmed: !!confirm,
+        message: "Shutdown stub - emergency shutdown via pf-emergency-shutdown",
+      }, headers);
+    }
+
+    case "restart": {
+      const { service } = data;
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        service: service || "all",
+        message: "Restart stub - service restart pending",
+      }, headers);
+    }
+
+    case "heal": {
+      const { target } = data;
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        target: target || "all",
+        message: "Auto-heal stub - use pf-self-heal for full functionality",
+      }, headers);
+    }
+
+    case "backup": {
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        message: "Backup stub - database backup logic pending",
+      }, headers);
+    }
+
+    case "restore": {
+      const { backup_id } = data;
+      return jsonResponse({
+        success: true,
+        ok: true,
+        placeholder: true,
+        action,
+        backup_id,
+        message: "Restore stub - backup restoration logic pending",
+      }, headers);
+    }
+
+    case "audit": {
+      const { data: logs } = await supabase
+        .from("audit_logs")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(50);
+
+      return jsonResponse({
+        success: true,
+        logs: logs || [],
+      }, headers);
+    }
+
+    case "version": {
+      return jsonResponse({
+        success: true,
+        substrate: "promptfluid®",
+        version: SUBSTRATE_VERSION,
+        type: "Cognitive Orchestration Substrate",
+        build: "2026.01.13",
+      }, headers);
+    }
+
+    default:
+      throw new Error(`Unknown system action: ${action}`);
   }
 }
 

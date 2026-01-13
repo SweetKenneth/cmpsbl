@@ -1,0 +1,298 @@
+# promptfluid® Module Actions Registry
+
+## Document Metadata
+
+| Field | Value |
+|-------|-------|
+| Document ID | PF-MAR-001 |
+| Version | v2026.01 |
+| Last Updated | 2026-01-13 |
+| Status | ACTIVE |
+| Type | Cognitive Orchestration Substrate |
+
+---
+
+## Overview
+
+This document catalogs all registered module actions across the promptfluid® substrate. Each module exposes a set of actions via the unified `pf-substrate` endpoint or dedicated edge functions.
+
+### Invocation Pattern
+
+```typescript
+// Via Substrate Client
+import { substrate } from '@/lib/substrate';
+const result = await substrate.brain.learn('content', 'source');
+
+// Via Direct API
+POST /pf-substrate
+{
+  "module": "brain",
+  "action": "learn",
+  "payload": { "content": "...", "source": "..." }
+}
+```
+
+---
+
+## Module: BRAIN
+
+Memory, learning cycles, reflection, and knowledge synthesis.
+
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `query` | Search memories by text | `query_text: string`, `limit?: number` | ✅ DEPLOYED |
+| `remember` | Store new memory | `content: string`, `memory_type: string`, `confidence?: number`, `metadata?: object` | ✅ DEPLOYED |
+| `reflect` | Trigger daily reflection cycle | — | ✅ DEPLOYED |
+| `reinforce` | Boost memory confidence | `memory_id: string`, `boost?: number` | ✅ DEPLOYED |
+| `dream` | Autonomous dream processing cycle | — | ✅ DEPLOYED |
+| `status` | Get brain module stats | — | ✅ DEPLOYED |
+| `learn` | Ingest new knowledge | `content: string`, `source?: string` | ✅ DEPLOYED (via decode) |
+| `recall` | Recall memories by query | `query: string`, `limit?: number` | ⚠️ STUB NEEDED |
+| `synthesize` | Synthesize insights from memories | — | ⚠️ STUB NEEDED |
+| `train` | Active learning cycle | `topic?: string` | ⚠️ STUB NEEDED |
+| `optimize` | Memory compression/cleanup | — | ⚠️ STUB NEEDED |
+| `deep_think` | Extended reasoning mode | `query: string`, `depth?: number` | ⚠️ STUB NEEDED |
+| `hypothesis_test` | Validate predictions | `hypothesis: string` | ⚠️ STUB NEEDED |
+| `cognitive_cycle` | Full cognitive loop | — | ⚠️ STUB NEEDED |
+| `continuous_learn` | 24/7 learning mode | `enabled: boolean` | ⚠️ STUB NEEDED |
+| `forecast` | Generate predictions | `metric: string`, `window?: string` | ⚠️ STUB NEEDED |
+| `graph_build` | Build knowledge graph | — | ⚠️ STUB NEEDED |
+| `cold_migrate` | Move old memories to cold storage | — | ✅ DEPLOYED (standalone) |
+
+### Brain Dedicated Functions (Standalone)
+
+| Function | Purpose | Status |
+|----------|---------|--------|
+| `pf-brain` | Main orchestration | ✅ DEPLOYED |
+| `pf-brain-status` | Health monitoring | ✅ DEPLOYED |
+| `pf-brain-learn` | Memory ingestion | ✅ DEPLOYED |
+| `pf-brain-reflect` | Daily reflection | ✅ DEPLOYED |
+| `pf-brain-dream` | Dream cycles | ✅ DEPLOYED |
+| `pf-brain-train` | Active learning | ✅ DEPLOYED |
+| `pf-brain-reinforce` | Edge strengthening | ✅ DEPLOYED |
+| `pf-brain-optimize` | Memory compression | ✅ DEPLOYED |
+| `pf-brain-deep-think` | Extended reasoning | ✅ DEPLOYED |
+| `pf-brain-hypothesis-test` | Prediction validation | ✅ DEPLOYED |
+| `pf-brain-cognitive-cycle` | Full cognitive loop | ✅ DEPLOYED |
+| `pf-brain-continuous-learn` | 24/7 learning | ✅ DEPLOYED |
+| `pf-brain-cold-migration` | Memory archival | ✅ DEPLOYED |
+| `pf-brain-causal` | Causal reasoning | ✅ DEPLOYED |
+| `pf-brain-forecast` | Predictions | ✅ DEPLOYED |
+
+---
+
+## Module: DECODE (Interpreter Primitive)
+
+Intent decoding, cognitive interface, chat. NOT a chatbot or agent.
+
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `chat` | Primary cognitive interpretation | `message: string`, `sessionId?: string`, `conversationHistory?: array` | ✅ DEPLOYED |
+| `dream` | Initiate dream cycle | — | ✅ DEPLOYED |
+| `propose` | Submit proposal for consideration | `idea: string` | ⚠️ STUB NEEDED |
+| `learn` | Learn from interaction | `content: string`, `source?: string` | ✅ DEPLOYED |
+| `status` | Get decode module stats | — | ✅ DEPLOYED |
+| `intent` | Decode user intent | `message: string` | ⚠️ STUB NEEDED |
+| `reflect` | Reflection on conversations | — | ⚠️ STUB NEEDED |
+| `summary` | Generate conversation summary | `sessionId: string` | ⚠️ STUB NEEDED |
+
+### Decode/Cascade Dedicated Functions (Standalone)
+
+| Function | Purpose | Status |
+|----------|---------|--------|
+| `pf-cascade-chat` | Conversational AI (hardened) | ✅ DEPLOYED |
+| `pf-cascade-dream` | Dream generation | ✅ DEPLOYED |
+| `pf-cascade-learn` | Learning intake | ✅ DEPLOYED |
+| `pf-cascade-operative` | Main operative loop | ✅ DEPLOYED |
+| `pf-cascade-proposals` | Proposal handling | ✅ DEPLOYED |
+| `pf-cascade-summary` | Conversation summary | ✅ DEPLOYED |
+| `pf-cascade-router` | Message routing | ✅ DEPLOYED |
+
+---
+
+## Module: DEFENSE
+
+Bot detection, threat analysis, security, IP reputation.
+
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `analyze` | Analyze request for threats | `ip_address: string`, `user_agent?: string`, `page_url?: string` | ✅ DEPLOYED |
+| `reputation` | Get IP reputation score | `ip_address: string` | ✅ DEPLOYED |
+| `status` | Get defense module stats | — | ✅ DEPLOYED |
+| `report` | Get threat report | `threatId: string` | ⚠️ STUB NEEDED |
+| `rules` | Get/manage defense rules | `action?: 'list'|'create'|'update'|'delete'` | ⚠️ STUB NEEDED |
+| `block` | Block IP/fingerprint | `target: string`, `type: 'ip'|'fingerprint'` | ⚠️ STUB NEEDED |
+| `unblock` | Remove block | `target: string` | ⚠️ STUB NEEDED |
+| `threat_feed` | External threat intel | — | ⚠️ STUB NEEDED |
+| `rate_limit` | Configure rate limiting | `endpoint: string`, `limit: number` | ⚠️ STUB NEEDED |
+| `anomaly` | Detect anomalies | `timeWindow?: string` | ⚠️ STUB NEEDED |
+
+### Defense Dedicated Functions (Standalone)
+
+| Function | Purpose | Status |
+|----------|---------|--------|
+| `pf-bot-detection` | Main bot analysis | ✅ DEPLOYED |
+| `pf-bot-report` | Bot detection report | ✅ DEPLOYED |
+| `pf-defense-event` | Event logging | ✅ DEPLOYED |
+| `pf-defense-rules` | Rule management | ✅ DEPLOYED |
+| `pf-defense-ip-reputation` | IP scoring | ✅ DEPLOYED |
+| `pf-defense-threat-feed` | External intel | ✅ DEPLOYED |
+| `pf-defense-rate-limit` | Rate limiting | ✅ DEPLOYED |
+| `pf-defense-anomaly-detection` | Anomaly detection | ✅ DEPLOYED |
+| `pf-defense-auto-shutdown` | Emergency shutdown | ✅ DEPLOYED |
+| `pf-defense-system-health` | System health | ✅ DEPLOYED |
+| `pf-behavioral-analysis` | Behavior scoring | ✅ DEPLOYED |
+| `pf-sdk-protect` | SDK protection | ✅ DEPLOYED |
+
+---
+
+## Module: NEXUS
+
+Multi-provider AI routing for text, image, video generation.
+
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `route` | Route to best provider | `prompt: string`, `systemPrompt?: string`, `temperature?: number` | ✅ DEPLOYED |
+| `status` | Get available providers | — | ✅ DEPLOYED |
+| `text` | Text generation | `prompt: string`, `model?: string` | ⚠️ STUB NEEDED (in substrate) |
+| `image` | Image generation | `prompt: string`, `model?: string` | ⚠️ STUB NEEDED (in substrate) |
+| `video` | Video generation | `prompt: string`, `model?: string` | ⚠️ STUB NEEDED (in substrate) |
+| `embed` | Generate embeddings | `text: string`, `model?: string` | ⚠️ STUB NEEDED |
+| `transcribe` | Audio transcription | `audio_url: string` | ⚠️ STUB NEEDED |
+
+### Nexus Dedicated Functions (Standalone)
+
+| Function | Purpose | Status |
+|----------|---------|--------|
+| `pf-nexus-router` | Main routing | ✅ DEPLOYED |
+| `pf-nexus-text` | Text generation | ✅ DEPLOYED |
+| `pf-nexus-image` | Image generation | ✅ DEPLOYED |
+| `pf-nexus-video` | Video generation | ✅ DEPLOYED |
+
+---
+
+## Module: VISION
+
+Observability, metrics, health monitoring, alerting.
+
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `health` | System health check | — | ✅ DEPLOYED |
+| `metrics` | Get system metrics | — | ✅ DEPLOYED |
+| `status` | Get vision module status | — | ✅ DEPLOYED |
+| `logs` | Get system logs | `module?: string`, `limit?: number` | ✅ DEPLOYED |
+| `alert` | Create alert | `severity: string`, `message: string` | ⚠️ STUB NEEDED |
+| `dashboard` | Get dashboard data | — | ⚠️ STUB NEEDED |
+| `trace` | Distributed tracing | `traceId: string` | ⚠️ STUB NEEDED |
+| `audit` | Audit log query | `entity?: string`, `action?: string` | ⚠️ STUB NEEDED |
+
+### Vision Dedicated Functions (Standalone)
+
+| Function | Purpose | Status |
+|----------|---------|--------|
+| `pf-health-check` | Health monitoring | ✅ DEPLOYED |
+| `pf-system-status` | System status | ✅ DEPLOYED |
+| `pf-diagnostics` | Diagnostics | ✅ DEPLOYED |
+| `pf-telemetry-log` | Telemetry | ✅ DEPLOYED |
+
+---
+
+## Module: DREAM
+
+Dream-Eater specific operations for dream processing and transformation.
+
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `cycle` | Execute dream cycle | `force?: boolean`, `send_email?: boolean` | ✅ DEPLOYED |
+| `awaken` | Awaken Dream-Eater | `action?: string` | ✅ DEPLOYED |
+| `status` | Get dream state | — | ⚠️ STUB NEEDED |
+| `feed` | Submit dream for consumption | `dream_content: string`, `dream_type?: string` | ✅ DEPLOYED (dream-feeder-api) |
+| `interpret` | Interpret a dream | `dream_text: string` | ⚠️ STUB NEEDED |
+| `mutation` | Trigger mutation cycle | — | ⚠️ STUB NEEDED |
+| `consume` | Consume and process dream | `dream_id: string` | ⚠️ STUB NEEDED |
+| `reflect` | Dream reflection | — | ⚠️ STUB NEEDED |
+| `mood` | Get/set Dream-Eater mood | `mood?: string` | ⚠️ STUB NEEDED |
+
+### Dream Dedicated Functions (Standalone)
+
+| Function | Purpose | Status |
+|----------|---------|--------|
+| `pf-dream-eater-cycle` | Main dream cycle | ✅ DEPLOYED |
+| `pf-dream-eater-awaken` | Awakening/seeding | ✅ DEPLOYED |
+| `pf-dream-mode` | Dream mode toggle | ✅ DEPLOYED |
+| `dream-feeder-api` | Public dream submission (hardened) | ✅ DEPLOYED |
+| `cascade-dream-generator` | Dream generation | ✅ DEPLOYED |
+
+---
+
+## Module: SYSTEM
+
+System-wide operations, administration, configuration.
+
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `status` | Global system status | — | ✅ DEPLOYED (via substrate status) |
+| `health` | Full system health | — | ⚠️ STUB NEEDED |
+| `config` | Get/set configuration | `key?: string`, `value?: any` | ⚠️ STUB NEEDED |
+| `shutdown` | Emergency shutdown | `confirm: boolean` | ⚠️ STUB NEEDED |
+| `restart` | Restart services | `service?: string` | ⚠️ STUB NEEDED |
+| `heal` | Auto-heal system | `target?: string` | ⚠️ STUB NEEDED |
+| `backup` | Create backup | — | ⚠️ STUB NEEDED |
+| `restore` | Restore from backup | `backup_id: string` | ⚠️ STUB NEEDED |
+| `audit` | System audit | — | ⚠️ STUB NEEDED |
+| `version` | Get substrate version | — | ⚠️ STUB NEEDED |
+
+### System Dedicated Functions (Standalone)
+
+| Function | Purpose | Status |
+|----------|---------|--------|
+| `pf-system-status` | System status | ✅ DEPLOYED |
+| `pf-system-verify` | System verification | ✅ DEPLOYED |
+| `pf-self-heal` | Self-healing | ✅ DEPLOYED |
+| `pf-heal` | Healing operations | ✅ DEPLOYED |
+| `pf-emergency-shutdown` | Emergency shutdown | ✅ DEPLOYED |
+| `pf-admin-control` | Admin control panel | ✅ DEPLOYED |
+| `pf-core-status` | Core status | ✅ DEPLOYED |
+| `pf-core-settings` | Settings management | ✅ DEPLOYED |
+
+---
+
+## Summary: Actions Requiring Stubs
+
+### Brain Module (9 stubs needed)
+- `recall`, `synthesize`, `train`, `optimize`, `deep_think`
+- `hypothesis_test`, `cognitive_cycle`, `continuous_learn`, `forecast`, `graph_build`
+
+### Decode Module (4 stubs needed)
+- `propose`, `intent`, `reflect`, `summary`
+
+### Defense Module (7 stubs needed)
+- `report`, `rules`, `block`, `unblock`, `threat_feed`, `rate_limit`, `anomaly`
+
+### Nexus Module (5 stubs needed)
+- `text`, `image`, `video`, `embed`, `transcribe`
+
+### Vision Module (4 stubs needed)
+- `alert`, `dashboard`, `trace`, `audit`
+
+### Dream Module (6 stubs needed)
+- `status`, `interpret`, `mutation`, `consume`, `reflect`, `mood`
+
+### System Module (9 stubs needed)
+- `health`, `config`, `shutdown`, `restart`, `heal`, `backup`, `restore`, `audit`, `version`
+
+**Total: 44 stub actions needed**
+
+---
+
+## Contact & Licensing
+
+**Founder:** Kenneth E Sweet Jr  
+**Email:** promptfluid@gmail.com  
+**Phone:** (760) FLUID-AI  
+**Website:** https://promptfluid.com
+
+---
+
+**promptfluid® — Cognitive Orchestration Substrate**  
+**Copyright © 2025-2026 promptfluid. All rights reserved.**

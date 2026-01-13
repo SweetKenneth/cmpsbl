@@ -16,7 +16,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 
-export type SubstrateModule = 'brain' | 'decode' | 'defense' | 'nexus' | 'vision';
+export type SubstrateModule = 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system';
 
 export interface SubstrateRequest {
   module: SubstrateModule;
