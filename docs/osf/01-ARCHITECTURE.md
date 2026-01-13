@@ -1,29 +1,34 @@
-# PromptFluid Architecture Overview
+# promptfluid substrate — Architecture Overview
+
+## v2026.01 — Cognitive Orchestration Substrate for AI Systems
 
 ## Document Metadata
 
 | Field | Value |
 |-------|-------|
 | Document ID | PF-ARCH-001 |
-| Version | 1.0.0 |
+| Version | 2026.01 |
 | Last Updated | 2026-01-13 |
 | Status | STABLE |
-| Citation | Sese, K. (2026). PromptFluid Architecture. doi:10.5281/zenodo.XXXXXXX |
+| Citation | Sweet Jr, K. E. (2026). promptfluid Architecture. doi:10.5281/zenodo.XXXXXXX |
 
 ---
 
 ## 1. Introduction
 
-PromptFluid is a distributed AI orchestration platform designed as an extensible substrate for intelligent applications. Unlike monolithic AI systems, PromptFluid separates concerns into discrete, composable modules that communicate through a unified message bus and shared memory layer.
+promptfluid is a cognitive orchestration substrate that provides routing, memory, learning cycles, observability, defense, and execution coordination for AI systems. It is model-agnostic, provider-agnostic, and runs on commodity cloud.
+
+Unlike monolithic AI systems, promptfluid separates concerns into discrete, composable modules that communicate through a unified message bus and shared memory layer.
 
 ### 1.1 Design Philosophy
 
-The architecture embodies four core principles:
+The architecture embodies five core principles:
 
-1. **Fluidity:** No rigid structures; every component adapts based on context, load, and learned patterns
-2. **AI-Native:** Intelligence is embedded at every layer, not bolted on as an afterthought
-3. **Zero-Friction:** Complexity is hidden from users while remaining accessible to developers
-4. **Perpetual Learning:** Systems observe, adapt, and improve autonomously without human intervention
+1. **Cognitive Fluidity** — No rigid structures; every component adapts based on context, load, and learned patterns
+2. **Model Agnosticism** — Intelligence layer is decoupled from any specific model or provider
+3. **Zero-Friction Orchestration** — Complexity is hidden from consumers while remaining accessible to developers
+4. **Perpetual Learning** — Systems observe, adapt, and improve autonomously without human intervention
+5. **Substrate Thinking** — Built as a foundation for others to extend, not a closed product
 
 ### 1.2 Scope
 
@@ -54,7 +59,7 @@ This document covers:
     ┌────▼────┐               ┌────▼────┐               ┌─────▼─────┐
     │  BRAIN  │               │ DEFENSE │               │   NEXUS   │
     │(Cascade)│               │ (Shield)│               │ (Gateway) │
-    │ Memory  │               │ Threats │               │ AI Triad  │
+    │ Memory  │               │ Threats │               │ Routing   │
     └────┬────┘               └────┬────┘               └─────┬─────┘
          │                         │                          │
          └─────────────────────────┴────────────┬─────────────┘
@@ -157,14 +162,14 @@ This document covers:
 |-----------|-------|
 | Function Count | 4 |
 | Primary Tables | `nexus_logs`, `ai_usage_log`, `ai_daily_quota` |
-| Providers | Groq, OpenAI, Anthropic, Perplexity |
+| Providers | Groq, OpenAI, Anthropic, Perplexity, Google, and more |
 | Caching | Redis with 90-day TTL |
 
 **Routing Hierarchy:**
-1. **Groq (Llama 3.3 70B):** Primary for reasoning tasks
-2. **OpenAI (GPT-4o):** Secondary for general synthesis
-3. **Anthropic (Claude 3.5):** Tertiary for ethical reasoning
-4. **Perplexity (Sonar):** Research and grounding tasks
+1. **Primary:** Fastest available provider for task type
+2. **Secondary:** Fallback for general synthesis
+3. **Tertiary:** Deep reasoning and ethical evaluation
+4. **Research:** Grounding and fact-checking
 
 **See:** [03-NEXUS-ROUTING.md](./03-NEXUS-ROUTING.md) for complete specification.
 
@@ -216,7 +221,7 @@ This document covers:
 | Function Count | 20 |
 | Primary Tables | `marketing_campaigns`, `auto_blog_posts` |
 | Content Types | Blog, Social, Email, Ad, Landing Page |
-| Research | Perplexity-powered SEO and competitor analysis |
+| Research | AI-powered SEO and competitor analysis |
 
 ---
 
@@ -267,9 +272,9 @@ Database Change → Supabase Realtime → WebSocket → Vision Dashboard
 ### 5.1 Learning Pipeline
 
 ```
-User Interaction → Brain Ingest → Memory Hot → Pattern Extraction → Graph Update
-                                      ↓
-                              Reflection Cycle → Memory Cold (Compressed)
+Input → Ingest → Classify → Store → Index → Connect → Reinforce
+                    │                           │
+                    └────── Feedback Loop ──────┘
 ```
 
 ### 5.2 Threat Intelligence Pipeline
@@ -298,12 +303,12 @@ All Modules → pf_logs → Vision Dashboard
 
 | Component | Technology | Purpose |
 |-----------|------------|---------|
-| Database | Supabase PostgreSQL | Primary data store |
-| Edge Functions | Deno (Supabase) | Serverless compute |
+| Database | PostgreSQL | Primary data store |
+| Edge Functions | Deno | Serverless compute |
 | Frontend | React + Vite | User interface |
-| Cache | Redis (Upstash) | Response caching |
-| CDN | Vercel Edge | Static asset delivery |
-| Secrets | Supabase Vault | Secure key storage |
+| Cache | Redis | Response caching |
+| CDN | Edge Network | Static asset delivery |
+| Secrets | Vault | Secure key storage |
 
 ### 6.2 Environment Variables
 
@@ -313,7 +318,7 @@ SUPABASE_URL=<project_url>
 SUPABASE_SERVICE_ROLE_KEY=<service_key>
 SUPABASE_PUBLISHABLE_KEY=<anon_key>
 
-# AI Providers
+# AI Providers (substrate is provider-agnostic)
 GROQ_API_KEY=<groq_key>
 OPENAI_API_KEY=<openai_key>
 ANTHROPIC_API_KEY=<anthropic_key>
@@ -321,7 +326,7 @@ PERPLEXITY_API_KEY=<perplexity_key>
 
 # Optional
 RESEND_API_KEY=<email_key>
-REDIS_URL=<upstash_redis_url>
+REDIS_URL=<redis_url>
 ```
 
 ---
@@ -330,7 +335,7 @@ REDIS_URL=<upstash_redis_url>
 
 ### 7.1 Horizontal Scaling
 
-Edge functions scale automatically with Supabase's serverless infrastructure. No manual scaling required for compute.
+Edge functions scale automatically with serverless infrastructure. No manual scaling required for compute.
 
 ### 7.2 Database Scaling
 
@@ -352,7 +357,7 @@ Edge functions scale automatically with Supabase's serverless infrastructure. No
 
 ### 8.1 Authentication Layers
 
-1. **User Authentication:** Supabase Auth with JWT
+1. **User Authentication:** JWT-based with OAuth support
 2. **API Authentication:** Service role keys for inter-module
 3. **External API Keys:** Customer-generated keys with scope limits
 
@@ -388,6 +393,18 @@ Research underway for federated Brain instances:
 1. Supabase Architecture Documentation. https://supabase.com/docs/architecture
 2. Deno Deploy Edge Functions. https://deno.com/deploy
 3. PostgreSQL Row-Level Security. https://www.postgresql.org/docs/current/ddl-rowsecurity.html
+
+---
+
+## Ownership & Licensing
+
+promptfluid® is a registered trademark. For ownership inquiries or licensing:
+
+| Contact | Details |
+|---------|---------|
+| **Founder** | Kenneth E Sweet Jr |
+| **Email** | promptfluid@gmail.com |
+| **Phone** | (760) FLUID-AI |
 
 ---
 

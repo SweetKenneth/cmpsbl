@@ -38,15 +38,15 @@ interface SEOProps {
 }
 
 export function SEO({
-  title = 'PromptFluid™ — Applied AI Infrastructure',
-  description = 'Applied AI company building autonomous systems, infrastructure tooling, and experimental interfaces. Six live products. 100+ projects shipped over 15 years.',
+  title = 'promptfluid® — Cognitive Orchestration Substrate',
+  description = 'promptfluid is a cognitive orchestration substrate that provides routing, memory, learning cycles, observability, defense, and execution coordination for AI systems. Model-agnostic. Provider-agnostic. Commodity cloud.',
   canonical = 'https://promptfluid.com',
   image = 'https://promptfluid.com/og-default.jpg',
   type = 'website',
   author = 'Kenneth E Sweet Jr',
   publishedTime,
   modifiedTime,
-  keywords = ['AI infrastructure', 'autonomous systems', 'WordPress security', 'accessibility compliance', 'AI orchestration', 'enterprise AI', 'bot detection', 'WCAG compliance'],
+  keywords = ['cognitive orchestration', 'AI substrate', 'AI routing', 'AI memory', 'learning cycles', 'observability', 'AI defense', 'model-agnostic', 'provider-agnostic'],
   noindex = false,
   breadcrumbs,
   faq,
@@ -54,18 +54,18 @@ export function SEO({
   video,
   howTo
 }: SEOProps) {
-  const siteName = 'PromptFluid';
+  const siteName = 'promptfluid';
   const twitterHandle = '@promptfluid';
-  const fullTitle = title.includes('PromptFluid') ? title : `${title} | ${siteName}`;
+  const fullTitle = title.includes('promptfluid') ? title : `${title} | ${siteName}`;
   const currentDate = new Date().toISOString();
 
-  // 2026 SEO: Enhanced Organization Schema with more signals
+  // Organization Schema
   const organizationSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     '@id': 'https://promptfluid.com/#organization',
-    name: 'PromptFluid',
-    alternateName: ['PromptFluid AI', 'PF', 'PromptFluid Inc'],
+    name: 'promptfluid',
+    alternateName: ['promptfluid substrate', 'promptfluid®'],
     url: 'https://promptfluid.com',
     logo: {
       '@type': 'ImageObject',
@@ -74,7 +74,7 @@ export function SEO({
       contentUrl: 'https://promptfluid.com/logo.png',
       width: 512,
       height: 512,
-      caption: 'PromptFluid Logo'
+      caption: 'promptfluid logo'
     },
     image: {
       '@type': 'ImageObject',
@@ -82,14 +82,14 @@ export function SEO({
       width: 1200,
       height: 630
     },
-    description: 'Applied AI company building autonomous systems, infrastructure tooling, and experimental interfaces that scale.',
+    description: 'Cognitive orchestration substrate for AI systems. Model-agnostic. Provider-agnostic. Commodity cloud.',
     foundingDate: '2009',
-    slogan: 'AI That Flows',
+    slogan: 'Cognitive Orchestration Substrate',
     founder: {
       '@type': 'Person',
       '@id': 'https://promptfluid.com/#founder',
       name: 'Kenneth E Sweet Jr',
-      jobTitle: 'Founder & CEO',
+      jobTitle: 'Founder',
       email: 'promptfluid@gmail.com',
       url: 'https://promptfluid.com/about'
     },
@@ -100,60 +100,42 @@ export function SEO({
       postalCode: '92262',
       addressCountry: 'US'
     },
-    geo: {
-      '@type': 'GeoCoordinates',
-      latitude: 33.8303,
-      longitude: -116.5453
-    },
     sameAs: [
       'https://twitter.com/promptfluid',
       'https://x.com/promptfluid',
       'https://linkedin.com/company/promptfluid',
-      'https://github.com/promptfluid',
-      'https://youtube.com/@promptfluid'
+      'https://github.com/promptfluid'
     ],
     contactPoint: [
       {
         '@type': 'ContactPoint',
-        contactType: 'customer service',
+        contactType: 'general',
         email: 'promptfluid@gmail.com',
         telephone: '+1-760-358-4324',
         availableLanguage: ['English'],
         areaServed: 'Worldwide'
-      },
-      {
-        '@type': 'ContactPoint',
-        contactType: 'sales',
-        email: 'promptfluid@gmail.com',
-        availableLanguage: ['English']
       }
     ],
-    numberOfEmployees: {
-      '@type': 'QuantitativeValue',
-      minValue: 1,
-      maxValue: 10
-    },
     knowsAbout: [
-      'Artificial Intelligence',
-      'Machine Learning',
-      'WordPress Security',
-      'Web Accessibility',
-      'WCAG Compliance',
-      'Bot Detection',
-      'Autonomous Systems',
-      'AI Orchestration'
+      'Cognitive Orchestration',
+      'AI Routing',
+      'AI Memory Systems',
+      'Learning Cycles',
+      'Observability',
+      'AI Defense',
+      'Model-Agnostic AI',
+      'Provider-Agnostic AI'
     ],
-    areaServed: 'Worldwide',
-    award: '100+ Projects Shipped'
+    areaServed: 'Worldwide'
   };
 
-  // 2026 SEO: Enhanced Website Schema with SearchAction
+  // Website Schema
   const websiteSchema = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     '@id': 'https://promptfluid.com/#website',
     name: siteName,
-    alternateName: 'PromptFluid AI',
+    alternateName: 'promptfluid substrate',
     url: 'https://promptfluid.com',
     description: description,
     inLanguage: 'en-US',
@@ -170,7 +152,7 @@ export function SEO({
     ]
   };
 
-  // 2026 SEO: Enhanced WebPage Schema with Speakable
+  // WebPage Schema
   const webPageSchema = {
     '@context': 'https://schema.org',
     '@type': type === 'article' ? 'Article' : type === 'product' ? 'ProductPage' : 'WebPage',
@@ -205,54 +187,44 @@ export function SEO({
       '@type': 'WebPage',
       '@id': canonical
     },
-    // 2026: Speakable for voice search optimization
     speakable: {
       '@type': 'SpeakableSpecification',
       cssSelector: ['h1', '.hero-description', '.product-title', 'article p:first-of-type']
     }
   };
 
-  // 2026 SEO: Enhanced SoftwareApplication Schema
+  // Software Schema
   const softwareSchema = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
     '@id': 'https://promptfluid.com/#software',
-    name: 'PromptFluid Platform',
-    applicationCategory: 'BusinessApplication',
-    applicationSubCategory: 'AI Infrastructure',
+    name: 'promptfluid substrate',
+    applicationCategory: 'DeveloperApplication',
+    applicationSubCategory: 'Cognitive Orchestration Substrate',
     operatingSystem: 'Web Browser',
     browserRequirements: 'Requires JavaScript',
-    softwareVersion: '2.0',
-    releaseNotes: 'https://promptfluid.com/blog/product-roadmap-2025',
+    softwareVersion: 'v2026.01',
     screenshot: image,
     offers: {
       '@type': 'Offer',
       price: '0',
       priceCurrency: 'USD',
-      availability: 'https://schema.org/InStock',
-      priceValidUntil: '2026-12-31'
+      availability: 'https://schema.org/InStock'
     },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.9',
-      ratingCount: '312',
-      bestRating: '5',
-      worstRating: '1'
-    },
-    description: 'Enterprise AI platform with six integrated modules for autonomous systems, security, and accessibility.',
+    description: 'Cognitive orchestration substrate for AI systems with routing, memory, learning cycles, observability, and defense.',
     featureList: [
-      'AI-Powered Bot Detection',
-      'WCAG 2.2 Accessibility Scanning',
-      'Autonomous System Orchestration',
-      'Multi-Provider AI Gateway',
-      'WordPress Security Plugins',
-      'Real-time Threat Analysis'
+      'Multi-provider AI routing',
+      'Dual-tier memory architecture',
+      'Autonomous learning cycles',
+      'Real-time observability',
+      'Behavioral threat detection',
+      'Model-agnostic design'
     ],
     author: { '@id': 'https://promptfluid.com/#organization' },
     provider: { '@id': 'https://promptfluid.com/#organization' }
   };
 
-  // Breadcrumb Schema (if provided)
+  // Breadcrumb Schema
   const breadcrumbSchema = breadcrumbs ? {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -264,7 +236,7 @@ export function SEO({
     }))
   } : null;
 
-  // FAQ Schema (if provided) - 2026 Enhanced
+  // FAQ Schema
   const faqSchema = faq && faq.length > 0 ? {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -278,7 +250,7 @@ export function SEO({
     }))
   } : null;
 
-  // 2026 SEO: Product Schema (if provided)
+  // Product Schema
   const productSchema = product ? {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -302,7 +274,7 @@ export function SEO({
     })
   } : null;
 
-  // 2026 SEO: Video Schema (if provided)
+  // Video Schema
   const videoSchema = video ? {
     '@context': 'https://schema.org',
     '@type': 'VideoObject',
@@ -315,7 +287,7 @@ export function SEO({
     publisher: { '@id': 'https://promptfluid.com/#organization' }
   } : null;
 
-  // 2026 SEO: HowTo Schema (if provided)
+  // HowTo Schema
   const howToSchema = howTo ? {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
@@ -331,7 +303,7 @@ export function SEO({
     }))
   } : null;
 
-  // 2026 SEO: Article Schema for blog posts
+  // Article Schema
   const articleSchema = type === 'article' ? {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -357,12 +329,7 @@ export function SEO({
       '@id': canonical
     },
     articleSection: 'Technology',
-    wordCount: 1500,
-    keywords: keywords.join(', '),
-    speakable: {
-      '@type': 'SpeakableSpecification',
-      cssSelector: ['h1', 'article p:first-of-type', '.article-summary']
-    }
+    keywords: keywords.join(', ')
   } : null;
 
   return (
@@ -373,23 +340,14 @@ export function SEO({
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords.join(', ')} />
       <meta name="author" content={author} />
-      <meta name="publisher" content="PromptFluid" />
-      <meta name="copyright" content="© 2009-2026 PromptFluid" />
+      <meta name="publisher" content="promptfluid" />
+      <meta name="copyright" content="© 2009-2026 promptfluid®" />
       <link rel="canonical" href={canonical} />
-      
-      {/* 2026 SEO Enhancements */}
-      <meta name="format-detection" content="telephone=no" />
-      <meta name="google" content="notranslate" />
-      <meta name="revisit-after" content="7 days" />
-      <meta name="rating" content="general" />
-      <meta name="distribution" content="global" />
-      <meta name="ai-content-declaration" content="human-authored" />
       
       {/* Performance Hints */}
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       <link rel="dns-prefetch" href="https://promptfluid.com" />
-      <link rel="dns-prefetch" href="https://www.google-analytics.com" />
       
       {/* Viewport & Mobile */}
       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
@@ -399,9 +357,9 @@ export function SEO({
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-      <meta name="apple-mobile-web-app-title" content="PromptFluid" />
+      <meta name="apple-mobile-web-app-title" content="promptfluid" />
       
-      {/* Open Graph / Facebook (2026 Enhanced) */}
+      {/* Open Graph */}
       <meta property="og:type" content={type === 'article' ? 'article' : 'website'} />
       <meta property="og:url" content={canonical} />
       <meta property="og:title" content={fullTitle} />
@@ -416,7 +374,7 @@ export function SEO({
       <meta property="og:locale" content="en_US" />
       <meta property="og:updated_time" content={modifiedTime || currentDate} />
       
-      {/* Twitter Card (2026 Enhanced) */}
+      {/* Twitter Card */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:url" content={canonical} />
       <meta name="twitter:title" content={fullTitle} />
@@ -427,7 +385,7 @@ export function SEO({
       <meta name="twitter:creator" content={twitterHandle} />
       <meta name="twitter:domain" content="promptfluid.com" />
       
-      {/* Article-specific (if article) */}
+      {/* Article-specific */}
       {type === 'article' && publishedTime && (
         <>
           <meta property="article:published_time" content={publishedTime} />
@@ -440,11 +398,9 @@ export function SEO({
         <meta property="article:modified_time" content={modifiedTime} />
       )}
       
-      {/* Advanced Robots & Indexing (2026) */}
+      {/* Robots */}
       <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"} />
       <meta name="googlebot" content={noindex ? "noindex, nofollow" : "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"} />
-      <meta name="bingbot" content={noindex ? "noindex, nofollow" : "index, follow"} />
-      <meta name="slurp" content={noindex ? "noindex, nofollow" : "index, follow"} />
       
       {/* RSS & Alternates */}
       <link rel="alternate" type="application/rss+xml" title={`${siteName} Blog RSS`} href="/rss.xml" />
