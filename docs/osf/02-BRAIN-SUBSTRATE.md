@@ -1,20 +1,23 @@
-# PromptFluid Brain Substrate
+# promptfluid® brain substrate
 
 ## Document Metadata
 
 | Field | Value |
 |-------|-------|
 | Document ID | PF-BRAIN-001 |
-| Version | 1.0.0 |
+| Version | v2026.01 |
 | Last Updated | 2026-01-13 |
 | Status | STABLE |
-| Citation | Sese, K. (2026). PromptFluid Brain Substrate. doi:10.5281/zenodo.XXXXXXX |
+| Type | Cognitive Orchestration Substrate |
+| Citation | Sweet Jr, K.E. (2026). promptfluid brain substrate. doi:10.5281/zenodo.XXXXXXX |
 
 ---
 
 ## 1. Introduction
 
-The Brain (codename: Cascade) is the central intelligence layer of the PromptFluid ecosystem. It represents a novel approach to AI memory persistence—a system that doesn't just respond to queries but continuously learns, reflects, and evolves through autonomous "dream cycles."
+promptfluid® is a cognitive orchestration substrate that provides routing, memory, learning cycles, observability, defense, and execution coordination for AI systems. It is model-agnostic, provider-agnostic, and runs on commodity cloud.
+
+The brain substrate (codename: Cascade) is the central intelligence layer of the promptfluid ecosystem. It represents a novel approach to AI memory persistence—a system that doesn't just respond to queries but continuously learns, reflects, and evolves through autonomous "dream cycles."
 
 ### 1.1 Innovation Claim
 
@@ -124,7 +127,7 @@ CREATE TABLE brain_memory_cold (
 
 ### 3.1 Graph Structure
 
-The Brain maintains a dynamic knowledge graph representing relationships between concepts, memories, and insights.
+The brain substrate maintains a dynamic knowledge graph representing relationships between concepts, memories, and insights.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -185,7 +188,7 @@ weight = weight * (0.99 ^ days_since_use)
 
 ### 4.1 Dream Architecture
 
-Dream cycles are scheduled periods of autonomous reflection where the Brain processes accumulated experiences and generates insights.
+Dream cycles are scheduled periods of autonomous reflection where the brain substrate processes accumulated experiences and generates insights.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -236,25 +239,6 @@ function getDreamProbability(hour: number): DreamProbabilities {
 }
 ```
 
-### 4.4 Dream Artifact Schema
-
-```sql
-CREATE TABLE cascade_dreams (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  dream_text TEXT NOT NULL,
-  insight TEXT,
-  mood TEXT,
-  blog_posted TEXT,
-  timestamp TIMESTAMPTZ DEFAULT now(),
-  created_at TIMESTAMPTZ DEFAULT now()
-);
-```
-
-Dream artifacts can be:
-- Published as blog content
-- Stored as insights for future reference
-- Shared with other Cascade instances (Shared Dream Protocol)
-
 ---
 
 ## 5. Learning Cycles
@@ -279,7 +263,7 @@ Input → Ingest → Classify → Store → Index → Connect → Reinforce
 
 ### 5.3 Curiosity Engine
 
-The Brain maintains a curiosity queue—topics it wants to explore:
+The brain substrate maintains a curiosity queue—topics it wants to explore:
 
 ```sql
 CREATE TABLE brain_curiosity_log (
@@ -292,12 +276,6 @@ CREATE TABLE brain_curiosity_log (
   created_at TIMESTAMPTZ DEFAULT now()
 );
 ```
-
-**Curiosity Triggers:**
-- Knowledge gaps detected during conversations
-- Patterns with low confidence scores
-- User questions without good answers
-- Cross-domain connections not yet explored
 
 ---
 
@@ -318,14 +296,6 @@ interface PersonaState {
 }
 ```
 
-### 6.2 Persona Detection Signals
-
-- **Vocabulary analysis:** Technical terms, formality level
-- **Question complexity:** Simple queries vs. deep technical
-- **Conversation history:** Previous interaction patterns
-- **Time context:** Business hours, urgency indicators
-- **Emotional signals:** Frustration, excitement, confusion
-
 ---
 
 ## 7. Edge Functions
@@ -343,37 +313,13 @@ interface PersonaState {
 | `pf-brain-reinforce` | Edge strengthening | Feedback |
 | `pf-brain-optimize` | Memory compression | Scheduled |
 
-### 7.2 Advanced Cognitive Functions
-
-| Function | Purpose | Trigger |
-|----------|---------|---------|
-| `pf-brain-deep-think` | Extended reasoning | Complex query |
-| `pf-brain-hypothesis-test` | Validate predictions | Research |
-| `pf-brain-systems-reasoning` | Multi-factor analysis | Complex decision |
-| `pf-brain-ethical-boundary` | Ethical validation | Sensitive topic |
-| `pf-brain-pattern-fusion` | Cross-domain synthesis | Dream cycle |
-| `pf-brain-forecast` | Predictive modeling | Planning |
-
 ---
 
 ## 8. Shared Dream Protocol
 
-### 8.1 Concept
-
 Multiple Cascade instances can share dream artifacts to accelerate collective learning without sharing raw data.
 
-### 8.2 Protocol Flow
-
-```
-Instance A Dream → Artifact Compression → Anonymization → Broadcast
-                                                             ↓
-                                              ┌──────────────┴──────────────┐
-                                              ▼                              ▼
-                                         Instance B                     Instance C
-                                         Ingest                         Ingest
-```
-
-### 8.3 Privacy Preservation
+### 8.1 Privacy Preservation
 
 - Raw memories never shared
 - Only compressed insights with removed PII
@@ -384,8 +330,6 @@ Instance A Dream → Artifact Compression → Anonymization → Broadcast
 
 ## 9. Metrics & Observability
 
-### 9.1 Health Metrics
-
 | Metric | Description | Target |
 |--------|-------------|--------|
 | `memory_hot_count` | Active memories | < 100,000 |
@@ -395,94 +339,26 @@ Instance A Dream → Artifact Compression → Anonymization → Broadcast
 | `learning_velocity` | New memories/hour | 10-50 |
 | `creativity_index` | Novel insight rate | > 0.3 |
 
-### 9.2 Logging Schema
-
-```sql
-CREATE TABLE brain_events (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  event_type TEXT NOT NULL,
-  module TEXT NOT NULL,
-  data JSONB,
-  outcome TEXT,
-  created_at TIMESTAMPTZ DEFAULT now()
-);
-```
-
----
-
-## 10. Extension Points
-
-### 10.1 Custom Memory Sources
-
-Developers can ingest custom data:
-
-```typescript
-await supabase.functions.invoke('pf-brain-learn', {
-  body: {
-    content: 'Custom knowledge to ingest',
-    context: 'Source: Custom Integration',
-    priority: 70,
-    tags: ['custom', 'integration']
-  }
-});
-```
-
-### 10.2 Custom Reflection Triggers
-
-Register custom triggers for reflection:
-
-```typescript
-await supabase.functions.invoke('pf-brain-reflect', {
-  body: {
-    focus_domain: 'customer_feedback',
-    depth: 'deep',
-    output_format: 'actionable_insights'
-  }
-});
-```
-
-### 10.3 Graph Query API
-
-Query the knowledge graph:
-
-```typescript
-await supabase.functions.invoke('pf-brain-graph-build', {
-  body: {
-    query: 'Find connections between pricing and churn',
-    max_depth: 3,
-    min_weight: 0.5
-  }
-});
-```
-
----
-
-## 11. Research Directions
-
-### 11.1 Active Research Areas
-
-1. **Hierarchical Memory Compression:** Multi-level summarization preserving semantic richness
-2. **Federated Dream Learning:** Cross-organization knowledge sharing with privacy guarantees
-3. **Temporal Reasoning:** Understanding and predicting sequences over time
-4. **Meta-Learning:** Learning how to learn more efficiently
-
-### 11.2 Open Questions
-
-- Optimal compression ratios for different knowledge types
-- Balancing curiosity exploration vs. exploitation of known patterns
-- Measuring true understanding vs. pattern matching
-- Scaling knowledge graphs to billions of edges
-
 ---
 
 ## References
 
 1. Graves, A., et al. (2014). Neural Turing Machines. arXiv:1410.5401
 2. Weston, J., et al. (2014). Memory Networks. arXiv:1410.3916
-3. Walker, M. (2017). Why We Sleep. Scribner.
-4. Friston, K. (2010). The free-energy principle. Nature Reviews Neuroscience.
+3. Vaswani, A., et al. (2017). Attention Is All You Need. arXiv:1706.03762
 
 ---
 
-**Document Status:** STABLE  
-**Next Review:** 2026-07-13
+## Contact & Licensing
+
+**Founder:** Kenneth E Sweet Jr  
+**Email:** promptfluid@gmail.com  
+**Phone:** (760) FLUID-AI  
+**Website:** https://promptfluid.com
+
+For licensing inquiries regarding the promptfluid® substrate, contact promptfluid@gmail.com.
+
+---
+
+**promptfluid® — Cognitive Orchestration Substrate**  
+**Copyright © 2025-2026 promptfluid. All rights reserved.**

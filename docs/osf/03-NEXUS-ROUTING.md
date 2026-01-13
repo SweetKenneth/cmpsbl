@@ -1,20 +1,23 @@
-# PromptFluid Nexus: AI Gateway & Routing Layer
+# promptfluid® nexus routing
 
 ## Document Metadata
 
 | Field | Value |
 |-------|-------|
 | Document ID | PF-NEXUS-001 |
-| Version | 1.0.0 |
+| Version | v2026.01 |
 | Last Updated | 2026-01-13 |
 | Status | STABLE |
-| Citation | Sese, K. (2026). PromptFluid Nexus Routing. doi:10.5281/zenodo.XXXXXXX |
+| Type | Cognitive Orchestration Substrate |
+| Citation | Sweet Jr, K.E. (2026). promptfluid nexus routing. doi:10.5281/zenodo.XXXXXXX |
 
 ---
 
 ## 1. Introduction
 
-Nexus is the AI gateway layer that abstracts multiple AI providers behind a unified interface. It provides intelligent routing, automatic fallback, response caching, and cost optimization for all AI operations within the PromptFluid ecosystem.
+promptfluid® is a cognitive orchestration substrate that provides routing, memory, learning cycles, observability, defense, and execution coordination for AI systems. It is model-agnostic, provider-agnostic, and runs on commodity cloud.
+
+nexus is the AI gateway layer that abstracts multiple AI providers behind a unified interface. It provides intelligent routing, automatic fallback, response caching, and cost optimization for all AI operations within the promptfluid ecosystem.
 
 ### 1.1 Design Goals
 
@@ -67,57 +70,13 @@ Nexus is the AI gateway layer that abstracts multiple AI providers behind a unif
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-### 2.2 Routing Decision Tree
-
-```
-Request Received
-      │
-      ▼
-┌─────────────────┐
-│ Check Cache     │──── HIT ────> Return Cached Response
-└────────┬────────┘
-         │ MISS
-         ▼
-┌─────────────────┐
-│ Analyze Task    │
-│ Type            │
-└────────┬────────┘
-         │
-    ┌────┴────┬────────────┬───────────────┐
-    ▼         ▼            ▼               ▼
-┌───────┐ ┌───────┐  ┌──────────┐  ┌────────────┐
-│Reason │ │Create │  │ Research │  │ Sensitive  │
-│       │ │       │  │          │  │            │
-│ Groq  │ │OpenAI │  │Perplexity│  │ Anthropic  │
-└───┬───┘ └───┬───┘  └────┬─────┘  └──────┬─────┘
-    │         │           │               │
-    └─────────┴───────────┴───────────────┘
-                    │
-                    ▼
-            Primary Provider
-                    │
-               ┌────┴────┐
-               │ Failed? │
-               └────┬────┘
-                    │ YES
-                    ▼
-            Secondary Provider
-                    │
-               ┌────┴────┐
-               │ Failed? │
-               └────┬────┘
-                    │ YES
-                    ▼
-            Tertiary Provider
-```
-
 ---
 
 ## 3. Task Classification
 
 ### 3.1 Task Types
 
-Nexus automatically classifies requests based on content analysis:
+nexus automatically classifies requests based on content analysis:
 
 | Task Type | Keywords | Primary Provider | Fallback Chain |
 |-----------|----------|------------------|----------------|
@@ -127,30 +86,6 @@ Nexus automatically classifies requests based on content analysis:
 | `sensitive` | ethics, policy, safety, legal | Anthropic | OpenAI |
 | `code` | code, function, implement, debug | Groq | OpenAI |
 | `general` | (default) | Groq | OpenAI → Anthropic |
-
-### 3.2 Classification Algorithm
-
-```typescript
-function classifyTask(prompt: string): TaskType {
-  const lowerPrompt = prompt.toLowerCase();
-  
-  const patterns: Record<TaskType, string[]> = {
-    reasoning: ['analyze', 'explain', 'compare', 'evaluate', 'why', 'how'],
-    creation: ['write', 'generate', 'create', 'compose', 'draft'],
-    research: ['search', 'find', 'current', 'recent', 'news', 'latest'],
-    sensitive: ['ethics', 'policy', 'safety', 'legal', 'medical', 'financial'],
-    code: ['code', 'function', 'implement', 'debug', 'program', 'script']
-  };
-  
-  for (const [type, keywords] of Object.entries(patterns)) {
-    if (keywords.some(kw => lowerPrompt.includes(kw))) {
-      return type as TaskType;
-    }
-  }
-  
-  return 'general';
-}
-```
 
 ---
 
@@ -184,57 +119,13 @@ Level 4: Perplexity (Sonar)
     └── On Failure → Return Error
 ```
 
-### 4.2 Failure Conditions
-
-A provider "fails" when:
-- HTTP error (4xx, 5xx)
-- Timeout exceeded
-- Rate limit reached (429)
-- Invalid response format
-- Content policy violation
-
-### 4.3 Retry Logic
-
-```typescript
-async function invokeWithFallback(
-  prompt: string,
-  providers: Provider[],
-  attempt: number = 0
-): Promise<AIResponse> {
-  if (attempt >= providers.length) {
-    throw new Error('All providers exhausted');
-  }
-  
-  const provider = providers[attempt];
-  
-  try {
-    const response = await invokeProvider(provider, prompt, {
-      timeout: provider.timeout,
-      retries: provider.retries
-    });
-    
-    // Log success
-    await logProviderUsage(provider, response, 'success');
-    
-    return response;
-    
-  } catch (error) {
-    // Log failure
-    await logProviderUsage(provider, null, 'failure', error);
-    
-    // Try next provider
-    return invokeWithFallback(prompt, providers, attempt + 1);
-  }
-}
-```
-
 ---
 
 ## 5. Response Caching
 
 ### 5.1 Cache Strategy
 
-Nexus uses Redis for response caching with content-addressed storage:
+nexus uses Redis for response caching with content-addressed storage:
 
 ```typescript
 function generateCacheKey(request: AIRequest): string {
@@ -261,14 +152,6 @@ function generateCacheKey(request: AIRequest): string {
 | Eviction | LRU | Least recently used evicted first |
 | Compression | Enabled | 40-60% storage reduction |
 
-### 5.3 Cache Invalidation
-
-Cache is invalidated when:
-- TTL expires
-- Manual invalidation via admin API
-- Model version changes
-- Content flagged as stale by Brain
-
 ---
 
 ## 6. Cost Optimization
@@ -284,50 +167,11 @@ Cache is invalidated when:
 | Anthropic | Claude 3.5 Sonnet | $3.00 | $15.00 |
 | Perplexity | Sonar | $1.00 | $1.00 |
 
-### 6.2 Cost Tracking Schema
-
-```sql
-CREATE TABLE ai_usage_log (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  provider TEXT NOT NULL,
-  model TEXT,
-  tokens_used INTEGER,
-  cost DECIMAL(10, 6),
-  response_time_ms INTEGER,
-  success BOOLEAN,
-  category TEXT,
-  metadata JSONB DEFAULT '{}',
-  created_at TIMESTAMPTZ DEFAULT now()
-);
-```
-
-### 6.3 Budget Controls
-
-```sql
-CREATE TABLE ai_daily_quota (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  provider TEXT NOT NULL,
-  date DATE DEFAULT CURRENT_DATE,
-  calls_used INTEGER DEFAULT 0,
-  calls_budget INTEGER DEFAULT 1000,
-  tokens_used INTEGER DEFAULT 0,
-  category TEXT,
-  updated_at TIMESTAMPTZ DEFAULT now()
-);
-```
-
-Daily quotas prevent runaway costs:
-- Hard limit: Request rejected when quota exceeded
-- Soft limit: Warning logged, fallback to cheaper provider
-- Reset: Quotas reset at midnight UTC
-
 ---
 
 ## 7. Multi-Modal Support
 
 ### 7.1 Text Generation
-
-Standard text generation through `pf-nexus-text`:
 
 ```typescript
 const response = await supabase.functions.invoke('pf-nexus-text', {
@@ -342,8 +186,6 @@ const response = await supabase.functions.invoke('pf-nexus-text', {
 
 ### 7.2 Image Generation
 
-Image generation through `pf-nexus-image`:
-
 ```typescript
 const response = await supabase.functions.invoke('pf-nexus-image', {
   body: {
@@ -355,14 +197,7 @@ const response = await supabase.functions.invoke('pf-nexus-image', {
 });
 ```
 
-Providers:
-- **Lovable AI (Gemini Flash):** Default for most images
-- **Stability AI (SDXL):** High-quality artistic images
-- **DALL-E 3:** When OpenAI-specific style needed
-
 ### 7.3 Video Generation
-
-Video generation through `pf-nexus-video`:
 
 ```typescript
 const response = await supabase.functions.invoke('pf-nexus-video', {
@@ -374,76 +209,13 @@ const response = await supabase.functions.invoke('pf-nexus-video', {
 });
 ```
 
-Providers:
-- **Luma AI (Dream Machine):** Primary video generation
-- **Runway ML:** Alternative for specific styles
-
 ---
 
-## 8. Edge Function Implementation
+## 8. Observability
 
-### 8.1 Core Gateway Function
+### 8.1 Metrics Dashboard
 
-```typescript
-// supabase/functions/pf-nexus-router/index.ts
-
-import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
-
-const PROVIDER_HIERARCHY = ['groq', 'openai', 'anthropic', 'perplexity'];
-
-serve(async (req) => {
-  const { prompt, task_type, options } = await req.json();
-  
-  // Check cache first
-  const cacheKey = generateCacheKey({ prompt, ...options });
-  const cached = await checkCache(cacheKey);
-  if (cached) {
-    return new Response(JSON.stringify(cached), {
-      headers: { 'X-Cache': 'HIT' }
-    });
-  }
-  
-  // Classify task if not specified
-  const taskType = task_type || classifyTask(prompt);
-  
-  // Get provider chain for task type
-  const providers = getProviderChain(taskType);
-  
-  // Execute with fallback
-  const response = await invokeWithFallback(prompt, providers, options);
-  
-  // Cache response
-  await cacheResponse(cacheKey, response);
-  
-  // Log usage
-  await logUsage(response);
-  
-  return new Response(JSON.stringify(response));
-});
-```
-
----
-
-## 9. Observability
-
-### 9.1 Logging Schema
-
-```sql
-CREATE TABLE nexus_logs (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  provider TEXT NOT NULL,
-  route_key TEXT DEFAULT 'default',
-  status TEXT NOT NULL,
-  latency_ms INTEGER NOT NULL,
-  token_count INTEGER DEFAULT 0,
-  cost_usd_est DECIMAL(10, 6) DEFAULT 0,
-  created_at TIMESTAMPTZ DEFAULT now()
-);
-```
-
-### 9.2 Metrics Dashboard
-
-Available metrics in Vision dashboard:
+Available metrics:
 - Requests per minute by provider
 - Average latency by provider
 - Cost per day/week/month
@@ -451,7 +223,7 @@ Available metrics in Vision dashboard:
 - Error rate by provider
 - Token usage trends
 
-### 9.3 Alerting
+### 8.2 Alerting
 
 Automatic alerts for:
 - Provider error rate > 5%
@@ -461,85 +233,16 @@ Automatic alerts for:
 
 ---
 
-## 10. Extension Points
+## Contact & Licensing
 
-### 10.1 Adding New Providers
+**Founder:** Kenneth E Sweet Jr  
+**Email:** promptfluid@gmail.com  
+**Phone:** (760) FLUID-AI  
+**Website:** https://promptfluid.com
 
-To add a new AI provider:
-
-1. Create provider adapter:
-
-```typescript
-// adapters/newprovider.ts
-export async function invokeNewProvider(
-  prompt: string,
-  options: ProviderOptions
-): Promise<AIResponse> {
-  // Implementation
-}
-```
-
-2. Register in provider registry:
-
-```typescript
-// registry.ts
-PROVIDERS['newprovider'] = {
-  name: 'New Provider',
-  invoke: invokeNewProvider,
-  timeout: 30000,
-  retries: 1,
-  costPerToken: { input: 0.001, output: 0.002 }
-};
-```
-
-3. Add to fallback chains as appropriate
-
-### 10.2 Custom Routing Rules
-
-Override default routing with custom rules:
-
-```typescript
-await supabase.functions.invoke('pf-nexus-router', {
-  body: {
-    prompt: 'My prompt',
-    routing: {
-      force_provider: 'anthropic',
-      skip_cache: true,
-      custom_timeout: 60000
-    }
-  }
-});
-```
+For licensing inquiries regarding the promptfluid® substrate, contact promptfluid@gmail.com.
 
 ---
 
-## 11. Performance Benchmarks
-
-### 11.1 Latency Comparison
-
-| Provider | P50 Latency | P95 Latency | P99 Latency |
-|----------|-------------|-------------|-------------|
-| Groq | 180ms | 450ms | 800ms |
-| OpenAI | 350ms | 900ms | 1500ms |
-| Anthropic | 400ms | 1000ms | 1800ms |
-| Perplexity | 600ms | 1500ms | 2500ms |
-
-### 11.2 Cache Performance
-
-- Cache hit rate: 85-92%
-- Cache lookup latency: 2-5ms
-- Effective cost reduction: 40-60%
-
----
-
-## References
-
-1. Groq API Documentation. https://console.groq.com/docs
-2. OpenAI API Reference. https://platform.openai.com/docs
-3. Anthropic API Documentation. https://docs.anthropic.com
-4. Perplexity API. https://docs.perplexity.ai
-
----
-
-**Document Status:** STABLE  
-**Next Review:** 2026-07-13
+**promptfluid® — Cognitive Orchestration Substrate**  
+**Copyright © 2025-2026 promptfluid. All rights reserved.**
