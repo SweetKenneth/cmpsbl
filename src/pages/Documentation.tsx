@@ -12,10 +12,10 @@ export default function Documentation() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Documentation — PromptFluid Developer Guides"
-        description="Complete developer documentation for the PromptFluid ecosystem. API references, integration guides, and technical resources."
+        title="Documentation — promptfluid® substrate Developer Guides"
+        description="Complete developer documentation for the promptfluid® cognitive orchestration substrate. API references, integration guides, and technical resources."
         canonical="https://promptfluid.com/docs"
-        keywords={['PromptFluid documentation', 'API reference', 'developer guides', 'AI integration']}
+        keywords={['promptfluid documentation', 'cognitive orchestration substrate', 'API reference', 'developer guides', 'AI integration']}
       />
 
       <PublicNav />
@@ -48,7 +48,7 @@ export default function Documentation() {
             </h1>
             
             <p className="text-xl text-muted-foreground">
-              Complete guide to the PromptFluid ecosystem. Everything you need to integrate, build, and scale.
+              Complete guide to the promptfluid® substrate. Everything you need to integrate, build, and scale cognitive orchestration for AI systems.
             </p>
           </div>
         </div>
@@ -68,10 +68,10 @@ export default function Documentation() {
 
             <TabsContent value="overview" className="space-y-6">
               <Card className="p-8 bg-card border-border">
-                <h2 className="text-2xl font-bold mb-4 text-foreground">PromptFluid Ecosystem</h2>
+                <h2 className="text-2xl font-bold mb-4 text-foreground">promptfluid® substrate</h2>
                 <p className="text-muted-foreground mb-6 leading-relaxed">
-                  PromptFluid is a comprehensive AI orchestration platform that combines adaptive intelligence,
-                  security, and creativity into a seamless ecosystem.
+                  promptfluid® is a cognitive orchestration substrate that provides routing, memory, learning cycles,
+                  observability, defense, and execution coordination for AI systems. It is model-agnostic, provider-agnostic, and runs on commodity cloud.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {[
@@ -92,9 +92,9 @@ export default function Documentation() {
 
             <TabsContent value="brain" className="space-y-6">
               <Card className="p-8 bg-card border-border">
-                <h2 className="text-2xl font-bold mb-4 text-foreground">PromptFluid Brain</h2>
+                <h2 className="text-2xl font-bold mb-4 text-foreground">Brain Substrate</h2>
                 <p className="text-muted-foreground mb-6 leading-relaxed">
-                  The Brain is the adaptive intelligence core that learns, evolves, and optimizes system behavior.
+                  The Brain substrate is the cognitive core that learns, evolves, and optimizes system behavior through memory, learning cycles, and reinforcement.
                 </p>
                 <div className="space-y-4">
                   <div className="p-4 border-l-4 border-primary bg-muted/30 rounded-r-lg">
@@ -121,9 +121,9 @@ export default function Documentation() {
 
             <TabsContent value="defense" className="space-y-6">
               <Card className="p-8 bg-card border-border">
-                <h2 className="text-2xl font-bold mb-4 text-foreground">PromptFluid Defense</h2>
+                <h2 className="text-2xl font-bold mb-4 text-foreground">Defense Intelligence</h2>
                 <p className="text-muted-foreground mb-6 leading-relaxed">
-                  Advanced bot protection with behavioral analysis and device fingerprinting.
+                  Bot detection, behavioral analysis, and device fingerprinting substrate for AI-powered threat detection.
                 </p>
                 <div className="space-y-4">
                   <div className="p-4 bg-muted/30 rounded-lg">

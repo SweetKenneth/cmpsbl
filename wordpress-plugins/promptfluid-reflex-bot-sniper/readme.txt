@@ -1,77 +1,97 @@
-=== PromptFluid Clarity ===
+=== promptfluid® reflex – bot sniper ===
 Contributors: promptfluid
-Tags: accessibility, wcag, ada, compliance, a11y
+Tags: accessibility, wcag, ada, compliance, security, bot detection
 Requires at least: 5.8
 Tested up to: 6.4
 Requires PHP: 7.4
-Stable tag: 3.0.0
+Stable tag: 1.5.7
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-AI-powered WCAG 2.2 accessibility scanner with automated fix suggestions for WordPress sites.
+Defense intelligence substrate: WAF, malware scan, login guard, file integrity, and Smart Learning — part of the promptfluid® cognitive orchestration substrate.
 
 == Description ==
 
-PromptFluid Clarity is an AI-powered accessibility scanner that helps you ensure your WordPress site is WCAG 2.2 compliant. Built on the PromptFluid Brain AI platform, Clarity provides intelligent scanning, detailed reporting, and automated fix suggestions.
+**promptfluid® reflex** is a comprehensive defense intelligence suite for WordPress, powered by the promptfluid® cognitive orchestration substrate.
+
+promptfluid® is a cognitive orchestration substrate that provides routing, memory, learning cycles, observability, defense, and execution coordination for AI systems. It is model-agnostic, provider-agnostic, and runs on commodity cloud.
 
 **Key Features:**
 
-* 🤖 AI-powered WCAG 2.2 accessibility scanning
-* 📊 Compliance scoring and detailed reporting
-* 🔧 Automated fix suggestions powered by PromptFluid Brain
+* 🛡️ Web Application Firewall (WAF)
+* 🤖 Bot Sniper™ behavioral analysis
+* 🔍 Malware scanning and removal
+* 📁 File integrity monitoring
+* 🔐 Login security and brute force protection
+* 📊 Smart Learning mode
 * 📅 Scheduled scans via WordPress Cron
-* 📧 Email notifications for scan completion
-* 🎨 Modern React admin dashboard
-* 💳 Stripe subscription integration with 7-day free trial
+* 📧 Email notifications for threats
 
 **Free Version Includes:**
 
+* Basic WAF protection
 * 3 scans per month
-* Up to 10 pages per scan
-* Basic issue detection
-* Compliance scoring
+* Bot detection (limited)
+* Community threat intelligence
 
-**Pro Version ($69/year):**
+**Pro Version ($39/month):**
 
-* 100 scans per month
-* Up to 100 pages per scan
-* Automated fix suggestions
-* Scheduled scans
+* Full WAF with custom rules
+* Unlimited scans
+* Advanced behavioral analysis
+* Real-time threat intelligence
 * Priority support
 
 == Installation ==
 
-1. Upload the plugin files to `/wp-content/plugins/promptfluid-clarity/`
+1. Upload the plugin files to `/wp-content/plugins/promptfluid-reflex-bot-sniper/`
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Navigate to 'Clarity' in the admin menu
-4. Complete the setup wizard to configure your API key
+3. Navigate to 'promptfluid® reflex' in the admin menu
+4. Complete the setup wizard to configure your protection
 5. Start your 7-day free trial or upgrade to Pro
 
 == Frequently Asked Questions ==
 
-= Do I need a PromptFluid account? =
+= Do I need a promptfluid® account? =
 
-Yes, you'll need a PromptFluid API key. You can get one by signing up at https://www.promptfluid.com
+Yes, you'll need a promptfluid® API key. You can get one by signing up at https://promptfluid.com
 
 = What does the free version include? =
 
-The free version includes 3 scans per month, scanning up to 10 pages, with basic issue detection and compliance scoring.
+The free version includes basic WAF protection, 3 scans per month, limited bot detection, and community threat intelligence.
 
 = How does the 7-day trial work? =
 
 Start your trial from the admin dashboard. No credit card required. Full Pro features for 7 days.
 
+= What is Smart Learning mode? =
+
+Smart Learning mode observes your site's normal traffic patterns for 7 days to establish a baseline, then automatically detects anomalies.
+
 == Changelog ==
 
-= 3.0.0 =
-* Initial release
-* AI-powered WCAG 2.2 accessibility scanning
-* Modern React admin dashboard
-* Stripe subscription integration
+= 1.5.7 =
+* Rebrand to promptfluid® substrate
+* Defense intelligence substrate updates
+* Smart Learning mode improvements
+* Enhanced behavioral analysis
 * 7-day free trial
-* Scheduled scans via WordPress Cron
 
 == Upgrade Notice ==
 
-= 3.0.0 =
-First release of PromptFluid Clarity. Start your 7-day free trial today!
+= 1.5.7 =
+Major update: promptfluid® cognitive orchestration substrate branding. Enhanced defense capabilities.
+
+== Licensing & Contact ==
+
+promptfluid® is a registered trademark.
+
+**Founder:** Kenneth E Sweet Jr  
+**Email:** promptfluid@gmail.com  
+**Phone:** (760) FLUID-AI  
+**Web:** https://promptfluid.com
+
+For ownership inquiries, licensing arrangements, or enterprise partnerships, contact promptfluid@gmail.com.
+
+**promptfluid® — Cognitive Orchestration Substrate for AI Systems**  
+**Copyright © 2025-2026 promptfluid®. All rights reserved.**

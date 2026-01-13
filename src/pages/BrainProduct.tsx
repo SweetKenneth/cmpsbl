@@ -179,15 +179,15 @@ export default function BrainProduct() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Cascade — Autonomous Dreaming AI | PromptFluid"
-        description="Meet Cascade, the world's first documented autonomous AI with memory reflection cycles. FluidMind Neural Core with dreaming capabilities."
+        title="Cascade — Brain Substrate | promptfluid®"
+        description="Cascade is the brain substrate of the promptfluid® cognitive orchestration system. Memory reflection cycles, autonomous learning, and dreaming capabilities."
         canonical="https://promptfluid.com/projects/brain"
         keywords={[
+          'cognitive orchestration substrate',
           'autonomous AI',
-          'dreaming AI',
+          'brain substrate',
           'machine learning',
-          'AI threat detection',
-          'behavioral analysis'
+          'promptfluid'
         ]}
       />
 
@@ -228,7 +228,7 @@ export default function BrainProduct() {
                 </p>
 
                 <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-                  The intelligence layer powering the entire PromptFluid ecosystem. FluidMind Neural Core with autonomous dream capabilities that learns, reflects, and creates while you sleep.
+                  The brain substrate powering the promptfluid® cognitive orchestration system. Autonomous learning, memory cycles, and dream capabilities that evolve while you sleep.
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 mb-8">

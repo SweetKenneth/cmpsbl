@@ -1,4 +1,4 @@
-=== PromptFluid Bot Sniper ===
+=== promptfluid® bot sniper ===
 Contributors: promptfluid
 Tags: security, bot detection, malware, firewall, protection
 Requires at least: 5.8
@@ -8,15 +8,17 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-AI-powered bot detection and protection. Stop malicious bots with real-time behavioral analysis and threat intelligence.
+Defense intelligence substrate for WordPress — behavioral bot detection powered by the promptfluid® cognitive orchestration substrate.
 
 == Description ==
 
-**PromptFluid Bot Sniper** uses advanced AI and behavioral analysis to detect and block malicious bots before they can harm your WordPress site.
+**promptfluid® bot sniper** uses advanced behavioral analysis to detect and block malicious bots before they can harm your WordPress site.
+
+promptfluid® is a cognitive orchestration substrate that provides routing, memory, learning cycles, observability, defense, and execution coordination for AI systems. It is model-agnostic, provider-agnostic, and runs on commodity cloud.
 
 = Features =
 
-* **Real-time Bot Detection** - AI-powered analysis of visitor behavior
+* **Real-time Bot Detection** - Behavioral analysis of visitor patterns
 * **Threat Scoring** - Each visitor gets a risk score (0-100)
 * **IP Reputation Tracking** - Build intelligence on repeat offenders
 * **Behavioral Analysis** - Mouse movements, timing, and interaction patterns
@@ -27,7 +29,7 @@ AI-powered bot detection and protection. Stop malicious bots with real-time beha
 
 = Why Bot Sniper? =
 
-Traditional security plugins rely on outdated signature-based detection. Bot Sniper uses AI to identify bot-like behavior patterns that evolve over time.
+Traditional security plugins rely on outdated signature-based detection. bot sniper uses machine learning to identify bot-like behavior patterns that evolve over time.
 
 * **10,000 requests/month** on the base plan
 * **Real-time threat intelligence**
@@ -43,7 +45,7 @@ Start with a **7-day free trial** - no credit card required.
 
 = Upgrade to Full Suite =
 
-Get the complete PromptFluid Reflex Defense suite:
+Get the complete promptfluid® reflex defense suite:
 * Web Application Firewall (WAF)
 * Malware scanning and removal
 * File integrity monitoring
@@ -62,7 +64,7 @@ Get the complete PromptFluid Reflex Defense suite:
 
 == Frequently Asked Questions ==
 
-= Do I need a PromptFluid account? =
+= Do I need a promptfluid® account? =
 
 Yes, you'll create one during setup. It takes less than 60 seconds and starts your 7-day free trial.
 
@@ -96,8 +98,8 @@ Each page view analyzed counts as one request. The base plan includes 10,000 req
 == Changelog ==
 
 = 1.0.0 =
-* Initial release
-* Real-time bot detection with AI behavioral analysis
+* Initial release as promptfluid® substrate
+* Real-time bot detection with behavioral analysis
 * Threat scoring and IP reputation tracking
 * Analytics dashboard with graphs and metrics
 * API key integration
@@ -108,22 +110,29 @@ Each page view analyzed counts as one request. The base plan includes 10,000 req
 == Upgrade Notice ==
 
 = 1.0.0 =
-Initial release of PromptFluid Bot Sniper. Start protecting your site today with our 7-day free trial.
+Initial release of promptfluid® bot sniper. Start protecting your site today with our 7-day free trial.
 
-== Support ==
+== Licensing & Contact ==
 
-Email: promptfluid@gmail.com
-Website: https://www.promptfluid.com
-Phone: (760) FLUID-AI
-Documentation: https://www.promptfluid.com/docs/bot-sniper
+promptfluid® is a registered trademark.
+
+**Founder:** Kenneth E Sweet Jr  
+**Email:** promptfluid@gmail.com  
+**Phone:** (760) FLUID-AI  
+**Web:** https://promptfluid.com
+
+For ownership inquiries, licensing arrangements, or enterprise partnerships, contact promptfluid@gmail.com.
 
 == Privacy Policy ==
 
-PromptFluid Bot Sniper is privacy-focused:
+promptfluid® bot sniper is privacy-focused:
 * We analyze anonymous behavioral patterns only
 * No personal information is collected or stored
 * IP addresses are hashed for reputation tracking
 * All data is encrypted in transit and at rest
 * GDPR, CCPA, and SOC 2 compliant
 
-For our complete privacy policy, visit: https://www.promptfluid.com/privacy
+For our complete privacy policy, visit: https://promptfluid.com/privacy
+
+**promptfluid® — Cognitive Orchestration Substrate for AI Systems**  
+**Copyright © 2025-2026 promptfluid®. All rights reserved.**
