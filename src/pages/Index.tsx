@@ -91,21 +91,21 @@ export default function Index() {
       </div>
 
       {/* Main Content */}
-      <main className="relative z-10 flex-1 flex items-center justify-center px-4 md:px-6 py-12 md:py-20">
+      <main className="relative z-10 flex-1 flex items-center justify-center px-4 md:px-6 py-4 md:py-20">
         <div className="max-w-2xl w-full text-center">
           
           {/* Ambient greeting */}
           <p 
-            className={`text-xs md:text-sm text-muted-foreground mb-4 md:mb-6 transition-all duration-500 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+            className={`text-xs md:text-sm text-muted-foreground mb-2 md:mb-6 transition-all duration-500 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
           >
             {greeting}
           </p>
 
           {/* Core message */}
           <div 
-            className={`mb-6 md:mb-8 transition-all duration-500 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+            className={`mb-4 md:mb-8 transition-all duration-500 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
           >
-            <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-light tracking-tight text-foreground mb-3 md:mb-4 leading-[1.1]">
+            <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-light tracking-tight text-foreground mb-2 md:mb-4 leading-[1.1]">
               Where machines learn
               <br />
               <span className="font-medium bg-gradient-to-r from-primary via-violet-500 to-primary bg-clip-text text-transparent animate-gradient bg-[length:200%_auto]">

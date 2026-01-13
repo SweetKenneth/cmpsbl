@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export function EnhancedFooter() {
   return (
-    <footer className="relative z-20 py-6 px-4 border-t border-border bg-background" role="contentinfo">
+    <footer className="relative z-20 py-3 md:py-6 px-4 border-t border-border bg-background" role="contentinfo">
       <div className="container mx-auto max-w-6xl">
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
           <p>© 2025-2026 promptfluid®</p>
