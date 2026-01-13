@@ -25,14 +25,14 @@ interface OperativeStatus {
   last_email: string | null;
 }
 
-export function CascadeOperativeControls() {
+export function DecodeOperativeControls() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [isTriggering, setIsTriggering] = useState<string | null>(null);
 
   // Fetch operative status
   const { data: status, isLoading } = useQuery({
-    queryKey: ['cascade-operative-status'],
+    queryKey: ['decode-operative-status'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('brain_orchestrator_state')
@@ -57,12 +57,12 @@ export function CascadeOperativeControls() {
 
   // Fetch recent events
   const { data: recentEvents } = useQuery({
-    queryKey: ['cascade-recent-events'],
+    queryKey: ['decode-recent-events'],
     queryFn: async () => {
       const { data } = await supabase
         .from('brain_events')
         .select('*')
-        .eq('module', 'cascade')
+        .eq('module', 'decode')
         .order('created_at', { ascending: false })
         .limit(5);
       return data || [];
@@ -74,7 +74,7 @@ export function CascadeOperativeControls() {
   const triggerLearning = async () => {
     setIsTriggering('learning');
     try {
-      const { data, error } = await supabase.functions.invoke('pf-cascade-operative');
+      const { data, error } = await supabase.functions.invoke('pf-decode-operative');
       
       if (error) throw error;
       
@@ -83,8 +83,8 @@ export function CascadeOperativeControls() {
         description: `Processed ${data?.signals?.total || 0} signals. Mode: ${data?.mode}`,
       });
       
-      queryClient.invalidateQueries({ queryKey: ['cascade-operative-status'] });
-      queryClient.invalidateQueries({ queryKey: ['cascade-recent-events'] });
+      queryClient.invalidateQueries({ queryKey: ['decode-operative-status'] });
+      queryClient.invalidateQueries({ queryKey: ['decode-recent-events'] });
     } catch (error) {
       toast({
         title: 'Error',
@@ -109,7 +109,7 @@ export function CascadeOperativeControls() {
         description: `Dream: ${data?.mood || 'unknown'} mood. Email sent: ${data?.email_sent ? 'Yes' : 'No'}`,
       });
       
-      queryClient.invalidateQueries({ queryKey: ['cascade-operative-status'] });
+      queryClient.invalidateQueries({ queryKey: ['decode-operative-status'] });
     } catch (error) {
       toast({
         title: 'Error',
@@ -134,7 +134,7 @@ export function CascadeOperativeControls() {
         description: `Made ${data?.learning?.calls_made || 0} doctrine-aligned learning calls.`,
       });
       
-      queryClient.invalidateQueries({ queryKey: ['cascade-operative-status'] });
+      queryClient.invalidateQueries({ queryKey: ['decode-operative-status'] });
     } catch (error) {
       toast({
         title: 'Error',
@@ -161,7 +161,7 @@ export function CascadeOperativeControls() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Brain className="w-5 h-5 text-primary" />
-            <CardTitle>Cascade Operative Controls</CardTitle>
+            <CardTitle>Decode Operative Controls</CardTitle>
           </div>
           <Badge variant={status?.mode === 'OPERATIVE' ? 'default' : 'secondary'}>
             {status?.mode || 'LOADING'}

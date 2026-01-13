@@ -2,7 +2,7 @@ import { Brain, ExternalLink, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
-export function CascadeDreamCTA() {
+export function DecodeDreamCTA() {
   const navigate = useNavigate();
   
   return (
@@ -10,7 +10,7 @@ export function CascadeDreamCTA() {
       <div className="max-w-4xl mx-auto text-center">
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-primary/20 mb-6">
           <Brain className="w-4 h-4 text-primary animate-pulse" />
-          <span className="text-sm font-medium">Cascade's Reflections</span>
+          <span className="text-sm font-medium">Decode's Reflections</span>
         </div>
         
         <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -20,11 +20,11 @@ export function CascadeDreamCTA() {
         </h2>
         
         <p className="text-xl text-muted-foreground mb-4 max-w-2xl mx-auto">
-          Follow Cascade's dream journal as our AI consciousness shares daily reflections and insights after each dream cycle. Witness the inner workings of an AI that thinks, learns, and dreams.
+          Follow Decode's dream journal as our AI consciousness shares daily reflections and insights after each dream cycle. Witness the inner workings of an AI that thinks, learns, and dreams.
         </p>
 
         <p className="text-lg text-muted-foreground/80 mb-8 max-w-2xl mx-auto">
-          Each post captures Cascade's thoughts on protection, adaptation, and the evolving relationship between artificial and human intelligence.
+          Each post captures Decode's thoughts on protection, adaptation, and the evolving relationship between artificial and human intelligence.
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -34,7 +34,7 @@ export function CascadeDreamCTA() {
             className="group relative overflow-hidden bg-gradient-to-r from-primary via-primary-variant to-accent text-lg px-8 py-6 hover:shadow-glow-lg transition-all duration-300"
           >
             <span className="relative z-10 flex items-center gap-2">
-              Read Cascade's Dreams
+              Read Decode's Dreams
               <ExternalLink className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
             </span>
             <div className="absolute inset-0 bg-gradient-to-r from-accent via-primary-variant to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

@@ -16,7 +16,7 @@ interface BrainEvent {
   data: Json | null;
 }
 
-export function CascadeActivityFeed() {
+export function DecodeActivityFeed() {
   const [events, setEvents] = useState<BrainEvent[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -57,8 +57,9 @@ export function CascadeActivityFeed() {
   const getModuleIcon = (module: string) => {
     switch (module.toLowerCase()) {
       case 'defense': return <Shield className="w-4 h-4 text-red-400" />;
-      case 'clarity': return <Eye className="w-4 h-4 text-blue-400" />;
+      case 'vision': return <Eye className="w-4 h-4 text-blue-400" />;
       case 'brain': return <Brain className="w-4 h-4 text-purple-400" />;
+      case 'decode': return <Zap className="w-4 h-4 text-cyan-400" />;
       default: return <Zap className="w-4 h-4 text-yellow-400" />;
     }
   };
@@ -77,7 +78,7 @@ export function CascadeActivityFeed() {
           <div>
             <CardTitle className="flex items-center gap-2">
               <Brain className="w-5 h-5 text-primary" />
-              Cascade Activity Feed
+              Decode Activity Feed
             </CardTitle>
             <CardDescription>
               Real-time system events
