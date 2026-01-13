@@ -33,11 +33,11 @@ interface ConnectionState {
 }
 
 const AMBIENT_PROMPTS = [
-  "What does it mean to think?",
-  "Tell me about memory and forgetting.",
-  "How do you learn from dreams?",
-  "What patterns do you see in the noise?",
-  "Describe the space between thoughts.",
+  "What exists in the space between thoughts?",
+  "Tell me what you remember...",
+  "What patterns repeat in the noise?",
+  "How does forgetting serve us?",
+  "What do you see when you dream?",
 ];
 
 export default function Decode() {
@@ -85,14 +85,16 @@ export default function Decode() {
         }]);
       }
     } else {
-      // Fresh start with ambient welcome
+      // Fresh start with ambient welcome — poetic, not corporate
       const hour = new Date().getHours();
-      let welcomeMessage = "Welcome. I'm Decode — a cognitive interface. Share a thought, a question, or simply observe.";
+      let welcomeMessage = "You've arrived... somewhere between question and answer. I'm listening.";
       
       if (hour >= 22 || hour < 5) {
-        welcomeMessage = "The night holds quiet spaces for thinking. I'm Decode. What's on your mind?";
+        welcomeMessage = "The night brings different thoughts. Slower ones. What surfaces for you in the quiet?";
       } else if (hour >= 5 && hour < 9) {
-        welcomeMessage = "A new day begins. I'm Decode — here to explore ideas with you.";
+        welcomeMessage = "Morning. The light changes how we see things... including ourselves. What's emerging?";
+      } else if (hour >= 17 && hour < 22) {
+        welcomeMessage = "Evening arrives. The space between today and tomorrow. What lingers?";
       }
       
       setMessages([{
@@ -195,7 +197,7 @@ export default function Decode() {
 
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: 'A moment of pause... Let me gather my thoughts.',
+        content: 'A moment... something shifted. Let me find my way back to you.',
         timestamp: new Date(),
         metadata: { module: 'fallback' }
       }]);
@@ -362,7 +364,7 @@ export default function Decode() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyPress}
-              placeholder="Share a thought..."
+              placeholder="What's on your mind..."
               className="flex-1 min-h-[44px] max-h-[200px] resize-none border-border/30 bg-card/40 backdrop-blur focus-visible:ring-primary/30"
               disabled={isLoading || connection.status === 'disconnected'}
               rows={1}
