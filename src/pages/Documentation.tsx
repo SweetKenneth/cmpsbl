@@ -158,8 +158,11 @@ export default function Documentation() {
                   <div>
                     <h3 className="font-semibold mb-2 text-foreground">Base URL</h3>
                     <code className="block bg-muted/30 p-4 rounded-lg text-xs border border-border">
-                      https://bxodolqqczjuahwdrswy.supabase.co/functions/v1
+                      POST /functions/v1/pf-substrate
                     </code>
+                    <p className="text-xs text-muted-foreground mt-2">
+                      Contact us for API access credentials.
+                    </p>
                   </div>
                 </div>
               </Card>

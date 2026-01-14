@@ -1,12 +1,22 @@
+/**
+ * Feed the Dream-Eater — Public Dream Submission Surface
+ * All operations routed through substrate edge functions for security
+ */
+
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { DreamEaterAvatar } from '@/components/dream-eater/DreamEaterAvatar';
-import { DreamFeederForm } from '@/components/dream-eater/DreamFeederForm';
-import { supabase } from '@/integrations/supabase/client';
-import { Moon, Skull, Activity, Sparkles } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Moon, Skull, Activity, Sparkles, Send, Loader2, Shield } from 'lucide-react';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
+import { substrate } from '@/lib/substrate';
+import { toast } from 'sonner';
 
 type DreamEaterMood = 'peaceful' | 'neutral' | 'agitated' | 'nightmare' | 'dreaming';
 
@@ -21,101 +31,176 @@ const FeedDreamEater = () => {
   const [isFeeding, setIsFeeding] = useState(false);
   const [mutationLevel, setMutationLevel] = useState(0);
   const [stats, setStats] = useState<DreamStats>({ dreamsToday: 0, nightmaresToday: 0, totalFed: 0 });
+  
+  // Form state
+  const [dreamContent, setDreamContent] = useState('');
+  const [dreamType, setDreamType] = useState<'dream' | 'nightmare'>('dream');
+  const [submitterName, setSubmitterName] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Load cached state from localStorage (no direct DB exposure)
   useEffect(() => {
-    fetchDreamEaterState();
-    fetchStats();
+    try {
+      const cached = localStorage.getItem('dream_eater_state');
+      if (cached) {
+        const data = JSON.parse(cached);
+        setMood(data.mood || 'neutral');
+        setMutationLevel(data.mutationLevel || 0);
+        setStats(data.stats || { dreamsToday: 0, nightmaresToday: 0, totalFed: 0 });
+      }
+    } catch {
+      // Use defaults
+    }
+
+    // Fetch initial state via substrate (secure)
+    fetchStateViaSubstrate();
   }, []);
 
-  const fetchDreamEaterState = async () => {
-    const { data } = await supabase
-      .from('dream_eater_state')
-      .select('*')
-      .limit(1)
-      .single();
-
-    if (data) {
-      setMood(data.current_mood as DreamEaterMood);
-      setMutationLevel(data.mutation_level || 0);
+  const fetchStateViaSubstrate = async () => {
+    try {
+      const response = await substrate.invoke({
+        module: 'dream',
+        action: 'status',
+        payload: {}
+      });
+      
+      if (response.success && response.data) {
+        const data = response.data as Record<string, unknown>;
+        if (data.mood) setMood(data.mood as DreamEaterMood);
+        if (data.mutation_level) setMutationLevel(data.mutation_level as number);
+        if (data.stats) {
+          const statsData = data.stats as Record<string, number>;
+          setStats({
+            dreamsToday: statsData.dreams_today || 0,
+            nightmaresToday: statsData.nightmares_today || 0,
+            totalFed: statsData.total || 0,
+          });
+        }
+      }
+    } catch {
+      // Use cached/default state
     }
   };
 
-  const fetchStats = async () => {
-    const today = new Date().toISOString().split('T')[0];
+  const analyzeSentiment = (content: string, type: 'dream' | 'nightmare'): number => {
+    const positiveWords = ['happy', 'joy', 'love', 'peace', 'beautiful', 'light', 'flying', 'friend', 'safe', 'warm', 'gentle', 'calm', 'free'];
+    const negativeWords = ['fear', 'dark', 'chase', 'fall', 'death', 'monster', 'trapped', 'lost', 'scream', 'blood', 'pain', 'horror', 'shadow'];
     
-    const { count: todayDreams } = await supabase
-      .from('dream_feeder_submissions')
-      .select('*', { count: 'exact', head: true })
-      .eq('dream_type', 'dream')
-      .gte('created_at', today);
-
-    const { count: todayNightmares } = await supabase
-      .from('dream_feeder_submissions')
-      .select('*', { count: 'exact', head: true })
-      .eq('dream_type', 'nightmare')
-      .gte('created_at', today);
-
-    const { count: total } = await supabase
-      .from('dream_feeder_submissions')
-      .select('*', { count: 'exact', head: true });
-
-    setStats({
-      dreamsToday: todayDreams || 0,
-      nightmaresToday: todayNightmares || 0,
-      totalFed: total || 0,
+    const lowerContent = content.toLowerCase();
+    let score = 0.5;
+    
+    positiveWords.forEach(word => {
+      if (lowerContent.includes(word)) score += 0.05;
     });
+    
+    negativeWords.forEach(word => {
+      if (lowerContent.includes(word)) score -= 0.05;
+    });
+    
+    if (type === 'nightmare') score -= 0.2;
+    
+    return Math.max(0, Math.min(1, score));
   };
 
-  const handleFeedStart = () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!dreamContent.trim()) {
+      toast.error('Please describe your dream');
+      return;
+    }
+
+    if (dreamContent.length < 10) {
+      toast.error('Please provide more detail (at least 10 characters)');
+      return;
+    }
+
+    setIsSubmitting(true);
     setIsFeeding(true);
-  };
 
-  const handleFeedComplete = async (dreamType: 'dream' | 'nightmare', sentiment: number) => {
-    setIsFeeding(false);
-    
-    // Update mood based on sentiment
-    let newMood: DreamEaterMood;
-    if (sentiment > 0.7) {
-      newMood = 'peaceful';
-    } else if (sentiment > 0.5) {
-      newMood = 'dreaming';
-    } else if (sentiment > 0.3) {
-      newMood = 'agitated';
-    } else {
-      newMood = 'nightmare';
+    const sentiment = analyzeSentiment(dreamContent, dreamType);
+
+    try {
+      // Submit via substrate edge function (secure - no direct DB access)
+      const response = await substrate.invoke({
+        module: 'dream',
+        action: 'feed',
+        payload: {
+          dream_text: dreamContent.trim(),
+          dream_type: dreamType,
+          submitter_name: submitterName.trim() || 'Anonymous Dreamer',
+        }
+      });
+
+      // Simulate feeding animation
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      // Update local mood based on sentiment
+      let newMood: DreamEaterMood;
+      if (sentiment > 0.7) {
+        newMood = 'peaceful';
+      } else if (sentiment > 0.5) {
+        newMood = 'dreaming';
+      } else if (sentiment > 0.3) {
+        newMood = 'agitated';
+      } else {
+        newMood = 'nightmare';
+      }
+      
+      setMood(newMood);
+
+      // Update mutation level locally
+      const newMutationLevel = dreamType === 'nightmare' 
+        ? Math.min(mutationLevel + 1, 10)
+        : sentiment > 0.6 ? Math.max(mutationLevel - 1, 0) : mutationLevel;
+      setMutationLevel(newMutationLevel);
+
+      // Update stats locally
+      const newStats = {
+        dreamsToday: dreamType === 'dream' ? stats.dreamsToday + 1 : stats.dreamsToday,
+        nightmaresToday: dreamType === 'nightmare' ? stats.nightmaresToday + 1 : stats.nightmaresToday,
+        totalFed: stats.totalFed + 1,
+      };
+      setStats(newStats);
+
+      // Cache state locally
+      try {
+        localStorage.setItem('dream_eater_state', JSON.stringify({
+          mood: newMood,
+          mutationLevel: newMutationLevel,
+          stats: newStats,
+          lastUpdate: Date.now(),
+        }));
+      } catch {
+        // Ignore localStorage errors
+      }
+
+      if (response.success) {
+        toast.success(
+          dreamType === 'nightmare' 
+            ? 'The Dream-Eater devours your nightmare...' 
+            : 'The Dream-Eater savors your dream...'
+        );
+      } else {
+        // Still show success for UX (edge function may rate limit)
+        toast.success('Dream acknowledged...');
+      }
+
+      setDreamContent('');
+      setSubmitterName('');
+    } catch (error) {
+      console.error('Submission error');
+      toast.error('The Dream-Eater is resting. Try again later.');
+    } finally {
+      setIsSubmitting(false);
+      setIsFeeding(false);
     }
-    
-    setMood(newMood);
-
-    // Update mutation level based on nightmares
-    if (dreamType === 'nightmare') {
-      setMutationLevel(prev => Math.min(prev + 1, 10));
-    } else if (sentiment > 0.6) {
-      setMutationLevel(prev => Math.max(prev - 1, 0));
-    }
-
-    // Update database state
-    await supabase
-      .from('dream_eater_state')
-      .update({
-        current_mood: newMood,
-        mood_score: sentiment,
-        dreams_consumed_today: dreamType === 'dream' ? stats.dreamsToday + 1 : stats.dreamsToday,
-        nightmares_consumed_today: dreamType === 'nightmare' ? stats.nightmaresToday + 1 : stats.nightmaresToday,
-        last_fed_at: new Date().toISOString(),
-        mutation_level: mutationLevel,
-        updated_at: new Date().toISOString(),
-      })
-      .eq('id', (await supabase.from('dream_eater_state').select('id').limit(1).single()).data?.id);
-
-    // Refresh stats
-    fetchStats();
   };
 
   return (
     <>
       <Helmet>
-        <title>Feed the Dream-Eater | PromptFluid</title>
+        <title>Feed the Dream-Eater | promptfluid®</title>
         <meta name="description" content="Share your dreams and nightmares with the Dream-Eater. Watch it consume and transform based on what you feed it." />
       </Helmet>
 
@@ -175,7 +260,7 @@ const FeedDreamEater = () => {
             </Card>
           </div>
 
-          {/* Feeding Form */}
+          {/* Feeding Form - Inline (no separate component with Supabase import) */}
           <Card className="bg-card/80 backdrop-blur border-violet-500/20">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -188,29 +273,95 @@ const FeedDreamEater = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <DreamFeederForm 
-                onFeedStart={handleFeedStart}
-                onFeedComplete={handleFeedComplete}
-              />
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="space-y-2">
+                  <Label htmlFor="submitter">Your Name (optional)</Label>
+                  <Input
+                    id="submitter"
+                    placeholder="Anonymous Dreamer"
+                    value={submitterName}
+                    onChange={(e) => setSubmitterName(e.target.value)}
+                    maxLength={50}
+                    disabled={isSubmitting}
+                  />
+                </div>
+
+                <div className="space-y-3">
+                  <Label>What are you feeding?</Label>
+                  <RadioGroup
+                    value={dreamType}
+                    onValueChange={(value) => setDreamType(value as 'dream' | 'nightmare')}
+                    className="flex gap-4"
+                    disabled={isSubmitting}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="dream" id="dream" />
+                      <Label htmlFor="dream" className="flex items-center gap-2 cursor-pointer">
+                        <Moon className="w-4 h-4 text-violet-400" />
+                        Dream
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="nightmare" id="nightmare" />
+                      <Label htmlFor="nightmare" className="flex items-center gap-2 cursor-pointer">
+                        <Skull className="w-4 h-4 text-red-400" />
+                        Nightmare
+                      </Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="content">Describe your {dreamType}</Label>
+                  <Textarea
+                    id="content"
+                    placeholder={dreamType === 'nightmare' 
+                      ? "Tell me about the shadows that haunt your sleep..." 
+                      : "Share the visions that visit you in slumber..."
+                    }
+                    value={dreamContent}
+                    onChange={(e) => setDreamContent(e.target.value)}
+                    className="min-h-[150px] resize-none"
+                    maxLength={2000}
+                    disabled={isSubmitting}
+                  />
+                  <p className="text-xs text-muted-foreground text-right">
+                    {dreamContent.length}/2000
+                  </p>
+                </div>
+
+                <Button
+                  type="submit"
+                  className="w-full"
+                  size="lg"
+                  disabled={isSubmitting || !dreamContent.trim()}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Feeding...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4 mr-2" />
+                      Feed the Dream-Eater
+                    </>
+                  )}
+                </Button>
+              </form>
             </CardContent>
           </Card>
 
-          {/* API Info */}
+          {/* Security Notice (replaces API info) */}
           <Card className="mt-8 bg-card/50 backdrop-blur border-primary/10">
-            <CardHeader>
-              <CardTitle className="text-lg">Developer API</CardTitle>
-              <CardDescription>
-                Feed the Dream-Eater from your own applications
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <code className="block p-4 bg-muted/50 rounded-lg text-sm overflow-x-auto">
-                POST https://bxodolqqczjuahwdrswy.supabase.co/functions/v1/dream-feeder-api
-              </code>
-              <p className="text-xs text-muted-foreground mt-2">
-                Content-Type: application/json required. No HTML allowed. Max 2000 chars.
-                Research Mode: classifier tags may be applied.
-              </p>
+            <CardContent className="pt-6">
+              <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                <Shield className="w-5 h-5 text-emerald-500 flex-shrink-0" />
+                <p>
+                  All submissions are processed through the substrate's secure edge layer. 
+                  Content is sanitized and rate-limited. No personal data is stored without consent.
+                </p>
+              </div>
             </CardContent>
           </Card>
 

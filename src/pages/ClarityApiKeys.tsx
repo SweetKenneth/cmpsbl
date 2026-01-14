@@ -269,8 +269,11 @@ export default function ClarityApiKeys() {
             <div>
               <h4 className="font-medium mb-2">Base URL</h4>
               <code className="block bg-muted p-2 rounded">
-                https://spobyzaevtmijcwbqzmv.supabase.co/functions/v1/pf-clarity-api
+                POST /functions/v1/pf-clarity-api
               </code>
+              <p className="text-xs text-muted-foreground mt-1">
+                Full endpoint URL provided with API key.
+              </p>
             </div>
             <div>
               <h4 className="font-medium mb-2">Endpoints</h4>

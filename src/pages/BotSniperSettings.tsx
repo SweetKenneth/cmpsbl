@@ -135,11 +135,14 @@ export default function BotSniperSettings() {
               Use your API key to analyze requests:
             </p>
             <pre className="bg-muted p-4 rounded-lg overflow-x-auto">
-{`curl -X POST https://hxgbibtkftocyrnuzxwd.supabase.co/functions/v1/bot-sniper-analyze \\
+{`curl -X POST [YOUR_ENDPOINT]/functions/v1/bot-sniper-analyze \\
   -H "Content-Type: application/json" \\
   -H "x-api-key: YOUR_API_KEY" \\
   -d '{"ip": "1.2.3.4", "user_agent": "Mozilla/5.0..."}'`}
             </pre>
+            <p className="text-xs text-muted-foreground mt-2">
+              Full endpoint URL provided with API key issuance.
+            </p>
           </div>
         </Card>
 

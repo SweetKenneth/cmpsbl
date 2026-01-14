@@ -16,7 +16,9 @@ export default function DefenseProduct() {
     try {
       toast.info("Generating WordPress plugin ZIP...");
       
-      const response = await fetch('https://hxgbibtkftocyrnuzxwd.supabase.co/functions/v1/pf-wordpress-generate-zip');
+      // Use environment variable for Supabase URL
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+      const response = await fetch(`${supabaseUrl}/functions/v1/pf-wordpress-generate-zip`);
       
       if (!response.ok) {
         throw new Error('Failed to generate plugin');
