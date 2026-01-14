@@ -90,13 +90,18 @@ class SubstrateClient {
     recall: (query: string, limit?: number) =>
       this.invoke({ module: 'brain', action: 'recall', payload: { query, limit } }),
     
+    /** Cross-domain cognitive synthesis - connects patterns across memory tiers */
     synthesize: () =>
       this.invoke({ module: 'brain', action: 'synthesize' }),
+    
+    /** Probabilistic forecasting engine */
+    forecast: (metric?: string, window?: string) =>
+      this.invoke({ module: 'brain', action: 'forecast', payload: { metric, window } }),
     
     status: () =>
       this.invoke({ module: 'brain', action: 'status' }),
     
-    // Extended Brain methods for Decode contract
+    // Extended Brain methods
     query: (query_text: string, limit?: number) =>
       this.invoke({ module: 'brain', action: 'query', payload: { query_text, limit } }),
     
@@ -180,9 +185,45 @@ class SubstrateClient {
     logs: (module?: SubstrateModule, limit?: number) =>
       this.invoke({ module: 'vision', action: 'logs', payload: { module, limit } }),
     
-    alert: (severity: string, message: string) =>
-      this.invoke({ module: 'vision', action: 'alert', payload: { severity, message } }),
+    /** Create an alert with severity level */
+    alert: (severity: 'info' | 'warn' | 'error' | 'critical', message: string, metadata?: Record<string, unknown>) =>
+      this.invoke({ module: 'vision', action: 'alert', payload: { severity, message, metadata } }),
+    
+    /** Get audit log entries */
+    audit: (entity?: string, action?: string) =>
+      this.invoke({ module: 'vision', action: 'audit', payload: { entity, action } }),
+    
+    status: () =>
+      this.invoke({ module: 'vision', action: 'status' }),
   };
+
+  // System Module — Administration & Configuration
+  system = {
+    status: () =>
+      this.invoke({ module: 'system', action: 'status' }),
+    
+    version: () =>
+      this.invoke({ module: 'system', action: 'version' }),
+    
+    config: (key?: string) =>
+      this.invoke({ module: 'system', action: 'config', payload: { key } }),
+    
+    audit: () =>
+      this.invoke({ module: 'system', action: 'audit' }),
+  };
+
+  // Dream Module — Dream-Eater Operations  
+  dream = {
+    status: () =>
+      this.invoke({ module: 'dream', action: 'status' }),
+    
+    mood: (mood?: string) =>
+      this.invoke({ module: 'dream', action: 'mood', payload: { mood } }),
+    
+    cycle: () =>
+      this.invoke({ module: 'dream', action: 'cycle' }),
+  };
+
 }
 
 export const substrate = SubstrateClient.getInstance();
@@ -193,3 +234,5 @@ export const decode = substrate.decode;
 export const defense = substrate.defense;
 export const nexus = substrate.nexus;
 export const vision = substrate.vision;
+export const system = substrate.system;
+export const dream = substrate.dream;

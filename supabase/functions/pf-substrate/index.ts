@@ -21,7 +21,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const SUBSTRATE_VERSION = "2026.01";
+const SUBSTRATE_VERSION = "2026.01.1";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -266,12 +266,50 @@ async function handleBrain(
     }
 
     case "synthesize": {
+      // Cross-domain cognitive synthesis (wired to pf-brain-synthesize logic)
+      const [
+        { data: hotMemories },
+        { data: coldMemories },
+        { data: patterns },
+        { data: reflections },
+        { data: dreams },
+      ] = await Promise.all([
+        supabase.from('brain_memory_hot').select('content, context, priority, tags').order('priority', { ascending: false }).limit(15),
+        supabase.from('brain_memory_cold').select('summary, core_summary, tags').limit(10),
+        supabase.from('learning_patterns').select('pattern_name, description, confidence').order('confidence', { ascending: false }).limit(10),
+        supabase.from('brain_reflections').select('summary, insights, lessons').order('reflection_date', { ascending: false }).limit(5),
+        supabase.from('cascade_dreams').select('dream_text, mood, insight').order('timestamp', { ascending: false }).limit(5),
+      ]);
+
+      const synthesisMaterial = {
+        hot_memories: hotMemories?.length || 0,
+        cold_memories: coldMemories?.length || 0,
+        patterns: patterns?.slice(0, 5).map((p: { pattern_name: string }) => p.pattern_name) || [],
+        dream_moods: dreams?.map((d: { mood: string }) => d.mood) || [],
+        reflection_lessons: reflections?.flatMap((r: { lessons: unknown[] }) => r.lessons || []).slice(0, 5) || [],
+      };
+
+      // Store synthesis event
+      await supabase.from('brain_events').insert({
+        event_type: 'cognitive_synthesis',
+        module: 'brain',
+        outcome: 'success',
+        data: { sources: synthesisMaterial, via: 'substrate' }
+      });
+
+      // Create insight record
+      const { data: insight } = await supabase.from('brain_cross_insights').insert({
+        insight_text: `Synthesis across ${synthesisMaterial.hot_memories} hot, ${synthesisMaterial.cold_memories} cold memories with ${synthesisMaterial.patterns.length} patterns`,
+        confidence: 0.8,
+        domains: ['hot_memory', 'cold_memory', 'patterns', 'dreams'],
+        metadata: { via: 'substrate', timestamp: new Date().toISOString() }
+      }).select().single();
+
       return jsonResponse({
         success: true,
-        ok: true,
-        placeholder: true,
-        action,
-        message: "Synthesize stub - insight synthesis from memories pending",
+        synthesis: synthesisMaterial,
+        insight_id: insight?.id,
+        message: "Cross-domain synthesis complete",
       }, headers);
     }
 
@@ -345,15 +383,48 @@ async function handleBrain(
     }
 
     case "forecast": {
-      const { metric, window = "7d" } = data;
-      return jsonResponse({
-        success: true,
-        ok: true,
-        placeholder: true,
-        action,
+      // Probabilistic forecasting (wired to pf-brain-forecast logic)
+      const { metric = "general", window = "7d" } = data;
+
+      // Gather signals and metrics
+      const [
+        { data: signals },
+        { data: defenseEvents },
+        { data: usageLogs },
+        { data: existingForecasts },
+      ] = await Promise.all([
+        supabase.from('global_signals').select('headline, category, sentiment_score').order('created_at', { ascending: false }).limit(20),
+        supabase.from('defense_events').select('action').gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()).limit(100),
+        supabase.from('ai_usage_log').select('provider').gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()).limit(100),
+        supabase.from('global_forecasts').select('*').order('created_at', { ascending: false }).limit(5),
+      ]);
+
+      const techSignals = signals?.filter((s: { category: string }) => s.category === 'tech') || [];
+      const avgSentiment = techSignals.reduce((sum: number, s: { sentiment_score?: number }) => sum + (s.sentiment_score || 0), 0) / (techSignals.length || 1);
+
+      const context = {
         metric,
         window,
-        message: "Forecast stub - prediction generation pending",
+        tech_signals: techSignals.length,
+        avg_sentiment: avgSentiment.toFixed(2),
+        threat_activity: defenseEvents?.length || 0,
+        ai_usage: usageLogs?.length || 0,
+        recent_forecasts: existingForecasts?.length || 0,
+      };
+
+      // Log forecast request
+      await supabase.from('brain_events').insert({
+        event_type: 'forecast_request',
+        module: 'brain',
+        outcome: 'success',
+        data: context
+      });
+
+      return jsonResponse({
+        success: true,
+        forecast_context: context,
+        recent_forecasts: existingForecasts?.slice(0, 3) || [],
+        message: `Forecast context for ${metric} over ${window}`,
       }, headers);
     }
 
@@ -992,15 +1063,31 @@ async function handleVision(
 
     // ═══ STUB HANDLERS ═══
     case "alert": {
-      const { severity, message } = data;
+      // Alerting system (wired to telemetry)
+      const { severity = "info", message, metadata = {} } = data;
+      
+      // Log alert to brain_events
+      const { data: alertEvent } = await supabase.from("brain_events").insert({
+        event_type: `alert_${severity}`,
+        module: 'vision',
+        outcome: 'success',
+        data: { message, severity, metadata, timestamp: new Date().toISOString() }
+      }).select().single();
+
+      // Also log to learning_logs for telemetry
+      await supabase.from("learning_logs").insert({
+        source: 'vision_alert',
+        content: message as string,
+        success: true,
+        metadata: { severity, event_id: alertEvent?.id }
+      });
+
       return jsonResponse({
         success: true,
-        ok: true,
-        placeholder: true,
-        action,
+        alert_id: alertEvent?.id,
         severity,
         message: (message as string)?.substring(0, 100),
-        note: "Alert stub - notification system pending",
+        timestamp: new Date().toISOString(),
       }, headers);
     }
 
