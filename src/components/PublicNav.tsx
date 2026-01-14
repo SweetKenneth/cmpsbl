@@ -1,45 +1,56 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 
 export function PublicNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   const navItems = [
     { name: "Demo", href: "/demo" },
     { name: "Substrate", href: "/substrate" },
+    { name: "Decode", href: "/decode" },
     { name: "Dream", href: "/feed-dream-eater" },
     { name: "Blog", href: "/blog" },
     { name: "About", href: "/about" },
   ];
 
+  const isActive = (path: string) => location.pathname === path;
+
   return (
     <>
       <nav
-        className="relative z-[10000] bg-background/95 backdrop-blur-sm border-b border-border/50"
+        className="sticky top-0 z-[10000] bg-background/95 backdrop-blur-md border-b border-border/50"
         role="navigation"
         aria-label="Main navigation"
       >
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          {/* Minimal Text Logo */}
-          <Link to="/" className="text-lg font-semibold text-foreground tracking-tight">
-            promptfluid
+          {/* Logo */}
+          <Link 
+            to="/" 
+            className="text-lg font-semibold text-foreground tracking-tight hover:text-primary transition-colors"
+          >
+            promptfluid<span className="text-primary">®</span>
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden md:flex items-center gap-1">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 to={item.href}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                className={`px-3 py-2 rounded-lg text-sm transition-colors ${
+                  isActive(item.href)
+                    ? "text-foreground bg-muted font-medium"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                }`}
               >
                 {item.name}
               </Link>
             ))}
             <Link
               to="/contact"
-              className="text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+              className="ml-2 px-4 py-2 rounded-lg text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
             >
               Contact
             </Link>
@@ -66,28 +77,33 @@ export function PublicNav() {
             aria-hidden="true"
           />
           <div 
-            className="fixed top-14 left-0 right-0 z-[9999] md:hidden bg-background border-b border-border shadow-lg"
+            className="fixed top-[57px] left-0 right-0 z-[9999] md:hidden bg-background border-b border-border shadow-xl"
             role="dialog"
             aria-modal="true"
           >
-            <div className="container mx-auto px-4 py-4">
+            <div className="container mx-auto px-4 py-3">
               <nav className="flex flex-col gap-1">
                 {navItems.map((item) => (
                   <Link
                     key={item.href}
                     to={item.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="py-2.5 px-3 rounded-lg text-sm text-foreground hover:bg-muted transition-colors"
+                    className={`py-3 px-4 rounded-lg text-sm transition-colors ${
+                      isActive(item.href)
+                        ? "text-foreground bg-muted font-medium"
+                        : "text-foreground hover:bg-muted"
+                    }`}
                   >
                     {item.name}
                   </Link>
                 ))}
+                <div className="border-t border-border my-2" />
                 <Link
                   to="/contact"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="py-2.5 px-3 rounded-lg text-sm font-medium text-primary hover:bg-primary/5 transition-colors"
+                  className="py-3 px-4 rounded-lg text-sm font-medium text-primary hover:bg-primary/10 transition-colors"
                 >
-                  Contact
+                  Contact Us
                 </Link>
               </nav>
             </div>

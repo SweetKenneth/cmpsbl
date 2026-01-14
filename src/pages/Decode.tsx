@@ -208,9 +208,9 @@ export default function Decode() {
   };
 
   const navLinks = [
+    { label: 'Demo', path: '/demo' },
     { label: 'Substrate', path: '/substrate' },
     { label: 'Dream', path: '/feed-dream-eater' },
-    { label: 'DOI', path: '/publication' },
     { label: 'Blog', path: '/blog' },
     { label: 'About', path: '/about' },
   ];
