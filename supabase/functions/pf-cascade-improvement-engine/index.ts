@@ -21,12 +21,16 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const ENGINE_VERSION = '1.0.0';
+const ENGINE_VERSION = '2.0.0';
 
-// 30% of Nexus max daily calls (Groq has highest at 950/day)
-const MAX_NEXUS_DAILY_CALLS = 950;
+// Calculate 80% of total daily capacity from all free providers
+// Based on v4.0.0 router limits (80% of max):
+// Groq: 800 + Cerebras: 11,520 + SambaNova: 32 + Hyperbolic: unlimited + DeepSeek: unlimited + Together: unlimited
+// Conservative estimate using limited providers: 800 + 11,520 + 32 = 12,352/day
+// Cascade uses 30% of that: 12,352 * 0.30 = 3,705 calls/day
+const TOTAL_DAILY_CAPACITY = 12352; // From limited providers only
 const THROTTLE_PERCENTAGE = 0.30;
-const DAILY_IMPROVEMENT_BUDGET = Math.floor(MAX_NEXUS_DAILY_CALLS * THROTTLE_PERCENTAGE); // 285 calls/day
+const DAILY_IMPROVEMENT_BUDGET = Math.floor(TOTAL_DAILY_CAPACITY * THROTTLE_PERCENTAGE); // ~3,705 calls/day
 
 // Substrate improvement domains - ONLY these are studied
 const SUBSTRATE_DOMAINS = [
@@ -90,7 +94,8 @@ serve(async (req) => {
     const { force = false, focus_domain = null } = await req.json().catch(() => ({}));
 
     console.log(`🔬 Cascade Improvement Engine v${ENGINE_VERSION} starting...`);
-    console.log(`📊 Daily budget: ${DAILY_IMPROVEMENT_BUDGET} calls (30% of ${MAX_NEXUS_DAILY_CALLS})`);
+    console.log(`📊 Daily budget: ${DAILY_IMPROVEMENT_BUDGET} calls (30% of ${TOTAL_DAILY_CAPACITY})`);
+    console.log(`📈 This is 13x more capacity than before (was 285, now ~3,705 calls/day)`);
 
     // Check today's usage
     const today = new Date().toISOString().split('T')[0];
