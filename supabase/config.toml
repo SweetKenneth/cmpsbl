@@ -59,3 +59,21 @@ verify_jwt = false
 
 [functions.pf-brain-monitor]
 verify_jwt = false
+
+[functions.pf-cascade-improvement-engine]
+verify_jwt = false
+
+[functions.pf-cascade-improvement-report]
+verify_jwt = false
+
+[functions.pf-dream-eater-cycle]
+verify_jwt = false
+
+[functions.pf-substrate]
+verify_jwt = false
+
+[functions.pf-brain-scheduler]
+verify_jwt = false
+
+[functions.pf-brain-report]
+verify_jwt = false
