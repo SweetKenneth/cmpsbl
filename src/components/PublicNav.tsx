@@ -8,6 +8,7 @@ export function PublicNav() {
 
   const navItems = [
     { name: "Demo", href: "/demo" },
+    { name: "Proof", href: "/proof" },
     { name: "Substrate", href: "/substrate" },
     { name: "Decode", href: "/decode" },
     { name: "Dream", href: "/feed-dream-eater" },
