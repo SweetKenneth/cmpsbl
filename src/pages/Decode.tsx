@@ -209,6 +209,7 @@ export default function Decode() {
 
   const navLinks = [
     { label: 'Demo', path: '/demo' },
+    { label: 'Proof', path: '/proof' },
     { label: 'Substrate', path: '/substrate' },
     { label: 'Dream', path: '/feed-dream-eater' },
     { label: 'Blog', path: '/blog' },
