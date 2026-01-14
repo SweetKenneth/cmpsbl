@@ -208,10 +208,11 @@ export default function Decode() {
   };
 
   const navLinks = [
-    { label: 'Home', path: '/' },
-    { label: 'Dream', path: '/feed-dream-eater' },
-    { label: 'Read', path: '/blog' },
     { label: 'Substrate', path: '/substrate' },
+    { label: 'Dream', path: '/feed-dream-eater' },
+    { label: 'DOI', path: '/publication' },
+    { label: 'Blog', path: '/blog' },
+    { label: 'About', path: '/about' },
   ];
 
   return (

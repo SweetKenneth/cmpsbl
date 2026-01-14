@@ -7,8 +7,8 @@ export function PublicNav() {
 
   const navItems = [
     { name: "Substrate", href: "/substrate" },
-    { name: "DOI Publication", href: "/publication" },
-    { name: "Modules", href: "/projects" },
+    { name: "Dream", href: "/feed-dream-eater" },
+    { name: "DOI", href: "/publication" },
     { name: "Blog", href: "/blog" },
     { name: "About", href: "/about" },
   ];

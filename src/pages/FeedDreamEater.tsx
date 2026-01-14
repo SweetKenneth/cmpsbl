@@ -5,6 +5,8 @@ import { DreamEaterAvatar } from '@/components/dream-eater/DreamEaterAvatar';
 import { DreamFeederForm } from '@/components/dream-eater/DreamFeederForm';
 import { supabase } from '@/integrations/supabase/client';
 import { Moon, Skull, Activity, Sparkles } from 'lucide-react';
+import { PublicNav } from '@/components/PublicNav';
+import { EnhancedFooter } from '@/components/EnhancedFooter';
 
 type DreamEaterMood = 'peaceful' | 'neutral' | 'agitated' | 'nightmare' | 'dreaming';
 
@@ -117,6 +119,8 @@ const FeedDreamEater = () => {
         <meta name="description" content="Share your dreams and nightmares with the Dream-Eater. Watch it consume and transform based on what you feed it." />
       </Helmet>
 
+      <PublicNav />
+
       <div className="min-h-screen bg-gradient-to-b from-background via-background/95 to-violet-950/20">
         <div className="container mx-auto px-4 py-12 max-w-4xl">
           {/* Header */}
@@ -216,6 +220,8 @@ const FeedDreamEater = () => {
           </p>
         </div>
       </div>
+
+      <EnhancedFooter />
     </>
   );
 };
