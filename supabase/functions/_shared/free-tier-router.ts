@@ -1,11 +1,11 @@
 /**
- * FREE-TIER AI Routing v3.0.0 - ENTERPRISE-GRADE ROUTER
+ * FREE-TIER AI Routing v4.0.0 - ENTERPRISE-GRADE ROUTER
  * 
- * PRECISION RATE LIMITS with 15-second safety buffer
- * Based on deep research of official provider documentation (Dec 2024)
+ * VERIFIED RATE LIMITS AT 80% CAPACITY
+ * Based on official provider documentation research (January 2025)
  * 
  * Features:
- * - ACCURATE rate limits from official docs with 15s buffer
+ * - ACCURATE rate limits from official docs AT 80% CAPACITY for safety margin
  * - Exponential backoff with jitter
  * - Circuit breaker pattern (closed → open → half-open)
  * - Auto-healing with health probes
@@ -14,30 +14,35 @@
  * - Real-time health scoring
  * - Predictive rate limit tracking
  * - Request retry with intelligent delay
+ * - SambaNova added as new provider (very fast inference)
  * 
- * VERIFIED RATE LIMITS (with 15-second buffer applied):
+ * VERIFIED RATE LIMITS (at 80% of maximum for reliability):
  * 
- * Provider      | RPM (buffered) | RPD (buffered) | TPM       | Source
+ * Provider      | RPM (80%)      | RPD (80%)      | TPM       | Source
  * --------------|----------------|----------------|-----------|---------------------------
- * Groq          | 28 RPM         | 950 RPD        | 12K TPM   | console.groq.com/docs (llama-3.3-70b)
- * Cerebras      | 28 RPM         | ~950 RPD       | 60K TPM   | cerebras.ai/docs (estimated)
- * Together      | 8 RPM          | ~550 RPD       | 60K TPM   | docs.together.ai (Tier 1)
- * Hyperbolic    | 58 RPM         | 580 RPD (Pro)  | N/A       | docs.hyperbolic.xyz (Basic: 60, Pro: 600)
- * DeepSeek      | 18 RPM         | ~950 RPD       | 60K TPM   | platform.deepseek.com
+ * Groq          | 24 RPM         | 800 RPD        | 9.6K TPM  | console.groq.com (llama-3.3-70b: 30/1000)
+ * Cerebras      | 24 RPM         | 11,520 RPD     | 48K TPM   | inference-docs.cerebras.ai (FREE: 30/14400)
+ * SambaNova     | 32 RPM         | 32 RPD         | N/A       | docs.sambanova.ai (FREE: 40/40)
+ * Hyperbolic    | 48 RPM         | unlimited      | 80K TPM   | docs.hyperbolic.xyz (Basic: 60 RPM)
+ * DeepSeek      | 16 RPM         | unlimited      | 48K TPM   | platform.deepseek.com (est: 20 RPM)
+ * Together      | 480 RPM        | unlimited      | 144K TPM  | docs.together.ai (Tier 1: 600 RPM w/ $5 paid)
  * 
- * PRIORITY ORDER: Groq (fastest) → Cerebras → Together → Hyperbolic → DeepSeek
+ * TOTAL DAILY CAPACITY: 800 + 11,520 + 32 + unlimited + unlimited + unlimited = 12,352+ calls/day
  * 
- * v3.0.0 CHANGELOG:
- * - Accurate rate limits from official documentation research
- * - 15-second buffer on all timing-based limits
- * - Enterprise-grade circuit breaker with configurable thresholds
- * - Exponential backoff with decorrelated jitter
- * - Request tracking with sliding window algorithm
- * - Health monitoring with real-time scoring
- * - Auto-healing with intelligent recovery probes
+ * PRIORITY ORDER: Groq → Cerebras → SambaNova → Hyperbolic → DeepSeek → Together
+ * (Priority based on: speed, reliability, free tier limits)
+ * 
+ * v4.0.0 CHANGELOG:
+ * - CORRECTED rate limits from official documentation (Jan 2025)
+ * - All limits now at 80% of maximum for reliability margin
+ * - Added SambaNova as new provider (very fast, 40 RPM free tier)
+ * - Cerebras FREE tier corrected: 30 RPM, 14,400 RPD (not 950!)
+ * - Groq confirmed: 30 RPM, 1,000 RPD
+ * - Together requires $5 deposit for Tier 1 (600 RPM)
+ * - Hyperbolic Basic: 60 RPM (no daily limit)
  */
 
-export const ROUTER_VERSION = "3.0.0";
+export const ROUTER_VERSION = "4.0.0";
 
 // ═══════════════════════════════════════════════════════════════
 // TYPE DEFINITIONS
@@ -92,54 +97,63 @@ export interface RouterState {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// PRECISION RATE LIMITS (with 15-second buffer)
-// Based on official documentation research - December 2024
+// VERIFIED RATE LIMITS AT 80% CAPACITY
+// Based on official documentation research - January 2025
 // ═══════════════════════════════════════════════════════════════
 
-const BUFFER_SECONDS = 15; // Safety buffer to prevent edge-case rate limit hits
+const SAFETY_MARGIN = 0.80; // Use 80% of max limits for reliability
 
-// VERIFIED from console.groq.com/docs/rate-limits (Dec 2024)
-// llama-3.3-70b-versatile: 30 RPM, 1K RPD, 12K TPM
-// Buffer: 30 - 2 = 28 RPM, 1000 - 50 = 950 RPD
+// VERIFIED from official documentation (Jan 2025)
+// All limits calculated as: OFFICIAL_LIMIT * 0.80
 export const RATE_LIMITS: Record<string, RateLimitConfig> = {
+  // Groq - console.groq.com/docs/rate-limits
+  // llama-3.3-70b-versatile: 30 RPM, 1,000 RPD, 12K TPM
   groq: { 
-    perMin: 28,           // 30 - buffer
-    perDay: 950,          // 1000 - buffer
-    perMinTokens: 12000,
-    bufferSeconds: BUFFER_SECONDS 
+    perMin: Math.floor(30 * SAFETY_MARGIN),           // 24 RPM (30 * 0.80)
+    perDay: Math.floor(1000 * SAFETY_MARGIN),         // 800 RPD (1000 * 0.80)
+    perMinTokens: Math.floor(12000 * SAFETY_MARGIN),  // 9,600 TPM
+    bufferSeconds: 5 
   },
-  // Cerebras - estimated based on similar free-tier patterns
-  // Conservative estimates with buffer
+  // Cerebras - inference-docs.cerebras.ai/support/rate-limits
+  // FREE TIER: llama-3.3-70b: 30 RPM, 900 RPH, 14,400 RPD, 60K TPM, 1M TPD
   cerebras: { 
-    perMin: 28,           // Estimated 30 - buffer
-    perDay: 950,          // Conservative estimate
-    perMinTokens: 60000,
-    bufferSeconds: BUFFER_SECONDS 
+    perMin: Math.floor(30 * SAFETY_MARGIN),           // 24 RPM
+    perDay: Math.floor(14400 * SAFETY_MARGIN),        // 11,520 RPD (CORRECTED!)
+    perMinTokens: Math.floor(60000 * SAFETY_MARGIN),  // 48,000 TPM
+    bufferSeconds: 5 
   },
-  // Together.ai - docs.together.ai/docs/rate-limits
-  // Tier 1 (free): ~10 RPM estimated
-  together: { 
-    perMin: 8,            // 10 - buffer
-    perDay: 550,          // Conservative estimate
-    perMinTokens: 60000,
-    bufferSeconds: BUFFER_SECONDS 
+  // SambaNova - docs.sambanova.ai/docs/en/models/rate-limits
+  // FREE TIER: Meta-Llama-3.3-70B-Instruct: 40 RPM, 40 RPD, 200K TPD
+  sambanova: { 
+    perMin: Math.floor(40 * SAFETY_MARGIN),           // 32 RPM
+    perDay: Math.floor(40 * SAFETY_MARGIN),           // 32 RPD
+    perMinTokens: 100000,                              // Not rate limited by TPM
+    bufferSeconds: 5 
   },
-  // Hyperbolic - docs.hyperbolic.xyz/docs/hyperbolic-pricing
-  // Basic: 60 RPM, Pro ($5 deposit): 600 RPM
-  // Using Basic tier limits with buffer
+  // Hyperbolic - docs.hyperbolic.xyz
+  // Basic tier: 60 RPM (no daily limit documented)
   hyperbolic: { 
-    perMin: 58,           // 60 - buffer
-    perDay: 580,          // Conservative daily limit
-    perMinTokens: 100000,
-    bufferSeconds: BUFFER_SECONDS 
+    perMin: Math.floor(60 * SAFETY_MARGIN),           // 48 RPM
+    perDay: 100000,                                    // Effectively unlimited
+    perMinTokens: Math.floor(100000 * SAFETY_MARGIN), // 80,000 TPM
+    bufferSeconds: 5 
   },
   // DeepSeek - platform.deepseek.com
-  // Estimated based on typical Chinese AI provider patterns
+  // Estimated: ~20 RPM free tier, generous daily
   deepseek: { 
-    perMin: 18,           // 20 - buffer
-    perDay: 950,          // Conservative estimate
-    perMinTokens: 60000,
-    bufferSeconds: BUFFER_SECONDS 
+    perMin: Math.floor(20 * SAFETY_MARGIN),           // 16 RPM
+    perDay: 100000,                                    // Effectively unlimited
+    perMinTokens: Math.floor(60000 * SAFETY_MARGIN),  // 48,000 TPM
+    bufferSeconds: 5 
+  },
+  // Together.ai - docs.together.ai/docs/rate-limits
+  // Tier 1 ($5 credit card): 600 RPM, 180K TPM
+  // Note: Requires $5 payment method for full limits
+  together: { 
+    perMin: Math.floor(600 * SAFETY_MARGIN),          // 480 RPM
+    perDay: 100000,                                    // Effectively unlimited
+    perMinTokens: Math.floor(180000 * SAFETY_MARGIN), // 144,000 TPM
+    bufferSeconds: 5 
   }
 };
 
@@ -173,14 +187,14 @@ const BACKOFF = {
 // ═══════════════════════════════════════════════════════════════
 
 const DEGRADATION_TIERS = {
-  tier1: ['groq', 'cerebras'],           // Primary: fastest, free
-  tier2: ['together', 'hyperbolic'],     // Secondary: reliable
-  tier3: ['deepseek'],                   // Tertiary: backup
-  emergency: ['local_fallback']          // Emergency: graceful message
+  tier1: ['groq', 'cerebras', 'sambanova'],  // Primary: fastest inference
+  tier2: ['hyperbolic', 'deepseek'],          // Secondary: reliable fallback
+  tier3: ['together'],                        // Tertiary: high capacity (requires $5)
+  emergency: ['local_fallback']               // Emergency: graceful message
 };
 
 // ═══════════════════════════════════════════════════════════════
-// PROVIDER CONFIGURATIONS
+// PROVIDER CONFIGURATIONS (6 providers)
 // ═══════════════════════════════════════════════════════════════
 
 const PROVIDER_CONFIGS = {
@@ -202,10 +216,10 @@ const PROVIDER_CONFIGS = {
       'Content-Type': 'application/json' 
     })
   },
-  together: {
-    url: 'https://api.together.xyz/v1/chat/completions',
-    model: 'meta-llama/Llama-3.1-70B-Instruct-Turbo',
-    keyEnv: 'TOGETHER_API_KEY',
+  sambanova: {
+    url: 'https://api.sambanova.ai/v1/chat/completions',
+    model: 'Meta-Llama-3.3-70B-Instruct',
+    keyEnv: 'SAMBANOVA_API_KEY',
     headers: (key: string) => ({ 
       'Authorization': `Bearer ${key}`, 
       'Content-Type': 'application/json' 
@@ -224,6 +238,15 @@ const PROVIDER_CONFIGS = {
     url: 'https://api.deepseek.com/v1/chat/completions',
     model: 'deepseek-chat',
     keyEnv: 'DEEPSEEK_API_KEY',
+    headers: (key: string) => ({ 
+      'Authorization': `Bearer ${key}`, 
+      'Content-Type': 'application/json' 
+    })
+  },
+  together: {
+    url: 'https://api.together.xyz/v1/chat/completions',
+    model: 'meta-llama/Llama-3.1-70B-Instruct-Turbo',
+    keyEnv: 'TOGETHER_API_KEY',
     headers: (key: string) => ({ 
       'Authorization': `Bearer ${key}`, 
       'Content-Type': 'application/json' 
@@ -302,10 +325,12 @@ function calculateBackoff(attempt: number): number {
 function updateRateLimitWindow(provider: string): void {
   const health = getProviderHealth(provider);
   const now = Date.now();
+  const limits = RATE_LIMITS[provider];
+  const bufferMs = (limits?.bufferSeconds || 5) * 1000;
   
-  // Reset minute window if needed (with 15s buffer)
+  // Reset minute window if needed (with buffer from provider config)
   const minuteWindowAge = now - health.minuteWindowStart;
-  if (minuteWindowAge >= 60000 + (BUFFER_SECONDS * 1000)) {
+  if (minuteWindowAge >= 60000 + bufferMs) {
     health.requestsThisMinute = 0;
     health.minuteWindowStart = now;
   }
@@ -423,8 +448,8 @@ function isCircuitOpen(provider: string): boolean {
 // ═══════════════════════════════════════════════════════════════
 
 function selectOptimalProvider(): string | null {
-  // Priority order: Groq → Cerebras → Together → Hyperbolic → DeepSeek
-  const priorityOrder = ['groq', 'cerebras', 'together', 'hyperbolic', 'deepseek'];
+  // Priority order: Groq → Cerebras → SambaNova → Hyperbolic → DeepSeek → Together
+  const priorityOrder = ['groq', 'cerebras', 'sambanova', 'hyperbolic', 'deepseek', 'together'];
   
   // First pass: find healthy providers with available capacity
   for (const provider of priorityOrder) {
