@@ -14,6 +14,7 @@ export function EnhancedFooter() {
   const companyLinks = [
     { name: "About", href: "/about" },
     { name: "Blog", href: "/blog" },
+    { name: "Changelog", href: "/changelog" },
     { name: "Contact", href: "/contact" },
     { name: "Publication", href: "/publication" },
   ];

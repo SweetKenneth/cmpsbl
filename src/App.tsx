@@ -46,6 +46,7 @@ const SubstrateDemo = lazy(() => import("./pages/SubstrateDemo"));
 const ProofMode = lazy(() => import("./pages/ProofMode"));
 const Documentation = lazy(() => import("./pages/Documentation"));
 const Publication = lazy(() => import("./pages/Publication"));
+const Changelog = lazy(() => import("./pages/Changelog"));
 
 // Marketing / Info pages
 const About = lazy(() => import("./pages/About"));
@@ -114,6 +115,7 @@ const App = () => {
                     <Route path="/proof" element={<ProofMode />} />
                     <Route path="/publication" element={<Publication />} />
                     <Route path="/documentation" element={<Documentation />} />
+                    <Route path="/changelog" element={<Changelog />} />
 
                     {/* Marketing / Info */}
                     <Route path="/about" element={<About />} />
