@@ -215,11 +215,14 @@ export function ClarityAPIKeys() {
           <p className="font-medium mb-2">API Documentation</p>
           <div className="bg-background p-2 sm:p-3 rounded text-xs overflow-x-auto">
             <code className="block whitespace-pre-wrap break-all sm:whitespace-nowrap">
-              POST https://bxodolqqczjuahwdrswy.supabase.co/functions/v1/pf-clarity-api/scan{'\n'}
+              POST /functions/v1/pf-clarity-api/scan{'\n'}
               Headers: x-api-key: clf_your_key_here{'\n'}
               Body: {JSON.stringify({ site_url: "https://example.com" })}
             </code>
           </div>
+          <p className="text-xs text-muted-foreground mt-2">
+            Full endpoint URL provided with API key issuance.
+          </p>
         </div>
       </div>
     </Card>
