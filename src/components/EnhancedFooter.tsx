@@ -5,6 +5,7 @@ export function EnhancedFooter() {
 
   const productLinks = [
     { name: "Demo", href: "/demo" },
+    { name: "Proof Mode", href: "/proof" },
     { name: "Substrate", href: "/substrate" },
     { name: "Decode", href: "/decode" },
     { name: "Dream", href: "/feed-dream-eater" },
