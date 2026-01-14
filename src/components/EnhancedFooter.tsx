@@ -10,6 +10,9 @@ export function EnhancedFooter() {
             <Link to="/substrate" className="hover:text-foreground transition-colors">
               Substrate
             </Link>
+            <Link to="/feed-dream-eater" className="hover:text-foreground transition-colors">
+              Dream
+            </Link>
             <Link to="/publication" className="hover:text-foreground transition-colors">
               DOI
             </Link>
@@ -19,12 +22,22 @@ export function EnhancedFooter() {
             <Link to="/terms" className="hover:text-foreground transition-colors">
               Terms
             </Link>
-            <Link to="/investors" className="hover:text-foreground transition-colors">
-              Investors
-            </Link>
-            <Link to="/contact" className="hover:text-foreground transition-colors">
-              Contact
-            </Link>
+            <a 
+              href="/llms.txt" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hover:text-foreground transition-colors"
+            >
+              llms.txt
+            </a>
+            <a 
+              href="/humans.txt" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hover:text-foreground transition-colors"
+            >
+              humans.txt
+            </a>
           </nav>
         </div>
       </div>
