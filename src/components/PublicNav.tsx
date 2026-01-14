@@ -6,9 +6,9 @@ export function PublicNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
+    { name: "Demo", href: "/demo" },
     { name: "Substrate", href: "/substrate" },
     { name: "Dream", href: "/feed-dream-eater" },
-    { name: "DOI", href: "/publication" },
     { name: "Blog", href: "/blog" },
     { name: "About", href: "/about" },
   ];
