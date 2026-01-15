@@ -194,6 +194,10 @@ class SubstrateClient {
     
     status: () =>
       this.invoke({ module: 'defense', action: 'status' }),
+    
+    /** v3.1.0: Real anomaly detection with pattern analysis */
+    anomaly: (timeWindow: '1h' | '6h' | '24h' = '1h') =>
+      this.invoke({ module: 'defense', action: 'anomaly', payload: { timeWindow } }),
   };
 
   // Nexus Module — Multi-Provider AI Routing
@@ -232,6 +236,10 @@ class SubstrateClient {
     
     status: () =>
       this.invoke({ module: 'vision', action: 'status' }),
+    
+    /** v3.1.0: Real dashboard data with orchestrator, metrics, AI usage */
+    dashboard: () =>
+      this.invoke({ module: 'vision', action: 'dashboard' }),
   };
 
   // System Module — Administration & Configuration
@@ -248,20 +256,23 @@ class SubstrateClient {
     audit: () =>
       this.invoke({ module: 'system', action: 'audit' }),
     
-    // NEW: System Administration
-    /** Trigger self-healing across all modules */
-    heal: (target?: string) =>
-      this.invoke({ module: 'system', action: 'heal', payload: { target } }),
+    /** v3.1.0: Full system heal - restores all modules to 100% health */
+    heal: (target?: string, force?: boolean) =>
+      this.invoke({ module: 'system', action: 'heal', payload: { target, force } }),
     
-    /** Health diagnostics */
+    /** v3.1.0: Comprehensive health diagnostics with circuit breaker status */
     health: () =>
       this.invoke({ module: 'system', action: 'health' }),
     
-    /** Restart a specific service */
+    /** v3.1.0: Full system diagnostics including orchestrator, providers, modules */
+    diagnostics: () =>
+      this.invoke({ module: 'system', action: 'diagnostics' }),
+    
+    /** Restart a specific service or all services */
     restart: (service?: string) =>
       this.invoke({ module: 'system', action: 'restart', payload: { service } }),
     
-    /** Create a backup */
+    /** Create a backup snapshot */
     backup: () =>
       this.invoke({ module: 'system', action: 'backup' }),
     
