@@ -111,7 +111,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!user) return false;
     
     try {
-      const { data, error } = await supabase.rpc('has_role', {
+      const { data, error } = await supabase.rpc('has_role_text', {
         _user_id: user.id,
         _role: 'admin'
       });
