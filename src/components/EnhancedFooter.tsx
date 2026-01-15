@@ -25,8 +25,8 @@ export function EnhancedFooter() {
   ];
 
   const techLinks = [
-    { name: "llms.txt", href: "/llms.txt", external: true },
-    { name: "humans.txt", href: "/humans.txt", external: true },
+    { name: "llms.txt", href: "/llms-txt" },
+    { name: "humans.txt", href: "/humans-txt" },
   ];
 
   return (
@@ -89,19 +89,17 @@ export function EnhancedFooter() {
           <div>
             <h3 className="font-semibold text-foreground mb-3 text-sm">Developers</h3>
             <ul className="space-y-2">
-              {techLinks.map((link) => (
-                <li key={link.href}>
-                  <a 
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {link.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            {techLinks.map((link) => (
+              <li key={link.href}>
+                <Link 
+                  to={link.href}
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {link.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
           </div>
         </div>
       </div>

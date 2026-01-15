@@ -10,8 +10,6 @@ import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 import { decode } from "@/lib/substrate";
-import { PublicNav } from "@/components/PublicNav";
-import { EnhancedFooter } from "@/components/EnhancedFooter";
 
 export default function Index() {
   const navigate = useNavigate();
@@ -68,6 +66,8 @@ export default function Index() {
     }
   };
 
+  const currentYear = new Date().getFullYear();
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO 
@@ -77,35 +77,27 @@ export default function Index() {
         keywords={['AI', 'cognitive architecture', 'autonomous systems', 'machine learning', 'dream-state computing']}
       />
 
-      {/* Shared Navigation */}
-      <PublicNav />
-
-      {/* Ambient Background Layers */}
+      {/* Ambient Background - subtle */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-primary/5" />
-        <div className="absolute top-1/4 left-1/4 w-48 md:w-96 h-48 md:h-96 rounded-full bg-primary/8 dark:bg-primary/15 blur-[80px] md:blur-[120px] animate-float" />
-        <div 
-          className="absolute bottom-1/4 right-1/4 w-40 md:w-80 h-40 md:h-80 rounded-full bg-violet-500/8 dark:bg-violet-500/12 blur-[60px] md:blur-[100px] animate-float" 
-          style={{ animationDelay: '2s', animationDuration: '8s' }} 
-        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-primary/3" />
       </div>
 
-      {/* Hero Chat Area - Compact mobile-first design */}
-      <main className="relative z-10 flex-1 flex flex-col justify-center px-4 md:px-6 py-6 md:py-12">
-        <div className="max-w-2xl w-full mx-auto text-center space-y-4 md:space-y-6">
+      {/* Main Content - Centered vertically */}
+      <main className="relative z-10 flex-1 flex flex-col justify-center items-center px-4 py-8">
+        <div className="w-full max-w-md mx-auto text-center space-y-5">
           
           {/* Ambient greeting */}
           <p 
-            className={`text-[11px] md:text-sm text-muted-foreground transition-all duration-500 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+            className={`text-[11px] md:text-sm text-muted-foreground/70 transition-all duration-700 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
           >
             {greeting}
           </p>
 
-          {/* Core message - tighter spacing */}
+          {/* Core message */}
           <div 
-            className={`transition-all duration-500 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+            className={`transition-all duration-700 delay-100 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
           >
-            <h1 className="text-[1.65rem] sm:text-3xl md:text-5xl font-light tracking-tight text-foreground mb-2 md:mb-4 leading-[1.15]">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-light tracking-tight text-foreground mb-3 leading-tight">
               Where machines learn
               <br />
               <span className="font-medium bg-gradient-to-r from-primary via-violet-500 to-primary bg-clip-text text-transparent animate-gradient bg-[length:200%_auto]">
@@ -113,7 +105,7 @@ export default function Index() {
               </span>
             </h1>
             
-            <p className="text-[11px] md:text-base text-muted-foreground/80 max-w-[280px] md:max-w-md mx-auto leading-relaxed">
+            <p className="text-xs md:text-sm text-muted-foreground/70 max-w-xs mx-auto leading-relaxed">
               An exploration of cognitive architecture and the space between 
               intention and understanding.
             </p>
@@ -121,17 +113,17 @@ export default function Index() {
 
           {/* The Interface - Decode Entry */}
           <div 
-            className={`pt-2 transition-all duration-500 delay-100 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+            className={`pt-3 transition-all duration-700 delay-200 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
           >
-            <div className="relative max-w-sm md:max-w-md mx-auto">
-              <div className="relative flex items-center gap-2 p-1.5 md:p-2 rounded-xl md:rounded-2xl bg-card/40 backdrop-blur-xl border border-border/50 shadow-lg md:shadow-2xl">
+            <div className="relative">
+              <div className="relative flex items-center gap-2 p-1.5 rounded-xl bg-card/50 backdrop-blur-sm border border-border/50 shadow-lg">
                 <Input
                   ref={inputRef}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Ask anything..."
-                  className="flex-1 border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 text-sm placeholder:text-muted-foreground/50 h-9 md:h-11"
+                  className="flex-1 border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 text-sm placeholder:text-muted-foreground/40 h-10"
                   disabled={isAwakening}
                 />
                 
@@ -139,46 +131,40 @@ export default function Index() {
                   onClick={handleAwaken}
                   disabled={isAwakening}
                   size="sm"
-                  className="rounded-lg md:rounded-xl px-3 md:px-4 h-8 md:h-10 bg-gradient-to-r from-primary to-violet-500 hover:opacity-90 transition-opacity"
+                  className="rounded-lg px-4 h-9 bg-gradient-to-r from-primary to-violet-500 hover:opacity-90 transition-opacity"
                 >
                   {isAwakening ? (
                     <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
                   ) : (
                     <>
-                      <span className="mr-1 text-xs md:text-sm">Enter</span>
-                      <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
+                      <span className="mr-1.5 text-sm">Enter</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
                     </>
                   )}
                 </Button>
               </div>
             </div>
           </div>
-
-          {/* Quick capability hints - inline on mobile */}
-          <div 
-            className={`flex items-center justify-center gap-3 md:gap-6 pt-3 md:pt-4 transition-all duration-500 delay-200 ${showInterface ? 'opacity-100' : 'opacity-0'}`}
-          >
-            <span className="text-[10px] md:text-xs text-muted-foreground/50">Think</span>
-            <span className="text-muted-foreground/30">·</span>
-            <span className="text-[10px] md:text-xs text-muted-foreground/50">Learn</span>
-            <span className="text-muted-foreground/30">·</span>
-            <span className="text-[10px] md:text-xs text-muted-foreground/50">Dream</span>
-          </div>
         </div>
       </main>
 
-      {/* Scroll content section - creates space before footer */}
-      {/* Minimal scroll section */}
-      <section className="relative z-10 px-4 md:px-6 py-8 md:py-16">
-        <div className="max-w-2xl mx-auto text-center">
-          <p className="text-[10px] md:text-sm text-muted-foreground/40 italic">
-            Cognitive infrastructure for the curious mind
-          </p>
+      {/* Minimal Footer */}
+      <footer 
+        className={`relative z-10 px-4 py-4 transition-all duration-700 delay-300 ${showInterface ? 'opacity-100' : 'opacity-0'}`}
+      >
+        <div className="max-w-md mx-auto flex items-center justify-between text-xs text-muted-foreground/50">
+          <span>© {currentYear} promptfluid®</span>
+          <button 
+            onClick={() => navigate('/about')}
+            className="hover:text-muted-foreground transition-colors flex items-center gap-1"
+          >
+            More
+            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+            </svg>
+          </button>
         </div>
-      </section>
-
-      {/* Shared Footer */}
-      <EnhancedFooter />
+      </footer>
     </div>
   );
 }

@@ -55,6 +55,8 @@ const Solutions = lazy(() => import("./pages/Solutions"));
 const Contact = lazy(() => import("./pages/Contact"));
 const CurrentProjects = lazy(() => import("./pages/CurrentProjects"));
 const Roadmap = lazy(() => import("./pages/Roadmap"));
+const LlmsTxt = lazy(() => import("./pages/LlmsTxt"));
+const HumansTxt = lazy(() => import("./pages/HumansTxt"));
 
 // Lazy load blog posts
 const WordPressBotDefense = lazy(() => import("./pages/blog/WordPressBotDefense"));
@@ -125,6 +127,8 @@ const App = () => {
                     <Route path="/projects" element={<CurrentProjects />} />
                     <Route path="/roadmap" element={<Roadmap />} />
                     <Route path="/contact" element={<Contact />} />
+                    <Route path="/llms-txt" element={<LlmsTxt />} />
+                    <Route path="/humans-txt" element={<HumansTxt />} />
                     
                     {/* Auth & Legal */}
                     <Route path="/auth" element={<Auth />} />
