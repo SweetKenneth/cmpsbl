@@ -17,6 +17,14 @@ import {
   useDreamCycleOS,
   useNexusRouteTest,
 } from '@/hooks/useSubstrateOS';
+import {
+  useBrainOptimize,
+  useBrainCognitiveCycle,
+  useBrainGraphBuild,
+  useSystemHeal,
+  useDreamMutate,
+  useDreamReflect,
+} from '@/hooks/useSubstrateOSEnhanced';
 
 interface CommandResult {
   id: string;
@@ -27,13 +35,30 @@ interface CommandResult {
 }
 
 const AVAILABLE_COMMANDS = [
-  { command: 'brain.reflect', description: 'Synthesize memories into reflections' },
-  { command: 'brain.dream', description: 'Process through dream cycle' },
-  { command: 'brain.synthesize', description: 'Cross-domain synthesis' },
-  { command: 'dream.cycle', description: 'Trigger Dream-Eater consumption' },
-  { command: 'nexus.test', description: 'Test provider routing (add prompt after)' },
-  { command: 'help', description: 'Show available commands' },
-  { command: 'clear', description: 'Clear command history' },
+  // Brain commands
+  { command: 'brain.reflect', description: 'Synthesize memories into reflections', category: 'brain' },
+  { command: 'brain.dream', description: 'Process through dream cycle', category: 'brain' },
+  { command: 'brain.synthesize', description: 'Cross-domain synthesis', category: 'brain' },
+  { command: 'brain.optimize', description: 'Compress and clean memory', category: 'brain' },
+  { command: 'brain.cognitive_cycle', description: 'Full cognitive loop', category: 'brain' },
+  { command: 'brain.graph_build', description: 'Update knowledge graph', category: 'brain' },
+  
+  // Dream commands
+  { command: 'dream.cycle', description: 'Trigger Dream-Eater consumption', category: 'dream' },
+  { command: 'dream.mutate', description: 'Trigger mutation/evolution', category: 'dream' },
+  { command: 'dream.reflect', description: 'Dream reflection cycle', category: 'dream' },
+  
+  // System commands
+  { command: 'system.heal', description: 'Self-heal all modules', category: 'system' },
+  { command: 'system.heal brain', description: 'Heal brain module only', category: 'system' },
+  { command: 'system.status', description: 'Show system status', category: 'system' },
+  
+  // Nexus commands
+  { command: 'nexus.test', description: 'Test provider routing (add prompt after)', category: 'nexus' },
+  
+  // Meta commands
+  { command: 'help', description: 'Show available commands', category: 'meta' },
+  { command: 'clear', description: 'Clear command history', category: 'meta' },
 ];
 
 interface CommandPaletteProps {
@@ -52,6 +77,14 @@ export function CommandPalette({ enabled }: CommandPaletteProps) {
   const synthesizeMutation = useBrainSynthesizeOS();
   const dreamCycleMutation = useDreamCycleOS();
   const routeTestMutation = useNexusRouteTest();
+  
+  // Enhanced mutations
+  const optimizeMutation = useBrainOptimize();
+  const cognitiveCycleMutation = useBrainCognitiveCycle();
+  const graphBuildMutation = useBrainGraphBuild();
+  const healMutation = useSystemHeal();
+  const dreamMutateMutation = useDreamMutate();
+  const dreamReflectMutation = useDreamReflect();
   
   useEffect(() => {
     if (scrollRef.current) {
@@ -77,9 +110,12 @@ export function CommandPalette({ enabled }: CommandPaletteProps) {
     
     // Handle built-in commands
     if (trimmed === 'help') {
-      addResult('help', 'success', AVAILABLE_COMMANDS.map(c => 
-        `  ${c.command.padEnd(20)} — ${c.description}`
-      ).join('\n'));
+      const categories = [...new Set(AVAILABLE_COMMANDS.map(c => c.category))];
+      const helpText = categories.map(cat => {
+        const cmds = AVAILABLE_COMMANDS.filter(c => c.category === cat);
+        return `[${cat.toUpperCase()}]\n${cmds.map(c => `  ${c.command.padEnd(24)} — ${c.description}`).join('\n')}`;
+      }).join('\n\n');
+      addResult('help', 'success', helpText);
       return;
     }
     
@@ -106,8 +142,24 @@ export function CommandPalette({ enabled }: CommandPaletteProps) {
         result = await dreamMutation.mutateAsync();
       } else if (trimmed === 'brain.synthesize') {
         result = await synthesizeMutation.mutateAsync();
+      } else if (trimmed === 'brain.optimize') {
+        result = await optimizeMutation.mutateAsync();
+      } else if (trimmed === 'brain.cognitive_cycle') {
+        result = await cognitiveCycleMutation.mutateAsync();
+      } else if (trimmed === 'brain.graph_build') {
+        result = await graphBuildMutation.mutateAsync();
       } else if (trimmed === 'dream.cycle') {
         result = await dreamCycleMutation.mutateAsync();
+      } else if (trimmed === 'dream.mutate') {
+        result = await dreamMutateMutation.mutateAsync();
+      } else if (trimmed === 'dream.reflect') {
+        result = await dreamReflectMutation.mutateAsync();
+      } else if (trimmed.startsWith('system.heal')) {
+        const target = trimmed.replace('system.heal', '').trim() || undefined;
+        result = await healMutation.mutateAsync(target);
+      } else if (trimmed === 'system.status') {
+        const { system } = await import('@/lib/substrate');
+        result = await system.status();
       } else if (trimmed.startsWith('nexus.test')) {
         const prompt = trimmed.replace('nexus.test', '').trim() || 'Hello, substrate.';
         result = await routeTestMutation.mutateAsync(prompt);

@@ -36,6 +36,8 @@ import { ModuleStatusBar } from '@/components/substrate-os/ModuleStatusBar';
 import { MetricsGrid } from '@/components/substrate-os/MetricsGrid';
 import { CommandPalette } from '@/components/substrate-os/CommandPalette';
 import { EventStream } from '@/components/substrate-os/EventStream';
+import { BrainIntelligencePanel } from '@/components/substrate-os/BrainIntelligencePanel';
+import { SystemHealthPanel } from '@/components/substrate-os/SystemHealthPanel';
 import { cn } from '@/lib/utils';
 
 function ConfirmActionDialog({
@@ -312,6 +314,12 @@ export default function SubstrateOS() {
           {/* Event Stream */}
           <EventStream />
         </div>
+        
+        {/* Brain Intelligence Panel */}
+        <BrainIntelligencePanel enabled={isOperator} />
+        
+        {/* System Health Panel */}
+        <SystemHealthPanel enabled={isOperator} />
         
         {/* Governor Section */}
         <GovernorPanel enabled={isGovernor} />
