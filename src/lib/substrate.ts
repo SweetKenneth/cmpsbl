@@ -79,7 +79,7 @@ class SubstrateClient {
     }
   }
 
-  // Brain Module — Memory, Learning, Reflection
+  // Brain Module — Memory, Learning, Reflection, Intelligence
   brain = {
     learn: (content: string, source?: string) =>
       this.invoke({ module: 'brain', action: 'learn', payload: { content, source } }),
@@ -113,6 +113,43 @@ class SubstrateClient {
     
     dream: () =>
       this.invoke({ module: 'brain', action: 'dream' }),
+    
+    // NEW: Advanced Intelligence Methods
+    /** Memory optimization - compress old memories, clean duplicates */
+    optimize: () =>
+      this.invoke({ module: 'brain', action: 'optimize' }),
+    
+    /** Deep thinking mode - extended reasoning with chain of thought */
+    deepThink: (query: string, depth?: number) =>
+      this.invoke({ module: 'brain', action: 'deep_think', payload: { query, depth } }),
+    
+    /** Test a hypothesis against the knowledge graph */
+    hypothesisTest: (hypothesis: string) =>
+      this.invoke({ module: 'brain', action: 'hypothesis_test', payload: { hypothesis } }),
+    
+    /** Full cognitive cycle - learn, reflect, dream, synthesize */
+    cognitiveCycle: () =>
+      this.invoke({ module: 'brain', action: 'cognitive_cycle' }),
+    
+    /** Toggle continuous learning mode */
+    continuousLearn: (enabled: boolean) =>
+      this.invoke({ module: 'brain', action: 'continuous_learn', payload: { enabled } }),
+    
+    /** Build/update knowledge graph connections */
+    graphBuild: () =>
+      this.invoke({ module: 'brain', action: 'graph_build' }),
+    
+    /** Get curiosity log - exploration queries */
+    curiosity: () =>
+      this.invoke({ module: 'brain', action: 'curiosity' }),
+    
+    /** Trigger active research based on curiosity */
+    explore: (query: string) =>
+      this.invoke({ module: 'brain', action: 'explore', payload: { query } }),
+    
+    /** Get learning patterns and insights */
+    patterns: () =>
+      this.invoke({ module: 'brain', action: 'patterns' }),
   };
 
   // Decode Module — Interpreter Primitive (NOT a chatbot, persona, or agent)
@@ -210,6 +247,27 @@ class SubstrateClient {
     
     audit: () =>
       this.invoke({ module: 'system', action: 'audit' }),
+    
+    // NEW: System Administration
+    /** Trigger self-healing across all modules */
+    heal: (target?: string) =>
+      this.invoke({ module: 'system', action: 'heal', payload: { target } }),
+    
+    /** Health diagnostics */
+    health: () =>
+      this.invoke({ module: 'system', action: 'health' }),
+    
+    /** Restart a specific service */
+    restart: (service?: string) =>
+      this.invoke({ module: 'system', action: 'restart', payload: { service } }),
+    
+    /** Create a backup */
+    backup: () =>
+      this.invoke({ module: 'system', action: 'backup' }),
+    
+    /** Restore from backup */
+    restore: (backup_id: string) =>
+      this.invoke({ module: 'system', action: 'restore', payload: { backup_id } }),
   };
 
   // Dream Module — Dream-Eater Operations  
@@ -222,6 +280,23 @@ class SubstrateClient {
     
     cycle: () =>
       this.invoke({ module: 'dream', action: 'cycle' }),
+    
+    // NEW: Enhanced Dream Operations
+    /** Consume and process a dream */
+    consume: (dream_id: string) =>
+      this.invoke({ module: 'dream', action: 'consume', payload: { dream_id } }),
+    
+    /** Interpret a dream text */
+    interpret: (dream_text: string) =>
+      this.invoke({ module: 'dream', action: 'interpret', payload: { dream_text } }),
+    
+    /** Trigger mutation/evolution */
+    mutate: () =>
+      this.invoke({ module: 'dream', action: 'mutation' }),
+    
+    /** Dream reflection */
+    reflect: () =>
+      this.invoke({ module: 'dream', action: 'reflect' }),
   };
 
 }
