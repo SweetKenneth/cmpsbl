@@ -90,22 +90,25 @@ export default function Index() {
         />
       </div>
 
-      {/* Main Content */}
-      <main className="relative z-10 flex-1 flex items-center justify-center px-4 md:px-6 py-4 md:py-20">
-        <div className="max-w-2xl w-full text-center">
+      {/* Hero Chat Area - Full screen feel on mobile */}
+      <main className="relative z-10 flex-1 flex flex-col justify-end min-h-[85vh] md:min-h-0 md:justify-center px-4 md:px-6 pb-8 pt-16 md:py-20">
+        <div className="max-w-2xl w-full mx-auto text-center">
           
-          {/* Ambient greeting */}
+          {/* Ambient greeting - positioned at top of chat area */}
           <p 
-            className={`text-xs md:text-sm text-muted-foreground mb-2 md:mb-6 transition-all duration-500 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+            className={`text-xs md:text-sm text-muted-foreground mb-auto md:mb-6 transition-all duration-500 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
           >
             {greeting}
           </p>
 
+          {/* Spacer for mobile to push content down */}
+          <div className="flex-1 min-h-[20vh] md:min-h-0" />
+
           {/* Core message */}
           <div 
-            className={`mb-4 md:mb-8 transition-all duration-500 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+            className={`mb-6 md:mb-8 transition-all duration-500 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
           >
-            <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-light tracking-tight text-foreground mb-2 md:mb-4 leading-[1.1]">
+            <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-light tracking-tight text-foreground mb-3 md:mb-4 leading-[1.1]">
               Where machines learn
               <br />
               <span className="font-medium bg-gradient-to-r from-primary via-violet-500 to-primary bg-clip-text text-transparent animate-gradient bg-[length:200%_auto]">
@@ -119,7 +122,7 @@ export default function Index() {
             </p>
           </div>
 
-          {/* The Interface - Decode Entry */}
+          {/* The Interface - Decode Entry - Like a chat input */}
           <div 
             className={`transition-all duration-500 delay-100 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
           >
@@ -131,7 +134,7 @@ export default function Index() {
                   onChange={(e) => setInput(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Ask anything..."
-                  className="flex-1 border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 text-sm md:text-base placeholder:text-muted-foreground/50 h-9 md:h-11"
+                  className="flex-1 border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 text-sm md:text-base placeholder:text-muted-foreground/50 h-10 md:h-11"
                   disabled={isAwakening}
                 />
                 
@@ -139,7 +142,7 @@ export default function Index() {
                   onClick={handleAwaken}
                   disabled={isAwakening}
                   size="sm"
-                  className="rounded-lg md:rounded-xl px-3 md:px-4 h-8 md:h-10 bg-gradient-to-r from-primary to-violet-500 hover:opacity-90 transition-opacity"
+                  className="rounded-lg md:rounded-xl px-3 md:px-4 h-9 md:h-10 bg-gradient-to-r from-primary to-violet-500 hover:opacity-90 transition-opacity"
                 >
                   {isAwakening ? (
                     <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
@@ -155,6 +158,39 @@ export default function Index() {
           </div>
         </div>
       </main>
+
+      {/* Scroll content section - creates space before footer */}
+      <section className="relative z-10 px-4 md:px-6 py-16 md:py-24">
+        <div className="max-w-2xl mx-auto text-center space-y-8">
+          {/* Subtle divider */}
+          <div className="flex items-center justify-center gap-4">
+            <div className="h-px w-12 bg-gradient-to-r from-transparent to-border" />
+            <div className="w-1.5 h-1.5 rounded-full bg-primary/40" />
+            <div className="h-px w-12 bg-gradient-to-l from-transparent to-border" />
+          </div>
+          
+          {/* Brief capability hints */}
+          <div className="grid grid-cols-3 gap-4 md:gap-8 text-center">
+            <div className="space-y-2">
+              <div className="text-lg md:text-2xl font-light text-foreground/80">Think</div>
+              <p className="text-[10px] md:text-xs text-muted-foreground/60">Pattern recognition</p>
+            </div>
+            <div className="space-y-2">
+              <div className="text-lg md:text-2xl font-light text-foreground/80">Learn</div>
+              <p className="text-[10px] md:text-xs text-muted-foreground/60">Adaptive memory</p>
+            </div>
+            <div className="space-y-2">
+              <div className="text-lg md:text-2xl font-light text-foreground/80">Dream</div>
+              <p className="text-[10px] md:text-xs text-muted-foreground/60">Creative synthesis</p>
+            </div>
+          </div>
+
+          {/* Subtle tagline */}
+          <p className="text-xs md:text-sm text-muted-foreground/50 italic">
+            Cognitive infrastructure for the curious mind
+          </p>
+        </div>
+      </section>
 
       {/* Shared Footer */}
       <EnhancedFooter />
