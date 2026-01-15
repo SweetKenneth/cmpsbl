@@ -1,19 +1,21 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 export function PublicNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { user } = useAuth();
 
   const navItems = [
     { name: "Demo", href: "/demo" },
     { name: "Proof", href: "/proof" },
     { name: "Substrate", href: "/substrate" },
+    ...(user ? [{ name: "OS", href: "/os" }] : []),
     { name: "Decode", href: "/decode" },
     { name: "Dream", href: "/feed-dream-eater" },
     { name: "Blog", href: "/blog" },
-    { name: "About", href: "/about" },
   ];
 
   const isActive = (path: string) => location.pathname === path;

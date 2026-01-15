@@ -42,6 +42,7 @@ const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
 const InvestorsPublic = lazy(() => import("./pages/InvestorsPublic"));
 const SubstrateDashboard = lazy(() => import("./pages/SubstrateDashboard"));
+const SubstrateOS = lazy(() => import("./pages/SubstrateOS"));
 const SubstrateDemo = lazy(() => import("./pages/SubstrateDemo"));
 const ProofMode = lazy(() => import("./pages/ProofMode"));
 const Documentation = lazy(() => import("./pages/Documentation"));
@@ -111,6 +112,7 @@ const App = () => {
                     <Route path="/blog" element={<Blog />} />
                     <Route path="/investors" element={<InvestorsPublic />} />
                     <Route path="/substrate" element={<SubstrateDashboard />} />
+                    <Route path="/os" element={<SubstrateOS />} />
                     <Route path="/demo" element={<SubstrateDemo />} />
                     <Route path="/proof" element={<ProofMode />} />
                     <Route path="/publication" element={<Publication />} />
