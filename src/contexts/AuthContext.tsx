@@ -51,7 +51,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (error) throw error;
       
       toast.success('Successfully signed in!');
-      navigate('/dashboard');
+      navigate('/os');
     } catch (error: any) {
       console.error('Sign in error:', error);
       toast.error(error.message || 'Failed to sign in');
