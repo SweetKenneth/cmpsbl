@@ -91,7 +91,7 @@ export default function Index() {
       </div>
 
       {/* Main Content */}
-      <main className="relative z-10 flex-1 flex items-center justify-center px-4 md:px-6 py-4 md:py-20">
+      <main className="relative z-10 flex-1 flex items-center justify-center px-4 md:px-6 py-8 md:py-20 min-h-0">
         <div className="max-w-2xl w-full text-center">
           
           {/* Ambient greeting */}
