@@ -13,12 +13,13 @@ import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { SEOProvider } from "@/contexts/SEOContext";
 import { SubstrateProvider } from "./components/substrate/SubstrateProvider";
 
-// Scroll to top on route change
+// Scroll to top on route change - immediate scroll for better UX
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   
   useEffect(() => {
-    window.scrollTo(0, 0);
+    // Immediate scroll to top, no smooth behavior for page loads
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, [pathname]);
   
   return null;
