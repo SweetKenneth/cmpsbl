@@ -125,7 +125,7 @@ Bot detection, threat analysis, security, IP reputation.
 | `unblock` | Remove block | `target: string` | ⚠️ STUB NEEDED |
 | `threat_feed` | External threat intel | — | ⚠️ STUB NEEDED |
 | `rate_limit` | Configure rate limiting | `endpoint: string`, `limit: number` | ⚠️ STUB NEEDED |
-| `anomaly` | Detect anomalies | `timeWindow?: string` | ⚠️ STUB NEEDED |
+| `anomaly` | Detect anomalies | `timeWindow?: '1h'|'6h'|'24h'` | ✅ DEPLOYED (v3.1.0) |
 
 ### Defense Dedicated Functions (Standalone)
 
@@ -181,10 +181,10 @@ Observability, metrics, health monitoring, alerting.
 | `metrics` | Get system metrics | — | ✅ DEPLOYED |
 | `status` | Get vision module status | — | ✅ DEPLOYED |
 | `logs` | Get system logs | `module?: string`, `limit?: number` | ✅ DEPLOYED |
-| `alert` | Create alert | `severity: string`, `message: string` | ⚠️ STUB NEEDED |
-| `dashboard` | Get dashboard data | — | ⚠️ STUB NEEDED |
+| `alert` | Create alert | `severity: string`, `message: string` | ✅ DEPLOYED |
+| `dashboard` | Get dashboard data | — | ✅ DEPLOYED (v3.1.0) |
 | `trace` | Distributed tracing | `traceId: string` | ⚠️ STUB NEEDED |
-| `audit` | Audit log query | `entity?: string`, `action?: string` | ⚠️ STUB NEEDED |
+| `audit` | Audit log query | `entity?: string`, `action?: string` | ✅ DEPLOYED |
 
 ### Vision Dedicated Functions (Standalone)
 
@@ -232,15 +232,16 @@ System-wide operations, administration, configuration.
 | Action | Description | Parameters | Status |
 |--------|-------------|------------|--------|
 | `status` | Global system status | — | ✅ DEPLOYED (via substrate status) |
-| `health` | Full system health | — | ⚠️ STUB NEEDED |
+| `health` | Full system health | — | ✅ DEPLOYED (v3.1.0) |
+| `diagnostics` | Comprehensive system diagnostics | — | ✅ DEPLOYED (v3.1.0) |
 | `config` | Get/set configuration | `key?: string`, `value?: any` | ⚠️ STUB NEEDED |
 | `shutdown` | Emergency shutdown | `confirm: boolean` | ⚠️ STUB NEEDED |
-| `restart` | Restart services | `service?: string` | ⚠️ STUB NEEDED |
-| `heal` | Auto-heal system | `target?: string` | ⚠️ STUB NEEDED |
-| `backup` | Create backup | — | ⚠️ STUB NEEDED |
+| `restart` | Restart services | `service?: string` | ✅ DEPLOYED |
+| `heal` | Full heal system | `target?: string`, `force?: boolean` | ✅ DEPLOYED (v3.1.0 - full restore) |
+| `backup` | Create backup | — | ✅ DEPLOYED |
 | `restore` | Restore from backup | `backup_id: string` | ⚠️ STUB NEEDED |
-| `audit` | System audit | — | ⚠️ STUB NEEDED |
-| `version` | Get substrate version | — | ⚠️ STUB NEEDED |
+| `audit` | System audit | — | ✅ DEPLOYED |
+| `version` | Get substrate version | — | ✅ DEPLOYED |
 
 ### System Dedicated Functions (Standalone)
 
