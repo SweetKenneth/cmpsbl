@@ -23,8 +23,24 @@ interface ChangelogEntry {
 
 const changelog: ChangelogEntry[] = [
   {
-    version: "1.2.0",
+    version: "1.3.0",
     date: "2026-01-15",
+    title: "Control Center",
+    emoji: "⚡",
+    description: "The surface now mirrors the depth beneath. When you look at it, you see something alive — not a dashboard, but a window into cognition.",
+    changes: [
+      { type: 'added', text: "OS Header — Live status bar with connection state, health %, module count, role badge, and real-time clock." },
+      { type: 'added', text: "Module Status Bar — Glowing indicators with pulse animations for each substrate module." },
+      { type: 'added', text: "Command Palette — Terminal-style interface. Type 'help' for commands. The substrate responds." },
+      { type: 'added', text: "Event Stream — Live filtered log viewer with module-colored badges and timestamps." },
+      { type: 'added', text: "Metrics Grid — Six live telemetry cards with trend indicators and hover-glow effects." },
+      { type: 'changed', text: "Complete visual overhaul — the substrate now looks like a true operating system." },
+      { type: 'added', text: "OS boot animation during initialization. The substrate wakes up." },
+    ]
+  },
+  {
+    version: "1.2.0",
+    date: "2026-01-14",
     title: "The OS Awakens",
     emoji: "🖥️",
     description: "The substrate learns to see itself. A unified control surface emerges — Observer, Operator, Governor. Three perspectives, one coherent view.",
