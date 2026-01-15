@@ -21,7 +21,7 @@ serve(async (req) => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error('Unauthorized');
 
-    const { data: isAdmin } = await supabase.rpc('has_role', { 
+    const { data: isAdmin } = await supabase.rpc('has_role_text', { 
       _user_id: user.id, 
       _role: 'admin' 
     });

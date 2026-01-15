@@ -36,7 +36,7 @@ export function useUserRole(): UserRoleState {
 
     try {
       // Check for admin/governor role first
-      const { data: isAdmin } = await supabase.rpc('has_role', {
+      const { data: isAdmin } = await supabase.rpc('has_role_text', {
         _user_id: user.id,
         _role: 'admin'
       });
@@ -48,7 +48,7 @@ export function useUserRole(): UserRoleState {
       }
 
       // Check for operator role
-      const { data: isOperator } = await supabase.rpc('has_role', {
+      const { data: isOperator } = await supabase.rpc('has_role_text', {
         _user_id: user.id,
         _role: 'operator'
       });
@@ -60,7 +60,7 @@ export function useUserRole(): UserRoleState {
       }
 
       // Check for moderator role (treat as operator)
-      const { data: isModerator } = await supabase.rpc('has_role', {
+      const { data: isModerator } = await supabase.rpc('has_role_text', {
         _user_id: user.id,
         _role: 'moderator'
       });
