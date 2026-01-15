@@ -1,11 +1,11 @@
 /**
  * Metrics Grid — Live system metrics with visual indicators
- * Real-time telemetry display
+ * Real-time telemetry display from database
  */
 
-import { Activity, Brain, MessageSquare, Shield, Zap, Clock, TrendingUp } from 'lucide-react';
+import { Activity, Brain, MessageSquare, Shield, Zap, Moon, TrendingUp, Database, Cpu } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useVisionMetricsOS, useBrainForecast } from '@/hooks/useSubstrateOS';
+import { useLiveDashboardMetrics, useLiveBrainEvents, useLiveForecasts } from '@/hooks/useSubstrateOSLive';
 import { cn } from '@/lib/utils';
 
 interface MetricCardProps {
@@ -15,9 +15,10 @@ interface MetricCardProps {
   trend?: 'up' | 'down' | 'stable';
   color: string;
   isLoading?: boolean;
+  subValue?: string;
 }
 
-function MetricCard({ label, value, icon: Icon, trend, color, isLoading }: MetricCardProps) {
+function MetricCard({ label, value, icon: Icon, trend, color, isLoading, subValue }: MetricCardProps) {
   if (isLoading) {
     return (
       <div className="p-4 rounded-lg border border-border/50 bg-card/30">
@@ -60,59 +61,73 @@ function MetricCard({ label, value, icon: Icon, trend, color, isLoading }: Metri
           )} />
         )}
       </div>
+      {subValue && (
+        <p className="text-[10px] text-muted-foreground mt-1">{subValue}</p>
+      )}
     </div>
   );
 }
 
 export function MetricsGrid() {
-  const visionMetrics = useVisionMetricsOS();
-  const forecast = useBrainForecast();
+  const dashboard = useLiveDashboardMetrics();
+  const brainEvents = useLiveBrainEvents();
+  const forecasts = useLiveForecasts();
   
-  const metrics = visionMetrics.data?.data as { metrics?: Record<string, number> } | undefined;
-  const isLoading = visionMetrics.isLoading;
+  const isLoading = dashboard.isLoading;
   
-  // Default metrics with fallbacks
+  // Real metrics from database
   const metricsData = [
     {
       label: 'Brain Memories',
-      value: metrics?.metrics?.brain_memories ?? 0,
+      value: dashboard.metrics.brainMemories,
       icon: Brain,
       color: 'text-cyan-500',
       trend: 'up' as const,
+      subValue: 'Stored memories',
     },
     {
       label: 'Decode Chats',
-      value: metrics?.metrics?.decode_conversations ?? 0,
+      value: dashboard.metrics.decodeConversations,
       icon: MessageSquare,
       color: 'text-purple-500',
       trend: 'stable' as const,
+      subValue: 'Conversations',
     },
     {
       label: 'Defense Events',
-      value: metrics?.metrics?.defense_events ?? 0,
+      value: dashboard.metrics.defenseEvents,
       icon: Shield,
       color: 'text-amber-500',
       trend: 'stable' as const,
+      subValue: 'Threats analyzed',
     },
     {
       label: 'Nexus Routes',
-      value: metrics?.metrics?.nexus_routes ?? 0,
+      value: dashboard.metrics.nexusRoutes,
       icon: Zap,
       color: 'text-green-500',
       trend: 'up' as const,
+      subValue: 'AI calls routed',
     },
     {
-      label: 'Uptime',
-      value: '99.9%',
-      icon: Clock,
-      color: 'text-blue-500',
-    },
-    {
-      label: 'API Calls',
-      value: metrics?.metrics?.total_api_calls ?? 0,
-      icon: Activity,
+      label: 'Dream Submissions',
+      value: dashboard.metrics.dreamSubmissions,
+      icon: Moon,
       color: 'text-violet-500',
       trend: 'up' as const,
+      subValue: 'Dreams consumed',
+    },
+    {
+      label: 'AI Tokens',
+      value: dashboard.metrics.aiTokensUsed > 1000000 
+        ? `${(dashboard.metrics.aiTokensUsed / 1000000).toFixed(1)}M`
+        : dashboard.metrics.aiTokensUsed > 1000 
+        ? `${(dashboard.metrics.aiTokensUsed / 1000).toFixed(1)}K`
+        : dashboard.metrics.aiTokensUsed,
+      icon: Cpu,
+      color: 'text-blue-500',
+      trend: 'up' as const,
+      subValue: `$${dashboard.metrics.aiCostTotal.toFixed(2)} cost`,
     },
   ];
   
@@ -140,6 +155,68 @@ export function MetricsGrid() {
           />
         ))}
       </div>
+      
+      {/* Orchestrator Status - if available */}
+      {dashboard.orchestrator && (
+        <div className="mt-4 p-3 rounded-lg border border-border/50 bg-card/30">
+          <div className="flex items-center gap-2 mb-2">
+            <Database className="w-4 h-4 text-primary" />
+            <span className="text-xs font-mono text-muted-foreground uppercase">Orchestrator</span>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+            <div>
+              <span className="text-muted-foreground text-xs">Status</span>
+              <p className="font-medium capitalize">{dashboard.orchestrator.status || 'idle'}</p>
+            </div>
+            <div>
+              <span className="text-muted-foreground text-xs">Phase</span>
+              <p className="font-medium capitalize">{dashboard.orchestrator.current_phase || 'waiting'}</p>
+            </div>
+            <div>
+              <span className="text-muted-foreground text-xs">Cycles</span>
+              <p className="font-medium">{dashboard.orchestrator.cycles_completed ?? 0}</p>
+            </div>
+            <div>
+              <span className="text-muted-foreground text-xs">Health</span>
+              <p className={cn(
+                "font-medium",
+                (dashboard.orchestrator.health_score ?? 0) >= 80 ? "text-green-500" :
+                (dashboard.orchestrator.health_score ?? 0) >= 50 ? "text-amber-500" : "text-red-500"
+              )}>
+                {dashboard.orchestrator.health_score ?? 0}%
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Dream-Eater State - if available */}
+      {dashboard.dreamEater && (
+        <div className="p-3 rounded-lg border border-violet-500/20 bg-violet-500/5">
+          <div className="flex items-center gap-2 mb-2">
+            <Moon className="w-4 h-4 text-violet-500" />
+            <span className="text-xs font-mono text-muted-foreground uppercase">Dream-Eater</span>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+            <div>
+              <span className="text-muted-foreground text-xs">Mood</span>
+              <p className="font-medium capitalize">{dashboard.dreamEater.current_mood || 'neutral'}</p>
+            </div>
+            <div>
+              <span className="text-muted-foreground text-xs">Dreams Today</span>
+              <p className="font-medium">{dashboard.dreamEater.dreams_consumed_today ?? 0}</p>
+            </div>
+            <div>
+              <span className="text-muted-foreground text-xs">Nightmares</span>
+              <p className="font-medium text-amber-500">{dashboard.dreamEater.nightmares_consumed_today ?? 0}</p>
+            </div>
+            <div>
+              <span className="text-muted-foreground text-xs">Mutation Level</span>
+              <p className="font-medium">{dashboard.dreamEater.mutation_level ?? 1}</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
