@@ -23,6 +23,22 @@ interface ChangelogEntry {
 
 const changelog: ChangelogEntry[] = [
   {
+    version: "1.2.0",
+    date: "2026-01-15",
+    title: "The OS Awakens",
+    emoji: "🖥️",
+    description: "The substrate learns to see itself. A unified control surface emerges — Observer, Operator, Governor. Three perspectives, one coherent view.",
+    changes: [
+      { type: 'added', text: "Substrate OS Dashboard — Role-aware control surface at /os. The substrate's window into itself." },
+      { type: 'added', text: "Observer mode — Read-only telemetry for all authenticated users. Watch the substrate breathe." },
+      { type: 'added', text: "Operator mode — Safe action triggers for elevated users. Reflect, dream, synthesize." },
+      { type: 'added', text: "Governor mode — Admin controls with double-confirmation guards. Power requires patience." },
+      { type: 'added', text: "Real-time hooks — useSubstrateOS, useUserRole. No mock data, only truth." },
+      { type: 'changed', text: "Navigation updated — OS link appears for authenticated users. The door opens when you're ready." },
+      { type: 'security', text: "Role detection via Supabase RPC. Privilege escalation blocked at the database level." },
+    ]
+  },
+  {
     version: "1.1.0",
     date: "2026-01-14",
     title: "The Synthesis Awakening",
