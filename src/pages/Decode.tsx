@@ -348,8 +348,8 @@ export default function Decode() {
         </div>
       </div>
 
-      {/* Input Area - Mobile optimized with safe area */}
-      <div className="relative z-20 border-t border-border/30 bg-background/90 backdrop-blur-lg safe-area-inset-bottom">
+      {/* Input Area - Fixed at bottom, mobile optimized */}
+      <div className="sticky bottom-0 z-20 border-t border-border/30 bg-background/95 backdrop-blur-lg" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
         <div className="px-3 md:px-6 py-2.5 md:py-4 max-w-3xl mx-auto">
           {messages.length <= 1 && !input && (
             <button
@@ -367,9 +367,10 @@ export default function Decode() {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyPress}
               placeholder="Share a thought..."
-              className="flex-1 min-h-[40px] md:min-h-[44px] max-h-[120px] resize-none border-border/30 bg-card/40 backdrop-blur focus-visible:ring-primary/30 text-sm md:text-base rounded-xl"
+              className="flex-1 min-h-[40px] md:min-h-[44px] max-h-[120px] resize-none border-border/30 bg-card/40 backdrop-blur focus-visible:ring-primary/30 text-base rounded-xl"
               disabled={isProcessing || connection.status === 'disconnected'}
               rows={1}
+              autoComplete="off"
             />
             
             <Button
