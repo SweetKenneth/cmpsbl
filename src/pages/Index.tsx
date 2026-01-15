@@ -155,7 +155,7 @@ export default function Index() {
         <div className="max-w-md mx-auto flex items-center justify-between text-xs text-muted-foreground/50">
           <span>© {currentYear} promptfluid®</span>
           <button 
-            onClick={() => navigate('/about')}
+            onClick={() => navigate('/explore')}
             className="hover:text-muted-foreground transition-colors flex items-center gap-1"
           >
             More
