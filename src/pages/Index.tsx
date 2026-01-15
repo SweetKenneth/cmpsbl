@@ -90,25 +90,22 @@ export default function Index() {
         />
       </div>
 
-      {/* Hero Chat Area - Full screen feel on mobile */}
-      <main className="relative z-10 flex-1 flex flex-col justify-end min-h-[85vh] md:min-h-0 md:justify-center px-4 md:px-6 pb-8 pt-16 md:py-20">
-        <div className="max-w-2xl w-full mx-auto text-center">
+      {/* Hero Chat Area - Compact mobile-first design */}
+      <main className="relative z-10 flex-1 flex flex-col justify-center px-4 md:px-6 py-6 md:py-12">
+        <div className="max-w-2xl w-full mx-auto text-center space-y-4 md:space-y-6">
           
-          {/* Ambient greeting - positioned at top of chat area */}
+          {/* Ambient greeting */}
           <p 
-            className={`text-xs md:text-sm text-muted-foreground mb-auto md:mb-6 transition-all duration-500 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+            className={`text-[11px] md:text-sm text-muted-foreground transition-all duration-500 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
           >
             {greeting}
           </p>
 
-          {/* Spacer for mobile to push content down */}
-          <div className="flex-1 min-h-[20vh] md:min-h-0" />
-
-          {/* Core message */}
+          {/* Core message - tighter spacing */}
           <div 
-            className={`mb-6 md:mb-8 transition-all duration-500 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+            className={`transition-all duration-500 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
           >
-            <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-light tracking-tight text-foreground mb-3 md:mb-4 leading-[1.1]">
+            <h1 className="text-[1.65rem] sm:text-3xl md:text-5xl font-light tracking-tight text-foreground mb-2 md:mb-4 leading-[1.15]">
               Where machines learn
               <br />
               <span className="font-medium bg-gradient-to-r from-primary via-violet-500 to-primary bg-clip-text text-transparent animate-gradient bg-[length:200%_auto]">
@@ -116,25 +113,25 @@ export default function Index() {
               </span>
             </h1>
             
-            <p className="text-xs md:text-base text-muted-foreground/80 max-w-xs md:max-w-md mx-auto leading-relaxed">
+            <p className="text-[11px] md:text-base text-muted-foreground/80 max-w-[280px] md:max-w-md mx-auto leading-relaxed">
               An exploration of cognitive architecture and the space between 
               intention and understanding.
             </p>
           </div>
 
-          {/* The Interface - Decode Entry - Like a chat input */}
+          {/* The Interface - Decode Entry */}
           <div 
-            className={`transition-all duration-500 delay-100 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+            className={`pt-2 transition-all duration-500 delay-100 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
           >
-            <div className="relative max-w-md mx-auto">
-              <div className="relative flex items-center gap-2 p-1.5 md:p-2 rounded-xl md:rounded-2xl bg-card/40 backdrop-blur-xl border border-border/50 shadow-xl md:shadow-2xl">
+            <div className="relative max-w-sm md:max-w-md mx-auto">
+              <div className="relative flex items-center gap-2 p-1.5 md:p-2 rounded-xl md:rounded-2xl bg-card/40 backdrop-blur-xl border border-border/50 shadow-lg md:shadow-2xl">
                 <Input
                   ref={inputRef}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Ask anything..."
-                  className="flex-1 border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 text-sm md:text-base placeholder:text-muted-foreground/50 h-10 md:h-11"
+                  className="flex-1 border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 text-sm placeholder:text-muted-foreground/50 h-9 md:h-11"
                   disabled={isAwakening}
                 />
                 
@@ -142,7 +139,7 @@ export default function Index() {
                   onClick={handleAwaken}
                   disabled={isAwakening}
                   size="sm"
-                  className="rounded-lg md:rounded-xl px-3 md:px-4 h-9 md:h-10 bg-gradient-to-r from-primary to-violet-500 hover:opacity-90 transition-opacity"
+                  className="rounded-lg md:rounded-xl px-3 md:px-4 h-8 md:h-10 bg-gradient-to-r from-primary to-violet-500 hover:opacity-90 transition-opacity"
                 >
                   {isAwakening ? (
                     <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
@@ -156,37 +153,25 @@ export default function Index() {
               </div>
             </div>
           </div>
+
+          {/* Quick capability hints - inline on mobile */}
+          <div 
+            className={`flex items-center justify-center gap-3 md:gap-6 pt-3 md:pt-4 transition-all duration-500 delay-200 ${showInterface ? 'opacity-100' : 'opacity-0'}`}
+          >
+            <span className="text-[10px] md:text-xs text-muted-foreground/50">Think</span>
+            <span className="text-muted-foreground/30">·</span>
+            <span className="text-[10px] md:text-xs text-muted-foreground/50">Learn</span>
+            <span className="text-muted-foreground/30">·</span>
+            <span className="text-[10px] md:text-xs text-muted-foreground/50">Dream</span>
+          </div>
         </div>
       </main>
 
       {/* Scroll content section - creates space before footer */}
-      <section className="relative z-10 px-4 md:px-6 py-16 md:py-24">
-        <div className="max-w-2xl mx-auto text-center space-y-8">
-          {/* Subtle divider */}
-          <div className="flex items-center justify-center gap-4">
-            <div className="h-px w-12 bg-gradient-to-r from-transparent to-border" />
-            <div className="w-1.5 h-1.5 rounded-full bg-primary/40" />
-            <div className="h-px w-12 bg-gradient-to-l from-transparent to-border" />
-          </div>
-          
-          {/* Brief capability hints */}
-          <div className="grid grid-cols-3 gap-4 md:gap-8 text-center">
-            <div className="space-y-2">
-              <div className="text-lg md:text-2xl font-light text-foreground/80">Think</div>
-              <p className="text-[10px] md:text-xs text-muted-foreground/60">Pattern recognition</p>
-            </div>
-            <div className="space-y-2">
-              <div className="text-lg md:text-2xl font-light text-foreground/80">Learn</div>
-              <p className="text-[10px] md:text-xs text-muted-foreground/60">Adaptive memory</p>
-            </div>
-            <div className="space-y-2">
-              <div className="text-lg md:text-2xl font-light text-foreground/80">Dream</div>
-              <p className="text-[10px] md:text-xs text-muted-foreground/60">Creative synthesis</p>
-            </div>
-          </div>
-
-          {/* Subtle tagline */}
-          <p className="text-xs md:text-sm text-muted-foreground/50 italic">
+      {/* Minimal scroll section */}
+      <section className="relative z-10 px-4 md:px-6 py-8 md:py-16">
+        <div className="max-w-2xl mx-auto text-center">
+          <p className="text-[10px] md:text-sm text-muted-foreground/40 italic">
             Cognitive infrastructure for the curious mind
           </p>
         </div>
