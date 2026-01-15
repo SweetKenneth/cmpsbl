@@ -1,13 +1,13 @@
 /**
- * promptfluid® substrate — OS Surface
- * v2026.01.2 — True OS-style control center
+ * promptfluid® substrate — OS Surface v3.0.0
+ * HARDENED EDITION — Circuit breakers, auto-heal, graceful degradation
  * 
  * Unified control surface with terminal aesthetics,
  * live telemetry, and module status visualization.
  */
 
 import { Navigate } from 'react-router-dom';
-import { Loader2, Lock, Terminal, AlertTriangle, Database, RefreshCw, Settings, FileText } from 'lucide-react';
+import { Loader2, Lock, Terminal, AlertTriangle, Database, RefreshCw, Settings, FileText, Zap } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -30,7 +30,7 @@ import { toast } from 'sonner';
 import { SEO } from '@/components/SEO';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserRole } from '@/hooks/useUserRole';
-import { useSystemAudit, useSystemConfig, useSystemVersion } from '@/hooks/useSubstrateOS';
+import { useSystemAudit, useSystemConfig, useSystemVersion, useSubstrateHealthScore } from '@/hooks/useSubstrateOS';
 import { OSHeader } from '@/components/substrate-os/OSHeader';
 import { ModuleStatusBar } from '@/components/substrate-os/ModuleStatusBar';
 import { MetricsGrid } from '@/components/substrate-os/MetricsGrid';
@@ -38,6 +38,7 @@ import { CommandPalette } from '@/components/substrate-os/CommandPalette';
 import { EventStream } from '@/components/substrate-os/EventStream';
 import { BrainIntelligencePanel } from '@/components/substrate-os/BrainIntelligencePanel';
 import { SystemHealthPanel } from '@/components/substrate-os/SystemHealthPanel';
+import { HealButton } from '@/components/substrate-os/HealButton';
 import { cn } from '@/lib/utils';
 
 function ConfirmActionDialog({
@@ -248,6 +249,7 @@ function GovernorPanel({ enabled }: { enabled: boolean }) {
 export default function SubstrateOS() {
   const { user, loading: authLoading } = useAuth();
   const { role, isOperator, isGovernor, loading: roleLoading } = useUserRole();
+  const healthScore = useSubstrateHealthScore();
 
   // Redirect to auth if not logged in
   if (!authLoading && !user) {
@@ -289,6 +291,18 @@ export default function SubstrateOS() {
       <OSHeader userEmail={user?.email} role={role} />
 
       <main className="flex-1 container mx-auto px-4 py-6 max-w-7xl space-y-6">
+        {/* PROMINENT HEAL BUTTON - Top of dashboard */}
+        {isOperator && (
+          <HealButton 
+            variant="prominent" 
+            healthScore={healthScore.healthScore}
+            onHealComplete={() => {
+              healthScore.refetch();
+              toast.success('Dashboard refreshed');
+            }}
+          />
+        )}
+        
         {/* Module Status Bar */}
         <ModuleStatusBar />
         
