@@ -46,7 +46,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const SUBSTRATE_VERSION = "3.7.0";
+const SUBSTRATE_VERSION = "3.8.0";
 
 // Trace ID generator for distributed tracing
 function generateTraceId(): string {
@@ -1809,6 +1809,71 @@ async function handleNexus(
       }, headers);
     }
 
+    // ═══ v3.8.0: ROUTE_STATS — AI routing analytics ═══
+    case "route_stats": {
+      // NEW: Routing analytics from nexus_logs - read-only, proof-compatible
+      const now = new Date();
+      const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+      
+      const { data: logs } = await supabase
+        .from("nexus_logs")
+        .select("*")
+        .gte("created_at", twentyFourHoursAgo.toISOString())
+        .order("created_at", { ascending: false });
+      
+      const entries = logs || [];
+      
+      // Calculate routing analytics
+      const providerStats: Record<string, { calls: number; successes: number; total_tokens: number; total_latency: number; total_cost: number }> = {};
+      
+      for (const log of entries) {
+        const p = log.provider || 'unknown';
+        if (!providerStats[p]) {
+          providerStats[p] = { calls: 0, successes: 0, total_tokens: 0, total_latency: 0, total_cost: 0 };
+        }
+        providerStats[p].calls++;
+        if (log.status === 'success') providerStats[p].successes++;
+        providerStats[p].total_tokens += log.token_count || 0;
+        providerStats[p].total_latency += log.latency_ms || 0;
+        providerStats[p].total_cost += log.cost_usd_est || 0;
+      }
+      
+      const providerBreakdown = Object.entries(providerStats).map(([provider, stats]) => ({
+        provider,
+        calls: stats.calls,
+        success_rate: stats.calls > 0 ? Math.round((stats.successes / stats.calls) * 100) : 0,
+        avg_latency_ms: stats.calls > 0 ? Math.round(stats.total_latency / stats.calls) : 0,
+        total_tokens: stats.total_tokens,
+        total_cost_usd: Math.round(stats.total_cost * 1000) / 1000
+      })).sort((a, b) => b.calls - a.calls);
+      
+      const totalCalls = entries.length;
+      // deno-lint-ignore no-explicit-any
+      const totalSuccesses = entries.filter((e: any) => e.status === 'success').length;
+      // deno-lint-ignore no-explicit-any
+      const totalTokens = entries.reduce((sum: number, e: any) => sum + (e.token_count || 0), 0);
+      // deno-lint-ignore no-explicit-any
+      const totalCost = entries.reduce((sum: number, e: any) => sum + (e.cost_usd_est || 0), 0);
+      
+      return jsonResponse({
+        success: true,
+        module: 'nexus',
+        action: 'route_stats',
+        period: '24h',
+        summary: {
+          total_calls: totalCalls,
+          success_rate: totalCalls > 0 ? Math.round((totalSuccesses / totalCalls) * 100) : 100,
+          total_tokens: totalTokens,
+          total_cost_usd: Math.round(totalCost * 1000) / 1000,
+          active_providers: Object.keys(providerStats).length
+        },
+        providers: providerBreakdown,
+        proof_mode: true,
+        read_only: true,
+        timestamp: new Date().toISOString()
+      }, headers);
+    }
+
     // ═══ STUB HANDLERS ═══
     case "text": {
       const { prompt, model } = data;
@@ -1946,6 +2011,87 @@ async function handleVision(
           decode_conversations: conversationCount || 0,
           timestamp: new Date().toISOString(),
         },
+      }, headers);
+    }
+
+    // ═══ v3.8.0: QUOTA — AI usage quota observability ═══
+    case "quota": {
+      // NEW: AI usage quota observability - read-only, proof-compatible
+      const today = new Date().toISOString().split('T')[0];
+      
+      // Fetch daily quotas from ai_daily_quota
+      const { data: quotas } = await supabase
+        .from("ai_daily_quota")
+        .select("*")
+        .eq("date", today);
+      
+      // Fetch recent AI usage logs for detailed breakdown
+      const now = new Date();
+      const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+      const { data: usageLogs } = await supabase
+        .from("ai_usage_log")
+        .select("*")
+        .gte("created_at", twentyFourHoursAgo.toISOString());
+      
+      const quotaEntries = quotas || [];
+      const logs = usageLogs || [];
+      
+      // Aggregate by provider
+      const providerQuotas: Record<string, { used: number; budget: number; tokens: number }> = {};
+      for (const q of quotaEntries) {
+        providerQuotas[q.provider] = {
+          used: q.calls_used || 0,
+          budget: q.calls_budget || 100,
+          tokens: q.tokens_used || 0
+        };
+      }
+      
+      // Calculate usage metrics from logs
+      const totalCalls = logs.length;
+      // deno-lint-ignore no-explicit-any
+      const successfulCalls = logs.filter((l: any) => l.success).length;
+      // deno-lint-ignore no-explicit-any
+      const totalTokens = logs.reduce((sum: number, l: any) => sum + (l.tokens_used || 0), 0);
+      // deno-lint-ignore no-explicit-any
+      const totalCost = logs.reduce((sum: number, l: any) => sum + (l.cost || 0), 0);
+      
+      // Provider breakdown from logs
+      const logsByProvider: Record<string, number> = {};
+      for (const l of logs) {
+        logsByProvider[l.provider] = (logsByProvider[l.provider] || 0) + 1;
+      }
+      
+      // Calculate pressure score (0-100)
+      // deno-lint-ignore no-explicit-any
+      const quotaPressure = quotaEntries.length > 0
+        ? Math.round(quotaEntries.reduce((sum: number, q: any) => sum + ((q.calls_used || 0) / (q.calls_budget || 100)), 0) / quotaEntries.length * 100)
+        : 0;
+      
+      return jsonResponse({
+        success: true,
+        module: 'vision',
+        action: 'quota',
+        date: today,
+        summary: {
+          total_calls_24h: totalCalls,
+          successful_calls: successfulCalls,
+          success_rate: totalCalls > 0 ? Math.round((successfulCalls / totalCalls) * 100) : 100,
+          total_tokens_24h: totalTokens,
+          total_cost_usd: Math.round(totalCost * 1000) / 1000,
+          quota_pressure: quotaPressure,
+          status: quotaPressure < 50 ? 'healthy' : quotaPressure < 80 ? 'moderate' : 'high'
+        },
+        providers: Object.entries(providerQuotas).map(([provider, data]) => ({
+          provider,
+          calls_used: data.used,
+          calls_budget: data.budget,
+          utilization_pct: Math.round((data.used / data.budget) * 100),
+          tokens_used: data.tokens
+        })),
+        usage_distribution: logsByProvider,
+        proof_mode: true,
+        read_only: true,
+        timestamp: new Date().toISOString()
       }, headers);
     }
 

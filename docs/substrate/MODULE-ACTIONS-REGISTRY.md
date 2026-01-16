@@ -8,7 +8,7 @@
 | Version | v2026.01 |
 | Last Updated | 2026-01-16 |
 | Status | ACTIVE |
-| Substrate Version | 3.7.0 |
+| Substrate Version | 3.8.0 |
 | Type | Cognitive Orchestration Substrate |
 | Changelog | [CHANGELOG.md](./CHANGELOG.md) |
 
@@ -162,6 +162,7 @@ Multi-provider AI routing for text, image, video generation.
 | `route` | Route to best provider | `prompt: string`, `systemPrompt?: string`, `temperature?: number` | ✅ DEPLOYED |
 | `status` | Get available providers | — | ✅ DEPLOYED |
 | `providers` | Provider availability matrix | — | ✅ DEPLOYED (v3.5.0) — Observer-eligible |
+| `route_stats` | AI routing analytics (24h) | — | ✅ DEPLOYED (v3.8.0) — read-only, proof-compatible |
 | `text` | Text generation | `prompt: string`, `model?: string` | ⚠️ STUB NEEDED (in substrate) |
 | `image` | Image generation | `prompt: string`, `model?: string` | ⚠️ STUB NEEDED (in substrate) |
 | `video` | Video generation | `prompt: string`, `model?: string` | ⚠️ STUB NEEDED (in substrate) |
@@ -199,6 +200,7 @@ Observability, metrics, health monitoring, alerting, distributed tracing, ecosys
 | `health_snapshot` | Quick consolidated health check | — | ✅ DEPLOYED (v3.4.0) — Observer-eligible |
 | `introspection` | Deep substrate self-analysis | — | ✅ DEPLOYED (v3.6.0) — read-only, proof-compatible |
 | `pulse` | Ultra-lightweight heartbeat (zero DB queries) | — | ✅ DEPLOYED (v3.7.0) — read-only, proof-compatible |
+| `quota` | AI usage quota observability | — | ✅ DEPLOYED (v3.8.0) — read-only, proof-compatible |
 
 ### Vision Dedicated Functions (Standalone)
 

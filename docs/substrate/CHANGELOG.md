@@ -4,6 +4,25 @@
 
 ---
 
+## 2026-01-16 · v3.8.0
+
+⟨This entry describes the observed addition of AI quota observability and routing analytics capabilities.⟩
+
+### Vision
+
+- **vision/quota** appears to provide AI usage quota observability including daily call counts, token usage, cost estimates, and quota pressure scoring. Aggregates data from ai_daily_quota and ai_usage_log tables, computing utilization percentages per provider and overall status classification (healthy/moderate/high). Marked read-only and proof-compatible.
+
+### Nexus
+
+- **nexus/route_stats** appears to provide 24h AI routing analytics from nexus_logs including per-provider call counts, success rates, average latency, token totals, and cost breakdowns. Enables visibility into routing efficiency and cost distribution. Marked read-only and proof-compatible.
+
+### TypeScript Helpers
+
+- `vision.quota()` helper added to substrate client.
+- `nexus.routeStats()` helper added to substrate client.
+
+---
+
 ## 2026-01-16 · v3.7.0
 
 ⟨This entry describes the observed addition of zero-query heartbeat and consolidated security posture capabilities.⟩

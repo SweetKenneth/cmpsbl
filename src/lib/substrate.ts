@@ -241,6 +241,10 @@ class SubstrateClient {
     /** v3.5.0: Provider availability matrix (read-only, Observer-eligible) */
     providers: () =>
       this.invoke({ module: 'nexus', action: 'providers' }),
+    
+    /** v3.8.0: AI routing analytics - 24h call/token/cost breakdown (read-only) */
+    routeStats: () =>
+      this.invoke({ module: 'nexus', action: 'route_stats' }),
   };
 
   // Vision Module — Observability & Metrics
@@ -296,6 +300,10 @@ class SubstrateClient {
     /** v3.7.0: Ultra-lightweight heartbeat - zero DB queries, pure in-memory (read-only) */
     pulse: () =>
       this.invoke({ module: 'vision', action: 'pulse' }),
+    
+    /** v3.8.0: AI usage quota observability - daily limits, pressure, cost (read-only) */
+    quota: () =>
+      this.invoke({ module: 'vision', action: 'quota' }),
   };
 
   // System Module — Administration & Configuration
