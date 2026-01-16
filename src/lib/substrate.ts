@@ -248,6 +248,18 @@ class SubstrateClient {
     /** v3.2.0: Distributed tracing - create or query traces */
     trace: (traceId?: string, options?: { create?: boolean; module?: string; action?: string; duration_ms?: number }) =>
       this.invoke({ module: 'vision', action: 'trace', payload: { traceId, ...options } }),
+    
+    /** v3.3.0: Ecosystem health monitoring - comprehensive subsystem check */
+    monitor: () =>
+      this.invoke({ module: 'vision', action: 'monitor' }),
+    
+    /** v3.3.0: Resilience framework - error analysis with auto-fix proposals */
+    resilience: () =>
+      this.invoke({ module: 'vision', action: 'resilience' }),
+    
+    /** v3.3.0: Threat analytics - 24h defense event rollup */
+    analytics: () =>
+      this.invoke({ module: 'vision', action: 'analytics' }),
   };
 
   // System Module — Administration & Configuration
