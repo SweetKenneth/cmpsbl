@@ -8,7 +8,7 @@
 | Version | v2026.01 |
 | Last Updated | 2026-01-16 |
 | Status | ACTIVE |
-| Substrate Version | 3.4.0 |
+| Substrate Version | 3.5.0 |
 | Type | Cognitive Orchestration Substrate |
 | Changelog | [CHANGELOG.md](./CHANGELOG.md) |
 
@@ -60,6 +60,7 @@ Memory, learning cycles, reflection, and knowledge synthesis.
 | `forecast` | Generate predictions | `metric: string`, `window?: string` | ⚠️ STUB NEEDED |
 | `graph_build` | Build knowledge graph | — | ⚠️ STUB NEEDED |
 | `cold_migrate` | Move old memories to cold storage | — | ✅ DEPLOYED (standalone) |
+| `session_reflection` | Cross-module session activity reflection | `hours?: number (1-168)` | ✅ DEPLOYED (v3.5.0) — Observer-eligible |
 
 ### Brain Dedicated Functions (Standalone)
 
@@ -157,6 +158,7 @@ Multi-provider AI routing for text, image, video generation.
 |--------|-------------|------------|--------|
 | `route` | Route to best provider | `prompt: string`, `systemPrompt?: string`, `temperature?: number` | ✅ DEPLOYED |
 | `status` | Get available providers | — | ✅ DEPLOYED |
+| `providers` | Provider availability matrix | — | ✅ DEPLOYED (v3.5.0) — Observer-eligible |
 | `text` | Text generation | `prompt: string`, `model?: string` | ⚠️ STUB NEEDED (in substrate) |
 | `image` | Image generation | `prompt: string`, `model?: string` | ⚠️ STUB NEEDED (in substrate) |
 | `video` | Video generation | `prompt: string`, `model?: string` | ⚠️ STUB NEEDED (in substrate) |

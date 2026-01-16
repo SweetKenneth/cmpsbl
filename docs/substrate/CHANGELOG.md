@@ -4,6 +4,25 @@
 
 ---
 
+## 2026-01-16 · v3.5.0
+
+⟨This entry describes the observed addition of cross-module session reflection and provider introspection capabilities, surfaced for Observer-role visibility.⟩
+
+### Brain
+
+- **brain/session_reflection** appears to aggregate activity across brain events, conversations, dreams, and defense events over a configurable lookback period (1–168 hours). Output includes event type counts, dream mood distribution, defense posture metrics, top learning patterns, and recent insights. Marked Observer-eligible and proof-compatible.
+
+### Nexus
+
+- **nexus/providers** appears to return a detailed provider availability matrix including model names, capability sets, availability status, and routing priority order. Provides summary counts and routing health status. Marked Observer-eligible and proof-compatible.
+
+### TypeScript Helpers
+
+- `brain.sessionReflection(hours?)` helper added to substrate client.
+- `nexus.providers()` helper added to substrate client.
+
+---
+
 ## 2026-01-16 · v3.4.0
 
 ⟨This entry describes the observed addition of statistical anomaly detection and consolidated health observability, surfaced for Observer-role visibility in the substrate control panel.⟩

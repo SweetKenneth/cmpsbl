@@ -46,7 +46,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const SUBSTRATE_VERSION = "3.4.0";
+const SUBSTRATE_VERSION = "3.5.0";
 
 // Trace ID generator for distributed tracing
 function generateTraceId(): string {
@@ -776,6 +776,78 @@ async function handleBrain(
       return jsonResponse({ success: true, learned: true, memory_id: memory?.id }, headers);
     }
 
+    // ═══ v3.5.0: SESSION REFLECTION — Observer-eligible ═══
+    case "session_reflection": {
+      // Reflects on recent session activity across modules - read-only
+      const { hours = 24 } = data;
+      const lookbackHours = Math.min(Math.max(1, hours as number), 168);
+      const cutoff = new Date(Date.now() - lookbackHours * 60 * 60 * 1000).toISOString();
+
+      const [
+        { data: brainEvents, count: brainCount },
+        { data: conversations, count: convCount },
+        { data: dreams, count: dreamCount },
+        { data: defenseEvents, count: defenseCount },
+        { data: learningPatterns },
+        { data: reflections },
+      ] = await Promise.all([
+        supabase.from('brain_events').select('event_type, module, outcome', { count: 'exact' }).gte('created_at', cutoff).limit(100),
+        supabase.from('cascade_conversations').select('id, created_at', { count: 'exact' }).gte('created_at', cutoff).limit(50),
+        supabase.from('cascade_dreams').select('mood, insight', { count: 'exact' }).gte('created_at', cutoff).limit(20),
+        supabase.from('defense_events').select('action, risk_score', { count: 'exact' }).gte('detected_at', cutoff).limit(100),
+        supabase.from('learning_patterns').select('pattern_name, confidence').order('confidence', { ascending: false }).limit(5),
+        supabase.from('brain_reflections').select('summary, insights').order('reflection_date', { ascending: false }).limit(3),
+      ]);
+
+      // Aggregate event types
+      const eventTypeCounts: Record<string, number> = {};
+      brainEvents?.forEach((e: { event_type: string }) => {
+        eventTypeCounts[e.event_type] = (eventTypeCounts[e.event_type] || 0) + 1;
+      });
+
+      // Calculate mood distribution from dreams
+      const moodDist: Record<string, number> = {};
+      dreams?.forEach((d: { mood: string }) => {
+        if (d.mood) moodDist[d.mood] = (moodDist[d.mood] || 0) + 1;
+      });
+
+      // Defense posture
+      const blockedCount = defenseEvents?.filter((e: { action: string }) => e.action === 'block').length || 0;
+      const avgRisk = defenseEvents?.length 
+        ? Math.round(defenseEvents.reduce((sum: number, e: { risk_score: number }) => sum + (e.risk_score || 0), 0) / defenseEvents.length)
+        : 0;
+
+      return jsonResponse({
+        success: true,
+        module: 'brain',
+        action: 'session_reflection',
+        period_hours: lookbackHours,
+        summary: {
+          brain_events: brainCount || 0,
+          conversations: convCount || 0,
+          dreams: dreamCount || 0,
+          defense_events: defenseCount || 0,
+        },
+        activity_breakdown: {
+          event_types: eventTypeCounts,
+          dream_moods: moodDist,
+          defense_posture: {
+            blocked: blockedCount,
+            avg_risk_score: avgRisk,
+            status: avgRisk > 60 ? 'elevated' : 'normal'
+          }
+        },
+        top_patterns: learningPatterns?.slice(0, 3).map((p: { pattern_name: string; confidence: number }) => ({
+          name: p.pattern_name,
+          confidence: p.confidence
+        })) || [],
+        recent_insights: reflections?.map((r: { summary: string }) => r.summary).filter(Boolean).slice(0, 2) || [],
+        proof_mode: true,
+        role_visibility: 'observer',
+        timestamp: new Date().toISOString()
+      }, headers);
+    }
+
     default:
       throw new Error(`Unknown brain action: ${action}`);
   }
@@ -1465,6 +1537,49 @@ async function handleNexus(
         module: "nexus",
         providers: available,
         routing_order: PROVIDER_ORDER,
+      }, headers);
+    }
+
+    // ═══ v3.5.0: PROVIDERS — Observer-eligible provider availability ═══
+    case "providers": {
+      // Detailed provider availability and capability matrix - read-only
+      const providerDetails: Array<{
+        name: string;
+        available: boolean;
+        model: string;
+        capabilities: string[];
+        priority: number;
+      }> = [];
+
+      let priority = 1;
+      for (const providerName of PROVIDER_ORDER) {
+        const config = PROVIDERS[providerName as keyof typeof PROVIDERS];
+        const isAvailable = !!Deno.env.get(config.keyEnv);
+        providerDetails.push({
+          name: providerName,
+          available: isAvailable,
+          model: config.model,
+          capabilities: ['text-generation', 'chat-completion'],
+          priority: priority++
+        });
+      }
+
+      const availableCount = providerDetails.filter(p => p.available).length;
+
+      return jsonResponse({
+        success: true,
+        module: 'nexus',
+        action: 'providers',
+        providers: providerDetails,
+        summary: {
+          total: providerDetails.length,
+          available: availableCount,
+          routing_status: availableCount > 0 ? 'operational' : 'degraded',
+          fallback_depth: availableCount
+        },
+        proof_mode: true,
+        role_visibility: 'observer',
+        timestamp: new Date().toISOString()
       }, headers);
     }
 
