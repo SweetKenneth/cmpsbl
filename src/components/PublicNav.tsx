@@ -10,7 +10,7 @@ export function PublicNav() {
 
   const navItems = [
     { name: "Demo", href: "/demo" },
-    { name: "Proof", href: "/proof" },
+    { name: "Developers", href: "/developers" },
     { name: "Substrate", href: "/substrate" },
     ...(user ? [{ name: "OS", href: "/os" }] : []),
     { name: "Decode", href: "/decode" },
