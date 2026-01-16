@@ -4,6 +4,30 @@
 
 ---
 
+## 2026-01-16 · v3.4.0
+
+⟨This entry describes the observed addition of statistical anomaly detection and consolidated health observability, surfaced for Observer-role visibility in the substrate control panel.⟩
+
+### Defense
+
+- **defense/anomaly_probe** appears to perform z-score based statistical anomaly detection on defense events over configurable lookback periods (1–168 hours). Each detected anomaly includes risk z-score, fingerprint frequency factor, behavioral anomaly factor, combined anomaly score, and confidence level. Baseline statistics are computed and returned.
+
+### Vision
+
+- **vision/health_snapshot** appears to produce a consolidated health snapshot including orchestrator state, memory tier counts (hot/cold), defense event totals, unresolved anomaly counts, and per-module circuit breaker status. Output is structured for quick Observer-level visibility.
+
+### Control Panel
+
+- New actions are marked as Observer-eligible and surfaced in the substrate control panel data surfaces.
+- All new actions are read-only and do not mutate substrate state.
+
+### TypeScript Helpers
+
+- `defense.anomalyProbe(lookbackHours?)` helper added to substrate client.
+- `vision.healthSnapshot()` helper added to substrate client.
+
+---
+
 ## 2026-01-16 · v3.3.0
 
 ⟨This entry describes the observed expansion of the substrate's observability capabilities, not a guarantee of behavior.⟩
