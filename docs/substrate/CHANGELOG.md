@@ -4,6 +4,25 @@
 
 ---
 
+## 2026-01-16 · v3.7.0
+
+⟨This entry describes the observed addition of zero-query heartbeat and consolidated security posture capabilities.⟩
+
+### Vision
+
+- **vision/pulse** appears to provide an ultra-lightweight heartbeat requiring zero database queries. Returns in-memory substrate state including uptime, module health summary, circuit breaker status, request/error counts, and heal statistics. Designed for high-frequency uptime monitoring with minimal overhead. Marked read-only and proof-compatible.
+
+### Defense
+
+- **defense/posture** appears to consolidate security status into a single posture score (0-100) with status classification (secure/guarded/elevated/critical). Aggregates 24h activity, risk distribution, block rates, active rules, unresolved anomalies, rate limit pressure, and weekly trend. Provides actionable security snapshot. Marked read-only and proof-compatible.
+
+### TypeScript Helpers
+
+- `vision.pulse()` helper added to substrate client.
+- `defense.posture()` helper added to substrate client.
+
+---
+
 ## 2026-01-16 · v3.6.0
 
 ⟨This entry describes the observed addition of deep introspection, knowledge graph summarization, and unified rate limit observability capabilities.⟩
