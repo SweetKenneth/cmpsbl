@@ -6,8 +6,9 @@
 |-------|-------|
 | Document ID | PF-MAR-001 |
 | Version | v2026.01 |
-| Last Updated | 2026-01-13 |
+| Last Updated | 2026-01-16 |
 | Status | ACTIVE |
+| Substrate Version | 3.2.0 |
 | Type | Cognitive Orchestration Substrate |
 
 ---
@@ -92,7 +93,7 @@ Intent decoding, cognitive interface, chat. NOT a chatbot or agent.
 | `propose` | Submit proposal for consideration | `idea: string` | ⚠️ STUB NEEDED |
 | `learn` | Learn from interaction | `content: string`, `source?: string` | ✅ DEPLOYED |
 | `status` | Get decode module stats | — | ✅ DEPLOYED |
-| `intent` | Decode user intent | `message: string` | ⚠️ STUB NEEDED |
+| `intent` | Extract structured intent from message | `message: string` | ✅ DEPLOYED (v3.2.0) |
 | `reflect` | Reflection on conversations | — | ⚠️ STUB NEEDED |
 | `summary` | Generate conversation summary | `sessionId: string` | ⚠️ STUB NEEDED |
 
@@ -173,7 +174,7 @@ Multi-provider AI routing for text, image, video generation.
 
 ## Module: VISION
 
-Observability, metrics, health monitoring, alerting.
+Observability, metrics, health monitoring, alerting, distributed tracing.
 
 | Action | Description | Parameters | Status |
 |--------|-------------|------------|--------|
@@ -183,7 +184,7 @@ Observability, metrics, health monitoring, alerting.
 | `logs` | Get system logs | `module?: string`, `limit?: number` | ✅ DEPLOYED |
 | `alert` | Create alert | `severity: string`, `message: string` | ✅ DEPLOYED |
 | `dashboard` | Get dashboard data | — | ✅ DEPLOYED (v3.1.0) |
-| `trace` | Distributed tracing | `traceId: string` | ⚠️ STUB NEEDED |
+| `trace` | Distributed tracing | `traceId?: string`, `create?: boolean`, `module?: string`, `action?: string`, `duration_ms?: number` | ✅ DEPLOYED (v3.2.0) |
 | `audit` | Audit log query | `entity?: string`, `action?: string` | ✅ DEPLOYED |
 
 ### Vision Dedicated Functions (Standalone)
@@ -238,8 +239,8 @@ System-wide operations, administration, configuration.
 | `shutdown` | Emergency shutdown | `confirm: boolean` | ⚠️ STUB NEEDED |
 | `restart` | Restart services | `service?: string` | ✅ DEPLOYED |
 | `heal` | Full heal system | `target?: string`, `force?: boolean` | ✅ DEPLOYED (v3.1.0 - full restore) |
-| `backup` | Create backup | — | ✅ DEPLOYED |
-| `restore` | Restore from backup | `backup_id: string` | ⚠️ STUB NEEDED |
+| `backup` | Create validated backup | `include_data?: boolean`, `tables?: string[]` | ✅ DEPLOYED (v3.2.0 - validated) |
+| `restore` | Restore from backup | `backup_id: string`, `validate_only?: boolean` | ✅ DEPLOYED (v3.2.0) |
 | `audit` | System audit | — | ✅ DEPLOYED |
 | `version` | Get substrate version | — | ✅ DEPLOYED |
 

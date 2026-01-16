@@ -176,6 +176,10 @@ class SubstrateClient {
     /** Get Decode module status */
     status: () =>
       this.invoke({ module: 'decode', action: 'status' }),
+    
+    /** v3.2.0: Extract structured intent from a message */
+    intent: (message: string) =>
+      this.invoke({ module: 'decode', action: 'intent', payload: { message } }),
   };
 
   // Defense Module — Security & Threat Analysis
@@ -240,6 +244,10 @@ class SubstrateClient {
     /** v3.1.0: Real dashboard data with orchestrator, metrics, AI usage */
     dashboard: () =>
       this.invoke({ module: 'vision', action: 'dashboard' }),
+    
+    /** v3.2.0: Distributed tracing - create or query traces */
+    trace: (traceId?: string, options?: { create?: boolean; module?: string; action?: string; duration_ms?: number }) =>
+      this.invoke({ module: 'vision', action: 'trace', payload: { traceId, ...options } }),
   };
 
   // System Module — Administration & Configuration
@@ -272,13 +280,17 @@ class SubstrateClient {
     restart: (service?: string) =>
       this.invoke({ module: 'system', action: 'restart', payload: { service } }),
     
-    /** Create a backup snapshot */
-    backup: () =>
-      this.invoke({ module: 'system', action: 'backup' }),
+    /** v3.2.0: Create a validated backup snapshot with optional data export */
+    backup: (options?: { include_data?: boolean; tables?: string[] }) =>
+      this.invoke({ module: 'system', action: 'backup', payload: options }),
     
-    /** Restore from backup */
-    restore: (backup_id: string) =>
-      this.invoke({ module: 'system', action: 'restore', payload: { backup_id } }),
+    /** v3.2.0: Restore from backup with validation */
+    restore: (backup_id: string, validate_only?: boolean) =>
+      this.invoke({ module: 'system', action: 'restore', payload: { backup_id, validate_only } }),
+    
+    /** List available backups */
+    listBackups: () =>
+      this.invoke({ module: 'system', action: 'list_backups' }),
   };
 
   // Dream Module — Dream-Eater Operations  
