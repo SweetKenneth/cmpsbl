@@ -8,7 +8,7 @@
 | Version | v2026.01 |
 | Last Updated | 2026-01-16 |
 | Status | ACTIVE |
-| Substrate Version | 3.5.0 |
+| Substrate Version | 3.6.0 |
 | Type | Cognitive Orchestration Substrate |
 | Changelog | [CHANGELOG.md](./CHANGELOG.md) |
 
@@ -59,6 +59,7 @@ Memory, learning cycles, reflection, and knowledge synthesis.
 | `continuous_learn` | 24/7 learning mode | `enabled: boolean` | ⚠️ STUB NEEDED |
 | `forecast` | Generate predictions | `metric: string`, `window?: string` | ⚠️ STUB NEEDED |
 | `graph_build` | Build knowledge graph | — | ⚠️ STUB NEEDED |
+| `graph_summary` | Knowledge graph structure summary | — | ✅ DEPLOYED (v3.6.0) — read-only, proof-compatible |
 | `cold_migrate` | Move old memories to cold storage | — | ✅ DEPLOYED (standalone) |
 | `session_reflection` | Cross-module session activity reflection | `hours?: number (1-168)` | ✅ DEPLOYED (v3.5.0) — Observer-eligible |
 
@@ -130,6 +131,7 @@ Bot detection, threat analysis, security, IP reputation.
 | `rate_limit` | Configure rate limiting | `endpoint: string`, `limit: number` | ⚠️ STUB NEEDED |
 | `anomaly` | Detect anomalies | `timeWindow?: '1h'|'6h'|'24h'` | ✅ DEPLOYED (v3.1.0) |
 | `anomaly_probe` | Statistical z-score anomaly detection | `lookbackHours?: number (1-168)` | ✅ DEPLOYED (v3.4.0) — Observer-eligible |
+| `limits` | Unified rate limit status | — | ✅ DEPLOYED (v3.6.0) — read-only, proof-compatible |
 
 ### Defense Dedicated Functions (Standalone)
 
@@ -194,6 +196,7 @@ Observability, metrics, health monitoring, alerting, distributed tracing, ecosys
 | `resilience` | Resilience framework probe | — | ✅ DEPLOYED (v3.3.0) |
 | `analytics` | Threat analytics (24h) | — | ✅ DEPLOYED (v3.3.0) |
 | `health_snapshot` | Quick consolidated health check | — | ✅ DEPLOYED (v3.4.0) — Observer-eligible |
+| `introspection` | Deep substrate self-analysis | — | ✅ DEPLOYED (v3.6.0) — read-only, proof-compatible |
 
 ### Vision Dedicated Functions (Standalone)
 
