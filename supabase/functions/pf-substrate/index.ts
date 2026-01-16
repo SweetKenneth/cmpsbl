@@ -46,7 +46,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const SUBSTRATE_VERSION = "3.5.0";
+const SUBSTRATE_VERSION = "3.6.0";
 
 // Trace ID generator for distributed tracing
 function generateTraceId(): string {
@@ -765,6 +765,81 @@ async function handleBrain(
       }, headers);
     }
 
+    // ═══ v3.6.0: GRAPH_SUMMARY — Knowledge graph introspection (read-only) ═══
+    case "graph_summary": {
+      // Summarizes knowledge graph structure - read-only, all-role visibility
+      const [
+        { data: edges, count: edgeCount },
+        { count: hotCount },
+        { count: coldCount },
+        { data: topEdges },
+        { data: recentEdges },
+      ] = await Promise.all([
+        supabase.from('brain_graph_edges').select('source_id, target_id, relation, weight', { count: 'exact' }).limit(500),
+        supabase.from('brain_memory_hot').select('id', { count: 'exact', head: true }),
+        supabase.from('brain_memory_cold').select('id', { count: 'exact', head: true }),
+        supabase.from('brain_graph_edges').select('source_id, target_id, relation, weight').order('weight', { ascending: false }).limit(10),
+        supabase.from('brain_graph_edges').select('relation, weight, created_at').order('created_at', { ascending: false }).limit(10),
+      ]);
+
+      // Calculate graph density and connectivity
+      const uniqueNodes = new Set<string>();
+      edges?.forEach((e: { source_id: string; target_id: string }) => {
+        uniqueNodes.add(e.source_id);
+        uniqueNodes.add(e.target_id);
+      });
+      const nodeCount = uniqueNodes.size;
+      const maxEdges = nodeCount * (nodeCount - 1) / 2; // undirected
+      const density = maxEdges > 0 ? ((edgeCount || 0) / maxEdges).toFixed(4) : '0';
+
+      // Relation type distribution
+      const relationDist: Record<string, number> = {};
+      edges?.forEach((e: { relation: string }) => {
+        const rel = e.relation || 'unknown';
+        relationDist[rel] = (relationDist[rel] || 0) + 1;
+      });
+
+      // Weight statistics
+      const weights: number[] = edges?.map((e: { weight: number }) => e.weight || 0) || [];
+      const avgWeight = weights.length > 0 ? (weights.reduce((a: number, b: number) => a + b, 0) / weights.length).toFixed(2) : '0';
+      const maxWeight = weights.length > 0 ? Math.max(...weights) : 0;
+
+      return jsonResponse({
+        success: true,
+        module: 'brain',
+        action: 'graph_summary',
+        graph: {
+          nodes: nodeCount,
+          edges: edgeCount || 0,
+          density: parseFloat(density),
+          connectivity_status: parseFloat(density) > 0.1 ? 'well_connected' : parseFloat(density) > 0.01 ? 'sparse' : 'minimal'
+        },
+        memory_tiers: {
+          hot: hotCount || 0,
+          cold: coldCount || 0,
+          total: (hotCount || 0) + (coldCount || 0)
+        },
+        relation_distribution: relationDist,
+        weight_stats: {
+          average: parseFloat(avgWeight),
+          max: maxWeight
+        },
+        strongest_connections: topEdges?.slice(0, 5).map((e: { source_id: string; target_id: string; relation: string; weight: number }) => ({
+          from: e.source_id.substring(0, 8),
+          to: e.target_id.substring(0, 8),
+          relation: e.relation,
+          weight: e.weight
+        })) || [],
+        recent_connections: recentEdges?.slice(0, 5).map((e: { relation: string; weight: number; created_at: string }) => ({
+          relation: e.relation,
+          weight: e.weight,
+          at: e.created_at
+        })) || [],
+        proof_mode: true,
+        timestamp: new Date().toISOString()
+      }, headers);
+    }
+
     case "learn": {
       const { content, source = "substrate" } = data;
       const { data: memory, error } = await supabase
@@ -1291,6 +1366,79 @@ async function handleDefense(
         endpoint,
         limit,
         message: "Rate limit stub - configuration pending",
+      }, headers);
+    }
+
+    // ═══ v3.6.0: LIMITS — Unified rate limit status (read-only) ═══
+    case "limits": {
+      // Returns unified rate limit status across edge functions - read-only
+      const now = new Date();
+      const hourAgo = new Date(now.getTime() - 60 * 60 * 1000).toISOString();
+
+      const [
+        { data: rateLimits },
+        { data: dreamLimits },
+        { count: recentBlocks },
+      ] = await Promise.all([
+        supabase.from('edge_rate_limits')
+          .select('function_name, identifier, request_count, window_start, updated_at')
+          .order('request_count', { ascending: false })
+          .limit(50),
+        supabase.from('dream_rate_limits')
+          .select('identifier, identifier_type, request_count, window_start')
+          .gte('window_start', hourAgo)
+          .limit(20),
+        supabase.from('defense_events')
+          .select('id', { count: 'exact', head: true })
+          .eq('reason', 'Rate limit exceeded')
+          .gte('detected_at', hourAgo),
+      ]);
+
+      // Group by function
+      const byFunction: Record<string, { total_requests: number; identifiers: number; max_single: number }> = {};
+      rateLimits?.forEach((r: { function_name: string; request_count: number }) => {
+        if (!byFunction[r.function_name]) {
+          byFunction[r.function_name] = { total_requests: 0, identifiers: 0, max_single: 0 };
+        }
+        byFunction[r.function_name].total_requests += r.request_count || 0;
+        byFunction[r.function_name].identifiers += 1;
+        byFunction[r.function_name].max_single = Math.max(byFunction[r.function_name].max_single, r.request_count || 0);
+      });
+
+      // Dream API limits
+      const dreamApiLoad = dreamLimits?.reduce((sum: number, d: { request_count: number }) => sum + (d.request_count || 0), 0) || 0;
+      const dreamIdentifiers = new Set(dreamLimits?.map((d: { identifier: string }) => d.identifier) || []).size;
+
+      // Overall pressure score
+      const totalRequests = rateLimits?.reduce((sum: number, r: { request_count: number }) => sum + (r.request_count || 0), 0) || 0;
+      const pressureScore = Math.min(100, Math.round(totalRequests / 10)); // 1000 requests = 100% pressure
+
+      return jsonResponse({
+        success: true,
+        module: 'defense',
+        action: 'limits',
+        status: pressureScore > 70 ? 'high_pressure' : pressureScore > 30 ? 'moderate' : 'normal',
+        pressure_score: pressureScore,
+        edge_functions: {
+          summary: byFunction,
+          total_active: Object.keys(byFunction).length,
+          total_requests: totalRequests
+        },
+        dream_api: {
+          requests_last_hour: dreamApiLoad,
+          unique_identifiers: dreamIdentifiers
+        },
+        enforcement: {
+          blocks_last_hour: recentBlocks || 0,
+          status: (recentBlocks || 0) > 10 ? 'active_enforcement' : 'low'
+        },
+        top_consumers: rateLimits?.slice(0, 5).map((r: { function_name: string; identifier: string; request_count: number }) => ({
+          function: r.function_name,
+          identifier: r.identifier.substring(0, 16) + '...',
+          count: r.request_count
+        })) || [],
+        proof_mode: true,
+        timestamp: new Date().toISOString()
       }, headers);
     }
 
@@ -1845,6 +1993,97 @@ async function handleVision(
         },
         proof_mode: true,
         role_visibility: 'observer',
+        timestamp: new Date().toISOString()
+      }, headers);
+    }
+
+    // ═══ v3.6.0: INTROSPECTION — Deep substrate self-analysis (read-only) ═══
+    case "introspection": {
+      // Deep analysis of substrate internals - read-only, all-role visibility
+      const uptime = Date.now() - state.initialized;
+
+      const [
+        { data: orchestrator },
+        { count: totalEvents },
+        { count: errorEvents },
+        { data: recentAI },
+        { data: memoryConfig },
+        { count: pendingActions },
+        { data: latestReflection },
+      ] = await Promise.all([
+        supabase.from('brain_orchestrator_state').select('*').limit(1).single(),
+        supabase.from('brain_events').select('id', { count: 'exact', head: true }),
+        supabase.from('brain_events').select('id', { count: 'exact', head: true }).eq('outcome', 'error'),
+        supabase.from('ai_usage_log').select('provider, tokens_used, cost, response_time_ms').order('created_at', { ascending: false }).limit(20),
+        supabase.from('brain_curiosity_settings').select('*').limit(1).single(),
+        supabase.from('brain_actions_queue').select('id', { count: 'exact', head: true }).eq('status', 'pending'),
+        supabase.from('brain_reflections').select('summary, insights, reflection_date').order('reflection_date', { ascending: false }).limit(1).single(),
+      ]);
+
+      // Module health matrix
+      const moduleMatrix = Object.entries(state.modules).map(([name, health]) => ({
+        name,
+        health_score: health.healthScore,
+        status: health.status,
+        circuit: health.circuitState,
+        failures: health.consecutiveFailures,
+        successes: health.consecutiveSuccesses
+      }));
+
+      // AI provider statistics
+      const providerStats: Record<string, { calls: number; tokens: number; avg_latency: number }> = {};
+      recentAI?.forEach((r: { provider: string; tokens_used?: number; response_time_ms?: number }) => {
+        if (!providerStats[r.provider]) {
+          providerStats[r.provider] = { calls: 0, tokens: 0, avg_latency: 0 };
+        }
+        providerStats[r.provider].calls++;
+        providerStats[r.provider].tokens += r.tokens_used || 0;
+        providerStats[r.provider].avg_latency += r.response_time_ms || 0;
+      });
+      Object.values(providerStats).forEach(s => {
+        s.avg_latency = s.calls > 0 ? Math.round(s.avg_latency / s.calls) : 0;
+      });
+
+      // Cognitive metrics
+      const errorRate = totalEvents && totalEvents > 0 ? ((errorEvents || 0) / totalEvents * 100).toFixed(2) : '0';
+
+      return jsonResponse({
+        success: true,
+        module: 'vision',
+        action: 'introspection',
+        substrate: {
+          version: SUBSTRATE_VERSION,
+          uptime_ms: uptime,
+          uptime_human: `${Math.floor(uptime / 3600000)}h ${Math.floor((uptime % 3600000) / 60000)}m`,
+          total_requests: state.totalRequests,
+          total_errors: state.totalErrors,
+          error_rate: `${errorRate}%`,
+          heal_attempts: state.healAttempts,
+          last_heal: state.lastHeal ? new Date(state.lastHeal).toISOString() : null
+        },
+        orchestrator: {
+          status: orchestrator?.status || 'unknown',
+          phase: orchestrator?.current_phase || 'idle',
+          health: Math.round((orchestrator?.health_score || 0) * 100),
+          cycles: orchestrator?.cycles_completed || 0,
+          last_cycle: orchestrator?.last_cycle_at || null
+        },
+        modules: moduleMatrix,
+        cognition: {
+          exploration_rate: memoryConfig?.exploration_rate || 0,
+          curiosity_threshold: memoryConfig?.threshold || 0,
+          pending_actions: pendingActions || 0,
+          last_reflection: latestReflection?.reflection_date || null,
+          recent_insight: latestReflection?.summary?.substring(0, 100) || null
+        },
+        providers: providerStats,
+        circuit_config: {
+          failure_threshold: CIRCUIT_CONFIG.failureThreshold,
+          success_threshold: CIRCUIT_CONFIG.successThreshold,
+          open_duration_ms: CIRCUIT_CONFIG.openDurationMs,
+          auto_heal_threshold: CIRCUIT_CONFIG.autoHealThreshold
+        },
+        proof_mode: true,
         timestamp: new Date().toISOString()
       }, headers);
     }

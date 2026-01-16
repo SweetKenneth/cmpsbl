@@ -139,6 +139,10 @@ class SubstrateClient {
     graphBuild: () =>
       this.invoke({ module: 'brain', action: 'graph_build' }),
     
+    /** v3.6.0: Knowledge graph summary - nodes, edges, connectivity (read-only) */
+    graphSummary: () =>
+      this.invoke({ module: 'brain', action: 'graph_summary' }),
+    
     /** Get curiosity log - exploration queries */
     curiosity: () =>
       this.invoke({ module: 'brain', action: 'curiosity' }),
@@ -210,6 +214,10 @@ class SubstrateClient {
     /** v3.4.0: Statistical anomaly probe with z-score analysis (read-only, Observer-eligible) */
     anomalyProbe: (lookbackHours?: number) =>
       this.invoke({ module: 'defense', action: 'anomaly_probe', payload: { lookbackHours } }),
+    
+    /** v3.6.0: Unified rate limit status across edge functions (read-only) */
+    limits: () =>
+      this.invoke({ module: 'defense', action: 'limits' }),
   };
 
   // Nexus Module — Multi-Provider AI Routing
@@ -276,6 +284,10 @@ class SubstrateClient {
     /** v3.4.0: Quick health snapshot (read-only, Observer-eligible) */
     healthSnapshot: () =>
       this.invoke({ module: 'vision', action: 'health_snapshot' }),
+    
+    /** v3.6.0: Deep substrate introspection - internals, modules, cognition (read-only) */
+    introspection: () =>
+      this.invoke({ module: 'vision', action: 'introspection' }),
   };
 
   // System Module — Administration & Configuration

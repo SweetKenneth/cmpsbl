@@ -4,6 +4,30 @@
 
 ---
 
+## 2026-01-16 · v3.6.0
+
+⟨This entry describes the observed addition of deep introspection, knowledge graph summarization, and unified rate limit observability capabilities.⟩
+
+### Vision
+
+- **vision/introspection** appears to provide deep self-analysis of substrate internals including uptime, error rates, module health matrix, orchestrator state, cognition metrics (exploration rate, curiosity threshold, pending actions), AI provider statistics, and circuit breaker configuration. Marked read-only and proof-compatible.
+
+### Brain
+
+- **brain/graph_summary** appears to return knowledge graph structure including node count, edge count, density calculation, relation type distribution, weight statistics, strongest connections, and recent edge additions. Provides connectivity status classification (well_connected/sparse/minimal). Marked read-only and proof-compatible.
+
+### Defense
+
+- **defense/limits** appears to aggregate rate limit status across edge functions and Dream API, computing pressure score, enforcement statistics (blocks in last hour), and top consumers. Provides status classification (normal/moderate/high_pressure). Marked read-only and proof-compatible.
+
+### TypeScript Helpers
+
+- `vision.introspection()` helper added to substrate client.
+- `brain.graphSummary()` helper added to substrate client.
+- `defense.limits()` helper added to substrate client.
+
+---
+
 ## 2026-01-16 · v3.5.0
 
 ⟨This entry describes the observed addition of cross-module session reflection and provider introspection capabilities, surfaced for Observer-role visibility.⟩
@@ -134,7 +158,7 @@
 | Voice | Decode Interpreter (Epistemic) |
 | Status | PUBLIC |
 | Last Updated | 2026-01-16 |
-| Substrate Version | 3.3.0 |
+| Substrate Version | 3.6.0 |
 
 ---
 
