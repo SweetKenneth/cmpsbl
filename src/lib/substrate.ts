@@ -150,6 +150,10 @@ class SubstrateClient {
     /** Get learning patterns and insights */
     patterns: () =>
       this.invoke({ module: 'brain', action: 'patterns' }),
+    
+    /** v3.5.0: Session reflection - cross-module activity summary (read-only, Observer-eligible) */
+    sessionReflection: (hours?: number) =>
+      this.invoke({ module: 'brain', action: 'session_reflection', payload: { hours } }),
   };
 
   // Decode Module — Interpreter Primitive (NOT a chatbot, persona, or agent)
@@ -221,6 +225,10 @@ class SubstrateClient {
     
     status: () =>
       this.invoke({ module: 'nexus', action: 'status' }),
+    
+    /** v3.5.0: Provider availability matrix (read-only, Observer-eligible) */
+    providers: () =>
+      this.invoke({ module: 'nexus', action: 'providers' }),
   };
 
   // Vision Module — Observability & Metrics
