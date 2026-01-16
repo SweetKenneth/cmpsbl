@@ -1,5 +1,5 @@
 /**
- * promptfluid® substrate — Unified Cognitive Orchestration v3.2.0
+ * promptfluid® substrate — Unified Cognitive Orchestration v3.3.0
  * HARDENED EDITION — Circuit breakers, auto-heal, graceful degradation
  * 
  * Modules:
@@ -7,9 +7,14 @@
  * - decode: Intent decoding, cognitive interface
  * - defense: Bot detection, threat analysis
  * - nexus: Multi-provider AI routing
- * - vision: Observability, metrics, health, tracing
+ * - vision: Observability, metrics, health, tracing, monitoring, resilience
  * - dream: Dream-Eater operations
  * - system: Administration, diagnostics, healing, backup/restore
+ * 
+ * v3.3.0 Improvements (2026-01-16):
+ * - vision/monitor: Ecosystem health monitoring (from pf-brain-monitor)
+ * - vision/resilience: Resilience framework with auto-fix proposals
+ * - vision/analytics: Real-time threat analytics with 24h rollup
  * 
  * v3.2.0 Improvements (2026-01-16):
  * - vision/trace: Distributed tracing across modules
@@ -41,7 +46,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const SUBSTRATE_VERSION = "3.2.0";
+const SUBSTRATE_VERSION = "3.3.0";
 
 // Trace ID generator for distributed tracing
 function generateTraceId(): string {
@@ -1716,6 +1721,308 @@ async function handleVision(
         success: true,
         logs: logs || [],
         filters: { entity, action: auditAction },
+      }, headers);
+    }
+
+    // ═══ v3.3.0: ECOSYSTEM MONITORING (from pf-brain-monitor) ═══
+    case "monitor": {
+      // Comprehensive ecosystem health monitoring - read-only
+      const systems: Array<{ name: string; status: string; score: number; details: string }> = [];
+      let overallHealth = 1.0;
+
+      // 1. Check Orchestrator
+      const { data: orchestrator } = await supabase
+        .from('brain_orchestrator_state')
+        .select('*')
+        .eq('id', '00000000-0000-0000-0000-000000000001')
+        .single();
+
+      if (orchestrator) {
+        const orchestratorHealth = orchestrator.health_score || 0.5;
+        systems.push({
+          name: 'Orchestrator',
+          status: orchestratorHealth > 0.7 ? 'healthy' : orchestratorHealth > 0.3 ? 'degraded' : 'critical',
+          score: orchestratorHealth,
+          details: `Phase: ${orchestrator.current_phase}, Cycles: ${orchestrator.cycles_completed || 0}`
+        });
+        overallHealth *= orchestratorHealth;
+      } else {
+        systems.push({ name: 'Orchestrator', status: 'critical', score: 0, details: 'Not initialized' });
+        overallHealth *= 0.3;
+      }
+
+      // 2. Check Hot Memory
+      const { count: hotCount } = await supabase
+        .from('brain_memory_hot')
+        .select('id', { count: 'exact', head: true });
+
+      const hotHealth = Math.min(1.0, (hotCount || 0) / 10);
+      systems.push({
+        name: 'Hot Memory',
+        status: hotHealth > 0.3 ? 'healthy' : 'degraded',
+        score: hotHealth,
+        details: `${hotCount || 0} active memories`
+      });
+
+      // 3. Check Cold Memory
+      const { count: coldCount } = await supabase
+        .from('brain_memory_cold')
+        .select('id', { count: 'exact', head: true });
+
+      systems.push({
+        name: 'Cold Memory',
+        status: 'healthy',
+        score: 1.0,
+        details: `${coldCount || 0} archived memories`
+      });
+
+      // 4. Check Learning Pipeline
+      const { count: pendingQueries } = await supabase
+        .from('learning_queries')
+        .select('id', { count: 'exact', head: true })
+        .eq('status', 'queued');
+
+      const { count: completedToday } = await supabase
+        .from('learning_results')
+        .select('id', { count: 'exact', head: true })
+        .gte('created_at', new Date().toISOString().split('T')[0]);
+
+      systems.push({
+        name: 'Learning Pipeline',
+        status: 'healthy',
+        score: Math.min(1.0, ((completedToday || 0) + 1) / 5),
+        details: `${pendingQueries || 0} pending, ${completedToday || 0} completed today`
+      });
+
+      // 5. Check AI Quotas
+      const today = new Date().toISOString().split('T')[0];
+      const { data: quotas } = await supabase
+        .from('ai_daily_quota')
+        .select('provider, calls_used, calls_budget')
+        .eq('date', today);
+
+      const groqQuota = quotas?.find((q: { provider: string }) => q.provider === 'groq');
+      const quotaHealth = groqQuota ? 1 - ((groqQuota.calls_used || 0) / (groqQuota.calls_budget || 14400)) : 1.0;
+      
+      systems.push({
+        name: 'AI Quotas (Groq)',
+        status: quotaHealth > 0.5 ? 'healthy' : quotaHealth > 0.1 ? 'degraded' : 'critical',
+        score: quotaHealth,
+        details: groqQuota ? `${groqQuota.calls_used}/${groqQuota.calls_budget} used` : 'Not initialized'
+      });
+
+      // 6. Check Anomalies
+      const { count: unresolvedAnomalies } = await supabase
+        .from('pf_brain_anomalies')
+        .select('id', { count: 'exact', head: true })
+        .eq('resolved', false);
+
+      const anomalyHealth = Math.max(0.3, 1 - ((unresolvedAnomalies || 0) * 0.1));
+      systems.push({
+        name: 'Anomaly Status',
+        status: (unresolvedAnomalies || 0) === 0 ? 'healthy' : (unresolvedAnomalies || 0) < 5 ? 'degraded' : 'critical',
+        score: anomalyHealth,
+        details: `${unresolvedAnomalies || 0} unresolved`
+      });
+
+      // 7. Check Dreams
+      const { count: recentDreams } = await supabase
+        .from('cascade_dreams')
+        .select('id', { count: 'exact', head: true })
+        .gte('timestamp', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+
+      systems.push({
+        name: 'Dream System',
+        status: 'healthy',
+        score: 1.0,
+        details: `${recentDreams || 0} dreams in last 24h`
+      });
+
+      // Calculate overall health
+      const avgHealth = systems.reduce((sum, s) => sum + s.score, 0) / systems.length;
+      const overallStatus = avgHealth > 0.7 ? 'healthy' : avgHealth > 0.4 ? 'degraded' : 'critical';
+
+      // Log monitoring event (read-only action, but we track it)
+      await supabase.from('brain_events').insert({
+        event_type: 'ecosystem_monitor',
+        module: 'vision',
+        outcome: overallStatus,
+        data: { overall_health: avgHealth, systems_count: systems.length, via: 'substrate' }
+      });
+
+      return jsonResponse({
+        success: true,
+        overall_status: overallStatus,
+        overall_health: Math.round(avgHealth * 100),
+        systems,
+        proof_mode: true,
+        timestamp: new Date().toISOString()
+      }, headers);
+    }
+
+    // ═══ v3.3.0: RESILIENCE FRAMEWORK (from pf-resilience-monitor) ═══
+    case "resilience": {
+      // Check resilience status and propose auto-fixes - read-only probe
+      const AUTO_FIX_THRESHOLD = 0.95;
+      
+      // Check for recent errors in brain_events (last hour)
+      const { data: errors } = await supabase
+        .from('brain_events')
+        .select('id, event_type, module, outcome, data, created_at')
+        .eq('outcome', 'error')
+        .gte('created_at', new Date(Date.now() - 60 * 60 * 1000).toISOString())
+        .order('created_at', { ascending: false })
+        .limit(50);
+
+      if (!errors || errors.length === 0) {
+        return jsonResponse({
+          success: true,
+          resilience_status: 'optimal',
+          errors_found: 0,
+          fixes_proposed: [],
+          message: 'No errors detected in the last hour',
+          proof_mode: true,
+          timestamp: new Date().toISOString()
+        }, headers);
+      }
+
+      // Analyze error patterns and propose fixes
+      const fixes: Array<{
+        error_type: string;
+        module: string;
+        proposal: { action: string; params: Record<string, unknown> };
+        confidence: number;
+        auto_applicable: boolean;
+      }> = [];
+
+      for (const error of errors.slice(0, 10)) {
+        const errorType = error.event_type || 'unknown';
+        let fixProposal: { action: string; params: Record<string, unknown> } = { 
+          action: 'log_for_manual_review', 
+          params: { error_id: error.id } 
+        };
+        let fixConfidence = 0.5;
+
+        // Pattern matching for common issues
+        if (errorType.includes('quota') || errorType.includes('rate_limit')) {
+          fixProposal = { action: 'reduce_batch_size', params: { new_limit: 30, reason: 'quota_protection' } };
+          fixConfidence = 0.97;
+        } else if (errorType.includes('timeout')) {
+          fixProposal = { action: 'increase_timeout', params: { new_timeout_ms: 30000 } };
+          fixConfidence = 0.92;
+        } else if (errorType.includes('auth') || errorType.includes('permission')) {
+          fixProposal = { action: 'refresh_credentials', params: { module: error.module } };
+          fixConfidence = 0.85;
+        } else if (errorType.includes('connection') || errorType.includes('network')) {
+          fixProposal = { action: 'retry_with_backoff', params: { max_retries: 3, backoff_ms: 1000 } };
+          fixConfidence = 0.88;
+        }
+
+        fixes.push({
+          error_type: errorType,
+          module: error.module || 'unknown',
+          proposal: fixProposal,
+          confidence: fixConfidence,
+          auto_applicable: fixConfidence >= AUTO_FIX_THRESHOLD && fixProposal.action !== 'log_for_manual_review',
+        });
+      }
+
+      const autoApplicable = fixes.filter(f => f.auto_applicable).length;
+      const resilienceStatus = errors.length > 10 ? 'critical' : errors.length > 3 ? 'degraded' : 'recovering';
+
+      return jsonResponse({
+        success: true,
+        resilience_status: resilienceStatus,
+        errors_found: errors.length,
+        errors_analyzed: fixes.length,
+        fixes_proposed: fixes,
+        auto_applicable_count: autoApplicable,
+        summary: {
+          total_errors: errors.length,
+          unique_modules: [...new Set(errors.map((e: { module: string }) => e.module))],
+          error_types: [...new Set(errors.map((e: { event_type: string }) => e.event_type))].slice(0, 5),
+        },
+        proof_mode: true,
+        timestamp: new Date().toISOString()
+      }, headers);
+    }
+
+    // ═══ v3.3.0: THREAT ANALYTICS (from pf-reflex-analytics) ═══
+    case "analytics": {
+      // Real-time threat analytics with 24h rollup - read-only
+      const now = new Date();
+      const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+
+      const { data: events } = await supabase
+        .from('defense_events')
+        .select('id, action, ip, reason, risk_score, detected_at, user_agent')
+        .gte('detected_at', yesterday.toISOString())
+        .order('detected_at', { ascending: false })
+        .limit(500);
+
+      if (!events || events.length === 0) {
+        return jsonResponse({
+          success: true,
+          period: '24h',
+          threats_blocked_24h: 0,
+          total_events: 0,
+          bot_detection_accuracy: 0,
+          active_protection_modules: 5,
+          recent_events: [],
+          proof_mode: true,
+          timestamp: new Date().toISOString()
+        }, headers);
+      }
+
+      const blocked = events.filter((e: { action: string }) => e.action === 'block').length;
+      const challenged = events.filter((e: { action: string }) => e.action === 'challenge').length;
+      const allowed = events.filter((e: { action: string }) => e.action === 'allow').length;
+      const total = events.length;
+
+      // Calculate detection accuracy (blocked / (blocked + allowed high-risk))
+      const highRiskAllowed = events.filter((e: { action: string; risk_score: number }) => 
+        e.action === 'allow' && e.risk_score >= 60
+      ).length;
+      const accuracy = total > 0 ? Math.round((blocked / (blocked + highRiskAllowed + 0.01)) * 100) : 0;
+
+      // Group by IP for concentration analysis
+      const ipCounts: Record<string, number> = {};
+      events.forEach((e: { ip: string }) => {
+        if (e.ip) ipCounts[e.ip] = (ipCounts[e.ip] || 0) + 1;
+      });
+      const topIPs = Object.entries(ipCounts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5)
+        .map(([ip, count]) => ({ ip, count }));
+
+      // Risk distribution
+      const riskDistribution = {
+        low: events.filter((e: { risk_score: number }) => e.risk_score < 40).length,
+        medium: events.filter((e: { risk_score: number }) => e.risk_score >= 40 && e.risk_score < 70).length,
+        high: events.filter((e: { risk_score: number }) => e.risk_score >= 70).length,
+      };
+
+      const recentEvents = events.slice(0, 10).map((e: { detected_at: string; action: string; ip: string; reason: string; risk_score: number }) => ({
+        timestamp: e.detected_at,
+        action: e.action,
+        ip_address: e.ip || 'unknown',
+        reason: e.reason || 'security check',
+        risk_score: e.risk_score || 0
+      }));
+
+      return jsonResponse({
+        success: true,
+        period: '24h',
+        threats_blocked_24h: blocked,
+        threats_challenged_24h: challenged,
+        total_events: total,
+        bot_detection_accuracy: accuracy,
+        active_protection_modules: 5,
+        top_offending_ips: topIPs,
+        risk_distribution: riskDistribution,
+        recent_events: recentEvents,
+        proof_mode: true,
+        timestamp: new Date().toISOString()
       }, headers);
     }
 

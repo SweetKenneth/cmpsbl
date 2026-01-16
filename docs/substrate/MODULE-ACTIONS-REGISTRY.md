@@ -8,8 +8,9 @@
 | Version | v2026.01 |
 | Last Updated | 2026-01-16 |
 | Status | ACTIVE |
-| Substrate Version | 3.2.0 |
+| Substrate Version | 3.3.0 |
 | Type | Cognitive Orchestration Substrate |
+| Changelog | [CHANGELOG.md](./CHANGELOG.md) |
 
 ---
 
@@ -174,7 +175,7 @@ Multi-provider AI routing for text, image, video generation.
 
 ## Module: VISION
 
-Observability, metrics, health monitoring, alerting, distributed tracing.
+Observability, metrics, health monitoring, alerting, distributed tracing, ecosystem monitoring.
 
 | Action | Description | Parameters | Status |
 |--------|-------------|------------|--------|
@@ -186,6 +187,9 @@ Observability, metrics, health monitoring, alerting, distributed tracing.
 | `dashboard` | Get dashboard data | — | ✅ DEPLOYED (v3.1.0) |
 | `trace` | Distributed tracing | `traceId?: string`, `create?: boolean`, `module?: string`, `action?: string`, `duration_ms?: number` | ✅ DEPLOYED (v3.2.0) |
 | `audit` | Audit log query | `entity?: string`, `action?: string` | ✅ DEPLOYED |
+| `monitor` | Ecosystem health monitoring | — | ✅ DEPLOYED (v3.3.0) |
+| `resilience` | Resilience framework probe | — | ✅ DEPLOYED (v3.3.0) |
+| `analytics` | Threat analytics (24h) | — | ✅ DEPLOYED (v3.3.0) |
 
 ### Vision Dedicated Functions (Standalone)
 
@@ -195,6 +199,9 @@ Observability, metrics, health monitoring, alerting, distributed tracing.
 | `pf-system-status` | System status | ✅ DEPLOYED |
 | `pf-diagnostics` | Diagnostics | ✅ DEPLOYED |
 | `pf-telemetry-log` | Telemetry | ✅ DEPLOYED |
+| `pf-brain-monitor` | Ecosystem monitor (source for vision/monitor) | ✅ DEPLOYED |
+| `pf-resilience-monitor` | Resilience (source for vision/resilience) | ✅ DEPLOYED |
+| `pf-reflex-analytics` | Analytics (source for vision/analytics) | ✅ DEPLOYED |
 
 ---
 
