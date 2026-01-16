@@ -202,6 +202,10 @@ class SubstrateClient {
     /** v3.1.0: Real anomaly detection with pattern analysis */
     anomaly: (timeWindow: '1h' | '6h' | '24h' = '1h') =>
       this.invoke({ module: 'defense', action: 'anomaly', payload: { timeWindow } }),
+    
+    /** v3.4.0: Statistical anomaly probe with z-score analysis (read-only, Observer-eligible) */
+    anomalyProbe: (lookbackHours?: number) =>
+      this.invoke({ module: 'defense', action: 'anomaly_probe', payload: { lookbackHours } }),
   };
 
   // Nexus Module — Multi-Provider AI Routing
@@ -260,6 +264,10 @@ class SubstrateClient {
     /** v3.3.0: Threat analytics - 24h defense event rollup */
     analytics: () =>
       this.invoke({ module: 'vision', action: 'analytics' }),
+    
+    /** v3.4.0: Quick health snapshot (read-only, Observer-eligible) */
+    healthSnapshot: () =>
+      this.invoke({ module: 'vision', action: 'health_snapshot' }),
   };
 
   // System Module — Administration & Configuration

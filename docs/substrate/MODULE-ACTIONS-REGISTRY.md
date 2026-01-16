@@ -8,7 +8,7 @@
 | Version | v2026.01 |
 | Last Updated | 2026-01-16 |
 | Status | ACTIVE |
-| Substrate Version | 3.3.0 |
+| Substrate Version | 3.4.0 |
 | Type | Cognitive Orchestration Substrate |
 | Changelog | [CHANGELOG.md](./CHANGELOG.md) |
 
@@ -128,6 +128,7 @@ Bot detection, threat analysis, security, IP reputation.
 | `threat_feed` | External threat intel | — | ⚠️ STUB NEEDED |
 | `rate_limit` | Configure rate limiting | `endpoint: string`, `limit: number` | ⚠️ STUB NEEDED |
 | `anomaly` | Detect anomalies | `timeWindow?: '1h'|'6h'|'24h'` | ✅ DEPLOYED (v3.1.0) |
+| `anomaly_probe` | Statistical z-score anomaly detection | `lookbackHours?: number (1-168)` | ✅ DEPLOYED (v3.4.0) — Observer-eligible |
 
 ### Defense Dedicated Functions (Standalone)
 
@@ -190,6 +191,7 @@ Observability, metrics, health monitoring, alerting, distributed tracing, ecosys
 | `monitor` | Ecosystem health monitoring | — | ✅ DEPLOYED (v3.3.0) |
 | `resilience` | Resilience framework probe | — | ✅ DEPLOYED (v3.3.0) |
 | `analytics` | Threat analytics (24h) | — | ✅ DEPLOYED (v3.3.0) |
+| `health_snapshot` | Quick consolidated health check | — | ✅ DEPLOYED (v3.4.0) — Observer-eligible |
 
 ### Vision Dedicated Functions (Standalone)
 

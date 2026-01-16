@@ -46,7 +46,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const SUBSTRATE_VERSION = "3.3.0";
+const SUBSTRATE_VERSION = "3.4.0";
 
 // Trace ID generator for distributed tracing
 function generateTraceId(): string {
@@ -1295,6 +1295,127 @@ async function handleDefense(
       }, headers);
     }
 
+    // ═══ v3.4.0: STATISTICAL ANOMALY PROBE (from pf-defense-anomaly-detection) ═══
+    case "anomaly_probe": {
+      // Advanced statistical anomaly detection using z-scores - read-only, Observer-eligible
+      const { lookbackHours = 24 } = data;
+      const lookback = Math.min(Math.max(1, lookbackHours as number), 168); // 1-168h
+      const cutoffTime = new Date(Date.now() - lookback * 60 * 60 * 1000).toISOString();
+      
+      const { data: events } = await supabase
+        .from('defense_events')
+        .select('id, risk_score, action, ip, detected_at, reason, metadata')
+        .gte('detected_at', cutoffTime)
+        .order('detected_at', { ascending: false })
+        .limit(500);
+
+      if (!events || events.length < 10) {
+        return jsonResponse({
+          success: true,
+          module: 'defense',
+          action: 'anomaly_probe',
+          anomalies: [],
+          message: 'Insufficient data for statistical anomaly detection (need at least 10 events)',
+          baseline_events: events?.length || 0,
+          lookback_hours: lookback,
+          proof_mode: true,
+          role_visibility: 'observer',
+          timestamp: new Date().toISOString()
+        }, headers);
+      }
+
+      // Calculate baseline statistics for z-score analysis
+      const riskScores = events.map((e: { risk_score: number }) => e.risk_score || 0);
+      const avgRiskScore = riskScores.reduce((a: number, b: number) => a + b, 0) / riskScores.length;
+      const stdDevRiskScore = Math.sqrt(
+        riskScores.reduce((sum: number, val: number) => sum + Math.pow(val - avgRiskScore, 2), 0) / riskScores.length
+      ) || 1;
+
+      // Time bucket analysis for rate anomalies
+      const timeBuckets = new Map<string, number>();
+      events.forEach((e: { detected_at: string }) => {
+        const hourBucket = new Date(e.detected_at).toISOString().slice(0, 13);
+        timeBuckets.set(hourBucket, (timeBuckets.get(hourBucket) || 0) + 1);
+      });
+      const bucketValues = Array.from(timeBuckets.values());
+      const avgRequestsPerHour = bucketValues.reduce((a, b) => a + b, 0) / bucketValues.length;
+
+      // Fingerprint frequency tracking
+      const fingerprintCounts = new Map<string, number>();
+      events.forEach((e: { metadata?: { fingerprint?: string } }) => {
+        const fp = e.metadata?.fingerprint;
+        if (fp) fingerprintCounts.set(fp, (fingerprintCounts.get(fp) || 0) + 1);
+      });
+
+      // Detect statistical anomalies
+      interface StatisticalAnomaly {
+        event_id: string;
+        timestamp: string;
+        risk_score: number;
+        z_score: number;
+        action: string;
+        ip_address: string;
+        anomaly_score: number;
+        factors: Record<string, number>;
+        confidence: number;
+      }
+      const statisticalAnomalies: StatisticalAnomaly[] = [];
+      const recentEvents = events.slice(0, Math.min(30, events.length));
+
+      for (const event of recentEvents) {
+        const riskZScore = Math.abs((event.risk_score - avgRiskScore) / stdDevRiskScore);
+        const riskFactor = Math.min(riskZScore / 3, 1) * 40;
+        
+        const fpCount = fingerprintCounts.get(event.metadata?.fingerprint) || 1;
+        const fpFactor = fpCount > 10 ? Math.min(fpCount / 50, 1) * 30 : 0;
+        
+        const reasonCount = Array.isArray(event.reason) ? event.reason.length : 0;
+        const behaviorFactor = reasonCount > 3 ? Math.min(reasonCount / 8, 1) * 20 : 0;
+        
+        const overallScore = Math.round(riskFactor + fpFactor + behaviorFactor + 10);
+        const confidence = overallScore > 50 ? 0.85 + (Math.min(overallScore - 50, 50) / 50) * 0.15 : 0.5 + (overallScore / 50) * 0.35;
+
+        if (overallScore >= 50) {
+          statisticalAnomalies.push({
+            event_id: event.id,
+            timestamp: event.detected_at,
+            risk_score: event.risk_score,
+            z_score: Math.round(riskZScore * 100) / 100,
+            action: event.action,
+            ip_address: event.ip || 'unknown',
+            anomaly_score: overallScore,
+            factors: {
+              risk_score_anomaly: Math.round(riskFactor),
+              fingerprint_frequency: Math.round(fpFactor),
+              behavioral_anomaly: Math.round(behaviorFactor)
+            },
+            confidence: Math.round(confidence * 100) / 100
+          });
+        }
+      }
+
+      statisticalAnomalies.sort((a, b) => b.anomaly_score - a.anomaly_score);
+
+      return jsonResponse({
+        success: true,
+        module: 'defense',
+        action: 'anomaly_probe',
+        anomalies: statisticalAnomalies.slice(0, 10),
+        total_anomalies: statisticalAnomalies.length,
+        baseline_events: events.length,
+        lookback_hours: lookback,
+        statistics: {
+          avg_risk_score: Math.round(avgRiskScore * 100) / 100,
+          std_dev_risk_score: Math.round(stdDevRiskScore * 100) / 100,
+          avg_requests_per_hour: Math.round(avgRequestsPerHour * 100) / 100,
+          unique_fingerprints: fingerprintCounts.size
+        },
+        proof_mode: true,
+        role_visibility: 'observer',
+        timestamp: new Date().toISOString()
+      }, headers);
+    }
+
     default:
       throw new Error(`Unknown defense action: ${action}`);
   }
@@ -1556,6 +1677,60 @@ async function handleVision(
         severity,
         message: (message as string)?.substring(0, 100),
         timestamp: new Date().toISOString(),
+      }, headers);
+    }
+
+    // ═══ v3.4.0: HEALTH SNAPSHOT (Observer-eligible quick health check) ═══
+    case "health_snapshot": {
+      // Consolidated health snapshot - read-only, Observer-eligible
+      const [
+        { data: orchestrator },
+        { count: hotMemCount },
+        { count: coldMemCount },
+        { count: defenseCount },
+        { count: anomalyCount }
+      ] = await Promise.all([
+        supabase.from('brain_orchestrator_state').select('health_score, current_phase, status').limit(1).single(),
+        supabase.from('brain_memory_hot').select('id', { count: 'exact', head: true }),
+        supabase.from('brain_memory_cold').select('id', { count: 'exact', head: true }),
+        supabase.from('defense_events').select('id', { count: 'exact', head: true }),
+        supabase.from('pf_brain_anomalies').select('id', { count: 'exact', head: true }).eq('resolved', false)
+      ]);
+
+      const orchestratorHealth = (orchestrator?.health_score || 0.5) * 100;
+      const overallStatus = orchestratorHealth >= 80 ? 'healthy' : orchestratorHealth >= 50 ? 'degraded' : 'critical';
+
+      return jsonResponse({
+        success: true,
+        module: 'vision',
+        action: 'health_snapshot',
+        snapshot: {
+          overall_status: overallStatus,
+          overall_health: Math.round(orchestratorHealth),
+          orchestrator: {
+            phase: orchestrator?.current_phase || 'idle',
+            status: orchestrator?.status || 'unknown',
+            health: Math.round(orchestratorHealth)
+          },
+          memory: {
+            hot: hotMemCount || 0,
+            cold: coldMemCount || 0
+          },
+          defense: {
+            total_events: defenseCount || 0,
+            unresolved_anomalies: anomalyCount || 0
+          },
+          modules: Object.fromEntries(
+            Object.entries(state.modules).map(([k, v]) => [k, {
+              status: v.status,
+              health: v.healthScore,
+              circuit: v.circuitState
+            }])
+          )
+        },
+        proof_mode: true,
+        role_visibility: 'observer',
+        timestamp: new Date().toISOString()
       }, headers);
     }
 
