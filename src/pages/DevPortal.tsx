@@ -5,29 +5,34 @@
  * 
  * IMPORTANT: Users must provide their own API keys.
  * This portal does not provide compute resources.
+ * 
+ * Documentation is USAGE-FOCUSED only - no internal implementation details.
  */
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
   Code, Download, BookOpen, Key, Terminal, Zap, Shield, Brain,
   Eye, Moon, Layers, FileCode, Copy, Check, ExternalLink,
   Server, Lock, Rocket, AlertTriangle, ChevronRight, FileText,
   Bot, Image, MessageSquare, Network, Database, Activity,
-  Cpu, GitBranch, Package, PlayCircle
+  Cpu, GitBranch, Package, PlayCircle, Sparkles, Workflow,
+  Target, Gauge, Search, Bell, Timer, CloudLightning, Fingerprint,
+  Radio, Lightbulb, Flame, Star, ArrowRight, Globe
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { SEO } from '@/components/SEO';
 import { toast } from 'sonner';
 
-// Template definitions
+// 15 Templates covering all modules and use cases
 const TEMPLATES = [
   {
     id: 'chatbot',
@@ -37,44 +42,64 @@ const TEMPLATES = [
     category: 'decode',
     difficulty: 'beginner',
     estimatedTime: '15 min',
-    code: `import { decode } from '@/lib/substrate';
+    features: ['Session memory', 'Intent extraction', 'Context awareness'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient({
+  url: 'https://YOUR_PROJECT.supabase.co',
+  anonKey: 'YOUR_ANON_KEY'
+});
 
 // Simple chatbot with session memory
 async function chat(message: string, sessionId: string) {
-  const response = await decode.chat(message, sessionId);
+  const response = await substrate.decode.chat(message, sessionId);
   return response.data?.reply;
 }
 
 // With intent extraction
-async function smartChat(message: string) {
-  const intent = await decode.intent(message);
-  const reply = await decode.chat(message);
-  return { intent: intent.data, reply: reply.data };
+async function smartChat(message: string, sessionId: string) {
+  const intent = await substrate.decode.intent(message);
+  const reply = await substrate.decode.chat(message, sessionId);
+  return { 
+    intent: intent.data,
+    reply: reply.data?.reply,
+    confidence: intent.data?.confidence
+  };
 }`
   },
   {
-    id: 'memory-system',
+    id: 'knowledge-base',
     name: 'Knowledge Base',
     description: 'Store, query, and evolve knowledge with confidence scoring',
     icon: Brain,
     category: 'brain',
     difficulty: 'beginner',
     estimatedTime: '20 min',
-    code: `import { brain } from '@/lib/substrate';
+    features: ['Semantic search', 'Confidence scoring', 'Memory reinforcement'],
+    code: `import { SubstrateClient } from './substrate-client';
 
-// Store knowledge
-await brain.remember(
+const substrate = new SubstrateClient(config);
+
+// Store knowledge with confidence
+await substrate.brain.remember(
   'Neural networks learn through backpropagation',
   'fact',
-  0.95, // confidence
+  0.95, // confidence score
   { domain: 'ml', verified: true }
 );
 
-// Query knowledge
-const results = await brain.query('machine learning', 10);
+// Semantic search
+const results = await substrate.brain.query('machine learning', 10);
 
-// Reinforce good memories
-await brain.reinforce(memoryId, 0.1);`
+// Reinforce accurate memories
+for (const memory of results.data.memories) {
+  if (memory.wasHelpful) {
+    await substrate.brain.reinforce(memory.id, 0.1);
+  }
+}
+
+// Trigger daily reflection
+await substrate.brain.reflect();`
   },
   {
     id: 'bot-detection',
@@ -84,27 +109,38 @@ await brain.reinforce(memoryId, 0.1);`
     category: 'defense',
     difficulty: 'intermediate',
     estimatedTime: '25 min',
-    code: `import { defense } from '@/lib/substrate';
+    features: ['Fingerprint analysis', 'IP reputation', 'Risk scoring'],
+    code: `import { SubstrateClient } from './substrate-client';
 
-// Analyze request
-const analysis = await defense.analyze({
-  fingerprint: {
-    canvas: canvasHash,
-    webgl: webglHash,
-    audio: audioHash,
-    fonts: fontList
-  },
-  ip: clientIp,
-  userAgent: navigator.userAgent
-});
+const substrate = new SubstrateClient(config);
 
-// Check if bot
-if (analysis.data?.risk_score > 0.7) {
-  return blockRequest();
-}
+// Analyze incoming request
+async function protectEndpoint(req: Request) {
+  const fingerprint = await collectFingerprint();
+  const clientIp = req.headers.get('x-forwarded-for');
+  
+  const analysis = await substrate.defense.analyze({
+    fingerprint: {
+      canvas: fingerprint.canvas,
+      webgl: fingerprint.webgl,
+      audio: fingerprint.audio,
+      fonts: fingerprint.fonts
+    }
+  }, clientIp);
 
-// Check IP reputation
-const reputation = await defense.reputation(clientIp);`
+  // Check risk score
+  if (analysis.data?.risk_score > 0.7) {
+    return { blocked: true, reason: 'High risk detected' };
+  }
+
+  // Check IP reputation
+  const reputation = await substrate.defense.reputation(clientIp);
+  if (reputation.data?.score < 30) {
+    return { blocked: true, reason: 'Bad IP reputation' };
+  }
+
+  return { blocked: false };
+}`
   },
   {
     id: 'ai-router',
@@ -114,24 +150,32 @@ const reputation = await defense.reputation(clientIp);`
     category: 'nexus',
     difficulty: 'intermediate',
     estimatedTime: '20 min',
-    code: `import { nexus } from '@/lib/substrate';
+    features: ['Provider failover', 'Cost optimization', 'Latency routing'],
+    code: `import { SubstrateClient } from './substrate-client';
 
-// Auto-route to best provider
-const response = await nexus.route('Explain quantum computing');
+const substrate = new SubstrateClient(config);
 
-// Generate text with specific model
-const text = await nexus.text(
-  'Write a poem about AI',
-  'gpt-4' // optional model override
+// Auto-route to best available provider
+// Automatically handles failover if primary is down
+const response = await substrate.nexus.route('Explain quantum computing');
+
+// Generate with specific requirements
+const text = await substrate.nexus.text(
+  'Write a technical blog post about microservices',
+  'gpt-4' // optional model preference
 );
 
-// Generate image
-const image = await nexus.image(
-  'A surreal dreamscape with floating islands'
+// Generate images
+const image = await substrate.nexus.image(
+  'A surreal dreamscape with floating islands, digital art'
 );
 
-// Check provider status
-const providers = await nexus.providers();`
+// Check which providers are available
+const providers = await substrate.nexus.providers();
+console.log('Available:', providers.data.available);
+
+// Get routing analytics
+const stats = await substrate.nexus.routeStats();`
   },
   {
     id: 'observability',
@@ -141,26 +185,37 @@ const providers = await nexus.providers();`
     category: 'vision',
     difficulty: 'intermediate',
     estimatedTime: '30 min',
-    code: `import { vision } from '@/lib/substrate';
+    features: ['Health monitoring', 'Distributed tracing', 'Alerting'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
 
 // Quick health check
-const health = await vision.healthSnapshot();
+const health = await substrate.vision.healthSnapshot();
+console.log('Health Score:', health.data.healthScore);
 
 // Full dashboard data
-const dashboard = await vision.dashboard();
+const dashboard = await substrate.vision.dashboard();
 
-// Create alert
-await vision.alert('warn', 'High latency detected', {
-  endpoint: '/api/chat',
-  latency_ms: 2500
-});
-
-// Distributed tracing
-const trace = await vision.trace(undefined, {
+// Create distributed trace
+const trace = await substrate.vision.trace(undefined, {
   create: true,
   module: 'brain',
   action: 'query'
-});`
+});
+const traceId = trace.data.traceId;
+
+// Continue trace in subsequent calls
+await substrate.vision.trace(traceId, {
+  module: 'nexus',
+  action: 'route',
+  duration_ms: 150
+});
+
+// Create alert for anomalies
+if (health.data.healthScore < 80) {
+  await substrate.vision.alert('warn', 'Health degradation detected');
+}`
   },
   {
     id: 'dream-feeder',
@@ -170,54 +225,74 @@ const trace = await vision.trace(undefined, {
     category: 'dream',
     difficulty: 'beginner',
     estimatedTime: '15 min',
-    code: `import { dream } from '@/lib/substrate';
+    features: ['Dream ingestion', 'Mood analysis', 'Dream interpretation'],
+    code: `import { SubstrateClient } from './substrate-client';
 
-// Feed a dream
-await dream.feed(
-  'I was floating through an endless library...',
-  'dream' // or 'nightmare', 'vision'
+const substrate = new SubstrateClient(config);
+
+// Feed a dream for processing
+const result = await substrate.dream.feed(
+  'I was floating through an endless library where each book contained a universe...',
+  'dream' // or 'nightmare', 'vision', 'memory'
 );
 
 // Check Dream-Eater state
-const state = await dream.status();
+const state = await substrate.dream.status();
+console.log('Mood:', state.data.current_mood);
+console.log('Dreams consumed today:', state.data.dreams_consumed_today);
 
-// Interpret a dream
-const interpretation = await dream.interpret(
-  'Flying over mountains with silver wings'
+// Interpret a specific dream
+const interpretation = await substrate.dream.interpret(
+  'Flying over silver mountains with crystalline wings'
 );
 
-// Trigger mutation cycle
-await dream.mutate();`
+// Trigger mutation cycle (advanced)
+await substrate.dream.mutate();`
   },
   {
-    id: 'learning-loop',
+    id: 'learning-agent',
     name: 'Self-Learning Agent',
     description: 'Create an agent that learns and improves from interactions',
     icon: Cpu,
     category: 'brain',
     difficulty: 'advanced',
     estimatedTime: '45 min',
-    code: `import { brain, decode } from '@/lib/substrate';
+    features: ['Continuous learning', 'Context recall', 'Reflection cycles'],
+    code: `import { SubstrateClient } from './substrate-client';
 
-async function learningAgent(input: string) {
-  // Recall relevant context
-  const context = await brain.query(input, 5);
+const substrate = new SubstrateClient(config);
+
+async function learningAgent(userInput: string, sessionId: string) {
+  // 1. Recall relevant context from memory
+  const context = await substrate.brain.query(userInput, 5);
   
-  // Process with context
-  const response = await decode.chat(input);
+  // 2. Process with Decode (includes context)
+  const response = await substrate.decode.chat(userInput, sessionId);
   
-  // Learn from interaction
-  await brain.learn(
-    \`Q: \${input}\\nA: \${response.data?.reply}\`,
+  // 3. Learn from this interaction
+  await substrate.brain.learn(
+    \`User asked: \${userInput}\\nAgent replied: \${response.data?.reply}\`,
     'interaction'
   );
   
-  // Trigger reflection periodically
+  // 4. Periodically trigger reflection for synthesis
   if (shouldReflect()) {
-    await brain.reflect();
+    const reflection = await substrate.brain.reflect();
+    console.log('Daily insights:', reflection.data?.insights);
   }
   
   return response.data?.reply;
+}
+
+// Helper: reflect once per day
+let lastReflection = 0;
+function shouldReflect() {
+  const now = Date.now();
+  if (now - lastReflection > 86400000) {
+    lastReflection = now;
+    return true;
+  }
+  return false;
 }`
   },
   {
@@ -228,27 +303,43 @@ async function learningAgent(input: string) {
     category: 'defense',
     difficulty: 'advanced',
     estimatedTime: '40 min',
-    code: `import { defense, vision } from '@/lib/substrate';
+    features: ['Threat detection', 'Anomaly analysis', 'Security posture'],
+    code: `import { SubstrateClient } from './substrate-client';
 
-// Get security posture
-const posture = await defense.posture();
+const substrate = new SubstrateClient(config);
 
-// Detect anomalies (statistical z-score)
-const anomalies = await defense.anomalyProbe(24);
+async function getSecurityState() {
+  // Get overall security posture
+  const posture = await substrate.defense.posture();
+  
+  // Detect anomalies (statistical z-score analysis)
+  const anomalies = await substrate.defense.anomalyProbe(24); // last 24 hours
+  
+  // Check rate limit status
+  const limits = await substrate.defense.limits();
+  
+  // Get threat analytics
+  const threats = await substrate.vision.analytics();
+  
+  return {
+    posture: {
+      score: posture.data.overall_score,
+      rls_enabled: posture.data.rls_enabled,
+      threats_blocked: posture.data.threats_blocked_24h
+    },
+    anomalies: anomalies.data?.anomalies || [],
+    rateLimits: limits.data,
+    recentThreats: threats.data?.threats || []
+  };
+}
 
-// Check rate limits
-const limits = await defense.limits();
-
-// Get threat analytics
-const threats = await vision.analytics();
-
-// Combined security view
-const securityState = {
-  posture: posture.data,
-  anomalies: anomalies.data?.anomalies,
-  rateLimits: limits.data,
-  threats24h: threats.data
-};`
+// Set up monitoring loop
+setInterval(async () => {
+  const state = await getSecurityState();
+  if (state.posture.score < 70) {
+    console.warn('Security score degraded!', state);
+  }
+}, 60000); // Check every minute`
   },
   {
     id: 'knowledge-graph',
@@ -258,75 +349,251 @@ const securityState = {
     category: 'brain',
     difficulty: 'advanced',
     estimatedTime: '50 min',
-    code: `import { brain } from '@/lib/substrate';
+    features: ['Graph building', 'Relationship mapping', 'Cross-domain synthesis'],
+    code: `import { SubstrateClient } from './substrate-client';
 
-// Build knowledge graph
-await brain.graphBuild();
+const substrate = new SubstrateClient(config);
 
-// Get graph summary
-const summary = await brain.graphSummary();
-// Returns: nodes, edges, clusters, connectivity
+// Store interconnected knowledge
+await substrate.brain.remember('React is a JavaScript library', 'concept');
+await substrate.brain.remember('React uses virtual DOM', 'fact');
+await substrate.brain.remember('Virtual DOM improves performance', 'fact');
 
-// Store connected memories
-await brain.remember('Concept A', 'concept');
-await brain.remember('Concept B', 'concept');
+// Build knowledge graph from memories
+await substrate.brain.graphBuild();
 
-// Reinforce connections
-await brain.reinforce(edgeId, 0.2);
+// Get graph structure summary
+const summary = await substrate.brain.graphSummary();
+console.log('Nodes:', summary.data.node_count);
+console.log('Edges:', summary.data.edge_count);
+console.log('Clusters:', summary.data.clusters);
 
-// Cross-domain synthesis
-const insights = await brain.synthesize();`
+// Synthesize insights across domains
+const insights = await substrate.brain.synthesize();
+console.log('Cross-domain insights:', insights.data.insights);
+
+// Reinforce important connections
+if (summary.data.top_edges) {
+  for (const edge of summary.data.top_edges.slice(0, 5)) {
+    await substrate.brain.reinforce(edge.id, 0.15);
+  }
+}`
   },
   {
     id: 'quota-monitor',
     name: 'AI Cost Monitor',
     description: 'Track AI usage, costs, and quota consumption in real-time',
-    icon: Database,
+    icon: Gauge,
     category: 'vision',
     difficulty: 'intermediate',
     estimatedTime: '25 min',
-    code: `import { vision, nexus } from '@/lib/substrate';
+    features: ['Usage tracking', 'Cost estimation', 'Quota alerts'],
+    code: `import { SubstrateClient } from './substrate-client';
 
-// Get quota status
-const quota = await vision.quota();
-// Returns: daily calls, tokens, cost estimates, pressure
+const substrate = new SubstrateClient(config);
 
-// Get routing analytics
-const routeStats = await nexus.routeStats();
-// Returns: per-provider breakdown, success rates, costs
-
-// Monitor usage
-function checkUsage() {
-  const { pressure } = quota.data;
-  if (pressure > 0.8) {
-    alert('Approaching daily limit!');
+async function monitorAICosts() {
+  // Get current quota status
+  const quota = await substrate.vision.quota();
+  
+  // Get routing stats with cost breakdown
+  const routeStats = await substrate.nexus.routeStats();
+  
+  console.log('Daily Usage:', {
+    calls: quota.data.daily_calls_used,
+    tokens: quota.data.tokens_used,
+    estimated_cost: quota.data.estimated_cost_usd,
+    pressure: quota.data.pressure // 0-1 scale
+  });
+  
+  console.log('Provider Costs:', routeStats.data.provider_breakdown);
+  
+  // Alert if approaching limit
+  if (quota.data.pressure > 0.8) {
+    console.warn('⚠️ Approaching daily quota limit!');
+    // Switch to cheaper models or implement throttling
   }
-}`
+  
+  return { quota: quota.data, routes: routeStats.data };
+}
+
+// Check every 5 minutes
+setInterval(monitorAICosts, 300000);`
   },
   {
     id: 'session-analytics',
     name: 'Session Analytics',
     description: 'Analyze user sessions with cross-module activity tracking',
-    icon: Eye,
+    icon: Search,
     category: 'brain',
     difficulty: 'intermediate',
     estimatedTime: '30 min',
-    code: `import { brain, vision } from '@/lib/substrate';
+    features: ['Session tracking', 'Activity patterns', 'Curiosity exploration'],
+    code: `import { SubstrateClient } from './substrate-client';
 
-// Session reflection (last 24 hours)
-const session = await brain.sessionReflection(24);
+const substrate = new SubstrateClient(config);
 
-// Introspection - deep substrate analysis
-const introspection = await vision.introspection();
+// Get session reflection (cross-module activity)
+const session = await substrate.brain.sessionReflection(24); // last 24 hours
+console.log('Session summary:', session.data.summary);
+console.log('Top patterns:', session.data.patterns);
 
-// Get patterns and insights
-const patterns = await brain.patterns();
+// Deep substrate introspection
+const introspection = await substrate.vision.introspection();
+console.log('Module health:', introspection.data.module_health);
+console.log('Memory stats:', introspection.data.memory_stats);
 
-// Curiosity log - what the system wants to learn
-const curiosity = await brain.curiosity();
+// View curiosity log (what the system wants to learn)
+const curiosity = await substrate.brain.curiosity();
+console.log('Unexplored topics:', curiosity.data.queries);
 
-// Explore a curiosity query
-await brain.explore('What is quantum entanglement?');`
+// Explore a curiosity topic
+if (curiosity.data.queries.length > 0) {
+  const topCuriosity = curiosity.data.queries[0];
+  await substrate.brain.explore(topCuriosity.query);
+}`
+  },
+  {
+    id: 'rate-limiter',
+    name: 'Smart Rate Limiter',
+    description: 'Intelligent rate limiting with fingerprint-based tracking',
+    icon: Timer,
+    category: 'defense',
+    difficulty: 'intermediate',
+    estimatedTime: '25 min',
+    features: ['Fingerprint tracking', 'Dynamic limits', 'Bypass detection'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+async function smartRateLimit(request: Request) {
+  const fingerprint = await collectFingerprint();
+  const clientIp = getClientIp(request);
+  
+  // Check current rate limit status
+  const limits = await substrate.defense.limits();
+  
+  // Analyze request pattern
+  const analysis = await substrate.defense.analyze({
+    fingerprint,
+    ip: clientIp,
+    userAgent: request.headers.get('user-agent')
+  }, clientIp);
+  
+  // Dynamic rate limiting based on risk
+  const riskScore = analysis.data?.risk_score || 0;
+  
+  if (riskScore > 0.8) {
+    return { allowed: false, reason: 'High risk client', wait: 3600 };
+  } else if (riskScore > 0.5) {
+    // Reduce rate limit for suspicious clients
+    if (limits.data.requests_remaining < 10) {
+      return { allowed: false, reason: 'Rate limited', wait: 60 };
+    }
+  }
+  
+  return { allowed: true, remaining: limits.data.requests_remaining };
+}`
+  },
+  {
+    id: 'webhook-processor',
+    name: 'Webhook Processor',
+    description: 'Process incoming webhooks with security validation',
+    icon: Workflow,
+    category: 'defense',
+    difficulty: 'intermediate',
+    estimatedTime: '30 min',
+    features: ['Signature validation', 'Threat screening', 'Event routing'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+async function processWebhook(request: Request) {
+  const body = await request.json();
+  const signature = request.headers.get('x-webhook-signature');
+  const sourceIp = getClientIp(request);
+  
+  // 1. Security screening
+  const security = await substrate.defense.analyze({
+    fingerprint: { source: 'webhook', signature }
+  }, sourceIp);
+  
+  if (security.data?.blocked) {
+    await substrate.vision.alert('error', 'Blocked webhook attempt', {
+      ip: sourceIp,
+      reason: security.data.reason
+    });
+    return { status: 403, error: 'Blocked' };
+  }
+  
+  // 2. Check IP reputation
+  const reputation = await substrate.defense.reputation(sourceIp);
+  if (reputation.data?.score < 50) {
+    return { status: 403, error: 'Untrusted source' };
+  }
+  
+  // 3. Learn from webhook content
+  await substrate.brain.learn(
+    JSON.stringify(body),
+    \`webhook:\${body.event_type || 'unknown'}\`
+  );
+  
+  // 4. Create trace for observability
+  const trace = await substrate.vision.trace(undefined, {
+    create: true,
+    module: 'webhook',
+    action: body.event_type
+  });
+  
+  return { status: 200, traceId: trace.data.traceId };
+}`
+  },
+  {
+    id: 'content-moderator',
+    name: 'Content Moderator',
+    description: 'AI-powered content moderation with learning',
+    icon: Target,
+    category: 'decode',
+    difficulty: 'intermediate',
+    estimatedTime: '35 min',
+    features: ['Content analysis', 'Risk classification', 'Feedback learning'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+async function moderateContent(content: string, contentType: string) {
+  // 1. Extract intent to understand content purpose
+  const intent = await substrate.decode.intent(content);
+  
+  // 2. Query past moderation decisions for similar content
+  const similar = await substrate.brain.query(
+    \`moderation \${contentType} \${intent.data?.primary_intent}\`,
+    5
+  );
+  
+  // 3. Route to AI for analysis
+  const analysis = await substrate.nexus.route(
+    \`Analyze this \${contentType} for policy violations: \${content}\`
+  );
+  
+  // 4. Make decision
+  const decision = {
+    approved: !analysis.data?.violations,
+    reason: analysis.data?.reason,
+    confidence: analysis.data?.confidence,
+    similar_cases: similar.data?.memories?.length || 0
+  };
+  
+  // 5. Learn from this decision
+  await substrate.brain.remember(
+    \`Moderation: \${contentType} - \${decision.approved ? 'approved' : 'rejected'}\`,
+    'moderation_decision',
+    decision.confidence,
+    { content_hash: hashContent(content), reason: decision.reason }
+  );
+  
+  return decision;
+}`
   },
   {
     id: 'full-stack-ai',
@@ -336,100 +603,179 @@ await brain.explore('What is quantum entanglement?');`
     category: 'system',
     difficulty: 'advanced',
     estimatedTime: '60 min',
-    code: `import { substrate, brain, decode, defense, 
-         nexus, vision, system } from '@/lib/substrate';
+    features: ['All modules', 'Production ready', 'Error handling'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
 
 class AIApplication {
   async initialize() {
-    // Check system health
-    const health = await system.health();
+    // Check system health on startup
+    const health = await substrate.system.health();
     if (!health.data?.healthy) {
-      await system.heal();
+      console.log('System unhealthy, initiating heal...');
+      await substrate.system.heal();
     }
+    console.log('System ready, version:', health.data?.version);
   }
 
-  async processRequest(req: Request) {
+  async processRequest(req: UserRequest) {
     // 1. Security check
-    const threat = await defense.analyze(req.fingerprint);
-    if (threat.data?.blocked) return { error: 'Blocked' };
+    const threat = await substrate.defense.analyze({
+      fingerprint: req.fingerprint
+    }, req.ip);
+    
+    if (threat.data?.blocked) {
+      return { error: 'Request blocked', code: 403 };
+    }
 
-    // 2. Decode intent
-    const intent = await decode.intent(req.message);
+    // 2. Create trace for observability
+    const trace = await substrate.vision.trace(undefined, { create: true });
 
-    // 3. Recall context
-    const context = await brain.query(req.message, 5);
+    // 3. Decode user intent
+    const intent = await substrate.decode.intent(req.message);
 
-    // 4. Route to AI
-    const response = await nexus.route(req.message);
+    // 4. Recall relevant context
+    const context = await substrate.brain.query(req.message, 5);
 
-    // 5. Learn from interaction
-    await brain.learn(req.message + response, 'interaction');
+    // 5. Route to AI with context
+    const response = await substrate.nexus.route(
+      \`Context: \${JSON.stringify(context.data)}\\nUser: \${req.message}\`
+    );
 
-    // 6. Log for observability
-    await vision.trace(req.id, { create: true });
+    // 6. Learn from interaction
+    await substrate.brain.learn(
+      \`Q: \${req.message}\\nA: \${response.data}\`,
+      'user_interaction'
+    );
 
-    return response;
+    // 7. Complete trace
+    await substrate.vision.trace(trace.data.traceId, { 
+      complete: true, 
+      duration_ms: Date.now() - trace.data.started 
+    });
+
+    return { reply: response.data, traceId: trace.data.traceId };
   }
 }`
   }
 ];
 
-// Documentation sections
+// Usage-focused documentation (no implementation details)
 const DOCS = [
   {
     id: 'quickstart',
     title: 'Quick Start Guide',
     description: 'Get up and running in 5 minutes',
     icon: Rocket,
-    path: '/docs/substrate/README.md'
-  },
-  {
-    id: 'user-manual',
-    title: 'User Manual',
-    description: 'Complete guide to all modules and actions',
-    icon: BookOpen,
-    path: '/docs/substrate/USER-MANUAL.md'
-  },
-  {
-    id: 'architecture',
-    title: 'Architecture',
-    description: 'System design and module interactions',
-    icon: Layers,
-    path: '/docs/substrate/ARCHITECTURE.md'
+    content: 'quickstart',
+    downloadable: true
   },
   {
     id: 'api-reference',
     title: 'API Reference',
-    description: 'All 50+ actions with parameters',
+    description: 'Complete action reference with parameters',
     icon: Code,
-    path: '/docs/substrate/MODULE-ACTIONS-REGISTRY.md'
+    content: 'api',
+    downloadable: true
   },
   {
-    id: 'changelog',
-    title: 'Changelog',
-    description: 'Version history and updates',
-    icon: FileText,
-    path: '/docs/substrate/CHANGELOG.md'
+    id: 'sdk-guide',
+    title: 'SDK Documentation',
+    description: 'TypeScript SDK usage and examples',
+    icon: Package,
+    content: 'sdk',
+    downloadable: true
   },
   {
-    id: 'decode-rfc',
-    title: 'Decode RFC',
-    description: 'The interpreter primitive specification',
-    icon: Terminal,
-    path: '/docs/substrate/DecodeRFC.md'
+    id: 'rate-limits',
+    title: 'Rate Limits',
+    description: 'Understanding request limits and quotas',
+    icon: Timer,
+    content: 'limits',
+    downloadable: false
+  },
+  {
+    id: 'authentication',
+    title: 'Authentication',
+    description: 'JWT authentication and authorization',
+    icon: Lock,
+    content: 'auth',
+    downloadable: false
+  },
+  {
+    id: 'error-handling',
+    title: 'Error Handling',
+    description: 'Error codes and troubleshooting',
+    icon: AlertTriangle,
+    content: 'errors',
+    downloadable: false
   }
 ];
 
 // Provider requirements
 const REQUIRED_KEYS = [
-  { name: 'GROQ_API_KEY', provider: 'Groq', url: 'https://console.groq.com', required: true },
-  { name: 'OPENAI_API_KEY', provider: 'OpenAI', url: 'https://platform.openai.com', required: false },
-  { name: 'CEREBRAS_API_KEY', provider: 'Cerebras', url: 'https://cloud.cerebras.ai', required: false },
-  { name: 'TOGETHER_API_KEY', provider: 'Together', url: 'https://together.ai', required: false },
-  { name: 'DEEPSEEK_API_KEY', provider: 'DeepSeek', url: 'https://platform.deepseek.com', required: false },
+  { name: 'GROQ_API_KEY', provider: 'Groq', url: 'https://console.groq.com', required: true, description: 'Primary AI provider (fastest)' },
+  { name: 'OPENAI_API_KEY', provider: 'OpenAI', url: 'https://platform.openai.com', required: false, description: 'GPT-4 access for complex tasks' },
+  { name: 'CEREBRAS_API_KEY', provider: 'Cerebras', url: 'https://cloud.cerebras.ai', required: false, description: 'High-performance fallback' },
+  { name: 'TOGETHER_API_KEY', provider: 'Together', url: 'https://together.ai', required: false, description: 'Open source models' },
+  { name: 'DEEPSEEK_API_KEY', provider: 'DeepSeek', url: 'https://platform.deepseek.com', required: false, description: 'Cost-effective option' },
 ];
 
-function CopyButton({ text }: { text: string }) {
+// Module quick reference
+const MODULES = [
+  { 
+    name: 'Brain', 
+    icon: Brain, 
+    color: 'violet',
+    desc: 'Memory, learning, knowledge graphs',
+    actions: ['query', 'remember', 'reflect', 'reinforce', 'learn', 'synthesize', 'graphSummary']
+  },
+  { 
+    name: 'Decode', 
+    icon: MessageSquare, 
+    color: 'cyan',
+    desc: 'Intent decoding, chat interface',
+    actions: ['chat', 'intent', 'dream', 'learn']
+  },
+  { 
+    name: 'Defense', 
+    icon: Shield, 
+    color: 'emerald',
+    desc: 'Bot detection, threat analysis',
+    actions: ['analyze', 'reputation', 'posture', 'anomalyProbe', 'limits']
+  },
+  { 
+    name: 'Nexus', 
+    icon: Network, 
+    color: 'amber',
+    desc: 'Multi-provider AI routing',
+    actions: ['route', 'text', 'image', 'providers', 'routeStats']
+  },
+  { 
+    name: 'Vision', 
+    icon: Eye, 
+    color: 'rose',
+    desc: 'Observability, metrics, tracing',
+    actions: ['health', 'healthSnapshot', 'dashboard', 'trace', 'quota', 'introspection']
+  },
+  { 
+    name: 'Dream', 
+    icon: Moon, 
+    color: 'purple',
+    desc: 'Dream processing, synthesis',
+    actions: ['feed', 'interpret', 'cycle', 'mutate', 'status']
+  },
+  { 
+    name: 'System', 
+    icon: Server, 
+    color: 'blue',
+    desc: 'Administration, health, backup',
+    actions: ['status', 'health', 'heal', 'backup', 'version']
+  },
+];
+
+function CopyButton({ text, className = '' }: { text: string; className?: string }) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -440,7 +786,7 @@ function CopyButton({ text }: { text: string }) {
   };
 
   return (
-    <Button variant="ghost" size="sm" onClick={handleCopy} className="h-7 px-2">
+    <Button variant="ghost" size="sm" onClick={handleCopy} className={`h-7 px-2 ${className}`}>
       {copied ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5" />}
     </Button>
   );
@@ -493,6 +839,13 @@ function TemplateCard({ template }: { template: typeof TEMPLATES[0] }) {
         <CardDescription className="text-sm mt-2">
           {template.description}
         </CardDescription>
+        <div className="flex flex-wrap gap-1 mt-2">
+          {template.features.map((feature) => (
+            <Badge key={feature} variant="secondary" className="text-[10px]">
+              {feature}
+            </Badge>
+          ))}
+        </div>
       </CardHeader>
       <CardContent className="pt-0">
         <Button 
@@ -505,32 +858,244 @@ function TemplateCard({ template }: { template: typeof TEMPLATES[0] }) {
           {expanded ? 'Hide Code' : 'View Code'}
         </Button>
         
-        {expanded && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-          >
-            <div className="relative">
-              <div className="absolute top-2 right-2 z-10">
-                <CopyButton text={template.code} />
+        <AnimatePresence>
+          {expanded && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+            >
+              <div className="relative">
+                <div className="absolute top-2 right-2 z-10">
+                  <CopyButton text={template.code} />
+                </div>
+                <ScrollArea className="h-[280px] rounded-lg bg-muted/50 border border-border/50">
+                  <pre className="p-4 text-xs font-mono overflow-x-auto">
+                    <code className="text-foreground/90">{template.code}</code>
+                  </pre>
+                </ScrollArea>
               </div>
-              <ScrollArea className="h-[250px] rounded-lg bg-muted/50 border border-border/50">
-                <pre className="p-4 text-xs font-mono overflow-x-auto">
-                  <code className="text-foreground/90">{template.code}</code>
-                </pre>
-              </ScrollArea>
-            </div>
-          </motion.div>
-        )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </CardContent>
     </Card>
   );
 }
 
+function InlineDocumentation({ docId }: { docId: string }) {
+  const docsContent: Record<string, React.ReactNode> = {
+    quickstart: (
+      <div className="space-y-6">
+        <div>
+          <h3 className="text-lg font-semibold mb-3">1. Get Your API Keys</h3>
+          <p className="text-muted-foreground mb-3">
+            The substrate routes to multiple AI providers. You need at least one API key:
+          </p>
+          <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1">
+            <li><strong>Groq</strong> (required) — Fastest inference, get key at console.groq.com</li>
+            <li><strong>OpenAI</strong> (optional) — GPT-4 for complex tasks</li>
+            <li><strong>Cerebras</strong> (optional) — High-performance fallback</li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 className="text-lg font-semibold mb-3">2. Deploy the Substrate</h3>
+          <Card className="bg-muted/50 p-4">
+            <code className="text-sm">
+              # Clone and deploy to your Supabase project<br/>
+              supabase functions deploy pf-substrate<br/><br/>
+              # Add your API keys as secrets<br/>
+              supabase secrets set GROQ_API_KEY=your_key_here
+            </code>
+          </Card>
+        </div>
+        
+        <div>
+          <h3 className="text-lg font-semibold mb-3">3. Make Your First Call</h3>
+          <Card className="bg-muted/50 p-4">
+            <code className="text-sm">
+              {`POST https://YOUR_PROJECT.supabase.co/functions/v1/pf-substrate
+              
+{
+  "module": "vision",
+  "action": "health",
+  "payload": {}
+}`}
+            </code>
+          </Card>
+        </div>
+      </div>
+    ),
+    api: (
+      <div className="space-y-6">
+        <div>
+          <h3 className="text-lg font-semibold mb-3">Request Format</h3>
+          <Card className="bg-muted/50 p-4">
+            <code className="text-sm">
+              {`POST /functions/v1/pf-substrate
+Content-Type: application/json
+Authorization: Bearer <jwt> (optional)
+
+{
+  "module": "brain|decode|defense|nexus|vision|dream|system",
+  "action": "<action-name>",
+  "payload": { /* action parameters */ }
+}`}
+            </code>
+          </Card>
+        </div>
+        
+        <div>
+          <h3 className="text-lg font-semibold mb-3">Response Format</h3>
+          <Card className="bg-muted/50 p-4">
+            <code className="text-sm">
+              {`{
+  "success": true,
+  "module": "brain",
+  "action": "query",
+  "data": { /* action-specific response */ },
+  "timestamp": "2026-01-16T..."
+}`}
+            </code>
+          </Card>
+        </div>
+        
+        <div>
+          <h3 className="text-lg font-semibold mb-3">Available Actions</h3>
+          <p className="text-sm text-muted-foreground">
+            See the module cards above for available actions per module.
+            Each action has specific parameters documented in the SDK.
+          </p>
+        </div>
+      </div>
+    ),
+    sdk: (
+      <div className="space-y-6">
+        <div>
+          <h3 className="text-lg font-semibold mb-3">Download SDK</h3>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" asChild>
+              <a href="/sdk/substrate-client.ts" download>
+                <Download className="w-4 h-4 mr-2" />
+                substrate-client.ts
+              </a>
+            </Button>
+            <Button variant="outline" size="sm" asChild>
+              <a href="/sdk/README.md" download>
+                <Download className="w-4 h-4 mr-2" />
+                README.md
+              </a>
+            </Button>
+          </div>
+        </div>
+        
+        <div>
+          <h3 className="text-lg font-semibold mb-3">Initialize Client</h3>
+          <Card className="bg-muted/50 p-4">
+            <code className="text-sm">
+              {`import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient({
+  url: 'https://YOUR_PROJECT.supabase.co',
+  anonKey: 'YOUR_ANON_KEY'
+});
+
+// Set auth token for authenticated operations
+substrate.setAuthToken(userJwtToken);`}
+            </code>
+          </Card>
+        </div>
+        
+        <div>
+          <h3 className="text-lg font-semibold mb-3">Module Methods</h3>
+          <p className="text-sm text-muted-foreground">
+            The SDK provides typed methods for all modules: <code>substrate.brain.*</code>,
+            <code>substrate.decode.*</code>, <code>substrate.defense.*</code>, etc.
+          </p>
+        </div>
+      </div>
+    ),
+    limits: (
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold mb-3">Rate Limits</h3>
+        <div className="grid gap-3">
+          {[
+            { scope: 'IP (general)', limit: '100 req / 5 min' },
+            { scope: 'IP (chat)', limit: '20 req / 5 min' },
+            { scope: 'IP (dream feed)', limit: '15 req / 5 min' },
+            { scope: 'Authenticated', limit: '500 req / 5 min' },
+            { scope: 'Daily per account', limit: '5000 req / day' },
+          ].map((item) => (
+            <div key={item.scope} className="flex justify-between p-3 bg-muted/50 rounded-lg">
+              <span className="text-sm">{item.scope}</span>
+              <Badge variant="outline">{item.limit}</Badge>
+            </div>
+          ))}
+        </div>
+        <p className="text-sm text-muted-foreground mt-4">
+          Exceeding limits returns <code>429 Too Many Requests</code>.
+        </p>
+      </div>
+    ),
+    auth: (
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold mb-3">Authentication</h3>
+        <div className="space-y-3">
+          <div>
+            <h4 className="font-medium mb-2">Public Endpoints</h4>
+            <p className="text-sm text-muted-foreground">
+              Some actions don't require authentication:
+            </p>
+            <ul className="list-disc list-inside text-sm text-muted-foreground mt-2">
+              <li>All <code>status</code> actions</li>
+              <li><code>vision.health</code></li>
+              <li><code>dream.feed</code> (rate-limited)</li>
+            </ul>
+          </div>
+          
+          <div>
+            <h4 className="font-medium mb-2">Authenticated Endpoints</h4>
+            <Card className="bg-muted/50 p-4">
+              <code className="text-sm">
+                Authorization: Bearer &lt;supabase-jwt&gt;
+              </code>
+            </Card>
+          </div>
+        </div>
+      </div>
+    ),
+    errors: (
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold mb-3">Error Codes</h3>
+        <div className="grid gap-2">
+          {[
+            { code: '200', meaning: 'Success' },
+            { code: '400', meaning: 'Invalid request (missing module/action)' },
+            { code: '401', meaning: 'Unauthorized' },
+            { code: '403', meaning: 'Forbidden (blocked)' },
+            { code: '404', meaning: 'Unknown module or action' },
+            { code: '422', meaning: 'Validation failed' },
+            { code: '429', meaning: 'Rate limit exceeded' },
+            { code: '500', meaning: 'Internal error' },
+          ].map((item) => (
+            <div key={item.code} className="flex justify-between p-2 bg-muted/50 rounded">
+              <code className="text-sm">{item.code}</code>
+              <span className="text-sm text-muted-foreground">{item.meaning}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  };
+
+  return docsContent[docId] || <p>Documentation not found.</p>;
+}
+
 export default function DevPortal() {
   const [activeTab, setActiveTab] = useState('overview');
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
+  const [selectedDoc, setSelectedDoc] = useState('quickstart');
 
   const filteredTemplates = categoryFilter 
     ? TEMPLATES.filter(t => t.category === categoryFilter)
@@ -540,7 +1105,7 @@ export default function DevPortal() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
         title="Developer Portal — promptfluid® Substrate"
-        description="Build autonomous AI systems with the promptfluid substrate. Templates, documentation, and integration guides for developers and researchers."
+        description="Build autonomous AI systems with the promptfluid substrate. Templates, SDK, and integration guides for developers and researchers."
         keywords={['ai substrate', 'developer portal', 'ai api', 'cognitive orchestration', 'ai templates']}
       />
       <PublicNav />
@@ -570,7 +1135,7 @@ export default function DevPortal() {
               transition={{ delay: 0.1 }}
               className="text-4xl md:text-6xl font-bold mb-6"
             >
-              Build with the{' '}
+              Build on the{' '}
               <span className="bg-gradient-to-r from-primary via-violet-400 to-cyan-400 bg-clip-text text-transparent">
                 Cognitive Substrate
               </span>
@@ -582,8 +1147,8 @@ export default function DevPortal() {
               transition={{ delay: 0.2 }}
               className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8"
             >
-              The promptfluid® substrate provides memory, learning, security, and AI routing
-              for autonomous systems. Open architecture. Bring your own keys.
+              Memory, learning, security, and AI routing for autonomous systems.
+              Deploy your own instance. Bring your own keys.
             </motion.p>
 
             {/* API Key Warning */}
@@ -595,8 +1160,8 @@ export default function DevPortal() {
             >
               <AlertTriangle className="w-5 h-5 flex-shrink-0" />
               <span className="text-sm text-left">
-                <strong>BYOK:</strong> Bring Your Own Keys. You must provide your own AI provider API keys.
-                The substrate does not include compute resources.
+                <strong>BYOK Required:</strong> You must deploy your own substrate instance and provide your own AI provider API keys.
+                No compute resources are included.
               </span>
             </motion.div>
 
@@ -611,8 +1176,8 @@ export default function DevPortal() {
                 Browse Templates
               </Button>
               <Button size="lg" variant="outline" className="gap-2" onClick={() => setActiveTab('docs')}>
-                <BookOpen className="w-5 h-5" />
-                Read Docs
+                <Download className="w-5 h-5" />
+                Get SDK
               </Button>
               <Link to="/demo">
                 <Button size="lg" variant="ghost" className="gap-2">
@@ -655,7 +1220,7 @@ export default function DevPortal() {
                 {[
                   { label: 'Modules', value: '7', icon: Layers },
                   { label: 'Actions', value: '50+', icon: Zap },
-                  { label: 'Templates', value: '12', icon: FileCode },
+                  { label: 'Templates', value: '15', icon: FileCode },
                   { label: 'Providers', value: '4+', icon: Server },
                 ].map((stat) => (
                   <Card key={stat.label} className="text-center py-6">
@@ -666,27 +1231,32 @@ export default function DevPortal() {
                 ))}
               </div>
 
-              {/* Module Overview */}
+              {/* Module Overview with Actions */}
               <div className="space-y-4">
                 <h2 className="text-2xl font-bold">Substrate Modules</h2>
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {[
-                    { name: 'Brain', icon: Brain, desc: 'Memory, learning, knowledge graphs', color: 'violet' },
-                    { name: 'Decode', icon: MessageSquare, desc: 'Intent decoding, chat interface', color: 'cyan' },
-                    { name: 'Defense', icon: Shield, desc: 'Bot detection, threat analysis', color: 'emerald' },
-                    { name: 'Nexus', icon: Network, desc: 'Multi-provider AI routing', color: 'amber' },
-                    { name: 'Vision', icon: Eye, desc: 'Observability, metrics, tracing', color: 'rose' },
-                    { name: 'Dream', icon: Moon, desc: 'Dream processing, synthesis', color: 'purple' },
-                  ].map((mod) => (
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                  {MODULES.map((mod) => (
                     <Card key={mod.name} className="p-4 hover:border-primary/40 transition-colors">
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-3 mb-3">
                         <div className={`w-10 h-10 rounded-lg bg-${mod.color}-500/20 flex items-center justify-center`}>
                           <mod.icon className={`w-5 h-5 text-${mod.color}-400`} />
                         </div>
                         <div>
                           <h3 className="font-medium">{mod.name}</h3>
-                          <p className="text-sm text-muted-foreground">{mod.desc}</p>
+                          <p className="text-xs text-muted-foreground">{mod.desc}</p>
                         </div>
+                      </div>
+                      <div className="flex flex-wrap gap-1">
+                        {mod.actions.slice(0, 4).map((action) => (
+                          <Badge key={action} variant="secondary" className="text-[9px]">
+                            {action}
+                          </Badge>
+                        ))}
+                        {mod.actions.length > 4 && (
+                          <Badge variant="outline" className="text-[9px]">
+                            +{mod.actions.length - 4}
+                          </Badge>
+                        )}
                       </div>
                     </Card>
                   ))}
@@ -698,31 +1268,63 @@ export default function DevPortal() {
                 <h2 className="text-2xl font-bold">Quick Start</h2>
                 <Card className="relative overflow-hidden">
                   <div className="absolute top-4 right-4">
-                    <CopyButton text={`import { substrate, brain, decode, nexus } from '@/lib/substrate';
+                    <CopyButton text={`import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient({
+  url: 'https://YOUR_PROJECT.supabase.co',
+  anonKey: 'YOUR_ANON_KEY'
+});
 
 // Query the brain
-const memories = await brain.query('machine learning', 10);
+const memories = await substrate.brain.query('machine learning', 10);
 
 // Chat with Decode
-const reply = await decode.chat('Hello!', 'session_123');
+const reply = await substrate.decode.chat('Hello!', 'session_123');
 
 // Route to AI provider
-const response = await nexus.route('Explain quantum computing');`} />
+const response = await substrate.nexus.route('Explain quantum computing');`} />
                   </div>
                   <pre className="p-6 text-sm font-mono overflow-x-auto bg-muted/30">
-{`import { substrate, brain, decode, nexus } from '@/lib/substrate';
+{`import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient({
+  url: 'https://YOUR_PROJECT.supabase.co',
+  anonKey: 'YOUR_ANON_KEY'
+});
 
 // Query the brain
-const memories = await brain.query('machine learning', 10);
+const memories = await substrate.brain.query('machine learning', 10);
 
 // Chat with Decode
-const reply = await decode.chat('Hello!', 'session_123');
+const reply = await substrate.decode.chat('Hello!', 'session_123');
 
 // Route to AI provider
-const response = await nexus.route('Explain quantum computing');`}
+const response = await substrate.nexus.route('Explain quantum computing');`}
                   </pre>
                 </Card>
               </div>
+
+              {/* CTA */}
+              <Card className="p-6 bg-gradient-to-r from-primary/10 to-violet-500/10 border-primary/20">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                  <div>
+                    <h3 className="text-lg font-semibold">Ready to build?</h3>
+                    <p className="text-muted-foreground">Get the SDK and start building in minutes.</p>
+                  </div>
+                  <div className="flex gap-3">
+                    <Button variant="outline" asChild>
+                      <a href="/sdk/substrate-client.ts" download>
+                        <Download className="w-4 h-4 mr-2" />
+                        Download SDK
+                      </a>
+                    </Button>
+                    <Button onClick={() => setActiveTab('templates')}>
+                      View Templates
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  </div>
+                </div>
+              </Card>
             </TabsContent>
 
             {/* Templates Tab */}
@@ -734,19 +1336,23 @@ const response = await nexus.route('Explain quantum computing');`}
                   size="sm"
                   onClick={() => setCategoryFilter(null)}
                 >
-                  All Templates
+                  All ({TEMPLATES.length})
                 </Button>
-                {['brain', 'decode', 'defense', 'nexus', 'vision', 'dream'].map((cat) => (
-                  <Button
-                    key={cat}
-                    variant={categoryFilter === cat ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => setCategoryFilter(cat)}
-                    className="capitalize"
-                  >
-                    {cat}
-                  </Button>
-                ))}
+                {['brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'system'].map((cat) => {
+                  const count = TEMPLATES.filter(t => t.category === cat).length;
+                  if (count === 0) return null;
+                  return (
+                    <Button
+                      key={cat}
+                      variant={categoryFilter === cat ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setCategoryFilter(cat)}
+                      className="capitalize"
+                    >
+                      {cat} ({count})
+                    </Button>
+                  );
+                })}
               </div>
 
               {/* Templates Grid */}
@@ -759,41 +1365,58 @@ const response = await nexus.route('Explain quantum computing');`}
 
             {/* Docs Tab */}
             <TabsContent value="docs" className="space-y-6">
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {DOCS.map((doc) => (
-                  <Card key={doc.id} className="group hover:border-primary/40 transition-all">
-                    <CardHeader>
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center">
-                          <doc.icon className="w-5 h-5 text-primary" />
-                        </div>
+              <div className="grid lg:grid-cols-3 gap-6">
+                {/* Doc Navigation */}
+                <Card className="p-4 lg:col-span-1">
+                  <h3 className="font-semibold mb-4">Documentation</h3>
+                  <div className="space-y-1">
+                    {DOCS.map((doc) => (
+                      <button
+                        key={doc.id}
+                        onClick={() => setSelectedDoc(doc.id)}
+                        className={`w-full text-left p-3 rounded-lg transition-colors flex items-center gap-3 ${
+                          selectedDoc === doc.id 
+                            ? 'bg-primary/20 text-primary' 
+                            : 'hover:bg-muted'
+                        }`}
+                      >
+                        <doc.icon className="w-4 h-4" />
                         <div>
-                          <CardTitle className="text-base">{doc.title}</CardTitle>
-                          <CardDescription className="text-sm">{doc.description}</CardDescription>
+                          <p className="text-sm font-medium">{doc.title}</p>
+                          <p className="text-xs text-muted-foreground">{doc.description}</p>
                         </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex gap-2">
-                        <Button variant="outline" size="sm" className="flex-1 gap-2" asChild>
-                          <a href={doc.path} target="_blank" rel="noopener noreferrer">
-                            <ExternalLink className="w-4 h-4" />
-                            View
-                          </a>
-                        </Button>
-                        <Button variant="ghost" size="sm" className="gap-2" asChild>
-                          <a href={doc.path} download>
-                            <Download className="w-4 h-4" />
-                          </a>
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                      </button>
+                    ))}
+                  </div>
+                  
+                  {/* Downloads */}
+                  <div className="mt-6 pt-6 border-t">
+                    <h4 className="font-medium mb-3">Downloads</h4>
+                    <div className="space-y-2">
+                      <Button variant="outline" size="sm" className="w-full justify-start" asChild>
+                        <a href="/sdk/substrate-client.ts" download>
+                          <Download className="w-4 h-4 mr-2" />
+                          TypeScript SDK
+                        </a>
+                      </Button>
+                      <Button variant="outline" size="sm" className="w-full justify-start" asChild>
+                        <a href="/sdk/README.md" download>
+                          <Download className="w-4 h-4 mr-2" />
+                          SDK Readme
+                        </a>
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Doc Content */}
+                <Card className="p-6 lg:col-span-2">
+                  <InlineDocumentation docId={selectedDoc} />
+                </Card>
               </div>
 
               {/* Additional Resources */}
-              <div className="mt-8 p-6 rounded-xl bg-gradient-to-r from-primary/10 to-violet-500/10 border border-primary/20">
+              <Card className="p-6 bg-gradient-to-r from-primary/10 to-violet-500/10 border-primary/20">
                 <h3 className="text-lg font-semibold mb-4">Additional Resources</h3>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   <Link to="/demo" className="flex items-center gap-2 text-sm hover:text-primary transition-colors">
@@ -813,7 +1436,7 @@ const response = await nexus.route('Explain quantum computing');`}
                     Get Support
                   </Link>
                 </div>
-              </div>
+              </Card>
             </TabsContent>
 
             {/* Setup Tab */}
@@ -827,8 +1450,8 @@ const response = await nexus.route('Explain quantum computing');`}
                   </div>
                   <CardDescription>
                     The promptfluid substrate is a routing and orchestration layer. 
-                    <strong> You must provide your own API keys</strong> for AI providers.
-                    The substrate does not include compute resources or credits.
+                    <strong> You must deploy your own instance and provide your own API keys.</strong>
+                    No compute resources, credits, or API access is included.
                   </CardDescription>
                 </CardHeader>
               </Card>
@@ -853,7 +1476,7 @@ const response = await nexus.route('Explain quantum computing');`}
                                 <Badge variant="secondary" className="text-[10px]">REQUIRED</Badge>
                               )}
                             </div>
-                            <p className="text-sm text-muted-foreground">{key.provider}</p>
+                            <p className="text-sm text-muted-foreground">{key.description}</p>
                           </div>
                         </div>
                         <Button variant="outline" size="sm" className="gap-2" asChild>
@@ -869,112 +1492,114 @@ const response = await nexus.route('Explain quantum computing');`}
 
               {/* Installation Steps */}
               <div className="space-y-4">
-                <h2 className="text-2xl font-bold">Installation</h2>
-                <div className="space-y-4">
-                  {[
-                    {
-                      step: 1,
-                      title: 'Clone or Fork the Repository',
-                      code: 'git clone https://github.com/promptfluid/substrate.git\ncd substrate'
-                    },
-                    {
-                      step: 2,
-                      title: 'Install Dependencies',
-                      code: 'npm install\n# or\nbun install'
-                    },
-                    {
-                      step: 3,
-                      title: 'Configure Environment',
-                      code: `# Create .env file with your keys
-GROQ_API_KEY=your_groq_key
-OPENAI_API_KEY=your_openai_key  # optional
-CEREBRAS_API_KEY=your_cerebras_key  # optional`
-                    },
-                    {
-                      step: 4,
-                      title: 'Deploy Edge Functions',
-                      code: 'supabase functions deploy pf-substrate'
-                    },
-                    {
-                      step: 5,
-                      title: 'Start Development',
-                      code: 'npm run dev'
-                    }
-                  ].map((item) => (
-                    <Card key={item.step} className="p-4">
-                      <div className="flex items-start gap-4">
-                        <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
-                          <span className="text-sm font-bold text-primary">{item.step}</span>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-medium mb-2">{item.title}</h3>
-                          <div className="relative">
-                            <div className="absolute top-2 right-2">
-                              <CopyButton text={item.code} />
-                            </div>
-                            <pre className="p-3 rounded-lg bg-muted/50 text-xs font-mono overflow-x-auto">
-                              {item.code}
-                            </pre>
-                          </div>
-                        </div>
+                <h2 className="text-2xl font-bold">Deployment Steps</h2>
+                <Accordion type="single" collapsible className="w-full">
+                  <AccordionItem value="step-1">
+                    <AccordionTrigger>
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-bold">1</div>
+                        Create Supabase Project
                       </div>
-                    </Card>
-                  ))}
-                </div>
+                    </AccordionTrigger>
+                    <AccordionContent className="pl-11">
+                      <p className="text-muted-foreground mb-3">Create a new Supabase project at supabase.com</p>
+                      <Card className="bg-muted/50 p-4">
+                        <code className="text-sm">
+                          # Note your project URL and anon key<br/>
+                          # These are needed for the SDK configuration
+                        </code>
+                      </Card>
+                    </AccordionContent>
+                  </AccordionItem>
+                  
+                  <AccordionItem value="step-2">
+                    <AccordionTrigger>
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-bold">2</div>
+                        Deploy Edge Functions
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent className="pl-11">
+                      <Card className="bg-muted/50 p-4">
+                        <code className="text-sm">
+                          # Deploy the substrate edge function<br/>
+                          supabase functions deploy pf-substrate<br/><br/>
+                          # Link to your project<br/>
+                          supabase link --project-ref YOUR_PROJECT_REF
+                        </code>
+                      </Card>
+                    </AccordionContent>
+                  </AccordionItem>
+                  
+                  <AccordionItem value="step-3">
+                    <AccordionTrigger>
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-bold">3</div>
+                        Configure Secrets
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent className="pl-11">
+                      <Card className="bg-muted/50 p-4">
+                        <code className="text-sm">
+                          # Add your API keys as secrets<br/>
+                          supabase secrets set GROQ_API_KEY=gsk_...<br/>
+                          supabase secrets set OPENAI_API_KEY=sk-...  # optional<br/>
+                          supabase secrets set CEREBRAS_API_KEY=...   # optional
+                        </code>
+                      </Card>
+                    </AccordionContent>
+                  </AccordionItem>
+                  
+                  <AccordionItem value="step-4">
+                    <AccordionTrigger>
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-bold">4</div>
+                        Initialize SDK
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent className="pl-11">
+                      <Card className="bg-muted/50 p-4">
+                        <code className="text-sm">
+                          {`import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient({
+  url: 'https://YOUR_PROJECT.supabase.co',
+  anonKey: 'YOUR_ANON_KEY'
+});
+
+// Test connection
+const health = await substrate.vision.health();
+console.log('Connected:', health.success);`}
+                        </code>
+                      </Card>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
               </div>
 
-              {/* SDK Usage */}
-              <div className="space-y-4">
-                <h2 className="text-2xl font-bold">SDK Usage</h2>
-                <Card className="relative overflow-hidden">
-                  <div className="absolute top-4 right-4">
-                    <CopyButton text={`// Import the substrate client
-import { substrate, brain, decode, defense, nexus, vision, dream, system } from '@/lib/substrate';
-
-// All modules are pre-configured singletons
-// Just import and use:
-
-// Memory operations
-await brain.learn('New information', 'user');
-await brain.query('search term', 10);
-
-// Chat interface
-await decode.chat('Hello!', 'session_id');
-
-// Security
-await defense.analyze({ fingerprint: {...} });
-
-// AI routing
-await nexus.route('Generate text');
-
-// Monitoring
-await vision.healthSnapshot();`} />
+              {/* SDK Download */}
+              <Card className="p-6">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                  <div>
+                    <h3 className="text-lg font-semibold">Download SDK</h3>
+                    <p className="text-muted-foreground">Get the TypeScript SDK and example implementations.</p>
                   </div>
-                  <pre className="p-6 text-sm font-mono overflow-x-auto bg-muted/30">
-{`// Import the substrate client
-import { substrate, brain, decode, defense, nexus, vision, dream, system } from '@/lib/substrate';
-
-// All modules are pre-configured singletons
-// Just import and use:
-
-// Memory operations
-await brain.learn('New information', 'user');
-await brain.query('search term', 10);
-
-// Chat interface
-await decode.chat('Hello!', 'session_id');
-
-// Security
-await defense.analyze({ fingerprint: {...} });
-
-// AI routing
-await nexus.route('Generate text');
-
-// Monitoring
-await vision.healthSnapshot();`}
-                  </pre>
-                </Card>
-              </div>
+                  <div className="flex gap-3">
+                    <Button variant="outline" asChild>
+                      <a href="/sdk/substrate-client.ts" download>
+                        <Download className="w-4 h-4 mr-2" />
+                        SDK Client
+                      </a>
+                    </Button>
+                    <Button asChild>
+                      <a href="/sdk/README.md" download>
+                        <FileText className="w-4 h-4 mr-2" />
+                        Documentation
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+              </Card>
             </TabsContent>
           </Tabs>
         </div>
