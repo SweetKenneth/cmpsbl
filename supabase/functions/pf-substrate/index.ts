@@ -46,7 +46,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const SUBSTRATE_VERSION = "3.6.0";
+const SUBSTRATE_VERSION = "3.7.0";
 
 // Trace ID generator for distributed tracing
 function generateTraceId(): string {
@@ -1442,6 +1442,84 @@ async function handleDefense(
       }, headers);
     }
 
+    // ═══ v3.7.0: POSTURE — Consolidated security posture summary ═══
+    case "posture": {
+      const last24h = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+      const last7d = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+
+      const [
+        { data: recent24h, count: count24h },
+        { count: count7d },
+        { count: blockedCount },
+        { count: challengedCount },
+        { data: topThreats },
+        { data: rules },
+        { count: unresolvedAnomalies },
+        { data: recentRateLimits },
+      ] = await Promise.all([
+        supabase.from('defense_events').select('action, risk_score, reason', { count: 'exact' }).gte('detected_at', last24h).limit(200),
+        supabase.from('defense_events').select('id', { count: 'exact', head: true }).gte('detected_at', last7d),
+        supabase.from('defense_events').select('id', { count: 'exact', head: true }).eq('action', 'block').gte('detected_at', last24h),
+        supabase.from('defense_events').select('id', { count: 'exact', head: true }).eq('action', 'challenge').gte('detected_at', last24h),
+        supabase.from('defense_events').select('reason, risk_score').gte('detected_at', last24h).order('risk_score', { ascending: false }).limit(10),
+        supabase.from('defense_rules').select('rule_name, is_active, priority').eq('is_active', true).order('priority', { ascending: true }).limit(10),
+        supabase.from('pf_brain_anomalies').select('id', { count: 'exact', head: true }).eq('resolved', false),
+        supabase.from('edge_rate_limits').select('function_name, request_count').gte('window_start', last24h).order('request_count', { ascending: false }).limit(5),
+      ]);
+
+      // Calculate risk distribution
+      const riskDist = { low: 0, medium: 0, high: 0, critical: 0 };
+      recent24h?.forEach((e: { risk_score: number }) => {
+        if (e.risk_score >= 80) riskDist.critical++;
+        else if (e.risk_score >= 60) riskDist.high++;
+        else if (e.risk_score >= 30) riskDist.medium++;
+        else riskDist.low++;
+      });
+
+      // Calculate posture score (0-100, higher is better/safer)
+      const threatDensity = (count24h || 0) / 24; // threats per hour
+      const blockRate = count24h && count24h > 0 ? ((blockedCount || 0) / count24h) : 0;
+      const criticalRatio = count24h && count24h > 0 ? (riskDist.critical / count24h) : 0;
+      const postureScore = Math.max(0, Math.min(100, Math.round(
+        100 - (threatDensity * 2) - (criticalRatio * 50) + (blockRate * 20)
+      )));
+
+      const postureStatus = postureScore >= 80 ? 'secure' : postureScore >= 60 ? 'guarded' : postureScore >= 40 ? 'elevated' : 'critical';
+
+      return jsonResponse({
+        success: true,
+        module: 'defense',
+        action: 'posture',
+        posture: {
+          score: postureScore,
+          status: postureStatus,
+          trend: (count7d || 0) > (count24h || 0) * 7 ? 'improving' : 'stable'
+        },
+        activity_24h: {
+          total_events: count24h || 0,
+          blocked: blockedCount || 0,
+          challenged: challengedCount || 0,
+          allowed: (count24h || 0) - (blockedCount || 0) - (challengedCount || 0),
+          block_rate: count24h ? `${Math.round(((blockedCount || 0) / count24h) * 100)}%` : '0%'
+        },
+        risk_distribution: riskDist,
+        top_threats: topThreats?.slice(0, 5).map((t: { reason: string; risk_score: number }) => ({
+          reason: t.reason?.substring(0, 50) || 'unknown',
+          risk: t.risk_score
+        })) || [],
+        active_rules: rules?.length || 0,
+        unresolved_anomalies: unresolvedAnomalies || 0,
+        rate_limit_pressure: recentRateLimits?.slice(0, 3).map((r: { function_name: string; request_count: number }) => ({
+          function: r.function_name,
+          load: r.request_count
+        })) || [],
+        weekly_events: count7d || 0,
+        proof_mode: true,
+        read_only: true,
+        timestamp: new Date().toISOString()
+      }, headers);
+    }
+
     case "anomaly": {
       // v3.1.0 Real anomaly detection
       const { timeWindow = "1h" } = data;
@@ -2084,6 +2162,46 @@ async function handleVision(
           auto_heal_threshold: CIRCUIT_CONFIG.autoHealThreshold
         },
         proof_mode: true,
+        timestamp: new Date().toISOString()
+      }, headers);
+    }
+
+    // ═══ v3.7.0: PULSE — Ultra-lightweight heartbeat (zero DB queries) ═══
+    case "pulse": {
+      // No DB queries - pure in-memory health check for uptime monitoring
+      const uptime = Date.now() - state.initialized;
+      const moduleCount = Object.keys(state.modules).length;
+      const healthyModules = Object.values(state.modules).filter(m => m.status === 'healthy').length;
+      const overallHealth = moduleCount > 0 
+        ? Math.round(Object.values(state.modules).reduce((sum, m) => sum + m.healthScore, 0) / moduleCount)
+        : 100;
+
+      return jsonResponse({
+        success: true,
+        module: 'vision',
+        action: 'pulse',
+        pulse: {
+          alive: true,
+          version: SUBSTRATE_VERSION,
+          uptime_ms: uptime,
+          uptime_human: `${Math.floor(uptime / 3600000)}h ${Math.floor((uptime % 3600000) / 60000)}m ${Math.floor((uptime % 60000) / 1000)}s`,
+          health: overallHealth,
+          status: overallHealth >= 80 ? 'healthy' : overallHealth >= 50 ? 'degraded' : 'critical',
+          modules: {
+            tracked: moduleCount,
+            healthy: healthyModules,
+            circuits_open: Object.values(state.modules).filter(m => m.circuitState === 'open').length
+          },
+          requests: {
+            total: state.totalRequests,
+            errors: state.totalErrors,
+            error_rate: state.totalRequests > 0 ? `${(state.totalErrors / state.totalRequests * 100).toFixed(2)}%` : '0%'
+          },
+          heals: state.healAttempts,
+          last_heal: state.lastHeal ? new Date(state.lastHeal).toISOString() : null
+        },
+        proof_mode: true,
+        read_only: true,
         timestamp: new Date().toISOString()
       }, headers);
     }

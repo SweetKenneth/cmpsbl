@@ -8,7 +8,7 @@
 | Version | v2026.01 |
 | Last Updated | 2026-01-16 |
 | Status | ACTIVE |
-| Substrate Version | 3.6.0 |
+| Substrate Version | 3.7.0 |
 | Type | Cognitive Orchestration Substrate |
 | Changelog | [CHANGELOG.md](./CHANGELOG.md) |
 
@@ -132,6 +132,7 @@ Bot detection, threat analysis, security, IP reputation.
 | `anomaly` | Detect anomalies | `timeWindow?: '1h'|'6h'|'24h'` | ✅ DEPLOYED (v3.1.0) |
 | `anomaly_probe` | Statistical z-score anomaly detection | `lookbackHours?: number (1-168)` | ✅ DEPLOYED (v3.4.0) — Observer-eligible |
 | `limits` | Unified rate limit status | — | ✅ DEPLOYED (v3.6.0) — read-only, proof-compatible |
+| `posture` | Consolidated security posture | — | ✅ DEPLOYED (v3.7.0) — read-only, proof-compatible |
 
 ### Defense Dedicated Functions (Standalone)
 
@@ -197,6 +198,7 @@ Observability, metrics, health monitoring, alerting, distributed tracing, ecosys
 | `analytics` | Threat analytics (24h) | — | ✅ DEPLOYED (v3.3.0) |
 | `health_snapshot` | Quick consolidated health check | — | ✅ DEPLOYED (v3.4.0) — Observer-eligible |
 | `introspection` | Deep substrate self-analysis | — | ✅ DEPLOYED (v3.6.0) — read-only, proof-compatible |
+| `pulse` | Ultra-lightweight heartbeat (zero DB queries) | — | ✅ DEPLOYED (v3.7.0) — read-only, proof-compatible |
 
 ### Vision Dedicated Functions (Standalone)
 

@@ -218,6 +218,10 @@ class SubstrateClient {
     /** v3.6.0: Unified rate limit status across edge functions (read-only) */
     limits: () =>
       this.invoke({ module: 'defense', action: 'limits' }),
+
+    /** v3.7.0: Consolidated security posture summary (read-only) */
+    posture: () =>
+      this.invoke({ module: 'defense', action: 'posture' }),
   };
 
   // Nexus Module — Multi-Provider AI Routing
@@ -288,6 +292,10 @@ class SubstrateClient {
     /** v3.6.0: Deep substrate introspection - internals, modules, cognition (read-only) */
     introspection: () =>
       this.invoke({ module: 'vision', action: 'introspection' }),
+
+    /** v3.7.0: Ultra-lightweight heartbeat - zero DB queries, pure in-memory (read-only) */
+    pulse: () =>
+      this.invoke({ module: 'vision', action: 'pulse' }),
   };
 
   // System Module — Administration & Configuration
