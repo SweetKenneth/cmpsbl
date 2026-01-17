@@ -10,6 +10,8 @@ import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 import { decode } from "@/lib/substrate";
+import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
 
 export default function Index() {
   const navigate = useNavigate();
@@ -77,13 +79,16 @@ export default function Index() {
         keywords={['AI', 'cognitive architecture', 'autonomous systems', 'machine learning', 'dream-state computing']}
       />
 
+      {/* Consistent Navigation */}
+      <PublicNav />
+
       {/* Ambient Background - subtle */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-primary/3" />
       </div>
 
       {/* Main Content - Centered vertically */}
-      <main className="relative z-10 flex-1 flex flex-col justify-center items-center px-4 py-8">
+      <main className="relative z-10 flex-1 flex flex-col justify-center items-center px-4 py-8 pt-24">
         <div className="w-full max-w-md mx-auto text-center space-y-5">
           
           {/* Ambient greeting */}
@@ -149,23 +154,8 @@ export default function Index() {
         </div>
       </main>
 
-      {/* Minimal Footer */}
-      <footer 
-        className={`relative z-10 px-4 py-4 transition-all duration-700 delay-300 ${showInterface ? 'opacity-100' : 'opacity-0'}`}
-      >
-        <div className="max-w-md mx-auto flex items-center justify-between text-xs text-muted-foreground/50">
-          <span>© {currentYear} promptfluid®</span>
-          <button 
-            onClick={() => navigate('/explore')}
-            className="hover:text-muted-foreground transition-colors flex items-center gap-1"
-          >
-            More
-            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-            </svg>
-          </button>
-        </div>
-      </footer>
+      {/* Consistent Footer */}
+      <EnhancedFooter />
     </div>
   );
 }

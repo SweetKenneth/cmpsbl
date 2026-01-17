@@ -2314,6 +2314,974 @@ async function triggerMutationCycle() {
   
   return mutation.data;
 }`
+  },
+  {
+    id: 'voice-assistant',
+    name: 'Voice Assistant',
+    description: 'Build voice-enabled AI assistants with speech recognition and synthesis',
+    icon: Radio,
+    category: 'decode',
+    difficulty: 'advanced',
+    estimatedTime: '45 min',
+    features: ['Speech recognition', 'Voice synthesis', 'Conversation flow'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+class VoiceAssistant {
+  private sessionId: string;
+  private isListening = false;
+  
+  constructor(userId: string) {
+    this.sessionId = \`voice:\${userId}:\${Date.now()}\`;
+  }
+  
+  async processVoiceInput(transcript: string) {
+    // 1. Analyze intent from voice input
+    const intent = await substrate.decode.intent(transcript);
+    
+    // 2. Check if it's a command or conversation
+    const isCommand = intent.data?.primary_intent?.startsWith('command:');
+    
+    if (isCommand) {
+      return this.handleCommand(intent.data?.primary_intent);
+    }
+    
+    // 3. Conversational response
+    const response = await substrate.decode.chat(transcript, this.sessionId);
+    
+    // 4. Store interaction for learning
+    await substrate.brain.learn(
+      \`Voice: \${transcript} → \${response.data?.reply}\`,
+      'voice_interaction'
+    );
+    
+    return {
+      text: response.data?.reply,
+      intent: intent.data?.primary_intent,
+      confidence: intent.data?.confidence
+    };
+  }
+  
+  private async handleCommand(command: string) {
+    const commands: Record<string, () => Promise<any>> = {
+      'command:status': () => substrate.vision.healthSnapshot(),
+      'command:dream': () => substrate.dream.status(),
+      'command:learn': () => substrate.brain.reflect()
+    };
+    
+    const handler = commands[command];
+    return handler ? await handler() : { error: 'Unknown command' };
+  }
+}`
+  },
+  {
+    id: 'rag-pipeline',
+    name: 'RAG Pipeline',
+    description: 'Retrieval-Augmented Generation for document-grounded responses',
+    icon: FileText,
+    category: 'brain',
+    difficulty: 'advanced',
+    estimatedTime: '50 min',
+    features: ['Document chunking', 'Context retrieval', 'Grounded generation'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+class RAGPipeline {
+  private namespace: string;
+  
+  constructor(namespace: string) {
+    this.namespace = namespace;
+  }
+  
+  // Ingest documents into the knowledge base
+  async ingest(document: string, metadata: Record<string, any> = {}) {
+    const chunks = this.chunkDocument(document, 500);
+    
+    for (let i = 0; i < chunks.length; i++) {
+      await substrate.brain.remember(
+        chunks[i],
+        \`rag:\${this.namespace}\`,
+        0.9,
+        { ...metadata, chunkIndex: i, totalChunks: chunks.length }
+      );
+    }
+    
+    // Build graph for better retrieval
+    await substrate.brain.graphBuild();
+    
+    return { chunksIngested: chunks.length };
+  }
+  
+  // Query with retrieval-augmented generation
+  async query(question: string, topK = 5) {
+    // 1. Retrieve relevant chunks
+    const retrieval = await substrate.brain.query(
+      \`rag:\${this.namespace} \${question}\`,
+      topK
+    );
+    
+    const context = retrieval.data?.memories
+      ?.map(m => m.content)
+      .join('\\n\\n') || '';
+    
+    // 2. Generate grounded response
+    const prompt = \`Context:\\n\${context}\\n\\nQuestion: \${question}\\n\\nAnswer based only on the context provided:\`;
+    
+    const response = await substrate.nexus.route(prompt);
+    
+    // 3. Track for learning
+    await substrate.brain.learn(
+      \`RAG Query: \${question}\`,
+      'rag_query'
+    );
+    
+    return {
+      answer: response.data,
+      sources: retrieval.data?.memories?.map(m => ({
+        content: m.content.substring(0, 100),
+        confidence: m.confidence
+      })),
+      retrievedChunks: topK
+    };
+  }
+  
+  private chunkDocument(doc: string, maxChunkSize: number): string[] {
+    const sentences = doc.split(/[.!?]+/);
+    const chunks: string[] = [];
+    let current = '';
+    
+    for (const sentence of sentences) {
+      if ((current + sentence).length > maxChunkSize) {
+        if (current) chunks.push(current.trim());
+        current = sentence;
+      } else {
+        current += sentence + '. ';
+      }
+    }
+    if (current) chunks.push(current.trim());
+    
+    return chunks;
+  }
+}`
+  },
+  {
+    id: 'anomaly-detector',
+    name: 'Anomaly Detector',
+    description: 'Detect anomalies in metrics and user behavior patterns',
+    icon: AlertTriangle,
+    category: 'defense',
+    difficulty: 'intermediate',
+    estimatedTime: '35 min',
+    features: ['Statistical analysis', 'Pattern detection', 'Alert generation'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+async function detectAnomalies(hoursBack = 24) {
+  // 1. Get anomaly probe from defense module
+  const anomalies = await substrate.defense.anomalyProbe(hoursBack);
+  
+  // 2. Get system metrics for context
+  const metrics = await substrate.vision.dashboard();
+  
+  // 3. Analyze each anomaly
+  const analyzed = [];
+  for (const anomaly of anomalies.data?.anomalies || []) {
+    // Get historical pattern
+    const pattern = await substrate.brain.query(
+      \`anomaly:\${anomaly.metric}\`,
+      5
+    );
+    
+    const isNewPattern = !pattern.data?.memories?.some(
+      m => m.content.includes(anomaly.description)
+    );
+    
+    if (isNewPattern) {
+      // New anomaly - store and alert
+      await substrate.brain.remember(
+        \`anomaly:\${anomaly.metric}: \${anomaly.description}\`,
+        'anomaly_pattern',
+        anomaly.severity
+      );
+      
+      await substrate.vision.alert(
+        anomaly.severity > 0.8 ? 'error' : 'warn',
+        \`New anomaly detected: \${anomaly.metric}\`,
+        { anomaly, isNew: true }
+      );
+    }
+    
+    analyzed.push({
+      ...anomaly,
+      isNew: isNewPattern,
+      historicalOccurrences: pattern.data?.memories?.length || 0
+    });
+  }
+  
+  return {
+    totalAnomalies: analyzed.length,
+    newAnomalies: analyzed.filter(a => a.isNew).length,
+    anomalies: analyzed
+  };
+}`
+  },
+  {
+    id: 'conversation-memory',
+    name: 'Long-Term Memory',
+    description: 'Persistent conversation memory across sessions and users',
+    icon: Database,
+    category: 'brain',
+    difficulty: 'intermediate',
+    estimatedTime: '30 min',
+    features: ['Cross-session recall', 'User preferences', 'Context persistence'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+class LongTermMemory {
+  private userId: string;
+  
+  constructor(userId: string) {
+    this.userId = userId;
+  }
+  
+  // Store user preference
+  async storePreference(key: string, value: any) {
+    await substrate.brain.remember(
+      JSON.stringify({ key, value }),
+      \`user:\${this.userId}:pref\`,
+      1.0,
+      { key, value, type: 'preference' }
+    );
+  }
+  
+  // Recall user preferences
+  async getPreferences() {
+    const prefs = await substrate.brain.query(
+      \`user:\${this.userId}:pref\`,
+      50
+    );
+    
+    const preferences: Record<string, any> = {};
+    for (const mem of prefs.data?.memories || []) {
+      if (mem.metadata?.key) {
+        preferences[mem.metadata.key] = mem.metadata.value;
+      }
+    }
+    return preferences;
+  }
+  
+  // Store conversation summary
+  async summarizeConversation(sessionId: string, messages: string[]) {
+    const summary = await substrate.nexus.route(
+      \`Summarize this conversation in 2-3 sentences: \${messages.join('\\n')}\`
+    );
+    
+    await substrate.brain.remember(
+      summary.data,
+      \`user:\${this.userId}:conv\`,
+      0.9,
+      { sessionId, messageCount: messages.length }
+    );
+    
+    return summary.data;
+  }
+  
+  // Recall past conversations
+  async recallContext(query: string) {
+    // Get relevant memories
+    const memories = await substrate.brain.query(
+      \`user:\${this.userId} \${query}\`,
+      10
+    );
+    
+    // Get preferences
+    const prefs = await this.getPreferences();
+    
+    return {
+      relevantMemories: memories.data?.memories,
+      preferences: prefs
+    };
+  }
+}`
+  },
+  {
+    id: 'ab-testing',
+    name: 'A/B Testing Engine',
+    description: 'Test and optimize AI responses with statistical significance',
+    icon: Target,
+    category: 'vision',
+    difficulty: 'advanced',
+    estimatedTime: '40 min',
+    features: ['Variant allocation', 'Metric tracking', 'Statistical analysis'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface Experiment {
+  name: string;
+  variants: string[];
+  allocation: number[]; // Percentage for each variant
+}
+
+class ABTestingEngine {
+  private experiments: Map<string, Experiment> = new Map();
+  
+  registerExperiment(experiment: Experiment) {
+    this.experiments.set(experiment.name, experiment);
+    return this;
+  }
+  
+  // Get variant for a user
+  async getVariant(experimentName: string, userId: string): Promise<string> {
+    const exp = this.experiments.get(experimentName);
+    if (!exp) throw new Error('Experiment not found');
+    
+    // Check if user already has assignment
+    const existing = await substrate.brain.query(
+      \`ab:\${experimentName}:user:\${userId}\`,
+      1
+    );
+    
+    if (existing.data?.memories?.[0]) {
+      return existing.data.memories[0].metadata?.variant;
+    }
+    
+    // Assign new variant
+    const rand = Math.random() * 100;
+    let cumulative = 0;
+    let variant = exp.variants[0];
+    
+    for (let i = 0; i < exp.variants.length; i++) {
+      cumulative += exp.allocation[i];
+      if (rand <= cumulative) {
+        variant = exp.variants[i];
+        break;
+      }
+    }
+    
+    // Store assignment
+    await substrate.brain.remember(
+      \`User \${userId} assigned to \${variant}\`,
+      \`ab:\${experimentName}:user:\${userId}\`,
+      1.0,
+      { variant, assignedAt: Date.now() }
+    );
+    
+    return variant;
+  }
+  
+  // Track conversion
+  async trackConversion(experimentName: string, userId: string, metric: string, value = 1) {
+    await substrate.brain.learn(
+      \`ab:\${experimentName}:conversion:\${metric}:\${userId}:\${value}\`,
+      'ab_conversion'
+    );
+    
+    await substrate.vision.trace(undefined, {
+      create: true,
+      module: 'ab_test',
+      action: 'conversion',
+      metadata: { experimentName, userId, metric, value }
+    });
+  }
+}`
+  },
+  {
+    id: 'content-moderation',
+    name: 'Content Moderation',
+    description: 'AI-powered content moderation with configurable policies',
+    icon: Shield,
+    category: 'defense',
+    difficulty: 'intermediate',
+    estimatedTime: '30 min',
+    features: ['Policy enforcement', 'Risk scoring', 'Appeal handling'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface ModerationResult {
+  allowed: boolean;
+  flags: string[];
+  riskScore: number;
+  action: 'allow' | 'flag' | 'block';
+}
+
+async function moderateContent(content: string, context?: string): Promise<ModerationResult> {
+  // 1. Analyze content intent
+  const intent = await substrate.decode.intent(content);
+  
+  // 2. Check against defense rules
+  const analysis = await substrate.defense.analyze({
+    content,
+    context,
+    contentType: 'user_generated'
+  }, 'content');
+  
+  // 3. Calculate risk score
+  const riskScore = analysis.data?.risk_score || 0;
+  const flags = [];
+  
+  // 4. Apply policy rules
+  if (intent.data?.primary_intent?.includes('harmful')) {
+    flags.push('potentially_harmful');
+  }
+  
+  if (riskScore > 0.8) {
+    flags.push('high_risk');
+  }
+  
+  // 5. Determine action
+  let action: 'allow' | 'flag' | 'block' = 'allow';
+  if (riskScore > 0.9) {
+    action = 'block';
+    await substrate.vision.alert('error', 'Content blocked', { content: content.substring(0, 100) });
+  } else if (riskScore > 0.6 || flags.length > 0) {
+    action = 'flag';
+    await substrate.vision.alert('warn', 'Content flagged for review', { flags });
+  }
+  
+  // 6. Log for learning
+  await substrate.brain.learn(
+    \`Moderation: \${action} - \${flags.join(', ')}\`,
+    'moderation_decision'
+  );
+  
+  return {
+    allowed: action !== 'block',
+    flags,
+    riskScore,
+    action
+  };
+}`
+  },
+  {
+    id: 'event-sourcing',
+    name: 'Event Sourcing',
+    description: 'Track and replay system events for auditability and debugging',
+    icon: Activity,
+    category: 'vision',
+    difficulty: 'advanced',
+    estimatedTime: '45 min',
+    features: ['Event logging', 'State reconstruction', 'Audit trail'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface Event {
+  type: string;
+  aggregateId: string;
+  payload: any;
+  timestamp: number;
+}
+
+class EventStore {
+  private namespace: string;
+  
+  constructor(namespace: string) {
+    this.namespace = namespace;
+  }
+  
+  // Append event to the store
+  async append(event: Omit<Event, 'timestamp'>) {
+    const fullEvent = {
+      ...event,
+      timestamp: Date.now()
+    };
+    
+    // Store in brain memory
+    await substrate.brain.remember(
+      JSON.stringify(fullEvent),
+      \`events:\${this.namespace}:\${event.aggregateId}\`,
+      1.0,
+      fullEvent
+    );
+    
+    // Create trace for observability
+    await substrate.vision.trace(undefined, {
+      create: true,
+      module: 'event_store',
+      action: event.type,
+      metadata: { aggregateId: event.aggregateId }
+    });
+    
+    return fullEvent;
+  }
+  
+  // Get events for an aggregate
+  async getEvents(aggregateId: string, limit = 100) {
+    const events = await substrate.brain.query(
+      \`events:\${this.namespace}:\${aggregateId}\`,
+      limit
+    );
+    
+    return (events.data?.memories || [])
+      .map(m => m.metadata as Event)
+      .sort((a, b) => a.timestamp - b.timestamp);
+  }
+  
+  // Replay events to reconstruct state
+  async replayTo<T>(
+    aggregateId: string,
+    reducer: (state: T, event: Event) => T,
+    initialState: T
+  ): Promise<T> {
+    const events = await this.getEvents(aggregateId);
+    return events.reduce(reducer, initialState);
+  }
+  
+  // Get audit trail
+  async getAuditTrail(startTime: number, endTime: number) {
+    const analytics = await substrate.vision.analytics();
+    return analytics.data;
+  }
+}`
+  },
+  {
+    id: 'prompt-optimizer',
+    name: 'Prompt Optimizer',
+    description: 'Automatically optimize prompts for better AI responses',
+    icon: Sparkles,
+    category: 'nexus',
+    difficulty: 'advanced',
+    estimatedTime: '40 min',
+    features: ['Prompt testing', 'Performance tracking', 'Auto-optimization'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface PromptVariant {
+  template: string;
+  variables: Record<string, string>;
+  score?: number;
+}
+
+class PromptOptimizer {
+  private variants: Map<string, PromptVariant[]> = new Map();
+  
+  // Register prompt variants
+  registerVariants(promptId: string, variants: PromptVariant[]) {
+    this.variants.set(promptId, variants);
+  }
+  
+  // Select best performing variant
+  async selectVariant(promptId: string): Promise<PromptVariant> {
+    const variants = this.variants.get(promptId);
+    if (!variants) throw new Error('Prompt not found');
+    
+    // Get historical performance
+    const performance = await substrate.brain.query(
+      \`prompt_perf:\${promptId}\`,
+      100
+    );
+    
+    // Calculate scores from history
+    const scores: Record<number, number[]> = {};
+    for (const mem of performance.data?.memories || []) {
+      const idx = mem.metadata?.variantIndex;
+      if (idx !== undefined) {
+        scores[idx] = scores[idx] || [];
+        scores[idx].push(mem.metadata?.score || 0);
+      }
+    }
+    
+    // Find best variant (exploration vs exploitation)
+    let bestIdx = 0;
+    let bestScore = -Infinity;
+    
+    for (let i = 0; i < variants.length; i++) {
+      const variantScores = scores[i] || [];
+      const avgScore = variantScores.length > 0
+        ? variantScores.reduce((a, b) => a + b, 0) / variantScores.length
+        : 0.5; // Default for unexplored
+      
+      // Add exploration bonus for less tested variants
+      const explorationBonus = 0.1 / Math.sqrt(variantScores.length + 1);
+      const finalScore = avgScore + explorationBonus;
+      
+      if (finalScore > bestScore) {
+        bestScore = finalScore;
+        bestIdx = i;
+      }
+    }
+    
+    return { ...variants[bestIdx], score: bestScore };
+  }
+  
+  // Record prompt performance
+  async recordPerformance(promptId: string, variantIndex: number, score: number) {
+    await substrate.brain.remember(
+      \`Performance: \${promptId} variant \${variantIndex} = \${score}\`,
+      \`prompt_perf:\${promptId}\`,
+      score,
+      { variantIndex, score, timestamp: Date.now() }
+    );
+  }
+}`
+  },
+  {
+    id: 'health-checker',
+    name: 'Health Checker',
+    description: 'Comprehensive system health monitoring with auto-healing',
+    icon: Activity,
+    category: 'system',
+    difficulty: 'intermediate',
+    estimatedTime: '30 min',
+    features: ['Health probes', 'Auto-healing', 'Status reporting'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface HealthReport {
+  status: 'healthy' | 'degraded' | 'unhealthy';
+  score: number;
+  checks: HealthCheck[];
+  lastChecked: number;
+}
+
+interface HealthCheck {
+  name: string;
+  status: 'pass' | 'fail' | 'warn';
+  latency?: number;
+  message?: string;
+}
+
+async function runHealthChecks(): Promise<HealthReport> {
+  const checks: HealthCheck[] = [];
+  const startTime = Date.now();
+  
+  // 1. System health
+  try {
+    const health = await substrate.system.health();
+    checks.push({
+      name: 'system',
+      status: health.data?.status === 'ok' ? 'pass' : 'warn',
+      message: health.data?.status
+    });
+  } catch (e) {
+    checks.push({ name: 'system', status: 'fail', message: String(e) });
+  }
+  
+  // 2. Vision dashboard
+  try {
+    const t0 = Date.now();
+    const vision = await substrate.vision.healthSnapshot();
+    checks.push({
+      name: 'vision',
+      status: vision.data?.healthScore > 70 ? 'pass' : 'warn',
+      latency: Date.now() - t0
+    });
+  } catch (e) {
+    checks.push({ name: 'vision', status: 'fail', message: String(e) });
+  }
+  
+  // 3. Brain query
+  try {
+    const t0 = Date.now();
+    await substrate.brain.query('health check', 1);
+    checks.push({ name: 'brain', status: 'pass', latency: Date.now() - t0 });
+  } catch (e) {
+    checks.push({ name: 'brain', status: 'fail', message: String(e) });
+  }
+  
+  // Calculate overall score
+  const passCount = checks.filter(c => c.status === 'pass').length;
+  const score = (passCount / checks.length) * 100;
+  
+  // Determine status
+  let status: 'healthy' | 'degraded' | 'unhealthy' = 'healthy';
+  if (checks.some(c => c.status === 'fail')) status = 'unhealthy';
+  else if (checks.some(c => c.status === 'warn')) status = 'degraded';
+  
+  // Auto-heal if needed
+  if (status === 'unhealthy') {
+    await substrate.system.heal();
+    await substrate.vision.alert('error', 'Auto-heal triggered', { checks });
+  }
+  
+  return { status, score, checks, lastChecked: Date.now() };
+}`
+  },
+  {
+    id: 'notification-hub',
+    name: 'Notification Hub',
+    description: 'Centralized notification management with priority routing',
+    icon: Bell,
+    category: 'vision',
+    difficulty: 'intermediate',
+    estimatedTime: '25 min',
+    features: ['Priority routing', 'Channel selection', 'Delivery tracking'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+type Priority = 'low' | 'medium' | 'high' | 'critical';
+type Channel = 'in_app' | 'email' | 'sms' | 'webhook';
+
+interface Notification {
+  title: string;
+  message: string;
+  priority: Priority;
+  channels: Channel[];
+  metadata?: Record<string, any>;
+}
+
+class NotificationHub {
+  private channelHandlers: Map<Channel, (n: Notification) => Promise<boolean>> = new Map();
+  
+  registerChannel(channel: Channel, handler: (n: Notification) => Promise<boolean>) {
+    this.channelHandlers.set(channel, handler);
+  }
+  
+  async send(notification: Notification) {
+    const results: Record<Channel, boolean> = {} as any;
+    
+    // Route based on priority
+    const channels = this.routeByPriority(notification);
+    
+    // Send to each channel
+    for (const channel of channels) {
+      const handler = this.channelHandlers.get(channel);
+      if (handler) {
+        try {
+          results[channel] = await handler(notification);
+        } catch (e) {
+          results[channel] = false;
+          await substrate.vision.alert('error', \`Notification failed: \${channel}\`);
+        }
+      }
+    }
+    
+    // Log notification
+    await substrate.brain.learn(
+      \`Notification: \${notification.title} - \${Object.entries(results).map(([k, v]) => \`\${k}:\${v}\`).join(', ')}\`,
+      'notification'
+    );
+    
+    // Create trace
+    await substrate.vision.trace(undefined, {
+      create: true,
+      module: 'notifications',
+      action: 'send',
+      metadata: { ...notification, results }
+    });
+    
+    return results;
+  }
+  
+  private routeByPriority(notification: Notification): Channel[] {
+    const channels = [...notification.channels];
+    
+    // Critical always includes all channels
+    if (notification.priority === 'critical') {
+      return ['in_app', 'email', 'sms', 'webhook'];
+    }
+    
+    // High priority adds email
+    if (notification.priority === 'high' && !channels.includes('email')) {
+      channels.push('email');
+    }
+    
+    return channels;
+  }
+}`
+  },
+  {
+    id: 'batch-processor',
+    name: 'Batch Processor',
+    description: 'Process large datasets with progress tracking and error handling',
+    icon: Layers,
+    category: 'system',
+    difficulty: 'advanced',
+    estimatedTime: '45 min',
+    features: ['Chunked processing', 'Progress tracking', 'Error recovery'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface BatchJob<T, R> {
+  id: string;
+  items: T[];
+  processor: (item: T) => Promise<R>;
+  chunkSize: number;
+  onProgress?: (progress: number, processed: number, total: number) => void;
+}
+
+interface BatchResult<R> {
+  jobId: string;
+  processed: number;
+  failed: number;
+  results: R[];
+  errors: Array<{ index: number; error: string }>;
+}
+
+async function processBatch<T, R>(job: BatchJob<T, R>): Promise<BatchResult<R>> {
+  const { id, items, processor, chunkSize, onProgress } = job;
+  const results: R[] = [];
+  const errors: Array<{ index: number; error: string }> = [];
+  
+  // Create trace for batch job
+  const trace = await substrate.vision.trace(undefined, {
+    create: true,
+    module: 'batch',
+    action: 'start',
+    metadata: { jobId: id, totalItems: items.length }
+  });
+  
+  // Process in chunks
+  for (let i = 0; i < items.length; i += chunkSize) {
+    const chunk = items.slice(i, i + chunkSize);
+    
+    // Process chunk in parallel
+    const chunkResults = await Promise.allSettled(
+      chunk.map((item, idx) => 
+        processor(item).catch(e => {
+          errors.push({ index: i + idx, error: String(e) });
+          throw e;
+        })
+      )
+    );
+    
+    // Collect successful results
+    for (const result of chunkResults) {
+      if (result.status === 'fulfilled') {
+        results.push(result.value);
+      }
+    }
+    
+    // Report progress
+    const processed = Math.min(i + chunkSize, items.length);
+    const progress = (processed / items.length) * 100;
+    
+    onProgress?.(progress, processed, items.length);
+    
+    // Log progress to brain
+    if (progress % 25 === 0) {
+      await substrate.brain.learn(
+        \`Batch \${id}: \${progress.toFixed(0)}% complete\`,
+        'batch_progress'
+      );
+    }
+  }
+  
+  // Complete trace
+  await substrate.vision.trace(trace.data?.traceId, {
+    complete: true,
+    metadata: { 
+      processed: results.length, 
+      failed: errors.length 
+    }
+  });
+  
+  // Alert on errors
+  if (errors.length > 0) {
+    await substrate.vision.alert('warn', \`Batch \${id} completed with errors\`, {
+      errorCount: errors.length,
+      totalItems: items.length
+    });
+  }
+  
+  return {
+    jobId: id,
+    processed: results.length,
+    failed: errors.length,
+    results,
+    errors
+  };
+}`
+  },
+  {
+    id: 'context-builder',
+    name: 'Context Builder',
+    description: 'Build rich context from multiple sources for AI prompts',
+    icon: Layers,
+    category: 'brain',
+    difficulty: 'intermediate',
+    estimatedTime: '30 min',
+    features: ['Multi-source aggregation', 'Priority ranking', 'Token budgeting'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface ContextSource {
+  name: string;
+  fetch: () => Promise<string>;
+  priority: number;
+  maxTokens?: number;
+}
+
+class ContextBuilder {
+  private sources: ContextSource[] = [];
+  private maxTotalTokens: number;
+  
+  constructor(maxTotalTokens = 4000) {
+    this.maxTotalTokens = maxTotalTokens;
+  }
+  
+  addSource(source: ContextSource) {
+    this.sources.push(source);
+    this.sources.sort((a, b) => b.priority - a.priority);
+    return this;
+  }
+  
+  async build(query: string): Promise<string> {
+    const contextParts: Array<{ name: string; content: string; tokens: number }> = [];
+    let totalTokens = 0;
+    
+    // Fetch from all sources
+    for (const source of this.sources) {
+      try {
+        const content = await source.fetch();
+        const tokens = this.estimateTokens(content);
+        const maxTokens = source.maxTokens || this.maxTotalTokens / this.sources.length;
+        
+        // Truncate if necessary
+        const truncated = tokens > maxTokens 
+          ? this.truncateToTokens(content, maxTokens)
+          : content;
+        
+        const finalTokens = this.estimateTokens(truncated);
+        
+        if (totalTokens + finalTokens <= this.maxTotalTokens) {
+          contextParts.push({ name: source.name, content: truncated, tokens: finalTokens });
+          totalTokens += finalTokens;
+        }
+      } catch (e) {
+        await substrate.vision.alert('warn', \`Context source failed: \${source.name}\`);
+      }
+    }
+    
+    // Add query-relevant memories
+    const memories = await substrate.brain.query(query, 5);
+    const memoryContext = memories.data?.memories
+      ?.map(m => m.content)
+      .join('\\n') || '';
+    
+    if (memoryContext) {
+      const memTokens = this.estimateTokens(memoryContext);
+      if (totalTokens + memTokens <= this.maxTotalTokens) {
+        contextParts.push({ name: 'memories', content: memoryContext, tokens: memTokens });
+      }
+    }
+    
+    // Build final context
+    return contextParts
+      .map(p => \`[\${p.name}]\\n\${p.content}\`)
+      .join('\\n\\n---\\n\\n');
+  }
+  
+  private estimateTokens(text: string): number {
+    return Math.ceil(text.length / 4); // Rough estimate
+  }
+  
+  private truncateToTokens(text: string, maxTokens: number): string {
+    const maxChars = maxTokens * 4;
+    return text.length > maxChars ? text.substring(0, maxChars) + '...' : text;
+  }
+}`
   }
 ];
 
