@@ -786,8 +786,13 @@ function CopyButton({ text, className = '' }: { text: string; className?: string
   };
 
   return (
-    <Button variant="ghost" size="sm" onClick={handleCopy} className={`h-7 px-2 ${className}`}>
-      {copied ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5" />}
+    <Button 
+      variant="ghost" 
+      size="sm" 
+      onClick={handleCopy} 
+      className={`h-8 w-8 p-0 touch-manipulation ${className}`}
+    >
+      {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
     </Button>
   );
 }
@@ -813,45 +818,43 @@ function TemplateCard({ template }: { template: typeof TEMPLATES[0] }) {
   };
 
   return (
-    <Card className="group hover:border-primary/40 transition-all duration-300">
-      <CardHeader className="pb-3">
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3">
-            <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${categoryColors[template.category]}`}>
-              <Icon className="w-5 h-5" />
-            </div>
-            <div>
-              <CardTitle className="text-base">{template.name}</CardTitle>
-              <div className="flex items-center gap-2 mt-1">
-                <Badge variant="outline" className={`text-[10px] ${categoryColors[template.category]}`}>
-                  {template.category}
-                </Badge>
-                <span className={`text-[10px] ${difficultyColors[template.difficulty]}`}>
-                  {template.difficulty}
-                </span>
-                <span className="text-[10px] text-muted-foreground">
-                  ~{template.estimatedTime}
-                </span>
-              </div>
+    <Card className="group active:scale-[0.98] transition-all duration-200 touch-manipulation">
+      <CardHeader className="p-4 sm:p-6 pb-3">
+        <div className="flex items-start gap-3">
+          <div className={`w-12 h-12 sm:w-10 sm:h-10 rounded-xl sm:rounded-lg flex-shrink-0 flex items-center justify-center ${categoryColors[template.category]}`}>
+            <Icon className="w-6 h-6 sm:w-5 sm:h-5" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <CardTitle className="text-base sm:text-sm leading-tight">{template.name}</CardTitle>
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mt-1.5">
+              <Badge variant="outline" className={`text-[10px] px-1.5 py-0 ${categoryColors[template.category]}`}>
+                {template.category}
+              </Badge>
+              <span className={`text-[10px] ${difficultyColors[template.difficulty]}`}>
+                {template.difficulty}
+              </span>
+              <span className="text-[10px] text-muted-foreground">
+                ~{template.estimatedTime}
+              </span>
             </div>
           </div>
         </div>
-        <CardDescription className="text-sm mt-2">
+        <CardDescription className="text-sm mt-3 leading-relaxed">
           {template.description}
         </CardDescription>
-        <div className="flex flex-wrap gap-1 mt-2">
+        <div className="flex flex-wrap gap-1.5 mt-3">
           {template.features.map((feature) => (
-            <Badge key={feature} variant="secondary" className="text-[10px]">
+            <Badge key={feature} variant="secondary" className="text-[10px] px-2 py-0.5">
               {feature}
             </Badge>
           ))}
         </div>
       </CardHeader>
-      <CardContent className="pt-0">
+      <CardContent className="pt-0 px-4 sm:px-6 pb-4 sm:pb-6">
         <Button 
           variant="outline" 
-          size="sm" 
-          className="w-full mb-3"
+          size="default"
+          className="w-full h-11 sm:h-9 touch-manipulation"
           onClick={() => setExpanded(!expanded)}
         >
           <Code className="w-4 h-4 mr-2" />
@@ -864,13 +867,14 @@ function TemplateCard({ template }: { template: typeof TEMPLATES[0] }) {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
+              className="mt-3"
             >
               <div className="relative">
                 <div className="absolute top-2 right-2 z-10">
                   <CopyButton text={template.code} />
                 </div>
-                <ScrollArea className="h-[280px] rounded-lg bg-muted/50 border border-border/50">
-                  <pre className="p-4 text-xs font-mono overflow-x-auto">
+                <ScrollArea className="h-[300px] sm:h-[280px] rounded-lg bg-muted/50 border border-border/50">
+                  <pre className="p-3 sm:p-4 text-[11px] sm:text-xs font-mono overflow-x-auto">
                     <code className="text-foreground/90">{template.code}</code>
                   </pre>
                 </ScrollArea>
@@ -1110,22 +1114,22 @@ export default function DevPortal() {
       />
       <PublicNav />
 
-      {/* Hero Section */}
-      <section className="relative py-16 md:py-24 overflow-hidden">
+      {/* Hero Section - Mobile First */}
+      <section className="relative py-12 sm:py-16 md:py-24 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/4 w-[600px] h-[600px] rounded-full bg-primary/10 blur-[120px]" />
-          <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full bg-violet-500/10 blur-[100px]" />
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(139,92,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
+          <div className="absolute top-0 left-1/4 w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] rounded-full bg-primary/10 blur-[80px] sm:blur-[120px]" />
+          <div className="absolute bottom-0 right-1/4 w-[250px] sm:w-[500px] h-[250px] sm:h-[500px] rounded-full bg-violet-500/10 blur-[60px] sm:blur-[100px]" />
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(139,92,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.03)_1px,transparent_1px)] bg-[size:40px_40px] sm:bg-[size:60px_60px]" />
         </div>
 
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="text-center max-w-4xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary/20 to-violet-500/20 border border-primary/30 text-sm mb-6"
+              className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-primary/20 to-violet-500/20 border border-primary/30 text-xs sm:text-sm mb-4 sm:mb-6"
             >
-              <Code className="w-4 h-4 text-primary" />
+              <Code className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary" />
               <span className="font-medium">Developer Portal v2026.01</span>
             </motion.div>
 
@@ -1133,10 +1137,10 @@ export default function DevPortal() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-4xl md:text-6xl font-bold mb-6"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight"
             >
               Build on the{' '}
-              <span className="bg-gradient-to-r from-primary via-violet-400 to-cyan-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-primary via-violet-400 to-cyan-400 bg-clip-text text-transparent block sm:inline mt-1 sm:mt-0">
                 Cognitive Substrate
               </span>
             </motion.h1>
@@ -1145,42 +1149,52 @@ export default function DevPortal() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8"
+              className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-6 sm:mb-8 px-2"
             >
               Memory, learning, security, and AI routing for autonomous systems.
               Deploy your own instance. Bring your own keys.
             </motion.p>
 
-            {/* API Key Warning */}
+            {/* API Key Warning - Mobile Optimized */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="inline-flex items-center gap-3 px-5 py-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 mb-8"
+              className="flex items-start sm:items-center gap-3 px-4 sm:px-5 py-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 mb-6 sm:mb-8 mx-auto max-w-xl text-left"
             >
-              <AlertTriangle className="w-5 h-5 flex-shrink-0" />
-              <span className="text-sm text-left">
+              <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5 sm:mt-0" />
+              <span className="text-xs sm:text-sm">
                 <strong>BYOK Required:</strong> You must deploy your own substrate instance and provide your own AI provider API keys.
                 No compute resources are included.
               </span>
             </motion.div>
 
+            {/* CTA Buttons - Stack on Mobile */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="flex flex-wrap justify-center gap-3"
+              className="flex flex-col sm:flex-row items-center justify-center gap-3 px-4 sm:px-0"
             >
-              <Button size="lg" className="gap-2" onClick={() => setActiveTab('templates')}>
+              <Button 
+                size="lg" 
+                className="w-full sm:w-auto gap-2 h-12 sm:h-11 touch-manipulation" 
+                onClick={() => setActiveTab('templates')}
+              >
                 <PlayCircle className="w-5 h-5" />
                 Browse Templates
               </Button>
-              <Button size="lg" variant="outline" className="gap-2" onClick={() => setActiveTab('docs')}>
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="w-full sm:w-auto gap-2 h-12 sm:h-11 touch-manipulation" 
+                onClick={() => setActiveTab('docs')}
+              >
                 <Download className="w-5 h-5" />
                 Get SDK
               </Button>
-              <Link to="/demo">
-                <Button size="lg" variant="ghost" className="gap-2">
+              <Link to="/demo" className="w-full sm:w-auto">
+                <Button size="lg" variant="ghost" className="w-full gap-2 h-12 sm:h-11 touch-manipulation">
                   <Zap className="w-5 h-5" />
                   Live Demo
                 </Button>
@@ -1190,70 +1204,71 @@ export default function DevPortal() {
         </div>
       </section>
 
-      {/* Main Content */}
-      <section className="py-12 flex-1">
-        <div className="container mx-auto px-4">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
-            <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-4 h-12">
-              <TabsTrigger value="overview" className="gap-2">
-                <Layers className="w-4 h-4" />
-                <span className="hidden sm:inline">Overview</span>
+      {/* Main Content - Mobile First */}
+      <section className="py-6 sm:py-8 md:py-12 flex-1">
+        <div className="container mx-auto px-4 sm:px-6">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6 sm:space-y-8">
+            {/* Mobile-optimized tabs */}
+            <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-4 h-14 sm:h-12 p-1">
+              <TabsTrigger value="overview" className="flex-col sm:flex-row gap-1 sm:gap-2 text-[10px] sm:text-sm px-1 sm:px-3 touch-manipulation">
+                <Layers className="w-4 h-4 sm:w-4 sm:h-4" />
+                <span>Overview</span>
               </TabsTrigger>
-              <TabsTrigger value="templates" className="gap-2">
-                <FileCode className="w-4 h-4" />
-                <span className="hidden sm:inline">Templates</span>
+              <TabsTrigger value="templates" className="flex-col sm:flex-row gap-1 sm:gap-2 text-[10px] sm:text-sm px-1 sm:px-3 touch-manipulation">
+                <FileCode className="w-4 h-4 sm:w-4 sm:h-4" />
+                <span>Templates</span>
               </TabsTrigger>
-              <TabsTrigger value="docs" className="gap-2">
-                <BookOpen className="w-4 h-4" />
-                <span className="hidden sm:inline">Docs</span>
+              <TabsTrigger value="docs" className="flex-col sm:flex-row gap-1 sm:gap-2 text-[10px] sm:text-sm px-1 sm:px-3 touch-manipulation">
+                <BookOpen className="w-4 h-4 sm:w-4 sm:h-4" />
+                <span>Docs</span>
               </TabsTrigger>
-              <TabsTrigger value="setup" className="gap-2">
-                <Key className="w-4 h-4" />
-                <span className="hidden sm:inline">Setup</span>
+              <TabsTrigger value="setup" className="flex-col sm:flex-row gap-1 sm:gap-2 text-[10px] sm:text-sm px-1 sm:px-3 touch-manipulation">
+                <Key className="w-4 h-4 sm:w-4 sm:h-4" />
+                <span>Setup</span>
               </TabsTrigger>
             </TabsList>
 
-            {/* Overview Tab */}
-            <TabsContent value="overview" className="space-y-8">
-              {/* Quick Stats */}
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* Overview Tab - Mobile First */}
+            <TabsContent value="overview" className="space-y-6 sm:space-y-8">
+              {/* Quick Stats - 2x2 grid on mobile */}
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                 {[
                   { label: 'Modules', value: '7', icon: Layers },
                   { label: 'Actions', value: '50+', icon: Zap },
                   { label: 'Templates', value: '15', icon: FileCode },
                   { label: 'Providers', value: '4+', icon: Server },
                 ].map((stat) => (
-                  <Card key={stat.label} className="text-center py-6">
-                    <stat.icon className="w-8 h-8 mx-auto mb-2 text-primary" />
-                    <p className="text-3xl font-bold">{stat.value}</p>
-                    <p className="text-sm text-muted-foreground">{stat.label}</p>
+                  <Card key={stat.label} className="text-center py-4 sm:py-6">
+                    <stat.icon className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-1.5 sm:mb-2 text-primary" />
+                    <p className="text-2xl sm:text-3xl font-bold">{stat.value}</p>
+                    <p className="text-xs sm:text-sm text-muted-foreground">{stat.label}</p>
                   </Card>
                 ))}
               </div>
 
-              {/* Module Overview with Actions */}
+              {/* Module Overview - Horizontal scroll on mobile */}
               <div className="space-y-4">
-                <h2 className="text-2xl font-bold">Substrate Modules</h2>
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                <h2 className="text-xl sm:text-2xl font-bold">Substrate Modules</h2>
+                <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-4 sm:overflow-visible scrollbar-hide">
                   {MODULES.map((mod) => (
-                    <Card key={mod.name} className="p-4 hover:border-primary/40 transition-colors">
+                    <Card key={mod.name} className="p-4 min-w-[260px] sm:min-w-0 flex-shrink-0 sm:flex-shrink active:scale-[0.98] transition-all touch-manipulation">
                       <div className="flex items-center gap-3 mb-3">
-                        <div className={`w-10 h-10 rounded-lg bg-${mod.color}-500/20 flex items-center justify-center`}>
+                        <div className={`w-11 h-11 sm:w-10 sm:h-10 rounded-xl sm:rounded-lg bg-${mod.color}-500/20 flex items-center justify-center flex-shrink-0`}>
                           <mod.icon className={`w-5 h-5 text-${mod.color}-400`} />
                         </div>
-                        <div>
-                          <h3 className="font-medium">{mod.name}</h3>
-                          <p className="text-xs text-muted-foreground">{mod.desc}</p>
+                        <div className="min-w-0">
+                          <h3 className="font-medium text-sm sm:text-base">{mod.name}</h3>
+                          <p className="text-xs text-muted-foreground truncate">{mod.desc}</p>
                         </div>
                       </div>
                       <div className="flex flex-wrap gap-1">
                         {mod.actions.slice(0, 4).map((action) => (
-                          <Badge key={action} variant="secondary" className="text-[9px]">
+                          <Badge key={action} variant="secondary" className="text-[9px] px-1.5">
                             {action}
                           </Badge>
                         ))}
                         {mod.actions.length > 4 && (
-                          <Badge variant="outline" className="text-[9px]">
+                          <Badge variant="outline" className="text-[9px] px-1.5">
                             +{mod.actions.length - 4}
                           </Badge>
                         )}
@@ -1263,11 +1278,11 @@ export default function DevPortal() {
                 </div>
               </div>
 
-              {/* Quick Start Code */}
+              {/* Quick Start Code - Better mobile scroll */}
               <div className="space-y-4">
-                <h2 className="text-2xl font-bold">Quick Start</h2>
+                <h2 className="text-xl sm:text-2xl font-bold">Quick Start</h2>
                 <Card className="relative overflow-hidden">
-                  <div className="absolute top-4 right-4">
+                  <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-10">
                     <CopyButton text={`import { SubstrateClient } from './substrate-client';
 
 const substrate = new SubstrateClient({
@@ -1284,7 +1299,8 @@ const reply = await substrate.decode.chat('Hello!', 'session_123');
 // Route to AI provider
 const response = await substrate.nexus.route('Explain quantum computing');`} />
                   </div>
-                  <pre className="p-6 text-sm font-mono overflow-x-auto bg-muted/30">
+                  <ScrollArea className="w-full">
+                    <pre className="p-4 sm:p-6 text-[11px] sm:text-sm font-mono bg-muted/30 min-w-[500px]">
 {`import { SubstrateClient } from './substrate-client';
 
 const substrate = new SubstrateClient({
@@ -1300,25 +1316,26 @@ const reply = await substrate.decode.chat('Hello!', 'session_123');
 
 // Route to AI provider
 const response = await substrate.nexus.route('Explain quantum computing');`}
-                  </pre>
+                    </pre>
+                  </ScrollArea>
                 </Card>
               </div>
 
-              {/* CTA */}
-              <Card className="p-6 bg-gradient-to-r from-primary/10 to-violet-500/10 border-primary/20">
-                <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              {/* CTA - Stack on mobile */}
+              <Card className="p-4 sm:p-6 bg-gradient-to-r from-primary/10 to-violet-500/10 border-primary/20">
+                <div className="flex flex-col items-center text-center sm:text-left sm:flex-row sm:justify-between gap-4">
                   <div>
                     <h3 className="text-lg font-semibold">Ready to build?</h3>
-                    <p className="text-muted-foreground">Get the SDK and start building in minutes.</p>
+                    <p className="text-sm sm:text-base text-muted-foreground">Get the SDK and start building in minutes.</p>
                   </div>
-                  <div className="flex gap-3">
-                    <Button variant="outline" asChild>
+                  <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                    <Button variant="outline" className="w-full sm:w-auto h-11 sm:h-10 touch-manipulation" asChild>
                       <a href="/sdk/substrate-client.ts" download>
                         <Download className="w-4 h-4 mr-2" />
                         Download SDK
                       </a>
                     </Button>
-                    <Button onClick={() => setActiveTab('templates')}>
+                    <Button className="w-full sm:w-auto h-11 sm:h-10 touch-manipulation" onClick={() => setActiveTab('templates')}>
                       View Templates
                       <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>
@@ -1327,14 +1344,15 @@ const response = await substrate.nexus.route('Explain quantum computing');`}
               </Card>
             </TabsContent>
 
-            {/* Templates Tab */}
-            <TabsContent value="templates" className="space-y-6">
-              {/* Category Filter */}
-              <div className="flex flex-wrap gap-2">
+            {/* Templates Tab - Mobile First */}
+            <TabsContent value="templates" className="space-y-4 sm:space-y-6">
+              {/* Category Filter - Horizontal scroll on mobile */}
+              <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap scrollbar-hide">
                 <Button
                   variant={categoryFilter === null ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => setCategoryFilter(null)}
+                  className="flex-shrink-0 h-9 sm:h-8 touch-manipulation"
                 >
                   All ({TEMPLATES.length})
                 </Button>
@@ -1347,7 +1365,7 @@ const response = await substrate.nexus.route('Explain quantum computing');`}
                       variant={categoryFilter === cat ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => setCategoryFilter(cat)}
-                      className="capitalize"
+                      className="capitalize flex-shrink-0 h-9 sm:h-8 touch-manipulation"
                     >
                       {cat} ({count})
                     </Button>
@@ -1355,35 +1373,55 @@ const response = await substrate.nexus.route('Explain quantum computing');`}
                 })}
               </div>
 
-              {/* Templates Grid */}
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Templates Grid - Single column on mobile */}
+              <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {filteredTemplates.map((template) => (
                   <TemplateCard key={template.id} template={template} />
                 ))}
               </div>
             </TabsContent>
 
-            {/* Docs Tab */}
-            <TabsContent value="docs" className="space-y-6">
-              <div className="grid lg:grid-cols-3 gap-6">
-                {/* Doc Navigation */}
-                <Card className="p-4 lg:col-span-1">
+            {/* Docs Tab - Mobile First with better layout */}
+            <TabsContent value="docs" className="space-y-4 sm:space-y-6">
+              {/* Mobile: Horizontal doc selector */}
+              <div className="lg:hidden">
+                <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide">
+                  {DOCS.map((doc) => (
+                    <button
+                      key={doc.id}
+                      onClick={() => setSelectedDoc(doc.id)}
+                      className={`flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-lg transition-colors touch-manipulation ${
+                        selectedDoc === doc.id 
+                          ? 'bg-primary text-primary-foreground' 
+                          : 'bg-muted hover:bg-muted/80'
+                      }`}
+                    >
+                      <doc.icon className="w-4 h-4" />
+                      <span className="text-sm font-medium whitespace-nowrap">{doc.title}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid lg:grid-cols-3 gap-4 sm:gap-6">
+                {/* Doc Navigation - Hidden on mobile, visible on desktop */}
+                <Card className="hidden lg:block p-4 lg:col-span-1">
                   <h3 className="font-semibold mb-4">Documentation</h3>
                   <div className="space-y-1">
                     {DOCS.map((doc) => (
                       <button
                         key={doc.id}
                         onClick={() => setSelectedDoc(doc.id)}
-                        className={`w-full text-left p-3 rounded-lg transition-colors flex items-center gap-3 ${
+                        className={`w-full text-left p-3 rounded-lg transition-colors flex items-center gap-3 touch-manipulation ${
                           selectedDoc === doc.id 
                             ? 'bg-primary/20 text-primary' 
                             : 'hover:bg-muted'
                         }`}
                       >
-                        <doc.icon className="w-4 h-4" />
-                        <div>
+                        <doc.icon className="w-4 h-4 flex-shrink-0" />
+                        <div className="min-w-0">
                           <p className="text-sm font-medium">{doc.title}</p>
-                          <p className="text-xs text-muted-foreground">{doc.description}</p>
+                          <p className="text-xs text-muted-foreground truncate">{doc.description}</p>
                         </div>
                       </button>
                     ))}
@@ -1393,13 +1431,13 @@ const response = await substrate.nexus.route('Explain quantum computing');`}
                   <div className="mt-6 pt-6 border-t">
                     <h4 className="font-medium mb-3">Downloads</h4>
                     <div className="space-y-2">
-                      <Button variant="outline" size="sm" className="w-full justify-start" asChild>
+                      <Button variant="outline" size="sm" className="w-full justify-start h-10 touch-manipulation" asChild>
                         <a href="/sdk/substrate-client.ts" download>
                           <Download className="w-4 h-4 mr-2" />
                           TypeScript SDK
                         </a>
                       </Button>
-                      <Button variant="outline" size="sm" className="w-full justify-start" asChild>
+                      <Button variant="outline" size="sm" className="w-full justify-start h-10 touch-manipulation" asChild>
                         <a href="/sdk/README.md" download>
                           <Download className="w-4 h-4 mr-2" />
                           SDK Readme
@@ -1410,45 +1448,61 @@ const response = await substrate.nexus.route('Explain quantum computing');`}
                 </Card>
 
                 {/* Doc Content */}
-                <Card className="p-6 lg:col-span-2">
+                <Card className="p-4 sm:p-6 lg:col-span-2">
                   <InlineDocumentation docId={selectedDoc} />
                 </Card>
               </div>
 
-              {/* Additional Resources */}
-              <Card className="p-6 bg-gradient-to-r from-primary/10 to-violet-500/10 border-primary/20">
-                <h3 className="text-lg font-semibold mb-4">Additional Resources</h3>
-                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <Link to="/demo" className="flex items-center gap-2 text-sm hover:text-primary transition-colors">
-                    <PlayCircle className="w-4 h-4" />
-                    Interactive Demo
+              {/* Mobile Downloads */}
+              <div className="lg:hidden grid grid-cols-2 gap-3">
+                <Button variant="outline" className="h-12 touch-manipulation" asChild>
+                  <a href="/sdk/substrate-client.ts" download>
+                    <Download className="w-4 h-4 mr-2" />
+                    SDK Client
+                  </a>
+                </Button>
+                <Button variant="outline" className="h-12 touch-manipulation" asChild>
+                  <a href="/sdk/README.md" download>
+                    <Download className="w-4 h-4 mr-2" />
+                    Readme
+                  </a>
+                </Button>
+              </div>
+
+              {/* Additional Resources - Better mobile layout */}
+              <Card className="p-4 sm:p-6 bg-gradient-to-r from-primary/10 to-violet-500/10 border-primary/20">
+                <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Additional Resources</h3>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+                  <Link to="/demo" className="flex items-center gap-2 text-sm hover:text-primary transition-colors p-2 sm:p-0 rounded-lg sm:rounded-none bg-background/50 sm:bg-transparent touch-manipulation">
+                    <PlayCircle className="w-4 h-4 flex-shrink-0" />
+                    <span className="truncate">Demo</span>
                   </Link>
-                  <Link to="/proof" className="flex items-center gap-2 text-sm hover:text-primary transition-colors">
-                    <Eye className="w-4 h-4" />
-                    Proof Mode
+                  <Link to="/proof" className="flex items-center gap-2 text-sm hover:text-primary transition-colors p-2 sm:p-0 rounded-lg sm:rounded-none bg-background/50 sm:bg-transparent touch-manipulation">
+                    <Eye className="w-4 h-4 flex-shrink-0" />
+                    <span className="truncate">Proof</span>
                   </Link>
-                  <Link to="/changelog" className="flex items-center gap-2 text-sm hover:text-primary transition-colors">
-                    <FileText className="w-4 h-4" />
-                    Changelog
+                  <Link to="/changelog" className="flex items-center gap-2 text-sm hover:text-primary transition-colors p-2 sm:p-0 rounded-lg sm:rounded-none bg-background/50 sm:bg-transparent touch-manipulation">
+                    <FileText className="w-4 h-4 flex-shrink-0" />
+                    <span className="truncate">Changelog</span>
                   </Link>
-                  <Link to="/contact" className="flex items-center gap-2 text-sm hover:text-primary transition-colors">
-                    <MessageSquare className="w-4 h-4" />
-                    Get Support
+                  <Link to="/contact" className="flex items-center gap-2 text-sm hover:text-primary transition-colors p-2 sm:p-0 rounded-lg sm:rounded-none bg-background/50 sm:bg-transparent touch-manipulation">
+                    <MessageSquare className="w-4 h-4 flex-shrink-0" />
+                    <span className="truncate">Support</span>
                   </Link>
                 </div>
               </Card>
             </TabsContent>
 
-            {/* Setup Tab */}
-            <TabsContent value="setup" className="space-y-8">
-              {/* BYOK Warning */}
+            {/* Setup Tab - Mobile First */}
+            <TabsContent value="setup" className="space-y-5 sm:space-y-8">
+              {/* BYOK Warning - More compact on mobile */}
               <Card className="border-amber-500/30 bg-amber-500/5">
-                <CardHeader>
-                  <div className="flex items-center gap-3">
-                    <AlertTriangle className="w-6 h-6 text-amber-500" />
-                    <CardTitle>Bring Your Own Keys (BYOK)</CardTitle>
+                <CardHeader className="p-4 sm:p-6">
+                  <div className="flex items-start sm:items-center gap-3">
+                    <AlertTriangle className="w-5 h-5 sm:w-6 sm:h-6 text-amber-500 flex-shrink-0 mt-0.5 sm:mt-0" />
+                    <CardTitle className="text-base sm:text-lg">Bring Your Own Keys (BYOK)</CardTitle>
                   </div>
-                  <CardDescription>
+                  <CardDescription className="text-sm mt-2">
                     The promptfluid substrate is a routing and orchestration layer. 
                     <strong> You must deploy your own instance and provide your own API keys.</strong>
                     No compute resources, credits, or API access is included.
@@ -1456,30 +1510,35 @@ const response = await substrate.nexus.route('Explain quantum computing');`}
                 </CardHeader>
               </Card>
 
-              {/* Required Keys */}
-              <div className="space-y-4">
-                <h2 className="text-2xl font-bold">Required API Keys</h2>
+              {/* Required Keys - Better mobile layout */}
+              <div className="space-y-3 sm:space-y-4">
+                <h2 className="text-xl sm:text-2xl font-bold">Required API Keys</h2>
                 <div className="grid gap-3">
                   {REQUIRED_KEYS.map((key) => (
-                    <Card key={key.name} className="p-4">
-                      <div className="flex items-center justify-between flex-wrap gap-4">
-                        <div className="flex items-center gap-3">
-                          <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                    <Card key={key.name} className="p-3 sm:p-4">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+                        <div className="flex items-center gap-3 flex-1 min-w-0">
+                          <div className={`w-10 h-10 sm:w-10 sm:h-10 rounded-lg flex-shrink-0 flex items-center justify-center ${
                             key.required ? 'bg-primary/20' : 'bg-muted'
                           }`}>
                             <Key className={`w-5 h-5 ${key.required ? 'text-primary' : 'text-muted-foreground'}`} />
                           </div>
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <code className="text-sm font-mono">{key.name}</code>
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <code className="text-xs sm:text-sm font-mono truncate">{key.name}</code>
                               {key.required && (
-                                <Badge variant="secondary" className="text-[10px]">REQUIRED</Badge>
+                                <Badge variant="secondary" className="text-[9px] sm:text-[10px] flex-shrink-0">REQUIRED</Badge>
                               )}
                             </div>
-                            <p className="text-sm text-muted-foreground">{key.description}</p>
+                            <p className="text-xs sm:text-sm text-muted-foreground mt-0.5 line-clamp-1">{key.description}</p>
                           </div>
                         </div>
-                        <Button variant="outline" size="sm" className="gap-2" asChild>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="w-full sm:w-auto h-10 sm:h-8 gap-2 touch-manipulation flex-shrink-0" 
+                          asChild
+                        >
                           <a href={key.url} target="_blank" rel="noopener noreferrer">
                             Get Key <ExternalLink className="w-3.5 h-3.5" />
                           </a>
@@ -1490,77 +1549,84 @@ const response = await substrate.nexus.route('Explain quantum computing');`}
                 </div>
               </div>
 
-              {/* Installation Steps */}
-              <div className="space-y-4">
-                <h2 className="text-2xl font-bold">Deployment Steps</h2>
+              {/* Installation Steps - Better accordion for mobile */}
+              <div className="space-y-3 sm:space-y-4">
+                <h2 className="text-xl sm:text-2xl font-bold">Deployment Steps</h2>
                 <Accordion type="single" collapsible className="w-full">
                   <AccordionItem value="step-1">
-                    <AccordionTrigger>
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-bold">1</div>
-                        Create Supabase Project
+                    <AccordionTrigger className="py-4 touch-manipulation">
+                      <div className="flex items-center gap-3 text-left">
+                        <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-bold flex-shrink-0">1</div>
+                        <span className="text-sm sm:text-base">Create Supabase Project</span>
                       </div>
                     </AccordionTrigger>
-                    <AccordionContent className="pl-11">
-                      <p className="text-muted-foreground mb-3">Create a new Supabase project at supabase.com</p>
-                      <Card className="bg-muted/50 p-4">
-                        <code className="text-sm">
-                          # Note your project URL and anon key<br/>
-                          # These are needed for the SDK configuration
-                        </code>
-                      </Card>
+                    <AccordionContent className="pl-11 sm:pl-11 pr-2">
+                      <p className="text-sm text-muted-foreground mb-3">Create a new Supabase project at supabase.com</p>
+                      <ScrollArea className="w-full">
+                        <Card className="bg-muted/50 p-3 sm:p-4 min-w-[280px]">
+                          <code className="text-xs sm:text-sm whitespace-pre">
+                            # Note your project URL and anon key{'\n'}
+                            # These are needed for the SDK configuration
+                          </code>
+                        </Card>
+                      </ScrollArea>
                     </AccordionContent>
                   </AccordionItem>
                   
                   <AccordionItem value="step-2">
-                    <AccordionTrigger>
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-bold">2</div>
-                        Deploy Edge Functions
+                    <AccordionTrigger className="py-4 touch-manipulation">
+                      <div className="flex items-center gap-3 text-left">
+                        <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-bold flex-shrink-0">2</div>
+                        <span className="text-sm sm:text-base">Deploy Edge Functions</span>
                       </div>
                     </AccordionTrigger>
-                    <AccordionContent className="pl-11">
-                      <Card className="bg-muted/50 p-4">
-                        <code className="text-sm">
-                          # Deploy the substrate edge function<br/>
-                          supabase functions deploy pf-substrate<br/><br/>
-                          # Link to your project<br/>
-                          supabase link --project-ref YOUR_PROJECT_REF
-                        </code>
-                      </Card>
+                    <AccordionContent className="pl-11 sm:pl-11 pr-2">
+                      <ScrollArea className="w-full">
+                        <Card className="bg-muted/50 p-3 sm:p-4 min-w-[320px]">
+                          <code className="text-xs sm:text-sm whitespace-pre">
+                            # Deploy the substrate edge function{'\n'}
+                            supabase functions deploy pf-substrate{'\n'}{'\n'}
+                            # Link to your project{'\n'}
+                            supabase link --project-ref YOUR_PROJECT_REF
+                          </code>
+                        </Card>
+                      </ScrollArea>
                     </AccordionContent>
                   </AccordionItem>
                   
                   <AccordionItem value="step-3">
-                    <AccordionTrigger>
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-bold">3</div>
-                        Configure Secrets
+                    <AccordionTrigger className="py-4 touch-manipulation">
+                      <div className="flex items-center gap-3 text-left">
+                        <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-bold flex-shrink-0">3</div>
+                        <span className="text-sm sm:text-base">Configure Secrets</span>
                       </div>
                     </AccordionTrigger>
-                    <AccordionContent className="pl-11">
-                      <Card className="bg-muted/50 p-4">
-                        <code className="text-sm">
-                          # Add your API keys as secrets<br/>
-                          supabase secrets set GROQ_API_KEY=gsk_...<br/>
-                          supabase secrets set OPENAI_API_KEY=sk-...  # optional<br/>
-                          supabase secrets set CEREBRAS_API_KEY=...   # optional
-                        </code>
-                      </Card>
+                    <AccordionContent className="pl-11 sm:pl-11 pr-2">
+                      <ScrollArea className="w-full">
+                        <Card className="bg-muted/50 p-3 sm:p-4 min-w-[360px]">
+                          <code className="text-xs sm:text-sm whitespace-pre">
+                            # Add your API keys as secrets{'\n'}
+                            supabase secrets set GROQ_API_KEY=gsk_...{'\n'}
+                            supabase secrets set OPENAI_API_KEY=sk-...  # optional{'\n'}
+                            supabase secrets set CEREBRAS_API_KEY=...   # optional
+                          </code>
+                        </Card>
+                      </ScrollArea>
                     </AccordionContent>
                   </AccordionItem>
                   
                   <AccordionItem value="step-4">
-                    <AccordionTrigger>
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-bold">4</div>
-                        Initialize SDK
+                    <AccordionTrigger className="py-4 touch-manipulation">
+                      <div className="flex items-center gap-3 text-left">
+                        <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-bold flex-shrink-0">4</div>
+                        <span className="text-sm sm:text-base">Initialize SDK</span>
                       </div>
                     </AccordionTrigger>
-                    <AccordionContent className="pl-11">
-                      <Card className="bg-muted/50 p-4">
-                        <code className="text-sm">
-                          {`import { SubstrateClient } from './substrate-client';
+                    <AccordionContent className="pl-11 sm:pl-11 pr-2">
+                      <ScrollArea className="w-full">
+                        <Card className="bg-muted/50 p-3 sm:p-4 min-w-[380px]">
+                          <code className="text-xs sm:text-sm whitespace-pre">
+                            {`import { SubstrateClient } from './substrate-client';
 
 const substrate = new SubstrateClient({
   url: 'https://YOUR_PROJECT.supabase.co',
@@ -1570,31 +1636,32 @@ const substrate = new SubstrateClient({
 // Test connection
 const health = await substrate.vision.health();
 console.log('Connected:', health.success);`}
-                        </code>
-                      </Card>
+                          </code>
+                        </Card>
+                      </ScrollArea>
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
               </div>
 
-              {/* SDK Download */}
-              <Card className="p-6">
-                <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                  <div>
-                    <h3 className="text-lg font-semibold">Download SDK</h3>
-                    <p className="text-muted-foreground">Get the TypeScript SDK and example implementations.</p>
+              {/* SDK Download - Stack on mobile */}
+              <Card className="p-4 sm:p-6">
+                <div className="flex flex-col gap-4">
+                  <div className="text-center sm:text-left">
+                    <h3 className="text-base sm:text-lg font-semibold">Download SDK</h3>
+                    <p className="text-sm text-muted-foreground">Get the TypeScript SDK and example implementations.</p>
                   </div>
-                  <div className="flex gap-3">
-                    <Button variant="outline" asChild>
+                  <div className="grid grid-cols-2 sm:flex sm:justify-end gap-3">
+                    <Button variant="outline" className="h-11 sm:h-10 touch-manipulation" asChild>
                       <a href="/sdk/substrate-client.ts" download>
                         <Download className="w-4 h-4 mr-2" />
                         SDK Client
                       </a>
                     </Button>
-                    <Button asChild>
+                    <Button className="h-11 sm:h-10 touch-manipulation" asChild>
                       <a href="/sdk/README.md" download>
                         <FileText className="w-4 h-4 mr-2" />
-                        Documentation
+                        Docs
                       </a>
                     </Button>
                   </div>
