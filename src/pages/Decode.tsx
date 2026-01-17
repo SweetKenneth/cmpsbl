@@ -6,13 +6,14 @@
  */
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { ArrowLeft, Send, RefreshCw, Menu, X } from "lucide-react";
+import { Send, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { decode, substrate } from "@/lib/substrate";
 import { useNavigate } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 import { toast } from "sonner";
+import { PublicNav } from "@/components/PublicNav";
 
 interface Message {
   role: 'user' | 'interpreter' | 'system';
@@ -46,7 +47,7 @@ export default function Decode() {
   const [input, setInput] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [epistemicPrompt, setEpistemicPrompt] = useState("");
-  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  // Removed showMobileMenu state - using PublicNav
   const [connection, setConnection] = useState<ConnectionState>({
     status: 'connected',
     lastSuccess: null,
@@ -207,95 +208,39 @@ export default function Decode() {
     }
   };
 
-  const navLinks = [
-    { label: 'Demo', path: '/demo' },
-    { label: 'Proof', path: '/proof' },
-    { label: 'Substrate', path: '/substrate' },
-    { label: 'Dream', path: '/feed-dream-eater' },
-    { label: 'Blog', path: '/blog' },
-    { label: 'About', path: '/about' },
-  ];
-
   return (
-    <div className="h-[100dvh] bg-background flex flex-col overflow-hidden">
+    <div className="min-h-screen bg-background flex flex-col">
       <SEO 
         title="Decode — Interpreter Primitive | promptfluid®"
         description="Decode is the substrate's interpreter primitive. It translates human ambiguity into substrate-structured cognition."
       />
+      
+      {/* Consistent Navigation */}
+      <PublicNav />
 
       {/* Ambient Background - Lighter for mobile performance */}
-      <div className="fixed inset-0 pointer-events-none">
+      <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-violet-950/5" />
         <div className="absolute top-1/3 left-1/4 w-48 md:w-96 h-48 md:h-96 rounded-full bg-primary/3 blur-[60px] md:blur-[100px] animate-float" />
       </div>
 
-      {/* Header - Mobile optimized with hamburger */}
-      <header className="relative z-20 border-b border-border/30 bg-background/90 backdrop-blur-lg safe-area-inset-top">
-        <div className="flex items-center justify-between px-3 md:px-6 py-2.5 md:py-3">
-          <div className="flex items-center gap-2 md:gap-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => navigate('/')}
-              className="h-8 w-8 md:h-9 md:w-9 text-muted-foreground hover:text-foreground"
-            >
-              <ArrowLeft className="w-4 h-4" />
-            </Button>
-            
-            <div className="flex items-center gap-1.5 md:gap-2">
-              <span className="font-medium text-sm md:text-base">Decode</span>
-              <div className={`w-1.5 h-1.5 rounded-full ${
-                connection.status === 'connected' ? 'bg-emerald-500' :
-                connection.status === 'degraded' ? 'bg-amber-500 animate-pulse' :
-                'bg-destructive'
-              }`} />
-            </div>
+      {/* Connection Status Bar */}
+      <div className="relative z-10 border-b border-border/30 bg-background/80 backdrop-blur-sm">
+        <div className="container mx-auto px-4 py-2 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="font-medium text-sm">Decode Interpreter</span>
+            <div className={`w-1.5 h-1.5 rounded-full ${
+              connection.status === 'connected' ? 'bg-emerald-500' :
+              connection.status === 'degraded' ? 'bg-amber-500 animate-pulse' :
+              'bg-destructive'
+            }`} />
+            <span className="text-xs text-muted-foreground">
+              {connection.status === 'connected' ? 'Active' : 
+               connection.status === 'degraded' ? 'Reconnecting...' : 'Disconnected'}
+            </span>
           </div>
-
-          {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-4">
-            {navLinks.map((item) => (
-              <button
-                key={item.label}
-                onClick={() => navigate(item.path)}
-                className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {item.label}
-              </button>
-            ))}
-          </nav>
-
-          {/* Mobile menu button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setShowMobileMenu(!showMobileMenu)}
-            className="h-8 w-8 md:hidden text-muted-foreground"
-          >
-            {showMobileMenu ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
-          </Button>
         </div>
-
-        {/* Mobile dropdown menu */}
-        {showMobileMenu && (
-          <div className="md:hidden border-t border-border/20 bg-background/95 backdrop-blur-lg">
-            <nav className="flex flex-col py-2">
-              {navLinks.map((item) => (
-                <button
-                  key={item.label}
-                  onClick={() => {
-                    navigate(item.path);
-                    setShowMobileMenu(false);
-                  }}
-                  className="px-4 py-3 text-left text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
-                >
-                  {item.label}
-                </button>
-              ))}
-            </nav>
-          </div>
-        )}
-      </header>
+      </div>
 
       {/* Messages Area - Full height with proper scroll */}
       <div className="relative z-10 flex-1 overflow-y-auto overscroll-contain">

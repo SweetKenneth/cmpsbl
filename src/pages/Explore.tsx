@@ -3,9 +3,9 @@
  * A masterpiece secondary home with modern CTAs and navigation
  */
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { 
   ArrowRight, 
   Brain, 
@@ -18,7 +18,6 @@ import {
   Sparkles,
   Play,
   ChevronDown,
-  ExternalLink,
   Cpu,
   Database,
   Lock,
@@ -28,6 +27,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { SEO } from "@/components/SEO";
 import { cn } from "@/lib/utils";
+import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
 
 // Animated gradient orb component
 function GradientOrb({ className, delay = 0 }: { className?: string; delay?: number }) {
@@ -262,6 +263,9 @@ export default function Explore() {
         canonical="https://promptfluid.com/explore"
       />
 
+      {/* Consistent Navigation */}
+      <PublicNav />
+
       {/* Ambient Background */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <motion.div style={{ y: backgroundY }} className="absolute inset-0">
@@ -270,34 +274,6 @@ export default function Explore() {
           <GradientOrb className="w-[400px] h-[400px] bottom-0 left-1/3 bg-cyan-500/15" delay={0.4} />
         </motion.div>
       </div>
-
-      {/* Navigation */}
-      <motion.nav 
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="relative z-50 px-4 py-6"
-      >
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center group-hover:bg-primary/30 transition-colors">
-              <Brain className="w-4 h-4 text-primary" />
-            </div>
-            <span className="font-medium text-foreground">promptfluid</span>
-          </Link>
-          
-          <div className="flex items-center gap-3">
-            <Link to="/auth">
-              <Button variant="ghost" size="sm">Sign In</Button>
-            </Link>
-            <Link to="/decode">
-              <Button size="sm" className="bg-primary hover:bg-primary/90">
-                Start Exploring
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </motion.nav>
 
       {/* Hero Section */}
       <section className="relative z-10 px-4 pt-12 pb-24 md:pt-20 md:pb-32">
@@ -514,17 +490,7 @@ export default function Explore() {
       </section>
 
       {/* Footer */}
-      <footer className="relative z-10 px-4 py-8 border-t border-border/50">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-          <div className="flex items-center gap-6">
-            <Link to="/" className="hover:text-foreground transition-colors">Home</Link>
-            <Link to="/about" className="hover:text-foreground transition-colors">About</Link>
-            <Link to="/blog" className="hover:text-foreground transition-colors">Blog</Link>
-            <Link to="/contact" className="hover:text-foreground transition-colors">Contact</Link>
-          </div>
-          <p>© {new Date().getFullYear()} promptfluid® — All rights reserved</p>
-        </div>
-      </footer>
+      <EnhancedFooter />
     </div>
   );
 }
