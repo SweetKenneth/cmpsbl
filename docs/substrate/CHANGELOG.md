@@ -4,6 +4,35 @@
 
 ---
 
+## 2026-01-17 · v3.9.0
+
+⟨This entry describes the observed addition of 7 new cognitive substrate modules and a site-wide SEO refactor from investor-facing to substrate SDK positioning.⟩
+
+### New Substrate Modules
+
+- **Coherence Reconciler** (brain, advanced) — Reconcile conflicting memory and embeddings into coherent substrate knowledge. Memory merging, coherence scoring, knowledge reconciliation.
+- **Preference Engine** (brain, intermediate) — Learn user preferences and value weights from interactions. Preference learning, value weights, reinforcement signals.
+- **Multi-Agent Bus** (system, advanced) — Message bus for substrate agent-to-agent or module-to-module communication. Message passing, event routing, multi-agent coordination.
+- **Governance Policy Engine** (defense, advanced) — Centralized policy and rule enforcement across substrate execution. Policy rules, override logic, constraint enforcement.
+- **Social Graph Modeling** (brain, advanced) — Build knowledge graphs of actors, relationships, and affinity. Relationship graph, affinity mapping, actor modeling.
+- **Substrate Composer** (nexus, advanced) — Composition layer for wiring substrate modules into directed graphs. Module chaining, graph execution, workflow composition.
+- **Substrate Evaluator** (vision, advanced) — Measure substrate performance on coherence, latency, cost, accuracy. Performance metrics, evaluation suite, execution audits.
+
+### SEO Refactor
+
+- Reframed site from investor-facing SaaS to cognitive substrate SDK positioning.
+- Navigation updated: "Products" → "Substrate", "Developers" → "SDK", "Company" → "About".
+- Removed investor-facing links from navigation.
+- Footer restructured: "Product" → "Substrate", "Company" → "SDK".
+- DevPortal title updated: "Substrate Modules — promptfluid® Cognitive SDK".
+- Keywords updated to substrate-focused terminology.
+
+### Template Count
+
+- Total substrate modules: 72 (previously 65)
+
+---
+
 ## 2026-01-16 · v3.8.0
 
 ⟨This entry describes the observed addition of AI quota observability and routing analytics capabilities.⟩

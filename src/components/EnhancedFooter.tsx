@@ -3,20 +3,20 @@ import { Link } from "react-router-dom";
 export function EnhancedFooter() {
   const currentYear = new Date().getFullYear();
 
-  const productLinks = [
-    { name: "Demo", href: "/demo" },
-    { name: "Proof Mode", href: "/proof" },
-    { name: "Substrate", href: "/substrate" },
+  const substrateLinks = [
+    { name: "Substrate Modules", href: "/developers" },
+    { name: "Substrate OS", href: "/substrate" },
     { name: "Decode", href: "/decode" },
     { name: "Dream", href: "/feed-dream-eater" },
+    { name: "Demo", href: "/demo" },
   ];
 
-  const companyLinks = [
-    { name: "About", href: "/about" },
-    { name: "Blog", href: "/blog" },
+  const sdkLinks = [
+    { name: "Documentation", href: "/documentation" },
     { name: "Changelog", href: "/changelog" },
+    { name: "Blog", href: "/blog" },
+    { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
-    { name: "Publication", href: "/publication" },
   ];
 
   const legalLinks = [
@@ -34,11 +34,11 @@ export function EnhancedFooter() {
       {/* Main Footer */}
       <div className="container mx-auto max-w-6xl px-4 py-8 md:py-12">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
-          {/* Product */}
+          {/* Substrate */}
           <div>
-            <h3 className="font-semibold text-foreground mb-3 text-sm">Product</h3>
+            <h3 className="font-semibold text-foreground mb-3 text-sm">Substrate</h3>
             <ul className="space-y-2">
-              {productLinks.map((link) => (
+              {substrateLinks.map((link) => (
                 <li key={link.href}>
                   <Link 
                     to={link.href} 
@@ -51,11 +51,11 @@ export function EnhancedFooter() {
             </ul>
           </div>
 
-          {/* Company */}
+          {/* SDK */}
           <div>
-            <h3 className="font-semibold text-foreground mb-3 text-sm">Company</h3>
+            <h3 className="font-semibold text-foreground mb-3 text-sm">SDK</h3>
             <ul className="space-y-2">
-              {companyLinks.map((link) => (
+              {sdkLinks.map((link) => (
                 <li key={link.href}>
                   <Link 
                     to={link.href} 

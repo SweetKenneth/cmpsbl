@@ -19,7 +19,7 @@ import {
   Bot, Image, MessageSquare, Network, Database, Activity,
   Cpu, GitBranch, Package, PlayCircle, Sparkles, Workflow,
   Target, Gauge, Search, Bell, Timer, CloudLightning, Fingerprint,
-  Radio, Lightbulb, Flame, Star, ArrowRight, Globe
+  Radio, Lightbulb, Flame, Star, ArrowRight, Globe, Users
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -32,7 +32,7 @@ import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { SEO } from '@/components/SEO';
 import { toast } from 'sonner';
 
-// 65 Templates covering all modules and use cases - all unique
+// 72 Templates covering all modules and use cases - all unique
 const TEMPLATES = [
   {
     id: 'chatbot',
@@ -4251,6 +4251,858 @@ class DreamDiary {
     };
   }
 }`
+  },
+  {
+    id: 'coherence-reconciler',
+    name: 'Coherence Reconciler',
+    description: 'Reconcile conflicting memory and embeddings into coherent substrate knowledge',
+    icon: Layers,
+    category: 'brain',
+    difficulty: 'advanced',
+    estimatedTime: '60 min',
+    features: ['Memory merging', 'Coherence scoring', 'Knowledge reconciliation'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface MemoryConflict {
+  sourceA: string;
+  sourceB: string;
+  conflictType: 'factual' | 'temporal' | 'semantic';
+  resolution?: string;
+}
+
+class CoherenceReconciler {
+  private coherenceThreshold = 0.7;
+  
+  async detectConflicts(domain: string): Promise<MemoryConflict[]> {
+    // Query memories in domain
+    const memories = await substrate.brain.query(domain, 100);
+    const conflicts: MemoryConflict[] = [];
+    
+    // Compare memory pairs for semantic conflicts
+    const mems = memories.data?.memories || [];
+    for (let i = 0; i < mems.length; i++) {
+      for (let j = i + 1; j < mems.length; j++) {
+        const analysis = await substrate.nexus.route(
+          \`Analyze if these two memories conflict:
+          Memory A: \${mems[i].content}
+          Memory B: \${mems[j].content}
+          Return JSON: { conflicts: boolean, type: string, severity: number }\`
+        );
+        
+        const result = JSON.parse(analysis.data || '{}');
+        if (result.conflicts) {
+          conflicts.push({
+            sourceA: mems[i].id,
+            sourceB: mems[j].id,
+            conflictType: result.type
+          });
+        }
+      }
+    }
+    
+    return conflicts;
+  }
+  
+  async reconcile(conflict: MemoryConflict): Promise<string> {
+    // Get both memories
+    const memA = await substrate.brain.query(conflict.sourceA, 1);
+    const memB = await substrate.brain.query(conflict.sourceB, 1);
+    
+    // Use AI to reconcile
+    const resolution = await substrate.nexus.route(
+      \`Reconcile these conflicting pieces of knowledge into a coherent truth:
+      
+      Source A: \${memA.data?.memories?.[0]?.content}
+      Source B: \${memB.data?.memories?.[0]?.content}
+      
+      Provide the reconciled, coherent version.\`
+    );
+    
+    // Store reconciled knowledge
+    await substrate.brain.remember(
+      resolution.data,
+      'reconciled',
+      0.95,
+      { sources: [conflict.sourceA, conflict.sourceB], type: conflict.conflictType }
+    );
+    
+    // Decay conflicting memories
+    await substrate.brain.reinforce(conflict.sourceA, -0.3);
+    await substrate.brain.reinforce(conflict.sourceB, -0.3);
+    
+    return resolution.data;
+  }
+  
+  async getCoherenceScore(domain: string): Promise<number> {
+    const conflicts = await this.detectConflicts(domain);
+    const memories = await substrate.brain.query(domain, 100);
+    const total = memories.data?.memories?.length || 1;
+    
+    return 1 - (conflicts.length / total);
+  }
+}`
+  },
+  {
+    id: 'preference-engine',
+    name: 'Preference Engine',
+    description: 'Learn user preferences and value weights from interactions',
+    icon: Star,
+    category: 'brain',
+    difficulty: 'intermediate',
+    estimatedTime: '45 min',
+    features: ['Preference learning', 'Value weights', 'Reinforcement signals'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface UserPreference {
+  category: string;
+  value: string;
+  weight: number;
+  lastUpdated: string;
+}
+
+class PreferenceEngine {
+  private userId: string;
+  
+  constructor(userId: string) {
+    this.userId = userId;
+  }
+  
+  async recordInteraction(
+    category: string, 
+    choice: string, 
+    context: Record<string, any> = {}
+  ) {
+    // Store interaction
+    await substrate.brain.remember(
+      \`User preferred: \${choice} in category: \${category}\`,
+      \`pref:\${this.userId}:\${category}\`,
+      0.8,
+      { choice, context, timestamp: new Date().toISOString() }
+    );
+    
+    // Reinforce similar past preferences
+    const similar = await substrate.brain.query(
+      \`pref:\${this.userId}:\${category}\`,
+      10
+    );
+    
+    for (const mem of similar.data?.memories || []) {
+      if (mem.metadata?.choice === choice) {
+        await substrate.brain.reinforce(mem.id, 0.1);
+      }
+    }
+  }
+  
+  async getPreferences(category?: string): Promise<UserPreference[]> {
+    const query = category 
+      ? \`pref:\${this.userId}:\${category}\`
+      : \`pref:\${this.userId}\`;
+    
+    const memories = await substrate.brain.query(query, 50);
+    const prefMap: Record<string, { count: number; totalConfidence: number }> = {};
+    
+    for (const mem of memories.data?.memories || []) {
+      const key = \`\${mem.metadata?.choice}\`;
+      if (!prefMap[key]) {
+        prefMap[key] = { count: 0, totalConfidence: 0 };
+      }
+      prefMap[key].count++;
+      prefMap[key].totalConfidence += mem.confidence || 0;
+    }
+    
+    return Object.entries(prefMap)
+      .map(([value, stats]) => ({
+        category: category || 'general',
+        value,
+        weight: stats.totalConfidence / stats.count,
+        lastUpdated: new Date().toISOString()
+      }))
+      .sort((a, b) => b.weight - a.weight);
+  }
+  
+  async predict(category: string, options: string[]): Promise<string> {
+    const prefs = await this.getPreferences(category);
+    
+    // Find option closest to preferences
+    const analysis = await substrate.nexus.route(
+      \`Given user preferences: \${JSON.stringify(prefs)}
+      
+      Which option would they prefer from: \${options.join(', ')}
+      
+      Return just the chosen option.\`
+    );
+    
+    return analysis.data?.trim() || options[0];
+  }
+}`
+  },
+  {
+    id: 'multi-agent-bus',
+    name: 'Multi-Agent Bus',
+    description: 'Message bus for substrate agent-to-agent or module-to-module communication',
+    icon: Radio,
+    category: 'system',
+    difficulty: 'advanced',
+    estimatedTime: '55 min',
+    features: ['Message passing', 'Event routing', 'Multi-agent coordination'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+type MessagePriority = 'low' | 'normal' | 'high' | 'critical';
+type AgentRole = 'orchestrator' | 'worker' | 'observer' | 'governor';
+
+interface AgentMessage {
+  id: string;
+  from: string;
+  to: string | 'broadcast';
+  type: string;
+  payload: any;
+  priority: MessagePriority;
+  timestamp: string;
+}
+
+class MultiAgentBus {
+  private agentId: string;
+  private role: AgentRole;
+  private handlers: Map<string, (msg: AgentMessage) => Promise<void>> = new Map();
+  
+  constructor(agentId: string, role: AgentRole) {
+    this.agentId = agentId;
+    this.role = role;
+  }
+  
+  async send(
+    to: string | 'broadcast',
+    type: string,
+    payload: any,
+    priority: MessagePriority = 'normal'
+  ): Promise<string> {
+    const message: AgentMessage = {
+      id: crypto.randomUUID(),
+      from: this.agentId,
+      to,
+      type,
+      payload,
+      priority,
+      timestamp: new Date().toISOString()
+    };
+    
+    // Store message in shared memory
+    await substrate.brain.remember(
+      JSON.stringify(message),
+      \`bus:messages:\${to === 'broadcast' ? 'all' : to}\`,
+      priority === 'critical' ? 1.0 : priority === 'high' ? 0.9 : 0.7,
+      { messageType: type, from: this.agentId, to }
+    );
+    
+    // Log for tracing
+    await substrate.vision.trace(message.id, {
+      create: true,
+      module: 'agent-bus',
+      action: 'send',
+      metadata: { from: this.agentId, to, type }
+    });
+    
+    return message.id;
+  }
+  
+  async receive(): Promise<AgentMessage[]> {
+    // Check direct messages and broadcasts
+    const [direct, broadcast] = await Promise.all([
+      substrate.brain.query(\`bus:messages:\${this.agentId}\`, 20),
+      substrate.brain.query('bus:messages:all', 20)
+    ]);
+    
+    const messages: AgentMessage[] = [];
+    
+    for (const mem of [...(direct.data?.memories || []), ...(broadcast.data?.memories || [])]) {
+      try {
+        const msg = JSON.parse(mem.content);
+        if (msg.from !== this.agentId) { // Don't receive own messages
+          messages.push(msg);
+          // Mark as processed by decaying
+          await substrate.brain.reinforce(mem.id, -0.5);
+        }
+      } catch {}
+    }
+    
+    // Sort by priority and timestamp
+    const priorityOrder = { critical: 0, high: 1, normal: 2, low: 3 };
+    return messages.sort((a, b) => 
+      priorityOrder[a.priority] - priorityOrder[b.priority] ||
+      new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+    );
+  }
+  
+  on(messageType: string, handler: (msg: AgentMessage) => Promise<void>) {
+    this.handlers.set(messageType, handler);
+  }
+  
+  async poll() {
+    const messages = await this.receive();
+    for (const msg of messages) {
+      const handler = this.handlers.get(msg.type);
+      if (handler) {
+        await handler(msg);
+      }
+    }
+  }
+}`
+  },
+  {
+    id: 'governance-policy-engine',
+    name: 'Governance Policy Engine',
+    description: 'Centralized policy and rule enforcement across substrate execution',
+    icon: Shield,
+    category: 'defense',
+    difficulty: 'advanced',
+    estimatedTime: '60 min',
+    features: ['Policy rules', 'Override logic', 'Constraint enforcement'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+type PolicyAction = 'allow' | 'deny' | 'audit' | 'escalate';
+
+interface Policy {
+  id: string;
+  name: string;
+  condition: (context: PolicyContext) => boolean;
+  action: PolicyAction;
+  priority: number;
+  metadata?: Record<string, any>;
+}
+
+interface PolicyContext {
+  module: string;
+  action: string;
+  actor: string;
+  resource?: string;
+  metadata?: Record<string, any>;
+}
+
+interface PolicyDecision {
+  allowed: boolean;
+  action: PolicyAction;
+  matchedPolicy?: string;
+  reason: string;
+  auditTrail: string;
+}
+
+class GovernancePolicyEngine {
+  private policies: Policy[] = [];
+  
+  registerPolicy(policy: Policy) {
+    this.policies.push(policy);
+    this.policies.sort((a, b) => b.priority - a.priority);
+  }
+  
+  async evaluate(context: PolicyContext): Promise<PolicyDecision> {
+    // Check defense posture first
+    const posture = await substrate.defense.posture();
+    const postureScore = posture.data?.score || 100;
+    
+    // Find matching policies
+    for (const policy of this.policies) {
+      if (policy.condition(context)) {
+        const decision: PolicyDecision = {
+          allowed: policy.action === 'allow',
+          action: policy.action,
+          matchedPolicy: policy.id,
+          reason: \`Matched policy: \${policy.name}\`,
+          auditTrail: crypto.randomUUID()
+        };
+        
+        // Log to audit
+        await substrate.brain.remember(
+          \`Policy decision: \${policy.action} for \${context.actor} on \${context.module}/\${context.action}\`,
+          'governance:audit',
+          0.95,
+          { context, decision, postureScore }
+        );
+        
+        // Handle escalation
+        if (policy.action === 'escalate') {
+          await this.escalate(context, policy);
+        }
+        
+        return decision;
+      }
+    }
+    
+    // Default: allow if posture is good, deny if degraded
+    const defaultAllow = postureScore >= 50;
+    
+    return {
+      allowed: defaultAllow,
+      action: defaultAllow ? 'allow' : 'deny',
+      reason: \`Default policy (posture: \${postureScore})\`,
+      auditTrail: crypto.randomUUID()
+    };
+  }
+  
+  private async escalate(context: PolicyContext, policy: Policy) {
+    await substrate.nexus.route(
+      \`GOVERNANCE ALERT: Action \${context.action} on module \${context.module} by \${context.actor} requires escalation per policy \${policy.name}\`
+    );
+  }
+  
+  // Preset governance policies
+  static standardPolicies(): Policy[] {
+    return [
+      {
+        id: 'rate-limit-override',
+        name: 'Rate Limit Override Protection',
+        condition: (ctx) => ctx.action === 'override' && ctx.module === 'defense',
+        action: 'escalate',
+        priority: 100
+      },
+      {
+        id: 'memory-wipe-protection',
+        name: 'Bulk Memory Deletion Protection',
+        condition: (ctx) => ctx.action.includes('delete') && ctx.module === 'brain',
+        action: 'audit',
+        priority: 90
+      },
+      {
+        id: 'system-heal-governance',
+        name: 'System Heal Governance',
+        condition: (ctx) => ctx.action === 'heal' && ctx.module === 'system',
+        action: 'allow',
+        priority: 50
+      }
+    ];
+  }
+}`
+  },
+  {
+    id: 'social-graph-modeling',
+    name: 'Social Graph Modeling',
+    description: 'Build knowledge graphs of actors, relationships, and affinity',
+    icon: Users,
+    category: 'brain',
+    difficulty: 'advanced',
+    estimatedTime: '55 min',
+    features: ['Relationship graph', 'Affinity mapping', 'Actor modeling'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface Actor {
+  id: string;
+  type: 'user' | 'org' | 'system' | 'agent';
+  attributes: Record<string, any>;
+}
+
+interface Relationship {
+  from: string;
+  to: string;
+  type: string;
+  strength: number;
+  metadata?: Record<string, any>;
+}
+
+class SocialGraphModeler {
+  async addActor(actor: Actor): Promise<void> {
+    await substrate.brain.remember(
+      JSON.stringify(actor),
+      \`graph:actor:\${actor.id}\`,
+      0.9,
+      { type: actor.type, ...actor.attributes }
+    );
+  }
+  
+  async addRelationship(relationship: Relationship): Promise<void> {
+    // Store relationship as memory
+    await substrate.brain.remember(
+      \`\${relationship.from} -> \${relationship.type} -> \${relationship.to}\`,
+      'graph:relationship',
+      relationship.strength,
+      { ...relationship, createdAt: new Date().toISOString() }
+    );
+    
+    // Also add to graph edges if using brain graph
+    const graphSummary = await substrate.brain.graphSummary();
+    if (graphSummary.success) {
+      // Graph already tracking edges
+    }
+  }
+  
+  async getRelationships(actorId: string): Promise<Relationship[]> {
+    const rels = await substrate.brain.query(\`graph:relationship \${actorId}\`, 50);
+    
+    return (rels.data?.memories || [])
+      .map(mem => mem.metadata as Relationship)
+      .filter(r => r.from === actorId || r.to === actorId);
+  }
+  
+  async computeAffinity(actorA: string, actorB: string): Promise<number> {
+    // Get shared relationships
+    const [relsA, relsB] = await Promise.all([
+      this.getRelationships(actorA),
+      this.getRelationships(actorB)
+    ]);
+    
+    // Find common connections
+    const connectionsA = new Set([
+      ...relsA.map(r => r.from === actorA ? r.to : r.from)
+    ]);
+    const connectionsB = new Set([
+      ...relsB.map(r => r.from === actorB ? r.to : r.from)
+    ]);
+    
+    const shared = [...connectionsA].filter(c => connectionsB.has(c));
+    const jaccard = shared.length / (connectionsA.size + connectionsB.size - shared.length);
+    
+    return jaccard;
+  }
+  
+  async findInfluencers(community: string, limit = 10): Promise<Actor[]> {
+    // Query actors in community
+    const actors = await substrate.brain.query(\`graph:actor \${community}\`, 100);
+    
+    // Rank by relationship count and strength
+    const rankings: Array<{ actor: Actor; score: number }> = [];
+    
+    for (const mem of actors.data?.memories || []) {
+      const actor = JSON.parse(mem.content) as Actor;
+      const rels = await this.getRelationships(actor.id);
+      const score = rels.reduce((sum, r) => sum + r.strength, 0);
+      rankings.push({ actor, score });
+    }
+    
+    return rankings
+      .sort((a, b) => b.score - a.score)
+      .slice(0, limit)
+      .map(r => r.actor);
+  }
+  
+  async suggestConnections(actorId: string): Promise<string[]> {
+    const myRels = await this.getRelationships(actorId);
+    const myConnections = new Set(myRels.map(r => r.from === actorId ? r.to : r.from));
+    
+    const suggestions = new Set<string>();
+    
+    for (const connId of myConnections) {
+      const theirRels = await this.getRelationships(connId);
+      for (const rel of theirRels) {
+        const potential = rel.from === connId ? rel.to : rel.from;
+        if (potential !== actorId && !myConnections.has(potential)) {
+          suggestions.add(potential);
+        }
+      }
+    }
+    
+    return [...suggestions].slice(0, 10);
+  }
+}`
+  },
+  {
+    id: 'substrate-composer',
+    name: 'Substrate Composer',
+    description: 'Composition layer for wiring substrate modules into directed graphs',
+    icon: Workflow,
+    category: 'nexus',
+    difficulty: 'advanced',
+    estimatedTime: '60 min',
+    features: ['Module chaining', 'Graph execution', 'Workflow composition'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+type ModuleType = 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system';
+
+interface CompositionNode {
+  id: string;
+  module: ModuleType;
+  action: string;
+  params?: Record<string, any>;
+  transform?: (result: any) => any;
+}
+
+interface CompositionEdge {
+  from: string;
+  to: string;
+  condition?: (result: any) => boolean;
+}
+
+interface CompositionGraph {
+  nodes: CompositionNode[];
+  edges: CompositionEdge[];
+  entryNode: string;
+}
+
+class SubstrateComposer {
+  private graph: CompositionGraph;
+  private results: Map<string, any> = new Map();
+  
+  constructor(graph: CompositionGraph) {
+    this.graph = graph;
+  }
+  
+  async execute(input: any): Promise<Record<string, any>> {
+    // Start tracing
+    const traceId = crypto.randomUUID();
+    await substrate.vision.trace(traceId, { create: true, module: 'composer', action: 'execute' });
+    
+    // Find entry node
+    const entryNode = this.graph.nodes.find(n => n.id === this.graph.entryNode);
+    if (!entryNode) throw new Error('Entry node not found');
+    
+    // Execute starting from entry
+    await this.executeNode(entryNode, input, traceId);
+    
+    // Return all results
+    return Object.fromEntries(this.results);
+  }
+  
+  private async executeNode(node: CompositionNode, input: any, traceId: string): Promise<any> {
+    // Execute the module action
+    const result = await this.callModule(node, input);
+    
+    // Apply transform if defined
+    const output = node.transform ? node.transform(result) : result;
+    this.results.set(node.id, output);
+    
+    // Log trace
+    await substrate.vision.trace(traceId, {
+      module: node.module,
+      action: node.action,
+      metadata: { nodeId: node.id }
+    });
+    
+    // Find outgoing edges
+    const outEdges = this.graph.edges.filter(e => e.from === node.id);
+    
+    // Execute downstream nodes
+    for (const edge of outEdges) {
+      // Check condition if present
+      if (edge.condition && !edge.condition(output)) continue;
+      
+      const nextNode = this.graph.nodes.find(n => n.id === edge.to);
+      if (nextNode) {
+        await this.executeNode(nextNode, output, traceId);
+      }
+    }
+    
+    return output;
+  }
+  
+  private async callModule(node: CompositionNode, input: any): Promise<any> {
+    const { module, action, params } = node;
+    const mergedParams = { ...params, input };
+    
+    switch (module) {
+      case 'brain':
+        if (action === 'query') return substrate.brain.query(input, params?.limit);
+        if (action === 'remember') return substrate.brain.remember(input, params?.type, params?.confidence);
+        if (action === 'synthesize') return substrate.brain.synthesize();
+        break;
+      case 'nexus':
+        if (action === 'route') return substrate.nexus.route(input);
+        if (action === 'text') return substrate.nexus.text(input);
+        break;
+      case 'decode':
+        if (action === 'intent') return substrate.decode.intent(input);
+        if (action === 'chat') return substrate.decode.chat(input, params?.sessionId);
+        break;
+      case 'defense':
+        if (action === 'analyze') return substrate.defense.analyze(input, params?.ip);
+        if (action === 'posture') return substrate.defense.posture();
+        break;
+      case 'vision':
+        if (action === 'healthSnapshot') return substrate.vision.healthSnapshot();
+        break;
+      case 'dream':
+        if (action === 'feed') return substrate.dream.feed(input, params?.type);
+        if (action === 'interpret') return substrate.dream.interpret(input);
+        break;
+    }
+    
+    return { error: 'Unknown action' };
+  }
+  
+  // Builder pattern for easy composition
+  static builder() {
+    return new ComposerBuilder();
+  }
+}
+
+class ComposerBuilder {
+  private nodes: CompositionNode[] = [];
+  private edges: CompositionEdge[] = [];
+  private entry: string = '';
+  
+  addNode(node: CompositionNode): this {
+    this.nodes.push(node);
+    if (!this.entry) this.entry = node.id;
+    return this;
+  }
+  
+  connect(from: string, to: string, condition?: (r: any) => boolean): this {
+    this.edges.push({ from, to, condition });
+    return this;
+  }
+  
+  build(): SubstrateComposer {
+    return new SubstrateComposer({
+      nodes: this.nodes,
+      edges: this.edges,
+      entryNode: this.entry
+    });
+  }
+}`
+  },
+  {
+    id: 'substrate-evaluator',
+    name: 'Substrate Evaluator',
+    description: 'Measure substrate performance on coherence, latency, cost, accuracy',
+    icon: Gauge,
+    category: 'vision',
+    difficulty: 'advanced',
+    estimatedTime: '50 min',
+    features: ['Performance metrics', 'Evaluation suite', 'Execution audits'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface EvaluationMetrics {
+  coherence: number;
+  latency: { avg: number; p95: number; p99: number };
+  cost: { total: number; perRequest: number };
+  accuracy: number;
+  uptime: number;
+  healthScore: number;
+}
+
+interface EvaluationReport {
+  timestamp: string;
+  metrics: EvaluationMetrics;
+  issues: string[];
+  recommendations: string[];
+  grade: 'A' | 'B' | 'C' | 'D' | 'F';
+}
+
+class SubstrateEvaluator {
+  async evaluate(): Promise<EvaluationReport> {
+    const timestamp = new Date().toISOString();
+    const issues: string[] = [];
+    const recommendations: string[] = [];
+    
+    // Gather all metrics in parallel
+    const [
+      healthSnapshot,
+      quotaData,
+      routeStats,
+      graphSummary,
+      introspection,
+      posture
+    ] = await Promise.all([
+      substrate.vision.healthSnapshot(),
+      substrate.vision.quota(),
+      substrate.nexus.routeStats(),
+      substrate.brain.graphSummary(),
+      substrate.vision.introspection(),
+      substrate.defense.posture()
+    ]);
+    
+    // Calculate coherence from graph density
+    const coherence = graphSummary.data?.density || 0;
+    if (coherence < 0.3) {
+      issues.push('Low knowledge graph coherence');
+      recommendations.push('Run brain.synthesize() to build more connections');
+    }
+    
+    // Calculate latency from route stats
+    const latencyStats = routeStats.data?.providers || [];
+    const avgLatency = latencyStats.reduce((s: number, p: any) => s + (p.avgLatency || 0), 0) / (latencyStats.length || 1);
+    const p95Latency = avgLatency * 1.5; // Estimate
+    const p99Latency = avgLatency * 2.0;
+    
+    if (avgLatency > 1000) {
+      issues.push('High average latency');
+      recommendations.push('Consider adding faster provider fallbacks');
+    }
+    
+    // Calculate cost
+    const totalCost = quotaData.data?.totalCost || 0;
+    const totalCalls = quotaData.data?.totalCalls || 1;
+    const costPerRequest = totalCost / totalCalls;
+    
+    if (costPerRequest > 0.01) {
+      recommendations.push('High cost per request - optimize prompts');
+    }
+    
+    // Calculate accuracy from success rates
+    const successRates = latencyStats.map((p: any) => p.successRate || 0);
+    const accuracy = successRates.reduce((s: number, r: number) => s + r, 0) / (successRates.length || 1);
+    
+    if (accuracy < 0.95) {
+      issues.push('Success rate below 95%');
+      recommendations.push('Check provider availability and error patterns');
+    }
+    
+    // Get uptime and health
+    const uptime = introspection.data?.uptime || 0;
+    const healthScore = healthSnapshot.data?.healthScore || 0;
+    
+    if (healthScore < 80) {
+      issues.push('Health score degraded');
+      recommendations.push('Run system.heal() to restore health');
+    }
+    
+    // Compute grade
+    const overallScore = (
+      coherence * 20 +
+      (1 - Math.min(avgLatency / 2000, 1)) * 20 +
+      accuracy * 30 +
+      healthScore * 0.3
+    );
+    
+    const grade = overallScore >= 90 ? 'A' 
+      : overallScore >= 80 ? 'B'
+      : overallScore >= 70 ? 'C'
+      : overallScore >= 60 ? 'D'
+      : 'F';
+    
+    const report: EvaluationReport = {
+      timestamp,
+      metrics: {
+        coherence,
+        latency: { avg: avgLatency, p95: p95Latency, p99: p99Latency },
+        cost: { total: totalCost, perRequest: costPerRequest },
+        accuracy,
+        uptime,
+        healthScore
+      },
+      issues,
+      recommendations,
+      grade
+    };
+    
+    // Store evaluation for tracking
+    await substrate.brain.remember(
+      JSON.stringify(report),
+      'evaluation:report',
+      0.95,
+      { grade, timestamp }
+    );
+    
+    return report;
+  }
+  
+  async getHistoricalTrend(days = 7): Promise<EvaluationReport[]> {
+    const reports = await substrate.brain.query('evaluation:report', days * 4);
+    return (reports.data?.memories || [])
+      .map(m => JSON.parse(m.content) as EvaluationReport)
+      .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+  }
+}`
   }
 ];
 
@@ -4703,9 +5555,9 @@ export default function DevPortal() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="Developer Portal — promptfluid® Substrate"
-        description="Build autonomous AI systems with the promptfluid substrate. Templates, SDK, and integration guides for developers and researchers."
-        keywords={['ai substrate', 'developer portal', 'ai api', 'cognitive orchestration', 'ai templates']}
+        title="Substrate Modules — promptfluid® Cognitive SDK"
+        description="Compose cognition as software with the promptfluid substrate SDK. 72 modular primitives for memory, routing, governance, and execution."
+        keywords={['cognitive substrate', 'substrate modules', 'substrate SDK', 'cognition as software', 'AI composition']}
       />
       <PublicNav />
 

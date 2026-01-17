@@ -30,42 +30,41 @@ export function PublicNav() {
   // Organized navigation sections
   const navSections: NavSection[] = [
     {
-      name: "Products",
+      name: "Substrate",
       icon: Layers,
       items: [
-        { name: "Substrate", href: "/substrate", description: "Cognitive OS", icon: Cpu },
-        { name: "Decode", href: "/decode", description: "AI Interpreter", icon: MessageSquare },
+        { name: "Substrate OS", href: "/substrate", description: "Cognitive Runtime", icon: Cpu },
+        { name: "Decode", href: "/decode", description: "Intent Interpreter", icon: MessageSquare },
         { name: "Dream Feeder", href: "/feed-dream-eater", description: "Dream Processing", icon: Moon },
         { name: "Demo", href: "/demo", description: "Interactive Demo", icon: Zap },
       ]
     },
     {
-      name: "Developers",
+      name: "SDK",
       icon: Code,
       items: [
-        { name: "Developer Portal", href: "/developers", description: "SDK & Templates", icon: Terminal },
-        { name: "Documentation", href: "/documentation", description: "API Docs", icon: FileText },
-        { name: "Changelog", href: "/changelog", description: "Updates", icon: BookOpen },
-        ...(user ? [{ name: "Substrate OS", href: "/os", description: "Admin Console", icon: Cpu }] : []),
+        { name: "Substrate Modules", href: "/developers", description: "Composable Primitives", icon: Terminal },
+        { name: "Documentation", href: "/documentation", description: "API Reference", icon: FileText },
+        { name: "Changelog", href: "/changelog", description: "Version History", icon: BookOpen },
+        ...(user ? [{ name: "Control Panel", href: "/os", description: "Admin Console", icon: Cpu }] : []),
       ]
     },
     {
       name: "Resources",
       icon: BookOpen,
       items: [
-        { name: "Blog", href: "/blog", description: "Articles & News", icon: FileText },
-        { name: "Roadmap", href: "/roadmap", description: "What's Coming", icon: Map },
-        { name: "Projects", href: "/projects", description: "Current Work", icon: Rocket },
-        { name: "Explore", href: "/explore", description: "Discover More", icon: Globe },
+        { name: "Blog", href: "/blog", description: "Articles & Research", icon: FileText },
+        { name: "Roadmap", href: "/roadmap", description: "Development Plan", icon: Map },
+        { name: "Projects", href: "/projects", description: "Active Development", icon: Rocket },
+        { name: "Explore", href: "/explore", description: "Discover Modules", icon: Globe },
       ]
     },
     {
-      name: "Company",
+      name: "About",
       icon: Users,
       items: [
-        { name: "About", href: "/about", description: "Our Story", icon: Info },
+        { name: "About", href: "/about", description: "Our Mission", icon: Info },
         { name: "Solutions", href: "/solutions", description: "Use Cases", icon: Layers },
-        { name: "Investors", href: "/investors", description: "Investment Info", icon: Users },
         { name: "Contact", href: "/contact", description: "Get in Touch", icon: Mail },
       ]
     },
