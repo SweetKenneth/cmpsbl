@@ -32,7 +32,7 @@ import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { SEO } from '@/components/SEO';
 import { toast } from 'sonner';
 
-// 15 Templates covering all modules and use cases
+// 27 Templates covering all modules and use cases
 const TEMPLATES = [
   {
     id: 'chatbot',
@@ -658,6 +658,853 @@ class AIApplication {
     return { reply: response.data, traceId: trace.data.traceId };
   }
 }`
+  },
+  // ========== NEW TEMPLATES ==========
+  {
+    id: 'voice-assistant',
+    name: 'Voice Assistant',
+    description: 'Build voice-enabled AI assistants with speech recognition',
+    icon: Radio,
+    category: 'decode',
+    difficulty: 'intermediate',
+    estimatedTime: '35 min',
+    features: ['Speech-to-text', 'Intent parsing', 'Voice context'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+async function processVoiceCommand(audioTranscript: string, sessionId: string) {
+  // 1. Decode intent from transcribed audio
+  const intent = await substrate.decode.intent(audioTranscript);
+  
+  // 2. Map voice commands to actions
+  const actionMap: Record<string, () => Promise<any>> = {
+    'question': () => substrate.decode.chat(audioTranscript, sessionId),
+    'search': () => substrate.brain.query(audioTranscript, 10),
+    'remember': () => substrate.brain.remember(audioTranscript, 'voice_note'),
+    'status': () => substrate.system.health()
+  };
+  
+  const action = actionMap[intent.data?.primary_intent] || actionMap['question'];
+  const result = await action();
+  
+  // 3. Learn voice patterns
+  await substrate.brain.learn(
+    \`Voice: \${audioTranscript} → Intent: \${intent.data?.primary_intent}\`,
+    'voice_pattern'
+  );
+  
+  return {
+    intent: intent.data?.primary_intent,
+    response: result.data,
+    confidence: intent.data?.confidence
+  };
+}`
+  },
+  {
+    id: 'recommendation-engine',
+    name: 'Recommendation Engine',
+    description: 'Personalized recommendations based on learned preferences',
+    icon: Star,
+    category: 'brain',
+    difficulty: 'advanced',
+    estimatedTime: '45 min',
+    features: ['Preference learning', 'Similarity matching', 'Ranking'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+class RecommendationEngine {
+  constructor(private userId: string) {}
+
+  async recordInteraction(itemId: string, action: 'view' | 'like' | 'purchase') {
+    const weight = { view: 0.3, like: 0.6, purchase: 1.0 }[action];
+    
+    await substrate.brain.remember(
+      \`User \${this.userId} \${action}ed item \${itemId}\`,
+      'user_preference',
+      weight,
+      { userId: this.userId, itemId, action }
+    );
+    
+    // Reinforce existing preference if any
+    const existing = await substrate.brain.query(
+      \`preference \${this.userId} \${itemId}\`, 1
+    );
+    if (existing.data?.memories?.length) {
+      await substrate.brain.reinforce(existing.data.memories[0].id, weight * 0.2);
+    }
+  }
+
+  async getRecommendations(context: string, limit = 10) {
+    // Query similar preferences
+    const preferences = await substrate.brain.query(
+      \`preferences \${this.userId} \${context}\`,
+      limit * 2
+    );
+    
+    // Get cross-domain insights
+    const insights = await substrate.brain.synthesize();
+    
+    return {
+      items: preferences.data?.memories || [],
+      insights: insights.data?.insights
+    };
+  }
+}`
+  },
+  {
+    id: 'document-qa',
+    name: 'Document Q&A',
+    description: 'Ask questions about uploaded documents with semantic search',
+    icon: FileText,
+    category: 'brain',
+    difficulty: 'intermediate',
+    estimatedTime: '30 min',
+    features: ['Document ingestion', 'Semantic search', 'Cited answers'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+async function ingestDocument(documentText: string, docId: string, docTitle: string) {
+  // Split document into chunks
+  const chunks = splitIntoChunks(documentText, 500);
+  
+  for (let i = 0; i < chunks.length; i++) {
+    await substrate.brain.remember(
+      chunks[i],
+      'document_chunk',
+      1.0,
+      { docId, docTitle, chunkIndex: i, totalChunks: chunks.length }
+    );
+  }
+  
+  return { chunksIngested: chunks.length };
+}
+
+async function askQuestion(question: string, docId?: string) {
+  // 1. Find relevant chunks
+  const query = docId ? \`document:\${docId} \${question}\` : question;
+  const chunks = await substrate.brain.query(query, 5);
+  
+  // 2. Build context from chunks
+  const context = chunks.data?.memories
+    ?.map(m => m.content)
+    .join('\\n\\n') || '';
+  
+  // 3. Generate answer with citations
+  const answer = await substrate.nexus.route(
+    \`Based on: \${context}\\n\\nQuestion: \${question}\\nProvide answer with chunk references.\`
+  );
+  
+  return {
+    answer: answer.data,
+    sources: chunks.data?.memories?.map(m => ({
+      docId: m.metadata?.docId,
+      chunk: m.metadata?.chunkIndex
+    }))
+  };
+}
+
+function splitIntoChunks(text: string, size: number): string[] {
+  const chunks: string[] = [];
+  for (let i = 0; i < text.length; i += size) {
+    chunks.push(text.slice(i, i + size));
+  }
+  return chunks;
+}`
+  },
+  {
+    id: 'anomaly-detector',
+    name: 'Anomaly Detector',
+    description: 'Detect unusual patterns in time-series and event data',
+    icon: Bell,
+    category: 'defense',
+    difficulty: 'advanced',
+    estimatedTime: '40 min',
+    features: ['Z-score analysis', 'Pattern baseline', 'Alert triggering'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+class AnomalyDetector {
+  async analyze(timeWindowHours: number = 24) {
+    // Get anomaly probe results
+    const anomalies = await substrate.defense.anomalyProbe(timeWindowHours);
+    
+    // Get baseline from vision
+    const baseline = await substrate.vision.analytics();
+    
+    const results = {
+      anomalies: anomalies.data?.anomalies || [],
+      severity: 'normal' as 'normal' | 'warning' | 'critical',
+      recommendations: [] as string[]
+    };
+    
+    // Classify severity
+    const zScores = results.anomalies.map(a => Math.abs(a.z_score));
+    const maxZ = Math.max(...zScores, 0);
+    
+    if (maxZ > 3) {
+      results.severity = 'critical';
+      results.recommendations.push('Immediate investigation required');
+    } else if (maxZ > 2) {
+      results.severity = 'warning';
+      results.recommendations.push('Monitor closely for escalation');
+    }
+    
+    // Log to vision for tracking
+    if (results.severity !== 'normal') {
+      await substrate.vision.alert(
+        results.severity === 'critical' ? 'error' : 'warn',
+        \`Anomaly detected: \${results.anomalies.length} unusual patterns\`,
+        { maxZScore: maxZ, count: results.anomalies.length }
+      );
+    }
+    
+    return results;
+  }
+  
+  async setBaseline() {
+    // Use current metrics as baseline
+    const health = await substrate.vision.healthSnapshot();
+    await substrate.brain.remember(
+      JSON.stringify(health.data),
+      'baseline_snapshot',
+      1.0,
+      { timestamp: new Date().toISOString() }
+    );
+  }
+}`
+  },
+  {
+    id: 'auto-responder',
+    name: 'Auto-Responder',
+    description: 'Automated responses with escalation and handoff logic',
+    icon: Bot,
+    category: 'decode',
+    difficulty: 'intermediate',
+    estimatedTime: '30 min',
+    features: ['Auto-reply', 'Escalation rules', 'Human handoff'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+const ESCALATION_KEYWORDS = ['urgent', 'emergency', 'human', 'manager', 'complaint'];
+const CONFIDENCE_THRESHOLD = 0.7;
+
+async function autoRespond(message: string, sessionId: string) {
+  // 1. Check for escalation triggers
+  const needsHuman = ESCALATION_KEYWORDS.some(k => 
+    message.toLowerCase().includes(k)
+  );
+  
+  if (needsHuman) {
+    await substrate.vision.alert('info', 'Escalation requested', { sessionId });
+    return { response: null, escalate: true, reason: 'Escalation keyword detected' };
+  }
+  
+  // 2. Analyze intent and confidence
+  const intent = await substrate.decode.intent(message);
+  
+  if (intent.data?.confidence < CONFIDENCE_THRESHOLD) {
+    await substrate.vision.alert('info', 'Low confidence response', { 
+      sessionId, 
+      confidence: intent.data?.confidence 
+    });
+    return { 
+      response: null, 
+      escalate: true, 
+      reason: 'Low confidence - needs human review' 
+    };
+  }
+  
+  // 3. Generate auto-response
+  const response = await substrate.decode.chat(message, sessionId);
+  
+  // 4. Learn from successful auto-responses
+  await substrate.brain.remember(
+    \`Auto-response: \${message} → \${response.data?.reply}\`,
+    'auto_response',
+    intent.data?.confidence
+  );
+  
+  return { 
+    response: response.data?.reply, 
+    escalate: false,
+    intent: intent.data?.primary_intent
+  };
+}`
+  },
+  {
+    id: 'semantic-cache',
+    name: 'Semantic Cache',
+    description: 'Cache AI responses using semantic similarity for cost reduction',
+    icon: Database,
+    category: 'brain',
+    difficulty: 'intermediate',
+    estimatedTime: '25 min',
+    features: ['Similarity matching', 'TTL management', 'Cost savings'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+const SIMILARITY_THRESHOLD = 0.85;
+const CACHE_TTL_HOURS = 24;
+
+async function semanticCache(prompt: string) {
+  // 1. Check cache for similar prompts
+  const cached = await substrate.brain.query(
+    \`cache:\${prompt}\`,
+    3
+  );
+  
+  // Find highly similar cached response
+  const match = cached.data?.memories?.find(m => 
+    m.confidence > SIMILARITY_THRESHOLD &&
+    isRecent(m.metadata?.cached_at, CACHE_TTL_HOURS)
+  );
+  
+  if (match) {
+    // Cache hit - return cached response
+    await substrate.brain.reinforce(match.id, 0.05); // Reinforce popular queries
+    return { 
+      response: match.metadata?.response, 
+      cached: true,
+      similarity: match.confidence 
+    };
+  }
+  
+  // 2. Cache miss - generate new response
+  const response = await substrate.nexus.route(prompt);
+  
+  // 3. Store in semantic cache
+  await substrate.brain.remember(
+    \`cache:\${prompt}\`,
+    'semantic_cache',
+    1.0,
+    { 
+      response: response.data,
+      cached_at: new Date().toISOString(),
+      prompt_length: prompt.length
+    }
+  );
+  
+  return { response: response.data, cached: false };
+}
+
+function isRecent(timestamp: string | undefined, hours: number): boolean {
+  if (!timestamp) return false;
+  const age = Date.now() - new Date(timestamp).getTime();
+  return age < hours * 60 * 60 * 1000;
+}`
+  },
+  {
+    id: 'multi-tenant',
+    name: 'Multi-Tenant AI',
+    description: 'Isolated AI instances for multi-tenant SaaS applications',
+    icon: Layers,
+    category: 'system',
+    difficulty: 'advanced',
+    estimatedTime: '50 min',
+    features: ['Tenant isolation', 'Quota per tenant', 'Custom models'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+class TenantAI {
+  constructor(private tenantId: string) {}
+  
+  private prefix(key: string) {
+    return \`tenant:\${this.tenantId}:\${key}\`;
+  }
+  
+  async remember(content: string, type: string, confidence = 0.9) {
+    return substrate.brain.remember(
+      content,
+      this.prefix(type),
+      confidence,
+      { tenantId: this.tenantId }
+    );
+  }
+  
+  async query(query: string, limit = 10) {
+    // Scoped to tenant data only
+    return substrate.brain.query(
+      this.prefix(query),
+      limit
+    );
+  }
+  
+  async chat(message: string, sessionId: string) {
+    const tenantSession = this.prefix(sessionId);
+    return substrate.decode.chat(message, tenantSession);
+  }
+  
+  async checkQuota() {
+    const quota = await substrate.vision.quota();
+    // Track per-tenant usage (implement your own tracking)
+    return {
+      global: quota.data,
+      tenantId: this.tenantId
+    };
+  }
+}
+
+// Usage
+const tenantA = new TenantAI('acme-corp');
+await tenantA.remember('ACME prefers formal tone', 'preference');
+
+const tenantB = new TenantAI('startup-xyz');
+await tenantB.remember('Startup XYZ uses casual language', 'preference');
+
+// Each tenant's data is isolated
+const acmeContext = await tenantA.query('tone preferences');
+const startupContext = await tenantB.query('tone preferences');`
+  },
+  {
+    id: 'feedback-loop',
+    name: 'Feedback Learning',
+    description: 'Learn from user feedback to improve responses over time',
+    icon: Lightbulb,
+    category: 'brain',
+    difficulty: 'intermediate',
+    estimatedTime: '30 min',
+    features: ['Feedback collection', 'Response improvement', 'A/B learning'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface ResponseRecord {
+  id: string;
+  prompt: string;
+  response: string;
+  memoryId?: string;
+}
+
+async function recordResponse(prompt: string, response: string): Promise<ResponseRecord> {
+  const result = await substrate.brain.remember(
+    \`Q: \${prompt}\\nA: \${response}\`,
+    'response_record',
+    0.5, // Start neutral
+    { prompt, response, feedback_count: 0 }
+  );
+  
+  return { 
+    id: crypto.randomUUID(), 
+    prompt, 
+    response,
+    memoryId: result.data?.id
+  };
+}
+
+async function recordFeedback(
+  record: ResponseRecord, 
+  feedback: 'positive' | 'negative',
+  comment?: string
+) {
+  const delta = feedback === 'positive' ? 0.1 : -0.1;
+  
+  // Reinforce or diminish the memory
+  if (record.memoryId) {
+    await substrate.brain.reinforce(record.memoryId, delta);
+  }
+  
+  // Store feedback for analysis
+  await substrate.brain.remember(
+    \`Feedback: \${feedback} for "\${record.prompt.slice(0, 50)}..."\`,
+    'user_feedback',
+    1.0,
+    { 
+      originalPrompt: record.prompt,
+      feedback,
+      comment,
+      recordId: record.id
+    }
+  );
+  
+  // Trigger learning if enough negative feedback
+  const recentNegative = await substrate.brain.query(
+    'feedback negative',
+    10
+  );
+  
+  if ((recentNegative.data?.memories?.length || 0) > 5) {
+    await substrate.brain.reflect(); // Trigger synthesis
+  }
+}
+
+async function getImprovedResponse(prompt: string) {
+  // Get past responses for similar prompts
+  const history = await substrate.brain.query(
+    \`response_record \${prompt}\`,
+    5
+  );
+  
+  // Filter to high-confidence (well-received) responses
+  const goodExamples = history.data?.memories
+    ?.filter(m => m.confidence > 0.7)
+    ?.map(m => m.content);
+  
+  // Generate new response with good examples as context
+  const context = goodExamples?.length 
+    ? \`Previous good responses:\\n\${goodExamples.join('\\n---\\n')}\`
+    : '';
+    
+  return substrate.nexus.route(\`\${context}\\n\\nNew query: \${prompt}\`);
+}`
+  },
+  {
+    id: 'scheduled-tasks',
+    name: 'Scheduled AI Tasks',
+    description: 'Schedule recurring AI operations with cron-like timing',
+    icon: Timer,
+    category: 'system',
+    difficulty: 'intermediate',
+    estimatedTime: '25 min',
+    features: ['Scheduled execution', 'Task queuing', 'Result tracking'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface ScheduledTask {
+  id: string;
+  name: string;
+  action: () => Promise<any>;
+  intervalMs: number;
+  lastRun?: Date;
+}
+
+class AIScheduler {
+  private tasks: Map<string, ScheduledTask> = new Map();
+  private intervals: Map<string, NodeJS.Timer> = new Map();
+
+  addTask(name: string, action: () => Promise<any>, intervalMs: number) {
+    const task: ScheduledTask = {
+      id: crypto.randomUUID(),
+      name,
+      action,
+      intervalMs
+    };
+    this.tasks.set(task.id, task);
+    return task.id;
+  }
+
+  start(taskId: string) {
+    const task = this.tasks.get(taskId);
+    if (!task) return;
+    
+    const run = async () => {
+      task.lastRun = new Date();
+      try {
+        const result = await task.action();
+        await substrate.vision.trace(undefined, {
+          create: true,
+          module: 'scheduler',
+          action: task.name,
+          metadata: { success: true, result }
+        });
+      } catch (error) {
+        await substrate.vision.alert('error', \`Scheduled task failed: \${task.name}\`);
+      }
+    };
+    
+    run(); // Run immediately
+    this.intervals.set(taskId, setInterval(run, task.intervalMs));
+  }
+
+  stop(taskId: string) {
+    const interval = this.intervals.get(taskId);
+    if (interval) clearInterval(interval);
+  }
+}
+
+// Usage
+const scheduler = new AIScheduler();
+
+// Daily reflection
+scheduler.addTask(
+  'daily-reflection',
+  () => substrate.brain.reflect(),
+  24 * 60 * 60 * 1000
+);
+
+// Hourly health check
+scheduler.addTask(
+  'health-check',
+  async () => {
+    const health = await substrate.vision.healthSnapshot();
+    if (health.data?.healthScore < 80) {
+      await substrate.system.heal();
+    }
+    return health.data;
+  },
+  60 * 60 * 1000
+);`
+  },
+  {
+    id: 'context-window',
+    name: 'Context Window Manager',
+    description: 'Optimize context for token-limited AI models',
+    icon: Flame,
+    category: 'nexus',
+    difficulty: 'advanced',
+    estimatedTime: '35 min',
+    features: ['Token counting', 'Priority ranking', 'Context compression'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface ContextItem {
+  content: string;
+  priority: number;
+  tokens: number;
+}
+
+class ContextWindowManager {
+  private maxTokens: number;
+  
+  constructor(maxTokens = 4000) {
+    this.maxTokens = maxTokens;
+  }
+  
+  estimateTokens(text: string): number {
+    // Rough estimation: ~4 chars per token
+    return Math.ceil(text.length / 4);
+  }
+  
+  async buildContext(query: string, systemPrompt: string): Promise<string> {
+    const items: ContextItem[] = [];
+    
+    // 1. Get relevant memories (high priority)
+    const memories = await substrate.brain.query(query, 10);
+    for (const m of memories.data?.memories || []) {
+      items.push({
+        content: m.content,
+        priority: m.confidence * 10, // Scale by confidence
+        tokens: this.estimateTokens(m.content)
+      });
+    }
+    
+    // 2. Get session context (medium priority)
+    const session = await substrate.brain.sessionReflection(1);
+    if (session.data?.summary) {
+      items.push({
+        content: \`Session context: \${session.data.summary}\`,
+        priority: 5,
+        tokens: this.estimateTokens(session.data.summary)
+      });
+    }
+    
+    // 3. Sort by priority and fit within budget
+    items.sort((a, b) => b.priority - a.priority);
+    
+    const systemTokens = this.estimateTokens(systemPrompt);
+    const queryTokens = this.estimateTokens(query);
+    let remainingTokens = this.maxTokens - systemTokens - queryTokens - 500; // Buffer
+    
+    const selectedContext: string[] = [];
+    for (const item of items) {
+      if (item.tokens <= remainingTokens) {
+        selectedContext.push(item.content);
+        remainingTokens -= item.tokens;
+      }
+    }
+    
+    return selectedContext.join('\\n---\\n');
+  }
+  
+  async generateWithOptimizedContext(query: string, systemPrompt: string) {
+    const context = await this.buildContext(query, systemPrompt);
+    return substrate.nexus.route(
+      \`\${systemPrompt}\\n\\nContext:\\n\${context}\\n\\nQuery: \${query}\`
+    );
+  }
+}`
+  },
+  {
+    id: 'ab-testing',
+    name: 'A/B Testing AI',
+    description: 'Test different prompts and models with statistical analysis',
+    icon: Target,
+    category: 'nexus',
+    difficulty: 'advanced',
+    estimatedTime: '40 min',
+    features: ['Variant testing', 'Statistical significance', 'Auto-winner'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface Variant {
+  id: string;
+  prompt: string;
+  model?: string;
+  impressions: number;
+  successes: number;
+}
+
+class ABTester {
+  private variants: Map<string, Variant> = new Map();
+  private testId: string;
+  
+  constructor(testId: string) {
+    this.testId = testId;
+  }
+  
+  addVariant(prompt: string, model?: string): string {
+    const id = crypto.randomUUID();
+    this.variants.set(id, { id, prompt, model, impressions: 0, successes: 0 });
+    return id;
+  }
+  
+  selectVariant(): Variant {
+    // Thompson sampling for optimal exploration/exploitation
+    const variants = Array.from(this.variants.values());
+    
+    // For simplicity, use epsilon-greedy
+    if (Math.random() < 0.1) {
+      // Explore: random variant
+      return variants[Math.floor(Math.random() * variants.length)];
+    }
+    
+    // Exploit: best performing
+    return variants.reduce((best, v) => {
+      const rate = v.impressions > 0 ? v.successes / v.impressions : 0.5;
+      const bestRate = best.impressions > 0 ? best.successes / best.impressions : 0.5;
+      return rate > bestRate ? v : best;
+    });
+  }
+  
+  async runTest(userQuery: string) {
+    const variant = this.selectVariant();
+    variant.impressions++;
+    
+    const fullPrompt = variant.prompt.replace('{query}', userQuery);
+    const response = await substrate.nexus.route(fullPrompt);
+    
+    // Store for later feedback
+    await substrate.brain.remember(
+      \`AB Test \${this.testId}: Variant \${variant.id}\`,
+      'ab_test',
+      0.5,
+      { testId: this.testId, variantId: variant.id, query: userQuery }
+    );
+    
+    return { variantId: variant.id, response: response.data };
+  }
+  
+  recordSuccess(variantId: string) {
+    const variant = this.variants.get(variantId);
+    if (variant) variant.successes++;
+  }
+  
+  getWinner(): Variant | null {
+    const variants = Array.from(this.variants.values());
+    const minSamples = 30;
+    
+    // Need minimum samples for significance
+    if (variants.some(v => v.impressions < minSamples)) return null;
+    
+    // Simple winner: highest success rate with >95% confidence
+    return variants.reduce((best, v) => {
+      const rate = v.successes / v.impressions;
+      const bestRate = best.successes / best.impressions;
+      return rate > bestRate ? v : best;
+    });
+  }
+}
+
+// Usage
+const test = new ABTester('greeting-test');
+test.addVariant('Be helpful. User says: {query}');
+test.addVariant('Be friendly and concise. Query: {query}');
+test.addVariant('You are an expert assistant. Respond to: {query}');`
+  },
+  {
+    id: 'event-driven',
+    name: 'Event-Driven AI',
+    description: 'React to system events with AI-powered handlers',
+    icon: CloudLightning,
+    category: 'system',
+    difficulty: 'intermediate',
+    estimatedTime: '30 min',
+    features: ['Event subscription', 'AI handlers', 'Event correlation'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+type EventType = 'user_signup' | 'purchase' | 'error' | 'feedback' | 'anomaly';
+
+interface AIEventHandler {
+  eventType: EventType;
+  handler: (payload: any) => Promise<void>;
+}
+
+class EventDrivenAI {
+  private handlers: Map<EventType, AIEventHandler[]> = new Map();
+  
+  on(eventType: EventType, handler: (payload: any) => Promise<void>) {
+    const existing = this.handlers.get(eventType) || [];
+    existing.push({ eventType, handler });
+    this.handlers.set(eventType, existing);
+  }
+  
+  async emit(eventType: EventType, payload: any) {
+    // 1. Log event for correlation
+    await substrate.brain.remember(
+      JSON.stringify({ type: eventType, ...payload }),
+      \`event:\${eventType}\`,
+      1.0,
+      { timestamp: new Date().toISOString() }
+    );
+    
+    // 2. Create trace
+    const trace = await substrate.vision.trace(undefined, {
+      create: true,
+      module: 'events',
+      action: eventType
+    });
+    
+    // 3. Run handlers
+    const handlers = this.handlers.get(eventType) || [];
+    for (const h of handlers) {
+      try {
+        await h.handler(payload);
+      } catch (error) {
+        await substrate.vision.alert('error', \`Event handler failed: \${eventType}\`);
+      }
+    }
+    
+    // 4. Complete trace
+    await substrate.vision.trace(trace.data.traceId, { complete: true });
+  }
+}
+
+// Usage
+const events = new EventDrivenAI();
+
+events.on('user_signup', async (user) => {
+  // Generate personalized welcome
+  const welcome = await substrate.nexus.route(
+    \`Write a welcome message for \${user.name} who signed up for \${user.plan}\`
+  );
+  await sendEmail(user.email, welcome.data);
+});
+
+events.on('error', async (error) => {
+  // AI-powered error analysis
+  const analysis = await substrate.nexus.route(
+    \`Analyze this error and suggest fixes: \${error.message}\`
+  );
+  await substrate.brain.remember(
+    \`Error: \${error.message}\\nAnalysis: \${analysis.data}\`,
+    'error_analysis'
+  );
+});
+
+events.on('anomaly', async (anomaly) => {
+  await substrate.defense.analyze({ fingerprint: anomaly }, anomaly.ip);
+});`
   }
 ];
 
