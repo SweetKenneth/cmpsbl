@@ -1502,9 +1502,818 @@ events.on('error', async (error) => {
   );
 });
 
-events.on('anomaly', async (anomaly) => {
-  await substrate.defense.analyze({ fingerprint: anomaly }, anomaly.ip);
+  events.on('anomaly', async (anomaly) => {
+    await substrate.defense.analyze({ fingerprint: anomaly }, anomaly.ip);
+  });`
+  },
+  // ========== ADDITIONAL TEMPLATES ==========
+  {
+    id: 'workflow-orchestrator',
+    name: 'Workflow Orchestrator',
+    description: 'Build multi-step AI workflows with branching logic',
+    icon: Workflow,
+    category: 'system',
+    difficulty: 'advanced',
+    estimatedTime: '50 min',
+    features: ['Step sequencing', 'Conditional branching', 'Error recovery'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface WorkflowStep {
+  id: string;
+  name: string;
+  action: (context: any) => Promise<any>;
+  onError?: 'skip' | 'retry' | 'abort';
+  condition?: (context: any) => boolean;
+}
+
+class WorkflowOrchestrator {
+  private steps: WorkflowStep[] = [];
+  
+  addStep(step: Omit<WorkflowStep, 'id'>): string {
+    const id = crypto.randomUUID();
+    this.steps.push({ id, ...step });
+    return id;
+  }
+  
+  async execute(initialContext: any = {}) {
+    const trace = await substrate.vision.trace(undefined, {
+      create: true,
+      module: 'workflow',
+      action: 'execute'
+    });
+    
+    let context = { ...initialContext, _results: {} };
+    
+    for (const step of this.steps) {
+      // Check condition
+      if (step.condition && !step.condition(context)) {
+        continue; // Skip this step
+      }
+      
+      try {
+        const result = await step.action(context);
+        context._results[step.id] = result;
+        context = { ...context, ...result };
+        
+        await substrate.brain.remember(
+          \`Workflow step \${step.name} completed\`,
+          'workflow_step',
+          1.0,
+          { stepId: step.id, traceId: trace.data.traceId }
+        );
+      } catch (error) {
+        if (step.onError === 'skip') continue;
+        if (step.onError === 'retry') {
+          // One retry attempt
+          try {
+            const result = await step.action(context);
+            context._results[step.id] = result;
+          } catch {
+            if (step.onError !== 'abort') continue;
+          }
+        }
+        if (step.onError === 'abort') {
+          await substrate.vision.alert('error', \`Workflow aborted at \${step.name}\`);
+          break;
+        }
+      }
+    }
+    
+    await substrate.vision.trace(trace.data.traceId, { complete: true });
+    return context;
+  }
+}
+
+// Usage
+const workflow = new WorkflowOrchestrator();
+
+workflow.addStep({
+  name: 'analyze_input',
+  action: async (ctx) => {
+    const intent = await substrate.decode.intent(ctx.userMessage);
+    return { intent: intent.data?.primary_intent };
+  }
+});
+
+workflow.addStep({
+  name: 'fetch_context',
+  action: async (ctx) => {
+    const memories = await substrate.brain.query(ctx.userMessage, 5);
+    return { context: memories.data?.memories };
+  }
+});
+
+workflow.addStep({
+  name: 'generate_response',
+  action: async (ctx) => {
+    const response = await substrate.nexus.route(
+      \`Context: \${JSON.stringify(ctx.context)}\\nQuery: \${ctx.userMessage}\`
+    );
+    return { response: response.data };
+  },
+  onError: 'retry'
 });`
+  },
+  {
+    id: 'embeddings-search',
+    name: 'Embeddings Search',
+    description: 'Semantic search using vector embeddings and similarity',
+    icon: Search,
+    category: 'brain',
+    difficulty: 'intermediate',
+    estimatedTime: '30 min',
+    features: ['Vector similarity', 'Hybrid search', 'Relevance ranking'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+async function semanticSearch(query: string, options: {
+  limit?: number;
+  threshold?: number;
+  filters?: Record<string, any>;
+} = {}) {
+  const { limit = 10, threshold = 0.7, filters = {} } = options;
+  
+  // Query brain with semantic search
+  const results = await substrate.brain.query(query, limit * 2);
+  
+  // Filter by confidence threshold
+  const filtered = (results.data?.memories || [])
+    .filter(m => m.confidence >= threshold)
+    .filter(m => {
+      // Apply metadata filters
+      for (const [key, value] of Object.entries(filters)) {
+        if (m.metadata?.[key] !== value) return false;
+      }
+      return true;
+    })
+    .slice(0, limit);
+  
+  // Track search for learning
+  await substrate.brain.learn(
+    \`Search: \${query} → \${filtered.length} results\`,
+    'search_query'
+  );
+  
+  return {
+    results: filtered,
+    query,
+    total: results.data?.memories?.length || 0,
+    filtered: filtered.length
+  };
+}
+
+// Hybrid search: combine semantic + keyword
+async function hybridSearch(query: string, keywords: string[]) {
+  // Semantic search
+  const semantic = await semanticSearch(query, { limit: 20 });
+  
+  // Boost results containing keywords
+  const boosted = semantic.results.map(result => {
+    let boost = 0;
+    for (const keyword of keywords) {
+      if (result.content.toLowerCase().includes(keyword.toLowerCase())) {
+        boost += 0.1;
+      }
+    }
+    return { ...result, boostedScore: result.confidence + boost };
+  });
+  
+  // Re-sort by boosted score
+  return boosted.sort((a, b) => b.boostedScore - a.boostedScore);
+}`
+  },
+  {
+    id: 'rate-limiter',
+    name: 'Intelligent Rate Limiter',
+    description: 'AI-aware rate limiting with priority queuing',
+    icon: Gauge,
+    category: 'defense',
+    difficulty: 'intermediate',
+    estimatedTime: '25 min',
+    features: ['Token bucket', 'Priority queuing', 'Adaptive limits'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface RateLimitConfig {
+  tokensPerMinute: number;
+  burstLimit: number;
+  priorityMultiplier: Record<string, number>;
+}
+
+class IntelligentRateLimiter {
+  private tokens: number;
+  private lastRefill: number;
+  private config: RateLimitConfig;
+  private queue: Array<{ 
+    resolve: (v: boolean) => void; 
+    priority: string;
+    timestamp: number;
+  }> = [];
+  
+  constructor(config: RateLimitConfig) {
+    this.config = config;
+    this.tokens = config.burstLimit;
+    this.lastRefill = Date.now();
+  }
+  
+  private refill() {
+    const now = Date.now();
+    const elapsed = (now - this.lastRefill) / 60000; // minutes
+    const newTokens = elapsed * this.config.tokensPerMinute;
+    this.tokens = Math.min(this.config.burstLimit, this.tokens + newTokens);
+    this.lastRefill = now;
+  }
+  
+  async acquire(priority: string = 'normal'): Promise<boolean> {
+    this.refill();
+    
+    const multiplier = this.config.priorityMultiplier[priority] || 1;
+    const cost = 1 / multiplier; // Higher priority = lower cost
+    
+    if (this.tokens >= cost) {
+      this.tokens -= cost;
+      return true;
+    }
+    
+    // Check with defense module
+    const limits = await substrate.defense.limits();
+    if (limits.data?.remaining <= 0) {
+      await substrate.vision.alert('warn', 'Rate limit exceeded');
+      return false;
+    }
+    
+    return new Promise((resolve) => {
+      this.queue.push({ resolve, priority, timestamp: Date.now() });
+      this.processQueue();
+    });
+  }
+  
+  private async processQueue() {
+    // Sort by priority and timestamp
+    this.queue.sort((a, b) => {
+      const prioA = this.config.priorityMultiplier[a.priority] || 1;
+      const prioB = this.config.priorityMultiplier[b.priority] || 1;
+      if (prioA !== prioB) return prioB - prioA;
+      return a.timestamp - b.timestamp;
+    });
+    
+    while (this.queue.length > 0) {
+      this.refill();
+      if (this.tokens >= 1) {
+        const next = this.queue.shift();
+        this.tokens -= 1;
+        next?.resolve(true);
+      } else {
+        break;
+      }
+    }
+  }
+}
+
+// Usage
+const limiter = new IntelligentRateLimiter({
+  tokensPerMinute: 60,
+  burstLimit: 10,
+  priorityMultiplier: { critical: 3, high: 2, normal: 1, low: 0.5 }
+});
+
+async function makeAIRequest(prompt: string, priority = 'normal') {
+  if (await limiter.acquire(priority)) {
+    return substrate.nexus.route(prompt);
+  }
+  throw new Error('Rate limited');
+}`
+  },
+  {
+    id: 'conversation-memory',
+    name: 'Conversation Memory',
+    description: 'Long-term conversation memory with summarization',
+    icon: MessageSquare,
+    category: 'brain',
+    difficulty: 'intermediate',
+    estimatedTime: '30 min',
+    features: ['Message history', 'Auto-summarization', 'Context retrieval'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+class ConversationMemory {
+  private sessionId: string;
+  private messages: Array<{ role: string; content: string; timestamp: Date }> = [];
+  private maxMessages = 20;
+  
+  constructor(sessionId: string) {
+    this.sessionId = sessionId;
+  }
+  
+  async addMessage(role: 'user' | 'assistant', content: string) {
+    this.messages.push({ role, content, timestamp: new Date() });
+    
+    // Store in brain for long-term
+    await substrate.brain.remember(
+      \`[\${role}]: \${content}\`,
+      \`conversation:\${this.sessionId}\`,
+      0.8,
+      { role, sessionId: this.sessionId }
+    );
+    
+    // Trim if too long
+    if (this.messages.length > this.maxMessages) {
+      await this.summarizeOldMessages();
+    }
+  }
+  
+  private async summarizeOldMessages() {
+    const toSummarize = this.messages.slice(0, 10);
+    this.messages = this.messages.slice(10);
+    
+    const summary = await substrate.nexus.route(
+      \`Summarize this conversation in 2-3 sentences:\\n\${
+        toSummarize.map(m => \`\${m.role}: \${m.content}\`).join('\\n')
+      }\`
+    );
+    
+    await substrate.brain.remember(
+      \`Conversation summary: \${summary.data}\`,
+      \`conversation:\${this.sessionId}:summary\`,
+      1.0
+    );
+  }
+  
+  async getContext() {
+    // Get summaries
+    const summaries = await substrate.brain.query(
+      \`conversation:\${this.sessionId}:summary\`,
+      3
+    );
+    
+    // Get session reflection
+    const reflection = await substrate.brain.sessionReflection(1);
+    
+    return {
+      recentMessages: this.messages,
+      summaries: summaries.data?.memories?.map(m => m.content) || [],
+      sessionInsight: reflection.data?.summary
+    };
+  }
+  
+  async chat(userMessage: string) {
+    await this.addMessage('user', userMessage);
+    
+    const context = await this.getContext();
+    const contextStr = [
+      ...context.summaries,
+      ...context.recentMessages.slice(-5).map(m => \`\${m.role}: \${m.content}\`)
+    ].join('\\n');
+    
+    const response = await substrate.decode.chat(
+      \`Context:\\n\${contextStr}\\n\\nUser: \${userMessage}\`,
+      this.sessionId
+    );
+    
+    await this.addMessage('assistant', response.data?.reply || '');
+    return response.data?.reply;
+  }
+}`
+  },
+  {
+    id: 'agent-tools',
+    name: 'AI Agent with Tools',
+    description: 'Build autonomous agents that can call functions',
+    icon: Bot,
+    category: 'decode',
+    difficulty: 'advanced',
+    estimatedTime: '45 min',
+    features: ['Tool calling', 'ReAct pattern', 'Multi-step reasoning'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface Tool {
+  name: string;
+  description: string;
+  parameters: Record<string, { type: string; description: string }>;
+  execute: (params: any) => Promise<any>;
+}
+
+class AIAgent {
+  private tools: Map<string, Tool> = new Map();
+  private maxIterations = 5;
+  
+  registerTool(tool: Tool) {
+    this.tools.set(tool.name, tool);
+  }
+  
+  private formatToolsPrompt(): string {
+    const toolDescriptions = Array.from(this.tools.values())
+      .map(t => \`- \${t.name}: \${t.description}\\n  Parameters: \${JSON.stringify(t.parameters)}\`)
+      .join('\\n');
+    
+    return \`You have access to these tools:\\n\${toolDescriptions}\\n
+To use a tool, respond with: TOOL: tool_name({"param": "value"})
+To give a final answer, respond with: ANSWER: your response\`;
+  }
+  
+  async run(task: string): Promise<string> {
+    let iterations = 0;
+    let context = \`Task: \${task}\\n\\n\${this.formatToolsPrompt()}\`;
+    const history: string[] = [];
+    
+    while (iterations < this.maxIterations) {
+      iterations++;
+      
+      const response = await substrate.nexus.route(
+        \`\${context}\\n\\nHistory:\\n\${history.join('\\n')}\\n\\nThink step by step.\`
+      );
+      
+      const output = response.data as string;
+      
+      // Check for final answer
+      if (output.includes('ANSWER:')) {
+        const answer = output.split('ANSWER:')[1].trim();
+        await substrate.brain.remember(
+          \`Agent task: \${task}\\nAnswer: \${answer}\`,
+          'agent_task',
+          1.0,
+          { iterations, toolsUsed: history.length }
+        );
+        return answer;
+      }
+      
+      // Check for tool call
+      if (output.includes('TOOL:')) {
+        const toolMatch = output.match(/TOOL:\\s*(\\w+)\\((.+)\\)/);
+        if (toolMatch) {
+          const [, toolName, paramsStr] = toolMatch;
+          const tool = this.tools.get(toolName);
+          
+          if (tool) {
+            try {
+              const params = JSON.parse(paramsStr);
+              const result = await tool.execute(params);
+              history.push(\`Used \${toolName}: \${JSON.stringify(result)}\`);
+            } catch (e) {
+              history.push(\`Error using \${toolName}: \${e}\`);
+            }
+          }
+        }
+      }
+    }
+    
+    return 'Max iterations reached';
+  }
+}
+
+// Usage
+const agent = new AIAgent();
+
+agent.registerTool({
+  name: 'search_memory',
+  description: 'Search the knowledge base',
+  parameters: { query: { type: 'string', description: 'Search query' } },
+  execute: async ({ query }) => {
+    const results = await substrate.brain.query(query, 5);
+    return results.data?.memories?.map(m => m.content);
+  }
+});
+
+agent.registerTool({
+  name: 'remember',
+  description: 'Store information for later',
+  parameters: { 
+    content: { type: 'string', description: 'What to remember' },
+    type: { type: 'string', description: 'Category of information' }
+  },
+  execute: async ({ content, type }) => {
+    await substrate.brain.remember(content, type);
+    return { stored: true };
+  }
+});`
+  },
+  {
+    id: 'realtime-stream',
+    name: 'Realtime Streaming',
+    description: 'Stream AI responses for real-time user experience',
+    icon: Activity,
+    category: 'nexus',
+    difficulty: 'intermediate',
+    estimatedTime: '25 min',
+    features: ['SSE streaming', 'Token-by-token', 'Progress tracking'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+// Server-side streaming handler
+async function streamResponse(prompt: string, onChunk: (chunk: string) => void) {
+  // Get initial response
+  const response = await substrate.nexus.route(prompt);
+  const fullText = response.data as string;
+  
+  // Simulate streaming for demo (real streaming would use SSE)
+  const words = fullText.split(' ');
+  let accumulated = '';
+  
+  for (const word of words) {
+    accumulated += (accumulated ? ' ' : '') + word;
+    onChunk(word + ' ');
+    await new Promise(r => setTimeout(r, 50)); // Simulate typing
+  }
+  
+  // Track completion
+  await substrate.brain.remember(
+    \`Streamed response: \${prompt.slice(0, 50)}...\`,
+    'stream_completion',
+    1.0,
+    { length: fullText.length, wordCount: words.length }
+  );
+  
+  return accumulated;
+}
+
+// React hook for streaming
+function useStreamingResponse() {
+  const [text, setText] = useState('');
+  const [isStreaming, setIsStreaming] = useState(false);
+  
+  const stream = async (prompt: string) => {
+    setText('');
+    setIsStreaming(true);
+    
+    try {
+      await streamResponse(prompt, (chunk) => {
+        setText(prev => prev + chunk);
+      });
+    } finally {
+      setIsStreaming(false);
+    }
+  };
+  
+  return { text, isStreaming, stream };
+}
+
+// Usage in component
+function ChatWithStreaming() {
+  const { text, isStreaming, stream } = useStreamingResponse();
+  
+  const handleSubmit = async (message: string) => {
+    await stream(message);
+  };
+  
+  return (
+    <div>
+      <div>{text}{isStreaming && '▌'}</div>
+    </div>
+  );
+}`
+  },
+  {
+    id: 'data-pipeline',
+    name: 'AI Data Pipeline',
+    description: 'Process and transform data through AI stages',
+    icon: Database,
+    category: 'brain',
+    difficulty: 'advanced',
+    estimatedTime: '40 min',
+    features: ['ETL with AI', 'Data enrichment', 'Quality scoring'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface PipelineStage<TIn, TOut> {
+  name: string;
+  process: (input: TIn) => Promise<TOut>;
+}
+
+class AIDataPipeline<T> {
+  private stages: PipelineStage<any, any>[] = [];
+  
+  addStage<TIn, TOut>(stage: PipelineStage<TIn, TOut>): AIDataPipeline<TOut> {
+    this.stages.push(stage);
+    return this as unknown as AIDataPipeline<TOut>;
+  }
+  
+  async process(input: T): Promise<any> {
+    const trace = await substrate.vision.trace(undefined, {
+      create: true,
+      module: 'pipeline',
+      action: 'process'
+    });
+    
+    let data: any = input;
+    const results: Record<string, any> = {};
+    
+    for (const stage of this.stages) {
+      try {
+        data = await stage.process(data);
+        results[stage.name] = { success: true, output: data };
+      } catch (error) {
+        results[stage.name] = { success: false, error };
+        await substrate.vision.alert('error', \`Pipeline failed at \${stage.name}\`);
+        break;
+      }
+    }
+    
+    await substrate.vision.trace(trace.data.traceId, { complete: true });
+    return { final: data, stages: results };
+  }
+}
+
+// Example: Document processing pipeline
+const docPipeline = new AIDataPipeline<string>()
+  .addStage({
+    name: 'extract_entities',
+    process: async (text) => {
+      const response = await substrate.nexus.route(
+        \`Extract all entities (people, places, organizations) from: \${text}\`
+      );
+      return { text, entities: response.data };
+    }
+  })
+  .addStage({
+    name: 'summarize',
+    process: async ({ text, entities }) => {
+      const response = await substrate.nexus.route(
+        \`Summarize in 2 sentences: \${text}\`
+      );
+      return { text, entities, summary: response.data };
+    }
+  })
+  .addStage({
+    name: 'classify',
+    process: async (data) => {
+      const intent = await substrate.decode.intent(data.text);
+      return { ...data, category: intent.data?.primary_intent };
+    }
+  })
+  .addStage({
+    name: 'store',
+    process: async (data) => {
+      await substrate.brain.remember(
+        \`Document: \${data.summary}\`,
+        'processed_document',
+        1.0,
+        { entities: data.entities, category: data.category }
+      );
+      return data;
+    }
+  });
+
+// Usage
+const result = await docPipeline.process(documentText);`
+  },
+  {
+    id: 'multi-model-consensus',
+    name: 'Multi-Model Consensus',
+    description: 'Get answers from multiple AI models and find consensus',
+    icon: Network,
+    category: 'nexus',
+    difficulty: 'advanced',
+    estimatedTime: '35 min',
+    features: ['Multi-provider', 'Voting system', 'Confidence aggregation'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface ModelResponse {
+  provider: string;
+  response: string;
+  confidence: number;
+}
+
+async function getConsensus(prompt: string, minAgreement = 0.6) {
+  // Get available providers
+  const providers = await substrate.nexus.providers();
+  const activeProviders = providers.data?.filter(p => p.available) || [];
+  
+  if (activeProviders.length < 2) {
+    // Fallback to single provider
+    const single = await substrate.nexus.route(prompt);
+    return { response: single.data, consensus: 1.0, providers: 1 };
+  }
+  
+  // Query multiple models
+  const responses: ModelResponse[] = await Promise.all(
+    activeProviders.slice(0, 3).map(async (provider) => {
+      try {
+        const response = await substrate.nexus.route(prompt);
+        return {
+          provider: provider.name,
+          response: response.data as string,
+          confidence: 0.8 // Base confidence
+        };
+      } catch {
+        return null;
+      }
+    })
+  ).then(results => results.filter((r): r is ModelResponse => r !== null));
+  
+  // Simple consensus: find most common key points
+  const synthesis = await substrate.nexus.route(
+    \`Given these responses from different AI models, find the consensus answer:
+    
+    \${responses.map(r => \`Model \${r.provider}: \${r.response}\`).join('\\n\\n')}
+    
+    Return the consensus answer that most models agree on.\`
+  );
+  
+  // Calculate agreement score
+  const agreementScore = responses.length / activeProviders.length;
+  
+  // Store for learning
+  await substrate.brain.remember(
+    \`Consensus query: \${prompt.slice(0, 100)}...\`,
+    'consensus_query',
+    agreementScore,
+    { 
+      providers: responses.map(r => r.provider),
+      agreement: agreementScore
+    }
+  );
+  
+  return {
+    response: synthesis.data,
+    consensus: agreementScore,
+    providers: responses.length,
+    individual: responses
+  };
+}`
+  },
+  {
+    id: 'dream-interpreter',
+    name: 'Dream Interpreter',
+    description: 'Feed dreams to the substrate and receive interpretations',
+    icon: Moon,
+    category: 'dream',
+    difficulty: 'beginner',
+    estimatedTime: '20 min',
+    features: ['Dream feeding', 'Symbol analysis', 'Pattern recognition'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+async function submitDream(dreamContent: string, dreamerName?: string) {
+  // 1. Feed the dream to the Dream module
+  const feeding = await substrate.dream.feed(dreamContent, 'dream');
+  
+  // 2. Get interpretation
+  const interpretation = await substrate.dream.interpret(dreamContent);
+  
+  // 3. Store in brain for pattern analysis
+  await substrate.brain.remember(
+    dreamContent,
+    'dream',
+    0.9,
+    { 
+      interpretation: interpretation.data,
+      dreamer: dreamerName,
+      timestamp: new Date().toISOString()
+    }
+  );
+  
+  return {
+    id: feeding.data?.id,
+    interpretation: interpretation.data?.interpretation,
+    symbols: interpretation.data?.symbols,
+    mood: interpretation.data?.mood
+  };
+}
+
+async function getDreamPatterns(timeframe: 'week' | 'month' = 'week') {
+  // Query dream memories
+  const dreams = await substrate.brain.query('dream', 50);
+  
+  // Get synthesis of patterns
+  const synthesis = await substrate.brain.synthesize();
+  
+  // Get dream module status
+  const status = await substrate.dream.status();
+  
+  return {
+    totalDreams: dreams.data?.memories?.length || 0,
+    patterns: synthesis.data?.insights,
+    eaterMood: status.data?.mood,
+    mutationLevel: status.data?.mutationLevel
+  };
+}
+
+async function triggerMutationCycle() {
+  // Initiate a dream mutation cycle
+  const mutation = await substrate.dream.mutate();
+  
+  // Log the mutation event
+  await substrate.vision.trace(undefined, {
+    create: true,
+    module: 'dream',
+    action: 'mutation',
+    metadata: { level: mutation.data?.level }
+  });
+  
+  return mutation.data;
+}`
   }
 ];
 
