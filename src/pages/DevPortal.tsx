@@ -32,7 +32,7 @@ import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { SEO } from '@/components/SEO';
 import { toast } from 'sonner';
 
-// 27 Templates covering all modules and use cases
+// 65 Templates covering all modules and use cases - all unique
 const TEMPLATES = [
   {
     id: 'chatbot',
@@ -2316,64 +2316,58 @@ async function triggerMutationCycle() {
 }`
   },
   {
-    id: 'voice-assistant',
-    name: 'Voice Assistant',
-    description: 'Build voice-enabled AI assistants with speech recognition and synthesis',
+    id: 'audio-transcriber',
+    name: 'Audio Transcriber',
+    description: 'Process audio files and transcripts with AI summarization',
     icon: Radio,
     category: 'decode',
-    difficulty: 'advanced',
-    estimatedTime: '45 min',
-    features: ['Speech recognition', 'Voice synthesis', 'Conversation flow'],
+    difficulty: 'intermediate',
+    estimatedTime: '30 min',
+    features: ['Transcript processing', 'Key point extraction', 'Action items'],
     code: `import { SubstrateClient } from './substrate-client';
 
 const substrate = new SubstrateClient(config);
 
-class VoiceAssistant {
-  private sessionId: string;
-  private isListening = false;
-  
-  constructor(userId: string) {
-    this.sessionId = \`voice:\${userId}:\${Date.now()}\`;
-  }
-  
-  async processVoiceInput(transcript: string) {
-    // 1. Analyze intent from voice input
-    const intent = await substrate.decode.intent(transcript);
+class AudioTranscriber {
+  async processTranscript(transcript: string, meetingId: string) {
+    // 1. Extract key topics
+    const topics = await substrate.decode.intent(transcript);
     
-    // 2. Check if it's a command or conversation
-    const isCommand = intent.data?.primary_intent?.startsWith('command:');
+    // 2. Generate meeting summary
+    const summary = await substrate.nexus.route(
+      \`Summarize this meeting transcript with key decisions and action items:\\n\${transcript}\`
+    );
     
-    if (isCommand) {
-      return this.handleCommand(intent.data?.primary_intent);
-    }
+    // 3. Store for future reference
+    await substrate.brain.remember(
+      summary.data,
+      \`meeting:\${meetingId}\`,
+      0.95,
+      { topics: topics.data?.entities, date: new Date().toISOString() }
+    );
     
-    // 3. Conversational response
-    const response = await substrate.decode.chat(transcript, this.sessionId);
-    
-    // 4. Store interaction for learning
-    await substrate.brain.learn(
-      \`Voice: \${transcript} → \${response.data?.reply}\`,
-      'voice_interaction'
+    // 4. Extract action items
+    const actions = await substrate.nexus.route(
+      \`Extract all action items from:\\n\${transcript}\\nFormat as JSON array.\`
     );
     
     return {
-      text: response.data?.reply,
-      intent: intent.data?.primary_intent,
-      confidence: intent.data?.confidence
+      summary: summary.data,
+      topics: topics.data?.entities,
+      actionItems: JSON.parse(actions.data || '[]'),
+      meetingId
     };
   }
   
-  private async handleCommand(command: string) {
-    const commands: Record<string, () => Promise<any>> = {
-      'command:status': () => substrate.vision.healthSnapshot(),
-      'command:dream': () => substrate.dream.status(),
-      'command:learn': () => substrate.brain.reflect()
-    };
-    
-    const handler = commands[command];
-    return handler ? await handler() : { error: 'Unknown command' };
+  async searchMeetings(query: string) {
+    const results = await substrate.brain.query(\`meeting: \${query}\`, 10);
+    return results.data?.memories?.map(m => ({
+      content: m.content,
+      date: m.metadata?.date,
+      topics: m.metadata?.topics
+    }));
   }
-}`
+}`,
   },
   {
     id: 'rag-pipeline',
@@ -2467,187 +2461,179 @@ class RAGPipeline {
 }`
   },
   {
-    id: 'anomaly-detector',
-    name: 'Anomaly Detector',
-    description: 'Detect anomalies in metrics and user behavior patterns',
+    id: 'threat-intelligence',
+    name: 'Threat Intelligence',
+    description: 'Aggregate and analyze security threats across your system',
     icon: AlertTriangle,
     category: 'defense',
-    difficulty: 'intermediate',
-    estimatedTime: '35 min',
-    features: ['Statistical analysis', 'Pattern detection', 'Alert generation'],
+    difficulty: 'advanced',
+    estimatedTime: '45 min',
+    features: ['Threat aggregation', 'Pattern correlation', 'Risk scoring'],
     code: `import { SubstrateClient } from './substrate-client';
 
 const substrate = new SubstrateClient(config);
 
-async function detectAnomalies(hoursBack = 24) {
-  // 1. Get anomaly probe from defense module
-  const anomalies = await substrate.defense.anomalyProbe(hoursBack);
-  
-  // 2. Get system metrics for context
-  const metrics = await substrate.vision.dashboard();
-  
-  // 3. Analyze each anomaly
-  const analyzed = [];
-  for (const anomaly of anomalies.data?.anomalies || []) {
-    // Get historical pattern
-    const pattern = await substrate.brain.query(
-      \`anomaly:\${anomaly.metric}\`,
-      5
-    );
+class ThreatIntelligence {
+  async gatherIntelligence(hoursBack = 72) {
+    // 1. Get defense events
+    const posture = await substrate.defense.posture();
     
-    const isNewPattern = !pattern.data?.memories?.some(
-      m => m.content.includes(anomaly.description)
-    );
+    // 2. Get IP reputation data
+    const recentIPs = await substrate.vision.analytics();
     
-    if (isNewPattern) {
-      // New anomaly - store and alert
-      await substrate.brain.remember(
-        \`anomaly:\${anomaly.metric}: \${anomaly.description}\`,
-        'anomaly_pattern',
-        anomaly.severity
-      );
+    // 3. Correlate patterns
+    const threats = [];
+    for (const event of posture.data?.recent_events || []) {
+      const ipRep = await substrate.defense.reputation(event.ip);
       
-      await substrate.vision.alert(
-        anomaly.severity > 0.8 ? 'error' : 'warn',
-        \`New anomaly detected: \${anomaly.metric}\`,
-        { anomaly, isNew: true }
-      );
+      if (ipRep.data?.score < 50) {
+        threats.push({
+          ip: event.ip,
+          reputation: ipRep.data?.score,
+          action: event.action,
+          riskLevel: event.risk_score > 0.8 ? 'critical' : 'elevated'
+        });
+      }
     }
     
-    analyzed.push({
-      ...anomaly,
-      isNew: isNewPattern,
-      historicalOccurrences: pattern.data?.memories?.length || 0
-    });
+    // 4. Store intelligence for pattern matching
+    await substrate.brain.remember(
+      JSON.stringify({ threats, timestamp: new Date().toISOString() }),
+      'threat_intel',
+      0.95,
+      { threatCount: threats.length }
+    );
+    
+    return {
+      totalThreats: threats.length,
+      criticalThreats: threats.filter(t => t.riskLevel === 'critical').length,
+      threats,
+      overallPosture: posture.data?.overall_score
+    };
   }
   
-  return {
-    totalAnomalies: analyzed.length,
-    newAnomalies: analyzed.filter(a => a.isNew).length,
-    anomalies: analyzed
-  };
-}`
+  async getHistoricalPatterns(threatType: string) {
+    const history = await substrate.brain.query(\`threat_intel \${threatType}\`, 20);
+    return history.data?.memories;
+  }
+}`,
   },
   {
-    id: 'conversation-memory',
-    name: 'Long-Term Memory',
-    description: 'Persistent conversation memory across sessions and users',
+    id: 'user-profiler',
+    name: 'User Profiler',
+    description: 'Build dynamic user profiles from interaction patterns',
     icon: Database,
     category: 'brain',
     difficulty: 'intermediate',
-    estimatedTime: '30 min',
-    features: ['Cross-session recall', 'User preferences', 'Context persistence'],
+    estimatedTime: '35 min',
+    features: ['Behavior tracking', 'Interest mapping', 'Profile evolution'],
     code: `import { SubstrateClient } from './substrate-client';
 
 const substrate = new SubstrateClient(config);
 
-class LongTermMemory {
+class UserProfiler {
   private userId: string;
   
   constructor(userId: string) {
     this.userId = userId;
   }
   
-  // Store user preference
-  async storePreference(key: string, value: any) {
+  async trackInteraction(category: string, action: string, value?: number) {
     await substrate.brain.remember(
-      JSON.stringify({ key, value }),
-      \`user:\${this.userId}:pref\`,
-      1.0,
-      { key, value, type: 'preference' }
+      \`User \${this.userId} performed \${action} in \${category}\`,
+      \`profile:\${this.userId}\`,
+      value || 0.7,
+      { category, action, timestamp: Date.now() }
     );
   }
   
-  // Recall user preferences
-  async getPreferences() {
-    const prefs = await substrate.brain.query(
-      \`user:\${this.userId}:pref\`,
-      50
+  async getProfile() {
+    const interactions = await substrate.brain.query(
+      \`profile:\${this.userId}\`,
+      100
     );
     
-    const preferences: Record<string, any> = {};
-    for (const mem of prefs.data?.memories || []) {
-      if (mem.metadata?.key) {
-        preferences[mem.metadata.key] = mem.metadata.value;
-      }
+    // Aggregate by category
+    const categories: Record<string, number> = {};
+    for (const mem of interactions.data?.memories || []) {
+      const cat = mem.metadata?.category;
+      if (cat) categories[cat] = (categories[cat] || 0) + 1;
     }
-    return preferences;
-  }
-  
-  // Store conversation summary
-  async summarizeConversation(sessionId: string, messages: string[]) {
-    const summary = await substrate.nexus.route(
-      \`Summarize this conversation in 2-3 sentences: \${messages.join('\\n')}\`
-    );
     
-    await substrate.brain.remember(
-      summary.data,
-      \`user:\${this.userId}:conv\`,
-      0.9,
-      { sessionId, messageCount: messages.length }
-    );
-    
-    return summary.data;
-  }
-  
-  // Recall past conversations
-  async recallContext(query: string) {
-    // Get relevant memories
-    const memories = await substrate.brain.query(
-      \`user:\${this.userId} \${query}\`,
-      10
-    );
-    
-    // Get preferences
-    const prefs = await this.getPreferences();
+    // Get top interests
+    const interests = Object.entries(categories)
+      .sort(([,a], [,b]) => b - a)
+      .slice(0, 5)
+      .map(([name, count]) => ({ name, count }));
     
     return {
-      relevantMemories: memories.data?.memories,
-      preferences: prefs
+      userId: this.userId,
+      totalInteractions: interactions.data?.memories?.length || 0,
+      topInterests: interests,
+      lastActive: interactions.data?.memories?.[0]?.metadata?.timestamp
     };
   }
-}`
+  
+  async predictPreference(options: string[]) {
+    const profile = await this.getProfile();
+    const prompt = \`Based on user interests: \${profile.topInterests.map(i => i.name).join(', ')}
+Which would they prefer: \${options.join(' or ')}?\`;
+    
+    const prediction = await substrate.nexus.route(prompt);
+    return prediction.data;
+  }
+}`,
   },
   {
-    id: 'ab-testing',
-    name: 'A/B Testing Engine',
-    description: 'Test and optimize AI responses with statistical significance',
+    id: 'experiment-runner',
+    name: 'Experiment Runner',
+    description: 'Run controlled experiments on AI model outputs',
     icon: Target,
     category: 'vision',
     difficulty: 'advanced',
-    estimatedTime: '40 min',
-    features: ['Variant allocation', 'Metric tracking', 'Statistical analysis'],
+    estimatedTime: '45 min',
+    features: ['Hypothesis testing', 'Metric collection', 'Result analysis'],
     code: `import { SubstrateClient } from './substrate-client';
 
 const substrate = new SubstrateClient(config);
 
 interface Experiment {
-  name: string;
-  variants: string[];
-  allocation: number[]; // Percentage for each variant
+  id: string;
+  hypothesis: string;
+  control: { prompt: string };
+  treatment: { prompt: string };
+  sampleSize: number;
 }
 
-class ABTestingEngine {
-  private experiments: Map<string, Experiment> = new Map();
-  
-  registerExperiment(experiment: Experiment) {
-    this.experiments.set(experiment.name, experiment);
-    return this;
-  }
-  
-  // Get variant for a user
-  async getVariant(experimentName: string, userId: string): Promise<string> {
-    const exp = this.experiments.get(experimentName);
-    if (!exp) throw new Error('Experiment not found');
+class ExperimentRunner {
+  async runExperiment(experiment: Experiment) {
+    const results = { control: [], treatment: [] };
     
-    // Check if user already has assignment
-    const existing = await substrate.brain.query(
-      \`ab:\${experimentName}:user:\${userId}\`,
-      1
+    for (let i = 0; i < experiment.sampleSize; i++) {
+      // Control group
+      const controlStart = Date.now();
+      const controlResp = await substrate.nexus.route(experiment.control.prompt);
+      results.control.push({
+        response: controlResp.data,
+        latencyMs: Date.now() - controlStart
+      });
+      
+      // Treatment group
+      const treatStart = Date.now();
+      const treatResp = await substrate.nexus.route(experiment.treatment.prompt);
+      results.treatment.push({
+        response: treatResp.data,
+        latencyMs: Date.now() - treatStart
+      });
+    }
+    
+    // Store experiment results
+    await substrate.brain.remember(
+      \`Experiment \${experiment.id}: \${experiment.hypothesis}\`,
+      'experiment',
+      1.0,
+      { results, completedAt: new Date().toISOString() }
     );
-    
-    if (existing.data?.memories?.[0]) {
-      return existing.data.memories[0].metadata?.variant;
     }
     
     // Assign new variant
@@ -3280,6 +3266,989 @@ class ContextBuilder {
   private truncateToTokens(text: string, maxTokens: number): string {
     const maxChars = maxTokens * 4;
     return text.length > maxChars ? text.substring(0, maxChars) + '...' : text;
+  }
+}`
+  },
+  // ========== 15 NEW UNIQUE TEMPLATES ==========
+  {
+    id: 'sentiment-analyzer',
+    name: 'Sentiment Analyzer',
+    description: 'Analyze text sentiment and emotional tone in real-time',
+    icon: Sparkles,
+    category: 'decode',
+    difficulty: 'beginner',
+    estimatedTime: '20 min',
+    features: ['Emotion detection', 'Tone analysis', 'Trend tracking'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+async function analyzeSentiment(text: string) {
+  // 1. Get intent with emotional context
+  const intent = await substrate.decode.intent(text);
+  
+  // 2. Route to AI for detailed analysis
+  const analysis = await substrate.nexus.route(
+    \`Analyze the sentiment of: "\${text}"
+    Return JSON: { sentiment: 'positive'|'negative'|'neutral', score: 0-1, emotions: string[], tone: string }\`
+  );
+  
+  const result = JSON.parse(analysis.data || '{}');
+  
+  // 3. Store for trend analysis
+  await substrate.brain.remember(
+    \`Sentiment: \${result.sentiment} - \${text.substring(0, 50)}\`,
+    'sentiment_log',
+    result.score,
+    { ...result, timestamp: Date.now() }
+  );
+  
+  return result;
+}
+
+async function getSentimentTrends(hours = 24) {
+  const logs = await substrate.brain.query('sentiment_log', 100);
+  const grouped = { positive: 0, negative: 0, neutral: 0 };
+  
+  for (const log of logs.data?.memories || []) {
+    const sentiment = log.metadata?.sentiment;
+    if (sentiment) grouped[sentiment]++;
+  }
+  
+  return grouped;
+}`
+  },
+  {
+    id: 'language-translator',
+    name: 'Language Translator',
+    description: 'Real-time translation with context preservation',
+    icon: Globe,
+    category: 'nexus',
+    difficulty: 'beginner',
+    estimatedTime: '15 min',
+    features: ['Multi-language', 'Context aware', 'Terminology memory'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+async function translate(text: string, targetLang: string, domain?: string) {
+  // Check for cached translations
+  const cached = await substrate.brain.query(
+    \`translation:\${targetLang}:\${text.substring(0, 50)}\`,
+    1
+  );
+  
+  if (cached.data?.memories?.[0]?.confidence > 0.9) {
+    return cached.data.memories[0].metadata?.translation;
+  }
+  
+  // Get domain terminology if available
+  const terminology = domain 
+    ? await substrate.brain.query(\`terminology:\${domain}:\${targetLang}\`, 10)
+    : null;
+  
+  const termContext = terminology?.data?.memories
+    ?.map(m => m.content)
+    .join('\\n') || '';
+  
+  // Translate with context
+  const translation = await substrate.nexus.route(
+    \`Translate to \${targetLang}:\n\${termContext ? \`Domain terms:\\n\${termContext}\\n\\n\` : ''}Text: \${text}\`
+  );
+  
+  // Cache the translation
+  await substrate.brain.remember(
+    \`translation:\${targetLang}:\${text.substring(0, 50)}\`,
+    'translation_cache',
+    0.95,
+    { original: text, translation: translation.data, targetLang }
+  );
+  
+  return translation.data;
+}`
+  },
+  {
+    id: 'code-reviewer',
+    name: 'Code Reviewer',
+    description: 'AI-powered code review with security and quality checks',
+    icon: FileCode,
+    category: 'nexus',
+    difficulty: 'intermediate',
+    estimatedTime: '35 min',
+    features: ['Security analysis', 'Best practices', 'Improvement suggestions'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface CodeReview {
+  issues: Array<{ severity: string; line?: number; message: string }>;
+  suggestions: string[];
+  securityScore: number;
+  qualityScore: number;
+}
+
+async function reviewCode(code: string, language: string): Promise<CodeReview> {
+  // 1. Analyze code for security issues
+  const securityCheck = await substrate.nexus.route(
+    \`Review this \${language} code for security vulnerabilities. 
+    Return JSON array of issues with severity (critical/high/medium/low) and message:
+    \${code}\`
+  );
+  
+  // 2. Check for best practices
+  const qualityCheck = await substrate.nexus.route(
+    \`Review this \${language} code for quality and best practices.
+    Return JSON array of suggestions:
+    \${code}\`
+  );
+  
+  const issues = JSON.parse(securityCheck.data || '[]');
+  const suggestions = JSON.parse(qualityCheck.data || '[]');
+  
+  // Calculate scores
+  const criticalCount = issues.filter(i => i.severity === 'critical').length;
+  const securityScore = Math.max(0, 100 - (criticalCount * 25) - (issues.length * 5));
+  const qualityScore = Math.max(0, 100 - (suggestions.length * 10));
+  
+  // Store for learning
+  await substrate.brain.learn(
+    \`Code review: \${language} - Security: \${securityScore}, Quality: \${qualityScore}\`,
+    'code_review'
+  );
+  
+  return { issues, suggestions, securityScore, qualityScore };
+}`
+  },
+  {
+    id: 'task-decomposer',
+    name: 'Task Decomposer',
+    description: 'Break complex tasks into actionable subtasks',
+    icon: Workflow,
+    category: 'brain',
+    difficulty: 'intermediate',
+    estimatedTime: '25 min',
+    features: ['Task breakdown', 'Dependency mapping', 'Priority assignment'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface Task {
+  id: string;
+  title: string;
+  priority: 'high' | 'medium' | 'low';
+  estimatedTime: string;
+  dependencies: string[];
+}
+
+async function decomposeTask(complexTask: string): Promise<Task[]> {
+  // 1. Analyze task complexity
+  const intent = await substrate.decode.intent(complexTask);
+  
+  // 2. Get related past tasks for context
+  const similar = await substrate.brain.query(\`task:\${complexTask}\`, 5);
+  
+  // 3. Generate subtasks
+  const decomposition = await substrate.nexus.route(
+    \`Break this task into subtasks with dependencies:
+    Task: \${complexTask}
+    
+    Return JSON array: [{ id, title, priority, estimatedTime, dependencies: [ids] }]\`
+  );
+  
+  const tasks: Task[] = JSON.parse(decomposition.data || '[]');
+  
+  // 4. Store task graph
+  for (const task of tasks) {
+    await substrate.brain.remember(
+      task.title,
+      'task_decomposition',
+      1.0,
+      { parentTask: complexTask, ...task }
+    );
+  }
+  
+  // 5. Build knowledge graph of task relationships
+  await substrate.brain.graphBuild();
+  
+  return tasks;
+}`
+  },
+  {
+    id: 'faq-generator',
+    name: 'FAQ Generator',
+    description: 'Auto-generate FAQs from content and user questions',
+    icon: BookOpen,
+    category: 'brain',
+    difficulty: 'beginner',
+    estimatedTime: '20 min',
+    features: ['Content extraction', 'Question clustering', 'Answer synthesis'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface FAQ {
+  question: string;
+  answer: string;
+  category: string;
+  confidence: number;
+}
+
+async function generateFAQs(content: string, existingQuestions: string[] = []): Promise<FAQ[]> {
+  // 1. Extract potential questions from content
+  const extraction = await substrate.nexus.route(
+    \`Generate 10 common questions users might ask about:\\n\${content}\\n
+    Return JSON array of questions\`
+  );
+  
+  const generatedQs = JSON.parse(extraction.data || '[]');
+  const allQuestions = [...new Set([...existingQuestions, ...generatedQs])];
+  
+  const faqs: FAQ[] = [];
+  
+  for (const question of allQuestions) {
+    // 2. Check if we have a stored answer
+    const existing = await substrate.brain.query(\`faq:\${question}\`, 1);
+    
+    if (existing.data?.memories?.[0]) {
+      faqs.push({
+        question,
+        answer: existing.data.memories[0].content,
+        category: existing.data.memories[0].metadata?.category || 'general',
+        confidence: existing.data.memories[0].confidence
+      });
+    } else {
+      // 3. Generate new answer
+      const answer = await substrate.nexus.route(
+        \`Answer based on this content:\\n\${content}\\n\\nQuestion: \${question}\`
+      );
+      
+      const faq = {
+        question,
+        answer: answer.data,
+        category: 'general',
+        confidence: 0.8
+      };
+      
+      // 4. Store for future use
+      await substrate.brain.remember(
+        answer.data,
+        \`faq:\${question}\`,
+        0.8,
+        { category: 'general' }
+      );
+      
+      faqs.push(faq);
+    }
+  }
+  
+  return faqs;
+}`
+  },
+  {
+    id: 'newsletter-curator',
+    name: 'Newsletter Curator',
+    description: 'Curate and summarize content for newsletters',
+    icon: FileText,
+    category: 'nexus',
+    difficulty: 'intermediate',
+    estimatedTime: '30 min',
+    features: ['Content aggregation', 'Summary generation', 'Topic clustering'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface NewsletterItem {
+  title: string;
+  summary: string;
+  category: string;
+  relevanceScore: number;
+}
+
+async function curateNewsletter(topics: string[], maxItems = 10): Promise<NewsletterItem[]> {
+  const items: NewsletterItem[] = [];
+  
+  for (const topic of topics) {
+    // 1. Query relevant memories
+    const content = await substrate.brain.query(topic, 5);
+    
+    for (const memory of content.data?.memories || []) {
+      // 2. Generate summary
+      const summary = await substrate.nexus.route(
+        \`Summarize in 2 sentences for a newsletter:\\n\${memory.content}\`
+      );
+      
+      // 3. Generate engaging title
+      const title = await substrate.nexus.route(
+        \`Generate a catchy newsletter headline for:\\n\${summary.data}\`
+      );
+      
+      items.push({
+        title: title.data,
+        summary: summary.data,
+        category: topic,
+        relevanceScore: memory.confidence
+      });
+    }
+  }
+  
+  // Sort by relevance and limit
+  const curated = items
+    .sort((a, b) => b.relevanceScore - a.relevanceScore)
+    .slice(0, maxItems);
+  
+  // Store for tracking
+  await substrate.brain.remember(
+    \`Newsletter curated: \${curated.length} items\`,
+    'newsletter_curation',
+    1.0,
+    { topics, itemCount: curated.length, date: new Date().toISOString() }
+  );
+  
+  return curated;
+}`
+  },
+  {
+    id: 'intent-classifier',
+    name: 'Intent Classifier',
+    description: 'Classify user intents with custom categories',
+    icon: Target,
+    category: 'decode',
+    difficulty: 'intermediate',
+    estimatedTime: '25 min',
+    features: ['Custom categories', 'Confidence scoring', 'Multi-intent detection'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface IntentResult {
+  primary: string;
+  secondary: string[];
+  confidence: number;
+  entities: Record<string, string>;
+}
+
+class IntentClassifier {
+  private categories: string[];
+  
+  constructor(categories: string[]) {
+    this.categories = categories;
+  }
+  
+  async classify(text: string): Promise<IntentResult> {
+    // 1. Get base intent from Decode
+    const baseIntent = await substrate.decode.intent(text);
+    
+    // 2. Map to custom categories
+    const mapping = await substrate.nexus.route(
+      \`Map this intent to one of: [\${this.categories.join(', ')}]
+      Input: "\${text}"
+      Base intent: \${baseIntent.data?.primary_intent}
+      Return JSON: { primary: string, secondary: string[], entities: {} }\`
+    );
+    
+    const result = JSON.parse(mapping.data || '{}');
+    
+    // 3. Store for training
+    await substrate.brain.remember(
+      \`Intent: \${result.primary} - \${text.substring(0, 50)}\`,
+      'intent_training',
+      baseIntent.data?.confidence || 0.8,
+      { ...result, originalText: text }
+    );
+    
+    return {
+      primary: result.primary,
+      secondary: result.secondary || [],
+      confidence: baseIntent.data?.confidence || 0.8,
+      entities: result.entities || {}
+    };
+  }
+  
+  async addCategory(category: string, examples: string[]) {
+    this.categories.push(category);
+    
+    for (const example of examples) {
+      await substrate.brain.remember(
+        example,
+        \`intent_example:\${category}\`,
+        1.0
+      );
+    }
+  }
+}`
+  },
+  {
+    id: 'similarity-finder',
+    name: 'Similarity Finder',
+    description: 'Find semantically similar content across your knowledge base',
+    icon: Search,
+    category: 'brain',
+    difficulty: 'beginner',
+    estimatedTime: '15 min',
+    features: ['Semantic matching', 'Threshold filtering', 'Cluster discovery'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface SimilarityResult {
+  content: string;
+  similarity: number;
+  source: string;
+  metadata: Record<string, any>;
+}
+
+async function findSimilar(
+  query: string, 
+  threshold = 0.7, 
+  limit = 10
+): Promise<SimilarityResult[]> {
+  // 1. Query brain for similar content
+  const results = await substrate.brain.query(query, limit * 2);
+  
+  // 2. Filter by confidence threshold
+  const filtered = (results.data?.memories || [])
+    .filter(m => m.confidence >= threshold)
+    .slice(0, limit)
+    .map(m => ({
+      content: m.content,
+      similarity: m.confidence,
+      source: m.source || 'unknown',
+      metadata: m.metadata || {}
+    }));
+  
+  // 3. Log search for analytics
+  await substrate.vision.trace(undefined, {
+    create: true,
+    module: 'search',
+    action: 'similarity',
+    metadata: { query, resultCount: filtered.length, threshold }
+  });
+  
+  return filtered;
+}
+
+async function findClusters(topic: string, clusterSize = 5) {
+  const all = await substrate.brain.query(topic, 50);
+  const clusters: SimilarityResult[][] = [];
+  const used = new Set<string>();
+  
+  for (const memory of all.data?.memories || []) {
+    if (used.has(memory.id)) continue;
+    
+    const similar = await findSimilar(memory.content, 0.85, clusterSize);
+    if (similar.length >= 2) {
+      clusters.push(similar);
+      similar.forEach(s => used.add(s.content));
+    }
+  }
+  
+  return clusters;
+}`
+  },
+  {
+    id: 'api-gateway',
+    name: 'API Gateway',
+    description: 'Unified API gateway with authentication and rate limiting',
+    icon: Server,
+    category: 'defense',
+    difficulty: 'advanced',
+    estimatedTime: '50 min',
+    features: ['Auth validation', 'Rate limiting', 'Request routing'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface GatewayRequest {
+  path: string;
+  method: string;
+  headers: Record<string, string>;
+  body?: any;
+  clientIp: string;
+}
+
+interface GatewayResponse {
+  status: number;
+  body: any;
+  headers: Record<string, string>;
+}
+
+class APIGateway {
+  async handleRequest(request: GatewayRequest): Promise<GatewayResponse> {
+    // 1. Security check
+    const security = await substrate.defense.analyze({
+      fingerprint: { path: request.path, method: request.method },
+      userAgent: request.headers['user-agent']
+    }, request.clientIp);
+    
+    if (security.data?.blocked) {
+      return { status: 403, body: { error: 'Blocked' }, headers: {} };
+    }
+    
+    // 2. Check rate limits
+    const limits = await substrate.defense.limits();
+    if (limits.data?.requests_remaining <= 0) {
+      return { 
+        status: 429, 
+        body: { error: 'Rate limit exceeded' },
+        headers: { 'Retry-After': '60' }
+      };
+    }
+    
+    // 3. Check IP reputation
+    const reputation = await substrate.defense.reputation(request.clientIp);
+    if (reputation.data?.score < 30) {
+      await substrate.vision.alert('warn', 'Low reputation IP', { ip: request.clientIp });
+    }
+    
+    // 4. Create trace
+    const trace = await substrate.vision.trace(undefined, {
+      create: true,
+      module: 'gateway',
+      action: request.path,
+      metadata: { method: request.method, ip: request.clientIp }
+    });
+    
+    // 5. Route to appropriate handler
+    const result = await this.routeRequest(request);
+    
+    // 6. Complete trace
+    await substrate.vision.trace(trace.data?.traceId, { complete: true });
+    
+    return result;
+  }
+  
+  private async routeRequest(request: GatewayRequest): Promise<GatewayResponse> {
+    // Implement your routing logic here
+    return { status: 200, body: { success: true }, headers: {} };
+  }
+}`
+  },
+  {
+    id: 'data-validator',
+    name: 'Data Validator',
+    description: 'AI-powered data validation and cleaning',
+    icon: Fingerprint,
+    category: 'decode',
+    difficulty: 'intermediate',
+    estimatedTime: '30 min',
+    features: ['Schema inference', 'Anomaly detection', 'Auto-correction'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface ValidationResult {
+  valid: boolean;
+  errors: Array<{ field: string; issue: string; suggestion?: string }>;
+  cleaned?: any;
+}
+
+async function validateData(data: any, schema?: object): Promise<ValidationResult> {
+  // 1. Analyze data structure
+  const intent = await substrate.decode.intent(JSON.stringify(data));
+  
+  // 2. AI-powered validation
+  const validation = await substrate.nexus.route(
+    \`Validate this data\${schema ? ' against schema: ' + JSON.stringify(schema) : ''}:
+    \${JSON.stringify(data)}
+    
+    Return JSON: { valid: boolean, errors: [{ field, issue, suggestion }], cleaned: {...} }\`
+  );
+  
+  const result = JSON.parse(validation.data || '{ "valid": true, "errors": [] }');
+  
+  // 3. Check for anomalies
+  if (result.errors.length > 0) {
+    await substrate.vision.alert('warn', 'Data validation issues', {
+      errorCount: result.errors.length,
+      fields: result.errors.map(e => e.field)
+    });
+  }
+  
+  // 4. Log for pattern analysis
+  await substrate.brain.learn(
+    \`Validation: \${result.valid ? 'passed' : 'failed'} - \${result.errors.length} issues\`,
+    'data_validation'
+  );
+  
+  return result;
+}
+
+async function inferSchema(samples: any[]) {
+  const inference = await substrate.nexus.route(
+    \`Infer a JSON schema from these data samples:
+    \${JSON.stringify(samples.slice(0, 5))}
+    Return the JSON schema.\`
+  );
+  
+  return JSON.parse(inference.data || '{}');
+}`
+  },
+  {
+    id: 'conversation-router',
+    name: 'Conversation Router',
+    description: 'Route conversations to appropriate handlers or agents',
+    icon: GitBranch,
+    category: 'decode',
+    difficulty: 'advanced',
+    estimatedTime: '40 min',
+    features: ['Intent routing', 'Handoff logic', 'Context preservation'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+type Handler = (message: string, context: any) => Promise<string>;
+
+class ConversationRouter {
+  private handlers: Map<string, Handler> = new Map();
+  private defaultHandler: Handler;
+  
+  constructor(defaultHandler: Handler) {
+    this.defaultHandler = defaultHandler;
+  }
+  
+  registerHandler(intent: string, handler: Handler) {
+    this.handlers.set(intent, handler);
+    return this;
+  }
+  
+  async route(message: string, sessionId: string): Promise<string> {
+    // 1. Get intent
+    const intent = await substrate.decode.intent(message);
+    const primaryIntent = intent.data?.primary_intent || 'unknown';
+    
+    // 2. Get conversation context
+    const context = await substrate.brain.query(
+      \`session:\${sessionId}\`,
+      5
+    );
+    
+    // 3. Find appropriate handler
+    const handler = this.handlers.get(primaryIntent) || this.defaultHandler;
+    
+    // 4. Execute handler
+    const response = await handler(message, {
+      intent: intent.data,
+      history: context.data?.memories
+    });
+    
+    // 5. Store in context
+    await substrate.brain.remember(
+      \`User: \${message}\\nBot: \${response}\`,
+      \`session:\${sessionId}\`,
+      0.9,
+      { intent: primaryIntent }
+    );
+    
+    // 6. Track routing
+    await substrate.vision.trace(undefined, {
+      create: true,
+      module: 'router',
+      action: primaryIntent,
+      metadata: { sessionId }
+    });
+    
+    return response;
+  }
+}`
+  },
+  {
+    id: 'insight-generator',
+    name: 'Insight Generator',
+    description: 'Generate actionable insights from data patterns',
+    icon: Lightbulb,
+    category: 'brain',
+    difficulty: 'advanced',
+    estimatedTime: '45 min',
+    features: ['Pattern synthesis', 'Trend detection', 'Recommendation engine'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface Insight {
+  title: string;
+  description: string;
+  confidence: number;
+  actionable: boolean;
+  recommendations: string[];
+}
+
+async function generateInsights(domain: string, timeframe = 7): Promise<Insight[]> {
+  // 1. Gather data from brain
+  const data = await substrate.brain.query(domain, 100);
+  
+  // 2. Get cross-domain synthesis
+  const synthesis = await substrate.brain.synthesize();
+  
+  // 3. Get session patterns
+  const session = await substrate.brain.sessionReflection(timeframe * 24);
+  
+  // 4. Generate insights with AI
+  const analysis = await substrate.nexus.route(
+    \`Analyze these patterns and generate actionable insights:
+    
+    Data: \${JSON.stringify(data.data?.memories?.slice(0, 20))}
+    Synthesis: \${JSON.stringify(synthesis.data)}
+    Patterns: \${JSON.stringify(session.data)}
+    
+    Return JSON array: [{ title, description, confidence: 0-1, actionable: bool, recommendations: [] }]\`
+  );
+  
+  const insights: Insight[] = JSON.parse(analysis.data || '[]');
+  
+  // 5. Store valuable insights
+  for (const insight of insights.filter(i => i.confidence > 0.7)) {
+    await substrate.brain.remember(
+      insight.title + ': ' + insight.description,
+      'insight',
+      insight.confidence,
+      { domain, recommendations: insight.recommendations }
+    );
+  }
+  
+  // 6. Trigger reflection to integrate
+  await substrate.brain.reflect();
+  
+  return insights;
+}`
+  },
+  {
+    id: 'session-recorder',
+    name: 'Session Recorder',
+    description: 'Record and replay user sessions with AI analysis',
+    icon: PlayCircle,
+    category: 'vision',
+    difficulty: 'intermediate',
+    estimatedTime: '35 min',
+    features: ['Event recording', 'Session replay', 'Behavior analysis'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface SessionEvent {
+  type: 'action' | 'navigation' | 'error' | 'ai_response';
+  timestamp: number;
+  data: any;
+}
+
+class SessionRecorder {
+  private sessionId: string;
+  private events: SessionEvent[] = [];
+  
+  constructor(userId: string) {
+    this.sessionId = \`session:\${userId}:\${Date.now()}\`;
+  }
+  
+  record(type: SessionEvent['type'], data: any) {
+    this.events.push({ type, timestamp: Date.now(), data });
+  }
+  
+  async save() {
+    // Store session to brain
+    await substrate.brain.remember(
+      JSON.stringify(this.events),
+      this.sessionId,
+      1.0,
+      { eventCount: this.events.length, duration: this.getDuration() }
+    );
+    
+    // Create trace
+    await substrate.vision.trace(undefined, {
+      create: true,
+      module: 'session',
+      action: 'save',
+      metadata: { sessionId: this.sessionId, events: this.events.length }
+    });
+    
+    return this.sessionId;
+  }
+  
+  async analyze() {
+    const analysis = await substrate.nexus.route(
+      \`Analyze this user session and identify:
+      1. Key actions and goals
+      2. Potential friction points
+      3. Suggestions for improvement
+      
+      Session: \${JSON.stringify(this.events)}\`
+    );
+    
+    await substrate.brain.learn(
+      \`Session analysis: \${this.sessionId}\`,
+      'session_analysis'
+    );
+    
+    return analysis.data;
+  }
+  
+  private getDuration() {
+    if (this.events.length < 2) return 0;
+    return this.events[this.events.length - 1].timestamp - this.events[0].timestamp;
+  }
+}`
+  },
+  {
+    id: 'feature-flag-ai',
+    name: 'AI Feature Flags',
+    description: 'Intelligent feature flags with AI-driven rollout decisions',
+    icon: Zap,
+    category: 'system',
+    difficulty: 'advanced',
+    estimatedTime: '40 min',
+    features: ['Smart rollout', 'User targeting', 'Impact analysis'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface FeatureFlag {
+  name: string;
+  enabled: boolean;
+  rolloutPercent: number;
+  targetRules: Array<{ attribute: string; operator: string; value: any }>;
+}
+
+class AIFeatureFlags {
+  async evaluateFlag(flagName: string, userId: string, userAttributes: Record<string, any>): Promise<boolean> {
+    // 1. Get flag configuration
+    const flagData = await substrate.brain.query(\`feature:\${flagName}\`, 1);
+    
+    if (!flagData.data?.memories?.[0]) {
+      return false; // Flag not found
+    }
+    
+    const flag: FeatureFlag = flagData.data.memories[0].metadata;
+    
+    if (!flag.enabled) return false;
+    
+    // 2. Check targeting rules
+    for (const rule of flag.targetRules) {
+      const userValue = userAttributes[rule.attribute];
+      if (!this.evaluateRule(userValue, rule.operator, rule.value)) {
+        return false;
+      }
+    }
+    
+    // 3. Check rollout percentage
+    const hash = this.hashUserId(userId, flagName);
+    const inRollout = hash % 100 < flag.rolloutPercent;
+    
+    // 4. Log evaluation
+    await substrate.brain.learn(
+      \`Flag \${flagName}: \${inRollout ? 'enabled' : 'disabled'} for \${userId}\`,
+      'feature_evaluation'
+    );
+    
+    return inRollout;
+  }
+  
+  async analyzeImpact(flagName: string) {
+    const evaluations = await substrate.brain.query(\`Flag \${flagName}\`, 100);
+    const enabled = evaluations.data?.memories?.filter(m => m.content.includes('enabled')).length || 0;
+    const disabled = evaluations.data?.memories?.filter(m => m.content.includes('disabled')).length || 0;
+    
+    const analysis = await substrate.nexus.route(
+      \`Analyze feature flag impact: \${enabled} enabled, \${disabled} disabled evaluations\`
+    );
+    
+    return { enabled, disabled, analysis: analysis.data };
+  }
+  
+  private evaluateRule(userValue: any, operator: string, targetValue: any): boolean {
+    switch (operator) {
+      case 'equals': return userValue === targetValue;
+      case 'contains': return String(userValue).includes(targetValue);
+      case 'gt': return userValue > targetValue;
+      case 'lt': return userValue < targetValue;
+      default: return true;
+    }
+  }
+  
+  private hashUserId(userId: string, salt: string): number {
+    let hash = 0;
+    const str = userId + salt;
+    for (let i = 0; i < str.length; i++) {
+      hash = ((hash << 5) - hash) + str.charCodeAt(i);
+      hash = hash & hash;
+    }
+    return Math.abs(hash);
+  }
+}`
+  },
+  {
+    id: 'dream-diary',
+    name: 'Dream Diary',
+    description: 'Personal dream journal with pattern analysis',
+    icon: Moon,
+    category: 'dream',
+    difficulty: 'beginner',
+    estimatedTime: '20 min',
+    features: ['Dream logging', 'Symbol tracking', 'Pattern recognition'],
+    code: `import { SubstrateClient } from './substrate-client';
+
+const substrate = new SubstrateClient(config);
+
+interface DreamEntry {
+  content: string;
+  mood: string;
+  symbols: string[];
+  interpretation?: string;
+}
+
+class DreamDiary {
+  private userId: string;
+  
+  constructor(userId: string) {
+    this.userId = userId;
+  }
+  
+  async logDream(content: string, mood?: string): Promise<DreamEntry> {
+    // 1. Feed to dream module
+    await substrate.dream.feed(content, 'dream');
+    
+    // 2. Get interpretation
+    const interpretation = await substrate.dream.interpret(content);
+    
+    // 3. Extract symbols
+    const symbols = await substrate.nexus.route(
+      \`Extract dream symbols from: \${content}\\nReturn JSON array of symbols\`
+    );
+    
+    const entry: DreamEntry = {
+      content,
+      mood: mood || interpretation.data?.mood || 'neutral',
+      symbols: JSON.parse(symbols.data || '[]'),
+      interpretation: interpretation.data?.interpretation
+    };
+    
+    // 4. Store in personal diary
+    await substrate.brain.remember(
+      content,
+      \`diary:\${this.userId}:dream\`,
+      0.95,
+      { ...entry, date: new Date().toISOString() }
+    );
+    
+    return entry;
+  }
+  
+  async getPatterns() {
+    const dreams = await substrate.brain.query(\`diary:\${this.userId}:dream\`, 50);
+    const allSymbols: Record<string, number> = {};
+    
+    for (const dream of dreams.data?.memories || []) {
+      for (const symbol of dream.metadata?.symbols || []) {
+        allSymbols[symbol] = (allSymbols[symbol] || 0) + 1;
+      }
+    }
+    
+    const synthesis = await substrate.brain.synthesize();
+    
+    return {
+      totalDreams: dreams.data?.memories?.length || 0,
+      recurringSymbols: Object.entries(allSymbols)
+        .sort(([,a], [,b]) => b - a)
+        .slice(0, 10),
+      insights: synthesis.data?.insights
+    };
   }
 }`
   }
