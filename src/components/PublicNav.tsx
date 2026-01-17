@@ -1,24 +1,88 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { 
+  Menu, X, ChevronDown, Code, Brain, Shield, Moon, Eye, 
+  Layers, FileText, Mail, Info, Rocket, BookOpen, Users,
+  Zap, Map, Globe, Terminal, Cpu, MessageSquare
+} from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+  DropdownMenuLabel,
+} from "@/components/ui/dropdown-menu";
+
+interface NavSection {
+  name: string;
+  icon: React.ElementType;
+  items: { name: string; href: string; description?: string; icon?: React.ElementType }[];
+}
 
 export function PublicNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [expandedSection, setExpandedSection] = useState<string | null>(null);
   const location = useLocation();
   const { user } = useAuth();
 
-  const navItems = [
+  // Organized navigation sections
+  const navSections: NavSection[] = [
+    {
+      name: "Products",
+      icon: Layers,
+      items: [
+        { name: "Substrate", href: "/substrate", description: "Cognitive OS", icon: Cpu },
+        { name: "Decode", href: "/decode", description: "AI Interpreter", icon: MessageSquare },
+        { name: "Dream Feeder", href: "/feed-dream-eater", description: "Dream Processing", icon: Moon },
+        { name: "Demo", href: "/demo", description: "Interactive Demo", icon: Zap },
+      ]
+    },
+    {
+      name: "Developers",
+      icon: Code,
+      items: [
+        { name: "Developer Portal", href: "/developers", description: "SDK & Templates", icon: Terminal },
+        { name: "Documentation", href: "/documentation", description: "API Docs", icon: FileText },
+        { name: "Changelog", href: "/changelog", description: "Updates", icon: BookOpen },
+        ...(user ? [{ name: "Substrate OS", href: "/os", description: "Admin Console", icon: Cpu }] : []),
+      ]
+    },
+    {
+      name: "Resources",
+      icon: BookOpen,
+      items: [
+        { name: "Blog", href: "/blog", description: "Articles & News", icon: FileText },
+        { name: "Roadmap", href: "/roadmap", description: "What's Coming", icon: Map },
+        { name: "Projects", href: "/projects", description: "Current Work", icon: Rocket },
+        { name: "Explore", href: "/explore", description: "Discover More", icon: Globe },
+      ]
+    },
+    {
+      name: "Company",
+      icon: Users,
+      items: [
+        { name: "About", href: "/about", description: "Our Story", icon: Info },
+        { name: "Solutions", href: "/solutions", description: "Use Cases", icon: Layers },
+        { name: "Investors", href: "/investors", description: "Investment Info", icon: Users },
+        { name: "Contact", href: "/contact", description: "Get in Touch", icon: Mail },
+      ]
+    },
+  ];
+
+  // Flat list for mobile
+  const allNavItems = navSections.flatMap(section => section.items);
+  
+  // Quick access items shown directly in nav
+  const quickLinks = [
     { name: "Demo", href: "/demo" },
     { name: "Developers", href: "/developers" },
-    { name: "Substrate", href: "/substrate" },
-    ...(user ? [{ name: "OS", href: "/os" }] : []),
-    { name: "Decode", href: "/decode" },
-    { name: "Dream", href: "/feed-dream-eater" },
-    { name: "Blog", href: "/blog" },
   ];
 
   const isActive = (path: string) => location.pathname === path;
+  const isInSection = (section: NavSection) => 
+    section.items.some(item => location.pathname === item.href);
 
   return (
     <>
@@ -31,14 +95,15 @@ export function PublicNav() {
           {/* Logo */}
           <Link 
             to="/" 
-            className="text-lg font-semibold text-foreground tracking-tight hover:text-primary transition-colors"
+            className="text-lg font-semibold text-foreground tracking-tight hover:text-primary transition-colors shrink-0"
           >
             promptfluid<span className="text-primary">®</span>
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-1">
-            {navItems.map((item) => (
+          <div className="hidden lg:flex items-center gap-1">
+            {/* Quick Links */}
+            {quickLinks.map((item) => (
               <Link
                 key={item.href}
                 to={item.href}
@@ -51,6 +116,91 @@ export function PublicNav() {
                 {item.name}
               </Link>
             ))}
+
+            {/* Dropdown Sections */}
+            {navSections.map((section) => (
+              <DropdownMenu key={section.name}>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    className={`flex items-center gap-1 px-3 py-2 rounded-lg text-sm transition-colors ${
+                      isInSection(section)
+                        ? "text-foreground bg-muted font-medium"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                    }`}
+                  >
+                    {section.name}
+                    <ChevronDown className="w-3 h-3" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-56 bg-background border border-border">
+                  <DropdownMenuLabel className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <section.icon className="w-3 h-3" />
+                    {section.name}
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {section.items.map((item) => (
+                    <DropdownMenuItem key={item.href} asChild>
+                      <Link
+                        to={item.href}
+                        className={`flex items-center gap-3 w-full cursor-pointer ${
+                          isActive(item.href) ? "bg-muted" : ""
+                        }`}
+                      >
+                        {item.icon && <item.icon className="w-4 h-4 text-muted-foreground" />}
+                        <div className="flex flex-col">
+                          <span className="font-medium">{item.name}</span>
+                          {item.description && (
+                            <span className="text-xs text-muted-foreground">{item.description}</span>
+                          )}
+                        </div>
+                      </Link>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ))}
+
+            {/* CTA */}
+            <Link
+              to="/contact"
+              className="ml-2 px-4 py-2 rounded-lg text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+            >
+              Contact
+            </Link>
+          </div>
+
+          {/* Tablet Menu - simplified */}
+          <div className="hidden md:flex lg:hidden items-center gap-1">
+            <Link
+              to="/demo"
+              className={`px-3 py-2 rounded-lg text-sm transition-colors ${
+                isActive("/demo")
+                  ? "text-foreground bg-muted font-medium"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+              }`}
+            >
+              Demo
+            </Link>
+            <Link
+              to="/developers"
+              className={`px-3 py-2 rounded-lg text-sm transition-colors ${
+                isActive("/developers")
+                  ? "text-foreground bg-muted font-medium"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+              }`}
+            >
+              Developers
+            </Link>
+            <Link
+              to="/blog"
+              className={`px-3 py-2 rounded-lg text-sm transition-colors ${
+                isActive("/blog")
+                  ? "text-foreground bg-muted font-medium"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+              }`}
+            >
+              Blog
+            </Link>
             <Link
               to="/contact"
               className="ml-2 px-4 py-2 rounded-lg text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
@@ -71,7 +221,7 @@ export function PublicNav() {
         </div>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu - Full Screen */}
       {mobileMenuOpen && (
         <>
           <div
@@ -80,34 +230,134 @@ export function PublicNav() {
             aria-hidden="true"
           />
           <div 
-            className="fixed top-[57px] left-0 right-0 z-[9999] md:hidden bg-background border-b border-border shadow-xl"
+            className="fixed top-[57px] left-0 right-0 bottom-0 z-[9999] md:hidden bg-background overflow-y-auto"
             role="dialog"
             aria-modal="true"
           >
-            <div className="container mx-auto px-4 py-3">
-              <nav className="flex flex-col gap-1">
-                {navItems.map((item) => (
-                  <Link
-                    key={item.href}
-                    to={item.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`py-3 px-4 rounded-lg text-sm transition-colors ${
-                      isActive(item.href)
-                        ? "text-foreground bg-muted font-medium"
-                        : "text-foreground hover:bg-muted"
-                    }`}
-                  >
-                    {item.name}
-                  </Link>
+            <div className="container mx-auto px-4 py-4">
+              {/* Search-like quick access */}
+              <div className="flex gap-2 mb-4 overflow-x-auto pb-2 -mx-4 px-4">
+                {["Demo", "Developers", "Blog", "Contact"].map((name) => {
+                  const href = name === "Demo" ? "/demo" : 
+                               name === "Developers" ? "/developers" :
+                               name === "Blog" ? "/blog" : "/contact";
+                  return (
+                    <Link
+                      key={name}
+                      to={href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                        isActive(href)
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-muted text-foreground hover:bg-muted/80"
+                      }`}
+                    >
+                      {name}
+                    </Link>
+                  );
+                })}
+              </div>
+
+              {/* Sections */}
+              <nav className="flex flex-col gap-2">
+                {navSections.map((section) => (
+                  <div key={section.name} className="border border-border rounded-xl overflow-hidden">
+                    <button
+                      onClick={() => setExpandedSection(
+                        expandedSection === section.name ? null : section.name
+                      )}
+                      className={`w-full flex items-center justify-between p-4 text-left transition-colors ${
+                        isInSection(section) ? "bg-muted/50" : "hover:bg-muted/30"
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <section.icon className="w-5 h-5 text-primary" />
+                        <span className="font-medium">{section.name}</span>
+                        {isInSection(section) && (
+                          <span className="w-2 h-2 rounded-full bg-primary" />
+                        )}
+                      </div>
+                      <ChevronDown 
+                        className={`w-4 h-4 text-muted-foreground transition-transform ${
+                          expandedSection === section.name ? "rotate-180" : ""
+                        }`} 
+                      />
+                    </button>
+                    
+                    {expandedSection === section.name && (
+                      <div className="border-t border-border bg-muted/20">
+                        {section.items.map((item) => (
+                          <Link
+                            key={item.href}
+                            to={item.href}
+                            onClick={() => setMobileMenuOpen(false)}
+                            className={`flex items-center gap-3 p-4 transition-colors ${
+                              isActive(item.href)
+                                ? "bg-primary/10 text-primary"
+                                : "hover:bg-muted/50"
+                            }`}
+                          >
+                            {item.icon && <item.icon className="w-4 h-4" />}
+                            <div className="flex flex-col">
+                              <span className="font-medium">{item.name}</span>
+                              {item.description && (
+                                <span className="text-xs text-muted-foreground">{item.description}</span>
+                              )}
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 ))}
-                <div className="border-t border-border my-2" />
-                <Link
-                  to="/contact"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="py-3 px-4 rounded-lg text-sm font-medium text-primary hover:bg-primary/10 transition-colors"
-                >
-                  Contact Us
-                </Link>
+
+                {/* Auth Link */}
+                {user ? (
+                  <Link
+                    to="/os"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center gap-3 p-4 rounded-xl border border-primary/30 bg-primary/5 text-primary"
+                  >
+                    <Cpu className="w-5 h-5" />
+                    <span className="font-medium">Substrate OS</span>
+                  </Link>
+                ) : (
+                  <Link
+                    to="/auth"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center gap-3 p-4 rounded-xl border border-border hover:bg-muted/30"
+                  >
+                    <Users className="w-5 h-5" />
+                    <span className="font-medium">Sign In</span>
+                  </Link>
+                )}
+
+                {/* Legal */}
+                <div className="mt-4 pt-4 border-t border-border">
+                  <div className="flex gap-4 text-sm text-muted-foreground">
+                    <Link 
+                      to="/privacy" 
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="hover:text-foreground"
+                    >
+                      Privacy
+                    </Link>
+                    <Link 
+                      to="/terms" 
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="hover:text-foreground"
+                    >
+                      Terms
+                    </Link>
+                    <Link 
+                      to="/llms-txt" 
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="hover:text-foreground"
+                    >
+                      llms.txt
+                    </Link>
+                  </div>
+                </div>
               </nav>
             </div>
           </div>
