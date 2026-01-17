@@ -60,13 +60,13 @@ export default function Index() {
               className={`flex flex-col sm:flex-row gap-4 justify-center items-center transition-all duration-700 delay-200 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
             >
               <Button asChild size="lg" className="rounded-xl px-6 bg-gradient-to-r from-primary to-violet-500 hover:opacity-90 transition-opacity">
-                <Link to="/dev-portal">
+                <Link to="/developers">
                   <Layers className="w-4 h-4 mr-2" />
                   Browse Modules
                 </Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="rounded-xl px-6">
-                <Link to="/docs">
+                <Link to="/documentation">
                   <BookOpen className="w-4 h-4 mr-2" />
                   Read the Docs
                 </Link>
@@ -109,7 +109,7 @@ export default function Index() {
               Prebuilt substrate modules for cognition. Import, compose, and execute with policy and observability.
             </p>
             <Button asChild size="lg" className="rounded-xl px-6 bg-gradient-to-r from-primary to-violet-500 hover:opacity-90 transition-opacity">
-              <Link to="/dev-portal">
+              <Link to="/developers">
                 <Layers className="w-4 h-4 mr-2" />
                 View Modules
               </Link>
@@ -130,7 +130,7 @@ export default function Index() {
               Everything in the substrate is code-first. No black boxes. No prompt guesswork. Deterministic composition with developer control.
             </p>
             <Button asChild variant="outline" size="lg" className="rounded-xl px-6">
-              <Link to="/dev-portal">
+              <Link to="/developers">
                 <Terminal className="w-4 h-4 mr-2" />
                 View Code
               </Link>
@@ -152,19 +152,19 @@ export default function Index() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Button asChild variant="outline" className="rounded-xl px-5">
-                <Link to="/docs">
+                <Link to="/documentation">
                   <BookOpen className="w-4 h-4 mr-2" />
                   Read the Docs
                 </Link>
               </Button>
               <Button asChild variant="outline" className="rounded-xl px-5">
-                <Link to="/docs/setup">
+                <Link to="/documentation">
                   <Terminal className="w-4 h-4 mr-2" />
                   Setup Guide
                 </Link>
               </Button>
               <Button asChild variant="outline" className="rounded-xl px-5">
-                <Link to="/docs/api">
+                <Link to="/documentation">
                   <Code2 className="w-4 h-4 mr-2" />
                   API Reference
                 </Link>
