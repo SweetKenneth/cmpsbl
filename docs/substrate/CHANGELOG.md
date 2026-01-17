@@ -4,6 +4,20 @@
 
 ---
 
+## 2026-01-17 · v3.10.0
+
+⟨This entry describes the homepage rewrite for substrate OS positioning with updated SEO metadata.⟩
+
+### Homepage Rewrite
+
+- Rewrote homepage body content for substrate OS positioning.
+- Hero: "The Cognitive Substrate OS" with subhead "Compose cognition as software. Modules, memory, agents, governance, execution."
+- Added sections: Substrate Explanation, Composition Model, Modules Surface, Code Surface, Developer Ingress.
+- Updated homepage SEO: title="PromptFluid — The Cognitive Substrate OS", description="Compose cognition as software. Modules for memory, agents, governance, observability, and execution."
+- Removed investor-facing language from homepage.
+
+---
+
 ## 2026-01-17 · v3.9.0
 
 ⟨This entry describes the observed addition of 7 new cognitive substrate modules and a site-wide SEO refactor from investor-facing to substrate SDK positioning.⟩
