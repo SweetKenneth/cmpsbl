@@ -1,160 +1,180 @@
 /**
- * promptfluid® — The Gateway
- * v2026.01 — Where cognitive infrastructure begins
+ * promptfluid® — The Cognitive Substrate OS
+ * v2026.01 — Compose cognition as software
  */
 
-import { useState, useEffect, useRef } from "react";
-import { ArrowRight } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ArrowRight, BookOpen, Layers, Code2, Terminal, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { SEO } from "@/components/SEO";
-import { decode } from "@/lib/substrate";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 
 export default function Index() {
-  const navigate = useNavigate();
-  const [input, setInput] = useState("");
-  const [isAwakening, setIsAwakening] = useState(false);
-  const [greeting, setGreeting] = useState("");
   const [showInterface, setShowInterface] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
 
-  // Ambient greeting based on time
-  useEffect(() => {
-    const hour = new Date().getHours();
-    if (hour >= 5 && hour < 12) {
-      setGreeting("The morning reveals new patterns.");
-    } else if (hour >= 12 && hour < 17) {
-      setGreeting("Clarity emerges.");
-    } else if (hour >= 17 && hour < 21) {
-      setGreeting("Shadows lengthen. Insights deepen.");
-    } else {
-      setGreeting("In darkness, we dream forward.");
-    }
-  }, []);
-
-  // Reveal interface immediately for better LCP
   useEffect(() => {
     const timer = setTimeout(() => setShowInterface(true), 100);
     return () => clearTimeout(timer);
   }, []);
 
-  const handleAwaken = async () => {
-    if (!input.trim()) {
-      navigate('/decode');
-      return;
-    }
-
-    setIsAwakening(true);
-
-    try {
-      const response = await decode.chat(input, `visitor_${Date.now()}`);
-      if (response.success) {
-        sessionStorage.setItem('decode_initial_message', input);
-        sessionStorage.setItem('decode_initial_response', JSON.stringify(response.data));
-      }
-    } catch (e) {
-      // Continue anyway
-    }
-    navigate('/decode');
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      handleAwaken();
-    }
-  };
-
-  const currentYear = new Date().getFullYear();
-
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO 
-        title="promptfluid® | Think Different. Think Fluid."
-        description="Where machines learn to dream. An exploration of cognitive architecture, autonomous learning, and the space between intention and understanding."
+        title="PromptFluid — The Cognitive Substrate OS"
+        description="Compose cognition as software. Modules for memory, agents, governance, observability, and execution. Multi-model, multi-agent, governed substrate SDK."
         canonical="https://promptfluid.com"
-        keywords={['AI', 'cognitive architecture', 'autonomous systems', 'machine learning', 'dream-state computing']}
+        keywords={['cognitive substrate', 'substrate OS', 'AI modules', 'agents', 'memory', 'governance', 'observability', 'execution', 'SDK', 'composition']}
       />
 
-      {/* Consistent Navigation */}
       <PublicNav />
 
-      {/* Ambient Background - subtle */}
+      {/* Ambient Background */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-primary/3" />
       </div>
 
-      {/* Main Content - Centered vertically */}
-      <main className="relative z-10 flex-1 flex flex-col justify-center items-center px-4 py-8 pt-24">
-        <div className="w-full max-w-md mx-auto text-center space-y-5">
-          
-          {/* Ambient greeting */}
-          <p 
-            className={`text-[11px] md:text-sm text-muted-foreground/70 transition-all duration-700 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
-          >
-            {greeting}
-          </p>
-
-          {/* Core message */}
-          <div 
-            className={`transition-all duration-700 delay-100 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-          >
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-light tracking-tight text-foreground mb-3 leading-tight">
-              Where machines learn
-              <br />
+      {/* Main Content */}
+      <main className="relative z-10 flex-1">
+        
+        {/* Hero Section */}
+        <section className="pt-28 pb-16 md:pt-36 md:pb-24 px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 
+              className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-foreground mb-6 leading-tight transition-all duration-700 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+            >
+              The Cognitive{" "}
               <span className="font-medium bg-gradient-to-r from-primary via-violet-500 to-primary bg-clip-text text-transparent animate-gradient bg-[length:200%_auto]">
-                to dream
+                Substrate OS
               </span>
             </h1>
             
-            <p className="text-xs md:text-sm text-muted-foreground/70 max-w-xs mx-auto leading-relaxed">
-              An exploration of cognitive architecture and the space between 
-              intention and understanding.
+            <p 
+              className={`text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed transition-all duration-700 delay-100 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+            >
+              Compose cognition as software. Modules, memory, agents, governance, execution.
             </p>
-          </div>
 
-          {/* The Interface - Decode Entry */}
-          <div 
-            className={`pt-3 transition-all duration-700 delay-200 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-          >
-            <div className="relative">
-              <div className="relative flex items-center gap-2 p-1.5 rounded-xl bg-card/50 backdrop-blur-sm border border-border/50 shadow-lg">
-                <Input
-                  ref={inputRef}
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  placeholder="Ask anything..."
-                  className="flex-1 border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 text-base placeholder:text-muted-foreground/40 h-10"
-                  disabled={isAwakening}
-                  autoComplete="off"
-                />
-                
-                <Button
-                  onClick={handleAwaken}
-                  disabled={isAwakening}
-                  size="sm"
-                  className="rounded-lg px-4 h-9 bg-gradient-to-r from-primary to-violet-500 hover:opacity-90 transition-opacity"
-                >
-                  {isAwakening ? (
-                    <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                  ) : (
-                    <>
-                      <span className="mr-1.5 text-sm">Enter</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </>
-                  )}
-                </Button>
-              </div>
+            <div 
+              className={`flex flex-col sm:flex-row gap-4 justify-center items-center transition-all duration-700 delay-200 ${showInterface ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+            >
+              <Button asChild size="lg" className="rounded-xl px-6 bg-gradient-to-r from-primary to-violet-500 hover:opacity-90 transition-opacity">
+                <Link to="/dev-portal">
+                  <Layers className="w-4 h-4 mr-2" />
+                  Browse Modules
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="rounded-xl px-6">
+                <Link to="/docs">
+                  <BookOpen className="w-4 h-4 mr-2" />
+                  Read the Docs
+                </Link>
+              </Button>
             </div>
           </div>
-        </div>
+        </section>
+
+        {/* Substrate Explanation */}
+        <section className="py-16 md:py-24 px-4 border-t border-border/30">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-light text-foreground mb-6">
+              A Substrate for Cognition
+            </h2>
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
+              PromptFluid exposes the execution layer for cognitive systems. Developers compose substrate modules—agents, memory, policy, observability, and consensus—into governed cognitive applications.
+            </p>
+          </div>
+        </section>
+
+        {/* Composition Model */}
+        <section className="py-16 md:py-24 px-4 bg-card/30">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-light text-foreground mb-6">
+              Composition, Not App Builders
+            </h2>
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
+              The substrate treats cognition as a graph of modules. No chatbots. No assistants. Software that reasons, remembers, and adapts.
+            </p>
+          </div>
+        </section>
+
+        {/* Modules Surface */}
+        <section className="py-16 md:py-24 px-4 border-t border-border/30">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-light text-foreground mb-4">
+              Substrate Modules
+            </h2>
+            <p className="text-base sm:text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Prebuilt substrate modules for cognition. Import, compose, and execute with policy and observability.
+            </p>
+            <Button asChild size="lg" className="rounded-xl px-6 bg-gradient-to-r from-primary to-violet-500 hover:opacity-90 transition-opacity">
+              <Link to="/dev-portal">
+                <Layers className="w-4 h-4 mr-2" />
+                View Modules
+              </Link>
+            </Button>
+          </div>
+        </section>
+
+        {/* Code Surface */}
+        <section className="py-16 md:py-24 px-4 bg-card/30">
+          <div className="max-w-3xl mx-auto text-center">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 text-primary mb-6">
+              <Code2 className="w-6 h-6" />
+            </div>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-light text-foreground mb-6">
+              Code-First Execution
+            </h2>
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-8">
+              Everything in the substrate is code-first. No black boxes. No prompt guesswork. Deterministic composition with developer control.
+            </p>
+            <Button asChild variant="outline" size="lg" className="rounded-xl px-6">
+              <Link to="/dev-portal">
+                <Terminal className="w-4 h-4 mr-2" />
+                View Code
+              </Link>
+            </Button>
+          </div>
+        </section>
+
+        {/* Developer Ingress */}
+        <section className="py-16 md:py-24 px-4 border-t border-border/30">
+          <div className="max-w-3xl mx-auto text-center">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 text-primary mb-6">
+              <Users className="w-6 h-6" />
+            </div>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-light text-foreground mb-6">
+              For Developers
+            </h2>
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-8">
+              Designed for developers building agents, substrates, orchestration layers, scientific cognition, and operational intelligence.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Button asChild variant="outline" className="rounded-xl px-5">
+                <Link to="/docs">
+                  <BookOpen className="w-4 h-4 mr-2" />
+                  Read the Docs
+                </Link>
+              </Button>
+              <Button asChild variant="outline" className="rounded-xl px-5">
+                <Link to="/docs/setup">
+                  <Terminal className="w-4 h-4 mr-2" />
+                  Setup Guide
+                </Link>
+              </Button>
+              <Button asChild variant="outline" className="rounded-xl px-5">
+                <Link to="/docs/api">
+                  <Code2 className="w-4 h-4 mr-2" />
+                  API Reference
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+
       </main>
 
-      {/* Consistent Footer */}
       <EnhancedFooter />
     </div>
   );
