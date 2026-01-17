@@ -4,15 +4,31 @@
 
 ---
 
+## 2026-01-17 · v3.11.0
+
+⟨This entry describes the observed addition of three internal substrate capabilities prioritizing observability, defense intelligence, and memory coherence. No UI surfaces were modified; these actions are opt-in and proof-compatible.⟩
+
+### Vision
+
+- **vision/dependency_map** appears to analyze module dependency relationships and health correlations. Output includes module health matrix, logical dependency graph, cascade risk scoring, and 24h activity patterns. Returns risk status classification (low/moderate/elevated). Marked read-only and proof-compatible.
+
+### Defense
+
+- **defense/ip_intel** appears to provide IP intelligence with reputation scoring. Aggregates 7-day activity, action distribution, threat indicators, endpoint analysis, and recommendation (block/challenge/monitor/allow). Optional history inclusion. Marked read-only and proof-compatible.
+
+### Brain
+
+- **brain/coherence_check** appears to validate memory coherence across hot and cold tiers. Analyzes tag overlap, graph density, compression ratios, and reflection recency. Returns coherence score (0-100), issues found, and recommendations. Marked read-only and proof-compatible.
+
+### TypeScript Helpers
+
+- `vision.dependencyMap()` helper added to substrate client.
+- `defense.ipIntel(ip_address, include_history?)` helper added to substrate client.
+- `brain.coherenceCheck(depth?)` helper added to substrate client.
+
+---
+
 ## 2026-01-17 · v3.10.0
-
-⟨This entry describes the homepage rewrite for substrate OS positioning with updated SEO metadata.⟩
-
-### Homepage Rewrite
-
-- Rewrote homepage body content for substrate OS positioning.
-- Hero: "The Cognitive Substrate OS" with subhead "Compose cognition as software. Modules, memory, agents, governance, execution."
-- Added sections: Substrate Explanation, Composition Model, Modules Surface, Code Surface, Developer Ingress.
 - Updated homepage SEO: title="PromptFluid — The Cognitive Substrate OS", description="Compose cognition as software. Modules for memory, agents, governance, observability, and execution."
 - Removed investor-facing language from homepage.
 

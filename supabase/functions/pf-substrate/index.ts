@@ -46,7 +46,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const SUBSTRATE_VERSION = "3.8.0";
+const SUBSTRATE_VERSION = "3.11.0";
 
 // Trace ID generator for distributed tracing
 function generateTraceId(): string {
@@ -573,6 +573,125 @@ async function handleBrain(
         synthesis: synthesisMaterial,
         insight_id: insight?.id,
         message: "Cross-domain synthesis complete",
+      }, headers);
+    }
+
+    // ═══ v3.11.0: COHERENCE_CHECK — Memory coherence validation (new) ═══
+    case "coherence_check": {
+      // NEW: Validate coherence across memory tiers - proof-compatible
+      const { depth = 'standard' } = data;
+      
+      // Fetch samples from both memory tiers
+      const [
+        { data: hotMemories, count: hotCount },
+        { data: coldMemories, count: coldCount },
+        { data: graphEdges, count: edgeCount },
+        { data: recentReflections },
+      ] = await Promise.all([
+        supabase.from('brain_memory_hot').select('id, content, context, priority, tags, created_at', { count: 'exact' }).order('priority', { ascending: false }).limit(depth === 'deep' ? 50 : 20),
+        supabase.from('brain_memory_cold').select('id, summary, core_summary, tags, archived_at, compression_ratio', { count: 'exact' }).order('archived_at', { ascending: false }).limit(depth === 'deep' ? 30 : 15),
+        supabase.from('brain_graph_edges').select('source_id, target_id, weight, relation', { count: 'exact' }).order('weight', { ascending: false }).limit(100),
+        supabase.from('brain_reflections').select('summary, insights, reflection_date').order('reflection_date', { ascending: false }).limit(5),
+      ]);
+
+      // Coherence checks
+      const coherenceIssues: Array<{ type: string; severity: string; detail: string }> = [];
+      
+      // Check 1: Tag consistency across tiers
+      const hotTags = new Set<string>();
+      const coldTags = new Set<string>();
+      (hotMemories || []).forEach((m: { tags?: unknown }) => {
+        if (m.tags && typeof m.tags === 'object') {
+          Object.values(m.tags as Record<string, string>).forEach(t => hotTags.add(String(t)));
+        }
+      });
+      (coldMemories || []).forEach((m: { tags?: unknown }) => {
+        if (m.tags && typeof m.tags === 'object') {
+          Object.values(m.tags as Record<string, string>).forEach(t => coldTags.add(String(t)));
+        }
+      });
+      const sharedTags = [...hotTags].filter(t => coldTags.has(t));
+      const tagOverlap = hotTags.size > 0 ? sharedTags.length / hotTags.size : 0;
+      
+      if (tagOverlap < 0.2 && hotTags.size > 5 && coldTags.size > 5) {
+        coherenceIssues.push({
+          type: 'tag_divergence',
+          severity: 'warning',
+          detail: `Low tag overlap between hot/cold tiers (${Math.round(tagOverlap * 100)}%)`
+        });
+      }
+
+      // Check 2: Graph connectivity
+      const graphDensity = (edgeCount || 0) / Math.max(1, (hotCount || 0) + (coldCount || 0));
+      if (graphDensity < 0.3 && (hotCount || 0) > 10) {
+        coherenceIssues.push({
+          type: 'sparse_graph',
+          severity: 'info',
+          detail: `Knowledge graph density is low (${Math.round(graphDensity * 100)}%)`
+        });
+      }
+
+      // Check 3: Cold storage compression health
+      const compressionRatios = (coldMemories || []).map((m: { compression_ratio?: number }) => m.compression_ratio || 1);
+      const avgCompression = compressionRatios.length > 0 
+        ? compressionRatios.reduce((a: number, b: number) => a + b, 0) / compressionRatios.length 
+        : 1;
+      if (avgCompression < 0.3) {
+        coherenceIssues.push({
+          type: 'over_compressed',
+          severity: 'warning',
+          detail: `Cold memories may be over-compressed (avg ratio: ${Math.round(avgCompression * 100)}%)`
+        });
+      }
+
+      // Check 4: Reflection recency
+      const lastReflection = recentReflections?.[0];
+      const daysSinceReflection = lastReflection 
+        ? Math.floor((Date.now() - new Date(lastReflection.reflection_date).getTime()) / (24 * 60 * 60 * 1000))
+        : 999;
+      if (daysSinceReflection > 3) {
+        coherenceIssues.push({
+          type: 'stale_reflection',
+          severity: daysSinceReflection > 7 ? 'warning' : 'info',
+          detail: `No reflection in ${daysSinceReflection} days`
+        });
+      }
+
+      // Calculate overall coherence score
+      const baseScore = 100;
+      const deductions = coherenceIssues.reduce((sum, issue) => {
+        return sum + (issue.severity === 'warning' ? 15 : issue.severity === 'info' ? 5 : 25);
+      }, 0);
+      const coherenceScore = Math.max(0, baseScore - deductions);
+
+      return jsonResponse({
+        success: true,
+        module: 'brain',
+        action: 'coherence_check',
+        coherence: {
+          score: coherenceScore,
+          status: coherenceScore >= 80 ? 'coherent' : coherenceScore >= 60 ? 'partial' : 'fragmented',
+          issues_found: coherenceIssues.length
+        },
+        memory_state: {
+          hot_count: hotCount || 0,
+          cold_count: coldCount || 0,
+          graph_edges: edgeCount || 0,
+          graph_density: Math.round(graphDensity * 100) / 100
+        },
+        analysis: {
+          tag_overlap: Math.round(tagOverlap * 100),
+          avg_compression: Math.round(avgCompression * 100),
+          days_since_reflection: daysSinceReflection,
+          shared_concepts: sharedTags.slice(0, 10)
+        },
+        issues: coherenceIssues,
+        recommendations: coherenceIssues.length > 0 
+          ? ['Run brain/synthesize to improve cross-tier coherence', 'Consider brain/reflect for recent insights']
+          : ['Memory coherence is healthy'],
+        proof_mode: true,
+        read_only: true,
+        timestamp: new Date().toISOString()
       }, headers);
     }
 
@@ -1714,6 +1833,114 @@ async function handleDefense(
       }, headers);
     }
 
+    // ═══ v3.11.0: IP_INTEL — IP intelligence and reputation analysis (new) ═══
+    case "ip_intel": {
+      // NEW: IP intelligence with reputation scoring - proof-compatible
+      const { ip_address, include_history = false } = data;
+      
+      if (!ip_address) {
+        return jsonResponse({
+          success: false,
+          error: 'ip_address is required',
+          module: 'defense',
+          action: 'ip_intel'
+        }, headers);
+      }
+
+      // Fetch IP reputation from database
+      const { data: reputation } = await supabase
+        .from('ip_reputation')
+        .select('*')
+        .eq('ip', ip_address)
+        .single();
+
+      // Fetch recent events for this IP
+      const last7d = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+      const { data: recentEvents, count: eventCount } = await supabase
+        .from('defense_events')
+        .select('action, risk_score, reason, detected_at, endpoint', { count: 'exact' })
+        .eq('ip', ip_address)
+        .gte('detected_at', last7d)
+        .order('detected_at', { ascending: false })
+        .limit(50);
+
+      const events = recentEvents || [];
+      const blockedCount = events.filter((e: { action: string }) => e.action === 'block').length;
+      const challengedCount = events.filter((e: { action: string }) => e.action === 'challenge').length;
+      const avgRiskScore = events.length > 0 
+        ? Math.round(events.reduce((sum: number, e: { risk_score: number }) => sum + (e.risk_score || 0), 0) / events.length)
+        : 0;
+
+      // Calculate threat level
+      const threatIndicators: string[] = [];
+      if (blockedCount > 5) threatIndicators.push('frequent_blocks');
+      if (avgRiskScore > 70) threatIndicators.push('high_risk_patterns');
+      if (events.length > 20) threatIndicators.push('high_volume');
+      if (challengedCount > 3 && blockedCount > 3) threatIndicators.push('persistent_attempts');
+
+      const threatLevel = threatIndicators.length >= 3 ? 'critical' :
+                          threatIndicators.length >= 2 ? 'high' :
+                          threatIndicators.length >= 1 ? 'medium' : 'low';
+
+      // Endpoint analysis
+      const endpointHits: Record<string, number> = {};
+      events.forEach((e: { endpoint?: string }) => {
+        if (e.endpoint) endpointHits[e.endpoint] = (endpointHits[e.endpoint] || 0) + 1;
+      });
+      const topEndpoints = Object.entries(endpointHits)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5)
+        .map(([endpoint, count]) => ({ endpoint, hits: count }));
+
+      // Behavioral patterns
+      const actionDistribution = {
+        blocked: blockedCount,
+        challenged: challengedCount,
+        allowed: events.length - blockedCount - challengedCount
+      };
+
+      const response: Record<string, unknown> = {
+        success: true,
+        module: 'defense',
+        action: 'ip_intel',
+        ip_address,
+        reputation: reputation ? {
+          score: reputation.score,
+          total_requests: reputation.total_requests,
+          blocked_count: reputation.blocked_count,
+          last_seen: reputation.last_seen,
+          first_seen: reputation.created_at
+        } : { score: 50, status: 'unknown', message: 'No prior history' },
+        activity_7d: {
+          total_events: eventCount || 0,
+          actions: actionDistribution,
+          avg_risk_score: avgRiskScore
+        },
+        analysis: {
+          threat_level: threatLevel,
+          threat_indicators: threatIndicators,
+          top_endpoints: topEndpoints,
+          recommendation: threatLevel === 'critical' ? 'block' :
+                          threatLevel === 'high' ? 'challenge' :
+                          threatLevel === 'medium' ? 'monitor' : 'allow'
+        },
+        proof_mode: true,
+        read_only: true,
+        timestamp: new Date().toISOString()
+      };
+
+      if (include_history) {
+        response.recent_events = events.slice(0, 10).map((e: { detected_at: string; action: string; risk_score: number; reason: string }) => ({
+          timestamp: e.detected_at,
+          action: e.action,
+          risk_score: e.risk_score,
+          reason: e.reason?.substring(0, 50)
+        }));
+      }
+
+      return jsonResponse(response, headers);
+    }
+
     default:
       throw new Error(`Unknown defense action: ${action}`);
   }
@@ -2815,6 +3042,98 @@ async function handleVision(
         risk_distribution: riskDistribution,
         recent_events: recentEvents,
         proof_mode: true,
+        timestamp: new Date().toISOString()
+      }, headers);
+    }
+
+    // ═══ v3.11.0: DEPENDENCY_MAP — Module dependency and correlation (new) ═══
+    case "dependency_map": {
+      // NEW: Module dependency analysis with health correlation - proof-compatible
+      const moduleList = ['brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'system'];
+      
+      // Collect module health from in-memory state
+      const moduleHealthMap: Record<string, { health: number; status: string; circuit: string }> = {};
+      moduleList.forEach(m => {
+        const h = state.modules[m];
+        moduleHealthMap[m] = h ? {
+          health: h.healthScore,
+          status: h.status,
+          circuit: h.circuitState
+        } : { health: 100, status: 'healthy', circuit: 'closed' };
+      });
+
+      // Query cross-module event correlations (last 24h)
+      const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+      const { data: moduleEvents } = await supabase
+        .from('brain_events')
+        .select('module, event_type, outcome, created_at')
+        .gte('created_at', yesterday)
+        .limit(500);
+
+      // Analyze module interaction patterns
+      const moduleCallCounts: Record<string, number> = {};
+      const moduleErrors: Record<string, number> = {};
+      const moduleSequences: Array<{ from: string; to: string; count: number }> = [];
+      
+      (moduleEvents || []).forEach((e: { module: string; outcome: string }) => {
+        moduleCallCounts[e.module] = (moduleCallCounts[e.module] || 0) + 1;
+        if (e.outcome === 'error') {
+          moduleErrors[e.module] = (moduleErrors[e.module] || 0) + 1;
+        }
+      });
+
+      // Define logical dependencies (substrate architecture)
+      const dependencies = [
+        { from: 'decode', to: 'brain', type: 'memory_lookup', strength: 0.9 },
+        { from: 'decode', to: 'nexus', type: 'ai_routing', strength: 0.95 },
+        { from: 'brain', to: 'vision', type: 'telemetry', strength: 0.7 },
+        { from: 'defense', to: 'brain', type: 'event_logging', strength: 0.8 },
+        { from: 'nexus', to: 'vision', type: 'metrics', strength: 0.75 },
+        { from: 'system', to: 'brain', type: 'health_sync', strength: 0.85 },
+        { from: 'dream', to: 'brain', type: 'memory_integration', strength: 0.6 },
+      ];
+
+      // Calculate health impact scores
+      const impactScores = dependencies.map(dep => {
+        const sourceHealth = moduleHealthMap[dep.from]?.health || 100;
+        const targetHealth = moduleHealthMap[dep.to]?.health || 100;
+        const cascadeRisk = (100 - Math.min(sourceHealth, targetHealth)) * dep.strength;
+        return {
+          ...dep,
+          source_health: sourceHealth,
+          target_health: targetHealth,
+          cascade_risk: Math.round(cascadeRisk)
+        };
+      });
+
+      // Find critical path (highest risk chain)
+      const criticalDeps = impactScores
+        .filter(d => d.cascade_risk > 20)
+        .sort((a, b) => b.cascade_risk - a.cascade_risk);
+
+      const overallRisk = criticalDeps.length > 0 
+        ? Math.round(criticalDeps.reduce((sum, d) => sum + d.cascade_risk, 0) / criticalDeps.length)
+        : 0;
+
+      return jsonResponse({
+        success: true,
+        module: 'vision',
+        action: 'dependency_map',
+        modules: moduleHealthMap,
+        dependencies: impactScores,
+        activity_24h: {
+          calls_by_module: moduleCallCounts,
+          errors_by_module: moduleErrors,
+          total_events: moduleEvents?.length || 0
+        },
+        analysis: {
+          total_dependencies: dependencies.length,
+          critical_paths: criticalDeps.slice(0, 3),
+          overall_cascade_risk: overallRisk,
+          risk_status: overallRisk > 40 ? 'elevated' : overallRisk > 20 ? 'moderate' : 'low'
+        },
+        proof_mode: true,
+        read_only: true,
         timestamp: new Date().toISOString()
       }, headers);
     }

@@ -158,6 +158,10 @@ class SubstrateClient {
     /** v3.5.0: Session reflection - cross-module activity summary (read-only, Observer-eligible) */
     sessionReflection: (hours?: number) =>
       this.invoke({ module: 'brain', action: 'session_reflection', payload: { hours } }),
+    
+    /** v3.11.0: Memory coherence validation - cross-tier coherence check (read-only) */
+    coherenceCheck: (depth?: 'standard' | 'deep') =>
+      this.invoke({ module: 'brain', action: 'coherence_check', payload: { depth } }),
   };
 
   // Decode Module — Interpreter Primitive (NOT a chatbot, persona, or agent)
@@ -222,6 +226,10 @@ class SubstrateClient {
     /** v3.7.0: Consolidated security posture summary (read-only) */
     posture: () =>
       this.invoke({ module: 'defense', action: 'posture' }),
+    
+    /** v3.11.0: IP intelligence with reputation analysis (read-only) */
+    ipIntel: (ip_address: string, include_history?: boolean) =>
+      this.invoke({ module: 'defense', action: 'ip_intel', payload: { ip_address, include_history } }),
   };
 
   // Nexus Module — Multi-Provider AI Routing
@@ -304,6 +312,10 @@ class SubstrateClient {
     /** v3.8.0: AI usage quota observability - daily limits, pressure, cost (read-only) */
     quota: () =>
       this.invoke({ module: 'vision', action: 'quota' }),
+    
+    /** v3.11.0: Module dependency map with health correlation (read-only) */
+    dependencyMap: () =>
+      this.invoke({ module: 'vision', action: 'dependency_map' }),
   };
 
   // System Module — Administration & Configuration
