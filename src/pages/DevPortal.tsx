@@ -4466,10 +4466,12 @@ function TemplateCard({ template }: { template: typeof TEMPLATES[0] }) {
                 <div className="absolute top-2 right-2 z-10">
                   <CopyButton text={template.code} />
                 </div>
-                <ScrollArea className="h-[300px] sm:h-[280px] rounded-lg bg-muted/50 border border-border/50">
-                  <pre className="p-3 sm:p-4 text-[11px] sm:text-xs font-mono overflow-x-auto">
-                    <code className="text-foreground/90">{template.code}</code>
-                  </pre>
+                <ScrollArea className="h-[250px] sm:h-[280px] rounded-lg bg-muted/50 border border-border/50">
+                  <div className="min-w-max">
+                    <pre className="p-3 sm:p-4 text-[10px] sm:text-xs font-mono whitespace-pre">
+                      <code className="text-foreground/90 block">{template.code}</code>
+                    </pre>
+                  </div>
                 </ScrollArea>
               </div>
             </motion.div>
