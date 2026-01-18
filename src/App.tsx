@@ -30,8 +30,8 @@ const PageLoader = () => (
   <div className="min-h-screen bg-background" />
 );
 
-// Core pages - only Index eager loaded for LCP, rest lazy
-import Index from "./pages/Index";
+// Core pages - only Explore eager loaded for LCP, rest lazy
+import Explore from "./pages/Explore";
 import NotFound from "./pages/NotFound";
 
 // Lazy load all other pages to reduce initial bundle
@@ -59,7 +59,7 @@ const CurrentProjects = lazy(() => import("./pages/CurrentProjects"));
 const Roadmap = lazy(() => import("./pages/Roadmap"));
 const LlmsTxt = lazy(() => import("./pages/LlmsTxt"));
 const HumansTxt = lazy(() => import("./pages/HumansTxt"));
-const Explore = lazy(() => import("./pages/Explore"));
+// Explore is now the homepage (eager loaded above)
 
 // Lazy load blog posts
 const WordPressBotDefense = lazy(() => import("./pages/blog/WordPressBotDefense"));
@@ -111,7 +111,7 @@ const App = () => {
                 <Suspense fallback={<PageLoader />}>
                   <Routes>
                     {/* Core Public Pages */}
-                    <Route path="/" element={<Index />} />
+                    <Route path="/" element={<Explore />} />
                     <Route path="/decode" element={<Decode />} />
                     <Route path="/feed-dream-eater" element={<FeedDreamEater />} />
                     <Route path="/blog" element={<Blog />} />
@@ -134,7 +134,7 @@ const App = () => {
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/llms-txt" element={<LlmsTxt />} />
                     <Route path="/humans-txt" element={<HumansTxt />} />
-                    <Route path="/explore" element={<Explore />} />
+                    <Route path="/explore" element={<Explore />} /> {/* Legacy route - same as home */}
                     
                     {/* Auth & Legal */}
                     <Route path="/auth" element={<Auth />} />
