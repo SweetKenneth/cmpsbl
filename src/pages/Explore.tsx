@@ -258,9 +258,10 @@ export default function Explore() {
   return (
     <div ref={containerRef} className="min-h-screen bg-background overflow-hidden">
       <SEO 
-        title="Explore — promptfluid®"
-        description="Discover the cognitive orchestration substrate. Demo, proof mode, documentation, and live system access."
-        canonical="https://promptfluid.com/explore"
+        title="promptfluid® — Discover the Cognitive Substrate"
+        description="Six interconnected modules working in harmony. Memory, routing, defense, observability, and dream-state processing—all orchestrated. Compose cognition as software."
+        canonical="https://promptfluid.com"
+        keywords={['cognitive substrate', 'substrate OS', 'AI modules', 'agents', 'memory', 'governance', 'observability', 'execution', 'SDK', 'composition']}
       />
 
       {/* Consistent Navigation */}

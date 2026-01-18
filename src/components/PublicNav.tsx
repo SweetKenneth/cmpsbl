@@ -56,7 +56,6 @@ export function PublicNav() {
         { name: "Blog", href: "/blog", description: "Articles & Research", icon: FileText },
         { name: "Roadmap", href: "/roadmap", description: "Development Plan", icon: Map },
         { name: "Projects", href: "/projects", description: "Active Development", icon: Rocket },
-        { name: "Explore", href: "/explore", description: "Discover Modules", icon: Globe },
       ]
     },
     {
