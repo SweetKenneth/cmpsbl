@@ -21,7 +21,8 @@ import {
   Cpu,
   Database,
   Lock,
-  Layers
+  Layers,
+  Code
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -463,6 +464,73 @@ export default function Explore() {
             ))}
           </motion.div>
         </div>
+      </section>
+
+      {/* Developer CTA - Strong */}
+      <section className="relative z-10 px-4 py-24">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="max-w-5xl mx-auto"
+        >
+          <div className="relative p-8 md:p-16 rounded-3xl overflow-hidden">
+            {/* Gradient background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-primary via-violet-600 to-purple-700" />
+            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] opacity-30" />
+            
+            <div className="relative flex flex-col lg:flex-row items-center justify-between gap-8">
+              <div className="flex-1 text-center lg:text-left">
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm text-white/90 text-sm font-medium mb-6">
+                  <Terminal className="w-4 h-4" />
+                  For Developers
+                </div>
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
+                  Start Building Today
+                </h2>
+                <p className="text-white/80 text-lg max-w-xl mb-6">
+                  Access the full SDK, composable modules, and ready-to-deploy templates. 
+                  Integrate cognitive capabilities into your applications in minutes.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                  <Link to="/developers">
+                    <Button size="lg" className="w-full sm:w-auto px-8 bg-white text-primary hover:bg-white/90 font-semibold">
+                      <Code className="w-4 h-4 mr-2" />
+                      Open Dev Portal
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  </Link>
+                  <Link to="/developers#templates">
+                    <Button size="lg" variant="outline" className="w-full sm:w-auto px-8 border-white/30 text-white hover:bg-white/10">
+                      <Layers className="w-4 h-4 mr-2" />
+                      Browse Templates
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+              
+              {/* Code preview decoration */}
+              <div className="hidden lg:block w-80 shrink-0">
+                <div className="bg-black/40 backdrop-blur-sm rounded-xl p-4 border border-white/10 font-mono text-sm">
+                  <div className="flex items-center gap-2 mb-3 text-white/50">
+                    <div className="w-3 h-3 rounded-full bg-red-500/60" />
+                    <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
+                    <div className="w-3 h-3 rounded-full bg-green-500/60" />
+                  </div>
+                  <pre className="text-white/80 text-xs leading-relaxed overflow-hidden">
+{`import { substrate } from 'pf-sdk'
+
+const result = await substrate
+  .brain.recall({ query: "..." })
+  
+const route = await substrate
+  .nexus.route({ task: "..." })`}
+                  </pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </section>
 
       {/* Final CTA */}
