@@ -1371,6 +1371,51 @@ export type Database = {
           },
         ]
       }
+      daily_backups: {
+        Row: {
+          backup_date: string
+          backup_id: string
+          backup_path: string
+          checksum: string | null
+          created_at: string
+          data_counts: Json | null
+          expires_at: string | null
+          id: string
+          restore_point_enabled: boolean | null
+          snapshot: Json
+          status: string | null
+          substrate_version: string | null
+        }
+        Insert: {
+          backup_date?: string
+          backup_id: string
+          backup_path: string
+          checksum?: string | null
+          created_at?: string
+          data_counts?: Json | null
+          expires_at?: string | null
+          id?: string
+          restore_point_enabled?: boolean | null
+          snapshot: Json
+          status?: string | null
+          substrate_version?: string | null
+        }
+        Update: {
+          backup_date?: string
+          backup_id?: string
+          backup_path?: string
+          checksum?: string | null
+          created_at?: string
+          data_counts?: Json | null
+          expires_at?: string | null
+          id?: string
+          restore_point_enabled?: boolean | null
+          snapshot?: Json
+          status?: string | null
+          substrate_version?: string | null
+        }
+        Relationships: []
+      }
       daily_state: {
         Row: {
           created_at: string
@@ -5455,6 +5500,10 @@ export type Database = {
         Args: { p_key_name: string; p_user_id: string }
         Returns: string
       }
+      generate_clarity_api_key: {
+        Args: { p_key_name: string; p_rate_limit?: number; p_user_id: string }
+        Returns: Json
+      }
       has_role:
         | {
             Args: {
@@ -5475,6 +5524,7 @@ export type Database = {
         Args: { p_action: string; p_ip: string; p_risk_score?: number }
         Returns: undefined
       }
+      validate_clarity_api_key: { Args: { p_api_key: string }; Returns: Json }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"

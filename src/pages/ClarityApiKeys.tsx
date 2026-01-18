@@ -73,24 +73,18 @@ export default function ClarityApiKeys() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Not authenticated');
 
-      const keyString = `clarity_${crypto.randomUUID().replace(/-/g, '')}`;
-      const encoder = new TextEncoder();
-      const data = encoder.encode(keyString);
-      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-
-      const { error } = await supabase
-        .from('pf_clarity_api_keys')
-        .insert({
-          user_id: user.id,
-          key_name: newKeyName,
-          api_key_hash: hashHex,
-        });
+      // Use server-side key generation for security
+      const { data, error } = await supabase.rpc('generate_clarity_api_key', {
+        p_user_id: user.id,
+        p_key_name: newKeyName,
+        p_rate_limit: 1000
+      });
 
       if (error) throw error;
 
-      setNewKey(keyString);
+      // The server returns the plaintext key only once
+      const keyData = data as { api_key: string; key_id: string; key_prefix: string; key_name: string };
+      setNewKey(keyData.api_key);
       setNewKeyName('');
       loadApiKeys();
 

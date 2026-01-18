@@ -23,58 +23,67 @@ export default function BrainTraining() {
 
     setUploading(true);
     const newFiles: string[] = [];
+    const errors: string[] = [];
 
     try {
-      for (const file of Array.from(files)) {
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
-        const filePath = `training/${fileName}`;
-
-        const { error: uploadError } = await supabase.storage
-          .from('brain-training-data')
-          .upload(filePath, file);
-
-        if (uploadError) {
-          console.error('Upload error:', uploadError);
-          throw uploadError;
-        }
-
-        // Read file content for text files
-        let content = '';
-        if (file.type.includes('text') || fileExt === 'txt' || fileExt === 'md') {
-          content = await file.text();
-        }
-
-        // Log the upload to brain memory
-        await supabase.from('brain_memory_hot').insert({
-          content: content || `Training file uploaded: ${file.name}`,
-          context: 'training_upload',
-          priority: 8,
-          tags: ['training', 'upload', fileExt],
-          metadata: { 
-            file_name: file.name, 
-            file_path: filePath,
-            file_size: file.size,
-            file_type: file.type 
-          }
-        });
-
-        // Log to learning_logs
-        await supabase.from('learning_logs').insert({
-          source: 'file_upload',
-          content: `Uploaded training file: ${file.name}`,
-          success: true,
-          metadata: { file_name: file.name, file_path: filePath }
-        });
-
-        newFiles.push(file.name);
+      // Get auth session for the edge function
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        throw new Error('Please log in to upload training data');
       }
 
-      setUploadedFiles([...uploadedFiles, ...newFiles]);
-      toast({
-        title: "Upload Successful",
-        description: `${newFiles.length} file(s) uploaded and added to Brain's knowledge`,
-      });
+      for (const file of Array.from(files)) {
+        const fileExt = file.name.split('.').pop()?.toLowerCase() || '';
+        
+        // Only allow text-based files for server-side processing
+        const allowedExtensions = ['txt', 'md', 'json'];
+        if (!allowedExtensions.includes(fileExt)) {
+          errors.push(`${file.name}: Only ${allowedExtensions.join(', ')} files are supported`);
+          continue;
+        }
+
+        // Validate file size client-side (10MB limit)
+        if (file.size > 10 * 1024 * 1024) {
+          errors.push(`${file.name}: File too large (max 10MB)`);
+          continue;
+        }
+
+        // Upload via secure edge function
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const { data, error } = await supabase.functions.invoke('pf-brain-training-upload', {
+          body: formData,
+        });
+
+        if (error) {
+          console.error('Upload error:', error);
+          errors.push(`${file.name}: ${error.message || 'Upload failed'}`);
+          continue;
+        }
+
+        if (data?.success) {
+          newFiles.push(file.name);
+        } else {
+          errors.push(`${file.name}: ${data?.error || 'Processing failed'}`);
+        }
+      }
+
+      if (newFiles.length > 0) {
+        setUploadedFiles([...uploadedFiles, ...newFiles]);
+        toast({
+          title: "Upload Successful",
+          description: `${newFiles.length} file(s) uploaded and added to Brain's knowledge`,
+        });
+      }
+
+      if (errors.length > 0) {
+        toast({
+          title: "Some files failed",
+          description: errors.slice(0, 3).join('; ') + (errors.length > 3 ? '...' : ''),
+          variant: "destructive",
+        });
+      }
     } catch (error: any) {
       console.error('Upload error:', error);
       toast({
@@ -223,7 +232,7 @@ export default function BrainTraining() {
                   ref={fileInputRef}
                   type="file"
                   multiple
-                  accept=".pdf,.txt,.doc,.docx,.md,.json"
+                  accept=".txt,.md,.json"
                   onChange={handleFileUpload}
                   className="hidden"
                 />
@@ -309,8 +318,11 @@ Examples:
 
         <div className="glass p-6 rounded-xl">
           <h3 className="text-lg font-semibold mb-4">Supported File Types</h3>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            {['PDF', 'TXT', 'DOC/DOCX', 'Markdown', 'JSON'].map((type) => (
+          <p className="text-sm text-muted-foreground mb-4">
+            Text-based files are processed with server-side validation for security.
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {['TXT', 'Markdown', 'JSON'].map((type) => (
               <div key={type} className="p-4 rounded-lg bg-muted/30 text-center">
                 <FileText className="w-8 h-8 mx-auto mb-2 text-primary" />
                 <p className="text-sm font-medium">{type}</p>
