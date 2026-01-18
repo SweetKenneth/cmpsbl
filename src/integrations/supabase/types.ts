@@ -4889,6 +4889,335 @@ export type Database = {
           },
         ]
       }
+      substrate_agent_events: {
+        Row: {
+          agent_id: string | null
+          created_at: string | null
+          duration_ms: number | null
+          event_type: string
+          id: string
+          mesh_id: string
+          payload: Json | null
+          source_agent: string | null
+          target_agent: string | null
+          tokens_used: number | null
+        }
+        Insert: {
+          agent_id?: string | null
+          created_at?: string | null
+          duration_ms?: number | null
+          event_type: string
+          id?: string
+          mesh_id: string
+          payload?: Json | null
+          source_agent?: string | null
+          target_agent?: string | null
+          tokens_used?: number | null
+        }
+        Update: {
+          agent_id?: string | null
+          created_at?: string | null
+          duration_ms?: number | null
+          event_type?: string
+          id?: string
+          mesh_id?: string
+          payload?: Json | null
+          source_agent?: string | null
+          target_agent?: string | null
+          tokens_used?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "substrate_agent_events_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "substrate_agents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      substrate_agents: {
+        Row: {
+          agent_name: string
+          agent_type: string
+          app_id: string
+          capabilities: Json | null
+          constraints: Json | null
+          created_at: string | null
+          developer_id: string
+          id: string
+          is_active: boolean | null
+          metadata: Json | null
+          model_preference: string | null
+          system_prompt: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          agent_name: string
+          agent_type: string
+          app_id: string
+          capabilities?: Json | null
+          constraints?: Json | null
+          created_at?: string | null
+          developer_id: string
+          id?: string
+          is_active?: boolean | null
+          metadata?: Json | null
+          model_preference?: string | null
+          system_prompt?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          agent_name?: string
+          agent_type?: string
+          app_id?: string
+          capabilities?: Json | null
+          constraints?: Json | null
+          created_at?: string | null
+          developer_id?: string
+          id?: string
+          is_active?: boolean | null
+          metadata?: Json | null
+          model_preference?: string | null
+          system_prompt?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      substrate_apps: {
+        Row: {
+          app_id: string
+          app_name: string
+          created_at: string | null
+          description: string | null
+          developer_id: string
+          id: string
+          is_active: boolean | null
+          monthly_budget_usd: number | null
+          settings: Json | null
+          tier: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          app_id: string
+          app_name: string
+          created_at?: string | null
+          description?: string | null
+          developer_id: string
+          id?: string
+          is_active?: boolean | null
+          monthly_budget_usd?: number | null
+          settings?: Json | null
+          tier?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          app_id?: string
+          app_name?: string
+          created_at?: string | null
+          description?: string | null
+          developer_id?: string
+          id?: string
+          is_active?: boolean | null
+          monthly_budget_usd?: number | null
+          settings?: Json | null
+          tier?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      substrate_developer_keys: {
+        Row: {
+          app_id: string
+          created_at: string | null
+          developer_id: string
+          encrypted_key: string
+          id: string
+          is_active: boolean | null
+          key_hint: string | null
+          metadata: Json | null
+          provider: string
+          rate_limit_rpm: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          app_id: string
+          created_at?: string | null
+          developer_id: string
+          encrypted_key: string
+          id?: string
+          is_active?: boolean | null
+          key_hint?: string | null
+          metadata?: Json | null
+          provider: string
+          rate_limit_rpm?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          app_id?: string
+          created_at?: string | null
+          developer_id?: string
+          encrypted_key?: string
+          id?: string
+          is_active?: boolean | null
+          key_hint?: string | null
+          metadata?: Json | null
+          provider?: string
+          rate_limit_rpm?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      substrate_extensions: {
+        Row: {
+          config: Json | null
+          created_at: string | null
+          developer_id: string
+          downloads_count: number | null
+          extension_name: string
+          extension_type: string
+          extension_version: string | null
+          handler_code: string | null
+          id: string
+          is_active: boolean | null
+          is_public: boolean | null
+          metadata: Json | null
+          schema_definition: Json | null
+          updated_at: string | null
+        }
+        Insert: {
+          config?: Json | null
+          created_at?: string | null
+          developer_id: string
+          downloads_count?: number | null
+          extension_name: string
+          extension_type: string
+          extension_version?: string | null
+          handler_code?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_public?: boolean | null
+          metadata?: Json | null
+          schema_definition?: Json | null
+          updated_at?: string | null
+        }
+        Update: {
+          config?: Json | null
+          created_at?: string | null
+          developer_id?: string
+          downloads_count?: number | null
+          extension_name?: string
+          extension_type?: string
+          extension_version?: string | null
+          handler_code?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_public?: boolean | null
+          metadata?: Json | null
+          schema_definition?: Json | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      substrate_integrations: {
+        Row: {
+          app_id: string
+          call_count: number | null
+          config: Json | null
+          created_at: string | null
+          credentials_ref: string | null
+          developer_id: string
+          error_count: number | null
+          id: string
+          integration_name: string
+          integration_type: string
+          is_active: boolean | null
+          last_called_at: string | null
+          updated_at: string | null
+          webhook_secret: string | null
+          webhook_url: string | null
+        }
+        Insert: {
+          app_id: string
+          call_count?: number | null
+          config?: Json | null
+          created_at?: string | null
+          credentials_ref?: string | null
+          developer_id: string
+          error_count?: number | null
+          id?: string
+          integration_name: string
+          integration_type: string
+          is_active?: boolean | null
+          last_called_at?: string | null
+          updated_at?: string | null
+          webhook_secret?: string | null
+          webhook_url?: string | null
+        }
+        Update: {
+          app_id?: string
+          call_count?: number | null
+          config?: Json | null
+          created_at?: string | null
+          credentials_ref?: string | null
+          developer_id?: string
+          error_count?: number | null
+          id?: string
+          integration_name?: string
+          integration_type?: string
+          is_active?: boolean | null
+          last_called_at?: string | null
+          updated_at?: string | null
+          webhook_secret?: string | null
+          webhook_url?: string | null
+        }
+        Relationships: []
+      }
+      substrate_usage_meters: {
+        Row: {
+          app_id: string
+          calls_count: number | null
+          created_at: string | null
+          date: string
+          developer_id: string
+          errors_count: number | null
+          id: string
+          latency_avg_ms: number | null
+          provider: string
+          tokens_input: number | null
+          tokens_output: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          app_id: string
+          calls_count?: number | null
+          created_at?: string | null
+          date?: string
+          developer_id: string
+          errors_count?: number | null
+          id?: string
+          latency_avg_ms?: number | null
+          provider: string
+          tokens_input?: number | null
+          tokens_output?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          app_id?: string
+          calls_count?: number | null
+          created_at?: string | null
+          date?: string
+          developer_id?: string
+          errors_count?: number | null
+          id?: string
+          latency_avg_ms?: number | null
+          provider?: string
+          tokens_input?: number | null
+          tokens_output?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       system_config: {
         Row: {
           created_at: string
