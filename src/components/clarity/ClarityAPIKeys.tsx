@@ -48,23 +48,17 @@ export function ClarityAPIKeys() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
 
-      const apiKey = `clf_${crypto.randomUUID().replace(/-/g, '')}`;
-      const encoder = new TextEncoder();
-      const data = encoder.encode(apiKey);
-      const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      const keyHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-
-      const { error } = await supabase
-        .from("pf_clarity_api_keys")
-        .insert({
-          user_id: user.id,
-          key_name: newKeyName,
-          api_key_hash: keyHash,
-          metadata: { key_prefix: apiKey.substring(0, 11), rate_limit: 1000 }
-        });
+      // Use server-side key generation for security
+      const { data, error } = await supabase.rpc('generate_clarity_api_key', {
+        p_user_id: user.id,
+        p_key_name: newKeyName,
+        p_rate_limit: 1000
+      });
 
       if (error) throw error;
+      
+      // Server returns the plaintext key only once
+      const keyData = data as { api_key: string; key_id: string; key_prefix: string; key_name: string };
       
       toast.success("API key created! Copy it now - you won't see it again.");
       
@@ -72,8 +66,8 @@ export function ClarityAPIKeys() {
       const tempKey = { 
         id: 'temp', 
         key_name: newKeyName, 
-        api_key_hash: apiKey, 
-        metadata: { key_prefix: apiKey },
+        api_key_hash: keyData.api_key, // Display the full key temporarily
+        metadata: { key_prefix: keyData.key_prefix },
         temp: true,
         user_id: user.id,
         created_at: new Date().toISOString()
