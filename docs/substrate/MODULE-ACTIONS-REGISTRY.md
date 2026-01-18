@@ -277,31 +277,32 @@ System-wide operations, administration, configuration.
 
 ---
 
-## Summary: Actions Requiring Stubs
+## Summary: Deployed Actions
 
-### Brain Module (9 stubs needed)
-- `recall`, `synthesize`, `train`, `optimize`, `deep_think`
-- `hypothesis_test`, `cognitive_cycle`, `continuous_learn`, `forecast`, `graph_build`
+| Module | Deployed | Planned (Stubs) |
+|--------|----------|-----------------|
+| **Brain** | 10 | 9 |
+| **Decode** | 5 | 3 |
+| **Defense** | 7 | 7 |
+| **Nexus** | 4 | 5 |
+| **Vision** | 14 | 0 |
+| **Dream** | 3 | 6 |
+| **System** | 9 | 2 |
+| **Total** | **52** | **32** |
 
-### Decode Module (4 stubs needed)
-- `propose`, `intent`, `reflect`, `summary`
+---
 
-### Defense Module (7 stubs needed)
-- `report`, `rules`, `block`, `unblock`, `threat_feed`, `rate_limit`, `anomaly`
+## BYOK Integrations
 
-### Nexus Module (5 stubs needed)
-- `text`, `image`, `video`, `embed`, `transcribe`
+The substrate supports external integrations via the `integration-bus` edge function:
 
-### Vision Module (4 stubs needed)
-- `alert`, `dashboard`, `trace`, `audit`
-
-### Dream Module (6 stubs needed)
-- `status`, `interpret`, `mutation`, `consume`, `reflect`, `mood`
-
-### System Module (9 stubs needed)
-- `health`, `config`, `shutdown`, `restart`, `heal`, `backup`, `restore`, `audit`, `version`
-
-**Total: 44 stub actions needed**
+| Integration | Type | Status |
+|-------------|------|--------|
+| **Stripe** | Payments | ✅ Available |
+| **Twilio** | SMS/Voice | ✅ Available |
+| **Shopify** | E-commerce | ✅ Available |
+| **n8n** | Automation | ✅ Available |
+| **Webhooks** | Custom | ✅ Available |
 
 ---
 
