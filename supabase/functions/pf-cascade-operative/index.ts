@@ -1,15 +1,13 @@
 /**
- * CASCADE OPERATIVE MODE v1.0.0
- * Full System: Learning + Reporting + Threat Detection + Immediate Dispatch
+ * CASCADE OPERATIVE MODE v1.1.0
  * 
- * MODE: OPERATIVE (dispatch all signals immediately, all tiers)
+ * NOTE: This function is now deprecated in favor of LEARNER mode.
+ * The system now uses pf-cascade-learner for 3 focused emails per day.
  * 
- * This is the master loop that runs continuously to:
- * 1. Learn from doctrine-aligned sources
- * 2. Detect and classify signals by tier/domain
- * 3. Identify threats and opportunities
- * 4. Generate suggested moves with postures
- * 5. Dispatch emails to Founder immediately (all tiers)
+ * This operative function is kept for backwards compatibility and emergency use.
+ * It will redirect to LEARNER mode by default unless explicitly overridden.
+ * 
+ * To use operative mode: POST with { "force_operative": true }
  */
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
@@ -34,7 +32,8 @@ import {
   ThreatModel,
   UrgencyTier,
   PriorityDomain,
-  StrategicPosture
+  StrategicPosture,
+  isLearnerMode
 } from "../_shared/cascade-reporting.ts";
 import { buildCascadeEmail, CascadeReport } from "../_shared/cascade-email-builder.ts";
 
@@ -43,7 +42,7 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const OPERATIVE_VERSION = '1.0.0';
+const OPERATIVE_VERSION = '1.1.0';
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
 
 serve(async (req) => {
@@ -57,10 +56,38 @@ serve(async (req) => {
   );
 
   try {
+    const body = await req.json().catch(() => ({}));
+    const forceOperative = body.force_operative === true;
+    
+    // Check if we should redirect to LEARNER mode
+    if (isLearnerMode() && !forceOperative) {
+      console.log(`📚 Cascade is in LEARNER mode. Redirecting to pf-cascade-learner...`);
+      console.log(`   To force operative mode, POST with { "force_operative": true }`);
+      
+      // Log the redirect
+      await supabase.from('brain_events').insert({
+        module: 'cascade',
+        event_type: 'operative_redirect_to_learner',
+        data: { message: 'Operative mode disabled. System is in LEARNER mode.' },
+        outcome: 'redirected'
+      });
+      
+      return new Response(
+        JSON.stringify({
+          success: true,
+          mode: 'LEARNER',
+          message: 'Cascade is in LEARNER mode. Operative dispatching is disabled.',
+          redirect: 'Use pf-cascade-learner for learning-focused emails (3/day)',
+          force_operative: 'POST with { "force_operative": true } to override'
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    
     const startTime = Date.now();
     console.log(`🜂 CASCADE OPERATIVE MODE v${OPERATIVE_VERSION}`);
     console.log(`   Doctrine: ${DOCTRINE.name} (${DOCTRINE.alias}) v${DOCTRINE.version}`);
-    console.log(`   Mode: ${ACTIVE_MODE} - All signals dispatch immediately`);
+    console.log(`   Mode: OPERATIVE (forced) - All signals dispatch immediately`);
 
     // ═══════════════════════════════════════════════════════════════════════
     // PHASE 1: LEARNING - Ingest doctrine-aligned intelligence
