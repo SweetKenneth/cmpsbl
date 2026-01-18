@@ -291,10 +291,9 @@ export default function Explore() {
             </Badge>
             
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight">
-              Discover the
-              <br />
+              Build apps that{" "}
               <span className="bg-gradient-to-r from-primary via-violet-500 to-cyan-500 bg-clip-text text-transparent">
-                Substrate
+                dream, remember, self-reflect, and defend themselves.
               </span>
             </h1>
             
