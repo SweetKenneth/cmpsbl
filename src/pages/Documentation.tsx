@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { BookOpen, Code, Zap, Shield, Database, FileText, ArrowRight } from "lucide-react";
+import { BookOpen, Code, Zap, Shield, Database, FileText, ArrowRight, Key, Package, Globe, Bot, Sparkles } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -13,9 +13,9 @@ export default function Documentation() {
     <div className="min-h-screen bg-background">
       <SEO 
         title="Documentation — promptfluid® substrate Developer Guides"
-        description="Complete developer documentation for the promptfluid® cognitive orchestration substrate. API references, integration guides, and technical resources."
+        description="Complete developer documentation for the promptfluid® cognitive orchestration substrate. API references, BYOK architecture, integration guides, and technical resources."
         canonical="https://promptfluid.com/docs"
-        keywords={['promptfluid documentation', 'cognitive orchestration substrate', 'API reference', 'developer guides', 'AI integration']}
+        keywords={['promptfluid documentation', 'cognitive orchestration substrate', 'API reference', 'developer guides', 'AI integration', 'BYOK', 'bring your own keys']}
       />
 
       <PublicNav />
@@ -49,6 +49,7 @@ export default function Documentation() {
             
             <p className="text-xl text-muted-foreground">
               Complete guide to the promptfluid® substrate. Everything you need to integrate, build, and scale cognitive orchestration for AI systems.
+              <span className="block mt-2 text-primary font-medium">100% BYOK — Zero compute costs for substrate operators.</span>
             </p>
           </div>
         </div>
@@ -58,12 +59,14 @@ export default function Documentation() {
       <section className="container mx-auto px-4 py-16">
         <div className="max-w-6xl mx-auto">
           <Tabs defaultValue="overview" className="space-y-8">
-            <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 bg-muted/50">
+            <TabsList className="grid w-full grid-cols-2 md:grid-cols-7 bg-muted/50">
               <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="byok">BYOK</TabsTrigger>
               <TabsTrigger value="brain">Brain</TabsTrigger>
-              <TabsTrigger value="defense">Defense</TabsTrigger>
-              <TabsTrigger value="api">API</TabsTrigger>
+              <TabsTrigger value="extensions">Extensions</TabsTrigger>
               <TabsTrigger value="integrations">Integrations</TabsTrigger>
+              <TabsTrigger value="agents">Agents</TabsTrigger>
+              <TabsTrigger value="api">API</TabsTrigger>
             </TabsList>
 
             <TabsContent value="overview" className="space-y-6">
@@ -73,12 +76,14 @@ export default function Documentation() {
                   promptfluid® is a cognitive orchestration substrate that provides routing, memory, learning cycles,
                   observability, defense, and execution coordination for AI systems. It is model-agnostic, provider-agnostic, and runs on commodity cloud.
                 </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {[
+                    { icon: Key, title: "BYOK Architecture", desc: "Bring your own API keys, pay your own costs" },
                     { icon: Zap, title: "Brain", desc: "Adaptive AI learning core" },
                     { icon: Shield, title: "Defense", desc: "Bot protection system" },
                     { icon: Database, title: "Nexus", desc: "API orchestration mesh" },
-                    { icon: FileText, title: "Studio", desc: "App builder platform" },
+                    { icon: Package, title: "Extensions", desc: "Custom module hooks" },
+                    { icon: Bot, title: "Agents", desc: "Multi-agent orchestration" },
                   ].map((item) => (
                     <div key={item.title} className="p-6 bg-muted/30 rounded-lg border border-border">
                       <item.icon className="w-8 h-8 text-primary mb-3" />
@@ -86,6 +91,45 @@ export default function Documentation() {
                       <p className="text-sm text-muted-foreground">{item.desc}</p>
                     </div>
                   ))}
+                </div>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="byok" className="space-y-6">
+              <Card className="p-8 bg-card border-border">
+                <div className="flex items-center gap-3 mb-4">
+                  <Key className="w-8 h-8 text-primary" />
+                  <h2 className="text-2xl font-bold text-foreground">BYOK Architecture</h2>
+                </div>
+                <p className="text-muted-foreground mb-6 leading-relaxed">
+                  <strong>Bring Your Own Keys (BYOK)</strong> means developers register their own AI provider API keys and pay compute costs directly to providers. 
+                  Zero LLM costs for substrate operators.
+                </p>
+                <div className="space-y-4">
+                  <div className="p-4 border-l-4 border-primary bg-muted/30 rounded-r-lg">
+                    <h4 className="font-semibold mb-1 text-foreground">Key Management</h4>
+                    <code className="text-xs block bg-background p-3 rounded border border-border mt-2">
+                      {`await substrate.keys.register('openai', 'sk-...');
+await substrate.keys.list(); // Lists masked keys
+await substrate.keys.rotate('openai', 'sk-new-...');
+await substrate.keys.usage('openai', 30); // 30 day usage`}
+                    </code>
+                  </div>
+                  <div className="p-4 border-l-4 border-primary bg-muted/30 rounded-r-lg">
+                    <h4 className="font-semibold mb-1 text-foreground">AI Calls with Your Keys</h4>
+                    <code className="text-xs block bg-background p-3 rounded border border-border mt-2">
+                      {`await substrate.ai.chat(
+  [{ role: 'user', content: 'Hello!' }],
+  { provider: 'openai', model: 'gpt-4o' }
+);`}
+                    </code>
+                  </div>
+                  <div className="p-4 border-l-4 border-amber-500 bg-amber-500/10 rounded-r-lg">
+                    <h4 className="font-semibold mb-1 text-foreground">Supported Providers</h4>
+                    <p className="text-sm text-muted-foreground">
+                      OpenAI, Anthropic, Groq, Together, DeepSeek, Mistral, Cohere, Fireworks, Hyperbolic, Cerebras
+                    </p>
+                  </div>
                 </div>
               </Card>
             </TabsContent>
@@ -119,25 +163,118 @@ export default function Documentation() {
               </Card>
             </TabsContent>
 
-            <TabsContent value="defense" className="space-y-6">
+            <TabsContent value="extensions" className="space-y-6">
               <Card className="p-8 bg-card border-border">
-                <h2 className="text-2xl font-bold mb-4 text-foreground">Defense Intelligence</h2>
+                <div className="flex items-center gap-3 mb-4">
+                  <Package className="w-8 h-8 text-primary" />
+                  <h2 className="text-2xl font-bold text-foreground">Extensions</h2>
+                </div>
                 <p className="text-muted-foreground mb-6 leading-relaxed">
-                  Bot detection, behavioral analysis, and device fingerprinting substrate for AI-powered threat detection.
+                  Extend substrate functionality with custom hooks that run before or after module actions.
                 </p>
                 <div className="space-y-4">
                   <div className="p-4 bg-muted/30 rounded-lg">
-                    <h4 className="font-semibold mb-2 text-foreground">Bot Detection</h4>
-                    <code className="text-xs block bg-background p-3 rounded border border-border">
-                      POST /functions/v1/bot-detection
-                    </code>
+                    <h4 className="font-semibold mb-2 text-foreground">Extension Types</h4>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      <li>• <code>brain_hook</code> — Memory and learning extensions</li>
+                      <li>• <code>nexus_hook</code> — AI routing extensions</li>
+                      <li>• <code>defense_hook</code> — Security extensions</li>
+                      <li>• <code>dream_hook</code> — Dream processing extensions</li>
+                      <li>• <code>vision_hook</code> — Observability extensions</li>
+                    </ul>
                   </div>
                   <div className="p-4 bg-muted/30 rounded-lg">
-                    <h4 className="font-semibold mb-2 text-foreground">Behavioral Analysis</h4>
+                    <h4 className="font-semibold mb-2 text-foreground">Register Extension</h4>
                     <code className="text-xs block bg-background p-3 rounded border border-border">
-                      POST /functions/v1/behavioral-analysis
+                      {`await substrate.extensions.register({
+  name: 'my-hook',
+  extension_type: 'brain_hook',
+  hook_point: 'pre_query',
+  endpoint_url: 'https://your-api.com/hook'
+});`}
                     </code>
                   </div>
+                </div>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="integrations" className="space-y-6">
+              <Card className="p-8 bg-card border-border">
+                <div className="flex items-center gap-3 mb-4">
+                  <Globe className="w-8 h-8 text-primary" />
+                  <h2 className="text-2xl font-bold text-foreground">Integrations</h2>
+                </div>
+                <p className="text-muted-foreground mb-6 leading-relaxed">
+                  Connect external services through the integration bus for payments, messaging, automation, and custom webhooks.
+                </p>
+                <div className="grid gap-4">
+                  {[
+                    { name: "Stripe", desc: "Payment processing and subscriptions" },
+                    { name: "Twilio", desc: "SMS, voice, and messaging" },
+                    { name: "Shopify", desc: "E-commerce and inventory" },
+                    { name: "n8n", desc: "Workflow automation" },
+                    { name: "Webhooks", desc: "Custom HTTP integrations" },
+                  ].map((integration) => (
+                    <div key={integration.name} className="p-4 bg-muted/30 rounded-lg border border-border">
+                      <h4 className="font-semibold text-foreground">{integration.name}</h4>
+                      <p className="text-sm text-muted-foreground">{integration.desc}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-4 p-4 bg-muted/30 rounded-lg">
+                  <code className="text-xs block bg-background p-3 rounded border border-border">
+                    {`await substrate.integrations.connect({
+  name: 'My Stripe',
+  integration_type: 'stripe',
+  credentials: { api_key: 'sk_live_...' }
+});
+
+await substrate.integrations.call('integration-id', 'customers.create', { email: 'user@example.com' });`}
+                  </code>
+                </div>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="agents" className="space-y-6">
+              <Card className="p-8 bg-card border-border">
+                <div className="flex items-center gap-3 mb-4">
+                  <Bot className="w-8 h-8 text-primary" />
+                  <h2 className="text-2xl font-bold text-foreground">Multi-Agent Orchestration</h2>
+                </div>
+                <p className="text-muted-foreground mb-6 leading-relaxed">
+                  Create and coordinate multiple AI agents using different patterns for complex tasks.
+                </p>
+                <div className="grid md:grid-cols-2 gap-4 mb-6">
+                  {[
+                    { pattern: "Chain", desc: "Sequential execution — each agent builds on previous" },
+                    { pattern: "Parallel", desc: "Concurrent execution — all agents work simultaneously" },
+                    { pattern: "Supervisor", desc: "One agent manages and coordinates others" },
+                    { pattern: "Debate", desc: "Agents discuss and argue to reach consensus" },
+                    { pattern: "Swarm", desc: "Collaborative swarm intelligence" },
+                  ].map((p) => (
+                    <div key={p.pattern} className="p-4 bg-muted/30 rounded-lg border border-border">
+                      <h4 className="font-semibold text-foreground">{p.pattern}</h4>
+                      <p className="text-sm text-muted-foreground">{p.desc}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="p-4 bg-muted/30 rounded-lg">
+                  <code className="text-xs block bg-background p-3 rounded border border-border">
+                    {`// Create an agent
+const agent = await substrate.agents.create({
+  name: 'ResearchAgent',
+  system_prompt: 'You are a research specialist...',
+  provider: 'anthropic',
+  model: 'claude-3-5-sonnet-20241022'
+});
+
+// Run agents with coordination pattern
+await substrate.agents.run(
+  [agent1.id, agent2.id],
+  'Research quantum computing',
+  { pattern: 'debate' }
+);`}
+                  </code>
                 </div>
               </Card>
             </TabsContent>
@@ -149,40 +286,24 @@ export default function Documentation() {
                   <div>
                     <h3 className="font-semibold mb-2 text-foreground">Authentication</h3>
                     <p className="text-sm text-muted-foreground mb-3">
-                      All API requests require authentication via API key header.
+                      All API requests require developer ID and app ID headers.
                     </p>
                     <code className="block bg-muted/30 p-4 rounded-lg text-xs border border-border">
-                      X-API-Key: pfdef_your_api_key_here
+                      {`X-Developer-ID: your-developer-uuid
+X-App-ID: your-app-uuid
+Authorization: Bearer <supabase-jwt>`}
                     </code>
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-2 text-foreground">Base URL</h3>
-                    <code className="block bg-muted/30 p-4 rounded-lg text-xs border border-border">
-                      POST /functions/v1/pf-substrate
-                    </code>
-                    <p className="text-xs text-muted-foreground mt-2">
-                      Contact us for API access credentials.
-                    </p>
-                  </div>
-                </div>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="integrations" className="space-y-6">
-              <Card className="p-8 bg-card border-border">
-                <h2 className="text-2xl font-bold mb-4 text-foreground">Integrations</h2>
-                <div className="grid gap-4">
-                  {[
-                    { name: "Groq", desc: "Primary inference with Llama 3.3-70B" },
-                    { name: "Cerebras", desc: "High-performance secondary fallback" },
-                    { name: "Together AI", desc: "Llama 3.1-70B turbo for complex tasks" },
-                    { name: "DeepSeek", desc: "Extended coverage and redundancy" },
-                  ].map((integration) => (
-                    <div key={integration.name} className="p-4 bg-muted/30 rounded-lg border border-border">
-                      <h4 className="font-semibold text-foreground">{integration.name}</h4>
-                      <p className="text-sm text-muted-foreground">{integration.desc}</p>
+                    <h3 className="font-semibold mb-2 text-foreground">Base Endpoints</h3>
+                    <div className="space-y-2 text-sm">
+                      <code className="block bg-muted/30 p-3 rounded-lg border border-border">POST /functions/v1/pf-substrate — Core substrate</code>
+                      <code className="block bg-muted/30 p-3 rounded-lg border border-border">POST /functions/v1/byok-proxy — BYOK AI routing</code>
+                      <code className="block bg-muted/30 p-3 rounded-lg border border-border">POST /functions/v1/extension-registry — Extensions</code>
+                      <code className="block bg-muted/30 p-3 rounded-lg border border-border">POST /functions/v1/integration-bus — Integrations</code>
+                      <code className="block bg-muted/30 p-3 rounded-lg border border-border">POST /functions/v1/agent-mesh — Agents</code>
                     </div>
-                  ))}
+                  </div>
                 </div>
               </Card>
             </TabsContent>
@@ -205,7 +326,7 @@ export default function Documentation() {
         <div className="absolute inset-0 flex items-center justify-center">
           <blockquote className="text-center max-w-3xl px-8">
             <p className="text-2xl md:text-4xl font-light text-white drop-shadow-lg">
-              "Built for developers who ship."
+              "BYOK — Built for developers who own their infrastructure."
             </p>
           </blockquote>
         </div>
@@ -214,15 +335,20 @@ export default function Documentation() {
       {/* CTA */}
       <section className="py-16 px-4 bg-muted/30">
         <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl font-bold mb-4 text-foreground">Need Help?</h2>
+          <h2 className="text-3xl font-bold mb-4 text-foreground">Ready to Build?</h2>
           <p className="text-lg text-muted-foreground mb-8">
-            Our team is ready to help you integrate and scale.
+            Deploy your own substrate instance and start building with BYOK architecture.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/contact">
+            <Link to="/dev">
               <Button size="lg" className="bg-primary hover:bg-primary/90">
-                Contact Support
+                Developer Portal
                 <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </Link>
+            <Link to="/contact">
+              <Button size="lg" variant="outline">
+                Contact Support
               </Button>
             </Link>
           </div>

@@ -3,7 +3,11 @@
  * 
  * A conversational AI that remembers context and learns from interactions.
  * 
- * BYOK: You must provide your own API keys.
+ * BYOK ARCHITECTURE:
+ * - You provide your own Supabase project
+ * - You register your own AI provider API keys  
+ * - You pay AI costs directly to providers
+ * - Zero LLM costs for substrate operators
  */
 
 import { SubstrateClient } from '../substrate-client';
@@ -11,8 +15,13 @@ import { SubstrateClient } from '../substrate-client';
 // Initialize substrate with your credentials
 const substrate = new SubstrateClient({
   url: process.env.SUPABASE_URL!,
-  anonKey: process.env.SUPABASE_ANON_KEY!
+  anonKey: process.env.SUPABASE_ANON_KEY!,
+  developerId: process.env.DEVELOPER_ID!, // Required for BYOK
+  appId: process.env.APP_ID! // Required for BYOK
 });
+
+// IMPORTANT: Register your API keys before using AI features
+// await substrate.keys.register('openai', process.env.OPENAI_API_KEY!);
 
 interface ChatMessage {
   role: 'user' | 'assistant';
