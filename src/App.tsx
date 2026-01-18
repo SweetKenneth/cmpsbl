@@ -88,7 +88,14 @@ const WordPressAccessibilityGuide = lazy(() => import("./pages/blog/WordPressAcc
 const WCAG22Changes = lazy(() => import("./pages/blog/WCAG22Changes"));
 const AIAccessibilityFixes = lazy(() => import("./pages/blog/AIAccessibilityFixes"));
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60 * 1000,
+      retry: 1,
+    },
+  },
+});
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
