@@ -1,6 +1,6 @@
 # promptfluid® Substrate — API Reference
 
-**v2026.01 — Usage Documentation**
+**v2026.01 — Deployed Substrate Actions**
 
 ---
 
@@ -38,104 +38,133 @@ POST https://[your-project].supabase.co/functions/v1/pf-substrate
 
 ---
 
-## Module: Brain
+## Module: Brain (10 Actions)
 
 Memory, learning, and knowledge operations.
 
-| Action | Description | Parameters |
-|--------|-------------|------------|
-| `query` | Search memories | `query_text: string`, `limit?: number` |
-| `remember` | Store memory | `content: string`, `type: string`, `confidence?: number` |
-| `learn` | Ingest knowledge | `content: string`, `source?: string` |
-| `reflect` | Trigger reflection | — |
-| `reinforce` | Boost memory | `memory_id: string`, `boost?: number` |
-| `graphSummary` | Knowledge graph stats | — |
-| `synthesize` | Cross-domain insights | — |
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `status` | Get brain module stats | — | ✅ Deployed |
+| `query` | Search memories | `query_text: string`, `limit?: number` | ✅ Deployed |
+| `remember` | Store memory | `content: string`, `type: string`, `confidence?: number` | ✅ Deployed |
+| `learn` | Ingest knowledge | `content: string`, `source?: string` | ✅ Deployed |
+| `reflect` | Trigger reflection | — | ✅ Deployed |
+| `reinforce` | Boost memory | `memory_id: string`, `boost?: number` | ✅ Deployed |
+| `dream` | Run dream cycle | — | ✅ Deployed |
+| `graphSummary` | Knowledge graph stats | — | ✅ Deployed |
+| `sessionReflection` | Cross-module reflection | `hours?: number` | ✅ Deployed |
+| `coldMigrate` | Move to cold storage | — | ✅ Deployed (standalone) |
 
 ---
 
-## Module: Decode
+## Module: Decode (5 Actions)
 
 Conversational AI and intent decoding.
 
-| Action | Description | Parameters |
-|--------|-------------|------------|
-| `chat` | Process message | `message: string`, `session_id?: string` |
-| `intent` | Extract intent | `message: string` |
-| `dream` | Generate dream | — |
-| `learn` | Learn from interaction | `content: string`, `source?: string` |
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `status` | Get decode module stats | — | ✅ Deployed |
+| `chat` | Process message | `message: string`, `session_id?: string` | ✅ Deployed |
+| `intent` | Extract intent | `message: string` | ✅ Deployed |
+| `dream` | Generate dream | — | ✅ Deployed |
+| `learn` | Learn from interaction | `content: string`, `source?: string` | ✅ Deployed |
 
 ---
 
-## Module: Defense
+## Module: Defense (7 Actions)
 
 Security and threat detection.
 
-| Action | Description | Parameters |
-|--------|-------------|------------|
-| `analyze` | Analyze request | `fingerprint: object`, `ip?: string` |
-| `reputation` | IP reputation | `ip: string` |
-| `posture` | Security posture | — |
-| `anomalyProbe` | Anomaly detection | `lookbackHours?: number` |
-| `limits` | Rate limit status | — |
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `status` | Get defense module stats | — | ✅ Deployed |
+| `analyze` | Analyze request | `fingerprint: object`, `ip?: string` | ✅ Deployed |
+| `reputation` | IP reputation | `ip: string` | ✅ Deployed |
+| `anomaly` | Anomaly detection | `timeWindow?: string` | ✅ Deployed |
+| `anomalyProbe` | Z-score anomaly detection | `lookbackHours?: number` | ✅ Deployed |
+| `posture` | Security posture | — | ✅ Deployed |
+| `limits` | Rate limit status | — | ✅ Deployed |
 
 ---
 
-## Module: Nexus
+## Module: Nexus (4 Actions)
 
 Multi-provider AI routing.
 
-| Action | Description | Parameters |
-|--------|-------------|------------|
-| `route` | Route to best provider | `prompt: string` |
-| `text` | Text generation | `prompt: string`, `model?: string` |
-| `image` | Image generation | `prompt: string` |
-| `providers` | Available providers | — |
-| `routeStats` | Routing analytics | — |
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `status` | Check available providers | — | ✅ Deployed |
+| `route` | Route to best provider | `prompt: string` | ✅ Deployed |
+| `providers` | Available providers | — | ✅ Deployed |
+| `routeStats` | Routing analytics | — | ✅ Deployed |
 
 ---
 
-## Module: Vision
+## Module: Vision (14 Actions)
 
 Observability and monitoring.
 
-| Action | Description | Parameters |
-|--------|-------------|------------|
-| `health` | System health | — |
-| `healthSnapshot` | Quick health check | — |
-| `dashboard` | Dashboard data | — |
-| `trace` | Distributed tracing | `traceId?: string`, `create?: boolean` |
-| `quota` | AI usage quota | — |
-| `introspection` | Deep analysis | — |
-| `alert` | Create alert | `severity: string`, `message: string` |
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `status` | Get vision module status | — | ✅ Deployed |
+| `health` | System health | — | ✅ Deployed |
+| `healthSnapshot` | Quick health check | — | ✅ Deployed |
+| `metrics` | System metrics | — | ✅ Deployed |
+| `logs` | Recent logs | `module?: string`, `limit?: number` | ✅ Deployed |
+| `dashboard` | Dashboard data | — | ✅ Deployed |
+| `trace` | Distributed tracing | `traceId?: string`, `create?: boolean` | ✅ Deployed |
+| `audit` | Audit log query | `entity?: string`, `action?: string` | ✅ Deployed |
+| `alert` | Create alert | `severity: string`, `message: string` | ✅ Deployed |
+| `monitor` | Ecosystem monitoring | — | ✅ Deployed |
+| `resilience` | Resilience probe | — | ✅ Deployed |
+| `analytics` | Threat analytics | — | ✅ Deployed |
+| `introspection` | Deep analysis | — | ✅ Deployed |
+| `pulse` | Lightweight heartbeat | — | ✅ Deployed |
+| `quota` | AI usage quota | — | ✅ Deployed |
 
 ---
 
-## Module: Dream
+## Module: Dream (3 Actions)
 
 Dream processing operations.
 
-| Action | Description | Parameters |
-|--------|-------------|------------|
-| `feed` | Submit dream | `dream_content: string`, `dream_type?: string` |
-| `interpret` | Interpret dream | `dream_text: string` |
-| `cycle` | Execute dream cycle | `force?: boolean` |
-| `mutate` | Mutation cycle | — |
-| `status` | Dream-Eater state | — |
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `feed` | Submit dream | `dream_content: string`, `dream_type?: string` | ✅ Deployed |
+| `cycle` | Execute dream cycle | `force?: boolean` | ✅ Deployed |
+| `awaken` | Awaken Dream-Eater | `action?: string` | ✅ Deployed |
 
 ---
 
-## Module: System
+## Module: System (9 Actions)
 
 Administration operations.
 
-| Action | Description | Parameters |
-|--------|-------------|------------|
-| `status` | System status | — |
-| `health` | Full health check | — |
-| `heal` | Heal system | `target?: string` |
-| `backup` | Create backup | `include_data?: boolean` |
-| `version` | Get version | — |
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `status` | System status | — | ✅ Deployed |
+| `health` | Full health check | — | ✅ Deployed |
+| `diagnostics` | Comprehensive diagnostics | — | ✅ Deployed |
+| `heal` | Heal system | `target?: string` | ✅ Deployed |
+| `backup` | Create backup | `include_data?: boolean` | ✅ Deployed |
+| `restore` | Restore from backup | `backup_id: string` | ✅ Deployed |
+| `audit` | System audit | — | ✅ Deployed |
+| `version` | Get version | — | ✅ Deployed |
+| `restart` | Restart services | `service?: string` | ✅ Deployed |
+
+---
+
+## BYOK Integrations
+
+Connect external services with your own API keys.
+
+| Integration | Description | Status |
+|-------------|-------------|--------|
+| **Stripe** | Payments, subscriptions, billing | ✅ Available |
+| **Twilio** | SMS, voice, messaging | ✅ Available |
+| **Shopify** | E-commerce, products, orders | ✅ Available |
+| **n8n** | Workflow automation | ✅ Available |
+| **Webhooks** | Custom API connections | ✅ Available |
 
 ---
 
@@ -177,6 +206,21 @@ Authorization: Bearer <supabase-jwt>
 | `422` | Validation failed |
 | `429` | Rate limited |
 | `500` | Internal error |
+
+---
+
+## Summary
+
+| Module | Deployed Actions |
+|--------|------------------|
+| Brain | 10 |
+| Decode | 5 |
+| Defense | 7 |
+| Nexus | 4 |
+| Vision | 14 |
+| Dream | 3 |
+| System | 9 |
+| **Total** | **52** |
 
 ---
 

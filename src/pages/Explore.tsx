@@ -264,19 +264,19 @@ export default function Explore() {
   const { scrollYProgress } = useScroll({ target: containerRef });
   const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
   
-  // Core Modules - the 6 pillars
+  // Core Modules - the 7 pillars (all deployed via pf-substrate)
   const coreModules = [
     {
       icon: Brain,
       title: "Brain",
       description: "Persistent memory, learning cycles, and self-reflection. The cognitive core that remembers, learns, and evolves.",
       features: [
-        "Hot & cold memory tiers",
-        "Knowledge graph construction",
-        "Autonomous learning cycles",
-        "Reflection & self-critique",
-        "Pattern recognition",
-        "Reinforcement learning"
+        "Memory query & storage",
+        "Daily reflection cycles",
+        "Knowledge graph summaries",
+        "Session reflection",
+        "Memory reinforcement",
+        "Cold storage migration"
       ],
       href: "/decode",
       color: "text-cyan-500",
@@ -285,13 +285,13 @@ export default function Explore() {
     {
       icon: MessageSquare,
       title: "Decode",
-      description: "Epistemic conversation engine. Multi-modal intent parsing with contextual understanding.",
+      description: "Epistemic conversation engine. Intent parsing with contextual understanding and dream integration.",
       features: [
-        "Natural language processing",
+        "Natural language chat",
+        "Intent extraction",
         "Dream mode conversations",
-        "Intent classification",
-        "Context-aware responses",
-        "Proposal generation",
+        "Learning from interactions",
+        "Session management",
         "Cascade AI integration"
       ],
       href: "/decode",
@@ -303,12 +303,12 @@ export default function Explore() {
       title: "Defense",
       description: "Behavioral analysis, threat detection, and autonomous security. Protects the substrate from attacks.",
       features: [
-        "Bot detection & blocking",
+        "Request analysis",
         "IP reputation scoring",
-        "Rate limiting",
         "Anomaly detection",
-        "Auto-repair systems",
-        "Threat intelligence feeds"
+        "Security posture checks",
+        "Rate limit monitoring",
+        "Z-score anomaly probes"
       ],
       href: "/substrate",
       color: "text-amber-500",
@@ -319,11 +319,11 @@ export default function Explore() {
       title: "Nexus",
       description: "Multi-provider AI routing with intelligent model selection based on task, cost, and latency.",
       features: [
-        "OpenAI, Anthropic, Google",
-        "Cost-optimized routing",
-        "Latency-aware selection",
+        "Intelligent routing",
+        "Provider availability",
+        "Routing analytics",
         "Automatic failover",
-        "Token tracking",
+        "Cost optimization",
         "BYOK support"
       ],
       href: "/substrate",
@@ -335,12 +335,12 @@ export default function Explore() {
       title: "Vision",
       description: "Unified observability layer with real-time metrics, health monitoring, and comprehensive audit trails.",
       features: [
-        "Real-time telemetry",
-        "Health dashboards",
-        "Event streaming",
-        "Audit logging",
-        "Performance analytics",
-        "Custom alerts"
+        "System health checks",
+        "Dashboard data",
+        "Distributed tracing",
+        "Introspection",
+        "AI quota monitoring",
+        "Pulse heartbeats"
       ],
       href: "/os",
       color: "text-blue-500",
@@ -348,44 +348,57 @@ export default function Explore() {
     },
     {
       icon: Moon,
-      title: "Dream-Eater",
+      title: "Dream",
       description: "Nocturnal processing engine. Feed dreams to the substrate and watch transformation emerge.",
       features: [
-        "Dream ingestion API",
+        "Dream feeding API",
+        "Dream cycles",
+        "Awakening sequences",
         "Sentiment analysis",
         "Pattern extraction",
-        "Nightmare processing",
-        "Mutation cycles",
-        "Insight generation"
+        "Mutation cycles"
       ],
       href: "/feed-dream-eater",
       color: "text-violet-500",
       gradient: "bg-violet-500",
     },
+    {
+      icon: Settings,
+      title: "System",
+      description: "Administrative operations, diagnostics, healing, and backup/restore for the entire substrate.",
+      features: [
+        "System status",
+        "Full diagnostics",
+        "Self-healing",
+        "Backup & restore",
+        "Version management",
+        "Service restart"
+      ],
+      href: "/substrate",
+      color: "text-rose-500",
+      gradient: "bg-rose-500",
+    },
   ];
 
-  // Edge Functions - Backend capabilities
-  // Edge Functions - ACCURATE counts based on MODULE-ACTIONS-REGISTRY.md
-  // Only includes functions actually working with the substrate
-  const edgeFunctions = [
-    { icon: Brain, title: "Brain System", description: "Memory, learning, reflection, knowledge graphs", count: "25", color: "text-cyan-500" },
-    { icon: Shield, title: "Defense System", description: "Bot detection, rate limiting, IP reputation", count: "20", color: "text-amber-500" },
-    { icon: Bot, title: "Cascade AI", description: "Conversational AI, proposals, routing", count: "12", color: "text-fuchsia-500" },
-    { icon: Eye, title: "Vision System", description: "Health, metrics, tracing, dashboards", count: "10", color: "text-blue-500" },
-    { icon: Mail, title: "Email Systems", description: "Automated reports, notifications, digests", count: "6", color: "text-rose-500" },
-    { icon: Moon, title: "Dream Processing", description: "Dream cycles, awakening, mutation", count: "5", color: "text-violet-500" },
-    { icon: Zap, title: "Nexus Routing", description: "Multi-provider AI orchestration", count: "4", color: "text-green-500" },
-    { icon: Webhook, title: "BYOK & Integrations", description: "API key management, external connections", count: "3", color: "text-orange-500" },
+  // Deployed substrate actions by module (per MODULE-ACTIONS-REGISTRY.md)
+  const substrateActions = [
+    { icon: Brain, title: "Brain Actions", description: "query, remember, reflect, reinforce, dream, status, graphSummary, sessionReflection, learn, coldMigrate", count: "10", color: "text-cyan-500" },
+    { icon: Eye, title: "Vision Actions", description: "health, healthSnapshot, dashboard, trace, introspection, pulse, quota, metrics, logs, alert, audit, monitor, resilience, analytics", count: "14", color: "text-blue-500" },
+    { icon: Shield, title: "Defense Actions", description: "analyze, reputation, anomaly, anomalyProbe, limits, posture, status", count: "7", color: "text-amber-500" },
+    { icon: MessageSquare, title: "Decode Actions", description: "chat, intent, dream, learn, status", count: "5", color: "text-purple-500" },
+    { icon: Zap, title: "Nexus Actions", description: "route, providers, routeStats, status", count: "4", color: "text-green-500" },
+    { icon: Moon, title: "Dream Actions", description: "cycle, awaken, feed", count: "3", color: "text-violet-500" },
+    { icon: Settings, title: "System Actions", description: "status, health, diagnostics, heal, backup, restore, audit, version, restart", count: "9", color: "text-rose-500" },
   ];
 
   // System Capabilities - ACCURATE counts
   const capabilities = [
-    { icon: Cpu, value: "85+", label: "Edge Functions", description: "Deployed & operational", color: "text-cyan-500" },
-    { icon: Layers, value: "44", label: "Substrate Actions", description: "Via unified pf-substrate", color: "text-purple-500" },
+    { icon: Layers, value: "52", label: "Substrate Actions", description: "Via unified pf-substrate", color: "text-purple-500" },
     { icon: Database, value: "50+", label: "Database Tables", description: "Structured data schemas", color: "text-green-500" },
     { icon: Activity, value: "24/7", label: "Autonomous Ops", description: "Self-healing systems", color: "text-amber-500" },
     { icon: Clock, value: "<100ms", label: "Response Time", description: "Edge-optimized latency", color: "text-blue-500" },
-    { icon: HeartPulse, value: "6", label: "Core Modules", description: "Brain, Decode, Defense, Nexus, Vision, Dream", color: "text-rose-500" },
+    { icon: HeartPulse, value: "7", label: "Core Modules", description: "Brain, Decode, Defense, Nexus, Vision, Dream, System", color: "text-rose-500" },
+    { icon: Lock, value: "BYOK", label: "Architecture", description: "Bring Your Own Keys", color: "text-cyan-500" },
   ];
 
   // Key Features
@@ -410,40 +423,40 @@ export default function Explore() {
     },
     {
       icon: TrendingUp,
-      title: "Predictive Intelligence",
-      description: "Forecasting systems analyze trends and predict future behavior, enabling proactive responses before issues arise.",
+      title: "Unified Observability",
+      description: "14 vision actions provide complete insight into system health, traces, metrics, AI quotas, and real-time pulse monitoring.",
       color: "text-purple-500"
     },
     {
       icon: Lock,
       title: "Defense-First Design",
-      description: "Multi-layer security with behavioral analysis, anomaly detection, and autonomous threat response protects every endpoint.",
+      description: "Multi-layer security with behavioral analysis, anomaly detection, and IP reputation scoring protects every endpoint.",
       color: "text-rose-500"
     },
     {
       icon: Cloud,
-      title: "Edge-Native Performance",
-      description: "All backend logic runs on edge functions for global distribution, minimal latency, and infinite scalability.",
+      title: "BYOK Architecture",
+      description: "Bring Your Own Keys — register your AI provider keys, connect your integrations, and pay providers directly. Zero vendor lock-in.",
       color: "text-cyan-500"
     },
   ];
 
   // External Integrations - BYOK services available via integration bus
   const integrations = [
-    { icon: Zap, title: "Stripe", description: "Payments, subscriptions, and billing via your Stripe account", color: "text-purple-500" },
-    { icon: MessageSquare, title: "Twilio", description: "SMS, voice, and messaging through Twilio APIs", color: "text-red-500" },
-    { icon: Globe, title: "Shopify", description: "E-commerce, products, and orders via Shopify Admin API", color: "text-green-500" },
-    { icon: Workflow, title: "n8n", description: "Workflow automation and custom integrations", color: "text-orange-500" },
-    { icon: Webhook, title: "Custom Webhooks", description: "Connect any external API or service", color: "text-cyan-500" },
+    { icon: Zap, title: "Stripe", description: "Payments, subscriptions, billing — use your Stripe API keys", color: "text-purple-500" },
+    { icon: MessageSquare, title: "Twilio", description: "SMS, voice, messaging — use your Twilio credentials", color: "text-red-500" },
+    { icon: Globe, title: "Shopify", description: "E-commerce, products, orders — connect your store", color: "text-green-500" },
+    { icon: Workflow, title: "n8n", description: "Workflow automation — trigger your n8n workflows", color: "text-orange-500" },
+    { icon: Webhook, title: "Webhooks", description: "Custom endpoints — connect any external API", color: "text-cyan-500" },
   ];
 
   return (
     <div ref={containerRef} className="min-h-screen bg-background overflow-hidden">
       <SEO 
         title="promptfluid® — Cognitive Substrate Infrastructure"
-        description="85+ edge functions, 44 substrate actions, 6 core modules. Autonomous learning and defense-first architecture. Build applications that dream, remember, self-reflect, and defend themselves."
+        description="7 core modules, 52 substrate actions, BYOK architecture. Autonomous learning, memory persistence, AI routing, and defense-first design. Build applications that think, learn, and defend themselves."
         canonical="https://promptfluid.com"
-        keywords={['cognitive substrate', 'AI infrastructure', 'autonomous AI', 'machine learning', 'edge functions', 'self-learning', 'defense AI']}
+        keywords={['cognitive substrate', 'AI infrastructure', 'autonomous AI', 'BYOK', 'memory systems', 'self-learning', 'defense AI']}
       />
 
       <PublicNav />
@@ -478,13 +491,13 @@ export default function Explore() {
             </h1>
             
             <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-4">
-              <strong className="text-foreground">85+ edge functions.</strong>{" "}
-              <strong className="text-foreground">44 substrate actions.</strong>{" "}
-              <strong className="text-foreground">6 core modules.</strong>
+              <strong className="text-foreground">7 core modules.</strong>{" "}
+              <strong className="text-foreground">52 substrate actions.</strong>{" "}
+              <strong className="text-foreground">BYOK architecture.</strong>
             </p>
             <p className="text-muted-foreground max-w-2xl mx-auto mb-10">
-              A complete cognitive backend with persistent memory, intelligent routing, behavioral defense, 
-              and dream-state processing—all self-healing and continuously learning.
+              A complete cognitive backend with persistent memory, intelligent AI routing, behavioral defense, 
+              dream-state processing, and full observability—all self-healing and continuously learning.
             </p>
           </motion.div>
           
@@ -516,10 +529,10 @@ export default function Explore() {
             className="mt-12 flex flex-wrap items-center justify-center gap-6 md:gap-12"
           >
             {[
-              { label: "Edge Functions", value: "85+" },
-              { label: "Substrate Actions", value: "44" },
-              { label: "Core Modules", value: "6" },
+              { label: "Core Modules", value: "7" },
+              { label: "Substrate Actions", value: "52" },
               { label: "Database Tables", value: "50+" },
+              { label: "BYOK Integrations", value: "5" },
             ].map((stat, idx) => (
               <div key={stat.label} className="text-center">
                 <div className="text-2xl md:text-3xl font-bold text-foreground">{stat.value}</div>
@@ -555,15 +568,15 @@ export default function Explore() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <Badge variant="outline" className="mb-4">6 Core Modules</Badge>
+            <Badge variant="outline" className="mb-4">7 Core Modules</Badge>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">The Cognitive Architecture</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Six interconnected systems working in harmony. Each module operates independently 
+              Seven interconnected systems working in harmony. Each module operates independently 
               while contributing to the collective intelligence of the substrate.
             </p>
           </motion.div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {coreModules.map((module, idx) => (
               <ModuleCard 
                 key={module.title}
@@ -577,7 +590,7 @@ export default function Explore() {
 
       <SectionDivider />
 
-      {/* Edge Functions Section */}
+      {/* Substrate Actions Section */}
       <section className="relative z-10 px-4 py-24">
         <div className="max-w-7xl mx-auto">
           <motion.div
@@ -586,19 +599,19 @@ export default function Explore() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <Badge variant="outline" className="mb-4">Backend Infrastructure</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">200+ Edge Functions</h2>
+            <Badge variant="outline" className="mb-4">Unified API</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">52 Substrate Actions</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              A comprehensive backend powering every capability. Cognitive cycles, security systems, 
-              email automation, content generation, and more—all running on the edge.
+              All cognitive operations accessible through a single endpoint. Memory, chat, security, 
+              AI routing, observability, dream processing, and system administration.
             </p>
           </motion.div>
           
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {edgeFunctions.map((fn, idx) => (
+            {substrateActions.map((action, idx) => (
               <IntegrationCard 
-                key={fn.title}
-                {...fn}
+                key={action.title}
+                {...action}
                 delay={idx * 0.05}
               />
             ))}
