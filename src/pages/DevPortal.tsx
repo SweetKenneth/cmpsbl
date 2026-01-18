@@ -5167,7 +5167,7 @@ const REQUIRED_KEYS = [
   { name: 'DEEPSEEK_API_KEY', provider: 'DeepSeek', url: 'https://platform.deepseek.com', required: false, description: 'Cost-effective option' },
 ];
 
-// Module quick reference
+// Module quick reference - Including BYOK modules
 const MODULES = [
   { 
     name: 'Brain', 
@@ -5217,6 +5217,42 @@ const MODULES = [
     color: 'blue',
     desc: 'Administration, health, backup',
     actions: ['status', 'health', 'heal', 'backup', 'version']
+  },
+  // NEW BYOK MODULES
+  { 
+    name: 'Keys (BYOK)', 
+    icon: Key, 
+    color: 'orange',
+    desc: 'API key management - pay your own compute',
+    actions: ['register', 'list', 'rotate', 'revoke', 'usage']
+  },
+  { 
+    name: 'AI (BYOK)', 
+    icon: Sparkles, 
+    color: 'pink',
+    desc: 'AI calls with YOUR API keys',
+    actions: ['chat', 'prompt', 'providers']
+  },
+  { 
+    name: 'Extensions', 
+    icon: Package, 
+    color: 'teal',
+    desc: 'Custom hooks for all modules',
+    actions: ['register', 'list', 'enable', 'disable', 'invoke', 'hooks']
+  },
+  { 
+    name: 'Integrations', 
+    icon: Globe, 
+    color: 'indigo',
+    desc: 'Connect Stripe, Twilio, n8n, webhooks',
+    actions: ['connect', 'list', 'call', 'webhook', 'disconnect']
+  },
+  { 
+    name: 'Agents', 
+    icon: Bot, 
+    color: 'lime',
+    desc: 'Multi-agent orchestration patterns',
+    actions: ['create', 'list', 'run', 'events', 'delete']
   },
 ];
 
@@ -5598,8 +5634,8 @@ export default function DevPortal() {
               transition={{ delay: 0.2 }}
               className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-6 sm:mb-8 px-2"
             >
-              Memory, learning, security, and AI routing for autonomous systems.
-              Deploy your own instance. Bring your own keys.
+              Memory, learning, security, AI routing, extensions, integrations, and multi-agent orchestration.
+              <span className="block mt-2 font-medium text-primary">100% BYOK — You own your infrastructure. You pay your own AI costs.</span>
             </motion.p>
 
             {/* API Key Warning - Mobile Optimized */}
@@ -5678,12 +5714,13 @@ export default function DevPortal() {
             {/* Overview Tab - Mobile First */}
             <TabsContent value="overview" className="space-y-6 sm:space-y-8">
               {/* Quick Stats - 2x2 grid on mobile */}
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+              <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
                 {[
-                  { label: 'Modules', value: '7', icon: Layers },
-                  { label: 'Actions', value: '50+', icon: Zap },
-                  { label: 'Templates', value: '15', icon: FileCode },
-                  { label: 'Providers', value: '4+', icon: Server },
+                  { label: 'Modules', value: '12', icon: Layers },
+                  { label: 'Actions', value: '80+', icon: Zap },
+                  { label: 'Templates', value: '72', icon: FileCode },
+                  { label: 'Providers', value: '10+', icon: Server },
+                  { label: 'Agent Patterns', value: '5', icon: Bot },
                 ].map((stat) => (
                   <Card key={stat.label} className="text-center py-4 sm:py-6">
                     <stat.icon className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-1.5 sm:mb-2 text-primary" />

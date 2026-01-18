@@ -3,14 +3,20 @@
  * 
  * Protect your API endpoints from bots using fingerprint analysis.
  * 
- * BYOK: You must deploy your own substrate with API keys.
+ * BYOK ARCHITECTURE:
+ * - You deploy your own substrate infrastructure
+ * - You control all security policies
+ * - No external dependencies for core detection
+ * - AI-enhanced analysis uses YOUR registered keys
  */
 
 import { SubstrateClient } from '../substrate-client';
 
 const substrate = new SubstrateClient({
   url: process.env.SUPABASE_URL!,
-  anonKey: process.env.SUPABASE_ANON_KEY!
+  anonKey: process.env.SUPABASE_ANON_KEY!,
+  developerId: process.env.DEVELOPER_ID!, // Required for BYOK
+  appId: process.env.APP_ID! // Required for BYOK
 });
 
 interface RequestContext {

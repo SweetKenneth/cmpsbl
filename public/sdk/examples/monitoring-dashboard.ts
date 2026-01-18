@@ -3,14 +3,20 @@
  * 
  * Monitor your substrate with health checks, metrics, and alerts.
  * 
- * BYOK: You must deploy your own substrate.
+ * BYOK ARCHITECTURE:
+ * - You deploy and own your substrate infrastructure
+ * - All metrics stay within your project
+ * - Full control over monitoring and alerting
+ * - No external telemetry or data collection
  */
 
 import { SubstrateClient } from '../substrate-client';
 
 const substrate = new SubstrateClient({
   url: process.env.SUPABASE_URL!,
-  anonKey: process.env.SUPABASE_ANON_KEY!
+  anonKey: process.env.SUPABASE_ANON_KEY!,
+  developerId: process.env.DEVELOPER_ID!, // Required for BYOK
+  appId: process.env.APP_ID! // Required for BYOK
 });
 
 interface HealthStatus {
