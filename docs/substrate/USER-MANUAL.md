@@ -463,34 +463,111 @@ import { substrate, brain, decode, defense, nexus, vision, dream, system } from 
 ### Module Helpers
 
 ```typescript
-// Brain operations
+// Brain operations - ✅ DEPLOYED
 await brain.query('machine learning', 10);
 await brain.remember('New fact', 'fact');
 await brain.reflect();
+await brain.graphSummary();
+await brain.sessionReflection(24);
 
-// Chat operations
+// Chat operations - ✅ DEPLOYED
 await decode.chat('Hello!', 'session_123');
-await decode.interpret('Analyze my data');
+await decode.intent('Analyze my data');
+await decode.learn('content', 'source');
 
-// Security checks
+// Security checks - ✅ DEPLOYED
 await defense.analyze({ fingerprint: {...} });
 await defense.reputation('192.168.1.1');
+await defense.anomaly('1h');
+await defense.posture();
 
-// AI routing
-await nexus.text('Generate summary');
-await nexus.image('A cosmic dream');
+// AI routing - ✅ DEPLOYED
+await nexus.route('Complex task description');
+await nexus.providers();
+await nexus.routeStats();
+// Note: text/image/video via standalone pf-nexus-* functions
 
-// Health monitoring
+// Health monitoring - ✅ DEPLOYED
 await vision.health();
-await vision.metrics('24h');
+await vision.healthSnapshot();
+await vision.dashboard();
+await vision.pulse();
 
-// Dream operations
+// Dream operations - ✅ DEPLOYED
 await dream.feed('I was flying...', 'dream');
-await dream.state();
+await dream.cycle(true);
+await dream.awaken();
 
-// System admin
-await system.config();
-await system.audit();
+// System admin - ✅ DEPLOYED
+await system.status();
+await system.health();
+await system.diagnostics();
+await system.heal('brain', true);
+```
+
+---
+
+## External Integrations (BYOK)
+
+The substrate supports connecting external services with your own API keys.
+
+### Supported Integrations
+
+| Integration | Purpose | Status |
+|-------------|---------|--------|
+| **Stripe** | Payments, subscriptions, billing | ✅ Available |
+| **Twilio** | SMS, voice, messaging | ✅ Available |
+| **Shopify** | E-commerce, products, orders | ✅ Available |
+| **n8n** | Workflow automation | ✅ Available |
+| **Webhooks** | Custom API connections | ✅ Available |
+
+### Integration Examples
+
+**Connect Stripe:**
+```typescript
+await substrate.integrations.connect({
+  name: 'My Stripe',
+  integration_type: 'stripe',
+  config: { mode: 'live' },
+  credentials: { api_key: 'sk_live_...' }
+});
+
+// Call Stripe API
+await substrate.integrations.call('stripe-id', 'customers.create', {
+  email: 'user@example.com'
+});
+```
+
+**Connect Twilio:**
+```typescript
+await substrate.integrations.connect({
+  name: 'SMS Service',
+  integration_type: 'twilio',
+  config: { from_number: '+1234567890' },
+  credentials: { 
+    account_sid: 'AC...',
+    auth_token: '...'
+  }
+});
+
+// Send SMS
+await substrate.integrations.call('twilio-id', 'messages.create', {
+  to: '+1987654321',
+  body: 'Hello from substrate!'
+});
+```
+
+**Connect Custom Webhook:**
+```typescript
+await substrate.integrations.connect({
+  name: 'My API',
+  integration_type: 'webhook',
+  config: { 
+    endpoint_url: 'https://api.example.com/webhook',
+    method: 'POST'
+  },
+  credentials: { api_key: 'your-api-key' }
+});
 ```
 
 ### React Hooks

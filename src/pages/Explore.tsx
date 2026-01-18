@@ -428,10 +428,13 @@ export default function Explore() {
     },
   ];
 
-  // Products - Only substrate-integrated products
-  const products = [
-    { icon: Shield, title: "Bot Sniper", description: "AI-powered bot detection for WordPress & web apps", href: "/blog/wordpress-bot-defense", color: "text-amber-500" },
-    { icon: Eye, title: "Clarity", description: "Automated accessibility scanning & WCAG compliance", href: "/blog/accessibility-free-for-all", color: "text-teal-500" },
+  // External Integrations - BYOK services available via integration bus
+  const integrations = [
+    { icon: Zap, title: "Stripe", description: "Payments, subscriptions, and billing via your Stripe account", color: "text-purple-500" },
+    { icon: MessageSquare, title: "Twilio", description: "SMS, voice, and messaging through Twilio APIs", color: "text-red-500" },
+    { icon: Globe, title: "Shopify", description: "E-commerce, products, and orders via Shopify Admin API", color: "text-green-500" },
+    { icon: Workflow, title: "n8n", description: "Workflow automation and custom integrations", color: "text-orange-500" },
+    { icon: Webhook, title: "Custom Webhooks", description: "Connect any external API or service", color: "text-cyan-500" },
   ];
 
   return (
@@ -702,42 +705,38 @@ export default function Explore() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <Badge variant="outline" className="mb-4">Products</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Built on the Substrate</h2>
+            <Badge variant="outline" className="mb-4">BYOK Integrations</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Connect External Services</h2>
             <p className="text-muted-foreground max-w-xl mx-auto">
-              Real products powered by this cognitive infrastructure, solving real problems.
+              Bring your own keys. The substrate connects to your existing services seamlessly.
             </p>
           </motion.div>
           
-          <div className="grid sm:grid-cols-2 gap-6">
-            {products.map((product, idx) => (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {integrations.map((integration, idx) => (
               <motion.div
-                key={product.title}
+                key={integration.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
+                className={cn(
+                  "p-5 rounded-xl border border-border/50 bg-card/30 transition-all duration-300",
+                  "hover:bg-card/60 hover:border-current/20",
+                  integration.color
+                )}
               >
-                <Link to={product.href} className="group block">
-                  <div className={cn(
-                    "p-6 rounded-2xl border border-border/50 bg-card/30 transition-all duration-300",
-                    "hover:bg-card/60 hover:border-current/20 hover:-translate-y-1",
-                    product.color
-                  )}>
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-current/10 flex items-center justify-center shrink-0">
-                        <product.icon className="w-6 h-6" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="font-bold text-lg text-foreground group-hover:text-current transition-colors mb-1">
-                          {product.title}
-                        </h3>
-                        <p className="text-sm text-muted-foreground">{product.description}</p>
-                      </div>
-                      <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-current group-hover:translate-x-1 transition-all" />
-                    </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-current/10 flex items-center justify-center shrink-0">
+                    <integration.icon className="w-5 h-5" />
                   </div>
-                </Link>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-foreground mb-1">
+                      {integration.title}
+                    </h3>
+                    <p className="text-xs text-muted-foreground">{integration.description}</p>
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
