@@ -21,55 +21,248 @@ interface BrainIntelligencePanelProps {
   enabled: boolean;
 }
 
+// Helper to extract clean text from various data formats
+function extractReadableText(data: any): string {
+  if (!data) return '';
+  if (typeof data === 'string') return data;
+  
+  // Handle nested objects with common patterns
+  if (typeof data === 'object') {
+    // Handle arrays
+    if (Array.isArray(data)) {
+      return data.map(item => extractReadableText(item)).filter(Boolean).join('\n');
+    }
+    
+    // Extract meaningful text from common nested structures
+    const textParts: string[] = [];
+    
+    // Look for insight-like fields
+    if (data.action) textParts.push(data.action);
+    if (data.finding) textParts.push(`Finding: ${data.finding}`);
+    if (data.adjustment) textParts.push(`Adjustment: ${data.adjustment}`);
+    if (data.insight) textParts.push(data.insight);
+    if (data.recommendation) textParts.push(data.recommendation);
+    if (data.content) textParts.push(data.content);
+    if (data.text) textParts.push(data.text);
+    if (data.description) textParts.push(data.description);
+    
+    // Handle nested insights array
+    if (data.insights && Array.isArray(data.insights)) {
+      textParts.push(...data.insights.map((i: any) => extractReadableText(i)));
+    }
+    
+    // Handle metrics object - format nicely
+    if (data.metrics) {
+      const metricLines: string[] = [];
+      Object.entries(data.metrics).forEach(([key, value]) => {
+        const label = key.replace(/_/g, ' ').replace(/avg /gi, '').trim();
+        const displayValue = typeof value === 'number' && !isNaN(value) 
+          ? `${(value * 100).toFixed(0)}%` 
+          : value === 'NaN%' || (typeof value === 'number' && isNaN(value))
+            ? 'Not measured'
+            : String(value);
+        metricLines.push(`• ${label}: ${displayValue}`);
+      });
+      if (metricLines.length) textParts.push('Metrics:\n' + metricLines.join('\n'));
+    }
+    
+    if (textParts.length > 0) {
+      return textParts.filter(Boolean).join('\n\n');
+    }
+  }
+  
+  return '';
+}
+
+// Parse and format reflection for display
+function parseReflectionContent(reflection: any): {
+  title: string;
+  summary: string;
+  insights: string[];
+  metrics: { label: string; value: string }[];
+  recommendations: string;
+} {
+  const result = {
+    title: '',
+    summary: '',
+    insights: [] as string[],
+    metrics: [] as { label: string; value: string }[],
+    recommendations: ''
+  };
+  
+  // Extract title from date
+  const date = new Date(reflection.reflection_date || reflection.created_at);
+  result.title = `Reflection - ${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
+  
+  // Parse summary - clean up the groq prefix if present
+  let summaryText = reflection.summary || '';
+  if (summaryText.includes(':')) {
+    // Remove "Reflection generated using X:" prefix
+    const colonIndex = summaryText.indexOf(':');
+    if (colonIndex < 50) {
+      summaryText = summaryText.substring(colonIndex + 1).trim();
+    }
+  }
+  result.summary = summaryText;
+  
+  // Parse lessons object for insights
+  if (reflection.lessons) {
+    const lessonsData = typeof reflection.lessons === 'string' 
+      ? JSON.parse(reflection.lessons) 
+      : reflection.lessons;
+    
+    // Extract insights from lessons
+    if (lessonsData.insights && Array.isArray(lessonsData.insights)) {
+      lessonsData.insights.forEach((insight: any) => {
+        if (insight.action && typeof insight.action === 'string') {
+          // Clean up the action text - take first sentence or meaningful chunk
+          const actionText = insight.action.split('\n')[0].substring(0, 200);
+          result.insights.push(actionText);
+        }
+      });
+    }
+    
+    // Extract metrics
+    if (lessonsData.metrics) {
+      Object.entries(lessonsData.metrics).forEach(([key, value]) => {
+        const label = key
+          .replace(/^avg_/, '')
+          .replace(/_/g, ' ')
+          .split(' ')
+          .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+          .join(' ');
+        
+        let displayValue: string;
+        if (typeof value === 'number') {
+          if (isNaN(value)) {
+            displayValue = 'No data';
+          } else if (value <= 1) {
+            displayValue = `${Math.round(value * 100)}%`;
+          } else {
+            displayValue = value.toFixed(2);
+          }
+        } else if (value === 'NaN%') {
+          displayValue = 'No data';
+        } else {
+          displayValue = String(value);
+        }
+        
+        result.metrics.push({ label, value: displayValue });
+      });
+    }
+  }
+  
+  // Parse recommendations
+  if (reflection.recommendations) {
+    result.recommendations = typeof reflection.recommendations === 'string' 
+      ? reflection.recommendations 
+      : extractReadableText(reflection.recommendations);
+  }
+  
+  // Parse insights field
+  if (reflection.insights && typeof reflection.insights === 'string') {
+    result.insights.unshift(reflection.insights);
+  }
+  
+  return result;
+}
+
 // Collapsible Reflection Card Component
 function ReflectionCard({ reflection }: { reflection: any }) {
   const [isExpanded, setIsExpanded] = useState(false);
-  
-  const summary = reflection.summary || reflection.insights || 'Reflection processed';
-  const fullContent = [
-    reflection.summary,
-    reflection.insights,
-    reflection.recommendations,
-    reflection.lessons ? JSON.stringify(reflection.lessons, null, 2) : null
-  ].filter(Boolean).join('\n\n');
-  
-  const date = new Date(reflection.reflection_date || reflection.created_at).toLocaleDateString();
+  const parsed = parseReflectionContent(reflection);
   
   return (
     <div 
       className={cn(
-        "rounded-lg bg-muted/20 text-xs transition-all duration-200 cursor-pointer hover:bg-muted/30",
+        "rounded-lg bg-muted/20 text-xs transition-all duration-200 cursor-pointer hover:bg-muted/30 border border-border/30",
         isExpanded ? "ring-1 ring-primary/30" : ""
       )}
       onClick={() => setIsExpanded(!isExpanded)}
     >
-      <div className="flex items-start justify-between p-3">
-        <div className="flex-1 min-w-0">
-          <p className={cn(
-            "text-muted-foreground transition-all",
-            !isExpanded && "line-clamp-2"
-          )}>
-            {isExpanded ? fullContent : summary}
-          </p>
-          <span className="text-[10px] text-muted-foreground/60 mt-1 block">
-            {date}
-          </span>
+      {/* Header */}
+      <div className="flex items-center justify-between p-3 pb-2">
+        <div className="flex items-center gap-2">
+          <Brain className="w-3.5 h-3.5 text-primary/70" />
+          <span className="font-medium text-foreground">{parsed.title}</span>
         </div>
         <ChevronDown 
           className={cn(
-            "w-4 h-4 text-muted-foreground/50 shrink-0 ml-2 transition-transform duration-200",
+            "w-4 h-4 text-muted-foreground/50 shrink-0 transition-transform duration-200",
             isExpanded && "rotate-180"
           )} 
         />
       </div>
-      {isExpanded && reflection.top_memories && (
-        <div className="px-3 pb-3 pt-0 border-t border-border/30 mt-2">
-          <p className="text-[10px] text-muted-foreground/70 font-medium mb-1">Top Memories:</p>
-          <div className="text-[10px] text-muted-foreground/60 whitespace-pre-wrap">
-            {typeof reflection.top_memories === 'string' 
-              ? reflection.top_memories 
-              : JSON.stringify(reflection.top_memories, null, 2)}
-          </div>
+      
+      {/* Summary - always visible */}
+      <div className="px-3 pb-3">
+        <p className={cn(
+          "text-muted-foreground leading-relaxed",
+          !isExpanded && "line-clamp-2"
+        )}>
+          {parsed.summary || 'Processing reflection data...'}
+        </p>
+      </div>
+      
+      {/* Expanded content */}
+      {isExpanded && (
+        <div className="border-t border-border/30 px-3 py-3 space-y-3">
+          {/* Metrics */}
+          {parsed.metrics.length > 0 && (
+            <div>
+              <p className="text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">System Metrics</p>
+              <div className="grid grid-cols-2 gap-2">
+                {parsed.metrics.map((m, idx) => (
+                  <div key={idx} className="bg-background/50 rounded px-2 py-1.5">
+                    <span className="text-muted-foreground/70">{m.label}:</span>
+                    <span className={cn(
+                      "ml-1 font-medium",
+                      m.value === 'No data' ? 'text-muted-foreground/50' : 'text-foreground'
+                    )}>
+                      {m.value}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {/* Insights */}
+          {parsed.insights.length > 0 && (
+            <div>
+              <p className="text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Key Insights</p>
+              <ul className="space-y-1.5">
+                {parsed.insights.map((insight, idx) => (
+                  <li key={idx} className="flex items-start gap-2">
+                    <Lightbulb className="w-3 h-3 text-amber-500/70 mt-0.5 shrink-0" />
+                    <span className="text-muted-foreground leading-relaxed">{insight}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          
+          {/* Recommendations */}
+          {parsed.recommendations && (
+            <div>
+              <p className="text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Recommendations</p>
+              <p className="text-muted-foreground leading-relaxed">{parsed.recommendations}</p>
+            </div>
+          )}
+          
+          {/* Top Memories */}
+          {reflection.top_memories && Array.isArray(reflection.top_memories) && reflection.top_memories.length > 0 && (
+            <div>
+              <p className="text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Associated Memories</p>
+              <div className="text-muted-foreground/70">
+                {reflection.top_memories.map((mem: any, idx: number) => (
+                  <div key={idx} className="bg-background/30 rounded px-2 py-1 mb-1">
+                    {typeof mem === 'string' ? mem : extractReadableText(mem)}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

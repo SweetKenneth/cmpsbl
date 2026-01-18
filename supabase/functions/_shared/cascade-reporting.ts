@@ -95,13 +95,15 @@ export const URGENCY_TIERS: Record<UrgencyTier, {
 // III. CADENCE MODES
 // ═══════════════════════════════════════════════════════════════════════════
 
-export type CadenceMode = 'BURST' | 'DAILY' | 'WEEKLY' | 'SILENT_OBSERVER' | 'OPERATIVE';
+export type CadenceMode = 'BURST' | 'DAILY' | 'WEEKLY' | 'SILENT_OBSERVER' | 'OPERATIVE' | 'LEARNER';
 
 export const CADENCE_MODES: Record<CadenceMode, {
   description: string;
   red_dispatch: string;
   yellow_dispatch: string;
   green_dispatch: string;
+  emails_per_day?: number;
+  focus?: string;
 }> = {
   BURST: {
     description: 'Event-based; RED+YELLOW only',
@@ -132,11 +134,43 @@ export const CADENCE_MODES: Record<CadenceMode, {
     red_dispatch: 'immediate',
     yellow_dispatch: 'immediate',
     green_dispatch: 'immediate'
+  },
+  LEARNER: {
+    description: 'Focus on studying edge functions and substrate improvement. 3 emails/day with learning insights.',
+    red_dispatch: 'suppress',
+    yellow_dispatch: 'suppress',
+    green_dispatch: 'suppress',
+    emails_per_day: 3,
+    focus: 'substrate_improvement'
   }
 };
 
+// LEARNER MODE CONFIG
+export const LEARNER_CONFIG = {
+  emails_per_day: 3,
+  email_schedule: [
+    { hour: 9, name: 'morning', focus: 'overnight_learning_digest' },
+    { hour: 14, name: 'afternoon', focus: 'edge_function_analysis' },
+    { hour: 20, name: 'evening', focus: 'improvement_proposals' }
+  ],
+  learning_sources: [
+    'supabase/functions',
+    'supabase/functions/_archived',
+    'brain_events',
+    'brain_memories',
+    'learning_patterns'
+  ],
+  focus_areas: [
+    'substrate_optimization',
+    'edge_function_patterns',
+    'feature_proposals',
+    'code_quality_improvements',
+    'new_capability_ideas'
+  ]
+};
+
 // ACTIVE MODE - SET BY FOUNDER
-export let ACTIVE_MODE: CadenceMode = 'OPERATIVE';
+export let ACTIVE_MODE: CadenceMode = 'LEARNER';
 
 export function setMode(mode: CadenceMode): void {
   ACTIVE_MODE = mode;
@@ -145,6 +179,10 @@ export function setMode(mode: CadenceMode): void {
 
 export function getActiveMode(): CadenceMode {
   return ACTIVE_MODE;
+}
+
+export function isLearnerMode(): boolean {
+  return ACTIVE_MODE === 'LEARNER';
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
