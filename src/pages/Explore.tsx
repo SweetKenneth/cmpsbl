@@ -365,29 +365,27 @@ export default function Explore() {
   ];
 
   // Edge Functions - Backend capabilities
+  // Edge Functions - ACCURATE counts based on MODULE-ACTIONS-REGISTRY.md
+  // Only includes functions actually working with the substrate
   const edgeFunctions = [
-    { icon: Brain, title: "Cognitive Cycles", description: "Deep think, reflect, synthesize, and learn", count: "40+", color: "text-cyan-500" },
-    { icon: Shield, title: "Security Suite", description: "Bot detection, rate limiting, IP reputation", count: "25+", color: "text-amber-500" },
-    { icon: Mail, title: "Email Systems", description: "Automated reports, notifications, digests", count: "10+", color: "text-rose-500" },
-    { icon: Search, title: "Research Engine", description: "Perplexity integration, web research", count: "5+", color: "text-emerald-500" },
-    { icon: Wand2, title: "Content Generation", description: "Blog posts, SEO, marketing copy", count: "15+", color: "text-purple-500" },
-    { icon: BarChart3, title: "Analytics", description: "Usage tracking, performance metrics", count: "10+", color: "text-blue-500" },
-    { icon: Webhook, title: "Integration Bus", description: "External API orchestration", count: "5+", color: "text-orange-500" },
-    { icon: Fingerprint, title: "Bot Sniper", description: "Advanced behavioral fingerprinting", count: "8+", color: "text-red-500" },
-    { icon: Globe, title: "Accessibility", description: "WCAG scanning, auto-fixes, reports", count: "15+", color: "text-teal-500" },
-    { icon: FileText, title: "Modernizer", description: "Website extraction & React rebuilding", count: "12+", color: "text-indigo-500" },
-    { icon: Bot, title: "Cascade AI", description: "Autonomous learning agent", count: "20+", color: "text-fuchsia-500" },
-    { icon: Network, title: "Ripple Network", description: "Distributed task processing", count: "5+", color: "text-sky-500" },
+    { icon: Brain, title: "Brain System", description: "Memory, learning, reflection, knowledge graphs", count: "25", color: "text-cyan-500" },
+    { icon: Shield, title: "Defense System", description: "Bot detection, rate limiting, IP reputation", count: "20", color: "text-amber-500" },
+    { icon: Bot, title: "Cascade AI", description: "Conversational AI, proposals, routing", count: "12", color: "text-fuchsia-500" },
+    { icon: Eye, title: "Vision System", description: "Health, metrics, tracing, dashboards", count: "10", color: "text-blue-500" },
+    { icon: Mail, title: "Email Systems", description: "Automated reports, notifications, digests", count: "6", color: "text-rose-500" },
+    { icon: Moon, title: "Dream Processing", description: "Dream cycles, awakening, mutation", count: "5", color: "text-violet-500" },
+    { icon: Zap, title: "Nexus Routing", description: "Multi-provider AI orchestration", count: "4", color: "text-green-500" },
+    { icon: Webhook, title: "BYOK & Integrations", description: "API key management, external connections", count: "3", color: "text-orange-500" },
   ];
 
-  // System Capabilities
+  // System Capabilities - ACCURATE counts
   const capabilities = [
-    { icon: Cpu, value: "200+", label: "Edge Functions", description: "Backend logic deployed", color: "text-cyan-500" },
-    { icon: Database, value: "50+", label: "Database Tables", description: "Structured data schemas", color: "text-purple-500" },
-    { icon: Activity, value: "24/7", label: "Autonomous Ops", description: "Self-healing systems", color: "text-green-500" },
-    { icon: RefreshCw, value: "∞", label: "Learning Cycles", description: "Continuous evolution", color: "text-amber-500" },
+    { icon: Cpu, value: "85+", label: "Edge Functions", description: "Deployed & operational", color: "text-cyan-500" },
+    { icon: Layers, value: "44", label: "Substrate Actions", description: "Via unified pf-substrate", color: "text-purple-500" },
+    { icon: Database, value: "50+", label: "Database Tables", description: "Structured data schemas", color: "text-green-500" },
+    { icon: Activity, value: "24/7", label: "Autonomous Ops", description: "Self-healing systems", color: "text-amber-500" },
     { icon: Clock, value: "<100ms", label: "Response Time", description: "Edge-optimized latency", color: "text-blue-500" },
-    { icon: HeartPulse, value: "99.9%", label: "Uptime SLA", description: "Production reliability", color: "text-rose-500" },
+    { icon: HeartPulse, value: "6", label: "Core Modules", description: "Brain, Decode, Defense, Nexus, Vision, Dream", color: "text-rose-500" },
   ];
 
   // Key Features
@@ -430,19 +428,17 @@ export default function Explore() {
     },
   ];
 
-  // Products
+  // Products - Only substrate-integrated products
   const products = [
     { icon: Shield, title: "Bot Sniper", description: "AI-powered bot detection for WordPress & web apps", href: "/blog/wordpress-bot-defense", color: "text-amber-500" },
     { icon: Eye, title: "Clarity", description: "Automated accessibility scanning & WCAG compliance", href: "/blog/accessibility-free-for-all", color: "text-teal-500" },
-    { icon: Wand2, title: "Modernizer", description: "Legacy website to React conversion engine", href: "/substrate", color: "text-purple-500" },
-    { icon: BarChart3, title: "Marketing Studio", description: "AI-powered campaign creation & optimization", href: "/substrate", color: "text-rose-500" },
   ];
 
   return (
     <div ref={containerRef} className="min-h-screen bg-background overflow-hidden">
       <SEO 
         title="promptfluid® — Cognitive Substrate Infrastructure"
-        description="200+ edge functions, 6 core modules, autonomous learning, and defense-first architecture. Build applications that dream, remember, self-reflect, and defend themselves."
+        description="85+ edge functions, 44 substrate actions, 6 core modules. Autonomous learning and defense-first architecture. Build applications that dream, remember, self-reflect, and defend themselves."
         canonical="https://promptfluid.com"
         keywords={['cognitive substrate', 'AI infrastructure', 'autonomous AI', 'machine learning', 'edge functions', 'self-learning', 'defense AI']}
       />
@@ -479,9 +475,9 @@ export default function Explore() {
             </h1>
             
             <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-4">
-              <strong className="text-foreground">200+ edge functions.</strong>{" "}
-              <strong className="text-foreground">6 core modules.</strong>{" "}
-              <strong className="text-foreground">24/7 autonomous operation.</strong>
+              <strong className="text-foreground">85+ edge functions.</strong>{" "}
+              <strong className="text-foreground">44 substrate actions.</strong>{" "}
+              <strong className="text-foreground">6 core modules.</strong>
             </p>
             <p className="text-muted-foreground max-w-2xl mx-auto mb-10">
               A complete cognitive backend with persistent memory, intelligent routing, behavioral defense, 
@@ -517,10 +513,10 @@ export default function Explore() {
             className="mt-12 flex flex-wrap items-center justify-center gap-6 md:gap-12"
           >
             {[
-              { label: "Edge Functions", value: "200+" },
-              { label: "Database Tables", value: "50+" },
+              { label: "Edge Functions", value: "85+" },
+              { label: "Substrate Actions", value: "44" },
               { label: "Core Modules", value: "6" },
-              { label: "Daily AI Calls", value: "10k+" },
+              { label: "Database Tables", value: "50+" },
             ].map((stat, idx) => (
               <div key={stat.label} className="text-center">
                 <div className="text-2xl md:text-3xl font-bold text-foreground">{stat.value}</div>
