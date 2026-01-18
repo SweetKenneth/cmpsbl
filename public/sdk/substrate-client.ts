@@ -1,11 +1,11 @@
 /**
  * promptfluid® Substrate Client SDK
- * v2026.01 — Cognitive Orchestration Substrate
+ * v2026.02 — Cognitive Orchestration Substrate with BYOK
  * 
  * Standalone TypeScript SDK for integrating with the promptfluid substrate.
  * 
- * IMPORTANT: You must provide your own Supabase project and API keys.
- * This SDK does not include compute resources.
+ * IMPORTANT: This is a BYOK (Bring Your Own Keys) architecture.
+ * Developers pay their own LLM compute costs directly to providers.
  * 
  * Installation:
  * 1. Copy this file to your project
@@ -15,12 +15,16 @@
  * Usage:
  * const substrate = new SubstrateClient({
  *   url: 'https://YOUR_PROJECT.supabase.co',
- *   anonKey: 'YOUR_ANON_KEY'
+ *   anonKey: 'YOUR_ANON_KEY',
+ *   developerId: 'YOUR_DEV_ID',
+ *   appId: 'YOUR_APP_ID'
  * });
  * 
- * await substrate.brain.query('search term', 10);
- * await substrate.decode.chat('Hello!', 'session_123');
- * await substrate.nexus.route('Generate text');
+ * // Register your API keys (BYOK)
+ * await substrate.keys.register('openai', 'sk-...');
+ * 
+ * // Use AI with your own keys
+ * await substrate.ai.chat([{ role: 'user', content: 'Hello!' }], { provider: 'openai', model: 'gpt-4' });
  */
 
 export type SubstrateModule = 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system';
@@ -29,6 +33,8 @@ export interface SubstrateConfig {
   url: string;
   anonKey: string;
   authToken?: string;
+  developerId?: string;
+  appId?: string;
 }
 
 export interface SubstrateRequest {
@@ -44,6 +50,59 @@ export interface SubstrateResponse<T = unknown> {
   data?: T;
   error?: string;
   timestamp: string;
+}
+
+// BYOK Types
+export interface BYOKMessage {
+  role: 'system' | 'user' | 'assistant';
+  content: string;
+}
+
+export interface BYOKOptions {
+  provider: 'openai' | 'anthropic' | 'groq' | 'together' | 'deepseek' | 'mistral' | 'cohere' | 'fireworks' | 'hyperbolic' | 'cerebras';
+  model: string;
+  max_tokens?: number;
+  temperature?: number;
+  stream?: boolean;
+}
+
+// Extension Types
+export type ExtensionType = 'brain_hook' | 'nexus_hook' | 'defense_hook' | 'dream_hook' | 'vision_hook' | 'custom';
+
+export interface ExtensionConfig {
+  name: string;
+  version: string;
+  description?: string;
+  extension_type: ExtensionType;
+  hook_point?: string;
+  config?: Record<string, unknown>;
+  endpoint_url?: string;
+  schema?: Record<string, unknown>;
+}
+
+// Integration Types
+export type IntegrationType = 'stripe' | 'twilio' | 'shopify' | 'n8n' | 'webhook' | 'custom';
+
+export interface IntegrationConfig {
+  name: string;
+  integration_type: IntegrationType;
+  config: Record<string, unknown>;
+  credentials?: Record<string, string>;
+  webhook_url?: string;
+}
+
+// Agent Types
+export type AgentPattern = 'chain' | 'parallel' | 'supervisor' | 'debate' | 'swarm';
+
+export interface AgentConfig {
+  name: string;
+  description?: string;
+  system_prompt: string;
+  provider: string;
+  model: string;
+  tools?: string[];
+  temperature?: number;
+  max_tokens?: number;
 }
 
 export class SubstrateClient {
@@ -94,10 +153,372 @@ export class SubstrateClient {
     }
   }
 
+  private async invokeEdge<T = unknown>(
+    functionName: string, 
+    payload: Record<string, unknown>
+  ): Promise<{ success: boolean; data?: T; error?: string }> {
+    try {
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+        'apikey': this.config.anonKey,
+      };
+
+      if (this.config.authToken) {
+        headers['Authorization'] = `Bearer ${this.config.authToken}`;
+      }
+      if (this.config.developerId) {
+        headers['x-developer-id'] = this.config.developerId;
+      }
+      if (this.config.appId) {
+        headers['x-app-id'] = this.config.appId;
+      }
+
+      const response = await fetch(`${this.config.url}/functions/v1/${functionName}`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        return { success: false, error: data.error || `HTTP ${response.status}` };
+      }
+
+      return { success: true, data: data as T };
+    } catch (err) {
+      return { success: false, error: err instanceof Error ? err.message : 'Unknown error' };
+    }
+  }
+
   // Set auth token for authenticated requests
   setAuthToken(token: string) {
     this.config.authToken = token;
   }
+
+  // Set developer credentials for BYOK
+  setDeveloper(developerId: string, appId: string) {
+    this.config.developerId = developerId;
+    this.config.appId = appId;
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // BYOK API KEYS MODULE — Bring Your Own Keys
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  keys = {
+    /**
+     * Register an API key for a provider (encrypted server-side)
+     */
+    register: (provider: string, apiKey: string, options?: { rateLimitRpm?: number }) =>
+      this.invokeEdge('byok-proxy', {
+        action: 'register_key',
+        provider,
+        api_key: apiKey,
+        rate_limit_rpm: options?.rateLimitRpm || 60,
+      }),
+
+    /**
+     * List registered API keys (keys are masked)
+     */
+    list: () =>
+      this.invokeEdge('byok-proxy', { action: 'list_keys' }),
+
+    /**
+     * Rotate an API key
+     */
+    rotate: (provider: string, newApiKey: string) =>
+      this.invokeEdge('byok-proxy', {
+        action: 'rotate_key',
+        provider,
+        api_key: newApiKey,
+      }),
+
+    /**
+     * Revoke an API key
+     */
+    revoke: (provider: string) =>
+      this.invokeEdge('byok-proxy', { action: 'revoke_key', provider }),
+
+    /**
+     * Get usage statistics for a provider
+     */
+    usage: (provider?: string, days?: number) =>
+      this.invokeEdge('byok-proxy', { action: 'usage', provider, days: days || 30 }),
+  };
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // AI MODULE — BYOK AI Calls
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  ai = {
+    /**
+     * Send a chat completion request using your own API key
+     */
+    chat: (messages: BYOKMessage[], options: BYOKOptions) =>
+      this.invokeEdge('byok-proxy', {
+        provider: options.provider,
+        model: options.model,
+        messages,
+        max_tokens: options.max_tokens || 1024,
+        temperature: options.temperature || 0.7,
+        stream: options.stream || false,
+      }),
+
+    /**
+     * Send a single prompt (convenience method)
+     */
+    prompt: (prompt: string, options: BYOKOptions) =>
+      this.invokeEdge('byok-proxy', {
+        provider: options.provider,
+        model: options.model,
+        prompt,
+        max_tokens: options.max_tokens || 1024,
+        temperature: options.temperature || 0.7,
+      }),
+
+    /**
+     * Get supported providers
+     */
+    providers: () => ({
+      success: true,
+      data: {
+        providers: [
+          { name: 'openai', models: ['gpt-4o', 'gpt-4o-mini', 'gpt-4-turbo', 'gpt-3.5-turbo'] },
+          { name: 'anthropic', models: ['claude-3-5-sonnet-20241022', 'claude-3-haiku-20240307'] },
+          { name: 'groq', models: ['llama-3.3-70b-versatile', 'mixtral-8x7b-32768'] },
+          { name: 'together', models: ['meta-llama/Llama-3-70b-chat-hf'] },
+          { name: 'deepseek', models: ['deepseek-chat', 'deepseek-coder'] },
+          { name: 'mistral', models: ['mistral-large-latest', 'mistral-medium'] },
+          { name: 'cohere', models: ['command-r-plus', 'command-r'] },
+          { name: 'fireworks', models: ['accounts/fireworks/models/llama-v3p1-70b-instruct'] },
+          { name: 'hyperbolic', models: ['meta-llama/Llama-3.2-3B-Instruct'] },
+          { name: 'cerebras', models: ['llama3.1-8b', 'llama3.1-70b'] },
+        ],
+      },
+    }),
+  };
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // EXTENSIONS MODULE — Plugin Registry
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  extensions = {
+    /**
+     * Register a new extension
+     */
+    register: (extension: ExtensionConfig) =>
+      this.invokeEdge('extension-registry', { action: 'register', extension }),
+
+    /**
+     * List all extensions
+     */
+    list: (filters?: { type?: ExtensionType; is_enabled?: boolean; author?: string }) =>
+      this.invokeEdge('extension-registry', { action: 'list', filters }),
+
+    /**
+     * Get extension by ID
+     */
+    get: (extensionId: string) =>
+      this.invokeEdge('extension-registry', { action: 'get', extension_id: extensionId }),
+
+    /**
+     * Enable an extension
+     */
+    enable: (extensionId: string) =>
+      this.invokeEdge('extension-registry', { action: 'enable', extension_id: extensionId }),
+
+    /**
+     * Disable an extension
+     */
+    disable: (extensionId: string) =>
+      this.invokeEdge('extension-registry', { action: 'disable', extension_id: extensionId }),
+
+    /**
+     * Unregister an extension
+     */
+    unregister: (extensionId: string) =>
+      this.invokeEdge('extension-registry', { action: 'unregister', extension_id: extensionId }),
+
+    /**
+     * Invoke an extension
+     */
+    invoke: (extensionId: string, payload: Record<string, unknown>) =>
+      this.invokeEdge('extension-registry', { 
+        action: 'invoke', 
+        extension_id: extensionId, 
+        invoke_payload: payload 
+      }),
+
+    /**
+     * Get all registered hooks by type
+     */
+    hooks: (type?: ExtensionType) =>
+      this.invokeEdge('extension-registry', { action: 'hooks', filters: { type } }),
+  };
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // INTEGRATIONS MODULE — External Service Connections
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  integrations = {
+    /**
+     * Connect a new integration
+     */
+    connect: (integration: IntegrationConfig) =>
+      this.invokeEdge('integration-bus', { action: 'connect', integration }),
+
+    /**
+     * List all integrations
+     */
+    list: (filters?: { type?: IntegrationType; is_active?: boolean }) =>
+      this.invokeEdge('integration-bus', { action: 'list', filters }),
+
+    /**
+     * Get integration by ID
+     */
+    get: (integrationId: string) =>
+      this.invokeEdge('integration-bus', { action: 'get', integration_id: integrationId }),
+
+    /**
+     * Update integration configuration
+     */
+    update: (integrationId: string, config: Record<string, unknown>) =>
+      this.invokeEdge('integration-bus', { 
+        action: 'update', 
+        integration_id: integrationId, 
+        config 
+      }),
+
+    /**
+     * Disconnect an integration
+     */
+    disconnect: (integrationId: string) =>
+      this.invokeEdge('integration-bus', { action: 'disconnect', integration_id: integrationId }),
+
+    /**
+     * Call an integration's API
+     */
+    call: (integrationId: string, method: string, params?: Record<string, unknown>) =>
+      this.invokeEdge('integration-bus', { 
+        action: 'call', 
+        integration_id: integrationId, 
+        method, 
+        params 
+      }),
+
+    /**
+     * Handle incoming webhook
+     */
+    webhook: (integrationId: string, payload: Record<string, unknown>) =>
+      this.invokeEdge('integration-bus', { 
+        action: 'webhook', 
+        integration_id: integrationId, 
+        payload 
+      }),
+  };
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // AGENTS MODULE — Multi-Agent Orchestration
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  agents = {
+    /**
+     * Create a new agent
+     */
+    create: (agent: AgentConfig) =>
+      this.invokeEdge('agent-mesh', { action: 'create', agent }),
+
+    /**
+     * List all agents
+     */
+    list: (filters?: { is_active?: boolean }) =>
+      this.invokeEdge('agent-mesh', { action: 'list', filters }),
+
+    /**
+     * Get agent by ID
+     */
+    get: (agentId: string) =>
+      this.invokeEdge('agent-mesh', { action: 'get', agent_id: agentId }),
+
+    /**
+     * Update an agent
+     */
+    update: (agentId: string, updates: Partial<AgentConfig>) =>
+      this.invokeEdge('agent-mesh', { action: 'update', agent_id: agentId, updates }),
+
+    /**
+     * Delete an agent
+     */
+    delete: (agentId: string) =>
+      this.invokeEdge('agent-mesh', { action: 'delete', agent_id: agentId }),
+
+    /**
+     * Run agent(s) with a task using a coordination pattern
+     */
+    run: (
+      agentIds: string[], 
+      task: string, 
+      options?: { pattern?: AgentPattern; context?: Record<string, unknown> }
+    ) =>
+      this.invokeEdge('agent-mesh', { 
+        action: 'run', 
+        agent_ids: agentIds, 
+        task, 
+        pattern: options?.pattern || 'chain',
+        context: options?.context,
+      }),
+
+    /**
+     * Get agent event history
+     */
+    events: (agentId?: string, limit?: number) =>
+      this.invokeEdge('agent-mesh', { action: 'events', agent_id: agentId, limit: limit || 50 }),
+  };
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // APPS MODULE — Application Management
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  apps = {
+    /**
+     * Register a new application
+     */
+    register: (name: string, description?: string) =>
+      this.invokeEdge('byok-proxy', { 
+        action: 'register_app', 
+        name, 
+        description 
+      }),
+
+    /**
+     * List all applications
+     */
+    list: () =>
+      this.invokeEdge('byok-proxy', { action: 'list_apps' }),
+
+    /**
+     * Get app by ID
+     */
+    get: (appId: string) =>
+      this.invokeEdge('byok-proxy', { action: 'get_app', app_id: appId }),
+
+    /**
+     * Update app settings
+     */
+    update: (appId: string, updates: { name?: string; description?: string; is_active?: boolean }) =>
+      this.invokeEdge('byok-proxy', { action: 'update_app', app_id: appId, ...updates }),
+
+    /**
+     * Get comprehensive usage metrics for an app
+     */
+    metrics: (appId: string, days?: number) =>
+      this.invokeEdge('byok-proxy', { action: 'app_metrics', app_id: appId, days: days || 30 }),
+  };
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ORIGINAL MODULES — Brain, Decode, Defense, Nexus, Vision, Dream, System
+  // ═══════════════════════════════════════════════════════════════════════════
 
   // Brain Module — Memory, Learning, Reflection
   brain = {
