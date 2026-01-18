@@ -77,3 +77,6 @@ verify_jwt = false
 
 [functions.pf-brain-report]
 verify_jwt = false
+
+[functions.pf-backup-daily]
+verify_jwt = false
