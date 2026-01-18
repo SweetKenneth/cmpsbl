@@ -4,7 +4,7 @@
  */
 
 import { useState } from 'react';
-import { Brain, Sparkles, Network, TrendingUp, Lightbulb, Loader2, CheckCircle2, AlertCircle, Zap, Activity } from 'lucide-react';
+import { Brain, Sparkles, Network, TrendingUp, Lightbulb, Loader2, CheckCircle2, AlertCircle, Zap, Activity, ChevronDown } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -20,6 +20,62 @@ import { useBrainOptimize, useBrainDeepThink, useBrainCognitiveCycle, useBrainEx
 interface BrainIntelligencePanelProps {
   enabled: boolean;
 }
+
+// Collapsible Reflection Card Component
+function ReflectionCard({ reflection }: { reflection: any }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  
+  const summary = reflection.summary || reflection.insights || 'Reflection processed';
+  const fullContent = [
+    reflection.summary,
+    reflection.insights,
+    reflection.recommendations,
+    reflection.lessons ? JSON.stringify(reflection.lessons, null, 2) : null
+  ].filter(Boolean).join('\n\n');
+  
+  const date = new Date(reflection.reflection_date || reflection.created_at).toLocaleDateString();
+  
+  return (
+    <div 
+      className={cn(
+        "rounded-lg bg-muted/20 text-xs transition-all duration-200 cursor-pointer hover:bg-muted/30",
+        isExpanded ? "ring-1 ring-primary/30" : ""
+      )}
+      onClick={() => setIsExpanded(!isExpanded)}
+    >
+      <div className="flex items-start justify-between p-3">
+        <div className="flex-1 min-w-0">
+          <p className={cn(
+            "text-muted-foreground transition-all",
+            !isExpanded && "line-clamp-2"
+          )}>
+            {isExpanded ? fullContent : summary}
+          </p>
+          <span className="text-[10px] text-muted-foreground/60 mt-1 block">
+            {date}
+          </span>
+        </div>
+        <ChevronDown 
+          className={cn(
+            "w-4 h-4 text-muted-foreground/50 shrink-0 ml-2 transition-transform duration-200",
+            isExpanded && "rotate-180"
+          )} 
+        />
+      </div>
+      {isExpanded && reflection.top_memories && (
+        <div className="px-3 pb-3 pt-0 border-t border-border/30 mt-2">
+          <p className="text-[10px] text-muted-foreground/70 font-medium mb-1">Top Memories:</p>
+          <div className="text-[10px] text-muted-foreground/60 whitespace-pre-wrap">
+            {typeof reflection.top_memories === 'string' 
+              ? reflection.top_memories 
+              : JSON.stringify(reflection.top_memories, null, 2)}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 
 export function BrainIntelligencePanel({ enabled }: BrainIntelligencePanelProps) {
   const [deepThinkQuery, setDeepThinkQuery] = useState('');
@@ -304,7 +360,7 @@ export function BrainIntelligencePanel({ enabled }: BrainIntelligencePanelProps)
         </Card>
       </div>
 
-      {/* Recent Reflections */}
+      {/* Recent Reflections - Collapsible Cards */}
       {reflections.data?.reflections && reflections.data.reflections.length > 0 && (
         <Card className="border-border/50">
           <CardHeader className="pb-2 pt-4 px-4">
@@ -314,18 +370,11 @@ export function BrainIntelligencePanel({ enabled }: BrainIntelligencePanelProps)
             </CardTitle>
           </CardHeader>
           <CardContent className="px-4 pb-4">
-            <ScrollArea className="h-[100px]">
-              <div className="space-y-2">
-                {reflections.data.reflections.slice(0, 3).map((r: any, idx: number) => (
-                  <div key={idx} className="p-2 rounded-lg bg-muted/20 text-xs">
-                    <p className="text-muted-foreground line-clamp-2">{r.summary || r.insights || 'Reflection processed'}</p>
-                    <span className="text-[10px] text-muted-foreground/60 mt-1 block">
-                      {new Date(r.reflection_date || r.created_at).toLocaleDateString()}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </ScrollArea>
+            <div className="space-y-2">
+              {reflections.data.reflections.slice(0, 5).map((r: any, idx: number) => (
+                <ReflectionCard key={idx} reflection={r} />
+              ))}
+            </div>
           </CardContent>
         </Card>
       )}
