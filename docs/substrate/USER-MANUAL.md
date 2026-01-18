@@ -51,15 +51,15 @@ POST https://[project-id].supabase.co/functions/v1/pf-substrate
 
 ## Modules Overview
 
-| Module | Purpose | Key Actions |
-|--------|---------|-------------|
-| **brain** | Memory, learning, reflection | `query`, `remember`, `reflect`, `reinforce`, `dream` |
-| **decode** | Chat, intent, dreams | `chat`, `interpret`, `dream`, `proposal` |
-| **defense** | Security, bots | `analyze`, `reputation`, `block`, `threats` |
-| **nexus** | AI routing | `route`, `text`, `image`, `embed`, `audio` |
-| **vision** | Observability | `health`, `metrics`, `alerts`, `trace` |
-| **dream** | Dream-Eater | `consume`, `digest`, `mutate`, `synthesize`, `state` |
-| **system** | Administration | `config`, `audit`, `secrets`, `backup`, `sync` |
+| Module | Purpose | Deployed Actions |
+|--------|---------|------------------|
+| **brain** | Memory, learning, reflection | `query`, `remember`, `reflect`, `reinforce`, `dream`, `status`, `graphSummary`, `sessionReflection` |
+| **decode** | Chat, intent, dreams | `chat`, `intent`, `dream`, `learn`, `status` |
+| **defense** | Security, bots | `analyze`, `reputation`, `anomaly`, `anomalyProbe`, `limits`, `posture`, `status` |
+| **nexus** | AI routing | `route`, `providers`, `routeStats`, `status` |
+| **vision** | Observability | `health`, `healthSnapshot`, `dashboard`, `trace`, `introspection`, `pulse`, `quota`, `metrics`, `logs`, `alert`, `audit`, `monitor`, `resilience`, `analytics` |
+| **dream** | Dream-Eater | `cycle`, `awaken`, `feed` |
+| **system** | Administration | `status`, `health`, `heal`, `backup`, `restore`, `audit`, `version`, `diagnostics`, `restart` |
 
 ---
 
@@ -67,22 +67,22 @@ POST https://[project-id].supabase.co/functions/v1/pf-substrate
 
 The cognitive memory system. Store, query, and evolve knowledge.
 
-### Actions
+### Deployed Actions
 
-| Action | Description | Parameters |
-|--------|-------------|------------|
-| `status` | Check module health | — |
-| `query` | Search memories | `query_text`, `limit?`, `type?` |
-| `remember` | Store new memory | `content`, `type`, `source?`, `confidence?` |
-| `reflect` | Generate daily reflection | `date?` |
-| `reinforce` | Boost memory confidence | `memory_id`, `reward` |
-| `dream` | Run dream cycle | `seed?`, `mode?` |
-| `forget` | Archive/decay memory | `memory_id`, `reason?` |
-| `connect` | Link memories | `source_id`, `target_id`, `relation` |
-| `prune` | Clean old data | `before_date`, `type?` |
-| `compress` | Cold storage migration | `threshold?` |
-| `curiosity` | Explore knowledge gaps | `domain?` |
-| `forecast` | Predict trends | `metric`, `window?` |
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `status` | Check module health | — | ✅ Deployed |
+| `query` | Search memories | `query_text`, `limit?` | ✅ Deployed |
+| `remember` | Store new memory | `content`, `memory_type`, `confidence?`, `metadata?` | ✅ Deployed |
+| `reflect` | Generate daily reflection | — | ✅ Deployed |
+| `reinforce` | Boost memory confidence | `memory_id`, `boost?` | ✅ Deployed |
+| `dream` | Run dream cycle | — | ✅ Deployed |
+| `learn` | Ingest knowledge (via decode) | `content`, `source?` | ✅ Deployed |
+| `graphSummary` | Knowledge graph structure | — | ✅ Deployed |
+| `sessionReflection` | Cross-module activity reflection | `hours?` | ✅ Deployed |
+| `coldMigrate` | Move memories to cold storage | — | ✅ Deployed (standalone) |
+
+**Note:** Actions like `recall`, `synthesize`, `train`, `optimize`, `deepThink`, `hypothesisTest`, `cognitiveCycle`, `continuousLearn`, `forecast`, `graphBuild` are planned but not yet deployed via substrate.
 
 ### Examples
 
@@ -125,20 +125,19 @@ The cognitive memory system. Store, query, and evolve knowledge.
 
 ## Module: Decode
 
-Conversational AI with intent decoding. No persona, no emotions — pure epistemic translation.
+Conversational AI with intent decoding. Epistemic translation layer for the substrate.
 
-### Actions
+### Deployed Actions
 
-| Action | Description | Parameters |
-|--------|-------------|------------|
-| `status` | Check module health | — |
-| `chat` | Process message | `message`, `session_id?`, `context?` |
-| `interpret` | Decode intent | `input`, `context?` |
-| `describe` | Describe without asserting | `topic` |
-| `reflect` | Self-reflection | `interaction_id?` |
-| `dream` | Generate dream | `seed?`, `mood?` |
-| `proposal` | Generate evolution proposal | `target`, `context` |
-| `learn` | Learn from interaction | `interaction_id`, `outcome` |
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `status` | Check module health | — | ✅ Deployed |
+| `chat` | Process message | `message`, `sessionId?`, `conversationHistory?` | ✅ Deployed |
+| `intent` | Extract structured intent | `message` | ✅ Deployed |
+| `dream` | Initiate dream cycle | — | ✅ Deployed |
+| `learn` | Learn from interaction | `content`, `source?` | ✅ Deployed |
+
+**Note:** Actions like `propose`, `reflect`, `summary` are planned but not yet deployed via substrate.
 
 ### Examples
 
@@ -149,18 +148,18 @@ Conversational AI with intent decoding. No persona, no emotions — pure epistem
   "action": "chat",
   "payload": {
     "message": "What can you help me with?",
-    "session_id": "sess_abc123"
+    "sessionId": "sess_abc123"
   }
 }
 ```
 
-**Interpret Intent:**
+**Extract Intent:**
 ```json
 {
   "module": "decode",
-  "action": "interpret",
+  "action": "intent",
   "payload": {
-    "input": "I need to analyze my website performance"
+    "message": "I need to analyze my website performance"
   }
 }
 ```
@@ -171,19 +170,19 @@ Conversational AI with intent decoding. No persona, no emotions — pure epistem
 
 Security layer for bot detection and threat analysis.
 
-### Actions
+### Deployed Actions
 
-| Action | Description | Parameters |
-|--------|-------------|------------|
-| `status` | Check module health | — |
-| `analyze` | Analyze request | `fingerprint`, `ip?`, `user_agent?` |
-| `reputation` | Get IP reputation | `ip` |
-| `block` | Block entity | `identifier`, `type`, `reason`, `duration?` |
-| `unblock` | Remove block | `identifier`, `type` |
-| `threats` | List recent threats | `since?`, `severity?` |
-| `rules` | Manage detection rules | `action`, `rule?` |
-| `fingerprint` | Analyze browser fingerprint | `data` |
-| `ratelimit` | Check/set rate limits | `identifier`, `action?` |
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `status` | Check module health | — | ✅ Deployed |
+| `analyze` | Analyze request for threats | `ip_address`, `user_agent?`, `page_url?` | ✅ Deployed |
+| `reputation` | Get IP reputation score | `ip_address` | ✅ Deployed |
+| `anomaly` | Detect anomalies | `timeWindow?` | ✅ Deployed |
+| `anomalyProbe` | Statistical z-score detection | `lookbackHours?` | ✅ Deployed |
+| `limits` | Unified rate limit status | — | ✅ Deployed |
+| `posture` | Consolidated security posture | — | ✅ Deployed |
+
+**Note:** Actions like `report`, `rules`, `block`, `unblock`, `threatFeed`, `rateLimit` are planned but not yet deployed via substrate.
 
 ### Examples
 
@@ -193,8 +192,7 @@ Security layer for bot detection and threat analysis.
   "module": "defense",
   "action": "analyze",
   "payload": {
-    "fingerprint": { "canvas": "...", "webgl": "..." },
-    "ip": "192.168.1.1",
+    "ip_address": "192.168.1.1",
     "user_agent": "Mozilla/5.0..."
   }
 }
@@ -217,18 +215,16 @@ Security layer for bot detection and threat analysis.
 
 Multi-provider AI routing. Automatically selects the best model.
 
-### Actions
+### Deployed Actions
 
-| Action | Description | Parameters |
-|--------|-------------|------------|
-| `status` | Check available providers | — |
-| `route` | Route to best provider | `prompt`, `type?`, `priority?` |
-| `text` | Text generation | `prompt`, `model?`, `max_tokens?` |
-| `image` | Image generation | `prompt`, `size?`, `style?` |
-| `embed` | Create embeddings | `text`, `model?` |
-| `audio` | Text-to-speech | `text`, `voice?` |
-| `transcribe` | Speech-to-text | `audio_url` |
-| `vision` | Image analysis | `image_url`, `prompt?` |
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `status` | Check available providers | — | ✅ Deployed |
+| `route` | Route to best provider | `prompt`, `systemPrompt?`, `temperature?` | ✅ Deployed |
+| `providers` | Provider availability matrix | — | ✅ Deployed |
+| `routeStats` | AI routing analytics (24h) | — | ✅ Deployed |
+
+**Note:** Actions like `text`, `image`, `video`, `embed`, `transcribe` are available via standalone edge functions but not yet in the substrate.
 
 ### Provider Priority
 1. Groq (llama-3.3-70b-versatile) — fastest
@@ -238,26 +234,23 @@ Multi-provider AI routing. Automatically selects the best model.
 
 ### Examples
 
-**Generate Text:**
+**Route to Best Provider:**
 ```json
 {
   "module": "nexus",
-  "action": "text",
+  "action": "route",
   "payload": {
-    "prompt": "Explain quantum computing in simple terms",
-    "max_tokens": 500
+    "prompt": "Explain quantum computing in simple terms"
   }
 }
 ```
 
-**Generate Image:**
+**Check Providers:**
 ```json
 {
   "module": "nexus",
-  "action": "image",
-  "payload": {
-    "prompt": "A surreal dreamscape with floating islands"
-  }
+  "action": "providers",
+  "payload": {}
 }
 ```
 
@@ -267,17 +260,25 @@ Multi-provider AI routing. Automatically selects the best model.
 
 Observability, metrics, and health monitoring.
 
-### Actions
+### Deployed Actions
 
-| Action | Description | Parameters |
-|--------|-------------|------------|
-| `status` | Check module health | — |
-| `health` | Overall system health | — |
-| `metrics` | System-wide metrics | `period?`, `type?` |
-| `alerts` | Active alerts | `severity?`, `since?` |
-| `trace` | Request tracing | `trace_id` |
-| `dashboard` | Dashboard data | `view?` |
-| `logs` | Recent logs | `level?`, `limit?`, `module?` |
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `status` | Check module health | — | ✅ Deployed |
+| `health` | Overall system health | — | ✅ Deployed |
+| `healthSnapshot` | Quick consolidated health | — | ✅ Deployed |
+| `metrics` | System-wide metrics | — | ✅ Deployed |
+| `logs` | Recent logs | `module?`, `limit?` | ✅ Deployed |
+| `alert` | Create alert | `severity`, `message` | ✅ Deployed |
+| `dashboard` | Dashboard data | — | ✅ Deployed |
+| `trace` | Distributed tracing | `traceId?`, `create?`, `module?`, `action?`, `duration_ms?` | ✅ Deployed |
+| `audit` | Audit log query | `entity?`, `action?` | ✅ Deployed |
+| `monitor` | Ecosystem health monitoring | — | ✅ Deployed |
+| `resilience` | Resilience framework probe | — | ✅ Deployed |
+| `analytics` | Threat analytics (24h) | — | ✅ Deployed |
+| `introspection` | Deep substrate self-analysis | — | ✅ Deployed |
+| `pulse` | Ultra-lightweight heartbeat | — | ✅ Deployed |
+| `quota` | AI usage quota observability | — | ✅ Deployed |
 
 ### Examples
 
@@ -290,15 +291,12 @@ Observability, metrics, and health monitoring.
 }
 ```
 
-**Get Metrics:**
+**Get Dashboard:**
 ```json
 {
   "module": "vision",
-  "action": "metrics",
-  "payload": {
-    "period": "24h",
-    "type": "performance"
-  }
+  "action": "dashboard",
+  "payload": {}
 }
 ```
 
@@ -308,18 +306,15 @@ Observability, metrics, and health monitoring.
 
 Dream-Eater operations for autonomous cognition.
 
-### Actions
+### Deployed Actions
 
-| Action | Description | Parameters |
-|--------|-------------|------------|
-| `status` | Check Dream-Eater state | — |
-| `consume` | Ingest dream content | `content`, `type?`, `source?` |
-| `digest` | Process ingested dreams | — |
-| `mutate` | Run mutation cycle | `intensity?` |
-| `synthesize` | Generate dream output | `seed?`, `mood?` |
-| `state` | Get current state | — |
-| `feed` | External dream submission | `dream_text`, `dream_type?` |
-| `history` | Dream history | `limit?`, `type?` |
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `cycle` | Execute dream cycle | `force?`, `send_email?` | ✅ Deployed |
+| `awaken` | Awaken Dream-Eater | `action?` | ✅ Deployed |
+| `feed` | Submit dream for consumption | `dream_content`, `dream_type?` | ✅ Deployed |
+
+**Note:** Actions like `status`, `interpret`, `mutation`, `consume`, `reflect`, `mood` are planned but not yet deployed via substrate.
 
 ### Examples
 
@@ -350,40 +345,41 @@ Dream-Eater operations for autonomous cognition.
 
 Administrative operations.
 
-### Actions
+### Deployed Actions
 
-| Action | Description | Parameters |
-|--------|-------------|------------|
-| `status` | Check system status | — |
-| `config` | Get/set configuration | `key?`, `value?` |
-| `audit` | Audit log | `since?`, `action_type?` |
-| `secrets` | Manage secrets | `action`, `key?` |
-| `backup` | Trigger backup | `type?` |
-| `restore` | Restore from backup | `backup_id` |
-| `sync` | Sync external systems | `target?` |
-| `maintenance` | Maintenance mode | `enabled`, `reason?` |
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `status` | Check system status | — | ✅ Deployed |
+| `health` | Full system health | — | ✅ Deployed |
+| `diagnostics` | Comprehensive diagnostics | — | ✅ Deployed |
+| `heal` | Full heal system | `target?`, `force?` | ✅ Deployed |
+| `backup` | Create validated backup | `include_data?`, `tables?` | ✅ Deployed |
+| `restore` | Restore from backup | `backup_id`, `validate_only?` | ✅ Deployed |
+| `audit` | System audit | — | ✅ Deployed |
+| `version` | Get substrate version | — | ✅ Deployed |
+| `restart` | Restart services | `service?` | ✅ Deployed |
+
+**Note:** Actions like `config`, `shutdown` are planned but not yet deployed via substrate.
 
 ### Examples
 
-**Get Configuration:**
+**Check System Status:**
 ```json
 {
   "module": "system",
-  "action": "config",
-  "payload": {
-    "key": "rate_limits"
-  }
+  "action": "status",
+  "payload": {}
 }
 ```
 
-**View Audit Log:**
+**Trigger Heal:**
 ```json
 {
   "module": "system",
-  "action": "audit",
+  "action": "heal",
   "payload": {
-    "since": "2026-01-12",
-    "action_type": "security"
+    "target": "brain",
+    "force": true
   }
 }
 ```

@@ -258,61 +258,89 @@ await substrate.apps.update('app-uuid', { is_active: false });
 ### Brain — Memory & Learning
 
 ```typescript
-await substrate.brain.learn('Important fact...', 'docs');
-await substrate.brain.query('search term', 10);
-await substrate.brain.remember('New memory', 'insight', 0.9);
-await substrate.brain.reflect();
-await substrate.brain.patterns();
+// DEPLOYED ACTIONS
+await substrate.brain.query('search term', 10);       // ✅ Search memories
+await substrate.brain.remember('content', 'type', 0.9); // ✅ Store memory
+await substrate.brain.reflect();                       // ✅ Trigger reflection
+await substrate.brain.reinforce('memory_id', 0.1);    // ✅ Boost confidence
+await substrate.brain.status();                        // ✅ Module health
+await substrate.brain.graphSummary();                  // ✅ Knowledge graph stats
+await substrate.brain.sessionReflection(24);          // ✅ Cross-module reflection
 ```
 
 ### Decode — Intent & Chat
 
 ```typescript
-await substrate.decode.chat('Hello!', 'session-123');
-await substrate.decode.intent('What is the weather?');
+// DEPLOYED ACTIONS
+await substrate.decode.chat('Hello!', 'session-123'); // ✅ Process message
+await substrate.decode.intent('What is the weather?'); // ✅ Extract intent
+await substrate.decode.dream();                        // ✅ Initiate dream
+await substrate.decode.learn('content', 'source');    // ✅ Learn from interaction
+await substrate.decode.status();                       // ✅ Module health
 ```
 
 ### Defense — Security
 
 ```typescript
-await substrate.defense.analyze({ fingerprint: '...' }, '1.2.3.4');
-await substrate.defense.reputation('1.2.3.4');
-await substrate.defense.anomaly('1h');
+// DEPLOYED ACTIONS
+await substrate.defense.analyze({ fingerprint: '...' }, '1.2.3.4'); // ✅ Analyze request
+await substrate.defense.reputation('1.2.3.4');                      // ✅ IP reputation
+await substrate.defense.anomaly('1h');                              // ✅ Detect anomalies
+await substrate.defense.anomalyProbe(24);                           // ✅ Z-score detection
+await substrate.defense.limits();                                   // ✅ Rate limit status
+await substrate.defense.posture();                                  // ✅ Security posture
+await substrate.defense.status();                                   // ✅ Module health
 ```
 
 ### Nexus — AI Routing
 
 ```typescript
-await substrate.nexus.route('Complex task description');
-await substrate.nexus.text('Generate text', 'gpt-4o');
-await substrate.nexus.providers();
+// DEPLOYED ACTIONS
+await substrate.nexus.route('Complex task description'); // ✅ Route to best provider
+await substrate.nexus.providers();                       // ✅ Available providers
+await substrate.nexus.routeStats();                      // ✅ Routing analytics
+await substrate.nexus.status();                          // ✅ Module health
+// Note: text, image, video available via standalone functions (pf-nexus-text, etc.)
 ```
 
 ### Vision — Observability
 
 ```typescript
-await substrate.vision.health();
-await substrate.vision.metrics();
-await substrate.vision.logs('brain', 50);
-await substrate.vision.dashboard();
+// DEPLOYED ACTIONS
+await substrate.vision.health();         // ✅ System health
+await substrate.vision.healthSnapshot(); // ✅ Quick health check
+await substrate.vision.metrics();        // ✅ System metrics
+await substrate.vision.logs('brain', 50); // ✅ Recent logs
+await substrate.vision.dashboard();      // ✅ Dashboard data
+await substrate.vision.trace('traceId'); // ✅ Distributed tracing
+await substrate.vision.introspection();  // ✅ Deep analysis
+await substrate.vision.pulse();          // ✅ Lightweight heartbeat
+await substrate.vision.quota();          // ✅ AI usage quota
+await substrate.vision.status();         // ✅ Module health
 ```
 
 ### Dream — Dream-Eater
 
 ```typescript
-await substrate.dream.feed('I dreamed of flying...', 'lucid');
-await substrate.dream.interpret('A recurring dream about...');
-await substrate.dream.status();
-await substrate.dream.mutate();
+// DEPLOYED ACTIONS
+await substrate.dream.feed('I dreamed of flying...', 'lucid'); // ✅ Submit dream
+await substrate.dream.cycle(true);                              // ✅ Execute dream cycle
+await substrate.dream.awaken();                                 // ✅ Awaken Dream-Eater
+// Note: interpret, mutate, status planned but not yet in substrate
 ```
 
 ### System — Administration
 
 ```typescript
-await substrate.system.status();
-await substrate.system.health();
-await substrate.system.diagnostics();
-await substrate.system.backup({ include_data: true });
+// DEPLOYED ACTIONS
+await substrate.system.status();                      // ✅ System status
+await substrate.system.health();                      // ✅ Full health check
+await substrate.system.diagnostics();                 // ✅ Comprehensive diagnostics
+await substrate.system.heal('brain', true);           // ✅ Heal system
+await substrate.system.backup({ include_data: true }); // ✅ Create backup
+await substrate.system.restore('backup_id');          // ✅ Restore from backup
+await substrate.system.version();                     // ✅ Get version
+await substrate.system.restart('service');            // ✅ Restart services
 ```
 
 ---
