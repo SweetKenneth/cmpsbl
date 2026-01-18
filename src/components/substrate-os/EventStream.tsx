@@ -15,7 +15,7 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useVisionLogsOS } from '@/hooks/useSubstrateOS';
+import { useLiveBrainEvents } from '@/hooks/useSubstrateOSLive';
 import { cn } from '@/lib/utils';
 
 const MODULE_ICONS: Record<string, React.ElementType> = {
@@ -40,17 +40,18 @@ const ALL_MODULES = ['brain', 'decode', 'defense', 'nexus', 'vision', 'dream'];
 
 export function EventStream() {
   const [selectedModules, setSelectedModules] = useState<string[]>(ALL_MODULES);
-  const visionLogs = useVisionLogsOS(undefined, 20);
+  const brainEvents = useLiveBrainEvents();
   
-  const logs = visionLogs.data?.data as { 
-    events?: Array<{ 
-      module: string; 
-      action: string; 
-      timestamp: string;
-    }> 
-  } | undefined;
+  // Map brain_events to the format expected by the UI
+  const events = brainEvents.data?.events?.map(event => ({
+    module: event.module || 'system',
+    action: event.event_type || 'unknown',
+    timestamp: event.created_at,
+    outcome: event.outcome,
+    data: event.data
+  })) || [];
   
-  const filteredLogs = logs?.events?.filter(e => selectedModules.includes(e.module.toLowerCase())) || [];
+  const filteredLogs = events.filter(e => selectedModules.includes(e.module.toLowerCase()));
   
   const toggleModule = (module: string) => {
     setSelectedModules(prev => 
@@ -115,7 +116,7 @@ export function EventStream() {
       {/* Events List */}
       <ScrollArea className="h-[280px]">
         <div className="p-2 space-y-1">
-          {visionLogs.isLoading ? (
+          {brainEvents.isLoading ? (
             [...Array(8)].map((_, i) => (
               <div key={i} className="flex items-center gap-3 p-2">
                 <Skeleton className="h-4 w-16" />
