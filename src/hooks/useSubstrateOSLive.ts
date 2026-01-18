@@ -156,6 +156,14 @@ export function useLiveOrchestratorState() {
         .maybeSingle();
       
       if (error) throw error;
+      
+      // Convert health_score from decimal (0-1) to percentage (0-100)
+      if (data && typeof data.health_score === 'number') {
+        return {
+          ...data,
+          health_score: data.health_score <= 1 ? Math.round(data.health_score * 100) : data.health_score
+        };
+      }
       return data;
     },
     refetchInterval: 30000,
