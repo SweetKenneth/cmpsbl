@@ -111,13 +111,15 @@ function parseReflectionContent(reflection: any): {
       ? JSON.parse(reflection.lessons) 
       : reflection.lessons;
     
-    // Extract insights from lessons
+    // Extract insights from lessons - show full content
     if (lessonsData.insights && Array.isArray(lessonsData.insights)) {
       lessonsData.insights.forEach((insight: any) => {
         if (insight.action && typeof insight.action === 'string') {
-          // Clean up the action text - take first sentence or meaningful chunk
-          const actionText = insight.action.split('\n')[0].substring(0, 200);
-          result.insights.push(actionText);
+          result.insights.push(insight.action.trim());
+        } else if (insight.finding && typeof insight.finding === 'string') {
+          result.insights.push(insight.finding.trim());
+        } else if (typeof insight === 'string') {
+          result.insights.push(insight.trim());
         }
       });
     }
@@ -194,20 +196,28 @@ function ReflectionCard({ reflection }: { reflection: any }) {
         />
       </div>
       
-      {/* Summary - always visible */}
+      {/* Summary Preview - collapsed shows first 3 lines */}
       <div className="px-3 pb-3">
         <p className={cn(
-          "text-muted-foreground leading-relaxed",
-          !isExpanded && "line-clamp-2"
+          "text-muted-foreground leading-relaxed whitespace-pre-wrap",
+          !isExpanded && "line-clamp-3"
         )}>
           {parsed.summary || 'Processing reflection data...'}
         </p>
       </div>
       
-      {/* Expanded content */}
+      {/* Expanded content - FULL readable view */}
       {isExpanded && (
-        <div className="border-t border-border/30 px-3 py-3 space-y-3">
-          {/* Metrics */}
+        <div className="border-t border-border/30 px-3 py-3 space-y-4">
+          {/* Full Summary if longer */}
+          {parsed.summary && parsed.summary.length > 150 && (
+            <div>
+              <p className="text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Full Summary</p>
+              <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap">{parsed.summary}</p>
+            </div>
+          )}
+          
+          {/* Metrics - displayed as readable list */}
           {parsed.metrics.length > 0 && (
             <div>
               <p className="text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">System Metrics</p>
@@ -227,36 +237,36 @@ function ReflectionCard({ reflection }: { reflection: any }) {
             </div>
           )}
           
-          {/* Insights */}
+          {/* Insights - FULL TEXT, no truncation */}
           {parsed.insights.length > 0 && (
             <div>
               <p className="text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Key Insights</p>
-              <ul className="space-y-1.5">
+              <ul className="space-y-3">
                 {parsed.insights.map((insight, idx) => (
                   <li key={idx} className="flex items-start gap-2">
-                    <Lightbulb className="w-3 h-3 text-amber-500/70 mt-0.5 shrink-0" />
-                    <span className="text-muted-foreground leading-relaxed">{insight}</span>
+                    <Lightbulb className="w-3.5 h-3.5 text-amber-500/70 mt-0.5 shrink-0" />
+                    <span className="text-muted-foreground leading-relaxed whitespace-pre-wrap">{insight}</span>
                   </li>
                 ))}
               </ul>
             </div>
           )}
           
-          {/* Recommendations */}
+          {/* Recommendations - FULL TEXT */}
           {parsed.recommendations && (
             <div>
               <p className="text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Recommendations</p>
-              <p className="text-muted-foreground leading-relaxed">{parsed.recommendations}</p>
+              <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap">{parsed.recommendations}</p>
             </div>
           )}
           
-          {/* Top Memories */}
+          {/* Top Memories - readable */}
           {reflection.top_memories && Array.isArray(reflection.top_memories) && reflection.top_memories.length > 0 && (
             <div>
               <p className="text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Associated Memories</p>
-              <div className="text-muted-foreground/70">
+              <div className="space-y-1.5">
                 {reflection.top_memories.map((mem: any, idx: number) => (
-                  <div key={idx} className="bg-background/30 rounded px-2 py-1 mb-1">
+                  <div key={idx} className="bg-background/30 rounded px-2 py-2 text-muted-foreground/80">
                     {typeof mem === 'string' ? mem : extractReadableText(mem)}
                   </div>
                 ))}
