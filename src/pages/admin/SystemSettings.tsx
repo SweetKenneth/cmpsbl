@@ -5,15 +5,18 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Settings, Save } from "lucide-react";
+import { Settings, Save, Database, Download, RotateCcw, Clock, CheckCircle2 } from "lucide-react";
 import { useSystemSettings, SystemSettings as SettingsType } from "@/hooks/admin/useSystemSettings";
+import { useBackups } from "@/hooks/admin/useBackups";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
+import { format } from "date-fns";
 
 export default function SystemSettings() {
   const { settings: dbSettings, isLoading, updateSettings, toggleSetting } = useSystemSettings();
+  const { backups, isLoading: backupsLoading, createManualBackup, restoreBackup } = useBackups();
   const [localSettings, setLocalSettings] = useState<SettingsType>(dbSettings);
 
-  // Sync local state with database state
   useEffect(() => {
     setLocalSettings(dbSettings);
   }, [dbSettings]);
@@ -48,7 +51,8 @@ export default function SystemSettings() {
           </Button>
         </div>
 
-        <div className="grid gap-6">
+        <div className="grid gap-6 lg:grid-cols-2">
+          {/* General Settings */}
           <Card className="glass-panel p-6">
             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
               <Settings className="w-5 h-5" />
@@ -99,7 +103,7 @@ export default function SystemSettings() {
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Auto Backups</Label>
-                    <p className="text-sm text-muted-foreground">Daily automated backups</p>
+                    <p className="text-sm text-muted-foreground">Daily automated backups at midnight CST</p>
                   </div>
                   <Switch
                     checked={localSettings.auto_backups}
@@ -111,6 +115,7 @@ export default function SystemSettings() {
             )}
           </Card>
 
+          {/* API Configuration */}
           <Card className="glass-panel p-6">
             <h3 className="text-lg font-semibold mb-4">API Configuration</h3>
             {isLoading ? (
@@ -121,10 +126,6 @@ export default function SystemSettings() {
                 </div>
                 <div className="space-y-2">
                   <Skeleton className="h-5 w-40" />
-                  <Skeleton className="h-10 w-full" />
-                </div>
-                <div className="space-y-2">
-                  <Skeleton className="h-5 w-36" />
                   <Skeleton className="h-10 w-full" />
                 </div>
               </div>
@@ -158,6 +159,90 @@ export default function SystemSettings() {
                     className="mt-2"
                   />
                 </div>
+              </div>
+            )}
+          </Card>
+
+          {/* Backup Management */}
+          <Card className="glass-panel p-6 lg:col-span-2">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold flex items-center gap-2">
+                <Database className="w-5 h-5" />
+                Backup Management
+              </h3>
+              <Button
+                onClick={() => createManualBackup.mutate()}
+                disabled={createManualBackup.isPending}
+                size="sm"
+              >
+                <Download className="w-4 h-4 mr-2" />
+                {createManualBackup.isPending ? "Creating..." : "Manual Backup"}
+              </Button>
+            </div>
+            
+            <p className="text-sm text-muted-foreground mb-4">
+              Automated backups run daily at midnight CST to <code className="text-xs bg-muted px-1 py-0.5 rounded">/backups/daily</code>. 
+              Manual backups are saved to <code className="text-xs bg-muted px-1 py-0.5 rounded">/backups/manual</code>.
+            </p>
+
+            {backupsLoading ? (
+              <div className="space-y-2">
+                {[1, 2, 3].map((i) => (
+                  <Skeleton key={i} className="h-16 w-full" />
+                ))}
+              </div>
+            ) : backups.length === 0 ? (
+              <div className="text-center py-8 text-muted-foreground">
+                <Database className="w-12 h-12 mx-auto mb-2 opacity-50" />
+                <p>No backups yet. Create your first backup above.</p>
+              </div>
+            ) : (
+              <div className="space-y-2 max-h-[300px] overflow-y-auto">
+                {backups.map((backup) => (
+                  <div
+                    key={backup.id}
+                    className="flex items-center justify-between p-3 rounded-lg bg-muted/50 hover:bg-muted/80 transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={`p-2 rounded-full ${
+                        backup.status === 'complete' ? 'bg-green-500/20 text-green-500' : 'bg-yellow-500/20 text-yellow-500'
+                      }`}>
+                        {backup.status === 'complete' ? (
+                          <CheckCircle2 className="w-4 h-4" />
+                        ) : (
+                          <Clock className="w-4 h-4" />
+                        )}
+                      </div>
+                      <div>
+                        <p className="font-medium text-sm">{backup.backup_id}</p>
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                          <span>{format(new Date(backup.created_at), "MMM d, yyyy HH:mm")}</span>
+                          <span>•</span>
+                          <span>{backup.backup_path.split('/')[0]}</span>
+                          {backup.restore_point_enabled && (
+                            <>
+                              <span>•</span>
+                              <Badge variant="outline" className="text-xs py-0">Restore Point</Badge>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Badge variant={backup.status === 'complete' ? 'default' : 'secondary'}>
+                        {backup.status}
+                      </Badge>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => restoreBackup.mutate(backup.backup_id)}
+                        disabled={restoreBackup.isPending}
+                      >
+                        <RotateCcw className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
           </Card>
