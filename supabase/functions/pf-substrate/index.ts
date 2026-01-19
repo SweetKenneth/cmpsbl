@@ -3370,6 +3370,29 @@ async function handleDream(
       }, headers);
     }
 
+    case "pulse": {
+      // Lightweight dream heartbeat
+      const uptime = Date.now() - state.initialized;
+      const moduleHealth = getModuleHealth('dream');
+      
+      return jsonResponse({
+        success: true,
+        module: 'dream',
+        action: 'pulse',
+        pulse: {
+          alive: true,
+          version: SUBSTRATE_VERSION,
+          uptime_ms: uptime,
+          health: moduleHealth.healthScore,
+          status: moduleHealth.status,
+          circuit: moduleHealth.circuitState,
+        },
+        proof_mode: true,
+        read_only: true,
+        timestamp: new Date().toISOString()
+      }, headers);
+    }
+
     default:
       throw new Error(`Unknown dream action: ${action}`);
   }
