@@ -562,7 +562,7 @@ export function HeroMetaSubstrate() {
             color: "hsl(var(--background))",
           }}
         >
-          <Link to="/projects" className="flex items-center justify-center gap-2">
+          <Link to="/codelab" className="flex items-center justify-center gap-2">
             <Sparkles className="w-5 h-5" />
             Build Now
             <ArrowRight className="w-5 h-5" />
