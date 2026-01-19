@@ -22,14 +22,15 @@ interface ModuleNode {
   actions: number;
 }
 
+// Neon color palette for maximum visual impact
 const modules: ModuleNode[] = [
   {
     id: "brain",
     name: "Brain",
     icon: Brain,
-    color: "text-cyan-400",
-    glowColor: "shadow-cyan-500/50",
-    position: { x: 50, y: 20 },
+    color: "text-cyan-300",
+    glowColor: "shadow-[0_0_30px_rgba(34,211,238,0.6)]",
+    position: { x: 50, y: 18 },
     description: "Memory • Learning • Reflection",
     actions: 10
   },
@@ -37,9 +38,9 @@ const modules: ModuleNode[] = [
     id: "decode",
     name: "Decode",
     icon: MessageSquare,
-    color: "text-purple-400",
-    glowColor: "shadow-purple-500/50",
-    position: { x: 20, y: 45 },
+    color: "text-fuchsia-400",
+    glowColor: "shadow-[0_0_30px_rgba(232,121,249,0.6)]",
+    position: { x: 18, y: 42 },
     description: "Intent • Conversation • Understanding",
     actions: 5
   },
@@ -47,9 +48,9 @@ const modules: ModuleNode[] = [
     id: "defense",
     name: "Defense",
     icon: Shield,
-    color: "text-amber-400",
-    glowColor: "shadow-amber-500/50",
-    position: { x: 80, y: 45 },
+    color: "text-amber-300",
+    glowColor: "shadow-[0_0_30px_rgba(252,211,77,0.6)]",
+    position: { x: 82, y: 42 },
     description: "Security • Threat Detection • Protection",
     actions: 7
   },
@@ -57,9 +58,9 @@ const modules: ModuleNode[] = [
     id: "nexus",
     name: "Nexus",
     icon: Zap,
-    color: "text-green-400",
-    glowColor: "shadow-green-500/50",
-    position: { x: 15, y: 75 },
+    color: "text-emerald-300",
+    glowColor: "shadow-[0_0_30px_rgba(110,231,183,0.6)]",
+    position: { x: 14, y: 72 },
     description: "AI Routing • Multi-Provider • BYOK",
     actions: 4
   },
@@ -67,9 +68,9 @@ const modules: ModuleNode[] = [
     id: "vision",
     name: "Vision",
     icon: Eye,
-    color: "text-blue-400",
-    glowColor: "shadow-blue-500/50",
-    position: { x: 50, y: 85 },
+    color: "text-sky-300",
+    glowColor: "shadow-[0_0_30px_rgba(125,211,252,0.6)]",
+    position: { x: 50, y: 82 },
     description: "Observability • Metrics • Health",
     actions: 14
   },
@@ -77,9 +78,9 @@ const modules: ModuleNode[] = [
     id: "dream",
     name: "Dream",
     icon: Moon,
-    color: "text-violet-400",
-    glowColor: "shadow-violet-500/50",
-    position: { x: 85, y: 75 },
+    color: "text-violet-300",
+    glowColor: "shadow-[0_0_30px_rgba(196,181,253,0.6)]",
+    position: { x: 86, y: 72 },
     description: "Cycles • Mutation • Transformation",
     actions: 3
   },
@@ -87,9 +88,9 @@ const modules: ModuleNode[] = [
     id: "system",
     name: "System",
     icon: Settings,
-    color: "text-rose-400",
-    glowColor: "shadow-rose-500/50",
-    position: { x: 50, y: 52 },
+    color: "text-rose-300",
+    glowColor: "shadow-[0_0_30px_rgba(253,164,175,0.6)]",
+    position: { x: 50, y: 50 },
     description: "Core • Orchestration • Control",
     actions: 9
   }
@@ -271,18 +272,28 @@ export function InteractiveSubstrateDiagram() {
   const activeModuleData = modules.find(m => m.id === (hoveredModule || activeModule));
 
   return (
-    <div className="relative w-full aspect-square max-w-2xl mx-auto">
-      {/* Background grid effect */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent" />
+    <div className="relative w-full aspect-square max-w-2xl mx-auto pb-16 md:pb-12">
+      {/* Neon background glow effects */}
+      <div className="absolute inset-0 overflow-hidden rounded-3xl">
+        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-fuchsia-500/10" />
+        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-cyan-400/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-32 h-32 bg-fuchsia-400/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-violet-400/15 rounded-full blur-3xl" />
+      </div>
       
-      {/* Grid lines */}
-      <svg className="absolute inset-0 w-full h-full opacity-20">
+      {/* Grid lines - enhanced neon */}
+      <svg className="absolute inset-0 w-full h-full opacity-30">
         <defs>
-          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-primary/30" />
+          <pattern id="neon-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-cyan-400/40" />
           </pattern>
+          <linearGradient id="neon-fade" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="rgb(34, 211, 238)" stopOpacity="0.3" />
+            <stop offset="50%" stopColor="rgb(168, 85, 247)" stopOpacity="0.2" />
+            <stop offset="100%" stopColor="rgb(236, 72, 153)" stopOpacity="0.3" />
+          </linearGradient>
         </defs>
-        <rect width="100%" height="100%" fill="url(#grid)" />
+        <rect width="100%" height="100%" fill="url(#neon-grid)" />
       </svg>
 
       {/* Connection lines */}
@@ -318,16 +329,26 @@ export function InteractiveSubstrateDiagram() {
         })}
       </svg>
 
-      {/* Center core */}
+      {/* Center core - Neon pulsing orb */}
       <motion.div
         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-0"
         animate={{
-          scale: [1, 1.05, 1],
-          opacity: [0.3, 0.5, 0.3]
+          scale: [1, 1.15, 1],
+          opacity: [0.4, 0.7, 0.4]
         }}
-        transition={{ duration: 4, repeat: Infinity }}
+        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
       >
-        <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-primary/20 to-violet-500/20 blur-2xl" />
+        <div className="w-28 h-28 md:w-36 md:h-36 rounded-full bg-gradient-to-br from-cyan-400/30 via-violet-500/25 to-fuchsia-500/30 blur-2xl" />
+      </motion.div>
+      <motion.div
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-0"
+        animate={{
+          scale: [1.1, 1, 1.1],
+          opacity: [0.2, 0.4, 0.2]
+        }}
+        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+      >
+        <div className="w-20 h-20 md:w-28 md:h-28 rounded-full bg-gradient-to-tr from-emerald-400/25 to-amber-400/25 blur-xl" />
       </motion.div>
 
       {/* Module nodes */}
@@ -342,33 +363,37 @@ export function InteractiveSubstrateDiagram() {
         />
       ))}
 
-      {/* Active module info panel */}
+      {/* Active module info panel - Mobile optimized */}
       <AnimatePresence>
         {activeModuleData && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-sm"
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            className="absolute -bottom-2 left-0 right-0 mx-2 md:left-1/2 md:-translate-x-1/2 md:mx-0 md:w-full md:max-w-sm"
           >
-            <div className="bg-card/90 backdrop-blur-md border border-border rounded-xl p-4 text-center">
-              <div className="flex items-center justify-center gap-2 mb-2">
+            <div className={cn(
+              "bg-background/95 backdrop-blur-xl border-2 rounded-xl p-3 md:p-4 text-center",
+              "shadow-[0_0_40px_rgba(0,0,0,0.3)]",
+              activeModuleData.color.replace("text-", "border-").replace("-300", "-500/50")
+            )}>
+              <div className="flex items-center justify-center gap-2 mb-1.5">
                 <activeModuleData.icon className={cn("w-5 h-5", activeModuleData.color)} />
-                <h3 className={cn("font-bold", activeModuleData.color)}>
+                <h3 className={cn("font-bold text-base", activeModuleData.color)}>
                   {activeModuleData.name}
                 </h3>
               </div>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-xs md:text-sm text-muted-foreground mb-2">
                 {activeModuleData.description}
               </p>
-              <div className="mt-3 flex items-center justify-center gap-4 text-xs text-muted-foreground">
+              <div className="flex items-center justify-center gap-3 md:gap-4 text-[10px] md:text-xs text-muted-foreground">
                 <span className="flex items-center gap-1">
                   <Activity className="w-3 h-3" />
                   {activeModuleData.actions} actions
                 </span>
                 <span className="flex items-center gap-1">
                   <Database className="w-3 h-3" />
-                  Connected
+                  Online
                 </span>
                 <span className="flex items-center gap-1">
                   <Lock className="w-3 h-3" />
@@ -380,21 +405,21 @@ export function InteractiveSubstrateDiagram() {
         )}
       </AnimatePresence>
 
-      {/* Corner stats */}
+      {/* Corner stats - Neon enhanced */}
       <div className="absolute top-0 left-0 text-left">
-        <div className="bg-card/50 backdrop-blur-sm rounded-lg px-3 py-2 border border-border/50">
+        <div className="bg-background/80 backdrop-blur-md rounded-lg px-3 py-2 border border-cyan-500/30 shadow-[0_0_15px_rgba(34,211,238,0.2)]">
           <div className="flex items-center gap-2">
-            <Cpu className="w-4 h-4 text-primary" />
-            <span className="text-xs font-mono text-muted-foreground">SUBSTRATE v3.11</span>
+            <Cpu className="w-4 h-4 text-cyan-400" />
+            <span className="text-xs font-mono text-cyan-300">SUBSTRATE v3.11</span>
           </div>
         </div>
       </div>
 
       <div className="absolute top-0 right-0 text-right">
-        <div className="bg-card/50 backdrop-blur-sm rounded-lg px-3 py-2 border border-border/50">
+        <div className="bg-background/80 backdrop-blur-md rounded-lg px-3 py-2 border border-emerald-500/30 shadow-[0_0_15px_rgba(52,211,153,0.2)]">
           <div className="flex items-center gap-2">
-            <Network className="w-4 h-4 text-green-400" />
-            <span className="text-xs font-mono text-green-400">ONLINE</span>
+            <Network className="w-4 h-4 text-emerald-400" />
+            <span className="text-xs font-mono text-emerald-300">ONLINE</span>
           </div>
         </div>
       </div>

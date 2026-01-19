@@ -5,8 +5,8 @@ import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { Badge } from "@/components/ui/badge";
-import heroImage from "@/assets/hero/cognitive-pathways.jpg";
-import neuralImage from "@/assets/hero/neural-command-center.jpg";
+import heroImage from "@/assets/hero/neon-roadmap.jpg";
+import neuralImage from "@/assets/hero/neon-data-center.jpg";
 export default function Roadmap() {
   const quarters = [
     {
