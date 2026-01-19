@@ -475,62 +475,14 @@ export default function Explore() {
       {/* META HERO: Combined Substrate Visualization */}
       <HeroMetaSubstrate />
 
-      {/* Content continues below */}
-      <section className="relative z-10 px-4 pt-8 pb-12 md:pt-12 md:pb-20">
+      {/* Content continues below - removed duplicate CTA section */}
+      <section className="relative z-10 px-4 py-12 md:py-20">
         <div className="max-w-7xl mx-auto">
-          
-          {/* CTA Buttons - Bold, action-oriented */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4"
-          >
-            <Link to="/projects">
-              <Button size="lg" className="gap-2 px-8 bg-gradient-to-r from-cyan-500 via-violet-500 to-fuchsia-500 hover:opacity-90 shadow-[0_0_30px_rgba(139,92,246,0.4)] transition-all hover:shadow-[0_0_40px_rgba(139,92,246,0.6)]">
-                <Sparkles className="w-4 h-4" />
-                Build Now
-              </Button>
-            </Link>
-            <Link to="/feed-dream-eater">
-              <Button size="lg" variant="outline" className="gap-2 px-8 border-violet-500/50 text-violet-400 hover:bg-violet-500/10 hover:border-violet-400">
-                <Moon className="w-4 h-4" />
-                Feed the Dream Eater
-              </Button>
-            </Link>
-            <Link to="/documentation">
-              <Button size="lg" variant="ghost" className="gap-2 px-6 text-cyan-400 hover:text-cyan-300 hover:bg-cyan-500/10">
-                <BookOpen className="w-4 h-4" />
-                Explore Docs
-              </Button>
-            </Link>
-          </motion.div>
-          
-          {/* Quick Stats - Neon enhanced */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.7 }}
-            className="mt-10 flex flex-wrap items-center justify-center gap-6 md:gap-12"
-          >
-            {[
-              { label: "Core Modules", value: "7", color: "from-cyan-400 to-cyan-600" },
-              { label: "Substrate Actions", value: "52", color: "from-violet-400 to-violet-600" },
-              { label: "Database Tables", value: "50+", color: "from-fuchsia-400 to-fuchsia-600" },
-              { label: "BYOK Ready", value: "∞", color: "from-emerald-400 to-emerald-600" },
-            ].map((stat) => (
-              <div key={stat.label} className="text-center group cursor-default">
-                <div className={cn("text-2xl md:text-3xl font-bold bg-gradient-to-r bg-clip-text text-transparent transition-all group-hover:scale-110", stat.color)}>{stat.value}</div>
-                <div className="text-xs text-muted-foreground uppercase tracking-wider">{stat.label}</div>
-              </div>
-            ))}
-          </motion.div>
-          
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.2, duration: 1 }}
-            className="mt-12"
+            transition={{ delay: 0.5 }}
+            className="text-center"
           >
             <motion.div
               animate={{ y: [0, 8, 0] }}
@@ -689,6 +641,85 @@ export default function Explore() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Full Bleed Image Section */}
+      <section className="relative z-10 w-full overflow-hidden">
+        <div 
+          className="relative min-h-[50vh] md:min-h-[60vh] flex items-center justify-center"
+          style={{
+            background: "linear-gradient(180deg, hsl(var(--background)) 0%, hsl(220 30% 2%) 20%, hsl(220 30% 2%) 80%, hsl(var(--background)) 100%)",
+          }}
+        >
+          {/* Grid overlay */}
+          <div 
+            className="absolute inset-0 opacity-[0.06]"
+            style={{
+              backgroundImage: `linear-gradient(hsl(var(--neon-cyan) / 0.5) 1px, transparent 1px), 
+                               linear-gradient(90deg, hsl(var(--neon-cyan) / 0.5) 1px, transparent 1px)`,
+              backgroundSize: "80px 80px",
+            }}
+          />
+          
+          {/* Neon glow effects */}
+          <motion.div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: "radial-gradient(ellipse 50% 50% at 30% 50%, hsl(var(--neon-magenta) / 0.15) 0%, transparent 60%)",
+            }}
+            animate={{ opacity: [0.3, 0.6, 0.3] }}
+            transition={{ duration: 4, repeat: Infinity }}
+          />
+          <motion.div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: "radial-gradient(ellipse 50% 50% at 70% 50%, hsl(var(--neon-cyan) / 0.12) 0%, transparent 60%)",
+            }}
+            animate={{ opacity: [0.4, 0.7, 0.4] }}
+            transition={{ duration: 5, repeat: Infinity, delay: 1 }}
+          />
+          
+          {/* Content */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="relative text-center px-4 py-16 md:py-24"
+          >
+            <h2 
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-6 max-w-4xl mx-auto leading-tight"
+              style={{
+                background: "linear-gradient(135deg, hsl(var(--foreground)), hsl(var(--neon-cyan)), hsl(var(--neon-magenta)))",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              Intelligence That Never Sleeps
+            </h2>
+            <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+              24/7 autonomous operations. Self-healing systems. Memory that persists forever.
+              <br className="hidden sm:block" />
+              <span style={{ color: "hsl(var(--neon-cyan))" }}>The substrate runs while you rest.</span>
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link to="/os">
+                <Button 
+                  size="lg" 
+                  className="px-8 py-6 text-base font-bold"
+                  style={{
+                    background: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-magenta)))",
+                    color: "hsl(var(--background))",
+                    boxShadow: "0 0 30px hsl(var(--neon-cyan) / 0.4)",
+                  }}
+                >
+                  <Terminal className="w-5 h-5 mr-2" />
+                  Open Substrate OS
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+              </Link>
+            </div>
+          </motion.div>
         </div>
       </section>
 
