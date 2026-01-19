@@ -17,7 +17,7 @@ import {
   Shield, 
   Zap, 
   Eye,
-  Infinity,
+  Infinity as InfinityIcon,
   Flame,
   Lock,
   Lightbulb,
@@ -37,7 +37,7 @@ interface Limitation {
 }
 
 const capabilities: Capability[] = [
-  { icon: Infinity, label: "Infinite Memory", color: "#06b6d4" },
+  { icon: InfinityIcon, label: "Infinite Memory", color: "#06b6d4" },
   { icon: Moon, label: "Dream Analysis", color: "#8b5cf6" },
   { icon: Shield, label: "Self-Defense", color: "#f59e0b" },
   { icon: Brain, label: "Continuous Learning", color: "#22c55e" },
