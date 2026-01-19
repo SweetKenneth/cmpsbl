@@ -54,10 +54,7 @@ import { SEO } from "@/components/SEO";
 import { cn } from "@/lib/utils";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
-import { InteractiveSubstrateDiagram } from "@/components/hero/InteractiveSubstrateDiagram";
-import { HeroConceptA_EvolutionFlow } from "@/components/hero/HeroConceptA_EvolutionFlow";
-import { HeroConceptB_OSLayerStack } from "@/components/hero/HeroConceptB_OSLayerStack";
-import { HeroConceptC_TransformationCinematic } from "@/components/hero/HeroConceptC_TransformationCinematic";
+import { HeroMetaSubstrate } from "@/components/hero/HeroMetaSubstrate";
 
 // Animated gradient orb component
 function GradientOrb({ className, delay = 0 }: { className?: string; delay?: number }) {
@@ -475,26 +472,10 @@ export default function Explore() {
         </motion.div>
       </div>
 
-      {/* HERO CONCEPT A: Evolution Flow */}
-      <HeroConceptA_EvolutionFlow />
-      
-      {/* Divider */}
-      <div className="relative z-10 py-8 text-center">
-        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent max-w-4xl mx-auto" />
-      </div>
+      {/* META HERO: Combined Substrate Visualization */}
+      <HeroMetaSubstrate />
 
-      {/* HERO CONCEPT B: OS Layer Stack */}
-      <HeroConceptB_OSLayerStack />
-      
-      {/* Divider */}
-      <div className="relative z-10 py-8 text-center">
-        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent max-w-4xl mx-auto" />
-      </div>
-
-      {/* HERO CONCEPT C: Transformation Cinematic */}
-      <HeroConceptC_TransformationCinematic />
-
-      {/* Original content continues below */}
+      {/* Content continues below */}
       <section className="relative z-10 px-4 pt-8 pb-12 md:pt-12 md:pb-20">
         <div className="max-w-7xl mx-auto">
           
