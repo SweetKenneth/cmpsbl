@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { SEO } from "@/components/SEO";
+import heroImage from "@/assets/hero/defense-shield-cyber.jpg";
 
 export default function RCKBLHome() {
   const navigate = useNavigate();
@@ -55,12 +56,12 @@ export default function RCKBLHome() {
 
       <PublicNav />
 
-      {/* Hero with Earth Window */}
+      {/* Hero with Futuristic Defense Shield Visual */}
       <section className="relative w-full">
         <div 
           className="absolute inset-0 h-[70vh] bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1920&q=80')`,
+            backgroundImage: `url(${heroImage})`,
           }}
         />
         <div className="absolute inset-0 h-[70vh] bg-gradient-to-b from-background/80 via-background/40 to-background" />
