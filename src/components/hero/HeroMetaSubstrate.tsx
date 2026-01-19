@@ -71,45 +71,106 @@ function OrbitRing({ radius, duration, color }: { radius: number; duration: numb
   );
 }
 
-// Energy ripple wave component
-function EnergyRipple({ delay, targetAngle, color }: { delay: number; targetAngle: number; color: string }) {
+// Wave arc between icons using SVG
+function WaveArcsBetweenIcons() {
+  const radius = 70;
+  const centerX = 128; // Half of 256px (md:w-64)
+  const centerY = 128;
+  
+  // Calculate positions for each module
+  const positions = coreModules.map((_, i) => {
+    const angle = (i / coreModules.length) * Math.PI * 2 - Math.PI / 2;
+    return {
+      x: centerX + Math.cos(angle) * radius,
+      y: centerY + Math.sin(angle) * radius,
+    };
+  });
+  
+  // Create wave paths between adjacent icons
+  const wavePaths = positions.map((pos, i) => {
+    const nextPos = positions[(i + 1) % positions.length];
+    const midX = (pos.x + nextPos.x) / 2;
+    const midY = (pos.y + nextPos.y) / 2;
+    
+    // Calculate control point for the wave (push outward from center)
+    const dx = midX - centerX;
+    const dy = midY - centerY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    const normalX = dx / dist;
+    const normalY = dy / dist;
+    
+    // Wave amplitude
+    const waveOffset = 15;
+    const ctrlX = midX + normalX * waveOffset;
+    const ctrlY = midY + normalY * waveOffset;
+    
+    return {
+      path: `M ${pos.x} ${pos.y} Q ${ctrlX} ${ctrlY} ${nextPos.x} ${nextPos.y}`,
+      color: coreModules[i].color,
+      nextColor: coreModules[(i + 1) % coreModules.length].color,
+    };
+  });
+  
   return (
-    <motion.div
-      className="absolute rounded-full pointer-events-none"
-      style={{
-        width: 20,
-        height: 20,
-        left: "calc(50% - 10px)",
-        top: "calc(50% - 10px)",
-        background: `radial-gradient(circle, ${color} 0%, transparent 70%)`,
-        boxShadow: `0 0 15px ${color}`,
-      }}
-      initial={{ scale: 0.2, opacity: 0.8, x: 0, y: 0 }}
-      animate={{
-        scale: [0.2, 0.8, 0.4],
-        opacity: [0.9, 0.6, 0],
-        x: Math.cos(targetAngle) * 65,
-        y: Math.sin(targetAngle) * 65,
-      }}
-      transition={{
-        duration: 1.8,
-        repeat: Infinity,
-        delay: delay,
-        ease: "easeOut",
-      }}
-    />
+    <svg
+      className="absolute inset-0 w-full h-full pointer-events-none"
+      viewBox="0 0 256 256"
+      style={{ overflow: "visible" }}
+    >
+      <defs>
+        {wavePaths.map((wave, i) => (
+          <linearGradient key={`grad-${i}`} id={`wave-gradient-${i}`} x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor={wave.color} stopOpacity="0.6" />
+            <stop offset="50%" stopColor={wave.nextColor} stopOpacity="0.8" />
+            <stop offset="100%" stopColor={wave.nextColor} stopOpacity="0.6" />
+          </linearGradient>
+        ))}
+      </defs>
+      
+      {wavePaths.map((wave, i) => (
+        <g key={`wave-group-${i}`}>
+          {/* Base wave glow */}
+          <motion.path
+            d={wave.path}
+            fill="none"
+            stroke={`url(#wave-gradient-${i})`}
+            strokeWidth="3"
+            strokeLinecap="round"
+            filter="blur(2px)"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: 0.4 }}
+            transition={{ duration: 1.5, delay: 0.5 + i * 0.1 }}
+          />
+          
+          {/* Animated energy pulse traveling along the wave */}
+          <motion.circle
+            r="3"
+            fill={wave.color}
+            filter={`drop-shadow(0 0 6px ${wave.color})`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0, 1, 1, 0] }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              delay: i * 0.3,
+            }}
+          >
+            <animateMotion
+              dur="2s"
+              repeatCount="indefinite"
+              begin={`${i * 0.3}s`}
+              path={wave.path}
+            />
+          </motion.circle>
+        </g>
+      ))}
+    </svg>
   );
 }
 
 // The central substrate core
 function SubstrateCore() {
   const [hoveredModule, setHoveredModule] = useState<number | null>(null);
-  
-  // Generate ripple configurations for each module
-  const rippleConfigs = coreModules.map((mod, i) => {
-    const angle = (i / coreModules.length) * Math.PI * 2 - Math.PI / 2;
-    return { angle, color: mod.color, delay: i * 0.3 };
-  });
   
   return (
     <motion.div
@@ -128,39 +189,8 @@ function SubstrateCore() {
         transition={{ duration: 3, repeat: Infinity }}
       />
       
-      {/* Energy ripples flowing from center to module icons */}
-      {rippleConfigs.map((config, i) => (
-        <React.Fragment key={`ripple-group-${i}`}>
-          <EnergyRipple delay={config.delay} targetAngle={config.angle} color={config.color} />
-          <EnergyRipple delay={config.delay + 0.9} targetAngle={config.angle} color={config.color} />
-        </React.Fragment>
-      ))}
-      
-      {/* Concentric ripple waves */}
-      {[0, 1, 2].map((ring) => (
-        <motion.div
-          key={`wave-${ring}`}
-          className="absolute rounded-full pointer-events-none"
-          style={{
-            width: 40,
-            height: 40,
-            left: "calc(50% - 20px)",
-            top: "calc(50% - 20px)",
-            border: "2px solid hsl(var(--neon-cyan) / 0.4)",
-            boxShadow: "0 0 10px hsl(var(--neon-cyan) / 0.3)",
-          }}
-          animate={{
-            scale: [1, 4],
-            opacity: [0.6, 0],
-          }}
-          transition={{
-            duration: 2.5,
-            repeat: Infinity,
-            delay: ring * 0.8,
-            ease: "easeOut",
-          }}
-        />
-      ))}
+      {/* Wave arcs between module icons */}
+      <WaveArcsBetweenIcons />
       
       {/* Orbit rings */}
       <OrbitRing radius={90} duration={12} color="hsl(var(--neon-cyan))" />
@@ -261,7 +291,107 @@ function SubstrateCore() {
   );
 }
 
-// AI Model evolution visualization - single row with arrows
+// Router hub connecting AI models
+function RouterHub() {
+  const modelCount = aiModels.length;
+  const hubWidth = 280;
+  const spacing = hubWidth / (modelCount - 1);
+  
+  return (
+    <svg
+      className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 pointer-events-none"
+      width={hubWidth + 40}
+      height="60"
+      viewBox={`0 0 ${hubWidth + 40} 60`}
+      style={{ overflow: "visible" }}
+    >
+      {/* Central router node */}
+      <motion.circle
+        cx={(hubWidth + 40) / 2}
+        cy="20"
+        r="8"
+        fill="hsl(var(--neon-cyan))"
+        filter="drop-shadow(0 0 8px hsl(var(--neon-cyan)))"
+        animate={{
+          r: [8, 10, 8],
+          opacity: [0.8, 1, 0.8],
+        }}
+        transition={{ duration: 2, repeat: Infinity }}
+      />
+      
+      {/* Inner router ring */}
+      <motion.circle
+        cx={(hubWidth + 40) / 2}
+        cy="20"
+        r="12"
+        fill="none"
+        stroke="hsl(var(--neon-cyan))"
+        strokeWidth="1"
+        opacity="0.4"
+        animate={{ r: [12, 16, 12] }}
+        transition={{ duration: 2, repeat: Infinity }}
+      />
+      
+      {/* Connection lines from router to each model */}
+      {aiModels.map((model, i) => {
+        const modelX = 20 + i * spacing;
+        const hubCenterX = (hubWidth + 40) / 2;
+        
+        return (
+          <g key={`router-line-${i}`}>
+            {/* Line from hub to model */}
+            <motion.line
+              x1={hubCenterX}
+              y1="28"
+              x2={modelX}
+              y2="55"
+              stroke={model.color}
+              strokeWidth="2"
+              strokeLinecap="round"
+              opacity="0.5"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 0.8, delay: 1.2 + i * 0.1 }}
+            />
+            
+            {/* Animated pulse along the line */}
+            <motion.circle
+              r="3"
+              fill={model.color}
+              filter={`drop-shadow(0 0 4px ${model.color})`}
+              animate={{
+                cx: [hubCenterX, modelX],
+                cy: [28, 55],
+                opacity: [0, 1, 1, 0],
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                delay: i * 0.4,
+                ease: "easeOut",
+              }}
+            />
+          </g>
+        );
+      })}
+      
+      {/* Router label */}
+      <text
+        x={(hubWidth + 40) / 2}
+        y="8"
+        textAnchor="middle"
+        fill="hsl(var(--neon-cyan))"
+        fontSize="8"
+        fontWeight="bold"
+        style={{ filter: "drop-shadow(0 0 4px hsl(var(--neon-cyan)))" }}
+      >
+        ROUTER
+      </text>
+    </svg>
+  );
+}
+
+// AI Model evolution visualization with router
 function AIEvolutionFlow() {
   return (
     <motion.div
@@ -284,56 +414,44 @@ function AIEvolutionFlow() {
         </span>
       </div>
       
-      {/* AI Models row with arrows */}
-      <div className="flex items-center justify-center gap-2 sm:gap-3 md:gap-4 flex-wrap">
+      {/* AI Models row with router hub */}
+      <div className="relative flex items-center justify-center gap-3 sm:gap-4 md:gap-6 flex-wrap pt-16">
+        {/* Router hub above models */}
+        <RouterHub />
+        
         {aiModels.map((model, i) => (
-          <React.Fragment key={model.name}>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 1 + i * 0.1 }}
-              className="relative group"
+          <motion.div
+            key={model.name}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 1 + i * 0.1 }}
+            className="relative group"
+          >
+            {/* Model bubble */}
+            <div 
+              className="w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center border-2 transition-all duration-300"
+              style={{
+                borderColor: model.color,
+                background: `${model.color}15`,
+                boxShadow: `0 0 15px ${model.color}40, inset 0 0 10px ${model.color}20`,
+              }}
             >
-              {/* Model bubble */}
-              <div 
-                className="w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center border-2 transition-all duration-300"
-                style={{
-                  borderColor: model.color,
-                  background: `${model.color}15`,
-                  boxShadow: `0 0 15px ${model.color}40, inset 0 0 10px ${model.color}20`,
-                }}
+              <span 
+                className="text-xs sm:text-sm font-bold"
+                style={{ color: model.color }}
               >
-                <span 
-                  className="text-xs sm:text-sm font-bold"
-                  style={{ color: model.color }}
-                >
-                  {model.name}
-                </span>
-              </div>
-              
-              {/* Glow on hover */}
-              <motion.div
-                className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                style={{ 
-                  boxShadow: `0 0 30px ${model.color}, 0 0 60px ${model.color}50`,
-                }}
-              />
-            </motion.div>
+                {model.name}
+              </span>
+            </div>
             
-            {/* Arrow between models */}
-            {i < aiModels.length - 1 && (
-              <motion.div
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1.2 + i * 0.1 }}
-              >
-                <ChevronRight 
-                  className="w-4 h-4 sm:w-5 sm:h-5"
-                  style={{ color: "hsl(var(--muted-foreground))" }}
-                />
-              </motion.div>
-            )}
-          </React.Fragment>
+            {/* Glow on hover */}
+            <motion.div
+              className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+              style={{ 
+                boxShadow: `0 0 30px ${model.color}, 0 0 60px ${model.color}50`,
+              }}
+            />
+          </motion.div>
         ))}
       </div>
     </motion.div>
