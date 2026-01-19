@@ -137,6 +137,23 @@ All colors MUST be HSL.
     @apply bg-background text-foreground antialiased;
   }
   
+  /* Mobile-first code block styling - ensures code wraps on small screens */
+  pre, code {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  @media (max-width: 639px) {
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    
+    code {
+      word-break: break-word;
+    }
+  }
+  
   /* Accessibility: Focus indicators */
   *:focus {
     @apply outline-none;

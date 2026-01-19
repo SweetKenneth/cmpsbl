@@ -5355,11 +5355,9 @@ function TemplateCard({ template }: { template: typeof TEMPLATES[0] }) {
                   <CopyButton text={template.code} />
                 </div>
                 <ScrollArea className="h-[250px] sm:h-[280px] rounded-lg bg-muted/50 border border-border/50">
-                  <div className="min-w-max">
-                    <pre className="p-3 sm:p-4 text-[10px] sm:text-xs font-mono whitespace-pre">
-                      <code className="text-foreground/90 block">{template.code}</code>
-                    </pre>
-                  </div>
+                  <pre className="p-3 sm:p-4 text-[10px] sm:text-xs font-mono whitespace-pre-wrap break-words overflow-x-auto">
+                    <code className="text-foreground/90 block">{template.code}</code>
+                  </pre>
                 </ScrollArea>
               </div>
             </motion.div>
@@ -5388,28 +5386,29 @@ function InlineDocumentation({ docId }: { docId: string }) {
         
         <div>
           <h3 className="text-lg font-semibold mb-3">2. Deploy the Substrate</h3>
-          <Card className="bg-muted/50 p-4">
-            <code className="text-sm">
-              # Clone and deploy to your Supabase project<br/>
-              supabase functions deploy pf-substrate<br/><br/>
-              # Add your API keys as secrets<br/>
-              supabase secrets set GROQ_API_KEY=your_key_here
-            </code>
+          <Card className="bg-muted/50 p-4 overflow-hidden">
+            <pre className="text-sm font-mono whitespace-pre-wrap break-words overflow-x-auto">
+              <code>{`# Clone and deploy to your Supabase project
+supabase functions deploy pf-substrate
+
+# Add your API keys as secrets
+supabase secrets set GROQ_API_KEY=your_key_here`}</code>
+            </pre>
           </Card>
         </div>
         
         <div>
           <h3 className="text-lg font-semibold mb-3">3. Make Your First Call</h3>
-          <Card className="bg-muted/50 p-4">
-            <code className="text-sm">
-              {`POST https://YOUR_PROJECT.supabase.co/functions/v1/pf-substrate
-              
+          <Card className="bg-muted/50 p-4 overflow-hidden">
+            <pre className="text-sm font-mono whitespace-pre-wrap break-words overflow-x-auto">
+              <code>{`POST https://YOUR_PROJECT.supabase.co/functions/v1/pf-substrate
+
 {
   "module": "vision",
   "action": "health",
   "payload": {}
-}`}
-            </code>
+}`}</code>
+            </pre>
           </Card>
         </div>
       </div>
@@ -5418,9 +5417,9 @@ function InlineDocumentation({ docId }: { docId: string }) {
       <div className="space-y-6">
         <div>
           <h3 className="text-lg font-semibold mb-3">Request Format</h3>
-          <Card className="bg-muted/50 p-4">
-            <code className="text-sm">
-              {`POST /functions/v1/pf-substrate
+          <Card className="bg-muted/50 p-4 overflow-hidden">
+            <pre className="text-sm font-mono whitespace-pre-wrap break-words overflow-x-auto">
+              <code>{`POST /functions/v1/pf-substrate
 Content-Type: application/json
 Authorization: Bearer <jwt> (optional)
 
@@ -5428,23 +5427,23 @@ Authorization: Bearer <jwt> (optional)
   "module": "brain|decode|defense|nexus|vision|dream|system",
   "action": "<action-name>",
   "payload": { /* action parameters */ }
-}`}
-            </code>
+}`}</code>
+            </pre>
           </Card>
         </div>
         
         <div>
           <h3 className="text-lg font-semibold mb-3">Response Format</h3>
-          <Card className="bg-muted/50 p-4">
-            <code className="text-sm">
-              {`{
+          <Card className="bg-muted/50 p-4 overflow-hidden">
+            <pre className="text-sm font-mono whitespace-pre-wrap break-words overflow-x-auto">
+              <code>{`{
   "success": true,
   "module": "brain",
   "action": "query",
   "data": { /* action-specific response */ },
   "timestamp": "2026-01-16T..."
-}`}
-            </code>
+}`}</code>
+            </pre>
           </Card>
         </div>
         
@@ -5479,9 +5478,9 @@ Authorization: Bearer <jwt> (optional)
         
         <div>
           <h3 className="text-lg font-semibold mb-3">Initialize Client</h3>
-          <Card className="bg-muted/50 p-4">
-            <code className="text-sm">
-              {`import { SubstrateClient } from './substrate-client';
+          <Card className="bg-muted/50 p-4 overflow-hidden">
+            <pre className="text-sm font-mono whitespace-pre-wrap break-words overflow-x-auto">
+              <code>{`import { SubstrateClient } from './substrate-client';
 
 const substrate = new SubstrateClient({
   url: 'https://YOUR_PROJECT.supabase.co',
@@ -5489,8 +5488,8 @@ const substrate = new SubstrateClient({
 });
 
 // Set auth token for authenticated operations
-substrate.setAuthToken(userJwtToken);`}
-            </code>
+substrate.setAuthToken(userJwtToken);`}</code>
+            </pre>
           </Card>
         </div>
         
@@ -5543,10 +5542,10 @@ substrate.setAuthToken(userJwtToken);`}
           
           <div>
             <h4 className="font-medium mb-2">Authenticated Endpoints</h4>
-            <Card className="bg-muted/50 p-4">
-              <code className="text-sm">
-                Authorization: Bearer &lt;supabase-jwt&gt;
-              </code>
+            <Card className="bg-muted/50 p-4 overflow-hidden">
+              <pre className="text-sm font-mono whitespace-pre-wrap break-words">
+                <code>Authorization: Bearer &lt;supabase-jwt&gt;</code>
+              </pre>
             </Card>
           </div>
         </div>
@@ -5784,7 +5783,7 @@ const reply = await substrate.decode.chat('Hello!', 'session_123');
 const response = await substrate.nexus.route('Explain quantum computing');`} />
                   </div>
                   <ScrollArea className="w-full">
-                    <pre className="p-4 sm:p-6 text-[11px] sm:text-sm font-mono bg-muted/30 min-w-[500px]">
+                    <pre className="p-4 sm:p-6 text-[11px] sm:text-sm font-mono bg-muted/30 whitespace-pre-wrap break-words sm:whitespace-pre overflow-x-auto">
 {`import { SubstrateClient } from './substrate-client';
 
 const substrate = new SubstrateClient({
