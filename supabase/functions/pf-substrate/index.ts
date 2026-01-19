@@ -1988,6 +1988,29 @@ async function handleDefense(
       return jsonResponse(response, headers);
     }
 
+    case "pulse": {
+      // Lightweight defense heartbeat
+      const uptime = Date.now() - state.initialized;
+      const moduleHealth = getModuleHealth('defense');
+      
+      return jsonResponse({
+        success: true,
+        module: 'defense',
+        action: 'pulse',
+        pulse: {
+          alive: true,
+          version: SUBSTRATE_VERSION,
+          uptime_ms: uptime,
+          health: moduleHealth.healthScore,
+          status: moduleHealth.status,
+          circuit: moduleHealth.circuitState,
+        },
+        proof_mode: true,
+        read_only: true,
+        timestamp: new Date().toISOString()
+      }, headers);
+    }
+
     default:
       throw new Error(`Unknown defense action: ${action}`);
   }
