@@ -33,7 +33,7 @@ import cmptblMissionImg from "@/assets/blog/cmptbl-mission-accessibility.jpg";
 import wpAccessibilityImg from "@/assets/blog/wordpress-accessibility-guide.jpg";
 import wcag22Img from "@/assets/blog/wcag-2-2-wordpress-changes.jpg";
 import autoAccessibilityImg from "@/assets/blog/automated-accessibility-fixes.jpg";
-import earthWindowImage from "@/assets/hero/earth-window-station-2.jpg";
+import earthWindowImage from "@/assets/hero/cognitive-pathways.jpg";
 
 export default function Blog() {
   const [searchQuery, setSearchQuery] = useState("");

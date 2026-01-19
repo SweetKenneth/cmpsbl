@@ -5,8 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
-import heroImage from "@/assets/hero/sustainable-architecture.jpg";
-import earthWindowImage from "@/assets/hero/earth-window-station-1.jpg";
+import heroImage from "@/assets/hero/neural-command-center.jpg";
+import earthWindowImage from "@/assets/hero/cognitive-pathways.jpg";
 import founderPhoto from "@/assets/founder-kenneth-sweet.png";
 export default function About() {
   const products = [
