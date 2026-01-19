@@ -5,8 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { SEO } from "@/components/SEO";
-import heroImage from "@/assets/hero/ai-control-room.jpg";
-import securityImage from "@/assets/hero/security-holographic.jpg";
+import heroImage from "@/assets/hero/neon-data-center.jpg";
+import securityImage from "@/assets/hero/neon-defense-shield.jpg";
 export default function Solutions() {
   const solutions = [
     {

@@ -9,8 +9,8 @@ import { useToast } from "@/hooks/use-toast";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { SEO } from "@/components/SEO";
-import heroImage from "@/assets/hero/ai-control-room.jpg";
-import accessibilityImage from "@/assets/hero/cognitive-pathways.jpg";
+import heroImage from "@/assets/hero/neon-data-center.jpg";
+import accessibilityImage from "@/assets/hero/neon-dream-cosmos.jpg";
 
 export default function Contact() {
   const { toast } = useToast();

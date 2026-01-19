@@ -462,12 +462,13 @@ export default function Explore() {
 
       <PublicNav />
 
-      {/* Ambient Background */}
+      {/* Enhanced Neon Ambient Background */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <motion.div style={{ y: backgroundY }} className="absolute inset-0">
-          <GradientOrb className="w-[600px] h-[600px] -top-48 -left-48 bg-primary/30" delay={0} />
-          <GradientOrb className="w-[500px] h-[500px] top-1/3 -right-48 bg-violet-500/20" delay={0.2} />
-          <GradientOrb className="w-[400px] h-[400px] bottom-0 left-1/3 bg-cyan-500/15" delay={0.4} />
+          <GradientOrb className="w-[700px] h-[700px] -top-48 -left-48 bg-cyan-500/20" delay={0} />
+          <GradientOrb className="w-[600px] h-[600px] top-1/4 -right-48 bg-fuchsia-500/15" delay={0.2} />
+          <GradientOrb className="w-[500px] h-[500px] bottom-0 left-1/4 bg-violet-500/15" delay={0.4} />
+          <GradientOrb className="w-[400px] h-[400px] top-1/2 right-1/4 bg-emerald-500/10" delay={0.6} />
         </motion.div>
       </div>
 
@@ -481,14 +482,14 @@ export default function Explore() {
             transition={{ duration: 0.8 }}
             className="text-center mb-8 md:mb-12"
           >
-            <Badge variant="outline" className="mb-6 px-4 py-1.5 bg-primary/5 border-primary/30">
-              <Sparkles className="w-3 h-3 mr-2 text-primary" />
-              <span className="text-primary">Production-Grade Cognitive Infrastructure</span>
+            <Badge variant="outline" className="mb-6 px-4 py-1.5 bg-gradient-to-r from-cyan-500/10 to-violet-500/10 border-cyan-500/30">
+              <Sparkles className="w-3 h-3 mr-2 text-cyan-400" />
+              <span className="text-cyan-300">Production-Grade Cognitive Infrastructure</span>
             </Badge>
             
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight">
               The Substrate That{" "}
-              <span className="bg-gradient-to-r from-primary via-violet-500 to-cyan-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-cyan-300 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(139,92,246,0.5)]">
                 Thinks, Learns, Defends, and Dreams
               </span>
             </h1>
@@ -510,34 +511,34 @@ export default function Explore() {
             <InteractiveSubstrateDiagram />
           </motion.div>
           
-          {/* CTA Buttons */}
+          {/* CTA Buttons - Bold, action-oriented */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4"
+            className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4"
           >
-            <Link to="/os">
-              <Button size="lg" className="gap-2 px-8 bg-gradient-to-r from-primary to-violet-500 hover:opacity-90">
-                <Terminal className="w-4 h-4" />
-                Open Substrate OS
+            <Link to="/projects">
+              <Button size="lg" className="gap-2 px-8 bg-gradient-to-r from-cyan-500 via-violet-500 to-fuchsia-500 hover:opacity-90 shadow-[0_0_30px_rgba(139,92,246,0.4)] transition-all hover:shadow-[0_0_40px_rgba(139,92,246,0.6)]">
+                <Sparkles className="w-4 h-4" />
+                Build Now
               </Button>
             </Link>
-            <Link to="/demo">
-              <Button size="lg" variant="outline" className="gap-2 px-8">
-                <Play className="w-4 h-4" />
-                Interactive Demo
+            <Link to="/feed-dream-eater">
+              <Button size="lg" variant="outline" className="gap-2 px-8 border-violet-500/50 text-violet-400 hover:bg-violet-500/10 hover:border-violet-400">
+                <Moon className="w-4 h-4" />
+                Feed the Dream Eater
               </Button>
             </Link>
-            <Link to="/developers">
-              <Button size="lg" variant="ghost" className="gap-2 px-6">
-                <Code className="w-4 h-4" />
-                View SDK
+            <Link to="/documentation">
+              <Button size="lg" variant="ghost" className="gap-2 px-6 text-cyan-400 hover:text-cyan-300 hover:bg-cyan-500/10">
+                <BookOpen className="w-4 h-4" />
+                Explore Docs
               </Button>
             </Link>
           </motion.div>
           
-          {/* Quick Stats */}
+          {/* Quick Stats - Neon enhanced */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -545,13 +546,13 @@ export default function Explore() {
             className="mt-10 flex flex-wrap items-center justify-center gap-6 md:gap-12"
           >
             {[
-              { label: "Core Modules", value: "7" },
-              { label: "Substrate Actions", value: "52" },
-              { label: "Database Tables", value: "50+" },
-              { label: "BYOK Ready", value: "∞" },
+              { label: "Core Modules", value: "7", color: "from-cyan-400 to-cyan-600" },
+              { label: "Substrate Actions", value: "52", color: "from-violet-400 to-violet-600" },
+              { label: "Database Tables", value: "50+", color: "from-fuchsia-400 to-fuchsia-600" },
+              { label: "BYOK Ready", value: "∞", color: "from-emerald-400 to-emerald-600" },
             ].map((stat) => (
-              <div key={stat.label} className="text-center">
-                <div className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">{stat.value}</div>
+              <div key={stat.label} className="text-center group cursor-default">
+                <div className={cn("text-2xl md:text-3xl font-bold bg-gradient-to-r bg-clip-text text-transparent transition-all group-hover:scale-110", stat.color)}>{stat.value}</div>
                 <div className="text-xs text-muted-foreground uppercase tracking-wider">{stat.label}</div>
               </div>
             ))}
