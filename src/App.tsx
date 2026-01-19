@@ -50,6 +50,7 @@ const Documentation = lazy(() => import("./pages/Documentation"));
 const Publication = lazy(() => import("./pages/Publication"));
 const DevPortal = lazy(() => import("./pages/DevPortal"));
 const Changelog = lazy(() => import("./pages/Changelog"));
+const CodeLab = lazy(() => import("./pages/CodeLab"));
 
 // Marketing / Info pages
 const About = lazy(() => import("./pages/About"));
@@ -130,6 +131,7 @@ const App = () => {
                     <Route path="/publication" element={<Publication />} />
                     <Route path="/documentation" element={<Documentation />} />
                     <Route path="/changelog" element={<Changelog />} />
+                    <Route path="/codelab" element={<CodeLab />} />
                     <Route path="/developers" element={<DevPortal />} />
                     <Route path="/dev" element={<Navigate to="/developers" replace />} />
 

@@ -45,7 +45,8 @@ export function PublicNav() {
       name: "SDK",
       icon: Code,
       items: [
-        { name: "Substrate Modules", href: "/developers", description: "Composable Primitives", icon: Terminal },
+        { name: "CodeLab", href: "/codelab", description: "Developer Workbench", icon: Terminal },
+        { name: "Substrate Modules", href: "/developers", description: "Composable Primitives", icon: Code },
         { name: "Documentation", href: "/documentation", description: "API Reference", icon: FileText },
         { name: "Changelog", href: "/changelog", description: "Version History", icon: BookOpen },
         ...(user ? [{ name: "Control Panel", href: "/os", description: "Admin Console", icon: Cpu }] : []),
@@ -77,7 +78,7 @@ export function PublicNav() {
   // Quick access items shown directly in nav
   const quickLinks = [
     { name: "Demo", href: "/demo" },
-    { name: "Developers", href: "/developers" },
+    { name: "CodeLab", href: "/codelab" },
   ];
 
   const isActive = (path: string) => location.pathname === path;
