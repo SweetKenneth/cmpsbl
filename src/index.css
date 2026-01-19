@@ -43,6 +43,14 @@ All colors MUST be HSL.
     --sidebar-border: 220 10% 88%;
     --sidebar-ring: 210 60% 45%;
     
+    /* Neon palette - also for light mode */
+    --neon-cyan: 185 100% 40%;
+    --neon-magenta: 310 100% 50%;
+    --neon-purple: 280 100% 55%;
+    --neon-amber: 38 100% 50%;
+    --neon-green: 145 80% 40%;
+    --neon-blue: 210 100% 50%;
+    
     /* Earthside specific */
     --system-green: 145 65% 42%;
     --system-amber: 38 92% 50%;
@@ -65,44 +73,52 @@ All colors MUST be HSL.
   }
 
   .dark {
-    /* EARTHSIDE Dark - Charcoal/Graphite */
-    --background: 220 20% 10%;
-    --foreground: 0 0% 95%;
-    --card: 220 18% 14%;
-    --card-foreground: 0 0% 95%;
-    --popover: 220 18% 12%;
-    --popover-foreground: 0 0% 95%;
-    --primary: 210 55% 55%;
-    --primary-variant: 200 45% 50%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 220 15% 20%;
-    --secondary-foreground: 0 0% 92%;
-    --muted: 220 15% 18%;
-    --muted-foreground: 220 10% 60%;
-    --accent: 45 85% 55%;
-    --accent-foreground: 220 15% 10%;
-    --destructive: 0 60% 45%;
+    /* EARTHSIDE Dark - Deep Black with Neon Accents */
+    --background: 220 25% 4%;
+    --foreground: 0 0% 98%;
+    --card: 220 20% 8%;
+    --card-foreground: 0 0% 98%;
+    --popover: 220 20% 6%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 185 100% 50%;
+    --primary-variant: 280 100% 65%;
+    --primary-foreground: 220 25% 4%;
+    --secondary: 220 20% 12%;
+    --secondary-foreground: 0 0% 95%;
+    --muted: 220 20% 14%;
+    --muted-foreground: 220 15% 55%;
+    --accent: 45 100% 55%;
+    --accent-foreground: 220 25% 4%;
+    --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 98%;
-    --border: 220 15% 22%;
-    --input: 220 15% 18%;
-    --ring: 210 55% 55%;
-    --sidebar-background: 220 18% 12%;
-    --sidebar-foreground: 0 0% 92%;
-    --sidebar-primary: 210 55% 55%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 15% 20%;
-    --sidebar-accent-foreground: 0 0% 92%;
-    --sidebar-border: 220 15% 22%;
-    --sidebar-ring: 210 55% 55%;
+    --border: 220 20% 16%;
+    --input: 220 20% 12%;
+    --ring: 185 100% 50%;
+    --sidebar-background: 220 20% 6%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 185 100% 50%;
+    --sidebar-primary-foreground: 220 25% 4%;
+    --sidebar-accent: 220 20% 14%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 220 20% 16%;
+    --sidebar-ring: 185 100% 50%;
+    
+    /* Neon palette */
+    --neon-cyan: 185 100% 50%;
+    --neon-magenta: 310 100% 60%;
+    --neon-purple: 280 100% 65%;
+    --neon-amber: 38 100% 55%;
+    --neon-green: 145 80% 50%;
+    --neon-blue: 210 100% 60%;
     
     /* Earthside specific */
-    --system-green: 145 60% 48%;
-    --system-amber: 38 88% 55%;
+    --system-green: 145 80% 50%;
+    --system-amber: 38 100% 55%;
     
-    --gradient-mesh: radial-gradient(at 0% 0%, hsl(210 55% 55% / 0.1) 0px, transparent 50%),
-                     radial-gradient(at 100% 0%, hsl(200 45% 50% / 0.08) 0px, transparent 50%),
-                     radial-gradient(at 100% 100%, hsl(145 60% 48% / 0.06) 0px, transparent 50%),
-                     radial-gradient(at 0% 100%, hsl(38 88% 55% / 0.05) 0px, transparent 50%);
+    --gradient-mesh: radial-gradient(at 0% 0%, hsl(185 100% 50% / 0.08) 0px, transparent 50%),
+                     radial-gradient(at 100% 0%, hsl(280 100% 65% / 0.06) 0px, transparent 50%),
+                     radial-gradient(at 100% 100%, hsl(145 80% 50% / 0.05) 0px, transparent 50%),
+                     radial-gradient(at 0% 100%, hsl(38 100% 55% / 0.04) 0px, transparent 50%);
   }
 }
 
