@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { 
-  Menu, X, ChevronDown, Code, Brain, Shield, Moon, Eye, 
+  Menu, X, ChevronDown, Code, 
   Layers, FileText, Mail, Info, Rocket, BookOpen, Users,
-  Zap, Map, Globe, Terminal, Cpu, MessageSquare, Sun, Laptop
+  Zap, Map, Terminal, Cpu, MessageSquare, Moon
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useTheme } from "next-themes";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,7 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
+
 interface NavSection {
   name: string;
   icon: React.ElementType;
@@ -27,7 +26,6 @@ export function PublicNav() {
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
   const location = useLocation();
   const { user } = useAuth();
-  const { theme, setTheme } = useTheme();
 
   // Organized navigation sections
   const navSections: NavSection[] = [
@@ -161,34 +159,6 @@ export function PublicNav() {
               </DropdownMenu>
             ))}
 
-            {/* Theme Toggle - Desktop */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-9 w-9">
-                  {theme === 'light' ? (
-                    <Sun className="w-4 h-4" />
-                  ) : theme === 'dark' ? (
-                    <Moon className="w-4 h-4" />
-                  ) : (
-                    <Laptop className="w-4 h-4" />
-                  )}
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="bg-background border border-border">
-                <DropdownMenuItem onClick={() => setTheme('light')}>
-                  <Sun className="w-4 h-4 mr-2" />
-                  Light
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme('dark')}>
-                  <Moon className="w-4 h-4 mr-2" />
-                  Dark
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme('system')}>
-                  <Laptop className="w-4 h-4 mr-2" />
-                  System
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
 
             {/* CTA */}
             <Link
@@ -231,15 +201,6 @@ export function PublicNav() {
             >
               Developers
             </Link>
-            {/* Theme Toggle - Tablet */}
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="h-9 w-9"
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            >
-              {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </Button>
             <Link
               to="/contact"
               className="ml-2 px-4 py-2 rounded-lg text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
@@ -248,16 +209,8 @@ export function PublicNav() {
             </Link>
           </div>
 
-          {/* Mobile Toggle + Theme Toggle */}
+          {/* Mobile Toggle */}
           <div className="flex md:hidden items-center gap-2">
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="h-9 w-9"
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            >
-              {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </Button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-lg hover:bg-muted transition-colors"
