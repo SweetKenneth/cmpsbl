@@ -5911,7 +5911,7 @@ const response = await substrate.nexus.route('Explain quantum computing');`}
                     ))}
                   </div>
                   
-                  {/* Downloads */}
+                  {/* Downloads - Separated docs from SDK */}
                   <div className="mt-6 pt-6 border-t">
                     <h4 className="font-medium mb-3">Downloads</h4>
                     <div className="space-y-2">
@@ -5922,9 +5922,21 @@ const response = await substrate.nexus.route('Explain quantum computing');`}
                         </a>
                       </Button>
                       <Button variant="outline" size="sm" className="w-full justify-start h-10 touch-manipulation" asChild>
+                        <a href="/sdk/USER-GUIDE.md" download>
+                          <Download className="w-4 h-4 mr-2" />
+                          User Guide (Concepts)
+                        </a>
+                      </Button>
+                      <Button variant="outline" size="sm" className="w-full justify-start h-10 touch-manipulation" asChild>
                         <a href="/sdk/README.md" download>
                           <Download className="w-4 h-4 mr-2" />
-                          SDK Readme
+                          API Reference
+                        </a>
+                      </Button>
+                      <Button variant="outline" size="sm" className="w-full justify-start h-10 touch-manipulation" asChild>
+                        <a href="/sdk/API-REFERENCE.md" download>
+                          <Download className="w-4 h-4 mr-2" />
+                          Endpoint Reference
                         </a>
                       </Button>
                     </div>
@@ -5937,18 +5949,18 @@ const response = await substrate.nexus.route('Explain quantum computing');`}
                 </Card>
               </div>
 
-              {/* Mobile Downloads */}
+              {/* Mobile Downloads - Separated */}
               <div className="lg:hidden grid grid-cols-2 gap-3">
                 <Button variant="outline" className="h-12 touch-manipulation" asChild>
                   <a href="/sdk/substrate-client.ts" download>
                     <Download className="w-4 h-4 mr-2" />
-                    SDK Client
+                    SDK
                   </a>
                 </Button>
                 <Button variant="outline" className="h-12 touch-manipulation" asChild>
-                  <a href="/sdk/README.md" download>
+                  <a href="/sdk/USER-GUIDE.md" download>
                     <Download className="w-4 h-4 mr-2" />
-                    Readme
+                    Guide
                   </a>
                 </Button>
               </div>
@@ -6143,9 +6155,9 @@ console.log('Connected:', health.success);`}
                       </a>
                     </Button>
                     <Button className="h-11 sm:h-10 touch-manipulation" asChild>
-                      <a href="/sdk/README.md" download>
+                      <a href="/sdk/USER-GUIDE.md" download>
                         <FileText className="w-4 h-4 mr-2" />
-                        Docs
+                        User Guide
                       </a>
                     </Button>
                   </div>

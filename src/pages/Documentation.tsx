@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { SEO } from "@/components/SEO";
+import heroImage from "@/assets/hero-substrate-neural.jpg";
 
 export default function Documentation() {
   return (
@@ -20,15 +21,15 @@ export default function Documentation() {
 
       <PublicNav />
 
-      {/* Hero with Earth Window */}
+      {/* Hero with Neural Network Visual */}
       <section className="relative w-full">
         <div 
           className="absolute inset-0 h-[50vh] bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80')`,
+            backgroundImage: `url(${heroImage})`,
           }}
         />
-        <div className="absolute inset-0 h-[50vh] bg-gradient-to-b from-background/80 via-background/40 to-background" />
+        <div className="absolute inset-0 h-[50vh] bg-gradient-to-b from-background/90 via-background/60 to-background" />
         
         <div className="relative container mx-auto px-4 pt-32 pb-16">
           <nav className="mb-12">
@@ -59,15 +60,18 @@ export default function Documentation() {
       <section className="container mx-auto px-4 py-16">
         <div className="max-w-6xl mx-auto">
           <Tabs defaultValue="overview" className="space-y-8">
-            <TabsList className="grid w-full grid-cols-2 md:grid-cols-7 bg-muted/50">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="byok">BYOK</TabsTrigger>
-              <TabsTrigger value="brain">Brain</TabsTrigger>
-              <TabsTrigger value="extensions">Extensions</TabsTrigger>
-              <TabsTrigger value="integrations">Integrations</TabsTrigger>
-              <TabsTrigger value="agents">Agents</TabsTrigger>
-              <TabsTrigger value="api">API</TabsTrigger>
-            </TabsList>
+            {/* Mobile-optimized horizontal scrolling tabs */}
+            <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
+              <TabsList className="inline-flex w-max md:grid md:w-full md:grid-cols-7 bg-muted/50 p-1 gap-1">
+                <TabsTrigger value="overview" className="min-w-[100px] md:min-w-0 text-sm px-4 py-2.5 data-[state=active]:bg-background">Overview</TabsTrigger>
+                <TabsTrigger value="byok" className="min-w-[80px] md:min-w-0 text-sm px-4 py-2.5 data-[state=active]:bg-background">BYOK</TabsTrigger>
+                <TabsTrigger value="brain" className="min-w-[80px] md:min-w-0 text-sm px-4 py-2.5 data-[state=active]:bg-background">Brain</TabsTrigger>
+                <TabsTrigger value="extensions" className="min-w-[100px] md:min-w-0 text-sm px-4 py-2.5 data-[state=active]:bg-background">Extensions</TabsTrigger>
+                <TabsTrigger value="integrations" className="min-w-[110px] md:min-w-0 text-sm px-4 py-2.5 data-[state=active]:bg-background">Integrations</TabsTrigger>
+                <TabsTrigger value="agents" className="min-w-[80px] md:min-w-0 text-sm px-4 py-2.5 data-[state=active]:bg-background">Agents</TabsTrigger>
+                <TabsTrigger value="api" className="min-w-[60px] md:min-w-0 text-sm px-4 py-2.5 data-[state=active]:bg-background">API</TabsTrigger>
+              </TabsList>
+            </div>
 
             <TabsContent value="overview" className="space-y-6">
               <Card className="p-8 bg-card border-border">
