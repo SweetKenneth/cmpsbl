@@ -212,6 +212,16 @@ export function PublicNav() {
               Demo
             </Link>
             <Link
+              to="/codelab"
+              className={`px-3 py-2 rounded-lg text-sm transition-colors ${
+                isActive("/codelab")
+                  ? "text-foreground bg-muted font-medium"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+              }`}
+            >
+              CodeLab
+            </Link>
+            <Link
               to="/developers"
               className={`px-3 py-2 rounded-lg text-sm transition-colors ${
                 isActive("/developers")
@@ -220,16 +230,6 @@ export function PublicNav() {
               }`}
             >
               Developers
-            </Link>
-            <Link
-              to="/blog"
-              className={`px-3 py-2 rounded-lg text-sm transition-colors ${
-                isActive("/blog")
-                  ? "text-foreground bg-muted font-medium"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-              }`}
-            >
-              Blog
             </Link>
             {/* Theme Toggle - Tablet */}
             <Button 
@@ -286,8 +286,9 @@ export function PublicNav() {
             <div className="container mx-auto px-4 py-4">
               {/* Search-like quick access */}
               <div className="flex gap-2 mb-4 overflow-x-auto pb-2 -mx-4 px-4">
-                {["Demo", "Developers", "Blog", "Contact"].map((name) => {
+                {["Demo", "CodeLab", "Developers", "Blog", "Contact"].map((name) => {
                   const href = name === "Demo" ? "/demo" : 
+                               name === "CodeLab" ? "/codelab" :
                                name === "Developers" ? "/developers" :
                                name === "Blog" ? "/blog" : "/contact";
                   return (

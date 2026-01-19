@@ -64,43 +64,46 @@ export default function CodeLab() {
         {/* Main Tabs */}
         <div className="max-w-6xl mx-auto">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-            <TabsList className="flex flex-wrap h-auto gap-1 bg-muted/50 p-1 rounded-xl">
-              <TabsTrigger 
-                value="explorer" 
-                className="flex items-center gap-2 data-[state=active]:bg-background text-xs sm:text-sm"
-              >
-                <Layers className="w-4 h-4" />
-                <span className="hidden sm:inline">Explorer</span>
-              </TabsTrigger>
-              <TabsTrigger 
-                value="workbench"
-                className="flex items-center gap-2 data-[state=active]:bg-background text-xs sm:text-sm"
-              >
-                <Terminal className="w-4 h-4" />
-                <span className="hidden sm:inline">Workbench</span>
-              </TabsTrigger>
-              <TabsTrigger 
-                value="starter"
-                className="flex items-center gap-2 data-[state=active]:bg-background text-xs sm:text-sm"
-              >
-                <Rocket className="w-4 h-4" />
-                <span className="hidden sm:inline">Starter</span>
-              </TabsTrigger>
-              <TabsTrigger 
-                value="templates"
-                className="flex items-center gap-2 data-[state=active]:bg-background text-xs sm:text-sm"
-              >
-                <Play className="w-4 h-4" />
-                <span className="hidden sm:inline">Templates</span>
-              </TabsTrigger>
-              <TabsTrigger 
-                value="observability"
-                className="flex items-center gap-2 data-[state=active]:bg-background text-xs sm:text-sm"
-              >
-                <Activity className="w-4 h-4" />
-                <span className="hidden sm:inline">HUD</span>
-              </TabsTrigger>
-            </TabsList>
+            {/* Mobile-optimized horizontal scrolling tabs */}
+            <div className="overflow-x-auto -mx-4 px-4 pb-2 scrollbar-hide">
+              <TabsList className="inline-flex h-auto gap-1 bg-muted/50 p-1 rounded-xl min-w-max">
+                <TabsTrigger 
+                  value="explorer" 
+                  className="flex items-center gap-2 data-[state=active]:bg-background px-3 py-2 text-xs sm:text-sm whitespace-nowrap"
+                >
+                  <Layers className="w-4 h-4" />
+                  Explorer
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="workbench"
+                  className="flex items-center gap-2 data-[state=active]:bg-background px-3 py-2 text-xs sm:text-sm whitespace-nowrap"
+                >
+                  <Terminal className="w-4 h-4" />
+                  Workbench
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="starter"
+                  className="flex items-center gap-2 data-[state=active]:bg-background px-3 py-2 text-xs sm:text-sm whitespace-nowrap"
+                >
+                  <Rocket className="w-4 h-4" />
+                  Starter
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="templates"
+                  className="flex items-center gap-2 data-[state=active]:bg-background px-3 py-2 text-xs sm:text-sm whitespace-nowrap"
+                >
+                  <Play className="w-4 h-4" />
+                  Templates
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="observability"
+                  className="flex items-center gap-2 data-[state=active]:bg-background px-3 py-2 text-xs sm:text-sm whitespace-nowrap"
+                >
+                  <Activity className="w-4 h-4" />
+                  HUD
+                </TabsTrigger>
+              </TabsList>
+            </div>
 
             <TabsContent value="explorer" className="mt-6">
               <ExplorerCards onOpenWorkbench={(module) => {

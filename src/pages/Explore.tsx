@@ -55,6 +55,7 @@ import { cn } from "@/lib/utils";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { HeroMetaSubstrate } from "@/components/hero/HeroMetaSubstrate";
+import { CodeLabCTA } from "@/components/codelab/CodeLabCTA";
 
 // Animated gradient orb component
 function GradientOrb({ className, delay = 0 }: { className?: string; delay?: number }) {
@@ -722,6 +723,11 @@ export default function Explore() {
           </motion.div>
         </div>
       </section>
+
+      <SectionDivider />
+
+      {/* CodeLab CTA */}
+      <CodeLabCTA />
 
       <SectionDivider />
 
