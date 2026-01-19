@@ -26,6 +26,21 @@
     <link rel="preload" as="image" href="/dreaming-ai-hero.png" type="image/png" fetchpriority="high" />
     <link rel="modulepreload" href="/src/main.tsx" />
     
+    <!-- Critical CSS for FCP - inline above-the-fold styles -->
+    <style>
+      /* Critical CSS for First Contentful Paint */
+      *,*::before,*::after{box-sizing:border-box;border-width:0;border-style:solid}
+      html{line-height:1.5;-webkit-text-size-adjust:100%;font-family:Inter,system-ui,-apple-system,sans-serif}
+      body{margin:0;line-height:inherit;background:#050816;color:#e5e7eb;min-height:100vh}
+      :root{--background:230 84% 5%;--foreground:220 13% 91%;--primary:260 100% 68%}
+      .dark{--background:230 84% 5%;--foreground:220 13% 91%}
+      img,video{max-width:100%;height:auto;display:block}
+      h1,h2,h3{margin:0;font-weight:600}
+      a{color:inherit;text-decoration:none}
+      button{font-family:inherit;cursor:pointer}
+      .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}
+    </style>
+    
     <!-- Fonts with display swap for CLS optimization -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
     <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" /></noscript>
