@@ -1042,6 +1042,30 @@ async function handleBrain(
       }, headers);
     }
 
+    // v3.11.1: Add pulse action to brain module for consistency
+    case "pulse": {
+      // Lightweight brain heartbeat - reports memory health without heavy queries
+      const uptime = Date.now() - state.initialized;
+      const moduleHealth = getModuleHealth('brain');
+      
+      return jsonResponse({
+        success: true,
+        module: 'brain',
+        action: 'pulse',
+        pulse: {
+          alive: true,
+          version: SUBSTRATE_VERSION,
+          uptime_ms: uptime,
+          health: moduleHealth.healthScore,
+          status: moduleHealth.status,
+          circuit: moduleHealth.circuitState,
+        },
+        proof_mode: true,
+        read_only: true,
+        timestamp: new Date().toISOString()
+      }, headers);
+    }
+
     default:
       throw new Error(`Unknown brain action: ${action}`);
   }
