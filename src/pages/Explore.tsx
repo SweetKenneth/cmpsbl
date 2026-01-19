@@ -52,6 +52,9 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { SEO } from "@/components/SEO";
 import { cn } from "@/lib/utils";
+
+// CSS class for content-visibility optimization (reduces main-thread layout work)
+const deferredSection = "content-visibility-auto";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { HeroMetaSubstrate } from "@/components/hero/HeroMetaSubstrate";
@@ -529,7 +532,7 @@ export default function Explore() {
       <SectionDivider />
 
       {/* Substrate Actions Section */}
-      <section className="relative z-10 px-4 py-24">
+      <section className="relative z-10 px-4 py-24 content-visibility-auto">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0 }}
@@ -575,7 +578,7 @@ export default function Explore() {
       <SectionDivider />
 
       {/* Capabilities Grid */}
-      <section className="relative z-10 px-4 py-24">
+      <section className="relative z-10 px-4 py-24 content-visibility-auto">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0 }}
@@ -606,7 +609,7 @@ export default function Explore() {
       <SectionDivider />
 
       {/* Key Features */}
-      <section className="relative z-10 px-4 py-24">
+      <section className="relative z-10 px-4 py-24 content-visibility-auto">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0 }}
@@ -646,7 +649,7 @@ export default function Explore() {
       </section>
 
       {/* Full Bleed Image Section */}
-      <section className="relative z-10 w-full overflow-hidden">
+      <section className="relative z-10 w-full overflow-hidden content-visibility-auto">
         <div 
           className="relative min-h-[50vh] md:min-h-[60vh] flex items-center justify-center"
           style={{
@@ -732,7 +735,7 @@ export default function Explore() {
       <SectionDivider />
 
       {/* Products Built on Substrate */}
-      <section className="relative z-10 px-4 py-24">
+      <section className="relative z-10 px-4 py-24 content-visibility-auto">
         <div className="max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0 }}
@@ -779,7 +782,7 @@ export default function Explore() {
       </section>
 
       {/* Developer CTA */}
-      <section className="relative z-10 px-4 py-24">
+      <section className="relative z-10 px-4 py-24 content-visibility-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -854,7 +857,7 @@ await substrate.brain.learn()`}
       </section>
 
       {/* Final CTA */}
-      <section className="relative z-10 px-4 py-24">
+      <section className="relative z-10 px-4 py-24 content-visibility-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
