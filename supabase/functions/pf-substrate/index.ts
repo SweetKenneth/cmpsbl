@@ -4055,6 +4055,29 @@ async function handleSystem(
       }, headers);
     }
 
+    case "pulse": {
+      // Lightweight system heartbeat
+      const uptime = Date.now() - state.initialized;
+      const moduleHealth = getModuleHealth('system');
+      
+      return jsonResponse({
+        success: true,
+        module: 'system',
+        action: 'pulse',
+        pulse: {
+          alive: true,
+          version: SUBSTRATE_VERSION,
+          uptime_ms: uptime,
+          health: moduleHealth.healthScore,
+          status: moduleHealth.status,
+          circuit: moduleHealth.circuitState,
+        },
+        proof_mode: true,
+        read_only: true,
+        timestamp: new Date().toISOString()
+      }, headers);
+    }
+
     default:
       throw new Error(`Unknown system action: ${action}`);
   }
