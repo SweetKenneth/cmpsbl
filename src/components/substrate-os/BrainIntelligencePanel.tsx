@@ -178,55 +178,58 @@ function ReflectionCard({ reflection }: { reflection: any }) {
     <div 
       className={cn(
         "rounded-lg bg-muted/20 text-xs transition-all duration-200 cursor-pointer hover:bg-muted/30 border border-border/30",
-        isExpanded ? "ring-1 ring-primary/30" : ""
+        isExpanded ? "ring-1 ring-primary/30 bg-muted/30" : ""
       )}
       onClick={() => setIsExpanded(!isExpanded)}
     >
-      {/* Header */}
-      <div className="flex items-center justify-between p-3 pb-2">
-        <div className="flex items-center gap-2">
-          <Brain className="w-3.5 h-3.5 text-primary/70" />
-          <span className="font-medium text-foreground">{parsed.title}</span>
+      {/* Header - improved touch targets */}
+      <div className="flex items-center justify-between p-3 md:p-3 pb-2 min-h-[44px]">
+        <div className="flex items-center gap-2 flex-1 min-w-0">
+          <Brain className="w-4 h-4 md:w-3.5 md:h-3.5 text-primary/70 shrink-0" />
+          <span className="font-medium text-foreground text-sm md:text-xs truncate">{parsed.title}</span>
         </div>
         <ChevronDown 
           className={cn(
-            "w-4 h-4 text-muted-foreground/50 shrink-0 transition-transform duration-200",
+            "w-5 h-5 md:w-4 md:h-4 text-muted-foreground/50 shrink-0 transition-transform duration-200 ml-2",
             isExpanded && "rotate-180"
           )} 
         />
       </div>
       
-      {/* Summary Preview - collapsed shows first 3 lines */}
+      {/* Summary Preview - collapsed shows first 2 lines on mobile, 3 on desktop */}
       <div className="px-3 pb-3">
         <p className={cn(
-          "text-muted-foreground leading-relaxed whitespace-pre-wrap",
-          !isExpanded && "line-clamp-3"
+          "text-muted-foreground leading-relaxed whitespace-pre-wrap text-sm md:text-xs",
+          !isExpanded && "line-clamp-2 md:line-clamp-3"
         )}>
           {parsed.summary || 'Processing reflection data...'}
         </p>
       </div>
       
-      {/* Expanded content - FULL readable view */}
+      {/* Expanded content - FULL readable view with mobile optimization */}
       {isExpanded && (
-        <div className="border-t border-border/30 px-3 py-3 space-y-4">
+        <div 
+          className="border-t border-border/30 px-3 py-4 space-y-4"
+          onClick={(e) => e.stopPropagation()} // Prevent collapse when interacting with content
+        >
           {/* Full Summary if longer */}
           {parsed.summary && parsed.summary.length > 150 && (
             <div>
-              <p className="text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Full Summary</p>
-              <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap">{parsed.summary}</p>
+              <p className="text-xs md:text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Full Summary</p>
+              <p className="text-sm md:text-xs text-muted-foreground leading-relaxed whitespace-pre-wrap">{parsed.summary}</p>
             </div>
           )}
           
-          {/* Metrics - displayed as readable list */}
+          {/* Metrics - displayed as readable list with mobile-friendly grid */}
           {parsed.metrics.length > 0 && (
             <div>
-              <p className="text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">System Metrics</p>
-              <div className="grid grid-cols-2 gap-2">
+              <p className="text-xs md:text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">System Metrics</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {parsed.metrics.map((m, idx) => (
-                  <div key={idx} className="bg-background/50 rounded px-2 py-1.5">
-                    <span className="text-muted-foreground/70">{m.label}:</span>
+                  <div key={idx} className="bg-background/50 rounded px-3 py-2 flex justify-between items-center">
+                    <span className="text-sm md:text-xs text-muted-foreground/70">{m.label}</span>
                     <span className={cn(
-                      "ml-1 font-medium",
+                      "text-sm md:text-xs font-medium",
                       m.value === 'No data' ? 'text-muted-foreground/50' : 'text-foreground'
                     )}>
                       {m.value}
@@ -237,15 +240,15 @@ function ReflectionCard({ reflection }: { reflection: any }) {
             </div>
           )}
           
-          {/* Insights - FULL TEXT, no truncation */}
+          {/* Insights - FULL TEXT with better mobile spacing */}
           {parsed.insights.length > 0 && (
             <div>
-              <p className="text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Key Insights</p>
+              <p className="text-xs md:text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Key Insights</p>
               <ul className="space-y-3">
                 {parsed.insights.map((insight, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <Lightbulb className="w-3.5 h-3.5 text-amber-500/70 mt-0.5 shrink-0" />
-                    <span className="text-muted-foreground leading-relaxed whitespace-pre-wrap">{insight}</span>
+                  <li key={idx} className="flex items-start gap-3">
+                    <Lightbulb className="w-4 h-4 md:w-3.5 md:h-3.5 text-amber-500/70 mt-0.5 shrink-0" />
+                    <span className="text-sm md:text-xs text-muted-foreground leading-relaxed whitespace-pre-wrap">{insight}</span>
                   </li>
                 ))}
               </ul>
@@ -255,18 +258,18 @@ function ReflectionCard({ reflection }: { reflection: any }) {
           {/* Recommendations - FULL TEXT */}
           {parsed.recommendations && (
             <div>
-              <p className="text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Recommendations</p>
-              <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap">{parsed.recommendations}</p>
+              <p className="text-xs md:text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Recommendations</p>
+              <p className="text-sm md:text-xs text-muted-foreground leading-relaxed whitespace-pre-wrap">{parsed.recommendations}</p>
             </div>
           )}
           
-          {/* Top Memories - readable */}
+          {/* Top Memories - readable with better mobile sizing */}
           {reflection.top_memories && Array.isArray(reflection.top_memories) && reflection.top_memories.length > 0 && (
             <div>
-              <p className="text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Associated Memories</p>
-              <div className="space-y-1.5">
+              <p className="text-xs md:text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Associated Memories</p>
+              <div className="space-y-2">
                 {reflection.top_memories.map((mem: any, idx: number) => (
-                  <div key={idx} className="bg-background/30 rounded px-2 py-2 text-muted-foreground/80">
+                  <div key={idx} className="bg-background/30 rounded px-3 py-2.5 text-sm md:text-xs text-muted-foreground/80">
                     {typeof mem === 'string' ? mem : extractReadableText(mem)}
                   </div>
                 ))}
@@ -563,21 +566,26 @@ export function BrainIntelligencePanel({ enabled }: BrainIntelligencePanelProps)
         </Card>
       </div>
 
-      {/* Recent Reflections - Collapsible Cards */}
+      {/* Recent Reflections - Collapsible Cards with proper mobile expansion */}
       {reflections.data?.reflections && reflections.data.reflections.length > 0 && (
         <Card className="border-border/50">
           <CardHeader className="pb-2 pt-4 px-4">
             <CardTitle className="text-xs flex items-center gap-2 text-muted-foreground">
               <Brain className="w-3.5 h-3.5" />
               Recent Reflections
+              <Badge variant="outline" className="ml-auto text-[9px] h-4">
+                {reflections.data.reflections.length}
+              </Badge>
             </CardTitle>
           </CardHeader>
-          <CardContent className="px-4 pb-4">
-            <div className="space-y-2">
-              {reflections.data.reflections.slice(0, 5).map((r: any, idx: number) => (
-                <ReflectionCard key={idx} reflection={r} />
-              ))}
-            </div>
+          <CardContent className="px-3 md:px-4 pb-4">
+            <ScrollArea className="h-auto max-h-[60vh] md:max-h-[50vh]">
+              <div className="space-y-3 pr-2">
+                {reflections.data.reflections.slice(0, 5).map((r: any, idx: number) => (
+                  <ReflectionCard key={idx} reflection={r} />
+                ))}
+              </div>
+            </ScrollArea>
           </CardContent>
         </Card>
       )}
