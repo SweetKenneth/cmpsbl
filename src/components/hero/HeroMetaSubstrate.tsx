@@ -71,9 +71,45 @@ function OrbitRing({ radius, duration, color }: { radius: number; duration: numb
   );
 }
 
+// Energy ripple wave component
+function EnergyRipple({ delay, targetAngle, color }: { delay: number; targetAngle: number; color: string }) {
+  return (
+    <motion.div
+      className="absolute rounded-full pointer-events-none"
+      style={{
+        width: 20,
+        height: 20,
+        left: "calc(50% - 10px)",
+        top: "calc(50% - 10px)",
+        background: `radial-gradient(circle, ${color} 0%, transparent 70%)`,
+        boxShadow: `0 0 15px ${color}`,
+      }}
+      initial={{ scale: 0.2, opacity: 0.8, x: 0, y: 0 }}
+      animate={{
+        scale: [0.2, 0.8, 0.4],
+        opacity: [0.9, 0.6, 0],
+        x: Math.cos(targetAngle) * 65,
+        y: Math.sin(targetAngle) * 65,
+      }}
+      transition={{
+        duration: 1.8,
+        repeat: Infinity,
+        delay: delay,
+        ease: "easeOut",
+      }}
+    />
+  );
+}
+
 // The central substrate core
 function SubstrateCore() {
   const [hoveredModule, setHoveredModule] = useState<number | null>(null);
+  
+  // Generate ripple configurations for each module
+  const rippleConfigs = coreModules.map((mod, i) => {
+    const angle = (i / coreModules.length) * Math.PI * 2 - Math.PI / 2;
+    return { angle, color: mod.color, delay: i * 0.3 };
+  });
   
   return (
     <motion.div
@@ -92,6 +128,40 @@ function SubstrateCore() {
         transition={{ duration: 3, repeat: Infinity }}
       />
       
+      {/* Energy ripples flowing from center to module icons */}
+      {rippleConfigs.map((config, i) => (
+        <React.Fragment key={`ripple-group-${i}`}>
+          <EnergyRipple delay={config.delay} targetAngle={config.angle} color={config.color} />
+          <EnergyRipple delay={config.delay + 0.9} targetAngle={config.angle} color={config.color} />
+        </React.Fragment>
+      ))}
+      
+      {/* Concentric ripple waves */}
+      {[0, 1, 2].map((ring) => (
+        <motion.div
+          key={`wave-${ring}`}
+          className="absolute rounded-full pointer-events-none"
+          style={{
+            width: 40,
+            height: 40,
+            left: "calc(50% - 20px)",
+            top: "calc(50% - 20px)",
+            border: "2px solid hsl(var(--neon-cyan) / 0.4)",
+            boxShadow: "0 0 10px hsl(var(--neon-cyan) / 0.3)",
+          }}
+          animate={{
+            scale: [1, 4],
+            opacity: [0.6, 0],
+          }}
+          transition={{
+            duration: 2.5,
+            repeat: Infinity,
+            delay: ring * 0.8,
+            ease: "easeOut",
+          }}
+        />
+      ))}
+      
       {/* Orbit rings */}
       <OrbitRing radius={90} duration={12} color="hsl(var(--neon-cyan))" />
       <OrbitRing radius={105} duration={18} color="hsl(var(--neon-magenta))" />
@@ -99,7 +169,7 @@ function SubstrateCore() {
       
       {/* Inner substrate core */}
       <div 
-        className="absolute inset-6 sm:inset-8 rounded-full border-2 backdrop-blur-md flex items-center justify-center"
+        className="absolute inset-6 sm:inset-8 rounded-full border-2 backdrop-blur-md flex items-center justify-center z-10"
         style={{
           background: "linear-gradient(135deg, hsl(var(--neon-cyan) / 0.15), hsl(var(--neon-magenta) / 0.1))",
           borderColor: "hsl(var(--neon-cyan) / 0.5)",
@@ -126,7 +196,7 @@ function SubstrateCore() {
         </motion.div>
       </div>
       
-      {/* 7 Module icons orbiting */}
+      {/* 7 Module icons orbiting - with powered glow effect */}
       {coreModules.map((mod, i) => {
         const angle = (i / coreModules.length) * Math.PI * 2 - Math.PI / 2;
         const radius = 70;
@@ -136,29 +206,53 @@ function SubstrateCore() {
         return (
           <motion.div
             key={mod.name}
-            className="absolute w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center cursor-pointer"
+            className="absolute w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center cursor-pointer z-20"
             style={{
               left: `calc(50% + ${x}px - 14px)`,
               top: `calc(50% + ${y}px - 14px)`,
-              background: hoveredModule === i ? `${mod.color}` : `${mod.color}20`,
+              background: hoveredModule === i ? `${mod.color}` : `${mod.color}30`,
               border: `2px solid ${mod.color}`,
-              boxShadow: hoveredModule === i ? `0 0 20px ${mod.color}, 0 0 40px ${mod.color}` : `0 0 10px ${mod.color}50`,
             }}
             whileHover={{ scale: 1.3 }}
             onMouseEnter={() => setHoveredModule(i)}
             onMouseLeave={() => setHoveredModule(null)}
             animate={{
               boxShadow: [
-                `0 0 8px ${mod.color}50`,
-                `0 0 20px ${mod.color}80`,
-                `0 0 8px ${mod.color}50`,
+                `0 0 10px ${mod.color}, 0 0 20px ${mod.color}60, 0 0 30px ${mod.color}30`,
+                `0 0 20px ${mod.color}, 0 0 40px ${mod.color}80, 0 0 60px ${mod.color}50`,
+                `0 0 10px ${mod.color}, 0 0 20px ${mod.color}60, 0 0 30px ${mod.color}30`,
               ],
+              scale: [1, 1.08, 1],
             }}
-            transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}
+            transition={{ 
+              duration: 1.5, 
+              repeat: Infinity, 
+              delay: i * 0.2,
+              ease: "easeInOut"
+            }}
           >
+            {/* Inner power glow */}
+            <motion.div
+              className="absolute inset-0 rounded-full"
+              style={{
+                background: `radial-gradient(circle, ${mod.color}40 0%, transparent 70%)`,
+              }}
+              animate={{
+                opacity: [0.4, 1, 0.4],
+                scale: [0.8, 1.2, 0.8],
+              }}
+              transition={{
+                duration: 1.2,
+                repeat: Infinity,
+                delay: i * 0.15,
+              }}
+            />
             <mod.icon 
-              className="w-3.5 h-3.5 sm:w-4 sm:h-4" 
-              style={{ color: hoveredModule === i ? "hsl(var(--background))" : mod.color }} 
+              className="w-3.5 h-3.5 sm:w-4 sm:h-4 relative z-10" 
+              style={{ 
+                color: hoveredModule === i ? "hsl(var(--background))" : mod.color,
+                filter: `drop-shadow(0 0 4px ${mod.color})`,
+              }} 
             />
           </motion.div>
         );
