@@ -55,6 +55,9 @@ import { cn } from "@/lib/utils";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { InteractiveSubstrateDiagram } from "@/components/hero/InteractiveSubstrateDiagram";
+import { HeroConceptA_EvolutionFlow } from "@/components/hero/HeroConceptA_EvolutionFlow";
+import { HeroConceptB_OSLayerStack } from "@/components/hero/HeroConceptB_OSLayerStack";
+import { HeroConceptC_TransformationCinematic } from "@/components/hero/HeroConceptC_TransformationCinematic";
 
 // Animated gradient orb component
 function GradientOrb({ className, delay = 0 }: { className?: string; delay?: number }) {
@@ -472,44 +475,28 @@ export default function Explore() {
         </motion.div>
       </div>
 
-      {/* Hero Section - Interactive System Diagram */}
+      {/* HERO CONCEPT A: Evolution Flow */}
+      <HeroConceptA_EvolutionFlow />
+      
+      {/* Divider */}
+      <div className="relative z-10 py-8 text-center">
+        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent max-w-4xl mx-auto" />
+      </div>
+
+      {/* HERO CONCEPT B: OS Layer Stack */}
+      <HeroConceptB_OSLayerStack />
+      
+      {/* Divider */}
+      <div className="relative z-10 py-8 text-center">
+        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent max-w-4xl mx-auto" />
+      </div>
+
+      {/* HERO CONCEPT C: Transformation Cinematic */}
+      <HeroConceptC_TransformationCinematic />
+
+      {/* Original content continues below */}
       <section className="relative z-10 px-4 pt-8 pb-12 md:pt-12 md:pb-20">
         <div className="max-w-7xl mx-auto">
-          {/* Text Content */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-8 md:mb-12"
-          >
-            <Badge variant="outline" className="mb-6 px-4 py-1.5 bg-gradient-to-r from-cyan-500/10 to-violet-500/10 border-cyan-500/30">
-              <Sparkles className="w-3 h-3 mr-2 text-cyan-400" />
-              <span className="text-cyan-300">Production-Grade Cognitive Infrastructure</span>
-            </Badge>
-            
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight">
-              The Substrate That{" "}
-              <span className="bg-gradient-to-r from-cyan-300 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(139,92,246,0.5)]">
-                Thinks, Learns, Defends, and Dreams
-              </span>
-            </h1>
-            
-            <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
-              <strong className="text-foreground">7 core modules.</strong>{" "}
-              <strong className="text-foreground">52 substrate actions.</strong>{" "}
-              <strong className="text-foreground">BYOK architecture.</strong>
-            </p>
-          </motion.div>
-
-          {/* Interactive Diagram - THE WOW FACTOR */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.3 }}
-            className="mb-8 md:mb-12"
-          >
-            <InteractiveSubstrateDiagram />
-          </motion.div>
           
           {/* CTA Buttons - Bold, action-oriented */}
           <motion.div
