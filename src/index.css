@@ -372,4 +372,10 @@ All colors MUST be HSL.
   .scrollbar-hide::-webkit-scrollbar {
     display: none;  /* Chrome, Safari and Opera */
   }
+  
+  /* Content Visibility Optimization - reduces main-thread layout work for below-the-fold content */
+  .content-visibility-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 500px; /* Estimated height for layout stability */
+  }
 }
