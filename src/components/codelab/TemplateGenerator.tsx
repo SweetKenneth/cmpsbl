@@ -1,398 +1,277 @@
 /**
- * Surface D — Template Generator
- * Describe your use case, generate a working template
+ * Surface D — Template Browser & Generator
+ * Browse 70+ templates or generate custom ones
  */
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { 
-  Sparkles, Copy, Check, Download, Loader2, 
-  MessageSquare, Shield, Brain, Zap, Eye, Moon
+  Sparkles, Copy, Check, Download, Search,
+  Brain, Shield, Zap, Eye, Moon, MessageSquare, Settings,
+  ChevronDown, ChevronUp, Filter
 } from "lucide-react";
 import { toast } from "sonner";
+import { TEMPLATES, getCategoryCounts, type Template } from "@/data/templates";
 
-interface Template {
-  title: string;
-  description: string;
-  modules: string[];
-  code: string;
-}
+const categoryIcons: Record<string, React.ElementType> = {
+  brain: Brain,
+  decode: MessageSquare,
+  defense: Shield,
+  nexus: Zap,
+  vision: Eye,
+  dream: Moon,
+  system: Settings,
+};
 
-const presetTemplates: Template[] = [
-  {
-    title: "AI Chatbot with Memory",
-    description: "A chatbot that remembers conversations and learns from interactions",
-    modules: ["decode", "brain"],
-    code: `// AI Chatbot with Memory
-import { substrate } from './lib/substrate';
+const categoryColors: Record<string, string> = {
+  brain: "text-violet-500 border-violet-500/30 bg-violet-500/10",
+  decode: "text-cyan-500 border-cyan-500/30 bg-cyan-500/10",
+  defense: "text-emerald-500 border-emerald-500/30 bg-emerald-500/10",
+  nexus: "text-amber-500 border-amber-500/30 bg-amber-500/10",
+  vision: "text-rose-500 border-rose-500/30 bg-rose-500/10",
+  dream: "text-purple-500 border-purple-500/30 bg-purple-500/10",
+  system: "text-blue-500 border-blue-500/30 bg-blue-500/10",
+};
 
-async function chat(message: string, sessionId: string) {
-  // Send message through decode
-  const response = await substrate.decode.chat(message, sessionId);
-  
-  if (response.success) {
-    // Store the interaction in brain memory
-    await substrate.brain.remember(
-      \`User: \${message}\\nAssistant: \${response.data.reply}\`,
-      "conversation"
-    );
-    
-    return response.data.reply;
-  }
-  
-  throw new Error(response.error);
-}
+const difficultyColors: Record<string, string> = {
+  beginner: "text-green-500",
+  intermediate: "text-yellow-500",
+  advanced: "text-red-500",
+};
 
-// Recall past conversations
-async function recallContext(topic: string) {
-  const memories = await substrate.brain.query(topic);
-  return memories.data;
-}
-
-// Trigger learning cycle
-async function learn() {
-  await substrate.brain.reflect();
-}
-`
-  },
-  {
-    title: "Bot Protection Layer",
-    description: "Protect your API endpoints from malicious bots and attacks",
-    modules: ["defense"],
-    code: `// Bot Protection Layer
-import { substrate } from './lib/substrate';
-
-interface RequestContext {
-  ip: string;
-  userAgent: string;
-  fingerprint?: Record<string, unknown>;
-}
-
-async function validateRequest(ctx: RequestContext) {
-  // Analyze the request for bot activity
-  const analysis = await substrate.defense.analyze(
-    ctx.fingerprint || {},
-    ctx.ip
-  );
-  
-  if (!analysis.success) {
-    throw new Error("Defense module unavailable");
-  }
-  
-  const { risk_score, action, reason } = analysis.data;
-  
-  if (action === "block") {
-    console.warn(\`Blocked request from \${ctx.ip}: \${reason}\`);
-    return { allowed: false, reason };
-  }
-  
-  if (action === "challenge") {
-    // Require CAPTCHA or additional verification
-    return { allowed: true, requireChallenge: true };
-  }
-  
-  return { allowed: true };
-}
-
-// Check IP reputation
-async function checkIP(ip: string) {
-  const rep = await substrate.defense.reputation(ip);
-  return rep.data;
-}
-`
-  },
-  {
-    title: "Multi-Model AI Router",
-    description: "Route AI tasks to the best available model automatically",
-    modules: ["nexus"],
-    code: `// Multi-Model AI Router
-import { substrate } from './lib/substrate';
-
-async function generateText(prompt: string, preferredModel?: string) {
-  // Let nexus route to the best available model
-  const response = await substrate.nexus.text(prompt, preferredModel);
-  
-  if (!response.success) {
-    // Fallback: try auto-routing
-    const routed = await substrate.nexus.route(\`text: \${prompt}\`);
-    return routed.data;
-  }
-  
-  return response.data;
-}
-
-async function generateImage(prompt: string) {
-  const response = await substrate.nexus.image(prompt);
-  return response.data;
-}
-
-// Get available providers
-async function getProviders() {
-  const providers = await substrate.nexus.providers();
-  return providers.data?.providers || [];
-}
-
-// Check routing stats
-async function getStats() {
-  const stats = await substrate.nexus.routeStats();
-  return stats.data;
-}
-`
-  },
-  {
-    title: "Real-time Dashboard",
-    description: "Monitor substrate health and metrics in real-time",
-    modules: ["vision"],
-    code: `// Real-time Dashboard
-import { substrate } from './lib/substrate';
-import { useEffect, useState } from 'react';
-
-function useSubstrateHealth(refreshInterval = 10000) {
-  const [health, setHealth] = useState(null);
-  const [metrics, setMetrics] = useState(null);
-  
-  useEffect(() => {
-    async function fetchData() {
-      const [healthRes, metricsRes] = await Promise.all([
-        substrate.vision.health(),
-        substrate.vision.metrics()
-      ]);
-      
-      if (healthRes.success) setHealth(healthRes.data);
-      if (metricsRes.success) setMetrics(metricsRes.data);
-    }
-    
-    fetchData();
-    const interval = setInterval(fetchData, refreshInterval);
-    return () => clearInterval(interval);
-  }, [refreshInterval]);
-  
-  return { health, metrics };
-}
-
-// Quick pulse check
-async function pulse() {
-  const res = await substrate.vision.pulse();
-  return res.data;
-}
-
-// Full dashboard data
-async function getDashboard() {
-  const res = await substrate.vision.dashboard();
-  return res.data;
-}
-`
-  },
-  {
-    title: "Dream-Powered Creativity",
-    description: "Use the Dream-Eater for creative content generation",
-    modules: ["dream", "brain"],
-    code: `// Dream-Powered Creativity
-import { substrate } from './lib/substrate';
-
-async function dreamCycle() {
-  // Check dream-eater mood
-  const status = await substrate.dream.status();
-  console.log("Dream-Eater mood:", status.data?.mood);
-  
-  // Trigger a dream cycle
-  const dream = await substrate.dream.cycle();
-  
-  // Store dream insights in brain
-  if (dream.success && dream.data?.insight) {
-    await substrate.brain.remember(
-      dream.data.insight,
-      "dream_insight",
-      0.8
-    );
-  }
-  
-  return dream.data;
-}
-
-// Interpret a user-submitted dream
-async function interpretDream(dreamText: string) {
-  const interpretation = await substrate.dream.interpret(dreamText);
-  return interpretation.data;
-}
-
-// Feed the dream-eater
-async function feedDream(content: string) {
-  // Dreams are consumed and processed
-  return await substrate.decode.dream();
-}
-`
-  }
-];
-
-export function TemplateGenerator() {
-  const [useCase, setUseCase] = useState("");
-  const [generatedTemplate, setGeneratedTemplate] = useState<Template | null>(null);
-  const [generating, setGenerating] = useState(false);
+function TemplateCard({ template, onSelect }: { template: Template; onSelect: (t: Template) => void }) {
+  const [expanded, setExpanded] = useState(false);
   const [copied, setCopied] = useState(false);
+  const Icon = template.icon;
+  const CategoryIcon = categoryIcons[template.category] || Zap;
 
-  const generateTemplate = async () => {
-    if (!useCase.trim()) {
-      toast.error("Please describe your use case");
-      return;
-    }
-
-    setGenerating(true);
-    
-    // Simple heuristic-based template generation
-    // In production, this could use the nexus module for AI generation
-    setTimeout(() => {
-      const lowerCase = useCase.toLowerCase();
-      let template: Template;
-      
-      if (lowerCase.includes("chat") || lowerCase.includes("conversation") || lowerCase.includes("assistant")) {
-        template = presetTemplates[0];
-      } else if (lowerCase.includes("bot") || lowerCase.includes("security") || lowerCase.includes("protect")) {
-        template = presetTemplates[1];
-      } else if (lowerCase.includes("ai") || lowerCase.includes("model") || lowerCase.includes("generate")) {
-        template = presetTemplates[2];
-      } else if (lowerCase.includes("monitor") || lowerCase.includes("dashboard") || lowerCase.includes("health")) {
-        template = presetTemplates[3];
-      } else if (lowerCase.includes("dream") || lowerCase.includes("creative") || lowerCase.includes("content")) {
-        template = presetTemplates[4];
-      } else {
-        // Default to chatbot template
-        template = {
-          ...presetTemplates[0],
-          title: "Custom Template",
-          description: `Template for: ${useCase}`,
-        };
-      }
-      
-      setGeneratedTemplate(template);
-      setGenerating(false);
-      toast.success("Template generated!");
-    }, 1500);
+  const copyCode = () => {
+    navigator.clipboard.writeText(template.code);
+    setCopied(true);
+    toast.success("Code copied to clipboard");
+    setTimeout(() => setCopied(false), 2000);
   };
 
-  const copyTemplate = () => {
-    if (generatedTemplate) {
-      navigator.clipboard.writeText(generatedTemplate.code);
-      setCopied(true);
-      toast.success("Copied to clipboard");
-      setTimeout(() => setCopied(false), 2000);
-    }
-  };
-
-  const downloadTemplate = () => {
-    if (generatedTemplate) {
-      const blob = new Blob([generatedTemplate.code], { type: "text/typescript" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `substrate-template-${Date.now()}.ts`;
-      a.click();
-      URL.revokeObjectURL(url);
-    }
-  };
-
-  const moduleIcons: Record<string, React.ElementType> = {
-    brain: Brain,
-    decode: MessageSquare,
-    defense: Shield,
-    nexus: Zap,
-    vision: Eye,
-    dream: Moon,
+  const downloadCode = () => {
+    const blob = new Blob([template.code], { type: "text/typescript" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${template.id}.ts`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success("Template downloaded");
   };
 
   return (
-    <div className="space-y-6">
-      {/* Generator Input */}
-      <Card className="p-6">
-        <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-          <Sparkles className="w-5 h-5 text-primary" />
-          Template Generator
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Describe your use case and we'll generate a working template using substrate modules.
-        </p>
-        <Textarea
-          value={useCase}
-          onChange={(e) => setUseCase(e.target.value)}
-          placeholder="e.g., I want to build a chatbot that remembers conversations and learns from user interactions..."
-          className="min-h-[100px] mb-4"
-        />
-        <Button onClick={generateTemplate} disabled={generating}>
-          {generating ? (
-            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-          ) : (
-            <Sparkles className="w-4 h-4 mr-2" />
-          )}
-          Generate Template
-        </Button>
-      </Card>
-
-      {/* Generated Template */}
-      {generatedTemplate && (
-        <Card className="p-6">
-          <div className="flex items-start justify-between gap-4 mb-4">
-            <div>
-              <h3 className="font-semibold text-lg">{generatedTemplate.title}</h3>
-              <p className="text-sm text-muted-foreground">{generatedTemplate.description}</p>
-            </div>
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm" onClick={copyTemplate}>
-                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-              </Button>
-              <Button variant="outline" size="sm" onClick={downloadTemplate}>
-                <Download className="w-4 h-4" />
-              </Button>
-            </div>
-          </div>
-          
-          <div className="flex gap-2 mb-4">
-            {generatedTemplate.modules.map((mod) => {
-              const Icon = moduleIcons[mod] || Zap;
-              return (
-                <Badge key={mod} variant="outline" className="gap-1">
-                  <Icon className="w-3 h-3" />
-                  {mod}
-                </Badge>
-              );
-            })}
-          </div>
-          
-          <pre className="bg-muted/30 p-4 rounded-lg text-xs sm:text-sm font-mono overflow-auto max-h-96">
-            {generatedTemplate.code}
-          </pre>
-        </Card>
-      )}
-
-      {/* Preset Templates */}
-      <div>
-        <h3 className="font-semibold mb-4">Preset Templates</h3>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {presetTemplates.map((template, index) => (
-            <Card
-              key={index}
-              className="p-4 cursor-pointer hover:border-primary/50 transition-colors"
-              onClick={() => setGeneratedTemplate(template)}
-            >
-              <h4 className="font-medium mb-1">{template.title}</h4>
-              <p className="text-xs text-muted-foreground mb-3">{template.description}</p>
-              <div className="flex gap-1">
-                {template.modules.map((mod) => {
-                  const Icon = moduleIcons[mod] || Zap;
-                  return (
-                    <Badge key={mod} variant="secondary" className="gap-1 text-xs">
-                      <Icon className="w-3 h-3" />
-                      {mod}
-                    </Badge>
-                  );
-                })}
-              </div>
-            </Card>
-          ))}
+    <Card className="p-4 hover:border-primary/50 transition-colors">
+      <div className="flex items-start gap-3 mb-3">
+        <div 
+          className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
+          style={{ 
+            background: `linear-gradient(135deg, hsl(var(--primary) / 0.2), hsl(var(--primary) / 0.1))` 
+          }}
+        >
+          <Icon className="w-5 h-5 text-primary" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <h3 className="font-semibold text-sm truncate">{template.name}</h3>
+          <p className="text-xs text-muted-foreground line-clamp-2">{template.description}</p>
         </div>
       </div>
+
+      <div className="flex flex-wrap items-center gap-2 mb-3">
+        <Badge variant="outline" className={`text-xs gap-1 ${categoryColors[template.category]}`}>
+          <CategoryIcon className="w-3 h-3" />
+          {template.category}
+        </Badge>
+        <Badge variant="outline" className={`text-xs ${difficultyColors[template.difficulty]}`}>
+          {template.difficulty}
+        </Badge>
+        <span className="text-xs text-muted-foreground">{template.estimatedTime}</span>
+      </div>
+
+      <div className="flex flex-wrap gap-1 mb-3">
+        {template.features.slice(0, 3).map((feature, i) => (
+          <span key={i} className="text-xs px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
+            {feature}
+          </span>
+        ))}
+      </div>
+
+      <div className="flex items-center gap-2">
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className="flex-1 text-xs"
+          onClick={() => setExpanded(!expanded)}
+        >
+          {expanded ? <ChevronUp className="w-3 h-3 mr-1" /> : <ChevronDown className="w-3 h-3 mr-1" />}
+          {expanded ? "Hide Code" : "View Code"}
+        </Button>
+        <Button variant="ghost" size="sm" onClick={copyCode}>
+          {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+        </Button>
+        <Button variant="ghost" size="sm" onClick={downloadCode}>
+          <Download className="w-4 h-4" />
+        </Button>
+      </div>
+
+      {expanded && (
+        <div className="mt-3 pt-3 border-t">
+          <ScrollArea className="h-[300px]">
+            <pre className="text-xs font-mono bg-muted/50 p-3 rounded-lg overflow-x-auto whitespace-pre-wrap">
+              {template.code}
+            </pre>
+          </ScrollArea>
+        </div>
+      )}
+    </Card>
+  );
+}
+
+export function TemplateGenerator() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
+  const [difficultyFilter, setDifficultyFilter] = useState<string | null>(null);
+  const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(null);
+
+  const categoryCounts = useMemo(() => getCategoryCounts(), []);
+
+  const filteredTemplates = useMemo(() => {
+    return TEMPLATES.filter((template) => {
+      // Search filter
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        const matchesSearch = 
+          template.name.toLowerCase().includes(query) ||
+          template.description.toLowerCase().includes(query) ||
+          template.features.some(f => f.toLowerCase().includes(query)) ||
+          template.category.toLowerCase().includes(query);
+        if (!matchesSearch) return false;
+      }
+
+      // Category filter
+      if (categoryFilter && template.category !== categoryFilter) return false;
+
+      // Difficulty filter
+      if (difficultyFilter && template.difficulty !== difficultyFilter) return false;
+
+      return true;
+    });
+  }, [searchQuery, categoryFilter, difficultyFilter]);
+
+  return (
+    <div className="space-y-6">
+      {/* Header with stats */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h2 className="text-xl font-bold flex items-center gap-2">
+            <Sparkles className="w-5 h-5 text-primary" />
+            Template Library
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            {TEMPLATES.length} templates across {Object.keys(categoryCounts).length} modules
+          </p>
+        </div>
+        
+        <div className="flex items-center gap-2">
+          <Badge variant="outline" className="gap-1">
+            <Filter className="w-3 h-3" />
+            {filteredTemplates.length} showing
+          </Badge>
+        </div>
+      </div>
+
+      {/* Search */}
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+        <Input
+          placeholder="Search templates..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="pl-10"
+        />
+      </div>
+
+      {/* Filters */}
+      <div className="flex flex-wrap gap-2">
+        {/* Category filters */}
+        <Button
+          variant={categoryFilter === null ? "default" : "outline"}
+          size="sm"
+          onClick={() => setCategoryFilter(null)}
+          className="text-xs"
+        >
+          All ({TEMPLATES.length})
+        </Button>
+        {Object.entries(categoryCounts).map(([category, count]) => {
+          const Icon = categoryIcons[category] || Zap;
+          return (
+            <Button
+              key={category}
+              variant={categoryFilter === category ? "default" : "outline"}
+              size="sm"
+              onClick={() => setCategoryFilter(categoryFilter === category ? null : category)}
+              className={`text-xs gap-1 ${categoryFilter === category ? '' : categoryColors[category]}`}
+            >
+              <Icon className="w-3 h-3" />
+              {category} ({count})
+            </Button>
+          );
+        })}
+      </div>
+
+      {/* Difficulty filters */}
+      <div className="flex gap-2">
+        {(['beginner', 'intermediate', 'advanced'] as const).map((difficulty) => {
+          const count = TEMPLATES.filter(t => t.difficulty === difficulty).length;
+          return (
+            <Button
+              key={difficulty}
+              variant={difficultyFilter === difficulty ? "default" : "outline"}
+              size="sm"
+              onClick={() => setDifficultyFilter(difficultyFilter === difficulty ? null : difficulty)}
+              className={`text-xs ${difficultyFilter !== difficulty ? difficultyColors[difficulty] : ''}`}
+            >
+              {difficulty} ({count})
+            </Button>
+          );
+        })}
+      </div>
+
+      {/* Templates Grid */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {filteredTemplates.map((template) => (
+          <TemplateCard
+            key={template.id}
+            template={template}
+            onSelect={setSelectedTemplate}
+          />
+        ))}
+      </div>
+
+      {filteredTemplates.length === 0 && (
+        <div className="text-center py-12">
+          <p className="text-muted-foreground">No templates match your filters</p>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="mt-2"
+            onClick={() => {
+              setSearchQuery("");
+              setCategoryFilter(null);
+              setDifficultyFilter(null);
+            }}
+          >
+            Clear filters
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

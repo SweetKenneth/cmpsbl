@@ -93,11 +93,30 @@ export function CodeWorkbench() {
       
       log(`→ ${parsed.module}.${parsed.action}`);
       
-      const result = await substrate.invoke({
-        module: parsed.module,
-        action: parsed.action,
-        payload: parsed.payload,
-      });
+      let result;
+      try {
+        result = await substrate.invoke({
+          module: parsed.module,
+          action: parsed.action,
+          payload: parsed.payload,
+        });
+      } catch (invokeError) {
+        // Handle network errors gracefully
+        const errorMessage = invokeError instanceof Error ? invokeError.message : 'Unknown network error';
+        log(`✗ Network error: ${errorMessage}`);
+        
+        // Create a graceful fallback response
+        result = {
+          success: false,
+          module: parsed.module,
+          action: parsed.action,
+          error: `Network error: ${errorMessage}. The substrate may be temporarily unavailable. Please try again.`,
+          timestamp: new Date().toISOString(),
+          _fallback: true,
+        };
+        
+        toast.error("Connection failed - using fallback response");
+      }
       
       const endTime = performance.now();
       const duration = Math.round(endTime - startTime);
@@ -119,13 +138,23 @@ export function CodeWorkbench() {
       
       if (result.success) {
         toast.success(`Executed in ${duration}ms`);
-      } else {
+      } else if (!result._fallback) {
+        // Only show error toast if it's not already handled by fallback
         toast.error(result.error || "Request failed");
         log(`✗ Error: ${result.error}`);
       }
     } catch (error) {
-      log(`✗ Parse error: ${error}`);
-      toast.error("Invalid JSON");
+      const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+      log(`✗ Parse error: ${errorMsg}`);
+      toast.error("Invalid JSON - please check your request format");
+      
+      // Set a helpful response for parse errors
+      setResponse({
+        success: false,
+        error: `JSON Parse Error: ${errorMsg}`,
+        hint: "Make sure your request is valid JSON with 'module', 'action', and optional 'payload' fields.",
+        timestamp: new Date().toISOString(),
+      });
     } finally {
       setExecuting(false);
     }
