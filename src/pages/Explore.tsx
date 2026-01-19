@@ -54,6 +54,7 @@ import { SEO } from "@/components/SEO";
 import { cn } from "@/lib/utils";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { InteractiveSubstrateDiagram } from "@/components/hero/InteractiveSubstrateDiagram";
 
 // Animated gradient orb component
 function GradientOrb({ className, delay = 0 }: { className?: string; delay?: number }) {
@@ -470,41 +471,50 @@ export default function Explore() {
         </motion.div>
       </div>
 
-      {/* Hero Section */}
-      <section className="relative z-10 px-4 pt-12 pb-20 md:pt-20 md:pb-28">
-        <div className="max-w-6xl mx-auto text-center">
+      {/* Hero Section - Interactive System Diagram */}
+      <section className="relative z-10 px-4 pt-8 pb-12 md:pt-12 md:pb-20">
+        <div className="max-w-7xl mx-auto">
+          {/* Text Content */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
+            className="text-center mb-8 md:mb-12"
           >
             <Badge variant="outline" className="mb-6 px-4 py-1.5 bg-primary/5 border-primary/30">
               <Sparkles className="w-3 h-3 mr-2 text-primary" />
               <span className="text-primary">Production-Grade Cognitive Infrastructure</span>
             </Badge>
             
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight">
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight">
               The Substrate That{" "}
               <span className="bg-gradient-to-r from-primary via-violet-500 to-cyan-500 bg-clip-text text-transparent">
                 Thinks, Learns, Defends, and Dreams
               </span>
             </h1>
             
-            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-4">
+            <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
               <strong className="text-foreground">7 core modules.</strong>{" "}
               <strong className="text-foreground">52 substrate actions.</strong>{" "}
               <strong className="text-foreground">BYOK architecture.</strong>
             </p>
-            <p className="text-muted-foreground max-w-2xl mx-auto mb-10">
-              A complete cognitive backend with persistent memory, intelligent AI routing, behavioral defense, 
-              dream-state processing, and full observability—all self-healing and continuously learning.
-            </p>
+          </motion.div>
+
+          {/* Interactive Diagram - THE WOW FACTOR */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.3 }}
+            className="mb-8 md:mb-12"
+          >
+            <InteractiveSubstrateDiagram />
           </motion.div>
           
+          {/* CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             <Link to="/os">
@@ -516,7 +526,13 @@ export default function Explore() {
             <Link to="/demo">
               <Button size="lg" variant="outline" className="gap-2 px-8">
                 <Play className="w-4 h-4" />
-                Watch Demo
+                Interactive Demo
+              </Button>
+            </Link>
+            <Link to="/developers">
+              <Button size="lg" variant="ghost" className="gap-2 px-6">
+                <Code className="w-4 h-4" />
+                View SDK
               </Button>
             </Link>
           </motion.div>
@@ -525,18 +541,18 @@ export default function Explore() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="mt-12 flex flex-wrap items-center justify-center gap-6 md:gap-12"
+            transition={{ delay: 0.7 }}
+            className="mt-10 flex flex-wrap items-center justify-center gap-6 md:gap-12"
           >
             {[
               { label: "Core Modules", value: "7" },
               { label: "Substrate Actions", value: "52" },
               { label: "Database Tables", value: "50+" },
-              { label: "BYOK Integrations", value: "5" },
-            ].map((stat, idx) => (
+              { label: "BYOK Ready", value: "∞" },
+            ].map((stat) => (
               <div key={stat.label} className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-foreground">{stat.value}</div>
-                <div className="text-xs text-muted-foreground">{stat.label}</div>
+                <div className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">{stat.value}</div>
+                <div className="text-xs text-muted-foreground uppercase tracking-wider">{stat.label}</div>
               </div>
             ))}
           </motion.div>
@@ -544,8 +560,8 @@ export default function Explore() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 1 }}
-            className="mt-16"
+            transition={{ delay: 1.2, duration: 1 }}
+            className="mt-12"
           >
             <motion.div
               animate={{ y: [0, 8, 0] }}
