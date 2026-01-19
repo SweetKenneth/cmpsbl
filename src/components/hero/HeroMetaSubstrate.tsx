@@ -294,28 +294,8 @@ export function HeroMetaSubstrate() {
         transition={{ duration: 0.8 }}
         className="relative z-10 text-center mb-8 md:mb-12"
       >
-        <motion.div 
-          className="inline-flex items-center gap-2 mb-4 md:mb-6 px-4 py-2 rounded-full border"
-          style={{
-            borderColor: "hsl(var(--neon-cyan) / 0.4)",
-            background: "linear-gradient(135deg, hsl(var(--neon-cyan) / 0.1), hsl(var(--neon-magenta) / 0.05))",
-            boxShadow: "0 0 20px hsl(var(--neon-cyan) / 0.2)",
-          }}
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          <Sparkles className="w-4 h-4" style={{ color: "hsl(var(--neon-cyan))" }} />
-          <span 
-            className="text-xs sm:text-sm font-medium"
-            style={{ color: "hsl(var(--neon-cyan))" }}
-          >
-            What Windows Did for PCs
-          </span>
-        </motion.div>
-        
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 tracking-tight leading-tight">
-          <span className="text-foreground">We Do for </span>
+          <span className="text-foreground">Where Machines </span>
           <span 
             style={{
               background: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-magenta)), hsl(var(--neon-amber)))",
@@ -324,12 +304,12 @@ export function HeroMetaSubstrate() {
               filter: "drop-shadow(0 0 20px hsl(var(--neon-cyan) / 0.5))",
             }}
           >
-            AI Models
+            Learn to Dream
           </span>
         </h1>
         
         <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed px-4">
-          The operating system for cognitive applications.
+          Cognitive Operating System for Serious Builders
         </p>
         <p 
           className="text-sm sm:text-base md:text-lg font-medium mt-2"
