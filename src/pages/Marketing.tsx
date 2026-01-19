@@ -6,6 +6,7 @@ import { Megaphone, TrendingUp, Users, Target, Mail, Share2, ArrowRight } from "
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { SEO } from "@/components/SEO";
+import heroImage from "@/assets/hero/marketing-analytics-flow.jpg";
 
 export default function Marketing() {
   const campaigns = [
@@ -32,12 +33,12 @@ export default function Marketing() {
 
       <PublicNav />
 
-      {/* Hero with Earth Window */}
+      {/* Hero with Futuristic Analytics Visual */}
       <section className="relative w-full">
         <div 
           className="absolute inset-0 h-[50vh] bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1920&q=80')`,
+            backgroundImage: `url(${heroImage})`,
           }}
         />
         <div className="absolute inset-0 h-[50vh] bg-gradient-to-b from-background/80 via-background/40 to-background" />

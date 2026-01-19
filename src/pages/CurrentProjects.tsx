@@ -6,6 +6,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import heroImage from "@/assets/hero/substrate-os-control.jpg";
 
 export default function CurrentProjects() {
   const navigate = useNavigate();
@@ -108,12 +109,12 @@ export default function CurrentProjects() {
 
       <PublicNav />
 
-      {/* Hero with Earth Window */}
+      {/* Hero with Futuristic OS Control Visual */}
       <section className="relative w-full">
         <div 
           className="absolute inset-0 h-[50vh] bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80')`,
+            backgroundImage: `url(${heroImage})`,
           }}
         />
         <div className="absolute inset-0 h-[50vh] bg-gradient-to-b from-background/80 via-background/40 to-background" />

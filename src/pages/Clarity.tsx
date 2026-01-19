@@ -6,6 +6,7 @@ import { Shield, Zap, CheckCircle, Heart, Accessibility, ArrowRight, Globe } fro
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import heroImage from "@/assets/hero/substrate-neural-dark.jpg";
 
 const PTCHBL = () => {
   const openPTCHBL = () => {
@@ -29,12 +30,12 @@ const PTCHBL = () => {
       
       <PublicNav />
 
-      {/* Hero with Earth Window */}
+      {/* Hero with Futuristic Neural Visual */}
       <section className="relative w-full">
         <div 
           className="absolute inset-0 h-[70vh] bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=1920&q=80')`,
+            backgroundImage: `url(${heroImage})`,
           }}
         />
         <div className="absolute inset-0 h-[70vh] bg-gradient-to-b from-background/80 via-background/40 to-background" />

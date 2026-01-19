@@ -5922,9 +5922,9 @@ const response = await substrate.nexus.route('Explain quantum computing');`}
                         </a>
                       </Button>
                       <Button variant="outline" size="sm" className="w-full justify-start h-10 touch-manipulation" asChild>
-                        <a href="/sdk/USER-GUIDE.md" download>
+                        <a href="/sdk/USER-MANUAL.md" download>
                           <Download className="w-4 h-4 mr-2" />
-                          User Guide (Concepts)
+                          User Manual (Complete Guide)
                         </a>
                       </Button>
                       <Button variant="outline" size="sm" className="w-full justify-start h-10 touch-manipulation" asChild>
