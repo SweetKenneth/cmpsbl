@@ -52,7 +52,10 @@ export async function analyzeRequest(
       factors.push('Medium IP reputation');
     }
   } catch (err) {
-    console.log('IP reputation check failed:', err);
+    // Only log in development - silent fail in production
+    if (import.meta.env.DEV) {
+      console.log('IP reputation check failed:', err);
+    }
   }
 
   // Check user agent
@@ -116,7 +119,7 @@ export async function logDefenseEvent(event: DefenseEvent): Promise<void> {
         metadata: event.metadata || {}
       });
 
-    if (error) {
+    if (error && import.meta.env.DEV) {
       console.error('Failed to log defense event:', error);
     }
 
@@ -127,7 +130,10 @@ export async function logDefenseEvent(event: DefenseEvent): Promise<void> {
       p_risk_score: event.risk_score,
     });
   } catch (error) {
-    console.error('Defense event logging error:', error);
+    // Only log in development - silent fail in production
+    if (import.meta.env.DEV) {
+      console.error('Defense event logging error:', error);
+    }
   }
 }
 
@@ -193,7 +199,9 @@ export async function getRecentEvents(limit: number = 50) {
     .limit(limit);
 
   if (error) {
-    console.error('Failed to fetch defense events:', error);
+    if (import.meta.env.DEV) {
+      console.error('Failed to fetch defense events:', error);
+    }
     return [];
   }
 
