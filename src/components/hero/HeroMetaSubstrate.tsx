@@ -461,17 +461,23 @@ function AIEvolutionFlow() {
 export function HeroMetaSubstrate() {
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center px-4 py-20 overflow-hidden">
-      {/* Deep black gradient background */}
+      {/* Background - plain white in light mode, gradient in dark mode */}
       <div 
-        className="absolute inset-0"
+        className="absolute inset-0 dark:hidden"
+        style={{
+          background: "hsl(var(--background))",
+        }}
+      />
+      <div 
+        className="absolute inset-0 hidden dark:block"
         style={{
           background: "linear-gradient(180deg, hsl(var(--background)) 0%, hsl(220 30% 2%) 50%, hsl(var(--background)) 100%)",
         }}
       />
       
-      {/* Radial neon spotlight */}
+      {/* Radial neon spotlight - more subtle in light mode */}
       <motion.div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none opacity-30 dark:opacity-100"
         style={{
           background: "radial-gradient(ellipse 80% 50% at 50% 40%, hsl(var(--neon-cyan) / 0.12) 0%, transparent 60%)",
         }}
@@ -479,9 +485,9 @@ export function HeroMetaSubstrate() {
         transition={{ duration: 4, repeat: Infinity }}
       />
       
-      {/* Secondary magenta glow */}
+      {/* Secondary magenta glow - more subtle in light mode */}
       <motion.div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none opacity-20 dark:opacity-100"
         style={{
           background: "radial-gradient(ellipse 60% 40% at 60% 60%, hsl(var(--neon-magenta) / 0.08) 0%, transparent 50%)",
         }}
@@ -489,9 +495,9 @@ export function HeroMetaSubstrate() {
         transition={{ duration: 5, repeat: Infinity, delay: 1 }}
       />
       
-      {/* Grid pattern */}
+      {/* Grid pattern - more subtle in light mode */}
       <div 
-        className="absolute inset-0 opacity-[0.04]"
+        className="absolute inset-0 opacity-[0.02] dark:opacity-[0.04]"
         style={{
           backgroundImage: `linear-gradient(hsl(var(--neon-cyan) / 0.3) 1px, transparent 1px), 
                            linear-gradient(90deg, hsl(var(--neon-cyan) / 0.3) 1px, transparent 1px)`,
