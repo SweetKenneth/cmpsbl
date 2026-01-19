@@ -117,10 +117,16 @@ export default function Decode() {
   }, []);
 
   useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 120)}px`;
-    }
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+    
+    // Use requestAnimationFrame to batch layout reads/writes and avoid forced reflow
+    requestAnimationFrame(() => {
+      textarea.style.height = 'auto';
+      requestAnimationFrame(() => {
+        textarea.style.height = `${Math.min(textarea.scrollHeight, 120)}px`;
+      });
+    });
   }, [input]);
 
   const attemptRecovery = useCallback(async () => {
