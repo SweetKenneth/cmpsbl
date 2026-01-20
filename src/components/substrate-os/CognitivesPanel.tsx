@@ -181,42 +181,48 @@ export function CognitivesPanel() {
 
   if (isLoading) {
     return (
-      <Card className="border-border/50 bg-black/30">
-        <CardHeader>
-          <CardTitle className="text-sm flex items-center gap-2">
+      <div className="rounded-xl border border-fuchsia-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl p-6">
+        <div className="flex items-center gap-2 mb-4">
+          <div className="w-8 h-8 rounded-lg bg-fuchsia-500/20 border border-fuchsia-500/40 flex items-center justify-center">
             <Bot className="w-4 h-4 text-fuchsia-400" />
-            Cognitives
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            {[1, 2, 3].map(i => (
-              <Skeleton key={i} className="h-16 w-full" />
-            ))}
           </div>
-        </CardContent>
-      </Card>
+          <span className="text-sm font-medium">Cognitives</span>
+        </div>
+        <div className="space-y-3">
+          {[1, 2, 3].map(i => (
+            <Skeleton key={i} className="h-20 w-full rounded-xl" />
+          ))}
+        </div>
+      </div>
     );
   }
 
   return (
     <>
-      <Card className="border-border/50 bg-black/30">
-        <CardHeader className="pb-3">
+      <div className="rounded-xl border border-fuchsia-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl overflow-hidden">
+        <div className="p-4 border-b border-white/10">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-sm flex items-center gap-2">
-              <Bot className="w-4 h-4 text-fuchsia-400" />
-              Cognitive Registry
-            </CardTitle>
-            <Badge variant="outline" className="text-[10px] border-fuchsia-500/50 text-fuchsia-400">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-lg bg-fuchsia-500/20 border border-fuchsia-500/40 flex items-center justify-center">
+                <Bot className="w-4 h-4 text-fuchsia-400" />
+              </div>
+              <div>
+                <h3 className="text-sm font-medium text-foreground">Cognitive Registry</h3>
+                <p className="text-[10px] text-muted-foreground font-mono">operator console</p>
+              </div>
+            </div>
+            <Badge variant="outline" className="text-[10px] border-fuchsia-500/40 text-fuchsia-400 bg-fuchsia-500/10">
               {cognitives?.length || 0} minted
             </Badge>
           </div>
-        </CardHeader>
-        <CardContent>
+        </div>
+        <div className="p-4">
           {!cognitives?.length ? (
-            <div className="text-center py-8">
-              <Bot className="w-10 h-10 mx-auto mb-3 text-muted-foreground/50" />
+            <div className="text-center py-12">
+              <div className="relative w-16 h-16 mx-auto mb-4">
+                <Bot className="w-16 h-16 text-muted-foreground/30" />
+                <div className="absolute inset-0 bg-fuchsia-500/20 rounded-full blur-xl" />
+              </div>
               <p className="text-sm text-muted-foreground">No cognitives minted yet</p>
               <p className="text-xs text-muted-foreground/70 mt-1">
                 Use the Forge to create your first cognitive
@@ -231,20 +237,46 @@ export function CognitivesPanel() {
                   const statusConfig = STATUS_CONFIG[cognitive.status] || STATUS_CONFIG.pending;
                   const StatusIcon = statusConfig.icon;
                   
+                  const colorBorderMap: Record<string, string> = {
+                    cyan: 'border-cyan-500/20 hover:border-cyan-500/40',
+                    emerald: 'border-emerald-500/20 hover:border-emerald-500/40',
+                    violet: 'border-violet-500/20 hover:border-violet-500/40',
+                    amber: 'border-amber-500/20 hover:border-amber-500/40',
+                    rose: 'border-rose-500/20 hover:border-rose-500/40',
+                    fuchsia: 'border-fuchsia-500/20 hover:border-fuchsia-500/40',
+                  };
+                  const colorIconBgMap: Record<string, string> = {
+                    cyan: 'bg-cyan-500/20 border-cyan-500/40',
+                    emerald: 'bg-emerald-500/20 border-emerald-500/40',
+                    violet: 'bg-violet-500/20 border-violet-500/40',
+                    amber: 'bg-amber-500/20 border-amber-500/40',
+                    rose: 'bg-rose-500/20 border-rose-500/40',
+                    fuchsia: 'bg-fuchsia-500/20 border-fuchsia-500/40',
+                  };
+                  const colorTextMap: Record<string, string> = {
+                    cyan: 'text-cyan-400',
+                    emerald: 'text-emerald-400',
+                    violet: 'text-violet-400',
+                    amber: 'text-amber-400',
+                    rose: 'text-rose-400',
+                    fuchsia: 'text-fuchsia-400',
+                  };
+                  
                   return (
                     <div 
                       key={cognitive.id}
                       className={cn(
-                        "p-3 rounded-lg border bg-black/20 transition-all hover:bg-black/30",
-                        `border-${classColor}-500/20 hover:border-${classColor}-500/40`
+                        "p-4 rounded-xl border bg-white/5 dark:bg-white/[0.02] backdrop-blur-sm transition-all duration-300",
+                        "hover:bg-white/10 hover:shadow-lg",
+                        colorBorderMap[classColor] || colorBorderMap.cyan
                       )}
                     >
                       <div className="flex items-start gap-3">
                         <div className={cn(
-                          "w-9 h-9 rounded-lg flex items-center justify-center shrink-0",
-                          `bg-${classColor}-500/20 border border-${classColor}-500/40`
+                          "w-10 h-10 rounded-lg flex items-center justify-center shrink-0 border",
+                          colorIconBgMap[classColor] || colorIconBgMap.cyan
                         )}>
-                          <ClassIcon className={cn("w-4 h-4", `text-${classColor}-400`)} />
+                          <ClassIcon className={cn("w-5 h-5", colorTextMap[classColor] || colorTextMap.cyan)} />
                         </div>
                         
                         <div className="flex-1 min-w-0">
@@ -359,8 +391,8 @@ export function CognitivesPanel() {
               </div>
             </ScrollArea>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Confirmation Dialog */}
       <AlertDialog open={!!confirmAction} onOpenChange={() => setConfirmAction(null)}>
