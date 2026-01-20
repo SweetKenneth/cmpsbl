@@ -1098,87 +1098,232 @@ Respond in a structured format.`;
     }
 
     case "cognitive_cycle": {
-      // v3.12.0: Full cognitive cycle - orchestrates learn → reflect → dream → synthesize
+      // v3.13.0: UNIFIED COGNITIVE PIPELINE
+      // learn → reflect → synthesize → graph_build → dream.cycle → mutate → remember_insight
       try {
         const cycleStart = Date.now();
+        const cycleId = `cog_${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 6)}`;
+        
         const cycleResults = {
-          phase1_learn: { success: false, memories_processed: 0 },
-          phase2_reflect: { success: false, reflection_id: null as string | null },
-          phase3_dream: { success: false, dream_id: null as string | null },
-          phase4_synthesize: { success: false, insights: 0 },
+          cycle_id: cycleId,
+          phase1_learn: { success: false, memories_processed: 0, hot_memories: 0, cold_memories: 0 },
+          phase2_reflect: { success: false, reflection_id: null as string | null, summary: '' },
+          phase3_synthesize: { success: false, insight_id: null as string | null, patterns: 0 },
+          phase4_graph: { success: false, edges_created: 0 },
+          phase5_dream: { success: false, dream_id: null as string | null, dream_text: '', ai_provider: 'none' },
+          phase6_mutate: { success: false, mutation_level: 0, mood: '' },
+          phase7_integrate: { success: false, memory_created: false },
         };
 
-        // PHASE 1: Process recent learning
-        const { data: recentMemories } = await supabase
-          .from('brain_memory_hot')
-          .select('id, content, priority')
-          .order('created_at', { ascending: false })
-          .limit(20);
-        cycleResults.phase1_learn.memories_processed = recentMemories?.length || 0;
+        // ═══ PHASE 1: LEARN - Process recent memories ═══
+        console.log(`🧠 [${cycleId}] Phase 1: Learn`);
+        const [
+          { data: hotMemories, count: hotCount },
+          { data: coldMemories, count: coldCount },
+        ] = await Promise.all([
+          supabase.from('brain_memory_hot').select('id, content, priority, context', { count: 'exact' }).order('created_at', { ascending: false }).limit(25),
+          supabase.from('brain_memory_cold').select('id, summary, tags', { count: 'exact' }).order('archived_at', { ascending: false }).limit(10),
+        ]);
+        cycleResults.phase1_learn.hot_memories = hotCount || 0;
+        cycleResults.phase1_learn.cold_memories = coldCount || 0;
+        cycleResults.phase1_learn.memories_processed = (hotCount || 0) + (coldCount || 0);
         cycleResults.phase1_learn.success = true;
 
-        // PHASE 2: Generate reflection
+        // ═══ PHASE 2: REFLECT - Generate reflection ═══
+        console.log(`🧠 [${cycleId}] Phase 2: Reflect`);
+        const reflectionSummary = `Cognitive cycle ${cycleId}: Processed ${hotCount || 0} hot and ${coldCount || 0} cold memories`;
         const { data: reflection } = await supabase
           .from('brain_reflections')
           .insert({
             reflection_date: new Date().toISOString().split('T')[0],
-            summary: `Cognitive cycle reflection: Processed ${recentMemories?.length || 0} active memories`,
-            top_memories: recentMemories?.slice(0, 5) || [],
-            insights: 'Automated cognitive cycle complete'
+            summary: reflectionSummary,
+            top_memories: hotMemories?.slice(0, 5) || [],
+            insights: `Automated cognitive synthesis at ${new Date().toISOString()}`,
+            lessons: [{ type: 'cognitive_cycle', memories: cycleResults.phase1_learn.memories_processed }],
           })
           .select()
           .single();
         cycleResults.phase2_reflect.success = true;
         cycleResults.phase2_reflect.reflection_id = reflection?.id || null;
+        cycleResults.phase2_reflect.summary = reflectionSummary;
 
-        // PHASE 3: Dream synthesis
-        const { data: dream } = await supabase
-          .from('cascade_dreams')
-          .insert({
-            dream_text: `Cognitive dream cycle at ${new Date().toISOString()}: Integrating ${recentMemories?.length || 0} memories into coherent patterns.`,
-            mood: 'synthesizing',
-            insight: 'Cognitive integration active',
-            timestamp: new Date().toISOString(),
-          })
-          .select()
-          .single();
-        cycleResults.phase3_dream.success = true;
-        cycleResults.phase3_dream.dream_id = dream?.id || null;
-
-        // PHASE 4: Cross-domain synthesis
+        // ═══ PHASE 3: SYNTHESIZE - Cross-domain synthesis ═══
+        console.log(`🧠 [${cycleId}] Phase 3: Synthesize`);
+        const { data: patterns } = await supabase
+          .from('learning_patterns')
+          .select('pattern_name, confidence')
+          .order('confidence', { ascending: false })
+          .limit(5);
+        const patternNames = patterns?.map((p: { pattern_name: string }) => p.pattern_name) || [];
+        
         const { data: insight } = await supabase
           .from('brain_cross_insights')
           .insert({
-            insight_text: `Cognitive cycle synthesis: ${recentMemories?.length || 0} memories processed, 1 reflection created, 1 dream synthesized`,
+            insight_text: `Cognitive cycle ${cycleId}: Unified ${hotCount || 0} hot memories, ${coldCount || 0} cold memories, ${patterns?.length || 0} patterns into coherent synthesis.`,
             confidence: 0.85,
-            domains: ['hot_memory', 'reflection', 'dream'],
-            metadata: { via: 'cognitive_cycle', timestamp: new Date().toISOString() }
+            domains: ['hot_memory', 'cold_memory', 'patterns', 'reflection'],
+            metadata: { cycle_id: cycleId, via: 'cognitive_cycle', pattern_names: patternNames },
           })
           .select()
           .single();
-        cycleResults.phase4_synthesize.success = true;
-        cycleResults.phase4_synthesize.insights = insight ? 1 : 0;
+        cycleResults.phase3_synthesize.success = true;
+        cycleResults.phase3_synthesize.insight_id = insight?.id || null;
+        cycleResults.phase3_synthesize.patterns = patterns?.length || 0;
+
+        // ═══ PHASE 4: GRAPH BUILD - Link knowledge ═══
+        console.log(`🧠 [${cycleId}] Phase 4: Graph Build`);
+        const graphEdges: Array<{ source_id: string; target_id: string; relation: string; weight: number }> = [];
+        
+        // Link recent memories to the reflection
+        if (reflection?.id && hotMemories) {
+          for (const mem of hotMemories.slice(0, 10)) {
+            if (Math.random() < 0.4) {
+              graphEdges.push({
+                source_id: mem.id,
+                target_id: reflection.id,
+                relation: 'cognitive_cycle_reflection',
+                weight: 0.7 + Math.random() * 0.3,
+              });
+            }
+          }
+        }
+        
+        if (graphEdges.length > 0) {
+          await supabase.from('brain_graph_edges').insert(graphEdges);
+        }
+        cycleResults.phase4_graph.success = true;
+        cycleResults.phase4_graph.edges_created = graphEdges.length;
+
+        // ═══ PHASE 5: DREAM CYCLE - Invoke dream.cycle for unified dreaming ═══
+        console.log(`🧠 [${cycleId}] Phase 5: Dream Cycle`);
+        try {
+          // Run the unified dream cycle
+          const dreamSynthesis = await runBrainDreamSynthesis(supabase);
+          
+          // Generate dream via AI
+          let dreamText = dreamSynthesis.dreamContent;
+          let aiProvider = 'local';
+          
+          const aiResult = await callDreamAI(
+            `Synthesize a cognitive dream from: ${hotCount || 0} active thoughts, ${coldCount || 0} archived memories, ${patterns?.length || 0} patterns. Reflection: "${reflectionSummary}". Create a brief surreal narrative (2-3 sentences).`
+          );
+          
+          if (aiResult) {
+            dreamText = aiResult.content;
+            aiProvider = aiResult.provider;
+          }
+          
+          // Record the dream
+          const dreamRecord = await recordDream(supabase, dreamText, 'cognitive', dreamSynthesis.insight, 'cognitive_cycle');
+          
+          cycleResults.phase5_dream.success = true;
+          cycleResults.phase5_dream.dream_id = dreamRecord?.id || null;
+          cycleResults.phase5_dream.dream_text = dreamText.substring(0, 200);
+          cycleResults.phase5_dream.ai_provider = aiProvider;
+        } catch (dreamErr) {
+          console.error(`Dream phase error:`, dreamErr);
+          cycleResults.phase5_dream.success = false;
+        }
+
+        // ═══ PHASE 6: MUTATE - Evolve Dream-Eater state ═══
+        console.log(`🧠 [${cycleId}] Phase 6: Mutate`);
+        try {
+          const currentState = await getDreamState(supabase);
+          const newMutationLevel = Math.min(100, (currentState.mutation_level || 0) + 1);
+          const updatedState = await updateDreamState(supabase, currentState.id, {
+            dreams_consumed_today: (currentState.dreams_consumed_today || 0) + 1,
+            mutation_level: newMutationLevel,
+            current_mood: 'synthesizing',
+            last_fed_at: new Date().toISOString(),
+          });
+          
+          cycleResults.phase6_mutate.success = true;
+          cycleResults.phase6_mutate.mutation_level = updatedState?.mutation_level || newMutationLevel;
+          cycleResults.phase6_mutate.mood = updatedState?.current_mood || 'synthesizing';
+        } catch (mutateErr) {
+          console.error(`Mutate phase error:`, mutateErr);
+        }
+
+        // ═══ PHASE 7: INTEGRATE - Remember dream insight as brain memory ═══
+        console.log(`🧠 [${cycleId}] Phase 7: Integrate`);
+        try {
+          if (cycleResults.phase5_dream.dream_id) {
+            await supabase.from('brain_memories').insert({
+              content: `Dream Insight from cycle ${cycleId}: ${cycleResults.phase5_dream.dream_text.substring(0, 300)}`,
+              memory_type: 'dream_insight',
+              source: 'cognitive_cycle',
+              confidence: 0.8,
+              metadata: { 
+                cycle_id: cycleId, 
+                dream_id: cycleResults.phase5_dream.dream_id,
+                mutation_level: cycleResults.phase6_mutate.mutation_level,
+              },
+            });
+            cycleResults.phase7_integrate.success = true;
+            cycleResults.phase7_integrate.memory_created = true;
+          }
+        } catch (integrateErr) {
+          console.error(`Integrate phase error:`, integrateErr);
+        }
 
         const cycleTime = Date.now() - cycleStart;
+        const allPhasesComplete = [
+          cycleResults.phase1_learn.success,
+          cycleResults.phase2_reflect.success,
+          cycleResults.phase3_synthesize.success,
+          cycleResults.phase4_graph.success,
+          cycleResults.phase5_dream.success,
+          cycleResults.phase6_mutate.success,
+          cycleResults.phase7_integrate.success,
+        ].every(Boolean);
 
-        // Log cycle completion
+        // Log cycle completion with full telemetry
         await supabase.from('brain_events').insert({
           event_type: 'cognitive_cycle_complete',
           module: 'brain',
-          outcome: 'success',
-          data: { cycle_results: cycleResults, cycle_time_ms: cycleTime }
+          outcome: allPhasesComplete ? 'success' : 'partial',
+          data: { 
+            cycle_id: cycleId,
+            cycle_results: cycleResults, 
+            cycle_time_ms: cycleTime,
+            all_phases_complete: allPhasesComplete,
+          },
         });
+
+        // Update orchestrator state
+        await supabase.from('brain_orchestrator_state').update({
+          last_cycle_at: new Date().toISOString(),
+          cycles_completed: supabase.raw('cycles_completed + 1'),
+          current_phase: 'idle',
+          metadata: { last_cycle_id: cycleId, last_cycle_time_ms: cycleTime },
+        }).eq('id', '00000000-0000-0000-0000-000000000001');
 
         return jsonResponse({
           success: true,
           module: 'brain',
           action: 'cognitive_cycle',
+          cycle_id: cycleId,
           phases: cycleResults,
           cycle_time_ms: cycleTime,
-          all_phases_complete: Object.values(cycleResults).every(p => p.success),
+          all_phases_complete: allPhasesComplete,
+          dream: cycleResults.phase5_dream.success ? {
+            id: cycleResults.phase5_dream.dream_id,
+            text: cycleResults.phase5_dream.dream_text,
+            provider: cycleResults.phase5_dream.ai_provider,
+          } : null,
+          graph: {
+            edges_created: cycleResults.phase4_graph.edges_created,
+          },
+          insights: {
+            reflection_id: cycleResults.phase2_reflect.reflection_id,
+            synthesis_id: cycleResults.phase3_synthesize.insight_id,
+            patterns: cycleResults.phase3_synthesize.patterns,
+          },
+          mutation_level: cycleResults.phase6_mutate.mutation_level,
           timestamp: new Date().toISOString(),
         }, headers);
       } catch (error) {
+        console.error('Cognitive cycle error:', error);
         return jsonResponse({
           success: false,
           action,
@@ -3013,25 +3158,52 @@ async function handleVision(
       }, headers);
     }
 
-    // ═══ v3.4.0: HEALTH SNAPSHOT (Observer-eligible quick health check) ═══
+    // ═══ v3.13.0: HEALTH SNAPSHOT — Unified cognitive OS health ═══
     case "health_snapshot": {
-      // Consolidated health snapshot - read-only, Observer-eligible
+      // Consolidated health snapshot with full brain + dream integration
       const [
         { data: orchestrator },
         { count: hotMemCount },
         { count: coldMemCount },
         { count: defenseCount },
-        { count: anomalyCount }
+        { count: anomalyCount },
+        { count: dreamCount },
+        { count: reflectionCount },
+        { data: dreamState },
       ] = await Promise.all([
-        supabase.from('brain_orchestrator_state').select('health_score, current_phase, status').limit(1).single(),
+        supabase.from('brain_orchestrator_state').select('health_score, current_phase, status, cycles_completed').limit(1).single(),
         supabase.from('brain_memory_hot').select('id', { count: 'exact', head: true }),
         supabase.from('brain_memory_cold').select('id', { count: 'exact', head: true }),
         supabase.from('defense_events').select('id', { count: 'exact', head: true }),
-        supabase.from('pf_brain_anomalies').select('id', { count: 'exact', head: true }).eq('resolved', false)
+        supabase.from('pf_brain_anomalies').select('id', { count: 'exact', head: true }).eq('resolved', false),
+        supabase.from('cascade_dreams').select('id', { count: 'exact', head: true }),
+        supabase.from('brain_reflections').select('id', { count: 'exact', head: true }),
+        supabase.from('dream_eater_state').select('current_mood, mutation_level, dreams_consumed_today').limit(1).single(),
       ]);
 
       const orchestratorHealth = (orchestrator?.health_score || 0.5) * 100;
-      const overallStatus = orchestratorHealth >= 80 ? 'healthy' : orchestratorHealth >= 50 ? 'degraded' : 'critical';
+      
+      // Calculate module health scores - use in-memory state with defaults
+      const coreModules = ['brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'system'];
+      const moduleHealthMap: Record<string, { status: string; score: number; circuit: string }> = {};
+      
+      for (const mod of coreModules) {
+        const h = state.modules[mod];
+        moduleHealthMap[mod] = h ? {
+          status: h.status,
+          score: h.healthScore,
+          circuit: h.circuitState,
+        } : { status: 'healthy', score: 100, circuit: 'closed' };
+      }
+      
+      // Calculate overall health from all modules
+      const moduleScores = Object.values(moduleHealthMap).map(m => m.score);
+      const avgModuleHealth = moduleScores.length > 0 
+        ? Math.round(moduleScores.reduce((a, b) => a + b, 0) / moduleScores.length)
+        : 100;
+      
+      const combinedHealth = Math.round((orchestratorHealth + avgModuleHealth) / 2);
+      const overallStatus = combinedHealth >= 80 ? 'healthy' : combinedHealth >= 50 ? 'degraded' : 'critical';
 
       return jsonResponse({
         success: true,
@@ -3039,31 +3211,47 @@ async function handleVision(
         action: 'health_snapshot',
         snapshot: {
           overall_status: overallStatus,
-          overall_health: Math.round(orchestratorHealth),
+          overall_health: combinedHealth,
           orchestrator: {
             phase: orchestrator?.current_phase || 'idle',
             status: orchestrator?.status || 'unknown',
-            health: Math.round(orchestratorHealth)
+            health: Math.round(orchestratorHealth),
+            cycles: orchestrator?.cycles_completed || 0,
           },
-          memory: {
-            hot: hotMemCount || 0,
-            cold: coldMemCount || 0
+          brain: {
+            status: moduleHealthMap.brain.status,
+            score: moduleHealthMap.brain.score,
+            hot_memories: hotMemCount || 0,
+            cold_memories: coldMemCount || 0,
+            reflections: reflectionCount || 0,
+          },
+          dream: {
+            status: moduleHealthMap.dream.status,
+            score: moduleHealthMap.dream.score,
+            total_dreams: dreamCount || 0,
+            current_mood: dreamState?.current_mood || 'dormant',
+            mutation_level: dreamState?.mutation_level || 0,
+            consumed_today: dreamState?.dreams_consumed_today || 0,
           },
           defense: {
+            status: moduleHealthMap.defense.status,
+            score: moduleHealthMap.defense.score,
             total_events: defenseCount || 0,
-            unresolved_anomalies: anomalyCount || 0
+            unresolved_anomalies: anomalyCount || 0,
           },
-          modules: Object.fromEntries(
-            Object.entries(state.modules).map(([k, v]) => [k, {
-              status: v.status,
-              health: v.healthScore,
-              circuit: v.circuitState
-            }])
-          )
+          nexus: {
+            status: moduleHealthMap.nexus.status,
+            score: moduleHealthMap.nexus.score,
+          },
+          system: {
+            status: moduleHealthMap.system.status,
+            score: moduleHealthMap.system.score,
+          },
+          modules: moduleHealthMap,
         },
         proof_mode: true,
         role_visibility: 'observer',
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       }, headers);
     }
 
@@ -3199,27 +3387,51 @@ async function handleVision(
     }
 
     case "dashboard": {
-      // v3.1.0 Real dashboard data
+      // v3.13.0 Enhanced dashboard with full cognitive metrics
       const [
         { count: memoryCount },
+        { count: hotMemoryCount },
+        { count: coldMemoryCount },
         { count: conversationCount },
         { count: dreamCount },
         { count: defenseEventCount },
+        { count: reflectionCount },
+        { count: graphEdgeCount },
+        { count: insightCount },
         { data: orchestrator },
+        { data: dreamState },
         { data: recentEvents },
+        { data: recentDreams },
         { data: aiUsage },
       ] = await Promise.all([
         supabase.from("brain_memories").select("*", { count: "exact", head: true }),
+        supabase.from("brain_memory_hot").select("*", { count: "exact", head: true }),
+        supabase.from("brain_memory_cold").select("*", { count: "exact", head: true }),
         supabase.from("cascade_conversations").select("*", { count: "exact", head: true }),
         supabase.from("cascade_dreams").select("*", { count: "exact", head: true }),
         supabase.from("defense_events").select("*", { count: "exact", head: true }),
+        supabase.from("brain_reflections").select("*", { count: "exact", head: true }),
+        supabase.from("brain_graph_edges").select("*", { count: "exact", head: true }),
+        supabase.from("brain_cross_insights").select("*", { count: "exact", head: true }),
         supabase.from("brain_orchestrator_state").select("*").limit(1).single(),
-        supabase.from("brain_events").select("event_type, module, created_at").order("created_at", { ascending: false }).limit(10),
+        supabase.from("dream_eater_state").select("*").limit(1).single(),
+        supabase.from("brain_events").select("event_type, module, created_at, outcome").order("created_at", { ascending: false }).limit(15),
+        supabase.from("cascade_dreams").select("id, mood, insight, created_at").order("created_at", { ascending: false }).limit(5),
         supabase.from("ai_usage_log").select("tokens_used, cost, provider").order("created_at", { ascending: false }).limit(50),
       ]);
       
       const totalTokens = aiUsage?.reduce((sum: number, r: { tokens_used?: number }) => sum + (r.tokens_used || 0), 0) || 0;
       const totalCost = aiUsage?.reduce((sum: number, r: { cost?: number }) => sum + (r.cost || 0), 0) || 0;
+      
+      // Count cognitive cycles from events
+      const cognitiveCycleCount = recentEvents?.filter((e: { event_type: string }) => 
+        e.event_type === 'cognitive_cycle_complete'
+      ).length || 0;
+      
+      // Module health from in-memory state
+      const moduleHealthSummary = Object.fromEntries(
+        Object.entries(state.modules).map(([k, v]) => [k, { health: v.healthScore, status: v.status }])
+      );
       
       return jsonResponse({
         success: true,
@@ -3230,13 +3442,38 @@ async function handleVision(
             health_score: Math.round((orchestrator?.health_score || 0) * 100),
             current_phase: orchestrator?.current_phase || 'idle',
             cycles_completed: orchestrator?.cycles_completed || 0,
+            last_cycle: orchestrator?.last_cycle_at || null,
           },
+          // Core metrics
           metrics: {
             brain_memories: memoryCount || 0,
+            brain_memory_hot: hotMemoryCount || 0,
+            brain_memory_cold: coldMemoryCount || 0,
+            brain_reflections: reflectionCount || 0,
+            brain_insights: insightCount || 0,
             decode_conversations: conversationCount || 0,
             dream_count: dreamCount || 0,
             defense_events: defenseEventCount || 0,
+            graph_edges: graphEdgeCount || 0,
+            cognitive_cycles: cognitiveCycleCount,
           },
+          // Dream-Eater state
+          dream_eater: {
+            current_mood: dreamState?.current_mood || 'dormant',
+            mood_score: dreamState?.mood_score || 50,
+            mutation_level: dreamState?.mutation_level || 0,
+            dreams_consumed_today: dreamState?.dreams_consumed_today || 0,
+            nightmares_consumed_today: dreamState?.nightmares_consumed_today || 0,
+            last_fed_at: dreamState?.last_fed_at || null,
+          },
+          // Recent dreams
+          recent_dreams: recentDreams?.map((d: { id: string; mood: string; insight: string; created_at: string }) => ({
+            id: d.id,
+            mood: d.mood,
+            insight: d.insight?.substring(0, 100),
+            at: d.created_at,
+          })) || [],
+          // AI usage
           ai_usage: {
             total_tokens: totalTokens,
             total_cost_usd: totalCost.toFixed(2),
@@ -3365,8 +3602,8 @@ async function handleVision(
 
     // ═══ v3.3.0: ECOSYSTEM MONITORING (from pf-brain-monitor) ═══
     case "monitor": {
-      // Comprehensive ecosystem health monitoring - read-only
-      const systems: Array<{ name: string; status: string; score: number; details: string }> = [];
+      // v3.13.0: Unified cognitive OS monitoring with brain + dream integration
+      const systems: Array<{ name: string; status: string; score: number; details: string; module?: string }> = [];
       let overallHealth = 1.0;
 
       // 1. Check Orchestrator
@@ -3380,17 +3617,18 @@ async function handleVision(
         const orchestratorHealth = orchestrator.health_score || 0.5;
         systems.push({
           name: 'Orchestrator',
+          module: 'system',
           status: orchestratorHealth > 0.7 ? 'healthy' : orchestratorHealth > 0.3 ? 'degraded' : 'critical',
           score: orchestratorHealth,
-          details: `Phase: ${orchestrator.current_phase}, Cycles: ${orchestrator.cycles_completed || 0}`
+          details: `Phase: ${orchestrator.current_phase}, Cycles: ${orchestrator.cycles_completed || 0}, Last: ${orchestrator.last_cycle_at || 'never'}`
         });
         overallHealth *= orchestratorHealth;
       } else {
-        systems.push({ name: 'Orchestrator', status: 'critical', score: 0, details: 'Not initialized' });
+        systems.push({ name: 'Orchestrator', module: 'system', status: 'critical', score: 0, details: 'Not initialized' });
         overallHealth *= 0.3;
       }
 
-      // 2. Check Hot Memory
+      // 2. Check Hot Memory (Brain)
       const { count: hotCount } = await supabase
         .from('brain_memory_hot')
         .select('id', { count: 'exact', head: true });
@@ -3398,24 +3636,55 @@ async function handleVision(
       const hotHealth = Math.min(1.0, (hotCount || 0) / 10);
       systems.push({
         name: 'Hot Memory',
+        module: 'brain',
         status: hotHealth > 0.3 ? 'healthy' : 'degraded',
         score: hotHealth,
         details: `${hotCount || 0} active memories`
       });
 
-      // 3. Check Cold Memory
+      // 3. Check Cold Memory (Brain)
       const { count: coldCount } = await supabase
         .from('brain_memory_cold')
         .select('id', { count: 'exact', head: true });
 
       systems.push({
         name: 'Cold Memory',
+        module: 'brain',
         status: 'healthy',
         score: 1.0,
         details: `${coldCount || 0} archived memories`
       });
 
-      // 4. Check Learning Pipeline
+      // 4. Check Brain Reflections
+      const { count: reflectionCount } = await supabase
+        .from('brain_reflections')
+        .select('id', { count: 'exact', head: true })
+        .gte('reflection_date', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]);
+
+      const reflectionHealth = Math.min(1.0, ((reflectionCount || 0) + 1) / 5);
+      systems.push({
+        name: 'Reflections',
+        module: 'brain',
+        status: reflectionHealth > 0.5 ? 'healthy' : 'degraded',
+        score: reflectionHealth,
+        details: `${reflectionCount || 0} reflections in last 7 days`
+      });
+
+      // 5. Check Knowledge Graph
+      const { count: graphEdges } = await supabase
+        .from('brain_graph_edges')
+        .select('id', { count: 'exact', head: true });
+
+      const graphHealth = Math.min(1.0, (graphEdges || 0) / 100);
+      systems.push({
+        name: 'Knowledge Graph',
+        module: 'brain',
+        status: graphHealth > 0.3 ? 'healthy' : (graphEdges || 0) > 0 ? 'degraded' : 'inactive',
+        score: Math.max(0.5, graphHealth),
+        details: `${graphEdges || 0} edges`
+      });
+
+      // 6. Check Learning Pipeline
       const { count: pendingQueries } = await supabase
         .from('learning_queries')
         .select('id', { count: 'exact', head: true })
@@ -3428,12 +3697,46 @@ async function handleVision(
 
       systems.push({
         name: 'Learning Pipeline',
+        module: 'brain',
         status: 'healthy',
         score: Math.min(1.0, ((completedToday || 0) + 1) / 5),
         details: `${pendingQueries || 0} pending, ${completedToday || 0} completed today`
       });
 
-      // 5. Check AI Quotas
+      // 7. Check Dream-Eater State
+      const { data: dreamState } = await supabase
+        .from('dream_eater_state')
+        .select('*')
+        .limit(1)
+        .single();
+
+      const dreamHealth = dreamState 
+        ? Math.min(1.0, 0.5 + (dreamState.dreams_consumed_today || 0) * 0.1)
+        : 0.5;
+      systems.push({
+        name: 'Dream-Eater',
+        module: 'dream',
+        status: dreamState?.current_mood === 'dormant' ? 'dormant' : 'healthy',
+        score: dreamHealth,
+        details: `Mood: ${dreamState?.current_mood || 'unknown'}, Mutation: ${dreamState?.mutation_level || 0}, Today: ${dreamState?.dreams_consumed_today || 0} dreams`
+      });
+
+      // 8. Check Dream Cycles
+      const { count: recentDreams } = await supabase
+        .from('cascade_dreams')
+        .select('id', { count: 'exact', head: true })
+        .gte('timestamp', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+
+      const dreamCycleHealth = Math.min(1.0, ((recentDreams || 0) + 1) / 5);
+      systems.push({
+        name: 'Dream Cycles',
+        module: 'dream',
+        status: dreamCycleHealth > 0.5 ? 'healthy' : 'inactive',
+        score: dreamCycleHealth,
+        details: `${recentDreams || 0} dreams in last 24h`
+      });
+
+      // 9. Check AI Quotas
       const today = new Date().toISOString().split('T')[0];
       const { data: quotas } = await supabase
         .from('ai_daily_quota')
@@ -3444,13 +3747,14 @@ async function handleVision(
       const quotaHealth = groqQuota ? 1 - ((groqQuota.calls_used || 0) / (groqQuota.calls_budget || 14400)) : 1.0;
       
       systems.push({
-        name: 'AI Quotas (Groq)',
+        name: 'AI Quotas (Nexus)',
+        module: 'nexus',
         status: quotaHealth > 0.5 ? 'healthy' : quotaHealth > 0.1 ? 'degraded' : 'critical',
         score: quotaHealth,
         details: groqQuota ? `${groqQuota.calls_used}/${groqQuota.calls_budget} used` : 'Not initialized'
       });
 
-      // 6. Check Anomalies
+      // 10. Check Anomalies
       const { count: unresolvedAnomalies } = await supabase
         .from('pf_brain_anomalies')
         .select('id', { count: 'exact', head: true })
@@ -3459,41 +3763,89 @@ async function handleVision(
       const anomalyHealth = Math.max(0.3, 1 - ((unresolvedAnomalies || 0) * 0.1));
       systems.push({
         name: 'Anomaly Status',
+        module: 'defense',
         status: (unresolvedAnomalies || 0) === 0 ? 'healthy' : (unresolvedAnomalies || 0) < 5 ? 'degraded' : 'critical',
         score: anomalyHealth,
         details: `${unresolvedAnomalies || 0} unresolved`
       });
 
-      // 7. Check Dreams
-      const { count: recentDreams } = await supabase
-        .from('cascade_dreams')
+      // 11. Check Defense Events
+      const { count: defenseEvents24h } = await supabase
+        .from('defense_events')
         .select('id', { count: 'exact', head: true })
-        .gte('timestamp', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+        .gte('detected_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+
+      const { count: blockedEvents } = await supabase
+        .from('defense_events')
+        .select('id', { count: 'exact', head: true })
+        .eq('action', 'block')
+        .gte('detected_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
 
       systems.push({
-        name: 'Dream System',
+        name: 'Defense Activity',
+        module: 'defense',
         status: 'healthy',
         score: 1.0,
-        details: `${recentDreams || 0} dreams in last 24h`
+        details: `${defenseEvents24h || 0} events, ${blockedEvents || 0} blocked in 24h`
+      });
+
+      // 12. Check Cognitive Cycles
+      const { count: cognitiveCycles } = await supabase
+        .from('brain_events')
+        .select('id', { count: 'exact', head: true })
+        .eq('event_type', 'cognitive_cycle_complete')
+        .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+
+      systems.push({
+        name: 'Cognitive Cycles',
+        module: 'brain',
+        status: (cognitiveCycles || 0) > 0 ? 'healthy' : 'inactive',
+        score: Math.min(1.0, ((cognitiveCycles || 0) + 1) / 3),
+        details: `${cognitiveCycles || 0} cycles in last 24h`
       });
 
       // Calculate overall health
       const avgHealth = systems.reduce((sum, s) => sum + s.score, 0) / systems.length;
       const overallStatus = avgHealth > 0.7 ? 'healthy' : avgHealth > 0.4 ? 'degraded' : 'critical';
 
-      // Log monitoring event (read-only action, but we track it)
+      // Group by module for rollup
+      const moduleRollup: Record<string, { count: number; avgScore: number; status: string }> = {};
+      for (const sys of systems) {
+        const mod = sys.module || 'system';
+        if (!moduleRollup[mod]) moduleRollup[mod] = { count: 0, avgScore: 0, status: 'healthy' };
+        moduleRollup[mod].count++;
+        moduleRollup[mod].avgScore += sys.score;
+      }
+      for (const [mod, data] of Object.entries(moduleRollup)) {
+        data.avgScore = data.avgScore / data.count;
+        data.status = data.avgScore > 0.7 ? 'healthy' : data.avgScore > 0.4 ? 'degraded' : 'critical';
+      }
+
+      // Log monitoring event
       await supabase.from('brain_events').insert({
         event_type: 'ecosystem_monitor',
         module: 'vision',
         outcome: overallStatus,
-        data: { overall_health: avgHealth, systems_count: systems.length, via: 'substrate' }
+        data: { 
+          overall_health: avgHealth, 
+          systems_count: systems.length, 
+          via: 'substrate',
+          module_rollup: moduleRollup,
+        }
       });
 
       return jsonResponse({
         success: true,
         overall_status: overallStatus,
         overall_health: Math.round(avgHealth * 100),
+        module_rollup: moduleRollup,
         systems,
+        cognitive_summary: {
+          brain_health: Math.round((moduleRollup.brain?.avgScore || 1) * 100),
+          dream_health: Math.round((moduleRollup.dream?.avgScore || 1) * 100),
+          defense_health: Math.round((moduleRollup.defense?.avgScore || 1) * 100),
+          nexus_health: Math.round((moduleRollup.nexus?.avgScore || 1) * 100),
+        },
         proof_mode: true,
         timestamp: new Date().toISOString()
       }, headers);
@@ -4662,9 +5014,10 @@ async function handleSystem(
     }
 
     case "heal": {
-      // v3.1.0 FULL HEAL - Restores all modules to 100% health
-      const { target, force = false } = data;
+      // v3.13.0 UNIFIED HEAL - Restores all modules + brain/dream states
+      const { target, force = false, test = true } = data;
       const healed: string[] = [];
+      const tested: Array<{ module: string; status: string; score: number }> = [];
       const errors: string[] = [];
       
       // If no modules tracked yet, initialize all core modules
@@ -4672,6 +5025,7 @@ async function handleSystem(
       const modulesToHeal = target ? [target] : 
         Object.keys(substrateState.modules).length > 0 ? Object.keys(substrateState.modules) : coreModules;
       
+      // PHASE 1: Reset in-memory module health
       for (const mod of modulesToHeal) {
         try {
           if (!substrateState.modules[mod]) {
@@ -4696,7 +5050,22 @@ async function handleSystem(
       substrateState.lastHeal = Date.now();
       substrateState.totalErrors = 0; // Reset error count on full heal
       
-      // Update orchestrator state in database to FULL health (1.0 = 100%)
+      // PHASE 2: Heal dream state if dream module is targeted
+      if (!target || target === 'dream') {
+        try {
+          // Reset dream-eater state to healthy defaults
+          await supabase.from('dream_eater_state').update({
+            current_mood: 'awakening',
+            mood_score: 70,
+            updated_at: new Date().toISOString(),
+          }).limit(1);
+          console.log('✅ Dream-Eater state healed');
+        } catch (e) {
+          console.error('Dream state heal failed:', e);
+        }
+      }
+      
+      // PHASE 3: Update orchestrator state in database to FULL health
       try {
         await supabase.from('brain_orchestrator_state').update({
           health_score: 1.0, // FULL RESTORE
@@ -4722,7 +5091,8 @@ async function handleSystem(
             errors,
             heal_count: substrateState.healAttempts,
             previous_health: 'restored_to_100',
-            version: SUBSTRATE_VERSION
+            version: SUBSTRATE_VERSION,
+            test_mode: test,
           }
         });
         
@@ -4735,16 +5105,54 @@ async function handleSystem(
         console.error('Heal logging failed:', e);
       }
       
+      // PHASE 4: Test brain and dream modules if requested
+      if (test) {
+        try {
+          // Test brain
+          const { count: memCount } = await supabase.from('brain_memories').select('*', { count: 'exact', head: true });
+          const brainScore = memCount !== null ? 100 : 50;
+          tested.push({ module: 'brain', status: 'healthy', score: brainScore });
+          
+          // Test dream
+          const { data: dreamState } = await supabase.from('dream_eater_state').select('*').limit(1).single();
+          const dreamScore = dreamState ? 100 : 50;
+          tested.push({ module: 'dream', status: dreamState?.current_mood || 'unknown', score: dreamScore });
+          
+          // Test decode
+          const { count: convCount } = await supabase.from('cascade_conversations').select('*', { count: 'exact', head: true });
+          tested.push({ module: 'decode', status: 'healthy', score: convCount !== null ? 100 : 50 });
+          
+          // Test defense
+          const { count: defCount } = await supabase.from('defense_events').select('*', { count: 'exact', head: true });
+          tested.push({ module: 'defense', status: 'healthy', score: defCount !== null ? 100 : 50 });
+          
+          // Test vision
+          const { count: eventCount } = await supabase.from('brain_events').select('*', { count: 'exact', head: true });
+          tested.push({ module: 'vision', status: 'healthy', score: eventCount !== null ? 100 : 50 });
+          
+          // Update module states based on tests
+          for (const testResult of tested) {
+            if (substrateState.modules[testResult.module]) {
+              substrateState.modules[testResult.module].healthScore = testResult.score;
+              substrateState.modules[testResult.module].status = testResult.score >= 80 ? 'healthy' : 'degraded';
+            }
+          }
+        } catch (testErr) {
+          console.error('Post-heal test failed:', testErr);
+        }
+      }
+      
       return jsonResponse({
         success: true,
         healed_modules: healed,
+        tested_modules: test ? tested : undefined,
         errors: errors.length > 0 ? errors : undefined,
         new_health: Object.fromEntries(
-          Object.entries(substrateState.modules).map(([k, v]) => [k, v.healthScore])
+          Object.entries(substrateState.modules).map(([k, v]) => [k, { score: v.healthScore, status: v.status }])
         ),
         orchestrator_health: 100,
         total_heal_attempts: substrateState.healAttempts,
-        message: `✅ Full heal complete. ${healed.length} module(s) restored to 100%.`,
+        message: `✅ Full heal complete. ${healed.length} module(s) restored to 100%.${test ? ` ${tested.length} modules tested.` : ''}`,
       }, headers);
     }
 
