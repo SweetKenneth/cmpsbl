@@ -328,6 +328,7 @@ export type Database = {
           capabilities: Json
           config: Json
           created_at: string
+          current_version: string | null
           delivery_format: string
           export_path: string | null
           id: string
@@ -338,11 +339,13 @@ export type Database = {
           type: string
           updated_at: string
           user_id: string | null
+          version_count: number | null
         }
         Insert: {
           capabilities?: Json
           config?: Json
           created_at?: string
+          current_version?: string | null
           delivery_format: string
           export_path?: string | null
           id?: string
@@ -353,11 +356,13 @@ export type Database = {
           type: string
           updated_at?: string
           user_id?: string | null
+          version_count?: number | null
         }
         Update: {
           capabilities?: Json
           config?: Json
           created_at?: string
+          current_version?: string | null
           delivery_format?: string
           export_path?: string | null
           id?: string
@@ -368,8 +373,62 @@ export type Database = {
           type?: string
           updated_at?: string
           user_id?: string | null
+          version_count?: number | null
         }
         Relationships: []
+      }
+      bots_versions: {
+        Row: {
+          bot_id: string
+          changelog: string | null
+          created_at: string
+          id: string
+          is_latest: boolean
+          published_at: string | null
+          release_notes: string | null
+          semver_major: number
+          semver_minor: number
+          semver_patch: number
+          updated_at: string
+          version: string
+        }
+        Insert: {
+          bot_id: string
+          changelog?: string | null
+          created_at?: string
+          id?: string
+          is_latest?: boolean
+          published_at?: string | null
+          release_notes?: string | null
+          semver_major?: number
+          semver_minor?: number
+          semver_patch?: number
+          updated_at?: string
+          version?: string
+        }
+        Update: {
+          bot_id?: string
+          changelog?: string | null
+          created_at?: string
+          id?: string
+          is_latest?: boolean
+          published_at?: string | null
+          release_notes?: string | null
+          semver_major?: number
+          semver_minor?: number
+          semver_patch?: number
+          updated_at?: string
+          version?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bots_versions_bot_id_fkey"
+            columns: ["bot_id"]
+            isOneToOne: false
+            referencedRelation: "bots"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       brain_actions_queue: {
         Row: {
