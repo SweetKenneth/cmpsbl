@@ -7,13 +7,15 @@
  * - Enables restore points for each backup
  * - Persists to both database and storage bucket
  * 
- * @version 1.0.0
+ * @version 1.1.0
  * @author Kenneth E Sweet Jr
  */
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+// NOTE: CORS is currently wide-open by design, but all non-OPTIONS calls
+// are protected by service-role auth. Do NOT relax auth even if CORS stays '*'.
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -21,20 +23,61 @@ const corsHeaders = {
 
 const SUBSTRATE_VERSION = "3.11.0";
 
+// Maximum backups per day per type to prevent runaway loops
+const MAX_BACKUPS_PER_DAY = 12;
+
 // Generate backup ID
 function generateBackupId(): string {
   return `bkp_${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 6)}`;
 }
 
 serve(async (req) => {
+  // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
-  const supabase = createClient(
-    Deno.env.get('SUPABASE_URL') ?? '',
-    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-  );
+  // ========== AUTH GUARD ==========
+  // Require service-role authentication for all non-OPTIONS requests
+  const authHeader = req.headers.get('Authorization');
+  const providedKey = authHeader?.replace('Bearer ', '').trim();
+  const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+
+  if (!SERVICE_ROLE_KEY) {
+    console.error('❌ Missing SUPABASE_SERVICE_ROLE_KEY in backup function');
+    return new Response(
+      JSON.stringify({
+        success: false,
+        error: 'Server misconfiguration: service role key missing',
+      }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  }
+
+  if (!providedKey || providedKey !== SERVICE_ROLE_KEY) {
+    console.warn('❌ Unauthorized backup attempt');
+    return new Response(
+      JSON.stringify({
+        success: false,
+        error: 'Forbidden - service role authentication required',
+      }),
+      { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  }
+
+  // ========== ENV VALIDATION ==========
+  const SUPABASE_URL = Deno.env.get('SUPABASE_URL') ?? '';
+
+  if (!SUPABASE_URL) {
+    console.error('❌ Missing SUPABASE_URL in pf-backup-daily');
+    return new Response(
+      JSON.stringify({ success: false, error: 'Server misconfiguration: SUPABASE_URL missing' }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  }
+
+  // Create client with validated env vars
+  const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
 
   try {
     // Parse request body for backup type
@@ -51,11 +94,35 @@ serve(async (req) => {
       // Default values if no body
     }
 
+    const now = new Date();
+    const dateStr = now.toISOString().split('T')[0];
+
+    // ========== RATE LIMIT CHECK ==========
+    // Simple safety limit: max backups per day per type
+    const { count: todaysBackups, error: countError } = await supabase
+      .from('daily_backups')
+      .select('*', { count: 'exact', head: true })
+      .eq('backup_date', dateStr);
+
+    if (countError) {
+      console.error('❌ Failed to check backup count:', countError);
+    } else if ((todaysBackups ?? 0) >= MAX_BACKUPS_PER_DAY) {
+      console.warn('⛔ Backup rate limit reached for', backupType, 'on', dateStr);
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: 'Backup rate limit reached for today',
+          backup_type: backupType,
+          backup_date: dateStr,
+          limit: MAX_BACKUPS_PER_DAY,
+        }),
+        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     console.log(`📦 Starting ${backupType} backup with restore_point=${enableRestorePoint}`);
 
     const backupId = generateBackupId();
-    const now = new Date();
-    const dateStr = now.toISOString().split('T')[0];
     const timeStr = now.toISOString().split('T')[1].replace(/:/g, '-').split('.')[0];
     
     // Determine backup path
