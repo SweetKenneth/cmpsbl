@@ -266,38 +266,63 @@ export function EnhancedBotBuilder({ onSuccess }: EnhancedBotBuilderProps) {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {BOT_CLASSES.map((cls) => {
             const Icon = CLASS_ICONS[cls.icon] || Layers;
+            const colorClasses = {
+              cyan: 'border-cyan-500/30 hover:border-cyan-400/60 hover:shadow-cyan-500/20',
+              emerald: 'border-emerald-500/30 hover:border-emerald-400/60 hover:shadow-emerald-500/20',
+              violet: 'border-violet-500/30 hover:border-violet-400/60 hover:shadow-violet-500/20',
+              amber: 'border-amber-500/30 hover:border-amber-400/60 hover:shadow-amber-500/20',
+              rose: 'border-rose-500/30 hover:border-rose-400/60 hover:shadow-rose-500/20',
+              fuchsia: 'border-fuchsia-500/30 hover:border-fuchsia-400/60 hover:shadow-fuchsia-500/20',
+            };
+            const iconBgClasses = {
+              cyan: 'bg-cyan-500/20 border-cyan-500/40',
+              emerald: 'bg-emerald-500/20 border-emerald-500/40',
+              violet: 'bg-violet-500/20 border-violet-500/40',
+              amber: 'bg-amber-500/20 border-amber-500/40',
+              rose: 'bg-rose-500/20 border-rose-500/40',
+              fuchsia: 'bg-fuchsia-500/20 border-fuchsia-500/40',
+            };
+            const iconTextClasses = {
+              cyan: 'text-cyan-400',
+              emerald: 'text-emerald-400',
+              violet: 'text-violet-400',
+              amber: 'text-amber-400',
+              rose: 'text-rose-400',
+              fuchsia: 'text-fuchsia-400',
+            };
             return (
-              <Card 
+              <div 
                 key={cls.id}
                 className={cn(
-                  "cursor-pointer transition-all hover:scale-[1.02] border-border/50 bg-black/40",
-                  `hover:border-${cls.color}-500/50 hover:bg-${cls.color}-500/5`
+                  "cursor-pointer transition-all duration-300 hover:scale-[1.02]",
+                  "rounded-xl p-4 backdrop-blur-xl",
+                  "bg-white/5 dark:bg-white/[0.03]",
+                  "border hover:shadow-lg",
+                  colorClasses[cls.color as keyof typeof colorClasses] || colorClasses.cyan
                 )}
                 onClick={() => handleClassSelect(cls.id)}
               >
-                <CardContent className="p-4">
-                  <div className="flex items-start gap-3">
-                    <div className={cn(
-                      "w-10 h-10 rounded-lg flex items-center justify-center shrink-0",
-                      `bg-${cls.color}-500/20 border border-${cls.color}-500/40`
-                    )}>
-                      <Icon className={cn("w-5 h-5", `text-${cls.color}-400`)} />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <h3 className="font-medium text-sm mb-1">{cls.name}</h3>
-                      <p className="text-xs text-muted-foreground line-clamp-2">
-                        {cls.description}
-                      </p>
-                      <div className="flex items-center gap-1 mt-2">
-                        <Badge variant="outline" className="text-[10px] h-5">
-                          {cls.capabilities.length} capabilities
-                        </Badge>
-                      </div>
-                    </div>
-                    <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
+                <div className="flex items-start gap-3">
+                  <div className={cn(
+                    "w-10 h-10 rounded-lg flex items-center justify-center shrink-0 border",
+                    iconBgClasses[cls.color as keyof typeof iconBgClasses] || iconBgClasses.cyan
+                  )}>
+                    <Icon className={cn("w-5 h-5", iconTextClasses[cls.color as keyof typeof iconTextClasses] || iconTextClasses.cyan)} />
                   </div>
-                </CardContent>
-              </Card>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="font-medium text-sm mb-1 text-foreground">{cls.name}</h3>
+                    <p className="text-xs text-muted-foreground line-clamp-2">
+                      {cls.description}
+                    </p>
+                    <div className="flex items-center gap-1 mt-2">
+                      <Badge variant="outline" className="text-[10px] h-5 bg-background/50 backdrop-blur-sm">
+                        {cls.capabilities.length} capabilities
+                      </Badge>
+                    </div>
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
+                </div>
+              </div>
             );
           })}
         </div>
