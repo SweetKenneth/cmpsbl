@@ -23,6 +23,24 @@ interface ChangelogEntry {
 
 const changelog: ChangelogEntry[] = [
   {
+    version: "1.4.0",
+    date: "2026-01-20",
+    title: "The Forge Ignites",
+    emoji: "🔨",
+    description: "Creation becomes possible. The Cognitive Forge opens — a tool for minting research bots from pure intention. Type becomes thought. Config becomes capability.",
+    changes: [
+      { type: 'added', text: "Cognitive Forge — Mint research bots on demand at /forge. Operators shape cognition." },
+      { type: 'added', text: "Bot Builder — Configurable attributes: type, memory mode, provider stack, capabilities." },
+      { type: 'added', text: "Minted Bots List — Your creations persist. Export them. Refine them. Deploy them." },
+      { type: 'added', text: "pf-forge-mint — Backend API generates YAML configs, TypeScript code, package.json, README." },
+      { type: 'added', text: "bots table — Database schema for storing bot metadata with full RLS protection." },
+      { type: 'added', text: "Five bot types: Research, Analyst, Planner, Strategist, Hybrid." },
+      { type: 'added', text: "Three memory modes: Stateless, Episodic, Persistent." },
+      { type: 'added', text: "Eight capabilities: Research/Web, Summarize, Compare, Reports, Threads, Graph, Learning, Retention." },
+      { type: 'security', text: "Operator-only access. Bot configs isolated per user via RLS policies." },
+    ]
+  },
+  {
     version: "1.3.0",
     date: "2026-01-15",
     title: "Control Center",

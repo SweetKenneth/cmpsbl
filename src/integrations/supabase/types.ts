@@ -323,6 +323,54 @@ export type Database = {
         }
         Relationships: []
       }
+      bots: {
+        Row: {
+          capabilities: Json
+          config: Json
+          created_at: string
+          delivery_format: string
+          export_path: string | null
+          id: string
+          memory_mode: string
+          name: string
+          providers: Json
+          slug: string | null
+          type: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          capabilities?: Json
+          config?: Json
+          created_at?: string
+          delivery_format: string
+          export_path?: string | null
+          id?: string
+          memory_mode: string
+          name: string
+          providers?: Json
+          slug?: string | null
+          type: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          capabilities?: Json
+          config?: Json
+          created_at?: string
+          delivery_format?: string
+          export_path?: string | null
+          id?: string
+          memory_mode?: string
+          name?: string
+          providers?: Json
+          slug?: string | null
+          type?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       brain_actions_queue: {
         Row: {
           action_type: string

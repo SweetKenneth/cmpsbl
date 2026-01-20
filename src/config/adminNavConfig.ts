@@ -25,6 +25,7 @@ import {
   HeartPulse,
   Moon,
   Beaker,
+  Hammer,
   type LucideIcon,
 } from "lucide-react";
 
@@ -52,6 +53,13 @@ export const adminNavConfig: NavGroup[] = [
       { id: "defense", label: "Defense", path: "/admin/defense", icon: Shield },
       { id: "clarity", label: "Clarity", path: "/clarity/dashboard", icon: Eye },
       { id: "dream-eater", label: "Dream Eater", path: "/feed-dream-eater", icon: Moon },
+    ],
+  },
+  {
+    id: "tools",
+    title: "Tools",
+    items: [
+      { id: "cognitive-forge", label: "Cognitive Forge", path: "/forge", icon: Hammer, isNew: true },
     ],
   },
   {
