@@ -1,6 +1,6 @@
 /**
- * Cognitive Forge v2.0.0 — Bot Minting Interface
- * Operator-only tool for creating cognitive research bots
+ * Cognitive Forge v3.0.0 — D-Mode Manufacturing
+ * Multi-class cognitive minting with export, deploy, and registry
  * Neon-styled Substrate OS aesthetic
  */
 
@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { Navigate, Link } from 'react-router-dom';
 import { 
   Loader2, Hammer, Bot, Sparkles, Terminal, 
-  Grid, ArrowRight, Zap, ChevronRight, Package
+  Grid, ArrowRight, Zap, Package, Rocket
 } from 'lucide-react';
 import { SEO } from '@/components/SEO';
 import { useAuth } from '@/contexts/AuthContext';
@@ -17,7 +17,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { BotBuilder } from '@/components/forge/BotBuilder';
+import { EnhancedBotBuilder } from '@/components/forge/EnhancedBotBuilder';
 import { MintedBotsList } from '@/components/forge/MintedBotsList';
 import { OSHeader } from '@/components/substrate-os/OSHeader';
 import { cn } from '@/lib/utils';
@@ -107,7 +107,7 @@ export default function CognitiveForge() {
                   Cognitive Forge
                 </h1>
                 <p className="text-sm text-muted-foreground font-mono">
-                  mint research bots on demand
+                  D-Mode manufacturing • multi-class cognitives
                 </p>
               </div>
             </div>
@@ -129,15 +129,15 @@ export default function CognitiveForge() {
           <div className="flex flex-wrap gap-2 mb-6">
             <Badge variant="outline" className="border-cyan-500/40 bg-cyan-500/10 text-cyan-400 gap-1.5">
               <Package className="w-3 h-3" />
-              Export Bundles
+              ZIP Export
             </Badge>
             <Badge variant="outline" className="border-fuchsia-500/40 bg-fuchsia-500/10 text-fuchsia-400 gap-1.5">
               <Zap className="w-3 h-3" />
-              Semantic Versioning
+              5 Bot Classes
             </Badge>
             <Badge variant="outline" className="border-emerald-500/40 bg-emerald-500/10 text-emerald-400 gap-1.5">
-              <Terminal className="w-3 h-3" />
-              Runtime Stub
+              <Rocket className="w-3 h-3" />
+              Cognitive Registry
             </Badge>
           </div>
         </div>
@@ -168,7 +168,7 @@ export default function CognitiveForge() {
           </TabsList>
 
           <TabsContent value="build" className="mt-6">
-            <BotBuilder onSuccess={() => setActiveTab('bots')} />
+            <EnhancedBotBuilder onSuccess={() => setActiveTab('bots')} />
           </TabsContent>
 
           <TabsContent value="bots" className="mt-6">
@@ -185,7 +185,7 @@ export default function CognitiveForge() {
             <span>promptfluid® cognitive forge</span>
           </div>
           <div className="flex items-center gap-4">
-            <span>v2.0.0</span>
+            <span>v3.0.0 D-Mode</span>
             <Link to="/forge/catalog" className="hover:text-amber-400 transition-colors">catalog</Link>
             <Link to="/os" className="hover:text-cyan-400 transition-colors">substrate os</Link>
           </div>

@@ -1344,6 +1344,75 @@ export type Database = {
         }
         Relationships: []
       }
+      cognitive_registry: {
+        Row: {
+          api_url: string | null
+          capabilities: Json | null
+          class: string
+          created_at: string
+          dream_enabled: boolean | null
+          error_count: number | null
+          export_path: string | null
+          graph_enabled: boolean | null
+          id: string
+          last_run_at: string | null
+          learning_mode: string[] | null
+          memory_mode: string
+          metrics: Json | null
+          name: string
+          owner: string | null
+          providers: Json | null
+          repo_url: string | null
+          status: string
+          updated_at: string
+          version: string
+        }
+        Insert: {
+          api_url?: string | null
+          capabilities?: Json | null
+          class: string
+          created_at?: string
+          dream_enabled?: boolean | null
+          error_count?: number | null
+          export_path?: string | null
+          graph_enabled?: boolean | null
+          id?: string
+          last_run_at?: string | null
+          learning_mode?: string[] | null
+          memory_mode: string
+          metrics?: Json | null
+          name: string
+          owner?: string | null
+          providers?: Json | null
+          repo_url?: string | null
+          status?: string
+          updated_at?: string
+          version?: string
+        }
+        Update: {
+          api_url?: string | null
+          capabilities?: Json | null
+          class?: string
+          created_at?: string
+          dream_enabled?: boolean | null
+          error_count?: number | null
+          export_path?: string | null
+          graph_enabled?: boolean | null
+          id?: string
+          last_run_at?: string | null
+          learning_mode?: string[] | null
+          memory_mode?: string
+          metrics?: Json | null
+          name?: string
+          owner?: string | null
+          providers?: Json | null
+          repo_url?: string | null
+          status?: string
+          updated_at?: string
+          version?: string
+        }
+        Relationships: []
+      }
       core_plans: {
         Row: {
           created_at: string | null

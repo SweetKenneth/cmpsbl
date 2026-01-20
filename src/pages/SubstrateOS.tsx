@@ -11,7 +11,7 @@ import { Navigate } from 'react-router-dom';
 import { useState } from 'react';
 import { 
   Loader2, Lock, Terminal, AlertTriangle, Database, RefreshCw, 
-  Settings, FileText, Zap, LayoutDashboard, Activity
+  Settings, FileText, Zap, LayoutDashboard, Activity, Bot
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -44,6 +44,7 @@ import { EventStream } from '@/components/substrate-os/EventStream';
 import { BrainIntelligencePanel } from '@/components/substrate-os/BrainIntelligencePanel';
 import { SystemHealthPanel } from '@/components/substrate-os/SystemHealthPanel';
 import { HealButton } from '@/components/substrate-os/HealButton';
+import { CognitivesPanel } from '@/components/substrate-os/CognitivesPanel';
 import { cn } from '@/lib/utils';
 
 function ConfirmActionDialog({
@@ -328,10 +329,20 @@ export default function SubstrateOS() {
                 <span className="hidden sm:inline">Terminal</span>
               </TabsTrigger>
               <TabsTrigger 
-                value="events" 
+                value="cognitives" 
                 className={cn(
                   "gap-2 data-[state=active]:bg-fuchsia-500/10 data-[state=active]:text-fuchsia-400",
                   "data-[state=active]:border-b-2 data-[state=active]:border-fuchsia-500"
+                )}
+              >
+                <Bot className="w-4 h-4" />
+                <span className="hidden sm:inline">Cognitives</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="events" 
+                className={cn(
+                  "gap-2 data-[state=active]:bg-amber-500/10 data-[state=active]:text-amber-400",
+                  "data-[state=active]:border-b-2 data-[state=active]:border-amber-500"
                 )}
               >
                 <Activity className="w-4 h-4" />
@@ -406,12 +417,31 @@ export default function SubstrateOS() {
           </div>
         </TabsContent>
 
+        {/* Cognitives Tab */}
+        <TabsContent value="cognitives" className="flex-1 mt-0">
+          <main className="container mx-auto px-4 py-6 max-w-7xl">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-8 h-8 rounded-lg bg-fuchsia-500/20 border border-fuchsia-500/40 flex items-center justify-center">
+                <Bot className="w-4 h-4 text-fuchsia-400" />
+              </div>
+              <div>
+                <h2 className="text-lg font-semibold">Cognitive Registry</h2>
+                <p className="text-xs text-muted-foreground font-mono">
+                  minted cognitives • operator console
+                </p>
+              </div>
+            </div>
+            
+            <CognitivesPanel />
+          </main>
+        </TabsContent>
+
         {/* Events Tab */}
         <TabsContent value="events" className="flex-1 mt-0">
           <main className="container mx-auto px-4 py-6 max-w-7xl">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-8 rounded-lg bg-fuchsia-500/20 border border-fuchsia-500/40 flex items-center justify-center">
-                <Activity className="w-4 h-4 text-fuchsia-400" />
+              <div className="w-8 h-8 rounded-lg bg-amber-500/20 border border-amber-500/40 flex items-center justify-center">
+                <Activity className="w-4 h-4 text-amber-400" />
               </div>
               <div>
                 <h2 className="text-lg font-semibold">Event Stream</h2>
