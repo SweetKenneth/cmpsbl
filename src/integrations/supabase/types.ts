@@ -5394,6 +5394,128 @@ export type Database = {
         }
         Relationships: []
       }
+      substrate_upgrade_config: {
+        Row: {
+          description: string | null
+          id: string
+          key: string
+          updated_at: string | null
+          value: string
+        }
+        Insert: {
+          description?: string | null
+          id?: string
+          key: string
+          updated_at?: string | null
+          value: string
+        }
+        Update: {
+          description?: string | null
+          id?: string
+          key?: string
+          updated_at?: string | null
+          value?: string
+        }
+        Relationships: []
+      }
+      substrate_upgrade_plans: {
+        Row: {
+          after_health_snapshot: Json | null
+          backup_id: string | null
+          before_health_snapshot: Json | null
+          created_at: string
+          diff_summary: Json | null
+          estimated_blast_radius: string | null
+          id: string
+          mode: string
+          operator_id: string | null
+          operator_notes: string | null
+          risk_level: string | null
+          scope: string
+          status: string
+          suggested_patches: Json | null
+          updated_at: string | null
+        }
+        Insert: {
+          after_health_snapshot?: Json | null
+          backup_id?: string | null
+          before_health_snapshot?: Json | null
+          created_at?: string
+          diff_summary?: Json | null
+          estimated_blast_radius?: string | null
+          id?: string
+          mode?: string
+          operator_id?: string | null
+          operator_notes?: string | null
+          risk_level?: string | null
+          scope?: string
+          status?: string
+          suggested_patches?: Json | null
+          updated_at?: string | null
+        }
+        Update: {
+          after_health_snapshot?: Json | null
+          backup_id?: string | null
+          before_health_snapshot?: Json | null
+          created_at?: string
+          diff_summary?: Json | null
+          estimated_blast_radius?: string | null
+          id?: string
+          mode?: string
+          operator_id?: string | null
+          operator_notes?: string | null
+          risk_level?: string | null
+          scope?: string
+          status?: string
+          suggested_patches?: Json | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      substrate_upgrade_runs: {
+        Row: {
+          error: string | null
+          finished_at: string | null
+          id: string
+          plan_id: string | null
+          post_health_snapshot: Json | null
+          result: string | null
+          rollback_attempted: boolean | null
+          rollback_success: boolean | null
+          started_at: string
+        }
+        Insert: {
+          error?: string | null
+          finished_at?: string | null
+          id?: string
+          plan_id?: string | null
+          post_health_snapshot?: Json | null
+          result?: string | null
+          rollback_attempted?: boolean | null
+          rollback_success?: boolean | null
+          started_at?: string
+        }
+        Update: {
+          error?: string | null
+          finished_at?: string | null
+          id?: string
+          plan_id?: string | null
+          post_health_snapshot?: Json | null
+          result?: string | null
+          rollback_attempted?: boolean | null
+          rollback_success?: boolean | null
+          started_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "substrate_upgrade_runs_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "substrate_upgrade_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       substrate_usage_meters: {
         Row: {
           app_id: string
@@ -5704,6 +5826,13 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
+      upgrade_mode: "shadow" | "auto_safe" | "auto_full"
+      upgrade_status:
+        | "proposed"
+        | "approved"
+        | "applied"
+        | "rolled_back"
+        | "rejected"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -5832,6 +5961,14 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "moderator", "user"],
+      upgrade_mode: ["shadow", "auto_safe", "auto_full"],
+      upgrade_status: [
+        "proposed",
+        "approved",
+        "applied",
+        "rolled_back",
+        "rejected",
+      ],
     },
   },
 } as const
