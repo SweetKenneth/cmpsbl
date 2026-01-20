@@ -116,18 +116,16 @@ export function MintedBotsList() {
 
   if (!bots || bots.length === 0) {
     return (
-      <Card className="border-dashed border-border/50 bg-black/20">
-        <CardContent className="py-12 text-center">
-          <div className="relative w-16 h-16 mx-auto mb-4">
-            <Bot className="w-16 h-16 text-muted-foreground/30" />
-            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-fuchsia-500/20 rounded-full blur-xl" />
-          </div>
-          <h3 className="text-lg font-medium mb-1">No Bots Minted</h3>
-          <p className="text-sm text-muted-foreground">
-            Create your first cognitive bot using the Build tab.
-          </p>
-        </CardContent>
-      </Card>
+      <div className="rounded-xl border-dashed border border-white/10 bg-white/5 backdrop-blur-xl p-12 text-center">
+        <div className="relative w-16 h-16 mx-auto mb-4">
+          <Bot className="w-16 h-16 text-muted-foreground/30" />
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-fuchsia-500/20 rounded-full blur-xl" />
+        </div>
+        <h3 className="text-lg font-medium mb-1 text-foreground">No Bots Minted</h3>
+        <p className="text-sm text-muted-foreground">
+          Create your first cognitive bot using the Build tab.
+        </p>
+      </div>
     );
   }
 
@@ -159,14 +157,14 @@ export function MintedBotsList() {
       <ScrollArea className="h-[500px]">
         <div className="space-y-3 pr-2">
           {bots.map(bot => (
-            <Card 
+            <div 
               key={bot.id} 
               className={cn(
-                "group border-border/50 bg-black/30 backdrop-blur-sm transition-all duration-300",
-                "hover:border-cyan-500/40 hover:shadow-[0_0_20px_rgba(6,182,212,0.1)]"
+                "group rounded-xl border bg-white/5 dark:bg-white/[0.03] backdrop-blur-xl transition-all duration-300",
+                "border-white/10 hover:border-cyan-500/40 hover:shadow-[0_0_30px_rgba(6,182,212,0.1)]"
               )}
             >
-              <CardContent className="p-4">
+              <div className="p-4">
                 {/* Mobile-first: Stack on mobile, row on larger screens */}
                 <div className="flex flex-col gap-4">
                   {/* Top Row: Name, Type, Version */}
@@ -261,8 +259,8 @@ export function MintedBotsList() {
                     </div>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           ))}
         </div>
       </ScrollArea>

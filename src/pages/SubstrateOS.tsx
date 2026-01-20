@@ -118,100 +118,96 @@ function GovernorPanel({ enabled }: { enabled: boolean }) {
 
   if (!enabled) {
     return (
-      <Card className="border-destructive/30 border-dashed bg-black/20">
-        <CardContent className="p-6 text-center">
-          <Lock className="w-8 h-8 mx-auto mb-3 text-muted-foreground/50" />
+      <div className="rounded-xl border border-dashed border-red-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl p-8">
+        <div className="text-center">
+          <Lock className="w-10 h-10 mx-auto mb-4 text-muted-foreground/30" />
           <p className="text-sm text-muted-foreground italic">
             Governor controls restricted to administrators
           </p>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     );
   }
 
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2">
-        <div className="w-6 h-6 rounded-md bg-destructive/20 flex items-center justify-center">
-          <AlertTriangle className="w-3.5 h-3.5 text-destructive" />
+        <div className="w-8 h-8 rounded-lg bg-red-500/20 border border-red-500/40 flex items-center justify-center">
+          <AlertTriangle className="w-4 h-4 text-red-400" />
         </div>
-        <h3 className="text-sm font-medium">Governor Controls</h3>
-        <Badge variant="outline" className="text-[10px] border-destructive/50 text-destructive">
+        <h3 className="text-sm font-medium text-foreground">Governor Controls</h3>
+        <Badge variant="outline" className="text-[10px] border-red-500/40 text-red-400 bg-red-500/10">
           ADMIN
         </Badge>
       </div>
       
       <div className="grid md:grid-cols-2 gap-4">
         {/* Audit Log */}
-        <Card className="border-border/50 bg-black/30">
-          <CardHeader className="pb-2 pt-4 px-4">
-            <CardTitle className="text-sm flex items-center gap-2">
-              <FileText className="w-4 h-4 text-blue-500" />
-              Audit Log
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="px-4 pb-4">
-            {systemAudit.isLoading ? (
+        <div className="rounded-xl border border-blue-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl p-4">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-7 h-7 rounded-lg bg-blue-500/20 border border-blue-500/40 flex items-center justify-center">
+              <FileText className="w-3.5 h-3.5 text-blue-400" />
+            </div>
+            <span className="text-sm font-medium text-foreground">Audit Log</span>
+          </div>
+          {systemAudit.isLoading ? (
+            <div className="space-y-2">
+              {[1, 2, 3].map(i => <Skeleton key={i} className="h-8 w-full rounded-lg" />)}
+            </div>
+          ) : auditData?.entries && auditData.entries.length > 0 ? (
+            <ScrollArea className="h-[120px]">
               <div className="space-y-2">
-                {[1, 2, 3].map(i => <Skeleton key={i} className="h-6 w-full" />)}
-              </div>
-            ) : auditData?.entries && auditData.entries.length > 0 ? (
-              <ScrollArea className="h-[120px]">
-                <div className="space-y-1.5">
-                  {auditData.entries.map((entry, idx) => (
-                    <div 
-                      key={idx}
-                      className="flex items-center gap-2 p-1.5 rounded bg-muted/30 text-xs"
-                    >
-                      <Badge variant="outline" className="text-[9px] h-4">{entry.action}</Badge>
-                      <span className="text-muted-foreground truncate">{entry.entity}</span>
-                    </div>
-                  ))}
-                </div>
-              </ScrollArea>
-            ) : (
-              <p className="text-xs text-muted-foreground italic">
-                Audit trail clean
-              </p>
-            )}
-          </CardContent>
-        </Card>
-        
-        {/* Rate Limits */}
-        <Card className="border-border/50 bg-black/30">
-          <CardHeader className="pb-2 pt-4 px-4">
-            <CardTitle className="text-sm flex items-center gap-2">
-              <Settings className="w-4 h-4 text-amber-500" />
-              Configuration
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="px-4 pb-4">
-            {systemConfig.isLoading ? (
-              <Skeleton className="h-[120px] w-full" />
-            ) : configData?.config ? (
-              <div className="text-xs space-y-1.5">
-                {Object.entries(configData.config).slice(0, 4).map(([key, value]) => (
-                  <div key={key} className="flex justify-between p-1.5 rounded bg-muted/30">
-                    <span className="text-muted-foreground capitalize">{key.replace(/_/g, ' ')}</span>
-                    <span className="font-mono">{String(value)}</span>
+                {auditData.entries.map((entry, idx) => (
+                  <div 
+                    key={idx}
+                    className="flex items-center gap-2 p-2 rounded-lg bg-white/5 text-xs"
+                  >
+                    <Badge variant="outline" className="text-[9px] h-4 border-blue-500/30">{entry.action}</Badge>
+                    <span className="text-muted-foreground truncate">{entry.entity}</span>
                   </div>
                 ))}
               </div>
-            ) : (
-              <p className="text-xs text-muted-foreground italic">
-                Configuration not exposed
-              </p>
-            )}
-          </CardContent>
-        </Card>
+            </ScrollArea>
+          ) : (
+            <p className="text-xs text-muted-foreground/70 italic py-4 text-center">
+              Audit trail clean
+            </p>
+          )}
+        </div>
+        
+        {/* Rate Limits */}
+        <div className="rounded-xl border border-amber-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl p-4">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-7 h-7 rounded-lg bg-amber-500/20 border border-amber-500/40 flex items-center justify-center">
+              <Settings className="w-3.5 h-3.5 text-amber-400" />
+            </div>
+            <span className="text-sm font-medium text-foreground">Configuration</span>
+          </div>
+          {systemConfig.isLoading ? (
+            <Skeleton className="h-[120px] w-full rounded-lg" />
+          ) : configData?.config ? (
+            <div className="text-xs space-y-2">
+              {Object.entries(configData.config).slice(0, 4).map(([key, value]) => (
+                <div key={key} className="flex justify-between p-2 rounded-lg bg-white/5">
+                  <span className="text-muted-foreground capitalize">{key.replace(/_/g, ' ')}</span>
+                  <span className="font-mono text-foreground">{String(value)}</span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-xs text-muted-foreground/70 italic py-4 text-center">
+              Configuration not exposed
+            </p>
+          )}
+        </div>
       </div>
       
       {/* Safety Controls */}
       <div className="flex flex-wrap gap-2 pt-2">
         <ConfirmActionDialog
           trigger={
-            <Button variant="outline" size="sm" className="h-8 gap-1.5 text-xs border-border/50">
-              <Database className="w-3.5 h-3.5" />
+            <Button variant="outline" size="sm" className="h-9 gap-2 text-xs border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/10">
+              <Database className="w-3.5 h-3.5 text-blue-400" />
               Backup Status
             </Button>
           }
@@ -223,7 +219,7 @@ function GovernorPanel({ enabled }: { enabled: boolean }) {
 
         <ConfirmActionDialog
           trigger={
-            <Button variant="outline" size="sm" className="h-8 gap-1.5 text-xs border-amber-500/30 text-amber-600 hover:bg-amber-500/10">
+            <Button variant="outline" size="sm" className="h-9 gap-2 text-xs border-amber-500/30 text-amber-400 bg-amber-500/10 hover:bg-amber-500/20">
               <RefreshCw className="w-3.5 h-3.5" />
               Manual Backup
             </Button>
@@ -236,7 +232,7 @@ function GovernorPanel({ enabled }: { enabled: boolean }) {
 
         <ConfirmActionDialog
           trigger={
-            <Button variant="outline" size="sm" className="h-8 gap-1.5 text-xs border-destructive/30 text-destructive hover:bg-destructive/10">
+            <Button variant="outline" size="sm" className="h-9 gap-2 text-xs border-red-500/30 text-red-400 bg-red-500/10 hover:bg-red-500/20">
               <AlertTriangle className="w-3.5 h-3.5" />
               Emergency Shutdown
             </Button>
@@ -305,14 +301,16 @@ export default function SubstrateOS() {
 
       {/* Main Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
-        <div className="border-b border-border/30 bg-black/30 backdrop-blur-sm">
+        <div className="border-b border-white/10 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
           <div className="container mx-auto max-w-7xl px-4">
             <TabsList className="h-12 bg-transparent border-0 gap-1">
               <TabsTrigger 
                 value="dashboard" 
                 className={cn(
-                  "gap-2 data-[state=active]:bg-cyan-500/10 data-[state=active]:text-cyan-400",
-                  "data-[state=active]:border-b-2 data-[state=active]:border-cyan-500"
+                  "gap-2 rounded-lg transition-all",
+                  "data-[state=active]:bg-cyan-500/10 data-[state=active]:text-cyan-400",
+                  "data-[state=active]:border-b-2 data-[state=active]:border-cyan-400",
+                  "hover:bg-white/5"
                 )}
               >
                 <LayoutDashboard className="w-4 h-4" />
@@ -321,8 +319,10 @@ export default function SubstrateOS() {
               <TabsTrigger 
                 value="terminal" 
                 className={cn(
-                  "gap-2 data-[state=active]:bg-emerald-500/10 data-[state=active]:text-emerald-400",
-                  "data-[state=active]:border-b-2 data-[state=active]:border-emerald-500"
+                  "gap-2 rounded-lg transition-all",
+                  "data-[state=active]:bg-emerald-500/10 data-[state=active]:text-emerald-400",
+                  "data-[state=active]:border-b-2 data-[state=active]:border-emerald-400",
+                  "hover:bg-white/5"
                 )}
               >
                 <Terminal className="w-4 h-4" />
@@ -331,8 +331,10 @@ export default function SubstrateOS() {
               <TabsTrigger 
                 value="cognitives" 
                 className={cn(
-                  "gap-2 data-[state=active]:bg-fuchsia-500/10 data-[state=active]:text-fuchsia-400",
-                  "data-[state=active]:border-b-2 data-[state=active]:border-fuchsia-500"
+                  "gap-2 rounded-lg transition-all",
+                  "data-[state=active]:bg-fuchsia-500/10 data-[state=active]:text-fuchsia-400",
+                  "data-[state=active]:border-b-2 data-[state=active]:border-fuchsia-400",
+                  "hover:bg-white/5"
                 )}
               >
                 <Bot className="w-4 h-4" />
@@ -341,8 +343,10 @@ export default function SubstrateOS() {
               <TabsTrigger 
                 value="events" 
                 className={cn(
-                  "gap-2 data-[state=active]:bg-amber-500/10 data-[state=active]:text-amber-400",
-                  "data-[state=active]:border-b-2 data-[state=active]:border-amber-500"
+                  "gap-2 rounded-lg transition-all",
+                  "data-[state=active]:bg-amber-500/10 data-[state=active]:text-amber-400",
+                  "data-[state=active]:border-b-2 data-[state=active]:border-amber-400",
+                  "hover:bg-white/5"
                 )}
               >
                 <Activity className="w-4 h-4" />
