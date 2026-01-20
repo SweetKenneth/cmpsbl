@@ -52,6 +52,7 @@ const DevPortal = lazy(() => import("./pages/DevPortal"));
 const Changelog = lazy(() => import("./pages/Changelog"));
 const CodeLab = lazy(() => import("./pages/CodeLab"));
 const CognitiveForge = lazy(() => import("./pages/CognitiveForge"));
+const ForgeCatalog = lazy(() => import("./pages/ForgeCatalog"));
 
 // Marketing / Info pages
 const About = lazy(() => import("./pages/About"));
@@ -134,6 +135,7 @@ const App = () => {
                     <Route path="/changelog" element={<Changelog />} />
                     <Route path="/codelab" element={<CodeLab />} />
                     <Route path="/forge" element={<CognitiveForge />} />
+                    <Route path="/forge/catalog" element={<ForgeCatalog />} />
                     <Route path="/developers" element={<DevPortal />} />
                     <Route path="/developers" element={<DevPortal />} />
                     <Route path="/dev" element={<Navigate to="/developers" replace />} />

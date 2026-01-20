@@ -1,19 +1,28 @@
 /**
- * Minted Bots List Component
- * Display and manage previously minted bots
+ * Minted Bots List Component v2.0.0
+ * Display and manage previously minted bots with neon aesthetics
+ * Mobile-first responsive design
  */
 
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { formatDistanceToNow } from 'date-fns';
-import { Loader2, Bot, Download, RotateCw, Cpu, Database, Zap } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { 
+  Loader2, Bot, Download, RotateCw, Cpu, Database, Zap, 
+  Play, ArrowUpCircle, Package, ChevronRight, Sparkles
+} from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Json } from '@/integrations/supabase/types';
+import { BotVersionBadge } from './BotVersionBadge';
+import { VersionBumpDialog } from './VersionBumpDialog';
+import { BotRuntimeDialog } from './BotRuntimeDialog';
+import { createExportBundle, downloadBundle } from '@/services/botExporter';
+import { cn } from '@/lib/utils';
 
 interface BotRow {
   id: string;
@@ -25,12 +34,15 @@ interface BotRow {
   delivery_format: string;
   slug: string | null;
   export_path: string | null;
+  current_version: string | null;
   created_at: string;
   updated_at: string;
 }
 
 export function MintedBotsList() {
   const [exportingId, setExportingId] = useState<string | null>(null);
+  const [bumpBot, setBumpBot] = useState<BotRow | null>(null);
+  const [runBot, setRunBot] = useState<BotRow | null>(null);
 
   const { data: bots, isLoading, refetch } = useQuery({
     queryKey: ['minted-bots'],
@@ -48,35 +60,18 @@ export function MintedBotsList() {
   const handleExport = async (bot: BotRow) => {
     setExportingId(bot.id);
     try {
-      const { data, error } = await supabase.functions.invoke('pf-forge-mint', {
-        body: {
-          bot_name: bot.name,
-          bot_type: bot.type,
-          memory_mode: bot.memory_mode,
-          provider_stack: bot.providers,
-          capabilities: bot.capabilities,
-          delivery_format: 'Download',
-        },
+      const bundle = await createExportBundle({
+        id: bot.id,
+        name: bot.name,
+        slug: bot.slug || bot.name.toLowerCase().replace(/\s+/g, '-'),
+        type: bot.type,
+        version: bot.current_version || '1.0.0',
+        memoryMode: bot.memory_mode,
+        providers: Array.isArray(bot.providers) ? bot.providers.map(String) : [],
+        capabilities: Array.isArray(bot.capabilities) ? bot.capabilities.map(String) : [],
       });
-
-      if (error) throw error;
-
-      if (data?.data?.artifacts) {
-        const content = Object.entries(data.data.artifacts)
-          .map(([filename, code]) => `// ===== ${filename} =====\n\n${code}\n`)
-          .join('\n\n');
-
-        const blob = new Blob([content], { type: 'text/plain' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${bot.slug}-cognitive-bot.txt`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        toast.success('Bot package exported');
-      }
+      downloadBundle(bundle);
+      toast.success('Bot package exported');
     } catch (err) {
       console.error('Export error:', err);
       toast.error('Failed to export bot');
@@ -87,12 +82,12 @@ export function MintedBotsList() {
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case 'Research': return 'bg-blue-500/10 text-blue-500 border-blue-500/30';
-      case 'Analyst': return 'bg-purple-500/10 text-purple-500 border-purple-500/30';
-      case 'Planner': return 'bg-green-500/10 text-green-500 border-green-500/30';
-      case 'Strategist': return 'bg-amber-500/10 text-amber-500 border-amber-500/30';
-      case 'Hybrid': return 'bg-cyan-500/10 text-cyan-500 border-cyan-500/30';
-      default: return 'bg-muted';
+      case 'Research': return 'bg-cyan-500/20 text-cyan-400 border-cyan-500/50';
+      case 'Analyst': return 'bg-fuchsia-500/20 text-fuchsia-400 border-fuchsia-500/50';
+      case 'Planner': return 'bg-emerald-500/20 text-emerald-400 border-emerald-500/50';
+      case 'Strategist': return 'bg-amber-500/20 text-amber-400 border-amber-500/50';
+      case 'Hybrid': return 'bg-violet-500/20 text-violet-400 border-violet-500/50';
+      default: return 'bg-muted text-muted-foreground';
     }
   };
 
@@ -108,16 +103,25 @@ export function MintedBotsList() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+        <div className="text-center space-y-3">
+          <div className="relative">
+            <Loader2 className="w-8 h-8 animate-spin text-cyan-500 mx-auto" />
+            <div className="absolute inset-0 w-8 h-8 mx-auto rounded-full bg-cyan-500/30 blur-xl animate-pulse" />
+          </div>
+          <p className="text-sm text-muted-foreground font-mono">loading bots...</p>
+        </div>
       </div>
     );
   }
 
   if (!bots || bots.length === 0) {
     return (
-      <Card className="border-dashed">
+      <Card className="border-dashed border-border/50 bg-black/20">
         <CardContent className="py-12 text-center">
-          <Bot className="w-10 h-10 mx-auto mb-4 text-muted-foreground/50" />
+          <div className="relative w-16 h-16 mx-auto mb-4">
+            <Bot className="w-16 h-16 text-muted-foreground/30" />
+            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-fuchsia-500/20 rounded-full blur-xl" />
+          </div>
           <h3 className="text-lg font-medium mb-1">No Bots Minted</h3>
           <p className="text-sm text-muted-foreground">
             Create your first cognitive bot using the Build tab.
@@ -129,71 +133,167 @@ export function MintedBotsList() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h3 className="text-lg font-medium">Your Bots</h3>
-          <p className="text-sm text-muted-foreground">{bots.length} bot{bots.length !== 1 ? 's' : ''} minted</p>
+          <h3 className="text-lg font-semibold flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-cyan-400" />
+            Your Bots
+          </h3>
+          <p className="text-sm text-muted-foreground font-mono">
+            {bots.length} bot{bots.length !== 1 ? 's' : ''} minted
+          </p>
         </div>
-        <Button variant="ghost" size="sm" onClick={() => refetch()} className="gap-2">
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={() => refetch()} 
+          className="gap-2 border-border/50 hover:border-cyan-500/50 hover:bg-cyan-500/10"
+        >
           <RotateCw className="w-4 h-4" />
           Refresh
         </Button>
       </div>
 
+      {/* Bot List */}
       <ScrollArea className="h-[500px]">
-        <div className="space-y-3">
+        <div className="space-y-3 pr-2">
           {bots.map(bot => (
-            <Card key={bot.id} className="hover:border-primary/30 transition-colors">
+            <Card 
+              key={bot.id} 
+              className={cn(
+                "group border-border/50 bg-black/30 backdrop-blur-sm transition-all duration-300",
+                "hover:border-cyan-500/40 hover:shadow-[0_0_20px_rgba(6,182,212,0.1)]"
+              )}
+            >
               <CardContent className="p-4">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-2">
-                      <h4 className="font-medium truncate">{bot.name}</h4>
-                      <Badge className={getTypeColor(bot.type)}>{bot.type}</Badge>
-                    </div>
-                    
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      <Badge variant="outline" className="text-xs gap-1">
-                        {getMemoryIcon(bot.memory_mode)}
-                        {bot.memory_mode}
-                      </Badge>
-                      {Array.isArray(bot.providers) && bot.providers.slice(0, 3).map((p, i) => (
-                        <Badge key={i} variant="secondary" className="text-xs">
-                          {String(p)}
+                {/* Mobile-first: Stack on mobile, row on larger screens */}
+                <div className="flex flex-col gap-4">
+                  {/* Top Row: Name, Type, Version */}
+                  <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                    <div className="flex-1 min-w-0 space-y-2">
+                      {/* Name with version */}
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h4 className="font-semibold text-foreground break-words">
+                          {bot.name}
+                        </h4>
+                        <Badge className={cn("shrink-0", getTypeColor(bot.type))}>
+                          {bot.type}
                         </Badge>
-                      ))}
-                      {Array.isArray(bot.providers) && bot.providers.length > 3 && (
-                        <Badge variant="secondary" className="text-xs">
-                          +{bot.providers.length - 3}
+                        <BotVersionBadge 
+                          version={bot.current_version || '1.0.0'} 
+                          hasUpdate={false}
+                        />
+                      </div>
+                      
+                      {/* Memory Mode & Providers */}
+                      <div className="flex flex-wrap gap-2">
+                        <Badge 
+                          variant="outline" 
+                          className="text-xs gap-1 border-border/50 bg-black/20"
+                        >
+                          {getMemoryIcon(bot.memory_mode)}
+                          <span className="truncate">{bot.memory_mode}</span>
                         </Badge>
-                      )}
+                        {Array.isArray(bot.providers) && bot.providers.slice(0, 2).map((p, i) => (
+                          <Badge 
+                            key={i} 
+                            variant="secondary" 
+                            className="text-xs bg-muted/30 border border-border/30"
+                          >
+                            {String(p)}
+                          </Badge>
+                        ))}
+                        {Array.isArray(bot.providers) && bot.providers.length > 2 && (
+                          <Badge 
+                            variant="secondary" 
+                            className="text-xs bg-muted/30 border border-border/30"
+                          >
+                            +{bot.providers.length - 2}
+                          </Badge>
+                        )}
+                      </div>
                     </div>
-                    
-                    <p className="text-xs text-muted-foreground">
-                      Created {formatDistanceToNow(new Date(bot.created_at), { addSuffix: true })}
-                    </p>
                   </div>
                   
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleExport(bot)}
-                    disabled={exportingId === bot.id}
-                    className="gap-2 shrink-0"
-                  >
-                    {exportingId === bot.id ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : (
-                      <Download className="w-4 h-4" />
-                    )}
-                    Export
-                  </Button>
+                  {/* Bottom Row: Timestamp & Actions */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-border/30">
+                    <p className="text-xs text-muted-foreground font-mono">
+                      Created {formatDistanceToNow(new Date(bot.created_at), { addSuffix: true })}
+                    </p>
+                    
+                    {/* Action Buttons - responsive grid on mobile */}
+                    <div className="flex flex-wrap gap-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setRunBot(bot)}
+                        className="gap-1.5 text-xs h-8 hover:bg-emerald-500/10 hover:text-emerald-400"
+                      >
+                        <Play className="w-3.5 h-3.5" />
+                        <span className="hidden sm:inline">Run</span>
+                      </Button>
+                      
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setBumpBot(bot)}
+                        className="gap-1.5 text-xs h-8 hover:bg-fuchsia-500/10 hover:text-fuchsia-400"
+                      >
+                        <ArrowUpCircle className="w-3.5 h-3.5" />
+                        <span className="hidden sm:inline">Bump</span>
+                      </Button>
+                      
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleExport(bot)}
+                        disabled={exportingId === bot.id}
+                        className="gap-1.5 text-xs h-8 border-cyan-500/30 hover:bg-cyan-500/10 hover:border-cyan-500/50"
+                      >
+                        {exportingId === bot.id ? (
+                          <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                        ) : (
+                          <Package className="w-3.5 h-3.5" />
+                        )}
+                        Export
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
           ))}
         </div>
       </ScrollArea>
+
+      {/* Dialogs */}
+      {bumpBot && (
+        <VersionBumpDialog
+          open={!!bumpBot}
+          onOpenChange={() => setBumpBot(null)}
+          currentVersion={bumpBot.current_version || '1.0.0'}
+          botName={bumpBot.name}
+          onBump={async (type, changelog) => {
+            const { error } = await supabase.functions.invoke('pf-forge-mint', {
+              body: { action: 'bump_version', bot_id: bumpBot.id, bump_type: type, changelog },
+            });
+            if (error) throw error;
+            refetch();
+            toast.success('Version bumped');
+          }}
+        />
+      )}
+
+      {runBot && (
+        <BotRuntimeDialog
+          open={!!runBot}
+          onOpenChange={() => setRunBot(null)}
+          botId={runBot.id}
+          botName={runBot.name}
+          botVersion={runBot.current_version || '1.0.0'}
+        />
+      )}
     </div>
   );
 }
