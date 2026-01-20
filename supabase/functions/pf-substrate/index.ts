@@ -3240,6 +3240,221 @@ async function handleVision(
 // DREAM MODULE — Dream-Eater Operations
 // ═══════════════════════════════════════════════════════════════
 
+// ═══════════════════════════════════════════════════════════════
+// DREAM MODULE HELPERS — Unified Brain + Dream-Eater Logic
+// ═══════════════════════════════════════════════════════════════
+
+interface DreamState {
+  id: string;
+  current_mood: string;
+  mood_score: number;
+  dreams_consumed_today: number;
+  nightmares_consumed_today: number;
+  mutation_level: number;
+  last_fed_at: string | null;
+  updated_at: string;
+}
+
+interface DreamRecord {
+  id: string;
+  dream_text: string;
+  mood: string | null;
+  insight: string | null;
+  created_at: string;
+  consumed_at?: string | null;
+  source?: string;
+}
+
+// Helper: Get or create Dream-Eater state
+// deno-lint-ignore no-explicit-any
+async function getDreamState(supabase: any): Promise<DreamState> {
+  const { data: existingState } = await supabase
+    .from("dream_eater_state")
+    .select("*")
+    .limit(1)
+    .single();
+
+  if (existingState) return existingState;
+
+  // Create initial state if missing
+  const { data: newState, error } = await supabase
+    .from("dream_eater_state")
+    .insert({
+      current_mood: "dormant",
+      mood_score: 50,
+      dreams_consumed_today: 0,
+      nightmares_consumed_today: 0,
+      mutation_level: 0,
+      last_fed_at: null,
+    })
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Failed to create dream state:", error);
+    return {
+      id: "default",
+      current_mood: "dormant",
+      mood_score: 50,
+      dreams_consumed_today: 0,
+      nightmares_consumed_today: 0,
+      mutation_level: 0,
+      last_fed_at: null,
+      updated_at: new Date().toISOString(),
+    };
+  }
+
+  return newState;
+}
+
+// Helper: Update Dream-Eater state
+// deno-lint-ignore no-explicit-any
+async function updateDreamState(supabase: any, stateId: string, changes: Partial<DreamState>): Promise<DreamState | null> {
+  const { data, error } = await supabase
+    .from("dream_eater_state")
+    .update({ ...changes, updated_at: new Date().toISOString() })
+    .eq("id", stateId)
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Failed to update dream state:", error);
+    return null;
+  }
+  return data;
+}
+
+// Helper: Record a dream in cascade_dreams
+// deno-lint-ignore no-explicit-any
+async function recordDream(
+  supabase: any,
+  dreamText: string,
+  mood: string,
+  insight: string,
+  source: string = "substrate"
+): Promise<DreamRecord | null> {
+  const { data, error } = await supabase
+    .from("cascade_dreams")
+    .insert({
+      dream_text: dreamText,
+      mood,
+      insight,
+      timestamp: new Date().toISOString(),
+    })
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Failed to record dream:", error);
+    return null;
+  }
+
+  // Add source metadata via brain event
+  await supabase.from("brain_events").insert({
+    event_type: "dream_recorded",
+    module: "dream",
+    outcome: "success",
+    data: { dream_id: data.id, source, mood },
+  });
+
+  return data;
+}
+
+// Helper: Run Brain dream synthesis
+// deno-lint-ignore no-explicit-any
+async function runBrainDreamSynthesis(supabase: any): Promise<{
+  hotMemories: number;
+  coldMemories: number;
+  patterns: number;
+  dreamContent: string;
+  insight: string;
+}> {
+  // Gather hot memories
+  const { data: hotMemories } = await supabase
+    .from("brain_memory_hot")
+    .select("content, context, priority")
+    .order("priority", { ascending: false })
+    .limit(15);
+
+  // Gather recent cold memories
+  const { data: coldMemories } = await supabase
+    .from("brain_memory_cold")
+    .select("summary")
+    .order("archived_at", { ascending: false })
+    .limit(5);
+
+  // Gather active patterns
+  const { data: patterns } = await supabase
+    .from("learning_patterns")
+    .select("pattern_name, description")
+    .order("confidence", { ascending: false })
+    .limit(5);
+
+  const hotCount = hotMemories?.length || 0;
+  const coldCount = coldMemories?.length || 0;
+  const patternCount = patterns?.length || 0;
+
+  // Synthesize dream content
+  const dreamContent = `Dream cycle at ${new Date().toISOString()}: Processed ${hotCount} active thoughts, ${coldCount} archived memories, and ${patternCount} patterns.`;
+  
+  const patternNames = patterns?.map((p: { pattern_name: string }) => p.pattern_name).join(", ") || "none";
+  const insight = `Synthesis complete. Active patterns: ${patternNames}`;
+
+  return {
+    hotMemories: hotCount,
+    coldMemories: coldCount,
+    patterns: patternCount,
+    dreamContent,
+    insight,
+  };
+}
+
+// Helper: Call AI for dream interpretation/synthesis
+// deno-lint-ignore no-explicit-any
+async function callDreamAI(prompt: string): Promise<{ content: string; provider: string } | null> {
+  // Use Nexus providers for AI calls
+  const providers = [
+    { name: "groq", url: "https://api.groq.com/openai/v1/chat/completions", model: "llama-3.3-70b-versatile", keyEnv: "GROQ_API_KEY" },
+    { name: "cerebras", url: "https://api.cerebras.ai/v1/chat/completions", model: "llama-3.3-70b", keyEnv: "CEREBRAS_API_KEY" },
+  ];
+
+  for (const provider of providers) {
+    const apiKey = Deno.env.get(provider.keyEnv);
+    if (!apiKey) continue;
+
+    try {
+      const response = await fetch(provider.url, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: provider.model,
+          messages: [
+            { role: "system", content: "You are the Dream-Eater, a cognitive entity that processes, synthesizes, and transforms dreams into insights. Respond concisely and poetically." },
+            { role: "user", content: prompt },
+          ],
+          temperature: 0.85,
+          max_tokens: 500,
+        }),
+      });
+
+      if (!response.ok) continue;
+
+      const data = await response.json();
+      const content = data.choices?.[0]?.message?.content;
+      if (content) {
+        return { content, provider: provider.name };
+      }
+    } catch {
+      continue;
+    }
+  }
+
+  return null;
+}
+
 // deno-lint-ignore no-explicit-any
 async function handleDream(
   supabase: any,
@@ -3248,137 +3463,562 @@ async function handleDream(
   headers: Record<string, string>
 ) {
   switch (action) {
+    // ═══ CYCLE: Unified dream cycle (Brain synthesis + Dream-Eater mutation) ═══
     case "cycle": {
-      // Redirect to dedicated function for full cycle
-      return jsonResponse({
-        success: true,
-        ok: true,
-        placeholder: true,
-        message: "Dream cycle: Use pf-dream-eater-cycle for full functionality",
-        action,
-      }, headers);
+      try {
+        // 1. Run Brain dream synthesis
+        const synthesis = await runBrainDreamSynthesis(supabase);
+
+        // 2. Generate dream via AI (optional, degrades gracefully)
+        let dreamText = synthesis.dreamContent;
+        let aiProvider = "local";
+        
+        const aiResult = await callDreamAI(
+          `Synthesize a dream from these elements: ${synthesis.hotMemories} active thoughts, ${synthesis.coldMemories} archived memories, ${synthesis.patterns} recognized patterns. Create a brief, surreal narrative (2-3 sentences).`
+        );
+        
+        if (aiResult) {
+          dreamText = aiResult.content;
+          aiProvider = aiResult.provider;
+        }
+
+        // 3. Record the dream
+        const dreamRecord = await recordDream(supabase, dreamText, "synthesized", synthesis.insight, "cycle");
+
+        // 4. Get and update Dream-Eater state
+        const currentState = await getDreamState(supabase);
+        const newMutationLevel = Math.min(100, (currentState.mutation_level || 0) + 1);
+        const updatedState = await updateDreamState(supabase, currentState.id, {
+          dreams_consumed_today: (currentState.dreams_consumed_today || 0) + 1,
+          mutation_level: newMutationLevel,
+          current_mood: "reflective",
+          last_fed_at: new Date().toISOString(),
+        });
+
+        // 5. Create hot memory from dream
+        await supabase.from("brain_memory_hot").insert({
+          content: `Dream Synthesis: ${dreamText.substring(0, 300)}`,
+          context: "dream_cycle",
+          priority: 7,
+          tags: ["dream", "synthesis", "auto"],
+          metadata: { dream_id: dreamRecord?.id, provider: aiProvider },
+        });
+
+        // 6. Log event
+        await supabase.from("brain_events").insert({
+          event_type: "dream_cycle_complete",
+          module: "dream",
+          outcome: "success",
+          data: {
+            dream_id: dreamRecord?.id,
+            hot_memories: synthesis.hotMemories,
+            cold_memories: synthesis.coldMemories,
+            patterns: synthesis.patterns,
+            ai_provider: aiProvider,
+            new_mutation_level: newMutationLevel,
+          },
+        });
+
+        return jsonResponse({
+          success: true,
+          module: "dream",
+          action: "cycle",
+          cycle_summary: {
+            hot_memories_processed: synthesis.hotMemories,
+            cold_memories_referenced: synthesis.coldMemories,
+            patterns_recognized: synthesis.patterns,
+            ai_provider: aiProvider,
+          },
+          dream: dreamRecord,
+          state: updatedState || currentState,
+          timestamp: new Date().toISOString(),
+        }, headers);
+      } catch (error) {
+        console.error("Dream cycle error:", error);
+        return jsonResponse({
+          success: false,
+          module: "dream",
+          action: "cycle",
+          error: error instanceof Error ? error.message : "Unknown cycle error",
+        }, headers);
+      }
+    }
+
+    // ═══ REFLECT: Cross-dream reflection with insights ═══
+    case "reflect": {
+      try {
+        // Get recent dreams
+        const { data: recentDreams } = await supabase
+          .from("cascade_dreams")
+          .select("dream_text, mood, insight, created_at")
+          .order("created_at", { ascending: false })
+          .limit(15);
+
+        // Get current state
+        const currentState = await getDreamState(supabase);
+
+        // Extract themes from dreams
+        const dreamTexts = recentDreams?.map((d: { dream_text: string }) => d.dream_text).join(" ") || "";
+        const moods = recentDreams?.map((d: { mood: string }) => d.mood).filter(Boolean) || [];
+
+        // Generate reflection via AI
+        let reflectionSummary = `Reflected on ${recentDreams?.length || 0} recent dreams. Predominant moods: ${[...new Set(moods)].join(", ") || "unknown"}.`;
+        let themes: string[] = [];
+        let aiProvider = "local";
+
+        if (recentDreams && recentDreams.length > 0) {
+          const aiResult = await callDreamAI(
+            `Reflect on these dreams and provide: 1) A brief summary (2 sentences), 2) Key themes (list 3-5). Dreams: ${dreamTexts.substring(0, 1000)}`
+          );
+
+          if (aiResult) {
+            reflectionSummary = aiResult.content;
+            aiProvider = aiResult.provider;
+            // Extract simple themes from content
+            const themeMatch = aiResult.content.match(/themes?:?\s*([^.]+)/i);
+            if (themeMatch) {
+              themes = themeMatch[1].split(/[,;]/).map((t: string) => t.trim()).filter(Boolean).slice(0, 5);
+            }
+          }
+        }
+
+        // Log reflection event
+        await supabase.from("brain_events").insert({
+          event_type: "dream_reflection",
+          module: "dream",
+          outcome: "success",
+          data: {
+            dreams_analyzed: recentDreams?.length || 0,
+            ai_provider: aiProvider,
+            themes,
+          },
+        });
+
+        return jsonResponse({
+          success: true,
+          module: "dream",
+          action: "reflect",
+          reflection: {
+            summary: reflectionSummary,
+            dreams_analyzed: recentDreams?.length || 0,
+            themes,
+            moods: [...new Set(moods)],
+            ai_provider: aiProvider,
+          },
+          state: {
+            mood: currentState.current_mood,
+            mutation_level: currentState.mutation_level,
+            dreams_today: currentState.dreams_consumed_today,
+          },
+          timestamp: new Date().toISOString(),
+        }, headers);
+      } catch (error) {
+        console.error("Dream reflect error:", error);
+        return jsonResponse({
+          success: false,
+          module: "dream",
+          action: "reflect",
+          error: error instanceof Error ? error.message : "Unknown reflect error",
+        }, headers);
+      }
+    }
+
+    // ═══ MUTATION: Advance Dream-Eater evolution ═══
+    case "mutation": {
+      try {
+        const currentState = await getDreamState(supabase);
+        const newMutationLevel = Math.min(100, (currentState.mutation_level || 0) + 5);
+
+        // Generate mutation story
+        let mutationStory = `Mutation level advanced from ${currentState.mutation_level} to ${newMutationLevel}. The Dream-Eater evolves.`;
+        let aiProvider = "local";
+
+        const aiResult = await callDreamAI(
+          `The Dream-Eater's mutation level increases from ${currentState.mutation_level} to ${newMutationLevel}. Describe this evolution in one poetic sentence.`
+        );
+
+        if (aiResult) {
+          mutationStory = aiResult.content;
+          aiProvider = aiResult.provider;
+        }
+
+        // Update state
+        const updatedState = await updateDreamState(supabase, currentState.id, {
+          mutation_level: newMutationLevel,
+          current_mood: newMutationLevel > 50 ? "transcendent" : "evolving",
+        });
+
+        // Log mutation event
+        await supabase.from("brain_events").insert({
+          event_type: "dream_mutation",
+          module: "dream",
+          outcome: "success",
+          data: {
+            previous_level: currentState.mutation_level,
+            new_level: newMutationLevel,
+            ai_provider: aiProvider,
+          },
+        });
+
+        return jsonResponse({
+          success: true,
+          module: "dream",
+          action: "mutation",
+          mutation: {
+            previous_level: currentState.mutation_level,
+            new_level: newMutationLevel,
+            mutation_story: mutationStory,
+            ai_provider: aiProvider,
+          },
+          state: updatedState || { ...currentState, mutation_level: newMutationLevel },
+          timestamp: new Date().toISOString(),
+        }, headers);
+      } catch (error) {
+        console.error("Dream mutation error:", error);
+        return jsonResponse({
+          success: false,
+          module: "dream",
+          action: "mutation",
+          error: error instanceof Error ? error.message : "Unknown mutation error",
+        }, headers);
+      }
+    }
+
+    // ═══ CONSUME: Process a specific dream by ID ═══
+    case "consume": {
+      const { dream_id } = data;
+
+      if (!dream_id) {
+        return jsonResponse({
+          success: false,
+          module: "dream",
+          action: "consume",
+          error: "dream_id is required",
+        }, headers);
+      }
+
+      try {
+        // Find the dream
+        const { data: dream, error: findError } = await supabase
+          .from("cascade_dreams")
+          .select("*")
+          .eq("id", dream_id)
+          .single();
+
+        if (findError || !dream) {
+          return jsonResponse({
+            success: false,
+            module: "dream",
+            action: "consume",
+            error: "Dream not found",
+            dream_id,
+          }, headers);
+        }
+
+        // Check if already consumed (using blog_posted as consumed marker)
+        if (dream.blog_posted) {
+          return jsonResponse({
+            success: true,
+            module: "dream",
+            action: "consume",
+            already_consumed: true,
+            dream,
+            message: "Dream was already consumed",
+          }, headers);
+        }
+
+        // Mark as consumed
+        const { data: updatedDream } = await supabase
+          .from("cascade_dreams")
+          .update({ blog_posted: new Date().toISOString() })
+          .eq("id", dream_id)
+          .select()
+          .single();
+
+        // Push to Brain as a memory
+        await supabase.from("brain_memories").insert({
+          content: `Consumed dream: ${dream.dream_text.substring(0, 500)}`,
+          memory_type: "dream_consumed",
+          confidence: 0.8,
+          source: "dream_eater",
+          metadata: { dream_id, mood: dream.mood, insight: dream.insight },
+        });
+
+        // Update Dream-Eater state
+        const currentState = await getDreamState(supabase);
+        const isNightmare = dream.mood?.toLowerCase().includes("nightmare") || dream.mood?.toLowerCase().includes("dark");
+        
+        await updateDreamState(supabase, currentState.id, {
+          dreams_consumed_today: (currentState.dreams_consumed_today || 0) + 1,
+          nightmares_consumed_today: isNightmare 
+            ? (currentState.nightmares_consumed_today || 0) + 1 
+            : currentState.nightmares_consumed_today,
+          last_fed_at: new Date().toISOString(),
+        });
+
+        // Log consumption
+        await supabase.from("brain_events").insert({
+          event_type: "dream_consumed",
+          module: "dream",
+          outcome: "success",
+          data: { dream_id, mood: dream.mood, is_nightmare: isNightmare },
+        });
+
+        return jsonResponse({
+          success: true,
+          module: "dream",
+          action: "consume",
+          dream: updatedDream || dream,
+          consumed_at: new Date().toISOString(),
+          brain_memory_created: true,
+        }, headers);
+      } catch (error) {
+        console.error("Dream consume error:", error);
+        return jsonResponse({
+          success: false,
+          module: "dream",
+          action: "consume",
+          error: error instanceof Error ? error.message : "Unknown consume error",
+        }, headers);
+      }
+    }
+
+    // ═══ INTERPRET: Process raw dream text through AI ═══
+    case "interpret": {
+      const { dream_text } = data;
+
+      if (!dream_text || typeof dream_text !== "string") {
+        return jsonResponse({
+          success: false,
+          module: "dream",
+          action: "interpret",
+          error: "dream_text is required",
+        }, headers);
+      }
+
+      try {
+        let interpretation = {
+          meaning: "Unable to interpret at this time.",
+          mood: "unknown",
+          themes: [] as string[],
+          symbols: [] as string[],
+        };
+        let aiProvider = "local";
+
+        // Call AI for interpretation
+        const aiResult = await callDreamAI(
+          `Interpret this dream and provide: 1) Brief meaning (1-2 sentences), 2) Detected mood, 3) Key themes (up to 3), 4) Symbolic elements (up to 3). Dream: "${dream_text.substring(0, 800)}"`
+        );
+
+        if (aiResult) {
+          interpretation.meaning = aiResult.content;
+          aiProvider = aiResult.provider;
+
+          // Simple mood extraction
+          const moodMatch = aiResult.content.match(/mood:?\s*(\w+)/i);
+          interpretation.mood = moodMatch?.[1] || "reflective";
+
+          // Simple theme extraction
+          const themesMatch = aiResult.content.match(/themes?:?\s*([^.]+)/i);
+          if (themesMatch) {
+            interpretation.themes = themesMatch[1].split(/[,;]/).map(t => t.trim()).filter(Boolean).slice(0, 3);
+          }
+        }
+
+        // Record the interpreted dream
+        const dreamRecord = await recordDream(
+          supabase,
+          dream_text.substring(0, 2000),
+          interpretation.mood,
+          interpretation.meaning.substring(0, 500),
+          "api_interpret"
+        );
+
+        // Log interpretation
+        await supabase.from("brain_events").insert({
+          event_type: "dream_interpreted",
+          module: "dream",
+          outcome: "success",
+          data: {
+            dream_id: dreamRecord?.id,
+            ai_provider: aiProvider,
+            mood: interpretation.mood,
+            input_length: dream_text.length,
+          },
+        });
+
+        return jsonResponse({
+          success: true,
+          module: "dream",
+          action: "interpret",
+          dream: dreamRecord,
+          interpretation: {
+            meaning: interpretation.meaning,
+            mood: interpretation.mood,
+            themes: interpretation.themes,
+            symbols: interpretation.symbols,
+            ai_provider: aiProvider,
+          },
+          timestamp: new Date().toISOString(),
+        }, headers);
+      } catch (error) {
+        console.error("Dream interpret error:", error);
+        return jsonResponse({
+          success: false,
+          module: "dream",
+          action: "interpret",
+          error: error instanceof Error ? error.message : "Unknown interpret error",
+        }, headers);
+      }
     }
 
     case "awaken": {
-      return jsonResponse({
-        success: true,
-        ok: true,
-        placeholder: true,
-        message: "Dream awaken: Use pf-dream-eater-awaken for full functionality",
-        action,
-      }, headers);
+      // Reset dream cycle for a new day
+      try {
+        const currentState = await getDreamState(supabase);
+        const updatedState = await updateDreamState(supabase, currentState.id, {
+          dreams_consumed_today: 0,
+          nightmares_consumed_today: 0,
+          current_mood: "awakening",
+        });
+
+        await supabase.from("brain_events").insert({
+          event_type: "dream_awaken",
+          module: "dream",
+          outcome: "success",
+          data: { previous_mood: currentState.current_mood },
+        });
+
+        return jsonResponse({
+          success: true,
+          module: "dream",
+          action: "awaken",
+          message: "Dream-Eater awakens. Daily counters reset.",
+          state: updatedState || currentState,
+          timestamp: new Date().toISOString(),
+        }, headers);
+      } catch (error) {
+        return jsonResponse({
+          success: false,
+          module: "dream",
+          action: "awaken",
+          error: error instanceof Error ? error.message : "Unknown awaken error",
+        }, headers);
+      }
     }
 
     case "status": {
-      // Get Dream-Eater state
-      const { data: state } = await supabase
-        .from("dream_eater_state")
-        .select("*")
-        .limit(1)
-        .single();
+      // Get Dream-Eater state with enriched data
+      const currentState = await getDreamState(supabase);
 
       const { count: dreamCount } = await supabase
         .from("cascade_dreams")
         .select("*", { count: "exact", head: true });
 
+      const { data: recentDreams } = await supabase
+        .from("cascade_dreams")
+        .select("id, mood, created_at")
+        .order("created_at", { ascending: false })
+        .limit(5);
+
       return jsonResponse({
         success: true,
         module: "dream",
-        state: state || { current_mood: "dormant", mutation_level: 0 },
+        action: "status",
+        state: currentState,
         total_dreams: dreamCount || 0,
+        recent_dreams: recentDreams || [],
+        timestamp: new Date().toISOString(),
       }, headers);
     }
 
     case "feed": {
-      return jsonResponse({
-        success: true,
-        ok: true,
-        placeholder: true,
-        message: "Dream feed: Use dream-feeder-api for submissions",
-        action,
-      }, headers);
-    }
+      // Simplified feed endpoint for quick dream ingestion
+      const { dream_text, submitter } = data;
 
-    case "interpret": {
-      const { dream_text } = data;
-      return jsonResponse({
-        success: true,
-        ok: true,
-        placeholder: true,
-        action,
-        input: { dream_text: (dream_text as string)?.substring(0, 50) },
-        message: "Dream interpretation stub - full logic pending",
-      }, headers);
-    }
+      if (!dream_text) {
+        return jsonResponse({
+          success: false,
+          module: "dream",
+          action: "feed",
+          error: "dream_text is required",
+        }, headers);
+      }
 
-    case "mutation": {
-      return jsonResponse({
-        success: true,
-        ok: true,
-        placeholder: true,
-        action,
-        message: "Mutation cycle stub - will trigger Dream-Eater evolution",
-      }, headers);
-    }
+      try {
+        const dreamRecord = await recordDream(
+          supabase,
+          dream_text.substring(0, 2000),
+          "submitted",
+          `Fed by ${submitter || "anonymous"}`,
+          "feed_api"
+        );
 
-    case "consume": {
-      const { dream_id } = data;
-      return jsonResponse({
-        success: true,
-        ok: true,
-        placeholder: true,
-        action,
-        dream_id,
-        message: "Dream consumption stub - processes and transforms dreams",
-      }, headers);
-    }
+        const currentState = await getDreamState(supabase);
+        await updateDreamState(supabase, currentState.id, {
+          last_fed_at: new Date().toISOString(),
+        });
 
-    case "reflect": {
-      return jsonResponse({
-        success: true,
-        ok: true,
-        placeholder: true,
-        action,
-        message: "Dream reflection stub - contemplates processed dreams",
-      }, headers);
+        return jsonResponse({
+          success: true,
+          module: "dream",
+          action: "feed",
+          dream: dreamRecord,
+          message: "Dream accepted for processing",
+          timestamp: new Date().toISOString(),
+        }, headers);
+      } catch (error) {
+        return jsonResponse({
+          success: false,
+          module: "dream",
+          action: "feed",
+          error: error instanceof Error ? error.message : "Unknown feed error",
+        }, headers);
+      }
     }
 
     case "mood": {
       const { mood } = data;
+      const currentState = await getDreamState(supabase);
+
       if (mood) {
-        // Set mood (stub)
+        // Set mood
+        const validMoods = ["dormant", "awakening", "reflective", "consuming", "synthesizing", "transcendent", "evolving"];
+        const normalizedMood = validMoods.includes(mood.toLowerCase()) ? mood.toLowerCase() : "reflective";
+        
+        const updatedState = await updateDreamState(supabase, currentState.id, {
+          current_mood: normalizedMood,
+        });
+
         return jsonResponse({
           success: true,
-          ok: true,
-          placeholder: true,
-          action,
-          mood_set: mood,
-          message: "Mood update stub - full persistence pending",
+          module: "dream",
+          action: "mood",
+          mood_set: normalizedMood,
+          state: updatedState || currentState,
         }, headers);
       }
-      // Get mood
-      const { data: state } = await supabase
-        .from("dream_eater_state")
-        .select("current_mood, mood_score")
-        .limit(1)
-        .single();
 
+      // Get mood
       return jsonResponse({
         success: true,
-        mood: state?.current_mood || "dormant",
-        mood_score: state?.mood_score || 0,
+        module: "dream",
+        action: "mood",
+        mood: currentState.current_mood || "dormant",
+        mood_score: currentState.mood_score || 0,
       }, headers);
     }
 
     case "pulse": {
       // Lightweight dream heartbeat
       const uptime = Date.now() - state.initialized;
-      const moduleHealth = getModuleHealth('dream');
+      const moduleHealth = getModuleHealth("dream");
+      const currentState = await getDreamState(supabase);
       
       return jsonResponse({
         success: true,
-        module: 'dream',
-        action: 'pulse',
+        module: "dream",
+        action: "pulse",
         pulse: {
           alive: true,
           version: SUBSTRATE_VERSION,
@@ -3386,10 +4026,12 @@ async function handleDream(
           health: moduleHealth.healthScore,
           status: moduleHealth.status,
           circuit: moduleHealth.circuitState,
+          mood: currentState.current_mood,
+          mutation_level: currentState.mutation_level,
         },
         proof_mode: true,
         read_only: true,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       }, headers);
     }
 
