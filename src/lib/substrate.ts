@@ -359,6 +359,41 @@ class SubstrateClient {
     /** List available backups */
     listBackups: () =>
       this.invoke({ module: 'system', action: 'list_backups' }),
+    
+    // ═══ v3.12.0: UPGRADE ENGINE ═══
+    
+    /** Propose an upgrade with analysis and backup */
+    upgrade: {
+      /** Generate an upgrade proposal in shadow mode */
+      propose: (options?: { scope?: string; notes?: string; max_changes?: number }) =>
+        supabase.functions.invoke('pf-substrate-upgrade', {
+          body: { action: 'propose', ...options }
+        }),
+      
+      /** List all upgrade plans */
+      listPlans: () =>
+        supabase.functions.invoke('pf-substrate-upgrade', {
+          body: { action: 'list_plans' }
+        }),
+      
+      /** Get a specific upgrade plan with runs */
+      getPlan: (planId: string) =>
+        supabase.functions.invoke('pf-substrate-upgrade', {
+          body: { action: 'get_plan', plan_id: planId }
+        }),
+      
+      /** Apply an upgrade plan (requires confirmation) */
+      applyPlan: (planId: string) =>
+        supabase.functions.invoke('pf-substrate-upgrade', {
+          body: { action: 'apply_plan', plan_id: planId }
+        }),
+      
+      /** Rollback an applied plan to its backup */
+      rollbackPlan: (planId: string) =>
+        supabase.functions.invoke('pf-substrate-upgrade', {
+          body: { action: 'rollback_plan', plan_id: planId }
+        }),
+    },
   };
 
   // Dream Module — Dream-Eater Operations  

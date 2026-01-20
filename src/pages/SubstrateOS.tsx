@@ -45,6 +45,7 @@ import { BrainIntelligencePanel } from '@/components/substrate-os/BrainIntellige
 import { SystemHealthPanel } from '@/components/substrate-os/SystemHealthPanel';
 import { HealButton } from '@/components/substrate-os/HealButton';
 import { CognitivesPanel } from '@/components/substrate-os/CognitivesPanel';
+import { UpgradeEnginePanel } from '@/components/substrate-os/UpgradeEnginePanel';
 import { cn } from '@/lib/utils';
 
 function ConfirmActionDialog({
@@ -382,6 +383,9 @@ export default function SubstrateOS() {
             
             {/* System Health Panel */}
             <SystemHealthPanel enabled={isOperator} />
+            
+            {/* Upgrade Engine Panel */}
+            <UpgradeEnginePanel enabled={isOperator} />
             
             {/* Governor Section */}
             <GovernorPanel enabled={isGovernor} />
