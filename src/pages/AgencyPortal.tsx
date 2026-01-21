@@ -1,20 +1,16 @@
 /**
  * Agency Portal 2026
- * Redesigned command center interface for deployed agencies
+ * Mobile-first responsive command center for deployed agencies
  */
 
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Loader2, Lock, ArrowLeft, Users } from 'lucide-react';
+import { Loader2, Lock, ArrowLeft } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { SEO } from '@/components/SEO';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { cn } from '@/lib/utils';
-import { SPECIALIZATIONS, DREAM_POOL_MODES } from '@/lib/agency/agencyTypes';
 import { useAgencyTasks } from '@/hooks/useAgencyTasks';
 import { useAgencySettings } from '@/hooks/useAgencySettings';
 import { startIdleLearning } from '@/lib/agency/taskExecutor';
@@ -22,18 +18,12 @@ import type { Agency } from '@/lib/agency/agencyTypes';
 import type { TaskTypeId } from '@/lib/agency/agencyTasks';
 
 // Portal Components
-import { AgencyPortalLayout } from '@/components/agency/portal/AgencyPortalLayout';
+import { ResponsivePortal } from '@/components/agency/portal/ResponsivePortal';
 import { PortalHeader } from '@/components/agency/portal/PortalHeader';
-import { PortalSidebar } from '@/components/agency/portal/PortalSidebar';
-import { PortalChatPanel } from '@/components/agency/portal/PortalChatPanel';
-import { PortalTaskPanel } from '@/components/agency/portal/PortalTaskPanel';
-import { MobileNavBar } from '@/components/agency/portal/MobileNavBar';
-
-// Existing components for settings/team
-import { AgencyTeamPanel } from '@/components/agency/AgencyTeamPanel';
+import { DreamModePage } from '@/components/agency/DreamModePage';
 import { AgencySettingsPanel } from '@/components/agency/AgencySettingsPanel';
 import { AgencyTelemetryPanel } from '@/components/agency/AgencyTelemetryPanel';
-import { DreamModePage } from '@/components/agency/DreamModePage';
+import { AgencyTeamPanel } from '@/components/agency/AgencyTeamPanel';
 
 interface AgencyData {
   id: string;
@@ -68,6 +58,9 @@ export default function AgencyPortal() {
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('chat');
   const [showDream, setShowDream] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [showTelemetry, setShowTelemetry] = useState(false);
+  const [showTeam, setShowTeam] = useState(false);
 
   // Load agency data
   useEffect(() => {
@@ -125,7 +118,6 @@ export default function AgencyPortal() {
     cancelTask,
     cancelAllTasks,
     retryTask,
-    retryAllFailed,
     clearCompletedTasks,
   } = useAgencyTasks({ agencyId });
 
@@ -167,14 +159,14 @@ export default function AgencyPortal() {
   // Handlers
   const handleBack = () => navigate('/');
 
-  const handleLaunchTask = useCallback(async (taskType: TaskTypeId, input: string) => {
+  const handleLaunchTask = useCallback(async (taskType: TaskTypeId, input?: string) => {
     if (!isAuthenticated || !agencyId) return;
 
     const task = await createTask({
       task_type: taskType as any,
-      title: `${taskType}: ${input.slice(0, 40)}${input.length > 40 ? '...' : ''}`,
-      description: input,
-      input_data: { rawInput: input },
+      title: input ? `${taskType}: ${input.slice(0, 40)}${input.length > 40 ? '...' : ''}` : `${taskType} task`,
+      description: input || `${taskType} task`,
+      input_data: { rawInput: input || '' },
       assigned_member_id: leader?.id || null,
     });
 
@@ -208,6 +200,23 @@ export default function AgencyPortal() {
       await startIdleLearning(agencyId, member.id, member.specialization);
     }
   }, [agencyId, members, isAuthenticated, isOwner]);
+
+  const handleNavigateTab = useCallback((tab: string) => {
+    // Handle special tabs that open overlays
+    if (tab === 'settings' && isOwner) {
+      setShowSettings(true);
+      return;
+    }
+    if (tab === 'telemetry' && isOwner) {
+      setShowTelemetry(true);
+      return;
+    }
+    if (tab === 'team') {
+      setShowTeam(true);
+      return;
+    }
+    setActiveTab(tab);
+  }, [isOwner]);
 
   // Loading state
   if (loading) {
@@ -248,13 +257,13 @@ export default function AgencyPortal() {
     );
   }
 
-  // Dream mode view
+  // Dream mode view (full screen overlay)
   if (showDream && isOwner) {
     return (
       <>
         <SEO title={`Dream Learning — ${agency.name}`} />
         <div className="min-h-screen bg-background">
-          <div className="p-4">
+          <div className="p-4 safe-area-pt">
             <Button variant="ghost" onClick={() => setShowDream(false)} className="mb-4">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back
@@ -266,11 +275,74 @@ export default function AgencyPortal() {
     );
   }
 
-  const feedMembers = members.map(m => ({
-    id: m.id,
-    specialization: m.specialization,
-    is_leader: m.is_leader,
-  }));
+  // Settings overlay
+  if (showSettings && isOwner) {
+    return (
+      <>
+        <SEO title={`Settings — ${agency.name}`} />
+        <div className="min-h-screen bg-background">
+          <div className="p-4 safe-area-pt">
+            <Button variant="ghost" onClick={() => setShowSettings(false)} className="mb-4">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back
+            </Button>
+            <AgencySettingsPanel
+              settings={settings}
+              isLoading={settingsLoading}
+              onUpdateSettings={updateSettings}
+              onUpdateLeaderName={updateLeaderName}
+              onAddPreset={addPresetCommand}
+              onRemovePreset={removePresetCommand}
+            />
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  // Telemetry overlay
+  if (showTelemetry && isOwner) {
+    return (
+      <>
+        <SEO title={`Telemetry — ${agency.name}`} />
+        <div className="min-h-screen bg-background">
+          <div className="p-4 safe-area-pt">
+            <Button variant="ghost" onClick={() => setShowTelemetry(false)} className="mb-4">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back
+            </Button>
+            <AgencyTelemetryPanel agencyId={agency.id} />
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  // Team overlay
+  if (showTeam) {
+    return (
+      <>
+        <SEO title={`Team — ${agency.name}`} />
+        <div className="min-h-screen bg-background">
+          <div className="p-4 safe-area-pt">
+            <Button variant="ghost" onClick={() => setShowTeam(false)} className="mb-4">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back
+            </Button>
+            <AgencyTeamPanel
+              members={members}
+              tasks={tasks}
+              agencyId={agency.id}
+              leaderName={settings?.leader_name}
+              onDispatchTask={isAuthenticated ? handleDispatchToMember : undefined}
+              onLaunchTeamTask={isAuthenticated ? handleLaunchTask : undefined}
+              idleLearningEnabled={isAuthenticated && isOwner}
+            />
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
@@ -279,123 +351,36 @@ export default function AgencyPortal() {
         description={`${agency.name} cognitive agency powered by promptfluid®`}
       />
 
-      <AgencyPortalLayout
-        header={
-          <PortalHeader
-            agencyName={agency.name}
-            leaderName={settings?.leader_name}
+      <div className="min-h-screen bg-background">
+        {/* Ambient background effects - hidden on mobile for performance */}
+        <div className="fixed inset-0 pointer-events-none overflow-hidden hidden md:block">
+          <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] animate-ambient-pulse" />
+          <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-neon-magenta/5 rounded-full blur-[100px] animate-ambient-pulse" style={{ animationDelay: '2s' }} />
+        </div>
+
+        {/* Main Portal */}
+        <div className="relative z-10 h-screen">
+          <ResponsivePortal
+            agency={agencyForComponents}
+            tasks={tasks}
+            taskLogs={taskLogs}
+            members={members}
             isOwner={isOwner}
             isAuthenticated={isAuthenticated}
-            activeTaskCount={activeTasks.length}
-            onBack={handleBack}
-            onOpenSettings={isOwner ? () => setActiveTab('settings') : undefined}
-            onOpenDream={isOwner ? () => setShowDream(true) : undefined}
+            leaderName={settings?.leader_name}
+            onLaunchTask={handleLaunchTask}
+            onCancelTask={cancelTask}
+            onRetryTask={retryTask}
+            onCancelAll={async () => { await cancelAllTasks(); }}
+            onClearCompleted={async () => { await clearCompletedTasks(); }}
+            onNavigateTab={handleNavigateTab}
+            onOpenSettings={() => setShowSettings(true)}
+            onOpenDream={() => setShowDream(true)}
+            onStartTeamLearning={handleStartTeamLearning}
+            activeTab={activeTab}
           />
-        }
-        sidebar={
-          <PortalSidebar
-            members={members}
-            tasks={tasks}
-            agencyId={agency.id}
-            dreamPoolMode={agency.dream_pool_mode}
-            cohesionRating={agency.cohesion_rating}
-            isOwner={isOwner}
-            onStartTeamLearning={isOwner ? handleStartTeamLearning : undefined}
-            onViewTelemetry={isOwner ? () => setActiveTab('telemetry') : undefined}
-            onViewDream={isOwner ? () => setShowDream(true) : undefined}
-          />
-        }
-        main={
-          <div className="flex flex-col h-full pb-16 lg:pb-0">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
-              {/* Desktop tab bar (hidden on mobile, uses MobileNavBar instead) */}
-              <div className="hidden lg:flex items-center gap-1 px-4 py-2 border-b border-border/30 bg-card/30">
-                {['chat', 'tasks', 'team', ...(isOwner ? ['telemetry', 'settings'] : [])].map(tab => (
-                  <Button
-                    key={tab}
-                    variant={activeTab === tab ? 'secondary' : 'ghost'}
-                    size="sm"
-                    onClick={() => setActiveTab(tab)}
-                    className={cn(
-                      "capitalize text-xs",
-                      activeTab === tab && "bg-primary/10 text-primary"
-                    )}
-                  >
-                    {tab}
-                    {tab === 'tasks' && activeTasks.length > 0 && (
-                      <Badge className="ml-1.5 h-4 px-1 text-[10px] bg-amber-500 text-black">
-                        {activeTasks.length}
-                      </Badge>
-                    )}
-                  </Button>
-                ))}
-              </div>
-
-              <div className="flex-1 overflow-hidden">
-                <TabsContent value="chat" className="h-full m-0 data-[state=inactive]:hidden">
-                  <PortalChatPanel agency={agencyForComponents} />
-                </TabsContent>
-
-                <TabsContent value="tasks" className="h-full m-0 data-[state=inactive]:hidden">
-                  <PortalTaskPanel
-                    tasks={tasks}
-                    logs={taskLogs}
-                    members={feedMembers}
-                    isOwner={isAuthenticated && isOwner}
-                    onCancelTask={cancelTask}
-                    onRetryTask={retryTask}
-                    onCancelAll={async () => { await cancelAllTasks(); }}
-                    onClearCompleted={async () => { await clearCompletedTasks(); }}
-                  />
-                </TabsContent>
-
-                <TabsContent value="team" className="h-full m-0 data-[state=inactive]:hidden overflow-auto">
-                  <AgencyTeamPanel
-                    members={members}
-                    tasks={tasks}
-                    agencyId={agency.id}
-                    leaderName={settings?.leader_name}
-                    onDispatchTask={isAuthenticated ? handleDispatchToMember : undefined}
-                    onLaunchTeamTask={isAuthenticated ? handleLaunchTask : undefined}
-                    idleLearningEnabled={isAuthenticated && isOwner}
-                  />
-                </TabsContent>
-
-                {isOwner && (
-                  <>
-                    <TabsContent value="telemetry" className="h-full m-0 data-[state=inactive]:hidden overflow-auto">
-                      <div className="p-4">
-                        <AgencyTelemetryPanel agencyId={agency.id} />
-                      </div>
-                    </TabsContent>
-
-                    <TabsContent value="settings" className="h-full m-0 data-[state=inactive]:hidden overflow-auto">
-                      <div className="p-4">
-                        <AgencySettingsPanel
-                          settings={settings}
-                          isLoading={settingsLoading}
-                          onUpdateSettings={updateSettings}
-                          onUpdateLeaderName={updateLeaderName}
-                          onAddPreset={addPresetCommand}
-                          onRemovePreset={removePresetCommand}
-                        />
-                      </div>
-                    </TabsContent>
-                  </>
-                )}
-              </div>
-            </Tabs>
-          </div>
-        }
-      />
-
-      {/* Mobile Navigation */}
-      <MobileNavBar
-        activeTab={activeTab}
-        onTabChange={setActiveTab}
-        activeTaskCount={activeTasks.length}
-        isOwner={isOwner}
-      />
+        </div>
+      </div>
     </>
   );
 }
