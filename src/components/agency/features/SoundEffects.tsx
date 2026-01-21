@@ -226,7 +226,7 @@ export function useSoundSettings() {
 // SOUND CONTEXT PROVIDER
 // ============================================================================
 export function useSoundEffects() {
-  const { settings } = useSoundSettings();
+  const { settings, toggleEnabled } = useSoundSettings();
   const { play: playRaw } = useSound({ 
     enabled: settings.enabled, 
     volume: settings.volume 
@@ -241,7 +241,11 @@ export function useSoundEffects() {
     playRaw(type);
   }, [playRaw, settings]);
   
-  return { play };
+  return { 
+    play, 
+    enabled: settings.enabled, 
+    toggle: toggleEnabled 
+  };
 }
 
 // ============================================================================
