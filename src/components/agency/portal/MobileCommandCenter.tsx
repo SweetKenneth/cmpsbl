@@ -34,11 +34,13 @@ import { useSoundEffects } from '../features/SoundEffects';
 import { PortalChatPanel } from './PortalChatPanel';
 import { PortalTaskPanel } from './PortalTaskPanel';
 import { AgentAvatar } from '../features/AgentAvatar';
+import { AgencySwitcher } from './AgencySwitcher';
 
 // Types
 import type { Agency, Specialization } from '@/lib/agency/agencyTypes';
 import type { AgencyTask, TaskTypeId, AgencyTaskLog } from '@/lib/agency/agencyTasks';
 import type { SmartSuggestion } from '@/lib/agency/smartSuggestions';
+import type { UserAgency } from '@/hooks/useUserAgency';
 import { getLevelFromXP } from '@/lib/agency/gamification';
 import { getPersonality } from '@/lib/agency/agentPersonalities';
 
@@ -58,6 +60,7 @@ interface MobileCommandCenterProps {
   isOwner: boolean;
   isAuthenticated: boolean;
   leaderName?: string;
+  userAgencies?: UserAgency[];
   onLaunchTask: (type: TaskTypeId, input?: string) => Promise<void>;
   onCancelTask: (taskId: string) => Promise<boolean | void>;
   onRetryTask: (taskId: string) => Promise<boolean | void>;
@@ -146,16 +149,20 @@ function MobileTabBar({
 // MOBILE HEADER
 // ============================================================================
 function MobileHeader({
-  agencyName,
+  agency,
   activeTasks,
   soundEnabled,
+  isOwner,
+  userAgencies,
   onToggleSound,
   onOpenMenu,
   onOpenCommand,
 }: {
-  agencyName: string;
+  agency: Agency;
   activeTasks: number;
   soundEnabled: boolean;
+  isOwner: boolean;
+  userAgencies: UserAgency[];
   onToggleSound: () => void;
   onOpenMenu: () => void;
   onOpenCommand: () => void;
@@ -173,7 +180,12 @@ function MobileHeader({
         </Button>
 
         <div className="flex items-center gap-2">
-          <span className="text-sm font-semibold truncate max-w-[160px]">{agencyName}</span>
+          <AgencySwitcher
+            agencies={userAgencies}
+            currentAgencyId={agency.id}
+            currentAgencyName={agency.name}
+            isOwner={isOwner}
+          />
           <LiveActivityDot active={activeTasks > 0} className="scale-90" />
         </div>
 
@@ -316,6 +328,7 @@ export function MobileCommandCenter({
   isOwner,
   isAuthenticated,
   leaderName,
+  userAgencies = [],
   onLaunchTask,
   onCancelTask,
   onRetryTask,
@@ -415,9 +428,11 @@ export function MobileCommandCenter({
     <div className={cn('flex flex-col h-full bg-background', className)}>
       {/* Mobile Header */}
       <MobileHeader
-        agencyName={agency.name}
+        agency={agency}
         activeTasks={activeTasks.length}
         soundEnabled={enabled}
+        isOwner={isOwner}
+        userAgencies={userAgencies}
         onToggleSound={toggle}
         onOpenMenu={() => setMenuOpen(true)}
         onOpenCommand={() => setCommandBarOpen(true)}

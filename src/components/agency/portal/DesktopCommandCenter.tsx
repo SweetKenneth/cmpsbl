@@ -27,11 +27,13 @@ import { AgentAvatar } from '../features/AgentAvatar';
 // Portal components
 import { PortalChatPanel } from './PortalChatPanel';
 import { PortalTaskPanel } from './PortalTaskPanel';
+import { AgencySwitcher } from './AgencySwitcher';
 
 // Types
 import type { Agency, Specialization } from '@/lib/agency/agencyTypes';
 import type { AgencyTask, TaskTypeId, AgencyTaskLog } from '@/lib/agency/agencyTasks';
 import type { SmartSuggestion } from '@/lib/agency/smartSuggestions';
+import type { UserAgency } from '@/hooks/useUserAgency';
 import { getLevelFromXP } from '@/lib/agency/gamification';
 import { getPersonality } from '@/lib/agency/agentPersonalities';
 
@@ -51,6 +53,7 @@ interface DesktopCommandCenterProps {
   isOwner: boolean;
   isAuthenticated: boolean;
   leaderName?: string;
+  userAgencies?: UserAgency[];
   onLaunchTask: (type: TaskTypeId, input?: string) => Promise<void>;
   onCancelTask: (taskId: string) => Promise<boolean | void>;
   onRetryTask: (taskId: string) => Promise<boolean | void>;
@@ -85,6 +88,7 @@ export function DesktopCommandCenter({
   isOwner,
   isAuthenticated,
   leaderName,
+  userAgencies = [],
   onLaunchTask,
   onCancelTask,
   onRetryTask,
@@ -185,7 +189,18 @@ export function DesktopCommandCenter({
     <div className={cn('flex flex-col h-full', className)}>
       {/* Top Bar */}
       <div className="flex items-center justify-between px-4 py-2 border-b border-border/30 bg-card/30 backdrop-blur-sm">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
+          {/* Agency Switcher */}
+          <AgencySwitcher
+            agencies={userAgencies}
+            currentAgencyId={agency.id}
+            currentAgencyName={agency.name}
+            isOwner={isOwner}
+          />
+          
+          {/* Divider */}
+          <div className="h-6 w-px bg-border/30" />
+          
           {/* Tab buttons */}
           <div className="flex items-center gap-1 bg-muted/30 rounded-lg p-0.5">
             {visibleTabs.map(tab => (

@@ -9,6 +9,7 @@ import { DesktopCommandCenter } from './DesktopCommandCenter';
 
 import type { Agency } from '@/lib/agency/agencyTypes';
 import type { AgencyTask, TaskTypeId, AgencyTaskLog } from '@/lib/agency/agencyTasks';
+import type { UserAgency } from '@/hooks/useUserAgency';
 
 interface ResponsivePortalProps {
   agency: Agency;
@@ -23,6 +24,7 @@ interface ResponsivePortalProps {
   isOwner: boolean;
   isAuthenticated: boolean;
   leaderName?: string;
+  userAgencies?: UserAgency[];
   onLaunchTask: (type: TaskTypeId, input?: string) => Promise<void>;
   onCancelTask: (taskId: string) => Promise<boolean | void>;
   onRetryTask: (taskId: string) => Promise<boolean | void>;
