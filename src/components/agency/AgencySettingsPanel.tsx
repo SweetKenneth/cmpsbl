@@ -2,7 +2,7 @@
  * Agency Settings Panel — Configure agency preferences
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Settings, User, Zap, Brain, Bookmark, Plus, X, Save } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -35,10 +35,17 @@ export function AgencySettingsPanel({
   onRemovePreset,
   className,
 }: AgencySettingsPanelProps) {
-  const [leaderName, setLeaderName] = useState(settings?.leader_name || 'Team Lead');
+  const [leaderName, setLeaderName] = useState('');
   const [newPresetName, setNewPresetName] = useState('');
   const [newPresetCommand, setNewPresetCommand] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+
+  // Sync leaderName with settings when loaded
+  useEffect(() => {
+    if (settings?.leader_name && !isSaving) {
+      setLeaderName(settings.leader_name);
+    }
+  }, [settings?.leader_name]);
 
   const handleSaveLeaderName = async () => {
     setIsSaving(true);
