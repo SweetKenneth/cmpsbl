@@ -43,5 +43,17 @@ export {
   useDreamLearningMetrics,
 } from './hooks/useHybridDream';
 
+// Agent Personalities & Avatars
+export * from './agentPersonalities';
+
+// Gamification System
+export * from './gamification';
+
+// Task Templates & Workflows
+export * from './taskTemplates';
+
+// Smart Suggestions
+export * from './smartSuggestions';
+
 // Utilities
 export * from './slugUtils';
