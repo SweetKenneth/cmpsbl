@@ -1,97 +1,26 @@
 /**
  * Enhanced Terminal v2026
- * Full-featured terminal with personality and 2026 aesthetics
- * Larger, more interactive command interface
+ * Full-featured terminal with comprehensive commands, autocomplete,
+ * larger viewport, and real substrate integration
  */
 
-import { useState, useRef, useEffect, useCallback } from 'react';
-import { Terminal, ChevronRight, Loader2, CheckCircle2, XCircle, Cpu, Zap, Brain, Shield, Eye, Sparkles } from 'lucide-react';
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
+import { Terminal, ChevronRight, Loader2, CheckCircle2, XCircle, Download, Maximize2, Minimize2, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
-import {
-  useBrainReflectOS,
-  useBrainDreamOS,
-  useBrainSynthesizeOS,
-  useDreamCycleOS,
-  useNexusRouteTest,
-} from '@/hooks/useSubstrateOS';
-import {
-  useBrainOptimize,
-  useBrainCognitiveCycle,
-  useBrainGraphBuild,
-  useSystemHeal,
-  useDreamMutate,
-  useDreamReflect,
-} from '@/hooks/useSubstrateOSEnhanced';
-
-interface CommandResult {
-  id: string;
-  command: string;
-  status: 'pending' | 'success' | 'error';
-  output?: string;
-  timestamp: Date;
-}
-
-// Terminal personality messages
-const BOOT_MESSAGES = [
-  '▓▓▓▓▓▓▓▓▓▓ substrate os v2026.01',
-  '◉ cognitive kernel loaded',
-  '◉ neural pathways initialized',
-  '◉ memory banks online',
-  '◉ dream-eater: standby',
-  '────────────────────────────────',
-  'type \'help\' for available commands',
-  '',
-];
-
-const PERSONALITY_RESPONSES = {
-  greeting: [
-    'standing by for orders...',
-    'neural pathways ready.',
-    'cognitive substrate: online.',
-    'awaiting input...',
-  ],
-  success: [
-    'operation complete.',
-    'task executed successfully.',
-    'neural pathways confirmed.',
-    'cognitive loop closed.',
-  ],
-  error: [
-    'anomaly detected.',
-    'pathway failed.',
-    'cognitive disruption.',
-    'attempting recovery...',
-  ],
-  thinking: [
-    'processing neural patterns...',
-    'traversing knowledge graph...',
-    'synthesizing insights...',
-    'cognitive cycle in progress...',
-  ],
-};
-
-const AVAILABLE_COMMANDS = [
-  { command: 'brain.reflect', description: 'Synthesize memories into reflections', category: 'brain', icon: Brain },
-  { command: 'brain.dream', description: 'Process through dream cycle', category: 'brain', icon: Brain },
-  { command: 'brain.synthesize', description: 'Cross-domain synthesis', category: 'brain', icon: Brain },
-  { command: 'brain.optimize', description: 'Compress and clean memory', category: 'brain', icon: Brain },
-  { command: 'brain.cognitive_cycle', description: 'Full cognitive loop', category: 'brain', icon: Brain },
-  { command: 'brain.graph_build', description: 'Update knowledge graph', category: 'brain', icon: Brain },
-  { command: 'dream.cycle', description: 'Trigger Dream-Eater consumption', category: 'dream', icon: Sparkles },
-  { command: 'dream.mutate', description: 'Trigger mutation/evolution', category: 'dream', icon: Sparkles },
-  { command: 'dream.reflect', description: 'Dream reflection cycle', category: 'dream', icon: Sparkles },
-  { command: 'system.heal', description: 'Self-heal all modules', category: 'system', icon: Shield },
-  { command: 'system.heal brain', description: 'Heal brain module only', category: 'system', icon: Shield },
-  { command: 'system.status', description: 'Show system status', category: 'system', icon: Eye },
-  { command: 'nexus.test', description: 'Test provider routing', category: 'nexus', icon: Zap },
-  { command: 'help', description: 'Show available commands', category: 'meta', icon: Terminal },
-  { command: 'clear', description: 'Clear command history', category: 'meta', icon: Terminal },
-  { command: 'whoami', description: 'Display substrate identity', category: 'meta', icon: Cpu },
-];
+import { 
+  CommandResult, 
+  TerminalTheme, 
+  BOOT_MESSAGES, 
+  PERSONALITY_RESPONSES, 
+  getRandomItem 
+} from './terminal/TerminalTypes';
+import { ALL_COMMANDS, searchCommands, type CommandDefinition } from './terminal/TerminalCommands';
+import { executeCommand, type ExecutionResult } from './terminal/TerminalExecutor';
 
 interface EnhancedTerminalProps {
   enabled: boolean;
@@ -99,30 +28,22 @@ interface EnhancedTerminalProps {
   fullHeight?: boolean;
 }
 
-function getRandomItem<T>(arr: T[]): T {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
-
 export function EnhancedTerminal({ enabled, className, fullHeight = false }: EnhancedTerminalProps) {
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<CommandResult[]>([]);
+  const [commandHistory, setCommandHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [bootComplete, setBootComplete] = useState(false);
   const [bootLines, setBootLines] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState<CommandDefinition[]>([]);
+  const [selectedSuggestion, setSelectedSuggestion] = useState(0);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [theme, setTheme] = useState<TerminalTheme>('dark');
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [sessionStats, setSessionStats] = useState({ commands: 0, success: 0, errors: 0 });
+  
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-  
-  const reflectMutation = useBrainReflectOS();
-  const dreamMutation = useBrainDreamOS();
-  const synthesizeMutation = useBrainSynthesizeOS();
-  const dreamCycleMutation = useDreamCycleOS();
-  const routeTestMutation = useNexusRouteTest();
-  const optimizeMutation = useBrainOptimize();
-  const cognitiveCycleMutation = useBrainCognitiveCycle();
-  const graphBuildMutation = useBrainGraphBuild();
-  const healMutation = useSystemHeal();
-  const dreamMutateMutation = useDreamMutate();
-  const dreamReflectMutation = useDreamReflect();
 
   // Boot animation
   useEffect(() => {
@@ -135,15 +56,29 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
         setBootComplete(true);
         clearInterval(interval);
       }
-    }, 100);
+    }, 80);
     return () => clearInterval(interval);
   }, []);
 
+  // Auto-scroll to bottom
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [history, bootLines]);
+
+  // Update suggestions on input change
+  useEffect(() => {
+    if (input.trim()) {
+      const results = searchCommands(input);
+      setSuggestions(results);
+      setShowSuggestions(results.length > 0);
+      setSelectedSuggestion(0);
+    } else {
+      setSuggestions([]);
+      setShowSuggestions(false);
+    }
+  }, [input]);
 
   const addResult = useCallback((command: string, status: 'pending' | 'success' | 'error', output?: string) => {
     const id = `${Date.now()}-${Math.random()}`;
@@ -151,158 +86,220 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
     return id;
   }, []);
 
-  const updateResult = useCallback((id: string, status: 'success' | 'error', output: string) => {
+  const updateResult = useCallback((id: string, status: 'success' | 'error', output: string, duration?: number) => {
     setHistory(prev => prev.map(r => 
-      r.id === id ? { ...r, status, output } : r
+      r.id === id ? { ...r, status, output, duration } : r
     ));
   }, []);
 
-  const executeCommand = async (cmd: string) => {
-    const trimmed = cmd.trim().toLowerCase();
+  const handleExecute = async (cmd: string) => {
+    const trimmed = cmd.trim();
     if (!trimmed) return;
 
-    // Handle built-in commands
-    if (trimmed === 'help') {
-      const categories = [...new Set(AVAILABLE_COMMANDS.map(c => c.category))];
-      const helpText = categories.map(cat => {
-        const cmds = AVAILABLE_COMMANDS.filter(c => c.category === cat);
-        return `┌─ ${cat.toUpperCase()} ─────────────────────────────\n${cmds.map(c => `│ ${c.command.padEnd(22)} ∷ ${c.description}`).join('\n')}\n└──────────────────────────────────────────`;
-      }).join('\n\n');
-      addResult('help', 'success', helpText);
-      return;
-    }
+    // Add to command history
+    setCommandHistory(prev => [...prev.filter(c => c !== trimmed), trimmed].slice(-50));
+    setHistoryIndex(-1);
 
-    if (trimmed === 'whoami') {
-      const identity = `
-┌─ SUBSTRATE IDENTITY ─────────────────────────
-│ 
-│  ██████╗ ███████╗     Cognitive Orchestration
-│  ██╔═══╝ ██╔════╝     Substrate v2026.01
-│  ██║     ███████╗     
-│  ██║     ╚════██║     Environment: Lovable Cloud
-│  ██████╗ ███████║     Status: OPERATIONAL
-│  ╚═════╝ ╚══════╝     
-│ 
-│  promptfluid® — where machines learn to dream
-│  
-│  Modules: Brain, Decode, Defense, Nexus, Vision
-│  Mode: ${enabled ? 'OPERATOR' : 'READ-ONLY'}
-│  
-└──────────────────────────────────────────────
-`;
-      addResult('whoami', 'success', identity);
-      return;
-    }
+    // Update session stats
+    setSessionStats(prev => ({ ...prev, commands: prev.commands + 1 }));
 
-    if (trimmed === 'clear') {
+    const startTime = Date.now();
+    const resultId = addResult(trimmed, 'pending', getRandomItem(PERSONALITY_RESPONSES.thinking));
+
+    const result = await executeCommand(trimmed, enabled);
+    const duration = Date.now() - startTime;
+
+    // Handle special outputs
+    if (result.output === '__CLEAR__') {
       setHistory([]);
       toast.success('Terminal cleared');
       return;
     }
 
-    if (!enabled) {
-      addResult(trimmed, 'error', `▓ ACCESS DENIED: Operator privileges required\n  ${getRandomItem(PERSONALITY_RESPONSES.error)}`);
+    if (result.output === '__HISTORY__') {
+      const historyOutput = commandHistory.length > 0
+        ? `\n┌─ COMMAND HISTORY ────────────────────────────────────────\n│\n${commandHistory.map((c, i) => `│  ${(i + 1).toString().padStart(3)} │ ${c}`).join('\n')}\n│\n└──────────────────────────────────────────────────────────`
+        : '◉ No command history yet.';
+      updateResult(resultId, 'success', historyOutput, duration);
+      setSessionStats(prev => ({ ...prev, success: prev.success + 1 }));
       return;
     }
 
-    // Execute substrate commands
-    const resultId = addResult(trimmed, 'pending', getRandomItem(PERSONALITY_RESPONSES.thinking));
-
-    try {
-      let result;
-
-      if (trimmed === 'brain.reflect') {
-        result = await reflectMutation.mutateAsync();
-      } else if (trimmed === 'brain.dream') {
-        result = await dreamMutation.mutateAsync();
-      } else if (trimmed === 'brain.synthesize') {
-        result = await synthesizeMutation.mutateAsync();
-      } else if (trimmed === 'brain.optimize') {
-        result = await optimizeMutation.mutateAsync();
-      } else if (trimmed === 'brain.cognitive_cycle') {
-        result = await cognitiveCycleMutation.mutateAsync();
-      } else if (trimmed === 'brain.graph_build') {
-        result = await graphBuildMutation.mutateAsync();
-      } else if (trimmed === 'dream.cycle') {
-        result = await dreamCycleMutation.mutateAsync();
-      } else if (trimmed === 'dream.mutate') {
-        result = await dreamMutateMutation.mutateAsync();
-      } else if (trimmed === 'dream.reflect') {
-        result = await dreamReflectMutation.mutateAsync();
-      } else if (trimmed.startsWith('system.heal')) {
-        const target = trimmed.replace('system.heal', '').trim() || undefined;
-        result = await healMutation.mutateAsync(target);
-      } else if (trimmed === 'system.status') {
-        const { system } = await import('@/lib/substrate');
-        result = await system.status();
-      } else if (trimmed.startsWith('nexus.test')) {
-        const prompt = trimmed.replace('nexus.test', '').trim() || 'Hello, substrate.';
-        result = await routeTestMutation.mutateAsync(prompt);
-      } else {
-        updateResult(resultId, 'error', `▓ UNKNOWN COMMAND: ${trimmed}\n  Type 'help' for available commands`);
-        return;
-      }
-
-      if (result?.success) {
-        const output = `◉ ${getRandomItem(PERSONALITY_RESPONSES.success)}\n\n${JSON.stringify(result.data || result, null, 2)}`;
-        updateResult(resultId, 'success', output);
-      } else {
-        updateResult(resultId, 'error', `▓ ${result?.error || 'Command failed'}`);
-      }
-    } catch (error) {
-      updateResult(resultId, 'error', `▓ EXCEPTION: ${error instanceof Error ? error.message : 'Unknown error'}\n  ${getRandomItem(PERSONALITY_RESPONSES.error)}`);
+    if (result.output === '__EXPORT__') {
+      const exportData = history.map(h => ({
+        command: h.command,
+        status: h.status,
+        timestamp: h.timestamp.toISOString(),
+        output: h.output,
+      }));
+      const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `substrate-terminal-${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      updateResult(resultId, 'success', '◉ Session exported successfully.', duration);
+      setSessionStats(prev => ({ ...prev, success: prev.success + 1 }));
+      return;
     }
+
+    if (result.output.startsWith('__THEME__')) {
+      const newTheme = result.output.replace('__THEME__', '');
+      if (newTheme === 'toggle') {
+        setTheme(prev => prev === 'dark' ? 'matrix' : prev === 'matrix' ? 'light' : 'dark');
+      } else if (['dark', 'light', 'matrix'].includes(newTheme)) {
+        setTheme(newTheme as TerminalTheme);
+      }
+      updateResult(resultId, 'success', `◉ Theme set to: ${newTheme === 'toggle' ? theme : newTheme}`, duration);
+      setSessionStats(prev => ({ ...prev, success: prev.success + 1 }));
+      return;
+    }
+
+    // Normal result
+    updateResult(resultId, result.success ? 'success' : 'error', result.output, duration);
+    setSessionStats(prev => ({
+      ...prev,
+      success: result.success ? prev.success + 1 : prev.success,
+      errors: result.success ? prev.errors : prev.errors + 1,
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    executeCommand(input);
-    setInput('');
-    setHistoryIndex(-1);
+    if (showSuggestions && suggestions[selectedSuggestion]) {
+      setInput(suggestions[selectedSuggestion].command);
+      setShowSuggestions(false);
+    } else {
+      handleExecute(input);
+      setInput('');
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    const commands = history.filter(h => h.status !== 'pending').map(h => h.command);
-
-    if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      const newIndex = Math.min(historyIndex + 1, commands.length - 1);
-      setHistoryIndex(newIndex);
-      if (commands[commands.length - 1 - newIndex]) {
-        setInput(commands[commands.length - 1 - newIndex]);
+    // Suggestions navigation
+    if (showSuggestions && suggestions.length > 0) {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        setSelectedSuggestion(prev => Math.min(prev + 1, suggestions.length - 1));
+        return;
       }
-    } else if (e.key === 'ArrowDown') {
+      if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        setSelectedSuggestion(prev => Math.max(prev - 1, 0));
+        return;
+      }
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        setInput(suggestions[selectedSuggestion].command + ' ');
+        setShowSuggestions(false);
+        return;
+      }
+      if (e.key === 'Escape') {
+        setShowSuggestions(false);
+        return;
+      }
+    }
+
+    // Command history navigation
+    if (e.key === 'ArrowUp' && !showSuggestions) {
+      e.preventDefault();
+      const newIndex = Math.min(historyIndex + 1, commandHistory.length - 1);
+      setHistoryIndex(newIndex);
+      if (commandHistory[commandHistory.length - 1 - newIndex]) {
+        setInput(commandHistory[commandHistory.length - 1 - newIndex]);
+      }
+    } else if (e.key === 'ArrowDown' && !showSuggestions) {
       e.preventDefault();
       const newIndex = Math.max(historyIndex - 1, -1);
       setHistoryIndex(newIndex);
       if (newIndex === -1) {
         setInput('');
-      } else if (commands[commands.length - 1 - newIndex]) {
-        setInput(commands[commands.length - 1 - newIndex]);
+      } else if (commandHistory[commandHistory.length - 1 - newIndex]) {
+        setInput(commandHistory[commandHistory.length - 1 - newIndex]);
       }
     }
+
+    // Shortcuts
+    if (e.ctrlKey && e.key === 'l') {
+      e.preventDefault();
+      setHistory([]);
+      toast.success('Terminal cleared');
+    }
+    if (e.ctrlKey && e.key === 'c') {
+      e.preventDefault();
+      setInput('');
+    }
   };
+
+  // Theme classes
+  const themeClasses = useMemo(() => ({
+    dark: {
+      bg: 'bg-black/90',
+      text: 'text-foreground',
+      accent: 'text-cyan-400',
+      success: 'text-emerald-400',
+      error: 'text-red-400',
+      border: 'border-border/50',
+    },
+    light: {
+      bg: 'bg-white/90',
+      text: 'text-gray-900',
+      accent: 'text-blue-600',
+      success: 'text-green-600',
+      error: 'text-red-600',
+      border: 'border-gray-300',
+    },
+    matrix: {
+      bg: 'bg-black',
+      text: 'text-green-400',
+      accent: 'text-green-300',
+      success: 'text-green-500',
+      error: 'text-red-500',
+      border: 'border-green-500/30',
+    },
+  }), []);
+
+  const currentTheme = themeClasses[theme];
 
   return (
     <div 
       className={cn(
-        "border border-border/50 rounded-xl bg-black/80 backdrop-blur-md overflow-hidden font-mono text-sm",
-        "shadow-[0_0_30px_rgba(6,182,212,0.1)]",
+        "border rounded-xl overflow-hidden font-mono text-sm",
+        "shadow-[0_0_40px_rgba(6,182,212,0.15)]",
+        "transition-all duration-300",
+        currentTheme.bg,
+        currentTheme.border,
+        isExpanded ? "fixed inset-4 z-50" : "",
         fullHeight ? "h-full flex flex-col" : "",
         className
       )}
+      style={{ backdropFilter: 'blur(12px)' }}
     >
       {/* Terminal Header */}
-      <div className="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-muted/30 via-muted/20 to-transparent border-b border-border/40">
+      <div className={cn(
+        "flex items-center gap-2 px-4 py-3 border-b",
+        "bg-gradient-to-r from-muted/40 via-muted/20 to-transparent",
+        currentTheme.border
+      )}>
         <div className="flex gap-1.5">
           <span className="w-3 h-3 rounded-full bg-red-500/90 shadow-[0_0_6px_rgba(239,68,68,0.5)]" />
           <span className="w-3 h-3 rounded-full bg-amber-500/90 shadow-[0_0_6px_rgba(245,158,11,0.5)]" />
           <span className="w-3 h-3 rounded-full bg-emerald-500/90 shadow-[0_0_6px_rgba(16,185,129,0.5)]" />
         </div>
+        
         <div className="flex-1 flex items-center justify-center gap-2">
-          <Terminal className="w-4 h-4 text-cyan-400" />
+          <Terminal className={cn("w-4 h-4", currentTheme.accent)} />
           <span className="text-xs text-muted-foreground">substrate://terminal</span>
         </div>
+
+        {/* Stats */}
+        <div className="hidden sm:flex items-center gap-2 text-[10px] text-muted-foreground">
+          <span>{sessionStats.commands} cmds</span>
+          <span className="text-emerald-400">{sessionStats.success} ✓</span>
+          <span className="text-red-400">{sessionStats.errors} ✗</span>
+        </div>
+
         <Badge 
           variant="outline" 
           className={cn(
@@ -312,12 +309,60 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
               : "border-amber-500/50 text-amber-400 bg-amber-500/10"
           )}
         >
-          {enabled ? 'OPERATOR' : 'READ-ONLY'}
+          {enabled ? 'OPERATOR' : 'OBSERVER'}
         </Badge>
+
+        {/* Controls */}
+        <div className="flex items-center gap-1">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="h-6 w-6 text-muted-foreground hover:text-foreground"
+            onClick={() => {
+              const exportData = history.map(h => ({
+                command: h.command,
+                status: h.status,
+                timestamp: h.timestamp.toISOString(),
+              }));
+              const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = `terminal-${Date.now()}.json`;
+              a.click();
+            }}
+          >
+            <Download className="h-3 w-3" />
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="h-6 w-6 text-muted-foreground hover:text-foreground"
+            onClick={() => setIsExpanded(!isExpanded)}
+          >
+            {isExpanded ? <Minimize2 className="h-3 w-3" /> : <Maximize2 className="h-3 w-3" />}
+          </Button>
+          {isExpanded && (
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="h-6 w-6 text-muted-foreground hover:text-foreground"
+              onClick={() => setIsExpanded(false)}
+            >
+              <X className="h-3 w-3" />
+            </Button>
+          )}
+        </div>
       </div>
 
       {/* Command Output */}
-      <ScrollArea className={cn("flex-1", fullHeight ? "min-h-0" : "h-80")} ref={scrollRef}>
+      <ScrollArea 
+        className={cn(
+          "flex-1 overflow-auto",
+          isExpanded ? "h-[calc(100vh-140px)]" : fullHeight ? "min-h-0" : "h-[500px]"
+        )} 
+        ref={scrollRef}
+      >
         <div className="p-4 space-y-2">
           {/* Boot Animation */}
           {bootLines.map((line, idx) => (
@@ -325,8 +370,8 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
               key={idx} 
               className={cn(
                 "text-xs",
-                line.startsWith('▓') ? "text-cyan-400 font-bold" : 
-                line.startsWith('◉') ? "text-emerald-400" :
+                line.startsWith('▓') ? cn("font-bold", currentTheme.accent) : 
+                line.startsWith('◉') ? currentTheme.success :
                 line.startsWith('─') ? "text-border" :
                 "text-muted-foreground"
               )}
@@ -335,10 +380,10 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
             </div>
           ))}
 
-          {/* Cursor blink after boot */}
+          {/* Ready indicator after boot */}
           {bootComplete && history.length === 0 && (
-            <div className="flex items-center gap-1 text-muted-foreground text-xs">
-              <span className="w-2 h-4 bg-cyan-400 animate-pulse" />
+            <div className={cn("flex items-center gap-1 text-xs", "text-muted-foreground")}>
+              <span className={cn("w-2 h-4 animate-pulse", theme === 'matrix' ? 'bg-green-400' : 'bg-cyan-400')} />
               <span>{getRandomItem(PERSONALITY_RESPONSES.greeting)}</span>
             </div>
           )}
@@ -348,9 +393,12 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
             <div key={result.id} className="space-y-1">
               {/* Command Line */}
               <div className="flex items-center gap-2">
-                <ChevronRight className="w-3 h-3 text-cyan-400 shrink-0" />
-                <span className="text-cyan-400">{result.command}</span>
-                <span className="text-[10px] text-muted-foreground/50">
+                <ChevronRight className={cn("w-3 h-3 shrink-0", currentTheme.accent)} />
+                <span className={currentTheme.accent}>{result.command}</span>
+                <span className="text-[10px] text-muted-foreground/50 ml-auto flex items-center gap-2">
+                  {result.duration !== undefined && (
+                    <span className="text-muted-foreground/70">{result.duration}ms</span>
+                  )}
                   {result.timestamp.toLocaleTimeString()}
                 </span>
               </div>
@@ -359,8 +407,8 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
               <div className={cn(
                 "pl-5 text-xs leading-relaxed",
                 result.status === 'pending' ? "text-amber-400/80" :
-                result.status === 'success' ? "text-emerald-400/90" :
-                "text-red-400/90"
+                result.status === 'success' ? currentTheme.success :
+                currentTheme.error
               )}>
                 {result.status === 'pending' ? (
                   <div className="flex items-center gap-2">
@@ -374,7 +422,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
                     ) : (
                       <XCircle className="w-3 h-3 shrink-0 mt-0.5" />
                     )}
-                    <pre className="whitespace-pre-wrap break-all font-mono">{result.output}</pre>
+                    <pre className="whitespace-pre-wrap break-all font-mono overflow-x-auto">{result.output}</pre>
                   </div>
                 )}
               </div>
@@ -383,22 +431,75 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
         </div>
       </ScrollArea>
 
+      {/* Autocomplete Suggestions */}
+      {showSuggestions && suggestions.length > 0 && (
+        <div className={cn(
+          "border-t px-4 py-2 space-y-1 max-h-48 overflow-y-auto",
+          currentTheme.border,
+          "bg-black/80"
+        )}>
+          <div className="text-[10px] text-muted-foreground mb-1">
+            Tab to complete • ↑↓ to navigate • Esc to close
+          </div>
+          {suggestions.map((cmd, idx) => (
+            <div
+              key={cmd.command}
+              className={cn(
+                "flex items-center gap-2 px-2 py-1 rounded text-xs cursor-pointer transition-colors",
+                idx === selectedSuggestion 
+                  ? "bg-cyan-500/20 text-cyan-400" 
+                  : "hover:bg-muted/30 text-muted-foreground"
+              )}
+              onClick={() => {
+                setInput(cmd.command + ' ');
+                setShowSuggestions(false);
+                inputRef.current?.focus();
+              }}
+            >
+              <cmd.icon className="w-3 h-3 shrink-0" />
+              <span className="font-medium">{cmd.command}</span>
+              <span className="text-muted-foreground/70 text-[10px]">∷</span>
+              <span className="text-muted-foreground/70 truncate flex-1">{cmd.description}</span>
+              {cmd.requiresOperator && (
+                <Badge variant="outline" className="text-[8px] h-4 border-amber-500/30 text-amber-400">
+                  ⚡
+                </Badge>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* Input Line */}
-      <form onSubmit={handleSubmit} className="border-t border-border/40 bg-black/50">
+      <form onSubmit={handleSubmit} className={cn("border-t bg-black/60", currentTheme.border)}>
         <div className="flex items-center gap-2 px-4 py-3">
           <div className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_6px_rgba(6,182,212,0.8)]" />
-            <Terminal className="w-4 h-4 text-cyan-400" />
+            <span className={cn(
+              "w-2 h-2 rounded-full animate-pulse shadow-[0_0_6px]",
+              theme === 'matrix' ? 'bg-green-400 shadow-green-400/80' : 'bg-cyan-400 shadow-cyan-400/80'
+            )} />
+            <Terminal className={cn("w-4 h-4", currentTheme.accent)} />
           </div>
           <Input
             ref={inputRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={enabled ? "enter command..." : "operator access required"}
-            disabled={!enabled && input !== 'help' && input !== 'clear' && input !== 'whoami'}
-            className="border-0 bg-transparent h-8 px-0 focus-visible:ring-0 placeholder:text-muted-foreground/40 text-foreground"
+            onFocus={() => input.trim() && setSuggestions(searchCommands(input))}
+            onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+            placeholder={enabled ? "enter command... (Tab for autocomplete)" : "observer mode — read-only commands only"}
+            className={cn(
+              "border-0 bg-transparent h-8 px-0 focus-visible:ring-0",
+              "placeholder:text-muted-foreground/40",
+              currentTheme.text
+            )}
+            autoComplete="off"
+            spellCheck={false}
           />
+          <div className="hidden sm:flex items-center gap-1 text-[10px] text-muted-foreground/50">
+            <kbd className="px-1 py-0.5 rounded bg-muted/30">↑↓</kbd>
+            <span>history</span>
+          </div>
         </div>
       </form>
     </div>
