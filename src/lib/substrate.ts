@@ -425,33 +425,38 @@ class SubstrateClient {
       this.invoke({ module: 'dream', action: 'reflect' }),
   };
 
-  // Modernizer Module — Website Modernization Service (v3.12.0)
+  // Modernizer Module — Substrate Codebase Analysis & Improvement Engine (v3.13.0)
+  // Scans the substrate architecture for improvements, NOT external websites
   modernizer = {
-    /** Get modernizer service status */
+    /** Get modernizer service status with substrate health metrics */
     status: () =>
       this.invoke({ module: 'modernizer', action: 'status' }),
     
-    /** List recent modernization jobs */
+    /** List recent substrate scans and improvement proposals */
     jobs: (limit?: number) =>
       this.invoke({ module: 'modernizer', action: 'jobs', payload: { limit } }),
     
-    /** Submit a URL for modernization */
-    submit: (url: string, options?: { theme?: string; improve_content?: boolean }) =>
-      this.invoke({ module: 'modernizer', action: 'submit', payload: { url, ...options } }),
+    /** Scan the substrate codebase for architecture improvements */
+    scan: (options?: { module?: string; depth?: 'quick' | 'standard' | 'deep' }) =>
+      this.invoke({ module: 'modernizer', action: 'scan', payload: options }),
     
-    /** Get a specific job by ID */
+    /** Alias for scan - submit a substrate analysis request */
+    submit: (options?: { module?: string; depth?: 'quick' | 'standard' | 'deep' }) =>
+      this.invoke({ module: 'modernizer', action: 'scan', payload: options }),
+    
+    /** Get a specific scan/job by ID */
     job: (job_id: string) =>
       this.invoke({ module: 'modernizer', action: 'job', payload: { job_id } }),
     
-    /** Check usage quota */
+    /** Check usage quota for scans */
     quota: () =>
       this.invoke({ module: 'modernizer', action: 'quota' }),
     
-    /** Analyze a URL without creating a job */
-    analyze: (url: string) =>
-      this.invoke({ module: 'modernizer', action: 'analyze', payload: { url } }),
+    /** Quick analysis of a specific substrate module */
+    analyze: (module?: string) =>
+      this.invoke({ module: 'modernizer', action: 'analyze', payload: { module } }),
     
-    /** Export job assets */
+    /** Export improvement proposals */
     export: (job_id: string) =>
       this.invoke({ module: 'modernizer', action: 'export', payload: { job_id } }),
     

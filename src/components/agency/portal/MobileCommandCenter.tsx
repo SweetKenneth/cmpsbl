@@ -417,12 +417,32 @@ export function MobileCommandCenter({
 
   const activeTasks = tasks.filter(t => t.status === 'in_progress');
 
-  // Suggestion handler
+  // Suggestion handler - supports all action types
   const handleSuggestion = useCallback((suggestion: SmartSuggestion) => {
-    if (suggestion.actionType === 'task') {
-      onLaunchTask(suggestion.actionPayload.taskType, suggestion.actionPayload.input);
+    switch (suggestion.actionType) {
+      case 'task':
+        onLaunchTask(suggestion.actionPayload.taskType, suggestion.actionPayload.input);
+        break;
+      case 'workflow':
+        // Trigger workflow via task launch with workflow context
+        onLaunchTask('research', `Workflow: ${suggestion.actionPayload.workflowId}`);
+        break;
+      case 'command':
+        // Navigate to chat tab for command execution
+        onNavigateTab('chat');
+        break;
+      case 'setting':
+        // Open settings or navigate to the specific tab
+        if (suggestion.actionPayload.tab === 'settings') {
+          onOpenSettings();
+        } else if (suggestion.actionPayload.tab === 'tasks') {
+          onNavigateTab('tasks');
+        } else {
+          onNavigateTab(suggestion.actionPayload.tab || 'chat');
+        }
+        break;
     }
-  }, [onLaunchTask]);
+  }, [onLaunchTask, onNavigateTab, onOpenSettings]);
 
   return (
     <div className={cn('flex flex-col h-full bg-background', className)}>

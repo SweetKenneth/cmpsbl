@@ -362,16 +362,14 @@ export async function executeCommand(
     } else if (base === 'modernizer.jobs') {
       const limit = args[0] ? parseInt(args[0]) : 10;
       result = await modernizer.jobs(limit);
-    } else if (base === 'modernizer.submit') {
-      if (!args[0]) {
-        return { success: false, output: '▓ ERROR: URL required\n  Usage: modernizer.submit <url>' };
-      }
-      result = await modernizer.submit(args[0]);
+    } else if (base === 'modernizer.submit' || base === 'modernizer.scan') {
+      // Scan substrate codebase - optional module filter
+      const depth = args[0] as 'quick' | 'standard' | 'deep' | undefined;
+      result = await modernizer.scan({ depth: depth || 'standard' });
     } else if (base === 'modernizer.analyze') {
-      if (!args[0]) {
-        return { success: false, output: '▓ ERROR: URL required\n  Usage: modernizer.analyze <url>' };
-      }
-      result = await modernizer.analyze(args[0]);
+      // Quick analysis of a specific module
+      const targetModule = args[0];
+      result = await modernizer.analyze(targetModule);
     } else if (base === 'modernizer.export') {
       if (!args[0]) {
         return { success: false, output: '▓ ERROR: Job ID required\n  Usage: modernizer.export <job_id>' };
