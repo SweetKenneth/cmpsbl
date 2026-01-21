@@ -17,6 +17,7 @@ interface ExecuteTaskOptions {
 
 interface ExecuteTaskResult {
   success: boolean;
+  cancelled?: boolean;
   result?: string;
   insights?: string[];
   error?: string;
@@ -53,6 +54,14 @@ export async function executeTask(options: ExecuteTaskOptions): Promise<ExecuteT
       return {
         success: false,
         error: error.message || 'Task execution failed',
+        executionTimeMs,
+      };
+    }
+
+    if (data?.cancelled) {
+      return {
+        success: true,
+        cancelled: true,
         executionTimeMs,
       };
     }
