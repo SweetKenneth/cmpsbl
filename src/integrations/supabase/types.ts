@@ -196,6 +196,85 @@ export type Database = {
           },
         ]
       }
+      agency_email_queue: {
+        Row: {
+          agency_id: string
+          body_html: string | null
+          body_text: string | null
+          created_at: string | null
+          deliverable_id: string | null
+          email_type: string
+          error_message: string | null
+          id: string
+          metadata: Json | null
+          recipient_email: string
+          recipient_name: string | null
+          retry_count: number | null
+          sent_at: string | null
+          status: string | null
+          subject: string
+          task_id: string | null
+        }
+        Insert: {
+          agency_id: string
+          body_html?: string | null
+          body_text?: string | null
+          created_at?: string | null
+          deliverable_id?: string | null
+          email_type: string
+          error_message?: string | null
+          id?: string
+          metadata?: Json | null
+          recipient_email: string
+          recipient_name?: string | null
+          retry_count?: number | null
+          sent_at?: string | null
+          status?: string | null
+          subject: string
+          task_id?: string | null
+        }
+        Update: {
+          agency_id?: string
+          body_html?: string | null
+          body_text?: string | null
+          created_at?: string | null
+          deliverable_id?: string | null
+          email_type?: string
+          error_message?: string | null
+          id?: string
+          metadata?: Json | null
+          recipient_email?: string
+          recipient_name?: string | null
+          retry_count?: number | null
+          sent_at?: string | null
+          status?: string | null
+          subject?: string
+          task_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agency_email_queue_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agency_email_queue_deliverable_id_fkey"
+            columns: ["deliverable_id"]
+            isOneToOne: false
+            referencedRelation: "agency_task_deliverables"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agency_email_queue_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "agency_tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       agency_members: {
         Row: {
           agency_id: string
@@ -312,6 +391,91 @@ export type Database = {
           },
         ]
       }
+      agency_scheduled_tasks: {
+        Row: {
+          agency_id: string
+          created_at: string | null
+          id: string
+          input_data: Json | null
+          is_active: boolean | null
+          last_run_at: string | null
+          last_task_id: string | null
+          member_id: string | null
+          metadata: Json | null
+          next_run_at: string
+          run_count: number | null
+          schedule_day_of_month: number | null
+          schedule_day_of_week: number | null
+          schedule_time: string | null
+          schedule_type: string
+          task_type: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          agency_id: string
+          created_at?: string | null
+          id?: string
+          input_data?: Json | null
+          is_active?: boolean | null
+          last_run_at?: string | null
+          last_task_id?: string | null
+          member_id?: string | null
+          metadata?: Json | null
+          next_run_at: string
+          run_count?: number | null
+          schedule_day_of_month?: number | null
+          schedule_day_of_week?: number | null
+          schedule_time?: string | null
+          schedule_type: string
+          task_type: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          agency_id?: string
+          created_at?: string | null
+          id?: string
+          input_data?: Json | null
+          is_active?: boolean | null
+          last_run_at?: string | null
+          last_task_id?: string | null
+          member_id?: string | null
+          metadata?: Json | null
+          next_run_at?: string
+          run_count?: number | null
+          schedule_day_of_month?: number | null
+          schedule_day_of_week?: number | null
+          schedule_time?: string | null
+          schedule_type?: string
+          task_type?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agency_scheduled_tasks_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agency_scheduled_tasks_last_task_id_fkey"
+            columns: ["last_task_id"]
+            isOneToOne: false
+            referencedRelation: "agency_tasks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agency_scheduled_tasks_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "agency_members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       agency_settings: {
         Row: {
           agency_id: string
@@ -358,6 +522,69 @@ export type Database = {
             columns: ["agency_id"]
             isOneToOne: true
             referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      agency_task_deliverables: {
+        Row: {
+          agency_id: string
+          content: string | null
+          created_at: string | null
+          deliverable_type: string
+          download_count: number | null
+          emailed_to: string[] | null
+          expires_at: string | null
+          file_path: string | null
+          file_size_bytes: number | null
+          id: string
+          metadata: Json | null
+          task_id: string
+          title: string
+        }
+        Insert: {
+          agency_id: string
+          content?: string | null
+          created_at?: string | null
+          deliverable_type: string
+          download_count?: number | null
+          emailed_to?: string[] | null
+          expires_at?: string | null
+          file_path?: string | null
+          file_size_bytes?: number | null
+          id?: string
+          metadata?: Json | null
+          task_id: string
+          title: string
+        }
+        Update: {
+          agency_id?: string
+          content?: string | null
+          created_at?: string | null
+          deliverable_type?: string
+          download_count?: number | null
+          emailed_to?: string[] | null
+          expires_at?: string | null
+          file_path?: string | null
+          file_size_bytes?: number | null
+          id?: string
+          metadata?: Json | null
+          task_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agency_task_deliverables_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agency_task_deliverables_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "agency_tasks"
             referencedColumns: ["id"]
           },
         ]
