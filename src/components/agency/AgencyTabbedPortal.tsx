@@ -216,9 +216,11 @@ export function AgencyTabbedPortal({ agency, members, onBack, isOwner }: AgencyT
               <AgencyTeamPanel
                 members={members}
                 tasks={tasks}
+                agencyId={agency.id}
                 leaderName={settings?.leader_name}
                 onDispatchTask={isAuthenticated ? handleDispatchToMember : undefined}
                 onLaunchTeamTask={isAuthenticated ? handleLaunchTask : undefined}
+                idleLearningEnabled={isAuthenticated && isOwner}
               />
             </TabsContent>
 
