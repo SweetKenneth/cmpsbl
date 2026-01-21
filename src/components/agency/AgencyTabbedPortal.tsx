@@ -3,7 +3,7 @@
  */
 
 import { useState, useCallback } from 'react';
-import { MessageSquare, ListTodo, Users2, Settings, ArrowLeft, Sparkles } from 'lucide-react';
+import { MessageSquare, ListTodo, Users2, Settings, ArrowLeft, Sparkles, LogIn } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
@@ -14,7 +14,10 @@ import { AgencyTeamPanel } from './AgencyTeamPanel';
 import { AgencySettingsPanel } from './AgencySettingsPanel';
 import { useAgencyTasks } from '@/hooks/useAgencyTasks';
 import { useAgencySettings } from '@/hooks/useAgencySettings';
+import { useAuth } from '@/contexts/AuthContext';
 import type { Agency } from '@/lib/agency/agencyTypes';
+import type { TaskTypeId } from '@/lib/agency/agencyTasks';
+import { Link } from 'react-router-dom';
 
 interface PortalMember {
   id: string;
@@ -33,21 +36,22 @@ interface AgencyTabbedPortalProps {
 
 export function AgencyTabbedPortal({ agency, members, onBack, isOwner }: AgencyTabbedPortalProps) {
   const [activeTab, setActiveTab] = useState('chat');
-  
-  const { 
-    tasks, 
-    taskLogs, 
-    createTask, 
-    startTask, 
-    completeTask, 
+  const { user } = useAuth();
+
+  const {
+    tasks,
+    taskLogs,
+    createTask,
+    startTask,
+    completeTask,
     addTaskLog,
     getTasksByStatus,
   } = useAgencyTasks({ agencyId: agency.id });
-  
-  const { 
-    settings, 
-    isLoading: settingsLoading, 
-    updateSettings, 
+
+  const {
+    settings,
+    isLoading: settingsLoading,
+    updateSettings,
     updateLeaderName,
     addPresetCommand,
     removePresetCommand,
@@ -57,8 +61,13 @@ export function AgencyTabbedPortal({ agency, members, onBack, isOwner }: AgencyT
   const queuedTasks = getTasksByStatus('queued');
   const leader = members.find(m => m.is_leader);
 
-  // Handler for launching tasks from chat commands
-  const handleLaunchTask = useCallback(async (taskType: string, input: string) => {
+  // Check if user is authenticated
+  const isAuthenticated = !!user;
+
+  // Handler for launching tasks from chat commands or quick dispatch
+  const handleLaunchTask = useCallback(async (taskType: TaskTypeId, input: string) => {
+    if (!isAuthenticated) return;
+
     const task = await createTask({
       task_type: taskType as any,
       title: `${taskType}: ${input.slice(0, 40)}${input.length > 40 ? '...' : ''}`,
@@ -66,14 +75,31 @@ export function AgencyTabbedPortal({ agency, members, onBack, isOwner }: AgencyT
       input_data: { rawInput: input },
       assigned_member_id: leader?.id || null,
     });
-    
+
     if (task) {
-      // Auto-start the task
       await startTask(task.id);
       await addTaskLog(task.id, `${settings?.leader_name || 'Team Lead'} dispatched this task`);
-      setActiveTab('tasks'); // Switch to tasks tab
+      setActiveTab('tasks');
     }
-  }, [createTask, startTask, addTaskLog, leader, settings?.leader_name]);
+  }, [createTask, startTask, addTaskLog, leader, settings?.leader_name, isAuthenticated]);
+
+  // Handler for dispatching task to specific member
+  const handleDispatchToMember = useCallback(async (memberId: string, taskType: TaskTypeId, description?: string) => {
+    if (!isAuthenticated) return;
+
+    const task = await createTask({
+      task_type: taskType as any,
+      title: description || `${taskType} task`,
+      description: description || `Task assigned to agent`,
+      input_data: { rawInput: description || '' },
+      assigned_member_id: memberId,
+    });
+
+    if (task) {
+      await startTask(task.id);
+      await addTaskLog(task.id, `Agent assigned to ${taskType} task`);
+    }
+  }, [createTask, startTask, addTaskLog, isAuthenticated]);
 
   // Convert to format expected by task feed
   const feedMembers = members.map(m => ({
@@ -113,8 +139,21 @@ export function AgencyTabbedPortal({ agency, members, onBack, isOwner }: AgencyT
                 </div>
               </div>
             </div>
-            
+
             <div className="flex items-center gap-2">
+              {!isAuthenticated && (
+                <Button asChild variant="outline" size="sm" className="gap-2 text-xs border-fuchsia-500/30">
+                  <Link to="/auth">
+                    <LogIn className="w-3 h-3" />
+                    Sign In
+                  </Link>
+                </Button>
+              )}
+              {isAuthenticated && isOwner && (
+                <Badge variant="outline" className="text-[10px] border-fuchsia-500/50 text-fuchsia-400">
+                  Owner
+                </Badge>
+              )}
               {activeTasks.length > 0 && (
                 <Badge variant="outline" className="text-[10px] border-amber-500/50 text-amber-400 animate-pulse">
                   {activeTasks.length} Active
@@ -178,11 +217,13 @@ export function AgencyTabbedPortal({ agency, members, onBack, isOwner }: AgencyT
                 members={members}
                 tasks={tasks}
                 leaderName={settings?.leader_name}
+                onDispatchTask={isAuthenticated ? handleDispatchToMember : undefined}
+                onLaunchTeamTask={isAuthenticated ? handleLaunchTask : undefined}
               />
             </TabsContent>
 
             <TabsContent value="settings" className="h-[calc(100vh-180px)] m-0">
-              {isOwner ? (
+              {isAuthenticated && isOwner ? (
                 <AgencySettingsPanel
                   settings={settings}
                   isLoading={settingsLoading}
@@ -193,9 +234,21 @@ export function AgencyTabbedPortal({ agency, members, onBack, isOwner }: AgencyT
                 />
               ) : (
                 <div className="flex items-center justify-center h-full">
-                  <div className="text-center text-muted-foreground">
-                    <Settings className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                    <p>Only the agency owner can modify settings.</p>
+                  <div className="text-center text-muted-foreground space-y-4">
+                    <Settings className="w-12 h-12 mx-auto opacity-50" />
+                    {!isAuthenticated ? (
+                      <>
+                        <p>Sign in to access agency settings.</p>
+                        <Button asChild variant="outline" className="gap-2">
+                          <Link to="/auth">
+                            <LogIn className="w-4 h-4" />
+                            Sign In
+                          </Link>
+                        </Button>
+                      </>
+                    ) : (
+                      <p>Only the agency owner can modify settings.</p>
+                    )}
                   </div>
                 </div>
               )}
