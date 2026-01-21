@@ -214,6 +214,7 @@ export const TASK_STATUSES = {
   completed: { id: 'completed', label: 'Completed', color: 'emerald', icon: '✅' },
   failed: { id: 'failed', label: 'Failed', color: 'red', icon: '❌' },
   paused: { id: 'paused', label: 'Paused', color: 'slate', icon: '⏸️' },
+  cancelled: { id: 'cancelled', label: 'Cancelled', color: 'slate', icon: '⏹️' },
 } as const;
 
 export type TaskStatus = keyof typeof TASK_STATUSES;

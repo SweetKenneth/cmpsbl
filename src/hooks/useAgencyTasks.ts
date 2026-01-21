@@ -25,6 +25,8 @@ interface UseAgencyTasksReturn {
   startTask: (taskId: string) => Promise<boolean>;
   completeTask: (taskId: string, output?: Record<string, any>) => Promise<boolean>;
   failTask: (taskId: string, errorMessage: string) => Promise<boolean>;
+  cancelTask: (taskId: string) => Promise<boolean>;
+  cancelAllTasks: () => Promise<number>;
   refetch: () => Promise<void>;
   getTasksByMember: (memberId: string) => AgencyTask[];
   getTasksByStatus: (status: TaskStatus) => AgencyTask[];
@@ -335,6 +337,67 @@ export function useAgencyTasks({ agencyId, autoRefresh = true }: UseAgencyTasksO
     return success;
   }, [updateTask, addTaskLog]);
 
+  // Cancel single task
+  const cancelTask = useCallback(async (taskId: string): Promise<boolean> => {
+    // allow cancel regardless of client-side executing set
+    executingTasks.current.delete(taskId);
+
+    const success = await updateTask(taskId, {
+      status: 'cancelled' as TaskStatus,
+      error_message: null,
+      progress: 0,
+    });
+    if (success) {
+      await addTaskLog(taskId, '⏹️ Task cancelled by user', 'info');
+      toast.message('Task cancelled');
+    }
+    return success;
+  }, [updateTask, addTaskLog]);
+
+  // Cancel all queued + active tasks for this agency
+  const cancelAllTasks = useCallback(async (): Promise<number> => {
+    if (!agencyId) return 0;
+
+    try {
+      // Find affected tasks first (for logging)
+      const affected = tasks.filter(t => t.status === 'queued' || t.status === 'in_progress');
+      if (affected.length === 0) return 0;
+
+      // Clear local execution guards
+      for (const t of affected) executingTasks.current.delete(t.id);
+
+      const { error: updateError } = await supabase
+        .from('agency_tasks')
+        .update({
+          status: 'cancelled',
+          progress: 0,
+          error_message: null,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('agency_id', agencyId)
+        .in('status', ['queued', 'in_progress']);
+
+      if (updateError) throw updateError;
+
+      // Log a lightweight cancel marker for each affected task (small batches are OK)
+      await supabase.from('agency_task_logs').insert(
+        affected.map(t => ({
+          task_id: t.id,
+          message: '⏹️ Task cancelled by user (bulk cancel)',
+          log_type: 'info',
+          data: { bulk: true },
+        }))
+      );
+
+      toast.message(`Cancelled ${affected.length} tasks`);
+      return affected.length;
+    } catch (err) {
+      console.error('Error cancelling all tasks:', err);
+      toast.error('Failed to cancel tasks');
+      return 0;
+    }
+  }, [agencyId, tasks]);
+
   // Helpers
   const getTasksByMember = useCallback((memberId: string) => 
     tasks.filter(t => t.assigned_member_id === memberId), [tasks]);
@@ -361,6 +424,8 @@ export function useAgencyTasks({ agencyId, autoRefresh = true }: UseAgencyTasksO
     startTask,
     completeTask,
     failTask,
+    cancelTask,
+    cancelAllTasks,
     refetch,
     getTasksByMember,
     getTasksByStatus,
