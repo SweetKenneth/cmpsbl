@@ -3,7 +3,7 @@
  * Handles parsing and execution of all substrate commands
  */
 
-import { substrate, brain, decode, defense, nexus, vision, dream, system } from '@/lib/substrate';
+import { substrate, brain, decode, defense, nexus, vision, dream, system, modernizer } from '@/lib/substrate';
 import { supabase } from '@/integrations/supabase/client';
 import { ALL_COMMANDS, COMMAND_CATEGORIES, type CommandDefinition } from './TerminalCommands';
 import { getRandomItem, PERSONALITY_RESPONSES } from './TerminalTypes';
@@ -356,86 +356,31 @@ export async function executeCommand(
       result = { success: !res.error, data: res.data, error: res.error?.message };
     }
 
-    // MODERNIZER module
+    // MODERNIZER module (via substrate)
     else if (base === 'modernizer.status') {
-      const { count, error } = await supabase
-        .from('modernizer_jobs')
-        .select('*', { count: 'exact', head: true });
-      
-      if (error) throw error;
-      
-      result = {
-        success: true,
-        data: {
-          status: 'operational',
-          total_jobs: count || 0,
-          message: 'Modernizer service is running',
-        },
-      };
+      result = await modernizer.status();
     } else if (base === 'modernizer.jobs') {
       const limit = args[0] ? parseInt(args[0]) : 10;
-      const { data, error } = await supabase
-        .from('modernizer_jobs')
-        .select('id, site_url, created_at')
-        .order('created_at', { ascending: false })
-        .limit(limit);
-      
-      if (error) throw error;
-      result = { success: true, data: { jobs: data, count: data?.length || 0 } };
+      result = await modernizer.jobs(limit);
     } else if (base === 'modernizer.submit') {
       if (!args[0]) {
         return { success: false, output: '▓ ERROR: URL required\n  Usage: modernizer.submit <url>' };
       }
-      // This would normally call an edge function - for now return a placeholder
-      result = {
-        success: true,
-        data: {
-          message: 'Modernization request queued',
-          url: args[0],
-          note: 'Navigate to /modernizer to submit jobs with full features',
-        },
-      };
+      result = await modernizer.submit(args[0]);
     } else if (base === 'modernizer.analyze') {
       if (!args[0]) {
         return { success: false, output: '▓ ERROR: URL required\n  Usage: modernizer.analyze <url>' };
       }
-      result = {
-        success: true,
-        data: {
-          message: 'Analysis would run for: ' + args[0],
-          note: 'Use the Modernizer UI for full analysis capabilities',
-        },
-      };
+      result = await modernizer.analyze(args[0]);
     } else if (base === 'modernizer.export') {
       if (!args[0]) {
         return { success: false, output: '▓ ERROR: Job ID required\n  Usage: modernizer.export <job_id>' };
       }
-      const { data, error } = await supabase
-        .from('modernizer_jobs')
-        .select('id, site_url, status, output_assets')
-        .eq('id', args[0])
-        .single();
-      
-      if (error) throw error;
-      result = { success: true, data };
+      result = await modernizer.export(args[0]);
     } else if (base === 'modernizer.quota') {
-      // Check user's modernizer usage
-      const { data, error } = await supabase
-        .from('modernizer_jobs')
-        .select('id, created_at')
-        .gte('created_at', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString());
-      
-      if (error) throw error;
-      
-      result = {
-        success: true,
-        data: {
-          jobs_this_month: data?.length || 0,
-          tier: 'free',
-          limit: 5,
-          remaining: Math.max(0, 5 - (data?.length || 0)),
-        },
-      };
+      result = await modernizer.quota();
+    } else if (base === 'modernizer.pulse') {
+      result = await modernizer.pulse();
     }
 
     // Unknown command
