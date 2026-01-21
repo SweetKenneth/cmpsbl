@@ -26,34 +26,8 @@ const CIRCUIT_BREAKER = {
 };
 
 // Research capabilities with actual API endpoints
+// Primary: Groq + Firecrawl (no Perplexity)
 const RESEARCH_PROVIDERS = {
-  perplexity: {
-    enabled: () => !!Deno.env.get('PERPLEXITY_API_KEY'),
-    search: async (query: string) => {
-      const apiKey = Deno.env.get('PERPLEXITY_API_KEY');
-      const response = await fetch('https://api.perplexity.ai/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'sonar',
-          messages: [
-            { role: 'system', content: 'Provide comprehensive research with citations.' },
-            { role: 'user', content: query }
-          ],
-        }),
-      });
-      
-      if (!response.ok) throw new Error(`Perplexity error: ${response.status}`);
-      const data = await response.json();
-      return {
-        content: data.choices?.[0]?.message?.content || '',
-        citations: data.citations || [],
-      };
-    },
-  },
   firecrawl: {
     enabled: () => !!Deno.env.get('FIRECRAWL_API_KEY'),
     scrape: async (url: string) => {
@@ -189,28 +163,12 @@ async function updateProgress(supabase: any, taskId: string, progress: number, m
   return true; // Continue
 }
 
-// Perform real web research
+// Perform real web research - Groq + Firecrawl strategy
 async function performWebResearch(query: string, depth: number = 1): Promise<{ content: string; sources: string[] }> {
   const sources: string[] = [];
   let content = '';
   
-  // Try Perplexity first (best for AI-powered search)
-  if (RESEARCH_PROVIDERS.perplexity.enabled() && !isCircuitOpen('perplexity')) {
-    try {
-      console.log('🔍 Researching with Perplexity...');
-      const result = await RESEARCH_PROVIDERS.perplexity.search(query);
-      recordCircuitResult('perplexity', true);
-      return {
-        content: result.content,
-        sources: result.citations,
-      };
-    } catch (err) {
-      console.warn('Perplexity failed:', err);
-      recordCircuitResult('perplexity', false);
-    }
-  }
-  
-  // Fallback to Firecrawl web search
+  // Try Firecrawl web search first (real web data)
   if (RESEARCH_PROVIDERS.firecrawl.enabled() && !isCircuitOpen('firecrawl')) {
     try {
       console.log('🔍 Researching with Firecrawl search...');
@@ -226,6 +184,21 @@ async function performWebResearch(query: string, depth: number = 1): Promise<{ c
       }
       
       if (content) {
+        // Enhance with Groq synthesis
+        if (RESEARCH_PROVIDERS.groq.enabled() && !isCircuitOpen('groq')) {
+          try {
+            console.log('🧠 Synthesizing with Groq...');
+            const synthesis = await RESEARCH_PROVIDERS.groq.generate(
+              'You are a research analyst. Synthesize the following scraped web content into a comprehensive, well-organized report. Maintain factual accuracy and cite sources where relevant.',
+              `Query: ${query}\n\nScraped content:\n${content.slice(0, 8000)}\n\nSources: ${sources.join(', ')}`
+            );
+            recordCircuitResult('groq', true);
+            return { content: synthesis, sources };
+          } catch (err) {
+            console.warn('Groq synthesis failed, returning raw Firecrawl data:', err);
+            recordCircuitResult('groq', false);
+          }
+        }
         return { content, sources };
       }
     } catch (err) {
@@ -234,12 +207,12 @@ async function performWebResearch(query: string, depth: number = 1): Promise<{ c
     }
   }
   
-  // Final fallback - use Groq for knowledge-based response
+  // Fallback to Groq for knowledge-based response
   if (RESEARCH_PROVIDERS.groq.enabled() && !isCircuitOpen('groq')) {
     try {
       console.log('🧠 Using Groq for knowledge-based research...');
       const result = await RESEARCH_PROVIDERS.groq.generate(
-        'You are a research specialist. Provide comprehensive, accurate information based on your training data. Format with clear sections and bullet points.',
+        'You are a research specialist. Provide comprehensive, accurate information based on your training data. Format with clear sections and bullet points. Include relevant statistics and examples.',
         `Research thoroughly: ${query}`
       );
       recordCircuitResult('groq', true);
