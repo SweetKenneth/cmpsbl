@@ -61,3 +61,9 @@ export * from './smartSuggestions';
 
 // Utilities
 export * from './slugUtils';
+
+// === NEW: Agency Economics + Dream Learning ===
+export * from './economy';
+export * from './skills';
+export * from './presets';
+export * from './substrate';
