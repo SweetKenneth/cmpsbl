@@ -3,9 +3,9 @@
  * Allows setting credentials and deploying directly
  */
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { toast } from 'sonner';
-import { Shield, Lock, Eye, EyeOff, Loader2, Check, Users, Mail } from 'lucide-react';
+import { Shield, Lock, Eye, EyeOff, Loader2, Check, Users, Mail, Link as LinkIcon, Copy } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -23,6 +23,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { supabase } from '@/integrations/supabase/client';
 import { isValidEmail } from '@/utils/validators';
 import { cn } from '@/lib/utils';
+import { generateSlug, getAgencyPortalUrl } from '@/lib/agency/slugUtils';
 import type { AgencyMember, DreamPoolMode } from '@/lib/agency/agencyTypes';
 
 interface GovernorSelfMintDialogProps {
@@ -50,6 +51,7 @@ export function GovernorSelfMintDialog({
 }: GovernorSelfMintDialogProps) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [deployedSlug, setDeployedSlug] = useState<string | null>(null);
   
   // Credentials
   const [userEmail, setUserEmail] = useState('');
@@ -57,12 +59,30 @@ export function GovernorSelfMintDialog({
   const [showPassword, setShowPassword] = useState(false);
   
   // Deployment
-  const [deploymentType, setDeploymentType] = useState<DeploymentType>('standalone');
-  const [deploymentDomain, setDeploymentDomain] = useState('');
+  const [deploymentType, setDeploymentType] = useState<DeploymentType>('hosted');
+  const [customSlug, setCustomSlug] = useState('');
   
   // Business Profile
   const [companyName, setCompanyName] = useState('');
   const [businessDomain, setBusinessDomain] = useState('');
+
+  // Generate preview slug from agency name
+  const previewSlug = useMemo(() => {
+    if (customSlug.trim()) return customSlug.toLowerCase().replace(/[^a-z0-9-]/g, '-');
+    return agencyName ? generateSlug(agencyName).split('-').slice(0, -1).join('-') : '';
+  }, [agencyName, customSlug]);
+
+  const portalUrl = useMemo(() => {
+    const slug = customSlug.trim() || generateSlug(agencyName);
+    return getAgencyPortalUrl(slug.split('-').slice(0, -1).join('-') || 'agency');
+  }, [agencyName, customSlug]);
+
+  const copyPortalUrl = () => {
+    if (deployedSlug) {
+      navigator.clipboard.writeText(getAgencyPortalUrl(deployedSlug));
+      toast.success('URL copied to clipboard');
+    }
+  };
 
   const handleSelfMint = async () => {
     if (!agencyName.trim()) {
@@ -104,18 +124,24 @@ export function GovernorSelfMintDialog({
         }
       }
       
+      // Generate unique slug for the agency
+      const agencySlug = customSlug.trim() 
+        ? customSlug.toLowerCase().replace(/[^a-z0-9-]/g, '-') 
+        : generateSlug(agencyName);
+      
       // 2. Create the agency record (status = deployed, since Governor is self-minting)
       const { data: agency, error: agencyError } = await supabase
         .from('agencies')
         .insert({
           owner_id: newUser?.user?.id || currentUser?.id,
           name: agencyName,
+          slug: agencySlug,
           template_id: templateId,
           dream_pool_mode: dreamPoolMode,
           cohesion_rating: cohesionRating,
           status: 'deployed',
           deployment_type: deploymentType,
-          deployment_domain: deploymentDomain || null,
+          deployment_domain: deploymentType === 'hosted' ? getAgencyPortalUrl(agencySlug) : null,
           business_profile: {
             companyName: companyName || agencyName,
             domain: businessDomain || null,
@@ -125,6 +151,9 @@ export function GovernorSelfMintDialog({
         .single();
 
       if (agencyError) throw agencyError;
+      
+      // Store deployed slug for success UI
+      setDeployedSlug(agencySlug);
 
       // 3. Insert members
       if (agency && members.length > 0) {
@@ -182,19 +211,22 @@ export function GovernorSelfMintDialog({
           },
         });
       
-      toast.success(`Agency "${agencyName}" deployed successfully!`, {
-        description: `Credentials sent to ${userEmail}`,
+      toast.success(`Agency "${agencyName}" deployed!`, {
+        description: deployedSlug ? `Available at /a/${agencySlug}` : `Credentials: ${userEmail}`,
       });
       
-      setOpen(false);
-      onComplete?.(agency?.id);
+      // Keep dialog open to show success with URL
+      if (deploymentType !== 'hosted') {
+        setOpen(false);
+        onComplete?.(agency?.id);
+      }
       
-      // Reset form
+      // Reset form fields (but not deployedSlug)
       setUserEmail('');
       setUserPassword('');
       setCompanyName('');
       setBusinessDomain('');
-      setDeploymentDomain('');
+      setCustomSlug('');
       
     } catch (error) {
       console.error('Self-mint error:', error);
@@ -306,17 +338,58 @@ export function GovernorSelfMintDialog({
             </RadioGroup>
           </div>
 
-          {/* Optional Domain */}
+          {/* Portal URL Preview (for hosted) */}
           {deploymentType === 'hosted' && (
             <div className="space-y-2">
-              <Label htmlFor="domain">Deployment Domain</Label>
-              <Input
-                id="domain"
-                value={deploymentDomain}
-                onChange={(e) => setDeploymentDomain(e.target.value)}
-                placeholder="agency.example.com"
-                className="bg-black/30"
-              />
+              <Label htmlFor="slug">Custom URL Slug (optional)</Label>
+              <div className="flex gap-2">
+                <Input
+                  id="slug"
+                  value={customSlug}
+                  onChange={(e) => setCustomSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
+                  placeholder={previewSlug || 'auto-generated'}
+                  className="bg-black/30 flex-1"
+                />
+              </div>
+              <div className="flex items-center gap-2 p-2 rounded-lg bg-cyan-500/10 border border-cyan-500/30">
+                <LinkIcon className="w-4 h-4 text-cyan-400 shrink-0" />
+                <code className="text-xs text-cyan-300 truncate">/a/{customSlug || previewSlug || 'your-agency'}</code>
+              </div>
+            </div>
+          )}
+
+          {/* Success State: Show URL */}
+          {deployedSlug && deploymentType === 'hosted' && (
+            <div className="space-y-3 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
+              <div className="flex items-center gap-2 text-emerald-400">
+                <Check className="w-5 h-5" />
+                <span className="font-medium">Agency Deployed!</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <code className="text-sm text-emerald-300 flex-1 truncate bg-black/30 px-3 py-2 rounded">
+                  {getAgencyPortalUrl(deployedSlug)}
+                </code>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={copyPortalUrl}
+                  className="shrink-0 gap-1"
+                >
+                  <Copy className="w-3 h-3" />
+                  Copy
+                </Button>
+              </div>
+              <Button 
+                className="w-full" 
+                onClick={() => { 
+                  setOpen(false); 
+                  const slug = deployedSlug;
+                  setDeployedSlug(null);
+                  onComplete?.(slug || '');
+                }}
+              >
+                Done
+              </Button>
             </div>
           )}
 
