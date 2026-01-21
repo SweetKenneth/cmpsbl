@@ -1,12 +1,12 @@
 /**
- * Agency Gallery — Manage created agencies
+ * Agency Gallery — Manage created agencies with chat access
  */
 
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { 
   Users, Download, Copy, Trash2, Edit, MoreVertical, 
-  ExternalLink, Archive, RefreshCw, Loader2 
+  ExternalLink, RefreshCw, Loader2, MessageCircle, X
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -29,10 +29,18 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
 import { AgencyMemberCard } from './AgencyMemberCard';
+import { AgencyChatInterface } from './AgencyChatInterface';
 import type { Agency, AgencyMember } from '@/lib/agency/agencyTypes';
+import { getDefaultSkillsForSpec, type Specialization } from '@/lib/agency/agencyTypes';
 
 interface AgencyGalleryProps {
   onEdit?: (agencyId: string) => void;
@@ -44,6 +52,7 @@ export function AgencyGallery({ onEdit }: AgencyGalleryProps) {
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [renameId, setRenameId] = useState<string | null>(null);
   const [newName, setNewName] = useState('');
+  const [chatAgency, setChatAgency] = useState<Agency | null>(null);
 
   const loadAgencies = async () => {
     setLoading(true);
@@ -71,13 +80,17 @@ export function AgencyGallery({ onEdit }: AgencyGalleryProps) {
         deploymentType: a.deployment_type as Agency['deploymentType'],
         deploymentDomain: a.deployment_domain,
         businessProfile: (a.business_profile as Agency['businessProfile']) || {},
-        members: (Array.isArray(a.agency_members) ? a.agency_members : []).map((m: any) => ({
-          id: m.id,
-          role: m.role as 'leader' | 'specialist',
-          specialization: m.specialization,
-          skillWeights: m.skill_weights || { research: 0.5, analysis: 0.5, execution: 0.5 },
-          cognitiveId: m.cognitive_id,
-        })),
+        members: (Array.isArray(a.agency_members) ? a.agency_members : []).map((m: any) => {
+          const spec = m.specialization as Specialization;
+          const defaultSkills = getDefaultSkillsForSpec(spec);
+          return {
+            id: m.id,
+            role: m.role as 'leader' | 'specialist',
+            specialization: m.specialization,
+            skillWeights: m.skill_weights || defaultSkills,
+            cognitiveId: m.cognitive_id,
+          };
+        }),
         createdAt: a.created_at,
         updatedAt: a.updated_at,
       }));
@@ -296,14 +309,26 @@ export function AgencyGallery({ onEdit }: AgencyGalleryProps) {
                 <span className="text-xs text-muted-foreground">
                   Cohesion: {agency.cohesionRating}%
                 </span>
-                {agency.status === 'deployed' && agency.deploymentDomain && (
-                  <Button variant="ghost" size="sm" className="h-6 gap-1 text-xs" asChild>
-                    <a href={`https://${agency.deploymentDomain}`} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="w-3 h-3" />
-                      View
-                    </a>
+                <div className="flex items-center gap-2">
+                  {/* Chat Button */}
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="h-6 gap-1 text-xs hover:bg-fuchsia-500/10 hover:text-fuchsia-400"
+                    onClick={() => setChatAgency(agency)}
+                  >
+                    <MessageCircle className="w-3 h-3" />
+                    Chat
                   </Button>
-                )}
+                  {agency.status === 'deployed' && agency.deploymentDomain && (
+                    <Button variant="ghost" size="sm" className="h-6 gap-1 text-xs" asChild>
+                      <a href={`https://${agency.deploymentDomain}`} target="_blank" rel="noopener noreferrer">
+                        <ExternalLink className="w-3 h-3" />
+                        View
+                      </a>
+                    </Button>
+                  )}
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -348,6 +373,21 @@ export function AgencyGallery({ onEdit }: AgencyGalleryProps) {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Chat Dialog */}
+      <Dialog open={!!chatAgency} onOpenChange={() => setChatAgency(null)}>
+        <DialogContent className="max-w-2xl h-[80vh] p-0 bg-background/95 backdrop-blur-xl border-fuchsia-500/30">
+          <DialogHeader className="sr-only">
+            <DialogTitle>Chat with {chatAgency?.name}</DialogTitle>
+          </DialogHeader>
+          {chatAgency && (
+            <AgencyChatInterface 
+              agency={chatAgency} 
+              className="h-full rounded-lg"
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
