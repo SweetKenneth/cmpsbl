@@ -3,13 +3,13 @@
  * Complete list of all substrate commands organized by module
  */
 
-import { Brain, Shield, Eye, Zap, MessageSquare, Moon, Settings, Terminal, Cpu, Clock, Search, Database, Activity, Lock, Router, Gauge } from 'lucide-react';
+import { Brain, Shield, Eye, Zap, MessageSquare, Moon, Settings, Terminal, Cpu, Clock, Search, Database, Activity, Lock, Router, Gauge, Sparkles } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
 export interface CommandDefinition {
   command: string;
   description: string;
-  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'meta';
+  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer' | 'meta';
   icon: LucideIcon;
   requiresOperator: boolean;
   args?: string;
@@ -120,6 +120,15 @@ export const SYSTEM_COMMANDS: CommandDefinition[] = [
   { command: 'system.upgrade.rollback', description: 'Rollback upgrade', category: 'system', icon: Cpu, requiresOperator: true, args: '<plan_id>' },
 ];
 
+export const MODERNIZER_COMMANDS: CommandDefinition[] = [
+  { command: 'modernizer.status', description: 'Modernizer service status', category: 'modernizer', icon: Sparkles, requiresOperator: false },
+  { command: 'modernizer.jobs', description: 'List recent modernization jobs', category: 'modernizer', icon: Activity, requiresOperator: false, args: '[limit]' },
+  { command: 'modernizer.submit', description: 'Submit URL for modernization', category: 'modernizer', icon: Sparkles, requiresOperator: true, args: '<url>', example: 'modernizer.submit https://example.com' },
+  { command: 'modernizer.analyze', description: 'Analyze a website', category: 'modernizer', icon: Search, requiresOperator: true, args: '<url>' },
+  { command: 'modernizer.export', description: 'Export job assets', category: 'modernizer', icon: Database, requiresOperator: true, args: '<job_id>' },
+  { command: 'modernizer.quota', description: 'Check usage limits', category: 'modernizer', icon: Gauge, requiresOperator: false },
+];
+
 export const META_COMMANDS: CommandDefinition[] = [
   { command: 'help', description: 'Show all commands', category: 'meta', icon: Terminal, requiresOperator: false },
   { command: 'help brain', description: 'Brain module commands', category: 'meta', icon: Brain, requiresOperator: false },
@@ -129,6 +138,7 @@ export const META_COMMANDS: CommandDefinition[] = [
   { command: 'help vision', description: 'Vision module commands', category: 'meta', icon: Eye, requiresOperator: false },
   { command: 'help dream', description: 'Dream module commands', category: 'meta', icon: Moon, requiresOperator: false },
   { command: 'help system', description: 'System module commands', category: 'meta', icon: Cpu, requiresOperator: false },
+  { command: 'help modernizer', description: 'Modernizer module commands', category: 'meta', icon: Sparkles, requiresOperator: false },
   { command: 'clear', description: 'Clear terminal history', category: 'meta', icon: Terminal, requiresOperator: false },
   { command: 'whoami', description: 'Display identity', category: 'meta', icon: Cpu, requiresOperator: false },
   { command: 'history', description: 'Command history', category: 'meta', icon: Clock, requiresOperator: false },
@@ -144,6 +154,7 @@ export const ALL_COMMANDS: CommandDefinition[] = [
   ...VISION_COMMANDS,
   ...DREAM_COMMANDS,
   ...SYSTEM_COMMANDS,
+  ...MODERNIZER_COMMANDS,
   ...META_COMMANDS,
 ];
 
@@ -155,6 +166,7 @@ export const COMMAND_CATEGORIES = {
   vision: { label: 'VISION', color: 'text-cyan-400', borderColor: 'border-cyan-500/30', commands: VISION_COMMANDS },
   dream: { label: 'DREAM', color: 'text-fuchsia-400', borderColor: 'border-fuchsia-500/30', commands: DREAM_COMMANDS },
   system: { label: 'SYSTEM', color: 'text-emerald-400', borderColor: 'border-emerald-500/30', commands: SYSTEM_COMMANDS },
+  modernizer: { label: 'MODERNIZER', color: 'text-orange-400', borderColor: 'border-orange-500/30', commands: MODERNIZER_COMMANDS },
   meta: { label: 'META', color: 'text-gray-400', borderColor: 'border-gray-500/30', commands: META_COMMANDS },
 } as const;
 

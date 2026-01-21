@@ -101,7 +101,8 @@ export function GovernorSelfMintDialog({
     try {
       const { data: { user: currentUser } } = await supabase.auth.getUser();
       
-      // 1. Create user account for the agency owner
+      // 1. Create user account for the agency owner (auto-confirmed via Supabase config)
+      let newUserId: string | null = null;
       const { data: newUser, error: signUpError } = await supabase.auth.signUp({
         email: userEmail,
         password: userPassword,
@@ -114,19 +115,33 @@ export function GovernorSelfMintDialog({
       });
       
       if (signUpError) {
-        // If user exists, we can still proceed with agency creation
-        if (!signUpError.message.includes('already registered')) {
+        // If user already exists, that's OK - they can still access the agency
+        if (!signUpError.message.includes('already registered') && 
+            !signUpError.message.includes('User already registered')) {
           throw signUpError;
         }
+        console.log('User already exists, proceeding with agency creation');
+      } else {
+        newUserId = newUser?.user?.id || null;
       }
       
-      // Auto-generate unique slug from agency name
-      const agencySlug = generateSlug(agencyName);
+      // Auto-generate unique slug from agency name with uniqueness check
+      let agencySlug = generateSlug(agencyName);
+      
+      // Check if slug exists and make it unique
+      const { data: existingSlug } = await supabase
+        .from('agencies')
+        .select('slug')
+        .eq('slug', agencySlug)
+        .maybeSingle();
+        
+      if (existingSlug) {
+        agencySlug = `${agencySlug}-${Date.now().toString(36)}`;
+      }
+      
       const portalUrl = getAgencyPortalUrl(agencySlug);
       
-      // Determine the owner - use the new user if created, otherwise current user (Governor)
-      // For RLS to work, we need to set owner_id to the current user (Governor) who is making the insert
-      // The new user will be linked via the purchase record
+      // For RLS to work, set owner_id to the current user (Governor) who is making the insert
       const ownerId = currentUser?.id;
       
       // 2. Create the agency record (status = deployed, since Governor is self-minting)
@@ -145,10 +160,10 @@ export function GovernorSelfMintDialog({
           business_profile: {
             companyName: companyName || agencyName,
             domain: businessDomain || null,
-            ownerEmail: userEmail, // Store the actual owner email
+            ownerEmail: userEmail,
           },
           metadata: {
-            created_for_user: newUser?.user?.id || null,
+            created_for_user: newUserId,
             created_by_governor: currentUser?.id,
           },
         })
@@ -197,7 +212,7 @@ export function GovernorSelfMintDialog({
       await supabase
         .from('agency_purchases')
         .insert({
-          user_id: newUser?.user?.id || currentUser?.id,
+          user_id: newUserId || currentUser?.id,
           agency_id: agency?.id,
           base_price_cents: 0,
           additional_cognitives: Math.max(0, members.filter(m => m.role === 'specialist').length),
@@ -216,14 +231,13 @@ export function GovernorSelfMintDialog({
       // Store deployed URL for success UI
       if (deploymentType === 'hosted') {
         setDeployedUrl(portalUrl);
-      }
-      
-      toast.success(`Agency "${agencyName}" deployed!`, {
-        description: deploymentType === 'hosted' ? `Available at ${portalUrl}` : `Credentials: ${userEmail}`,
-      });
-      
-      // Close dialog for non-hosted deployments
-      if (deploymentType !== 'hosted') {
+        toast.success(`Agency "${agencyName}" deployed successfully!`, {
+          description: `Portal ready at ${portalUrl}`,
+        });
+      } else {
+        toast.success(`Agency "${agencyName}" deployed!`, {
+          description: `Owner credentials: ${userEmail}`,
+        });
         setOpen(false);
         resetForm();
         onComplete?.(agency?.id);
