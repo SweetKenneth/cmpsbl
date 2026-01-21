@@ -1,10 +1,11 @@
 /**
- * promptfluid® substrate — OS Surface v3.1.0
+ * promptfluid® substrate — OS Surface v3.2.0
  * HARDENED EDITION — Circuit breakers, auto-heal, graceful degradation
  * 
  * Unified control surface with terminal aesthetics,
  * live telemetry, and module status visualization.
  * Now with dedicated terminal tab for full interaction.
+ * v3.2.0: Added Backup & Restore panel
  */
 
 import { Navigate, Link } from 'react-router-dom';
@@ -12,7 +13,7 @@ import { useState } from 'react';
 import { 
   Loader2, Lock, Terminal, AlertTriangle, Database, RefreshCw, 
   Settings, FileText, Zap, LayoutDashboard, Activity, Bot, Users, Sparkles,
-  Building2, ExternalLink
+  Building2, ExternalLink, HardDrive
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -48,6 +49,7 @@ import { SystemHealthPanel } from '@/components/substrate-os/SystemHealthPanel';
 import { HealButton } from '@/components/substrate-os/HealButton';
 import { CognitivesPanel } from '@/components/substrate-os/CognitivesPanel';
 import { UpgradeEnginePanel } from '@/components/substrate-os/UpgradeEnginePanel';
+import { BackupRestorePanel } from '@/components/substrate-os/BackupRestorePanel';
 import { AgencyMintWizard } from '@/components/agency/AgencyMintWizard';
 import { AgencyGallery } from '@/components/agency/AgencyGallery';
 import { cn } from '@/lib/utils';
@@ -359,6 +361,20 @@ export default function SubstrateOS() {
                 <Activity className="w-4 h-4" />
                 <span className="hidden sm:inline">Events</span>
               </TabsTrigger>
+              {isOperator && (
+                <TabsTrigger 
+                  value="backups" 
+                  className={cn(
+                    "gap-2 rounded-lg transition-all",
+                    "data-[state=active]:bg-blue-500/10 data-[state=active]:text-blue-400",
+                    "data-[state=active]:border-b-2 data-[state=active]:border-blue-400",
+                    "hover:bg-white/5"
+                  )}
+                >
+                  <HardDrive className="w-4 h-4" />
+                  <span className="hidden sm:inline">Backups</span>
+                </TabsTrigger>
+              )}
               {isGovernor && (
                 <TabsTrigger 
                   value="mint" 
@@ -496,6 +512,15 @@ export default function SubstrateOS() {
             <EventStream />
           </main>
         </TabsContent>
+
+        {/* Backups Tab - Operator+ */}
+        {isOperator && (
+          <TabsContent value="backups" className="flex-1 mt-0">
+            <main className="container mx-auto px-4 py-6 max-w-7xl">
+              <BackupRestorePanel enabled={isOperator} />
+            </main>
+          </TabsContent>
+        )}
 
         {/* Mint Tab - Governor Only */}
         {isGovernor && (

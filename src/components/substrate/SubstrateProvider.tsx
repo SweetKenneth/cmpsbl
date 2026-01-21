@@ -83,7 +83,8 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
   };
 
   const refresh = async () => {
-    const moduleList: SubstrateModule[] = ['brain', 'decode', 'defense', 'nexus', 'vision'];
+    // Check all 8 substrate modules
+    const moduleList: SubstrateModule[] = ['brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'system', 'modernizer'];
     const results = await Promise.all(moduleList.map(checkModule));
     
     const newModules = moduleList.reduce((acc, module, index) => {
@@ -91,7 +92,7 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
       return acc;
     }, {} as Record<SubstrateModule, ModuleStatus>);
 
-    setModules(newModules);
+    setModules(prev => ({ ...prev, ...newModules }));
     setInitialized(true);
   };
 
@@ -103,7 +104,11 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
     }
   }, [autoInit]);
 
-  const overallHealth = Object.values(modules).reduce((sum, m) => sum + m.health, 0) / 5;
+  // Calculate overall health from all initialized modules
+  const activeModules = Object.values(modules).filter(m => m.health > 0);
+  const overallHealth = activeModules.length > 0 
+    ? activeModules.reduce((sum, m) => sum + m.health, 0) / activeModules.length 
+    : 0;
 
   return (
     <SubstrateContext.Provider value={{ initialized, modules, overallHealth, refresh }}>
