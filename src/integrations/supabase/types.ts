@@ -152,6 +152,160 @@ export type Database = {
           },
         ]
       }
+      agency_agent_telemetry: {
+        Row: {
+          agency_id: string
+          api_calls: number
+          avg_latency_ms: number | null
+          created_at: string
+          datasets_processed: number
+          enrichment_operations: number
+          estimated_cost_cents: number
+          id: string
+          member_id: string | null
+          monitoring_cycles: number
+          period_date: string
+          skill_usage: Json
+          tasks_completed: number
+          tasks_failed: number
+          total_execution_time_ms: number
+          updated_at: string
+          websites_crawled: number
+        }
+        Insert: {
+          agency_id: string
+          api_calls?: number
+          avg_latency_ms?: number | null
+          created_at?: string
+          datasets_processed?: number
+          enrichment_operations?: number
+          estimated_cost_cents?: number
+          id?: string
+          member_id?: string | null
+          monitoring_cycles?: number
+          period_date?: string
+          skill_usage?: Json
+          tasks_completed?: number
+          tasks_failed?: number
+          total_execution_time_ms?: number
+          updated_at?: string
+          websites_crawled?: number
+        }
+        Update: {
+          agency_id?: string
+          api_calls?: number
+          avg_latency_ms?: number | null
+          created_at?: string
+          datasets_processed?: number
+          enrichment_operations?: number
+          estimated_cost_cents?: number
+          id?: string
+          member_id?: string | null
+          monitoring_cycles?: number
+          period_date?: string
+          skill_usage?: Json
+          tasks_completed?: number
+          tasks_failed?: number
+          total_execution_time_ms?: number
+          updated_at?: string
+          websites_crawled?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agency_agent_telemetry_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agency_agent_telemetry_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "agency_members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      agency_api_calls: {
+        Row: {
+          agency_id: string
+          api_name: string
+          created_at: string
+          endpoint: string | null
+          error_message: string | null
+          estimated_cost_cents: number | null
+          id: string
+          member_id: string | null
+          method: string | null
+          request_metadata: Json | null
+          response_metadata: Json | null
+          response_time_ms: number | null
+          status_code: number | null
+          success: boolean
+          task_id: string | null
+          tokens_used: number | null
+        }
+        Insert: {
+          agency_id: string
+          api_name: string
+          created_at?: string
+          endpoint?: string | null
+          error_message?: string | null
+          estimated_cost_cents?: number | null
+          id?: string
+          member_id?: string | null
+          method?: string | null
+          request_metadata?: Json | null
+          response_metadata?: Json | null
+          response_time_ms?: number | null
+          status_code?: number | null
+          success?: boolean
+          task_id?: string | null
+          tokens_used?: number | null
+        }
+        Update: {
+          agency_id?: string
+          api_name?: string
+          created_at?: string
+          endpoint?: string | null
+          error_message?: string | null
+          estimated_cost_cents?: number | null
+          id?: string
+          member_id?: string | null
+          method?: string | null
+          request_metadata?: Json | null
+          response_metadata?: Json | null
+          response_time_ms?: number | null
+          status_code?: number | null
+          success?: boolean
+          task_id?: string | null
+          tokens_used?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agency_api_calls_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agency_api_calls_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "agency_members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agency_api_calls_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "agency_tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       agency_dream_pool: {
         Row: {
           agency_id: string
@@ -522,6 +676,76 @@ export type Database = {
             columns: ["agency_id"]
             isOneToOne: true
             referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      agency_task_artifacts: {
+        Row: {
+          agency_id: string
+          artifact_type: string
+          content_hash: string | null
+          created_at: string
+          download_count: number
+          file_name: string
+          file_path: string | null
+          file_size_bytes: number | null
+          id: string
+          inline_content: string | null
+          member_id: string | null
+          metadata: Json | null
+          task_id: string
+        }
+        Insert: {
+          agency_id: string
+          artifact_type: string
+          content_hash?: string | null
+          created_at?: string
+          download_count?: number
+          file_name: string
+          file_path?: string | null
+          file_size_bytes?: number | null
+          id?: string
+          inline_content?: string | null
+          member_id?: string | null
+          metadata?: Json | null
+          task_id: string
+        }
+        Update: {
+          agency_id?: string
+          artifact_type?: string
+          content_hash?: string | null
+          created_at?: string
+          download_count?: number
+          file_name?: string
+          file_path?: string | null
+          file_size_bytes?: number | null
+          id?: string
+          inline_content?: string | null
+          member_id?: string | null
+          metadata?: Json | null
+          task_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agency_task_artifacts_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agency_task_artifacts_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "agency_members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agency_task_artifacts_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "agency_tasks"
             referencedColumns: ["id"]
           },
         ]
@@ -6488,6 +6712,17 @@ export type Database = {
       has_role_text: {
         Args: { _role: string; _user_id: string }
         Returns: boolean
+      }
+      increment_agent_telemetry: {
+        Args: {
+          p_agency_id: string
+          p_execution_time_ms?: number
+          p_field: string
+          p_increment?: number
+          p_member_id: string
+          p_skill_usage?: Json
+        }
+        Returns: undefined
       }
       reset_daily_quotas: { Args: never; Returns: undefined }
       show_limit: { Args: never; Returns: number }
