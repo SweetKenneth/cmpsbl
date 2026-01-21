@@ -1,9 +1,9 @@
 /**
  * Governor Self-Mint Dialog — Admin-only agency creation without payment
- * Allows setting credentials and deploying directly
+ * Auto-generates slug from agency name for hosted deployments
  */
 
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 import { Shield, Lock, Eye, EyeOff, Loader2, Check, Users, Mail, Link as LinkIcon, Copy } from 'lucide-react';
 import {
@@ -51,7 +51,7 @@ export function GovernorSelfMintDialog({
 }: GovernorSelfMintDialogProps) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [deployedSlug, setDeployedSlug] = useState<string | null>(null);
+  const [deployedUrl, setDeployedUrl] = useState<string | null>(null);
   
   // Credentials
   const [userEmail, setUserEmail] = useState('');
@@ -60,28 +60,24 @@ export function GovernorSelfMintDialog({
   
   // Deployment
   const [deploymentType, setDeploymentType] = useState<DeploymentType>('hosted');
-  const [customSlug, setCustomSlug] = useState('');
   
   // Business Profile
   const [companyName, setCompanyName] = useState('');
   const [businessDomain, setBusinessDomain] = useState('');
 
-  // Generate preview slug from agency name
-  const previewSlug = useMemo(() => {
-    if (customSlug.trim()) return customSlug.toLowerCase().replace(/[^a-z0-9-]/g, '-');
-    return agencyName ? generateSlug(agencyName).split('-').slice(0, -1).join('-') : '';
-  }, [agencyName, customSlug]);
-
-  const portalUrl = useMemo(() => {
-    const slug = customSlug.trim() || generateSlug(agencyName);
-    return getAgencyPortalUrl(slug.split('-').slice(0, -1).join('-') || 'agency');
-  }, [agencyName, customSlug]);
-
   const copyPortalUrl = () => {
-    if (deployedSlug) {
-      navigator.clipboard.writeText(getAgencyPortalUrl(deployedSlug));
+    if (deployedUrl) {
+      navigator.clipboard.writeText(deployedUrl);
       toast.success('URL copied to clipboard');
     }
+  };
+
+  const resetForm = () => {
+    setUserEmail('');
+    setUserPassword('');
+    setCompanyName('');
+    setBusinessDomain('');
+    setDeployedUrl(null);
   };
 
   const handleSelfMint = async () => {
@@ -124,16 +120,20 @@ export function GovernorSelfMintDialog({
         }
       }
       
-      // Generate unique slug for the agency
-      const agencySlug = customSlug.trim() 
-        ? customSlug.toLowerCase().replace(/[^a-z0-9-]/g, '-') 
-        : generateSlug(agencyName);
+      // Auto-generate unique slug from agency name
+      const agencySlug = generateSlug(agencyName);
+      const portalUrl = getAgencyPortalUrl(agencySlug);
+      
+      // Determine the owner - use the new user if created, otherwise current user (Governor)
+      // For RLS to work, we need to set owner_id to the current user (Governor) who is making the insert
+      // The new user will be linked via the purchase record
+      const ownerId = currentUser?.id;
       
       // 2. Create the agency record (status = deployed, since Governor is self-minting)
       const { data: agency, error: agencyError } = await supabase
         .from('agencies')
         .insert({
-          owner_id: newUser?.user?.id || currentUser?.id,
+          owner_id: ownerId,
           name: agencyName,
           slug: agencySlug,
           template_id: templateId,
@@ -141,19 +141,21 @@ export function GovernorSelfMintDialog({
           cohesion_rating: cohesionRating,
           status: 'deployed',
           deployment_type: deploymentType,
-          deployment_domain: deploymentType === 'hosted' ? getAgencyPortalUrl(agencySlug) : null,
+          deployment_domain: deploymentType === 'hosted' ? portalUrl : null,
           business_profile: {
             companyName: companyName || agencyName,
             domain: businessDomain || null,
+            ownerEmail: userEmail, // Store the actual owner email
+          },
+          metadata: {
+            created_for_user: newUser?.user?.id || null,
+            created_by_governor: currentUser?.id,
           },
         })
         .select()
         .single();
 
       if (agencyError) throw agencyError;
-      
-      // Store deployed slug for success UI
-      setDeployedSlug(agencySlug);
 
       // 3. Insert members
       if (agency && members.length > 0) {
@@ -211,22 +213,21 @@ export function GovernorSelfMintDialog({
           },
         });
       
-      toast.success(`Agency "${agencyName}" deployed!`, {
-        description: deployedSlug ? `Available at /a/${agencySlug}` : `Credentials: ${userEmail}`,
-      });
-      
-      // Keep dialog open to show success with URL
-      if (deploymentType !== 'hosted') {
-        setOpen(false);
-        onComplete?.(agency?.id);
+      // Store deployed URL for success UI
+      if (deploymentType === 'hosted') {
+        setDeployedUrl(portalUrl);
       }
       
-      // Reset form fields (but not deployedSlug)
-      setUserEmail('');
-      setUserPassword('');
-      setCompanyName('');
-      setBusinessDomain('');
-      setCustomSlug('');
+      toast.success(`Agency "${agencyName}" deployed!`, {
+        description: deploymentType === 'hosted' ? `Available at ${portalUrl}` : `Credentials: ${userEmail}`,
+      });
+      
+      // Close dialog for non-hosted deployments
+      if (deploymentType !== 'hosted') {
+        setOpen(false);
+        resetForm();
+        onComplete?.(agency?.id);
+      }
       
     } catch (error) {
       console.error('Self-mint error:', error);
@@ -236,8 +237,21 @@ export function GovernorSelfMintDialog({
     }
   };
 
+  const handleClose = () => {
+    setOpen(false);
+    resetForm();
+  };
+
+  const handleDone = () => {
+    handleClose();
+    onComplete?.('');
+  };
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={(isOpen) => {
+      if (!isOpen) handleClose();
+      else setOpen(true);
+    }}>
       <DialogTrigger asChild disabled={disabled}>
         {children}
       </DialogTrigger>
@@ -252,122 +266,20 @@ export function GovernorSelfMintDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-5 py-4">
-          {/* Agency Summary */}
-          <div className="flex items-center justify-between p-3 rounded-lg bg-fuchsia-500/10 border border-fuchsia-500/30">
-            <div className="flex items-center gap-2">
-              <Users className="w-4 h-4 text-fuchsia-400" />
-              <span className="font-medium">{agencyName || 'Unnamed Agency'}</span>
-            </div>
-            <Badge variant="outline" className="text-[10px] border-fuchsia-500/50 text-fuchsia-400">
-              {members.length} cognitives
-            </Badge>
-          </div>
-
-          {/* Owner Credentials */}
-          <div className="space-y-3">
-            <div className="flex items-center gap-2 text-sm font-medium">
-              <Lock className="w-4 h-4 text-cyan-400" />
-              Owner Credentials
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="email">Email *</Label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input
-                  id="email"
-                  type="email"
-                  value={userEmail}
-                  onChange={(e) => setUserEmail(e.target.value)}
-                  placeholder="owner@company.com"
-                  className="pl-10 bg-black/30"
-                />
-              </div>
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="password">Password *</Label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input
-                  id="password"
-                  type={showPassword ? 'text' : 'password'}
-                  value={userPassword}
-                  onChange={(e) => setUserPassword(e.target.value)}
-                  placeholder="Min 8 characters"
-                  className="pl-10 pr-10 bg-black/30"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              </div>
-              <p className="text-[10px] text-muted-foreground">
-                Owner will use these credentials to access the agency.
-              </p>
-            </div>
-          </div>
-
-          {/* Deployment Type */}
-          <div className="space-y-3">
-            <Label>Deployment Type</Label>
-            <RadioGroup 
-              value={deploymentType} 
-              onValueChange={(v) => setDeploymentType(v as DeploymentType)}
-              className="grid grid-cols-3 gap-2"
-            >
-              {(['standalone', 'embedded', 'hosted'] as const).map((type) => (
-                <label
-                  key={type}
-                  className={cn(
-                    "flex items-center justify-center p-3 rounded-lg border cursor-pointer transition-all",
-                    "text-xs capitalize",
-                    deploymentType === type
-                      ? "border-cyan-500/50 bg-cyan-500/10 text-cyan-400"
-                      : "border-border/30 hover:border-border/50"
-                  )}
-                >
-                  <RadioGroupItem value={type} className="sr-only" />
-                  {type}
-                </label>
-              ))}
-            </RadioGroup>
-          </div>
-
-          {/* Portal URL Preview (for hosted) */}
-          {deploymentType === 'hosted' && (
-            <div className="space-y-2">
-              <Label htmlFor="slug">Custom URL Slug (optional)</Label>
-              <div className="flex gap-2">
-                <Input
-                  id="slug"
-                  value={customSlug}
-                  onChange={(e) => setCustomSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
-                  placeholder={previewSlug || 'auto-generated'}
-                  className="bg-black/30 flex-1"
-                />
-              </div>
-              <div className="flex items-center gap-2 p-2 rounded-lg bg-cyan-500/10 border border-cyan-500/30">
-                <LinkIcon className="w-4 h-4 text-cyan-400 shrink-0" />
-                <code className="text-xs text-cyan-300 truncate">/a/{customSlug || previewSlug || 'your-agency'}</code>
-              </div>
-            </div>
-          )}
-
-          {/* Success State: Show URL */}
-          {deployedSlug && deploymentType === 'hosted' && (
+        {/* Success State */}
+        {deployedUrl ? (
+          <div className="space-y-4 py-4">
             <div className="space-y-3 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
               <div className="flex items-center gap-2 text-emerald-400">
                 <Check className="w-5 h-5" />
                 <span className="font-medium">Agency Deployed!</span>
               </div>
+              <p className="text-sm text-muted-foreground">
+                Your agency is now live and accessible at:
+              </p>
               <div className="flex items-center gap-2">
                 <code className="text-sm text-emerald-300 flex-1 truncate bg-black/30 px-3 py-2 rounded">
-                  {getAgencyPortalUrl(deployedSlug)}
+                  {deployedUrl}
                 </code>
                 <Button 
                   variant="outline" 
@@ -379,64 +291,168 @@ export function GovernorSelfMintDialog({
                   Copy
                 </Button>
               </div>
-              <Button 
-                className="w-full" 
-                onClick={() => { 
-                  setOpen(false); 
-                  const slug = deployedSlug;
-                  setDeployedSlug(null);
-                  onComplete?.(slug || '');
-                }}
-              >
-                Done
-              </Button>
-            </div>
-          )}
-
-          {/* Business Profile */}
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-2">
-              <Label htmlFor="company">Company Name</Label>
-              <Input
-                id="company"
-                value={companyName}
-                onChange={(e) => setCompanyName(e.target.value)}
-                placeholder="Optional"
-                className="bg-black/30"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="bizDomain">Business Domain</Label>
-              <Input
-                id="bizDomain"
-                value={businessDomain}
-                onChange={(e) => setBusinessDomain(e.target.value)}
-                placeholder="example.com"
-                className="bg-black/30"
-              />
+              <div className="flex gap-2 pt-2">
+                <Button 
+                  variant="outline"
+                  className="flex-1" 
+                  onClick={() => window.open(deployedUrl, '_blank')}
+                >
+                  <LinkIcon className="w-4 h-4 mr-2" />
+                  Open Portal
+                </Button>
+                <Button 
+                  className="flex-1" 
+                  onClick={handleDone}
+                >
+                  Done
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <>
+            <div className="space-y-5 py-4">
+              {/* Agency Summary */}
+              <div className="flex items-center justify-between p-3 rounded-lg bg-fuchsia-500/10 border border-fuchsia-500/30">
+                <div className="flex items-center gap-2">
+                  <Users className="w-4 h-4 text-fuchsia-400" />
+                  <span className="font-medium">{agencyName || 'Unnamed Agency'}</span>
+                </div>
+                <Badge variant="outline" className="text-[10px] border-fuchsia-500/50 text-fuchsia-400">
+                  {members.length} cognitives
+                </Badge>
+              </div>
 
-        <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)}>
-            Cancel
-          </Button>
-          <Button
-            onClick={handleSelfMint}
-            disabled={loading || !agencyName.trim() || !userEmail || userPassword.length < 8}
-            className="gap-2 bg-gradient-to-r from-fuchsia-600 to-purple-600 hover:from-fuchsia-500 hover:to-purple-500"
-          >
-            {loading ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            ) : (
-              <>
-                <Check className="w-4 h-4" />
-                Deploy Agency (Free)
-              </>
-            )}
-          </Button>
-        </DialogFooter>
+              {/* Owner Credentials */}
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 text-sm font-medium">
+                  <Lock className="w-4 h-4 text-cyan-400" />
+                  Owner Credentials
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email *</Label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <Input
+                      id="email"
+                      type="email"
+                      value={userEmail}
+                      onChange={(e) => setUserEmail(e.target.value)}
+                      placeholder="owner@company.com"
+                      className="pl-10 bg-black/30"
+                    />
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="password">Password *</Label>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <Input
+                      id="password"
+                      type={showPassword ? 'text' : 'password'}
+                      value={userPassword}
+                      onChange={(e) => setUserPassword(e.target.value)}
+                      placeholder="Min 8 characters"
+                      className="pl-10 pr-10 bg-black/30"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    >
+                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground">
+                    Owner will use these credentials to access the agency.
+                  </p>
+                </div>
+              </div>
+
+              {/* Deployment Type */}
+              <div className="space-y-3">
+                <Label>Deployment Type</Label>
+                <RadioGroup 
+                  value={deploymentType} 
+                  onValueChange={(v) => setDeploymentType(v as DeploymentType)}
+                  className="grid grid-cols-3 gap-2"
+                >
+                  {(['standalone', 'embedded', 'hosted'] as const).map((type) => (
+                    <label
+                      key={type}
+                      className={cn(
+                        "flex items-center justify-center p-3 rounded-lg border cursor-pointer transition-all",
+                        "text-xs capitalize",
+                        deploymentType === type
+                          ? "border-cyan-500/50 bg-cyan-500/10 text-cyan-400"
+                          : "border-border/30 hover:border-border/50"
+                      )}
+                    >
+                      <RadioGroupItem value={type} className="sr-only" />
+                      {type}
+                    </label>
+                  ))}
+                </RadioGroup>
+              </div>
+
+              {/* Hosted deployment info */}
+              {deploymentType === 'hosted' && (
+                <div className="flex items-center gap-2 p-3 rounded-lg bg-cyan-500/10 border border-cyan-500/30">
+                  <LinkIcon className="w-4 h-4 text-cyan-400 shrink-0" />
+                  <div className="text-xs text-cyan-300">
+                    A unique portal URL will be auto-generated from your agency name.
+                  </div>
+                </div>
+              )}
+
+              {/* Business Profile */}
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-2">
+                  <Label htmlFor="company">Company Name</Label>
+                  <Input
+                    id="company"
+                    value={companyName}
+                    onChange={(e) => setCompanyName(e.target.value)}
+                    placeholder="Optional"
+                    className="bg-black/30"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="bizDomain">Business Domain</Label>
+                  <Input
+                    id="bizDomain"
+                    value={businessDomain}
+                    onChange={(e) => setBusinessDomain(e.target.value)}
+                    placeholder="example.com"
+                    className="bg-black/30"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <DialogFooter>
+              <Button variant="outline" onClick={handleClose}>
+                Cancel
+              </Button>
+              <Button
+                onClick={handleSelfMint}
+                disabled={loading || !agencyName.trim() || !userEmail || userPassword.length < 8}
+                className="gap-2 bg-gradient-to-r from-fuchsia-600 to-purple-600 hover:from-fuchsia-500 hover:to-purple-500"
+              >
+                {loading ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <>
+                    <Check className="w-4 h-4" />
+                    Deploy Agency (Free)
+                  </>
+                )}
+              </Button>
+            </DialogFooter>
+          </>
+        )}
       </DialogContent>
     </Dialog>
   );
