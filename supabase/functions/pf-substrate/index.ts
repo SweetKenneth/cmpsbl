@@ -5757,7 +5757,8 @@ async function handleSystem(
 }
 
 // ═══════════════════════════════════════════════════════════════
-// MODERNIZER MODULE — Website Modernization Service
+// MODERNIZER MODULE — Substrate Codebase Analysis & Improvement Engine
+// Scans the substrate itself for architecture improvements, not external sites
 // ═══════════════════════════════════════════════════════════════
 
 // deno-lint-ignore no-explicit-any
@@ -5778,44 +5779,57 @@ async function handleModernizer(
   switch (action) {
     case "status": {
       try {
-        const { count: totalJobs } = await supabase
-          .from('modernizer_jobs')
-          .select('*', { count: 'exact', head: true });
+        // Scan substrate tables for health metrics
+        const [
+          { count: memoryCount },
+          { count: eventCount },
+          { count: dreamCount },
+          { count: defenseCount },
+          { count: proposalCount },
+          { data: orchestrator },
+        ] = await Promise.all([
+          supabase.from('brain_memories').select('*', { count: 'exact', head: true }),
+          supabase.from('brain_events').select('*', { count: 'exact', head: true }),
+          supabase.from('cascade_dreams').select('*', { count: 'exact', head: true }),
+          supabase.from('defense_events').select('*', { count: 'exact', head: true }),
+          supabase.from('evolution_proposals').select('*', { count: 'exact', head: true }),
+          supabase.from('brain_orchestrator_state').select('*').limit(1).single(),
+        ]);
         
-        const { count: activeJobs } = await supabase
-          .from('modernizer_jobs')
-          .select('*', { count: 'exact', head: true })
-          .in('status', ['pending', 'extracting', 'rebuilding', 'processing']);
+        // Calculate substrate health metrics
+        const tableHealth = {
+          brain_memories: memoryCount ?? 0,
+          brain_events: eventCount ?? 0,
+          cascade_dreams: dreamCount ?? 0,
+          defense_events: defenseCount ?? 0,
+          evolution_proposals: proposalCount ?? 0,
+        };
         
-        const { count: completedJobs } = await supabase
-          .from('modernizer_jobs')
-          .select('*', { count: 'exact', head: true })
-          .eq('status', 'completed');
-        
-        const { count: failedJobs } = await supabase
-          .from('modernizer_jobs')
-          .select('*', { count: 'exact', head: true })
-          .eq('status', 'failed');
+        const totalRecords = Object.values(tableHealth).reduce((a, b) => a + b, 0);
+        const orchestratorHealth = orchestrator?.health_score ?? 50;
         
         return jsonResponse({
           success: true,
           module: 'modernizer',
           action: 'status',
+          target: 'substrate_codebase',
           status: 'operational',
           health: {
             score: moduleHealth.healthScore,
             status: moduleHealth.status,
             circuit: moduleHealth.circuitState,
           },
-          stats: {
-            total_jobs: totalJobs || 0,
-            active_jobs: activeJobs || 0,
-            completed_jobs: completedJobs || 0,
-            failed_jobs: failedJobs || 0,
-            success_rate: totalJobs && totalJobs > 0 
-              ? `${((completedJobs || 0) / totalJobs * 100).toFixed(1)}%` 
-              : 'N/A',
+          substrate_metrics: {
+            total_records: totalRecords,
+            table_health: tableHealth,
+            orchestrator_health: orchestratorHealth,
+            module_count: Object.keys(substrateState.modules).length,
           },
+          improvement_areas: [
+            totalRecords < 100 ? 'Low data density - substrate needs more training data' : null,
+            orchestratorHealth < 80 ? 'Orchestrator health degraded - run system.heal' : null,
+            moduleHealth.healthScore < 80 ? 'Modernizer module needs attention' : null,
+          ].filter(Boolean),
           timestamp: new Date().toISOString(),
         }, headers);
       } catch (error) {
@@ -5825,6 +5839,7 @@ async function handleModernizer(
           graceful_fallback: true,
           module: 'modernizer',
           action: 'status',
+          target: 'substrate_codebase',
           status: 'degraded',
           error: error instanceof Error ? error.message : 'Failed to fetch status',
           message: 'Modernizer service is experiencing issues. Self-healing initiated.',
@@ -5865,85 +5880,192 @@ async function handleModernizer(
       }
     }
 
-    case "submit": {
-      const { url } = data;
-      
-      if (!url) {
-        return jsonResponse({
-          success: false,
-          module: 'modernizer',
-          action: 'submit',
-          error: 'URL is required',
-        }, headers);
-      }
-      
-      // Validate URL format
-      try {
-        new URL(url as string);
-      } catch {
-        return jsonResponse({
-          success: false,
-          module: 'modernizer',
-          action: 'submit',
-          error: 'Invalid URL format',
-        }, headers);
-      }
+    case "submit":
+    case "scan": {
+      // Scan the substrate codebase for improvements
+      const { module: targetModule, depth = 'standard' } = data;
       
       try {
-        // Create a new modernization job
-        const { data: job, error } = await supabase
-          .from('modernizer_jobs')
-          .insert({
-            source_url: url,
-            status: 'pending',
-            theme: data.theme || 'modern',
-            improve_content: data.improve_content ?? true,
-          })
-          .select()
-          .single();
+        // Analyze substrate architecture
+        const [
+          { count: memoryCount },
+          { count: hotCount },
+          { count: coldCount },
+          { count: eventCount },
+          { count: dreamCount },
+          { count: proposalCount },
+          { data: recentEvents },
+          { data: orchestrator },
+        ] = await Promise.all([
+          supabase.from('brain_memories').select('*', { count: 'exact', head: true }),
+          supabase.from('brain_memory_hot').select('*', { count: 'exact', head: true }),
+          supabase.from('brain_memory_cold').select('*', { count: 'exact', head: true }),
+          supabase.from('brain_events').select('*', { count: 'exact', head: true }),
+          supabase.from('cascade_dreams').select('*', { count: 'exact', head: true }),
+          supabase.from('evolution_proposals').select('*', { count: 'exact', head: true }),
+          supabase.from('brain_events').select('event_type, outcome, module').order('created_at', { ascending: false }).limit(100),
+          supabase.from('brain_orchestrator_state').select('*').limit(1).single(),
+        ]);
         
-        if (error) throw error;
+        // Analyze patterns
+        const eventTypes = recentEvents?.reduce((acc: Record<string, number>, e: { event_type: string }) => {
+          acc[e.event_type] = (acc[e.event_type] || 0) + 1;
+          return acc;
+        }, {}) || {};
         
-        // Log the job creation
+        const outcomeStats = recentEvents?.reduce((acc: Record<string, number>, e: { outcome?: string }) => {
+          const outcome = e.outcome || 'unknown';
+          acc[outcome] = (acc[outcome] || 0) + 1;
+          return acc;
+        }, {}) || {};
+        
+        const successRate = outcomeStats['success'] 
+          ? (outcomeStats['success'] / (recentEvents?.length || 1) * 100).toFixed(1)
+          : '0';
+        
+        // Generate improvement proposals
+        const proposals: Array<{area: string; priority: string; description: string; action: string}> = [];
+        
+        if ((memoryCount || 0) < 50) {
+          proposals.push({
+            area: 'brain_memories',
+            priority: 'high',
+            description: 'Low memory density - substrate lacks training data for optimal inference',
+            action: 'Run brain.learn with domain knowledge or enable continuous learning'
+          });
+        }
+        
+        if ((hotCount || 0) > (coldCount || 0) * 10) {
+          proposals.push({
+            area: 'memory_tiering',
+            priority: 'medium',
+            description: 'Hot memory overloaded - consider archiving to cold storage',
+            action: 'Run brain.optimize to compress and tier memories'
+          });
+        }
+        
+        if ((dreamCount || 0) < 5) {
+          proposals.push({
+            area: 'dream_cycles',
+            priority: 'medium',
+            description: 'Few dream cycles - substrate consolidation limited',
+            action: 'Trigger brain.dream or enable nightly dream cycles'
+          });
+        }
+        
+        if (parseFloat(successRate) < 80) {
+          proposals.push({
+            area: 'reliability',
+            priority: 'high',
+            description: `Success rate at ${successRate}% - below 80% threshold`,
+            action: 'Review failed events and run system.heal'
+          });
+        }
+        
+        if ((orchestrator?.health_score || 0) < 80) {
+          proposals.push({
+            area: 'orchestrator',
+            priority: 'critical',
+            description: 'Orchestrator health degraded',
+            action: 'Run system.heal with test=true for full diagnostics'
+          });
+        }
+        
+        // Check module health
+        for (const [mod, health] of Object.entries(substrateState.modules)) {
+          if ((health as ModuleHealth).healthScore < 70) {
+            proposals.push({
+              area: `module_${mod}`,
+              priority: 'high',
+              description: `${mod} module health at ${(health as ModuleHealth).healthScore}%`,
+              action: `Run system.restart with service=${mod} or system.heal`
+            });
+          }
+        }
+        
+        // Store scan results as evolution proposal
+        const scanId = `scan_${Date.now().toString(36)}`;
+        await supabase.from('evolution_proposals').insert({
+          proposal_type: 'substrate_scan',
+          title: `Substrate Architecture Scan - ${new Date().toISOString().split('T')[0]}`,
+          description: `Automated scan found ${proposals.length} improvement areas`,
+          impact_analysis: {
+            total_proposals: proposals.length,
+            critical: proposals.filter(p => p.priority === 'critical').length,
+            high: proposals.filter(p => p.priority === 'high').length,
+            medium: proposals.filter(p => p.priority === 'medium').length,
+          },
+          implementation_plan: proposals,
+          status: 'pending_review',
+          confidence_score: 0.85,
+        });
+        
+        // Log the scan
         await supabase.from('brain_events').insert({
-          event_type: 'modernizer_job_created',
+          event_type: 'substrate_scan_completed',
           module: 'modernizer',
           outcome: 'success',
-          data: { job_id: job?.id, url }
+          data: {
+            scan_id: scanId,
+            proposals_count: proposals.length,
+            depth,
+            target_module: targetModule || 'all',
+          }
         });
+        
+        recordSuccess('modernizer');
         
         return jsonResponse({
           success: true,
           module: 'modernizer',
-          action: 'submit',
-          job_id: job?.id,
-          status: 'pending',
-          url: url,
-          message: 'Modernization job created successfully',
-          next_steps: [
-            'Job will be processed automatically',
-            'Use modernizer.job <job_id> to check status',
-            'Visit /modernizer for full UI experience'
-          ],
+          action: 'scan',
+          scan_id: scanId,
+          target: 'substrate_codebase',
+          depth,
+          analysis: {
+            data_density: {
+              brain_memories: memoryCount || 0,
+              hot_memory: hotCount || 0,
+              cold_memory: coldCount || 0,
+              events: eventCount || 0,
+              dreams: dreamCount || 0,
+              proposals: proposalCount || 0,
+            },
+            performance: {
+              success_rate: `${successRate}%`,
+              event_distribution: eventTypes,
+              outcome_distribution: outcomeStats,
+            },
+            orchestrator: {
+              health: orchestrator?.health_score || 0,
+              phase: orchestrator?.current_phase || 'unknown',
+              cycles: orchestrator?.cycles_completed || 0,
+            },
+          },
+          proposals,
+          proposal_count: proposals.length,
+          message: proposals.length > 0 
+            ? `Found ${proposals.length} improvement areas for the substrate`
+            : 'Substrate architecture is healthy - no improvements needed',
+          next_steps: proposals.length > 0 
+            ? ['Review proposals above', 'Use decode.propose to implement changes', 'Run system.heal for quick fixes']
+            : ['Continue monitoring', 'Run periodic scans to maintain health'],
         }, headers);
-      } catch (error) {
-        console.error('Modernizer submit error:', error);
         
-        // Attempt self-healing
-        moduleHealth.consecutiveFailures++;
-        if (moduleHealth.consecutiveFailures >= 3) {
-          moduleHealth.circuitState = 'open';
-          moduleHealth.status = 'degraded';
-        }
+      } catch (error) {
+        console.error('Modernizer scan error:', error);
+        recordFailure('modernizer', error instanceof Error ? error.message : 'Scan failed');
         
         return jsonResponse({
           success: false,
           graceful_fallback: true,
           module: 'modernizer',
-          action: 'submit',
-          error: error instanceof Error ? error.message : 'Failed to create job',
+          action: 'scan',
+          target: 'substrate_codebase',
+          error: error instanceof Error ? error.message : 'Failed to scan substrate',
           self_heal_triggered: true,
           circuit_state: moduleHealth.circuitState,
+          fallback_action: 'Run system.heal to restore module health',
         }, headers);
       }
     }
@@ -6025,30 +6147,58 @@ async function handleModernizer(
     }
 
     case "analyze": {
-      const { url } = data;
+      // Quick analysis of a specific substrate module
+      const { module: targetModule } = data;
       
-      if (!url) {
+      try {
+        // Get module-specific metrics
+        const moduleToAnalyze = targetModule || 'brain';
+        const moduleHealth = substrateState.modules[moduleToAnalyze];
+        
+        // Get relevant table counts based on module
+        const tableMap: Record<string, string[]> = {
+          brain: ['brain_memories', 'brain_memory_hot', 'brain_memory_cold', 'brain_events'],
+          decode: ['cascade_conversations', 'cascade_dreams'],
+          defense: ['defense_events', 'ip_reputation', 'security_audit_log'],
+          vision: ['brain_events', 'pf_brain_observations'],
+          dream: ['cascade_dreams', 'dream_eater_state'],
+          system: ['daily_backups', 'brain_orchestrator_state'],
+        };
+        
+        const tables = tableMap[moduleToAnalyze] || tableMap.brain;
+        const metrics: Record<string, number> = {};
+        
+        for (const table of tables) {
+          const { count } = await supabase.from(table).select('*', { count: 'exact', head: true });
+          metrics[table] = count || 0;
+        }
+        
         return jsonResponse({
-          success: false,
+          success: true,
           module: 'modernizer',
           action: 'analyze',
-          error: 'URL is required',
+          target: targetModule || 'brain',
+          analysis: {
+            health: moduleHealth || { status: 'unknown', healthScore: 50 },
+            table_metrics: metrics,
+            recommendations: [
+              (metrics[tables[0]] || 0) < 10 ? 'Low data - consider training or importing data' : null,
+              moduleHealth?.healthScore && moduleHealth.healthScore < 80 ? 'Module health degraded - run system.heal' : null,
+            ].filter(Boolean),
+          },
+          quick_scan: true,
+          note: 'Use modernizer.scan for comprehensive architecture analysis',
+        }, headers);
+      } catch (error) {
+        return jsonResponse({
+          success: false,
+          graceful_fallback: true,
+          module: 'modernizer',
+          action: 'analyze',
+          error: error instanceof Error ? error.message : 'Analysis failed',
+          fallback: { status: 'degraded', recommendation: 'Run system.heal' },
         }, headers);
       }
-      
-      // For analyze, we return analysis metadata without creating a full job
-      return jsonResponse({
-        success: true,
-        module: 'modernizer',
-        action: 'analyze',
-        url: url,
-        analysis: {
-          status: 'available',
-          estimated_time: '2-5 minutes',
-          features: ['HTML extraction', 'SEO analysis', 'Accessibility check', 'Modern rebuild'],
-          note: 'Use modernizer.submit <url> to start full modernization',
-        },
-      }, headers);
     }
 
     case "export": {
