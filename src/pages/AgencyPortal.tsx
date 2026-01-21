@@ -12,7 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { SEO } from '@/components/SEO';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { AgencyChatInterface } from '@/components/agency/AgencyChatInterface';
+import { AgencyTabbedPortal } from '@/components/agency/AgencyTabbedPortal';
 import { SPECIALIZATIONS, DREAM_POOL_MODES } from '@/lib/agency/agencyTypes';
 import { cn } from '@/lib/utils';
 
@@ -131,64 +131,48 @@ export default function AgencyPortal() {
   const specialists = members.filter(m => !m.is_leader);
   const dreamMode = DREAM_POOL_MODES.find(m => m.id === agency.dream_pool_mode);
 
-  // If showing chat, render full-screen chat interface
+  // If showing chat, render full tabbed portal interface
   if (showChat) {
+    // Convert members to expected format
+    const portalMembers = members.map(m => ({
+      id: m.id,
+      role: m.role,
+      specialization: m.specialization,
+      is_leader: m.is_leader,
+      skill_weights: m.skill_weights || {},
+    }));
+
     return (
-      <div className="min-h-screen bg-background flex flex-col">
+      <>
         <SEO
-          title={`Chat with ${agency.name} — promptfluid®`}
+          title={`${agency.name} — promptfluid®`}
           description={`Interact with ${agency.name} cognitive agency.`}
         />
-        
-        <header className="border-b border-border/40 bg-black/60 backdrop-blur-md sticky top-0 z-50">
-          <div className="container max-w-4xl mx-auto px-4">
-            <div className="h-14 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={() => setShowChat(false)}
-                  className="gap-2"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                  Back
-                </Button>
-                <div className="h-4 w-px bg-border/50" />
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-fuchsia-500/20 border border-fuchsia-500/40 flex items-center justify-center">
-                    <MessageSquare className="w-4 h-4 text-fuchsia-400" />
-                  </div>
-                  <span className="font-semibold text-sm">{agency.name}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        <main className="flex-1 container max-w-4xl mx-auto px-4 py-4">
-          <AgencyChatInterface
-            agency={{
-              id: agency.id,
-              name: agency.name,
-              description: agency.description || '',
-              status: agency.status as 'deployed',
-              dreamPoolMode: agency.dream_pool_mode as any,
-              cohesionRating: agency.cohesion_rating,
-              ownerId: agency.owner_id,
-              deploymentType: 'hosted',
-              businessProfile: agency.business_profile || {},
-              members: members.map(m => ({
-                id: m.id,
-                role: m.role as 'leader' | 'specialist',
-                specialization: m.specialization as any,
-                skillWeights: m.skill_weights as any,
-              })),
-              createdAt: new Date().toISOString(),
-              updatedAt: new Date().toISOString(),
-            }}
-          />
-        </main>
-      </div>
+        <AgencyTabbedPortal
+          agency={{
+            id: agency.id,
+            name: agency.name,
+            description: agency.description || '',
+            status: agency.status as 'deployed',
+            dreamPoolMode: agency.dream_pool_mode as any,
+            cohesionRating: agency.cohesion_rating,
+            ownerId: agency.owner_id,
+            deploymentType: 'hosted',
+            businessProfile: agency.business_profile || {},
+            members: members.map(m => ({
+              id: m.id,
+              role: m.role as 'leader' | 'specialist',
+              specialization: m.specialization as any,
+              skillWeights: m.skill_weights as any,
+            })),
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          }}
+          members={portalMembers}
+          onBack={() => setShowChat(false)}
+          isOwner={isOwner}
+        />
+      </>
     );
   }
 
