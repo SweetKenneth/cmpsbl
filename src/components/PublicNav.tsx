@@ -159,14 +159,22 @@ export function PublicNav() {
               </DropdownMenu>
             ))}
 
-
-            {/* CTA */}
-            <Link
-              to="/contact"
-              className="ml-2 px-4 py-2 rounded-lg text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
-            >
-              Contact
-            </Link>
+            {/* Auth / CTA */}
+            {user ? (
+              <Link
+                to="/os"
+                className="ml-2 px-4 py-2 rounded-lg text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+              >
+                Dashboard
+              </Link>
+            ) : (
+              <Link
+                to="/auth"
+                className="ml-2 px-4 py-2 rounded-lg text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+              >
+                Sign In
+              </Link>
+            )}
           </div>
 
           {/* Tablet Menu - simplified */}
