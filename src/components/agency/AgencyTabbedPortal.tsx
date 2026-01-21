@@ -46,6 +46,11 @@ export function AgencyTabbedPortal({ agency, members, onBack, isOwner }: AgencyT
     completeTask,
     addTaskLog,
     getTasksByStatus,
+    cancelTask,
+    cancelAllTasks,
+    retryTask,
+    retryAllFailed,
+    clearCompletedTasks,
   } = useAgencyTasks({ agencyId: agency.id });
 
   const {
@@ -100,6 +105,17 @@ export function AgencyTabbedPortal({ agency, members, onBack, isOwner }: AgencyT
       await addTaskLog(task.id, `Agent assigned to ${taskType} task`);
     }
   }, [createTask, startTask, addTaskLog, isAuthenticated]);
+
+  // Reset team to learning mode (cancel all then start idle learning)
+  const handleResetToLearning = useCallback(async () => {
+    if (!isAuthenticated || !isOwner) return;
+
+    // Start idle learning for each member
+    const { startIdleLearning } = await import('@/lib/agency/taskExecutor');
+    for (const member of members) {
+      await startIdleLearning(agency.id, member.id, member.specialization);
+    }
+  }, [agency.id, members, isAuthenticated, isOwner]);
 
   // Convert to format expected by task feed
   const feedMembers = members.map(m => ({
@@ -209,6 +225,13 @@ export function AgencyTabbedPortal({ agency, members, onBack, isOwner }: AgencyT
                 tasks={tasks}
                 logs={taskLogs}
                 members={feedMembers}
+                isOwner={isAuthenticated && isOwner}
+                onCancelTask={cancelTask}
+                onCancelAllTasks={async () => { await cancelAllTasks(); }}
+                onRetryTask={retryTask}
+                onRetryAllFailed={async () => { await retryAllFailed(); }}
+                onResetToLearning={handleResetToLearning}
+                onClearCompleted={async () => { await clearCompletedTasks(); }}
               />
             </TabsContent>
 

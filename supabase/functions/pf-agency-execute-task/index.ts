@@ -159,8 +159,20 @@ function recordCircuitResult(provider: string, success: boolean): void {
   }
 }
 
-// Update task progress
-async function updateProgress(supabase: any, taskId: string, progress: number, message?: string): Promise<void> {
+// Update task progress (checks for cancellation)
+async function updateProgress(supabase: any, taskId: string, progress: number, message?: string): Promise<boolean> {
+  // First check if task was cancelled
+  const { data: task } = await supabase
+    .from('agency_tasks')
+    .select('status')
+    .eq('id', taskId)
+    .single();
+
+  if (task?.status === 'cancelled') {
+    console.log(`⏹️ Task ${taskId} was cancelled, stopping execution`);
+    return false; // Signal to stop
+  }
+
   await supabase
     .from('agency_tasks')
     .update({ progress, updated_at: new Date().toISOString() })
@@ -174,6 +186,7 @@ async function updateProgress(supabase: any, taskId: string, progress: number, m
       data: { progress },
     });
   }
+  return true; // Continue
 }
 
 // Perform real web research
@@ -345,22 +358,39 @@ serve(async (req) => {
     let provider = '';
     let insights: string[] = [];
 
-    // Update progress: 20%
-    await updateProgress(supabase, taskId, 20, 'Analyzing task requirements...');
+    // Update progress: 20% - check for cancellation
+    const shouldContinue = await updateProgress(supabase, taskId, 20, 'Analyzing task requirements...');
+    if (!shouldContinue) {
+      return new Response(JSON.stringify({ 
+        success: true,
+        cancelled: true,
+        taskId,
+      }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
     // Route based on task type
     switch (taskType) {
       case 'research':
       case 'company_research': {
-        // Update progress: 30%
-        await updateProgress(supabase, taskId, 30, '🔍 Searching the web...');
+        // Update progress: 30% - check for cancellation
+        if (!await updateProgress(supabase, taskId, 30, '🔍 Searching the web...')) {
+          return new Response(JSON.stringify({ success: true, cancelled: true, taskId }), {
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
         
         // Perform real web research
         const research = await performWebResearch(rawInput, 2);
         sources = research.sources;
         
-        // Update progress: 60%
-        await updateProgress(supabase, taskId, 60, '📝 Synthesizing findings...');
+        // Update progress: 60% - check for cancellation
+        if (!await updateProgress(supabase, taskId, 60, '📝 Synthesizing findings...')) {
+          return new Response(JSON.stringify({ success: true, cancelled: true, taskId }), {
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
         
         // Synthesize with AI
         const synthesis = await performAICompletion(

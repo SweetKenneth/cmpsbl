@@ -27,6 +27,9 @@ interface UseAgencyTasksReturn {
   failTask: (taskId: string, errorMessage: string) => Promise<boolean>;
   cancelTask: (taskId: string) => Promise<boolean>;
   cancelAllTasks: () => Promise<number>;
+  retryTask: (taskId: string) => Promise<boolean>;
+  retryAllFailed: () => Promise<number>;
+  clearCompletedTasks: () => Promise<number>;
   refetch: () => Promise<void>;
   getTasksByMember: (memberId: string) => AgencyTask[];
   getTasksByStatus: (status: TaskStatus) => AgencyTask[];
@@ -398,6 +401,81 @@ export function useAgencyTasks({ agencyId, autoRefresh = true }: UseAgencyTasksO
     }
   }, [agencyId, tasks]);
 
+  // Retry single task (requeue and restart)
+  const retryTask = useCallback(async (taskId: string): Promise<boolean> => {
+    const task = tasks.find(t => t.id === taskId);
+    if (!task || (task.status !== 'failed' && task.status !== 'cancelled')) {
+      return false;
+    }
+
+    // Reset task to queued
+    const success = await updateTask(taskId, {
+      status: 'queued' as TaskStatus,
+      error_message: null,
+      progress: 0,
+      started_at: null,
+      completed_at: null,
+    });
+
+    if (success) {
+      await addTaskLog(taskId, '🔄 Task queued for retry', 'info');
+      toast.info('Task queued for retry');
+      // Immediately start it
+      await startTask(taskId);
+    }
+    return success;
+  }, [tasks, updateTask, addTaskLog, startTask]);
+
+  // Retry all failed tasks
+  const retryAllFailed = useCallback(async (): Promise<number> => {
+    const failedTasks = tasks.filter(t => t.status === 'failed' || t.status === 'cancelled');
+    if (failedTasks.length === 0) return 0;
+
+    let retried = 0;
+    for (const task of failedTasks) {
+      const success = await retryTask(task.id);
+      if (success) retried++;
+    }
+
+    if (retried > 0) {
+      toast.success(`Retrying ${retried} tasks`);
+    }
+    return retried;
+  }, [tasks, retryTask]);
+
+  // Clear completed tasks (delete from DB)
+  const clearCompletedTasks = useCallback(async (): Promise<number> => {
+    if (!agencyId) return 0;
+
+    try {
+      const completed = tasks.filter(t => t.status === 'completed');
+      if (completed.length === 0) return 0;
+
+      const completedIds = completed.map(t => t.id);
+
+      // Delete logs first
+      await supabase
+        .from('agency_task_logs')
+        .delete()
+        .in('task_id', completedIds);
+
+      // Delete tasks
+      const { error: deleteError } = await supabase
+        .from('agency_tasks')
+        .delete()
+        .in('id', completedIds);
+
+      if (deleteError) throw deleteError;
+
+      toast.message(`Cleared ${completed.length} completed tasks`);
+      return completed.length;
+    } catch (err) {
+      console.error('Error clearing completed tasks:', err);
+      toast.error('Failed to clear tasks');
+      return 0;
+    }
+  }, [agencyId, tasks]);
+
   // Helpers
   const getTasksByMember = useCallback((memberId: string) => 
     tasks.filter(t => t.assigned_member_id === memberId), [tasks]);
@@ -426,6 +504,9 @@ export function useAgencyTasks({ agencyId, autoRefresh = true }: UseAgencyTasksO
     failTask,
     cancelTask,
     cancelAllTasks,
+    retryTask,
+    retryAllFailed,
+    clearCompletedTasks,
     refetch,
     getTasksByMember,
     getTasksByStatus,
