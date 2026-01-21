@@ -473,6 +473,65 @@ export type Database = {
           },
         ]
       }
+      agency_economics: {
+        Row: {
+          agency_id: string
+          avg_roi: number | null
+          convergence_speed: number | null
+          created_at: string | null
+          id: string
+          improvement_rate: number | null
+          period_date: string
+          success_rate: number | null
+          tasks_completed: number | null
+          total_compute_time_ms: number | null
+          total_cost_cents: number | null
+          total_learning_gain: number | null
+          total_value_cents: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          agency_id: string
+          avg_roi?: number | null
+          convergence_speed?: number | null
+          created_at?: string | null
+          id?: string
+          improvement_rate?: number | null
+          period_date?: string
+          success_rate?: number | null
+          tasks_completed?: number | null
+          total_compute_time_ms?: number | null
+          total_cost_cents?: number | null
+          total_learning_gain?: number | null
+          total_value_cents?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          agency_id?: string
+          avg_roi?: number | null
+          convergence_speed?: number | null
+          created_at?: string | null
+          id?: string
+          improvement_rate?: number | null
+          period_date?: string
+          success_rate?: number | null
+          tasks_completed?: number | null
+          total_compute_time_ms?: number | null
+          total_cost_cents?: number | null
+          total_learning_gain?: number | null
+          total_value_cents?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agency_economics_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       agency_email_queue: {
         Row: {
           agency_id: string
@@ -556,35 +615,53 @@ export type Database = {
         Row: {
           agency_id: string
           cognitive_id: string | null
+          competency_score: number | null
           created_at: string | null
           id: string
           is_leader: boolean | null
+          reflection_quality: number | null
           role: string
+          skill_level: string | null
           skill_weights: Json | null
           sort_order: number | null
           specialization: string
+          success_rate: number | null
+          task_count: number | null
+          total_learning_gain: number | null
         }
         Insert: {
           agency_id: string
           cognitive_id?: string | null
+          competency_score?: number | null
           created_at?: string | null
           id?: string
           is_leader?: boolean | null
+          reflection_quality?: number | null
           role: string
+          skill_level?: string | null
           skill_weights?: Json | null
           sort_order?: number | null
           specialization: string
+          success_rate?: number | null
+          task_count?: number | null
+          total_learning_gain?: number | null
         }
         Update: {
           agency_id?: string
           cognitive_id?: string | null
+          competency_score?: number | null
           created_at?: string | null
           id?: string
           is_leader?: boolean | null
+          reflection_quality?: number | null
           role?: string
+          skill_level?: string | null
           skill_weights?: Json | null
           sort_order?: number | null
           specialization?: string
+          success_rate?: number | null
+          task_count?: number | null
+          total_learning_gain?: number | null
         }
         Relationships: [
           {
@@ -986,19 +1063,25 @@ export type Database = {
           agency_id: string
           assigned_member_id: string | null
           completed_at: string | null
+          compute_time_ms: number | null
           created_at: string
           description: string | null
           error_message: string | null
           id: string
           input_data: Json | null
+          learning_gain: number | null
           metadata: Json | null
           output_data: Json | null
+          preset_id: string | null
           priority: number | null
           progress: number | null
           research_domain: string | null
+          roi: number | null
           started_at: string | null
           status: string
+          task_cost_cents: number | null
           task_type: string
+          task_value_cents: number | null
           title: string
           updated_at: string
         }
@@ -1006,19 +1089,25 @@ export type Database = {
           agency_id: string
           assigned_member_id?: string | null
           completed_at?: string | null
+          compute_time_ms?: number | null
           created_at?: string
           description?: string | null
           error_message?: string | null
           id?: string
           input_data?: Json | null
+          learning_gain?: number | null
           metadata?: Json | null
           output_data?: Json | null
+          preset_id?: string | null
           priority?: number | null
           progress?: number | null
           research_domain?: string | null
+          roi?: number | null
           started_at?: string | null
           status?: string
+          task_cost_cents?: number | null
           task_type?: string
+          task_value_cents?: number | null
           title: string
           updated_at?: string
         }
@@ -1026,19 +1115,25 @@ export type Database = {
           agency_id?: string
           assigned_member_id?: string | null
           completed_at?: string | null
+          compute_time_ms?: number | null
           created_at?: string
           description?: string | null
           error_message?: string | null
           id?: string
           input_data?: Json | null
+          learning_gain?: number | null
           metadata?: Json | null
           output_data?: Json | null
+          preset_id?: string | null
           priority?: number | null
           progress?: number | null
           research_domain?: string | null
+          roi?: number | null
           started_at?: string | null
           status?: string
+          task_cost_cents?: number | null
           task_type?: string
+          task_value_cents?: number | null
           title?: string
           updated_at?: string
         }
@@ -6733,6 +6828,68 @@ export type Database = {
         }
         Relationships: []
       }
+      substrate_heuristics: {
+        Row: {
+          category: string
+          confidence: number | null
+          created_at: string | null
+          description: string | null
+          heuristic_type: string
+          id: string
+          is_active: boolean | null
+          is_global: boolean | null
+          payload: Json | null
+          source_agency_id: string | null
+          source_task_id: string | null
+          success_rate: number | null
+          title: string
+          updated_at: string | null
+          usage_count: number | null
+        }
+        Insert: {
+          category: string
+          confidence?: number | null
+          created_at?: string | null
+          description?: string | null
+          heuristic_type: string
+          id?: string
+          is_active?: boolean | null
+          is_global?: boolean | null
+          payload?: Json | null
+          source_agency_id?: string | null
+          source_task_id?: string | null
+          success_rate?: number | null
+          title: string
+          updated_at?: string | null
+          usage_count?: number | null
+        }
+        Update: {
+          category?: string
+          confidence?: number | null
+          created_at?: string | null
+          description?: string | null
+          heuristic_type?: string
+          id?: string
+          is_active?: boolean | null
+          is_global?: boolean | null
+          payload?: Json | null
+          source_agency_id?: string | null
+          source_task_id?: string | null
+          success_rate?: number | null
+          title?: string
+          updated_at?: string | null
+          usage_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "substrate_heuristics_source_agency_id_fkey"
+            columns: ["source_agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       substrate_integrations: {
         Row: {
           app_id: string
@@ -6786,6 +6943,78 @@ export type Database = {
           webhook_url?: string | null
         }
         Relationships: []
+      }
+      substrate_templates: {
+        Row: {
+          action_sequence: Json | null
+          created_at: string | null
+          description: string | null
+          id: string
+          input_schema: Json | null
+          is_active: boolean | null
+          is_global: boolean | null
+          name: string
+          output_schema: Json | null
+          preset_id: string | null
+          source_agency_id: string | null
+          success_rate: number | null
+          template_type: string
+          updated_at: string | null
+          usage_count: number | null
+          version: number | null
+        }
+        Insert: {
+          action_sequence?: Json | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          input_schema?: Json | null
+          is_active?: boolean | null
+          is_global?: boolean | null
+          name: string
+          output_schema?: Json | null
+          preset_id?: string | null
+          source_agency_id?: string | null
+          success_rate?: number | null
+          template_type: string
+          updated_at?: string | null
+          usage_count?: number | null
+          version?: number | null
+        }
+        Update: {
+          action_sequence?: Json | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          input_schema?: Json | null
+          is_active?: boolean | null
+          is_global?: boolean | null
+          name?: string
+          output_schema?: Json | null
+          preset_id?: string | null
+          source_agency_id?: string | null
+          success_rate?: number | null
+          template_type?: string
+          updated_at?: string | null
+          usage_count?: number | null
+          version?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "substrate_templates_preset_id_fkey"
+            columns: ["preset_id"]
+            isOneToOne: false
+            referencedRelation: "task_presets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "substrate_templates_source_agency_id_fkey"
+            columns: ["source_agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       substrate_upgrade_config: {
         Row: {
@@ -7014,6 +7243,63 @@ export type Database = {
           prev_config?: Json
           proposal_id?: string
           target_system?: string
+        }
+        Relationships: []
+      }
+      task_presets: {
+        Row: {
+          action_sequence: Json | null
+          category: string
+          created_at: string | null
+          description: string | null
+          estimated_cost_cents: number | null
+          estimated_time_minutes: number | null
+          estimated_value_cents: number | null
+          id: string
+          integrations_used: string[] | null
+          is_active: boolean | null
+          name: string
+          output_format: string | null
+          skill_required: string | null
+          tags: string[] | null
+          updated_at: string | null
+          uses_execution_layer: boolean | null
+        }
+        Insert: {
+          action_sequence?: Json | null
+          category: string
+          created_at?: string | null
+          description?: string | null
+          estimated_cost_cents?: number | null
+          estimated_time_minutes?: number | null
+          estimated_value_cents?: number | null
+          id: string
+          integrations_used?: string[] | null
+          is_active?: boolean | null
+          name: string
+          output_format?: string | null
+          skill_required?: string | null
+          tags?: string[] | null
+          updated_at?: string | null
+          uses_execution_layer?: boolean | null
+        }
+        Update: {
+          action_sequence?: Json | null
+          category?: string
+          created_at?: string | null
+          description?: string | null
+          estimated_cost_cents?: number | null
+          estimated_time_minutes?: number | null
+          estimated_value_cents?: number | null
+          id?: string
+          integrations_used?: string[] | null
+          is_active?: boolean | null
+          name?: string
+          output_format?: string | null
+          skill_required?: string | null
+          tags?: string[] | null
+          updated_at?: string | null
+          uses_execution_layer?: boolean | null
         }
         Relationships: []
       }
