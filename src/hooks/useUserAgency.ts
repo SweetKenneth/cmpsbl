@@ -1,5 +1,5 @@
 /**
- * Hook to fetch the current user's owned agency
+ * Hooks to fetch the current user's owned agencies
  */
 
 import { useQuery } from '@tanstack/react-query';
@@ -14,29 +14,43 @@ export interface UserAgency {
   description: string | null;
 }
 
-export function useUserAgency() {
+/**
+ * Fetch all agencies owned by the current user
+ */
+export function useUserAgencies() {
   const { user } = useAuth();
 
   return useQuery({
-    queryKey: ['user-agency', user?.id],
-    queryFn: async (): Promise<UserAgency | null> => {
-      if (!user?.id) return null;
+    queryKey: ['user-agencies', user?.id],
+    queryFn: async (): Promise<UserAgency[]> => {
+      if (!user?.id) return [];
 
       const { data, error } = await supabase
         .from('agencies')
         .select('id, name, slug, status, description')
         .eq('owner_id', user.id)
-        .limit(1)
-        .maybeSingle();
+        .order('created_at', { ascending: false });
 
       if (error) {
-        console.error('Error fetching user agency:', error);
-        return null;
+        console.error('Error fetching user agencies:', error);
+        return [];
       }
 
-      return data;
+      return data || [];
     },
     enabled: !!user?.id,
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
+}
+
+/**
+ * Fetch a single agency (first one) - for backwards compatibility
+ */
+export function useUserAgency() {
+  const { data: agencies, ...rest } = useUserAgencies();
+  
+  return {
+    ...rest,
+    data: agencies?.[0] || null,
+  };
 }

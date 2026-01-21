@@ -13,6 +13,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useAgencyTasks } from '@/hooks/useAgencyTasks';
 import { useAgencySettings } from '@/hooks/useAgencySettings';
+import { useUserAgencies } from '@/hooks/useUserAgency';
 import { startIdleLearning } from '@/lib/agency/taskExecutor';
 import type { Agency } from '@/lib/agency/agencyTypes';
 import type { TaskTypeId } from '@/lib/agency/agencyTasks';
@@ -129,6 +130,9 @@ export default function AgencyPortal() {
     addPresetCommand,
     removePresetCommand,
   } = useAgencySettings(agencyId);
+
+  // Fetch user's agencies for the switcher
+  const { data: userAgencies = [] } = useUserAgencies();
 
   const isOwner = user?.id === agency?.owner_id;
   const isAuthenticated = !!user;
@@ -368,6 +372,7 @@ export default function AgencyPortal() {
             isOwner={isOwner}
             isAuthenticated={isAuthenticated}
             leaderName={settings?.leader_name}
+            userAgencies={userAgencies}
             onLaunchTask={handleLaunchTask}
             onCancelTask={cancelTask}
             onRetryTask={retryTask}
