@@ -80,6 +80,277 @@ export type Database = {
         }
         Relationships: []
       }
+      agencies: {
+        Row: {
+          business_profile: Json | null
+          cohesion_rating: number | null
+          created_at: string | null
+          deployment_domain: string | null
+          deployment_type: string | null
+          description: string | null
+          dream_pool_mode: string | null
+          id: string
+          leader_id: string | null
+          metadata: Json | null
+          name: string
+          owner_id: string | null
+          status: string | null
+          template_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          business_profile?: Json | null
+          cohesion_rating?: number | null
+          created_at?: string | null
+          deployment_domain?: string | null
+          deployment_type?: string | null
+          description?: string | null
+          dream_pool_mode?: string | null
+          id?: string
+          leader_id?: string | null
+          metadata?: Json | null
+          name: string
+          owner_id?: string | null
+          status?: string | null
+          template_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          business_profile?: Json | null
+          cohesion_rating?: number | null
+          created_at?: string | null
+          deployment_domain?: string | null
+          deployment_type?: string | null
+          description?: string | null
+          dream_pool_mode?: string | null
+          id?: string
+          leader_id?: string | null
+          metadata?: Json | null
+          name?: string
+          owner_id?: string | null
+          status?: string | null
+          template_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agencies_leader_id_fkey"
+            columns: ["leader_id"]
+            isOneToOne: false
+            referencedRelation: "agency_members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agencies_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "agency_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      agency_dream_pool: {
+        Row: {
+          agency_id: string
+          contributor_id: string | null
+          created_at: string | null
+          dream_content: string
+          dream_type: string | null
+          id: string
+          sentiment_score: number | null
+          tags: string[] | null
+          visibility: string | null
+        }
+        Insert: {
+          agency_id: string
+          contributor_id?: string | null
+          created_at?: string | null
+          dream_content: string
+          dream_type?: string | null
+          id?: string
+          sentiment_score?: number | null
+          tags?: string[] | null
+          visibility?: string | null
+        }
+        Update: {
+          agency_id?: string
+          contributor_id?: string | null
+          created_at?: string | null
+          dream_content?: string
+          dream_type?: string | null
+          id?: string
+          sentiment_score?: number | null
+          tags?: string[] | null
+          visibility?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agency_dream_pool_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      agency_members: {
+        Row: {
+          agency_id: string
+          cognitive_id: string | null
+          created_at: string | null
+          id: string
+          is_leader: boolean | null
+          role: string
+          skill_weights: Json | null
+          sort_order: number | null
+          specialization: string
+        }
+        Insert: {
+          agency_id: string
+          cognitive_id?: string | null
+          created_at?: string | null
+          id?: string
+          is_leader?: boolean | null
+          role: string
+          skill_weights?: Json | null
+          sort_order?: number | null
+          specialization: string
+        }
+        Update: {
+          agency_id?: string
+          cognitive_id?: string | null
+          created_at?: string | null
+          id?: string
+          is_leader?: boolean | null
+          role?: string
+          skill_weights?: Json | null
+          sort_order?: number | null
+          specialization?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agency_members_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agency_members_cognitive_id_fkey"
+            columns: ["cognitive_id"]
+            isOneToOne: false
+            referencedRelation: "cognitive_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      agency_purchases: {
+        Row: {
+          additional_cognitives: number | null
+          additional_price_cents: number | null
+          agency_id: string | null
+          base_price_cents: number
+          created_at: string | null
+          id: string
+          metadata: Json | null
+          onboarding_completed: boolean | null
+          onboarding_token: string | null
+          purchase_email: string | null
+          status: string | null
+          stripe_customer_id: string | null
+          stripe_session_id: string | null
+          total_price_cents: number
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          additional_cognitives?: number | null
+          additional_price_cents?: number | null
+          agency_id?: string | null
+          base_price_cents?: number
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          onboarding_completed?: boolean | null
+          onboarding_token?: string | null
+          purchase_email?: string | null
+          status?: string | null
+          stripe_customer_id?: string | null
+          stripe_session_id?: string | null
+          total_price_cents: number
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          additional_cognitives?: number | null
+          additional_price_cents?: number | null
+          agency_id?: string | null
+          base_price_cents?: number
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          onboarding_completed?: boolean | null
+          onboarding_token?: string | null
+          purchase_email?: string | null
+          status?: string | null
+          stripe_customer_id?: string | null
+          stripe_session_id?: string | null
+          total_price_cents?: number
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agency_purchases_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      agency_templates: {
+        Row: {
+          base_price_cents: number | null
+          created_at: string | null
+          default_members: Json | null
+          description: string | null
+          dream_pool_mode: string | null
+          icon: string | null
+          id: string
+          is_featured: boolean | null
+          name: string
+          slug: string
+          updated_at: string | null
+        }
+        Insert: {
+          base_price_cents?: number | null
+          created_at?: string | null
+          default_members?: Json | null
+          description?: string | null
+          dream_pool_mode?: string | null
+          icon?: string | null
+          id?: string
+          is_featured?: boolean | null
+          name: string
+          slug: string
+          updated_at?: string | null
+        }
+        Update: {
+          base_price_cents?: number | null
+          created_at?: string | null
+          default_members?: Json | null
+          description?: string | null
+          dream_pool_mode?: string | null
+          icon?: string | null
+          id?: string
+          is_featured?: boolean | null
+          name?: string
+          slug?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       ai_daily_quota: {
         Row: {
           calls_budget: number | null
