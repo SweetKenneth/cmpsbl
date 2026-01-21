@@ -7,11 +7,12 @@
  * Now with dedicated terminal tab for full interaction.
  */
 
-import { Navigate } from 'react-router-dom';
+import { Navigate, Link } from 'react-router-dom';
 import { useState } from 'react';
 import { 
   Loader2, Lock, Terminal, AlertTriangle, Database, RefreshCw, 
-  Settings, FileText, Zap, LayoutDashboard, Activity, Bot, Users, Sparkles
+  Settings, FileText, Zap, LayoutDashboard, Activity, Bot, Users, Sparkles,
+  Building2, ExternalLink
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -35,6 +36,7 @@ import { toast } from 'sonner';
 import { SEO } from '@/components/SEO';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserRole } from '@/hooks/useUserRole';
+import { useUserAgency } from '@/hooks/useUserAgency';
 import { useSystemAudit, useSystemConfig, useSubstrateHealthScore } from '@/hooks/useSubstrateOS';
 import { OSHeader } from '@/components/substrate-os/OSHeader';
 import { ModuleStatusBar } from '@/components/substrate-os/ModuleStatusBar';
@@ -254,6 +256,7 @@ function GovernorPanel({ enabled }: { enabled: boolean }) {
 export default function SubstrateOS() {
   const { user, loading: authLoading } = useAuth();
   const { role, isOperator, isGovernor, loading: roleLoading } = useUserRole();
+  const { data: userAgency, isLoading: agencyLoading } = useUserAgency();
   const healthScore = useSubstrateHealthScore();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [mintSubTab, setMintSubTab] = useState<'forge' | 'agency'>('agency');
@@ -368,6 +371,20 @@ export default function SubstrateOS() {
                 >
                   <Sparkles className="w-4 h-4" />
                   <span className="hidden sm:inline">Mint</span>
+                </TabsTrigger>
+              )}
+              {userAgency && (
+                <TabsTrigger 
+                  value="agency" 
+                  className={cn(
+                    "gap-2 rounded-lg transition-all",
+                    "data-[state=active]:bg-blue-500/10 data-[state=active]:text-blue-400",
+                    "data-[state=active]:border-b-2 data-[state=active]:border-blue-400",
+                    "hover:bg-white/5"
+                  )}
+                >
+                  <Building2 className="w-4 h-4" />
+                  <span className="hidden sm:inline">My Agency</span>
                 </TabsTrigger>
               )}
             </TabsList>
@@ -553,6 +570,85 @@ export default function SubstrateOS() {
                   </TabsContent>
                 </Tabs>
               )}
+            </main>
+          </TabsContent>
+        )}
+
+        {/* Agency Tab - User's Agency */}
+        {userAgency && (
+          <TabsContent value="agency" className="flex-1 mt-0">
+            <main className="container mx-auto px-4 py-6 max-w-6xl space-y-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-blue-500/20 border border-blue-500/40 flex items-center justify-center">
+                    <Building2 className="w-4 h-4 text-blue-400" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-semibold">{userAgency.name}</h2>
+                    <p className="text-xs text-muted-foreground font-mono">
+                      {userAgency.status === 'deployed' ? 'deployed • active' : userAgency.status || 'pending'}
+                    </p>
+                  </div>
+                </div>
+                <Link
+                  to={userAgency.slug ? `/a/${userAgency.slug}` : `/agency/${userAgency.id}`}
+                  className={cn(
+                    "inline-flex items-center gap-2 px-4 py-2 rounded-lg",
+                    "bg-blue-500/20 border border-blue-500/40 text-blue-400",
+                    "hover:bg-blue-500/30 transition-all"
+                  )}
+                >
+                  <span className="text-sm font-medium">Open Portal</span>
+                  <ExternalLink className="w-4 h-4" />
+                </Link>
+              </div>
+
+              {/* Agency Info Card */}
+              <Card className="border border-blue-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm font-medium flex items-center gap-2">
+                    <Users className="w-4 h-4 text-blue-400" />
+                    Agency Overview
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {userAgency.description && (
+                    <p className="text-sm text-muted-foreground">{userAgency.description}</p>
+                  )}
+                  
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="rounded-lg bg-white/5 p-3 text-center">
+                      <p className="text-xs text-muted-foreground mb-1">Status</p>
+                      <Badge 
+                        variant="outline" 
+                        className={cn(
+                          "text-[10px]",
+                          userAgency.status === 'deployed' 
+                            ? "border-emerald-500/50 text-emerald-400 bg-emerald-500/10"
+                            : "border-amber-500/50 text-amber-400 bg-amber-500/10"
+                        )}
+                      >
+                        {userAgency.status || 'pending'}
+                      </Badge>
+                    </div>
+                    <div className="rounded-lg bg-white/5 p-3 text-center">
+                      <p className="text-xs text-muted-foreground mb-1">Portal</p>
+                      <p className="text-sm font-mono text-foreground truncate">
+                        {userAgency.slug ? `/a/${userAgency.slug}` : 'Not deployed'}
+                      </p>
+                    </div>
+                    <div className="rounded-lg bg-white/5 p-3 text-center col-span-2">
+                      <p className="text-xs text-muted-foreground mb-1">Quick Access</p>
+                      <Link
+                        to={userAgency.slug ? `/a/${userAgency.slug}` : `/agency/${userAgency.id}`}
+                        className="text-sm text-blue-400 hover:text-blue-300 transition-colors underline underline-offset-2"
+                      >
+                        Launch full agency portal →
+                      </Link>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </main>
           </TabsContent>
         )}
