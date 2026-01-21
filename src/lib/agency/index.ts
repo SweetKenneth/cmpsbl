@@ -10,6 +10,9 @@ export * from './agencyCommands';
 // Task execution
 export * from './taskExecutor';
 
+// Execution Layer (Web Actuator, Verification, Credit Assignment)
+export * from '@/lib/execution';
+
 // Skills & Primitives
 export * from './skills/agentSkills';
 export * from './skills/taskPrimitives';
