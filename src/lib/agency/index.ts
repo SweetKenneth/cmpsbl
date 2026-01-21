@@ -13,6 +13,7 @@ export * from './taskExecutor';
 // Skills & Primitives
 export * from './skills/agentSkills';
 export * from './skills/taskPrimitives';
+export * from './specialtySkills';
 
 // Free API Adapters
 export * from './adapters/freeApiAdapters';

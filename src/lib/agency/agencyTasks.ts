@@ -6,10 +6,10 @@
 import type { Specialization } from './agencyTypes';
 
 // ============================================================================
-// RESEARCH DOMAINS — Real online resources agents can visit
+// RESEARCH DOMAINS — Expanded real-world resources for deep research
 // ============================================================================
 export const RESEARCH_DOMAINS = {
-  // General Research
+  // General Research & AI
   perplexity: { 
     url: 'https://www.perplexity.ai', 
     name: 'Perplexity AI', 
@@ -23,6 +23,20 @@ export const RESEARCH_DOMAINS = {
     category: 'research',
     description: 'Encyclopedia for general knowledge',
     specializations: ['Research', 'Writing', 'Intel'] as Specialization[]
+  },
+  arxiv: {
+    url: 'https://arxiv.org',
+    name: 'arXiv',
+    category: 'research',
+    description: 'Academic papers and preprints',
+    specializations: ['Research', 'Data', 'Analyst'] as Specialization[]
+  },
+  scholar: {
+    url: 'https://scholar.google.com',
+    name: 'Google Scholar',
+    category: 'research',
+    description: 'Academic research papers and citations',
+    specializations: ['Research', 'Analyst', 'Legal'] as Specialization[]
   },
   
   // Code & Technical
@@ -47,6 +61,27 @@ export const RESEARCH_DOMAINS = {
     description: 'JavaScript package registry',
     specializations: ['Coding', 'OPS'] as Specialization[]
   },
+  devto: {
+    url: 'https://dev.to',
+    name: 'Dev.to',
+    category: 'code',
+    description: 'Developer community and tutorials',
+    specializations: ['Coding', 'Writing', 'OPS'] as Specialization[]
+  },
+  hackernews: {
+    url: 'https://news.ycombinator.com',
+    name: 'Hacker News',
+    category: 'code',
+    description: 'Tech news and startup discussions',
+    specializations: ['Coding', 'Growth', 'Intel'] as Specialization[]
+  },
+  mdnwebdocs: {
+    url: 'https://developer.mozilla.org',
+    name: 'MDN Web Docs',
+    category: 'code',
+    description: 'Web development documentation',
+    specializations: ['Coding', 'Designer'] as Specialization[]
+  },
   
   // SEO & Marketing
   semrush: { 
@@ -63,8 +98,29 @@ export const RESEARCH_DOMAINS = {
     description: 'SEO tools and backlink analysis',
     specializations: ['SEO', 'Marketing'] as Specialization[]
   },
+  moz: {
+    url: 'https://moz.com',
+    name: 'Moz',
+    category: 'seo',
+    description: 'SEO tools and domain authority',
+    specializations: ['SEO', 'Marketing'] as Specialization[]
+  },
+  similarweb: {
+    url: 'https://www.similarweb.com',
+    name: 'SimilarWeb',
+    category: 'seo',
+    description: 'Website traffic and analytics',
+    specializations: ['SEO', 'Marketing', 'Intel'] as Specialization[]
+  },
+  hubspot: {
+    url: 'https://www.hubspot.com',
+    name: 'HubSpot',
+    category: 'marketing',
+    description: 'Marketing automation and CRM insights',
+    specializations: ['Marketing', 'Sales', 'Growth'] as Specialization[]
+  },
   
-  // Business & Market
+  // Business & Market Intelligence
   crunchbase: { 
     url: 'https://www.crunchbase.com', 
     name: 'Crunchbase', 
@@ -78,6 +134,34 @@ export const RESEARCH_DOMAINS = {
     category: 'business',
     description: 'Professional networking and company info',
     specializations: ['Sales', 'Intel', 'Marketing'] as Specialization[]
+  },
+  pitchbook: {
+    url: 'https://pitchbook.com',
+    name: 'PitchBook',
+    category: 'business',
+    description: 'Private market data and valuations',
+    specializations: ['Finance', 'Intel', 'Sales'] as Specialization[]
+  },
+  glassdoor: {
+    url: 'https://www.glassdoor.com',
+    name: 'Glassdoor',
+    category: 'business',
+    description: 'Company reviews and salary data',
+    specializations: ['Intel', 'Sales', 'Research'] as Specialization[]
+  },
+  g2: {
+    url: 'https://www.g2.com',
+    name: 'G2',
+    category: 'business',
+    description: 'Software reviews and comparisons',
+    specializations: ['Intel', 'Sales', 'Marketing'] as Specialization[]
+  },
+  capterra: {
+    url: 'https://www.capterra.com',
+    name: 'Capterra',
+    category: 'business',
+    description: 'Software comparison platform',
+    specializations: ['Intel', 'Sales'] as Specialization[]
   },
   
   // Design & Creative
@@ -95,6 +179,20 @@ export const RESEARCH_DOMAINS = {
     description: 'Creative portfolios and inspiration',
     specializations: ['Designer', 'Dreamer'] as Specialization[]
   },
+  figma: {
+    url: 'https://www.figma.com/community',
+    name: 'Figma Community',
+    category: 'design',
+    description: 'Design templates and resources',
+    specializations: ['Designer', 'Coding'] as Specialization[]
+  },
+  awwwards: {
+    url: 'https://www.awwwards.com',
+    name: 'Awwwards',
+    category: 'design',
+    description: 'Award-winning web design inspiration',
+    specializations: ['Designer', 'Dreamer'] as Specialization[]
+  },
   
   // Legal & Compliance
   courtlistener: { 
@@ -102,6 +200,13 @@ export const RESEARCH_DOMAINS = {
     name: 'CourtListener', 
     category: 'legal',
     description: 'Legal case search and opinions',
+    specializations: ['Legal', 'Audit'] as Specialization[]
+  },
+  justia: {
+    url: 'https://www.justia.com',
+    name: 'Justia',
+    category: 'legal',
+    description: 'Legal information and case law',
     specializations: ['Legal', 'Audit'] as Specialization[]
   },
   
@@ -112,6 +217,82 @@ export const RESEARCH_DOMAINS = {
     category: 'security',
     description: 'Security vulnerability database',
     specializations: ['Defense', 'Audit', 'Coding'] as Specialization[]
+  },
+  nvd: {
+    url: 'https://nvd.nist.gov',
+    name: 'NVD',
+    category: 'security',
+    description: 'National Vulnerability Database',
+    specializations: ['Defense', 'Audit'] as Specialization[]
+  },
+  shodan: {
+    url: 'https://www.shodan.io',
+    name: 'Shodan',
+    category: 'security',
+    description: 'Internet device search engine',
+    specializations: ['Defense', 'OPS'] as Specialization[]
+  },
+  
+  // Data & Analytics
+  kaggle: {
+    url: 'https://www.kaggle.com',
+    name: 'Kaggle',
+    category: 'data',
+    description: 'Data science datasets and notebooks',
+    specializations: ['Data', 'Analyst', 'Research'] as Specialization[]
+  },
+  statista: {
+    url: 'https://www.statista.com',
+    name: 'Statista',
+    category: 'data',
+    description: 'Statistics and market data',
+    specializations: ['Analyst', 'Research', 'Finance'] as Specialization[]
+  },
+  
+  // News & Content
+  reddit: {
+    url: 'https://www.reddit.com',
+    name: 'Reddit',
+    category: 'social',
+    description: 'Community discussions and trends',
+    specializations: ['Research', 'Marketing', 'Support'] as Specialization[]
+  },
+  producthunt: {
+    url: 'https://www.producthunt.com',
+    name: 'Product Hunt',
+    category: 'business',
+    description: 'New product launches and reviews',
+    specializations: ['Growth', 'Marketing', 'Intel'] as Specialization[]
+  },
+  medium: {
+    url: 'https://medium.com',
+    name: 'Medium',
+    category: 'content',
+    description: 'Articles and thought leadership',
+    specializations: ['Writing', 'Marketing', 'Research'] as Specialization[]
+  },
+  substack: {
+    url: 'https://substack.com',
+    name: 'Substack',
+    category: 'content',
+    description: 'Newsletters and industry insights',
+    specializations: ['Writing', 'Research', 'Marketing'] as Specialization[]
+  },
+  
+  // Customer & Support
+  trustpilot: {
+    url: 'https://www.trustpilot.com',
+    name: 'Trustpilot',
+    category: 'reviews',
+    description: 'Customer reviews and ratings',
+    specializations: ['Support', 'Success', 'Intel'] as Specialization[]
+  },
+  zendesk: {
+    url: 'https://www.zendesk.com',
+    name: 'Zendesk Community',
+    category: 'support',
+    description: 'Support best practices and resources',
+    specializations: ['Support', 'Success'] as Specialization[]
   },
 } as const;
 

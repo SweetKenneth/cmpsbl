@@ -99,6 +99,7 @@ export async function executeTask(options: ExecuteTaskOptions): Promise<ExecuteT
 /**
  * Start idle learning for an agent
  * Triggers background research on the agent's specialty domain
+ * Now with extended learning time and deeper crawling
  */
 export async function startIdleLearning(
   agencyId: string,
@@ -106,30 +107,116 @@ export async function startIdleLearning(
   specialization: string
 ): Promise<void> {
   try {
-    // Map specializations to research topics
+    // Extended topic pool organized by specialization with real-world relevance
     const learningTopics: Record<string, string[]> = {
-      research: ['latest AI developments', 'research methodologies', 'data analysis techniques'],
-      seo: ['SEO best practices 2025', 'Google algorithm updates', 'backlink strategies'],
-      code: ['software architecture patterns', 'TypeScript advanced patterns', 'performance optimization'],
-      creative: ['content marketing trends', 'copywriting techniques', 'brand storytelling'],
-      strategy: ['business strategy frameworks', 'competitive analysis methods', 'market positioning'],
-      analytics: ['data visualization best practices', 'analytics interpretation', 'KPI frameworks'],
-      audit: ['compliance frameworks', 'quality assurance methods', 'risk assessment'],
-      security: ['cybersecurity trends', 'vulnerability assessment', 'security best practices'],
+      research: [
+        'latest AI research methodologies 2025',
+        'advanced data collection techniques',
+        'academic research best practices',
+        'systematic literature review methods',
+        'primary vs secondary research approaches',
+      ],
+      seo: [
+        'Google algorithm updates 2025',
+        'technical SEO audit checklist',
+        'backlink building strategies that work',
+        'Core Web Vitals optimization',
+        'semantic SEO and entity optimization',
+        'local SEO ranking factors',
+      ],
+      coding: [
+        'TypeScript 5.0 advanced patterns',
+        'React Server Components best practices',
+        'microservices architecture patterns',
+        'performance optimization techniques',
+        'security best practices for web apps',
+        'API design patterns RESTful GraphQL',
+      ],
+      creative: [
+        'content marketing trends 2025',
+        'viral copywriting techniques',
+        'brand storytelling frameworks',
+        'emotional marketing psychology',
+        'content repurposing strategies',
+      ],
+      strategy: [
+        'business strategy frameworks OKRs',
+        'competitive positioning models',
+        'market entry strategies',
+        'blue ocean strategy principles',
+        'digital transformation playbook',
+      ],
+      analytics: [
+        'predictive analytics techniques',
+        'data visualization best practices',
+        'cohort analysis methods',
+        'attribution modeling approaches',
+        'A/B testing statistical significance',
+      ],
+      audit: [
+        'SOC 2 compliance requirements',
+        'GDPR compliance checklist',
+        'security audit frameworks',
+        'code quality metrics',
+        'accessibility WCAG guidelines',
+      ],
+      security: [
+        'OWASP top 10 vulnerabilities 2025',
+        'zero trust architecture',
+        'incident response playbook',
+        'penetration testing methodologies',
+        'cloud security best practices AWS Azure',
+      ],
+      design: [
+        'UI design trends 2025',
+        'accessibility in design systems',
+        'motion design principles',
+        'design token architecture',
+        'responsive design patterns',
+      ],
+      marketing: [
+        'growth marketing playbook',
+        'influencer marketing ROI',
+        'email marketing automation',
+        'social media algorithm changes',
+        'B2B marketing strategies',
+      ],
+      sales: [
+        'sales prospecting techniques',
+        'account based selling strategies',
+        'sales enablement best practices',
+        'CRM optimization tips',
+        'cold outreach that converts',
+      ],
+      finance: [
+        'financial modeling techniques',
+        'startup valuation methods',
+        'unit economics analysis',
+        'SaaS metrics and benchmarks',
+        'cash flow management',
+      ],
+      ops: [
+        'DevOps automation patterns',
+        'CI/CD pipeline optimization',
+        'infrastructure as code',
+        'monitoring and observability',
+        'incident management processes',
+      ],
     };
 
-    const topics = learningTopics[specialization.toLowerCase()] || learningTopics.research;
+    const specKey = specialization.toLowerCase();
+    const topics = learningTopics[specKey] || learningTopics.research;
     const randomTopic = topics[Math.floor(Math.random() * topics.length)];
 
-    console.log(`📚 Starting idle learning for ${specialization}: ${randomTopic}`);
+    console.log(`📚 Starting deep learning for ${specialization}: ${randomTopic}`);
 
-    // Create a low-priority learning task
+    // Create a learning task with extended duration
     const { data: task } = await supabase
       .from('agency_tasks')
       .insert({
         agency_id: agencyId,
         title: `[Learning] ${randomTopic}`,
-        description: `Background learning task: ${randomTopic}`,
+        description: `Deep learning task: Researching "${randomTopic}" across multiple sources`,
         task_type: 'research',
         status: 'queued',
         priority: 10, // Low priority
@@ -138,9 +225,15 @@ export async function startIdleLearning(
           rawInput: randomTopic, 
           isLearning: true,
           learningDomain: specialization,
+          crawlDepth: 5, // Go 5 links deep
+          estimatedMinutes: 5, // Extended learning time
         },
         assigned_member_id: memberId,
-        metadata: { source: 'idle_learning' },
+        metadata: { 
+          source: 'idle_learning',
+          extended: true,
+          startedAt: new Date().toISOString(),
+        },
       })
       .select()
       .single();
@@ -151,7 +244,11 @@ export async function startIdleLearning(
         taskId: task.id,
         agencyId,
         taskType: 'research',
-        inputData: { rawInput: randomTopic, isLearning: true },
+        inputData: { 
+          rawInput: randomTopic, 
+          isLearning: true,
+          crawlDepth: 5,
+        },
         memberId,
       }).catch(err => console.warn('Idle learning error (non-critical):', err));
     }
