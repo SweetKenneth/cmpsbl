@@ -58,6 +58,19 @@ export function AgencyMintWizard({ onComplete }: AgencyMintWizardProps) {
   const [members, setMembers] = useState<AgencyMember[]>([]);
   const [dreamPoolMode, setDreamPoolMode] = useState<DreamPoolMode>('local_shared');
 
+  // Ensure member has complete skillWeights
+  const ensureCompleteSkillWeights = (member: Partial<AgencyMember>): AgencyMember => ({
+    role: member.role || 'specialist',
+    specialization: member.specialization || 'Coding',
+    skillWeights: {
+      research: member.skillWeights?.research ?? 0.5,
+      analysis: member.skillWeights?.analysis ?? 0.5,
+      execution: member.skillWeights?.execution ?? 0.5,
+    },
+    ...(member.id && { id: member.id }),
+    ...(member.cognitiveId && { cognitiveId: member.cognitiveId }),
+  });
+
   // Load templates
   useEffect(() => {
     async function loadTemplates() {
@@ -67,17 +80,25 @@ export function AgencyMintWizard({ onComplete }: AgencyMintWizardProps) {
         .order('is_featured', { ascending: false });
       
       if (!error && data) {
-        setTemplates(data.map(t => ({
-          id: t.id,
-          name: t.name,
-          slug: t.slug,
-          description: t.description || '',
-          icon: t.icon || 'Users',
-          basePriceCents: t.base_price_cents || 39500,
-          defaultMembers: (Array.isArray(t.default_members) ? t.default_members : []) as unknown as AgencyMember[],
-          dreamPoolMode: (t.dream_pool_mode as DreamPoolMode) || 'local_shared',
-          isFeatured: t.is_featured || false,
-        })));
+        setTemplates(data.map(t => {
+          // Parse and normalize members with complete skill weights
+          const rawMembers = Array.isArray(t.default_members) ? t.default_members : [];
+          const normalizedMembers = rawMembers.map((m: unknown) => 
+            ensureCompleteSkillWeights(m as Partial<AgencyMember>)
+          );
+          
+          return {
+            id: t.id,
+            name: t.name,
+            slug: t.slug,
+            description: t.description || '',
+            icon: t.icon || 'Users',
+            basePriceCents: t.base_price_cents || 39500,
+            defaultMembers: normalizedMembers,
+            dreamPoolMode: (t.dream_pool_mode as DreamPoolMode) || 'local_shared',
+            isFeatured: t.is_featured || false,
+          };
+        }));
       }
     }
     loadTemplates();
@@ -129,7 +150,9 @@ export function AgencyMintWizard({ onComplete }: AgencyMintWizardProps) {
     setSelectedTemplate(templateId);
     const template = templates.find(t => t.id === templateId);
     if (template) {
-      setMembers(template.defaultMembers);
+      // Ensure all members have complete skill weights
+      const normalizedMembers = template.defaultMembers.map(m => ensureCompleteSkillWeights(m));
+      setMembers(normalizedMembers);
       setDreamPoolMode(template.dreamPoolMode);
     }
   };
