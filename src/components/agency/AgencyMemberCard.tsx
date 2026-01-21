@@ -1,5 +1,6 @@
 /**
  * Agency Member Card — Displays a cognitive member in the agency
+ * Updated for 8 skill dimensions
  */
 
 import { X, Crown, Sliders } from 'lucide-react';
@@ -7,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Slider } from '@/components/ui/slider';
 import { cn } from '@/lib/utils';
-import { SPECIALIZATIONS, type AgencyMember } from '@/lib/agency/agencyTypes';
+import { SPECIALIZATIONS, SKILL_DIMENSIONS, type AgencyMember, type SkillDimension } from '@/lib/agency/agencyTypes';
 
 interface AgencyMemberCardProps {
   member: AgencyMember;
@@ -39,6 +40,14 @@ export function AgencyMemberCard({
     blue: 'border-blue-500/40 bg-blue-500/10 text-blue-400',
     orange: 'border-orange-500/40 bg-orange-500/10 text-orange-400',
     teal: 'border-teal-500/40 bg-teal-500/10 text-teal-400',
+    rose: 'border-rose-500/40 bg-rose-500/10 text-rose-400',
+    indigo: 'border-indigo-500/40 bg-indigo-500/10 text-indigo-400',
+    slate: 'border-slate-500/40 bg-slate-500/10 text-slate-400',
+    yellow: 'border-yellow-500/40 bg-yellow-500/10 text-yellow-400',
+    stone: 'border-stone-500/40 bg-stone-500/10 text-stone-400',
+    lime: 'border-lime-500/40 bg-lime-500/10 text-lime-400',
+    sky: 'border-sky-500/40 bg-sky-500/10 text-sky-400',
+    purple: 'border-purple-500/40 bg-purple-500/10 text-purple-400',
   };
 
   const colors = colorClasses[spec?.color || 'fuchsia'];
@@ -98,30 +107,35 @@ export function AgencyMemberCard({
       </p>
 
       {showSkills && onUpdateSkills && (
-        <div className="space-y-3 pt-2 border-t border-border/20">
+        <div className="space-y-2 pt-2 border-t border-border/20">
           <div className="flex items-center gap-2 mb-2">
             <Sliders className="w-3 h-3 text-muted-foreground" />
-            <span className="text-[10px] text-muted-foreground">Skill Weights</span>
+            <span className="text-[10px] text-muted-foreground">Skill Weights (8 dimensions)</span>
           </div>
           
-          {(['research', 'analysis', 'execution'] as const).map((skill) => (
-            <div key={skill} className="space-y-1">
-              <div className="flex justify-between text-[10px]">
-                <span className="text-muted-foreground capitalize">{skill}</span>
-                <span className="text-foreground">{Math.round(member.skillWeights[skill] * 100)}%</span>
-              </div>
-              <Slider
-                value={[member.skillWeights[skill] * 100]}
-                onValueChange={([val]) => onUpdateSkills({
-                  ...member.skillWeights,
-                  [skill]: val / 100
-                })}
-                max={100}
-                step={5}
-                className="h-1"
-              />
-            </div>
-          ))}
+          <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+            {SKILL_DIMENSIONS.map((skill) => {
+              const skillValue = member.skillWeights?.[skill.id as SkillDimension] ?? 0.5;
+              return (
+                <div key={skill.id} className="space-y-0.5">
+                  <div className="flex justify-between text-[9px]">
+                    <span className="text-muted-foreground">{skill.name}</span>
+                    <span className="text-foreground font-medium">{Math.round(skillValue * 100)}%</span>
+                  </div>
+                  <Slider
+                    value={[skillValue * 100]}
+                    onValueChange={([val]) => onUpdateSkills({
+                      ...member.skillWeights,
+                      [skill.id]: val / 100
+                    })}
+                    max={100}
+                    step={5}
+                    className="h-1"
+                  />
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
     </div>

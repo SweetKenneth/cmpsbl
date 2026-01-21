@@ -24,9 +24,10 @@ import { AgencyTemplateCard } from './AgencyTemplateCard';
 import { AgencyMemberCard } from './AgencyMemberCard';
 import { GovernorSelfMintDialog } from './GovernorSelfMintDialog';
 import { 
-  SPECIALIZATIONS, DREAM_POOL_MODES,
-  type AgencyMember, type AgencyTemplate, type DreamPoolMode,
-  AGENCY_BASE_PRICE, COGNITIVE_PRICE, calculateTotalPrice, formatPrice
+  SPECIALIZATIONS, DREAM_POOL_MODES, SKILL_DIMENSIONS, DEFAULT_SKILL_WEIGHTS,
+  type AgencyMember, type AgencyTemplate, type DreamPoolMode, type SkillWeights,
+  AGENCY_BASE_PRICE, COGNITIVE_PRICE, calculateTotalPrice, formatPrice,
+  getDefaultSkillsForSpec,
 } from '@/lib/agency/agencyTypes';
 
 type Step = 'template' | 'leader' | 'specialists' | 'skills' | 'memory' | 'preview' | 'checkout';
@@ -58,18 +59,28 @@ export function AgencyMintWizard({ onComplete }: AgencyMintWizardProps) {
   const [members, setMembers] = useState<AgencyMember[]>([]);
   const [dreamPoolMode, setDreamPoolMode] = useState<DreamPoolMode>('local_shared');
 
-  // Ensure member has complete skillWeights
-  const ensureCompleteSkillWeights = (member: Partial<AgencyMember>): AgencyMember => ({
-    role: member.role || 'specialist',
-    specialization: member.specialization || 'Coding',
-    skillWeights: {
-      research: member.skillWeights?.research ?? 0.5,
-      analysis: member.skillWeights?.analysis ?? 0.5,
-      execution: member.skillWeights?.execution ?? 0.5,
-    },
-    ...(member.id && { id: member.id }),
-    ...(member.cognitiveId && { cognitiveId: member.cognitiveId }),
-  });
+  // Ensure member has complete skillWeights using specialization defaults
+  const ensureCompleteSkillWeights = (member: Partial<AgencyMember>): AgencyMember => {
+    const specId = member.specialization || 'Coding';
+    const defaultSkills = getDefaultSkillsForSpec(specId as any);
+    
+    return {
+      role: member.role || 'specialist',
+      specialization: specId as any,
+      skillWeights: {
+        research: member.skillWeights?.research ?? defaultSkills.research,
+        analysis: member.skillWeights?.analysis ?? defaultSkills.analysis,
+        execution: member.skillWeights?.execution ?? defaultSkills.execution,
+        creativity: member.skillWeights?.creativity ?? defaultSkills.creativity,
+        communication: member.skillWeights?.communication ?? defaultSkills.communication,
+        strategy: member.skillWeights?.strategy ?? defaultSkills.strategy,
+        technical: member.skillWeights?.technical ?? defaultSkills.technical,
+        coordination: member.skillWeights?.coordination ?? defaultSkills.coordination,
+      },
+      ...(member.id && { id: member.id }),
+      ...(member.cognitiveId && { cognitiveId: member.cognitiveId }),
+    };
+  };
 
   // Load templates
   useEffect(() => {
@@ -119,7 +130,7 @@ export function AgencyMintWizard({ onComplete }: AgencyMintWizardProps) {
     const leader: AgencyMember = {
       role: 'leader',
       specialization: 'Hybrid',
-      skillWeights: { research: 0.7, analysis: 0.7, execution: 0.7 },
+      skillWeights: getDefaultSkillsForSpec('Hybrid'),
     };
     setMembers([leader]);
   };
@@ -130,7 +141,7 @@ export function AgencyMintWizard({ onComplete }: AgencyMintWizardProps) {
     const specialist: AgencyMember = {
       role: 'specialist',
       specialization,
-      skillWeights: { research: 0.5, analysis: 0.5, execution: 0.5 },
+      skillWeights: getDefaultSkillsForSpec(specialization),
     };
     setMembers(prev => [...prev, specialist]);
   };
