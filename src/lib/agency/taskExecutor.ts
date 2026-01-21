@@ -1,10 +1,20 @@
 /**
  * Agency Task Executor — Invokes edge functions to actually execute tasks
  * Handles real-time progress updates and error recovery
+ * Now integrated with the Execution Layer for verification and credit assignment
  */
 
 import { supabase } from '@/integrations/supabase/client';
 import type { AgencyTask, TaskTypeId } from './agencyTasks';
+import {
+  createPlan,
+  executePlan,
+  isTaskExecutable,
+  estimateExecutionTime,
+  parseActionIntent,
+  type ExecutionContext,
+  type ExecutionOutcome,
+} from '@/lib/execution';
 
 interface ExecuteTaskOptions {
   taskId: string;
@@ -13,6 +23,7 @@ interface ExecuteTaskOptions {
   inputData: Record<string, any>;
   memberId?: string;
   researchDomain?: string;
+  executable?: boolean; // New flag to use execution layer
 }
 
 interface ExecuteTaskResult {
@@ -23,66 +34,36 @@ interface ExecuteTaskResult {
   error?: string;
   provider?: string;
   executionTimeMs?: number;
+  verification?: {
+    status: string;
+    matchScore: number;
+    discrepancies: string[];
+  };
+  creditDelta?: number;
 }
 
 /**
  * Execute a task by invoking the edge function
  * This is the main entry point for real task execution
+ * Now supports the Execution Layer for verified, credit-assigned tasks
  */
 export async function executeTask(options: ExecuteTaskOptions): Promise<ExecuteTaskResult> {
   const startTime = Date.now();
   
+  // Determine if we should use the execution layer
+  const useExecutionLayer = options.executable ?? 
+    isTaskExecutable(options.inputData?.rawInput || options.inputData?.query || '');
+  
   try {
-    console.log(`🚀 Executing task ${options.taskId} (${options.taskType})`);
+    console.log(`🚀 Executing task ${options.taskId} (${options.taskType}) [Execution Layer: ${useExecutionLayer}]`);
     
-    // Call the edge function to execute the task
-    const { data, error } = await supabase.functions.invoke('pf-agency-execute-task', {
-      body: {
-        taskId: options.taskId,
-        agencyId: options.agencyId,
-        taskType: options.taskType,
-        inputData: options.inputData,
-        memberId: options.memberId,
-        researchDomain: options.researchDomain,
-      },
-    });
-
-    const executionTimeMs = Date.now() - startTime;
-
-    if (error) {
-      console.error('❌ Task execution error:', error);
-      return {
-        success: false,
-        error: error.message || 'Task execution failed',
-        executionTimeMs,
-      };
+    // Use execution layer for verified execution
+    if (useExecutionLayer && options.memberId) {
+      return executeWithVerification(options, startTime);
     }
-
-    if (data?.cancelled) {
-      return {
-        success: true,
-        cancelled: true,
-        executionTimeMs,
-      };
-    }
-
-    if (!data?.success) {
-      return {
-        success: false,
-        error: data?.error || 'Unknown execution error',
-        executionTimeMs,
-      };
-    }
-
-    console.log(`✅ Task ${options.taskId} completed in ${executionTimeMs}ms`);
     
-    return {
-      success: true,
-      result: data.result,
-      insights: data.insights,
-      provider: data.provider,
-      executionTimeMs,
-    };
+    // Legacy path: direct edge function call
+    return executeLegacy(options, startTime);
 
   } catch (err) {
     const executionTimeMs = Date.now() - startTime;
@@ -93,6 +74,161 @@ export async function executeTask(options: ExecuteTaskOptions): Promise<ExecuteT
       error: err instanceof Error ? err.message : 'Unexpected error',
       executionTimeMs,
     };
+  }
+}
+
+/**
+ * Execute with the new Execution Layer (verification + credit assignment)
+ */
+async function executeWithVerification(
+  options: ExecuteTaskOptions, 
+  startTime: number
+): Promise<ExecuteTaskResult> {
+  const goal = options.inputData?.rawInput || 
+               options.inputData?.query || 
+               options.inputData?.url ||
+               `Execute ${options.taskType} task`;
+
+  const context: ExecutionContext = {
+    agentId: options.memberId!,
+    taskId: options.taskId,
+    agencyId: options.agencyId,
+  };
+
+  // Create and execute plan
+  const plan = createPlan(goal, context);
+  const outcome = await executePlan(plan, context, undefined, (progress) => {
+    console.log(`📊 Progress: ${progress.completed}/${progress.total} - ${progress.currentAction}`);
+  });
+
+  const executionTimeMs = Date.now() - startTime;
+
+  // Store execution trace in database
+  await storeTrace(options, outcome);
+
+  // Map outcome to result
+  const success = outcome.finalStatus === 'success' || outcome.finalStatus === 'partial';
+  
+  return {
+    success,
+    result: success 
+      ? `Completed with ${outcome.verification.matchScore}% match. ${outcome.verification.observedState}`
+      : `Failed: ${outcome.verification.discrepancies.join(', ')}`,
+    insights: outcome.verification.evidence.map(e => e.content.slice(0, 200)),
+    provider: 'execution-layer',
+    executionTimeMs,
+    verification: {
+      status: outcome.verification.status,
+      matchScore: outcome.verification.matchScore,
+      discrepancies: outcome.verification.discrepancies,
+    },
+    creditDelta: calculateCreditFromOutcome(outcome),
+  };
+}
+
+/**
+ * Legacy execution path (direct edge function)
+ */
+async function executeLegacy(
+  options: ExecuteTaskOptions, 
+  startTime: number
+): Promise<ExecuteTaskResult> {
+  const { data, error } = await supabase.functions.invoke('pf-agency-execute-task', {
+    body: {
+      taskId: options.taskId,
+      agencyId: options.agencyId,
+      taskType: options.taskType,
+      inputData: options.inputData,
+      memberId: options.memberId,
+      researchDomain: options.researchDomain,
+    },
+  });
+
+  const executionTimeMs = Date.now() - startTime;
+
+  if (error) {
+    console.error('❌ Task execution error:', error);
+    return {
+      success: false,
+      error: error.message || 'Task execution failed',
+      executionTimeMs,
+    };
+  }
+
+  if (data?.cancelled) {
+    return {
+      success: true,
+      cancelled: true,
+      executionTimeMs,
+    };
+  }
+
+  if (!data?.success) {
+    return {
+      success: false,
+      error: data?.error || 'Unknown execution error',
+      executionTimeMs,
+    };
+  }
+
+  console.log(`✅ Task ${options.taskId} completed in ${executionTimeMs}ms`);
+  
+  return {
+    success: true,
+    result: data.result,
+    insights: data.insights,
+    provider: data.provider,
+    executionTimeMs,
+  };
+}
+
+/**
+ * Store execution trace for learning
+ */
+async function storeTrace(
+  options: ExecuteTaskOptions, 
+  outcome: ExecutionOutcome
+): Promise<void> {
+  try {
+    await supabase.from('execution_traces').insert({
+      agency_id: options.agencyId,
+      agent_id: options.memberId,
+      task_id: options.taskId,
+      plan_id: outcome.plan.id,
+      goal_state: outcome.plan.goalState,
+      action_count: outcome.plan.actions.length,
+      status: outcome.finalStatus,
+      match_score: outcome.verification.matchScore,
+      verification_status: outcome.verification.status,
+      discrepancies: outcome.verification.discrepancies,
+      evidence: outcome.verification.evidence.map(e => ({
+        type: e.type,
+        url: e.url,
+        preview: e.content.slice(0, 500),
+      })),
+      credit_delta: calculateCreditFromOutcome(outcome),
+      fallback_used: outcome.recovery === 'fallback',
+      recovery_strategy: outcome.recovery,
+      execution_time_ms: outcome.totalDurationMs,
+      completed_at: new Date().toISOString(),
+    });
+  } catch (err) {
+    console.warn('Failed to store execution trace:', err);
+  }
+}
+
+/**
+ * Calculate credit delta from execution outcome
+ */
+function calculateCreditFromOutcome(outcome: ExecutionOutcome): number {
+  const { matchScore, status } = outcome.verification;
+  
+  if (status === 'success') {
+    return Math.min(10, Math.ceil(matchScore / 10));
+  } else if (status === 'partial') {
+    return Math.ceil((matchScore - 50) / 10);
+  } else {
+    return Math.max(-10, -Math.ceil((100 - matchScore) / 20));
   }
 }
 
