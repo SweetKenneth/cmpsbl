@@ -16,7 +16,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 
-export type SubstrateModule = 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system';
+export type SubstrateModule = 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer';
 
 export interface SubstrateRequest {
   module: SubstrateModule;
@@ -393,7 +393,7 @@ class SubstrateClient {
         supabase.functions.invoke('pf-substrate-upgrade', {
           body: { action: 'rollback_plan', plan_id: planId }
         }),
-    },
+  },
   };
 
   // Dream Module — Dream-Eater Operations  
@@ -425,6 +425,41 @@ class SubstrateClient {
       this.invoke({ module: 'dream', action: 'reflect' }),
   };
 
+  // Modernizer Module — Website Modernization Service (v3.12.0)
+  modernizer = {
+    /** Get modernizer service status */
+    status: () =>
+      this.invoke({ module: 'modernizer', action: 'status' }),
+    
+    /** List recent modernization jobs */
+    jobs: (limit?: number) =>
+      this.invoke({ module: 'modernizer', action: 'jobs', payload: { limit } }),
+    
+    /** Submit a URL for modernization */
+    submit: (url: string, options?: { theme?: string; improve_content?: boolean }) =>
+      this.invoke({ module: 'modernizer', action: 'submit', payload: { url, ...options } }),
+    
+    /** Get a specific job by ID */
+    job: (job_id: string) =>
+      this.invoke({ module: 'modernizer', action: 'job', payload: { job_id } }),
+    
+    /** Check usage quota */
+    quota: () =>
+      this.invoke({ module: 'modernizer', action: 'quota' }),
+    
+    /** Analyze a URL without creating a job */
+    analyze: (url: string) =>
+      this.invoke({ module: 'modernizer', action: 'analyze', payload: { url } }),
+    
+    /** Export job assets */
+    export: (job_id: string) =>
+      this.invoke({ module: 'modernizer', action: 'export', payload: { job_id } }),
+    
+    /** Lightweight heartbeat */
+    pulse: () =>
+      this.invoke({ module: 'modernizer', action: 'pulse' }),
+  };
+
 }
 
 export const substrate = SubstrateClient.getInstance();
@@ -437,3 +472,4 @@ export const nexus = substrate.nexus;
 export const vision = substrate.vision;
 export const system = substrate.system;
 export const dream = substrate.dream;
+export const modernizer = substrate.modernizer;

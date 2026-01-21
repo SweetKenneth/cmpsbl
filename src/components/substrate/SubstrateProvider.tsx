@@ -37,6 +37,7 @@ const SubstrateContext = createContext<SubstrateContextType>({
     vision: defaultModuleStatus,
     dream: defaultModuleStatus,
     system: defaultModuleStatus,
+    modernizer: defaultModuleStatus,
   },
   overallHealth: 0,
   refresh: async () => {},
@@ -61,6 +62,7 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
     vision: defaultModuleStatus,
     dream: defaultModuleStatus,
     system: defaultModuleStatus,
+    modernizer: defaultModuleStatus,
   });
 
   const checkModule = async (module: SubstrateModule): Promise<ModuleStatus> => {
