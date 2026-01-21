@@ -275,7 +275,14 @@ export function AgencyChatInterface({ agency, className }: AgencyChatInterfacePr
                     ? "bg-amber-500/10 border border-amber-500/20"
                     : "bg-muted/30 border border-border/30"
               )}>
-                <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                <div 
+                  className="text-sm whitespace-pre-wrap prose prose-invert prose-sm max-w-none
+                    [&_strong]:text-foreground [&_strong]:font-semibold
+                    [&_em]:text-muted-foreground"
+                  dangerouslySetInnerHTML={{ 
+                    __html: formatMessageContent(msg.content)
+                  }}
+                />
                 {msg.metadata?.command && (
                   <Badge variant="outline" className="mt-2 text-[10px] h-4">
                     {msg.metadata.command}
@@ -435,4 +442,28 @@ function generateTeamStatus(agency: Agency): string {
   lines.push('', '---', '*All systems operational. Ready for tasks.*');
 
   return lines.join('\n');
+}
+
+// Format message content with rich HTML
+function formatMessageContent(content: string): string {
+  // Replace ##text## with <strong>text</strong>
+  let formatted = content.replace(/##([^#]+)##/g, '<strong>$1</strong>');
+  
+  // Replace **text** with <strong>text</strong>
+  formatted = formatted.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  
+  // Replace *text* with <em>text</em>
+  formatted = formatted.replace(/(?<!\*)\*([^*]+)\*(?!\*)/g, '<em>$1</em>');
+  
+  // Replace - at start of lines with bullet points
+  formatted = formatted.replace(/^- /gm, '• ');
+  
+  // Convert ## headers
+  formatted = formatted.replace(/^## (.+)$/gm, '<strong class="text-base block mt-2 mb-1">$1</strong>');
+  formatted = formatted.replace(/^### (.+)$/gm, '<strong class="text-sm block mt-2 mb-1">$1</strong>');
+  
+  // Preserve line breaks
+  formatted = formatted.replace(/\n/g, '<br />');
+  
+  return formatted;
 }
