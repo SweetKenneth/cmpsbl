@@ -1,11 +1,13 @@
 /**
  * useAgencyTasks — Hook for managing agency tasks with real-time updates
+ * v2.0 — Now actually executes tasks via edge function
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import type { AgencyTask, AgencyTaskLog, TaskTypeId, TaskStatus } from '@/lib/agency/agencyTasks';
+import { executeTask } from '@/lib/agency/taskExecutor';
 
 interface UseAgencyTasksOptions {
   agencyId: string;
@@ -30,6 +32,7 @@ interface UseAgencyTasksReturn {
 }
 
 export function useAgencyTasks({ agencyId, autoRefresh = true }: UseAgencyTasksOptions): UseAgencyTasksReturn {
+  const executingTasks = useRef<Set<string>>(new Set());
   const [tasks, setTasks] = useState<AgencyTask[]>([]);
   const [taskLogs, setTaskLogs] = useState<AgencyTaskLog[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -91,11 +94,11 @@ export function useAgencyTasks({ agencyId, autoRefresh = true }: UseAgencyTasksO
     }
   }, [tasks.length, fetchLogs]);
 
-  // Real-time subscription
+  // Real-time subscription for tasks
   useEffect(() => {
     if (!autoRefresh || !agencyId) return;
 
-    const channel = supabase
+    const taskChannel = supabase
       .channel(`agency_tasks_${agencyId}`)
       .on(
         'postgres_changes',
@@ -120,9 +123,43 @@ export function useAgencyTasks({ agencyId, autoRefresh = true }: UseAgencyTasksO
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      supabase.removeChannel(taskChannel);
     };
   }, [agencyId, autoRefresh]);
+
+  // Real-time subscription for task logs
+  useEffect(() => {
+    if (!autoRefresh || !agencyId || tasks.length === 0) return;
+
+    const taskIds = tasks.map(t => t.id);
+    
+    const logChannel = supabase
+      .channel(`agency_task_logs_${agencyId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'agency_task_logs',
+        },
+        (payload) => {
+          const newLog = payload.new as AgencyTaskLog;
+          // Only add if it belongs to one of our tasks
+          if (taskIds.includes(newLog.task_id)) {
+            setTaskLogs(prev => {
+              // Avoid duplicates
+              if (prev.some(l => l.id === newLog.id)) return prev;
+              return [newLog, ...prev].slice(0, 100);
+            });
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(logChannel);
+    };
+  }, [agencyId, autoRefresh, tasks]);
 
   // Create task
   const createTask = useCallback(async (task: Partial<AgencyTask>): Promise<AgencyTask | null> => {
@@ -210,18 +247,66 @@ export function useAgencyTasks({ agencyId, autoRefresh = true }: UseAgencyTasksO
     }
   }, []);
 
-  // Start task
+  // Start task - NOW ACTUALLY EXECUTES VIA EDGE FUNCTION
   const startTask = useCallback(async (taskId: string): Promise<boolean> => {
-    const success = await updateTask(taskId, {
+    // Prevent double execution
+    if (executingTasks.current.has(taskId)) {
+      console.log('Task already executing:', taskId);
+      return true;
+    }
+    
+    // Find the task to get its details
+    const task = tasks.find(t => t.id === taskId);
+    if (!task) {
+      console.error('Task not found:', taskId);
+      return false;
+    }
+    
+    executingTasks.current.add(taskId);
+    
+    // First update to show task is starting
+    const updated = await updateTask(taskId, {
       status: 'in_progress' as TaskStatus,
       started_at: new Date().toISOString(),
       progress: 5,
     });
-    if (success) {
-      await addTaskLog(taskId, 'Task started', 'info');
+    
+    if (!updated) {
+      executingTasks.current.delete(taskId);
+      return false;
     }
-    return success;
-  }, [updateTask, addTaskLog]);
+    
+    await addTaskLog(taskId, '🚀 Task started - executing...', 'info');
+    toast.info('Task started', { description: 'Agent is now working on this task' });
+    
+    // Execute the task via edge function (fire and forget for UI responsiveness)
+    // The edge function will update progress and status directly in the database
+    // Real-time subscription will pick up the changes
+    executeTask({
+      taskId,
+      agencyId,
+      taskType: task.task_type as any,
+      inputData: (task.input_data as Record<string, any>) || {},
+      memberId: task.assigned_member_id || undefined,
+      researchDomain: task.research_domain || undefined,
+    }).then(result => {
+      executingTasks.current.delete(taskId);
+      
+      if (result.success) {
+        toast.success('Task completed', { 
+          description: `Finished in ${Math.round((result.executionTimeMs || 0) / 1000)}s` 
+        });
+      } else {
+        toast.error('Task failed', { description: result.error });
+      }
+    }).catch(err => {
+      executingTasks.current.delete(taskId);
+      console.error('Task execution error:', err);
+      toast.error('Task execution failed', { description: err.message });
+    });
+    
+    return true;
+  }, [tasks, agencyId, updateTask, addTaskLog]);
 
   // Complete task
   const completeTask = useCallback(async (taskId: string, output: Record<string, any> = {}): Promise<boolean> => {

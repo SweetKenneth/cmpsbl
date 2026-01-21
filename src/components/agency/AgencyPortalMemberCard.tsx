@@ -1,9 +1,9 @@
 /**
- * Agency Portal Member Card — Team member with dispatch capabilities
+ * Agency Portal Member Card — Team member with dispatch and learning capabilities
  */
 
 import { useState } from 'react';
-import { User, Crown, Zap, Clock, Play, Loader2, CheckCircle } from 'lucide-react';
+import { User, Crown, Zap, Clock, Play, Loader2, CheckCircle, BookOpen, Brain } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -33,6 +33,9 @@ interface AgencyPortalMemberCardProps {
   totalTasks: number;
   leaderName?: string;
   onDispatchTask?: (memberId: string, taskType: TaskTypeId, description?: string) => Promise<void>;
+  onStartLearning?: () => Promise<void>;
+  isStartingLearning?: boolean;
+  agentStatus?: 'working' | 'learning' | 'idle';
   className?: string;
 }
 
@@ -43,6 +46,9 @@ export function AgencyPortalMemberCard({
   totalTasks,
   leaderName,
   onDispatchTask,
+  onStartLearning,
+  isStartingLearning,
+  agentStatus = 'idle',
   className,
 }: AgencyPortalMemberCardProps) {
   const [isDispatching, setIsDispatching] = useState(false);
@@ -66,7 +72,15 @@ export function AgencyPortalMemberCard({
   };
 
   const getStatusBadge = () => {
-    if (currentTask) {
+    if (agentStatus === 'learning') {
+      return (
+        <Badge variant="outline" className="text-[10px] h-5 border-purple-500/50 text-purple-400 gap-1">
+          <BookOpen className="w-3 h-3 animate-pulse" />
+          Learning
+        </Badge>
+      );
+    }
+    if (agentStatus === 'working' || currentTask) {
       return (
         <Badge variant="outline" className="text-[10px] h-5 border-amber-500/50 text-amber-400 gap-1">
           <Loader2 className="w-3 h-3 animate-spin" />
@@ -153,42 +167,62 @@ export function AgencyPortalMemberCard({
         )}
 
         {/* Dispatch Button for Idle Agents */}
-        {isIdle && !isLeader && onDispatchTask && (
+        {isIdle && !isLeader && (onDispatchTask || onStartLearning) && (
           <div className="mt-3 pt-3 border-t border-border/20">
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-2 text-xs text-muted-foreground">
                 <Clock className="w-3 h-3" />
-                <span>Self-studying specialized domains...</span>
+                <span>Available for tasks</span>
               </div>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
+              <div className="flex items-center gap-1">
+                {onStartLearning && (
                   <Button
                     size="sm"
-                    variant="outline"
-                    className="h-7 text-[10px] gap-1 border-fuchsia-500/30 hover:bg-fuchsia-500/10"
-                    disabled={isDispatching}
+                    variant="ghost"
+                    className="h-7 text-[10px] gap-1 text-purple-400 hover:bg-purple-500/10"
+                    disabled={isStartingLearning}
+                    onClick={onStartLearning}
                   >
-                    {isDispatching ? (
+                    {isStartingLearning ? (
                       <Loader2 className="w-3 h-3 animate-spin" />
                     ) : (
-                      <Play className="w-3 h-3" />
+                      <Brain className="w-3 h-3" />
                     )}
-                    Dispatch
+                    Learn
                   </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  {availableTaskTypes.map(taskType => (
-                    <DropdownMenuItem
-                      key={taskType.id}
-                      onClick={() => handleDispatch(taskType.id as TaskTypeId)}
-                      className="gap-2 text-xs"
-                    >
-                      <span>{taskType.icon}</span>
-                      {taskType.name}
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
+                )}
+                {onDispatchTask && (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="h-7 text-[10px] gap-1 border-fuchsia-500/30 hover:bg-fuchsia-500/10"
+                        disabled={isDispatching}
+                      >
+                        {isDispatching ? (
+                          <Loader2 className="w-3 h-3 animate-spin" />
+                        ) : (
+                          <Play className="w-3 h-3" />
+                        )}
+                        Dispatch
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-48">
+                      {availableTaskTypes.map(taskType => (
+                        <DropdownMenuItem
+                          key={taskType.id}
+                          onClick={() => handleDispatch(taskType.id as TaskTypeId)}
+                          className="gap-2 text-xs"
+                        >
+                          <span>{taskType.icon}</span>
+                          {taskType.name}
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                )}
+              </div>
             </div>
           </div>
         )}
