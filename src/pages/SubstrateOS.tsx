@@ -11,7 +11,7 @@ import { Navigate } from 'react-router-dom';
 import { useState } from 'react';
 import { 
   Loader2, Lock, Terminal, AlertTriangle, Database, RefreshCw, 
-  Settings, FileText, Zap, LayoutDashboard, Activity, Bot
+  Settings, FileText, Zap, LayoutDashboard, Activity, Bot, Users, Sparkles
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -46,6 +46,8 @@ import { SystemHealthPanel } from '@/components/substrate-os/SystemHealthPanel';
 import { HealButton } from '@/components/substrate-os/HealButton';
 import { CognitivesPanel } from '@/components/substrate-os/CognitivesPanel';
 import { UpgradeEnginePanel } from '@/components/substrate-os/UpgradeEnginePanel';
+import { AgencyMintWizard } from '@/components/agency/AgencyMintWizard';
+import { AgencyGallery } from '@/components/agency/AgencyGallery';
 import { cn } from '@/lib/utils';
 
 function ConfirmActionDialog({
@@ -254,6 +256,7 @@ export default function SubstrateOS() {
   const { role, isOperator, isGovernor, loading: roleLoading } = useUserRole();
   const healthScore = useSubstrateHealthScore();
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [mintSubTab, setMintSubTab] = useState<'forge' | 'agency'>('agency');
 
   // Redirect to auth if not logged in
   if (!authLoading && !user) {
@@ -353,6 +356,20 @@ export default function SubstrateOS() {
                 <Activity className="w-4 h-4" />
                 <span className="hidden sm:inline">Events</span>
               </TabsTrigger>
+              {isGovernor && (
+                <TabsTrigger 
+                  value="mint" 
+                  className={cn(
+                    "gap-2 rounded-lg transition-all",
+                    "data-[state=active]:bg-purple-500/10 data-[state=active]:text-purple-400",
+                    "data-[state=active]:border-b-2 data-[state=active]:border-purple-400",
+                    "hover:bg-white/5"
+                  )}
+                >
+                  <Sparkles className="w-4 h-4" />
+                  <span className="hidden sm:inline">Mint</span>
+                </TabsTrigger>
+              )}
             </TabsList>
           </div>
         </div>
@@ -462,6 +479,83 @@ export default function SubstrateOS() {
             <EventStream />
           </main>
         </TabsContent>
+
+        {/* Mint Tab - Governor Only */}
+        {isGovernor && (
+          <TabsContent value="mint" className="flex-1 mt-0">
+            <main className="container mx-auto px-4 py-6 max-w-6xl space-y-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-purple-500/20 border border-purple-500/40 flex items-center justify-center">
+                    <Sparkles className="w-4 h-4 text-purple-400" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-semibold">Cognitive Mint</h2>
+                    <p className="text-xs text-muted-foreground font-mono">
+                      forge cognitives • assemble agencies
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Sub-tabs for Forge vs Agency */}
+              <div className="flex gap-2 p-1 rounded-lg bg-black/40 border border-border/30 w-fit">
+                <button
+                  onClick={() => setMintSubTab('agency')}
+                  className={cn(
+                    "px-4 py-2 rounded-md text-sm font-medium transition-all flex items-center gap-2",
+                    mintSubTab === 'agency'
+                      ? "bg-fuchsia-500/20 text-fuchsia-400 border border-fuchsia-500/40"
+                      : "text-muted-foreground hover:text-foreground hover:bg-white/5"
+                  )}
+                >
+                  <Users className="w-4 h-4" />
+                  Agency Mint
+                </button>
+                <a
+                  href="/forge"
+                  className={cn(
+                    "px-4 py-2 rounded-md text-sm font-medium transition-all flex items-center gap-2",
+                    "text-muted-foreground hover:text-foreground hover:bg-white/5"
+                  )}
+                >
+                  <Bot className="w-4 h-4" />
+                  Cognitive Forge
+                </a>
+              </div>
+
+              {/* Agency Sub-content */}
+              {mintSubTab === 'agency' && (
+                <Tabs defaultValue="create" className="space-y-4">
+                  <TabsList className="bg-black/40 border border-border/30">
+                    <TabsTrigger 
+                      value="create" 
+                      className="gap-2 data-[state=active]:bg-fuchsia-500/20 data-[state=active]:text-fuchsia-400"
+                    >
+                      <Sparkles className="w-4 h-4" />
+                      Create Agency
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="gallery"
+                      className="gap-2 data-[state=active]:bg-cyan-500/20 data-[state=active]:text-cyan-400"
+                    >
+                      <Users className="w-4 h-4" />
+                      Gallery
+                    </TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="create">
+                    <AgencyMintWizard onComplete={() => {}} />
+                  </TabsContent>
+
+                  <TabsContent value="gallery">
+                    <AgencyGallery />
+                  </TabsContent>
+                </Tabs>
+              )}
+            </main>
+          </TabsContent>
+        )}
       </Tabs>
 
       {/* Footer Status */}
