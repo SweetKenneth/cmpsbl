@@ -33,5 +33,15 @@ export type { ScheduledTask, CreateScheduleInput } from './useAgencyScheduling';
 export { useAgencyDeliverables } from './useAgencyDeliverables';
 export type { TaskDeliverable, DeliverableFormat, ExportOptions } from './useAgencyDeliverables';
 
+// Hybrid Dream Learning System
+export * from './dream/hybridDreamSystem';
+export {
+  useLocalImprovements,
+  useGlobalImprovements,
+  useDreamConsent,
+  useDreamCycleLogs,
+  useDreamLearningMetrics,
+} from './hooks/useHybridDream';
+
 // Utilities
 export * from './slugUtils';
