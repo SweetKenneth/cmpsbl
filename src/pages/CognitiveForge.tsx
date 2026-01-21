@@ -20,6 +20,7 @@ import { Badge } from '@/components/ui/badge';
 import { EnhancedBotBuilder } from '@/components/forge/EnhancedBotBuilder';
 import { MintedBotsList } from '@/components/forge/MintedBotsList';
 import { OSHeader } from '@/components/substrate-os/OSHeader';
+import { MintForgeToggle } from '@/components/navigation/MintForgeToggle';
 import { cn } from '@/lib/utils';
 
 export default function CognitiveForge() {
@@ -112,17 +113,22 @@ export default function CognitiveForge() {
               </div>
             </div>
             
-            {/* Catalog Link */}
-            <Link to="/forge/catalog">
-              <Button 
-                variant="outline" 
-                className="gap-2 border-cyan-500/30 hover:border-cyan-500/50 hover:bg-cyan-500/10 group"
-              >
-                <Grid className="w-4 h-4 text-cyan-400" />
-                <span>Catalog</span>
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-              </Button>
-            </Link>
+            <div className="flex items-center gap-3">
+              {/* Mint/Forge Toggle */}
+              <MintForgeToggle />
+              
+              {/* Catalog Link */}
+              <Link to="/forge/catalog">
+                <Button 
+                  variant="outline" 
+                  className="gap-2 border-cyan-500/30 hover:border-cyan-500/50 hover:bg-cyan-500/10 group"
+                >
+                  <Grid className="w-4 h-4 text-cyan-400" />
+                  <span className="hidden sm:inline">Catalog</span>
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+                </Button>
+              </Link>
+            </div>
           </div>
 
           {/* Feature Pills */}

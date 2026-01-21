@@ -16,6 +16,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useUserRole } from '@/hooks/useUserRole';
 import { AgencyMintWizard } from '@/components/agency/AgencyMintWizard';
 import { AgencyGallery } from '@/components/agency/AgencyGallery';
+import { MintForgeToggle } from '@/components/navigation/MintForgeToggle';
 import { cn } from '@/lib/utils';
 
 export default function AgencyMint() {
@@ -114,9 +115,12 @@ export default function AgencyMint() {
                 </div>
               </div>
             </div>
-            <Badge variant="outline" className="text-[10px] border-fuchsia-500/50 text-fuchsia-400 bg-fuchsia-500/10">
-              v1.0.0
-            </Badge>
+            <div className="flex items-center gap-3">
+              <MintForgeToggle />
+              <Badge variant="outline" className="text-[10px] border-fuchsia-500/50 text-fuchsia-400 bg-fuchsia-500/10">
+                v1.0.0
+              </Badge>
+            </div>
           </div>
         </div>
       </div>
