@@ -29,8 +29,8 @@ export async function storeTemplate(
   agencyId: string,
   _taskId: string
 ): Promise<boolean> {
-  const { error } = await supabase.from('substrate_templates').insert({
-    preset_id: presetId,
+  // Direct insert with type assertion (types will regenerate after migration)
+  const insertData = {
     name: `Template from ${presetId}`,
     description: `Auto-generated from successful execution`,
     action_sequence: actionSequence,
@@ -39,7 +39,11 @@ export async function storeTemplate(
     usage_count: 1,
     is_global: false,
     is_active: true,
-  });
+  };
+  
+  const { error } = await supabase
+    .from('substrate_templates')
+    .insert(insertData as any);
 
   if (error) {
     console.error('Failed to store template:', error);
@@ -64,7 +68,8 @@ export async function storeHeuristic(
   taskId: string,
   successRate: number = 0.8
 ): Promise<boolean> {
-  const { error } = await supabase.from('substrate_heuristics').insert({
+  // Type assertion to bypass stale types until regeneration
+  const insertData = {
     heuristic_type: heuristic.type,
     category: heuristic.category,
     title: heuristic.title,
@@ -76,7 +81,11 @@ export async function storeHeuristic(
     confidence: 0.7,
     is_global: false,
     is_active: true,
-  });
+  };
+  
+  const { error } = await supabase
+    .from('substrate_heuristics')
+    .insert(insertData as any);
 
   if (error) {
     console.error('Failed to store heuristic:', error);
@@ -128,7 +137,7 @@ export async function storeErrorPattern(
   agencyId: string,
   taskId: string
 ): Promise<boolean> {
-  const { error } = await supabase.from('substrate_heuristics').insert({
+  const insertData = {
     heuristic_type: 'error_pattern',
     category: 'recovery',
     title: `Error: ${errorType}`,
@@ -140,7 +149,11 @@ export async function storeErrorPattern(
     confidence: 0.5,
     is_global: false,
     is_active: true,
-  });
+  };
+  
+  const { error } = await supabase
+    .from('substrate_heuristics')
+    .insert(insertData as any);
 
   if (error) {
     console.error('Failed to store error pattern:', error);
