@@ -306,6 +306,129 @@ export type Database = {
           },
         ]
       }
+      agency_dream_consent: {
+        Row: {
+          agency_id: string
+          allow_global_pooling: boolean | null
+          allow_heuristic_sharing: boolean | null
+          allow_template_sharing: boolean | null
+          created_at: string | null
+          exclude_domains: string[] | null
+          id: string
+          privacy_level: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          agency_id: string
+          allow_global_pooling?: boolean | null
+          allow_heuristic_sharing?: boolean | null
+          allow_template_sharing?: boolean | null
+          created_at?: string | null
+          exclude_domains?: string[] | null
+          id?: string
+          privacy_level?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          agency_id?: string
+          allow_global_pooling?: boolean | null
+          allow_heuristic_sharing?: boolean | null
+          allow_template_sharing?: boolean | null
+          created_at?: string | null
+          exclude_domains?: string[] | null
+          id?: string
+          privacy_level?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agency_dream_consent_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: true
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      agency_dream_memory: {
+        Row: {
+          agency_id: string
+          applied: boolean | null
+          applied_at: string | null
+          category: string | null
+          confidence: number | null
+          created_at: string | null
+          evidence_refs: string[] | null
+          id: string
+          improvement_type: string
+          layer: string
+          member_id: string | null
+          parent_id: string | null
+          payload: Json
+          title: string
+          updated_at: string | null
+          version: number | null
+        }
+        Insert: {
+          agency_id: string
+          applied?: boolean | null
+          applied_at?: string | null
+          category?: string | null
+          confidence?: number | null
+          created_at?: string | null
+          evidence_refs?: string[] | null
+          id?: string
+          improvement_type: string
+          layer: string
+          member_id?: string | null
+          parent_id?: string | null
+          payload?: Json
+          title: string
+          updated_at?: string | null
+          version?: number | null
+        }
+        Update: {
+          agency_id?: string
+          applied?: boolean | null
+          applied_at?: string | null
+          category?: string | null
+          confidence?: number | null
+          created_at?: string | null
+          evidence_refs?: string[] | null
+          id?: string
+          improvement_type?: string
+          layer?: string
+          member_id?: string | null
+          parent_id?: string | null
+          payload?: Json
+          title?: string
+          updated_at?: string | null
+          version?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agency_dream_memory_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agency_dream_memory_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "agency_members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agency_dream_memory_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "agency_dream_memory"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       agency_dream_pool: {
         Row: {
           agency_id: string
@@ -2592,6 +2715,62 @@ export type Database = {
         }
         Relationships: []
       }
+      dream_cycle_logs: {
+        Row: {
+          agency_id: string | null
+          artifacts_processed: number | null
+          completed_at: string | null
+          created_at: string | null
+          cycle_type: string
+          error_message: string | null
+          heuristics_learned: number | null
+          id: string
+          improvements_generated: number | null
+          metadata: Json | null
+          started_at: string | null
+          status: string | null
+          templates_created: number | null
+        }
+        Insert: {
+          agency_id?: string | null
+          artifacts_processed?: number | null
+          completed_at?: string | null
+          created_at?: string | null
+          cycle_type: string
+          error_message?: string | null
+          heuristics_learned?: number | null
+          id?: string
+          improvements_generated?: number | null
+          metadata?: Json | null
+          started_at?: string | null
+          status?: string | null
+          templates_created?: number | null
+        }
+        Update: {
+          agency_id?: string | null
+          artifacts_processed?: number | null
+          completed_at?: string | null
+          created_at?: string | null
+          cycle_type?: string
+          error_message?: string | null
+          heuristics_learned?: number | null
+          id?: string
+          improvements_generated?: number | null
+          metadata?: Json | null
+          started_at?: string | null
+          status?: string | null
+          templates_created?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dream_cycle_logs_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       dream_eater_state: {
         Row: {
           current_mood: string
@@ -2720,6 +2899,65 @@ export type Database = {
           user_agent?: string | null
         }
         Relationships: []
+      }
+      dream_learning_metrics: {
+        Row: {
+          agency_id: string | null
+          artifact_quality_score: number | null
+          created_at: string | null
+          id: string
+          metric_date: string | null
+          skill_improvement_score: number | null
+          success_rate_after: number | null
+          success_rate_before: number | null
+          success_rate_delta: number | null
+          tasks_after: number | null
+          tasks_before: number | null
+          template_diff_score: number | null
+          token_efficiency_delta: number | null
+          user_feedback_score: number | null
+        }
+        Insert: {
+          agency_id?: string | null
+          artifact_quality_score?: number | null
+          created_at?: string | null
+          id?: string
+          metric_date?: string | null
+          skill_improvement_score?: number | null
+          success_rate_after?: number | null
+          success_rate_before?: number | null
+          success_rate_delta?: number | null
+          tasks_after?: number | null
+          tasks_before?: number | null
+          template_diff_score?: number | null
+          token_efficiency_delta?: number | null
+          user_feedback_score?: number | null
+        }
+        Update: {
+          agency_id?: string | null
+          artifact_quality_score?: number | null
+          created_at?: string | null
+          id?: string
+          metric_date?: string | null
+          skill_improvement_score?: number | null
+          success_rate_after?: number | null
+          success_rate_before?: number | null
+          success_rate_delta?: number | null
+          tasks_after?: number | null
+          tasks_before?: number | null
+          template_diff_score?: number | null
+          token_efficiency_delta?: number | null
+          user_feedback_score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dream_learning_metrics_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       dream_log: {
         Row: {
@@ -6145,6 +6383,68 @@ export type Database = {
         }
         Relationships: []
       }
+      substrate_brain_improvements: {
+        Row: {
+          adoption_count: number | null
+          category: string
+          confidence: number | null
+          created_at: string | null
+          description: string | null
+          id: string
+          improvement_type: string
+          is_active: boolean | null
+          payload: Json
+          previous_version_id: string | null
+          source_count: number | null
+          success_rate: number | null
+          title: string
+          updated_at: string | null
+          version: string | null
+        }
+        Insert: {
+          adoption_count?: number | null
+          category: string
+          confidence?: number | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          improvement_type: string
+          is_active?: boolean | null
+          payload?: Json
+          previous_version_id?: string | null
+          source_count?: number | null
+          success_rate?: number | null
+          title: string
+          updated_at?: string | null
+          version?: string | null
+        }
+        Update: {
+          adoption_count?: number | null
+          category?: string
+          confidence?: number | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          improvement_type?: string
+          is_active?: boolean | null
+          payload?: Json
+          previous_version_id?: string | null
+          source_count?: number | null
+          success_rate?: number | null
+          title?: string
+          updated_at?: string | null
+          version?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "substrate_brain_improvements_previous_version_id_fkey"
+            columns: ["previous_version_id"]
+            isOneToOne: false
+            referencedRelation: "substrate_brain_improvements"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       substrate_developer_keys: {
         Row: {
           app_id: string
@@ -6730,6 +7030,17 @@ export type Database = {
       update_ip_reputation: {
         Args: { p_action: string; p_ip: string; p_risk_score?: number }
         Returns: undefined
+      }
+      upsert_dream_learning_metrics: {
+        Args: {
+          p_agency_id: string
+          p_artifact_quality?: number
+          p_skill_improvement?: number
+          p_success_rate_delta?: number
+          p_template_diff?: number
+          p_token_efficiency_delta?: number
+        }
+        Returns: string
       }
       validate_clarity_api_key: { Args: { p_api_key: string }; Returns: Json }
     }

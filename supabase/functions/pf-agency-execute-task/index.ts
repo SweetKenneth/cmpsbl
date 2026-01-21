@@ -97,6 +97,66 @@ const RESEARCH_PROVIDERS = {
   },
 };
 
+// Telemetry recording helper
+async function recordTelemetry(supabase: any, data: {
+  agencyId: string;
+  memberId?: string;
+  taskType: string;
+  success: boolean;
+  executionTimeMs: number;
+  websitesCrawled: number;
+  apiCalls: number;
+  provider: string;
+}) {
+  await supabase.rpc('increment_agent_telemetry', {
+    p_agency_id: data.agencyId,
+    p_member_id: data.memberId || null,
+    p_tasks_completed: data.success ? 1 : 0,
+    p_tasks_failed: data.success ? 0 : 1,
+    p_websites_crawled: data.websitesCrawled,
+    p_api_calls: data.apiCalls,
+    p_execution_time_ms: data.executionTimeMs,
+  });
+}
+
+// Create task artifact helper
+async function createTaskArtifact(supabase: any, data: {
+  taskId: string;
+  agencyId: string;
+  memberId?: string;
+  taskType: string;
+  content: string;
+  sources: string[];
+  insights: string[];
+}): Promise<string | null> {
+  const { data: artifact, error } = await supabase
+    .from('agency_task_artifacts')
+    .insert({
+      task_id: data.taskId,
+      agency_id: data.agencyId,
+      member_id: data.memberId,
+      artifact_type: 'report',
+      file_name: `${data.taskType}-${Date.now()}.md`,
+      inline_content: data.content,
+      metadata: { sources: data.sources, insights: data.insights },
+    })
+    .select('id')
+    .single();
+  
+  return error ? null : artifact?.id;
+}
+
+// Cost estimation helper
+function estimateCost(provider: string, outputLength: number): number {
+  const costs: Record<string, number> = {
+    'lovable': 0.1,
+    'groq': 0.05,
+    'graceful_fallback': 0,
+  };
+  const baseCost = costs[provider.split('/')[0]] || 0.1;
+  return Math.round(baseCost * (outputLength / 1000) * 100) / 100;
+}
+
 // Check circuit breaker
 function isCircuitOpen(provider: string): boolean {
   const state = circuitState[provider];
@@ -522,6 +582,42 @@ Format with clear sections and supporting data points.`,
 
     const executionTime = Date.now() - startTime;
 
+    // ============================================
+    // TELEMETRY: Record agent performance metrics
+    // ============================================
+    try {
+      await recordTelemetry(supabase, {
+        agencyId,
+        memberId,
+        taskType,
+        success: true,
+        executionTimeMs: executionTime,
+        websitesCrawled: sources.filter(s => s.startsWith('http')).length,
+        apiCalls: 1 + (sources.length > 0 ? 1 : 0), // Base + research calls
+        provider,
+      });
+    } catch (telemetryError) {
+      console.warn('Telemetry recording failed:', telemetryError);
+    }
+
+    // ============================================
+    // ARTIFACT: Generate downloadable artifact
+    // ============================================
+    let artifactId: string | null = null;
+    try {
+      artifactId = await createTaskArtifact(supabase, {
+        taskId,
+        agencyId,
+        memberId,
+        taskType,
+        content: result,
+        sources,
+        insights,
+      });
+    } catch (artifactError) {
+      console.warn('Artifact creation failed:', artifactError);
+    }
+
     // Complete the task
     await supabase
       .from('agency_tasks')
@@ -536,6 +632,7 @@ Format with clear sections and supporting data points.`,
           provider,
           executionTimeMs: executionTime,
           isLearning,
+          artifactId,
         },
       })
       .eq('id', taskId);
@@ -546,7 +643,7 @@ Format with clear sections and supporting data points.`,
       member_id: memberId,
       log_type: 'completion',
       message: `✅ Task completed in ${Math.round(executionTime / 1000)}s`,
-      data: { insights: insights.slice(0, 3), sources: sources.slice(0, 3), provider },
+      data: { insights: insights.slice(0, 3), sources: sources.slice(0, 3), provider, artifactId },
     });
 
     // Add insight logs
@@ -578,6 +675,19 @@ Format with clear sections and supporting data points.`,
       });
     }
 
+    // Log API call for telemetry
+    await supabase.from('agency_api_calls').insert({
+      agency_id: agencyId,
+      member_id: memberId,
+      task_id: taskId,
+      api_name: provider.split('/')[0] || 'unknown',
+      endpoint: `/chat/completions`,
+      method: 'POST',
+      success: true,
+      response_time_ms: executionTime,
+      estimated_cost_cents: estimateCost(provider, result.length),
+    });
+
     console.log(`✅ Task ${taskId} completed successfully in ${executionTime}ms`);
 
     return new Response(JSON.stringify({ 
@@ -588,6 +698,7 @@ Format with clear sections and supporting data points.`,
       sources,
       provider,
       executionTimeMs: executionTime,
+      artifactId,
     }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
