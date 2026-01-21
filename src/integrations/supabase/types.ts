@@ -94,6 +94,7 @@ export type Database = {
           metadata: Json | null
           name: string
           owner_id: string | null
+          slug: string | null
           status: string | null
           template_id: string | null
           updated_at: string | null
@@ -111,6 +112,7 @@ export type Database = {
           metadata?: Json | null
           name: string
           owner_id?: string | null
+          slug?: string | null
           status?: string | null
           template_id?: string | null
           updated_at?: string | null
@@ -128,6 +130,7 @@ export type Database = {
           metadata?: Json | null
           name?: string
           owner_id?: string | null
+          slug?: string | null
           status?: string | null
           template_id?: string | null
           updated_at?: string | null
