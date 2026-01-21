@@ -10,6 +10,21 @@ export * from './agencyCommands';
 // Task execution
 export * from './taskExecutor';
 
+// Skills & Primitives
+export * from './skills/agentSkills';
+export * from './skills/taskPrimitives';
+
+// Free API Adapters
+export * from './adapters/freeApiAdapters';
+
+// Telemetry
+export * from './telemetry/agencyTelemetry';
+export { useAgencyTelemetry, useTaskArtifacts } from './hooks/useAgencyTelemetry';
+
+// Leader Orchestration
+export * from './orchestration/leaderOrchestrator';
+export { useLeaderOrchestration } from './hooks/useLeaderOrchestration';
+
 // Scheduling (recurring tasks)
 export { useAgencyScheduling } from './useAgencyScheduling';
 export type { ScheduledTask, CreateScheduleInput } from './useAgencyScheduling';
