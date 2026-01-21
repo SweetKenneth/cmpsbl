@@ -1,10 +1,10 @@
 /**
  * InteractiveSubstrateDiagram — Animated System Architecture Hero
- * A WOW-factor interactive visualization of the Substrate OS
+ * Performance-optimized version with deferred animations
  */
 
-import { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useCallback, memo, useMemo } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { 
   Brain, Shield, Zap, Eye, Moon, Settings, MessageSquare,
   Activity, Database, Lock, Cpu, Network
@@ -110,8 +110,18 @@ const connections = [
   { from: "nexus", to: "vision" },
 ];
 
-// Animated pulse component for data flow
-function DataPulse({ from, to, delay = 0 }: { from: ModuleNode; to: ModuleNode; delay?: number }) {
+// Memoized data pulse component - only renders when active
+const DataPulse = memo(function DataPulse({ 
+  from, 
+  to, 
+  isActive 
+}: { 
+  from: ModuleNode; 
+  to: ModuleNode; 
+  isActive: boolean;
+}) {
+  if (!isActive) return null;
+  
   return (
     <motion.circle
       r="3"
@@ -125,33 +135,35 @@ function DataPulse({ from, to, delay = 0 }: { from: ModuleNode; to: ModuleNode; 
       }}
       transition={{
         duration: 2,
-        delay,
         repeat: Infinity,
         repeatDelay: 1,
         ease: "easeInOut"
       }}
     />
   );
-}
+});
 
-// Module node component
-function ModuleNodeComponent({ 
+// Memoized module node component
+const ModuleNodeComponent = memo(function ModuleNodeComponent({ 
   module, 
   isActive, 
   isHovered,
   onClick,
-  onHover
+  onHover,
+  animationsReady
 }: { 
   module: ModuleNode; 
   isActive: boolean;
   isHovered: boolean;
   onClick: () => void;
   onHover: (hover: boolean) => void;
+  animationsReady: boolean;
 }) {
   const Icon = module.icon;
+  const shouldAnimate = animationsReady && isActive;
   
   return (
-    <motion.div
+    <div
       className={cn(
         "absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer z-10",
         "transition-all duration-300"
@@ -163,29 +175,23 @@ function ModuleNodeComponent({
       onClick={onClick}
       onMouseEnter={() => onHover(true)}
       onMouseLeave={() => onHover(false)}
-      whileHover={{ scale: 1.15 }}
-      whileTap={{ scale: 0.95 }}
     >
-      {/* Glow effect */}
-      <motion.div
+      {/* Glow effect - CSS only */}
+      <div
         className={cn(
-          "absolute inset-0 rounded-full blur-xl opacity-0 transition-opacity",
-          module.color.replace("text-", "bg-")
+          "absolute inset-0 rounded-full blur-xl transition-opacity duration-300",
+          module.color.replace("text-", "bg-"),
+          isActive || isHovered ? "opacity-40" : "opacity-0"
         )}
-        animate={{ opacity: isActive || isHovered ? 0.4 : 0 }}
       />
       
-      {/* Outer ring - animated */}
-      <motion.div
+      {/* Outer ring - CSS animation when active */}
+      <div
         className={cn(
           "absolute inset-[-6px] rounded-full border-2 opacity-30",
-          module.color.replace("text-", "border-")
+          module.color.replace("text-", "border-"),
+          shouldAnimate && "animate-pulse"
         )}
-        animate={{
-          scale: isActive ? [1, 1.2, 1] : 1,
-          opacity: isActive ? [0.3, 0.6, 0.3] : 0.3
-        }}
-        transition={{ duration: 2, repeat: Infinity }}
       />
       
       {/* Main node */}
@@ -193,7 +199,7 @@ function ModuleNodeComponent({
         className={cn(
           "relative w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center",
           "bg-background/80 backdrop-blur-sm border-2 transition-all duration-300",
-          isActive || isHovered ? "border-current shadow-lg" : "border-border/50",
+          isActive || isHovered ? "border-current shadow-lg scale-110" : "border-border/50",
           module.color,
           isActive && module.glowColor,
           isActive && "shadow-xl"
@@ -211,28 +217,42 @@ function ModuleNodeComponent({
           {module.name}
         </p>
         {(isHovered || isActive) && (
-          <motion.p 
-            className="text-[10px] text-muted-foreground whitespace-nowrap mt-0.5"
-            initial={{ opacity: 0, y: -5 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
+          <p className="text-[10px] text-muted-foreground whitespace-nowrap mt-0.5">
             {module.actions} actions
-          </motion.p>
+          </p>
         )}
       </div>
-    </motion.div>
+    </div>
   );
-}
+});
 
 export function InteractiveSubstrateDiagram() {
+  const prefersReducedMotion = useReducedMotion();
   const [activeModule, setActiveModule] = useState<string | null>(null);
   const [hoveredModule, setHoveredModule] = useState<string | null>(null);
-  const [autoRotate, setAutoRotate] = useState(true);
+  const [autoRotate, setAutoRotate] = useState(false); // Start paused
   const [pulseIndex, setPulseIndex] = useState(0);
+  const [animationsReady, setAnimationsReady] = useState(false);
 
-  // Auto-rotate through modules
+  // Defer animations until after initial paint to prevent freezing
   useEffect(() => {
-    if (!autoRotate) return;
+    // Use requestIdleCallback for non-blocking initialization
+    const startAnimations = () => {
+      setAnimationsReady(true);
+      // Start auto-rotate after a delay
+      setTimeout(() => setAutoRotate(true), 500);
+    };
+    
+    if ('requestIdleCallback' in window) {
+      (window as any).requestIdleCallback(startAnimations, { timeout: 1000 });
+    } else {
+      setTimeout(startAnimations, 100);
+    }
+  }, []);
+
+  // Auto-rotate through modules - only when ready and not reduced motion
+  useEffect(() => {
+    if (!autoRotate || !animationsReady || prefersReducedMotion) return;
     
     const interval = setInterval(() => {
       setActiveModule(prev => {
@@ -243,15 +263,17 @@ export function InteractiveSubstrateDiagram() {
     }, 3000);
     
     return () => clearInterval(interval);
-  }, [autoRotate]);
+  }, [autoRotate, animationsReady, prefersReducedMotion]);
 
-  // Pulse animation cycle
+  // Pulse animation cycle - slower interval, only when ready
   useEffect(() => {
+    if (!animationsReady || prefersReducedMotion) return;
+    
     const interval = setInterval(() => {
       setPulseIndex(prev => (prev + 1) % connections.length);
-    }, 800);
+    }, 1200); // Slower to reduce CPU usage
     return () => clearInterval(interval);
-  }, []);
+  }, [animationsReady, prefersReducedMotion]);
 
   const handleModuleClick = useCallback((moduleId: string) => {
     setAutoRotate(false);
@@ -321,9 +343,7 @@ export function InteractiveSubstrateDiagram() {
               />
               
               {/* Animated pulse on active connections */}
-              {idx === pulseIndex && (
-                <DataPulse from={fromModule} to={toModule} />
-              )}
+              <DataPulse from={fromModule} to={toModule} isActive={idx === pulseIndex && animationsReady} />
             </g>
           );
         })}
@@ -360,6 +380,7 @@ export function InteractiveSubstrateDiagram() {
           isHovered={hoveredModule === module.id}
           onClick={() => handleModuleClick(module.id)}
           onHover={(hover) => handleModuleHover(module.id, hover)}
+          animationsReady={animationsReady}
         />
       ))}
 
