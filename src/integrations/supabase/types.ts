@@ -1101,6 +1101,62 @@ export type Database = {
         }
         Relationships: []
       }
+      agent_competency: {
+        Row: {
+          agent_id: string
+          competency_score: number
+          created_at: string
+          escalations: number | null
+          failed_attempts: number | null
+          heuristics: Json | null
+          id: string
+          last_execution_at: string | null
+          partial_attempts: number | null
+          success_rate: number | null
+          successful_attempts: number | null
+          total_attempts: number | null
+          updated_at: string
+        }
+        Insert: {
+          agent_id: string
+          competency_score?: number
+          created_at?: string
+          escalations?: number | null
+          failed_attempts?: number | null
+          heuristics?: Json | null
+          id?: string
+          last_execution_at?: string | null
+          partial_attempts?: number | null
+          success_rate?: number | null
+          successful_attempts?: number | null
+          total_attempts?: number | null
+          updated_at?: string
+        }
+        Update: {
+          agent_id?: string
+          competency_score?: number
+          created_at?: string
+          escalations?: number | null
+          failed_attempts?: number | null
+          heuristics?: Json | null
+          id?: string
+          last_execution_at?: string | null
+          partial_attempts?: number | null
+          success_rate?: number | null
+          successful_attempts?: number | null
+          total_attempts?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agent_competency_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: true
+            referencedRelation: "agency_members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_daily_quota: {
         Row: {
           calls_budget: number | null
@@ -3193,6 +3249,94 @@ export type Database = {
         }
         Relationships: []
       }
+      execution_traces: {
+        Row: {
+          action_count: number | null
+          agency_id: string | null
+          agent_id: string | null
+          completed_at: string | null
+          created_at: string
+          credit_delta: number | null
+          discrepancies: Json | null
+          evidence: Json | null
+          execution_time_ms: number | null
+          fallback_used: boolean | null
+          goal_state: string
+          heuristics_learned: string[] | null
+          id: string
+          match_score: number | null
+          plan_id: string
+          recovery_strategy: string | null
+          status: string
+          task_id: string | null
+          verification_status: string | null
+        }
+        Insert: {
+          action_count?: number | null
+          agency_id?: string | null
+          agent_id?: string | null
+          completed_at?: string | null
+          created_at?: string
+          credit_delta?: number | null
+          discrepancies?: Json | null
+          evidence?: Json | null
+          execution_time_ms?: number | null
+          fallback_used?: boolean | null
+          goal_state: string
+          heuristics_learned?: string[] | null
+          id?: string
+          match_score?: number | null
+          plan_id: string
+          recovery_strategy?: string | null
+          status?: string
+          task_id?: string | null
+          verification_status?: string | null
+        }
+        Update: {
+          action_count?: number | null
+          agency_id?: string | null
+          agent_id?: string | null
+          completed_at?: string | null
+          created_at?: string
+          credit_delta?: number | null
+          discrepancies?: Json | null
+          evidence?: Json | null
+          execution_time_ms?: number | null
+          fallback_used?: boolean | null
+          goal_state?: string
+          heuristics_learned?: string[] | null
+          id?: string
+          match_score?: number | null
+          plan_id?: string
+          recovery_strategy?: string | null
+          status?: string
+          task_id?: string | null
+          verification_status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "execution_traces_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "execution_traces_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "agency_members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "execution_traces_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "agency_tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       global_correlation: {
         Row: {
           correlation_score: number
@@ -3288,6 +3432,57 @@ export type Database = {
           source_name?: string
         }
         Relationships: []
+      }
+      integration_usage: {
+        Row: {
+          agency_id: string | null
+          agent_id: string | null
+          created_at: string
+          endpoint_id: string | null
+          error_message: string | null
+          id: string
+          integration_id: string
+          response_time_ms: number | null
+          status: string
+        }
+        Insert: {
+          agency_id?: string | null
+          agent_id?: string | null
+          created_at?: string
+          endpoint_id?: string | null
+          error_message?: string | null
+          id?: string
+          integration_id: string
+          response_time_ms?: number | null
+          status?: string
+        }
+        Update: {
+          agency_id?: string | null
+          agent_id?: string | null
+          created_at?: string
+          endpoint_id?: string | null
+          error_message?: string | null
+          id?: string
+          integration_id?: string
+          response_time_ms?: number | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "integration_usage_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "integration_usage_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "agency_members"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       ip_reputation: {
         Row: {
