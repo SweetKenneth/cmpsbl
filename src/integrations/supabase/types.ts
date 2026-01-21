@@ -312,6 +312,179 @@ export type Database = {
           },
         ]
       }
+      agency_settings: {
+        Row: {
+          agency_id: string
+          auto_research_enabled: boolean | null
+          created_at: string
+          default_research_domains: Json | null
+          id: string
+          leader_name: string | null
+          notification_preferences: Json | null
+          preset_commands: Json | null
+          shared_learning_enabled: boolean | null
+          theme_settings: Json | null
+          updated_at: string
+        }
+        Insert: {
+          agency_id: string
+          auto_research_enabled?: boolean | null
+          created_at?: string
+          default_research_domains?: Json | null
+          id?: string
+          leader_name?: string | null
+          notification_preferences?: Json | null
+          preset_commands?: Json | null
+          shared_learning_enabled?: boolean | null
+          theme_settings?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          agency_id?: string
+          auto_research_enabled?: boolean | null
+          created_at?: string
+          default_research_domains?: Json | null
+          id?: string
+          leader_name?: string | null
+          notification_preferences?: Json | null
+          preset_commands?: Json | null
+          shared_learning_enabled?: boolean | null
+          theme_settings?: Json | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agency_settings_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: true
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      agency_task_logs: {
+        Row: {
+          created_at: string
+          data: Json | null
+          id: string
+          log_type: string
+          member_id: string | null
+          message: string
+          task_id: string
+        }
+        Insert: {
+          created_at?: string
+          data?: Json | null
+          id?: string
+          log_type?: string
+          member_id?: string | null
+          message: string
+          task_id: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json | null
+          id?: string
+          log_type?: string
+          member_id?: string | null
+          message?: string
+          task_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agency_task_logs_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "agency_members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agency_task_logs_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "agency_tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      agency_tasks: {
+        Row: {
+          agency_id: string
+          assigned_member_id: string | null
+          completed_at: string | null
+          created_at: string
+          description: string | null
+          error_message: string | null
+          id: string
+          input_data: Json | null
+          metadata: Json | null
+          output_data: Json | null
+          priority: number | null
+          progress: number | null
+          research_domain: string | null
+          started_at: string | null
+          status: string
+          task_type: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          agency_id: string
+          assigned_member_id?: string | null
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          error_message?: string | null
+          id?: string
+          input_data?: Json | null
+          metadata?: Json | null
+          output_data?: Json | null
+          priority?: number | null
+          progress?: number | null
+          research_domain?: string | null
+          started_at?: string | null
+          status?: string
+          task_type?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          agency_id?: string
+          assigned_member_id?: string | null
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          error_message?: string | null
+          id?: string
+          input_data?: Json | null
+          metadata?: Json | null
+          output_data?: Json | null
+          priority?: number | null
+          progress?: number | null
+          research_domain?: string | null
+          started_at?: string | null
+          status?: string
+          task_type?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agency_tasks_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agency_tasks_assigned_member_id_fkey"
+            columns: ["assigned_member_id"]
+            isOneToOne: false
+            referencedRelation: "agency_members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       agency_templates: {
         Row: {
           base_price_cents: number | null
