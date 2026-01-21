@@ -1,12 +1,13 @@
 /**
  * Agency Mint Wizard — Multi-step agency creation flow
+ * Now with Governor self-mint option (free deployment)
  */
 
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { 
   ChevronRight, ChevronLeft, Users, Sparkles, Brain, 
-  ShoppingCart, Check, Crown, Plus, Loader2 
+  ShoppingCart, Check, Crown, Plus, Loader2, Shield 
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -17,9 +18,11 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { supabase } from '@/integrations/supabase/client';
+import { useUserRole } from '@/hooks/useUserRole';
 import { cn } from '@/lib/utils';
 import { AgencyTemplateCard } from './AgencyTemplateCard';
 import { AgencyMemberCard } from './AgencyMemberCard';
+import { GovernorSelfMintDialog } from './GovernorSelfMintDialog';
 import { 
   SPECIALIZATIONS, DREAM_POOL_MODES,
   type AgencyMember, type AgencyTemplate, type DreamPoolMode,
@@ -43,6 +46,7 @@ interface AgencyMintWizardProps {
 }
 
 export function AgencyMintWizard({ onComplete }: AgencyMintWizardProps) {
+  const { isGovernor } = useUserRole();
   const [step, setStep] = useState<Step>('template');
   const [loading, setLoading] = useState(false);
   const [templates, setTemplates] = useState<AgencyTemplate[]>([]);
@@ -519,7 +523,9 @@ export function AgencyMintWizard({ onComplete }: AgencyMintWizardProps) {
               <div>
                 <h3 className="text-lg font-semibold mb-2">Checkout</h3>
                 <p className="text-sm text-muted-foreground">
-                  Complete your purchase to deploy your agency.
+                  {isGovernor 
+                    ? 'Choose to deploy for free or proceed with Stripe checkout.'
+                    : 'Complete your purchase to deploy your agency.'}
                 </p>
               </div>
 
@@ -540,6 +546,36 @@ export function AgencyMintWizard({ onComplete }: AgencyMintWizardProps) {
                   <span className="text-xl font-bold text-fuchsia-400">{formatPrice(totalPrice)}</span>
                 </div>
               </div>
+
+              {/* Governor Self-Mint Option */}
+              {isGovernor && (
+                <div className="p-4 rounded-xl bg-fuchsia-500/10 border border-fuchsia-500/30 space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Shield className="w-4 h-4 text-fuchsia-400" />
+                    <span className="font-medium text-fuchsia-400">Governor Privilege</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    As a Governor, you can deploy this agency for free and set owner credentials directly.
+                  </p>
+                  <GovernorSelfMintDialog
+                    agencyName={agencyName}
+                    members={members}
+                    dreamPoolMode={dreamPoolMode}
+                    cohesionRating={cohesionRating}
+                    templateId={selectedTemplate}
+                    onComplete={(id) => onComplete?.(id)}
+                    disabled={!agencyName.trim()}
+                  >
+                    <Button 
+                      variant="outline" 
+                      className="w-full gap-2 border-fuchsia-500/50 text-fuchsia-400 hover:bg-fuchsia-500/20"
+                    >
+                      <Shield className="w-4 h-4" />
+                      Self-Mint (Free Deploy)
+                    </Button>
+                  </GovernorSelfMintDialog>
+                </div>
+              )}
 
               <div className="text-xs text-muted-foreground text-center space-y-1">
                 <p>🔒 Secure checkout powered by Stripe</p>
