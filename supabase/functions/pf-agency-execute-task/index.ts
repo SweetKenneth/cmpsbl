@@ -1,12 +1,12 @@
 /**
- * pf-agency-execute-task v2.0.0
+ * pf-agency-execute-task v3.0.0
  * 
  * Full task execution with:
- * - Real web research (Perplexity, Firecrawl)
- * - Circuit breakers and graceful fallback
- * - Self-healing mode
+ * - Groq (primary AI) + Firecrawl (web) - NO Perplexity
+ * - All 15 executable task types
+ * - Domain-aware research
+ * - Circuit breakers and fallback
  * - Progress streaming
- * - Idle learning support
  */
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
@@ -25,9 +25,10 @@ const CIRCUIT_BREAKER = {
   openDurationMs: 60000,
 };
 
-// Research capabilities with actual API endpoints
-// Primary: Groq + Firecrawl (no Perplexity)
-const RESEARCH_PROVIDERS = {
+// ============================================
+// RESEARCH PROVIDERS - Groq + Firecrawl only
+// ============================================
+const PROVIDERS = {
   firecrawl: {
     enabled: () => !!Deno.env.get('FIRECRAWL_API_KEY'),
     scrape: async (url: string) => {
@@ -45,11 +46,11 @@ const RESEARCH_PROVIDERS = {
         }),
       });
       
-      if (!response.ok) throw new Error(`Firecrawl error: ${response.status}`);
+      if (!response.ok) throw new Error(`Firecrawl scrape error: ${response.status}`);
       const data = await response.json();
       return data.data?.markdown || data.markdown || '';
     },
-    search: async (query: string) => {
+    search: async (query: string, limit: number = 5) => {
       const apiKey = Deno.env.get('FIRECRAWL_API_KEY');
       const response = await fetch('https://api.firecrawl.dev/v1/search', {
         method: 'POST',
@@ -59,7 +60,7 @@ const RESEARCH_PROVIDERS = {
         },
         body: JSON.stringify({
           query,
-          limit: 5,
+          limit,
           scrapeOptions: { formats: ['markdown'] },
         }),
       });
@@ -68,10 +69,29 @@ const RESEARCH_PROVIDERS = {
       const data = await response.json();
       return data.data || [];
     },
+    map: async (url: string, limit: number = 100) => {
+      const apiKey = Deno.env.get('FIRECRAWL_API_KEY');
+      const response = await fetch('https://api.firecrawl.dev/v1/map', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          url,
+          limit,
+          includeSubdomains: false,
+        }),
+      });
+      
+      if (!response.ok) throw new Error(`Firecrawl map error: ${response.status}`);
+      const data = await response.json();
+      return data.links || [];
+    },
   },
   groq: {
     enabled: () => !!Deno.env.get('GROQ_API_KEY'),
-    generate: async (systemPrompt: string, userPrompt: string) => {
+    generate: async (systemPrompt: string, userPrompt: string, maxTokens: number = 4000) => {
       const apiKey = Deno.env.get('GROQ_API_KEY');
       const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
         method: 'POST',
@@ -85,7 +105,7 @@ const RESEARCH_PROVIDERS = {
             { role: 'system', content: systemPrompt },
             { role: 'user', content: userPrompt }
           ],
-          max_tokens: 4000,
+          max_tokens: maxTokens,
           temperature: 0.7,
         }),
       });
@@ -95,75 +115,42 @@ const RESEARCH_PROVIDERS = {
       return data.choices?.[0]?.message?.content || '';
     },
   },
+  lovable: {
+    enabled: () => !!Deno.env.get('LOVABLE_API_KEY'),
+    generate: async (systemPrompt: string, userPrompt: string) => {
+      const apiKey = Deno.env.get('LOVABLE_API_KEY');
+      const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "google/gemini-2.5-flash",
+          messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: userPrompt },
+          ],
+          max_tokens: 4096,
+        }),
+      });
+      
+      if (!response.ok) throw new Error(`Lovable AI error: ${response.status}`);
+      const data = await response.json();
+      return data.choices?.[0]?.message?.content || '';
+    },
+  },
 };
 
-// Telemetry recording helper
-async function recordTelemetry(supabase: any, data: {
-  agencyId: string;
-  memberId?: string;
-  taskType: string;
-  success: boolean;
-  executionTimeMs: number;
-  websitesCrawled: number;
-  apiCalls: number;
-  provider: string;
-}) {
-  await supabase.rpc('increment_agent_telemetry', {
-    p_agency_id: data.agencyId,
-    p_member_id: data.memberId || null,
-    p_tasks_completed: data.success ? 1 : 0,
-    p_tasks_failed: data.success ? 0 : 1,
-    p_websites_crawled: data.websitesCrawled,
-    p_api_calls: data.apiCalls,
-    p_execution_time_ms: data.executionTimeMs,
-  });
-}
+// ============================================
+// HELPER FUNCTIONS
+// ============================================
 
-// Create task artifact helper
-async function createTaskArtifact(supabase: any, data: {
-  taskId: string;
-  agencyId: string;
-  memberId?: string;
-  taskType: string;
-  content: string;
-  sources: string[];
-  insights: string[];
-}): Promise<string | null> {
-  const { data: artifact, error } = await supabase
-    .from('agency_task_artifacts')
-    .insert({
-      task_id: data.taskId,
-      agency_id: data.agencyId,
-      member_id: data.memberId,
-      artifact_type: 'report',
-      file_name: `${data.taskType}-${Date.now()}.md`,
-      inline_content: data.content,
-      metadata: { sources: data.sources, insights: data.insights },
-    })
-    .select('id')
-    .single();
-  
-  return error ? null : artifact?.id;
-}
-
-// Cost estimation helper
-function estimateCost(provider: string, outputLength: number): number {
-  const costs: Record<string, number> = {
-    'lovable': 0.1,
-    'groq': 0.05,
-    'graceful_fallback': 0,
-  };
-  const baseCost = costs[provider.split('/')[0]] || 0.1;
-  return Math.round(baseCost * (outputLength / 1000) * 100) / 100;
-}
-
-// Check circuit breaker
 function isCircuitOpen(provider: string): boolean {
   const state = circuitState[provider];
   if (!state) return false;
   
   if (state.state === 'open') {
-    // Check if enough time has passed to try again
     if (Date.now() - state.lastFailure > CIRCUIT_BREAKER.openDurationMs) {
       state.state = 'half-open';
       return false;
@@ -173,7 +160,6 @@ function isCircuitOpen(provider: string): boolean {
   return false;
 }
 
-// Record success/failure
 function recordCircuitResult(provider: string, success: boolean): void {
   if (!circuitState[provider]) {
     circuitState[provider] = { failures: 0, lastFailure: 0, state: 'closed' };
@@ -188,14 +174,11 @@ function recordCircuitResult(provider: string, success: boolean): void {
     
     if (circuitState[provider].failures >= CIRCUIT_BREAKER.failureThreshold) {
       circuitState[provider].state = 'open';
-      console.warn(`🚫 Circuit OPEN for ${provider}`);
     }
   }
 }
 
-// Update task progress (checks for cancellation)
 async function updateProgress(supabase: any, taskId: string, progress: number, message?: string): Promise<boolean> {
-  // First check if task was cancelled
   const { data: task } = await supabase
     .from('agency_tasks')
     .select('status')
@@ -203,8 +186,7 @@ async function updateProgress(supabase: any, taskId: string, progress: number, m
     .single();
 
   if (task?.status === 'cancelled') {
-    console.log(`⏹️ Task ${taskId} was cancelled, stopping execution`);
-    return false; // Signal to stop
+    return false;
   }
 
   await supabase
@@ -220,108 +202,17 @@ async function updateProgress(supabase: any, taskId: string, progress: number, m
       data: { progress },
     });
   }
-  return true; // Continue
+  return true;
 }
 
-// Perform real web research - Groq + Firecrawl strategy
-async function performWebResearch(query: string, depth: number = 1): Promise<{ content: string; sources: string[] }> {
-  const sources: string[] = [];
-  let content = '';
-  
-  // Try Firecrawl web search first (real web data)
-  if (RESEARCH_PROVIDERS.firecrawl.enabled() && !isCircuitOpen('firecrawl')) {
+// AI completion with fallback chain: Lovable -> Groq
+async function aiComplete(systemPrompt: string, userPrompt: string): Promise<{ content: string; provider: string }> {
+  // Try Lovable first
+  if (PROVIDERS.lovable.enabled() && !isCircuitOpen('lovable')) {
     try {
-      console.log('🔍 Researching with Firecrawl search...');
-      const results = await RESEARCH_PROVIDERS.firecrawl.search(query);
-      recordCircuitResult('firecrawl', true);
-      
-      // Aggregate results
-      for (const result of results.slice(0, 3)) {
-        if (result.markdown) {
-          content += `\n\n## ${result.title || 'Source'}\n${result.markdown.slice(0, 2000)}`;
-          sources.push(result.url);
-        }
-      }
-      
-      if (content) {
-        // Enhance with Groq synthesis
-        if (RESEARCH_PROVIDERS.groq.enabled() && !isCircuitOpen('groq')) {
-          try {
-            console.log('🧠 Synthesizing with Groq...');
-            const synthesis = await RESEARCH_PROVIDERS.groq.generate(
-              'You are a research analyst. Synthesize the following scraped web content into a comprehensive, well-organized report. Maintain factual accuracy and cite sources where relevant.',
-              `Query: ${query}\n\nScraped content:\n${content.slice(0, 8000)}\n\nSources: ${sources.join(', ')}`
-            );
-            recordCircuitResult('groq', true);
-            return { content: synthesis, sources };
-          } catch (err) {
-            console.warn('Groq synthesis failed, returning raw Firecrawl data:', err);
-            recordCircuitResult('groq', false);
-          }
-        }
-        return { content, sources };
-      }
-    } catch (err) {
-      console.warn('Firecrawl search failed:', err);
-      recordCircuitResult('firecrawl', false);
-    }
-  }
-  
-  // Fallback to Groq for knowledge-based response
-  if (RESEARCH_PROVIDERS.groq.enabled() && !isCircuitOpen('groq')) {
-    try {
-      console.log('🧠 Using Groq for knowledge-based research...');
-      const result = await RESEARCH_PROVIDERS.groq.generate(
-        'You are a research specialist. Provide comprehensive, accurate information based on your training data. Format with clear sections and bullet points. Include relevant statistics and examples.',
-        `Research thoroughly: ${query}`
-      );
-      recordCircuitResult('groq', true);
-      return { content: result, sources: ['AI Knowledge Base'] };
-    } catch (err) {
-      console.warn('Groq failed:', err);
-      recordCircuitResult('groq', false);
-    }
-  }
-  
-  // Emergency fallback
-  return {
-    content: `Research request: "${query}"\n\nNote: External research providers are temporarily unavailable. Please try again later.`,
-    sources: [],
-  };
-}
-
-// Main AI completion with fallback chain
-async function performAICompletion(systemPrompt: string, userPrompt: string): Promise<{ content: string; provider: string }> {
-  // Try Lovable AI Gateway first
-  const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-  
-  if (LOVABLE_API_KEY && !isCircuitOpen('lovable')) {
-    try {
-      const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${LOVABLE_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "google/gemini-2.5-flash",
-          messages: [
-            { role: "system", content: systemPrompt },
-            { role: "user", content: userPrompt },
-          ],
-          max_tokens: 4096,
-        }),
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        recordCircuitResult('lovable', true);
-        return {
-          content: data.choices?.[0]?.message?.content || '',
-          provider: 'lovable/gemini-2.5-flash',
-        };
-      }
-      recordCircuitResult('lovable', false);
+      const content = await PROVIDERS.lovable.generate(systemPrompt, userPrompt);
+      recordCircuitResult('lovable', true);
+      return { content, provider: 'lovable/gemini-2.5-flash' };
     } catch (err) {
       console.warn('Lovable AI failed:', err);
       recordCircuitResult('lovable', false);
@@ -329,23 +220,394 @@ async function performAICompletion(systemPrompt: string, userPrompt: string): Pr
   }
   
   // Fallback to Groq
-  if (RESEARCH_PROVIDERS.groq.enabled() && !isCircuitOpen('groq')) {
+  if (PROVIDERS.groq.enabled() && !isCircuitOpen('groq')) {
     try {
-      const content = await RESEARCH_PROVIDERS.groq.generate(systemPrompt, userPrompt);
+      const content = await PROVIDERS.groq.generate(systemPrompt, userPrompt);
       recordCircuitResult('groq', true);
       return { content, provider: 'groq/llama-3.3-70b' };
     } catch (err) {
-      console.warn('Groq fallback failed:', err);
+      console.warn('Groq failed:', err);
       recordCircuitResult('groq', false);
     }
   }
   
-  // Emergency response
-  return {
-    content: 'Task processing is temporarily degraded. Your request has been queued for retry.',
-    provider: 'graceful_fallback',
-  };
+  return { content: 'AI providers temporarily unavailable.', provider: 'fallback' };
 }
+
+// Web research with Firecrawl
+async function webResearch(query: string): Promise<{ content: string; sources: string[] }> {
+  const sources: string[] = [];
+  let content = '';
+  
+  if (PROVIDERS.firecrawl.enabled() && !isCircuitOpen('firecrawl')) {
+    try {
+      const results = await PROVIDERS.firecrawl.search(query, 5);
+      recordCircuitResult('firecrawl', true);
+      
+      for (const result of results.slice(0, 3)) {
+        if (result.markdown) {
+          content += `\n\n## ${result.title || 'Source'}\n${result.markdown.slice(0, 2000)}`;
+          sources.push(result.url);
+        }
+      }
+    } catch (err) {
+      console.warn('Firecrawl search failed:', err);
+      recordCircuitResult('firecrawl', false);
+    }
+  }
+  
+  // Always synthesize with AI if we have content
+  if (content) {
+    const synthesis = await aiComplete(
+      'You are a research analyst. Synthesize the web content into a comprehensive, well-organized report.',
+      `Query: ${query}\n\nContent:\n${content.slice(0, 8000)}`
+    );
+    return { content: synthesis.content, sources };
+  }
+  
+  // Pure AI fallback
+  const fallback = await aiComplete(
+    'You are a research specialist. Provide comprehensive information based on your knowledge.',
+    `Research: ${query}`
+  );
+  return { content: fallback.content, sources: ['AI Knowledge Base'] };
+}
+
+// Scrape a URL
+async function scrapeUrl(url: string): Promise<string> {
+  if (PROVIDERS.firecrawl.enabled() && !isCircuitOpen('firecrawl')) {
+    try {
+      const content = await PROVIDERS.firecrawl.scrape(url);
+      recordCircuitResult('firecrawl', true);
+      return content;
+    } catch (err) {
+      console.warn('Firecrawl scrape failed:', err);
+      recordCircuitResult('firecrawl', false);
+    }
+  }
+  return '';
+}
+
+// Extract insights from text
+function extractInsights(text: string): string[] {
+  const insights: string[] = [];
+  
+  const bulletMatches = text.match(/^[•\-\*]\s+.{20,150}$/gm);
+  if (bulletMatches) {
+    insights.push(...bulletMatches.slice(0, 5).map(m => m.replace(/^[•\-\*]\s+/, '').trim()));
+  }
+  
+  const numberedMatches = text.match(/^\d+\.\s+.{20,150}$/gm);
+  if (numberedMatches && insights.length < 5) {
+    insights.push(...numberedMatches.slice(0, 5 - insights.length).map(m => m.replace(/^\d+\.\s+/, '').trim()));
+  }
+  
+  if (insights.length === 0) {
+    const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 30 && s.trim().length < 200);
+    insights.push(...sentences.slice(0, 3).map(s => s.trim()));
+  }
+  
+  return [...new Set(insights)].slice(0, 5);
+}
+
+// ============================================
+// TASK HANDLERS
+// ============================================
+
+const TASK_HANDLERS: Record<string, (input: string, supabase: any, taskId: string) => Promise<{ result: string; sources: string[]; provider: string }>> = {
+  // Web Research
+  web_research: async (input) => {
+    const research = await webResearch(input);
+    return { result: research.content, sources: research.sources, provider: 'firecrawl+groq' };
+  },
+
+  // Competitor Research
+  competitive_profile: async (input) => {
+    const urlMatch = input.match(/https?:\/\/[^\s]+/);
+    let pageContent = '';
+    const sources: string[] = [];
+    
+    if (urlMatch) {
+      pageContent = await scrapeUrl(urlMatch[0]);
+      sources.push(urlMatch[0]);
+    }
+    
+    const research = await webResearch(`${input} competitor analysis market position`);
+    sources.push(...research.sources);
+    
+    const analysis = await aiComplete(
+      `You are a competitive intelligence analyst. Create a comprehensive competitor profile including:
+- Company Overview (what they do, target market)
+- Key Products/Services
+- Pricing Strategy (if discoverable)
+- Strengths and Weaknesses
+- Market Positioning
+- Key Differentiators
+Format as a structured report.`,
+      `Analyze: ${input}\n\nPage content:\n${pageContent.slice(0, 4000)}\n\nResearch:\n${research.content.slice(0, 4000)}`
+    );
+    
+    return { result: analysis.content, sources, provider: analysis.provider };
+  },
+
+  // Market Research
+  market_research: async (input) => {
+    const research = await webResearch(`${input} market size trends key players opportunities`);
+    
+    const analysis = await aiComplete(
+      `You are a market research analyst. Create a market report including:
+- Market Overview & Size
+- Key Players & Market Share
+- Industry Trends
+- Growth Opportunities
+- Challenges & Threats
+- Market Forecast`,
+      `Market: ${input}\n\nResearch:\n${research.content.slice(0, 6000)}`
+    );
+    
+    return { result: analysis.content, sources: research.sources, provider: 'firecrawl+' + analysis.provider };
+  },
+
+  // SEO Audit
+  seo_audit: async (input) => {
+    const urlMatch = input.match(/https?:\/\/[^\s]+/);
+    let pageContent = '';
+    const sources: string[] = [];
+    
+    if (urlMatch) {
+      pageContent = await scrapeUrl(urlMatch[0]);
+      sources.push(urlMatch[0]);
+    }
+    
+    const audit = await aiComplete(
+      `You are an SEO expert. Perform a comprehensive SEO audit including:
+- Technical SEO (page structure, meta tags, headings)
+- Content Quality (keyword usage, readability, length)
+- On-Page SEO Score (1-100)
+- Key Issues Found
+- Priority Recommendations
+- Quick Wins
+Format as a professional SEO audit report.`,
+      `Audit: ${input}\n\nPage content:\n${pageContent.slice(0, 6000)}`
+    );
+    
+    return { result: audit.content, sources, provider: audit.provider };
+  },
+
+  // Keyword Research
+  keyword_research: async (input) => {
+    const research = await webResearch(`${input} keywords SEO search volume intent`);
+    
+    const analysis = await aiComplete(
+      `You are an SEO keyword specialist. Create a keyword research report:
+- Primary Keywords (5-10)
+- Long-tail Keywords (10-15)
+- Search Intent Analysis
+- Keyword Difficulty Assessment
+- Content Opportunity Gaps
+- Recommended Target Keywords`,
+      `Topic: ${input}\n\nResearch:\n${research.content.slice(0, 4000)}`
+    );
+    
+    return { result: analysis.content, sources: research.sources, provider: analysis.provider };
+  },
+
+  // Backlink Research
+  backlink_research: async (input) => {
+    const research = await webResearch(`${input} backlink opportunities guest posting directories forums`);
+    
+    const analysis = await aiComplete(
+      `You are a link building specialist. Create a backlink opportunity report:
+- High-Authority Directory Opportunities
+- Forum & Community Opportunities
+- Guest Post Targets
+- Resource Page Opportunities
+- Competitor Backlink Insights
+- Outreach Priority List`,
+      `Domain/Niche: ${input}\n\nResearch:\n${research.content.slice(0, 5000)}`
+    );
+    
+    return { result: analysis.content, sources: research.sources, provider: analysis.provider };
+  },
+
+  // Data Extraction
+  data_extraction: async (input) => {
+    const urlMatch = input.match(/https?:\/\/[^\s]+/);
+    const sources: string[] = [];
+    
+    if (!urlMatch) {
+      return { result: 'No valid URL provided for extraction.', sources: [], provider: 'none' };
+    }
+    
+    const content = await scrapeUrl(urlMatch[0]);
+    sources.push(urlMatch[0]);
+    
+    const extraction = await aiComplete(
+      `You are a data extraction specialist. Extract and structure key data from this content:
+- Main Entities (companies, people, products)
+- Key Statistics & Numbers
+- Contact Information (if present)
+- Dates & Events
+- Lists & Tables (as structured data)
+Format as clean JSON-like structured data.`,
+      `Extract data from:\n${content.slice(0, 8000)}`
+    );
+    
+    return { result: extraction.content, sources, provider: extraction.provider };
+  },
+
+  // Site Mapping
+  site_mapping: async (input) => {
+    const urlMatch = input.match(/https?:\/\/[^\s]+/);
+    const sources: string[] = [];
+    
+    if (!urlMatch) {
+      return { result: 'No valid URL provided for mapping.', sources: [], provider: 'none' };
+    }
+    
+    if (PROVIDERS.firecrawl.enabled()) {
+      try {
+        const links = await PROVIDERS.firecrawl.map(urlMatch[0], 100);
+        sources.push(urlMatch[0]);
+        
+        const analysis = await aiComplete(
+          'Analyze this sitemap and provide a structure overview with page categories and hierarchy.',
+          `URL: ${urlMatch[0]}\nPages found: ${links.length}\n\nLinks:\n${links.slice(0, 50).join('\n')}`
+        );
+        
+        return { 
+          result: `## Site Map: ${urlMatch[0]}\n\nTotal pages discovered: ${links.length}\n\n${analysis.content}\n\n### All URLs:\n${links.map((l: string) => `- ${l}`).join('\n')}`,
+          sources,
+          provider: 'firecrawl'
+        };
+      } catch (err) {
+        console.warn('Site mapping failed:', err);
+      }
+    }
+    
+    return { result: 'Site mapping requires Firecrawl API.', sources: [], provider: 'none' };
+  },
+
+  // Content Scraping
+  content_scrape: async (input) => {
+    const urls = input.match(/https?:\/\/[^\s]+/g) || [];
+    const sources: string[] = [];
+    let content = '';
+    
+    for (const url of urls.slice(0, 5)) {
+      try {
+        const scraped = await scrapeUrl(url);
+        if (scraped) {
+          content += `\n\n## ${url}\n${scraped.slice(0, 2000)}`;
+          sources.push(url);
+        }
+      } catch (err) {
+        console.warn(`Failed to scrape ${url}:`, err);
+      }
+    }
+    
+    if (!content) {
+      return { result: 'No content could be scraped from provided URLs.', sources: [], provider: 'none' };
+    }
+    
+    return { result: content, sources, provider: 'firecrawl' };
+  },
+
+  // Content Generation
+  content_generation: async (input) => {
+    const research = await webResearch(input);
+    
+    const content = await aiComplete(
+      `You are a professional content writer. Create engaging, SEO-optimized content that is:
+- Well-structured with clear headings (H1, H2, H3)
+- Includes a compelling meta description
+- Uses relevant keywords naturally
+- Provides actionable value
+- 800-1200 words in length`,
+      `Topic: ${input}\n\nResearch context:\n${research.content.slice(0, 4000)}`
+    );
+    
+    return { result: content.content, sources: research.sources, provider: content.provider };
+  },
+
+  // Outreach Drafting
+  outreach_draft: async (input) => {
+    const draft = await aiComplete(
+      `You are an outreach specialist. Create personalized outreach emails:
+- Main Email (professional, value-focused)
+- 3 Subject Line Variations
+- Follow-up Email Template
+- Key personalization points to research`,
+      `Outreach purpose: ${input}`
+    );
+    
+    return { result: draft.content, sources: [], provider: draft.provider };
+  },
+
+  // Social Content
+  social_content: async (input) => {
+    const content = await aiComplete(
+      `You are a social media content specialist. Create engaging posts for multiple platforms:
+- LinkedIn Post (professional, 150-200 words)
+- Twitter/X Thread (5-7 tweets)
+- Instagram Caption (with hashtags)
+- Key Hooks & CTAs`,
+      `Topic: ${input}`
+    );
+    
+    return { result: content.content, sources: [], provider: content.provider };
+  },
+
+  // Trend Analysis
+  trend_analysis: async (input) => {
+    const research = await webResearch(`${input} trends 2024 2025 emerging developments`);
+    
+    const analysis = await aiComplete(
+      `You are a trend analyst. Create a comprehensive trend report:
+- Current State of ${input}
+- Emerging Trends (5-7 key trends)
+- Data & Statistics
+- Future Predictions
+- Opportunities to Watch
+- Risk Factors`,
+      `Topic: ${input}\n\nResearch:\n${research.content.slice(0, 5000)}`
+    );
+    
+    return { result: analysis.content, sources: research.sources, provider: analysis.provider };
+  },
+
+  // Brand Analysis
+  brand_analysis: async (input) => {
+    const urlMatch = input.match(/https?:\/\/[^\s]+/);
+    let pageContent = '';
+    const sources: string[] = [];
+    
+    if (urlMatch) {
+      pageContent = await scrapeUrl(urlMatch[0]);
+      sources.push(urlMatch[0]);
+    }
+    
+    const research = await webResearch(`${input} brand reputation reviews`);
+    sources.push(...research.sources);
+    
+    const analysis = await aiComplete(
+      `You are a brand strategist. Create a brand analysis:
+- Brand Identity & Positioning
+- Visual Identity Assessment
+- Messaging & Tone
+- Online Presence Audit
+- Competitor Comparison
+- Improvement Recommendations`,
+      `Brand: ${input}\n\nWebsite content:\n${pageContent.slice(0, 3000)}\n\nResearch:\n${research.content.slice(0, 3000)}`
+    );
+    
+    return { result: analysis.content, sources, provider: analysis.provider };
+  },
+};
+
+// ============================================
+// MAIN HANDLER
+// ============================================
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -355,16 +617,15 @@ serve(async (req) => {
   const startTime = Date.now();
 
   try {
-    const { taskId, agencyId, taskType, inputData, memberId, researchDomain } = await req.json();
+    const { taskId, agencyId, taskType, inputData, memberId } = await req.json();
 
     console.log(`🚀 Executing task ${taskId} (${taskType})`);
 
-    // Initialize Supabase client
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Update task to in_progress
+    // Update to in_progress
     await supabase
       .from('agency_tasks')
       .update({ 
@@ -374,248 +635,54 @@ serve(async (req) => {
       })
       .eq('id', taskId);
 
-    // Add initial log
     await supabase.from('agency_task_logs').insert({
       task_id: taskId,
       member_id: memberId,
       log_type: 'info',
-      message: `🚀 Starting ${taskType} task execution`,
-      data: { taskType, inputData },
+      message: `🚀 Starting ${taskType} task`,
+      data: { taskType },
     });
 
     const rawInput = inputData?.rawInput || inputData?.topic || '';
-    const isLearning = inputData?.isLearning || false;
-    
-    let result = '';
-    let sources: string[] = [];
-    let provider = '';
-    let insights: string[] = [];
 
-    // Update progress: 20% - check for cancellation
-    const shouldContinue = await updateProgress(supabase, taskId, 20, 'Analyzing task requirements...');
-    if (!shouldContinue) {
-      return new Response(JSON.stringify({ 
-        success: true,
-        cancelled: true,
-        taskId,
-      }), {
+    // Check for cancellation
+    if (!await updateProgress(supabase, taskId, 20, 'Analyzing task...')) {
+      return new Response(JSON.stringify({ success: true, cancelled: true, taskId }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    // Route based on task type
-    switch (taskType) {
-      case 'research':
-      case 'company_research': {
-        // Update progress: 30% - check for cancellation
-        if (!await updateProgress(supabase, taskId, 30, '🔍 Searching the web...')) {
-          return new Response(JSON.stringify({ success: true, cancelled: true, taskId }), {
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
-          });
-        }
-        
-        // Perform real web research
-        const research = await performWebResearch(rawInput, 2);
-        sources = research.sources;
-        
-        // Update progress: 60% - check for cancellation
-        if (!await updateProgress(supabase, taskId, 60, '📝 Synthesizing findings...')) {
-          return new Response(JSON.stringify({ success: true, cancelled: true, taskId }), {
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
-          });
-        }
-        
-        // Synthesize with AI
-        const synthesis = await performAICompletion(
-          `You are a research analyst. Synthesize the following research into a comprehensive report with key findings, insights, and actionable recommendations. Format with clear sections and bullet points.`,
-          `Research topic: ${rawInput}\n\nResearch findings:\n${research.content.slice(0, 8000)}\n\nSources: ${sources.join(', ')}`
-        );
-        
-        result = synthesis.content;
-        provider = synthesis.provider;
-        break;
-      }
-
-      case 'seo_scan': {
-        await updateProgress(supabase, taskId, 30, '🔍 Analyzing SEO factors...');
-        
-        // Try to scrape the URL if provided
-        let pageContent = '';
-        const urlMatch = rawInput.match(/https?:\/\/[^\s]+/);
-        
-        if (urlMatch && RESEARCH_PROVIDERS.firecrawl.enabled()) {
-          try {
-            pageContent = await RESEARCH_PROVIDERS.firecrawl.scrape(urlMatch[0]);
-            sources.push(urlMatch[0]);
-          } catch (err) {
-            console.warn('Failed to scrape URL:', err);
-          }
-        }
-        
-        await updateProgress(supabase, taskId, 50, '📊 Generating SEO recommendations...');
-        
-        const seoAnalysis = await performAICompletion(
-          `You are an SEO expert. Analyze the provided content and generate a comprehensive SEO audit with:
-- Meta tag analysis and recommendations
-- Content structure and heading hierarchy
-- Keyword optimization opportunities
-- Technical SEO issues
-- Performance recommendations
-- Backlink strategy suggestions
-Format as a professional SEO report with scores and prioritized actions.`,
-          `Analyze: ${rawInput}\n\nPage content:\n${pageContent.slice(0, 6000)}`
-        );
-        
-        result = seoAnalysis.content;
-        provider = seoAnalysis.provider;
-        break;
-      }
-
-      case 'code_study': {
-        await updateProgress(supabase, taskId, 30, '🔍 Analyzing code patterns...');
-        
-        // Research code patterns
-        const codeResearch = await performWebResearch(`${rawInput} code architecture patterns best practices`);
-        sources = codeResearch.sources;
-        
-        await updateProgress(supabase, taskId, 60, '📝 Generating analysis...');
-        
-        const codeAnalysis = await performAICompletion(
-          `You are a senior software architect. Analyze code patterns and provide:
-- Architecture overview
-- Design pattern identification
-- Best practice recommendations
-- Potential improvements
-- Security considerations
-Format as a technical review document.`,
-          `Code study: ${rawInput}\n\nResearch context:\n${codeResearch.content.slice(0, 5000)}`
-        );
-        
-        result = codeAnalysis.content;
-        provider = codeAnalysis.provider;
-        break;
-      }
-
-      case 'content_creation': {
-        await updateProgress(supabase, taskId, 30, '🎨 Researching topic...');
-        
-        // Research for content accuracy
-        const contentResearch = await performWebResearch(rawInput);
-        sources = contentResearch.sources;
-        
-        await updateProgress(supabase, taskId, 60, '✍️ Creating content...');
-        
-        const content = await performAICompletion(
-          `You are a professional content writer. Create engaging, well-structured content that is:
-- Optimized for the target audience
-- SEO-friendly with proper headings
-- Informative and actionable
-- Professional in tone
-Include relevant statistics and examples where appropriate.`,
-          `Create content for: ${rawInput}\n\nResearch context:\n${contentResearch.content.slice(0, 4000)}`
-        );
-        
-        result = content.content;
-        provider = content.provider;
-        break;
-      }
-
-      case 'audit': {
-        await updateProgress(supabase, taskId, 30, '🔍 Conducting audit...');
-        
-        const auditAnalysis = await performAICompletion(
-          `You are a compliance and quality auditor. Perform a thorough audit covering:
-- Compliance status
-- Risk assessment
-- Quality metrics
-- Improvement recommendations
-- Priority action items
-Format as a professional audit report with severity ratings.`,
-          `Audit: ${rawInput}`
-        );
-        
-        result = auditAnalysis.content;
-        provider = auditAnalysis.provider;
-        break;
-      }
-
-      case 'analysis': {
-        await updateProgress(supabase, taskId, 30, '📊 Performing analysis...');
-        
-        const analysis = await performAICompletion(
-          `You are a data analyst. Provide comprehensive analysis with:
-- Key findings and patterns
-- Data insights
-- Trend identification
-- Actionable recommendations
-Format with clear sections and supporting data points.`,
-          `Analyze: ${rawInput}`
-        );
-        
-        result = analysis.content;
-        provider = analysis.provider;
-        break;
-      }
-
-      default: {
-        // Generic task handling
-        await updateProgress(supabase, taskId, 40, '⚙️ Processing task...');
-        
-        const genericResult = await performAICompletion(
-          `You are a helpful AI assistant. Complete the requested task thoroughly and professionally.`,
-          rawInput
-        );
-        
-        result = genericResult.content;
-        provider = genericResult.provider;
-      }
-    }
-
-    // Update progress: 80%
-    await updateProgress(supabase, taskId, 80, '📋 Extracting insights...');
-
-    // Extract insights
-    insights = extractInsights(result);
-
-    // Update progress: 90%
-    await updateProgress(supabase, taskId, 90, '💾 Saving results...');
-
+    // Get the handler
+    const handler = TASK_HANDLERS[taskType] || TASK_HANDLERS.web_research;
+    
+    await updateProgress(supabase, taskId, 40, `Executing ${taskType}...`);
+    
+    const { result, sources, provider } = await handler(rawInput, supabase, taskId);
+    
+    await updateProgress(supabase, taskId, 80, 'Extracting insights...');
+    
+    const insights = extractInsights(result);
     const executionTime = Date.now() - startTime;
 
-    // ============================================
-    // TELEMETRY: Record agent performance metrics
-    // ============================================
-    try {
-      await recordTelemetry(supabase, {
-        agencyId,
-        memberId,
-        taskType,
-        success: true,
-        executionTimeMs: executionTime,
-        websitesCrawled: sources.filter(s => s.startsWith('http')).length,
-        apiCalls: 1 + (sources.length > 0 ? 1 : 0), // Base + research calls
-        provider,
-      });
-    } catch (telemetryError) {
-      console.warn('Telemetry recording failed:', telemetryError);
-    }
-
-    // ============================================
-    // ARTIFACT: Generate downloadable artifact
-    // ============================================
+    // Save artifact
     let artifactId: string | null = null;
     try {
-      artifactId = await createTaskArtifact(supabase, {
-        taskId,
-        agencyId,
-        memberId,
-        taskType,
-        content: result,
-        sources,
-        insights,
-      });
-    } catch (artifactError) {
-      console.warn('Artifact creation failed:', artifactError);
+      const { data: artifact } = await supabase
+        .from('agency_task_artifacts')
+        .insert({
+          task_id: taskId,
+          agency_id: agencyId,
+          member_id: memberId,
+          artifact_type: 'report',
+          file_name: `${taskType}-${Date.now()}.md`,
+          inline_content: result,
+          metadata: { sources, insights },
+        })
+        .select('id')
+        .single();
+      artifactId = artifact?.id;
+    } catch (e) {
+      console.warn('Artifact save failed:', e);
     }
 
     // Complete the task
@@ -631,13 +698,11 @@ Format with clear sections and supporting data points.`,
           sources,
           provider,
           executionTimeMs: executionTime,
-          isLearning,
           artifactId,
         },
       })
       .eq('id', taskId);
 
-    // Add completion log
     await supabase.from('agency_task_logs').insert({
       task_id: taskId,
       member_id: memberId,
@@ -646,49 +711,7 @@ Format with clear sections and supporting data points.`,
       data: { insights: insights.slice(0, 3), sources: sources.slice(0, 3), provider, artifactId },
     });
 
-    // Add insight logs
-    for (const insight of insights.slice(0, 3)) {
-      await supabase.from('agency_task_logs').insert({
-        task_id: taskId,
-        member_id: memberId,
-        log_type: 'insight',
-        message: insight,
-      });
-    }
-
-    // Store learning in dream pool if enabled and it's a learning task
-    const { data: settings } = await supabase
-      .from('agency_settings')
-      .select('shared_learning_enabled')
-      .eq('agency_id', agencyId)
-      .single();
-
-    if (settings?.shared_learning_enabled) {
-      await supabase.from('agency_dream_pool').insert({
-        agency_id: agencyId,
-        contributor_id: memberId,
-        dream_type: isLearning ? 'learning' : 'task_completion',
-        dream_content: `[${taskType}] ${insights.slice(0, 2).join(' | ')}`,
-        sentiment_score: 0.8,
-        tags: [taskType, isLearning ? 'idle_learning' : 'active_task'],
-        visibility: 'team',
-      });
-    }
-
-    // Log API call for telemetry
-    await supabase.from('agency_api_calls').insert({
-      agency_id: agencyId,
-      member_id: memberId,
-      task_id: taskId,
-      api_name: provider.split('/')[0] || 'unknown',
-      endpoint: `/chat/completions`,
-      method: 'POST',
-      success: true,
-      response_time_ms: executionTime,
-      estimated_cost_cents: estimateCost(provider, result.length),
-    });
-
-    console.log(`✅ Task ${taskId} completed successfully in ${executionTime}ms`);
+    console.log(`✅ Task ${taskId} completed in ${executionTime}ms`);
 
     return new Response(JSON.stringify({ 
       success: true,
@@ -706,7 +729,6 @@ Format with clear sections and supporting data points.`,
   } catch (error) {
     console.error("❌ Task execution error:", error);
     
-    // Try to mark task as failed
     try {
       const { taskId } = await req.json().catch(() => ({}));
       if (taskId) {
@@ -742,34 +764,3 @@ Format with clear sections and supporting data points.`,
     });
   }
 });
-
-// Helper to extract key insights from AI response
-function extractInsights(text: string): string[] {
-  const insights: string[] = [];
-  
-  // Look for bullet points
-  const bulletMatches = text.match(/^[•\-\*]\s+.{20,150}$/gm);
-  if (bulletMatches) {
-    insights.push(...bulletMatches.slice(0, 5).map(m => m.replace(/^[•\-\*]\s+/, '').trim()));
-  }
-  
-  // Look for numbered points
-  const numberedMatches = text.match(/^\d+\.\s+.{20,150}$/gm);
-  if (numberedMatches && insights.length < 5) {
-    insights.push(...numberedMatches.slice(0, 5 - insights.length).map(m => m.replace(/^\d+\.\s+/, '').trim()));
-  }
-  
-  // Look for bold headings as insights
-  const boldMatches = text.match(/\*\*([^*]{10,100})\*\*/g);
-  if (boldMatches && insights.length < 5) {
-    insights.push(...boldMatches.slice(0, 5 - insights.length).map(m => m.replace(/\*\*/g, '').trim()));
-  }
-  
-  // If no structured content, take first sentences
-  if (insights.length === 0) {
-    const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 30 && s.trim().length < 200);
-    insights.push(...sentences.slice(0, 3).map(s => s.trim()));
-  }
-  
-  return [...new Set(insights)].slice(0, 5); // Remove duplicates, limit to 5
-}

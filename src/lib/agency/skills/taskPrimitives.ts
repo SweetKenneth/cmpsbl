@@ -1,11 +1,12 @@
 /**
- * Task Primitives — Atomic units of work agents can execute
- * Each primitive defines inputs, outputs, required skills, and API handlers
+ * Task Primitives v2.0 — Only executable tasks
+ * Each primitive maps to actual backend handlers that work
+ * Using: Groq (AI) + Firecrawl (Web Scraping/Search) + Lovable AI
  */
 
 import type { AgentSkillId } from './agentSkills';
 
-export type ExecutionProfile = 'single_run' | 'leader_route' | 'scheduled' | 'batch';
+export type ExecutionProfile = 'single_run' | 'leader_route' | 'batch';
 
 export interface TaskPrimitive {
   id: string;
@@ -17,157 +18,219 @@ export interface TaskPrimitive {
   inputs: string[];
   outputs: string[];
   
-  // Requirements
+  // Requirements - only use available handlers
   skills: AgentSkillId[];
-  handlers: string[];
+  handlers: ('groq' | 'firecrawl' | 'lovable')[];
   
   // Execution config
   executionProfiles: ExecutionProfile[];
   estimatedDurationMs: number;
   
-  // Telemetry
-  telemetryFields: string[]; // Which counters to increment
+  // What telemetry fields to track
+  telemetryFields: string[];
 }
 
+// ONLY primitives that can actually execute with current infrastructure
 export const TASK_PRIMITIVES: Record<string, TaskPrimitive> = {
+  // ============ RESEARCH TASKS ============
   web_research: {
     id: 'web_research',
     name: 'Web Research',
-    description: 'Search the web and compile research findings',
+    description: 'Search the web and compile research findings using Firecrawl',
     icon: '🔍',
-    inputs: ['query_string', 'websites?'],
-    outputs: ['summary', 'citations'],
+    inputs: ['query_string', 'target_domains?'],
+    outputs: ['summary', 'citations', 'sources'],
     skills: ['research', 'analysis'],
-    handlers: ['firecrawl', 'fetch'],
+    handlers: ['firecrawl', 'groq'],
     executionProfiles: ['single_run', 'leader_route'],
     estimatedDurationMs: 30000,
-    telemetryFields: ['websites_crawled', 'tasks_completed'],
-  },
-  
-  data_extraction: {
-    id: 'data_extraction',
-    name: 'Data Extraction',
-    description: 'Extract structured data from a URL',
-    icon: '📥',
-    inputs: ['url'],
-    outputs: ['json'],
-    skills: ['analysis'],
-    handlers: ['firecrawl', 'fetch'],
-    executionProfiles: ['single_run', 'batch'],
-    estimatedDurationMs: 15000,
-    telemetryFields: ['websites_crawled', 'datasets_processed'],
-  },
-  
-  data_enrichment: {
-    id: 'data_enrichment',
-    name: 'Data Enrichment',
-    description: 'Enrich datasets with additional context',
-    icon: '🔗',
-    inputs: ['csv', 'json'],
-    outputs: ['csv_enriched', 'json_enriched'],
-    skills: ['enrichment', 'analysis'],
-    handlers: ['firecrawl', 'wikipedia', 'whois', 'ipinfo'],
-    executionProfiles: ['batch'],
-    estimatedDurationMs: 60000,
-    telemetryFields: ['enrichment_operations', 'datasets_processed'],
-  },
-  
-  content_generation: {
-    id: 'content_generation',
-    name: 'Content Generation',
-    description: 'Generate structured content from a brief',
-    icon: '✍️',
-    inputs: ['brief'],
-    outputs: ['markdown', 'html', 'text'],
-    skills: ['writing'],
-    handlers: ['groq', 'lovable'],
-    executionProfiles: ['single_run', 'leader_route'],
-    estimatedDurationMs: 20000,
-    telemetryFields: ['tasks_completed'],
-  },
-  
-  outreach_generation: {
-    id: 'outreach_generation',
-    name: 'Outreach Generation',
-    description: 'Generate email sequences and outreach scripts',
-    icon: '📧',
-    inputs: ['persona', 'offer'],
-    outputs: ['email_sequence', 'script'],
-    skills: ['writing', 'outreach'],
-    handlers: ['groq', 'lovable'],
-    executionProfiles: ['single_run', 'batch'],
-    estimatedDurationMs: 25000,
-    telemetryFields: ['tasks_completed'],
-  },
-  
-  seo_audit: {
-    id: 'seo_audit',
-    name: 'SEO Audit',
-    description: 'Analyze a domain for SEO opportunities',
-    icon: '📊',
-    inputs: ['domain'],
-    outputs: ['audit_report', 'keyword_targets'],
-    skills: ['seo', 'research'],
-    handlers: ['firecrawl', 'fetch'],
-    executionProfiles: ['single_run', 'scheduled'],
-    estimatedDurationMs: 45000,
     telemetryFields: ['websites_crawled', 'tasks_completed'],
   },
   
   competitive_profile: {
     id: 'competitive_profile',
-    name: 'Competitive Profile',
-    description: 'Research competitors and build profiles',
+    name: 'Competitor Research',
+    description: 'Scrape competitor websites and build profiles',
     icon: '🎯',
-    inputs: ['domain', 'query'],
-    outputs: ['matrix', 'weaknesses', 'pricing'],
-    skills: ['research', 'analysis'],
-    handlers: ['firecrawl', 'fetch'],
+    inputs: ['competitor_url', 'focus_areas?'],
+    outputs: ['profile', 'features', 'pricing', 'weaknesses'],
+    skills: ['research', 'competitive', 'analysis'],
+    handlers: ['firecrawl', 'groq'],
     executionProfiles: ['single_run', 'leader_route'],
-    estimatedDurationMs: 60000,
+    estimatedDurationMs: 45000,
     telemetryFields: ['websites_crawled', 'tasks_completed'],
   },
-  
-  monitoring_check: {
-    id: 'monitoring_check',
-    name: 'Monitoring Check',
-    description: 'Check a target for changes over time',
-    icon: '👁️',
-    inputs: ['target'],
-    outputs: ['diff', 'trend', 'alert'],
-    skills: ['monitoring', 'analysis'],
-    handlers: ['firecrawl', 'fetch'],
-    executionProfiles: ['scheduled'],
-    estimatedDurationMs: 20000,
-    telemetryFields: ['monitoring_cycles', 'websites_crawled'],
-  },
-  
-  dataset_operations: {
-    id: 'dataset_operations',
-    name: 'Dataset Operations',
-    description: 'Clean, convert, and normalize datasets',
-    icon: '🔧',
-    inputs: ['csv', 'json', 'xml'],
-    outputs: ['cleaned_dataset', 'converted_dataset'],
-    skills: ['data_ops'],
-    handlers: ['groq', 'lovable'],
-    executionProfiles: ['batch'],
-    estimatedDurationMs: 30000,
-    telemetryFields: ['datasets_processed'],
-  },
-  
-  local_business_analysis: {
-    id: 'local_business_analysis',
-    name: 'Local Business Analysis',
-    description: 'Analyze local businesses and competition',
-    icon: '🏪',
-    inputs: ['industry', 'geo'],
-    outputs: ['local_comp_matrix', 'pricing', 'reviews'],
-    skills: ['local_business', 'analysis'],
-    handlers: ['yelp_reviews', 'firecrawl', 'fetch'],
+
+  market_research: {
+    id: 'market_research',
+    name: 'Market Research',
+    description: 'Research market trends, players, and opportunities',
+    icon: '📊',
+    inputs: ['market_query', 'industry?'],
+    outputs: ['market_overview', 'key_players', 'trends', 'opportunities'],
+    skills: ['research', 'analysis'],
+    handlers: ['firecrawl', 'groq'],
     executionProfiles: ['single_run'],
-    estimatedDurationMs: 45000,
-    telemetryFields: ['api_calls', 'tasks_completed'],
+    estimatedDurationMs: 40000,
+    telemetryFields: ['websites_crawled', 'tasks_completed'],
+  },
+
+  // ============ SEO TASKS ============
+  seo_audit: {
+    id: 'seo_audit',
+    name: 'SEO Audit',
+    description: 'Scrape a URL and analyze SEO factors with recommendations',
+    icon: '📈',
+    inputs: ['url'],
+    outputs: ['audit_report', 'issues', 'recommendations', 'score'],
+    skills: ['seo', 'research'],
+    handlers: ['firecrawl', 'groq'],
+    executionProfiles: ['single_run'],
+    estimatedDurationMs: 35000,
+    telemetryFields: ['websites_crawled', 'tasks_completed'],
+  },
+
+  keyword_research: {
+    id: 'keyword_research',
+    name: 'Keyword Research',
+    description: 'Research keywords and search intent for a topic',
+    icon: '🔑',
+    inputs: ['topic', 'industry?'],
+    outputs: ['keywords', 'search_intent', 'difficulty', 'suggestions'],
+    skills: ['seo', 'research', 'analysis'],
+    handlers: ['firecrawl', 'groq'],
+    executionProfiles: ['single_run'],
+    estimatedDurationMs: 30000,
+    telemetryFields: ['tasks_completed'],
+  },
+
+  backlink_research: {
+    id: 'backlink_research',
+    name: 'Backlink Opportunity Research',
+    description: 'Research potential backlink sources and opportunities',
+    icon: '🔗',
+    inputs: ['domain', 'niche?'],
+    outputs: ['opportunities', 'directories', 'forums', 'outreach_targets'],
+    skills: ['seo', 'research'],
+    handlers: ['firecrawl', 'groq'],
+    executionProfiles: ['single_run'],
+    estimatedDurationMs: 40000,
+    telemetryFields: ['websites_crawled', 'tasks_completed'],
+  },
+
+  // ============ DATA EXTRACTION TASKS ============
+  data_extraction: {
+    id: 'data_extraction',
+    name: 'Data Extraction',
+    description: 'Extract structured data from a URL using Firecrawl',
+    icon: '📥',
+    inputs: ['url', 'data_schema?'],
+    outputs: ['structured_data', 'metadata'],
+    skills: ['extraction', 'analysis'],
+    handlers: ['firecrawl', 'groq'],
+    executionProfiles: ['single_run', 'batch'],
+    estimatedDurationMs: 20000,
+    telemetryFields: ['websites_crawled', 'datasets_processed'],
+  },
+
+  site_mapping: {
+    id: 'site_mapping',
+    name: 'Site Mapping',
+    description: 'Discover all URLs on a website using Firecrawl map',
+    icon: '🗺️',
+    inputs: ['url', 'include_subdomains?'],
+    outputs: ['sitemap', 'page_count', 'structure'],
+    skills: ['extraction', 'research'],
+    handlers: ['firecrawl'],
+    executionProfiles: ['single_run'],
+    estimatedDurationMs: 25000,
+    telemetryFields: ['websites_crawled'],
+  },
+
+  content_scrape: {
+    id: 'content_scrape',
+    name: 'Content Scraping',
+    description: 'Scrape and extract content from multiple pages',
+    icon: '📄',
+    inputs: ['urls', 'content_type?'],
+    outputs: ['content', 'metadata', 'links'],
+    skills: ['extraction', 'research'],
+    handlers: ['firecrawl'],
+    executionProfiles: ['single_run', 'batch'],
+    estimatedDurationMs: 30000,
+    telemetryFields: ['websites_crawled'],
+  },
+
+  // ============ CONTENT TASKS ============
+  content_generation: {
+    id: 'content_generation',
+    name: 'Content Generation',
+    description: 'Generate SEO-optimized content based on research',
+    icon: '✍️',
+    inputs: ['topic', 'keywords?', 'tone?'],
+    outputs: ['article', 'meta_description', 'title'],
+    skills: ['writing', 'analysis'],
+    handlers: ['groq', 'lovable'],
+    executionProfiles: ['single_run', 'leader_route'],
+    estimatedDurationMs: 25000,
+    telemetryFields: ['tasks_completed'],
+  },
+
+  outreach_draft: {
+    id: 'outreach_draft',
+    name: 'Outreach Drafting',
+    description: 'Draft outreach emails for link building or partnerships',
+    icon: '📧',
+    inputs: ['target_info', 'purpose', 'offer?'],
+    outputs: ['email_draft', 'subject_lines', 'follow_up'],
+    skills: ['writing'],
+    handlers: ['groq', 'lovable'],
+    executionProfiles: ['single_run', 'batch'],
+    estimatedDurationMs: 20000,
+    telemetryFields: ['tasks_completed'],
+  },
+
+  social_content: {
+    id: 'social_content',
+    name: 'Social Media Content',
+    description: 'Create social media posts and content',
+    icon: '📱',
+    inputs: ['topic', 'platform?', 'tone?'],
+    outputs: ['posts', 'hashtags', 'hooks'],
+    skills: ['writing'],
+    handlers: ['groq', 'lovable'],
+    executionProfiles: ['single_run'],
+    estimatedDurationMs: 15000,
+    telemetryFields: ['tasks_completed'],
+  },
+
+  // ============ ANALYSIS TASKS ============
+  trend_analysis: {
+    id: 'trend_analysis',
+    name: 'Trend Analysis',
+    description: 'Research and analyze trends in a topic or industry',
+    icon: '📈',
+    inputs: ['topic', 'timeframe?'],
+    outputs: ['trends', 'insights', 'predictions'],
+    skills: ['analysis', 'research'],
+    handlers: ['firecrawl', 'groq'],
+    executionProfiles: ['single_run'],
+    estimatedDurationMs: 35000,
+    telemetryFields: ['websites_crawled', 'tasks_completed'],
+  },
+
+  brand_analysis: {
+    id: 'brand_analysis',
+    name: 'Brand Analysis',
+    description: 'Analyze a brand\'s online presence and messaging',
+    icon: '🏢',
+    inputs: ['brand_url', 'focus?'],
+    outputs: ['brand_profile', 'messaging', 'recommendations'],
+    skills: ['analysis', 'research', 'competitive'],
+    handlers: ['firecrawl', 'groq'],
+    executionProfiles: ['single_run'],
+    estimatedDurationMs: 40000,
+    telemetryFields: ['websites_crawled', 'tasks_completed'],
   },
 };
 
@@ -192,11 +255,22 @@ export function getPrimitiveForTaskType(taskType: string): TaskPrimitive | null 
     company_research: 'competitive_profile',
     seo_scan: 'seo_audit',
     content_creation: 'content_generation',
-    analysis: 'data_extraction',
+    analysis: 'trend_analysis',
     audit: 'seo_audit',
     code_study: 'web_research',
   };
   
   const primitiveId = mapping[taskType] || taskType;
   return TASK_PRIMITIVES[primitiveId] || null;
+}
+
+/**
+ * Get all task types for a dropdown/selector
+ */
+export function getTaskTypeOptions(): { value: string; label: string; icon: string }[] {
+  return Object.values(TASK_PRIMITIVES).map(p => ({
+    value: p.id,
+    label: p.name,
+    icon: p.icon,
+  }));
 }
