@@ -486,6 +486,10 @@ class SubstrateClient {
     rollback: (plan_id: string) =>
       this.invoke({ module: 'modernizer', action: 'rollback', payload: { plan_id } }),
     
+    /** Delete/reject an upgrade plan (cannot delete applied plans) */
+    delete: (plan_id: string, reason?: string) =>
+      this.invoke({ module: 'modernizer', action: 'delete', payload: { plan_id, reason } }),
+    
     /** Scan archived edge functions for repurposing opportunities */
     archived: () =>
       this.invoke({ module: 'modernizer', action: 'archived' }),
