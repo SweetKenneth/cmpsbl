@@ -1,10 +1,10 @@
 /**
  * Agency Chat Interface — Interact with deployed agency team
- * Features quick commands, /help menu, and team-specific prompts
+ * Features: Persistent chat, real task delegation, honest capabilities
  */
 
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { Send, Loader2, Sparkles, Command, HelpCircle, ChevronUp, X, Bot, User } from 'lucide-react';
+import { Send, Loader2, Sparkles, Command, HelpCircle, ChevronUp, X, Bot, User, Trash2, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
@@ -18,22 +18,22 @@ import {
   getCommandsByCategory, 
   parseCommand, 
   buildPromptFromCommand,
+  getTaskPrimitiveForCommand,
+  getCapabilitiesSummary,
   CATEGORY_INFO,
   type QuickCommand 
 } from '@/lib/agency/agencyCommands';
+import { 
+  loadChatMessages, 
+  saveChatMessages, 
+  clearChatHistory,
+  type ChatMessage 
+} from '@/lib/agency/chatPersistence';
+import { 
+  processUserRequest,
+  detectActionIntent,
+} from '@/lib/agency/leaderTaskDelegation';
 import { AgencyCommandPalette } from './AgencyCommandPalette';
-
-interface Message {
-  id: string;
-  role: 'user' | 'assistant' | 'system';
-  content: string;
-  timestamp: Date;
-  metadata?: {
-    command?: string;
-    respondingMember?: string;
-    processingTime?: number;
-  };
-}
 
 interface AgencyChatInterfaceProps {
   agency: Agency;
@@ -41,11 +41,12 @@ interface AgencyChatInterfaceProps {
 }
 
 export function AgencyChatInterface({ agency, className }: AgencyChatInterfaceProps) {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showCommands, setShowCommands] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
+  const [initialized, setInitialized] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -57,18 +58,33 @@ export function AgencyChatInterface({ agency, className }: AgencyChatInterfacePr
   // Get leader for responses
   const leader = agency.members.find(m => m.role === 'leader');
 
-  // Initialize with welcome message
+  // Load persisted messages on mount
   useEffect(() => {
-    if (messages.length === 0) {
-      const welcomeMsg: Message = {
-        id: 'welcome',
-        role: 'system',
-        content: `Welcome to **${agency.name}**! I'm ${leader?.specialization || 'your team lead'}. Type \`/help\` to see available commands or ask me anything.`,
-        timestamp: new Date(),
-      };
-      setMessages([welcomeMsg]);
+    if (!initialized && agency.id) {
+      const stored = loadChatMessages(agency.id);
+      if (stored.length > 0) {
+        setMessages(stored);
+      } else {
+        // Add welcome message
+        const welcomeMsg: ChatMessage = {
+          id: 'welcome',
+          role: 'system',
+          content: `Welcome to **${agency.name}**! I'm ${leader?.specialization || 'your team lead'}.\n\nType \`/help\` to see available commands, or just tell me what you need — I'll assign tasks to the right team members.\n\n**What we can do:** Research, SEO audits, content generation, data extraction, and analysis.`,
+          timestamp: new Date().toISOString(),
+        };
+        setMessages([welcomeMsg]);
+        saveChatMessages(agency.id, [welcomeMsg]);
+      }
+      setInitialized(true);
     }
-  }, [agency.name, leader]);
+  }, [agency.id, agency.name, leader, initialized]);
+
+  // Save messages when they change
+  useEffect(() => {
+    if (initialized && messages.length > 0) {
+      saveChatMessages(agency.id, messages);
+    }
+  }, [messages, agency.id, initialized]);
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -101,15 +117,28 @@ export function AgencyChatInterface({ agency, className }: AgencyChatInterfacePr
     inputRef.current?.focus();
   };
 
+  // Clear chat history
+  const handleClearChat = () => {
+    clearChatHistory(agency.id);
+    const welcomeMsg: ChatMessage = {
+      id: 'welcome_new',
+      role: 'system',
+      content: `Chat cleared. I'm ${leader?.specialization || 'your team lead'}, ready to help.`,
+      timestamp: new Date().toISOString(),
+    };
+    setMessages([welcomeMsg]);
+    toast.success('Chat history cleared');
+  };
+
   // Send message
   const sendMessage = useCallback(async () => {
     if (!input.trim() || isLoading) return;
 
-    const userMessage: Message = {
+    const userMessage: ChatMessage = {
       id: `user_${Date.now()}`,
       role: 'user',
       content: input.trim(),
-      timestamp: new Date(),
+      timestamp: new Date().toISOString(),
     };
 
     setMessages(prev => [...prev, userMessage]);
@@ -128,57 +157,82 @@ export function AgencyChatInterface({ agency, className }: AgencyChatInterfacePr
       }
 
       if (command?.id === 'status') {
-        // Generate team status
         const statusContent = generateTeamStatus(agency);
-        setMessages(prev => [...prev, {
+        const statusMsg: ChatMessage = {
           id: `status_${Date.now()}`,
           role: 'assistant',
           content: statusContent,
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           metadata: { command: command.command },
-        }]);
+        };
+        setMessages(prev => [...prev, statusMsg]);
         setIsLoading(false);
         return;
       }
 
-      // Build the actual prompt
-      const prompt = command 
-        ? buildPromptFromCommand(command, args) 
-        : userMessage.content;
+      // Check if this is a command with a task primitive
+      const taskPrimitive = command ? getTaskPrimitiveForCommand(command.id) : null;
+      
+      // Process for potential task creation
+      const delegationResult = await processUserRequest(
+        agency.id,
+        userMessage.content,
+        teamSpecs
+      );
 
-      const startTime = Date.now();
+      let assistantContent: string;
+      let tasksCreated: string[] = [];
 
-      // Call the AI with agency context
-      const { data, error } = await supabase.functions.invoke('pf-agency-chat', {
-        body: {
-          message: prompt,
-          agencyId: agency.id,
-          agencyName: agency.name,
-          teamComposition: agency.members.map(m => ({
-            role: m.role,
-            specialization: m.specialization,
-            skills: m.skillWeights,
-          })),
-          dreamPoolMode: agency.dreamPoolMode,
-          command: command?.command,
-        },
-      });
+      if (delegationResult.shouldCreateTask && delegationResult.delegationResult?.success) {
+        // Task was created
+        assistantContent = delegationResult.leaderResponse;
+        if (delegationResult.delegationResult.taskId) {
+          tasksCreated = [delegationResult.delegationResult.taskId];
+        }
+        toast.success('Task created and queued');
+      } else if (delegationResult.leaderResponse) {
+        // Leader has a specific response (out of scope, clarification needed)
+        assistantContent = delegationResult.leaderResponse;
+      } else {
+        // Regular chat - call AI
+        const prompt = command 
+          ? buildPromptFromCommand(command, args) 
+          : userMessage.content;
 
-      const processingTime = Date.now() - startTime;
+        const startTime = Date.now();
 
-      if (error) {
-        throw new Error(error.message || 'Failed to get response');
+        const { data, error } = await supabase.functions.invoke('pf-agency-chat', {
+          body: {
+            message: prompt,
+            agencyId: agency.id,
+            agencyName: agency.name,
+            teamComposition: agency.members.map(m => ({
+              role: m.role,
+              specialization: m.specialization,
+              skills: m.skillWeights,
+            })),
+            dreamPoolMode: agency.dreamPoolMode,
+            command: command?.command,
+            capabilities: getCapabilitiesSummary(),
+          },
+        });
+
+        if (error) {
+          throw new Error(error.message || 'Failed to get response');
+        }
+
+        assistantContent = data?.reply || 'I understand. Let me coordinate with the team on this.';
       }
 
-      const assistantMessage: Message = {
+      const assistantMessage: ChatMessage = {
         id: `assistant_${Date.now()}`,
         role: 'assistant',
-        content: data?.reply || 'I understand. Let me coordinate with the team on this.',
-        timestamp: new Date(),
+        content: assistantContent,
+        timestamp: new Date().toISOString(),
         metadata: {
           command: command?.command,
           respondingMember: leader?.specialization,
-          processingTime,
+          tasksCreated: tasksCreated.length > 0 ? tasksCreated : undefined,
         },
       };
 
@@ -186,18 +240,17 @@ export function AgencyChatInterface({ agency, className }: AgencyChatInterfacePr
     } catch (error) {
       console.error('Chat error:', error);
       
-      // Fallback response
-      const fallbackMessage: Message = {
+      const fallbackMessage: ChatMessage = {
         id: `fallback_${Date.now()}`,
         role: 'assistant',
         content: `I'm coordinating with the team. The ${leader?.specialization || 'lead'} is reviewing your request.`,
-        timestamp: new Date(),
+        timestamp: new Date().toISOString(),
       };
       setMessages(prev => [...prev, fallbackMessage]);
     } finally {
       setIsLoading(false);
     }
-  }, [input, isLoading, agency]);
+  }, [input, isLoading, agency, teamSpecs, leader]);
 
   // Handle keyboard
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -226,7 +279,16 @@ export function AgencyChatInterface({ agency, className }: AgencyChatInterfacePr
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleClearChat}
+            className="gap-1 text-xs text-muted-foreground hover:text-destructive"
+            title="Clear chat history"
+          >
+            <Trash2 className="w-3 h-3" />
+          </Button>
           <Button
             variant="ghost"
             size="sm"
@@ -283,13 +345,19 @@ export function AgencyChatInterface({ agency, className }: AgencyChatInterfacePr
                     __html: formatMessageContent(msg.content)
                   }}
                 />
+                {msg.metadata?.tasksCreated && msg.metadata.tasksCreated.length > 0 && (
+                  <div className="mt-2 flex items-center gap-1.5 text-emerald-400">
+                    <CheckCircle className="w-3 h-3" />
+                    <span className="text-[10px]">Task queued</span>
+                  </div>
+                )}
                 {msg.metadata?.command && (
                   <Badge variant="outline" className="mt-2 text-[10px] h-4">
                     {msg.metadata.command}
                   </Badge>
                 )}
                 <span className="block text-[10px] text-muted-foreground mt-1">
-                  {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </span>
               </div>
             </div>
@@ -336,7 +404,7 @@ export function AgencyChatInterface({ agency, className }: AgencyChatInterfacePr
             </div>
 
             <p className="text-sm text-muted-foreground mb-6">
-              Commands available based on your team composition ({agency.members.length} cognitives)
+              All commands create real tasks that the team will execute.
             </p>
 
             <div className="space-y-6">
@@ -370,10 +438,26 @@ export function AgencyChatInterface({ agency, className }: AgencyChatInterfacePr
               ))}
             </div>
 
+            {/* Capabilities Section */}
+            <div className="mt-8 space-y-4">
+              <h3 className="text-sm font-medium text-emerald-400">✓ What We Can Do</h3>
+              <ul className="text-sm space-y-1 text-muted-foreground">
+                {getCapabilitiesSummary().canDo.map((item, i) => (
+                  <li key={i}>• {item}</li>
+                ))}
+              </ul>
+
+              <h3 className="text-sm font-medium text-amber-400">⚠ Current Limitations</h3>
+              <ul className="text-sm space-y-1 text-muted-foreground">
+                {getCapabilitiesSummary().cannotDo.map((item, i) => (
+                  <li key={i}>• {item}</li>
+                ))}
+              </ul>
+            </div>
+
             <div className="mt-8 p-4 bg-cyan-500/10 border border-cyan-500/30 rounded-lg">
               <p className="text-sm">
-                <strong>Tip:</strong> Type <code className="bg-black/30 px-1">/</code> in the chat to see quick command suggestions, 
-                or start typing any message to talk directly with your team.
+                <strong>Tip:</strong> Just describe what you need — I'll create the right task and assign it to the best team member automatically.
               </p>
             </div>
           </div>
@@ -389,7 +473,7 @@ export function AgencyChatInterface({ agency, className }: AgencyChatInterfacePr
               value={input}
               onChange={(e) => handleInputChange(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Type a message or / for commands..."
+              placeholder="Tell me what you need (e.g., 'research competitors for X')..."
               className="min-h-[44px] max-h-32 resize-none pr-10 bg-black/30"
               disabled={isLoading}
             />
