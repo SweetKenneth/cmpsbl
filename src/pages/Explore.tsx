@@ -3,9 +3,9 @@
  * Comprehensive showcase of all cognitive infrastructure capabilities
  */
 
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import { Link } from "react-router-dom";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { 
   ArrowRight, 
   Brain, 
@@ -266,8 +266,9 @@ function SectionDivider() {
 
 export default function Explore() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: containerRef });
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
+  // Disable scroll-based transforms to prevent forced reflows during initial paint
+  // The parallax effect is nice-to-have but causes layout thrashing
+  const backgroundY = '0%'; // Static - no scroll animation to avoid reflow
   
   // Core Modules - the 7 pillars (all deployed via pf-substrate)
   const coreModules = [
@@ -466,14 +467,14 @@ export default function Explore() {
 
       <PublicNav />
 
-      {/* Enhanced Neon Ambient Background */}
+      {/* Enhanced Neon Ambient Background - static position to prevent forced reflows */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <motion.div style={{ y: backgroundY }} className="absolute inset-0">
+        <div className="absolute inset-0" style={{ transform: `translateY(${backgroundY})` }}>
           <GradientOrb className="w-[700px] h-[700px] -top-48 -left-48 bg-cyan-500/20" delay={0} />
           <GradientOrb className="w-[600px] h-[600px] top-1/4 -right-48 bg-fuchsia-500/15" delay={0.2} />
           <GradientOrb className="w-[500px] h-[500px] bottom-0 left-1/4 bg-violet-500/15" delay={0.4} />
           <GradientOrb className="w-[400px] h-[400px] top-1/2 right-1/4 bg-emerald-500/10" delay={0.6} />
-        </motion.div>
+        </div>
       </div>
 
       {/* META HERO: Combined Substrate Visualization */}
