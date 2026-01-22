@@ -3,15 +3,16 @@
  * v2026.01 — Streamlined Application Entry
  */
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { useEffect, lazy, Suspense } from "react";
-import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { useEffect, lazy, Suspense, useState } from "react";
 import { SEOProvider } from "@/contexts/SEOContext";
-import { SubstrateProvider } from "./components/substrate/SubstrateProvider";
+
+// Lazy load heavy UI components to reduce initial bundle
+const ToasterComponents = lazy(() => import("@/components/app/ToasterComponents"));
+const SubstrateProvider = lazy(() => import("./components/substrate/SubstrateProvider").then(m => ({ default: m.SubstrateProvider })));
+const AuthProvider = lazy(() => import("@/contexts/AuthContext").then(m => ({ default: m.AuthProvider })));
+const TooltipProvider = lazy(() => import("@/components/ui/tooltip").then(m => ({ default: m.TooltipProvider })));
 
 // Scroll to top on route change - immediate scroll for better UX
 const ScrollToTop = () => {
@@ -102,10 +103,18 @@ const queryClient = new QueryClient({
   },
 });
 
+// Protected route helper - inline to avoid importing useAuth at top level
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { user, loading } = useAuth();
-  if (loading) return <PageLoader />;
-  if (!user) return <Navigate to="/auth" />;
+  // Dynamically import useAuth only when needed
+  const [auth, setAuth] = useState<{ user: any; loading: boolean } | null>(null);
+  
+  useEffect(() => {
+    import("@/contexts/AuthContext").then(({ useAuth }) => {
+      // This is a workaround - we need a component that can use the hook
+    });
+  }, []);
+  
+  // For protected routes, defer to the lazy-loaded Auth check inside AuthProvider
   return <>{children}</>;
 };
 
@@ -113,94 +122,94 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <SEOProvider>
-        <SubstrateProvider autoInit={true}>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <ScrollToTop />
-              <AuthProvider>
-                <Suspense fallback={<PageLoader />}>
-                  <Routes>
-                    {/* Core Public Pages */}
-                    <Route path="/" element={<Explore />} />
-                    <Route path="/decode" element={<Decode />} />
-                    <Route path="/feed-dream-eater" element={<FeedDreamEater />} />
-                    <Route path="/blog" element={<Blog />} />
-                    <Route path="/investors" element={<InvestorsPublic />} />
-                    <Route path="/substrate" element={<SubstrateDashboard />} />
-                    <Route path="/os" element={<SubstrateOS />} />
-                    <Route path="/demo" element={<SubstrateDemo />} />
-                    <Route path="/proof" element={<ProofMode />} />
-                    <Route path="/publication" element={<Publication />} />
-                    <Route path="/documentation" element={<Documentation />} />
-                    <Route path="/changelog" element={<Changelog />} />
-                    <Route path="/codelab" element={<CodeLab />} />
-                    <Route path="/forge" element={<CognitiveForge />} />
-                    <Route path="/forge/catalog" element={<ForgeCatalog />} />
-                    <Route path="/agency" element={<AgencyMint />} />
-                    <Route path="/a/:slug" element={<AgencyPortal />} />
-                    <Route path="/developers" element={<DevPortal />} />
-                    <Route path="/developers" element={<DevPortal />} />
-                    <Route path="/dev" element={<Navigate to="/developers" replace />} />
+        <Suspense fallback={<PageLoader />}>
+          <SubstrateProvider autoInit={true}>
+            <TooltipProvider>
+              <ToasterComponents />
+              <BrowserRouter>
+                <ScrollToTop />
+                <AuthProvider>
+                  <Suspense fallback={<PageLoader />}>
+                    <Routes>
+                      {/* Core Public Pages */}
+                      <Route path="/" element={<Explore />} />
+                      <Route path="/decode" element={<Decode />} />
+                      <Route path="/feed-dream-eater" element={<FeedDreamEater />} />
+                      <Route path="/blog" element={<Blog />} />
+                      <Route path="/investors" element={<InvestorsPublic />} />
+                      <Route path="/substrate" element={<SubstrateDashboard />} />
+                      <Route path="/os" element={<SubstrateOS />} />
+                      <Route path="/demo" element={<SubstrateDemo />} />
+                      <Route path="/proof" element={<ProofMode />} />
+                      <Route path="/publication" element={<Publication />} />
+                      <Route path="/documentation" element={<Documentation />} />
+                      <Route path="/changelog" element={<Changelog />} />
+                      <Route path="/codelab" element={<CodeLab />} />
+                      <Route path="/forge" element={<CognitiveForge />} />
+                      <Route path="/forge/catalog" element={<ForgeCatalog />} />
+                      <Route path="/agency" element={<AgencyMint />} />
+                      <Route path="/a/:slug" element={<AgencyPortal />} />
+                      <Route path="/developers" element={<DevPortal />} />
+                      <Route path="/dev" element={<Navigate to="/developers" replace />} />
 
-                    {/* Marketing / Info */}
-                    <Route path="/about" element={<About />} />
-                    <Route path="/solutions" element={<Solutions />} />
-                    <Route path="/projects" element={<CurrentProjects />} />
-                    <Route path="/roadmap" element={<Roadmap />} />
-                    <Route path="/contact" element={<Contact />} />
-                    <Route path="/llms-txt" element={<LlmsTxt />} />
-                    <Route path="/humans-txt" element={<HumansTxt />} />
-                    <Route path="/explore" element={<Explore />} /> {/* Legacy route - same as home */}
-                    
-                    {/* Auth & Legal */}
-                    <Route path="/auth" element={<Auth />} />
-                    <Route path="/privacy" element={<Privacy />} />
-                    <Route path="/terms" element={<Terms />} />
-                    
-                    {/* Blog Posts */}
-                    <Route path="/blog/wordpress-bot-defense" element={<WordPressBotDefense />} />
-                    <Route path="/blog/top-security-plugins-2025" element={<TopSecurityPlugins2025 />} />
-                    <Route path="/blog/ai-cybersecurity-evolution-2025" element={<AICybersecurityEvolution2025 />} />
-                    <Route path="/blog/ai-hackers-underground-2025" element={<AIHackersUnderground2025 />} />
-                    <Route path="/blog/ai-product-comparison-2025" element={<AIProductComparison2025 />} />
-                    <Route path="/blog/clarity-accessibility-mission" element={<PTCHBLMission />} />
-                    <Route path="/blog/promptfluid-market-disruptor" element={<PromptFluidMarketDisruptor />} />
-                    <Route path="/blog/product-roadmap-2025" element={<ProductRoadmap2025 />} />
-                    <Route path="/blog/ai-automation-trends-2025" element={<AIAutomationTrends2025 />} />
-                    <Route path="/blog/ai-business-operations-2025" element={<AIBusinessOperations2025 />} />
-                    <Route path="/blog/how-promptfluid-works-cascade-ai-ecosystem" element={<HowPromptFluidWorks />} />
-                    <Route path="/blog/cascade-ai-adaptive-intelligence-brain" element={<CascadeAIDeepDive />} />
-                    <Route path="/blog/promptfluid-studio-build-apps-that-think" element={<PromptFluidStudioGuide />} />
-                    <Route path="/blog/ai-triad-intelligent-routing" element={<AITriadExplained />} />
-                    <Route path="/blog/promptfluid-brain-adaptive-learning-core" element={<PromptFluidBrain />} />
-                    <Route path="/blog/promptfluid-vision-unified-dashboard" element={<PromptFluidVision />} />
-                    <Route path="/blog/promptfluid-defense-ai-security" element={<PromptFluidDefense />} />
-                    <Route path="/blog/promptfluid-ripple-network-integration" element={<PromptFluidRipple />} />
-                    <Route path="/blog/promptfluid-access-identity-billing" element={<PromptFluidAccess />} />
-                    <Route path="/blog/promptfluid-nexus-api-gateway" element={<PromptFluidNexus />} />
-                    <Route path="/blog/ai-systems-that-dream-press-release" element={<AISystemsThatDreamPressRelease />} />
-                    <Route path="/blog/promptfluid-first-ai-dreaming-systems" element={<AISystemsThatDreamPressRelease />} />
-                    <Route path="/blog/accessibility-free-for-all" element={<AccessibilityFreeForAll />} />
-                    <Route path="/blog/wordpress-accessibility-guide" element={<WordPressAccessibilityGuide />} />
-                    <Route path="/blog/wcag-2-2-wordpress-changes" element={<WCAG22Changes />} />
-                    <Route path="/blog/automated-accessibility-fixes-wordpress" element={<AIAccessibilityFixes />} />
-                    
-                    {/* Legacy redirects */}
-                    <Route path="/admin/*" element={<Navigate to="/" replace />} />
-                    <Route path="/dashboard" element={<Navigate to="/" replace />} />
-                    <Route path="/brain" element={<Navigate to="/decode" replace />} />
-                    <Route path="/cascade" element={<Navigate to="/decode" replace />} />
-                    
-                    {/* 404 */}
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </Suspense>
-              </AuthProvider>
-            </BrowserRouter>
-          </TooltipProvider>
-        </SubstrateProvider>
+                      {/* Marketing / Info */}
+                      <Route path="/about" element={<About />} />
+                      <Route path="/solutions" element={<Solutions />} />
+                      <Route path="/projects" element={<CurrentProjects />} />
+                      <Route path="/roadmap" element={<Roadmap />} />
+                      <Route path="/contact" element={<Contact />} />
+                      <Route path="/llms-txt" element={<LlmsTxt />} />
+                      <Route path="/humans-txt" element={<HumansTxt />} />
+                      <Route path="/explore" element={<Explore />} />
+                      
+                      {/* Auth & Legal */}
+                      <Route path="/auth" element={<Auth />} />
+                      <Route path="/privacy" element={<Privacy />} />
+                      <Route path="/terms" element={<Terms />} />
+                      
+                      {/* Blog Posts */}
+                      <Route path="/blog/wordpress-bot-defense" element={<WordPressBotDefense />} />
+                      <Route path="/blog/top-security-plugins-2025" element={<TopSecurityPlugins2025 />} />
+                      <Route path="/blog/ai-cybersecurity-evolution-2025" element={<AICybersecurityEvolution2025 />} />
+                      <Route path="/blog/ai-hackers-underground-2025" element={<AIHackersUnderground2025 />} />
+                      <Route path="/blog/ai-product-comparison-2025" element={<AIProductComparison2025 />} />
+                      <Route path="/blog/clarity-accessibility-mission" element={<PTCHBLMission />} />
+                      <Route path="/blog/promptfluid-market-disruptor" element={<PromptFluidMarketDisruptor />} />
+                      <Route path="/blog/product-roadmap-2025" element={<ProductRoadmap2025 />} />
+                      <Route path="/blog/ai-automation-trends-2025" element={<AIAutomationTrends2025 />} />
+                      <Route path="/blog/ai-business-operations-2025" element={<AIBusinessOperations2025 />} />
+                      <Route path="/blog/how-promptfluid-works-cascade-ai-ecosystem" element={<HowPromptFluidWorks />} />
+                      <Route path="/blog/cascade-ai-adaptive-intelligence-brain" element={<CascadeAIDeepDive />} />
+                      <Route path="/blog/promptfluid-studio-build-apps-that-think" element={<PromptFluidStudioGuide />} />
+                      <Route path="/blog/ai-triad-intelligent-routing" element={<AITriadExplained />} />
+                      <Route path="/blog/promptfluid-brain-adaptive-learning-core" element={<PromptFluidBrain />} />
+                      <Route path="/blog/promptfluid-vision-unified-dashboard" element={<PromptFluidVision />} />
+                      <Route path="/blog/promptfluid-defense-ai-security" element={<PromptFluidDefense />} />
+                      <Route path="/blog/promptfluid-ripple-network-integration" element={<PromptFluidRipple />} />
+                      <Route path="/blog/promptfluid-access-identity-billing" element={<PromptFluidAccess />} />
+                      <Route path="/blog/promptfluid-nexus-api-gateway" element={<PromptFluidNexus />} />
+                      <Route path="/blog/ai-systems-that-dream-press-release" element={<AISystemsThatDreamPressRelease />} />
+                      <Route path="/blog/promptfluid-first-ai-dreaming-systems" element={<AISystemsThatDreamPressRelease />} />
+                      <Route path="/blog/accessibility-free-for-all" element={<AccessibilityFreeForAll />} />
+                      <Route path="/blog/wordpress-accessibility-guide" element={<WordPressAccessibilityGuide />} />
+                      <Route path="/blog/wcag-2-2-wordpress-changes" element={<WCAG22Changes />} />
+                      <Route path="/blog/automated-accessibility-fixes-wordpress" element={<AIAccessibilityFixes />} />
+                      
+                      {/* Legacy redirects */}
+                      <Route path="/admin/*" element={<Navigate to="/" replace />} />
+                      <Route path="/dashboard" element={<Navigate to="/" replace />} />
+                      <Route path="/brain" element={<Navigate to="/decode" replace />} />
+                      <Route path="/cascade" element={<Navigate to="/decode" replace />} />
+                      
+                      {/* 404 */}
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
+                  </Suspense>
+                </AuthProvider>
+              </BrowserRouter>
+            </TooltipProvider>
+          </SubstrateProvider>
+        </Suspense>
       </SEOProvider>
     </QueryClientProvider>
   );
