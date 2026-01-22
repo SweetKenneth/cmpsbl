@@ -38,12 +38,14 @@
       a{color:inherit;text-decoration:none}
       button{font-family:inherit;cursor:pointer}
       .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}
-      /* FCP Shell - immediate visual content */
-      #fcp-shell{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:1rem}
-      #fcp-shell.hide{display:none}
-      .fcp-logo{width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,hsl(260 100% 68%),hsl(280 100% 60%));margin-bottom:1.5rem;animation:pulse 2s ease-in-out infinite}
-      .fcp-title{font-size:1.5rem;font-weight:700;background:linear-gradient(135deg,#fff,#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:0.5rem;text-align:center}
-      .fcp-tagline{font-size:0.875rem;color:#9ca3af;text-align:center}
+      /* FCP/LCP Shell - immediate visual content matching hero */
+      #fcp-shell{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:1rem 1rem 4rem}
+      #fcp-shell.hide{opacity:0;pointer-events:none;position:absolute}
+      .fcp-headline{font-size:clamp(1.875rem,5vw,3.75rem);font-weight:900;text-align:center;line-height:1.1;margin-bottom:1rem}
+      .fcp-headline-main{color:#e5e7eb}
+      .fcp-headline-gradient{background:linear-gradient(135deg,#22d3ee,#f472b6,#fbbf24);-webkit-background-clip:text;background-clip:text;color:transparent}
+      .fcp-tagline{font-size:clamp(1rem,2vw,1.25rem);color:#9ca3af;text-align:center;max-width:42ch;margin:0 auto 2rem}
+      .fcp-cta{display:inline-flex;align-items:center;gap:0.5rem;padding:0.875rem 2rem;background:linear-gradient(135deg,hsl(260 100% 65%),hsl(280 100% 55%));color:#fff;font-weight:600;border-radius:9999px;text-decoration:none;font-size:1rem}
       @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.8;transform:scale(0.98)}}
     </style>
     
@@ -584,22 +586,34 @@
   </head>
 
   <body>
-    <!-- FCP Shell: Immediate visible content for First Contentful Paint -->
+    <!-- FCP/LCP Shell: Immediate visible content matching hero for fast LCP -->
     <div id="fcp-shell" aria-label="Loading PromptFluid">
-      <div class="fcp-logo" aria-hidden="true"></div>
-      <h1 class="fcp-title">PromptFluid</h1>
-      <p class="fcp-tagline">AI That Flows</p>
+      <h1 class="fcp-headline">
+        <span class="fcp-headline-main">Where Machines </span>
+        <span class="fcp-headline-gradient">Learn to Dream</span>
+      </h1>
+      <p class="fcp-tagline">Cognitive Operating System for Serious Builders</p>
+      <a href="/codelab" class="fcp-cta">Build Now →</a>
     </div>
     
     <!-- 2026 SEO: Semantic HTML structure -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <script>
-      // Hide FCP shell once React hydrates
+      // Hide FCP shell once React hydrates - smooth transition
       (function(){
         var r=document.getElementById('root');
         var s=document.getElementById('fcp-shell');
-        if(r&&s){new MutationObserver(function(m,o){if(r.children.length>0){s.classList.add('hide');o.disconnect();}}).observe(r,{childList:true});}
+        if(r&&s){
+          new MutationObserver(function(m,o){
+            if(r.children.length>0){
+              s.style.transition='opacity 0.15s ease-out';
+              s.classList.add('hide');
+              setTimeout(function(){s.style.display='none';},150);
+              o.disconnect();
+            }
+          }).observe(r,{childList:true});
+        }
       })();
     </script>
     
