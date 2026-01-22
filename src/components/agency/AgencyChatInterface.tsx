@@ -528,10 +528,23 @@ function generateTeamStatus(agency: Agency): string {
   return lines.join('\n');
 }
 
-// Format message content with rich HTML
+// Escape HTML to prevent XSS attacks
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
+}
+
+// Format message content with rich HTML (XSS-safe)
 function formatMessageContent(content: string): string {
+  // SECURITY: Escape HTML first to prevent XSS
+  let formatted = escapeHtml(content);
+  
   // Replace ##text## with <strong>text</strong>
-  let formatted = content.replace(/##([^#]+)##/g, '<strong>$1</strong>');
+  formatted = formatted.replace(/##([^#]+)##/g, '<strong>$1</strong>');
   
   // Replace **text** with <strong>text</strong>
   formatted = formatted.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
