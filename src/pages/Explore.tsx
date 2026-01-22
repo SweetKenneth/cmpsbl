@@ -457,7 +457,7 @@ export default function Explore() {
   ];
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-background overflow-hidden">
+    <div ref={containerRef} className="min-h-screen bg-background overflow-hidden contain-paint">
       <SEO 
         title="promptfluid® — Cognitive Substrate Infrastructure"
         description="7 core modules, 52 substrate actions, BYOK architecture. Autonomous learning, memory persistence, AI routing, and defense-first design. Build applications that think, learn, and defend themselves."
@@ -467,9 +467,9 @@ export default function Explore() {
 
       <PublicNav />
 
-      {/* Enhanced Neon Ambient Background - static position to prevent forced reflows */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute inset-0" style={{ transform: `translateY(${backgroundY})` }}>
+      {/* Enhanced Neon Ambient Background - static, GPU-accelerated, no reflows */}
+      <div className="fixed inset-0 pointer-events-none z-0 will-change-transform">
+        <div className="absolute inset-0" style={{ transform: `translateY(${backgroundY})`, willChange: 'transform' }}>
           <GradientOrb className="w-[700px] h-[700px] -top-48 -left-48 bg-cyan-500/20" delay={0} />
           <GradientOrb className="w-[600px] h-[600px] top-1/4 -right-48 bg-fuchsia-500/15" delay={0.2} />
           <GradientOrb className="w-[500px] h-[500px] bottom-0 left-1/4 bg-violet-500/15" delay={0.4} />

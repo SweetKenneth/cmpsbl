@@ -98,9 +98,25 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
 
   useEffect(() => {
     if (autoInit) {
-      refresh();
-      const interval = setInterval(refresh, 60000); // Refresh every minute
-      return () => clearInterval(interval);
+      // Defer initialization to avoid blocking main thread during initial render
+      const deferredInit = () => {
+        refresh();
+        const interval = setInterval(refresh, 60000); // Refresh every minute
+        return () => clearInterval(interval);
+      };
+      
+      // Use requestIdleCallback if available, otherwise use setTimeout
+      if ('requestIdleCallback' in window) {
+        const handle = (window as Window & { requestIdleCallback: (cb: () => void, options?: { timeout: number }) => number }).requestIdleCallback(deferredInit, { timeout: 3000 });
+        return () => {
+          if ('cancelIdleCallback' in window) {
+            (window as Window & { cancelIdleCallback: (handle: number) => void }).cancelIdleCallback(handle);
+          }
+        };
+      } else {
+        const timeout = setTimeout(deferredInit, 1000);
+        return () => clearTimeout(timeout);
+      }
     }
   }, [autoInit]);
 
