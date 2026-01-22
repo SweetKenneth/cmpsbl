@@ -239,6 +239,8 @@ export function createOrchestrationPlan(
 
 /**
  * Execute the orchestration plan
+ * Creates tasks in parallel, distributed across available agents
+ * Tasks are created with 'queued' status - the queue processor will start them
  */
 export async function executeOrchestration(
   agencyId: string,
@@ -248,8 +250,10 @@ export async function executeOrchestration(
   const errors: string[] = [];
   
   try {
-    // Create tasks for each routed assignment
-    for (const routed of plan.routedTasks) {
+    console.log(`🎯 Orchestrating ${plan.routedTasks.length} tasks in ${plan.executionOrder} mode`);
+    
+    // Create all tasks in parallel for efficiency
+    const taskPromises = plan.routedTasks.map(async (routed) => {
       const primitive = TASK_PRIMITIVES[routed.primitiveId];
       
       const { data: task, error } = await supabase
@@ -260,7 +264,7 @@ export async function executeOrchestration(
           title: `${primitive.name}: ${routed.input.slice(0, 50)}...`,
           description: routed.input,
           task_type: routed.primitiveId,
-          status: 'queued',
+          status: 'queued',  // Queue processor will auto-start these
           priority: routed.priority,
           progress: 0,
           input_data: {
@@ -271,28 +275,46 @@ export async function executeOrchestration(
           metadata: {
             source: 'leader_orchestration',
             plan: plan.originalInput.slice(0, 200),
+            executionOrder: plan.executionOrder,
           },
         })
         .select('id')
         .single();
       
+      return { task, error, routed };
+    });
+
+    const results = await Promise.all(taskPromises);
+    
+    for (const { task, error, routed } of results) {
       if (error) {
-        errors.push(`Failed to create task: ${error.message}`);
+        errors.push(`Failed to create task for ${routed.primitiveId}: ${error.message}`);
       } else if (task) {
         taskIds.push(task.id);
+        
+        // Add log entry for orchestrated task
+        await supabase.from('agency_task_logs').insert({
+          task_id: task.id,
+          log_type: 'info',
+          message: `📋 Orchestrated to ${routed.assignedMemberId ? 'assigned agent' : 'queue'} via leader`,
+          data: { primitiveId: routed.primitiveId, priority: routed.priority },
+        });
       }
     }
     
     // Record telemetry
     await recordTelemetryEvent(agencyId, null, 'tasks_completed', taskIds.length);
     
+    console.log(`✅ Orchestration complete: ${taskIds.length} tasks created, ${errors.length} errors`);
+    
     return {
       success: errors.length === 0,
       taskIds,
-      summary: `Created ${taskIds.length} tasks from orchestration plan`,
+      summary: `Orchestrated ${taskIds.length} tasks across agents (${plan.executionOrder} mode)`,
       errors: errors.length > 0 ? errors : undefined,
     };
   } catch (err) {
+    console.error('Orchestration error:', err);
     return {
       success: false,
       taskIds,

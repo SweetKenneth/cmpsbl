@@ -1,8 +1,9 @@
 /**
  * Agency Tabbed Portal — Main interface with Chat, Tasks, Team, Settings tabs
+ * v2.0 — Now with proper task distribution and queue processing
  */
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { MessageSquare, ListTodo, Users2, Settings, ArrowLeft, Sparkles, LogIn } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -15,6 +16,13 @@ import { AgencySettingsPanel } from './AgencySettingsPanel';
 import { useAgencyTasks } from '@/hooks/useAgencyTasks';
 import { useAgencySettings } from '@/hooks/useAgencySettings';
 import { useAuth } from '@/contexts/AuthContext';
+import { 
+  findBestAgent, 
+  parseIntents, 
+  createOrchestrationPlan, 
+  executeOrchestration,
+  type TeamMember 
+} from '@/lib/agency/orchestration/leaderOrchestrator';
 import type { Agency } from '@/lib/agency/agencyTypes';
 import type { TaskTypeId } from '@/lib/agency/agencyTasks';
 import { Link } from 'react-router-dom';
@@ -42,6 +50,7 @@ export function AgencyTabbedPortal({ agency, members, onBack, isOwner }: AgencyT
     tasks,
     taskLogs,
     createTask,
+    createAndQueueTask,
     startTask,
     completeTask,
     addTaskLog,
@@ -51,6 +60,7 @@ export function AgencyTabbedPortal({ agency, members, onBack, isOwner }: AgencyT
     retryTask,
     retryAllFailed,
     clearCompletedTasks,
+    queueStats,
   } = useAgencyTasks({ agencyId: agency.id });
 
   const {
@@ -69,30 +79,61 @@ export function AgencyTabbedPortal({ agency, members, onBack, isOwner }: AgencyT
   // Check if user is authenticated
   const isAuthenticated = !!user;
 
-  // Handler for launching tasks from chat commands or quick dispatch
+  // Cast members to TeamMember type for orchestrator
+  const teamMembers: TeamMember[] = useMemo(() => 
+    members.map(m => ({
+      id: m.id,
+      role: m.role,
+      specialization: m.specialization,
+      is_leader: m.is_leader,
+      skill_weights: m.skill_weights,
+    })), [members]);
+
+  // Handler for launching tasks - NOW USES ORCHESTRATION to distribute to best agents
   const handleLaunchTask = useCallback(async (taskType: TaskTypeId, input: string) => {
     if (!isAuthenticated) return;
 
-    const task = await createTask({
+    // Parse intents from input
+    const intents = parseIntents(input);
+    
+    // If multiple intents detected, use full orchestration
+    if (intents.length > 1) {
+      console.log(`🎯 Multiple intents detected (${intents.length}), using orchestration`);
+      const plan = createOrchestrationPlan(input, teamMembers);
+      const result = await executeOrchestration(agency.id, plan);
+      
+      if (result.success) {
+        await addTaskLog(result.taskIds[0], 
+          `${settings?.leader_name || 'Team Lead'} orchestrated ${result.taskIds.length} tasks across agents`);
+        setActiveTab('tasks');
+        return;
+      }
+    }
+
+    // Single intent - find best agent for this task type
+    const bestAgent = findBestAgent(intents[0]?.primitive || 'web_research', teamMembers);
+    const assignedMemberId = bestAgent?.id || leader?.id || null;
+
+    const task = await createAndQueueTask({
       task_type: taskType as any,
       title: `${taskType}: ${input.slice(0, 40)}${input.length > 40 ? '...' : ''}`,
       description: input,
       input_data: { rawInput: input },
-      assigned_member_id: leader?.id || null,
+      assigned_member_id: assignedMemberId,
     });
 
     if (task) {
-      await startTask(task.id);
-      await addTaskLog(task.id, `${settings?.leader_name || 'Team Lead'} dispatched this task`);
+      await addTaskLog(task.id, 
+        `${settings?.leader_name || 'Team Lead'} assigned to ${bestAgent?.specialization || 'available agent'}`);
       setActiveTab('tasks');
     }
-  }, [createTask, startTask, addTaskLog, leader, settings?.leader_name, isAuthenticated]);
+  }, [createAndQueueTask, addTaskLog, leader, settings?.leader_name, isAuthenticated, teamMembers, agency.id]);
 
   // Handler for dispatching task to specific member
   const handleDispatchToMember = useCallback(async (memberId: string, taskType: TaskTypeId, description?: string) => {
     if (!isAuthenticated) return;
 
-    const task = await createTask({
+    const task = await createAndQueueTask({
       task_type: taskType as any,
       title: description || `${taskType} task`,
       description: description || `Task assigned to agent`,
@@ -101,10 +142,9 @@ export function AgencyTabbedPortal({ agency, members, onBack, isOwner }: AgencyT
     });
 
     if (task) {
-      await startTask(task.id);
       await addTaskLog(task.id, `Agent assigned to ${taskType} task`);
     }
-  }, [createTask, startTask, addTaskLog, isAuthenticated]);
+  }, [createAndQueueTask, addTaskLog, isAuthenticated]);
 
   // Reset team to learning mode (cancel all then start idle learning)
   const handleResetToLearning = useCallback(async () => {

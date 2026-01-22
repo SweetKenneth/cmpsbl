@@ -1,6 +1,6 @@
 /**
  * useAgencyTasks — Hook for managing agency tasks with real-time updates
- * v2.0 — Now actually executes tasks via edge function
+ * v3.0 — Queue processor + parallel agent execution
  */
 
 import { useState, useEffect, useCallback, useRef } from 'react';
@@ -9,9 +9,15 @@ import { toast } from 'sonner';
 import type { AgencyTask, AgencyTaskLog, TaskTypeId, TaskStatus } from '@/lib/agency/agencyTasks';
 import { executeTask } from '@/lib/agency/taskExecutor';
 
+// Maximum concurrent tasks per agency
+const MAX_CONCURRENT_TASKS = 5;
+// Queue processing interval (ms)
+const QUEUE_PROCESS_INTERVAL = 3000;
+
 interface UseAgencyTasksOptions {
   agencyId: string;
   autoRefresh?: boolean;
+  maxConcurrent?: number;
 }
 
 interface UseAgencyTasksReturn {
@@ -20,6 +26,7 @@ interface UseAgencyTasksReturn {
   isLoading: boolean;
   error: string | null;
   createTask: (task: Partial<AgencyTask>) => Promise<AgencyTask | null>;
+  createAndQueueTask: (task: Partial<AgencyTask>) => Promise<AgencyTask | null>;
   updateTask: (taskId: string, updates: Partial<AgencyTask>) => Promise<boolean>;
   addTaskLog: (taskId: string, message: string, logType?: AgencyTaskLog['log_type'], data?: Record<string, any>) => Promise<void>;
   startTask: (taskId: string) => Promise<boolean>;
@@ -34,10 +41,13 @@ interface UseAgencyTasksReturn {
   getTasksByMember: (memberId: string) => AgencyTask[];
   getTasksByStatus: (status: TaskStatus) => AgencyTask[];
   getRecentLogs: (limit?: number) => AgencyTaskLog[];
+  processQueue: () => Promise<number>;
+  queueStats: { queued: number; inProgress: number; available: number };
 }
 
-export function useAgencyTasks({ agencyId, autoRefresh = true }: UseAgencyTasksOptions): UseAgencyTasksReturn {
+export function useAgencyTasks({ agencyId, autoRefresh = true, maxConcurrent = MAX_CONCURRENT_TASKS }: UseAgencyTasksOptions): UseAgencyTasksReturn {
   const executingTasks = useRef<Set<string>>(new Set());
+  const processingQueue = useRef<boolean>(false);
   const [tasks, setTasks] = useState<AgencyTask[]>([]);
   const [taskLogs, setTaskLogs] = useState<AgencyTaskLog[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -166,7 +176,15 @@ export function useAgencyTasks({ agencyId, autoRefresh = true }: UseAgencyTasksO
     };
   }, [agencyId, autoRefresh, tasks]);
 
-  // Create task
+  // Get queue statistics
+  const queueStats = useCallback(() => {
+    const queued = tasks.filter(t => t.status === 'queued').length;
+    const inProgress = tasks.filter(t => t.status === 'in_progress').length;
+    const available = Math.max(0, maxConcurrent - inProgress);
+    return { queued, inProgress, available };
+  }, [tasks, maxConcurrent]);
+
+  // Create task (just creates, doesn't start)
   const createTask = useCallback(async (task: Partial<AgencyTask>): Promise<AgencyTask | null> => {
     try {
       const { data, error: insertError } = await supabase
@@ -189,7 +207,6 @@ export function useAgencyTasks({ agencyId, autoRefresh = true }: UseAgencyTasksO
         .single();
 
       if (insertError) throw insertError;
-      toast.success('Task created');
       return data as AgencyTask;
     } catch (err) {
       console.error('Error creating task:', err);
@@ -197,6 +214,15 @@ export function useAgencyTasks({ agencyId, autoRefresh = true }: UseAgencyTasksO
       return null;
     }
   }, [agencyId]);
+
+  // Create task and add to queue (will be auto-processed)
+  const createAndQueueTask = useCallback(async (task: Partial<AgencyTask>): Promise<AgencyTask | null> => {
+    const newTask = await createTask(task);
+    if (newTask) {
+      toast.success('Task queued');
+    }
+    return newTask;
+  }, [createTask]);
 
   // Update task
   const updateTask = useCallback(async (taskId: string, updates: Partial<AgencyTask>): Promise<boolean> => {
@@ -491,12 +517,84 @@ export function useAgencyTasks({ agencyId, autoRefresh = true }: UseAgencyTasksO
     await fetchLogs();
   }, [fetchTasks, fetchLogs]);
 
+  // ============================================
+  // QUEUE PROCESSOR - Automatically starts queued tasks
+  // ============================================
+  const processQueue = useCallback(async (): Promise<number> => {
+    if (processingQueue.current) return 0;
+    processingQueue.current = true;
+
+    try {
+      const stats = queueStats();
+      if (stats.queued === 0 || stats.available === 0) {
+        return 0;
+      }
+
+      // Get queued tasks ordered by priority (high first) and creation time
+      const queuedTasks = tasks
+        .filter(t => t.status === 'queued' && !executingTasks.current.has(t.id))
+        .sort((a, b) => {
+          // Higher priority first
+          if ((b.priority || 0) !== (a.priority || 0)) {
+            return (b.priority || 0) - (a.priority || 0);
+          }
+          // Earlier creation first
+          return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+        })
+        .slice(0, stats.available);
+
+      let started = 0;
+      
+      // Start tasks in parallel
+      const startPromises = queuedTasks.map(async (task) => {
+        const success = await startTask(task.id);
+        if (success) started++;
+        return success;
+      });
+
+      await Promise.all(startPromises);
+
+      if (started > 0) {
+        console.log(`📊 Queue processor: started ${started} tasks`);
+      }
+
+      return started;
+    } finally {
+      processingQueue.current = false;
+    }
+  }, [tasks, queueStats, startTask]);
+
+  // Auto-process queue when tasks change
+  useEffect(() => {
+    if (!autoRefresh || !agencyId) return;
+
+    const processInterval = setInterval(() => {
+      const stats = queueStats();
+      if (stats.queued > 0 && stats.available > 0) {
+        processQueue();
+      }
+    }, QUEUE_PROCESS_INTERVAL);
+
+    return () => clearInterval(processInterval);
+  }, [autoRefresh, agencyId, processQueue, queueStats]);
+
+  // Process queue immediately when new queued tasks appear
+  useEffect(() => {
+    const stats = queueStats();
+    if (stats.queued > 0 && stats.available > 0 && !processingQueue.current) {
+      // Slight delay to batch multiple task creations
+      const timeout = setTimeout(() => processQueue(), 500);
+      return () => clearTimeout(timeout);
+    }
+  }, [tasks.length, queueStats, processQueue]);
+
   return {
     tasks,
     taskLogs,
     isLoading,
     error,
     createTask,
+    createAndQueueTask,
     updateTask,
     addTaskLog,
     startTask,
@@ -511,5 +609,7 @@ export function useAgencyTasks({ agencyId, autoRefresh = true }: UseAgencyTasksO
     getTasksByMember,
     getTasksByStatus,
     getRecentLogs,
+    processQueue,
+    queueStats: queueStats(),
   };
 }
