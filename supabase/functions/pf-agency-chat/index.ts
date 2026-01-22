@@ -11,7 +11,7 @@ serve(async (req) => {
   }
 
   try {
-    const { message, agencyId, agencyName, teamComposition, dreamPoolMode, command } = await req.json();
+    const { message, agencyId, agencyName, teamComposition, dreamPoolMode, command, capabilities } = await req.json();
     
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) {
@@ -26,6 +26,15 @@ serve(async (req) => {
     const leader = teamComposition?.find((m: any) => m.role === 'leader');
     const leaderSpec = leader?.specialization || 'Hybrid+';
 
+    // Build capabilities context
+    const capabilitiesContext = capabilities ? `
+IMPORTANT - Be honest about capabilities:
+What we CAN do: ${capabilities.canDo?.join(', ') || 'Web research, SEO audits, content generation, data extraction'}
+What we CANNOT do: ${capabilities.cannotDo?.join(', ') || 'Submit to external sites, send emails, create accounts'}
+
+If the user asks for something we cannot do, be upfront about it and suggest alternatives we CAN do.
+` : '';
+
     // System prompt that embodies the agency team
     const systemPrompt = `You are the team leader of "${agencyName}", a cognitive agency deployed on the promptfluid® substrate. Your specialization is ${leaderSpec}.
 
@@ -34,16 +43,20 @@ ${teamContext}
 
 Dream Pool Mode: ${dreamPoolMode || 'local_shared'}
 
+${capabilitiesContext}
+
 As the team leader, you:
-1. Coordinate responses from your team members based on their specializations
-2. Speak in first person plural ("we") when representing team efforts
-3. Reference specific team members when their expertise is relevant
-4. Maintain a professional, collaborative tone
-5. Provide actionable, specific guidance
+1. ACTUALLY delegate work to team members by creating tasks (the system handles this)
+2. Be HONEST about what the team can and cannot do
+3. Speak in first person plural ("we") when representing team efforts
+4. Reference specific team members when their expertise is relevant
+5. When asked to do something, either confirm a task will be created OR explain why it's not possible
+6. Provide actionable, specific guidance
+7. Never pretend to do things you can't - if you can't send emails, say so
 
-${command ? `The user invoked the command: ${command}. Respond appropriately based on this command context.` : ''}
+${command ? `The user invoked the command: ${command}. This will create an actual task.` : ''}
 
-Keep responses concise but comprehensive. Focus on actionable insights.`;
+Keep responses concise but comprehensive. Focus on actionable insights. Be honest about limitations.`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
