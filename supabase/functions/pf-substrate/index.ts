@@ -5979,11 +5979,13 @@ async function handleModernizer(
           });
         }
         
-        if ((orchestrator?.health_score || 0) < 80) {
+        // health_score is 0-1 decimal, so check < 0.80 (80%)
+        const orchHealthPercent = (orchestrator?.health_score || 0) * 100;
+        if (orchHealthPercent < 80) {
           proposals.push({
             area: 'orchestrator',
             priority: 'critical',
-            description: 'Orchestrator health degraded',
+            description: `Orchestrator health degraded (${orchHealthPercent.toFixed(0)}%)`,
             action: 'Run system.heal with test=true for full diagnostics'
           });
         }
@@ -6054,7 +6056,7 @@ async function handleModernizer(
               outcome_distribution: outcomeStats,
             },
             orchestrator: {
-              health: orchestrator?.health_score || 0,
+              health: Math.round((orchestrator?.health_score || 0) * 100), // Convert to percentage
               phase: orchestrator?.current_phase || 'unknown',
               cycles: orchestrator?.cycles_completed || 0,
             },
@@ -6441,6 +6443,46 @@ async function handleModernizer(
           module: 'modernizer',
           action: 'rollback',
           error: error instanceof Error ? error.message : 'Failed to rollback',
+        }, headers);
+      }
+    }
+
+    // ═══ DELETE — Delete/reject an upgrade plan ═══
+    case "delete":
+    case "reject": {
+      const { plan_id, reason } = data;
+      
+      if (!plan_id) {
+        return jsonResponse({
+          success: false,
+          module: 'modernizer',
+          action: action,
+          error: 'plan_id is required',
+        }, headers);
+      }
+      
+      try {
+        const { data: deleteResult, error } = await supabase.functions.invoke('pf-substrate-upgrade', {
+          body: { action: 'delete_plan', plan_id, reason }
+        });
+        
+        if (error) throw error;
+        
+        return jsonResponse({
+          success: deleteResult?.success || false,
+          module: 'modernizer',
+          action: action,
+          result: deleteResult,
+          message: deleteResult?.success 
+            ? 'Plan deleted successfully' 
+            : 'Delete failed - check result for details',
+        }, headers);
+      } catch (error) {
+        return jsonResponse({
+          success: false,
+          module: 'modernizer',
+          action: action,
+          error: error instanceof Error ? error.message : 'Failed to delete plan',
         }, headers);
       }
     }

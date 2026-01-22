@@ -30,12 +30,13 @@ function generatePlanId(): string {
 }
 
 interface UpgradeRequest {
-  action: 'propose' | 'list_plans' | 'get_plan' | 'apply_plan' | 'rollback_plan';
+  action: 'propose' | 'list_plans' | 'get_plan' | 'apply_plan' | 'rollback_plan' | 'delete_plan' | 'reject_plan';
   mode?: 'shadow' | 'auto_safe' | 'auto_full';
   scope?: 'brain' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'all';
   max_changes?: number;
   notes?: string;
   plan_id?: string;
+  reason?: string;
 }
 
 interface UpgradePlan {
@@ -578,11 +579,75 @@ serve(async (req) => {
         }, corsHeaders);
       }
       
+      case 'delete_plan':
+      case 'reject_plan': {
+        if (!plan_id) {
+          return jsonResponse({
+            success: false,
+            error: 'plan_id is required',
+          }, corsHeaders, 400);
+        }
+        
+        const { reason } = body;
+        
+        // Get plan
+        const { data: plan, error: planError } = await supabase
+          .from('substrate_upgrade_plans')
+          .select('*')
+          .eq('id', plan_id)
+          .single();
+        
+        if (planError || !plan) {
+          return jsonResponse({
+            success: false,
+            error: 'Plan not found',
+            plan_id,
+          }, corsHeaders, 404);
+        }
+        
+        // Cannot delete applied plans - must rollback first
+        if (plan.status === 'applied') {
+          return jsonResponse({
+            success: false,
+            error: 'Cannot delete applied plans. Use rollback_plan first.',
+            plan_id,
+            current_status: plan.status,
+          }, corsHeaders, 400);
+        }
+        
+        // Update plan status to rejected/deleted
+        const newStatus = action === 'reject_plan' ? 'rejected' : 'deleted';
+        await supabase.from('substrate_upgrade_plans').update({
+          status: newStatus,
+          operator_notes: reason || `${newStatus.charAt(0).toUpperCase() + newStatus.slice(1)} by operator`,
+        }).eq('id', plan_id);
+        
+        // Log to vision
+        await supabase.from('brain_events').insert({
+          event_type: `upgrade_${newStatus}`,
+          module: 'system',
+          outcome: 'success',
+          data: { 
+            plan_id, 
+            reason: reason || 'Operator decision',
+            previous_status: plan.status,
+          }
+        });
+        
+        return jsonResponse({
+          success: true,
+          plan_id,
+          status: newStatus,
+          message: `Plan ${newStatus} successfully`,
+          timestamp: new Date().toISOString(),
+        }, corsHeaders);
+      }
+      
       default:
         return jsonResponse({
           success: false,
           error: `Unknown action: ${action}`,
-          valid_actions: ['propose', 'list_plans', 'get_plan', 'apply_plan', 'rollback_plan'],
+          valid_actions: ['propose', 'list_plans', 'get_plan', 'apply_plan', 'rollback_plan', 'delete_plan', 'reject_plan'],
         }, corsHeaders, 400);
     }
     

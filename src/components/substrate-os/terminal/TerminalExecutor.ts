@@ -401,6 +401,11 @@ export async function executeCommand(
         return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.rollback <plan_id>' };
       }
       result = await modernizer.rollback(args[0]);
+    } else if (base === 'modernizer.delete') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.delete <plan_id> [reason]' };
+      }
+      result = await modernizer.delete(args[0], args.slice(1).join(' ') || undefined);
     } else if (base === 'modernizer.archived') {
       result = await modernizer.archived();
     }

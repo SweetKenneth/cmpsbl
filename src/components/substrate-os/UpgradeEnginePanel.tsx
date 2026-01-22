@@ -8,7 +8,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { 
   Zap, Clock, Shield, AlertTriangle, CheckCircle, XCircle,
-  RefreshCw, Play, RotateCcw, Eye, Loader2, Lock
+  RefreshCw, Play, RotateCcw, Eye, Loader2, Lock, Trash2
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -157,6 +157,28 @@ export function UpgradeEnginePanel({ enabled }: UpgradeEnginePanelProps) {
     },
     onError: (error) => {
       toast.error('Rollback failed', {
+        description: error instanceof Error ? error.message : 'Unknown error',
+      });
+    },
+  });
+
+  // Delete/Reject plan mutation
+  const deleteMutation = useMutation({
+    mutationFn: async ({ planId, reason }: { planId: string; reason?: string }) => {
+      const { data, error } = await supabase.functions.invoke('pf-substrate-upgrade', {
+        body: { action: 'delete_plan', plan_id: planId, reason }
+      });
+      if (error) throw error;
+      if (!data.success) throw new Error(data.error || data.message);
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['upgrade-plans'] });
+      toast.success('Plan deleted');
+      setSelectedPlanId(null);
+    },
+    onError: (error) => {
+      toast.error('Failed to delete plan', {
         description: error instanceof Error ? error.message : 'Unknown error',
       });
     },
@@ -433,6 +455,24 @@ export function UpgradeEnginePanel({ enabled }: UpgradeEnginePanelProps) {
                                 </AlertDialogFooter>
                               </AlertDialogContent>
                             </AlertDialog>
+                          )}
+                          
+                          {/* Delete button for proposed/approved/rejected plans (not applied) */}
+                          {plan.status !== 'applied' && (
+                            <Button 
+                              size="sm" 
+                              variant="ghost" 
+                              className="gap-1 text-muted-foreground hover:text-red-400 hover:bg-red-500/10"
+                              onClick={() => deleteMutation.mutate({ planId: plan.id })}
+                              disabled={deleteMutation.isPending}
+                            >
+                              {deleteMutation.isPending ? (
+                                <Loader2 className="w-3 h-3 animate-spin" />
+                              ) : (
+                                <Trash2 className="w-3 h-3" />
+                              )}
+                              Delete
+                            </Button>
                           )}
                         </div>
                       </div>
