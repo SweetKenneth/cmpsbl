@@ -123,8 +123,14 @@ export const SYSTEM_COMMANDS: CommandDefinition[] = [
 export const MODERNIZER_COMMANDS: CommandDefinition[] = [
   { command: 'modernizer.status', description: 'Modernizer service status', category: 'modernizer', icon: Sparkles, requiresOperator: false },
   { command: 'modernizer.jobs', description: 'List recent modernization jobs', category: 'modernizer', icon: Activity, requiresOperator: false, args: '[limit]' },
-  { command: 'modernizer.submit', description: 'Submit URL for modernization', category: 'modernizer', icon: Sparkles, requiresOperator: true, args: '<url>', example: 'modernizer.submit https://example.com' },
-  { command: 'modernizer.analyze', description: 'Analyze a website', category: 'modernizer', icon: Search, requiresOperator: true, args: '<url>' },
+  { command: 'modernizer.scan', description: 'Scan substrate for improvements', category: 'modernizer', icon: Search, requiresOperator: true, args: '[depth]', example: 'modernizer.scan deep' },
+  { command: 'modernizer.analyze', description: 'Quick analysis of a module', category: 'modernizer', icon: Search, requiresOperator: true, args: '[module]' },
+  { command: 'modernizer.propose', description: 'Generate upgrade proposal (shadow)', category: 'modernizer', icon: Sparkles, requiresOperator: true, args: '[scope] [notes]', example: 'modernizer.propose brain "optimize memory"' },
+  { command: 'modernizer.plans', description: 'List all upgrade plans', category: 'modernizer', icon: Activity, requiresOperator: false },
+  { command: 'modernizer.review', description: 'Review a specific plan', category: 'modernizer', icon: Eye, requiresOperator: false, args: '<plan_id>' },
+  { command: 'modernizer.apply', description: 'Apply an approved plan', category: 'modernizer', icon: Sparkles, requiresOperator: true, args: '<plan_id>' },
+  { command: 'modernizer.rollback', description: 'Rollback an applied plan', category: 'modernizer', icon: Shield, requiresOperator: true, args: '<plan_id>' },
+  { command: 'modernizer.archived', description: 'Scan archived functions to repurpose', category: 'modernizer', icon: Database, requiresOperator: false },
   { command: 'modernizer.export', description: 'Export job assets', category: 'modernizer', icon: Database, requiresOperator: true, args: '<job_id>' },
   { command: 'modernizer.quota', description: 'Check usage limits', category: 'modernizer', icon: Gauge, requiresOperator: false },
 ];
