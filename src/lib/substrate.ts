@@ -463,6 +463,32 @@ class SubstrateClient {
     /** Lightweight heartbeat */
     pulse: () =>
       this.invoke({ module: 'modernizer', action: 'pulse' }),
+    
+    // ═══ NEW: Shadow-mode upgrade workflow ═══
+    
+    /** Generate an upgrade proposal (shadow mode - requires human approval) */
+    propose: (options?: { scope?: string; notes?: string; max_changes?: number }) =>
+      this.invoke({ module: 'modernizer', action: 'propose', payload: options }),
+    
+    /** List all upgrade plans */
+    plans: () =>
+      this.invoke({ module: 'modernizer', action: 'plans' }),
+    
+    /** Review a specific upgrade plan */
+    review: (plan_id: string) =>
+      this.invoke({ module: 'modernizer', action: 'review', payload: { plan_id } }),
+    
+    /** Apply an approved upgrade plan (requires human confirmation) */
+    apply: (plan_id: string) =>
+      this.invoke({ module: 'modernizer', action: 'apply', payload: { plan_id } }),
+    
+    /** Rollback an applied upgrade to pre-upgrade state */
+    rollback: (plan_id: string) =>
+      this.invoke({ module: 'modernizer', action: 'rollback', payload: { plan_id } }),
+    
+    /** Scan archived edge functions for repurposing opportunities */
+    archived: () =>
+      this.invoke({ module: 'modernizer', action: 'archived' }),
   };
 
 }

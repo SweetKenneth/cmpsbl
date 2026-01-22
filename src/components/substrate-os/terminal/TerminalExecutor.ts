@@ -362,8 +362,8 @@ export async function executeCommand(
     } else if (base === 'modernizer.jobs') {
       const limit = args[0] ? parseInt(args[0]) : 10;
       result = await modernizer.jobs(limit);
-    } else if (base === 'modernizer.submit' || base === 'modernizer.scan') {
-      // Scan substrate codebase - optional module filter
+    } else if (base === 'modernizer.scan') {
+      // Scan substrate codebase - optional depth filter
       const depth = args[0] as 'quick' | 'standard' | 'deep' | undefined;
       result = await modernizer.scan({ depth: depth || 'standard' });
     } else if (base === 'modernizer.analyze') {
@@ -379,6 +379,30 @@ export async function executeCommand(
       result = await modernizer.quota();
     } else if (base === 'modernizer.pulse') {
       result = await modernizer.pulse();
+    } else if (base === 'modernizer.propose') {
+      // Generate upgrade proposal in shadow mode
+      const scope = args[0] || 'all';
+      const notes = args.slice(1).join(' ') || '';
+      result = await modernizer.propose({ scope, notes });
+    } else if (base === 'modernizer.plans') {
+      result = await modernizer.plans();
+    } else if (base === 'modernizer.review') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.review <plan_id>' };
+      }
+      result = await modernizer.review(args[0]);
+    } else if (base === 'modernizer.apply') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.apply <plan_id>' };
+      }
+      result = await modernizer.apply(args[0]);
+    } else if (base === 'modernizer.rollback') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.rollback <plan_id>' };
+      }
+      result = await modernizer.rollback(args[0]);
+    } else if (base === 'modernizer.archived') {
+      result = await modernizer.archived();
     }
 
     // Unknown command

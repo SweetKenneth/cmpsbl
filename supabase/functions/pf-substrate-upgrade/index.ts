@@ -24,9 +24,9 @@ function generateBackupId(): string {
   return `bkp_${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 6)}`;
 }
 
-// Plan ID generator  
+// Plan ID generator - must be a valid UUID for database
 function generatePlanId(): string {
-  return `upg_${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 8)}`;
+  return crypto.randomUUID();
 }
 
 interface UpgradeRequest {
