@@ -64,12 +64,15 @@ export function AgencyQuickDispatch({
 
   return (
     <div className={cn("space-y-3", className)}>
-      {/* Quick Launch - Top 6 Tasks */}
+      {/* Quick Launch - Top Tasks */}
       <Card className="border-border/30 bg-black/40">
         <CardHeader className="pb-2 px-3 pt-3">
           <CardTitle className="text-xs sm:text-sm flex items-center gap-2">
             <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400" />
             Quick Launch
+            <Badge variant="outline" className="text-[9px] px-1.5 py-0 ml-auto border-emerald-500/30 text-emerald-400">
+              {Object.keys(EXECUTABLE_TASKS).length} tasks
+            </Badge>
           </CardTitle>
         </CardHeader>
         <CardContent className="px-3 pb-3">
