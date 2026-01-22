@@ -505,33 +505,34 @@
       })();
     </script>
 
-    <!-- Google tag (gtag.js) - Deferred for Core Web Vitals -->
+    <!-- Google tag (gtag.js) - Aggressively deferred for Core Web Vitals -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-88CLWS1QHK', {
-        'anonymize_ip': true,
-        'link_attribution': true,
-        'allow_google_signals': true
-      });
       
-      // Load GA after page is interactive (improves LCP/FID)
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(function() {
-          var script = document.createElement('script');
-          script.async = true;
-          script.src = 'https://www.googletagmanager.com/gtag/js?id=G-88CLWS1QHK';
-          document.head.appendChild(script);
+      // Delay analytics initialization until after LCP (typically 2.5s)
+      function loadAnalytics() {
+        gtag('js', new Date());
+        gtag('config', 'G-88CLWS1QHK', {
+          'anonymize_ip': true,
+          'link_attribution': true,
+          'allow_google_signals': true
         });
-      } else {
-        setTimeout(function() {
-          var script = document.createElement('script');
-          script.async = true;
-          script.src = 'https://www.googletagmanager.com/gtag/js?id=G-88CLWS1QHK';
-          document.head.appendChild(script);
-        }, 100);
+        
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-88CLWS1QHK';
+        document.head.appendChild(script);
       }
+      
+      // Use multiple deferral layers: wait for load, then idle, then timeout
+      window.addEventListener('load', function() {
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(loadAnalytics, { timeout: 5000 });
+        } else {
+          setTimeout(loadAnalytics, 3000);
+        }
+      });
     </script>
     
     <!-- 2026 SEO: Inline Critical CSS for faster FCP & Speed Index -->

@@ -21,16 +21,13 @@ export function CodeLabCTA() {
           {/* Gradient background */}
           <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-cyan-500/5 to-violet-500/10" />
           
-          {/* Animated glow */}
-          <motion.div
-            className="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-primary/20 blur-[100px]"
-            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-            transition={{ duration: 6, repeat: Infinity }}
+          {/* Static glow - CSS-only, no JS animation to reduce main-thread work */}
+          <div
+            className="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-primary/20 blur-[100px] animate-hero-glow-pulse"
           />
-          <motion.div
-            className="absolute -bottom-24 -left-24 w-64 h-64 rounded-full bg-cyan-500/20 blur-[100px]"
-            animate={{ scale: [1.2, 1, 1.2], opacity: [0.4, 0.6, 0.4] }}
-            transition={{ duration: 8, repeat: Infinity }}
+          <div
+            className="absolute -bottom-24 -left-24 w-64 h-64 rounded-full bg-cyan-500/20 blur-[100px] animate-hero-glow-pulse"
+            style={{ animationDelay: '2s' }}
           />
           
           <div className="relative flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">

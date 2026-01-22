@@ -434,4 +434,40 @@ All colors MUST be HSL.
     animation: hero-glow-pulse 3s ease-in-out infinite;
     will-change: transform, opacity;
   }
+  
+  /* Bounce animation for scroll indicators */
+  @keyframes bounce-gentle {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(8px);
+    }
+  }
+  
+  .animate-bounce-gentle {
+    animation: bounce-gentle 2s ease-in-out infinite;
+    will-change: transform;
+  }
+  
+  /* Fade pulse for ambient glow effects */
+  @keyframes fade-pulse {
+    0%, 100% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 0.6;
+    }
+  }
+  
+  .animate-fade-pulse {
+    animation: fade-pulse 4s ease-in-out infinite;
+    will-change: opacity;
+  }
+  
+  .animate-fade-pulse-slow {
+    animation: fade-pulse 5s ease-in-out infinite;
+    animation-delay: 1s;
+    will-change: opacity;
+  }
 }

@@ -250,15 +250,13 @@ function CapabilityStat({
   );
 }
 
-// Section divider
+// Section divider - using CSS animation to reduce main-thread work
 function SectionDivider() {
   return (
     <div className="relative py-16">
       <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-      <motion.div 
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-primary"
-        animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
-        transition={{ duration: 2, repeat: Infinity }}
+      <div 
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-primary animate-hero-glow-pulse"
       />
     </div>
   );
@@ -489,14 +487,12 @@ export default function Explore() {
             transition={{ delay: 0.5 }}
             className="text-center"
           >
-            <motion.div
-              animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="flex flex-col items-center gap-2 text-muted-foreground"
+            <div
+              className="flex flex-col items-center gap-2 text-muted-foreground animate-bounce-gentle"
             >
               <span className="text-xs uppercase tracking-widest">Explore the Infrastructure</span>
               <ChevronDown className="w-5 h-5" />
-            </motion.div>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -667,22 +663,18 @@ export default function Explore() {
             }}
           />
           
-          {/* Neon glow effects */}
-          <motion.div
-            className="absolute inset-0 pointer-events-none"
+          {/* Neon glow effects - CSS animations to reduce main-thread work */}
+          <div
+            className="absolute inset-0 pointer-events-none animate-fade-pulse"
             style={{
               background: "radial-gradient(ellipse 50% 50% at 30% 50%, hsl(var(--neon-magenta) / 0.15) 0%, transparent 60%)",
             }}
-            animate={{ opacity: [0.3, 0.6, 0.3] }}
-            transition={{ duration: 4, repeat: Infinity }}
           />
-          <motion.div
-            className="absolute inset-0 pointer-events-none"
+          <div
+            className="absolute inset-0 pointer-events-none animate-fade-pulse-slow"
             style={{
               background: "radial-gradient(ellipse 50% 50% at 70% 50%, hsl(var(--neon-cyan) / 0.12) 0%, transparent 60%)",
             }}
-            animate={{ opacity: [0.4, 0.7, 0.4] }}
-            transition={{ duration: 5, repeat: Infinity, delay: 1 }}
           />
           
           {/* Content */}
