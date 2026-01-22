@@ -22,8 +22,8 @@
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
     
     <!-- 2026 SEO: Preload Critical Assets (LCP optimization) -->
-    <!-- Note: Main hero uses animated SVG/CSS, not static images - preloading removed to reduce network contention -->
-    <link rel="modulepreload" href="/src/main.tsx" />
+    <!-- Note: Vite automatically injects modulepreload links for JS chunks during build -->
+    <!-- CSS preload handled by Vite's build process with proper hashing -->
     
     <!-- Critical CSS for FCP - inline above-the-fold styles -->
     <style>

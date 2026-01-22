@@ -52,6 +52,10 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
+    // Enable modulepreload polyfill for older browsers and proper preloading
+    modulePreload: {
+      polyfill: true,
+    },
     rollupOptions: {
       output: {
         manualChunks: {
