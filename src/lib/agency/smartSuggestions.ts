@@ -1,11 +1,10 @@
 /**
- * Smart Suggestions System
- * AI-powered follow-up suggestions and next-best-action recommendations
+ * Smart Suggestions System — Uses ONLY executable tasks
  */
 
-import { TaskTypeId, TASK_TYPES, AgencyTask } from './agencyTasks';
+import { AgencyTask } from './agencyTasks';
 import { Specialization } from './agencyTypes';
-import { WorkflowTemplate, getAvailableWorkflows } from './taskTemplates';
+import { EXECUTABLE_TASKS, type ExecutableTask } from './executableTasks';
 
 // ============================================================================
 // SUGGESTION TYPES
@@ -35,7 +34,7 @@ export interface SuggestionContext {
 }
 
 // ============================================================================
-// SUGGESTION RULES
+// SUGGESTION RULES — All reference EXECUTABLE_TASKS
 // ============================================================================
 
 interface SuggestionRule {
@@ -59,13 +58,12 @@ const SUGGESTION_RULES: SuggestionRule[] = [
         type: 'follow_up',
         priority: 'high',
         title: 'Create Content from Research',
-        description: `Turn your "${lastTask.title}" research into a blog post or report`,
-        actionLabel: 'Create Content',
+        description: `Turn your "${lastTask.title}" research into an SEO article`,
+        actionLabel: 'Create Article',
         actionType: 'task',
         actionPayload: { 
-          taskType: 'content_creation', 
+          taskId: 'seo_article', 
           input: `Based on research: ${lastTask.title}`,
-          context: lastTask.output_data 
         },
         icon: '✍️',
       };
@@ -82,19 +80,18 @@ const SUGGESTION_RULES: SuggestionRule[] = [
     generate: (ctx) => {
       const lastTask = ctx.recentTasks[0];
       return {
-        id: 'sug_seo_content',
+        id: 'sug_backlink_research',
         type: 'follow_up',
         priority: 'high',
-        title: 'Fix SEO Issues',
-        description: 'Create an action plan to address the SEO issues found',
-        actionLabel: 'Create Action Plan',
+        title: 'Find Backlink Opportunities',
+        description: 'Research backlink sources to improve SEO',
+        actionLabel: 'Find Backlinks',
         actionType: 'task',
         actionPayload: { 
-          taskType: 'content_creation', 
-          input: `SEO action plan for: ${lastTask.input_data?.url || 'target site'}`,
-          context: lastTask.output_data 
+          taskId: 'backlink_research', 
+          input: lastTask.input_data?.url || lastTask.title,
         },
-        icon: '📈',
+        icon: '🔗',
       };
     },
   },
@@ -109,70 +106,42 @@ const SUGGESTION_RULES: SuggestionRule[] = [
     generate: (ctx) => {
       const lastTask = ctx.recentTasks[0];
       return {
-        id: 'sug_intel_seo',
+        id: 'sug_content_gap',
         type: 'follow_up',
         priority: 'medium',
-        title: 'Analyze Their SEO',
-        description: 'Run an SEO scan to understand their search strategy',
-        actionLabel: 'Run SEO Scan',
+        title: 'Analyze Content Gaps',
+        description: 'Find content opportunities they\'re missing',
+        actionLabel: 'Find Gaps',
         actionType: 'task',
         actionPayload: { 
-          taskType: 'seo_scan',
-          input: lastTask.output_data?.companyUrl || lastTask.input_data?.target
+          taskId: 'content_gap_analysis',
+          input: lastTask.input_data?.target || lastTask.title,
         },
-        icon: '🔍',
+        icon: '🕳️',
       };
     },
   },
   
-  // Suggest workflow when multiple related tasks
+  // After content creation
   {
-    id: 'suggest_workflow',
+    id: 'content_follow_up',
     condition: (ctx) => {
-      const researchCount = ctx.recentTasks.filter(t => 
-        t.task_type === 'research' && t.status === 'completed'
-      ).length;
-      return researchCount >= 2;
-    },
-    generate: (ctx) => {
-      const availableWorkflows = getAvailableWorkflows(ctx.teamSpecs);
-      const topWorkflow = availableWorkflows[0];
-      if (!topWorkflow) return null;
-      
-      return {
-        id: 'sug_workflow',
-        type: 'workflow',
-        priority: 'medium',
-        title: `Try: ${topWorkflow.name}`,
-        description: topWorkflow.description,
-        actionLabel: 'Start Workflow',
-        actionType: 'workflow',
-        actionPayload: { workflowId: topWorkflow.id },
-        icon: topWorkflow.icon,
-      };
-    },
-  },
-  
-  // Morning productivity suggestion
-  {
-    id: 'morning_brief',
-    condition: (ctx) => {
-      const hour = ctx.currentTime.getHours();
-      return hour >= 6 && hour <= 10;
+      const lastTask = ctx.recentTasks[0];
+      return lastTask?.task_type === 'content_creation' && lastTask?.status === 'completed';
     },
     generate: () => ({
-      id: 'sug_morning_brief',
-      type: 'next_action',
-      priority: 'low',
-      title: 'Get Your Daily Brief',
-      description: 'Start your day with a summary of pending tasks and opportunities',
-      actionLabel: 'Get Brief',
-      actionType: 'command',
-      actionPayload: { command: '/brief' },
-      icon: '☀️',
+      id: 'sug_social_content',
+      type: 'follow_up',
+      priority: 'medium',
+      title: 'Create Social Posts',
+      description: 'Promote your content on social media',
+      actionLabel: 'Create Posts',
+      actionType: 'task',
+      actionPayload: { taskId: 'social_content' },
+      icon: '📱',
     }),
   },
-  
+
   // Idle team suggestion
   {
     id: 'idle_research',
@@ -184,55 +153,38 @@ const SUGGESTION_RULES: SuggestionRule[] = [
       }).length;
       return recentTaskCount === 0;
     },
-    generate: (ctx) => ({
+    generate: () => ({
       id: 'sug_idle_research',
       type: 'next_action',
       priority: 'low',
       title: 'Your Team is Ready',
-      description: 'No recent activity - put your agents to work with some research',
+      description: 'No recent activity - start with some research',
       actionLabel: 'Start Research',
-      actionType: 'command',
-      actionPayload: { command: '/research' },
+      actionType: 'task',
+      actionPayload: { taskId: 'web_research' },
       icon: '🔍',
     }),
   },
   
-  // Success rate optimization
+  // Business building suggestion
   {
-    id: 'optimize_success',
+    id: 'business_validation',
     condition: (ctx) => {
-      return (ctx.agencyMetrics?.successRate || 1) < 0.85;
+      const hasBusinessTasks = ctx.recentTasks.some(t => 
+        t.task_type === 'research' && t.title.toLowerCase().includes('business')
+      );
+      return hasBusinessTasks;
     },
     generate: () => ({
-      id: 'sug_optimize',
-      type: 'optimization',
+      id: 'sug_validate',
+      type: 'next_action',
       priority: 'medium',
-      title: 'Improve Success Rate',
-      description: 'Some tasks are failing. Review recent errors and adjust settings',
-      actionLabel: 'View Issues',
-      actionType: 'setting',
-      actionPayload: { tab: 'tasks', filter: 'failed' },
-      icon: '⚠️',
-    }),
-  },
-  
-  // Dream learning suggestion
-  {
-    id: 'enable_dream',
-    condition: (ctx) => {
-      const completedTasks = ctx.recentTasks.filter(t => t.status === 'completed').length;
-      return completedTasks >= 10;
-    },
-    generate: () => ({
-      id: 'sug_dream',
-      type: 'insight',
-      priority: 'low',
-      title: 'Enable Dream Learning',
-      description: 'Your agents have enough data to start learning and improving',
-      actionLabel: 'Enable',
-      actionType: 'setting',
-      actionPayload: { tab: 'settings', setting: 'dream_learning' },
-      icon: '🌙',
+      title: 'Validate Your Idea',
+      description: 'Get market validation for your business concept',
+      actionLabel: 'Validate',
+      actionType: 'task',
+      actionPayload: { taskId: 'startup_idea_validation' },
+      icon: '✅',
     }),
   },
 ];
@@ -247,9 +199,6 @@ export interface QuickReply {
   icon: string;
 }
 
-/**
- * Generate contextual quick replies based on last message/task
- */
 export function generateQuickReplies(context: {
   lastMessage?: string;
   lastTask?: AgencyTask;
@@ -257,38 +206,42 @@ export function generateQuickReplies(context: {
 }): QuickReply[] {
   const replies: QuickReply[] = [];
   
-  // Context-based replies
   if (context.lastTask) {
     const taskType = context.lastTask.task_type;
     const taskTitle = context.lastTask.title;
     
     if (taskType === 'research') {
       replies.push(
-        { id: 'dig_deeper', label: 'Dig Deeper', prompt: `Tell me more about ${taskTitle}`, icon: '🔍' },
-        { id: 'summarize', label: 'Summarize', prompt: 'Give me a brief summary of the key findings', icon: '📋' },
-        { id: 'create_content', label: 'Write About It', prompt: `Create a blog post about ${taskTitle}`, icon: '✍️' },
+        { id: 'dig_deeper', label: 'Dig Deeper', prompt: `Research more about ${taskTitle}`, icon: '🔍' },
+        { id: 'create_content', label: 'Write Article', prompt: `Create an SEO article about ${taskTitle}`, icon: '✍️' },
+        { id: 'find_competitors', label: 'Find Competitors', prompt: `Research competitors in ${taskTitle}`, icon: '🎯' },
       );
     } else if (taskType === 'seo_scan') {
       replies.push(
-        { id: 'fix_issues', label: 'Fix Issues', prompt: 'What are the top 3 issues I should fix?', icon: '🔧' },
-        { id: 'compare', label: 'Compare', prompt: 'Compare this to my competitors', icon: '⚖️' },
-        { id: 'action_plan', label: 'Action Plan', prompt: 'Create a prioritized action plan', icon: '📝' },
+        { id: 'find_backlinks', label: 'Find Backlinks', prompt: 'Research backlink opportunities', icon: '🔗' },
+        { id: 'keywords', label: 'Keyword Research', prompt: 'Do keyword research for this site', icon: '🔑' },
+        { id: 'content_gaps', label: 'Content Gaps', prompt: 'Find content gaps vs competitors', icon: '🕳️' },
       );
     } else if (taskType === 'company_research') {
       replies.push(
-        { id: 'swot', label: 'SWOT Analysis', prompt: 'Create a SWOT analysis for this company', icon: '📊' },
-        { id: 'positioning', label: 'Positioning', prompt: 'How should I position against them?', icon: '🎯' },
-        { id: 'opportunities', label: 'Opportunities', prompt: 'What opportunities do you see?', icon: '💡' },
+        { id: 'seo_audit', label: 'SEO Audit', prompt: 'Run an SEO audit on their site', icon: '📈' },
+        { id: 'pricing', label: 'Extract Pricing', prompt: 'Extract their pricing information', icon: '💰' },
+        { id: 'outreach', label: 'Draft Outreach', prompt: 'Draft outreach email to them', icon: '📧' },
+      );
+    } else if (taskType === 'content_creation') {
+      replies.push(
+        { id: 'social', label: 'Social Posts', prompt: 'Create social media posts', icon: '📱' },
+        { id: 'guest_pitch', label: 'Guest Pitch', prompt: 'Create a guest post pitch', icon: '✉️' },
       );
     }
   }
   
-  // Default quick actions if no context
+  // Default quick actions
   if (replies.length === 0) {
     replies.push(
-      { id: 'research', label: 'Research', prompt: '/research ', icon: '🔍' },
-      { id: 'status', label: 'Status', prompt: '/status', icon: '📡' },
-      { id: 'help', label: 'Help', prompt: '/help', icon: '❓' },
+      { id: 'research', label: 'Research', prompt: 'Research ', icon: '🔍' },
+      { id: 'seo', label: 'SEO Audit', prompt: 'Run SEO audit on ', icon: '📈' },
+      { id: 'competitor', label: 'Competitor Intel', prompt: 'Research competitor ', icon: '🎯' },
     );
   }
   
@@ -299,9 +252,6 @@ export function generateQuickReplies(context: {
 // MAIN FUNCTIONS
 // ============================================================================
 
-/**
- * Generate smart suggestions based on context
- */
 export function generateSuggestions(context: SuggestionContext): SmartSuggestion[] {
   const suggestions: SmartSuggestion[] = [];
   
@@ -314,31 +264,22 @@ export function generateSuggestions(context: SuggestionContext): SmartSuggestion
     }
   }
   
-  // Sort by priority
   const priorityOrder = { high: 0, medium: 1, low: 2 };
   suggestions.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
   
-  // Limit to top 3
   return suggestions.slice(0, 3);
 }
 
-/**
- * Get next best action for an agency
- */
 export function getNextBestAction(context: SuggestionContext): SmartSuggestion | null {
   const suggestions = generateSuggestions(context);
   return suggestions[0] || null;
 }
 
-/**
- * Generate task-specific suggestions
- */
 export function getTaskSuggestions(task: AgencyTask, teamSpecs: Specialization[]): SmartSuggestion[] {
   const context: SuggestionContext = {
     recentTasks: [task],
     teamSpecs,
     currentTime: new Date(),
   };
-  
   return generateSuggestions(context);
 }

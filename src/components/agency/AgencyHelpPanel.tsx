@@ -1,32 +1,31 @@
 /**
- * Agency Help Panel — Standalone help overlay for agency commands
+ * Agency Help Panel — Shows ONLY executable capabilities
  */
 
-import { X, Command, Sparkles, Zap } from 'lucide-react';
+import { X, Command, Sparkles, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { 
-  getCommandsByCategory, 
-  CATEGORY_INFO,
-  type QuickCommand 
-} from '@/lib/agency/agencyCommands';
+  getExecutableTasks,
+  getExecutableTasksByCategory,
+  TASK_CATEGORIES,
+  type ExecutableTask 
+} from '@/lib/agency/executableTasks';
 import type { Specialization } from '@/lib/agency/agencyTypes';
 
 interface AgencyHelpPanelProps {
-  commands: QuickCommand[];
   teamSpecs: Specialization[];
   onClose: () => void;
-  onSelectCommand: (command: QuickCommand) => void;
+  onSelectTask: (task: ExecutableTask) => void;
 }
 
 export function AgencyHelpPanel({ 
-  commands, 
   teamSpecs, 
   onClose, 
-  onSelectCommand 
+  onSelectTask 
 }: AgencyHelpPanelProps) {
-  const commandsByCategory = getCommandsByCategory(commands);
+  const allTasks = getExecutableTasks();
 
   return (
     <div className="fixed inset-0 bg-black/95 backdrop-blur-md z-50 overflow-auto">
@@ -38,9 +37,9 @@ export function AgencyHelpPanel({
               <Command className="w-5 h-5 text-fuchsia-400" />
             </div>
             <div>
-              <h2 className="text-lg font-semibold">Quick Commands</h2>
+              <h2 className="text-lg font-semibold">Agency Capabilities</h2>
               <p className="text-xs text-muted-foreground">
-                Based on your team's {teamSpecs.length} specializations
+                {allTasks.length} executable tasks • All verified working
               </p>
             </div>
           </div>
@@ -53,7 +52,7 @@ export function AgencyHelpPanel({
         <div className="mb-6 p-4 bg-muted/10 border border-border/30 rounded-lg">
           <h3 className="text-sm font-medium mb-3 flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-cyan-400" />
-            Your Team Capabilities
+            Your Team ({teamSpecs.length} agents)
           </h3>
           <div className="flex flex-wrap gap-2">
             {teamSpecs.map((spec, i) => (
@@ -68,66 +67,88 @@ export function AgencyHelpPanel({
           </div>
         </div>
 
-        {/* Command Categories */}
+        {/* Executable Status Banner */}
+        <div className="mb-6 p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-lg flex items-center gap-3">
+          <CheckCircle className="w-5 h-5 text-emerald-400" />
+          <div>
+            <p className="text-sm font-medium text-emerald-400">All Tasks Are Executable</p>
+            <p className="text-xs text-muted-foreground">
+              Every task listed below has a working backend handler and will produce real results.
+            </p>
+          </div>
+        </div>
+
+        {/* Tasks by Category */}
         <div className="space-y-8">
-          {Object.entries(commandsByCategory).map(([category, cmds]) => (
-            <div key={category}>
-              <h3 className={cn(
-                "text-sm font-medium mb-4 flex items-center gap-2",
-                CATEGORY_INFO[category]?.color || 'text-foreground'
-              )}>
-                <Zap className="w-4 h-4" />
-                {CATEGORY_INFO[category]?.label || category}
-                <Badge variant="secondary" className="ml-2 text-[10px]">
-                  {cmds.length} commands
-                </Badge>
-              </h3>
-              <div className="grid gap-3 sm:grid-cols-2">
-                {cmds.map((cmd) => (
-                  <button
-                    key={cmd.id}
-                    onClick={() => {
-                      onClose();
-                      onSelectCommand(cmd);
-                    }}
-                    className="text-left p-4 rounded-lg bg-muted/10 border border-border/30 hover:border-fuchsia-500/40 hover:bg-fuchsia-500/5 transition-all group"
-                  >
-                    <div className="flex items-center gap-3 mb-2">
-                      <span className="text-lg">{cmd.icon}</span>
-                      <code className="text-xs bg-black/40 px-2 py-1 rounded text-fuchsia-400 font-mono group-hover:bg-fuchsia-500/20 transition-colors">
-                        {cmd.command}
-                      </code>
-                    </div>
-                    <p className="font-medium text-sm mb-1">{cmd.label}</p>
-                    <p className="text-xs text-muted-foreground line-clamp-2">
-                      {cmd.description}
-                    </p>
-                    {cmd.requiredSpecs && cmd.requiredSpecs.length > 0 && (
-                      <div className="mt-2 flex flex-wrap gap-1">
-                        {cmd.requiredSpecs.slice(0, 3).map((spec, i) => (
-                          <Badge 
-                            key={i} 
-                            variant="outline" 
-                            className="text-[9px] h-4 px-1.5 border-border/50"
-                          >
-                            {spec}
-                          </Badge>
-                        ))}
+          {Object.entries(TASK_CATEGORIES).map(([categoryKey, categoryMeta]) => {
+            const tasks = getExecutableTasksByCategory(categoryKey as ExecutableTask['category']);
+            if (tasks.length === 0) return null;
+
+            return (
+              <div key={categoryKey}>
+                <h3 className={cn(
+                  "text-sm font-medium mb-4 flex items-center gap-2",
+                  categoryMeta.color
+                )}>
+                  <span className="text-lg">{categoryMeta.icon}</span>
+                  {categoryMeta.name}
+                  <Badge variant="secondary" className="ml-2 text-[10px]">
+                    {tasks.length} tasks
+                  </Badge>
+                </h3>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {tasks.map((task) => (
+                    <button
+                      key={task.id}
+                      onClick={() => {
+                        onClose();
+                        onSelectTask(task);
+                      }}
+                      className="text-left p-4 rounded-lg bg-muted/10 border border-border/30 hover:border-fuchsia-500/40 hover:bg-fuchsia-500/5 transition-all group"
+                    >
+                      <div className="flex items-center gap-3 mb-2">
+                        <span className="text-lg">{task.icon}</span>
+                        <span className="font-medium text-sm">{task.name}</span>
                       </div>
-                    )}
-                  </button>
-                ))}
+                      <p className="text-xs text-muted-foreground line-clamp-2 mb-2">
+                        {task.description}
+                      </p>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="outline" className="text-[9px] px-1.5 py-0">
+                          ~{task.estimatedMinutes}min
+                        </Badge>
+                        <Badge variant="outline" className="text-[9px] px-1.5 py-0 border-emerald-500/30 text-emerald-400">
+                          ✓ Executable
+                        </Badge>
+                      </div>
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
+        </div>
+
+        {/* What We CAN'T Do */}
+        <div className="mt-8 p-4 bg-amber-500/10 border border-amber-500/30 rounded-lg">
+          <h3 className="text-sm font-medium mb-2 text-amber-400">Current Limitations</h3>
+          <p className="text-xs text-muted-foreground mb-2">
+            The following require additional integrations:
+          </p>
+          <ul className="text-xs text-muted-foreground space-y-1">
+            <li>• <strong>Account creation</strong> - Cannot create accounts on external sites</li>
+            <li>• <strong>Email sending</strong> - Cannot send emails directly (drafts only)</li>
+            <li>• <strong>Form submissions</strong> - Cannot submit forms on external sites</li>
+            <li>• <strong>Social media posting</strong> - Cannot post directly (content only)</li>
+            <li>• <strong>File uploads</strong> - Cannot upload to external services</li>
+          </ul>
         </div>
 
         {/* Tip */}
-        <div className="mt-8 p-4 bg-gradient-to-r from-cyan-500/10 to-fuchsia-500/10 border border-cyan-500/30 rounded-lg">
+        <div className="mt-6 p-4 bg-gradient-to-r from-cyan-500/10 to-fuchsia-500/10 border border-cyan-500/30 rounded-lg">
           <p className="text-sm">
-            <strong className="text-cyan-400">Pro tip:</strong> Type{' '}
-            <code className="bg-black/40 px-1.5 py-0.5 rounded text-fuchsia-400">/</code>{' '}
-            in the chat to see command suggestions, or just type your message naturally — your team lead will coordinate the response.
+            <strong className="text-cyan-400">Pro tip:</strong> Talk to your Team Leader naturally — 
+            they'll delegate tasks to the right agents and queue them for execution.
           </p>
         </div>
 
