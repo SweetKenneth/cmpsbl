@@ -417,4 +417,21 @@ All colors MUST be HSL.
   .contain-strict {
     contain: strict;
   }
+  
+  /* Hero glow pulse animation - GPU-accelerated, no layout thrashing */
+  @keyframes hero-glow-pulse {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 0.5;
+    }
+    50% {
+      transform: scale(1.15);
+      opacity: 0.8;
+    }
+  }
+  
+  .animate-hero-glow-pulse {
+    animation: hero-glow-pulse 3s ease-in-out infinite;
+    will-change: transform, opacity;
+  }
 }

@@ -130,39 +130,37 @@ function WaveArcsBetweenIcons() {
       
       {wavePaths.map((wave, i) => (
         <g key={`wave-group-${i}`}>
-          {/* Base wave glow */}
-          <motion.path
+          {/* Base wave glow - static path, no continuous animation */}
+          <path
             d={wave.path}
             fill="none"
             stroke={`url(#wave-gradient-${i})`}
             strokeWidth="3"
             strokeLinecap="round"
             filter="blur(2px)"
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={{ pathLength: 1, opacity: 0.4 }}
-            transition={{ duration: 1.5, delay: 0.5 + i * 0.1 }}
+            opacity="0.4"
           />
           
-          {/* Animated energy pulse traveling along the wave */}
-          <motion.circle
+          {/* Animated energy pulse using SVG native animation only */}
+          <circle
             r="3"
             fill={wave.color}
             filter={`drop-shadow(0 0 6px ${wave.color})`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: [0, 1, 1, 0] }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              delay: i * 0.3,
-            }}
           >
+            <animate 
+              attributeName="opacity" 
+              values="0;1;1;0" 
+              dur="2s" 
+              repeatCount="indefinite" 
+              begin={`${i * 0.3}s`} 
+            />
             <animateMotion
               dur="2s"
               repeatCount="indefinite"
               begin={`${i * 0.3}s`}
               path={wave.path}
             />
-          </motion.circle>
+          </circle>
         </g>
       ))}
     </svg>
@@ -180,14 +178,12 @@ function SubstrateCore() {
       transition={{ duration: 1, delay: 0.3 }}
       className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 flex items-center justify-center mx-auto"
     >
-      {/* Outer glow pulse */}
-      <motion.div
-        className="absolute inset-0 rounded-full"
+      {/* Outer glow pulse - CSS animation instead of Framer Motion to prevent reflows */}
+      <div
+        className="absolute inset-0 rounded-full animate-hero-glow-pulse"
         style={{
           background: "radial-gradient(circle, hsl(var(--neon-cyan) / 0.3) 0%, hsl(var(--neon-magenta) / 0.15) 50%, transparent 70%)",
         }}
-        animate={{ scale: [1, 1.15, 1], opacity: [0.5, 0.8, 0.5] }}
-        transition={{ duration: 3, repeat: Infinity }}
       />
       
       {/* Wave arcs between module icons */}
@@ -265,11 +261,12 @@ function SubstrateCore() {
   );
 }
 
-// Router hub connecting AI models
+// Router hub connecting AI models - using SVG native animations to prevent forced reflows
 function RouterHub() {
   const modelCount = aiModels.length;
   const hubWidth = 280;
   const spacing = hubWidth / (modelCount - 1);
+  const hubCenterX = (hubWidth + 40) / 2;
   
   return (
     <svg
@@ -279,42 +276,39 @@ function RouterHub() {
       viewBox={`0 0 ${hubWidth + 40} 60`}
       style={{ overflow: "visible" }}
     >
-      {/* Central router node */}
-      <motion.circle
-        cx={(hubWidth + 40) / 2}
+      {/* Central router node - using SVG animate instead of Framer Motion */}
+      <circle
+        cx={hubCenterX}
         cy="20"
         r="8"
         fill="hsl(var(--neon-cyan))"
         filter="drop-shadow(0 0 8px hsl(var(--neon-cyan)))"
-        animate={{
-          r: [8, 10, 8],
-          opacity: [0.8, 1, 0.8],
-        }}
-        transition={{ duration: 2, repeat: Infinity }}
-      />
+      >
+        <animate attributeName="r" values="8;10;8" dur="2s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite" />
+      </circle>
       
-      {/* Inner router ring */}
-      <motion.circle
-        cx={(hubWidth + 40) / 2}
+      {/* Inner router ring - SVG native animation */}
+      <circle
+        cx={hubCenterX}
         cy="20"
         r="12"
         fill="none"
         stroke="hsl(var(--neon-cyan))"
         strokeWidth="1"
         opacity="0.4"
-        animate={{ r: [12, 16, 12] }}
-        transition={{ duration: 2, repeat: Infinity }}
-      />
+      >
+        <animate attributeName="r" values="12;16;12" dur="2s" repeatCount="indefinite" />
+      </circle>
       
-      {/* Connection lines from router to each model */}
+      {/* Connection lines from router to each model - static lines */}
       {aiModels.map((model, i) => {
         const modelX = 20 + i * spacing;
-        const hubCenterX = (hubWidth + 40) / 2;
         
         return (
           <g key={`router-line-${i}`}>
-            {/* Line from hub to model */}
-            <motion.line
+            {/* Static line from hub to model */}
+            <line
               x1={hubCenterX}
               y1="28"
               x2={modelX}
@@ -323,35 +317,29 @@ function RouterHub() {
               strokeWidth="2"
               strokeLinecap="round"
               opacity="0.5"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 0.8, delay: 1.2 + i * 0.1 }}
             />
             
-            {/* Animated pulse along the line */}
-            <motion.circle
+            {/* Animated pulse using SVG animateMotion - no JS involved */}
+            <circle
               r="3"
               fill={model.color}
               filter={`drop-shadow(0 0 4px ${model.color})`}
-              animate={{
-                cx: [hubCenterX, modelX],
-                cy: [28, 55],
-                opacity: [0, 1, 1, 0],
-              }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                delay: i * 0.4,
-                ease: "easeOut",
-              }}
-            />
+            >
+              <animate attributeName="opacity" values="0;1;1;0" dur="1.5s" repeatCount="indefinite" begin={`${i * 0.4}s`} />
+              <animateMotion
+                dur="1.5s"
+                repeatCount="indefinite"
+                begin={`${i * 0.4}s`}
+                path={`M${hubCenterX},28 L${modelX},55`}
+              />
+            </circle>
           </g>
         );
       })}
       
       {/* Router label */}
       <text
-        x={(hubWidth + 40) / 2}
+        x={hubCenterX}
         y="8"
         textAnchor="middle"
         fill="hsl(var(--neon-cyan))"
