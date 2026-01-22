@@ -732,6 +732,183 @@ const TASK_HANDLERS: Record<string, (input: string, supabase: any, taskId: strin
     );
     return { result: outline.content, sources: [], provider: outline.provider };
   },
+
+  // ========== LEARNING ==========
+  skill_assessment: async (input, supabase, taskId) => {
+    // Get agency context
+    const { data: task } = await supabase.from('agency_tasks').select('agency_id, assigned_member_id').eq('id', taskId).single();
+    let memberContext = '';
+    if (task?.assigned_member_id) {
+      const { data: member } = await supabase.from('agency_members').select('specialization, skill_weights, competency_score, success_rate').eq('id', task.assigned_member_id).single();
+      if (member) {
+        memberContext = `Current agent: ${member.specialization}, Competency: ${member.competency_score || 50}%, Success Rate: ${member.success_rate || 50}%`;
+      }
+    }
+    const assessment = await aiComplete(
+      `You are an AI agent self-improvement coach. Assess the agent's skills and provide improvement recommendations:
+- Current Skill Assessment (based on context)
+- Strengths Identified
+- Areas for Improvement
+- Specific Training Exercises
+- Recommended Focus Areas
+- Measurable Goals for Improvement`,
+      `Skill area to assess: ${input}\n\nAgent Context: ${memberContext}`
+    );
+    return { result: assessment.content, sources: ['Self-Assessment'], provider: assessment.provider };
+  },
+
+  domain_learning: async (input) => {
+    const research = await webResearch(`${input} comprehensive guide fundamentals advanced concepts best practices`);
+    const synthesis = await aiComplete(
+      `You are a domain expert teacher. Create a comprehensive learning document:
+- Domain Overview
+- Key Concepts & Terminology (10+)
+- Core Principles
+- Best Practices
+- Common Pitfalls to Avoid
+- Advanced Techniques
+- Resources for Further Learning
+- Key Takeaways for an AI Agent`,
+      `Domain to learn: ${input}\n\nResearch:\n${research.content.slice(0, 6000)}`
+    );
+    return { result: synthesis.content, sources: research.sources, provider: synthesis.provider };
+  },
+
+  heuristic_extraction: async (input, supabase, taskId) => {
+    // Get recent completed tasks for pattern extraction
+    const { data: task } = await supabase.from('agency_tasks').select('agency_id').eq('id', taskId).single();
+    let taskHistory = '';
+    if (task?.agency_id) {
+      const { data: recentTasks } = await supabase.from('agency_tasks')
+        .select('task_type, title, status, output_data')
+        .eq('agency_id', task.agency_id)
+        .eq('status', 'completed')
+        .order('completed_at', { ascending: false })
+        .limit(10);
+      if (recentTasks?.length) {
+        taskHistory = recentTasks.map((t: { task_type: string; title: string; status: string }) => `- ${t.task_type}: ${t.title} (${t.status})`).join('\n');
+      }
+    }
+    const extraction = await aiComplete(
+      `You are an AI pattern recognition specialist. Extract heuristics and best practices:
+- Patterns Identified in Successful Tasks
+- Common Success Factors
+- Failure Patterns to Avoid
+- Process Improvements
+- Optimal Workflows Discovered
+- Generalizable Heuristics (5-10)
+- Recommended System Updates`,
+      `Topic: ${input}\n\nRecent task history:\n${taskHistory || 'No task history available'}`
+    );
+    return { result: extraction.content, sources: ['Task History Analysis'], provider: extraction.provider };
+  },
+
+  substrate_reflection: async (input, supabase, taskId) => {
+    const { data: task } = await supabase.from('agency_tasks').select('agency_id').eq('id', taskId).single();
+    let memoryContext = '';
+    if (task?.agency_id) {
+      const { data: memories } = await supabase.from('agency_dream_memory')
+        .select('title, improvement_type, confidence, layer')
+        .eq('agency_id', task.agency_id)
+        .order('created_at', { ascending: false })
+        .limit(5);
+      if (memories?.length) {
+        memoryContext = memories.map((m: { title: string; improvement_type: string; layer: string }) => `- ${m.title} (${m.improvement_type}, ${m.layer})`).join('\n');
+      }
+    }
+    const reflection = await aiComplete(
+      `You are an AI system memory architect. Reflect on recent learnings and create memory entries:
+- Key Insights to Remember
+- Pattern Improvements
+- Workflow Optimizations
+- Knowledge Gaps Identified
+- Suggested Memory Entries for Substrate
+- Priority for Future Reference`,
+      `Reflection topic: ${input}\n\nRecent memory context:\n${memoryContext || 'Fresh start - no previous memories'}`
+    );
+    return { result: reflection.content, sources: ['Memory Reflection'], provider: reflection.provider };
+  },
+
+  prompt_optimization: async (input) => {
+    const optimization = await aiComplete(
+      `You are an AI prompt engineering specialist. Optimize prompts for better task execution:
+- Current Prompt Analysis
+- Identified Weaknesses
+- Optimized Prompt Structure
+- Key Improvements Made
+- Expected Performance Gains
+- Test Cases for Validation
+- Before/After Examples`,
+      `Task type to optimize: ${input}`
+    );
+    return { result: optimization.content, sources: ['Prompt Engineering'], provider: optimization.provider };
+  },
+
+  knowledge_synthesis: async (input, supabase, taskId) => {
+    const { data: task } = await supabase.from('agency_tasks').select('agency_id').eq('id', taskId).single();
+    let taskInsights = '';
+    if (task?.agency_id) {
+      const { data: recentTasks } = await supabase.from('agency_tasks')
+        .select('task_type, title, output_data')
+        .eq('agency_id', task.agency_id)
+        .eq('status', 'completed')
+        .order('completed_at', { ascending: false })
+        .limit(5);
+      if (recentTasks?.length) {
+        taskInsights = recentTasks.map((t: { title: string; output_data: unknown }) => {
+          const outputData = t.output_data as { insights?: string[] } | null;
+          const insights = outputData?.insights || [];
+          return `${t.title}: ${insights.slice(0, 2).join('; ')}`;
+        }).join('\n');
+      }
+    }
+    const synthesis = await aiComplete(
+      `You are an AI knowledge synthesis specialist. Combine learnings into actionable insights:
+- Cross-Task Patterns
+- Synthesized Knowledge
+- Actionable Insights (5-10)
+- Strategic Recommendations
+- Knowledge Graph Connections
+- Future Learning Priorities`,
+      `Synthesis topic: ${input}\n\nRecent task insights:\n${taskInsights || 'No recent insights available'}`
+    );
+    return { result: synthesis.content, sources: ['Knowledge Synthesis'], provider: synthesis.provider };
+  },
+
+  workflow_discovery: async (input) => {
+    const research = await webResearch(`${input} optimal workflow process automation steps`);
+    const discovery = await aiComplete(
+      `You are a workflow optimization specialist. Discover optimal multi-step workflows:
+- Goal Analysis
+- Optimal Workflow Steps (detailed)
+- Alternative Pathways
+- Automation Opportunities
+- Required Resources
+- Success Metrics
+- Common Pitfalls`,
+      `Goal: ${input}\n\nResearch:\n${research.content.slice(0, 4000)}`
+    );
+    return { result: discovery.content, sources: research.sources, provider: discovery.provider };
+  },
+
+  industry_deep_dive: async (input) => {
+    const research = await webResearch(`${input} industry comprehensive guide leaders trends technology future`);
+    const deepDive = await aiComplete(
+      `You are an industry analyst creating a comprehensive deep dive:
+- Industry Overview & History
+- Market Size & Growth
+- Key Players & Market Share
+- Value Chain Analysis
+- Technology Stack
+- Regulatory Environment
+- Emerging Trends
+- Future Outlook (5-10 years)
+- Key Success Factors
+- Strategic Opportunities`,
+      `Industry: ${input}\n\nResearch:\n${research.content.slice(0, 8000)}`
+    );
+    return { result: deepDive.content, sources: research.sources, provider: deepDive.provider };
+  },
 };
 
 // ============================================

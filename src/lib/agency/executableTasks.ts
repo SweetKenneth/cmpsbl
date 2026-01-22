@@ -448,6 +448,104 @@ export const EXECUTABLE_TASKS: Record<string, ExecutableTask> = {
     estimatedMinutes: 8,
     inputPlaceholder: 'Describe your startup for investors...',
   },
+
+  // ========== LEARNING CATEGORY ==========
+  skill_assessment: {
+    id: 'skill_assessment',
+    name: 'Skill Self-Assessment',
+    description: 'Agent evaluates and improves its own capabilities',
+    icon: '🎯',
+    category: 'learning',
+    taskType: 'analysis',
+    handlers: ['groq', 'lovable'],
+    executable: true,
+    estimatedMinutes: 5,
+    inputPlaceholder: 'Enter skill area to assess...',
+  },
+  domain_learning: {
+    id: 'domain_learning',
+    name: 'Domain Learning',
+    description: 'Deep research on a domain to expand agent knowledge',
+    icon: '📚',
+    category: 'learning',
+    taskType: 'research',
+    handlers: ['firecrawl', 'groq'],
+    executable: true,
+    estimatedMinutes: 10,
+    inputPlaceholder: 'Enter domain to learn about...',
+  },
+  heuristic_extraction: {
+    id: 'heuristic_extraction',
+    name: 'Heuristic Extraction',
+    description: 'Extract patterns and best practices from successful tasks',
+    icon: '🧬',
+    category: 'learning',
+    taskType: 'analysis',
+    handlers: ['groq', 'lovable'],
+    executable: true,
+    estimatedMinutes: 6,
+    inputPlaceholder: 'Enter topic to extract patterns from...',
+  },
+  substrate_reflection: {
+    id: 'substrate_reflection',
+    name: 'Substrate Reflection',
+    description: 'Reflect on tasks to improve substrate memory',
+    icon: '🪞',
+    category: 'learning',
+    taskType: 'analysis',
+    handlers: ['groq', 'lovable'],
+    executable: true,
+    estimatedMinutes: 5,
+    inputPlaceholder: 'Enter reflection topic...',
+  },
+  prompt_optimization: {
+    id: 'prompt_optimization',
+    name: 'Prompt Optimization',
+    description: 'Improve prompts used for task execution',
+    icon: '⚡',
+    category: 'learning',
+    taskType: 'analysis',
+    handlers: ['groq', 'lovable'],
+    executable: true,
+    estimatedMinutes: 5,
+    inputPlaceholder: 'Enter task type to optimize...',
+  },
+  knowledge_synthesis: {
+    id: 'knowledge_synthesis',
+    name: 'Knowledge Synthesis',
+    description: 'Combine learnings from multiple tasks into actionable insights',
+    icon: '🔮',
+    category: 'learning',
+    taskType: 'analysis',
+    handlers: ['groq', 'lovable'],
+    executable: true,
+    estimatedMinutes: 7,
+    inputPlaceholder: 'Enter topic to synthesize...',
+  },
+  workflow_discovery: {
+    id: 'workflow_discovery',
+    name: 'Workflow Discovery',
+    description: 'Discover optimal multi-step workflows for common goals',
+    icon: '🔄',
+    category: 'learning',
+    taskType: 'analysis',
+    handlers: ['groq', 'lovable'],
+    executable: true,
+    estimatedMinutes: 8,
+    inputPlaceholder: 'Enter goal to find workflows for...',
+  },
+  industry_deep_dive: {
+    id: 'industry_deep_dive',
+    name: 'Industry Deep Dive',
+    description: 'Intensive research to become an industry expert',
+    icon: '🏭',
+    category: 'learning',
+    taskType: 'research',
+    handlers: ['firecrawl', 'groq'],
+    executable: true,
+    estimatedMinutes: 15,
+    inputPlaceholder: 'Enter industry to master...',
+  },
 };
 
 // ============================================================================
@@ -473,24 +571,24 @@ export function getExecutableTasksByCategory(category: ExecutableTask['category'
  */
 export function getExecutableTasksForSpec(spec: Specialization): ExecutableTask[] {
   const specTaskMap: Record<Specialization, string[]> = {
-    Research: ['web_research', 'market_research', 'niche_discovery', 'audience_research', 'trend_analysis'],
-    Intel: ['competitive_profile', 'brand_analysis', 'startup_idea_validation'],
+    Research: ['web_research', 'market_research', 'niche_discovery', 'audience_research', 'trend_analysis', 'domain_learning', 'industry_deep_dive'],
+    Intel: ['competitive_profile', 'brand_analysis', 'startup_idea_validation', 'heuristic_extraction'],
     SEO: ['seo_audit', 'keyword_research', 'backlink_research', 'directory_discovery', 'serp_analysis', 'content_gap_analysis', 'local_seo_research'],
     Writing: ['content_generation', 'seo_article', 'guest_post_pitch', 'press_release', 'comment_drafts', 'product_description'],
     Marketing: ['social_content', 'outreach_draft', 'landing_page_copy'],
-    Analyst: ['data_extraction', 'pricing_extraction', 'review_aggregation', 'business_model_analysis'],
+    Analyst: ['data_extraction', 'pricing_extraction', 'review_aggregation', 'business_model_analysis', 'skill_assessment', 'knowledge_synthesis'],
     Data: ['site_mapping', 'content_scrape', 'contact_extraction'],
     Sales: ['outreach_draft', 'contact_extraction'],
-    Growth: ['startup_idea_validation', 'pitch_deck_outline', 'value_proposition'],
-    Coding: ['site_mapping', 'data_extraction'],
+    Growth: ['startup_idea_validation', 'pitch_deck_outline', 'value_proposition', 'workflow_discovery'],
+    Coding: ['site_mapping', 'data_extraction', 'prompt_optimization'],
     Designer: ['brand_analysis'],
     Finance: ['business_model_analysis', 'pricing_extraction'],
     Legal: ['review_aggregation'],
     Hybrid: Object.keys(EXECUTABLE_TASKS), // Leader can do anything
-    OPS: ['site_mapping', 'data_extraction'],
-    Dreamer: ['business_name_ideas', 'value_proposition'],
-    Defense: ['seo_audit'],
-    Audit: ['seo_audit', 'content_gap_analysis'],
+    OPS: ['site_mapping', 'data_extraction', 'workflow_discovery'],
+    Dreamer: ['business_name_ideas', 'value_proposition', 'knowledge_synthesis', 'substrate_reflection'],
+    Defense: ['seo_audit', 'skill_assessment'],
+    Audit: ['seo_audit', 'content_gap_analysis', 'skill_assessment'],
     Support: ['review_aggregation', 'comment_drafts'],
     Success: ['outreach_draft', 'review_aggregation'],
   };
@@ -514,9 +612,25 @@ export function getQuickLaunchTasks(): ExecutableTask[] {
     EXECUTABLE_TASKS.web_research,
     EXECUTABLE_TASKS.seo_audit,
     EXECUTABLE_TASKS.competitive_profile,
-    EXECUTABLE_TASKS.content_generation,
     EXECUTABLE_TASKS.backlink_research,
+    EXECUTABLE_TASKS.content_generation,
+    EXECUTABLE_TASKS.domain_learning,
+  ].filter(Boolean);
+}
+
+/**
+ * Get featured tasks for homepage/dashboard
+ */
+export function getFeaturedTasks(): ExecutableTask[] {
+  return [
+    EXECUTABLE_TASKS.web_research,
+    EXECUTABLE_TASKS.seo_audit,
     EXECUTABLE_TASKS.keyword_research,
+    EXECUTABLE_TASKS.backlink_research,
+    EXECUTABLE_TASKS.seo_article,
+    EXECUTABLE_TASKS.startup_idea_validation,
+    EXECUTABLE_TASKS.skill_assessment,
+    EXECUTABLE_TASKS.knowledge_synthesis,
   ].filter(Boolean);
 }
 
@@ -531,3 +645,28 @@ export const TASK_CATEGORIES = {
   business: { name: 'Business Building', icon: '💼', color: 'text-amber-400' },
   learning: { name: 'Agent Learning', icon: '🧠', color: 'text-fuchsia-400' },
 } as const;
+
+/**
+ * Get all task IDs as a simple array
+ */
+export function getAllTaskIds(): string[] {
+  return Object.keys(EXECUTABLE_TASKS);
+}
+
+/**
+ * Get task count by category
+ */
+export function getTaskCountByCategory(): Record<string, number> {
+  const counts: Record<string, number> = {};
+  for (const task of Object.values(EXECUTABLE_TASKS)) {
+    counts[task.category] = (counts[task.category] || 0) + 1;
+  }
+  return counts;
+}
+
+/**
+ * Get total executable task count
+ */
+export function getTotalExecutableCount(): number {
+  return getExecutableTasks().length;
+}

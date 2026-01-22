@@ -281,10 +281,13 @@ export function PortalChatPanel({ agency, className }: PortalChatPanelProps) {
       {/* Help Panel */}
       {showHelp && (
         <AgencyHelpPanel
-          commands={availableCommands}
           teamSpecs={teamSpecs}
           onClose={() => setShowHelp(false)}
-          onSelectCommand={handleCommandSelect}
+          onSelectTask={(task) => {
+            setInput(`/${task.id.replace(/_/g, '-')} `);
+            setShowHelp(false);
+            inputRef.current?.focus();
+          }}
         />
       )}
 

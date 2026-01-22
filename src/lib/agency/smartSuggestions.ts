@@ -142,6 +142,66 @@ const SUGGESTION_RULES: SuggestionRule[] = [
     }),
   },
 
+  // Learning suggestion after multiple tasks
+  {
+    id: 'learning_synthesis',
+    condition: (ctx) => {
+      const completedTasks = ctx.recentTasks.filter(t => t.status === 'completed');
+      return completedTasks.length >= 3;
+    },
+    generate: () => ({
+      id: 'sug_learn',
+      type: 'optimization',
+      priority: 'medium',
+      title: 'Synthesize Learnings',
+      description: 'Combine insights from recent tasks to improve',
+      actionLabel: 'Synthesize',
+      actionType: 'task',
+      actionPayload: { taskId: 'knowledge_synthesis' },
+      icon: '🔮',
+    }),
+  },
+
+  // Skill improvement suggestion
+  {
+    id: 'skill_improvement',
+    condition: (ctx) => {
+      const failedTasks = ctx.recentTasks.filter(t => t.status === 'failed');
+      return failedTasks.length > 0;
+    },
+    generate: () => ({
+      id: 'sug_skill',
+      type: 'optimization',
+      priority: 'high',
+      title: 'Improve Agent Skills',
+      description: 'Assess and improve skills after failed task',
+      actionLabel: 'Assess',
+      actionType: 'task',
+      actionPayload: { taskId: 'skill_assessment' },
+      icon: '🎯',
+    }),
+  },
+
+  // Workflow discovery after varied tasks
+  {
+    id: 'workflow_suggestion',
+    condition: (ctx) => {
+      const uniqueTypes = new Set(ctx.recentTasks.map(t => t.task_type));
+      return uniqueTypes.size >= 3;
+    },
+    generate: () => ({
+      id: 'sug_workflow',
+      type: 'workflow',
+      priority: 'medium',
+      title: 'Discover Workflows',
+      description: 'Find optimal multi-step sequences',
+      actionLabel: 'Discover',
+      actionType: 'task',
+      actionPayload: { taskId: 'workflow_discovery' },
+      icon: '🔄',
+    }),
+  },
+
   // Idle team suggestion
   {
     id: 'idle_research',
@@ -185,6 +245,32 @@ const SUGGESTION_RULES: SuggestionRule[] = [
       actionType: 'task',
       actionPayload: { taskId: 'startup_idea_validation' },
       icon: '✅',
+    }),
+  },
+
+  // Domain expertise suggestion
+  {
+    id: 'domain_learning',
+    condition: (ctx) => {
+      const researchTasks = ctx.recentTasks.filter(t => t.task_type === 'research');
+      // If multiple research on same topic, suggest deep dive
+      const topics = researchTasks.map(t => t.title.toLowerCase());
+      const topicCounts = topics.reduce((acc, t) => {
+        acc[t] = (acc[t] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>);
+      return Object.values(topicCounts).some(c => c >= 2);
+    },
+    generate: () => ({
+      id: 'sug_deep_dive',
+      type: 'optimization',
+      priority: 'medium',
+      title: 'Industry Deep Dive',
+      description: 'Become an expert in this domain',
+      actionLabel: 'Deep Dive',
+      actionType: 'task',
+      actionPayload: { taskId: 'industry_deep_dive' },
+      icon: '🏭',
     }),
   },
 ];
@@ -242,6 +328,7 @@ export function generateQuickReplies(context: {
       { id: 'research', label: 'Research', prompt: 'Research ', icon: '🔍' },
       { id: 'seo', label: 'SEO Audit', prompt: 'Run SEO audit on ', icon: '📈' },
       { id: 'competitor', label: 'Competitor Intel', prompt: 'Research competitor ', icon: '🎯' },
+      { id: 'learn', label: 'Learn Domain', prompt: 'Learn about ', icon: '📚' },
     );
   }
   
