@@ -395,4 +395,26 @@ All colors MUST be HSL.
     content-visibility: auto;
     contain-intrinsic-size: 0 500px; /* Estimated height for layout stability */
   }
+  
+  /* GPU acceleration hints for animated elements - reduces main-thread work */
+  .will-change-transform {
+    will-change: transform;
+  }
+  
+  .will-change-opacity {
+    will-change: opacity;
+  }
+  
+  /* Containment for performance - isolates layout/paint work */
+  .contain-layout {
+    contain: layout;
+  }
+  
+  .contain-paint {
+    contain: paint;
+  }
+  
+  .contain-strict {
+    contain: strict;
+  }
 }

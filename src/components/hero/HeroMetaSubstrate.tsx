@@ -40,11 +40,11 @@ const coreModules = [
   { icon: Settings, name: "System", color: "hsl(var(--destructive))" },
 ];
 
-// Orbit ring around substrate core - using CSS animation instead of JS to reduce reflows
+// Orbit ring around substrate core - using CSS animation with GPU acceleration to reduce main-thread work
 function OrbitRing({ radius, duration, color }: { radius: number; duration: number; color: string }) {
   return (
     <div
-      className="absolute rounded-full border animate-spin"
+      className="absolute rounded-full border animate-spin will-change-transform"
       style={{
         width: radius * 2,
         height: radius * 2,
@@ -55,6 +55,7 @@ function OrbitRing({ radius, duration, color }: { radius: number; duration: numb
         top: `calc(50% - ${radius}px)`,
         animationDuration: `${duration}s`,
         animationTimingFunction: 'linear',
+        transform: 'translateZ(0)', // Force GPU layer
       }}
     >
       <div
@@ -450,7 +451,7 @@ export function HeroMetaSubstrate() {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center px-4 py-20 overflow-hidden">
+    <section className="relative min-h-screen flex flex-col items-center justify-center px-4 py-20 overflow-hidden contain-paint">
       {/* Background - plain white in light mode, gradient in dark mode */}
       <div 
         className="absolute inset-0 dark:hidden"
