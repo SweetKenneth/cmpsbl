@@ -4,7 +4,7 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { substrate, vision, brain, defense, nexus, dream, system } from '@/lib/substrate';
+import { substrate, vision, brain, defense, nexus, dream, system, modernizer, decode } from '@/lib/substrate';
 
 // ═══════════════════════════════════════════════════════════════
 // OBSERVER HOOKS — Read-only telemetry
@@ -101,6 +101,22 @@ export function useDreamStatusOS() {
   });
 }
 
+export function useModernizerStatusOS() {
+  return useQuery({
+    queryKey: ['substrate', 'modernizer', 'status'],
+    queryFn: () => modernizer.status(),
+    refetchInterval: 30000,
+  });
+}
+
+export function useDecodeStatusOS() {
+  return useQuery({
+    queryKey: ['substrate', 'decode', 'status'],
+    queryFn: () => decode.status(),
+    refetchInterval: 30000,
+  });
+}
+
 export function useBrainForecast() {
   return useQuery({
     queryKey: ['substrate', 'brain', 'forecast'],
@@ -193,31 +209,41 @@ export function useSystemConfig(key?: string) {
   });
 }
 
-// Combined health score for dashboard
+// Combined health score for dashboard - all 8 modules
 export function useSubstrateHealthScore() {
   const visionHealth = useVisionHealthOS();
   const brainStatus = useBrainStatusOS();
   const defenseStatus = useDefenseStatusOS();
   const nexusStatus = useNexusStatusOS();
   const dreamStatus = useDreamStatusOS();
+  const modernizerStatus = useModernizerStatusOS();
+  const decodeStatus = useDecodeStatusOS();
+  const systemStatus = useSystemStatus();
 
   const isLoading = 
     visionHealth.isLoading || 
     brainStatus.isLoading || 
     defenseStatus.isLoading || 
     nexusStatus.isLoading ||
-    dreamStatus.isLoading;
+    dreamStatus.isLoading ||
+    modernizerStatus.isLoading ||
+    decodeStatus.isLoading ||
+    systemStatus.isLoading;
 
   const modules = {
-    vision: visionHealth.data?.success ?? false,
     brain: brainStatus.data?.success ?? false,
+    decode: decodeStatus.data?.success ?? false,
     defense: defenseStatus.data?.success ?? false,
     nexus: nexusStatus.data?.success ?? false,
+    vision: visionHealth.data?.success ?? false,
     dream: dreamStatus.data?.success ?? false,
+    system: systemStatus.data?.success ?? false,
+    modernizer: modernizerStatus.data?.success ?? false,
   };
 
   const healthyCount = Object.values(modules).filter(Boolean).length;
-  const healthScore = Math.round((healthyCount / 5) * 100);
+  const totalModules = 8;
+  const healthScore = Math.round((healthyCount / totalModules) * 100);
 
   const refetchAll = () => {
     visionHealth.refetch();
@@ -225,12 +251,17 @@ export function useSubstrateHealthScore() {
     defenseStatus.refetch();
     nexusStatus.refetch();
     dreamStatus.refetch();
+    modernizerStatus.refetch();
+    decodeStatus.refetch();
+    systemStatus.refetch();
   };
 
   return {
     isLoading,
     modules,
     healthScore,
+    activeCount: healthyCount,
+    totalModules,
     isHealthy: healthScore >= 80,
     isDegraded: healthScore >= 40 && healthScore < 80,
     isDown: healthScore < 40,

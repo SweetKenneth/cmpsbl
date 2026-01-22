@@ -1,9 +1,9 @@
 /**
  * Module Status Bar — Live module indicators with pulse animations
- * Visual representation of substrate module health
+ * Visual representation of all 8 substrate module health
  */
 
-import { Brain, MessageSquare, Shield, Zap, Eye, Moon } from 'lucide-react';
+import { Brain, MessageSquare, Shield, Zap, Eye, Moon, Cpu, Sparkles } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useSubstrateHealthScore } from '@/hooks/useSubstrateOS';
 import { cn } from '@/lib/utils';
@@ -65,6 +65,22 @@ const MODULES: ModuleConfig[] = [
     description: 'Dream-Eater consumption engine',
     activeColor: 'text-violet-400',
     glowColor: 'shadow-violet-500/50'
+  },
+  { 
+    id: 'system', 
+    name: 'SYSTEM', 
+    icon: Cpu, 
+    description: 'Core administration & control',
+    activeColor: 'text-emerald-400',
+    glowColor: 'shadow-emerald-500/50'
+  },
+  { 
+    id: 'modernizer', 
+    name: 'MODERNIZER', 
+    icon: Sparkles, 
+    description: 'Self-improvement engine',
+    activeColor: 'text-orange-400',
+    glowColor: 'shadow-orange-500/50'
   },
 ];
 
