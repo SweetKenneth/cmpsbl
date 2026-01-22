@@ -1,5 +1,5 @@
 /**
- * Agent Skills Module v2.0 — Executable capabilities only
+ * Agent Skills Module v3.0 — Expanded executable capabilities
  * Each skill maps to task primitives agents CAN actually execute
  * Using: Groq (AI) + Firecrawl (Web) + Lovable AI Gateway
  */
@@ -9,12 +9,12 @@ export interface AgentSkill {
   name: string;
   description: string;
   icon: string;
-  category: 'research' | 'content' | 'data' | 'seo' | 'outreach';
+  category: 'research' | 'content' | 'data' | 'seo' | 'analysis' | 'business' | 'learning';
   handlers: string[]; // Available: groq, firecrawl, lovable
-  isExecutable: boolean; // Can this skill actually be executed with current infra?
+  isExecutable: boolean;
 }
 
-// Core agent skills - ONLY those with working infrastructure
+// Core agent skills - ALL executable with current infrastructure
 export const AGENT_SKILLS: Record<string, AgentSkill> = {
   research: {
     id: 'research',
@@ -30,14 +30,14 @@ export const AGENT_SKILLS: Record<string, AgentSkill> = {
     name: 'Data Analysis',
     description: 'Analyze and synthesize information with AI',
     icon: '📊',
-    category: 'data',
+    category: 'analysis',
     handlers: ['groq', 'lovable'],
     isExecutable: true,
   },
   writing: {
     id: 'writing',
     name: 'Content Writing',
-    description: 'Generate optimized content and articles',
+    description: 'Generate optimized content, articles, and copy',
     icon: '✍️',
     category: 'content',
     handlers: ['groq', 'lovable'],
@@ -45,7 +45,7 @@ export const AGENT_SKILLS: Record<string, AgentSkill> = {
   },
   seo: {
     id: 'seo',
-    name: 'SEO Analysis',
+    name: 'SEO Optimization',
     description: 'Analyze pages for SEO and provide recommendations',
     icon: '📈',
     category: 'seo',
@@ -67,35 +67,71 @@ export const AGENT_SKILLS: Record<string, AgentSkill> = {
     description: 'Extract structured data from web pages',
     icon: '📥',
     category: 'data',
-    handlers: ['firecrawl'],
+    handlers: ['firecrawl', 'groq'],
+    isExecutable: true,
+  },
+  business: {
+    id: 'business',
+    name: 'Business Strategy',
+    description: 'Business planning, validation, and growth strategies',
+    icon: '💼',
+    category: 'business',
+    handlers: ['groq', 'lovable'],
+    isExecutable: true,
+  },
+  learning: {
+    id: 'learning',
+    name: 'Self-Improvement',
+    description: 'Learn new techniques and improve capabilities',
+    icon: '🎓',
+    category: 'learning',
+    handlers: ['firecrawl', 'groq', 'lovable'],
+    isExecutable: true,
+  },
+  outreach: {
+    id: 'outreach',
+    name: 'Outreach Content',
+    description: 'Create outreach emails, pitches, and messaging',
+    icon: '📧',
+    category: 'content',
+    handlers: ['groq', 'lovable'],
+    isExecutable: true,
+  },
+  local_seo: {
+    id: 'local_seo',
+    name: 'Local SEO',
+    description: 'Local search optimization and citation building',
+    icon: '📍',
+    category: 'seo',
+    handlers: ['firecrawl', 'groq'],
     isExecutable: true,
   },
 } as const;
 
 export type AgentSkillId = keyof typeof AGENT_SKILLS;
 
-// Map specializations to only executable skills
+// Map specializations to executable skills
 export const SPECIALIZATION_SKILLS: Record<string, AgentSkillId[]> = {
-  Research: ['research', 'analysis', 'competitive'],
-  Intel: ['research', 'analysis', 'competitive', 'extraction'],
-  Writing: ['writing', 'analysis'],
-  SEO: ['seo', 'research', 'analysis'],
-  Marketing: ['writing', 'seo', 'research'],
-  Analyst: ['analysis', 'research', 'extraction'],
+  Research: ['research', 'analysis', 'competitive', 'extraction'],
+  Intel: ['research', 'analysis', 'competitive', 'extraction', 'business'],
+  Writing: ['writing', 'outreach', 'analysis', 'seo'],
+  SEO: ['seo', 'research', 'analysis', 'local_seo', 'writing'],
+  Marketing: ['writing', 'seo', 'research', 'outreach', 'business'],
+  Analyst: ['analysis', 'research', 'extraction', 'competitive', 'business'],
   Data: ['extraction', 'analysis', 'research'],
-  Sales: ['research', 'competitive', 'writing'],
-  Growth: ['seo', 'analysis', 'research'],
-  Coding: ['analysis', 'research'],
-  OPS: ['research', 'analysis'],
-  Designer: ['writing', 'analysis'],
-  Dreamer: ['writing', 'research'],
-  Defense: ['research', 'analysis'],
-  Audit: ['analysis', 'research', 'seo'],
-  Finance: ['analysis', 'research'],
-  Legal: ['research', 'analysis'],
-  Support: ['writing', 'research'],
-  Success: ['research', 'writing', 'analysis'],
-  Hybrid: ['research', 'analysis', 'writing', 'seo', 'competitive'],
+  Sales: ['research', 'competitive', 'writing', 'outreach', 'business'],
+  Growth: ['seo', 'analysis', 'research', 'business', 'competitive'],
+  Coding: ['analysis', 'research', 'extraction'],
+  OPS: ['research', 'analysis', 'extraction', 'learning'],
+  Designer: ['writing', 'analysis', 'research'],
+  Dreamer: ['writing', 'research', 'learning', 'business'],
+  Defense: ['research', 'analysis', 'extraction', 'competitive'],
+  Audit: ['analysis', 'research', 'seo', 'extraction'],
+  Finance: ['analysis', 'research', 'extraction', 'business'],
+  Legal: ['research', 'analysis', 'extraction', 'writing'],
+  Support: ['writing', 'research', 'analysis', 'outreach'],
+  Success: ['research', 'writing', 'analysis', 'outreach', 'business'],
+  Hybrid: ['research', 'analysis', 'writing', 'seo', 'competitive', 'extraction', 'business', 'learning'],
 };
 
 /**
@@ -120,3 +156,32 @@ export function hasSkill(specialization: string, skillId: AgentSkillId): boolean
 export function getExecutableSkills(): AgentSkillId[] {
   return Object.keys(AGENT_SKILLS) as AgentSkillId[];
 }
+
+/**
+ * Get skills grouped by category
+ */
+export function getSkillsByCategory(): Record<string, AgentSkill[]> {
+  const grouped: Record<string, AgentSkill[]> = {};
+  
+  for (const skill of Object.values(AGENT_SKILLS)) {
+    if (!grouped[skill.category]) {
+      grouped[skill.category] = [];
+    }
+    grouped[skill.category].push(skill);
+  }
+  
+  return grouped;
+}
+
+/**
+ * Get category display info
+ */
+export const SKILL_CATEGORY_INFO: Record<string, { label: string; color: string; icon: string }> = {
+  research: { label: 'Research', color: 'text-blue-400', icon: '🔍' },
+  analysis: { label: 'Analysis', color: 'text-purple-400', icon: '📊' },
+  content: { label: 'Content', color: 'text-pink-400', icon: '✍️' },
+  data: { label: 'Data', color: 'text-cyan-400', icon: '📥' },
+  seo: { label: 'SEO', color: 'text-emerald-400', icon: '📈' },
+  business: { label: 'Business', color: 'text-amber-400', icon: '💼' },
+  learning: { label: 'Learning', color: 'text-indigo-400', icon: '🎓' },
+};
