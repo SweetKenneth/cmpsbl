@@ -1,9 +1,9 @@
 /**
- * Agency Quick Commands — Pre-built prompts that map to EXECUTABLE tasks
- * v2026.01.22 — Aligned with actual backend capabilities
+ * Agency Quick Commands v3.0 — Comprehensive executable task commands
+ * Aligned with expanded task primitives for business, SEO, learning, substrate
  */
 
-import { SPECIALIZATIONS, SKILL_DIMENSIONS, type Specialization } from './agencyTypes';
+import { SPECIALIZATIONS, type Specialization } from './agencyTypes';
 import { TASK_PRIMITIVES, type TaskPrimitiveId } from './skills/taskPrimitives';
 
 export interface QuickCommand {
@@ -12,8 +12,7 @@ export interface QuickCommand {
   label: string;
   description: string;
   prompt: string;
-  category: 'research' | 'seo' | 'content' | 'analysis' | 'data' | 'general';
-  // Maps directly to an executable task primitive
+  category: 'research' | 'seo' | 'content' | 'analysis' | 'data' | 'business' | 'learning' | 'general';
   taskPrimitive?: TaskPrimitiveId;
   requiredSpecs?: Specialization[];
   icon?: string;
@@ -25,7 +24,7 @@ const BASE_COMMANDS: QuickCommand[] = [
     id: 'help',
     command: '/help',
     label: 'Show Help',
-    description: 'Display all available commands',
+    description: 'Display all available commands and team capabilities',
     prompt: '',
     category: 'general',
     icon: '❓',
@@ -39,9 +38,18 @@ const BASE_COMMANDS: QuickCommand[] = [
     category: 'general',
     icon: '📊',
   },
+  {
+    id: 'capabilities',
+    command: '/capabilities',
+    label: 'Show Capabilities',
+    description: 'List what the team can and cannot do',
+    prompt: 'List all the tasks and actions this team can perform, and what is currently out of scope.',
+    category: 'general',
+    icon: '🔧',
+  },
 ];
 
-// Commands that map to EXECUTABLE task primitives only
+// Commands that map to EXECUTABLE task primitives
 const EXECUTABLE_COMMANDS: QuickCommand[] = [
   // ============ RESEARCH COMMANDS ============
   {
@@ -76,6 +84,28 @@ const EXECUTABLE_COMMANDS: QuickCommand[] = [
     taskPrimitive: 'market_research',
     requiredSpecs: ['Research', 'Analyst', 'Growth'],
     icon: '📊',
+  },
+  {
+    id: 'niche',
+    command: '/niche',
+    label: 'Niche Discovery',
+    description: 'Find underserved niches and opportunities',
+    prompt: 'Discover underserved niches in [INDUSTRY]. Find gaps, opportunities, and competition levels.',
+    category: 'research',
+    taskPrimitive: 'niche_discovery',
+    requiredSpecs: ['Research', 'Intel', 'Growth'],
+    icon: '💎',
+  },
+  {
+    id: 'audience',
+    command: '/audience',
+    label: 'Audience Research',
+    description: 'Research target audience demographics',
+    prompt: 'Research target audience for [PRODUCT/SERVICE]. Find demographics, pain points, and channels.',
+    category: 'research',
+    taskPrimitive: 'audience_research',
+    requiredSpecs: ['Research', 'Marketing'],
+    icon: '👥',
   },
 
   // ============ SEO COMMANDS ============
@@ -112,6 +142,50 @@ const EXECUTABLE_COMMANDS: QuickCommand[] = [
     requiredSpecs: ['SEO', 'Research'],
     icon: '🔗',
   },
+  {
+    id: 'directories',
+    command: '/directories',
+    label: 'Directory Discovery',
+    description: 'Find relevant directories for listings',
+    prompt: 'Discover directories for [INDUSTRY]. Find listing sites and submission requirements.',
+    category: 'seo',
+    taskPrimitive: 'directory_discovery',
+    requiredSpecs: ['SEO', 'Research'],
+    icon: '📁',
+  },
+  {
+    id: 'serp',
+    command: '/serp',
+    label: 'SERP Analysis',
+    description: 'Analyze search results for a keyword',
+    prompt: 'Analyze SERP for [KEYWORD]. Find top results, features, and content gaps.',
+    category: 'seo',
+    taskPrimitive: 'serp_analysis',
+    requiredSpecs: ['SEO', 'Research', 'Analyst'],
+    icon: '🔎',
+  },
+  {
+    id: 'contentgap',
+    command: '/contentgap',
+    label: 'Content Gap Analysis',
+    description: 'Find content opportunities',
+    prompt: 'Find content gaps for [DOMAIN] vs competitors. Identify missing topics and keywords.',
+    category: 'seo',
+    taskPrimitive: 'content_gap_analysis',
+    requiredSpecs: ['SEO', 'Research'],
+    icon: '🕳️',
+  },
+  {
+    id: 'local',
+    command: '/local',
+    label: 'Local SEO Research',
+    description: 'Research local SEO opportunities',
+    prompt: 'Research local SEO for [BUSINESS TYPE] in [LOCATION]. Find directories and citations.',
+    category: 'seo',
+    taskPrimitive: 'local_seo_research',
+    requiredSpecs: ['SEO', 'Research'],
+    icon: '📍',
+  },
 
   // ============ DATA EXTRACTION COMMANDS ============
   {
@@ -147,6 +221,39 @@ const EXECUTABLE_COMMANDS: QuickCommand[] = [
     requiredSpecs: ['Research', 'Data'],
     icon: '📄',
   },
+  {
+    id: 'contacts',
+    command: '/contacts',
+    label: 'Contact Extraction',
+    description: 'Extract contact information',
+    prompt: 'Extract contacts from [URL]. Find emails, phones, and social profiles.',
+    category: 'data',
+    taskPrimitive: 'contact_extraction',
+    requiredSpecs: ['Data', 'Research'],
+    icon: '📇',
+  },
+  {
+    id: 'pricing',
+    command: '/pricing',
+    label: 'Pricing Extraction',
+    description: 'Extract competitor pricing',
+    prompt: 'Extract pricing from [URL]. Get tiers, features, and comparison data.',
+    category: 'data',
+    taskPrimitive: 'pricing_extraction',
+    requiredSpecs: ['Data', 'Research', 'Intel'],
+    icon: '💰',
+  },
+  {
+    id: 'reviews',
+    command: '/reviews',
+    label: 'Review Aggregation',
+    description: 'Collect and analyze reviews',
+    prompt: 'Aggregate reviews for [PRODUCT/BRAND]. Analyze sentiment and themes.',
+    category: 'data',
+    taskPrimitive: 'review_aggregation',
+    requiredSpecs: ['Data', 'Research', 'Analyst'],
+    icon: '⭐',
+  },
 
   // ============ CONTENT COMMANDS ============
   {
@@ -161,6 +268,17 @@ const EXECUTABLE_COMMANDS: QuickCommand[] = [
     icon: '✍️',
   },
   {
+    id: 'seoarticle',
+    command: '/seoarticle',
+    label: 'SEO Article',
+    description: 'Create fully optimized SEO article',
+    prompt: 'Write SEO article about [TOPIC] targeting [KEYWORD]. Include backlink anchors.',
+    category: 'content',
+    taskPrimitive: 'seo_article',
+    requiredSpecs: ['Writing', 'SEO'],
+    icon: '📝',
+  },
+  {
     id: 'outreach',
     command: '/outreach',
     label: 'Outreach Drafting',
@@ -172,6 +290,39 @@ const EXECUTABLE_COMMANDS: QuickCommand[] = [
     icon: '📧',
   },
   {
+    id: 'guestpost',
+    command: '/guestpost',
+    label: 'Guest Post Pitch',
+    description: 'Create guest post pitches',
+    prompt: 'Create guest post pitch for [TARGET SITE]. Include topic proposals and bio.',
+    category: 'content',
+    taskPrimitive: 'guest_post_pitch',
+    requiredSpecs: ['Writing', 'SEO'],
+    icon: '✉️',
+  },
+  {
+    id: 'pressrelease',
+    command: '/pressrelease',
+    label: 'Press Release',
+    description: 'Draft a press release',
+    prompt: 'Draft press release for [ANNOUNCEMENT]. Include boilerplate and distribution targets.',
+    category: 'content',
+    taskPrimitive: 'press_release',
+    requiredSpecs: ['Writing', 'Marketing'],
+    icon: '📰',
+  },
+  {
+    id: 'comments',
+    command: '/comments',
+    label: 'Comment Drafts',
+    description: 'Draft forum/blog comments',
+    prompt: 'Draft valuable comments for [TOPIC]. Include engagement strategies.',
+    category: 'content',
+    taskPrimitive: 'comment_drafts',
+    requiredSpecs: ['Writing', 'SEO'],
+    icon: '💬',
+  },
+  {
     id: 'social',
     command: '/social',
     label: 'Social Content',
@@ -181,6 +332,74 @@ const EXECUTABLE_COMMANDS: QuickCommand[] = [
     taskPrimitive: 'social_content',
     requiredSpecs: ['Writing', 'Marketing'],
     icon: '📱',
+  },
+  {
+    id: 'product',
+    command: '/product',
+    label: 'Product Description',
+    description: 'Create product descriptions',
+    prompt: 'Create product description for [PRODUCT]. Include SEO-optimized copy.',
+    category: 'content',
+    taskPrimitive: 'product_description',
+    requiredSpecs: ['Writing'],
+    icon: '🏷️',
+  },
+
+  // ============ BUSINESS COMMANDS ============
+  {
+    id: 'names',
+    command: '/names',
+    label: 'Business Name Ideas',
+    description: 'Generate business name ideas',
+    prompt: 'Generate business names for [INDUSTRY]. Include domain suggestions.',
+    category: 'business',
+    taskPrimitive: 'business_name_ideas',
+    requiredSpecs: ['Writing', 'Research'],
+    icon: '💡',
+  },
+  {
+    id: 'valueprop',
+    command: '/valueprop',
+    label: 'Value Proposition',
+    description: 'Craft value proposition',
+    prompt: 'Create value proposition for [PRODUCT/SERVICE]. Include taglines and USPs.',
+    category: 'business',
+    taskPrimitive: 'value_proposition',
+    requiredSpecs: ['Writing', 'Analyst'],
+    icon: '🎯',
+  },
+  {
+    id: 'validate',
+    command: '/validate',
+    label: 'Idea Validation',
+    description: 'Validate startup idea',
+    prompt: 'Validate startup idea: [IDEA]. Research market size, competitors, and risks.',
+    category: 'business',
+    taskPrimitive: 'startup_idea_validation',
+    requiredSpecs: ['Research', 'Analyst', 'Intel'],
+    icon: '✅',
+  },
+  {
+    id: 'landing',
+    command: '/landing',
+    label: 'Landing Page Copy',
+    description: 'Create landing page copy',
+    prompt: 'Write landing page copy for [PRODUCT]. Include headlines, CTAs, and trust elements.',
+    category: 'business',
+    taskPrimitive: 'landing_page_copy',
+    requiredSpecs: ['Writing', 'Marketing'],
+    icon: '🚀',
+  },
+  {
+    id: 'pitch',
+    command: '/pitch',
+    label: 'Pitch Deck Outline',
+    description: 'Create pitch deck outline',
+    prompt: 'Create pitch deck outline for [BUSINESS]. Include key slides and narrative.',
+    category: 'business',
+    taskPrimitive: 'pitch_deck_outline',
+    requiredSpecs: ['Writing', 'Analyst'],
+    icon: '📊',
   },
 
   // ============ ANALYSIS COMMANDS ============
@@ -206,6 +425,74 @@ const EXECUTABLE_COMMANDS: QuickCommand[] = [
     requiredSpecs: ['Marketing', 'Research', 'Analyst'],
     icon: '🏢',
   },
+  {
+    id: 'sentiment',
+    command: '/sentiment',
+    label: 'Sentiment Analysis',
+    description: 'Analyze sentiment around topic',
+    prompt: 'Analyze sentiment for [BRAND/TOPIC]. Find themes and recommendations.',
+    category: 'analysis',
+    taskPrimitive: 'sentiment_analysis',
+    requiredSpecs: ['Analyst', 'Research'],
+    icon: '😊',
+  },
+  {
+    id: 'techstack',
+    command: '/techstack',
+    label: 'Tech Stack Analysis',
+    description: 'Analyze website tech stack',
+    prompt: 'Analyze tech stack for [URL]. Identify technologies and frameworks.',
+    category: 'analysis',
+    taskPrimitive: 'tech_stack_analysis',
+    requiredSpecs: ['Research', 'Analyst'],
+    icon: '⚙️',
+  },
+
+  // ============ LEARNING COMMANDS ============
+  {
+    id: 'learn',
+    command: '/learn',
+    label: 'Skill Improvement',
+    description: 'Agent learns new techniques',
+    prompt: 'Learn about [SKILL AREA]. Find best practices and improvement techniques.',
+    category: 'learning',
+    taskPrimitive: 'skill_improvement',
+    requiredSpecs: ['Research', 'Analyst'],
+    icon: '📚',
+  },
+  {
+    id: 'expertise',
+    command: '/expertise',
+    label: 'Domain Knowledge',
+    description: 'Build domain expertise',
+    prompt: 'Build expertise in [DOMAIN]. Gather key concepts and expert sources.',
+    category: 'learning',
+    taskPrimitive: 'domain_knowledge',
+    requiredSpecs: ['Research'],
+    icon: '🧠',
+  },
+  {
+    id: 'tools',
+    command: '/tools',
+    label: 'Tool Research',
+    description: 'Research tools and APIs',
+    prompt: 'Research tools for [CAPABILITY]. Find APIs and integration options.',
+    category: 'learning',
+    taskPrimitive: 'tool_research',
+    requiredSpecs: ['Research', 'Analyst'],
+    icon: '🔧',
+  },
+  {
+    id: 'optimize',
+    command: '/optimize',
+    label: 'Workflow Optimization',
+    description: 'Optimize task workflows',
+    prompt: 'Optimize workflow for [TASK TYPE]. Suggest automations and efficiency gains.',
+    category: 'learning',
+    taskPrimitive: 'workflow_optimization',
+    requiredSpecs: ['Analyst'],
+    icon: '⚡',
+  },
 ];
 
 /**
@@ -220,7 +507,6 @@ export function getAvailableCommands(teamSpecs: Specialization[]): QuickCommand[
       continue;
     }
 
-    // Check if team has at least one of the required specializations
     const hasRequiredSpec = cmd.requiredSpecs.some(spec => teamSpecs.includes(spec));
     if (hasRequiredSpec) {
       available.push(cmd);
@@ -272,14 +558,11 @@ export function parseCommand(input: string): { command: QuickCommand | null; arg
 export function buildPromptFromCommand(command: QuickCommand, args: string): string {
   if (!command.prompt) return args;
   
-  // Replace placeholders with args
   let prompt = command.prompt;
-  const placeholders = prompt.match(/\[([A-Z_/]+)\]/g) || [];
+  const placeholders = prompt.match(/\[([A-Z_/\s]+)\]/g) || [];
   
   if (placeholders.length > 0 && args) {
-    // Replace first placeholder with args
     prompt = prompt.replace(placeholders[0], args);
-    // Remove remaining placeholders
     for (const ph of placeholders.slice(1)) {
       prompt = prompt.replace(ph, '');
     }
@@ -306,18 +589,19 @@ export function getAllExecutableCommands(): QuickCommand[] {
 /**
  * Get category display info
  */
-export const CATEGORY_INFO: Record<string, { label: string; color: string }> = {
-  general: { label: 'General', color: 'text-muted-foreground' },
-  research: { label: 'Research', color: 'text-blue-400' },
-  seo: { label: 'SEO', color: 'text-emerald-400' },
-  content: { label: 'Content', color: 'text-pink-400' },
-  analysis: { label: 'Analysis', color: 'text-purple-400' },
-  data: { label: 'Data Extraction', color: 'text-cyan-400' },
+export const CATEGORY_INFO: Record<string, { label: string; color: string; icon: string }> = {
+  general: { label: 'General', color: 'text-muted-foreground', icon: '📋' },
+  research: { label: 'Research', color: 'text-blue-400', icon: '🔍' },
+  seo: { label: 'SEO', color: 'text-emerald-400', icon: '📈' },
+  content: { label: 'Content', color: 'text-pink-400', icon: '✍️' },
+  analysis: { label: 'Analysis', color: 'text-purple-400', icon: '📊' },
+  data: { label: 'Data', color: 'text-cyan-400', icon: '📥' },
+  business: { label: 'Business', color: 'text-amber-400', icon: '💼' },
+  learning: { label: 'Learning', color: 'text-indigo-400', icon: '🎓' },
 };
 
 /**
- * Capabilities that the leader CANNOT do
- * Leader should be honest about these limitations
+ * Out of scope capabilities - be honest about limitations
  */
 export const OUT_OF_SCOPE_CAPABILITIES = [
   'submit_to_search_engines',
@@ -328,31 +612,60 @@ export const OUT_OF_SCOPE_CAPABILITIES = [
   'access_paid_apis',
   'authenticate_external_services',
   'write_to_external_databases',
-  'execute_javascript',
+  'execute_javascript_on_sites',
   'bypass_captchas',
+  'click_buttons_on_sites',
+  'fill_forms_on_sites',
 ];
 
 /**
- * Get a human-readable explanation of what the team can/cannot do
+ * Get comprehensive capabilities summary
  */
-export function getCapabilitiesSummary(): { canDo: string[]; cannotDo: string[] } {
+export function getCapabilitiesSummary(): { canDo: string[]; cannotDo: string[]; wouldNeed: string[] } {
   return {
     canDo: [
       'Web research and information gathering',
-      'SEO audits and keyword research',
+      'SEO audits, keyword research, and backlink analysis',
       'Competitor and market analysis',
       'Content generation (articles, emails, social posts)',
       'Data extraction and site mapping',
-      'Trend and brand analysis',
-      'Backlink opportunity research',
+      'Trend, sentiment, and brand analysis',
+      'Business strategy and idea validation',
+      'Directory and citation discovery',
+      'Contact and pricing extraction',
+      'Review aggregation and analysis',
+      'Guest post and outreach drafting',
+      'Self-improvement and learning tasks',
+      'Template and heuristic generation',
     ],
     cannotDo: [
-      'Submit sites to search engines (need API credentials)',
-      'Post to forums or external sites (need authentication)',
-      'Send actual emails (need SMTP/email service)',
+      'Submit sites to search engines (no API)',
+      'Post to forums or external sites (no auth)',
+      'Send actual emails (no SMTP)',
       'Create accounts on external services',
-      'Access paid third-party APIs without credentials',
-      'Execute actions that require CAPTCHA solving',
+      'Click buttons or fill forms on websites',
+      'Bypass CAPTCHAs',
+      'Access paid APIs without credentials',
+    ],
+    wouldNeed: [
+      'SendGrid/SMTP integration for email sending',
+      'OAuth credentials for forum/social posting',
+      'Search engine submission APIs',
+      'Browser automation for form filling',
+      'Paid tool APIs (Ahrefs, SEMrush, etc.)',
     ],
   };
+}
+
+/**
+ * Get command count by category
+ */
+export function getCommandCounts(): Record<string, number> {
+  const counts: Record<string, number> = {};
+  
+  for (const cmd of EXECUTABLE_COMMANDS) {
+    counts[cmd.category] = (counts[cmd.category] || 0) + 1;
+  }
+  
+  return counts;
 }

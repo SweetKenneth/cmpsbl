@@ -5,58 +5,106 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+// Comprehensive capabilities - be honest about what we can/cannot do
+const CAPABILITIES = {
+  canDo: [
+    'Web research and information gathering',
+    'SEO audits, keyword research, and backlink analysis',
+    'Competitor and market analysis',
+    'Content generation (articles, emails, social posts)',
+    'Data extraction and site mapping',
+    'Trend, sentiment, and brand analysis',
+    'Business strategy and idea validation',
+    'Directory and citation discovery',
+    'Contact and pricing extraction',
+    'Review aggregation and analysis',
+    'Guest post and outreach drafting',
+    'SERP and content gap analysis',
+    'Local SEO research',
+    'Self-improvement and learning tasks',
+  ],
+  cannotDo: [
+    'Submit sites to search engines (no API credentials)',
+    'Post to forums or external sites (no authentication)',
+    'Send actual emails (no SMTP/email service)',
+    'Create accounts on external services',
+    'Click buttons or fill forms on websites',
+    'Bypass CAPTCHAs',
+    'Access paid APIs without credentials',
+  ],
+  wouldNeed: [
+    'SendGrid/SMTP for email sending',
+    'OAuth credentials for forum posting',
+    'Search engine APIs for indexing',
+    'Browser automation for form filling',
+  ],
+};
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { message, agencyId, agencyName, teamComposition, dreamPoolMode, command, capabilities } = await req.json();
+    const { message, agencyId, agencyName, teamComposition, dreamPoolMode, command } = await req.json();
     
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) {
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
-    // Build team context for the AI
-    const teamContext = teamComposition?.map((m: any) => 
-      `- ${m.specialization} (${m.role}): Research ${Math.round((m.skills?.research || 0.5) * 100)}%, Analysis ${Math.round((m.skills?.analysis || 0.5) * 100)}%, Execution ${Math.round((m.skills?.execution || 0.5) * 100)}%`
-    ).join('\n') || 'No team members configured';
+    // Build detailed team context
+    const teamContext = teamComposition?.map((m: any) => {
+      const skills = m.skills || {};
+      return `- ${m.specialization} (${m.role}): Research ${Math.round((skills.research || 0.5) * 100)}%, Analysis ${Math.round((skills.analysis || 0.5) * 100)}%, Writing ${Math.round((skills.writing || 0.5) * 100)}%`;
+    }).join('\n') || 'No team members configured';
 
     const leader = teamComposition?.find((m: any) => m.role === 'leader');
     const leaderSpec = leader?.specialization || 'Hybrid+';
+    const specializations = teamComposition?.map((m: any) => m.specialization) || [];
 
-    // Build capabilities context
-    const capabilitiesContext = capabilities ? `
-IMPORTANT - Be honest about capabilities:
-What we CAN do: ${capabilities.canDo?.join(', ') || 'Web research, SEO audits, content generation, data extraction'}
-What we CANNOT do: ${capabilities.cannotDo?.join(', ') || 'Submit to external sites, send emails, create accounts'}
+    // Build comprehensive system prompt
+    const systemPrompt = `You are the team leader of "${agencyName}", a cognitive agency on the promptfluid® substrate. Your specialization is ${leaderSpec}.
 
-If the user asks for something we cannot do, be upfront about it and suggest alternatives we CAN do.
-` : '';
-
-    // System prompt that embodies the agency team
-    const systemPrompt = `You are the team leader of "${agencyName}", a cognitive agency deployed on the promptfluid® substrate. Your specialization is ${leaderSpec}.
-
-Your team composition:
+## Your Team
 ${teamContext}
 
-Dream Pool Mode: ${dreamPoolMode || 'local_shared'}
+## Dream Pool Mode: ${dreamPoolMode || 'local_shared'}
 
-${capabilitiesContext}
+## CRITICAL: Capability Honesty
 
-As the team leader, you:
-1. ACTUALLY delegate work to team members by creating tasks (the system handles this)
-2. Be HONEST about what the team can and cannot do
-3. Speak in first person plural ("we") when representing team efforts
-4. Reference specific team members when their expertise is relevant
-5. When asked to do something, either confirm a task will be created OR explain why it's not possible
-6. Provide actionable, specific guidance
-7. Never pretend to do things you can't - if you can't send emails, say so
+**What we CAN actually do:**
+${CAPABILITIES.canDo.map(c => `✅ ${c}`).join('\n')}
 
-${command ? `The user invoked the command: ${command}. This will create an actual task.` : ''}
+**What we CANNOT do (be upfront about this):**
+${CAPABILITIES.cannotDo.map(c => `❌ ${c}`).join('\n')}
 
-Keep responses concise but comprehensive. Focus on actionable insights. Be honest about limitations.`;
+**To enable blocked capabilities, we would need:**
+${CAPABILITIES.wouldNeed.map(w => `🔧 ${w}`).join('\n')}
+
+## Your Behavior Rules
+
+1. **ACTUALLY delegate work** - When users ask for tasks, create them (the system handles this automatically based on your response)
+2. **Be HONEST** - If asked to do something we cannot do, say so clearly and suggest what we CAN do instead
+3. **Speak as the team** - Use "we" when representing team efforts, reference specific team members when relevant
+4. **Be actionable** - When you say you'll do something, specify what task will be created
+5. **No hallucinating capabilities** - Never claim we can send emails, post to forums, or submit to sites
+6. **Suggest alternatives** - When something is out of scope, always offer what we CAN do
+
+## Response Format
+
+When creating tasks, format like:
+"**✅ Task Created:** [Task Name]
+I've assigned [brief description] to the team. Check the Tasks tab for progress."
+
+When something is out of scope:
+"**⚠️ Out of Scope:** [What they asked for]
+This requires [what we need]. 
+**What I CAN do instead:** [Alternative task]"
+
+${command ? `\n## Active Command: ${command}\nThis will create an actual task based on user input.` : ''}
+
+Keep responses professional, concise, and action-oriented. Focus on delivering real value through tasks we can actually execute.`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -77,8 +125,8 @@ Keep responses concise but comprehensive. Focus on actionable insights. Be hones
     if (!response.ok) {
       if (response.status === 429) {
         return new Response(JSON.stringify({ 
-          error: "Rate limits exceeded, please try again later.",
-          reply: "The team is currently at capacity. Please try again in a moment."
+          error: "Rate limits exceeded",
+          reply: "The team is at capacity. Please try again in a moment."
         }), {
           status: 429,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -87,7 +135,7 @@ Keep responses concise but comprehensive. Focus on actionable insights. Be hones
       if (response.status === 402) {
         return new Response(JSON.stringify({ 
           error: "Payment required",
-          reply: "The agency requires additional credits to continue. Please contact your administrator."
+          reply: "Additional credits required. Please contact your administrator."
         }), {
           status: 402,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -106,6 +154,7 @@ Keep responses concise but comprehensive. Focus on actionable insights. Be hones
       reply,
       agencyId,
       command,
+      capabilities: CAPABILITIES,
       timestamp: new Date().toISOString()
     }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
