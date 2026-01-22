@@ -4,8 +4,8 @@
  * Mobile-first, neon-vibrant design
  */
 
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { 
@@ -40,11 +40,11 @@ const coreModules = [
   { icon: Settings, name: "System", color: "hsl(var(--destructive))" },
 ];
 
-// Orbit ring around substrate core
+// Orbit ring around substrate core - using CSS animation instead of JS to reduce reflows
 function OrbitRing({ radius, duration, color }: { radius: number; duration: number; color: string }) {
   return (
-    <motion.div
-      className="absolute rounded-full border"
+    <div
+      className="absolute rounded-full border animate-spin"
       style={{
         width: radius * 2,
         height: radius * 2,
@@ -53,11 +53,11 @@ function OrbitRing({ radius, duration, color }: { radius: number; duration: numb
         opacity: 0.3,
         left: `calc(50% - ${radius}px)`,
         top: `calc(50% - ${radius}px)`,
+        animationDuration: `${duration}s`,
+        animationTimingFunction: 'linear',
       }}
-      animate={{ rotate: 360 }}
-      transition={{ duration, repeat: Infinity, ease: "linear" }}
     >
-      <motion.div
+      <div
         className="absolute w-2 h-2 rounded-full"
         style={{
           background: color,
@@ -67,7 +67,7 @@ function OrbitRing({ radius, duration, color }: { radius: number; duration: numb
           marginLeft: -4,
         }}
       />
-    </motion.div>
+    </div>
   );
 }
 
@@ -197,7 +197,7 @@ function SubstrateCore() {
       <OrbitRing radius={105} duration={18} color="hsl(var(--neon-magenta))" />
       <OrbitRing radius={120} duration={25} color="hsl(var(--neon-amber))" />
       
-      {/* Inner substrate core */}
+      {/* Inner substrate core - using CSS animation for pulse effect */}
       <div 
         className="absolute inset-6 sm:inset-8 rounded-full border-2 backdrop-blur-md flex items-center justify-center z-10"
         style={{
@@ -206,11 +206,7 @@ function SubstrateCore() {
           boxShadow: "0 0 40px hsl(var(--neon-cyan) / 0.3), inset 0 0 30px hsl(var(--neon-cyan) / 0.1)",
         }}
       >
-        <motion.div
-          className="text-center"
-          animate={{ scale: [1, 1.03, 1] }}
-          transition={{ duration: 3, repeat: Infinity }}
-        >
+        <div className="text-center animate-pulse" style={{ animationDuration: '3s' }}>
           <div 
             className="text-lg sm:text-xl md:text-2xl font-black tracking-tight"
             style={{
@@ -223,10 +219,10 @@ function SubstrateCore() {
             SUBSTRATE
           </div>
           <div className="text-xs sm:text-sm text-muted-foreground font-medium">OS</div>
-        </motion.div>
+        </div>
       </div>
       
-      {/* 7 Module icons orbiting - with powered glow effect */}
+      {/* 7 Module icons - simplified with CSS hover, no continuous JS animation */}
       {coreModules.map((mod, i) => {
         const angle = (i / coreModules.length) * Math.PI * 2 - Math.PI / 2;
         const radius = 70;
@@ -234,47 +230,24 @@ function SubstrateCore() {
         const y = Math.sin(angle) * radius;
         
         return (
-          <motion.div
+          <div
             key={mod.name}
-            className="absolute w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center cursor-pointer z-20"
+            className="absolute w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center cursor-pointer z-20 transition-transform duration-200 hover:scale-130"
             style={{
               left: `calc(50% + ${x}px - 14px)`,
               top: `calc(50% + ${y}px - 14px)`,
               background: hoveredModule === i ? `${mod.color}` : `${mod.color}30`,
               border: `2px solid ${mod.color}`,
+              boxShadow: `0 0 15px ${mod.color}, 0 0 30px ${mod.color}50`,
             }}
-            whileHover={{ scale: 1.3 }}
             onMouseEnter={() => setHoveredModule(i)}
             onMouseLeave={() => setHoveredModule(null)}
-            animate={{
-              boxShadow: [
-                `0 0 10px ${mod.color}, 0 0 20px ${mod.color}60, 0 0 30px ${mod.color}30`,
-                `0 0 20px ${mod.color}, 0 0 40px ${mod.color}80, 0 0 60px ${mod.color}50`,
-                `0 0 10px ${mod.color}, 0 0 20px ${mod.color}60, 0 0 30px ${mod.color}30`,
-              ],
-              scale: [1, 1.08, 1],
-            }}
-            transition={{ 
-              duration: 1.5, 
-              repeat: Infinity, 
-              delay: i * 0.2,
-              ease: "easeInOut"
-            }}
           >
-            {/* Inner power glow */}
-            <motion.div
+            {/* Inner power glow - static */}
+            <div
               className="absolute inset-0 rounded-full"
               style={{
                 background: `radial-gradient(circle, ${mod.color}40 0%, transparent 70%)`,
-              }}
-              animate={{
-                opacity: [0.4, 1, 0.4],
-                scale: [0.8, 1.2, 0.8],
-              }}
-              transition={{
-                duration: 1.2,
-                repeat: Infinity,
-                delay: i * 0.15,
               }}
             />
             <mod.icon 
@@ -284,7 +257,7 @@ function SubstrateCore() {
                 filter: `drop-shadow(0 0 4px ${mod.color})`,
               }} 
             />
-          </motion.div>
+          </div>
         );
       })}
     </motion.div>
@@ -459,6 +432,23 @@ function AIEvolutionFlow() {
 }
 
 export function HeroMetaSubstrate() {
+  // Defer heavy animations until after initial paint to prevent forced reflows
+  const [animationsReady, setAnimationsReady] = useState(false);
+  
+  useEffect(() => {
+    // Use requestIdleCallback or setTimeout to defer animation initialization
+    const deferAnimation = () => setAnimationsReady(true);
+    
+    if ('requestIdleCallback' in window) {
+      (window as Window & { requestIdleCallback: (cb: () => void) => number }).requestIdleCallback(deferAnimation);
+    } else {
+      // Fallback: wait for initial paint, then enable animations
+      requestAnimationFrame(() => {
+        requestAnimationFrame(deferAnimation);
+      });
+    }
+  }, []);
+
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center px-4 py-20 overflow-hidden">
       {/* Background - plain white in light mode, gradient in dark mode */}
@@ -475,24 +465,20 @@ export function HeroMetaSubstrate() {
         }}
       />
       
-      {/* Radial neon spotlight - more subtle in light mode */}
-      <motion.div
+      {/* Radial neon spotlight - only animate after initial paint */}
+      <div
         className="absolute inset-0 pointer-events-none opacity-30 dark:opacity-100"
         style={{
           background: "radial-gradient(ellipse 80% 50% at 50% 40%, hsl(var(--neon-cyan) / 0.12) 0%, transparent 60%)",
         }}
-        animate={{ opacity: [0.6, 1, 0.6] }}
-        transition={{ duration: 4, repeat: Infinity }}
       />
       
-      {/* Secondary magenta glow - more subtle in light mode */}
-      <motion.div
+      {/* Secondary magenta glow - static to prevent reflows */}
+      <div
         className="absolute inset-0 pointer-events-none opacity-20 dark:opacity-100"
         style={{
           background: "radial-gradient(ellipse 60% 40% at 60% 60%, hsl(var(--neon-magenta) / 0.08) 0%, transparent 50%)",
         }}
-        animate={{ opacity: [0.4, 0.8, 0.4] }}
-        transition={{ duration: 5, repeat: Infinity, delay: 1 }}
       />
       
       {/* Grid pattern - more subtle in light mode */}
