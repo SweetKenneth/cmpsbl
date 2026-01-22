@@ -1,23 +1,29 @@
 /**
- * useAgencyTasks — Hook for managing agency tasks with real-time updates
- * v3.0 — Queue processor + parallel agent execution
+ * useAgencyTasks v4.0 — Robust queue processing with DB-driven fallback
+ * Fixes: Queue stalls, proper queueStats return, immediate processing
  */
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import type { AgencyTask, AgencyTaskLog, TaskTypeId, TaskStatus } from '@/lib/agency/agencyTasks';
 import { executeTask } from '@/lib/agency/taskExecutor';
 
-// Maximum concurrent tasks per agency
+// Configuration
 const MAX_CONCURRENT_TASKS = 5;
-// Queue processing interval (ms)
-const QUEUE_PROCESS_INTERVAL = 3000;
+const QUEUE_POLL_INTERVAL = 2000; // Poll more frequently
+const STALE_TASK_THRESHOLD = 300000; // 5 minutes - mark stuck tasks as failed
 
 interface UseAgencyTasksOptions {
   agencyId: string;
   autoRefresh?: boolean;
   maxConcurrent?: number;
+}
+
+interface QueueStats {
+  queued: number;
+  inProgress: number;
+  available: number;
 }
 
 interface UseAgencyTasksReturn {
@@ -42,18 +48,34 @@ interface UseAgencyTasksReturn {
   getTasksByStatus: (status: TaskStatus) => AgencyTask[];
   getRecentLogs: (limit?: number) => AgencyTaskLog[];
   processQueue: () => Promise<number>;
-  queueStats: { queued: number; inProgress: number; available: number };
+  queueStats: QueueStats;
 }
 
-export function useAgencyTasks({ agencyId, autoRefresh = true, maxConcurrent = MAX_CONCURRENT_TASKS }: UseAgencyTasksOptions): UseAgencyTasksReturn {
+export function useAgencyTasks({ 
+  agencyId, 
+  autoRefresh = true, 
+  maxConcurrent = MAX_CONCURRENT_TASKS 
+}: UseAgencyTasksOptions): UseAgencyTasksReturn {
   const executingTasks = useRef<Set<string>>(new Set());
   const processingQueue = useRef<boolean>(false);
+  const lastProcessTime = useRef<number>(0);
+  
   const [tasks, setTasks] = useState<AgencyTask[]>([]);
   const [taskLogs, setTaskLogs] = useState<AgencyTaskLog[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch tasks
+  // ============================================
+  // QUEUE STATS - Computed as a memoized value
+  // ============================================
+  const queueStats = useMemo((): QueueStats => {
+    const queued = tasks.filter(t => t.status === 'queued').length;
+    const inProgress = tasks.filter(t => t.status === 'in_progress').length;
+    const available = Math.max(0, maxConcurrent - inProgress - executingTasks.current.size);
+    return { queued, inProgress, available };
+  }, [tasks, maxConcurrent]);
+
+  // Fetch tasks from DB
   const fetchTasks = useCallback(async () => {
     if (!agencyId) return;
 
@@ -65,7 +87,29 @@ export function useAgencyTasks({ agencyId, autoRefresh = true, maxConcurrent = M
         .order('created_at', { ascending: false });
 
       if (fetchError) throw fetchError;
-      setTasks((data || []) as AgencyTask[]);
+      
+      const fetchedTasks = (data || []) as AgencyTask[];
+      
+      // Check for stale in_progress tasks and auto-fail them
+      const now = Date.now();
+      for (const task of fetchedTasks) {
+        if (task.status === 'in_progress' && task.started_at) {
+          const startedAt = new Date(task.started_at).getTime();
+          if (now - startedAt > STALE_TASK_THRESHOLD) {
+            console.warn(`Stale task detected: ${task.id}, marking as failed`);
+            await supabase
+              .from('agency_tasks')
+              .update({ 
+                status: 'failed', 
+                error_message: 'Task timed out (stale)',
+                updated_at: new Date().toISOString(),
+              })
+              .eq('id', task.id);
+          }
+        }
+      }
+      
+      setTasks(fetchedTasks);
     } catch (err) {
       console.error('Error fetching tasks:', err);
       setError('Failed to load tasks');
@@ -125,10 +169,20 @@ export function useAgencyTasks({ agencyId, autoRefresh = true, maxConcurrent = M
         },
         (payload) => {
           if (payload.eventType === 'INSERT') {
-            setTasks(prev => [payload.new as AgencyTask, ...prev]);
+            const newTask = payload.new as AgencyTask;
+            setTasks(prev => {
+              // Avoid duplicates
+              if (prev.some(t => t.id === newTask.id)) return prev;
+              return [newTask, ...prev];
+            });
           } else if (payload.eventType === 'UPDATE') {
+            const updated = payload.new as AgencyTask;
+            // Remove from executing set if task is done
+            if (['completed', 'failed', 'cancelled'].includes(updated.status)) {
+              executingTasks.current.delete(updated.id);
+            }
             setTasks(prev =>
-              prev.map(t => (t.id === payload.new.id ? (payload.new as AgencyTask) : t))
+              prev.map(t => (t.id === updated.id ? updated : t))
             );
           } else if (payload.eventType === 'DELETE') {
             setTasks(prev => prev.filter(t => t.id !== payload.old.id));
@@ -159,10 +213,8 @@ export function useAgencyTasks({ agencyId, autoRefresh = true, maxConcurrent = M
         },
         (payload) => {
           const newLog = payload.new as AgencyTaskLog;
-          // Only add if it belongs to one of our tasks
           if (taskIds.includes(newLog.task_id)) {
             setTaskLogs(prev => {
-              // Avoid duplicates
               if (prev.some(l => l.id === newLog.id)) return prev;
               return [newLog, ...prev].slice(0, 100);
             });
@@ -176,15 +228,7 @@ export function useAgencyTasks({ agencyId, autoRefresh = true, maxConcurrent = M
     };
   }, [agencyId, autoRefresh, tasks]);
 
-  // Get queue statistics
-  const queueStats = useCallback(() => {
-    const queued = tasks.filter(t => t.status === 'queued').length;
-    const inProgress = tasks.filter(t => t.status === 'in_progress').length;
-    const available = Math.max(0, maxConcurrent - inProgress);
-    return { queued, inProgress, available };
-  }, [tasks, maxConcurrent]);
-
-  // Create task (just creates, doesn't start)
+  // Create task
   const createTask = useCallback(async (task: Partial<AgencyTask>): Promise<AgencyTask | null> => {
     try {
       const { data, error: insertError } = await supabase
@@ -193,7 +237,7 @@ export function useAgencyTasks({ agencyId, autoRefresh = true, maxConcurrent = M
           agency_id: agencyId,
           title: task.title || 'New Task',
           description: task.description || null,
-          task_type: task.task_type || 'research',
+          task_type: task.task_type || 'web_research',
           status: 'queued',
           priority: task.priority || 50,
           progress: 0,
@@ -215,11 +259,13 @@ export function useAgencyTasks({ agencyId, autoRefresh = true, maxConcurrent = M
     }
   }, [agencyId]);
 
-  // Create task and add to queue (will be auto-processed)
+  // Create task and immediately trigger processing
   const createAndQueueTask = useCallback(async (task: Partial<AgencyTask>): Promise<AgencyTask | null> => {
     const newTask = await createTask(task);
     if (newTask) {
       toast.success('Task queued');
+      // Trigger immediate processing
+      setTimeout(() => processQueueInternal(), 100);
     }
     return newTask;
   }, [createTask]);
@@ -251,7 +297,7 @@ export function useAgencyTasks({ agencyId, autoRefresh = true, maxConcurrent = M
     data: Record<string, any> = {}
   ): Promise<void> => {
     try {
-      const { error: insertError } = await supabase
+      await supabase
         .from('agency_task_logs')
         .insert({
           task_id: taskId,
@@ -259,26 +305,12 @@ export function useAgencyTasks({ agencyId, autoRefresh = true, maxConcurrent = M
           log_type: logType,
           data,
         });
-
-      if (insertError) throw insertError;
-      
-      // Optimistically add to local state
-      const newLog: AgencyTaskLog = {
-        id: crypto.randomUUID(),
-        task_id: taskId,
-        member_id: null,
-        message,
-        log_type: logType,
-        data,
-        created_at: new Date().toISOString(),
-      };
-      setTaskLogs(prev => [newLog, ...prev]);
     } catch (err) {
       console.error('Error adding log:', err);
     }
   }, []);
 
-  // Start task - NOW ACTUALLY EXECUTES VIA EDGE FUNCTION
+  // Start task - executes via edge function
   const startTask = useCallback(async (taskId: string): Promise<boolean> => {
     // Prevent double execution
     if (executingTasks.current.has(taskId)) {
@@ -286,16 +318,22 @@ export function useAgencyTasks({ agencyId, autoRefresh = true, maxConcurrent = M
       return true;
     }
     
-    // Find the task to get its details
+    // Find the task
     const task = tasks.find(t => t.id === taskId);
     if (!task) {
       console.error('Task not found:', taskId);
       return false;
     }
     
+    // Skip if not queued
+    if (task.status !== 'queued') {
+      console.log('Task not in queued status:', taskId, task.status);
+      return false;
+    }
+    
     executingTasks.current.add(taskId);
     
-    // First update to show task is starting
+    // Update to in_progress
     const updated = await updateTask(taskId, {
       status: 'in_progress' as TaskStatus,
       started_at: new Date().toISOString(),
@@ -310,9 +348,7 @@ export function useAgencyTasks({ agencyId, autoRefresh = true, maxConcurrent = M
     await addTaskLog(taskId, '🚀 Task started - executing...', 'info');
     toast.info('Task started', { description: 'Agent is now working on this task' });
     
-    // Execute the task via edge function (fire and forget for UI responsiveness)
-    // The edge function will update progress and status directly in the database
-    // Real-time subscription will pick up the changes
+    // Execute via edge function (fire and forget)
     executeTask({
       taskId,
       agencyId,
@@ -333,7 +369,13 @@ export function useAgencyTasks({ agencyId, autoRefresh = true, maxConcurrent = M
     }).catch(err => {
       executingTasks.current.delete(taskId);
       console.error('Task execution error:', err);
-      toast.error('Task execution failed', { description: err.message });
+      toast.error('Task execution failed');
+      
+      // Mark as failed in DB
+      updateTask(taskId, {
+        status: 'failed' as TaskStatus,
+        error_message: err.message || 'Execution error',
+      });
     });
     
     return true;
@@ -341,6 +383,7 @@ export function useAgencyTasks({ agencyId, autoRefresh = true, maxConcurrent = M
 
   // Complete task
   const completeTask = useCallback(async (taskId: string, output: Record<string, any> = {}): Promise<boolean> => {
+    executingTasks.current.delete(taskId);
     const success = await updateTask(taskId, {
       status: 'completed' as TaskStatus,
       completed_at: new Date().toISOString(),
@@ -356,6 +399,7 @@ export function useAgencyTasks({ agencyId, autoRefresh = true, maxConcurrent = M
 
   // Fail task
   const failTask = useCallback(async (taskId: string, errorMessage: string): Promise<boolean> => {
+    executingTasks.current.delete(taskId);
     const success = await updateTask(taskId, {
       status: 'failed' as TaskStatus,
       error_message: errorMessage,
@@ -368,7 +412,6 @@ export function useAgencyTasks({ agencyId, autoRefresh = true, maxConcurrent = M
 
   // Cancel single task
   const cancelTask = useCallback(async (taskId: string): Promise<boolean> => {
-    // allow cancel regardless of client-side executing set
     executingTasks.current.delete(taskId);
 
     const success = await updateTask(taskId, {
@@ -383,16 +426,15 @@ export function useAgencyTasks({ agencyId, autoRefresh = true, maxConcurrent = M
     return success;
   }, [updateTask, addTaskLog]);
 
-  // Cancel all queued + active tasks for this agency
+  // Cancel all queued + active tasks
   const cancelAllTasks = useCallback(async (): Promise<number> => {
     if (!agencyId) return 0;
 
     try {
-      // Find affected tasks first (for logging)
       const affected = tasks.filter(t => t.status === 'queued' || t.status === 'in_progress');
       if (affected.length === 0) return 0;
 
-      // Clear local execution guards
+      // Clear local guards
       for (const t of affected) executingTasks.current.delete(t.id);
 
       const { error: updateError } = await supabase
@@ -408,16 +450,6 @@ export function useAgencyTasks({ agencyId, autoRefresh = true, maxConcurrent = M
 
       if (updateError) throw updateError;
 
-      // Log a lightweight cancel marker for each affected task (small batches are OK)
-      await supabase.from('agency_task_logs').insert(
-        affected.map(t => ({
-          task_id: t.id,
-          message: '⏹️ Task cancelled by user (bulk cancel)',
-          log_type: 'info',
-          data: { bulk: true },
-        }))
-      );
-
       toast.message(`Cancelled ${affected.length} tasks`);
       return affected.length;
     } catch (err) {
@@ -427,14 +459,13 @@ export function useAgencyTasks({ agencyId, autoRefresh = true, maxConcurrent = M
     }
   }, [agencyId, tasks]);
 
-  // Retry single task (requeue and restart)
+  // Retry single task
   const retryTask = useCallback(async (taskId: string): Promise<boolean> => {
     const task = tasks.find(t => t.id === taskId);
     if (!task || (task.status !== 'failed' && task.status !== 'cancelled')) {
       return false;
     }
 
-    // Reset task to queued
     const success = await updateTask(taskId, {
       status: 'queued' as TaskStatus,
       error_message: null,
@@ -446,11 +477,11 @@ export function useAgencyTasks({ agencyId, autoRefresh = true, maxConcurrent = M
     if (success) {
       await addTaskLog(taskId, '🔄 Task queued for retry', 'info');
       toast.info('Task queued for retry');
-      // Immediately start it
-      await startTask(taskId);
+      // Trigger processing
+      setTimeout(() => processQueueInternal(), 100);
     }
     return success;
-  }, [tasks, updateTask, addTaskLog, startTask]);
+  }, [tasks, updateTask, addTaskLog]);
 
   // Retry all failed tasks
   const retryAllFailed = useCallback(async (): Promise<number> => {
@@ -469,7 +500,7 @@ export function useAgencyTasks({ agencyId, autoRefresh = true, maxConcurrent = M
     return retried;
   }, [tasks, retryTask]);
 
-  // Clear completed tasks (delete from DB)
+  // Clear completed tasks
   const clearCompletedTasks = useCallback(async (): Promise<number> => {
     if (!agencyId) return 0;
 
@@ -479,17 +510,8 @@ export function useAgencyTasks({ agencyId, autoRefresh = true, maxConcurrent = M
 
       const completedIds = completed.map(t => t.id);
 
-      // Delete logs first
-      await supabase
-        .from('agency_task_logs')
-        .delete()
-        .in('task_id', completedIds);
-
-      // Delete tasks
-      const { error: deleteError } = await supabase
-        .from('agency_tasks')
-        .delete()
-        .in('id', completedIds);
+      await supabase.from('agency_task_logs').delete().in('task_id', completedIds);
+      const { error: deleteError } = await supabase.from('agency_tasks').delete().in('id', completedIds);
 
       if (deleteError) throw deleteError;
 
@@ -518,19 +540,29 @@ export function useAgencyTasks({ agencyId, autoRefresh = true, maxConcurrent = M
   }, [fetchTasks, fetchLogs]);
 
   // ============================================
-  // QUEUE PROCESSOR - Automatically starts queued tasks
+  // QUEUE PROCESSOR - Core processing logic
   // ============================================
-  const processQueue = useCallback(async (): Promise<number> => {
+  const processQueueInternal = useCallback(async (): Promise<number> => {
+    // Debounce rapid calls
+    const now = Date.now();
+    if (now - lastProcessTime.current < 500) return 0;
+    lastProcessTime.current = now;
+
     if (processingQueue.current) return 0;
     processingQueue.current = true;
 
     try {
-      const stats = queueStats();
-      if (stats.queued === 0 || stats.available === 0) {
+      // Calculate current capacity
+      const inProgressCount = tasks.filter(t => t.status === 'in_progress').length;
+      const executingCount = executingTasks.current.size;
+      const currentLoad = Math.max(inProgressCount, executingCount);
+      const availableSlots = Math.max(0, maxConcurrent - currentLoad);
+
+      if (availableSlots === 0) {
         return 0;
       }
 
-      // Get queued tasks ordered by priority (high first) and creation time
+      // Get queued tasks not already being processed
       const queuedTasks = tasks
         .filter(t => t.status === 'queued' && !executingTasks.current.has(t.id))
         .sort((a, b) => {
@@ -541,52 +573,66 @@ export function useAgencyTasks({ agencyId, autoRefresh = true, maxConcurrent = M
           // Earlier creation first
           return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
         })
-        .slice(0, stats.available);
+        .slice(0, availableSlots);
 
-      let started = 0;
+      if (queuedTasks.length === 0) {
+        return 0;
+      }
+
+      console.log(`📊 Queue processor: starting ${queuedTasks.length} tasks (${availableSlots} slots available)`);
+
+      // Start all tasks in parallel
+      const results = await Promise.allSettled(
+        queuedTasks.map(task => startTask(task.id))
+      );
+
+      const started = results.filter(r => r.status === 'fulfilled' && r.value).length;
       
-      // Start tasks in parallel
-      const startPromises = queuedTasks.map(async (task) => {
-        const success = await startTask(task.id);
-        if (success) started++;
-        return success;
-      });
-
-      await Promise.all(startPromises);
-
       if (started > 0) {
-        console.log(`📊 Queue processor: started ${started} tasks`);
+        console.log(`✅ Queue processor: started ${started} tasks`);
       }
 
       return started;
     } finally {
       processingQueue.current = false;
     }
-  }, [tasks, queueStats, startTask]);
+  }, [tasks, maxConcurrent, startTask]);
 
-  // Auto-process queue when tasks change
+  // Expose processQueue
+  const processQueue = useCallback(async (): Promise<number> => {
+    return processQueueInternal();
+  }, [processQueueInternal]);
+
+  // ============================================
+  // AUTO-PROCESSING: Interval-based polling
+  // ============================================
   useEffect(() => {
     if (!autoRefresh || !agencyId) return;
 
     const processInterval = setInterval(() => {
-      const stats = queueStats();
-      if (stats.queued > 0 && stats.available > 0) {
-        processQueue();
+      const queuedCount = tasks.filter(t => t.status === 'queued').length;
+      const inProgressCount = tasks.filter(t => t.status === 'in_progress').length;
+      
+      if (queuedCount > 0 && inProgressCount < maxConcurrent) {
+        processQueueInternal();
       }
-    }, QUEUE_PROCESS_INTERVAL);
+    }, QUEUE_POLL_INTERVAL);
 
     return () => clearInterval(processInterval);
-  }, [autoRefresh, agencyId, processQueue, queueStats]);
+  }, [autoRefresh, agencyId, tasks, maxConcurrent, processQueueInternal]);
 
-  // Process queue immediately when new queued tasks appear
+  // ============================================
+  // AUTO-PROCESSING: Immediate on new queued tasks
+  // ============================================
   useEffect(() => {
-    const stats = queueStats();
-    if (stats.queued > 0 && stats.available > 0 && !processingQueue.current) {
-      // Slight delay to batch multiple task creations
-      const timeout = setTimeout(() => processQueue(), 500);
+    const queuedCount = tasks.filter(t => t.status === 'queued').length;
+    const inProgressCount = tasks.filter(t => t.status === 'in_progress').length;
+    
+    if (queuedCount > 0 && inProgressCount < maxConcurrent && !processingQueue.current) {
+      const timeout = setTimeout(() => processQueueInternal(), 300);
       return () => clearTimeout(timeout);
     }
-  }, [tasks.length, queueStats, processQueue]);
+  }, [tasks, maxConcurrent, processQueueInternal]);
 
   return {
     tasks,
@@ -610,6 +656,6 @@ export function useAgencyTasks({ agencyId, autoRefresh = true, maxConcurrent = M
     getTasksByStatus,
     getRecentLogs,
     processQueue,
-    queueStats: queueStats(),
+    queueStats, // Now properly returns the object, not a function
   };
 }

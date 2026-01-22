@@ -1,6 +1,7 @@
 /**
- * Agent Skills Module — Defines capabilities for agency agents
- * Each skill maps to specific task primitives agents can execute
+ * Agent Skills Module v2.0 — Executable capabilities only
+ * Each skill maps to task primitives agents CAN actually execute
+ * Using: Groq (AI) + Firecrawl (Web) + Lovable AI Gateway
  */
 
 export interface AgentSkill {
@@ -8,110 +9,93 @@ export interface AgentSkill {
   name: string;
   description: string;
   icon: string;
-  category: 'research' | 'content' | 'data' | 'outreach' | 'technical' | 'business';
-  handlers: string[]; // API handlers this skill can use
+  category: 'research' | 'content' | 'data' | 'seo' | 'outreach';
+  handlers: string[]; // Available: groq, firecrawl, lovable
+  isExecutable: boolean; // Can this skill actually be executed with current infra?
 }
 
-// Core agent skills
+// Core agent skills - ONLY those with working infrastructure
 export const AGENT_SKILLS: Record<string, AgentSkill> = {
   research: {
     id: 'research',
-    name: 'Research',
-    description: 'Perform competitive, market, and web research',
+    name: 'Web Research',
+    description: 'Search and scrape websites for information using Firecrawl',
     icon: '🔍',
     category: 'research',
-    handlers: ['firecrawl', 'fetch', 'wikipedia', 'hn_api', 'reddit_api'],
-  },
-  writing: {
-    id: 'writing',
-    name: 'Writing',
-    description: 'Generate structured content outputs',
-    icon: '✍️',
-    category: 'content',
-    handlers: ['groq', 'lovable'],
+    handlers: ['firecrawl', 'groq'],
+    isExecutable: true,
   },
   analysis: {
     id: 'analysis',
-    name: 'Analysis',
-    description: 'Extract structured insights and summaries',
+    name: 'Data Analysis',
+    description: 'Analyze and synthesize information with AI',
     icon: '📊',
     category: 'data',
     handlers: ['groq', 'lovable'],
+    isExecutable: true,
   },
-  enrichment: {
-    id: 'enrichment',
-    name: 'Enrichment',
-    description: 'Enrich datasets with additional context',
-    icon: '🔗',
-    category: 'data',
-    handlers: ['firecrawl', 'wikipedia', 'whois', 'ipinfo', 'builtwith'],
-  },
-  outreach: {
-    id: 'outreach',
-    name: 'Outreach',
-    description: 'Generate outreach messaging and campaign copy',
-    icon: '📧',
-    category: 'outreach',
+  writing: {
+    id: 'writing',
+    name: 'Content Writing',
+    description: 'Generate optimized content and articles',
+    icon: '✍️',
+    category: 'content',
     handlers: ['groq', 'lovable'],
+    isExecutable: true,
   },
   seo: {
     id: 'seo',
-    name: 'SEO',
-    description: 'Analyze SEO signals and surface opportunities',
+    name: 'SEO Analysis',
+    description: 'Analyze pages for SEO and provide recommendations',
     icon: '📈',
-    category: 'technical',
-    handlers: ['firecrawl', 'fetch', 'groq'],
+    category: 'seo',
+    handlers: ['firecrawl', 'groq'],
+    isExecutable: true,
   },
-  monitoring: {
-    id: 'monitoring',
-    name: 'Monitoring',
-    description: 'Track changes over time across web targets',
-    icon: '👁️',
+  competitive: {
+    id: 'competitive',
+    name: 'Competitive Intel',
+    description: 'Research competitors and build profiles',
+    icon: '🎯',
     category: 'research',
-    handlers: ['firecrawl', 'fetch'],
+    handlers: ['firecrawl', 'groq'],
+    isExecutable: true,
   },
-  data_ops: {
-    id: 'data_ops',
-    name: 'Data Ops',
-    description: 'Clean, convert, normalize and export datasets',
-    icon: '🔧',
+  extraction: {
+    id: 'extraction',
+    name: 'Data Extraction',
+    description: 'Extract structured data from web pages',
+    icon: '📥',
     category: 'data',
-    handlers: ['groq', 'lovable'],
-  },
-  local_business: {
-    id: 'local_business',
-    name: 'Local Business',
-    description: 'Perform local competitive audits and profiles',
-    icon: '🏪',
-    category: 'business',
-    handlers: ['yelp_reviews', 'firecrawl', 'fetch'],
+    handlers: ['firecrawl'],
+    isExecutable: true,
   },
 } as const;
 
 export type AgentSkillId = keyof typeof AGENT_SKILLS;
 
-// Map specializations to skills
+// Map specializations to only executable skills
 export const SPECIALIZATION_SKILLS: Record<string, AgentSkillId[]> = {
-  Research: ['research', 'analysis', 'monitoring'],
-  Intel: ['research', 'analysis', 'enrichment'],
-  Writing: ['writing', 'outreach'],
+  Research: ['research', 'analysis', 'competitive'],
+  Intel: ['research', 'analysis', 'competitive', 'extraction'],
+  Writing: ['writing', 'analysis'],
   SEO: ['seo', 'research', 'analysis'],
-  Marketing: ['outreach', 'writing', 'seo'],
-  Analyst: ['analysis', 'data_ops', 'research'],
-  Data: ['data_ops', 'analysis', 'enrichment'],
-  Sales: ['outreach', 'research', 'local_business'],
-  Growth: ['seo', 'analysis', 'outreach'],
-  Coding: ['analysis', 'data_ops'],
-  OPS: ['data_ops', 'monitoring'],
+  Marketing: ['writing', 'seo', 'research'],
+  Analyst: ['analysis', 'research', 'extraction'],
+  Data: ['extraction', 'analysis', 'research'],
+  Sales: ['research', 'competitive', 'writing'],
+  Growth: ['seo', 'analysis', 'research'],
+  Coding: ['analysis', 'research'],
+  OPS: ['research', 'analysis'],
   Designer: ['writing', 'analysis'],
   Dreamer: ['writing', 'research'],
-  Defense: ['research', 'analysis', 'monitoring'],
-  Audit: ['analysis', 'research', 'data_ops'],
-  Finance: ['analysis', 'research', 'data_ops'],
+  Defense: ['research', 'analysis'],
+  Audit: ['analysis', 'research', 'seo'],
+  Finance: ['analysis', 'research'],
   Legal: ['research', 'analysis'],
   Support: ['writing', 'research'],
-  Success: ['outreach', 'writing', 'research'],
-  Hybrid: ['research', 'analysis', 'writing', 'outreach', 'seo'],
+  Success: ['research', 'writing', 'analysis'],
+  Hybrid: ['research', 'analysis', 'writing', 'seo', 'competitive'],
 };
 
 /**
@@ -128,4 +112,11 @@ export function getSkillsForSpecialization(specialization: string): AgentSkill[]
 export function hasSkill(specialization: string, skillId: AgentSkillId): boolean {
   const skills = SPECIALIZATION_SKILLS[specialization] || [];
   return skills.includes(skillId);
+}
+
+/**
+ * Get all executable skill IDs
+ */
+export function getExecutableSkills(): AgentSkillId[] {
+  return Object.keys(AGENT_SKILLS) as AgentSkillId[];
 }

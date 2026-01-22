@@ -1,13 +1,13 @@
 /**
- * Leader Orchestrator — Routes tasks to specialist agents
- * The leader receives user instructions, parses into primitives,
- * assigns to best-fit agents, and aggregates results
+ * Leader Orchestrator v2.0 — Routes tasks to specialist agents
+ * Updated with executable task types only
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import { TASK_PRIMITIVES, TaskPrimitiveId, getPrimitiveForTaskType } from '../skills/taskPrimitives';
-import { SPECIALIZATION_SKILLS, hasSkill, type AgentSkillId } from '../skills/agentSkills';
+import { TASK_PRIMITIVES, TaskPrimitiveId } from '../skills/taskPrimitives';
+import { SPECIALIZATION_SKILLS, type AgentSkillId } from '../skills/agentSkills';
 import { recordTelemetryEvent } from '../telemetry/agencyTelemetry';
+import { getDomainsForTaskType } from '../domains/researchDomains';
 
 // ============================================================================
 // TYPES
@@ -26,6 +26,7 @@ export interface RoutedTask {
   assignedMemberId: string;
   input: string;
   priority: number;
+  suggestedDomains?: string[];
 }
 
 export interface OrchestrationPlan {
@@ -43,68 +44,79 @@ export interface OrchestrationResult {
 }
 
 // ============================================================================
-// INTENT PARSING
+// INTENT PARSING - Maps user input to executable task types
 // ============================================================================
 
-/**
- * Parse user input into task intents
- * Uses keyword matching and pattern recognition
- */
 export function parseIntents(input: string): { primitive: TaskPrimitiveId; input: string }[] {
   const intents: { primitive: TaskPrimitiveId; input: string }[] = [];
   const lowerInput = input.toLowerCase();
   
   // Research patterns
-  if (lowerInput.includes('research') || lowerInput.includes('find out') || lowerInput.includes('discover')) {
+  if (lowerInput.includes('research') || lowerInput.includes('find out') || lowerInput.includes('discover') || lowerInput.includes('learn about')) {
     intents.push({ primitive: 'web_research', input });
   }
   
-  // Competitive analysis patterns
-  if (lowerInput.includes('competitor') || lowerInput.includes('competition') || lowerInput.includes('compare')) {
+  // Competitor patterns
+  if (lowerInput.includes('competitor') || lowerInput.includes('competition') || lowerInput.includes('compare') || lowerInput.includes('rival')) {
     intents.push({ primitive: 'competitive_profile', input });
   }
   
+  // Market research
+  if (lowerInput.includes('market') || lowerInput.includes('industry') || lowerInput.includes('sector')) {
+    intents.push({ primitive: 'market_research', input });
+  }
+  
   // SEO patterns
-  if (lowerInput.includes('seo') || lowerInput.includes('ranking') || lowerInput.includes('keywords')) {
+  if (lowerInput.includes('seo') || lowerInput.includes('audit') || lowerInput.includes('ranking')) {
     intents.push({ primitive: 'seo_audit', input });
   }
   
+  // Keyword patterns
+  if (lowerInput.includes('keyword') || lowerInput.includes('search term')) {
+    intents.push({ primitive: 'keyword_research', input });
+  }
+  
+  // Backlink patterns
+  if (lowerInput.includes('backlink') || lowerInput.includes('link building') || lowerInput.includes('guest post')) {
+    intents.push({ primitive: 'backlink_research', input });
+  }
+  
+  // Data extraction
+  if (lowerInput.includes('extract') || lowerInput.includes('scrape') || lowerInput.includes('pull data')) {
+    intents.push({ primitive: 'data_extraction', input });
+  }
+  
+  // Site mapping
+  if (lowerInput.includes('sitemap') || lowerInput.includes('map site') || lowerInput.includes('all pages')) {
+    intents.push({ primitive: 'site_mapping', input });
+  }
+  
   // Content patterns
-  if (lowerInput.includes('write') || lowerInput.includes('create content') || lowerInput.includes('blog')) {
+  if (lowerInput.includes('write') || lowerInput.includes('create content') || lowerInput.includes('blog') || lowerInput.includes('article')) {
     intents.push({ primitive: 'content_generation', input });
   }
   
   // Outreach patterns
-  if (lowerInput.includes('email') || lowerInput.includes('outreach') || lowerInput.includes('sequence')) {
-    intents.push({ primitive: 'outreach_generation', input });
+  if (lowerInput.includes('email') || lowerInput.includes('outreach') || lowerInput.includes('pitch')) {
+    intents.push({ primitive: 'outreach_draft', input });
   }
   
-  // Data patterns
-  if (lowerInput.includes('extract') || lowerInput.includes('scrape') || lowerInput.includes('data from')) {
-    intents.push({ primitive: 'data_extraction', input });
+  // Social content
+  if (lowerInput.includes('social') || lowerInput.includes('post') || lowerInput.includes('linkedin') || lowerInput.includes('twitter')) {
+    intents.push({ primitive: 'social_content', input });
   }
   
-  // Enrichment patterns
-  if (lowerInput.includes('enrich') || lowerInput.includes('add context') || lowerInput.includes('enhance')) {
-    intents.push({ primitive: 'data_enrichment', input });
+  // Trend analysis
+  if (lowerInput.includes('trend') || lowerInput.includes('emerging') || lowerInput.includes('future')) {
+    intents.push({ primitive: 'trend_analysis', input });
   }
   
-  // Monitoring patterns
-  if (lowerInput.includes('monitor') || lowerInput.includes('track') || lowerInput.includes('alert')) {
-    intents.push({ primitive: 'monitoring_check', input });
+  // Brand analysis
+  if (lowerInput.includes('brand') || lowerInput.includes('reputation') || lowerInput.includes('identity')) {
+    intents.push({ primitive: 'brand_analysis', input });
   }
   
-  // Local business patterns
-  if (lowerInput.includes('local') || lowerInput.includes('nearby') || lowerInput.includes('reviews')) {
-    intents.push({ primitive: 'local_business_analysis', input });
-  }
-  
-  // Dataset operations
-  if (lowerInput.includes('clean') || lowerInput.includes('convert') || lowerInput.includes('normalize')) {
-    intents.push({ primitive: 'dataset_operations', input });
-  }
-  
-  // Default to web research if no specific intent detected
+  // Default to web research
   if (intents.length === 0) {
     intents.push({ primitive: 'web_research', input });
   }
