@@ -54,6 +54,7 @@ import { AccessIdentityTab } from '@/components/substrate-os/AccessIdentityTab';
 import { AgencyMintWizard } from '@/components/agency/AgencyMintWizard';
 import { AgencyGallery } from '@/components/agency/AgencyGallery';
 import { EvolutionTab } from '@/components/substrate-os/EvolutionTab';
+import { CodeAgentTab } from '@/components/substrate-os/CodeAgentTab';
 import { cn } from '@/lib/utils';
 
 // ============================================
@@ -84,6 +85,7 @@ function getTabGroups(isOperator: boolean, isGovernor: boolean, hasAgency: boole
   const operateTabs: TabConfig[] = [
     { id: 'terminal', label: 'Terminal', icon: Terminal, color: 'emerald' },
     ...(isOperator ? [
+      { id: 'codeagent', label: 'CodeAgent', icon: Bot, color: 'violet', minRole: 'operator' as const },
       { id: 'core', label: 'Core', icon: Cpu, color: 'orange', minRole: 'operator' as const },
       { id: 'ripple', label: 'Ripple', icon: Radio, color: 'cyan', minRole: 'operator' as const },
       { id: 'access', label: 'Access', icon: Key, color: 'amber', minRole: 'operator' as const },
@@ -163,6 +165,7 @@ function SidebarNav({ groups, activeTab, onTabChange, collapsed = false, onClose
                     orange: 'bg-orange-500/10 text-orange-400 border-orange-500/40',
                     purple: 'bg-purple-500/10 text-purple-400 border-purple-500/40',
                     blue: 'bg-blue-500/10 text-blue-400 border-blue-500/40',
+                    violet: 'bg-violet-500/10 text-violet-400 border-violet-500/40',
                   };
                   
                   return (
@@ -435,6 +438,9 @@ export default function SubstrateOS() {
               <EventStream />
             </main>
           )}
+
+          {/* CodeAgent */}
+          {activeTab === 'codeagent' && isOperator && <CodeAgentTab enabled={isOperator} />}
 
           {/* Core Kernel */}
           {activeTab === 'core' && isOperator && <CoreKernelTab enabled={isOperator} />}
