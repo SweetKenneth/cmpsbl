@@ -3,13 +3,13 @@
  * Complete list of all substrate commands organized by module
  */
 
-import { Brain, Shield, Eye, Zap, MessageSquare, Moon, Settings, Terminal, Cpu, Clock, Search, Database, Activity, Lock, Router, Gauge, Sparkles } from 'lucide-react';
+import { Brain, Shield, Eye, Zap, MessageSquare, Moon, Settings, Terminal, Cpu, Clock, Search, Database, Activity, Lock, Router, Gauge, Sparkles, Radio, Key, Server, Send, List, PlayCircle } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
 export interface CommandDefinition {
   command: string;
   description: string;
-  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer' | 'meta';
+  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer' | 'core' | 'ripple' | 'access' | 'meta';
   icon: LucideIcon;
   requiresOperator: boolean;
   args?: string;
@@ -137,6 +137,45 @@ export const MODERNIZER_COMMANDS: CommandDefinition[] = [
   { command: 'modernizer.quota', description: 'Check usage limits', category: 'modernizer', icon: Gauge, requiresOperator: false },
 ];
 
+// CORE module — Kernel, scheduler, lifecycle
+export const CORE_COMMANDS: CommandDefinition[] = [
+  { command: 'core.status', description: 'Kernel status with uptime', category: 'core', icon: Server, requiresOperator: false },
+  { command: 'core.pulse', description: 'Lightweight heartbeat', category: 'core', icon: Activity, requiresOperator: false },
+  { command: 'core.boot', description: 'Initialize boot sequence', category: 'core', icon: PlayCircle, requiresOperator: true },
+  { command: 'core.schedule', description: 'Schedule a delayed job', category: 'core', icon: Clock, requiresOperator: true, args: '<module> <action> [delay]', example: 'core.schedule brain reflect 5m' },
+  { command: 'core.jobs', description: 'List scheduled jobs', category: 'core', icon: List, requiresOperator: false, args: '[status] [limit]' },
+  { command: 'core.process', description: 'Process next queued job', category: 'core', icon: PlayCircle, requiresOperator: true },
+  { command: 'core.config', description: 'Get/set system config', category: 'core', icon: Settings, requiresOperator: true, args: '[key] [value]' },
+  { command: 'core.shutdown', description: 'Graceful system shutdown', category: 'core', icon: Server, requiresOperator: true },
+];
+
+// RIPPLE module — Message bus, pub/sub, queues
+export const RIPPLE_COMMANDS: CommandDefinition[] = [
+  { command: 'ripple.status', description: 'Message bus status', category: 'ripple', icon: Radio, requiresOperator: false },
+  { command: 'ripple.pulse', description: 'Lightweight heartbeat', category: 'ripple', icon: Activity, requiresOperator: false },
+  { command: 'ripple.topics', description: 'List all topics', category: 'ripple', icon: List, requiresOperator: false },
+  { command: 'ripple.events', description: 'Get event log', category: 'ripple', icon: Activity, requiresOperator: false, args: '[topic] [limit]' },
+  { command: 'ripple.publish', description: 'Publish event to topic', category: 'ripple', icon: Send, requiresOperator: true, args: '<topic> <event_type> [payload]', example: 'ripple.publish system.alerts health_check "{}"' },
+  { command: 'ripple.subscribe', description: 'Subscribe to topic', category: 'ripple', icon: Radio, requiresOperator: true, args: '<topic> <module> <action>' },
+  { command: 'ripple.enqueue', description: 'Add job to queue', category: 'ripple', icon: List, requiresOperator: true, args: '<queue> <payload>' },
+  { command: 'ripple.dequeue', description: 'Get next from queue', category: 'ripple', icon: List, requiresOperator: true, args: '<queue>' },
+  { command: 'ripple.dead_letter', description: 'View failed jobs', category: 'ripple', icon: Shield, requiresOperator: false },
+  { command: 'ripple.retry', description: 'Retry failed job', category: 'ripple', icon: PlayCircle, requiresOperator: true, args: '<job_id>' },
+];
+
+// ACCESS module — API keys, billing, metering
+export const ACCESS_COMMANDS: CommandDefinition[] = [
+  { command: 'access.status', description: 'Identity module status', category: 'access', icon: Key, requiresOperator: false },
+  { command: 'access.pulse', description: 'Lightweight heartbeat', category: 'access', icon: Activity, requiresOperator: false },
+  { command: 'access.create_key', description: 'Create API key', category: 'access', icon: Key, requiresOperator: true, args: '<developer_id> [name] [scopes]', example: 'access.create_key dev_123 "My Key" read,write' },
+  { command: 'access.validate_key', description: 'Validate API key', category: 'access', icon: Shield, requiresOperator: true, args: '<api_key>' },
+  { command: 'access.revoke_key', description: 'Revoke API key', category: 'access', icon: Lock, requiresOperator: true, args: '<key_id>' },
+  { command: 'access.list_keys', description: 'List developer keys', category: 'access', icon: List, requiresOperator: false, args: '<developer_id>' },
+  { command: 'access.usage', description: 'Get usage statistics', category: 'access', icon: Gauge, requiresOperator: false, args: '[api_key_id] [start] [end]' },
+  { command: 'access.quota', description: 'Check quota remaining', category: 'access', icon: Gauge, requiresOperator: false, args: '<api_key_id>' },
+  { command: 'access.subscription', description: 'Get subscription info', category: 'access', icon: Key, requiresOperator: false, args: '<developer_id>' },
+];
+
 export const META_COMMANDS: CommandDefinition[] = [
   { command: 'help', description: 'Show all commands', category: 'meta', icon: Terminal, requiresOperator: false },
   { command: 'help brain', description: 'Brain module commands', category: 'meta', icon: Brain, requiresOperator: false },
@@ -147,6 +186,9 @@ export const META_COMMANDS: CommandDefinition[] = [
   { command: 'help dream', description: 'Dream module commands', category: 'meta', icon: Moon, requiresOperator: false },
   { command: 'help system', description: 'System module commands', category: 'meta', icon: Cpu, requiresOperator: false },
   { command: 'help modernizer', description: 'Modernizer module commands', category: 'meta', icon: Sparkles, requiresOperator: false },
+  { command: 'help core', description: 'Core kernel commands', category: 'meta', icon: Server, requiresOperator: false },
+  { command: 'help ripple', description: 'Message bus commands', category: 'meta', icon: Radio, requiresOperator: false },
+  { command: 'help access', description: 'Identity/billing commands', category: 'meta', icon: Key, requiresOperator: false },
   { command: 'clear', description: 'Clear terminal history', category: 'meta', icon: Terminal, requiresOperator: false },
   { command: 'whoami', description: 'Display identity', category: 'meta', icon: Cpu, requiresOperator: false },
   { command: 'history', description: 'Command history', category: 'meta', icon: Clock, requiresOperator: false },
@@ -163,18 +205,24 @@ export const ALL_COMMANDS: CommandDefinition[] = [
   ...DREAM_COMMANDS,
   ...SYSTEM_COMMANDS,
   ...MODERNIZER_COMMANDS,
+  ...CORE_COMMANDS,
+  ...RIPPLE_COMMANDS,
+  ...ACCESS_COMMANDS,
   ...META_COMMANDS,
 ];
 
 export const COMMAND_CATEGORIES = {
+  core: { label: 'CORE', color: 'text-orange-400', borderColor: 'border-orange-500/30', commands: CORE_COMMANDS },
   brain: { label: 'BRAIN', color: 'text-purple-400', borderColor: 'border-purple-500/30', commands: BRAIN_COMMANDS },
   decode: { label: 'DECODE', color: 'text-blue-400', borderColor: 'border-blue-500/30', commands: DECODE_COMMANDS },
   defense: { label: 'DEFENSE', color: 'text-red-400', borderColor: 'border-red-500/30', commands: DEFENSE_COMMANDS },
   nexus: { label: 'NEXUS', color: 'text-amber-400', borderColor: 'border-amber-500/30', commands: NEXUS_COMMANDS },
   vision: { label: 'VISION', color: 'text-cyan-400', borderColor: 'border-cyan-500/30', commands: VISION_COMMANDS },
   dream: { label: 'DREAM', color: 'text-fuchsia-400', borderColor: 'border-fuchsia-500/30', commands: DREAM_COMMANDS },
+  ripple: { label: 'RIPPLE', color: 'text-cyan-500', borderColor: 'border-cyan-500/30', commands: RIPPLE_COMMANDS },
+  access: { label: 'ACCESS', color: 'text-amber-500', borderColor: 'border-amber-500/30', commands: ACCESS_COMMANDS },
   system: { label: 'SYSTEM', color: 'text-emerald-400', borderColor: 'border-emerald-500/30', commands: SYSTEM_COMMANDS },
-  modernizer: { label: 'MODERNIZER', color: 'text-orange-400', borderColor: 'border-orange-500/30', commands: MODERNIZER_COMMANDS },
+  modernizer: { label: 'MODERNIZER', color: 'text-pink-400', borderColor: 'border-pink-500/30', commands: MODERNIZER_COMMANDS },
   meta: { label: 'META', color: 'text-gray-400', borderColor: 'border-gray-500/30', commands: META_COMMANDS },
 } as const;
 

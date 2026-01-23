@@ -1,6 +1,6 @@
 # promptfluid® Substrate — API Reference
 
-**v2026.10 | Complete Cognitive OS API**
+**v4.0.0 | Complete 11-Module Cognitive OS API**
 
 ---
 

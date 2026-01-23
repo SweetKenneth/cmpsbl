@@ -39,14 +39,20 @@ export const DEFAULT_CONFIG: TerminalConfig = {
 
 // Terminal personality messages
 export const BOOT_MESSAGES = [
-  '▓▓▓▓▓▓▓▓▓▓ substrate os v2026.01',
-  '◉ cognitive kernel loaded',
-  '◉ neural pathways initialized',
-  '◉ memory banks online',
+  '▓▓▓▓▓▓▓▓▓▓ promptfluid® substrate os v4.0.0',
+  '◉ core kernel loaded',
+  '◉ ripple message bus initialized',
+  '◉ access identity layer online',
+  '◉ brain cognitive engine ready',
+  '◉ decode interpreter armed',
+  '◉ defense grid activated',
+  '◉ nexus ai router connected',
+  '◉ vision telemetry streaming',
   '◉ dream-eater: standby',
-  '◉ defense grid: armed',
-  '◉ nexus router: connected',
+  '◉ system admin layer ready',
+  '◉ modernizer evolution engine online',
   '────────────────────────────────────────',
+  '11 modules | 140+ commands | 100% health',
   'type \'help\' for commands or \'help <module>\' for specifics',
   '',
 ];
