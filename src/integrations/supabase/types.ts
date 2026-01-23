@@ -2046,33 +2046,102 @@ export type Database = {
       }
       brain_graph_edges: {
         Row: {
+          access_count: number | null
+          confidence: number | null
           created_at: string | null
+          decay_weight: number | null
+          direction: string | null
           id: string
+          last_accessed: string | null
           metadata: Json | null
           reinforcement_score: number | null
           relation: string | null
+          relation_type: string | null
           source_id: string
           target_id: string
+          temporal_context: string | null
           weight: number | null
         }
         Insert: {
+          access_count?: number | null
+          confidence?: number | null
           created_at?: string | null
+          decay_weight?: number | null
+          direction?: string | null
           id?: string
+          last_accessed?: string | null
           metadata?: Json | null
           reinforcement_score?: number | null
           relation?: string | null
+          relation_type?: string | null
           source_id: string
           target_id: string
+          temporal_context?: string | null
           weight?: number | null
         }
         Update: {
+          access_count?: number | null
+          confidence?: number | null
           created_at?: string | null
+          decay_weight?: number | null
+          direction?: string | null
           id?: string
+          last_accessed?: string | null
           metadata?: Json | null
           reinforcement_score?: number | null
           relation?: string | null
+          relation_type?: string | null
           source_id?: string
           target_id?: string
+          temporal_context?: string | null
+          weight?: number | null
+        }
+        Relationships: []
+      }
+      brain_graph_nodes: {
+        Row: {
+          attributes: Json | null
+          centrality_score: number | null
+          cluster_id: string | null
+          created_at: string | null
+          description: string | null
+          embedding: string | null
+          id: string
+          label: string
+          memory_tier: string | null
+          node_type: string
+          source_id: string | null
+          updated_at: string | null
+          weight: number | null
+        }
+        Insert: {
+          attributes?: Json | null
+          centrality_score?: number | null
+          cluster_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          embedding?: string | null
+          id?: string
+          label: string
+          memory_tier?: string | null
+          node_type: string
+          source_id?: string | null
+          updated_at?: string | null
+          weight?: number | null
+        }
+        Update: {
+          attributes?: Json | null
+          centrality_score?: number | null
+          cluster_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          embedding?: string | null
+          id?: string
+          label?: string
+          memory_tier?: string | null
+          node_type?: string
+          source_id?: string | null
+          updated_at?: string | null
           weight?: number | null
         }
         Relationships: []
@@ -2112,6 +2181,7 @@ export type Database = {
       }
       brain_memory_cold: {
         Row: {
+          access_count: number | null
           archived_at: string | null
           compression_level: number | null
           compression_ratio: number | null
@@ -2119,11 +2189,14 @@ export type Database = {
           created_at: string | null
           embedding: string | null
           id: string
+          last_accessed: string | null
           source_refs: string[] | null
           summary: string
           tags: Json | null
+          value_score: number | null
         }
         Insert: {
+          access_count?: number | null
           archived_at?: string | null
           compression_level?: number | null
           compression_ratio?: number | null
@@ -2131,11 +2204,14 @@ export type Database = {
           created_at?: string | null
           embedding?: string | null
           id?: string
+          last_accessed?: string | null
           source_refs?: string[] | null
           summary: string
           tags?: Json | null
+          value_score?: number | null
         }
         Update: {
+          access_count?: number | null
           archived_at?: string | null
           compression_level?: number | null
           compression_ratio?: number | null
@@ -2143,48 +2219,167 @@ export type Database = {
           created_at?: string | null
           embedding?: string | null
           id?: string
+          last_accessed?: string | null
           source_refs?: string[] | null
           summary?: string
           tags?: Json | null
+          value_score?: number | null
         }
         Relationships: []
       }
       brain_memory_hot: {
         Row: {
+          access_count: number | null
           content: string
           context: string | null
           created_at: string | null
+          decay_rate: number | null
           embedding: string | null
           goal_ref: string | null
           id: string
+          importance_score: number | null
           last_used: string | null
           metadata: Json | null
           priority: number | null
           tags: Json | null
+          updated_at: string | null
+          value_score: number | null
         }
         Insert: {
+          access_count?: number | null
           content: string
           context?: string | null
           created_at?: string | null
+          decay_rate?: number | null
           embedding?: string | null
           goal_ref?: string | null
           id?: string
+          importance_score?: number | null
           last_used?: string | null
           metadata?: Json | null
           priority?: number | null
           tags?: Json | null
+          updated_at?: string | null
+          value_score?: number | null
         }
         Update: {
+          access_count?: number | null
           content?: string
           context?: string | null
           created_at?: string | null
+          decay_rate?: number | null
           embedding?: string | null
           goal_ref?: string | null
           id?: string
+          importance_score?: number | null
           last_used?: string | null
           metadata?: Json | null
           priority?: number | null
           tags?: Json | null
+          updated_at?: string | null
+          value_score?: number | null
+        }
+        Relationships: []
+      }
+      brain_memory_pruned: {
+        Row: {
+          can_restore: boolean | null
+          content_preview: string | null
+          context: string | null
+          id: string
+          original_memory_id: string
+          original_tier: string
+          prune_reason: string
+          pruned_at: string | null
+          restore_until: string | null
+          value_score: number | null
+        }
+        Insert: {
+          can_restore?: boolean | null
+          content_preview?: string | null
+          context?: string | null
+          id?: string
+          original_memory_id: string
+          original_tier: string
+          prune_reason: string
+          pruned_at?: string | null
+          restore_until?: string | null
+          value_score?: number | null
+        }
+        Update: {
+          can_restore?: boolean | null
+          content_preview?: string | null
+          context?: string | null
+          id?: string
+          original_memory_id?: string
+          original_tier?: string
+          prune_reason?: string
+          pruned_at?: string | null
+          restore_until?: string | null
+          value_score?: number | null
+        }
+        Relationships: []
+      }
+      brain_memory_warm: {
+        Row: {
+          access_count: number | null
+          content: string
+          context: string | null
+          core_summary: string | null
+          created_at: string | null
+          decay_rate: number | null
+          demoted_at: string | null
+          embedding: string | null
+          goal_ref: string | null
+          id: string
+          last_accessed: string | null
+          metadata: Json | null
+          priority: number | null
+          promoted_at: string | null
+          source_memory_id: string | null
+          tags: Json | null
+          updated_at: string | null
+          value_score: number | null
+        }
+        Insert: {
+          access_count?: number | null
+          content: string
+          context?: string | null
+          core_summary?: string | null
+          created_at?: string | null
+          decay_rate?: number | null
+          demoted_at?: string | null
+          embedding?: string | null
+          goal_ref?: string | null
+          id?: string
+          last_accessed?: string | null
+          metadata?: Json | null
+          priority?: number | null
+          promoted_at?: string | null
+          source_memory_id?: string | null
+          tags?: Json | null
+          updated_at?: string | null
+          value_score?: number | null
+        }
+        Update: {
+          access_count?: number | null
+          content?: string
+          context?: string | null
+          core_summary?: string | null
+          created_at?: string | null
+          decay_rate?: number | null
+          demoted_at?: string | null
+          embedding?: string | null
+          goal_ref?: string | null
+          id?: string
+          last_accessed?: string | null
+          metadata?: Json | null
+          priority?: number | null
+          promoted_at?: string | null
+          source_memory_id?: string | null
+          tags?: Json | null
+          updated_at?: string | null
+          value_score?: number | null
         }
         Relationships: []
       }
@@ -2592,6 +2787,48 @@ export type Database = {
           fix_confidence?: number | null
           id?: string
           sensory_data?: Json
+        }
+        Relationships: []
+      }
+      brain_tiering_config: {
+        Row: {
+          auto_demote: boolean | null
+          auto_promote: boolean | null
+          config: Json | null
+          created_at: string | null
+          id: string
+          max_age_days: number | null
+          max_entries: number | null
+          min_value_score: number | null
+          prune_threshold: number | null
+          tier_name: string
+          updated_at: string | null
+        }
+        Insert: {
+          auto_demote?: boolean | null
+          auto_promote?: boolean | null
+          config?: Json | null
+          created_at?: string | null
+          id?: string
+          max_age_days?: number | null
+          max_entries?: number | null
+          min_value_score?: number | null
+          prune_threshold?: number | null
+          tier_name: string
+          updated_at?: string | null
+        }
+        Update: {
+          auto_demote?: boolean | null
+          auto_promote?: boolean | null
+          config?: Json | null
+          created_at?: string | null
+          id?: string
+          max_age_days?: number | null
+          max_entries?: number | null
+          min_value_score?: number | null
+          prune_threshold?: number | null
+          tier_name?: string
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -7997,6 +8234,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      calculate_memory_value: {
+        Args: {
+          p_access_count: number
+          p_age_days: number
+          p_decay_rate: number
+          p_importance_score: number
+        }
+        Returns: number
+      }
       calculate_next_scan_run: {
         Args: {
           p_frequency: string
