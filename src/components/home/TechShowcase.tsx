@@ -1,6 +1,7 @@
 /**
- * Tech Showcase — Interactive demonstration of CMPSBL capabilities
+ * Tech Showcase — Interactive demonstration of all 11 CMPSBL modules
  * Premium terminal-style code display with syntax highlighting
+ * v4.1.1: Full module coverage for the 4-layer kernel architecture
  */
 
 import { useState, useEffect } from "react";
@@ -12,22 +13,95 @@ import {
   Terminal,
   Copy,
   Check,
-  Play,
+  Shield,
+  Eye,
+  MessageSquare,
+  Cpu,
+  Radio,
+  Key,
+  Settings,
   Sparkles,
   Code,
+  Layers,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
+// All 11 modules organized by 4-layer architecture
 const codeExamples = [
+  // KERNEL LAYER
   {
-    id: "memory",
-    icon: Brain,
-    title: "Persistent Memory",
-    description: "Store and recall context across sessions",
+    id: "core",
+    icon: Cpu,
+    layer: "Kernel",
+    title: "CORE Scheduling",
+    description: "Kernel orchestration & task scheduling",
+    color: "text-orange-500",
+    gradient: "from-orange-500 to-amber-600",
+    code: `// Schedule a recurring task with CORE
+const task = await cmpsbl.core.schedule({
+  name: "daily_memory_cleanup",
+  cron: "0 3 * * *", // 3am daily
+  handler: "brain.prune",
+  params: { threshold: 0.2, dry_run: false }
+});
+
+// Check scheduled tasks
+const scheduled = await cmpsbl.core.list();
+console.log(scheduled.tasks);
+// [{ name: "daily_memory_cleanup", next_run: "2026-01-24T03:00:00Z" }]`,
+  },
+  {
+    id: "ripple",
+    icon: Radio,
+    layer: "Kernel",
+    title: "RIPPLE Events",
+    description: "Message bus & cross-module communication",
     color: "text-cyan-500",
-    gradient: "from-cyan-500 to-blue-600",
+    gradient: "from-cyan-500 to-teal-600",
+    code: `// Publish an event to the message bus
+await cmpsbl.ripple.emit({
+  channel: "user.actions",
+  event: "purchase_completed",
+  payload: { user_id: "u_123", amount: 49.99 },
+  ttl: 86400 // 24h retention
+});
+
+// Subscribe to events across modules
+cmpsbl.ripple.on("dream.cycle_complete", (event) => {
+  console.log("Dream cycle finished:", event.insights);
+});`,
+  },
+  {
+    id: "access",
+    icon: Key,
+    layer: "Kernel",
+    title: "ACCESS Identity",
+    description: "API keys, metering & access control",
+    color: "text-amber-500",
+    gradient: "from-amber-500 to-yellow-600",
+    code: `// Generate a scoped API key
+const apiKey = await cmpsbl.access.createKey({
+  name: "mobile-app-prod",
+  scopes: ["brain.read", "nexus.route"],
+  rate_limit: { requests: 1000, window: "1h" },
+  expires_at: "2026-12-31T23:59:59Z"
+});
+
+// Check usage metrics
+const usage = await cmpsbl.access.usage(apiKey.id);
+console.log(usage.calls_today, usage.quota_remaining);`,
+  },
+  // COGNITIVE LAYER
+  {
+    id: "brain",
+    icon: Brain,
+    layer: "Cognitive",
+    title: "BRAIN Memory",
+    description: "3-tier persistent memory system",
+    color: "text-purple-500",
+    gradient: "from-purple-500 to-violet-600",
     code: `// Store a memory with semantic context
 await cmpsbl.brain.remember({
   entity_id: "user_jane_doe",
@@ -35,47 +109,47 @@ await cmpsbl.brain.remember({
     type: "preference",
     content: "Prefers dark mode and concise responses",
     emotional_weight: 0.9,
-    tags: ["ui", "communication", "style"]
+    tier: "hot" // hot/warm/cold
   }
 });
 
-// Recall relevant memories later
+// Recall relevant memories
 const context = await cmpsbl.brain.recall({
   entity_id: "user_jane_doe",
-  query: "How does this user prefer to communicate?",
+  query: "communication style",
   limit: 5
 });`,
   },
   {
-    id: "dream",
-    icon: Moon,
-    title: "Dream Cycles",
-    description: "Consolidate learnings during idle time",
-    color: "text-violet-500",
-    gradient: "from-violet-500 to-purple-600",
-    code: `// Trigger a dream cycle for memory consolidation
-const dreamResult = await cmpsbl.dream.cycle({
-  entity_ids: ["npc_merchant_01", "npc_guard_05"],
-  mode: "consolidate",
-  options: {
-    extract_patterns: true,
-    prune_weak_memories: true,
-    min_confidence: 0.3
-  }
+    id: "decode",
+    icon: MessageSquare,
+    layer: "Cognitive",
+    title: "DECODE Chat",
+    description: "Epistemic conversation engine",
+    color: "text-fuchsia-500",
+    gradient: "from-fuchsia-500 to-pink-600",
+    code: `// Start an epistemic conversation
+const session = await cmpsbl.decode.chat({
+  context: "onboarding_flow",
+  system_prompt: "Guide users through setup",
+  memory_scope: "session", // persist to brain after
 });
 
-// Check what patterns were discovered
-console.log(dreamResult.patterns_extracted);
-// ["player_prefers_stealth", "avoids_combat", "collects_rare_items"]`,
+// Continue with memory-aware responses
+const reply = await session.send({
+  message: "What features should I explore first?",
+  include_memories: true
+});`,
   },
   {
-    id: "routing",
+    id: "nexus",
     icon: Zap,
-    title: "Smart Routing",
-    description: "Optimal AI provider selection",
+    layer: "Cognitive",
+    title: "NEXUS Routing",
+    description: "Intelligent AI provider selection",
     color: "text-green-500",
     gradient: "from-green-500 to-emerald-600",
-    code: `// Let CMPSBL choose the best provider
+    code: `// Auto-route to optimal provider
 const response = await cmpsbl.nexus.route({
   task: "complex_reasoning",
   prompt: userMessage,
@@ -87,31 +161,153 @@ const response = await cmpsbl.nexus.route({
   fallback_chain: ["gpt-4", "claude-3", "gemini-pro"]
 });
 
-// Response includes provider used and metrics
-console.log(response.provider); // "claude-3"
-console.log(response.latency_ms); // 847`,
+console.log(response.provider); // "claude-3"`,
+  },
+  // OPERATIONAL LAYER
+  {
+    id: "defense",
+    icon: Shield,
+    layer: "Operational",
+    title: "DEFENSE Security",
+    description: "Threat detection & governance",
+    color: "text-red-500",
+    gradient: "from-red-500 to-rose-600",
+    code: `// Check security posture
+const posture = await cmpsbl.defense.posture();
+console.log(posture.threat_level); // "low"
+
+// Analyze request for threats
+const analysis = await cmpsbl.defense.analyze({
+  ip: request.ip,
+  user_agent: request.headers["user-agent"],
+  payload: request.body
+});
+
+if (analysis.risk_score > 0.7) {
+  await cmpsbl.defense.block(request.ip, "24h");
+}`,
+  },
+  {
+    id: "vision",
+    icon: Eye,
+    layer: "Operational",
+    title: "VISION Telemetry",
+    description: "Observability & system monitoring",
+    color: "text-blue-500",
+    gradient: "from-blue-500 to-indigo-600",
+    code: `// Get real-time system health
+const health = await cmpsbl.vision.health();
+console.log(health.overall); // 98.5
+console.log(health.modules); // { brain: 100, nexus: 97, ... }
+
+// Query historical metrics
+const metrics = await cmpsbl.vision.query({
+  metric: "api_latency_p99",
+  range: "24h",
+  group_by: "module"
+});`,
+  },
+  {
+    id: "dream",
+    icon: Moon,
+    layer: "Operational",
+    title: "DREAM Evolution",
+    description: "Offline learning & pattern extraction",
+    color: "text-violet-500",
+    gradient: "from-violet-500 to-purple-600",
+    code: `// Trigger a dream cycle
+const dreamResult = await cmpsbl.dream.cycle({
+  entity_ids: ["npc_merchant", "npc_guard"],
+  mode: "consolidate",
+  options: {
+    extract_patterns: true,
+    prune_weak_memories: true,
+    min_confidence: 0.3
+  }
+});
+
+console.log(dreamResult.patterns_extracted);
+// ["player_prefers_stealth", "avoids_combat"]`,
+  },
+  // ADMIN LAYER
+  {
+    id: "system",
+    icon: Settings,
+    layer: "Admin",
+    title: "SYSTEM Control",
+    description: "Core administration & backups",
+    color: "text-emerald-500",
+    gradient: "from-emerald-500 to-green-600",
+    code: `// Create a system backup
+const backup = await cmpsbl.system.backup({
+  include: ["brain", "config", "access"],
+  compress: true,
+  encrypt: true
+});
+
+// Restore from backup
+await cmpsbl.system.restore({
+  backup_id: backup.id,
+  target_modules: ["brain"]
+});`,
+  },
+  {
+    id: "modernizer",
+    icon: Sparkles,
+    layer: "Admin",
+    title: "MODERNIZER Upgrade",
+    description: "Self-improvement & code evolution",
+    color: "text-rose-500",
+    gradient: "from-rose-500 to-pink-600",
+    code: `// Scan for improvement opportunities
+const proposals = await cmpsbl.modernizer.scan({
+  scope: ["brain", "nexus"],
+  types: ["performance", "security"]
+});
+
+// Review and apply a proposal
+await cmpsbl.modernizer.apply({
+  proposal_id: proposals[0].id,
+  shadow_test: true, // Test before production
+  auto_rollback: true
+});`,
   },
 ];
 
-// Syntax highlighting helper
+// Syntax highlighting helper - extended for all modules
 function highlightCode(code: string) {
   return code
     .replace(/(\/\/.*)/g, '<span class="text-slate-500">$1</span>')
-    .replace(/(\bawait\b|\bconst\b|\blet\b|\bvar\b)/g, '<span class="text-purple-400">$1</span>')
+    .replace(/(\bawait\b|\bconst\b|\blet\b|\bvar\b|\bif\b)/g, '<span class="text-purple-400">$1</span>')
     .replace(/(\bcmpsbl\b)/g, '<span class="text-cyan-400 font-semibold">$1</span>')
-    .replace(/(\.brain|\.dream|\.nexus|\.remember|\.recall|\.cycle|\.route)/g, '<span class="text-blue-400">$1</span>')
+    .replace(/(\.core|\.ripple|\.access|\.brain|\.decode|\.nexus|\.defense|\.vision|\.dream|\.system|\.modernizer)/g, '<span class="text-blue-400">$1</span>')
+    .replace(/(\.schedule|\.list|\.emit|\.on|\.createKey|\.usage|\.remember|\.recall|\.chat|\.send|\.route|\.posture|\.analyze|\.block|\.health|\.query|\.cycle|\.backup|\.restore|\.scan|\.apply)/g, '<span class="text-green-400">$1</span>')
     .replace(/(".*?")/g, '<span class="text-amber-300">$1</span>')
     .replace(/(\d+)/g, '<span class="text-orange-400">$1</span>')
     .replace(/(true|false|null)/g, '<span class="text-rose-400">$1</span>');
 }
 
+// Layer configuration for grouping modules
+const LAYER_CONFIG = {
+  Kernel: { color: 'text-orange-400', bgGlow: 'from-orange-500/20' },
+  Cognitive: { color: 'text-purple-400', bgGlow: 'from-purple-500/20' },
+  Operational: { color: 'text-blue-400', bgGlow: 'from-blue-500/20' },
+  Admin: { color: 'text-emerald-400', bgGlow: 'from-emerald-500/20' },
+} as const;
+
 export function TechShowcase() {
-  const [activeTab, setActiveTab] = useState("memory");
+  const [activeTab, setActiveTab] = useState("brain");
+  const [activeLayer, setActiveLayer] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [typedLines, setTypedLines] = useState(0);
   
   const activeExample = codeExamples.find(e => e.id === activeTab) || codeExamples[0];
   const codeLines = activeExample.code.split('\n');
+  
+  // Filter by layer if selected
+  const filteredExamples = activeLayer 
+    ? codeExamples.filter(e => e.layer === activeLayer)
+    : codeExamples;
   
   // Typing effect when tab changes
   useEffect(() => {
@@ -124,7 +320,7 @@ export function TechShowcase() {
         }
         return prev + 1;
       });
-    }, 50);
+    }, 40);
     return () => clearInterval(interval);
   }, [activeTab, codeLines.length]);
   
@@ -157,21 +353,21 @@ export function TechShowcase() {
         />
       </div>
       
-      <div className="relative max-w-6xl mx-auto">
+      <div className="relative max-w-7xl mx-auto">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12 sm:mb-16"
+          className="text-center mb-10 sm:mb-14"
         >
           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
-            <Code className="w-3 h-3 text-primary" />
-            <span className="text-xs">See It In Action</span>
+            <Layers className="w-3 h-3 text-primary" />
+            <span className="text-xs">11 Modules • 4 Layers • 1 SDK</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
-            Simple{" "}
+            Complete{" "}
             <span 
               style={{
                 background: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-green)), hsl(var(--neon-cyan)))",
@@ -181,44 +377,69 @@ export function TechShowcase() {
                 animation: "gradientShift 4s ease-in-out infinite",
               }}
             >
-              Integration
+              Cognitive SDK
             </span>
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            A few lines of code to add 
-            <span className="text-foreground font-medium"> persistent memory</span>, 
-            <span className="text-foreground font-medium"> dream cycles</span>, and 
-            <span className="text-foreground font-medium"> intelligent routing</span> to any application.
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            One unified API for 
+            <span className="text-foreground font-medium"> memory</span>, 
+            <span className="text-foreground font-medium"> routing</span>, 
+            <span className="text-foreground font-medium"> security</span>, 
+            <span className="text-foreground font-medium"> evolution</span>, and 
+            <span className="text-foreground font-medium"> self-improvement</span>.
           </p>
         </motion.div>
         
-        {/* Enhanced Tab Navigation */}
-        <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-10">
-          {codeExamples.map((example, idx) => (
-            <motion.button
-              key={example.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.1 }}
-              onClick={() => setActiveTab(example.id)}
-              className={cn(
-                "relative flex items-center gap-2 px-5 py-3 rounded-full border transition-all duration-300",
-                activeTab === example.id
-                  ? `bg-gradient-to-r ${example.gradient} text-white border-transparent shadow-lg scale-105`
-                  : "bg-card/50 border-border/50 text-muted-foreground hover:bg-card/80 hover:border-border"
-              )}
-            >
-              <example.icon className="w-4 h-4" />
-              <span className="text-sm font-semibold">{example.title}</span>
-              {activeTab === example.id && (
-                <motion.div
-                  layoutId="activeTab"
-                  className="absolute inset-0 rounded-full bg-gradient-to-r opacity-20"
-                  style={{ background: `linear-gradient(135deg, currentColor, transparent)` }}
-                />
-              )}
-            </motion.button>
-          ))}
+        {/* Layer Filter Tabs */}
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-6">
+          <Button
+            variant={activeLayer === null ? "default" : "outline"}
+            size="sm"
+            onClick={() => setActiveLayer(null)}
+            className="h-8 px-4 text-xs font-medium"
+          >
+            All Modules
+            <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-[10px]">11</Badge>
+          </Button>
+          {Object.entries(LAYER_CONFIG).map(([layer, config]) => {
+            const count = codeExamples.filter(e => e.layer === layer).length;
+            return (
+              <Button
+                key={layer}
+                variant={activeLayer === layer ? "default" : "outline"}
+                size="sm"
+                onClick={() => setActiveLayer(layer)}
+                className={cn("h-8 px-4 text-xs font-medium", activeLayer === layer && config.color)}
+              >
+                {layer}
+                <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-[10px]">{count}</Badge>
+              </Button>
+            );
+          })}
+        </div>
+        
+        {/* Module Tab Navigation - Scrollable on mobile */}
+        <div className="relative mb-8">
+          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide snap-x snap-mandatory">
+            {filteredExamples.map((example, idx) => (
+              <motion.button
+                key={example.id}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: idx * 0.03 }}
+                onClick={() => setActiveTab(example.id)}
+                className={cn(
+                  "snap-start flex-shrink-0 relative flex items-center gap-2 px-4 py-2.5 rounded-xl border transition-all duration-300",
+                  activeTab === example.id
+                    ? `bg-gradient-to-r ${example.gradient} text-white border-transparent shadow-lg`
+                    : "bg-card/50 border-border/50 text-muted-foreground hover:bg-card/80 hover:border-border"
+                )}
+              >
+                <example.icon className="w-4 h-4" />
+                <span className="text-xs font-semibold whitespace-nowrap">{example.title.split(' ')[0]}</span>
+              </motion.button>
+            ))}
+          </div>
         </div>
         
         {/* Premium Code Display */}
@@ -320,14 +541,22 @@ export function TechShowcase() {
             className="absolute -right-4 top-1/2 -translate-y-1/2 hidden xl:block"
           >
             <div className={cn(
-              "p-5 rounded-2xl border bg-card/95 backdrop-blur-xl shadow-2xl max-w-[220px]",
+              "p-5 rounded-2xl border bg-card/95 backdrop-blur-xl shadow-2xl max-w-[240px]",
               "border-border/50"
             )}>
-              <div className={cn(
-                "w-12 h-12 rounded-xl flex items-center justify-center mb-3",
-                `bg-gradient-to-br ${activeExample.gradient}`
-              )}>
-                <activeExample.icon className="w-6 h-6 text-white" />
+              <div className="flex items-center gap-2 mb-3">
+                <div className={cn(
+                  "w-10 h-10 rounded-xl flex items-center justify-center",
+                  `bg-gradient-to-br ${activeExample.gradient}`
+                )}>
+                  <activeExample.icon className="w-5 h-5 text-white" />
+                </div>
+                <Badge variant="outline" className={cn(
+                  "text-[9px] h-5",
+                  LAYER_CONFIG[activeExample.layer as keyof typeof LAYER_CONFIG]?.color
+                )}>
+                  {activeExample.layer}
+                </Badge>
               </div>
               <h4 className="font-bold text-foreground mb-1">{activeExample.title}</h4>
               <p className="text-sm text-muted-foreground leading-relaxed">{activeExample.description}</p>

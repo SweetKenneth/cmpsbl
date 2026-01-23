@@ -1,6 +1,7 @@
 /**
- * Why CMPSBL — Value proposition section for homepage
+ * Why CMPSBL — Full 11-module capability showcase
  * Premium bento grid with enhanced visuals and micro-animations
+ * v4.1.1: Complete representation of the 4-layer kernel architecture
  */
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
@@ -14,39 +15,91 @@ import {
   Lock,
   Sparkles,
   ArrowRight,
+  Eye,
+  MessageSquare,
+  Cpu,
+  Radio,
+  Key,
+  Settings,
+  Layers,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
+// All capabilities mapped to the 11 modules in 4-layer architecture
 const differentiators = [
+  // KERNEL LAYER - Core infrastructure
   {
-    icon: Brain,
-    title: "Persistent Memory",
-    description: "3-tier memory architecture (hot/warm/cold) that survives sessions. Your AI never forgets a conversation, preference, or interaction.",
-    highlight: "Never Forgets",
+    icon: Cpu,
+    title: "Kernel Orchestration",
+    layer: "Kernel",
+    description: "CORE module handles task scheduling, cron jobs, and kernel-level coordination across all cognitive functions.",
+    highlight: "Central Brain",
+    stat: "11",
+    statLabel: "Modules",
+    color: "from-orange-500 to-amber-600",
+    iconBg: "bg-gradient-to-br from-orange-500/20 to-amber-500/20",
+    iconColor: "text-orange-500",
+    glowColor: "orange",
+  },
+  {
+    icon: Radio,
+    title: "Event Streaming",
+    layer: "Kernel",
+    description: "RIPPLE module provides pub/sub messaging, cross-module communication, and event-sourced architecture.",
+    highlight: "Real-Time Bus",
     stat: "∞",
-    statLabel: "Memory Depth",
-    color: "from-cyan-500 to-blue-600",
-    iconBg: "bg-gradient-to-br from-cyan-500/20 to-blue-500/20",
+    statLabel: "Events/sec",
+    color: "from-cyan-500 to-teal-600",
+    iconBg: "bg-gradient-to-br from-cyan-500/20 to-teal-500/20",
     iconColor: "text-cyan-500",
     glowColor: "cyan",
   },
   {
-    icon: Moon,
-    title: "Dream Cycles",
-    description: "Offline processing that consolidates memories, extracts patterns, and evolves understanding—like REM sleep for AI.",
-    highlight: "Learns While Idle",
-    stat: "24/7",
-    statLabel: "Processing",
-    color: "from-violet-500 to-purple-600",
-    iconBg: "bg-gradient-to-br from-violet-500/20 to-purple-500/20",
-    iconColor: "text-violet-500",
-    glowColor: "violet",
+    icon: Key,
+    title: "Identity & Access",
+    layer: "Kernel",
+    description: "ACCESS module manages API keys, usage metering, rate limiting, and multi-tenant access control.",
+    highlight: "Zero Trust",
+    stat: "BYOK",
+    statLabel: "Architecture",
+    color: "from-amber-500 to-yellow-600",
+    iconBg: "bg-gradient-to-br from-amber-500/20 to-yellow-500/20",
+    iconColor: "text-amber-500",
+    glowColor: "amber",
+  },
+  // COGNITIVE LAYER - Intelligence
+  {
+    icon: Brain,
+    title: "Persistent Memory",
+    layer: "Cognitive",
+    description: "BRAIN module provides 3-tier memory (hot/warm/cold) that survives sessions. Your AI never forgets.",
+    highlight: "Never Forgets",
+    stat: "∞",
+    statLabel: "Memory Depth",
+    color: "from-purple-500 to-violet-600",
+    iconBg: "bg-gradient-to-br from-purple-500/20 to-violet-500/20",
+    iconColor: "text-purple-500",
+    glowColor: "purple",
+  },
+  {
+    icon: MessageSquare,
+    title: "Epistemic Chat",
+    layer: "Cognitive",
+    description: "DECODE module powers memory-aware conversations with context injection and session persistence.",
+    highlight: "Context-Aware",
+    stat: "∞",
+    statLabel: "Context",
+    color: "from-fuchsia-500 to-pink-600",
+    iconBg: "bg-gradient-to-br from-fuchsia-500/20 to-pink-500/20",
+    iconColor: "text-fuchsia-500",
+    glowColor: "pink",
   },
   {
     icon: Zap,
     title: "Smart Routing",
-    description: "Every request routed to the optimal AI provider based on task complexity, cost constraints, and latency requirements.",
+    layer: "Cognitive",
+    description: "NEXUS module routes every request to the optimal AI provider based on task, cost, and latency constraints.",
     highlight: "Auto-Optimized",
     stat: "<100ms",
     statLabel: "Latency",
@@ -55,22 +108,65 @@ const differentiators = [
     iconColor: "text-green-500",
     glowColor: "green",
   },
+  // OPERATIONAL LAYER - Runtime
   {
     icon: Shield,
     title: "Defense-First",
-    description: "Behavioral analysis, threat detection, rate limiting, and governance rules built into every layer of the stack.",
+    layer: "Operational",
+    description: "DEFENSE module provides behavioral analysis, threat detection, rate limiting, and governance rules.",
     highlight: "Enterprise Security",
     stat: "100%",
     statLabel: "Coverage",
-    color: "from-amber-500 to-orange-600",
-    iconBg: "bg-gradient-to-br from-amber-500/20 to-orange-500/20",
-    iconColor: "text-amber-500",
-    glowColor: "amber",
+    color: "from-red-500 to-rose-600",
+    iconBg: "bg-gradient-to-br from-red-500/20 to-rose-500/20",
+    iconColor: "text-red-500",
+    glowColor: "red",
   },
   {
-    icon: RefreshCw,
+    icon: Eye,
+    title: "Full Observability",
+    layer: "Operational",
+    description: "VISION module tracks health metrics, latency, costs, and provides real-time dashboards and alerts.",
+    highlight: "See Everything",
+    stat: "24/7",
+    statLabel: "Monitoring",
+    color: "from-blue-500 to-indigo-600",
+    iconBg: "bg-gradient-to-br from-blue-500/20 to-indigo-500/20",
+    iconColor: "text-blue-500",
+    glowColor: "blue",
+  },
+  {
+    icon: Moon,
+    title: "Dream Cycles",
+    layer: "Operational",
+    description: "DREAM module runs offline processing to consolidate memories, extract patterns, and evolve understanding.",
+    highlight: "Learns While Idle",
+    stat: "24/7",
+    statLabel: "Processing",
+    color: "from-violet-500 to-purple-600",
+    iconBg: "bg-gradient-to-br from-violet-500/20 to-purple-500/20",
+    iconColor: "text-violet-500",
+    glowColor: "violet",
+  },
+  // ADMIN LAYER - Control plane
+  {
+    icon: Settings,
+    title: "System Control",
+    layer: "Admin",
+    description: "SYSTEM module handles backups, restore points, configuration, and administrative operations.",
+    highlight: "Full Control",
+    stat: "1-Click",
+    statLabel: "Recovery",
+    color: "from-emerald-500 to-green-600",
+    iconBg: "bg-gradient-to-br from-emerald-500/20 to-green-500/20",
+    iconColor: "text-emerald-500",
+    glowColor: "emerald",
+  },
+  {
+    icon: Sparkles,
     title: "Self-Improving",
-    description: "The Modernizer continuously scans code, proposes upgrades, and applies patches—your system gets better autonomously.",
+    layer: "Admin",
+    description: "MODERNIZER module continuously scans code, proposes upgrades, and applies patches autonomously.",
     highlight: "Autonomous Updates",
     stat: "Auto",
     statLabel: "Evolution",
@@ -79,19 +175,14 @@ const differentiators = [
     iconColor: "text-rose-500",
     glowColor: "rose",
   },
-  {
-    icon: Lock,
-    title: "BYOK Architecture",
-    description: "Bring your own API keys. No vendor lock-in. Pay providers directly. Your data stays yours.",
-    highlight: "Zero Lock-In",
-    stat: "0",
-    statLabel: "Lock-In",
-    color: "from-blue-500 to-indigo-600",
-    iconBg: "bg-gradient-to-br from-blue-500/20 to-indigo-500/20",
-    iconColor: "text-blue-500",
-    glowColor: "blue",
-  },
 ];
+
+const LAYER_CONFIG = {
+  Kernel: { color: 'text-orange-400', count: 3 },
+  Cognitive: { color: 'text-purple-400', count: 3 },
+  Operational: { color: 'text-blue-400', count: 3 },
+  Admin: { color: 'text-emerald-400', count: 2 },
+};
 
 // 3D tilt effect hook for cards
 function useTilt() {
@@ -193,13 +284,25 @@ function FeatureCard({ item, idx }: { item: typeof differentiators[0]; idx: numb
           </div>
         </div>
         
-        {/* Highlight pill */}
-        <div className={cn(
-          "inline-flex px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-semibold mb-3",
-          "bg-gradient-to-r text-white shadow-sm",
-          item.color
-        )}>
-          {item.highlight}
+        {/* Layer + Highlight pills */}
+        <div className="flex items-center gap-2 mb-3 flex-wrap">
+          <Badge 
+            variant="outline" 
+            className={cn(
+              "text-[9px] h-5 px-2",
+              LAYER_CONFIG[item.layer as keyof typeof LAYER_CONFIG]?.color,
+              "border-current/30"
+            )}
+          >
+            {item.layer}
+          </Badge>
+          <div className={cn(
+            "inline-flex px-2.5 py-0.5 rounded-full text-[10px] font-semibold",
+            "bg-gradient-to-r text-white shadow-sm",
+            item.color
+          )}>
+            {item.highlight}
+          </div>
         </div>
         
         {/* Content */}
@@ -224,6 +327,12 @@ function FeatureCard({ item, idx }: { item: typeof differentiators[0]; idx: numb
 }
 
 export function WhySubstrate() {
+  const [selectedLayer, setSelectedLayer] = useState<string | null>(null);
+  
+  const filteredItems = selectedLayer 
+    ? differentiators.filter(d => d.layer === selectedLayer)
+    : differentiators;
+  
   return (
     <section className="relative py-20 sm:py-32 px-4 overflow-hidden">
       {/* Enhanced background decoration */}
@@ -258,11 +367,11 @@ export function WhySubstrate() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-14 sm:mb-20"
+          className="text-center mb-10 sm:mb-14"
         >
           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
-            <Sparkles className="w-3 h-3 text-primary" />
-            <span className="text-xs">Why CMPSBL</span>
+            <Layers className="w-3 h-3 text-primary" />
+            <span className="text-xs">11 Modules • 4 Layers</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
             What Makes It{" "}
@@ -276,23 +385,62 @@ export function WhySubstrate() {
                 animation: "gradientShift 4s ease-in-out infinite",
               }}
             >
-              Different
+              Complete
             </span>
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Beyond traditional AI backends. Infrastructure that 
-            <span className="text-foreground font-medium"> thinks</span>, 
-            <span className="text-foreground font-medium"> learns</span>, and 
-            <span className="text-foreground font-medium"> evolves</span> on its own.
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            A full cognitive operating system with 
+            <span className="text-foreground font-medium"> kernel orchestration</span>, 
+            <span className="text-foreground font-medium"> intelligent routing</span>, 
+            <span className="text-foreground font-medium"> persistent memory</span>, and 
+            <span className="text-foreground font-medium"> self-evolution</span>.
           </p>
         </motion.div>
         
-        {/* Features Grid - Enhanced Bento style with 3D tilt */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-8">
-          {differentiators.map((item, idx) => (
-            <FeatureCard key={item.title} item={item} idx={idx} />
+        {/* Layer Filter */}
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8">
+          <motion.button
+            onClick={() => setSelectedLayer(null)}
+            className={cn(
+              "px-4 py-2 rounded-full text-xs font-semibold transition-all",
+              selectedLayer === null
+                ? "bg-primary text-primary-foreground"
+                : "bg-muted/50 text-muted-foreground hover:bg-muted"
+            )}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            All Modules
+            <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-[10px]">11</Badge>
+          </motion.button>
+          {Object.entries(LAYER_CONFIG).map(([layer, config]) => (
+            <motion.button
+              key={layer}
+              onClick={() => setSelectedLayer(layer)}
+              className={cn(
+                "px-4 py-2 rounded-full text-xs font-semibold transition-all",
+                selectedLayer === layer
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-muted/50 text-muted-foreground hover:bg-muted"
+              )}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <span className={selectedLayer !== layer ? config.color : ""}>{layer}</span>
+              <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-[10px]">{config.count}</Badge>
+            </motion.button>
           ))}
         </div>
+        
+        {/* Features Grid - Enhanced Bento style with 3D tilt */}
+        <motion.div 
+          className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5"
+          layout
+        >
+          {filteredItems.map((item, idx) => (
+            <FeatureCard key={item.title} item={item} idx={idx} />
+          ))}
+        </motion.div>
       </div>
     </section>
   );
