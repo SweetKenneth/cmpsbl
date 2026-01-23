@@ -18,7 +18,11 @@ import {
   Eye,
   MessageSquare,
   Settings,
-  ChevronRight
+  ChevronRight,
+  Cpu,
+  Network,
+  Fingerprint,
+  RefreshCw
 } from "lucide-react";
 
 // AI Models that flow through
@@ -29,15 +33,19 @@ const aiModels = [
   { name: "Gemini", color: "hsl(var(--neon-purple))" },
 ];
 
-// The 7 core modules
+// The 11 core modules (v4.0.0 kernel architecture)
 const coreModules = [
+  { icon: Cpu, name: "Core", color: "hsl(var(--muted-foreground))" },
+  { icon: Network, name: "Ripple", color: "hsl(var(--neon-green))" },
+  { icon: Fingerprint, name: "Access", color: "hsl(220 80% 60%)" },
   { icon: Brain, name: "Brain", color: "hsl(var(--neon-cyan))" },
   { icon: MessageSquare, name: "Decode", color: "hsl(var(--neon-purple))" },
   { icon: Shield, name: "Defense", color: "hsl(var(--neon-amber))" },
-  { icon: Zap, name: "Nexus", color: "hsl(var(--neon-green))" },
+  { icon: Zap, name: "Nexus", color: "hsl(150 80% 50%)" },
   { icon: Eye, name: "Vision", color: "hsl(var(--neon-blue))" },
   { icon: Moon, name: "Dream", color: "hsl(var(--neon-magenta))" },
   { icon: Settings, name: "System", color: "hsl(var(--destructive))" },
+  { icon: RefreshCw, name: "Modernizer", color: "hsl(30 80% 55%)" },
 ];
 
 // Orbit ring around substrate core - using CSS animation with GPU acceleration to reduce main-thread work
@@ -74,7 +82,7 @@ function OrbitRing({ radius, duration, color }: { radius: number; duration: numb
 
 // Wave arc between icons using SVG
 function WaveArcsBetweenIcons() {
-  const radius = 70;
+  const radius = 85; // Increased for 11 modules
   const centerX = 128; // Half of 256px (md:w-64)
   const centerY = 128;
   
@@ -176,7 +184,7 @@ function SubstrateCore() {
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 1, delay: 0.3 }}
-      className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 flex items-center justify-center mx-auto"
+      className="relative w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 flex items-center justify-center mx-auto"
     >
       {/* Outer glow pulse - CSS animation instead of Framer Motion to prevent reflows */}
       <div
@@ -189,10 +197,10 @@ function SubstrateCore() {
       {/* Wave arcs between module icons */}
       <WaveArcsBetweenIcons />
       
-      {/* Orbit rings */}
-      <OrbitRing radius={90} duration={12} color="hsl(var(--neon-cyan))" />
-      <OrbitRing radius={105} duration={18} color="hsl(var(--neon-magenta))" />
-      <OrbitRing radius={120} duration={25} color="hsl(var(--neon-amber))" />
+      {/* Orbit rings - expanded for 11 modules */}
+      <OrbitRing radius={100} duration={12} color="hsl(var(--neon-cyan))" />
+      <OrbitRing radius={115} duration={18} color="hsl(var(--neon-magenta))" />
+      <OrbitRing radius={130} duration={25} color="hsl(var(--neon-amber))" />
       
       {/* Inner substrate core - using CSS animation for pulse effect */}
       <div 
@@ -219,20 +227,20 @@ function SubstrateCore() {
         </div>
       </div>
       
-      {/* 7 Module icons - simplified with CSS hover, no continuous JS animation */}
+      {/* 11 Module icons - simplified with CSS hover, no continuous JS animation */}
       {coreModules.map((mod, i) => {
         const angle = (i / coreModules.length) * Math.PI * 2 - Math.PI / 2;
-        const radius = 70;
+        const radius = 85; // Increased for 11 modules
         const x = Math.cos(angle) * radius;
         const y = Math.sin(angle) * radius;
         
         return (
           <div
             key={mod.name}
-            className="absolute w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center cursor-pointer z-20 transition-transform duration-200 hover:scale-130"
+            className="absolute w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center cursor-pointer z-20 transition-transform duration-200 hover:scale-125"
             style={{
-              left: `calc(50% + ${x}px - 14px)`,
-              top: `calc(50% + ${y}px - 14px)`,
+              left: `calc(50% + ${x}px - 12px)`,
+              top: `calc(50% + ${y}px - 12px)`,
               background: hoveredModule === i ? `${mod.color}` : `${mod.color}30`,
               border: `2px solid ${mod.color}`,
               boxShadow: `0 0 15px ${mod.color}, 0 0 30px ${mod.color}50`,
@@ -248,7 +256,7 @@ function SubstrateCore() {
               }}
             />
             <mod.icon 
-              className="w-3.5 h-3.5 sm:w-4 sm:h-4 relative z-10" 
+              className="w-3 h-3 sm:w-3.5 sm:h-3.5 relative z-10" 
               style={{ 
                 color: hoveredModule === i ? "hsl(var(--background))" : mod.color,
                 filter: `drop-shadow(0 0 4px ${mod.color})`,
