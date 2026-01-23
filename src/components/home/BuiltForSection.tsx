@@ -1,10 +1,11 @@
 /**
  * Built For Section — Shows who CMPSBL is designed for
- * Gaming, Developers, Enterprise with enhanced visuals
+ * Premium audience cards with 3D effects and gradient borders
  */
 
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useRef, useState } from "react";
 import {
   ArrowRight,
   Gamepad2,
@@ -18,6 +19,7 @@ import {
   Eye,
   Sparkles,
   CheckCircle2,
+  Star,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -36,10 +38,12 @@ const audiences = [
       { icon: MessageSquare, text: "Context-aware dialogue" },
     ],
     stats: { value: "∞", label: "Memory Depth" },
+    testimonial: "Finally, NPCs that remember me.",
     cta: "Build Game AI",
     href: "/gaming",
     gradient: "from-purple-600 via-violet-600 to-fuchsia-600",
     glow: "shadow-purple-500/25",
+    borderGlow: "group-hover:shadow-[0_0_30px_rgba(168,85,247,0.4)]",
     iconGradient: "from-purple-500 to-violet-500",
   },
   {
@@ -54,10 +58,12 @@ const audiences = [
       { icon: Eye, text: "Full observability" },
     ],
     stats: { value: "70+", label: "Templates" },
+    testimonial: "The infrastructure I always wanted.",
     cta: "Start Coding",
     href: "/developers",
     gradient: "from-cyan-600 via-blue-600 to-indigo-600",
     glow: "shadow-cyan-500/25",
+    borderGlow: "group-hover:shadow-[0_0_30px_rgba(6,182,212,0.4)]",
     iconGradient: "from-cyan-500 to-blue-500",
   },
   {
@@ -72,52 +78,106 @@ const audiences = [
       { icon: Eye, text: "Audit everything" },
     ],
     stats: { value: "100%", label: "Your Data" },
+    testimonial: "Enterprise-grade from day one.",
     cta: "Enterprise Solutions",
     href: "/use-cases",
     gradient: "from-amber-500 via-orange-500 to-red-500",
     glow: "shadow-amber-500/25",
+    borderGlow: "group-hover:shadow-[0_0_30px_rgba(245,158,11,0.4)]",
     iconGradient: "from-amber-500 to-orange-500",
   },
 ];
 
 function AudienceCard({ audience, index }: { audience: typeof audiences[0]; index: number }) {
   const Icon = audience.icon;
+  const [isHovered, setIsHovered] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+  
+  // 3D tilt effect
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [5, -5]), { stiffness: 300, damping: 30 });
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-5, 5]), { stiffness: 300, damping: 30 });
+  
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    x.set((e.clientX - rect.left - rect.width / 2) / rect.width);
+    y.set((e.clientY - rect.top - rect.height / 2) / rect.height);
+  };
+  
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+    setIsHovered(false);
+  };
   
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ delay: index * 0.15, duration: 0.6 }}
+      transition={{ delay: index * 0.15, duration: 0.6, ease: "easeOut" }}
       className="h-full group"
+      style={{ perspective: 1000 }}
     >
-      <div className={cn(
-        "relative h-full rounded-3xl overflow-hidden",
-        "border border-border/50 bg-card/50 backdrop-blur-sm",
-        "transition-all duration-500",
-        "hover:shadow-2xl",
-        audience.glow
-      )}>
+      <motion.div
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={handleMouseLeave}
+        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+        className={cn(
+          "relative h-full rounded-3xl overflow-hidden",
+          "border border-border/50 bg-card/50 backdrop-blur-sm",
+          "transition-all duration-500",
+          "hover:shadow-2xl",
+          audience.glow,
+          audience.borderGlow
+        )}
+      >
         {/* Gradient top bar */}
         <div className={cn(
           "h-1.5 w-full bg-gradient-to-r",
           audience.gradient
         )} />
         
-        <div className="p-6 sm:p-8 flex flex-col h-full">
+        {/* Animated gradient border on hover */}
+        <motion.div
+          className={cn(
+            "absolute inset-0 rounded-3xl opacity-0 pointer-events-none",
+            "bg-gradient-to-br",
+            audience.gradient
+          )}
+          animate={{ opacity: isHovered ? 0.05 : 0 }}
+          transition={{ duration: 0.3 }}
+        />
+        
+        <div className="p-6 sm:p-8 flex flex-col h-full relative">
           {/* Header */}
           <div className="flex items-start justify-between mb-5">
             {/* Icon with gradient background */}
-            <div className={cn(
-              "w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center",
-              "bg-gradient-to-br shadow-lg",
-              audience.gradient
-            )}>
+            <motion.div 
+              className={cn(
+                "w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center",
+                "bg-gradient-to-br shadow-lg",
+                audience.gradient
+              )}
+              animate={{ 
+                scale: isHovered ? 1.1 : 1,
+                rotate: isHovered ? 5 : 0
+              }}
+              transition={{ duration: 0.3 }}
+            >
               <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
-            </div>
+            </motion.div>
             
-            {/* Stat */}
-            <div className="text-right">
+            {/* Stat with animation */}
+            <motion.div 
+              className="text-right"
+              animate={{ scale: isHovered ? 1.05 : 1 }}
+              transition={{ duration: 0.3 }}
+            >
               <div className={cn(
                 "text-2xl sm:text-3xl font-black bg-gradient-to-r bg-clip-text text-transparent",
                 audience.gradient
@@ -127,7 +187,7 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
               <div className="text-[10px] sm:text-xs text-muted-foreground">
                 {audience.stats.label}
               </div>
-            </div>
+            </motion.div>
           </div>
           
           {/* Badge */}
@@ -157,20 +217,37 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
             {audience.description}
           </p>
           
-          {/* Features */}
-          <div className="space-y-2 mb-6">
+          {/* Features with enhanced styling */}
+          <div className="space-y-2.5 mb-6">
             {audience.features.map((feature, idx) => (
-              <div key={idx} className="flex items-center gap-2.5 text-sm text-muted-foreground">
+              <motion.div 
+                key={idx} 
+                className="flex items-center gap-3 text-sm text-muted-foreground"
+                initial={{ opacity: 0, x: -10 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3 + idx * 0.1 }}
+              >
                 <div className={cn(
-                  "w-6 h-6 rounded-md flex items-center justify-center",
-                  "bg-gradient-to-br opacity-80",
+                  "w-7 h-7 rounded-lg flex items-center justify-center shrink-0",
+                  "bg-gradient-to-br",
                   audience.gradient
                 )}>
                   <feature.icon className="w-3.5 h-3.5 text-white" />
                 </div>
-                <span>{feature.text}</span>
-              </div>
+                <span className="font-medium">{feature.text}</span>
+              </motion.div>
             ))}
+          </div>
+          
+          {/* Testimonial quote */}
+          <div className="mb-6 p-3 rounded-lg bg-muted/30 border border-border/30">
+            <div className="flex items-center gap-1 mb-1">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-3 h-3 fill-amber-400 text-amber-400" />
+              ))}
+            </div>
+            <p className="text-xs text-muted-foreground italic">"{audience.testimonial}"</p>
           </div>
           
           {/* CTA */}
@@ -183,57 +260,76 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
           )}>
             <Link to={audience.href}>
               {audience.cta}
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <motion.div
+                animate={{ x: isHovered ? 4 : 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <ArrowRight className="w-4 h-4" />
+              </motion.div>
             </Link>
           </Button>
         </div>
-      </div>
+      </motion.div>
     </motion.div>
   );
 }
 
 export function BuiltForSection() {
   return (
-    <section className="relative py-20 sm:py-28 px-4 overflow-hidden">
-      {/* Background */}
+    <section className="relative py-20 sm:py-32 px-4 overflow-hidden">
+      {/* Enhanced Background */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-muted/30" />
-        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[150px]" />
-        <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-[150px]" />
+        <motion.div 
+          className="absolute top-0 left-1/4 w-[700px] h-[700px] bg-purple-500/8 rounded-full blur-[180px]"
+          animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div 
+          className="absolute bottom-0 right-1/4 w-[700px] h-[700px] bg-cyan-500/8 rounded-full blur-[180px]"
+          animate={{ scale: [1.2, 1, 1.2], opacity: [0.8, 0.5, 0.8] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        />
       </div>
       
       <div className="relative max-w-7xl mx-auto">
-        {/* Header */}
+        {/* Header with enhanced animation */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-12 sm:mb-16"
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12 sm:mb-20"
         >
-          <Badge variant="outline" className="mb-4 gap-1.5">
-            <Sparkles className="w-3 h-3" />
-            Built For You
+          <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
+            <Sparkles className="w-3 h-3 text-primary" />
+            <span className="text-xs">Built For You</span>
           </Badge>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
             Choose Your{" "}
             <span 
               style={{
                 background: "linear-gradient(135deg, hsl(var(--neon-purple)), hsl(var(--neon-cyan)), hsl(var(--neon-amber)))",
+                backgroundSize: "200% 200%",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
+                animation: "gradientShift 4s ease-in-out infinite",
               }}
             >
               Path
             </span>
           </h2>
-          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             The same cognitive infrastructure adapts to your use case. 
-            Pre-configured packages ready for gaming, development, and enterprise.
+            Pre-configured packages ready for 
+            <span className="text-foreground font-medium"> gaming</span>, 
+            <span className="text-foreground font-medium"> development</span>, and 
+            <span className="text-foreground font-medium"> enterprise</span>.
           </p>
         </motion.div>
         
-        {/* Audience Cards */}
-        <div className="grid md:grid-cols-3 gap-6 sm:gap-8">
+        {/* Audience Cards with better spacing */}
+        <div className="grid md:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
           {audiences.map((audience, idx) => (
             <AudienceCard key={audience.title} audience={audience} index={idx} />
           ))}

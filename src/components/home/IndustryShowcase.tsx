@@ -1,10 +1,11 @@
 /**
  * Industry Showcase — Homepage section showing CMPSBL versatility
- * Enhanced with better visuals and clearer messaging
+ * Premium cards with hover effects and clear industry-specific messaging
  */
 
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useRef, useState } from "react";
 import {
   ArrowRight,
   Gamepad2,
@@ -16,6 +17,7 @@ import {
   Phone,
   Factory,
   Sparkles,
+  Quote,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -108,42 +110,67 @@ const industries: Industry[] = [
 
 function IndustryCard({ industry, delay = 0 }: { industry: Industry; delay?: number }) {
   const Icon = industry.icon;
+  const [isHovered, setIsHovered] = useState(false);
   
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true }}
-      transition={{ delay, duration: 0.4 }}
+      transition={{ delay, duration: 0.5, ease: "easeOut" }}
     >
       <Link 
         to={industry.href || "/use-cases"} 
         className="group block h-full"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
-        <div className={cn(
-          "relative h-full p-5 sm:p-6 rounded-2xl border border-border/50 overflow-hidden",
-          "bg-card/50 backdrop-blur-sm",
-          "hover:border-current/40 transition-all duration-300",
-          "hover:shadow-lg",
-          industry.color
-        )}>
+        <motion.div 
+          className={cn(
+            "relative h-full p-5 sm:p-6 rounded-2xl border border-border/50 overflow-hidden",
+            "bg-card/50 backdrop-blur-sm",
+            "hover:border-current/50 transition-all duration-300",
+            "hover:shadow-xl",
+            industry.color
+          )}
+          animate={{ y: isHovered ? -4 : 0 }}
+          transition={{ duration: 0.2 }}
+        >
           {/* Gradient background on hover */}
-          <div className={cn(
-            "absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300",
-            "bg-gradient-to-br",
-            industry.gradient
-          )} />
+          <motion.div 
+            className={cn(
+              "absolute inset-0",
+              "bg-gradient-to-br",
+              industry.gradient
+            )}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isHovered ? 1 : 0 }}
+            transition={{ duration: 0.3 }}
+          />
+          
+          {/* Glow effect */}
+          <motion.div
+            className="absolute -inset-px rounded-2xl opacity-0"
+            style={{
+              background: `linear-gradient(135deg, currentColor, transparent)`,
+            }}
+            animate={{ opacity: isHovered ? 0.1 : 0 }}
+            transition={{ duration: 0.3 }}
+          />
           
           {/* Content */}
           <div className="relative">
-            <div className="flex items-start gap-4 mb-3">
-              <div className={cn(
-                "w-11 h-11 rounded-xl flex items-center justify-center shrink-0",
-                "bg-current/10 group-hover:bg-current/20 transition-colors",
-                "group-hover:scale-110 transition-transform duration-300"
-              )}>
+            <div className="flex items-start gap-4 mb-4">
+              <motion.div 
+                className={cn(
+                  "w-12 h-12 rounded-xl flex items-center justify-center shrink-0",
+                  "bg-current/10 group-hover:bg-current/20 transition-colors"
+                )}
+                animate={{ scale: isHovered ? 1.1 : 1, rotate: isHovered ? 5 : 0 }}
+                transition={{ duration: 0.3 }}
+              >
                 <Icon className="w-5 h-5" />
-              </div>
+              </motion.div>
               <div className="flex-1 min-w-0">
                 <h3 className="font-bold text-base text-foreground mb-1 group-hover:text-current transition-colors">
                   {industry.title}
@@ -154,22 +181,29 @@ function IndustryCard({ industry, delay = 0 }: { industry: Industry; delay?: num
               </div>
             </div>
             
-            {/* Example quote */}
+            {/* Example quote - enhanced */}
             <div className={cn(
-              "p-3 rounded-lg bg-background/50 border border-border/30",
-              "group-hover:bg-background/70 transition-colors"
+              "relative p-4 rounded-xl bg-background/60 border border-border/30",
+              "group-hover:bg-background/80 transition-all duration-300",
+              "group-hover:border-current/20"
             )}>
-              <p className="text-xs text-current/80 italic leading-relaxed">
-                "{industry.example}"
+              <Quote className="absolute top-2 left-2 w-3 h-3 text-current/30" />
+              <p className="text-xs text-foreground/80 italic leading-relaxed pl-4">
+                {industry.example}
               </p>
             </div>
             
-            {/* Arrow indicator */}
-            <div className="absolute top-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity">
+            {/* Arrow indicator with animation */}
+            <motion.div 
+              className="absolute top-0 right-0"
+              initial={{ opacity: 0, x: -5 }}
+              animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : -5 }}
+              transition={{ duration: 0.2 }}
+            >
               <ArrowRight className="w-4 h-4 text-current" />
-            </div>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
       </Link>
     </motion.div>
   );
@@ -177,56 +211,69 @@ function IndustryCard({ industry, delay = 0 }: { industry: Industry; delay?: num
 
 export function IndustryShowcase() {
   return (
-    <section className="relative py-20 sm:py-28 px-4">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
+    <section className="relative py-20 sm:py-32 px-4 overflow-hidden">
+      {/* Background elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-gradient-radial from-primary/5 to-transparent rounded-full blur-3xl" />
+      </div>
+      
+      <div className="relative max-w-7xl mx-auto">
+        {/* Header with enhanced styling */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-12 sm:mb-14"
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12 sm:mb-16"
         >
-          <Badge variant="outline" className="mb-4 gap-1.5">
-            <Sparkles className="w-3 h-3" />
-            Universal Infrastructure
+          <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
+            <Sparkles className="w-3 h-3 text-primary" />
+            <span className="text-xs">Universal Infrastructure</span>
           </Badge>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
             One CMPSBL,{" "}
             <span 
               style={{
-                background: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-magenta)))",
+                background: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)), hsl(var(--neon-magenta)))",
+                backgroundSize: "200% 200%",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
+                animation: "gradientShift 4s ease-in-out infinite",
               }}
             >
               Every Industry
             </span>
           </h2>
-          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Persistent memory and dream cycles adapt to any domain. 
-            From NPC brains to enterprise automation.
+            From <span className="text-foreground font-medium">NPC brains</span> to 
+            <span className="text-foreground font-medium"> enterprise automation</span>.
           </p>
         </motion.div>
         
-        {/* Industry Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mb-10 sm:mb-12">
+        {/* Industry Grid - enhanced spacing */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6 mb-12 sm:mb-16">
           {industries.map((industry, idx) => (
             <IndustryCard 
               key={industry.title} 
               industry={industry} 
-              delay={idx * 0.05} 
+              delay={idx * 0.06} 
             />
           ))}
         </div>
         
-        {/* CTA */}
+        {/* CTA with gradient border */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="text-center"
         >
-          <Button asChild size="lg" variant="outline" className="gap-2 h-12 px-8">
+          <Button 
+            asChild 
+            size="lg" 
+            className="gap-2 h-12 px-8 bg-gradient-to-r from-primary via-violet-600 to-purple-600 text-white border-0 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+          >
             <Link to="/use-cases">
               Explore All Use Cases
               <ArrowRight className="w-4 h-4" />
