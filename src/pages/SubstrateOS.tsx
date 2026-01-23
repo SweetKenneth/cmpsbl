@@ -345,33 +345,33 @@ export default function SubstrateOS() {
           <SidebarNav groups={tabGroups} activeTab={activeTab} onTabChange={setActiveTab} />
         </div>
 
-        {/* Mobile Navigation Bar */}
+        {/* Mobile Navigation Bar - Improved spacing */}
         <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-t border-border/50 safe-area-pb">
-          <div className="flex items-center justify-around px-2 py-2">
-            {tabGroups.flatMap(g => g.tabs).slice(0, 5).map((tab) => {
+          <div className="grid grid-cols-5 px-1 py-1.5">
+            {tabGroups.flatMap(g => g.tabs).slice(0, 4).map((tab) => {
               const isActive = activeTab === tab.id;
               return (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={cn(
-                    "flex flex-col items-center gap-1 p-2 rounded-lg transition-all min-w-[60px]",
+                    "flex flex-col items-center justify-center gap-0.5 py-2 rounded-lg transition-all",
                     isActive 
                       ? "text-primary bg-primary/10" 
-                      : "text-muted-foreground hover:text-foreground"
+                      : "text-muted-foreground hover:text-foreground active:bg-muted/50"
                   )}
                 >
                   <tab.icon className="w-5 h-5" />
-                  <span className="text-[10px] font-medium truncate">{tab.label}</span>
+                  <span className="text-[9px] font-medium leading-tight">{tab.label}</span>
                 </button>
               );
             })}
             <button
               onClick={() => setSidebarOpen(true)}
-              className="flex flex-col items-center gap-1 p-2 rounded-lg text-muted-foreground hover:text-foreground min-w-[60px]"
+              className="flex flex-col items-center justify-center gap-0.5 py-2 rounded-lg text-muted-foreground hover:text-foreground active:bg-muted/50"
             >
               <Menu className="w-5 h-5" />
-              <span className="text-[10px] font-medium">More</span>
+              <span className="text-[9px] font-medium leading-tight">More</span>
             </button>
           </div>
         </div>

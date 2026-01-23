@@ -40,13 +40,13 @@ export function PublicNav() {
       ]
     },
     {
-      name: "SDK",
+      name: "Build",
       icon: Code,
       items: [
-        { name: "CodeLab", href: "/codelab", description: "Developer Workbench", icon: Terminal },
-        { name: "Substrate Modules", href: "/developers", description: "Composable Primitives", icon: Code },
+        { name: "Gaming AI", href: "/gaming", description: "NPC Brains & World Engines", icon: Zap },
+        { name: "DevTools", href: "/devtools", description: "Templates & Debugger", icon: Terminal },
+        { name: "CodeLab", href: "/codelab", description: "Developer Workbench", icon: Code },
         { name: "Documentation", href: "/documentation", description: "API Reference", icon: FileText },
-        { name: "Changelog", href: "/changelog", description: "Version History", icon: BookOpen },
         ...(user ? [{ name: "Control Panel", href: "/os", description: "Admin Console", icon: Cpu }] : []),
       ]
     },
@@ -55,6 +55,7 @@ export function PublicNav() {
       icon: BookOpen,
       items: [
         { name: "Blog", href: "/blog", description: "Articles & Research", icon: FileText },
+        { name: "Changelog", href: "/changelog", description: "Version History", icon: BookOpen },
         { name: "Roadmap", href: "/roadmap", description: "Development Plan", icon: Map },
         { name: "Projects", href: "/projects", description: "Active Development", icon: Rocket },
       ]
@@ -75,8 +76,8 @@ export function PublicNav() {
   
   // Quick access items shown directly in nav
   const quickLinks = [
-    { name: "Demo", href: "/demo" },
-    { name: "CodeLab", href: "/codelab" },
+    { name: "Gaming", href: "/gaming" },
+    { name: "DevTools", href: "/devtools" },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -247,10 +248,10 @@ export function PublicNav() {
             <div className="container mx-auto px-4 py-4">
               {/* Search-like quick access */}
               <div className="flex gap-2 mb-4 overflow-x-auto pb-2 -mx-4 px-4">
-                {["Demo", "CodeLab", "Developers", "Blog", "Contact"].map((name) => {
-                  const href = name === "Demo" ? "/demo" : 
-                               name === "CodeLab" ? "/codelab" :
-                               name === "Developers" ? "/developers" :
+                {["Gaming", "DevTools", "Demo", "Blog", "Contact"].map((name) => {
+                  const href = name === "Gaming" ? "/gaming" :
+                               name === "DevTools" ? "/devtools" :
+                               name === "Demo" ? "/demo" :
                                name === "Blog" ? "/blog" : "/contact";
                   return (
                     <Link
