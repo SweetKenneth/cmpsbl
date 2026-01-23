@@ -6,9 +6,9 @@
 |-------|-------|
 | Document ID | PF-MAR-001 |
 | Version | v2026.01 |
-| Last Updated | 2026-01-16 |
+| Last Updated | 2026-01-23 |
 | Status | ACTIVE |
-| Substrate Version | 3.8.0 |
+| Substrate Version | 4.0.0 |
 | Type | Cognitive Orchestration Substrate |
 | Changelog | [CHANGELOG.md](./CHANGELOG.md) |
 
@@ -277,10 +277,70 @@ System-wide operations, administration, configuration.
 
 ---
 
+---
+
+## Module: CORE (Kernel)
+
+Execution scheduler, lifecycle, routing, state machine.
+
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `boot` | Initialize all modules | — | ✅ DEPLOYED |
+| `schedule` | Queue jobs with priority | `module: string`, `action: string`, `delay?: string`, `payload?: object` | ✅ DEPLOYED |
+| `authorize` | Check permissions, rate limits | `api_key: string`, `action: string` | ✅ DEPLOYED |
+| `route` | Forward requests to module | `module: string`, `action: string`, `payload: object` | ✅ DEPLOYED |
+| `meter` | Track usage per API key | `api_key_id: string`, `tokens?: number` | ✅ DEPLOYED |
+| `integrate` | Connect external services | `service: string`, `config: object` | ✅ DEPLOYED |
+| `config` | Global system configuration | `key?: string`, `value?: any` | ✅ DEPLOYED |
+| `shutdown` | Graceful system shutdown | `confirm: boolean` | ✅ DEPLOYED |
+| `status` | Get kernel status | — | ✅ DEPLOYED |
+| `pulse` | Ultra-lightweight heartbeat | — | ✅ DEPLOYED |
+
+---
+
+## Module: RIPPLE (Message Bus)
+
+Async job queues, pub/sub messaging, event sourcing.
+
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `enqueue` | Add job to queue | `queue: string`, `job_type: string`, `payload: object` | ✅ DEPLOYED |
+| `dequeue` | Get next job | `queue: string` | ✅ DEPLOYED |
+| `publish` | Publish event to topic | `topic: string`, `event_type: string`, `payload: object` | ✅ DEPLOYED |
+| `subscribe` | Subscribe to topic | `topic: string`, `subscriber_module: string`, `subscriber_action: string` | ✅ DEPLOYED |
+| `status` | Queue stats | — | ✅ DEPLOYED |
+| `retry` | Retry failed job | `job_id: string` | ✅ DEPLOYED |
+| `dead_letter` | View failed jobs | `queue?: string`, `limit?: number` | ✅ DEPLOYED |
+| `pulse` | Ultra-lightweight heartbeat | — | ✅ DEPLOYED |
+
+---
+
+## Module: ACCESS (Identity & Billing)
+
+API keys, usage metering, quotas, billing integration.
+
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `create_key` | Generate new API key | `name: string`, `scopes?: string[]`, `expires_in_days?: number` | ✅ DEPLOYED |
+| `validate_key` | Validate API key | `api_key: string` | ✅ DEPLOYED |
+| `revoke_key` | Revoke API key | `key_id: string` | ✅ DEPLOYED |
+| `list_keys` | List developer's keys | `developer_id?: string` | ✅ DEPLOYED |
+| `get_usage` | Get usage stats | `start_date?: string`, `end_date?: string` | ✅ DEPLOYED |
+| `check_quota` | Check remaining quota | `api_key_id: string` | ✅ DEPLOYED |
+| `create_checkout` | Stripe checkout | `tier: string` | ✅ DEPLOYED |
+| `webhook` | Stripe webhook handler | `event: object` | ✅ DEPLOYED |
+| `portal` | Customer portal | `customer_id: string` | ✅ DEPLOYED |
+| `pulse` | Ultra-lightweight heartbeat | — | ✅ DEPLOYED |
+
+---
+
 ## Summary: Deployed Actions
 
 | Module | Deployed | Planned (Stubs) |
 |--------|----------|-----------------|
+| **Core** | 10 | 0 |
+| **Ripple** | 8 | 0 |
+| **Access** | 10 | 0 |
 | **Brain** | 10 | 9 |
 | **Decode** | 5 | 3 |
 | **Defense** | 7 | 7 |
@@ -288,7 +348,8 @@ System-wide operations, administration, configuration.
 | **Vision** | 14 | 0 |
 | **Dream** | 3 | 6 |
 | **System** | 9 | 2 |
-| **Total** | **52** | **32** |
+| **Modernizer** | 4 | 2 |
+| **Total** | **84** | **34** |
 
 ---
 

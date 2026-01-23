@@ -1,6 +1,8 @@
 # promptfluid® Substrate — User Manual
 
-**v2026.01 — Cognitive Orchestration Substrate**
+**v4.0.0 — Cognitive Orchestration Substrate**
+
+*Last Updated: 2026-01-23*
 
 ---
 
@@ -14,6 +16,9 @@ The promptfluid® Substrate is a unified API gateway for cognitive AI operations
 - **AI Routing** — Multi-provider model selection
 - **Observability** — Real-time health and metrics
 - **Dream Processing** — Autonomous cognition cycles
+- **Kernel Operations** — Job scheduling, lifecycle, state machine
+- **Message Bus** — Async queues, pub/sub, event sourcing
+- **Identity & Billing** — API keys, quotas, usage metering
 
 All capabilities are accessed through a single endpoint.
 
@@ -51,19 +56,113 @@ POST https://[project-id].supabase.co/functions/v1/pf-substrate
 
 ## Modules Overview
 
-| Module | Purpose | Deployed Actions |
-|--------|---------|------------------|
-| **brain** | Memory, learning, reflection | `query`, `remember`, `reflect`, `reinforce`, `dream`, `status`, `graphSummary`, `sessionReflection` |
+| Module | Purpose | Key Actions |
+|--------|---------|-------------|
+| **core** | Kernel (scheduler, lifecycle, routing) | `boot`, `schedule`, `config`, `shutdown`, `status` |
+| **ripple** | Message Bus (async, pub/sub) | `enqueue`, `publish`, `subscribe`, `status` |
+| **access** | Identity (API keys, billing) | `create_key`, `validate_key`, `get_usage`, `check_quota` |
+| **brain** | Memory, learning, reflection | `query`, `remember`, `reflect`, `reinforce`, `dream`, `status` |
 | **decode** | Chat, intent, dreams | `chat`, `intent`, `dream`, `learn`, `status` |
-| **defense** | Security, bots | `analyze`, `reputation`, `anomaly`, `anomalyProbe`, `limits`, `posture`, `status` |
+| **defense** | Security, bots | `analyze`, `reputation`, `anomaly`, `posture`, `limits`, `status` |
 | **nexus** | AI routing | `route`, `providers`, `routeStats`, `status` |
-| **vision** | Observability | `health`, `healthSnapshot`, `dashboard`, `trace`, `introspection`, `pulse`, `quota`, `metrics`, `logs`, `alert`, `audit`, `monitor`, `resilience`, `analytics` |
+| **vision** | Observability | `health`, `healthSnapshot`, `dashboard`, `pulse`, `introspection` |
 | **dream** | Dream-Eater | `cycle`, `awaken`, `feed` |
-| **system** | Administration | `status`, `health`, `heal`, `backup`, `restore`, `audit`, `version`, `diagnostics`, `restart` |
+| **system** | Administration | `status`, `health`, `heal`, `backup`, `restore`, `diagnostics` |
+| **modernizer** | Self-upgrade | `scan`, `propose`, `apply`, `status` |
 
 ---
 
-## Module: Brain
+## Module: Core (Kernel)
+
+The kernel that manages all other modules. Handles scheduling, routing, and lifecycle.
+
+### Deployed Actions
+
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `boot` | Initialize all modules | — | ✅ Deployed |
+| `schedule` | Queue jobs with priority | `module`, `action`, `delay?`, `payload?` | ✅ Deployed |
+| `authorize` | Check permissions | `api_key`, `action` | ✅ Deployed |
+| `route` | Forward to module | `module`, `action`, `payload` | ✅ Deployed |
+| `config` | Get/set configuration | `key?`, `value?` | ✅ Deployed |
+| `shutdown` | Graceful shutdown | `confirm` | ✅ Deployed |
+| `status` | Get kernel status | — | ✅ Deployed |
+| `pulse` | Heartbeat | — | ✅ Deployed |
+
+### Examples
+
+**Schedule a Job:**
+```json
+{
+  "module": "core",
+  "action": "schedule",
+  "target_module": "brain",
+  "target_action": "reflect",
+  "delay": "5m"
+}
+```
+
+---
+
+## Module: Ripple (Message Bus)
+
+Async job processing, pub/sub messaging, event sourcing.
+
+### Deployed Actions
+
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `enqueue` | Add job to queue | `queue`, `job_type`, `payload` | ✅ Deployed |
+| `dequeue` | Get next job | `queue` | ✅ Deployed |
+| `publish` | Publish event | `topic`, `event_type`, `payload` | ✅ Deployed |
+| `subscribe` | Subscribe to topic | `topic`, `subscriber_module`, `subscriber_action` | ✅ Deployed |
+| `status` | Queue stats | — | ✅ Deployed |
+| `pulse` | Heartbeat | — | ✅ Deployed |
+
+### Examples
+
+**Publish Event:**
+```json
+{
+  "module": "ripple",
+  "action": "publish",
+  "topic": "memory.stored",
+  "event_type": "new_insight",
+  "payload": { "memory_id": "abc123" }
+}
+```
+
+---
+
+## Module: Access (Identity & Billing)
+
+API key management, usage metering, quotas.
+
+### Deployed Actions
+
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `create_key` | Generate new API key | `name`, `scopes?`, `expires_in_days?` | ✅ Deployed |
+| `validate_key` | Validate API key | `api_key` | ✅ Deployed |
+| `revoke_key` | Revoke API key | `key_id` | ✅ Deployed |
+| `list_keys` | List developer's keys | `developer_id?` | ✅ Deployed |
+| `get_usage` | Get usage stats | `start_date?`, `end_date?` | ✅ Deployed |
+| `check_quota` | Check remaining quota | `api_key_id` | ✅ Deployed |
+| `pulse` | Heartbeat | — | ✅ Deployed |
+
+### Examples
+
+**Create API Key:**
+```json
+{
+  "module": "access",
+  "action": "create_key",
+  "name": "Production API",
+  "scopes": ["brain:read", "nexus:write"]
+}
+```
+
+---
 
 The cognitive memory system. Store, query, and evolve knowledge.
 
@@ -620,10 +719,11 @@ function Dashboard() {
 ## Support
 
 - **Documentation**: This manual
-- **Architecture**: `docs/substrate/ARCHITECTURE.md`
+- **Architecture**: `docs/ARCHITECTURE.md`
 - **Module Registry**: `docs/substrate/MODULE-ACTIONS-REGISTRY.md`
-- **Decode RFC**: `docs/substrate/DecodeRFC.md`
+- **Quick Start**: `docs/QUICK-START.md`
+- **Explained**: `docs/SUBSTRATE-EXPLAINED.md`
 
 ---
 
-*promptfluid® — Cognitive Orchestration Substrate v2026.01*
+*promptfluid® — Cognitive Orchestration Substrate v4.0.0*

@@ -247,6 +247,46 @@
 
 ---
 
+## 2026-01-23 · v4.0.0
+
+⟨This entry describes the major architecture upgrade to a kernel-mediated operating system model.⟩
+
+### New Kernel-Level Modules
+
+- **CORE (Kernel)** — Execution scheduler, lifecycle management, state machine, request routing. Actions: `boot`, `schedule`, `authorize`, `route`, `meter`, `integrate`, `config`, `shutdown`, `status`, `pulse`.
+
+- **RIPPLE (Message Bus)** — Async job processing, pub/sub messaging, event sourcing. Actions: `enqueue`, `dequeue`, `publish`, `subscribe`, `status`, `retry`, `dead_letter`, `pulse`.
+
+- **ACCESS (Identity & Billing)** — API key management, usage metering, quotas, billing integration. Actions: `create_key`, `validate_key`, `revoke_key`, `list_keys`, `get_usage`, `check_quota`, `create_checkout`, `webhook`, `portal`, `pulse`.
+
+### Architecture Shift
+
+- Transitioned from peer-to-peer module mesh to 4-layer kernel-mediated model.
+- All 200+ legacy edge functions consolidated into single `pf-substrate` orchestrator.
+- Legacy functions now return `410 Gone` with migration instructions.
+- Database tables added: `core_jobs`, `core_state`, `ripple_jobs`, `ripple_events`, `access_usage`.
+
+### Dashboard Integration
+
+- New CORE tab displaying system state and job queues.
+- New RIPPLE tab displaying message bus and event sourcing.
+- New ACCESS tab displaying API key management and usage.
+- Enhanced boot sequence animation with 11-module verification.
+
+### Terminal Commands
+
+- 30+ new commands for kernel operations (`core.*`, `ripple.*`, `access.*`).
+- Updated `whoami` to display 4-layer architecture identity.
+- `/help` supports module-specific queries (e.g., `/help core`).
+
+### SDK Enhancements
+
+- `substrate.core.schedule()`, `substrate.core.boot()`, `substrate.core.shutdown()`
+- `substrate.ripple.publish()`, `substrate.ripple.enqueue()`, `substrate.ripple.subscribe()`
+- `substrate.access.createKey()`, `substrate.access.validateKey()`, `substrate.access.getUsage()`
+
+---
+
 ## Document Metadata
 
 | Field | Value |
@@ -254,8 +294,8 @@
 | Document ID | PF-CHANGELOG-001 |
 | Voice | Decode Interpreter (Epistemic) |
 | Status | PUBLIC |
-| Last Updated | 2026-01-16 |
-| Substrate Version | 3.6.0 |
+| Last Updated | 2026-01-23 |
+| Substrate Version | 4.0.0 |
 
 ---
 
