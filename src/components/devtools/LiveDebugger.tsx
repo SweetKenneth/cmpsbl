@@ -1,0 +1,393 @@
+import { useState } from "react";
+import {
+  useDebuggerSessions,
+  useActiveDebuggerSession,
+  useDebuggerTraces,
+  useStartDebugger,
+  useStopDebugger,
+  useFlameGraphData,
+} from "@/hooks/useDebugger";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Progress } from "@/components/ui/progress";
+import {
+  Activity,
+  Play,
+  Square,
+  Flame,
+  List,
+  Clock,
+  AlertCircle,
+  CheckCircle,
+  Zap,
+  Cpu,
+  TrendingUp,
+  BarChart3,
+} from "lucide-react";
+import { toast } from "sonner";
+
+const STATUS_COLORS: Record<string, string> = {
+  success: "text-green-400",
+  error: "text-red-400",
+  pending: "text-amber-400",
+};
+
+const STATUS_ICONS: Record<string, React.ElementType> = {
+  success: CheckCircle,
+  error: AlertCircle,
+  pending: Clock,
+};
+
+const MODULE_COLORS: Record<string, string> = {
+  brain: "bg-purple-500/20 text-purple-400 border-purple-500/30",
+  decode: "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
+  defense: "bg-red-500/20 text-red-400 border-red-500/30",
+  nexus: "bg-amber-500/20 text-amber-400 border-amber-500/30",
+  vision: "bg-green-500/20 text-green-400 border-green-500/30",
+  dream: "bg-indigo-500/20 text-indigo-400 border-indigo-500/30",
+  core: "bg-blue-500/20 text-blue-400 border-blue-500/30",
+  access: "bg-pink-500/20 text-pink-400 border-pink-500/30",
+  ripple: "bg-teal-500/20 text-teal-400 border-teal-500/30",
+};
+
+export function LiveDebugger() {
+  const [sessionName, setSessionName] = useState("");
+  const [selectedTrace, setSelectedTrace] = useState<string | null>(null);
+
+  const { data: activeSession } = useActiveDebuggerSession();
+  const { data: sessions } = useDebuggerSessions();
+  const { data: traces } = useDebuggerTraces(activeSession?.id);
+  const flameData = useFlameGraphData(activeSession?.id);
+  const startDebugger = useStartDebugger();
+  const stopDebugger = useStopDebugger();
+
+  const handleStart = async () => {
+    const name = sessionName.trim() || `Debug ${new Date().toLocaleTimeString()}`;
+    try {
+      await startDebugger.mutateAsync({ name });
+      setSessionName("");
+      toast.success("Debugger started");
+    } catch (error) {
+      toast.error("Failed to start debugger");
+    }
+  };
+
+  const handleStop = async () => {
+    if (!activeSession) return;
+    try {
+      await stopDebugger.mutateAsync(activeSession.id);
+      toast.success("Debugger stopped");
+    } catch (error) {
+      toast.error("Failed to stop debugger");
+    }
+  };
+
+  // Calculate stats
+  const successCount = traces?.filter((t) => t.status === "success").length || 0;
+  const errorCount = traces?.filter((t) => t.status === "error").length || 0;
+  const avgLatency =
+    traces?.length && traces.reduce((acc, t) => acc + (t.latency_ms || 0), 0) / traces.length;
+
+  const selectedTraceData = traces?.find((t) => t.trace_id === selectedTrace);
+
+  return (
+    <div className="space-y-6">
+      {/* Control Bar */}
+      <Card>
+        <CardContent className="p-4">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              {activeSession ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse" />
+                  <span className="font-medium">Recording: {activeSession.name}</span>
+                </div>
+              ) : (
+                <>
+                  <Input
+                    placeholder="Session name (optional)"
+                    value={sessionName}
+                    onChange={(e) => setSessionName(e.target.value)}
+                    className="w-64"
+                  />
+                </>
+              )}
+            </div>
+
+            <div className="flex items-center gap-2 ml-auto">
+              {activeSession ? (
+                <Button variant="destructive" onClick={handleStop}>
+                  <Square className="h-4 w-4 mr-2" />
+                  Stop
+                </Button>
+              ) : (
+                <Button onClick={handleStart} disabled={startDebugger.isPending}>
+                  <Play className="h-4 w-4 mr-2" />
+                  Start Debugger
+                </Button>
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Stats */}
+      {activeSession && (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-muted-foreground">Total Traces</p>
+                  <p className="text-2xl font-bold">{traces?.length || 0}</p>
+                </div>
+                <Activity className="h-8 w-8 text-primary opacity-50" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-muted-foreground">Success Rate</p>
+                  <p className="text-2xl font-bold text-green-400">
+                    {traces?.length ? Math.round((successCount / traces.length) * 100) : 0}%
+                  </p>
+                </div>
+                <CheckCircle className="h-8 w-8 text-green-500 opacity-50" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-muted-foreground">Errors</p>
+                  <p className="text-2xl font-bold text-red-400">{errorCount}</p>
+                </div>
+                <AlertCircle className="h-8 w-8 text-red-500 opacity-50" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-muted-foreground">Avg Latency</p>
+                  <p className="text-2xl font-bold">{avgLatency?.toFixed(0) || 0}ms</p>
+                </div>
+                <Clock className="h-8 w-8 text-amber-500 opacity-50" />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* Main Content */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Trace List */}
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <List className="h-5 w-5" />
+              Live Traces
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Tabs defaultValue="list">
+              <TabsList className="mb-4">
+                <TabsTrigger value="list" className="flex items-center gap-2">
+                  <List className="h-4 w-4" />
+                  List
+                </TabsTrigger>
+                <TabsTrigger value="flame" className="flex items-center gap-2">
+                  <Flame className="h-4 w-4" />
+                  Flame Graph
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="list">
+                <ScrollArea className="h-[400px]">
+                  {!traces?.length ? (
+                    <div className="text-center py-12 text-muted-foreground">
+                      {activeSession
+                        ? "Waiting for traces..."
+                        : "Start the debugger to see traces"}
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      {traces.map((trace) => {
+                        const StatusIcon = STATUS_ICONS[trace.status] || Clock;
+                        return (
+                          <div
+                            key={trace.id}
+                            className={`p-3 rounded-lg border cursor-pointer transition-all ${
+                              selectedTrace === trace.trace_id
+                                ? "border-primary bg-primary/5"
+                                : "border-border hover:border-primary/50"
+                            }`}
+                            onClick={() => setSelectedTrace(trace.trace_id)}
+                          >
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-3">
+                                <StatusIcon
+                                  className={`h-4 w-4 ${STATUS_COLORS[trace.status]}`}
+                                />
+                                <Badge
+                                  variant="outline"
+                                  className={MODULE_COLORS[trace.module] || ""}
+                                >
+                                  {trace.module}
+                                </Badge>
+                                <span className="font-mono text-sm">{trace.action}</span>
+                              </div>
+                              <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                                {trace.memory_mb && (
+                                  <span className="flex items-center gap-1">
+                                    <Cpu className="h-3 w-3" />
+                                    {trace.memory_mb.toFixed(1)}MB
+                                  </span>
+                                )}
+                                <span className="flex items-center gap-1">
+                                  <Clock className="h-3 w-3" />
+                                  {trace.latency_ms}ms
+                                </span>
+                              </div>
+                            </div>
+                            {trace.error_message && (
+                              <p className="text-xs text-red-400 mt-2 truncate">
+                                {trace.error_message}
+                              </p>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </ScrollArea>
+              </TabsContent>
+
+              <TabsContent value="flame">
+                <div className="h-[400px] bg-muted/50 rounded-lg p-4">
+                  {!flameData?.length ? (
+                    <div className="h-full flex items-center justify-center text-muted-foreground">
+                      No flame graph data available
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      {flameData.map((node, i) => (
+                        <FlameRow key={i} node={node} depth={0} maxValue={Math.max(...flameData.map(n => n.value))} />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
+
+        {/* Trace Detail */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <BarChart3 className="h-5 w-5" />
+              Trace Detail
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {!selectedTraceData ? (
+              <div className="text-center py-12 text-muted-foreground">
+                Select a trace to view details
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-xs text-muted-foreground">Module</p>
+                    <Badge className={MODULE_COLORS[selectedTraceData.module] || ""}>
+                      {selectedTraceData.module}
+                    </Badge>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground">Action</p>
+                    <p className="font-mono text-sm">{selectedTraceData.action}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground">Latency</p>
+                    <p className="font-mono">{selectedTraceData.latency_ms}ms</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground">Memory</p>
+                    <p className="font-mono">{selectedTraceData.memory_mb?.toFixed(2) || "N/A"}MB</p>
+                  </div>
+                </div>
+
+                {selectedTraceData.input_preview && (
+                  <div>
+                    <p className="text-xs text-muted-foreground mb-1">Input</p>
+                    <pre className="bg-muted p-2 rounded text-xs overflow-auto max-h-24">
+                      {selectedTraceData.input_preview}
+                    </pre>
+                  </div>
+                )}
+
+                {selectedTraceData.output_preview && (
+                  <div>
+                    <p className="text-xs text-muted-foreground mb-1">Output</p>
+                    <pre className="bg-muted p-2 rounded text-xs overflow-auto max-h-24">
+                      {selectedTraceData.output_preview}
+                    </pre>
+                  </div>
+                )}
+
+                {selectedTraceData.error_message && (
+                  <div>
+                    <p className="text-xs text-muted-foreground mb-1">Error</p>
+                    <pre className="bg-red-500/10 text-red-400 p-2 rounded text-xs overflow-auto">
+                      {selectedTraceData.error_message}
+                    </pre>
+                  </div>
+                )}
+
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1">Trace ID</p>
+                  <code className="text-xs bg-muted px-2 py-1 rounded">
+                    {selectedTraceData.trace_id}
+                  </code>
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
+
+// Flame graph row component
+function FlameRow({ node, depth, maxValue }: { node: any; depth: number; maxValue: number }) {
+  const width = Math.max((node.value / maxValue) * 100, 10);
+  const statusColor = node.status === "success" ? "bg-green-500" : node.status === "error" ? "bg-red-500" : "bg-amber-500";
+
+  return (
+    <div style={{ marginLeft: depth * 16 }}>
+      <div
+        className={`${statusColor} text-white px-2 py-1 rounded text-xs font-mono mb-1 truncate`}
+        style={{ width: `${width}%` }}
+        title={`${node.name} - ${node.value}ms`}
+      >
+        {node.name} ({node.value}ms)
+      </div>
+      {node.children?.map((child: any, i: number) => (
+        <FlameRow key={i} node={child} depth={depth + 1} maxValue={maxValue} />
+      ))}
+    </div>
+  );
+}
