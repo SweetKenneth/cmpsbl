@@ -280,7 +280,8 @@ serve(async (req) => {
       case 'list_plans': {
         const { data: plans, error } = await supabase
           .from('substrate_upgrade_plans')
-          .select('id, created_at, mode, scope, status, risk_level, backup_id, operator_notes')
+          .select('id, created_at, mode, scope, status, risk_level, backup_id, operator_notes, diff_summary, suggested_patches')
+          .neq('status', 'deleted')
           .order('created_at', { ascending: false })
           .limit(50);
         

@@ -51,6 +51,7 @@ import { CognitivesPanel } from '@/components/substrate-os/CognitivesPanel';
 import { UpgradeEnginePanel } from '@/components/substrate-os/UpgradeEnginePanel';
 import { BackupRestorePanel } from '@/components/substrate-os/BackupRestorePanel';
 import { EmergencyRecoveryPanel } from '@/components/substrate-os/EmergencyRecoveryPanel';
+import { ModernizerScanWidget } from '@/components/substrate-os/ModernizerScanWidget';
 import { AgencyMintWizard } from '@/components/agency/AgencyMintWizard';
 import { AgencyGallery } from '@/components/agency/AgencyGallery';
 import { cn } from '@/lib/utils';
@@ -435,8 +436,11 @@ export default function SubstrateOS() {
             {/* Metrics Grid */}
             <MetricsGrid />
             
-            {/* Brain Intelligence Panel */}
-            <BrainIntelligencePanel enabled={isOperator} />
+            {/* Brain Intelligence + Modernizer side by side on larger screens */}
+            <div className="grid lg:grid-cols-2 gap-6">
+              <BrainIntelligencePanel enabled={isOperator} />
+              <ModernizerScanWidget enabled={isOperator} />
+            </div>
             
             {/* System Health Panel */}
             <SystemHealthPanel enabled={isOperator} />

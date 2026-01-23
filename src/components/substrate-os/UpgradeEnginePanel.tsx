@@ -47,6 +47,20 @@ interface UpgradePlan {
   risk_level: string;
   backup_id: string;
   operator_notes: string | null;
+  diff_summary?: Array<{
+    module: string;
+    change_type: string;
+    description: string;
+    risk: string;
+  }>;
+  suggested_patches?: Array<{
+    target: string;
+    action: string;
+    rationale: string;
+  }>;
+}
+
+interface UpgradePlanDetails extends UpgradePlan {
   diff_summary: Array<{
     module: string;
     change_type: string;
@@ -97,18 +111,38 @@ export function UpgradeEnginePanel({ enabled }: UpgradeEnginePanelProps) {
         }
       });
       if (error) throw error;
-      if (!data.success) throw new Error(data.error || data.message);
+      if (!data.success) {
+        // Provide user-friendly error messages
+        const message = data.error || data.message || 'Analysis failed';
+        if (message.includes('health below threshold')) {
+          throw new Error(`System health too low (${data.current_health}%). Run system.heal first.`);
+        }
+        if (message.includes('rate limit')) {
+          throw new Error(`Daily limit reached (${data.upgrades_today}/${data.max_per_day}). Try again tomorrow.`);
+        }
+        if (message.includes('rollback')) {
+          throw new Error('Recent rollback detected. Wait 1 hour before proposing upgrades.');
+        }
+        throw new Error(message);
+      }
       return data;
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['upgrade-plans'] });
-      toast.success('Upgrade proposal generated', {
-        description: `Plan ${data.plan?.plan_id} created with ${data.plan?.diff_summaries?.length || 0} suggested changes`,
-      });
+      const changeCount = data.plan?.diff_summaries?.length || 0;
+      if (changeCount > 0) {
+        toast.success('Upgrade proposal generated', {
+          description: `Plan created with ${changeCount} suggested changes`,
+        });
+      } else {
+        toast.info('Substrate is healthy', {
+          description: 'No actionable improvements found at this time',
+        });
+      }
       setNotes('');
     },
     onError: (error) => {
-      toast.error('Failed to generate proposal', {
+      toast.error('Analysis failed', {
         description: error instanceof Error ? error.message : 'Unknown error',
       });
     },
@@ -280,20 +314,26 @@ export function UpgradeEnginePanel({ enabled }: UpgradeEnginePanelProps) {
           <Button 
             onClick={() => proposeMutation.mutate({ scope: selectedScope, notes })}
             disabled={proposeMutation.isPending}
-            className="w-full bg-gradient-to-r from-cyan-500/20 to-fuchsia-500/20 border border-cyan-500/40 hover:from-cyan-500/30 hover:to-fuchsia-500/30"
+            className="w-full bg-gradient-to-r from-cyan-500/20 to-fuchsia-500/20 border border-cyan-500/40 hover:from-cyan-500/30 hover:to-fuchsia-500/30 transition-all"
           >
             {proposeMutation.isPending ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Analyzing...
+                Analyzing substrate...
               </>
             ) : (
               <>
                 <Zap className="w-4 h-4 mr-2" />
-                Generate Proposal
+                Scan & Generate Proposal
               </>
             )}
           </Button>
+          
+          {proposeMutation.isError && (
+            <p className="text-xs text-red-400 mt-2 text-center">
+              {proposeMutation.error instanceof Error ? proposeMutation.error.message : 'Analysis failed'}
+            </p>
+          )}
         </CardContent>
       </Card>
 
