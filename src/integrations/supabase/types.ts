@@ -3515,6 +3515,72 @@ export type Database = {
         }
         Relationships: []
       }
+      developer_templates: {
+        Row: {
+          category: string
+          created_at: string
+          default_config: Json
+          description: string
+          difficulty: string
+          documentation_url: string | null
+          estimated_setup_minutes: number
+          example_code: string | null
+          features: string[]
+          id: string
+          install_count: number
+          is_active: boolean
+          is_featured: boolean
+          long_description: string | null
+          name: string
+          required_modules: string[]
+          slug: string
+          thumbnail_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          default_config?: Json
+          description: string
+          difficulty?: string
+          documentation_url?: string | null
+          estimated_setup_minutes?: number
+          example_code?: string | null
+          features?: string[]
+          id?: string
+          install_count?: number
+          is_active?: boolean
+          is_featured?: boolean
+          long_description?: string | null
+          name: string
+          required_modules?: string[]
+          slug: string
+          thumbnail_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          default_config?: Json
+          description?: string
+          difficulty?: string
+          documentation_url?: string | null
+          estimated_setup_minutes?: number
+          example_code?: string | null
+          features?: string[]
+          id?: string
+          install_count?: number
+          is_active?: boolean
+          is_featured?: boolean
+          long_description?: string | null
+          name?: string
+          required_modules?: string[]
+          slug?: string
+          thumbnail_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       dream_cycle_logs: {
         Row: {
           agency_id: string | null
