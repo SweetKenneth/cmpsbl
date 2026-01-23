@@ -508,9 +508,9 @@ export default function Explore() {
     <div ref={containerRef} className="min-h-screen bg-background overflow-hidden contain-paint">
       <SEO 
         title="promptfluid® — Cognitive Substrate Infrastructure"
-        description="7 core modules, 52 substrate actions, BYOK architecture. Autonomous learning, memory persistence, AI routing, and defense-first design. Build applications that think, learn, and defend themselves."
+        description="11 core modules, 124+ substrate actions, BYOK architecture. Autonomous learning, memory persistence, AI routing, and defense-first design. Build applications that think, learn, and defend themselves."
         canonical="https://promptfluid.com"
-        keywords={['cognitive substrate', 'AI infrastructure', 'autonomous AI', 'BYOK', 'memory systems', 'self-learning', 'defense AI']}
+        keywords={['cognitive substrate', 'AI infrastructure', 'autonomous AI', 'BYOK', 'memory systems', 'self-learning', 'defense AI', 'kernel architecture']}
       />
 
       <PublicNav />
@@ -556,10 +556,10 @@ export default function Explore() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <Badge variant="outline" className="mb-4">7 Core Modules</Badge>
+            <Badge variant="outline" className="mb-4">11 Core Modules</Badge>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">The Cognitive Architecture</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Seven interconnected systems working in harmony. Each module operates independently 
+              Eleven interconnected systems working in harmony. Each module operates independently 
               while contributing to the collective intelligence of the substrate.
             </p>
           </motion.div>
@@ -588,10 +588,10 @@ export default function Explore() {
             className="text-center mb-12"
           >
             <Badge variant="outline" className="mb-4">Unified API</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">52 Substrate Actions</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">124+ Substrate Actions</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               All cognitive operations accessible through a single endpoint. Memory, chat, security, 
-              AI routing, observability, dream processing, and system administration.
+              AI routing, observability, dream processing, backup/restore, and self-modernization.
             </p>
           </motion.div>
           
