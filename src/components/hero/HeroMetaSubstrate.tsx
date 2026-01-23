@@ -329,7 +329,7 @@ function TypedText({ texts, gradientColors, className }: {
   
   return (
     <span 
-      className={className}
+      className={cn("inline-flex items-baseline", className)}
       style={{
         background: currentGradient,
         WebkitBackgroundClip: "text",
@@ -337,11 +337,12 @@ function TypedText({ texts, gradientColors, className }: {
         backgroundClip: "text",
       }}
     >
-      {displayText}
+      <span className="inline-block">{displayText}</span>
       <span 
-        className="animate-pulse"
+        className="inline-block w-[0.5ch] text-center"
         style={{
           WebkitTextFillColor: "hsl(var(--foreground))",
+          animation: "blink 1s step-end infinite",
         }}
       >|</span>
     </span>
@@ -436,10 +437,10 @@ export function HeroMetaSubstrate() {
               <span className="text-xs sm:text-sm text-muted-foreground">Cognitive Operating System</span>
             </motion.div>
             
-            {/* Main headline */}
+            {/* Main headline - fixed height to prevent CLS */}
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] mb-4 sm:mb-6">
               <span className="text-foreground block">Where Machines Learn To</span>
-              <span className="block mt-1 sm:mt-2 min-h-[1.2em]">
+              <span className="block mt-1 sm:mt-2" style={{ minHeight: "1.2em", height: "1.2em" }}>
                 <TypedText 
                   texts={["Dream.", "Remember.", "Self-Improve.", "Evolve.", "Think.", "Adapt."]}
                   gradientColors={[
