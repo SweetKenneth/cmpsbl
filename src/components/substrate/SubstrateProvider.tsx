@@ -89,8 +89,8 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
   };
 
   const refresh = async () => {
-    // Check all 8 substrate modules
-    const moduleList: SubstrateModule[] = ['brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'system', 'modernizer'];
+    // Check all 11 substrate modules (v4.1.1 full kernel architecture)
+    const moduleList: SubstrateModule[] = ['core', 'ripple', 'access', 'brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'system', 'modernizer'];
     const results = await Promise.all(moduleList.map(checkModule));
     
     const newModules = moduleList.reduce((acc, module, index) => {

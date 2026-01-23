@@ -268,19 +268,63 @@ export default function Explore() {
   // The parallax effect is nice-to-have but causes layout thrashing
   const backgroundY = '0%'; // Static - no scroll animation to avoid reflow
   
-  // Core Modules - the 7 pillars (all deployed via pf-substrate)
+  // Core Modules - all 11 pillars (v4.1.1 kernel architecture)
   const coreModules = [
+    {
+      icon: Cpu,
+      title: "Core",
+      description: "The kernel. Scheduling, lifecycle, routing, and configuration. The foundation all modules depend on.",
+      features: [
+        "Boot sequence",
+        "Job scheduling",
+        "Module routing",
+        "Configuration management",
+        "Graceful shutdown"
+      ],
+      href: "/substrate",
+      color: "text-slate-500",
+      gradient: "bg-slate-500",
+    },
+    {
+      icon: Network,
+      title: "Ripple",
+      description: "Message bus for async job processing, pub/sub events, and event sourcing across modules.",
+      features: [
+        "Job queues",
+        "Pub/sub events",
+        "Dead letter handling",
+        "Retry mechanisms",
+        "Event log"
+      ],
+      href: "/substrate",
+      color: "text-teal-500",
+      gradient: "bg-teal-500",
+    },
+    {
+      icon: Fingerprint,
+      title: "Access",
+      description: "Identity, API keys, quotas, and usage metering. Secure access control for the substrate.",
+      features: [
+        "API key management",
+        "Rate limiting",
+        "Usage metering",
+        "Quota enforcement",
+        "Developer accounts"
+      ],
+      href: "/substrate",
+      color: "text-indigo-500",
+      gradient: "bg-indigo-500",
+    },
     {
       icon: Brain,
       title: "Brain",
-      description: "Persistent memory, learning cycles, and self-reflection. The cognitive core that remembers, learns, and evolves.",
+      description: "Three-tier memory (Hot/Warm/Cold), learning cycles, and knowledge graph. The cognitive core.",
       features: [
-        "Memory query & storage",
-        "Daily reflection cycles",
-        "Knowledge graph summaries",
-        "Session reflection",
-        "Memory reinforcement",
-        "Cold storage migration"
+        "3-tier memory tiering",
+        "Knowledge graph v2",
+        "Memory pruning",
+        "Reflection cycles",
+        "Coherence checks"
       ],
       href: "/decode",
       color: "text-cyan-500",
@@ -289,14 +333,12 @@ export default function Explore() {
     {
       icon: MessageSquare,
       title: "Decode",
-      description: "Epistemic conversation engine. Intent parsing with contextual understanding and dream integration.",
+      description: "Epistemic conversation engine. Intent parsing with contextual understanding.",
       features: [
         "Natural language chat",
         "Intent extraction",
-        "Dream mode conversations",
-        "Learning from interactions",
-        "Session management",
-        "Cascade AI integration"
+        "Dream mode",
+        "Learning from interactions"
       ],
       href: "/decode",
       color: "text-purple-500",
@@ -305,14 +347,12 @@ export default function Explore() {
     {
       icon: Shield,
       title: "Defense",
-      description: "Behavioral analysis, threat detection, and autonomous security. Protects the substrate from attacks.",
+      description: "Behavioral analysis, threat detection, and autonomous security.",
       features: [
         "Request analysis",
-        "IP reputation scoring",
+        "IP reputation",
         "Anomaly detection",
-        "Security posture checks",
-        "Rate limit monitoring",
-        "Z-score anomaly probes"
+        "Security posture"
       ],
       href: "/substrate",
       color: "text-amber-500",
@@ -321,12 +361,10 @@ export default function Explore() {
     {
       icon: Zap,
       title: "Nexus",
-      description: "Multi-provider AI routing with intelligent model selection based on task, cost, and latency.",
+      description: "Multi-provider AI routing with intelligent model selection.",
       features: [
         "Intelligent routing",
-        "Provider availability",
-        "Routing analytics",
-        "Automatic failover",
+        "Provider failover",
         "Cost optimization",
         "BYOK support"
       ],
@@ -337,12 +375,10 @@ export default function Explore() {
     {
       icon: Eye,
       title: "Vision",
-      description: "Unified observability layer with real-time metrics, health monitoring, and comprehensive audit trails.",
+      description: "Unified observability with health monitoring, tracing, and audit trails.",
       features: [
-        "System health checks",
-        "Dashboard data",
+        "Health dashboard",
         "Distributed tracing",
-        "Introspection",
         "AI quota monitoring",
         "Pulse heartbeats"
       ],
@@ -353,12 +389,10 @@ export default function Explore() {
     {
       icon: Moon,
       title: "Dream",
-      description: "Nocturnal processing engine. Feed dreams to the substrate and watch transformation emerge.",
+      description: "Nocturnal processing engine. Feed dreams and watch transformation emerge.",
       features: [
         "Dream feeding API",
         "Dream cycles",
-        "Awakening sequences",
-        "Sentiment analysis",
         "Pattern extraction",
         "Mutation cycles"
       ],
@@ -369,39 +403,55 @@ export default function Explore() {
     {
       icon: Settings,
       title: "System",
-      description: "Administrative operations, diagnostics, healing, and backup/restore for the entire substrate.",
+      description: "Administration, diagnostics, healing, and backup/restore.",
       features: [
-        "System status",
-        "Full diagnostics",
         "Self-healing",
         "Backup & restore",
-        "Version management",
-        "Service restart"
+        "Full diagnostics",
+        "Version management"
       ],
       href: "/substrate",
       color: "text-rose-500",
       gradient: "bg-rose-500",
     },
+    {
+      icon: RefreshCw,
+      title: "Modernizer",
+      description: "Self-upgrade engine. Scans, proposes, and applies architecture improvements.",
+      features: [
+        "Substrate scanning",
+        "Upgrade proposals",
+        "Shadow mode review",
+        "Rollback safety"
+      ],
+      href: "/os",
+      color: "text-orange-500",
+      gradient: "bg-orange-500",
+    },
   ];
 
-  // Deployed substrate actions by module (per MODULE-ACTIONS-REGISTRY.md)
+  // Deployed substrate actions by module (v4.1.1 - 124+ actions)
   const substrateActions = [
-    { icon: Brain, title: "Brain Actions", description: "query, remember, reflect, reinforce, dream, status, graphSummary, sessionReflection, learn, coldMigrate", count: "10", color: "text-cyan-500" },
-    { icon: Eye, title: "Vision Actions", description: "health, healthSnapshot, dashboard, trace, introspection, pulse, quota, metrics, logs, alert, audit, monitor, resilience, analytics", count: "14", color: "text-blue-500" },
-    { icon: Shield, title: "Defense Actions", description: "analyze, reputation, anomaly, anomalyProbe, limits, posture, status", count: "7", color: "text-amber-500" },
-    { icon: MessageSquare, title: "Decode Actions", description: "chat, intent, dream, learn, status", count: "5", color: "text-purple-500" },
-    { icon: Zap, title: "Nexus Actions", description: "route, providers, routeStats, status", count: "4", color: "text-green-500" },
-    { icon: Moon, title: "Dream Actions", description: "cycle, awaken, feed", count: "3", color: "text-violet-500" },
-    { icon: Settings, title: "System Actions", description: "status, health, diagnostics, heal, backup, restore, audit, version, restart", count: "9", color: "text-rose-500" },
+    { icon: Cpu, title: "Core Actions", description: "boot, schedule, jobs, process, config, shutdown, status, pulse", count: "8", color: "text-slate-500" },
+    { icon: Network, title: "Ripple Actions", description: "enqueue, dequeue, publish, subscribe, topics, events, dead_letter, retry, status, pulse", count: "10", color: "text-teal-500" },
+    { icon: Fingerprint, title: "Access Actions", description: "create_key, validate_key, revoke_key, list_keys, usage, quota, record_usage, subscription, pulse", count: "9", color: "text-indigo-500" },
+    { icon: Brain, title: "Brain Actions", description: "query, remember, reflect, reinforce, dream, recall, synthesize, train, optimize, deep_think, coherence_check, status", count: "12", color: "text-cyan-500" },
+    { icon: Eye, title: "Vision Actions", description: "health, healthSnapshot, dashboard, trace, introspection, pulse, quota, metrics, logs, alert, audit, monitor, resilience, analytics, dependency_map", count: "15", color: "text-blue-500" },
+    { icon: Shield, title: "Defense Actions", description: "analyze, reputation, anomaly, anomalyProbe, limits, posture, ip_intel, status", count: "8", color: "text-amber-500" },
+    { icon: MessageSquare, title: "Decode Actions", description: "chat, intent, dream, learn, propose, status", count: "6", color: "text-purple-500" },
+    { icon: Zap, title: "Nexus Actions", description: "route, text, image, providers, routeStats, status", count: "6", color: "text-green-500" },
+    { icon: Moon, title: "Dream Actions", description: "cycle, awaken, feed, consume, interpret, mutate, reflect, status, mood", count: "9", color: "text-violet-500" },
+    { icon: Settings, title: "System Actions", description: "status, health, diagnostics, heal, backup, restore, list_backups, audit, version, restart, config", count: "11", color: "text-rose-500" },
+    { icon: RefreshCw, title: "Modernizer Actions", description: "scan, submit, job, jobs, analyze, quota, propose, plans, review, apply, rollback, delete, archived, implement, status, pulse", count: "16", color: "text-orange-500" },
   ];
 
-  // System Capabilities - ACCURATE counts
+  // System Capabilities - ACCURATE v4.1.1 counts
   const capabilities = [
-    { icon: Layers, value: "52", label: "Substrate Actions", description: "Via unified pf-substrate", color: "text-purple-500" },
-    { icon: Database, value: "50+", label: "Database Tables", description: "Structured data schemas", color: "text-green-500" },
+    { icon: Layers, value: "124+", label: "Substrate Actions", description: "Via unified pf-substrate", color: "text-purple-500" },
+    { icon: Database, value: "60+", label: "Database Tables", description: "Including 3-tier memory", color: "text-green-500" },
     { icon: Activity, value: "24/7", label: "Autonomous Ops", description: "Self-healing systems", color: "text-amber-500" },
     { icon: Clock, value: "<100ms", label: "Response Time", description: "Edge-optimized latency", color: "text-blue-500" },
-    { icon: HeartPulse, value: "7", label: "Core Modules", description: "Brain, Decode, Defense, Nexus, Vision, Dream, System", color: "text-rose-500" },
+    { icon: HeartPulse, value: "11", label: "Core Modules", description: "Full kernel architecture", color: "text-rose-500" },
     { icon: Lock, value: "BYOK", label: "Architecture", description: "Bring Your Own Keys", color: "text-cyan-500" },
   ];
 

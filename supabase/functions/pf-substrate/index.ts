@@ -46,7 +46,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const SUBSTRATE_VERSION = "4.0.0"; // Complete OS with CORE, RIPPLE, ACCESS modules
+const SUBSTRATE_VERSION = "4.1.1"; // Brain v2.0 (3-tier memory), Knowledge Graph v2, 11-module kernel OS
 
 // Trace ID generator for distributed tracing
 function generateTraceId(): string {

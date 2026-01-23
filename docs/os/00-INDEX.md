@@ -92,5 +92,5 @@ Think of this as your "explain it to me like I'm five" guide to a very sophistic
 ---
 
 *Last Updated: January 2026*
-*Version: v4.0.0*
+*Version: v4.1.1*
 *Classification: CONFIDENTIAL*

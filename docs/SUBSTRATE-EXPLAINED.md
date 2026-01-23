@@ -247,7 +247,7 @@ const health = await vision.healthSnapshot();
 | **Database** | PostgreSQL via Supabase |
 | **Edge Functions** | Deno runtime |
 | **Authentication** | JWT (Supabase Auth) or API Key |
-| **Version** | v4.0.0 (2026-01) |
+| **Version** | v4.1.1 (2026-01) |
 
 ---
 

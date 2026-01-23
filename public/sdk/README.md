@@ -1,6 +1,6 @@
 # promptfluid® Substrate SDK
 
-## v4.0.0 — Cognitive Orchestration Substrate
+## v4.1.1 — Cognitive Orchestration Substrate (Brain v2.0)
 
 A TypeScript client SDK for the promptfluid® Substrate — a unified API for cognitive AI operations with **11 modules** across 4 layers.
 

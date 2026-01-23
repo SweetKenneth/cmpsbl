@@ -1,6 +1,6 @@
 # promptfluid® Substrate — API Reference
 
-**v4.0.0 — Complete Module & Action Reference**
+**v4.1.1 — Complete Module & Action Reference (Brain v2.0)**
 
 ---
 
