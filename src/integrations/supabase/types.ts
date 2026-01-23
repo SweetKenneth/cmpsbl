@@ -1637,6 +1637,84 @@ export type Database = {
         }
         Relationships: []
       }
+      backup_exports: {
+        Row: {
+          backup_id: string
+          created_at: string | null
+          created_by: string | null
+          download_count: number | null
+          download_token: string | null
+          expires_at: string | null
+          export_type: string
+          file_path: string
+          file_size_bytes: number | null
+          id: string
+          includes_secrets: boolean | null
+        }
+        Insert: {
+          backup_id: string
+          created_at?: string | null
+          created_by?: string | null
+          download_count?: number | null
+          download_token?: string | null
+          expires_at?: string | null
+          export_type: string
+          file_path: string
+          file_size_bytes?: number | null
+          id?: string
+          includes_secrets?: boolean | null
+        }
+        Update: {
+          backup_id?: string
+          created_at?: string | null
+          created_by?: string | null
+          download_count?: number | null
+          download_token?: string | null
+          expires_at?: string | null
+          export_type?: string
+          file_path?: string
+          file_size_bytes?: number | null
+          id?: string
+          includes_secrets?: boolean | null
+        }
+        Relationships: []
+      }
+      backup_import_log: {
+        Row: {
+          completed_at: string | null
+          errors: Json | null
+          id: string
+          import_status: string | null
+          imported_by: string | null
+          source_backup_id: string
+          source_project_id: string | null
+          started_at: string | null
+          tables_restored: Json | null
+        }
+        Insert: {
+          completed_at?: string | null
+          errors?: Json | null
+          id?: string
+          import_status?: string | null
+          imported_by?: string | null
+          source_backup_id: string
+          source_project_id?: string | null
+          started_at?: string | null
+          tables_restored?: Json | null
+        }
+        Update: {
+          completed_at?: string | null
+          errors?: Json | null
+          id?: string
+          import_status?: string | null
+          imported_by?: string | null
+          source_backup_id?: string
+          source_project_id?: string | null
+          started_at?: string | null
+          tables_restored?: Json | null
+        }
+        Relationships: []
+      }
       bot_sniper_api_keys: {
         Row: {
           api_key_hash: string
