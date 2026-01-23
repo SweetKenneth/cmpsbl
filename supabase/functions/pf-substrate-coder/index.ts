@@ -1,17 +1,18 @@
 /**
  * promptfluid® Substrate Coder Agent — Self-Evolution Code Generator
- * v1.0.0 — Brain-powered code generation with pattern learning
+ * v1.1.0 — Brain-powered code generation with pattern learning
  * 
  * Generates executable code for substrate improvements using:
  * - Brain memory context injection
- * - Free-tier router for AI calls
+ * - Free-tier router for AI calls (NO Lovable AI)
  * - Pattern learning from successful deployments
  */
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { callFreeTierAI, ROUTER_VERSION as FREE_TIER_VERSION } from "../_shared/free-tier-router.ts";
 
-const CODER_VERSION = "1.0.0";
+const CODER_VERSION = "1.1.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -61,9 +62,7 @@ serve(async (req) => {
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
   );
 
-  // Use Lovable AI endpoint instead of Groq for reliability
-  const LOVABLE_AI_URL = Deno.env.get("LOVABLE_AI_URL") || "https://ai.lovable.dev/v1";
-  const GROQ_API_KEY = Deno.env.get("GROQ_API_KEY"); // Fallback
+  // Using free-tier router exclusively (no Lovable AI)
 
   try {
     const body: CoderRequest = await req.json();
@@ -88,7 +87,7 @@ serve(async (req) => {
         return jsonResponse({
           success: true,
           version: CODER_VERSION,
-          ai_configured: !!GROQ_API_KEY,
+          free_tier_router: FREE_TIER_VERSION,
           learned_patterns: learnedPatterns || 0,
           generated_today: generatedToday || 0,
           capabilities: [
@@ -98,6 +97,11 @@ serve(async (req) => {
             'hook_ts',
             'utility_ts',
           ],
+          rate_limits: {
+            groq: '800/day',
+            cerebras: '11,520/day',
+            total: '12,352+/day'
+          }
         }, corsHeaders);
       }
 
@@ -130,15 +134,6 @@ serve(async (req) => {
           }, corsHeaders, 400);
         }
 
-        // Try Lovable AI first, fallback to Groq
-        const useAI = true; // Always have a fallback
-        if (!LOVABLE_AI_URL && !GROQ_API_KEY) {
-          return jsonResponse({
-            success: false,
-            error: 'AI provider not configured',
-          }, corsHeaders, 500);
-        }
-
         // 1. Query Brain for relevant patterns
         const brainPatterns = await getBrainPatterns(supabase, improvement.module, improvement.change_type);
         
@@ -146,9 +141,15 @@ serve(async (req) => {
         const systemPrompt = buildCoderSystemPrompt(improvement.module);
         const userPrompt = buildGenerationPrompt(improvement, brainPatterns, context);
 
-        // 3. Generate code via Lovable AI (or fallback to Groq)
+        // 3. Generate code via Free-Tier Router (Groq → Cerebras → SambaNova → etc)
         const startTime = Date.now();
-        const generatedCode = await generateWithAI(LOVABLE_AI_URL, GROQ_API_KEY, systemPrompt, userPrompt);
+        const aiResult = await callFreeTierAI(userPrompt, {
+          systemPrompt,
+          temperature: 0.3,
+          maxTokens: 4000,
+          priority: 'reliability',
+        });
+        const generatedCode = aiResult.content;
         const latency = Date.now() - startTime;
 
         // 4. Parse and validate the response
@@ -165,6 +166,8 @@ serve(async (req) => {
             confidence: parsed.confidence,
             latency_ms: latency,
             patterns_used: brainPatterns.length,
+            provider: aiResult.provider,
+            model: aiResult.model,
           },
         });
 
@@ -181,6 +184,8 @@ serve(async (req) => {
           generated: parsed.result,
           brain_patterns_used: brainPatterns.length,
           latency_ms: latency,
+          provider: aiResult.provider,
+          model: aiResult.model,
           version: CODER_VERSION,
         }, corsHeaders);
       }
@@ -364,65 +369,8 @@ ${context.existing_code}
   return prompt;
 }
 
-/**
- * Generate code using Lovable AI (primary) or Groq (fallback)
- */
-async function generateWithAI(lovableUrl: string, groqKey: string | undefined, systemPrompt: string, userPrompt: string): Promise<string> {
-  // Try Lovable AI first (no API key needed, uses project auth)
-  try {
-    const lovableResponse = await fetch(`${lovableUrl}/chat/completions`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userPrompt },
-        ],
-        temperature: 0.3,
-        max_tokens: 4000,
-      }),
-    });
-
-    if (lovableResponse.ok) {
-      const data = await lovableResponse.json();
-      return data.choices[0]?.message?.content || '';
-    }
-    console.log('[CODER] Lovable AI unavailable, trying Groq fallback...');
-  } catch (e) {
-    console.log('[CODER] Lovable AI error, trying Groq fallback...', e);
-  }
-
-  // Fallback to Groq
-  if (!groqKey) {
-    throw new Error('No AI provider available');
-  }
-
-  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${groqKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      model: 'llama-3.3-70b-versatile',
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userPrompt },
-      ],
-      temperature: 0.3,
-      max_tokens: 4000,
-    }),
-  });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`AI generation failed: ${response.status} - ${errorText}`);
-  }
-
-  const data = await response.json();
-  return data.choices[0]?.message?.content || '';
-}
+// Code generation now uses callFreeTierAI from the shared router
+// No custom AI function needed - using the enterprise-grade free-tier router v4.0.0
 
 /**
  * Parse and validate generated code
