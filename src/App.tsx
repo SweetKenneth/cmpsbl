@@ -202,13 +202,125 @@ const App = () => {
                       <Route path="/blog/wcag-2-2-wordpress-changes" element={<WCAG22Changes />} />
                       <Route path="/blog/automated-accessibility-fixes-wordpress" element={<AIAccessibilityFixes />} />
                       
-                      {/* Legacy redirects */}
+                      {/* ===== ORPHANED PAGE REDIRECTS ===== */}
+                      {/* These pages exist but are not accessible via nav/footer/CTAs */}
+                      {/* Redirecting to home to prevent outdated content access */}
+                      
+                      {/* Admin routes */}
                       <Route path="/admin/*" element={<Navigate to="/" replace />} />
                       <Route path="/dashboard" element={<Navigate to="/" replace />} />
-                      <Route path="/brain" element={<Navigate to="/decode" replace />} />
-                      <Route path="/cascade" element={<Navigate to="/decode" replace />} />
                       
-                      {/* 404 */}
+                      {/* Legacy brain/cascade routes */}
+                      <Route path="/brain" element={<Navigate to="/decode" replace />} />
+                      <Route path="/brain/*" element={<Navigate to="/decode" replace />} />
+                      <Route path="/brain-hub" element={<Navigate to="/" replace />} />
+                      <Route path="/brain-analytics" element={<Navigate to="/" replace />} />
+                      <Route path="/brain-learning" element={<Navigate to="/" replace />} />
+                      <Route path="/brain-ml" element={<Navigate to="/" replace />} />
+                      <Route path="/brain-training" element={<Navigate to="/" replace />} />
+                      <Route path="/brain-control" element={<Navigate to="/" replace />} />
+                      <Route path="/cascade" element={<Navigate to="/decode" replace />} />
+                      <Route path="/cascade-mindmap" element={<Navigate to="/" replace />} />
+                      
+                      {/* Clarity routes - deprecated product */}
+                      <Route path="/clarity" element={<Navigate to="/" replace />} />
+                      <Route path="/clarity/*" element={<Navigate to="/" replace />} />
+                      <Route path="/clarity-dashboard" element={<Navigate to="/" replace />} />
+                      <Route path="/clarity-add-site" element={<Navigate to="/" replace />} />
+                      <Route path="/clarity-admin" element={<Navigate to="/" replace />} />
+                      <Route path="/clarity-api-keys" element={<Navigate to="/" replace />} />
+                      <Route path="/clarity-certifications" element={<Navigate to="/" replace />} />
+                      <Route path="/clarity-clients" element={<Navigate to="/" replace />} />
+                      <Route path="/clarity-download" element={<Navigate to="/" replace />} />
+                      <Route path="/clarity-extension" element={<Navigate to="/" replace />} />
+                      <Route path="/clarity-fix-suggestions" element={<Navigate to="/" replace />} />
+                      <Route path="/clarity-notification-settings" element={<Navigate to="/" replace />} />
+                      <Route path="/clarity-portfolio" element={<Navigate to="/" replace />} />
+                      <Route path="/clarity-reports" element={<Navigate to="/" replace />} />
+                      <Route path="/clarity-scan-details" element={<Navigate to="/" replace />} />
+                      <Route path="/clarity-scan-details/*" element={<Navigate to="/" replace />} />
+                      <Route path="/clarity-schedules" element={<Navigate to="/" replace />} />
+                      <Route path="/clarity-site-settings" element={<Navigate to="/" replace />} />
+                      <Route path="/clarity-site-settings/*" element={<Navigate to="/" replace />} />
+                      <Route path="/clarity-subscription" element={<Navigate to="/" replace />} />
+                      <Route path="/clarity-teams" element={<Navigate to="/" replace />} />
+                      <Route path="/clarity-trends" element={<Navigate to="/" replace />} />
+                      <Route path="/clarity-webhooks" element={<Navigate to="/" replace />} />
+                      <Route path="/clarity-whitelabel" element={<Navigate to="/" replace />} />
+                      <Route path="/clarity-widget" element={<Navigate to="/" replace />} />
+                      
+                      {/* BotSniper/RCKBL routes - deprecated product */}
+                      <Route path="/bot-sniper" element={<Navigate to="/" replace />} />
+                      <Route path="/bot-sniper/*" element={<Navigate to="/" replace />} />
+                      <Route path="/bot-sniper-analytics" element={<Navigate to="/" replace />} />
+                      <Route path="/bot-sniper-home" element={<Navigate to="/" replace />} />
+                      <Route path="/bot-sniper-pricing" element={<Navigate to="/" replace />} />
+                      <Route path="/bot-sniper-settings" element={<Navigate to="/" replace />} />
+                      <Route path="/reflex-keys" element={<Navigate to="/" replace />} />
+                      
+                      {/* Decode sub-pages - not in current nav */}
+                      <Route path="/decode-coder" element={<Navigate to="/decode" replace />} />
+                      <Route path="/decode-control" element={<Navigate to="/decode" replace />} />
+                      <Route path="/decode-dreams" element={<Navigate to="/decode" replace />} />
+                      <Route path="/decode-governance" element={<Navigate to="/decode" replace />} />
+                      <Route path="/decode-mindmap" element={<Navigate to="/decode" replace />} />
+                      <Route path="/decode-status" element={<Navigate to="/decode" replace />} />
+                      
+                      {/* System/Admin pages */}
+                      <Route path="/system" element={<Navigate to="/" replace />} />
+                      <Route path="/system/*" element={<Navigate to="/" replace />} />
+                      <Route path="/system-audit" element={<Navigate to="/" replace />} />
+                      <Route path="/system-health" element={<Navigate to="/" replace />} />
+                      <Route path="/system-initializer" element={<Navigate to="/" replace />} />
+                      <Route path="/system-map" element={<Navigate to="/" replace />} />
+                      <Route path="/system-verify" element={<Navigate to="/" replace />} />
+                      <Route path="/audit" element={<Navigate to="/" replace />} />
+                      <Route path="/analytics" element={<Navigate to="/" replace />} />
+                      <Route path="/access-control" element={<Navigate to="/" replace />} />
+                      
+                      {/* Product info pages - cluster */}
+                      <Route path="/cluster/*" element={<Navigate to="/" replace />} />
+                      <Route path="/products/*" element={<Navigate to="/" replace />} />
+                      <Route path="/pillars/*" element={<Navigate to="/" replace />} />
+                      
+                      {/* Business/Finance pages */}
+                      <Route path="/billing" element={<Navigate to="/" replace />} />
+                      <Route path="/subscriptions" element={<Navigate to="/" replace />} />
+                      <Route path="/investor-packets" element={<Navigate to="/" replace />} />
+                      <Route path="/partnerships" element={<Navigate to="/" replace />} />
+                      
+                      {/* Marketing/Creative pages */}
+                      <Route path="/marketing" element={<Navigate to="/" replace />} />
+                      <Route path="/marketing-studio" element={<Navigate to="/" replace />} />
+                      <Route path="/creative-studio" element={<Navigate to="/" replace />} />
+                      <Route path="/creative-generation" element={<Navigate to="/" replace />} />
+                      <Route path="/prompt-merger" element={<Navigate to="/" replace />} />
+                      
+                      {/* Network/Infrastructure pages */}
+                      <Route path="/ripple-network" element={<Navigate to="/" replace />} />
+                      <Route path="/nexus-admin" element={<Navigate to="/" replace />} />
+                      <Route path="/threat-feed" element={<Navigate to="/" replace />} />
+                      
+                      {/* Legacy product pages */}
+                      <Route path="/modernizer" element={<Navigate to="/" replace />} />
+                      <Route path="/awake" element={<Navigate to="/" replace />} />
+                      <Route path="/scan" element={<Navigate to="/" replace />} />
+                      <Route path="/sentience-hub" element={<Navigate to="/" replace />} />
+                      <Route path="/learning-intelligence" element={<Navigate to="/" replace />} />
+                      
+                      {/* Product-specific routes */}
+                      <Route path="/access-product" element={<Navigate to="/" replace />} />
+                      <Route path="/brain-product" element={<Navigate to="/" replace />} />
+                      <Route path="/clarity-product" element={<Navigate to="/" replace />} />
+                      <Route path="/defense-product" element={<Navigate to="/" replace />} />
+                      <Route path="/ripple-product" element={<Navigate to="/" replace />} />
+                      <Route path="/studio-product" element={<Navigate to="/" replace />} />
+                      
+                      {/* Resources pages */}
+                      <Route path="/resources/*" element={<Navigate to="/" replace />} />
+                      <Route path="/solutions/*" element={<Navigate to="/solutions" replace />} />
+                      
+                      {/* 404 - catch all remaining */}
                       <Route path="*" element={<NotFound />} />
                     </Routes>
                   </Suspense>
