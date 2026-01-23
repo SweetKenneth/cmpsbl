@@ -1,15 +1,13 @@
 /**
  * META HERO: CMPSBL (Composable) By PromptFluid
- * Clear value proposition for all audiences: Gaming, Developers, Enterprise
+ * Cinematic, head-turning showcase of substrate versatility
  * Mobile-first, performance-optimized
  */
 
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useState, useRef } from "react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { CmpsblLogo } from "@/components/CmpsblLogo";
 import { 
   ArrowRight, 
   Brain, 
@@ -26,322 +24,491 @@ import {
   Gamepad2,
   Code,
   Building2,
+  Play,
   Sparkles,
-  CheckCircle2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-// The 11 core modules (v4.1.1 kernel architecture)
+// The 11 core modules with industries they power
 const coreModules = [
-  { icon: Cpu, name: "Core", color: "hsl(var(--muted-foreground))" },
-  { icon: Network, name: "Ripple", color: "hsl(var(--neon-green))" },
-  { icon: Fingerprint, name: "Access", color: "hsl(220 80% 60%)" },
-  { icon: Brain, name: "Brain", color: "hsl(var(--neon-cyan))" },
-  { icon: MessageSquare, name: "Decode", color: "hsl(var(--neon-purple))" },
-  { icon: Shield, name: "Defense", color: "hsl(var(--neon-amber))" },
-  { icon: Zap, name: "Nexus", color: "hsl(150 80% 50%)" },
-  { icon: Eye, name: "Vision", color: "hsl(var(--neon-blue))" },
-  { icon: Moon, name: "Dream", color: "hsl(var(--neon-magenta))" },
-  { icon: Settings, name: "System", color: "hsl(var(--destructive))" },
-  { icon: RefreshCw, name: "Modernizer", color: "hsl(30 80% 55%)" },
+  { icon: Cpu, name: "Core", desc: "Kernel orchestration", color: "hsl(var(--muted-foreground))" },
+  { icon: Network, name: "Ripple", desc: "Event propagation", color: "hsl(150 80% 50%)" },
+  { icon: Fingerprint, name: "Access", desc: "Identity & auth", color: "hsl(220 80% 60%)" },
+  { icon: Brain, name: "Brain", desc: "Persistent memory", color: "hsl(var(--neon-cyan))" },
+  { icon: MessageSquare, name: "Decode", desc: "Multi-modal AI", color: "hsl(var(--neon-purple))" },
+  { icon: Shield, name: "Defense", desc: "Threat detection", color: "hsl(var(--neon-amber))" },
+  { icon: Zap, name: "Nexus", desc: "Smart routing", color: "hsl(150 80% 50%)" },
+  { icon: Eye, name: "Vision", desc: "Observability", color: "hsl(var(--neon-blue))" },
+  { icon: Moon, name: "Dream", desc: "Offline learning", color: "hsl(var(--neon-magenta))" },
+  { icon: Settings, name: "System", desc: "Configuration", color: "hsl(var(--destructive))" },
+  { icon: RefreshCw, name: "Modernizer", desc: "Self-improvement", color: "hsl(30 80% 55%)" },
 ];
 
-// Audience cards
-const audienceCards = [
-  {
-    icon: Gamepad2,
-    title: "Game Developers",
-    description: "NPCs that remember, dream, and evolve",
-    features: ["Persistent NPC memory", "Dream cycles", "Dynamic dialogue"],
-    href: "/gaming",
-    color: "text-purple-500",
-    gradient: "from-purple-500/20 to-violet-500/20",
-  },
-  {
-    icon: Code,
-    title: "Software Developers",
-    description: "Apps that think, learn, and adapt",
-    features: ["3-tier memory", "AI routing", "Self-improvement"],
-    href: "/developers",
-    color: "text-cyan-500",
-    gradient: "from-cyan-500/20 to-blue-500/20",
-  },
-  {
-    icon: Building2,
-    title: "Enterprise",
-    description: "Operations that optimize themselves",
-    features: ["Workflow memory", "Decision support", "Audit trails"],
-    href: "/use-cases",
-    color: "text-amber-500",
-    gradient: "from-amber-500/20 to-orange-500/20",
-  },
+// Use cases that rotate through
+const useCases = [
+  { icon: Gamepad2, label: "NPCs that dream", industry: "Gaming", color: "text-purple-500" },
+  { icon: Building2, label: "Operations that learn", industry: "Enterprise", color: "text-amber-500" },
+  { icon: Code, label: "Apps that remember", industry: "Development", color: "text-cyan-500" },
 ];
 
-// Compact module orbit visualization
-function ModuleOrbit() {
-  const [hoveredModule, setHoveredModule] = useState<number | null>(null);
+// Floating particle component
+function FloatingParticle({ delay, duration, size, color, startX, startY }: {
+  delay: number;
+  duration: number;
+  size: number;
+  color: string;
+  startX: number;
+  startY: number;
+}) {
+  return (
+    <motion.div
+      className="absolute rounded-full pointer-events-none"
+      style={{
+        width: size,
+        height: size,
+        background: color,
+        left: `${startX}%`,
+        top: `${startY}%`,
+        filter: "blur(1px)",
+      }}
+      animate={{
+        y: [0, -100, -200],
+        x: [0, Math.random() * 50 - 25, Math.random() * 100 - 50],
+        opacity: [0, 0.8, 0],
+        scale: [0.5, 1, 0.3],
+      }}
+      transition={{
+        duration,
+        delay,
+        repeat: Infinity,
+        ease: "easeOut",
+      }}
+    />
+  );
+}
+
+// Connection line between modules
+function ConnectionLine({ from, to, delay }: { from: number; to: number; delay: number }) {
+  const fromAngle = (from / 11) * Math.PI * 2 - Math.PI / 2;
+  const toAngle = (to / 11) * Math.PI * 2 - Math.PI / 2;
+  const radius = 140;
+  
+  const x1 = Math.cos(fromAngle) * radius + 160;
+  const y1 = Math.sin(fromAngle) * radius + 160;
+  const x2 = Math.cos(toAngle) * radius + 160;
+  const y2 = Math.sin(toAngle) * radius + 160;
   
   return (
-    <div className="relative w-48 h-48 sm:w-56 sm:h-56 flex items-center justify-center mx-auto">
-      {/* Outer glow */}
-      <div
-        className="absolute inset-0 rounded-full animate-pulse"
-        style={{
-          background: "radial-gradient(circle, hsl(var(--neon-cyan) / 0.2) 0%, transparent 70%)",
-          animationDuration: "3s",
-        }}
-      />
+    <motion.line
+      x1={x1}
+      y1={y1}
+      x2={x2}
+      y2={y2}
+      stroke="url(#lineGradient)"
+      strokeWidth="1"
+      initial={{ pathLength: 0, opacity: 0 }}
+      animate={{ pathLength: 1, opacity: [0, 0.6, 0] }}
+      transition={{
+        duration: 2,
+        delay,
+        repeat: Infinity,
+        repeatDelay: 3,
+      }}
+    />
+  );
+}
+
+// Central substrate visualization
+function SubstrateVisualization() {
+  const [activeModule, setActiveModule] = useState(0);
+  const [activeUseCase, setActiveUseCase] = useState(0);
+  
+  // Rotate through modules
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveModule((prev) => (prev + 1) % coreModules.length);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
+  
+  // Rotate through use cases
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveUseCase((prev) => (prev + 1) % useCases.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const currentUseCase = useCases[activeUseCase];
+  
+  return (
+    <div className="relative w-full max-w-[320px] sm:max-w-[400px] md:max-w-[500px] aspect-square mx-auto">
+      {/* Floating particles */}
+      {Array.from({ length: 20 }).map((_, i) => (
+        <FloatingParticle
+          key={i}
+          delay={i * 0.5}
+          duration={4 + Math.random() * 2}
+          size={2 + Math.random() * 3}
+          color={`hsl(${180 + Math.random() * 60} 80% 60% / 0.6)`}
+          startX={20 + Math.random() * 60}
+          startY={70 + Math.random() * 30}
+        />
+      ))}
       
-      {/* Orbit ring */}
-      <div
-        className="absolute rounded-full border border-border/30"
-        style={{
-          width: "85%",
-          height: "85%",
-          left: "7.5%",
-          top: "7.5%",
-        }}
-      />
+      {/* SVG container for rings and connections */}
+      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 320 320">
+        <defs>
+          <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="hsl(var(--neon-cyan))" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="hsl(var(--neon-magenta))" stopOpacity="0.8" />
+          </linearGradient>
+          <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="hsl(var(--neon-cyan))" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="transparent" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+        
+        {/* Animated connection lines */}
+        <ConnectionLine from={0} to={3} delay={0} />
+        <ConnectionLine from={3} to={8} delay={1} />
+        <ConnectionLine from={8} to={4} delay={2} />
+        <ConnectionLine from={4} to={6} delay={3} />
+        <ConnectionLine from={6} to={10} delay={4} />
+        
+        {/* Outer orbit ring */}
+        <motion.circle
+          cx="160"
+          cy="160"
+          r="140"
+          fill="none"
+          stroke="hsl(var(--border))"
+          strokeWidth="1"
+          strokeDasharray="4 8"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+          style={{ transformOrigin: "center" }}
+        />
+        
+        {/* Middle ring with glow */}
+        <circle
+          cx="160"
+          cy="160"
+          r="90"
+          fill="none"
+          stroke="hsl(var(--neon-cyan) / 0.2)"
+          strokeWidth="1"
+        />
+        
+        {/* Inner ring */}
+        <motion.circle
+          cx="160"
+          cy="160"
+          r="50"
+          fill="url(#coreGlow)"
+          stroke="hsl(var(--primary) / 0.4)"
+          strokeWidth="2"
+          animate={{ scale: [1, 1.05, 1] }}
+          transition={{ duration: 3, repeat: Infinity }}
+          style={{ transformOrigin: "center" }}
+        />
+      </svg>
       
-      {/* Inner core */}
-      <div 
-        className="absolute inset-6 sm:inset-8 rounded-full border-2 backdrop-blur-md flex items-center justify-center z-10"
-        style={{
-          background: "linear-gradient(135deg, hsl(var(--neon-cyan) / 0.1), hsl(var(--neon-magenta) / 0.05))",
-          borderColor: "hsl(var(--primary) / 0.3)",
-        }}
-      >
-        <div className="text-center">
-          <div 
-            className="text-base sm:text-lg font-bold tracking-tight"
-            style={{
-              background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-magenta)))",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
-            CMPSBL
-          </div>
-          <div className="text-[10px] text-muted-foreground font-medium">11 Modules</div>
-        </div>
-      </div>
-      
-      {/* Module icons */}
+      {/* Module icons orbiting */}
       {coreModules.map((mod, i) => {
         const angle = (i / coreModules.length) * Math.PI * 2 - Math.PI / 2;
-        const radius = 70;
-        const x = Math.cos(angle) * radius;
-        const y = Math.sin(angle) * radius;
+        const radius = 44; // percentage
+        const x = 50 + Math.cos(angle) * radius;
+        const y = 50 + Math.sin(angle) * radius;
+        const isActive = i === activeModule;
         
         return (
-          <div
+          <motion.div
             key={mod.name}
-            className="absolute w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center cursor-pointer z-20 transition-transform duration-200 hover:scale-125"
+            className="absolute flex items-center justify-center cursor-pointer z-20"
             style={{
-              left: `calc(50% + ${x}px - 10px)`,
-              top: `calc(50% + ${y}px - 10px)`,
-              background: hoveredModule === i ? mod.color : `${mod.color}30`,
-              border: `1.5px solid ${mod.color}`,
-              boxShadow: `0 0 8px ${mod.color}50`,
+              left: `${x}%`,
+              top: `${y}%`,
+              transform: "translate(-50%, -50%)",
             }}
-            onMouseEnter={() => setHoveredModule(i)}
-            onMouseLeave={() => setHoveredModule(null)}
-            title={mod.name}
+            animate={{
+              scale: isActive ? 1.3 : 1,
+            }}
+            transition={{ duration: 0.3 }}
+            onMouseEnter={() => setActiveModule(i)}
           >
-            <mod.icon 
-              className="w-2.5 h-2.5 sm:w-3 sm:h-3" 
-              style={{ 
-                color: hoveredModule === i ? "hsl(var(--background))" : mod.color,
-              }} 
-            />
-          </div>
+            <div
+              className={cn(
+                "w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center transition-all duration-300",
+                isActive ? "shadow-lg" : ""
+              )}
+              style={{
+                background: isActive ? mod.color : `${mod.color}20`,
+                border: `2px solid ${mod.color}`,
+                boxShadow: isActive ? `0 0 20px ${mod.color}60` : `0 0 10px ${mod.color}30`,
+              }}
+            >
+              <mod.icon 
+                className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" 
+                style={{ color: isActive ? "hsl(var(--background))" : mod.color }}
+              />
+            </div>
+            
+            {/* Module label on active */}
+            {isActive && (
+              <motion.div
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="absolute -bottom-6 sm:-bottom-7 left-1/2 -translate-x-1/2 whitespace-nowrap"
+              >
+                <span className="text-[10px] sm:text-xs font-medium px-2 py-0.5 rounded-full bg-background/80 backdrop-blur-sm border border-border/50">
+                  {mod.name}
+                </span>
+              </motion.div>
+            )}
+          </motion.div>
         );
       })}
+      
+      {/* Central core content */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <motion.div 
+          className="text-center"
+          key={activeUseCase}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.9 }}
+          transition={{ duration: 0.5 }}
+        >
+          <currentUseCase.icon className={cn("w-8 h-8 sm:w-10 sm:h-10 mx-auto mb-2", currentUseCase.color)} />
+          <div className="text-xs sm:text-sm font-bold text-foreground">{currentUseCase.label}</div>
+          <div className="text-[10px] sm:text-xs text-muted-foreground">{currentUseCase.industry}</div>
+        </motion.div>
+      </div>
     </div>
   );
 }
 
-// Audience card component
-function AudienceCard({ 
-  icon: Icon, 
-  title, 
-  description, 
-  features, 
-  href, 
-  color, 
-  gradient,
-  delay = 0 
-}: {
-  icon: React.ElementType;
-  title: string;
-  description: string;
-  features: string[];
-  href: string;
-  color: string;
-  gradient: string;
-  delay?: number;
-}) {
+// Typing animation for headline
+function TypedText({ texts, className }: { texts: string[]; className?: string }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [displayText, setDisplayText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  
+  useEffect(() => {
+    const currentText = texts[currentIndex];
+    const typingSpeed = isDeleting ? 50 : 100;
+    
+    if (!isDeleting && displayText === currentText) {
+      setTimeout(() => setIsDeleting(true), 2000);
+      return;
+    }
+    
+    if (isDeleting && displayText === "") {
+      setIsDeleting(false);
+      setCurrentIndex((prev) => (prev + 1) % texts.length);
+      return;
+    }
+    
+    const timeout = setTimeout(() => {
+      setDisplayText(prev => 
+        isDeleting 
+          ? prev.slice(0, -1) 
+          : currentText.slice(0, prev.length + 1)
+      );
+    }, typingSpeed);
+    
+    return () => clearTimeout(timeout);
+  }, [displayText, isDeleting, currentIndex, texts]);
+  
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay, duration: 0.5 }}
-    >
-      <Link to={href} className="group block h-full">
-        <div className={cn(
-          "relative h-full p-5 sm:p-6 rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm",
-          "hover:border-current/30 hover:shadow-lg transition-all duration-300",
-          color
-        )}>
-          {/* Gradient background on hover */}
-          <div className={cn(
-            "absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br -z-10",
-            gradient
-          )} />
-          
-          {/* Icon */}
-          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-current/10 flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform">
-            <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
-          </div>
-          
-          <h3 className="text-base sm:text-lg font-bold text-foreground mb-1">{title}</h3>
-          <p className="text-xs sm:text-sm text-muted-foreground mb-3">{description}</p>
-          
-          {/* Features */}
-          <ul className="space-y-1.5 mb-3">
-            {features.map((feature, idx) => (
-              <li key={idx} className="flex items-center gap-1.5 text-[11px] sm:text-xs text-muted-foreground">
-                <CheckCircle2 className="w-3 h-3 text-current opacity-60" />
-                {feature}
-              </li>
-            ))}
-          </ul>
-          
-          {/* Arrow */}
-          <div className="flex items-center gap-1 text-xs sm:text-sm font-medium text-current opacity-0 group-hover:opacity-100 transition-opacity">
-            Learn more
-            <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-          </div>
-        </div>
-      </Link>
-    </motion.div>
+    <span className={className}>
+      {displayText}
+      <span className="animate-pulse">|</span>
+    </span>
+  );
+}
+
+// Stats with animated counters
+function AnimatedStat({ value, label, suffix = "" }: { value: number; label: string; suffix?: string }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          let start = 0;
+          const duration = 1500;
+          const step = (timestamp: number) => {
+            if (!start) start = timestamp;
+            const progress = Math.min((timestamp - start) / duration, 1);
+            setCount(Math.floor(progress * value));
+            if (progress < 1) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+        }
+      },
+      { threshold: 0.5 }
+    );
+    
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [value]);
+  
+  return (
+    <div ref={ref} className="text-center">
+      <div className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground">
+        {count}{suffix}
+      </div>
+      <div className="text-xs sm:text-sm text-muted-foreground">{label}</div>
+    </div>
   );
 }
 
 export function HeroMetaSubstrate() {
   return (
-    <section className="relative min-h-[90vh] flex flex-col items-center justify-center px-4 py-16 sm:py-20 overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-background" />
+    <section className="relative min-h-screen flex flex-col items-center justify-center px-4 py-12 sm:py-16 overflow-hidden">
+      {/* Animated background gradient */}
+      <div className="absolute inset-0 bg-background">
+        <motion.div
+          className="absolute inset-0"
+          animate={{
+            background: [
+              "radial-gradient(ellipse at 20% 20%, hsl(var(--neon-cyan) / 0.08) 0%, transparent 50%)",
+              "radial-gradient(ellipse at 80% 80%, hsl(var(--neon-magenta) / 0.08) 0%, transparent 50%)",
+              "radial-gradient(ellipse at 50% 50%, hsl(var(--neon-purple) / 0.08) 0%, transparent 50%)",
+              "radial-gradient(ellipse at 20% 20%, hsl(var(--neon-cyan) / 0.08) 0%, transparent 50%)",
+            ],
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+        />
+      </div>
       
-      {/* Subtle grid */}
+      {/* Grid overlay */}
       <div 
-        className="absolute inset-0 opacity-[0.02] dark:opacity-[0.03]"
+        className="absolute inset-0 opacity-[0.015] dark:opacity-[0.03]"
         style={{
-          backgroundImage: `linear-gradient(hsl(var(--primary) / 0.3) 1px, transparent 1px), 
-                           linear-gradient(90deg, hsl(var(--primary) / 0.3) 1px, transparent 1px)`,
-          backgroundSize: "60px 60px",
+          backgroundImage: `
+            linear-gradient(hsl(var(--primary) / 0.5) 1px, transparent 1px), 
+            linear-gradient(90deg, hsl(var(--primary) / 0.5) 1px, transparent 1px)
+          `,
+          backgroundSize: "80px 80px",
         }}
       />
-      
-      {/* Gradient orbs */}
-      <div className="absolute top-0 -left-32 w-96 h-96 bg-primary/5 rounded-full blur-[100px]" />
-      <div className="absolute bottom-0 -right-32 w-96 h-96 bg-violet-500/5 rounded-full blur-[100px]" />
 
-      <div className="relative z-10 w-full max-w-6xl mx-auto">
-        {/* Logo */}
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex justify-center mb-6 sm:mb-8"
-        >
-          <CmpsblLogo size="xl" className="h-16 sm:h-20 md:h-24" />
-        </motion.div>
-
-        {/* Main headline */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="text-center mb-6 sm:mb-8"
-        >
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-3 sm:mb-4 tracking-tight leading-tight">
-            <span className="text-foreground">Build AI That </span>
-            <span 
-              className="inline-block"
-              style={{
-                background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)), hsl(var(--neon-magenta)))",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
+      <div className="relative z-10 w-full max-w-7xl mx-auto">
+        {/* Top section: Text + Visualization side by side */}
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center mb-12 sm:mb-16">
+          {/* Left: Headlines and CTAs */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center lg:text-left"
+          >
+            {/* Tagline */}
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-border/50 bg-muted/30 backdrop-blur-sm mb-4 sm:mb-6"
             >
-              Remembers
-            </span>
-          </h1>
-          <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
-            CMPSBL gives your applications persistent memory, 
-            dream cycles, intelligent routing, and autonomous learning. 
-            <span className="hidden sm:inline"> One infrastructure for gaming, software, and enterprise.</span>
-          </p>
-        </motion.div>
-
-        {/* Module Orbit - visible on larger screens */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2 }}
-          className="hidden md:block mb-8"
-        >
-          <ModuleOrbit />
-        </motion.div>
-
-        {/* Audience Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-10 px-2">
-          {audienceCards.map((card, idx) => (
-            <AudienceCard key={card.title} {...card} delay={0.3 + idx * 0.1} />
-          ))}
+              <Sparkles className="w-3 h-3 text-primary" />
+              <span className="text-xs sm:text-sm text-muted-foreground">Cognitive Operating System</span>
+            </motion.div>
+            
+            {/* Main headline */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] mb-4 sm:mb-6">
+              <span className="text-foreground block">One Substrate.</span>
+              <span 
+                className="block mt-1 sm:mt-2"
+                style={{
+                  background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)), hsl(var(--neon-magenta)))",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                <TypedText 
+                  texts={["Infinite Memory.", "Dream Cycles.", "Smart Routing.", "Self-Improvement."]}
+                />
+              </span>
+            </h1>
+            
+            {/* Subheadline */}
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-6 sm:mb-8">
+              CMPSBL is the cognitive infrastructure that gives AI applications 
+              <span className="text-foreground font-medium"> persistent memory</span>, 
+              <span className="text-foreground font-medium"> offline learning</span>, and 
+              <span className="text-foreground font-medium"> autonomous evolution</span>.
+            </p>
+            
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4">
+              <Button asChild size="lg" className="w-full sm:w-auto gap-2 px-6 sm:px-8 h-12 text-base">
+                <Link to="/codelab">
+                  <Code className="w-5 h-5" />
+                  Start Building
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="w-full sm:w-auto gap-2 px-6 sm:px-8 h-12 text-base group">
+                <Link to="/demo">
+                  <Play className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                  Watch Demo
+                </Link>
+              </Button>
+            </div>
+          </motion.div>
+          
+          {/* Right: Substrate Visualization */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <SubstrateVisualization />
+          </motion.div>
         </div>
-
-        {/* CTA Buttons */}
+        
+        {/* Use case pills */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
+          transition={{ delay: 0.5 }}
+          className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-12 sm:mb-16"
         >
-          <Button asChild size="lg" className="w-full sm:w-auto gap-2 px-6 sm:px-8">
-            <Link to="/codelab">
-              <Code className="w-4 h-4" />
-              Start Building
-              <ArrowRight className="w-4 h-4" />
+          {[
+            { icon: Gamepad2, label: "Gaming AI", href: "/gaming", color: "text-purple-500 hover:border-purple-500/50" },
+            { icon: Code, label: "Developer Tools", href: "/developers", color: "text-cyan-500 hover:border-cyan-500/50" },
+            { icon: Building2, label: "Enterprise", href: "/use-cases", color: "text-amber-500 hover:border-amber-500/50" },
+          ].map((item) => (
+            <Link
+              key={item.label}
+              to={item.href}
+              className={cn(
+                "flex items-center gap-2 px-4 py-2 rounded-full border border-border/50 bg-card/50 backdrop-blur-sm",
+                "hover:bg-card/80 transition-all duration-300",
+                item.color
+              )}
+            >
+              <item.icon className="w-4 h-4" />
+              <span className="text-sm font-medium text-foreground">{item.label}</span>
+              <ArrowRight className="w-3 h-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
             </Link>
-          </Button>
-          <Button asChild variant="outline" size="lg" className="w-full sm:w-auto gap-2 px-6 sm:px-8">
-            <Link to="/demo">
-              <Eye className="w-4 h-4" />
-              See Demo
-            </Link>
-          </Button>
+          ))}
         </motion.div>
         
         {/* Stats bar */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-          className="flex flex-wrap justify-center gap-4 sm:gap-8 mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-border/50"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7 }}
+          className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 p-6 sm:p-8 rounded-2xl border border-border/50 bg-card/30 backdrop-blur-sm"
         >
-          {[
-            { value: "11", label: "Modules" },
-            { value: "124+", label: "Actions" },
-            { value: "60+", label: "Tables" },
-            { value: "<100ms", label: "Latency" },
-          ].map((stat) => (
-            <div key={stat.label} className="text-center px-3">
-              <div className="text-lg sm:text-xl md:text-2xl font-bold text-foreground">{stat.value}</div>
-              <div className="text-[10px] sm:text-xs text-muted-foreground">{stat.label}</div>
-            </div>
-          ))}
+          <AnimatedStat value={11} label="Core Modules" />
+          <AnimatedStat value={124} suffix="+" label="API Actions" />
+          <AnimatedStat value={60} suffix="+" label="Data Tables" />
+          <AnimatedStat value={100} suffix="ms" label="Avg Latency" />
         </motion.div>
       </div>
     </section>
