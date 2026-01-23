@@ -29,6 +29,86 @@ export function useBrainOptimize() {
   });
 }
 
+export function useBrainTiering() {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: async (batchSize?: number) => {
+      const { data, error } = await import('@/integrations/supabase/client').then(m => 
+        m.supabase.functions.invoke('pf-brain-memory-tiering', {
+          body: { batch_size: batchSize || 500 }
+        })
+      );
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'brain'] });
+      queryClient.invalidateQueries({ queryKey: ['live', 'brain'] });
+      const promoted = data?.promoted || 0;
+      const demoted = data?.demoted || 0;
+      toast.success(`Tiering complete: ${promoted} promoted, ${demoted} demoted`);
+    },
+    onError: () => {
+      toast.error('Memory tiering failed');
+    },
+  });
+}
+
+export function useBrainPrune() {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: async (options?: { dry_run?: boolean }) => {
+      const { data, error } = await import('@/integrations/supabase/client').then(m => 
+        m.supabase.functions.invoke('pf-brain-memory-prune', {
+          body: options || {}
+        })
+      );
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'brain'] });
+      queryClient.invalidateQueries({ queryKey: ['live', 'brain'] });
+      const pruned = data?.pruned_count || 0;
+      if (variables?.dry_run) {
+        toast.info(`Prune preview: ${pruned} memories would be removed`);
+      } else {
+        toast.success(`Pruning complete: ${pruned} low-value memories removed`);
+      }
+    },
+    onError: () => {
+      toast.error('Memory pruning failed');
+    },
+  });
+}
+
+export function useBrainBatchTiering() {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: async (options?: { batch_size?: number; max_batches?: number }) => {
+      const { data, error } = await import('@/integrations/supabase/client').then(m => 
+        m.supabase.functions.invoke('pf-brain-batch-tiering', {
+          body: options || { batch_size: 500, max_batches: 10 }
+        })
+      );
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'brain'] });
+      queryClient.invalidateQueries({ queryKey: ['live', 'brain'] });
+      const processed = data?.total_processed || 0;
+      toast.success(`Batch tiering complete: ${processed} memories processed`);
+    },
+    onError: () => {
+      toast.error('Batch tiering failed');
+    },
+  });
+}
+
 export function useBrainDeepThink() {
   const queryClient = useQueryClient();
   
