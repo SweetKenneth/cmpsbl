@@ -5,6 +5,8 @@
  * - Working Apply/Rollback buttons
  * - Quick scan & archived function discovery
  * - Complete upgrade lifecycle management
+ * - Shadow testing & validation workflow
+ * - Diff view comparing shadow vs production
  */
 
 import { useState, useCallback } from 'react';
@@ -13,13 +15,16 @@ import { supabase } from '@/integrations/supabase/client';
 import { 
   Zap, Clock, Shield, AlertTriangle, CheckCircle, XCircle, Copy, Check,
   RefreshCw, Play, RotateCcw, Eye, Loader2, Lock, Trash2, Archive,
-  ChevronDown, ChevronRight, Sparkles, Settings, TrendingUp, Database
+  ChevronDown, ChevronRight, Sparkles, TrendingUp, Database, 
+  FlaskConical, FileCode, GitCompare, Rocket, Activity
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Progress } from '@/components/ui/progress';
 import {
   Select,
   SelectContent,
@@ -65,6 +70,55 @@ interface UpgradePlan {
     action: string;
     rationale: string;
   }>;
+}
+
+interface ValidationResult {
+  check: string;
+  status: 'pass' | 'warning' | 'fail';
+  message: string;
+  details?: unknown;
+}
+
+interface TestResult {
+  module: string;
+  test: string;
+  status: 'pass' | 'fail' | 'skip';
+  latency_ms?: number;
+  error?: string;
+}
+
+interface DiffData {
+  plan_id: string;
+  created_at: string;
+  scope: string;
+  status: string;
+  health_comparison: {
+    before: number | string;
+    current: number | string;
+    after_estimate: number | string;
+  };
+  proposed_changes: Array<{
+    module: string;
+    change_type: string;
+    description: string;
+    risk: string;
+  }>;
+  suggested_patches: Array<{
+    target: string;
+    action: string;
+    rationale: string;
+  }>;
+  affected_modules: string;
+  risk_level: string;
+  backup_info: {
+    backup_id: string;
+    can_rollback: boolean;
+  };
+  production_state: {
+    health: number;
+    modules: Record<string, unknown>;
+    metrics_snapshot: Record<string, unknown>;
+  };
 }
 
 interface ArchivedOpportunity {
@@ -117,10 +171,14 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
   const [notes, setNotes] = useState('');
   const [expandedPlanId, setExpandedPlanId] = useState<string | null>(null);
   const [showArchived, setShowArchived] = useState(false);
+  const [activeTab, setActiveTab] = useState('proposals');
   
-  // Dialog states for Apply and Rollback actions
+  // Dialog states
   const [applyDialog, setApplyDialog] = useState<{ open: boolean; planId: string | null }>({ open: false, planId: null });
   const [rollbackDialog, setRollbackDialog] = useState<{ open: boolean; planId: string | null; backupId: string | null }>({ open: false, planId: null, backupId: null });
+  const [validationDialog, setValidationDialog] = useState<{ open: boolean; planId: string | null }>({ open: false, planId: null });
+  const [testDialog, setTestDialog] = useState<{ open: boolean; planId: string | null }>({ open: false, planId: null });
+  const [diffDialog, setDiffDialog] = useState<{ open: boolean; planId: string | null }>({ open: false, planId: null });
   const [confirmValue, setConfirmValue] = useState('');
 
   // Fetch system status
@@ -235,7 +293,84 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
     },
   });
 
-  // Apply plan mutation - Fixed: Uses controlled dialog instead of AlertDialog
+  // Validate plan mutation
+  const validateMutation = useMutation({
+    mutationFn: async (planId: string) => {
+      const { data, error } = await supabase.functions.invoke('pf-substrate-upgrade', {
+        body: { action: 'validate_plan', plan_id: planId }
+      });
+      if (error) throw error;
+      return data as {
+        success: boolean;
+        validation_status: 'pass' | 'warning' | 'fail';
+        ready_to_apply: boolean;
+        summary: { passed: number; warnings: number; failed: number; total: number };
+        results: ValidationResult[];
+      };
+    },
+    onSuccess: (data) => {
+      if (data.ready_to_apply) {
+        toast.success('Validation passed', {
+          description: `${data.summary.passed}/${data.summary.total} checks passed`
+        });
+      } else {
+        toast.warning('Validation has issues', {
+          description: `${data.summary.failed} failed, ${data.summary.warnings} warnings`
+        });
+      }
+    },
+    onError: (error) => {
+      toast.error('Validation failed', {
+        description: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  // Test shadow mutation
+  const testShadowMutation = useMutation({
+    mutationFn: async (planId: string) => {
+      const { data, error } = await supabase.functions.invoke('pf-substrate-upgrade', {
+        body: { action: 'test_shadow', plan_id: planId }
+      });
+      if (error) throw error;
+      return data as {
+        success: boolean;
+        test_status: 'pass' | 'fail';
+        ready_for_production: boolean;
+        summary: { total_tests: number; passed: number; failed: number; avg_latency_ms: number };
+        results: TestResult[];
+      };
+    },
+    onSuccess: (data) => {
+      if (data.ready_for_production) {
+        toast.success('All tests passed', {
+          description: `${data.summary.passed} tests, avg ${data.summary.avg_latency_ms}ms latency`
+        });
+      } else {
+        toast.error('Tests failed', {
+          description: `${data.summary.failed}/${data.summary.total_tests} tests failed`
+        });
+      }
+    },
+    onError: (error) => {
+      toast.error('Test run failed', {
+        description: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  // Diff view mutation
+  const diffViewMutation = useMutation({
+    mutationFn: async (planId: string) => {
+      const { data, error } = await supabase.functions.invoke('pf-substrate-upgrade', {
+        body: { action: 'diff_view', plan_id: planId }
+      });
+      if (error) throw error;
+      return data as { success: boolean; diff: DiffData };
+    },
+  });
+
+  // Apply plan mutation
   const applyMutation = useMutation({
     mutationFn: async (planId: string) => {
       const { data, error } = await supabase.functions.invoke('pf-substrate-upgrade', {
@@ -261,7 +396,7 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
     },
   });
 
-  // Rollback plan mutation - Fixed: Uses controlled dialog
+  // Rollback plan mutation
   const rollbackMutation = useMutation({
     mutationFn: async (planId: string) => {
       const { data, error } = await supabase.functions.invoke('pf-substrate-upgrade', {
@@ -336,6 +471,17 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
     }
   };
 
+  const getValidationIcon = (status: 'pass' | 'warning' | 'fail') => {
+    switch (status) {
+      case 'pass':
+        return <CheckCircle className="w-4 h-4 text-emerald-400" />;
+      case 'warning':
+        return <AlertTriangle className="w-4 h-4 text-amber-400" />;
+      case 'fail':
+        return <XCircle className="w-4 h-4 text-red-400" />;
+    }
+  };
+
   if (!enabled) {
     return (
       <main className="container mx-auto px-4 py-6 max-w-7xl">
@@ -368,7 +514,7 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
             <p className="text-xs text-muted-foreground font-mono">self-improvement engine • shadow mode</p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <Badge 
             variant="outline" 
             className={cn(
@@ -427,178 +573,29 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
         </div>
       )}
 
-      {/* Main Content Grid */}
-      <div className="grid lg:grid-cols-3 gap-6">
-        {/* Left Column - Actions */}
-        <div className="lg:col-span-1 space-y-4">
-          {/* Quick Scan */}
-          <Card className="border border-fuchsia-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <RefreshCw className="w-4 h-4 text-fuchsia-400" />
-                Quick Scan
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Button
-                onClick={() => scanMutation.mutate()}
-                disabled={scanMutation.isPending}
-                className="w-full bg-gradient-to-r from-fuchsia-500/20 to-cyan-500/20 border border-fuchsia-500/40 hover:from-fuchsia-500/30 hover:to-cyan-500/30 transition-all"
-              >
-                {scanMutation.isPending ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Scanning...
-                  </>
-                ) : (
-                  <>
-                    <Zap className="w-4 h-4 mr-2" />
-                    Scan Substrate
-                  </>
-                )}
-              </Button>
-              
-              {/* Scan Results */}
-              {scanMutation.data && scanMutation.data.proposals?.length > 0 && (
-                <div className="mt-3 space-y-2">
-                  {scanMutation.data.proposals.slice(0, 3).map((proposal, idx) => (
-                    <div key={idx} className="flex items-start gap-2 p-2 rounded-lg bg-white/5 text-xs">
-                      {proposal.priority === 'critical' ? (
-                        <AlertTriangle className="w-3 h-3 text-red-400 shrink-0 mt-0.5" />
-                      ) : (
-                        <Zap className="w-3 h-3 text-cyan-400 shrink-0 mt-0.5" />
-                      )}
-                      <span className="text-muted-foreground">{proposal.description}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
-              
-              {scanMutation.data && scanMutation.data.proposals?.length === 0 && (
-                <div className="mt-3 flex items-center gap-2 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                  <CheckCircle className="w-4 h-4 text-emerald-400" />
-                  <span className="text-xs text-emerald-400">All systems healthy</span>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+      {/* Main Tabs */}
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+        <TabsList className="w-full grid grid-cols-3 sm:grid-cols-4 bg-white/5 border border-white/10">
+          <TabsTrigger value="proposals" className="gap-1.5 text-xs">
+            <Clock className="w-3 h-3" />
+            <span className="hidden sm:inline">Proposals</span>
+          </TabsTrigger>
+          <TabsTrigger value="validation" className="gap-1.5 text-xs">
+            <FlaskConical className="w-3 h-3" />
+            <span className="hidden sm:inline">Validate</span>
+          </TabsTrigger>
+          <TabsTrigger value="deploy" className="gap-1.5 text-xs">
+            <Rocket className="w-3 h-3" />
+            <span className="hidden sm:inline">Deploy</span>
+          </TabsTrigger>
+          <TabsTrigger value="generate" className="gap-1.5 text-xs">
+            <Zap className="w-3 h-3" />
+            <span className="hidden sm:inline">Generate</span>
+          </TabsTrigger>
+        </TabsList>
 
-          {/* Generate Proposal */}
-          <Card className="border border-cyan-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <Play className="w-4 h-4 text-cyan-400" />
-                Generate Proposal
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <Select value={selectedScope} onValueChange={setSelectedScope}>
-                <SelectTrigger className="bg-white/5 border-white/10">
-                  <SelectValue placeholder="Scope" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Modules</SelectItem>
-                  <SelectItem value="brain">Brain</SelectItem>
-                  <SelectItem value="defense">Defense</SelectItem>
-                  <SelectItem value="nexus">Nexus</SelectItem>
-                  <SelectItem value="vision">Vision</SelectItem>
-                  <SelectItem value="dream">Dream</SelectItem>
-                  <SelectItem value="system">System</SelectItem>
-                </SelectContent>
-              </Select>
-              <Textarea 
-                placeholder="Notes (optional)"
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                className="bg-white/5 border-white/10 min-h-[60px]"
-              />
-              <Button 
-                onClick={() => proposeMutation.mutate({ scope: selectedScope, notes })}
-                disabled={proposeMutation.isPending}
-                className="w-full bg-gradient-to-r from-cyan-500/20 to-fuchsia-500/20 border border-cyan-500/40 hover:from-cyan-500/30 hover:to-fuchsia-500/30"
-              >
-                {proposeMutation.isPending ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Analyzing...
-                  </>
-                ) : (
-                  <>
-                    <Zap className="w-4 h-4 mr-2" />
-                    Generate
-                  </>
-                )}
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Archived Functions */}
-          <Collapsible open={showArchived} onOpenChange={setShowArchived}>
-            <Card className="border border-white/10 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
-              <CollapsibleTrigger asChild>
-                <CardHeader className="pb-3 cursor-pointer hover:bg-white/5 transition-colors rounded-t-xl">
-                  <CardTitle className="text-sm font-medium flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Archive className="w-4 h-4 text-amber-400" />
-                      Archived Functions
-                    </div>
-                    <ChevronDown className={cn(
-                      "w-4 h-4 transition-transform",
-                      showArchived && "rotate-180"
-                    )} />
-                  </CardTitle>
-                </CardHeader>
-              </CollapsibleTrigger>
-              <CollapsibleContent>
-                <CardContent className="pt-0">
-                  {archivedLoading ? (
-                    <div className="space-y-2">
-                      {[1, 2, 3].map(i => <Skeleton key={i} className="h-10 rounded-lg" />)}
-                    </div>
-                  ) : archived && archived.length > 0 ? (
-                    <ScrollArea className="h-[200px]">
-                      <div className="space-y-2">
-                        {archived.map((opp, idx) => (
-                          <div 
-                            key={idx}
-                            className="p-3 rounded-lg bg-white/5 border border-white/10 space-y-2"
-                          >
-                            <div className="flex items-center justify-between">
-                              <span className="font-mono text-xs text-foreground truncate">
-                                {opp.archived_function}
-                              </span>
-                              <Badge 
-                                variant="outline" 
-                                className={cn(
-                                  "text-[9px] h-4",
-                                  opp.value === 'high' 
-                                    ? "border-emerald-500/50 text-emerald-400"
-                                    : "border-white/20"
-                                )}
-                              >
-                                {opp.value}
-                              </Badge>
-                            </div>
-                            <p className="text-[10px] text-muted-foreground">
-                              → {opp.repurpose_for}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                    </ScrollArea>
-                  ) : (
-                    <p className="text-xs text-muted-foreground/70 text-center py-4">
-                      No archived functions to repurpose
-                    </p>
-                  )}
-                </CardContent>
-              </CollapsibleContent>
-            </Card>
-          </Collapsible>
-        </div>
-
-        {/* Right Column - Proposals List */}
-        <div className="lg:col-span-2">
+        {/* Proposals Tab */}
+        <TabsContent value="proposals" className="space-y-4">
           <Card className="border border-white/10 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
             <CardHeader className="pb-3 flex flex-row items-center justify-between">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
@@ -625,7 +622,7 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
                   <p className="text-xs text-muted-foreground/70 mt-1">Generate a proposal to get started</p>
                 </div>
               ) : (
-                <ScrollArea className="h-[500px]">
+                <ScrollArea className="h-[400px]">
                   <div className="space-y-3 pr-4">
                     {plans.map((plan) => (
                       <Collapsible
@@ -638,13 +635,11 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
                           "bg-white/5 border-white/10",
                           expandedPlanId === plan.id && "border-fuchsia-500/30 bg-fuchsia-500/5"
                         )}>
-                          {/* Plan Header */}
                           <CollapsibleTrigger asChild>
                             <div className="p-4 cursor-pointer hover:bg-white/5 transition-colors">
                               <div className="flex items-start justify-between gap-2">
                                 <div className="flex-1 min-w-0">
-                                  {/* ID with Copy Button - Easy to tap on mobile */}
-                                  <div className="flex items-center gap-2 mb-2">
+                                  <div className="flex items-center gap-2 mb-2 flex-wrap">
                                     <Button
                                       variant="ghost"
                                       size="sm"
@@ -659,7 +654,7 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
                                       ) : (
                                         <Copy className="w-3 h-3" />
                                       )}
-                                      <span className="truncate max-w-[120px] sm:max-w-[200px]">{plan.id}</span>
+                                      <span className="truncate max-w-[100px] sm:max-w-[200px]">{plan.id}</span>
                                     </Button>
                                     {getStatusBadge(plan.status)}
                                     {getRiskBadge(plan.risk_level)}
@@ -684,7 +679,6 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
                             </div>
                           </CollapsibleTrigger>
                           
-                          {/* Expanded Details */}
                           <CollapsibleContent>
                             <div className="px-4 pb-4 space-y-4 border-t border-white/10">
                               {/* Diff Summary */}
@@ -705,21 +699,6 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
                                 </div>
                               )}
                               
-                              {/* Suggested Patches */}
-                              {plan.suggested_patches && plan.suggested_patches.length > 0 && (
-                                <div>
-                                  <p className="text-xs font-medium mb-2 text-foreground">Patches:</p>
-                                  <div className="space-y-2">
-                                    {plan.suggested_patches.map((patch, idx) => (
-                                      <div key={idx} className="text-xs p-3 rounded-lg bg-white/5 border border-white/10">
-                                        <div className="font-mono text-cyan-400 mb-1">{patch.target}</div>
-                                        <p className="text-muted-foreground">{patch.rationale}</p>
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                              )}
-                              
                               {/* Terminal Command Hint */}
                               <div className="p-3 rounded-lg bg-black/40 border border-white/10">
                                 <p className="text-[10px] text-muted-foreground mb-1">Terminal command:</p>
@@ -728,8 +707,58 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
                                 </code>
                               </div>
                               
-                              {/* Actions */}
+                              {/* Quick Actions */}
                               <div className="flex flex-wrap gap-2 pt-2">
+                                {/* View Diff */}
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="gap-1.5 border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/10"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setDiffDialog({ open: true, planId: plan.id });
+                                    diffViewMutation.mutate(plan.id);
+                                  }}
+                                >
+                                  <GitCompare className="w-3 h-3" />
+                                  Diff
+                                </Button>
+                                
+                                {/* Validate */}
+                                {(plan.status === 'proposed' || plan.status === 'approved') && (
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    className="gap-1.5 border-amber-500/30 text-amber-400 hover:bg-amber-500/10"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setValidationDialog({ open: true, planId: plan.id });
+                                      validateMutation.mutate(plan.id);
+                                    }}
+                                  >
+                                    <FlaskConical className="w-3 h-3" />
+                                    Validate
+                                  </Button>
+                                )}
+                                
+                                {/* Test */}
+                                {(plan.status === 'proposed' || plan.status === 'approved') && (
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    className="gap-1.5 border-fuchsia-500/30 text-fuchsia-400 hover:bg-fuchsia-500/10"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setTestDialog({ open: true, planId: plan.id });
+                                      testShadowMutation.mutate(plan.id);
+                                    }}
+                                  >
+                                    <Activity className="w-3 h-3" />
+                                    Test
+                                  </Button>
+                                )}
+
+                                {/* Apply */}
                                 {(plan.status === 'proposed' || plan.status === 'approved') && (
                                   <Button 
                                     size="sm" 
@@ -745,6 +774,7 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
                                   </Button>
                                 )}
                                 
+                                {/* Rollback */}
                                 {plan.status === 'applied' && plan.backup_id && (
                                   <Button 
                                     size="sm" 
@@ -760,6 +790,7 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
                                   </Button>
                                 )}
                                 
+                                {/* Delete */}
                                 {plan.status !== 'applied' && (
                                   <Button 
                                     size="sm" 
@@ -790,10 +821,640 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
               )}
             </CardContent>
           </Card>
-        </div>
-      </div>
+        </TabsContent>
 
-      {/* Apply Dialog - Controlled component to fix close-on-click issue */}
+        {/* Validation Tab */}
+        <TabsContent value="validation" className="space-y-4">
+          <Card className="border border-white/10 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
+            <CardHeader>
+              <CardTitle className="text-sm font-medium flex items-center gap-2">
+                <FlaskConical className="w-4 h-4 text-amber-400" />
+                Validation & Testing Workflow
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-sm text-muted-foreground">
+                Before applying an upgrade, validate the plan and run shadow tests to ensure stability.
+              </p>
+              
+              <div className="grid sm:grid-cols-3 gap-4">
+                <div className="p-4 rounded-lg bg-white/5 border border-white/10 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-full bg-cyan-500/20 flex items-center justify-center">
+                      <span className="text-sm font-bold text-cyan-400">1</span>
+                    </div>
+                    <p className="font-medium text-sm">Validate</p>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Check system health, backup status, and module availability
+                  </p>
+                </div>
+                
+                <div className="p-4 rounded-lg bg-white/5 border border-white/10 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-full bg-fuchsia-500/20 flex items-center justify-center">
+                      <span className="text-sm font-bold text-fuchsia-400">2</span>
+                    </div>
+                    <p className="font-medium text-sm">Test Shadow</p>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Run tests against all substrate modules in shadow mode
+                  </p>
+                </div>
+                
+                <div className="p-4 rounded-lg bg-white/5 border border-white/10 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                      <span className="text-sm font-bold text-emerald-400">3</span>
+                    </div>
+                    <p className="font-medium text-sm">Apply</p>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Push validated changes to production with auto-rollback safety
+                  </p>
+                </div>
+              </div>
+
+              {/* Quick Actions for Proposed Plans */}
+              {plans && plans.filter(p => p.status === 'proposed' || p.status === 'approved').length > 0 && (
+                <div className="pt-4 border-t border-white/10">
+                  <p className="text-xs font-medium mb-3 text-foreground">Pending Plans:</p>
+                  <div className="space-y-2">
+                    {plans.filter(p => p.status === 'proposed' || p.status === 'approved').map(plan => (
+                      <div key={plan.id} className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/10">
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-6 px-1.5 gap-1 font-mono text-[10px]"
+                            onClick={() => copy(plan.id, plan.id)}
+                          >
+                            {copiedId === plan.id ? <Check className="w-2.5 h-2.5" /> : <Copy className="w-2.5 h-2.5" />}
+                            {plan.id.slice(0, 8)}
+                          </Button>
+                          {getStatusBadge(plan.status)}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="h-7 px-2"
+                            onClick={() => {
+                              setValidationDialog({ open: true, planId: plan.id });
+                              validateMutation.mutate(plan.id);
+                            }}
+                          >
+                            <FlaskConical className="w-3 h-3" />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="h-7 px-2"
+                            onClick={() => {
+                              setTestDialog({ open: true, planId: plan.id });
+                              testShadowMutation.mutate(plan.id);
+                            }}
+                          >
+                            <Activity className="w-3 h-3" />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="h-7 px-2"
+                            onClick={() => setApplyDialog({ open: true, planId: plan.id })}
+                          >
+                            <Rocket className="w-3 h-3" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Deploy Tab */}
+        <TabsContent value="deploy" className="space-y-4">
+          <Card className="border border-white/10 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
+            <CardHeader>
+              <CardTitle className="text-sm font-medium flex items-center gap-2">
+                <Rocket className="w-4 h-4 text-emerald-400" />
+                Deployment Status
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {/* Applied Upgrades */}
+              {plans && plans.filter(p => p.status === 'applied').length > 0 ? (
+                <div className="space-y-3">
+                  <p className="text-xs font-medium text-foreground">Applied Upgrades:</p>
+                  {plans.filter(p => p.status === 'applied').map(plan => (
+                    <div key={plan.id} className="p-4 rounded-lg bg-emerald-500/10 border border-emerald-500/30">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <CheckCircle className="w-4 h-4 text-emerald-400" />
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-6 px-2 gap-1.5 font-mono text-xs"
+                            onClick={() => copy(plan.id, plan.id)}
+                          >
+                            {copiedId === plan.id ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                            {plan.id.slice(0, 12)}...
+                          </Button>
+                        </div>
+                        <Badge variant="outline" className="border-emerald-500/50 text-emerald-400 bg-emerald-500/10">
+                          LIVE
+                        </Badge>
+                      </div>
+                      <div className="flex items-center gap-4 text-xs text-muted-foreground mb-3">
+                        <span>Scope: {plan.scope}</span>
+                        <span>•</span>
+                        <span>{plan.diff_summary?.length || 0} changes</span>
+                        <span>•</span>
+                        <span>Applied {new Date(plan.created_at).toLocaleDateString()}</span>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="gap-1.5 border-cyan-500/30 text-cyan-400"
+                          onClick={() => {
+                            setDiffDialog({ open: true, planId: plan.id });
+                            diffViewMutation.mutate(plan.id);
+                          }}
+                        >
+                          <GitCompare className="w-3 h-3" />
+                          View Changes
+                        </Button>
+                        {plan.backup_id && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="gap-1.5 border-red-500/30 text-red-400"
+                            onClick={() => setRollbackDialog({ open: true, planId: plan.id, backupId: plan.backup_id })}
+                          >
+                            <RotateCcw className="w-3 h-3" />
+                            Rollback
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <Rocket className="w-10 h-10 mx-auto mb-3 text-muted-foreground/30" />
+                  <p className="text-sm text-muted-foreground">No upgrades deployed yet</p>
+                  <p className="text-xs text-muted-foreground/70 mt-1">Generate and apply a proposal to deploy</p>
+                </div>
+              )}
+
+              {/* Rolled Back History */}
+              {plans && plans.filter(p => p.status === 'rolled_back').length > 0 && (
+                <div className="pt-4 border-t border-white/10">
+                  <Collapsible>
+                    <CollapsibleTrigger className="flex items-center gap-2 text-xs font-medium text-muted-foreground hover:text-foreground">
+                      <ChevronRight className="w-4 h-4" />
+                      Rollback History ({plans.filter(p => p.status === 'rolled_back').length})
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <div className="mt-3 space-y-2">
+                        {plans.filter(p => p.status === 'rolled_back').map(plan => (
+                          <div key={plan.id} className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-xs">
+                            <div className="flex items-center gap-2">
+                              <RotateCcw className="w-3 h-3 text-red-400" />
+                              <span className="font-mono">{plan.id.slice(0, 12)}...</span>
+                              <span className="text-muted-foreground">
+                                {new Date(plan.created_at).toLocaleDateString()}
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </CollapsibleContent>
+                  </Collapsible>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Generate Tab */}
+        <TabsContent value="generate" className="space-y-4">
+          <div className="grid lg:grid-cols-2 gap-6">
+            {/* Quick Scan */}
+            <Card className="border border-fuchsia-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-medium flex items-center gap-2">
+                  <RefreshCw className="w-4 h-4 text-fuchsia-400" />
+                  Quick Scan
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Button
+                  onClick={() => scanMutation.mutate()}
+                  disabled={scanMutation.isPending}
+                  className="w-full bg-gradient-to-r from-fuchsia-500/20 to-cyan-500/20 border border-fuchsia-500/40 hover:from-fuchsia-500/30 hover:to-cyan-500/30 transition-all"
+                >
+                  {scanMutation.isPending ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Scanning...
+                    </>
+                  ) : (
+                    <>
+                      <Zap className="w-4 h-4 mr-2" />
+                      Scan Substrate
+                    </>
+                  )}
+                </Button>
+                
+                {scanMutation.data && scanMutation.data.proposals?.length > 0 && (
+                  <div className="mt-3 space-y-2">
+                    {scanMutation.data.proposals.slice(0, 3).map((proposal, idx) => (
+                      <div key={idx} className="flex items-start gap-2 p-2 rounded-lg bg-white/5 text-xs">
+                        {proposal.priority === 'critical' ? (
+                          <AlertTriangle className="w-3 h-3 text-red-400 shrink-0 mt-0.5" />
+                        ) : (
+                          <Zap className="w-3 h-3 text-cyan-400 shrink-0 mt-0.5" />
+                        )}
+                        <span className="text-muted-foreground">{proposal.description}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                
+                {scanMutation.data && scanMutation.data.proposals?.length === 0 && (
+                  <div className="mt-3 flex items-center gap-2 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+                    <CheckCircle className="w-4 h-4 text-emerald-400" />
+                    <span className="text-xs text-emerald-400">All systems healthy</span>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Generate Proposal */}
+            <Card className="border border-cyan-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-medium flex items-center gap-2">
+                  <Play className="w-4 h-4 text-cyan-400" />
+                  Generate Proposal
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <Select value={selectedScope} onValueChange={setSelectedScope}>
+                  <SelectTrigger className="bg-white/5 border-white/10">
+                    <SelectValue placeholder="Scope" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Modules</SelectItem>
+                    <SelectItem value="brain">Brain</SelectItem>
+                    <SelectItem value="defense">Defense</SelectItem>
+                    <SelectItem value="nexus">Nexus</SelectItem>
+                    <SelectItem value="vision">Vision</SelectItem>
+                    <SelectItem value="dream">Dream</SelectItem>
+                    <SelectItem value="system">System</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Textarea 
+                  placeholder="Notes (optional)"
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  className="bg-white/5 border-white/10 min-h-[60px]"
+                />
+                <Button 
+                  onClick={() => proposeMutation.mutate({ scope: selectedScope, notes })}
+                  disabled={proposeMutation.isPending}
+                  className="w-full bg-gradient-to-r from-cyan-500/20 to-fuchsia-500/20 border border-cyan-500/40 hover:from-cyan-500/30 hover:to-fuchsia-500/30"
+                >
+                  {proposeMutation.isPending ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Analyzing...
+                    </>
+                  ) : (
+                    <>
+                      <Zap className="w-4 h-4 mr-2" />
+                      Generate
+                    </>
+                  )}
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Archived Functions */}
+            <Card className="lg:col-span-2 border border-white/10 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
+              <Collapsible open={showArchived} onOpenChange={setShowArchived}>
+                <CollapsibleTrigger asChild>
+                  <CardHeader className="pb-3 cursor-pointer hover:bg-white/5 transition-colors">
+                    <CardTitle className="text-sm font-medium flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Archive className="w-4 h-4 text-amber-400" />
+                        Archived Functions for Repurposing
+                      </div>
+                      <ChevronDown className={cn(
+                        "w-4 h-4 transition-transform",
+                        showArchived && "rotate-180"
+                      )} />
+                    </CardTitle>
+                  </CardHeader>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <CardContent className="pt-0">
+                    {archivedLoading ? (
+                      <div className="grid sm:grid-cols-2 gap-3">
+                        {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-20 rounded-lg" />)}
+                      </div>
+                    ) : archived && archived.length > 0 ? (
+                      <div className="grid sm:grid-cols-2 gap-3">
+                        {archived.map((opp, idx) => (
+                          <div 
+                            key={idx}
+                            className="p-3 rounded-lg bg-white/5 border border-white/10 space-y-2"
+                          >
+                            <div className="flex items-center justify-between">
+                              <span className="font-mono text-xs text-foreground truncate">
+                                {opp.archived_function}
+                              </span>
+                              <Badge 
+                                variant="outline" 
+                                className={cn(
+                                  "text-[9px] h-4",
+                                  opp.value === 'high' 
+                                    ? "border-emerald-500/50 text-emerald-400"
+                                    : "border-white/20"
+                                )}
+                              >
+                                {opp.value}
+                              </Badge>
+                            </div>
+                            <p className="text-[10px] text-muted-foreground">
+                              → {opp.repurpose_for}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-xs text-muted-foreground/70 text-center py-4">
+                        No archived functions to repurpose
+                      </p>
+                    )}
+                  </CardContent>
+                </CollapsibleContent>
+              </Collapsible>
+            </Card>
+          </div>
+        </TabsContent>
+      </Tabs>
+
+      {/* Validation Dialog */}
+      <Dialog open={validationDialog.open} onOpenChange={(open) => {
+        if (!open) setValidationDialog({ open: false, planId: null });
+      }}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <FlaskConical className="w-5 h-5 text-amber-400" />
+              Validation Results
+            </DialogTitle>
+            <DialogDescription>
+              Pre-deployment validation checks for plan {validationDialog.planId?.slice(0, 8)}...
+            </DialogDescription>
+          </DialogHeader>
+          
+          {validateMutation.isPending ? (
+            <div className="py-8 text-center">
+              <Loader2 className="w-8 h-8 mx-auto mb-3 animate-spin text-amber-400" />
+              <p className="text-sm text-muted-foreground">Running validation checks...</p>
+            </div>
+          ) : validateMutation.data ? (
+            <div className="space-y-4">
+              {/* Summary */}
+              <div className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/10">
+                <span className="text-sm font-medium">Overall Status</span>
+                <Badge variant={validateMutation.data.ready_to_apply ? "default" : "destructive"}>
+                  {validateMutation.data.validation_status.toUpperCase()}
+                </Badge>
+              </div>
+              
+              {/* Progress */}
+              <div className="space-y-1">
+                <div className="flex justify-between text-xs">
+                  <span>{validateMutation.data.summary.passed} passed</span>
+                  <span>{validateMutation.data.summary.total} total</span>
+                </div>
+                <Progress 
+                  value={(validateMutation.data.summary.passed / validateMutation.data.summary.total) * 100} 
+                  className="h-2"
+                />
+              </div>
+              
+              {/* Results */}
+              <ScrollArea className="h-[200px]">
+                <div className="space-y-2">
+                  {validateMutation.data.results.map((result, idx) => (
+                    <div key={idx} className="flex items-start gap-3 p-2 rounded-lg bg-white/5">
+                      {getValidationIcon(result.status)}
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-medium">{result.check.replace(/_/g, ' ')}</p>
+                        <p className="text-[10px] text-muted-foreground truncate">{result.message}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </ScrollArea>
+              
+              {validateMutation.data.ready_to_apply && (
+                <Button
+                  onClick={() => {
+                    setValidationDialog({ open: false, planId: null });
+                    if (validationDialog.planId) {
+                      setApplyDialog({ open: true, planId: validationDialog.planId });
+                    }
+                  }}
+                  className="w-full bg-emerald-600 hover:bg-emerald-700"
+                >
+                  <CheckCircle className="w-4 h-4 mr-2" />
+                  Ready to Apply
+                </Button>
+              )}
+            </div>
+          ) : null}
+        </DialogContent>
+      </Dialog>
+
+      {/* Test Shadow Dialog */}
+      <Dialog open={testDialog.open} onOpenChange={(open) => {
+        if (!open) setTestDialog({ open: false, planId: null });
+      }}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Activity className="w-5 h-5 text-fuchsia-400" />
+              Shadow Test Results
+            </DialogTitle>
+            <DialogDescription>
+              Testing all substrate modules for plan {testDialog.planId?.slice(0, 8)}...
+            </DialogDescription>
+          </DialogHeader>
+          
+          {testShadowMutation.isPending ? (
+            <div className="py-8 text-center">
+              <Loader2 className="w-8 h-8 mx-auto mb-3 animate-spin text-fuchsia-400" />
+              <p className="text-sm text-muted-foreground">Running shadow tests...</p>
+            </div>
+          ) : testShadowMutation.data ? (
+            <div className="space-y-4">
+              {/* Summary */}
+              <div className="grid grid-cols-3 gap-3">
+                <div className="p-3 rounded-lg bg-white/5 border border-white/10 text-center">
+                  <p className="text-lg font-bold text-emerald-400">{testShadowMutation.data.summary.passed}</p>
+                  <p className="text-[10px] text-muted-foreground">Passed</p>
+                </div>
+                <div className="p-3 rounded-lg bg-white/5 border border-white/10 text-center">
+                  <p className="text-lg font-bold text-red-400">{testShadowMutation.data.summary.failed}</p>
+                  <p className="text-[10px] text-muted-foreground">Failed</p>
+                </div>
+                <div className="p-3 rounded-lg bg-white/5 border border-white/10 text-center">
+                  <p className="text-lg font-bold text-foreground">{testShadowMutation.data.summary.avg_latency_ms}ms</p>
+                  <p className="text-[10px] text-muted-foreground">Avg Latency</p>
+                </div>
+              </div>
+              
+              {/* Results */}
+              <ScrollArea className="h-[250px]">
+                <div className="space-y-2">
+                  {testShadowMutation.data.results.map((result, idx) => (
+                    <div key={idx} className="flex items-center justify-between p-2 rounded-lg bg-white/5">
+                      <div className="flex items-center gap-2">
+                        {result.status === 'pass' ? (
+                          <CheckCircle className="w-3 h-3 text-emerald-400" />
+                        ) : (
+                          <XCircle className="w-3 h-3 text-red-400" />
+                        )}
+                        <span className="text-xs font-mono">{result.module}</span>
+                        <span className="text-[10px] text-muted-foreground">• {result.test}</span>
+                      </div>
+                      {result.latency_ms && (
+                        <span className="text-[10px] text-muted-foreground">{result.latency_ms}ms</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </ScrollArea>
+              
+              {testShadowMutation.data.ready_for_production && (
+                <Button
+                  onClick={() => {
+                    setTestDialog({ open: false, planId: null });
+                    if (testDialog.planId) {
+                      setApplyDialog({ open: true, planId: testDialog.planId });
+                    }
+                  }}
+                  className="w-full bg-emerald-600 hover:bg-emerald-700"
+                >
+                  <Rocket className="w-4 h-4 mr-2" />
+                  Deploy to Production
+                </Button>
+              )}
+            </div>
+          ) : null}
+        </DialogContent>
+      </Dialog>
+
+      {/* Diff View Dialog */}
+      <Dialog open={diffDialog.open} onOpenChange={(open) => {
+        if (!open) setDiffDialog({ open: false, planId: null });
+      }}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <GitCompare className="w-5 h-5 text-cyan-400" />
+              Diff View
+            </DialogTitle>
+            <DialogDescription>
+              Comparing proposal with current production state
+            </DialogDescription>
+          </DialogHeader>
+          
+          {diffViewMutation.isPending ? (
+            <div className="py-8 text-center">
+              <Loader2 className="w-8 h-8 mx-auto mb-3 animate-spin text-cyan-400" />
+              <p className="text-sm text-muted-foreground">Loading diff...</p>
+            </div>
+          ) : diffViewMutation.data?.diff ? (
+            <div className="space-y-4">
+              {/* Health Comparison */}
+              <div className="p-4 rounded-lg bg-white/5 border border-white/10">
+                <p className="text-xs font-medium mb-3 text-foreground">Health Comparison</p>
+                <div className="grid grid-cols-3 gap-4 text-center">
+                  <div>
+                    <p className="text-lg font-bold text-muted-foreground">{diffViewMutation.data.diff.health_comparison.before}</p>
+                    <p className="text-[10px] text-muted-foreground">Before</p>
+                  </div>
+                  <div>
+                    <p className="text-lg font-bold text-foreground">{diffViewMutation.data.diff.health_comparison.current}</p>
+                    <p className="text-[10px] text-muted-foreground">Current</p>
+                  </div>
+                  <div>
+                    <p className="text-lg font-bold text-emerald-400">{diffViewMutation.data.diff.health_comparison.after_estimate}</p>
+                    <p className="text-[10px] text-muted-foreground">After</p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Proposed Changes */}
+              {diffViewMutation.data.diff.proposed_changes.length > 0 && (
+                <div>
+                  <p className="text-xs font-medium mb-2 text-foreground">Proposed Changes</p>
+                  <div className="space-y-2">
+                    {diffViewMutation.data.diff.proposed_changes.map((change, idx) => (
+                      <div key={idx} className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+                        <div className="flex items-center gap-2 mb-1">
+                          <Badge variant="outline" className="text-[9px] border-emerald-500/30 text-emerald-400">
+                            + {change.module}
+                          </Badge>
+                          <Badge variant="outline" className="text-[9px]">{change.change_type}</Badge>
+                        </div>
+                        <p className="text-xs text-muted-foreground">{change.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {/* Suggested Patches */}
+              {diffViewMutation.data.diff.suggested_patches.length > 0 && (
+                <div>
+                  <p className="text-xs font-medium mb-2 text-foreground">Patches</p>
+                  <div className="space-y-2">
+                    {diffViewMutation.data.diff.suggested_patches.map((patch, idx) => (
+                      <div key={idx} className="p-3 rounded-lg bg-cyan-500/10 border border-cyan-500/20">
+                        <p className="text-xs font-mono text-cyan-400 mb-1">{patch.target}</p>
+                        <p className="text-[10px] text-muted-foreground">{patch.rationale}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {/* Backup Info */}
+              <div className="p-3 rounded-lg bg-white/5 border border-white/10">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-muted-foreground">Backup ID</span>
+                  <code className="text-xs font-mono text-foreground">
+                    {diffViewMutation.data.diff.backup_info.backup_id || 'N/A'}
+                  </code>
+                </div>
+              </div>
+            </div>
+          ) : null}
+        </DialogContent>
+      </Dialog>
+
+      {/* Apply Dialog */}
       <Dialog open={applyDialog.open} onOpenChange={(open) => {
         if (!open) {
           setApplyDialog({ open: false, planId: null });
@@ -804,7 +1465,7 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
           <DialogHeader>
             <DialogTitle>Apply Upgrade</DialogTitle>
             <DialogDescription>
-              This will apply the upgrade proposal to the substrate. A backup will be created automatically before applying changes.
+              This will apply the upgrade to production. Backup is ready for rollback if needed.
             </DialogDescription>
           </DialogHeader>
           <div className="py-4">

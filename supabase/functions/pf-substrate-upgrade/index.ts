@@ -30,7 +30,7 @@ function generatePlanId(): string {
 }
 
 interface UpgradeRequest {
-  action: 'propose' | 'list_plans' | 'get_plan' | 'apply_plan' | 'rollback_plan' | 'delete_plan' | 'reject_plan';
+  action: 'propose' | 'list_plans' | 'get_plan' | 'apply_plan' | 'rollback_plan' | 'delete_plan' | 'reject_plan' | 'validate_plan' | 'diff_view' | 'test_shadow';
   mode?: 'shadow' | 'auto_safe' | 'auto_full';
   scope?: 'brain' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'all';
   max_changes?: number;
@@ -644,11 +644,362 @@ serve(async (req) => {
         }, corsHeaders);
       }
       
+      case 'validate_plan': {
+        // Validate a plan before applying - check all functions and health
+        if (!plan_id) {
+          return jsonResponse({
+            success: false,
+            error: 'plan_id is required',
+          }, corsHeaders, 400);
+        }
+        
+        const { data: plan, error: planError } = await supabase
+          .from('substrate_upgrade_plans')
+          .select('*')
+          .eq('id', plan_id)
+          .single();
+        
+        if (planError || !plan) {
+          return jsonResponse({
+            success: false,
+            error: 'Plan not found',
+            plan_id,
+          }, corsHeaders, 404);
+        }
+        
+        const validationResults: Array<{
+          check: string;
+          status: 'pass' | 'warning' | 'fail';
+          message: string;
+          details?: unknown;
+        }> = [];
+        
+        // 1. Check backup exists
+        validationResults.push({
+          check: 'backup_exists',
+          status: plan.backup_id ? 'pass' : 'fail',
+          message: plan.backup_id 
+            ? `Backup ready: ${plan.backup_id}` 
+            : 'No backup associated with plan',
+        });
+        
+        // 2. Check current system health
+        const { data: healthData } = await supabase.functions.invoke('pf-substrate', {
+          body: { module: 'system', action: 'health' }
+        });
+        const currentHealth = healthData?.overall_health ?? 0;
+        
+        validationResults.push({
+          check: 'system_health',
+          status: currentHealth >= 95 ? 'pass' : currentHealth >= 80 ? 'warning' : 'fail',
+          message: `Current health: ${currentHealth}%`,
+          details: { current: currentHealth, required: 95 }
+        });
+        
+        // 3. Check each affected module
+        const affectedModules = plan.scope === 'all' 
+          ? ['brain', 'defense', 'nexus', 'vision', 'dream', 'system', 'modernizer', 'decode']
+          : [plan.scope];
+        
+        for (const mod of affectedModules) {
+          try {
+            const { data: modData, error: modError } = await supabase.functions.invoke('pf-substrate', {
+              body: { module: mod, action: 'pulse' }
+            });
+            
+            validationResults.push({
+              check: `module_${mod}`,
+              status: modError ? 'fail' : modData?.active ? 'pass' : 'warning',
+              message: modError 
+                ? `${mod}: unreachable`
+                : modData?.active 
+                  ? `${mod}: healthy`
+                  : `${mod}: degraded`,
+              details: modData
+            });
+          } catch (e) {
+            validationResults.push({
+              check: `module_${mod}`,
+              status: 'fail',
+              message: `${mod}: error during validation`,
+              details: e instanceof Error ? e.message : 'Unknown'
+            });
+          }
+        }
+        
+        // 4. Check for conflicting upgrades
+        const { data: activeUpgrades } = await supabase
+          .from('substrate_upgrade_plans')
+          .select('id, status')
+          .in('status', ['applying', 'approved'])
+          .neq('id', plan_id);
+        
+        validationResults.push({
+          check: 'no_conflicting_upgrades',
+          status: !activeUpgrades?.length ? 'pass' : 'warning',
+          message: activeUpgrades?.length 
+            ? `${activeUpgrades.length} other upgrade(s) in progress`
+            : 'No conflicting upgrades',
+        });
+        
+        // 5. Check risk level
+        validationResults.push({
+          check: 'risk_assessment',
+          status: plan.risk_level === 'low' ? 'pass' : plan.risk_level === 'medium' ? 'warning' : 'fail',
+          message: `Risk level: ${plan.risk_level}`,
+          details: { 
+            risk_level: plan.risk_level,
+            blast_radius: plan.estimated_blast_radius
+          }
+        });
+        
+        const passCount = validationResults.filter(r => r.status === 'pass').length;
+        const failCount = validationResults.filter(r => r.status === 'fail').length;
+        const warningCount = validationResults.filter(r => r.status === 'warning').length;
+        
+        const overallStatus = failCount > 0 ? 'fail' : warningCount > 0 ? 'warning' : 'pass';
+        
+        // Update plan with validation results
+        await supabase.from('substrate_upgrade_plans').update({
+          operator_notes: `Last validation: ${new Date().toISOString()} - ${overallStatus.toUpperCase()}`,
+        }).eq('id', plan_id);
+        
+        return jsonResponse({
+          success: true,
+          plan_id,
+          validation_status: overallStatus,
+          ready_to_apply: failCount === 0,
+          summary: {
+            passed: passCount,
+            warnings: warningCount,
+            failed: failCount,
+            total: validationResults.length,
+          },
+          results: validationResults,
+          timestamp: new Date().toISOString(),
+        }, corsHeaders);
+      }
+      
+      case 'diff_view': {
+        // Get detailed diff between current and proposed changes
+        if (!plan_id) {
+          return jsonResponse({
+            success: false,
+            error: 'plan_id is required',
+          }, corsHeaders, 400);
+        }
+        
+        const { data: plan, error: planError } = await supabase
+          .from('substrate_upgrade_plans')
+          .select('*')
+          .eq('id', plan_id)
+          .single();
+        
+        if (planError || !plan) {
+          return jsonResponse({
+            success: false,
+            error: 'Plan not found',
+            plan_id,
+          }, corsHeaders, 404);
+        }
+        
+        // Get current production state
+        const { data: prodHealth } = await supabase.functions.invoke('pf-substrate', {
+          body: { module: 'system', action: 'health' }
+        });
+        
+        const { data: prodMetrics } = await supabase.functions.invoke('pf-substrate', {
+          body: { module: 'vision', action: 'metrics' }
+        });
+        
+        // Get the before snapshot from when proposal was made
+        const beforeSnapshot = plan.before_health_snapshot || {};
+        
+        // Build comprehensive diff
+        const diff = {
+          plan_id,
+          created_at: plan.created_at,
+          scope: plan.scope,
+          status: plan.status,
+          
+          health_comparison: {
+            before: beforeSnapshot.overall_health ?? 'N/A',
+            current: prodHealth?.overall_health ?? 'N/A',
+            after_estimate: plan.status === 'applied' 
+              ? (plan.after_health_snapshot?.overall_health ?? 'N/A')
+              : 'Pending',
+          },
+          
+          proposed_changes: plan.diff_summary || [],
+          suggested_patches: plan.suggested_patches || [],
+          
+          affected_modules: plan.estimated_blast_radius,
+          risk_level: plan.risk_level,
+          
+          backup_info: {
+            backup_id: plan.backup_id,
+            can_rollback: !!plan.backup_id && plan.status === 'applied',
+          },
+          
+          production_state: {
+            health: prodHealth?.overall_health ?? 0,
+            modules: prodHealth?.modules ?? {},
+            metrics_snapshot: prodMetrics?.metrics ?? {},
+          },
+        };
+        
+        return jsonResponse({
+          success: true,
+          diff,
+          timestamp: new Date().toISOString(),
+        }, corsHeaders);
+      }
+      
+      case 'test_shadow': {
+        // Run comprehensive shadow tests on all substrate modules
+        if (!plan_id) {
+          return jsonResponse({
+            success: false,
+            error: 'plan_id is required',
+          }, corsHeaders, 400);
+        }
+        
+        const { data: plan } = await supabase
+          .from('substrate_upgrade_plans')
+          .select('*')
+          .eq('id', plan_id)
+          .single();
+        
+        if (!plan) {
+          return jsonResponse({
+            success: false,
+            error: 'Plan not found',
+          }, corsHeaders, 404);
+        }
+        
+        const testResults: Array<{
+          module: string;
+          test: string;
+          status: 'pass' | 'fail' | 'skip';
+          latency_ms?: number;
+          error?: string;
+        }> = [];
+        
+        const modules = ['brain', 'defense', 'nexus', 'vision', 'dream', 'system', 'modernizer', 'decode'];
+        
+        for (const mod of modules) {
+          const startTime = Date.now();
+          
+          // Test 1: Pulse/health check
+          try {
+            const { data, error } = await supabase.functions.invoke('pf-substrate', {
+              body: { module: mod, action: 'pulse' }
+            });
+            
+            testResults.push({
+              module: mod,
+              test: 'pulse',
+              status: error ? 'fail' : data?.active ? 'pass' : 'fail',
+              latency_ms: Date.now() - startTime,
+              error: error?.message,
+            });
+          } catch (e) {
+            testResults.push({
+              module: mod,
+              test: 'pulse',
+              status: 'fail',
+              latency_ms: Date.now() - startTime,
+              error: e instanceof Error ? e.message : 'Unknown',
+            });
+          }
+          
+          // Test 2: Status check
+          try {
+            const statusStart = Date.now();
+            const { data, error } = await supabase.functions.invoke('pf-substrate', {
+              body: { module: mod, action: 'status' }
+            });
+            
+            testResults.push({
+              module: mod,
+              test: 'status',
+              status: error ? 'fail' : data?.success ? 'pass' : 'fail',
+              latency_ms: Date.now() - statusStart,
+              error: error?.message,
+            });
+          } catch (e) {
+            testResults.push({
+              module: mod,
+              test: 'status',
+              status: 'fail',
+              error: e instanceof Error ? e.message : 'Unknown',
+            });
+          }
+        }
+        
+        // Additional integration tests
+        // Test substrate gateway directly
+        try {
+          const gwStart = Date.now();
+          const { data, error } = await supabase.functions.invoke('pf-substrate', {
+            body: { action: 'health' }
+          });
+          
+          testResults.push({
+            module: 'gateway',
+            test: 'health_endpoint',
+            status: error ? 'fail' : data?.success ? 'pass' : 'fail',
+            latency_ms: Date.now() - gwStart,
+          });
+        } catch (e) {
+          testResults.push({
+            module: 'gateway',
+            test: 'health_endpoint',
+            status: 'fail',
+            error: e instanceof Error ? e.message : 'Unknown',
+          });
+        }
+        
+        const passCount = testResults.filter(r => r.status === 'pass').length;
+        const failCount = testResults.filter(r => r.status === 'fail').length;
+        const avgLatency = testResults
+          .filter(r => r.latency_ms)
+          .reduce((sum, r) => sum + (r.latency_ms || 0), 0) / testResults.length;
+        
+        // Log test run
+        await supabase.from('brain_events').insert({
+          event_type: 'shadow_test',
+          module: 'modernizer',
+          outcome: failCount === 0 ? 'success' : 'failure',
+          data: { 
+            plan_id,
+            passed: passCount,
+            failed: failCount,
+            avg_latency_ms: Math.round(avgLatency),
+          }
+        });
+        
+        return jsonResponse({
+          success: true,
+          plan_id,
+          test_status: failCount === 0 ? 'pass' : 'fail',
+          ready_for_production: failCount === 0,
+          summary: {
+            total_tests: testResults.length,
+            passed: passCount,
+            failed: failCount,
+            avg_latency_ms: Math.round(avgLatency),
+          },
+          results: testResults,
+          timestamp: new Date().toISOString(),
+        }, corsHeaders);
+      }
+      
       default:
         return jsonResponse({
           success: false,
           error: `Unknown action: ${action}`,
-          valid_actions: ['propose', 'list_plans', 'get_plan', 'apply_plan', 'rollback_plan', 'delete_plan', 'reject_plan'],
+          valid_actions: ['propose', 'list_plans', 'get_plan', 'apply_plan', 'rollback_plan', 'delete_plan', 'reject_plan', 'validate_plan', 'diff_view', 'test_shadow'],
         }, corsHeaders, 400);
     }
     
