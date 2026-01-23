@@ -1,6 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
+// Type assertions needed until Supabase types sync
+const db = supabase as any;
+
 export interface DebuggerSession {
   id: string;
   name: string;
@@ -37,14 +40,13 @@ export function useDebuggerSessions(limit = 10) {
   return useQuery({
     queryKey: ["debugger-sessions", limit],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("debugger_sessions")
+      const { data, error } = await db.from("debugger_sessions")
         .select("*")
         .order("started_at", { ascending: false })
         .limit(limit);
 
       if (error) throw error;
-      return (data || []) as unknown as DebuggerSession[];
+      return (data || []) as DebuggerSession[];
     },
   });
 }
@@ -53,8 +55,7 @@ export function useActiveDebuggerSession() {
   return useQuery({
     queryKey: ["active-debugger-session"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("debugger_sessions")
+      const { data, error } = await db.from("debugger_sessions")
         .select("*")
         .eq("is_active", true)
         .order("started_at", { ascending: false })
@@ -62,7 +63,7 @@ export function useActiveDebuggerSession() {
         .maybeSingle();
 
       if (error) throw error;
-      return data as unknown as DebuggerSession | null;
+      return data as DebuggerSession | null;
     },
     refetchInterval: 5000,
   });
@@ -73,15 +74,14 @@ export function useDebuggerTraces(sessionId?: string) {
     queryKey: ["debugger-traces", sessionId],
     enabled: !!sessionId,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("debugger_traces")
+      const { data, error } = await db.from("debugger_traces")
         .select("*")
         .eq("session_id", sessionId!)
         .order("created_at", { ascending: false })
         .limit(100);
 
       if (error) throw error;
-      return (data || []) as unknown as DebuggerTrace[];
+      return (data || []) as DebuggerTrace[];
     },
     refetchInterval: 2000,
   });
@@ -92,8 +92,7 @@ export function useStartDebugger() {
 
   return useMutation({
     mutationFn: async ({ name, appId, entityId }: { name: string; appId?: string; entityId?: string }) => {
-      const { data, error } = await supabase
-        .from("debugger_sessions")
+      const { data, error } = await db.from("debugger_sessions")
         .insert({
           name,
           app_id: appId,
@@ -108,7 +107,7 @@ export function useStartDebugger() {
         .single();
 
       if (error) throw error;
-      return data as unknown as DebuggerSession;
+      return data as DebuggerSession;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["debugger-sessions"] });
@@ -122,8 +121,7 @@ export function useStopDebugger() {
 
   return useMutation({
     mutationFn: async (sessionId: string) => {
-      const { error } = await supabase
-        .from("debugger_sessions")
+      const { error } = await db.from("debugger_sessions")
         .update({ is_active: false, ended_at: new Date().toISOString() })
         .eq("id", sessionId);
 
