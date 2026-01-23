@@ -27,6 +27,8 @@ import {
   Cpu,
   TrendingUp,
   BarChart3,
+  Loader2,
+  RefreshCw,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -58,9 +60,9 @@ export function LiveDebugger() {
   const [sessionName, setSessionName] = useState("");
   const [selectedTrace, setSelectedTrace] = useState<string | null>(null);
 
-  const { data: activeSession } = useActiveDebuggerSession();
-  const { data: sessions } = useDebuggerSessions();
-  const { data: traces } = useDebuggerTraces(activeSession?.id);
+  const { data: activeSession, isLoading: sessionLoading, error: sessionError } = useActiveDebuggerSession();
+  const { data: sessions, isLoading: sessionsLoading } = useDebuggerSessions();
+  const { data: traces, isLoading: tracesLoading, error: tracesError } = useDebuggerTraces(activeSession?.id);
   const flameData = useFlameGraphData(activeSession?.id);
   const startDebugger = useStartDebugger();
   const stopDebugger = useStopDebugger();
@@ -70,9 +72,18 @@ export function LiveDebugger() {
     try {
       await startDebugger.mutateAsync({ name });
       setSessionName("");
-      toast.success("Debugger started");
-    } catch (error) {
-      toast.error("Failed to start debugger");
+      toast.success("Debugger session started", {
+        description: `Session "${name}" is now recording traces.`
+      });
+    } catch (error: any) {
+      const message = error?.message || "Unable to start debugger session";
+      toast.error("Debugger Start Failed", {
+        description: message.includes("permission") 
+          ? "You may need to sign in or check your permissions."
+          : message.includes("network") || message.includes("fetch")
+            ? "Network error. Please check your connection."
+            : "The debugger tables may not be set up. Contact support."
+      });
     }
   };
 
@@ -80,11 +91,52 @@ export function LiveDebugger() {
     if (!activeSession) return;
     try {
       await stopDebugger.mutateAsync(activeSession.id);
-      toast.success("Debugger stopped");
-    } catch (error) {
-      toast.error("Failed to stop debugger");
+      toast.success("Debugger stopped", {
+        description: `Recorded ${traces?.length || 0} traces.`
+      });
+    } catch (error: any) {
+      toast.error("Stop Failed", {
+        description: "Session may have already ended."
+      });
     }
   };
+
+  // Show graceful loading/error states
+  if (sessionLoading) {
+    return (
+      <Card className="p-8">
+        <div className="flex flex-col items-center justify-center gap-4 text-muted-foreground">
+          <Loader2 className="w-8 h-8 animate-spin" />
+          <p>Connecting to debugger...</p>
+        </div>
+      </Card>
+    );
+  }
+
+  if (sessionError || tracesError) {
+    return (
+      <Card className="p-8 border-amber-500/30 bg-amber-500/5">
+        <div className="flex flex-col items-center justify-center gap-4 text-center">
+          <div className="w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center">
+            <AlertCircle className="w-6 h-6 text-amber-400" />
+          </div>
+          <div>
+            <h3 className="font-semibold mb-1">Debugger Unavailable</h3>
+            <p className="text-sm text-muted-foreground max-w-md">
+              The live debugger requires database tables that may not be configured yet. 
+              This is expected during initial setup.
+            </p>
+          </div>
+          <div className="flex gap-2 mt-2">
+            <Button variant="outline" size="sm" onClick={() => window.location.reload()}>
+              <RefreshCw className="w-4 h-4 mr-2" />
+              Retry
+            </Button>
+          </div>
+        </div>
+      </Card>
+    );
+  }
 
   // Calculate stats
   const successCount = traces?.filter((t) => t.status === "success").length || 0;

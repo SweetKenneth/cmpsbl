@@ -1,6 +1,7 @@
 /**
  * Substrate Install Wizard — Complete restoration with customization
- * Guides users through theme, branding, modules, AI providers, and quotas
+ * Guides users through industry selection, theme, branding, modules, AI providers, and quotas
+ * v3.1 — Now with industry-optimized module presets
  */
 
 import { useState } from 'react';
@@ -8,7 +9,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Package, Palette, Layout, Cpu, Key, Settings,
   ChevronRight, ChevronLeft, Check, Loader2, AlertTriangle,
-  Building2, Image, Mail, Type
+  Building2, Image, Mail, Type, Gamepad2, Code, Briefcase, Sparkles
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -26,6 +27,7 @@ interface WizardStep {
 }
 
 interface InstallConfig {
+  industry: string;
   branding: {
     company_name: string;
     logo_url: string;
@@ -45,12 +47,44 @@ interface InstallConfig {
 }
 
 const WIZARD_STEPS: WizardStep[] = [
+  { id: 'industry', title: 'Industry', icon: Sparkles },
   { id: 'branding', title: 'Branding', icon: Building2 },
   { id: 'theme', title: 'Theme', icon: Palette },
   { id: 'layout', title: 'Layout', icon: Layout },
   { id: 'modules', title: 'Modules', icon: Cpu },
   { id: 'ai_providers', title: 'AI Keys', icon: Key },
   { id: 'quotas', title: 'Quotas', icon: Settings },
+];
+
+// Industry presets define which modules are enabled by default
+const INDUSTRY_PRESETS = [
+  {
+    id: 'gaming',
+    name: 'Video Game Development',
+    icon: Gamepad2,
+    description: 'NPC memory, dream cycles, world engines, and dialogue systems',
+    color: 'text-purple-400 border-purple-500/30 bg-purple-500/10',
+    enabledModules: ['core', 'ripple', 'access', 'brain', 'decode', 'dream', 'defense', 'system'],
+    tagline: 'NPCs that remember and evolve',
+  },
+  {
+    id: 'software',
+    name: 'Software Development',
+    icon: Code,
+    description: 'RAG pipelines, AI agents, chatbots, and cognitive applications',
+    color: 'text-cyan-400 border-cyan-500/30 bg-cyan-500/10',
+    enabledModules: ['core', 'ripple', 'access', 'brain', 'decode', 'nexus', 'defense', 'system'],
+    tagline: 'Apps that think and learn',
+  },
+  {
+    id: 'enterprise',
+    name: 'Enterprise Business',
+    icon: Briefcase,
+    description: 'Operations AI, institutional memory, workflow automation, and analytics',
+    color: 'text-blue-400 border-blue-500/30 bg-blue-500/10',
+    enabledModules: ['core', 'ripple', 'access', 'brain', 'vision', 'nexus', 'defense', 'system', 'modernizer'],
+    tagline: 'Intelligence that scales',
+  },
 ];
 
 const THEMES = [
@@ -67,17 +101,17 @@ const LAYOUTS = [
 ];
 
 const MODULES = [
-  { key: 'core', name: 'Core Kernel', required: true, icon: '🔮' },
-  { key: 'ripple', name: 'Ripple Bus', required: true, icon: '🌊' },
-  { key: 'access', name: 'Access Layer', required: true, icon: '🔐' },
-  { key: 'brain', name: 'Brain', required: false, icon: '🧠' },
-  { key: 'decode', name: 'Decode Chat', required: false, icon: '💬' },
-  { key: 'defense', name: 'Defense', required: false, icon: '🛡️' },
-  { key: 'nexus', name: 'Nexus Research', required: false, icon: '🔍' },
-  { key: 'vision', name: 'Vision', required: false, icon: '👁️' },
-  { key: 'dream', name: 'Dream', required: false, icon: '✨' },
-  { key: 'system', name: 'System', required: true, icon: '⚙️' },
-  { key: 'modernizer', name: 'Modernizer', required: false, icon: '🔄' },
+  { key: 'core', name: 'Core Kernel', required: true, icon: '🔮', description: 'Scheduling & orchestration' },
+  { key: 'ripple', name: 'Ripple Bus', required: true, icon: '🌊', description: 'Event messaging system' },
+  { key: 'access', name: 'Access Layer', required: true, icon: '🔐', description: 'Identity & billing' },
+  { key: 'brain', name: 'Brain', required: false, icon: '🧠', description: 'Persistent 3-tier memory' },
+  { key: 'decode', name: 'Decode Chat', required: false, icon: '💬', description: 'Context-aware dialogue' },
+  { key: 'defense', name: 'Defense', required: false, icon: '🛡️', description: 'Security & governance' },
+  { key: 'nexus', name: 'Nexus Research', required: false, icon: '🔍', description: 'AI provider routing' },
+  { key: 'vision', name: 'Vision', required: false, icon: '👁️', description: 'Analytics dashboard' },
+  { key: 'dream', name: 'Dream', required: false, icon: '✨', description: 'Offline learning cycles' },
+  { key: 'system', name: 'System', required: true, icon: '⚙️', description: 'Operations & backup' },
+  { key: 'modernizer', name: 'Modernizer', required: false, icon: '🔄', description: 'Self-upgrade system' },
 ];
 
 const AI_PROVIDERS = [
@@ -98,7 +132,18 @@ interface InstallWizardProps {
 export function InstallWizard({ packageData, onComplete, onCancel }: InstallWizardProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [isInstalling, setIsInstalling] = useState(false);
+  
+  // Get initial modules based on default industry (gaming)
+  const getDefaultModules = (industryId: string = 'gaming') => {
+    const preset = INDUSTRY_PRESETS.find(p => p.id === industryId);
+    const enabledModules = preset?.enabledModules || [];
+    return Object.fromEntries(
+      MODULES.map(m => [m.key, m.required || enabledModules.includes(m.key)])
+    );
+  };
+
   const [config, setConfig] = useState<InstallConfig>({
+    industry: 'gaming',
     branding: {
       company_name: '',
       logo_url: '',
@@ -107,7 +152,7 @@ export function InstallWizard({ packageData, onComplete, onCancel }: InstallWiza
     },
     theme: 'dark_professional',
     layout: 'full_marketing',
-    modules: Object.fromEntries(MODULES.map(m => [m.key, m.required || ['brain', 'decode', 'defense', 'system'].includes(m.key)])),
+    modules: getDefaultModules('gaming'),
     ai_providers: {},
     quotas: {
       memory_hot_limit: 1000,
@@ -247,6 +292,69 @@ export function InstallWizard({ packageData, onComplete, onCancel }: InstallWiza
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.2 }}
               >
+                {/* Industry Step */}
+                {step.id === 'industry' && (
+                  <div className="space-y-4">
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Select your primary use case. This pre-configures the optimal modules for your industry.
+                    </p>
+                    <div className="grid gap-4">
+                      {INDUSTRY_PRESETS.map((preset) => (
+                        <button
+                          key={preset.id}
+                          onClick={() => {
+                            setConfig(prev => ({
+                              ...prev,
+                              industry: preset.id,
+                              modules: getDefaultModules(preset.id),
+                              branding: {
+                                ...prev.branding,
+                                tagline: prev.branding.tagline || preset.tagline
+                              }
+                            }));
+                          }}
+                          className={cn(
+                            "p-5 rounded-xl border text-left transition-all",
+                            config.industry === preset.id
+                              ? "border-primary bg-primary/10"
+                              : "border-white/10 bg-white/5 hover:bg-white/10"
+                          )}
+                        >
+                          <div className="flex items-start gap-4">
+                            <div className={cn(
+                              "w-12 h-12 rounded-xl flex items-center justify-center shrink-0",
+                              preset.color
+                            )}>
+                              <preset.icon className="w-6 h-6" />
+                            </div>
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-1">
+                                <span className="font-semibold">{preset.name}</span>
+                                {config.industry === preset.id && (
+                                  <Check className="w-4 h-4 text-primary" />
+                                )}
+                              </div>
+                              <p className="text-sm text-muted-foreground mb-2">{preset.description}</p>
+                              <div className="flex flex-wrap gap-1">
+                                {preset.enabledModules.slice(0, 5).map(mod => (
+                                  <Badge key={mod} variant="outline" className="text-[10px]">
+                                    {MODULES.find(m => m.key === mod)?.icon} {mod}
+                                  </Badge>
+                                ))}
+                                {preset.enabledModules.length > 5 && (
+                                  <Badge variant="outline" className="text-[10px]">
+                                    +{preset.enabledModules.length - 5} more
+                                  </Badge>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {/* Branding Step */}
                 {step.id === 'branding' && (
                   <div className="space-y-4">
@@ -281,7 +389,7 @@ export function InstallWizard({ packageData, onComplete, onCancel }: InstallWiza
                         <Input
                           value={config.branding.tagline}
                           onChange={(e) => updateBranding('tagline', e.target.value)}
-                          placeholder="Your cognitive backbone"
+                          placeholder={INDUSTRY_PRESETS.find(p => p.id === config.industry)?.tagline || 'Your cognitive backbone'}
                         />
                       </div>
                       <div className="space-y-2">

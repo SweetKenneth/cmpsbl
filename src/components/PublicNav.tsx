@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { 
   Menu, X, ChevronDown, Code, 
   Layers, FileText, Mail, Info, Rocket, BookOpen, Users,
-  Zap, Map, Terminal, Cpu, MessageSquare, Moon
+  Zap, Map, Terminal, Cpu, MessageSquare, Moon, Building2, Gamepad2, Sparkles
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import {
@@ -43,11 +43,20 @@ export function PublicNav() {
       name: "Build",
       icon: Code,
       items: [
-        { name: "Gaming AI", href: "/gaming", description: "NPC Brains & World Engines", icon: Zap },
-        { name: "DevTools", href: "/devtools", description: "Templates & Debugger", icon: Terminal },
-        { name: "CodeLab", href: "/codelab", description: "Developer Workbench", icon: Code },
+        { name: "For Developers", href: "/developers", description: "Build Intelligent Apps", icon: Code },
+        { name: "Gaming AI", href: "/gaming", description: "NPC Brains & World Engines", icon: Gamepad2 },
+        { name: "CodeLab", href: "/codelab", description: "Templates & Workbench", icon: Terminal },
         { name: "Documentation", href: "/documentation", description: "API Reference", icon: FileText },
         ...(user ? [{ name: "Control Panel", href: "/os", description: "Admin Console", icon: Cpu }] : []),
+      ]
+    },
+    {
+      name: "Solutions",
+      icon: Building2,
+      items: [
+        { name: "Use Cases", href: "/use-cases", description: "Industry Applications", icon: Sparkles },
+        { name: "Enterprise", href: "/solutions", description: "Business Solutions", icon: Building2 },
+        { name: "Projects", href: "/projects", description: "Active Development", icon: Rocket },
       ]
     },
     {
@@ -57,7 +66,6 @@ export function PublicNav() {
         { name: "Blog", href: "/blog", description: "Articles & Research", icon: FileText },
         { name: "Changelog", href: "/changelog", description: "Version History", icon: BookOpen },
         { name: "Roadmap", href: "/roadmap", description: "Development Plan", icon: Map },
-        { name: "Projects", href: "/projects", description: "Active Development", icon: Rocket },
       ]
     },
     {
@@ -65,7 +73,6 @@ export function PublicNav() {
       icon: Users,
       items: [
         { name: "About", href: "/about", description: "Our Mission", icon: Info },
-        { name: "Solutions", href: "/solutions", description: "Use Cases", icon: Layers },
         { name: "Contact", href: "/contact", description: "Get in Touch", icon: Mail },
       ]
     },
@@ -76,8 +83,9 @@ export function PublicNav() {
   
   // Quick access items shown directly in nav
   const quickLinks = [
+    { name: "Developers", href: "/developers" },
     { name: "Gaming", href: "/gaming" },
-    { name: "DevTools", href: "/devtools" },
+    { name: "Use Cases", href: "/use-cases" },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -248,11 +256,11 @@ export function PublicNav() {
             <div className="container mx-auto px-4 py-4">
               {/* Search-like quick access */}
               <div className="flex gap-2 mb-4 overflow-x-auto pb-2 -mx-4 px-4">
-                {["Gaming", "DevTools", "Demo", "Blog", "Contact"].map((name) => {
-                  const href = name === "Gaming" ? "/gaming" :
-                               name === "DevTools" ? "/devtools" :
-                               name === "Demo" ? "/demo" :
-                               name === "Blog" ? "/blog" : "/contact";
+                {["Developers", "Gaming", "Use Cases", "Demo", "Contact"].map((name) => {
+                  const href = name === "Developers" ? "/developers" :
+                               name === "Gaming" ? "/gaming" :
+                               name === "Use Cases" ? "/use-cases" :
+                               name === "Demo" ? "/demo" : "/contact";
                   return (
                     <Link
                       key={name}
