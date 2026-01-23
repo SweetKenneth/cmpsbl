@@ -47,6 +47,50 @@ interface ModuleConfig {
 }
 
 const modules: ModuleConfig[] = [
+  // ═══ KERNEL LAYER ═══
+  {
+    id: "core",
+    name: "Core",
+    description: "Kernel scheduling, lifecycle, circuit breakers, routing",
+    icon: Settings,
+    color: "text-slate-400",
+    bgColor: "bg-slate-500/10",
+    actions: [
+      { name: "status", description: "Get core kernel status" },
+      { name: "schedule", description: "Schedule a task", params: [{ name: "task", type: "string", required: true }, { name: "delay_ms", type: "string", placeholder: "1000" }] },
+      { name: "boot", description: "Boot sequence status" },
+      { name: "circuit", description: "Circuit breaker status" },
+    ],
+  },
+  {
+    id: "ripple",
+    name: "Ripple",
+    description: "Pub/sub messaging, event queues, inter-module communication",
+    icon: MessageSquare,
+    color: "text-indigo-500",
+    bgColor: "bg-indigo-500/10",
+    actions: [
+      { name: "status", description: "Get message bus status" },
+      { name: "publish", description: "Publish event", params: [{ name: "topic", type: "string", required: true }, { name: "message", type: "string", required: true }] },
+      { name: "subscribe", description: "Subscribe to topic", params: [{ name: "topic", type: "string", required: true }] },
+      { name: "queue", description: "Queue status" },
+    ],
+  },
+  {
+    id: "access",
+    name: "Access",
+    description: "API key management, rate limiting, quotas, billing",
+    icon: Shield,
+    color: "text-orange-500",
+    bgColor: "bg-orange-500/10",
+    actions: [
+      { name: "status", description: "Get access layer status" },
+      { name: "validate", description: "Validate API key", params: [{ name: "key", type: "string", required: true }] },
+      { name: "quota", description: "Check quota usage" },
+      { name: "usage", description: "Get usage stats" },
+    ],
+  },
+  // ═══ COGNITIVE LAYER ═══
   {
     id: "brain",
     name: "Brain",
@@ -76,6 +120,21 @@ const modules: ModuleConfig[] = [
       { name: "propose", description: "Submit proposal", params: [{ name: "idea", type: "string", required: true }] },
     ],
   },
+  {
+    id: "dream",
+    name: "Dream",
+    description: "Dream-Eater operations, mood, mutations, nocturnal processing",
+    icon: Moon,
+    color: "text-pink-500",
+    bgColor: "bg-pink-500/10",
+    actions: [
+      { name: "status", description: "Get dream-eater status" },
+      { name: "mood", description: "Get/set mood", params: [{ name: "mood", type: "string", placeholder: "curious|hungry|content" }] },
+      { name: "cycle", description: "Trigger dream cycle" },
+      { name: "interpret", description: "Interpret a dream", params: [{ name: "dream_text", type: "string", required: true }] },
+    ],
+  },
+  // ═══ OPERATIONAL LAYER ═══
   {
     id: "defense",
     name: "Defense",
@@ -120,24 +179,11 @@ const modules: ModuleConfig[] = [
       { name: "introspection", description: "Deep substrate introspection" },
     ],
   },
-  {
-    id: "dream",
-    name: "Dream",
-    description: "Dream-Eater operations, mood, mutations",
-    icon: Moon,
-    color: "text-pink-500",
-    bgColor: "bg-pink-500/10",
-    actions: [
-      { name: "status", description: "Get dream-eater status" },
-      { name: "mood", description: "Get/set mood", params: [{ name: "mood", type: "string", placeholder: "curious|hungry|content" }] },
-      { name: "cycle", description: "Trigger dream cycle" },
-      { name: "interpret", description: "Interpret a dream", params: [{ name: "dream_text", type: "string", required: true }] },
-    ],
-  },
+  // ═══ ADMINISTRATIVE LAYER ═══
   {
     id: "system",
     name: "System",
-    description: "Administration, configuration, diagnostics",
+    description: "Administration, backup, restore, configuration",
     icon: Settings,
     color: "text-red-500",
     bgColor: "bg-red-500/10",
@@ -146,6 +192,21 @@ const modules: ModuleConfig[] = [
       { name: "health", description: "Full health diagnostics" },
       { name: "diagnostics", description: "Complete diagnostics" },
       { name: "version", description: "Get substrate version" },
+      { name: "backup", description: "Create backup snapshot" },
+    ],
+  },
+  {
+    id: "modernizer",
+    name: "Modernizer",
+    description: "Self-improvement proposals, architecture scanning, upgrades",
+    icon: Zap,
+    color: "text-emerald-500",
+    bgColor: "bg-emerald-500/10",
+    actions: [
+      { name: "status", description: "Get modernizer status" },
+      { name: "scan", description: "Scan for improvements", params: [{ name: "module", type: "string", placeholder: "brain|defense|nexus" }] },
+      { name: "jobs", description: "List recent scan jobs" },
+      { name: "quota", description: "Check scan quota" },
     ],
   },
 ];
