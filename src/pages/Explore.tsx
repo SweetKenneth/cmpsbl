@@ -1,5 +1,5 @@
 /**
- * Explore — The Substrate Gateway
+ * Explore — The CMPSBL Gateway
  * Comprehensive showcase of cognitive infrastructure capabilities
  * Polished for maximum conversion across gaming, dev, and enterprise audiences
  */
@@ -285,10 +285,10 @@ export default function Explore() {
   return (
     <div ref={containerRef} className="min-h-screen bg-background overflow-hidden">
       <SEO 
-        title="promptfluid® — Cognitive Substrate for AI That Remembers"
+        title="CMPSBL (Composable) By PromptFluid — AI That Remembers"
         description="Build AI that remembers, dreams, and evolves. 11 core modules, 124+ actions, persistent memory, dream cycles, and BYOK architecture for gaming, software development, and enterprise."
         canonical="https://promptfluid.com"
-        keywords={['cognitive substrate', 'AI infrastructure', 'persistent AI memory', 'dream cycles', 'NPC AI', 'enterprise AI', 'AI routing', 'BYOK']}
+        keywords={['CMPSBL', 'composable AI', 'AI infrastructure', 'persistent AI memory', 'dream cycles', 'NPC AI', 'enterprise AI', 'AI routing', 'BYOK']}
       />
 
       <PublicNav />
@@ -380,8 +380,8 @@ export default function Explore() {
               Production-Ready Scale
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto">
-              Not a proof of concept. A fully deployed, battle-tested cognitive 
-              substrate running in production 24/7.
+              Not a proof of concept. A fully deployed, battle-tested CMPSBL 
+              running in production 24/7.
             </p>
           </motion.div>
           
@@ -418,7 +418,7 @@ export default function Explore() {
               Connect External Services
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto">
-              Bring your own keys. The substrate connects to your existing services seamlessly.
+              Bring your own keys. CMPSBL connects to your existing services seamlessly.
             </p>
           </motion.div>
           
@@ -469,7 +469,7 @@ export default function Explore() {
               </h2>
               <p className="text-white/80 text-sm sm:text-base md:text-lg max-w-xl mx-auto mb-6 sm:mb-8">
                 Start with 70+ templates, explore the full documentation, 
-                or see the substrate in action.
+                or see CMPSBL in action.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                 <Button asChild size="lg" className="px-6 sm:px-8 bg-white text-primary hover:bg-white/90 font-semibold">

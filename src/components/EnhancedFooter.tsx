@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 export function EnhancedFooter() {
   const currentYear = new Date().getFullYear();
 
-  const substrateLinks = [
-    { name: "Substrate OS", href: "/substrate" },
+  const cmpsblLinks = [
+    { name: "CMPSBL OS", href: "/substrate" },
     { name: "Decode", href: "/decode" },
     { name: "Dream Feeder", href: "/feed-dream-eater" },
     { name: "Demo", href: "/demo" },
@@ -12,7 +12,7 @@ export function EnhancedFooter() {
 
   const buildLinks = [
     { name: "Gaming AI", href: "/gaming" },
-    { name: "DevTools", href: "/devtools" },
+    { name: "Developers", href: "/developers" },
     { name: "CodeLab", href: "/codelab" },
     { name: "Documentation", href: "/documentation" },
   ];
@@ -36,11 +36,11 @@ export function EnhancedFooter() {
       {/* Main Footer */}
       <div className="container mx-auto max-w-6xl px-4 py-8 md:py-12">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
-          {/* Substrate */}
+          {/* CMPSBL */}
           <div>
-            <h3 className="font-semibold text-foreground mb-3 text-sm">Substrate</h3>
+            <h3 className="font-semibold text-foreground mb-3 text-sm">CMPSBL</h3>
             <ul className="space-y-2">
-              {substrateLinks.map((link) => (
+              {cmpsblLinks.map((link) => (
                 <li key={link.href}>
                   <Link 
                     to={link.href} 
@@ -112,7 +112,7 @@ export function EnhancedFooter() {
           <div className="flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-muted-foreground">
             <p>© 2009-{currentYear} promptfluid® — All rights reserved</p>
             <p className="text-center sm:text-right">
-              Cognitive Orchestration Substrate
+              CMPSBL (Composable) By PromptFluid
             </p>
           </div>
         </div>

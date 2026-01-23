@@ -1,5 +1,5 @@
 /**
- * Industry Showcase — Homepage section showing Substrate versatility
+ * Industry Showcase — Homepage section showing CMPSBL versatility
  * Displays use cases across Gaming, Enterprise, Healthcare, Legal, Education, Retail
  */
 
@@ -151,7 +151,7 @@ export function IndustryShowcase() {
         >
           <Badge variant="outline" className="mb-4">Universal Infrastructure</Badge>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
-            One Substrate, Every Industry
+            One CMPSBL, Every Industry
           </h2>
           <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto">
             Persistent memory and dream cycles adapt to any domain. 

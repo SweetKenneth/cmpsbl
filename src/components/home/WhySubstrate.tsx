@@ -1,5 +1,5 @@
 /**
- * Why Substrate — Value proposition section for homepage
+ * Why CMPSBL — Value proposition section for homepage
  * Clear differentiators and benefits
  */
 
@@ -69,7 +69,7 @@ export function WhySubstrate() {
           viewport={{ once: true }}
           className="text-center mb-10 sm:mb-12"
         >
-          <Badge variant="outline" className="mb-4">Why Substrate</Badge>
+          <Badge variant="outline" className="mb-4">Why CMPSBL</Badge>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
             What Makes It Different
           </h2>

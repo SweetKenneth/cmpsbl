@@ -30,10 +30,10 @@ export function PublicNav() {
   // Organized navigation sections
   const navSections: NavSection[] = [
     {
-      name: "Substrate",
+      name: "CMPSBL",
       icon: Layers,
       items: [
-        { name: "Substrate OS", href: "/substrate", description: "Cognitive Runtime", icon: Cpu },
+        { name: "CMPSBL OS", href: "/substrate", description: "Cognitive Runtime", icon: Cpu },
         { name: "Decode", href: "/decode", description: "Intent Interpreter", icon: MessageSquare },
         { name: "Dream Feeder", href: "/feed-dream-eater", description: "Dream Processing", icon: Moon },
         { name: "Demo", href: "/demo", description: "Interactive Demo", icon: Zap },
@@ -105,7 +105,8 @@ export function PublicNav() {
             to="/" 
             className="text-lg font-semibold text-foreground tracking-tight hover:text-primary transition-colors shrink-0"
           >
-            promptfluid<span className="text-primary">®</span>
+            CMPSBL<span className="text-primary">®</span>
+            <span className="hidden sm:inline text-xs text-muted-foreground ml-1.5 font-normal">by promptfluid</span>
           </Link>
 
           {/* Desktop Menu */}
@@ -339,7 +340,7 @@ export function PublicNav() {
                     className="flex items-center gap-3 p-4 rounded-xl border border-primary/30 bg-primary/5 text-primary"
                   >
                     <Cpu className="w-5 h-5" />
-                    <span className="font-medium">Substrate OS</span>
+                    <span className="font-medium">CMPSBL OS</span>
                   </Link>
                 ) : (
                   <Link

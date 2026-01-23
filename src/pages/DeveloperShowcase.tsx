@@ -1,5 +1,5 @@
 /**
- * Developer Showcase — Substrate for Software Developers
+ * Developer Showcase — CMPSBL for Software Developers
  * The cognitive backbone for intelligent applications
  */
 
@@ -246,8 +246,8 @@ export default function DeveloperShowcase() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="For Developers — Build Intelligent Apps | promptfluid®"
-        description="The cognitive substrate for software developers. Add persistent memory, dream cycles, and intelligent reasoning to any application."
+        title="For Developers — Build Intelligent Apps | CMPSBL by promptfluid®"
+        description="CMPSBL for software developers. Add persistent memory, dream cycles, and intelligent reasoning to any application."
         canonical="https://promptfluid.com/developers"
         keywords={[
           "AI development",
@@ -287,7 +287,7 @@ export default function DeveloperShowcase() {
             </h1>
 
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              The cognitive substrate gives your applications persistent memory, 
+              CMPSBL gives your applications persistent memory, 
               self-improvement through dream cycles, and intelligent multi-provider AI routing.
             </p>
 

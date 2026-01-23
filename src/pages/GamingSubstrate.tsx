@@ -1,6 +1,6 @@
 /**
- * Gaming Substrate — NPC Brains, World Engines & Persistent Memory
- * The substrate as a foundation for video game AI
+ * Gaming CMPSBL — NPC Brains, World Engines & Persistent Memory
+ * CMPSBL (Composable) as a foundation for video game AI
  */
 
 import { Link } from "react-router-dom";
@@ -248,8 +248,8 @@ export default function GamingSubstrate() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="Gaming Substrate — NPC Brains & World Engines | promptfluid®"
-        description="Give your NPCs persistent memory, dream cycles, and genuine personalities. The cognitive substrate designed for video game AI."
+        title="Gaming CMPSBL — NPC Brains & World Engines | promptfluid®"
+        description="Give your NPCs persistent memory, dream cycles, and genuine personalities. CMPSBL designed for video game AI."
         canonical="https://promptfluid.com/gaming"
         keywords={[
           "NPC AI",
@@ -261,6 +261,7 @@ export default function GamingSubstrate() {
           "AI companions",
           "world engine",
           "game development AI",
+          "CMPSBL",
         ]}
       />
 
@@ -291,7 +292,7 @@ export default function GamingSubstrate() {
             </h1>
 
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              The cognitive substrate gives your NPCs persistent memory, authentic personalities, 
+              CMPSBL gives your NPCs persistent memory, authentic personalities, 
               and the ability to grow from player interactions. They don't just respond—they remember.
             </p>
 
@@ -409,7 +410,7 @@ export default function GamingSubstrate() {
               <CardContent className="p-6">
                 <pre className="text-sm overflow-x-auto">
                   <code className="text-green-400">{`// Initialize NPC with persistent memory
-const npc = await substrate.brain.remember({
+const npc = await cmpsbl.brain.remember({
   entity_id: "npc_innkeeper_03",
   memory: {
     type: "interaction",
@@ -421,14 +422,14 @@ const npc = await substrate.brain.remember({
 });
 
 // NPC recalls relevant memories during dialogue
-const memories = await substrate.brain.recall({
+const memories = await cmpsbl.brain.recall({
   entity_id: "npc_innkeeper_03",
   query: "What does this NPC remember about the player?",
   limit: 5
 });
 
 // Trigger dream cycle for memory consolidation
-await substrate.dream.cycle({
+await cmpsbl.dream.cycle({
   entity_ids: ["npc_innkeeper_03"],
   consolidate: true,
   extract_patterns: true

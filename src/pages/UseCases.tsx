@@ -1,5 +1,5 @@
 /**
- * Use Cases — Substrate Applications Across Industries
+ * Use Cases — CMPSBL Applications Across Industries
  * Enterprise, Healthcare, Legal, Education, and more
  */
 
@@ -274,8 +274,8 @@ export default function UseCases() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="Use Cases — Substrate for Every Industry | promptfluid®"
-        description="Explore how the cognitive substrate powers intelligent applications across gaming, enterprise, healthcare, legal, education, and more."
+        title="Use Cases — CMPSBL for Every Industry | promptfluid®"
+        description="Explore how CMPSBL powers intelligent applications across gaming, enterprise, healthcare, legal, education, and more."
         canonical="https://promptfluid.com/use-cases"
         keywords={[
           "AI use cases",
@@ -310,12 +310,12 @@ export default function UseCases() {
             </Badge>
 
             <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-purple-400 to-cyan-400 bg-clip-text text-transparent">
-              One Substrate,
+              One CMPSBL,
               <br />Infinite Possibilities
             </h1>
 
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              The cognitive substrate adapts to any industry. Persistent memory, dream cycles, 
+              CMPSBL adapts to any industry. Persistent memory, dream cycles, 
               and intelligent routing power applications from gaming to healthcare.
             </p>
 

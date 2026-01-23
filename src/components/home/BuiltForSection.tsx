@@ -1,5 +1,5 @@
 /**
- * Built For Section — Shows who the Substrate is designed for
+ * Built For Section — Shows who CMPSBL is designed for
  * Gaming, Developers, Enterprise with clear CTAs
  */
 
