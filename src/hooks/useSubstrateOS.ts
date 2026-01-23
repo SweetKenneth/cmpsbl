@@ -4,7 +4,7 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { substrate, vision, brain, defense, nexus, dream, system, modernizer, decode } from '@/lib/substrate';
+import { substrate, vision, brain, defense, nexus, dream, system, modernizer, decode, core, ripple, access } from '@/lib/substrate';
 
 // ═══════════════════════════════════════════════════════════════
 // OBSERVER HOOKS — Read-only telemetry
@@ -209,7 +209,7 @@ export function useSystemConfig(key?: string) {
   });
 }
 
-// Combined health score for dashboard - all 8 modules
+// Combined health score for dashboard - all 11 modules
 export function useSubstrateHealthScore() {
   const visionHealth = useVisionHealthOS();
   const brainStatus = useBrainStatusOS();
@@ -219,6 +219,9 @@ export function useSubstrateHealthScore() {
   const modernizerStatus = useModernizerStatusOS();
   const decodeStatus = useDecodeStatusOS();
   const systemStatus = useSystemStatus();
+  const coreStatus = useCoreStatusOS();
+  const rippleStatus = useRippleStatusOS();
+  const accessStatus = useAccessStatusOS();
 
   const isLoading = 
     visionHealth.isLoading || 
@@ -228,21 +231,31 @@ export function useSubstrateHealthScore() {
     dreamStatus.isLoading ||
     modernizerStatus.isLoading ||
     decodeStatus.isLoading ||
-    systemStatus.isLoading;
+    systemStatus.isLoading ||
+    coreStatus.isLoading ||
+    rippleStatus.isLoading ||
+    accessStatus.isLoading;
 
   const modules = {
+    // Kernel Layer
+    core: coreStatus.data?.success ?? false,
+    ripple: rippleStatus.data?.success ?? false,
+    access: accessStatus.data?.success ?? false,
+    // Cognitive Layer
     brain: brainStatus.data?.success ?? false,
     decode: decodeStatus.data?.success ?? false,
-    defense: defenseStatus.data?.success ?? false,
     nexus: nexusStatus.data?.success ?? false,
+    // Operational Layer
+    defense: defenseStatus.data?.success ?? false,
     vision: visionHealth.data?.success ?? false,
     dream: dreamStatus.data?.success ?? false,
+    // Admin Layer
     system: systemStatus.data?.success ?? false,
     modernizer: modernizerStatus.data?.success ?? false,
   };
 
   const healthyCount = Object.values(modules).filter(Boolean).length;
-  const totalModules = 8;
+  const totalModules = 11;
   const healthScore = Math.round((healthyCount / totalModules) * 100);
 
   const refetchAll = () => {
@@ -254,6 +267,9 @@ export function useSubstrateHealthScore() {
     modernizerStatus.refetch();
     decodeStatus.refetch();
     systemStatus.refetch();
+    coreStatus.refetch();
+    rippleStatus.refetch();
+    accessStatus.refetch();
   };
 
   return {
@@ -267,4 +283,32 @@ export function useSubstrateHealthScore() {
     isDown: healthScore < 40,
     refetch: refetchAll,
   };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// KERNEL MODULE HOOKS — Core, Ripple, Access (v4.0.0)
+// ═══════════════════════════════════════════════════════════════
+
+export function useCoreStatusOS() {
+  return useQuery({
+    queryKey: ['substrate', 'core', 'status'],
+    queryFn: () => core.status(),
+    refetchInterval: 30000,
+  });
+}
+
+export function useRippleStatusOS() {
+  return useQuery({
+    queryKey: ['substrate', 'ripple', 'status'],
+    queryFn: () => ripple.status(),
+    refetchInterval: 30000,
+  });
+}
+
+export function useAccessStatusOS() {
+  return useQuery({
+    queryKey: ['substrate', 'access', 'status'],
+    queryFn: () => access.status(),
+    refetchInterval: 30000,
+  });
 }
