@@ -1,6 +1,7 @@
 /**
- * Backup & Restore Panel for Substrate OS — v2.0
- * Enhanced with exportable backups, retention management, and permanent failsafe
+ * Backup & Restore Panel for Substrate OS — v3.0
+ * Enhanced with exportable backups, retention management, permanent failsafe,
+ * and sellable package exports with install wizard
  */
 
 import { useState, useRef } from 'react';
@@ -11,7 +12,7 @@ import { toast } from 'sonner';
 import { 
   Database, RefreshCw, Download, RotateCcw, CheckCircle2, 
   AlertTriangle, Clock, Shield, Loader2, HardDrive, Upload,
-  Lock, Trash2, FileDown, Package, Key, ExternalLink
+  Lock, Trash2, FileDown, Package, Key, ExternalLink, ShoppingBag
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -32,6 +33,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
+import { SubstratePackageManager } from './SubstratePackageManager';
 
 interface Backup {
   id: string;
@@ -416,8 +418,12 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
 
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-3 bg-white/5">
+        <TabsList className="grid w-full grid-cols-4 bg-white/5">
           <TabsTrigger value="backups">Backups</TabsTrigger>
+          <TabsTrigger value="packages" className="gap-1">
+            <ShoppingBag className="w-3 h-3" />
+            Packages
+          </TabsTrigger>
           <TabsTrigger value="export">Export/Import</TabsTrigger>
           <TabsTrigger value="retention">Retention</TabsTrigger>
         </TabsList>
@@ -596,6 +602,11 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
               )}
             </CardContent>
           </Card>
+        </TabsContent>
+
+        {/* Packages Tab - Sellable Package Export */}
+        <TabsContent value="packages" className="space-y-4">
+          <SubstratePackageManager />
         </TabsContent>
 
         {/* Export/Import Tab */}
