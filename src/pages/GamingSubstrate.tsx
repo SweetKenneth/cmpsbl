@@ -1,6 +1,6 @@
 /**
  * Gaming CMPSBL — NPC Brains, World Engines & Persistent Memory
- * CMPSBL (Composable) as a foundation for video game AI
+ * Polished showcase for game developers
  */
 
 import { Link } from "react-router-dom";
@@ -45,6 +45,7 @@ function FeatureCard({
   description,
   features,
   color,
+  gradient,
   delay = 0,
 }: {
   icon: React.ElementType;
@@ -52,6 +53,7 @@ function FeatureCard({
   description: string;
   features: string[];
   color: string;
+  gradient: string;
   delay?: number;
 }) {
   return (
@@ -60,24 +62,39 @@ function FeatureCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay }}
+      className="group"
     >
       <Card className={cn(
-        "h-full border-border/50 bg-card/50 backdrop-blur-sm",
-        "hover:border-current/30 transition-all duration-300",
+        "h-full border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden",
+        "hover:border-current/30 hover:shadow-xl transition-all duration-500",
         color
       )}>
-        <CardHeader className="pb-2">
-          <div className="w-12 h-12 rounded-xl bg-current/10 flex items-center justify-center mb-3">
-            <Icon className="w-6 h-6" />
+        {/* Gradient top bar */}
+        <div className={cn("h-1 w-full bg-gradient-to-r", gradient)} />
+        
+        <CardHeader className="pb-3">
+          <div className={cn(
+            "w-14 h-14 rounded-2xl flex items-center justify-center mb-4",
+            "bg-gradient-to-br shadow-lg",
+            gradient
+          )}>
+            <Icon className="w-7 h-7 text-white" />
           </div>
-          <CardTitle className="text-lg">{title}</CardTitle>
+          <CardTitle className="text-xl group-hover:text-current transition-colors">
+            {title}
+          </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground mb-4">{description}</p>
-          <ul className="space-y-2">
+          <p className="text-sm text-muted-foreground mb-5 leading-relaxed">{description}</p>
+          <ul className="space-y-2.5">
             {features.map((feature, idx) => (
-              <li key={idx} className="flex items-center gap-2 text-xs text-muted-foreground">
-                <CheckCircle2 className="w-3 h-3 text-current opacity-60" />
+              <li key={idx} className="flex items-center gap-2.5 text-sm text-muted-foreground">
+                <div className={cn(
+                  "w-5 h-5 rounded-full flex items-center justify-center",
+                  "bg-current/10"
+                )}>
+                  <CheckCircle2 className="w-3 h-3 text-current" />
+                </div>
                 {feature}
               </li>
             ))}
@@ -95,30 +112,45 @@ function UseCaseCard({
   description,
   example,
   color,
+  gradient,
 }: {
   icon: React.ElementType;
   title: string;
   description: string;
   example: string;
   color: string;
+  gradient: string;
 }) {
   return (
-    <div className={cn(
-      "p-6 rounded-xl border border-border/50 bg-card/30 backdrop-blur-sm",
-      "hover:bg-card/50 transition-all duration-300",
-      color
-    )}>
-      <div className="flex items-start gap-4">
-        <div className="w-10 h-10 rounded-lg bg-current/10 flex items-center justify-center shrink-0">
-          <Icon className="w-5 h-5" />
-        </div>
-        <div>
-          <h3 className="font-semibold mb-1">{title}</h3>
-          <p className="text-sm text-muted-foreground mb-2">{description}</p>
-          <p className="text-xs text-current/80 italic">"{example}"</p>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="group"
+    >
+      <div className={cn(
+        "p-6 rounded-2xl border border-border/50 bg-card/30 backdrop-blur-sm",
+        "hover:bg-card/60 hover:border-current/30 hover:shadow-lg transition-all duration-300",
+        color
+      )}>
+        <div className="flex items-start gap-4">
+          <div className={cn(
+            "w-12 h-12 rounded-xl flex items-center justify-center shrink-0",
+            "bg-gradient-to-br shadow-md",
+            gradient
+          )}>
+            <Icon className="w-6 h-6 text-white" />
+          </div>
+          <div className="flex-1">
+            <h3 className="font-bold text-lg mb-1 group-hover:text-current transition-colors">{title}</h3>
+            <p className="text-sm text-muted-foreground mb-3">{description}</p>
+            <div className="p-3 rounded-lg bg-background/50 border border-border/30">
+              <p className="text-sm text-current/80 italic">"{example}"</p>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -134,9 +166,9 @@ export default function GamingSubstrate() {
         "Relationship tracking",
         "Emotional state persistence",
         "Cross-session recall",
-        "Memory decay & reinforcement",
       ],
       color: "text-purple-500",
+      gradient: "from-purple-500 to-violet-600",
     },
     {
       icon: Moon,
@@ -146,10 +178,10 @@ export default function GamingSubstrate() {
         "Offline memory consolidation",
         "Pattern extraction",
         "Personality evolution",
-        "Dream-influenced behaviors",
         "Emergent storytelling",
       ],
       color: "text-violet-500",
+      gradient: "from-violet-500 to-purple-600",
     },
     {
       icon: MessageSquare,
@@ -160,9 +192,9 @@ export default function GamingSubstrate() {
         "Contextual responses",
         "Personality-driven speech",
         "Memory-informed dialogue",
-        "Multi-turn conversations",
       ],
       color: "text-cyan-500",
+      gradient: "from-cyan-500 to-blue-600",
     },
     {
       icon: Zap,
@@ -172,10 +204,10 @@ export default function GamingSubstrate() {
         "Multi-provider support",
         "Cost optimization",
         "Latency-based routing",
-        "Fallback chains",
         "BYOK architecture",
       ],
       color: "text-green-500",
+      gradient: "from-green-500 to-emerald-600",
     },
     {
       icon: Globe,
@@ -184,11 +216,11 @@ export default function GamingSubstrate() {
       features: [
         "Global event system",
         "Faction relationships",
-        "Economic simulation",
         "News/rumor propagation",
         "Environmental memory",
       ],
       color: "text-amber-500",
+      gradient: "from-amber-500 to-orange-600",
     },
     {
       icon: Users,
@@ -198,10 +230,10 @@ export default function GamingSubstrate() {
         "Multi-agent coordination",
         "Role specialization",
         "Shared knowledge bases",
-        "Group decision making",
         "Leader/follower dynamics",
       ],
       color: "text-rose-500",
+      gradient: "from-rose-500 to-pink-600",
     },
   ];
 
@@ -213,6 +245,7 @@ export default function GamingSubstrate() {
       description: "Party members who remember your adventures together and grow based on shared experiences.",
       example: "Remember when we defeated that dragon together? I've been practicing fire resistance since then.",
       color: "text-amber-500",
+      gradient: "from-amber-500 to-orange-600",
     },
     {
       icon: Map,
@@ -220,6 +253,7 @@ export default function GamingSubstrate() {
       description: "Shopkeepers, guards, and villagers who remember you and react to your reputation.",
       example: "You're the one who saved my daughter! Take this discount, hero.",
       color: "text-emerald-500",
+      gradient: "from-emerald-500 to-green-600",
     },
     {
       icon: Heart,
@@ -227,6 +261,7 @@ export default function GamingSubstrate() {
       description: "Characters with genuine emotional memory who build authentic relationships over time.",
       example: "You remembered my favorite flower from our first conversation...",
       color: "text-rose-500",
+      gradient: "from-rose-500 to-pink-600",
     },
     {
       icon: Bot,
@@ -234,22 +269,23 @@ export default function GamingSubstrate() {
       description: "Opponents that learn your tactics and adapt their strategies across matches.",
       example: "You always attack from the east. Not this time.",
       color: "text-blue-500",
+      gradient: "from-blue-500 to-indigo-600",
     },
   ];
 
   // Technical capabilities
   const techCapabilities = [
-    { icon: Database, label: "60+ Tables", description: "Full persistence layer" },
-    { icon: Clock, label: "<100ms", description: "Response latency" },
-    { icon: Network, label: "11 Modules", description: "Complete cognitive OS" },
-    { icon: Shield, label: "Enterprise", description: "Production-ready security" },
+    { icon: Database, label: "60+", sublabel: "Tables", description: "Full persistence layer" },
+    { icon: Clock, label: "<100ms", sublabel: "Latency", description: "Response time" },
+    { icon: Network, label: "11", sublabel: "Modules", description: "Complete cognitive OS" },
+    { icon: Shield, label: "Enterprise", sublabel: "Security", description: "Production-ready" },
   ];
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="Gaming CMPSBL — NPC Brains & World Engines | promptfluid®"
-        description="Give your NPCs persistent memory, dream cycles, and genuine personalities. CMPSBL designed for video game AI."
+        title="Gaming AI — NPCs That Dream & Remember | CMPSBL"
+        description="Give your NPCs persistent memory, dream cycles, and genuine personalities. CMPSBL cognitive infrastructure for video game AI."
         canonical="https://promptfluid.com/gaming"
         keywords={[
           "NPC AI",
@@ -268,11 +304,12 @@ export default function GamingSubstrate() {
       <PublicNav />
 
       {/* Hero Section */}
-      <section className="relative py-20 md:py-32 overflow-hidden">
+      <section className="relative py-24 md:py-36 overflow-hidden">
         {/* Background effects */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/4 -left-32 w-96 h-96 bg-purple-500/10 rounded-full blur-[100px]" />
-          <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-cyan-500/10 rounded-full blur-[100px]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-purple-500/5 via-transparent to-transparent" />
+          <div className="absolute top-1/4 -left-48 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[120px]" />
+          <div className="absolute bottom-1/4 -right-48 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[120px]" />
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
@@ -281,31 +318,41 @@ export default function GamingSubstrate() {
             animate={{ opacity: 1, y: 0 }}
             className="max-w-4xl mx-auto text-center"
           >
-            <Badge className="mb-6 bg-purple-500/10 text-purple-400 border-purple-500/30">
-              <Gamepad2 className="w-3 h-3 mr-1" />
+            <Badge className="mb-6 px-4 py-1.5 bg-purple-500/10 text-purple-400 border-purple-500/30">
+              <Gamepad2 className="w-4 h-4 mr-2" />
               For Video Game Developers
             </Badge>
 
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-purple-400 via-cyan-400 to-green-400 bg-clip-text text-transparent">
-              NPCs That Remember,
-              <br />Dream, and Evolve
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 tracking-tight">
+              <span className="text-foreground">NPCs That </span>
+              <span 
+                className="block sm:inline"
+                style={{
+                  background: "linear-gradient(135deg, hsl(280 80% 60%), hsl(320 80% 60%), hsl(var(--neon-cyan)))",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                Remember, Dream, Evolve
+              </span>
             </h1>
 
-            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+            <p className="text-lg sm:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
               CMPSBL gives your NPCs persistent memory, authentic personalities, 
-              and the ability to grow from player interactions. They don't just respond—they remember.
+              and the ability to grow from every player interaction. They don't just respond—they <em>remember</em>.
             </p>
 
             <div className="flex flex-wrap justify-center gap-4">
-              <Button asChild size="lg" className="gap-2">
+              <Button asChild size="lg" className="gap-2 h-12 px-8 text-base bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700">
                 <Link to="/devtools">
-                  <Terminal className="w-4 h-4" />
+                  <Terminal className="w-5 h-5" />
                   Start Building
+                  <ArrowRight className="w-4 h-4" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="gap-2">
+              <Button asChild variant="outline" size="lg" className="gap-2 h-12 px-8 text-base">
                 <Link to="/demo">
-                  <Play className="w-4 h-4" />
+                  <Play className="w-5 h-5" />
                   See Demo
                 </Link>
               </Button>
@@ -315,9 +362,9 @@ export default function GamingSubstrate() {
       </section>
 
       {/* Stats Bar */}
-      <section className="border-y border-border/50 bg-card/30 py-8">
+      <section className="border-y border-border/50 bg-card/30 py-10">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {techCapabilities.map((cap, idx) => (
               <motion.div
                 key={cap.label}
@@ -327,11 +374,11 @@ export default function GamingSubstrate() {
                 transition={{ delay: idx * 0.1 }}
                 className="text-center"
               >
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mx-auto mb-2">
-                  <cap.icon className="w-5 h-5 text-primary" />
+                <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center mx-auto mb-3">
+                  <cap.icon className="w-6 h-6 text-purple-500" />
                 </div>
-                <div className="text-2xl font-bold text-foreground">{cap.label}</div>
-                <div className="text-xs text-muted-foreground">{cap.description}</div>
+                <div className="text-2xl sm:text-3xl font-black text-foreground">{cap.label}</div>
+                <div className="text-xs text-muted-foreground">{cap.sublabel}</div>
               </motion.div>
             ))}
           </div>
@@ -339,18 +386,22 @@ export default function GamingSubstrate() {
       </section>
 
       {/* Core Features */}
-      <section className="py-20">
+      <section className="py-24">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="text-center mb-14"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <Badge variant="outline" className="mb-4">
+              <Sparkles className="w-3 h-3 mr-1" />
+              Core Capabilities
+            </Badge>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4">
               Everything Your NPCs Need
             </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
               A complete cognitive infrastructure for building intelligent, memorable game characters.
             </p>
           </motion.div>
@@ -364,23 +415,27 @@ export default function GamingSubstrate() {
       </section>
 
       {/* Use Cases */}
-      <section className="py-20 bg-card/30">
+      <section className="py-24 bg-muted/30">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="text-center mb-14"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <Badge variant="outline" className="mb-4">
+              <Gamepad2 className="w-3 h-3 mr-1" />
+              Game Genres
+            </Badge>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4">
               Built for Every Genre
             </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              From epic RPGs to intimate dating sims, the substrate powers authentic character AI.
+            <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+              From epic RPGs to intimate dating sims, CMPSBL powers authentic character AI.
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
             {useCases.map((useCase) => (
               <UseCaseCard key={useCase.title} {...useCase} />
             ))}
@@ -388,28 +443,40 @@ export default function GamingSubstrate() {
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="py-20">
+      {/* Code Example */}
+      <section className="py-24">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="text-center mb-14"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Simple Integration
+            <Badge variant="outline" className="mb-4">
+              <Code className="w-3 h-3 mr-1" />
+              Integration
+            </Badge>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4">
+              Simple to Integrate
             </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Connect your game to the substrate in minutes. We handle the cognitive complexity.
+            <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+              Connect your game to CMPSBL in minutes. We handle the cognitive complexity.
             </p>
           </motion.div>
 
           <div className="max-w-4xl mx-auto">
-            <Card className="bg-black/60 border-border/50">
+            <Card className="bg-black/80 border-purple-500/30 overflow-hidden shadow-2xl shadow-purple-500/10">
+              <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10">
+                <div className="flex gap-1.5">
+                  <div className="w-3 h-3 rounded-full bg-red-500/80" />
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
+                  <div className="w-3 h-3 rounded-full bg-green-500/80" />
+                </div>
+                <span className="text-xs text-white/40 ml-2">npc-memory.ts</span>
+              </div>
               <CardContent className="p-6">
                 <pre className="text-sm overflow-x-auto">
-                  <code className="text-green-400">{`// Initialize NPC with persistent memory
+                  <code className="text-green-400 font-mono">{`// Initialize NPC with persistent memory
 const npc = await cmpsbl.brain.remember({
   entity_id: "npc_innkeeper_03",
   memory: {
@@ -442,41 +509,44 @@ await cmpsbl.dream.cycle({
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-b from-transparent to-card/50">
-        <div className="container mx-auto px-4">
+      <section className="py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-500/5 to-transparent" />
+        <div className="container mx-auto px-4 relative">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="max-w-3xl mx-auto text-center"
+            className="max-w-4xl mx-auto"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Ready to Build Smarter NPCs?
-            </h2>
-            <p className="text-muted-foreground mb-8">
-              Access the full substrate SDK, templates, and documentation. 
-              Start building NPCs that players will actually remember.
-            </p>
+            <div className="relative p-10 sm:p-14 rounded-3xl overflow-hidden text-center">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-violet-600 to-fuchsia-600" />
+              <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] opacity-50" />
+              
+              <div className="relative">
+                <Gamepad2 className="w-16 h-16 mx-auto mb-6 text-white/80" />
+                <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
+                  Ready to Build Smarter NPCs?
+                </h2>
+                <p className="text-white/80 text-lg max-w-xl mx-auto mb-8">
+                  Access the full SDK, templates, and documentation. 
+                  Start building NPCs that players will actually remember.
+                </p>
 
-            <div className="flex flex-wrap justify-center gap-4">
-              <Button asChild size="lg" className="gap-2">
-                <Link to="/devtools">
-                  <Code className="w-4 h-4" />
-                  Developer Portal
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="gap-2">
-                <Link to="/documentation">
-                  <BookOpen className="w-4 h-4" />
-                  Read the Docs
-                </Link>
-              </Button>
-              <Button asChild variant="ghost" size="lg" className="gap-2">
-                <Link to="/contact">
-                  <MessageSquare className="w-4 h-4" />
-                  Talk to Us
-                </Link>
-              </Button>
+                <div className="flex flex-wrap justify-center gap-4">
+                  <Button asChild size="lg" className="h-12 px-8 bg-white text-purple-600 hover:bg-white/90 font-bold">
+                    <Link to="/devtools">
+                      <Code className="w-5 h-5 mr-2" />
+                      Developer Portal
+                    </Link>
+                  </Button>
+                  <Button asChild variant="outline" size="lg" className="h-12 px-8 border-white/30 text-white hover:bg-white/10">
+                    <Link to="/documentation">
+                      <BookOpen className="w-5 h-5 mr-2" />
+                      Read the Docs
+                    </Link>
+                  </Button>
+                </div>
+              </div>
             </div>
           </motion.div>
         </div>

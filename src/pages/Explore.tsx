@@ -47,6 +47,7 @@ import { HeroMetaSubstrate } from "@/components/hero/HeroMetaSubstrate";
 import { IndustryShowcase } from "@/components/home/IndustryShowcase";
 import { WhySubstrate } from "@/components/home/WhySubstrate";
 import { BuiltForSection } from "@/components/home/BuiltForSection";
+import { TechShowcase } from "@/components/home/TechShowcase";
 import { CodeLabCTA } from "@/components/codelab/CodeLabCTA";
 
 // Animated gradient orb
@@ -325,6 +326,11 @@ export default function Explore() {
 
       {/* Why Substrate - Differentiators */}
       <WhySubstrate />
+
+      <SectionDivider />
+
+      {/* Tech Showcase - Code Examples */}
+      <TechShowcase />
 
       <SectionDivider />
 
