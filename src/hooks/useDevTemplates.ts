@@ -1,6 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
+// Type assertions needed until Supabase types sync
+const db = supabase as any;
+
 export interface DevTemplate {
   id: string;
   name: string;
@@ -28,8 +31,7 @@ export function useDevTemplates(category?: string) {
   return useQuery({
     queryKey: ["dev-templates", category],
     queryFn: async () => {
-      let query = supabase
-        .from("developer_templates")
+      let query = db.from("developer_templates")
         .select("*")
         .eq("is_active", true)
         .order("is_featured", { ascending: false })
@@ -41,7 +43,7 @@ export function useDevTemplates(category?: string) {
 
       const { data, error } = await query;
       if (error) throw error;
-      return (data || []) as unknown as DevTemplate[];
+      return (data || []) as DevTemplate[];
     },
   });
 }
@@ -50,8 +52,7 @@ export function useTemplateCategories() {
   return useQuery({
     queryKey: ["template-categories"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("developer_templates")
+      const { data, error } = await db.from("developer_templates")
         .select("category")
         .eq("is_active", true);
 
@@ -80,20 +81,18 @@ export function useInstallTemplate() {
 
   return useMutation({
     mutationFn: async ({ slug }: { slug: string; developerId: string }) => {
-      const { data: template } = await supabase
-        .from("developer_templates")
+      const { data: template } = await db.from("developer_templates")
         .select("*")
         .eq("slug", slug)
         .single();
 
       if (template) {
-        await supabase
-          .from("developer_templates")
+        await db.from("developer_templates")
           .update({ install_count: ((template as any).install_count || 0) + 1 })
           .eq("id", (template as any).id);
       }
 
-      return template as unknown as DevTemplate;
+      return template as DevTemplate;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["dev-templates"] });

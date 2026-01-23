@@ -1,6 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
+// Type assertions needed until Supabase types sync
+const db = supabase as any;
+
 export interface Plugin {
   id: string;
   name: string;
@@ -25,8 +28,7 @@ export function usePlugins(category?: string) {
   return useQuery({
     queryKey: ["plugins", category],
     queryFn: async () => {
-      let query = supabase
-        .from("substrate_plugins")
+      let query = db.from("substrate_plugins")
         .select("*")
         .eq("is_active", true)
         .order("is_official", { ascending: false })
@@ -38,7 +40,7 @@ export function usePlugins(category?: string) {
 
       const { data, error } = await query;
       if (error) throw error;
-      return (data || []) as unknown as Plugin[];
+      return (data || []) as Plugin[];
     },
   });
 }
@@ -48,8 +50,7 @@ export function useMyPlugins(developerId?: string) {
     queryKey: ["my-plugins", developerId],
     enabled: !!developerId,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("plugin_installations")
+      const { data, error } = await db.from("plugin_installations")
         .select(`*, plugin:substrate_plugins(*)`)
         .eq("developer_id", developerId!);
 
@@ -64,8 +65,7 @@ export function useInstallPlugin() {
 
   return useMutation({
     mutationFn: async ({ pluginId, developerId }: { pluginId: string; developerId: string }) => {
-      const { data, error } = await supabase
-        .from("plugin_installations")
+      const { data, error } = await db.from("plugin_installations")
         .insert({ plugin_id: pluginId, developer_id: developerId, is_enabled: true })
         .select()
         .single();
@@ -85,8 +85,7 @@ export function useUninstallPlugin() {
 
   return useMutation({
     mutationFn: async (installationId: string) => {
-      const { error } = await supabase
-        .from("plugin_installations")
+      const { error } = await db.from("plugin_installations")
         .delete()
         .eq("id", installationId);
 
@@ -103,8 +102,7 @@ export function useTogglePlugin() {
 
   return useMutation({
     mutationFn: async ({ installationId, enabled }: { installationId: string; enabled: boolean }) => {
-      const { error } = await supabase
-        .from("plugin_installations")
+      const { error } = await db.from("plugin_installations")
         .update({ is_enabled: enabled })
         .eq("id", installationId);
 

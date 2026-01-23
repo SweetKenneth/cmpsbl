@@ -1,6 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
+// Type assertions needed until Supabase types sync
+const db = supabase as any;
+
 export interface ReplaySession {
   id: string;
   name: string;
@@ -33,14 +36,13 @@ export function useReplaySessions(limit = 20) {
   return useQuery({
     queryKey: ["replay-sessions", limit],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("event_replay_sessions")
+      const { data, error } = await db.from("event_replay_sessions")
         .select("*")
         .order("created_at", { ascending: false })
         .limit(limit);
 
       if (error) throw error;
-      return (data || []) as unknown as ReplaySession[];
+      return (data || []) as ReplaySession[];
     },
   });
 }
@@ -50,14 +52,13 @@ export function useReplayEvents(sessionId?: string) {
     queryKey: ["replay-events", sessionId],
     enabled: !!sessionId,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("event_replay_events")
+      const { data, error } = await db.from("event_replay_events")
         .select("*")
         .eq("session_id", sessionId!)
         .order("sequence_number", { ascending: true });
 
       if (error) throw error;
-      return (data || []) as unknown as ReplayEvent[];
+      return (data || []) as ReplayEvent[];
     },
   });
 }
@@ -67,8 +68,7 @@ export function useStartRecording() {
 
   return useMutation({
     mutationFn: async ({ name, entityId, appId }: { name: string; entityId?: string; appId?: string }) => {
-      const { data, error } = await supabase
-        .from("event_replay_sessions")
+      const { data, error } = await db.from("event_replay_sessions")
         .insert({
           name,
           entity_id: entityId,
@@ -82,7 +82,7 @@ export function useStartRecording() {
         .single();
 
       if (error) throw error;
-      return data as unknown as ReplaySession;
+      return data as ReplaySession;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["replay-sessions"] });
@@ -95,8 +95,7 @@ export function useStopRecording() {
 
   return useMutation({
     mutationFn: async (sessionId: string) => {
-      const { error } = await supabase
-        .from("event_replay_sessions")
+      const { error } = await db.from("event_replay_sessions")
         .update({ status: "completed", end_time: new Date().toISOString() })
         .eq("id", sessionId);
 
@@ -113,8 +112,8 @@ export function useDeleteSession() {
 
   return useMutation({
     mutationFn: async (sessionId: string) => {
-      await supabase.from("event_replay_events").delete().eq("session_id", sessionId);
-      const { error } = await supabase.from("event_replay_sessions").delete().eq("id", sessionId);
+      await db.from("event_replay_events").delete().eq("session_id", sessionId);
+      const { error } = await db.from("event_replay_sessions").delete().eq("id", sessionId);
       if (error) throw error;
     },
     onSuccess: () => {
