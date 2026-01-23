@@ -85,6 +85,7 @@ interface TestResult {
   status: 'pass' | 'fail' | 'skip';
   latency_ms?: number;
   error?: string;
+  details?: string;
 }
 
 interface DiffData {
@@ -540,21 +541,24 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <Card className="border border-fuchsia-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
+          <Card className="border border-fuchsia-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl hover:border-fuchsia-500/40 transition-colors">
             <CardContent className="p-4 text-center">
               <TrendingUp className="w-5 h-5 mx-auto mb-2 text-fuchsia-400" />
-              <p className="text-2xl font-bold text-foreground">{healthScore}%</p>
+              <p className={cn(
+                "text-2xl font-bold",
+                healthScore >= 90 ? "text-emerald-400" : healthScore >= 70 ? "text-amber-400" : "text-red-400"
+              )}>{healthScore}%</p>
               <p className="text-[10px] text-muted-foreground">System Health</p>
             </CardContent>
           </Card>
-          <Card className="border border-cyan-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
+          <Card className="border border-cyan-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl hover:border-cyan-500/40 transition-colors">
             <CardContent className="p-4 text-center">
               <Database className="w-5 h-5 mx-auto mb-2 text-cyan-400" />
-              <p className="text-2xl font-bold text-foreground">{plans?.length ?? 0}</p>
-              <p className="text-[10px] text-muted-foreground">Proposals</p>
+              <p className="text-2xl font-bold text-foreground">{plans?.filter(p => p.status === 'proposed').length ?? 0}</p>
+              <p className="text-[10px] text-muted-foreground">Pending</p>
             </CardContent>
           </Card>
-          <Card className="border border-emerald-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
+          <Card className="border border-emerald-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl hover:border-emerald-500/40 transition-colors">
             <CardContent className="p-4 text-center">
               <CheckCircle className="w-5 h-5 mx-auto mb-2 text-emerald-400" />
               <p className="text-2xl font-bold text-foreground">
@@ -563,11 +567,13 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
               <p className="text-[10px] text-muted-foreground">Applied</p>
             </CardContent>
           </Card>
-          <Card className="border border-amber-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
+          <Card className="border border-amber-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl hover:border-amber-500/40 transition-colors">
             <CardContent className="p-4 text-center">
-              <AlertTriangle className="w-5 h-5 mx-auto mb-2 text-amber-400" />
-              <p className="text-2xl font-bold text-foreground">{proposalCount}</p>
-              <p className="text-[10px] text-muted-foreground">Issues Found</p>
+              <RotateCcw className="w-5 h-5 mx-auto mb-2 text-amber-400" />
+              <p className="text-2xl font-bold text-foreground">
+                {plans?.filter(p => p.status === 'rolled_back').length ?? 0}
+              </p>
+              <p className="text-[10px] text-muted-foreground">Rolled Back</p>
             </CardContent>
           </Card>
         </div>
@@ -1037,6 +1043,47 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
                   </Collapsible>
                 </div>
               )}
+              
+              {/* All History Summary */}
+              {plans && plans.length > 0 && (
+                <div className="pt-4 border-t border-white/10">
+                  <Collapsible>
+                    <CollapsibleTrigger className="flex items-center gap-2 text-xs font-medium text-muted-foreground hover:text-foreground w-full">
+                      <ChevronRight className="w-4 h-4" />
+                      All Activity ({plans.length} total)
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <div className="mt-3 space-y-2 max-h-[200px] overflow-y-auto">
+                        {plans.map(plan => (
+                          <div 
+                            key={plan.id} 
+                            className={cn(
+                              "p-3 rounded-lg border text-xs flex items-center justify-between",
+                              plan.status === 'applied' && "bg-emerald-500/10 border-emerald-500/20",
+                              plan.status === 'proposed' && "bg-amber-500/10 border-amber-500/20",
+                              plan.status === 'rolled_back' && "bg-red-500/10 border-red-500/20",
+                              plan.status === 'rejected' && "bg-gray-500/10 border-gray-500/20",
+                              plan.status === 'deleted' && "bg-gray-500/10 border-gray-500/20",
+                            )}
+                          >
+                            <div className="flex items-center gap-2">
+                              {plan.status === 'applied' && <CheckCircle className="w-3 h-3 text-emerald-400" />}
+                              {plan.status === 'proposed' && <Clock className="w-3 h-3 text-amber-400" />}
+                              {plan.status === 'rolled_back' && <RotateCcw className="w-3 h-3 text-red-400" />}
+                              {plan.status === 'rejected' && <XCircle className="w-3 h-3 text-gray-400" />}
+                              <span className="font-mono">{plan.id.slice(0, 8)}</span>
+                              <Badge variant="outline" className="text-[8px] h-4">{plan.scope}</Badge>
+                            </div>
+                            <span className="text-muted-foreground">
+                              {new Date(plan.created_at).toLocaleDateString()}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </CollapsibleContent>
+                  </Collapsible>
+                </div>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
@@ -1141,6 +1188,55 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
                     </>
                   )}
                 </Button>
+                {proposeMutation.isSuccess && proposeMutation.data?.plan && (
+                  <div className="mt-3 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+                    <div className="flex items-center gap-2 mb-1">
+                      <CheckCircle className="w-4 h-4 text-emerald-400" />
+                      <span className="text-xs font-medium text-emerald-400">Proposal Created</span>
+                    </div>
+                    <p className="text-[10px] text-muted-foreground">
+                      {proposeMutation.data.plan.diff_summaries?.length || 0} changes suggested
+                    </p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Safety Info Card */}
+            <Card className="lg:col-span-2 border border-emerald-500/20 bg-gradient-to-br from-emerald-500/5 to-transparent backdrop-blur-xl">
+              <CardContent className="p-4">
+                <div className="flex items-start gap-3">
+                  <Shield className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium text-foreground">Safety Features Active</p>
+                    <div className="grid sm:grid-cols-2 gap-2 text-[10px] text-muted-foreground">
+                      <div className="flex items-center gap-1.5">
+                        <CheckCircle className="w-3 h-3 text-emerald-400" />
+                        <span>Pre-upgrade backup required</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <CheckCircle className="w-3 h-3 text-emerald-400" />
+                        <span>95% health threshold gate</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <CheckCircle className="w-3 h-3 text-emerald-400" />
+                        <span>Auto-rollback on degradation</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <CheckCircle className="w-3 h-3 text-emerald-400" />
+                        <span>Human approval required</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <CheckCircle className="w-3 h-3 text-emerald-400" />
+                        <span>3 upgrades/day rate limit</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <CheckCircle className="w-3 h-3 text-emerald-400" />
+                        <span>Shadow mode by default</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </CardContent>
             </Card>
 
@@ -1328,18 +1424,26 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
                 <div className="space-y-2">
                   {testShadowMutation.data.results.map((result, idx) => (
                     <div key={idx} className="flex items-center justify-between p-2 rounded-lg bg-white/5">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-1 min-w-0">
                         {result.status === 'pass' ? (
-                          <CheckCircle className="w-3 h-3 text-emerald-400" />
+                          <CheckCircle className="w-3 h-3 text-emerald-400 shrink-0" />
                         ) : (
-                          <XCircle className="w-3 h-3 text-red-400" />
+                          <XCircle className="w-3 h-3 text-red-400 shrink-0" />
                         )}
                         <span className="text-xs font-mono">{result.module}</span>
                         <span className="text-[10px] text-muted-foreground">• {result.test}</span>
+                        {result.details && (
+                          <Badge variant="outline" className="text-[8px] h-4 ml-1">{result.details}</Badge>
+                        )}
                       </div>
-                      {result.latency_ms && (
-                        <span className="text-[10px] text-muted-foreground">{result.latency_ms}ms</span>
-                      )}
+                      <div className="flex items-center gap-2 shrink-0">
+                        {result.error && (
+                          <span className="text-[9px] text-red-400 truncate max-w-[80px]">{result.error}</span>
+                        )}
+                        {result.latency_ms && (
+                          <span className="text-[10px] text-muted-foreground">{result.latency_ms}ms</span>
+                        )}
+                      </div>
                     </div>
                   ))}
                 </div>
