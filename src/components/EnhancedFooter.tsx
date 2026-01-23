@@ -4,17 +4,22 @@ export function EnhancedFooter() {
   const currentYear = new Date().getFullYear();
 
   const substrateLinks = [
-    { name: "Substrate Modules", href: "/developers" },
     { name: "Substrate OS", href: "/substrate" },
     { name: "Decode", href: "/decode" },
-    { name: "Dream", href: "/feed-dream-eater" },
+    { name: "Dream Feeder", href: "/feed-dream-eater" },
     { name: "Demo", href: "/demo" },
   ];
 
-  const sdkLinks = [
+  const buildLinks = [
+    { name: "Gaming AI", href: "/gaming" },
+    { name: "DevTools", href: "/devtools" },
+    { name: "CodeLab", href: "/codelab" },
     { name: "Documentation", href: "/documentation" },
-    { name: "Changelog", href: "/changelog" },
+  ];
+
+  const resourceLinks = [
     { name: "Blog", href: "/blog" },
+    { name: "Changelog", href: "/changelog" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
   ];
@@ -22,9 +27,6 @@ export function EnhancedFooter() {
   const legalLinks = [
     { name: "Privacy", href: "/privacy" },
     { name: "Terms", href: "/terms" },
-  ];
-
-  const techLinks = [
     { name: "llms.txt", href: "/llms-txt" },
     { name: "humans.txt", href: "/humans-txt" },
   ];
@@ -51,11 +53,11 @@ export function EnhancedFooter() {
             </ul>
           </div>
 
-          {/* SDK */}
+          {/* Build */}
           <div>
-            <h3 className="font-semibold text-foreground mb-3 text-sm">SDK</h3>
+            <h3 className="font-semibold text-foreground mb-3 text-sm">Build</h3>
             <ul className="space-y-2">
-              {sdkLinks.map((link) => (
+              {buildLinks.map((link) => (
                 <li key={link.href}>
                   <Link 
                     to={link.href} 
@@ -85,21 +87,21 @@ export function EnhancedFooter() {
             </ul>
           </div>
 
-          {/* For Developers */}
+          {/* Resources */}
           <div>
-            <h3 className="font-semibold text-foreground mb-3 text-sm">Developers</h3>
+            <h3 className="font-semibold text-foreground mb-3 text-sm">Resources</h3>
             <ul className="space-y-2">
-            {techLinks.map((link) => (
-              <li key={link.href}>
-                <Link 
-                  to={link.href}
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  {link.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
+              {resourceLinks.map((link) => (
+                <li key={link.href}>
+                  <Link 
+                    to={link.href}
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>
