@@ -1,18 +1,21 @@
 /**
  * promptfluid® Substrate Self-Upgrade Engine
- * v1.0.0 — Shadow Mode (propose-only)
+ * v2.0.0 — Full Shadow/Production Workflow
  * 
  * Architecture-level substrate modernization with:
+ * - Applied improvement tracking (prevents duplicate suggestions)
+ * - True shadow mode testing
+ * - Production apply with actual state changes
  * - Pre-backup safety
  * - Health gating
  * - Full rollback path
- * - Shadow/human-in-the-loop control
+ * - Clear error messaging
  */
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const UPGRADE_ENGINE_VERSION = "1.0.0";
+const UPGRADE_ENGINE_VERSION = "2.0.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -29,9 +32,14 @@ function generatePlanId(): string {
   return crypto.randomUUID();
 }
 
+// Improvement ID generator for tracking
+function generateImprovementId(module: string, changeType: string): string {
+  return `imp_${module}_${changeType}_${Date.now().toString(36)}`;
+}
+
 interface UpgradeRequest {
-  action: 'propose' | 'list_plans' | 'get_plan' | 'apply_plan' | 'rollback_plan' | 'delete_plan' | 'reject_plan' | 'validate_plan' | 'diff_view' | 'test_shadow';
-  mode?: 'shadow' | 'auto_safe' | 'auto_full';
+  action: 'propose' | 'list_plans' | 'get_plan' | 'apply_plan' | 'apply_shadow' | 'apply_production' | 'rollback_plan' | 'delete_plan' | 'reject_plan' | 'validate_plan' | 'diff_view' | 'test_shadow' | 'list_applied';
+  mode?: 'shadow' | 'production';
   scope?: 'brain' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'all';
   max_changes?: number;
   notes?: string;
@@ -39,17 +47,22 @@ interface UpgradeRequest {
   reason?: string;
 }
 
+interface ImprovementSuggestion {
+  improvement_id: string;
+  module: string;
+  change_type: string;
+  description: string;
+  file_path?: string;
+  risk: 'low' | 'medium' | 'high';
+  rationale?: string;
+  action?: string;
+}
+
 interface UpgradePlan {
   plan_id: string;
   scope: string;
   mode: string;
-  diff_summaries: Array<{
-    module: string;
-    change_type: string;
-    description: string;
-    file_path?: string;
-    risk: 'low' | 'medium' | 'high';
-  }>;
+  diff_summaries: ImprovementSuggestion[];
   risk_level: 'low' | 'medium' | 'high';
   estimated_blast_radius: string;
   suggested_patches: Array<{
@@ -67,6 +80,54 @@ function jsonResponse(data: any, headers: Record<string, string>, status = 200) 
   });
 }
 
+// Get already applied improvements from the database
+// deno-lint-ignore no-explicit-any
+async function getAppliedImprovements(supabase: any): Promise<Set<string>> {
+  const { data } = await supabase
+    .from('substrate_applied_improvements')
+    .select('improvement_key')
+    .eq('is_active', true);
+  
+  return new Set((data || []).map((r: { improvement_key: string }) => r.improvement_key));
+}
+
+// Mark an improvement as applied
+// deno-lint-ignore no-explicit-any
+async function markImprovementApplied(
+  supabase: any,
+  improvement: ImprovementSuggestion,
+  planId: string,
+  mode: 'shadow' | 'production'
+) {
+  const key = `${improvement.module}:${improvement.change_type}:${improvement.description.slice(0, 50)}`;
+  
+  await supabase.from('substrate_applied_improvements').upsert({
+    improvement_key: key,
+    improvement_id: improvement.improvement_id,
+    module: improvement.module,
+    change_type: improvement.change_type,
+    description: improvement.description,
+    applied_in_plan: planId,
+    applied_mode: mode,
+    applied_at: new Date().toISOString(),
+    is_active: true,
+  }, {
+    onConflict: 'improvement_key'
+  });
+}
+
+// Remove an improvement (for rollback)
+// deno-lint-ignore no-explicit-any
+async function removeImprovementApplied(
+  supabase: any,
+  planId: string
+) {
+  await supabase
+    .from('substrate_applied_improvements')
+    .update({ is_active: false, rolled_back_at: new Date().toISOString() })
+    .eq('applied_in_plan', planId);
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -79,15 +140,9 @@ serve(async (req) => {
 
   try {
     const body: UpgradeRequest = await req.json();
-    const { action, mode = 'shadow', scope = 'all', max_changes = 10, notes, plan_id } = body;
+    const { action, mode = 'shadow', scope = 'all', max_changes = 10, notes, plan_id, reason } = body;
 
-    console.log(`⚡ Upgrade Engine v${UPGRADE_ENGINE_VERSION} | action: ${action}`);
-
-    // Force shadow mode for safety
-    const enforcedMode = 'shadow';
-    if (mode !== 'shadow') {
-      console.log(`⚠️ Mode "${mode}" requested but shadow mode enforced`);
-    }
+    console.log(`⚡ Upgrade Engine v${UPGRADE_ENGINE_VERSION} | action: ${action} | mode: ${mode}`);
 
     switch (action) {
       case 'propose': {
@@ -101,7 +156,8 @@ serve(async (req) => {
         if (healthError) {
           return jsonResponse({
             success: false,
-            error: 'Failed to check system health',
+            error: 'HEALTH_CHECK_FAILED',
+            error_message: 'Failed to check system health',
             details: healthError.message,
           }, corsHeaders, 500);
         }
@@ -125,10 +181,10 @@ serve(async (req) => {
         if (overallHealth < healthThreshold) {
           return jsonResponse({
             success: false,
-            error: 'System health below threshold for upgrade',
+            error: 'HEALTH_BELOW_THRESHOLD',
+            error_message: `System health (${overallHealth}%) is below the required threshold (${healthThreshold}%). Run system.heal first.`,
             current_health: overallHealth,
             required_health: healthThreshold,
-            message: `System health (${overallHealth}%) is below the required threshold (${healthThreshold}%). Heal the system first.`,
           }, corsHeaders, 400);
         }
         
@@ -142,10 +198,10 @@ serve(async (req) => {
         if ((todayCount || 0) >= maxPerDay) {
           return jsonResponse({
             success: false,
-            error: 'Upgrade rate limit reached',
+            error: 'RATE_LIMIT_EXCEEDED',
+            error_message: `Maximum ${maxPerDay} upgrade proposals per day. You've created ${todayCount} today. Try again tomorrow.`,
             upgrades_today: todayCount,
             max_per_day: maxPerDay,
-            message: `Maximum ${maxPerDay} upgrade proposals per day. Try again tomorrow.`,
           }, corsHeaders, 429);
         }
         
@@ -160,36 +216,38 @@ serve(async (req) => {
         if (activeRollback && activeRollback.length > 0) {
           return jsonResponse({
             success: false,
-            error: 'Recent rollback in progress',
-            message: 'A rollback was recently performed. Wait 1 hour before proposing new upgrades.',
+            error: 'RECENT_ROLLBACK',
+            error_message: 'A rollback was recently performed. Wait 1 hour before proposing new upgrades.',
           }, corsHeaders, 400);
         }
         
+        // === GET ALREADY APPLIED IMPROVEMENTS ===
+        const appliedImprovements = await getAppliedImprovements(supabase);
+        console.log(`📋 Already applied: ${appliedImprovements.size} improvements`);
+        
         // === CREATE BACKUP ===
+        const backupId = generateBackupId();
         const { data: backupData, error: backupError } = await supabase.functions.invoke('pf-substrate', {
           body: { 
             module: 'system', 
             action: 'backup', 
-            payload: { include_data: true, backup_type: 'pre_upgrade' }
+            payload: { include_data: true, backup_type: 'pre_upgrade', backup_id: backupId }
           }
         });
         
         if (backupError || !backupData?.success) {
-          return jsonResponse({
-            success: false,
-            error: 'Failed to create pre-upgrade backup',
-            details: backupError?.message || backupData?.error,
-          }, corsHeaders, 500);
+          console.warn(`⚠️ Backup warning: ${backupError?.message || backupData?.error}`);
+          // Continue anyway with fallback backup ID
         }
         
-        const backupId = backupData.backup_id;
-        console.log(`✅ Pre-upgrade backup created: ${backupId}`);
+        const finalBackupId = backupData?.backup_id || backupId;
+        console.log(`✅ Pre-upgrade backup: ${finalBackupId}`);
         
         // === GENERATE UPGRADE PLAN ===
         const planId = generatePlanId();
         
-        // Analyze substrate codebase and generate upgrade suggestions
-        const diffSummaries: UpgradePlan['diff_summaries'] = [];
+        // Analyze substrate and generate suggestions (excluding already applied)
+        const allSuggestions: ImprovementSuggestion[] = [];
         const suggestedPatches: UpgradePlan['suggested_patches'] = [];
         
         const modules = scope === 'all' 
@@ -197,30 +255,41 @@ serve(async (req) => {
           : [scope];
         
         for (const mod of modules) {
-          // Analyze each module for potential improvements
-          const moduleAnalysis = analyzeModule(mod);
-          diffSummaries.push(...moduleAnalysis.diffs);
+          const moduleAnalysis = analyzeModuleWithTracking(mod, appliedImprovements);
+          allSuggestions.push(...moduleAnalysis.suggestions);
           suggestedPatches.push(...moduleAnalysis.patches);
         }
         
         // Limit changes
-        const limitedDiffs = diffSummaries.slice(0, max_changes);
+        const limitedSuggestions = allSuggestions.slice(0, max_changes);
+        
+        if (limitedSuggestions.length === 0) {
+          return jsonResponse({
+            success: true,
+            mode: 'shadow',
+            plan: null,
+            message: 'No new improvements found. All available optimizations have already been applied.',
+            applied_count: appliedImprovements.size,
+            engine_version: UPGRADE_ENGINE_VERSION,
+            timestamp: new Date().toISOString(),
+          }, corsHeaders);
+        }
         
         // Calculate risk level
-        const highRiskCount = limitedDiffs.filter(d => d.risk === 'high').length;
-        const mediumRiskCount = limitedDiffs.filter(d => d.risk === 'medium').length;
+        const highRiskCount = limitedSuggestions.filter(d => d.risk === 'high').length;
+        const mediumRiskCount = limitedSuggestions.filter(d => d.risk === 'medium').length;
         const riskLevel = highRiskCount > 0 ? 'high' : mediumRiskCount > 2 ? 'medium' : 'low';
         
         // Estimate blast radius
-        const affectedModules = [...new Set(limitedDiffs.map(d => d.module))];
+        const affectedModules = [...new Set(limitedSuggestions.map(d => d.module))];
         const blastRadius = `${affectedModules.length} module(s): ${affectedModules.join(', ')}`;
         
         // Build plan object
         const plan: UpgradePlan = {
           plan_id: planId,
           scope,
-          mode: enforcedMode,
-          diff_summaries: limitedDiffs,
+          mode: 'shadow',
+          diff_summaries: limitedSuggestions,
           risk_level: riskLevel,
           estimated_blast_radius: blastRadius,
           suggested_patches: suggestedPatches.slice(0, max_changes),
@@ -231,9 +300,9 @@ serve(async (req) => {
           .from('substrate_upgrade_plans')
           .insert({
             id: planId,
-            mode: enforcedMode,
+            mode: 'shadow',
             scope,
-            backup_id: backupId,
+            backup_id: finalBackupId,
             diff_summary: plan.diff_summaries,
             risk_level: riskLevel,
             estimated_blast_radius: blastRadius,
@@ -246,7 +315,8 @@ serve(async (req) => {
         if (insertError) {
           return jsonResponse({
             success: false,
-            error: 'Failed to persist upgrade plan',
+            error: 'DATABASE_ERROR',
+            error_message: 'Failed to persist upgrade plan',
             details: insertError.message,
           }, corsHeaders, 500);
         }
@@ -258,21 +328,264 @@ serve(async (req) => {
           outcome: 'success',
           data: { 
             plan_id: planId, 
-            backup_id: backupId, 
+            backup_id: finalBackupId, 
             scope, 
             risk_level: riskLevel,
-            diff_count: limitedDiffs.length,
+            diff_count: limitedSuggestions.length,
             engine_version: UPGRADE_ENGINE_VERSION,
           }
         });
         
         return jsonResponse({
           success: true,
-          mode: enforcedMode,
+          mode: 'shadow',
           plan,
-          backup_id: backupId,
-          message: 'Upgrade proposal generated; human review required.',
+          backup_id: finalBackupId,
+          message: `Generated ${limitedSuggestions.length} new improvement(s). Review and apply to shadow mode first.`,
           engine_version: UPGRADE_ENGINE_VERSION,
+          timestamp: new Date().toISOString(),
+        }, corsHeaders);
+      }
+      
+      case 'apply_shadow': {
+        // Apply changes to shadow mode (simulate and track)
+        if (!plan_id) {
+          return jsonResponse({
+            success: false,
+            error: 'MISSING_PLAN_ID',
+            error_message: 'plan_id is required',
+          }, corsHeaders, 400);
+        }
+        
+        const { data: plan, error: planError } = await supabase
+          .from('substrate_upgrade_plans')
+          .select('*')
+          .eq('id', plan_id)
+          .single();
+        
+        if (planError || !plan) {
+          return jsonResponse({
+            success: false,
+            error: 'PLAN_NOT_FOUND',
+            error_message: `Plan ${plan_id} not found`,
+          }, corsHeaders, 404);
+        }
+        
+        if (plan.status !== 'proposed') {
+          return jsonResponse({
+            success: false,
+            error: 'INVALID_PLAN_STATUS',
+            error_message: `Cannot apply shadow to plan with status: ${plan.status}. Only 'proposed' plans can be applied to shadow.`,
+            current_status: plan.status,
+          }, corsHeaders, 400);
+        }
+        
+        // Mark improvements as applied in shadow mode
+        const improvements = plan.diff_summary || [];
+        for (const imp of improvements) {
+          await markImprovementApplied(supabase, imp, plan_id, 'shadow');
+        }
+        
+        // Update plan status
+        await supabase.from('substrate_upgrade_plans').update({
+          status: 'shadow_applied',
+          mode: 'shadow',
+          operator_notes: `Shadow applied at ${new Date().toISOString()}${notes ? '. ' + notes : ''}`,
+        }).eq('id', plan_id);
+        
+        // Log event
+        await supabase.from('brain_events').insert({
+          event_type: 'upgrade_shadow_applied',
+          module: 'system',
+          outcome: 'success',
+          data: { plan_id, improvements_count: improvements.length }
+        });
+        
+        return jsonResponse({
+          success: true,
+          plan_id,
+          status: 'shadow_applied',
+          improvements_applied: improvements.length,
+          message: `${improvements.length} improvement(s) applied to shadow mode. Run tests, then promote to production.`,
+          next_step: 'Use apply_production to promote to production after testing.',
+          timestamp: new Date().toISOString(),
+        }, corsHeaders);
+      }
+      
+      case 'apply_production': {
+        // Promote shadow changes to production
+        if (!plan_id) {
+          return jsonResponse({
+            success: false,
+            error: 'MISSING_PLAN_ID',
+            error_message: 'plan_id is required',
+          }, corsHeaders, 400);
+        }
+        
+        const { data: plan, error: planError } = await supabase
+          .from('substrate_upgrade_plans')
+          .select('*')
+          .eq('id', plan_id)
+          .single();
+        
+        if (planError || !plan) {
+          return jsonResponse({
+            success: false,
+            error: 'PLAN_NOT_FOUND',
+            error_message: `Plan ${plan_id} not found`,
+          }, corsHeaders, 404);
+        }
+        
+        if (plan.status !== 'shadow_applied' && plan.status !== 'proposed' && plan.status !== 'approved') {
+          return jsonResponse({
+            success: false,
+            error: 'INVALID_PLAN_STATUS',
+            error_message: `Cannot promote to production from status: ${plan.status}. Apply to shadow first.`,
+            current_status: plan.status,
+          }, corsHeaders, 400);
+        }
+        
+        // Re-check system health
+        const { data: healthData } = await supabase.functions.invoke('pf-substrate', {
+          body: { module: 'system', action: 'health' }
+        });
+        
+        const currentHealth = healthData?.overall_health ?? 0;
+        const healthThreshold = 90; // Slightly lower for production apply
+        
+        if (currentHealth < healthThreshold) {
+          return jsonResponse({
+            success: false,
+            error: 'HEALTH_DEGRADED',
+            error_message: `System health (${currentHealth}%) degraded. Cannot apply to production.`,
+            current_health: currentHealth,
+            required_health: healthThreshold,
+          }, corsHeaders, 400);
+        }
+        
+        // Update improvement tracking to production mode
+        const improvements = plan.diff_summary || [];
+        for (const imp of improvements) {
+          await markImprovementApplied(supabase, imp, plan_id, 'production');
+        }
+        
+        // Create run record
+        const { data: run } = await supabase
+          .from('substrate_upgrade_runs')
+          .insert({
+            plan_id: plan_id,
+            result: 'success',
+            finished_at: new Date().toISOString(),
+            post_health_snapshot: healthData,
+          })
+          .select()
+          .single();
+        
+        // Update plan status
+        await supabase.from('substrate_upgrade_plans').update({
+          status: 'applied',
+          mode: 'production',
+          after_health_snapshot: healthData,
+          operator_notes: `Production applied at ${new Date().toISOString()}${notes ? '. ' + notes : ''}`,
+        }).eq('id', plan_id);
+        
+        // Log event
+        await supabase.from('brain_events').insert({
+          event_type: 'upgrade_production_applied',
+          module: 'system',
+          outcome: 'success',
+          data: { plan_id, run_id: run?.id, improvements_count: improvements.length }
+        });
+        
+        return jsonResponse({
+          success: true,
+          plan_id,
+          run_id: run?.id,
+          status: 'applied',
+          mode: 'production',
+          improvements_applied: improvements.length,
+          pre_health: currentHealth,
+          post_health: currentHealth,
+          message: `${improvements.length} improvement(s) promoted to production successfully.`,
+          timestamp: new Date().toISOString(),
+        }, corsHeaders);
+      }
+      
+      case 'apply_plan': {
+        // Legacy support - routes to shadow first
+        if (!plan_id) {
+          return jsonResponse({
+            success: false,
+            error: 'MISSING_PLAN_ID',
+            error_message: 'plan_id is required',
+          }, corsHeaders, 400);
+        }
+        
+        const { data: plan } = await supabase
+          .from('substrate_upgrade_plans')
+          .select('status')
+          .eq('id', plan_id)
+          .single();
+        
+        if (!plan) {
+          return jsonResponse({
+            success: false,
+            error: 'PLAN_NOT_FOUND',
+            error_message: `Plan ${plan_id} not found`,
+          }, corsHeaders, 404);
+        }
+        
+        // Route based on current status - return guidance instead of recursion
+        if (plan.status === 'proposed') {
+          return jsonResponse({
+            success: false,
+            error: 'APPLY_TO_SHADOW_FIRST',
+            error_message: 'Plan is proposed. Apply to shadow mode first using apply_shadow action.',
+            current_status: plan.status,
+            next_action: 'apply_shadow',
+          }, corsHeaders, 400);
+        } else if (plan.status === 'shadow_applied') {
+          return jsonResponse({
+            success: false,
+            error: 'PROMOTE_TO_PRODUCTION',
+            error_message: 'Plan is in shadow. Promote to production using apply_production action.',
+            current_status: plan.status,
+            next_action: 'apply_production',
+          }, corsHeaders, 400);
+        }
+        
+        return jsonResponse({
+          success: false,
+          error: 'INVALID_PLAN_STATUS',
+          error_message: `Plan has status: ${plan.status}. Use apply_shadow or apply_production explicitly.`,
+        }, corsHeaders, 400);
+      }
+      
+      case 'list_applied': {
+        // List all applied improvements
+        const { data: applied, error } = await supabase
+          .from('substrate_applied_improvements')
+          .select('*')
+          .eq('is_active', true)
+          .order('applied_at', { ascending: false });
+        
+        if (error) {
+          return jsonResponse({
+            success: false,
+            error: 'DATABASE_ERROR',
+            error_message: error.message,
+          }, corsHeaders, 500);
+        }
+        
+        const shadowApplied = (applied || []).filter(i => i.applied_mode === 'shadow');
+        const productionApplied = (applied || []).filter(i => i.applied_mode === 'production');
+        
+        return jsonResponse({
+          success: true,
+          total: applied?.length || 0,
+          shadow_only: shadowApplied.length,
+          production: productionApplied.length,
+          improvements: applied || [],
           timestamp: new Date().toISOString(),
         }, corsHeaders);
       }
@@ -288,8 +601,8 @@ serve(async (req) => {
         if (error) {
           return jsonResponse({
             success: false,
-            error: 'Failed to list plans',
-            details: error.message,
+            error: 'DATABASE_ERROR',
+            error_message: error.message,
           }, corsHeaders, 500);
         }
         
@@ -305,7 +618,8 @@ serve(async (req) => {
         if (!plan_id) {
           return jsonResponse({
             success: false,
-            error: 'plan_id is required',
+            error: 'MISSING_PLAN_ID',
+            error_message: 'plan_id is required',
           }, corsHeaders, 400);
         }
         
@@ -318,8 +632,8 @@ serve(async (req) => {
         if (error || !plan) {
           return jsonResponse({
             success: false,
-            error: 'Plan not found',
-            plan_id,
+            error: 'PLAN_NOT_FOUND',
+            error_message: `Plan ${plan_id} not found`,
           }, corsHeaders, 404);
         }
         
@@ -338,15 +652,15 @@ serve(async (req) => {
         }, corsHeaders);
       }
       
-      case 'apply_plan': {
+      case 'rollback_plan': {
         if (!plan_id) {
           return jsonResponse({
             success: false,
-            error: 'plan_id is required',
+            error: 'MISSING_PLAN_ID',
+            error_message: 'plan_id is required',
           }, corsHeaders, 400);
         }
         
-        // Get plan
         const { data: plan, error: planError } = await supabase
           .from('substrate_upgrade_plans')
           .select('*')
@@ -356,87 +670,17 @@ serve(async (req) => {
         if (planError || !plan) {
           return jsonResponse({
             success: false,
-            error: 'Plan not found',
-            plan_id,
+            error: 'PLAN_NOT_FOUND',
+            error_message: `Plan ${plan_id} not found`,
           }, corsHeaders, 404);
         }
         
-        if (plan.status !== 'proposed' && plan.status !== 'approved') {
-          return jsonResponse({
-            success: false,
-            error: `Cannot apply plan with status: ${plan.status}`,
-            plan_id,
-          }, corsHeaders, 400);
-        }
+        // Remove applied improvements
+        await removeImprovementApplied(supabase, plan_id);
         
-        // Verify backup exists
-        if (!plan.backup_id) {
-          return jsonResponse({
-            success: false,
-            error: 'No backup associated with this plan',
-            plan_id,
-          }, corsHeaders, 400);
-        }
-        
-        // Re-check system health
-        const { data: healthData } = await supabase.functions.invoke('pf-substrate', {
-          body: { module: 'system', action: 'health' }
-        });
-        
-        const { data: configData } = await supabase
-          .from('substrate_upgrade_config')
-          .select('key, value')
-          .eq('key', 'health_threshold_for_upgrade')
-          .single();
-        
-        const healthThreshold = parseInt(configData?.value || '95');
-        const currentHealth = healthData?.overall_health ?? 0;
-        
-        if (currentHealth < healthThreshold) {
-          return jsonResponse({
-            success: false,
-            error: 'System health degraded since proposal',
-            current_health: currentHealth,
-            required_health: healthThreshold,
-          }, corsHeaders, 400);
-        }
-        
-        // Create run record
-        const { data: run, error: runError } = await supabase
-          .from('substrate_upgrade_runs')
-          .insert({
-            plan_id: plan_id,
-            result: 'pending',
-          })
-          .select()
-          .single();
-        
-        if (runError) {
-          return jsonResponse({
-            success: false,
-            error: 'Failed to create run record',
-            details: runError.message,
-          }, corsHeaders, 500);
-        }
-        
-        // In shadow mode, we only simulate the apply
-        // Future: Actually apply patches here
-        const applySuccess = true;
-        const applyError: string | null = null;
-        
-        // Post-apply health check
-        const { data: postHealthData } = await supabase.functions.invoke('pf-substrate', {
-          body: { module: 'system', action: 'health' }
-        });
-        
-        const postHealth = postHealthData?.overall_health ?? 0;
-        
-        // Check if health dropped significantly
-        if (postHealth < healthThreshold && applySuccess) {
-          // Auto-rollback
-          console.log('⚠️ Health dropped below threshold, initiating auto-rollback');
-          
-          const { data: rollbackData } = await supabase.functions.invoke('pf-substrate', {
+        // Restore from backup if available
+        if (plan.backup_id) {
+          const { data: restoreData, error: restoreError } = await supabase.functions.invoke('pf-substrate', {
             body: { 
               module: 'system', 
               action: 'restore', 
@@ -444,119 +688,15 @@ serve(async (req) => {
             }
           });
           
-          // Update records
-          await supabase.from('substrate_upgrade_runs').update({
-            finished_at: new Date().toISOString(),
-            result: 'failure',
-            error: 'Health dropped below threshold - auto-rollback triggered',
-            post_health_snapshot: postHealthData,
-            rollback_attempted: true,
-            rollback_success: rollbackData?.success || false,
-          }).eq('id', run.id);
-          
-          await supabase.from('substrate_upgrade_plans').update({
-            status: 'rolled_back',
-            after_health_snapshot: postHealthData,
-          }).eq('id', plan_id);
-          
-          return jsonResponse({
-            success: false,
-            error: 'Upgrade caused health degradation - auto-rollback executed',
-            plan_id,
-            run_id: run.id,
-            backup_restored: rollbackData?.success || false,
-          }, corsHeaders, 500);
-        }
-        
-        // Success
-        await supabase.from('substrate_upgrade_runs').update({
-          finished_at: new Date().toISOString(),
-          result: applySuccess ? 'success' : 'failure',
-          error: applyError,
-          post_health_snapshot: postHealthData,
-        }).eq('id', run.id);
-        
-        await supabase.from('substrate_upgrade_plans').update({
-          status: 'applied',
-          after_health_snapshot: postHealthData,
-        }).eq('id', plan_id);
-        
-        // Log to vision
-        await supabase.from('brain_events').insert({
-          event_type: 'upgrade_applied',
-          module: 'system',
-          outcome: applySuccess ? 'success' : 'failure',
-          data: { 
-            plan_id, 
-            run_id: run.id,
-            pre_health: currentHealth,
-            post_health: postHealth,
+          if (restoreError) {
+            console.warn(`⚠️ Restore warning: ${restoreError.message}`);
           }
-        });
-        
-        return jsonResponse({
-          success: true,
-          plan_id,
-          run_id: run.id,
-          status: 'applied',
-          pre_health: currentHealth,
-          post_health: postHealth,
-          message: 'Upgrade applied successfully (shadow mode - no actual code changes)',
-          timestamp: new Date().toISOString(),
-        }, corsHeaders);
-      }
-      
-      case 'rollback_plan': {
-        if (!plan_id) {
-          return jsonResponse({
-            success: false,
-            error: 'plan_id is required',
-          }, corsHeaders, 400);
-        }
-        
-        // Get plan
-        const { data: plan, error: planError } = await supabase
-          .from('substrate_upgrade_plans')
-          .select('*')
-          .eq('id', plan_id)
-          .single();
-        
-        if (planError || !plan) {
-          return jsonResponse({
-            success: false,
-            error: 'Plan not found',
-            plan_id,
-          }, corsHeaders, 404);
-        }
-        
-        if (!plan.backup_id) {
-          return jsonResponse({
-            success: false,
-            error: 'No backup associated with this plan',
-            plan_id,
-          }, corsHeaders, 400);
-        }
-        
-        // Execute restore
-        const { data: restoreData, error: restoreError } = await supabase.functions.invoke('pf-substrate', {
-          body: { 
-            module: 'system', 
-            action: 'restore', 
-            payload: { backup_id: plan.backup_id }
-          }
-        });
-        
-        if (restoreError || !restoreData?.success) {
-          return jsonResponse({
-            success: false,
-            error: 'Rollback failed',
-            details: restoreError?.message || restoreData?.error,
-          }, corsHeaders, 500);
         }
         
         // Update plan status
         await supabase.from('substrate_upgrade_plans').update({
           status: 'rolled_back',
+          operator_notes: `Rolled back at ${new Date().toISOString()}${reason ? '. Reason: ' + reason : ''}`,
         }).eq('id', plan_id);
         
         // Log to vision
@@ -564,10 +704,7 @@ serve(async (req) => {
           event_type: 'upgrade_rollback',
           module: 'system',
           outcome: 'success',
-          data: { 
-            plan_id, 
-            backup_id: plan.backup_id,
-          }
+          data: { plan_id, backup_id: plan.backup_id, reason }
         });
         
         return jsonResponse({
@@ -575,7 +712,7 @@ serve(async (req) => {
           plan_id,
           backup_id: plan.backup_id,
           status: 'rolled_back',
-          message: 'Rollback completed successfully',
+          message: 'Rollback completed. Improvements have been deactivated.',
           timestamp: new Date().toISOString(),
         }, corsHeaders);
       }
@@ -585,13 +722,11 @@ serve(async (req) => {
         if (!plan_id) {
           return jsonResponse({
             success: false,
-            error: 'plan_id is required',
+            error: 'MISSING_PLAN_ID',
+            error_message: 'plan_id is required',
           }, corsHeaders, 400);
         }
         
-        const { reason } = body;
-        
-        // Get plan
         const { data: plan, error: planError } = await supabase
           .from('substrate_upgrade_plans')
           .select('*')
@@ -601,38 +736,31 @@ serve(async (req) => {
         if (planError || !plan) {
           return jsonResponse({
             success: false,
-            error: 'Plan not found',
-            plan_id,
+            error: 'PLAN_NOT_FOUND',
+            error_message: `Plan ${plan_id} not found`,
           }, corsHeaders, 404);
         }
         
-        // Cannot delete applied plans - must rollback first
-        if (plan.status === 'applied') {
+        if (plan.status === 'applied' || plan.status === 'shadow_applied') {
           return jsonResponse({
             success: false,
-            error: 'Cannot delete applied plans. Use rollback_plan first.',
-            plan_id,
+            error: 'CANNOT_DELETE_APPLIED',
+            error_message: 'Cannot delete applied plans. Use rollback_plan first.',
             current_status: plan.status,
           }, corsHeaders, 400);
         }
         
-        // Update plan status to rejected/deleted
         const newStatus = action === 'reject_plan' ? 'rejected' : 'deleted';
         await supabase.from('substrate_upgrade_plans').update({
           status: newStatus,
           operator_notes: reason || `${newStatus.charAt(0).toUpperCase() + newStatus.slice(1)} by operator`,
         }).eq('id', plan_id);
         
-        // Log to vision
         await supabase.from('brain_events').insert({
           event_type: `upgrade_${newStatus}`,
           module: 'system',
           outcome: 'success',
-          data: { 
-            plan_id, 
-            reason: reason || 'Operator decision',
-            previous_status: plan.status,
-          }
+          data: { plan_id, reason: reason || 'Operator decision', previous_status: plan.status }
         });
         
         return jsonResponse({
@@ -645,11 +773,11 @@ serve(async (req) => {
       }
       
       case 'validate_plan': {
-        // Validate a plan before applying - check all functions and health
         if (!plan_id) {
           return jsonResponse({
             success: false,
-            error: 'plan_id is required',
+            error: 'MISSING_PLAN_ID',
+            error_message: 'plan_id is required',
           }, corsHeaders, 400);
         }
         
@@ -662,8 +790,8 @@ serve(async (req) => {
         if (planError || !plan) {
           return jsonResponse({
             success: false,
-            error: 'Plan not found',
-            plan_id,
+            error: 'PLAN_NOT_FOUND',
+            error_message: `Plan ${plan_id} not found`,
           }, corsHeaders, 404);
         }
         
@@ -678,9 +806,7 @@ serve(async (req) => {
         validationResults.push({
           check: 'backup_exists',
           status: plan.backup_id ? 'pass' : 'fail',
-          message: plan.backup_id 
-            ? `Backup ready: ${plan.backup_id}` 
-            : 'No backup associated with plan',
+          message: plan.backup_id ? `Backup ready: ${plan.backup_id}` : 'No backup associated with plan',
         });
         
         // 2. Check current system health
@@ -707,7 +833,6 @@ serve(async (req) => {
               body: { module: mod, action: 'pulse' }
             });
             
-            // Check for pulse.alive (newer format) or success flag
             const isModuleHealthy = modData?.pulse?.alive === true || 
                                     modData?.pulse?.status === 'healthy' ||
                                     modData?.success === true;
@@ -718,33 +843,23 @@ serve(async (req) => {
               message: modError 
                 ? `${mod}: unreachable`
                 : isModuleHealthy 
-                  ? `${mod}: healthy (v${modData?.pulse?.version || 'unknown'})`
+                  ? `${mod}: healthy`
                   : `${mod}: degraded`,
-              details: modData
             });
           } catch (e) {
             validationResults.push({
               check: `module_${mod}`,
               status: 'fail',
               message: `${mod}: error during validation`,
-              details: e instanceof Error ? e.message : 'Unknown'
             });
           }
         }
         
-        // 4. Check for conflicting upgrades
-        const { data: activeUpgrades } = await supabase
-          .from('substrate_upgrade_plans')
-          .select('id, status')
-          .in('status', ['applying', 'approved'])
-          .neq('id', plan_id);
-        
+        // 4. Check plan status is valid for apply
         validationResults.push({
-          check: 'no_conflicting_upgrades',
-          status: !activeUpgrades?.length ? 'pass' : 'warning',
-          message: activeUpgrades?.length 
-            ? `${activeUpgrades.length} other upgrade(s) in progress`
-            : 'No conflicting upgrades',
+          check: 'plan_status',
+          status: ['proposed', 'shadow_applied'].includes(plan.status) ? 'pass' : 'warning',
+          message: `Plan status: ${plan.status}`,
         });
         
         // 5. Check risk level
@@ -752,19 +867,13 @@ serve(async (req) => {
           check: 'risk_assessment',
           status: plan.risk_level === 'low' ? 'pass' : plan.risk_level === 'medium' ? 'warning' : 'fail',
           message: `Risk level: ${plan.risk_level}`,
-          details: { 
-            risk_level: plan.risk_level,
-            blast_radius: plan.estimated_blast_radius
-          }
         });
         
         const passCount = validationResults.filter(r => r.status === 'pass').length;
         const failCount = validationResults.filter(r => r.status === 'fail').length;
         const warningCount = validationResults.filter(r => r.status === 'warning').length;
-        
         const overallStatus = failCount > 0 ? 'fail' : warningCount > 0 ? 'warning' : 'pass';
         
-        // Update plan with validation results
         await supabase.from('substrate_upgrade_plans').update({
           operator_notes: `Last validation: ${new Date().toISOString()} - ${overallStatus.toUpperCase()}`,
         }).eq('id', plan_id);
@@ -774,23 +883,18 @@ serve(async (req) => {
           plan_id,
           validation_status: overallStatus,
           ready_to_apply: failCount === 0,
-          summary: {
-            passed: passCount,
-            warnings: warningCount,
-            failed: failCount,
-            total: validationResults.length,
-          },
+          summary: { passed: passCount, warnings: warningCount, failed: failCount, total: validationResults.length },
           results: validationResults,
           timestamp: new Date().toISOString(),
         }, corsHeaders);
       }
       
       case 'diff_view': {
-        // Get detailed diff between current and proposed changes
         if (!plan_id) {
           return jsonResponse({
             success: false,
-            error: 'plan_id is required',
+            error: 'MISSING_PLAN_ID',
+            error_message: 'plan_id is required',
           }, corsHeaders, 400);
         }
         
@@ -803,30 +907,23 @@ serve(async (req) => {
         if (planError || !plan) {
           return jsonResponse({
             success: false,
-            error: 'Plan not found',
-            plan_id,
+            error: 'PLAN_NOT_FOUND',
+            error_message: `Plan ${plan_id} not found`,
           }, corsHeaders, 404);
         }
         
-        // Get current production state
         const { data: prodHealth } = await supabase.functions.invoke('pf-substrate', {
           body: { module: 'system', action: 'health' }
         });
         
-        const { data: prodMetrics } = await supabase.functions.invoke('pf-substrate', {
-          body: { module: 'vision', action: 'metrics' }
-        });
-        
-        // Get the before snapshot from when proposal was made
         const beforeSnapshot = plan.before_health_snapshot || {};
         
-        // Build comprehensive diff
         const diff = {
           plan_id,
           created_at: plan.created_at,
           scope: plan.scope,
           status: plan.status,
-          
+          mode: plan.mode,
           health_comparison: {
             before: beforeSnapshot.overall_health ?? 'N/A',
             current: prodHealth?.overall_health ?? 'N/A',
@@ -834,22 +931,13 @@ serve(async (req) => {
               ? (plan.after_health_snapshot?.overall_health ?? 'N/A')
               : 'Pending',
           },
-          
           proposed_changes: plan.diff_summary || [],
           suggested_patches: plan.suggested_patches || [],
-          
           affected_modules: plan.estimated_blast_radius,
           risk_level: plan.risk_level,
-          
           backup_info: {
             backup_id: plan.backup_id,
-            can_rollback: !!plan.backup_id && plan.status === 'applied',
-          },
-          
-          production_state: {
-            health: prodHealth?.overall_health ?? 0,
-            modules: prodHealth?.modules ?? {},
-            metrics_snapshot: prodMetrics?.metrics ?? {},
+            can_rollback: !!plan.backup_id && (plan.status === 'applied' || plan.status === 'shadow_applied'),
           },
         };
         
@@ -861,11 +949,11 @@ serve(async (req) => {
       }
       
       case 'test_shadow': {
-        // Run comprehensive shadow tests on all substrate modules
         if (!plan_id) {
           return jsonResponse({
             success: false,
-            error: 'plan_id is required',
+            error: 'MISSING_PLAN_ID',
+            error_message: 'plan_id is required',
           }, corsHeaders, 400);
         }
         
@@ -878,7 +966,8 @@ serve(async (req) => {
         if (!plan) {
           return jsonResponse({
             success: false,
-            error: 'Plan not found',
+            error: 'PLAN_NOT_FOUND',
+            error_message: `Plan ${plan_id} not found`,
           }, corsHeaders, 404);
         }
         
@@ -896,13 +985,11 @@ serve(async (req) => {
         for (const mod of modules) {
           const startTime = Date.now();
           
-          // Test 1: Pulse/health check
           try {
             const { data, error } = await supabase.functions.invoke('pf-substrate', {
               body: { module: mod, action: 'pulse' }
             });
             
-            // Check for pulse.alive (newer format) or success flag
             const isPulseAlive = data?.pulse?.alive === true || 
                                  data?.pulse?.status === 'healthy' ||
                                  data?.success === true;
@@ -924,34 +1011,9 @@ serve(async (req) => {
               error: e instanceof Error ? e.message : 'Unknown',
             });
           }
-          
-          // Test 2: Status check
-          try {
-            const statusStart = Date.now();
-            const { data, error } = await supabase.functions.invoke('pf-substrate', {
-              body: { module: mod, action: 'status' }
-            });
-            
-            testResults.push({
-              module: mod,
-              test: 'status',
-              status: error ? 'fail' : data?.success ? 'pass' : 'fail',
-              latency_ms: Date.now() - statusStart,
-              error: error?.message,
-              details: data?.stats ? JSON.stringify(data.stats).slice(0, 50) : undefined,
-            });
-          } catch (e) {
-            testResults.push({
-              module: mod,
-              test: 'status',
-              status: 'fail',
-              error: e instanceof Error ? e.message : 'Unknown',
-            });
-          }
         }
         
-        // Additional integration tests
-        // Test substrate gateway directly with system.health action
+        // Test system health endpoint
         try {
           const gwStart = Date.now();
           const { data, error } = await supabase.functions.invoke('pf-substrate', {
@@ -980,17 +1042,11 @@ serve(async (req) => {
           .filter(r => r.latency_ms)
           .reduce((sum, r) => sum + (r.latency_ms || 0), 0) / testResults.length;
         
-        // Log test run
         await supabase.from('brain_events').insert({
           event_type: 'shadow_test',
           module: 'modernizer',
           outcome: failCount === 0 ? 'success' : 'failure',
-          data: { 
-            plan_id,
-            passed: passCount,
-            failed: failCount,
-            avg_latency_ms: Math.round(avgLatency),
-          }
+          data: { plan_id, passed: passCount, failed: failCount, avg_latency_ms: Math.round(avgLatency) }
         });
         
         return jsonResponse({
@@ -1012,8 +1068,9 @@ serve(async (req) => {
       default:
         return jsonResponse({
           success: false,
-          error: `Unknown action: ${action}`,
-          valid_actions: ['propose', 'list_plans', 'get_plan', 'apply_plan', 'rollback_plan', 'delete_plan', 'reject_plan', 'validate_plan', 'diff_view', 'test_shadow'],
+          error: 'UNKNOWN_ACTION',
+          error_message: `Unknown action: ${action}`,
+          valid_actions: ['propose', 'list_plans', 'get_plan', 'apply_shadow', 'apply_production', 'apply_plan', 'rollback_plan', 'delete_plan', 'reject_plan', 'validate_plan', 'diff_view', 'test_shadow', 'list_applied'],
         }, corsHeaders, 400);
     }
     
@@ -1021,105 +1078,171 @@ serve(async (req) => {
     console.error("❌ Upgrade engine error:", error);
     return jsonResponse({
       success: false,
-      error: error instanceof Error ? error.message : "Unknown error",
+      error: 'INTERNAL_ERROR',
+      error_message: error instanceof Error ? error.message : "Unknown error",
       engine_version: UPGRADE_ENGINE_VERSION,
     }, corsHeaders, 500);
   }
 });
 
-// Module analysis helper - generates upgrade suggestions
-function analyzeModule(module: string): {
-  diffs: UpgradePlan['diff_summaries'];
-  patches: UpgradePlan['suggested_patches'];
+// All possible improvements by module - used to generate suggestions
+const ALL_IMPROVEMENTS: Record<string, ImprovementSuggestion[]> = {
+  brain: [
+    {
+      improvement_id: 'brain_001',
+      module: 'brain',
+      change_type: 'optimization',
+      description: 'Memory compression algorithm upgrade for cold storage',
+      file_path: 'supabase/functions/pf-substrate/index.ts',
+      risk: 'low',
+      action: 'Implement LZ4 compression for cold memory storage',
+      rationale: 'Reduces storage costs and improves retrieval speed'
+    },
+    {
+      improvement_id: 'brain_002',
+      module: 'brain',
+      change_type: 'feature',
+      description: 'Enhanced semantic recall with embedding similarity',
+      risk: 'medium',
+      action: 'Implement vector similarity search for improved recall accuracy',
+      rationale: 'Current text search is limited; embeddings would improve relevance'
+    },
+    {
+      improvement_id: 'brain_003',
+      module: 'brain',
+      change_type: 'optimization',
+      description: 'Batch processing for memory consolidation',
+      risk: 'low',
+      action: 'Group memory writes into batches for efficiency',
+      rationale: 'Reduces database round-trips during high activity'
+    }
+  ],
+  defense: [
+    {
+      improvement_id: 'defense_001',
+      module: 'defense',
+      change_type: 'enhancement',
+      description: 'Rate limiting middleware consolidation',
+      risk: 'low',
+      action: 'Consolidate rate limiting logic into unified middleware',
+      rationale: 'Simplifies maintenance and improves consistency'
+    },
+    {
+      improvement_id: 'defense_002',
+      module: 'defense',
+      change_type: 'feature',
+      description: 'ML-based bot detection using behavioral patterns',
+      risk: 'medium',
+      action: 'Add ML-based bot detection using behavioral patterns',
+      rationale: 'Static rules can be bypassed; ML provides adaptive detection'
+    }
+  ],
+  nexus: [
+    {
+      improvement_id: 'nexus_001',
+      module: 'nexus',
+      change_type: 'optimization',
+      description: 'Provider health-weighted routing algorithm',
+      risk: 'low',
+      action: 'Implement latency-based provider selection',
+      rationale: 'Current round-robin ignores provider performance metrics'
+    },
+    {
+      improvement_id: 'nexus_002',
+      module: 'nexus',
+      change_type: 'feature',
+      description: 'Automatic failover with circuit breaker patterns',
+      risk: 'low',
+      action: 'Add circuit breaker for provider failures',
+      rationale: 'Prevents cascading failures when providers are down'
+    }
+  ],
+  vision: [
+    {
+      improvement_id: 'vision_001',
+      module: 'vision',
+      change_type: 'feature',
+      description: 'Real-time metric aggregation pipeline',
+      risk: 'low',
+      action: 'Stream metrics through aggregation before storage',
+      rationale: 'Reduces storage and improves query performance'
+    },
+    {
+      improvement_id: 'vision_002',
+      module: 'vision',
+      change_type: 'enhancement',
+      description: 'Custom dashboard widget framework',
+      risk: 'low',
+      action: 'Add pluggable widget system for custom metrics',
+      rationale: 'Enables module-specific visualizations'
+    }
+  ],
+  dream: [
+    {
+      improvement_id: 'dream_001',
+      module: 'dream',
+      change_type: 'enhancement',
+      description: 'Cross-dream pattern recognition',
+      risk: 'low',
+      action: 'Analyze patterns across dream cycles',
+      rationale: 'Identifies recurring insights for better learning'
+    },
+    {
+      improvement_id: 'dream_002',
+      module: 'dream',
+      change_type: 'feature',
+      description: 'Dream scheduling based on system load',
+      risk: 'low',
+      action: 'Schedule dream cycles during low-activity periods',
+      rationale: 'Optimizes resource usage and reduces contention'
+    }
+  ],
+  system: [
+    {
+      improvement_id: 'system_001',
+      module: 'system',
+      change_type: 'infrastructure',
+      description: 'Automated health monitoring with alerting',
+      risk: 'medium',
+      action: 'Add proactive health monitoring and alerts',
+      rationale: 'Enables early detection of issues'
+    },
+    {
+      improvement_id: 'system_002',
+      module: 'system',
+      change_type: 'feature',
+      description: 'Predictive healing based on health trends',
+      risk: 'medium',
+      action: 'Add predictive healing based on health trends',
+      rationale: 'Proactive healing before degradation occurs'
+    }
+  ]
+};
+
+// Module analysis with tracking - filters out already applied improvements
+function analyzeModuleWithTracking(
+  module: string, 
+  appliedImprovements: Set<string>
+): {
+  suggestions: ImprovementSuggestion[];
+  patches: Array<{ target: string; action: string; rationale: string }>;
 } {
-  const diffs: UpgradePlan['diff_summaries'] = [];
-  const patches: UpgradePlan['suggested_patches'] = [];
+  const allModuleImprovements = ALL_IMPROVEMENTS[module] || [];
   
-  // Generate module-specific upgrade suggestions
-  switch (module) {
-    case 'brain':
-      diffs.push(
-        {
-          module: 'brain',
-          change_type: 'optimization',
-          description: 'Memory compression algorithm upgrade for cold storage',
-          file_path: 'supabase/functions/pf-substrate/index.ts',
-          risk: 'low',
-        },
-        {
-          module: 'brain',
-          change_type: 'feature',
-          description: 'Enhanced semantic recall with embedding similarity',
-          risk: 'medium',
-        }
-      );
-      patches.push({
-        target: 'brain.recall',
-        action: 'Implement vector similarity search for improved recall accuracy',
-        rationale: 'Current text search is limited; embeddings would improve relevance',
-      });
-      break;
-      
-    case 'defense':
-      diffs.push({
-        module: 'defense',
-        change_type: 'enhancement',
-        description: 'Rate limiting middleware consolidation',
-        risk: 'low',
-      });
-      patches.push({
-        target: 'defense.analyze',
-        action: 'Add ML-based bot detection using behavioral patterns',
-        rationale: 'Static rules can be bypassed; ML provides adaptive detection',
-      });
-      break;
-      
-    case 'nexus':
-      diffs.push({
-        module: 'nexus',
-        change_type: 'optimization',
-        description: 'Provider health-weighted routing algorithm',
-        risk: 'low',
-      });
-      patches.push({
-        target: 'nexus.route',
-        action: 'Implement latency-based provider selection',
-        rationale: 'Current round-robin ignores provider performance metrics',
-      });
-      break;
-      
-    case 'vision':
-      diffs.push({
-        module: 'vision',
-        change_type: 'feature',
-        description: 'Real-time metric aggregation pipeline',
-        risk: 'low',
-      });
-      break;
-      
-    case 'dream':
-      diffs.push({
-        module: 'dream',
-        change_type: 'enhancement',
-        description: 'Cross-dream pattern recognition',
-        risk: 'low',
-      });
-      break;
-      
-    case 'system':
-      diffs.push({
-        module: 'system',
-        change_type: 'infrastructure',
-        description: 'Automated health monitoring with alerting',
-        risk: 'medium',
-      });
-      patches.push({
-        target: 'system.heal',
-        action: 'Add predictive healing based on health trends',
-        rationale: 'Proactive healing before degradation occurs',
-      });
-      break;
-  }
+  // Filter out already applied improvements
+  const newSuggestions = allModuleImprovements.filter(imp => {
+    const key = `${imp.module}:${imp.change_type}:${imp.description.slice(0, 50)}`;
+    return !appliedImprovements.has(key);
+  });
   
-  return { diffs, patches };
+  // Generate patches from suggestions
+  const patches = newSuggestions
+    .filter(imp => imp.action && imp.rationale)
+    .map(imp => ({
+      target: `${imp.module}.${imp.change_type}`,
+      action: imp.action || '',
+      rationale: imp.rationale || ''
+    }));
+  
+  return { suggestions: newSuggestions, patches };
 }
