@@ -1,13 +1,10 @@
 /**
  * CMPSBL Logo Component
- * Theme-aware logo with dark/light variants
+ * Uses dark version (richer colors) - works on all backgrounds
  */
 
-import { useTheme } from "next-themes";
 import logoDark from "@/assets/cmpsbl-logo-dark.png";
-import logoLight from "@/assets/cmpsbl-logo-light.png";
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
 
 interface CmpsblLogoProps {
   className?: string;
@@ -23,20 +20,9 @@ const sizeClasses = {
 };
 
 export function CmpsblLogo({ className, iconOnly = false, size = "md" }: CmpsblLogoProps) {
-  const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  // Prevent hydration mismatch
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Default to dark logo during SSR/initial render to prevent flash
-  const logoSrc = mounted && resolvedTheme === "light" ? logoLight : logoDark;
-
   return (
     <img
-      src={logoSrc}
+      src={logoDark}
       alt="CMPSBL By PromptFluid"
       className={cn(
         sizeClasses[size],
