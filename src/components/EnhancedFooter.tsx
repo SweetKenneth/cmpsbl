@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { CmpsblLogo } from "@/components/CmpsblLogo";
 
 export function EnhancedFooter() {
   const currentYear = new Date().getFullYear();
@@ -35,6 +36,13 @@ export function EnhancedFooter() {
     <footer className="relative z-20 border-t border-border bg-background" role="contentinfo">
       {/* Main Footer */}
       <div className="container mx-auto max-w-6xl px-4 py-8 md:py-12">
+        {/* Logo at top */}
+        <div className="mb-8 flex justify-center md:justify-start">
+          <Link to="/" className="hover:opacity-80 transition-opacity">
+            <CmpsblLogo size="lg" />
+          </Link>
+        </div>
+        
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
           {/* CMPSBL */}
           <div>

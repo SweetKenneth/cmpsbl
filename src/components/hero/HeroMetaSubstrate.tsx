@@ -4,11 +4,12 @@
  * Mobile-first, performance-optimized
  */
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { CmpsblLogo } from "@/components/CmpsblLogo";
 import { 
   ArrowRight, 
   Brain, 
@@ -248,16 +249,13 @@ export function HeroMetaSubstrate() {
       <div className="absolute bottom-0 -right-32 w-96 h-96 bg-violet-500/5 rounded-full blur-[100px]" />
 
       <div className="relative z-10 w-full max-w-6xl mx-auto">
-        {/* Badge */}
+        {/* Logo */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-4 sm:mb-6"
+          className="flex justify-center mb-6 sm:mb-8"
         >
-          <Badge variant="outline" className="gap-1.5 px-3 py-1 text-xs sm:text-sm">
-            <Sparkles className="w-3 h-3" />
-            CMPSBL (Composable) By PromptFluid
-          </Badge>
+          <CmpsblLogo size="xl" className="h-16 sm:h-20 md:h-24" />
         </motion.div>
 
         {/* Main headline */}
