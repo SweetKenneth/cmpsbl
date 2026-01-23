@@ -13,7 +13,7 @@ import { useState } from 'react';
 import { 
   Loader2, Lock, Terminal, AlertTriangle, Database, RefreshCw, 
   Settings, FileText, Zap, LayoutDashboard, Activity, Bot, Users, Sparkles,
-  Building2, ExternalLink, HardDrive, Wand2
+  Building2, ExternalLink, HardDrive, Wand2, Cpu, Radio, Key
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -51,6 +51,9 @@ import { CognitivesPanel } from '@/components/substrate-os/CognitivesPanel';
 import { BackupRestorePanel } from '@/components/substrate-os/BackupRestorePanel';
 import { EmergencyRecoveryPanel } from '@/components/substrate-os/EmergencyRecoveryPanel';
 import { ModernizerTab } from '@/components/substrate-os/ModernizerTab';
+import { CoreKernelTab } from '@/components/substrate-os/CoreKernelTab';
+import { RippleMessageBusTab } from '@/components/substrate-os/RippleMessageBusTab';
+import { AccessIdentityTab } from '@/components/substrate-os/AccessIdentityTab';
 import { AgencyMintWizard } from '@/components/agency/AgencyMintWizard';
 import { AgencyGallery } from '@/components/agency/AgencyGallery';
 import { cn } from '@/lib/utils';
@@ -367,6 +370,48 @@ export default function SubstrateOS() {
               </TabsTrigger>
               {isOperator && (
                 <TabsTrigger 
+                  value="core" 
+                  className={cn(
+                    "gap-2 rounded-lg transition-all",
+                    "data-[state=active]:bg-orange-500/10 data-[state=active]:text-orange-400",
+                    "data-[state=active]:border-b-2 data-[state=active]:border-orange-400",
+                    "hover:bg-white/5"
+                  )}
+                >
+                  <Cpu className="w-4 h-4" />
+                  <span className="hidden sm:inline">Core</span>
+                </TabsTrigger>
+              )}
+              {isOperator && (
+                <TabsTrigger 
+                  value="ripple" 
+                  className={cn(
+                    "gap-2 rounded-lg transition-all",
+                    "data-[state=active]:bg-cyan-500/10 data-[state=active]:text-cyan-400",
+                    "data-[state=active]:border-b-2 data-[state=active]:border-cyan-400",
+                    "hover:bg-white/5"
+                  )}
+                >
+                  <Radio className="w-4 h-4" />
+                  <span className="hidden sm:inline">Ripple</span>
+                </TabsTrigger>
+              )}
+              {isOperator && (
+                <TabsTrigger 
+                  value="access" 
+                  className={cn(
+                    "gap-2 rounded-lg transition-all",
+                    "data-[state=active]:bg-amber-500/10 data-[state=active]:text-amber-400",
+                    "data-[state=active]:border-b-2 data-[state=active]:border-amber-400",
+                    "hover:bg-white/5"
+                  )}
+                >
+                  <Key className="w-4 h-4" />
+                  <span className="hidden sm:inline">Access</span>
+                </TabsTrigger>
+              )}
+              {isOperator && (
+                <TabsTrigger 
                   value="backups" 
                   className={cn(
                     "gap-2 rounded-lg transition-all",
@@ -530,6 +575,27 @@ export default function SubstrateOS() {
             <EventStream />
           </main>
         </TabsContent>
+
+        {/* Core Kernel Tab - Operator+ */}
+        {isOperator && (
+          <TabsContent value="core" className="flex-1 mt-0">
+            <CoreKernelTab enabled={isOperator} />
+          </TabsContent>
+        )}
+
+        {/* Ripple Message Bus Tab - Operator+ */}
+        {isOperator && (
+          <TabsContent value="ripple" className="flex-1 mt-0">
+            <RippleMessageBusTab enabled={isOperator} />
+          </TabsContent>
+        )}
+
+        {/* Access Identity Tab - Operator+ */}
+        {isOperator && (
+          <TabsContent value="access" className="flex-1 mt-0">
+            <AccessIdentityTab enabled={isOperator} />
+          </TabsContent>
+        )}
 
         {/* Backups Tab - Operator+ */}
         {isOperator && (
