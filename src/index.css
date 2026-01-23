@@ -418,6 +418,20 @@ All colors MUST be HSL.
     contain: strict;
   }
   
+  /* Cursor blink animation - pure CSS, no layout shift */
+  @keyframes blink {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+  
+  .animate-blink {
+    animation: blink 1s step-end infinite;
+  }
+  
   /* Hero glow pulse animation - GPU-accelerated, no layout thrashing */
   @keyframes hero-glow-pulse {
     0%, 100% {
