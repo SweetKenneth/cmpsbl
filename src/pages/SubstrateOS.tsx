@@ -345,24 +345,49 @@ export default function SubstrateOS() {
           <SidebarNav groups={tabGroups} activeTab={activeTab} onTabChange={setActiveTab} />
         </div>
 
-        {/* Mobile Sidebar */}
-        <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
-          <SheetTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="lg:hidden fixed bottom-4 left-4 z-50 w-12 h-12 rounded-full bg-primary/90 text-primary-foreground shadow-lg"
+        {/* Mobile Navigation Bar */}
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-t border-border/50 safe-area-pb">
+          <div className="flex items-center justify-around px-2 py-2">
+            {tabGroups.flatMap(g => g.tabs).slice(0, 5).map((tab) => {
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={cn(
+                    "flex flex-col items-center gap-1 p-2 rounded-lg transition-all min-w-[60px]",
+                    isActive 
+                      ? "text-primary bg-primary/10" 
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  <tab.icon className="w-5 h-5" />
+                  <span className="text-[10px] font-medium truncate">{tab.label}</span>
+                </button>
+              );
+            })}
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="flex flex-col items-center gap-1 p-2 rounded-lg text-muted-foreground hover:text-foreground min-w-[60px]"
             >
               <Menu className="w-5 h-5" />
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="p-0 w-56">
+              <span className="text-[10px] font-medium">More</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Full Menu Sheet */}
+        <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
+          <SheetContent side="left" className="p-0 w-64 bg-background">
+            <div className="p-4 border-b border-border/50">
+              <h3 className="font-semibold text-sm">Navigation</h3>
+            </div>
             <SidebarNav groups={tabGroups} activeTab={activeTab} onTabChange={setActiveTab} onClose={() => setSidebarOpen(false)} />
           </SheetContent>
         </Sheet>
 
         {/* Content Area */}
-        <div className="flex-1 overflow-auto">
+        <div className="flex-1 overflow-auto pb-20 lg:pb-0">
           {/* Dashboard */}
           {activeTab === 'dashboard' && (
             <main className="container mx-auto px-4 py-6 max-w-7xl space-y-6">
