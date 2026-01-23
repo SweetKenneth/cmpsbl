@@ -52,12 +52,25 @@ function pickRandomTopic(): { category: string; topic: string } {
   };
 }
 
-// Generate blog post content using AI
+// Generate blog post content using AI (free-tier router)
 async function generateBlogPost(topic: string, category: string): Promise<{ title: string; content: string; slug: string; excerpt: string }> {
-  const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+  // Use free-tier providers instead of Lovable AI
+  const providers = [
+    { key: 'GROQ_API_KEY', url: 'https://api.groq.com/openai/v1/chat/completions', model: 'llama-3.3-70b-versatile' },
+    { key: 'CEREBRAS_API_KEY', url: 'https://api.cerebras.ai/v1/chat/completions', model: 'llama-3.3-70b' },
+    { key: 'TOGETHER_API_KEY', url: 'https://api.together.xyz/v1/chat/completions', model: 'meta-llama/Llama-3.1-70B-Instruct-Turbo' },
+  ];
   
-  if (!LOVABLE_API_KEY) {
-    throw new Error("LOVABLE_API_KEY not configured");
+  let activeProvider = null;
+  for (const provider of providers) {
+    if (Deno.env.get(provider.key)) {
+      activeProvider = { ...provider, apiKey: Deno.env.get(provider.key)! };
+      break;
+    }
+  }
+  
+  if (!activeProvider) {
+    throw new Error("No AI provider configured. Add GROQ_API_KEY, CEREBRAS_API_KEY, or TOGETHER_API_KEY.");
   }
   
   const systemPrompt = `You are a technical content writer for PromptFluid, an AI infrastructure company. 
@@ -84,14 +97,14 @@ EXCERPT: [2-3 sentence summary for meta description]
 ---
 [Full blog post content in markdown]`;
 
-  const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+  const response = await fetch(activeProvider.url, {
     method: "POST",
     headers: {
-      "Authorization": `Bearer ${LOVABLE_API_KEY}`,
+      "Authorization": `Bearer ${activeProvider.apiKey}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "google/gemini-2.5-flash",
+      model: activeProvider.model,
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: userPrompt },

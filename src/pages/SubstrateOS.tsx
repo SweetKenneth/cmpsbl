@@ -50,6 +50,7 @@ import { HealButton } from '@/components/substrate-os/HealButton';
 import { CognitivesPanel } from '@/components/substrate-os/CognitivesPanel';
 import { UpgradeEnginePanel } from '@/components/substrate-os/UpgradeEnginePanel';
 import { BackupRestorePanel } from '@/components/substrate-os/BackupRestorePanel';
+import { EmergencyRecoveryPanel } from '@/components/substrate-os/EmergencyRecoveryPanel';
 import { AgencyMintWizard } from '@/components/agency/AgencyMintWizard';
 import { AgencyGallery } from '@/components/agency/AgencyGallery';
 import { cn } from '@/lib/utils';
@@ -262,6 +263,9 @@ export default function SubstrateOS() {
   const healthScore = useSubstrateHealthScore();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [mintSubTab, setMintSubTab] = useState<'forge' | 'agency'>('agency');
+  
+  // Calculate if system is in critical state for emergency recovery panel
+  const isCritical = healthScore.healthScore < 40;
 
   // Redirect to auth if not logged in
   if (!authLoading && !user) {
@@ -410,6 +414,9 @@ export default function SubstrateOS() {
         {/* Dashboard Tab */}
         <TabsContent value="dashboard" className="flex-1 mt-0">
           <main className="container mx-auto px-4 py-6 max-w-7xl space-y-6">
+            {/* Emergency Recovery Panel - Shows when system is critical */}
+            <EmergencyRecoveryPanel showAlways={false} isCritical={isCritical} />
+            
             {/* PROMINENT HEAL BUTTON - Top of dashboard */}
             {isOperator && (
               <HealButton 
