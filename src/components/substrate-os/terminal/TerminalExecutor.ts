@@ -3,7 +3,7 @@
  * Handles parsing and execution of all substrate commands
  */
 
-import { substrate, brain, decode, defense, nexus, vision, dream, system, modernizer } from '@/lib/substrate';
+import { substrate, brain, decode, defense, nexus, vision, dream, system, modernizer, core, ripple, access } from '@/lib/substrate';
 import { supabase } from '@/integrations/supabase/client';
 import { ALL_COMMANDS, COMMAND_CATEGORIES, type CommandDefinition } from './TerminalCommands';
 import { getRandomItem, PERSONALITY_RESPONSES } from './TerminalTypes';
@@ -114,26 +114,39 @@ export async function executeCommand(
     const identity = `
 ┌─ SUBSTRATE IDENTITY ─────────────────────────────────────────
 │ 
-│  ██████╗ ███████╗     Cognitive Orchestration
-│  ██╔═══╝ ██╔════╝     Substrate v2026.01
+│  ██████╗ ███████╗     Cognitive Operating System
+│  ██╔═══╝ ██╔════╝     promptfluid® Substrate v4.0.0
 │  ██║     ███████╗     
 │  ██║     ╚════██║     Environment: Lovable Cloud
 │  ██████╗ ███████║     Status: OPERATIONAL
 │  ╚═════╝ ╚══════╝     
 │ 
-│  promptfluid® — where machines learn to dream
+│  11-Module Architecture — Full AI Operating System
 │  
-│  Modules: Brain, Decode, Defense, Nexus, Vision, Dream, System
 │  Mode: ${isOperator ? 'OPERATOR (full access)' : 'OBSERVER (read-only)'}
 │  
-│  Endpoints:
-│    substrate://brain     memory + cognition
-│    substrate://decode    interpretation
-│    substrate://defense   security
-│    substrate://nexus     AI routing
-│    substrate://vision    observability
-│    substrate://dream     dream-eater
-│    substrate://system    administration
+│  ┌─ KERNEL LAYER ────────────────────────────────────────────
+│  │  core://       scheduler, lifecycle, routing
+│  │  ripple://     message bus, pub/sub, queues
+│  │  access://     API keys, billing, metering
+│  │
+│  ├─ COGNITION LAYER ─────────────────────────────────────────
+│  │  brain://      memory, learning, reflection
+│  │  decode://     interpretation, intent parsing
+│  │  dream://      dream-eater, mutation
+│  │
+│  ├─ OPERATIONS LAYER ────────────────────────────────────────
+│  │  defense://    security, threats, anomalies
+│  │  nexus://      AI routing, multi-provider
+│  │  vision://     observability, metrics
+│  │
+│  ├─ ADMIN LAYER ─────────────────────────────────────────────
+│  │  system://     administration, backups
+│  │  modernizer:// upgrades, codebase evolution
+│  │
+│  └────────────────────────────────────────────────────────────
+│  
+│  promptfluid® — where machines learn to dream
 │  
 └──────────────────────────────────────────────────────────────`;
     return { success: true, output: identity };
@@ -413,6 +426,119 @@ export async function executeCommand(
         return { success: false, output: '▓ ERROR: Both archived_function and target_action required\n  Usage: modernizer.implement <archived_function> <target_action>\n  Example: modernizer.implement pf-brain-systems-reasoning brain.deep_think' };
       }
       result = await modernizer.implement(args[0], args[1]);
+    }
+
+    // CORE module (Kernel)
+    else if (base === 'core.status') {
+      result = await core.status();
+    } else if (base === 'core.pulse') {
+      result = await core.pulse();
+    } else if (base === 'core.boot') {
+      result = await core.boot();
+    } else if (base === 'core.schedule') {
+      if (!args[0] || !args[1]) {
+        return { success: false, output: '▓ ERROR: Module and action required\n  Usage: core.schedule <module> <action> [delay]' };
+      }
+      result = await core.schedule({ 
+        module: args[0] as any, 
+        action: args[1], 
+        delay: args[2] 
+      });
+    } else if (base === 'core.jobs') {
+      result = await core.jobs(args[0] as any, args[1] ? parseInt(args[1]) : undefined);
+    } else if (base === 'core.process') {
+      result = await core.process();
+    } else if (base === 'core.config') {
+      result = await core.config(args[0], args[1]);
+    } else if (base === 'core.shutdown') {
+      result = await core.shutdown();
+    }
+
+    // RIPPLE module (Message Bus)
+    else if (base === 'ripple.status') {
+      result = await ripple.status();
+    } else if (base === 'ripple.pulse') {
+      result = await ripple.pulse();
+    } else if (base === 'ripple.topics') {
+      result = await ripple.topics();
+    } else if (base === 'ripple.events') {
+      result = await ripple.events({ topic: args[0], limit: args[1] ? parseInt(args[1]) : undefined });
+    } else if (base === 'ripple.publish') {
+      if (!args[0] || !args[1]) {
+        return { success: false, output: '▓ ERROR: Topic and event_type required\n  Usage: ripple.publish <topic> <event_type> [payload]' };
+      }
+      const payload = args[2] ? JSON.parse(args[2]) : undefined;
+      result = await ripple.publish(args[0], args[1], payload);
+    } else if (base === 'ripple.subscribe') {
+      if (!args[0] || !args[1] || !args[2]) {
+        return { success: false, output: '▓ ERROR: Topic, module, and action required\n  Usage: ripple.subscribe <topic> <module> <action>' };
+      }
+      result = await ripple.subscribe(args[0], args[1] as any, args[2]);
+    } else if (base === 'ripple.enqueue') {
+      if (!args[0] || !args[1]) {
+        return { success: false, output: '▓ ERROR: Queue and payload required\n  Usage: ripple.enqueue <queue> <payload>' };
+      }
+      const payload = JSON.parse(args[1]);
+      result = await ripple.enqueue(args[0], payload);
+    } else if (base === 'ripple.dequeue') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Queue name required\n  Usage: ripple.dequeue <queue>' };
+      }
+      result = await ripple.dequeue(args[0]);
+    } else if (base === 'ripple.dead_letter') {
+      result = await ripple.deadLetter();
+    } else if (base === 'ripple.retry') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Job ID required\n  Usage: ripple.retry <job_id>' };
+      }
+      result = await ripple.retry(args[0]);
+    }
+
+    // ACCESS module (Identity & Billing)
+    else if (base === 'access.status') {
+      result = await access.status();
+    } else if (base === 'access.pulse') {
+      result = await access.pulse();
+    } else if (base === 'access.create_key') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Developer ID required\n  Usage: access.create_key <developer_id> [name] [scopes]' };
+      }
+      result = await access.createKey({ 
+        developer_id: args[0], 
+        name: args[1], 
+        scopes: args[2]?.split(',') 
+      });
+    } else if (base === 'access.validate_key') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: API key required\n  Usage: access.validate_key <api_key>' };
+      }
+      result = await access.validateKey(args[0]);
+    } else if (base === 'access.revoke_key') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Key ID required\n  Usage: access.revoke_key <key_id>' };
+      }
+      result = await access.revokeKey(args[0]);
+    } else if (base === 'access.list_keys') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Developer ID required\n  Usage: access.list_keys <developer_id>' };
+      }
+      result = await access.listKeys(args[0]);
+    } else if (base === 'access.usage') {
+      result = await access.getUsage({ 
+        api_key_id: args[0], 
+        start_date: args[1], 
+        end_date: args[2] 
+      });
+    } else if (base === 'access.quota') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: API key ID required\n  Usage: access.quota <api_key_id>' };
+      }
+      result = await access.checkQuota(args[0]);
+    } else if (base === 'access.subscription') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Developer ID required\n  Usage: access.subscription <developer_id>' };
+      }
+      result = await access.subscription(args[0]);
     }
 
     // Unknown command
