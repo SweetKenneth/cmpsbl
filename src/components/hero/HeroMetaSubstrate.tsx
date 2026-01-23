@@ -1,16 +1,16 @@
 /**
- * META HERO: The Substrate OS
- * Streamlined visualization with arrows showing evolution
- * Mobile-first, neon-vibrant design
+ * META HERO: The Cognitive Substrate
+ * Clear value proposition for all audiences: Gaming, Developers, Enterprise
+ * Mobile-first, performance-optimized
  */
 
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { 
   ArrowRight, 
-  Sparkles, 
   Brain, 
   Moon, 
   Shield, 
@@ -18,22 +18,19 @@ import {
   Eye,
   MessageSquare,
   Settings,
-  ChevronRight,
   Cpu,
   Network,
   Fingerprint,
-  RefreshCw
+  RefreshCw,
+  Gamepad2,
+  Code,
+  Building2,
+  Sparkles,
+  CheckCircle2,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-// AI Models that flow through
-const aiModels = [
-  { name: "GPT", color: "hsl(var(--neon-green))" },
-  { name: "Claude", color: "hsl(var(--neon-amber))" },
-  { name: "Grok", color: "hsl(var(--neon-blue))" },
-  { name: "Gemini", color: "hsl(var(--neon-purple))" },
-];
-
-// The 11 core modules (v4.0.0 kernel architecture)
+// The 11 core modules (v4.1.1 kernel architecture)
 const coreModules = [
   { icon: Cpu, name: "Core", color: "hsl(var(--muted-foreground))" },
   { icon: Network, name: "Ripple", color: "hsl(var(--neon-green))" },
@@ -48,539 +45,307 @@ const coreModules = [
   { icon: RefreshCw, name: "Modernizer", color: "hsl(30 80% 55%)" },
 ];
 
-// Orbit ring around substrate core - using CSS animation with GPU acceleration to reduce main-thread work
-function OrbitRing({ radius, duration, color }: { radius: number; duration: number; color: string }) {
-  return (
-    <div
-      className="absolute rounded-full border animate-spin will-change-transform"
-      style={{
-        width: radius * 2,
-        height: radius * 2,
-        borderColor: `${color}`,
-        borderWidth: 1,
-        opacity: 0.3,
-        left: `calc(50% - ${radius}px)`,
-        top: `calc(50% - ${radius}px)`,
-        animationDuration: `${duration}s`,
-        animationTimingFunction: 'linear',
-        transform: 'translateZ(0)', // Force GPU layer
-      }}
-    >
-      <div
-        className="absolute w-2 h-2 rounded-full"
-        style={{
-          background: color,
-          boxShadow: `0 0 12px ${color}, 0 0 24px ${color}`,
-          top: -4,
-          left: "50%",
-          marginLeft: -4,
-        }}
-      />
-    </div>
-  );
-}
+// Audience cards
+const audienceCards = [
+  {
+    icon: Gamepad2,
+    title: "Game Developers",
+    description: "NPCs that remember, dream, and evolve",
+    features: ["Persistent NPC memory", "Dream cycles", "Dynamic dialogue"],
+    href: "/gaming",
+    color: "text-purple-500",
+    gradient: "from-purple-500/20 to-violet-500/20",
+  },
+  {
+    icon: Code,
+    title: "Software Developers",
+    description: "Apps that think, learn, and adapt",
+    features: ["3-tier memory", "AI routing", "Self-improvement"],
+    href: "/developers",
+    color: "text-cyan-500",
+    gradient: "from-cyan-500/20 to-blue-500/20",
+  },
+  {
+    icon: Building2,
+    title: "Enterprise",
+    description: "Operations that optimize themselves",
+    features: ["Workflow memory", "Decision support", "Audit trails"],
+    href: "/use-cases",
+    color: "text-amber-500",
+    gradient: "from-amber-500/20 to-orange-500/20",
+  },
+];
 
-// Wave arc between icons using SVG
-function WaveArcsBetweenIcons() {
-  const radius = 85; // Increased for 11 modules
-  const centerX = 128; // Half of 256px (md:w-64)
-  const centerY = 128;
-  
-  // Calculate positions for each module
-  const positions = coreModules.map((_, i) => {
-    const angle = (i / coreModules.length) * Math.PI * 2 - Math.PI / 2;
-    return {
-      x: centerX + Math.cos(angle) * radius,
-      y: centerY + Math.sin(angle) * radius,
-    };
-  });
-  
-  // Create wave paths between adjacent icons
-  const wavePaths = positions.map((pos, i) => {
-    const nextPos = positions[(i + 1) % positions.length];
-    const midX = (pos.x + nextPos.x) / 2;
-    const midY = (pos.y + nextPos.y) / 2;
-    
-    // Calculate control point for the wave (push outward from center)
-    const dx = midX - centerX;
-    const dy = midY - centerY;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-    const normalX = dx / dist;
-    const normalY = dy / dist;
-    
-    // Wave amplitude
-    const waveOffset = 15;
-    const ctrlX = midX + normalX * waveOffset;
-    const ctrlY = midY + normalY * waveOffset;
-    
-    return {
-      path: `M ${pos.x} ${pos.y} Q ${ctrlX} ${ctrlY} ${nextPos.x} ${nextPos.y}`,
-      color: coreModules[i].color,
-      nextColor: coreModules[(i + 1) % coreModules.length].color,
-    };
-  });
-  
-  return (
-    <svg
-      className="absolute inset-0 w-full h-full pointer-events-none"
-      viewBox="0 0 256 256"
-      style={{ overflow: "visible" }}
-    >
-      <defs>
-        {wavePaths.map((wave, i) => (
-          <linearGradient key={`grad-${i}`} id={`wave-gradient-${i}`} x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor={wave.color} stopOpacity="0.6" />
-            <stop offset="50%" stopColor={wave.nextColor} stopOpacity="0.8" />
-            <stop offset="100%" stopColor={wave.nextColor} stopOpacity="0.6" />
-          </linearGradient>
-        ))}
-      </defs>
-      
-      {wavePaths.map((wave, i) => (
-        <g key={`wave-group-${i}`}>
-          {/* Base wave glow - static path, no continuous animation */}
-          <path
-            d={wave.path}
-            fill="none"
-            stroke={`url(#wave-gradient-${i})`}
-            strokeWidth="3"
-            strokeLinecap="round"
-            filter="blur(2px)"
-            opacity="0.4"
-          />
-          
-          {/* Animated energy pulse using SVG native animation only */}
-          <circle
-            r="3"
-            fill={wave.color}
-            filter={`drop-shadow(0 0 6px ${wave.color})`}
-          >
-            <animate 
-              attributeName="opacity" 
-              values="0;1;1;0" 
-              dur="2s" 
-              repeatCount="indefinite" 
-              begin={`${i * 0.3}s`} 
-            />
-            <animateMotion
-              dur="2s"
-              repeatCount="indefinite"
-              begin={`${i * 0.3}s`}
-              path={wave.path}
-            />
-          </circle>
-        </g>
-      ))}
-    </svg>
-  );
-}
-
-// The central substrate core
-function SubstrateCore() {
+// Compact module orbit visualization
+function ModuleOrbit() {
   const [hoveredModule, setHoveredModule] = useState<number | null>(null);
   
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 1, delay: 0.3 }}
-      className="relative w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 flex items-center justify-center mx-auto"
-    >
-      {/* Outer glow pulse - CSS animation instead of Framer Motion to prevent reflows */}
+    <div className="relative w-48 h-48 sm:w-56 sm:h-56 flex items-center justify-center mx-auto">
+      {/* Outer glow */}
       <div
-        className="absolute inset-0 rounded-full animate-hero-glow-pulse"
+        className="absolute inset-0 rounded-full animate-pulse"
         style={{
-          background: "radial-gradient(circle, hsl(var(--neon-cyan) / 0.3) 0%, hsl(var(--neon-magenta) / 0.15) 50%, transparent 70%)",
+          background: "radial-gradient(circle, hsl(var(--neon-cyan) / 0.2) 0%, transparent 70%)",
+          animationDuration: "3s",
         }}
       />
       
-      {/* Wave arcs between module icons */}
-      <WaveArcsBetweenIcons />
+      {/* Orbit ring */}
+      <div
+        className="absolute rounded-full border border-border/30"
+        style={{
+          width: "85%",
+          height: "85%",
+          left: "7.5%",
+          top: "7.5%",
+        }}
+      />
       
-      {/* Orbit rings - expanded for 11 modules */}
-      <OrbitRing radius={100} duration={12} color="hsl(var(--neon-cyan))" />
-      <OrbitRing radius={115} duration={18} color="hsl(var(--neon-magenta))" />
-      <OrbitRing radius={130} duration={25} color="hsl(var(--neon-amber))" />
-      
-      {/* Inner substrate core - using CSS animation for pulse effect */}
+      {/* Inner core */}
       <div 
         className="absolute inset-6 sm:inset-8 rounded-full border-2 backdrop-blur-md flex items-center justify-center z-10"
         style={{
-          background: "linear-gradient(135deg, hsl(var(--neon-cyan) / 0.15), hsl(var(--neon-magenta) / 0.1))",
-          borderColor: "hsl(var(--neon-cyan) / 0.5)",
-          boxShadow: "0 0 40px hsl(var(--neon-cyan) / 0.3), inset 0 0 30px hsl(var(--neon-cyan) / 0.1)",
+          background: "linear-gradient(135deg, hsl(var(--neon-cyan) / 0.1), hsl(var(--neon-magenta) / 0.05))",
+          borderColor: "hsl(var(--primary) / 0.3)",
         }}
       >
-        <div className="text-center animate-pulse" style={{ animationDuration: '3s' }}>
+        <div className="text-center">
           <div 
-            className="text-lg sm:text-xl md:text-2xl font-black tracking-tight"
+            className="text-base sm:text-lg font-bold tracking-tight"
             style={{
-              background: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-magenta)), hsl(var(--neon-amber)))",
+              background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-magenta)))",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
-              filter: "drop-shadow(0 0 10px hsl(var(--neon-cyan) / 0.5))",
             }}
           >
             SUBSTRATE
           </div>
-          <div className="text-xs sm:text-sm text-muted-foreground font-medium">OS</div>
+          <div className="text-[10px] text-muted-foreground font-medium">11 Modules</div>
         </div>
       </div>
       
-      {/* 11 Module icons - simplified with CSS hover, no continuous JS animation */}
+      {/* Module icons */}
       {coreModules.map((mod, i) => {
         const angle = (i / coreModules.length) * Math.PI * 2 - Math.PI / 2;
-        const radius = 85; // Increased for 11 modules
+        const radius = 70;
         const x = Math.cos(angle) * radius;
         const y = Math.sin(angle) * radius;
         
         return (
           <div
             key={mod.name}
-            className="absolute w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center cursor-pointer z-20 transition-transform duration-200 hover:scale-125"
+            className="absolute w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center cursor-pointer z-20 transition-transform duration-200 hover:scale-125"
             style={{
-              left: `calc(50% + ${x}px - 12px)`,
-              top: `calc(50% + ${y}px - 12px)`,
-              background: hoveredModule === i ? `${mod.color}` : `${mod.color}30`,
-              border: `2px solid ${mod.color}`,
-              boxShadow: `0 0 15px ${mod.color}, 0 0 30px ${mod.color}50`,
+              left: `calc(50% + ${x}px - 10px)`,
+              top: `calc(50% + ${y}px - 10px)`,
+              background: hoveredModule === i ? mod.color : `${mod.color}30`,
+              border: `1.5px solid ${mod.color}`,
+              boxShadow: `0 0 8px ${mod.color}50`,
             }}
             onMouseEnter={() => setHoveredModule(i)}
             onMouseLeave={() => setHoveredModule(null)}
+            title={mod.name}
           >
-            {/* Inner power glow - static */}
-            <div
-              className="absolute inset-0 rounded-full"
-              style={{
-                background: `radial-gradient(circle, ${mod.color}40 0%, transparent 70%)`,
-              }}
-            />
             <mod.icon 
-              className="w-3 h-3 sm:w-3.5 sm:h-3.5 relative z-10" 
+              className="w-2.5 h-2.5 sm:w-3 sm:h-3" 
               style={{ 
                 color: hoveredModule === i ? "hsl(var(--background))" : mod.color,
-                filter: `drop-shadow(0 0 4px ${mod.color})`,
               }} 
             />
           </div>
         );
       })}
-    </motion.div>
+    </div>
   );
 }
 
-// Router hub connecting AI models - using SVG native animations to prevent forced reflows
-function RouterHub() {
-  const modelCount = aiModels.length;
-  const hubWidth = 280;
-  const spacing = hubWidth / (modelCount - 1);
-  const hubCenterX = (hubWidth + 40) / 2;
-  
-  return (
-    <svg
-      className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 pointer-events-none"
-      width={hubWidth + 40}
-      height="60"
-      viewBox={`0 0 ${hubWidth + 40} 60`}
-      style={{ overflow: "visible" }}
-    >
-      {/* Central router node - using SVG animate instead of Framer Motion */}
-      <circle
-        cx={hubCenterX}
-        cy="20"
-        r="8"
-        fill="hsl(var(--neon-cyan))"
-        filter="drop-shadow(0 0 8px hsl(var(--neon-cyan)))"
-      >
-        <animate attributeName="r" values="8;10;8" dur="2s" repeatCount="indefinite" />
-        <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite" />
-      </circle>
-      
-      {/* Inner router ring - SVG native animation */}
-      <circle
-        cx={hubCenterX}
-        cy="20"
-        r="12"
-        fill="none"
-        stroke="hsl(var(--neon-cyan))"
-        strokeWidth="1"
-        opacity="0.4"
-      >
-        <animate attributeName="r" values="12;16;12" dur="2s" repeatCount="indefinite" />
-      </circle>
-      
-      {/* Connection lines from router to each model - static lines */}
-      {aiModels.map((model, i) => {
-        const modelX = 20 + i * spacing;
-        
-        return (
-          <g key={`router-line-${i}`}>
-            {/* Static line from hub to model */}
-            <line
-              x1={hubCenterX}
-              y1="28"
-              x2={modelX}
-              y2="55"
-              stroke={model.color}
-              strokeWidth="2"
-              strokeLinecap="round"
-              opacity="0.5"
-            />
-            
-            {/* Animated pulse using SVG animateMotion - no JS involved */}
-            <circle
-              r="3"
-              fill={model.color}
-              filter={`drop-shadow(0 0 4px ${model.color})`}
-            >
-              <animate attributeName="opacity" values="0;1;1;0" dur="1.5s" repeatCount="indefinite" begin={`${i * 0.4}s`} />
-              <animateMotion
-                dur="1.5s"
-                repeatCount="indefinite"
-                begin={`${i * 0.4}s`}
-                path={`M${hubCenterX},28 L${modelX},55`}
-              />
-            </circle>
-          </g>
-        );
-      })}
-      
-      {/* Router label */}
-      <text
-        x={hubCenterX}
-        y="8"
-        textAnchor="middle"
-        fill="hsl(var(--neon-cyan))"
-        fontSize="8"
-        fontWeight="bold"
-        style={{ filter: "drop-shadow(0 0 4px hsl(var(--neon-cyan)))" }}
-      >
-        ROUTER
-      </text>
-    </svg>
-  );
-}
-
-// AI Model evolution visualization with router
-function AIEvolutionFlow() {
+// Audience card component
+function AudienceCard({ 
+  icon: Icon, 
+  title, 
+  description, 
+  features, 
+  href, 
+  color, 
+  gradient,
+  delay = 0 
+}: {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+  features: string[];
+  href: string;
+  color: string;
+  gradient: string;
+  delay?: number;
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.8, duration: 0.8 }}
-      className="w-full max-w-2xl mx-auto px-4"
+      transition={{ delay, duration: 0.5 }}
     >
-      {/* EVOLVE label */}
-      <div className="text-center mb-6">
-        <span 
-          className="text-xs sm:text-sm font-bold tracking-[0.3em] uppercase"
-          style={{
-            background: "linear-gradient(90deg, hsl(var(--neon-cyan)), hsl(var(--neon-magenta)))",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          }}
-        >
-          EVOLVE
-        </span>
-      </div>
-      
-      {/* AI Models row with router hub */}
-      <div className="relative flex items-center justify-center gap-3 sm:gap-4 md:gap-6 flex-wrap pt-16">
-        {/* Router hub above models */}
-        <RouterHub />
-        
-        {aiModels.map((model, i) => (
-          <motion.div
-            key={model.name}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 1 + i * 0.1 }}
-            className="relative group"
-          >
-            {/* Model bubble */}
-            <div 
-              className="w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center border-2 transition-all duration-300"
-              style={{
-                borderColor: model.color,
-                background: `${model.color}15`,
-                boxShadow: `0 0 15px ${model.color}40, inset 0 0 10px ${model.color}20`,
-              }}
-            >
-              <span 
-                className="text-xs sm:text-sm font-bold"
-                style={{ color: model.color }}
-              >
-                {model.name}
-              </span>
-            </div>
-            
-            {/* Glow on hover */}
-            <motion.div
-              className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-              style={{ 
-                boxShadow: `0 0 30px ${model.color}, 0 0 60px ${model.color}50`,
-              }}
-            />
-          </motion.div>
-        ))}
-      </div>
+      <Link to={href} className="group block h-full">
+        <div className={cn(
+          "relative h-full p-5 sm:p-6 rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm",
+          "hover:border-current/30 hover:shadow-lg transition-all duration-300",
+          color
+        )}>
+          {/* Gradient background on hover */}
+          <div className={cn(
+            "absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br -z-10",
+            gradient
+          )} />
+          
+          {/* Icon */}
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-current/10 flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform">
+            <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
+          </div>
+          
+          <h3 className="text-base sm:text-lg font-bold text-foreground mb-1">{title}</h3>
+          <p className="text-xs sm:text-sm text-muted-foreground mb-3">{description}</p>
+          
+          {/* Features */}
+          <ul className="space-y-1.5 mb-3">
+            {features.map((feature, idx) => (
+              <li key={idx} className="flex items-center gap-1.5 text-[11px] sm:text-xs text-muted-foreground">
+                <CheckCircle2 className="w-3 h-3 text-current opacity-60" />
+                {feature}
+              </li>
+            ))}
+          </ul>
+          
+          {/* Arrow */}
+          <div className="flex items-center gap-1 text-xs sm:text-sm font-medium text-current opacity-0 group-hover:opacity-100 transition-opacity">
+            Learn more
+            <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </div>
+      </Link>
     </motion.div>
   );
 }
 
 export function HeroMetaSubstrate() {
-  // Defer heavy animations until after initial paint to prevent forced reflows
-  const [animationsReady, setAnimationsReady] = useState(false);
-  
-  useEffect(() => {
-    // Use requestIdleCallback or setTimeout to defer animation initialization
-    const deferAnimation = () => setAnimationsReady(true);
-    
-    if ('requestIdleCallback' in window) {
-      (window as Window & { requestIdleCallback: (cb: () => void) => number }).requestIdleCallback(deferAnimation);
-    } else {
-      // Fallback: wait for initial paint, then enable animations
-      requestAnimationFrame(() => {
-        requestAnimationFrame(deferAnimation);
-      });
-    }
-  }, []);
-
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center px-4 py-20 overflow-hidden contain-paint">
-      {/* Background - plain white in light mode, gradient in dark mode */}
-      <div 
-        className="absolute inset-0 dark:hidden"
-        style={{
-          background: "hsl(var(--background))",
-        }}
-      />
-      <div 
-        className="absolute inset-0 hidden dark:block"
-        style={{
-          background: "linear-gradient(180deg, hsl(var(--background)) 0%, hsl(220 30% 2%) 50%, hsl(var(--background)) 100%)",
-        }}
-      />
+    <section className="relative min-h-[90vh] flex flex-col items-center justify-center px-4 py-16 sm:py-20 overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0 bg-background" />
       
-      {/* Radial neon spotlight - only animate after initial paint */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-30 dark:opacity-100"
-        style={{
-          background: "radial-gradient(ellipse 80% 50% at 50% 40%, hsl(var(--neon-cyan) / 0.12) 0%, transparent 60%)",
-        }}
-      />
-      
-      {/* Secondary magenta glow - static to prevent reflows */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-20 dark:opacity-100"
-        style={{
-          background: "radial-gradient(ellipse 60% 40% at 60% 60%, hsl(var(--neon-magenta) / 0.08) 0%, transparent 50%)",
-        }}
-      />
-      
-      {/* Grid pattern - more subtle in light mode */}
+      {/* Subtle grid */}
       <div 
-        className="absolute inset-0 opacity-[0.02] dark:opacity-[0.04]"
+        className="absolute inset-0 opacity-[0.02] dark:opacity-[0.03]"
         style={{
-          backgroundImage: `linear-gradient(hsl(var(--neon-cyan) / 0.3) 1px, transparent 1px), 
-                           linear-gradient(90deg, hsl(var(--neon-cyan) / 0.3) 1px, transparent 1px)`,
+          backgroundImage: `linear-gradient(hsl(var(--primary) / 0.3) 1px, transparent 1px), 
+                           linear-gradient(90deg, hsl(var(--primary) / 0.3) 1px, transparent 1px)`,
           backgroundSize: "60px 60px",
         }}
       />
+      
+      {/* Gradient orbs */}
+      <div className="absolute top-0 -left-32 w-96 h-96 bg-primary/5 rounded-full blur-[100px]" />
+      <div className="absolute bottom-0 -right-32 w-96 h-96 bg-violet-500/5 rounded-full blur-[100px]" />
 
-      {/* Hero Headline */}
-      <motion.div
-        initial={{ opacity: 0, y: -30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="relative z-10 text-center mb-8 md:mb-12"
-      >
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 tracking-tight leading-tight">
-          <span className="text-foreground">Where Machines </span>
-          <span 
-            style={{
-              background: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-magenta)), hsl(var(--neon-amber)))",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              filter: "drop-shadow(0 0 20px hsl(var(--neon-cyan) / 0.5))",
-            }}
-          >
-            Learn to Dream
-          </span>
-        </h1>
-        
-        <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed px-4">
-          Cognitive Operating System for Serious Builders
-        </p>
-        <p 
-          className="text-sm sm:text-base md:text-lg font-medium mt-2"
-          style={{ color: "hsl(var(--neon-cyan))" }}
+      <div className="relative z-10 w-full max-w-6xl mx-auto">
+        {/* Badge */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-4 sm:mb-6"
         >
-          Memory. Dreams. Defense. Intelligence.
-        </p>
-      </motion.div>
+          <Badge variant="outline" className="gap-1.5 px-3 py-1 text-xs sm:text-sm">
+            <Sparkles className="w-3 h-3" />
+            Cognitive Orchestration Substrate
+          </Badge>
+        </motion.div>
 
-      {/* Central Substrate Core */}
-      <div className="relative z-10 mb-10 md:mb-14">
-        <SubstrateCore />
+        {/* Main headline */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="text-center mb-6 sm:mb-8"
+        >
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-3 sm:mb-4 tracking-tight leading-tight">
+            <span className="text-foreground">Build AI That </span>
+            <span 
+              className="inline-block"
+              style={{
+                background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)), hsl(var(--neon-magenta)))",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              Remembers
+            </span>
+          </h1>
+          <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
+            The cognitive substrate gives your applications persistent memory, 
+            dream cycles, intelligent routing, and autonomous learning. 
+            <span className="hidden sm:inline"> One infrastructure for gaming, software, and enterprise.</span>
+          </p>
+        </motion.div>
+
+        {/* Module Orbit - visible on larger screens */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2 }}
+          className="hidden md:block mb-8"
+        >
+          <ModuleOrbit />
+        </motion.div>
+
+        {/* Audience Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-10 px-2">
+          {audienceCards.map((card, idx) => (
+            <AudienceCard key={card.title} {...card} delay={0.3 + idx * 0.1} />
+          ))}
+        </div>
+
+        {/* CTA Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
+        >
+          <Button asChild size="lg" className="w-full sm:w-auto gap-2 px-6 sm:px-8">
+            <Link to="/codelab">
+              <Code className="w-4 h-4" />
+              Start Building
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </Button>
+          <Button asChild variant="outline" size="lg" className="w-full sm:w-auto gap-2 px-6 sm:px-8">
+            <Link to="/demo">
+              <Eye className="w-4 h-4" />
+              See Demo
+            </Link>
+          </Button>
+        </motion.div>
+        
+        {/* Stats bar */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8 }}
+          className="flex flex-wrap justify-center gap-4 sm:gap-8 mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-border/50"
+        >
+          {[
+            { value: "11", label: "Modules" },
+            { value: "124+", label: "Actions" },
+            { value: "60+", label: "Tables" },
+            { value: "<100ms", label: "Latency" },
+          ].map((stat) => (
+            <div key={stat.label} className="text-center px-3">
+              <div className="text-lg sm:text-xl md:text-2xl font-bold text-foreground">{stat.value}</div>
+              <div className="text-[10px] sm:text-xs text-muted-foreground">{stat.label}</div>
+            </div>
+          ))}
+        </motion.div>
       </div>
-
-      {/* AI Evolution Flow */}
-      <AIEvolutionFlow />
-
-      {/* CTAs - Stacked and centered for mobile */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.5, duration: 0.6 }}
-        className="relative z-10 flex flex-col items-center gap-3 sm:gap-4 mt-10 md:mt-14 w-full max-w-sm mx-auto px-4"
-      >
-        <Button 
-          asChild 
-          size="lg" 
-          className="w-full sm:w-auto px-8 py-6 text-base font-bold border-0"
-          style={{
-            background: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-magenta)))",
-            boxShadow: "0 0 30px hsl(var(--neon-cyan) / 0.5), 0 0 60px hsl(var(--neon-magenta) / 0.3)",
-            color: "hsl(var(--background))",
-          }}
-        >
-          <Link to="/codelab" className="flex items-center justify-center gap-2">
-            <Sparkles className="w-5 h-5" />
-            Build Now
-            <ArrowRight className="w-5 h-5" />
-          </Link>
-        </Button>
-        
-        <Button 
-          asChild 
-          variant="outline" 
-          size="lg" 
-          className="w-full sm:w-auto px-8 py-6 text-base font-medium border-2"
-          style={{
-            borderColor: "hsl(var(--neon-magenta) / 0.5)",
-            color: "hsl(var(--neon-magenta))",
-            background: "hsl(var(--neon-magenta) / 0.1)",
-          }}
-        >
-          <Link to="/feed-dream-eater" className="flex items-center justify-center gap-2">
-            <Moon className="w-5 h-5" />
-            Feed the Dream Eater
-          </Link>
-        </Button>
-        
-        <Button 
-          asChild 
-          variant="ghost" 
-          size="lg" 
-          className="w-full sm:w-auto px-8 py-6 text-base font-medium text-muted-foreground hover:text-foreground"
-        >
-          <Link to="/documentation" className="flex items-center justify-center gap-2">
-            Explore Docs
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </Button>
-      </motion.div>
     </section>
   );
 }
