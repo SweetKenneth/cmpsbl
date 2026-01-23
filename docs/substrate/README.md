@@ -1,13 +1,13 @@
 # promptfluid® Substrate — Developer Documentation
 
-**v2026.01 — Usage Documentation**
+**v4.0.0 — Usage Documentation**
 
 ---
 
 ## ⚠️ BYOK Required
 
 This is **usage documentation only**. You must:
-1. Deploy your own Supabase project
+1. Deploy your own infrastructure
 2. Provide your own AI provider API keys
 3. No compute resources are included
 
@@ -17,7 +17,7 @@ This is **usage documentation only**. You must:
 
 | Document | Description |
 |----------|-------------|
-| [**USER-MANUAL.md**](./USER-MANUAL.md) | API usage guide with all modules and examples |
+| [**USER-MANUAL.md**](./USER-MANUAL.md) | API usage guide with all 11 modules |
 | [**MODULE-ACTIONS-REGISTRY.md**](./MODULE-ACTIONS-REGISTRY.md) | Complete action reference |
 | [**CHANGELOG.md**](./CHANGELOG.md) | Version history |
 
@@ -29,7 +29,7 @@ This is **usage documentation only**. You must:
 POST /functions/v1/pf-substrate
 
 {
-  "module": "brain|decode|defense|nexus|vision|dream|system",
+  "module": "core|ripple|access|brain|decode|defense|nexus|vision|dream|system|modernizer",
   "action": "<action-name>",
   "payload": { ... }
 }
@@ -37,10 +37,15 @@ POST /functions/v1/pf-substrate
 
 ---
 
-## SDK
+## 11-Module Architecture (v4.0.0)
 
-Download the TypeScript SDK at `/sdk/substrate-client.ts`
+| Layer | Modules |
+|-------|---------|
+| Kernel | CORE, RIPPLE, ACCESS |
+| Cognitive | BRAIN, DECODE, DREAM |
+| Operational | DEFENSE, NEXUS, VISION |
+| Administrative | SYSTEM, MODERNIZER |
 
 ---
 
-*promptfluid® — Build on the substrate. Bring your own keys.*
+*promptfluid® v4.0.0 — Build on the substrate. Bring your own keys.*
