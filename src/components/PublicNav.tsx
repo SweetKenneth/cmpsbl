@@ -14,6 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
+import { CmpsblLogo } from "@/components/CmpsblLogo";
 
 interface NavSection {
   name: string;
@@ -103,10 +104,10 @@ export function PublicNav() {
           {/* Logo */}
           <Link 
             to="/" 
-            className="text-lg font-semibold text-foreground tracking-tight hover:text-primary transition-colors shrink-0"
+            className="shrink-0 hover:opacity-80 transition-opacity"
           >
-            CMPSBL<span className="text-primary">®</span>
-            <span className="hidden sm:inline text-xs text-muted-foreground ml-1.5 font-normal">by promptfluid</span>
+            <CmpsblLogo size="sm" className="hidden sm:block" />
+            <CmpsblLogo size="sm" iconOnly className="sm:hidden h-8 w-8" />
           </Link>
 
           {/* Desktop Menu */}
