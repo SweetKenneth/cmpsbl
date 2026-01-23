@@ -967,21 +967,93 @@ serve(async (req) => {
       data: { insights: insights.slice(0, 3), sources: sources.slice(0, 3), provider, artifactId },
     });
 
+    // Record telemetry for completed task
+    try {
+      await supabase.rpc('increment_agent_telemetry', {
+        p_agency_id: agencyId,
+        p_member_id: memberId || null,
+        p_field: 'tasks_completed',
+        p_increment: 1,
+        p_skill_usage: { [taskType]: 1 },
+        p_execution_time_ms: executionTime,
+      });
+      // Record API calls and websites crawled
+      if (sources.length > 0) {
+        await supabase.rpc('increment_agent_telemetry', {
+          p_agency_id: agencyId,
+          p_member_id: memberId || null,
+          p_field: 'websites_crawled',
+          p_increment: sources.length,
+          p_skill_usage: null,
+          p_execution_time_ms: 0,
+        });
+      }
+    } catch (telemetryError) {
+      console.warn('Telemetry recording failed (non-critical):', telemetryError);
+    }
+
     console.log(`✅ Task ${taskId} completed in ${executionTime}ms`);
     return new Response(JSON.stringify({ success: true, taskId, result, insights, sources, provider, executionTimeMs: executionTime, artifactId }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
 
   } catch (error) {
     console.error("❌ Task execution error:", error);
+    
+    // Improved error handling - always try to update the task status
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
+    
     try {
-      const { taskId } = await req.json().catch(() => ({}));
-      if (taskId) {
-        const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-        const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-        const supabase = createClient(supabaseUrl, supabaseKey);
-        await supabase.from('agency_tasks').update({ status: 'failed', error_message: error instanceof Error ? error.message : 'Unknown error', progress: 0 }).eq('id', taskId);
-        await supabase.from('agency_task_logs').insert({ task_id: taskId, log_type: 'error', message: `❌ Task failed: ${error instanceof Error ? error.message : 'Unknown error'}` });
+      // Try to get taskId from the request body that was already parsed
+      let taskIdToUpdate: string | undefined;
+      let agencyIdForTelemetry: string | undefined;
+      let memberIdForTelemetry: string | undefined;
+      
+      try {
+        const body = await req.clone().json();
+        taskIdToUpdate = body.taskId;
+        agencyIdForTelemetry = body.agencyId;
+        memberIdForTelemetry = body.memberId;
+      } catch {
+        // Request body already consumed, try to extract from original
       }
-    } catch (e) { console.error('Failed to update task status:', e); }
-    return new Response(JSON.stringify({ error: error instanceof Error ? error.message : "Unknown error", success: false }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      
+      if (taskIdToUpdate) {
+        await supabase.from('agency_tasks').update({ 
+          status: 'failed', 
+          error_message: error instanceof Error ? error.message : 'Unknown error', 
+          progress: 0,
+          updated_at: new Date().toISOString(),
+        }).eq('id', taskIdToUpdate);
+        
+        await supabase.from('agency_task_logs').insert({ 
+          task_id: taskIdToUpdate, 
+          log_type: 'error', 
+          message: `❌ Task failed: ${error instanceof Error ? error.message : 'Unknown error'}` 
+        });
+        
+        // Record failed task telemetry
+        if (agencyIdForTelemetry) {
+          try {
+            await supabase.rpc('increment_agent_telemetry', {
+              p_agency_id: agencyIdForTelemetry,
+              p_member_id: memberIdForTelemetry || null,
+              p_field: 'tasks_failed',
+              p_increment: 1,
+              p_skill_usage: null,
+              p_execution_time_ms: 0,
+            });
+          } catch { /* ignore telemetry errors */ }
+        }
+      }
+    } catch (e) { 
+      console.error('Failed to update task status:', e); 
+    }
+    
+    return new Response(JSON.stringify({ 
+      error: error instanceof Error ? error.message : "Unknown error", 
+      success: false,
+      details: error instanceof Error ? error.stack : undefined,
+    }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
   }
 });

@@ -493,6 +493,10 @@ class SubstrateClient {
     /** Scan archived edge functions for repurposing opportunities */
     archived: () =>
       this.invoke({ module: 'modernizer', action: 'archived' }),
+    
+    /** Generate code to implement an archived function repurposing */
+    implement: (archived_function: string, target_action: string) =>
+      this.invoke({ module: 'modernizer', action: 'implement_archived', payload: { archived_function, target_action } }),
   };
 
 }

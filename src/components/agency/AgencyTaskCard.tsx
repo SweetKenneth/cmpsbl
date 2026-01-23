@@ -1,5 +1,5 @@
 /**
- * Agency Task Card — Individual task with cancel/retry actions
+ * Agency Task Card — Individual task with cancel/retry actions and results viewer
  */
 
 import { useState } from 'react';
@@ -10,6 +10,7 @@ import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 import { TASK_TYPES, TASK_STATUSES, type AgencyTask } from '@/lib/agency/agencyTasks';
 import { formatDistanceToNow } from 'date-fns';
+import { TaskResultViewer } from './TaskResultViewer';
 
 interface AgencyTaskCardProps {
   task: AgencyTask;
@@ -163,6 +164,13 @@ export function AgencyTaskCard({
               <span>Started {formatDistanceToNow(new Date(task.started_at), { addSuffix: true })}</span>
             )}
           </div>
+        </div>
+      )}
+
+      {/* View results for completed tasks */}
+      {task.status === 'completed' && (
+        <div className="mt-2">
+          <TaskResultViewer task={task} />
         </div>
       )}
 
