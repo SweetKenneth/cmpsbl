@@ -707,13 +707,18 @@ serve(async (req) => {
               body: { module: mod, action: 'pulse' }
             });
             
+            // Check for pulse.alive (newer format) or success flag
+            const isModuleHealthy = modData?.pulse?.alive === true || 
+                                    modData?.pulse?.status === 'healthy' ||
+                                    modData?.success === true;
+            
             validationResults.push({
               check: `module_${mod}`,
-              status: modError ? 'fail' : modData?.active ? 'pass' : 'warning',
+              status: modError ? 'fail' : isModuleHealthy ? 'pass' : 'warning',
               message: modError 
                 ? `${mod}: unreachable`
-                : modData?.active 
-                  ? `${mod}: healthy`
+                : isModuleHealthy 
+                  ? `${mod}: healthy (v${modData?.pulse?.version || 'unknown'})`
                   : `${mod}: degraded`,
               details: modData
             });
@@ -883,6 +888,7 @@ serve(async (req) => {
           status: 'pass' | 'fail' | 'skip';
           latency_ms?: number;
           error?: string;
+          details?: string;
         }> = [];
         
         const modules = ['brain', 'defense', 'nexus', 'vision', 'dream', 'system', 'modernizer', 'decode'];
@@ -896,12 +902,18 @@ serve(async (req) => {
               body: { module: mod, action: 'pulse' }
             });
             
+            // Check for pulse.alive (newer format) or success flag
+            const isPulseAlive = data?.pulse?.alive === true || 
+                                 data?.pulse?.status === 'healthy' ||
+                                 data?.success === true;
+            
             testResults.push({
               module: mod,
               test: 'pulse',
-              status: error ? 'fail' : data?.active ? 'pass' : 'fail',
+              status: error ? 'fail' : isPulseAlive ? 'pass' : 'fail',
               latency_ms: Date.now() - startTime,
               error: error?.message,
+              details: isPulseAlive ? `v${data?.pulse?.version || 'unknown'}` : undefined,
             });
           } catch (e) {
             testResults.push({
@@ -926,6 +938,7 @@ serve(async (req) => {
               status: error ? 'fail' : data?.success ? 'pass' : 'fail',
               latency_ms: Date.now() - statusStart,
               error: error?.message,
+              details: data?.stats ? JSON.stringify(data.stats).slice(0, 50) : undefined,
             });
           } catch (e) {
             testResults.push({
@@ -938,23 +951,24 @@ serve(async (req) => {
         }
         
         // Additional integration tests
-        // Test substrate gateway directly
+        // Test substrate gateway directly with system.health action
         try {
           const gwStart = Date.now();
           const { data, error } = await supabase.functions.invoke('pf-substrate', {
-            body: { action: 'health' }
+            body: { module: 'system', action: 'health' }
           });
           
           testResults.push({
             module: 'gateway',
-            test: 'health_endpoint',
-            status: error ? 'fail' : data?.success ? 'pass' : 'fail',
+            test: 'system_health',
+            status: error ? 'fail' : (data?.success || data?.overall_health !== undefined) ? 'pass' : 'fail',
             latency_ms: Date.now() - gwStart,
+            details: data?.overall_health ? `${data.overall_health}%` : undefined,
           });
         } catch (e) {
           testResults.push({
             module: 'gateway',
-            test: 'health_endpoint',
+            test: 'system_health',
             status: 'fail',
             error: e instanceof Error ? e.message : 'Unknown',
           });
