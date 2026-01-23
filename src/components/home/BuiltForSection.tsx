@@ -1,6 +1,6 @@
 /**
  * Built For Section — Shows who CMPSBL is designed for
- * Gaming, Developers, Enterprise with clear CTAs
+ * Gaming, Developers, Enterprise with enhanced visuals
  */
 
 import { Link } from "react-router-dom";
@@ -16,12 +16,11 @@ import {
   Shield,
   MessageSquare,
   Eye,
-  Terminal,
-  Rocket,
+  Sparkles,
+  CheckCircle2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 const audiences = [
@@ -29,46 +28,55 @@ const audiences = [
     icon: Gamepad2,
     badge: "For Game Devs",
     title: "NPCs That Dream",
-    description: "Give your NPCs persistent memory, emotional evolution, and the ability to learn from every player interaction. They remember. They grow.",
+    tagline: "Give your characters a soul",
+    description: "Persistent memory, emotional evolution, and the ability to learn from every player interaction. NPCs that remember, grow, and surprise.",
     features: [
       { icon: Brain, text: "3-tier NPC memory" },
-      { icon: Moon, text: "Dream cycles for learning" },
+      { icon: Moon, text: "Dream cycle processing" },
       { icon: MessageSquare, text: "Context-aware dialogue" },
     ],
+    stats: { value: "∞", label: "Memory Depth" },
     cta: "Build Game AI",
     href: "/gaming",
-    color: "text-purple-500",
-    gradient: "from-purple-500 to-violet-600",
+    gradient: "from-purple-600 via-violet-600 to-fuchsia-600",
+    glow: "shadow-purple-500/25",
+    iconGradient: "from-purple-500 to-violet-500",
   },
   {
     icon: Code,
     badge: "For Developers",
     title: "Apps That Think",
-    description: "Add persistent memory, intelligent routing, and self-improvement to any application. 70+ templates. Full SDK. Production-ready.",
+    tagline: "Intelligence as infrastructure",
+    description: "Add persistent memory, intelligent routing, and self-improvement to any application. 70+ templates. Full SDK. Production-ready from day one.",
     features: [
       { icon: Zap, text: "Multi-provider routing" },
       { icon: Brain, text: "Memory persistence" },
       { icon: Eye, text: "Full observability" },
     ],
+    stats: { value: "70+", label: "Templates" },
     cta: "Start Coding",
     href: "/developers",
-    color: "text-cyan-500",
-    gradient: "from-cyan-500 to-blue-600",
+    gradient: "from-cyan-600 via-blue-600 to-indigo-600",
+    glow: "shadow-cyan-500/25",
+    iconGradient: "from-cyan-500 to-blue-500",
   },
   {
     icon: Building2,
     badge: "For Enterprise",
     title: "Operations That Learn",
-    description: "Workflow memory, decision support, audit trails, and governance built-in. Deploy on your infrastructure with full control.",
+    tagline: "Institutional memory, automated",
+    description: "Workflow memory, decision support, audit trails, and governance built-in. Deploy on your infrastructure with complete control.",
     features: [
       { icon: Shield, text: "Security & compliance" },
       { icon: Brain, text: "Institutional memory" },
       { icon: Eye, text: "Audit everything" },
     ],
+    stats: { value: "100%", label: "Your Data" },
     cta: "Enterprise Solutions",
     href: "/use-cases",
-    color: "text-amber-500",
-    gradient: "from-amber-500 to-orange-600",
+    gradient: "from-amber-500 via-orange-500 to-red-500",
+    glow: "shadow-amber-500/25",
+    iconGradient: "from-amber-500 to-orange-500",
   },
 ];
 
@@ -77,42 +85,89 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
   
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ delay: index * 0.15, duration: 0.5 }}
-      className="h-full"
+      transition={{ delay: index * 0.15, duration: 0.6 }}
+      className="h-full group"
     >
-      <Card className={cn(
-        "h-full border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden",
-        "hover:border-current/30 transition-all duration-500 group",
-        audience.color
+      <div className={cn(
+        "relative h-full rounded-3xl overflow-hidden",
+        "border border-border/50 bg-card/50 backdrop-blur-sm",
+        "transition-all duration-500",
+        "hover:shadow-2xl",
+        audience.glow
       )}>
-        <CardContent className="p-6 sm:p-8 h-full flex flex-col">
+        {/* Gradient top bar */}
+        <div className={cn(
+          "h-1.5 w-full bg-gradient-to-r",
+          audience.gradient
+        )} />
+        
+        <div className="p-6 sm:p-8 flex flex-col h-full">
+          {/* Header */}
+          <div className="flex items-start justify-between mb-5">
+            {/* Icon with gradient background */}
+            <div className={cn(
+              "w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center",
+              "bg-gradient-to-br shadow-lg",
+              audience.gradient
+            )}>
+              <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
+            </div>
+            
+            {/* Stat */}
+            <div className="text-right">
+              <div className={cn(
+                "text-2xl sm:text-3xl font-black bg-gradient-to-r bg-clip-text text-transparent",
+                audience.gradient
+              )}>
+                {audience.stats.value}
+              </div>
+              <div className="text-[10px] sm:text-xs text-muted-foreground">
+                {audience.stats.label}
+              </div>
+            </div>
+          </div>
+          
           {/* Badge */}
           <Badge 
             variant="outline" 
-            className="w-fit mb-4 text-current border-current/30"
+            className={cn(
+              "w-fit mb-3 border-current/30",
+              `bg-gradient-to-r ${audience.gradient} bg-clip-text text-transparent`
+            )}
           >
-            <Icon className="w-3 h-3 mr-1" />
             {audience.badge}
           </Badge>
           
-          {/* Title */}
-          <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-2 group-hover:text-current transition-colors">
+          {/* Title & Tagline */}
+          <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-1">
             {audience.title}
           </h3>
+          <p className={cn(
+            "text-sm font-medium bg-gradient-to-r bg-clip-text text-transparent mb-3",
+            audience.gradient
+          )}>
+            {audience.tagline}
+          </p>
           
           {/* Description */}
-          <p className="text-sm text-muted-foreground mb-6 flex-grow">
+          <p className="text-sm text-muted-foreground mb-5 flex-grow leading-relaxed">
             {audience.description}
           </p>
           
           {/* Features */}
           <div className="space-y-2 mb-6">
             {audience.features.map((feature, idx) => (
-              <div key={idx} className="flex items-center gap-2 text-sm text-muted-foreground">
-                <feature.icon className="w-4 h-4 text-current opacity-70" />
+              <div key={idx} className="flex items-center gap-2.5 text-sm text-muted-foreground">
+                <div className={cn(
+                  "w-6 h-6 rounded-md flex items-center justify-center",
+                  "bg-gradient-to-br opacity-80",
+                  audience.gradient
+                )}>
+                  <feature.icon className="w-3.5 h-3.5 text-white" />
+                </div>
                 <span>{feature.text}</span>
               </div>
             ))}
@@ -120,38 +175,60 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
           
           {/* CTA */}
           <Button asChild className={cn(
-            "w-full gap-2 bg-gradient-to-r text-white border-0",
-            audience.gradient
+            "w-full gap-2 h-12 text-base font-semibold",
+            "bg-gradient-to-r text-white border-0 shadow-lg",
+            "transition-all duration-300 hover:shadow-xl hover:scale-[1.02]",
+            audience.gradient,
+            audience.glow
           )}>
             <Link to={audience.href}>
               {audience.cta}
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </Button>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </motion.div>
   );
 }
 
 export function BuiltForSection() {
   return (
-    <section className="relative py-16 sm:py-24 px-4">
-      <div className="max-w-7xl mx-auto">
+    <section className="relative py-20 sm:py-28 px-4 overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-muted/30" />
+        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[150px]" />
+        <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-[150px]" />
+      </div>
+      
+      <div className="relative max-w-7xl mx-auto">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-10 sm:mb-14"
+          className="text-center mb-12 sm:mb-16"
         >
-          <Badge variant="outline" className="mb-4">Built For You</Badge>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
-            Choose Your Path
+          <Badge variant="outline" className="mb-4 gap-1.5">
+            <Sparkles className="w-3 h-3" />
+            Built For You
+          </Badge>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 tracking-tight">
+            Choose Your{" "}
+            <span 
+              style={{
+                background: "linear-gradient(135deg, hsl(var(--neon-purple)), hsl(var(--neon-cyan)), hsl(var(--neon-amber)))",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              Path
+            </span>
           </h2>
-          <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
             The same cognitive infrastructure adapts to your use case. 
-            Pre-configured packages for gaming, development, and enterprise.
+            Pre-configured packages ready for gaming, development, and enterprise.
           </p>
         </motion.div>
         
