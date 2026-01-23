@@ -76,20 +76,38 @@ const PROVIDERS = {
       return data.choices?.[0]?.message?.content || '';
     },
   },
-  lovable: {
-    enabled: () => !!Deno.env.get('LOVABLE_API_KEY'),
+  cerebras: {
+    enabled: () => !!Deno.env.get('CEREBRAS_API_KEY'),
     generate: async (systemPrompt: string, userPrompt: string) => {
-      const apiKey = Deno.env.get('LOVABLE_API_KEY');
-      const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      const apiKey = Deno.env.get('CEREBRAS_API_KEY');
+      const response = await fetch("https://api.cerebras.ai/v1/chat/completions", {
         method: "POST",
         headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: "google/gemini-2.5-flash",
+          model: "llama-3.3-70b",
           messages: [{ role: "system", content: systemPrompt }, { role: "user", content: userPrompt }],
           max_tokens: 4096,
         }),
       });
-      if (!response.ok) throw new Error(`Lovable AI error: ${response.status}`);
+      if (!response.ok) throw new Error(`Cerebras error: ${response.status}`);
+      const data = await response.json();
+      return data.choices?.[0]?.message?.content || '';
+    },
+  },
+  together: {
+    enabled: () => !!Deno.env.get('TOGETHER_API_KEY'),
+    generate: async (systemPrompt: string, userPrompt: string) => {
+      const apiKey = Deno.env.get('TOGETHER_API_KEY');
+      const response = await fetch("https://api.together.xyz/v1/chat/completions", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "meta-llama/Llama-3.1-70B-Instruct-Turbo",
+          messages: [{ role: "system", content: systemPrompt }, { role: "user", content: userPrompt }],
+          max_tokens: 4096,
+        }),
+      });
+      if (!response.ok) throw new Error(`Together error: ${response.status}`);
       const data = await response.json();
       return data.choices?.[0]?.message?.content || '';
     },
@@ -138,18 +156,8 @@ async function updateProgress(supabase: any, taskId: string, progress: number, m
   return true;
 }
 
-// AI completion with fallback chain: Lovable -> Groq
+// AI completion with fallback chain: Groq -> Cerebras -> Together
 async function aiComplete(systemPrompt: string, userPrompt: string): Promise<{ content: string; provider: string }> {
-  if (PROVIDERS.lovable.enabled() && !isCircuitOpen('lovable')) {
-    try {
-      const content = await PROVIDERS.lovable.generate(systemPrompt, userPrompt);
-      recordCircuitResult('lovable', true);
-      return { content, provider: 'lovable/gemini-2.5-flash' };
-    } catch (err) {
-      console.warn('Lovable AI failed:', err);
-      recordCircuitResult('lovable', false);
-    }
-  }
   if (PROVIDERS.groq.enabled() && !isCircuitOpen('groq')) {
     try {
       const content = await PROVIDERS.groq.generate(systemPrompt, userPrompt);
@@ -158,6 +166,26 @@ async function aiComplete(systemPrompt: string, userPrompt: string): Promise<{ c
     } catch (err) {
       console.warn('Groq failed:', err);
       recordCircuitResult('groq', false);
+    }
+  }
+  if (PROVIDERS.cerebras.enabled() && !isCircuitOpen('cerebras')) {
+    try {
+      const content = await PROVIDERS.cerebras.generate(systemPrompt, userPrompt);
+      recordCircuitResult('cerebras', true);
+      return { content, provider: 'cerebras/llama-3.3-70b' };
+    } catch (err) {
+      console.warn('Cerebras failed:', err);
+      recordCircuitResult('cerebras', false);
+    }
+  }
+  if (PROVIDERS.together.enabled() && !isCircuitOpen('together')) {
+    try {
+      const content = await PROVIDERS.together.generate(systemPrompt, userPrompt);
+      recordCircuitResult('together', true);
+      return { content, provider: 'together/llama-3.1-70b' };
+    } catch (err) {
+      console.warn('Together failed:', err);
+      recordCircuitResult('together', false);
     }
   }
   return { content: 'AI providers temporarily unavailable.', provider: 'fallback' };

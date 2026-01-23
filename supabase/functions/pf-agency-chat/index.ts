@@ -48,9 +48,23 @@ serve(async (req) => {
   try {
     const { message, agencyId, agencyName, teamComposition, dreamPoolMode, command } = await req.json();
     
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) {
-      throw new Error("LOVABLE_API_KEY is not configured");
+    // Use free-tier router instead of Lovable AI
+    const AI_PROVIDERS = [
+      { key: 'GROQ_API_KEY', url: 'https://api.groq.com/openai/v1/chat/completions', model: 'llama-3.3-70b-versatile' },
+      { key: 'CEREBRAS_API_KEY', url: 'https://api.cerebras.ai/v1/chat/completions', model: 'llama-3.3-70b' },
+      { key: 'TOGETHER_API_KEY', url: 'https://api.together.xyz/v1/chat/completions', model: 'meta-llama/Llama-3.1-70B-Instruct-Turbo' },
+    ];
+    
+    let activeProvider = null;
+    for (const provider of AI_PROVIDERS) {
+      if (Deno.env.get(provider.key)) {
+        activeProvider = { ...provider, apiKey: Deno.env.get(provider.key)! };
+        break;
+      }
+    }
+    
+    if (!activeProvider) {
+      throw new Error("No AI provider configured. Add GROQ_API_KEY, CEREBRAS_API_KEY, or TOGETHER_API_KEY.");
     }
 
     // Build detailed team context
@@ -61,7 +75,6 @@ serve(async (req) => {
 
     const leader = teamComposition?.find((m: any) => m.role === 'leader');
     const leaderSpec = leader?.specialization || 'Hybrid+';
-    const specializations = teamComposition?.map((m: any) => m.specialization) || [];
 
     // Build comprehensive system prompt
     const systemPrompt = `You are the team leader of "${agencyName}", a cognitive agency on the promptfluid® substrate. Your specialization is ${leaderSpec}.
@@ -79,9 +92,6 @@ ${CAPABILITIES.canDo.map(c => `✅ ${c}`).join('\n')}
 **What we CANNOT do (be upfront about this):**
 ${CAPABILITIES.cannotDo.map(c => `❌ ${c}`).join('\n')}
 
-**To enable blocked capabilities, we would need:**
-${CAPABILITIES.wouldNeed.map(w => `🔧 ${w}`).join('\n')}
-
 ## Your Behavior Rules
 
 1. **ACTUALLY delegate work** - When users ask for tasks, create them (the system handles this automatically based on your response)
@@ -91,29 +101,18 @@ ${CAPABILITIES.wouldNeed.map(w => `🔧 ${w}`).join('\n')}
 5. **No hallucinating capabilities** - Never claim we can send emails, post to forums, or submit to sites
 6. **Suggest alternatives** - When something is out of scope, always offer what we CAN do
 
-## Response Format
-
-When creating tasks, format like:
-"**✅ Task Created:** [Task Name]
-I've assigned [brief description] to the team. Check the Tasks tab for progress."
-
-When something is out of scope:
-"**⚠️ Out of Scope:** [What they asked for]
-This requires [what we need]. 
-**What I CAN do instead:** [Alternative task]"
-
 ${command ? `\n## Active Command: ${command}\nThis will create an actual task based on user input.` : ''}
 
 Keep responses professional, concise, and action-oriented. Focus on delivering real value through tasks we can actually execute.`;
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    const response = await fetch(activeProvider.url, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        Authorization: `Bearer ${activeProvider.apiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
+        model: activeProvider.model,
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: message },
