@@ -61,7 +61,9 @@ serve(async (req) => {
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
   );
 
-  const GROQ_API_KEY = Deno.env.get("GROQ_API_KEY");
+  // Use Lovable AI endpoint instead of Groq for reliability
+  const LOVABLE_AI_URL = Deno.env.get("LOVABLE_AI_URL") || "https://ai.lovable.dev/v1";
+  const GROQ_API_KEY = Deno.env.get("GROQ_API_KEY"); // Fallback
 
   try {
     const body: CoderRequest = await req.json();
@@ -128,10 +130,12 @@ serve(async (req) => {
           }, corsHeaders, 400);
         }
 
-        if (!GROQ_API_KEY) {
+        // Try Lovable AI first, fallback to Groq
+        const useAI = true; // Always have a fallback
+        if (!LOVABLE_AI_URL && !GROQ_API_KEY) {
           return jsonResponse({
             success: false,
-            error: 'AI provider not configured (GROQ_API_KEY missing)',
+            error: 'AI provider not configured',
           }, corsHeaders, 500);
         }
 
@@ -142,9 +146,9 @@ serve(async (req) => {
         const systemPrompt = buildCoderSystemPrompt(improvement.module);
         const userPrompt = buildGenerationPrompt(improvement, brainPatterns, context);
 
-        // 3. Generate code via free-tier router
+        // 3. Generate code via Lovable AI (or fallback to Groq)
         const startTime = Date.now();
-        const generatedCode = await generateWithAI(GROQ_API_KEY, systemPrompt, userPrompt);
+        const generatedCode = await generateWithAI(LOVABLE_AI_URL, GROQ_API_KEY, systemPrompt, userPrompt);
         const latency = Date.now() - startTime;
 
         // 4. Parse and validate the response
@@ -361,13 +365,43 @@ ${context.existing_code}
 }
 
 /**
- * Generate code using free-tier AI
+ * Generate code using Lovable AI (primary) or Groq (fallback)
  */
-async function generateWithAI(apiKey: string, systemPrompt: string, userPrompt: string): Promise<string> {
+async function generateWithAI(lovableUrl: string, groqKey: string | undefined, systemPrompt: string, userPrompt: string): Promise<string> {
+  // Try Lovable AI first (no API key needed, uses project auth)
+  try {
+    const lovableResponse = await fetch(`${lovableUrl}/chat/completions`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'google/gemini-2.5-flash',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt },
+        ],
+        temperature: 0.3,
+        max_tokens: 4000,
+      }),
+    });
+
+    if (lovableResponse.ok) {
+      const data = await lovableResponse.json();
+      return data.choices[0]?.message?.content || '';
+    }
+    console.log('[CODER] Lovable AI unavailable, trying Groq fallback...');
+  } catch (e) {
+    console.log('[CODER] Lovable AI error, trying Groq fallback...', e);
+  }
+
+  // Fallback to Groq
+  if (!groqKey) {
+    throw new Error('No AI provider available');
+  }
+
   const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${apiKey}`,
+      'Authorization': `Bearer ${groqKey}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({

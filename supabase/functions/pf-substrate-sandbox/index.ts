@@ -321,7 +321,7 @@ function validateCode(code: string, language: string): { valid: boolean; issues:
 }
 
 /**
- * Execute code in E2B sandbox
+ * Execute code in E2B sandbox using Code Interpreter
  */
 async function executeInE2B(
   apiKey: string,
@@ -329,43 +329,47 @@ async function executeInE2B(
   language: string,
   timeoutMs: number
 ): Promise<{ success: boolean; output?: string; error?: string; logs?: string[] }> {
-  // E2B Code Interpreter SDK integration
-  const E2B_API_URL = "https://api.e2b.dev/v1";
+  // E2B Code Interpreter API v2
+  const E2B_API_URL = "https://api.e2b.dev/v2";
+  const logs: string[] = [];
 
   try {
-    // Create sandbox session
+    // Create code interpreter sandbox
+    logs.push('[INFO] Creating E2B code interpreter sandbox...');
+    
     const createResponse = await fetch(`${E2B_API_URL}/sandboxes`, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${apiKey}`,
+        "X-E2B-API-Key": apiKey,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        template: language === 'typescript' ? 'base' : 'base',
-        timeout: Math.ceil(timeoutMs / 1000),
+        templateID: "code-interpreter-v1",
+        timeout: Math.min(Math.ceil(timeoutMs / 1000), 300),
       }),
     });
 
     if (!createResponse.ok) {
       const errorText = await createResponse.text();
+      logs.push(`[ERROR] Sandbox creation failed: ${createResponse.status}`);
       throw new Error(`E2B sandbox creation failed: ${createResponse.status} - ${errorText}`);
     }
 
     const sandbox = await createResponse.json();
-    const sandboxId = sandbox.sandboxId || sandbox.id;
-    const logs: string[] = [];
+    const sandboxId = sandbox.sandboxID || sandbox.id;
+    logs.push(`[OK] Sandbox created: ${sandboxId}`);
 
     try {
-      // Execute code
-      const execResponse = await fetch(`${E2B_API_URL}/sandboxes/${sandboxId}/code/execute`, {
+      // Execute code using the code interpreter
+      const execResponse = await fetch(`${E2B_API_URL}/sandboxes/${sandboxId}/executions`, {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${apiKey}`,
+          "X-E2B-API-Key": apiKey,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           code,
-          language: language === 'typescript' ? 'ts' : 'js',
+          language: language === 'typescript' ? 'python' : 'python', // Code interpreter uses Python
         }),
       });
 
@@ -382,28 +386,32 @@ async function executeInE2B(
       const result = await execResponse.json();
       logs.push(`[OK] Execution completed`);
 
+      // Extract output from result
+      const stdout = result.results?.map((r: { text?: string }) => r.text).filter(Boolean).join('\n') || '';
+      const stderr = result.logs?.stderr || '';
+      const error = result.error?.value || '';
+
       return {
-        success: !result.error,
-        output: result.stdout || result.output || result.result,
-        error: result.stderr || result.error,
+        success: !error && !stderr,
+        output: stdout || result.results?.[0]?.text || 'Execution completed',
+        error: error || stderr || undefined,
         logs,
       };
     } finally {
-      // Always cleanup sandbox
+      // Cleanup sandbox
       await fetch(`${E2B_API_URL}/sandboxes/${sandboxId}`, {
         method: "DELETE",
-        headers: {
-          "Authorization": `Bearer ${apiKey}`,
-        },
+        headers: { "X-E2B-API-Key": apiKey },
       }).catch(() => {
         logs.push('[WARN] Sandbox cleanup failed');
       });
     }
   } catch (error) {
+    logs.push(`[FATAL] ${error instanceof Error ? error.message : 'Unknown error'}`);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'E2B execution error',
-      logs: [`[FATAL] ${error instanceof Error ? error.message : 'Unknown error'}`],
+      logs,
     };
   }
 }
