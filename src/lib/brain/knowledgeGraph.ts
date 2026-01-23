@@ -4,6 +4,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import type { Json } from '@/integrations/supabase/types';
 
 export type NodeType = string;
 export type RelationType = string;
@@ -28,6 +29,28 @@ export interface GraphEdge {
   relation_type: string;
   weight: number;
   confidence: number;
+}
+
+// Helper to safely convert Json to Record<string, any>
+function parseAttributes(attrs: Json | null): Record<string, any> {
+  if (attrs === null || attrs === undefined) return {};
+  if (typeof attrs === 'object' && !Array.isArray(attrs)) return attrs as Record<string, any>;
+  return {};
+}
+
+// Map database row to GraphNode
+function mapToGraphNode(row: any): GraphNode {
+  return {
+    id: row.id,
+    node_type: row.node_type,
+    label: row.label,
+    description: row.description ?? undefined,
+    memory_tier: row.memory_tier ?? undefined,
+    weight: row.weight ?? 1,
+    centrality_score: row.centrality_score ?? 0,
+    cluster_id: row.cluster_id ?? undefined,
+    attributes: parseAttributes(row.attributes),
+  };
 }
 
 export interface GraphStats {
@@ -137,7 +160,7 @@ export async function getNodesByType(
       .limit(limit);
 
     if (error) throw error;
-    return data || [];
+    return (data || []).map(mapToGraphNode);
   } catch (error) {
     console.error('Get nodes error:', error);
     return [];
@@ -160,7 +183,7 @@ export async function getClusterNodes(
       .limit(limit);
 
     if (error) throw error;
-    return data || [];
+    return (data || []).map(mapToGraphNode);
   } catch (error) {
     console.error('Get cluster nodes error:', error);
     return [];
@@ -326,8 +349,8 @@ export async function getHubNodes(limit: number = 20): Promise<GraphNode[]> {
       .select('*')
       .in('id', topIds);
 
-    // Sort by connection count
-    return (nodes || []).sort((a, b) => {
+    // Sort by connection count and map to GraphNode
+    return (nodes || []).map(mapToGraphNode).sort((a, b) => {
       const countA = connectionCounts.get(a.id) || 0;
       const countB = connectionCounts.get(b.id) || 0;
       return countB - countA;
@@ -362,7 +385,7 @@ export async function searchNodes(
 
     const { data, error } = await q;
     if (error) throw error;
-    return data || [];
+    return (data || []).map(mapToGraphNode);
   } catch (error) {
     console.error('Search nodes error:', error);
     return [];
