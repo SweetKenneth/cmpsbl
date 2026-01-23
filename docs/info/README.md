@@ -39,8 +39,8 @@ This directory contains all documentation required to understand, deploy, operat
 
 | Field | Value |
 |-------|-------|
-| Document Set | PF-DOCS-4.0.0 |
-| Version | v4.0.0 |
+| Document Set | PF-DOCS-4.1.1 |
+| Version | v4.1.1 |
 | Last Updated | 2026-01-23 |
 | Maintainer | Kenneth E Sweet Jr |
 | Contact | promptfluid@gmail.com |

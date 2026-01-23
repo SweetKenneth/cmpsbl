@@ -8,7 +8,7 @@
 | Version | v2026.01 |
 | Last Updated | 2026-01-23 |
 | Status | ACTIVE |
-| Substrate Version | 4.0.0 |
+| Substrate Version | 4.1.1 |
 | Type | Cognitive Orchestration Substrate |
 | Changelog | [CHANGELOG.md](./CHANGELOG.md) |
 

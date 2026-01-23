@@ -186,7 +186,7 @@ Quick health check for the kernel.
 
 ```typescript
 const pulse = await substrate.core.pulse();
-// Returns: { alive: true, version: '4.0.0', uptime_ms: 7200000 }
+// Returns: { alive: true, version: '4.1.1', uptime_ms: 7200000 }
 ```
 
 ---

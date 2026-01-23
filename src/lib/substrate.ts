@@ -1,17 +1,19 @@
 /**
  * promptfluid® Substrate Client
- * v2026.01 — Cognitive Orchestration Substrate for AI Systems
+ * v4.1.1 — Cognitive Orchestration Substrate (Brain v2.0)
  * 
- * Unified API for all substrate modules:
- * - Brain: Memory, learning, reflection
- * - Decode: Intent decoding, cognitive interface (Interpreter Primitive)
+ * Unified API for all 11 substrate modules:
+ * - Core: Kernel (scheduler, lifecycle, routing)
+ * - Ripple: Message bus (queues, pub/sub, events)
+ * - Access: Identity (API keys, quotas, usage)
+ * - Brain: Three-tier memory, learning, knowledge graph
+ * - Decode: Intent decoding, cognitive interface
  * - Defense: Security, bot detection, threats
  * - Nexus: AI routing, multi-provider
  * - Vision: Observability, metrics, health
- * 
- * Decode is the substrate's interpreter primitive. It translates human
- * ambiguity into substrate-structured cognition without asserting facts,
- * agency, or execution authority.
+ * - Dream: Nocturnal processing, mutation
+ * - System: Administration, backup, healing
+ * - Modernizer: Self-upgrade, proposals
  */
 
 import { supabase } from '@/integrations/supabase/client';

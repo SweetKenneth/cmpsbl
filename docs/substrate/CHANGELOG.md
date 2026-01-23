@@ -4,6 +4,44 @@
 
 ---
 
+## 2026-01-23 · v4.1.1
+
+⟨This entry describes the completion of Brain v2.0, a three-tier memory architecture, knowledge graph v2, and full system hardening.⟩
+
+### Brain
+
+- **Three-Tier Memory System** deployed: Hot (≤500 high-value), Warm (≤2000 intermediate), Cold (≤10000 archived). Automatic tiering based on value_score, access_count, and recency.
+- **brain/memory_tiering** action added for on-demand rebalancing.
+- **brain/memory_prune** action added for noise removal (diagnostics, heartbeats, duplicates).
+- **Knowledge Graph v2** with typed relations (semantic, causal, temporal, hierarchical), node clustering, and centrality scoring.
+- Batch tiering function (`pf-brain-batch-tiering`) handles 20,000+ memory migration without timeout.
+- `brain_memory_pruned` table provides 30-day soft-delete recovery.
+
+### Modernizer
+
+- Shadow mode upgrade workflow now clears old proposals after processing.
+- Improved substrate scan recommendations based on memory health metrics.
+
+### System
+
+- Full v4.1.1 version bump across all 11 modules.
+- All documentation, SDK, and public-facing pages updated.
+- SubstrateProvider now checks all 11 modules (core, ripple, access, brain, decode, defense, nexus, vision, dream, system, modernizer).
+
+### SDK
+
+- `brain.tiering()`, `brain.prune()` methods added to substrate client.
+- Knowledge graph client library (`src/lib/brain/knowledgeGraph.ts`) with type-safe graph operations.
+- Memory tiering client library (`src/lib/brain/memoryTiering.ts`) with search across tiers.
+
+### Website
+
+- Landing page (Explore) updated: 11 modules displayed, 124+ actions documented.
+- Module cards reflect full kernel architecture (Core, Ripple, Access visible).
+- DevPortal SDK documentation updated for v4.1.1.
+
+---
+
 ## 2026-01-17 · v3.11.0
 
 ⟨This entry describes the observed addition of three internal substrate capabilities prioritizing observability, defense intelligence, and memory coherence. No UI surfaces were modified; these actions are opt-in and proof-compatible.⟩
@@ -295,7 +333,7 @@
 | Voice | Decode Interpreter (Epistemic) |
 | Status | PUBLIC |
 | Last Updated | 2026-01-23 |
-| Substrate Version | 4.0.0 |
+| Substrate Version | 4.1.1 |
 
 ---
 

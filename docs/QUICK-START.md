@@ -2,7 +2,7 @@
 
 **Get started with the Cognitive OS in 5 minutes**
 
-*Version 4.0.0 — Updated 2026-01-23*
+*Version 4.1.1 — Updated 2026-01-23*
 
 ---
 

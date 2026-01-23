@@ -1,6 +1,6 @@
 # promptfluid® Substrate — User Manual
 
-**v4.0.0 — Cognitive Orchestration Substrate**
+**v4.1.1 — Cognitive Orchestration Substrate (Brain v2.0)**
 
 *Last Updated: 2026-01-23*
 
