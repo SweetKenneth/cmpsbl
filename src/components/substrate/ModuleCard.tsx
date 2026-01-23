@@ -5,7 +5,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Brain, MessageSquare, Shield, Zap, Eye, Moon, Settings, Sparkles } from 'lucide-react';
+import { Brain, MessageSquare, Shield, Zap, Eye, Moon, Settings, Sparkles, Cpu, Radio, Key } from 'lucide-react';
 import { SubstrateModule } from '@/lib/substrate';
 
 interface ModuleCardProps {
@@ -71,6 +71,24 @@ const moduleConfig: Record<SubstrateModule, {
     label: 'Modernizer',
     description: 'Website modernization',
     color: 'text-fuchsia-500',
+  },
+  core: {
+    icon: Cpu,
+    label: 'Core',
+    description: 'Kernel, scheduling, lifecycle',
+    color: 'text-orange-500',
+  },
+  ripple: {
+    icon: Radio,
+    label: 'Ripple',
+    description: 'Message bus, pub/sub, queues',
+    color: 'text-cyan-500',
+  },
+  access: {
+    icon: Key,
+    label: 'Access',
+    description: 'API keys, billing, metering',
+    color: 'text-amber-500',
   },
 };
 
