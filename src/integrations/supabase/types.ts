@@ -7120,6 +7120,59 @@ export type Database = {
         }
         Relationships: []
       }
+      substrate_applied_improvements: {
+        Row: {
+          applied_at: string | null
+          applied_in_plan: string | null
+          applied_mode: string
+          change_type: string
+          created_at: string | null
+          description: string | null
+          id: string
+          improvement_id: string | null
+          improvement_key: string
+          is_active: boolean | null
+          module: string
+          rolled_back_at: string | null
+        }
+        Insert: {
+          applied_at?: string | null
+          applied_in_plan?: string | null
+          applied_mode?: string
+          change_type: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          improvement_id?: string | null
+          improvement_key: string
+          is_active?: boolean | null
+          module: string
+          rolled_back_at?: string | null
+        }
+        Update: {
+          applied_at?: string | null
+          applied_in_plan?: string | null
+          applied_mode?: string
+          change_type?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          improvement_id?: string | null
+          improvement_key?: string
+          is_active?: boolean | null
+          module?: string
+          rolled_back_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "substrate_applied_improvements_applied_in_plan_fkey"
+            columns: ["applied_in_plan"]
+            isOneToOne: false
+            referencedRelation: "substrate_upgrade_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       substrate_apps: {
         Row: {
           app_id: string
