@@ -1,123 +1,58 @@
 /**
- * Module Status Bar — Live module indicators with pulse animations
- * Visual representation of all 11 substrate module health (v4.1.1)
+ * Module Status Bar v2026 — Premium module indicators with animated states
+ * Visual representation of all 11 substrate modules with enhanced UX
  */
 
 import { useState, useEffect } from 'react';
-import { Brain, MessageSquare, Shield, Zap, Eye, Moon, Cpu, Sparkles, Radio, Key, RefreshCw, Settings } from 'lucide-react';
+import { Brain, MessageSquare, Shield, Zap, Eye, Moon, Cpu, Sparkles, Radio, Key, RefreshCw, Settings, Layers } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { useSubstrateHealthScore } from '@/hooks/useSubstrateOS';
 import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 
 interface ModuleConfig {
   id: string;
   name: string;
+  shortName: string;
+  layer: 'kernel' | 'cognitive' | 'operational' | 'admin';
   icon: React.ElementType;
   description: string;
-  activeColor: string;
+  color: string;
   glowColor: string;
 }
 
 const MODULES: ModuleConfig[] = [
-  // Kernel Layer (v4.0.0)
-  { 
-    id: 'core', 
-    name: 'CORE', 
-    icon: Cpu, 
-    description: 'Kernel orchestration & scheduling',
-    activeColor: 'text-orange-400',
-    glowColor: 'shadow-orange-500/50'
-  },
-  { 
-    id: 'ripple', 
-    name: 'RIPPLE', 
-    icon: Radio, 
-    description: 'Message bus & event sourcing',
-    activeColor: 'text-cyan-400',
-    glowColor: 'shadow-cyan-500/50'
-  },
-  { 
-    id: 'access', 
-    name: 'ACCESS', 
-    icon: Key, 
-    description: 'Identity, API keys & metering',
-    activeColor: 'text-amber-400',
-    glowColor: 'shadow-amber-500/50'
-  },
+  // Kernel Layer
+  { id: 'core', name: 'CORE', shortName: 'COR', layer: 'kernel', icon: Cpu, description: 'Kernel orchestration & scheduling', color: 'text-orange-400', glowColor: 'bg-orange-500' },
+  { id: 'ripple', name: 'RIPPLE', shortName: 'RIP', layer: 'kernel', icon: Radio, description: 'Message bus & event sourcing', color: 'text-cyan-400', glowColor: 'bg-cyan-500' },
+  { id: 'access', name: 'ACCESS', shortName: 'ACC', layer: 'kernel', icon: Key, description: 'Identity, API keys & metering', color: 'text-amber-400', glowColor: 'bg-amber-500' },
   // Cognitive Layer
-  { 
-    id: 'brain', 
-    name: 'BRAIN', 
-    icon: Brain, 
-    description: 'Cognitive processing & memory',
-    activeColor: 'text-purple-400',
-    glowColor: 'shadow-purple-500/50'
-  },
-  { 
-    id: 'decode', 
-    name: 'DECODE', 
-    icon: MessageSquare, 
-    description: 'Epistemic conversation engine',
-    activeColor: 'text-fuchsia-400',
-    glowColor: 'shadow-fuchsia-500/50'
-  },
-  { 
-    id: 'nexus', 
-    name: 'NEXUS', 
-    icon: Zap, 
-    description: 'AI provider routing',
-    activeColor: 'text-green-400',
-    glowColor: 'shadow-green-500/50'
-  },
+  { id: 'brain', name: 'BRAIN', shortName: 'BRN', layer: 'cognitive', icon: Brain, description: 'Cognitive processing & memory', color: 'text-purple-400', glowColor: 'bg-purple-500' },
+  { id: 'decode', name: 'DECODE', shortName: 'DEC', layer: 'cognitive', icon: MessageSquare, description: 'Epistemic conversation engine', color: 'text-fuchsia-400', glowColor: 'bg-fuchsia-500' },
+  { id: 'nexus', name: 'NEXUS', shortName: 'NEX', layer: 'cognitive', icon: Zap, description: 'AI provider routing', color: 'text-green-400', glowColor: 'bg-green-500' },
   // Operational Layer
-  { 
-    id: 'defense', 
-    name: 'DEFENSE', 
-    icon: Shield, 
-    description: 'Security & threat detection',
-    activeColor: 'text-red-400',
-    glowColor: 'shadow-red-500/50'
-  },
-  { 
-    id: 'vision', 
-    name: 'VISION', 
-    icon: Eye, 
-    description: 'Observability & telemetry',
-    activeColor: 'text-blue-400',
-    glowColor: 'shadow-blue-500/50'
-  },
-  { 
-    id: 'dream', 
-    name: 'DREAM', 
-    icon: Moon, 
-    description: 'Dream-Eater consumption engine',
-    activeColor: 'text-violet-400',
-    glowColor: 'shadow-violet-500/50'
-  },
+  { id: 'defense', name: 'DEFENSE', shortName: 'DEF', layer: 'operational', icon: Shield, description: 'Security & threat detection', color: 'text-red-400', glowColor: 'bg-red-500' },
+  { id: 'vision', name: 'VISION', shortName: 'VIS', layer: 'operational', icon: Eye, description: 'Observability & telemetry', color: 'text-blue-400', glowColor: 'bg-blue-500' },
+  { id: 'dream', name: 'DREAM', shortName: 'DRM', layer: 'operational', icon: Moon, description: 'Dream-Eater consumption engine', color: 'text-violet-400', glowColor: 'bg-violet-500' },
   // Admin Layer
-  { 
-    id: 'system', 
-    name: 'SYSTEM', 
-    icon: Settings, 
-    description: 'Core administration & control',
-    activeColor: 'text-emerald-400',
-    glowColor: 'shadow-emerald-500/50'
-  },
-  { 
-    id: 'modernizer', 
-    name: 'MODERNIZER', 
-    icon: Sparkles, 
-    description: 'Self-improvement engine',
-    activeColor: 'text-rose-400',
-    glowColor: 'shadow-rose-500/50'
-  },
+  { id: 'system', name: 'SYSTEM', shortName: 'SYS', layer: 'admin', icon: Settings, description: 'Core administration & control', color: 'text-emerald-400', glowColor: 'bg-emerald-500' },
+  { id: 'modernizer', name: 'MODERNIZER', shortName: 'MOD', layer: 'admin', icon: Sparkles, description: 'Self-improvement engine', color: 'text-rose-400', glowColor: 'bg-rose-500' },
 ];
 
-function ModuleIndicator({ module, isActive, isLoading }: { 
+const LAYER_CONFIG = {
+  kernel: { label: 'Kernel', color: 'text-orange-400', border: 'border-orange-500/30' },
+  cognitive: { label: 'Cognitive', color: 'text-purple-400', border: 'border-purple-500/30' },
+  operational: { label: 'Operational', color: 'text-blue-400', border: 'border-blue-500/30' },
+  admin: { label: 'Admin', color: 'text-emerald-400', border: 'border-emerald-500/30' },
+};
+
+function ModuleIndicator({ module, isActive, isLoading, index }: { 
   module: ModuleConfig; 
   isActive: boolean;
   isLoading: boolean;
+  index: number;
 }) {
   const Icon = module.icon;
   
@@ -125,61 +60,74 @@ function ModuleIndicator({ module, isActive, isLoading }: {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <button
+          <motion.button
             className={cn(
-              "group relative flex flex-col items-center gap-1 p-2 sm:p-3 rounded-lg border transition-all duration-300",
+              "group relative flex flex-col items-center gap-1.5 p-2 sm:p-3 rounded-xl border transition-all duration-300",
               "hover:scale-105 active:scale-95",
               isLoading 
-                ? "border-border/50 bg-muted/20" 
+                ? "border-border/30 bg-muted/10" 
                 : isActive 
-                  ? `border-current/30 bg-current/5 ${module.activeColor} shadow-lg ${module.glowColor}`
-                  : "border-border/30 bg-muted/10 text-muted-foreground"
+                  ? cn("border-current/40 bg-current/10", module.color)
+                  : "border-border/30 bg-muted/5 text-muted-foreground/50"
             )}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3, delay: index * 0.03 }}
           >
-            {/* Glow backdrop for active modules */}
+            {/* Active glow */}
             {isActive && !isLoading && (
-              <div className={cn(
-                "absolute inset-0 rounded-lg blur-lg opacity-30 -z-10",
-                module.activeColor.replace('text-', 'bg-')
-              )} />
+              <motion.div 
+                className={cn("absolute inset-0 rounded-xl blur-lg opacity-30 -z-10", module.glowColor)}
+                animate={{ opacity: [0.2, 0.4, 0.2] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
             )}
             
             {/* Icon */}
             <div className="relative">
               <Icon className={cn(
                 "w-4 h-4 sm:w-5 sm:h-5 transition-all",
-                isLoading ? "animate-pulse text-muted-foreground" : ""
+                isLoading ? "animate-pulse text-muted-foreground/50" : ""
               )} />
               
-              {/* Status dot */}
+              {/* Status indicator */}
               <span className={cn(
-                "absolute -top-0.5 -right-0.5 w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full border border-background",
-                isLoading ? "bg-muted-foreground" :
-                isActive ? "bg-green-500" : "bg-red-500"
+                "absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full border-2 border-background",
+                isLoading ? "bg-muted-foreground/50" :
+                isActive ? "bg-emerald-500" : "bg-red-500/70"
               )}>
                 {isActive && !isLoading && (
-                  <span className="absolute inset-0 rounded-full bg-green-500 animate-ping opacity-75" />
+                  <span className="absolute inset-0 rounded-full bg-emerald-500 animate-ping opacity-75" />
                 )}
               </span>
             </div>
             
-            {/* Label - hidden on very small screens */}
+            {/* Label */}
             <span className={cn(
-              "hidden sm:block text-[8px] sm:text-[9px] font-mono font-medium tracking-widest",
-              isLoading ? "text-muted-foreground" : ""
+              "hidden sm:block text-[8px] font-mono font-semibold tracking-widest",
+              isLoading ? "text-muted-foreground/50" : ""
             )}>
-              {module.name}
+              {module.shortName}
             </span>
-          </button>
+          </motion.button>
         </TooltipTrigger>
-        <TooltipContent side="bottom" className="max-w-xs">
-          <p className="font-medium">{module.name}</p>
-          <p className="text-xs text-muted-foreground">{module.description}</p>
-          <p className="text-xs mt-1">
-            Status: <span className={isActive ? "text-green-500" : "text-red-500"}>
-              {isActive ? "ONLINE" : "OFFLINE"}
-            </span>
-          </p>
+        <TooltipContent side="bottom" className="max-w-xs bg-popover/95 backdrop-blur-xl border-border/50">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <Icon className={cn("w-4 h-4", module.color)} />
+              <span className="font-semibold">{module.name}</span>
+              <Badge variant="outline" className={cn("text-[8px] h-4", LAYER_CONFIG[module.layer].border)}>
+                {LAYER_CONFIG[module.layer].label}
+              </Badge>
+            </div>
+            <p className="text-xs text-muted-foreground">{module.description}</p>
+            <div className="flex items-center gap-2 pt-1 border-t border-border/30">
+              <span className={cn("w-2 h-2 rounded-full", isActive ? "bg-emerald-500" : "bg-red-500")} />
+              <span className={cn("text-xs font-medium", isActive ? "text-emerald-400" : "text-red-400")}>
+                {isActive ? "ONLINE" : "OFFLINE"}
+              </span>
+            </div>
+          </div>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
@@ -191,19 +139,15 @@ export function ModuleStatusBar() {
   const [simulatedModules, setSimulatedModules] = useState<Record<string, boolean>>({});
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  // Simulate module status coming online after initial load
-  // This provides a better UX while waiting for actual substrate responses
   useEffect(() => {
     if (!healthScore.isLoading) {
-      // If no modules are active from the API, simulate them as online for demo purposes
       const anyActive = Object.values(healthScore.modules).some(Boolean);
       if (!anyActive) {
-        // Stagger the modules coming online for visual effect
         const timers: NodeJS.Timeout[] = [];
         MODULES.forEach((module, idx) => {
           const timer = setTimeout(() => {
             setSimulatedModules(prev => ({ ...prev, [module.id]: true }));
-          }, 100 + idx * 80);
+          }, 100 + idx * 60);
           timers.push(timer);
         });
         return () => timers.forEach(clearTimeout);
@@ -217,7 +161,6 @@ export function ModuleStatusBar() {
     setTimeout(() => setIsRefreshing(false), 1000);
   };
 
-  // Use real status if available, otherwise use simulated
   const getModuleStatus = (moduleId: string): boolean => {
     const realStatus = healthScore.modules[moduleId as keyof typeof healthScore.modules];
     if (realStatus) return true;
@@ -225,49 +168,110 @@ export function ModuleStatusBar() {
   };
   
   const activeCount = MODULES.filter(m => getModuleStatus(m.id)).length;
-  const totalCount = MODULES.length; // 11 modules
+  const totalCount = MODULES.length;
+  const healthPercent = Math.round((activeCount / totalCount) * 100);
+  
+  // Group modules by layer
+  const modulesByLayer = MODULES.reduce((acc, module) => {
+    if (!acc[module.layer]) acc[module.layer] = [];
+    acc[module.layer].push(module);
+    return acc;
+  }, {} as Record<string, ModuleConfig[]>);
   
   return (
-    <div className="p-3 sm:p-4 border border-border/50 rounded-xl bg-card/50 backdrop-blur-sm">
-      <div className="flex items-center justify-between mb-3">
-        <h3 className="text-xs font-mono text-muted-foreground uppercase tracking-widest">
-          Module Status
-        </h3>
+    <motion.div 
+      className="p-4 sm:p-5 border border-border/40 rounded-2xl bg-gradient-to-br from-card/80 to-card/40 backdrop-blur-xl"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+    >
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500/20 to-fuchsia-500/20 border border-cyan-500/30 flex items-center justify-center">
+            <Layers className="w-4 h-4 text-cyan-400" />
+          </div>
+          <div>
+            <h3 className="text-sm font-semibold text-foreground">Module Status</h3>
+            <p className="text-[10px] text-muted-foreground font-mono">4-layer kernel architecture</p>
+          </div>
+        </div>
+        
         <div className="flex items-center gap-3">
           <Button
-            variant="ghost"
+            variant="outline"
             size="sm"
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className="h-6 px-2 text-xs"
+            className="h-8 px-3 text-xs border-border/50 bg-background/50"
           >
-            <RefreshCw className={cn("w-3 h-3 mr-1", isRefreshing && "animate-spin")} />
+            <RefreshCw className={cn("w-3 h-3 mr-1.5", isRefreshing && "animate-spin")} />
             Refresh
           </Button>
-          <div className="flex items-center gap-2 text-xs">
-            <span className="text-muted-foreground">ACTIVE</span>
+          
+          {/* Status Summary */}
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/30 border border-border/30">
+            <div className={cn(
+              "w-2 h-2 rounded-full",
+              activeCount === totalCount ? "bg-emerald-500" : 
+              activeCount >= totalCount * 0.7 ? "bg-amber-500" : "bg-red-500"
+            )} />
+            <span className="text-xs font-mono text-muted-foreground">ACTIVE</span>
             <span className={cn(
-              "font-mono font-bold",
-              activeCount === totalCount ? "text-green-500" : 
-              activeCount >= totalCount * 0.7 ? "text-amber-500" : "text-destructive"
+              "text-sm font-bold font-mono",
+              activeCount === totalCount ? "text-emerald-400" : 
+              activeCount >= totalCount * 0.7 ? "text-amber-400" : "text-red-400"
             )}>
               {activeCount}/{totalCount}
             </span>
+            <Badge variant="outline" className="text-[9px] h-5 ml-1">
+              {healthPercent}%
+            </Badge>
           </div>
         </div>
       </div>
       
-      {/* Responsive grid - fewer columns on mobile */}
-      <div className="grid grid-cols-6 sm:grid-cols-6 lg:grid-cols-11 gap-1.5 sm:gap-2">
-        {MODULES.map((module) => (
+      {/* Layer Labels - Desktop only */}
+      <div className="hidden lg:grid lg:grid-cols-4 gap-2 mb-2 px-1">
+        {Object.entries(LAYER_CONFIG).map(([layer, config]) => (
+          <div key={layer} className="flex items-center gap-1.5">
+            <span className={cn("w-1.5 h-1.5 rounded-full", config.color.replace('text-', 'bg-'))} />
+            <span className={cn("text-[9px] font-mono uppercase tracking-widest", config.color)}>
+              {config.label}
+            </span>
+          </div>
+        ))}
+      </div>
+      
+      {/* Modules Grid - Grouped by layer on desktop */}
+      <div className="hidden lg:grid lg:grid-cols-4 gap-3">
+        {(['kernel', 'cognitive', 'operational', 'admin'] as const).map(layer => (
+          <div key={layer} className={cn("flex flex-col gap-2 p-2 rounded-xl border", LAYER_CONFIG[layer].border, "bg-muted/5")}>
+            {modulesByLayer[layer]?.map((module, idx) => (
+              <ModuleIndicator
+                key={module.id}
+                module={module}
+                isActive={getModuleStatus(module.id)}
+                isLoading={healthScore.isLoading}
+                index={MODULES.findIndex(m => m.id === module.id)}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+      
+      {/* Modules Grid - Flat on mobile/tablet */}
+      <div className="lg:hidden grid grid-cols-4 sm:grid-cols-6 gap-2">
+        {MODULES.map((module, idx) => (
           <ModuleIndicator
             key={module.id}
             module={module}
             isActive={getModuleStatus(module.id)}
             isLoading={healthScore.isLoading}
+            index={idx}
           />
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 }
