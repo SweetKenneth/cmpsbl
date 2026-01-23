@@ -19,6 +19,8 @@ Think of this as your "explain it to me like I'm five" guide to a very sophistic
 
 ## Document Index
 
+### Overview Documents (01-09)
+
 | # | Document | What It Explains |
 |---|----------|------------------|
 | 01 | [WHAT-IS-THIS.md](./01-WHAT-IS-THIS.md) | The 30-second elevator pitch and core concept |
@@ -30,6 +32,19 @@ Think of this as your "explain it to me like I'm five" guide to a very sophistic
 | 07 | [MARKET-POSITION.md](./07-MARKET-POSITION.md) | Where we stand vs. competitors |
 | 08 | [FUTURE-ROADMAP.md](./08-FUTURE-ROADMAP.md) | Where we're going next |
 | 09 | [INVESTOR-TALKING-POINTS.md](./09-INVESTOR-TALKING-POINTS.md) | Key points for investor conversations |
+
+### Module Deep Dives (10-17)
+
+| # | Document | Module | What It Explains |
+|---|----------|--------|------------------|
+| 10 | [BRAIN-DEEP-DIVE.md](./10-BRAIN-DEEP-DIVE.md) | Brain | Memory tiers, confidence, recall, learning, dreams |
+| 11 | [DEFENSE-DEEP-DIVE.md](./11-DEFENSE-DEEP-DIVE.md) | Defense | Bot detection, threat analysis, rate limiting |
+| 12 | [NEXUS-DEEP-DIVE.md](./12-NEXUS-DEEP-DIVE.md) | Nexus | Multi-provider routing, fallbacks, cost optimization |
+| 13 | [VISION-DEEP-DIVE.md](./13-VISION-DEEP-DIVE.md) | Vision | Health monitoring, metrics, alerting, dashboards |
+| 14 | [DREAM-DEEP-DIVE.md](./14-DREAM-DEEP-DIVE.md) | Dream | Autonomous cognition, dream cycles, mutations |
+| 15 | [MODERNIZER-COMPLETE-GUIDE.md](./15-MODERNIZER-COMPLETE-GUIDE.md) | Modernizer | Complete self-improvement workflow with examples |
+| 16 | [SYSTEM-DEEP-DIVE.md](./16-SYSTEM-DEEP-DIVE.md) | System | Backup, restore, heal, shutdown, configuration |
+| 17 | [DECODE-DEEP-DIVE.md](./17-DECODE-DEEP-DIVE.md) | Decode | Human interface, intent parsing, routing logic |
 
 ---
 
