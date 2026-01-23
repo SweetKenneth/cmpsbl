@@ -27,7 +27,7 @@
  * await substrate.ai.chat([{ role: 'user', content: 'Hello!' }], { provider: 'openai', model: 'gpt-4' });
  */
 
-export type SubstrateModule = 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system';
+export type SubstrateModule = 'core' | 'ripple' | 'access' | 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer';
 
 export interface SubstrateConfig {
   url: string;
@@ -749,6 +749,157 @@ export class SubstrateClient {
     
     feed: (dream_content: string, dream_type?: string) =>
       this.invoke({ module: 'dream', action: 'feed', payload: { dream_content, dream_type } }),
+  };
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // v4.0.0 KERNEL MODULES — Core, Ripple, Access
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  // Core Module — Kernel & Scheduler
+  core = {
+    status: () =>
+      this.invoke({ module: 'core', action: 'status' }),
+    
+    pulse: () =>
+      this.invoke({ module: 'core', action: 'pulse' }),
+    
+    boot: () =>
+      this.invoke({ module: 'core', action: 'boot' }),
+    
+    schedule: (options: { module: SubstrateModule; action: string; payload?: Record<string, unknown>; delay?: string; priority?: number }) =>
+      this.invoke({ module: 'core', action: 'schedule', payload: options }),
+    
+    jobs: (status?: 'queued' | 'processing' | 'completed' | 'failed', limit?: number) =>
+      this.invoke({ module: 'core', action: 'jobs', payload: { status, limit } }),
+    
+    process: () =>
+      this.invoke({ module: 'core', action: 'process' }),
+    
+    config: (key?: string, value?: unknown) =>
+      this.invoke({ module: 'core', action: 'config', payload: { key, value } }),
+    
+    shutdown: () =>
+      this.invoke({ module: 'core', action: 'shutdown' }),
+  };
+
+  // Ripple Module — Message Bus
+  ripple = {
+    status: () =>
+      this.invoke({ module: 'ripple', action: 'status' }),
+    
+    pulse: () =>
+      this.invoke({ module: 'ripple', action: 'pulse' }),
+    
+    enqueue: (queue: string, payload: Record<string, unknown>, options?: { priority?: number; delay?: string }) =>
+      this.invoke({ module: 'ripple', action: 'enqueue', payload: { queue, payload, ...options } }),
+    
+    dequeue: (queue: string) =>
+      this.invoke({ module: 'ripple', action: 'dequeue', payload: { queue } }),
+    
+    publish: (topic: string, event_type: string, payload?: Record<string, unknown>, correlation_id?: string) =>
+      this.invoke({ module: 'ripple', action: 'publish', payload: { topic, event_type, payload, correlation_id } }),
+    
+    subscribe: (topic: string, subscriber_module: SubstrateModule, subscriber_action: string, filter?: Record<string, unknown>) =>
+      this.invoke({ module: 'ripple', action: 'subscribe', payload: { topic, subscriber_module, subscriber_action, filter } }),
+    
+    topics: () =>
+      this.invoke({ module: 'ripple', action: 'topics' }),
+    
+    events: (options?: { topic?: string; limit?: number; unprocessed_only?: boolean }) =>
+      this.invoke({ module: 'ripple', action: 'events', payload: options }),
+    
+    deadLetter: () =>
+      this.invoke({ module: 'ripple', action: 'dead_letter' }),
+    
+    retry: (job_id: string) =>
+      this.invoke({ module: 'ripple', action: 'retry', payload: { job_id } }),
+  };
+
+  // Access Module — Identity & Billing
+  access = {
+    status: () =>
+      this.invoke({ module: 'access', action: 'status' }),
+    
+    pulse: () =>
+      this.invoke({ module: 'access', action: 'pulse' }),
+    
+    createKey: (options: { developer_id: string; name?: string; scopes?: string[]; rate_limit_per_minute?: number; rate_limit_per_day?: number }) =>
+      this.invoke({ module: 'access', action: 'create_key', payload: options }),
+    
+    validateKey: (api_key: string) =>
+      this.invoke({ module: 'access', action: 'validate_key', payload: { api_key } }),
+    
+    revokeKey: (key_id: string) =>
+      this.invoke({ module: 'access', action: 'revoke_key', payload: { key_id } }),
+    
+    listKeys: (developer_id: string) =>
+      this.invoke({ module: 'access', action: 'list_keys', payload: { developer_id } }),
+    
+    getUsage: (options?: { api_key_id?: string; developer_id?: string; start_date?: string; end_date?: string }) =>
+      this.invoke({ module: 'access', action: 'usage', payload: options }),
+    
+    checkQuota: (api_key_id: string) =>
+      this.invoke({ module: 'access', action: 'quota', payload: { api_key_id } }),
+    
+    recordUsage: (options: { api_key_id?: string; developer_id?: string; module: string; action: string; tokens_used?: number; compute_ms?: number; cost_millicents?: number }) =>
+      this.invoke({ module: 'access', action: 'record_usage', payload: options }),
+    
+    subscription: (developer_id: string) =>
+      this.invoke({ module: 'access', action: 'subscription', payload: { developer_id } }),
+  };
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // MODERNIZER MODULE — Self-Improvement Engine
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  modernizer = {
+    status: () =>
+      this.invoke({ module: 'modernizer', action: 'status' }),
+    
+    pulse: () =>
+      this.invoke({ module: 'modernizer', action: 'pulse' }),
+    
+    scan: (options?: { module?: string; depth?: 'quick' | 'standard' | 'deep' }) =>
+      this.invoke({ module: 'modernizer', action: 'scan', payload: options }),
+    
+    jobs: (limit?: number) =>
+      this.invoke({ module: 'modernizer', action: 'jobs', payload: { limit } }),
+    
+    job: (job_id: string) =>
+      this.invoke({ module: 'modernizer', action: 'job', payload: { job_id } }),
+    
+    quota: () =>
+      this.invoke({ module: 'modernizer', action: 'quota' }),
+    
+    analyze: (module?: string) =>
+      this.invoke({ module: 'modernizer', action: 'analyze', payload: { module } }),
+    
+    export: (job_id: string) =>
+      this.invoke({ module: 'modernizer', action: 'export', payload: { job_id } }),
+    
+    propose: (options?: { scope?: string; notes?: string; max_changes?: number }) =>
+      this.invoke({ module: 'modernizer', action: 'propose', payload: options }),
+    
+    plans: () =>
+      this.invoke({ module: 'modernizer', action: 'plans' }),
+    
+    review: (plan_id: string) =>
+      this.invoke({ module: 'modernizer', action: 'review', payload: { plan_id } }),
+    
+    apply: (plan_id: string) =>
+      this.invoke({ module: 'modernizer', action: 'apply', payload: { plan_id } }),
+    
+    rollback: (plan_id: string) =>
+      this.invoke({ module: 'modernizer', action: 'rollback', payload: { plan_id } }),
+    
+    delete: (plan_id: string, reason?: string) =>
+      this.invoke({ module: 'modernizer', action: 'delete', payload: { plan_id, reason } }),
+    
+    archived: () =>
+      this.invoke({ module: 'modernizer', action: 'archived' }),
+    
+    implement: (archived_function: string, target_action: string) =>
+      this.invoke({ module: 'modernizer', action: 'implement_archived', payload: { archived_function, target_action } }),
   };
 }
 
