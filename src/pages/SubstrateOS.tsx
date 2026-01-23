@@ -13,7 +13,7 @@ import { useState } from 'react';
 import { 
   Loader2, Lock, Terminal, AlertTriangle, Database, RefreshCw, 
   Settings, FileText, Zap, LayoutDashboard, Activity, Bot, Users, Sparkles,
-  Building2, ExternalLink, HardDrive, Wand2, Cpu, Radio, Key
+  Building2, ExternalLink, HardDrive, Wand2, Cpu, Radio, Key, Dna
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -56,6 +56,7 @@ import { RippleMessageBusTab } from '@/components/substrate-os/RippleMessageBusT
 import { AccessIdentityTab } from '@/components/substrate-os/AccessIdentityTab';
 import { AgencyMintWizard } from '@/components/agency/AgencyMintWizard';
 import { AgencyGallery } from '@/components/agency/AgencyGallery';
+import { EvolutionTab } from '@/components/substrate-os/EvolutionTab';
 import { cn } from '@/lib/utils';
 
 function ConfirmActionDialog({
@@ -436,6 +437,20 @@ export default function SubstrateOS() {
                 >
                   <Wand2 className="w-4 h-4" />
                   <span className="hidden sm:inline">Modernizer</span>
+                </TabsTrigger>
+              )}
+              {isGovernor && (
+                <TabsTrigger 
+                  value="evolution" 
+                  className={cn(
+                    "gap-2 rounded-lg transition-all",
+                    "data-[state=active]:bg-purple-500/10 data-[state=active]:text-purple-400",
+                    "data-[state=active]:border-b-2 data-[state=active]:border-purple-400",
+                    "hover:bg-white/5"
+                  )}
+                >
+                  <Dna className="w-4 h-4" />
+                  <span className="hidden sm:inline">Evolution</span>
                 </TabsTrigger>
               )}
               {isGovernor && (
