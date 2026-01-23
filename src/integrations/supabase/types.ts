@@ -14,6 +14,86 @@ export type Database = {
   }
   public: {
     Tables: {
+      access_api_keys: {
+        Row: {
+          created_at: string | null
+          developer_id: string
+          expires_at: string | null
+          id: string
+          is_active: boolean | null
+          key_hash: string
+          key_prefix: string
+          last_used_at: string | null
+          name: string | null
+          rate_limit_per_day: number | null
+          rate_limit_per_minute: number | null
+          scopes: string[] | null
+        }
+        Insert: {
+          created_at?: string | null
+          developer_id: string
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          key_hash: string
+          key_prefix: string
+          last_used_at?: string | null
+          name?: string | null
+          rate_limit_per_day?: number | null
+          rate_limit_per_minute?: number | null
+          scopes?: string[] | null
+        }
+        Update: {
+          created_at?: string | null
+          developer_id?: string
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          key_hash?: string
+          key_prefix?: string
+          last_used_at?: string | null
+          name?: string | null
+          rate_limit_per_day?: number | null
+          rate_limit_per_minute?: number | null
+          scopes?: string[] | null
+        }
+        Relationships: []
+      }
+      access_quotas: {
+        Row: {
+          api_key_id: string | null
+          calls_used: number | null
+          cost_millicents: number | null
+          date: string
+          id: string
+          tokens_used: number | null
+        }
+        Insert: {
+          api_key_id?: string | null
+          calls_used?: number | null
+          cost_millicents?: number | null
+          date?: string
+          id?: string
+          tokens_used?: number | null
+        }
+        Update: {
+          api_key_id?: string | null
+          calls_used?: number | null
+          cost_millicents?: number | null
+          date?: string
+          id?: string
+          tokens_used?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "access_quotas_api_key_id_fkey"
+            columns: ["api_key_id"]
+            isOneToOne: false
+            referencedRelation: "access_api_keys"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       access_scans: {
         Row: {
           created_at: string
@@ -40,6 +120,95 @@ export type Database = {
           score?: number | null
         }
         Relationships: []
+      }
+      access_subscriptions: {
+        Row: {
+          created_at: string | null
+          current_period_end: string | null
+          current_period_start: string | null
+          developer_id: string
+          id: string
+          monthly_quota: number | null
+          status: string | null
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
+          tier: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          current_period_end?: string | null
+          current_period_start?: string | null
+          developer_id: string
+          id?: string
+          monthly_quota?: number | null
+          status?: string | null
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          tier?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          current_period_end?: string | null
+          current_period_start?: string | null
+          developer_id?: string
+          id?: string
+          monthly_quota?: number | null
+          status?: string | null
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          tier?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      access_usage: {
+        Row: {
+          action: string
+          api_key_id: string | null
+          compute_ms: number | null
+          cost_millicents: number | null
+          created_at: string | null
+          developer_id: string | null
+          id: string
+          metadata: Json | null
+          module: string
+          tokens_used: number | null
+        }
+        Insert: {
+          action: string
+          api_key_id?: string | null
+          compute_ms?: number | null
+          cost_millicents?: number | null
+          created_at?: string | null
+          developer_id?: string | null
+          id?: string
+          metadata?: Json | null
+          module: string
+          tokens_used?: number | null
+        }
+        Update: {
+          action?: string
+          api_key_id?: string | null
+          compute_ms?: number | null
+          cost_millicents?: number | null
+          created_at?: string | null
+          developer_id?: string | null
+          id?: string
+          metadata?: Json | null
+          module?: string
+          tokens_used?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "access_usage_api_key_id_fkey"
+            columns: ["api_key_id"]
+            isOneToOne: false
+            referencedRelation: "access_api_keys"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       accessibility_scans: {
         Row: {
@@ -2585,6 +2754,135 @@ export type Database = {
         }
         Relationships: []
       }
+      core_config: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          is_sensitive: boolean | null
+          key: string
+          updated_at: string | null
+          value: Json
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_sensitive?: boolean | null
+          key: string
+          updated_at?: string | null
+          value: Json
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_sensitive?: boolean | null
+          key?: string
+          updated_at?: string | null
+          value?: Json
+        }
+        Relationships: []
+      }
+      core_contexts: {
+        Row: {
+          api_key_id: string | null
+          developer_id: string | null
+          expires_at: string | null
+          id: string
+          is_active: boolean | null
+          metadata: Json | null
+          permissions: Json | null
+          rate_limit_remaining: number | null
+          started_at: string | null
+          tokens_remaining: number | null
+        }
+        Insert: {
+          api_key_id?: string | null
+          developer_id?: string | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          metadata?: Json | null
+          permissions?: Json | null
+          rate_limit_remaining?: number | null
+          started_at?: string | null
+          tokens_remaining?: number | null
+        }
+        Update: {
+          api_key_id?: string | null
+          developer_id?: string | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          metadata?: Json | null
+          permissions?: Json | null
+          rate_limit_remaining?: number | null
+          started_at?: string | null
+          tokens_remaining?: number | null
+        }
+        Relationships: []
+      }
+      core_jobs: {
+        Row: {
+          action: string
+          completed_at: string | null
+          created_at: string | null
+          created_by: string | null
+          error_message: string | null
+          execution_ms: number | null
+          id: string
+          max_retries: number | null
+          module: string
+          payload: Json | null
+          priority: number | null
+          result: Json | null
+          retry_count: number | null
+          scheduled_at: string | null
+          started_at: string | null
+          status: string | null
+        }
+        Insert: {
+          action: string
+          completed_at?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          error_message?: string | null
+          execution_ms?: number | null
+          id?: string
+          max_retries?: number | null
+          module: string
+          payload?: Json | null
+          priority?: number | null
+          result?: Json | null
+          retry_count?: number | null
+          scheduled_at?: string | null
+          started_at?: string | null
+          status?: string | null
+        }
+        Update: {
+          action?: string
+          completed_at?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          error_message?: string | null
+          execution_ms?: number | null
+          id?: string
+          max_retries?: number | null
+          module?: string
+          payload?: Json | null
+          priority?: number | null
+          result?: Json | null
+          retry_count?: number | null
+          scheduled_at?: string | null
+          started_at?: string | null
+          status?: string | null
+        }
+        Relationships: []
+      }
       core_plans: {
         Row: {
           created_at: string | null
@@ -2633,6 +2931,42 @@ export type Database = {
           scope?: string
           updated_at?: string
           value?: string
+        }
+        Relationships: []
+      }
+      core_state: {
+        Row: {
+          boot_sequence: Json | null
+          created_at: string | null
+          id: string
+          last_heartbeat: string | null
+          metadata: Json | null
+          modules_status: Json | null
+          state: string
+          updated_at: string | null
+          uptime_seconds: number | null
+        }
+        Insert: {
+          boot_sequence?: Json | null
+          created_at?: string | null
+          id?: string
+          last_heartbeat?: string | null
+          metadata?: Json | null
+          modules_status?: Json | null
+          state?: string
+          updated_at?: string | null
+          uptime_seconds?: number | null
+        }
+        Update: {
+          boot_sequence?: Json | null
+          created_at?: string | null
+          id?: string
+          last_heartbeat?: string | null
+          metadata?: Json | null
+          modules_status?: Json | null
+          state?: string
+          updated_at?: string | null
+          uptime_seconds?: number | null
         }
         Relationships: []
       }
@@ -6252,6 +6586,161 @@ export type Database = {
           status?: string | null
           target_audience?: Json | null
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      ripple_events: {
+        Row: {
+          correlation_id: string | null
+          created_at: string | null
+          event_type: string
+          id: string
+          payload: Json | null
+          processed: boolean | null
+          processed_at: string | null
+          publisher_module: string | null
+          topic: string
+        }
+        Insert: {
+          correlation_id?: string | null
+          created_at?: string | null
+          event_type: string
+          id?: string
+          payload?: Json | null
+          processed?: boolean | null
+          processed_at?: string | null
+          publisher_module?: string | null
+          topic: string
+        }
+        Update: {
+          correlation_id?: string | null
+          created_at?: string | null
+          event_type?: string
+          id?: string
+          payload?: Json | null
+          processed?: boolean | null
+          processed_at?: string | null
+          publisher_module?: string | null
+          topic?: string
+        }
+        Relationships: []
+      }
+      ripple_jobs: {
+        Row: {
+          attempts: number | null
+          completed_at: string | null
+          created_at: string | null
+          error_log: Json | null
+          id: string
+          max_attempts: number | null
+          payload: Json | null
+          priority: number | null
+          queue_name: string
+          result: Json | null
+          scheduled_for: string | null
+          started_at: string | null
+          status: string | null
+        }
+        Insert: {
+          attempts?: number | null
+          completed_at?: string | null
+          created_at?: string | null
+          error_log?: Json | null
+          id?: string
+          max_attempts?: number | null
+          payload?: Json | null
+          priority?: number | null
+          queue_name: string
+          result?: Json | null
+          scheduled_for?: string | null
+          started_at?: string | null
+          status?: string | null
+        }
+        Update: {
+          attempts?: number | null
+          completed_at?: string | null
+          created_at?: string | null
+          error_log?: Json | null
+          id?: string
+          max_attempts?: number | null
+          payload?: Json | null
+          priority?: number | null
+          queue_name?: string
+          result?: Json | null
+          scheduled_for?: string | null
+          started_at?: string | null
+          status?: string | null
+        }
+        Relationships: []
+      }
+      ripple_subscriptions: {
+        Row: {
+          created_at: string | null
+          filter_conditions: Json | null
+          id: string
+          is_active: boolean | null
+          last_triggered_at: string | null
+          subscriber_action: string
+          subscriber_module: string
+          topic_id: string | null
+          trigger_count: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          filter_conditions?: Json | null
+          id?: string
+          is_active?: boolean | null
+          last_triggered_at?: string | null
+          subscriber_action: string
+          subscriber_module: string
+          topic_id?: string | null
+          trigger_count?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          filter_conditions?: Json | null
+          id?: string
+          is_active?: boolean | null
+          last_triggered_at?: string | null
+          subscriber_action?: string
+          subscriber_module?: string
+          topic_id?: string | null
+          trigger_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ripple_subscriptions_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "ripple_topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ripple_topics: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          retention_days: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          retention_days?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          retention_days?: number | null
         }
         Relationships: []
       }

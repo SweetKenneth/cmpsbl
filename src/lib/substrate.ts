@@ -16,7 +16,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 
-export type SubstrateModule = 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer';
+export type SubstrateModule = 'core' | 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'ripple' | 'access' | 'system' | 'modernizer';
 
 export interface SubstrateRequest {
   module: SubstrateModule;
@@ -499,16 +499,149 @@ class SubstrateClient {
       this.invoke({ module: 'modernizer', action: 'implement_archived', payload: { archived_function, target_action } }),
   };
 
+  // ═══════════════════════════════════════════════════════════════
+  // CORE MODULE — The Kernel (Scheduler, Router, Lifecycle)
+  // ═══════════════════════════════════════════════════════════════
+  
+  core = {
+    /** Get kernel status with uptime and module health */
+    status: () =>
+      this.invoke({ module: 'core', action: 'status' }),
+    
+    /** Lightweight heartbeat check */
+    pulse: () =>
+      this.invoke({ module: 'core', action: 'pulse' }),
+    
+    /** Initialize boot sequence for all modules */
+    boot: () =>
+      this.invoke({ module: 'core', action: 'boot' }),
+    
+    /** Schedule a job for delayed/async execution */
+    schedule: (options: { module: SubstrateModule; action: string; payload?: Record<string, unknown>; delay?: string; priority?: number }) =>
+      this.invoke({ module: 'core', action: 'schedule', payload: options }),
+    
+    /** List scheduled/pending jobs */
+    jobs: (status?: 'queued' | 'processing' | 'completed' | 'failed', limit?: number) =>
+      this.invoke({ module: 'core', action: 'jobs', payload: { status, limit } }),
+    
+    /** Process the next queued job */
+    process: () =>
+      this.invoke({ module: 'core', action: 'process' }),
+    
+    /** Get or set system configuration */
+    config: (key?: string, value?: unknown) =>
+      this.invoke({ module: 'core', action: 'config', payload: { key, value } }),
+    
+    /** Initiate graceful system shutdown */
+    shutdown: () =>
+      this.invoke({ module: 'core', action: 'shutdown' }),
+  };
+
+  // ═══════════════════════════════════════════════════════════════
+  // RIPPLE MODULE — Message Bus (Queues, Pub/Sub, Events)
+  // ═══════════════════════════════════════════════════════════════
+  
+  ripple = {
+    /** Get message bus status */
+    status: () =>
+      this.invoke({ module: 'ripple', action: 'status' }),
+    
+    /** Lightweight heartbeat */
+    pulse: () =>
+      this.invoke({ module: 'ripple', action: 'pulse' }),
+    
+    /** Add a job to a named queue */
+    enqueue: (queue: string, payload: Record<string, unknown>, options?: { priority?: number; delay?: string }) =>
+      this.invoke({ module: 'ripple', action: 'enqueue', payload: { queue, payload, ...options } }),
+    
+    /** Get next job from a queue */
+    dequeue: (queue: string) =>
+      this.invoke({ module: 'ripple', action: 'dequeue', payload: { queue } }),
+    
+    /** Publish an event to a topic */
+    publish: (topic: string, event_type: string, payload?: Record<string, unknown>, correlation_id?: string) =>
+      this.invoke({ module: 'ripple', action: 'publish', payload: { topic, event_type, payload, correlation_id } }),
+    
+    /** Subscribe a module/action to a topic */
+    subscribe: (topic: string, subscriber_module: SubstrateModule, subscriber_action: string, filter?: Record<string, unknown>) =>
+      this.invoke({ module: 'ripple', action: 'subscribe', payload: { topic, subscriber_module, subscriber_action, filter } }),
+    
+    /** List all available topics */
+    topics: () =>
+      this.invoke({ module: 'ripple', action: 'topics' }),
+    
+    /** Get event log */
+    events: (options?: { topic?: string; limit?: number; unprocessed_only?: boolean }) =>
+      this.invoke({ module: 'ripple', action: 'events', payload: options }),
+    
+    /** View dead letter queue (failed jobs) */
+    deadLetter: () =>
+      this.invoke({ module: 'ripple', action: 'dead_letter' }),
+    
+    /** Retry a failed job */
+    retry: (job_id: string) =>
+      this.invoke({ module: 'ripple', action: 'retry', payload: { job_id } }),
+  };
+
+  // ═══════════════════════════════════════════════════════════════
+  // ACCESS MODULE — Identity & Billing (API Keys, Quotas, Usage)
+  // ═══════════════════════════════════════════════════════════════
+  
+  access = {
+    /** Get access module status */
+    status: () =>
+      this.invoke({ module: 'access', action: 'status' }),
+    
+    /** Lightweight heartbeat */
+    pulse: () =>
+      this.invoke({ module: 'access', action: 'pulse' }),
+    
+    /** Create a new API key */
+    createKey: (options: { developer_id: string; name?: string; scopes?: string[]; rate_limit_per_minute?: number; rate_limit_per_day?: number }) =>
+      this.invoke({ module: 'access', action: 'create_key', payload: options }),
+    
+    /** Validate an API key */
+    validateKey: (api_key: string) =>
+      this.invoke({ module: 'access', action: 'validate_key', payload: { api_key } }),
+    
+    /** Revoke an API key */
+    revokeKey: (key_id: string) =>
+      this.invoke({ module: 'access', action: 'revoke_key', payload: { key_id } }),
+    
+    /** List API keys for a developer */
+    listKeys: (developer_id: string) =>
+      this.invoke({ module: 'access', action: 'list_keys', payload: { developer_id } }),
+    
+    /** Get usage statistics */
+    getUsage: (options?: { api_key_id?: string; developer_id?: string; start_date?: string; end_date?: string }) =>
+      this.invoke({ module: 'access', action: 'usage', payload: options }),
+    
+    /** Check quota remaining for an API key */
+    checkQuota: (api_key_id: string) =>
+      this.invoke({ module: 'access', action: 'quota', payload: { api_key_id } }),
+    
+    /** Record usage for metering */
+    recordUsage: (options: { api_key_id?: string; developer_id?: string; module: string; action: string; tokens_used?: number; compute_ms?: number; cost_millicents?: number }) =>
+      this.invoke({ module: 'access', action: 'record_usage', payload: options }),
+    
+    /** Get subscription info for a developer */
+    subscription: (developer_id: string) =>
+      this.invoke({ module: 'access', action: 'subscription', payload: { developer_id } }),
+  };
+
 }
 
 export const substrate = SubstrateClient.getInstance();
 
-// Quick access functions
+// Quick access functions for all 11 modules
+export const core = substrate.core;
 export const brain = substrate.brain;
 export const decode = substrate.decode;
 export const defense = substrate.defense;
 export const nexus = substrate.nexus;
 export const vision = substrate.vision;
-export const system = substrate.system;
 export const dream = substrate.dream;
+export const ripple = substrate.ripple;
+export const access = substrate.access;
+export const system = substrate.system;
 export const modernizer = substrate.modernizer;

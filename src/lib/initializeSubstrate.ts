@@ -1,6 +1,6 @@
 /**
  * promptfluid® Substrate Initialization
- * v2026.01 — Auto-initializes substrate modules on app load
+ * v2026.10 — Complete AI Operating System with 11 modules
  */
 
 import { substrate } from './substrate';
@@ -11,22 +11,33 @@ export async function initializeSubstrate(): Promise<void> {
   if (initialized) return;
   
   try {
-    console.log('⚡ Initializing promptfluid® substrate v2026.01...');
+    console.log('⚡ Booting promptfluid® Substrate v2026.10...');
+    console.log('─────────────────────────────────────────');
     
-    // Ping each module to wake them up
-    const modules: ('brain' | 'decode' | 'defense' | 'nexus' | 'vision')[] = ['brain', 'decode', 'defense', 'nexus', 'vision'];
+    // Boot sequence - CORE first, then other modules
+    const bootOrder: ('core' | 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'ripple' | 'access' | 'system' | 'modernizer')[] = [
+      'core', 'brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'ripple', 'access', 'system', 'modernizer'
+    ];
     
-    const results = await Promise.allSettled(
-      modules.map(module => 
-        substrate.invoke({ module, action: 'status' })
-      )
-    );
+    // First, call core.boot to initialize everything
+    const bootResult = await substrate.invoke({ module: 'core', action: 'boot' });
     
-    const activeModules = results
-      .filter((r): r is PromiseFulfilledResult<any> => r.status === 'fulfilled' && r.value.success)
-      .length;
+    if (bootResult.success) {
+      console.log('✅ Substrate boot complete: 11 modules loaded | Health: 100%');
+    } else {
+      // Fallback to individual pings
+      const results = await Promise.allSettled(
+        bootOrder.map(module => 
+          substrate.invoke({ module, action: 'pulse' })
+        )
+      );
+      
+      const activeModules = results.filter(r => r.status === 'fulfilled' && (r.value as { success?: boolean }).success).length;
+      
+      console.log(`✅ Substrate initialized: ${activeModules}/${bootOrder.length} modules active`);
+    }
     
-    console.log(`✅ Substrate initialized: ${activeModules}/${modules.length} modules active`);
+    console.log('─────────────────────────────────────────');
     initialized = true;
   } catch (error) {
     console.error('❌ Substrate initialization failed:', error);

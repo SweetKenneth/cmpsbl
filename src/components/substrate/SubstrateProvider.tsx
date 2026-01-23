@@ -30,12 +30,15 @@ const defaultModuleStatus: ModuleStatus = {
 const SubstrateContext = createContext<SubstrateContextType>({
   initialized: false,
   modules: {
+    core: defaultModuleStatus,
     brain: defaultModuleStatus,
     decode: defaultModuleStatus,
     defense: defaultModuleStatus,
     nexus: defaultModuleStatus,
     vision: defaultModuleStatus,
     dream: defaultModuleStatus,
+    ripple: defaultModuleStatus,
+    access: defaultModuleStatus,
     system: defaultModuleStatus,
     modernizer: defaultModuleStatus,
   },
@@ -55,12 +58,15 @@ interface SubstrateProviderProps {
 export function SubstrateProvider({ children, autoInit = true }: SubstrateProviderProps) {
   const [initialized, setInitialized] = useState(false);
   const [modules, setModules] = useState<Record<SubstrateModule, ModuleStatus>>({
+    core: defaultModuleStatus,
     brain: defaultModuleStatus,
     decode: defaultModuleStatus,
     defense: defaultModuleStatus,
     nexus: defaultModuleStatus,
     vision: defaultModuleStatus,
     dream: defaultModuleStatus,
+    ripple: defaultModuleStatus,
+    access: defaultModuleStatus,
     system: defaultModuleStatus,
     modernizer: defaultModuleStatus,
   });

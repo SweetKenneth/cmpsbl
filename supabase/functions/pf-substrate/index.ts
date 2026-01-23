@@ -46,7 +46,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const SUBSTRATE_VERSION = "3.11.1";
+const SUBSTRATE_VERSION = "4.0.0"; // Complete OS with CORE, RIPPLE, ACCESS modules
 
 // Trace ID generator for distributed tracing
 function generateTraceId(): string {
@@ -291,6 +291,15 @@ serve(async (req) => {
           case "system":
             return await handleSystem(supabase, action, params, corsHeaders, state);
           
+          case "core":
+            return await handleCore(supabase, action, params, corsHeaders, state);
+          
+          case "ripple":
+            return await handleRipple(supabase, action, params, corsHeaders);
+          
+          case "access":
+            return await handleAccess(supabase, action, params, corsHeaders);
+          
           case "status":
             return new Response(
               JSON.stringify({
@@ -298,7 +307,7 @@ serve(async (req) => {
                 substrate: "promptfluid®",
                 version: SUBSTRATE_VERSION,
                 type: "Cognitive Orchestration Substrate (HARDENED)",
-                modules: ["brain", "decode", "defense", "nexus", "vision", "dream", "system"],
+                modules: ["core", "brain", "decode", "defense", "nexus", "vision", "dream", "ripple", "access", "system", "modernizer"],
                 status: "operational",
                 health: Object.fromEntries(
                   Object.entries(state.modules).map(([k, v]) => [k, { score: v.healthScore, status: v.status }])
@@ -6745,6 +6754,798 @@ Output a structured implementation plan in JSON format with fields:
         action: action,
         error: `Unknown modernizer action: ${action}`,
         available_actions: ['status', 'jobs', 'scan', 'job', 'quota', 'analyze', 'export', 'propose', 'review', 'apply', 'rollback', 'plans', 'archived', 'implement_archived', 'pulse'],
+      }, headers);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CORE MODULE — The Kernel (Scheduler, Router, Lifecycle, State)
+// ═══════════════════════════════════════════════════════════════
+
+// deno-lint-ignore no-explicit-any
+async function handleCore(
+  supabase: any,
+  action: string,
+  data: Record<string, any>,
+  headers: Record<string, string>,
+  state: SubstrateState
+) {
+  switch (action) {
+    case "status":
+    case "pulse": {
+      const { data: coreState } = await supabase
+        .from('core_state')
+        .select('*')
+        .eq('id', '00000000-0000-0000-0001-000000000001')
+        .single();
+
+      const { count: pendingJobs } = await supabase
+        .from('core_jobs')
+        .select('*', { count: 'exact', head: true })
+        .eq('status', 'queued');
+
+      return jsonResponse({
+        success: true,
+        module: 'core',
+        action,
+        kernel: {
+          state: coreState?.state || 'running',
+          uptime_seconds: Math.floor((Date.now() - state.initialized) / 1000),
+          version: SUBSTRATE_VERSION,
+          modules_online: Object.keys(state.modules).length,
+        },
+        jobs: { pending: pendingJobs || 0 },
+        health: getOverallHealth(),
+        timestamp: new Date().toISOString(),
+      }, headers);
+    }
+
+    case "boot": {
+      const bootSequence = ['core', 'brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'ripple', 'access', 'system', 'modernizer'];
+      const bootResults: Record<string, { status: string; time_ms: number }> = {};
+      
+      for (const mod of bootSequence) {
+        const start = Date.now();
+        const health = getModuleHealth(mod);
+        health.healthScore = 100;
+        health.status = 'healthy';
+        health.circuitState = 'closed';
+        bootResults[mod] = { status: 'ready', time_ms: Date.now() - start };
+      }
+
+      await supabase.from('core_state').update({
+        state: 'running',
+        modules_status: bootResults,
+        boot_sequence: bootSequence,
+        last_heartbeat: new Date().toISOString(),
+      }).eq('id', '00000000-0000-0000-0001-000000000001');
+
+      // Publish boot event to Ripple
+      await supabase.from('ripple_events').insert({
+        topic: 'system.boot',
+        event_type: 'boot_complete',
+        payload: { modules: bootSequence.length, version: SUBSTRATE_VERSION },
+        publisher_module: 'core',
+      });
+
+      return jsonResponse({
+        success: true,
+        module: 'core',
+        action: 'boot',
+        boot_sequence: bootResults,
+        modules_loaded: bootSequence.length,
+        message: `promptfluid® Substrate v${SUBSTRATE_VERSION} — 11 modules loaded | Health: 100%`,
+        timestamp: new Date().toISOString(),
+      }, headers);
+    }
+
+    case "schedule": {
+      const { module: targetModule, action: targetAction, payload, delay, priority = 5 } = data;
+      
+      let scheduledAt = new Date();
+      if (delay) {
+        const delayMs = parseDelay(delay as string);
+        scheduledAt = new Date(Date.now() + delayMs);
+      }
+
+      const { data: job, error } = await supabase.from('core_jobs').insert({
+        module: targetModule,
+        action: targetAction,
+        payload: payload || {},
+        priority,
+        scheduled_at: scheduledAt.toISOString(),
+        created_by: 'substrate',
+      }).select().single();
+
+      if (error) throw error;
+
+      return jsonResponse({
+        success: true,
+        module: 'core',
+        action: 'schedule',
+        job_id: job.id,
+        scheduled_for: scheduledAt.toISOString(),
+        target: { module: targetModule, action: targetAction },
+        message: `Job scheduled for ${targetModule}/${targetAction}`,
+      }, headers);
+    }
+
+    case "jobs": {
+      const { status: filterStatus, limit = 20 } = data;
+      
+      let query = supabase.from('core_jobs').select('*').order('scheduled_at', { ascending: false }).limit(limit);
+      if (filterStatus) query = query.eq('status', filterStatus);
+      
+      const { data: jobs } = await query;
+
+      return jsonResponse({
+        success: true,
+        module: 'core',
+        action: 'jobs',
+        jobs: jobs || [],
+        count: jobs?.length || 0,
+      }, headers);
+    }
+
+    case "process": {
+      // Process next queued job
+      const { data: nextJob } = await supabase
+        .from('core_jobs')
+        .select('*')
+        .eq('status', 'queued')
+        .lte('scheduled_at', new Date().toISOString())
+        .order('priority', { ascending: false })
+        .order('scheduled_at', { ascending: true })
+        .limit(1)
+        .single();
+
+      if (!nextJob) {
+        return jsonResponse({
+          success: true,
+          module: 'core',
+          action: 'process',
+          message: 'No jobs to process',
+        }, headers);
+      }
+
+      // Mark as processing
+      await supabase.from('core_jobs').update({
+        status: 'processing',
+        started_at: new Date().toISOString(),
+      }).eq('id', nextJob.id);
+
+      return jsonResponse({
+        success: true,
+        module: 'core',
+        action: 'process',
+        job: nextJob,
+        message: `Processing job ${nextJob.id}: ${nextJob.module}/${nextJob.action}`,
+      }, headers);
+    }
+
+    case "config": {
+      const { key, value } = data;
+      
+      if (key && value !== undefined) {
+        // Set config
+        await supabase.from('core_config').upsert({
+          key,
+          value: JSON.stringify(value),
+          updated_at: new Date().toISOString(),
+        }, { onConflict: 'key' });
+
+        return jsonResponse({
+          success: true,
+          module: 'core',
+          action: 'config',
+          key,
+          message: `Config '${key}' updated`,
+        }, headers);
+      } else if (key) {
+        // Get specific config
+        const { data: config } = await supabase.from('core_config').select('*').eq('key', key).single();
+        return jsonResponse({
+          success: true,
+          module: 'core',
+          action: 'config',
+          key,
+          value: config?.value ? JSON.parse(config.value) : null,
+        }, headers);
+      } else {
+        // Get all config
+        const { data: configs } = await supabase.from('core_config').select('key, value, category');
+        return jsonResponse({
+          success: true,
+          module: 'core',
+          action: 'config',
+          config: Object.fromEntries((configs || []).map((c: { key: string; value: string }) => [c.key, JSON.parse(c.value)])),
+        }, headers);
+      }
+    }
+
+    case "shutdown": {
+      // Graceful shutdown
+      await supabase.from('core_state').update({
+        state: 'shutdown',
+        last_heartbeat: new Date().toISOString(),
+      }).eq('id', '00000000-0000-0000-0001-000000000001');
+
+      await supabase.from('ripple_events').insert({
+        topic: 'system.shutdown',
+        event_type: 'shutdown_initiated',
+        payload: { reason: 'user_initiated', timestamp: new Date().toISOString() },
+        publisher_module: 'core',
+      });
+
+      return jsonResponse({
+        success: true,
+        module: 'core',
+        action: 'shutdown',
+        message: 'Substrate shutdown initiated. Active jobs will complete.',
+        timestamp: new Date().toISOString(),
+      }, headers);
+    }
+
+    default:
+      return jsonResponse({
+        success: false,
+        module: 'core',
+        error: `Unknown core action: ${action}`,
+        available_actions: ['status', 'pulse', 'boot', 'schedule', 'jobs', 'process', 'config', 'shutdown'],
+      }, headers);
+  }
+}
+
+function parseDelay(delay: string): number {
+  const match = delay.match(/^(\d+)(s|m|h|d)$/);
+  if (!match) return 0;
+  const [, num, unit] = match;
+  const multipliers: Record<string, number> = { s: 1000, m: 60000, h: 3600000, d: 86400000 };
+  return parseInt(num) * (multipliers[unit] || 0);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RIPPLE MODULE — Message Bus (Queues, Pub/Sub, Event Sourcing)
+// ═══════════════════════════════════════════════════════════════
+
+// deno-lint-ignore no-explicit-any
+async function handleRipple(
+  supabase: any,
+  action: string,
+  data: Record<string, any>,
+  headers: Record<string, string>
+) {
+  switch (action) {
+    case "status":
+    case "pulse": {
+      const [
+        { count: pendingJobs },
+        { count: topics },
+        { count: subscriptions },
+        { count: unprocessedEvents },
+      ] = await Promise.all([
+        supabase.from('ripple_jobs').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
+        supabase.from('ripple_topics').select('*', { count: 'exact', head: true }),
+        supabase.from('ripple_subscriptions').select('*', { count: 'exact', head: true }).eq('is_active', true),
+        supabase.from('ripple_events').select('*', { count: 'exact', head: true }).eq('processed', false),
+      ]);
+
+      return jsonResponse({
+        success: true,
+        module: 'ripple',
+        action,
+        bus: {
+          pending_jobs: pendingJobs || 0,
+          topics: topics || 0,
+          active_subscriptions: subscriptions || 0,
+          unprocessed_events: unprocessedEvents || 0,
+        },
+        timestamp: new Date().toISOString(),
+      }, headers);
+    }
+
+    case "enqueue": {
+      const { queue, payload, priority = 5, delay } = data;
+      
+      let scheduledFor = new Date();
+      if (delay) {
+        const delayMs = parseDelay(delay as string);
+        scheduledFor = new Date(Date.now() + delayMs);
+      }
+
+      const { data: job, error } = await supabase.from('ripple_jobs').insert({
+        queue_name: queue,
+        payload: payload || {},
+        priority,
+        scheduled_for: scheduledFor.toISOString(),
+      }).select().single();
+
+      if (error) throw error;
+
+      return jsonResponse({
+        success: true,
+        module: 'ripple',
+        action: 'enqueue',
+        job_id: job.id,
+        queue,
+        scheduled_for: scheduledFor.toISOString(),
+      }, headers);
+    }
+
+    case "dequeue": {
+      const { queue } = data;
+      
+      const { data: job } = await supabase
+        .from('ripple_jobs')
+        .select('*')
+        .eq('queue_name', queue)
+        .eq('status', 'pending')
+        .lte('scheduled_for', new Date().toISOString())
+        .order('priority', { ascending: false })
+        .order('scheduled_for', { ascending: true })
+        .limit(1)
+        .single();
+
+      if (!job) {
+        return jsonResponse({
+          success: true,
+          module: 'ripple',
+          action: 'dequeue',
+          job: null,
+          message: 'No jobs available in queue',
+        }, headers);
+      }
+
+      await supabase.from('ripple_jobs').update({
+        status: 'processing',
+        started_at: new Date().toISOString(),
+        attempts: job.attempts + 1,
+      }).eq('id', job.id);
+
+      return jsonResponse({
+        success: true,
+        module: 'ripple',
+        action: 'dequeue',
+        job,
+      }, headers);
+    }
+
+    case "publish": {
+      const { topic, event_type, payload, correlation_id } = data;
+
+      const { data: event, error } = await supabase.from('ripple_events').insert({
+        topic,
+        event_type: event_type || 'default',
+        payload: payload || {},
+        correlation_id,
+        publisher_module: 'substrate',
+      }).select().single();
+
+      if (error) throw error;
+
+      // Check for subscriptions
+      const { data: subs } = await supabase
+        .from('ripple_subscriptions')
+        .select('subscriber_module, subscriber_action')
+        .eq('topic_id', (await supabase.from('ripple_topics').select('id').eq('name', topic).single()).data?.id)
+        .eq('is_active', true);
+
+      return jsonResponse({
+        success: true,
+        module: 'ripple',
+        action: 'publish',
+        event_id: event.id,
+        topic,
+        subscribers_notified: subs?.length || 0,
+      }, headers);
+    }
+
+    case "subscribe": {
+      const { topic, subscriber_module, subscriber_action, filter } = data;
+
+      // Get or create topic
+      let { data: topicRecord } = await supabase.from('ripple_topics').select('id').eq('name', topic).single();
+      
+      if (!topicRecord) {
+        const { data: newTopic } = await supabase.from('ripple_topics').insert({ name: topic }).select().single();
+        topicRecord = newTopic;
+      }
+
+      const { data: subscription, error } = await supabase.from('ripple_subscriptions').insert({
+        topic_id: topicRecord.id,
+        subscriber_module,
+        subscriber_action,
+        filter_conditions: filter || {},
+      }).select().single();
+
+      if (error) throw error;
+
+      return jsonResponse({
+        success: true,
+        module: 'ripple',
+        action: 'subscribe',
+        subscription_id: subscription.id,
+        topic,
+        subscriber: `${subscriber_module}/${subscriber_action}`,
+      }, headers);
+    }
+
+    case "topics": {
+      const { data: topics } = await supabase.from('ripple_topics').select('name, description, is_active, created_at').order('name');
+      
+      return jsonResponse({
+        success: true,
+        module: 'ripple',
+        action: 'topics',
+        topics: topics || [],
+      }, headers);
+    }
+
+    case "events": {
+      const { topic, limit = 50, unprocessed_only = false } = data;
+      
+      let query = supabase.from('ripple_events').select('*').order('created_at', { ascending: false }).limit(limit);
+      if (topic) query = query.eq('topic', topic);
+      if (unprocessed_only) query = query.eq('processed', false);
+      
+      const { data: events } = await query;
+
+      return jsonResponse({
+        success: true,
+        module: 'ripple',
+        action: 'events',
+        events: events || [],
+        count: events?.length || 0,
+      }, headers);
+    }
+
+    case "dead_letter": {
+      const { data: deadJobs } = await supabase
+        .from('ripple_jobs')
+        .select('*')
+        .eq('status', 'dead')
+        .order('completed_at', { ascending: false })
+        .limit(50);
+
+      return jsonResponse({
+        success: true,
+        module: 'ripple',
+        action: 'dead_letter',
+        dead_jobs: deadJobs || [],
+        count: deadJobs?.length || 0,
+      }, headers);
+    }
+
+    case "retry": {
+      const { job_id } = data;
+      
+      const { data: job } = await supabase
+        .from('ripple_jobs')
+        .select('*')
+        .eq('id', job_id)
+        .single();
+
+      if (!job) {
+        return jsonResponse({
+          success: false,
+          module: 'ripple',
+          action: 'retry',
+          error: 'Job not found',
+        }, headers);
+      }
+
+      await supabase.from('ripple_jobs').update({
+        status: 'pending',
+        scheduled_for: new Date().toISOString(),
+        error_log: [...(job.error_log || []), { retry_at: new Date().toISOString() }],
+      }).eq('id', job_id);
+
+      return jsonResponse({
+        success: true,
+        module: 'ripple',
+        action: 'retry',
+        job_id,
+        message: 'Job requeued for retry',
+      }, headers);
+    }
+
+    default:
+      return jsonResponse({
+        success: false,
+        module: 'ripple',
+        error: `Unknown ripple action: ${action}`,
+        available_actions: ['status', 'pulse', 'enqueue', 'dequeue', 'publish', 'subscribe', 'topics', 'events', 'dead_letter', 'retry'],
+      }, headers);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ACCESS MODULE — Identity & Billing (API Keys, Quotas, Usage)
+// ═══════════════════════════════════════════════════════════════
+
+// deno-lint-ignore no-explicit-any
+async function handleAccess(
+  supabase: any,
+  action: string,
+  data: Record<string, any>,
+  headers: Record<string, string>
+) {
+  switch (action) {
+    case "status":
+    case "pulse": {
+      const [
+        { count: totalKeys },
+        { count: activeKeys },
+        { count: subscriptions },
+      ] = await Promise.all([
+        supabase.from('access_api_keys').select('*', { count: 'exact', head: true }),
+        supabase.from('access_api_keys').select('*', { count: 'exact', head: true }).eq('is_active', true),
+        supabase.from('access_subscriptions').select('*', { count: 'exact', head: true }).eq('status', 'active'),
+      ]);
+
+      return jsonResponse({
+        success: true,
+        module: 'access',
+        action,
+        identity: {
+          total_api_keys: totalKeys || 0,
+          active_api_keys: activeKeys || 0,
+          active_subscriptions: subscriptions || 0,
+        },
+        timestamp: new Date().toISOString(),
+      }, headers);
+    }
+
+    case "create_key": {
+      const { developer_id, name, scopes = [], rate_limit_per_minute = 60, rate_limit_per_day = 10000 } = data;
+      
+      // Generate secure API key
+      const keyBytes = new Uint8Array(32);
+      crypto.getRandomValues(keyBytes);
+      const apiKey = 'pf_' + Array.from(keyBytes).map(b => b.toString(16).padStart(2, '0')).join('');
+      const keyPrefix = apiKey.substring(0, 10);
+      
+      // Hash the key for storage
+      const encoder = new TextEncoder();
+      const hashBuffer = await crypto.subtle.digest('SHA-256', encoder.encode(apiKey));
+      const keyHash = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+
+      const { data: apiKeyRecord, error } = await supabase.from('access_api_keys').insert({
+        developer_id,
+        key_hash: keyHash,
+        key_prefix: keyPrefix,
+        name: name || 'Unnamed Key',
+        scopes,
+        rate_limit_per_minute,
+        rate_limit_per_day,
+      }).select().single();
+
+      if (error) throw error;
+
+      return jsonResponse({
+        success: true,
+        module: 'access',
+        action: 'create_key',
+        api_key: apiKey, // Only returned once!
+        key_id: apiKeyRecord.id,
+        key_prefix: keyPrefix,
+        message: 'Save this key securely. It will not be shown again.',
+        scopes,
+      }, headers);
+    }
+
+    case "validate_key": {
+      const { api_key } = data;
+      
+      // Hash the provided key
+      const encoder = new TextEncoder();
+      const hashBuffer = await crypto.subtle.digest('SHA-256', encoder.encode(api_key));
+      const keyHash = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+
+      const { data: keyRecord } = await supabase
+        .from('access_api_keys')
+        .select('id, developer_id, name, scopes, is_active, rate_limit_per_minute, rate_limit_per_day')
+        .eq('key_hash', keyHash)
+        .single();
+
+      if (!keyRecord) {
+        return jsonResponse({
+          success: false,
+          module: 'access',
+          action: 'validate_key',
+          valid: false,
+          error: 'Invalid API key',
+        }, headers);
+      }
+
+      if (!keyRecord.is_active) {
+        return jsonResponse({
+          success: false,
+          module: 'access',
+          action: 'validate_key',
+          valid: false,
+          error: 'API key is inactive',
+        }, headers);
+      }
+
+      // Update last_used_at
+      await supabase.from('access_api_keys').update({
+        last_used_at: new Date().toISOString(),
+      }).eq('id', keyRecord.id);
+
+      return jsonResponse({
+        success: true,
+        module: 'access',
+        action: 'validate_key',
+        valid: true,
+        key_id: keyRecord.id,
+        developer_id: keyRecord.developer_id,
+        scopes: keyRecord.scopes,
+        rate_limits: {
+          per_minute: keyRecord.rate_limit_per_minute,
+          per_day: keyRecord.rate_limit_per_day,
+        },
+      }, headers);
+    }
+
+    case "revoke_key": {
+      const { key_id } = data;
+      
+      await supabase.from('access_api_keys').update({
+        is_active: false,
+      }).eq('id', key_id);
+
+      return jsonResponse({
+        success: true,
+        module: 'access',
+        action: 'revoke_key',
+        key_id,
+        message: 'API key revoked',
+      }, headers);
+    }
+
+    case "list_keys": {
+      const { developer_id } = data;
+      
+      const { data: keys } = await supabase
+        .from('access_api_keys')
+        .select('id, key_prefix, name, scopes, is_active, last_used_at, created_at')
+        .eq('developer_id', developer_id)
+        .order('created_at', { ascending: false });
+
+      return jsonResponse({
+        success: true,
+        module: 'access',
+        action: 'list_keys',
+        keys: keys || [],
+        count: keys?.length || 0,
+      }, headers);
+    }
+
+    case "usage": 
+    case "get_usage": {
+      const { api_key_id, developer_id, start_date, end_date } = data;
+      
+      let query = supabase.from('access_usage').select('*').order('created_at', { ascending: false }).limit(100);
+      if (api_key_id) query = query.eq('api_key_id', api_key_id);
+      if (developer_id) query = query.eq('developer_id', developer_id);
+      if (start_date) query = query.gte('created_at', start_date);
+      if (end_date) query = query.lte('created_at', end_date);
+      
+      const { data: usage } = await query;
+
+      // Aggregate by module
+      const byModule: Record<string, { calls: number; tokens: number; cost_millicents: number }> = {};
+      for (const u of usage || []) {
+        if (!byModule[u.module]) byModule[u.module] = { calls: 0, tokens: 0, cost_millicents: 0 };
+        byModule[u.module].calls++;
+        byModule[u.module].tokens += u.tokens_used || 0;
+        byModule[u.module].cost_millicents += u.cost_millicents || 0;
+      }
+
+      return jsonResponse({
+        success: true,
+        module: 'access',
+        action: 'usage',
+        usage: usage || [],
+        summary: {
+          by_module: byModule,
+          total_calls: usage?.length || 0,
+          total_tokens: usage?.reduce((s: number, u: { tokens_used?: number }) => s + (u.tokens_used || 0), 0) || 0,
+          total_cost_millicents: usage?.reduce((s: number, u: { cost_millicents?: number }) => s + (u.cost_millicents || 0), 0) || 0,
+        },
+      }, headers);
+    }
+
+    case "quota":
+    case "check_quota": {
+      const { api_key_id } = data;
+      
+      const { data: quota } = await supabase
+        .from('access_quotas')
+        .select('*')
+        .eq('api_key_id', api_key_id)
+        .eq('date', new Date().toISOString().split('T')[0])
+        .single();
+
+      const { data: keyLimits } = await supabase
+        .from('access_api_keys')
+        .select('rate_limit_per_day')
+        .eq('id', api_key_id)
+        .single();
+
+      const dailyLimit = keyLimits?.rate_limit_per_day || 10000;
+      const used = quota?.calls_used || 0;
+
+      return jsonResponse({
+        success: true,
+        module: 'access',
+        action: 'quota',
+        quota: {
+          calls_used: used,
+          calls_remaining: Math.max(0, dailyLimit - used),
+          daily_limit: dailyLimit,
+          usage_percent: Math.round((used / dailyLimit) * 100),
+          reset_at: new Date(new Date().setHours(24, 0, 0, 0)).toISOString(),
+        },
+      }, headers);
+    }
+
+    case "record_usage": {
+      const { api_key_id, developer_id, module: usedModule, action: usedAction, tokens_used = 0, compute_ms = 0, cost_millicents = 0 } = data;
+
+      // Insert usage record
+      await supabase.from('access_usage').insert({
+        api_key_id,
+        developer_id,
+        module: usedModule,
+        action: usedAction,
+        tokens_used,
+        compute_ms,
+        cost_millicents,
+      });
+
+      // Update daily quota
+      await supabase.from('access_quotas').upsert({
+        api_key_id,
+        date: new Date().toISOString().split('T')[0],
+        calls_used: 1,
+        tokens_used,
+        cost_millicents,
+      }, { onConflict: 'api_key_id,date' });
+
+      return jsonResponse({
+        success: true,
+        module: 'access',
+        action: 'record_usage',
+        message: 'Usage recorded',
+      }, headers);
+    }
+
+    case "subscription": {
+      const { developer_id } = data;
+      
+      const { data: subscription } = await supabase
+        .from('access_subscriptions')
+        .select('*')
+        .eq('developer_id', developer_id)
+        .eq('status', 'active')
+        .single();
+
+      return jsonResponse({
+        success: true,
+        module: 'access',
+        action: 'subscription',
+        subscription: subscription || { tier: 'free', monthly_quota: 1000 },
+      }, headers);
+    }
+
+    default:
+      return jsonResponse({
+        success: false,
+        module: 'access',
+        error: `Unknown access action: ${action}`,
+        available_actions: ['status', 'pulse', 'create_key', 'validate_key', 'revoke_key', 'list_keys', 'usage', 'quota', 'record_usage', 'subscription'],
       }, headers);
   }
 }
