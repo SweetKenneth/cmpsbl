@@ -13,7 +13,7 @@ import { useState } from 'react';
 import { 
   Loader2, Lock, Terminal, AlertTriangle, Database, RefreshCw, 
   Settings, FileText, Zap, LayoutDashboard, Activity, Bot, Users, Sparkles,
-  Building2, ExternalLink, HardDrive
+  Building2, ExternalLink, HardDrive, Wand2
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -48,10 +48,9 @@ import { BrainIntelligencePanel } from '@/components/substrate-os/BrainIntellige
 import { SystemHealthPanel } from '@/components/substrate-os/SystemHealthPanel';
 import { HealButton } from '@/components/substrate-os/HealButton';
 import { CognitivesPanel } from '@/components/substrate-os/CognitivesPanel';
-import { UpgradeEnginePanel } from '@/components/substrate-os/UpgradeEnginePanel';
 import { BackupRestorePanel } from '@/components/substrate-os/BackupRestorePanel';
 import { EmergencyRecoveryPanel } from '@/components/substrate-os/EmergencyRecoveryPanel';
-import { ModernizerScanWidget } from '@/components/substrate-os/ModernizerScanWidget';
+import { ModernizerTab } from '@/components/substrate-os/ModernizerTab';
 import { AgencyMintWizard } from '@/components/agency/AgencyMintWizard';
 import { AgencyGallery } from '@/components/agency/AgencyGallery';
 import { cn } from '@/lib/utils';
@@ -380,6 +379,20 @@ export default function SubstrateOS() {
                   <span className="hidden sm:inline">Backups</span>
                 </TabsTrigger>
               )}
+              {isOperator && (
+                <TabsTrigger 
+                  value="modernizer" 
+                  className={cn(
+                    "gap-2 rounded-lg transition-all",
+                    "data-[state=active]:bg-fuchsia-500/10 data-[state=active]:text-fuchsia-400",
+                    "data-[state=active]:border-b-2 data-[state=active]:border-fuchsia-400",
+                    "hover:bg-white/5"
+                  )}
+                >
+                  <Wand2 className="w-4 h-4" />
+                  <span className="hidden sm:inline">Modernizer</span>
+                </TabsTrigger>
+              )}
               {isGovernor && (
                 <TabsTrigger 
                   value="mint" 
@@ -436,17 +449,11 @@ export default function SubstrateOS() {
             {/* Metrics Grid */}
             <MetricsGrid />
             
-            {/* Brain Intelligence + Modernizer side by side on larger screens */}
-            <div className="grid lg:grid-cols-2 gap-6">
-              <BrainIntelligencePanel enabled={isOperator} />
-              <ModernizerScanWidget enabled={isOperator} />
-            </div>
+            {/* Brain Intelligence Panel */}
+            <BrainIntelligencePanel enabled={isOperator} />
             
             {/* System Health Panel */}
             <SystemHealthPanel enabled={isOperator} />
-            
-            {/* Upgrade Engine Panel */}
-            <UpgradeEnginePanel enabled={isOperator} />
             
             {/* Governor Section */}
             <GovernorPanel enabled={isGovernor} />
@@ -530,6 +537,13 @@ export default function SubstrateOS() {
             <main className="container mx-auto px-4 py-6 max-w-7xl">
               <BackupRestorePanel enabled={isOperator} />
             </main>
+          </TabsContent>
+        )}
+
+        {/* Modernizer Tab - Operator+ */}
+        {isOperator && (
+          <TabsContent value="modernizer" className="flex-1 mt-0">
+            <ModernizerTab enabled={isOperator} />
           </TabsContent>
         )}
 
