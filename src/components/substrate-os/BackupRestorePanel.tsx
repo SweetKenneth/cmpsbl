@@ -1,16 +1,17 @@
 /**
- * Backup & Restore Panel for Substrate OS
- * Displays backups and enables restore operations
+ * Backup & Restore Panel for Substrate OS — v2.0
+ * Enhanced with exportable backups, retention management, and permanent failsafe
  */
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { system } from '@/lib/substrate';
 import { toast } from 'sonner';
 import { 
   Database, RefreshCw, Download, RotateCcw, CheckCircle2, 
-  AlertTriangle, Clock, Shield, Loader2, HardDrive
+  AlertTriangle, Clock, Shield, Loader2, HardDrive, Upload,
+  Lock, Trash2, FileDown, Package, Key, ExternalLink
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -29,6 +30,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Input } from '@/components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 
 interface Backup {
@@ -40,6 +42,10 @@ interface Backup {
   restore_point_enabled: boolean;
   status: string;
   checksum: string;
+  is_permanent?: boolean;
+  backup_category?: string;
+  notes?: string;
+  size_bytes?: number;
   data_counts: Record<string, number>;
   snapshot: {
     orchestrator?: {
@@ -80,10 +86,20 @@ function formatRelative(dateStr: string): string {
   return `${diffDays}d ago`;
 }
 
+function formatBytes(bytes: number): string {
+  if (bytes === 0) return '0 B';
+  const k = 1024;
+  const sizes = ['B', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
 export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
   const queryClient = useQueryClient();
   const [confirmValue, setConfirmValue] = useState('');
   const [selectedBackup, setSelectedBackup] = useState<Backup | null>(null);
+  const [activeTab, setActiveTab] = useState('backups');
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Fetch backups from database
   const { data: backups, isLoading, refetch } = useQuery({
@@ -117,8 +133,85 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
       });
     },
     onError: (error) => {
-      console.error('Backup error:', error);
       toast.error('Failed to create backup', {
+        description: error instanceof Error ? error.message : 'Unknown error',
+      });
+    },
+  });
+
+  // Export backup mutation
+  const exportBackup = useMutation({
+    mutationFn: async ({ backupId, includeSecrets }: { backupId?: string; includeSecrets: boolean }) => {
+      const { data, error } = await supabase.functions.invoke('pf-backup-export', {
+        body: { 
+          backup_id: backupId,
+          include_secrets: includeSecrets,
+          export_type: includeSecrets ? 'full' : 'portable',
+        }
+      });
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (data: any) => {
+      if (data?.download_url) {
+        // Trigger download
+        const link = document.createElement('a');
+        link.href = data.download_url;
+        link.download = `substrate-backup-${data.export_token}.json`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+      toast.success('Export ready', {
+        description: `${data?.size_mb || 0} MB - ${data?.total_records || 0} records`,
+      });
+    },
+    onError: (error) => {
+      toast.error('Export failed', {
+        description: error instanceof Error ? error.message : 'Unknown error',
+      });
+    },
+  });
+
+  // Create failsafe mutation
+  const createFailsafe = useMutation({
+    mutationFn: async (notes?: string) => {
+      const { data, error } = await supabase.functions.invoke('pf-backup-prune', {
+        body: { action: 'create_failsafe', failsafe_notes: notes }
+      });
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (data: any) => {
+      queryClient.invalidateQueries({ queryKey: ['substrate-backups'] });
+      toast.success('Permanent failsafe created', {
+        description: `ID: ${data?.failsafe_id} - Will never be auto-pruned`,
+      });
+    },
+    onError: (error) => {
+      toast.error('Failed to create failsafe', {
+        description: error instanceof Error ? error.message : 'Unknown error',
+      });
+    },
+  });
+
+  // Prune backups mutation
+  const pruneBackups = useMutation({
+    mutationFn: async (retentionCount: number = 3) => {
+      const { data, error } = await supabase.functions.invoke('pf-backup-prune', {
+        body: { action: 'prune', retention_count: retentionCount }
+      });
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (data: any) => {
+      queryClient.invalidateQueries({ queryKey: ['substrate-backups'] });
+      toast.success('Backup pruning complete', {
+        description: `Removed ${data?.pruned_count || 0} old backups`,
+      });
+    },
+    onError: (error) => {
+      toast.error('Prune failed', {
         description: error instanceof Error ? error.message : 'Unknown error',
       });
     },
@@ -142,18 +235,84 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
       setConfirmValue('');
     },
     onError: (error) => {
-      console.error('Restore error:', error);
       toast.error('Failed to restore backup', {
         description: error instanceof Error ? error.message : 'Unknown error',
       });
     },
   });
 
-  // Calculate total records from latest backup
+  // Import from file mutation
+  const importBackup = useMutation({
+    mutationFn: async (exportPackage: any) => {
+      const { data, error } = await supabase.functions.invoke('pf-backup-import', {
+        body: { 
+          export_package: exportPackage,
+          dry_run: false,
+          clear_existing: false,
+        }
+      });
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (data: any) => {
+      queryClient.invalidateQueries({ queryKey: ['substrate-backups'] });
+      toast.success('Import completed', {
+        description: `Restored ${data?.total_restored || 0} records`,
+      });
+      if (data?.missing_secrets?.length > 0) {
+        toast.warning('Missing secrets', {
+          description: `Configure: ${data.missing_secrets.join(', ')}`,
+        });
+      }
+    },
+    onError: (error) => {
+      toast.error('Import failed', {
+        description: error instanceof Error ? error.message : 'Unknown error',
+      });
+    },
+  });
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const content = e.target?.result as string;
+        const exportPackage = JSON.parse(content);
+        
+        if (!exportPackage._meta) {
+          toast.error('Invalid backup file', {
+            description: 'Missing metadata - not a valid substrate export',
+          });
+          return;
+        }
+
+        toast.info('Backup file loaded', {
+          description: `Source: v${exportPackage._meta.substrate_version} - ${exportPackage._meta.total_records} records`,
+        });
+
+        // Ask for confirmation before import
+        if (confirm(`Import ${exportPackage._meta.total_records} records from v${exportPackage._meta.substrate_version}?`)) {
+          importBackup.mutate(exportPackage);
+        }
+      } catch {
+        toast.error('Invalid file', {
+          description: 'Could not parse backup file',
+        });
+      }
+    };
+    reader.readAsText(file);
+  };
+
+  // Calculate stats
   const latestBackup = backups?.[0];
   const totalRecords = latestBackup?.data_counts 
     ? Object.values(latestBackup.data_counts).reduce((a, b) => a + b, 0)
     : 0;
+  const permanentBackups = backups?.filter(b => b.is_permanent) || [];
+  const hasFailsafe = permanentBackups.some(b => b.backup_category === 'failsafe');
 
   if (!enabled) {
     return (
@@ -173,7 +332,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-blue-500/20 border border-blue-500/40 flex items-center justify-center">
             <Database className="w-4 h-4 text-blue-400" />
@@ -181,11 +340,11 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
           <div>
             <h2 className="text-lg font-semibold">Backup & Restore</h2>
             <p className="text-xs text-muted-foreground font-mono">
-              substrate state persistence • disaster recovery
+              portable exports • retention policy • permanent failsafe
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <Button
             variant="outline"
             size="sm"
@@ -212,7 +371,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <Card className="border border-emerald-500/20 bg-white/5 dark:bg-white/[0.02]">
           <CardContent className="p-4">
             <p className="text-xs text-muted-foreground mb-1">Total Backups</p>
@@ -221,7 +380,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
         </Card>
         <Card className="border border-cyan-500/20 bg-white/5 dark:bg-white/[0.02]">
           <CardContent className="p-4">
-            <p className="text-xs text-muted-foreground mb-1">Latest Backup</p>
+            <p className="text-xs text-muted-foreground mb-1">Latest</p>
             <p className="text-sm font-mono text-cyan-400">
               {latestBackup ? formatRelative(latestBackup.created_at) : 'None'}
             </p>
@@ -229,203 +388,448 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
         </Card>
         <Card className="border border-purple-500/20 bg-white/5 dark:bg-white/[0.02]">
           <CardContent className="p-4">
-            <p className="text-xs text-muted-foreground mb-1">Records Backed</p>
+            <p className="text-xs text-muted-foreground mb-1">Records</p>
             <p className="text-2xl font-mono font-bold text-purple-400">{totalRecords.toLocaleString()}</p>
           </CardContent>
         </Card>
         <Card className="border border-amber-500/20 bg-white/5 dark:bg-white/[0.02]">
           <CardContent className="p-4">
-            <p className="text-xs text-muted-foreground mb-1">Version</p>
-            <p className="text-sm font-mono text-amber-400">
-              {latestBackup?.substrate_version || 'N/A'}
+            <p className="text-xs text-muted-foreground mb-1">Permanent</p>
+            <p className="text-2xl font-mono font-bold text-amber-400">{permanentBackups.length}</p>
+          </CardContent>
+        </Card>
+        <Card className={cn(
+          "border bg-white/5 dark:bg-white/[0.02]",
+          hasFailsafe ? "border-green-500/20" : "border-red-500/20"
+        )}>
+          <CardContent className="p-4">
+            <p className="text-xs text-muted-foreground mb-1">Failsafe</p>
+            <p className={cn(
+              "text-sm font-mono font-bold",
+              hasFailsafe ? "text-green-400" : "text-red-400"
+            )}>
+              {hasFailsafe ? '✓ Protected' : '⚠ Not Set'}
             </p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Backup List */}
-      <Card className="border border-white/10 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-sm font-medium flex items-center gap-2">
-            <Clock className="w-4 h-4 text-blue-400" />
-            Backup History
-          </CardTitle>
-          <CardDescription className="text-xs">
-            Recent backups with restore point capability
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {isLoading ? (
-            <div className="space-y-3">
-              {[1, 2, 3].map(i => (
-                <Skeleton key={i} className="h-20 w-full rounded-lg" />
-              ))}
-            </div>
-          ) : backups && backups.length > 0 ? (
-            <ScrollArea className="h-[400px] pr-4">
-              <div className="space-y-3">
-                {backups.map((backup, idx) => (
-                  <div
-                    key={backup.id}
-                    className={cn(
-                      "p-4 rounded-lg border transition-all",
-                      idx === 0 
-                        ? "border-emerald-500/30 bg-emerald-500/5" 
-                        : "border-white/10 bg-white/5 hover:bg-white/10"
-                    )}
-                  >
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                          <code className="text-sm font-mono text-foreground">
-                            {backup.backup_id}
-                          </code>
-                          {idx === 0 && (
-                            <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/40 text-[10px]">
-                              LATEST
-                            </Badge>
-                          )}
-                          <Badge 
-                            variant="outline" 
-                            className={cn(
-                              "text-[10px]",
-                              backup.status === 'complete' 
-                                ? "border-emerald-500/40 text-emerald-400" 
-                                : "border-amber-500/40 text-amber-400"
-                            )}
-                          >
-                            {backup.status}
-                          </Badge>
-                        </div>
-                        
-                        <p className="text-xs text-muted-foreground mb-2">
-                          {formatDate(backup.created_at)} • v{backup.substrate_version}
-                        </p>
-                        
-                        <div className="flex flex-wrap gap-2 text-[10px]">
-                          {backup.data_counts && Object.entries(backup.data_counts).slice(0, 4).map(([key, value]) => (
-                            <span key={key} className="px-2 py-0.5 rounded bg-white/5 text-muted-foreground">
-                              {key.replace(/_/g, ' ')}: <span className="text-foreground">{value}</span>
-                            </span>
-                          ))}
-                        </div>
-                        
-                        {backup.snapshot?.orchestrator && (
-                          <div className="mt-2 flex items-center gap-2 text-xs">
-                            <span className="text-muted-foreground">Orchestrator:</span>
-                            <Badge 
-                              variant="outline" 
-                              className={cn(
-                                "text-[10px]",
-                                (backup.snapshot.orchestrator.health_score || 0) > 0.8
-                                  ? "border-emerald-500/40 text-emerald-400"
-                                  : "border-amber-500/40 text-amber-400"
-                              )}
-                            >
-                              {Math.round((backup.snapshot.orchestrator.health_score || 0) * 100)}% health
-                            </Badge>
-                          </div>
-                        )}
-                      </div>
-                      
-                      <div className="flex items-center gap-2">
-                        {backup.restore_point_enabled && (
-                          <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => setSelectedBackup(backup)}
-                                className="h-8 gap-2 border-amber-500/30 text-amber-400 bg-amber-500/10 hover:bg-amber-500/20"
-                              >
-                                <RotateCcw className="w-3.5 h-3.5" />
-                                Restore
-                              </Button>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                              <AlertDialogHeader>
-                                <AlertDialogTitle className="flex items-center gap-2">
-                                  <AlertTriangle className="w-5 h-5 text-amber-400" />
-                                  Confirm Restore
-                                </AlertDialogTitle>
-                                <AlertDialogDescription>
-                                  This will restore the substrate to the state from{' '}
-                                  <strong>{formatDate(backup.created_at)}</strong>.
-                                  <br /><br />
-                                  Backup ID: <code className="bg-muted px-1 rounded">{backup.backup_id}</code>
-                                  <br />
-                                  Version: {backup.substrate_version}
-                                </AlertDialogDescription>
-                              </AlertDialogHeader>
-                              
-                              <div className="py-2">
-                                <p className="text-sm text-muted-foreground mb-2">
-                                  Type <code className="bg-muted px-1 rounded">RESTORE</code> to confirm:
-                                </p>
-                                <Input
-                                  value={confirmValue}
-                                  onChange={(e) => setConfirmValue(e.target.value)}
-                                  placeholder="Type RESTORE"
-                                  className="font-mono"
-                                />
-                              </div>
-                              
-                              <AlertDialogFooter>
-                                <AlertDialogCancel onClick={() => {
-                                  setConfirmValue('');
-                                  setSelectedBackup(null);
-                                }}>
-                                  Cancel
-                                </AlertDialogCancel>
-                                <AlertDialogAction
-                                  onClick={() => restoreBackup.mutate(backup.backup_id)}
-                                  disabled={confirmValue !== 'RESTORE' || restoreBackup.isPending}
-                                  className="bg-amber-500/20 text-amber-400 border border-amber-500/40 hover:bg-amber-500/30"
-                                >
-                                  {restoreBackup.isPending ? (
-                                    <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                                  ) : (
-                                    <RotateCcw className="w-4 h-4 mr-2" />
-                                  )}
-                                  Restore Backup
-                                </AlertDialogAction>
-                              </AlertDialogFooter>
-                            </AlertDialogContent>
-                          </AlertDialog>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </ScrollArea>
-          ) : (
-            <div className="text-center py-8">
-              <Database className="w-10 h-10 mx-auto mb-4 text-muted-foreground/30" />
-              <p className="text-sm text-muted-foreground">
-                No backups found. Create your first backup above.
-              </p>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+      {/* Tabs */}
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList className="grid w-full grid-cols-3 bg-white/5">
+          <TabsTrigger value="backups">Backups</TabsTrigger>
+          <TabsTrigger value="export">Export/Import</TabsTrigger>
+          <TabsTrigger value="retention">Retention</TabsTrigger>
+        </TabsList>
 
-      {/* Info Card */}
-      <Card className="border border-blue-500/20 bg-blue-500/5">
-        <CardContent className="p-4">
-          <div className="flex items-start gap-3">
-            <CheckCircle2 className="w-5 h-5 text-blue-400 mt-0.5" />
-            <div className="text-sm">
-              <p className="text-foreground font-medium mb-1">Automated Backups Enabled</p>
-              <p className="text-muted-foreground text-xs">
-                The substrate automatically creates daily backups stored in the backups bucket. 
-                Manual backups can be created at any time. All backups include orchestrator state, 
-                module health, and data counts for validation.
-              </p>
-            </div>
+        {/* Backups Tab */}
+        <TabsContent value="backups" className="space-y-4">
+          <Card className="border border-white/10 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm font-medium flex items-center gap-2">
+                <Clock className="w-4 h-4 text-blue-400" />
+                Backup History
+              </CardTitle>
+              <CardDescription className="text-xs">
+                Recent backups with restore point capability
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {isLoading ? (
+                <div className="space-y-3">
+                  {[1, 2, 3].map(i => (
+                    <Skeleton key={i} className="h-20 w-full rounded-lg" />
+                  ))}
+                </div>
+              ) : backups && backups.length > 0 ? (
+                <ScrollArea className="h-[400px] pr-4">
+                  <div className="space-y-3">
+                    {backups.map((backup, idx) => (
+                      <div
+                        key={backup.id}
+                        className={cn(
+                          "p-4 rounded-lg border transition-all",
+                          backup.is_permanent
+                            ? "border-amber-500/40 bg-amber-500/5"
+                            : idx === 0 
+                              ? "border-emerald-500/30 bg-emerald-500/5" 
+                              : "border-white/10 bg-white/5 hover:bg-white/10"
+                        )}
+                      >
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-1 flex-wrap">
+                              <code className="text-sm font-mono text-foreground">
+                                {backup.backup_id}
+                              </code>
+                              {backup.is_permanent && (
+                                <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/40 text-[10px]">
+                                  <Lock className="w-2.5 h-2.5 mr-1" />
+                                  PERMANENT
+                                </Badge>
+                              )}
+                              {backup.backup_category === 'failsafe' && (
+                                <Badge className="bg-red-500/20 text-red-400 border-red-500/40 text-[10px]">
+                                  FAILSAFE
+                                </Badge>
+                              )}
+                              {idx === 0 && !backup.is_permanent && (
+                                <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/40 text-[10px]">
+                                  LATEST
+                                </Badge>
+                              )}
+                              <Badge 
+                                variant="outline" 
+                                className={cn(
+                                  "text-[10px]",
+                                  backup.status === 'complete' 
+                                    ? "border-emerald-500/40 text-emerald-400" 
+                                    : "border-amber-500/40 text-amber-400"
+                                )}
+                              >
+                                {backup.status}
+                              </Badge>
+                            </div>
+                            
+                            <p className="text-xs text-muted-foreground mb-2">
+                              {formatDate(backup.created_at)} • v{backup.substrate_version}
+                              {backup.size_bytes ? ` • ${formatBytes(backup.size_bytes)}` : ''}
+                            </p>
+                            
+                            {backup.notes && (
+                              <p className="text-xs text-muted-foreground/70 italic mb-2">
+                                {backup.notes}
+                              </p>
+                            )}
+                            
+                            <div className="flex flex-wrap gap-2 text-[10px]">
+                              {backup.data_counts && Object.entries(backup.data_counts).slice(0, 4).map(([key, value]) => (
+                                <span key={key} className="px-2 py-0.5 rounded bg-white/5 text-muted-foreground">
+                                  {key.replace(/_/g, ' ')}: <span className="text-foreground">{value}</span>
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                          
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => exportBackup.mutate({ backupId: backup.backup_id, includeSecrets: false })}
+                              disabled={exportBackup.isPending}
+                              className="h-7 px-2 text-xs"
+                            >
+                              <Download className="w-3 h-3" />
+                            </Button>
+                            
+                            {backup.restore_point_enabled && (
+                              <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => setSelectedBackup(backup)}
+                                    className="h-7 gap-1 text-xs border-amber-500/30 text-amber-400 bg-amber-500/10 hover:bg-amber-500/20"
+                                  >
+                                    <RotateCcw className="w-3 h-3" />
+                                    Restore
+                                  </Button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                  <AlertDialogHeader>
+                                    <AlertDialogTitle className="flex items-center gap-2">
+                                      <AlertTriangle className="w-5 h-5 text-amber-400" />
+                                      Confirm Restore
+                                    </AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                      This will restore the substrate to the state from{' '}
+                                      <strong>{formatDate(backup.created_at)}</strong>.
+                                      <br /><br />
+                                      Backup ID: <code className="bg-muted px-1 rounded">{backup.backup_id}</code>
+                                    </AlertDialogDescription>
+                                  </AlertDialogHeader>
+                                  
+                                  <div className="py-2">
+                                    <p className="text-sm text-muted-foreground mb-2">
+                                      Type <code className="bg-muted px-1 rounded">RESTORE</code> to confirm:
+                                    </p>
+                                    <Input
+                                      value={confirmValue}
+                                      onChange={(e) => setConfirmValue(e.target.value)}
+                                      placeholder="Type RESTORE"
+                                      className="font-mono"
+                                    />
+                                  </div>
+                                  
+                                  <AlertDialogFooter>
+                                    <AlertDialogCancel onClick={() => {
+                                      setConfirmValue('');
+                                      setSelectedBackup(null);
+                                    }}>
+                                      Cancel
+                                    </AlertDialogCancel>
+                                    <AlertDialogAction
+                                      onClick={() => restoreBackup.mutate(backup.backup_id)}
+                                      disabled={confirmValue !== 'RESTORE' || restoreBackup.isPending}
+                                      className="bg-amber-500/20 text-amber-400 border border-amber-500/40 hover:bg-amber-500/30"
+                                    >
+                                      {restoreBackup.isPending && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
+                                      Restore Backup
+                                    </AlertDialogAction>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialog>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </ScrollArea>
+              ) : (
+                <div className="text-center py-8">
+                  <Database className="w-10 h-10 mx-auto mb-4 text-muted-foreground/30" />
+                  <p className="text-sm text-muted-foreground">
+                    No backups found. Create your first backup above.
+                  </p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Export/Import Tab */}
+        <TabsContent value="export" className="space-y-4">
+          <div className="grid md:grid-cols-2 gap-4">
+            {/* Export Options */}
+            <Card className="border border-blue-500/20 bg-white/5">
+              <CardHeader>
+                <CardTitle className="text-sm flex items-center gap-2">
+                  <FileDown className="w-4 h-4 text-blue-400" />
+                  Export Backup
+                </CardTitle>
+                <CardDescription className="text-xs">
+                  Download a portable backup file
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <Button
+                  onClick={() => exportBackup.mutate({ includeSecrets: false })}
+                  disabled={exportBackup.isPending}
+                  className="w-full justify-start gap-2 bg-blue-500/20 border border-blue-500/40 text-blue-400 hover:bg-blue-500/30"
+                >
+                  {exportBackup.isPending ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Package className="w-4 h-4" />
+                  )}
+                  Export Portable (No Secrets)
+                </Button>
+                <p className="text-[10px] text-muted-foreground">
+                  Safe for sharing or selling — recipient configures their own API keys
+                </p>
+                
+                <div className="border-t border-white/10 pt-3">
+                  <Button
+                    onClick={() => exportBackup.mutate({ includeSecrets: true })}
+                    disabled={exportBackup.isPending}
+                    variant="outline"
+                    className="w-full justify-start gap-2 border-amber-500/30 text-amber-400 hover:bg-amber-500/10"
+                  >
+                    {exportBackup.isPending ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <Key className="w-4 h-4" />
+                    )}
+                    Export Full (With Secrets Manifest)
+                  </Button>
+                  <p className="text-[10px] text-muted-foreground mt-2">
+                    Includes list of required secrets — for personal use/migration only
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Import Options */}
+            <Card className="border border-emerald-500/20 bg-white/5">
+              <CardHeader>
+                <CardTitle className="text-sm flex items-center gap-2">
+                  <Upload className="w-4 h-4 text-emerald-400" />
+                  Import Backup
+                </CardTitle>
+                <CardDescription className="text-xs">
+                  Restore from an exported backup file
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".json"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
+                <Button
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={importBackup.isPending}
+                  className="w-full justify-start gap-2 bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/30"
+                >
+                  {importBackup.isPending ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Upload className="w-4 h-4" />
+                  )}
+                  Upload Backup File
+                </Button>
+                <p className="text-[10px] text-muted-foreground">
+                  Select a .json export file from another project
+                </p>
+                
+                <div className="border-t border-white/10 pt-3">
+                  <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3">
+                    <p className="text-xs text-amber-400 font-medium mb-1">Important</p>
+                    <p className="text-[10px] text-muted-foreground">
+                      After import, configure any missing API keys in your project secrets.
+                      The import will show which secrets need to be set up.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
-        </CardContent>
-      </Card>
+        </TabsContent>
+
+        {/* Retention Tab */}
+        <TabsContent value="retention" className="space-y-4">
+          <div className="grid md:grid-cols-2 gap-4">
+            {/* Permanent Failsafe */}
+            <Card className={cn(
+              "border bg-white/5",
+              hasFailsafe ? "border-green-500/20" : "border-red-500/20"
+            )}>
+              <CardHeader>
+                <CardTitle className="text-sm flex items-center gap-2">
+                  <Lock className="w-4 h-4 text-amber-400" />
+                  Permanent Failsafe
+                </CardTitle>
+                <CardDescription className="text-xs">
+                  A backup that is never auto-pruned
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {hasFailsafe ? (
+                  <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-3">
+                    <div className="flex items-center gap-2 mb-2">
+                      <CheckCircle2 className="w-4 h-4 text-green-400" />
+                      <span className="text-sm font-medium text-green-400">Failsafe Active</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      Your permanent failsafe backup is protected and will never be deleted.
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3">
+                      <div className="flex items-center gap-2 mb-2">
+                        <AlertTriangle className="w-4 h-4 text-red-400" />
+                        <span className="text-sm font-medium text-red-400">No Failsafe Set</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Create a permanent backup as a failsafe for disaster recovery.
+                      </p>
+                    </div>
+                    <Button
+                      onClick={() => createFailsafe.mutate(`Failsafe created on ${new Date().toISOString()}`)}
+                      disabled={createFailsafe.isPending}
+                      className="w-full gap-2 bg-amber-500/20 border border-amber-500/40 text-amber-400 hover:bg-amber-500/30"
+                    >
+                      {createFailsafe.isPending ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <Lock className="w-4 h-4" />
+                      )}
+                      Create Permanent Failsafe
+                    </Button>
+                  </>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Auto-Prune */}
+            <Card className="border border-purple-500/20 bg-white/5">
+              <CardHeader>
+                <CardTitle className="text-sm flex items-center gap-2">
+                  <Trash2 className="w-4 h-4 text-purple-400" />
+                  Retention Policy
+                </CardTitle>
+                <CardDescription className="text-xs">
+                  Keep only the most recent backups
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <p className="text-xs text-muted-foreground">
+                  Auto-prune will remove old backups, keeping only the most recent ones.
+                  Permanent backups are never pruned.
+                </p>
+                
+                <div className="grid grid-cols-3 gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => pruneBackups.mutate(3)}
+                    disabled={pruneBackups.isPending}
+                    className="text-xs"
+                  >
+                    Keep 3
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => pruneBackups.mutate(5)}
+                    disabled={pruneBackups.isPending}
+                    className="text-xs"
+                  >
+                    Keep 5
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => pruneBackups.mutate(10)}
+                    disabled={pruneBackups.isPending}
+                    className="text-xs"
+                  >
+                    Keep 10
+                  </Button>
+                </div>
+                
+                {pruneBackups.isPending && (
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Loader2 className="w-3 h-3 animate-spin" />
+                    Pruning old backups...
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Info Card */}
+          <Card className="border border-blue-500/20 bg-blue-500/5">
+            <CardContent className="p-4">
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="w-5 h-5 text-blue-400 mt-0.5" />
+                <div className="text-sm">
+                  <p className="text-foreground font-medium mb-1">Backup Retention</p>
+                  <p className="text-muted-foreground text-xs">
+                    The system keeps the last 3 non-permanent backups by default. 
+                    Permanent backups (including your failsafe) are never automatically deleted.
+                    You can export any backup for offsite storage or migration.
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
