@@ -470,4 +470,20 @@ All colors MUST be HSL.
     animation-delay: 1s;
     will-change: opacity;
   }
+
+  /* Safe area padding for iOS notches and mobile nav */
+  .safe-area-pb {
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+  }
+  
+  /* Ensure content doesn't hide behind fixed mobile nav */
+  .pb-mobile-nav {
+    padding-bottom: 5rem;
+  }
+  
+  @media (min-width: 1024px) {
+    .pb-mobile-nav {
+      padding-bottom: 0;
+    }
+  }
 }
