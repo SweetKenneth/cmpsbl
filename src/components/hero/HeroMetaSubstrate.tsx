@@ -1,5 +1,5 @@
 /**
- * META HERO: The Cognitive Substrate
+ * META HERO: CMPSBL (Composable) By PromptFluid
  * Clear value proposition for all audiences: Gaming, Developers, Enterprise
  * Mobile-first, performance-optimized
  */
@@ -119,7 +119,7 @@ function ModuleOrbit() {
               WebkitTextFillColor: "transparent",
             }}
           >
-            SUBSTRATE
+            CMPSBL
           </div>
           <div className="text-[10px] text-muted-foreground font-medium">11 Modules</div>
         </div>
@@ -256,7 +256,7 @@ export function HeroMetaSubstrate() {
         >
           <Badge variant="outline" className="gap-1.5 px-3 py-1 text-xs sm:text-sm">
             <Sparkles className="w-3 h-3" />
-            Cognitive Orchestration Substrate
+            CMPSBL (Composable) By PromptFluid
           </Badge>
         </motion.div>
 
@@ -281,7 +281,7 @@ export function HeroMetaSubstrate() {
             </span>
           </h1>
           <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
-            The cognitive substrate gives your applications persistent memory, 
+            CMPSBL gives your applications persistent memory, 
             dream cycles, intelligent routing, and autonomous learning. 
             <span className="hidden sm:inline"> One infrastructure for gaming, software, and enterprise.</span>
           </p>
