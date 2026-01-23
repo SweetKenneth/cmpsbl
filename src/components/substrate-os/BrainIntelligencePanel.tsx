@@ -4,7 +4,7 @@
  */
 
 import { useState } from 'react';
-import { Brain, Sparkles, Network, TrendingUp, Lightbulb, Loader2, CheckCircle2, AlertCircle, Zap, Activity, ChevronDown } from 'lucide-react';
+import { Brain, Sparkles, Network, TrendingUp, Lightbulb, Loader2, CheckCircle2, AlertCircle, Zap, Activity, ChevronDown, Layers, Trash2, ArrowUpDown } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { useLiveCuriosityLog, useLiveLearningPatterns, useLiveReflections } from '@/hooks/useSubstrateOSLive';
-import { useBrainOptimize, useBrainDeepThink, useBrainCognitiveCycle, useBrainExplore, useBrainGraphBuild } from '@/hooks/useSubstrateOSEnhanced';
+import { useBrainOptimize, useBrainDeepThink, useBrainCognitiveCycle, useBrainExplore, useBrainGraphBuild, useBrainTiering, useBrainPrune, useBrainBatchTiering } from '@/hooks/useSubstrateOSEnhanced';
 
 interface BrainIntelligencePanelProps {
   enabled: boolean;
@@ -298,6 +298,9 @@ export function BrainIntelligencePanel({ enabled }: BrainIntelligencePanelProps)
   const cognitiveCycleMutation = useBrainCognitiveCycle();
   const exploreMutation = useBrainExplore();
   const graphBuildMutation = useBrainGraphBuild();
+  const tieringMutation = useBrainTiering();
+  const pruneMutation = useBrainPrune();
+  const batchTieringMutation = useBrainBatchTiering();
 
   const handleDeepThink = async () => {
     if (!deepThinkQuery.trim()) {
@@ -405,6 +408,77 @@ export function BrainIntelligencePanel({ enabled }: BrainIntelligencePanelProps)
                 <Network className="w-3.5 h-3.5" />
               )}
               <span className="text-xs">Build Knowledge Graph</span>
+            </Button>
+          </CardContent>
+        </Card>
+
+        {/* Memory Tiering & Pruning */}
+        <Card className="border-border/50">
+          <CardHeader className="pb-2 pt-4 px-4">
+            <CardTitle className="text-sm flex items-center gap-2">
+              <Layers className="w-4 h-4 text-cyan-500" />
+              Memory Tiering
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="px-4 pb-4 space-y-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full justify-start gap-2 h-9"
+              onClick={() => tieringMutation.mutate(500)}
+              disabled={tieringMutation.isPending}
+            >
+              {tieringMutation.isPending ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              ) : (
+                <ArrowUpDown className="w-3.5 h-3.5" />
+              )}
+              <span className="text-xs">Tier Memories (Hot↔Warm↔Cold)</span>
+            </Button>
+            
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full justify-start gap-2 h-9"
+              onClick={() => batchTieringMutation.mutate({ batch_size: 500, max_batches: 10 })}
+              disabled={batchTieringMutation.isPending}
+            >
+              {batchTieringMutation.isPending ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              ) : (
+                <Layers className="w-3.5 h-3.5" />
+              )}
+              <span className="text-xs">Batch Tiering (Deep)</span>
+            </Button>
+            
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full justify-start gap-2 h-9 text-amber-600 hover:text-amber-500 border-amber-500/30 hover:border-amber-500/50"
+              onClick={() => pruneMutation.mutate({ dry_run: true })}
+              disabled={pruneMutation.isPending}
+            >
+              {pruneMutation.isPending ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              ) : (
+                <Trash2 className="w-3.5 h-3.5" />
+              )}
+              <span className="text-xs">Preview Prune</span>
+            </Button>
+            
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full justify-start gap-2 h-9 text-destructive hover:text-destructive border-destructive/30 hover:border-destructive/50"
+              onClick={() => pruneMutation.mutate({})}
+              disabled={pruneMutation.isPending}
+            >
+              {pruneMutation.isPending ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              ) : (
+                <Trash2 className="w-3.5 h-3.5" />
+              )}
+              <span className="text-xs">Prune Low-Value Memories</span>
             </Button>
           </CardContent>
         </Card>
