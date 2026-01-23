@@ -37,14 +37,22 @@ interface PulseData {
   uptime_seconds?: number;
 }
 
-const moduleConfig: { id: SubstrateModule; name: string; icon: React.ElementType; color: string }[] = [
-  { id: "brain", name: "Brain", icon: Brain, color: "text-cyan-500" },
-  { id: "decode", name: "Decode", icon: MessageSquare, color: "text-purple-500" },
-  { id: "defense", name: "Defense", icon: Shield, color: "text-amber-500" },
-  { id: "nexus", name: "Nexus", icon: Zap, color: "text-green-500" },
-  { id: "vision", name: "Vision", icon: Eye, color: "text-blue-500" },
-  { id: "dream", name: "Dream", icon: Moon, color: "text-pink-500" },
-  { id: "system", name: "System", icon: Settings, color: "text-red-500" },
+const moduleConfig: { id: SubstrateModule; name: string; icon: React.ElementType; color: string; layer: string }[] = [
+  // Kernel Layer
+  { id: "core", name: "Core", icon: Settings, color: "text-slate-400", layer: "Kernel" },
+  { id: "ripple", name: "Ripple", icon: MessageSquare, color: "text-indigo-500", layer: "Kernel" },
+  { id: "access", name: "Access", icon: Shield, color: "text-orange-500", layer: "Kernel" },
+  // Cognitive Layer
+  { id: "brain", name: "Brain", icon: Brain, color: "text-cyan-500", layer: "Cognitive" },
+  { id: "decode", name: "Decode", icon: MessageSquare, color: "text-purple-500", layer: "Cognitive" },
+  { id: "dream", name: "Dream", icon: Moon, color: "text-pink-500", layer: "Cognitive" },
+  // Operational Layer
+  { id: "defense", name: "Defense", icon: Shield, color: "text-amber-500", layer: "Operational" },
+  { id: "nexus", name: "Nexus", icon: Zap, color: "text-green-500", layer: "Operational" },
+  { id: "vision", name: "Vision", icon: Eye, color: "text-blue-500", layer: "Operational" },
+  // Administrative Layer
+  { id: "system", name: "System", icon: Settings, color: "text-red-500", layer: "Admin" },
+  { id: "modernizer", name: "Modernizer", icon: Zap, color: "text-emerald-500", layer: "Admin" },
 ];
 
 export function ObservabilityHUD() {
@@ -217,28 +225,39 @@ export function ObservabilityHUD() {
         </div>
       </Card>
 
-      {/* Module Status Grid */}
-      <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7">
-        {moduleConfig.map((mod) => {
-          const health = moduleHealth.find(h => h.module === mod.id);
-          const status = health?.status || "offline";
-          
+      {/* Module Status Grid - 4 Layer Architecture */}
+      <div className="space-y-4">
+        {/* Layer Groups */}
+        {["Kernel", "Cognitive", "Operational", "Admin"].map((layer) => {
+          const layerModules = moduleConfig.filter(m => m.layer === layer);
           return (
-            <Card 
-              key={mod.id} 
-              className={`p-4 ${getStatusColor(status)}`}
-            >
-              <div className="flex items-center justify-between mb-2">
-                <mod.icon className={`w-5 h-5 ${mod.color}`} />
-                {getStatusIcon(status)}
+            <div key={layer}>
+              <h4 className="text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wider">{layer} Layer</h4>
+              <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
+                {layerModules.map((mod) => {
+                  const health = moduleHealth.find(h => h.module === mod.id);
+                  const status = health?.status || "offline";
+                  
+                  return (
+                    <Card 
+                      key={mod.id} 
+                      className={`p-3 ${getStatusColor(status)}`}
+                    >
+                      <div className="flex items-center justify-between mb-1">
+                        <mod.icon className={`w-4 h-4 ${mod.color}`} />
+                        {getStatusIcon(status)}
+                      </div>
+                      <h5 className="font-medium text-sm">{mod.name}</h5>
+                      {health?.latency && (
+                        <p className="text-xs text-muted-foreground">
+                          {health.latency}ms
+                        </p>
+                      )}
+                    </Card>
+                  );
+                })}
               </div>
-              <h4 className="font-medium text-sm">{mod.name}</h4>
-              {health?.latency && (
-                <p className="text-xs text-muted-foreground mt-1">
-                  {health.latency}ms
-                </p>
-              )}
-            </Card>
+            </div>
           );
         })}
       </div>
