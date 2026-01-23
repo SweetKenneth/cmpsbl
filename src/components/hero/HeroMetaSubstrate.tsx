@@ -289,18 +289,22 @@ function SubstrateVisualization() {
   );
 }
 
-// Typing animation for headline
-function TypedText({ texts, className }: { texts: string[]; className?: string }) {
+// Typing animation for headline with gradient colors
+function TypedText({ texts, gradientColors, className }: { 
+  texts: string[]; 
+  gradientColors?: string[];
+  className?: string;
+}) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   
   useEffect(() => {
     const currentText = texts[currentIndex];
-    const typingSpeed = isDeleting ? 50 : 100;
+    const typingSpeed = isDeleting ? 40 : 80;
     
     if (!isDeleting && displayText === currentText) {
-      setTimeout(() => setIsDeleting(true), 2000);
+      setTimeout(() => setIsDeleting(true), 2500);
       return;
     }
     
@@ -321,10 +325,25 @@ function TypedText({ texts, className }: { texts: string[]; className?: string }
     return () => clearTimeout(timeout);
   }, [displayText, isDeleting, currentIndex, texts]);
   
+  const currentGradient = gradientColors?.[currentIndex] || "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))";
+  
   return (
-    <span className={className}>
+    <span 
+      className={className}
+      style={{
+        background: currentGradient,
+        WebkitBackgroundClip: "text",
+        WebkitTextFillColor: "transparent",
+        backgroundClip: "text",
+      }}
+    >
       {displayText}
-      <span className="animate-pulse">|</span>
+      <span 
+        className="animate-pulse"
+        style={{
+          WebkitTextFillColor: "hsl(var(--foreground))",
+        }}
+      >|</span>
     </span>
   );
 }
@@ -419,17 +438,18 @@ export function HeroMetaSubstrate() {
             
             {/* Main headline */}
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] mb-4 sm:mb-6">
-              <span className="text-foreground block">One Substrate.</span>
-              <span 
-                className="block mt-1 sm:mt-2"
-                style={{
-                  background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)), hsl(var(--neon-magenta)))",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
-              >
+              <span className="text-foreground block">Where Machines Learn To</span>
+              <span className="block mt-1 sm:mt-2 min-h-[1.2em]">
                 <TypedText 
-                  texts={["Infinite Memory.", "Dream Cycles.", "Smart Routing.", "Self-Improvement."]}
+                  texts={["Dream.", "Remember.", "Self-Improve.", "Evolve.", "Think.", "Adapt."]}
+                  gradientColors={[
+                    "linear-gradient(135deg, hsl(280 80% 60%), hsl(320 80% 60%))",
+                    "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(200 80% 60%))",
+                    "linear-gradient(135deg, hsl(30 80% 55%), hsl(45 90% 55%))",
+                    "linear-gradient(135deg, hsl(150 80% 50%), hsl(180 70% 50%))",
+                    "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-magenta)))",
+                    "linear-gradient(135deg, hsl(var(--neon-purple)), hsl(260 80% 65%))",
+                  ]}
                 />
               </span>
             </h1>
