@@ -408,6 +408,11 @@ export async function executeCommand(
       result = await modernizer.delete(args[0], args.slice(1).join(' ') || undefined);
     } else if (base === 'modernizer.archived') {
       result = await modernizer.archived();
+    } else if (base === 'modernizer.implement') {
+      if (!args[0] || !args[1]) {
+        return { success: false, output: '▓ ERROR: Both archived_function and target_action required\n  Usage: modernizer.implement <archived_function> <target_action>\n  Example: modernizer.implement pf-brain-systems-reasoning brain.deep_think' };
+      }
+      result = await modernizer.implement(args[0], args[1]);
     }
 
     // Unknown command

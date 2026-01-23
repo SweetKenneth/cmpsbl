@@ -6002,22 +6002,25 @@ async function handleModernizer(
           }
         }
         
-        // Store scan results as evolution proposal
+        // Only store scan results as evolution proposal if there are actionable proposals
         const scanId = `scan_${Date.now().toString(36)}`;
-        await supabase.from('evolution_proposals').insert({
-          proposal_type: 'substrate_scan',
-          title: `Substrate Architecture Scan - ${new Date().toISOString().split('T')[0]}`,
-          description: `Automated scan found ${proposals.length} improvement areas`,
-          impact_analysis: {
-            total_proposals: proposals.length,
-            critical: proposals.filter(p => p.priority === 'critical').length,
-            high: proposals.filter(p => p.priority === 'high').length,
-            medium: proposals.filter(p => p.priority === 'medium').length,
-          },
-          implementation_plan: proposals,
-          status: 'pending_review',
-          confidence_score: 0.85,
-        });
+        
+        if (proposals.length > 0) {
+          await supabase.from('evolution_proposals').insert({
+            proposal_type: 'substrate_scan',
+            title: `Substrate Architecture Scan - ${new Date().toISOString().split('T')[0]}`,
+            description: `Automated scan found ${proposals.length} improvement areas`,
+            impact_analysis: {
+              total_proposals: proposals.length,
+              critical: proposals.filter(p => p.priority === 'critical').length,
+              high: proposals.filter(p => p.priority === 'high').length,
+              medium: proposals.filter(p => p.priority === 'medium').length,
+            },
+            implementation_plan: proposals,
+            status: 'pending_review',
+            confidence_score: 0.85,
+          });
+        }
         
         // Log the scan
         await supabase.from('brain_events').insert({
@@ -6617,6 +6620,106 @@ async function handleModernizer(
       }
     }
 
+    // ═══ IMPLEMENT_ARCHIVED — Generate code to repurpose an archived function ═══
+    case "implement_archived":
+    case "implement": {
+      const { archived_function, target_action } = data;
+      
+      if (!archived_function || !target_action) {
+        return jsonResponse({
+          success: false,
+          module: 'modernizer',
+          action: 'implement_archived',
+          error: 'archived_function and target_action are required',
+          example: {
+            archived_function: 'pf-brain-systems-reasoning',
+            target_action: 'brain.deep_think',
+          },
+        }, headers);
+      }
+      
+      try {
+        // Generate implementation proposal using AI
+        const implementationPrompt = `Generate a detailed implementation plan to repurpose the archived edge function "${archived_function}" for the "${target_action}" action in the promptfluid substrate.
+
+Requirements:
+1. Analyze what ${archived_function} likely did based on its name
+2. Design how it should integrate with ${target_action}
+3. Provide pseudocode for the key functions
+4. List the database tables that may need updates
+5. Specify safety considerations
+
+Output a structured implementation plan in JSON format with fields:
+- summary: Brief description of the integration
+- code_structure: Array of {file, description, pseudocode}
+- database_changes: Array of table modifications needed
+- safety_gates: Array of safety checks required
+- estimated_complexity: low/medium/high
+- recommended_approach: step-by-step implementation`;
+
+        const aiResult = await routeToProvider(implementationPrompt, 'You are a senior software architect specializing in AI substrate systems.');
+        
+        // Create a shadow proposal for human review
+        const proposalId = `impl_${Date.now().toString(36)}`;
+        
+        await supabase.from('substrate_upgrade_plans').insert({
+          id: proposalId,
+          plan_type: 'archived_repurpose',
+          status: 'pending_review',
+          scope: target_action,
+          proposed_changes: {
+            archived_function,
+            target_action,
+            ai_plan: aiResult.content,
+            provider: aiResult.provider,
+          },
+          operator_notes: `Auto-generated plan to repurpose ${archived_function} for ${target_action}`,
+          safety_checks_passed: false,
+          is_shadow: true,
+        });
+        
+        // Log the implementation proposal
+        await supabase.from('brain_events').insert({
+          event_type: 'archived_implementation_proposed',
+          module: 'modernizer',
+          outcome: 'pending',
+          data: {
+            proposal_id: proposalId,
+            archived_function,
+            target_action,
+          },
+        });
+        
+        return jsonResponse({
+          success: true,
+          module: 'modernizer',
+          action: 'implement_archived',
+          proposal_id: proposalId,
+          archived_function,
+          target_action,
+          implementation_plan: aiResult.content,
+          provider: aiResult.provider,
+          status: 'pending_review',
+          message: `Implementation plan generated for repurposing ${archived_function}. Human approval required.`,
+          next_steps: [
+            `Review the implementation plan above`,
+            `Run 'modernizer.apply ${proposalId}' to approve and queue for implementation`,
+            `Implementation will be created in shadow mode for testing`,
+            `Final production deployment requires additional approval`,
+          ],
+          note: 'Code changes are generated in shadow mode. No production code is modified until explicit approval.',
+        }, headers);
+      } catch (error) {
+        console.error('Implement archived error:', error);
+        return jsonResponse({
+          success: false,
+          module: 'modernizer',
+          action: 'implement_archived',
+          error: error instanceof Error ? error.message : 'Failed to generate implementation plan',
+        }, headers);
+      }
+    }
+
     case "pulse": {
       // Lightweight heartbeat for modernizer module
       return jsonResponse({
@@ -6641,7 +6744,7 @@ async function handleModernizer(
         module: 'modernizer',
         action: action,
         error: `Unknown modernizer action: ${action}`,
-        available_actions: ['status', 'jobs', 'scan', 'job', 'quota', 'analyze', 'export', 'propose', 'review', 'apply', 'rollback', 'plans', 'archived', 'pulse'],
+        available_actions: ['status', 'jobs', 'scan', 'job', 'quota', 'analyze', 'export', 'propose', 'review', 'apply', 'rollback', 'plans', 'archived', 'implement_archived', 'pulse'],
       }, headers);
   }
 }
