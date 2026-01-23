@@ -1,0 +1,436 @@
+/**
+ * Use Cases — Substrate Applications Across Industries
+ * Enterprise, Healthcare, Legal, Education, and more
+ */
+
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import {
+  ArrowRight,
+  Brain,
+  Moon,
+  Zap,
+  Building2,
+  Heart,
+  Scale,
+  GraduationCap,
+  ShoppingCart,
+  Headphones,
+  FileText,
+  Users,
+  Bot,
+  Sparkles,
+  Database,
+  Network,
+  Shield,
+  Clock,
+  Play,
+  CheckCircle2,
+  BookOpen,
+  Rocket,
+  MessageSquare,
+  TrendingUp,
+  Gamepad2,
+  Code,
+  Factory,
+  Stethoscope,
+  Gavel,
+  School,
+  Store,
+  Phone,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { SEO } from "@/components/SEO";
+import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { cn } from "@/lib/utils";
+
+// Industry card
+function IndustryCard({
+  icon: Icon,
+  title,
+  subtitle,
+  description,
+  benefits,
+  example,
+  color,
+  link,
+  delay = 0,
+}: {
+  icon: React.ElementType;
+  title: string;
+  subtitle: string;
+  description: string;
+  benefits: string[];
+  example: string;
+  color: string;
+  link?: string;
+  delay?: number;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay }}
+    >
+      <Card className={cn(
+        "h-full border-border/50 bg-card/50 backdrop-blur-sm",
+        "hover:border-current/30 transition-all duration-300",
+        color
+      )}>
+        <CardHeader>
+          <div className="flex items-start justify-between mb-4">
+            <div className="w-14 h-14 rounded-xl bg-current/10 flex items-center justify-center">
+              <Icon className="w-7 h-7" />
+            </div>
+            {link && (
+              <Button asChild variant="ghost" size="sm" className="text-current">
+                <Link to={link}>
+                  Learn More
+                  <ArrowRight className="w-3 h-3 ml-1" />
+                </Link>
+              </Button>
+            )}
+          </div>
+          <Badge variant="outline" className="w-fit mb-2 text-current border-current/30">
+            {subtitle}
+          </Badge>
+          <CardTitle className="text-xl">{title}</CardTitle>
+          <CardDescription className="text-sm">
+            {description}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <ul className="space-y-2">
+            {benefits.map((benefit, idx) => (
+              <li key={idx} className="flex items-center gap-2 text-sm text-muted-foreground">
+                <CheckCircle2 className="w-4 h-4 text-current opacity-60 shrink-0" />
+                {benefit}
+              </li>
+            ))}
+          </ul>
+          <div className="pt-4 border-t border-border/50">
+            <p className="text-xs text-muted-foreground mb-1">Example Use Case</p>
+            <p className="text-sm italic text-current/80">"{example}"</p>
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+}
+
+// Core capability pill
+function CapabilityPill({
+  icon: Icon,
+  label,
+  description,
+}: {
+  icon: React.ElementType;
+  label: string;
+  description: string;
+}) {
+  return (
+    <div className="flex items-center gap-3 p-4 rounded-xl border border-border/50 bg-card/30">
+      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+        <Icon className="w-5 h-5 text-primary" />
+      </div>
+      <div>
+        <p className="font-medium text-sm">{label}</p>
+        <p className="text-xs text-muted-foreground">{description}</p>
+      </div>
+    </div>
+  );
+}
+
+export default function UseCases() {
+  const industries = [
+    {
+      icon: Gamepad2,
+      title: "Video Game Development",
+      subtitle: "Gaming AI",
+      description: "NPCs that remember player interactions, evolve through dream cycles, and create emergent narratives.",
+      benefits: [
+        "Persistent NPC memory across sessions",
+        "Emotional state tracking & evolution",
+        "Dynamic dialogue with context recall",
+        "World state propagation & rumor systems",
+      ],
+      example: "The innkeeper remembers you saved her daughter three sessions ago and offers a special discount.",
+      color: "text-purple-500",
+      link: "/gaming",
+    },
+    {
+      icon: Building2,
+      title: "Enterprise Operations",
+      subtitle: "Business AI",
+      description: "Intelligent automation that learns from operations, optimizes workflows, and maintains institutional memory.",
+      benefits: [
+        "Organizational knowledge capture",
+        "Process optimization through patterns",
+        "Cross-department intelligence sharing",
+        "Decision support with historical context",
+      ],
+      example: "The system learns that Q4 budget reviews always require these 12 reports and pre-generates them.",
+      color: "text-blue-500",
+    },
+    {
+      icon: Stethoscope,
+      title: "Healthcare & Wellness",
+      subtitle: "Health AI",
+      description: "Patient-aware systems that track health journeys, personalize recommendations, and support clinical decisions.",
+      benefits: [
+        "Longitudinal patient memory",
+        "Personalized treatment patterns",
+        "Clinical decision support",
+        "Care coordination across providers",
+      ],
+      example: "The AI recalls this patient had an adverse reaction to penicillin three years ago during triage.",
+      color: "text-emerald-500",
+    },
+    {
+      icon: Gavel,
+      title: "Legal & Compliance",
+      subtitle: "Legal AI",
+      description: "Case-aware research assistants that remember precedents, track regulatory changes, and learn from outcomes.",
+      benefits: [
+        "Case history & precedent memory",
+        "Regulatory change tracking",
+        "Contract analysis patterns",
+        "Outcome-based learning",
+      ],
+      example: "Based on 47 similar cases, this clause has a 73% chance of being contested.",
+      color: "text-amber-500",
+    },
+    {
+      icon: School,
+      title: "Education & Training",
+      subtitle: "EdTech AI",
+      description: "Adaptive learning systems that remember student progress, identify knowledge gaps, and personalize curricula.",
+      benefits: [
+        "Student progress tracking",
+        "Knowledge gap identification",
+        "Adaptive difficulty scaling",
+        "Learning style optimization",
+      ],
+      example: "This student struggles with algebra but excels at geometry—adjusting lesson plan accordingly.",
+      color: "text-cyan-500",
+    },
+    {
+      icon: Store,
+      title: "Retail & E-Commerce",
+      subtitle: "Commerce AI",
+      description: "Customer-aware experiences that remember preferences, predict needs, and personalize every interaction.",
+      benefits: [
+        "Customer preference memory",
+        "Purchase pattern analysis",
+        "Personalized recommendations",
+        "Inventory optimization",
+      ],
+      example: "This customer always buys running shoes in January—proactively suggest the new models.",
+      color: "text-rose-500",
+    },
+    {
+      icon: Phone,
+      title: "Customer Support",
+      subtitle: "Support AI",
+      description: "Context-aware support agents that remember customer history, learn from resolutions, and escalate intelligently.",
+      benefits: [
+        "Full interaction history recall",
+        "Resolution pattern learning",
+        "Smart escalation routing",
+        "Proactive issue detection",
+      ],
+      example: "I see you called about this same printer issue twice before—let me escalate to a specialist.",
+      color: "text-violet-500",
+    },
+    {
+      icon: Factory,
+      title: "Manufacturing & IoT",
+      subtitle: "Industrial AI",
+      description: "Process-aware systems that learn from sensor data, predict maintenance, and optimize production.",
+      benefits: [
+        "Equipment behavior memory",
+        "Predictive maintenance patterns",
+        "Quality control learning",
+        "Supply chain optimization",
+      ],
+      example: "Machine 7's vibration pattern matches the pre-failure signature from 6 months ago—scheduling maintenance.",
+      color: "text-orange-500",
+    },
+  ];
+
+  const coreCapabilities = [
+    { icon: Brain, label: "Persistent Memory", description: "3-tier memory that never forgets" },
+    { icon: Moon, label: "Dream Cycles", description: "Offline learning & pattern extraction" },
+    { icon: Zap, label: "Smart Routing", description: "Optimal AI provider selection" },
+    { icon: Shield, label: "Defense Layer", description: "Security & governance built-in" },
+    { icon: MessageSquare, label: "Decode", description: "Context-aware conversation" },
+    { icon: Network, label: "Event Bus", description: "Decoupled, reactive architecture" },
+  ];
+
+  return (
+    <div className="min-h-screen bg-background flex flex-col">
+      <SEO
+        title="Use Cases — Substrate for Every Industry | promptfluid®"
+        description="Explore how the cognitive substrate powers intelligent applications across gaming, enterprise, healthcare, legal, education, and more."
+        canonical="https://promptfluid.com/use-cases"
+        keywords={[
+          "AI use cases",
+          "enterprise AI",
+          "healthcare AI",
+          "legal AI",
+          "education AI",
+          "retail AI",
+          "customer support AI",
+          "industry applications",
+        ]}
+      />
+
+      <PublicNav />
+
+      {/* Hero Section */}
+      <section className="relative py-20 md:py-28 overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/4 -left-32 w-96 h-96 bg-primary/10 rounded-full blur-[100px]" />
+          <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-violet-500/10 rounded-full blur-[100px]" />
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-4xl mx-auto text-center"
+          >
+            <Badge className="mb-6 bg-primary/10 text-primary border-primary/30">
+              <Sparkles className="w-3 h-3 mr-1" />
+              Industry Applications
+            </Badge>
+
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+              One Substrate,
+              <br />Infinite Possibilities
+            </h1>
+
+            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+              The cognitive substrate adapts to any industry. Persistent memory, dream cycles, 
+              and intelligent routing power applications from gaming to healthcare.
+            </p>
+
+            <div className="flex flex-wrap justify-center gap-4">
+              <Button asChild size="lg" className="gap-2">
+                <Link to="/codelab">
+                  <Code className="w-4 h-4" />
+                  Start Building
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="gap-2">
+                <Link to="/contact">
+                  <MessageSquare className="w-4 h-4" />
+                  Talk to Sales
+                </Link>
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Core Capabilities */}
+      <section className="py-12 border-y border-border/50 bg-card/30">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-8">
+            <h2 className="text-xl font-semibold mb-2">Core Capabilities</h2>
+            <p className="text-sm text-muted-foreground">The building blocks that power every use case</p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {coreCapabilities.map((cap) => (
+              <CapabilityPill key={cap.label} {...cap} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Industry Grid */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Built for Every Industry
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              See how organizations across sectors leverage persistent memory and dream cycles 
+              to build truly intelligent applications.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {industries.map((industry, idx) => (
+              <IndustryCard key={industry.title} {...industry} delay={idx * 0.05} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Install Wizard CTA */}
+      <section className="py-20 bg-gradient-to-b from-card/30 to-transparent">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-4xl mx-auto"
+          >
+            <Card className="border-primary/30 bg-primary/5">
+              <CardContent className="p-8 md:p-12 text-center">
+                <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center mx-auto mb-6">
+                  <Rocket className="w-8 h-8 text-primary" />
+                </div>
+                <h2 className="text-2xl md:text-3xl font-bold mb-4">
+                  Industry-Optimized Packages
+                </h2>
+                <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
+                  Our installation wizard lets you choose your industry—Gaming, Software, or Enterprise—and 
+                  pre-configures only the modules you need. No bloat, just the right tools.
+                </p>
+                <div className="flex flex-wrap justify-center gap-3 mb-8">
+                  <Badge variant="outline" className="text-purple-400 border-purple-500/30">
+                    🎮 Gaming Package
+                  </Badge>
+                  <Badge variant="outline" className="text-cyan-400 border-cyan-500/30">
+                    💻 Developer Package
+                  </Badge>
+                  <Badge variant="outline" className="text-blue-400 border-blue-500/30">
+                    🏢 Enterprise Package
+                  </Badge>
+                </div>
+                <div className="flex flex-wrap justify-center gap-4">
+                  <Button asChild size="lg" className="gap-2">
+                    <Link to="/codelab">
+                      <Play className="w-4 h-4" />
+                      Try the Wizard
+                    </Link>
+                  </Button>
+                  <Button asChild variant="outline" size="lg" className="gap-2">
+                    <Link to="/documentation">
+                      <BookOpen className="w-4 h-4" />
+                      View Docs
+                    </Link>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
+      </section>
+
+      <EnhancedFooter />
+    </div>
+  );
+}

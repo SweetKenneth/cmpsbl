@@ -57,6 +57,8 @@ const ForgeCatalog = lazy(() => import("./pages/ForgeCatalog"));
 const AgencyMint = lazy(() => import("./pages/AgencyMint"));
 const DevTools = lazy(() => import("./pages/DevTools"));
 const GamingSubstrate = lazy(() => import("./pages/GamingSubstrate"));
+const DeveloperShowcase = lazy(() => import("./pages/DeveloperShowcase"));
+const UseCases = lazy(() => import("./pages/UseCases"));
 const AgencyPortal = lazy(() => import("./pages/AgencyPortal"));
 
 // Marketing / Info pages
@@ -153,7 +155,9 @@ const App = () => {
                       <Route path="/a/:slug" element={<AgencyPortal />} />
                       <Route path="/devtools" element={<DevTools />} />
                       <Route path="/gaming" element={<GamingSubstrate />} />
-                      <Route path="/developers" element={<DevPortal />} />
+                      <Route path="/developers" element={<DeveloperShowcase />} />
+                      <Route path="/use-cases" element={<UseCases />} />
+                      <Route path="/dev-portal" element={<DevPortal />} />
 
                       {/* Marketing / Info */}
                       <Route path="/about" element={<About />} />
