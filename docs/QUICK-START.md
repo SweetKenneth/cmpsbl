@@ -2,6 +2,8 @@
 
 **Get started with the Cognitive OS in 5 minutes**
 
+*Version 4.0.0 — Updated 2026-01-23*
+
 ---
 
 ## 1. Basic Usage
@@ -95,19 +97,31 @@ await substrate.call({
 
 ## 4. Module Cheat Sheet
 
+### Kernel Layer (How the OS Works)
+
 | Module | Purpose | Top Actions |
 |--------|---------|-------------|
-| **core** | Kernel | boot, schedule, shutdown |
-| **brain** | Memory | query, remember, reflect |
-| **decode** | Intent | interpret, chat |
-| **defense** | Security | analyze, detect, block |
-| **nexus** | AI | text, image, video |
-| **vision** | Observability | dashboard, health_snapshot |
-| **dream** | Evolution | cycle, mutation |
-| **ripple** | Messages | enqueue, publish, subscribe |
-| **access** | Identity | create_key, validate_key |
-| **system** | Admin | backup, restore, heal |
-| **modernizer** | Self-improve | scan, propose |
+| **core** | Kernel | boot, schedule, config, shutdown, status |
+| **ripple** | Message Bus | enqueue, publish, subscribe, status |
+| **access** | Identity | create_key, validate_key, get_usage |
+
+### Cognitive Layer (What the OS Thinks)
+
+| Module | Purpose | Top Actions |
+|--------|---------|-------------|
+| **brain** | Memory | query, remember, reflect, dream |
+| **decode** | Intent | chat, intent, learn |
+| **nexus** | AI Router | route, providers, routeStats |
+| **dream** | Evolution | cycle, feed, awaken |
+
+### Operational Layer (How the OS Runs)
+
+| Module | Purpose | Top Actions |
+|--------|---------|-------------|
+| **defense** | Security | analyze, reputation, posture |
+| **vision** | Observability | dashboard, health_snapshot, pulse |
+| **system** | Admin | backup, restore, heal, diagnostics |
+| **modernizer** | Self-Upgrade | scan, propose, apply |
 
 ---
 
