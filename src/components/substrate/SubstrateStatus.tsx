@@ -15,6 +15,7 @@ export function SubstrateStatus({ compact = false }: SubstrateStatusProps) {
   const { initialized, overallHealth, modules } = useSubstrateContext();
 
   const activeCount = Object.values(modules).filter(m => m.active).length;
+  const totalModules = 11; // v4.0.0: All 11 modules
   const isHealthy = overallHealth >= 80;
 
   if (compact) {
@@ -24,7 +25,7 @@ export function SubstrateStatus({ compact = false }: SubstrateStatusProps) {
         className={`gap-1.5 ${isHealthy ? 'border-green-500/50 text-green-500' : 'border-amber-500/50 text-amber-500'}`}
       >
         <Activity className="h-3 w-3" />
-        {activeCount}/5
+        {activeCount}/{totalModules}
       </Badge>
     );
   }
@@ -37,10 +38,10 @@ export function SubstrateStatus({ compact = false }: SubstrateStatusProps) {
         <AlertCircle className="h-4 w-4 text-amber-500" />
       )}
       <span className="text-muted-foreground">
-        promptfluid® substrate: {activeCount}/5 modules
+        promptfluid® substrate: {activeCount}/{totalModules} modules
       </span>
       <Badge variant="outline" className="text-xs">
-        v2026.01
+        v4.0.0
       </Badge>
     </div>
   );

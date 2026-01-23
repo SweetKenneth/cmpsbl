@@ -3,7 +3,7 @@
  * Visual representation of all 8 substrate module health
  */
 
-import { Brain, MessageSquare, Shield, Zap, Eye, Moon, Cpu, Sparkles } from 'lucide-react';
+import { Brain, MessageSquare, Shield, Zap, Eye, Moon, Cpu, Sparkles, Radio, Key } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useSubstrateHealthScore } from '@/hooks/useSubstrateOS';
 import { cn } from '@/lib/utils';
@@ -18,29 +18,47 @@ interface ModuleConfig {
 }
 
 const MODULES: ModuleConfig[] = [
+  // Kernel Layer (v4.0.0)
+  { 
+    id: 'core', 
+    name: 'CORE', 
+    icon: Cpu, 
+    description: 'Kernel orchestration & scheduling',
+    activeColor: 'text-orange-400',
+    glowColor: 'shadow-orange-500/50'
+  },
+  { 
+    id: 'ripple', 
+    name: 'RIPPLE', 
+    icon: Zap, 
+    description: 'Message bus & event sourcing',
+    activeColor: 'text-cyan-400',
+    glowColor: 'shadow-cyan-500/50'
+  },
+  { 
+    id: 'access', 
+    name: 'ACCESS', 
+    icon: Shield, 
+    description: 'Identity, API keys & metering',
+    activeColor: 'text-amber-400',
+    glowColor: 'shadow-amber-500/50'
+  },
+  // Cognitive Layer
   { 
     id: 'brain', 
     name: 'BRAIN', 
     icon: Brain, 
     description: 'Cognitive processing & memory',
-    activeColor: 'text-cyan-400',
-    glowColor: 'shadow-cyan-500/50'
+    activeColor: 'text-purple-400',
+    glowColor: 'shadow-purple-500/50'
   },
   { 
     id: 'decode', 
     name: 'DECODE', 
     icon: MessageSquare, 
     description: 'Epistemic conversation engine',
-    activeColor: 'text-purple-400',
-    glowColor: 'shadow-purple-500/50'
-  },
-  { 
-    id: 'defense', 
-    name: 'DEFENSE', 
-    icon: Shield, 
-    description: 'Security & threat detection',
-    activeColor: 'text-amber-400',
-    glowColor: 'shadow-amber-500/50'
+    activeColor: 'text-fuchsia-400',
+    glowColor: 'shadow-fuchsia-500/50'
   },
   { 
     id: 'nexus', 
@@ -49,6 +67,15 @@ const MODULES: ModuleConfig[] = [
     description: 'AI provider routing',
     activeColor: 'text-green-400',
     glowColor: 'shadow-green-500/50'
+  },
+  // Operational Layer
+  { 
+    id: 'defense', 
+    name: 'DEFENSE', 
+    icon: Shield, 
+    description: 'Security & threat detection',
+    activeColor: 'text-red-400',
+    glowColor: 'shadow-red-500/50'
   },
   { 
     id: 'vision', 
@@ -66,6 +93,7 @@ const MODULES: ModuleConfig[] = [
     activeColor: 'text-violet-400',
     glowColor: 'shadow-violet-500/50'
   },
+  // Admin Layer
   { 
     id: 'system', 
     name: 'SYSTEM', 
@@ -79,8 +107,8 @@ const MODULES: ModuleConfig[] = [
     name: 'MODERNIZER', 
     icon: Sparkles, 
     description: 'Self-improvement engine',
-    activeColor: 'text-orange-400',
-    glowColor: 'shadow-orange-500/50'
+    activeColor: 'text-rose-400',
+    glowColor: 'shadow-rose-500/50'
   },
 ];
 
@@ -159,6 +187,12 @@ function ModuleIndicator({ module, isActive, isLoading }: {
 export function ModuleStatusBar() {
   const healthScore = useSubstrateHealthScore();
   
+  // Count active modules from all 11 modules
+  const activeCount = MODULES.filter(m => 
+    healthScore.modules[m.id as keyof typeof healthScore.modules] ?? false
+  ).length;
+  const totalCount = MODULES.length; // 11 modules
+  
   return (
     <div className="p-4 border border-border/50 rounded-xl bg-card/50 backdrop-blur-sm">
       <div className="flex items-center justify-between mb-3">
@@ -169,15 +203,15 @@ export function ModuleStatusBar() {
           <span className="text-muted-foreground">ACTIVE</span>
           <span className={cn(
             "font-mono font-bold",
-            healthScore.isHealthy ? "text-green-500" : 
-            healthScore.isDegraded ? "text-amber-500" : "text-destructive"
+            activeCount === totalCount ? "text-green-500" : 
+            activeCount >= totalCount * 0.7 ? "text-amber-500" : "text-destructive"
           )}>
-            {Object.values(healthScore.modules).filter(Boolean).length}/6
+            {activeCount}/{totalCount}
           </span>
         </div>
       </div>
       
-      <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+      <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-11 gap-2">
         {MODULES.map((module) => (
           <ModuleIndicator
             key={module.id}
