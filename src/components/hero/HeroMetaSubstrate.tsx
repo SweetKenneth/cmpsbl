@@ -289,7 +289,7 @@ function SubstrateVisualization() {
   );
 }
 
-// Typing animation for headline with gradient colors
+// Typing animation for headline with gradient colors - optimized to prevent forced reflows
 function TypedText({ texts, gradientColors, className }: { 
   texts: string[]; 
   gradientColors?: string[];
@@ -304,8 +304,8 @@ function TypedText({ texts, gradientColors, className }: {
     const typingSpeed = isDeleting ? 40 : 80;
     
     if (!isDeleting && displayText === currentText) {
-      setTimeout(() => setIsDeleting(true), 2500);
-      return;
+      const timeout = setTimeout(() => setIsDeleting(true), 2500);
+      return () => clearTimeout(timeout);
     }
     
     if (isDeleting && displayText === "") {
@@ -327,6 +327,7 @@ function TypedText({ texts, gradientColors, className }: {
   
   const currentGradient = gradientColors?.[currentIndex] || "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))";
   
+  // Use CSS containment and will-change to prevent layout thrashing
   return (
     <span 
       className={cn("inline-flex items-baseline", className)}
@@ -335,28 +336,39 @@ function TypedText({ texts, gradientColors, className }: {
         WebkitBackgroundClip: "text",
         WebkitTextFillColor: "transparent",
         backgroundClip: "text",
+        contain: "layout style",
       }}
     >
-      <span className="inline-block">{displayText}</span>
+      <span className="inline-block" style={{ contain: "layout" }}>{displayText}</span>
       <span 
-        className="inline-block w-[0.5ch] text-center animate-blink"
+        className="inline-block text-center"
         style={{
           WebkitTextFillColor: "hsl(var(--foreground))",
+          width: "0.5ch",
+          contain: "strict",
+          animation: "blink 1s step-end infinite",
         }}
       >|</span>
     </span>
   );
 }
 
-// Stats with animated counters
+// Stats with animated counters - optimized to prevent forced reflows
 function AnimatedStat({ value, label, suffix = "" }: { value: number; label: string; suffix?: string }) {
   const [count, setCount] = useState(0);
+  const [hasAnimated, setHasAnimated] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
+    if (hasAnimated) return;
+    
+    const currentRef = ref.current;
+    if (!currentRef) return;
+    
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && !hasAnimated) {
+          setHasAnimated(true);
           let start = 0;
           const duration = 1500;
           const step = (timestamp: number) => {
@@ -366,17 +378,18 @@ function AnimatedStat({ value, label, suffix = "" }: { value: number; label: str
             if (progress < 1) requestAnimationFrame(step);
           };
           requestAnimationFrame(step);
+          observer.disconnect();
         }
       },
-      { threshold: 0.5 }
+      { threshold: 0.5, rootMargin: "50px" }
     );
     
-    if (ref.current) observer.observe(ref.current);
+    observer.observe(currentRef);
     return () => observer.disconnect();
-  }, [value]);
+  }, [value, hasAnimated]);
   
   return (
-    <div ref={ref} className="text-center">
+    <div ref={ref} className="text-center" style={{ contain: "layout style" }}>
       <div className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground">
         {count}{suffix}
       </div>
@@ -436,10 +449,10 @@ export function HeroMetaSubstrate() {
               <span className="text-xs sm:text-sm text-muted-foreground">Cognitive Operating System</span>
             </motion.div>
             
-            {/* Main headline - fixed height to prevent CLS */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] mb-4 sm:mb-6">
+            {/* Main headline - fixed height and containment to prevent CLS and forced reflows */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] mb-4 sm:mb-6" style={{ contain: "layout" }}>
               <span className="text-foreground block">Where Machines Learn To</span>
-              <span className="block mt-1 sm:mt-2" style={{ minHeight: "1.2em", height: "1.2em" }}>
+              <span className="block mt-1 sm:mt-2" style={{ minHeight: "1.2em", height: "1.2em", contain: "strict", overflow: "hidden" }}>
                 <TypedText 
                   texts={["Dream.", "Remember.", "Self-Improve.", "Evolve.", "Think.", "Adapt."]}
                   gradientColors={[
