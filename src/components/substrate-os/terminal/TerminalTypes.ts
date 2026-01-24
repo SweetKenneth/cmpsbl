@@ -19,7 +19,7 @@ export interface TerminalSession {
   errorCount: number;
 }
 
-export type TerminalTheme = 'dark' | 'light' | 'matrix';
+export type TerminalTheme = 'dark' | 'light' | 'matrix' | 'biohack';
 
 export interface TerminalConfig {
   theme: TerminalTheme;
