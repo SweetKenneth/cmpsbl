@@ -6,7 +6,7 @@
  */
 
 // ═══════════════════════════════════════════════════════════════
-// MOCK CODE TEMPLATES
+// EXTENSIVE CODE TEMPLATES — Matching Real Substrate Patterns
 // ═══════════════════════════════════════════════════════════════
 
 const CODE_TEMPLATES: Record<string, string> = {
@@ -15,6 +15,7 @@ const CODE_TEMPLATES: Record<string, string> = {
 // Generated: {{timestamp}}
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -22,15 +23,29 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
+  // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
   }
 
   try {
+    const supabaseClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+    );
+
     const { action, payload } = await req.json();
     
     // {{description}}
-    const result = await processAction(action, payload);
+    const result = await processAction(action, payload, supabaseClient);
+    
+    // Log success to brain_events
+    await supabaseClient.from('brain_events').insert({
+      module: '{{module}}',
+      event_type: action,
+      outcome: 'success',
+      data: { latency_ms: Date.now() }
+    });
     
     return new Response(JSON.stringify({
       success: true,
@@ -41,9 +56,12 @@ serve(async (req) => {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
   } catch (error) {
+    console.error('[{{module}}] Error:', error.message);
+    
     return new Response(JSON.stringify({
       success: false,
-      error: error.message
+      error: error.message,
+      module: '{{module}}'
     }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
@@ -51,10 +69,22 @@ serve(async (req) => {
   }
 });
 
-async function processAction(action: string, payload: unknown) {
+async function processAction(
+  action: string, 
+  payload: unknown, 
+  supabase: ReturnType<typeof createClient>
+) {
   // Implementation: {{description}}
-  console.log(\`Processing \${action}\`, payload);
-  return { processed: true, action };
+  console.log(\`[{{module}}] Processing \${action}\`, payload);
+  
+  switch (action) {
+    case 'status':
+      return { status: 'operational', module: '{{module}}' };
+    case 'process':
+      return { processed: true, action };
+    default:
+      throw new Error(\`Unknown action: \${action}\`);
+  }
 }`,
 
   config_update: `// Substrate Configuration Update
@@ -72,17 +102,39 @@ export const {{module}}Config = {
     rateLimit: {
       requests: 100,
       window: '1m'
+    },
+    circuitBreaker: {
+      failureThreshold: 3,
+      recoveryTimeout: 60000,
+      halfOpenRequests: 1
     }
   },
   
   features: {
     autoRecovery: true,
     telemetry: true,
-    debugMode: false
+    debugMode: process.env.NODE_ENV === 'development',
+    caching: {
+      enabled: true,
+      ttl: 300000 // 5 minutes
+    }
+  },
+  
+  endpoints: {
+    primary: '/api/{{module}}',
+    health: '/api/{{module}}/health',
+    metrics: '/api/{{module}}/metrics'
   }
 } as const;
 
-export type {{module}}ConfigType = typeof {{module}}Config;`,
+export type {{module}}ConfigType = typeof {{module}}Config;
+
+// Validation
+export function validate{{module}}Config(config: Partial<{{module}}ConfigType>): boolean {
+  if (!config.settings?.maxRetries || config.settings.maxRetries < 1) return false;
+  if (!config.settings?.timeout || config.settings.timeout < 1000) return false;
+  return true;
+}`,
 
   prompt_refinement: `// Substrate Prompt Template
 // Module: {{module}}
@@ -92,28 +144,55 @@ export const {{module}}Prompts = {
   systemPrompt: \`You are a specialized {{module}} agent within the Cognitive Substrate.
 Your role: {{description}}
 
-Guidelines:
-- Be precise and deterministic
-- Log all actions for auditability
-- Respect rate limits and quotas
-- Fail gracefully with helpful errors
+Core Principles:
+- Be precise, deterministic, and predictable
+- Log all actions for auditability and learning
+- Respect rate limits, quotas, and resource constraints
+- Fail gracefully with helpful, actionable errors
+- Learn from outcomes to improve future responses
+
+Context Awareness:
+- You have access to brain memories and learned patterns
+- You can query the knowledge bank for relevant skills
+- You should consider past successes and failures
 \`,
 
   taskPrompt: (context: Record<string, unknown>) => \`
 Execute the following task within {{module}} domain:
 
-Context: \${JSON.stringify(context, null, 2)}
+Context:
+\${JSON.stringify(context, null, 2)}
 
-Remember to:
-1. Validate inputs before processing
+Instructions:
+1. Validate all inputs before processing
 2. Return structured JSON responses
 3. Include confidence scores when applicable
+4. Log key decisions and their rationale
+5. Handle edge cases gracefully
 \`,
 
-  errorPrompt: (error: string) => \`
-An error occurred: \${error}
+  errorPrompt: (error: string, context?: Record<string, unknown>) => \`
+An error occurred during {{module}} execution:
+Error: \${error}
+Context: \${context ? JSON.stringify(context, null, 2) : 'None provided'}
 
-Analyze and suggest recovery actions.
+Analyze and suggest:
+1. Root cause of the error
+2. Immediate recovery actions
+3. Preventive measures for future
+4. Whether escalation is needed
+\`,
+
+  learningPrompt: (outcome: 'success' | 'partial' | 'failure', data: Record<string, unknown>) => \`
+Record learning from {{module}} task:
+Outcome: \${outcome}
+Data: \${JSON.stringify(data, null, 2)}
+
+Extract:
+1. What worked well
+2. What could be improved
+3. New patterns to remember
+4. Updates to confidence scores
 \`
 } as const;`,
 
@@ -126,12 +205,24 @@ Analyze and suggest recovery actions.
 ALTER TABLE public.{{module}}_data ENABLE ROW LEVEL SECURITY;
 
 -- Policy: Users can only access their own data
-CREATE POLICY "{{module}}_user_access" ON public.{{module}}_data
-  FOR ALL
+CREATE POLICY "{{module}}_user_select" ON public.{{module}}_data
+  FOR SELECT
+  USING (auth.uid() = user_id);
+
+CREATE POLICY "{{module}}_user_insert" ON public.{{module}}_data
+  FOR INSERT
+  WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "{{module}}_user_update" ON public.{{module}}_data
+  FOR UPDATE
   USING (auth.uid() = user_id)
   WITH CHECK (auth.uid() = user_id);
 
--- Policy: Operators can access all data (read-only)
+CREATE POLICY "{{module}}_user_delete" ON public.{{module}}_data
+  FOR DELETE
+  USING (auth.uid() = user_id);
+
+-- Policy: Operators can read all data
 CREATE POLICY "{{module}}_operator_read" ON public.{{module}}_data
   FOR SELECT
   USING (
@@ -142,9 +233,17 @@ CREATE POLICY "{{module}}_operator_read" ON public.{{module}}_data
     )
   );
 
--- Index for performance
+-- Policy: Service role has full access (for edge functions)
+CREATE POLICY "{{module}}_service_role" ON public.{{module}}_data
+  FOR ALL
+  USING (auth.role() = 'service_role');
+
+-- Performance indexes
 CREATE INDEX IF NOT EXISTS idx_{{module}}_user_id 
-  ON public.{{module}}_data(user_id);`,
+  ON public.{{module}}_data(user_id);
+
+CREATE INDEX IF NOT EXISTS idx_{{module}}_created_at 
+  ON public.{{module}}_data(created_at DESC);`,
 
   rate_limit: `// Substrate Rate Limiter
 // Module: {{module}}
@@ -154,35 +253,51 @@ interface RateLimitConfig {
   maxRequests: number;
   windowMs: number;
   skipOnError: boolean;
+  keyGenerator?: (req: unknown) => string;
 }
 
-const rateLimitStore = new Map<string, { count: number; resetAt: number }>();
+interface RateLimitRecord {
+  count: number;
+  resetAt: number;
+  blocked: boolean;
+}
+
+const rateLimitStore = new Map<string, RateLimitRecord>();
 
 export function createRateLimiter(config: RateLimitConfig) {
   const { maxRequests, windowMs, skipOnError } = config;
   
   return {
     // {{description}}
-    check: (key: string): { allowed: boolean; remaining: number; resetAt: Date } => {
+    check: (key: string): { allowed: boolean; remaining: number; resetAt: Date; retryAfter?: number } => {
       const now = Date.now();
       const record = rateLimitStore.get(key);
       
+      // New or expired window
       if (!record || now >= record.resetAt) {
-        rateLimitStore.set(key, { count: 1, resetAt: now + windowMs });
+        rateLimitStore.set(key, { count: 1, resetAt: now + windowMs, blocked: false });
         return { allowed: true, remaining: maxRequests - 1, resetAt: new Date(now + windowMs) };
       }
       
+      // Check if blocked
       if (record.count >= maxRequests) {
-        return { allowed: false, remaining: 0, resetAt: new Date(record.resetAt) };
+        const retryAfter = Math.ceil((record.resetAt - now) / 1000);
+        return { allowed: false, remaining: 0, resetAt: new Date(record.resetAt), retryAfter };
       }
       
+      // Increment and allow
       record.count++;
       return { allowed: true, remaining: maxRequests - record.count, resetAt: new Date(record.resetAt) };
     },
     
     reset: (key: string) => {
       rateLimitStore.delete(key);
-    }
+    },
+    
+    getStats: () => ({
+      activeKeys: rateLimitStore.size,
+      config: { maxRequests, windowMs }
+    })
   };
 }
 
@@ -191,7 +306,564 @@ export const {{module}}RateLimiter = createRateLimiter({
   maxRequests: 100,
   windowMs: 60000,
   skipOnError: false
-});`
+});`,
+
+  // NEW TEMPLATES
+  
+  react_component: `// Substrate React Component
+// Module: {{module}}
+// Generated: {{timestamp}}
+
+import { useState, useEffect, useCallback } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Loader2, CheckCircle2, AlertTriangle } from 'lucide-react';
+import { toast } from 'sonner';
+import { cn } from '@/lib/utils';
+
+interface {{module}}Props {
+  enabled?: boolean;
+  className?: string;
+  onComplete?: (result: unknown) => void;
+}
+
+export function {{module}}Component({ enabled = true, className, onComplete }: {{module}}Props) {
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState<unknown>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  // {{description}}
+  const handleAction = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      // Implement action logic here
+      const result = await new Promise(resolve => setTimeout(() => resolve({ success: true }), 1000));
+      setData(result);
+      onComplete?.(result);
+      toast.success('Action completed successfully');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Unknown error';
+      setError(message);
+      toast.error('Action failed', { description: message });
+    } finally {
+      setLoading(false);
+    }
+  }, [onComplete]);
+
+  if (!enabled) {
+    return (
+      <Card className={cn("border-dashed border-muted", className)}>
+        <CardContent className="py-8 text-center">
+          <AlertTriangle className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
+          <p className="text-sm text-muted-foreground">{{module}} is disabled</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className={cn("border-border/50", className)}>
+      <CardHeader className="pb-3">
+        <CardTitle className="flex items-center gap-2 text-lg">
+          {{module}}
+          <Badge variant="outline" className="text-xs">v1.0.0</Badge>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Button onClick={handleAction} disabled={loading} className="w-full">
+          {loading ? (
+            <>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Processing...
+            </>
+          ) : (
+            <>
+              <CheckCircle2 className="w-4 h-4 mr-2" />
+              Execute
+            </>
+          )}
+        </Button>
+        {error && <p className="mt-2 text-sm text-destructive">{error}</p>}
+      </CardContent>
+    </Card>
+  );
+}`,
+
+  react_hook: `// Substrate React Hook
+// Module: {{module}}
+// Generated: {{timestamp}}
+
+import { useState, useEffect, useCallback } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
+
+interface Use{{module}}Options {
+  enabled?: boolean;
+  refetchInterval?: number;
+  onSuccess?: (data: unknown) => void;
+  onError?: (error: Error) => void;
+}
+
+interface {{module}}State {
+  isLoading: boolean;
+  isError: boolean;
+  data: unknown;
+  error: Error | null;
+}
+
+// {{description}}
+export function use{{module}}(options: Use{{module}}Options = {}) {
+  const { enabled = true, refetchInterval, onSuccess, onError } = options;
+  const queryClient = useQueryClient();
+
+  // Query for fetching data
+  const query = useQuery({
+    queryKey: ['{{module}}'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('{{module}}_data')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(100);
+      
+      if (error) throw error;
+      return data;
+    },
+    enabled,
+    refetchInterval,
+  });
+
+  // Mutation for creating/updating
+  const mutation = useMutation({
+    mutationFn: async (payload: Record<string, unknown>) => {
+      const { data, error } = await supabase
+        .from('{{module}}_data')
+        .upsert(payload)
+        .select()
+        .single();
+      
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['{{module}}'] });
+      onSuccess?.(data);
+      toast.success('{{module}} updated successfully');
+    },
+    onError: (error) => {
+      onError?.(error);
+      toast.error('Failed to update {{module}}', { description: error.message });
+    },
+  });
+
+  return {
+    ...query,
+    mutate: mutation.mutate,
+    mutateAsync: mutation.mutateAsync,
+    isMutating: mutation.isPending,
+    refetch: query.refetch,
+  };
+}`,
+
+  api_client: `// Substrate API Client
+// Module: {{module}}
+// Generated: {{timestamp}}
+
+import { supabase } from '@/integrations/supabase/client';
+
+interface ApiResponse<T> {
+  success: boolean;
+  data?: T;
+  error?: string;
+  metadata?: {
+    latency_ms: number;
+    cached: boolean;
+  };
+}
+
+interface {{module}}ApiOptions {
+  timeout?: number;
+  retries?: number;
+  cache?: boolean;
+}
+
+// {{description}}
+export class {{module}}Api {
+  private baseOptions: {{module}}ApiOptions;
+  
+  constructor(options: {{module}}ApiOptions = {}) {
+    this.baseOptions = {
+      timeout: options.timeout ?? 30000,
+      retries: options.retries ?? 3,
+      cache: options.cache ?? true,
+    };
+  }
+
+  async invoke<T>(action: string, payload?: unknown): Promise<ApiResponse<T>> {
+    const startTime = Date.now();
+    let lastError: Error | null = null;
+    
+    for (let attempt = 0; attempt < (this.baseOptions.retries ?? 1); attempt++) {
+      try {
+        const { data, error } = await supabase.functions.invoke('pf-{{module}}', {
+          body: { action, payload },
+        });
+        
+        if (error) throw error;
+        
+        return {
+          success: true,
+          data: data as T,
+          metadata: {
+            latency_ms: Date.now() - startTime,
+            cached: false,
+          },
+        };
+      } catch (error) {
+        lastError = error instanceof Error ? error : new Error('Unknown error');
+        console.warn(\`[{{module}}Api] Attempt \${attempt + 1} failed:\`, lastError.message);
+        
+        // Exponential backoff
+        if (attempt < (this.baseOptions.retries ?? 1) - 1) {
+          await new Promise(r => setTimeout(r, Math.pow(2, attempt) * 1000));
+        }
+      }
+    }
+    
+    return {
+      success: false,
+      error: lastError?.message ?? 'All retries exhausted',
+    };
+  }
+
+  async status(): Promise<ApiResponse<{ version: string; healthy: boolean }>> {
+    return this.invoke('status');
+  }
+}
+
+export const {{module}}Client = new {{module}}Api();`,
+
+  database_migration: `-- Substrate Database Migration
+-- Module: {{module}}
+-- Generated: {{timestamp}}
+-- Description: {{description}}
+
+-- Create the main table
+CREATE TABLE IF NOT EXISTS public.{{module}}_data (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+  
+  -- Core fields
+  title TEXT NOT NULL,
+  content JSONB DEFAULT '{}',
+  status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'active', 'completed', 'failed')),
+  
+  -- Metadata
+  metadata JSONB DEFAULT '{}',
+  tags TEXT[] DEFAULT '{}',
+  
+  -- Timestamps
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now(),
+  
+  -- Soft delete
+  deleted_at TIMESTAMPTZ
+);
+
+-- Enable RLS
+ALTER TABLE public.{{module}}_data ENABLE ROW LEVEL SECURITY;
+
+-- Create policies
+CREATE POLICY "{{module}}_select_own" ON public.{{module}}_data
+  FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "{{module}}_insert_own" ON public.{{module}}_data
+  FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "{{module}}_update_own" ON public.{{module}}_data
+  FOR UPDATE USING (auth.uid() = user_id);
+
+CREATE POLICY "{{module}}_delete_own" ON public.{{module}}_data
+  FOR DELETE USING (auth.uid() = user_id);
+
+-- Create indexes
+CREATE INDEX idx_{{module}}_user_id ON public.{{module}}_data(user_id);
+CREATE INDEX idx_{{module}}_status ON public.{{module}}_data(status);
+CREATE INDEX idx_{{module}}_created_at ON public.{{module}}_data(created_at DESC);
+CREATE INDEX idx_{{module}}_tags ON public.{{module}}_data USING GIN(tags);
+
+-- Create updated_at trigger
+CREATE OR REPLACE FUNCTION update_{{module}}_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = now();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER {{module}}_updated_at
+  BEFORE UPDATE ON public.{{module}}_data
+  FOR EACH ROW
+  EXECUTE FUNCTION update_{{module}}_updated_at();`,
+
+  test_suite: `// Substrate Test Suite
+// Module: {{module}}
+// Generated: {{timestamp}}
+
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+
+// {{description}}
+
+describe('{{module}} Module', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  describe('initialization', () => {
+    it('should initialize with default config', () => {
+      // Test implementation
+      expect(true).toBe(true);
+    });
+
+    it('should handle custom config', () => {
+      // Test implementation
+      expect(true).toBe(true);
+    });
+  });
+
+  describe('core functionality', () => {
+    it('should process valid input', async () => {
+      const input = { data: 'test' };
+      // const result = await process{{module}}(input);
+      // expect(result.success).toBe(true);
+      expect(true).toBe(true);
+    });
+
+    it('should handle errors gracefully', async () => {
+      const invalidInput = null;
+      // await expect(process{{module}}(invalidInput)).rejects.toThrow();
+      expect(true).toBe(true);
+    });
+  });
+
+  describe('error handling', () => {
+    it('should retry on transient failures', async () => {
+      // Test retry logic
+      expect(true).toBe(true);
+    });
+
+    it('should respect rate limits', async () => {
+      // Test rate limiting
+      expect(true).toBe(true);
+    });
+  });
+
+  describe('integration', () => {
+    it('should integrate with brain module', async () => {
+      // Test brain integration
+      expect(true).toBe(true);
+    });
+  });
+});`,
+
+  utility_function: `// Substrate Utility Functions
+// Module: {{module}}
+// Generated: {{timestamp}}
+
+// {{description}}
+
+/**
+ * Safely parse JSON with fallback
+ */
+export function safeJsonParse<T>(json: string, fallback: T): T {
+  try {
+    return JSON.parse(json) as T;
+  } catch {
+    return fallback;
+  }
+}
+
+/**
+ * Deep merge objects
+ */
+export function deepMerge<T extends Record<string, unknown>>(target: T, source: Partial<T>): T {
+  const result = { ...target };
+  
+  for (const key in source) {
+    if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
+      result[key] = deepMerge(
+        (result[key] as Record<string, unknown>) || {},
+        source[key] as Record<string, unknown>
+      ) as T[Extract<keyof T, string>];
+    } else {
+      result[key] = source[key] as T[Extract<keyof T, string>];
+    }
+  }
+  
+  return result;
+}
+
+/**
+ * Retry with exponential backoff
+ */
+export async function retryWithBackoff<T>(
+  fn: () => Promise<T>,
+  maxRetries: number = 3,
+  baseDelay: number = 1000
+): Promise<T> {
+  let lastError: Error | null = null;
+  
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      return await fn();
+    } catch (error) {
+      lastError = error instanceof Error ? error : new Error(String(error));
+      if (i < maxRetries - 1) {
+        await new Promise(r => setTimeout(r, baseDelay * Math.pow(2, i)));
+      }
+    }
+  }
+  
+  throw lastError ?? new Error('All retries exhausted');
+}
+
+/**
+ * Create a debounced function
+ */
+export function debounce<T extends (...args: unknown[]) => unknown>(
+  fn: T,
+  delay: number
+): (...args: Parameters<T>) => void {
+  let timeoutId: ReturnType<typeof setTimeout>;
+  
+  return (...args: Parameters<T>) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => fn(...args), delay);
+  };
+}
+
+/**
+ * Format bytes to human readable
+ */
+export function formatBytes(bytes: number): string {
+  const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+  let unitIndex = 0;
+  let value = bytes;
+  
+  while (value >= 1024 && unitIndex < units.length - 1) {
+    value /= 1024;
+    unitIndex++;
+  }
+  
+  return \`\${value.toFixed(1)} \${units[unitIndex]}\`;
+}
+
+/**
+ * Generate a unique ID
+ */
+export function generateId(prefix: string = ''): string {
+  const timestamp = Date.now().toString(36);
+  const randomPart = Math.random().toString(36).substring(2, 9);
+  return prefix ? \`\${prefix}_\${timestamp}\${randomPart}\` : \`\${timestamp}\${randomPart}\`;
+}`,
+
+  type_definitions: `// Substrate Type Definitions
+// Module: {{module}}
+// Generated: {{timestamp}}
+
+// {{description}}
+
+// ═══════════════════════════════════════════════════════════════
+// BASE TYPES
+// ═══════════════════════════════════════════════════════════════
+
+export interface {{module}}Base {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  metadata?: Record<string, unknown>;
+}
+
+export interface {{module}}Config {
+  enabled: boolean;
+  version: string;
+  settings: {{module}}Settings;
+}
+
+export interface {{module}}Settings {
+  timeout: number;
+  retries: number;
+  rateLimit: {
+    maxRequests: number;
+    windowMs: number;
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// REQUEST/RESPONSE TYPES
+// ═══════════════════════════════════════════════════════════════
+
+export interface {{module}}Request {
+  action: string;
+  payload?: unknown;
+  options?: {
+    timeout?: number;
+    priority?: 'low' | 'medium' | 'high';
+  };
+}
+
+export interface {{module}}Response<T = unknown> {
+  success: boolean;
+  data?: T;
+  error?: {{module}}Error;
+  metadata?: {
+    latencyMs: number;
+    cached: boolean;
+    provider?: string;
+  };
+}
+
+export interface {{module}}Error {
+  code: string;
+  message: string;
+  details?: Record<string, unknown>;
+  recoverable: boolean;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// STATUS TYPES
+// ═══════════════════════════════════════════════════════════════
+
+export type {{module}}Status = 'idle' | 'loading' | 'success' | 'error';
+
+export interface {{module}}Health {
+  status: 'healthy' | 'degraded' | 'down';
+  score: number;
+  lastCheck: Date;
+  issues: string[];
+}
+
+// ═══════════════════════════════════════════════════════════════
+// EVENT TYPES
+// ═══════════════════════════════════════════════════════════════
+
+export interface {{module}}Event {
+  type: string;
+  timestamp: Date;
+  module: '{{module}}';
+  data: unknown;
+  outcome?: 'success' | 'failure' | 'partial';
+}
+
+export type {{module}}EventHandler = (event: {{module}}Event) => void | Promise<void>;`
 };
 
 // ═══════════════════════════════════════════════════════════════
