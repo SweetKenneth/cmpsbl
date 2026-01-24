@@ -54,7 +54,7 @@ export const BOOT_MESSAGES = [
   '◉ integration enterprise adapters ready',
   '◉ terminal v5.0: aliases, macros, NLP, watch mode, audit',
   '────────────────────────────────────────',
-  '12 modules | 200+ commands | health: 100%',
+  '12 modules | 230+ commands | health: 100%',
   'type \'help\' for commands • \'alias\' for shortcuts • \'macro list\' for scripts',
   '',
 ];
