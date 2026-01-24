@@ -60,6 +60,7 @@ const GamingSubstrate = lazy(() => import("./pages/GamingSubstrate"));
 const DeveloperShowcase = lazy(() => import("./pages/DeveloperShowcase"));
 const UseCases = lazy(() => import("./pages/UseCases"));
 const AgencyPortal = lazy(() => import("./pages/AgencyPortal"));
+const Modernizer = lazy(() => import("./pages/Modernizer"));
 
 // Marketing / Info pages
 const About = lazy(() => import("./pages/About"));
@@ -302,7 +303,7 @@ const App = () => {
                       <Route path="/threat-feed" element={<Navigate to="/" replace />} />
                       
                       {/* Legacy product pages */}
-                      <Route path="/modernizer" element={<Navigate to="/" replace />} />
+                      <Route path="/modernizer" element={<Modernizer />} />
                       <Route path="/awake" element={<Navigate to="/" replace />} />
                       <Route path="/scan" element={<Navigate to="/" replace />} />
                       <Route path="/sentience-hub" element={<Navigate to="/" replace />} />

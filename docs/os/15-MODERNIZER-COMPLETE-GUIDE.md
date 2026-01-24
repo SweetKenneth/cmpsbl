@@ -473,6 +473,217 @@ ANY ERROR = ROLLBACK
 
 ---
 
+## The CodeAgent — Autonomous Coding Capability
+
+The Modernizer includes a full **CodeAgent** — an autonomous coding layer that can analyze, write, test, and improve code without real-time human intervention (but always with human approval gates before production changes).
+
+### How the CodeAgent Actually Writes Code
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    CODEAGENT WORKFLOW                                │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│  STEP 1: BRAIN-FIRST QUERY                                          │
+│  ──────────────────────────────────────────────────────────────────  │
+│  Before calling ANY external LLM, the agent queries internal         │
+│  memories for existing patterns, solutions, and heuristics.          │
+│                                                                      │
+│  ┌─────────────────────────────────────────────────────────────┐    │
+│  │  checkBrainFirst(query, module, changeType)                  │    │
+│  │  ├── Query brain_memories for code_pattern type             │    │
+│  │  ├── Query learning_patterns for heuristics                 │    │
+│  │  ├── Check CORE_KNOWLEDGE bank                               │    │
+│  │  ├── Compute avgConfidence across matches                    │    │
+│  │  └── Decide: use_brain | call_llm | hybrid                   │    │
+│  └─────────────────────────────────────────────────────────────┘    │
+│                                                                      │
+│  Confidence Threshold: >75% to proceed with brain-only solution      │
+│                                                                      │
+│  STEP 2: KNOWLEDGE BANK VALIDATION                                   │
+│  ──────────────────────────────────────────────────────────────────  │
+│  Strict "Read-before-Write" boundaries enforced:                     │
+│                                                                      │
+│  FORBIDDEN PATTERNS (auto-detected, auto-rejected):                  │
+│  ├── eval() statements                                               │
+│  ├── Hardcoded secrets/API keys                                      │
+│  ├── SQL injection vulnerabilities                                   │
+│  ├── Insecure dependencies (CVE checked)                             │
+│  ├── Missing input validation                                        │
+│  └── Unsafe type coercion                                            │
+│                                                                      │
+│  STEP 3: SANDBOX VALIDATION                                          │
+│  ──────────────────────────────────────────────────────────────────  │
+│  Before any change is proposed, it runs through:                     │
+│                                                                      │
+│  ┌─────────────────────────────────────────────────────────────┐    │
+│  │  pf-substrate-sandbox                                        │    │
+│  │  ├── validateCode(code, language)                            │    │
+│  │  │   ├── Regex-based security patterns                       │    │
+│  │  │   ├── Bracket balance / syntax check                      │    │
+│  │  │   └── SQL restriction patterns                            │    │
+│  │  │                                                            │    │
+│  │  ├── performDeepAnalysis(code, language)                     │    │
+│  │  │   ├── Complexity scoring (low/medium/high)                │    │
+│  │  │   ├── Line count / function count                         │    │
+│  │  │   ├── Import count                                         │    │
+│  │  │   └── Async operation detection                           │    │
+│  │  │                                                            │    │
+│  │  └── Returns: { valid, issues[], metrics }                   │    │
+│  └─────────────────────────────────────────────────────────────┘    │
+│                                                                      │
+│  STEP 4: ROLLBACK TRACKING                                           │
+│  ──────────────────────────────────────────────────────────────────  │
+│  Every file and DB change is logged with:                            │
+│  ├── Pre-change content hash                                         │
+│  ├── Applied change content                                          │
+│  ├── Timestamp and author (codeagent)                                │
+│  └── One-click rollback capability                                   │
+│                                                                      │
+│  STEP 5: HUMAN APPROVAL GATE                                         │
+│  ──────────────────────────────────────────────────────────────────  │
+│  After all validation passes:                                        │
+│  ├── Proposal generated with diff view                               │
+│  ├── Risk assessment computed                                        │
+│  ├── Human reviews and approves (or rejects)                         │
+│  └── Only then: change is applied                                    │
+│                                                                      │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### CodeAgent Skills & Learning
+
+The CodeAgent continuously learns through the `pf-codeagent-learn` function:
+
+```
+pf-codeagent-learn
+
+Skill Acquisition System
+═══════════════════════════════════════════
+
+API Budget Allocation: 60% of daily budget (~9,600 calls)
+Learning Schedule: 24/7 background acquisition
+
+CURRENT SKILL LEVELS:
+─────────────────────────────────────────────
+
+TypeScript/JavaScript:
+├── Syntax patterns ..................... ██████████ Advanced
+├── Async/await handling ................ ██████████ Advanced  
+├── Error handling ...................... █████████░ Advanced
+├── Type definitions .................... ████████░░ Intermediate+
+└── React patterns ...................... ███████░░░ Intermediate
+
+SQL/Database:
+├── Query optimization .................. ████████░░ Intermediate+
+├── Schema design ....................... ███████░░░ Intermediate
+├── RLS policy patterns ................. ██████████ Advanced
+└── Migration safety .................... █████████░ Advanced
+
+Security:
+├── Vulnerability detection ............. ██████████ Advanced
+├── Input validation .................... ██████████ Advanced
+├── Secret handling ..................... ██████████ Advanced
+└── OWASP patterns ...................... █████████░ Advanced
+
+Edge Functions (Deno):
+├── Supabase integration ................ ██████████ Advanced
+├── CORS handling ....................... ██████████ Advanced
+├── Error responses ..................... █████████░ Advanced
+└── Rate limiting ....................... ████████░░ Intermediate+
+
+Testing:
+├── Unit test patterns .................. ███████░░░ Intermediate
+├── Integration patterns ................ ██████░░░░ Learning
+└── Mocking strategies .................. █████░░░░░ Learning
+
+═══════════════════════════════════════════
+```
+
+### Using CodeAgent WITHOUT Lovable
+
+**Critical Point:** The CodeAgent operates completely independently of Lovable or any other IDE. It's embedded in the substrate itself.
+
+```
+DEPLOYMENT MODES
+═══════════════════════════════════════════
+
+1. HEADLESS MODE (Self-Hosted)
+   ────────────────────────────────────────
+   Deploy substrate to any host (VPS, cloud, on-prem).
+   CodeAgent runs in background, analyzing and proposing
+   improvements through Terminal or API.
+   
+   No browser needed. No Lovable needed.
+   
+   Example workflow:
+   $ curl -X POST https://your-substrate/api/codeagent \
+     -d '{"action": "analyze", "scope": "performance"}'
+   
+   Response: { proposals: [...], estimated_impact: "15%" }
+
+2. API-DRIVEN (External Integration)
+   ────────────────────────────────────────
+   Call codeagent.analyze or codeagent.patch from any
+   external system. CI/CD pipelines, Slack bots, monitoring
+   systems can all trigger the CodeAgent.
+   
+   Available endpoints:
+   ├── codeagent.analyze   — Scan for improvements
+   ├── codeagent.propose   — Generate specific patch
+   ├── codeagent.validate  — Check code before apply
+   ├── codeagent.apply     — Apply approved changes
+   └── codeagent.rollback  — Revert specific change
+
+3. SCHEDULED IMPROVEMENTS
+   ────────────────────────────────────────
+   Configure nightly/weekly scans. Wake up to proposals
+   waiting for approval. Apply with one command.
+   
+   Schedule config:
+   {
+     "scan_schedule": "0 2 * * *",  // 2 AM daily
+     "auto_propose": true,
+     "notification": "email",
+     "max_proposals_per_scan": 5
+   }
+
+4. CI/CD INTEGRATION
+   ────────────────────────────────────────
+   CodeAgent validates code changes in your pipeline.
+   Blocks bad patterns, suggests fixes, gates deployments.
+   
+   GitHub Action example:
+   - name: CodeAgent Validation
+     run: |
+       curl -X POST $SUBSTRATE_URL/api/codeagent \
+         -d '{"action": "validate", "diff": "${{ github.event.pull_request.diff }}"}'
+
+═══════════════════════════════════════════
+```
+
+### CodeAgent vs Lovable: When to Use Each
+
+| Capability | Lovable | CodeAgent |
+|------------|---------|-----------|
+| Real-time chat | ✅ | ❌ |
+| Visual preview | ✅ | ❌ |
+| Interactive development | ✅ | ❌ |
+| Autonomous analysis | ❌ | ✅ |
+| Background operation | ❌ | ✅ |
+| Self-hosting | ❌ | ✅ |
+| Memory integration | ❌ | ✅ |
+| Learning from codebase | ❌ | ✅ |
+| Scheduled scans | ❌ | ✅ |
+| CI/CD integration | ❌ | ✅ |
+
+**Plain English:** 
+- Use **Lovable** for interactive, real-time development with visual feedback.
+- Use **CodeAgent** for autonomous maintenance, background optimization, and self-hosted scenarios.
+- Use **both together** for maximum velocity: Lovable for new features, CodeAgent for continuous improvement.
+
+---
+
 ## Archived Function Discovery
 
 The substrate has 200+ archived edge functions. The Modernizer can find opportunities to repurpose them:
