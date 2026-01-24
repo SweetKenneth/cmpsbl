@@ -413,9 +413,9 @@ export default function UseCases() {
                 </div>
                 <div className="flex flex-wrap justify-center gap-4">
                   <Button asChild size="lg" className="gap-2">
-                    <Link to="/codelab">
+                    <Link to="/marketplace">
                       <Play className="w-4 h-4" />
-                      Try the Wizard
+                      Browse Templates
                     </Link>
                   </Button>
                   <Button asChild variant="outline" size="lg" className="gap-2">

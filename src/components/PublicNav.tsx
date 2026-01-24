@@ -57,7 +57,6 @@ export function PublicNav() {
       icon: Building2,
       items: [
         { name: "Use Cases", href: "/use-cases", description: "Industry Applications", icon: Sparkles },
-        { name: "Enterprise", href: "/solutions", description: "Business Solutions", icon: Building2 },
         { name: "Projects", href: "/projects", description: "Active Development", icon: Rocket },
       ]
     },

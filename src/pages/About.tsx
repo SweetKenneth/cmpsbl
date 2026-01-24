@@ -21,10 +21,10 @@ export default function About() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="About promptfluid® | Cognitive Orchestration Substrate"
-        description="promptfluid is a cognitive orchestration substrate that provides routing, memory, learning cycles, observability, defense, and execution coordination for AI systems."
+        title="About CMPSBL | Cognitive Orchestration Substrate"
+        description="CMPSBL is a cognitive orchestration substrate that provides routing, memory, learning cycles, observability, defense, and execution coordination for AI systems."
         canonical="https://promptfluid.com/about"
-        keywords={['promptfluid substrate', 'cognitive orchestration', 'AI infrastructure', 'autonomous systems', 'accessibility tools']}
+        keywords={['CMPSBL', 'cognitive orchestration', 'AI infrastructure', 'autonomous systems', 'accessibility tools']}
       />
       
       <script type="application/ld+json">
@@ -61,10 +61,10 @@ export default function About() {
             </Link>
           </nav>
           
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground">
-            promptfluid<sup className="text-lg">®</sup> substrate
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground [text-shadow:_0_2px_20px_hsl(var(--background))]">
+            CMPSBL<sup className="text-lg">®</sup> by PromptFluid
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed">
+          <p className="text-xl text-foreground/90 max-w-3xl leading-relaxed [text-shadow:_0_2px_10px_hsl(var(--background))]">
             A cognitive orchestration substrate that provides routing, memory, learning cycles, observability, defense, and execution coordination for AI systems. Model-agnostic. Provider-agnostic. Runs on commodity cloud.
           </p>
         </div>
@@ -86,7 +86,7 @@ export default function About() {
                   I build systems that start as abstract ideas and end up running on their own.
                 </p>
                 <p className="text-muted-foreground leading-relaxed mb-6">
-                  promptfluid began as a focused effort to make AI orchestration actually useful—routing that adapts, memory that persists, and learning cycles that run autonomously.
+                  CMPSBL began as a focused effort to make AI orchestration actually useful—routing that adapts, memory that persists, and learning cycles that run autonomously.
                 </p>
                 <p className="text-muted-foreground leading-relaxed mb-6">
                   Everything here is built to work without supervision. The goal is infrastructure that improves itself over time.
