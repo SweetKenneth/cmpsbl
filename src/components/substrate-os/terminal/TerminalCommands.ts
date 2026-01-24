@@ -207,6 +207,7 @@ export const INTEGRATION_COMMANDS: CommandDefinition[] = [
 ];
 
 export const META_COMMANDS: CommandDefinition[] = [
+  // Help & Navigation
   { command: 'help', description: 'Show all commands', category: 'meta', icon: Terminal, requiresOperator: false },
   { command: 'help brain', description: 'Brain module commands', category: 'meta', icon: Brain, requiresOperator: false },
   { command: 'help decode', description: 'Decode module commands', category: 'meta', icon: MessageSquare, requiresOperator: false },
@@ -220,11 +221,40 @@ export const META_COMMANDS: CommandDefinition[] = [
   { command: 'help ripple', description: 'Message bus commands', category: 'meta', icon: Radio, requiresOperator: false },
   { command: 'help access', description: 'Identity/billing commands', category: 'meta', icon: Key, requiresOperator: false },
   { command: 'help integration', description: 'Enterprise integration commands', category: 'meta', icon: Plug, requiresOperator: false },
+  
+  // Terminal Controls
   { command: 'clear', description: 'Clear terminal history', category: 'meta', icon: Terminal, requiresOperator: false },
   { command: 'whoami', description: 'Display identity', category: 'meta', icon: Cpu, requiresOperator: false },
   { command: 'history', description: 'Command history', category: 'meta', icon: Clock, requiresOperator: false },
   { command: 'export', description: 'Export session log', category: 'meta', icon: Database, requiresOperator: false },
   { command: 'theme', description: 'Toggle terminal theme', category: 'meta', icon: Eye, requiresOperator: false, args: '[dark|light|matrix]' },
+  
+  // v5.0.0: Aliases
+  { command: 'alias', description: 'List all command aliases', category: 'meta', icon: Terminal, requiresOperator: false },
+  { command: 'alias add', description: 'Create a custom alias', category: 'meta', icon: Terminal, requiresOperator: false, args: '<alias> <command>', example: 'alias add hs system.health' },
+  { command: 'alias remove', description: 'Remove a custom alias', category: 'meta', icon: Terminal, requiresOperator: false, args: '<alias>' },
+  
+  // v5.0.0: Macros
+  { command: 'macro', description: 'Macro help & commands', category: 'meta', icon: PlayCircle, requiresOperator: false },
+  { command: 'macro list', description: 'List all macros', category: 'meta', icon: List, requiresOperator: false },
+  { command: 'macro run', description: 'Execute a macro', category: 'meta', icon: PlayCircle, requiresOperator: false, args: '<name>', example: 'macro run health_check' },
+  { command: 'macro show', description: 'Show macro details', category: 'meta', icon: Eye, requiresOperator: false, args: '<name>' },
+  { command: 'macro create', description: 'Create a custom macro', category: 'meta', icon: Terminal, requiresOperator: false, args: '<name> <commands...>' },
+  { command: 'macro delete', description: 'Delete a custom macro', category: 'meta', icon: Terminal, requiresOperator: false, args: '<name>' },
+  
+  // v5.0.0: Scheduling & Watch
+  { command: 'schedule', description: 'Schedule command execution', category: 'meta', icon: Clock, requiresOperator: false, args: '<delay> <command>', example: 'schedule 5m brain.reflect' },
+  { command: 'schedule list', description: 'List scheduled commands', category: 'meta', icon: List, requiresOperator: false },
+  { command: 'schedule cancel', description: 'Cancel a scheduled command', category: 'meta', icon: Terminal, requiresOperator: false, args: '<id>' },
+  { command: 'schedule clear', description: 'Cancel all scheduled commands', category: 'meta', icon: Terminal, requiresOperator: false },
+  { command: 'watch', description: 'Run command repeatedly', category: 'meta', icon: Eye, requiresOperator: false, args: '<interval> <command>', example: 'watch 10s vision.pulse' },
+  { command: 'watch list', description: 'List active watch sessions', category: 'meta', icon: List, requiresOperator: false },
+  { command: 'watch stop', description: 'Stop a watch session', category: 'meta', icon: Terminal, requiresOperator: false, args: '<id|all>' },
+  
+  // v5.0.0: Audit & Analytics
+  { command: 'audit', description: 'View session audit log', category: 'meta', icon: Eye, requiresOperator: false, args: '[limit]' },
+  { command: 'audit stats', description: 'Session statistics', category: 'meta', icon: Activity, requiresOperator: false },
+  { command: 'audit export', description: 'Export audit log as JSON', category: 'meta', icon: Database, requiresOperator: false },
 ];
 
 export const ALL_COMMANDS: CommandDefinition[] = [

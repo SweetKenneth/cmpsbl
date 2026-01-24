@@ -1,7 +1,7 @@
 /**
- * Enhanced Terminal v2026
+ * Enhanced Terminal v5.0.0
  * Full-featured terminal with comprehensive commands, autocomplete,
- * larger viewport, and real substrate integration
+ * aliases, macros, scheduling, watch mode, and audit trail
  */
 
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
@@ -21,6 +21,11 @@ import {
 } from './terminal/TerminalTypes';
 import { ALL_COMMANDS, searchCommands, type CommandDefinition } from './terminal/TerminalCommands';
 import { executeCommand, type ExecutionResult } from './terminal/TerminalExecutor';
+import { resolveAlias } from './terminal/useTerminalAliases';
+import { getMacro } from './terminal/useTerminalMacros';
+import { scheduleCommand, parseDelay, formatScheduleConfirmation } from './terminal/useTerminalScheduler';
+import { useTerminalWatch, formatWatchListOutput } from './terminal/useTerminalWatch';
+import { recordAuditEntry, exportAuditLog } from './terminal/useTerminalAudit';
 
 interface EnhancedTerminalProps {
   enabled: boolean;
@@ -92,9 +97,15 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
     ));
   }, []);
 
+  // Watch mode
+  const { startWatch, stopWatch, stopAllWatches, getActiveSessions } = useTerminalWatch();
+
   const handleExecute = async (cmd: string) => {
     const trimmed = cmd.trim();
     if (!trimmed) return;
+
+    // Resolve alias before execution
+    const resolvedCmd = resolveAlias(trimmed);
 
     // Add to command history
     setCommandHistory(prev => [...prev.filter(c => c !== trimmed), trimmed].slice(-50));
@@ -104,10 +115,13 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
     setSessionStats(prev => ({ ...prev, commands: prev.commands + 1 }));
 
     const startTime = Date.now();
-    const resultId = addResult(trimmed, 'pending', getRandomItem(PERSONALITY_RESPONSES.thinking));
+    const resultId = addResult(resolvedCmd, 'pending', getRandomItem(PERSONALITY_RESPONSES.thinking));
 
-    const result = await executeCommand(trimmed, enabled);
+    const result = await executeCommand(resolvedCmd, enabled);
     const duration = Date.now() - startTime;
+
+    // Record to audit log
+    recordAuditEntry(resolvedCmd, result.success ? 'success' : 'error', result.output, duration);
 
     // Handle special outputs
     if (result.output === '__CLEAR__') {
@@ -144,6 +158,20 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
       return;
     }
 
+    if (result.output === '__AUDIT_EXPORT__') {
+      const auditJson = exportAuditLog();
+      const blob = new Blob([auditJson], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `substrate-audit-${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      updateResult(resultId, 'success', '◉ Audit log exported successfully.', duration);
+      setSessionStats(prev => ({ ...prev, success: prev.success + 1 }));
+      return;
+    }
+
     if (result.output.startsWith('__THEME__')) {
       const newTheme = result.output.replace('__THEME__', '');
       if (newTheme === 'toggle') {
@@ -152,6 +180,89 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
         setTheme(newTheme as TerminalTheme);
       }
       updateResult(resultId, 'success', `◉ Theme set to: ${newTheme === 'toggle' ? theme : newTheme}`, duration);
+      setSessionStats(prev => ({ ...prev, success: prev.success + 1 }));
+      return;
+    }
+
+    // Handle macro execution
+    if (result.output.startsWith('__MACRO_RUN__')) {
+      const macroName = result.output.replace('__MACRO_RUN__', '');
+      const macro = getMacro(macroName);
+      if (macro) {
+        updateResult(resultId, 'success', `◉ Executing macro: @${macroName} (${macro.commands.length} commands)`, duration);
+        setSessionStats(prev => ({ ...prev, success: prev.success + 1 }));
+        // Execute each command in sequence
+        for (const macroCmd of macro.commands) {
+          await handleExecute(macroCmd);
+        }
+        return;
+      }
+    }
+
+    // Handle watch list
+    if (result.output === '__WATCH_LIST__') {
+      const sessions = getActiveSessions();
+      updateResult(resultId, 'success', formatWatchListOutput(sessions), duration);
+      setSessionStats(prev => ({ ...prev, success: prev.success + 1 }));
+      return;
+    }
+
+    // Handle watch stop
+    if (result.output.startsWith('__WATCH_STOP__')) {
+      const target = result.output.replace('__WATCH_STOP__', '');
+      if (target === 'all') {
+        stopAllWatches();
+        updateResult(resultId, 'success', '◉ All watch sessions stopped.', duration);
+      } else {
+        const sessions = getActiveSessions();
+        const match = sessions.find(s => s.id.startsWith(target) || s.id.slice(0, 8) === target);
+        if (match) {
+          stopWatch(match.id);
+          updateResult(resultId, 'success', `◉ Watch session stopped: ${match.id.slice(0, 12)}`, duration);
+        } else {
+          updateResult(resultId, 'error', `▓ ERROR: Watch session '${target}' not found`, duration);
+        }
+      }
+      setSessionStats(prev => ({ ...prev, success: prev.success + 1 }));
+      return;
+    }
+
+    // Handle watch start
+    if (result.output.startsWith('__WATCH_START__')) {
+      const parts = result.output.replace('__WATCH_START__', '').split('__');
+      const interval = parts[0];
+      const watchCmd = parts.slice(1).join('__');
+      const seconds = parseDelay(interval);
+      if (seconds) {
+        const watchId = startWatch(watchCmd, seconds / 1000, async (cmd) => {
+          const res = await executeCommand(cmd, enabled);
+          return { success: res.success, output: res.output };
+        });
+        updateResult(resultId, 'success', `◉ Watch started: ${watchId.slice(0, 12)}\n  Command: ${watchCmd}\n  Interval: ${interval}\n  Use 'watch stop ${watchId.slice(0, 8)}' to stop`, duration);
+      } else {
+        updateResult(resultId, 'error', `▓ ERROR: Invalid interval: ${interval}`, duration);
+      }
+      setSessionStats(prev => ({ ...prev, success: prev.success + 1 }));
+      return;
+    }
+
+    // Handle schedule
+    if (result.output.startsWith('__SCHEDULE__')) {
+      const parts = result.output.replace('__SCHEDULE__', '').split('__');
+      const delay = parts[0];
+      const schedCmd = parts.slice(1).join('__');
+      try {
+        const id = scheduleCommand(schedCmd, delay, async (cmd) => {
+          const res = await executeCommand(cmd, enabled);
+          addResult(cmd, res.success ? 'success' : 'error', `[Scheduled] ${res.output}`);
+          return { success: res.success, output: res.output };
+        });
+        const delayMs = parseDelay(delay) || 5000;
+        const executeAt = new Date(Date.now() + delayMs);
+        updateResult(resultId, 'success', formatScheduleConfirmation(id, schedCmd, executeAt), duration);
+      } catch (e) {
+        updateResult(resultId, 'error', `▓ ERROR: ${e instanceof Error ? e.message : 'Schedule failed'}`, duration);
+      }
       setSessionStats(prev => ({ ...prev, success: prev.success + 1 }));
       return;
     }

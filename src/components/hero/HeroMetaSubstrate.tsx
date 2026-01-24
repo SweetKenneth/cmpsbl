@@ -4,7 +4,7 @@
  * Mobile-first, performance-optimized
  */
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -331,16 +331,19 @@ function TypedText({ texts, gradientColors, className }: {
   const currentGradient = gradientColors?.[currentIndex] || "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))";
   
   // Use CSS containment and fixed dimensions to prevent layout thrashing
+  // Note: Using separate style objects to avoid React's shorthand property collision warning
+  const gradientStyle = useMemo(() => ({
+    backgroundImage: currentGradient,
+    backgroundClip: "text" as const,
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    contain: "layout style paint" as const,
+  }), [currentGradient]);
+  
   return (
     <span 
       className={cn("inline-flex items-baseline", className)}
-      style={{
-        background: currentGradient,
-        WebkitBackgroundClip: "text",
-        WebkitTextFillColor: "transparent",
-        backgroundClip: "text",
-        contain: "layout style paint",
-      }}
+      style={gradientStyle}
     >
       <span style={{ display: "inline-block" }}>{displayText}</span>
       <span 

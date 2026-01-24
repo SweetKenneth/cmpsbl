@@ -1,12 +1,17 @@
 /**
  * Terminal Command Executor
  * Handles parsing and execution of all substrate commands
+ * v5.0.0 - Enhanced with aliases, macros, scheduling, watch, and audit
  */
 
 import { substrate, brain, decode, defense, nexus, vision, dream, system, modernizer, core, ripple, access, integration } from '@/lib/substrate';
 import { supabase } from '@/integrations/supabase/client';
 import { ALL_COMMANDS, COMMAND_CATEGORIES, type CommandDefinition } from './TerminalCommands';
 import { getRandomItem, PERSONALITY_RESPONSES } from './TerminalTypes';
+import { resolveAlias, addAlias, removeAlias, formatAliasHelp } from './useTerminalAliases';
+import { getMacro, createMacro, deleteMacro, formatMacroHelp, formatMacroDetail } from './useTerminalMacros';
+import { scheduleCommand, cancelScheduled, clearScheduled, formatScheduledList, formatScheduleConfirmation, getPendingCommands } from './useTerminalScheduler';
+import { getLocalAuditLog, formatAuditLog, getSessionStats, exportAuditLog } from './useTerminalAudit';
 
 export interface ExecutionResult {
   success: boolean;
@@ -52,7 +57,7 @@ function generateFullHelp(): string {
 │
 │  Total commands: ${totalCommands}
 │  Modules: ${modules.length}
-│  Version: v4.3.0
+│  Version: v5.0.0
 │
 │  Quick navigation:
 │    help <module>  ∷  Show module-specific commands
@@ -89,9 +94,18 @@ function generateFullHelp(): string {
 │  6. modernizer.apply_production <id> ∷  Promote to production
 │     OR: modernizer.apply <id>     ∷  Auto-route (shadow→prod)
 │
+├─ v5.0.0 TERMINAL FEATURES ────────────────────────────────────
+│
+│  alias              ∷  Shorthand commands (e.g., 'st' → system.status)
+│  macro              ∷  Multi-command scripts (@health_check)
+│  schedule           ∷  Delayed execution (schedule 5m brain.reflect)
+│  watch              ∷  Periodic execution (watch 10s vision.pulse)
+│  audit              ∷  Session audit trail & stats
+│
 ├─ KEYBOARD SHORTCUTS ──────────────────────────────────────────
 │
 │  ↑/↓                ∷  Navigate command history
+│  Ctrl+R             ∷  Reverse search history
 │  Tab                ∷  Autocomplete command
 │  Ctrl+C             ∷  Clear current input
 │  Ctrl+L             ∷  Clear terminal
@@ -126,15 +140,11 @@ export async function executeCommand(
 ┌─ SUBSTRATE IDENTITY ─────────────────────────────────────────
 │ 
 │  ██████╗ ███████╗     Cognitive Operating System
-│  ██╔═══╝ ██╔════╝     promptfluid® Substrate v4.3.0
+│  ██╔═══╝ ██╔════╝     promptfluid® Substrate v5.0.0
 │  ██║     ███████╗     
 │  ██║     ╚════██║     Environment: Lovable Cloud
 │  ██████╗ ███████║     Status: OPERATIONAL
 │  ╚═════╝ ╚══════╝
-│  ██║     ███████╗     
-│  ██║     ╚════██║     Environment: Lovable Cloud
-│  ██████╗ ███████║     Status: OPERATIONAL
-│  ╚═════╝ ╚══════╝     
 │ 
 │  12-Module Architecture — Full AI Operating System
 │  
@@ -162,6 +172,7 @@ export async function executeCommand(
 │  │
 │  └────────────────────────────────────────────────────────────
 │  
+│  Terminal v5.0.0: aliases, macros, NLP, watch mode, audit
 │  promptfluid® — where machines learn to dream
 │  
 └──────────────────────────────────────────────────────────────`;
@@ -179,6 +190,158 @@ export async function executeCommand(
   if (base === 'theme') {
     const theme = args[0] || 'toggle';
     return { success: true, output: `__THEME__${theme}` };
+  }
+
+  // v5.0.0: Alias commands
+  if (base === 'alias') {
+    if (args[0] === 'add' && args[1] && args[2]) {
+      const success = addAlias(args[1], args.slice(2).join(' '));
+      return {
+        success,
+        output: success 
+          ? `◉ Alias created: ${args[1]} → ${args.slice(2).join(' ')}`
+          : `▓ ERROR: Cannot override builtin alias '${args[1]}'`,
+      };
+    }
+    if (args[0] === 'remove' && args[1]) {
+      const success = removeAlias(args[1]);
+      return {
+        success,
+        output: success 
+          ? `◉ Alias removed: ${args[1]}`
+          : `▓ ERROR: Alias '${args[1]}' not found or is builtin`,
+      };
+    }
+    return { success: true, output: formatAliasHelp() };
+  }
+
+  // v5.0.0: Macro commands
+  if (base === 'macro') {
+    if (args[0] === 'list' || args.length === 0) {
+      return { success: true, output: formatMacroHelp() };
+    }
+    if (args[0] === 'show' && args[1]) {
+      return { success: true, output: formatMacroDetail(args[1]) };
+    }
+    if (args[0] === 'create' && args[1]) {
+      // Expect format: macro create <name> "cmd1; cmd2; cmd3" "description"
+      const name = args[1];
+      const commandStr = args[2] || '';
+      const commands = commandStr.split(';').map(c => c.trim()).filter(Boolean);
+      const description = args[3] || 'Custom macro';
+      
+      if (commands.length === 0) {
+        return { 
+          success: false, 
+          output: '▓ ERROR: No commands provided\n  Usage: macro create <name> "cmd1; cmd2; cmd3" "description"',
+        };
+      }
+      
+      const success = createMacro(name, description, commands);
+      return {
+        success,
+        output: success 
+          ? `◉ Macro created: @${name} with ${commands.length} commands`
+          : `▓ ERROR: Cannot override builtin macro '${name}'`,
+      };
+    }
+    if (args[0] === 'delete' && args[1]) {
+      const success = deleteMacro(args[1]);
+      return {
+        success,
+        output: success 
+          ? `◉ Macro deleted: @${args[1]}`
+          : `▓ ERROR: Macro '${args[1]}' not found or is builtin`,
+      };
+    }
+    if (args[0] === 'run' && args[1]) {
+      const macro = getMacro(args[1]);
+      if (!macro) {
+        return { success: false, output: `▓ ERROR: Macro '${args[1]}' not found` };
+      }
+      // Return special marker for macro execution
+      return { success: true, output: `__MACRO_RUN__${args[1]}` };
+    }
+    return { success: true, output: formatMacroHelp() };
+  }
+
+  // v5.0.0: Schedule commands
+  if (base === 'schedule') {
+    if (args[0] === 'list' || args.length === 0) {
+      return { success: true, output: formatScheduledList() };
+    }
+    if (args[0] === 'cancel' && args[1]) {
+      // Find matching schedule by prefix
+      const pending = getPendingCommands();
+      const match = pending.find(s => s.id.startsWith(args[1]) || s.id.slice(0, 10) === args[1]);
+      if (match) {
+        cancelScheduled(match.id);
+        return { success: true, output: `◉ Scheduled command cancelled: ${match.id.slice(0, 12)}` };
+      }
+      return { success: false, output: `▓ ERROR: Schedule '${args[1]}' not found` };
+    }
+    if (args[0] === 'clear') {
+      const count = clearScheduled();
+      return { success: true, output: `◉ Cancelled ${count} scheduled command(s)` };
+    }
+    // schedule <delay> <command>
+    if (args[0] && args[1]) {
+      const delay = args[0];
+      const cmd = args.slice(1).join(' ');
+      try {
+        const executeAt = new Date(Date.now() + (parseInt(delay) * 1000 || 5000));
+        return { 
+          success: true, 
+          output: `__SCHEDULE__${delay}__${cmd}`,
+        };
+      } catch (e) {
+        return { success: false, output: `▓ ERROR: Invalid delay format: ${delay}` };
+      }
+    }
+    return { success: true, output: formatScheduledList() };
+  }
+
+  // v5.0.0: Watch commands
+  if (base === 'watch') {
+    if (args[0] === 'list' || args.length === 0) {
+      return { success: true, output: '__WATCH_LIST__' };
+    }
+    if (args[0] === 'stop') {
+      return { success: true, output: `__WATCH_STOP__${args[1] || 'all'}` };
+    }
+    // watch <interval> <command>
+    if (args[0] && args[1]) {
+      const interval = args[0];
+      const cmd = args.slice(1).join(' ');
+      return { success: true, output: `__WATCH_START__${interval}__${cmd}` };
+    }
+    return { success: true, output: '__WATCH_LIST__' };
+  }
+
+  // v5.0.0: Audit commands
+  if (base === 'audit') {
+    if (args[0] === 'stats') {
+      const stats = getSessionStats();
+      return {
+        success: true,
+        output: `
+┌─ SESSION STATISTICS ─────────────────────────────────────────
+│
+│  Session ID:    ${stats.session_id.substring(0, 20)}...
+│  Commands Run:  ${stats.command_count}
+│  Success Rate:  ${stats.success_rate.toFixed(1)}%
+│  Total Time:    ${(stats.total_duration_ms / 1000).toFixed(1)}s
+│  Avg Duration:  ${stats.avg_duration_ms.toFixed(0)}ms
+│  Started:       ${stats.started_at.toLocaleTimeString()}
+│
+└──────────────────────────────────────────────────────────────`,
+      };
+    }
+    if (args[0] === 'export') {
+      return { success: true, output: `__AUDIT_EXPORT__` };
+    }
+    const limit = args[0] ? parseInt(args[0]) : 20;
+    return { success: true, output: formatAuditLog(getLocalAuditLog(), limit) };
   }
 
   // Check if command requires operator
