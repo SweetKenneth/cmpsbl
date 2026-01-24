@@ -42,17 +42,46 @@ With Nexus:
 
 ## Supported Providers
 
+### Free-Tier Providers (v5.0.0 Router)
+
+The substrate's primary backbone uses 8 free-tier providers with ~16,000+ calls/day capacity:
+
+| Provider | Daily Limit | RPM | Strengths | Role in Cascade |
+|----------|-------------|-----|-----------|-----------------|
+| **Cerebras** | 13,680 | 228 | Ultra-fast, high volume | Primary (handles bulk) |
+| **Groq** | 1,000 | 30 | Fastest inference | Speed priority |
+| **OpenRouter** | 1,000 | 20 | Model variety | Fallback |
+| **Novita** | 500 | 60 | Good balance | Secondary |
+| **SambaNova** | 240 | 10 | Enterprise-grade | Quality fallback |
+| **Hyperbolic** | 120 | 10 | Specialized models | Tertiary |
+| **DeepSeek** | 100 | 10 | Code generation | Code tasks |
+| **Together AI** | 60 | 60 | Open models | Last resort |
+
+**Total Free Capacity:** ~16,700 requests/day @ $0.00 cost
+
+### Premium Providers (Bring Your Own Key)
+
 | Provider | Strengths | Best For |
 |----------|-----------|----------|
-| **Groq** | Fastest inference | Real-time responses |
-| **Cerebras** | High throughput | Batch processing |
 | **OpenAI** | Quality + ecosystem | Complex reasoning |
-| **Google** | Multimodal | Image + text tasks |
-| **Anthropic** | Safety + reasoning | Careful analysis |
-| **Together AI** | Open models | Cost-effective scale |
-| **DeepSeek** | Code generation | Developer tasks |
-| **Perplexity** | Web search | Current information |
-| **SambaNova** | Enterprise speed | Production workloads |
+| **Google Gemini** | Multimodal, long context | Image + text tasks |
+| **Anthropic Claude** | Safety + reasoning | Careful analysis |
+| **Perplexity** | Web search integrated | Current information |
+
+### Lovable AI Models (When Available)
+
+When running in Lovable Cloud, additional premium models are available:
+
+| Model | Capability | Best For |
+|-------|------------|----------|
+| **google/gemini-2.5-pro** | Top reasoning, multimodal | Heavy reasoning + visuals |
+| **google/gemini-3-pro-preview** | Next-gen Gemini | Latest capabilities |
+| **google/gemini-2.5-flash** | Balanced cost/quality | General tasks |
+| **google/gemini-2.5-flash-lite** | Fastest, cheapest | Simple workloads |
+| **openai/gpt-5** | Powerful all-rounder | Accuracy-critical tasks |
+| **openai/gpt-5-mini** | Lower cost, strong reasoning | Balanced workloads |
+| **openai/gpt-5-nano** | Speed + cost optimized | High-volume tasks |
+| **openai/gpt-5.2** | Enhanced reasoning | Complex problem-solving |
 
 ---
 
