@@ -503,17 +503,59 @@ class SubstrateClient {
     review: (plan_id: string) =>
       this.invoke({ module: 'modernizer', action: 'review', payload: { plan_id } }),
     
-    /** Apply an approved upgrade plan (requires human confirmation) */
+    /** Validate plan readiness (checks health, modules, backup) */
+    validate: (plan_id: string) =>
+      supabase.functions.invoke('pf-substrate-upgrade', {
+        body: { action: 'validate_plan', plan_id }
+      }),
+    
+    /** View plan diff and health comparison */
+    diff: (plan_id: string) =>
+      supabase.functions.invoke('pf-substrate-upgrade', {
+        body: { action: 'diff_view', plan_id }
+      }),
+    
+    /** Apply an approved upgrade plan (auto-routes shadow→production) */
     apply: (plan_id: string) =>
-      this.invoke({ module: 'modernizer', action: 'apply', payload: { plan_id } }),
+      supabase.functions.invoke('pf-substrate-upgrade', {
+        body: { action: 'apply_plan', plan_id }
+      }),
+    
+    /** Apply plan to shadow mode only */
+    applyShadow: (plan_id: string) =>
+      supabase.functions.invoke('pf-substrate-upgrade', {
+        body: { action: 'apply_shadow', plan_id }
+      }),
+    
+    /** Test shadow mode changes before production */
+    testShadow: (plan_id: string) =>
+      supabase.functions.invoke('pf-substrate-upgrade', {
+        body: { action: 'test_shadow', plan_id }
+      }),
+    
+    /** Promote shadow changes to production */
+    applyProduction: (plan_id: string) =>
+      supabase.functions.invoke('pf-substrate-upgrade', {
+        body: { action: 'apply_production', plan_id }
+      }),
     
     /** Rollback an applied upgrade to pre-upgrade state */
     rollback: (plan_id: string) =>
-      this.invoke({ module: 'modernizer', action: 'rollback', payload: { plan_id } }),
+      supabase.functions.invoke('pf-substrate-upgrade', {
+        body: { action: 'rollback_plan', plan_id }
+      }),
     
     /** Delete/reject an upgrade plan (cannot delete applied plans) */
     delete: (plan_id: string, reason?: string) =>
-      this.invoke({ module: 'modernizer', action: 'delete', payload: { plan_id, reason } }),
+      supabase.functions.invoke('pf-substrate-upgrade', {
+        body: { action: 'delete_plan', plan_id, reason }
+      }),
+    
+    /** List all applied improvements */
+    applied: () =>
+      supabase.functions.invoke('pf-substrate-upgrade', {
+        body: { action: 'list_applied' }
+      }),
     
     /** Scan archived edge functions for repurposing opportunities */
     archived: () =>

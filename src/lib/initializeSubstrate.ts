@@ -1,6 +1,6 @@
 /**
  * promptfluid® Substrate Initialization
- * v4.2.0 — Complete AI Operating System with 12 modules
+ * v4.3.0 — Complete AI Operating System with 12 modules
  */
 
 import { substrate } from './substrate';
@@ -11,7 +11,7 @@ export async function initializeSubstrate(): Promise<void> {
   if (initialized) return;
   
   try {
-    console.log('⚡ Booting promptfluid® Substrate v4.2.0...');
+    console.log('⚡ Booting promptfluid® Substrate v4.3.0...');
     console.log('─────────────────────────────────────────');
     
     // Boot sequence - CORE first, then other modules (12-module architecture)

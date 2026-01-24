@@ -52,6 +52,7 @@ function generateFullHelp(): string {
 │
 │  Total commands: ${totalCommands}
 │  Modules: ${modules.length}
+│  Version: v4.3.0
 │
 │  Quick navigation:
 │    help <module>  ∷  Show module-specific commands
@@ -64,7 +65,7 @@ function generateFullHelp(): string {
   for (const mod of modules) {
     const cat = COMMAND_CATEGORIES[mod];
     const count = cat.commands.length;
-    const label = cat.label.padEnd(10);
+    const label = cat.label.padEnd(12);
     output += `│  • ${label} (${count.toString().padStart(2)} commands)  ∷  help ${mod}\n`;
   }
 
@@ -77,6 +78,16 @@ function generateFullHelp(): string {
 │  brain.reflect      ∷  Trigger reflection
 │  dream.cycle        ∷  Dream-Eater cycle
 │  system.heal        ∷  Self-healing
+│
+├─ MODERNIZER WORKFLOW ─────────────────────────────────────────
+│
+│  1. modernizer.scan               ∷  Scan for improvements
+│  2. modernizer.propose            ∷  Generate proposal (shadow)
+│  3. modernizer.validate <id>      ∷  Validate readiness
+│  4. modernizer.apply_shadow <id>  ∷  Apply to shadow mode
+│  5. modernizer.test_shadow <id>   ∷  Test shadow changes
+│  6. modernizer.apply_production <id> ∷  Promote to production
+│     OR: modernizer.apply <id>     ∷  Auto-route (shadow→prod)
 │
 ├─ KEYBOARD SHORTCUTS ──────────────────────────────────────────
 │
@@ -115,7 +126,11 @@ export async function executeCommand(
 ┌─ SUBSTRATE IDENTITY ─────────────────────────────────────────
 │ 
 │  ██████╗ ███████╗     Cognitive Operating System
-│  ██╔═══╝ ██╔════╝     promptfluid® Substrate v4.2.0
+│  ██╔═══╝ ██╔════╝     promptfluid® Substrate v4.3.0
+│  ██║     ███████╗     
+│  ██║     ╚════██║     Environment: Lovable Cloud
+│  ██████╗ ███████║     Status: OPERATIONAL
+│  ╚═════╝ ╚══════╝
 │  ██║     ███████╗     
 │  ██║     ╚════██║     Environment: Lovable Cloud
 │  ██████╗ ███████║     Status: OPERATIONAL
@@ -405,21 +420,57 @@ export async function executeCommand(
         return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.review <plan_id>' };
       }
       result = await modernizer.review(args[0]);
+    } else if (base === 'modernizer.validate') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.validate <plan_id>' };
+      }
+      const res = await modernizer.validate(args[0]);
+      result = { success: !res.error, data: res.data, error: res.error?.message };
+    } else if (base === 'modernizer.diff') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.diff <plan_id>' };
+      }
+      const res = await modernizer.diff(args[0]);
+      result = { success: !res.error, data: res.data, error: res.error?.message };
     } else if (base === 'modernizer.apply') {
       if (!args[0]) {
-        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.apply <plan_id>' };
+        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.apply <plan_id>\n\n  Workflow: proposed → shadow_applied → applied (production)' };
       }
-      result = await modernizer.apply(args[0]);
+      const res = await modernizer.apply(args[0]);
+      result = { success: !res.error, data: res.data, error: res.error?.message };
+    } else if (base === 'modernizer.apply_shadow') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.apply_shadow <plan_id>' };
+      }
+      const res = await modernizer.applyShadow(args[0]);
+      result = { success: !res.error, data: res.data, error: res.error?.message };
+    } else if (base === 'modernizer.test_shadow') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.test_shadow <plan_id>' };
+      }
+      const res = await modernizer.testShadow(args[0]);
+      result = { success: !res.error, data: res.data, error: res.error?.message };
+    } else if (base === 'modernizer.apply_production') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.apply_production <plan_id>\n\n  Note: Plan must be in shadow_applied status first.' };
+      }
+      const res = await modernizer.applyProduction(args[0]);
+      result = { success: !res.error, data: res.data, error: res.error?.message };
     } else if (base === 'modernizer.rollback') {
       if (!args[0]) {
         return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.rollback <plan_id>' };
       }
-      result = await modernizer.rollback(args[0]);
+      const res = await modernizer.rollback(args[0]);
+      result = { success: !res.error, data: res.data, error: res.error?.message };
     } else if (base === 'modernizer.delete') {
       if (!args[0]) {
         return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.delete <plan_id> [reason]' };
       }
-      result = await modernizer.delete(args[0], args.slice(1).join(' ') || undefined);
+      const res = await modernizer.delete(args[0], args.slice(1).join(' ') || undefined);
+      result = { success: !res.error, data: res.data, error: res.error?.message };
+    } else if (base === 'modernizer.applied') {
+      const res = await modernizer.applied();
+      result = { success: !res.error, data: res.data, error: res.error?.message };
     } else if (base === 'modernizer.archived') {
       result = await modernizer.archived();
     } else if (base === 'modernizer.implement') {
