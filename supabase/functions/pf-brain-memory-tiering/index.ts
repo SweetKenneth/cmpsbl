@@ -82,59 +82,67 @@ serve(async (req) => {
     console.log(`Current counts - Hot: ${counts.hot}, Warm: ${counts.warm}, Cold: ${counts.cold}`);
 
     // ==================================
-    // STEP 1: Calculate value scores for all hot memories
+    // STEP 1: Calculate value scores for unscored hot memories (batched)
     // ==================================
     if (operation === 'rebalance' || operation === 'score') {
+      // Only process memories without value_score to reduce load
       const { data: hotMemories } = await supabase
         .from('brain_memory_hot')
         .select('id, access_count, importance_score, created_at, decay_rate')
+        .is('value_score', null)
         .order('created_at', { ascending: true })
-        .limit(5000);
+        .limit(500); // Reduced batch size for stability
 
-      for (const memory of hotMemories || []) {
-        const ageDays = Math.floor(
-          (Date.now() - new Date(memory.created_at).getTime()) / (1000 * 60 * 60 * 24)
-        );
-        
-        const accessCount = memory.access_count || 0;
-        const importance = memory.importance_score || 0.5;
-        const decayRate = memory.decay_rate || 0.02;
-        
-        // Recency factor: exponential decay
-        const recencyFactor = Math.exp(-decayRate * ageDays);
-        // Access factor: logarithmic boost
-        const accessFactor = Math.min(1.0, 0.3 + 0.1 * Math.log(Math.max(1, accessCount)));
-        // Combined score
-        const valueScore = Math.min(1.0, Math.max(0, 
-          (importance * 0.4) + (recencyFactor * 0.35) + (accessFactor * 0.25)
-        ));
+      // Process in parallel batches of 50
+      const BATCH_SIZE = 50;
+      const batches = [];
+      for (let i = 0; i < (hotMemories?.length || 0); i += BATCH_SIZE) {
+        batches.push((hotMemories || []).slice(i, i + BATCH_SIZE));
+      }
 
-        await supabase
-          .from('brain_memory_hot')
-          .update({ value_score: valueScore })
-          .eq('id', memory.id);
-        
-        stats.rebalanced++;
+      for (const batch of batches) {
+        await Promise.all(batch.map(async (memory) => {
+          const ageDays = Math.floor(
+            (Date.now() - new Date(memory.created_at).getTime()) / (1000 * 60 * 60 * 24)
+          );
+          
+          const accessCount = memory.access_count || 0;
+          const importance = memory.importance_score || 0.5;
+          const decayRate = memory.decay_rate || 0.02;
+          
+          const recencyFactor = Math.exp(-decayRate * ageDays);
+          const accessFactor = Math.min(1.0, 0.3 + 0.1 * Math.log(Math.max(1, accessCount)));
+          const valueScore = Math.min(1.0, Math.max(0, 
+            (importance * 0.4) + (recencyFactor * 0.35) + (accessFactor * 0.25)
+          ));
+
+          await supabase
+            .from('brain_memory_hot')
+            .update({ value_score: valueScore })
+            .eq('id', memory.id);
+          
+          stats.rebalanced++;
+        }));
       }
     }
 
     // ==================================
-    // STEP 2: Demote low-value hot memories to warm
+    // STEP 2: Demote low-value hot memories to warm (batched)
     // ==================================
     if (operation === 'rebalance' || operation === 'demote') {
       const hotConfig = tierConfig['hot'] || { max_entries: 500, min_value_score: 0.6 };
       
-      // Find memories below threshold or exceeding capacity
+      // Find memories below threshold - limit to 200 per run for stability
       const { data: toDemote } = await supabase
         .from('brain_memory_hot')
         .select('*')
-        .or(`value_score.lt.${hotConfig.min_value_score}`)
+        .lt('value_score', hotConfig.min_value_score)
         .order('value_score', { ascending: true })
-        .limit(Math.max(0, counts.hot - hotConfig.max_entries));
+        .limit(200);
 
+      // Process in smaller batches
       for (const memory of toDemote || []) {
         try {
-          // Insert into warm
           await supabase.from('brain_memory_warm').insert({
             content: memory.content,
             core_summary: memory.content.substring(0, 200),
@@ -151,7 +159,6 @@ serve(async (req) => {
             demoted_at: new Date().toISOString(),
           });
 
-          // Delete from hot
           await supabase.from('brain_memory_hot').delete().eq('id', memory.id);
           stats.demoted_to_warm++;
         } catch (err) {
@@ -162,7 +169,7 @@ serve(async (req) => {
     }
 
     // ==================================
-    // STEP 3: Demote low-value warm memories to cold
+    // STEP 3: Demote low-value warm memories to cold (limit 100)
     // ==================================
     if (operation === 'rebalance' || operation === 'demote') {
       const warmConfig = tierConfig['warm'] || { max_entries: 2000, min_value_score: 0.35 };
@@ -172,7 +179,7 @@ serve(async (req) => {
         .select('*')
         .lt('value_score', warmConfig.min_value_score)
         .order('value_score', { ascending: true })
-        .limit(500);
+        .limit(100); // Reduced for stability
 
       for (const memory of warmToDemote || []) {
         try {

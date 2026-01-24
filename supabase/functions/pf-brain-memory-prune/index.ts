@@ -136,7 +136,7 @@ serve(async (req) => {
         .from('brain_memory_hot')
         .select('id, content, context, value_score, created_at')
         .order('value_score', { ascending: true })
-        .limit(2000);
+        .limit(500); // Reduced from 2000 for stability
 
       const threshold = aggressive ? 0.3 : 0.15;
       const contentMap = new Map<string, any[]>();
