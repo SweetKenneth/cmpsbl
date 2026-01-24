@@ -243,9 +243,9 @@ function SubstrateVisualization() {
                 isActive ? "shadow-lg" : ""
               )}
               style={{
-                background: isActive ? mod.color : `${mod.color}20`,
+                background: isActive ? mod.color : "hsl(var(--background))",
                 border: `2px solid ${mod.color}`,
-                boxShadow: isActive ? `0 0 20px ${mod.color}60` : `0 0 10px ${mod.color}30`,
+                boxShadow: isActive ? `0 0 20px ${mod.color}60` : `0 0 8px ${mod.color}40`,
               }}
             >
               <mod.icon 
