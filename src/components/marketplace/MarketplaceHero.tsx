@@ -12,16 +12,24 @@ import {
 } from "lucide-react";
 import { TEMPLATES } from "@/data/templates";
 
-// The 12 modules of the substrate
+// The 12 modules of the substrate (4-layer architecture)
 const MODULES = [
+  // Kernel Layer
+  { icon: Cpu, name: "Core", color: "text-orange-400", description: "Kernel scheduling" },
+  { icon: Zap, name: "Ripple", color: "text-teal-400", description: "Message bus" },
+  { icon: Lock, name: "Access", color: "text-amber-400", description: "Identity & keys" },
+  // Cognitive Layer
   { icon: Brain, name: "Brain", color: "text-violet-400", description: "3-tier memory" },
-  { icon: MessageSquare, name: "Decode", color: "text-blue-400", description: "Intent parsing" },
+  { icon: MessageSquare, name: "Decode", color: "text-cyan-400", description: "Intent parsing" },
+  { icon: Sparkles, name: "Nexus", color: "text-green-400", description: "AI routing" },
+  // Operational Layer
   { icon: Shield, name: "Defense", color: "text-red-400", description: "Threat detection" },
-  { icon: Zap, name: "Nexus", color: "text-amber-400", description: "Multi-model routing" },
-  { icon: Eye, name: "Vision", color: "text-emerald-400", description: "Observability" },
-  { icon: Moon, name: "Dream", color: "text-purple-400", description: "Night synthesis" },
-  { icon: Settings, name: "Agency", color: "text-cyan-400", description: "Agent orchestration" },
-  { icon: Cpu, name: "Core", color: "text-pink-400", description: "Kernel runtime" },
+  { icon: Eye, name: "Vision", color: "text-blue-400", description: "Observability" },
+  { icon: Moon, name: "Dream", color: "text-purple-400", description: "Evolution" },
+  // Admin Layer
+  { icon: Settings, name: "System", color: "text-slate-400", description: "Administration" },
+  { icon: Crown, name: "Modernizer", color: "text-pink-400", description: "Self-upgrade" },
+  { icon: Globe, name: "Integration", color: "text-emerald-400", description: "Enterprise" },
 ];
 
 // Competitor logos (stylized as text for now)
@@ -133,7 +141,7 @@ export function MarketplaceHero() {
               {/* Orbiting Modules */}
               {MODULES.map((mod, index) => {
                 const angle = (index / MODULES.length) * 360;
-                const radius = 110;
+                const radius = 120;
                 const x = Math.cos((angle * Math.PI) / 180) * radius;
                 const y = Math.sin((angle * Math.PI) / 180) * radius;
                 const Icon = mod.icon;

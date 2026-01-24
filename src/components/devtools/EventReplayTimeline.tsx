@@ -60,9 +60,10 @@ export function EventReplayTimeline() {
   const [currentEventIndex, setCurrentEventIndex] = useState(0);
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
   const [newSessionName, setNewSessionName] = useState("");
+  const [dialogOpen, setDialogOpen] = useState(false);
 
-  const { data: sessions, isLoading: sessionsLoading } = useReplaySessions();
-  const { data: events } = useReplayEvents(selectedSession || undefined);
+  const { data: sessions, isLoading: sessionsLoading, error: sessionsError } = useReplaySessions();
+  const { data: events, error: eventsError } = useReplayEvents(selectedSession || undefined);
   const startRecording = useStartRecording();
   const stopRecording = useStopRecording();
   const deleteSession = useDeleteSession();
@@ -93,9 +94,17 @@ export function EventReplayTimeline() {
       const session = await startRecording.mutateAsync({ name: newSessionName });
       if (session?.id) setSelectedSession(session.id);
       setNewSessionName("");
+      setDialogOpen(false);
       toast.success("Recording started");
-    } catch (error) {
-      toast.error("Failed to start recording");
+    } catch (error: any) {
+      const message = error?.message || "Failed to start recording";
+      toast.error("Recording failed", {
+        description: message.includes("permission") 
+          ? "You may need to sign in or check your permissions."
+          : message.includes("relation") || message.includes("does not exist")
+            ? "Recording tables are not configured yet."
+            : "Please try again later."
+      });
     }
   };
 
@@ -123,6 +132,29 @@ export function EventReplayTimeline() {
   const currentEvent = events?.[currentEventIndex];
   const progress = events?.length ? ((currentEventIndex + 1) / events.length) * 100 : 0;
 
+  // Handle error state for missing tables
+  if (sessionsError || eventsError) {
+    return (
+      <Card className="p-8 border-amber-500/30 bg-amber-500/5">
+        <div className="flex flex-col items-center justify-center gap-4 text-center">
+          <div className="w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center">
+            <History className="w-6 h-6 text-amber-400" />
+          </div>
+          <div>
+            <h3 className="font-semibold mb-1">Event Replay Unavailable</h3>
+            <p className="text-sm text-muted-foreground max-w-md">
+              The event replay feature requires database tables that may not be configured yet. 
+              This is expected during initial setup.
+            </p>
+          </div>
+          <Button variant="outline" size="sm" onClick={() => window.location.reload()}>
+            Retry
+          </Button>
+        </div>
+      </Card>
+    );
+  }
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       {/* Session List */}
@@ -132,9 +164,9 @@ export function EventReplayTimeline() {
             <History className="h-5 w-5" />
             Sessions
           </CardTitle>
-          <Dialog>
+          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
-              <Button size="sm">
+              <Button size="sm" onClick={() => setDialogOpen(true)}>
                 <Plus className="h-4 w-4 mr-1" />
                 New
               </Button>

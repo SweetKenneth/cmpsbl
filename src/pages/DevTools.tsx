@@ -57,14 +57,22 @@ await substrate.dream.feed('I was floating through space...', 'dream');
 const interpretation = await substrate.dream.interpret(dreamText);`;
 
 const MODULES = [
+  // Kernel Layer
+  { id: 'core', name: 'Core', icon: Cpu, color: 'text-orange-400', desc: 'Kernel scheduling & orchestration' },
+  { id: 'ripple', name: 'Ripple', icon: Zap, color: 'text-teal-400', desc: 'Message bus & events' },
+  { id: 'access', name: 'Access', icon: Shield, color: 'text-amber-400', desc: 'Identity & API keys' },
+  // Cognitive Layer
   { id: 'brain', name: 'Brain', icon: Brain, color: 'text-violet-400', desc: 'Persistent memory & knowledge graphs' },
   { id: 'decode', name: 'Decode', icon: MessageSquare, color: 'text-cyan-400', desc: 'Intent parsing & conversation' },
+  { id: 'nexus', name: 'Nexus', icon: Zap, color: 'text-green-400', desc: 'Multi-model AI routing' },
+  // Operational Layer
   { id: 'defense', name: 'Defense', icon: Shield, color: 'text-red-400', desc: 'Bot detection & threat analysis' },
-  { id: 'nexus', name: 'Nexus', icon: Zap, color: 'text-amber-400', desc: 'Multi-model AI routing' },
-  { id: 'vision', name: 'Vision', icon: Eye, color: 'text-green-400', desc: 'Observability & monitoring' },
-  { id: 'dream', name: 'Dream', icon: Moon, color: 'text-purple-400', desc: 'Cognitive synthesis & dreams' },
-  { id: 'core', name: 'Core', icon: Cpu, color: 'text-blue-400', desc: 'Kernel orchestration' },
-  { id: 'system', name: 'System', icon: Settings, color: 'text-slate-400', desc: 'Configuration & admin' },
+  { id: 'vision', name: 'Vision', icon: Eye, color: 'text-blue-400', desc: 'Observability & monitoring' },
+  { id: 'dream', name: 'Dream', icon: Moon, color: 'text-purple-400', desc: 'Cognitive synthesis & evolution' },
+  // Admin Layer
+  { id: 'system', name: 'System', icon: Settings, color: 'text-slate-400', desc: 'Configuration & backups' },
+  { id: 'modernizer', name: 'Modernizer', icon: Sparkles, color: 'text-pink-400', desc: 'Self-improvement engine' },
+  { id: 'integration', name: 'Integration', icon: Cpu, color: 'text-emerald-400', desc: 'Enterprise adapters' },
 ];
 
 const TABS = [
