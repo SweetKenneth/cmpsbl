@@ -25,7 +25,7 @@ Think of this as your "explain it to me like I'm five" guide to a very sophistic
 |---|----------|------------------|
 | 01 | [WHAT-IS-THIS.md](./01-WHAT-IS-THIS.md) | The 30-second elevator pitch and core concept |
 | 02 | [THE-BRAIN.md](./02-THE-BRAIN.md) | How the system remembers, learns, and thinks |
-| 03 | [THE-MODULES.md](./03-THE-MODULES.md) | The 11 building blocks and what each one does |
+| 03 | [THE-MODULES.md](./03-THE-MODULES.md) | The 12 building blocks and what each one does |
 | 04 | [THE-TERMINAL.md](./04-THE-TERMINAL.md) | How to control the system (command reference) |
 | 05 | [THE-MODERNIZER.md](./05-THE-MODERNIZER.md) | How the system proposes improvements |
 | 06 | [ARCHITECTURE-DIAGRAMS.md](./06-ARCHITECTURE-DIAGRAMS.md) | Visual maps of how everything connects |
@@ -49,6 +49,13 @@ Think of this as your "explain it to me like I'm five" guide to a very sophistic
 | 19 | [RIPPLE-DEEP-DIVE.md](./19-RIPPLE-DEEP-DIVE.md) | Ripple | Message bus, pub/sub, event queues |
 | 20 | [ACCESS-DEEP-DIVE.md](./20-ACCESS-DEEP-DIVE.md) | Access | API keys, rate limiting, billing, metering |
 | 21 | [INTEGRATION-DEEP-DIVE.md](./21-INTEGRATION-DEEP-DIVE.md) | Integration | Enterprise adapters, auto-discovery, LLM governance |
+
+### System Guides (22-23)
+
+| # | Document | What It Explains |
+|---|----------|------------------|
+| 22 | [BACKUP-RESTORE-SYSTEM.md](./22-BACKUP-RESTORE-SYSTEM.md) | Backup, restore, export packages, install wizard, templates |
+| 23 | [VERSATILITY-AND-USE-CASES.md](./23-VERSATILITY-AND-USE-CASES.md) | How one substrate serves many industries |
 
 ---
 

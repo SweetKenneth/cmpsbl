@@ -282,6 +282,98 @@ Each cycle makes the system:
 
 ---
 
+## The CodeAgent — Autonomous Coding Capability
+
+The Modernizer now includes a full **CodeAgent** — an autonomous coding layer that can analyze, write, and improve code without human intervention (but with human approval gates).
+
+### How the CodeAgent Works
+
+```
+┌─────────────────────────────────────────────────┐
+│              CODEAGENT WORKFLOW                 │
+├─────────────────────────────────────────────────┤
+│                                                 │
+│  1. BRAIN-FIRST LOGIC                           │
+│     Before calling any external LLM, the agent  │
+│     queries internal memories for patterns.     │
+│     Requires >75% confidence to proceed.        │
+│                                                 │
+│  2. KNOWLEDGE BANK                              │
+│     Strict "Read-before-Write" boundaries.      │
+│     Forbidden patterns detected automatically:  │
+│     - eval() statements                         │
+│     - Hardcoded secrets                         │
+│     - SQL injection vulnerabilities             │
+│     - Insecure dependencies                     │
+│                                                 │
+│  3. SANDBOX VALIDATION                          │
+│     Before applying any change:                 │
+│     - Static syntax check                       │
+│     - Security scan                             │
+│     - Complexity analysis                       │
+│                                                 │
+│  4. ROLLBACK TRACKING                           │
+│     Every file and DB change is logged.         │
+│     One-click rollback if anything breaks.      │
+│                                                 │
+└─────────────────────────────────────────────────┘
+```
+
+### CodeAgent Skills
+
+The CodeAgent continuously learns through the `pf-codeagent-learn` function:
+
+| Skill Area | What It Learns | Current Level |
+|------------|----------------|---------------|
+| **TypeScript** | Syntax, patterns, best practices | Advanced |
+| **SQL** | Query optimization, schema design | Intermediate |
+| **Security** | Vulnerability detection, secure coding | Advanced |
+| **Edge Functions** | Deno patterns, Supabase integration | Advanced |
+| **React** | Component patterns, hooks, state management | Intermediate |
+| **Testing** | Unit tests, integration patterns | Learning |
+
+### Using CodeAgent Without Lovable
+
+**Critical Point:** The CodeAgent can operate completely independently of Lovable or any other IDE. It's embedded in the substrate itself.
+
+```
+Use Cases:
+─────────────────────────────────────────────
+
+1. HEADLESS MODE
+   Deploy substrate to any host. CodeAgent runs
+   in the background, analyzing and proposing
+   improvements through the Terminal or API.
+
+2. API-DRIVEN
+   Call codeagent.analyze or codeagent.patch
+   from any external system. No UI required.
+
+3. SCHEDULED IMPROVEMENTS
+   Configure nightly scans. Wake up to proposals
+   waiting for approval. Apply with one command.
+
+4. CI/CD INTEGRATION
+   CodeAgent validates code changes in your
+   pipeline. Blocks bad patterns, suggests fixes.
+```
+
+### CodeAgent vs Lovable
+
+| Capability | Lovable | CodeAgent |
+|------------|---------|-----------|
+| Real-time chat | ✅ | ❌ |
+| Visual preview | ✅ | ❌ |
+| Autonomous analysis | ❌ | ✅ |
+| Background operation | ❌ | ✅ |
+| Self-hosting | ❌ | ✅ |
+| Memory integration | ❌ | ✅ |
+| Learning from codebase | ❌ | ✅ |
+
+**Plain English:** Lovable is great for interactive development. CodeAgent is great for autonomous maintenance. Use both, or use just CodeAgent if you're self-hosting.
+
+---
+
 ## Current Limitations
 
 ### What Works Now
@@ -291,6 +383,9 @@ Each cycle makes the system:
 - ✅ Backup/restore
 - ✅ Health monitoring
 - ✅ Auto-rollback
+- ✅ CodeAgent TypeScript/SQL skills
+- ✅ Security pattern detection
+- ✅ Sandbox validation
 
 ### What's Coming
 - ⏳ Semantic code understanding
@@ -298,6 +393,8 @@ Each cycle makes the system:
 - ⏳ Multi-step complex upgrades
 - ⏳ Cross-module optimization
 - ⏳ A/B testing of changes
+- ⏳ Full React component generation
+- ⏳ Test generation and execution
 
 ---
 
