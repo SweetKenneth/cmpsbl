@@ -59,6 +59,13 @@ import { PRQueuePanel } from './PRQueuePanel';
 import { DiffViewer } from './DiffViewer';
 import { createPR, type PRPatch } from '@/lib/codeagent/pr-queue';
 import { runDeploymentPipeline, type PipelineRun } from '@/lib/codeagent/deploy-pipeline';
+import { 
+  learnFromCodeAction, 
+  startBackgroundLearning, 
+  getLearningStats,
+  runLearningCycle,
+  type CodeAction 
+} from '@/lib/codeagent/learning-engine';
 
 interface Message {
   id: string;
@@ -124,11 +131,15 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
   const [deployPipeline, setDeployPipeline] = useState<PipelineRun | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Fetch status on mount
+  // Fetch status and start learning on mount
   useEffect(() => {
     fetchStatus();
     refreshHealth();
     setShadowMode(getShadowModeStatus());
+    
+    // Start 24/7 background learning (15 min cycles)
+    startBackgroundLearning(15 * 60 * 1000);
+    console.log('[CodeAgent] 24/7 learning engine started');
   }, []);
 
   // Auto-scroll on new messages
