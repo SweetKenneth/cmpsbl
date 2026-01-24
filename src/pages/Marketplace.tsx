@@ -135,32 +135,65 @@ export default function Marketplace() {
         <PublicNav />
 
         <main className="container mx-auto px-4 py-8 pt-24">
-          {/* Hero Section */}
+          {/* Hero Section - Premium Marketplace */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-12"
+            className="relative mb-16"
           >
-            <Badge variant="outline" className="mb-4 gap-2 px-4 py-1.5 border-primary/30">
-              <Package className="w-3 h-3" />
-              Developer Marketplace
-            </Badge>
-            <h1 className="text-4xl md:text-5xl font-black mb-4">
-              Build Faster with{" "}
-              <span className="bg-gradient-to-r from-primary via-neon-cyan to-neon-green bg-clip-text text-transparent">
-                Ready-Made Templates
-              </span>
-            </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
-              {TEMPLATES.length}+ production-ready templates. SDK is 100% free.
-              Purchase templates for single-project use or get the full OS for self-hosting.
-            </p>
+            {/* Background Glow */}
+            <div className="absolute inset-0 -z-10">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-gradient-to-r from-primary/20 via-neon-cyan/15 to-neon-green/20 blur-[100px] rounded-full" />
+            </div>
             
-            {/* Free SDK Banner */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-system-green/10 border border-system-green/30 text-system-green text-sm">
-              <Sparkles className="w-4 h-4" />
-              <span className="font-medium">SDK is FREE for developers</span>
-              <span className="text-muted-foreground">— Templates & OS sold separately</span>
+            <div className="text-center">
+              <Badge variant="outline" className="mb-6 gap-2 px-5 py-2 border-primary/40 bg-primary/5 text-sm">
+                <Package className="w-4 h-4" />
+                The First OS for AI Development
+              </Badge>
+              
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight">
+                <span className="block text-foreground">Build Apps That</span>
+                <span className="bg-gradient-to-r from-primary via-neon-cyan to-neon-green bg-clip-text text-transparent">
+                  Dream, Remember & Defend
+                </span>
+              </h1>
+              
+              <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8 leading-relaxed">
+                The promptfluid® Substrate is the world's first cognitive operating system for AI.
+                <span className="text-foreground font-medium"> {TEMPLATES.length}+ production templates</span>,
+                <span className="text-foreground font-medium"> 12-module architecture</span>, and
+                <span className="text-foreground font-medium"> self-hosted licensing</span> for serious developers.
+              </p>
+
+              {/* Value Props */}
+              <div className="flex flex-wrap justify-center gap-4 mb-8">
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-muted/50 border border-border/50">
+                  <Brain className="w-4 h-4 text-violet-400" />
+                  <span className="text-sm">Persistent Memory</span>
+                </div>
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-muted/50 border border-border/50">
+                  <Shield className="w-4 h-4 text-red-400" />
+                  <span className="text-sm">Bot Detection</span>
+                </div>
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-muted/50 border border-border/50">
+                  <Moon className="w-4 h-4 text-purple-400" />
+                  <span className="text-sm">Dream Synthesis</span>
+                </div>
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-muted/50 border border-border/50">
+                  <Zap className="w-4 h-4 text-amber-400" />
+                  <span className="text-sm">Multi-Model AI</span>
+                </div>
+              </div>
+              
+              {/* Free SDK Banner */}
+              <div className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-system-green/10 border border-system-green/30">
+                <Sparkles className="w-5 h-5 text-system-green" />
+                <div className="text-left">
+                  <span className="font-bold text-system-green">SDK is 100% FREE</span>
+                  <span className="text-muted-foreground block text-sm">Templates from $9 • OS License $599</span>
+                </div>
+              </div>
             </div>
           </motion.div>
 
@@ -401,7 +434,7 @@ export default function Marketplace() {
                     Only pay for templates if you want pre-built solutions.
                   </p>
                   <Button variant="outline" className="gap-2" asChild>
-                    <a href="/codelab">
+                    <a href="/devtools">
                       <Code className="w-4 h-4" />
                       Explore Free SDK
                     </a>

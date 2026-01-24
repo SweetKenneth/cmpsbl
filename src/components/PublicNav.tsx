@@ -47,7 +47,7 @@ export function PublicNav() {
         { name: "For Developers", href: "/developers", description: "Build Intelligent Apps", icon: Code },
         { name: "Marketplace", href: "/marketplace", description: "Templates & OS ($9-$599)", icon: Sparkles },
         { name: "Gaming AI", href: "/gaming", description: "NPC Brains & World Engines", icon: Gamepad2 },
-        { name: "CodeLab", href: "/codelab", description: "Templates & Workbench", icon: Terminal },
+        { name: "DevTools", href: "/devtools", description: "SDK & Documentation", icon: Terminal },
         { name: "Documentation", href: "/documentation", description: "API Reference", icon: FileText },
         ...(user ? [{ name: "Control Panel", href: "/os", description: "Admin Console", icon: Cpu }] : []),
       ]
