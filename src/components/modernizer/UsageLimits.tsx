@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Zap, TrendingUp, Crown } from 'lucide-react';
+import { Zap, TrendingUp, Crown, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface UsageLimits {
@@ -61,21 +61,38 @@ export const UsageLimits = () => {
   };
 
   if (loading || !limits) {
-    return null;
+    return (
+      <Card className="border-2 border-border/50 bg-card/80 backdrop-blur-sm animate-pulse">
+        <CardHeader>
+          <div className="h-6 bg-muted rounded w-32" />
+        </CardHeader>
+        <CardContent>
+          <div className="h-2 bg-muted rounded w-full mb-4" />
+          <div className="space-y-2">
+            <div className="h-10 bg-muted rounded" />
+            <div className="h-10 bg-muted rounded" />
+          </div>
+        </CardContent>
+      </Card>
+    );
   }
 
   const usage = (limits.monthly_jobs_used / limits.monthly_jobs_limit) * 100;
   const remaining = limits.monthly_jobs_limit - limits.monthly_jobs_used;
+  const isLow = remaining <= 1;
 
   return (
-    <Card className="border-2">
-      <CardHeader>
+    <Card className="border-2 border-border/50 bg-card/80 backdrop-blur-sm">
+      <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg flex items-center gap-2">
-            <Zap className="w-5 h-5 text-primary" />
+          <CardTitle className="text-base flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-primary" />
             Usage This Month
           </CardTitle>
-          <Badge variant={limits.plan_tier === 'free' ? 'secondary' : 'default'}>
+          <Badge 
+            variant={limits.plan_tier === 'free' ? 'secondary' : 'default'}
+            className={limits.plan_tier !== 'free' ? 'bg-gradient-to-r from-primary to-accent text-primary-foreground' : ''}
+          >
             {limits.plan_tier.toUpperCase()}
           </Badge>
         </div>
@@ -84,52 +101,58 @@ export const UsageLimits = () => {
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">
-              {limits.monthly_jobs_used} / {limits.monthly_jobs_limit} jobs used
+              {limits.monthly_jobs_used} / {limits.monthly_jobs_limit} jobs
             </span>
-            <span className="font-semibold text-primary">
-              {remaining} remaining
+            <span className={`font-semibold ${isLow ? 'text-destructive' : 'text-primary'}`}>
+              {remaining} left
             </span>
           </div>
-          <Progress value={usage} className="h-2" />
+          <Progress 
+            value={usage} 
+            className={`h-2 ${isLow ? '[&>div]:bg-destructive' : ''}`} 
+          />
         </div>
 
         {limits.plan_tier === 'free' && (
-          <div className="space-y-3 pt-2">
-            <p className="text-sm text-muted-foreground">
-              Upgrade for more modernizations and advanced features
+          <div className="space-y-3 pt-2 border-t border-border/50">
+            <p className="text-xs text-muted-foreground">
+              Upgrade for unlimited modernizations
             </p>
             <div className="grid gap-2">
               <Button 
                 onClick={() => handleUpgrade('starter')}
                 variant="outline"
-                className="w-full justify-between"
+                size="sm"
+                className="w-full justify-between h-9 text-xs"
               >
                 <span className="flex items-center gap-2">
-                  <TrendingUp className="w-4 h-4" />
-                  Starter - $19/mo
+                  <TrendingUp className="w-3.5 h-3.5" />
+                  Starter $19/mo
                 </span>
-                <span className="text-xs text-muted-foreground">10 jobs</span>
+                <span className="text-muted-foreground">10 jobs</span>
               </Button>
               <Button 
                 onClick={() => handleUpgrade('pro')}
                 variant="outline"
-                className="w-full justify-between"
+                size="sm"
+                className="w-full justify-between h-9 text-xs"
               >
                 <span className="flex items-center gap-2">
-                  <Zap className="w-4 h-4" />
-                  Pro - $49/mo
+                  <Zap className="w-3.5 h-3.5" />
+                  Pro $49/mo
                 </span>
-                <span className="text-xs text-muted-foreground">50 jobs</span>
+                <span className="text-muted-foreground">50 jobs</span>
               </Button>
               <Button 
                 onClick={() => handleUpgrade('studio')}
-                className="w-full justify-between bg-gradient-to-r from-primary to-accent"
+                size="sm"
+                className="w-full justify-between h-9 text-xs bg-gradient-to-r from-primary to-accent hover:opacity-90"
               >
                 <span className="flex items-center gap-2">
-                  <Crown className="w-4 h-4" />
-                  Studio - $99/mo
+                  <Crown className="w-3.5 h-3.5" />
+                  Studio $99/mo
                 </span>
-                <span className="text-xs">Unlimited</span>
+                <span>Unlimited</span>
               </Button>
             </div>
           </div>
