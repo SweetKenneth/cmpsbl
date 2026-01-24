@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { BookOpen, Code, Zap, Shield, Database, FileText, ArrowRight, Key, Package, Globe, Bot, Sparkles } from "lucide-react";
+import { BookOpen, Code, Zap, Shield, Database, FileText, ArrowRight, Key, Package, Globe, Bot, Sparkles, Plug } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -88,6 +88,7 @@ export default function Documentation() {
                     { icon: Database, title: "Nexus", desc: "API orchestration mesh" },
                     { icon: Package, title: "Extensions", desc: "Custom module hooks" },
                     { icon: Bot, title: "Agents", desc: "Multi-agent orchestration" },
+                    { icon: Plug, title: "Integration", desc: "Enterprise adapters & LLM governance" },
                   ].map((item) => (
                     <div key={item.title} className="p-6 bg-muted/30 rounded-lg border border-border">
                       <item.icon className="w-8 h-8 text-primary mb-3" />

@@ -36,7 +36,7 @@ const MODULE_COLORS: Record<string, string> = {
   dream: 'text-violet-400 bg-violet-500/10 border-violet-500/30',
 };
 
-const ALL_MODULES = ['brain', 'decode', 'defense', 'nexus', 'vision', 'dream'];
+const ALL_MODULES = ['brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'core', 'ripple', 'access', 'system', 'modernizer', 'integration'];
 
 export function EventStream() {
   const [selectedModules, setSelectedModules] = useState<string[]>(ALL_MODULES);

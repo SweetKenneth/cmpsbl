@@ -51,7 +51,7 @@ const scenarios = [
     id: "health" as Scenario,
     label: "Substrate Health Ping",
     description: "Calls vision.health() and returns system health snapshot.",
-    technicalNote: "Queries all 5 substrate modules (Brain, Decode, Defense, Nexus, Vision) for liveness.",
+    technicalNote: "Queries all 12 substrate modules for liveness.",
     icon: Activity,
     color: "text-emerald-500",
     bgColor: "bg-emerald-500/10",
@@ -615,7 +615,7 @@ function ProofModeContent() {
                     {selectedScenario === "health" && (
                       <>
                         <p>✓ The substrate is deployed and responding to HTTP requests</p>
-                        <p>✓ All 5 modules (Brain, Decode, Defense, Nexus, Vision) are reachable</p>
+                        <p>✓ All 12 modules are reachable (v4.2.0 architecture)</p>
                         <p>✓ Edge functions are executing on Deno runtime in {EDGE_REGION}</p>
                         <p>✓ Version {SUBSTRATE_VERSION} is the active deployment</p>
                       </>

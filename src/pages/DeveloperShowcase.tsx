@@ -270,7 +270,7 @@ export default function DeveloperShowcase() {
   const techCapabilities = [
     { icon: Database, label: "60+", sublabel: "Tables", description: "Full persistence layer" },
     { icon: Clock, label: "<100ms", sublabel: "Latency", description: "Response time" },
-    { icon: Network, label: "11", sublabel: "Modules", description: "Complete cognitive OS" },
+    { icon: Network, label: "12", sublabel: "Modules", description: "Complete cognitive OS" },
     { icon: GitBranch, label: "REST + SDK", sublabel: "Access", description: "Multiple integrations" },
   ];
 

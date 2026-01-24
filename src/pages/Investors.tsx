@@ -13,7 +13,7 @@ import { SEO } from "@/components/SEO";
 
 export default function Investors() {
   const acquisitionMetrics = [
-    { label: "Substrate Modules", value: "5", detail: "Brain • Cascade • Defense • Nexus • Vision" },
+    { label: "Substrate Modules", value: "12", detail: "Brain • Decode • Defense • Nexus • Vision • Dream • Core • Ripple • Access • System • Modernizer • Integration" },
     { label: "Technology Status", value: "Live", detail: "Production systems running" },
     { label: "IP Status", value: "100%", detail: "Proprietary & documented" },
     { label: "Track Record", value: "100+", detail: "Projects shipped over 15 years" },

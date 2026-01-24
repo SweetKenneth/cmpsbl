@@ -4,7 +4,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { Brain, MessageSquare, Shield, Zap, Eye, Moon, Cpu, Sparkles, Radio, Key, RefreshCw, Settings, Layers } from 'lucide-react';
+import { Brain, MessageSquare, Shield, Zap, Eye, Moon, Cpu, Sparkles, Radio, Key, RefreshCw, Settings, Layers, Plug } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -39,6 +39,7 @@ const MODULES: ModuleConfig[] = [
   // Admin Layer
   { id: 'system', name: 'SYSTEM', shortName: 'SYS', layer: 'admin', icon: Settings, description: 'Core administration & control', color: 'text-emerald-400', glowColor: 'bg-emerald-500' },
   { id: 'modernizer', name: 'MODERNIZER', shortName: 'MOD', layer: 'admin', icon: Sparkles, description: 'Self-improvement engine', color: 'text-rose-400', glowColor: 'bg-rose-500' },
+  { id: 'integration', name: 'INTEGRATION', shortName: 'INT', layer: 'admin', icon: Plug, description: 'Enterprise adapters & LLM governance', color: 'text-teal-400', glowColor: 'bg-teal-500' },
 ];
 
 const LAYER_CONFIG = {

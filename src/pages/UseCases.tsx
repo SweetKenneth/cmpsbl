@@ -38,6 +38,7 @@ import {
   School,
   Store,
   Phone,
+  Plug,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -268,7 +269,7 @@ export default function UseCases() {
     { icon: Zap, label: "Smart Routing", description: "Optimal AI provider selection" },
     { icon: Shield, label: "Defense Layer", description: "Security & governance built-in" },
     { icon: MessageSquare, label: "Decode", description: "Context-aware conversation" },
-    { icon: Network, label: "Event Bus", description: "Decoupled, reactive architecture" },
+    { icon: Plug, label: "Integration", description: "Enterprise adapters & LLM governance" },
   ];
 
   return (

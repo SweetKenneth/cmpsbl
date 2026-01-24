@@ -357,7 +357,7 @@ export default function Explore() {
             viewport={{ once: true }}
             className="text-center mb-10 sm:mb-12"
           >
-            <Badge variant="outline" className="mb-4">11 Core Modules</Badge>
+            <Badge variant="outline" className="mb-4">12 Core Modules</Badge>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
               The Cognitive Architecture
             </h2>
