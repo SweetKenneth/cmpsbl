@@ -266,14 +266,14 @@ export default function SubstrateDemo() {
                   </div>
 
                   {/* Circular Module Layout */}
-                  <div className="relative h-[320px] md:h-[400px] flex items-center justify-center">
-                    {/* Orbital Rings */}
-                    <div className="absolute w-[260px] h-[260px] md:w-[320px] md:h-[320px] rounded-full border border-border/20" />
-                    <div className="absolute w-[200px] h-[200px] md:w-[240px] md:h-[240px] rounded-full border border-border/10" />
+                  <div className="relative h-[320px] md:h-[400px] flex items-center justify-center overflow-hidden">
+                    {/* Orbital Rings - centered with inset-0 + margin auto */}
+                    <div className="absolute inset-0 m-auto w-[260px] h-[260px] md:w-[320px] md:h-[320px] rounded-full border border-border/20" />
+                    <div className="absolute inset-0 m-auto w-[200px] h-[200px] md:w-[240px] md:h-[240px] rounded-full border border-border/10" />
                     
                     {/* Center Core */}
                     <motion.div 
-                      className="absolute w-20 h-20 md:w-28 md:h-28 rounded-2xl bg-gradient-to-br from-primary/30 via-violet-500/20 to-cyan-500/20 border border-primary/40 flex flex-col items-center justify-center backdrop-blur-sm"
+                      className="absolute inset-0 m-auto w-20 h-20 md:w-28 md:h-28 rounded-2xl bg-gradient-to-br from-primary/30 via-violet-500/20 to-cyan-500/20 border border-primary/40 flex flex-col items-center justify-center backdrop-blur-sm z-10"
                       animate={{ 
                         scale: isRunning ? [1, 1.05, 1] : 1,
                         boxShadow: isRunning 
@@ -286,8 +286,12 @@ export default function SubstrateDemo() {
                       <span className="text-[10px] md:text-xs font-medium text-muted-foreground">Substrate</span>
                     </motion.div>
 
-                    {/* Connection Lines SVG */}
-                    <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ overflow: 'visible' }}>
+                    {/* Connection Lines SVG - use viewBox for proper centering */}
+                    <svg 
+                      className="absolute inset-0 w-full h-full pointer-events-none"
+                      viewBox="0 0 320 320"
+                      preserveAspectRatio="xMidYMid meet"
+                    >
                       <defs>
                         <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
                           <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.8" />
@@ -303,7 +307,7 @@ export default function SubstrateDemo() {
                         </filter>
                       </defs>
                       
-                      {activeConnections.map((conn, i) => {
+                      {activeConnections.map((conn) => {
                         const [from, to] = conn.split('-');
                         const fromIdx = modules.findIndex(m => m.id === from);
                         const toIdx = modules.findIndex(m => m.id === to);
@@ -311,7 +315,7 @@ export default function SubstrateDemo() {
                         
                         const fromPos = getModulePosition(fromIdx, modules.length);
                         const toPos = getModulePosition(toIdx, modules.length);
-                        const centerX = 160; // Approximate center for mobile
+                        const centerX = 160;
                         const centerY = 160;
                         
                         return (
@@ -332,7 +336,7 @@ export default function SubstrateDemo() {
                       })}
                     </svg>
 
-                    {/* Module Nodes */}
+                    {/* Module Nodes - positioned via transform for true centering */}
                     {modules.map((module, index) => {
                       const pos = getModulePosition(index, modules.length);
                       const Icon = module.icon;
@@ -342,10 +346,9 @@ export default function SubstrateDemo() {
                       return (
                         <motion.div
                           key={module.id}
-                          className="absolute"
+                          className="absolute left-1/2 top-1/2"
                           style={{ 
-                            left: `calc(50% + ${pos.x}px - 32px)`,
-                            top: `calc(50% + ${pos.y}px - 32px)`,
+                            transform: `translate(calc(-50% + ${pos.x}px), calc(-50% + ${pos.y}px))`,
                           }}
                           initial={{ opacity: 0, scale: 0 }}
                           animate={{ opacity: 1, scale: 1 }}
