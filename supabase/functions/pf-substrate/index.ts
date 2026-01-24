@@ -6030,11 +6030,11 @@ async function handleModernizer(
 
     case "submit":
     case "scan": {
-      // Scan the substrate codebase for improvements
+      // Scan the substrate codebase for improvements - DYNAMIC ANALYSIS v3.0
       const { module: targetModule, depth = 'standard' } = data;
       
       try {
-        // Analyze substrate architecture
+        // Analyze substrate architecture with real data
         const [
           { count: memoryCount },
           { count: hotCount },
@@ -6043,6 +6043,7 @@ async function handleModernizer(
           { count: dreamCount },
           { count: proposalCount },
           { data: recentEvents },
+          { data: recentErrors },
           { data: orchestrator },
         ] = await Promise.all([
           supabase.from('brain_memories').select('*', { count: 'exact', head: true }),
@@ -6052,10 +6053,11 @@ async function handleModernizer(
           supabase.from('cascade_dreams').select('*', { count: 'exact', head: true }),
           supabase.from('evolution_proposals').select('*', { count: 'exact', head: true }),
           supabase.from('brain_events').select('event_type, outcome, module').order('created_at', { ascending: false }).limit(100),
+          supabase.from('brain_events').select('event_type, module, data, created_at').in('outcome', ['failed', 'error', 'failure']).gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()).order('created_at', { ascending: false }).limit(50),
           supabase.from('brain_orchestrator_state').select('*').limit(1).single(),
         ]);
         
-        // Analyze patterns
+        // Analyze event patterns
         const eventTypes = recentEvents?.reduce((acc: Record<string, number>, e: { event_type: string }) => {
           acc[e.event_type] = (acc[e.event_type] || 0) + 1;
           return acc;
@@ -6071,8 +6073,19 @@ async function handleModernizer(
           ? (outcomeStats['success'] / (recentEvents?.length || 1) * 100).toFixed(1)
           : '0';
         
-        // Generate improvement proposals
-        const proposals: Array<{area: string; priority: string; description: string; action: string}> = [];
+        // Analyze error patterns - NEW: Dynamic analysis based on real errors
+        const errorPatterns: Record<string, { count: number; modules: Set<string>; lastSeen: string }> = {};
+        for (const err of (recentErrors || [])) {
+          const key = `${err.module}:${err.event_type}`;
+          if (!errorPatterns[key]) {
+            errorPatterns[key] = { count: 0, modules: new Set(), lastSeen: err.created_at };
+          }
+          errorPatterns[key].count++;
+          errorPatterns[key].modules.add(err.module);
+        }
+        
+        // Generate improvement proposals based on REAL DATA
+        const proposals: Array<{area: string; priority: string; description: string; action: string; evidence?: Record<string, unknown>}> = [];
         
         if ((memoryCount || 0) < 50) {
           proposals.push({
