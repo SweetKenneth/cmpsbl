@@ -1,6 +1,6 @@
 /**
  * DevTools — SDK Documentation & Developer Resources
- * Templates are now in /marketplace only
+ * Streamlined to SDK + Documentation tabs only
  */
 
 import { useState } from "react";
@@ -13,13 +13,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { PluginMarketplace } from "@/components/devtools/PluginMarketplace";
-import { LiveDebugger } from "@/components/devtools/LiveDebugger";
-import { EventReplayTimeline } from "@/components/devtools/EventReplayTimeline";
 import {
-  Code, Puzzle, Activity, History, Sparkles, Terminal, 
-  BookOpen, ExternalLink, Copy, Check, Package, ArrowRight,
-  Cpu, Brain, Shield, Zap, Eye, Moon, MessageSquare, Settings
+  Code, Sparkles, Terminal, BookOpen, ExternalLink, Copy, Check, 
+  Package, ArrowRight, Cpu, Brain, Shield, Zap, Eye, Moon, 
+  MessageSquare, Settings, Download, FileText
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -57,29 +54,50 @@ await substrate.dream.feed('I was floating through space...', 'dream');
 const interpretation = await substrate.dream.interpret(dreamText);`;
 
 const MODULES = [
-  // Kernel Layer
   { id: 'core', name: 'Core', icon: Cpu, color: 'text-orange-400', desc: 'Kernel scheduling & orchestration' },
   { id: 'ripple', name: 'Ripple', icon: Zap, color: 'text-teal-400', desc: 'Message bus & events' },
   { id: 'access', name: 'Access', icon: Shield, color: 'text-amber-400', desc: 'Identity & API keys' },
-  // Cognitive Layer
   { id: 'brain', name: 'Brain', icon: Brain, color: 'text-violet-400', desc: 'Persistent memory & knowledge graphs' },
   { id: 'decode', name: 'Decode', icon: MessageSquare, color: 'text-cyan-400', desc: 'Intent parsing & conversation' },
   { id: 'nexus', name: 'Nexus', icon: Zap, color: 'text-green-400', desc: 'Multi-model AI routing' },
-  // Operational Layer
   { id: 'defense', name: 'Defense', icon: Shield, color: 'text-red-400', desc: 'Bot detection & threat analysis' },
   { id: 'vision', name: 'Vision', icon: Eye, color: 'text-blue-400', desc: 'Observability & monitoring' },
   { id: 'dream', name: 'Dream', icon: Moon, color: 'text-purple-400', desc: 'Cognitive synthesis & evolution' },
-  // Admin Layer
   { id: 'system', name: 'System', icon: Settings, color: 'text-slate-400', desc: 'Configuration & backups' },
   { id: 'modernizer', name: 'Modernizer', icon: Sparkles, color: 'text-pink-400', desc: 'Self-improvement engine' },
   { id: 'integration', name: 'Integration', icon: Cpu, color: 'text-emerald-400', desc: 'Enterprise adapters' },
 ];
 
+const DOWNLOADABLE_DOCS = [
+  { 
+    title: "Quick Start Guide", 
+    file: "QUICK-START.md", 
+    desc: "Get up and running in 5 minutes",
+    size: "12 KB"
+  },
+  { 
+    title: "API Reference", 
+    file: "API-REFERENCE.md", 
+    desc: "Complete SDK API documentation",
+    size: "45 KB"
+  },
+  { 
+    title: "Architecture Overview", 
+    file: "ARCHITECTURE.md", 
+    desc: "System design & module relationships",
+    size: "28 KB"
+  },
+  { 
+    title: "Migration Guide", 
+    file: "MIGRATION.md", 
+    desc: "Upgrading from previous versions",
+    size: "8 KB"
+  },
+];
+
 const TABS = [
   { id: "sdk", label: "SDK", icon: Code },
-  { id: "plugins", label: "Plugins", icon: Puzzle },
-  { id: "debugger", label: "Live Debugger", icon: Activity, isNew: true },
-  { id: "replay", label: "Event Replay", icon: History, isNew: true },
+  { id: "docs", label: "Documentation", icon: BookOpen },
 ];
 
 export default function DevTools() {
@@ -93,11 +111,19 @@ export default function DevTools() {
     setTimeout(() => setCopied(null), 2000);
   };
 
+  const downloadDoc = (filename: string) => {
+    const link = document.createElement('a');
+    link.href = `/docs/${filename}`;
+    link.download = filename;
+    link.click();
+    toast.success(`Downloading ${filename}`);
+  };
+
   return (
     <>
       <SEO
-        title="Developer Tools | promptfluid® SDK & Documentation"
-        description="SDK documentation, plugins, debugger, and event replay for building on the promptfluid® Substrate. SDK is 100% free."
+        title="Developer Tools | CMPSBL SDK & Documentation"
+        description="SDK documentation and downloadable resources for building on CMPSBL. SDK is 100% free."
       />
       <div className="min-h-screen bg-background">
         <PublicNav />
@@ -112,7 +138,7 @@ export default function DevTools() {
               <div>
                 <h1 className="text-3xl md:text-4xl font-bold">Developer Tools</h1>
                 <p className="text-muted-foreground">
-                  SDK documentation, plugins, and debugging for the Substrate
+                  SDK documentation and resources for CMPSBL
                 </p>
               </div>
             </div>
@@ -135,7 +161,7 @@ export default function DevTools() {
 
           {/* Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-            <TabsList className="flex flex-wrap h-auto gap-2 bg-muted/50 p-2">
+            <TabsList className="flex h-auto gap-2 bg-muted/50 p-2 w-fit">
               {TABS.map((tab) => (
                 <TabsTrigger
                   key={tab.id}
@@ -144,11 +170,6 @@ export default function DevTools() {
                 >
                   <tab.icon className="h-4 w-4" />
                   <span>{tab.label}</span>
-                  {tab.isNew && (
-                    <Badge className="ml-1 text-xs bg-green-500/20 text-green-400 border-green-500/30">
-                      New
-                    </Badge>
-                  )}
                 </TabsTrigger>
               ))}
             </TabsList>
@@ -218,14 +239,65 @@ export default function DevTools() {
                   );
                 })}
               </div>
+            </TabsContent>
 
-              {/* Documentation Links */}
+            {/* Documentation Tab */}
+            <TabsContent value="docs" className="space-y-6">
+              {/* Downloadable Docs */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Download className="w-5 h-5 text-primary" />
+                    Downloadable Documentation
+                  </CardTitle>
+                  <CardDescription>
+                    Download our complete documentation for offline reference
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    {DOWNLOADABLE_DOCS.map((doc) => (
+                      <Card key={doc.file} className="border-border/50 hover:border-primary/50 transition-colors">
+                        <CardContent className="p-4">
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="flex items-start gap-3">
+                              <div className="p-2 rounded-lg bg-primary/10">
+                                <FileText className="w-5 h-5 text-primary" />
+                              </div>
+                              <div>
+                                <h4 className="font-medium">{doc.title}</h4>
+                                <p className="text-xs text-muted-foreground mt-1">{doc.desc}</p>
+                                <Badge variant="secondary" className="mt-2 text-xs">
+                                  {doc.size}
+                                </Badge>
+                              </div>
+                            </div>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => downloadDoc(doc.file)}
+                              className="shrink-0"
+                            >
+                              <Download className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Online Documentation Links */}
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <BookOpen className="w-5 h-5" />
-                    Documentation
+                    Online Resources
                   </CardTitle>
+                  <CardDescription>
+                    Additional documentation and community resources
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -252,18 +324,6 @@ export default function DevTools() {
                   </div>
                 </CardContent>
               </Card>
-            </TabsContent>
-
-            <TabsContent value="plugins">
-              <PluginMarketplace />
-            </TabsContent>
-
-            <TabsContent value="debugger">
-              <LiveDebugger />
-            </TabsContent>
-
-            <TabsContent value="replay">
-              <EventReplayTimeline />
             </TabsContent>
           </Tabs>
         </main>
