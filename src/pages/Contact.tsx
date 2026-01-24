@@ -70,15 +70,15 @@ export default function Contact() {
             </Link>
           </nav>
           
-          <Badge variant="outline" className="mb-6 border-primary/30 text-primary">
+          <Badge variant="outline" className="mb-6 border-primary/30 bg-background/80 text-primary">
             <Mail className="w-3 h-3 mr-2" />
             Get in Touch
           </Badge>
           
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground [text-shadow:_0_2px_20px_hsl(var(--background))]">
             Ownership & Licensing
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl">
+          <p className="text-xl text-foreground/90 max-w-3xl [text-shadow:_0_2px_10px_hsl(var(--background))]">
             Inquire about ownership, licensing arrangements, or enterprise partnerships for promptfluid® substrate.
           </p>
         </div>

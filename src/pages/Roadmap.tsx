@@ -10,82 +10,82 @@ import neuralImage from "@/assets/hero/neon-data-center.jpg";
 export default function Roadmap() {
   const quarters = [
     {
-      period: "Q1 2025",
+      period: "Q1 2026",
+      status: "Completed",
+      items: [
+        {
+          icon: Brain,
+          title: "CMPSBL v4.2.0 — 12-Module Kernel",
+          description: "Production-ready cognitive OS with complete 12-module architecture: Core, Ripple, Access, Brain, Decode, Defense, Nexus, Vision, Dream, System, Modernizer, Integration.",
+          status: "Live",
+          technologies: ["Supabase", "Edge Functions", "TypeScript", "React"]
+        },
+        {
+          icon: Store,
+          title: "Template Marketplace Launch",
+          description: "70+ production templates for gaming AI, RAG pipelines, world engines, and enterprise agents. Tiered pricing from $9 to $199.",
+          status: "Live",
+          technologies: ["Templates", "SDK", "Developer Tools", "Marketplace"]
+        }
+      ]
+    },
+    {
+      period: "Q2 2026",
       status: "In Progress",
       items: [
         {
           icon: Shield,
-          title: "RCKBL (Rockable) - WordPress Plugin",
-          description: "AI-powered bot detection and threat intelligence for WordPress. Behavioral analysis, adaptive CAPTCHA, and real-time threat blocking. Currently pending WordPress.org approval.",
-          status: "Pending Approval",
-          technologies: ["Machine Learning", "Behavioral Analysis", "Fingerprinting", "PHP", "React"]
-        },
-        {
-          icon: Brain,
-          title: "Dream Eater - Experimental AI",
-          description: "Experimental AI system exploring autonomous dream cycles and self-reflection concepts. Early stage research and development.",
-          status: "Experimental",
-          technologies: ["AI Orchestration", "Scheduled Tasks", "Pattern Recognition"]
-        }
-      ]
-    },
-    {
-      period: "Q2 2025",
-      status: "In Progress",
-      items: [
-        {
-          icon: Accessibility,
-          title: "PTCHBL (Patchable) Accessibility Suite",
-          description: "100% free WCAG compliance scanning and AI-powered fixes. Live at PTCHBL.com — accessibility should never be behind a paywall.",
-          status: "Live",
-          technologies: ["Computer Vision", "NLP", "WCAG 2.2", "ARIA"]
+          title: "Enterprise Governance Layer",
+          description: "Advanced LLM governance, audit trails, and compliance reporting for enterprise customers. SOC2 preparation.",
+          status: "Active Development",
+          technologies: ["Governance", "Audit", "Compliance", "Enterprise"]
         },
         {
           icon: Zap,
-          title: "AI Provider Network",
-          description: "Intelligent routing across free-tier AI providers (Groq, Cerebras, Together AI, DeepSeek, Hyperbolic, Google AI Studio) for zero-cost AI operations.",
+          title: "Multi-Provider Nexus Expansion",
+          description: "Expanding AI provider support to 20+ models with intelligent cost/latency optimization and automatic failover.",
           status: "Active Development",
-          technologies: ["API Gateway", "Load Balancing", "Free-tier Optimization"]
+          technologies: ["OpenAI", "Anthropic", "Google", "Groq", "Cerebras"]
         }
       ]
     },
     {
-      period: "Q3 2025",
+      period: "Q3 2026",
       status: "Planned",
       items: [
         {
-          icon: Store,
-          title: "AI Marketing Studio",
-          description: "Autonomous content generation, SEO optimization, competitor analysis, and campaign management. Marketing that thinks for itself.",
-          status: "Concept",
-          technologies: ["Free-tier AI Routing", "SEO AI", "Market Intelligence"]
+          icon: Globe,
+          title: "Federation Protocol",
+          description: "Connect multiple CMPSBL instances across organizations. Shared learning with privacy controls and governed data exchange.",
+          status: "Planning",
+          technologies: ["Federation", "Privacy", "Distributed Systems"]
         },
         {
-          icon: Globe,
-          title: "Multi-Site Orchestration",
-          description: "Manage hundreds of websites from one unified dashboard. Automated updates, security monitoring, and performance optimization across your entire portfolio.",
-          status: "Planning",
-          technologies: ["Distributed Systems", "Real-time Sync", "Cloud Infrastructure"]
+          icon: Accessibility,
+          title: "Agency Marketplace",
+          description: "Pre-trained cognitive agencies for specific verticals: Legal AI, Healthcare AI, Finance AI. Deploy in minutes.",
+          status: "Concept",
+          technologies: ["Pre-trained Agents", "Vertical AI", "One-click Deploy"]
         }
       ]
     },
     {
-      period: "Q4 2025 - 2026",
+      period: "Q4 2026 - 2027",
       status: "Vision",
       items: [
         {
           icon: Rocket,
-          title: "Enterprise AI Platform",
-          description: "White-label solutions, custom AI models, and dedicated infrastructure. Scale from startup to enterprise with intelligent automation.",
+          title: "Cognitive Cloud",
+          description: "Fully managed CMPSBL infrastructure. Multi-region deployment, automatic scaling, and 99.99% SLA.",
           status: "Roadmap",
-          technologies: ["Custom Models", "Private Cloud", "API Gateway", "Enterprise SLA"]
+          technologies: ["Managed Cloud", "Multi-region", "Auto-scaling", "Enterprise SLA"]
         },
         {
           icon: Brain,
-          title: "Predictive Intelligence Network",
-          description: "Global threat intelligence sharing, predictive analytics, and zero-day protection. Learning from millions of sites to protect yours.",
+          title: "Self-Evolving Substrate",
+          description: "The OS that improves itself. Autonomous code modernization, performance optimization, and security hardening.",
           status: "Research",
-          technologies: ["Federated Learning", "Threat Intelligence", "Global CDN"]
+          technologies: ["Self-improvement", "Meta-learning", "Autonomous Ops"]
         }
       ]
     }
@@ -106,18 +106,18 @@ export default function Roadmap() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="2025-2026 Roadmap | PromptFluid™ — Building the Future of AI Tools"
-        description="Explore PromptFluid's ambitious roadmap: AI-powered WordPress security, rapid application development, universal accessibility tools, intelligent marketing automation, and enterprise AI solutions. See what we're building to democratize technology."
+        title="2026-2027 Roadmap | CMPSBL — The Future of AI Governance"
+        description="Explore CMPSBL's roadmap: 12-module cognitive OS, template marketplace, enterprise governance, federation protocol, and self-evolving substrate. See what we're building to transform AI infrastructure."
         canonical="https://promptfluid.com/roadmap"
         keywords={[
-          'AI development roadmap',
-          'WordPress security plugin',
-          'AI automation tools',
-          'accessibility software',
-          'intelligent marketing',
-          'rapid application development',
-          'enterprise AI platform',
-          'technology roadmap 2025',
+          'CMPSBL roadmap',
+          'AI governance OS',
+          'cognitive infrastructure',
+          'AI templates',
+          'enterprise AI',
+          'federated AI',
+          'self-evolving AI',
+          'technology roadmap 2026',
           'AI-powered tools',
           'developer productivity'
         ]}
@@ -142,18 +142,17 @@ export default function Roadmap() {
           </nav>
 
           <div className="max-w-4xl">
-            <Badge variant="outline" className="mb-6 border-primary/30 text-primary">
+            <Badge variant="outline" className="mb-6 border-primary/30 bg-background/80 text-primary">
               <Sparkles className="w-3 h-3 mr-2" />
               Building the Future
             </Badge>
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground">
-              2025-2026 Roadmap
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground [text-shadow:_0_2px_20px_hsl(var(--background))]">
+              2026-2027 Roadmap
             </h1>
 
-            <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-              We're building intelligent tools that democratize technology—making enterprise-grade AI accessible to developers, 
-              agencies, and businesses of all sizes.
+            <p className="text-xl text-foreground/90 mb-8 leading-relaxed [text-shadow:_0_2px_10px_hsl(var(--background))]">
+              CMPSBL is the world's first production-ready AI governance OS. Here's where we're headed—from 12-module kernel to self-evolving cognitive cloud.
             </p>
 
             <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">

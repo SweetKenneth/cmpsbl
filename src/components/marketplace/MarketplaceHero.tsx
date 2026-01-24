@@ -70,10 +70,10 @@ export function MarketplaceHero() {
           >
             <Badge 
               variant="outline" 
-              className="gap-2 px-6 py-3 text-sm font-semibold border-amber-500/50 bg-amber-500/10 text-amber-500 dark:text-amber-400"
+              className="gap-2 px-6 py-3 text-sm font-semibold border-primary/50 bg-primary/10 text-primary"
             >
-              <Crown className="w-4 h-4" />
-              WORLD'S FIRST — PRODUCTION-READY AI GOVERNANCE OS
+              <Sparkles className="w-4 h-4" />
+              Template & OS Marketplace
             </Badge>
           </motion.div>
 
@@ -85,68 +85,34 @@ export function MarketplaceHero() {
             className="text-center mb-8"
           >
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-[0.95] tracking-tight">
-              <span className="block text-foreground mb-2">What They</span>
-              <span className="block text-foreground mb-2">
-                <span className="relative inline-block">
-                  <span className="line-through opacity-40">Can't</span>
-                  <motion.span
-                    initial={{ width: 0 }}
-                    animate={{ width: "100%" }}
-                    transition={{ duration: 1, delay: 1 }}
-                    className="absolute inset-0 bg-destructive/20 rounded"
-                  />
-                </span>
-                {" "}Build,
+              <span className="block bg-gradient-to-r from-rose-500 via-purple-500 to-cyan-500 bg-clip-text text-transparent animate-gradient bg-[length:200%_200%] mb-2">
+                Build AI That
               </span>
-              <span className="block bg-gradient-to-r from-primary via-neon-cyan to-neon-green bg-clip-text text-transparent animate-gradient bg-[length:200%_200%]">
-                We Ship.
+              <span className="block bg-gradient-to-r from-amber-400 via-emerald-400 to-blue-500 bg-clip-text text-transparent animate-gradient bg-[length:200%_200%]">
+                Thinks, Remembers, Defends
               </span>
             </h1>
           </motion.div>
 
-          {/* Competitor Comparison */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            className="flex justify-center gap-4 mb-8"
-          >
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              {COMPETITORS.map((name, i) => (
-                <span key={name} className="flex items-center gap-1">
-                  <span className="opacity-50 line-through">{name}</span>
-                  {i < COMPETITORS.length - 1 && <span className="opacity-30">•</span>}
-                </span>
-              ))}
-              <ArrowRight className="w-4 h-4 mx-2 text-muted-foreground" />
-              <span className="font-bold text-primary">CMPSBL</span>
-            </div>
-          </motion.div>
-
-          {/* Value Proposition */}
+          {/* Subtitle */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.8 }}
-            className="text-lg md:text-xl lg:text-2xl text-center text-muted-foreground max-w-4xl mx-auto mb-12 leading-relaxed"
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="text-lg md:text-xl text-center text-muted-foreground max-w-3xl mx-auto mb-12"
           >
-            The only operating system that gives LLMs{" "}
-            <span className="text-foreground font-semibold">persistent memory</span>,{" "}
-            <span className="text-foreground font-semibold">real-time governance</span>, and{" "}
-            <span className="text-foreground font-semibold">autonomous improvement</span>.
-            <span className="block mt-2 text-base md:text-lg text-muted-foreground/80">
-              No wrapper. No middleware. A complete cognitive kernel.
-            </span>
+            The only OS that gives LLMs persistent memory, real-time governance, and autonomous improvement. 
+            <span className="text-foreground font-semibold"> No wrapper. No middleware. A complete cognitive kernel.</span>
           </motion.p>
 
           {/* Module Orbit Visualization */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 1 }}
+            transition={{ duration: 1, delay: 0.6 }}
             className="relative flex justify-center mb-16"
           >
-            <div className="relative w-[320px] h-[320px] md:w-[400px] md:h-[400px]">
+            <div className="relative w-[280px] h-[280px] md:w-[360px] md:h-[360px] mx-auto">
               {/* Center Core */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <motion.div
@@ -159,15 +125,15 @@ export function MarketplaceHero() {
                   transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
                   className="absolute w-[75%] h-[75%] rounded-full border border-primary/20"
                 />
-                <div className="relative z-10 w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-gradient-to-br from-primary via-primary/80 to-neon-cyan flex items-center justify-center shadow-2xl">
-                  <Server className="w-10 h-10 md:w-14 md:h-14 text-primary-foreground" />
+                <div className="relative z-10 w-20 h-20 md:w-28 md:h-28 rounded-2xl bg-gradient-to-br from-rose-500 via-purple-500 to-cyan-500 flex items-center justify-center shadow-2xl">
+                  <Server className="w-10 h-10 md:w-12 md:h-12 text-white" />
                 </div>
               </div>
 
               {/* Orbiting Modules */}
               {MODULES.map((mod, index) => {
                 const angle = (index / MODULES.length) * 360;
-                const radius = 130;
+                const radius = 110;
                 const x = Math.cos((angle * Math.PI) / 180) * radius;
                 const y = Math.sin((angle * Math.PI) / 180) * radius;
                 const Icon = mod.icon;
@@ -177,16 +143,16 @@ export function MarketplaceHero() {
                     key={mod.name}
                     initial={{ opacity: 0, scale: 0 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5, delay: 1.2 + index * 0.1 }}
-                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+                    transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }}
+                    className="absolute left-1/2 top-1/2"
                     style={{ transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))` }}
                   >
                     <motion.div
                       whileHover={{ scale: 1.2 }}
                       className="group relative"
                     >
-                      <div className={`p-3 rounded-xl bg-card border border-border/50 shadow-lg cursor-pointer transition-all duration-300 hover:border-primary/50`}>
-                        <Icon className={`w-5 h-5 md:w-6 md:h-6 ${mod.color}`} />
+                      <div className={`p-2.5 md:p-3 rounded-xl bg-card border border-border/50 shadow-lg cursor-pointer transition-all duration-300 hover:border-primary/50`}>
+                        <Icon className={`w-4 h-4 md:w-5 md:h-5 ${mod.color}`} />
                       </div>
                       {/* Tooltip */}
                       <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-popover border border-border rounded text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
@@ -203,23 +169,23 @@ export function MarketplaceHero() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1.4 }}
+            transition={{ duration: 0.6, delay: 1 }}
             className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 mb-12 max-w-4xl mx-auto"
           >
             <div className="text-center p-4 rounded-2xl bg-card/50 border border-border/50">
-              <div className="text-3xl md:text-4xl font-black text-primary">{TEMPLATES.length}+</div>
+              <div className="text-3xl md:text-4xl font-black bg-gradient-to-r from-rose-500 to-purple-500 bg-clip-text text-transparent">{TEMPLATES.length}+</div>
               <div className="text-sm text-muted-foreground">Production Templates</div>
             </div>
             <div className="text-center p-4 rounded-2xl bg-card/50 border border-border/50">
-              <div className="text-3xl md:text-4xl font-black text-primary">12</div>
+              <div className="text-3xl md:text-4xl font-black bg-gradient-to-r from-purple-500 to-cyan-500 bg-clip-text text-transparent">12</div>
               <div className="text-sm text-muted-foreground">Kernel Modules</div>
             </div>
             <div className="text-center p-4 rounded-2xl bg-card/50 border border-border/50">
-              <div className="text-3xl md:text-4xl font-black text-system-green">FREE</div>
+              <div className="text-3xl md:text-4xl font-black text-emerald-500">FREE</div>
               <div className="text-sm text-muted-foreground">SDK Access</div>
             </div>
             <div className="text-center p-4 rounded-2xl bg-card/50 border border-border/50">
-              <div className="text-3xl md:text-4xl font-black text-primary">$9</div>
+              <div className="text-3xl md:text-4xl font-black bg-gradient-to-r from-amber-500 to-rose-500 bg-clip-text text-transparent">$9</div>
               <div className="text-sm text-muted-foreground">Templates From</div>
             </div>
           </motion.div>
@@ -228,25 +194,25 @@ export function MarketplaceHero() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1.6 }}
+            transition={{ duration: 0.6, delay: 1.2 }}
             className="grid md:grid-cols-3 gap-4 mb-12 max-w-5xl mx-auto"
           >
             <div className="group p-6 rounded-2xl bg-gradient-to-br from-violet-500/10 to-violet-500/5 border border-violet-500/20 hover:border-violet-500/40 transition-all">
-              <Brain className="w-8 h-8 text-violet-400 mb-3" />
+              <Brain className="w-8 h-8 text-violet-500 mb-3" />
               <h3 className="font-bold text-foreground mb-2">3-Tier Memory</h3>
               <p className="text-sm text-muted-foreground">
                 Working, episodic, and semantic memory that persists across sessions. No more stateless conversations.
               </p>
             </div>
-            <div className="group p-6 rounded-2xl bg-gradient-to-br from-red-500/10 to-red-500/5 border border-red-500/20 hover:border-red-500/40 transition-all">
-              <Shield className="w-8 h-8 text-red-400 mb-3" />
+            <div className="group p-6 rounded-2xl bg-gradient-to-br from-rose-500/10 to-rose-500/5 border border-rose-500/20 hover:border-rose-500/40 transition-all">
+              <Shield className="w-8 h-8 text-rose-500 mb-3" />
               <h3 className="font-bold text-foreground mb-2">Autonomous Governance</h3>
               <p className="text-sm text-muted-foreground">
                 Real-time threat detection, PII filtering, and compliance enforcement. Security built into the kernel.
               </p>
             </div>
             <div className="group p-6 rounded-2xl bg-gradient-to-br from-purple-500/10 to-purple-500/5 border border-purple-500/20 hover:border-purple-500/40 transition-all">
-              <Moon className="w-8 h-8 text-purple-400 mb-3" />
+              <Moon className="w-8 h-8 text-purple-500 mb-3" />
               <h3 className="font-bold text-foreground mb-2">Dream Synthesis</h3>
               <p className="text-sm text-muted-foreground">
                 Autonomous overnight learning cycles. Your AI improves while you sleep. No competitor has this.
@@ -258,12 +224,12 @@ export function MarketplaceHero() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1.8 }}
+            transition={{ duration: 0.6, delay: 1.4 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             <Button 
               size="lg" 
-              className="gap-2 px-8 py-6 text-lg font-bold bg-gradient-to-r from-primary to-neon-cyan hover:opacity-90 transition-opacity"
+              className="gap-2 px-8 py-6 text-lg font-bold bg-gradient-to-r from-rose-500 via-purple-500 to-cyan-500 hover:opacity-90 transition-opacity text-white"
             >
               <Sparkles className="w-5 h-5" />
               Start Free with SDK
@@ -282,23 +248,23 @@ export function MarketplaceHero() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 2 }}
+            transition={{ duration: 0.6, delay: 1.6 }}
             className="flex flex-wrap items-center justify-center gap-6 mt-12 text-sm text-muted-foreground"
           >
             <div className="flex items-center gap-2">
-              <Lock className="w-4 h-4 text-system-green" />
+              <Lock className="w-4 h-4 text-emerald-500" />
               <span>Self-hosted licensing</span>
             </div>
             <div className="flex items-center gap-2">
-              <Star className="w-4 h-4 text-amber-400" />
+              <Star className="w-4 h-4 text-amber-500" />
               <span>Production-ready</span>
             </div>
             <div className="flex items-center gap-2">
-              <Globe className="w-4 h-4 text-primary" />
+              <Globe className="w-4 h-4 text-cyan-500" />
               <span>Multi-model compatible</span>
             </div>
             <div className="flex items-center gap-2">
-              <Users className="w-4 h-4 text-neon-purple" />
+              <Users className="w-4 h-4 text-purple-500" />
               <span>Enterprise support</span>
             </div>
           </motion.div>

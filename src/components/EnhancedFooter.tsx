@@ -36,17 +36,13 @@ export function EnhancedFooter() {
     <footer className="relative z-20 border-t border-border bg-background" role="contentinfo">
       {/* Main Footer */}
       <div className="container mx-auto max-w-6xl px-4 py-8 md:py-12">
-        {/* Logo at top */}
-        <div className="mb-8 flex justify-center md:justify-start">
-          <Link to="/" className="hover:opacity-80 transition-opacity">
-            <CmpsblLogo size="lg" />
-          </Link>
-        </div>
         
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
-          {/* CMPSBL */}
+          {/* CMPSBL - with logo at top */}
           <div>
-            <h3 className="font-semibold text-foreground mb-3 text-sm">CMPSBL</h3>
+            <Link to="/" className="hover:opacity-80 transition-opacity block mb-4">
+              <CmpsblLogo size="md" />
+            </Link>
             <ul className="space-y-2">
               {cmpsblLinks.map((link) => (
                 <li key={link.href}>
@@ -119,9 +115,10 @@ export function EnhancedFooter() {
         <div className="container mx-auto max-w-6xl px-4 py-4">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-muted-foreground">
             <p>© 2009-{currentYear} promptfluid® — All rights reserved</p>
-            <p className="text-center sm:text-right">
-              CMPSBL (Composable) By PromptFluid
-            </p>
+            <div className="text-center sm:text-right">
+              <p>CMPSBL (Composable) By PromptFluid</p>
+              <p className="mt-1">Made by humans who care ❤️</p>
+            </div>
           </div>
         </div>
       </div>
