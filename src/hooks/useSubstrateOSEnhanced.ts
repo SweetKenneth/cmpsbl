@@ -45,12 +45,14 @@ export function useBrainTiering() {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['substrate', 'brain'] });
       queryClient.invalidateQueries({ queryKey: ['live', 'brain'] });
-      const promoted = data?.promoted || 0;
-      const demoted = data?.demoted || 0;
-      toast.success(`Tiering complete: ${promoted} promoted, ${demoted} demoted`);
+      const stats = data?.stats || {};
+      const promoted = stats.promoted_to_hot || 0;
+      const demoted = stats.demoted_to_warm || 0;
+      const pruned = stats.pruned || 0;
+      toast.success(`Tiering complete: ${demoted} demoted, ${promoted} promoted, ${pruned} pruned`);
     },
-    onError: () => {
-      toast.error('Memory tiering failed');
+    onError: (error) => {
+      toast.error(`Memory tiering failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     },
   });
 }
@@ -71,15 +73,16 @@ export function useBrainPrune() {
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: ['substrate', 'brain'] });
       queryClient.invalidateQueries({ queryKey: ['live', 'brain'] });
-      const pruned = data?.pruned_count || 0;
+      const stats = data?.stats || data?.summary || {};
+      const totalPruned = stats.total_pruned || stats.pruned_noise + stats.pruned_duplicates + stats.pruned_low_value || 0;
       if (variables?.dry_run) {
-        toast.info(`Prune preview: ${pruned} memories would be removed`);
+        toast.info(`Prune preview: ${totalPruned} memories would be removed`);
       } else {
-        toast.success(`Pruning complete: ${pruned} low-value memories removed`);
+        toast.success(`Pruning complete: ${totalPruned} low-value memories removed`);
       }
     },
-    onError: () => {
-      toast.error('Memory pruning failed');
+    onError: (error) => {
+      toast.error(`Memory pruning failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     },
   });
 }
@@ -100,11 +103,13 @@ export function useBrainBatchTiering() {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['substrate', 'brain'] });
       queryClient.invalidateQueries({ queryKey: ['live', 'brain'] });
-      const processed = data?.total_processed || 0;
-      toast.success(`Batch tiering complete: ${processed} memories processed`);
+      const stats = data?.stats || {};
+      const processed = stats.scored || stats.demoted_to_warm || 0;
+      const demoted = stats.demoted_to_warm || 0;
+      toast.success(`Batch tiering complete: ${demoted} demoted, ${processed} scored`);
     },
-    onError: () => {
-      toast.error('Batch tiering failed');
+    onError: (error) => {
+      toast.error(`Batch tiering failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     },
   });
 }

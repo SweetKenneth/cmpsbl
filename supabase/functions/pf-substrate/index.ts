@@ -1305,10 +1305,15 @@ Respond in a structured format.`;
           },
         });
 
-        // Update orchestrator state
+        // Update orchestrator state (fetch current count first to avoid .raw() issue)
+        const { data: orchState } = await supabase.from('brain_orchestrator_state')
+          .select('cycles_completed')
+          .eq('id', '00000000-0000-0000-0000-000000000001')
+          .single();
+        
         await supabase.from('brain_orchestrator_state').update({
           last_cycle_at: new Date().toISOString(),
-          cycles_completed: supabase.raw('cycles_completed + 1'),
+          cycles_completed: (orchState?.cycles_completed || 0) + 1,
           current_phase: 'idle',
           metadata: { last_cycle_id: cycleId, last_cycle_time_ms: cycleTime },
         }).eq('id', '00000000-0000-0000-0000-000000000001');
