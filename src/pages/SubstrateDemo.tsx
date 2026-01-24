@@ -159,9 +159,9 @@ export default function SubstrateDemo() {
     ping();
   }, [addLog]);
 
-  const getModulePosition = (index: number, total: number, isMobile: boolean = false) => {
+  const getModulePosition = (index: number, total: number) => {
     const angle = (index / total) * 2 * Math.PI - Math.PI / 2;
-    const radius = isMobile ? 100 : 130;
+    const radius = 130;
     return {
       x: Math.cos(angle) * radius,
       y: Math.sin(angle) * radius,
@@ -266,10 +266,10 @@ export default function SubstrateDemo() {
                   </div>
 
                   {/* Circular Module Layout */}
-                  <div className="relative h-[280px] md:h-[400px] w-full flex items-center justify-center overflow-hidden">
+                  <div className="relative h-[320px] md:h-[400px] flex items-center justify-center">
                     {/* Orbital Rings */}
-                    <div className="absolute w-[200px] h-[200px] md:w-[320px] md:h-[320px] rounded-full border border-border/20" />
-                    <div className="absolute w-[140px] h-[140px] md:w-[240px] md:h-[240px] rounded-full border border-border/10" />
+                    <div className="absolute w-[260px] h-[260px] md:w-[320px] md:h-[320px] rounded-full border border-border/20" />
+                    <div className="absolute w-[200px] h-[200px] md:w-[240px] md:h-[240px] rounded-full border border-border/10" />
                     
                     {/* Center Core */}
                     <motion.div 
@@ -286,8 +286,8 @@ export default function SubstrateDemo() {
                       <span className="text-[10px] md:text-xs font-medium text-muted-foreground">Substrate</span>
                     </motion.div>
 
-                    {/* Connection Lines SVG - hidden on mobile for clarity */}
-                    <svg className="absolute inset-0 w-full h-full pointer-events-none hidden md:block" style={{ overflow: 'visible' }}>
+                    {/* Connection Lines SVG */}
+                    <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ overflow: 'visible' }}>
                       <defs>
                         <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
                           <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.8" />
@@ -303,22 +303,24 @@ export default function SubstrateDemo() {
                         </filter>
                       </defs>
                       
-                      {activeConnections.map((conn) => {
+                      {activeConnections.map((conn, i) => {
                         const [from, to] = conn.split('-');
                         const fromIdx = modules.findIndex(m => m.id === from);
                         const toIdx = modules.findIndex(m => m.id === to);
                         if (fromIdx === -1 || toIdx === -1) return null;
                         
-                        const fromPos = getModulePosition(fromIdx, modules.length, false);
-                        const toPos = getModulePosition(toIdx, modules.length, false);
+                        const fromPos = getModulePosition(fromIdx, modules.length);
+                        const toPos = getModulePosition(toIdx, modules.length);
+                        const centerX = 160; // Approximate center for mobile
+                        const centerY = 160;
                         
                         return (
                           <motion.line
                             key={conn}
-                            x1={`calc(50% + ${fromPos.x}px)`}
-                            y1={`calc(50% + ${fromPos.y}px)`}
-                            x2={`calc(50% + ${toPos.x}px)`}
-                            y2={`calc(50% + ${toPos.y}px)`}
+                            x1={centerX + fromPos.x}
+                            y1={centerY + fromPos.y}
+                            x2={centerX + toPos.x}
+                            y2={centerY + toPos.y}
                             stroke="url(#connectionGradient)"
                             strokeWidth="2"
                             filter="url(#glow)"
@@ -332,8 +334,7 @@ export default function SubstrateDemo() {
 
                     {/* Module Nodes */}
                     {modules.map((module, index) => {
-                      const pos = getModulePosition(index, modules.length, true);
-                      const posDesktop = getModulePosition(index, modules.length, false);
+                      const pos = getModulePosition(index, modules.length);
                       const Icon = module.icon;
                       const isActive = module.status === 'processing';
                       const isComplete = module.status === 'complete';
@@ -341,16 +342,17 @@ export default function SubstrateDemo() {
                       return (
                         <motion.div
                           key={module.id}
-                          className="absolute left-1/2 top-1/2"
+                          className="absolute"
                           style={{ 
-                            transform: `translate(calc(-50% + ${pos.x}px), calc(-50% + ${pos.y}px))`,
+                            left: `calc(50% + ${pos.x}px - 32px)`,
+                            top: `calc(50% + ${pos.y}px - 32px)`,
                           }}
                           initial={{ opacity: 0, scale: 0 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: index * 0.08, type: "spring", stiffness: 200 }}
                         >
                           <motion.div 
-                            className={`relative w-14 h-14 md:w-[72px] md:h-[72px] rounded-xl md:rounded-2xl border-2 flex flex-col items-center justify-center gap-0.5 transition-all duration-300 backdrop-blur-sm ${
+                            className={`relative w-16 h-16 md:w-[72px] md:h-[72px] rounded-2xl border-2 flex flex-col items-center justify-center gap-0.5 transition-all duration-300 backdrop-blur-sm ${
                               isActive 
                                 ? `bg-gradient-to-br ${module.gradient} border-white/30 shadow-lg shadow-${module.color}-500/30` 
                                 : isComplete 
