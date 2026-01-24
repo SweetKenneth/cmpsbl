@@ -1,12 +1,14 @@
 /**
  * CodeAgent Tab — Self-Evolution Coding Interface
+ * v2.0.0 — With circuit breakers, self-healing, and resilient execution
  * Provides chat interface to the Substrate Coder + Sandbox validation preview
  */
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { 
   Code, Send, Loader2, CheckCircle2, XCircle, AlertTriangle, 
-  Terminal, Zap, Bot, FileCode, Play, RefreshCw, Copy, Check
+  Terminal, Zap, Bot, FileCode, Play, RefreshCw, Copy, Check,
+  Heart, ShieldCheck, Activity
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -14,9 +16,21 @@ import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Progress } from '@/components/ui/progress';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
+import { 
+  generateCode, 
+  validateCode as validateCodeWithResilience, 
+  executeInSandbox,
+  getCodeAgentHealth,
+  resetService,
+  rollbackLastChange,
+  learnFromOutcome,
+  type CodeResult 
+} from '@/lib/codeagent/executor';
+import { getHealingActions, getOverallHealth } from '@/lib/codeagent/circuit-breaker';
 
 interface Message {
   id: string;
@@ -58,15 +72,18 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
   const [isLoading, setIsLoading] = useState(false);
   const [coderStatus, setCoderStatus] = useState<CoderStatus | null>(null);
   const [sandboxStatus, setSandboxStatus] = useState<SandboxStatus | null>(null);
-  const [activeTab, setActiveTab] = useState<'chat' | 'preview'>('chat');
+  const [activeTab, setActiveTab] = useState<'chat' | 'preview' | 'health'>('chat');
   const [currentCode, setCurrentCode] = useState<string>('');
   const [validationResult, setValidationResult] = useState<{ valid: boolean; issues: string[] } | null>(null);
   const [copied, setCopied] = useState(false);
+  const [agentHealth, setAgentHealth] = useState(getCodeAgentHealth());
+  const [overallHealth, setOverallHealth] = useState(getOverallHealth());
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // Fetch status on mount
   useEffect(() => {
     fetchStatus();
+    refreshHealth();
   }, []);
 
   // Auto-scroll on new messages
@@ -76,17 +93,34 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
     }
   }, [messages]);
 
+  // Refresh health periodically
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refreshHealth();
+    }, 10000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const refreshHealth = useCallback(() => {
+    setAgentHealth(getCodeAgentHealth());
+    setOverallHealth(getOverallHealth());
+  }, []);
+
   async function fetchStatus() {
     try {
       const [coderRes, sandboxRes] = await Promise.all([
-        supabase.functions.invoke('pf-substrate-coder', { body: { action: 'status' } }),
-        supabase.functions.invoke('pf-substrate-sandbox', { body: { action: 'status' } }),
+        supabase.functions.invoke('pf-substrate-coder', { body: { action: 'status' } }).catch(() => ({ data: null })),
+        supabase.functions.invoke('pf-substrate-sandbox', { body: { action: 'status' } }).catch(() => ({ data: null })),
       ]);
 
       if (coderRes.data?.success) setCoderStatus(coderRes.data);
       if (sandboxRes.data?.success) setSandboxStatus(sandboxRes.data);
+      
+      refreshHealth();
     } catch (error) {
       console.error('Failed to fetch status:', error);
+      // Don't fail - we have fallbacks
+      toast.error('Status fetch failed', { description: 'Using cached status' });
     }
   }
 
@@ -109,62 +143,155 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
       // Parse the request to determine action
       const lowerInput = input.toLowerCase();
       
+      // Command: status/health check
       if (lowerInput.includes('status') || lowerInput.includes('health')) {
-        // Status check
         await fetchStatus();
-        addAgentMessage(`**Coder Status**\n- Version: ${coderStatus?.version || 'unknown'}\n- Patterns Learned: ${coderStatus?.learned_patterns || 0}\n- Generated Today: ${coderStatus?.generated_today || 0}\n\n**Sandbox Status**\n- Version: ${sandboxStatus?.version || 'unknown'}\n- Mode: ${sandboxStatus?.mode || 'unknown'}\n- Status: ${sandboxStatus?.status || 'unknown'}`);
-      } else if (lowerInput.includes('validate') && currentCode) {
-        // Validate current code
-        const result = await validateCode(currentCode);
-        setValidationResult(result);
+        const health = getCodeAgentHealth();
+        const overall = getOverallHealth();
+        
+        addAgentMessage(
+          `**🔧 CodeAgent Health Report**\n\n` +
+          `**Services**\n` +
+          `- Coder: ${health.coder.state === 'closed' ? '✅' : '⚠️'} ${health.coder.healthScore}% (${health.coder.state})\n` +
+          `- Sandbox: ${health.sandbox.state === 'closed' ? '✅' : '⚠️'} ${health.sandbox.healthScore}% (${health.sandbox.state})\n` +
+          `- Brain: ${health.brain.state === 'closed' ? '✅' : '⚠️'} ${health.brain.healthScore}% (${health.brain.state})\n\n` +
+          `**Overall**: ${overall.averageScore}% — ${overall.healthy} healthy, ${overall.degraded} degraded, ${overall.down} down\n\n` +
+          `**Coder Details**\n` +
+          `- Version: ${coderStatus?.version || 'unknown'}\n` +
+          `- Patterns Learned: ${coderStatus?.learned_patterns || 0}\n` +
+          `- Generated Today: ${coderStatus?.generated_today || 0}`
+        );
+        return;
+      } 
+      
+      // Command: reset circuit
+      if (lowerInput.includes('reset') && (lowerInput.includes('circuit') || lowerInput.includes('coder') || lowerInput.includes('sandbox'))) {
+        if (lowerInput.includes('coder')) {
+          resetService('coder');
+          toast.success('Coder circuit reset');
+          addAgentMessage('🔄 **Circuit Reset**\nCoder service circuit has been manually reset.');
+        } else if (lowerInput.includes('sandbox')) {
+          resetService('sandbox');
+          toast.success('Sandbox circuit reset');
+          addAgentMessage('🔄 **Circuit Reset**\nSandbox service circuit has been manually reset.');
+        } else {
+          resetService('coder');
+          resetService('sandbox');
+          resetService('brain');
+          toast.success('All circuits reset');
+          addAgentMessage('🔄 **All Circuits Reset**\nAll service circuits have been manually reset.');
+        }
+        refreshHealth();
+        return;
+      }
+      
+      // Command: rollback
+      if (lowerInput.includes('rollback') || lowerInput.includes('undo')) {
+        const result = await rollbackLastChange();
+        addAgentMessage(
+          result.success 
+            ? `✅ **Rollback Successful**\n${result.message}`
+            : `❌ **Rollback Failed**\n${result.message}`,
+          undefined,
+          result.success ? 'agent' : 'system'
+        );
+        return;
+      }
+      
+      // Command: validate current code
+      if (lowerInput.includes('validate') && currentCode) {
+        const result = await validateCodeWithResilience(currentCode);
+        setValidationResult({ valid: result.valid, issues: result.issues });
         addAgentMessage(result.valid 
           ? '✅ **Validation Passed**\nThe code passes all static analysis checks.' 
           : `❌ **Validation Failed**\nIssues found:\n${result.issues.map(i => `- ${i}`).join('\n')}`);
-      } else {
-        // Generate code
-        const improvement = parseImprovementRequest(input);
-        const response = await supabase.functions.invoke('pf-substrate-coder', {
-          body: {
-            action: 'generate',
-            improvement,
-          },
-        });
+        return;
+      }
+      
+      // Default: Generate code using resilient executor
+      const improvement = parseImprovementRequest(input);
+      
+      addAgentMessage('🔄 **Processing...**\nChecking brain memory, validating patterns, generating code...', undefined, 'system');
+      
+      const result: CodeResult = await generateCode({
+        description: improvement.description,
+        module: improvement.module,
+        changeType: improvement.change_type,
+      });
 
-        if (response.data?.success) {
-          const generated = response.data.generated;
-          setCurrentCode(generated.code);
-          
-          // Auto-validate
-          const validation = await validateCode(generated.code);
-          setValidationResult(validation);
+      // Remove the processing message
+      setMessages(prev => prev.slice(0, -1));
 
-          addAgentMessage(
-            `**Generated Code**\n\`\`\`typescript\n${generated.code.substring(0, 500)}${generated.code.length > 500 ? '\n// ... (truncated)' : ''}\n\`\`\`\n\n` +
-            `- **File:** \`${generated.file_path}\`\n` +
-            `- **Operation:** ${generated.operation}\n` +
-            `- **Confidence:** ${(generated.confidence * 100).toFixed(0)}%\n` +
-            `- **Provider:** ${response.data.provider}\n` +
-            `- **Latency:** ${response.data.latency_ms}ms\n\n` +
-            (validation.valid ? '✅ Passes validation' : `⚠️ Validation issues: ${validation.issues.join(', ')}`),
-            {
-              provider: response.data.provider,
-              model: response.data.model,
-              latency_ms: response.data.latency_ms,
-              generated_code: generated.code,
-              file_path: generated.file_path,
-              confidence: generated.confidence,
-              validation,
-            }
-          );
+      if (result.success && result.code) {
+        setCurrentCode(result.code);
+        setValidationResult(result.validation ? { valid: result.validation.safe, issues: result.validation.issues } : null);
 
-          setActiveTab('preview');
-        } else {
-          addAgentMessage(`❌ **Generation Failed**\n${response.data?.error || 'Unknown error'}`, undefined, 'system');
+        const confidencePercent = result.confidence ? (result.confidence * 100).toFixed(0) : 'N/A';
+        const validationStatus = result.validation?.safe 
+          ? '✅ Passes validation' 
+          : `⚠️ Validation issues: ${result.validation?.issues?.join(', ') || 'Unknown'}`;
+
+        addAgentMessage(
+          `**Generated Code**\n\`\`\`typescript\n${result.code.substring(0, 500)}${result.code.length > 500 ? '\n// ... (truncated)' : ''}\n\`\`\`\n\n` +
+          `- **File:** \`${result.filePath || 'N/A'}\`\n` +
+          `- **Operation:** ${result.operation || 'modify'}\n` +
+          `- **Confidence:** ${confidencePercent}%\n` +
+          `- **Provider:** ${result.provider || 'unknown'}\n` +
+          `- **Latency:** ${result.latencyMs || 0}ms\n` +
+          (result.fallbackUsed ? '- **Note:** Using fallback (service degraded)\n' : '') +
+          `\n${validationStatus}`,
+          {
+            provider: result.provider,
+            model: result.model,
+            latency_ms: result.latencyMs,
+            generated_code: result.code,
+            file_path: result.filePath,
+            confidence: result.confidence,
+            validation: result.validation ? { valid: result.validation.safe, issues: result.validation.issues } : undefined,
+          }
+        );
+
+        setActiveTab('preview');
+        
+        // Learn from successful generation
+        if (result.code && result.validation?.safe) {
+          learnFromOutcome(result.code, 'success').catch(console.error);
         }
+      } else {
+        // Handle failure with self-healing suggestions
+        const health = getCodeAgentHealth();
+        let suggestion = '';
+        
+        if (health.coder.state === 'open') {
+          suggestion = '\n\n💡 **Suggestion:** The coder circuit is open. Try "reset circuit coder" to manually recover, or wait 60 seconds for auto-recovery.';
+        } else if (result.assessment && !result.assessment.canProceed) {
+          suggestion = `\n\n💡 **Suggestions:**\n${result.assessment.suggestions.map(s => `- ${s}`).join('\n')}`;
+        }
+        
+        addAgentMessage(
+          `❌ **Generation Failed**\n${result.error || 'Unknown error'}${suggestion}`,
+          undefined,
+          'system'
+        );
+        
+        refreshHealth();
       }
     } catch (error) {
       console.error('CodeAgent error:', error);
-      addAgentMessage(`❌ **Error**\n${error instanceof Error ? error.message : 'Unknown error'}`, undefined, 'system');
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      
+      // Provide actionable error message
+      addAgentMessage(
+        `❌ **Error**\n${errorMessage}\n\n` +
+        `💡 **Recovery Options:**\n` +
+        `- Type "status" to check service health\n` +
+        `- Type "reset circuit" to reset all circuits\n` +
+        `- Wait 60 seconds for automatic recovery`,
+        undefined,
+        'system'
+      );
+      
+      refreshHealth();
     } finally {
       setIsLoading(false);
     }
