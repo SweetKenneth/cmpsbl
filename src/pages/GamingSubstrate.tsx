@@ -180,8 +180,8 @@ export default function GamingSubstrate() {
         "Personality evolution",
         "Emergent storytelling",
       ],
-      color: "text-violet-500",
-      gradient: "from-violet-500 to-purple-600",
+      color: "text-cyan-500",
+      gradient: "from-cyan-500 to-teal-600",
     },
     {
       icon: MessageSquare,
@@ -533,13 +533,13 @@ await cmpsbl.dream.cycle({
                 </p>
 
                 <div className="flex flex-wrap justify-center gap-4">
-                  <Button asChild size="lg" className="h-12 px-8 bg-white text-purple-600 hover:bg-white/90 font-bold">
+                  <Button asChild size="lg" className="h-12 px-8 bg-white text-purple-600 hover:bg-white/90 font-bold shadow-lg">
                     <Link to="/devtools">
                       <Code className="w-5 h-5 mr-2" />
                       Developer Portal
                     </Link>
                   </Button>
-                  <Button asChild variant="outline" size="lg" className="h-12 px-8 border-white/30 text-white hover:bg-white/10">
+                  <Button asChild size="lg" className="h-12 px-8 bg-white/20 text-white hover:bg-white/30 font-bold border-2 border-white/40">
                     <Link to="/documentation">
                       <BookOpen className="w-5 h-5 mr-2" />
                       Read the Docs

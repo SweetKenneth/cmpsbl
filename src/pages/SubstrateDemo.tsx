@@ -38,12 +38,22 @@ interface LogEntry {
 }
 
 const INITIAL_MODULES: ModuleState[] = [
+  // KERNEL LAYER
+  { id: 'core', name: 'Core', icon: Cpu, status: 'idle', color: 'orange', gradient: 'from-orange-500 to-amber-600', description: 'Kernel Scheduling' },
+  { id: 'ripple', name: 'Ripple', icon: Network, status: 'idle', color: 'teal', gradient: 'from-teal-500 to-cyan-600', description: 'Message Bus' },
+  { id: 'access', name: 'Access', icon: Lock, status: 'idle', color: 'yellow', gradient: 'from-yellow-500 to-amber-600', description: 'Identity & Keys' },
+  // COGNITIVE LAYER
   { id: 'brain', name: 'Brain', icon: Brain, status: 'idle', color: 'violet', gradient: 'from-violet-500 to-purple-600', description: 'Memory & Learning' },
-  { id: 'decode', name: 'Decode', icon: Zap, status: 'idle', color: 'cyan', gradient: 'from-cyan-500 to-blue-600', description: 'Human Translation' },
-  { id: 'defense', name: 'Defense', icon: Shield, status: 'idle', color: 'emerald', gradient: 'from-emerald-500 to-teal-600', description: 'Threat Detection' },
+  { id: 'decode', name: 'Decode', icon: Zap, status: 'idle', color: 'cyan', gradient: 'from-cyan-500 to-blue-600', description: 'Intent Parsing' },
   { id: 'nexus', name: 'Nexus', icon: Layers, status: 'idle', color: 'amber', gradient: 'from-amber-500 to-orange-600', description: 'AI Routing' },
+  // OPERATIONAL LAYER
+  { id: 'defense', name: 'Defense', icon: Shield, status: 'idle', color: 'emerald', gradient: 'from-emerald-500 to-teal-600', description: 'Threat Detection' },
   { id: 'vision', name: 'Vision', icon: Eye, status: 'idle', color: 'rose', gradient: 'from-rose-500 to-pink-600', description: 'Observability' },
-  { id: 'dream', name: 'Dream', icon: Moon, status: 'idle', color: 'purple', gradient: 'from-purple-500 to-indigo-600', description: 'Synthesis' },
+  { id: 'dream', name: 'Dream', icon: Moon, status: 'idle', color: 'purple', gradient: 'from-purple-500 to-indigo-600', description: 'Evolution' },
+  // ADMIN LAYER
+  { id: 'system', name: 'System', icon: Cpu, status: 'idle', color: 'slate', gradient: 'from-slate-500 to-gray-600', description: 'Administration' },
+  { id: 'modernizer', name: 'Modernizer', icon: Sparkles, status: 'idle', color: 'pink', gradient: 'from-pink-500 to-rose-600', description: 'Self-Upgrade' },
+  { id: 'integration', name: 'Integration', icon: Code, status: 'idle', color: 'indigo', gradient: 'from-indigo-500 to-blue-600', description: 'Enterprise' },
 ];
 
 const DEMO_SCENARIOS = [

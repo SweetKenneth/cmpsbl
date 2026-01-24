@@ -541,14 +541,11 @@ export function TechShowcase() {
                   </div>
                   
                   {/* Code */}
-                  <div className="pl-4 flex-1">
+                  <div className="pl-4 flex-1 overflow-hidden">
                     {codeLines.slice(0, typedLines).map((line, idx) => (
-                      <motion.div
-                        key={idx}
-                        initial={{ opacity: 0, x: -5 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.1 }}
-                        className="text-sm font-mono leading-relaxed h-6"
+                      <div
+                        key={`${activeTab}-${idx}`}
+                        className="text-sm font-mono leading-relaxed h-6 text-[hsl(var(--foreground))]"
                         dangerouslySetInnerHTML={{ __html: highlightCode(line) || '&nbsp;' }}
                       />
                     ))}
