@@ -1,0 +1,120 @@
+/**
+ * Terminal Command Aliases
+ * Provides shorthand aliases for common commands
+ */
+
+export interface AliasDefinition {
+  alias: string;
+  expansion: string;
+  description: string;
+}
+
+export const BUILTIN_ALIASES: AliasDefinition[] = [
+  // Navigation shortcuts
+  { alias: 'll', expansion: 'vision.logs brain 10', description: 'List recent brain logs' },
+  { alias: 'cls', expansion: 'clear', description: 'Clear terminal' },
+  { alias: 'clr', expansion: 'clear', description: 'Clear terminal' },
+  { alias: 'h', expansion: 'help', description: 'Show help' },
+  { alias: '?', expansion: 'help', description: 'Show help' },
+  
+  // Status shortcuts
+  { alias: 'st', expansion: 'system.status', description: 'System status' },
+  { alias: 'hp', expansion: 'vision.pulse', description: 'Health pulse' },
+  { alias: 'sh', expansion: 'system.health', description: 'System health' },
+  { alias: 'sd', expansion: 'system.diagnostics', description: 'Diagnostics' },
+  
+  // Brain shortcuts
+  { alias: 'br', expansion: 'brain.reflect', description: 'Brain reflect' },
+  { alias: 'bq', expansion: 'brain.query', description: 'Brain query' },
+  { alias: 'bs', expansion: 'brain.status', description: 'Brain status' },
+  
+  // Dream shortcuts
+  { alias: 'dc', expansion: 'dream.cycle', description: 'Dream cycle' },
+  { alias: 'ds', expansion: 'dream.status', description: 'Dream status' },
+  
+  // Modernizer shortcuts
+  { alias: 'ms', expansion: 'modernizer.scan', description: 'Modernizer scan' },
+  { alias: 'mp', expansion: 'modernizer.plans', description: 'List plans' },
+  { alias: 'ma', expansion: 'modernizer.apply', description: 'Apply plan' },
+  
+  // Defense shortcuts
+  { alias: 'dp', expansion: 'defense.posture', description: 'Security posture' },
+  { alias: 'da', expansion: 'defense.anomaly_probe', description: 'Anomaly probe' },
+  
+  // Quick actions
+  { alias: 'heal', expansion: 'system.heal', description: 'Self-healing' },
+  { alias: 'fix', expansion: 'system.heal auto true', description: 'Auto-fix issues' },
+  { alias: 'reboot', expansion: 'system.restart', description: 'Restart services' },
+];
+
+const customAliases: Map<string, AliasDefinition> = new Map();
+
+export function resolveAlias(input: string): string {
+  const parts = input.trim().split(/\s+/);
+  const potentialAlias = parts[0].toLowerCase();
+  
+  // Check custom aliases first
+  const custom = customAliases.get(potentialAlias);
+  if (custom) {
+    return custom.expansion + (parts.length > 1 ? ' ' + parts.slice(1).join(' ') : '');
+  }
+  
+  // Check builtin aliases
+  const builtin = BUILTIN_ALIASES.find(a => a.alias === potentialAlias);
+  if (builtin) {
+    return builtin.expansion + (parts.length > 1 ? ' ' + parts.slice(1).join(' ') : '');
+  }
+  
+  return input;
+}
+
+export function addAlias(alias: string, expansion: string, description = ''): boolean {
+  if (BUILTIN_ALIASES.some(a => a.alias === alias)) {
+    return false; // Can't override builtins
+  }
+  customAliases.set(alias, { alias, expansion, description });
+  return true;
+}
+
+export function removeAlias(alias: string): boolean {
+  return customAliases.delete(alias);
+}
+
+export function listAliases(): AliasDefinition[] {
+  return [...BUILTIN_ALIASES, ...Array.from(customAliases.values())];
+}
+
+export function formatAliasHelp(): string {
+  const aliases = listAliases();
+  const maxAliasLen = Math.max(...aliases.map(a => a.alias.length));
+  const maxExpLen = Math.max(...aliases.map(a => a.expansion.length));
+  
+  let output = `
+┌─ COMMAND ALIASES ────────────────────────────────────────────
+│
+│  Aliases are shorthand for common commands.
+│  Usage: Just type the alias, it expands automatically.
+│
+├─ BUILTIN ALIASES ────────────────────────────────────────────
+│
+`;
+
+  for (const a of BUILTIN_ALIASES) {
+    const pad1 = a.alias.padEnd(maxAliasLen + 2);
+    const pad2 = a.expansion.padEnd(maxExpLen + 2);
+    output += `│  ${pad1}→  ${pad2}∷ ${a.description}\n`;
+  }
+
+  const customs = Array.from(customAliases.values());
+  if (customs.length > 0) {
+    output += `│\n├─ CUSTOM ALIASES ─────────────────────────────────────────────\n│\n`;
+    for (const a of customs) {
+      const pad1 = a.alias.padEnd(maxAliasLen + 2);
+      const pad2 = a.expansion.padEnd(maxExpLen + 2);
+      output += `│  ${pad1}→  ${pad2}∷ ${a.description}\n`;
+    }
+  }
+
+  output += `│\n└──────────────────────────────────────────────────────────────`;
+  return output;
+}
