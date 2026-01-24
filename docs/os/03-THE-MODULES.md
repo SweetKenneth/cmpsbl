@@ -1,18 +1,18 @@
-# 03: The Modules — The 11 Building Blocks
+# 03: The Modules — The 12 Building Blocks
 
-**Everything the Substrate Can Do (v4.0.0)**
+**Everything the Substrate Can Do (v4.2.0)**
 
 ---
 
 ## The Module System Explained
 
-Think of the substrate as a toolbox with 11 specialized tools. Each tool (module) does one category of things really well.
+Think of the substrate as a toolbox with 12 specialized tools. Each tool (module) does one category of things really well.
 
 The modules are organized into **4 layers**:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                    THE SUBSTRATE v4.0.0                              │
+│                    THE SUBSTRATE v4.2.0                              │
 │                                                                      │
 │  ┌─── KERNEL LAYER (Infrastructure) ──────────────────────────────┐ │
 │  │  CORE         RIPPLE        ACCESS                              │ │
@@ -25,8 +25,8 @@ The modules are organized into **4 layers**:
 │  └────────────────────────────────────────────────────────────────┘ │
 │                                                                      │
 │  ┌─── OPERATIONAL LAYER (Services) ───────────────────────────────┐ │
-│  │  DEFENSE      NEXUS         VISION                              │ │
-│  │  Security     AI Routing    Observability                       │ │
+│  │  DEFENSE      NEXUS         VISION       INTEGRATION            │ │
+│  │  Security     AI Routing    Observability Enterprise            │ │
 │  └────────────────────────────────────────────────────────────────┘ │
 │                                                                      │
 │  ┌─── ADMINISTRATIVE LAYER (Control) ─────────────────────────────┐ │
@@ -431,6 +431,48 @@ System.heal triggers automatically when health drops below 50.
 
 ---
 
+## Module 12: INTEGRATION (New in v4.2.0)
+
+**What It Does:** Enterprise adapters, auto-discovery, LLM governance
+
+**Plain English:** This is the "arms and legs" that let the substrate connect to and control external systems—from Salesforce to Unity game engines.
+
+#### Key Actions
+
+| Action | What It Does | Example |
+|--------|--------------|---------|
+| `adapters` | List available adapters | "What can I connect to?" |
+| `connect` | Connect to external system | "Hook up Stripe" |
+| `discover` | Auto-find API endpoints | "What can this system do?" |
+| `execute` | Run action with governance | "Create a customer (supervised)" |
+| `map_command` | Create terminal shortcut | "Make 'subscribe' trigger Stripe" |
+| `policies` | View LLM governance rules | "What is AI allowed to do?" |
+
+#### The 35+ Adapters
+
+Integration comes with pre-built adapters for:
+
+- **ERP:** SAP, Oracle, NetSuite, Dynamics 365
+- **Payroll:** ADP, Gusto, Workday, BambooHR
+- **Gaming:** Unity, Unreal, Godot, custom engines
+- **CRM:** Salesforce, Zendesk, Intercom, Freshdesk
+- **DevOps:** GitHub, GitLab, Jira, Linear
+- **Payments:** Stripe, Shopify, Square
+
+#### Why It Matters
+
+Without Integration, connecting to external systems is manual and ungoverned. With Integration:
+- Pre-built adapters save weeks of development
+- LLM governance controls what AI can do
+- Full audit trail of every action
+- Terminal commands for easy operations
+
+#### Deep Dive
+
+→ [21-INTEGRATION-DEEP-DIVE.md](./21-INTEGRATION-DEEP-DIVE.md) — Complete enterprise integration guide
+
+---
+
 ## Quick Reference Card
 
 | Module | Layer | Purpose | Key Action |
@@ -444,6 +486,7 @@ System.heal triggers automatically when health drops below 50.
 | DEFENSE | Operational | Security | `detect` |
 | NEXUS | Operational | AI Routing | `route` |
 | VISION | Operational | Monitoring | `health` |
+| INTEGRATION | Operational | Enterprise | `connect` |
 | SYSTEM | Administrative | Operations | `heal` |
 | MODERNIZER | Administrative | Upgrades | `propose` |
 

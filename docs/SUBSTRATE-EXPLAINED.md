@@ -45,9 +45,14 @@ Network Security     →          Bot Detection & Defense
 │   └─────────────────────────────────────────────────────────────────┘   │
 │                                   │                                      │
 │   ┌─────────┬─────────┬─────────┬─────────┬─────────┬─────────┬─────┐   │
-│   │  BRAIN  │ DECODE  │ DEFENSE │  NEXUS  │ VISION  │  DREAM  │SYSTEM│   │
-│   │ Memory  │ Intent  │Security │AI Route │ Monitor │ Evolve  │Admin │   │
+│   │  BRAIN  │ DECODE  │ DEFENSE │  NEXUS  │ VISION  │  DREAM  │INTEG│   │
+│   │ Memory  │ Intent  │Security │AI Route │ Monitor │ Evolve  │Adapt│   │
 │   └─────────┴─────────┴─────────┴─────────┴─────────┴─────────┴─────┘   │
+│                                                                          │
+│   ┌─────────────────────────────────────────────────────────────────┐   │
+│   │                    SYSTEM • MODERNIZER                           │   │
+│   │                  Administration • Self-Upgrade                   │   │
+│   └─────────────────────────────────────────────────────────────────┘   │
 │                                                                          │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                         SUPABASE (POSTGRES + EDGE)                       │
@@ -56,7 +61,7 @@ Network Security     →          Bot Detection & Defense
 
 ---
 
-## The 11 Modules
+## The 12 Modules
 
 ### 🎛️ Kernel Layer (How the OS Works)
 
@@ -81,6 +86,12 @@ Network Security     →          Bot Detection & Defense
 |--------|---------|--------------|
 | **DEFENSE** | Security | Bot detection, threat analysis, IP reputation, rate limiting |
 | **VISION** | Observability | Health monitoring, metrics, logs, dashboards, alerting |
+| **INTEGRATION** | Enterprise | 35+ adapters for external systems, LLM governance, auto-discovery |
+
+### ⚙️ Administrative Layer (How the OS Maintains Itself)
+
+| Module | Purpose | What It Does |
+|--------|---------|--------------|
 | **SYSTEM** | Administration | Backups, restores, diagnostics, healing, configuration |
 | **MODERNIZER** | Self-Upgrade | Scans for improvements, proposes updates, shadow testing |
 
@@ -162,6 +173,13 @@ Code ages. MODERNIZER:
 - Tests changes in shadow mode
 - Applies approved updates
 
+### INTEGRATION — "The Arms & Legs"
+AI needs to affect the real world. INTEGRATION:
+- 35+ pre-built enterprise adapters
+- Connect to SAP, Salesforce, Unity, Stripe
+- LLM governance controls what AI can do
+- Full audit trail of all external actions
+
 ---
 
 ## How It All Works Together
@@ -224,13 +242,16 @@ const response = await nexus.route('Explain quantum computing');
 
 // Check system health
 const health = await vision.healthSnapshot();
+
+// Connect to enterprise systems
+const adapters = await substrate.integration.adapters();
 ```
 
 ---
 
 ## Key Principles
 
-1. **One Endpoint** — All 11 modules accessible via `pf-substrate`
+1. **One Endpoint** — All 12 modules accessible via `pf-substrate`
 2. **Module Isolation** — Modules don't directly call each other (use RIPPLE)
 3. **Health Always** — Every module has a `pulse` action for monitoring
 4. **Fail Gracefully** — Circuit breakers prevent cascade failures
@@ -243,11 +264,11 @@ const health = await vision.healthSnapshot();
 | Aspect | Value |
 |--------|-------|
 | **Endpoint** | `POST /functions/v1/pf-substrate` |
-| **Modules** | 11 (CORE, RIPPLE, ACCESS, BRAIN, DECODE, DEFENSE, NEXUS, VISION, DREAM, SYSTEM, MODERNIZER) |
+| **Modules** | 12 (CORE, RIPPLE, ACCESS, BRAIN, DECODE, DEFENSE, NEXUS, VISION, DREAM, SYSTEM, MODERNIZER, INTEGRATION) |
 | **Database** | PostgreSQL via Supabase |
 | **Edge Functions** | Deno runtime |
 | **Authentication** | JWT (Supabase Auth) or API Key |
-| **Version** | v4.1.1 (2026-01) |
+| **Version** | v4.2.0 (2026-01) |
 
 ---
 
