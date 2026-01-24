@@ -1,6 +1,6 @@
 /**
  * Module Health Monitor Hook
- * Tracks health status of all 8 PromptFluid modules via substrate
+ * Tracks health status of all 12 PromptFluid modules via substrate
  */
 
 import { useState, useEffect } from 'react';
