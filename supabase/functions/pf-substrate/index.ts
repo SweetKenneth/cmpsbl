@@ -46,7 +46,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const SUBSTRATE_VERSION = "4.2.0"; // Integration module v1.0, 12-module kernel OS
+const SUBSTRATE_VERSION = "4.3.0"; // Dynamic-only: no mock/placeholder responses
 
 // Trace ID generator for distributed tracing
 function generateTraceId(): string {
@@ -2081,24 +2081,44 @@ RESPONSES:
     }
 
     case "reflect": {
+      // Fetch recent decode events to provide partial data
+      const { data: recentDecodes } = await supabase
+        .from('cascade_conversations')
+        .select('id, created_at, intent')
+        .order('created_at', { ascending: false })
+        .limit(5);
+      
       return jsonResponse({
-        success: true,
-        ok: true,
-        placeholder: true,
+        success: false,
+        not_implemented: true,
         action,
-        message: "Decode reflect stub - conversation reflection pending",
+        message: "Decode reflect not yet implemented - conversation reflection pending",
+        partial_data: {
+          recent_conversations: recentDecodes?.length || 0,
+          last_activity: recentDecodes?.[0]?.created_at || null,
+        },
       }, headers);
     }
 
     case "summary": {
       const { sessionId } = data;
+      // Fetch session data if available
+      const { data: session } = await supabase
+        .from('cascade_conversations')
+        .select('id, created_at, messages')
+        .eq('session_id', sessionId)
+        .single();
+      
       return jsonResponse({
-        success: true,
-        ok: true,
-        placeholder: true,
+        success: false,
+        not_implemented: true,
         action,
         sessionId,
-        message: "Summary stub - conversation summarization pending",
+        message: "Summary not yet implemented - conversation summarization pending",
+        partial_data: {
+          session_found: !!session,
+          message_count: session?.messages?.length || 0,
+        },
       }, headers);
     }
 
@@ -2244,84 +2264,138 @@ async function handleDefense(
       }, headers);
     }
 
-    // ═══ STUB HANDLERS ═══
+    // ═══ PARTIAL DATA HANDLERS (not_implemented but with real context) ═══
     case "report": {
       const { threatId } = data;
+      // Fetch actual threat data if available
+      const { data: threat } = await supabase
+        .from('defense_events')
+        .select('*')
+        .eq('id', threatId)
+        .single();
+      
       return jsonResponse({
-        success: true,
-        ok: true,
-        placeholder: true,
+        success: false,
+        not_implemented: true,
         action,
         threatId,
-        message: "Threat report stub - detailed threat analysis pending",
+        message: "Threat report not yet implemented - detailed analysis pending",
+        partial_data: {
+          threat_found: !!threat,
+          risk_score: threat?.risk_score || null,
+          action_taken: threat?.action || null,
+          detected_at: threat?.detected_at || null,
+        },
       }, headers);
     }
 
     case "rules": {
       const { action: ruleAction } = data;
+      // Always fetch real rules
+      const { data: rules } = await supabase
+        .from("defense_rules")
+        .select("*")
+        .eq("is_active", true)
+        .limit(50);
+      
       if (ruleAction === "list" || !ruleAction) {
-        const { data: rules } = await supabase
-          .from("defense_rules")
-          .select("*")
-          .eq("is_active", true)
-          .limit(50);
         return jsonResponse({ success: true, rules: rules || [] }, headers);
       }
       return jsonResponse({
-        success: true,
-        ok: true,
-        placeholder: true,
+        success: false,
+        not_implemented: true,
         action,
         ruleAction,
-        message: "Rules management stub - create/update/delete pending",
+        message: "Rules create/update/delete not yet implemented",
+        partial_data: {
+          current_rule_count: rules?.length || 0,
+        },
       }, headers);
     }
 
     case "block": {
       const { target, type } = data;
+      // Check if already blocked
+      const { data: existing } = await supabase
+        .from('ip_reputation')
+        .select('ip, score, blocked_count')
+        .eq('ip', target)
+        .single();
+      
       return jsonResponse({
-        success: true,
-        ok: true,
-        placeholder: true,
+        success: false,
+        not_implemented: true,
         action,
         target,
         type,
-        message: "Block stub - IP/fingerprint blocking pending",
+        message: "Block action not yet implemented - use defense.analyze for risk assessment",
+        partial_data: {
+          target_known: !!existing,
+          current_score: existing?.score || null,
+          blocked_count: existing?.blocked_count || 0,
+        },
       }, headers);
     }
 
     case "unblock": {
       const { target } = data;
+      const { data: existing } = await supabase
+        .from('ip_reputation')
+        .select('ip, score')
+        .eq('ip', target)
+        .single();
+      
       return jsonResponse({
-        success: true,
-        ok: true,
-        placeholder: true,
+        success: false,
+        not_implemented: true,
         action,
         target,
-        message: "Unblock stub - block removal pending",
+        message: "Unblock action not yet implemented",
+        partial_data: {
+          target_found: !!existing,
+          current_score: existing?.score || null,
+        },
       }, headers);
     }
 
     case "threat_feed": {
+      // Provide recent threat stats as partial data
+      const { count: recentThreats } = await supabase
+        .from('defense_events')
+        .select('*', { count: 'exact', head: true })
+        .gte('detected_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+      
       return jsonResponse({
-        success: true,
-        ok: true,
-        placeholder: true,
+        success: false,
+        not_implemented: true,
         action,
-        message: "Threat feed stub - external intel integration pending",
+        message: "External threat feed integration not yet implemented",
+        partial_data: {
+          threats_24h: recentThreats || 0,
+          internal_feed_active: true,
+        },
       }, headers);
     }
 
     case "rate_limit": {
       const { endpoint, limit } = data;
+      // Fetch current rate limit config
+      const { data: limits } = await supabase
+        .from('edge_rate_limits')
+        .select('function_name, request_count, window_start')
+        .limit(10);
+      
       return jsonResponse({
-        success: true,
-        ok: true,
-        placeholder: true,
+        success: false,
+        not_implemented: true,
         action,
         endpoint,
         limit,
-        message: "Rate limit stub - configuration pending",
+        message: "Rate limit configuration not yet implemented",
+        partial_data: {
+          active_limits: limits?.length || 0,
+          current_config: limits || [],
+        },
       }, headers);
     }
 
@@ -2961,65 +3035,83 @@ async function handleNexus(
       }, headers);
     }
 
-    // ═══ STUB HANDLERS ═══
+    // ═══ NOT IMPLEMENTED HANDLERS (with partial data) ═══
     case "text": {
       const { prompt, model } = data;
+      // Provide provider availability as partial data
+      const availableProviders = PROVIDER_ORDER.filter(p => Deno.env.get(PROVIDERS[p as keyof typeof PROVIDERS]?.keyEnv));
       return jsonResponse({
-        success: true,
-        ok: true,
-        placeholder: true,
+        success: false,
+        not_implemented: true,
         action,
         model: model || "auto",
-        message: "Text generation stub - use route action or pf-nexus-text",
+        message: "Text generation via substrate not implemented - use nexus.route or pf-nexus-text edge function",
+        partial_data: {
+          prompt_length: (prompt as string)?.length || 0,
+          available_providers: availableProviders,
+          suggestion: "Call supabase.functions.invoke('pf-nexus-text', { body: { prompt } })",
+        },
       }, headers);
     }
 
     case "image": {
       const { prompt, model } = data;
       return jsonResponse({
-        success: true,
-        ok: true,
-        placeholder: true,
+        success: false,
+        not_implemented: true,
         action,
         model: model || "auto",
-        message: "Image generation stub - use pf-nexus-image for full functionality",
+        message: "Image generation via substrate not implemented - use pf-nexus-image edge function",
+        partial_data: {
+          prompt_length: (prompt as string)?.length || 0,
+          suggestion: "Call supabase.functions.invoke('pf-nexus-image', { body: { prompt } })",
+        },
       }, headers);
     }
 
     case "video": {
       const { prompt, model } = data;
       return jsonResponse({
-        success: true,
-        ok: true,
-        placeholder: true,
+        success: false,
+        not_implemented: true,
         action,
         model: model || "auto",
-        message: "Video generation stub - use pf-nexus-video for full functionality",
+        message: "Video generation via substrate not implemented - use pf-nexus-video edge function",
+        partial_data: {
+          prompt_length: (prompt as string)?.length || 0,
+          suggestion: "Call supabase.functions.invoke('pf-nexus-video', { body: { prompt } })",
+        },
       }, headers);
     }
 
     case "embed": {
       const { text, model } = data;
       return jsonResponse({
-        success: true,
-        ok: true,
-        placeholder: true,
+        success: false,
+        not_implemented: true,
         action,
         model: model || "auto",
         input_length: (text as string)?.length || 0,
-        message: "Embedding generation stub - vector encoding pending",
+        message: "Embedding generation not yet implemented",
+        partial_data: {
+          text_preview: (text as string)?.substring(0, 50) || null,
+          suggested_dimension: 1536,
+        },
       }, headers);
     }
 
     case "transcribe": {
       const { audio_url } = data;
       return jsonResponse({
-        success: true,
-        ok: true,
-        placeholder: true,
+        success: false,
+        not_implemented: true,
         action,
         audio_url,
-        message: "Transcription stub - audio processing pending",
+        message: "Audio transcription not yet implemented",
+        partial_data: {
+          url_provided: !!audio_url,
+          supported_formats: ['mp3', 'wav', 'flac', 'm4a'],
+        },
       }, headers);
     }
 
@@ -5393,22 +5485,28 @@ async function handleSystem(
 
     case "config": {
       const { key, value } = data;
-      if (key && value !== undefined) {
-        return jsonResponse({
-          success: true,
-          ok: true,
-          placeholder: true,
-          action,
-          key,
-          message: "Config set stub - persistence pending",
-        }, headers);
-      }
-      // Get config
+      // Get current config
       const { data: settings } = await supabase
         .from("core_settings")
         .select("*")
         .limit(20);
 
+      if (key && value !== undefined) {
+        // Config SET not implemented - but return current state
+        return jsonResponse({
+          success: false,
+          not_implemented: true,
+          action,
+          key,
+          message: "Config set not yet implemented - read-only access available",
+          partial_data: {
+            current_settings: settings?.length || 0,
+            requested_key: key,
+            requested_value: value,
+          },
+        }, headers);
+      }
+      
       return jsonResponse({
         success: true,
         settings: settings || [],
@@ -5417,13 +5515,29 @@ async function handleSystem(
 
     case "shutdown": {
       const { confirm } = data;
+      // Shutdown requires explicit confirmation
+      if (!confirm) {
+        return jsonResponse({
+          success: false,
+          not_implemented: true,
+          action,
+          message: "Shutdown requires confirm=true. This action is destructive.",
+          partial_data: {
+            uptime_ms: Date.now() - substrateState.initialized,
+            active_modules: Object.keys(substrateState.modules).length,
+          },
+        }, headers);
+      }
+      
       return jsonResponse({
-        success: true,
-        ok: true,
-        placeholder: true,
+        success: false,
+        not_implemented: true,
         action,
-        confirmed: !!confirm,
-        message: "Shutdown stub - emergency shutdown via pf-emergency-shutdown",
+        confirmed: true,
+        message: "Emergency shutdown not yet implemented - use pf-emergency-shutdown edge function",
+        partial_data: {
+          suggestion: "Call supabase.functions.invoke('pf-emergency-shutdown', { body: { confirm: true } })",
+        },
       }, headers);
     }
 
@@ -6035,6 +6149,10 @@ async function handleModernizer(
       
       try {
         // Analyze substrate architecture with real data
+        // 24h cutoff for failure-based success rate
+        const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+        const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+        
         const [
           { count: memoryCount },
           { count: hotCount },
@@ -6052,12 +6170,14 @@ async function handleModernizer(
           supabase.from('brain_events').select('*', { count: 'exact', head: true }),
           supabase.from('cascade_dreams').select('*', { count: 'exact', head: true }),
           supabase.from('evolution_proposals').select('*', { count: 'exact', head: true }),
-          supabase.from('brain_events').select('event_type, outcome, module').order('created_at', { ascending: false }).limit(100),
-          supabase.from('brain_events').select('event_type, module, data, created_at').in('outcome', ['failed', 'error', 'failure']).gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()).order('created_at', { ascending: false }).limit(50),
+          // Fetch 24h events for success rate
+          supabase.from('brain_events').select('event_type, outcome, module').gte('created_at', twentyFourHoursAgo).order('created_at', { ascending: false }).limit(500),
+          // Fetch 7d errors for diagnostics
+          supabase.from('brain_events').select('event_type, module, data, created_at').in('outcome', ['failed', 'error', 'failure']).gte('created_at', sevenDaysAgo).order('created_at', { ascending: false }).limit(50),
           supabase.from('brain_orchestrator_state').select('*').limit(1).single(),
         ]);
         
-        // Analyze event patterns
+        // Analyze event patterns from 24h window
         const eventTypes = recentEvents?.reduce((acc: Record<string, number>, e: { event_type: string }) => {
           acc[e.event_type] = (acc[e.event_type] || 0) + 1;
           return acc;
@@ -6069,9 +6189,15 @@ async function handleModernizer(
           return acc;
         }, {}) || {};
         
-        const successRate = outcomeStats['success'] 
-          ? (outcomeStats['success'] / (recentEvents?.length || 1) * 100).toFixed(1)
-          : '0';
+        // FAILURE-BASED success rate: anything NOT explicitly failed/error is success
+        const failureOutcomes = ['failed', 'error', 'failure'];
+        const totalEvents24h = recentEvents?.length || 0;
+        const failedEvents24h = recentEvents?.filter((e: { outcome?: string }) => 
+          failureOutcomes.includes((e.outcome || '').toLowerCase())
+        ).length || 0;
+        const successRate = totalEvents24h > 0 
+          ? ((totalEvents24h - failedEvents24h) / totalEvents24h * 100).toFixed(1)
+          : '100';
         
         // Analyze error patterns - NEW: Dynamic analysis based on real errors
         const errorPatterns: Record<string, { count: number; modules: Set<string>; lastSeen: string }> = {};
