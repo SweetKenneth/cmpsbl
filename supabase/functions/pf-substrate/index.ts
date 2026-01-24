@@ -5044,25 +5044,100 @@ async function handleSystem(
   headers: Record<string, string>,
   substrateState: SubstrateState
 ) {
+  // 12-module architecture - all modules that should be checked
+  const ALL_12_MODULES = ['core', 'brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'ripple', 'access', 'system', 'modernizer', 'integration'];
+
   switch (action) {
     case "status": {
-      // Full system status with v3 health data
-      const checks = { brain: false, defense: false, decode: false, nexus: false };
-
-      try { await supabase.from("brain_memories").select("*", { count: "exact", head: true }); checks.brain = true; } catch {}
-      try { await supabase.from("defense_events").select("*", { count: "exact", head: true }); checks.defense = true; } catch {}
-      try { await supabase.from("cascade_conversations").select("*", { count: "exact", head: true }); checks.decode = true; } catch {}
+      // Full system status with v4 health data - checks ALL 12 MODULES
+      const checks: Record<string, boolean> = {};
       
+      // Initialize all 12 modules as false
+      for (const mod of ALL_12_MODULES) {
+        checks[mod] = false;
+      }
+
+      // KERNEL LAYER
+      // Core - always available (kernel)
+      checks.core = true;
+      
+      // Ripple - message bus (check brain_events as proxy for event system)
+      try { 
+        const { count } = await supabase.from("brain_events").select("*", { count: "exact", head: true }); 
+        checks.ripple = count !== null; 
+      } catch { checks.ripple = false; }
+      
+      // Access - identity layer (check access_api_keys table)
+      try { 
+        const { error } = await supabase.from("access_api_keys").select("*", { count: "exact", head: true }); 
+        checks.access = !error; 
+      } catch { checks.access = false; }
+
+      // COGNITION LAYER
+      // Brain - memory system
+      try { 
+        const { count } = await supabase.from("brain_memories").select("*", { count: "exact", head: true }); 
+        checks.brain = count !== null; 
+      } catch { checks.brain = false; }
+      
+      // Decode - conversation/interpretation
+      try { 
+        const { error } = await supabase.from("cascade_conversations").select("*", { count: "exact", head: true }); 
+        checks.decode = !error; 
+      } catch { checks.decode = false; }
+      
+      // Dream - dream-eater state
+      try { 
+        const { data } = await supabase.from("dream_eater_state").select("*").limit(1).single(); 
+        checks.dream = !!data; 
+      } catch { checks.dream = false; }
+
+      // OPERATIONS LAYER
+      // Defense - security events
+      try { 
+        const { error } = await supabase.from("defense_events").select("*", { count: "exact", head: true }); 
+        checks.defense = !error; 
+      } catch { checks.defense = false; }
+      
+      // Nexus - AI providers
       for (const config of Object.values(PROVIDERS)) {
         if (Deno.env.get(config.keyEnv)) { checks.nexus = true; break; }
       }
+      
+      // Vision - observability (check orchestrator state)
+      try { 
+        const { data } = await supabase.from("brain_orchestrator_state").select("*").limit(1).single(); 
+        checks.vision = !!data; 
+      } catch { checks.vision = false; }
+      
+      // Integration - enterprise adapters (check integration_adapters or brain_events with integration type)
+      try { 
+        const { count } = await supabase.from("brain_events").select("*", { count: "exact", head: true }).eq("module", "integration"); 
+        checks.integration = count !== null; 
+      } catch { checks.integration = true; } // Default to true as integration is optional
+
+      // ADMIN LAYER
+      // System - always available
+      checks.system = true;
+      
+      // Modernizer - evolution proposals
+      try { 
+        const { error } = await supabase.from("evolution_proposals").select("*", { count: "exact", head: true }); 
+        checks.modernizer = !error; 
+      } catch { checks.modernizer = false; }
+
+      // Calculate healthy count
+      const healthyCount = Object.values(checks).filter(v => v).length;
+      const totalModules = ALL_12_MODULES.length;
 
       return jsonResponse({
         success: true,
         module: "system",
         substrate: "promptfluid®",
         version: SUBSTRATE_VERSION,
-        healthy: Object.values(checks).every(v => v),
+        healthy: healthyCount === totalModules,
+        module_count: totalModules,
+        healthy_count: healthyCount,
         checks,
         resilience: {
           total_requests: substrateState.totalRequests,
@@ -5086,11 +5161,18 @@ async function handleSystem(
     }
 
     case "health": {
-      // Comprehensive health diagnostics with circuit breaker status
-      const diagnostics = [];
+      // Comprehensive health diagnostics with circuit breaker status - ALL 12 MODULES
       
-      for (const [module, health] of Object.entries(substrateState.modules)) {
-        diagnostics.push({
+      // Ensure all 12 modules are in state for health check
+      for (const mod of ALL_12_MODULES) {
+        if (!substrateState.modules[mod]) {
+          substrateState.modules[mod] = initModuleHealth(mod);
+        }
+      }
+      
+      const diagnostics = ALL_12_MODULES.map(module => {
+        const health = substrateState.modules[module];
+        return {
           module,
           health_score: health.healthScore,
           status: health.status,
@@ -5099,8 +5181,8 @@ async function handleSystem(
           consecutive_successes: health.consecutiveSuccesses,
           last_success: health.lastSuccess ? new Date(health.lastSuccess).toISOString() : null,
           last_failure: health.lastFailure ? new Date(health.lastFailure).toISOString() : null,
-        });
-      }
+        };
+      });
       
       const overallHealth = diagnostics.length > 0
         ? Math.round(diagnostics.reduce((sum, d) => sum + d.health_score, 0) / diagnostics.length)
@@ -5128,16 +5210,14 @@ async function handleSystem(
     }
 
     case "heal": {
-      // v3.13.0 UNIFIED HEAL - Restores all modules + brain/dream states
+      // v4.2.0 UNIFIED HEAL - Restores ALL 12 modules + brain/dream states
       const { target, force = false, test = true } = data;
       const healed: string[] = [];
       const tested: Array<{ module: string; status: string; score: number }> = [];
       const errors: string[] = [];
       
-      // If no modules tracked yet, initialize all core modules
-      const coreModules = ['brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'system'];
-      const modulesToHeal = target ? [target] : 
-        Object.keys(substrateState.modules).length > 0 ? Object.keys(substrateState.modules) : coreModules;
+      // ALL 12 MODULES - complete architecture
+      const modulesToHeal = target ? [target] : ALL_12_MODULES;
       
       // PHASE 1: Reset in-memory module health
       for (const mod of modulesToHeal) {
@@ -5219,30 +5299,40 @@ async function handleSystem(
         console.error('Heal logging failed:', e);
       }
       
-      // PHASE 4: Test ALL 8 modules if requested
+      // PHASE 4: Test ALL 12 modules if requested
       if (test) {
         try {
+          // KERNEL LAYER
+          // Test core - always healthy (kernel)
+          tested.push({ module: 'core', status: 'healthy', score: 100 });
+          
+          // Test ripple - message bus
+          const { count: eventBusCount } = await supabase.from('brain_events').select('*', { count: 'exact', head: true });
+          tested.push({ module: 'ripple', status: 'healthy', score: eventBusCount !== null ? 100 : 50 });
+          
+          // Test access - identity
+          const { error: accessErr } = await supabase.from('access_api_keys').select('*', { count: 'exact', head: true });
+          tested.push({ module: 'access', status: !accessErr ? 'healthy' : 'degraded', score: !accessErr ? 100 : 50 });
+          
+          // COGNITION LAYER
           // Test brain
           const { count: memCount } = await supabase.from('brain_memories').select('*', { count: 'exact', head: true });
           const brainScore = memCount !== null ? 100 : 50;
           tested.push({ module: 'brain', status: 'healthy', score: brainScore });
+          
+          // Test decode
+          const { count: convCount } = await supabase.from('cascade_conversations').select('*', { count: 'exact', head: true });
+          tested.push({ module: 'decode', status: 'healthy', score: convCount !== null ? 100 : 50 });
           
           // Test dream
           const { data: dreamState } = await supabase.from('dream_eater_state').select('*').limit(1).single();
           const dreamScore = dreamState ? 100 : 50;
           tested.push({ module: 'dream', status: dreamState?.current_mood || 'unknown', score: dreamScore });
           
-          // Test decode
-          const { count: convCount } = await supabase.from('cascade_conversations').select('*', { count: 'exact', head: true });
-          tested.push({ module: 'decode', status: 'healthy', score: convCount !== null ? 100 : 50 });
-          
+          // OPERATIONS LAYER
           // Test defense
           const { count: defCount } = await supabase.from('defense_events').select('*', { count: 'exact', head: true });
           tested.push({ module: 'defense', status: 'healthy', score: defCount !== null ? 100 : 50 });
-          
-          // Test vision
-          const { count: eventCount } = await supabase.from('brain_events').select('*', { count: 'exact', head: true });
-          tested.push({ module: 'vision', status: 'healthy', score: eventCount !== null ? 100 : 50 });
           
           // Test nexus - check if providers are configured
           const nexusAvailableProviders = ['GROQ_API_KEY', 'CEREBRAS_API_KEY', 'TOGETHER_API_KEY', 'DEEPSEEK_API_KEY']
@@ -5250,6 +5340,15 @@ async function handleSystem(
           const nexusScore = nexusAvailableProviders > 0 ? 100 : 50;
           tested.push({ module: 'nexus', status: nexusAvailableProviders > 0 ? 'healthy' : 'degraded', score: nexusScore });
           
+          // Test vision
+          const { count: eventCount } = await supabase.from('brain_events').select('*', { count: 'exact', head: true });
+          tested.push({ module: 'vision', status: 'healthy', score: eventCount !== null ? 100 : 50 });
+          
+          // Test integration - enterprise adapters
+          const { count: integrationEvents } = await supabase.from('brain_events').select('*', { count: 'exact', head: true }).eq('module', 'integration');
+          tested.push({ module: 'integration', status: 'healthy', score: integrationEvents !== null ? 100 : 80 });
+          
+          // ADMIN LAYER
           // Test system - check orchestrator state
           const { data: orchState } = await supabase.from('brain_orchestrator_state').select('health_score, status').limit(1).single();
           const systemScore = orchState ? Math.round((orchState.health_score || 0.5) * 100) : 50;
@@ -5684,7 +5783,7 @@ async function handleSystem(
     }
 
     case "diagnostics": {
-      // v3.1.0 Comprehensive system diagnostics
+      // v4.2.0 Comprehensive system diagnostics - ALL 12 MODULES
       const [
         { data: orchestrator },
         { count: memoryCount },
@@ -5699,17 +5798,27 @@ async function handleSystem(
         supabase.from("edge_rate_limits").select("*").order("updated_at", { ascending: false }).limit(10),
       ]);
       
-      // Module diagnostics from in-memory state
-      const moduleDiagnostics = Object.entries(substrateState.modules).map(([name, health]) => ({
-        name,
-        health_score: health.healthScore,
-        status: health.status,
-        circuit_state: health.circuitState,
-        consecutive_failures: health.consecutiveFailures,
-        consecutive_successes: health.consecutiveSuccesses,
-        last_success: health.lastSuccess ? new Date(health.lastSuccess).toISOString() : null,
-        last_failure: health.lastFailure ? new Date(health.lastFailure).toISOString() : null,
-      }));
+      // Ensure all 12 modules are in state for diagnostics
+      for (const mod of ALL_12_MODULES) {
+        if (!substrateState.modules[mod]) {
+          substrateState.modules[mod] = initModuleHealth(mod);
+        }
+      }
+      
+      // Module diagnostics from in-memory state - ALL 12 MODULES
+      const moduleDiagnostics = ALL_12_MODULES.map(name => {
+        const health = substrateState.modules[name] || initModuleHealth(name);
+        return {
+          name,
+          health_score: health.healthScore,
+          status: health.status,
+          circuit_state: health.circuitState,
+          consecutive_failures: health.consecutiveFailures,
+          consecutive_successes: health.consecutiveSuccesses,
+          last_success: health.lastSuccess ? new Date(health.lastSuccess).toISOString() : null,
+          last_failure: health.lastFailure ? new Date(health.lastFailure).toISOString() : null,
+        };
+      });
       
       // Provider availability
       const providerStatus: Record<string, boolean> = {};

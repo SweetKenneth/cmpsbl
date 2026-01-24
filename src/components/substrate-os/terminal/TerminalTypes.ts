@@ -53,7 +53,7 @@ export const BOOT_MESSAGES = [
   '◉ modernizer evolution engine online',
   '◉ integration enterprise adapters ready',
   '────────────────────────────────────────',
-  '12 modules | 160+ commands | 100% health',
+  '12 modules | 160+ commands | health: 100%',
   'type \'help\' for commands or \'help <module>\' for specifics',
   '',
 ];
