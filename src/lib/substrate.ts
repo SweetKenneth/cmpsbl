@@ -54,13 +54,35 @@ class SubstrateClient {
         body: request,
       });
 
+      const now = new Date().toISOString();
+
       if (error) {
         return {
           success: false,
           module: request.module,
           action: request.action,
           error: error.message,
-          timestamp: new Date().toISOString(),
+          timestamp: now,
+        };
+      }
+
+      // Many substrate actions return HTTP 200 with a JSON body containing { success: false, ... }.
+      // Treat that as a failure so the terminal/UI doesn't show confusing “2xx but error” states.
+      const payload = data as any;
+      if (payload && typeof payload === 'object' && 'success' in payload && payload.success === false) {
+        const message =
+          payload.error_message ||
+          payload.error ||
+          payload.message ||
+          'Command failed';
+
+        return {
+          success: false,
+          module: request.module,
+          action: request.action,
+          error: String(message),
+          data: payload as T,
+          timestamp: now,
         };
       }
 
@@ -69,7 +91,7 @@ class SubstrateClient {
         module: request.module,
         action: request.action,
         data: data as T,
-        timestamp: new Date().toISOString(),
+        timestamp: now,
       };
     } catch (err) {
       return {
