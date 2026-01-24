@@ -1,5 +1,5 @@
 /**
- * Template & OS Marketplace — promptfluid® Developer Store
+ * Template & OS Marketplace — CMPSBL Developer Store
  * The World's First Production-Ready AI Governance OS
  */
 
@@ -127,9 +127,9 @@ export default function Marketplace() {
   return (
     <>
       <SEO
-        title="Developer Marketplace | World's First AI Governance OS"
+        title="Developer Marketplace | CMPSBL — World's First AI Governance OS"
         description="The only operating system that gives LLMs persistent memory, real-time governance, and autonomous improvement. Templates from $9, OS License $599. SDK is FREE."
-        keywords={["AI governance OS", "cognitive operating system", "AI templates", "LLM memory", "AI security", "promptfluid", "AI SDK"]}
+        keywords={["CMPSBL", "AI governance OS", "cognitive operating system", "AI templates", "LLM memory", "AI security", "AI SDK"]}
       />
       <div className="min-h-screen bg-background">
         <PublicNav />
