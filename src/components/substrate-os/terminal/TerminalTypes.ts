@@ -39,7 +39,7 @@ export const DEFAULT_CONFIG: TerminalConfig = {
 
 // Terminal personality messages
 export const BOOT_MESSAGES = [
-  '▓▓▓▓▓▓▓▓▓▓ promptfluid® substrate os v4.3.0',
+  '▓▓▓▓▓▓▓▓▓▓ promptfluid® substrate os v5.0.0',
   '◉ core kernel loaded',
   '◉ ripple message bus initialized',
   '◉ access identity layer online',
@@ -52,9 +52,10 @@ export const BOOT_MESSAGES = [
   '◉ system admin layer ready',
   '◉ modernizer evolution engine online [shadow/prod workflow]',
   '◉ integration enterprise adapters ready',
+  '◉ terminal v5.0: aliases, macros, NLP, watch mode, audit',
   '────────────────────────────────────────',
-  '12 modules | 175+ commands | health: 100%',
-  'type \'help\' for commands or \'help <module>\' for specifics',
+  '12 modules | 200+ commands | health: 100%',
+  'type \'help\' for commands • \'alias\' for shortcuts • \'macro list\' for scripts',
   '',
 ];
 
