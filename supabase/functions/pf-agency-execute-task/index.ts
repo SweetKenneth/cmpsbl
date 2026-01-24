@@ -20,11 +20,16 @@ const CIRCUIT_BREAKER = { failureThreshold: 3, openDurationMs: 60000 };
 // ============================================
 // PROVIDERS
 // ============================================
+// Get Firecrawl API key - check both manual and connector secrets
+function getFirecrawlApiKey(): string | undefined {
+  return Deno.env.get('FIRECRAWL_API_KEY') || Deno.env.get('FIRECRAWL_API_KEY_1');
+}
+
 const PROVIDERS = {
   firecrawl: {
-    enabled: () => !!Deno.env.get('FIRECRAWL_API_KEY'),
+    enabled: () => !!getFirecrawlApiKey(),
     scrape: async (url: string) => {
-      const apiKey = Deno.env.get('FIRECRAWL_API_KEY');
+      const apiKey = getFirecrawlApiKey();
       const response = await fetch('https://api.firecrawl.dev/v1/scrape', {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
@@ -35,7 +40,7 @@ const PROVIDERS = {
       return data.data?.markdown || data.markdown || '';
     },
     search: async (query: string, limit: number = 5) => {
-      const apiKey = Deno.env.get('FIRECRAWL_API_KEY');
+      const apiKey = getFirecrawlApiKey();
       const response = await fetch('https://api.firecrawl.dev/v1/search', {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
@@ -46,7 +51,7 @@ const PROVIDERS = {
       return data.data || [];
     },
     map: async (url: string, limit: number = 100) => {
-      const apiKey = Deno.env.get('FIRECRAWL_API_KEY');
+      const apiKey = getFirecrawlApiKey();
       const response = await fetch('https://api.firecrawl.dev/v1/map', {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },

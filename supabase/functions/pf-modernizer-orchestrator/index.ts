@@ -34,22 +34,8 @@ serve(async (req) => {
 
     console.log('User authenticated:', user.id);
 
-    // Check quota
-    const { data: quotaOk } = await supabase.rpc('check_modernizer_quota', { 
-      p_user_id: user.id 
-    });
-
-    if (!quotaOk) {
-      return new Response(JSON.stringify({ 
-        error: 'Monthly quota exceeded',
-        upgrade_required: true 
-      }), {
-        status: 402,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
-    }
-
-    console.log('Creating job...');
+    // QUOTA CHECK REMOVED - unlimited usage now
+    console.log('Creating job (no quota limit)...');
     
     // Create job
     const { data: job, error: jobError } = await supabase

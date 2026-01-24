@@ -365,7 +365,7 @@ async function processJob(jobId: string, supabase: any) {
       throw updateError;
     }
 
-    const FIRECRAWL_API_KEY = Deno.env.get('FIRECRAWL_API_KEY');
+    const FIRECRAWL_API_KEY = Deno.env.get('FIRECRAWL_API_KEY') || Deno.env.get('FIRECRAWL_API_KEY_1');
     if (!FIRECRAWL_API_KEY) {
       console.error('❌ FIRECRAWL_API_KEY not configured');
       throw new Error('FIRECRAWL_API_KEY not configured');
