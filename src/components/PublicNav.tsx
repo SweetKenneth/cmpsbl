@@ -45,6 +45,7 @@ export function PublicNav() {
       icon: Code,
       items: [
         { name: "For Developers", href: "/developers", description: "Build Intelligent Apps", icon: Code },
+        { name: "Marketplace", href: "/marketplace", description: "Templates & OS ($9-$599)", icon: Sparkles },
         { name: "Gaming AI", href: "/gaming", description: "NPC Brains & World Engines", icon: Gamepad2 },
         { name: "CodeLab", href: "/codelab", description: "Templates & Workbench", icon: Terminal },
         { name: "Documentation", href: "/documentation", description: "API Reference", icon: FileText },
@@ -85,7 +86,7 @@ export function PublicNav() {
   // Quick access items shown directly in nav
   const quickLinks = [
     { name: "Developers", href: "/developers" },
-    { name: "Gaming", href: "/gaming" },
+    { name: "Marketplace", href: "/marketplace" },
     { name: "Use Cases", href: "/use-cases" },
   ];
 

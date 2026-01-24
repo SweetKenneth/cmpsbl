@@ -4527,6 +4527,60 @@ export type Database = {
         }
         Relationships: []
       }
+      marketplace_licenses: {
+        Row: {
+          activated: boolean | null
+          activated_at: string | null
+          activated_domain: string | null
+          amount_paid: number | null
+          created_at: string
+          id: string
+          license_key_hash: string
+          license_key_prefix: string
+          product_id: string | null
+          product_type: string
+          purchaser_email: string
+          stripe_customer_id: string | null
+          stripe_session_id: string
+          template_name: string | null
+          updated_at: string
+        }
+        Insert: {
+          activated?: boolean | null
+          activated_at?: string | null
+          activated_domain?: string | null
+          amount_paid?: number | null
+          created_at?: string
+          id?: string
+          license_key_hash: string
+          license_key_prefix: string
+          product_id?: string | null
+          product_type: string
+          purchaser_email: string
+          stripe_customer_id?: string | null
+          stripe_session_id: string
+          template_name?: string | null
+          updated_at?: string
+        }
+        Update: {
+          activated?: boolean | null
+          activated_at?: string | null
+          activated_domain?: string | null
+          amount_paid?: number | null
+          created_at?: string
+          id?: string
+          license_key_hash?: string
+          license_key_prefix?: string
+          product_id?: string | null
+          product_type?: string
+          purchaser_email?: string
+          stripe_customer_id?: string | null
+          stripe_session_id?: string
+          template_name?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       modernizer_analytics: {
         Row: {
           analysis_result: Json | null
