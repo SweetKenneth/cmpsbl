@@ -545,7 +545,7 @@ export function HeroMetaSubstrate() {
           transition={{ delay: 0.7 }}
           className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 p-6 sm:p-8 rounded-2xl border border-border/50 bg-card/30 backdrop-blur-sm"
         >
-          <AnimatedStat value={11} label="Core Modules" />
+          <AnimatedStat value={12} label="Core Modules" />
           <AnimatedStat value={124} suffix="+" label="API Actions" />
           <AnimatedStat value={60} suffix="+" label="Data Tables" />
           <AnimatedStat value={100} suffix="ms" label="Avg Latency" />

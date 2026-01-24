@@ -19,7 +19,7 @@ import {
   Bot, Image, MessageSquare, Network, Database, Activity,
   Cpu, GitBranch, Package, PlayCircle, Sparkles, Workflow,
   Target, Gauge, Search, Bell, Timer, CloudLightning, Fingerprint,
-  Radio, Lightbulb, Flame, Star, ArrowRight, Globe, Users
+  Radio, Lightbulb, Flame, Star, ArrowRight, Globe, Users, Plug
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -4815,7 +4815,7 @@ class SocialGraphModeler {
 
 const substrate = new SubstrateClient(config);
 
-type ModuleType = 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system';
+type ModuleType = 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'core' | 'ripple' | 'access' | 'modernizer' | 'integration';
 
 interface CompositionNode {
   id: string;
@@ -5424,7 +5424,7 @@ Content-Type: application/json
 Authorization: Bearer <jwt> (optional)
 
 {
-  "module": "brain|decode|defense|nexus|vision|dream|system",
+  "module": "brain|decode|defense|nexus|vision|dream|system|core|ripple|access|modernizer|integration",
   "action": "<action-name>",
   "payload": { /* action parameters */ }
 }`}</code>
@@ -5839,7 +5839,7 @@ const response = await substrate.nexus.route('Explain quantum computing');`}
                 >
                   All ({TEMPLATES.length})
                 </Button>
-                {['brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'system'].map((cat) => {
+                {['brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'system', 'integration'].map((cat) => {
                   const count = TEMPLATES.filter(t => t.category === cat).length;
                   if (count === 0) return null;
                   return (
