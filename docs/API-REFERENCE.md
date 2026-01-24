@@ -1,6 +1,6 @@
 # promptfluid® Substrate — API Reference
 
-**v4.2.0 | Complete 12-Module Cognitive OS API**
+**v4.3.0 | Complete 12-Module Cognitive OS API**
 
 ---
 
@@ -227,16 +227,49 @@ Diagnostics, backup/restore, and system management.
 
 ### MODERNIZER (Self-Evolution)
 
-Codebase analysis, evolution proposals, self-improvement.
+Codebase analysis, evolution proposals, self-improvement with shadow/production workflow.
 
 | Action | Description | Parameters |
 |--------|-------------|------------|
 | `scan` | Scan codebase | `{ depth? }` |
-| `propose` | Generate proposals | `{ focus? }` |
-| `implement` | Implement proposal | `{ proposal_id }` |
-| `apply` | Apply changes | `{ changes }` |
-| `rollback` | Rollback changes | `{ checkpoint_id }` |
-| `pulse` | Heartbeat check | `{}` |
+| `propose` | Generate proposals (shadow mode) | `{ scope?, notes?, max_changes? }` |
+| `plans` | List all upgrade plans | `{}` |
+| `review` | Review a specific plan | `{ plan_id }` |
+| `validate` | Validate plan readiness | `{ plan_id }` |
+| `diff` | View plan diff and health comparison | `{ plan_id }` |
+| `apply` | Apply plan (auto-routes shadow→prod) | `{ plan_id }` |
+| `apply_shadow` | Apply to shadow mode only | `{ plan_id }` |
+| `test_shadow` | Test shadow mode changes | `{ plan_id }` |
+| `apply_production` | Promote shadow to production | `{ plan_id }` |
+| `rollback` | Rollback changes | `{ plan_id }` |
+| `delete` | Delete/reject a plan | `{ plan_id, reason? }` |
+| `applied` | List all applied improvements | `{}` |
+| `pulse` | Heartbeat check | `{}`  |
+
+**Upgrade Workflow:**
+```typescript
+// 1. Scan for improvements
+await substrate.modernizer.scan({ depth: 'deep' });
+
+// 2. Generate proposal (enters shadow mode)
+await substrate.modernizer.propose({ scope: 'brain', notes: 'optimize memory' });
+
+// 3. Validate readiness
+await substrate.modernizer.validate(planId);
+
+// 4. Apply to shadow (test environment)
+await substrate.modernizer.applyShadow(planId);
+
+// 5. Test shadow changes
+await substrate.modernizer.testShadow(planId);
+
+// 6. Promote to production
+await substrate.modernizer.applyProduction(planId);
+
+// OR use auto-routing (shadow → production in 2 calls)
+await substrate.modernizer.apply(planId); // → shadow_applied
+await substrate.modernizer.apply(planId); // → applied (production)
+```
 
 ---
 

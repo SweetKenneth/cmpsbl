@@ -1,6 +1,6 @@
 /**
  * promptfluid® Substrate Provider
- * v4.2.0 — Cognitive Orchestration Substrate (12-Module Architecture)
+ * v4.3.0 — Cognitive Orchestration Substrate (12-Module Architecture)
  * 
  * Wraps the application with substrate context and auto-initialization
  */
