@@ -5,7 +5,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Brain, MessageSquare, Shield, Zap, Eye, Moon, Settings, Sparkles, Cpu, Radio, Key } from 'lucide-react';
+import { Brain, MessageSquare, Shield, Zap, Eye, Moon, Settings, Sparkles, Cpu, Radio, Key, Plug } from 'lucide-react';
 import { SubstrateModule } from '@/lib/substrate';
 
 interface ModuleCardProps {
@@ -89,6 +89,12 @@ const moduleConfig: Record<SubstrateModule, {
     label: 'Access',
     description: 'API keys, billing, metering',
     color: 'text-amber-500',
+  },
+  integration: {
+    icon: Plug,
+    label: 'Integration',
+    description: 'Enterprise adapters, LLM governance',
+    color: 'text-emerald-500',
   },
 };
 

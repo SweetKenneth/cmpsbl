@@ -1,6 +1,6 @@
 /**
  * promptfluid® Substrate Provider
- * v2026.01 — Cognitive Orchestration Substrate
+ * v4.2.0 — Cognitive Orchestration Substrate (12-Module Architecture)
  * 
  * Wraps the application with substrate context and auto-initialization
  */
@@ -41,6 +41,7 @@ const SubstrateContext = createContext<SubstrateContextType>({
     access: defaultModuleStatus,
     system: defaultModuleStatus,
     modernizer: defaultModuleStatus,
+    integration: defaultModuleStatus,
   },
   overallHealth: 0,
   refresh: async () => {},
@@ -69,6 +70,7 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
     access: defaultModuleStatus,
     system: defaultModuleStatus,
     modernizer: defaultModuleStatus,
+    integration: defaultModuleStatus,
   });
 
   const checkModule = async (module: SubstrateModule): Promise<ModuleStatus> => {
@@ -89,8 +91,8 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
   };
 
   const refresh = async () => {
-    // Check all 11 substrate modules (v4.1.1 full kernel architecture)
-    const moduleList: SubstrateModule[] = ['core', 'ripple', 'access', 'brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'system', 'modernizer'];
+    // Check all 12 substrate modules (v4.2.0 full kernel architecture)
+    const moduleList: SubstrateModule[] = ['core', 'ripple', 'access', 'brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'system', 'modernizer', 'integration'];
     const results = await Promise.all(moduleList.map(checkModule));
     
     const newModules = moduleList.reduce((acc, module, index) => {

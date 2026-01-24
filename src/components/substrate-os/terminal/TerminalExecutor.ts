@@ -3,7 +3,7 @@
  * Handles parsing and execution of all substrate commands
  */
 
-import { substrate, brain, decode, defense, nexus, vision, dream, system, modernizer, core, ripple, access } from '@/lib/substrate';
+import { substrate, brain, decode, defense, nexus, vision, dream, system, modernizer, core, ripple, access, integration } from '@/lib/substrate';
 import { supabase } from '@/integrations/supabase/client';
 import { ALL_COMMANDS, COMMAND_CATEGORIES, type CommandDefinition } from './TerminalCommands';
 import { getRandomItem, PERSONALITY_RESPONSES } from './TerminalTypes';
@@ -115,13 +115,13 @@ export async function executeCommand(
 ┌─ SUBSTRATE IDENTITY ─────────────────────────────────────────
 │ 
 │  ██████╗ ███████╗     Cognitive Operating System
-│  ██╔═══╝ ██╔════╝     promptfluid® Substrate v4.0.0
+│  ██╔═══╝ ██╔════╝     promptfluid® Substrate v4.2.0
 │  ██║     ███████╗     
 │  ██║     ╚════██║     Environment: Lovable Cloud
 │  ██████╗ ███████║     Status: OPERATIONAL
 │  ╚═════╝ ╚══════╝     
 │ 
-│  11-Module Architecture — Full AI Operating System
+│  12-Module Architecture — Full AI Operating System
 │  
 │  Mode: ${isOperator ? 'OPERATOR (full access)' : 'OBSERVER (read-only)'}
 │  
@@ -139,6 +139,7 @@ export async function executeCommand(
 │  │  defense://    security, threats, anomalies
 │  │  nexus://      AI routing, multi-provider
 │  │  vision://     observability, metrics
+│  │  integration://enterprise adapters, LLM governance
 │  │
 │  ├─ ADMIN LAYER ─────────────────────────────────────────────
 │  │  system://     administration, backups
@@ -539,6 +540,102 @@ export async function executeCommand(
         return { success: false, output: '▓ ERROR: Developer ID required\n  Usage: access.subscription <developer_id>' };
       }
       result = await access.subscription(args[0]);
+    }
+
+    // INTEGRATION module (Enterprise Adapters)
+    else if (base === 'integration.status') {
+      result = await integration.status();
+    } else if (base === 'integration.pulse') {
+      result = await integration.pulse();
+    } else if (base === 'integration.adapters') {
+      result = await integration.adapters();
+    } else if (base === 'integration.connections') {
+      result = await integration.connections();
+    } else if (base === 'integration.discovered') {
+      result = await integration.discovered(args[0]);
+    } else if (base === 'integration.mapped_commands') {
+      result = await integration.mappedCommands(args[0]);
+    } else if (base === 'integration.policies') {
+      result = await integration.policies();
+    } else if (base === 'integration.audit_log') {
+      result = await integration.auditLog({ adapter_id: args[0], limit: args[1] ? parseInt(args[1]) : undefined });
+    } else if (base === 'integration.connect') {
+      if (!args[0] || !args[1]) {
+        return { success: false, output: '▓ ERROR: Type and name required\n  Usage: integration.connect <type> <name> <config>' };
+      }
+      const configStr = args.slice(2).join(' ') || '{}';
+      result = await integration.connect({ 
+        adapter_type: args[0] as any, 
+        name: args[1], 
+        config: JSON.parse(configStr) 
+      });
+    } else if (base === 'integration.disconnect') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Adapter ID required\n  Usage: integration.disconnect <adapter_id>' };
+      }
+      result = await integration.disconnect(args[0]);
+    } else if (base === 'integration.test') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Adapter ID required\n  Usage: integration.test <adapter_id>' };
+      }
+      result = await integration.test(args[0]);
+    } else if (base === 'integration.discover') {
+      result = await integration.discover({ 
+        target: args[0], 
+        depth: args[1] as 'shallow' | 'deep' | undefined 
+      });
+    } else if (base === 'integration.map_command') {
+      if (!args[0] || !args[1] || !args[2]) {
+        return { success: false, output: '▓ ERROR: Function, command, and description required\n  Usage: integration.map_command <func> <cmd> <desc>' };
+      }
+      result = await integration.mapCommand({ 
+        discovered_function: args[0], 
+        terminal_command: args[1], 
+        description: args.slice(2).join(' ') 
+      });
+    } else if (base === 'integration.set_policy') {
+      const policyStr = args.slice(1).join(' ') || '{}';
+      result = await integration.setPolicy({ 
+        adapter_id: args[0], 
+        policy: JSON.parse(policyStr) 
+      });
+    } else if (base === 'integration.execute') {
+      if (!args[0] || !args[1]) {
+        return { success: false, output: '▓ ERROR: Adapter ID and action required\n  Usage: integration.execute <adapter_id> <action> [params]' };
+      }
+      const paramsStr = args.slice(2).join(' ') || '{}';
+      result = await integration.execute({ 
+        adapter_id: args[0], 
+        action: args[1], 
+        parameters: JSON.parse(paramsStr) 
+      });
+    } else if (base === 'integration.game_discover') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Engine type required\n  Usage: integration.game_discover <engine_type>\n  Engines: unity, unreal, godot, custom' };
+      }
+      result = await integration.gameEngine.discover(args[0] as any, args[1]);
+    } else if (base === 'integration.enterprise_discover') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: System type required\n  Usage: integration.enterprise_discover <system_type>\n  Systems: sap, salesforce, workday, servicenow, dynamics, custom' };
+      }
+      result = await integration.enterprise.discover(args[0] as any);
+    } else if (base === 'integration.dev_discover') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Platform type required\n  Usage: integration.dev_discover <platform_type>\n  Platforms: github, gitlab, jira, confluence, linear, notion, custom' };
+      }
+      result = await integration.devPlatform.discover(args[0] as any);
+    } else if (base === 'integration.payroll') {
+      if (!args[0] || !args[1]) {
+        return { success: false, output: '▓ ERROR: Adapter ID and operation required\n  Usage: integration.payroll <adapter_id> <operation> [params]\n  Operations: calculate, schedule, status' };
+      }
+      const paramsStr = args.slice(2).join(' ') || '{}';
+      result = await integration.enterprise.payroll(args[0], args[1] as any, JSON.parse(paramsStr));
+    } else if (base === 'integration.customer_service') {
+      if (!args[0] || !args[1]) {
+        return { success: false, output: '▓ ERROR: Adapter ID and operation required\n  Usage: integration.customer_service <adapter_id> <operation> [params]\n  Operations: respond, escalate, summarize' };
+      }
+      const paramsStr = args.slice(2).join(' ') || '{}';
+      result = await integration.enterprise.customerService(args[0], args[1] as any, JSON.parse(paramsStr));
     }
 
     // Unknown command

@@ -3,13 +3,13 @@
  * Complete list of all substrate commands organized by module
  */
 
-import { Brain, Shield, Eye, Zap, MessageSquare, Moon, Settings, Terminal, Cpu, Clock, Search, Database, Activity, Lock, Router, Gauge, Sparkles, Radio, Key, Server, Send, List, PlayCircle } from 'lucide-react';
+import { Brain, Shield, Eye, Zap, MessageSquare, Moon, Settings, Terminal, Cpu, Clock, Search, Database, Activity, Lock, Router, Gauge, Sparkles, Radio, Key, Server, Send, List, PlayCircle, Plug, Globe, Workflow, Users, CreditCard, GitBranch, Box } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
 export interface CommandDefinition {
   command: string;
   description: string;
-  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer' | 'core' | 'ripple' | 'access' | 'meta';
+  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer' | 'core' | 'ripple' | 'access' | 'integration' | 'meta';
   icon: LucideIcon;
   requiresOperator: boolean;
   args?: string;
@@ -176,6 +176,30 @@ export const ACCESS_COMMANDS: CommandDefinition[] = [
   { command: 'access.subscription', description: 'Get subscription info', category: 'access', icon: Key, requiresOperator: false, args: '<developer_id>' },
 ];
 
+// INTEGRATION module — Enterprise adapters, auto-discovery, LLM governance
+export const INTEGRATION_COMMANDS: CommandDefinition[] = [
+  { command: 'integration.status', description: 'Integration module status', category: 'integration', icon: Plug, requiresOperator: false },
+  { command: 'integration.pulse', description: 'Lightweight heartbeat', category: 'integration', icon: Activity, requiresOperator: false },
+  { command: 'integration.adapters', description: 'List available adapters', category: 'integration', icon: Box, requiresOperator: false },
+  { command: 'integration.connect', description: 'Connect enterprise adapter', category: 'integration', icon: Plug, requiresOperator: true, args: '<type> <name> <config>', example: 'integration.connect erp "SAP" {"host":"..."}' },
+  { command: 'integration.disconnect', description: 'Disconnect adapter', category: 'integration', icon: Plug, requiresOperator: true, args: '<adapter_id>' },
+  { command: 'integration.test', description: 'Test adapter connectivity', category: 'integration', icon: Activity, requiresOperator: true, args: '<adapter_id>' },
+  { command: 'integration.connections', description: 'List connected adapters', category: 'integration', icon: Globe, requiresOperator: false },
+  { command: 'integration.discover', description: 'Auto-discover client systems', category: 'integration', icon: Search, requiresOperator: true, args: '[target] [depth]', example: 'integration.discover erp deep' },
+  { command: 'integration.discovered', description: 'Get discovered endpoints', category: 'integration', icon: List, requiresOperator: false, args: '[adapter_id]' },
+  { command: 'integration.map_command', description: 'Map function to terminal cmd', category: 'integration', icon: GitBranch, requiresOperator: true, args: '<func> <cmd> <desc>' },
+  { command: 'integration.mapped_commands', description: 'List mapped commands', category: 'integration', icon: Terminal, requiresOperator: false, args: '[adapter_id]' },
+  { command: 'integration.execute', description: 'Execute governed LLM action', category: 'integration', icon: PlayCircle, requiresOperator: true, args: '<adapter_id> <action> [params]' },
+  { command: 'integration.policies', description: 'Get governance policies', category: 'integration', icon: Shield, requiresOperator: false },
+  { command: 'integration.set_policy', description: 'Set governance policy', category: 'integration', icon: Lock, requiresOperator: true, args: '[adapter_id] <policy>' },
+  { command: 'integration.audit_log', description: 'View governance audit log', category: 'integration', icon: Eye, requiresOperator: false, args: '[adapter_id] [limit]' },
+  { command: 'integration.game_discover', description: 'Discover game engine APIs', category: 'integration', icon: Workflow, requiresOperator: true, args: '<engine_type>', example: 'integration.game_discover unity' },
+  { command: 'integration.enterprise_discover', description: 'Discover enterprise APIs', category: 'integration', icon: Users, requiresOperator: true, args: '<system_type>', example: 'integration.enterprise_discover salesforce' },
+  { command: 'integration.dev_discover', description: 'Discover dev platform APIs', category: 'integration', icon: GitBranch, requiresOperator: true, args: '<platform_type>', example: 'integration.dev_discover github' },
+  { command: 'integration.payroll', description: 'Execute payroll operation', category: 'integration', icon: CreditCard, requiresOperator: true, args: '<adapter_id> <operation> [params]' },
+  { command: 'integration.customer_service', description: 'Execute customer service op', category: 'integration', icon: Users, requiresOperator: true, args: '<adapter_id> <operation> [params]' },
+];
+
 export const META_COMMANDS: CommandDefinition[] = [
   { command: 'help', description: 'Show all commands', category: 'meta', icon: Terminal, requiresOperator: false },
   { command: 'help brain', description: 'Brain module commands', category: 'meta', icon: Brain, requiresOperator: false },
@@ -189,6 +213,7 @@ export const META_COMMANDS: CommandDefinition[] = [
   { command: 'help core', description: 'Core kernel commands', category: 'meta', icon: Server, requiresOperator: false },
   { command: 'help ripple', description: 'Message bus commands', category: 'meta', icon: Radio, requiresOperator: false },
   { command: 'help access', description: 'Identity/billing commands', category: 'meta', icon: Key, requiresOperator: false },
+  { command: 'help integration', description: 'Enterprise integration commands', category: 'meta', icon: Plug, requiresOperator: false },
   { command: 'clear', description: 'Clear terminal history', category: 'meta', icon: Terminal, requiresOperator: false },
   { command: 'whoami', description: 'Display identity', category: 'meta', icon: Cpu, requiresOperator: false },
   { command: 'history', description: 'Command history', category: 'meta', icon: Clock, requiresOperator: false },
@@ -208,6 +233,7 @@ export const ALL_COMMANDS: CommandDefinition[] = [
   ...CORE_COMMANDS,
   ...RIPPLE_COMMANDS,
   ...ACCESS_COMMANDS,
+  ...INTEGRATION_COMMANDS,
   ...META_COMMANDS,
 ];
 
@@ -221,7 +247,8 @@ export const COMMAND_CATEGORIES = {
   dream: { label: 'DREAM', color: 'text-fuchsia-400', borderColor: 'border-fuchsia-500/30', commands: DREAM_COMMANDS },
   ripple: { label: 'RIPPLE', color: 'text-cyan-500', borderColor: 'border-cyan-500/30', commands: RIPPLE_COMMANDS },
   access: { label: 'ACCESS', color: 'text-amber-500', borderColor: 'border-amber-500/30', commands: ACCESS_COMMANDS },
-  system: { label: 'SYSTEM', color: 'text-emerald-400', borderColor: 'border-emerald-500/30', commands: SYSTEM_COMMANDS },
+  integration: { label: 'INTEGRATION', color: 'text-emerald-400', borderColor: 'border-emerald-500/30', commands: INTEGRATION_COMMANDS },
+  system: { label: 'SYSTEM', color: 'text-gray-400', borderColor: 'border-gray-500/30', commands: SYSTEM_COMMANDS },
   modernizer: { label: 'MODERNIZER', color: 'text-pink-400', borderColor: 'border-pink-500/30', commands: MODERNIZER_COMMANDS },
   meta: { label: 'META', color: 'text-gray-400', borderColor: 'border-gray-500/30', commands: META_COMMANDS },
 } as const;

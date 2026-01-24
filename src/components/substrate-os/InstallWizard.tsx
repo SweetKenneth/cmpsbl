@@ -80,9 +80,9 @@ const INDUSTRY_PRESETS = [
     id: 'enterprise',
     name: 'Enterprise Business',
     icon: Briefcase,
-    description: 'Operations AI, institutional memory, workflow automation, and analytics',
+    description: 'Operations AI, institutional memory, workflow automation, LLM governance, and system integration',
     color: 'text-blue-400 border-blue-500/30 bg-blue-500/10',
-    enabledModules: ['core', 'ripple', 'access', 'brain', 'vision', 'nexus', 'defense', 'system', 'modernizer'],
+    enabledModules: ['core', 'ripple', 'access', 'brain', 'vision', 'nexus', 'defense', 'system', 'modernizer', 'integration'],
     tagline: 'Intelligence that scales',
   },
 ];
@@ -112,6 +112,7 @@ const MODULES = [
   { key: 'dream', name: 'Dream', required: false, icon: '✨', description: 'Offline learning cycles' },
   { key: 'system', name: 'System', required: true, icon: '⚙️', description: 'Operations & backup' },
   { key: 'modernizer', name: 'Modernizer', required: false, icon: '🔄', description: 'Self-upgrade system' },
+  { key: 'integration', name: 'Integration', required: false, icon: '🔌', description: 'Enterprise adapters & LLM governance' },
 ];
 
 const AI_PROVIDERS = [
