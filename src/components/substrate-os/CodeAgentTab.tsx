@@ -1,6 +1,6 @@
 /**
  * CodeAgent Tab — Self-Evolution Coding Interface
- * v2.0.0 — With circuit breakers, self-healing, and resilient execution
+ * v3.0.0 — With robust workflow engine: Read → Think → Write → Confirm → Submit
  * Provides chat interface to the Substrate Coder + Sandbox validation preview
  */
 
@@ -8,7 +8,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { 
   Code, Send, Loader2, CheckCircle2, XCircle, AlertTriangle, 
   Terminal, Zap, Bot, FileCode, Play, RefreshCw, Copy, Check,
-  Heart, ShieldCheck, Activity
+  Heart, ShieldCheck, Activity, Eye, Brain, Cog, Rocket
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -31,6 +31,15 @@ import {
   type CodeResult 
 } from '@/lib/codeagent/executor';
 import { getHealingActions, getOverallHealth } from '@/lib/codeagent/circuit-breaker';
+import { 
+  executeWorkflow, 
+  getWorkflowProgress, 
+  getWorkflowState, 
+  resetWorkflow,
+  type WorkflowStage,
+  type WorkflowExecutionResult
+} from '@/lib/codeagent/workflow';
+import { getShadowModeStatus } from '@/lib/codeagent/shadow-mode';
 
 interface Message {
   id: string;
@@ -78,12 +87,20 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
   const [copied, setCopied] = useState(false);
   const [agentHealth, setAgentHealth] = useState(getCodeAgentHealth());
   const [overallHealth, setOverallHealth] = useState(getOverallHealth());
+  const [workflowProgress, setWorkflowProgress] = useState<{
+    stage: WorkflowStage;
+    stageProgress: number;
+    overallProgress: number;
+    completedStages: WorkflowStage[];
+  } | null>(null);
+  const [shadowMode, setShadowMode] = useState(getShadowModeStatus());
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // Fetch status on mount
   useEffect(() => {
     fetchStatus();
     refreshHealth();
+    setShadowMode(getShadowModeStatus());
   }, []);
 
   // Auto-scroll on new messages
@@ -208,73 +225,117 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
         return;
       }
       
-      // Default: Generate code using resilient executor
+      // Default: Use robust workflow engine
       const improvement = parseImprovementRequest(input);
       
-      addAgentMessage('🔄 **Processing...**\nChecking brain memory, validating patterns, generating code...', undefined, 'system');
+      // Show workflow progress
+      addAgentMessage(
+        '🔄 **Starting Workflow Engine**\n\n' +
+        '**Stage 1/5:** Reading context and gathering dependencies...',
+        undefined,
+        'system'
+      );
       
-      const result: CodeResult = await generateCode({
-        description: improvement.description,
-        module: improvement.module,
-        changeType: improvement.change_type,
-      });
+      // Start workflow progress tracking
+      const progressInterval = setInterval(() => {
+        const progress = getWorkflowProgress();
+        setWorkflowProgress(progress);
+      }, 100);
+      
+      try {
+        const result: WorkflowExecutionResult = await executeWorkflow({
+          description: improvement.description,
+          module: improvement.module,
+          changeType: improvement.change_type,
+        });
+        
+        clearInterval(progressInterval);
+        setWorkflowProgress(null);
+        
+        // Remove the processing message
+        setMessages(prev => prev.slice(0, -1));
 
-      // Remove the processing message
-      setMessages(prev => prev.slice(0, -1));
+        if (result.success && result.code) {
+          setCurrentCode(result.code);
+          setValidationResult(result.validation ? { 
+            valid: result.validation.passed, 
+            issues: result.validation.issues 
+          } : null);
 
-      if (result.success && result.code) {
-        setCurrentCode(result.code);
-        setValidationResult(result.validation ? { valid: result.validation.safe, issues: result.validation.issues } : null);
+          const confidencePercent = result.confidence ? (result.confidence * 100).toFixed(0) : 'N/A';
+          const validationStatus = result.validation?.passed 
+            ? '✅ Validation passed — ready to apply' 
+            : `⚠️ Validation issues: ${result.validation?.issues?.join(', ') || 'Unknown'}`;
 
-        const confidencePercent = result.confidence ? (result.confidence * 100).toFixed(0) : 'N/A';
-        const validationStatus = result.validation?.safe 
-          ? '✅ Passes validation' 
-          : `⚠️ Validation issues: ${result.validation?.issues?.join(', ') || 'Unknown'}`;
+          // Format completed stages
+          const stagesFormatted = result.stagesCompleted.map(s => {
+            const icons: Record<string, string> = {
+              reading: '📖',
+              thinking: '🧠',
+              writing: '✍️',
+              confirming: '✅',
+              submitting: '🚀'
+            };
+            return `${icons[s] || '•'} ${s.charAt(0).toUpperCase() + s.slice(1)}`;
+          }).join(' → ');
 
-        addAgentMessage(
-          `**Generated Code**\n\`\`\`typescript\n${result.code.substring(0, 500)}${result.code.length > 500 ? '\n// ... (truncated)' : ''}\n\`\`\`\n\n` +
-          `- **File:** \`${result.filePath || 'N/A'}\`\n` +
-          `- **Operation:** ${result.operation || 'modify'}\n` +
-          `- **Confidence:** ${confidencePercent}%\n` +
-          `- **Provider:** ${result.provider || 'unknown'}\n` +
-          `- **Latency:** ${result.latencyMs || 0}ms\n` +
-          (result.fallbackUsed ? '- **Note:** Using fallback (service degraded)\n' : '') +
-          `\n${validationStatus}`,
-          {
-            provider: result.provider,
-            model: result.model,
-            latency_ms: result.latencyMs,
-            generated_code: result.code,
-            file_path: result.filePath,
-            confidence: result.confidence,
-            validation: result.validation ? { valid: result.validation.safe, issues: result.validation.issues } : undefined,
+          addAgentMessage(
+            `**✅ Code Generated Successfully**\n\n` +
+            `**Workflow:** ${stagesFormatted}\n\n` +
+            `\`\`\`typescript\n${result.code.substring(0, 600)}${result.code.length > 600 ? '\n// ... (truncated)' : ''}\n\`\`\`\n\n` +
+            `---\n` +
+            `📁 **File:** \`${result.filePath || 'N/A'}\`\n` +
+            `🔧 **Operation:** ${result.operation || 'create'}\n` +
+            `📊 **Confidence:** ${confidencePercent}%\n` +
+            `⏱️ **Duration:** ${result.duration}ms\n` +
+            (result.rollbackId ? `🔄 **Rollback ID:** \`${result.rollbackId.slice(0, 8)}...\`\n` : '') +
+            `\n${validationStatus}\n\n` +
+            `💡 *Type "apply" to deploy this change, or "rollback" to undo.*`,
+            {
+              provider: 'workflow-engine',
+              model: 'shadow-v1',
+              latency_ms: result.duration,
+              generated_code: result.code,
+              file_path: result.filePath,
+              confidence: result.confidence,
+              validation: result.validation ? { valid: result.validation.passed, issues: result.validation.issues } : undefined,
+            }
+          );
+
+          setActiveTab('preview');
+          
+          // Learn from successful generation
+          if (result.code && result.validation?.passed) {
+            learnFromOutcome(result.code, 'success').catch(console.error);
           }
-        );
-
-        setActiveTab('preview');
-        
-        // Learn from successful generation
-        if (result.code && result.validation?.safe) {
-          learnFromOutcome(result.code, 'success').catch(console.error);
+          
+          toast.success('Code generated successfully', {
+            description: `${result.stagesCompleted.length} workflow stages completed`
+          });
+        } else {
+          // Handle failure with detailed diagnostics
+          const state = getWorkflowState();
+          
+          addAgentMessage(
+            `❌ **Workflow Failed at Stage: ${result.stage}**\n\n` +
+            `**Error:** ${result.message}\n\n` +
+            `**Stages Completed:** ${result.stagesCompleted.join(' → ') || 'None'}\n\n` +
+            `**Duration:** ${result.duration}ms\n\n` +
+            `💡 **Recovery Options:**\n` +
+            `- Type "status" to check service health\n` +
+            `- Type "reset circuit" to reset all circuits\n` +
+            `- Try a simpler request first`,
+            undefined,
+            'system'
+          );
+          
+          toast.error('Code generation failed', { description: result.message });
+          refreshHealth();
         }
-      } else {
-        // Handle failure with self-healing suggestions
-        const health = getCodeAgentHealth();
-        let suggestion = '';
-        
-        if (health.coder.state === 'open') {
-          suggestion = '\n\n💡 **Suggestion:** The coder circuit is open. Try "reset circuit coder" to manually recover, or wait 60 seconds for auto-recovery.';
-        } else if (result.assessment && !result.assessment.canProceed) {
-          suggestion = `\n\n💡 **Suggestions:**\n${result.assessment.suggestions.map(s => `- ${s}`).join('\n')}`;
-        }
-        
-        addAgentMessage(
-          `❌ **Generation Failed**\n${result.error || 'Unknown error'}${suggestion}`,
-          undefined,
-          'system'
-        );
-        
-        refreshHealth();
+      } catch (error) {
+        clearInterval(progressInterval);
+        setWorkflowProgress(null);
+        throw error;
       }
     } catch (error) {
       console.error('CodeAgent error:', error);

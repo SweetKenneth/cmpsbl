@@ -1,9 +1,10 @@
 /**
  * CMPSBL Logo Component
- * Uses dark version (richer colors) - works on all backgrounds
+ * Uses high-color dark logo with transparent background
+ * Restricted to navigation bar and footer
  */
 
-import logoDark from "@/assets/cmpsbl-logo-dark.png";
+import cmpsblLogo from "@/assets/cmpsbl-logo.png";
 import { cn } from "@/lib/utils";
 
 interface CmpsblLogoProps {
@@ -13,21 +14,21 @@ interface CmpsblLogoProps {
 }
 
 const sizeClasses = {
-  sm: "h-8",
-  md: "h-10",
-  lg: "h-14",
-  xl: "h-20",
+  sm: "h-10",
+  md: "h-12",
+  lg: "h-16",
+  xl: "h-24",
 };
 
 export function CmpsblLogo({ className, iconOnly = false, size = "md" }: CmpsblLogoProps) {
   return (
     <img
-      src={logoDark}
+      src={cmpsblLogo}
       alt="CMPSBL By PromptFluid"
       className={cn(
         sizeClasses[size],
         "w-auto object-contain",
-        iconOnly && "aspect-square object-left",
+        iconOnly && "aspect-square object-left object-cover",
         className
       )}
     />
