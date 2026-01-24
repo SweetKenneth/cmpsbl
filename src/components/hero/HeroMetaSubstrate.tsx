@@ -339,15 +339,16 @@ function TypedText({ texts, gradientColors, className }: {
         contain: "layout style",
       }}
     >
-      <span className="inline-block" style={{ contain: "layout" }}>{displayText}</span>
+      <span style={{ display: "inline-block" }}>{displayText}</span>
       <span 
-        className="inline-block text-center"
         style={{
+          display: "inline-block",
+          width: "0.6ch",
+          textAlign: "center",
           WebkitTextFillColor: "hsl(var(--foreground))",
-          width: "0.5ch",
-          contain: "strict",
           animation: "blink 1s step-end infinite",
         }}
+        aria-hidden="true"
       >|</span>
     </span>
   );
