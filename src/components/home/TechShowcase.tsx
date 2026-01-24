@@ -304,14 +304,21 @@ await cmpsbl.integration.execute({
 ];
 
 // Syntax highlighting helper - extended for all modules
-function highlightCode(code: string) {
-  return code
+function highlightCode(code: string): string {
+  // Escape HTML first to prevent issues
+  let escaped = code
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+  
+  // Apply syntax highlighting with explicit white base for non-highlighted text
+  return escaped
     .replace(/(\/\/.*)/g, '<span class="text-slate-500">$1</span>')
     .replace(/(\bawait\b|\bconst\b|\blet\b|\bvar\b|\bif\b)/g, '<span class="text-purple-400">$1</span>')
     .replace(/(\bcmpsbl\b)/g, '<span class="text-cyan-400 font-semibold">$1</span>')
     .replace(/(\.core|\.ripple|\.access|\.brain|\.decode|\.nexus|\.defense|\.vision|\.dream|\.system|\.modernizer|\.integration)/g, '<span class="text-blue-400">$1</span>')
     .replace(/(\.schedule|\.list|\.emit|\.on|\.createKey|\.usage|\.remember|\.recall|\.chat|\.send|\.route|\.posture|\.analyze|\.block|\.health|\.query|\.cycle|\.backup|\.restore|\.scan|\.apply|\.discover|\.connect|\.execute)/g, '<span class="text-green-400">$1</span>')
-    .replace(/(".*?")/g, '<span class="text-amber-300">$1</span>')
+    .replace(/(&quot;.*?&quot;|".*?")/g, '<span class="text-amber-300">$1</span>')
     .replace(/(\d+)/g, '<span class="text-orange-400">$1</span>')
     .replace(/(true|false|null)/g, '<span class="text-rose-400">$1</span>');
 }
@@ -514,48 +521,45 @@ export function TechShowcase() {
               </div>
             </div>
             
-            {/* Code content with line numbers */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className="p-6 overflow-x-auto"
-              >
-                <div className="flex">
-                  {/* Line numbers */}
-                  <div className="pr-4 border-r border-white/10 select-none">
-                    {codeLines.map((_, idx) => (
-                      <div 
-                        key={idx} 
-                        className={cn(
-                          "text-xs font-mono text-white/20 text-right leading-relaxed h-6",
-                          idx < typedLines && "text-white/30"
-                        )}
-                      >
-                        {idx + 1}
-                      </div>
-                    ))}
-                  </div>
-                  
-                  {/* Code */}
-                  <div className="pl-4 flex-1 overflow-hidden">
-                    {codeLines.slice(0, typedLines).map((line, idx) => (
-                      <div
-                        key={`${activeTab}-${idx}`}
-                        className="text-sm font-mono leading-relaxed h-6 text-[hsl(var(--foreground))]"
-                        dangerouslySetInnerHTML={{ __html: highlightCode(line) || '&nbsp;' }}
-                      />
-                    ))}
-                    {typedLines < codeLines.length && (
-                      <span className="inline-block w-2 h-5 bg-cyan-400 animate-pulse ml-1" />
-                    )}
-                  </div>
+            {/* Code content with line numbers - NO animation to prevent overlap */}
+            <div
+              key={activeTab}
+              className="p-6 overflow-x-auto"
+            >
+              <div className="flex">
+                {/* Line numbers */}
+                <div className="pr-4 border-r border-white/10 select-none flex-shrink-0">
+                  {codeLines.map((_, idx) => (
+                    <div 
+                      key={`ln-${activeTab}-${idx}`} 
+                      className={cn(
+                        "text-xs font-mono text-white/20 text-right h-6 leading-6",
+                        idx < typedLines && "text-white/40"
+                      )}
+                    >
+                      {idx + 1}
+                    </div>
+                  ))}
                 </div>
-              </motion.div>
-            </AnimatePresence>
+                
+                {/* Code - using white text for dark terminal background */}
+                <div className="pl-4 flex-1 min-w-0">
+                  {codeLines.map((line, idx) => (
+                    <div
+                      key={`code-${activeTab}-${idx}`}
+                      className={cn(
+                        "text-sm font-mono h-6 leading-6 text-slate-300 whitespace-pre",
+                        idx >= typedLines && "invisible"
+                      )}
+                      dangerouslySetInnerHTML={{ __html: highlightCode(line) || '&nbsp;' }}
+                    />
+                  ))}
+                  {typedLines < codeLines.length && (
+                    <span className="inline-block w-2 h-5 bg-cyan-400 animate-pulse absolute" />
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
           
           {/* Floating description card */}
