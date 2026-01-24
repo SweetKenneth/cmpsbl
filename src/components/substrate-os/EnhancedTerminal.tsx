@@ -1,11 +1,11 @@
 /**
- * Enhanced Terminal v5.0.0
+ * Enhanced Terminal v5.1.0
  * Full-featured terminal with comprehensive commands, autocomplete,
- * aliases, macros, scheduling, watch mode, and audit trail
+ * aliases, macros, scheduling, watch mode, audit trail, and smart suggestions
  */
 
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
-import { Terminal, ChevronRight, Loader2, CheckCircle2, XCircle, Download, Maximize2, Minimize2, X } from 'lucide-react';
+import { Terminal, ChevronRight, Loader2, CheckCircle2, XCircle, Download, Maximize2, Minimize2, X, Sparkles } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -26,6 +26,7 @@ import { getMacro } from './terminal/useTerminalMacros';
 import { scheduleCommand, parseDelay, formatScheduleConfirmation } from './terminal/useTerminalScheduler';
 import { useTerminalWatch, formatWatchListOutput } from './terminal/useTerminalWatch';
 import { recordAuditEntry, exportAuditLog } from './terminal/useTerminalAudit';
+import { generateSmartSuggestions, getSuggestionDefinition, type SmartSuggestion } from './terminal/useSmartSuggestions';
 
 interface EnhancedTerminalProps {
   enabled: boolean;
@@ -46,6 +47,8 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
   const [theme, setTheme] = useState<TerminalTheme>('dark');
   const [isExpanded, setIsExpanded] = useState(false);
   const [sessionStats, setSessionStats] = useState({ commands: 0, success: 0, errors: 0 });
+  const [smartSuggestions, setSmartSuggestions] = useState<SmartSuggestion[]>([]);
+  const [showSmartSuggestions, setShowSmartSuggestions] = useState(false);
   
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -274,6 +277,15 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
       success: result.success ? prev.success + 1 : prev.success,
       errors: result.success ? prev.errors : prev.errors + 1,
     }));
+
+    // Generate smart suggestions after successful execution
+    if (result.success && !resolvedCmd.startsWith('__')) {
+      const suggestions = generateSmartSuggestions(resolvedCmd, commandHistory);
+      setSmartSuggestions(suggestions);
+      setShowSmartSuggestions(suggestions.length > 0);
+    } else {
+      setShowSmartSuggestions(false);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -282,12 +294,37 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
       setInput(suggestions[selectedSuggestion].command);
       setShowSuggestions(false);
     } else {
+      setShowSmartSuggestions(false);
       handleExecute(input);
       setInput('');
     }
   };
 
+  // Execute a smart suggestion by number (1-4)
+  const executeSmartSuggestion = useCallback((num: number) => {
+    const suggestion = smartSuggestions[num - 1];
+    if (suggestion) {
+      setShowSmartSuggestions(false);
+      handleExecute(suggestion.command);
+    }
+  }, [smartSuggestions]);
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
+    // Smart suggestions: number keys 1-4 when visible and input is empty
+    if (showSmartSuggestions && !input.trim() && ['1', '2', '3', '4'].includes(e.key)) {
+      e.preventDefault();
+      const num = parseInt(e.key);
+      if (num <= smartSuggestions.length) {
+        executeSmartSuggestion(num);
+        return;
+      }
+    }
+
+    // Dismiss smart suggestions when typing
+    if (showSmartSuggestions && e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
+      setShowSmartSuggestions(false);
+    }
+
     // Suggestions navigation
     if (showSuggestions && suggestions.length > 0) {
       if (e.key === 'ArrowDown') {
@@ -308,8 +345,15 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
       }
       if (e.key === 'Escape') {
         setShowSuggestions(false);
+        setShowSmartSuggestions(false);
         return;
       }
+    }
+
+    // Escape to dismiss smart suggestions
+    if (e.key === 'Escape' && showSmartSuggestions) {
+      setShowSmartSuggestions(false);
+      return;
     }
 
     // Command history navigation
@@ -335,11 +379,13 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
     if (e.ctrlKey && e.key === 'l') {
       e.preventDefault();
       setHistory([]);
+      setShowSmartSuggestions(false);
       toast.success('Terminal cleared');
     }
     if (e.ctrlKey && e.key === 'c') {
       e.preventDefault();
       setInput('');
+      setShowSmartSuggestions(false);
     }
   };
 
@@ -581,6 +627,55 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
         </div>
       )}
 
+      {/* Smart Suggestions - Context-aware next commands */}
+      {showSmartSuggestions && smartSuggestions.length > 0 && !showSuggestions && (
+        <div className={cn(
+          "border-t px-4 py-2 space-y-1",
+          currentTheme.border,
+          "bg-gradient-to-r from-amber-500/5 via-transparent to-cyan-500/5"
+        )}>
+          <div className="flex items-center gap-2 text-[10px] text-muted-foreground mb-1.5">
+            <Sparkles className="w-3 h-3 text-amber-400" />
+            <span>Smart Suggestions</span>
+            <span className="text-muted-foreground/50">• Press 1-{smartSuggestions.length} to execute • Esc to dismiss</span>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1">
+            {smartSuggestions.map((suggestion, idx) => {
+              const def = getSuggestionDefinition(suggestion.command);
+              const Icon = def?.icon || Terminal;
+              return (
+                <div
+                  key={suggestion.command}
+                  className={cn(
+                    "flex items-center gap-2 px-2 py-1.5 rounded text-xs cursor-pointer transition-all",
+                    "hover:bg-cyan-500/20 hover:text-cyan-400 group",
+                    "bg-muted/20 text-muted-foreground"
+                  )}
+                  onClick={() => executeSmartSuggestion(idx + 1)}
+                >
+                  <span className={cn(
+                    "flex items-center justify-center w-5 h-5 rounded text-[10px] font-bold",
+                    "bg-cyan-500/20 text-cyan-400 group-hover:bg-cyan-500/30"
+                  )}>
+                    {idx + 1}
+                  </span>
+                  <Icon className="w-3 h-3 shrink-0 opacity-70" />
+                  <span className="font-medium">{suggestion.command}</span>
+                  <span className="text-[10px] text-muted-foreground/50 truncate flex-1 hidden sm:block">
+                    → {suggestion.reason}
+                  </span>
+                  {def?.requiresOperator && (
+                    <Badge variant="outline" className="text-[8px] h-4 border-amber-500/30 text-amber-400">
+                      ⚡
+                    </Badge>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* Input Line */}
       <form onSubmit={handleSubmit} className={cn("border-t bg-black/60", currentTheme.border)}>
         <div className="flex items-center gap-2 px-4 py-3">
@@ -598,7 +693,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
             onKeyDown={handleKeyDown}
             onFocus={() => input.trim() && setSuggestions(searchCommands(input))}
             onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
-            placeholder={enabled ? "enter command... (Tab for autocomplete)" : "observer mode — read-only commands only"}
+            placeholder={enabled ? "enter command... (1-4 for suggestions, Tab for autocomplete)" : "observer mode — read-only commands only"}
             className={cn(
               "border-0 bg-transparent h-8 px-0 focus-visible:ring-0",
               "placeholder:text-muted-foreground/40",
@@ -608,6 +703,12 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
             spellCheck={false}
           />
           <div className="hidden sm:flex items-center gap-1 text-[10px] text-muted-foreground/50">
+            {showSmartSuggestions && (
+              <>
+                <kbd className="px-1 py-0.5 rounded bg-amber-500/20 text-amber-400">1-4</kbd>
+                <span className="text-amber-400/70">smart</span>
+              </>
+            )}
             <kbd className="px-1 py-0.5 rounded bg-muted/30">↑↓</kbd>
             <span>history</span>
           </div>

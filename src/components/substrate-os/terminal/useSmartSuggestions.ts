@@ -1,0 +1,242 @@
+/**
+ * Smart Command Suggestions
+ * Context-aware next-command suggestions based on previous execution
+ */
+
+import { ALL_COMMANDS, type CommandDefinition } from './TerminalCommands';
+
+export interface SmartSuggestion {
+  command: string;
+  reason: string;
+  confidence: number;
+}
+
+// Command workflow mappings - what typically follows what
+const COMMAND_WORKFLOWS: Record<string, string[]> = {
+  // Brain workflows
+  'brain.status': ['brain.reflect', 'brain.query', 'brain.optimize', 'brain.patterns'],
+  'brain.query': ['brain.recall', 'brain.remember', 'brain.reinforce', 'brain.deep_think'],
+  'brain.remember': ['brain.query', 'brain.reinforce', 'brain.graph_build', 'brain.patterns'],
+  'brain.reflect': ['brain.dream', 'brain.synthesize', 'brain.patterns', 'brain.session_reflection'],
+  'brain.dream': ['dream.cycle', 'brain.reflect', 'brain.patterns', 'brain.synthesize'],
+  'brain.optimize': ['brain.status', 'brain.graph_build', 'brain.patterns', 'system.health'],
+  'brain.deep_think': ['brain.hypothesis_test', 'brain.synthesize', 'brain.remember', 'brain.patterns'],
+  'brain.synthesize': ['brain.patterns', 'brain.graph_build', 'brain.reflect', 'brain.deep_think'],
+  'brain.patterns': ['brain.reflect', 'brain.optimize', 'brain.synthesize', 'modernizer.scan'],
+  'brain.graph_build': ['brain.graph_summary', 'brain.patterns', 'brain.synthesize', 'brain.coherence_check'],
+  'brain.graph_summary': ['brain.graph_build', 'brain.query', 'brain.patterns', 'brain.coherence_check'],
+  'brain.curiosity': ['brain.explore', 'brain.query', 'brain.deep_think', 'brain.synthesize'],
+  'brain.explore': ['brain.remember', 'brain.synthesize', 'brain.patterns', 'brain.curiosity'],
+  
+  // System workflows
+  'system.status': ['system.health', 'vision.pulse', 'system.diagnostics', 'modernizer.status'],
+  'system.health': ['system.heal', 'system.diagnostics', 'vision.metrics', 'modernizer.scan'],
+  'system.diagnostics': ['system.heal', 'system.health', 'vision.logs', 'system.backup'],
+  'system.heal': ['system.health', 'system.status', 'system.diagnostics', 'vision.pulse'],
+  'system.backup': ['system.list_backups', 'system.status', 'system.restore', 'system.health'],
+  'system.list_backups': ['system.restore', 'system.backup', 'system.status', 'system.health'],
+  
+  // Vision workflows
+  'vision.pulse': ['vision.health', 'system.status', 'vision.metrics', 'vision.logs'],
+  'vision.health': ['vision.metrics', 'vision.logs', 'system.heal', 'vision.resilience'],
+  'vision.metrics': ['vision.dashboard', 'vision.logs', 'vision.health', 'vision.analytics'],
+  'vision.logs': ['vision.metrics', 'vision.health', 'vision.trace', 'system.diagnostics'],
+  'vision.dashboard': ['vision.metrics', 'vision.health', 'vision.analytics', 'vision.resilience'],
+  'vision.resilience': ['system.heal', 'vision.health', 'vision.logs', 'vision.metrics'],
+  
+  // Defense workflows
+  'defense.status': ['defense.posture', 'defense.anomaly', 'defense.limits', 'defense.rules'],
+  'defense.posture': ['defense.anomaly', 'defense.rules', 'defense.limits', 'vision.analytics'],
+  'defense.anomaly': ['defense.posture', 'defense.ip_intel', 'defense.rules', 'vision.logs'],
+  'defense.anomaly_probe': ['defense.anomaly', 'defense.posture', 'defense.rules', 'vision.analytics'],
+  'defense.reputation': ['defense.ip_intel', 'defense.posture', 'defense.anomaly', 'defense.rules'],
+  'defense.ip_intel': ['defense.reputation', 'defense.posture', 'defense.anomaly', 'defense.rules'],
+  
+  // Nexus workflows
+  'nexus.status': ['nexus.providers', 'nexus.route_stats', 'nexus.test', 'nexus.text'],
+  'nexus.providers': ['nexus.route', 'nexus.route_stats', 'nexus.test', 'nexus.text'],
+  'nexus.text': ['nexus.providers', 'nexus.route_stats', 'brain.remember', 'nexus.image'],
+  'nexus.image': ['nexus.providers', 'nexus.route_stats', 'nexus.text', 'nexus.test'],
+  'nexus.route_stats': ['nexus.providers', 'nexus.test', 'vision.metrics', 'nexus.text'],
+  
+  // Dream workflows
+  'dream.status': ['dream.cycle', 'dream.mood', 'dream.awaken', 'brain.dream'],
+  'dream.cycle': ['dream.reflect', 'dream.status', 'brain.reflect', 'brain.patterns'],
+  'dream.mood': ['dream.cycle', 'dream.status', 'dream.awaken', 'dream.interpret'],
+  'dream.reflect': ['dream.cycle', 'brain.reflect', 'brain.patterns', 'dream.status'],
+  'dream.awaken': ['dream.cycle', 'dream.status', 'dream.mood', 'brain.dream'],
+  'dream.feed': ['dream.consume', 'dream.cycle', 'dream.interpret', 'dream.reflect'],
+  'dream.consume': ['dream.reflect', 'dream.cycle', 'brain.reflect', 'dream.status'],
+  
+  // Modernizer workflows
+  'modernizer.status': ['modernizer.scan', 'modernizer.plans', 'modernizer.applied', 'modernizer.quota'],
+  'modernizer.scan': ['modernizer.propose', 'modernizer.plans', 'modernizer.analyze', 'modernizer.status'],
+  'modernizer.propose': ['modernizer.plans', 'modernizer.validate', 'modernizer.review', 'modernizer.apply'],
+  'modernizer.plans': ['modernizer.review', 'modernizer.validate', 'modernizer.apply', 'modernizer.delete'],
+  'modernizer.review': ['modernizer.validate', 'modernizer.diff', 'modernizer.apply', 'modernizer.delete'],
+  'modernizer.validate': ['modernizer.apply_shadow', 'modernizer.diff', 'modernizer.apply', 'modernizer.delete'],
+  'modernizer.diff': ['modernizer.apply_shadow', 'modernizer.apply', 'modernizer.validate', 'modernizer.rollback'],
+  'modernizer.apply_shadow': ['modernizer.test_shadow', 'modernizer.diff', 'modernizer.apply_production', 'modernizer.rollback'],
+  'modernizer.test_shadow': ['modernizer.apply_production', 'modernizer.rollback', 'modernizer.diff', 'modernizer.plans'],
+  'modernizer.apply_production': ['modernizer.status', 'modernizer.applied', 'system.health', 'modernizer.plans'],
+  'modernizer.apply': ['modernizer.applied', 'modernizer.status', 'system.health', 'modernizer.plans'],
+  'modernizer.rollback': ['modernizer.plans', 'modernizer.status', 'system.health', 'modernizer.diff'],
+  'modernizer.applied': ['modernizer.plans', 'modernizer.status', 'modernizer.scan', 'system.health'],
+  
+  // Core workflows
+  'core.status': ['core.pulse', 'core.jobs', 'core.config', 'system.status'],
+  'core.pulse': ['core.status', 'vision.pulse', 'system.health', 'core.jobs'],
+  'core.jobs': ['core.process', 'core.schedule', 'core.status', 'ripple.events'],
+  'core.schedule': ['core.jobs', 'core.process', 'core.status', 'ripple.enqueue'],
+  
+  // Ripple workflows
+  'ripple.status': ['ripple.topics', 'ripple.events', 'ripple.pulse', 'core.status'],
+  'ripple.topics': ['ripple.events', 'ripple.subscribe', 'ripple.publish', 'ripple.status'],
+  'ripple.events': ['ripple.topics', 'ripple.status', 'vision.logs', 'ripple.dead_letter'],
+  'ripple.dead_letter': ['ripple.retry', 'ripple.events', 'ripple.status', 'vision.logs'],
+  
+  // Access workflows
+  'access.status': ['access.usage', 'access.quota', 'access.list_keys', 'access.pulse'],
+  'access.create_key': ['access.list_keys', 'access.quota', 'access.usage', 'access.validate_key'],
+  'access.list_keys': ['access.create_key', 'access.usage', 'access.revoke_key', 'access.quota'],
+  'access.usage': ['access.quota', 'access.list_keys', 'access.status', 'vision.metrics'],
+  'access.quota': ['access.usage', 'access.list_keys', 'access.subscription', 'access.status'],
+  
+  // Decode workflows
+  'decode.status': ['decode.chat', 'decode.intent', 'decode.learn', 'decode.dream'],
+  'decode.chat': ['decode.intent', 'decode.learn', 'brain.remember', 'decode.dream'],
+  'decode.intent': ['decode.chat', 'decode.learn', 'brain.remember', 'decode.propose'],
+  'decode.learn': ['brain.remember', 'brain.reflect', 'decode.chat', 'brain.patterns'],
+  
+  // Integration workflows
+  'integration.status': ['integration.adapters', 'integration.connections', 'integration.policies', 'integration.pulse'],
+  'integration.adapters': ['integration.connect', 'integration.discover', 'integration.connections', 'integration.status'],
+  'integration.connect': ['integration.test', 'integration.connections', 'integration.adapters', 'integration.status'],
+  'integration.connections': ['integration.disconnect', 'integration.test', 'integration.adapters', 'integration.audit_log'],
+  
+  // Meta/Terminal workflows
+  'help': ['whoami', 'system.status', 'vision.pulse', 'modernizer.status'],
+  'whoami': ['help', 'system.status', 'audit stats', 'vision.pulse'],
+  'history': ['clear', 'export', 'audit', 'audit stats'],
+  'audit': ['audit stats', 'audit export', 'history', 'export'],
+  'audit stats': ['audit', 'audit export', 'history', 'system.status'],
+  'alias': ['alias add', 'macro', 'help', 'whoami'],
+  'macro': ['macro list', 'macro run', 'alias', 'schedule'],
+  'macro list': ['macro run', 'macro show', 'macro create', 'alias'],
+  'schedule': ['schedule list', 'watch', 'core.schedule', 'core.jobs'],
+  'schedule list': ['schedule cancel', 'schedule clear', 'watch list', 'core.jobs'],
+  'watch': ['watch list', 'schedule', 'vision.pulse', 'system.status'],
+  'watch list': ['watch stop', 'schedule list', 'vision.pulse', 'system.status'],
+};
+
+// Module-level defaults when specific command not found
+const MODULE_DEFAULTS: Record<string, string[]> = {
+  brain: ['brain.status', 'brain.query', 'brain.reflect', 'brain.patterns'],
+  system: ['system.status', 'system.health', 'system.diagnostics', 'vision.pulse'],
+  vision: ['vision.pulse', 'vision.health', 'vision.metrics', 'vision.logs'],
+  defense: ['defense.status', 'defense.posture', 'defense.anomaly', 'defense.rules'],
+  nexus: ['nexus.status', 'nexus.providers', 'nexus.text', 'nexus.route_stats'],
+  dream: ['dream.status', 'dream.cycle', 'dream.mood', 'brain.dream'],
+  modernizer: ['modernizer.status', 'modernizer.scan', 'modernizer.plans', 'modernizer.applied'],
+  core: ['core.status', 'core.jobs', 'core.pulse', 'system.status'],
+  ripple: ['ripple.status', 'ripple.topics', 'ripple.events', 'ripple.pulse'],
+  access: ['access.status', 'access.usage', 'access.quota', 'access.list_keys'],
+  decode: ['decode.status', 'decode.chat', 'decode.intent', 'decode.learn'],
+  integration: ['integration.status', 'integration.adapters', 'integration.connections', 'integration.policies'],
+  meta: ['help', 'whoami', 'history', 'audit'],
+};
+
+// Generate reasons for suggestions
+function generateReason(lastCmd: string, suggestedCmd: string): string {
+  const lastModule = lastCmd.split('.')[0];
+  const sugModule = suggestedCmd.split('.')[0];
+  
+  // Same module follow-ups
+  if (lastModule === sugModule) {
+    if (suggestedCmd.includes('status')) return 'Check module status';
+    if (suggestedCmd.includes('health')) return 'Verify health';
+    if (suggestedCmd.includes('reflect')) return 'Trigger reflection';
+    if (suggestedCmd.includes('patterns')) return 'View patterns';
+    if (suggestedCmd.includes('query') || suggestedCmd.includes('recall')) return 'Search memories';
+    if (suggestedCmd.includes('optimize')) return 'Optimize performance';
+    if (suggestedCmd.includes('apply')) return 'Apply changes';
+    if (suggestedCmd.includes('validate')) return 'Validate before apply';
+    if (suggestedCmd.includes('test')) return 'Test changes';
+    if (suggestedCmd.includes('rollback')) return 'Revert if needed';
+    return 'Continue workflow';
+  }
+  
+  // Cross-module suggestions
+  if (suggestedCmd.includes('health') || suggestedCmd.includes('status')) return 'Verify system state';
+  if (suggestedCmd.includes('logs') || suggestedCmd.includes('metrics')) return 'Check diagnostics';
+  if (suggestedCmd.includes('heal')) return 'Auto-fix issues';
+  if (sugModule === 'brain') return 'Process learnings';
+  if (sugModule === 'vision') return 'Monitor results';
+  if (sugModule === 'modernizer') return 'Plan improvements';
+  
+  return 'Suggested next step';
+}
+
+/**
+ * Generate smart suggestions based on the last executed command
+ */
+export function generateSmartSuggestions(
+  lastCommand: string,
+  commandHistory: string[] = [],
+  maxSuggestions: number = 4
+): SmartSuggestion[] {
+  const normalized = lastCommand.toLowerCase().trim().split(' ')[0];
+  
+  // Get workflow-based suggestions
+  let suggestions = COMMAND_WORKFLOWS[normalized] || [];
+  
+  // Fallback to module defaults
+  if (suggestions.length === 0) {
+    const module = normalized.split('.')[0];
+    suggestions = MODULE_DEFAULTS[module] || MODULE_DEFAULTS['meta'];
+  }
+  
+  // Filter out recently executed commands to avoid repetition
+  const recentCmds = new Set(commandHistory.slice(-5).map(c => c.split(' ')[0].toLowerCase()));
+  const filtered = suggestions.filter(s => !recentCmds.has(s.toLowerCase()) && s.toLowerCase() !== normalized);
+  
+  // If all filtered out, use original suggestions minus the last command
+  const finalSuggestions = filtered.length > 0 
+    ? filtered 
+    : suggestions.filter(s => s.toLowerCase() !== normalized);
+  
+  // Map to SmartSuggestion format with confidence
+  return finalSuggestions.slice(0, maxSuggestions).map((cmd, idx) => ({
+    command: cmd,
+    reason: generateReason(normalized, cmd),
+    confidence: 1 - (idx * 0.15), // Decreasing confidence: 1.0, 0.85, 0.7, 0.55
+  }));
+}
+
+/**
+ * Get command definition for a suggestion
+ */
+export function getSuggestionDefinition(command: string): CommandDefinition | undefined {
+  return ALL_COMMANDS.find(c => c.command.toLowerCase() === command.toLowerCase());
+}
+
+/**
+ * Format suggestions for terminal display
+ */
+export function formatSuggestionsOutput(suggestions: SmartSuggestion[]): string {
+  if (suggestions.length === 0) return '';
+  
+  let output = '\n┌─ SMART SUGGESTIONS ──────────────────────────────────────────\n│\n';
+  
+  suggestions.forEach((s, i) => {
+    const num = i + 1;
+    const def = getSuggestionDefinition(s.command);
+    const icon = def?.requiresOperator ? '⚡' : '○';
+    output += `│  [${num}] ${icon} ${s.command.padEnd(28)} → ${s.reason}\n`;
+  });
+  
+  output += `│\n│  Press 1-${suggestions.length} to execute, or type a new command\n`;
+  output += `└──────────────────────────────────────────────────────────────`;
+  
+  return output;
+}
