@@ -1,5 +1,5 @@
 /**
- * Cinematic Marketplace Hero — World's First AI Governance OS
+ * Cinematic Marketplace Hero — CMPSBL: World's First AI Governance OS
  * Premium visual experience conveying unprecedented market position
  */
 
@@ -119,7 +119,7 @@ export function MarketplaceHero() {
                 </span>
               ))}
               <ArrowRight className="w-4 h-4 mx-2 text-muted-foreground" />
-              <span className="font-bold text-primary">promptfluid®</span>
+              <span className="font-bold text-primary">CMPSBL</span>
             </div>
           </motion.div>
 
