@@ -1,7 +1,7 @@
 /**
- * Tech Showcase — Interactive demonstration of all 11 CMPSBL modules
+ * Tech Showcase — Interactive demonstration of all 12 CMPSBL modules
  * Premium terminal-style code display with syntax highlighting
- * v4.1.1: Full module coverage for the 4-layer kernel architecture
+ * v4.2.0: Full module coverage for the 4-layer kernel architecture
  */
 
 import { useState, useEffect } from "react";
@@ -23,12 +23,13 @@ import {
   Sparkles,
   Code,
   Layers,
+  Plug,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-// All 11 modules organized by 4-layer architecture
+// All 12 modules organized by 4-layer architecture
 const codeExamples = [
   // KERNEL LAYER
   {
@@ -272,6 +273,34 @@ await cmpsbl.modernizer.apply({
   auto_rollback: true
 });`,
   },
+  {
+    id: "integration",
+    icon: Plug,
+    layer: "Admin",
+    title: "INTEGRATION Enterprise",
+    description: "Enterprise adapters & LLM governance",
+    color: "text-emerald-500",
+    gradient: "from-emerald-500 to-teal-600",
+    code: `// Discover enterprise systems
+const systems = await cmpsbl.integration.discover({
+  target: "erp",
+  depth: "full"
+});
+
+// Connect to SAP with governance
+await cmpsbl.integration.connect({
+  adapter: "sap_s4hana",
+  config: { host: "erp.company.com" },
+  governance: { approval_required: true }
+});
+
+// Execute governed action
+await cmpsbl.integration.execute({
+  system: "sap",
+  action: "create_purchase_order",
+  payload: { vendor: "V001", amount: 5000 }
+});`,
+  },
 ];
 
 // Syntax highlighting helper - extended for all modules
@@ -280,8 +309,8 @@ function highlightCode(code: string) {
     .replace(/(\/\/.*)/g, '<span class="text-slate-500">$1</span>')
     .replace(/(\bawait\b|\bconst\b|\blet\b|\bvar\b|\bif\b)/g, '<span class="text-purple-400">$1</span>')
     .replace(/(\bcmpsbl\b)/g, '<span class="text-cyan-400 font-semibold">$1</span>')
-    .replace(/(\.core|\.ripple|\.access|\.brain|\.decode|\.nexus|\.defense|\.vision|\.dream|\.system|\.modernizer)/g, '<span class="text-blue-400">$1</span>')
-    .replace(/(\.schedule|\.list|\.emit|\.on|\.createKey|\.usage|\.remember|\.recall|\.chat|\.send|\.route|\.posture|\.analyze|\.block|\.health|\.query|\.cycle|\.backup|\.restore|\.scan|\.apply)/g, '<span class="text-green-400">$1</span>')
+    .replace(/(\.core|\.ripple|\.access|\.brain|\.decode|\.nexus|\.defense|\.vision|\.dream|\.system|\.modernizer|\.integration)/g, '<span class="text-blue-400">$1</span>')
+    .replace(/(\.schedule|\.list|\.emit|\.on|\.createKey|\.usage|\.remember|\.recall|\.chat|\.send|\.route|\.posture|\.analyze|\.block|\.health|\.query|\.cycle|\.backup|\.restore|\.scan|\.apply|\.discover|\.connect|\.execute)/g, '<span class="text-green-400">$1</span>')
     .replace(/(".*?")/g, '<span class="text-amber-300">$1</span>')
     .replace(/(\d+)/g, '<span class="text-orange-400">$1</span>')
     .replace(/(true|false|null)/g, '<span class="text-rose-400">$1</span>');
@@ -364,7 +393,7 @@ export function TechShowcase() {
         >
           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
             <Layers className="w-3 h-3 text-primary" />
-            <span className="text-xs">11 Modules • 4 Layers • 1 SDK</span>
+            <span className="text-xs">12 Modules • 4 Layers • 1 SDK</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
             Complete{" "}
@@ -399,7 +428,7 @@ export function TechShowcase() {
             className="h-8 px-4 text-xs font-medium"
           >
             All Modules
-            <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-[10px]">11</Badge>
+            <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-[10px]">12</Badge>
           </Button>
           {Object.entries(LAYER_CONFIG).map(([layer, config]) => {
             const count = codeExamples.filter(e => e.layer === layer).length;

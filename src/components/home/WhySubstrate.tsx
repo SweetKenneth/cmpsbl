@@ -1,7 +1,7 @@
 /**
- * Why CMPSBL — Full 11-module capability showcase
+ * Why CMPSBL — Full 12-module capability showcase
  * Premium bento grid with enhanced visuals and micro-animations
- * v4.1.1: Complete representation of the 4-layer kernel architecture
+ * v4.2.0: Complete representation of the 4-layer kernel architecture
  */
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
@@ -22,11 +22,12 @@ import {
   Key,
   Settings,
   Layers,
+  Plug,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-// All capabilities mapped to the 11 modules in 4-layer architecture
+// All capabilities mapped to the 12 modules in 4-layer architecture
 const differentiators = [
   // KERNEL LAYER - Core infrastructure
   {
@@ -35,7 +36,7 @@ const differentiators = [
     layer: "Kernel",
     description: "CORE module handles task scheduling, cron jobs, and kernel-level coordination across all cognitive functions.",
     highlight: "Central Brain",
-    stat: "11",
+    stat: "12",
     statLabel: "Modules",
     color: "from-orange-500 to-amber-600",
     iconBg: "bg-gradient-to-br from-orange-500/20 to-amber-500/20",
@@ -175,13 +176,26 @@ const differentiators = [
     iconColor: "text-rose-500",
     glowColor: "rose",
   },
+  {
+    icon: Plug,
+    title: "Enterprise Integration",
+    layer: "Admin",
+    description: "INTEGRATION module connects to enterprise systems (SAP, Oracle, Workday) and governs LLM access to real business operations.",
+    highlight: "LLM Governance",
+    stat: "35+",
+    statLabel: "Adapters",
+    color: "from-emerald-500 to-teal-600",
+    iconBg: "bg-gradient-to-br from-emerald-500/20 to-teal-500/20",
+    iconColor: "text-emerald-500",
+    glowColor: "emerald",
+  },
 ];
 
 const LAYER_CONFIG = {
   Kernel: { color: 'text-orange-400', count: 3 },
   Cognitive: { color: 'text-purple-400', count: 3 },
   Operational: { color: 'text-blue-400', count: 3 },
-  Admin: { color: 'text-emerald-400', count: 2 },
+  Admin: { color: 'text-emerald-400', count: 3 },
 };
 
 // 3D tilt effect hook for cards
@@ -371,7 +385,7 @@ export function WhySubstrate() {
         >
           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
             <Layers className="w-3 h-3 text-primary" />
-            <span className="text-xs">11 Modules • 4 Layers</span>
+            <span className="text-xs">12 Modules • 4 Layers</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
             What Makes It{" "}
@@ -411,7 +425,7 @@ export function WhySubstrate() {
             whileTap={{ scale: 0.98 }}
           >
             All Modules
-            <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-[10px]">11</Badge>
+            <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-[10px]">12</Badge>
           </motion.button>
           {Object.entries(LAYER_CONFIG).map(([layer, config]) => (
             <motion.button
