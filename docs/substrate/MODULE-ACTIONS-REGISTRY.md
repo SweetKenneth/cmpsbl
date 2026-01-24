@@ -6,9 +6,9 @@
 |-------|-------|
 | Document ID | PF-MAR-001 |
 | Version | v2026.01 |
-| Last Updated | 2026-01-23 |
+| Last Updated | 2026-01-24 |
 | Status | ACTIVE |
-| Substrate Version | 4.1.1 |
+| Substrate Version | 4.2.0 |
 | Type | Cognitive Orchestration Substrate |
 | Changelog | [CHANGELOG.md](./CHANGELOG.md) |
 
@@ -334,6 +334,40 @@ API keys, usage metering, quotas, billing integration.
 
 ---
 
+## Module: INTEGRATION (v4.2.0)
+
+Enterprise adapters, auto-discovery, command mapping, LLM governance.
+
+| Action | Description | Parameters | Status |
+|--------|-------------|------------|--------|
+| `status` | Integration module status | — | ✅ DEPLOYED |
+| `pulse` | Lightweight heartbeat | — | ✅ DEPLOYED |
+| `adapters` | List available adapters | `category?` | ✅ DEPLOYED |
+| `connect` | Connect enterprise adapter | `type`, `name`, `config`, `credentials?` | ✅ DEPLOYED |
+| `disconnect` | Disconnect adapter | `adapter_id` | ✅ DEPLOYED |
+| `discover` | Auto-discover client systems | `target?`, `depth?` | ✅ DEPLOYED |
+| `map_command` | Map function to terminal command | `function`, `command`, `description` | ✅ DEPLOYED |
+| `execute` | Execute governed LLM action | `adapter_id`, `action`, `params?` | ✅ DEPLOYED |
+| `governance` | Check governance policies | `adapter_id?` | ✅ DEPLOYED |
+| `game_discover` | Discover game engine APIs | `engine_type` | ✅ DEPLOYED |
+| `enterprise_discover` | Discover enterprise APIs | `system_type` | ✅ DEPLOYED |
+| `dev_discover` | Discover dev platform APIs | `platform_type` | ✅ DEPLOYED |
+
+### Available Adapter Categories (35+)
+
+| Category | Adapters |
+|----------|----------|
+| **ERP** | SAP, Oracle, NetSuite, Dynamics 365 |
+| **Payroll** | ADP, Gusto, Workday, BambooHR, Paychex |
+| **Gaming** | Unity, Unreal, Godot, Custom |
+| **CRM** | Salesforce, Zendesk, Intercom, Freshdesk, HubSpot |
+| **DevOps** | GitHub, GitLab, Jira, Linear, Azure DevOps |
+| **Payments** | Stripe, Shopify, Square, PayPal |
+| **Communication** | Slack, Teams, Discord, Twilio |
+| **Analytics** | Mixpanel, Amplitude, Segment |
+
+---
+
 ## Summary: Deployed Actions
 
 | Module | Deployed | Planned (Stubs) |
@@ -349,7 +383,8 @@ API keys, usage metering, quotas, billing integration.
 | **Dream** | 3 | 6 |
 | **System** | 9 | 2 |
 | **Modernizer** | 4 | 2 |
-| **Total** | **84** | **34** |
+| **Integration** | 12 | 0 |
+| **Total** | **96** | **34** |
 
 ---
 

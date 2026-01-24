@@ -1,6 +1,6 @@
 # promptfluid® Substrate — API Reference
 
-**v4.0.0 | Complete 11-Module Cognitive OS API**
+**v4.2.0 | Complete 12-Module Cognitive OS API**
 
 ---
 
@@ -22,7 +22,7 @@ const response = await supabase.functions.invoke('pf-substrate', {
 
 ---
 
-## 11 Modules — Complete Reference
+## 12 Modules — Complete Reference
 
 ### CORE (The Kernel)
 

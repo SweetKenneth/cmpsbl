@@ -1,8 +1,8 @@
 # promptfluid® Substrate — User Manual
 
-**v4.1.1 — Cognitive Orchestration Substrate (Brain v2.0)**
+**v4.2.0 — Cognitive Orchestration Substrate**
 
-*Last Updated: 2026-01-23*
+*Last Updated: 2026-01-24*
 
 ---
 
@@ -19,6 +19,7 @@ The promptfluid® Substrate is a unified API gateway for cognitive AI operations
 - **Kernel Operations** — Job scheduling, lifecycle, state machine
 - **Message Bus** — Async queues, pub/sub, event sourcing
 - **Identity & Billing** — API keys, quotas, usage metering
+- **Enterprise Integration** — 35+ adapters for external systems with LLM governance
 
 All capabilities are accessed through a single endpoint.
 
@@ -69,6 +70,7 @@ POST https://[project-id].supabase.co/functions/v1/pf-substrate
 | **dream** | Dream-Eater | `cycle`, `awaken`, `feed` |
 | **system** | Administration | `status`, `health`, `heal`, `backup`, `restore`, `diagnostics` |
 | **modernizer** | Self-upgrade | `scan`, `propose`, `apply`, `status` |
+| **integration** | Enterprise adapters | `adapters`, `connect`, `discover`, `execute`, `governance` |
 
 ---
 

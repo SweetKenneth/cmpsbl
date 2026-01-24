@@ -4,6 +4,40 @@
 
 ---
 
+## 2026-01-24 · v4.2.0
+
+⟨This entry describes the addition of the 12th module: Integration, providing enterprise adapters, auto-discovery, and LLM governance.⟩
+
+### Integration (New Module)
+
+- **35+ Enterprise Adapters** deployed across categories: ERP (SAP, Oracle, NetSuite, Dynamics), Payroll (ADP, Gusto, Workday, BambooHR), Gaming (Unity, Unreal, Godot), CRM (Salesforce, Zendesk, Intercom), DevOps (GitHub, GitLab, Jira, Linear), Payments (Stripe, Shopify, Square).
+- **Auto-Discovery** (`integration.discover`) scans connected systems to find available API endpoints automatically.
+- **Command Mapping** (`integration.map_command`) creates terminal shortcuts for enterprise operations.
+- **LLM Governance** controls what AI agents can do with connected systems (read-only, supervised, automated policies).
+- **Full Audit Trail** logs every action through connected adapters.
+
+### Architecture
+
+- Total modules: **12** (added Integration to Operational layer)
+- Total deployed actions: **96+** (previously 84)
+- `pf-substrate` orchestrator updated to route Integration module requests.
+
+### Website & Documentation
+
+- All marketing pages updated to reflect 12 modules.
+- New deep-dive documentation: `docs/os/21-INTEGRATION-DEEP-DIVE.md`
+- MODULE-ACTIONS-REGISTRY.md updated with Integration actions.
+- USER-MANUAL.md updated with Integration module section.
+
+### SDK
+
+- `substrate.integration.adapters()` — List available adapters
+- `substrate.integration.connect()` — Connect enterprise adapter
+- `substrate.integration.discover()` — Auto-discover endpoints
+- `substrate.integration.execute()` — Execute governed action
+
+---
+
 ## 2026-01-23 · v4.1.1
 
 ⟨This entry describes the completion of Brain v2.0, a three-tier memory architecture, knowledge graph v2, and full system hardening.⟩

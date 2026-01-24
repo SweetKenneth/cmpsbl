@@ -33,7 +33,7 @@ Think of this as your "explain it to me like I'm five" guide to a very sophistic
 | 08 | [FUTURE-ROADMAP.md](./08-FUTURE-ROADMAP.md) | Where we're going next |
 | 09 | [INVESTOR-TALKING-POINTS.md](./09-INVESTOR-TALKING-POINTS.md) | Key points for investor conversations |
 
-### Module Deep Dives (10-20)
+### Module Deep Dives (10-21)
 
 | # | Document | Module | What It Explains |
 |---|----------|--------|------------------|
@@ -48,14 +48,15 @@ Think of this as your "explain it to me like I'm five" guide to a very sophistic
 | 18 | [CORE-DEEP-DIVE.md](./18-CORE-DEEP-DIVE.md) | Core | Kernel scheduling, lifecycle, circuit breakers |
 | 19 | [RIPPLE-DEEP-DIVE.md](./19-RIPPLE-DEEP-DIVE.md) | Ripple | Message bus, pub/sub, event queues |
 | 20 | [ACCESS-DEEP-DIVE.md](./20-ACCESS-DEEP-DIVE.md) | Access | API keys, rate limiting, billing, metering |
+| 21 | [INTEGRATION-DEEP-DIVE.md](./21-INTEGRATION-DEEP-DIVE.md) | Integration | Enterprise adapters, auto-discovery, LLM governance |
 
 ---
 
-## The Four-Layer Architecture (v4.0.0)
+## The Four-Layer Architecture (v4.2.0)
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                    THE SUBSTRATE v4.0.0                              │
+│                    THE SUBSTRATE v4.2.0                              │
 ├─────────────────────────────────────────────────────────────────────┤
 │  KERNEL LAYER:      CORE → RIPPLE → ACCESS                          │
 │  (Infrastructure)   Scheduling, Messaging, Identity                  │
@@ -63,8 +64,8 @@ Think of this as your "explain it to me like I'm five" guide to a very sophistic
 │  COGNITIVE LAYER:   BRAIN → DECODE → DREAM                          │
 │  (Intelligence)     Memory, Interface, Evolution                     │
 ├─────────────────────────────────────────────────────────────────────┤
-│  OPERATIONAL LAYER: DEFENSE → NEXUS → VISION                        │
-│  (Services)         Security, AI Routing, Monitoring                 │
+│  OPERATIONAL LAYER: DEFENSE → NEXUS → VISION → INTEGRATION          │
+│  (Services)         Security, AI Routing, Monitoring, Enterprise     │
 ├─────────────────────────────────────────────────────────────────────┤
 │  ADMIN LAYER:       SYSTEM → MODERNIZER                             │
 │  (Control)          Operations, Self-Upgrade                         │
@@ -75,7 +76,7 @@ Think of this as your "explain it to me like I'm five" guide to a very sophistic
 
 ## Quick Reference: The One-Paragraph Summary
 
-**promptfluid** is a "cognitive operating system" for AI. Instead of building AI applications from scratch, developers plug into promptfluid and get instant access to memory (the AI remembers things), learning (the AI gets smarter over time), security (the AI protects itself from attacks), multi-provider routing (the AI can use any AI model from any company), and self-improvement (the AI can propose upgrades to itself). It's like the difference between building a house from raw lumber vs. buying a pre-fabricated foundation—we provide the foundation so builders can focus on what makes their AI unique.
+**promptfluid** is a "cognitive operating system" for AI. Instead of building AI applications from scratch, developers plug into promptfluid and get instant access to memory (the AI remembers things), learning (the AI gets smarter over time), security (the AI protects itself from attacks), multi-provider routing (the AI can use any AI model from any company), enterprise integration (the AI can connect to Salesforce, SAP, Unity, and 35+ other systems), and self-improvement (the AI can propose upgrades to itself). It's like the difference between building a house from raw lumber vs. buying a pre-fabricated foundation—we provide the foundation so builders can focus on what makes their AI unique.
 
 ---
 
@@ -92,5 +93,5 @@ Think of this as your "explain it to me like I'm five" guide to a very sophistic
 ---
 
 *Last Updated: January 2026*
-*Version: v4.1.1*
+*Version: v4.2.0*
 *Classification: CONFIDENTIAL*
