@@ -58,18 +58,37 @@ export default defineConfig(({ mode }) => ({
     },
     rollupOptions: {
       output: {
-        manualChunks: {
-          // Split vendor chunks for better caching and parallel loading
-          "react-vendor": ["react", "react-dom", "react-router-dom"],
-          "ui-vendor": [
-            "@radix-ui/react-dialog",
-            "@radix-ui/react-dropdown-menu",
-            "@radix-ui/react-toast",
-            "@radix-ui/react-tabs",
-            "@radix-ui/react-select",
-          ],
-          supabase: ["@supabase/supabase-js"],
-          charts: ["recharts"],
+        manualChunks(id) {
+          // Only eagerly load react core - everything else deferred
+          if (id.includes('node_modules')) {
+            // React core - essential for initial render
+            if (id.includes('react-dom') || id.includes('/react/')) {
+              return 'react-vendor';
+            }
+            // React Router - essential for navigation
+            if (id.includes('react-router')) {
+              return 'react-vendor';
+            }
+            // Supabase - defer to when auth is actually needed
+            if (id.includes('@supabase/')) {
+              return 'supabase';
+            }
+            // Charts - defer heavily (recharts is huge)
+            if (id.includes('recharts') || id.includes('d3-')) {
+              return 'charts';
+            }
+            // Radix UI - split by usage pattern
+            if (id.includes('@radix-ui/react-tooltip')) {
+              return 'tooltip';
+            }
+            if (id.includes('@radix-ui/')) {
+              return 'ui-vendor';
+            }
+            // Framer Motion - defer animations
+            if (id.includes('framer-motion')) {
+              return 'motion';
+            }
+          }
         },
       },
     },

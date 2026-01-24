@@ -1,6 +1,5 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { User, Session } from '@supabase/supabase-js';
-import { supabase } from '@/integrations/supabase/client';
+import { createContext, useContext, useEffect, useState, ReactNode, useRef } from 'react';
+import type { User, Session, SupabaseClient } from '@supabase/supabase-js';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
@@ -16,33 +15,50 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Lazy-load Supabase client to reduce initial bundle size
+let supabasePromise: Promise<SupabaseClient> | null = null;
+const getSupabase = () => {
+  if (!supabasePromise) {
+    supabasePromise = import('@/integrations/supabase/client').then(m => m.supabase);
+  }
+  return supabasePromise;
+};
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const supabaseRef = useRef<SupabaseClient | null>(null);
 
   useEffect(() => {
-    // Check for existing session FIRST (to avoid flicker)
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
-
-    // Set up auth state listener for future changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
+    let subscription: { unsubscribe: () => void } | null = null;
+    
+    // Defer Supabase initialization to reduce initial bundle
+    getSupabase().then(supabase => {
+      supabaseRef.current = supabase;
+      
+      // Check for existing session
+      supabase.auth.getSession().then(({ data: { session } }) => {
         setSession(session);
         setUser(session?.user ?? null);
-      }
-    );
+        setLoading(false);
+      });
 
-    return () => subscription.unsubscribe();
+      // Set up auth state listener
+      const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+      });
+      subscription = data.subscription;
+    });
+
+    return () => subscription?.unsubscribe();
   }, []);
 
   const signIn = async (email: string, password: string) => {
     try {
+      const supabase = await getSupabase();
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -61,6 +77,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signUp = async (email: string, password: string, displayName?: string) => {
     try {
+      const supabase = await getSupabase();
       const redirectUrl = `${window.location.origin}/admin`;
       
       const { error, data } = await supabase.auth.signUp({
@@ -96,6 +113,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signOut = async () => {
     try {
+      const supabase = await getSupabase();
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
       
@@ -111,6 +129,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!user) return false;
     
     try {
+      const supabase = await getSupabase();
       const { data, error } = await supabase.rpc('has_role_text', {
         _user_id: user.id,
         _role: 'admin'
