@@ -17,8 +17,8 @@ export interface Template {
   name: string;
   description: string;
   icon: LucideIcon;
-  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system';
-  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'world_engine';
+  difficulty: 'beginner' | 'intermediate' | 'advanced' | 'premium' | 'elite';
   estimatedTime: string;
   features: string[];
   code: string;
@@ -2094,6 +2094,895 @@ class PromptOptimizer {
     );
   }
 }`
+  },
+  // ===== PREMIUM WORLD ENGINE TEMPLATES ($99) =====
+  {
+    id: 'world-engine-core',
+    name: 'World Engine Core',
+    description: 'Complete world simulation engine with entity management, spatial indexing, and physics integration',
+    icon: Globe,
+    category: 'world_engine',
+    difficulty: 'premium',
+    estimatedTime: '2 hours',
+    features: ['Entity system', 'Spatial indexing', 'Physics hooks', 'Event propagation', 'State persistence'],
+    code: `import { substrate } from './lib/substrate';
+
+// World Engine Core - Premium Template ($99)
+// Complete world simulation with entities, physics, and events
+
+interface WorldEntity {
+  id: string;
+  type: string;
+  position: { x: number; y: number; z: number };
+  velocity: { x: number; y: number; z: number };
+  properties: Record<string, any>;
+  lastUpdated: number;
+}
+
+interface WorldState {
+  entities: Map<string, WorldEntity>;
+  spatialIndex: SpatialGrid;
+  eventQueue: WorldEvent[];
+  tick: number;
+}
+
+class WorldEngine {
+  private state: WorldState;
+  private updateRate: number = 60; // ticks per second
+  private running: boolean = false;
+  
+  constructor() {
+    this.state = {
+      entities: new Map(),
+      spatialIndex: new SpatialGrid(100), // 100 unit cells
+      eventQueue: [],
+      tick: 0
+    };
+  }
+  
+  // Spawn entity into world
+  async spawn(type: string, position: { x: number; y: number; z: number }, properties = {}) {
+    const entity: WorldEntity = {
+      id: crypto.randomUUID(),
+      type,
+      position,
+      velocity: { x: 0, y: 0, z: 0 },
+      properties,
+      lastUpdated: Date.now()
+    };
+    
+    this.state.entities.set(entity.id, entity);
+    this.state.spatialIndex.insert(entity);
+    
+    // Log to brain for persistence
+    await substrate.brain.remember(
+      \`Entity spawned: \${type} at \${JSON.stringify(position)}\`,
+      'world_event',
+      1.0,
+      { entityId: entity.id, type, position }
+    );
+    
+    return entity;
+  }
+  
+  // Query entities in radius
+  queryRadius(center: { x: number; y: number; z: number }, radius: number) {
+    return this.state.spatialIndex.queryRadius(center, radius);
+  }
+  
+  // Apply physics tick
+  physicsTick(deltaTime: number) {
+    for (const [id, entity] of this.state.entities) {
+      entity.position.x += entity.velocity.x * deltaTime;
+      entity.position.y += entity.velocity.y * deltaTime;
+      entity.position.z += entity.velocity.z * deltaTime;
+      entity.lastUpdated = Date.now();
+    }
+    this.state.tick++;
+  }
+  
+  // Persist world state
+  async saveState() {
+    const serialized = Array.from(this.state.entities.values());
+    await substrate.brain.remember(
+      \`World state snapshot: \${serialized.length} entities\`,
+      'world_snapshot',
+      1.0,
+      { entities: serialized, tick: this.state.tick }
+    );
+  }
+}
+
+// Spatial grid for efficient queries
+class SpatialGrid {
+  private cellSize: number;
+  private cells: Map<string, WorldEntity[]> = new Map();
+  
+  constructor(cellSize: number) {
+    this.cellSize = cellSize;
+  }
+  
+  private getCell(pos: { x: number; y: number; z: number }) {
+    const cx = Math.floor(pos.x / this.cellSize);
+    const cy = Math.floor(pos.y / this.cellSize);
+    const cz = Math.floor(pos.z / this.cellSize);
+    return \`\${cx},\${cy},\${cz}\`;
+  }
+  
+  insert(entity: WorldEntity) {
+    const key = this.getCell(entity.position);
+    if (!this.cells.has(key)) this.cells.set(key, []);
+    this.cells.get(key)!.push(entity);
+  }
+  
+  queryRadius(center: { x: number; y: number; z: number }, radius: number) {
+    const results: WorldEntity[] = [];
+    const cellRadius = Math.ceil(radius / this.cellSize);
+    const cx = Math.floor(center.x / this.cellSize);
+    const cy = Math.floor(center.y / this.cellSize);
+    const cz = Math.floor(center.z / this.cellSize);
+    
+    for (let dx = -cellRadius; dx <= cellRadius; dx++) {
+      for (let dy = -cellRadius; dy <= cellRadius; dy++) {
+        for (let dz = -cellRadius; dz <= cellRadius; dz++) {
+          const key = \`\${cx+dx},\${cy+dy},\${cz+dz}\`;
+          const cell = this.cells.get(key);
+          if (cell) {
+            for (const entity of cell) {
+              const dist = Math.sqrt(
+                (entity.position.x - center.x) ** 2 +
+                (entity.position.y - center.y) ** 2 +
+                (entity.position.z - center.z) ** 2
+              );
+              if (dist <= radius) results.push(entity);
+            }
+          }
+        }
+      }
+    }
+    return results;
+  }
+}
+
+export const worldEngine = new WorldEngine();`
+  },
+  {
+    id: 'world-engine-physics',
+    name: 'World Engine Physics',
+    description: 'Advanced physics simulation with collision detection, forces, and constraints',
+    icon: Zap,
+    category: 'world_engine',
+    difficulty: 'premium',
+    estimatedTime: '3 hours',
+    features: ['Collision detection', 'Force systems', 'Constraints', 'Rigid bodies', 'Raycasting'],
+    code: `import { substrate } from './lib/substrate';
+
+// World Engine Physics - Premium Template ($99)
+// Advanced physics with collisions, forces, and constraints
+
+interface PhysicsBody {
+  id: string;
+  mass: number;
+  position: Vec3;
+  velocity: Vec3;
+  acceleration: Vec3;
+  forces: Vec3[];
+  collider: Collider;
+  isStatic: boolean;
+}
+
+interface Vec3 { x: number; y: number; z: number; }
+
+interface Collider {
+  type: 'sphere' | 'box' | 'capsule';
+  radius?: number;
+  halfExtents?: Vec3;
+}
+
+class PhysicsWorld {
+  private bodies: Map<string, PhysicsBody> = new Map();
+  private gravity: Vec3 = { x: 0, y: -9.81, z: 0 };
+  private constraints: Constraint[] = [];
+  
+  // Add physics body
+  addBody(config: Partial<PhysicsBody> & { id: string }): PhysicsBody {
+    const body: PhysicsBody = {
+      id: config.id,
+      mass: config.mass ?? 1,
+      position: config.position ?? { x: 0, y: 0, z: 0 },
+      velocity: config.velocity ?? { x: 0, y: 0, z: 0 },
+      acceleration: { x: 0, y: 0, z: 0 },
+      forces: [],
+      collider: config.collider ?? { type: 'sphere', radius: 1 },
+      isStatic: config.isStatic ?? false
+    };
+    this.bodies.set(body.id, body);
+    return body;
+  }
+  
+  // Apply force to body
+  applyForce(bodyId: string, force: Vec3) {
+    const body = this.bodies.get(bodyId);
+    if (body && !body.isStatic) {
+      body.forces.push(force);
+    }
+  }
+  
+  // Physics step
+  step(deltaTime: number) {
+    // Integrate forces
+    for (const body of this.bodies.values()) {
+      if (body.isStatic) continue;
+      
+      // Sum all forces
+      let totalForce: Vec3 = { x: 0, y: 0, z: 0 };
+      for (const f of body.forces) {
+        totalForce.x += f.x;
+        totalForce.y += f.y;
+        totalForce.z += f.z;
+      }
+      
+      // Add gravity
+      totalForce.x += this.gravity.x * body.mass;
+      totalForce.y += this.gravity.y * body.mass;
+      totalForce.z += this.gravity.z * body.mass;
+      
+      // F = ma -> a = F/m
+      body.acceleration = {
+        x: totalForce.x / body.mass,
+        y: totalForce.y / body.mass,
+        z: totalForce.z / body.mass
+      };
+      
+      // Integrate velocity
+      body.velocity.x += body.acceleration.x * deltaTime;
+      body.velocity.y += body.acceleration.y * deltaTime;
+      body.velocity.z += body.acceleration.z * deltaTime;
+      
+      // Integrate position
+      body.position.x += body.velocity.x * deltaTime;
+      body.position.y += body.velocity.y * deltaTime;
+      body.position.z += body.velocity.z * deltaTime;
+      
+      // Clear forces
+      body.forces = [];
+    }
+    
+    // Detect & resolve collisions
+    this.resolveCollisions();
+  }
+  
+  // Sphere-sphere collision
+  private resolveCollisions() {
+    const bodies = Array.from(this.bodies.values());
+    for (let i = 0; i < bodies.length; i++) {
+      for (let j = i + 1; j < bodies.length; j++) {
+        const a = bodies[i], b = bodies[j];
+        if (a.collider.type === 'sphere' && b.collider.type === 'sphere') {
+          const dist = this.distance(a.position, b.position);
+          const minDist = (a.collider.radius || 1) + (b.collider.radius || 1);
+          
+          if (dist < minDist) {
+            // Collision response
+            const normal = this.normalize(this.subtract(b.position, a.position));
+            const overlap = minDist - dist;
+            
+            if (!a.isStatic && !b.isStatic) {
+              a.position.x -= normal.x * overlap * 0.5;
+              a.position.y -= normal.y * overlap * 0.5;
+              a.position.z -= normal.z * overlap * 0.5;
+              b.position.x += normal.x * overlap * 0.5;
+              b.position.y += normal.y * overlap * 0.5;
+              b.position.z += normal.z * overlap * 0.5;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  // Raycast
+  raycast(origin: Vec3, direction: Vec3, maxDistance: number) {
+    let closest: { body: PhysicsBody; distance: number } | null = null;
+    
+    for (const body of this.bodies.values()) {
+      if (body.collider.type === 'sphere') {
+        const hit = this.raySphereIntersect(
+          origin, direction, body.position, body.collider.radius || 1
+        );
+        if (hit && hit < maxDistance && (!closest || hit < closest.distance)) {
+          closest = { body, distance: hit };
+        }
+      }
+    }
+    return closest;
+  }
+  
+  private distance(a: Vec3, b: Vec3) {
+    return Math.sqrt((a.x-b.x)**2 + (a.y-b.y)**2 + (a.z-b.z)**2);
+  }
+  
+  private subtract(a: Vec3, b: Vec3): Vec3 {
+    return { x: a.x - b.x, y: a.y - b.y, z: a.z - b.z };
+  }
+  
+  private normalize(v: Vec3): Vec3 {
+    const len = Math.sqrt(v.x**2 + v.y**2 + v.z**2);
+    return { x: v.x/len, y: v.y/len, z: v.z/len };
+  }
+  
+  private raySphereIntersect(origin: Vec3, dir: Vec3, center: Vec3, radius: number) {
+    const oc = this.subtract(origin, center);
+    const a = dir.x**2 + dir.y**2 + dir.z**2;
+    const b = 2 * (oc.x*dir.x + oc.y*dir.y + oc.z*dir.z);
+    const c = oc.x**2 + oc.y**2 + oc.z**2 - radius**2;
+    const discriminant = b*b - 4*a*c;
+    if (discriminant < 0) return null;
+    return (-b - Math.sqrt(discriminant)) / (2*a);
+  }
+}
+
+export const physics = new PhysicsWorld();`
+  },
+  {
+    id: 'multi-agent-orchestrator',
+    name: 'Multi-Agent Orchestrator',
+    description: 'Coordinate multiple AI agents with task distribution, consensus, and emergent behavior',
+    icon: Users,
+    category: 'brain',
+    difficulty: 'premium',
+    estimatedTime: '2.5 hours',
+    features: ['Agent coordination', 'Task distribution', 'Consensus protocols', 'Emergent behavior', 'Role assignment'],
+    code: `import { substrate } from './lib/substrate';
+
+// Multi-Agent Orchestrator - Premium Template ($99)
+// Coordinate agent swarms with consensus and emergent behavior
+
+interface Agent {
+  id: string;
+  role: string;
+  capabilities: string[];
+  currentTask: string | null;
+  status: 'idle' | 'working' | 'blocked';
+  performance: number;
+}
+
+interface Task {
+  id: string;
+  type: string;
+  priority: number;
+  requirements: string[];
+  assignedTo: string | null;
+  status: 'pending' | 'in_progress' | 'completed' | 'failed';
+}
+
+class AgentOrchestrator {
+  private agents: Map<string, Agent> = new Map();
+  private taskQueue: Task[] = [];
+  private consensusThreshold = 0.66;
+  
+  // Register agent
+  registerAgent(config: Omit<Agent, 'currentTask' | 'status' | 'performance'>) {
+    const agent: Agent = {
+      ...config,
+      currentTask: null,
+      status: 'idle',
+      performance: 1.0
+    };
+    this.agents.set(agent.id, agent);
+    return agent;
+  }
+  
+  // Submit task
+  async submitTask(task: Omit<Task, 'id' | 'assignedTo' | 'status'>) {
+    const newTask: Task = {
+      ...task,
+      id: crypto.randomUUID(),
+      assignedTo: null,
+      status: 'pending'
+    };
+    this.taskQueue.push(newTask);
+    this.taskQueue.sort((a, b) => b.priority - a.priority);
+    
+    await this.assignTasks();
+    return newTask;
+  }
+  
+  // Assign tasks to best-fit agents
+  private async assignTasks() {
+    for (const task of this.taskQueue.filter(t => t.status === 'pending')) {
+      const candidates = this.findCandidates(task);
+      if (candidates.length > 0) {
+        // Pick best performer
+        const best = candidates.reduce((a, b) => 
+          a.performance > b.performance ? a : b
+        );
+        
+        task.assignedTo = best.id;
+        task.status = 'in_progress';
+        best.currentTask = task.id;
+        best.status = 'working';
+        
+        await substrate.brain.remember(
+          \`Task assigned: \${task.type} -> \${best.role}\`,
+          'orchestrator_event',
+          1.0,
+          { taskId: task.id, agentId: best.id }
+        );
+      }
+    }
+  }
+  
+  // Find agents with required capabilities
+  private findCandidates(task: Task): Agent[] {
+    return Array.from(this.agents.values()).filter(agent => {
+      if (agent.status !== 'idle') return false;
+      return task.requirements.every(req => 
+        agent.capabilities.includes(req)
+      );
+    });
+  }
+  
+  // Consensus voting on decision
+  async seekConsensus(proposal: string, voters: string[]): Promise<boolean> {
+    const votes: boolean[] = [];
+    
+    for (const voterId of voters) {
+      const agent = this.agents.get(voterId);
+      if (!agent) continue;
+      
+      // Each agent evaluates proposal
+      const evaluation = await substrate.decode.intent(
+        \`As a \${agent.role}, evaluate: \${proposal}\`
+      );
+      
+      votes.push(evaluation.data?.sentiment === 'positive');
+    }
+    
+    const approval = votes.filter(v => v).length / votes.length;
+    const passed = approval >= this.consensusThreshold;
+    
+    await substrate.brain.remember(
+      \`Consensus: \${passed ? 'PASSED' : 'FAILED'} (\${(approval * 100).toFixed(0)}%)\`,
+      'consensus_result',
+      approval,
+      { proposal, votes: votes.length, approval }
+    );
+    
+    return passed;
+  }
+  
+  // Get swarm status
+  getStatus() {
+    const agents = Array.from(this.agents.values());
+    return {
+      totalAgents: agents.length,
+      idle: agents.filter(a => a.status === 'idle').length,
+      working: agents.filter(a => a.status === 'working').length,
+      pendingTasks: this.taskQueue.filter(t => t.status === 'pending').length,
+      avgPerformance: agents.reduce((s, a) => s + a.performance, 0) / agents.length
+    };
+  }
+}
+
+export const orchestrator = new AgentOrchestrator();`
+  },
+  // ===== ELITE TEMPLATES ($199) =====
+  {
+    id: 'world-engine-complete',
+    name: 'World Engine Complete Suite',
+    description: 'Full world simulation package: entities, physics, AI, networking, and persistence',
+    icon: Globe,
+    category: 'world_engine',
+    difficulty: 'elite',
+    estimatedTime: '4+ hours',
+    features: ['Complete ECS', 'Advanced physics', 'NPC AI', 'Multiplayer sync', 'Save/load', 'Event system'],
+    code: `import { substrate } from './lib/substrate';
+
+// World Engine Complete Suite - Elite Template ($199)
+// Full-featured world simulation with all components
+
+// ===== ENTITY COMPONENT SYSTEM =====
+type ComponentType = 'transform' | 'physics' | 'render' | 'ai' | 'network' | 'custom';
+
+interface Component {
+  type: ComponentType;
+  data: Record<string, any>;
+}
+
+interface Entity {
+  id: string;
+  name: string;
+  components: Map<ComponentType, Component>;
+  tags: Set<string>;
+  parent: string | null;
+  children: string[];
+}
+
+// ===== WORLD STATE =====
+class WorldEngine {
+  private entities: Map<string, Entity> = new Map();
+  private systems: System[] = [];
+  private tick: number = 0;
+  private running: boolean = false;
+  
+  // Create entity with components
+  createEntity(name: string, components: Component[] = []): Entity {
+    const entity: Entity = {
+      id: crypto.randomUUID(),
+      name,
+      components: new Map(),
+      tags: new Set(),
+      parent: null,
+      children: []
+    };
+    
+    for (const comp of components) {
+      entity.components.set(comp.type, comp);
+    }
+    
+    this.entities.set(entity.id, entity);
+    return entity;
+  }
+  
+  // Query entities by component
+  query(requiredComponents: ComponentType[]): Entity[] {
+    return Array.from(this.entities.values()).filter(entity =>
+      requiredComponents.every(comp => entity.components.has(comp))
+    );
+  }
+  
+  // Register system
+  addSystem(system: System) {
+    this.systems.push(system);
+    this.systems.sort((a, b) => a.priority - b.priority);
+  }
+  
+  // Main loop
+  async start(tickRate: number = 60) {
+    this.running = true;
+    const tickInterval = 1000 / tickRate;
+    
+    while (this.running) {
+      const startTime = performance.now();
+      
+      // Run all systems
+      for (const system of this.systems) {
+        const entities = this.query(system.requiredComponents);
+        await system.update(entities, tickInterval / 1000, this);
+      }
+      
+      this.tick++;
+      
+      // Auto-save every 1000 ticks
+      if (this.tick % 1000 === 0) {
+        await this.saveWorld();
+      }
+      
+      const elapsed = performance.now() - startTime;
+      const sleepTime = Math.max(0, tickInterval - elapsed);
+      await new Promise(r => setTimeout(r, sleepTime));
+    }
+  }
+  
+  stop() { this.running = false; }
+  
+  // Persistence
+  async saveWorld() {
+    const data = {
+      tick: this.tick,
+      entities: Array.from(this.entities.entries()).map(([id, e]) => ({
+        id,
+        name: e.name,
+        components: Array.from(e.components.entries()),
+        tags: Array.from(e.tags),
+        parent: e.parent,
+        children: e.children
+      }))
+    };
+    
+    await substrate.brain.remember(
+      \`World save: \${data.entities.length} entities at tick \${this.tick}\`,
+      'world_save',
+      1.0,
+      data
+    );
+  }
+  
+  async loadWorld(saveId: string) {
+    const result = await substrate.brain.query(\`world_save:\${saveId}\`, 1);
+    if (result.data?.memories?.[0]) {
+      const data = result.data.memories[0].metadata;
+      this.tick = data.tick;
+      // Reconstruct entities...
+    }
+  }
+}
+
+// ===== SYSTEM INTERFACE =====
+interface System {
+  name: string;
+  priority: number;
+  requiredComponents: ComponentType[];
+  update(entities: Entity[], deltaTime: number, world: WorldEngine): Promise<void>;
+}
+
+// ===== BUILT-IN SYSTEMS =====
+const PhysicsSystem: System = {
+  name: 'physics',
+  priority: 10,
+  requiredComponents: ['transform', 'physics'],
+  async update(entities, dt, world) {
+    for (const entity of entities) {
+      const transform = entity.components.get('transform')!.data;
+      const physics = entity.components.get('physics')!.data;
+      
+      // Apply gravity
+      physics.velocity.y -= 9.81 * dt;
+      
+      // Integrate
+      transform.position.x += physics.velocity.x * dt;
+      transform.position.y += physics.velocity.y * dt;
+      transform.position.z += physics.velocity.z * dt;
+    }
+  }
+};
+
+const AISystem: System = {
+  name: 'ai',
+  priority: 20,
+  requiredComponents: ['transform', 'ai'],
+  async update(entities, dt, world) {
+    for (const entity of entities) {
+      const ai = entity.components.get('ai')!.data;
+      
+      // Run AI behavior tree
+      if (ai.behaviorTree) {
+        const decision = await substrate.decode.intent(
+          \`AI decision for \${entity.name}: \${ai.currentGoal}\`
+        );
+        ai.lastDecision = decision.data;
+      }
+    }
+  }
+};
+
+const NetworkSystem: System = {
+  name: 'network',
+  priority: 100,
+  requiredComponents: ['transform', 'network'],
+  async update(entities, dt, world) {
+    // Sync networked entities
+    const updates = entities.map(e => ({
+      id: e.id,
+      transform: e.components.get('transform')!.data,
+      owner: e.components.get('network')!.data.owner
+    }));
+    // Broadcast to connected clients...
+  }
+};
+
+// ===== EXPORTS =====
+export const worldEngine = new WorldEngine();
+worldEngine.addSystem(PhysicsSystem);
+worldEngine.addSystem(AISystem);
+worldEngine.addSystem(NetworkSystem);`
+  },
+  {
+    id: 'enterprise-agency-suite',
+    name: 'Enterprise Agency Suite',
+    description: 'Complete AI agency management with tasks, billing, analytics, and white-label deployment',
+    icon: Server,
+    category: 'system',
+    difficulty: 'elite',
+    estimatedTime: '5+ hours',
+    features: ['Agency management', 'Task automation', 'Billing integration', 'Analytics dashboard', 'White-label', 'Multi-tenant'],
+    code: `import { substrate } from './lib/substrate';
+
+// Enterprise Agency Suite - Elite Template ($199)
+// Complete agency platform with billing and analytics
+
+interface Agency {
+  id: string;
+  name: string;
+  owner: string;
+  tier: 'starter' | 'professional' | 'enterprise';
+  agents: AgentConfig[];
+  billing: BillingConfig;
+  usage: UsageMetrics;
+}
+
+interface AgentConfig {
+  id: string;
+  role: string;
+  model: string;
+  rateLimit: number;
+  capabilities: string[];
+}
+
+interface BillingConfig {
+  stripeCustomerId: string;
+  subscription: string;
+  usageBasedPricing: boolean;
+  pricePerTask: number;
+}
+
+interface UsageMetrics {
+  tasksCompleted: number;
+  tokensUsed: number;
+  apiCalls: number;
+  costThisMonth: number;
+}
+
+class AgencyManager {
+  private agencies: Map<string, Agency> = new Map();
+  
+  // Create agency
+  async createAgency(config: {
+    name: string;
+    owner: string;
+    tier: Agency['tier'];
+  }): Promise<Agency> {
+    const agency: Agency = {
+      id: crypto.randomUUID(),
+      name: config.name,
+      owner: config.owner,
+      tier: config.tier,
+      agents: this.getDefaultAgents(config.tier),
+      billing: {
+        stripeCustomerId: '',
+        subscription: '',
+        usageBasedPricing: config.tier === 'enterprise',
+        pricePerTask: this.getPricePerTask(config.tier)
+      },
+      usage: {
+        tasksCompleted: 0,
+        tokensUsed: 0,
+        apiCalls: 0,
+        costThisMonth: 0
+      }
+    };
+    
+    this.agencies.set(agency.id, agency);
+    
+    await substrate.brain.remember(
+      \`Agency created: \${agency.name} (\${agency.tier})\`,
+      'agency_event',
+      1.0,
+      { agencyId: agency.id, tier: agency.tier }
+    );
+    
+    return agency;
+  }
+  
+  // Execute task with billing
+  async executeTask(agencyId: string, task: {
+    type: string;
+    input: any;
+    agentId?: string;
+  }) {
+    const agency = this.agencies.get(agencyId);
+    if (!agency) throw new Error('Agency not found');
+    
+    // Find best agent
+    const agent = task.agentId 
+      ? agency.agents.find(a => a.id === task.agentId)
+      : this.selectBestAgent(agency, task.type);
+    
+    if (!agent) throw new Error('No suitable agent');
+    
+    // Execute
+    const startTime = Date.now();
+    const result = await substrate.decode.intent(
+      \`Execute \${task.type}: \${JSON.stringify(task.input)}\`
+    );
+    const duration = Date.now() - startTime;
+    
+    // Track usage
+    const tokensUsed = result.data?.tokensUsed || 100;
+    agency.usage.tasksCompleted++;
+    agency.usage.tokensUsed += tokensUsed;
+    agency.usage.apiCalls++;
+    agency.usage.costThisMonth += agency.billing.pricePerTask;
+    
+    // Log for analytics
+    await substrate.brain.remember(
+      \`Task completed: \${task.type} in \${duration}ms\`,
+      'task_execution',
+      result.data?.confidence || 0.8,
+      {
+        agencyId,
+        agentId: agent.id,
+        taskType: task.type,
+        duration,
+        tokensUsed,
+        cost: agency.billing.pricePerTask
+      }
+    );
+    
+    return {
+      result: result.data,
+      metrics: {
+        duration,
+        tokensUsed,
+        cost: agency.billing.pricePerTask
+      }
+    };
+  }
+  
+  // Analytics
+  async getAnalytics(agencyId: string, period: 'day' | 'week' | 'month') {
+    const agency = this.agencies.get(agencyId);
+    if (!agency) throw new Error('Agency not found');
+    
+    const results = await substrate.brain.query(
+      \`task_execution agencyId:\${agencyId}\`,
+      1000
+    );
+    
+    // Aggregate metrics
+    const tasks = results.data?.memories || [];
+    const byAgent = new Map<string, number>();
+    const byType = new Map<string, number>();
+    let totalCost = 0;
+    let totalDuration = 0;
+    
+    for (const task of tasks) {
+      const meta = task.metadata;
+      byAgent.set(meta.agentId, (byAgent.get(meta.agentId) || 0) + 1);
+      byType.set(meta.taskType, (byType.get(meta.taskType) || 0) + 1);
+      totalCost += meta.cost;
+      totalDuration += meta.duration;
+    }
+    
+    return {
+      period,
+      totalTasks: tasks.length,
+      totalCost,
+      avgDuration: totalDuration / tasks.length,
+      tasksByAgent: Object.fromEntries(byAgent),
+      tasksByType: Object.fromEntries(byType),
+      currentUsage: agency.usage
+    };
+  }
+  
+  private getDefaultAgents(tier: Agency['tier']): AgentConfig[] {
+    const base = [
+      { id: 'researcher', role: 'Researcher', model: 'gpt-4', rateLimit: 100, capabilities: ['research', 'summarize'] },
+      { id: 'writer', role: 'Writer', model: 'gpt-4', rateLimit: 100, capabilities: ['write', 'edit'] }
+    ];
+    
+    if (tier === 'professional' || tier === 'enterprise') {
+      base.push(
+        { id: 'analyst', role: 'Analyst', model: 'gpt-4', rateLimit: 200, capabilities: ['analyze', 'report'] }
+      );
+    }
+    
+    if (tier === 'enterprise') {
+      base.push(
+        { id: 'strategist', role: 'Strategist', model: 'gpt-4', rateLimit: 500, capabilities: ['strategy', 'planning'] }
+      );
+    }
+    
+    return base;
+  }
+  
+  private getPricePerTask(tier: Agency['tier']): number {
+    switch (tier) {
+      case 'starter': return 0.05;
+      case 'professional': return 0.03;
+      case 'enterprise': return 0.01;
+    }
+  }
+  
+  private selectBestAgent(agency: Agency, taskType: string): AgentConfig | undefined {
+    return agency.agents.find(a => 
+      a.capabilities.some(c => taskType.toLowerCase().includes(c))
+    ) || agency.agents[0];
+  }
+}
+
+export const agencyManager = new AgencyManager();`
   }
 ];
 

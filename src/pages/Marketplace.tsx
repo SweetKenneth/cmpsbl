@@ -34,12 +34,15 @@ const categoryIcons: Record<string, React.ElementType> = {
   vision: Eye,
   dream: Moon,
   system: Settings,
+  world_engine: Server,
 };
 
 const difficultyBadgeStyles: Record<string, string> = {
   beginner: "bg-system-green/20 text-system-green border-system-green/30",
   intermediate: "bg-system-amber/20 text-system-amber border-system-amber/30", 
   advanced: "bg-destructive/20 text-destructive border-destructive/30",
+  premium: "bg-violet-500/20 text-violet-400 border-violet-500/30",
+  elite: "bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-400 border-amber-500/30",
 };
 
 export default function Marketplace() {
@@ -230,6 +233,14 @@ export default function Marketplace() {
                   <Badge className={difficultyBadgeStyles.advanced}>Advanced</Badge>
                   <span className="text-sm font-medium">{formatPrice(MARKETPLACE_PRODUCTS.templates.enterprise.amount)}</span>
                 </div>
+                <div className="flex items-center gap-2">
+                  <Badge className={difficultyBadgeStyles.premium}>Premium</Badge>
+                  <span className="text-sm font-medium">{formatPrice(MARKETPLACE_PRODUCTS.templates.premium.amount)}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge className={difficultyBadgeStyles.elite}>Elite</Badge>
+                  <span className="text-sm font-medium">{formatPrice(MARKETPLACE_PRODUCTS.templates.elite.amount)}</span>
+                </div>
               </div>
 
               {/* Template Grid */}
@@ -237,7 +248,7 @@ export default function Marketplace() {
                 {filteredTemplates.map((template) => {
                   const Icon = template.icon;
                   const CategoryIcon = categoryIcons[template.category] || Zap;
-                  const pricing = getTemplatePricing(template.difficulty);
+                  const pricing = getTemplatePricing(template.difficulty, template.id);
                   
                   return (
                     <Card 
@@ -445,7 +456,7 @@ export default function Marketplace() {
                   </span>
                   <div className="ml-auto">
                     <span className="text-2xl font-bold text-primary">
-                      {formatPrice(getTemplatePricing(selectedTemplate.difficulty).amount)}
+                      {formatPrice(getTemplatePricing(selectedTemplate.difficulty, selectedTemplate.id).amount)}
                     </span>
                   </div>
                 </div>
@@ -492,7 +503,7 @@ export default function Marketplace() {
                   disabled={isCheckingOut}
                 >
                   <ShoppingCart className="w-5 h-5" />
-                  {isCheckingOut ? "Processing..." : `Purchase for ${formatPrice(getTemplatePricing(selectedTemplate.difficulty).amount)}`}
+                  {isCheckingOut ? "Processing..." : `Purchase for ${formatPrice(getTemplatePricing(selectedTemplate.difficulty, selectedTemplate.id).amount)}`}
                 </Button>
               </div>
             </ScrollArea>
