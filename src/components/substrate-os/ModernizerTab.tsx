@@ -190,6 +190,9 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
         body: { module: 'modernizer', action: 'status' }
       });
       if (error) throw error;
+      if ((data as any)?.success === false) {
+        throw new Error((data as any)?.error_message || (data as any)?.error || 'Modernizer status failed');
+      }
       return data;
     },
     refetchInterval: 60000,
@@ -218,6 +221,9 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
         body: { module: 'modernizer', action: 'archived' }
       });
       if (error) throw error;
+      if ((data as any)?.success === false) {
+        throw new Error((data as any)?.error_message || (data as any)?.error || 'Archived scan failed');
+      }
       return data.repurposing_opportunities as ArchivedOpportunity[];
     },
     enabled: enabled && showArchived,
@@ -230,6 +236,9 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
         body: { module: 'modernizer', action: 'scan' }
       });
       if (error) throw error;
+      if ((data as any)?.success === false) {
+        throw new Error((data as any)?.error_message || (data as any)?.error || 'Scan failed');
+      }
       return data as ScanResult;
     },
     onSuccess: (data) => {
