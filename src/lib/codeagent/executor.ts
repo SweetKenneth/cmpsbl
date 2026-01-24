@@ -1,5 +1,6 @@
 /**
  * CodeAgent Executor — Resilient Code Generation with Self-Healing
+ * v2.1.0 — Now with Shadow Mode for full UI functionality
  * Wraps the substrate coder with circuit breakers and error handling
  */
 
@@ -21,6 +22,15 @@ import {
   checkRequiredPatterns,
   type ActionAssessment 
 } from './knowledge';
+import {
+  isShadowModeActive,
+  shadowGenerate,
+  shadowValidate,
+  shadowExecute,
+  getShadowCoderStatus,
+  getShadowSandboxStatus,
+  getShadowModeStatus,
+} from './shadow-mode';
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES
@@ -109,11 +119,57 @@ function getSandboxFallback(): ValidationResult {
 
 /**
  * Generate code with full resilience: brain-first check, circuit breakers, validation
+ * Now prioritizes Shadow Mode when edge functions are unavailable
  */
 export async function generateCode(request: CodeRequest): Promise<CodeResult> {
   const startTime = Date.now();
   
   try {
+    // Step 0: Check if we should use Shadow Mode (edge functions not available)
+    if (isShadowModeActive()) {
+      console.log('[Executor] Using Shadow Mode for code generation');
+      const shadowResult = await shadowGenerate({
+        module: request.module,
+        changeType: request.changeType,
+        description: request.description,
+        filePath: request.filePath,
+      });
+      
+      // Record the change for potential rollback
+      if (shadowResult.success) {
+        recordChange({
+          changeType: 'code',
+          module: request.module,
+          description: request.description,
+          beforeState: request.existingCode || '',
+          afterState: shadowResult.code,
+          appliedBy: 'agent', // Shadow agent is still an 'agent' type
+        });
+      }
+      
+      return {
+        success: shadowResult.success,
+        code: shadowResult.code,
+        filePath: shadowResult.filePath,
+        operation: shadowResult.operation,
+        confidence: shadowResult.confidence,
+        provider: shadowResult.provider,
+        model: shadowResult.model,
+        latencyMs: Date.now() - startTime,
+        validation: shadowResult.validation,
+        assessment: {
+          canProceed: true,
+          confidenceLevel: 'high',
+          requiresApproval: false,
+          warnings: ['Running in Shadow Mode - edge functions not connected'],
+          suggestions: [],
+          relatedKnowledge: [],
+          rollbackAvailable: true,
+        },
+        fallbackUsed: false,
+      };
+    }
+    
     // Step 1: Check if circuit is open
     if (isCircuitOpen(SERVICES.CODER)) {
       console.warn('[Executor] Coder circuit is open, using fallback');
@@ -283,8 +339,14 @@ export async function generateCode(request: CodeRequest): Promise<CodeResult> {
 
 /**
  * Validate code through the sandbox with resilience
+ * Uses Shadow Mode when edge functions are unavailable
  */
 export async function validateCode(code: string): Promise<ValidationResult> {
+  // Use shadow mode if active
+  if (isShadowModeActive()) {
+    return shadowValidate(code);
+  }
+  
   return resilientCall({
     service: SERVICES.SANDBOX,
     operation: async () => {
@@ -320,6 +382,7 @@ export async function validateCode(code: string): Promise<ValidationResult> {
 
 /**
  * Execute code in the sandbox with resilience
+ * Uses Shadow Mode when edge functions are unavailable
  */
 export async function executeInSandbox(code: string): Promise<{
   success: boolean;
@@ -327,6 +390,11 @@ export async function executeInSandbox(code: string): Promise<{
   error?: string;
   analysis?: object;
 }> {
+  // Use shadow mode if active
+  if (isShadowModeActive()) {
+    return shadowExecute(code);
+  }
+  
   return resilientCall({
     service: SERVICES.SANDBOX,
     operation: async () => {
