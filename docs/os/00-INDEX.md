@@ -50,12 +50,13 @@ Think of this as your "explain it to me like I'm five" guide to a very sophistic
 | 20 | [ACCESS-DEEP-DIVE.md](./20-ACCESS-DEEP-DIVE.md) | Access | API keys, rate limiting, billing, metering |
 | 21 | [INTEGRATION-DEEP-DIVE.md](./21-INTEGRATION-DEEP-DIVE.md) | Integration | Enterprise adapters, auto-discovery, LLM governance |
 
-### System Guides (22-23)
+### System Guides (22-24)
 
 | # | Document | What It Explains |
 |---|----------|------------------|
 | 22 | [BACKUP-RESTORE-SYSTEM.md](./22-BACKUP-RESTORE-SYSTEM.md) | Backup, restore, export packages, install wizard, templates |
 | 23 | [VERSATILITY-AND-USE-CASES.md](./23-VERSATILITY-AND-USE-CASES.md) | How one substrate serves many industries |
+| 24 | [CODEAGENT-DEEP-DIVE.md](./24-CODEAGENT-DEEP-DIVE.md) | Autonomous coding engine, 24/7 learning, deployment pipeline |
 
 ---
 
