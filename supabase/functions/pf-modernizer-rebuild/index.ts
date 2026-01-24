@@ -1,11 +1,44 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { callFreeTierAI } from "../_shared/free-tier-router.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
+
+// Direct Groq call - no free-tier-router fallback chain
+async function callGroqDirect(systemPrompt: string, userPrompt: string): Promise<string> {
+  const GROQ_API_KEY = Deno.env.get('GROQ_API_KEY');
+  if (!GROQ_API_KEY) {
+    throw new Error('GROQ_API_KEY not configured');
+  }
+
+  console.log('Calling Groq directly for modernization...');
+  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${GROQ_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: 'llama-3.3-70b-versatile',
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: userPrompt }
+      ],
+      temperature: 0.4,
+      max_tokens: 12000,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Groq request failed: ${response.status} - ${errorText}`);
+  }
+
+  const data = await response.json();
+  return data.choices[0].message.content;
+}
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -35,9 +68,9 @@ serve(async (req) => {
 
     const extractedContent = job.extracted_content?.markdown || job.extracted_content?.html || '';
     const metadata = job.extracted_metadata || {};
-    const improveContent = job.improve_content !== false; // Default to true
+    const improveContent = job.improve_content !== false;
 
-    // Enhanced AI rebuild prompt with better structure and content improvement
+    // Enhanced AI rebuild prompt
     const systemPrompt = `You are an elite web modernization architect. Transform legacy websites into production-grade modern experiences.
 
 ${improveContent ? `CONTENT IMPROVEMENT MODE: Active
@@ -77,21 +110,14 @@ CRITICAL REQUIREMENTS:
 
 8. Return ONLY the HTML - no explanations, no markdown blocks, just pure HTML starting with <!DOCTYPE html>`;
 
-    // Use upgraded free tier routing with better model
-    console.log('Calling upgraded AI for modernization...');
-    const aiResult = await callFreeTierAI(prompt, {
-      maxTokens: 12000,
-      temperature: 0.4,
-      systemPrompt
-    });
-
-    let htmlContent = aiResult.content;
-    console.log(`AI generation complete using ${aiResult.provider}/${aiResult.model}`);
+    // Call Groq directly - stable and reliable
+    let htmlContent = await callGroqDirect(systemPrompt, prompt);
+    console.log(`AI generation complete using groq/llama-3.3-70b`);
 
     // Clean up markdown code blocks if present
     htmlContent = htmlContent.replace(/```html\n?/g, '').replace(/```\n?/g, '').trim();
 
-    // Convert external links to internal (remove domain, keep path)
+    // Convert external links to internal
     const sourceDomain = new URL(job.source_url).hostname;
     htmlContent = htmlContent.replace(
       new RegExp(`https?://${sourceDomain.replace(/\./g, '\\.')}(/[^"'\\s]*)`, 'g'),
@@ -128,11 +154,11 @@ CRITICAL REQUIREMENTS:
       })
       .eq('id', job_id);
 
-    // Log costs (free tier = $0)
+    // Log costs (Groq free tier = $0)
     await supabase.from('cost_logs').insert({
       job_id,
       user_id: job.user_id,
-      api_name: `${aiResult.provider}-free`,
+      api_name: 'groq-direct',
       cost_amount: 0,
       tokens_used: 0
     });

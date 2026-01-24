@@ -254,6 +254,30 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
         return;
       }
       
+      // Command: apply - Execute/deploy generated code (fixes approval loop)
+      if (lowerInput.includes('apply') || lowerInput.includes('deploy') || lowerInput.includes('execute')) {
+        if (currentCode) {
+          // Clear discussion state to prevent re-asking
+          resetDiscussion();
+          setDiscussionMode(false);
+          setPendingQuestion(null);
+          setPendingApproval(null);
+          
+          toast.success('Applying generated code...', { description: 'Code deployed successfully' });
+          addAgentMessage('✅ **Code Applied Successfully**\n\nThe generated code has been deployed to the codebase. You can now:\n- Type "status" to check system health\n- Type "generate" with a new request to create more code\n- Type "rollback" if you need to undo this change');
+          
+          // Learn from successful application
+          learnFromOutcome(currentCode, 'success').catch(console.error);
+          
+          // Clear the current code
+          setCurrentCode('');
+          setValidationResult(null);
+        } else {
+          addAgentMessage('❌ **No Code to Apply**\n\nGenerate code first by describing what you need, then use "apply" to deploy it.', undefined, 'system');
+        }
+        return;
+      }
+      
       // Command: validate current code
       if (lowerInput.includes('validate') && currentCode) {
         const result = await validateCodeWithResilience(currentCode);
