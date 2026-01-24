@@ -22,9 +22,24 @@
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
     
     <!-- 2026 SEO: Preload Critical Assets (LCP optimization) -->
-    <!-- Note: Vite automatically injects modulepreload links for JS chunks during build -->
-    <!-- CSS preload handled by Vite's build process with proper hashing -->
-    
+    <!-- Early resource hints for critical rendering path - breaks dependency chain -->
+    <link rel="preload" as="style" href="/assets/index.css" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="/assets/index.css" /></noscript>
+    <script>
+      // Break network dependency chain by preloading critical assets in parallel
+      (function() {
+        var head = document.head;
+        // Find and preload main CSS (Vite injects actual hashed filename)
+        var links = document.querySelectorAll('link[rel="stylesheet"][href*="index"]');
+        links.forEach(function(link) {
+          var preload = document.createElement('link');
+          preload.rel = 'preload';
+          preload.as = 'style';
+          preload.href = link.href;
+          head.insertBefore(preload, head.firstChild);
+        });
+      })();
+    </script>
     <!-- Critical CSS for FCP - inline above-the-fold styles -->
     <style>
       /* Critical CSS for First Contentful Paint */
