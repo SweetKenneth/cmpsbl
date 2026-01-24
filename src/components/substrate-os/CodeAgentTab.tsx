@@ -1,6 +1,6 @@
 /**
  * CodeAgent Tab — Self-Evolution Coding Interface
- * v4.0.0 — With discussion mode, approval gates, and file context reading
+ * v3.0.0 — Full v3 with PR Queue, Diff Viewer, and Deploy Pipeline
  * Provides chat interface to the Substrate Coder + Sandbox validation preview
  */
 
@@ -9,7 +9,8 @@ import {
   Code, Send, Loader2, CheckCircle2, XCircle, AlertTriangle, 
   Terminal, Zap, Bot, FileCode, Play, RefreshCw, Copy, Check,
   Heart, ShieldCheck, Activity, Eye, Brain, Cog, Rocket,
-  MessageSquare, HelpCircle, FileText, Shield, Undo2
+  MessageSquare, HelpCircle, FileText, Shield, Undo2, GitPullRequest, 
+  BarChart3, Layers
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -54,6 +55,10 @@ import {
 } from '@/lib/codeagent/discussion';
 import { gatherContextForChange, summarizeContext } from '@/lib/codeagent/file-context';
 import { getRecentChanges, type ChangeRecord } from '@/lib/codeagent/rollback';
+import { PRQueuePanel } from './PRQueuePanel';
+import { DiffViewer } from './DiffViewer';
+import { createPR, type PRPatch } from '@/lib/codeagent/pr-queue';
+import { runDeploymentPipeline, type PipelineRun } from '@/lib/codeagent/deploy-pipeline';
 
 interface Message {
   id: string;
@@ -98,7 +103,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
   const [isLoading, setIsLoading] = useState(false);
   const [coderStatus, setCoderStatus] = useState<CoderStatus | null>(null);
   const [sandboxStatus, setSandboxStatus] = useState<SandboxStatus | null>(null);
-  const [activeTab, setActiveTab] = useState<'chat' | 'preview' | 'health' | 'history'>('chat');
+  const [activeTab, setActiveTab] = useState<'chat' | 'preview' | 'health' | 'history' | 'review'>('chat');
   const [currentCode, setCurrentCode] = useState<string>('');
   const [validationResult, setValidationResult] = useState<{ valid: boolean; issues: string[] } | null>(null);
   const [copied, setCopied] = useState(false);
@@ -115,6 +120,8 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
   const [pendingQuestion, setPendingQuestion] = useState<ClarifyingQuestion | null>(null);
   const [pendingApproval, setPendingApproval] = useState<ApprovalGate | null>(null);
   const [changeHistory, setChangeHistory] = useState<ChangeRecord[]>([]);
+  const [diffMode, setDiffMode] = useState<'split' | 'unified'>('split');
+  const [deployPipeline, setDeployPipeline] = useState<PipelineRun | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // Fetch status on mount
@@ -564,7 +571,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
   if (!enabled) {
     return (
       <main className="container mx-auto px-4 py-6 max-w-7xl">
-        <Card className="border-dashed border-amber-500/30 bg-white/5">
+        <Card className="border-dashed border-system-amber/30 bg-muted/50">
           <CardContent className="py-12 text-center">
             <Bot className="w-12 h-12 mx-auto mb-4 text-muted-foreground/30" />
             <p className="text-sm text-muted-foreground">CodeAgent requires Operator privileges</p>
@@ -579,29 +586,35 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500/30 to-fuchsia-500/30 border border-violet-500/40 flex items-center justify-center">
-            <Code className="w-5 h-5 text-violet-400" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/30 to-accent/30 border border-primary/40 flex items-center justify-center">
+            <Code className="w-5 h-5 text-primary" />
           </div>
           <div>
             <h2 className="text-lg font-semibold flex items-center gap-2">
               CodeAgent
-              <Badge variant="outline" className="text-[10px] border-violet-500/40 text-violet-400 bg-violet-500/10">
-                v2.0.0
+              <Badge variant="outline" className="text-[10px] border-primary/40 text-primary bg-primary/10">
+                v3.0.0
               </Badge>
               {discussionMode && (
-                <Badge variant="outline" className="text-[10px] border-cyan-500/40 text-cyan-400 bg-cyan-500/10">
+                <Badge variant="outline" className="text-[10px] border-accent/40 text-accent bg-accent/10">
                   <MessageSquare className="w-3 h-3 mr-1" />
                   Discussion
                 </Badge>
               )}
+              {deployPipeline && (
+                <Badge variant="outline" className="text-[10px] border-system-green/40 text-system-green bg-system-green/10">
+                  <Rocket className="w-3 h-3 mr-1" />
+                  Pipeline
+                </Badge>
+              )}
             </h2>
             <p className="text-xs text-muted-foreground font-mono">
-              discuss → read → think → write → confirm → submit
+              discuss → read → think → write → confirm → deploy
             </p>
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Badge variant="outline" className="text-[10px] border-emerald-500/40 text-emerald-400 bg-emerald-500/10">
+          <Badge variant="outline" className="text-[10px] border-system-green/40 text-system-green bg-system-green/10">
             <Zap className="w-3 h-3 mr-1" />
             Free-Tier Router {coderStatus?.free_tier_router || ''}
           </Badge>
@@ -612,23 +625,23 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
       </div>
 
       {/* Status Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-        <Card className="border-violet-500/20 bg-white/5">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
+        <Card className="border-primary/20 bg-card/50">
           <CardContent className="py-3 px-4">
             <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Patterns</p>
-            <p className="text-2xl font-bold text-violet-400">{coderStatus?.learned_patterns || 0}</p>
+            <p className="text-2xl font-bold text-primary">{coderStatus?.learned_patterns || 0}</p>
           </CardContent>
         </Card>
-        <Card className="border-cyan-500/20 bg-white/5">
+        <Card className="border-accent/20 bg-card/50">
           <CardContent className="py-3 px-4">
-            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Generated Today</p>
-            <p className="text-2xl font-bold text-cyan-400">{coderStatus?.generated_today || 0}</p>
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Generated</p>
+            <p className="text-2xl font-bold text-accent">{coderStatus?.generated_today || 0}</p>
           </CardContent>
         </Card>
-        <Card className="border-emerald-500/20 bg-white/5">
+        <Card className="border-system-green/20 bg-card/50">
           <CardContent className="py-3 px-4">
             <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Sandbox</p>
-            <p className="text-sm font-mono text-emerald-400 flex items-center gap-1">
+            <p className="text-sm font-mono text-system-green flex items-center gap-1">
               {sandboxStatus?.status === 'ready' ? (
                 <><CheckCircle2 className="w-3 h-3" /> Ready</>
               ) : (
@@ -637,10 +650,22 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
             </p>
           </CardContent>
         </Card>
-        <Card className="border-amber-500/20 bg-white/5">
+        <Card className="border-system-amber/20 bg-card/50">
           <CardContent className="py-3 px-4">
             <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Mode</p>
-            <p className="text-sm font-mono text-amber-400">{sandboxStatus?.mode || 'validation'}</p>
+            <p className="text-sm font-mono text-system-amber">{sandboxStatus?.mode || 'validation'}</p>
+          </CardContent>
+        </Card>
+        <Card 
+          className="border-neon-purple/20 bg-card/50 cursor-pointer hover:bg-card/80 transition-colors"
+          onClick={() => setActiveTab('review')}
+        >
+          <CardContent className="py-3 px-4">
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">PR Queue</p>
+            <p className="text-sm font-mono text-neon-purple flex items-center gap-1">
+              <GitPullRequest className="w-3 h-3" />
+              View Queue
+            </p>
           </CardContent>
         </Card>
       </div>
@@ -648,10 +673,10 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
       {/* Main Interface */}
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Chat Panel */}
-        <Card className="border-violet-500/20 bg-black/40 backdrop-blur-xl">
-          <CardHeader className="border-b border-white/10 py-3">
+        <Card className="border-primary/20 bg-card/50 backdrop-blur-xl">
+          <CardHeader className="border-b border-border/50 py-3">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <Bot className="w-4 h-4 text-violet-400" />
+              <Bot className="w-4 h-4 text-primary" />
               Agent Chat
             </CardTitle>
           </CardHeader>
@@ -666,12 +691,12 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
                       Describe what you want to build or improve.
                     </p>
                     <div className="flex flex-wrap gap-2 justify-center">
-                      {['Add rate limiting to Brain', 'Create a health check function', 'Improve error handling'].map(example => (
-                        <button
-                          key={example}
-                          onClick={() => setInput(example)}
-                          className="text-xs px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-muted-foreground hover:text-foreground hover:bg-white/10 transition-all"
-                        >
+                        {['Add rate limiting to Brain', 'Create a health check function', 'Improve error handling'].map(example => (
+                          <button
+                            key={example}
+                            onClick={() => setInput(example)}
+                            className="text-xs px-3 py-1.5 rounded-full bg-muted/50 border border-border/50 text-muted-foreground hover:text-foreground hover:bg-muted transition-all"
+                          >
                           {example}
                         </button>
                       ))}
@@ -686,31 +711,31 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
                       className={cn(
                         "rounded-lg p-3 text-sm",
                         msg.role === 'user' 
-                          ? "bg-violet-500/10 border border-violet-500/20 ml-8" 
+                          ? "bg-primary/10 border border-primary/20 ml-8" 
                           : msg.role === 'system'
-                          ? "bg-amber-500/10 border border-amber-500/20"
+                          ? "bg-system-amber/10 border border-system-amber/20"
                           : msg.role === 'question'
-                          ? "bg-cyan-500/10 border border-cyan-500/20"
+                          ? "bg-neon-cyan/10 border border-neon-cyan/20"
                           : msg.role === 'preview'
-                          ? "bg-blue-500/10 border border-blue-500/20"
+                          ? "bg-neon-blue/10 border border-neon-blue/20"
                           : msg.role === 'approval'
-                          ? "bg-emerald-500/10 border border-emerald-500/20"
-                          : "bg-white/5 border border-white/10 mr-8"
+                          ? "bg-system-green/10 border border-system-green/20"
+                          : "bg-muted/50 border border-border/50 mr-8"
                       )}
                     >
                       <div className="flex items-center gap-2 mb-2">
                         {msg.role === 'user' ? (
-                          <Terminal className="w-3 h-3 text-violet-400" />
+                          <Terminal className="w-3 h-3 text-primary" />
                         ) : msg.role === 'system' ? (
-                          <AlertTriangle className="w-3 h-3 text-amber-400" />
+                          <AlertTriangle className="w-3 h-3 text-system-amber" />
                         ) : msg.role === 'question' ? (
-                          <HelpCircle className="w-3 h-3 text-cyan-400" />
+                          <HelpCircle className="w-3 h-3 text-neon-cyan" />
                         ) : msg.role === 'preview' ? (
-                          <FileText className="w-3 h-3 text-blue-400" />
+                          <FileText className="w-3 h-3 text-neon-blue" />
                         ) : msg.role === 'approval' ? (
-                          <Shield className="w-3 h-3 text-emerald-400" />
+                          <Shield className="w-3 h-3 text-system-green" />
                         ) : (
-                          <Bot className="w-3 h-3 text-cyan-400" />
+                          <Bot className="w-3 h-3 text-primary" />
                         )}
                         <span className="text-[10px] text-muted-foreground">
                           {msg.role === 'user' ? 'You' : 
@@ -736,7 +761,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
                               key={opt}
                               size="sm"
                               variant="outline"
-                              className="text-xs h-7 border-cyan-500/30 hover:bg-cyan-500/20"
+                              className="text-xs h-7 border-neon-cyan/30 hover:bg-neon-cyan/20"
                               onClick={() => {
                                 setInput(opt);
                               }}
@@ -752,7 +777,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
                         <div className="mt-3 flex gap-2">
                           <Button
                             size="sm"
-                            className="bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/30"
+                            className="bg-system-green/20 border border-system-green/40 text-system-green hover:bg-system-green/30"
                             onClick={() => setInput('yes')}
                           >
                             <CheckCircle2 className="w-3 h-3 mr-1" />
@@ -761,7 +786,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
                           <Button
                             size="sm"
                             variant="outline"
-                            className="border-red-500/30 text-red-400 hover:bg-red-500/20"
+                            className="border-destructive/30 text-destructive hover:bg-destructive/20"
                             onClick={() => setInput('no')}
                           >
                             <XCircle className="w-3 h-3 mr-1" />
@@ -771,7 +796,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
                       )}
                       
                       {msg.metadata?.provider && (
-                        <div className="mt-2 pt-2 border-t border-white/5 flex items-center gap-2 text-[10px] text-muted-foreground">
+                        <div className="mt-2 pt-2 border-t border-border/30 flex items-center gap-2 text-[10px] text-muted-foreground">
                           <Badge variant="outline" className="h-4 text-[9px]">{msg.metadata.provider}</Badge>
                           <span>{msg.metadata.latency_ms}ms</span>
                           {msg.metadata.confidence && (
@@ -792,13 +817,13 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
             </ScrollArea>
 
             {/* Input */}
-            <form onSubmit={handleSubmit} className="p-4 border-t border-white/10">
+            <form onSubmit={handleSubmit} className="p-4 border-t border-border/50">
               <div className="flex gap-2">
                 <Textarea
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Describe a code change or improvement..."
-                  className="min-h-[60px] resize-none bg-white/5 border-white/10"
+                  className="min-h-[60px] resize-none bg-muted/50 border-border/50"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
                       e.preventDefault();
@@ -809,7 +834,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
                 <Button 
                   type="submit" 
                   disabled={isLoading || !input.trim()}
-                  className="bg-violet-500/20 border border-violet-500/40 text-violet-400 hover:bg-violet-500/30"
+                  className="bg-primary/20 border border-primary/40 text-primary hover:bg-primary/30"
                 >
                   {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
                 </Button>
@@ -819,11 +844,11 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
         </Card>
 
         {/* Preview Panel */}
-        <Card className="border-cyan-500/20 bg-black/40 backdrop-blur-xl">
-          <CardHeader className="border-b border-white/10 py-3">
+        <Card className="border-accent/20 bg-card/50 backdrop-blur-xl">
+          <CardHeader className="border-b border-border/50 py-3">
             <div className="flex items-center justify-between">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <FileCode className="w-4 h-4 text-cyan-400" />
+                <FileCode className="w-4 h-4 text-accent" />
                 Code Preview
               </CardTitle>
               <div className="flex items-center gap-2">
@@ -855,8 +880,8 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
               <div className={cn(
                 "px-4 py-2 border-b flex items-center gap-2 text-xs",
                 validationResult.valid 
-                  ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400"
-                  : "bg-red-500/10 border-red-500/20 text-red-400"
+                  ? "bg-system-green/10 border-system-green/20 text-system-green"
+                  : "bg-destructive/10 border-destructive/20 text-destructive"
               )}>
                 {validationResult.valid ? (
                   <><CheckCircle2 className="w-3 h-3" /> Validation passed</>
@@ -889,11 +914,11 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
 
             {/* Issues List */}
             {validationResult && !validationResult.valid && validationResult.issues.length > 0 && (
-              <div className="border-t border-white/10 p-3 bg-red-500/5">
-                <p className="text-xs font-medium text-red-400 mb-2">Issues:</p>
+              <div className="border-t border-border/50 p-3 bg-destructive/5">
+                <p className="text-xs font-medium text-destructive mb-2">Issues:</p>
                 <ul className="space-y-1">
                   {validationResult.issues.map((issue, idx) => (
-                    <li key={idx} className="text-xs text-red-300/80 flex items-start gap-2">
+                    <li key={idx} className="text-xs text-destructive/80 flex items-start gap-2">
                       <XCircle className="w-3 h-3 mt-0.5 shrink-0" />
                       {issue}
                     </li>
@@ -907,11 +932,11 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
 
       {/* Change History Panel */}
       {changeHistory.length > 0 && (
-        <Card className="mt-6 border-blue-500/20 bg-black/40 backdrop-blur-xl">
-          <CardHeader className="border-b border-white/10 py-3">
+        <Card className="mt-6 border-neon-blue/20 bg-card/50 backdrop-blur-xl">
+          <CardHeader className="border-b border-border/50 py-3">
             <div className="flex items-center justify-between">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <Undo2 className="w-4 h-4 text-blue-400" />
+                <Undo2 className="w-4 h-4 text-neon-blue" />
                 Change History — Rollback UI
               </CardTitle>
               <Button
@@ -927,18 +952,18 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
           </CardHeader>
           <CardContent className="p-0">
             <ScrollArea className="max-h-[200px]">
-              <div className="divide-y divide-white/5">
+              <div className="divide-y divide-border/30">
                 {changeHistory.map((change) => (
-                  <div key={change.id} className="p-3 flex items-center justify-between hover:bg-white/5 transition-colors">
+                  <div key={change.id} className="p-3 flex items-center justify-between hover:bg-muted/30 transition-colors">
                     <div className="flex items-center gap-3">
                       <Badge 
                         variant="outline" 
                         className={cn(
                           "text-[9px]",
-                          change.status === 'applied' ? "border-emerald-500/40 text-emerald-400" :
-                          change.status === 'rolled_back' ? "border-amber-500/40 text-amber-400" :
-                          change.status === 'failed' ? "border-red-500/40 text-red-400" :
-                          "border-blue-500/40 text-blue-400"
+                          change.status === 'applied' ? "border-system-green/40 text-system-green" :
+                          change.status === 'rolled_back' ? "border-system-amber/40 text-system-amber" :
+                          change.status === 'failed' ? "border-destructive/40 text-destructive" :
+                          "border-neon-blue/40 text-neon-blue"
                         )}
                       >
                         {change.status}
@@ -954,7 +979,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
                       <Button
                         size="sm"
                         variant="ghost"
-                        className="h-7 text-xs text-amber-400 hover:bg-amber-500/20"
+                        className="h-7 text-xs text-system-amber hover:bg-system-amber/20"
                         onClick={async () => {
                           const result = await rollbackLastChange();
                           if (result.success) {
@@ -977,17 +1002,78 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
         </Card>
       )}
 
+      {/* PR Queue Panel - Shows when review tab is active */}
+      {activeTab === 'review' && (
+        <div className="mt-6">
+          <PRQueuePanel
+            onDeploy={async (pr) => {
+              // Run deployment pipeline for the PR
+              const pipeline = await runDeploymentPipeline({
+                functionName: pr.filesChanged[0] || 'unknown',
+                code: pr.diff,
+                autoValidate: true
+              }, (stage, status) => {
+                console.log(`Pipeline: ${stage} → ${status}`);
+              });
+              setDeployPipeline(pipeline);
+              if (!pipeline.result?.success) {
+                throw new Error(pipeline.result?.validationErrors[0] || 'Deployment failed');
+              }
+            }}
+          />
+        </div>
+      )}
+
+      {/* Diff Viewer for current code */}
+      {currentCode && activeTab === 'preview' && (
+        <Card className="mt-6 border-border/50 bg-card/50">
+          <CardHeader className="py-3 border-b border-border/50">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-sm font-medium flex items-center gap-2">
+                <Layers className="w-4 h-4 text-primary" />
+                Code Diff View
+              </CardTitle>
+              <div className="flex gap-1">
+                <Button
+                  size="sm"
+                  variant={diffMode === 'split' ? 'secondary' : 'ghost'}
+                  onClick={() => setDiffMode('split')}
+                  className="h-7 text-xs"
+                >
+                  Split
+                </Button>
+                <Button
+                  size="sm"
+                  variant={diffMode === 'unified' ? 'secondary' : 'ghost'}
+                  onClick={() => setDiffMode('unified')}
+                  className="h-7 text-xs"
+                >
+                  Unified
+                </Button>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className="p-0">
+            <DiffViewer 
+              diff={`--- a/original.ts\n+++ b/new.ts\n@@ -1,1 +1,${currentCode.split('\n').length} @@\n${currentCode.split('\n').map(l => `+${l}`).join('\n')}`} 
+              mode={diffMode}
+              onModeChange={setDiffMode}
+            />
+          </CardContent>
+        </Card>
+      )}
+
       {/* Learning Notice */}
-      <Card className="mt-6 border-amber-500/20 bg-amber-500/5">
+      <Card className="mt-6 border-system-amber/20 bg-system-amber/5">
         <CardContent className="py-3 px-4">
           <div className="flex items-start gap-3">
-            <Brain className="w-5 h-5 text-amber-400 mt-0.5" />
+            <Brain className="w-5 h-5 text-system-amber mt-0.5" />
             <div className="text-sm">
-              <p className="font-medium text-amber-400 mb-1">v2.0 — Discussion-First Workflow</p>
+              <p className="font-medium text-system-amber mb-1">v3.0 — Full Autonomous Pipeline</p>
               <p className="text-xs text-muted-foreground">
-                CodeAgent now asks clarifying questions before coding, shows impact previews,
-                reads file context, and requires approval for complex changes. Each successful
-                pattern is reinforced in Brain memory for continuous improvement.
+                CodeAgent v3 includes PR-style review queues, split-diff viewing, 6-stage deployment pipelines
+                (syntax → AST → style → performance → security → deploy), type-safe refactoring, and
+                multi-project pattern learning. Every change is validated before deployment.
               </p>
             </div>
           </div>
