@@ -512,7 +512,7 @@ serve(async (req) => {
       }
       
       case 'apply_plan': {
-        // Legacy support - routes to shadow first
+        // Primary apply action - automatically handles shadow → production workflow
         if (!plan_id) {
           return jsonResponse({
             success: false,
@@ -521,13 +521,13 @@ serve(async (req) => {
           }, corsHeaders, 400);
         }
         
-        const { data: plan } = await supabase
+        const { data: plan, error: planError } = await supabase
           .from('substrate_upgrade_plans')
-          .select('status')
+          .select('*')
           .eq('id', plan_id)
           .single();
         
-        if (!plan) {
+        if (planError || !plan) {
           return jsonResponse({
             success: false,
             error: 'PLAN_NOT_FOUND',
@@ -535,29 +535,120 @@ serve(async (req) => {
           }, corsHeaders, 404);
         }
         
-        // Route based on current status - return guidance instead of recursion
+        // Auto-route based on current status
         if (plan.status === 'proposed') {
+          // Step 1: Apply to shadow mode
+          const improvements = plan.diff_summary || [];
+          
+          for (const imp of improvements) {
+            await markImprovementApplied(supabase, imp, plan_id, 'shadow');
+          }
+          
+          await supabase.from('substrate_upgrade_plans').update({
+            status: 'shadow_applied',
+            mode: 'shadow',
+            operator_notes: `Shadow applied at ${new Date().toISOString()}${notes ? '. ' + notes : ''}`,
+          }).eq('id', plan_id);
+          
+          await supabase.from('brain_events').insert({
+            event_type: 'upgrade_shadow_applied',
+            module: 'system',
+            outcome: 'success',
+            data: { plan_id, improvements_count: improvements.length, auto_route: true }
+          });
+          
+          return jsonResponse({
+            success: true,
+            plan_id,
+            status: 'shadow_applied',
+            improvements_applied: improvements.length,
+            message: `${improvements.length} improvement(s) applied to shadow mode. Run 'modernizer.apply ${plan_id}' again to promote to production.`,
+            next_step: 'Test and run apply again to promote to production.',
+            timestamp: new Date().toISOString(),
+          }, corsHeaders);
+          
+        } else if (plan.status === 'shadow_applied' || plan.status === 'approved') {
+          // Step 2: Promote to production
+          const { data: healthData } = await supabase.functions.invoke('pf-substrate', {
+            body: { module: 'system', action: 'health' }
+          });
+          
+          const currentHealth = healthData?.overall_health ?? 0;
+          const healthThreshold = 80; // Reasonable threshold for production
+          
+          if (currentHealth < healthThreshold) {
+            return jsonResponse({
+              success: false,
+              error: 'HEALTH_DEGRADED',
+              error_message: `System health (${currentHealth}%) below threshold. Run system.heal first.`,
+              current_health: currentHealth,
+              required_health: healthThreshold,
+            }, corsHeaders, 400);
+          }
+          
+          const improvements = plan.diff_summary || [];
+          for (const imp of improvements) {
+            await markImprovementApplied(supabase, imp, plan_id, 'production');
+          }
+          
+          const { data: run } = await supabase
+            .from('substrate_upgrade_runs')
+            .insert({
+              plan_id: plan_id,
+              result: 'success',
+              finished_at: new Date().toISOString(),
+              post_health_snapshot: healthData,
+            })
+            .select()
+            .single();
+          
+          await supabase.from('substrate_upgrade_plans').update({
+            status: 'applied',
+            mode: 'production',
+            after_health_snapshot: healthData,
+            operator_notes: `Production applied at ${new Date().toISOString()}${notes ? '. ' + notes : ''}`,
+          }).eq('id', plan_id);
+          
+          await supabase.from('brain_events').insert({
+            event_type: 'upgrade_production_applied',
+            module: 'system',
+            outcome: 'success',
+            data: { plan_id, run_id: run?.id, improvements_count: improvements.length }
+          });
+          
+          return jsonResponse({
+            success: true,
+            plan_id,
+            run_id: run?.id,
+            status: 'applied',
+            mode: 'production',
+            improvements_applied: improvements.length,
+            pre_health: currentHealth,
+            message: `${improvements.length} improvement(s) promoted to production successfully.`,
+            timestamp: new Date().toISOString(),
+          }, corsHeaders);
+          
+        } else if (plan.status === 'applied') {
+          return jsonResponse({
+            success: true,
+            plan_id,
+            status: 'already_applied',
+            message: 'This plan has already been applied to production.',
+          }, corsHeaders);
+          
+        } else if (plan.status === 'rolled_back') {
           return jsonResponse({
             success: false,
-            error: 'APPLY_TO_SHADOW_FIRST',
-            error_message: 'Plan is proposed. Apply to shadow mode first using apply_shadow action.',
+            error: 'PLAN_ROLLED_BACK',
+            error_message: 'This plan was rolled back and cannot be re-applied.',
             current_status: plan.status,
-            next_action: 'apply_shadow',
-          }, corsHeaders, 400);
-        } else if (plan.status === 'shadow_applied') {
-          return jsonResponse({
-            success: false,
-            error: 'PROMOTE_TO_PRODUCTION',
-            error_message: 'Plan is in shadow. Promote to production using apply_production action.',
-            current_status: plan.status,
-            next_action: 'apply_production',
           }, corsHeaders, 400);
         }
         
         return jsonResponse({
           success: false,
           error: 'INVALID_PLAN_STATUS',
-          error_message: `Plan has status: ${plan.status}. Use apply_shadow or apply_production explicitly.`,
+          error_message: `Plan has unexpected status: ${plan.status}`,
         }, corsHeaders, 400);
       }
       

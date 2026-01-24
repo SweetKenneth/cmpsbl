@@ -445,25 +445,30 @@ async function handleBrain(
     }
 
     case "reflect": {
-      // Create daily reflection from recent memories
+      // Create or update daily reflection from recent memories
+      const today = new Date().toISOString().split("T")[0];
+      
       const { data: recentMemories } = await supabase
         .from("brain_memories")
         .select("*")
         .order("created_at", { ascending: false })
         .limit(20);
 
+      // Use upsert to handle existing reflection for today
       const { data: reflection, error } = await supabase
         .from("brain_reflections")
-        .insert({
-          reflection_date: new Date().toISOString().split("T")[0],
-          summary: `Processed ${recentMemories?.length || 0} memories`,
+        .upsert({
+          reflection_date: today,
+          summary: `Processed ${recentMemories?.length || 0} memories at ${new Date().toISOString()}`,
           top_memories: recentMemories?.slice(0, 5) || [],
+        }, {
+          onConflict: 'reflection_date'
         })
         .select()
         .single();
 
       if (error) throw error;
-      return jsonResponse({ success: true, reflection }, headers);
+      return jsonResponse({ success: true, reflection, memories_analyzed: recentMemories?.length || 0 }, headers);
     }
 
     case "reinforce": {
