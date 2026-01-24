@@ -159,9 +159,9 @@ export default function SubstrateDemo() {
     ping();
   }, [addLog]);
 
-  const getModulePosition = (index: number, total: number) => {
+  const getModulePosition = (index: number, total: number, isMobile: boolean = false) => {
     const angle = (index / total) * 2 * Math.PI - Math.PI / 2;
-    const radius = 130;
+    const radius = isMobile ? 100 : 130;
     return {
       x: Math.cos(angle) * radius,
       y: Math.sin(angle) * radius,
@@ -266,10 +266,10 @@ export default function SubstrateDemo() {
                   </div>
 
                   {/* Circular Module Layout */}
-                  <div className="relative h-[320px] md:h-[400px] flex items-center justify-center">
+                  <div className="relative h-[280px] md:h-[400px] w-full flex items-center justify-center overflow-hidden">
                     {/* Orbital Rings */}
-                    <div className="absolute w-[260px] h-[260px] md:w-[320px] md:h-[320px] rounded-full border border-border/20" />
-                    <div className="absolute w-[200px] h-[200px] md:w-[240px] md:h-[240px] rounded-full border border-border/10" />
+                    <div className="absolute w-[200px] h-[200px] md:w-[320px] md:h-[320px] rounded-full border border-border/20" />
+                    <div className="absolute w-[140px] h-[140px] md:w-[240px] md:h-[240px] rounded-full border border-border/10" />
                     
                     {/* Center Core */}
                     <motion.div 
@@ -309,10 +309,10 @@ export default function SubstrateDemo() {
                         const toIdx = modules.findIndex(m => m.id === to);
                         if (fromIdx === -1 || toIdx === -1) return null;
                         
-                        const fromPos = getModulePosition(fromIdx, modules.length);
-                        const toPos = getModulePosition(toIdx, modules.length);
-                        const centerX = 160; // Approximate center for mobile
-                        const centerY = 160;
+                        const fromPos = getModulePosition(fromIdx, modules.length, true);
+                        const toPos = getModulePosition(toIdx, modules.length, true);
+                        const centerX = 140;
+                        const centerY = 140;
                         
                         return (
                           <motion.line
@@ -334,7 +334,8 @@ export default function SubstrateDemo() {
 
                     {/* Module Nodes */}
                     {modules.map((module, index) => {
-                      const pos = getModulePosition(index, modules.length);
+                      const pos = getModulePosition(index, modules.length, true);
+                      const posDesktop = getModulePosition(index, modules.length, false);
                       const Icon = module.icon;
                       const isActive = module.status === 'processing';
                       const isComplete = module.status === 'complete';
@@ -344,15 +345,15 @@ export default function SubstrateDemo() {
                           key={module.id}
                           className="absolute"
                           style={{ 
-                            left: `calc(50% + ${pos.x}px - 32px)`,
-                            top: `calc(50% + ${pos.y}px - 32px)`,
+                            left: `calc(50% + ${pos.x}px - 28px)`,
+                            top: `calc(50% + ${pos.y}px - 28px)`,
                           }}
                           initial={{ opacity: 0, scale: 0 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: index * 0.08, type: "spring", stiffness: 200 }}
                         >
                           <motion.div 
-                            className={`relative w-16 h-16 md:w-[72px] md:h-[72px] rounded-2xl border-2 flex flex-col items-center justify-center gap-0.5 transition-all duration-300 backdrop-blur-sm ${
+                            className={`relative w-14 h-14 md:w-[72px] md:h-[72px] rounded-xl md:rounded-2xl border-2 flex flex-col items-center justify-center gap-0.5 transition-all duration-300 backdrop-blur-sm ${
                               isActive 
                                 ? `bg-gradient-to-br ${module.gradient} border-white/30 shadow-lg shadow-${module.color}-500/30` 
                                 : isComplete 
