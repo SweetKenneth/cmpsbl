@@ -15,7 +15,7 @@ export function SubstrateStatus({ compact = false }: SubstrateStatusProps) {
   const { initialized, overallHealth, modules } = useSubstrateContext();
 
   const activeCount = Object.values(modules).filter(m => m.active).length;
-  const totalModules = 11; // v4.0.0: All 11 modules
+  const totalModules = 12; // v4.2.0: All 12 modules
   const isHealthy = overallHealth >= 80;
 
   if (compact) {
@@ -41,7 +41,7 @@ export function SubstrateStatus({ compact = false }: SubstrateStatusProps) {
         promptfluid® substrate: {activeCount}/{totalModules} modules
       </span>
       <Badge variant="outline" className="text-xs">
-        v4.1.1
+        v4.2.0
       </Badge>
     </div>
   );

@@ -1,8 +1,8 @@
 /**
  * promptfluid® Substrate Client
- * v4.1.1 — Cognitive Orchestration Substrate (Brain v2.0)
+ * v4.2.0 — Cognitive Orchestration Substrate (12-Module Architecture)
  * 
- * Unified API for all 11 substrate modules:
+ * Unified API for all 12 substrate modules:
  * - Core: Kernel (scheduler, lifecycle, routing)
  * - Ripple: Message bus (queues, pub/sub, events)
  * - Access: Identity (API keys, quotas, usage)
@@ -14,11 +14,12 @@
  * - Dream: Nocturnal processing, mutation
  * - System: Administration, backup, healing
  * - Modernizer: Self-upgrade, proposals
+ * - Integration: Enterprise adapters, auto-discovery, LLM governance
  */
 
 import { supabase } from '@/integrations/supabase/client';
 
-export type SubstrateModule = 'core' | 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'ripple' | 'access' | 'system' | 'modernizer';
+export type SubstrateModule = 'core' | 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'ripple' | 'access' | 'system' | 'modernizer' | 'integration';
 
 export interface SubstrateRequest {
   module: SubstrateModule;
@@ -631,11 +632,172 @@ class SubstrateClient {
       this.invoke({ module: 'access', action: 'subscription', payload: { developer_id } }),
   };
 
+  // ═══════════════════════════════════════════════════════════════
+  // INTEGRATION MODULE — Enterprise Adapters, Auto-Discovery, LLM Governance
+  // ═══════════════════════════════════════════════════════════════
+  
+  integration = {
+    /** Get integration module status */
+    status: () =>
+      this.invoke({ module: 'integration', action: 'status' }),
+    
+    /** Lightweight heartbeat */
+    pulse: () =>
+      this.invoke({ module: 'integration', action: 'pulse' }),
+    
+    // === ADAPTER MANAGEMENT ===
+    
+    /** List all available adapters (ERP, CRM, HR, etc.) */
+    adapters: () =>
+      this.invoke({ module: 'integration', action: 'adapters' }),
+    
+    /** Connect an enterprise system adapter */
+    connect: (options: { 
+      adapter_type: 'erp' | 'crm' | 'hr' | 'payroll' | 'calendar' | 'email' | 'helpdesk' | 'analytics' | 'devops' | 'game_engine' | 'custom';
+      name: string;
+      config: Record<string, unknown>;
+      credentials?: Record<string, string>;
+    }) =>
+      this.invoke({ module: 'integration', action: 'connect', payload: options }),
+    
+    /** Disconnect an adapter */
+    disconnect: (adapter_id: string) =>
+      this.invoke({ module: 'integration', action: 'disconnect', payload: { adapter_id } }),
+    
+    /** Test adapter connectivity */
+    test: (adapter_id: string) =>
+      this.invoke({ module: 'integration', action: 'test', payload: { adapter_id } }),
+    
+    /** List connected adapters */
+    connections: () =>
+      this.invoke({ module: 'integration', action: 'connections' }),
+    
+    // === AUTO-DISCOVERY ===
+    
+    /** Start auto-discovery mode to scan client systems */
+    discover: (options?: { 
+      target?: string;
+      depth?: 'shallow' | 'deep';
+      include_functions?: boolean;
+    }) =>
+      this.invoke({ module: 'integration', action: 'discover', payload: options }),
+    
+    /** Get discovered endpoints and function signatures */
+    discovered: (adapter_id?: string) =>
+      this.invoke({ module: 'integration', action: 'discovered', payload: { adapter_id } }),
+    
+    /** Map a discovered function to a terminal command */
+    mapCommand: (options: {
+      discovered_function: string;
+      terminal_command: string;
+      description: string;
+      parameters?: Array<{ name: string; type: string; required: boolean }>;
+    }) =>
+      this.invoke({ module: 'integration', action: 'map_command', payload: options }),
+    
+    /** List mapped terminal commands */
+    mappedCommands: (adapter_id?: string) =>
+      this.invoke({ module: 'integration', action: 'mapped_commands', payload: { adapter_id } }),
+    
+    // === LLM GOVERNANCE ===
+    
+    /** Execute a governed LLM action through an adapter */
+    execute: (options: {
+      adapter_id: string;
+      action: string;
+      parameters: Record<string, unknown>;
+      governance?: {
+        require_approval?: boolean;
+        audit_level?: 'none' | 'basic' | 'full';
+        timeout_ms?: number;
+        max_retries?: number;
+      };
+    }) =>
+      this.invoke({ module: 'integration', action: 'execute', payload: options }),
+    
+    /** Get governance policies */
+    policies: () =>
+      this.invoke({ module: 'integration', action: 'policies' }),
+    
+    /** Set governance policy for an adapter or action */
+    setPolicy: (options: {
+      adapter_id?: string;
+      action_pattern?: string;
+      policy: {
+        require_approval?: boolean;
+        allowed_actions?: string[];
+        blocked_actions?: string[];
+        rate_limit_per_hour?: number;
+        audit_retention_days?: number;
+      };
+    }) =>
+      this.invoke({ module: 'integration', action: 'set_policy', payload: options }),
+    
+    /** Get governance audit log */
+    auditLog: (options?: {
+      adapter_id?: string;
+      action?: string;
+      since?: string;
+      limit?: number;
+    }) =>
+      this.invoke({ module: 'integration', action: 'audit_log', payload: options }),
+    
+    // === INDUSTRY-SPECIFIC HELPERS ===
+    
+    /** Game engine integration helpers */
+    gameEngine: {
+      /** Discover game engine APIs (Unity, Unreal, Godot) */
+      discover: (engine_type: 'unity' | 'unreal' | 'godot' | 'custom', endpoint?: string) =>
+        substrate.invoke({ module: 'integration', action: 'game_discover', payload: { engine_type, endpoint } }),
+      
+      /** Sync NPC memory states with game engine */
+      syncNpcMemory: (npc_id: string, adapter_id: string) =>
+        substrate.invoke({ module: 'integration', action: 'game_sync_npc', payload: { npc_id, adapter_id } }),
+      
+      /** Register a game world state callback */
+      registerWorldCallback: (adapter_id: string, event_types: string[]) =>
+        substrate.invoke({ module: 'integration', action: 'game_world_callback', payload: { adapter_id, event_types } }),
+    },
+    
+    /** Enterprise system helpers */
+    enterprise: {
+      /** Discover enterprise APIs (SAP, Salesforce, Workday, etc.) */
+      discover: (system_type: 'sap' | 'salesforce' | 'workday' | 'servicenow' | 'dynamics' | 'custom', credentials?: Record<string, string>) =>
+        substrate.invoke({ module: 'integration', action: 'enterprise_discover', payload: { system_type, credentials } }),
+      
+      /** Execute payroll operation */
+      payroll: (adapter_id: string, operation: 'calculate' | 'schedule' | 'status', params: Record<string, unknown>) =>
+        substrate.invoke({ module: 'integration', action: 'enterprise_payroll', payload: { adapter_id, operation, params } }),
+      
+      /** Execute HR operation */
+      hr: (adapter_id: string, operation: 'schedule' | 'onboard' | 'offboard' | 'lookup', params: Record<string, unknown>) =>
+        substrate.invoke({ module: 'integration', action: 'enterprise_hr', payload: { adapter_id, operation, params } }),
+      
+      /** Execute customer service operation */
+      customerService: (adapter_id: string, operation: 'respond' | 'escalate' | 'summarize', params: Record<string, unknown>) =>
+        substrate.invoke({ module: 'integration', action: 'enterprise_customer', payload: { adapter_id, operation, params } }),
+    },
+    
+    /** Developer platform helpers */
+    devPlatform: {
+      /** Discover dev platform APIs (GitHub, GitLab, Jira, etc.) */
+      discover: (platform_type: 'github' | 'gitlab' | 'jira' | 'confluence' | 'linear' | 'notion' | 'custom', credentials?: Record<string, string>) =>
+        substrate.invoke({ module: 'integration', action: 'dev_discover', payload: { platform_type, credentials } }),
+      
+      /** Execute repository operation */
+      repo: (adapter_id: string, operation: 'list' | 'create' | 'pr' | 'issue', params: Record<string, unknown>) =>
+        substrate.invoke({ module: 'integration', action: 'dev_repo', payload: { adapter_id, operation, params } }),
+      
+      /** Execute project management operation */
+      project: (adapter_id: string, operation: 'tasks' | 'sprint' | 'backlog' | 'report', params: Record<string, unknown>) =>
+        substrate.invoke({ module: 'integration', action: 'dev_project', payload: { adapter_id, operation, params } }),
+    },
+  };
 }
 
 export const substrate = SubstrateClient.getInstance();
 
-// Quick access functions for all 11 modules
+// Quick access functions for all 12 modules
 export const core = substrate.core;
 export const brain = substrate.brain;
 export const decode = substrate.decode;
@@ -647,3 +809,4 @@ export const ripple = substrate.ripple;
 export const access = substrate.access;
 export const system = substrate.system;
 export const modernizer = substrate.modernizer;
+export const integration = substrate.integration;
