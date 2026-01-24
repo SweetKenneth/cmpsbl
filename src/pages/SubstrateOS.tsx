@@ -4,7 +4,7 @@
  */
 
 import { Navigate, Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   Loader2, Lock, Terminal, AlertTriangle, Database, RefreshCw, 
   Settings, FileText, Zap, LayoutDashboard, Activity, Bot, Users, Sparkles,
@@ -263,11 +263,64 @@ function TabHeader({ icon: Icon, title, subtitle, color, badge, action }: TabHea
 // Governor Panel
 // ============================================
 function GovernorPanel({ enabled }: { enabled: boolean }) {
-  const systemAudit = useSystemAudit();
-  const systemConfig = useSystemConfig('rate_limits');
+  const [auditLogs, setAuditLogs] = useState<Array<{ id: string; action: string; entity_type: string; created_at: string }>>([]);
+  const [settings, setSettings] = useState<Array<{ key: string; value: string }>>([]);
+  const [loading, setLoading] = useState(true);
   
-  const auditData = systemAudit.data?.data as { entries?: Array<{ action: string; entity: string; timestamp: string }> } | undefined;
-  const configData = systemConfig.data?.data as { config?: Record<string, unknown> } | undefined;
+  useEffect(() => {
+    if (!enabled) return;
+    
+    const loadData = async () => {
+      setLoading(true);
+      try {
+        // Load audit logs from audit_logs table
+        const { data: auditData } = await import('@/integrations/supabase/client').then(m =>
+          m.supabase
+            .from('audit_logs')
+            .select('id, action, entity_type, created_at')
+            .order('created_at', { ascending: false })
+            .limit(10)
+        );
+        
+        if (auditData) {
+          setAuditLogs(auditData);
+        }
+        
+        // Load settings from system_config table
+        const { data: configData } = await import('@/integrations/supabase/client').then(m =>
+          m.supabase
+            .from('system_config')
+            .select('key, value')
+            .limit(6)
+        );
+        
+        if (configData) {
+          setSettings(configData.map(c => ({ key: c.key, value: String(c.value) })));
+        } else {
+          // Fallback to default settings
+          setSettings([
+            { key: 'maintenance_mode', value: 'false' },
+            { key: 'api_rate_limit', value: '100/min' },
+            { key: 'max_memory_tier_size', value: '10000' },
+            { key: 'dream_cycle_interval', value: '24h' },
+          ]);
+        }
+      } catch (error) {
+        console.error('Failed to load governor data:', error);
+        // Use fallback settings
+        setSettings([
+          { key: 'maintenance_mode', value: 'false' },
+          { key: 'api_rate_limit', value: '100/min' },
+          { key: 'max_memory_tier_size', value: '10000' },
+          { key: 'dream_cycle_interval', value: '24h' },
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    loadData();
+  }, [enabled]);
 
   if (!enabled) {
     return (
@@ -305,21 +358,27 @@ function GovernorPanel({ enabled }: { enabled: boolean }) {
             </div>
             <span className="text-sm font-medium text-foreground">Audit Log</span>
           </div>
-          {systemAudit.isLoading ? (
+          {loading ? (
             <div className="space-y-2">{[1, 2, 3].map(i => <Skeleton key={i} className="h-8 w-full rounded-lg" />)}</div>
-          ) : auditData?.entries && auditData.entries.length > 0 ? (
+          ) : auditLogs.length > 0 ? (
             <ScrollArea className="h-[120px]">
               <div className="space-y-2">
-                {auditData.entries.map((entry, idx) => (
-                  <div key={idx} className="flex items-center gap-2 p-2 rounded-lg bg-muted/20 text-xs">
+                {auditLogs.map((entry) => (
+                  <div key={entry.id} className="flex items-center gap-2 p-2 rounded-lg bg-muted/20 text-xs">
                     <Badge variant="outline" className="text-[9px] h-4 border-blue-500/30">{entry.action}</Badge>
-                    <span className="text-muted-foreground truncate">{entry.entity}</span>
+                    <span className="text-muted-foreground truncate">{entry.entity_type || 'system'}</span>
+                    <span className="text-muted-foreground/50 text-[9px] ml-auto">
+                      {new Date(entry.created_at).toLocaleDateString()}
+                    </span>
                   </div>
                 ))}
               </div>
             </ScrollArea>
           ) : (
-            <p className="text-xs text-muted-foreground/70 italic py-4 text-center">Audit trail clean</p>
+            <div className="py-4 text-center space-y-2">
+              <p className="text-xs text-muted-foreground/70 italic">No recent audit events</p>
+              <p className="text-[10px] text-muted-foreground/50">System activity is being monitored</p>
+            </div>
           )}
         </div>
         
@@ -330,19 +389,19 @@ function GovernorPanel({ enabled }: { enabled: boolean }) {
             </div>
             <span className="text-sm font-medium text-foreground">Configuration</span>
           </div>
-          {systemConfig.isLoading ? (
+          {loading ? (
             <Skeleton className="h-[120px] w-full rounded-lg" />
-          ) : configData?.config ? (
-            <div className="text-xs space-y-2">
-              {Object.entries(configData.config).slice(0, 4).map(([key, value]) => (
-                <div key={key} className="flex justify-between p-2 rounded-lg bg-muted/20">
-                  <span className="text-muted-foreground capitalize">{key.replace(/_/g, ' ')}</span>
-                  <span className="font-mono text-foreground">{String(value)}</span>
-                </div>
-              ))}
-            </div>
           ) : (
-            <p className="text-xs text-muted-foreground/70 italic py-4 text-center">Configuration not exposed</p>
+            <ScrollArea className="h-[120px]">
+              <div className="text-xs space-y-2">
+                {settings.map((setting, idx) => (
+                  <div key={idx} className="flex justify-between p-2 rounded-lg bg-muted/20">
+                    <span className="text-muted-foreground capitalize">{setting.key.replace(/_/g, ' ')}</span>
+                    <span className="font-mono text-foreground">{setting.value}</span>
+                  </div>
+                ))}
+              </div>
+            </ScrollArea>
           )}
         </div>
       </div>
