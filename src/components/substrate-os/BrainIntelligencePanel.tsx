@@ -74,6 +74,30 @@ function extractReadableText(data: any): string {
   return '';
 }
 
+// Helper to render markdown-like text with bold support
+function FormattedText({ text, className }: { text: string; className?: string }) {
+  // Parse **bold** and ##BOLD## patterns
+  const parts = text.split(/(\*\*[^*]+\*\*|##[^#]+##)/g);
+  
+  return (
+    <span className={className}>
+      {parts.map((part, idx) => {
+        // Match **bold** pattern
+        const boldMatch = part.match(/^\*\*(.+)\*\*$/);
+        if (boldMatch) {
+          return <strong key={idx} className="font-semibold text-foreground">{boldMatch[1]}</strong>;
+        }
+        // Match ##BOLD## pattern
+        const hashMatch = part.match(/^##(.+)##$/);
+        if (hashMatch) {
+          return <strong key={idx} className="font-semibold text-foreground">{hashMatch[1]}</strong>;
+        }
+        return <span key={idx}>{part}</span>;
+      })}
+    </span>
+  );
+}
+
 // Parse and format reflection for display
 function parseReflectionContent(reflection: any): {
   title: string;
@@ -177,13 +201,15 @@ function ReflectionCard({ reflection }: { reflection: any }) {
   return (
     <div 
       className={cn(
-        "rounded-lg bg-muted/20 text-xs transition-all duration-200 cursor-pointer hover:bg-muted/30 border border-border/30",
-        isExpanded ? "ring-1 ring-primary/30 bg-muted/30" : ""
+        "rounded-lg bg-muted/20 text-xs transition-all duration-200 border border-border/30",
+        isExpanded ? "ring-1 ring-primary/30 bg-muted/30" : "cursor-pointer hover:bg-muted/30"
       )}
-      onClick={() => setIsExpanded(!isExpanded)}
     >
       {/* Header - improved touch targets */}
-      <div className="flex items-center justify-between p-3 md:p-3 pb-2 min-h-[44px]">
+      <div 
+        className="flex items-center justify-between p-3 md:p-3 pb-2 min-h-[44px] cursor-pointer"
+        onClick={() => setIsExpanded(!isExpanded)}
+      >
         <div className="flex items-center gap-2 flex-1 min-w-0">
           <Brain className="w-4 h-4 md:w-3.5 md:h-3.5 text-primary/70 shrink-0" />
           <span className="font-medium text-foreground text-sm md:text-xs truncate">{parsed.title}</span>
@@ -197,86 +223,95 @@ function ReflectionCard({ reflection }: { reflection: any }) {
       </div>
       
       {/* Summary Preview - collapsed shows first 2 lines on mobile, 3 on desktop */}
-      <div className="px-3 pb-3">
-        <p className={cn(
-          "text-muted-foreground leading-relaxed whitespace-pre-wrap text-sm md:text-xs",
-          !isExpanded && "line-clamp-2 md:line-clamp-3"
-        )}>
-          {parsed.summary || 'Processing reflection data...'}
-        </p>
+      <div className="px-3 pb-3" onClick={() => !isExpanded && setIsExpanded(true)}>
+        <FormattedText 
+          text={parsed.summary || 'Processing reflection data...'} 
+          className={cn(
+            "text-muted-foreground leading-relaxed text-sm md:text-xs block",
+            !isExpanded && "line-clamp-2 md:line-clamp-3"
+          )}
+        />
       </div>
       
-      {/* Expanded content - FULL readable view with mobile optimization */}
+      {/* Expanded content - FULL readable view with scrolling */}
       {isExpanded && (
-        <div 
-          className="border-t border-border/30 px-3 py-4 space-y-4"
-          onClick={(e) => e.stopPropagation()} // Prevent collapse when interacting with content
-        >
-          {/* Full Summary if longer */}
-          {parsed.summary && parsed.summary.length > 150 && (
-            <div>
-              <p className="text-xs md:text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Full Summary</p>
-              <p className="text-sm md:text-xs text-muted-foreground leading-relaxed whitespace-pre-wrap">{parsed.summary}</p>
-            </div>
-          )}
-          
-          {/* Metrics - displayed as readable list with mobile-friendly grid */}
-          {parsed.metrics.length > 0 && (
-            <div>
-              <p className="text-xs md:text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">System Metrics</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                {parsed.metrics.map((m, idx) => (
-                  <div key={idx} className="bg-background/50 rounded px-3 py-2 flex justify-between items-center">
-                    <span className="text-sm md:text-xs text-muted-foreground/70">{m.label}</span>
-                    <span className={cn(
-                      "text-sm md:text-xs font-medium",
-                      m.value === 'No data' ? 'text-muted-foreground/50' : 'text-foreground'
-                    )}>
-                      {m.value}
-                    </span>
-                  </div>
-                ))}
+        <ScrollArea className="max-h-[50vh] border-t border-border/30">
+          <div className="px-3 py-4 space-y-4">
+            {/* Full Summary if longer */}
+            {parsed.summary && parsed.summary.length > 150 && (
+              <div>
+                <p className="text-xs md:text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Full Summary</p>
+                <FormattedText 
+                  text={parsed.summary} 
+                  className="text-sm md:text-xs text-muted-foreground leading-relaxed block"
+                />
               </div>
-            </div>
-          )}
-          
-          {/* Insights - FULL TEXT with better mobile spacing */}
-          {parsed.insights.length > 0 && (
-            <div>
-              <p className="text-xs md:text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Key Insights</p>
-              <ul className="space-y-3">
-                {parsed.insights.map((insight, idx) => (
-                  <li key={idx} className="flex items-start gap-3">
-                    <Lightbulb className="w-4 h-4 md:w-3.5 md:h-3.5 text-amber-500/70 mt-0.5 shrink-0" />
-                    <span className="text-sm md:text-xs text-muted-foreground leading-relaxed whitespace-pre-wrap">{insight}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-          
-          {/* Recommendations - FULL TEXT */}
-          {parsed.recommendations && (
-            <div>
-              <p className="text-xs md:text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Recommendations</p>
-              <p className="text-sm md:text-xs text-muted-foreground leading-relaxed whitespace-pre-wrap">{parsed.recommendations}</p>
-            </div>
-          )}
-          
-          {/* Top Memories - readable with better mobile sizing */}
-          {reflection.top_memories && Array.isArray(reflection.top_memories) && reflection.top_memories.length > 0 && (
-            <div>
-              <p className="text-xs md:text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Associated Memories</p>
-              <div className="space-y-2">
-                {reflection.top_memories.map((mem: any, idx: number) => (
-                  <div key={idx} className="bg-background/30 rounded px-3 py-2.5 text-sm md:text-xs text-muted-foreground/80">
-                    {typeof mem === 'string' ? mem : extractReadableText(mem)}
-                  </div>
-                ))}
+            )}
+            
+            {/* Metrics - displayed as readable list with mobile-friendly grid */}
+            {parsed.metrics.length > 0 && (
+              <div>
+                <p className="text-xs md:text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">System Metrics</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {parsed.metrics.map((m, idx) => (
+                    <div key={idx} className="bg-background/50 rounded px-3 py-2 flex justify-between items-center">
+                      <span className="text-sm md:text-xs text-muted-foreground/70">{m.label}</span>
+                      <span className={cn(
+                        "text-sm md:text-xs font-medium",
+                        m.value === 'No data' ? 'text-muted-foreground/50' : 'text-foreground'
+                      )}>
+                        {m.value}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+            
+            {/* Insights - FULL TEXT with bold formatting */}
+            {parsed.insights.length > 0 && (
+              <div>
+                <p className="text-xs md:text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Key Insights</p>
+                <ul className="space-y-3">
+                  {parsed.insights.map((insight, idx) => (
+                    <li key={idx} className="flex items-start gap-3">
+                      <Lightbulb className="w-4 h-4 md:w-3.5 md:h-3.5 text-amber-500/70 mt-0.5 shrink-0" />
+                      <FormattedText 
+                        text={insight} 
+                        className="text-sm md:text-xs text-muted-foreground leading-relaxed"
+                      />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            
+            {/* Recommendations - FULL TEXT with bold formatting */}
+            {parsed.recommendations && (
+              <div>
+                <p className="text-xs md:text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Recommendations</p>
+                <FormattedText 
+                  text={parsed.recommendations} 
+                  className="text-sm md:text-xs text-muted-foreground leading-relaxed block"
+                />
+              </div>
+            )}
+            
+            {/* Top Memories - readable with better mobile sizing */}
+            {reflection.top_memories && Array.isArray(reflection.top_memories) && reflection.top_memories.length > 0 && (
+              <div>
+                <p className="text-xs md:text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Associated Memories</p>
+                <div className="space-y-2">
+                  {reflection.top_memories.map((mem: any, idx: number) => (
+                    <div key={idx} className="bg-background/30 rounded px-3 py-2.5 text-sm md:text-xs text-muted-foreground/80">
+                      <FormattedText text={typeof mem === 'string' ? mem : extractReadableText(mem)} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </ScrollArea>
       )}
     </div>
   );
@@ -369,7 +404,10 @@ export function BrainIntelligencePanel({ enabled }: BrainIntelligencePanelProps)
               variant="outline"
               size="sm"
               className="w-full justify-start gap-2 h-9"
-              onClick={() => optimizeMutation.mutate()}
+              onClick={() => {
+                toast.info('Optimizing memory...');
+                optimizeMutation.mutate();
+              }}
               disabled={optimizeMutation.isPending}
             >
               {optimizeMutation.isPending ? (
@@ -384,7 +422,10 @@ export function BrainIntelligencePanel({ enabled }: BrainIntelligencePanelProps)
               variant="outline"
               size="sm"
               className="w-full justify-start gap-2 h-9"
-              onClick={() => cognitiveCycleMutation.mutate()}
+              onClick={() => {
+                toast.info('Running cognitive cycle...');
+                cognitiveCycleMutation.mutate();
+              }}
               disabled={cognitiveCycleMutation.isPending}
             >
               {cognitiveCycleMutation.isPending ? (
@@ -399,7 +440,10 @@ export function BrainIntelligencePanel({ enabled }: BrainIntelligencePanelProps)
               variant="outline"
               size="sm"
               className="w-full justify-start gap-2 h-9"
-              onClick={() => graphBuildMutation.mutate()}
+              onClick={() => {
+                toast.info('Building knowledge graph...');
+                graphBuildMutation.mutate();
+              }}
               disabled={graphBuildMutation.isPending}
             >
               {graphBuildMutation.isPending ? (
@@ -425,7 +469,10 @@ export function BrainIntelligencePanel({ enabled }: BrainIntelligencePanelProps)
               variant="outline"
               size="sm"
               className="w-full justify-start gap-2 h-9"
-              onClick={() => tieringMutation.mutate(500)}
+              onClick={() => {
+                toast.info('Tiering memories...');
+                tieringMutation.mutate(500);
+              }}
               disabled={tieringMutation.isPending}
             >
               {tieringMutation.isPending ? (
@@ -440,7 +487,10 @@ export function BrainIntelligencePanel({ enabled }: BrainIntelligencePanelProps)
               variant="outline"
               size="sm"
               className="w-full justify-start gap-2 h-9"
-              onClick={() => batchTieringMutation.mutate({ batch_size: 500, max_batches: 10 })}
+              onClick={() => {
+                toast.info('Running batch tiering...');
+                batchTieringMutation.mutate({ batch_size: 500, max_batches: 10 });
+              }}
               disabled={batchTieringMutation.isPending}
             >
               {batchTieringMutation.isPending ? (
@@ -455,7 +505,10 @@ export function BrainIntelligencePanel({ enabled }: BrainIntelligencePanelProps)
               variant="outline"
               size="sm"
               className="w-full justify-start gap-2 h-9 text-amber-600 hover:text-amber-500 border-amber-500/30 hover:border-amber-500/50"
-              onClick={() => pruneMutation.mutate({ dry_run: true })}
+              onClick={() => {
+                toast.info('Preview pruning...');
+                pruneMutation.mutate({ dry_run: true });
+              }}
               disabled={pruneMutation.isPending}
             >
               {pruneMutation.isPending ? (
@@ -470,7 +523,10 @@ export function BrainIntelligencePanel({ enabled }: BrainIntelligencePanelProps)
               variant="outline"
               size="sm"
               className="w-full justify-start gap-2 h-9 text-destructive hover:text-destructive border-destructive/30 hover:border-destructive/50"
-              onClick={() => pruneMutation.mutate({})}
+              onClick={() => {
+                toast.info('Pruning low-value memories...');
+                pruneMutation.mutate({});
+              }}
               disabled={pruneMutation.isPending}
             >
               {pruneMutation.isPending ? (
