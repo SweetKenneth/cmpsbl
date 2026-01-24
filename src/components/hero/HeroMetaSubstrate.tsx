@@ -26,10 +26,11 @@ import {
   Building2,
   Play,
   Sparkles,
+  Plug,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-// The 11 core modules with industries they power
+// The 12 core modules with industries they power
 const coreModules = [
   { icon: Cpu, name: "Core", desc: "Kernel orchestration", color: "hsl(var(--muted-foreground))" },
   { icon: Network, name: "Ripple", desc: "Event propagation", color: "hsl(150 80% 50%)" },
@@ -42,6 +43,7 @@ const coreModules = [
   { icon: Moon, name: "Dream", desc: "Offline learning", color: "hsl(var(--neon-magenta))" },
   { icon: Settings, name: "System", desc: "Configuration", color: "hsl(var(--destructive))" },
   { icon: RefreshCw, name: "Modernizer", desc: "Self-improvement", color: "hsl(30 80% 55%)" },
+  { icon: Plug, name: "Integration", desc: "Enterprise connect", color: "hsl(280 80% 60%)" },
 ];
 
 // Use cases that rotate through
@@ -89,8 +91,9 @@ function FloatingParticle({ delay, duration, size, color, startX, startY }: {
 
 // Connection line between modules
 function ConnectionLine({ from, to, delay }: { from: number; to: number; delay: number }) {
-  const fromAngle = (from / 11) * Math.PI * 2 - Math.PI / 2;
-  const toAngle = (to / 11) * Math.PI * 2 - Math.PI / 2;
+  const moduleCount = 12;
+  const fromAngle = (from / moduleCount) * Math.PI * 2 - Math.PI / 2;
+  const toAngle = (to / moduleCount) * Math.PI * 2 - Math.PI / 2;
   const radius = 140;
   
   const x1 = Math.cos(fromAngle) * radius + 160;
