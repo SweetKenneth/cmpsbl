@@ -291,7 +291,7 @@ export function useSubstrateHealthScore() {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// KERNEL MODULE HOOKS — Core, Ripple, Access (v4.0.0)
+// KERNEL MODULE HOOKS — Core, Ripple, Access (v4.2.0)
 // ═══════════════════════════════════════════════════════════════
 
 export function useCoreStatusOS() {

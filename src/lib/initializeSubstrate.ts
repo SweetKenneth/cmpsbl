@@ -1,6 +1,6 @@
 /**
  * promptfluid® Substrate Initialization
- * v2026.10 — Complete AI Operating System with 11 modules
+ * v4.2.0 — Complete AI Operating System with 12 modules
  */
 
 import { substrate } from './substrate';
@@ -11,19 +11,19 @@ export async function initializeSubstrate(): Promise<void> {
   if (initialized) return;
   
   try {
-    console.log('⚡ Booting promptfluid® Substrate v2026.10...');
+    console.log('⚡ Booting promptfluid® Substrate v4.2.0...');
     console.log('─────────────────────────────────────────');
     
-    // Boot sequence - CORE first, then other modules
-    const bootOrder: ('core' | 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'ripple' | 'access' | 'system' | 'modernizer')[] = [
-      'core', 'brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'ripple', 'access', 'system', 'modernizer'
+    // Boot sequence - CORE first, then other modules (12-module architecture)
+    const bootOrder: ('core' | 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'ripple' | 'access' | 'system' | 'modernizer' | 'integration')[] = [
+      'core', 'brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'ripple', 'access', 'system', 'modernizer', 'integration'
     ];
     
     // First, call core.boot to initialize everything
     const bootResult = await substrate.invoke({ module: 'core', action: 'boot' });
     
     if (bootResult.success) {
-      console.log('✅ Substrate boot complete: 11 modules loaded | Health: 100%');
+      console.log('✅ Substrate boot complete: 12 modules loaded | Health: 100%');
     } else {
       // Fallback to individual pings
       const results = await Promise.allSettled(

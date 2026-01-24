@@ -6804,7 +6804,7 @@ async function handleCore(
     }
 
     case "boot": {
-      const bootSequence = ['core', 'brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'ripple', 'access', 'system', 'modernizer'];
+      const bootSequence = ['core', 'brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'ripple', 'access', 'system', 'modernizer', 'integration'];
       const bootResults: Record<string, { status: string; time_ms: number }> = {};
       
       for (const mod of bootSequence) {
@@ -6837,7 +6837,7 @@ async function handleCore(
         action: 'boot',
         boot_sequence: bootResults,
         modules_loaded: bootSequence.length,
-        message: `promptfluid® Substrate v${SUBSTRATE_VERSION} — 11 modules loaded | Health: 100%`,
+        message: `promptfluid® Substrate v${SUBSTRATE_VERSION} — 12 modules loaded | Health: 100%`,
         timestamp: new Date().toISOString(),
       }, headers);
     }
