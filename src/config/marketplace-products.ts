@@ -37,11 +37,52 @@ export const MARKETPLACE_PRODUCTS = {
       label: 'Enterprise',
       difficulty: 'advanced',
     },
+    // Premium tier for World Engine and complex templates
+    premium: {
+      product_id: 'prod_TqfLpremiumWE1',
+      price_id: 'price_1Ssy0bQ7FtTiAL4aPremium99',
+      amount: 9900, // $99
+      label: 'Premium',
+      difficulty: 'premium',
+    },
+    elite: {
+      product_id: 'prod_TqfLeliteWE199',
+      price_id: 'price_1Ssy0cQ7FtTiAL4aElite199',
+      amount: 19900, // $199
+      label: 'Elite',
+      difficulty: 'elite',
+    },
   },
 } as const;
 
+// Premium template IDs that cost more
+export const PREMIUM_TEMPLATE_IDS = [
+  'world-engine-core',
+  'world-engine-physics',
+  'world-engine-entities',
+  'enterprise-rag-pipeline',
+  'multi-agent-orchestrator',
+  'cognitive-swarm',
+];
+
+export const ELITE_TEMPLATE_IDS = [
+  'world-engine-complete',
+  'enterprise-agency-suite',
+  'cognitive-os-starter-kit',
+];
+
 // Map difficulty to price tier
-export function getTemplatePricing(difficulty: 'beginner' | 'intermediate' | 'advanced') {
+export function getTemplatePricing(difficulty: 'beginner' | 'intermediate' | 'advanced' | 'premium' | 'elite', templateId?: string) {
+  // Check for premium/elite templates first
+  if (templateId) {
+    if (ELITE_TEMPLATE_IDS.includes(templateId)) {
+      return MARKETPLACE_PRODUCTS.templates.elite;
+    }
+    if (PREMIUM_TEMPLATE_IDS.includes(templateId)) {
+      return MARKETPLACE_PRODUCTS.templates.premium;
+    }
+  }
+  
   switch (difficulty) {
     case 'beginner':
       return MARKETPLACE_PRODUCTS.templates.starter;
@@ -49,6 +90,12 @@ export function getTemplatePricing(difficulty: 'beginner' | 'intermediate' | 'ad
       return MARKETPLACE_PRODUCTS.templates.advanced;
     case 'advanced':
       return MARKETPLACE_PRODUCTS.templates.enterprise;
+    case 'premium':
+      return MARKETPLACE_PRODUCTS.templates.premium;
+    case 'elite':
+      return MARKETPLACE_PRODUCTS.templates.elite;
+    default:
+      return MARKETPLACE_PRODUCTS.templates.starter;
   }
 }
 

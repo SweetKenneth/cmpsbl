@@ -1,284 +1,99 @@
-import { useState } from "react";
-import { useDevTemplates, useTemplateCategories, useInstallTemplate } from "@/hooks/useDevTemplates";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+/**
+ * TemplateGallery — Now redirects to paid Marketplace
+ * Templates are no longer free, must purchase at /marketplace
+ */
+
+import { Link } from "react-router-dom";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { 
-  Gamepad2, 
-  Globe, 
-  MessageSquare, 
-  Bot, 
-  BookOpen, 
-  Wrench,
-  Download,
-  Star,
-  Code,
-  Copy,
-  Check,
-  Sparkles,
-  Package
+  Package, ShoppingCart, Sparkles, ArrowRight, Code, Lock
 } from "lucide-react";
-import { toast } from "sonner";
-
-const CATEGORY_ICONS: Record<string, React.ElementType> = {
-  gaming: Gamepad2,
-  world_engine: Globe,
-  chatbot: MessageSquare,
-  agent: Bot,
-  rag: BookOpen,
-  utility: Wrench,
-  all: Package,
-};
-
-const DIFFICULTY_COLORS: Record<string, string> = {
-  beginner: "bg-green-500/20 text-green-400 border-green-500/30",
-  intermediate: "bg-amber-500/20 text-amber-400 border-amber-500/30",
-  advanced: "bg-red-500/20 text-red-400 border-red-500/30",
-};
 
 export function TemplateGallery() {
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [selectedTemplate, setSelectedTemplate] = useState<any>(null);
-  const [copied, setCopied] = useState(false);
-
-  const { data: templates, isLoading: templatesLoading } = useDevTemplates(selectedCategory);
-  const { data: categories } = useTemplateCategories();
-  const installMutation = useInstallTemplate();
-
-  const handleInstall = async (template: any) => {
-    try {
-      await installMutation.mutateAsync({
-        slug: template.slug,
-        developerId: "demo-developer",
-      });
-      toast.success(`${template.name} installed successfully!`);
-      setSelectedTemplate(template);
-    } catch (error) {
-      toast.error("Failed to install template");
-    }
-  };
-
-  const handleCopyCode = (code: string) => {
-    navigator.clipboard.writeText(code);
-    setCopied(true);
-    toast.success("Code copied to clipboard");
-    setTimeout(() => setCopied(false), 2000);
-  };
-
   return (
     <div className="space-y-6">
-      {/* Category Tabs */}
-      <Tabs value={selectedCategory} onValueChange={setSelectedCategory}>
-        <TabsList className="flex flex-wrap h-auto gap-2 bg-muted/50 p-2">
-          {categories?.map((cat) => {
-            const Icon = CATEGORY_ICONS[cat.id] || Package;
-            return (
-              <TabsTrigger
-                key={cat.id}
-                value={cat.id}
-                className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-              >
-                <Icon className="h-4 w-4" />
-                <span>{cat.name}</span>
-                <Badge variant="secondary" className="ml-1 text-xs">
-                  {cat.count}
-                </Badge>
-              </TabsTrigger>
-            );
-          })}
-        </TabsList>
-      </Tabs>
+      {/* Marketplace Redirect Card */}
+      <Card className="border-primary/30 bg-gradient-to-br from-primary/5 via-transparent to-transparent">
+        <CardHeader className="text-center pb-4">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center">
+            <Package className="w-8 h-8 text-primary-foreground" />
+          </div>
+          <CardTitle className="text-2xl">Templates Marketplace</CardTitle>
+          <CardDescription className="text-base max-w-lg mx-auto">
+            Browse 72+ production-ready templates. All templates require a purchase for single-project use.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* Pricing Overview */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="p-4 rounded-lg bg-muted/50 border border-border/50 text-center">
+              <Badge className="mb-2 bg-system-green/20 text-system-green border-system-green/30">Starter</Badge>
+              <p className="text-2xl font-bold">$9</p>
+              <p className="text-xs text-muted-foreground">Beginner templates</p>
+            </div>
+            <div className="p-4 rounded-lg bg-muted/50 border border-border/50 text-center">
+              <Badge className="mb-2 bg-system-amber/20 text-system-amber border-system-amber/30">Advanced</Badge>
+              <p className="text-2xl font-bold">$29</p>
+              <p className="text-xs text-muted-foreground">Intermediate templates</p>
+            </div>
+            <div className="p-4 rounded-lg bg-muted/50 border border-border/50 text-center">
+              <Badge className="mb-2 bg-destructive/20 text-destructive border-destructive/30">Enterprise</Badge>
+              <p className="text-2xl font-bold">$49+</p>
+              <p className="text-xs text-muted-foreground">Advanced templates</p>
+            </div>
+          </div>
 
-      {/* Template Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {templatesLoading ? (
-          Array.from({ length: 6 }).map((_, i) => (
-            <Card key={i} className="animate-pulse">
-              <CardHeader className="space-y-2">
-                <div className="h-6 bg-muted rounded w-3/4" />
-                <div className="h-4 bg-muted rounded w-full" />
-              </CardHeader>
-              <CardContent>
-                <div className="h-20 bg-muted rounded" />
-              </CardContent>
-            </Card>
-          ))
-        ) : (
-          templates?.map((template) => {
-            const Icon = CATEGORY_ICONS[template.category] || Package;
-            return (
-              <Card
-                key={template.id}
-                className="group hover:border-primary/50 transition-all cursor-pointer"
-                onClick={() => setSelectedTemplate(template)}
-              >
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-primary/10">
-                        <Icon className="h-5 w-5 text-primary" />
-                      </div>
-                      <div>
-                        <CardTitle className="text-lg flex items-center gap-2">
-                          {template.name}
-                          {template.is_featured && (
-                            <Star className="h-4 w-4 text-amber-400 fill-amber-400" />
-                          )}
-                        </CardTitle>
-                        <div className="flex items-center gap-2 mt-1">
-                          <Badge
-                            variant="outline"
-                            className={DIFFICULTY_COLORS[template.difficulty] || ""}
-                          >
-                            {template.difficulty}
-                          </Badge>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <CardDescription className="mt-2">
-                    {template.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex flex-wrap gap-1">
-                    {template.required_modules?.slice(0, 4).map((mod: string) => (
-                      <Badge key={mod} variant="secondary" className="text-xs">
-                        {mod}
-                      </Badge>
-                    ))}
-                    {template.required_modules?.length > 4 && (
-                      <Badge variant="secondary" className="text-xs">
-                        +{template.required_modules.length - 4}
-                      </Badge>
-                    )}
-                  </div>
-                  <div className="flex items-center justify-between pt-2 border-t border-border/50">
-                    <span className="text-xs text-muted-foreground flex items-center gap-1">
-                      <Download className="h-3 w-3" />
-                      {template.install_count || 0} installs
-                    </span>
-                    <Button
-                      size="sm"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleInstall(template);
-                      }}
-                      disabled={installMutation.isPending}
-                    >
-                      <Sparkles className="h-4 w-4 mr-1" />
-                      Install
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })
-        )}
+          {/* License Info */}
+          <div className="flex items-start gap-3 p-4 rounded-lg bg-muted/30 border border-border/50">
+            <Lock className="w-5 h-5 text-muted-foreground mt-0.5" />
+            <div>
+              <p className="font-medium text-sm">Single-Project License</p>
+              <p className="text-xs text-muted-foreground">
+                Each purchased template can be used in one project. The SDK remains free for all developers.
+              </p>
+            </div>
+          </div>
+
+          {/* CTA */}
+          <Button asChild size="lg" className="w-full gap-2">
+            <Link to="/marketplace">
+              <ShoppingCart className="w-5 h-5" />
+              Browse Marketplace
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </Button>
+
+          {/* SDK Free Reminder */}
+          <div className="text-center p-4 rounded-lg bg-system-green/5 border border-system-green/20">
+            <Sparkles className="w-5 h-5 mx-auto mb-2 text-system-green" />
+            <p className="text-sm">
+              <span className="font-medium text-system-green">SDK is 100% free</span>
+              <span className="text-muted-foreground"> — only pay for templates you want to use</span>
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Quick Category Preview */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {[
+          { name: "Gaming", count: 8, color: "text-violet-500" },
+          { name: "World Engine", count: 5, color: "text-cyan-500" },
+          { name: "AI Agents", count: 12, color: "text-emerald-500" },
+          { name: "RAG Pipelines", count: 9, color: "text-amber-500" },
+        ].map((cat) => (
+          <Link 
+            key={cat.name} 
+            to="/marketplace"
+            className="p-3 rounded-lg bg-muted/50 border border-border/50 hover:border-primary/50 transition-colors text-center group"
+          >
+            <p className={`font-medium text-sm ${cat.color}`}>{cat.name}</p>
+            <p className="text-xs text-muted-foreground">{cat.count} templates</p>
+          </Link>
+        ))}
       </div>
-
-      {/* Template Detail Modal */}
-      <Dialog open={!!selectedTemplate} onOpenChange={() => setSelectedTemplate(null)}>
-        <DialogContent className="max-w-3xl max-h-[85vh] overflow-hidden flex flex-col">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-3">
-              {selectedTemplate && (
-                <>
-                  {(() => {
-                    const Icon = CATEGORY_ICONS[selectedTemplate.category] || Package;
-                    return <Icon className="h-6 w-6 text-primary" />;
-                  })()}
-                  {selectedTemplate.name}
-                  {selectedTemplate.is_featured && (
-                    <Star className="h-5 w-5 text-amber-400 fill-amber-400" />
-                  )}
-                </>
-              )}
-            </DialogTitle>
-            <DialogDescription>
-              {selectedTemplate?.description}
-            </DialogDescription>
-          </DialogHeader>
-
-          <ScrollArea className="flex-1 pr-4">
-            {selectedTemplate && (
-              <div className="space-y-6">
-                {/* Metadata */}
-                <div className="flex flex-wrap gap-2">
-                  <Badge variant="outline" className={DIFFICULTY_COLORS[selectedTemplate.difficulty]}>
-                    {selectedTemplate.difficulty}
-                  </Badge>
-                  <Badge variant="secondary">{selectedTemplate.category}</Badge>
-                  <Badge variant="outline">
-                    <Download className="h-3 w-3 mr-1" />
-                    {selectedTemplate.install_count} installs
-                  </Badge>
-                </div>
-
-                {/* Required Modules */}
-                <div>
-                  <h4 className="font-medium mb-2">Required Modules</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedTemplate.required_modules?.map((mod: string) => (
-                      <Badge key={mod} variant="secondary">
-                        {mod}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-
-                {/* SDK Code */}
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-medium flex items-center gap-2">
-                      <Code className="h-4 w-4" />
-                      Quick Start Code
-                    </h4>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleCopyCode(selectedTemplate.sdk_snippet || "")}
-                    >
-                      {copied ? (
-                        <Check className="h-4 w-4 text-green-500" />
-                      ) : (
-                        <Copy className="h-4 w-4" />
-                      )}
-                    </Button>
-                  </div>
-                  <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm">
-                    <code>{selectedTemplate.sdk_snippet}</code>
-                  </pre>
-                </div>
-
-                {/* Config Preview */}
-                {selectedTemplate.default_config && (
-                  <div>
-                    <h4 className="font-medium mb-2">Default Configuration</h4>
-                    <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm">
-                      <code>{JSON.stringify(selectedTemplate.default_config, null, 2)}</code>
-                    </pre>
-                  </div>
-                )}
-
-                {/* Install Button */}
-                <Button
-                  className="w-full"
-                  size="lg"
-                  onClick={() => handleInstall(selectedTemplate)}
-                  disabled={installMutation.isPending}
-                >
-                  <Download className="h-5 w-5 mr-2" />
-                  Install Template
-                </Button>
-              </div>
-            )}
-          </ScrollArea>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }
