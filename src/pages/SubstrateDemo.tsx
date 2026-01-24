@@ -286,8 +286,8 @@ export default function SubstrateDemo() {
                       <span className="text-[10px] md:text-xs font-medium text-muted-foreground">Substrate</span>
                     </motion.div>
 
-                    {/* Connection Lines SVG */}
-                    <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ overflow: 'visible' }}>
+                    {/* Connection Lines SVG - hidden on mobile for clarity */}
+                    <svg className="absolute inset-0 w-full h-full pointer-events-none hidden md:block" style={{ overflow: 'visible' }}>
                       <defs>
                         <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
                           <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.8" />
@@ -303,24 +303,22 @@ export default function SubstrateDemo() {
                         </filter>
                       </defs>
                       
-                      {activeConnections.map((conn, i) => {
+                      {activeConnections.map((conn) => {
                         const [from, to] = conn.split('-');
                         const fromIdx = modules.findIndex(m => m.id === from);
                         const toIdx = modules.findIndex(m => m.id === to);
                         if (fromIdx === -1 || toIdx === -1) return null;
                         
-                        const fromPos = getModulePosition(fromIdx, modules.length, true);
-                        const toPos = getModulePosition(toIdx, modules.length, true);
-                        const centerX = 140;
-                        const centerY = 140;
+                        const fromPos = getModulePosition(fromIdx, modules.length, false);
+                        const toPos = getModulePosition(toIdx, modules.length, false);
                         
                         return (
                           <motion.line
                             key={conn}
-                            x1={centerX + fromPos.x}
-                            y1={centerY + fromPos.y}
-                            x2={centerX + toPos.x}
-                            y2={centerY + toPos.y}
+                            x1={`calc(50% + ${fromPos.x}px)`}
+                            y1={`calc(50% + ${fromPos.y}px)`}
+                            x2={`calc(50% + ${toPos.x}px)`}
+                            y2={`calc(50% + ${toPos.y}px)`}
                             stroke="url(#connectionGradient)"
                             strokeWidth="2"
                             filter="url(#glow)"
@@ -343,10 +341,9 @@ export default function SubstrateDemo() {
                       return (
                         <motion.div
                           key={module.id}
-                          className="absolute"
+                          className="absolute left-1/2 top-1/2"
                           style={{ 
-                            left: `calc(50% + ${pos.x}px - 28px)`,
-                            top: `calc(50% + ${pos.y}px - 28px)`,
+                            transform: `translate(calc(-50% + ${pos.x}px), calc(-50% + ${pos.y}px))`,
                           }}
                           initial={{ opacity: 0, scale: 0 }}
                           animate={{ opacity: 1, scale: 1 }}
