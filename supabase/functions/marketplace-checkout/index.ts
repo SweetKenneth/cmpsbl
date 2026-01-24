@@ -1,5 +1,6 @@
 /**
  * Marketplace Checkout — Create Stripe checkout session for templates/OS
+ * Supports both authenticated users and guest checkout (Stripe collects email)
  */
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
@@ -48,24 +49,24 @@ serve(async (req) => {
       throw new Error("Missing required fields: price_id, product_type");
     }
 
+    // Use email if available; otherwise Stripe will collect it in checkout
     const email = userEmail || customer_email;
-    if (!email) {
-      throw new Error("Email required for purchase");
-    }
-
-    // Check if customer exists
-    const customers = await stripe.customers.list({ email, limit: 1 });
-    let customerId: string | undefined;
-    if (customers.data.length > 0) {
-      customerId = customers.data[0].id;
-    }
 
     const origin = req.headers.get("origin") || "https://promptfluid.com";
 
-    // Create checkout session
+    // Check if customer exists (only if we have an email)
+    let customerId: string | undefined;
+    if (email) {
+      const customers = await stripe.customers.list({ email, limit: 1 });
+      if (customers.data.length > 0) {
+        customerId = customers.data[0].id;
+      }
+    }
+
+    // Create checkout session - Stripe will collect email if not provided
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
-      customer_email: customerId ? undefined : email,
+      customer_email: customerId ? undefined : email, // Only set if we have email and no customer
       line_items: [
         {
           price: price_id,
@@ -79,9 +80,12 @@ serve(async (req) => {
         product_type,
         product_id: product_id || '',
         template_name: template_name || '',
-        purchaser_email: email,
       },
+      // Allow Stripe to collect email for guest users
+      customer_creation: customerId ? undefined : 'always',
     });
+
+    console.log(`Checkout session created: ${session.id}, type: ${product_type}, email: ${email || 'guest'}`);
 
     return new Response(
       JSON.stringify({ url: session.url, session_id: session.id }),

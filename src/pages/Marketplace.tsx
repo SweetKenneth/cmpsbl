@@ -13,7 +13,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { TEMPLATES, type Template } from "@/data/templates";
@@ -49,8 +48,14 @@ export default function Marketplace() {
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(null);
+  const [showCheckoutModal, setShowCheckoutModal] = useState(false);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [copied, setCopied] = useState(false);
+
+  // Open checkout modal (second step on mobile)
+  const proceedToCheckout = () => {
+    setShowCheckoutModal(true);
+  };
 
   // Filter templates
   const filteredTemplates = useMemo(() => {
@@ -390,98 +395,152 @@ export default function Marketplace() {
         <EnhancedFooter />
       </div>
 
-      {/* Template Detail Modal */}
-      <Dialog open={!!selectedTemplate} onOpenChange={() => setSelectedTemplate(null)}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-3">
+      {/* Template Preview Modal (Step 1 - Mobile Optimized) */}
+      <Dialog open={!!selectedTemplate && !showCheckoutModal} onOpenChange={() => setSelectedTemplate(null)}>
+        <DialogContent className="max-w-lg sm:max-w-2xl max-h-[85vh] overflow-y-auto p-4 sm:p-6">
+          <DialogHeader className="pb-2">
+            <DialogTitle className="flex items-center gap-2 text-base sm:text-lg">
               {selectedTemplate && (
                 <>
-                  <selectedTemplate.icon className="w-6 h-6 text-primary" />
-                  {selectedTemplate.name}
+                  <selectedTemplate.icon className="w-5 h-5 text-primary" />
+                  <span className="truncate">{selectedTemplate.name}</span>
                 </>
               )}
             </DialogTitle>
-            <DialogDescription>
-              {selectedTemplate?.description}
+          </DialogHeader>
+
+          {selectedTemplate && (
+            <div className="space-y-4">
+              {/* Pricing & Quick Info */}
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge className={`text-xs ${difficultyBadgeStyles[selectedTemplate.difficulty]}`}>
+                  {selectedTemplate.difficulty}
+                </Badge>
+                <Badge variant="outline" className="text-xs">
+                  {selectedTemplate.category}
+                </Badge>
+                <span className="text-xs text-muted-foreground">
+                  ~{selectedTemplate.estimatedTime}
+                </span>
+                <span className="ml-auto text-xl font-bold text-primary">
+                  {formatPrice(getTemplatePricing(selectedTemplate.difficulty, selectedTemplate.id).amount)}
+                </span>
+              </div>
+
+              {/* Description */}
+              <p className="text-sm text-muted-foreground">
+                {selectedTemplate.description}
+              </p>
+
+              {/* Features - Compact */}
+              <div>
+                <h4 className="font-medium text-sm mb-2">Features</h4>
+                <div className="flex flex-wrap gap-1.5">
+                  {selectedTemplate.features.map((f, i) => (
+                    <Badge key={i} variant="secondary" className="text-xs">{f}</Badge>
+                  ))}
+                </div>
+              </div>
+
+              {/* Code Preview - Collapsible on mobile */}
+              <details className="group">
+                <summary className="flex items-center justify-between cursor-pointer py-2 text-sm font-medium">
+                  <span className="flex items-center gap-2">
+                    <Code className="w-4 h-4" />
+                    Code Preview
+                  </span>
+                  <span className="text-xs text-muted-foreground group-open:hidden">Tap to expand</span>
+                </summary>
+                <div className="mt-2">
+                  <div className="flex justify-end mb-1">
+                    <Button variant="ghost" size="sm" className="h-7 px-2" onClick={() => copyCode(selectedTemplate.code)}>
+                      {copied ? <Check className="w-3 h-3 text-system-green" /> : <Copy className="w-3 h-3" />}
+                      <span className="ml-1 text-xs">{copied ? "Copied" : "Copy"}</span>
+                    </Button>
+                  </div>
+                  <pre className="bg-muted p-3 rounded-lg overflow-x-auto text-xs max-h-[200px]">
+                    <code>{selectedTemplate.code}</code>
+                  </pre>
+                </div>
+              </details>
+
+              {/* CTA Button */}
+              <Button 
+                size="lg" 
+                className="w-full gap-2 mt-2"
+                onClick={proceedToCheckout}
+              >
+                <ShoppingCart className="w-4 h-4" />
+                Continue to Purchase
+              </Button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Checkout Confirmation Modal (Step 2 - Compact) */}
+      <Dialog open={showCheckoutModal} onOpenChange={(open) => {
+        if (!open) {
+          setShowCheckoutModal(false);
+        }
+      }}>
+        <DialogContent className="max-w-sm sm:max-w-md p-4 sm:p-6">
+          <DialogHeader className="pb-2">
+            <DialogTitle className="text-base">Confirm Purchase</DialogTitle>
+            <DialogDescription className="text-sm">
+              Complete your template purchase
             </DialogDescription>
           </DialogHeader>
 
           {selectedTemplate && (
-            <ScrollArea className="flex-1 pr-4">
-              <div className="space-y-6">
-                {/* Pricing & Metadata */}
-                <div className="flex flex-wrap items-center gap-3">
-                  <Badge className={difficultyBadgeStyles[selectedTemplate.difficulty]}>
+            <div className="space-y-4">
+              {/* Template Summary */}
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 border">
+                <div className="p-2 rounded-lg bg-primary/10">
+                  <selectedTemplate.icon className="w-5 h-5 text-primary" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium text-sm truncate">{selectedTemplate.name}</p>
+                  <Badge className={`text-xs ${difficultyBadgeStyles[selectedTemplate.difficulty]}`}>
                     {selectedTemplate.difficulty}
                   </Badge>
-                  <Badge variant="outline">
-                    {categoryIcons[selectedTemplate.category] && (
-                      <>
-                        {(() => {
-                          const CatIcon = categoryIcons[selectedTemplate.category];
-                          return <CatIcon className="w-3 h-3 mr-1" />;
-                        })()}
-                      </>
-                    )}
-                    {selectedTemplate.category}
-                  </Badge>
-                  <span className="text-sm text-muted-foreground">
-                    ~{selectedTemplate.estimatedTime}
-                  </span>
-                  <div className="ml-auto">
-                    <span className="text-2xl font-bold text-primary">
-                      {formatPrice(getTemplatePricing(selectedTemplate.difficulty, selectedTemplate.id).amount)}
-                    </span>
-                  </div>
                 </div>
+                <span className="text-lg font-bold text-primary">
+                  {formatPrice(getTemplatePricing(selectedTemplate.difficulty, selectedTemplate.id).amount)}
+                </span>
+              </div>
 
-                {/* Features */}
-                <div>
-                  <h4 className="font-medium mb-2">Features</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedTemplate.features.map((f, i) => (
-                      <Badge key={i} variant="secondary">{f}</Badge>
-                    ))}
-                  </div>
-                </div>
+              {/* License Info */}
+              <div className="p-3 rounded-lg bg-amber-500/10 border border-amber-500/20">
+                <p className="text-xs text-muted-foreground">
+                  <strong className="text-foreground">Single-Project License:</strong> This template can be used in one project only.
+                </p>
+              </div>
 
-                {/* Code Preview */}
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-medium flex items-center gap-2">
-                      <Code className="w-4 h-4" />
-                      Code Preview
-                    </h4>
-                    <Button variant="ghost" size="sm" onClick={() => copyCode(selectedTemplate.code)}>
-                      {copied ? <Check className="w-4 h-4 text-system-green" /> : <Copy className="w-4 h-4" />}
-                    </Button>
-                  </div>
-                  <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm max-h-[300px]">
-                    <code>{selectedTemplate.code}</code>
-                  </pre>
-                </div>
-
-                {/* License Info */}
-                <div className="p-4 rounded-lg bg-muted/50 border border-border/50">
-                  <p className="text-sm text-muted-foreground">
-                    <strong>Single-Project License:</strong> This template can be used in one project. 
-                    For use in additional projects, purchase another license.
-                  </p>
-                </div>
-
-                {/* Purchase Button */}
+              {/* Actions */}
+              <div className="flex flex-col gap-2">
                 <Button 
                   size="lg" 
                   className="w-full gap-2"
                   onClick={() => handleCheckout('template', selectedTemplate)}
                   disabled={isCheckingOut}
                 >
-                  <ShoppingCart className="w-5 h-5" />
-                  {isCheckingOut ? "Processing..." : `Purchase for ${formatPrice(getTemplatePricing(selectedTemplate.difficulty, selectedTemplate.id).amount)}`}
+                  <CreditCard className="w-4 h-4" />
+                  {isCheckingOut ? "Processing..." : "Pay with Stripe"}
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => setShowCheckoutModal(false)}
+                >
+                  Back to Details
                 </Button>
               </div>
-            </ScrollArea>
+
+              <p className="text-xs text-center text-muted-foreground">
+                Secure payment. Instant delivery.
+              </p>
+            </div>
           )}
         </DialogContent>
       </Dialog>
