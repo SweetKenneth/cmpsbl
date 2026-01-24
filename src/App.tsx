@@ -51,7 +51,7 @@ const Documentation = lazy(() => import("./pages/Documentation"));
 const Publication = lazy(() => import("./pages/Publication"));
 const DevPortal = lazy(() => import("./pages/DevPortal"));
 const Changelog = lazy(() => import("./pages/Changelog"));
-const CodeLab = lazy(() => import("./pages/CodeLab"));
+// CodeLab removed - templates now in /marketplace only
 const CognitiveForge = lazy(() => import("./pages/CognitiveForge"));
 const ForgeCatalog = lazy(() => import("./pages/ForgeCatalog"));
 const AgencyMint = lazy(() => import("./pages/AgencyMint"));
@@ -151,7 +151,7 @@ const App = () => {
                       <Route path="/publication" element={<Publication />} />
                       <Route path="/documentation" element={<Documentation />} />
                       <Route path="/changelog" element={<Changelog />} />
-                      <Route path="/codelab" element={<CodeLab />} />
+                      <Route path="/codelab" element={<Navigate to="/marketplace" replace />} />
                       <Route path="/forge" element={<CognitiveForge />} />
                       <Route path="/forge/catalog" element={<ForgeCatalog />} />
                       <Route path="/agency" element={<AgencyMint />} />
