@@ -1,6 +1,6 @@
 /**
  * Template & OS Marketplace — promptfluid® Developer Store
- * Purchase templates ($9-$49) and OS licenses ($599)
+ * The World's First Production-Ready AI Governance OS
  */
 
 import { useState, useMemo } from "react";
@@ -18,7 +18,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { TEMPLATES, type Template } from "@/data/templates";
 import { MARKETPLACE_PRODUCTS, getTemplatePricing, formatPrice, SDK_FREE_MESSAGE } from "@/config/marketplace-products";
-import { motion } from "framer-motion";
+import { MarketplaceHero } from "@/components/marketplace/MarketplaceHero";
 import {
   Search, Package, Download, Star, Code, Copy, Check,
   ShoppingCart, CreditCard, Shield, Brain, MessageSquare,
@@ -127,76 +127,18 @@ export default function Marketplace() {
   return (
     <>
       <SEO
-        title="Developer Marketplace | promptfluid® Templates & OS"
-        description="Purchase production-ready templates ($9-$49) and the full Substrate OS ($599). SDK is free for all developers."
-        keywords={["AI templates", "cognitive OS", "developer marketplace", "promptfluid", "AI SDK"]}
+        title="Developer Marketplace | World's First AI Governance OS"
+        description="The only operating system that gives LLMs persistent memory, real-time governance, and autonomous improvement. Templates from $9, OS License $599. SDK is FREE."
+        keywords={["AI governance OS", "cognitive operating system", "AI templates", "LLM memory", "AI security", "promptfluid", "AI SDK"]}
       />
       <div className="min-h-screen bg-background">
         <PublicNav />
 
-        <main className="container mx-auto px-4 py-8 pt-24">
-          {/* Hero Section - Premium Marketplace */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="relative mb-16"
-          >
-            {/* Background Glow */}
-            <div className="absolute inset-0 -z-10">
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-gradient-to-r from-primary/20 via-neon-cyan/15 to-neon-green/20 blur-[100px] rounded-full" />
-            </div>
-            
-            <div className="text-center">
-              <Badge variant="outline" className="mb-6 gap-2 px-5 py-2 border-primary/40 bg-primary/5 text-sm">
-                <Package className="w-4 h-4" />
-                The First OS for AI Development
-              </Badge>
-              
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight">
-                <span className="block text-foreground">Build Apps That</span>
-                <span className="bg-gradient-to-r from-primary via-neon-cyan to-neon-green bg-clip-text text-transparent">
-                  Dream, Remember & Defend
-                </span>
-              </h1>
-              
-              <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8 leading-relaxed">
-                The promptfluid® Substrate is the world's first cognitive operating system for AI.
-                <span className="text-foreground font-medium"> {TEMPLATES.length}+ production templates</span>,
-                <span className="text-foreground font-medium"> 12-module architecture</span>, and
-                <span className="text-foreground font-medium"> self-hosted licensing</span> for serious developers.
-              </p>
+        {/* Cinematic Hero */}
+        <MarketplaceHero />
 
-              {/* Value Props */}
-              <div className="flex flex-wrap justify-center gap-4 mb-8">
-                <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-muted/50 border border-border/50">
-                  <Brain className="w-4 h-4 text-violet-400" />
-                  <span className="text-sm">Persistent Memory</span>
-                </div>
-                <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-muted/50 border border-border/50">
-                  <Shield className="w-4 h-4 text-red-400" />
-                  <span className="text-sm">Bot Detection</span>
-                </div>
-                <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-muted/50 border border-border/50">
-                  <Moon className="w-4 h-4 text-purple-400" />
-                  <span className="text-sm">Dream Synthesis</span>
-                </div>
-                <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-muted/50 border border-border/50">
-                  <Zap className="w-4 h-4 text-amber-400" />
-                  <span className="text-sm">Multi-Model AI</span>
-                </div>
-              </div>
-              
-              {/* Free SDK Banner */}
-              <div className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-system-green/10 border border-system-green/30">
-                <Sparkles className="w-5 h-5 text-system-green" />
-                <div className="text-left">
-                  <span className="font-bold text-system-green">SDK is 100% FREE</span>
-                  <span className="text-muted-foreground block text-sm">Templates from $9 • OS License $599</span>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
+        {/* Main Content */}
+        <main className="container mx-auto px-4 py-8">
           {/* Tabs: Templates / OS */}
           <Tabs defaultValue="templates" className="space-y-8">
             <TabsList className="grid w-full max-w-md mx-auto grid-cols-2">
