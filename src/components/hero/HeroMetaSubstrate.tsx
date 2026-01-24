@@ -339,10 +339,9 @@ function TypedText({ texts, gradientColors, className }: {
     >
       <span className="inline-block">{displayText}</span>
       <span 
-        className="inline-block w-[0.5ch] text-center"
+        className="inline-block w-[0.5ch] text-center animate-blink"
         style={{
           WebkitTextFillColor: "hsl(var(--foreground))",
-          animation: "blink 1s step-end infinite",
         }}
       >|</span>
     </span>
