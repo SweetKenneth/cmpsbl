@@ -327,7 +327,7 @@ function TypedText({ texts, gradientColors, className }: {
   
   const currentGradient = gradientColors?.[currentIndex] || "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))";
   
-  // Use CSS containment and will-change to prevent layout thrashing
+  // Use CSS containment and fixed dimensions to prevent layout thrashing
   return (
     <span 
       className={cn("inline-flex items-baseline", className)}
@@ -336,7 +336,7 @@ function TypedText({ texts, gradientColors, className }: {
         WebkitBackgroundClip: "text",
         WebkitTextFillColor: "transparent",
         backgroundClip: "text",
-        contain: "layout style",
+        contain: "layout style paint",
       }}
     >
       <span style={{ display: "inline-block" }}>{displayText}</span>
@@ -344,9 +344,12 @@ function TypedText({ texts, gradientColors, className }: {
         style={{
           display: "inline-block",
           width: "0.6ch",
+          height: "1em",
+          lineHeight: "1em",
           textAlign: "center",
           WebkitTextFillColor: "hsl(var(--foreground))",
           animation: "blink 1s step-end infinite",
+          contain: "strict",
         }}
         aria-hidden="true"
       >|</span>

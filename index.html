@@ -53,18 +53,18 @@
       a{color:inherit;text-decoration:none}
       button{font-family:inherit;cursor:pointer}
       .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}
-      /* Root container - synchronized with shell dimensions to prevent CLS */
-      #root{min-height:100vh;contain:content}
-      /* FCP Shell - absolutely positioned to not affect document flow */
-      #fcp-shell{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:1rem 1rem 4rem;position:fixed;inset:0;z-index:9999;background:#050816;transition:opacity 0.15s ease-out;contain:strict}
-      #fcp-shell.hide{opacity:0;pointer-events:none}
+      /* Root container - visible immediately, shell overlays it */
+      #root{min-height:100vh;visibility:visible}
+      /* FCP Shell - fixed overlay that fades out, never affects #root layout */
+      #fcp-shell{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:1rem 1rem 4rem;position:fixed;inset:0;z-index:9999;background:#050816;opacity:1;transition:opacity 0.2s ease-out;pointer-events:none}
+      #fcp-shell.hide{opacity:0;visibility:hidden}
       .fcp-headline{font-size:clamp(1.875rem,5vw,3.75rem);font-weight:900;text-align:center;line-height:1.1;margin-bottom:1rem}
       .fcp-headline-main{color:#e5e7eb}
       .fcp-headline-gradient{background:linear-gradient(135deg,#22d3ee,#f472b6,#fbbf24);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-flex;align-items:baseline}
-      .fcp-headline-gradient .fcp-cursor{display:inline-block;width:0.6ch;text-align:center;color:#e5e7eb;animation:blink 1s step-end infinite}
+      .fcp-headline-gradient .fcp-cursor{display:inline-block;width:0.6ch;height:1em;text-align:center;color:#e5e7eb;opacity:1}
       .fcp-tagline{font-size:clamp(1rem,2vw,1.25rem);color:#9ca3af;text-align:center;max-width:42ch;margin:0 auto 2rem;font-family:Inter,system-ui,sans-serif}
       .fcp-cta{display:inline-flex;align-items:center;gap:0.5rem;padding:0.875rem 2rem;background:linear-gradient(135deg,hsl(260 100% 65%),hsl(280 100% 55%));color:#fff;font-weight:600;border-radius:9999px;text-decoration:none;font-size:1rem}
-      /* Cursor blink animation - opacity only, no layout shift */
+      /* Cursor blink animation - opacity only, fixed dimensions */
       @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
     </style>
     
@@ -619,16 +619,19 @@
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <script>
-      // Hide FCP shell once React hydrates - smooth transition
+      // Hide FCP shell once React hydrates - smooth opacity transition, no layout shift
       (function(){
         var r=document.getElementById('root');
         var s=document.getElementById('fcp-shell');
         if(r&&s){
           new MutationObserver(function(m,o){
             if(r.children.length>0){
-              s.style.transition='opacity 0.15s ease-out';
-              s.classList.add('hide');
-              setTimeout(function(){s.style.display='none';},150);
+              // Use requestAnimationFrame to batch the visual change
+              requestAnimationFrame(function(){
+                s.classList.add('hide');
+                // After transition completes, fully remove from accessibility tree
+                setTimeout(function(){s.setAttribute('aria-hidden','true');},200);
+              });
               o.disconnect();
             }
           }).observe(r,{childList:true});
