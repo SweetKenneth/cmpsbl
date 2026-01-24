@@ -14,8 +14,9 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { analyzeDynamically, DynamicImprovement } from "./dynamicAnalyzer.ts";
 
-const UPGRADE_ENGINE_VERSION = "2.0.0";
+const UPGRADE_ENGINE_VERSION = "3.0.0"; // Dynamic analysis engine
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -243,32 +244,28 @@ serve(async (req) => {
         const finalBackupId = backupData?.backup_id || backupId;
         console.log(`✅ Pre-upgrade backup: ${finalBackupId}`);
         
-        // === GENERATE UPGRADE PLAN ===
+        // === GENERATE UPGRADE PLAN (Dynamic Analysis v3.0) ===
         const planId = generatePlanId();
         
-        // Analyze substrate and generate suggestions (excluding already applied)
-        const allSuggestions: ImprovementSuggestion[] = [];
-        const suggestedPatches: UpgradePlan['suggested_patches'] = [];
+        // Use dynamic analyzer to find real issues based on current system state
+        console.log(`🔍 Running dynamic codebase analysis for scope: ${scope}`);
+        const analysisResult = await analyzeDynamically(supabase, scope, max_changes);
         
-        const modules = scope === 'all' 
-          ? ['brain', 'defense', 'nexus', 'vision', 'dream', 'system'] 
-          : [scope];
+        console.log(`📊 Analysis complete: ${analysisResult.analysis_summary.improvements_found} potential improvements found`);
+        console.log(`   - Errors analyzed: ${analysisResult.analysis_summary.errors_analyzed}`);
+        console.log(`   - Events analyzed: ${analysisResult.analysis_summary.events_analyzed}`);
+        console.log(`   - Patterns analyzed: ${analysisResult.analysis_summary.patterns_analyzed}`);
         
-        for (const mod of modules) {
-          const moduleAnalysis = analyzeModuleWithTracking(mod, appliedImprovements);
-          allSuggestions.push(...moduleAnalysis.suggestions);
-          suggestedPatches.push(...moduleAnalysis.patches);
-        }
-        
-        // Limit changes
-        const limitedSuggestions = allSuggestions.slice(0, max_changes);
+        const limitedSuggestions = analysisResult.suggestions;
+        const suggestedPatches = analysisResult.patches;
         
         if (limitedSuggestions.length === 0) {
           return jsonResponse({
             success: true,
             mode: 'shadow',
             plan: null,
-            message: 'No new improvements found. All available optimizations have already been applied.',
+            message: 'System is fully optimized. No new improvements identified from current state analysis.',
+            analysis_summary: analysisResult.analysis_summary,
             applied_count: appliedImprovements.size,
             engine_version: UPGRADE_ENGINE_VERSION,
             timestamp: new Date().toISOString(),
@@ -341,7 +338,8 @@ serve(async (req) => {
           mode: 'shadow',
           plan,
           backup_id: finalBackupId,
-          message: `Generated ${limitedSuggestions.length} new improvement(s). Review and apply to shadow mode first.`,
+          analysis_summary: analysisResult.analysis_summary,
+          message: `Generated ${limitedSuggestions.length} data-driven improvement(s) based on real system analysis. Review and apply to shadow mode first.`,
           engine_version: UPGRADE_ENGINE_VERSION,
           timestamp: new Date().toISOString(),
         }, corsHeaders);
