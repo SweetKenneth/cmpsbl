@@ -1,6 +1,6 @@
 /**
  * CodeAgent Tab — Self-Evolution Coding Interface
- * v3.0.0 — With robust workflow engine: Read → Think → Write → Confirm → Submit
+ * v4.0.0 — With discussion mode, approval gates, and file context reading
  * Provides chat interface to the Substrate Coder + Sandbox validation preview
  */
 
@@ -8,7 +8,8 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { 
   Code, Send, Loader2, CheckCircle2, XCircle, AlertTriangle, 
   Terminal, Zap, Bot, FileCode, Play, RefreshCw, Copy, Check,
-  Heart, ShieldCheck, Activity, Eye, Brain, Cog, Rocket
+  Heart, ShieldCheck, Activity, Eye, Brain, Cog, Rocket,
+  MessageSquare, HelpCircle, FileText, Shield, Undo2
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -40,10 +41,23 @@ import {
   type WorkflowExecutionResult
 } from '@/lib/codeagent/workflow';
 import { getShadowModeStatus } from '@/lib/codeagent/shadow-mode';
+import {
+  startDiscussion,
+  answerQuestion,
+  approveGate,
+  getDiscussionState,
+  resetDiscussion,
+  type ClarifyingQuestion,
+  type ImpactPreview,
+  type ApprovalGate,
+  type DiscussionStep
+} from '@/lib/codeagent/discussion';
+import { gatherContextForChange, summarizeContext } from '@/lib/codeagent/file-context';
+import { getRecentChanges, type ChangeRecord } from '@/lib/codeagent/rollback';
 
 interface Message {
   id: string;
-  role: 'user' | 'agent' | 'system';
+  role: 'user' | 'agent' | 'system' | 'question' | 'preview' | 'approval';
   content: string;
   timestamp: Date;
   metadata?: {
@@ -57,6 +71,9 @@ interface Message {
       valid: boolean;
       issues: string[];
     };
+    question?: ClarifyingQuestion;
+    preview?: ImpactPreview;
+    gate?: ApprovalGate;
   };
 }
 
@@ -81,7 +98,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
   const [isLoading, setIsLoading] = useState(false);
   const [coderStatus, setCoderStatus] = useState<CoderStatus | null>(null);
   const [sandboxStatus, setSandboxStatus] = useState<SandboxStatus | null>(null);
-  const [activeTab, setActiveTab] = useState<'chat' | 'preview' | 'health'>('chat');
+  const [activeTab, setActiveTab] = useState<'chat' | 'preview' | 'health' | 'history'>('chat');
   const [currentCode, setCurrentCode] = useState<string>('');
   const [validationResult, setValidationResult] = useState<{ valid: boolean; issues: string[] } | null>(null);
   const [copied, setCopied] = useState(false);
@@ -94,6 +111,10 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
     completedStages: WorkflowStage[];
   } | null>(null);
   const [shadowMode, setShadowMode] = useState(getShadowModeStatus());
+  const [discussionMode, setDiscussionMode] = useState(false);
+  const [pendingQuestion, setPendingQuestion] = useState<ClarifyingQuestion | null>(null);
+  const [pendingApproval, setPendingApproval] = useState<ApprovalGate | null>(null);
+  const [changeHistory, setChangeHistory] = useState<ChangeRecord[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // Fetch status on mount
@@ -224,17 +245,131 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
           : `❌ **Validation Failed**\nIssues found:\n${result.issues.map(i => `- ${i}`).join('\n')}`);
         return;
       }
+
+      // Command: show history
+      if (lowerInput.includes('history') || lowerInput.includes('changes')) {
+        const history = getRecentChanges(10);
+        setChangeHistory(history);
+        setActiveTab('history');
+        addAgentMessage(
+          `📜 **Change History**\n\n` +
+          `Found ${history.length} recent changes. Switch to the History tab to view details.`
+        );
+        return;
+      }
+
+      // Handle discussion mode responses
+      if (discussionMode) {
+        if (pendingQuestion) {
+          // Answer the pending question
+          const step = answerQuestion(pendingQuestion.id, input);
+          handleDiscussionStep(step);
+          return;
+        }
+        if (pendingApproval) {
+          // Handle approval response
+          if (['yes', 'approve', 'proceed', 'ok', 'y'].includes(lowerInput.trim())) {
+            const step = approveGate(pendingApproval.id);
+            handleDiscussionStep(step);
+          } else {
+            resetDiscussion();
+            setDiscussionMode(false);
+            setPendingQuestion(null);
+            setPendingApproval(null);
+            addAgentMessage('❌ **Change cancelled.** Let me know when you want to try again.');
+          }
+          return;
+        }
+      }
       
-      // Default: Use robust workflow engine
-      const improvement = parseImprovementRequest(input);
+      // Default: Start discussion mode for clarity before coding
+      setDiscussionMode(true);
+      const step = startDiscussion(input);
+      handleDiscussionStep(step);
       
-      // Show workflow progress
+    } catch (error) {
+      console.error('CodeAgent error:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      
       addAgentMessage(
-        '🔄 **Starting Workflow Engine**\n\n' +
-        '**Stage 1/5:** Reading context and gathering dependencies...',
+        `❌ **Error**\n${errorMessage}\n\n` +
+        `💡 **Recovery Options:**\n` +
+        `- Type "status" to check service health\n` +
+        `- Type "reset circuit" to reset all circuits\n` +
+        `- Wait 60 seconds for automatic recovery`,
         undefined,
         'system'
       );
+      
+      refreshHealth();
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  function handleDiscussionStep(step: DiscussionStep) {
+    setIsLoading(false);
+    
+    switch (step.type) {
+      case 'question':
+        setPendingQuestion(step.content as ClarifyingQuestion);
+        setPendingApproval(null);
+        addAgentMessage(step.message, { question: step.content as ClarifyingQuestion }, 'question');
+        break;
+        
+      case 'preview':
+        setPendingQuestion(null);
+        const preview = step.content as ImpactPreview;
+        addAgentMessage(step.message, { preview }, 'preview');
+        // Auto-approve for low complexity
+        if (preview.estimatedComplexity === 'low') {
+          const state = getDiscussionState();
+          if (state.approvalGates.length > 0) {
+            const nextStep = approveGate(state.approvalGates[0].id);
+            handleDiscussionStep(nextStep);
+          }
+        }
+        break;
+        
+      case 'approval':
+        setPendingQuestion(null);
+        setPendingApproval(step.content as ApprovalGate);
+        addAgentMessage(step.message, { gate: step.content as ApprovalGate }, 'approval');
+        break;
+        
+      case 'proceed':
+        setPendingQuestion(null);
+        setPendingApproval(null);
+        setDiscussionMode(false);
+        resetDiscussion();
+        
+        // Now execute the workflow with gathered context
+        addAgentMessage(step.message);
+        executeCodeGeneration();
+        break;
+    }
+  }
+
+  async function executeCodeGeneration() {
+    setIsLoading(true);
+    const state = getDiscussionState();
+    const ctx = state.context as any;
+    
+    const module = ctx.module || ctx.analysis?.module || 'system';
+    const changeType = ctx.changeType || ctx.analysis?.changeType || 'edge_function';
+    const description = ctx.additionalDetails 
+      ? `${ctx.originalInput}. ${ctx.additionalDetails}`
+      : ctx.originalInput || '';
+
+    // Gather file context first (Read before Write)
+    const fileContexts = gatherContextForChange(module, changeType);
+    const contextSummary = summarizeContext(fileContexts);
+    
+    addAgentMessage(
+      `📖 **Reading File Context**\n\n${contextSummary}\n\n🔄 Starting code generation...`,
+      undefined,
+      'system'
+    );
       
       // Start workflow progress tracking
       const progressInterval = setInterval(() => {
@@ -244,9 +379,9 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
       
       try {
         const result: WorkflowExecutionResult = await executeWorkflow({
-          description: improvement.description,
-          module: improvement.module,
-          changeType: improvement.change_type,
+          description,
+          module,
+          changeType,
         });
         
         clearInterval(progressInterval);
@@ -261,6 +396,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
             valid: result.validation.passed, 
             issues: result.validation.issues 
           } : null);
+          setChangeHistory(getRecentChanges(10));
 
           const confidencePercent = result.confidence ? (result.confidence * 100).toFixed(0) : 'N/A';
           const validationStatus = result.validation?.passed 
@@ -293,7 +429,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
             `💡 *Type "apply" to deploy this change, or "rollback" to undo.*`,
             {
               provider: 'workflow-engine',
-              model: 'shadow-v1',
+              model: 'shadow-v2',
               latency_ms: result.duration,
               generated_code: result.code,
               file_path: result.filePath,
@@ -314,8 +450,6 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
           });
         } else {
           // Handle failure with detailed diagnostics
-          const state = getWorkflowState();
-          
           addAgentMessage(
             `❌ **Workflow Failed at Stage: ${result.stage}**\n\n` +
             `**Error:** ${result.message}\n\n` +
@@ -335,30 +469,21 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
       } catch (error) {
         clearInterval(progressInterval);
         setWorkflowProgress(null);
-        throw error;
+        
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        addAgentMessage(
+          `❌ **Error**\n${errorMessage}\n\n` +
+          `💡 **Recovery Options:**\n` +
+          `- Type "status" to check service health`,
+          undefined,
+          'system'
+        );
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      console.error('CodeAgent error:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      
-      // Provide actionable error message
-      addAgentMessage(
-        `❌ **Error**\n${errorMessage}\n\n` +
-        `💡 **Recovery Options:**\n` +
-        `- Type "status" to check service health\n` +
-        `- Type "reset circuit" to reset all circuits\n` +
-        `- Wait 60 seconds for automatic recovery`,
-        undefined,
-        'system'
-      );
-      
-      refreshHealth();
-    } finally {
-      setIsLoading(false);
-    }
   }
 
-  function addAgentMessage(content: string, metadata?: Message['metadata'], role: 'agent' | 'system' = 'agent') {
+  function addAgentMessage(content: string, metadata?: Message['metadata'], role: Message['role'] = 'agent') {
     setMessages(prev => [...prev, {
       id: `msg_${Date.now()}`,
       role,
@@ -461,11 +586,17 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
             <h2 className="text-lg font-semibold flex items-center gap-2">
               CodeAgent
               <Badge variant="outline" className="text-[10px] border-violet-500/40 text-violet-400 bg-violet-500/10">
-                v{coderStatus?.version || '1.1.0'}
+                v2.0.0
               </Badge>
+              {discussionMode && (
+                <Badge variant="outline" className="text-[10px] border-cyan-500/40 text-cyan-400 bg-cyan-500/10">
+                  <MessageSquare className="w-3 h-3 mr-1" />
+                  Discussion
+                </Badge>
+              )}
             </h2>
             <p className="text-xs text-muted-foreground font-mono">
-              self-evolution coding • {coderStatus?.learned_patterns || 0} patterns learned
+              discuss → read → think → write → confirm → submit
             </p>
           </div>
         </div>
@@ -558,6 +689,12 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
                           ? "bg-violet-500/10 border border-violet-500/20 ml-8" 
                           : msg.role === 'system'
                           ? "bg-amber-500/10 border border-amber-500/20"
+                          : msg.role === 'question'
+                          ? "bg-cyan-500/10 border border-cyan-500/20"
+                          : msg.role === 'preview'
+                          ? "bg-blue-500/10 border border-blue-500/20"
+                          : msg.role === 'approval'
+                          ? "bg-emerald-500/10 border border-emerald-500/20"
                           : "bg-white/5 border border-white/10 mr-8"
                       )}
                     >
@@ -566,11 +703,22 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
                           <Terminal className="w-3 h-3 text-violet-400" />
                         ) : msg.role === 'system' ? (
                           <AlertTriangle className="w-3 h-3 text-amber-400" />
+                        ) : msg.role === 'question' ? (
+                          <HelpCircle className="w-3 h-3 text-cyan-400" />
+                        ) : msg.role === 'preview' ? (
+                          <FileText className="w-3 h-3 text-blue-400" />
+                        ) : msg.role === 'approval' ? (
+                          <Shield className="w-3 h-3 text-emerald-400" />
                         ) : (
                           <Bot className="w-3 h-3 text-cyan-400" />
                         )}
                         <span className="text-[10px] text-muted-foreground">
-                          {msg.role === 'user' ? 'You' : msg.role === 'system' ? 'System' : 'CodeAgent'}
+                          {msg.role === 'user' ? 'You' : 
+                           msg.role === 'system' ? 'System' : 
+                           msg.role === 'question' ? 'Clarification' :
+                           msg.role === 'preview' ? 'Impact Preview' :
+                           msg.role === 'approval' ? 'Approval Required' :
+                           'CodeAgent'}
                         </span>
                         <span className="text-[10px] text-muted-foreground/50">
                           {msg.timestamp.toLocaleTimeString()}
@@ -579,6 +727,49 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
                       <div className="prose prose-sm prose-invert max-w-none">
                         <pre className="whitespace-pre-wrap font-sans text-foreground/90">{msg.content}</pre>
                       </div>
+                      
+                      {/* Question options UI */}
+                      {msg.role === 'question' && msg.metadata?.question?.options && (
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          {msg.metadata.question.options.map((opt) => (
+                            <Button
+                              key={opt}
+                              size="sm"
+                              variant="outline"
+                              className="text-xs h-7 border-cyan-500/30 hover:bg-cyan-500/20"
+                              onClick={() => {
+                                setInput(opt);
+                              }}
+                            >
+                              {opt}
+                            </Button>
+                          ))}
+                        </div>
+                      )}
+                      
+                      {/* Approval buttons UI */}
+                      {msg.role === 'approval' && msg.metadata?.gate && !msg.metadata.gate.approved && (
+                        <div className="mt-3 flex gap-2">
+                          <Button
+                            size="sm"
+                            className="bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/30"
+                            onClick={() => setInput('yes')}
+                          >
+                            <CheckCircle2 className="w-3 h-3 mr-1" />
+                            Approve
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="border-red-500/30 text-red-400 hover:bg-red-500/20"
+                            onClick={() => setInput('no')}
+                          >
+                            <XCircle className="w-3 h-3 mr-1" />
+                            Cancel
+                          </Button>
+                        </div>
+                      )}
+                      
                       {msg.metadata?.provider && (
                         <div className="mt-2 pt-2 border-t border-white/5 flex items-center gap-2 text-[10px] text-muted-foreground">
                           <Badge variant="outline" className="h-4 text-[9px]">{msg.metadata.provider}</Badge>
@@ -714,17 +905,89 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
         </Card>
       </div>
 
+      {/* Change History Panel */}
+      {changeHistory.length > 0 && (
+        <Card className="mt-6 border-blue-500/20 bg-black/40 backdrop-blur-xl">
+          <CardHeader className="border-b border-white/10 py-3">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-sm font-medium flex items-center gap-2">
+                <Undo2 className="w-4 h-4 text-blue-400" />
+                Change History — Rollback UI
+              </CardTitle>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setChangeHistory(getRecentChanges(10))}
+                className="h-7 px-2 text-xs"
+              >
+                <RefreshCw className="w-3 h-3 mr-1" />
+                Refresh
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent className="p-0">
+            <ScrollArea className="max-h-[200px]">
+              <div className="divide-y divide-white/5">
+                {changeHistory.map((change) => (
+                  <div key={change.id} className="p-3 flex items-center justify-between hover:bg-white/5 transition-colors">
+                    <div className="flex items-center gap-3">
+                      <Badge 
+                        variant="outline" 
+                        className={cn(
+                          "text-[9px]",
+                          change.status === 'applied' ? "border-emerald-500/40 text-emerald-400" :
+                          change.status === 'rolled_back' ? "border-amber-500/40 text-amber-400" :
+                          change.status === 'failed' ? "border-red-500/40 text-red-400" :
+                          "border-blue-500/40 text-blue-400"
+                        )}
+                      >
+                        {change.status}
+                      </Badge>
+                      <div>
+                        <p className="text-xs font-medium">{change.description.slice(0, 50)}...</p>
+                        <p className="text-[10px] text-muted-foreground">
+                          {change.module} • {change.changeType} • {change.timestamp.toLocaleTimeString()}
+                        </p>
+                      </div>
+                    </div>
+                    {change.status === 'applied' && (
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="h-7 text-xs text-amber-400 hover:bg-amber-500/20"
+                        onClick={async () => {
+                          const result = await rollbackLastChange();
+                          if (result.success) {
+                            toast.success('Rolled back successfully');
+                            setChangeHistory(getRecentChanges(10));
+                          } else {
+                            toast.error(result.message);
+                          }
+                        }}
+                      >
+                        <Undo2 className="w-3 h-3 mr-1" />
+                        Rollback
+                      </Button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </ScrollArea>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Learning Notice */}
       <Card className="mt-6 border-amber-500/20 bg-amber-500/5">
         <CardContent className="py-3 px-4">
           <div className="flex items-start gap-3">
-            <Zap className="w-5 h-5 text-amber-400 mt-0.5" />
+            <Brain className="w-5 h-5 text-amber-400 mt-0.5" />
             <div className="text-sm">
-              <p className="font-medium text-amber-400 mb-1">Brain Learning Active</p>
+              <p className="font-medium text-amber-400 mb-1">v2.0 — Discussion-First Workflow</p>
               <p className="text-xs text-muted-foreground">
-                Every LLM call through the Free-Tier Router is captured and stored in Brain memory. 
-                Successful code patterns are reinforced; failed patterns are deprioritized. 
-                The CodeAgent learns from each interaction to improve future code generation.
+                CodeAgent now asks clarifying questions before coding, shows impact previews,
+                reads file context, and requires approval for complex changes. Each successful
+                pattern is reinforced in Brain memory for continuous improvement.
               </p>
             </div>
           </div>
