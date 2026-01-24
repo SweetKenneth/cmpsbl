@@ -58,27 +58,27 @@ const INITIAL_MODULES: ModuleState[] = [
 
 const DEMO_SCENARIOS = [
   {
-    name: 'Natural Language Processing',
-    sequence: ['decode', 'brain', 'nexus'],
-    description: 'Human input → interpretation → memory → AI routing',
+    name: 'Cognitive Pipeline',
+    sequence: ['access', 'core', 'decode', 'brain', 'nexus', 'ripple'],
+    description: 'Auth → orchestrate → interpret → memorize → route → broadcast',
     icon: Zap,
   },
   {
-    name: 'Security Analysis',
-    sequence: ['defense', 'vision', 'brain'],
-    description: 'Detect threat → observe patterns → store intelligence',
+    name: 'Secure Intelligence',
+    sequence: ['access', 'defense', 'vision', 'brain', 'system', 'ripple'],
+    description: 'Authenticate → scan threats → observe → store intel → admin → notify',
     icon: Shield,
   },
   {
-    name: 'Dream Synthesis',
-    sequence: ['brain', 'dream', 'decode'],
-    description: 'Recall memories → synthesize → translate to human',
+    name: 'Autonomous Evolution',
+    sequence: ['core', 'brain', 'dream', 'modernizer', 'integration', 'vision'],
+    description: 'Schedule → recall → synthesize → upgrade → connect → monitor',
     icon: Moon,
   },
   {
-    name: 'Full Orchestration',
-    sequence: ['decode', 'defense', 'nexus', 'brain', 'vision', 'dream'],
-    description: 'Complete cognitive pipeline demonstration',
+    name: 'Full System Demo',
+    sequence: ['access', 'core', 'decode', 'defense', 'nexus', 'brain', 'dream', 'vision', 'modernizer', 'system', 'integration', 'ripple'],
+    description: 'Complete 12-module orchestration across all layers',
     icon: Sparkles,
   },
 ];
