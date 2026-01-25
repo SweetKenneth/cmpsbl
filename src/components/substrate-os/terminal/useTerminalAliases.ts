@@ -41,6 +41,13 @@ export const BUILTIN_ALIASES: AliasDefinition[] = [
   { alias: 'dp', expansion: 'defense.posture', description: 'Security posture' },
   { alias: 'da', expansion: 'defense.anomaly_probe', description: 'Anomaly probe' },
   
+  // Cortex (Agency) shortcuts
+  { alias: 'cp', expansion: 'cortex.propose', description: 'Cortex propose' },
+  { alias: 'ce', expansion: 'cortex.evaluate', description: 'Cortex evaluate' },
+  { alias: 'ca', expansion: 'cortex.apply', description: 'Cortex apply' },
+  { alias: 'cs', expansion: 'cortex.status', description: 'Cortex status' },
+  { alias: 'csum', expansion: 'cortex.summary', description: 'Cortex summary' },
+  
   // Quick actions
   { alias: 'heal', expansion: 'system.heal', description: 'Self-healing' },
   { alias: 'fix', expansion: 'system.heal auto true', description: 'Auto-fix issues' },

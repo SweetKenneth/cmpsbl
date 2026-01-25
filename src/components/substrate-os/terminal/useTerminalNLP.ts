@@ -159,6 +159,48 @@ const INTENT_PATTERNS: Array<{
     explanation: 'List upgrade plans',
   },
   
+  // Cortex (Agency module, resurrected from Cascade)
+  {
+    patterns: [/propose/i, /suggest.*improvement/i, /generate.*proposal/i, /improvement.*idea/i, /new.*proposal/i],
+    command: 'cortex.propose',
+    explanation: 'Generate an improvement proposal',
+  },
+  {
+    patterns: [/evaluate.*proposal/i, /score.*proposal/i, /assess/i, /feasibility/i],
+    command: 'cortex.evaluate',
+    explanation: 'Evaluate and score a proposal',
+  },
+  {
+    patterns: [/apply.*proposal/i, /execute.*proposal/i, /apply.*change/i, /implement.*proposal/i],
+    command: 'cortex.apply',
+    explanation: 'Apply approved proposal changes',
+  },
+  {
+    patterns: [/cortex.*status/i, /agency.*status/i, /cascade.*status/i, /proposal.*status/i],
+    command: 'cortex.status',
+    explanation: 'Cortex agency module status',
+  },
+  {
+    patterns: [/cortex.*audit/i, /proposal.*audit/i, /decision.*log/i, /cortex.*history/i],
+    command: 'cortex.audit',
+    explanation: 'Query Cortex decisions and deltas',
+  },
+  {
+    patterns: [/cortex.*learn/i, /reinforce/i, /outcome.*feedback/i, /proposal.*result/i],
+    command: 'cortex.learn',
+    explanation: 'Ingest outcome for reinforcement learning',
+  },
+  {
+    patterns: [/cortex.*summary/i, /agency.*summary/i, /cascade.*summary/i, /proposal.*loop/i],
+    command: 'cortex.summary',
+    explanation: 'Human-readable Cortex context dump',
+  },
+  {
+    patterns: [/rollback.*proposal/i, /undo.*apply/i, /revert.*change/i, /cortex.*rollback/i],
+    command: 'cortex.rollback',
+    explanation: 'Rollback applied Cortex changes',
+  },
+  
   // System Management
   {
     patterns: [/heal/i, /fix/i, /repair/i, /auto.*fix/i, /self.*heal/i],

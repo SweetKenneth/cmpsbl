@@ -3,13 +3,13 @@
  * Complete list of all substrate commands organized by module
  */
 
-import { Brain, Shield, Eye, Zap, MessageSquare, Moon, Settings, Terminal, Cpu, Clock, Search, Database, Activity, Lock, Router, Gauge, Sparkles, Radio, Key, Server, Send, List, PlayCircle, Plug, Globe, Workflow, Users, CreditCard, GitBranch, Box } from 'lucide-react';
+import { Brain, Shield, Eye, Zap, MessageSquare, Moon, Settings, Terminal, Cpu, Clock, Search, Database, Activity, Lock, Router, Gauge, Sparkles, Radio, Key, Server, Send, List, PlayCircle, Plug, Globe, Workflow, Users, CreditCard, GitBranch, Box, Wand2 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
 export interface CommandDefinition {
   command: string;
   description: string;
-  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer' | 'core' | 'ripple' | 'access' | 'integration' | 'meta';
+  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer' | 'core' | 'ripple' | 'access' | 'integration' | 'cortex' | 'meta';
   icon: LucideIcon;
   requiresOperator: boolean;
   args?: string;
@@ -211,6 +211,20 @@ export const INTEGRATION_COMMANDS: CommandDefinition[] = [
   { command: 'integration.customer_service', description: 'Execute customer service op', category: 'integration', icon: Users, requiresOperator: true, args: '<adapter_id> <operation> [params]' },
 ];
 
+// CORTEX module — Agency-class autonomous proposal/evaluation/execution loop (resurrected from Cascade)
+export const CORTEX_COMMANDS: CommandDefinition[] = [
+  { command: 'cortex.status', description: 'Module status + capabilities', category: 'cortex', icon: Wand2, requiresOperator: false },
+  { command: 'cortex.health', description: 'Health + connected modules', category: 'cortex', icon: Activity, requiresOperator: false },
+  { command: 'cortex.pulse', description: 'Lightweight heartbeat', category: 'cortex', icon: Activity, requiresOperator: false },
+  { command: 'cortex.propose', description: 'Generate improvement proposal', category: 'cortex', icon: Wand2, requiresOperator: true, args: '<goal> [context]', example: 'cortex.propose "Optimize memory tiering"' },
+  { command: 'cortex.evaluate', description: 'Score and assess proposal', category: 'cortex', icon: Search, requiresOperator: true, args: '[proposal_id] [criteria]' },
+  { command: 'cortex.apply', description: 'Execute approved changes', category: 'cortex', icon: PlayCircle, requiresOperator: true, args: '<proposal_id> [target_module]' },
+  { command: 'cortex.rollback', description: 'Rollback applied changes', category: 'cortex', icon: Shield, requiresOperator: true, args: '<apply_id> [reason]' },
+  { command: 'cortex.audit', description: 'Query decisions and deltas', category: 'cortex', icon: Eye, requiresOperator: false, args: '[since] [type]', example: 'cortex.audit 24h proposal' },
+  { command: 'cortex.learn', description: 'Ingest outcome for reinforcement', category: 'cortex', icon: Brain, requiresOperator: true, args: '<outcome> [proposal_id] [feedback]', example: 'cortex.learn success prop_abc123' },
+  { command: 'cortex.summary', description: 'Human-readable context dump', category: 'cortex', icon: Terminal, requiresOperator: false },
+];
+
 export const META_COMMANDS: CommandDefinition[] = [
   // Help & Navigation
   { command: 'help', description: 'Show all commands', category: 'meta', icon: Terminal, requiresOperator: false },
@@ -222,6 +236,7 @@ export const META_COMMANDS: CommandDefinition[] = [
   { command: 'help dream', description: 'Dream module commands', category: 'meta', icon: Moon, requiresOperator: false },
   { command: 'help system', description: 'System module commands', category: 'meta', icon: Cpu, requiresOperator: false },
   { command: 'help modernizer', description: 'Modernizer module commands', category: 'meta', icon: Sparkles, requiresOperator: false },
+  { command: 'help cortex', description: 'Cortex (Agency) module commands', category: 'meta', icon: Wand2, requiresOperator: false },
   { command: 'help core', description: 'Core kernel commands', category: 'meta', icon: Server, requiresOperator: false },
   { command: 'help ripple', description: 'Message bus commands', category: 'meta', icon: Radio, requiresOperator: false },
   { command: 'help access', description: 'Identity/billing commands', category: 'meta', icon: Key, requiresOperator: false },
@@ -271,6 +286,7 @@ export const ALL_COMMANDS: CommandDefinition[] = [
   ...DREAM_COMMANDS,
   ...SYSTEM_COMMANDS,
   ...MODERNIZER_COMMANDS,
+  ...CORTEX_COMMANDS,
   ...CORE_COMMANDS,
   ...RIPPLE_COMMANDS,
   ...ACCESS_COMMANDS,
@@ -289,6 +305,7 @@ export const COMMAND_CATEGORIES = {
   ripple: { label: 'RIPPLE', color: 'text-cyan-500', borderColor: 'border-cyan-500/30', commands: RIPPLE_COMMANDS },
   access: { label: 'ACCESS', color: 'text-amber-500', borderColor: 'border-amber-500/30', commands: ACCESS_COMMANDS },
   integration: { label: 'INTEGRATION', color: 'text-emerald-400', borderColor: 'border-emerald-500/30', commands: INTEGRATION_COMMANDS },
+  cortex: { label: 'CORTEX', color: 'text-violet-400', borderColor: 'border-violet-500/30', commands: CORTEX_COMMANDS },
   system: { label: 'SYSTEM', color: 'text-gray-400', borderColor: 'border-gray-500/30', commands: SYSTEM_COMMANDS },
   modernizer: { label: 'MODERNIZER', color: 'text-pink-400', borderColor: 'border-pink-500/30', commands: MODERNIZER_COMMANDS },
   meta: { label: 'META', color: 'text-gray-400', borderColor: 'border-gray-500/30', commands: META_COMMANDS },
