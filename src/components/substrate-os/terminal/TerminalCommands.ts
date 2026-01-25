@@ -105,9 +105,10 @@ export const DREAM_COMMANDS: CommandDefinition[] = [
 export const SYSTEM_COMMANDS: CommandDefinition[] = [
   { command: 'system.status', description: 'Global system status', category: 'system', icon: Cpu, requiresOperator: false },
   { command: 'system.health', description: 'Full system health', category: 'system', icon: Activity, requiresOperator: false },
+  { command: 'system.resilience', description: 'Resilience snapshot (circuits, health, heals)', category: 'system', icon: Shield, requiresOperator: false, args: '[role]', example: 'system.resilience operator' },
   { command: 'system.version', description: 'Substrate version', category: 'system', icon: Cpu, requiresOperator: false },
   { command: 'system.config', description: 'View configuration', category: 'system', icon: Settings, requiresOperator: false, args: '[key]' },
-  { command: 'system.audit', description: 'Query audit log', category: 'system', icon: Eye, requiresOperator: false, args: '[since] [type]' },
+  { command: 'system.audit', description: 'Query health incidents & audit log', category: 'system', icon: Eye, requiresOperator: false, args: '[since] [type]', example: 'system.audit 24h heal' },
   { command: 'system.diagnostics', description: 'Full diagnostics', category: 'system', icon: Cpu, requiresOperator: false },
   { command: 'system.heal', description: 'Self-healing trigger', category: 'system', icon: Shield, requiresOperator: true, args: '[target] [force]' },
   { command: 'system.restart', description: 'Restart service', category: 'system', icon: Cpu, requiresOperator: true, args: '[service]' },

@@ -29,6 +29,11 @@ const INTENT_PATTERNS: Array<{
     explanation: 'Full health diagnostic',
   },
   {
+    patterns: [/resilience/i, /circuit.*breaker/i, /circuits/i, /open.*circuit/i, /heal.*attempts/i],
+    command: 'system.resilience',
+    explanation: 'Resilience snapshot with circuit breakers and heal history',
+  },
+  {
     patterns: [/quick.*check/i, /pulse/i, /heartbeat/i, /alive/i],
     command: 'vision.pulse',
     explanation: 'Quick system pulse check',
