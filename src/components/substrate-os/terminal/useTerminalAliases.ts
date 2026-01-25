@@ -48,6 +48,14 @@ export const BUILTIN_ALIASES: AliasDefinition[] = [
   { alias: 'cs', expansion: 'cortex.status', description: 'Cortex status' },
   { alias: 'csum', expansion: 'cortex.summary', description: 'Cortex summary' },
   
+  // Ripple v2 shortcuts
+  { alias: 'rs', expansion: 'ripple.status', description: 'Ripple bus status' },
+  { alias: 'rj', expansion: 'ripple.jobs', description: 'List jobs' },
+  { alias: 'rdl', expansion: 'ripple.dead_letter', description: 'Dead-letter queue' },
+  { alias: 'rw', expansion: 'ripple.work', description: 'Work next job' },
+  { alias: 'rd', expansion: 'ripple.drain', description: 'Drain queue' },
+  { alias: 'rc', expansion: 'ripple.circuits', description: 'Circuit breakers' },
+  
   // Quick actions
   { alias: 'heal', expansion: 'system.heal', description: 'Self-healing' },
   { alias: 'fix', expansion: 'system.heal auto true', description: 'Auto-fix issues' },

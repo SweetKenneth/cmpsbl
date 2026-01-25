@@ -163,18 +163,35 @@ export const CORE_COMMANDS: CommandDefinition[] = [
   { command: 'core.shutdown', description: 'Graceful system shutdown', category: 'core', icon: Server, requiresOperator: true },
 ];
 
-// RIPPLE module — Message bus, pub/sub, queues
+// RIPPLE module v2.0 — Hybrid Event Orchestrator
 export const RIPPLE_COMMANDS: CommandDefinition[] = [
-  { command: 'ripple.status', description: 'Message bus status', category: 'ripple', icon: Radio, requiresOperator: false },
+  // Status & health
+  { command: 'ripple.status', description: 'Bus status with job breakdown + 24h analytics', category: 'ripple', icon: Radio, requiresOperator: false },
   { command: 'ripple.pulse', description: 'Lightweight heartbeat', category: 'ripple', icon: Activity, requiresOperator: false },
+  { command: 'ripple.metrics', description: 'Bus metrics for Vision integration', category: 'ripple', icon: Gauge, requiresOperator: false },
+  
+  // Topics & events
   { command: 'ripple.topics', description: 'List all topics', category: 'ripple', icon: List, requiresOperator: false },
-  { command: 'ripple.events', description: 'Get event log', category: 'ripple', icon: Activity, requiresOperator: false, args: '[topic] [limit]' },
-  { command: 'ripple.publish', description: 'Publish event to topic', category: 'ripple', icon: Send, requiresOperator: true, args: '<topic> <event_type> [payload]', example: 'ripple.publish system.alerts health_check "{}"' },
-  { command: 'ripple.subscribe', description: 'Subscribe to topic', category: 'ripple', icon: Radio, requiresOperator: true, args: '<topic> <module> <action>' },
-  { command: 'ripple.enqueue', description: 'Add job to queue', category: 'ripple', icon: List, requiresOperator: true, args: '<queue> <payload>' },
-  { command: 'ripple.dequeue', description: 'Get next from queue', category: 'ripple', icon: List, requiresOperator: true, args: '<queue>' },
-  { command: 'ripple.dead_letter', description: 'View failed jobs', category: 'ripple', icon: Shield, requiresOperator: false },
-  { command: 'ripple.retry', description: 'Retry failed job', category: 'ripple', icon: PlayCircle, requiresOperator: true, args: '<job_id>' },
+  { command: 'ripple.events', description: 'Get event log with status', category: 'ripple', icon: Activity, requiresOperator: false, args: '[topic] [limit] [status]' },
+  { command: 'ripple.publish', description: 'Publish event + fan-out to subscribers', category: 'ripple', icon: Send, requiresOperator: true, args: '<topic> <event_type> [payload]', example: 'ripple.publish system.alerts health_check "{}"' },
+  { command: 'ripple.subscribe', description: 'Subscribe module/action to topic', category: 'ripple', icon: Radio, requiresOperator: true, args: '<topic> <module> <action> [max_attempts]' },
+  { command: 'ripple.replay', description: 'Re-process events on topic', category: 'ripple', icon: PlayCircle, requiresOperator: true, args: '<topic> [limit]', example: 'ripple.replay system.alerts 10' },
+  
+  // Jobs & queues
+  { command: 'ripple.jobs', description: 'List jobs with filtering', category: 'ripple', icon: List, requiresOperator: false, args: '[queue] [status] [limit]' },
+  { command: 'ripple.enqueue', description: 'Add job to queue', category: 'ripple', icon: List, requiresOperator: true, args: '<queue> <payload> [priority] [delay]' },
+  { command: 'ripple.dequeue', description: 'Get next pending job', category: 'ripple', icon: List, requiresOperator: true, args: '[queue]' },
+  { command: 'ripple.work', description: 'Process job(s) from queue', category: 'ripple', icon: PlayCircle, requiresOperator: true, args: '[queue] [--once]', example: 'ripple.work events --once' },
+  { command: 'ripple.drain', description: 'Process all pending jobs in queue', category: 'ripple', icon: PlayCircle, requiresOperator: true, args: '[queue]' },
+  
+  // Delivery semantics
+  { command: 'ripple.ack', description: 'Acknowledge job as succeeded', category: 'ripple', icon: Shield, requiresOperator: true, args: '<job_id>' },
+  { command: 'ripple.nack', description: 'Reject job (increment attempts)', category: 'ripple', icon: Shield, requiresOperator: true, args: '<job_id> [reason]' },
+  { command: 'ripple.dead_letter', description: 'View dead-letter jobs', category: 'ripple', icon: Shield, requiresOperator: false, args: '[queue] [limit]' },
+  { command: 'ripple.retry', description: 'Retry dead-letter job', category: 'ripple', icon: PlayCircle, requiresOperator: true, args: '<job_id>' },
+  
+  // Circuit breakers
+  { command: 'ripple.circuits', description: 'View subscriber circuit breakers', category: 'ripple', icon: Activity, requiresOperator: false },
 ];
 
 // ACCESS module — API keys, billing, metering
