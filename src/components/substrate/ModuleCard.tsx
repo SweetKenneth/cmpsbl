@@ -5,7 +5,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Brain, MessageSquare, Shield, Zap, Eye, Moon, Settings, Sparkles, Cpu, Radio, Key, Plug } from 'lucide-react';
+import { Brain, MessageSquare, Shield, Zap, Eye, Moon, Settings, Sparkles, Cpu, Radio, Key, Plug, Wand2 } from 'lucide-react';
 import { SubstrateModule } from '@/lib/substrate';
 
 interface ModuleCardProps {
@@ -95,6 +95,12 @@ const moduleConfig: Record<SubstrateModule, {
     label: 'Integration',
     description: 'Enterprise adapters, LLM governance',
     color: 'text-emerald-500',
+  },
+  cortex: {
+    icon: Wand2,
+    label: 'Cortex',
+    description: 'Orchestrator, evolution, governance',
+    color: 'text-violet-500',
   },
 };
 

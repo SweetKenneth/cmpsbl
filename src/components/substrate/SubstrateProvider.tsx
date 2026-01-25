@@ -42,6 +42,7 @@ const SubstrateContext = createContext<SubstrateContextType>({
     system: defaultModuleStatus,
     modernizer: defaultModuleStatus,
     integration: defaultModuleStatus,
+    cortex: defaultModuleStatus,
   },
   overallHealth: 0,
   refresh: async () => {},
@@ -71,6 +72,7 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
     system: defaultModuleStatus,
     modernizer: defaultModuleStatus,
     integration: defaultModuleStatus,
+    cortex: defaultModuleStatus,
   });
 
   const checkModule = async (module: SubstrateModule): Promise<ModuleStatus> => {
@@ -91,8 +93,8 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
   };
 
   const refresh = async () => {
-    // Check all 12 substrate modules (v4.2.0 full kernel architecture)
-    const moduleList: SubstrateModule[] = ['core', 'ripple', 'access', 'brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'system', 'modernizer', 'integration'];
+    // Check all 13 substrate modules (12 core + cortex orchestrator)
+    const moduleList: SubstrateModule[] = ['core', 'ripple', 'access', 'brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'system', 'modernizer', 'integration', 'cortex'];
     const results = await Promise.all(moduleList.map(checkModule));
     
     const newModules = moduleList.reduce((acc, module, index) => {
