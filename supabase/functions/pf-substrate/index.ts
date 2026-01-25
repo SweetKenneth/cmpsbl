@@ -46,7 +46,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const SUBSTRATE_VERSION = "4.5.0"; // Production-ready: all commands return real data
+const SUBSTRATE_VERSION = "4.6.0"; // Brain learning loop repair - v2026.01.25
 
 // Trace ID generator for distributed tracing
 function generateTraceId(): string {
@@ -421,54 +421,257 @@ async function handleBrain(
   switch (action) {
     case "query": {
       const { query_text, limit = 5 } = data;
-      const { data: memories, error } = await supabase
-        .from("brain_memories")
-        .select("*")
-        .textSearch("content", query_text as string)
-        .order("confidence", { ascending: false })
-        .limit(limit as number);
+      const searchTerm = String(query_text || '').trim();
+      
+      // Try multiple search strategies for robustness
+      let memories: any[] = [];
+      let searchMethod = 'none';
+      
+      // Strategy 1: FTS with to_tsquery (handles phrases)
+      try {
+        const { data: ftsResults, error: ftsError } = await supabase
+          .from("brain_memories")
+          .select("*")
+          .textSearch("content", searchTerm, { type: 'websearch' })
+          .order("confidence", { ascending: false })
+          .limit(limit as number);
+        
+        if (!ftsError && ftsResults && ftsResults.length > 0) {
+          memories = ftsResults;
+          searchMethod = 'fts_websearch';
+        }
+      } catch { /* fallback */ }
+      
+      // Strategy 2: ILIKE fallback for simple word matching
+      if (memories.length === 0 && searchTerm) {
+        const { data: ilikeResults } = await supabase
+          .from("brain_memories")
+          .select("*")
+          .ilike("content", `%${searchTerm}%`)
+          .order("confidence", { ascending: false })
+          .limit(limit as number);
+        
+        if (ilikeResults && ilikeResults.length > 0) {
+          memories = ilikeResults;
+          searchMethod = 'ilike';
+        }
+      }
+      
+      // Strategy 3: Also search hot memories for recent facts
+      if (memories.length < (limit as number)) {
+        const { data: hotResults } = await supabase
+          .from("brain_memory_hot")
+          .select("id, content, context, priority, created_at")
+          .ilike("content", `%${searchTerm}%`)
+          .order("priority", { ascending: false })
+          .limit((limit as number) - memories.length);
+        
+        if (hotResults && hotResults.length > 0) {
+          memories = [
+            ...memories,
+            ...hotResults.map((h: { id: string; content: string; context?: string; priority?: number; created_at?: string }) => ({ ...h, source: 'hot_memory', memory_type: 'hot' }))
+          ];
+          searchMethod = searchMethod ? `${searchMethod}+hot` : 'hot';
+        }
+      }
 
-      if (error) throw error;
-      return jsonResponse({ success: true, memories }, headers);
+      // Log query event for observability
+      await supabase.from('brain_events').insert({
+        event_type: 'memory_query',
+        module: 'brain',
+        outcome: memories.length > 0 ? 'success' : 'empty',
+        data: { query: searchTerm, results: memories.length, method: searchMethod }
+      });
+
+      return jsonResponse({ 
+        success: true, 
+        memories,
+        query: searchTerm,
+        count: memories.length,
+        search_method: searchMethod,
+      }, headers);
     }
 
     case "remember": {
-      const { content, memory_type, confidence = 0.8, metadata = {} } = data;
-      const { data: memory, error } = await supabase
-        .from("brain_memories")
-        .insert({ content, memory_type, confidence, metadata, source: "substrate" })
-        .select()
-        .single();
+      const { content, memory_type = 'fact', confidence = 0.8, metadata = {} } = data;
+      
+      // Validate content
+      if (!content || typeof content !== 'string' || content.trim().length === 0) {
+        return jsonResponse({ 
+          success: false, 
+          error: 'Content is required and must be a non-empty string',
+          action: 'remember',
+        }, headers);
+      }
 
-      if (error) throw error;
-      return jsonResponse({ success: true, memory }, headers);
+      try {
+        // Insert into main memories table
+        const { data: memory, error } = await supabase
+          .from("brain_memories")
+          .insert({ 
+            content: String(content).trim(), 
+            memory_type: String(memory_type), 
+            confidence: Math.min(1, Math.max(0, Number(confidence) || 0.8)), 
+            metadata: metadata || {}, 
+            source: "substrate" 
+          })
+          .select()
+          .single();
+
+        if (error) {
+          console.error('❌ brain.remember DB error:', error);
+          
+          // Log cognitive disruption for observability
+          await supabase.from('brain_events').insert({
+            event_type: 'cognitive_disruption',
+            module: 'brain',
+            outcome: 'failed',
+            data: { 
+              action: 'remember',
+              error_code: error.code,
+              error_message: error.message,
+              content_length: String(content).length,
+              memory_type,
+            }
+          });
+          
+          return jsonResponse({ 
+            success: false, 
+            error: error.message,
+            error_code: error.code,
+            action: 'remember',
+          }, headers);
+        }
+
+        // Also create a hot memory entry for immediate accessibility
+        await supabase.from("brain_memory_hot").insert({
+          content: String(content).trim().substring(0, 2000),
+          context: String(memory_type),
+          priority: Math.round((confidence as number) * 10),
+          tags: { type: memory_type, source: 'remember' },
+          metadata: { memory_id: memory?.id, ...metadata },
+        });
+
+        // Log successful memory creation
+        await supabase.from('brain_events').insert({
+          event_type: 'memory_created',
+          module: 'brain',
+          outcome: 'success',
+          data: { 
+            memory_id: memory?.id,
+            memory_type,
+            confidence,
+            content_length: String(content).length,
+          }
+        });
+
+        return jsonResponse({ 
+          success: true, 
+          memory,
+          memory_id: memory?.id,
+          hot_memory_created: true,
+        }, headers);
+      } catch (err) {
+        console.error('❌ brain.remember exception:', err);
+        
+        await supabase.from('brain_events').insert({
+          event_type: 'cognitive_disruption',
+          module: 'brain',
+          outcome: 'exception',
+          data: { 
+            action: 'remember',
+            error: err instanceof Error ? err.message : 'Unknown error',
+          }
+        });
+        
+        return jsonResponse({ 
+          success: false, 
+          error: err instanceof Error ? err.message : 'Failed to store memory',
+          action: 'remember',
+        }, headers);
+      }
     }
 
     case "reflect": {
-      // Create or update daily reflection from recent memories
+      // Enhanced reflection - create daily reflection and store as memory
       const today = new Date().toISOString().split("T")[0];
       
-      const { data: recentMemories } = await supabase
-        .from("brain_memories")
-        .select("*")
-        .order("created_at", { ascending: false })
-        .limit(20);
+      // Gather comprehensive reflection material
+      const [
+        { data: recentMemories },
+        { data: hotMemories },
+        { data: recentPatterns },
+        { data: recentDreams },
+      ] = await Promise.all([
+        supabase.from("brain_memories").select("*").order("created_at", { ascending: false }).limit(30),
+        supabase.from("brain_memory_hot").select("content, context, priority").order("priority", { ascending: false }).limit(20),
+        supabase.from("learning_patterns").select("pattern_name, confidence").order("confidence", { ascending: false }).limit(5),
+        supabase.from("cascade_dreams").select("dream_text, mood, insight").order("timestamp", { ascending: false }).limit(3),
+      ]);
 
-      // Use upsert to handle existing reflection for today
+      const totalMemories = (recentMemories?.length || 0) + (hotMemories?.length || 0);
+      const topPatterns = recentPatterns?.map((p: { pattern_name: string }) => p.pattern_name).slice(0, 3) || [];
+      const dreamMoods = recentDreams?.map((d: { mood: string }) => d.mood).filter(Boolean) || [];
+      
+      const reflectionSummary = `Daily reflection (${today}): Analyzed ${totalMemories} memories. Top patterns: ${topPatterns.join(', ') || 'emerging'}. Dream moods: ${dreamMoods.join(', ') || 'restful'}.`;
+      const insights = `Consolidated ${recentMemories?.length || 0} main memories, ${hotMemories?.length || 0} hot memories, across ${recentPatterns?.length || 0} learning patterns.`;
+
+      // Upsert reflection for today
       const { data: reflection, error } = await supabase
         .from("brain_reflections")
         .upsert({
           reflection_date: today,
-          summary: `Processed ${recentMemories?.length || 0} memories at ${new Date().toISOString()}`,
+          summary: reflectionSummary,
           top_memories: recentMemories?.slice(0, 5) || [],
+          insights,
+          lessons: topPatterns.map((p: string) => ({ pattern: p, source: 'daily_reflection' })),
         }, {
           onConflict: 'reflection_date'
         })
         .select()
         .single();
 
-      if (error) throw error;
-      return jsonResponse({ success: true, reflection, memories_analyzed: recentMemories?.length || 0 }, headers);
+      if (error) {
+        console.error('Reflection error:', error);
+        return jsonResponse({ success: false, error: error.message, action: 'reflect' }, headers);
+      }
+
+      // Store reflection as a memory for graph integration
+      await supabase.from("brain_memories").insert({
+        content: reflectionSummary,
+        memory_type: 'reflection',
+        source: 'brain_reflect',
+        confidence: 0.85,
+        metadata: { 
+          reflection_id: reflection?.id, 
+          reflection_date: today,
+          memories_analyzed: totalMemories,
+          patterns: topPatterns,
+        },
+      });
+
+      // Log reflection event
+      await supabase.from('brain_events').insert({
+        event_type: 'reflection_complete',
+        module: 'brain',
+        outcome: 'success',
+        data: { 
+          reflection_id: reflection?.id,
+          memories_analyzed: totalMemories,
+          patterns: topPatterns.length,
+          dreams: recentDreams?.length || 0,
+        }
+      });
+
+      return jsonResponse({ 
+        success: true, 
+        reflection,
+        reflection_id: reflection?.id,
+        memories_analyzed: totalMemories,
+        patterns_identified: topPatterns,
+        memory_stored: true,
+        consolidation: 'complete',
+      }, headers);
     }
 
     case "reinforce": {
@@ -492,45 +695,243 @@ async function handleBrain(
     }
 
     case "dream": {
-      // Autonomous dream cycle - process and synthesize
-      const { data: hotMemories } = await supabase
-        .from("brain_memory_hot")
-        .select("*")
-        .order("priority", { ascending: false })
-        .limit(10);
-
-      const dreamContent = `Dream cycle processed ${hotMemories?.length || 0} hot memories at ${new Date().toISOString()}`;
+      // Enhanced autonomous dream cycle - process meaningful batch of memories
+      const DREAM_BATCH_SIZE = 100; // Increased from 10 to 100 for meaningful synthesis
       
+      // Gather material from multiple tiers
+      const [
+        { data: hotMemories, count: hotCount },
+        { data: mainMemories },
+        { data: patterns },
+        { data: recentReflections },
+      ] = await Promise.all([
+        supabase.from("brain_memory_hot")
+          .select("id, content, context, priority, tags", { count: 'exact' })
+          .order("priority", { ascending: false })
+          .limit(DREAM_BATCH_SIZE),
+        supabase.from("brain_memories")
+          .select("id, content, memory_type, confidence")
+          .order("created_at", { ascending: false })
+          .limit(DREAM_BATCH_SIZE / 2),
+        supabase.from("learning_patterns")
+          .select("pattern_name, description, confidence")
+          .order("confidence", { ascending: false })
+          .limit(10),
+        supabase.from("brain_reflections")
+          .select("summary, insights")
+          .order("reflection_date", { ascending: false })
+          .limit(3),
+      ]);
+
+      const totalProcessed = (hotMemories?.length || 0) + (mainMemories?.length || 0);
+      const patternNames = patterns?.map((p: any) => p.pattern_name).slice(0, 5) || [];
+      const recentInsights = recentReflections?.map((r: any) => r.summary).filter(Boolean).slice(0, 2) || [];
+
+      // Generate dream content using AI if available
+      let dreamText = `Dream cycle processed ${totalProcessed} memories (${hotMemories?.length || 0} hot, ${mainMemories?.length || 0} main) at ${new Date().toISOString()}. Patterns: ${patternNames.join(', ') || 'emerging'}. Recent insights: ${recentInsights.join('; ') || 'processing'}.`;
+      let mood = 'synthesizing';
+      let aiProvider = 'local';
+
+      // Try AI synthesis for richer dreams
+      for (const providerName of ['groq', 'cerebras']) {
+        const provider = PROVIDERS[providerName as keyof typeof PROVIDERS];
+        if (!provider) continue;
+        const apiKey = Deno.env.get(provider.keyEnv);
+        if (!apiKey) continue;
+
+        try {
+          const memorySnippets = hotMemories?.slice(0, 5).map((m: any) => m.content?.substring(0, 100)) || [];
+          const response = await fetch(provider.url, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              model: provider.model,
+              messages: [
+                { role: 'system', content: 'You are a dream synthesizer. Generate a brief, surreal 2-3 sentence dream narrative from the given memory fragments. Be poetic and abstract.' },
+                { role: 'user', content: `Dream from ${totalProcessed} memories. Key fragments: ${memorySnippets.join(' | ')}. Patterns: ${patternNames.join(', ')}` }
+              ],
+              temperature: 0.9,
+              max_tokens: 200,
+            }),
+          });
+
+          if (response.ok) {
+            const result = await response.json();
+            const content = result.choices?.[0]?.message?.content;
+            if (content) {
+              dreamText = content;
+              aiProvider = providerName;
+              mood = 'dreaming';
+              break;
+            }
+          }
+        } catch { continue; }
+      }
+
+      // Store the dream
       const { data: dream, error } = await supabase
         .from("cascade_dreams")
         .insert({
-          dream_text: dreamContent,
-          mood: "reflective",
-          insight: "Autonomous processing cycle complete",
+          dream_text: dreamText,
+          mood,
+          insight: `Synthesized ${totalProcessed} memories across ${(patterns?.length || 0)} patterns`,
         })
         .select()
         .single();
 
-      if (error) throw error;
-      return jsonResponse({ success: true, dream, processed: hotMemories?.length || 0 }, headers);
+      if (error) {
+        console.error('Dream insert error:', error);
+        return jsonResponse({ 
+          success: false, 
+          error: error.message,
+          action: 'dream',
+        }, headers);
+      }
+
+      // Store dream insight as a memory for graph integration
+      if (dream?.id) {
+        await supabase.from('brain_memories').insert({
+          content: `Dream insight: ${dreamText.substring(0, 500)}`,
+          memory_type: 'dream_insight',
+          source: 'dream_cycle',
+          confidence: 0.75,
+          metadata: { dream_id: dream.id, processed: totalProcessed, patterns: patternNames },
+        });
+      }
+
+      // Log dream cycle event
+      await supabase.from('brain_events').insert({
+        event_type: 'dream_cycle_complete',
+        module: 'brain',
+        outcome: 'success',
+        data: { 
+          dream_id: dream?.id,
+          processed: totalProcessed,
+          hot_count: hotMemories?.length || 0,
+          main_count: mainMemories?.length || 0,
+          patterns: patternNames.length,
+          ai_provider: aiProvider,
+        }
+      });
+
+      return jsonResponse({ 
+        success: true, 
+        dream,
+        processed: totalProcessed,
+        breakdown: {
+          hot_memories: hotMemories?.length || 0,
+          main_memories: mainMemories?.length || 0,
+          patterns: patterns?.length || 0,
+          reflections: recentReflections?.length || 0,
+        },
+        ai_provider: aiProvider,
+        dream_id: dream?.id,
+      }, headers);
     }
 
     case "status": {
-      const { count: memoryCount } = await supabase
-        .from("brain_memories")
-        .select("*", { count: "exact", head: true });
+      // Enhanced brain status with comprehensive health diagnostics
+      const now = new Date();
+      const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000).toISOString();
+      const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000).toISOString();
       
-      const { count: reflectionCount } = await supabase
-        .from("brain_reflections")
-        .select("*", { count: "exact", head: true });
+      // Gather comprehensive stats in parallel
+      const [
+        { count: memoryCount },
+        { count: hotMemoryCount },
+        { count: coldMemoryCount },
+        { count: reflectionCount },
+        { count: graphEdgeCount },
+        { data: recentEvents },
+        { data: recentDisruptions },
+        { data: latestReflection },
+        { data: latestDream },
+      ] = await Promise.all([
+        supabase.from("brain_memories").select("*", { count: "exact", head: true }),
+        supabase.from("brain_memory_hot").select("*", { count: "exact", head: true }),
+        supabase.from("brain_memory_cold").select("*", { count: "exact", head: true }),
+        supabase.from("brain_reflections").select("*", { count: "exact", head: true }),
+        supabase.from("brain_graph_edges").select("*", { count: "exact", head: true }),
+        supabase.from("brain_events").select("event_type, outcome").gte("created_at", oneDayAgo).limit(100),
+        supabase.from("brain_events").select("*").eq("event_type", "cognitive_disruption").gte("created_at", oneDayAgo).limit(10),
+        supabase.from("brain_reflections").select("reflection_date, summary").order("reflection_date", { ascending: false }).limit(1),
+        supabase.from("cascade_dreams").select("timestamp, mood").order("timestamp", { ascending: false }).limit(1),
+      ]);
+
+      // Calculate health metrics
+      const totalEvents = recentEvents?.length || 0;
+      const failedEvents = recentEvents?.filter((e: { outcome: string }) => 
+        ['failed', 'error', 'exception'].includes(e.outcome?.toLowerCase())
+      ).length || 0;
+      const successRate = totalEvents > 0 ? ((totalEvents - failedEvents) / totalEvents * 100) : 100;
+      
+      // Check component health
+      const memoryWriteOk = (recentDisruptions?.length || 0) === 0;
+      const memoryReadOk = (memoryCount || 0) > 0;
+      const graphOk = (graphEdgeCount || 0) > 0;
+      const reflectionOk = latestReflection && latestReflection.length > 0;
+      const dreamOk = latestDream && latestDream.length > 0;
+      
+      const healthScore = [memoryWriteOk, memoryReadOk, graphOk, reflectionOk, dreamOk]
+        .filter(Boolean).length * 20;
+
+      // Calculate last activity times
+      const lastReflectionDate = latestReflection?.[0]?.reflection_date;
+      const lastDreamDate = latestDream?.[0]?.timestamp;
+      const daysSinceReflection = lastReflectionDate 
+        ? Math.floor((now.getTime() - new Date(lastReflectionDate).getTime()) / (24 * 60 * 60 * 1000))
+        : 999;
+      const hoursSinceDream = lastDreamDate
+        ? Math.floor((now.getTime() - new Date(lastDreamDate).getTime()) / (60 * 60 * 1000))
+        : 999;
+
+      // Log status check
+      await supabase.from('brain_events').insert({
+        event_type: 'brain_status_check',
+        module: 'brain',
+        outcome: 'success',
+        data: { health_score: healthScore, success_rate: successRate }
+      });
 
       return jsonResponse({
         success: true,
         module: "brain",
+        version: SUBSTRATE_VERSION,
+        health: {
+          score: healthScore,
+          status: healthScore >= 80 ? 'healthy' : healthScore >= 60 ? 'degraded' : 'critical',
+          memory_write_ok: memoryWriteOk,
+          memory_read_ok: memoryReadOk,
+          graph_ok: graphOk,
+          reflection_ok: reflectionOk,
+          dream_ok: dreamOk,
+        },
         stats: {
           memories: memoryCount || 0,
+          hot_memories: hotMemoryCount || 0,
+          cold_memories: coldMemoryCount || 0,
           reflections: reflectionCount || 0,
+          graph_edges: graphEdgeCount || 0,
         },
+        activity: {
+          events_24h: totalEvents,
+          failed_events_24h: failedEvents,
+          success_rate: `${successRate.toFixed(1)}%`,
+          disruptions_24h: recentDisruptions?.length || 0,
+        },
+        recency: {
+          days_since_reflection: daysSinceReflection,
+          hours_since_dream: hoursSinceDream,
+          last_reflection: lastReflectionDate || null,
+          last_dream: lastDreamDate || null,
+        },
+        recommendations: [
+          ...(daysSinceReflection > 1 ? ['Run brain.reflect to update insights'] : []),
+          ...(hoursSinceDream > 24 ? ['Run brain.dream to process memories'] : []),
+          ...((graphEdgeCount || 0) < 10 ? ['Run brain.graph_build to strengthen knowledge connections'] : []),
+          ...((recentDisruptions?.length || 0) > 0 ? ['Review cognitive_disruption events in brain_events'] : []),
+        ],
+        timestamp: now.toISOString(),
       }, headers);
     }
 
