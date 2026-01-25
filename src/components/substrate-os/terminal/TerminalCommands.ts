@@ -223,23 +223,35 @@ export const ACCESS_COMMANDS: CommandDefinition[] = [
   { command: 'access.products', description: 'List available products/entitlements', category: 'access', icon: Box, requiresOperator: false, args: '[category]', example: 'access.products cmptbl' },
 ];
 
-// INTEGRATION module — Enterprise adapters, auto-discovery, LLM governance
+// INTEGRATION module v2.0 — Adapters, Connections, Discovery, Governance
 export const INTEGRATION_COMMANDS: CommandDefinition[] = [
-  { command: 'integration.status', description: 'Integration module status', category: 'integration', icon: Plug, requiresOperator: false },
+  // Status & pulse
+  { command: 'integration.status', description: 'Integration module status (v2.0)', category: 'integration', icon: Plug, requiresOperator: false },
   { command: 'integration.pulse', description: 'Lightweight heartbeat', category: 'integration', icon: Activity, requiresOperator: false },
-  { command: 'integration.adapters', description: 'List available adapters', category: 'integration', icon: Box, requiresOperator: false },
-  { command: 'integration.connect', description: 'Connect enterprise adapter', category: 'integration', icon: Plug, requiresOperator: true, args: '<type> <name> <config>', example: 'integration.connect erp "SAP" {"host":"..."}' },
-  { command: 'integration.disconnect', description: 'Disconnect adapter', category: 'integration', icon: Plug, requiresOperator: true, args: '<adapter_id>' },
-  { command: 'integration.test', description: 'Test adapter connectivity', category: 'integration', icon: Activity, requiresOperator: true, args: '<adapter_id>' },
-  { command: 'integration.connections', description: 'List connected adapters', category: 'integration', icon: Globe, requiresOperator: false },
-  { command: 'integration.discover', description: 'Auto-discover client systems', category: 'integration', icon: Search, requiresOperator: true, args: '[target] [depth]', example: 'integration.discover erp deep' },
-  { command: 'integration.discovered', description: 'Get discovered endpoints', category: 'integration', icon: List, requiresOperator: false, args: '[adapter_id]' },
-  { command: 'integration.map_command', description: 'Map function to terminal cmd', category: 'integration', icon: GitBranch, requiresOperator: true, args: '<func> <cmd> <desc>' },
+  
+  // Adapters & connections
+  { command: 'integration.adapters', description: 'List available adapters by category', category: 'integration', icon: Box, requiresOperator: false, args: '[category]', example: 'integration.adapters enterprise' },
+  { command: 'integration.connect', description: 'Connect adapter with mode', category: 'integration', icon: Plug, requiresOperator: true, args: '<mode> <adapter_id>', example: 'integration.connect mock PostgreSQL' },
+  { command: 'integration.disconnect', description: 'Disconnect connection by ID', category: 'integration', icon: Plug, requiresOperator: true, args: '<connection_id>' },
+  { command: 'integration.connections', description: 'List active connections', category: 'integration', icon: Globe, requiresOperator: false },
+  { command: 'integration.test', description: 'Test adapter connectivity', category: 'integration', icon: Activity, requiresOperator: true, args: '<adapter_id>', example: 'integration.test PostgreSQL' },
+  
+  // Discovery
+  { command: 'integration.discover', description: 'Discover system (shallow by default)', category: 'integration', icon: Search, requiresOperator: true, args: '<adapter_id> [depth]', example: 'integration.discover PostgreSQL' },
+  { command: 'integration.discovered', description: 'List discoveries', category: 'integration', icon: List, requiresOperator: false, args: '[adapter_id]' },
+  
+  // Command mapping & execution
+  { command: 'integration.map_command', description: 'Map terminal command to adapter', category: 'integration', icon: GitBranch, requiresOperator: true, args: '<adapter_id> <command> "<description>"', example: 'integration.map_command PostgreSQL payroll "Run payroll"' },
   { command: 'integration.mapped_commands', description: 'List mapped commands', category: 'integration', icon: Terminal, requiresOperator: false, args: '[adapter_id]' },
-  { command: 'integration.execute', description: 'Execute governed LLM action', category: 'integration', icon: PlayCircle, requiresOperator: true, args: '<adapter_id> <action> [params]' },
+  { command: 'integration.execute', description: 'Execute governed command', category: 'integration', icon: PlayCircle, requiresOperator: true, args: '<adapter_id> <command> [params_json]', example: 'integration.execute PostgreSQL payroll' },
+  
+  // Governance & audit
   { command: 'integration.policies', description: 'Get governance policies', category: 'integration', icon: Shield, requiresOperator: false },
   { command: 'integration.set_policy', description: 'Set governance policy', category: 'integration', icon: Lock, requiresOperator: true, args: '[adapter_id] <policy>' },
+  { command: 'integration.governance', description: 'Governance status', category: 'integration', icon: Shield, requiresOperator: false },
   { command: 'integration.audit_log', description: 'View governance audit log', category: 'integration', icon: Eye, requiresOperator: false, args: '[adapter_id] [limit]' },
+  
+  // Enterprise verticals
   { command: 'integration.game_discover', description: 'Discover game engine APIs', category: 'integration', icon: Workflow, requiresOperator: true, args: '<engine_type>', example: 'integration.game_discover unity' },
   { command: 'integration.enterprise_discover', description: 'Discover enterprise APIs', category: 'integration', icon: Users, requiresOperator: true, args: '<system_type>', example: 'integration.enterprise_discover salesforce' },
   { command: 'integration.dev_discover', description: 'Discover dev platform APIs', category: 'integration', icon: GitBranch, requiresOperator: true, args: '<platform_type>', example: 'integration.dev_discover github' },
