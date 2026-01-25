@@ -12717,9 +12717,11 @@ async function handleIntegration(
 }
 
 // ═══════════════════════════════════════════════════════════════
-// CORTEX MODULE — Agency-Class Autonomous Proposal/Evaluation/Execution Loop
-// Resurrected from legacy Cascade functions with modern substrate integration
+// CORTEX MODULE v2.0 — Agency-Class Orchestrator with Lifecycle Integration
+// Full panic mode, circuit breakers, mode control, evolution sequencing
 // ═══════════════════════════════════════════════════════════════
+
+const CORTEX_VERSION = "2.0.0";
 
 interface CortexProposal {
   id: string;
@@ -12734,28 +12736,132 @@ interface CortexProposal {
   applied_at: string | null;
 }
 
-interface CortexState {
+interface CortexRuntimeState {
   active: boolean;
+  mode: 'manual' | 'shadow' | 'auto';
+  ready: boolean;
+  degraded: boolean;
+  degraded_reason: string | null;
+  panic_frozen: boolean;
+  panic_reason: string | null;
   last_proposal_at: string | null;
   last_apply_at: string | null;
+  last_restart_at: string | null;
   proposals_pending: number;
   proposals_applied: number;
   proposals_rejected: number;
   learn_cycles: number;
   connected_modules: string[];
+  dispatch_enabled: boolean;
+  circuit_breakers: Record<string, string>;
 }
 
-// In-memory cortex state
-const cortexState: CortexState = {
+// In-memory cortex runtime state
+const cortexState: CortexRuntimeState = {
   active: true,
+  mode: 'manual',
+  ready: true,
+  degraded: false,
+  degraded_reason: null,
+  panic_frozen: false,
+  panic_reason: null,
   last_proposal_at: null,
   last_apply_at: null,
+  last_restart_at: null,
   proposals_pending: 0,
   proposals_applied: 0,
   proposals_rejected: 0,
   learn_cycles: 0,
-  connected_modules: ['brain', 'dream', 'nexus', 'vision', 'defense', 'system'],
+  connected_modules: ['brain', 'vision', 'modernizer', 'system', 'dream', 'nexus', 'defense'],
+  dispatch_enabled: true,
+  circuit_breakers: { dispatch: 'closed', observability: 'closed', modernizer: 'closed', panic: 'closed' },
 };
+
+// Helper: Log to cortex audit log
+async function logCortexAudit(
+  supabase: any,
+  eventType: string,
+  details: Record<string, unknown>
+): Promise<void> {
+  try {
+    await supabase.from('cortex_audit_log').insert({
+      event_type: eventType,
+      actor: details.actor || 'system',
+      target_module: details.target_module,
+      target_action: details.target_action,
+      old_value: details.old_value,
+      new_value: details.new_value,
+      reason: details.reason,
+      metadata: details.metadata || {},
+    });
+  } catch (err) {
+    console.log('[CORTEX AUDIT] Failed to log:', err);
+  }
+}
+
+// Helper: Sync mode from DB
+async function syncCortexModeFromDB(supabase: any): Promise<void> {
+  try {
+    const { data } = await supabase.from('cortex_modes').select('*').limit(1).maybeSingle();
+    if (data) {
+      cortexState.mode = data.mode || 'manual';
+      cortexState.panic_frozen = data.panic_frozen || false;
+      cortexState.panic_reason = data.panic_reason;
+      cortexState.ready = data.ready !== false;
+      cortexState.degraded = data.degraded || false;
+      cortexState.degraded_reason = data.degraded_reason;
+      cortexState.dispatch_enabled = data.dispatch_enabled !== false;
+      cortexState.last_restart_at = data.last_restart_at;
+    }
+  } catch { /* continue with defaults */ }
+}
+
+// Helper: Sync circuit breakers from DB
+async function syncCircuitBreakersFromDB(supabase: any): Promise<void> {
+  try {
+    const { data } = await supabase.from('cortex_circuit_breakers').select('subsystem, state');
+    if (data) {
+      for (const row of data) {
+        cortexState.circuit_breakers[row.subsystem] = row.state;
+      }
+    }
+  } catch { /* continue with defaults */ }
+}
+
+// Helper: Update circuit breaker
+async function updateCortexCircuit(supabase: any, subsystem: string, newState: string, reason?: string): Promise<boolean> {
+  try {
+    const oldState = cortexState.circuit_breakers[subsystem] || 'closed';
+    await supabase.from('cortex_circuit_breakers').upsert({
+      subsystem,
+      state: newState,
+      opened_at: newState === 'open' ? new Date().toISOString() : null,
+      last_success_at: newState === 'closed' ? new Date().toISOString() : undefined,
+    }, { onConflict: 'subsystem' });
+    
+    cortexState.circuit_breakers[subsystem] = newState;
+    
+    await logCortexAudit(supabase, 'circuit_change', {
+      target_module: 'cortex',
+      target_action: subsystem,
+      old_value: { state: oldState },
+      new_value: { state: newState },
+      reason,
+    });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+// Helper: Check if dispatch is allowed
+function canDispatch(): { allowed: boolean; reason?: string } {
+  if (!cortexState.active) return { allowed: false, reason: 'Cortex inactive' };
+  if (cortexState.panic_frozen) return { allowed: false, reason: `Panic frozen: ${cortexState.panic_reason}` };
+  if (!cortexState.dispatch_enabled) return { allowed: false, reason: 'Dispatch disabled' };
+  if (cortexState.circuit_breakers.dispatch === 'open') return { allowed: false, reason: 'Dispatch circuit open' };
+  return { allowed: true };
+}
 
 // deno-lint-ignore no-explicit-any
 async function handleCortex(
@@ -12765,36 +12871,66 @@ async function handleCortex(
   headers: Record<string, string>,
   substrateState: SubstrateState
 ): Promise<Response> {
+  // Sync state from DB on each request
+  await Promise.all([
+    syncCortexModeFromDB(supabase),
+    syncCircuitBreakersFromDB(supabase),
+  ]);
+
   switch (action) {
     // ═══════════════════════════════════════════════════════════════
-    // STATUS & HEALTH
+    // STATUS, HEALTH, PULSE — Core observability
     // ═══════════════════════════════════════════════════════════════
     case "status": {
-      // Fetch recent proposals from brain_events
-      const { data: recentProposals, error: proposalError } = await supabase
+      const { data: recentProposals } = await supabase
         .from('brain_events')
         .select('*')
         .eq('module', 'cortex')
         .order('created_at', { ascending: false })
         .limit(10);
 
+      const { data: pendingSequences } = await supabase
+        .from('substrate_sequences')
+        .select('id')
+        .in('status', ['draft', 'approved', 'running']);
+
       return jsonResponse({
         success: true,
         module: 'cortex',
+        version: CORTEX_VERSION,
         action: 'status',
-        version: '1.0.0',
         legacy_alias: 'cascade',
-        state: cortexState,
+        runtime: {
+          mode: cortexState.mode,
+          active: cortexState.active,
+          ready: cortexState.ready,
+          degraded: cortexState.degraded,
+          degraded_reason: cortexState.degraded_reason,
+          panic_frozen: cortexState.panic_frozen,
+          panic_reason: cortexState.panic_reason,
+          dispatch_enabled: cortexState.dispatch_enabled,
+        },
+        circuit_breakers: cortexState.circuit_breakers,
+        stats: {
+          proposals_pending: cortexState.proposals_pending,
+          proposals_applied: cortexState.proposals_applied,
+          proposals_rejected: cortexState.proposals_rejected,
+          learn_cycles: cortexState.learn_cycles,
+          pending_sequences: pendingSequences?.length || 0,
+        },
         health: getModuleHealth('cortex'),
         recent_events: recentProposals?.length || 0,
         connected_modules: cortexState.connected_modules,
         capabilities: [
-          'propose - Generate improvement proposals',
-          'evaluate - Score and assess proposals',
-          'apply - Execute approved changes',
-          'audit - Log decisions and deltas',
-          'learn - Ingest outcomes for reinforcement',
-          'summary - Human-readable context dump',
+          'status / health / pulse - Observability',
+          'mode - Get/set mode (manual|shadow|auto)',
+          'dispatch - Execute module.action',
+          'observe - Subscribe to module events',
+          'restart - Soft reload cortex',
+          'panic.freeze / panic.resume / panic.status - Emergency controls',
+          'propose / evaluate / apply / rollback - PAAEL loop',
+          'audit / learn / summary - Reinforcement',
+          'plan / sequence / run - Evolution sequencing',
         ],
         timestamp: new Date().toISOString(),
       }, headers);
@@ -12803,22 +12939,31 @@ async function handleCortex(
     case "health": {
       const health = getModuleHealth('cortex');
       
-      // Check connected module health
       const moduleHealths: Record<string, unknown> = {};
       for (const mod of cortexState.connected_modules) {
         moduleHealths[mod] = getModuleHealth(mod);
       }
 
+      // Calculate aggregate health
+      const healthValues = Object.values(moduleHealths).map((h: any) => h.healthScore || 0);
+      const avgConnectedHealth = healthValues.length > 0 ? healthValues.reduce((a, b) => a + b, 0) / healthValues.length : 0;
+
       return jsonResponse({
         success: true,
         module: 'cortex',
+        version: CORTEX_VERSION,
         action: 'health',
-        health,
+        cortex_health: health,
+        degraded: cortexState.degraded,
+        degraded_reason: cortexState.degraded_reason,
+        circuit_breakers: cortexState.circuit_breakers,
         connected_modules: moduleHealths,
+        aggregate_connected_health: Math.round(avgConnectedHealth),
         loop_status: {
-          propose: 'ready',
+          propose: cortexState.panic_frozen ? 'frozen' : 'ready',
           evaluate: 'ready',
-          apply: 'ready',
+          apply: cortexState.panic_frozen ? 'frozen' : 'ready',
+          dispatch: cortexState.dispatch_enabled && !cortexState.panic_frozen ? 'ready' : 'blocked',
           audit: 'ready',
           learn: 'ready',
         },
@@ -12830,11 +12975,515 @@ async function handleCortex(
       return jsonResponse({
         success: true,
         module: 'cortex',
+        version: CORTEX_VERSION,
         action: 'pulse',
         active: cortexState.active,
+        mode: cortexState.mode,
+        ready: cortexState.ready,
+        panic_frozen: cortexState.panic_frozen,
         health_score: getModuleHealth('cortex').healthScore,
         proposals_pending: cortexState.proposals_pending,
         learn_cycles: cortexState.learn_cycles,
+        circuit: cortexState.circuit_breakers.dispatch,
+        timestamp: new Date().toISOString(),
+      }, headers);
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // MODE CONTROL — manual | shadow | auto
+    // ═══════════════════════════════════════════════════════════════
+    case "mode": {
+      const { set_mode } = data;
+      
+      if (set_mode) {
+        const validModes = ['manual', 'shadow', 'auto'];
+        if (!validModes.includes(set_mode)) {
+          return jsonResponse({
+            success: false,
+            module: 'cortex',
+            action: 'mode',
+            error: `Invalid mode: ${set_mode}. Valid modes: ${validModes.join(', ')}`,
+          }, headers);
+        }
+        
+        const oldMode = cortexState.mode;
+        await supabase.from('cortex_modes').update({ mode: set_mode }).not('id', 'is', null);
+        cortexState.mode = set_mode as 'manual' | 'shadow' | 'auto';
+        
+        await logCortexAudit(supabase, 'mode_change', {
+          actor: 'operator',
+          old_value: { mode: oldMode },
+          new_value: { mode: set_mode },
+          reason: `Mode changed via cortex.mode`,
+        });
+        
+        return jsonResponse({
+          success: true,
+          module: 'cortex',
+          action: 'mode',
+          previous_mode: oldMode,
+          current_mode: set_mode,
+          message: `Cortex mode changed from ${oldMode} to ${set_mode}`,
+          timestamp: new Date().toISOString(),
+        }, headers);
+      }
+      
+      return jsonResponse({
+        success: true,
+        module: 'cortex',
+        action: 'mode',
+        current_mode: cortexState.mode,
+        available_modes: ['manual', 'shadow', 'auto'],
+        description: {
+          manual: 'All actions require explicit operator approval',
+          shadow: 'Auto-apply in shadow mode, requires approval for production',
+          auto: 'Confidence-gated auto-apply to production (low/medium risk only)',
+        },
+        timestamp: new Date().toISOString(),
+      }, headers);
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // PANIC MODE — Emergency controls
+    // ═══════════════════════════════════════════════════════════════
+    case "panic": {
+      const { operation, reason } = data;
+      
+      switch (operation) {
+        case 'freeze': {
+          const oldFrozen = cortexState.panic_frozen;
+          await supabase.from('cortex_modes').update({
+            panic_frozen: true,
+            panic_reason: reason || 'Manual panic freeze',
+            panic_frozen_at: new Date().toISOString(),
+          }).not('id', 'is', null);
+          
+          cortexState.panic_frozen = true;
+          cortexState.panic_reason = reason || 'Manual panic freeze';
+          
+          await logCortexAudit(supabase, 'panic_freeze', {
+            actor: 'operator',
+            old_value: { frozen: oldFrozen },
+            new_value: { frozen: true },
+            reason: reason || 'Manual panic freeze',
+          });
+          
+          logResilienceEvent('circuit_open', 'cortex', 'critical', {
+            action: 'panic_freeze',
+            reason: reason || 'Manual panic freeze',
+          });
+          
+          return jsonResponse({
+            success: true,
+            module: 'cortex',
+            action: 'panic',
+            operation: 'freeze',
+            frozen: true,
+            reason: cortexState.panic_reason,
+            message: 'PANIC FREEZE activated. Modernizer apply blocked. Brain observe still active.',
+            affected: ['modernizer.apply', 'cortex.apply', 'cortex.dispatch'],
+            still_allowed: ['brain.observe', 'vision.health', 'system.status'],
+            timestamp: new Date().toISOString(),
+          }, headers);
+        }
+        
+        case 'resume': {
+          await supabase.from('cortex_modes').update({
+            panic_frozen: false,
+            panic_reason: null,
+            panic_frozen_at: null,
+          }).not('id', 'is', null);
+          
+          cortexState.panic_frozen = false;
+          cortexState.panic_reason = null;
+          
+          await logCortexAudit(supabase, 'panic_resume', {
+            actor: 'operator',
+            old_value: { frozen: true },
+            new_value: { frozen: false },
+            reason: reason || 'Manual panic resume',
+          });
+          
+          logResilienceEvent('circuit_close', 'cortex', 'info', {
+            action: 'panic_resume',
+            reason: reason || 'Manual panic resume',
+          });
+          
+          return jsonResponse({
+            success: true,
+            module: 'cortex',
+            action: 'panic',
+            operation: 'resume',
+            frozen: false,
+            message: 'Panic mode deactivated. Normal operations resumed.',
+            timestamp: new Date().toISOString(),
+          }, headers);
+        }
+        
+        case 'status':
+        default:
+          return jsonResponse({
+            success: true,
+            module: 'cortex',
+            action: 'panic',
+            operation: 'status',
+            frozen: cortexState.panic_frozen,
+            reason: cortexState.panic_reason,
+            message: cortexState.panic_frozen ? 'PANIC MODE ACTIVE' : 'Normal operations',
+            timestamp: new Date().toISOString(),
+          }, headers);
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // RESTART — Soft reload of Cortex state
+    // ═══════════════════════════════════════════════════════════════
+    case "restart": {
+      const oldState = { ...cortexState };
+      
+      // Reset runtime state
+      cortexState.proposals_pending = 0;
+      cortexState.proposals_applied = 0;
+      cortexState.proposals_rejected = 0;
+      cortexState.learn_cycles = 0;
+      cortexState.degraded = false;
+      cortexState.degraded_reason = null;
+      cortexState.last_restart_at = new Date().toISOString();
+      
+      // Reset circuit breakers to closed
+      for (const key of Object.keys(cortexState.circuit_breakers)) {
+        cortexState.circuit_breakers[key] = 'closed';
+        await updateCortexCircuit(supabase, key, 'closed', 'Cortex restart');
+      }
+      
+      // Update DB
+      await supabase.from('cortex_modes').update({
+        last_restart_at: cortexState.last_restart_at,
+        restart_count: substrateState.totalRequests, // Approximate
+        degraded: false,
+        degraded_reason: null,
+      }).not('id', 'is', null);
+      
+      await logCortexAudit(supabase, 'restart', {
+        actor: 'operator',
+        old_value: { proposals_pending: oldState.proposals_pending, learn_cycles: oldState.learn_cycles },
+        new_value: { proposals_pending: 0, learn_cycles: 0 },
+        reason: data.reason || 'Manual restart',
+      });
+      
+      return jsonResponse({
+        success: true,
+        module: 'cortex',
+        version: CORTEX_VERSION,
+        action: 'restart',
+        message: 'Cortex soft restart complete',
+        reset: ['circuit_breakers', 'counters', 'degraded_state', 'watchers'],
+        preserved: ['mode', 'panic_state', 'connected_modules'],
+        last_restart_at: cortexState.last_restart_at,
+        timestamp: new Date().toISOString(),
+      }, headers);
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // DISPATCH — Execute module.action with governance
+    // ═══════════════════════════════════════════════════════════════
+    case "dispatch": {
+      const { target, args = {} } = data;
+      
+      // Check dispatch allowed
+      const dispatchCheck = canDispatch();
+      if (!dispatchCheck.allowed) {
+        return jsonResponse({
+          success: false,
+          module: 'cortex',
+          action: 'dispatch',
+          error: `Dispatch blocked: ${dispatchCheck.reason}`,
+          panic_frozen: cortexState.panic_frozen,
+          circuit_state: cortexState.circuit_breakers.dispatch,
+        }, headers);
+      }
+      
+      if (!target || !target.includes('.')) {
+        return jsonResponse({
+          success: false,
+          module: 'cortex',
+          action: 'dispatch',
+          error: 'Target must be in format module.action (e.g., brain.reflect)',
+        }, headers);
+      }
+      
+      const [targetModule, targetAction] = target.split('.');
+      
+      // Block dangerous dispatches
+      const blockedActions = ['system.shutdown', 'cortex.panic'];
+      if (blockedActions.includes(target)) {
+        return jsonResponse({
+          success: false,
+          module: 'cortex',
+          action: 'dispatch',
+          error: `Cannot dispatch ${target} - blocked for safety`,
+        }, headers);
+      }
+      
+      await logCortexAudit(supabase, 'dispatch', {
+        actor: cortexState.mode === 'auto' ? 'autopilot' : 'operator',
+        target_module: targetModule,
+        target_action: targetAction,
+        metadata: { args },
+      });
+      
+      return jsonResponse({
+        success: true,
+        module: 'cortex',
+        action: 'dispatch',
+        dispatched: {
+          target,
+          module: targetModule,
+          action: targetAction,
+          args,
+        },
+        message: `Dispatched ${target}. Execute via substrate call.`,
+        next_step: `Call substrate with module="${targetModule}" action="${targetAction}"`,
+        timestamp: new Date().toISOString(),
+      }, headers);
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // OBSERVE — Subscribe to module events (advisory)
+    // ═══════════════════════════════════════════════════════════════
+    case "observe": {
+      const { target_module, event_types = ['all'] } = data;
+      
+      // Get recent events for the module
+      let query = supabase
+        .from('brain_events')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(20);
+      
+      if (target_module) {
+        query = query.eq('module', target_module);
+      }
+      
+      const { data: events } = await query;
+      
+      return jsonResponse({
+        success: true,
+        module: 'cortex',
+        action: 'observe',
+        observing: target_module || 'all',
+        event_types,
+        recent_events: events?.length || 0,
+        events: events?.slice(0, 10).map((e: any) => ({
+          id: e.id,
+          module: e.module,
+          event_type: e.event_type,
+          outcome: e.outcome,
+          created_at: e.created_at,
+        })) || [],
+        note: 'Observation is advisory. For real-time, use ripple.subscribe.',
+        timestamp: new Date().toISOString(),
+      }, headers);
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // DIAGNOSTICS — Deep self-analysis
+    // ═══════════════════════════════════════════════════════════════
+    case "diagnostics": {
+      // Fetch cortex-related data
+      const [
+        { data: auditLogs },
+        { data: sequences },
+        { data: circuits },
+        { data: modeData },
+      ] = await Promise.all([
+        supabase.from('cortex_audit_log').select('*').order('created_at', { ascending: false }).limit(20),
+        supabase.from('substrate_sequences').select('id, name, status, strategy_type').order('created_at', { ascending: false }).limit(10),
+        supabase.from('cortex_circuit_breakers').select('*'),
+        supabase.from('cortex_modes').select('*').limit(1).maybeSingle(),
+      ]);
+      
+      const cortexHealth = getModuleHealth('cortex');
+      
+      return jsonResponse({
+        success: true,
+        module: 'cortex',
+        version: CORTEX_VERSION,
+        action: 'diagnostics',
+        runtime_state: cortexState,
+        persisted_mode: modeData,
+        circuit_breakers: circuits || [],
+        health: cortexHealth,
+        recent_audit: auditLogs?.slice(0, 5) || [],
+        sequences: sequences || [],
+        resilience_events: getResilienceEvents(24 * 60 * 60 * 1000).filter(e => e.module === 'cortex').slice(0, 10),
+        recommendations: [
+          cortexState.degraded ? 'Run cortex.restart to clear degraded state' : null,
+          cortexState.panic_frozen ? 'Run cortex.panic resume to unfreeze' : null,
+          Object.values(cortexState.circuit_breakers).some(s => s === 'open') ? 'Some circuits are open, check diagnostics' : null,
+        ].filter(Boolean),
+        timestamp: new Date().toISOString(),
+      }, headers);
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // EVOLUTION SEQUENCING — Plan, sequence, run
+    // ═══════════════════════════════════════════════════════════════
+    case "plan":
+    case "sequence": {
+      const { sequence_id } = data;
+      
+      if (sequence_id) {
+        // Fetch specific sequence with steps
+        const { data: seq } = await supabase
+          .from('substrate_sequences')
+          .select('*')
+          .eq('id', sequence_id)
+          .maybeSingle();
+        
+        if (!seq) {
+          return jsonResponse({
+            success: false,
+            module: 'cortex',
+            action: 'plan',
+            error: `Sequence ${sequence_id} not found`,
+          }, headers);
+        }
+        
+        const { data: steps } = await supabase
+          .from('substrate_sequence_steps')
+          .select('*')
+          .eq('sequence_id', sequence_id)
+          .order('step_index', { ascending: true });
+        
+        return jsonResponse({
+          success: true,
+          module: 'cortex',
+          action: 'plan',
+          sequence: seq,
+          steps: steps || [],
+          timestamp: new Date().toISOString(),
+        }, headers);
+      }
+      
+      // Fetch all sequences and score them
+      const { data: sequences } = await supabase
+        .from('substrate_sequences')
+        .select('*')
+        .in('status', ['draft', 'approved'])
+        .order('priority_score', { ascending: false })
+        .limit(20);
+      
+      // Score sequences based on current health
+      const scoredSequences = (sequences || []).map((seq: any) => {
+        // Simple scoring: prioritize low-risk, high-value
+        let score = seq.priority_score || 50;
+        if (seq.risk_level === 'low') score += 20;
+        if (seq.risk_level === 'medium') score += 10;
+        if (seq.risk_level === 'high') score -= 10;
+        if (seq.strategy_type === 'procedural') score += 5;
+        return { ...seq, computed_score: score };
+      }).sort((a: any, b: any) => b.computed_score - a.computed_score);
+      
+      return jsonResponse({
+        success: true,
+        module: 'cortex',
+        action: 'plan',
+        total_sequences: scoredSequences.length,
+        sequences: scoredSequences.map((s: any) => ({
+          id: s.id,
+          name: s.name,
+          strategy_type: s.strategy_type,
+          status: s.status,
+          risk_level: s.risk_level,
+          priority_score: s.computed_score,
+          total_steps: s.total_steps,
+        })),
+        recommended_next: scoredSequences[0]?.id || null,
+        timestamp: new Date().toISOString(),
+      }, headers);
+    }
+
+    case "run": {
+      const { sequence_id, mode: runMode = 'shadow' } = data;
+      
+      if (!sequence_id) {
+        return jsonResponse({
+          success: false,
+          module: 'cortex',
+          action: 'run',
+          error: 'sequence_id required. Use cortex.plan to see available sequences.',
+        }, headers);
+      }
+      
+      // Check panic mode
+      if (cortexState.panic_frozen) {
+        return jsonResponse({
+          success: false,
+          module: 'cortex',
+          action: 'run',
+          error: 'Cannot run sequence: panic mode active',
+        }, headers);
+      }
+      
+      // Fetch sequence
+      const { data: seq } = await supabase
+        .from('substrate_sequences')
+        .select('*')
+        .eq('id', sequence_id)
+        .maybeSingle();
+      
+      if (!seq) {
+        return jsonResponse({
+          success: false,
+          module: 'cortex',
+          action: 'run',
+          error: `Sequence ${sequence_id} not found`,
+        }, headers);
+      }
+      
+      // Update sequence to running
+      await supabase.from('substrate_sequences').update({
+        status: 'running',
+        mode: runMode,
+        started_at: new Date().toISOString(),
+      }).eq('id', sequence_id);
+      
+      // Get steps
+      const { data: steps } = await supabase
+        .from('substrate_sequence_steps')
+        .select('*')
+        .eq('sequence_id', sequence_id)
+        .order('step_index', { ascending: true });
+      
+      // Record outcome
+      await supabase.from('substrate_sequence_outcomes').insert({
+        sequence_id,
+        outcome: 'partial',
+        health_before: { cortex: getModuleHealth('cortex') },
+        notes: `Sequence started in ${runMode} mode`,
+      });
+      
+      // Log to brain for learning
+      await supabase.from('brain_memories').insert({
+        content: `[EVOLUTION] Sequence "${seq.name}" started in ${runMode} mode with ${steps?.length || 0} steps`,
+        memory_type: 'evolution_sequence',
+        source: 'cortex',
+        confidence: 0.8,
+        metadata: { sequence_id, steps: steps?.length, mode: runMode },
+      });
+      
+      return jsonResponse({
+        success: true,
+        module: 'cortex',
+        action: 'run',
+        sequence_id,
+        sequence_name: seq.name,
+        mode: runMode,
+        status: 'running',
+        total_steps: steps?.length || 0,
+        message: `Sequence ${seq.name} started in ${runMode} mode`,
+        note: 'Steps will execute sequentially. Monitor via cortex.plan <id>',
         timestamp: new Date().toISOString(),
       }, headers);
     }

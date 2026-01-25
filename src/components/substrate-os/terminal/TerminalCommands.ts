@@ -262,11 +262,26 @@ export const INTEGRATION_COMMANDS: CommandDefinition[] = [
   { command: 'integration.customer_service', description: 'Execute customer service op', category: 'integration', icon: Users, requiresOperator: true, args: '<adapter_id> <operation> [params]' },
 ];
 
-// CORTEX module — Agency-class autonomous proposal/evaluation/execution loop (resurrected from Cascade)
+// CORTEX module v2.0 — Agency-class orchestrator with lifecycle, panic, dispatch, evolution
 export const CORTEX_COMMANDS: CommandDefinition[] = [
-  { command: 'cortex.status', description: 'Module status + capabilities', category: 'cortex', icon: Wand2, requiresOperator: false },
-  { command: 'cortex.health', description: 'Health + connected modules', category: 'cortex', icon: Activity, requiresOperator: false },
+  // Status & health
+  { command: 'cortex.status', description: 'Full status + capabilities + circuits', category: 'cortex', icon: Wand2, requiresOperator: false },
+  { command: 'cortex.health', description: 'Health + connected modules + circuits', category: 'cortex', icon: Activity, requiresOperator: false },
   { command: 'cortex.pulse', description: 'Lightweight heartbeat', category: 'cortex', icon: Activity, requiresOperator: false },
+  { command: 'cortex.diagnostics', description: 'Deep self-analysis', category: 'cortex', icon: Search, requiresOperator: false },
+  
+  // Mode control
+  { command: 'cortex.mode', description: 'Get/set mode (manual|shadow|auto)', category: 'cortex', icon: Settings, requiresOperator: false, args: '[manual|shadow|auto]', example: 'cortex.mode shadow' },
+  { command: 'cortex.restart', description: 'Soft reload cortex state', category: 'cortex', icon: PlayCircle, requiresOperator: true },
+  
+  // Panic controls
+  { command: 'cortex.panic', description: 'Panic mode controls', category: 'cortex', icon: Shield, requiresOperator: true, args: '<freeze|resume|status> [reason]', example: 'cortex.panic freeze "Emergency"' },
+  
+  // Dispatch & observe
+  { command: 'cortex.dispatch', description: 'Execute module.action with governance', category: 'cortex', icon: Send, requiresOperator: true, args: '<module.action> [args]', example: 'cortex.dispatch brain.reflect' },
+  { command: 'cortex.observe', description: 'Subscribe to module events', category: 'cortex', icon: Eye, requiresOperator: false, args: '[module] [event_types]' },
+  
+  // PAAEL Loop
   { command: 'cortex.propose', description: 'Generate improvement proposal', category: 'cortex', icon: Wand2, requiresOperator: true, args: '<goal> [context]', example: 'cortex.propose "Optimize memory tiering"' },
   { command: 'cortex.evaluate', description: 'Score and assess proposal', category: 'cortex', icon: Search, requiresOperator: true, args: '[proposal_id] [criteria]' },
   { command: 'cortex.apply', description: 'Execute approved changes', category: 'cortex', icon: PlayCircle, requiresOperator: true, args: '<proposal_id> [target_module]' },
@@ -274,6 +289,10 @@ export const CORTEX_COMMANDS: CommandDefinition[] = [
   { command: 'cortex.audit', description: 'Query decisions and deltas', category: 'cortex', icon: Eye, requiresOperator: false, args: '[since] [type]', example: 'cortex.audit 24h proposal' },
   { command: 'cortex.learn', description: 'Ingest outcome for reinforcement', category: 'cortex', icon: Brain, requiresOperator: true, args: '<outcome> [proposal_id] [feedback]', example: 'cortex.learn success prop_abc123' },
   { command: 'cortex.summary', description: 'Human-readable context dump', category: 'cortex', icon: Terminal, requiresOperator: false },
+  
+  // Evolution sequencing
+  { command: 'cortex.plan', description: 'Rank evolution sequences by priority', category: 'cortex', icon: Workflow, requiresOperator: false, args: '[sequence_id]' },
+  { command: 'cortex.run', description: 'Execute sequence in shadow mode', category: 'cortex', icon: PlayCircle, requiresOperator: true, args: '<sequence_id> [mode]', example: 'cortex.run abc123 shadow' },
 ];
 
 export const META_COMMANDS: CommandDefinition[] = [
