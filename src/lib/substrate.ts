@@ -1,8 +1,11 @@
 /**
  * promptfluid® Substrate Client
- * v4.2.0 — Cognitive Orchestration Substrate (12-Module Architecture)
+ * v5.5.0 — Cognitive Orchestration Substrate (13-Module Architecture)
  * 
- * Unified API for all 12 substrate modules:
+ * Full-system audit completed: 2026-01-25
+ * All module/action handlers verified, terminal commands wired, types synchronized.
+ * 
+ * Unified API for all 13 substrate modules (12 core + 1 orchestrator):
  * - Core: Kernel (scheduler, lifecycle, routing)
  * - Ripple: Message bus (queues, pub/sub, events)
  * - Access: Identity (API keys, quotas, usage)
@@ -15,6 +18,7 @@
  * - System: Administration, backup, healing
  * - Modernizer: Self-upgrade, proposals
  * - Integration: Enterprise adapters, auto-discovery, LLM governance
+ * - Cortex: Agency-class orchestrator, governance, evolution
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -621,6 +625,10 @@ class SubstrateClient {
     pulse: () =>
       this.invoke({ module: 'ripple', action: 'pulse' }),
     
+    /** Get bus metrics for Vision integration */
+    metrics: () =>
+      this.invoke({ module: 'ripple', action: 'metrics' }),
+    
     /** Add a job to a named queue */
     enqueue: (queue: string, payload: Record<string, unknown>, options?: { priority?: number; delay?: string }) =>
       this.invoke({ module: 'ripple', action: 'enqueue', payload: { queue, payload, ...options } }),
@@ -642,16 +650,44 @@ class SubstrateClient {
       this.invoke({ module: 'ripple', action: 'topics' }),
     
     /** Get event log */
-    events: (options?: { topic?: string; limit?: number; unprocessed_only?: boolean }) =>
+    events: (options?: { topic?: string; limit?: number; unprocessed_only?: boolean; status?: string }) =>
       this.invoke({ module: 'ripple', action: 'events', payload: options }),
     
+    /** Re-process events on a topic */
+    replay: (topic: string, limit?: number) =>
+      this.invoke({ module: 'ripple', action: 'replay', payload: { topic, limit } }),
+    
+    /** List jobs with filtering */
+    jobs: (options?: { queue?: string; status?: string; limit?: number }) =>
+      this.invoke({ module: 'ripple', action: 'jobs', payload: options }),
+    
+    /** Process job(s) from queue */
+    work: (queue?: string, once?: boolean) =>
+      this.invoke({ module: 'ripple', action: 'work', payload: { queue, once } }),
+    
+    /** Process all pending jobs in queue */
+    drain: (queue?: string) =>
+      this.invoke({ module: 'ripple', action: 'drain', payload: { queue } }),
+    
+    /** Acknowledge job as succeeded */
+    ack: (job_id: string) =>
+      this.invoke({ module: 'ripple', action: 'ack', payload: { job_id } }),
+    
+    /** Reject job (increment attempts) */
+    nack: (job_id: string, reason?: string) =>
+      this.invoke({ module: 'ripple', action: 'nack', payload: { job_id, reason } }),
+    
     /** View dead letter queue (failed jobs) */
-    deadLetter: () =>
-      this.invoke({ module: 'ripple', action: 'dead_letter' }),
+    deadLetter: (queue?: string, limit?: number) =>
+      this.invoke({ module: 'ripple', action: 'dead_letter', payload: { queue, limit } }),
     
     /** Retry a failed job */
     retry: (job_id: string) =>
       this.invoke({ module: 'ripple', action: 'retry', payload: { job_id } }),
+    
+    /** View subscriber circuit breakers */
+    circuits: () =>
+      this.invoke({ module: 'ripple', action: 'circuits' }),
   };
 
   // ═══════════════════════════════════════════════════════════════
@@ -667,8 +703,20 @@ class SubstrateClient {
     pulse: () =>
       this.invoke({ module: 'access', action: 'pulse' }),
     
+    /** Register as developer (auto-creates from auth) */
+    register: (display_name?: string) =>
+      this.invoke({ module: 'access', action: 'register', payload: { display_name } }),
+    
+    /** Get developer profile */
+    developer: (developer_id?: string) =>
+      this.invoke({ module: 'access', action: 'developer', payload: { developer_id } }),
+    
+    /** List all developers (admin) */
+    developers: () =>
+      this.invoke({ module: 'access', action: 'developers' }),
+    
     /** Create a new API key */
-    createKey: (options: { developer_id: string; name?: string; scopes?: string[]; rate_limit_per_minute?: number; rate_limit_per_day?: number }) =>
+    createKey: (options: { developer_id?: string; name?: string; scopes?: string[]; rate_limit_per_minute?: number; rate_limit_per_day?: number }) =>
       this.invoke({ module: 'access', action: 'create_key', payload: options }),
     
     /** Validate an API key */
@@ -679,25 +727,33 @@ class SubstrateClient {
     revokeKey: (key_id: string) =>
       this.invoke({ module: 'access', action: 'revoke_key', payload: { key_id } }),
     
-    /** List API keys for a developer */
-    listKeys: (developer_id: string) =>
+    /** List API keys for current user or developer */
+    listKeys: (developer_id?: string) =>
       this.invoke({ module: 'access', action: 'list_keys', payload: { developer_id } }),
     
     /** Get usage statistics */
-    getUsage: (options?: { api_key_id?: string; developer_id?: string; start_date?: string; end_date?: string }) =>
+    getUsage: (options?: { api_key_id?: string; developer_id?: string; product_code?: string; days?: number }) =>
       this.invoke({ module: 'access', action: 'usage', payload: options }),
     
     /** Check quota remaining for an API key */
-    checkQuota: (api_key_id: string) =>
+    checkQuota: (api_key_id?: string) =>
       this.invoke({ module: 'access', action: 'quota', payload: { api_key_id } }),
     
     /** Record usage for metering */
     recordUsage: (options: { api_key_id?: string; developer_id?: string; module: string; action: string; tokens_used?: number; compute_ms?: number; cost_millicents?: number }) =>
       this.invoke({ module: 'access', action: 'record_usage', payload: options }),
     
-    /** Get subscription info for a developer */
-    subscription: (developer_id: string) =>
+    /** Get subscription info for current user */
+    subscription: (developer_id?: string) =>
       this.invoke({ module: 'access', action: 'subscription', payload: { developer_id } }),
+    
+    /** List your entitlements */
+    entitlements: () =>
+      this.invoke({ module: 'access', action: 'entitlements' }),
+    
+    /** List available products/entitlements */
+    products: (category?: string) =>
+      this.invoke({ module: 'access', action: 'products', payload: { category } }),
   };
 
   // ═══════════════════════════════════════════════════════════════
