@@ -13573,7 +13573,81 @@ async function handleCortex(
     // ═══════════════════════════════════════════════════════════════
     case "plan":
     case "sequence": {
-      const { sequence_id } = data;
+      const { sequence_id, eligible } = data;
+      
+      // Handle --eligible flag: show eligible sequences for execution
+      if (eligible) {
+        // Fetch sequences that are ready to run
+        const { data: eligibleSequences } = await supabase
+          .from('substrate_sequences')
+          .select('id, name, status, strategy_type, risk_level, priority_score, total_steps, target_modules, required_roles')
+          .in('status', ['draft', 'approved'])
+          .order('priority_score', { ascending: false })
+          .limit(20);
+        
+        // Also fetch module registry for eligibility context
+        const { data: registryData } = await supabase
+          .from('module_registry')
+          .select('name, eligible_for_upgrade, shadow_supported, production_supported, category')
+          .eq('eligible_for_upgrade', true);
+        
+        const eligibleModules = registryData || [];
+        
+        // If no sequences exist, return a clear message
+        if (!eligibleSequences || eligibleSequences.length === 0) {
+          return jsonResponse({
+            success: true,
+            module: 'cortex',
+            action: 'plan',
+            mode: 'eligible',
+            sequences: [],
+            eligible_modules: eligibleModules.map((m: any) => ({
+              name: m.name,
+              category: m.category,
+              shadow_supported: m.shadow_supported,
+              production_supported: m.production_supported,
+            })),
+            message: 'No evolution sequences are currently registered; nothing is eligible yet.',
+            hint: 'Use cortex.propose to create new proposals, or modernizer.propose to generate improvement sequences.',
+            timestamp: new Date().toISOString(),
+          }, headers);
+        }
+        
+        // Annotate sequences with readiness
+        const annotatedSequences = eligibleSequences.map((seq: any) => {
+          const targetModules = seq.target_modules || [];
+          const allModulesReady = targetModules.length === 0 || 
+            targetModules.every((tm: string) => eligibleModules.some((em: any) => em.name === tm));
+          
+          return {
+            sequence_id: seq.id,
+            name: seq.name,
+            strategy_type: seq.strategy_type,
+            status: seq.status,
+            risk_level: seq.risk_level,
+            priority_score: seq.priority_score,
+            target_modules: targetModules,
+            required_roles: seq.required_roles || [],
+            ready: allModulesReady && !cortexState.panic_frozen,
+            blocked_reason: cortexState.panic_frozen ? 'Panic mode active' : 
+              (!allModulesReady ? 'Some target modules not eligible' : null),
+          };
+        });
+        
+        return jsonResponse({
+          success: true,
+          module: 'cortex',
+          action: 'plan',
+          mode: 'eligible',
+          total_sequences: annotatedSequences.length,
+          ready_count: annotatedSequences.filter((s: any) => s.ready).length,
+          blocked_count: annotatedSequences.filter((s: any) => !s.ready).length,
+          sequences: annotatedSequences,
+          eligible_modules: eligibleModules.map((m: any) => m.name),
+          panic_frozen: cortexState.panic_frozen,
+          timestamp: new Date().toISOString(),
+        }, headers);
+      }
       
       if (sequence_id) {
         // Fetch specific sequence with steps
@@ -14286,13 +14360,52 @@ async function handleCortex(
     }
     
     case "inventory": {
-      const { data: registryData } = await supabase.from('module_registry').select('*').order('boot_order', { ascending: true });
+      const { eligible: filterEligible } = data;
+      
+      let query = supabase.from('module_registry').select('*').order('boot_order', { ascending: true });
+      
+      if (filterEligible) {
+        query = query.eq('eligible_for_upgrade', true);
+      }
+      
+      const { data: registryData } = await query;
+      const modules = registryData || [];
+      
+      // Sync live health into results
+      for (const mod of modules) {
+        const liveHealth = substrateState.modules[mod.name];
+        if (liveHealth) {
+          mod.health_score = liveHealth.healthScore;
+          mod.circuit_state = liveHealth.circuitState;
+          mod.status = liveHealth.status;
+        }
+      }
+      
+      const inventory = modules.map((m: any) => ({
+        name: m.name,
+        version: m.version,
+        category: m.category,
+        health_score: m.health_score || 100,
+        circuit_state: m.circuit_state || 'closed',
+        status: m.status || 'active',
+        eligible_for_upgrade: m.eligible_for_upgrade,
+        shadow_supported: m.shadow_supported,
+        production_supported: m.production_supported,
+        capabilities: m.capabilities || [],
+        roles: m.roles || [],
+      }));
+      
       return jsonResponse({
         success: true,
         module: 'cortex',
         action: 'inventory',
-        inventory: (registryData || []).map((m: any) => ({ name: m.name, version: m.version, category: m.category, eligible_for_upgrade: m.eligible_for_upgrade, shadow_supported: m.shadow_supported, capabilities: m.capabilities || [], roles: m.roles || [] })),
-        count: registryData?.length || 0,
+        mode: filterEligible ? 'eligible' : 'full',
+        inventory,
+        count: inventory.length,
+        eligible_count: inventory.filter((m: any) => m.eligible_for_upgrade).length,
+        message: filterEligible && inventory.length === 0 
+          ? 'No modules are currently eligible for upgrade.' 
+          : undefined,
         timestamp: new Date().toISOString(),
       }, headers);
     }
