@@ -3426,6 +3426,138 @@ export type Database = {
         }
         Relationships: []
       }
+      cortex_audit_log: {
+        Row: {
+          actor: string | null
+          created_at: string | null
+          event_type: string
+          id: string
+          metadata: Json | null
+          new_value: Json | null
+          old_value: Json | null
+          reason: string | null
+          target_action: string | null
+          target_module: string | null
+        }
+        Insert: {
+          actor?: string | null
+          created_at?: string | null
+          event_type: string
+          id?: string
+          metadata?: Json | null
+          new_value?: Json | null
+          old_value?: Json | null
+          reason?: string | null
+          target_action?: string | null
+          target_module?: string | null
+        }
+        Update: {
+          actor?: string | null
+          created_at?: string | null
+          event_type?: string
+          id?: string
+          metadata?: Json | null
+          new_value?: Json | null
+          old_value?: Json | null
+          reason?: string | null
+          target_action?: string | null
+          target_module?: string | null
+        }
+        Relationships: []
+      }
+      cortex_circuit_breakers: {
+        Row: {
+          created_at: string | null
+          failure_count: number | null
+          id: string
+          last_failure_at: string | null
+          last_success_at: string | null
+          metadata: Json | null
+          opened_at: string | null
+          state: string
+          subsystem: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          failure_count?: number | null
+          id?: string
+          last_failure_at?: string | null
+          last_success_at?: string | null
+          metadata?: Json | null
+          opened_at?: string | null
+          state?: string
+          subsystem: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          failure_count?: number | null
+          id?: string
+          last_failure_at?: string | null
+          last_success_at?: string | null
+          metadata?: Json | null
+          opened_at?: string | null
+          state?: string
+          subsystem?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      cortex_modes: {
+        Row: {
+          auto_apply_enabled: boolean | null
+          auto_apply_max_risk: string | null
+          created_at: string | null
+          degraded: boolean | null
+          degraded_reason: string | null
+          dispatch_enabled: boolean | null
+          id: string
+          last_restart_at: string | null
+          mode: string
+          panic_frozen: boolean | null
+          panic_frozen_at: string | null
+          panic_reason: string | null
+          ready: boolean | null
+          restart_count: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          auto_apply_enabled?: boolean | null
+          auto_apply_max_risk?: string | null
+          created_at?: string | null
+          degraded?: boolean | null
+          degraded_reason?: string | null
+          dispatch_enabled?: boolean | null
+          id?: string
+          last_restart_at?: string | null
+          mode?: string
+          panic_frozen?: boolean | null
+          panic_frozen_at?: string | null
+          panic_reason?: string | null
+          ready?: boolean | null
+          restart_count?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          auto_apply_enabled?: boolean | null
+          auto_apply_max_risk?: string | null
+          created_at?: string | null
+          degraded?: boolean | null
+          degraded_reason?: string | null
+          dispatch_enabled?: boolean | null
+          id?: string
+          last_restart_at?: string | null
+          mode?: string
+          panic_frozen?: boolean | null
+          panic_frozen_at?: string | null
+          panic_reason?: string | null
+          ready?: boolean | null
+          restart_count?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       cost_logs: {
         Row: {
           api_name: string
@@ -7401,6 +7533,81 @@ export type Database = {
         }
         Relationships: []
       }
+      proposal_meta: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          authority_required: string | null
+          confidence: number | null
+          created_at: string | null
+          dependencies: string[] | null
+          evidentiary_basis: Json | null
+          id: string
+          impact_estimate: string | null
+          module_target: string | null
+          proposal_id: string
+          proposal_origin: string | null
+          proposal_scope: string | null
+          proposal_type: string | null
+          rejected_at: string | null
+          rejected_by: string | null
+          rejection_reason: string | null
+          reverse_dependencies: string[] | null
+          risk_level: string | null
+          rollback_strategy: string | null
+          test_coverage: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          authority_required?: string | null
+          confidence?: number | null
+          created_at?: string | null
+          dependencies?: string[] | null
+          evidentiary_basis?: Json | null
+          id?: string
+          impact_estimate?: string | null
+          module_target?: string | null
+          proposal_id: string
+          proposal_origin?: string | null
+          proposal_scope?: string | null
+          proposal_type?: string | null
+          rejected_at?: string | null
+          rejected_by?: string | null
+          rejection_reason?: string | null
+          reverse_dependencies?: string[] | null
+          risk_level?: string | null
+          rollback_strategy?: string | null
+          test_coverage?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          authority_required?: string | null
+          confidence?: number | null
+          created_at?: string | null
+          dependencies?: string[] | null
+          evidentiary_basis?: Json | null
+          id?: string
+          impact_estimate?: string | null
+          module_target?: string | null
+          proposal_id?: string
+          proposal_origin?: string | null
+          proposal_scope?: string | null
+          proposal_type?: string | null
+          rejected_at?: string | null
+          rejected_by?: string | null
+          rejection_reason?: string | null
+          reverse_dependencies?: string[] | null
+          risk_level?: string | null
+          rollback_strategy?: string | null
+          test_coverage?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       resilience_ledger: {
         Row: {
           auto_fix_applied: boolean | null
@@ -8475,6 +8682,182 @@ export type Database = {
           updated_at?: string | null
           webhook_secret?: string | null
           webhook_url?: string | null
+        }
+        Relationships: []
+      }
+      substrate_sequence_outcomes: {
+        Row: {
+          created_at: string | null
+          health_after: Json | null
+          health_before: Json | null
+          id: string
+          metrics: Json | null
+          notes: string | null
+          outcome: string
+          sequence_id: string | null
+          step_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          health_after?: Json | null
+          health_before?: Json | null
+          id?: string
+          metrics?: Json | null
+          notes?: string | null
+          outcome: string
+          sequence_id?: string | null
+          step_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          health_after?: Json | null
+          health_before?: Json | null
+          id?: string
+          metrics?: Json | null
+          notes?: string | null
+          outcome?: string
+          sequence_id?: string | null
+          step_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "substrate_sequence_outcomes_sequence_id_fkey"
+            columns: ["sequence_id"]
+            isOneToOne: false
+            referencedRelation: "substrate_sequences"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "substrate_sequence_outcomes_step_id_fkey"
+            columns: ["step_id"]
+            isOneToOne: false
+            referencedRelation: "substrate_sequence_steps"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      substrate_sequence_steps: {
+        Row: {
+          action: string
+          completed_at: string | null
+          depends_on: string[] | null
+          estimated_cost: number | null
+          estimated_value: number | null
+          execution_time_ms: number | null
+          id: string
+          last_error: string | null
+          metadata: Json | null
+          module: string
+          payload_template: Json | null
+          risk_level: string | null
+          sequence_id: string | null
+          started_at: string | null
+          status: string | null
+          step_index: number
+        }
+        Insert: {
+          action: string
+          completed_at?: string | null
+          depends_on?: string[] | null
+          estimated_cost?: number | null
+          estimated_value?: number | null
+          execution_time_ms?: number | null
+          id?: string
+          last_error?: string | null
+          metadata?: Json | null
+          module: string
+          payload_template?: Json | null
+          risk_level?: string | null
+          sequence_id?: string | null
+          started_at?: string | null
+          status?: string | null
+          step_index: number
+        }
+        Update: {
+          action?: string
+          completed_at?: string | null
+          depends_on?: string[] | null
+          estimated_cost?: number | null
+          estimated_value?: number | null
+          execution_time_ms?: number | null
+          id?: string
+          last_error?: string | null
+          metadata?: Json | null
+          module?: string
+          payload_template?: Json | null
+          risk_level?: string | null
+          sequence_id?: string | null
+          started_at?: string | null
+          status?: string | null
+          step_index?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "substrate_sequence_steps_sequence_id_fkey"
+            columns: ["sequence_id"]
+            isOneToOne: false
+            referencedRelation: "substrate_sequences"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      substrate_sequences: {
+        Row: {
+          completed_at: string | null
+          completed_steps: number | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          failed_steps: number | null
+          id: string
+          metadata: Json | null
+          mode: string | null
+          name: string
+          plan_id: string | null
+          priority_score: number | null
+          risk_level: string | null
+          started_at: string | null
+          status: string
+          strategy_type: string
+          total_steps: number | null
+        }
+        Insert: {
+          completed_at?: string | null
+          completed_steps?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          failed_steps?: number | null
+          id?: string
+          metadata?: Json | null
+          mode?: string | null
+          name: string
+          plan_id?: string | null
+          priority_score?: number | null
+          risk_level?: string | null
+          started_at?: string | null
+          status?: string
+          strategy_type?: string
+          total_steps?: number | null
+        }
+        Update: {
+          completed_at?: string | null
+          completed_steps?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          failed_steps?: number | null
+          id?: string
+          metadata?: Json | null
+          mode?: string | null
+          name?: string
+          plan_id?: string | null
+          priority_score?: number | null
+          risk_level?: string | null
+          started_at?: string | null
+          status?: string
+          strategy_type?: string
+          total_steps?: number | null
         }
         Relationships: []
       }
