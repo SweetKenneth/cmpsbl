@@ -46,7 +46,57 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const SUBSTRATE_VERSION = "4.7.0"; // Defense live perimeter engine - v2026.01.25
+const SUBSTRATE_VERSION = "4.8.0"; // System v1.2 — Resilience surface + audit wiring - v2026.01.25
+
+// ═══════════════════════════════════════════════════════════════
+// RESILIENCE EVENT LOGGING — Circuit breaker + heal audit trail
+// ═══════════════════════════════════════════════════════════════
+
+interface ResilienceEvent {
+  type: 'circuit_open' | 'circuit_close' | 'auto_heal' | 'manual_heal' | 'rate_limit' | 'provider_error' | 'health_check';
+  module: string;
+  severity: 'info' | 'warning' | 'error' | 'critical';
+  timestamp: number;
+  details: Record<string, unknown>;
+  resolved: boolean;
+}
+
+// In-memory resilience event buffer (ring buffer, max 500 entries)
+const resilienceEvents: ResilienceEvent[] = [];
+const MAX_RESILIENCE_EVENTS = 500;
+
+function logResilienceEvent(
+  type: ResilienceEvent['type'],
+  module: string,
+  severity: ResilienceEvent['severity'],
+  details: Record<string, unknown> = {},
+  resolved = false
+): void {
+  const event: ResilienceEvent = {
+    type,
+    module,
+    severity,
+    timestamp: Date.now(),
+    details,
+    resolved,
+  };
+  
+  resilienceEvents.unshift(event);
+  if (resilienceEvents.length > MAX_RESILIENCE_EVENTS) {
+    resilienceEvents.pop();
+  }
+  
+  console.log(`[RESILIENCE] ${severity.toUpperCase()} ${type} on ${module}:`, JSON.stringify(details));
+}
+
+function getResilienceEvents(sinceMs: number = 24 * 60 * 60 * 1000, filterType?: string): ResilienceEvent[] {
+  const cutoff = Date.now() - sinceMs;
+  return resilienceEvents.filter(e => {
+    if (e.timestamp < cutoff) return false;
+    if (filterType && e.type !== filterType) return false;
+    return true;
+  });
+}
 
 // ═══════════════════════════════════════════════════════════════
 // DEFENSE PERIMETER ENGINE — Fingerprint Detection & Scoring
@@ -379,6 +429,8 @@ function getModuleHealth(module: string): ModuleHealth {
 
 function recordSuccess(module: string): void {
   const health = getModuleHealth(module);
+  const wasOpen = health.circuitState === 'open' || health.circuitState === 'half-open';
+  
   health.consecutiveSuccesses++;
   health.consecutiveFailures = 0;
   health.lastSuccess = Date.now();
@@ -389,6 +441,13 @@ function recordSuccess(module: string): void {
     health.circuitState = 'closed';
     health.status = 'healthy';
     console.log(`✅ Circuit CLOSED for ${module} — recovered`);
+    
+    // Log circuit close event
+    logResilienceEvent('circuit_close', module, 'info', {
+      previous_state: 'half-open',
+      consecutive_successes: health.consecutiveSuccesses,
+      health_score: health.healthScore,
+    }, true);
   }
   
   health.status = health.healthScore >= 80 ? 'healthy' : 
@@ -397,6 +456,8 @@ function recordSuccess(module: string): void {
 
 function recordFailure(module: string, error: string): void {
   const health = getModuleHealth(module);
+  const wasOpen = health.circuitState === 'open';
+  
   health.consecutiveFailures++;
   health.consecutiveSuccesses = 0;
   health.lastFailure = Date.now();
@@ -408,6 +469,14 @@ function recordFailure(module: string, error: string): void {
     health.circuitState = 'open';
     health.status = 'down';
     console.log(`🚫 Circuit OPEN for ${module} — ${error}`);
+    
+    // Log circuit open event
+    logResilienceEvent('circuit_open', module, 'critical', {
+      error,
+      consecutive_failures: health.consecutiveFailures,
+      health_score: health.healthScore,
+      failure_threshold: CIRCUIT_CONFIG.failureThreshold,
+    }, false);
   }
   
   health.status = health.healthScore >= 80 ? 'healthy' : 
@@ -6121,6 +6190,14 @@ async function handleSystem(
       substrateState.lastHeal = Date.now();
       substrateState.totalErrors = 0; // Reset error count on full heal
       
+      // Log manual heal event to resilience buffer
+      logResilienceEvent('manual_heal', target || 'all', 'info', {
+        healed_modules: healed,
+        force,
+        test,
+        heal_count: substrateState.healAttempts,
+      }, true);
+      
       // PHASE 2: Heal dream state if dream module is targeted
       if (!target || target === 'dream') {
         try {
@@ -6653,16 +6730,218 @@ async function handleSystem(
     }
 
     case "audit": {
-      const { data: logs } = await supabase
+      // v4.8.0: Enhanced audit with health incidents from resilience buffer + brain_events
+      const { since = '24h', type: filterType } = data;
+      
+      // Parse since parameter
+      let sinceMs = 24 * 60 * 60 * 1000; // default 24h
+      if (since === '1h') sinceMs = 60 * 60 * 1000;
+      else if (since === '6h') sinceMs = 6 * 60 * 60 * 1000;
+      else if (since === '12h') sinceMs = 12 * 60 * 60 * 1000;
+      else if (since === '7d') sinceMs = 7 * 24 * 60 * 60 * 1000;
+      
+      const cutoffDate = new Date(Date.now() - sinceMs);
+      
+      // Get in-memory resilience events
+      const memoryEvents = getResilienceEvents(sinceMs, filterType);
+      
+      // Also query brain_events for health-related events
+      const healthEventTypes = [
+        'circuit_open', 'circuit_close', 'auto_heal', 'manual_heal', 
+        'full_heal', 'rate_limit_exceeded', 'provider_error', 'health_check',
+        'cognitive_disruption', 'ecosystem_monitor'
+      ];
+      
+      const { data: dbEvents } = await supabase
+        .from('brain_events')
+        .select('id, event_type, module, outcome, data, created_at')
+        .in('event_type', healthEventTypes)
+        .gte('created_at', cutoffDate.toISOString())
+        .order('created_at', { ascending: false })
+        .limit(100);
+      
+      // Also get audit_logs for manual actions
+      const { data: auditLogs } = await supabase
         .from("audit_logs")
         .select("*")
+        .gte('created_at', cutoffDate.toISOString())
         .order("created_at", { ascending: false })
         .limit(50);
-
+      
+      // Merge and format logs
+      const formattedLogs: Array<{
+        timestamp: string;
+        module: string;
+        severity: string;
+        type: string;
+        details: Record<string, unknown>;
+        resolved: boolean;
+        source: string;
+      }> = [];
+      
+      // Add in-memory resilience events
+      for (const e of memoryEvents) {
+        formattedLogs.push({
+          timestamp: new Date(e.timestamp).toISOString(),
+          module: e.module,
+          severity: e.severity,
+          type: e.type,
+          details: e.details,
+          resolved: e.resolved,
+          source: 'resilience_buffer',
+        });
+      }
+      
+      // Add brain_events
+      for (const e of (dbEvents || [])) {
+        const severity = e.outcome === 'error' ? 'error' : 
+                        e.outcome === 'success' ? 'info' : 'warning';
+        formattedLogs.push({
+          timestamp: e.created_at,
+          module: e.module || 'system',
+          severity,
+          type: e.event_type,
+          details: e.data || {},
+          resolved: e.outcome === 'success',
+          source: 'brain_events',
+        });
+      }
+      
+      // Add audit_logs
+      for (const e of (auditLogs || [])) {
+        formattedLogs.push({
+          timestamp: e.created_at,
+          module: e.entity_type || 'system',
+          severity: 'info',
+          type: e.action,
+          details: e.details || {},
+          resolved: true,
+          source: 'audit_logs',
+        });
+      }
+      
+      // Sort by timestamp descending and deduplicate
+      formattedLogs.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+      
+      // Apply type filter if specified
+      const filteredLogs = filterType 
+        ? formattedLogs.filter(l => l.type.includes(filterType))
+        : formattedLogs;
+      
       return jsonResponse({
         success: true,
-        logs: logs || [],
+        since,
+        filter_type: filterType || null,
+        logs: filteredLogs.slice(0, 100),
+        summary: {
+          total_events: filteredLogs.length,
+          by_severity: {
+            critical: filteredLogs.filter(l => l.severity === 'critical').length,
+            error: filteredLogs.filter(l => l.severity === 'error').length,
+            warning: filteredLogs.filter(l => l.severity === 'warning').length,
+            info: filteredLogs.filter(l => l.severity === 'info').length,
+          },
+          by_source: {
+            resilience_buffer: filteredLogs.filter(l => l.source === 'resilience_buffer').length,
+            brain_events: filteredLogs.filter(l => l.source === 'brain_events').length,
+            audit_logs: filteredLogs.filter(l => l.source === 'audit_logs').length,
+          },
+          unresolved: filteredLogs.filter(l => !l.resolved).length,
+        },
+        timestamp: new Date().toISOString(),
       }, headers);
+    }
+    
+    case "resilience": {
+      // v4.8.0: System resilience snapshot surface
+      const { role = 'observer' } = data;
+      
+      // Ensure all 12 modules are in state
+      for (const mod of ALL_12_MODULES) {
+        if (!substrateState.modules[mod]) {
+          substrateState.modules[mod] = initModuleHealth(mod);
+        }
+      }
+      
+      // Calculate summary metrics
+      const openCircuits: string[] = [];
+      const degradedModules: string[] = [];
+      let closedCount = 0;
+      let totalHealth = 0;
+      
+      for (const [name, health] of Object.entries(substrateState.modules)) {
+        if (health.circuitState === 'open') openCircuits.push(name);
+        if (health.status === 'degraded') degradedModules.push(name);
+        if (health.circuitState === 'closed') closedCount++;
+        totalHealth += health.healthScore;
+      }
+      
+      const moduleCount = Object.keys(substrateState.modules).length;
+      const overallHealth = moduleCount > 0 ? Math.round(totalHealth / moduleCount) : 100;
+      const errorRate = substrateState.totalRequests > 0 
+        ? (substrateState.totalErrors / substrateState.totalRequests * 100).toFixed(2) + '%'
+        : '0.00%';
+      
+      // Build modules snapshot
+      const modulesSnapshot: Record<string, {
+        health_score: number;
+        status: string;
+        circuit_state: string;
+        consecutive_failures: number;
+        consecutive_successes: number;
+        last_failure: string | null;
+        last_success: string | null;
+      }> = {};
+      
+      for (const [name, health] of Object.entries(substrateState.modules)) {
+        modulesSnapshot[name] = {
+          health_score: health.healthScore,
+          status: health.status,
+          circuit_state: health.circuitState,
+          consecutive_failures: health.consecutiveFailures,
+          consecutive_successes: health.consecutiveSuccesses,
+          last_failure: health.lastFailure ? new Date(health.lastFailure).toISOString() : null,
+          last_success: health.lastSuccess ? new Date(health.lastSuccess).toISOString() : null,
+        };
+      }
+      
+      // Base response (observer)
+      const response: Record<string, unknown> = {
+        success: true,
+        summary: {
+          overall_health: overallHealth,
+          error_rate: errorRate,
+          heal_attempts: substrateState.healAttempts,
+          open_circuits: openCircuits.length,
+          closed_circuits: closedCount,
+          degraded_modules: degradedModules,
+        },
+        modules: modulesSnapshot,
+        circuit_breaker_config: {
+          failure_threshold: CIRCUIT_CONFIG.failureThreshold,
+          success_threshold: CIRCUIT_CONFIG.successThreshold,
+          open_duration_ms: CIRCUIT_CONFIG.openDurationMs,
+          auto_heal_threshold: CIRCUIT_CONFIG.autoHealThreshold,
+        },
+        proof_mode: true,
+        timestamp: new Date().toISOString(),
+      };
+      
+      // Operator additions
+      if (role === 'operator') {
+        const lastError = resilienceEvents.find(e => e.severity === 'error' || e.severity === 'critical');
+        
+        response.operator_data = {
+          last_heal_timestamp: substrateState.lastHeal ? new Date(substrateState.lastHeal).toISOString() : null,
+          last_error_timestamp: lastError ? new Date(lastError.timestamp).toISOString() : null,
+          next_auto_heal_due_ms: null, // Would require scheduled job tracking
+          recent_resilience_events: getResilienceEvents(60 * 60 * 1000).length, // last hour
+          total_resilience_events: resilienceEvents.length,
+          uptime_ms: Date.now() - substrateState.initialized,
+        };
+      }
+      
+      return jsonResponse(response, headers);
     }
 
     case "version": {

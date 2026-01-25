@@ -354,8 +354,12 @@ class SubstrateClient {
     config: (key?: string) =>
       this.invoke({ module: 'system', action: 'config', payload: { key } }),
     
-    audit: () =>
-      this.invoke({ module: 'system', action: 'audit' }),
+    audit: (since?: string, type?: string) =>
+      this.invoke({ module: 'system', action: 'audit', payload: { since, type } }),
+    
+    /** v4.8.0: Resilience snapshot surface - circuit breakers, health, heals */
+    resilience: (role?: 'observer' | 'operator') =>
+      this.invoke({ module: 'system', action: 'resilience', payload: { role } }),
     
     /** v3.1.0: Full system heal - restores all modules to 100% health */
     heal: (target?: string, force?: boolean) =>
