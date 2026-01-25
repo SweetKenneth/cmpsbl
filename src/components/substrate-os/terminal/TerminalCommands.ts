@@ -93,15 +93,17 @@ export const VISION_COMMANDS: CommandDefinition[] = [
 ];
 
 export const DREAM_COMMANDS: CommandDefinition[] = [
-  { command: 'dream.status', description: 'Dream-Eater state', category: 'dream', icon: Moon, requiresOperator: false },
-  { command: 'dream.mood', description: 'Get/set mood', category: 'dream', icon: Moon, requiresOperator: true, args: '[mood]' },
+  { command: 'dream.status', description: 'Dream-Eater state with histograms + metabolic data', category: 'dream', icon: Moon, requiresOperator: false },
+  { command: 'dream.mood', description: 'Get/set mood with decay info', category: 'dream', icon: Moon, requiresOperator: true, args: '[mood]' },
   { command: 'dream.cycle', description: 'Execute dream cycle', category: 'dream', icon: Moon, requiresOperator: true },
-  { command: 'dream.feed', description: 'Submit dream content', category: 'dream', icon: Moon, requiresOperator: true, args: '<content> [type]' },
-  { command: 'dream.consume', description: 'Process a dream', category: 'dream', icon: Moon, requiresOperator: true, args: '<dream_id>' },
+  { command: 'dream.feed', description: 'Feed dream text (auto-classifies type)', category: 'dream', icon: Moon, requiresOperator: true, args: '<text> [--type dream|nightmare]', example: 'dream.feed "I was flying through clouds"' },
+  { command: 'dream.consume', description: 'Process a dream (mutation curve)', category: 'dream', icon: Moon, requiresOperator: true, args: '<dream_id>' },
   { command: 'dream.interpret', description: 'Interpret dream text', category: 'dream', icon: Moon, requiresOperator: true, args: '<text>' },
   { command: 'dream.mutate', description: 'Trigger mutation', category: 'dream', icon: Moon, requiresOperator: true },
   { command: 'dream.reflect', description: 'Dream reflection', category: 'dream', icon: Moon, requiresOperator: true },
-  { command: 'dream.awaken', description: 'Awaken Dream-Eater', category: 'dream', icon: Moon, requiresOperator: true },
+  { command: 'dream.awaken', description: 'Awaken Dream-Eater (reset with reason)', category: 'dream', icon: Moon, requiresOperator: true, args: '[reason]', example: 'dream.awaken manual_reset' },
+  { command: 'dream.pulse', description: 'Lightweight heartbeat + circadian', category: 'dream', icon: Activity, requiresOperator: false },
+  { command: 'dream.anomalies', description: 'View dream module anomalies', category: 'dream', icon: Activity, requiresOperator: false, args: '[limit] [--resolved]' },
 ];
 
 export const SYSTEM_COMMANDS: CommandDefinition[] = [

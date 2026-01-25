@@ -110,16 +110,41 @@ const INTENT_PATTERNS: Array<{
     explanation: 'Test AI provider routing',
   },
   
-  // Dreams
+  // Dreams (v1.1)
   {
-    patterns: [/dream/i, /dreaming/i, /dream.*cycle/i, /imagination/i],
+    patterns: [/dream.*cycle/i, /run.*dream/i, /execute.*dream/i, /start.*dreaming/i],
     command: 'dream.cycle',
     explanation: 'Execute dream cycle',
   },
   {
-    patterns: [/dream.*status/i, /dream.*state/i, /dream-eater/i],
+    patterns: [/dream.*status/i, /dream.*state/i, /dream-eater/i, /dream.*histogram/i, /dream.*stats/i],
     command: 'dream.status',
-    explanation: 'Dream module status',
+    explanation: 'Dream module status with histograms and metabolic data',
+  },
+  {
+    patterns: [/feed.*dream/i, /submit.*dream/i, /had.*dream/i, /new.*dream/i, /dream.*feed/i],
+    command: 'dream.feed',
+    explanation: 'Feed dream text (auto-classifies type)',
+  },
+  {
+    patterns: [/mood.*decay/i, /dream.*mood/i, /current.*mood/i, /set.*mood/i, /idle.*time/i],
+    command: 'dream.mood',
+    explanation: 'Get/set mood with decay calculation',
+  },
+  {
+    patterns: [/dream.*anomal/i, /dream.*error/i, /dream.*issue/i, /dream.*problem/i],
+    command: 'dream.anomalies',
+    explanation: 'View dream anomaly logs',
+  },
+  {
+    patterns: [/awaken/i, /wake.*up/i, /reset.*dream/i, /circadian.*reset/i],
+    command: 'dream.awaken',
+    explanation: 'Awaken Dream-Eater with reset reason',
+  },
+  {
+    patterns: [/dream.*pulse/i, /dream.*heartbeat/i, /dream.*alive/i],
+    command: 'dream.pulse',
+    explanation: 'Dream heartbeat with circadian data',
   },
   
   // Modernizer
