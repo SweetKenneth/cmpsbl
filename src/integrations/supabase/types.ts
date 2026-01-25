@@ -5426,6 +5426,84 @@ export type Database = {
         }
         Relationships: []
       }
+      module_registry: {
+        Row: {
+          boot_order: number
+          capabilities: string[] | null
+          category: string
+          circuit_state: string
+          config: Json | null
+          created_at: string
+          dependencies: string[] | null
+          dependents: string[] | null
+          eligible_for_upgrade: boolean | null
+          file_paths: Json | null
+          health_score: number
+          id: string
+          last_error: string | null
+          last_seen: string | null
+          last_success: string | null
+          metadata: Json | null
+          name: string
+          production_supported: boolean | null
+          roles: string[] | null
+          shadow_supported: boolean | null
+          status: string
+          updated_at: string
+          version: string
+        }
+        Insert: {
+          boot_order?: number
+          capabilities?: string[] | null
+          category?: string
+          circuit_state?: string
+          config?: Json | null
+          created_at?: string
+          dependencies?: string[] | null
+          dependents?: string[] | null
+          eligible_for_upgrade?: boolean | null
+          file_paths?: Json | null
+          health_score?: number
+          id?: string
+          last_error?: string | null
+          last_seen?: string | null
+          last_success?: string | null
+          metadata?: Json | null
+          name: string
+          production_supported?: boolean | null
+          roles?: string[] | null
+          shadow_supported?: boolean | null
+          status?: string
+          updated_at?: string
+          version?: string
+        }
+        Update: {
+          boot_order?: number
+          capabilities?: string[] | null
+          category?: string
+          circuit_state?: string
+          config?: Json | null
+          created_at?: string
+          dependencies?: string[] | null
+          dependents?: string[] | null
+          eligible_for_upgrade?: boolean | null
+          file_paths?: Json | null
+          health_score?: number
+          id?: string
+          last_error?: string | null
+          last_seen?: string | null
+          last_success?: string | null
+          metadata?: Json | null
+          name?: string
+          production_supported?: boolean | null
+          roles?: string[] | null
+          shadow_supported?: boolean | null
+          status?: string
+          updated_at?: string
+          version?: string
+        }
+        Relationships: []
+      }
       nexus_logs: {
         Row: {
           cost_usd_est: number

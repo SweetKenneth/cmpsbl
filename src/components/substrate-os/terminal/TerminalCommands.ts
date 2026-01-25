@@ -126,6 +126,9 @@ export const SYSTEM_COMMANDS: CommandDefinition[] = [
   { command: 'system.upgrade.list', description: 'List upgrade plans', category: 'system', icon: Cpu, requiresOperator: false },
   { command: 'system.upgrade.apply', description: 'Apply upgrade plan', category: 'system', icon: Cpu, requiresOperator: true, args: '<plan_id>' },
   { command: 'system.upgrade.rollback', description: 'Rollback upgrade', category: 'system', icon: Cpu, requiresOperator: true, args: '<plan_id>' },
+  // v5.6.0: Module Registry + Inventory
+  { command: 'system.modules', description: 'List all registered modules', category: 'system', icon: Box, requiresOperator: false, args: '[--full|--health|--dag|--roles|--boot|--inventory]' },
+  { command: 'system.module', description: 'Get specific module details', category: 'system', icon: Box, requiresOperator: false, args: '<module_name>' },
 ];
 
 export const MODERNIZER_COMMANDS: CommandDefinition[] = [
@@ -293,6 +296,10 @@ export const CORTEX_COMMANDS: CommandDefinition[] = [
   // Evolution sequencing
   { command: 'cortex.plan', description: 'Rank evolution sequences by priority', category: 'cortex', icon: Workflow, requiresOperator: false, args: '[sequence_id]' },
   { command: 'cortex.run', description: 'Execute sequence in shadow mode', category: 'cortex', icon: PlayCircle, requiresOperator: true, args: '<sequence_id> [mode]', example: 'cortex.run abc123 shadow' },
+  
+  // v5.6.0: World Model + Introspection
+  { command: 'cortex.world', description: 'Full module registry snapshot', category: 'cortex', icon: Globe, requiresOperator: false, args: '[--dag|--roles|--eligible]' },
+  { command: 'cortex.inventory', description: 'Module inventory with eligibility', category: 'cortex', icon: Box, requiresOperator: false },
 ];
 
 export const META_COMMANDS: CommandDefinition[] = [
