@@ -4,7 +4,7 @@
  * v5.0.0 - Enhanced with aliases, macros, scheduling, watch, and audit
  */
 
-import { substrate, brain, decode, defense, nexus, vision, dream, system, modernizer, core, ripple, access, integration } from '@/lib/substrate';
+import { substrate, brain, decode, defense, nexus, vision, dream, system, modernizer, core, ripple, access, integration, cortex } from '@/lib/substrate';
 import { supabase } from '@/integrations/supabase/client';
 import { ALL_COMMANDS, COMMAND_CATEGORIES, type CommandDefinition } from './TerminalCommands';
 import { getRandomItem, PERSONALITY_RESPONSES } from './TerminalTypes';
@@ -453,6 +453,10 @@ export async function executeCommand(
       result = await nexus.routeStats();
     } else if (base === 'nexus.test') {
       result = await nexus.text(args[0] || 'Hello, substrate.', undefined);
+    } else if (base === 'nexus.pulse') {
+      result = await substrate.invoke({ module: 'nexus', action: 'pulse' });
+    } else if (base === 'nexus.analytics') {
+      result = await substrate.invoke({ module: 'nexus', action: 'analytics' });
     }
 
     // VISION module
@@ -488,6 +492,18 @@ export async function executeCommand(
       result = await vision.quota();
     } else if (base === 'vision.dependency_map') {
       result = await vision.dependencyMap();
+    } else if (base === 'vision.anomalies') {
+      // Parse --window flag from args
+      const windowArg = args.find(a => a.startsWith('--window'));
+      const windowVal = windowArg ? windowArg.split('=')[1] || args[args.indexOf(windowArg) + 1] : '1h';
+      const limit = args[0] && !args[0].startsWith('--') ? parseInt(args[0]) : 10;
+      result = await substrate.invoke({ module: 'vision', action: 'anomalies', payload: { limit, window: windowVal } });
+    } else if (base === 'vision.mode') {
+      const newMode = args[0] as 'passive' | 'advisory' | 'operative' | undefined;
+      result = await substrate.invoke({ module: 'vision', action: 'mode', payload: { mode: newMode } });
+    } else if (base === 'vision.replay') {
+      const window = args[0] || '1h';
+      result = await substrate.invoke({ module: 'vision', action: 'replay', payload: { window } });
     }
 
     // DREAM module
@@ -509,6 +525,12 @@ export async function executeCommand(
       result = await substrate.invoke({ module: 'dream', action: 'feed', payload: { dream_content: args[0] || '', dream_type: args[1] || 'dream' } });
     } else if (base === 'dream.awaken') {
       result = await substrate.invoke({ module: 'dream', action: 'awaken' });
+    } else if (base === 'dream.pulse') {
+      result = await substrate.invoke({ module: 'dream', action: 'pulse' });
+    } else if (base === 'dream.anomalies') {
+      const limit = args[0] ? parseInt(args[0]) : 10;
+      const showResolved = args.includes('--resolved');
+      result = await substrate.invoke({ module: 'dream', action: 'anomalies', payload: { limit, show_resolved: showResolved } });
     }
 
     // SYSTEM module
@@ -524,6 +546,9 @@ export async function executeCommand(
       result = await system.audit();
     } else if (base === 'system.diagnostics') {
       result = await system.diagnostics();
+    } else if (base === 'system.resilience') {
+      const role = args[0] as 'observer' | 'operator' | undefined;
+      result = await system.resilience(role);
     } else if (base === 'system.heal') {
       result = await system.heal(args[0], args[1] === 'true');
     } else if (base === 'system.restart') {
@@ -641,6 +666,15 @@ export async function executeCommand(
         return { success: false, output: '▓ ERROR: Both archived_function and target_action required\n  Usage: modernizer.implement <archived_function> <target_action>\n  Example: modernizer.implement pf-brain-systems-reasoning brain.deep_think' };
       }
       result = await modernizer.implement(args[0], args[1]);
+    } else if (base === 'modernizer.refresh') {
+      result = await substrate.invoke({ module: 'modernizer', action: 'refresh' });
+    } else if (base === 'modernizer.autopilot') {
+      result = await substrate.invoke({ module: 'modernizer', action: 'autopilot' });
+    } else if (base === 'modernizer.confidence') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.confidence <plan_id>' };
+      }
+      result = await substrate.invoke({ module: 'modernizer', action: 'confidence', payload: { plan_id: args[0] } });
     }
 
     // CORE module (Kernel)
@@ -850,6 +884,68 @@ export async function executeCommand(
       }
       const paramsStr = args.slice(2).join(' ') || '{}';
       result = await integration.enterprise.customerService(args[0], args[1] as any, JSON.parse(paramsStr));
+    }
+
+    // CORTEX module (Agency-class Orchestrator)
+    else if (base === 'cortex.status') {
+      result = await cortex.status();
+    } else if (base === 'cortex.health') {
+      result = await cortex.health();
+    } else if (base === 'cortex.pulse') {
+      result = await cortex.pulse();
+    } else if (base === 'cortex.diagnostics') {
+      result = await cortex.diagnostics();
+    } else if (base === 'cortex.mode') {
+      const mode = args[0] as 'manual' | 'shadow' | 'auto' | undefined;
+      result = await cortex.mode(mode);
+    } else if (base === 'cortex.restart') {
+      result = await cortex.restart();
+    } else if (base === 'cortex.panic') {
+      const panicAction = args[0] as 'freeze' | 'resume' | 'status' || 'status';
+      const reason = args.slice(1).join(' ') || undefined;
+      result = await cortex.panic(panicAction, reason);
+    } else if (base === 'cortex.dispatch') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Target required\n  Usage: cortex.dispatch <module.action> [args]\n  Example: cortex.dispatch brain.reflect' };
+      }
+      const [targetMod, targetAct] = args[0].split('.');
+      const dispatchArgs = args[1] ? JSON.parse(args[1]) : undefined;
+      result = await cortex.dispatch(targetMod, targetAct, dispatchArgs);
+    } else if (base === 'cortex.observe') {
+      result = await cortex.observe(args[0], args[1]?.split(','));
+    } else if (base === 'cortex.propose') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Goal required\n  Usage: cortex.propose <goal> [context]\n  Example: cortex.propose "Optimize memory tiering"' };
+      }
+      result = await cortex.propose(args[0], args.slice(1).join(' ') || undefined);
+    } else if (base === 'cortex.evaluate') {
+      result = await cortex.evaluate(args[0]);
+    } else if (base === 'cortex.apply') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Proposal ID required\n  Usage: cortex.apply <proposal_id> [target_module]' };
+      }
+      result = await cortex.apply(args[0], args[1]);
+    } else if (base === 'cortex.rollback') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Apply ID required\n  Usage: cortex.rollback <apply_id> [reason]' };
+      }
+      result = await cortex.rollback(args[0], args.slice(1).join(' ') || undefined);
+    } else if (base === 'cortex.audit') {
+      result = await cortex.audit(args[0], args[1]);
+    } else if (base === 'cortex.learn') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Outcome required\n  Usage: cortex.learn <outcome> [proposal_id] [feedback]\n  Example: cortex.learn success prop_abc123' };
+      }
+      result = await cortex.learn(args[0], args[1], args.slice(2).join(' ') || undefined);
+    } else if (base === 'cortex.summary') {
+      result = await cortex.summary();
+    } else if (base === 'cortex.plan') {
+      result = await cortex.plan(args[0]);
+    } else if (base === 'cortex.run') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Sequence ID required\n  Usage: cortex.run <sequence_id> [mode]\n  Example: cortex.run abc123 shadow' };
+      }
+      result = await cortex.run(args[0], args[1] as 'shadow' | 'production' | undefined);
     }
 
     // Unknown command

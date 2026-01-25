@@ -19,7 +19,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 
-export type SubstrateModule = 'core' | 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'ripple' | 'access' | 'system' | 'modernizer' | 'integration';
+export type SubstrateModule = 'core' | 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'ripple' | 'access' | 'system' | 'modernizer' | 'integration' | 'cortex';
 
 export interface SubstrateRequest {
   module: SubstrateModule;
@@ -861,11 +861,89 @@ class SubstrateClient {
         substrate.invoke({ module: 'integration', action: 'dev_project', payload: { adapter_id, operation, params } }),
     },
   };
+
+  // ═══════════════════════════════════════════════════════════════
+  // CORTEX MODULE v2.0 — Agency-class Orchestrator
+  // ═══════════════════════════════════════════════════════════════
+  
+  cortex = {
+    /** Get full cortex status with capabilities and circuits */
+    status: () =>
+      this.invoke({ module: 'cortex' as SubstrateModule, action: 'status' }),
+    
+    /** Get health with connected modules and circuit states */
+    health: () =>
+      this.invoke({ module: 'cortex' as SubstrateModule, action: 'health' }),
+    
+    /** Lightweight heartbeat */
+    pulse: () =>
+      this.invoke({ module: 'cortex' as SubstrateModule, action: 'pulse' }),
+    
+    /** Deep self-analysis */
+    diagnostics: () =>
+      this.invoke({ module: 'cortex' as SubstrateModule, action: 'diagnostics' }),
+    
+    /** Get or set cortex mode (manual|shadow|auto) */
+    mode: (newMode?: 'manual' | 'shadow' | 'auto') =>
+      this.invoke({ module: 'cortex' as SubstrateModule, action: 'mode', payload: { mode: newMode } }),
+    
+    /** Soft reload cortex state */
+    restart: () =>
+      this.invoke({ module: 'cortex' as SubstrateModule, action: 'restart' }),
+    
+    /** Panic mode controls */
+    panic: (action: 'freeze' | 'resume' | 'status', reason?: string) =>
+      this.invoke({ module: 'cortex' as SubstrateModule, action: 'panic', payload: { panic_action: action, reason } }),
+    
+    /** Execute module.action with governance */
+    dispatch: (targetModule: string, targetAction: string, args?: Record<string, unknown>) =>
+      this.invoke({ module: 'cortex' as SubstrateModule, action: 'dispatch', payload: { target_module: targetModule, target_action: targetAction, args } }),
+    
+    /** Subscribe to module events */
+    observe: (module?: string, eventTypes?: string[]) =>
+      this.invoke({ module: 'cortex' as SubstrateModule, action: 'observe', payload: { module, event_types: eventTypes } }),
+    
+    /** Generate improvement proposal */
+    propose: (goal: string, context?: string) =>
+      this.invoke({ module: 'cortex' as SubstrateModule, action: 'propose', payload: { goal, context } }),
+    
+    /** Score and assess proposal */
+    evaluate: (proposalId?: string, criteria?: Record<string, unknown>) =>
+      this.invoke({ module: 'cortex' as SubstrateModule, action: 'evaluate', payload: { proposal_id: proposalId, criteria } }),
+    
+    /** Execute approved changes */
+    apply: (proposalId: string, targetModule?: string) =>
+      this.invoke({ module: 'cortex' as SubstrateModule, action: 'apply', payload: { proposal_id: proposalId, target_module: targetModule } }),
+    
+    /** Rollback applied changes */
+    rollback: (applyId: string, reason?: string) =>
+      this.invoke({ module: 'cortex' as SubstrateModule, action: 'rollback', payload: { apply_id: applyId, reason } }),
+    
+    /** Query decisions and deltas */
+    audit: (since?: string, type?: string) =>
+      this.invoke({ module: 'cortex' as SubstrateModule, action: 'audit', payload: { since, type } }),
+    
+    /** Ingest outcome for reinforcement learning */
+    learn: (outcome: string, proposalId?: string, feedback?: string) =>
+      this.invoke({ module: 'cortex' as SubstrateModule, action: 'learn', payload: { outcome, proposal_id: proposalId, feedback } }),
+    
+    /** Human-readable context dump */
+    summary: () =>
+      this.invoke({ module: 'cortex' as SubstrateModule, action: 'summary' }),
+    
+    /** Rank evolution sequences by priority */
+    plan: (sequenceId?: string) =>
+      this.invoke({ module: 'cortex' as SubstrateModule, action: 'plan', payload: { sequence_id: sequenceId } }),
+    
+    /** Execute sequence in shadow mode */
+    run: (sequenceId: string, mode?: 'shadow' | 'production') =>
+      this.invoke({ module: 'cortex' as SubstrateModule, action: 'run', payload: { sequence_id: sequenceId, mode } }),
+  };
 }
 
 export const substrate = SubstrateClient.getInstance();
 
-// Quick access functions for all 12 modules
+// Quick access functions for all 13 modules (12 core + cortex orchestrator)
 export const core = substrate.core;
 export const brain = substrate.brain;
 export const decode = substrate.decode;
@@ -878,3 +956,4 @@ export const access = substrate.access;
 export const system = substrate.system;
 export const modernizer = substrate.modernizer;
 export const integration = substrate.integration;
+export const cortex = substrate.cortex;
