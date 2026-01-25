@@ -62,13 +62,15 @@ export const DEFENSE_COMMANDS: CommandDefinition[] = [
 ];
 
 export const NEXUS_COMMANDS: CommandDefinition[] = [
-  { command: 'nexus.status', description: 'Module status', category: 'nexus', icon: Zap, requiresOperator: false },
+  { command: 'nexus.status', description: 'Module status with analytics', category: 'nexus', icon: Zap, requiresOperator: false },
   { command: 'nexus.route', description: 'Route to best provider', category: 'nexus', icon: Router, requiresOperator: true, args: '<task>' },
-  { command: 'nexus.text', description: 'Text generation', category: 'nexus', icon: Zap, requiresOperator: true, args: '<prompt> [model]', example: 'nexus.text "Explain gravity"' },
-  { command: 'nexus.image', description: 'Image generation', category: 'nexus', icon: Zap, requiresOperator: true, args: '<prompt> [model]' },
-  { command: 'nexus.providers', description: 'Provider availability matrix', category: 'nexus', icon: Router, requiresOperator: false },
+  { command: 'nexus.text', description: 'Text generation via routing spine', category: 'nexus', icon: Zap, requiresOperator: true, args: '<prompt> [model]', example: 'nexus.text "Explain gravity"' },
+  { command: 'nexus.image', description: 'Image generation metadata', category: 'nexus', icon: Zap, requiresOperator: true, args: '<prompt> [model]', example: 'nexus.image "a blue fox" dalle' },
+  { command: 'nexus.providers', description: 'Provider registry + capabilities', category: 'nexus', icon: Router, requiresOperator: false },
   { command: 'nexus.route_stats', description: 'AI routing analytics (24h)', category: 'nexus', icon: Activity, requiresOperator: false },
+  { command: 'nexus.analytics', description: 'Session analytics accumulator', category: 'nexus', icon: Gauge, requiresOperator: false },
   { command: 'nexus.test', description: 'Test provider routing', category: 'nexus', icon: Zap, requiresOperator: true, args: '[prompt]' },
+  { command: 'nexus.pulse', description: 'Lightweight heartbeat', category: 'nexus', icon: Activity, requiresOperator: false },
 ];
 
 export const VISION_COMMANDS: CommandDefinition[] = [
