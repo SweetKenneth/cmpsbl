@@ -46,7 +46,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const SUBSTRATE_VERSION = "5.0.0"; // Cortex v1.0 — Agency-class autonomous proposal/evaluation/execution loop - v2026.01.25
+const SUBSTRATE_VERSION = "5.1.0"; // Vision v2.0 "Vee" — Operative Perception Engine with trace context, anomaly detection, provider analytics - v2026.01.25
 
 // ═══════════════════════════════════════════════════════════════
 // RESILIENCE EVENT LOGGING — Circuit breaker + heal audit trail
@@ -5158,75 +5158,101 @@ async function handleVision(
     }
 
     case "trace": {
-      // v3.2.0: Distributed tracing for request flows
-      const { traceId, create = false, module: traceModule, action: traceAction, duration_ms } = data;
+      // v2.0 Vee: Enhanced distributed tracing with causal chains
+      const { traceId, eventId, create = false, module: traceModule, action: traceAction, duration_ms } = data;
       
       if (create) {
-        // Create a new trace
-        const newTraceId = generateTraceId();
+        // Create a new trace with span context
+        const newTraceId = crypto.randomUUID();
+        const newSpanId = crypto.randomUUID();
         
         const { data: trace } = await supabase.from("brain_events").insert({
           event_type: 'trace_started',
           module: (traceModule as string) || 'system',
           outcome: 'success',
+          trace_id: newTraceId,
+          span_id: newSpanId,
+          source_operation: traceAction || 'manual_trace',
           data: {
             trace_id: newTraceId,
             action: traceAction,
             started_at: new Date().toISOString(),
-            metadata: { substrate_version: SUBSTRATE_VERSION }
+            metadata: { substrate_version: SUBSTRATE_VERSION, vee_version: '2.0.0' }
           }
         }).select().single();
         
         return jsonResponse({
           success: true,
           trace_id: newTraceId,
+          span_id: newSpanId,
           status: 'created',
           event_id: trace?.id,
+          vee_version: '2.0.0',
           timestamp: new Date().toISOString(),
         }, headers);
       }
       
-      if (!traceId) {
+      // Resolve trace_id from event_id if provided
+      let resolvedTraceId = traceId;
+      if (eventId && !traceId) {
+        const { data: eventData } = await supabase
+          .from("brain_events")
+          .select("trace_id")
+          .eq("id", eventId)
+          .single();
+        resolvedTraceId = eventData?.trace_id;
+      }
+      
+      if (!resolvedTraceId) {
         return jsonResponse({
           success: false,
-          error: "traceId is required, or set create=true to start a new trace",
+          error: "traceId or eventId is required, or set create=true to start a new trace",
         }, headers);
       }
       
-      // Find trace events
+      // Find trace events using new trace_id column
       const { data: traceEvents } = await supabase
         .from("brain_events")
-        .select("*")
-        .or(`data->>trace_id.eq.${traceId}`)
+        .select("id, event_type, module, outcome, created_at, span_id, parent_span_id, source_operation, correlation_keys, data")
+        .eq("trace_id", resolvedTraceId)
         .order("created_at", { ascending: true })
-        .limit(50);
+        .limit(100);
       
-      // Also check audit logs
-      const { data: auditEvents } = await supabase
-        .from("audit_logs")
-        .select("*")
-        .or(`details->>trace_id.eq.${traceId}`)
-        .order("created_at", { ascending: true })
-        .limit(20);
+      // Fallback: check data->trace_id for legacy events
+      let legacyEvents: typeof traceEvents = [];
+      if (!traceEvents || traceEvents.length === 0) {
+        const { data: legacyData } = await supabase
+          .from("brain_events")
+          .select("id, event_type, module, outcome, created_at, data")
+          .filter('data->>trace_id', 'eq', resolvedTraceId)
+          .order("created_at", { ascending: true })
+          .limit(50);
+        legacyEvents = legacyData || [];
+      }
       
-      // Build trace timeline
+      // Build trace timeline with causal chain info
       const allEvents = [
-        ...(traceEvents || []).map((e: { event_type: string; module: string; outcome: string; created_at: string; data?: Record<string, unknown> }) => ({
-          type: 'brain_event',
-          event: e.event_type,
+        ...(traceEvents || []).map((e: any) => ({
           module: e.module,
+          event_type: e.event_type,
+          created_at: e.created_at,
+          span_id: e.span_id,
+          parent_span_id: e.parent_span_id,
+          source_operation: e.source_operation,
+          correlation_keys: e.correlation_keys,
           outcome: e.outcome,
-          timestamp: e.created_at,
-          data: e.data,
+          duration_ms: e.data?.duration_ms,
         })),
-        ...(auditEvents || []).map((e: { action: string; entity_type: string; created_at: string; details?: Record<string, unknown> }) => ({
-          type: 'audit',
-          event: e.action,
-          entity: e.entity_type,
-          timestamp: e.created_at,
-          details: e.details,
+        ...legacyEvents.map((e: any) => ({
+          module: e.module,
+          event_type: e.event_type,
+          created_at: e.created_at,
+          span_id: null,
+          parent_span_id: null,
+          outcome: e.outcome,
+          legacy: true,
         })),
-      ].sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+      ].sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
       
       // Complete trace if duration provided
       if (duration_ms) {
@@ -5234,8 +5260,9 @@ async function handleVision(
           event_type: 'trace_completed',
           module: 'vision',
           outcome: 'success',
+          trace_id: resolvedTraceId,
           data: {
-            trace_id: traceId,
+            trace_id: resolvedTraceId,
             duration_ms,
             event_count: allEvents.length,
             completed_at: new Date().toISOString(),
@@ -5245,10 +5272,214 @@ async function handleVision(
       
       return jsonResponse({
         success: true,
-        trace_id: traceId,
+        trace_id: resolvedTraceId,
         event_count: allEvents.length,
         timeline: allEvents,
-        status: allEvents.length > 0 ? 'found' : 'empty',
+        status: allEvents.length > 0 ? 'ok' : 'empty',
+        vee_version: '2.0.0',
+        timestamp: new Date().toISOString(),
+      }, headers);
+    }
+
+    // ═══ v2.0 Vee: ANOMALY DETECTION ═══
+    case "anomalies": {
+      const { limit = 20, includeResolved = false, window: analysisWindow } = data;
+      
+      // Optionally run analysis first
+      if (analysisWindow) {
+        const windowMs: Record<string, number> = {
+          '5m': 5 * 60 * 1000,
+          '1h': 60 * 60 * 1000,
+          '24h': 24 * 60 * 60 * 1000,
+        };
+        const since = new Date(Date.now() - (windowMs[analysisWindow] || windowMs['1h'])).toISOString();
+        
+        // Check for error spikes
+        const { data: recentErrors } = await supabase
+          .from('brain_events')
+          .select('module, outcome')
+          .eq('outcome', 'error')
+          .gte('created_at', since);
+        
+        const errorsByModule: Record<string, number> = {};
+        (recentErrors || []).forEach((e: any) => {
+          errorsByModule[e.module] = (errorsByModule[e.module] || 0) + 1;
+        });
+        
+        // Detect anomalies and persist
+        for (const [mod, count] of Object.entries(errorsByModule)) {
+          if (count > 5) {
+            await supabase.from('vision_anomalies').insert({
+              module: mod,
+              anomaly_type: 'error_spike',
+              severity: count > 20 ? 'critical' : count > 10 ? 'high' : 'medium',
+              details: { error_count: count, window: analysisWindow },
+              detected_value: count,
+              detected_at: new Date().toISOString(),
+            });
+          }
+        }
+      }
+      
+      // Fetch anomalies
+      let query = supabase
+        .from('vision_anomalies')
+        .select('*')
+        .order('detected_at', { ascending: false })
+        .limit(limit);
+      
+      if (!includeResolved) {
+        query = query.eq('resolved', false);
+      }
+      
+      const { data: anomalies } = await query;
+      
+      // Get counts
+      const since24h = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+      const { count: totalCount } = await supabase
+        .from('vision_anomalies')
+        .select('*', { count: 'exact', head: true })
+        .gte('detected_at', since24h);
+      
+      const { count: criticalCount } = await supabase
+        .from('vision_anomalies')
+        .select('*', { count: 'exact', head: true })
+        .eq('severity', 'critical')
+        .gte('detected_at', since24h);
+      
+      return jsonResponse({
+        success: true,
+        module: 'vision',
+        action: 'anomalies',
+        anomalies: (anomalies || []).map((a: any) => ({
+          id: a.id,
+          module: a.module,
+          type: a.anomaly_type,
+          severity: a.severity,
+          detected_at: a.detected_at,
+          details: a.details,
+          resolved: a.resolved,
+        })),
+        count_24h: totalCount || 0,
+        critical_24h: criticalCount || 0,
+        vee_version: '2.0.0',
+        timestamp: new Date().toISOString(),
+      }, headers);
+    }
+
+    // ═══ v2.0 Vee: VISION MODE ═══
+    case "mode": {
+      const { set: newMode } = data;
+      
+      // Get current mode
+      const { data: configData } = await supabase
+        .from('system_config')
+        .select('value')
+        .eq('key', 'vision_mode')
+        .maybeSingle();
+      
+      let currentMode = 'operative';
+      if (configData?.value) {
+        currentMode = typeof configData.value === 'string' 
+          ? configData.value.replace(/"/g, '') 
+          : String(configData.value).replace(/"/g, '');
+      }
+      
+      // Update if new mode provided
+      if (newMode && ['passive', 'advisory', 'operative'].includes(newMode)) {
+        await supabase.from('system_config').upsert({
+          key: 'vision_mode',
+          value: `"${newMode}"`,
+          description: 'Vision module mode: passive | advisory | operative',
+          updated_at: new Date().toISOString(),
+        });
+        
+        await supabase.from('brain_events').insert({
+          event_type: 'vision_mode_change',
+          module: 'vision',
+          outcome: 'success',
+          data: { previous_mode: currentMode, new_mode: newMode },
+        });
+        
+        currentMode = newMode;
+      }
+      
+      return jsonResponse({
+        success: true,
+        module: 'vision',
+        action: 'mode',
+        mode: currentMode,
+        source: 'config',
+        available_modes: ['passive', 'advisory', 'operative'],
+        mode_descriptions: {
+          passive: 'Log anomalies only, no actions',
+          advisory: 'Log anomalies with recommendations',
+          operative: 'Auto-heal and take corrective actions',
+        },
+        vee_version: '2.0.0',
+        timestamp: new Date().toISOString(),
+      }, headers);
+    }
+
+    // ═══ v2.0 Vee: REPLAY ═══
+    case "replay": {
+      const { period = '1h' } = data;
+      const periodMs: Record<string, number> = {
+        '5m': 5 * 60 * 1000,
+        '1h': 60 * 60 * 1000,
+        '24h': 24 * 60 * 60 * 1000,
+      };
+      
+      const since = new Date(Date.now() - (periodMs[period] || periodMs['1h'])).toISOString();
+      
+      // Fetch events with trace context
+      const { data: events } = await supabase
+        .from('brain_events')
+        .select('id, event_type, module, outcome, created_at, trace_id, span_id, parent_span_id, source_operation')
+        .gte('created_at', since)
+        .order('created_at', { ascending: false })
+        .limit(500);
+      
+      // Group by trace_id
+      const traceGroups: Record<string, any[]> = {};
+      const noTraceEvents: any[] = [];
+      
+      (events || []).forEach((e: any) => {
+        if (e.trace_id) {
+          if (!traceGroups[e.trace_id]) traceGroups[e.trace_id] = [];
+          traceGroups[e.trace_id].push({
+            module: e.module,
+            event_type: e.event_type,
+            created_at: e.created_at,
+            outcome: e.outcome,
+          });
+        } else {
+          noTraceEvents.push({
+            module: e.module,
+            event_type: e.event_type,
+            created_at: e.created_at,
+            outcome: e.outcome,
+          });
+        }
+      });
+      
+      // Sort events within each trace
+      const traces = Object.entries(traceGroups).map(([traceId, evts]) => ({
+        trace_id: traceId,
+        event_count: evts.length,
+        events: evts.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()),
+      }));
+      
+      return jsonResponse({
+        success: true,
+        module: 'vision',
+        action: 'replay',
+        period,
+        trace_count: traces.length,
+        traces: traces.slice(0, 50),
+        untraced_events: noTraceEvents.length,
+        vee_version: '2.0.0',
+        read_only: true,
         timestamp: new Date().toISOString(),
       }, headers);
     }

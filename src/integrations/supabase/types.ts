@@ -2034,28 +2034,43 @@ export type Database = {
       }
       brain_events: {
         Row: {
+          correlation_keys: Json | null
           created_at: string
           data: Json | null
           event_type: string
           id: string
           module: string
           outcome: string | null
+          parent_span_id: string | null
+          source_operation: string | null
+          span_id: string | null
+          trace_id: string | null
         }
         Insert: {
+          correlation_keys?: Json | null
           created_at?: string
           data?: Json | null
           event_type: string
           id?: string
           module: string
           outcome?: string | null
+          parent_span_id?: string | null
+          source_operation?: string | null
+          span_id?: string | null
+          trace_id?: string | null
         }
         Update: {
+          correlation_keys?: Json | null
           created_at?: string
           data?: Json | null
           event_type?: string
           id?: string
           module?: string
           outcome?: string | null
+          parent_span_id?: string | null
+          source_operation?: string | null
+          span_id?: string | null
+          trace_id?: string | null
         }
         Relationships: []
       }
@@ -8580,6 +8595,57 @@ export type Database = {
           status?: string | null
           total_usage?: number | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      vision_anomalies: {
+        Row: {
+          anomaly_type: string
+          auto_action_taken: string | null
+          baseline_value: number | null
+          created_at: string
+          details: Json
+          detected_at: string
+          detected_value: number | null
+          deviation_percent: number | null
+          id: string
+          module: string
+          resolution_action: string | null
+          resolved: boolean
+          resolved_at: string | null
+          severity: string
+        }
+        Insert: {
+          anomaly_type: string
+          auto_action_taken?: string | null
+          baseline_value?: number | null
+          created_at?: string
+          details?: Json
+          detected_at?: string
+          detected_value?: number | null
+          deviation_percent?: number | null
+          id?: string
+          module: string
+          resolution_action?: string | null
+          resolved?: boolean
+          resolved_at?: string | null
+          severity?: string
+        }
+        Update: {
+          anomaly_type?: string
+          auto_action_taken?: string | null
+          baseline_value?: number | null
+          created_at?: string
+          details?: Json
+          detected_at?: string
+          detected_value?: number | null
+          deviation_percent?: number | null
+          id?: string
+          module?: string
+          resolution_action?: string | null
+          resolved?: boolean
+          resolved_at?: string | null
+          severity?: string
         }
         Relationships: []
       }
