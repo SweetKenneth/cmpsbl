@@ -172,6 +172,10 @@ class SubstrateClient {
     graphSummary: () =>
       this.invoke({ module: 'brain', action: 'graph_summary' }),
     
+    /** v5.6.0: Knowledge graph surfaces (read-only) */
+    graph: (options?: { inspect?: boolean; stats?: boolean; export?: boolean; page?: number }) =>
+      this.invoke({ module: 'brain', action: 'graph', payload: options }),
+    
     /** Get curiosity log - exploration queries */
     curiosity: () =>
       this.invoke({ module: 'brain', action: 'curiosity' }),
@@ -345,6 +349,14 @@ class SubstrateClient {
     /** v3.11.0: Module dependency map with health correlation (read-only) */
     dependencyMap: () =>
       this.invoke({ module: 'vision', action: 'dependency_map' }),
+    
+    /** v5.6.0: Inspect observability state */
+    inspect: (options?: { links?: boolean }) =>
+      this.invoke({ module: 'vision', action: 'inspect', payload: options }),
+    
+    /** v5.6.0: Diagnostics for observability */
+    diagnostics: (options?: { full?: boolean }) =>
+      this.invoke({ module: 'vision', action: 'diagnostics', payload: options }),
   };
 
   // System Module — Administration & Configuration
@@ -374,8 +386,8 @@ class SubstrateClient {
       this.invoke({ module: 'system', action: 'health' }),
     
     /** v3.1.0: Full system diagnostics including orchestrator, providers, modules */
-    diagnostics: () =>
-      this.invoke({ module: 'system', action: 'diagnostics' }),
+    diagnostics: (options?: { full?: boolean }) =>
+      this.invoke({ module: 'system', action: 'diagnostics', payload: options }),
     
     /** Restart a specific service or all services */
     restart: (service?: string) =>

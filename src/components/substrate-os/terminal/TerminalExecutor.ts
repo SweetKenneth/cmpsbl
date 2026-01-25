@@ -395,6 +395,16 @@ export async function executeCommand(
       result = await brain.graphBuild();
     } else if (base === 'brain.graph_summary') {
       result = await brain.graphSummary();
+    } else if (base === 'brain.graph') {
+      const inspect = args.includes('--inspect');
+      const stats = args.includes('--stats');
+      const exportGraph = args.includes('--export');
+      const page = args.find(a => !a.startsWith('--') && /^\d+$/.test(a));
+      result = await substrate.invoke({ 
+        module: 'brain', 
+        action: 'graph', 
+        payload: { inspect, stats, export: exportGraph, page: page ? parseInt(page) : undefined } 
+      });
     } else if (base === 'brain.curiosity') {
       result = await brain.curiosity();
     } else if (base === 'brain.explore') {
@@ -511,6 +521,12 @@ export async function executeCommand(
     } else if (base === 'vision.replay') {
       const window = args[0] || '1h';
       result = await substrate.invoke({ module: 'vision', action: 'replay', payload: { window } });
+    } else if (base === 'vision.inspect') {
+      const links = args.includes('--links');
+      result = await substrate.invoke({ module: 'vision', action: 'inspect', payload: { links } });
+    } else if (base === 'vision.diagnostics') {
+      const full = args.includes('--full');
+      result = await substrate.invoke({ module: 'vision', action: 'diagnostics', payload: { full } });
     }
 
     // DREAM module
@@ -552,7 +568,8 @@ export async function executeCommand(
     } else if (base === 'system.audit') {
       result = await system.audit();
     } else if (base === 'system.diagnostics') {
-      result = await system.diagnostics();
+      const full = args.includes('--full');
+      result = await substrate.invoke({ module: 'system', action: 'diagnostics', payload: { full } });
     } else if (base === 'system.resilience') {
       const role = args[0] as 'observer' | 'operator' | undefined;
       result = await system.resilience(role);
@@ -983,7 +1000,13 @@ export async function executeCommand(
     } else if (base === 'cortex.summary') {
       result = await cortex.summary();
     } else if (base === 'cortex.plan') {
-      result = await cortex.plan(args[0]);
+      const eligible = args.includes('--eligible');
+      const sequenceId = args.find(a => !a.startsWith('--'));
+      result = await substrate.invoke({ 
+        module: 'cortex', 
+        action: 'plan', 
+        payload: { sequence_id: sequenceId, eligible } 
+      });
     } else if (base === 'cortex.run') {
       if (!args[0]) {
         return { success: false, output: '▓ ERROR: Sequence ID required\n  Usage: cortex.run <sequence_id> [mode]\n  Example: cortex.run abc123 shadow' };
@@ -997,7 +1020,12 @@ export async function executeCommand(
       const eligible = args.includes('--eligible');
       result = await cortex.world({ dag, roles, eligible });
     } else if (base === 'cortex.inventory') {
-      result = await cortex.inventory();
+      const eligible = args.includes('--eligible');
+      result = await substrate.invoke({ 
+        module: 'cortex', 
+        action: 'inventory', 
+        payload: { eligible } 
+      });
     }
 
     // Unknown command

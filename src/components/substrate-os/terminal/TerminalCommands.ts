@@ -32,6 +32,7 @@ export const BRAIN_COMMANDS: CommandDefinition[] = [
   { command: 'brain.continuous_learn', description: 'Toggle 24/7 learning', category: 'brain', icon: Brain, requiresOperator: true, args: '<enabled>', example: 'brain.continuous_learn true' },
   { command: 'brain.graph_build', description: 'Update knowledge graph', category: 'brain', icon: Database, requiresOperator: true },
   { command: 'brain.graph_summary', description: 'Knowledge graph overview', category: 'brain', icon: Database, requiresOperator: false },
+  { command: 'brain.graph', description: 'Knowledge graph surfaces', category: 'brain', icon: Database, requiresOperator: false, args: '[--inspect|--stats|--export]' },
   { command: 'brain.curiosity', description: 'Get exploration queries', category: 'brain', icon: Search, requiresOperator: false },
   { command: 'brain.explore', description: 'Active research query', category: 'brain', icon: Search, requiresOperator: true, args: '<query>' },
   { command: 'brain.patterns', description: 'Learning patterns/insights', category: 'brain', icon: Brain, requiresOperator: false },
@@ -93,6 +94,8 @@ export const VISION_COMMANDS: CommandDefinition[] = [
   { command: 'vision.introspection', description: 'Deep self-analysis', category: 'vision', icon: Eye, requiresOperator: false },
   { command: 'vision.quota', description: 'AI usage quota', category: 'vision', icon: Gauge, requiresOperator: false },
   { command: 'vision.dependency_map', description: 'Module dependencies', category: 'vision', icon: Database, requiresOperator: false },
+  { command: 'vision.inspect', description: 'Inspect observability state', category: 'vision', icon: Eye, requiresOperator: false, args: '[--links]' },
+  { command: 'vision.diagnostics', description: 'Diagnostics for observability', category: 'vision', icon: Eye, requiresOperator: false, args: '[--full]' },
 ];
 
 export const DREAM_COMMANDS: CommandDefinition[] = [
@@ -116,7 +119,7 @@ export const SYSTEM_COMMANDS: CommandDefinition[] = [
   { command: 'system.version', description: 'Substrate version', category: 'system', icon: Cpu, requiresOperator: false },
   { command: 'system.config', description: 'View configuration', category: 'system', icon: Settings, requiresOperator: false, args: '[key]' },
   { command: 'system.audit', description: 'Query health incidents & audit log', category: 'system', icon: Eye, requiresOperator: false, args: '[since] [type]', example: 'system.audit 24h heal' },
-  { command: 'system.diagnostics', description: 'Full diagnostics', category: 'system', icon: Cpu, requiresOperator: false },
+  { command: 'system.diagnostics', description: 'Full diagnostics', category: 'system', icon: Cpu, requiresOperator: false, args: '[--full]' },
   { command: 'system.heal', description: 'Self-healing trigger', category: 'system', icon: Shield, requiresOperator: true, args: '[target] [force]' },
   { command: 'system.restart', description: 'Restart service', category: 'system', icon: Cpu, requiresOperator: true, args: '[service]' },
   { command: 'system.backup', description: 'Create backup snapshot', category: 'system', icon: Database, requiresOperator: true, args: '[include_data]' },
