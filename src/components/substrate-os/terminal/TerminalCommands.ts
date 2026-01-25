@@ -194,17 +194,33 @@ export const RIPPLE_COMMANDS: CommandDefinition[] = [
   { command: 'ripple.circuits', description: 'View subscriber circuit breakers', category: 'ripple', icon: Activity, requiresOperator: false },
 ];
 
-// ACCESS module — API keys, billing, metering
+// ACCESS module v2.0 — API keys, subscriptions, entitlements, CMPTBL products
 export const ACCESS_COMMANDS: CommandDefinition[] = [
-  { command: 'access.status', description: 'Identity module status', category: 'access', icon: Key, requiresOperator: false },
+  // Status & pulse
+  { command: 'access.status', description: 'Module status (v2.0)', category: 'access', icon: Key, requiresOperator: false },
   { command: 'access.pulse', description: 'Lightweight heartbeat', category: 'access', icon: Activity, requiresOperator: false },
-  { command: 'access.create_key', description: 'Create API key', category: 'access', icon: Key, requiresOperator: true, args: '<developer_id> [name] [scopes]', example: 'access.create_key dev_123 "My Key" read,write' },
+  
+  // Developer CRUD
+  { command: 'access.register', description: 'Register as developer (auto-creates from auth)', category: 'access', icon: Users, requiresOperator: true, args: '[display_name]', example: 'access.register "My App"' },
+  { command: 'access.developer', description: 'Get developer profile', category: 'access', icon: Users, requiresOperator: false, args: '[developer_id]' },
+  { command: 'access.developers', description: 'List all developers (admin)', category: 'access', icon: Users, requiresOperator: true },
+  
+  // API Key lifecycle
+  { command: 'access.create_key', description: 'Create API key', category: 'access', icon: Key, requiresOperator: true, args: '[name] [scopes...]', example: 'access.create_key "My Key" substrate.read substrate.write' },
   { command: 'access.validate_key', description: 'Validate API key', category: 'access', icon: Shield, requiresOperator: true, args: '<api_key>' },
   { command: 'access.revoke_key', description: 'Revoke API key', category: 'access', icon: Lock, requiresOperator: true, args: '<key_id>' },
-  { command: 'access.list_keys', description: 'List developer keys', category: 'access', icon: List, requiresOperator: false, args: '<developer_id>' },
-  { command: 'access.usage', description: 'Get usage statistics', category: 'access', icon: Gauge, requiresOperator: false, args: '[api_key_id] [start] [end]' },
-  { command: 'access.quota', description: 'Check quota remaining', category: 'access', icon: Gauge, requiresOperator: false, args: '<api_key_id>' },
-  { command: 'access.subscription', description: 'Get subscription info', category: 'access', icon: Key, requiresOperator: false, args: '<developer_id>' },
+  { command: 'access.list_keys', description: 'List your API keys', category: 'access', icon: List, requiresOperator: false },
+  
+  // Usage & Quota
+  { command: 'access.usage', description: 'Get usage statistics', category: 'access', icon: Gauge, requiresOperator: false, args: '[product_code] [days]', example: 'access.usage scan 30' },
+  { command: 'access.quota', description: 'Check quota remaining', category: 'access', icon: Gauge, requiresOperator: false, args: '[api_key_id]' },
+  
+  // Subscriptions & Entitlements
+  { command: 'access.subscription', description: 'Get subscription info', category: 'access', icon: Key, requiresOperator: false },
+  { command: 'access.entitlements', description: 'List your entitlements', category: 'access', icon: Shield, requiresOperator: false },
+  
+  // Product catalog
+  { command: 'access.products', description: 'List available products/entitlements', category: 'access', icon: Box, requiresOperator: false, args: '[category]', example: 'access.products cmptbl' },
 ];
 
 // INTEGRATION module — Enterprise adapters, auto-discovery, LLM governance

@@ -46,7 +46,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const SUBSTRATE_VERSION = "5.2.0"; // Ripple v2.0 — Hybrid Event Orchestrator with delivery semantics, worker loop, ack/nack, dead-letter, drain/replay - v2026.01.25
+const SUBSTRATE_VERSION = "5.3.0"; // Access v2.0 — Keys, Subscriptions, Entitlements, CMPTBL Product Wiring - v2026.01.25
 
 // ═══════════════════════════════════════════════════════════════
 // RESILIENCE EVENT LOGGING — Circuit breaker + heal audit trail
@@ -848,7 +848,7 @@ serve(async (req) => {
             return await handleRipple(supabase, action, params, corsHeaders);
           
           case "access":
-            return await handleAccess(supabase, action, params, corsHeaders);
+            return await handleAccess(supabase, action, params, corsHeaders, undefined);
           
           case "integration":
             return await handleIntegration(supabase, action, params, corsHeaders);
@@ -10651,13 +10651,72 @@ async function handleRipple(
 // ACCESS MODULE — Identity & Billing (API Keys, Quotas, Usage)
 // ═══════════════════════════════════════════════════════════════
 
+// ═══════════════════════════════════════════════════════════════
+// ACCESS MODULE v2.0 — Keys, Subscriptions, Entitlements, CMPTBL Products
+// ═══════════════════════════════════════════════════════════════
+
+const ACCESS_VERSION = "2.0.0";
+
+// CMPTBL Product catalog (maps to pf-access-* archived functions)
+const CMPTBL_PRODUCTS = {
+  scan: { name: 'Accessibility Scan', function: 'pf-access-scan', quota: 100 },
+  fix: { name: 'Auto Fix', function: 'pf-access-fix', quota: 50 },
+  badge: { name: 'Compliance Badge', function: 'pf-access-badge', quota: 1000 },
+  report: { name: 'Accessibility Report', function: 'pf-access-report', quota: 25 },
+  assist: { name: 'Vision Assist', function: 'pf-access-assist', quota: 200 },
+  alt_text: { name: 'Alt Text Generation', function: 'pf-access-alt-text', quota: 500 },
+  tts: { name: 'Text to Speech', function: 'pf-access-tts', quota: 200 },
+  recommendations: { name: 'Fix Recommendations', function: 'pf-access-recommendations', quota: 100 },
+};
+
 // deno-lint-ignore no-explicit-any
 async function handleAccess(
   supabase: any,
   action: string,
   data: Record<string, any>,
-  headers: Record<string, string>
+  headers: Record<string, string>,
+  userId?: string
 ) {
+  // Helper: Get or create developer from authenticated user
+  async function getOrCreateDeveloper(uid: string, displayName?: string) {
+    // Check if developer exists for this user
+    const { data: existing } = await supabase
+      .from('access_developers')
+      .select('*')
+      .eq('user_id', uid)
+      .maybeSingle();
+    
+    if (existing) return existing;
+    
+    // Auto-create developer profile
+    const { data: newDev, error } = await supabase
+      .from('access_developers')
+      .insert({
+        user_id: uid,
+        display_name: displayName || `Developer ${uid.substring(0, 8)}`,
+        status: 'active',
+      })
+      .select()
+      .single();
+    
+    if (error) {
+      console.error('[ACCESS] Failed to create developer:', error);
+      return null;
+    }
+    
+    // Auto-create free subscription
+    await supabase.from('access_subscriptions').insert({
+      developer_id: newDev.id,
+      tier: 'free',
+      plan_slug: 'substrate_free',
+      status: 'active',
+      monthly_quota: 1000,
+      entitlements: ['substrate_read', 'brain_query'],
+    });
+    
+    return newDev;
+  }
+
   switch (action) {
     case "status":
     case "pulse": {
@@ -10665,27 +10724,124 @@ async function handleAccess(
         { count: totalKeys },
         { count: activeKeys },
         { count: subscriptions },
+        { count: developers },
+        { count: products },
       ] = await Promise.all([
         supabase.from('access_api_keys').select('*', { count: 'exact', head: true }),
         supabase.from('access_api_keys').select('*', { count: 'exact', head: true }).eq('is_active', true),
         supabase.from('access_subscriptions').select('*', { count: 'exact', head: true }).eq('status', 'active'),
+        supabase.from('access_developers').select('*', { count: 'exact', head: true }).eq('status', 'active'),
+        supabase.from('access_products').select('*', { count: 'exact', head: true }).eq('is_active', true),
       ]);
 
       return jsonResponse({
         success: true,
         module: 'access',
+        version: ACCESS_VERSION,
         action,
         identity: {
+          total_developers: developers || 0,
           total_api_keys: totalKeys || 0,
           active_api_keys: activeKeys || 0,
           active_subscriptions: subscriptions || 0,
+          available_products: products || 0,
         },
+        cmptbl_products: Object.keys(CMPTBL_PRODUCTS),
         timestamp: new Date().toISOString(),
       }, headers);
     }
 
+    case "register": {
+      if (!userId) {
+        return jsonResponse({ success: false, error: 'Authentication required' }, headers);
+      }
+      
+      const { display_name } = data;
+      const developer = await getOrCreateDeveloper(userId, display_name);
+      
+      if (!developer) {
+        return jsonResponse({ success: false, error: 'Failed to register developer' }, headers);
+      }
+
+      return jsonResponse({
+        success: true,
+        module: 'access',
+        action: 'register',
+        developer: {
+          id: developer.id,
+          display_name: developer.display_name,
+          status: developer.status,
+          created_at: developer.created_at,
+        },
+        message: 'Developer registered successfully',
+      }, headers);
+    }
+
+    case "developer": {
+      const { developer_id } = data;
+      
+      let query = supabase.from('access_developers').select('id, display_name, status, created_at, updated_at');
+      
+      if (developer_id) {
+        query = query.eq('id', developer_id);
+      } else if (userId) {
+        query = query.eq('user_id', userId);
+      } else {
+        return jsonResponse({ success: false, error: 'Developer ID or authentication required' }, headers);
+      }
+      
+      const { data: developer } = await query.maybeSingle();
+      
+      return jsonResponse({
+        success: true,
+        module: 'access',
+        action: 'developer',
+        developer: developer || null,
+        found: !!developer,
+      }, headers);
+    }
+
+    case "developers": {
+      // Admin only - list all developers
+      const { limit = 50 } = data;
+      
+      const { data: developers } = await supabase
+        .from('access_developers')
+        .select('id, display_name, status, created_at')
+        .order('created_at', { ascending: false })
+        .limit(limit);
+
+      return jsonResponse({
+        success: true,
+        module: 'access',
+        action: 'developers',
+        developers: developers || [],
+        count: developers?.length || 0,
+      }, headers);
+    }
+
     case "create_key": {
-      const { developer_id, name, scopes = [], rate_limit_per_minute = 60, rate_limit_per_day = 10000 } = data;
+      // Get developer from user or create one
+      let developerId = data.developer_id;
+      
+      if (!developerId && userId) {
+        const developer = await getOrCreateDeveloper(userId);
+        if (!developer) {
+          return jsonResponse({ success: false, error: 'Failed to create developer profile' }, headers);
+        }
+        developerId = developer.id;
+      }
+      
+      if (!developerId) {
+        return jsonResponse({ success: false, error: 'Developer ID required (authenticate or provide developer_id)' }, headers);
+      }
+
+      const { name, scopes = [], rate_limit_per_minute = 60, rate_limit_per_day = 10000 } = data;
+      
+      // Parse scopes from string or array
+      const parsedScopes = Array.isArray(scopes) 
+        ? scopes 
+        : (typeof scopes === 'string' ? scopes.split(',').map((s: string) => s.trim()) : []);
       
       // Generate secure API key
       const keyBytes = new Uint8Array(32);
@@ -10699,16 +10855,27 @@ async function handleAccess(
       const keyHash = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
 
       const { data: apiKeyRecord, error } = await supabase.from('access_api_keys').insert({
-        developer_id,
+        developer_id: developerId,
         key_hash: keyHash,
         key_prefix: keyPrefix,
-        name: name || 'Unnamed Key',
-        scopes,
+        name: name || 'API Key',
+        scopes: parsedScopes.length > 0 ? parsedScopes : ['substrate.read'],
         rate_limit_per_minute,
         rate_limit_per_day,
       }).select().single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('[ACCESS] create_key error:', error);
+        return jsonResponse({ success: false, error: error.message }, headers);
+      }
+
+      // Log to Vision
+      await supabase.from('brain_events').insert({
+        module: 'access',
+        event_type: 'access_key_created',
+        outcome: 'success',
+        data: { developer_id: developerId, key_prefix: keyPrefix, scopes: parsedScopes },
+      });
 
       return jsonResponse({
         success: true,
@@ -10717,13 +10884,18 @@ async function handleAccess(
         api_key: apiKey, // Only returned once!
         key_id: apiKeyRecord.id,
         key_prefix: keyPrefix,
+        developer_id: developerId,
+        scopes: parsedScopes.length > 0 ? parsedScopes : ['substrate.read'],
         message: 'Save this key securely. It will not be shown again.',
-        scopes,
       }, headers);
     }
 
     case "validate_key": {
       const { api_key } = data;
+      
+      if (!api_key) {
+        return jsonResponse({ success: false, valid: false, error: 'API key required' }, headers);
+      }
       
       // Hash the provided key
       const encoder = new TextEncoder();
@@ -10779,9 +10951,21 @@ async function handleAccess(
     case "revoke_key": {
       const { key_id } = data;
       
+      if (!key_id) {
+        return jsonResponse({ success: false, error: 'Key ID required' }, headers);
+      }
+      
       await supabase.from('access_api_keys').update({
         is_active: false,
       }).eq('id', key_id);
+
+      // Log to Vision
+      await supabase.from('brain_events').insert({
+        module: 'access',
+        event_type: 'access_key_revoked',
+        outcome: 'success',
+        data: { key_id },
+      });
 
       return jsonResponse({
         success: true,
@@ -10793,18 +10977,33 @@ async function handleAccess(
     }
 
     case "list_keys": {
-      const { developer_id } = data;
+      let developerId = data.developer_id;
+      
+      // If no developer_id provided, try to get from authenticated user
+      if (!developerId && userId) {
+        const { data: dev } = await supabase
+          .from('access_developers')
+          .select('id')
+          .eq('user_id', userId)
+          .maybeSingle();
+        developerId = dev?.id;
+      }
+      
+      if (!developerId) {
+        return jsonResponse({ success: true, module: 'access', action: 'list_keys', keys: [], count: 0, message: 'No developer profile found' }, headers);
+      }
       
       const { data: keys } = await supabase
         .from('access_api_keys')
         .select('id, key_prefix, name, scopes, is_active, last_used_at, created_at')
-        .eq('developer_id', developer_id)
+        .eq('developer_id', developerId)
         .order('created_at', { ascending: false });
 
       return jsonResponse({
         success: true,
         module: 'access',
         action: 'list_keys',
+        developer_id: developerId,
         keys: keys || [],
         count: keys?.length || 0,
       }, headers);
@@ -10812,32 +11011,58 @@ async function handleAccess(
 
     case "usage": 
     case "get_usage": {
-      const { api_key_id, developer_id, start_date, end_date } = data;
+      const { api_key_id, developer_id, product_code, days = 30 } = data;
       
-      let query = supabase.from('access_usage').select('*').order('created_at', { ascending: false }).limit(100);
+      let devId = developer_id;
+      if (!devId && userId) {
+        const { data: dev } = await supabase
+          .from('access_developers')
+          .select('id')
+          .eq('user_id', userId)
+          .maybeSingle();
+        devId = dev?.id;
+      }
+      
+      const startDate = new Date();
+      startDate.setDate(startDate.getDate() - days);
+      
+      let query = supabase.from('access_usage')
+        .select('*')
+        .gte('created_at', startDate.toISOString())
+        .order('created_at', { ascending: false })
+        .limit(500);
+      
       if (api_key_id) query = query.eq('api_key_id', api_key_id);
-      if (developer_id) query = query.eq('developer_id', developer_id);
-      if (start_date) query = query.gte('created_at', start_date);
-      if (end_date) query = query.lte('created_at', end_date);
+      if (devId) query = query.eq('developer_id', devId);
+      if (product_code) query = query.eq('product_code', product_code);
       
       const { data: usage } = await query;
 
-      // Aggregate by module
+      // Aggregate by module and product
       const byModule: Record<string, { calls: number; tokens: number; cost_millicents: number }> = {};
+      const byProduct: Record<string, number> = {};
+      
       for (const u of usage || []) {
+        // By module
         if (!byModule[u.module]) byModule[u.module] = { calls: 0, tokens: 0, cost_millicents: 0 };
         byModule[u.module].calls++;
         byModule[u.module].tokens += u.tokens_used || 0;
         byModule[u.module].cost_millicents += u.cost_millicents || 0;
+        
+        // By product
+        if (u.product_code) {
+          byProduct[u.product_code] = (byProduct[u.product_code] || 0) + 1;
+        }
       }
 
       return jsonResponse({
         success: true,
         module: 'access',
         action: 'usage',
-        usage: usage || [],
+        period_days: days,
         summary: {
           by_module: byModule,
+          by_product: byProduct,
           total_calls: usage?.length || 0,
           total_tokens: usage?.reduce((s: number, u: { tokens_used?: number }) => s + (u.tokens_used || 0), 0) || 0,
           total_cost_millicents: usage?.reduce((s: number, u: { cost_millicents?: number }) => s + (u.cost_millicents || 0), 0) || 0,
@@ -10848,6 +11073,52 @@ async function handleAccess(
     case "quota":
     case "check_quota": {
       const { api_key_id } = data;
+      
+      if (!api_key_id) {
+        // Return general quota info for authenticated user
+        let devId = data.developer_id;
+        if (!devId && userId) {
+          const { data: dev } = await supabase
+            .from('access_developers')
+            .select('id')
+            .eq('user_id', userId)
+            .maybeSingle();
+          devId = dev?.id;
+        }
+        
+        if (devId) {
+          const { data: subscription } = await supabase
+            .from('access_subscriptions')
+            .select('monthly_quota, tier, entitlements')
+            .eq('developer_id', devId)
+            .eq('status', 'active')
+            .maybeSingle();
+          
+          const { count: usageCount } = await supabase
+            .from('access_usage')
+            .select('*', { count: 'exact', head: true })
+            .eq('developer_id', devId)
+            .gte('created_at', new Date(new Date().setDate(1)).toISOString());
+          
+          const limit = subscription?.monthly_quota || 1000;
+          const used = usageCount || 0;
+          
+          return jsonResponse({
+            success: true,
+            module: 'access',
+            action: 'quota',
+            developer_id: devId,
+            quota: {
+              tier: subscription?.tier || 'free',
+              monthly_limit: limit,
+              monthly_used: used,
+              monthly_remaining: Math.max(0, limit - used),
+              usage_percent: Math.round((used / limit) * 100),
+              reset_at: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1).toISOString(),
+            },
+          }, headers);
+        }
+      }
       
       const { data: quota } = await supabase
         .from('access_quotas')
@@ -10880,7 +11151,7 @@ async function handleAccess(
     }
 
     case "record_usage": {
-      const { api_key_id, developer_id, module: usedModule, action: usedAction, tokens_used = 0, compute_ms = 0, cost_millicents = 0 } = data;
+      const { api_key_id, developer_id, module: usedModule, action: usedAction, product_code, tokens_used = 0, compute_ms = 0, cost_millicents = 0 } = data;
 
       // Insert usage record
       await supabase.from('access_usage').insert({
@@ -10888,6 +11159,7 @@ async function handleAccess(
         developer_id,
         module: usedModule,
         action: usedAction,
+        product_code,
         tokens_used,
         compute_ms,
         cost_millicents,
@@ -10911,20 +11183,102 @@ async function handleAccess(
     }
 
     case "subscription": {
-      const { developer_id } = data;
+      let developerId = data.developer_id;
+      
+      // Auto-resolve developer from auth
+      if (!developerId && userId) {
+        const developer = await getOrCreateDeveloper(userId);
+        developerId = developer?.id;
+      }
+      
+      if (!developerId) {
+        return jsonResponse({
+          success: true,
+          module: 'access',
+          action: 'subscription',
+          subscription: { tier: 'free', monthly_quota: 1000, status: 'guest', entitlements: ['substrate_read'] },
+          message: 'Guest mode - register to unlock full access',
+        }, headers);
+      }
       
       const { data: subscription } = await supabase
         .from('access_subscriptions')
         .select('*')
-        .eq('developer_id', developer_id)
+        .eq('developer_id', developerId)
         .eq('status', 'active')
-        .single();
+        .maybeSingle();
 
       return jsonResponse({
         success: true,
         module: 'access',
         action: 'subscription',
-        subscription: subscription || { tier: 'free', monthly_quota: 1000 },
+        developer_id: developerId,
+        subscription: subscription || { tier: 'free', monthly_quota: 1000, status: 'none', entitlements: [] },
+        has_subscription: !!subscription,
+      }, headers);
+    }
+
+    case "entitlements": {
+      let developerId = data.developer_id;
+      
+      if (!developerId && userId) {
+        const { data: dev } = await supabase
+          .from('access_developers')
+          .select('id')
+          .eq('user_id', userId)
+          .maybeSingle();
+        developerId = dev?.id;
+      }
+      
+      if (!developerId) {
+        return jsonResponse({
+          success: true,
+          module: 'access',
+          action: 'entitlements',
+          entitlements: ['substrate_read'],
+          tier: 'guest',
+        }, headers);
+      }
+      
+      const { data: subscription } = await supabase
+        .from('access_subscriptions')
+        .select('tier, entitlements, plan_slug')
+        .eq('developer_id', developerId)
+        .eq('status', 'active')
+        .maybeSingle();
+
+      return jsonResponse({
+        success: true,
+        module: 'access',
+        action: 'entitlements',
+        developer_id: developerId,
+        tier: subscription?.tier || 'free',
+        plan_slug: subscription?.plan_slug || 'substrate_free',
+        entitlements: subscription?.entitlements || ['substrate_read', 'brain_query'],
+      }, headers);
+    }
+
+    case "products": {
+      const { category } = data;
+      
+      let query = supabase.from('access_products')
+        .select('code, name, description, category, monthly_quota, is_active')
+        .eq('is_active', true)
+        .order('category', { ascending: true });
+      
+      if (category) {
+        query = query.eq('category', category);
+      }
+      
+      const { data: products } = await query;
+
+      return jsonResponse({
+        success: true,
+        module: 'access',
+        action: 'products',
+        products: products || [],
+        count: products?.length || 0,
+        cmptbl_catalog: CMPTBL_PRODUCTS,
       }, headers);
     }
 
@@ -10932,8 +11286,13 @@ async function handleAccess(
       return jsonResponse({
         success: false,
         module: 'access',
+        version: ACCESS_VERSION,
         error: `Unknown access action: ${action}`,
-        available_actions: ['status', 'pulse', 'create_key', 'validate_key', 'revoke_key', 'list_keys', 'usage', 'quota', 'record_usage', 'subscription'],
+        available_actions: [
+          'status', 'pulse', 'register', 'developer', 'developers',
+          'create_key', 'validate_key', 'revoke_key', 'list_keys',
+          'usage', 'quota', 'record_usage', 'subscription', 'entitlements', 'products'
+        ],
       }, headers);
   }
 }
