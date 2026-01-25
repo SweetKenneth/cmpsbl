@@ -6,10 +6,10 @@
 import { Navigate, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { 
-  Loader2, Lock, Terminal, AlertTriangle, Database, RefreshCw, 
-  Settings, FileText, Zap, LayoutDashboard, Activity, Bot, Users, Sparkles,
+  Loader2, Lock, Terminal, AlertTriangle, RefreshCw, FileText,
+  Settings, Zap, LayoutDashboard, Activity, Bot, Users, Sparkles,
   Building2, ExternalLink, HardDrive, Wand2, Cpu, Radio, Key, Dna,
-  ChevronRight, Menu, X, Shield, Layers, Gauge, Moon, ArrowUpRight
+  ChevronRight, Menu, Shield, Layers, Gauge, ArrowUpRight
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -24,15 +24,12 @@ import { SEO } from '@/components/SEO';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserRole } from '@/hooks/useUserRole';
 import { useUserAgency } from '@/hooks/useUserAgency';
-import { useSystemAudit, useSystemConfig, useSubstrateHealthScore } from '@/hooks/useSubstrateOS';
+import { useSubstrateHealthScore } from '@/hooks/useSubstrateOS';
 import { OSHeader } from '@/components/substrate-os/OSHeader';
-import { ModuleStatusBar } from '@/components/substrate-os/ModuleStatusBar';
-import { MetricsGrid } from '@/components/substrate-os/MetricsGrid';
 import { EnhancedTerminal } from '@/components/substrate-os/EnhancedTerminal';
 import { EventStream } from '@/components/substrate-os/EventStream';
 import { BrainIntelligencePanel } from '@/components/substrate-os/BrainIntelligencePanel';
 import { SystemHealthPanel } from '@/components/substrate-os/SystemHealthPanel';
-import { HealButton } from '@/components/substrate-os/HealButton';
 import { CognitivesPanel } from '@/components/substrate-os/CognitivesPanel';
 import { BackupRestorePanel } from '@/components/substrate-os/BackupRestorePanel';
 import { EmergencyRecoveryPanel } from '@/components/substrate-os/EmergencyRecoveryPanel';
@@ -44,6 +41,7 @@ import { AgencyMintWizard } from '@/components/agency/AgencyMintWizard';
 import { AgencyGallery } from '@/components/agency/AgencyGallery';
 import { EvolutionTab } from '@/components/substrate-os/EvolutionTab';
 import { CodeAgentTab } from '@/components/substrate-os/CodeAgentTab';
+import { DashboardMetricsHero, QuickActionsPanel, ModuleControlsGrid } from '@/components/substrate-os/dashboard';
 import { cn } from '@/lib/utils';
 
 // ============================================
@@ -527,15 +525,9 @@ export default function SubstrateOS() {
                 exit={{ opacity: 0, y: -20 }}
               >
                 <EmergencyRecoveryPanel showAlways={false} isCritical={isCritical} />
-                {isOperator && (
-                  <HealButton 
-                    variant="prominent" 
-                    healthScore={healthScore.healthScore}
-                    onHealComplete={() => { healthScore.refetch(); toast.success('Dashboard refreshed'); }}
-                  />
-                )}
-                <ModuleStatusBar />
-                <MetricsGrid />
+                <DashboardMetricsHero />
+                <QuickActionsPanel enabled={isOperator} onOpenTerminal={() => setActiveTab('terminal')} />
+                <ModuleControlsGrid enabled={isOperator} />
                 <BrainIntelligencePanel enabled={isOperator} />
                 <SystemHealthPanel enabled={isOperator} />
                 <GovernorPanel enabled={isGovernor} />
@@ -781,7 +773,7 @@ export default function SubstrateOS() {
               <span>promptfluid® substrate os</span>
             </div>
             <span>•</span>
-            <span>v4.2.0</span>
+            <span>v5.5.0</span>
           </div>
           <div className="flex items-center gap-4">
             <a href="/changelog" className="hover:text-cyan-400 transition-colors">changelog</a>
