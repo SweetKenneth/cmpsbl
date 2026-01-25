@@ -149,6 +149,9 @@ export const MODERNIZER_COMMANDS: CommandDefinition[] = [
   { command: 'modernizer.implement', description: 'Generate code for archived function repurposing', category: 'modernizer', icon: Sparkles, requiresOperator: true, args: '<archived_function> <target_action>', example: 'modernizer.implement pf-brain-systems-reasoning brain.deep_think' },
   { command: 'modernizer.export', description: 'Export job assets', category: 'modernizer', icon: Database, requiresOperator: true, args: '<job_id>' },
   { command: 'modernizer.quota', description: 'Check usage limits', category: 'modernizer', icon: Gauge, requiresOperator: false },
+  { command: 'modernizer.refresh', description: 'Resync metrics and clear stale hints', category: 'modernizer', icon: Activity, requiresOperator: true },
+  { command: 'modernizer.autopilot', description: 'Confidence-gated auto-apply cycle', category: 'modernizer', icon: Sparkles, requiresOperator: true },
+  { command: 'modernizer.confidence', description: 'Evaluate plan confidence score', category: 'modernizer', icon: Gauge, requiresOperator: false, args: '<plan_id>' },
 ];
 
 // CORE module — Kernel, scheduler, lifecycle
