@@ -201,6 +201,43 @@ const INTENT_PATTERNS: Array<{
     explanation: 'Rollback applied Cortex changes',
   },
   
+  // Ripple v2 — Hybrid Event Orchestrator
+  {
+    patterns: [/ripple.*status/i, /bus.*status/i, /message.*bus/i, /queue.*status/i],
+    command: 'ripple.status',
+    explanation: 'Ripple bus status with job breakdown',
+  },
+  {
+    patterns: [/pending.*jobs/i, /list.*jobs/i, /job.*queue/i, /show.*jobs/i],
+    command: 'ripple.jobs',
+    explanation: 'List jobs with filtering',
+  },
+  {
+    patterns: [/dead.*letter/i, /failed.*jobs/i, /dlq/i],
+    command: 'ripple.dead_letter',
+    explanation: 'View dead-letter queue',
+  },
+  {
+    patterns: [/drain.*queue/i, /process.*all.*jobs/i, /empty.*queue/i],
+    command: 'ripple.drain',
+    explanation: 'Process all pending jobs in queue',
+  },
+  {
+    patterns: [/work.*job/i, /process.*job/i, /run.*job/i],
+    command: 'ripple.work',
+    explanation: 'Process job(s) from queue',
+  },
+  {
+    patterns: [/replay.*event/i, /reprocess.*event/i, /retry.*event/i],
+    command: 'ripple.replay',
+    explanation: 'Re-process events on topic',
+  },
+  {
+    patterns: [/circuit.*breaker/i, /subscriber.*circuit/i, /ripple.*circuit/i],
+    command: 'ripple.circuits',
+    explanation: 'View subscriber circuit breakers',
+  },
+
   // System Management
   {
     patterns: [/heal/i, /fix/i, /repair/i, /auto.*fix/i, /self.*heal/i],

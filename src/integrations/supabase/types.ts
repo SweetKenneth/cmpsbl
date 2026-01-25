@@ -7171,38 +7171,95 @@ export type Database = {
         }
         Relationships: []
       }
+      ripple_circuit_breakers: {
+        Row: {
+          created_at: string | null
+          failure_count: number | null
+          half_open_at: string | null
+          id: string
+          last_failure_at: string | null
+          last_success_at: string | null
+          opened_at: string | null
+          state: string | null
+          subscriber_action: string
+          subscriber_key: string
+          subscriber_module: string
+          success_count: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          failure_count?: number | null
+          half_open_at?: string | null
+          id?: string
+          last_failure_at?: string | null
+          last_success_at?: string | null
+          opened_at?: string | null
+          state?: string | null
+          subscriber_action: string
+          subscriber_key: string
+          subscriber_module: string
+          success_count?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          failure_count?: number | null
+          half_open_at?: string | null
+          id?: string
+          last_failure_at?: string | null
+          last_success_at?: string | null
+          opened_at?: string | null
+          state?: string | null
+          subscriber_action?: string
+          subscriber_key?: string
+          subscriber_module?: string
+          success_count?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       ripple_events: {
         Row: {
           correlation_id: string | null
           created_at: string | null
           event_type: string
+          fan_out_count: number | null
           id: string
+          last_fan_out_at: string | null
           payload: Json | null
           processed: boolean | null
           processed_at: string | null
           publisher_module: string | null
+          status: string | null
           topic: string
         }
         Insert: {
           correlation_id?: string | null
           created_at?: string | null
           event_type: string
+          fan_out_count?: number | null
           id?: string
+          last_fan_out_at?: string | null
           payload?: Json | null
           processed?: boolean | null
           processed_at?: string | null
           publisher_module?: string | null
+          status?: string | null
           topic: string
         }
         Update: {
           correlation_id?: string | null
           created_at?: string | null
           event_type?: string
+          fan_out_count?: number | null
           id?: string
+          last_fan_out_at?: string | null
           payload?: Json | null
           processed?: boolean | null
           processed_at?: string | null
           publisher_module?: string | null
+          status?: string | null
           topic?: string
         }
         Relationships: []
@@ -7211,8 +7268,10 @@ export type Database = {
         Row: {
           attempts: number | null
           completed_at: string | null
+          correlation_id: string | null
           created_at: string | null
           error_log: Json | null
+          event_id: string | null
           id: string
           max_attempts: number | null
           payload: Json | null
@@ -7222,12 +7281,17 @@ export type Database = {
           scheduled_for: string | null
           started_at: string | null
           status: string | null
+          subscriber_action: string | null
+          subscriber_module: string | null
+          updated_at: string | null
         }
         Insert: {
           attempts?: number | null
           completed_at?: string | null
+          correlation_id?: string | null
           created_at?: string | null
           error_log?: Json | null
+          event_id?: string | null
           id?: string
           max_attempts?: number | null
           payload?: Json | null
@@ -7237,12 +7301,17 @@ export type Database = {
           scheduled_for?: string | null
           started_at?: string | null
           status?: string | null
+          subscriber_action?: string | null
+          subscriber_module?: string | null
+          updated_at?: string | null
         }
         Update: {
           attempts?: number | null
           completed_at?: string | null
+          correlation_id?: string | null
           created_at?: string | null
           error_log?: Json | null
+          event_id?: string | null
           id?: string
           max_attempts?: number | null
           payload?: Json | null
@@ -7252,42 +7321,66 @@ export type Database = {
           scheduled_for?: string | null
           started_at?: string | null
           status?: string | null
+          subscriber_action?: string | null
+          subscriber_module?: string | null
+          updated_at?: string | null
         }
         Relationships: []
       }
       ripple_subscriptions: {
         Row: {
+          backoff_strategy: string | null
+          circuit_state: string | null
+          consecutive_failures: number | null
           created_at: string | null
           filter_conditions: Json | null
           id: string
           is_active: boolean | null
+          last_failure_at: string | null
           last_triggered_at: string | null
+          max_attempts: number | null
           subscriber_action: string
           subscriber_module: string
           topic_id: string | null
+          topic_name: string | null
           trigger_count: number | null
+          updated_at: string | null
         }
         Insert: {
+          backoff_strategy?: string | null
+          circuit_state?: string | null
+          consecutive_failures?: number | null
           created_at?: string | null
           filter_conditions?: Json | null
           id?: string
           is_active?: boolean | null
+          last_failure_at?: string | null
           last_triggered_at?: string | null
+          max_attempts?: number | null
           subscriber_action: string
           subscriber_module: string
           topic_id?: string | null
+          topic_name?: string | null
           trigger_count?: number | null
+          updated_at?: string | null
         }
         Update: {
+          backoff_strategy?: string | null
+          circuit_state?: string | null
+          consecutive_failures?: number | null
           created_at?: string | null
           filter_conditions?: Json | null
           id?: string
           is_active?: boolean | null
+          last_failure_at?: string | null
           last_triggered_at?: string | null
+          max_attempts?: number | null
           subscriber_action?: string
           subscriber_module?: string
           topic_id?: string | null
+          topic_name?: string | null
           trigger_count?: number | null
+          updated_at?: string | null
         }
         Relationships: [
           {

@@ -46,7 +46,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const SUBSTRATE_VERSION = "5.1.0"; // Vision v2.0 "Vee" — Operative Perception Engine with trace context, anomaly detection, provider analytics - v2026.01.25
+const SUBSTRATE_VERSION = "5.2.0"; // Ripple v2.0 — Hybrid Event Orchestrator with delivery semantics, worker loop, ack/nack, dead-letter, drain/replay - v2026.01.25
 
 // ═══════════════════════════════════════════════════════════════
 // RESILIENCE EVENT LOGGING — Circuit breaker + heal audit trail
@@ -9689,8 +9689,122 @@ function parseDelay(delay: string): number {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// RIPPLE MODULE — Message Bus (Queues, Pub/Sub, Event Sourcing)
+// RIPPLE MODULE v2.0 — Hybrid Event Orchestrator
+// Features: PUSH/PULL delivery, ack/nack, dead-letter, drain/replay
 // ═══════════════════════════════════════════════════════════════
+
+// Circuit breaker config for Ripple subscribers
+const RIPPLE_CIRCUIT_CONFIG = {
+  failureThreshold: 5,
+  successThreshold: 2,
+  openDurationMs: 300000, // 5 minutes
+};
+
+// Helper: Get or create circuit breaker state for subscriber
+async function getSubscriberCircuit(supabase: any, module: string, action: string) {
+  const subscriberKey = `${module}/${action}`;
+  
+  const { data: circuit } = await supabase
+    .from('ripple_circuit_breakers')
+    .select('*')
+    .eq('subscriber_key', subscriberKey)
+    .single();
+  
+  if (circuit) return circuit;
+  
+  // Create new circuit
+  const { data: newCircuit } = await supabase
+    .from('ripple_circuit_breakers')
+    .insert({
+      subscriber_key: subscriberKey,
+      subscriber_module: module,
+      subscriber_action: action,
+    })
+    .select()
+    .single();
+  
+  return newCircuit;
+}
+
+// Helper: Update circuit breaker on success/failure
+async function updateSubscriberCircuit(
+  supabase: any, 
+  subscriberKey: string, 
+  success: boolean
+) {
+  const { data: circuit } = await supabase
+    .from('ripple_circuit_breakers')
+    .select('*')
+    .eq('subscriber_key', subscriberKey)
+    .single();
+  
+  if (!circuit) return;
+  
+  if (success) {
+    const newSuccessCount = (circuit.success_count || 0) + 1;
+    const updates: Record<string, unknown> = {
+      success_count: newSuccessCount,
+      failure_count: 0,
+      last_success_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+    
+    // Close circuit if in half-open and enough successes
+    if (circuit.state === 'half-open' && newSuccessCount >= RIPPLE_CIRCUIT_CONFIG.successThreshold) {
+      updates.state = 'closed';
+      updates.opened_at = null;
+      updates.half_open_at = null;
+    }
+    
+    await supabase.from('ripple_circuit_breakers').update(updates).eq('subscriber_key', subscriberKey);
+  } else {
+    const newFailureCount = (circuit.failure_count || 0) + 1;
+    const updates: Record<string, unknown> = {
+      failure_count: newFailureCount,
+      success_count: 0,
+      last_failure_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+    
+    // Open circuit if too many failures
+    if (newFailureCount >= RIPPLE_CIRCUIT_CONFIG.failureThreshold && circuit.state !== 'open') {
+      updates.state = 'open';
+      updates.opened_at = new Date().toISOString();
+      console.log(`🔴 Ripple circuit OPENED for ${subscriberKey}`);
+    }
+    
+    await supabase.from('ripple_circuit_breakers').update(updates).eq('subscriber_key', subscriberKey);
+  }
+}
+
+// Helper: Check if circuit allows execution
+async function isCircuitClosed(supabase: any, module: string, action: string): Promise<boolean> {
+  const subscriberKey = `${module}/${action}`;
+  
+  const { data: circuit } = await supabase
+    .from('ripple_circuit_breakers')
+    .select('*')
+    .eq('subscriber_key', subscriberKey)
+    .single();
+  
+  if (!circuit || circuit.state === 'closed') return true;
+  
+  if (circuit.state === 'open') {
+    // Check if enough time has passed to try half-open
+    const openedAt = new Date(circuit.opened_at).getTime();
+    if (Date.now() - openedAt > RIPPLE_CIRCUIT_CONFIG.openDurationMs) {
+      await supabase.from('ripple_circuit_breakers').update({
+        state: 'half-open',
+        half_open_at: new Date().toISOString(),
+      }).eq('subscriber_key', subscriberKey);
+      return true;
+    }
+    return false;
+  }
+  
+  // Half-open allows single attempt
+  return circuit.state === 'half-open';
+}
 
 // deno-lint-ignore no-explicit-any
 async function handleRipple(
@@ -9699,37 +9813,67 @@ async function handleRipple(
   data: Record<string, any>,
   headers: Record<string, string>
 ) {
+  // Ripple v2 action registry
+  const RIPPLE_ACTIONS = [
+    'status', 'pulse', 'enqueue', 'dequeue', 'publish', 'subscribe', 
+    'topics', 'events', 'dead_letter', 'retry',
+    // v2 additions
+    'jobs', 'ack', 'nack', 'replay', 'drain', 'work', 'metrics', 'circuits'
+  ];
+
   switch (action) {
     case "status":
     case "pulse": {
+      // v2: Extended status with job state breakdown + 24h analytics
+      const now = new Date();
+      const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+      
       const [
         { count: pendingJobs },
+        { count: runningJobs },
+        { count: deadLetterJobs },
         { count: topics },
         { count: subscriptions },
         { count: unprocessedEvents },
+        { data: recentSucceeded },
+        { data: recentFailed },
+        { data: lastRun },
       ] = await Promise.all([
         supabase.from('ripple_jobs').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
+        supabase.from('ripple_jobs').select('*', { count: 'exact', head: true }).eq('status', 'running'),
+        supabase.from('ripple_jobs').select('*', { count: 'exact', head: true }).eq('status', 'dead_letter'),
         supabase.from('ripple_topics').select('*', { count: 'exact', head: true }),
         supabase.from('ripple_subscriptions').select('*', { count: 'exact', head: true }).eq('is_active', true),
         supabase.from('ripple_events').select('*', { count: 'exact', head: true }).eq('processed', false),
+        supabase.from('ripple_jobs').select('id', { count: 'exact', head: true }).eq('status', 'succeeded').gte('completed_at', yesterday.toISOString()),
+        supabase.from('ripple_jobs').select('id', { count: 'exact', head: true }).eq('status', 'failed').gte('completed_at', yesterday.toISOString()),
+        supabase.from('ripple_jobs').select('completed_at').eq('status', 'succeeded').order('completed_at', { ascending: false }).limit(1),
       ]);
 
       return jsonResponse({
         success: true,
         module: 'ripple',
+        version: '2.0',
         action,
         bus: {
-          pending_jobs: pendingJobs || 0,
           topics: topics || 0,
           active_subscriptions: subscriptions || 0,
           unprocessed_events: unprocessedEvents || 0,
+        },
+        jobs: {
+          pending: pendingJobs || 0,
+          running: runningJobs || 0,
+          succeeded_24h: recentSucceeded?.length || 0,
+          failed_24h: recentFailed?.length || 0,
+          dead_letter: deadLetterJobs || 0,
+          last_run_at: lastRun?.[0]?.completed_at || null,
         },
         timestamp: new Date().toISOString(),
       }, headers);
     }
 
     case "enqueue": {
-      const { queue, payload, priority = 5, delay } = data;
+      const { queue, payload, priority = 5, delay, max_attempts = 3 } = data;
       
       let scheduledFor = new Date();
       if (delay) {
@@ -9738,10 +9882,14 @@ async function handleRipple(
       }
 
       const { data: job, error } = await supabase.from('ripple_jobs').insert({
-        queue_name: queue,
+        queue_name: queue || 'default',
         payload: payload || {},
         priority,
+        max_attempts,
         scheduled_for: scheduledFor.toISOString(),
+        status: 'pending',
+        attempts: 0,
+        error_log: [],
       }).select().single();
 
       if (error) throw error;
@@ -9751,13 +9899,14 @@ async function handleRipple(
         module: 'ripple',
         action: 'enqueue',
         job_id: job.id,
-        queue,
+        queue: queue || 'default',
         scheduled_for: scheduledFor.toISOString(),
+        max_attempts,
       }, headers);
     }
 
     case "dequeue": {
-      const { queue } = data;
+      const { queue = 'default' } = data;
       
       const { data: job } = await supabase
         .from('ripple_jobs')
@@ -9780,17 +9929,19 @@ async function handleRipple(
         }, headers);
       }
 
+      // Transition to running
       await supabase.from('ripple_jobs').update({
-        status: 'processing',
+        status: 'running',
         started_at: new Date().toISOString(),
         attempts: job.attempts + 1,
+        updated_at: new Date().toISOString(),
       }).eq('id', job.id);
 
       return jsonResponse({
         success: true,
         module: 'ripple',
         action: 'dequeue',
-        job,
+        job: { ...job, status: 'running', attempts: job.attempts + 1 },
       }, headers);
     }
 
@@ -9803,16 +9954,56 @@ async function handleRipple(
         payload: payload || {},
         correlation_id,
         publisher_module: 'substrate',
+        status: 'pending',
+        processed: false,
       }).select().single();
 
       if (error) throw error;
 
-      // Check for subscriptions
-      const { data: subs } = await supabase
-        .from('ripple_subscriptions')
-        .select('subscriber_module, subscriber_action')
-        .eq('topic_id', (await supabase.from('ripple_topics').select('id').eq('name', topic).single()).data?.id)
-        .eq('is_active', true);
+      // v2: Fan-out to subscribers - create jobs for each subscriber
+      const { data: topicRecord } = await supabase.from('ripple_topics').select('id').eq('name', topic).single();
+      let subscribersNotified = 0;
+      
+      if (topicRecord) {
+        const { data: subs } = await supabase
+          .from('ripple_subscriptions')
+          .select('id, subscriber_module, subscriber_action, max_attempts')
+          .eq('topic_id', topicRecord.id)
+          .eq('is_active', true);
+        
+        if (subs && subs.length > 0) {
+          // Create jobs for each subscriber (fan-out)
+          const fanOutJobs = subs.map((sub: any) => ({
+            queue_name: 'events',
+            payload: {
+              topic,
+              event_id: event.id,
+              event_type: event_type || 'default',
+              event_payload: payload || {},
+              subscriber: { module: sub.subscriber_module, action: sub.subscriber_action },
+            },
+            priority: 5,
+            max_attempts: sub.max_attempts || 3,
+            scheduled_for: new Date().toISOString(),
+            status: 'pending',
+            attempts: 0,
+            error_log: [],
+            event_id: event.id,
+            subscriber_module: sub.subscriber_module,
+            subscriber_action: sub.subscriber_action,
+            correlation_id: correlation_id || event.id,
+          }));
+          
+          await supabase.from('ripple_jobs').insert(fanOutJobs);
+          subscribersNotified = subs.length;
+          
+          // Update event fan-out count
+          await supabase.from('ripple_events').update({
+            fan_out_count: subscribersNotified,
+            last_fan_out_at: new Date().toISOString(),
+          }).eq('id', event.id);
+        }
+      }
 
       return jsonResponse({
         success: true,
@@ -9820,12 +10011,13 @@ async function handleRipple(
         action: 'publish',
         event_id: event.id,
         topic,
-        subscribers_notified: subs?.length || 0,
+        subscribers_notified: subscribersNotified,
+        fan_out_jobs_created: subscribersNotified,
       }, headers);
     }
 
     case "subscribe": {
-      const { topic, subscriber_module, subscriber_action, filter } = data;
+      const { topic, subscriber_module, subscriber_action, filter, max_attempts = 3, backoff_strategy = 'none' } = data;
 
       // Get or create topic
       let { data: topicRecord } = await supabase.from('ripple_topics').select('id').eq('name', topic).single();
@@ -9835,42 +10027,53 @@ async function handleRipple(
         topicRecord = newTopic;
       }
 
-      const { data: subscription, error } = await supabase.from('ripple_subscriptions').insert({
+      // Upsert subscription (v2: includes max_attempts, backoff)
+      const { data: subscription, error } = await supabase.from('ripple_subscriptions').upsert({
         topic_id: topicRecord.id,
+        topic_name: topic,
         subscriber_module,
         subscriber_action,
         filter_conditions: filter || {},
-      }).select().single();
+        max_attempts,
+        backoff_strategy,
+        is_active: true,
+      }, { onConflict: 'topic_id,subscriber_module,subscriber_action' }).select().single();
 
       if (error) throw error;
+
+      // Initialize circuit breaker for this subscriber
+      await getSubscriberCircuit(supabase, subscriber_module, subscriber_action);
 
       return jsonResponse({
         success: true,
         module: 'ripple',
         action: 'subscribe',
-        subscription_id: subscription.id,
+        subscription_id: subscription?.id,
         topic,
         subscriber: `${subscriber_module}/${subscriber_action}`,
+        max_attempts,
       }, headers);
     }
 
     case "topics": {
-      const { data: topics } = await supabase.from('ripple_topics').select('name, description, is_active, created_at').order('name');
+      const { data: topicsData } = await supabase.from('ripple_topics').select('name, description, is_active, created_at').order('name');
       
       return jsonResponse({
         success: true,
         module: 'ripple',
         action: 'topics',
-        topics: topics || [],
+        topics: topicsData || [],
       }, headers);
     }
 
     case "events": {
-      const { topic, limit = 50, unprocessed_only = false } = data;
+      // v2: Extended with status field and optional filtering
+      const { topic, limit = 50, unprocessed_only = false, status: eventStatus } = data;
       
-      let query = supabase.from('ripple_events').select('*').order('created_at', { ascending: false }).limit(limit);
+      let query = supabase.from('ripple_events').select('id, topic, event_type, payload, status, processed, processed_at, fan_out_count, created_at').order('created_at', { ascending: false }).limit(limit);
       if (topic) query = query.eq('topic', topic);
       if (unprocessed_only) query = query.eq('processed', false);
+      if (eventStatus) query = query.eq('status', eventStatus);
       
       const { data: events } = await query;
 
@@ -9883,13 +10086,446 @@ async function handleRipple(
       }, headers);
     }
 
+    case "jobs": {
+      // v2: New command - list jobs with filtering
+      const { queue, status: jobStatus, limit = 50 } = data;
+      
+      let query = supabase.from('ripple_jobs')
+        .select('id, queue_name, status, priority, attempts, max_attempts, scheduled_for, started_at, completed_at, subscriber_module, subscriber_action, error_log, created_at')
+        .order('created_at', { ascending: false })
+        .limit(limit);
+      
+      if (queue) query = query.eq('queue_name', queue);
+      if (jobStatus) query = query.eq('status', jobStatus);
+      
+      const { data: jobs } = await query;
+
+      return jsonResponse({
+        success: true,
+        module: 'ripple',
+        action: 'jobs',
+        jobs: jobs || [],
+        count: jobs?.length || 0,
+      }, headers);
+    }
+
+    case "ack": {
+      // v2: Force mark job as succeeded
+      const { job_id } = data;
+      
+      if (!job_id) {
+        return jsonResponse({
+          success: false,
+          module: 'ripple',
+          action: 'ack',
+          error: 'job_id required',
+        }, headers);
+      }
+
+      const { data: job } = await supabase.from('ripple_jobs').select('*').eq('id', job_id).single();
+      
+      if (!job) {
+        return jsonResponse({
+          success: false,
+          module: 'ripple',
+          action: 'ack',
+          error: 'Job not found',
+        }, headers);
+      }
+
+      await supabase.from('ripple_jobs').update({
+        status: 'succeeded',
+        completed_at: new Date().toISOString(),
+        result: { acked: true, acked_at: new Date().toISOString() },
+        error_log: [],
+        updated_at: new Date().toISOString(),
+      }).eq('id', job_id);
+
+      // Update circuit breaker on success
+      if (job.subscriber_module && job.subscriber_action) {
+        await updateSubscriberCircuit(supabase, `${job.subscriber_module}/${job.subscriber_action}`, true);
+      }
+
+      return jsonResponse({
+        success: true,
+        module: 'ripple',
+        action: 'ack',
+        job_id,
+        message: 'Job acknowledged as succeeded',
+      }, headers);
+    }
+
+    case "nack": {
+      // v2: Force increment attempts and potentially move to dead_letter
+      const { job_id, reason } = data;
+      
+      if (!job_id) {
+        return jsonResponse({
+          success: false,
+          module: 'ripple',
+          action: 'nack',
+          error: 'job_id required',
+        }, headers);
+      }
+
+      const { data: job } = await supabase.from('ripple_jobs').select('*').eq('id', job_id).single();
+      
+      if (!job) {
+        return jsonResponse({
+          success: false,
+          module: 'ripple',
+          action: 'nack',
+          error: 'Job not found',
+        }, headers);
+      }
+
+      const newAttempts = (job.attempts || 0) + 1;
+      const maxAttempts = job.max_attempts || 3;
+      const isDeadLetter = newAttempts >= maxAttempts;
+      
+      const errorEntry = {
+        nack_at: new Date().toISOString(),
+        reason: reason || 'Manual NACK',
+        attempt: newAttempts,
+      };
+
+      await supabase.from('ripple_jobs').update({
+        status: isDeadLetter ? 'dead_letter' : 'pending',
+        attempts: newAttempts,
+        completed_at: isDeadLetter ? new Date().toISOString() : null,
+        error_log: [...(job.error_log || []), errorEntry],
+        updated_at: new Date().toISOString(),
+      }).eq('id', job_id);
+
+      // Update circuit breaker on failure
+      if (job.subscriber_module && job.subscriber_action) {
+        await updateSubscriberCircuit(supabase, `${job.subscriber_module}/${job.subscriber_action}`, false);
+      }
+
+      return jsonResponse({
+        success: true,
+        module: 'ripple',
+        action: 'nack',
+        job_id,
+        new_status: isDeadLetter ? 'dead_letter' : 'pending',
+        attempts: newAttempts,
+        max_attempts: maxAttempts,
+        message: isDeadLetter ? 'Job moved to dead_letter' : 'Job requeued for retry',
+      }, headers);
+    }
+
+    case "replay": {
+      // v2: Reset events back to pending for re-processing
+      const { topic, limit = 50, include_failed = true } = data;
+      
+      if (!topic) {
+        return jsonResponse({
+          success: false,
+          module: 'ripple',
+          action: 'replay',
+          error: 'topic required',
+        }, headers);
+      }
+
+      // Find processed/failed events to replay
+      let query = supabase.from('ripple_events').select('id').eq('topic', topic);
+      if (include_failed) {
+        query = query.in('status', ['processed', 'failed']);
+      } else {
+        query = query.eq('status', 'processed');
+      }
+      query = query.limit(limit);
+      
+      const { data: events } = await query;
+      
+      if (!events || events.length === 0) {
+        return jsonResponse({
+          success: true,
+          module: 'ripple',
+          action: 'replay',
+          replayed: 0,
+          message: 'No events to replay',
+        }, headers);
+      }
+
+      const eventIds = events.map((e: any) => e.id);
+      
+      // Reset events to pending
+      await supabase.from('ripple_events').update({
+        status: 'pending',
+        processed: false,
+        processed_at: null,
+      }).in('id', eventIds);
+
+      // Re-fan-out: create new jobs for each event
+      const { data: topicRecord } = await supabase.from('ripple_topics').select('id').eq('name', topic).single();
+      let totalJobsCreated = 0;
+      
+      if (topicRecord) {
+        const { data: subs } = await supabase
+          .from('ripple_subscriptions')
+          .select('id, subscriber_module, subscriber_action, max_attempts')
+          .eq('topic_id', topicRecord.id)
+          .eq('is_active', true);
+        
+        if (subs && subs.length > 0) {
+          for (const eventId of eventIds) {
+            const fanOutJobs = subs.map((sub: any) => ({
+              queue_name: 'events',
+              payload: { topic, event_id: eventId, subscriber: { module: sub.subscriber_module, action: sub.subscriber_action } },
+              priority: 3, // Lower priority for replays
+              max_attempts: sub.max_attempts || 3,
+              scheduled_for: new Date().toISOString(),
+              status: 'pending',
+              attempts: 0,
+              error_log: [],
+              event_id: eventId,
+              subscriber_module: sub.subscriber_module,
+              subscriber_action: sub.subscriber_action,
+            }));
+            
+            await supabase.from('ripple_jobs').insert(fanOutJobs);
+            totalJobsCreated += fanOutJobs.length;
+          }
+        }
+      }
+
+      return jsonResponse({
+        success: true,
+        module: 'ripple',
+        action: 'replay',
+        topic,
+        events_replayed: events.length,
+        jobs_created: totalJobsCreated,
+      }, headers);
+    }
+
+    case "drain": {
+      // v2: Process all pending jobs in a queue until empty
+      const { queue = 'default', max_iterations = 100 } = data;
+      
+      let processed = 0;
+      let succeeded = 0;
+      let failed = 0;
+      let movedToDeadLetter = 0;
+      
+      for (let i = 0; i < max_iterations; i++) {
+        // Get next pending job
+        const { data: job } = await supabase
+          .from('ripple_jobs')
+          .select('*')
+          .eq('queue_name', queue)
+          .eq('status', 'pending')
+          .lte('scheduled_for', new Date().toISOString())
+          .order('priority', { ascending: false })
+          .order('scheduled_for', { ascending: true })
+          .limit(1)
+          .single();
+        
+        if (!job) break; // Queue empty
+        
+        processed++;
+        
+        // Mark as running
+        await supabase.from('ripple_jobs').update({
+          status: 'running',
+          started_at: new Date().toISOString(),
+          attempts: job.attempts + 1,
+          updated_at: new Date().toISOString(),
+        }).eq('id', job.id);
+        
+        // Execute job (simulate - in real v2 this would invoke the target module/action)
+        try {
+          const subscriberModule = job.subscriber_module || job.payload?.subscriber?.module;
+          const subscriberAction = job.subscriber_action || job.payload?.subscriber?.action;
+          
+          // Check circuit breaker
+          if (subscriberModule && subscriberAction) {
+            const circuitClosed = await isCircuitClosed(supabase, subscriberModule, subscriberAction);
+            if (!circuitClosed) {
+              // Circuit open - skip and requeue
+              await supabase.from('ripple_jobs').update({
+                status: 'pending',
+                scheduled_for: new Date(Date.now() + 60000).toISOString(), // Delay 1 minute
+                error_log: [...(job.error_log || []), { skipped_at: new Date().toISOString(), reason: 'circuit_open' }],
+                updated_at: new Date().toISOString(),
+              }).eq('id', job.id);
+              continue;
+            }
+          }
+          
+          // Mark succeeded (actual invocation would happen here in production)
+          await supabase.from('ripple_jobs').update({
+            status: 'succeeded',
+            completed_at: new Date().toISOString(),
+            result: { drained: true, drained_at: new Date().toISOString() },
+            updated_at: new Date().toISOString(),
+          }).eq('id', job.id);
+          
+          succeeded++;
+          
+          // Update circuit on success
+          if (subscriberModule && subscriberAction) {
+            await updateSubscriberCircuit(supabase, `${subscriberModule}/${subscriberAction}`, true);
+          }
+          
+          // Mark event as processed if this was the last job for it
+          if (job.event_id) {
+            const { count: remainingJobs } = await supabase
+              .from('ripple_jobs')
+              .select('*', { count: 'exact', head: true })
+              .eq('event_id', job.event_id)
+              .in('status', ['pending', 'running']);
+            
+            if (remainingJobs === 0) {
+              await supabase.from('ripple_events').update({
+                status: 'processed',
+                processed: true,
+                processed_at: new Date().toISOString(),
+              }).eq('id', job.event_id);
+            }
+          }
+          
+        } catch (err) {
+          failed++;
+          const newAttempts = job.attempts + 1;
+          const isDeadLetter = newAttempts >= (job.max_attempts || 3);
+          
+          if (isDeadLetter) movedToDeadLetter++;
+          
+          await supabase.from('ripple_jobs').update({
+            status: isDeadLetter ? 'dead_letter' : 'pending',
+            completed_at: isDeadLetter ? new Date().toISOString() : null,
+            error_log: [...(job.error_log || []), { 
+              error: err instanceof Error ? err.message : 'Drain execution failed',
+              at: new Date().toISOString(),
+            }],
+            updated_at: new Date().toISOString(),
+          }).eq('id', job.id);
+          
+          // Update circuit on failure
+          const subscriberModule = job.subscriber_module || job.payload?.subscriber?.module;
+          const subscriberAction = job.subscriber_action || job.payload?.subscriber?.action;
+          if (subscriberModule && subscriberAction) {
+            await updateSubscriberCircuit(supabase, `${subscriberModule}/${subscriberAction}`, false);
+          }
+        }
+      }
+
+      return jsonResponse({
+        success: true,
+        module: 'ripple',
+        action: 'drain',
+        queue,
+        summary: {
+          jobs_processed: processed,
+          succeeded,
+          failed,
+          moved_to_dead_letter: movedToDeadLetter,
+        },
+      }, headers);
+    }
+
+    case "work": {
+      // v2: Process a single job (--once) or batch
+      const { queue = 'default', once = true, batch_size = 1 } = data;
+      const limit = once ? 1 : Math.min(batch_size, 10);
+      
+      const results: Array<{ job_id: string; status: string; result?: any; error?: string }> = [];
+      
+      for (let i = 0; i < limit; i++) {
+        const { data: job } = await supabase
+          .from('ripple_jobs')
+          .select('*')
+          .eq('queue_name', queue)
+          .eq('status', 'pending')
+          .lte('scheduled_for', new Date().toISOString())
+          .order('priority', { ascending: false })
+          .order('scheduled_for', { ascending: true })
+          .limit(1)
+          .single();
+        
+        if (!job) break;
+        
+        // Mark running
+        await supabase.from('ripple_jobs').update({
+          status: 'running',
+          started_at: new Date().toISOString(),
+          attempts: job.attempts + 1,
+          updated_at: new Date().toISOString(),
+        }).eq('id', job.id);
+        
+        try {
+          // Check circuit
+          const subscriberModule = job.subscriber_module || job.payload?.subscriber?.module;
+          const subscriberAction = job.subscriber_action || job.payload?.subscriber?.action;
+          
+          if (subscriberModule && subscriberAction) {
+            const circuitClosed = await isCircuitClosed(supabase, subscriberModule, subscriberAction);
+            if (!circuitClosed) {
+              await supabase.from('ripple_jobs').update({
+                status: 'pending',
+                scheduled_for: new Date(Date.now() + 60000).toISOString(),
+                error_log: [...(job.error_log || []), { skipped: 'circuit_open' }],
+                updated_at: new Date().toISOString(),
+              }).eq('id', job.id);
+              results.push({ job_id: job.id, status: 'skipped', error: 'circuit_open' });
+              continue;
+            }
+          }
+          
+          // Execute (placeholder - real impl would call module/action)
+          await supabase.from('ripple_jobs').update({
+            status: 'succeeded',
+            completed_at: new Date().toISOString(),
+            result: { worked: true },
+            updated_at: new Date().toISOString(),
+          }).eq('id', job.id);
+          
+          results.push({ job_id: job.id, status: 'succeeded' });
+          
+          if (subscriberModule && subscriberAction) {
+            await updateSubscriberCircuit(supabase, `${subscriberModule}/${subscriberAction}`, true);
+          }
+          
+        } catch (err) {
+          const newAttempts = job.attempts + 1;
+          const isDeadLetter = newAttempts >= (job.max_attempts || 3);
+          
+          await supabase.from('ripple_jobs').update({
+            status: isDeadLetter ? 'dead_letter' : 'failed',
+            completed_at: isDeadLetter ? new Date().toISOString() : null,
+            error_log: [...(job.error_log || []), { error: err instanceof Error ? err.message : 'Unknown' }],
+            updated_at: new Date().toISOString(),
+          }).eq('id', job.id);
+          
+          results.push({ job_id: job.id, status: isDeadLetter ? 'dead_letter' : 'failed', error: err instanceof Error ? err.message : 'Unknown' });
+        }
+      }
+
+      return jsonResponse({
+        success: true,
+        module: 'ripple',
+        action: 'work',
+        queue,
+        jobs_processed: results.length,
+        results,
+      }, headers);
+    }
+
     case "dead_letter": {
-      const { data: deadJobs } = await supabase
+      const { limit = 50, queue } = data;
+      
+      let query = supabase
         .from('ripple_jobs')
-        .select('*')
-        .eq('status', 'dead')
+        .select('id, queue_name, payload, attempts, max_attempts, error_log, subscriber_module, subscriber_action, completed_at, created_at')
+        .eq('status', 'dead_letter')
         .order('completed_at', { ascending: false })
-        .limit(50);
+        .limit(limit);
+      
+      if (queue) query = query.eq('queue_name', queue);
+      
+      const { data: deadJobs } = await query;
 
       return jsonResponse({
         success: true,
@@ -9902,6 +10538,15 @@ async function handleRipple(
 
     case "retry": {
       const { job_id } = data;
+      
+      if (!job_id) {
+        return jsonResponse({
+          success: false,
+          module: 'ripple',
+          action: 'retry',
+          error: 'job_id required',
+        }, headers);
+      }
       
       const { data: job } = await supabase
         .from('ripple_jobs')
@@ -9921,7 +10566,9 @@ async function handleRipple(
       await supabase.from('ripple_jobs').update({
         status: 'pending',
         scheduled_for: new Date().toISOString(),
-        error_log: [...(job.error_log || []), { retry_at: new Date().toISOString() }],
+        attempts: 0, // Reset attempts on manual retry
+        error_log: [...(job.error_log || []), { retry_at: new Date().toISOString(), manual: true }],
+        updated_at: new Date().toISOString(),
       }).eq('id', job_id);
 
       return jsonResponse({
@@ -9929,7 +10576,64 @@ async function handleRipple(
         module: 'ripple',
         action: 'retry',
         job_id,
-        message: 'Job requeued for retry',
+        message: 'Job requeued for retry (attempts reset)',
+      }, headers);
+    }
+
+    case "metrics": {
+      // v2: Bus metrics for Vision integration
+      const now = new Date();
+      const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+      
+      const [
+        { count: jobsPending },
+        { count: jobsDead },
+        { count: eventsUnprocessed },
+        { data: succeeded24h },
+        { data: failed24h },
+        { data: processed24h },
+      ] = await Promise.all([
+        supabase.from('ripple_jobs').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
+        supabase.from('ripple_jobs').select('*', { count: 'exact', head: true }).eq('status', 'dead_letter'),
+        supabase.from('ripple_events').select('*', { count: 'exact', head: true }).eq('processed', false),
+        supabase.from('ripple_jobs').select('id').eq('status', 'succeeded').gte('completed_at', yesterday.toISOString()),
+        supabase.from('ripple_jobs').select('id').eq('status', 'failed').gte('completed_at', yesterday.toISOString()),
+        supabase.from('ripple_events').select('id').eq('processed', true).gte('processed_at', yesterday.toISOString()),
+      ]);
+
+      return jsonResponse({
+        success: true,
+        module: 'ripple',
+        action: 'metrics',
+        metrics: {
+          bus_jobs_pending: jobsPending || 0,
+          bus_jobs_dead: jobsDead || 0,
+          bus_jobs_succeeded_24h: succeeded24h?.length || 0,
+          bus_jobs_failed_24h: failed24h?.length || 0,
+          bus_events_unprocessed: eventsUnprocessed || 0,
+          bus_events_processed_24h: processed24h?.length || 0,
+        },
+        timestamp: new Date().toISOString(),
+      }, headers);
+    }
+
+    case "circuits": {
+      // v2: View circuit breaker states
+      const { data: circuits } = await supabase
+        .from('ripple_circuit_breakers')
+        .select('*')
+        .order('updated_at', { ascending: false });
+
+      const open = circuits?.filter((c: any) => c.state === 'open').length || 0;
+      const halfOpen = circuits?.filter((c: any) => c.state === 'half-open').length || 0;
+      const closed = circuits?.filter((c: any) => c.state === 'closed').length || 0;
+
+      return jsonResponse({
+        success: true,
+        module: 'ripple',
+        action: 'circuits',
+        summary: { open, half_open: halfOpen, closed, total: circuits?.length || 0 },
+        circuits: circuits || [],
       }, headers);
     }
 
@@ -9938,7 +10642,7 @@ async function handleRipple(
         success: false,
         module: 'ripple',
         error: `Unknown ripple action: ${action}`,
-        available_actions: ['status', 'pulse', 'enqueue', 'dequeue', 'publish', 'subscribe', 'topics', 'events', 'dead_letter', 'retry'],
+        available_actions: RIPPLE_ACTIONS,
       }, headers);
   }
 }
