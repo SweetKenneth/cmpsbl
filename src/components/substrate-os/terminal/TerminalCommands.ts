@@ -74,7 +74,7 @@ export const NEXUS_COMMANDS: CommandDefinition[] = [
 ];
 
 export const VISION_COMMANDS: CommandDefinition[] = [
-  { command: 'vision.status', description: 'Module status', category: 'vision', icon: Eye, requiresOperator: false },
+  { command: 'vision.status', description: 'Module status (Vee v2.0)', category: 'vision', icon: Eye, requiresOperator: false },
   { command: 'vision.health', description: 'System-wide health', category: 'vision', icon: Activity, requiresOperator: false },
   { command: 'vision.pulse', description: 'Lightweight heartbeat', category: 'vision', icon: Activity, requiresOperator: false },
   { command: 'vision.metrics', description: 'System metrics', category: 'vision', icon: Gauge, requiresOperator: false, args: '[period] [type]' },
@@ -82,10 +82,13 @@ export const VISION_COMMANDS: CommandDefinition[] = [
   { command: 'vision.alert', description: 'Create alert', category: 'vision', icon: Activity, requiresOperator: true, args: '<severity> <message>' },
   { command: 'vision.audit', description: 'Query audit log', category: 'vision', icon: Eye, requiresOperator: false, args: '[entity] [action]' },
   { command: 'vision.dashboard', description: 'Dashboard aggregation', category: 'vision', icon: Gauge, requiresOperator: false },
-  { command: 'vision.trace', description: 'Distributed tracing', category: 'vision', icon: Eye, requiresOperator: true, args: '[traceId]' },
+  { command: 'vision.trace', description: 'Distributed tracing with causal chains', category: 'vision', icon: Eye, requiresOperator: true, args: '[traceId|eventId]', example: 'vision.trace abc123' },
   { command: 'vision.monitor', description: 'Ecosystem health', category: 'vision', icon: Eye, requiresOperator: false },
   { command: 'vision.resilience', description: 'Error analysis + auto-fix', category: 'vision', icon: Activity, requiresOperator: false },
-  { command: 'vision.analytics', description: 'Threat analytics (24h)', category: 'vision', icon: Activity, requiresOperator: false },
+  { command: 'vision.analytics', description: 'Threat + provider analytics', category: 'vision', icon: Activity, requiresOperator: false },
+  { command: 'vision.anomalies', description: 'Anomaly detection results', category: 'vision', icon: Activity, requiresOperator: false, args: '[limit] [--window 5m|1h|24h]', example: 'vision.anomalies 10 --window 1h' },
+  { command: 'vision.mode', description: 'Get/set vision mode', category: 'vision', icon: Eye, requiresOperator: false, args: '[passive|advisory|operative]' },
+  { command: 'vision.replay', description: 'Replay traces over time window', category: 'vision', icon: Eye, requiresOperator: false, args: '[5m|1h|24h]', example: 'vision.replay 1h' },
   { command: 'vision.health_snapshot', description: 'Quick health snapshot', category: 'vision', icon: Activity, requiresOperator: false },
   { command: 'vision.introspection', description: 'Deep self-analysis', category: 'vision', icon: Eye, requiresOperator: false },
   { command: 'vision.quota', description: 'AI usage quota', category: 'vision', icon: Gauge, requiresOperator: false },
