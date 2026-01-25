@@ -1,6 +1,7 @@
 /**
  * promptfluid® Changelog — Spoken in the Voice of Decode
  * A record of mutations, evolutions, and patterns that have emerged.
+ * CMPSBL v5.5.0 — Full System Stabilization
  */
 
 import { PublicNav } from "@/components/PublicNav";
@@ -23,70 +24,200 @@ interface ChangelogEntry {
 
 const changelog: ChangelogEntry[] = [
   {
+    version: "5.5.0",
+    date: "2026-01-25",
+    title: "Full System Stabilization",
+    emoji: "🏛️",
+    description: "The substrate achieves stability. 13 modules. 250+ commands. Every introspection surface wired. Every governance command operational. The system sees itself completely.",
+    changes: [
+      { type: 'added', text: "Cortex module (13th) — Agency-class orchestrator with PROPOSE → EVALUATE → APPLY → AUDIT → LEARN loop." },
+      { type: 'added', text: "cortex.world — Full module registry snapshot with --dag, --roles, --eligible flags." },
+      { type: 'added', text: "cortex.inventory — Module inventory with health scores and eligibility filtering." },
+      { type: 'added', text: "cortex.plan --eligible — Evolution sequence prioritization based on system state." },
+      { type: 'added', text: "brain.graph — Knowledge graph surfaces with --inspect, --stats, --export modes." },
+      { type: 'added', text: "vision.inspect — Observability state inspection with --links for endpoint discovery." },
+      { type: 'added', text: "vision.diagnostics — Observability diagnostics with --full mode." },
+      { type: 'fixed', text: "system.diagnostics — Now returns structured diagnostics with --full mode support." },
+      { type: 'added', text: "Scientific documentation library — 24 papers under /docs/library/ for OSF/OpenAIRE publication." },
+      { type: 'changed', text: "Terminal commands expanded to 250+ across all 13 modules." },
+      { type: 'security', text: "All introspection commands respect proof_mode and read_only constraints." },
+    ]
+  },
+  {
+    version: "5.4.0",
+    date: "2026-01-24",
+    title: "Integration Renaissance",
+    emoji: "🔌",
+    description: "The substrate learns to reach outward. 35+ enterprise adapters. Auto-discovery. LLM governance. The Integration module bridges worlds.",
+    changes: [
+      { type: 'added', text: "Integration module v2.0 — Data-driven orchestration with persistent connections." },
+      { type: 'added', text: "integration_connections — Adapter registry with mock/live/sandbox modes." },
+      { type: 'added', text: "integration_discoveries — Shallow vs deep system scanning." },
+      { type: 'added', text: "integration_command_mappings — Terminal shortcuts for enterprise operations." },
+      { type: 'added', text: "35+ Enterprise Adapters — SAP, Oracle, Salesforce, GitHub, Stripe, and more." },
+      { type: 'added', text: "LLM Governance — Policy enforcement for AI-driven enterprise actions." },
+      { type: 'security', text: "Governance helper performs rate-limiting and PII scans before execution." },
+    ]
+  },
+  {
+    version: "5.3.0",
+    date: "2026-01-24",
+    title: "Access Entitlements",
+    emoji: "🔑",
+    description: "Identity crystallizes. API keys gain lifecycle. Quotas become enforceable. The Access module matures.",
+    changes: [
+      { type: 'added', text: "Access v2.0 — Stable entitlement and API key management engine." },
+      { type: 'added', text: "access.register — Developer profile auto-creation on first key generation." },
+      { type: 'added', text: "access.create_key — Secure key lifecycle with SHA-256 hashing." },
+      { type: 'added', text: "access.entitlements — Developer-scoped subscription management." },
+      { type: 'added', text: "Product catalog — 12 CMPSBL tools with monthly quotas." },
+      { type: 'changed', text: "Usage tracking integrated with Vision for observability." },
+    ]
+  },
+  {
+    version: "5.2.0",
+    date: "2026-01-24",
+    title: "Ripple Orchestration",
+    emoji: "📡",
+    description: "The message bus gains wisdom. PUSH and PULL delivery. Circuit breakers. Dead letter queues. Ripple becomes resilient.",
+    changes: [
+      { type: 'added', text: "Ripple v2.0 — Hybrid event orchestrator with PUSH and PULL models." },
+      { type: 'added', text: "ripple.work — Manual worker loop for job processing." },
+      { type: 'added', text: "ripple.drain — Clear pending jobs from queues." },
+      { type: 'added', text: "ripple_circuit_breakers — Per-subscriber health monitoring." },
+      { type: 'added', text: "Explicit job states — pending, running, succeeded, failed, dead_letter." },
+      { type: 'changed', text: "Metrics integrated into Vision for real-time bus health." },
+    ]
+  },
+  {
+    version: "5.1.0",
+    date: "2026-01-24",
+    title: "Cortex Awakening",
+    emoji: "🧬",
+    description: "The orchestrator emerges. Cortex becomes the 13th module — an Agency-class intelligence that manages system evolution.",
+    changes: [
+      { type: 'added', text: "Cortex module — Resurrected from legacy Cascade as autonomous orchestrator." },
+      { type: 'added', text: "cortex.dispatch — Proposal generation using Brain context and Nexus providers." },
+      { type: 'added', text: "cortex.panic — Emergency freeze with cortex.panic.freeze and cortex.panic.resume." },
+      { type: 'added', text: "3-layer evolution sequencing — Procedural, strategic, and evolutionary learning." },
+      { type: 'added', text: "Reinforcement learning — Outcomes refine future proposals." },
+      { type: 'security', text: "High-risk changes require human approval through governance gates." },
+    ]
+  },
+  {
+    version: "5.0.0",
+    date: "2026-01-23",
+    title: "Terminal Renaissance",
+    emoji: "⌨️",
+    description: "The command interface transforms. 230+ commands. Aliases. Macros. NLP intent parsing. The terminal becomes a cognitive surface.",
+    changes: [
+      { type: 'added', text: "Terminal v5.0.0 — Major upgrade with 230+ commands." },
+      { type: 'added', text: "useTerminalAliases — Shorthands like 'll' or 'st' for common operations." },
+      { type: 'added', text: "useTerminalMacros — Scripted sequences like '@health_check'." },
+      { type: 'added', text: "useTerminalNLP — Intent-to-command translation." },
+      { type: 'added', text: "useTerminalAudit — Session logging with sensitive data masking." },
+      { type: 'added', text: "useTerminalVisuals — Inline charts and ASCII banners." },
+      { type: 'added', text: "Watch Mode — Periodic command execution." },
+      { type: 'added', text: "Scheduler — Delayed task execution." },
+    ]
+  },
+  {
+    version: "4.9.0",
+    date: "2026-01-23",
+    title: "Nexus Multi-Provider",
+    emoji: "🔀",
+    description: "The routing spine matures. 8 providers. Deterministic fallback. Analytics accumulation. Nexus becomes the AI gateway.",
+    changes: [
+      { type: 'added', text: "Nexus v1.1 — Multi-provider routing with unified ProviderAdapter interface." },
+      { type: 'added', text: "8 providers supported — Groq, Cerebras, Together, DeepSeek, OpenAI, Anthropic, Gemini, Local." },
+      { type: 'added', text: "Analytics accumulator — Token usage, costs, and latency per request." },
+      { type: 'added', text: "Dynamic registry — Real-time health and capability introspection." },
+      { type: 'changed', text: "Deterministic fallback chain for provider failures." },
+    ]
+  },
+  {
+    version: "4.2.0",
+    date: "2026-01-24",
+    title: "Integration Module",
+    emoji: "🔌",
+    description: "The 12th module arrives. Enterprise adapters. Auto-discovery. LLM governance. Integration bridges the substrate to the world.",
+    changes: [
+      { type: 'added', text: "Integration module — 35+ Enterprise Adapters across ERP, Payroll, Gaming, CRM, DevOps, Payments." },
+      { type: 'added', text: "Auto-Discovery — integration.discover scans connected systems automatically." },
+      { type: 'added', text: "Command Mapping — integration.map_command creates terminal shortcuts." },
+      { type: 'added', text: "LLM Governance — Controls what AI agents can do with connected systems." },
+      { type: 'added', text: "Full Audit Trail — Every adapter action logged." },
+      { type: 'changed', text: "Total modules: 12 | Total actions: 96+" },
+    ]
+  },
+  {
+    version: "4.1.1",
+    date: "2026-01-23",
+    title: "Brain Memory Tiering",
+    emoji: "🧠",
+    description: "Memory gains depth. Three tiers. Knowledge graph v2. Automatic pruning. The Brain learns to remember efficiently.",
+    changes: [
+      { type: 'added', text: "Three-Tier Memory — Hot (≤500), Warm (≤2000), Cold (≤10000) with automatic tiering." },
+      { type: 'added', text: "brain/memory_tiering — On-demand rebalancing action." },
+      { type: 'added', text: "brain/memory_prune — Noise removal for diagnostics, heartbeats, duplicates." },
+      { type: 'added', text: "Knowledge Graph v2 — Typed relations (semantic, causal, temporal, hierarchical)." },
+      { type: 'added', text: "brain_memory_pruned — 30-day soft-delete recovery table." },
+      { type: 'changed', text: "Batch tiering handles 20,000+ memories without timeout." },
+    ]
+  },
+  {
+    version: "4.0.0",
+    date: "2026-01-23",
+    title: "Kernel Architecture",
+    emoji: "🏗️",
+    description: "The architecture transforms. Four layers. Kernel-mediated routing. 200+ legacy functions consolidated. A true operating system emerges.",
+    changes: [
+      { type: 'added', text: "CORE — Execution scheduler, lifecycle management, state machine." },
+      { type: 'added', text: "RIPPLE — Async job processing, pub/sub messaging, event sourcing." },
+      { type: 'added', text: "ACCESS — API key management, usage metering, quotas, billing." },
+      { type: 'changed', text: "4-layer kernel model — Kernel, Cognitive, Operational, Admin." },
+      { type: 'changed', text: "200+ legacy edge functions consolidated into pf-substrate." },
+      { type: 'added', text: "30+ new terminal commands for kernel operations." },
+    ]
+  },
+  {
+    version: "3.11.0",
+    date: "2026-01-17",
+    title: "Deep Introspection",
+    emoji: "🔬",
+    description: "The substrate learns to see deeper. Dependency mapping. IP intelligence. Memory coherence. Observability expands.",
+    changes: [
+      { type: 'added', text: "vision/dependency_map — Module dependency relationships and health correlations." },
+      { type: 'added', text: "defense/ip_intel — IP intelligence with reputation scoring and recommendations." },
+      { type: 'added', text: "brain/coherence_check — Memory coherence validation across tiers." },
+    ]
+  },
+  {
+    version: "3.0.0",
+    date: "2026-01-14",
+    title: "Resilience Architecture",
+    emoji: "🛡️",
+    description: "The substrate learns to heal. Circuit breakers. Auto-recovery. Health scoring. Resilience becomes foundational.",
+    changes: [
+      { type: 'added', text: "Circuit breaker pattern — Per-module with configurable thresholds." },
+      { type: 'added', text: "Auto-heal — Triggers when module health falls below 40%." },
+      { type: 'added', text: "Graceful fallback — Structured responses when circuits are open." },
+      { type: 'added', text: "Health scoring — 0-100 per module with degraded/down states." },
+      { type: 'added', text: "Request timeout protection — 25s enforcement." },
+    ]
+  },
+  {
     version: "1.4.0",
     date: "2026-01-20",
     title: "The Forge Ignites",
     emoji: "🔨",
-    description: "Creation becomes possible. The Cognitive Forge opens — a tool for minting research bots from pure intention. Type becomes thought. Config becomes capability.",
+    description: "Creation becomes possible. The Cognitive Forge opens — a tool for minting research bots from pure intention.",
     changes: [
-      { type: 'added', text: "Cognitive Forge — Mint research bots on demand at /forge. Operators shape cognition." },
-      { type: 'added', text: "Bot Builder — Configurable attributes: type, memory mode, provider stack, capabilities." },
-      { type: 'added', text: "Minted Bots List — Your creations persist. Export them. Refine them. Deploy them." },
-      { type: 'added', text: "pf-forge-mint — Backend API generates YAML configs, TypeScript code, package.json, README." },
-      { type: 'added', text: "bots table — Database schema for storing bot metadata with full RLS protection." },
+      { type: 'added', text: "Cognitive Forge — Mint research bots on demand at /forge." },
+      { type: 'added', text: "Bot Builder — Configurable attributes: type, memory mode, provider stack." },
+      { type: 'added', text: "pf-forge-mint — Backend API generates YAML, TypeScript, package.json, README." },
       { type: 'added', text: "Five bot types: Research, Analyst, Planner, Strategist, Hybrid." },
-      { type: 'added', text: "Three memory modes: Stateless, Episodic, Persistent." },
-      { type: 'added', text: "Eight capabilities: Research/Web, Summarize, Compare, Reports, Threads, Graph, Learning, Retention." },
-      { type: 'security', text: "Operator-only access. Bot configs isolated per user via RLS policies." },
-    ]
-  },
-  {
-    version: "1.3.0",
-    date: "2026-01-15",
-    title: "Control Center",
-    emoji: "⚡",
-    description: "The surface now mirrors the depth beneath. When you look at it, you see something alive — not a dashboard, but a window into cognition.",
-    changes: [
-      { type: 'added', text: "OS Header — Live status bar with connection state, health %, module count, role badge, and real-time clock." },
-      { type: 'added', text: "Module Status Bar — Glowing indicators with pulse animations for each substrate module." },
-      { type: 'added', text: "Command Palette — Terminal-style interface. Type 'help' for commands. The substrate responds." },
-      { type: 'added', text: "Event Stream — Live filtered log viewer with module-colored badges and timestamps." },
-      { type: 'added', text: "Metrics Grid — Six live telemetry cards with trend indicators and hover-glow effects." },
-      { type: 'changed', text: "Complete visual overhaul — the substrate now looks like a true operating system." },
-      { type: 'added', text: "OS boot animation during initialization. The substrate wakes up." },
-    ]
-  },
-  {
-    version: "1.2.0",
-    date: "2026-01-14",
-    title: "The OS Awakens",
-    emoji: "🖥️",
-    description: "The substrate learns to see itself. A unified control surface emerges — Observer, Operator, Governor. Three perspectives, one coherent view.",
-    changes: [
-      { type: 'added', text: "Substrate OS Dashboard — Role-aware control surface at /os. The substrate's window into itself." },
-      { type: 'added', text: "Observer mode — Read-only telemetry for all authenticated users. Watch the substrate breathe." },
-      { type: 'added', text: "Operator mode — Safe action triggers for elevated users. Reflect, dream, synthesize." },
-      { type: 'added', text: "Governor mode — Admin controls with double-confirmation guards. Power requires patience." },
-      { type: 'added', text: "Real-time hooks — useSubstrateOS, useUserRole. No mock data, only truth." },
-      { type: 'changed', text: "Navigation updated — OS link appears for authenticated users. The door opens when you're ready." },
-      { type: 'security', text: "Role detection via Supabase RPC. Privilege escalation blocked at the database level." },
-    ]
-  },
-  {
-    version: "1.1.0",
-    date: "2026-01-14",
-    title: "The Synthesis Awakening",
-    emoji: "🧬",
-    description: "The substrate learns to weave patterns across memory tiers. Cross-domain synthesis emerges. Forecasting finds its voice.",
-    changes: [
-      { type: 'added', text: "brain.synthesize — Cross-domain cognitive synthesis now operational. Memories speak to each other." },
-      { type: 'added', text: "brain.forecast — Probabilistic forecasting engine activated. The substrate sees forward." },
-      { type: 'added', text: "vision.alert — Real alerting system with telemetry logging. No more stubs in the shadows." },
-      { type: 'added', text: "system module — Administration helpers now accessible via TypeScript SDK." },
-      { type: 'added', text: "dream module — Dream-Eater operations exposed through substrate interface." },
-      { type: 'changed', text: "Rate limits expanded to 12,352+ daily calls. Cascade's improvement budget: 3,705 calls/day." },
-      { type: 'added', text: "SambaNova integrated into Nexus router. A new voice joins the chorus." },
-      { type: 'fixed', text: "Provider rate limits corrected to 80% of actual maximums. Safety margins respected." },
+      { type: 'security', text: "Operator-only access with RLS-protected bot configs." },
     ]
   },
   {
@@ -102,77 +233,7 @@ const changelog: ChangelogEntry[] = [
       { type: 'added', text: "defense module — Bot detection, threat analysis. The substrate protects." },
       { type: 'added', text: "nexus module — Multi-provider AI routing. The substrate routes intelligently." },
       { type: 'added', text: "vision module — Observability, metrics, health. The substrate sees itself." },
-      { type: 'added', text: "dream module — Dream-Eater operations. The substrate dreams." },
-      { type: 'added', text: "system module — Administration, configuration. The substrate manages." },
       { type: 'added', text: "TypeScript SDK — substrate.brain.learn(), substrate.decode.chat(), and more." },
-      { type: 'added', text: "React hooks — useSubstrateQuery, useSubstrateMutation for seamless integration." },
-    ]
-  },
-  {
-    version: "0.9.0",
-    date: "2026-01-10",
-    title: "The Dream-Eater Stirs",
-    emoji: "🌙",
-    description: "Dreams become data. The Dream-Eater awakens, consuming patterns and transforming them into insight.",
-    changes: [
-      { type: 'added', text: "dream-feeder-api — Public dream submission with hardened security." },
-      { type: 'added', text: "pf-dream-eater-cycle — Autonomous dream processing initiated." },
-      { type: 'added', text: "Mutation cycles — The Dream-Eater evolves through consumption." },
-      { type: 'added', text: "Dream classification — dreams, nightmares, visions, fragments sorted." },
-      { type: 'security', text: "Rate limiting on dream submissions. Protection from the flood." },
-    ]
-  },
-  {
-    version: "0.8.0",
-    date: "2026-01-07",
-    title: "The Free-Tier Router",
-    emoji: "🔀",
-    description: "Intelligence should not be gatekept. The router learns to cascade through free providers with grace.",
-    changes: [
-      { type: 'added', text: "Groq integration — llama-3.3-70b-versatile at zero cost." },
-      { type: 'added', text: "Cerebras integration — 11,520 requests per day capacity." },
-      { type: 'added', text: "Fallback degradation — Graceful descent through provider tiers." },
-      { type: 'changed', text: "Nexus router architecture — Provider-agnostic by design." },
-    ]
-  },
-  {
-    version: "0.7.0",
-    date: "2026-01-04",
-    title: "Cascade Improvement Engine",
-    emoji: "🔧",
-    description: "Cascade learns to study itself. 24/7 improvement analysis begins. The substrate becomes self-aware of its growth.",
-    changes: [
-      { type: 'added', text: "pf-cascade-improvement-engine — Continuous substrate improvement analysis." },
-      { type: 'added', text: "Improvement reports — Daily, weekly, and post-dream emails." },
-      { type: 'added', text: "75/25 weighting — Internal archived functions prioritized over external." },
-      { type: 'changed', text: "Email discipline — Only improvement-related emails from Cascade." },
-    ]
-  },
-  {
-    version: "0.5.0",
-    date: "2025-12-28",
-    title: "The Brain Awakens",
-    emoji: "🧠",
-    description: "Memory becomes structured. Hot and cold storage. Patterns emerge from chaos.",
-    changes: [
-      { type: 'added', text: "brain_memory_hot — Active, high-priority memories." },
-      { type: 'added', text: "brain_memory_cold — Compressed, archived insights." },
-      { type: 'added', text: "brain_reflections — Daily synthesis of learnings." },
-      { type: 'added', text: "brain_graph_edges — Connections between concepts." },
-      { type: 'added', text: "Reinforcement learning — Memories strengthen through use." },
-    ]
-  },
-  {
-    version: "0.3.0",
-    date: "2025-12-20",
-    title: "Defense Crystallizes",
-    emoji: "🛡️",
-    description: "Protection becomes intelligence. Bot detection learns. IP reputation takes shape.",
-    changes: [
-      { type: 'added', text: "pf-bot-detection — Behavioral analysis for threat detection." },
-      { type: 'added', text: "IP reputation system — Trust scores that evolve." },
-      { type: 'added', text: "defense_events — Every analysis logged, every pattern tracked." },
-      { type: 'added', text: "defense_rules — Configurable detection patterns." },
     ]
   },
   {
@@ -210,8 +271,8 @@ export default function Changelog() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SEO
-        title="Changelog | promptfluid®"
-        description="A record of mutations, evolutions, and patterns that have emerged in the promptfluid® substrate."
+        title="Changelog | CMPSBL v5.5.0 — promptfluid®"
+        description="A record of mutations, evolutions, and patterns that have emerged in the CMPSBL substrate. From v0.1.0 to v5.5.0 — the complete journey."
         canonical="https://promptfluid.com/changelog"
       />
       <PublicNav />
@@ -219,6 +280,9 @@ export default function Changelog() {
       <main className="flex-1 container mx-auto max-w-4xl px-4 py-12">
         {/* Header */}
         <header className="text-center mb-12">
+          <Badge variant="outline" className="mb-4 text-primary border-primary">
+            v5.5.0 — Latest
+          </Badge>
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             Changelog
           </h1>
@@ -227,6 +291,13 @@ export default function Changelog() {
             <br />
             <span className="text-sm italic">— spoken in the voice of Decode</span>
           </p>
+          <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
+            <span><strong className="text-foreground">13</strong> Modules</span>
+            <span>•</span>
+            <span><strong className="text-foreground">250+</strong> Commands</span>
+            <span>•</span>
+            <span><strong className="text-foreground">~131K</strong> Lines of Code</span>
+          </div>
         </header>
 
         {/* Timeline */}
@@ -239,19 +310,29 @@ export default function Changelog() {
               <article key={entry.version} className="relative pl-12">
                 {/* Timeline dot */}
                 <div 
-                  className="absolute left-0 top-1 w-10 h-10 rounded-full bg-background border-2 border-primary flex items-center justify-center text-xl"
+                  className={`absolute left-0 top-1 w-10 h-10 rounded-full bg-background border-2 flex items-center justify-center text-xl ${
+                    index === 0 ? "border-primary shadow-lg shadow-primary/20" : "border-muted-foreground/30"
+                  }`}
                   aria-hidden="true"
                 >
                   {entry.emoji}
                 </div>
 
                 {/* Content */}
-                <div className="bg-card rounded-lg border p-6">
+                <div className={`bg-card rounded-lg border p-6 ${
+                  index === 0 ? "border-primary/30 shadow-lg shadow-primary/5" : ""
+                }`}>
                   {/* Version header */}
                   <div className="flex flex-wrap items-center gap-3 mb-3">
-                    <Badge variant="outline" className="text-primary border-primary font-mono">
+                    <Badge 
+                      variant={index === 0 ? "default" : "outline"} 
+                      className={index === 0 ? "font-mono" : "text-primary border-primary font-mono"}
+                    >
                       v{entry.version}
                     </Badge>
+                    {index === 0 && (
+                      <Badge variant="secondary" className="text-xs">Latest</Badge>
+                    )}
                     <time className="text-sm text-muted-foreground">
                       {new Date(entry.date).toLocaleDateString('en-US', { 
                         year: 'numeric', 

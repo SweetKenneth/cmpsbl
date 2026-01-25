@@ -1,6 +1,6 @@
 /**
- * promptfluid® substrate — OS Surface v4.2.0
- * PREMIUM EDITION — Enhanced sidebar, glassmorphic panels, smooth animations
+ * promptfluid® substrate — OS Surface v5.5.0
+ * PREMIUM EDITION — 13 modules, 250+ commands, full introspection
  */
 
 import { Navigate, Link } from 'react-router-dom';
@@ -206,7 +206,7 @@ function SidebarNav({ groups, activeTab, onTabChange, collapsed = false, onClose
         <div className="p-4 border-t border-border/30">
           <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-mono">
             <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>promptfluid® v4.2.0</span>
+            <span>CMPSBL v5.5.0</span>
           </div>
         </div>
       )}

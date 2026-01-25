@@ -1,6 +1,6 @@
 # promptfluid®
 
-## v2026.01 — Cognitive Orchestration Substrate for AI Systems
+## CMPSBL v5.5.0 — Cognitive Orchestration Substrate for AI Systems
 
 ---
 
@@ -13,8 +13,8 @@ promptfluid is a cognitive orchestration substrate that provides routing, memory
 | Property | Value |
 |----------|-------|
 | **Type** | Cognitive Orchestration Substrate |
-| **Formal Name** | promptfluid substrate |
-| **Version** | v2026.01 |
+| **Formal Name** | CMPSBL (Composable) substrate |
+| **Version** | v5.5.0 |
 | **Model Dependency** | Agnostic |
 | **Provider Dependency** | Agnostic |
 | **Infrastructure** | Commodity Cloud |
@@ -54,7 +54,12 @@ Async job queues, rate limit distribution, and service mesh connectivity.
 | **Core** | System kernel |
 | **Ripple** | Queue management |
 | **Access** | Identity & billing |
-| **Studio** | App builder |
+| **Dream** | Offline learning |
+| **Decode** | Intent interpretation |
+| **System** | Administration |
+| **Modernizer** | Self-upgrade |
+| **Integration** | Enterprise adapters |
+| **Cortex** | Autonomous orchestrator |
 
 ---
 
