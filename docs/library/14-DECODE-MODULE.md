@@ -1,0 +1,143 @@
+# CMPSBL OS Substrate — DECODE Module Deep Dive
+
+**Version 5.5.0 | Scientific Publication**
+
+---
+
+## Document Metadata
+
+| Field | Value |
+|-------|-------|
+| **Document ID** | CMPSBL-LIB-014 |
+| **Module** | DECODE |
+| **Layer** | Cognitive |
+| **Version** | v5.5.0 |
+
+---
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    CMPSBL OS SUBSTRATE                          │
+├─────────────────────────────────────────────────────────────────┤
+│  Created By:        Kenneth E Sweet Jr                          │
+│  Organization:      PromptFluid®                                │
+├─────────────────────────────────────────────────────────────────┤
+│  For licensing or acquisition inquiries:                        │
+│  Email: promptfluid@gmail.com | Phone: (214) 548-0883           │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 1. Module Overview
+
+DECODE serves as the human-machine interface layer, parsing natural language input into structured intents and routing them to appropriate handlers.
+
+| Property | Value |
+|----------|-------|
+| **Name** | DECODE |
+| **Layer** | Cognitive |
+| **Boot Order** | 5 |
+| **Dependencies** | CORE, BRAIN |
+
+---
+
+## 2. Responsibilities
+
+### 2.1 Intent Parsing
+
+DECODE transforms natural language into structured actions:
+
+```
+"Remember that the user likes dark mode"
+         │
+         ▼
+{
+  module: "brain",
+  action: "remember",
+  payload: {
+    content: "user likes dark mode",
+    memory_type: "preference"
+  }
+}
+```
+
+### 2.2 Conversation Management
+
+- Session tracking
+- Context window management
+- Multi-turn dialogue support
+- Conversation history integration
+
+### 2.3 Response Formatting
+
+DECODE formats responses for human consumption:
+- Structured data → Natural language
+- Error messages → User-friendly explanations
+- Technical details → Accessible summaries
+
+---
+
+## 3. Processing Pipeline
+
+```
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│    Input    │───►│   Analyze   │───►│   Intent    │
+│   (Text)    │    │  Structure  │    │  Classify   │
+└─────────────┘    └─────────────┘    └──────┬──────┘
+                                             │
+                                             ▼
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│   Output    │◄───│   Format    │◄───│   Execute   │
+│  (Response) │    │  Response   │    │   Handler   │
+└─────────────┘    └─────────────┘    └─────────────┘
+```
+
+---
+
+## 4. Intent Categories
+
+| Category | Examples |
+|----------|----------|
+| **Memory** | remember, recall, forget |
+| **Query** | what, how, why, explain |
+| **Command** | run, execute, trigger |
+| **Configuration** | set, configure, enable |
+| **Status** | status, health, check |
+
+---
+
+## 5. Key Operations
+
+| Operation | Description |
+|-----------|-------------|
+| `decode.status` | Interface status |
+| `decode.parse` | Parse intent from text |
+| `decode.route` | Route parsed intent |
+| `decode.history` | Conversation history |
+
+---
+
+## 6. Integration with BRAIN
+
+DECODE leverages BRAIN for context:
+
+1. **Context Retrieval** — Relevant memories fetched
+2. **Intent Enrichment** — Historical patterns applied
+3. **Response Enhancement** — Context-aware formatting
+
+---
+
+## 7. Performance Characteristics
+
+| Metric | Value |
+|--------|-------|
+| Boot time | ~5ms |
+| Parse latency | <20ms |
+| Context lookup | <50ms |
+| Response format | <10ms |
+
+---
+
+*CMPSBL OS Substrate v5.5.0*
+*© 2025-2026 PromptFluid®. All rights reserved.*
