@@ -4453,6 +4453,168 @@ export type Database = {
         }
         Relationships: []
       }
+      integration_audit_log: {
+        Row: {
+          adapter_id: string | null
+          command: string | null
+          connection_id: string | null
+          created_at: string
+          entry_type: string
+          error_message: string | null
+          governance: Json | null
+          id: string
+          outcome: string
+          params: Json | null
+        }
+        Insert: {
+          adapter_id?: string | null
+          command?: string | null
+          connection_id?: string | null
+          created_at?: string
+          entry_type: string
+          error_message?: string | null
+          governance?: Json | null
+          id?: string
+          outcome: string
+          params?: Json | null
+        }
+        Update: {
+          adapter_id?: string | null
+          command?: string | null
+          connection_id?: string | null
+          created_at?: string
+          entry_type?: string
+          error_message?: string | null
+          governance?: Json | null
+          id?: string
+          outcome?: string
+          params?: Json | null
+        }
+        Relationships: []
+      }
+      integration_command_mappings: {
+        Row: {
+          active: boolean
+          adapter_id: string
+          created_at: string
+          description: string | null
+          execution_count: number | null
+          governance_level: string
+          id: string
+          last_executed_at: string | null
+          terminal_command: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          adapter_id: string
+          created_at?: string
+          description?: string | null
+          execution_count?: number | null
+          governance_level?: string
+          id?: string
+          last_executed_at?: string | null
+          terminal_command: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          adapter_id?: string
+          created_at?: string
+          description?: string | null
+          execution_count?: number | null
+          governance_level?: string
+          id?: string
+          last_executed_at?: string | null
+          terminal_command?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      integration_connections: {
+        Row: {
+          adapter_category: string
+          adapter_name: string
+          adapter_type: string
+          adapter_version: string | null
+          capabilities: Json | null
+          config: Json | null
+          created_at: string
+          credentials_ref: string | null
+          error_message: string | null
+          id: string
+          last_latency_ms: number | null
+          last_tested_at: string | null
+          mode: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          adapter_category: string
+          adapter_name: string
+          adapter_type: string
+          adapter_version?: string | null
+          capabilities?: Json | null
+          config?: Json | null
+          created_at?: string
+          credentials_ref?: string | null
+          error_message?: string | null
+          id?: string
+          last_latency_ms?: number | null
+          last_tested_at?: string | null
+          mode?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          adapter_category?: string
+          adapter_name?: string
+          adapter_type?: string
+          adapter_version?: string | null
+          capabilities?: Json | null
+          config?: Json | null
+          created_at?: string
+          credentials_ref?: string | null
+          error_message?: string | null
+          id?: string
+          last_latency_ms?: number | null
+          last_tested_at?: string | null
+          mode?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      integration_discoveries: {
+        Row: {
+          adapter_id: string
+          depth: string
+          discovered_at: string
+          id: string
+          metadata: Json | null
+          status: string | null
+          target: string
+        }
+        Insert: {
+          adapter_id: string
+          depth?: string
+          discovered_at?: string
+          id?: string
+          metadata?: Json | null
+          status?: string | null
+          target: string
+        }
+        Update: {
+          adapter_id?: string
+          depth?: string
+          discovered_at?: string
+          id?: string
+          metadata?: Json | null
+          status?: string | null
+          target?: string
+        }
+        Relationships: []
+      }
       integration_usage: {
         Row: {
           agency_id: string | null
