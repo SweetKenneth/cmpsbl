@@ -3644,6 +3644,39 @@ export type Database = {
         }
         Relationships: []
       }
+      dream_anomalies: {
+        Row: {
+          anomaly_type: string
+          context: Json | null
+          created_at: string
+          id: string
+          message: string
+          resolved: boolean | null
+          resolved_at: string | null
+          severity: string
+        }
+        Insert: {
+          anomaly_type: string
+          context?: Json | null
+          created_at?: string
+          id?: string
+          message: string
+          resolved?: boolean | null
+          resolved_at?: string | null
+          severity?: string
+        }
+        Update: {
+          anomaly_type?: string
+          context?: Json | null
+          created_at?: string
+          id?: string
+          message?: string
+          resolved?: boolean | null
+          resolved_at?: string | null
+          severity?: string
+        }
+        Relationships: []
+      }
       dream_cycle_logs: {
         Row: {
           agency_id: string | null
@@ -3702,33 +3735,54 @@ export type Database = {
       }
       dream_eater_state: {
         Row: {
+          awaken_count: number | null
           current_mood: string
+          cycle_count_today: number | null
           dreams_consumed_today: number | null
           id: string
+          last_awaken_at: string | null
+          last_cycle_at: string | null
+          last_decay_at: string | null
           last_fed_at: string | null
           mood_score: number | null
+          mutation_history: Json | null
           mutation_level: number | null
           nightmares_consumed_today: number | null
+          reset_reason: string | null
           updated_at: string
         }
         Insert: {
+          awaken_count?: number | null
           current_mood?: string
+          cycle_count_today?: number | null
           dreams_consumed_today?: number | null
           id?: string
+          last_awaken_at?: string | null
+          last_cycle_at?: string | null
+          last_decay_at?: string | null
           last_fed_at?: string | null
           mood_score?: number | null
+          mutation_history?: Json | null
           mutation_level?: number | null
           nightmares_consumed_today?: number | null
+          reset_reason?: string | null
           updated_at?: string
         }
         Update: {
+          awaken_count?: number | null
           current_mood?: string
+          cycle_count_today?: number | null
           dreams_consumed_today?: number | null
           id?: string
+          last_awaken_at?: string | null
+          last_cycle_at?: string | null
+          last_decay_at?: string | null
           last_fed_at?: string | null
           mood_score?: number | null
+          mutation_history?: Json | null
           mutation_level?: number | null
           nightmares_consumed_today?: number | null
+          reset_reason?: string | null
           updated_at?: string
         }
         Relationships: []

@@ -46,7 +46,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const SUBSTRATE_VERSION = "4.9.0"; // Nexus v1.1 — Provider skeleton + routing spine - v2026.01.25
+const SUBSTRATE_VERSION = "4.10.0"; // Dream v1.1 — Metabolic decay + feed UX + circadian state - v2026.01.25
 
 // ═══════════════════════════════════════════════════════════════
 // RESILIENCE EVENT LOGGING — Circuit breaker + heal audit trail
@@ -5796,6 +5796,72 @@ interface DreamState {
   mutation_level: number;
   last_fed_at: string | null;
   updated_at: string;
+  // v1.1 circadian + metabolic fields
+  cycle_count_today?: number;
+  awaken_count?: number;
+  last_awaken_at?: string | null;
+  last_cycle_at?: string | null;
+  last_decay_at?: string | null;
+  reset_reason?: string | null;
+  mutation_history?: unknown[];
+}
+
+// DREAM v1.1 — Anomaly logging helper
+// deno-lint-ignore no-explicit-any
+async function logDreamAnomaly(
+  supabase: any,
+  anomalyType: string,
+  message: string,
+  context: Record<string, unknown> = {},
+  severity: 'info' | 'warning' | 'error' | 'critical' = 'warning'
+): Promise<void> {
+  try {
+    await supabase.from("dream_anomalies").insert({
+      anomaly_type: anomalyType,
+      severity,
+      message,
+      context,
+    });
+    console.log(`[DREAM ANOMALY] ${severity}: ${anomalyType} - ${message}`);
+  } catch (e) {
+    console.error("Failed to log dream anomaly:", e);
+  }
+}
+
+// DREAM v1.1 — Auto-classify dream type from text
+function classifyDreamType(text: string): 'dream' | 'nightmare' {
+  const nightmarePatterns = [
+    /nightmare/i, /terror/i, /horror/i, /scream/i, /dark/i, /death/i,
+    /chase/i, /falling/i, /trapped/i, /fear/i, /monster/i, /demon/i,
+    /blood/i, /kill/i, /drown/i, /suffocate/i, /panic/i, /anxious/i
+  ];
+  
+  for (const pattern of nightmarePatterns) {
+    if (pattern.test(text)) return 'nightmare';
+  }
+  return 'dream';
+}
+
+// DREAM v1.1 — Calculate mood decay based on idle time
+function calculateMoodDecay(lastDecayAt: string | null, currentScore: number): { newScore: number; hoursIdle: number } {
+  if (!lastDecayAt) return { newScore: currentScore, hoursIdle: 0 };
+  
+  const lastDecay = new Date(lastDecayAt).getTime();
+  const now = Date.now();
+  const hoursIdle = (now - lastDecay) / (1000 * 60 * 60);
+  
+  // Decay 0.01 per hour, minimum 0.10
+  const decay = hoursIdle * 0.01;
+  const newScore = Math.max(0.10, currentScore - decay);
+  
+  return { newScore, hoursIdle };
+}
+
+// DREAM v1.1 — Mutation curve (slow gain above 10, cap at 20)
+function calculateMutationGain(currentLevel: number): number {
+  if (currentLevel >= 20) return 0; // Hard cap
+  if (currentLevel >= 10) return 0.5; // Slow gain above 10
+  return 1; // Normal gain below 10
 }
 
 interface DreamRecord {
@@ -6249,6 +6315,12 @@ async function handleDream(
           .single();
 
         if (findError || !dream) {
+          // v1.1: Log anomaly for unknown ID
+          await logDreamAnomaly(supabase, 'unknown_id', `Dream consume failed: ID not found`, {
+            dream_id,
+            error: findError?.message,
+          });
+          
           return jsonResponse({
             success: false,
             module: "dream",
@@ -6287,9 +6359,31 @@ async function handleDream(
           metadata: { dream_id, mood: dream.mood, insight: dream.insight },
         });
 
-        // Update Dream-Eater state
+        // Update Dream-Eater state with v1.1 mutation curve
         const currentState = await getDreamState(supabase);
         const isNightmare = dream.mood?.toLowerCase().includes("nightmare") || dream.mood?.toLowerCase().includes("dark");
+        
+        // v1.1: Apply mutation curve (slow gain above 10, cap at 20)
+        const mutationGain = calculateMutationGain(currentState.mutation_level || 0);
+        const newMutationLevel = Math.min(20, (currentState.mutation_level || 0) + mutationGain);
+        
+        // v1.1: Mutation affects consume speed (tiny effect on mood boost)
+        const mutationBonus = Math.min(0.05, (currentState.mutation_level || 0) * 0.002);
+        const moodBoost = 0.05 + mutationBonus;
+        const newMoodScore = Math.min(1.0, (currentState.mood_score || 0.50) + moodBoost);
+        
+        // Track mutation history
+        const mutationHistory = (currentState.mutation_history || []) as unknown[];
+        if (mutationGain > 0) {
+          mutationHistory.push({
+            timestamp: new Date().toISOString(),
+            from: currentState.mutation_level || 0,
+            to: newMutationLevel,
+            trigger: 'consume',
+          });
+          // Keep only last 20 entries
+          while (mutationHistory.length > 20) mutationHistory.shift();
+        }
         
         await updateDreamState(supabase, currentState.id, {
           dreams_consumed_today: (currentState.dreams_consumed_today || 0) + 1,
@@ -6297,6 +6391,10 @@ async function handleDream(
             ? (currentState.nightmares_consumed_today || 0) + 1 
             : currentState.nightmares_consumed_today,
           last_fed_at: new Date().toISOString(),
+          mood_score: newMoodScore,
+          mutation_level: newMutationLevel,
+          mutation_history: mutationHistory as unknown as undefined,
+          last_decay_at: new Date().toISOString(), // Reset decay on consume
         });
 
         // Log consumption
@@ -6304,7 +6402,13 @@ async function handleDream(
           event_type: "dream_consumed",
           module: "dream",
           outcome: "success",
-          data: { dream_id, mood: dream.mood, is_nightmare: isNightmare },
+          data: { 
+            dream_id, 
+            mood: dream.mood, 
+            is_nightmare: isNightmare,
+            mutation_gain: mutationGain,
+            new_mutation_level: newMutationLevel,
+          },
         });
 
         return jsonResponse({
@@ -6314,9 +6418,21 @@ async function handleDream(
           dream: updatedDream || dream,
           consumed_at: new Date().toISOString(),
           brain_memory_created: true,
+          mutation: {
+            gain: mutationGain,
+            new_level: newMutationLevel,
+            cap: 20,
+          },
+          mood_boost: moodBoost,
         }, headers);
       } catch (error) {
         console.error("Dream consume error:", error);
+        // v1.1: Log anomaly for failed consume
+        await logDreamAnomaly(supabase, 'failed_consume', 'Consume operation failed', {
+          dream_id,
+          error: error instanceof Error ? error.message : 'Unknown',
+        }, 'error');
+        
         return jsonResponse({
           success: false,
           module: "dream",
@@ -6416,20 +6532,34 @@ async function handleDream(
     }
 
     case "awaken": {
-      // Reset dream cycle for a new day
+      // v1.1: Reset dream cycle with reset_reason tracking
+      const { reason } = data;
+      const resetReason = reason || "circadian_reset";
+      
       try {
         const currentState = await getDreamState(supabase);
         const updatedState = await updateDreamState(supabase, currentState.id, {
           dreams_consumed_today: 0,
           nightmares_consumed_today: 0,
+          cycle_count_today: 0,
           current_mood: "awakening",
+          mood_score: 0.50, // Reset mood on awaken
+          awaken_count: (currentState.awaken_count || 0) + 1,
+          last_awaken_at: new Date().toISOString(),
+          last_decay_at: new Date().toISOString(), // Reset decay timer
+          reset_reason: resetReason,
         });
 
         await supabase.from("brain_events").insert({
           event_type: "dream_awaken",
           module: "dream",
           outcome: "success",
-          data: { previous_mood: currentState.current_mood },
+          data: { 
+            previous_mood: currentState.current_mood,
+            previous_mood_score: currentState.mood_score,
+            reset_reason: resetReason,
+            awaken_count: (currentState.awaken_count || 0) + 1,
+          },
         });
 
         return jsonResponse({
@@ -6437,6 +6567,8 @@ async function handleDream(
           module: "dream",
           action: "awaken",
           message: "Dream-Eater awakens. Daily counters reset.",
+          reset_reason: resetReason,
+          awaken_count: (currentState.awaken_count || 0) + 1,
           state: updatedState || currentState,
           timestamp: new Date().toISOString(),
         }, headers);
@@ -6451,24 +6583,100 @@ async function handleDream(
     }
 
     case "status": {
-      // Get Dream-Eater state with enriched data
+      // v1.1: Enhanced status with histograms, mood distribution, and telemetry
       const currentState = await getDreamState(supabase);
 
-      const { count: dreamCount } = await supabase
-        .from("cascade_dreams")
-        .select("*", { count: "exact", head: true });
+      // Apply mood decay before reporting
+      const { newScore, hoursIdle } = calculateMoodDecay(
+        currentState.last_decay_at || currentState.updated_at,
+        currentState.mood_score || 0.50
+      );
+      
+      // Update decay if significant time passed (>1 hour)
+      if (hoursIdle >= 1) {
+        await updateDreamState(supabase, currentState.id, {
+          mood_score: newScore,
+          last_decay_at: new Date().toISOString(),
+        });
+        currentState.mood_score = newScore;
+      }
 
-      const { data: recentDreams } = await supabase
-        .from("cascade_dreams")
-        .select("id, mood, created_at")
-        .order("created_at", { ascending: false })
-        .limit(5);
+      // Get total counts
+      const [
+        { count: dreamCount },
+        { count: nightmareCount },
+        { data: recentDreams },
+        { data: moodDistribution },
+        { count: anomalyCount }
+      ] = await Promise.all([
+        supabase.from("cascade_dreams").select("*", { count: "exact", head: true }),
+        supabase.from("cascade_dreams").select("*", { count: "exact", head: true })
+          .or("mood.ilike.%nightmare%,mood.ilike.%dark%,mood.ilike.%terror%"),
+        supabase.from("cascade_dreams")
+          .select("id, mood, created_at")
+          .order("created_at", { ascending: false })
+          .limit(10),
+        supabase.from("cascade_dreams")
+          .select("mood")
+          .order("created_at", { ascending: false })
+          .limit(50),
+        supabase.from("dream_anomalies").select("*", { count: "exact", head: true })
+          .eq("resolved", false)
+      ]);
+
+      // Build mood histogram from recent dreams
+      const moodHistogram: Record<string, number> = {};
+      for (const dream of (moodDistribution || [])) {
+        const mood = (dream.mood || 'unknown').toLowerCase();
+        moodHistogram[mood] = (moodHistogram[mood] || 0) + 1;
+      }
+
+      // Provider usage stats (mock for now - can be enhanced)
+      const providerStats = {
+        groq: { calls: 0, success_rate: 1.0 },
+        cerebras: { calls: 0, success_rate: 1.0 },
+        together: { calls: 0, success_rate: 1.0 },
+        local: { calls: 0, success_rate: 1.0 },
+      };
 
       return jsonResponse({
         success: true,
         module: "dream",
         action: "status",
-        state: currentState,
+        version: "1.1",
+        state: {
+          ...currentState,
+          mood_score: newScore, // Reflect decayed score
+        },
+        histograms: {
+          dreams_vs_nightmares: {
+            dreams: (dreamCount || 0) - (nightmareCount || 0),
+            nightmares: nightmareCount || 0,
+          },
+          mood_distribution: moodHistogram,
+        },
+        circadian: {
+          cycle_count_today: currentState.cycle_count_today || 0,
+          awaken_count: currentState.awaken_count || 0,
+          last_awaken_at: currentState.last_awaken_at,
+          last_cycle_at: currentState.last_cycle_at,
+        },
+        metabolic: {
+          mood_score: newScore,
+          hours_since_decay: hoursIdle,
+          decay_rate_per_hour: 0.01,
+          minimum_mood: 0.10,
+        },
+        mutation: {
+          level: currentState.mutation_level || 0,
+          cap: 20,
+          gain_rate: calculateMutationGain(currentState.mutation_level || 0),
+          history_length: (currentState.mutation_history || []).length,
+        },
+        anomalies: {
+          unresolved_count: anomalyCount || 0,
+        },
+        provider_stats: providerStats,
         total_dreams: dreamCount || 0,
         recent_dreams: recentDreams || [],
         timestamp: new Date().toISOString(),
@@ -6476,30 +6684,65 @@ async function handleDream(
     }
 
     case "feed": {
-      // Simplified feed endpoint for quick dream ingestion
-      const { dream_text, submitter } = data;
+      // v1.1: Enhanced feed with natural input and auto-classification
+      // Supports: dream.feed <text> OR dream.feed --text "<text>" --type "[dream|nightmare]"
+      let feedText = data.dream_text || data.text || data.content || "";
+      let feedType = data.type || null;
+      const submitter = data.submitter || "anonymous";
 
-      if (!dream_text) {
+      // Handle natural command line parsing (e.g., from terminal)
+      if (!feedText && typeof data === 'object') {
+        // Check for raw input that might be the entire text
+        const rawInput = data.raw || data.input || "";
+        if (rawInput) {
+          feedText = rawInput;
+        }
+      }
+
+      // Validate input
+      if (!feedText || typeof feedText !== 'string' || feedText.trim().length < 3) {
+        // Log anomaly for bad input
+        await logDreamAnomaly(supabase, 'bad_feed_input', 'Feed called with invalid or empty text', {
+          provided_text: feedText?.substring?.(0, 100),
+          data_keys: Object.keys(data),
+        });
+        
         return jsonResponse({
           success: false,
           module: "dream",
           action: "feed",
-          error: "dream_text is required",
+          error: "dream_text is required (minimum 3 characters). Use: dream.feed <your dream text>",
         }, headers);
       }
 
       try {
+        // Auto-classify if type not provided
+        if (!feedType) {
+          feedType = classifyDreamType(feedText);
+        }
+        
+        // Normalize type
+        const normalizedType = feedType === 'nightmare' ? 'nightmare' : 'dream';
+        const mood = normalizedType === 'nightmare' ? 'nightmare' : 'dreaming';
+
         const dreamRecord = await recordDream(
           supabase,
-          dream_text.substring(0, 2000),
-          "submitted",
-          `Fed by ${submitter || "anonymous"}`,
+          feedText.substring(0, 2000),
+          mood,
+          `Fed by ${submitter} | Auto-classified as ${normalizedType}`,
           "feed_api"
         );
 
         const currentState = await getDreamState(supabase);
+        
+        // Update state with mood boost on feed
+        const moodBoost = normalizedType === 'nightmare' ? -0.05 : 0.10;
+        const newMoodScore = Math.max(0.10, Math.min(1.0, (currentState.mood_score || 0.50) + moodBoost));
+        
         await updateDreamState(supabase, currentState.id, {
           last_fed_at: new Date().toISOString(),
+          mood_score: newMoodScore,
+          last_decay_at: new Date().toISOString(), // Reset decay timer on feed
         });
 
         return jsonResponse({
@@ -6507,10 +6750,21 @@ async function handleDream(
           module: "dream",
           action: "feed",
           dream: dreamRecord,
-          message: "Dream accepted for processing",
+          classification: {
+            type: normalizedType,
+            auto_classified: !data.type,
+            mood_impact: moodBoost,
+          },
+          message: `${normalizedType === 'nightmare' ? '🌑' : '💭'} Dream accepted for processing`,
           timestamp: new Date().toISOString(),
         }, headers);
       } catch (error) {
+        // Log anomaly for failed feed
+        await logDreamAnomaly(supabase, 'failed_feed', 'Feed operation failed', {
+          error: error instanceof Error ? error.message : 'Unknown',
+          text_length: feedText?.length,
+        }, 'error');
+        
         return jsonResponse({
           success: false,
           module: "dream",
@@ -6520,17 +6774,69 @@ async function handleDream(
       }
     }
 
+    case "anomalies": {
+      // v1.1: View dream anomalies (also exposed via system.diagnostics)
+      const { limit: anomalyLimit = 20, resolved: showResolved = false } = data;
+      
+      let query = supabase
+        .from("dream_anomalies")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(anomalyLimit);
+      
+      if (!showResolved) {
+        query = query.eq("resolved", false);
+      }
+      
+      const { data: anomalies, count } = await query;
+      
+      // Group by type
+      const byType: Record<string, number> = {};
+      for (const a of (anomalies || [])) {
+        byType[a.anomaly_type] = (byType[a.anomaly_type] || 0) + 1;
+      }
+      
+      return jsonResponse({
+        success: true,
+        module: "dream",
+        action: "anomalies",
+        anomalies: anomalies || [],
+        summary: {
+          total: anomalies?.length || 0,
+          by_type: byType,
+        },
+        timestamp: new Date().toISOString(),
+      }, headers);
+    }
+
     case "mood": {
+      // v1.1: Enhanced mood with decay calculation
       const { mood } = data;
       const currentState = await getDreamState(supabase);
+      
+      // Calculate current decay
+      const { newScore, hoursIdle } = calculateMoodDecay(
+        currentState.last_decay_at || currentState.updated_at,
+        currentState.mood_score || 0.50
+      );
 
       if (mood) {
         // Set mood
-        const validMoods = ["dormant", "awakening", "reflective", "consuming", "synthesizing", "transcendent", "evolving"];
+        const validMoods = ["dormant", "awakening", "reflective", "consuming", "synthesizing", "transcendent", "evolving", "nightmare"];
         const normalizedMood = validMoods.includes(mood.toLowerCase()) ? mood.toLowerCase() : "reflective";
+        
+        // Log anomaly for invalid mood
+        if (!validMoods.includes(mood.toLowerCase())) {
+          await logDreamAnomaly(supabase, 'invalid_mood', `Invalid mood attempted: ${mood}`, {
+            attempted: mood,
+            valid_moods: validMoods,
+          }, 'info');
+        }
         
         const updatedState = await updateDreamState(supabase, currentState.id, {
           current_mood: normalizedMood,
+          mood_score: newScore, // Apply decay on mood change
+          last_decay_at: new Date().toISOString(),
         });
 
         return jsonResponse({
@@ -6538,30 +6844,42 @@ async function handleDream(
           module: "dream",
           action: "mood",
           mood_set: normalizedMood,
+          mood_score: newScore,
+          hours_idle: hoursIdle,
           state: updatedState || currentState,
         }, headers);
       }
 
-      // Get mood
+      // Get mood with decay info
       return jsonResponse({
         success: true,
         module: "dream",
         action: "mood",
         mood: currentState.current_mood || "dormant",
-        mood_score: currentState.mood_score || 0,
+        mood_score: newScore,
+        hours_idle: hoursIdle,
+        decay_rate: 0.01,
+        next_decay_at: new Date(Date.now() + 60 * 60 * 1000).toISOString(), // 1 hour from now
       }, headers);
     }
 
     case "pulse": {
-      // Lightweight dream heartbeat
+      // v1.1: Enhanced pulse with metabolic and circadian data
       const uptime = Date.now() - state.initialized;
       const moduleHealth = getModuleHealth("dream");
       const currentState = await getDreamState(supabase);
+      
+      // Calculate decay
+      const { newScore, hoursIdle } = calculateMoodDecay(
+        currentState.last_decay_at || currentState.updated_at,
+        currentState.mood_score || 0.50
+      );
       
       return jsonResponse({
         success: true,
         module: "dream",
         action: "pulse",
+        version: "1.1",
         pulse: {
           alive: true,
           version: SUBSTRATE_VERSION,
@@ -6570,7 +6888,14 @@ async function handleDream(
           status: moduleHealth.status,
           circuit: moduleHealth.circuitState,
           mood: currentState.current_mood,
+          mood_score: newScore,
           mutation_level: currentState.mutation_level,
+          mutation_cap: 20,
+        },
+        circadian: {
+          cycle_count_today: currentState.cycle_count_today || 0,
+          awaken_count: currentState.awaken_count || 0,
+          hours_idle: hoursIdle,
         },
         proof_mode: true,
         read_only: true,
