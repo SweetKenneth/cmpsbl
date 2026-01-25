@@ -100,6 +100,7 @@ export type Database = {
           description: string | null
           id: string
           is_active: boolean | null
+          legacy_code: string | null
           metadata: Json | null
           monthly_quota: number | null
           name: string
@@ -111,6 +112,7 @@ export type Database = {
           description?: string | null
           id?: string
           is_active?: boolean | null
+          legacy_code?: string | null
           metadata?: Json | null
           monthly_quota?: number | null
           name: string
@@ -122,6 +124,7 @@ export type Database = {
           description?: string | null
           id?: string
           is_active?: boolean | null
+          legacy_code?: string | null
           metadata?: Json | null
           monthly_quota?: number | null
           name?: string
