@@ -59,6 +59,75 @@ export type Database = {
         }
         Relationships: []
       }
+      access_developers: {
+        Row: {
+          created_at: string | null
+          display_name: string
+          email: string | null
+          id: string
+          metadata: Json | null
+          status: string
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          display_name: string
+          email?: string | null
+          id?: string
+          metadata?: Json | null
+          status?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          display_name?: string
+          email?: string | null
+          id?: string
+          metadata?: Json | null
+          status?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      access_products: {
+        Row: {
+          category: string | null
+          code: string
+          created_at: string | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          metadata: Json | null
+          monthly_quota: number | null
+          name: string
+        }
+        Insert: {
+          category?: string | null
+          code: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          metadata?: Json | null
+          monthly_quota?: number | null
+          name: string
+        }
+        Update: {
+          category?: string | null
+          code?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          metadata?: Json | null
+          monthly_quota?: number | null
+          name?: string
+        }
+        Relationships: []
+      }
       access_quotas: {
         Row: {
           api_key_id: string | null
@@ -127,8 +196,10 @@ export type Database = {
           current_period_end: string | null
           current_period_start: string | null
           developer_id: string
+          entitlements: Json | null
           id: string
           monthly_quota: number | null
+          plan_slug: string | null
           status: string | null
           stripe_customer_id: string | null
           stripe_subscription_id: string | null
@@ -140,8 +211,10 @@ export type Database = {
           current_period_end?: string | null
           current_period_start?: string | null
           developer_id: string
+          entitlements?: Json | null
           id?: string
           monthly_quota?: number | null
+          plan_slug?: string | null
           status?: string | null
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
@@ -153,8 +226,10 @@ export type Database = {
           current_period_end?: string | null
           current_period_start?: string | null
           developer_id?: string
+          entitlements?: Json | null
           id?: string
           monthly_quota?: number | null
+          plan_slug?: string | null
           status?: string | null
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
@@ -174,6 +249,7 @@ export type Database = {
           id: string
           metadata: Json | null
           module: string
+          product_code: string | null
           tokens_used: number | null
         }
         Insert: {
@@ -186,6 +262,7 @@ export type Database = {
           id?: string
           metadata?: Json | null
           module: string
+          product_code?: string | null
           tokens_used?: number | null
         }
         Update: {
@@ -198,6 +275,7 @@ export type Database = {
           id?: string
           metadata?: Json | null
           module?: string
+          product_code?: string | null
           tokens_used?: number | null
         }
         Relationships: [
