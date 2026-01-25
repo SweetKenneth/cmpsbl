@@ -1,7 +1,7 @@
 /**
- * Tech Showcase — Interactive demonstration of all 12 CMPSBL modules
+ * Tech Showcase — Interactive demonstration of all 13 CMPSBL modules
  * Premium terminal-style code display with syntax highlighting
- * v4.2.0: Full module coverage for the 4-layer kernel architecture
+ * v5.5.0: Full module coverage for the 4-layer kernel architecture + Cortex orchestrator
  */
 
 import { useState, useEffect } from "react";
@@ -29,7 +29,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-// All 12 modules organized by 4-layer architecture
+// All 13 modules organized by 4-layer architecture + Cortex orchestrator
 const codeExamples = [
   // KERNEL LAYER
   {
@@ -301,9 +301,37 @@ await cmpsbl.integration.execute({
   payload: { vendor: "V001", amount: 5000 }
 });`,
   },
+  // ORCHESTRATOR LAYER (13th module)
+  {
+    id: "cortex",
+    icon: Layers,
+    layer: "Orchestrator",
+    title: "CORTEX Evolution",
+    description: "Agency-class autonomous orchestrator",
+    color: "text-violet-500",
+    gradient: "from-violet-500 to-purple-600",
+    code: `// Get the world state
+const world = await cmpsbl.cortex.world({
+  flags: ["--eligible", "--dag"]
+});
+console.log(world.modules_by_category);
+
+// Query evolution sequences
+const plans = await cmpsbl.cortex.plan({
+  filter: "eligible",
+  sort_by: "priority"
+});
+
+// Dispatch an evolution proposal
+const proposal = await cmpsbl.cortex.dispatch({
+  scope: ["brain", "vision"],
+  confidence_threshold: 0.85,
+  auto_apply: false // Require approval
+});`,
+  },
 ];
 
-// Syntax highlighting helper - extended for all modules
+// Syntax highlighting helper - extended for all modules including Cortex
 function highlightCode(code: string): string {
   // Escape HTML first to prevent issues
   let escaped = code
@@ -316,8 +344,8 @@ function highlightCode(code: string): string {
     .replace(/(\/\/.*)/g, '<span class="text-slate-500">$1</span>')
     .replace(/(\bawait\b|\bconst\b|\blet\b|\bvar\b|\bif\b)/g, '<span class="text-purple-400">$1</span>')
     .replace(/(\bcmpsbl\b)/g, '<span class="text-cyan-400 font-semibold">$1</span>')
-    .replace(/(\.core|\.ripple|\.access|\.brain|\.decode|\.nexus|\.defense|\.vision|\.dream|\.system|\.modernizer|\.integration)/g, '<span class="text-blue-400">$1</span>')
-    .replace(/(\.schedule|\.list|\.emit|\.on|\.createKey|\.usage|\.remember|\.recall|\.chat|\.send|\.route|\.posture|\.analyze|\.block|\.health|\.query|\.cycle|\.backup|\.restore|\.scan|\.apply|\.discover|\.connect|\.execute)/g, '<span class="text-green-400">$1</span>')
+    .replace(/(\.core|\.ripple|\.access|\.brain|\.decode|\.nexus|\.defense|\.vision|\.dream|\.system|\.modernizer|\.integration|\.cortex)/g, '<span class="text-blue-400">$1</span>')
+    .replace(/(\.schedule|\.list|\.emit|\.on|\.createKey|\.usage|\.remember|\.recall|\.chat|\.send|\.route|\.posture|\.analyze|\.block|\.health|\.query|\.cycle|\.backup|\.restore|\.scan|\.apply|\.discover|\.connect|\.execute|\.world|\.plan|\.dispatch|\.inventory)/g, '<span class="text-green-400">$1</span>')
     .replace(/(&quot;.*?&quot;|".*?")/g, '<span class="text-amber-300">$1</span>')
     .replace(/(\d+)/g, '<span class="text-orange-400">$1</span>')
     .replace(/(true|false|null)/g, '<span class="text-rose-400">$1</span>');
@@ -329,6 +357,7 @@ const LAYER_CONFIG = {
   Cognitive: { color: 'text-purple-400', bgGlow: 'from-purple-500/20' },
   Operational: { color: 'text-blue-400', bgGlow: 'from-blue-500/20' },
   Admin: { color: 'text-emerald-400', bgGlow: 'from-emerald-500/20' },
+  Orchestrator: { color: 'text-violet-400', bgGlow: 'from-violet-500/20' },
 } as const;
 
 export function TechShowcase() {
@@ -400,7 +429,7 @@ export function TechShowcase() {
         >
           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
             <Layers className="w-3 h-3 text-primary" />
-            <span className="text-xs">12 Modules • 4 Layers • 1 SDK</span>
+            <span className="text-xs">13 Modules • 5 Layers • 1 SDK</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
             Complete{" "}
@@ -435,7 +464,7 @@ export function TechShowcase() {
             className="h-8 px-4 text-xs font-medium"
           >
             All Modules
-            <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-[10px]">12</Badge>
+            <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-[10px]">13</Badge>
           </Button>
           {Object.entries(LAYER_CONFIG).map(([layer, config]) => {
             const count = codeExamples.filter(e => e.layer === layer).length;

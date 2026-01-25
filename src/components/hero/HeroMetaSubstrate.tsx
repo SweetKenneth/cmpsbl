@@ -30,7 +30,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-// The 12 core modules with industries they power
+// The 13 core modules with industries they power (v5.5.0)
 const coreModules = [
   { icon: Cpu, name: "Core", desc: "Kernel orchestration", color: "hsl(var(--muted-foreground))" },
   { icon: Network, name: "Ripple", desc: "Event propagation", color: "hsl(150 80% 50%)" },
@@ -44,6 +44,7 @@ const coreModules = [
   { icon: Settings, name: "System", desc: "Configuration", color: "hsl(var(--destructive))" },
   { icon: RefreshCw, name: "Modernizer", desc: "Self-improvement", color: "hsl(30 80% 55%)" },
   { icon: Plug, name: "Integration", desc: "Enterprise connect", color: "hsl(280 80% 60%)" },
+  { icon: Sparkles, name: "Cortex", desc: "Autonomous orchestrator", color: "hsl(270 80% 60%)" },
 ];
 
 // Use cases that rotate through

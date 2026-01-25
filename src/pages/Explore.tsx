@@ -34,6 +34,7 @@ import {
   BookOpen,
   ChevronDown,
   Plug,
+  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -173,7 +174,7 @@ function SectionDivider() {
 export default function Explore() {
   const containerRef = useRef<HTMLDivElement>(null);
   
-  // Core Modules - all 12 pillars (v4.2.0 kernel architecture)
+  // Core Modules - all 13 pillars (v5.5.0 kernel architecture + Cortex orchestrator)
   const coreModules = [
     {
       icon: Cpu,
@@ -271,13 +272,21 @@ export default function Explore() {
       href: "/os",
       color: "text-emerald-500",
     },
+    {
+      icon: Sparkles,
+      title: "Cortex",
+      description: "Agency-class orchestrator for autonomous evolution.",
+      features: ["Evolution planning", "Proposal dispatch", "System governance"],
+      href: "/os",
+      color: "text-violet-500",
+    },
   ];
 
   // System Capabilities
   const capabilities = [
-    { icon: Layers, value: "160+", label: "Actions", color: "text-purple-500" },
-    { icon: Database, value: "60+", label: "Tables", color: "text-green-500" },
-    { icon: HeartPulse, value: "12", label: "Modules", color: "text-rose-500" },
+    { icon: Layers, value: "250+", label: "Commands", color: "text-purple-500" },
+    { icon: Database, value: "70+", label: "Tables", color: "text-green-500" },
+    { icon: HeartPulse, value: "13", label: "Modules", color: "text-rose-500" },
     { icon: Clock, value: "<100ms", label: "Latency", color: "text-blue-500" },
     { icon: Lock, value: "BYOK", label: "Architecture", color: "text-cyan-500" },
     { icon: RefreshCw, value: "24/7", label: "Autonomous", color: "text-amber-500" },
@@ -295,10 +304,10 @@ export default function Explore() {
   return (
     <div ref={containerRef} className="min-h-screen bg-background overflow-hidden">
       <SEO 
-        title="CMPSBL (Composable) By PromptFluid — AI That Remembers"
-        description="Build AI that remembers, dreams, and evolves. 12 core modules, 160+ actions, persistent memory, dream cycles, and BYOK architecture for gaming, software development, and enterprise."
+        title="CMPSBL v5.5.0 By PromptFluid — AI That Remembers"
+        description="Build AI that remembers, dreams, and evolves. 13 core modules, 250+ commands, persistent memory, dream cycles, and BYOK architecture for gaming, software development, and enterprise."
         canonical="https://promptfluid.com"
-        keywords={['CMPSBL', 'composable AI', 'AI infrastructure', 'persistent AI memory', 'dream cycles', 'NPC AI', 'enterprise AI', 'AI routing', 'BYOK']}
+        keywords={['CMPSBL', 'composable AI', 'AI infrastructure', 'persistent AI memory', 'dream cycles', 'NPC AI', 'enterprise AI', 'AI routing', 'BYOK', 'v5.5.0']}
       />
 
       <PublicNav />
@@ -357,12 +366,12 @@ export default function Explore() {
             viewport={{ once: true }}
             className="text-center mb-10 sm:mb-12"
           >
-            <Badge variant="outline" className="mb-4">12 Core Modules</Badge>
+            <Badge variant="outline" className="mb-4">13 Core Modules</Badge>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
               The Cognitive Architecture
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto">
-              Eleven interconnected systems working in harmony. Each module operates 
+              Thirteen interconnected systems working in harmony. Each module operates 
               independently while contributing to collective intelligence.
             </p>
           </motion.div>
