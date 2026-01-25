@@ -10958,19 +10958,48 @@ async function handleRipple(
 // ACCESS MODULE v2.0 — Keys, Subscriptions, Entitlements, CMPTBL Products
 // ═══════════════════════════════════════════════════════════════
 
-const ACCESS_VERSION = "2.0.0";
+const ACCESS_VERSION = "2.1.0";
 
-// CMPTBL Product catalog (maps to pf-access-* archived functions)
-const CMPTBL_PRODUCTS = {
-  scan: { name: 'Accessibility Scan', function: 'pf-access-scan', quota: 100 },
-  fix: { name: 'Auto Fix', function: 'pf-access-fix', quota: 50 },
-  badge: { name: 'Compliance Badge', function: 'pf-access-badge', quota: 1000 },
-  report: { name: 'Accessibility Report', function: 'pf-access-report', quota: 25 },
-  assist: { name: 'Vision Assist', function: 'pf-access-assist', quota: 200 },
-  alt_text: { name: 'Alt Text Generation', function: 'pf-access-alt-text', quota: 500 },
-  tts: { name: 'Text to Speech', function: 'pf-access-tts', quota: 200 },
-  recommendations: { name: 'Fix Recommendations', function: 'pf-access-recommendations', quota: 100 },
+// Substrate-native product catalog (configurable, substrate-first naming)
+const SUBSTRATE_PRODUCTS: Record<string, { name: string; function: string; quota: number; category: string }> = {
+  'substrate.scan': { name: 'Substrate Scan', function: 'pf-access-scan', quota: 100, category: 'analysis' },
+  'substrate.fix': { name: 'Auto Fix', function: 'pf-access-fix', quota: 50, category: 'remediation' },
+  'substrate.report': { name: 'Compliance Report', function: 'pf-access-report', quota: 25, category: 'reporting' },
+  'substrate.assist': { name: 'Assist Agent', function: 'pf-access-assist', quota: 200, category: 'interaction' },
+  'substrate.tts': { name: 'Text to Speech', function: 'pf-access-tts', quota: 200, category: 'media' },
+  'substrate.recommend': { name: 'Recommendations', function: 'pf-access-recommendations', quota: 100, category: 'analysis' },
+  'substrate.read': { name: 'Substrate Read', function: 'substrate-core', quota: 10000, category: 'core' },
+  'substrate.write': { name: 'Substrate Write', function: 'substrate-core', quota: 5000, category: 'core' },
+  'substrate.brain': { name: 'Brain Access', function: 'pf-substrate', quota: 1000, category: 'memory' },
+  'substrate.vision': { name: 'Vision Access', function: 'pf-substrate', quota: 500, category: 'observability' },
 };
+
+// Legacy product code mapping for backwards compatibility
+const LEGACY_PRODUCT_MAP: Record<string, string> = {
+  'scan': 'substrate.scan',
+  'fix': 'substrate.fix',
+  'badge': 'substrate.report', // badge deprecated → maps to report
+  'report': 'substrate.report',
+  'assist': 'substrate.assist',
+  'alt_text': 'substrate.assist', // alt_text deprecated → maps to assist
+  'tts': 'substrate.tts',
+  'recommendations': 'substrate.recommend',
+  'substrate_read': 'substrate.read',
+  'substrate_write': 'substrate.write',
+};
+
+// Helper: Translate legacy product codes to substrate-native codes
+function translateProductCode(code: string): string {
+  if (code.startsWith('substrate.')) {
+    return code; // Already substrate-native
+  }
+  const mapped = LEGACY_PRODUCT_MAP[code];
+  if (mapped) {
+    console.log(`[ACCESS] Legacy product code detected and mapped: ${code} -> ${mapped}`);
+    return mapped;
+  }
+  return code; // Unknown codes pass through
+}
 
 // deno-lint-ignore no-explicit-any
 async function handleAccess(
@@ -11049,7 +11078,8 @@ async function handleAccess(
           active_subscriptions: subscriptions || 0,
           available_products: products || 0,
         },
-        cmptbl_products: Object.keys(CMPTBL_PRODUCTS),
+        substrate_products: Object.keys(SUBSTRATE_PRODUCTS),
+        product_categories: [...new Set(Object.values(SUBSTRATE_PRODUCTS).map(p => p.category))],
         timestamp: new Date().toISOString(),
       }, headers);
     }
@@ -11575,13 +11605,21 @@ async function handleAccess(
       
       const { data: products } = await query;
 
+      // Merge DB products with substrate catalog, translating legacy codes
+      const dbProducts = (products || []).map((p: { code: string; name: string; description: string; category: string; monthly_quota: number }) => ({
+        ...p,
+        code: translateProductCode(p.code),
+        original_code: p.code !== translateProductCode(p.code) ? p.code : undefined,
+      }));
+      
       return jsonResponse({
         success: true,
         module: 'access',
         action: 'products',
-        products: products || [],
-        count: products?.length || 0,
-        cmptbl_catalog: CMPTBL_PRODUCTS,
+        products: dbProducts,
+        count: dbProducts.length,
+        substrate_catalog: SUBSTRATE_PRODUCTS,
+        categories: [...new Set(Object.values(SUBSTRATE_PRODUCTS).map(p => p.category))],
       }, headers);
     }
 
