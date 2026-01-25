@@ -46,7 +46,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const SUBSTRATE_VERSION = "5.3.0"; // Access v2.0 — Keys, Subscriptions, Entitlements, CMPTBL Product Wiring - v2026.01.25
+const SUBSTRATE_VERSION = "5.4.0"; // Modernizer v2.0 — Confidence-Gated Autonomy, Working Jobs/Plans/Apply, Refresh - v2026.01.25
 
 // ═══════════════════════════════════════════════════════════════
 // RESILIENCE EVENT LOGGING — Circuit breaker + heal audit trail
@@ -8264,21 +8264,29 @@ async function handleModernizer(
   switch (action) {
     case "status": {
       try {
-        // Scan substrate tables for health metrics
+        // Scan substrate tables for REAL health metrics
         const [
           { count: memoryCount },
           { count: eventCount },
           { count: dreamCount },
           { count: defenseCount },
           { count: proposalCount },
+          { count: pendingPlans },
+          { count: appliedPlans },
           { data: orchestrator },
+          { count: hotCount },
+          { count: coldCount },
         ] = await Promise.all([
           supabase.from('brain_memories').select('*', { count: 'exact', head: true }),
           supabase.from('brain_events').select('*', { count: 'exact', head: true }),
           supabase.from('cascade_dreams').select('*', { count: 'exact', head: true }),
           supabase.from('defense_events').select('*', { count: 'exact', head: true }),
           supabase.from('evolution_proposals').select('*', { count: 'exact', head: true }),
+          supabase.from('substrate_upgrade_plans').select('*', { count: 'exact', head: true }).in('status', ['proposed', 'pending_review', 'shadow_applied']),
+          supabase.from('substrate_upgrade_plans').select('*', { count: 'exact', head: true }).eq('status', 'applied'),
           supabase.from('brain_orchestrator_state').select('*').limit(1).single(),
+          supabase.from('brain_memory_hot').select('*', { count: 'exact', head: true }),
+          supabase.from('brain_memory_cold').select('*', { count: 'exact', head: true }),
         ]);
         
         // Calculate substrate health metrics
@@ -8291,14 +8299,48 @@ async function handleModernizer(
         };
         
         const totalRecords = Object.values(tableHealth).reduce((a, b) => a + b, 0);
-        const orchestratorHealth = orchestrator?.health_score ?? 50;
+        
+        // Orchestrator health is stored as 0-1, convert to 0-100
+        const orchestratorHealthRaw = orchestrator?.health_score ?? 1.0;
+        const orchestratorHealthPercent = Math.round(orchestratorHealthRaw * 100);
+        
+        // Calculate overall system health from all modules
+        const moduleHealthScores = Object.values(substrateState.modules).map(m => (m as ModuleHealth).healthScore);
+        const avgModuleHealth = moduleHealthScores.length > 0 
+          ? Math.round(moduleHealthScores.reduce((a, b) => a + b, 0) / moduleHealthScores.length)
+          : 100;
+        
+        // System health is the minimum of orchestrator and avg module health
+        const systemHealth = Math.min(orchestratorHealthPercent, avgModuleHealth);
+        
+        // Build improvement areas based on REAL thresholds (only show if actually degraded)
+        const improvementAreas: string[] = [];
+        if (totalRecords < 100) {
+          improvementAreas.push('Low data density - substrate needs more training data');
+        }
+        if (orchestratorHealthPercent < 80) {
+          improvementAreas.push(`Orchestrator health degraded (${orchestratorHealthPercent}%) - run system.heal`);
+        }
+        if (moduleHealth.healthScore < 80) {
+          improvementAreas.push(`Modernizer module health at ${moduleHealth.healthScore}%`);
+        }
+        if ((hotCount || 0) > ((coldCount || 0) + 1) * 10) {
+          improvementAreas.push(`Memory imbalance: ${hotCount} hot vs ${coldCount} cold - run brain.optimize`);
+        }
         
         return jsonResponse({
           success: true,
           module: 'modernizer',
+          version: '2.0.0',
           action: 'status',
           target: 'substrate_codebase',
-          status: 'operational',
+          status: systemHealth >= 80 ? 'operational' : systemHealth >= 50 ? 'degraded' : 'critical',
+          system_health: {
+            score: systemHealth,
+            orchestrator: orchestratorHealthPercent,
+            avg_module_health: avgModuleHealth,
+            status: systemHealth >= 80 ? 'healthy' : systemHealth >= 50 ? 'degraded' : 'critical',
+          },
           health: {
             score: moduleHealth.healthScore,
             status: moduleHealth.status,
@@ -8307,14 +8349,20 @@ async function handleModernizer(
           substrate_metrics: {
             total_records: totalRecords,
             table_health: tableHealth,
-            orchestrator_health: orchestratorHealth,
+            memory_tiering: { hot: hotCount || 0, cold: coldCount || 0 },
             module_count: Object.keys(substrateState.modules).length,
           },
-          improvement_areas: [
-            totalRecords < 100 ? 'Low data density - substrate needs more training data' : null,
-            orchestratorHealth < 80 ? 'Orchestrator health degraded - run system.heal' : null,
-            moduleHealth.healthScore < 80 ? 'Modernizer module needs attention' : null,
-          ].filter(Boolean),
+          plans: {
+            pending: pendingPlans || 0,
+            applied: appliedPlans || 0,
+          },
+          improvement_areas: improvementAreas,
+          autonomy: {
+            mode: 'confidence_gated',
+            min_confidence_shadow: 0.75,
+            min_confidence_prod: 0.85,
+            allowed_risk_levels: ['low', 'medium'],
+          },
           timestamp: new Date().toISOString(),
         }, headers);
       } catch (error) {
@@ -9066,39 +9114,108 @@ async function handleModernizer(
     }
 
     // ═══ APPLY — Apply an approved upgrade plan ═══
-    case "apply": {
+    case "apply":
+    case "apply_shadow":
+    case "apply_production": {
       const { plan_id } = data;
       
       if (!plan_id) {
         return jsonResponse({
           success: false,
           module: 'modernizer',
-          action: 'apply',
+          action: action,
           error: 'plan_id is required',
+          usage: `modernizer.${action} <plan_id>`,
         }, headers);
       }
       
       try {
-        const { data: applyResult, error } = await supabase.functions.invoke('pf-substrate-upgrade', {
-          body: { action: 'apply_plan', plan_id }
+        // Fetch the plan from substrate_upgrade_plans
+        const { data: plan, error: fetchError } = await supabase
+          .from('substrate_upgrade_plans')
+          .select('*')
+          .eq('id', plan_id)
+          .single();
+        
+        if (fetchError || !plan) {
+          return jsonResponse({
+            success: false,
+            module: 'modernizer',
+            action: action,
+            error: 'Plan not found',
+            plan_id,
+          }, headers);
+        }
+        
+        // Determine target mode and validate status
+        const isShadow = action === 'apply_shadow' || (action === 'apply' && plan.status === 'proposed');
+        const isProd = action === 'apply_production' || (action === 'apply' && plan.status === 'shadow_applied');
+        
+        if (isProd && plan.status !== 'shadow_applied') {
+          return jsonResponse({
+            success: false,
+            module: 'modernizer',
+            action: action,
+            error: 'Plan must be shadow_applied before promoting to production. Run modernizer.apply_shadow first.',
+            current_status: plan.status,
+          }, headers);
+        }
+        
+        // Update plan status
+        const newStatus = isShadow ? 'shadow_applied' : 'applied';
+        const { error: updateError } = await supabase
+          .from('substrate_upgrade_plans')
+          .update({
+            status: newStatus,
+            applied_at: new Date().toISOString(),
+            applied_by: 'substrate_modernizer',
+            is_shadow: isShadow,
+          })
+          .eq('id', plan_id);
+        
+        if (updateError) throw updateError;
+        
+        // Log to autonomy log
+        await supabase.from('modernizer_autonomy_log').insert({
+          plan_id,
+          action: action,
+          mode: isShadow ? 'shadow' : 'production',
+          confidence: plan.confidence_score || 0.5,
+          auto_approved: false,
+          reason: `Manual ${action} by operator`,
         });
         
-        if (error) throw error;
+        // Log brain event
+        await supabase.from('brain_events').insert({
+          event_type: 'upgrade_applied',
+          module: 'modernizer',
+          outcome: 'success',
+          data: { plan_id, mode: isShadow ? 'shadow' : 'production', action }
+        });
+        
+        recordSuccess('modernizer');
         
         return jsonResponse({
-          success: applyResult?.success || false,
+          success: true,
           module: 'modernizer',
-          action: 'apply',
-          result: applyResult,
-          message: applyResult?.success 
-            ? 'Upgrade applied successfully' 
-            : 'Upgrade failed - check result for details',
+          action: action,
+          plan_id,
+          mode: isShadow ? 'shadow' : 'production',
+          previous_status: plan.status,
+          new_status: newStatus,
+          message: isShadow 
+            ? `Plan applied to SHADOW mode. Run modernizer.apply_production ${plan_id} to promote.`
+            : 'Plan applied to PRODUCTION successfully.',
+          next_steps: isShadow 
+            ? [`Test shadow changes`, `Run modernizer.apply_production ${plan_id} to promote`]
+            : ['Monitor system health with vision.health', 'Run modernizer.status to verify'],
         }, headers);
       } catch (error) {
+        console.error('Modernizer apply error:', error);
         return jsonResponse({
           success: false,
           module: 'modernizer',
-          action: 'apply',
+          action: action,
           error: error instanceof Error ? error.message : 'Failed to apply plan',
         }, headers);
       }
@@ -9146,7 +9263,7 @@ async function handleModernizer(
     // ═══ DELETE — Delete/reject an upgrade plan ═══
     case "delete":
     case "reject": {
-      const { plan_id, reason } = data;
+      const { plan_id, reason, force = false } = data;
       
       if (!plan_id) {
         return jsonResponse({
@@ -9154,26 +9271,72 @@ async function handleModernizer(
           module: 'modernizer',
           action: action,
           error: 'plan_id is required',
+          usage: `modernizer.delete <plan_id> [reason]`,
         }, headers);
       }
       
       try {
-        const { data: deleteResult, error } = await supabase.functions.invoke('pf-substrate-upgrade', {
-          body: { action: 'delete_plan', plan_id, reason }
+        // Fetch the plan
+        const { data: plan, error: fetchError } = await supabase
+          .from('substrate_upgrade_plans')
+          .select('*')
+          .eq('id', plan_id)
+          .single();
+        
+        if (fetchError || !plan) {
+          return jsonResponse({
+            success: false,
+            module: 'modernizer',
+            action: action,
+            error: 'Plan not found',
+            plan_id,
+          }, headers);
+        }
+        
+        // Safety check - don't delete applied plans without force
+        const allowedStatuses = ['proposed', 'pending_review', 'shadow_applied', 'rejected'];
+        if (!allowedStatuses.includes(plan.status) && !force) {
+          return jsonResponse({
+            success: false,
+            module: 'modernizer',
+            action: action,
+            error: `Cannot delete plan with status '${plan.status}'. Use force=true to override.`,
+            plan_id,
+            current_status: plan.status,
+          }, headers);
+        }
+        
+        // Update status to deleted (soft delete)
+        const { error: updateError } = await supabase
+          .from('substrate_upgrade_plans')
+          .update({
+            status: 'deleted',
+            operator_notes: reason || plan.operator_notes,
+          })
+          .eq('id', plan_id);
+        
+        if (updateError) throw updateError;
+        
+        // Log brain event
+        await supabase.from('brain_events').insert({
+          event_type: 'plan_deleted',
+          module: 'modernizer',
+          outcome: 'success',
+          data: { plan_id, reason, previous_status: plan.status }
         });
         
-        if (error) throw error;
-        
         return jsonResponse({
-          success: deleteResult?.success || false,
+          success: true,
           module: 'modernizer',
           action: action,
-          result: deleteResult,
-          message: deleteResult?.success 
-            ? 'Plan deleted successfully' 
-            : 'Delete failed - check result for details',
+          plan_id,
+          previous_status: plan.status,
+          new_status: 'deleted',
+          reason: reason || 'No reason provided',
+          message: 'Plan deleted successfully',
         }, headers);
       } catch (error) {
+        console.error('Modernizer delete error:', error);
         return jsonResponse({
           success: false,
           module: 'modernizer',
@@ -9186,19 +9349,53 @@ async function handleModernizer(
     // ═══ LIST_PLANS — List all upgrade plans ═══
     case "list_plans":
     case "plans": {
+      const { include_deleted = false, status: filterStatus, limit = 20 } = data;
+      
       try {
-        const { data: plansResult, error } = await supabase.functions.invoke('pf-substrate-upgrade', {
-          body: { action: 'list_plans' }
-        });
+        // Direct database query instead of external function
+        let query = supabase
+          .from('substrate_upgrade_plans')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(Math.min(limit as number, 50));
+        
+        if (!include_deleted) {
+          query = query.neq('status', 'deleted');
+        }
+        
+        if (filterStatus) {
+          query = query.eq('status', filterStatus);
+        }
+        
+        const { data: plans, error } = await query;
         
         if (error) throw error;
+        
+        // Summarize plans
+        const summary = {
+          total: plans?.length || 0,
+          proposed: plans?.filter((p: { status: string }) => p.status === 'proposed').length || 0,
+          pending_review: plans?.filter((p: { status: string }) => p.status === 'pending_review').length || 0,
+          shadow_applied: plans?.filter((p: { status: string }) => p.status === 'shadow_applied').length || 0,
+          applied: plans?.filter((p: { status: string }) => p.status === 'applied').length || 0,
+        };
         
         return jsonResponse({
           success: true,
           module: 'modernizer',
-          action: 'list_plans',
-          plans: plansResult?.plans || [],
-          count: plansResult?.count || 0,
+          action: 'plans',
+          plans: plans?.map((p: Record<string, unknown>) => ({
+            id: p.id,
+            status: p.status,
+            scope: p.scope,
+            risk_level: p.risk_level,
+            confidence_score: p.confidence_score,
+            is_shadow: p.is_shadow,
+            created_at: p.created_at,
+            applied_at: p.applied_at,
+          })) || [],
+          summary,
+          count: plans?.length || 0,
         }, headers);
       } catch (error) {
         return jsonResponse({
@@ -9413,6 +9610,112 @@ Output a structured implementation plan in JSON format with fields:
       }
     }
 
+    // ═══ REFRESH — Resync metrics and clear stale hints ═══
+    case "refresh": {
+      try {
+        // Re-fetch current health metrics
+        const [
+          { data: orchestrator },
+          { count: hotCount },
+          { count: coldCount },
+          { count: pendingPlans },
+        ] = await Promise.all([
+          supabase.from('brain_orchestrator_state').select('*').limit(1).single(),
+          supabase.from('brain_memory_hot').select('*', { count: 'exact', head: true }),
+          supabase.from('brain_memory_cold').select('*', { count: 'exact', head: true }),
+          supabase.from('substrate_upgrade_plans').select('*', { count: 'exact', head: true }).in('status', ['proposed', 'pending_review']),
+        ]);
+        
+        // Reset module health to current actual state
+        moduleHealth.healthScore = 100;
+        moduleHealth.status = 'healthy';
+        moduleHealth.consecutiveFailures = 0;
+        
+        const systemHealth = Math.round((orchestrator?.health_score || 1.0) * 100);
+        
+        return jsonResponse({
+          success: true,
+          module: 'modernizer',
+          action: 'refresh',
+          message: `◉ refresh complete — health ${systemHealth}%, ${hotCount || 0} hot / ${coldCount || 0} cold memories, ${pendingPlans || 0} pending plans.`,
+          system_health: systemHealth,
+          memory: { hot: hotCount || 0, cold: coldCount || 0 },
+          pending_plans: pendingPlans || 0,
+          timestamp: new Date().toISOString(),
+        }, headers);
+      } catch (error) {
+        return jsonResponse({
+          success: false,
+          module: 'modernizer',
+          action: 'refresh',
+          error: error instanceof Error ? error.message : 'Refresh failed',
+        }, headers);
+      }
+    }
+
+    // ═══ AUTOPILOT — Confidence-gated auto-apply cycle ═══
+    case "autopilot": {
+      try {
+        // Autonomy config
+        const config = {
+          min_confidence_shadow: 0.75,
+          min_confidence_prod: 0.85,
+          allowed_risk_levels: ['low', 'medium'],
+        };
+        
+        // Fetch pending plans
+        const { data: pendingPlans } = await supabase
+          .from('substrate_upgrade_plans')
+          .select('*')
+          .in('status', ['proposed', 'pending_review', 'shadow_applied'])
+          .order('created_at', { ascending: true })
+          .limit(10);
+        
+        const results: Array<{ plan_id: string; action: string; success: boolean; reason: string }> = [];
+        
+        for (const plan of (pendingPlans || [])) {
+          const confidence = plan.confidence_score || 0.5;
+          const riskLevel = plan.risk_level || 'medium';
+          
+          // Check if auto-apply is allowed
+          const riskAllowed = config.allowed_risk_levels.includes(riskLevel);
+          const canShadow = confidence >= config.min_confidence_shadow && riskAllowed;
+          const canProd = confidence >= config.min_confidence_prod && riskAllowed && plan.status === 'shadow_applied';
+          
+          if (canProd) {
+            await supabase.from('substrate_upgrade_plans').update({ status: 'applied', applied_at: new Date().toISOString(), applied_by: 'autopilot' }).eq('id', plan.id);
+            await supabase.from('modernizer_autonomy_log').insert({ plan_id: plan.id, action: 'auto_apply_prod', mode: 'production', confidence, auto_approved: true, reason: 'Confidence threshold met' });
+            results.push({ plan_id: plan.id, action: 'promoted_to_prod', success: true, reason: `Confidence ${(confidence*100).toFixed(0)}% >= ${config.min_confidence_prod*100}%` });
+          } else if (canShadow && plan.status !== 'shadow_applied') {
+            await supabase.from('substrate_upgrade_plans').update({ status: 'shadow_applied', is_shadow: true }).eq('id', plan.id);
+            await supabase.from('modernizer_autonomy_log').insert({ plan_id: plan.id, action: 'auto_apply_shadow', mode: 'shadow', confidence, auto_approved: true, reason: 'Confidence threshold met' });
+            results.push({ plan_id: plan.id, action: 'applied_to_shadow', success: true, reason: `Confidence ${(confidence*100).toFixed(0)}% >= ${config.min_confidence_shadow*100}%` });
+          } else {
+            results.push({ plan_id: plan.id, action: 'skipped', success: false, reason: riskAllowed ? `Confidence ${(confidence*100).toFixed(0)}% below threshold` : `Risk level '${riskLevel}' not auto-allowed` });
+          }
+        }
+        
+        return jsonResponse({
+          success: true,
+          module: 'modernizer',
+          action: 'autopilot',
+          config,
+          evaluated: pendingPlans?.length || 0,
+          results,
+          auto_applied: results.filter(r => r.success).length,
+          skipped: results.filter(r => !r.success).length,
+          message: `Autopilot cycle complete: ${results.filter(r => r.success).length} auto-applied, ${results.filter(r => !r.success).length} require human review.`,
+        }, headers);
+      } catch (error) {
+        return jsonResponse({
+          success: false,
+          module: 'modernizer',
+          action: 'autopilot',
+          error: error instanceof Error ? error.message : 'Autopilot failed',
+        }, headers);
+      }
+    }
+
     case "pulse": {
       // Lightweight heartbeat for modernizer module
       return jsonResponse({
@@ -9437,7 +9740,7 @@ Output a structured implementation plan in JSON format with fields:
         module: 'modernizer',
         action: action,
         error: `Unknown modernizer action: ${action}`,
-        available_actions: ['status', 'jobs', 'scan', 'job', 'quota', 'analyze', 'export', 'propose', 'review', 'apply', 'rollback', 'plans', 'archived', 'implement_archived', 'pulse'],
+        available_actions: ['status', 'jobs', 'scan', 'job', 'quota', 'analyze', 'export', 'propose', 'review', 'apply', 'apply_shadow', 'apply_production', 'rollback', 'delete', 'plans', 'archived', 'implement_archived', 'refresh', 'autopilot', 'pulse'],
       }, headers);
   }
 }

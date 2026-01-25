@@ -4992,6 +4992,56 @@ export type Database = {
         }
         Relationships: []
       }
+      modernizer_autonomy_log: {
+        Row: {
+          action: string
+          auto_approved: boolean
+          confidence: number
+          created_at: string
+          id: string
+          mode: string | null
+          plan_id: string | null
+          reason: string | null
+          result: Json | null
+          system_health_after: number | null
+          system_health_before: number | null
+        }
+        Insert: {
+          action: string
+          auto_approved?: boolean
+          confidence: number
+          created_at?: string
+          id?: string
+          mode?: string | null
+          plan_id?: string | null
+          reason?: string | null
+          result?: Json | null
+          system_health_after?: number | null
+          system_health_before?: number | null
+        }
+        Update: {
+          action?: string
+          auto_approved?: boolean
+          confidence?: number
+          created_at?: string
+          id?: string
+          mode?: string | null
+          plan_id?: string | null
+          reason?: string | null
+          result?: Json | null
+          system_health_after?: number | null
+          system_health_before?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "modernizer_autonomy_log_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "substrate_upgrade_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       modernizer_extractions: {
         Row: {
           extracted_at: string | null
@@ -8524,16 +8574,23 @@ export type Database = {
       substrate_upgrade_plans: {
         Row: {
           after_health_snapshot: Json | null
+          applied_at: string | null
+          applied_by: string | null
           backup_id: string | null
           before_health_snapshot: Json | null
+          confidence_score: number | null
           created_at: string
           diff_summary: Json | null
           estimated_blast_radius: string | null
           id: string
+          is_shadow: boolean | null
           mode: string
           operator_id: string | null
           operator_notes: string | null
+          plan_type: string | null
+          proposed_changes: Json | null
           risk_level: string | null
+          safety_checks_passed: boolean | null
           scope: string
           status: string
           suggested_patches: Json | null
@@ -8541,16 +8598,23 @@ export type Database = {
         }
         Insert: {
           after_health_snapshot?: Json | null
+          applied_at?: string | null
+          applied_by?: string | null
           backup_id?: string | null
           before_health_snapshot?: Json | null
+          confidence_score?: number | null
           created_at?: string
           diff_summary?: Json | null
           estimated_blast_radius?: string | null
           id?: string
+          is_shadow?: boolean | null
           mode?: string
           operator_id?: string | null
           operator_notes?: string | null
+          plan_type?: string | null
+          proposed_changes?: Json | null
           risk_level?: string | null
+          safety_checks_passed?: boolean | null
           scope?: string
           status?: string
           suggested_patches?: Json | null
@@ -8558,16 +8622,23 @@ export type Database = {
         }
         Update: {
           after_health_snapshot?: Json | null
+          applied_at?: string | null
+          applied_by?: string | null
           backup_id?: string | null
           before_health_snapshot?: Json | null
+          confidence_score?: number | null
           created_at?: string
           diff_summary?: Json | null
           estimated_blast_radius?: string | null
           id?: string
+          is_shadow?: boolean | null
           mode?: string
           operator_id?: string | null
           operator_notes?: string | null
+          plan_type?: string | null
+          proposed_changes?: Json | null
           risk_level?: string | null
+          safety_checks_passed?: boolean | null
           scope?: string
           status?: string
           suggested_patches?: Json | null
