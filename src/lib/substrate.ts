@@ -393,6 +393,14 @@ class SubstrateClient {
     listBackups: () =>
       this.invoke({ module: 'system', action: 'list_backups' }),
     
+    /** v5.6.0: List all registered modules */
+    modules: (options?: { full?: boolean; health?: boolean; dag?: boolean; roles?: boolean; boot?: boolean; inventory?: boolean }) =>
+      this.invoke({ module: 'system', action: 'modules', payload: options }),
+    
+    /** v5.6.0: Get specific module details */
+    module: (name: string) =>
+      this.invoke({ module: 'system', action: 'module', payload: { name } }),
+    
     // ═══ v3.12.0: UPGRADE ENGINE ═══
     
     /** Propose an upgrade with analysis and backup */
@@ -994,6 +1002,14 @@ class SubstrateClient {
     /** Execute sequence in shadow mode */
     run: (sequenceId: string, mode?: 'shadow' | 'production') =>
       this.invoke({ module: 'cortex' as SubstrateModule, action: 'run', payload: { sequence_id: sequenceId, mode } }),
+    
+    /** v5.6.0: Get full module registry snapshot (world model) */
+    world: (options?: { dag?: boolean; roles?: boolean; eligible?: boolean }) =>
+      this.invoke({ module: 'cortex' as SubstrateModule, action: 'world', payload: options }),
+    
+    /** v5.6.0: Get module inventory with eligibility */
+    inventory: () =>
+      this.invoke({ module: 'cortex' as SubstrateModule, action: 'inventory' }),
   };
 }
 

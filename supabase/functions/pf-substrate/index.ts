@@ -8236,6 +8236,248 @@ async function handleSystem(
       }, headers);
     }
 
+    // ═══════════════════════════════════════════════════════════════
+    // v5.6.0: MODULE REGISTRY — Introspection + DAG + Roles
+    // ═══════════════════════════════════════════════════════════════
+    
+    case "modules": {
+      const { full, health: showHealth, dag, roles, boot, inventory } = data;
+      
+      // Fetch module registry
+      const { data: registryData, error: registryError } = await supabase
+        .from('module_registry')
+        .select('*')
+        .order('boot_order', { ascending: true });
+      
+      if (registryError) {
+        return jsonResponse({
+          success: false,
+          module: 'system',
+          action: 'modules',
+          error: registryError.message,
+        }, headers);
+      }
+      
+      const modules = registryData || [];
+      
+      // Sync live health from in-memory state
+      for (const mod of modules) {
+        const liveHealth = substrateState.modules[mod.name];
+        if (liveHealth) {
+          mod.health_score = liveHealth.healthScore;
+          mod.circuit_state = liveHealth.circuitState;
+          mod.status = liveHealth.status;
+          mod.last_seen = new Date(liveHealth.lastSuccess || Date.now()).toISOString();
+        }
+      }
+      
+      // Build response based on flags
+      if (dag) {
+        // Build DAG structure
+        const dagNodes = modules.map((m: any) => ({
+          name: m.name,
+          category: m.category,
+          boot_order: m.boot_order,
+          dependencies: m.dependencies || [],
+          dependents: m.dependents || [],
+        }));
+        
+        // Build edges for visualization
+        const edges: Array<{ from: string; to: string; type: string }> = [];
+        for (const node of dagNodes) {
+          for (const dep of node.dependencies) {
+            edges.push({ from: dep, to: node.name, type: 'depends' });
+          }
+        }
+        
+        return jsonResponse({
+          success: true,
+          module: 'system',
+          action: 'modules',
+          view: 'dag',
+          dag: {
+            nodes: dagNodes,
+            edges,
+            layers: {
+              kernel: modules.filter((m: any) => m.category === 'kernel').map((m: any) => m.name),
+              cognitive: modules.filter((m: any) => m.category === 'cognitive').map((m: any) => m.name),
+              operational: modules.filter((m: any) => m.category === 'operational').map((m: any) => m.name),
+              admin: modules.filter((m: any) => m.category === 'admin').map((m: any) => m.name),
+              orchestrator: modules.filter((m: any) => m.category === 'orchestrator').map((m: any) => m.name),
+            },
+          },
+          timestamp: new Date().toISOString(),
+        }, headers);
+      }
+      
+      if (roles) {
+        const roleMap: Record<string, string[]> = {
+          observer: [],
+          operator: [],
+          governor: [],
+          cortex: [],
+        };
+        
+        for (const mod of modules) {
+          for (const role of (mod.roles || [])) {
+            if (!roleMap[role]) roleMap[role] = [];
+            roleMap[role].push(mod.name);
+          }
+        }
+        
+        return jsonResponse({
+          success: true,
+          module: 'system',
+          action: 'modules',
+          view: 'roles',
+          roles: roleMap,
+          module_roles: modules.map((m: any) => ({
+            name: m.name,
+            roles: m.roles || [],
+          })),
+          timestamp: new Date().toISOString(),
+        }, headers);
+      }
+      
+      if (boot) {
+        return jsonResponse({
+          success: true,
+          module: 'system',
+          action: 'modules',
+          view: 'boot',
+          boot_sequence: modules.map((m: any) => ({
+            order: m.boot_order,
+            name: m.name,
+            category: m.category,
+            dependencies: m.dependencies?.length || 0,
+            status: m.status || 'ready',
+          })),
+          timestamp: new Date().toISOString(),
+        }, headers);
+      }
+      
+      if (showHealth) {
+        return jsonResponse({
+          success: true,
+          module: 'system',
+          action: 'modules',
+          view: 'health',
+          modules: modules.map((m: any) => ({
+            name: m.name,
+            health_score: m.health_score || 100,
+            circuit_state: m.circuit_state || 'closed',
+            status: m.status || 'active',
+            last_seen: m.last_seen,
+          })),
+          timestamp: new Date().toISOString(),
+        }, headers);
+      }
+      
+      if (inventory) {
+        return jsonResponse({
+          success: true,
+          module: 'system',
+          action: 'modules',
+          view: 'inventory',
+          inventory: modules.map((m: any) => ({
+            name: m.name,
+            version: m.version,
+            category: m.category,
+            status: m.status || 'active',
+            eligible_for_upgrade: m.eligible_for_upgrade,
+            shadow_supported: m.shadow_supported,
+            production_supported: m.production_supported,
+            capabilities: m.capabilities || [],
+            roles: m.roles || [],
+          })),
+          timestamp: new Date().toISOString(),
+        }, headers);
+      }
+      
+      // Default: summary or full
+      if (full) {
+        return jsonResponse({
+          success: true,
+          module: 'system',
+          action: 'modules',
+          view: 'full',
+          modules,
+          count: modules.length,
+          timestamp: new Date().toISOString(),
+        }, headers);
+      }
+      
+      // Summary view
+      return jsonResponse({
+        success: true,
+        module: 'system',
+        action: 'modules',
+        view: 'summary',
+        modules: modules.map((m: any) => ({
+          name: m.name,
+          version: m.version,
+          category: m.category,
+          boot_order: m.boot_order,
+          health_score: m.health_score || 100,
+          status: m.status || 'active',
+        })),
+        count: modules.length,
+        categories: {
+          kernel: modules.filter((m: any) => m.category === 'kernel').length,
+          cognitive: modules.filter((m: any) => m.category === 'cognitive').length,
+          operational: modules.filter((m: any) => m.category === 'operational').length,
+          admin: modules.filter((m: any) => m.category === 'admin').length,
+          orchestrator: modules.filter((m: any) => m.category === 'orchestrator').length,
+        },
+        timestamp: new Date().toISOString(),
+      }, headers);
+    }
+    
+    case "module": {
+      const { name } = data;
+      
+      if (!name) {
+        return jsonResponse({
+          success: false,
+          module: 'system',
+          action: 'module',
+          error: 'Module name required',
+        }, headers);
+      }
+      
+      const { data: modData, error: modError } = await supabase
+        .from('module_registry')
+        .select('*')
+        .eq('name', name)
+        .maybeSingle();
+      
+      if (modError || !modData) {
+        return jsonResponse({
+          success: false,
+          module: 'system',
+          action: 'module',
+          error: modError?.message || `Module '${name}' not found`,
+        }, headers);
+      }
+      
+      // Enrich with live health
+      const liveHealth = substrateState.modules[name];
+      if (liveHealth) {
+        modData.health_score = liveHealth.healthScore;
+        modData.circuit_state = liveHealth.circuitState;
+        modData.status = liveHealth.status;
+        modData.last_seen = new Date(liveHealth.lastSuccess || Date.now()).toISOString();
+      }
+      
+      return jsonResponse({
+        success: true,
+        module: 'system',
+        action: 'module',
+        data: modData,
+        timestamp: new Date().toISOString(),
+      }, headers);
+    }
+
     default:
       throw new Error(`Unknown system action: ${action}`);
   }
@@ -13990,18 +14232,81 @@ async function handleCortex(
       }, headers);
     }
 
+    // ═══════════════════════════════════════════════════════════════
+    // v5.6.0: WORLD MODEL + INVENTORY — Cortex introspection layer
+    // ═══════════════════════════════════════════════════════════════
+    
+    case "world": {
+      const { dag, roles: showRoles, eligible } = data;
+      
+      const { data: registryData } = await supabase
+        .from('module_registry')
+        .select('*')
+        .order('boot_order', { ascending: true });
+      
+      const modules = registryData || [];
+      
+      // Sync live health
+      for (const mod of modules) {
+        const liveHealth = substrateState.modules[mod.name];
+        if (liveHealth) {
+          mod.health_score = liveHealth.healthScore;
+          mod.circuit_state = liveHealth.circuitState;
+          mod.status = liveHealth.status;
+        }
+      }
+      
+      const response: Record<string, unknown> = {
+        success: true,
+        module: 'cortex',
+        action: 'world',
+        version: CORTEX_VERSION,
+        mode: cortexState.mode,
+        panic_frozen: cortexState.panic_frozen,
+        module_count: modules.length,
+      };
+      
+      if (dag) {
+        response.dag = {
+          nodes: modules.map((m: any) => ({ name: m.name, dependencies: m.dependencies || [], dependents: m.dependents || [] })),
+          layers: { kernel: modules.filter((m: any) => m.category === 'kernel').map((m: any) => m.name), cognitive: modules.filter((m: any) => m.category === 'cognitive').map((m: any) => m.name), operational: modules.filter((m: any) => m.category === 'operational').map((m: any) => m.name), admin: modules.filter((m: any) => m.category === 'admin').map((m: any) => m.name) },
+        };
+      } else if (showRoles) {
+        const roleMap: Record<string, string[]> = { observer: [], operator: [], governor: [], cortex: [] };
+        for (const mod of modules) for (const role of (mod.roles || [])) { if (!roleMap[role]) roleMap[role] = []; roleMap[role].push(mod.name); }
+        response.roles = roleMap;
+      } else if (eligible) {
+        response.eligible = modules.filter((m: any) => m.eligible_for_upgrade).map((m: any) => ({ name: m.name, shadow_supported: m.shadow_supported, production_supported: m.production_supported }));
+      } else {
+        response.modules = modules.map((m: any) => ({ name: m.name, category: m.category, health_score: m.health_score || 100, status: m.status || 'active', capabilities: m.capabilities || [] }));
+      }
+      
+      response.timestamp = new Date().toISOString();
+      return jsonResponse(response, headers);
+    }
+    
+    case "inventory": {
+      const { data: registryData } = await supabase.from('module_registry').select('*').order('boot_order', { ascending: true });
+      return jsonResponse({
+        success: true,
+        module: 'cortex',
+        action: 'inventory',
+        inventory: (registryData || []).map((m: any) => ({ name: m.name, version: m.version, category: m.category, eligible_for_upgrade: m.eligible_for_upgrade, shadow_supported: m.shadow_supported, capabilities: m.capabilities || [], roles: m.roles || [] })),
+        count: registryData?.length || 0,
+        timestamp: new Date().toISOString(),
+      }, headers);
+    }
+
     default:
       return jsonResponse({
         success: false,
         module: 'cortex',
         error: `Unknown cortex action: ${action}`,
         available_actions: [
-          'status', 'health', 'pulse',
+          'status', 'health', 'pulse', 'world', 'inventory',
           'propose', 'evaluate', 'apply', 'rollback',
           'audit', 'learn', 'summary',
-          'operative (legacy)', 'improvement_engine (legacy)',
         ],
-        legacy_note: 'Cortex is the modern successor to Cascade. Legacy functions preserved.',
       }, headers);
   }
 }

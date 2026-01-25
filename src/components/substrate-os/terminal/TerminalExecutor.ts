@@ -579,6 +579,18 @@ export async function executeCommand(
       const res = await system.upgrade.rollbackPlan(args[0] || '');
       result = { success: !res.error, data: res.data, error: res.error?.message };
     }
+    // v5.6.0: Module Registry commands
+    else if (base === 'system.modules') {
+      const full = args.includes('--full');
+      const health = args.includes('--health');
+      const dag = args.includes('--dag');
+      const roles = args.includes('--roles');
+      const boot = args.includes('--boot');
+      const inventory = args.includes('--inventory');
+      result = await system.modules({ full, health, dag, roles, boot, inventory });
+    } else if (base === 'system.module') {
+      result = await system.module(args[0] || '');
+    }
 
     // MODERNIZER module (via substrate)
     else if (base === 'modernizer.status') {
@@ -977,6 +989,15 @@ export async function executeCommand(
         return { success: false, output: '▓ ERROR: Sequence ID required\n  Usage: cortex.run <sequence_id> [mode]\n  Example: cortex.run abc123 shadow' };
       }
       result = await cortex.run(args[0], args[1] as 'shadow' | 'production' | undefined);
+    }
+    // v5.6.0: Cortex World Model + Inventory
+    else if (base === 'cortex.world') {
+      const dag = args.includes('--dag');
+      const roles = args.includes('--roles');
+      const eligible = args.includes('--eligible');
+      result = await cortex.world({ dag, roles, eligible });
+    } else if (base === 'cortex.inventory') {
+      result = await cortex.inventory();
     }
 
     // Unknown command
