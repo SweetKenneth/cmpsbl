@@ -82,7 +82,7 @@ const INTENT_PATTERNS: Array<{
   {
     patterns: [/generate.*text/i, /write.*something/i, /create.*text/i, /ai.*write/i],
     command: 'nexus.text',
-    explanation: 'Generate text with AI',
+    explanation: 'Generate text with AI via routing spine',
   },
   {
     patterns: [/generate.*image/i, /create.*image/i, /make.*picture/i],
@@ -90,9 +90,24 @@ const INTENT_PATTERNS: Array<{
     explanation: 'Generate an image',
   },
   {
-    patterns: [/which.*provider/i, /ai.*providers/i, /available.*models/i],
+    patterns: [/which.*provider/i, /ai.*providers/i, /available.*models/i, /provider.*list/i, /model.*capabilities/i],
     command: 'nexus.providers',
-    explanation: 'List AI providers',
+    explanation: 'List AI providers with capabilities',
+  },
+  {
+    patterns: [/ai.*analytics/i, /nexus.*stats/i, /routing.*stats/i, /ai.*usage/i, /token.*usage/i],
+    command: 'nexus.analytics',
+    explanation: 'AI usage analytics accumulator',
+  },
+  {
+    patterns: [/route.*stats/i, /routing.*analytics/i, /ai.*routing/i],
+    command: 'nexus.route_stats',
+    explanation: 'AI routing analytics (24h)',
+  },
+  {
+    patterns: [/test.*ai/i, /test.*provider/i, /test.*nexus/i, /quick.*ai.*test/i],
+    command: 'nexus.test',
+    explanation: 'Test AI provider routing',
   },
   
   // Dreams
