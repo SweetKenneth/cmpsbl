@@ -3434,44 +3434,95 @@ export type Database = {
         }
         Relationships: []
       }
+      defense_config: {
+        Row: {
+          config_key: string
+          config_value: Json
+          created_at: string | null
+          description: string | null
+          id: string
+          updated_at: string | null
+        }
+        Insert: {
+          config_key: string
+          config_value?: Json
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          updated_at?: string | null
+        }
+        Update: {
+          config_key?: string
+          config_value?: Json
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       defense_events: {
         Row: {
           action: string
+          asn: string | null
+          country: string | null
+          defense_mode: string | null
           detected_at: string
           endpoint: string
+          fingerprint_family: string | null
           fingerprint_hash: string | null
           id: string
           ip: string
+          matched_rule_id: string | null
           metadata: Json | null
+          provider: string | null
           reason: string | null
+          request_method: string | null
           risk_score: number
           session_id: string | null
+          status_code: number | null
           user_agent: string | null
         }
         Insert: {
           action: string
+          asn?: string | null
+          country?: string | null
+          defense_mode?: string | null
           detected_at?: string
           endpoint: string
+          fingerprint_family?: string | null
           fingerprint_hash?: string | null
           id?: string
           ip: string
+          matched_rule_id?: string | null
           metadata?: Json | null
+          provider?: string | null
           reason?: string | null
+          request_method?: string | null
           risk_score: number
           session_id?: string | null
+          status_code?: number | null
           user_agent?: string | null
         }
         Update: {
           action?: string
+          asn?: string | null
+          country?: string | null
+          defense_mode?: string | null
           detected_at?: string
           endpoint?: string
+          fingerprint_family?: string | null
           fingerprint_hash?: string | null
           id?: string
           ip?: string
+          matched_rule_id?: string | null
           metadata?: Json | null
+          provider?: string | null
           reason?: string | null
+          request_method?: string | null
           risk_score?: number
           session_id?: string | null
+          status_code?: number | null
           user_agent?: string | null
         }
         Relationships: []
@@ -3479,9 +3530,13 @@ export type Database = {
       defense_rules: {
         Row: {
           action: string
+          condition: Json | null
           created_at: string | null
+          description: string | null
           id: string
           is_active: boolean | null
+          last_matched_at: string | null
+          match_count: number | null
           metadata: Json | null
           pattern: string
           priority: number | null
@@ -3491,9 +3546,13 @@ export type Database = {
         }
         Insert: {
           action?: string
+          condition?: Json | null
           created_at?: string | null
+          description?: string | null
           id?: string
           is_active?: boolean | null
+          last_matched_at?: string | null
+          match_count?: number | null
           metadata?: Json | null
           pattern: string
           priority?: number | null
@@ -3503,9 +3562,13 @@ export type Database = {
         }
         Update: {
           action?: string
+          condition?: Json | null
           created_at?: string | null
+          description?: string | null
           id?: string
           is_active?: boolean | null
+          last_matched_at?: string | null
+          match_count?: number | null
           metadata?: Json | null
           pattern?: string
           priority?: number | null
@@ -4297,33 +4360,48 @@ export type Database = {
       ip_reputation: {
         Row: {
           blocked_count: number | null
+          challenge_count: number | null
+          country: string | null
           created_at: string
+          fingerprint_family: string | null
           id: string
           ip: string
           last_seen: string
           metadata: Json | null
+          provider: string | null
+          risk_level: string | null
           score: number
           total_requests: number | null
           updated_at: string
         }
         Insert: {
           blocked_count?: number | null
+          challenge_count?: number | null
+          country?: string | null
           created_at?: string
+          fingerprint_family?: string | null
           id?: string
           ip: string
           last_seen?: string
           metadata?: Json | null
+          provider?: string | null
+          risk_level?: string | null
           score?: number
           total_requests?: number | null
           updated_at?: string
         }
         Update: {
           blocked_count?: number | null
+          challenge_count?: number | null
+          country?: string | null
           created_at?: string
+          fingerprint_family?: string | null
           id?: string
           ip?: string
           last_seen?: string
           metadata?: Json | null
+          provider?: string | null
+          risk_level?: string | null
           score?: number
           total_requests?: number | null
           updated_at?: string

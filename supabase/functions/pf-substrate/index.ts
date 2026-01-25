@@ -46,7 +46,256 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const SUBSTRATE_VERSION = "4.6.0"; // Brain learning loop repair - v2026.01.25
+const SUBSTRATE_VERSION = "4.7.0"; // Defense live perimeter engine - v2026.01.25
+
+// ═══════════════════════════════════════════════════════════════
+// DEFENSE PERIMETER ENGINE — Fingerprint Detection & Scoring
+// ═══════════════════════════════════════════════════════════════
+
+// User-Agent fingerprint family classification
+function classifyFingerprint(userAgent: string): { family: string; isBrowser: boolean; isBot: boolean; isCli: boolean } {
+  const ua = (userAgent || '').toLowerCase();
+  
+  // Bots and crawlers
+  if (ua.includes('googlebot')) return { family: 'googlebot', isBrowser: false, isBot: true, isCli: false };
+  if (ua.includes('bingbot')) return { family: 'bingbot', isBrowser: false, isBot: true, isCli: false };
+  if (ua.includes('slackbot')) return { family: 'slackbot', isBrowser: false, isBot: true, isCli: false };
+  if (ua.includes('discordbot')) return { family: 'discordbot', isBrowser: false, isBot: true, isCli: false };
+  if (ua.includes('facebookexternalhit')) return { family: 'facebook-bot', isBrowser: false, isBot: true, isCli: false };
+  if (ua.includes('twitterbot')) return { family: 'twitter-bot', isBrowser: false, isBot: true, isCli: false };
+  
+  // CLI tools and libraries
+  if (ua.includes('curl')) return { family: 'curl', isBrowser: false, isBot: false, isCli: true };
+  if (ua.includes('wget')) return { family: 'wget', isBrowser: false, isBot: false, isCli: true };
+  if (ua.includes('python-requests') || ua.includes('python-urllib')) return { family: 'python-requests', isBrowser: false, isBot: false, isCli: true };
+  if (ua.includes('httpx') || ua.includes('aiohttp')) return { family: 'httpx', isBrowser: false, isBot: false, isCli: true };
+  if (ua.includes('node-fetch') || ua.includes('axios') || ua.includes('got/')) return { family: 'node-http', isBrowser: false, isBot: false, isCli: true };
+  if (ua.includes('go-http-client') || ua.includes('golang')) return { family: 'go-http', isBrowser: false, isBot: false, isCli: true };
+  if (ua.includes('java/') || ua.includes('okhttp') || ua.includes('apache-httpclient')) return { family: 'java-http', isBrowser: false, isBot: false, isCli: true };
+  
+  // Scanners and malicious patterns
+  if (ua.includes('scan') || ua.includes('nuclei') || ua.includes('nikto') || ua.includes('sqlmap')) return { family: 'scanner', isBrowser: false, isBot: false, isCli: true };
+  if (ua.includes('tor') || ua.includes('onion')) return { family: 'tor-exit', isBrowser: false, isBot: false, isCli: true };
+  if (ua.includes('headless') || ua.includes('phantomjs') || ua.includes('selenium')) return { family: 'headless-browser', isBrowser: true, isBot: true, isCli: false };
+  
+  // Cloud providers
+  if (ua.includes('aws-lambda') || ua.includes('amazon')) return { family: 'aws-lambda', isBrowser: false, isBot: false, isCli: true };
+  if (ua.includes('cloudflare')) return { family: 'cloudflare-probe', isBrowser: false, isBot: true, isCli: false };
+  
+  // Real browsers - mobile
+  if (ua.includes('iphone') || ua.includes('ipad')) {
+    if (ua.includes('safari')) return { family: 'safari-mobile', isBrowser: true, isBot: false, isCli: false };
+    return { family: 'ios-webview', isBrowser: true, isBot: false, isCli: false };
+  }
+  if (ua.includes('android')) {
+    if (ua.includes('chrome')) return { family: 'chrome-mobile', isBrowser: true, isBot: false, isCli: false };
+    if (ua.includes('firefox')) return { family: 'firefox-mobile', isBrowser: true, isBot: false, isCli: false };
+    return { family: 'android-webview', isBrowser: true, isBot: false, isCli: false };
+  }
+  
+  // Real browsers - desktop
+  if (ua.includes('edg/')) return { family: 'edge-desktop', isBrowser: true, isBot: false, isCli: false };
+  if (ua.includes('chrome')) return { family: 'chrome-desktop', isBrowser: true, isBot: false, isCli: false };
+  if (ua.includes('firefox')) return { family: 'firefox-desktop', isBrowser: true, isBot: false, isCli: false };
+  if (ua.includes('safari')) return { family: 'safari-desktop', isBrowser: true, isBot: false, isCli: false };
+  if (ua.includes('opera') || ua.includes('opr/')) return { family: 'opera-desktop', isBrowser: true, isBot: false, isCli: false };
+  
+  // Unknown or empty
+  if (!ua || ua.length < 10) return { family: 'empty-ua', isBrowser: false, isBot: false, isCli: true };
+  return { family: 'unknown', isBrowser: false, isBot: false, isCli: false };
+}
+
+// Provider/ASN detection from headers
+function detectProvider(req?: Request, metadata?: Record<string, unknown>): { provider: string; isCloud: boolean; country?: string } {
+  // Check metadata for pre-extracted values
+  if (metadata?.provider) return { provider: String(metadata.provider), isCloud: true, country: metadata.country as string };
+  
+  // If we have request headers, check Cloudflare-style headers
+  if (req) {
+    const cfIpCountry = req.headers?.get?.('cf-ipcountry');
+    const cfRay = req.headers?.get?.('cf-ray');
+    if (cfRay) {
+      return { provider: 'cloudflare-proxied', isCloud: false, country: cfIpCountry || undefined };
+    }
+  }
+  
+  return { provider: 'unknown', isCloud: false };
+}
+
+// Threat scoring pipeline - central scoring logic
+interface ThreatScoreInput {
+  fingerprintFamily: string;
+  isBrowser: boolean;
+  isBot: boolean;
+  isCli: boolean;
+  provider: string;
+  isCloud: boolean;
+  path: string;
+  velocityHour: number;
+  reputationScore: number;
+}
+
+interface ThreatScoreResult {
+  score: number;
+  riskLevel: 'low' | 'medium' | 'high' | 'critical';
+  factors: Record<string, number>;
+  recommendation: 'allow' | 'monitor' | 'challenge' | 'block';
+}
+
+function scoreThreat(input: ThreatScoreInput): ThreatScoreResult {
+  const factors: Record<string, number> = {};
+  let baseScore = 0;
+  
+  // Base score by fingerprint family
+  if (['tor-exit', 'scanner'].includes(input.fingerprintFamily)) {
+    baseScore = 85;
+    factors.fingerprint_type = 40;
+  } else if (['aws-lambda', 'headless-browser'].includes(input.fingerprintFamily)) {
+    baseScore = 60;
+    factors.fingerprint_type = 30;
+  } else if (input.isCli) {
+    baseScore = 45;
+    factors.fingerprint_type = 20;
+  } else if (input.isBot && !['googlebot', 'bingbot', 'slackbot', 'cloudflare-probe'].includes(input.fingerprintFamily)) {
+    baseScore = 55;
+    factors.fingerprint_type = 25;
+  } else if (input.isBot) {
+    baseScore = 15; // Known good bots
+    factors.fingerprint_type = 5;
+  } else if (input.isBrowser) {
+    baseScore = 10;
+    factors.fingerprint_type = 5;
+  } else if (input.fingerprintFamily === 'empty-ua') {
+    baseScore = 70;
+    factors.fingerprint_type = 35;
+  } else {
+    baseScore = 40;
+    factors.fingerprint_type = 15;
+  }
+  
+  // Path sensitivity modifier
+  const sensitivePaths = ['/admin', '/api/admin', '/login', '/auth', '/signup', '/api/auth', '/substrate', '/.env', '/wp-admin'];
+  if (sensitivePaths.some(p => input.path.toLowerCase().includes(p))) {
+    factors.path_sensitivity = 15;
+    baseScore += 15;
+  }
+  
+  // Velocity modifier (requests per hour)
+  if (input.velocityHour > 100) {
+    factors.velocity = 20;
+    baseScore += 20;
+  } else if (input.velocityHour > 50) {
+    factors.velocity = 10;
+    baseScore += 10;
+  }
+  
+  // Cloud provider modifier (more suspicious from cloud)
+  if (input.isCloud && !input.isBrowser) {
+    factors.cloud_origin = 10;
+    baseScore += 10;
+  }
+  
+  // Reputation modifier
+  if (input.reputationScore < 20) {
+    factors.bad_reputation = 25;
+    baseScore += 25;
+  } else if (input.reputationScore < 40) {
+    factors.low_reputation = 10;
+    baseScore += 10;
+  } else if (input.reputationScore > 80) {
+    factors.good_reputation = -10;
+    baseScore = Math.max(0, baseScore - 10);
+  }
+  
+  // Clamp score
+  const score = Math.max(0, Math.min(100, baseScore));
+  
+  // Determine risk level and recommendation
+  let riskLevel: 'low' | 'medium' | 'high' | 'critical';
+  let recommendation: 'allow' | 'monitor' | 'challenge' | 'block';
+  
+  if (score >= 80) {
+    riskLevel = 'critical';
+    recommendation = 'block';
+  } else if (score >= 60) {
+    riskLevel = 'high';
+    recommendation = 'challenge';
+  } else if (score >= 35) {
+    riskLevel = 'medium';
+    recommendation = 'monitor';
+  } else {
+    riskLevel = 'low';
+    recommendation = 'allow';
+  }
+  
+  return { score, riskLevel, factors, recommendation };
+}
+
+// Rule DSL evaluation engine
+interface DefenseRule {
+  id: string;
+  rule_name: string;
+  action: string;
+  priority: number;
+  is_active: boolean;
+  condition: Record<string, unknown>;
+  threshold?: number;
+}
+
+interface RuleEvalContext {
+  fingerprintFamily: string;
+  provider: string;
+  riskLevel: string;
+  score: number;
+  path: string;
+  ip: string;
+}
+
+function evaluateRuleDSL(condition: Record<string, unknown>, ctx: RuleEvalContext): boolean {
+  const field = condition.field as string;
+  const op = condition.op as string;
+  const value = condition.value;
+  const values = condition.values as string[];
+  
+  let fieldValue: string | number;
+  switch (field) {
+    case 'fingerprint_family': fieldValue = ctx.fingerprintFamily; break;
+    case 'provider': fieldValue = ctx.provider; break;
+    case 'risk_level': fieldValue = ctx.riskLevel; break;
+    case 'score': fieldValue = ctx.score; break;
+    case 'path': fieldValue = ctx.path; break;
+    case 'ip': fieldValue = ctx.ip; break;
+    default: return false;
+  }
+  
+  switch (op) {
+    case 'eq': return fieldValue === value;
+    case 'neq': return fieldValue !== value;
+    case 'contains': return String(fieldValue).includes(String(value));
+    case 'in': return values?.includes(String(fieldValue)) || false;
+    case 'not_in': return !values?.includes(String(fieldValue)) || false;
+    case 'gt': return Number(fieldValue) > Number(value);
+    case 'gte': return Number(fieldValue) >= Number(value);
+    case 'lt': return Number(fieldValue) < Number(value);
+    case 'lte': return Number(fieldValue) <= Number(value);
+    default: return false;
+  }
+}
+
+function evaluateRules(rules: DefenseRule[], ctx: RuleEvalContext): { matched: boolean; rule?: DefenseRule; action: string } {
+  // Sort by priority (lower = higher priority)
+  const sorted = rules.filter(r => r.is_active).sort((a, b) => a.priority - b.priority);
+  
+  for (const rule of sorted) {
+    if (rule.condition && Object.keys(rule.condition).length > 0) {
+      if (evaluateRuleDSL(rule.condition, ctx)) {
+        return { matched: true, rule, action: rule.action };
+      }
+    }
+  }
+  
+  return { matched: false, action: 'allow' };
+}
 
 // Trace ID generator for distributed tracing
 function generateTraceId(): string {
@@ -2552,8 +2801,160 @@ RESPONSES:
 }
 
 // ═══════════════════════════════════════════════════════════════
-// DEFENSE MODULE — Bot Detection, Threat Analysis
+// DEFENSE MODULE — Live Perimeter Engine v4.7.0
+// Features: Traffic ingestion, Reputation graph, Threat scoring, Rule DSL
 // ═══════════════════════════════════════════════════════════════
+
+// Defense event ingestion helper - non-blocking, fire-and-forget
+// deno-lint-ignore no-explicit-any
+async function defenseIngestEvent(supabase: any, event: {
+  ip: string;
+  userAgent: string;
+  path: string;
+  method?: string;
+  statusCode?: number;
+  metadata?: Record<string, unknown>;
+}): Promise<{ score: number; riskLevel: string; action: string; matchedRule?: string }> {
+  try {
+    // Get config
+    const { data: modeConfig } = await supabase
+      .from('defense_config')
+      .select('config_value')
+      .eq('config_key', 'defense_mode')
+      .single();
+    const defenseMode = modeConfig?.config_value?.mode || 'observe';
+    
+    // Classify fingerprint
+    const fp = classifyFingerprint(event.userAgent);
+    const prov = detectProvider(undefined, event.metadata);
+    
+    // Get existing reputation
+    const { data: existingRep } = await supabase
+      .from('ip_reputation')
+      .select('score, total_requests')
+      .eq('ip', event.ip)
+      .single();
+    const reputationScore = existingRep?.score ?? 50;
+    
+    // Count velocity (requests in last hour)
+    const hourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+    const { count: velocityCount } = await supabase
+      .from('defense_events')
+      .select('id', { count: 'exact', head: true })
+      .eq('ip', event.ip)
+      .gte('detected_at', hourAgo);
+    
+    // Score the threat
+    const scoreResult = scoreThreat({
+      fingerprintFamily: fp.family,
+      isBrowser: fp.isBrowser,
+      isBot: fp.isBot,
+      isCli: fp.isCli,
+      provider: prov.provider,
+      isCloud: prov.isCloud,
+      path: event.path,
+      velocityHour: velocityCount || 0,
+      reputationScore,
+    });
+    
+    // Load and evaluate rules
+    const { data: rules } = await supabase
+      .from('defense_rules')
+      .select('id, rule_name, action, priority, is_active, condition, threshold')
+      .eq('is_active', true);
+    
+    const ruleResult = evaluateRules(rules || [], {
+      fingerprintFamily: fp.family,
+      provider: prov.provider,
+      riskLevel: scoreResult.riskLevel,
+      score: scoreResult.score,
+      path: event.path,
+      ip: event.ip,
+    });
+    
+    // Determine final action (rule takes precedence if matched)
+    const finalAction = ruleResult.matched ? ruleResult.action : scoreResult.recommendation;
+    
+    // Write defense event
+    await supabase.from('defense_events').insert({
+      ip: event.ip,
+      user_agent: event.userAgent,
+      endpoint: event.path,
+      risk_score: scoreResult.score,
+      action: defenseMode === 'observe' ? 'allow' : finalAction,
+      reason: scoreResult.riskLevel,
+      fingerprint_family: fp.family,
+      fingerprint_hash: event.metadata?.fingerprint_hash as string || null,
+      provider: prov.provider,
+      country: prov.country || null,
+      matched_rule_id: ruleResult.rule?.id || null,
+      request_method: event.method || 'GET',
+      status_code: event.statusCode || null,
+      defense_mode: defenseMode,
+      metadata: {
+        ...event.metadata,
+        factors: scoreResult.factors,
+        is_browser: fp.isBrowser,
+        is_bot: fp.isBot,
+        is_cli: fp.isCli,
+        velocity_hour: velocityCount || 0,
+        would_action: finalAction,
+      },
+    });
+    
+    // Update IP reputation
+    const newScore = Math.max(0, Math.min(100, Math.round(
+      existingRep 
+        ? (existingRep.score * 0.7 + (100 - scoreResult.score) * 0.3)
+        : (100 - scoreResult.score)
+    )));
+    
+    if (existingRep) {
+      await supabase.from('ip_reputation').update({
+        score: newScore,
+        total_requests: (existingRep.total_requests || 0) + 1,
+        blocked_count: existingRep.blocked_count + (finalAction === 'block' ? 1 : 0),
+        challenge_count: (existingRep.challenge_count || 0) + (finalAction === 'challenge' ? 1 : 0),
+        risk_level: scoreResult.riskLevel,
+        fingerprint_family: fp.family,
+        provider: prov.provider,
+        country: prov.country || null,
+        last_seen: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      }).eq('ip', event.ip);
+    } else {
+      await supabase.from('ip_reputation').insert({
+        ip: event.ip,
+        score: newScore,
+        total_requests: 1,
+        blocked_count: finalAction === 'block' ? 1 : 0,
+        challenge_count: finalAction === 'challenge' ? 1 : 0,
+        risk_level: scoreResult.riskLevel,
+        fingerprint_family: fp.family,
+        provider: prov.provider,
+        country: prov.country || null,
+      });
+    }
+    
+    // Update rule match count if matched
+    if (ruleResult.matched && ruleResult.rule) {
+      await supabase.from('defense_rules').update({
+        match_count: (ruleResult.rule as DefenseRule & { match_count?: number }).match_count ? ((ruleResult.rule as DefenseRule & { match_count?: number }).match_count || 0) + 1 : 1,
+        last_matched_at: new Date().toISOString(),
+      }).eq('id', ruleResult.rule.id);
+    }
+    
+    return {
+      score: scoreResult.score,
+      riskLevel: scoreResult.riskLevel,
+      action: defenseMode === 'observe' ? 'allow' : finalAction,
+      matchedRule: ruleResult.rule?.rule_name,
+    };
+  } catch (e) {
+    console.error('[Defense] Ingest error:', e);
+    return { score: 50, riskLevel: 'unknown', action: 'allow' };
+  }
+}
 
 // deno-lint-ignore no-explicit-any
 async function handleDefense(
@@ -2563,69 +2964,154 @@ async function handleDefense(
   headers: Record<string, string>
 ) {
   switch (action) {
-    case "analyze": {
-      const { ip_address, user_agent, page_url, referer } = data;
+    // ═══ INGEST — Live traffic ingestion endpoint ═══
+    case "ingest": {
+      const { ip_address, user_agent, path, method, status_code, metadata } = data;
       
-      let score = 0;
-
-      // User-Agent analysis
-      if (!user_agent || (user_agent as string).length < 20) {
-        score += 40;
+      if (!ip_address) {
+        return jsonResponse({ success: false, error: 'ip_address is required' }, headers);
       }
+      
+      const result = await defenseIngestEvent(supabase, {
+        ip: ip_address,
+        userAgent: user_agent || '',
+        path: path || '/',
+        method: method || 'GET',
+        statusCode: status_code,
+        metadata: metadata || {},
+      });
+      
+      return jsonResponse({
+        success: true,
+        module: 'defense',
+        action: 'ingest',
+        threat_score: result.score,
+        risk_level: result.riskLevel,
+        decision: result.action,
+        matched_rule: result.matchedRule,
+        timestamp: new Date().toISOString(),
+      }, headers);
+    }
 
-      const botKeywords = ["bot", "crawler", "spider", "scraper", "curl", "wget", "python"];
-      if (botKeywords.some((k) => (user_agent as string)?.toLowerCase().includes(k))) {
-        score += 30;
-      }
-
-      // Legitimate bots get reduced score
-      const goodBots = ["googlebot", "bingbot", "slackbot"];
-      if (goodBots.some((b) => (user_agent as string)?.toLowerCase().includes(b))) {
-        score = Math.max(0, score - 50);
-      }
-
-      const riskLevel = score >= 80 ? "high" : score >= 60 ? "medium" : score >= 40 ? "low" : "human";
-      const actionTaken = score >= 70 ? "block" : "allow";
+    // ═══ ANALYZE — Enhanced threat analysis with scoring pipeline ═══
+    case "analyze": {
+      const { ip_address, user_agent, page_url, referer, path, method } = data;
+      
+      // Classify fingerprint
+      const fp = classifyFingerprint(user_agent || '');
+      const prov = detectProvider(undefined, data);
+      
+      // Get existing reputation
+      const { data: existingRep } = await supabase
+        .from('ip_reputation')
+        .select('score, total_requests, blocked_count')
+        .eq('ip', ip_address)
+        .single();
+      
+      // Count velocity
+      const hourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+      const { count: velocityCount } = await supabase
+        .from('defense_events')
+        .select('id', { count: 'exact', head: true })
+        .eq('ip', ip_address)
+        .gte('detected_at', hourAgo);
+      
+      // Full threat scoring
+      const scoreResult = scoreThreat({
+        fingerprintFamily: fp.family,
+        isBrowser: fp.isBrowser,
+        isBot: fp.isBot,
+        isCli: fp.isCli,
+        provider: prov.provider,
+        isCloud: prov.isCloud,
+        path: path || page_url || '/',
+        velocityHour: velocityCount || 0,
+        reputationScore: existingRep?.score ?? 50,
+      });
+      
+      // Load and evaluate rules
+      const { data: rules } = await supabase
+        .from('defense_rules')
+        .select('id, rule_name, action, priority, is_active, condition, threshold')
+        .eq('is_active', true);
+      
+      const ruleResult = evaluateRules(rules || [], {
+        fingerprintFamily: fp.family,
+        provider: prov.provider,
+        riskLevel: scoreResult.riskLevel,
+        score: scoreResult.score,
+        path: path || page_url || '/',
+        ip: ip_address || '',
+      });
+      
+      const finalAction = ruleResult.matched ? ruleResult.action : scoreResult.recommendation;
 
       // Log to defense events
-      await supabase.from("defense_events").insert({
+      await supabase.from('defense_events').insert({
         ip: ip_address as string,
         user_agent: user_agent as string,
-        endpoint: page_url as string || "/",
-        risk_score: score,
-        action: actionTaken,
-        reason: riskLevel,
+        endpoint: page_url || path || '/',
+        risk_score: scoreResult.score,
+        action: finalAction,
+        reason: scoreResult.riskLevel,
+        fingerprint_family: fp.family,
+        provider: prov.provider,
+        matched_rule_id: ruleResult.rule?.id || null,
+        request_method: method || 'GET',
+        metadata: {
+          referer,
+          factors: scoreResult.factors,
+          fingerprint: fp,
+          provider_info: prov,
+          matched_rule: ruleResult.rule?.rule_name,
+        },
       });
 
       // Update IP reputation
-      const { data: existing } = await supabase
-        .from("ip_reputation")
-        .select("score, total_requests")
-        .eq("ip", ip_address)
-        .single();
-
-      if (existing) {
-        await supabase
-          .from("ip_reputation")
-          .update({
-            score: Math.round((existing.score + score) / 2),
-            total_requests: (existing.total_requests || 0) + 1,
-            last_seen: new Date().toISOString(),
-          })
-          .eq("ip", ip_address);
-      } else {
-        await supabase.from("ip_reputation").insert({
-          ip: ip_address as string,
-          score,
+      if (existingRep) {
+        const newScore = Math.round((existingRep.score * 0.8 + (100 - scoreResult.score) * 0.2));
+        await supabase.from('ip_reputation').update({
+          score: newScore,
+          total_requests: (existingRep.total_requests || 0) + 1,
+          blocked_count: existingRep.blocked_count + (finalAction === 'block' ? 1 : 0),
+          risk_level: scoreResult.riskLevel,
+          fingerprint_family: fp.family,
+          last_seen: new Date().toISOString(),
+        }).eq('ip', ip_address);
+      } else if (ip_address) {
+        await supabase.from('ip_reputation').insert({
+          ip: ip_address,
+          score: 100 - scoreResult.score,
           total_requests: 1,
+          risk_level: scoreResult.riskLevel,
+          fingerprint_family: fp.family,
         });
       }
 
       return jsonResponse({
         success: true,
-        threat_score: Math.min(100, score),
-        risk_level: riskLevel,
-        action: actionTaken,
+        threat_score: scoreResult.score,
+        risk_level: scoreResult.riskLevel,
+        action: finalAction,
+        fingerprint: {
+          family: fp.family,
+          is_browser: fp.isBrowser,
+          is_bot: fp.isBot,
+          is_cli: fp.isCli,
+        },
+        provider: prov,
+        factors: scoreResult.factors,
+        matched_rule: ruleResult.matched ? {
+          name: ruleResult.rule?.rule_name,
+          action: ruleResult.action,
+        } : null,
+        reputation: existingRep ? {
+          score: existingRep.score,
+          requests: existingRep.total_requests,
+          blocks: existingRep.blocked_count,
+        } : { score: 50, status: 'new' },
+        velocity_hour: velocityCount || 0,
+        timestamp: new Date().toISOString(),
       }, headers);
     }
 
@@ -2637,212 +3123,171 @@ async function handleDefense(
         .eq("ip", ip_address)
         .single();
 
+      // Also get recent events for this IP
+      const { data: recentEvents, count: eventCount } = await supabase
+        .from('defense_events')
+        .select('action, risk_score, fingerprint_family, detected_at', { count: 'exact' })
+        .eq('ip', ip_address)
+        .order('detected_at', { ascending: false })
+        .limit(10);
+
       return jsonResponse({
         success: true,
-        reputation: rep || { score: 0, total_requests: 0 },
+        reputation: rep ? {
+          ...rep,
+          status: rep.score >= 70 ? 'trusted' : rep.score >= 40 ? 'neutral' : rep.score >= 20 ? 'suspicious' : 'blocked',
+        } : { score: 50, total_requests: 0, status: 'unknown' },
+        recent_activity: {
+          total_events: eventCount || 0,
+          last_10: recentEvents?.map((e: { action: string; risk_score: number; fingerprint_family?: string; detected_at: string }) => ({
+            action: e.action,
+            risk: e.risk_score,
+            fingerprint: e.fingerprint_family,
+            time: e.detected_at,
+          })) || [],
+        },
       }, headers);
     }
 
     case "status": {
-      const { count: eventCount } = await supabase
-        .from("defense_events")
-        .select("*", { count: "exact", head: true });
+      const last24h = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+      
+      const [
+        { count: totalEvents },
+        { count: events24h },
+        { count: blockedCount },
+        { count: challengedCount },
+        { data: recentBlocks },
+        { data: rules },
+        { data: modeConfig },
+      ] = await Promise.all([
+        supabase.from('defense_events').select('id', { count: 'exact', head: true }),
+        supabase.from('defense_events').select('id', { count: 'exact', head: true }).gte('detected_at', last24h),
+        supabase.from('defense_events').select('id', { count: 'exact', head: true }).eq('action', 'block').gte('detected_at', last24h),
+        supabase.from('defense_events').select('id', { count: 'exact', head: true }).eq('action', 'challenge').gte('detected_at', last24h),
+        supabase.from('defense_events').select('ip, fingerprint_family, risk_score, detected_at').eq('action', 'block').order('detected_at', { ascending: false }).limit(5),
+        supabase.from('defense_rules').select('rule_name, is_active, match_count').eq('is_active', true),
+        supabase.from('defense_config').select('config_value').eq('config_key', 'defense_mode').single(),
+      ]);
 
-      const { data: recentBlocks } = await supabase
-        .from("defense_events")
-        .select("*")
-        .eq("action", "block")
-        .order("detected_at", { ascending: false })
-        .limit(5);
+      const defenseMode = modeConfig?.config_value?.mode || 'observe';
 
       return jsonResponse({
         success: true,
-        module: "defense",
+        module: 'defense',
+        version: '4.7.0',
+        mode: defenseMode,
         stats: {
-          total_events: eventCount || 0,
-          recent_blocks: recentBlocks?.length || 0,
+          total_events: totalEvents || 0,
+          events_24h: events24h || 0,
+          blocked_24h: blockedCount || 0,
+          challenged_24h: challengedCount || 0,
+          allowed_24h: (events24h || 0) - (blockedCount || 0) - (challengedCount || 0),
+          block_rate: events24h ? `${Math.round(((blockedCount || 0) / events24h) * 100)}%` : '0%',
         },
+        recent_blocks: recentBlocks?.map((b: { ip: string; fingerprint_family?: string; risk_score: number; detected_at: string }) => ({
+          ip: b.ip?.substring(0, 12) + '...',
+          fingerprint: b.fingerprint_family || 'unknown',
+          risk: b.risk_score,
+          time: b.detected_at,
+        })) || [],
+        active_rules: rules?.length || 0,
+        top_rules: rules?.sort((a: { match_count?: number }, b: { match_count?: number }) => (b.match_count || 0) - (a.match_count || 0)).slice(0, 3).map((r: { rule_name: string; match_count?: number }) => ({
+          name: r.rule_name,
+          matches: r.match_count || 0,
+        })) || [],
+        timestamp: new Date().toISOString(),
       }, headers);
     }
 
-    // ═══ PARTIAL DATA HANDLERS (not_implemented but with real context) ═══
-    case "report": {
-      const { threatId } = data;
-      // Fetch actual threat data if available
-      const { data: threat } = await supabase
-        .from('defense_events')
-        .select('*')
-        .eq('id', threatId)
-        .single();
-      
-      return jsonResponse({
-        success: false,
-        not_implemented: true,
-        action,
-        threatId,
-        message: "Threat report not yet implemented - detailed analysis pending",
-        partial_data: {
-          threat_found: !!threat,
-          risk_score: threat?.risk_score || null,
-          action_taken: threat?.action || null,
-          detected_at: threat?.detected_at || null,
-        },
-      }, headers);
-    }
-
+    // ═══ RULES — Full rules management with DSL ═══
     case "rules": {
-      const { action: ruleAction } = data;
-      // Always fetch real rules
-      const { data: rules } = await supabase
-        .from("defense_rules")
-        .select("*")
-        .eq("is_active", true)
-        .limit(50);
+      const { action: ruleAction, rule_id, rule_name, condition, priority, action: ruleActionType } = data;
       
-      if (ruleAction === "list" || !ruleAction) {
-        return jsonResponse({ success: true, rules: rules || [] }, headers);
+      if (ruleAction === 'create' && rule_name && condition) {
+        const { data: newRule, error } = await supabase.from('defense_rules').insert({
+          rule_name,
+          pattern: condition.value || condition.values?.join('|') || '',
+          action: ruleActionType || 'monitor',
+          priority: priority || 50,
+          is_active: true,
+          condition,
+          description: data.description || '',
+        }).select().single();
+        
+        if (error) return jsonResponse({ success: false, error: error.message }, headers);
+        return jsonResponse({ success: true, rule: newRule }, headers);
       }
-      return jsonResponse({
-        success: false,
-        not_implemented: true,
-        action,
-        ruleAction,
-        message: "Rules create/update/delete not yet implemented",
-        partial_data: {
-          current_rule_count: rules?.length || 0,
-        },
-      }, headers);
-    }
-
-    case "block": {
-      const { target, type } = data;
-      // Check if already blocked
-      const { data: existing } = await supabase
-        .from('ip_reputation')
-        .select('ip, score, blocked_count')
-        .eq('ip', target)
-        .single();
       
-      return jsonResponse({
-        success: false,
-        not_implemented: true,
-        action,
-        target,
-        type,
-        message: "Block action not yet implemented - use defense.analyze for risk assessment",
-        partial_data: {
-          target_known: !!existing,
-          current_score: existing?.score || null,
-          blocked_count: existing?.blocked_count || 0,
-        },
-      }, headers);
-    }
-
-    case "unblock": {
-      const { target } = data;
-      const { data: existing } = await supabase
-        .from('ip_reputation')
-        .select('ip, score')
-        .eq('ip', target)
-        .single();
+      if (ruleAction === 'toggle' && rule_id) {
+        const { data: existing } = await supabase.from('defense_rules').select('is_active').eq('id', rule_id).single();
+        await supabase.from('defense_rules').update({ is_active: !existing?.is_active }).eq('id', rule_id);
+        return jsonResponse({ success: true, toggled: rule_id, now_active: !existing?.is_active }, headers);
+      }
       
-      return jsonResponse({
-        success: false,
-        not_implemented: true,
-        action,
-        target,
-        message: "Unblock action not yet implemented",
-        partial_data: {
-          target_found: !!existing,
-          current_score: existing?.score || null,
-        },
-      }, headers);
-    }
-
-    case "threat_feed": {
-      // Provide recent threat stats as partial data
-      const { count: recentThreats } = await supabase
-        .from('defense_events')
-        .select('*', { count: 'exact', head: true })
-        .gte('detected_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+      if (ruleAction === 'delete' && rule_id) {
+        await supabase.from('defense_rules').delete().eq('id', rule_id);
+        return jsonResponse({ success: true, deleted: rule_id }, headers);
+      }
       
-      return jsonResponse({
-        success: false,
-        not_implemented: true,
-        action,
-        message: "External threat feed integration not yet implemented",
-        partial_data: {
-          threats_24h: recentThreats || 0,
-          internal_feed_active: true,
-        },
-      }, headers);
-    }
-
-    case "rate_limit": {
-      const { endpoint, limit } = data;
-      // Fetch current rate limit config
-      const { data: limits } = await supabase
-        .from('edge_rate_limits')
-        .select('function_name, request_count, window_start')
-        .limit(10);
+      // Default: list rules
+      const { data: rules } = await supabase
+        .from('defense_rules')
+        .select('*')
+        .order('priority', { ascending: true });
       
-      return jsonResponse({
-        success: false,
-        not_implemented: true,
-        action,
-        endpoint,
-        limit,
-        message: "Rate limit configuration not yet implemented",
-        partial_data: {
-          active_limits: limits?.length || 0,
-          current_config: limits || [],
-        },
+      return jsonResponse({ 
+        success: true, 
+        rules: rules || [],
+        dsl_operators: ['eq', 'neq', 'contains', 'in', 'not_in', 'gt', 'gte', 'lt', 'lte'],
+        dsl_fields: ['fingerprint_family', 'provider', 'risk_level', 'score', 'path', 'ip'],
       }, headers);
     }
 
-    // ═══ v3.6.0: LIMITS — Unified rate limit status (read-only) ═══
+    // ═══ LIMITS — Unified rate limit status ═══
     case "limits": {
-      // Returns unified rate limit status across edge functions - read-only
       const now = new Date();
       const hourAgo = new Date(now.getTime() - 60 * 60 * 1000).toISOString();
 
       const [
         { data: rateLimits },
-        { data: dreamLimits },
         { count: recentBlocks },
+        { data: topIPs },
       ] = await Promise.all([
         supabase.from('edge_rate_limits')
-          .select('function_name, identifier, request_count, window_start, updated_at')
+          .select('function_name, identifier, request_count, window_start')
           .order('request_count', { ascending: false })
           .limit(50),
-        supabase.from('dream_rate_limits')
-          .select('identifier, identifier_type, request_count, window_start')
-          .gte('window_start', hourAgo)
-          .limit(20),
         supabase.from('defense_events')
           .select('id', { count: 'exact', head: true })
-          .eq('reason', 'Rate limit exceeded')
+          .eq('action', 'block')
           .gte('detected_at', hourAgo),
+        supabase.from('defense_events')
+          .select('ip, fingerprint_family')
+          .gte('detected_at', hourAgo)
+          .limit(500),
       ]);
 
       // Group by function
-      const byFunction: Record<string, { total_requests: number; identifiers: number; max_single: number }> = {};
+      const byFunction: Record<string, { total_requests: number; identifiers: number }> = {};
       rateLimits?.forEach((r: { function_name: string; request_count: number }) => {
-        if (!byFunction[r.function_name]) {
-          byFunction[r.function_name] = { total_requests: 0, identifiers: 0, max_single: 0 };
-        }
+        if (!byFunction[r.function_name]) byFunction[r.function_name] = { total_requests: 0, identifiers: 0 };
         byFunction[r.function_name].total_requests += r.request_count || 0;
         byFunction[r.function_name].identifiers += 1;
-        byFunction[r.function_name].max_single = Math.max(byFunction[r.function_name].max_single, r.request_count || 0);
       });
 
-      // Dream API limits
-      const dreamApiLoad = dreamLimits?.reduce((sum: number, d: { request_count: number }) => sum + (d.request_count || 0), 0) || 0;
-      const dreamIdentifiers = new Set(dreamLimits?.map((d: { identifier: string }) => d.identifier) || []).size;
+      // Top consumers by IP
+      const ipCounts: Record<string, number> = {};
+      topIPs?.forEach((e: { ip: string }) => {
+        ipCounts[e.ip] = (ipCounts[e.ip] || 0) + 1;
+      });
+      const topConsumers = Object.entries(ipCounts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5)
+        .map(([ip, count]) => ({ ip: ip.substring(0, 12) + '...', requests: count }));
 
-      // Overall pressure score
       const totalRequests = rateLimits?.reduce((sum: number, r: { request_count: number }) => sum + (r.request_count || 0), 0) || 0;
-      const pressureScore = Math.min(100, Math.round(totalRequests / 10)); // 1000 requests = 100% pressure
+      const pressureScore = Math.min(100, Math.round(totalRequests / 10));
 
       return jsonResponse({
         success: true,
@@ -2853,27 +3298,18 @@ async function handleDefense(
         edge_functions: {
           summary: byFunction,
           total_active: Object.keys(byFunction).length,
-          total_requests: totalRequests
-        },
-        dream_api: {
-          requests_last_hour: dreamApiLoad,
-          unique_identifiers: dreamIdentifiers
+          total_requests: totalRequests,
         },
         enforcement: {
           blocks_last_hour: recentBlocks || 0,
-          status: (recentBlocks || 0) > 10 ? 'active_enforcement' : 'low'
         },
-        top_consumers: rateLimits?.slice(0, 5).map((r: { function_name: string; identifier: string; request_count: number }) => ({
-          function: r.function_name,
-          identifier: r.identifier.substring(0, 16) + '...',
-          count: r.request_count
-        })) || [],
+        top_consumers: topConsumers,
         proof_mode: true,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       }, headers);
     }
 
-    // ═══ v3.7.0: POSTURE — Consolidated security posture summary ═══
+    // ═══ POSTURE — Consolidated security posture ═══
     case "posture": {
       const last24h = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
       const last7d = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
@@ -2883,129 +3319,101 @@ async function handleDefense(
         { count: count7d },
         { count: blockedCount },
         { count: challengedCount },
-        { data: topThreats },
+        { data: topFingerprints },
         { data: rules },
-        { count: unresolvedAnomalies },
-        { data: recentRateLimits },
+        { data: modeConfig },
       ] = await Promise.all([
-        supabase.from('defense_events').select('action, risk_score, reason', { count: 'exact' }).gte('detected_at', last24h).limit(200),
+        supabase.from('defense_events').select('action, risk_score, fingerprint_family, reason', { count: 'exact' }).gte('detected_at', last24h).limit(500),
         supabase.from('defense_events').select('id', { count: 'exact', head: true }).gte('detected_at', last7d),
         supabase.from('defense_events').select('id', { count: 'exact', head: true }).eq('action', 'block').gte('detected_at', last24h),
         supabase.from('defense_events').select('id', { count: 'exact', head: true }).eq('action', 'challenge').gte('detected_at', last24h),
-        supabase.from('defense_events').select('reason, risk_score').gte('detected_at', last24h).order('risk_score', { ascending: false }).limit(10),
-        supabase.from('defense_rules').select('rule_name, is_active, priority').eq('is_active', true).order('priority', { ascending: true }).limit(10),
-        supabase.from('pf_brain_anomalies').select('id', { count: 'exact', head: true }).eq('resolved', false),
-        supabase.from('edge_rate_limits').select('function_name, request_count').gte('window_start', last24h).order('request_count', { ascending: false }).limit(5),
+        supabase.from('defense_events').select('fingerprint_family, risk_score').gte('detected_at', last24h).limit(500),
+        supabase.from('defense_rules').select('rule_name, is_active, match_count').eq('is_active', true),
+        supabase.from('defense_config').select('config_value').eq('config_key', 'defense_mode').single(),
       ]);
 
-      // Calculate risk distribution
+      // Risk distribution
       const riskDist = { low: 0, medium: 0, high: 0, critical: 0 };
       recent24h?.forEach((e: { risk_score: number }) => {
         if (e.risk_score >= 80) riskDist.critical++;
         else if (e.risk_score >= 60) riskDist.high++;
-        else if (e.risk_score >= 30) riskDist.medium++;
+        else if (e.risk_score >= 35) riskDist.medium++;
         else riskDist.low++;
       });
 
-      // Calculate posture score (0-100, higher is better/safer)
-      const threatDensity = (count24h || 0) / 24; // threats per hour
+      // Fingerprint distribution
+      const fpDist: Record<string, number> = {};
+      topFingerprints?.forEach((e: { fingerprint_family?: string }) => {
+        const fp = e.fingerprint_family || 'unknown';
+        fpDist[fp] = (fpDist[fp] || 0) + 1;
+      });
+      const topFps = Object.entries(fpDist).sort((a, b) => b[1] - a[1]).slice(0, 5);
+
+      // Posture score
+      const threatDensity = (count24h || 0) / 24;
       const blockRate = count24h && count24h > 0 ? ((blockedCount || 0) / count24h) : 0;
       const criticalRatio = count24h && count24h > 0 ? (riskDist.critical / count24h) : 0;
-      const postureScore = Math.max(0, Math.min(100, Math.round(
-        100 - (threatDensity * 2) - (criticalRatio * 50) + (blockRate * 20)
-      )));
-
+      const postureScore = Math.max(0, Math.min(100, Math.round(100 - (threatDensity * 2) - (criticalRatio * 50) + (blockRate * 20))));
       const postureStatus = postureScore >= 80 ? 'secure' : postureScore >= 60 ? 'guarded' : postureScore >= 40 ? 'elevated' : 'critical';
 
       return jsonResponse({
         success: true,
         module: 'defense',
         action: 'posture',
+        mode: modeConfig?.config_value?.mode || 'observe',
         posture: {
           score: postureScore,
           status: postureStatus,
-          trend: (count7d || 0) > (count24h || 0) * 7 ? 'improving' : 'stable'
+          trend: (count7d || 0) > (count24h || 0) * 7 ? 'improving' : 'stable',
         },
         activity_24h: {
           total_events: count24h || 0,
           blocked: blockedCount || 0,
           challenged: challengedCount || 0,
           allowed: (count24h || 0) - (blockedCount || 0) - (challengedCount || 0),
-          block_rate: count24h ? `${Math.round(((blockedCount || 0) / count24h) * 100)}%` : '0%'
+          block_rate: count24h ? `${Math.round(((blockedCount || 0) / count24h) * 100)}%` : '0%',
         },
         risk_distribution: riskDist,
-        top_threats: topThreats?.slice(0, 5).map((t: { reason: string; risk_score: number }) => ({
-          reason: t.reason?.substring(0, 50) || 'unknown',
-          risk: t.risk_score
-        })) || [],
+        top_fingerprints: topFps.map(([fp, count]) => ({ fingerprint: fp, count })),
         active_rules: rules?.length || 0,
-        unresolved_anomalies: unresolvedAnomalies || 0,
-        rate_limit_pressure: recentRateLimits?.slice(0, 3).map((r: { function_name: string; request_count: number }) => ({
-          function: r.function_name,
-          load: r.request_count
-        })) || [],
         weekly_events: count7d || 0,
         proof_mode: true,
         read_only: true,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       }, headers);
     }
 
+    // ═══ ANOMALY — Statistical anomaly detection ═══
     case "anomaly": {
-      // v3.1.0 Real anomaly detection
-      const { timeWindow = "1h" } = data;
+      const { timeWindow = '1h' } = data;
       
-      // Parse time window
       const windowMs = timeWindow === '24h' ? 24 * 60 * 60 * 1000 :
                        timeWindow === '6h' ? 6 * 60 * 60 * 1000 :
                        timeWindow === '1h' ? 60 * 60 * 1000 : 60 * 60 * 1000;
       const since = new Date(Date.now() - windowMs).toISOString();
       
-      // Get recent defense events
       const { data: events } = await supabase
-        .from("defense_events")
-        .select("risk_score, action, ip, detected_at")
-        .gte("detected_at", since)
-        .order("detected_at", { ascending: false })
-        .limit(200);
+        .from('defense_events')
+        .select('risk_score, action, ip, fingerprint_family, detected_at')
+        .gte('detected_at', since)
+        .order('detected_at', { ascending: false })
+        .limit(500);
       
-      // Analyze for anomalies
       const totalEvents = events?.length || 0;
       const blockedEvents = events?.filter((e: { action: string }) => e.action === 'block').length || 0;
-      const highRiskEvents = events?.filter((e: { risk_score: number }) => e.risk_score >= 70).length || 0;
+      const highRiskEvents = events?.filter((e: { risk_score: number }) => e.risk_score >= 60).length || 0;
       const uniqueIPs = new Set(events?.map((e: { ip: string }) => e.ip) || []).size;
+      const uniqueFingerprints = new Set(events?.map((e: { fingerprint_family?: string }) => e.fingerprint_family).filter(Boolean) || []).size;
       
-      // Calculate anomaly score
       const blockRate = totalEvents > 0 ? blockedEvents / totalEvents : 0;
       const highRiskRate = totalEvents > 0 ? highRiskEvents / totalEvents : 0;
       const anomalyScore = Math.round((blockRate * 40 + highRiskRate * 60) * 100);
       
-      // Detect patterns
       const anomalies: Array<{ type: string; severity: string; description: string }> = [];
-      
-      if (blockRate > 0.5) {
-        anomalies.push({
-          type: 'high_block_rate',
-          severity: 'warning',
-          description: `${Math.round(blockRate * 100)}% of requests blocked in ${timeWindow}`
-        });
-      }
-      
-      if (highRiskEvents > 10) {
-        anomalies.push({
-          type: 'high_risk_volume',
-          severity: highRiskEvents > 50 ? 'critical' : 'warning',
-          description: `${highRiskEvents} high-risk events detected`
-        });
-      }
-      
-      if (totalEvents > 100 && uniqueIPs < 5) {
-        anomalies.push({
-          type: 'ip_concentration',
-          severity: 'warning',
-          description: `${totalEvents} events from only ${uniqueIPs} unique IPs (possible attack)`
-        });
-      }
+      if (blockRate > 0.5) anomalies.push({ type: 'high_block_rate', severity: 'warning', description: `${Math.round(blockRate * 100)}% of requests blocked in ${timeWindow}` });
+      if (highRiskEvents > 20) anomalies.push({ type: 'high_risk_volume', severity: highRiskEvents > 50 ? 'critical' : 'warning', description: `${highRiskEvents} high-risk events detected` });
+      if (totalEvents > 100 && uniqueIPs < 5) anomalies.push({ type: 'ip_concentration', severity: 'warning', description: `${totalEvents} events from only ${uniqueIPs} unique IPs` });
+      if (totalEvents > 50 && uniqueFingerprints < 3) anomalies.push({ type: 'fingerprint_concentration', severity: 'warning', description: `Traffic concentrated in ${uniqueFingerprints} fingerprint families` });
       
       return jsonResponse({
         success: true,
@@ -3017,6 +3425,7 @@ async function handleDefense(
           blocked: blockedEvents,
           high_risk: highRiskEvents,
           unique_ips: uniqueIPs,
+          unique_fingerprints: uniqueFingerprints,
           block_rate: `${Math.round(blockRate * 100)}%`,
         },
         anomalies,
@@ -3024,16 +3433,15 @@ async function handleDefense(
       }, headers);
     }
 
-    // ═══ v3.4.0: STATISTICAL ANOMALY PROBE (from pf-defense-anomaly-detection) ═══
+    // ═══ ANOMALY_PROBE — Advanced statistical probe ═══
     case "anomaly_probe": {
-      // Advanced statistical anomaly detection using z-scores - read-only, Observer-eligible
       const { lookbackHours = 24 } = data;
-      const lookback = Math.min(Math.max(1, lookbackHours as number), 168); // 1-168h
+      const lookback = Math.min(Math.max(1, lookbackHours as number), 168);
       const cutoffTime = new Date(Date.now() - lookback * 60 * 60 * 1000).toISOString();
       
       const { data: events } = await supabase
         .from('defense_events')
-        .select('id, risk_score, action, ip, detected_at, reason, metadata')
+        .select('id, risk_score, action, ip, fingerprint_family, detected_at, metadata')
         .gte('detected_at', cutoffTime)
         .order('detected_at', { ascending: false })
         .limit(500);
@@ -3048,77 +3456,39 @@ async function handleDefense(
           baseline_events: events?.length || 0,
           lookback_hours: lookback,
           proof_mode: true,
-          role_visibility: 'observer',
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
         }, headers);
       }
 
-      // Calculate baseline statistics for z-score analysis
       const riskScores = events.map((e: { risk_score: number }) => e.risk_score || 0);
       const avgRiskScore = riskScores.reduce((a: number, b: number) => a + b, 0) / riskScores.length;
-      const stdDevRiskScore = Math.sqrt(
-        riskScores.reduce((sum: number, val: number) => sum + Math.pow(val - avgRiskScore, 2), 0) / riskScores.length
-      ) || 1;
+      const stdDevRiskScore = Math.sqrt(riskScores.reduce((sum: number, val: number) => sum + Math.pow(val - avgRiskScore, 2), 0) / riskScores.length) || 1;
 
-      // Time bucket analysis for rate anomalies
-      const timeBuckets = new Map<string, number>();
-      events.forEach((e: { detected_at: string }) => {
-        const hourBucket = new Date(e.detected_at).toISOString().slice(0, 13);
-        timeBuckets.set(hourBucket, (timeBuckets.get(hourBucket) || 0) + 1);
-      });
-      const bucketValues = Array.from(timeBuckets.values());
-      const avgRequestsPerHour = bucketValues.reduce((a, b) => a + b, 0) / bucketValues.length;
-
-      // Fingerprint frequency tracking
       const fingerprintCounts = new Map<string, number>();
-      events.forEach((e: { metadata?: { fingerprint?: string } }) => {
-        const fp = e.metadata?.fingerprint;
-        if (fp) fingerprintCounts.set(fp, (fingerprintCounts.get(fp) || 0) + 1);
+      events.forEach((e: { fingerprint_family?: string }) => {
+        const fp = e.fingerprint_family || 'unknown';
+        fingerprintCounts.set(fp, (fingerprintCounts.get(fp) || 0) + 1);
       });
 
-      // Detect statistical anomalies
-      interface StatisticalAnomaly {
-        event_id: string;
-        timestamp: string;
-        risk_score: number;
-        z_score: number;
-        action: string;
-        ip_address: string;
-        anomaly_score: number;
-        factors: Record<string, number>;
-        confidence: number;
-      }
-      const statisticalAnomalies: StatisticalAnomaly[] = [];
-      const recentEvents = events.slice(0, Math.min(30, events.length));
-
-      for (const event of recentEvents) {
+      interface StatAnomaly { event_id: string; timestamp: string; risk_score: number; z_score: number; fingerprint: string; anomaly_score: number; confidence: number }
+      const statisticalAnomalies: StatAnomaly[] = [];
+      
+      for (const event of events.slice(0, 30)) {
         const riskZScore = Math.abs((event.risk_score - avgRiskScore) / stdDevRiskScore);
         const riskFactor = Math.min(riskZScore / 3, 1) * 40;
-        
-        const fpCount = fingerprintCounts.get(event.metadata?.fingerprint) || 1;
+        const fpCount = fingerprintCounts.get(event.fingerprint_family || 'unknown') || 1;
         const fpFactor = fpCount > 10 ? Math.min(fpCount / 50, 1) * 30 : 0;
+        const overallScore = Math.round(riskFactor + fpFactor + 10);
         
-        const reasonCount = Array.isArray(event.reason) ? event.reason.length : 0;
-        const behaviorFactor = reasonCount > 3 ? Math.min(reasonCount / 8, 1) * 20 : 0;
-        
-        const overallScore = Math.round(riskFactor + fpFactor + behaviorFactor + 10);
-        const confidence = overallScore > 50 ? 0.85 + (Math.min(overallScore - 50, 50) / 50) * 0.15 : 0.5 + (overallScore / 50) * 0.35;
-
-        if (overallScore >= 50) {
+        if (overallScore >= 40) {
           statisticalAnomalies.push({
             event_id: event.id,
             timestamp: event.detected_at,
             risk_score: event.risk_score,
             z_score: Math.round(riskZScore * 100) / 100,
-            action: event.action,
-            ip_address: event.ip || 'unknown',
+            fingerprint: event.fingerprint_family || 'unknown',
             anomaly_score: overallScore,
-            factors: {
-              risk_score_anomaly: Math.round(riskFactor),
-              fingerprint_frequency: Math.round(fpFactor),
-              behavioral_anomaly: Math.round(behaviorFactor)
-            },
-            confidence: Math.round(confidence * 100) / 100
+            confidence: overallScore > 50 ? 0.85 : 0.65,
           });
         }
       }
@@ -3135,42 +3505,33 @@ async function handleDefense(
         lookback_hours: lookback,
         statistics: {
           avg_risk_score: Math.round(avgRiskScore * 100) / 100,
-          std_dev_risk_score: Math.round(stdDevRiskScore * 100) / 100,
-          avg_requests_per_hour: Math.round(avgRequestsPerHour * 100) / 100,
-          unique_fingerprints: fingerprintCounts.size
+          std_dev: Math.round(stdDevRiskScore * 100) / 100,
+          unique_fingerprints: fingerprintCounts.size,
+          top_fingerprints: Array.from(fingerprintCounts.entries()).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([fp, count]) => ({ fingerprint: fp, count })),
         },
         proof_mode: true,
-        role_visibility: 'observer',
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       }, headers);
     }
 
-    // ═══ v3.11.0: IP_INTEL — IP intelligence and reputation analysis (new) ═══
+    // ═══ IP_INTEL — Enhanced IP intelligence ═══
     case "ip_intel": {
-      // NEW: IP intelligence with reputation scoring - proof-compatible
       const { ip_address, include_history = false } = data;
       
       if (!ip_address) {
-        return jsonResponse({
-          success: false,
-          error: 'ip_address is required',
-          module: 'defense',
-          action: 'ip_intel'
-        }, headers);
+        return jsonResponse({ success: false, error: 'ip_address is required' }, headers);
       }
 
-      // Fetch IP reputation from database
       const { data: reputation } = await supabase
         .from('ip_reputation')
         .select('*')
         .eq('ip', ip_address)
         .single();
 
-      // Fetch recent events for this IP
       const last7d = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
       const { data: recentEvents, count: eventCount } = await supabase
         .from('defense_events')
-        .select('action, risk_score, reason, detected_at, endpoint', { count: 'exact' })
+        .select('action, risk_score, fingerprint_family, reason, detected_at, endpoint', { count: 'exact' })
         .eq('ip', ip_address)
         .gte('detected_at', last7d)
         .order('detected_at', { ascending: false })
@@ -3183,33 +3544,19 @@ async function handleDefense(
         ? Math.round(events.reduce((sum: number, e: { risk_score: number }) => sum + (e.risk_score || 0), 0) / events.length)
         : 0;
 
-      // Calculate threat level
+      // Fingerprint diversity
+      const fingerprints = new Set(events.map((e: { fingerprint_family?: string }) => e.fingerprint_family).filter(Boolean));
+      
       const threatIndicators: string[] = [];
       if (blockedCount > 5) threatIndicators.push('frequent_blocks');
       if (avgRiskScore > 70) threatIndicators.push('high_risk_patterns');
       if (events.length > 20) threatIndicators.push('high_volume');
       if (challengedCount > 3 && blockedCount > 3) threatIndicators.push('persistent_attempts');
+      if (fingerprints.size > 5) threatIndicators.push('fingerprint_rotation');
 
       const threatLevel = threatIndicators.length >= 3 ? 'critical' :
                           threatIndicators.length >= 2 ? 'high' :
                           threatIndicators.length >= 1 ? 'medium' : 'low';
-
-      // Endpoint analysis
-      const endpointHits: Record<string, number> = {};
-      events.forEach((e: { endpoint?: string }) => {
-        if (e.endpoint) endpointHits[e.endpoint] = (endpointHits[e.endpoint] || 0) + 1;
-      });
-      const topEndpoints = Object.entries(endpointHits)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 5)
-        .map(([endpoint, count]) => ({ endpoint, hits: count }));
-
-      // Behavioral patterns
-      const actionDistribution = {
-        blocked: blockedCount,
-        challenged: challengedCount,
-        allowed: events.length - blockedCount - challengedCount
-      };
 
       const response: Record<string, unknown> = {
         success: true,
@@ -3218,43 +3565,76 @@ async function handleDefense(
         ip_address,
         reputation: reputation ? {
           score: reputation.score,
+          risk_level: reputation.risk_level,
           total_requests: reputation.total_requests,
           blocked_count: reputation.blocked_count,
+          challenge_count: reputation.challenge_count,
+          fingerprint_family: reputation.fingerprint_family,
+          provider: reputation.provider,
+          country: reputation.country,
           last_seen: reputation.last_seen,
-          first_seen: reputation.created_at
-        } : { score: 50, status: 'unknown', message: 'No prior history' },
+          first_seen: reputation.created_at,
+        } : { score: 50, status: 'unknown' },
         activity_7d: {
           total_events: eventCount || 0,
-          actions: actionDistribution,
-          avg_risk_score: avgRiskScore
+          blocked: blockedCount,
+          challenged: challengedCount,
+          allowed: events.length - blockedCount - challengedCount,
+          avg_risk_score: avgRiskScore,
+          fingerprint_diversity: fingerprints.size,
         },
         analysis: {
           threat_level: threatLevel,
           threat_indicators: threatIndicators,
-          top_endpoints: topEndpoints,
           recommendation: threatLevel === 'critical' ? 'block' :
                           threatLevel === 'high' ? 'challenge' :
-                          threatLevel === 'medium' ? 'monitor' : 'allow'
+                          threatLevel === 'medium' ? 'monitor' : 'allow',
         },
         proof_mode: true,
-        read_only: true,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       if (include_history) {
-        response.recent_events = events.slice(0, 10).map((e: { detected_at: string; action: string; risk_score: number; reason: string }) => ({
+        response.recent_events = events.slice(0, 10).map((e: { detected_at: string; action: string; risk_score: number; fingerprint_family?: string; reason: string }) => ({
           timestamp: e.detected_at,
           action: e.action,
           risk_score: e.risk_score,
-          reason: e.reason?.substring(0, 50)
+          fingerprint: e.fingerprint_family,
+          reason: e.reason?.substring(0, 50),
         }));
       }
 
       return jsonResponse(response, headers);
     }
 
+    // ═══ CONFIG — Defense configuration management ═══
+    case "config": {
+      const { action: configAction, key, value } = data;
+      
+      if (configAction === 'set' && key && value !== undefined) {
+        await supabase.from('defense_config').upsert({
+          config_key: key,
+          config_value: typeof value === 'object' ? value : { value },
+          updated_at: new Date().toISOString(),
+        }, { onConflict: 'config_key' });
+        return jsonResponse({ success: true, updated: key, value }, headers);
+      }
+      
+      if (configAction === 'get' && key) {
+        const { data: config } = await supabase.from('defense_config').select('config_value').eq('config_key', key).single();
+        return jsonResponse({ success: true, key, value: config?.config_value }, headers);
+      }
+      
+      // List all config
+      const { data: allConfig } = await supabase.from('defense_config').select('config_key, config_value, description');
+      return jsonResponse({
+        success: true,
+        config: Object.fromEntries((allConfig || []).map((c: { config_key: string; config_value: unknown }) => [c.config_key, c.config_value])),
+        available_keys: ['defense_mode', 'min_events_for_anomaly', 'scoring_matrix'],
+      }, headers);
+    }
+
     case "pulse": {
-      // Lightweight defense heartbeat
       const uptime = Date.now() - state.initialized;
       const moduleHealth = getModuleHealth('defense');
       
@@ -3271,8 +3651,7 @@ async function handleDefense(
           circuit: moduleHealth.circuitState,
         },
         proof_mode: true,
-        read_only: true,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       }, headers);
     }
 
