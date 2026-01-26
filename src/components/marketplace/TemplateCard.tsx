@@ -1,5 +1,5 @@
 /**
- * TemplateCard — Premium visual template card with enticing preview
+ * TemplateCard — Premium visual template card with rarity and dynamic names
  * Mobile-optimized, designed to make users want to own it
  */
 
@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import type { Template } from '@/data/templates';
 import { getTemplatePricing, formatPrice } from '@/config/marketplace-products';
+import { generateDisplayName, getRarityBadge } from '@/lib/templateNames';
 
 const categoryIcons: Record<string, React.ElementType> = {
   brain: Brain,
@@ -75,6 +76,8 @@ export function TemplateCard({ template, onPreview, onBuy, isLoading, featured }
   const gradient = categoryGradients[template.category] || categoryGradients.brain;
   const borderColor = categoryColors[template.category] || categoryColors.brain;
   const difficulty = difficultyConfig[template.difficulty] || difficultyConfig.beginner;
+  const rarity = getRarityBadge(template.difficulty);
+  const displayName = generateDisplayName(template.id, template.category, template.difficulty);
 
   return (
     <Card
@@ -160,21 +163,25 @@ export function TemplateCard({ template, onPreview, onBuy, isLoading, featured }
       </div>
 
       <CardContent className="p-4 sm:p-5 space-y-3">
-        {/* Category & Difficulty */}
+        {/* Rarity & Category */}
         <div className="flex items-center gap-2 flex-wrap">
+          <Badge className={cn("text-[10px] h-6 px-2 border", rarity.bgColor, rarity.color, rarity.borderColor)}>
+            <Sparkles className="w-3 h-3 mr-1" />
+            {rarity.label}
+          </Badge>
           <Badge variant="outline" className="text-[10px] gap-1 h-6 px-2">
             <CategoryIcon className="w-3 h-3" />
             {template.category}
           </Badge>
-          <Badge className={cn("text-[10px] h-6 px-2 border-0", difficulty.bg, difficulty.color)}>
-            {difficulty.label}
-          </Badge>
         </div>
 
-        {/* Title */}
+        {/* Dynamic Title */}
         <h3 className="font-bold text-base sm:text-lg leading-tight line-clamp-1 group-hover:text-primary transition-colors">
-          {template.name}
+          {displayName}
         </h3>
+        
+        {/* Original Name as Subtitle */}
+        <p className="text-xs text-muted-foreground/70 -mt-2">{template.name}</p>
 
         {/* Description */}
         <p className="text-sm text-muted-foreground line-clamp-2 min-h-[40px]">

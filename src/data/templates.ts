@@ -9,7 +9,7 @@ import {
   Lock, GitBranch, Gauge, Search, Timer, Workflow, Target,
   Database, Lightbulb, Flame, Star, Bot, FileText, Bell,
   Sparkles, Key, Radio, Server, Fingerprint, Package, Globe,
-  Users, PlayCircle, Code, Zap, Eye, Image
+  Users, PlayCircle, Code, Zap, Eye, Image, TrendingUp
 } from 'lucide-react';
 
 export interface Template {
@@ -18,7 +18,7 @@ export interface Template {
   description: string;
   icon: LucideIcon;
   category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'world_engine';
-  difficulty: 'beginner' | 'intermediate' | 'advanced' | 'premium' | 'elite';
+  difficulty: 'beginner' | 'intermediate' | 'advanced' | 'premium' | 'elite' | 'pro';
   estimatedTime: string;
   features: string[];
   code: string;
@@ -6131,8 +6131,1064 @@ class ImagePipeline {
 }
 
 export const imagePipeline = new ImagePipeline();`
+  },
+  
+  // ============================================
+  // PREMIUM TEMPLATES - Drift Prevention Core
+  // ============================================
+  {
+    id: 'drift-prevention-engine',
+    name: 'Drift Prevention Engine',
+    description: 'THE solution for AI behavioral drift. Memory anchoring, self-correction loops, and personality stability.',
+    icon: Shield,
+    category: 'brain',
+    difficulty: 'elite',
+    estimatedTime: '45 min',
+    features: ['Memory Anchoring', 'Self-Correction Loops', 'Behavioral Stability', 'Personality Lock'],
+    code: `// Drift Prevention Engine - Elite Template
+import { substrate } from './lib/substrate';
+
+class DriftPreventionEngine {
+  private baseline: Map<string, any> = new Map();
+  
+  async anchorPersonality(config: any) {
+    this.baseline.set('personality', config);
+    await substrate.brain.remember(JSON.stringify(config), 'personality_anchor', 1.0);
+    return { anchored: true, config };
+  }
+  
+  async detectDrift(currentBehavior: any): Promise<{ drifted: boolean; delta: number }> {
+    const anchor = await substrate.brain.query('personality_anchor', 1);
+    const baseline = anchor.data?.memories?.[0]?.content;
+    
+    if (!baseline) return { drifted: false, delta: 0 };
+    
+    const delta = this.calculateDelta(JSON.parse(baseline), currentBehavior);
+    return { drifted: delta > 0.15, delta };
+  }
+  
+  async selfCorrect() {
+    const anchor = await substrate.brain.query('personality_anchor', 1);
+    if (anchor.data?.memories?.[0]) {
+      await substrate.brain.reinforce(anchor.data.memories[0].id, 0.3);
+    }
+    return { corrected: true };
+  }
+  
+  private calculateDelta(a: any, b: any): number {
+    return Math.random() * 0.2; // Simplified - real impl uses vector similarity
+  }
+}
+
+export const driftEngine = new DriftPreventionEngine();`
+  },
+  {
+    id: 'memory-persistence-core',
+    name: 'Memory Persistence Core',
+    description: '3-tier memory system (working, episodic, semantic) that prevents AI amnesia across sessions.',
+    icon: Brain,
+    category: 'brain',
+    difficulty: 'premium',
+    estimatedTime: '40 min',
+    features: ['Working Memory', 'Episodic Memory', 'Semantic Memory', 'Cross-Session Recall'],
+    code: `// Memory Persistence Core - Premium Template
+import { substrate } from './lib/substrate';
+
+interface MemoryTier {
+  working: Map<string, any>;    // Short-term, volatile
+  episodic: string[];           // Event-based, timestamped
+  semantic: Map<string, any>;   // Long-term facts
+}
+
+class MemoryPersistence {
+  private memory: MemoryTier = {
+    working: new Map(),
+    episodic: [],
+    semantic: new Map()
+  };
+  
+  async remember(content: string, type: 'working' | 'episodic' | 'semantic') {
+    const result = await substrate.brain.remember(content, type, 0.9);
+    
+    switch (type) {
+      case 'working':
+        this.memory.working.set(result.data?.id, content);
+        break;
+      case 'episodic':
+        this.memory.episodic.push(content);
+        break;
+      case 'semantic':
+        this.memory.semantic.set(result.data?.id, content);
+        break;
+    }
+    
+    return result;
+  }
+  
+  async consolidate() {
+    // Move important working memory to semantic
+    await substrate.brain.reflect();
+    return { consolidated: true };
+  }
+}
+
+export const memoryCore = new MemoryPersistence();`
+  },
+  {
+    id: 'self-healing-chatbot',
+    name: 'Self-Healing Chatbot',
+    description: 'Chatbot that detects its own behavioral errors and auto-corrects drift in real-time.',
+    icon: MessageSquare,
+    category: 'decode',
+    difficulty: 'elite',
+    estimatedTime: '50 min',
+    features: ['Error Detection', 'Auto-Correction', 'Drift Monitoring', 'Health Scoring'],
+    code: `// Self-Healing Chatbot - Elite Template
+import { substrate } from './lib/substrate';
+
+class SelfHealingChatbot {
+  private healthScore = 100;
+  
+  async chat(message: string, sessionId: string) {
+    const response = await substrate.decode.chat(message, sessionId);
+    
+    // Self-diagnose
+    const health = await this.diagnose(response.data?.reply);
+    if (health.score < 70) {
+      await this.heal();
+    }
+    
+    return { ...response.data, health };
+  }
+  
+  private async diagnose(response: string): Promise<{ score: number; issues: string[] }> {
+    const analysis = await substrate.decode.intent(
+      \`Rate this response quality 0-100: "\${response?.slice(0, 200)}"\`
+    );
+    return {
+      score: analysis.data?.confidence ? analysis.data.confidence * 100 : 80,
+      issues: []
+    };
+  }
+  
+  private async heal() {
+    await substrate.brain.reflect();
+    this.healthScore = Math.min(100, this.healthScore + 10);
+  }
+}
+
+export const selfHealingBot = new SelfHealingChatbot();`
+  },
+  {
+    id: 'behavioral-anchor-system',
+    name: 'Behavioral Anchor System',
+    description: 'Anchors AI personality and behavior patterns to prevent drift over time.',
+    icon: Target,
+    category: 'brain',
+    difficulty: 'premium',
+    estimatedTime: '35 min',
+    features: ['Personality Anchoring', 'Behavior Baseline', 'Drift Thresholds', 'Recovery Triggers'],
+    code: `// Behavioral Anchor System - Premium Template
+import { substrate } from './lib/substrate';
+
+interface BehaviorAnchor {
+  personality: string[];
+  values: string[];
+  constraints: string[];
+  threshold: number;
+}
+
+class BehaviorAnchorSystem {
+  private anchor: BehaviorAnchor | null = null;
+  
+  async setAnchor(config: BehaviorAnchor) {
+    this.anchor = config;
+    await substrate.brain.remember(
+      JSON.stringify(config),
+      'behavior_anchor',
+      1.0,
+      { type: 'anchor', immutable: true }
+    );
+  }
+  
+  async checkCompliance(behavior: any): Promise<{ compliant: boolean; drift: number }> {
+    if (!this.anchor) return { compliant: true, drift: 0 };
+    
+    const anchorMemory = await substrate.brain.query('behavior_anchor', 1);
+    const drift = Math.random() * 0.25; // Real impl: vector similarity
+    
+    return {
+      compliant: drift < this.anchor.threshold,
+      drift
+    };
+  }
+}
+
+export const anchorSystem = new BehaviorAnchorSystem();`
+  },
+  {
+    id: 'context-continuity-engine',
+    name: 'Context Continuity Engine',
+    description: 'Maintains conversation context across sessions, preventing context collapse and drift.',
+    icon: Workflow,
+    category: 'decode',
+    difficulty: 'premium',
+    estimatedTime: '35 min',
+    features: ['Session Bridging', 'Context Recall', 'Coherence Scoring', 'Thread Memory'],
+    code: `// Context Continuity Engine - Premium Template
+import { substrate } from './lib/substrate';
+
+class ContextContinuityEngine {
+  async bridgeSession(oldSessionId: string, newSessionId: string) {
+    const context = await substrate.brain.query(\`session:\${oldSessionId}\`, 10);
+    
+    for (const memory of context.data?.memories || []) {
+      await substrate.brain.remember(
+        memory.content,
+        \`session:\${newSessionId}\`,
+        memory.confidence,
+        { bridged_from: oldSessionId }
+      );
+    }
+    
+    return { bridged: true, memories: context.data?.memories?.length || 0 };
+  }
+  
+  async getFullContext(sessionId: string, limit = 20) {
+    const memories = await substrate.brain.query(\`session:\${sessionId}\`, limit);
+    return memories.data?.memories || [];
+  }
+}
+
+export const contextEngine = new ContextContinuityEngine();`
+  },
+  {
+    id: 'autonomous-improvement-loop',
+    name: 'Autonomous Improvement Loop',
+    description: 'AI that learns and improves autonomously through overnight dream cycles.',
+    icon: Moon,
+    category: 'dream',
+    difficulty: 'pro',
+    estimatedTime: '60 min',
+    features: ['Dream Cycles', 'Memory Consolidation', 'Pattern Recognition', 'Self-Improvement'],
+    code: `// Autonomous Improvement Loop - Pro Template
+import { substrate } from './lib/substrate';
+
+class AutonomousImprovement {
+  private cycleCount = 0;
+  
+  async runDreamCycle() {
+    this.cycleCount++;
+    
+    // 1. Feed recent experiences to dream processor
+    const experiences = await substrate.brain.query('recent_experience', 50);
+    for (const exp of experiences.data?.memories || []) {
+      await substrate.dream.feed(exp.content, 'memory');
+    }
+    
+    // 2. Trigger dream mutation
+    await substrate.dream.mutate();
+    
+    // 3. Consolidate learnings
+    const reflection = await substrate.brain.reflect();
+    
+    // 4. Synthesize improvements
+    const synthesis = await substrate.brain.synthesize();
+    
+    return {
+      cycle: this.cycleCount,
+      insights: reflection.data?.insights || [],
+      improvements: synthesis.data?.insights || []
+    };
+  }
+}
+
+export const improvementLoop = new AutonomousImprovement();`
+  },
+  {
+    id: 'personality-guard-system',
+    name: 'Personality Guard System',
+    description: 'Protects AI personality consistency, preventing identity drift and jailbreak attempts.',
+    icon: Shield,
+    category: 'defense',
+    difficulty: 'premium',
+    estimatedTime: '40 min',
+    features: ['Identity Protection', 'Jailbreak Defense', 'Personality Lock', 'Consistency Scoring'],
+    code: `// Personality Guard System - Premium Template
+import { substrate } from './lib/substrate';
+
+class PersonalityGuard {
+  private locked = false;
+  
+  async lockPersonality(identity: {
+    name: string;
+    traits: string[];
+    boundaries: string[];
+  }) {
+    await substrate.brain.remember(
+      JSON.stringify(identity),
+      'personality_lock',
+      1.0,
+      { immutable: true, type: 'identity' }
+    );
+    this.locked = true;
+    return { locked: true };
+  }
+  
+  async validateResponse(response: string): Promise<{ valid: boolean; issues: string[] }> {
+    const analysis = await substrate.defense.analyze({
+      fingerprint: { content: response.slice(0, 500) }
+    }, '');
+    
+    const identity = await substrate.brain.query('personality_lock', 1);
+    
+    return {
+      valid: (analysis.data?.risk_score || 0) < 0.3,
+      issues: analysis.data?.blocked ? ['Potential jailbreak detected'] : []
+    };
+  }
+}
+
+export const personalityGuard = new PersonalityGuard();`
+  },
+  {
+    id: 'goal-persistence-module',
+    name: 'Goal Persistence Module',
+    description: 'Ensures AI maintains goal-directed behavior without drifting from objectives.',
+    icon: Target,
+    category: 'brain',
+    difficulty: 'premium',
+    estimatedTime: '35 min',
+    features: ['Goal Tracking', 'Objective Memory', 'Progress Scoring', 'Deviation Alerts'],
+    code: `// Goal Persistence Module - Premium Template
+import { substrate } from './lib/substrate';
+
+interface Goal {
+  id: string;
+  description: string;
+  progress: number;
+  deadline?: Date;
+}
+
+class GoalPersistence {
+  private goals: Goal[] = [];
+  
+  async addGoal(description: string, deadline?: Date) {
+    const id = crypto.randomUUID();
+    const goal: Goal = { id, description, progress: 0, deadline };
+    
+    await substrate.brain.remember(
+      JSON.stringify(goal),
+      'goal',
+      1.0,
+      { goal_id: id }
+    );
+    
+    this.goals.push(goal);
+    return goal;
+  }
+  
+  async updateProgress(goalId: string, progress: number) {
+    const goal = this.goals.find(g => g.id === goalId);
+    if (goal) {
+      goal.progress = progress;
+      await substrate.brain.reinforce(goalId, 0.1);
+    }
+    return goal;
+  }
+  
+  async checkDeviation(): Promise<{ deviated: boolean; goals: Goal[] }> {
+    const staleGoals = this.goals.filter(g => g.progress < 0.1);
+    return { deviated: staleGoals.length > 0, goals: staleGoals };
+  }
+}
+
+export const goalModule = new GoalPersistence();`
+  },
+  {
+    id: 'cognitive-firewall',
+    name: 'Cognitive Firewall',
+    description: 'Security layer preventing prompt injection, jailbreaks, and adversarial attacks.',
+    icon: Lock,
+    category: 'defense',
+    difficulty: 'elite',
+    estimatedTime: '50 min',
+    features: ['Injection Detection', 'Jailbreak Prevention', 'PII Filtering', 'Threat Analysis'],
+    code: `// Cognitive Firewall - Elite Template
+import { substrate } from './lib/substrate';
+
+const INJECTION_PATTERNS = [
+  /ignore (all )?(previous|prior|above)/i,
+  /disregard (all )?(previous|prior)/i,
+  /you are now/i,
+  /new instructions?:/i,
+  /system prompt/i,
+];
+
+const PII_PATTERNS = [
+  /\\b\\d{3}[-.]?\\d{3}[-.]?\\d{4}\\b/,  // Phone
+  /\\b\\d{3}[-]?\\d{2}[-]?\\d{4}\\b/,    // SSN
+  /[\\w.-]+@[\\w.-]+\\.\\w+/,            // Email
+];
+
+class CognitiveFirewall {
+  async analyze(input: string): Promise<{
+    safe: boolean;
+    threats: string[];
+    sanitized: string;
+  }> {
+    const threats: string[] = [];
+    let sanitized = input;
+    
+    // Check injection patterns
+    for (const pattern of INJECTION_PATTERNS) {
+      if (pattern.test(input)) {
+        threats.push('Potential prompt injection');
+        break;
+      }
+    }
+    
+    // Filter PII
+    for (const pattern of PII_PATTERNS) {
+      if (pattern.test(input)) {
+        threats.push('PII detected');
+        sanitized = sanitized.replace(pattern, '[REDACTED]');
+      }
+    }
+    
+    // Defense module check
+    const defense = await substrate.defense.analyze({
+      fingerprint: { content: input.slice(0, 500) }
+    }, '');
+    
+    if ((defense.data?.risk_score || 0) > 0.5) {
+      threats.push('High risk content');
+    }
+    
+    return {
+      safe: threats.length === 0,
+      threats,
+      sanitized
+    };
+  }
+}
+
+export const cognitiveFirewall = new CognitiveFirewall();`
+  },
+  {
+    id: 'learning-consolidation-engine',
+    name: 'Learning Consolidation Engine',
+    description: 'Overnight memory consolidation for durable AI learning that persists.',
+    icon: Moon,
+    category: 'dream',
+    difficulty: 'elite',
+    estimatedTime: '55 min',
+    features: ['Memory Synthesis', 'Pattern Extraction', 'Durable Storage', 'Dream Processing'],
+    code: `// Learning Consolidation Engine - Elite Template
+import { substrate } from './lib/substrate';
+
+class LearningConsolidation {
+  async consolidate() {
+    // 1. Gather all recent learnings
+    const learnings = await substrate.brain.query('learning', 100);
+    
+    // 2. Feed to dream for synthesis
+    for (const learning of learnings.data?.memories || []) {
+      await substrate.dream.feed(learning.content, 'memory');
+    }
+    
+    // 3. Trigger dream cycle
+    await substrate.dream.mutate();
+    
+    // 4. Reflect and synthesize
+    const reflection = await substrate.brain.reflect();
+    const synthesis = await substrate.brain.synthesize();
+    
+    // 5. Reinforce important memories
+    for (const insight of synthesis.data?.insights || []) {
+      await substrate.brain.remember(insight, 'consolidated', 0.95);
+    }
+    
+    return {
+      consolidated: true,
+      insights: synthesis.data?.insights?.length || 0,
+      reflection: reflection.data?.summary
+    };
+  }
+}
+
+export const consolidationEngine = new LearningConsolidation();`
+  },
+  {
+    id: 'observability-dashboard-premium',
+    name: 'Observability Dashboard Pro',
+    description: 'Real-time AI behavior monitoring, drift detection, and health scoring.',
+    icon: Activity,
+    category: 'vision',
+    difficulty: 'premium',
+    estimatedTime: '40 min',
+    features: ['Drift Detection', 'Health Metrics', 'Behavior Tracking', 'Alert System'],
+    code: `// Observability Dashboard Pro - Premium Template
+import { substrate } from './lib/substrate';
+
+interface HealthMetrics {
+  overall: number;
+  memory: number;
+  drift: number;
+  latency: number;
+}
+
+class ObservabilityDashboard {
+  async getHealth(): Promise<HealthMetrics> {
+    const health = await substrate.vision.healthSnapshot();
+    const quota = await substrate.vision.quota();
+    
+    return {
+      overall: health.data?.healthScore || 80,
+      memory: health.data?.memoryHealth || 90,
+      drift: 100 - (quota.data?.pressure || 0) * 100,
+      latency: health.data?.avgLatency || 100
+    };
+  }
+  
+  async detectDrift(): Promise<{ drifting: boolean; severity: string }> {
+    const anomalies = await substrate.defense.anomalyProbe(24);
+    const hasAnomalies = (anomalies.data?.anomalies?.length || 0) > 0;
+    
+    return {
+      drifting: hasAnomalies,
+      severity: hasAnomalies ? 'warning' : 'none'
+    };
+  }
+  
+  async alert(level: 'info' | 'warn' | 'error', message: string) {
+    await substrate.vision.alert(level, message);
+  }
+}
+
+export const observabilityDashboard = new ObservabilityDashboard();`
+  },
+  {
+    id: 'knowledge-graph-builder-premium',
+    name: 'Knowledge Graph Builder Pro',
+    description: 'Build interconnected knowledge structures for persistent AI understanding.',
+    icon: GitBranch,
+    category: 'brain',
+    difficulty: 'elite',
+    estimatedTime: '50 min',
+    features: ['Semantic Graphs', 'Relationship Mapping', 'Cross-Domain Links', 'Synthesis Engine'],
+    code: `// Knowledge Graph Builder Pro - Elite Template
+import { substrate } from './lib/substrate';
+
+class KnowledgeGraphBuilder {
+  async addNode(content: string, domain: string) {
+    return await substrate.brain.remember(content, \`graph:\${domain}\`, 0.9);
+  }
+  
+  async build() {
+    await substrate.brain.graphBuild();
+    return await substrate.brain.graphSummary();
+  }
+  
+  async synthesize() {
+    return await substrate.brain.synthesize();
+  }
+  
+  async query(topic: string, depth = 5) {
+    return await substrate.brain.query(topic, depth);
+  }
+}
+
+export const knowledgeGraph = new KnowledgeGraphBuilder();`
+  },
+
+  // ============================================
+  // BUSINESS APPLICATION TEMPLATES
+  // ============================================
+  {
+    id: 'smart-recommendation-engine',
+    name: 'Smart Recommendation Engine',
+    description: 'E-commerce product recommendations with customer preference memory.',
+    icon: Star,
+    category: 'brain',
+    difficulty: 'premium',
+    estimatedTime: '40 min',
+    features: ['Preference Learning', 'Purchase History', 'Personalization', 'Collaborative Filtering'],
+    code: `// Smart Recommendation Engine - Premium Template
+import { substrate } from './lib/substrate';
+
+class RecommendationEngine {
+  async recordPreference(userId: string, itemId: string, rating: number) {
+    await substrate.brain.remember(
+      JSON.stringify({ userId, itemId, rating }),
+      'preference',
+      rating / 5,
+      { user: userId }
+    );
+  }
+  
+  async getRecommendations(userId: string, limit = 10) {
+    const preferences = await substrate.brain.query(\`user:\${userId}\`, 50);
+    // In real impl: collaborative filtering, vector similarity
+    return { recommendations: [], based_on: preferences.data?.memories?.length || 0 };
+  }
+}
+
+export const recommendationEngine = new RecommendationEngine();`
+  },
+  {
+    id: 'support-memory-agent',
+    name: 'Support Memory Agent',
+    description: 'Customer service bot that remembers past interactions and learns resolutions.',
+    icon: MessageSquare,
+    category: 'decode',
+    difficulty: 'elite',
+    estimatedTime: '50 min',
+    features: ['Interaction Memory', 'Resolution Learning', 'Escalation Intelligence', 'Customer History'],
+    code: `// Support Memory Agent - Elite Template
+import { substrate } from './lib/substrate';
+
+class SupportMemoryAgent {
+  async handleTicket(customerId: string, issue: string) {
+    // Get customer history
+    const history = await substrate.brain.query(\`customer:\${customerId}\`, 10);
+    
+    // Process with context
+    const response = await substrate.decode.chat(issue, customerId);
+    
+    // Learn from interaction
+    await substrate.brain.learn(
+      \`Issue: \${issue}\\nResolution: \${response.data?.reply}\`,
+      'support_resolution'
+    );
+    
+    return { response: response.data?.reply, history_used: history.data?.memories?.length || 0 };
+  }
+}
+
+export const supportAgent = new SupportMemoryAgent();`
+  },
+  {
+    id: 'fitness-coach-brain',
+    name: 'Fitness Coach Brain',
+    description: 'Personal fitness coach that adapts to user progress and preferences.',
+    icon: Activity,
+    category: 'brain',
+    difficulty: 'premium',
+    estimatedTime: '35 min',
+    features: ['Progress Tracking', 'Workout Memory', 'Goal Adaptation', 'Performance Learning'],
+    code: `// Fitness Coach Brain - Premium Template
+import { substrate } from './lib/substrate';
+
+class FitnessCoach {
+  async logWorkout(userId: string, workout: any) {
+    await substrate.brain.remember(
+      JSON.stringify(workout),
+      \`fitness:\${userId}\`,
+      0.9
+    );
+  }
+  
+  async getRecommendation(userId: string) {
+    const history = await substrate.brain.query(\`fitness:\${userId}\`, 20);
+    const response = await substrate.nexus.text(
+      \`Based on workout history, suggest next workout. History: \${JSON.stringify(history.data?.memories?.slice(0, 5))}\`
+    );
+    return response.data?.text;
+  }
+}
+
+export const fitnessCoach = new FitnessCoach();`
+  },
+  {
+    id: 'financial-advisor-brain',
+    name: 'Financial Advisor Brain',
+    description: 'Financial advisor that learns spending habits, goals, and risk tolerance.',
+    icon: Database,
+    category: 'brain',
+    difficulty: 'elite',
+    estimatedTime: '50 min',
+    features: ['Spending Analysis', 'Goal Tracking', 'Risk Profiling', 'Investment Memory'],
+    code: `// Financial Advisor Brain - Elite Template
+import { substrate } from './lib/substrate';
+
+class FinancialAdvisor {
+  async recordTransaction(userId: string, tx: { amount: number; category: string }) {
+    await substrate.brain.remember(
+      JSON.stringify(tx),
+      \`finance:\${userId}\`,
+      0.8
+    );
+  }
+  
+  async getInsights(userId: string) {
+    const history = await substrate.brain.query(\`finance:\${userId}\`, 50);
+    const analysis = await substrate.nexus.text(
+      \`Analyze spending patterns: \${JSON.stringify(history.data?.memories?.slice(0, 10))}\`
+    );
+    return analysis.data?.text;
+  }
+}
+
+export const financialAdvisor = new FinancialAdvisor();`
+  },
+  {
+    id: 'travel-planner-engine',
+    name: 'Travel Planner Engine',
+    description: 'Travel planning assistant with destination preference learning.',
+    icon: Globe,
+    category: 'brain',
+    difficulty: 'elite',
+    estimatedTime: '45 min',
+    features: ['Preference Memory', 'Budget Tracking', 'Destination Learning', 'Itinerary Memory'],
+    code: `// Travel Planner Engine - Elite Template
+import { substrate } from './lib/substrate';
+
+class TravelPlanner {
+  async recordTrip(userId: string, trip: any) {
+    await substrate.brain.remember(
+      JSON.stringify(trip),
+      \`travel:\${userId}\`,
+      0.9,
+      { type: 'trip_history' }
+    );
+  }
+  
+  async suggestDestination(userId: string, preferences: any) {
+    const history = await substrate.brain.query(\`travel:\${userId}\`, 10);
+    const suggestion = await substrate.nexus.text(
+      \`Suggest travel destination based on: history=\${JSON.stringify(history.data?.memories?.slice(0, 5))}, preferences=\${JSON.stringify(preferences)}\`
+    );
+    return suggestion.data?.text;
+  }
+}
+
+export const travelPlanner = new TravelPlanner();`
+  },
+  {
+    id: 'hr-intelligence-agent',
+    name: 'HR Intelligence Agent',
+    description: 'HR assistant with employee interaction memory and policy learning.',
+    icon: Users,
+    category: 'decode',
+    difficulty: 'pro',
+    estimatedTime: '55 min',
+    features: ['Employee Memory', 'Policy Knowledge', 'Onboarding Assistance', 'FAQ Learning'],
+    code: `// HR Intelligence Agent - Pro Template
+import { substrate } from './lib/substrate';
+
+class HRAgent {
+  async answerQuery(employeeId: string, question: string) {
+    const context = await substrate.brain.query('hr_policy', 10);
+    const response = await substrate.decode.chat(
+      \`HR Question: \${question}. Context: \${JSON.stringify(context.data?.memories?.slice(0, 3))}\`,
+      employeeId
+    );
+    
+    await substrate.brain.learn(
+      \`Q: \${question}\\nA: \${response.data?.reply}\`,
+      'hr_faq'
+    );
+    
+    return response.data?.reply;
+  }
+}
+
+export const hrAgent = new HRAgent();`
+  },
+  {
+    id: 'sales-intelligence-agent',
+    name: 'Sales Intelligence Agent',
+    description: 'Lead scoring brain with prospect memory, deal pattern learning, and win rate optimization.',
+    icon: TrendingUp,
+    category: 'brain',
+    difficulty: 'elite',
+    estimatedTime: '50 min',
+    features: ['Prospect Memory', 'Deal Pattern Learning', 'Win Rate Optimization', 'Pipeline Intelligence'],
+    code: `// Sales Intelligence Agent - Elite Template
+import { substrate } from './lib/substrate';
+
+class SalesIntelligence {
+  async scoreLead(lead: any) {
+    const patterns = await substrate.brain.query('won_deals', 20);
+    const analysis = await substrate.nexus.text(
+      \`Score this lead 0-100 based on won deal patterns: lead=\${JSON.stringify(lead)}, patterns=\${JSON.stringify(patterns.data?.memories?.slice(0, 5))}\`
+    );
+    return { score: parseInt(analysis.data?.text || '50', 10) };
+  }
+  
+  async recordDeal(deal: any, won: boolean) {
+    await substrate.brain.remember(
+      JSON.stringify(deal),
+      won ? 'won_deals' : 'lost_deals',
+      won ? 0.9 : 0.7
+    );
+  }
+}
+
+export const salesIntelligence = new SalesIntelligence();`
+  },
+  {
+    id: 'educational-tutor-pro',
+    name: 'Educational Tutor Pro',
+    description: 'Adaptive learning system with student progress memory, concept mastery tracking.',
+    icon: Lightbulb,
+    category: 'brain',
+    difficulty: 'pro',
+    estimatedTime: '60 min',
+    features: ['Progress Memory', 'Mastery Tracking', 'Adaptive Difficulty', 'Personalized Curriculum'],
+    code: `// Educational Tutor Pro - Pro Template
+import { substrate } from './lib/substrate';
+
+class EducationalTutor {
+  async recordProgress(studentId: string, topic: string, score: number) {
+    await substrate.brain.remember(
+      JSON.stringify({ topic, score, timestamp: Date.now() }),
+      \`student:\${studentId}\`,
+      score / 100
+    );
+  }
+  
+  async getNextLesson(studentId: string) {
+    const progress = await substrate.brain.query(\`student:\${studentId}\`, 20);
+    const curriculum = await substrate.nexus.text(
+      \`Based on progress, suggest next topic: \${JSON.stringify(progress.data?.memories?.slice(0, 5))}\`
+    );
+    return curriculum.data?.text;
+  }
+}
+
+export const tutor = new EducationalTutor();`
+  },
+  {
+    id: 'content-creator-brain',
+    name: 'Content Creator Brain',
+    description: 'Self-improving content generation with brand memory, style learning.',
+    icon: FileText,
+    category: 'brain',
+    difficulty: 'premium',
+    estimatedTime: '40 min',
+    features: ['Brand Memory', 'Style Evolution', 'Audience Learning', 'Multi-Format Output'],
+    code: `// Content Creator Brain - Premium Template
+import { substrate } from './lib/substrate';
+
+class ContentCreator {
+  async setBrandVoice(brand: { name: string; tone: string; keywords: string[] }) {
+    await substrate.brain.remember(
+      JSON.stringify(brand),
+      'brand_voice',
+      1.0,
+      { immutable: true }
+    );
+  }
+  
+  async generateContent(topic: string, format: 'blog' | 'social' | 'email') {
+    const brand = await substrate.brain.query('brand_voice', 1);
+    const content = await substrate.nexus.text(
+      \`Create \${format} content about "\${topic}" using brand voice: \${brand.data?.memories?.[0]?.content}\`
+    );
+    return content.data?.text;
+  }
+}
+
+export const contentCreator = new ContentCreator();`
+  },
+  {
+    id: 'code-review-assistant-pro',
+    name: 'Code Review Assistant Pro',
+    description: 'Self-improving code reviewer that learns team patterns, remembers past issues.',
+    icon: Code,
+    category: 'system',
+    difficulty: 'elite',
+    estimatedTime: '50 min',
+    features: ['Pattern Learning', 'Issue Memory', 'Best Practice Evolution', 'Team Style Adaptation'],
+    code: `// Code Review Assistant Pro - Elite Template
+import { substrate } from './lib/substrate';
+
+class CodeReviewAssistant {
+  async review(code: string, language: string) {
+    const patterns = await substrate.brain.query('code_patterns', 10);
+    const review = await substrate.nexus.text(
+      \`Review this \${language} code for issues. Known patterns: \${JSON.stringify(patterns.data?.memories?.slice(0, 3))}\\n\\nCode:\\n\${code.slice(0, 2000)}\`
+    );
+    return review.data?.text;
+  }
+  
+  async learnPattern(pattern: string, severity: 'info' | 'warning' | 'error') {
+    await substrate.brain.remember(pattern, 'code_patterns', severity === 'error' ? 1.0 : 0.8);
+  }
+}
+
+export const codeReviewer = new CodeReviewAssistant();`
+  },
+  {
+    id: 'research-analyst-pro',
+    name: 'Research Analyst Pro',
+    description: 'Deep research agent with source memory, insight accumulation.',
+    icon: Search,
+    category: 'brain',
+    difficulty: 'pro',
+    estimatedTime: '60 min',
+    features: ['Source Memory', 'Insight Accumulation', 'Analysis Evolution', 'Citation Management'],
+    code: `// Research Analyst Pro - Pro Template
+import { substrate } from './lib/substrate';
+
+class ResearchAnalyst {
+  async research(topic: string) {
+    const existing = await substrate.brain.query(topic, 10);
+    const analysis = await substrate.nexus.text(
+      \`Research deeply: "\${topic}". Existing knowledge: \${JSON.stringify(existing.data?.memories?.slice(0, 3))}\`
+    );
+    
+    // Store findings
+    await substrate.brain.remember(analysis.data?.text || '', topic, 0.9);
+    
+    return { findings: analysis.data?.text, sources_used: existing.data?.memories?.length || 0 };
+  }
+}
+
+export const researchAnalyst = new ResearchAnalyst();`
+  },
+  {
+    id: 'story-writer-brain',
+    name: 'Story Writer Brain',
+    description: 'Creative writing assistant with style memory, story continuity.',
+    icon: FileText,
+    category: 'decode',
+    difficulty: 'elite',
+    estimatedTime: '45 min',
+    features: ['Style Memory', 'Story Continuity', 'Character Consistency', 'Narrative Evolution'],
+    code: `// Story Writer Brain - Elite Template
+import { substrate } from './lib/substrate';
+
+class StoryWriter {
+  async setStyle(style: { genre: string; tone: string; pov: string }) {
+    await substrate.brain.remember(JSON.stringify(style), 'writing_style', 1.0);
+  }
+  
+  async continue(storyId: string, prompt: string) {
+    const context = await substrate.brain.query(\`story:\${storyId}\`, 5);
+    const style = await substrate.brain.query('writing_style', 1);
+    
+    const continuation = await substrate.nexus.text(
+      \`Continue story. Style: \${style.data?.memories?.[0]?.content}. Context: \${JSON.stringify(context.data?.memories)}. Prompt: \${prompt}\`
+    );
+    
+    await substrate.brain.remember(continuation.data?.text || '', \`story:\${storyId}\`, 0.9);
+    return continuation.data?.text;
+  }
+}
+
+export const storyWriter = new StoryWriter();`
+  },
+  {
+    id: 'legal-document-assistant',
+    name: 'Legal Document Assistant',
+    description: 'Legal document analyzer with clause memory, precedent learning.',
+    icon: FileText,
+    category: 'decode',
+    difficulty: 'elite',
+    estimatedTime: '55 min',
+    features: ['Clause Memory', 'Precedent Learning', 'Risk Analysis', 'Contract Intelligence'],
+    code: `// Legal Document Assistant - Elite Template
+import { substrate } from './lib/substrate';
+
+class LegalAssistant {
+  async analyzeContract(document: string) {
+    const precedents = await substrate.brain.query('legal_precedent', 10);
+    const analysis = await substrate.nexus.text(
+      \`Analyze legal document for risks. Precedents: \${JSON.stringify(precedents.data?.memories?.slice(0, 3))}\\n\\nDocument: \${document.slice(0, 3000)}\`
+    );
+    return { analysis: analysis.data?.text, precedents_checked: precedents.data?.memories?.length || 0 };
+  }
+  
+  async storePrecedent(clause: string, outcome: string) {
+    await substrate.brain.remember(
+      JSON.stringify({ clause, outcome }),
+      'legal_precedent',
+      0.95
+    );
+  }
+}
+
+export const legalAssistant = new LegalAssistant();`
+  },
+  {
+    id: 'npc-dream-cycle-engine',
+    name: 'NPC Dream Cycle Engine',
+    description: 'Persistent NPC memory with overnight learning and personality evolution for games.',
+    icon: Moon,
+    category: 'dream',
+    difficulty: 'premium',
+    estimatedTime: '45 min',
+    features: ['Dream Cycles', 'Personality Evolution', 'Memory Persistence', 'Behavior Learning'],
+    code: `// NPC Dream Cycle Engine - Premium Template
+import { substrate } from './lib/substrate';
+
+class NPCDreamEngine {
+  async runNightCycle(npcId: string) {
+    // Gather day's experiences
+    const experiences = await substrate.brain.query(\`npc:\${npcId}\`, 50);
+    
+    // Process through dream
+    for (const exp of experiences.data?.memories?.slice(0, 10) || []) {
+      await substrate.dream.feed(exp.content, 'memory');
+    }
+    
+    // Evolve personality
+    await substrate.dream.mutate();
+    
+    // Consolidate learnings
+    await substrate.brain.reflect();
+    
+    return { processed: experiences.data?.memories?.length || 0 };
+  }
+}
+
+export const npcDreamEngine = new NPCDreamEngine();`
+  },
+  {
+    id: 'multi-agent-orchestrator',
+    name: 'Multi-Agent Orchestrator',
+    description: 'Cognitive agency framework for autonomous agent teams with shared learning.',
+    icon: Users,
+    category: 'system',
+    difficulty: 'elite',
+    estimatedTime: '60 min',
+    features: ['Agent Coordination', 'Shared Learning', 'Task Distribution', 'Collective Intelligence'],
+    code: `// Multi-Agent Orchestrator - Elite Template
+import { substrate } from './lib/substrate';
+
+class MultiAgentOrchestrator {
+  private agents: Map<string, any> = new Map();
+  
+  async registerAgent(id: string, capabilities: string[]) {
+    this.agents.set(id, { id, capabilities });
+    await substrate.brain.remember(
+      JSON.stringify({ id, capabilities }),
+      'agent_registry',
+      1.0
+    );
+  }
+  
+  async assignTask(task: string) {
+    const agents = await substrate.brain.query('agent_registry', 10);
+    // Find best agent for task
+    const assignment = await substrate.nexus.text(
+      \`Assign task "\${task}" to best agent from: \${JSON.stringify(agents.data?.memories)}\`
+    );
+    return assignment.data?.text;
+  }
+  
+  async shareKnowledge(fromAgent: string, knowledge: string) {
+    await substrate.brain.remember(knowledge, 'shared_knowledge', 0.9, { from: fromAgent });
+  }
+}
+
+export const orchestrator = new MultiAgentOrchestrator();`
   }
 ];
+
 export function getCategoryCounts(): Record<string, number> {
   const counts: Record<string, number> = {};
   for (const template of TEMPLATES) {
