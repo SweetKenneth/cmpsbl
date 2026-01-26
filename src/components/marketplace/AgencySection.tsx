@@ -16,11 +16,11 @@ import {
 import { AGENCY_PACKS } from '@/config/marketplace-bundles';
 
 interface AgencySectionProps {
-  onContact?: () => void;
+  onCheckout?: (packId: string, billingCycle: 'monthly' | 'annual') => void;
   isLoading?: boolean;
 }
 
-export function AgencySection({ onContact, isLoading }: AgencySectionProps) {
+export function AgencySection({ onCheckout, isLoading }: AgencySectionProps) {
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('annual');
 
   return (
@@ -161,7 +161,7 @@ export function AgencySection({ onContact, isLoading }: AgencySectionProps) {
                     <Button 
                       className="w-full gap-2"
                       variant={isPopular ? "default" : "outline"}
-                      onClick={onContact}
+                      onClick={() => onCheckout?.(pack.id, billingCycle)}
                       disabled={isLoading}
                     >
                       {index === 2 ? 'Contact Sales' : 'Get Started'}

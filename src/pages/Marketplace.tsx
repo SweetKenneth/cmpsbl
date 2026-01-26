@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { TEMPLATES, type Template } from "@/data/templates";
 import { MARKETPLACE_PRODUCTS, getTemplatePricing } from "@/config/marketplace-products";
+import { BUNDLES, TEMPLATE_STACKS, AGENCY_PACKS } from "@/config/marketplace-bundles";
 import { useMarketplaceUser } from "@/hooks/useMarketplaceUser";
 
 // Marketplace components
@@ -157,39 +158,65 @@ export default function Marketplace() {
     trackPreview(template.id);
   };
 
-  const handleCheckout = async (type: 'os' | 'world_engine' | 'template' | 'bundle', template?: Template, bundleId?: string) => {
+  const handleCheckout = async (type: 'os' | 'world_engine' | 'template' | 'bundle' | 'stack' | 'agency', template?: Template, itemId?: string, billingCycle?: 'monthly' | 'annual') => {
     setIsCheckingOut(true);
     try {
       let priceId: string;
       let productId: string;
-      let templateName: string | undefined;
+      let productName: string | undefined;
 
       if (type === 'os') {
         priceId = MARKETPLACE_PRODUCTS.os_license.price_id;
         productId = MARKETPLACE_PRODUCTS.os_license.product_id;
+        productName = 'OS License';
       } else if (type === 'world_engine') {
         priceId = MARKETPLACE_PRODUCTS.world_engine.price_id;
         productId = MARKETPLACE_PRODUCTS.world_engine.product_id;
-      } else if (type === 'bundle' && bundleId) {
-        // TODO: Implement bundle checkout with Stripe
-        toast.info('Bundle checkout coming soon!');
-        setIsCheckingOut(false);
-        return;
+        productName = 'World Engine Complete';
+      } else if (type === 'bundle' && itemId) {
+        // Find bundle by ID
+        const bundle = BUNDLES.find(b => b.id === itemId);
+        if (!bundle?.price_id || !bundle?.product_id) {
+          throw new Error('Bundle pricing not configured');
+        }
+        priceId = bundle.price_id;
+        productId = bundle.product_id;
+        productName = bundle.name;
+      } else if (type === 'stack' && itemId) {
+        // Find stack by ID
+        const stack = TEMPLATE_STACKS.find(s => s.id === itemId);
+        if (!stack?.price_id || !stack?.product_id) {
+          throw new Error('Stack pricing not configured');
+        }
+        priceId = stack.price_id;
+        productId = stack.product_id;
+        productName = stack.name;
+      } else if (type === 'agency' && itemId) {
+        // Find agency pack by ID
+        const pack = AGENCY_PACKS.find(p => p.id === itemId);
+        if (!pack?.product_id) {
+          throw new Error('Agency pack pricing not configured');
+        }
+        priceId = billingCycle === 'annual' && pack.price_id_annual 
+          ? pack.price_id_annual 
+          : pack.price_id_monthly!;
+        productId = pack.product_id;
+        productName = pack.name;
       } else if (template) {
         const pricing = getTemplatePricing(template.difficulty, template.id);
         priceId = pricing.price_id;
         productId = pricing.product_id;
-        templateName = template.name;
+        productName = template.name;
       } else {
-        throw new Error("Template required for template purchase");
+        throw new Error("Invalid checkout parameters");
       }
 
       const { data, error } = await supabase.functions.invoke('marketplace-checkout', {
         body: {
-          product_type: type === 'world_engine' ? 'template' : type,
+          product_type: type,
           price_id: priceId,
           product_id: productId,
-          template_name: templateName || (type === 'world_engine' ? 'World Engine Complete' : undefined),
+          template_name: productName,
         },
       });
 
@@ -209,11 +236,13 @@ export default function Marketplace() {
   };
 
   const handleBundleCheckout = (bundleId: string) => {
-    handleCheckout('bundle', undefined, bundleId);
+    // Determine if it's a stack or bundle
+    const isStack = TEMPLATE_STACKS.some(s => s.id === bundleId);
+    handleCheckout(isStack ? 'stack' : 'bundle', undefined, bundleId);
   };
 
-  const handleAgencyContact = () => {
-    toast.info('Agency licensing inquiry - Contact sales@cmpsbl.com');
+  const handleAgencyCheckout = (packId: string, billingCycle: 'monthly' | 'annual') => {
+    handleCheckout('agency', undefined, packId, billingCycle);
   };
 
   return (
@@ -269,7 +298,7 @@ export default function Marketplace() {
 
         {/* Agency Licensing Section */}
         <AgencySection
-          onContact={handleAgencyContact}
+          onCheckout={handleAgencyCheckout}
           isLoading={isCheckingOut}
         />
 
@@ -413,7 +442,7 @@ export default function Marketplace() {
             {/* Licensing Tab */}
             <TabsContent value="licensing">
               <AgencySection
-                onContact={handleAgencyContact}
+                onCheckout={handleAgencyCheckout}
                 isLoading={isCheckingOut}
               />
               <FeaturedSection
