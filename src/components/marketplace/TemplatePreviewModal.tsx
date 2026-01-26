@@ -19,6 +19,7 @@ import type { Template } from '@/data/templates';
 import { getTemplatePricing, formatPrice } from '@/config/marketplace-products';
 import { BlurredCodePreview } from './BlurredCodePreview';
 import { useMarketplaceUser } from '@/hooks/useMarketplaceUser';
+import { generateDisplayName, getRarityBadge } from '@/lib/templateNames';
 
 const categoryIcons: Record<string, React.ElementType> = {
   brain: Brain,
@@ -65,6 +66,8 @@ export function TemplatePreviewModal({
   const pricing = getTemplatePricing(template.difficulty, template.id);
   const difficulty = difficultyConfig[template.difficulty] || difficultyConfig.beginner;
   const isPurchased = hasPurchased(template.id);
+  const displayName = generateDisplayName(template.id, template.category, template.difficulty);
+  const rarity = getRarityBadge(template.difficulty);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -109,16 +112,18 @@ export function TemplatePreviewModal({
                   <Icon className="w-5 h-5 sm:w-8 sm:h-8 text-primary" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <DialogTitle className="text-base sm:text-xl font-bold mb-1.5 sm:mb-2">
-                    {template.name}
+                  <DialogTitle className="text-base sm:text-xl font-bold mb-0.5 sm:mb-1">
+                    {displayName}
                   </DialogTitle>
+                  <p className="text-xs text-muted-foreground/70 mb-1.5 sm:mb-2">{template.name}</p>
                   <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                    <Badge className={cn("text-[10px] gap-1 border", rarity.bgColor, rarity.color, rarity.borderColor)}>
+                      <Sparkles className="w-3 h-3" />
+                      {rarity.label}
+                    </Badge>
                     <Badge variant="outline" className="gap-1 text-xs">
                       <CategoryIcon className="w-3 h-3" />
                       {template.category}
-                    </Badge>
-                    <Badge className={cn("text-xs border-0", difficulty.bg, difficulty.color)}>
-                      {difficulty.label}
                     </Badge>
                     <div className="flex items-center gap-1 text-xs text-muted-foreground">
                       <Clock className="w-3.5 h-3.5" />
@@ -156,7 +161,8 @@ export function TemplatePreviewModal({
                         <Icon className="w-10 h-10 sm:w-14 sm:h-14 text-primary" />
                       </div>
                       <div className="space-y-1">
-                        <p className="text-lg font-semibold">{template.name}</p>
+                        <p className="text-lg font-semibold">{displayName}</p>
+                        <p className="text-xs text-muted-foreground/70">{template.name}</p>
                         <p className="text-sm text-muted-foreground">
                           Production-ready cognitive template
                         </p>
