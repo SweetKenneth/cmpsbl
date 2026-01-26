@@ -1,7 +1,7 @@
 /**
  * AI Template Generator — Premium Marketplace Feature
- * Generate unique random templates with AI for $39
- * Uses the Nexus free-tier router
+ * Generate unique random templates with AI
+ * Priced at Rare tier floor ($87) - never underprices Rare/Epic/Legendary/Mythic
  */
 
 import { useState } from "react";
@@ -16,25 +16,33 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { 
+  GENERATOR_CONFIG, 
+  RARITY_TIERS, 
+  formatValueRange, 
+  formatExpectedValue,
+  getGeneratorValueMultiplier 
+} from "@/config/marketplace-rarity";
 
-// Stripe product/price for the generator
+// Stripe product/price for the generator - repriced at $87 (Rare floor)
 const GENERATOR_PRICE_ID = 'price_1StiieQ7FtTiAL4a9fPjQkPR';
 const GENERATOR_PRODUCT_ID = 'prod_TrRbgjWKs1zBh0';
+const GENERATOR_PRICE = 8700; // $87 - Rare tier floor price
 
 // Template generation constants for display
 const CATEGORIES = ['Brain', 'Decode', 'Defense', 'Nexus', 'Vision', 'Dream', 'System', 'Integration', 'Cortex'];
 const DIFFICULTIES = ['Beginner', 'Intermediate', 'Advanced', 'Premium', 'Elite', 'Pro'];
-const RARITIES = [
-  { name: 'Common', color: 'text-slate-400', chance: '40%' },
-  { name: 'Uncommon', color: 'text-emerald-400', chance: '25%' },
-  { name: 'Rare', color: 'text-blue-400', chance: '18%' },
-  { name: 'Epic', color: 'text-purple-400', chance: '10%' },
-  { name: 'Legendary', color: 'text-amber-400', chance: '5%' },
-  { name: 'Mythic', color: 'text-rose-400', chance: '2%' },
-];
+
+// Use rarity tiers from config
+const RARITIES = RARITY_TIERS.map(r => ({
+  name: r.label,
+  color: r.color,
+  chance: `${Math.round(r.dropChance * 100)}%`,
+  priceRange: `$${(r.priceRange.min / 100).toFixed(0)}-$${(r.priceRange.max / 100).toFixed(0)}`,
+}));
 
 // Calculate total combinations
-const TOTAL_COMBINATIONS = 9 * 6 * 6 * 256; // categories * difficulties * rarities * feature combos
+const TOTAL_COMBINATIONS = GENERATOR_CONFIG.totalCombinations;
 const FORMATTED_COMBINATIONS = TOTAL_COMBINATIONS.toLocaleString();
 
 interface GeneratedTemplate {
@@ -200,12 +208,12 @@ ${generatedTemplate.code}
                 <Crown className="w-6 h-6 sm:w-8 sm:h-8 text-amber-500 mb-2" />
                 <h3 className="font-bold text-sm sm:text-base mb-1">Variable Value</h3>
                 <p className="text-xs sm:text-sm text-muted-foreground">
-                  Worth $27-$499. Avg: $147.
+                  Worth {formatValueRange()}. Avg: {formatExpectedValue()}.
                 </p>
               </div>
               <div className="p-3 sm:p-4 rounded-xl bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border border-emerald-500/20">
                 <Lock className="w-6 h-6 sm:w-8 sm:h-8 text-emerald-500 mb-2" />
-                <h3 className="font-bold text-sm sm:text-base mb-1">Exclusive</h3>
+                <h3 className="font-bold text-sm sm:text-base mb-1">{getGeneratorValueMultiplier()} Value</h3>
                 <p className="text-xs sm:text-sm text-muted-foreground">
                   Download & keep forever.
                 </p>
@@ -243,11 +251,11 @@ ${generatedTemplate.code}
             {/* Price & CTA */}
             <div className="text-center space-y-3 sm:space-y-4">
               <div className="flex items-center justify-center gap-3 sm:gap-4">
-                <div className="text-3xl sm:text-4xl font-black text-foreground">$39</div>
+                <div className="text-3xl sm:text-4xl font-black text-foreground">${GENERATOR_PRICE / 100}</div>
                 <div className="text-left">
-                  <p className="text-xs sm:text-sm text-muted-foreground line-through">$147 avg value</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground line-through">{formatExpectedValue()} avg value</p>
                   <Badge variant="outline" className="text-[10px] sm:text-xs text-emerald-500 border-emerald-500/30">
-                    73% Discount
+                    {getGeneratorValueMultiplier()} Avg Return
                   </Badge>
                 </div>
               </div>
@@ -266,15 +274,15 @@ ${generatedTemplate.code}
                 ) : (
                   <>
                     <Dices className="w-4 h-4 sm:w-5 sm:h-5" />
-                    <span className="hidden sm:inline">Generate Random Template — $39</span>
-                    <span className="sm:hidden">Generate Template — $39</span>
+                    <span className="hidden sm:inline">Generate Random Template — ${GENERATOR_PRICE / 100}</span>
+                    <span className="sm:hidden">Generate Template — ${GENERATOR_PRICE / 100}</span>
                     <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                   </>
                 )}
               </Button>
 
               <p className="text-[10px] sm:text-xs text-muted-foreground">
-                Instant delivery • Download immediately • Yours forever
+                Instant delivery • Never underprices Rare+ templates • Yours forever
               </p>
             </div>
 
