@@ -24,9 +24,9 @@ import {
   getGeneratorValueMultiplier 
 } from "@/config/marketplace-rarity";
 
-// Stripe product/price for the generator - repriced at $87 (Rare floor)
-const GENERATOR_PRICE_ID = 'price_1StiieQ7FtTiAL4a9fPjQkPR';
-const GENERATOR_PRODUCT_ID = 'prod_TrRbgjWKs1zBh0';
+// Stripe product/price for the generator - $87 (Rare floor)
+const GENERATOR_PRICE_ID = 'price_1Stkx6Q7FtTiAL4aHfmaRUyc';
+const GENERATOR_PRODUCT_ID = 'prod_TrTuiFPK6wjaNt';
 const GENERATOR_PRICE = 8700; // $87 - Rare tier floor price
 
 // Template generation constants for display
