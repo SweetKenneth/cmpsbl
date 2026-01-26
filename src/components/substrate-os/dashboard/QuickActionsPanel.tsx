@@ -1,6 +1,6 @@
 /**
  * Quick Actions Panel v5.5.0 - System-wide controls
- * Heal, backup, restart, diagnostics
+ * Heal, backup, restart, diagnostics with Substrate Voice notifications
  */
 
 import { 
@@ -10,10 +10,10 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
-import { toast } from 'sonner';
 import { useSystemHeal, useSystemBackup } from '@/hooks/useSubstrateOSEnhanced';
-import { useSubstrateHealthScore, useSystemStatus } from '@/hooks/useSubstrateOS';
+import { useSubstrateHealthScore } from '@/hooks/useSubstrateOS';
 import { system } from '@/lib/substrate';
+import { useSubstrateVoice } from '@/components/substrate-os/audio';
 
 interface QuickActionsPanelProps {
   enabled: boolean;
@@ -24,39 +24,40 @@ export function QuickActionsPanel({ enabled, onOpenTerminal }: QuickActionsPanel
   const healthScore = useSubstrateHealthScore();
   const healMutation = useSystemHeal();
   const backupMutation = useSystemBackup();
+  const voice = useSubstrateVoice();
 
   const handleHealAll = async () => {
-    toast.info('Initiating system-wide heal...');
+    voice.info('Initiating system-wide heal', 'Scanning all modules for degradation...', 'SYSTEM');
     try {
       await healMutation.mutateAsync(undefined);
-      toast.success('System heal complete');
+      voice.success('System heal complete', 'All modules restored to optimal state', 'SYSTEM');
       healthScore.refetch();
     } catch {
-      toast.error('Heal operation failed');
+      voice.error('Heal operation failed', 'Manual intervention may be required', 'SYSTEM');
     }
   };
 
   const handleBackup = async () => {
-    toast.info('Creating system backup...');
+    voice.info('Creating system backup', 'Capturing current substrate state...', 'SYSTEM');
     try {
-      await backupMutation.mutateAsync();
-      toast.success('Backup created successfully');
+      const result = await backupMutation.mutateAsync();
+      voice.success('Backup complete', `Snapshot saved: ${(result as any)?.backup_id?.slice(0, 8) || 'OK'}`, 'SYSTEM');
     } catch {
-      toast.error('Backup failed');
+      voice.error('Backup failed', 'Storage write error detected', 'SYSTEM');
     }
   };
 
   const handleDiagnostics = async () => {
-    toast.info('Running full diagnostics...');
+    voice.system('Running full diagnostics', 'Analyzing all 13 modules...', 'VISION');
     try {
       const result = await system.diagnostics();
       if (result?.success) {
-        toast.success('Diagnostics complete - all systems nominal');
+        voice.success('Diagnostics complete', 'All systems nominal. No anomalies detected.', 'VISION');
       } else {
-        toast.warning('Diagnostics found issues');
+        voice.warning('Diagnostics found issues', 'Review module health for details', 'VISION');
       }
     } catch {
-      toast.error('Diagnostics failed');
+      voice.error('Diagnostics failed', 'Unable to complete system analysis', 'VISION');
     }
   };
 

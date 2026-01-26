@@ -1,6 +1,6 @@
 /**
- * OS Header v2026 — Premium Substrate identity with animated status indicators
- * Glassmorphic design with live telemetry and gradient accents
+ * OS Header v5.5.0 — Premium Substrate identity with animated status indicators
+ * Glassmorphic design with live telemetry, gradient accents, and audio controls
  */
 
 import { useState, useEffect } from 'react';
@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { useSystemVersion, useSubstrateHealthScore } from '@/hooks/useSubstrateOS';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+import { DashboardAudio } from './audio';
 
 function LiveClock() {
   const [time, setTime] = useState(new Date());
@@ -193,16 +194,18 @@ export function OSHeader({ userEmail, role }: OSHeaderProps) {
               <span className="text-[9px] text-muted-foreground font-mono uppercase tracking-wider">MODULES</span>
               <div className="flex items-center gap-1">
                 <span className="text-[10px] font-bold font-mono text-foreground">
-                  {Object.values(healthScore.modules).filter(Boolean).length}
+                  {healthScore.activeCount}
                 </span>
                 <span className="text-[10px] text-muted-foreground">/</span>
-                <span className="text-[10px] text-muted-foreground">11</span>
+                <span className="text-[10px] text-muted-foreground">{healthScore.totalModules}</span>
               </div>
             </div>
           </div>
         </div>
         
         <div className="flex items-center gap-4">
+          {/* Audio Controls */}
+          <DashboardAudio />
           {/* Role Badge */}
           <motion.div 
             className="flex items-center gap-2"
