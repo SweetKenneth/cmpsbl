@@ -109,8 +109,11 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
     const trimmed = cmd.trim();
     if (!trimmed) return;
 
+    // Handle @macro shorthand syntax (e.g., @upgrade_prepare -> macro run upgrade_prepare)
+    const macroShorthand = trimmed.startsWith('@') ? `macro run ${trimmed.slice(1)}` : trimmed;
+
     // Resolve alias before execution
-    const resolvedCmd = resolveAlias(trimmed);
+    const resolvedCmd = resolveAlias(macroShorthand);
 
     // Add to command history
     setCommandHistory(prev => [...prev.filter(c => c !== trimmed), trimmed].slice(-50));
