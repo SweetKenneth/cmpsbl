@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { TEMPLATES, type Template } from "@/data/templates";
 import { MARKETPLACE_PRODUCTS, getTemplatePricing } from "@/config/marketplace-products";
+import { useMarketplaceUser } from "@/hooks/useMarketplaceUser";
 
 // New marketplace components
 import { MarketplaceHeader } from "@/components/marketplace/MarketplaceHeader";
@@ -22,9 +23,13 @@ import { TemplateCard } from "@/components/marketplace/TemplateCard";
 import { TemplatePreviewModal } from "@/components/marketplace/TemplatePreviewModal";
 import { FeaturedSection } from "@/components/marketplace/FeaturedSection";
 import { MobileFilters } from "@/components/marketplace/MobileFilters";
+import { PopularSection } from "@/components/marketplace/PopularSection";
+import { UserPurchases } from "@/components/marketplace/UserPurchases";
+import { MarketplaceAuthPrompt } from "@/components/marketplace/MarketplaceAuthPrompt";
+import { MailingListSignup } from "@/components/marketplace/MailingListSignup";
 
 import {
-  Code, Server, Grid3X3, LayoutList, ArrowUpDown, Sparkles
+  Code, Server, Grid3X3, LayoutList, Sparkles
 } from "lucide-react";
 
 type SortOption = 'featured' | 'price-low' | 'price-high' | 'name';
@@ -43,8 +48,10 @@ export default function Marketplace() {
   const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(null);
   const [previewOpen, setPreviewOpen] = useState(false);
   
-  // Checkout state
   const [isCheckingOut, setIsCheckingOut] = useState(false);
+  
+  // User personalization
+  const { trackView, trackPreview, isLoggedIn } = useMarketplaceUser();
 
   // Filter templates
   const filteredTemplates = useMemo(() => {
@@ -143,6 +150,7 @@ export default function Marketplace() {
   const handlePreview = (template: Template) => {
     setSelectedTemplate(template);
     setPreviewOpen(true);
+    trackPreview(template.id);
   };
 
   const handleCheckout = async (type: 'os' | 'world_engine' | 'template', template?: Template) => {
@@ -213,6 +221,23 @@ export default function Marketplace() {
         <FeaturedSection
           onBuyOS={() => handleCheckout('os')}
           onBuyWorldEngine={() => handleCheckout('world_engine')}
+          isLoading={isCheckingOut}
+        />
+
+        {/* Auth Prompt for non-logged-in users */}
+        <MarketplaceAuthPrompt />
+
+        {/* User Purchases & Recommendations */}
+        <UserPurchases
+          onPreview={handlePreview}
+          onBuy={(t) => handleCheckout('template', t)}
+          isLoading={isCheckingOut}
+        />
+
+        {/* Popular/Trending Section */}
+        <PopularSection
+          onPreview={handlePreview}
+          onBuy={(t) => handleCheckout('template', t)}
           isLoading={isCheckingOut}
         />
 
@@ -359,6 +384,13 @@ export default function Marketplace() {
             </TabsContent>
           </Tabs>
         </main>
+
+        {/* Mailing List Signup */}
+        <section className="container mx-auto px-4 py-12">
+          <div className="max-w-xl mx-auto">
+            <MailingListSignup />
+          </div>
+        </section>
 
         <EnhancedFooter />
       </div>

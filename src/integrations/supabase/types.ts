@@ -5115,6 +5115,192 @@ export type Database = {
         }
         Relationships: []
       }
+      marketplace_mailing_list: {
+        Row: {
+          email: string
+          id: string
+          is_active: boolean | null
+          preferences: Json | null
+          subscribed_at: string | null
+          unsubscribed_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          email: string
+          id?: string
+          is_active?: boolean | null
+          preferences?: Json | null
+          subscribed_at?: string | null
+          unsubscribed_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          email?: string
+          id?: string
+          is_active?: boolean | null
+          preferences?: Json | null
+          subscribed_at?: string | null
+          unsubscribed_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      marketplace_purchases: {
+        Row: {
+          download_count: number | null
+          id: string
+          last_downloaded_at: string | null
+          license_key: string | null
+          metadata: Json | null
+          price_cents: number
+          purchased_at: string | null
+          stripe_payment_intent: string | null
+          stripe_session_id: string | null
+          template_id: string
+          template_name: string
+          user_id: string
+        }
+        Insert: {
+          download_count?: number | null
+          id?: string
+          last_downloaded_at?: string | null
+          license_key?: string | null
+          metadata?: Json | null
+          price_cents: number
+          purchased_at?: string | null
+          stripe_payment_intent?: string | null
+          stripe_session_id?: string | null
+          template_id: string
+          template_name: string
+          user_id: string
+        }
+        Update: {
+          download_count?: number | null
+          id?: string
+          last_downloaded_at?: string | null
+          license_key?: string | null
+          metadata?: Json | null
+          price_cents?: number
+          purchased_at?: string | null
+          stripe_payment_intent?: string | null
+          stripe_session_id?: string | null
+          template_id?: string
+          template_name?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      marketplace_release_alerts: {
+        Row: {
+          alert_method: string | null
+          category: string | null
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          user_id: string
+        }
+        Insert: {
+          alert_method?: string | null
+          category?: string | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          user_id: string
+        }
+        Update: {
+          alert_method?: string | null
+          category?: string | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      marketplace_saved_templates: {
+        Row: {
+          id: string
+          notes: string | null
+          saved_at: string | null
+          template_id: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          notes?: string | null
+          saved_at?: string | null
+          template_id: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          notes?: string | null
+          saved_at?: string | null
+          template_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      marketplace_template_stats: {
+        Row: {
+          id: string
+          like_count: number | null
+          preview_count: number | null
+          purchase_count: number | null
+          template_id: string
+          trending_score: number | null
+          updated_at: string | null
+          view_count: number | null
+        }
+        Insert: {
+          id?: string
+          like_count?: number | null
+          preview_count?: number | null
+          purchase_count?: number | null
+          template_id: string
+          trending_score?: number | null
+          updated_at?: string | null
+          view_count?: number | null
+        }
+        Update: {
+          id?: string
+          like_count?: number | null
+          preview_count?: number | null
+          purchase_count?: number | null
+          template_id?: string
+          trending_score?: number | null
+          updated_at?: string | null
+          view_count?: number | null
+        }
+        Relationships: []
+      }
+      marketplace_user_interests: {
+        Row: {
+          created_at: string | null
+          id: string
+          interaction_type: string
+          metadata: Json | null
+          template_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          interaction_type: string
+          metadata?: Json | null
+          template_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          interaction_type?: string
+          metadata?: Json | null
+          template_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       modernizer_analytics: {
         Row: {
           analysis_result: Json | null
@@ -9596,6 +9782,10 @@ export type Database = {
       reset_daily_quotas: { Args: never; Returns: undefined }
       show_limit: { Args: never; Returns: number }
       show_trgm: { Args: { "": string }; Returns: string[] }
+      track_template_interaction: {
+        Args: { p_interaction_type: string; p_template_id: string }
+        Returns: undefined
+      }
       update_ip_reputation: {
         Args: { p_action: string; p_ip: string; p_risk_score?: number }
         Returns: undefined
