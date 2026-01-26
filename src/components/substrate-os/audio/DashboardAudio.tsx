@@ -21,22 +21,22 @@ export function DashboardAudio({ className }: DashboardAudioProps) {
   const [showSettings, setShowSettings] = useState(false);
   
   return (
-    <div className={cn("flex items-center gap-2", className)}>
+    <div className={cn("flex items-center gap-1.5 sm:gap-2", className)}>
       {/* Quick Sound Toggle */}
       <Button
         variant="ghost"
         size="icon"
         onClick={toggleEnabled}
         className={cn(
-          "h-9 w-9 relative",
+          "h-8 w-8 sm:h-9 sm:w-9 relative shrink-0",
           settings.enabled && "text-emerald-400"
         )}
         title={settings.enabled ? 'Mute sounds' : 'Enable sounds'}
       >
         {settings.enabled ? (
-          <Volume2 className="w-4 h-4" />
+          <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
         ) : (
-          <VolumeX className="w-4 h-4 text-muted-foreground" />
+          <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-muted-foreground" />
         )}
         {settings.enabled && (
           <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-emerald-500 rounded-full" />
@@ -52,10 +52,10 @@ export function DashboardAudio({ className }: DashboardAudioProps) {
           variant="ghost"
           size="icon"
           onClick={() => setShowSettings(!showSettings)}
-          className="h-9 w-9"
+          className="h-8 w-8 sm:h-9 sm:w-9 shrink-0"
           title="Audio Settings"
         >
-          <Settings2 className="w-4 h-4" />
+          <Settings2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
         </Button>
         
         <AnimatePresence>

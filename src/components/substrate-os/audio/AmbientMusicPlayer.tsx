@@ -154,13 +154,13 @@ export function AmbientMusicPlayer({ className }: { className?: string }) {
         size="icon"
         onClick={() => setIsExpanded(!isExpanded)}
         className={cn(
-          "h-9 w-9 relative",
+          "h-8 w-8 sm:h-9 sm:w-9 relative shrink-0",
           settings.enabled && "text-primary"
         )}
         title="Ambient Music"
       >
         <Music className={cn(
-          "w-4 h-4 transition-transform",
+          "w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform",
           settings.enabled && "animate-pulse"
         )} />
         {settings.enabled && (

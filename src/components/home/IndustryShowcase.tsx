@@ -118,6 +118,7 @@ function IndustryCard({ industry, delay = 0 }: { industry: Industry; delay?: num
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true }}
       transition={{ delay, duration: 0.5, ease: "easeOut" }}
+      className="h-full"
     >
       <Link 
         to={industry.href || "/use-cases"} 
@@ -127,7 +128,7 @@ function IndustryCard({ industry, delay = 0 }: { industry: Industry; delay?: num
       >
         <motion.div 
           className={cn(
-            "relative h-full p-5 sm:p-6 rounded-2xl border border-border/50 overflow-hidden",
+            "relative h-full p-4 sm:p-5 md:p-6 rounded-xl sm:rounded-2xl border border-border/50 overflow-hidden",
             "bg-card/50 backdrop-blur-sm",
             "hover:border-current/50 transition-all duration-300",
             "hover:shadow-xl",
@@ -160,22 +161,22 @@ function IndustryCard({ industry, delay = 0 }: { industry: Industry; delay?: num
           
           {/* Content */}
           <div className="relative">
-            <div className="flex items-start gap-4 mb-4">
+            <div className="flex items-start gap-3 sm:gap-4 mb-3 sm:mb-4">
               <motion.div 
                 className={cn(
-                  "w-12 h-12 rounded-xl flex items-center justify-center shrink-0",
+                  "w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0",
                   "bg-current/10 group-hover:bg-current/20 transition-colors"
                 )}
                 animate={{ scale: isHovered ? 1.1 : 1, rotate: isHovered ? 5 : 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <Icon className="w-5 h-5" />
+                <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
               </motion.div>
               <div className="flex-1 min-w-0">
-                <h3 className="font-bold text-base text-foreground mb-1 group-hover:text-current transition-colors">
+                <h3 className="font-bold text-sm sm:text-base text-foreground mb-1 group-hover:text-current transition-colors">
                   {industry.title}
                 </h3>
-                <p className="text-xs text-muted-foreground line-clamp-2">
+                <p className="text-[11px] sm:text-xs text-muted-foreground line-clamp-2">
                   {industry.tagline}
                 </p>
               </div>
@@ -183,12 +184,12 @@ function IndustryCard({ industry, delay = 0 }: { industry: Industry; delay?: num
             
             {/* Example quote - enhanced */}
             <div className={cn(
-              "relative p-4 rounded-xl bg-background/60 border border-border/30",
+              "relative p-3 sm:p-4 rounded-lg sm:rounded-xl bg-background/60 border border-border/30",
               "group-hover:bg-background/80 transition-all duration-300",
               "group-hover:border-current/20"
             )}>
-              <Quote className="absolute top-2 left-2 w-3 h-3 text-current/30" />
-              <p className="text-xs text-foreground/80 italic leading-relaxed pl-4">
+              <Quote className="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 w-2.5 h-2.5 sm:w-3 sm:h-3 text-current/30" />
+              <p className="text-[11px] sm:text-xs text-foreground/80 italic leading-relaxed pl-3 sm:pl-4">
                 {industry.example}
               </p>
             </div>
@@ -252,7 +253,7 @@ export function IndustryShowcase() {
         </motion.div>
         
         {/* Industry Grid - enhanced spacing */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6 mb-12 sm:mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 mb-12 sm:mb-16">
           {industries.map((industry, idx) => (
             <IndustryCard 
               key={industry.title} 
