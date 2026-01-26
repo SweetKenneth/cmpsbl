@@ -41,7 +41,7 @@ export function SubstrateStatus({ compact = false }: SubstrateStatusProps) {
         promptfluid® substrate: {activeCount}/{totalModules} modules
       </span>
       <Badge variant="outline" className="text-xs">
-        v4.2.0
+        v5.5.0
       </Badge>
     </div>
   );

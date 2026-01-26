@@ -7154,16 +7154,16 @@ async function handleSystem(
   headers: Record<string, string>,
   substrateState: SubstrateState
 ) {
-  // 12-module architecture - all modules that should be checked
-  const ALL_12_MODULES = ['core', 'brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'ripple', 'access', 'system', 'modernizer', 'integration'];
+  // 13-module architecture - all modules including Cortex orchestrator
+  const ALL_13_MODULES = ['core', 'brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'ripple', 'access', 'system', 'modernizer', 'integration', 'cortex'];
 
   switch (action) {
     case "status": {
-      // Full system status with v4 health data - checks ALL 12 MODULES
+      // Full system status with v4 health data - checks ALL 13 MODULES
       const checks: Record<string, boolean> = {};
       
-      // Initialize all 12 modules as false
-      for (const mod of ALL_12_MODULES) {
+      // Initialize all 13 modules as false
+      for (const mod of ALL_13_MODULES) {
         checks[mod] = false;
       }
 
@@ -7236,9 +7236,13 @@ async function handleSystem(
         checks.modernizer = !error; 
       } catch { checks.modernizer = false; }
 
+      // ORCHESTRATOR LAYER
+      // Cortex - always available (orchestrator is the substrate itself)
+      checks.cortex = true;
+
       // Calculate healthy count
       const healthyCount = Object.values(checks).filter(v => v).length;
-      const totalModules = ALL_12_MODULES.length;
+      const totalModules = ALL_13_MODULES.length;
 
       return jsonResponse({
         success: true,
@@ -7271,16 +7275,16 @@ async function handleSystem(
     }
 
     case "health": {
-      // Comprehensive health diagnostics with circuit breaker status - ALL 12 MODULES
+      // Comprehensive health diagnostics with circuit breaker status - ALL 13 MODULES
       
-      // Ensure all 12 modules are in state for health check
-      for (const mod of ALL_12_MODULES) {
+      // Ensure all 13 modules are in state for health check
+      for (const mod of ALL_13_MODULES) {
         if (!substrateState.modules[mod]) {
           substrateState.modules[mod] = initModuleHealth(mod);
         }
       }
       
-      const diagnostics = ALL_12_MODULES.map(module => {
+      const diagnostics = ALL_13_MODULES.map((module: string) => {
         const health = substrateState.modules[module];
         return {
           module,
@@ -7295,7 +7299,7 @@ async function handleSystem(
       });
       
       const overallHealth = diagnostics.length > 0
-        ? Math.round(diagnostics.reduce((sum, d) => sum + d.health_score, 0) / diagnostics.length)
+        ? Math.round(diagnostics.reduce((sum: number, d: { health_score: number }) => sum + d.health_score, 0) / diagnostics.length)
         : 100;
 
       return jsonResponse({
@@ -7320,14 +7324,14 @@ async function handleSystem(
     }
 
     case "heal": {
-      // v4.2.0 UNIFIED HEAL - Restores ALL 12 modules + brain/dream states
+      // v5.5.0 UNIFIED HEAL - Restores ALL 13 modules + brain/dream states
       const { target, force = false, test = true } = data;
       const healed: string[] = [];
       const tested: Array<{ module: string; status: string; score: number }> = [];
       const errors: string[] = [];
       
-      // ALL 12 MODULES - complete architecture
-      const modulesToHeal = target ? [target] : ALL_12_MODULES;
+      // ALL 13 MODULES - complete architecture including Cortex orchestrator
+      const modulesToHeal = target ? [target] : ALL_13_MODULES;
       
       // PHASE 1: Reset in-memory module health
       for (const mod of modulesToHeal) {
@@ -7476,6 +7480,10 @@ async function handleSystem(
           const { count: proposalCount } = await supabase.from('evolution_proposals').select('*', { count: 'exact', head: true });
           const modernizerScore = proposalCount !== null ? 100 : 50;
           tested.push({ module: 'modernizer', status: 'healthy', score: modernizerScore });
+          
+          // ORCHESTRATOR LAYER
+          // Test cortex - always healthy as the orchestration layer
+          tested.push({ module: 'cortex', status: 'healthy', score: 100 });
           
           // Update module states based on tests
           for (const testResult of tested) {
@@ -8017,11 +8025,11 @@ async function handleSystem(
     }
     
     case "resilience": {
-      // v4.8.0: System resilience snapshot surface
+      // v5.5.0: System resilience snapshot surface
       const { role = 'observer' } = data;
       
-      // Ensure all 12 modules are in state
-      for (const mod of ALL_12_MODULES) {
+      // Ensure all 13 modules are in state
+      for (const mod of ALL_13_MODULES) {
         if (!substrateState.modules[mod]) {
           substrateState.modules[mod] = initModuleHealth(mod);
         }
@@ -8125,7 +8133,7 @@ async function handleSystem(
     }
 
     case "diagnostics": {
-      // v4.2.0 Comprehensive system diagnostics - ALL 12 MODULES
+      // v5.5.0 Comprehensive system diagnostics - ALL 13 MODULES
       const [
         { data: orchestrator },
         { count: memoryCount },
@@ -8140,15 +8148,15 @@ async function handleSystem(
         supabase.from("edge_rate_limits").select("*").order("updated_at", { ascending: false }).limit(10),
       ]);
       
-      // Ensure all 12 modules are in state for diagnostics
-      for (const mod of ALL_12_MODULES) {
+      // Ensure all 13 modules are in state for diagnostics
+      for (const mod of ALL_13_MODULES) {
         if (!substrateState.modules[mod]) {
           substrateState.modules[mod] = initModuleHealth(mod);
         }
       }
       
-      // Module diagnostics from in-memory state - ALL 12 MODULES
-      const moduleDiagnostics = ALL_12_MODULES.map(name => {
+      // Module diagnostics from in-memory state - ALL 13 MODULES
+      const moduleDiagnostics = ALL_13_MODULES.map((name: string) => {
         const health = substrateState.modules[name] || initModuleHealth(name);
         return {
           name,
