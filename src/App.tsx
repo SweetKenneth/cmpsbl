@@ -62,6 +62,7 @@ const AgencyPortal = lazy(() => import("./pages/AgencyPortal"));
 const Modernizer = lazy(() => import("./pages/Modernizer"));
 const Marketplace = lazy(() => import("./pages/Marketplace"));
 const MarketplaceSuccess = lazy(() => import("./pages/MarketplaceSuccess"));
+const SubstrateIntelligence = lazy(() => import("./pages/SubstrateIntelligence"));
 
 // Marketing / Info pages
 const About = lazy(() => import("./pages/About"));
@@ -162,6 +163,7 @@ const App = () => {
                       <Route path="/dev-portal" element={<DevPortal />} />
                       <Route path="/marketplace" element={<Marketplace />} />
                       <Route path="/marketplace/success" element={<MarketplaceSuccess />} />
+                      <Route path="/intelligence" element={<SubstrateIntelligence />} />
 
                       {/* Marketing / Info */}
                       <Route path="/about" element={<About />} />
