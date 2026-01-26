@@ -145,7 +145,7 @@ export default function Marketplace() {
     <>
       <SEO
         title="Stop AI Chatbot Drift | 50+ Templates + Full OS | CMPSBL"
-        description="The ONLY production solution for AI chatbot behavioral drift. 50+ templates ($27-$499) or complete OS ($3,999). Persistent memory, self-correction, dream cycles. 131k+ LOC, battle-tested."
+        description="Solve AI chatbot behavioral drift with persistent memory and self-correction. 50+ templates ($27-$499) or complete OS ($3,999). Dream cycles, 13-module architecture, full documentation."
         keywords={["AI chatbot drift", "chatbot behavioral drift", "AI memory persistence", "prevent AI drift", "LLM self-correction", "AI dream cycles", "chatbot stability", "cognitive OS", "CMPSBL", "AI governance"]}
       />
       <div className="min-h-screen bg-background">
