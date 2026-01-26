@@ -1,10 +1,10 @@
 /**
  * TemplatePreviewModal — Immersive full preview with protected code
- * Mobile-optimized, high-conversion design
+ * Mobile-optimized, high-conversion design with proper close controls
  */
 
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils';
 import {
   Code, ShoppingCart, CreditCard, Eye, Sparkles, Zap, Clock, Star, 
   Lock, Shield, Brain, Moon, MessageSquare, Settings, Server, Check,
-  ArrowRight, Award, Download
+  ArrowRight, Award, Download, X, ArrowLeft
 } from 'lucide-react';
 import type { Template } from '@/data/templates';
 import { getTemplatePricing, formatPrice } from '@/config/marketplace-products';
@@ -68,20 +68,51 @@ export function TemplatePreviewModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-5xl max-h-[95vh] overflow-hidden p-0">
-        <div className="flex flex-col lg:flex-row h-full max-h-[95vh]">
+      <DialogContent className="max-w-5xl h-[85vh] sm:h-auto sm:max-h-[85vh] overflow-hidden p-0 flex flex-col">
+        {/* Mobile Header with Close Button */}
+        <div className="flex items-center justify-between p-3 border-b bg-muted/30 shrink-0 lg:hidden">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={() => onOpenChange(false)}
+            className="gap-2"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back to Marketplace
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => onOpenChange(false)}
+            className="h-8 w-8"
+          >
+            <X className="w-4 h-4" />
+          </Button>
+        </div>
+        
+        {/* Desktop Close Button */}
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => onOpenChange(false)}
+          className="absolute right-4 top-4 z-50 h-8 w-8 rounded-full bg-background/80 backdrop-blur-sm border shadow-sm hidden lg:flex"
+        >
+          <X className="w-4 h-4" />
+        </Button>
+
+        <div className="flex flex-col lg:flex-row flex-1 overflow-hidden">
           {/* Left: Preview Content */}
           <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-            <DialogHeader className="px-4 sm:px-6 pt-4 sm:pt-6 pb-4 border-b shrink-0">
+            <DialogHeader className="px-4 sm:px-6 pt-3 sm:pt-6 pb-3 sm:pb-4 border-b shrink-0">
               <div className="flex items-start gap-3 sm:gap-4">
-                <div className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 border border-primary/30 shrink-0">
-                  <Icon className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
+                <div className="p-2.5 sm:p-4 rounded-xl sm:rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 border border-primary/30 shrink-0">
+                  <Icon className="w-5 h-5 sm:w-8 sm:h-8 text-primary" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <DialogTitle className="text-lg sm:text-xl font-bold mb-2 pr-8">
+                  <DialogTitle className="text-base sm:text-xl font-bold mb-1.5 sm:mb-2">
                     {template.name}
                   </DialogTitle>
-                  <div className="flex flex-wrap items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                     <Badge variant="outline" className="gap-1 text-xs">
                       <CategoryIcon className="w-3 h-3" />
                       {template.category}
@@ -207,82 +238,119 @@ export function TemplatePreviewModal({
             </Tabs>
           </div>
 
-          {/* Right: Purchase Panel */}
-          <div className="w-full lg:w-80 border-t lg:border-t-0 lg:border-l bg-gradient-to-b from-muted/30 to-muted/50 p-4 sm:p-6 flex flex-col shrink-0">
-            <div className="flex-1 space-y-5">
-              {/* Price */}
-              <div className="text-center lg:text-left">
-                <div className="text-4xl sm:text-5xl font-black text-primary">
-                  {formatPrice(pricing.amount)}
+          {/* Right: Purchase Panel - Collapsible on mobile */}
+          <div className="w-full lg:w-72 border-t lg:border-t-0 lg:border-l bg-gradient-to-b from-muted/30 to-muted/50 shrink-0 overflow-y-auto">
+            <ScrollArea className="h-full max-h-[40vh] lg:max-h-none">
+              <div className="p-4 space-y-4">
+                {/* Price - Compact on mobile */}
+                <div className="flex items-center justify-between lg:block lg:text-left">
+                  <div>
+                    <div className="text-2xl lg:text-4xl font-black text-primary">
+                      {formatPrice(pricing.amount)}
+                    </div>
+                    <p className="text-xs text-muted-foreground">One-time payment</p>
+                  </div>
+                  
+                  {/* Mobile CTA inline with price */}
+                  <div className="lg:hidden">
+                    {isPurchased ? (
+                      <Button size="sm" variant="outline" className="gap-1.5">
+                        <Download className="w-4 h-4" />
+                        Download
+                      </Button>
+                    ) : (
+                      <Button 
+                        size="sm" 
+                        className="gap-1.5 shadow-lg shadow-primary/25"
+                        onClick={() => onBuy(template)}
+                        disabled={isLoading}
+                      >
+                        <CreditCard className="w-4 h-4" />
+                        {isLoading ? '...' : 'Buy Now'}
+                      </Button>
+                    )}
+                  </div>
                 </div>
-                <p className="text-sm text-muted-foreground">One-time payment</p>
-              </div>
 
-              {/* Quick Info */}
-              <div className="space-y-3 p-4 rounded-xl bg-background/50 border">
-                <div className="flex items-center gap-3 text-sm">
-                  <Lock className="w-4 h-4 text-muted-foreground shrink-0" />
-                  <span>Single-project license</span>
+                {/* Quick Info - Hidden on mobile, shown on desktop */}
+                <div className="hidden lg:block space-y-2.5 p-3 rounded-xl bg-background/50 border">
+                  <div className="flex items-center gap-2.5 text-sm">
+                    <Lock className="w-4 h-4 text-muted-foreground shrink-0" />
+                    <span>Single-project license</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 text-sm">
+                    <Code className="w-4 h-4 text-muted-foreground shrink-0" />
+                    <span>Full source code</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 text-sm">
+                    <Download className="w-4 h-4 text-muted-foreground shrink-0" />
+                    <span>Instant download</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 text-sm">
+                    <Shield className="w-4 h-4 text-muted-foreground shrink-0" />
+                    <span>Secure payment</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-3 text-sm">
-                  <Code className="w-4 h-4 text-muted-foreground shrink-0" />
-                  <span>Full source code included</span>
+
+                {/* Mobile Quick Info - Compact horizontal */}
+                <div className="flex flex-wrap gap-2 lg:hidden">
+                  <Badge variant="outline" className="text-xs gap-1">
+                    <Code className="w-3 h-3" /> Full Code
+                  </Badge>
+                  <Badge variant="outline" className="text-xs gap-1">
+                    <Download className="w-3 h-3" /> Instant
+                  </Badge>
+                  <Badge variant="outline" className="text-xs gap-1">
+                    <Shield className="w-3 h-3" /> Secure
+                  </Badge>
                 </div>
-                <div className="flex items-center gap-3 text-sm">
-                  <Download className="w-4 h-4 text-muted-foreground shrink-0" />
-                  <span>Instant download</span>
+
+                {/* Rating */}
+                <div className="p-2.5 rounded-lg bg-amber-500/5 border border-amber-500/20 flex items-center gap-2">
+                  <div className="flex">
+                    {[1, 2, 3, 4, 5].map((i) => (
+                      <Star key={i} className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                    ))}
+                  </div>
+                  <span className="text-sm font-semibold">5.0</span>
+                  <span className="text-xs text-muted-foreground">(Premium)</span>
                 </div>
-                <div className="flex items-center gap-3 text-sm">
-                  <Shield className="w-4 h-4 text-muted-foreground shrink-0" />
-                  <span>Secure payment via Stripe</span>
+
+                {/* Trust badge */}
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <Shield className="w-3.5 h-3.5 text-system-green shrink-0" />
+                  <span>promptfluid® Trade Secret License</span>
+                </div>
+
+                {/* Desktop CTA */}
+                <div className="hidden lg:block space-y-2 pt-3 border-t">
+                  {isPurchased ? (
+                    <Button 
+                      size="lg" 
+                      className="w-full gap-2"
+                      variant="outline"
+                    >
+                      <Download className="w-5 h-5" />
+                      Download Again
+                    </Button>
+                  ) : (
+                    <Button 
+                      size="lg" 
+                      className="w-full gap-2 shadow-lg shadow-primary/25"
+                      onClick={() => onBuy(template)}
+                      disabled={isLoading}
+                    >
+                      <CreditCard className="w-5 h-5" />
+                      {isLoading ? 'Processing...' : 'Purchase Now'}
+                      <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  )}
+                  <p className="text-xs text-center text-muted-foreground">
+                    Instant delivery after payment
+                  </p>
                 </div>
               </div>
-
-              {/* Rating */}
-              <div className="p-3 rounded-lg bg-amber-500/5 border border-amber-500/20 flex items-center gap-2">
-                <div className="flex">
-                  {[1, 2, 3, 4, 5].map((i) => (
-                    <Star key={i} className="w-4 h-4 text-amber-500 fill-amber-500" />
-                  ))}
-                </div>
-                <span className="text-sm font-semibold">5.0</span>
-                <span className="text-xs text-muted-foreground">(Premium)</span>
-              </div>
-
-              {/* Trust badge */}
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <Shield className="w-4 h-4 text-system-green" />
-                <span>Protected by promptfluid® Trade Secret License</span>
-              </div>
-            </div>
-
-            {/* CTA */}
-            <div className="space-y-3 pt-5 border-t mt-4">
-              {isPurchased ? (
-                <Button 
-                  size="lg" 
-                  className="w-full gap-2"
-                  variant="outline"
-                >
-                  <Download className="w-5 h-5" />
-                  Download Again
-                </Button>
-              ) : (
-                <Button 
-                  size="lg" 
-                  className="w-full gap-2 shadow-lg shadow-primary/25"
-                  onClick={() => onBuy(template)}
-                  disabled={isLoading}
-                >
-                  <CreditCard className="w-5 h-5" />
-                  {isLoading ? 'Processing...' : 'Purchase Now'}
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
-              )}
-              <p className="text-xs text-center text-muted-foreground">
-                Instant delivery after payment
-              </p>
-            </div>
+            </ScrollArea>
           </div>
         </div>
       </DialogContent>
