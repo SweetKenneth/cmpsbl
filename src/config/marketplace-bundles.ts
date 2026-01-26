@@ -91,6 +91,8 @@ export const TEMPLATE_STACKS: TemplateStack[] = [
     ],
     modules: ['brain', 'decode', 'defense'],
     discount: 0.25,
+    product_id: 'prod_TrTXD7AJqm3FHZ',
+    price_id: 'price_1StkaXQ7FtTiAL4a58DIgguO',
   },
   {
     id: 'stack-support-agent',
@@ -105,6 +107,8 @@ export const TEMPLATE_STACKS: TemplateStack[] = [
     ],
     modules: ['brain', 'decode', 'vision'],
     discount: 0.25,
+    product_id: 'prod_TrTXdxrGQFR9dX',
+    price_id: 'price_1StkaZQ7FtTiAL4a6bayDLa9',
   },
   {
     id: 'stack-learning-platform',
@@ -119,6 +123,8 @@ export const TEMPLATE_STACKS: TemplateStack[] = [
     ],
     modules: ['brain', 'dream'],
     discount: 0.30,
+    product_id: 'prod_TrTX07cvn2Cja9',
+    price_id: 'price_1StkaaQ7FtTiAL4a7cOKlhD1',
   },
   {
     id: 'stack-secure-enterprise',
@@ -133,6 +139,8 @@ export const TEMPLATE_STACKS: TemplateStack[] = [
     ],
     modules: ['defense', 'brain', 'vision'],
     discount: 0.25,
+    product_id: 'prod_TrTXGcYdqrJmeO',
+    price_id: 'price_1StkacQ7FtTiAL4a3D3NMPo6',
   },
 ];
 
@@ -164,10 +172,12 @@ export const BUNDLES: Bundle[] = [
       'context-continuity-engine',
       'observability-dashboard',
     ],
-    originalPrice: 163600, // Sum of individual prices
-    bundlePrice: 114520, // 30% off
+    originalPrice: 163600,
+    bundlePrice: 114520,
     savings: 49080,
     savingsPercent: 30,
+    product_id: 'prod_TrTXtPZf5SteaR',
+    price_id: 'price_1StkaTQ7FtTiAL4a9XCkEqzj',
   },
   {
     id: 'bundle-business-complete',
@@ -186,9 +196,11 @@ export const BUNDLES: Bundle[] = [
       'real-estate-agent-brain',
     ],
     originalPrice: 377400,
-    bundlePrice: 264180, // 30% off
+    bundlePrice: 264180,
     savings: 113220,
     savingsPercent: 30,
+    product_id: 'prod_TrTX2F02kWos5n',
+    price_id: 'price_1StkaUQ7FtTiAL4aLihyQYfX',
   },
   {
     id: 'bundle-starter-pack',
@@ -201,10 +213,12 @@ export const BUNDLES: Bundle[] = [
       'ai-router',
       'observability',
     ],
-    originalPrice: 13500, // 5 × $27
-    bundlePrice: 9450, // 30% off
+    originalPrice: 13500,
+    bundlePrice: 9450,
     savings: 4050,
     savingsPercent: 30,
+    product_id: 'prod_TrTX9L8eDWh0Vk',
+    price_id: 'price_1StkaWQ7FtTiAL4auVElR0PM',
   },
 ];
 
@@ -236,8 +250,11 @@ export const AGENCY_PACKS: AgencyPack[] = [
       'Email support',
     ],
     templateCount: 10,
-    monthlyPrice: 19900, // $199/mo
-    annualPrice: 179100, // $149/mo billed annually (25% off)
+    monthlyPrice: 19900,
+    annualPrice: 179100,
+    price_id_monthly: 'price_1StkahQ7FtTiAL4a9vwzcf52',
+    price_id_annual: 'price_1StkaiQ7FtTiAL4aHljLC4VK',
+    product_id: 'prod_TrTXujuZzhJkqG',
   },
   {
     id: 'agency-professional',
@@ -251,8 +268,11 @@ export const AGENCY_PACKS: AgencyPack[] = [
       'Optional rebranding',
     ],
     templateCount: 30,
-    monthlyPrice: 49900, // $499/mo
-    annualPrice: 449100, // $374/mo billed annually
+    monthlyPrice: 49900,
+    annualPrice: 449100,
+    price_id_monthly: 'price_1StkakQ7FtTiAL4aSD0KP9Qh',
+    price_id_annual: 'price_1StkalQ7FtTiAL4a7u9C048C',
+    product_id: 'prod_TrTXmiUiQFerTZ',
   },
   {
     id: 'agency-enterprise',
@@ -266,9 +286,12 @@ export const AGENCY_PACKS: AgencyPack[] = [
       'Full rebranding rights',
       'Source code access',
     ],
-    templateCount: -1, // All templates
-    monthlyPrice: 149900, // $1499/mo
-    annualPrice: 1349100, // $1124/mo billed annually
+    templateCount: -1,
+    monthlyPrice: 149900,
+    annualPrice: 1349100,
+    price_id_monthly: 'price_1StkanQ7FtTiAL4afkVK2zDQ',
+    price_id_annual: 'price_1StkaoQ7FtTiAL4asIfm4Af0',
+    product_id: 'prod_TrTXLKscsgEYvO',
   },
 ];
 
@@ -299,8 +322,10 @@ export const STUDIO_LICENSES: StudioLicense[] = [
       'Physics Integration',
       'BYOK Routing',
     ],
-    monthlyPrice: 99900, // $999/mo
-    annualPrice: 899100, // 25% off annual
+    monthlyPrice: 99900,
+    annualPrice: 899100,
+    price_id_monthly: 'price_1StkatQ7FtTiAL4aWqQYzs6O',
+    price_id_annual: 'price_1StkauQ7FtTiAL4awoJFZ0Ct',
   },
   {
     id: 'studio-enterprise',
@@ -314,8 +339,10 @@ export const STUDIO_LICENSES: StudioLicense[] = [
       'Custom Integration Support',
       'SLA Guarantee',
     ],
-    monthlyPrice: 249900, // $2499/mo
-    annualPrice: 2249100, // 25% off annual
+    monthlyPrice: 249900,
+    annualPrice: 2249100,
+    price_id_monthly: 'price_1StkawQ7FtTiAL4aM4CPyVFd',
+    price_id_annual: 'price_1StkaxQ7FtTiAL4aXeYaVfcx',
   },
 ];
 
