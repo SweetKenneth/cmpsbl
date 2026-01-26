@@ -66,7 +66,7 @@ export function DashboardAudio({ className }: DashboardAudioProps) {
               exit={{ opacity: 0, y: 10, scale: 0.95 }}
               className={cn(
                 "absolute right-0 top-full mt-2 z-50",
-                "w-64 p-4 rounded-xl",
+                "w-64 max-w-[calc(100vw-2rem)] p-4 rounded-xl",
                 "bg-card/95 backdrop-blur-xl border border-border/50",
                 "shadow-xl shadow-black/20"
               )}

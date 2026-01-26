@@ -92,6 +92,7 @@ function ModuleCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay }}
+       whileHover={{ y: -5, scale: 1.02 }}
     >
       <Link to={href} className="group block h-full">
         <div className={cn(
@@ -100,6 +101,10 @@ function ModuleCard({
           "hover:bg-card/80 hover:border-current/30 hover:shadow-lg",
           color
         )}>
+           {/* Gradient overlay on hover */}
+           <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-current/5 to-current/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+           
+           <div className="relative z-10">
           {/* Icon */}
           <div className={cn(
             "w-10 h-10 rounded-lg flex items-center justify-center mb-3",
@@ -124,6 +129,7 @@ function ModuleCard({
               </li>
             ))}
           </ul>
+           </div>
         </div>
       </Link>
     </motion.div>
@@ -372,11 +378,11 @@ export default function Explore() {
           >
             <Badge variant="outline" className="mb-4">13 Core Modules</Badge>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
-              The Cognitive Architecture
+              The 13-Module Cognitive Substrate
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto">
-              Thirteen interconnected systems working in harmony. Each module operates 
-              independently while contributing to collective intelligence.
+              Thirteen specialized modules across five architectural layers. Each operates autonomously 
+              while contributing to system-wide intelligence, self-healing, and continuous evolution.
             </p>
           </motion.div>
           
@@ -405,11 +411,11 @@ export default function Explore() {
           >
             <Badge variant="outline" className="mb-4">By The Numbers</Badge>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
-              Production-Ready Scale
+              Battle-Tested At Scale
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto">
-              Not a proof of concept. A fully deployed, battle-tested CMPSBL 
-              running in production 24/7.
+              Not a proof-of-concept. A complete, production-hardened cognitive infrastructure 
+              running 24/7 with real users, real workloads, and real-world fault tolerance.
             </p>
           </motion.div>
           
@@ -443,10 +449,11 @@ export default function Explore() {
           >
             <Badge variant="outline" className="mb-4">BYOK Integrations</Badge>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
-              Connect External Services
+              Bring Your Own Keys
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto">
-              Bring your own keys. CMPSBL connects to your existing services seamlessly.
+              CMPSBL integrates with your existing services using your API keys. 
+              No vendor lock-in, full data sovereignty, zero intermediaries.
             </p>
           </motion.div>
           
@@ -493,11 +500,11 @@ export default function Explore() {
             
             <div className="relative">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4">
-                Ready to Build AI That Remembers?
+                Build AI That Remembers, Dreams, and Evolves
               </h2>
               <p className="text-white/80 text-sm sm:text-base md:text-lg max-w-xl mx-auto mb-6 sm:mb-8">
-                Start with 70+ templates, explore the full documentation, 
-                or see CMPSBL in action.
+                Start with production-ready templates, dive into comprehensive documentation, 
+                or see the substrate orchestrating autonomous workflows in real-time.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                 <Button asChild size="lg" className="px-6 sm:px-8 bg-white text-primary hover:bg-white/90 font-semibold">

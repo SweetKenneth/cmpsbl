@@ -7,6 +7,13 @@ const Toaster = ({ ...props }: ToasterProps) => {
     <Sonner
       theme="dark"
       position="bottom-right"
+      offset="16px"
+      style={{
+        position: 'fixed',
+        bottom: '1rem',
+        right: '1rem',
+        zIndex: 999999,
+      }}
       richColors
       closeButton
       expand
@@ -21,6 +28,10 @@ const Toaster = ({ ...props }: ToasterProps) => {
           cancelButton: "group-[.toast]:bg-muted group-[.toast]:text-muted-foreground",
         },
         duration: 8000,
+        style: {
+          position: 'relative',
+          pointerEvents: 'auto',
+        },
       }}
       {...props}
     />
