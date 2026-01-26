@@ -169,7 +169,8 @@ export default function Marketplace() {
         priceId = MARKETPLACE_PRODUCTS.world_engine.price_id;
         productId = MARKETPLACE_PRODUCTS.world_engine.product_id;
       } else if (template) {
-        const pricing = getTemplatePricing(template.difficulty);
+        // Pass template.id to get specific pricing if available, otherwise tier pricing
+        const pricing = getTemplatePricing(template.difficulty, template.id);
         priceId = pricing.price_id;
         productId = pricing.product_id;
         templateName = template.name;
