@@ -54,6 +54,8 @@ const INITIAL_MODULES: ModuleState[] = [
   { id: 'system', name: 'System', icon: Cpu, status: 'idle', color: 'slate', gradient: 'from-slate-500 to-gray-600', description: 'Administration' },
   { id: 'modernizer', name: 'Modernizer', icon: Sparkles, status: 'idle', color: 'pink', gradient: 'from-pink-500 to-rose-600', description: 'Self-Upgrade' },
   { id: 'integration', name: 'Integration', icon: Code, status: 'idle', color: 'indigo', gradient: 'from-indigo-500 to-blue-600', description: 'Enterprise' },
+  // ORCHESTRATOR LAYER
+  { id: 'cortex', name: 'Cortex', icon: Activity, status: 'idle', color: 'fuchsia', gradient: 'from-fuchsia-500 to-pink-600', description: 'Orchestrator' },
 ];
 
 const DEMO_SCENARIOS = [
@@ -159,14 +161,24 @@ export default function SubstrateDemo() {
     ping();
   }, [addLog]);
 
-  const getModulePosition = (index: number, total: number) => {
+  // Responsive radius - smaller on mobile to prevent overflow
+  const getModulePosition = (index: number, total: number, isMobile: boolean = false) => {
     const angle = (index / total) * 2 * Math.PI - Math.PI / 2;
-    const radius = 130;
+    const radius = isMobile ? 95 : 130; // Reduced mobile radius
     return {
       x: Math.cos(angle) * radius,
       y: Math.sin(angle) * radius,
     };
   };
+  
+  // Check if mobile viewport
+  const [isMobileView, setIsMobileView] = useState(false);
+  useEffect(() => {
+    const checkMobile = () => setIsMobileView(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -265,15 +277,15 @@ export default function SubstrateDemo() {
                     </div>
                   </div>
 
-                  {/* Circular Module Layout */}
-                  <div className="relative h-[320px] md:h-[400px] flex items-center justify-center overflow-hidden">
-                    {/* Orbital Rings - centered with inset-0 + margin auto */}
-                    <div className="absolute inset-0 m-auto w-[260px] h-[260px] md:w-[320px] md:h-[320px] rounded-full border border-border/20" />
-                    <div className="absolute inset-0 m-auto w-[200px] h-[200px] md:w-[240px] md:h-[240px] rounded-full border border-border/10" />
+                  {/* Circular Module Layout - contained within card bounds */}
+                  <div className="relative h-[280px] md:h-[400px] flex items-center justify-center overflow-hidden">
+                    {/* Orbital Rings - scaled for mobile */}
+                    <div className="absolute inset-0 m-auto w-[200px] h-[200px] md:w-[320px] md:h-[320px] rounded-full border border-border/20" />
+                    <div className="absolute inset-0 m-auto w-[150px] h-[150px] md:w-[240px] md:h-[240px] rounded-full border border-border/10" />
                     
-                    {/* Center Core */}
+                    {/* Center Core - smaller on mobile */}
                     <motion.div 
-                      className="absolute inset-0 m-auto w-20 h-20 md:w-28 md:h-28 rounded-2xl bg-gradient-to-br from-primary/30 via-violet-500/20 to-cyan-500/20 border border-primary/40 flex flex-col items-center justify-center backdrop-blur-sm z-10"
+                      className="absolute inset-0 m-auto w-14 h-14 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br from-primary/30 via-violet-500/20 to-cyan-500/20 border border-primary/40 flex flex-col items-center justify-center backdrop-blur-sm z-10"
                       animate={{ 
                         scale: isRunning ? [1, 1.05, 1] : 1,
                         boxShadow: isRunning 
@@ -282,14 +294,14 @@ export default function SubstrateDemo() {
                       }}
                       transition={{ duration: 2, repeat: isRunning ? Infinity : 0 }}
                     >
-                      <Sparkles className="w-8 h-8 md:w-10 md:h-10 text-primary mb-1" />
-                      <span className="text-[10px] md:text-xs font-medium text-muted-foreground">Substrate</span>
+                      <Sparkles className="w-5 h-5 md:w-8 md:h-8 text-primary mb-0.5" />
+                      <span className="text-[8px] md:text-xs font-medium text-muted-foreground">Substrate</span>
                     </motion.div>
 
-                    {/* Connection Lines SVG - use viewBox for proper centering */}
+                    {/* Connection Lines SVG - responsive viewBox */}
                     <svg 
                       className="absolute inset-0 w-full h-full pointer-events-none"
-                      viewBox="0 0 320 320"
+                      viewBox={isMobileView ? "0 0 240 240" : "0 0 320 320"}
                       preserveAspectRatio="xMidYMid meet"
                     >
                       <defs>
@@ -299,7 +311,7 @@ export default function SubstrateDemo() {
                           <stop offset="100%" stopColor="hsl(190, 80%, 50%)" stopOpacity="0.8" />
                         </linearGradient>
                         <filter id="glow">
-                          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                          <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
                           <feMerge>
                             <feMergeNode in="coloredBlur"/>
                             <feMergeNode in="SourceGraphic"/>
@@ -313,10 +325,10 @@ export default function SubstrateDemo() {
                         const toIdx = modules.findIndex(m => m.id === to);
                         if (fromIdx === -1 || toIdx === -1) return null;
                         
-                        const fromPos = getModulePosition(fromIdx, modules.length);
-                        const toPos = getModulePosition(toIdx, modules.length);
-                        const centerX = 160;
-                        const centerY = 160;
+                        const fromPos = getModulePosition(fromIdx, modules.length, isMobileView);
+                        const toPos = getModulePosition(toIdx, modules.length, isMobileView);
+                        const centerX = isMobileView ? 120 : 160;
+                        const centerY = isMobileView ? 120 : 160;
                         
                         return (
                           <motion.line
@@ -336,9 +348,9 @@ export default function SubstrateDemo() {
                       })}
                     </svg>
 
-                    {/* Module Nodes - positioned via transform for true centering */}
+                    {/* Module Nodes - positioned via transform, responsive sizing */}
                     {modules.map((module, index) => {
-                      const pos = getModulePosition(index, modules.length);
+                      const pos = getModulePosition(index, modules.length, isMobileView);
                       const Icon = module.icon;
                       const isActive = module.status === 'processing';
                       const isComplete = module.status === 'complete';
@@ -352,10 +364,10 @@ export default function SubstrateDemo() {
                           }}
                           initial={{ opacity: 0, scale: 0 }}
                           animate={{ opacity: 1, scale: 1 }}
-                          transition={{ delay: index * 0.08, type: "spring", stiffness: 200 }}
+                          transition={{ delay: index * 0.05, type: "spring", stiffness: 200 }}
                         >
                           <motion.div 
-                            className={`relative w-16 h-16 md:w-[72px] md:h-[72px] rounded-2xl border-2 flex flex-col items-center justify-center gap-0.5 transition-all duration-300 backdrop-blur-sm ${
+                            className={`relative w-10 h-10 md:w-[60px] md:h-[60px] rounded-xl md:rounded-2xl border-2 flex flex-col items-center justify-center gap-0 md:gap-0.5 transition-all duration-300 backdrop-blur-sm ${
                               isActive 
                                 ? `bg-gradient-to-br ${module.gradient} border-white/30 shadow-lg shadow-${module.color}-500/30` 
                                 : isComplete 
@@ -367,11 +379,11 @@ export default function SubstrateDemo() {
                               transition: { duration: 0.6, repeat: Infinity }
                             } : {}}
                           >
-                            <Icon className={`w-5 h-5 md:w-6 md:h-6 ${
+                            <Icon className={`w-3.5 h-3.5 md:w-5 md:h-5 ${
                               isActive ? 'text-white' : 
                               isComplete ? 'text-emerald-400' : 'text-muted-foreground'
                             }`} />
-                            <span className={`text-[10px] font-medium ${
+                            <span className={`text-[7px] md:text-[9px] font-medium leading-tight ${
                               isActive ? 'text-white/90' :
                               isComplete ? 'text-emerald-400' : 'text-muted-foreground'
                             }`}>{module.name}</span>
@@ -380,9 +392,9 @@ export default function SubstrateDemo() {
                               <motion.div 
                                 initial={{ scale: 0 }}
                                 animate={{ scale: 1 }}
-                                className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center"
+                                className="absolute -top-0.5 -right-0.5 md:-top-1 md:-right-1 w-3.5 h-3.5 md:w-4 md:h-4 rounded-full bg-emerald-500 flex items-center justify-center"
                               >
-                                <Check className="w-3 h-3 text-white" />
+                                <Check className="w-2 h-2 md:w-2.5 md:h-2.5 text-white" />
                               </motion.div>
                             )}
                           </motion.div>
