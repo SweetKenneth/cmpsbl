@@ -128,9 +128,9 @@ export default function SubstrateDashboard() {
     <div className="min-h-screen bg-background">
       <SEO
         title="Substrate Dashboard — promptfluid®"
-        description="Cognitive orchestration substrate control center. Monitor all 12 modules including brain, decode, defense, nexus, vision, dream, and integration."
+        description="Cognitive orchestration substrate control center. Monitor all 13 modules including brain, decode, defense, nexus, vision, dream, integration, and cortex orchestrator."
         canonical="https://promptfluid.com/substrate"
-        keywords={["cognitive orchestration", "AI substrate", "promptfluid dashboard", "integration module"]}
+        keywords={["cognitive orchestration", "AI substrate", "promptfluid dashboard", "integration module", "cortex"]}
       />
 
       <PublicNav />

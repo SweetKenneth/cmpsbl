@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { TEMPLATES } from "@/data/templates";
 
-// The 12 modules of the substrate (4-layer architecture)
+// The 13 modules of the substrate (5-layer architecture v5.5.0)
 const MODULES = [
   // Kernel Layer
   { icon: Cpu, name: "Core", color: "text-orange-400", description: "Kernel scheduling" },
@@ -30,6 +30,8 @@ const MODULES = [
   { icon: Settings, name: "System", color: "text-slate-400", description: "Administration" },
   { icon: Crown, name: "Modernizer", color: "text-pink-400", description: "Self-upgrade" },
   { icon: Globe, name: "Integration", color: "text-emerald-400", description: "Enterprise" },
+  // Orchestrator Layer
+  { icon: Sparkles, name: "Cortex", color: "text-fuchsia-400", description: "Orchestrator" },
 ];
 
 // Competitor logos (stylized as text for now)
@@ -185,7 +187,7 @@ export function MarketplaceHero() {
               <div className="text-sm text-muted-foreground">Production Templates</div>
             </div>
             <div className="text-center p-4 rounded-2xl bg-card/50 border border-border/50">
-              <div className="text-3xl md:text-4xl font-black bg-gradient-to-r from-purple-500 to-cyan-500 bg-clip-text text-transparent">12</div>
+              <div className="text-3xl md:text-4xl font-black bg-gradient-to-r from-purple-500 to-cyan-500 bg-clip-text text-transparent">13</div>
               <div className="text-sm text-muted-foreground">Kernel Modules</div>
             </div>
             <div className="text-center p-4 rounded-2xl bg-card/50 border border-border/50">

@@ -77,8 +77,8 @@ const DEMO_SCENARIOS = [
   },
   {
     name: 'Full System Demo',
-    sequence: ['access', 'core', 'decode', 'defense', 'nexus', 'brain', 'dream', 'vision', 'modernizer', 'system', 'integration', 'ripple'],
-    description: 'Complete 12-module orchestration across all layers',
+    sequence: ['access', 'core', 'decode', 'defense', 'nexus', 'brain', 'dream', 'vision', 'modernizer', 'system', 'integration', 'ripple', 'cortex'],
+    description: 'Complete 13-module orchestration across all 5 layers',
     icon: Sparkles,
   },
 ];
