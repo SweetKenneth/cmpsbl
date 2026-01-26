@@ -1,7 +1,8 @@
 /**
  * Marketplace Product Configuration
  * Stripe product/price mappings for templates and OS
- * Updated: Tripled base prices, $3999 OS, $1999 World Engine
+ * CMPSBL: THE Solution for AI Chatbot Behavioral Drift
+ * Updated: 50+ templates with drift prevention focus
  */
 
 export const MARKETPLACE_PRODUCTS = {
@@ -72,7 +73,275 @@ export const MARKETPLACE_PRODUCTS = {
   },
 } as const;
 
-// Complex application templates with real-world use cases
+// ============================================
+// DRIFT PREVENTION TEMPLATES - Our Core USP
+// ============================================
+export const DRIFT_PREVENTION_TEMPLATES = [
+  {
+    id: 'drift-prevention-engine',
+    name: 'Drift Prevention Engine',
+    description: 'THE solution for AI behavioral drift. Memory anchoring, self-correction loops, and personality stability.',
+    product_id: 'prod_TrNUK82cim3vP7',
+    price_id: 'price_1StejiQ7FtTiAL4a4axcHYQv',
+    amount: 39900,
+    category: 'brain',
+    difficulty: 'elite',
+    tags: ['drift-prevention', 'core'],
+    features: ['Memory Anchoring', 'Self-Correction Loops', 'Behavioral Stability', 'Personality Lock'],
+  },
+  {
+    id: 'memory-persistence-core',
+    name: 'Memory Persistence Core',
+    description: '3-tier memory system (working, episodic, semantic) that prevents AI amnesia across sessions.',
+    product_id: 'prod_TrNUtnvNOI8A7o',
+    price_id: 'price_1StejjQ7FtTiAL4abQJ5BmyA',
+    amount: 34900,
+    category: 'brain',
+    difficulty: 'premium',
+    tags: ['memory', 'persistence'],
+    features: ['Working Memory', 'Episodic Memory', 'Semantic Memory', 'Cross-Session Recall'],
+  },
+  {
+    id: 'self-healing-chatbot',
+    name: 'Self-Healing Chatbot',
+    description: 'Chatbot that detects its own behavioral errors and auto-corrects drift in real-time.',
+    product_id: 'prod_TrNUwfKCUk06WV',
+    price_id: 'price_1StejkQ7FtTiAL4azxvOUmBh',
+    amount: 44900,
+    category: 'decode',
+    difficulty: 'elite',
+    tags: ['chatbot', 'self-healing'],
+    features: ['Error Detection', 'Auto-Correction', 'Drift Monitoring', 'Health Scoring'],
+  },
+  {
+    id: 'behavioral-anchor-system',
+    name: 'Behavioral Anchor System',
+    description: 'Anchors AI personality and behavior patterns to prevent drift over time.',
+    product_id: 'prod_TrNU4sW4CdG8r2',
+    price_id: 'price_1StejlQ7FtTiAL4aItBweWfQ',
+    amount: 29900,
+    category: 'brain',
+    difficulty: 'premium',
+    tags: ['behavior', 'anchor'],
+    features: ['Personality Anchoring', 'Behavior Baseline', 'Drift Thresholds', 'Recovery Triggers'],
+  },
+  {
+    id: 'context-continuity-engine',
+    name: 'Context Continuity Engine',
+    description: 'Maintains conversation context across sessions, preventing context collapse and drift.',
+    product_id: 'prod_TrNUEvaAyTdRuo',
+    price_id: 'price_1StejmQ7FtTiAL4aOJNUMiuY',
+    amount: 29900,
+    category: 'decode',
+    difficulty: 'premium',
+    tags: ['context', 'continuity'],
+    features: ['Session Bridging', 'Context Recall', 'Coherence Scoring', 'Thread Memory'],
+  },
+  {
+    id: 'autonomous-improvement-loop',
+    name: 'Autonomous Improvement Loop',
+    description: 'AI that learns and improves autonomously through overnight dream cycles.',
+    product_id: 'prod_TrNUXjUXIE7DxP',
+    price_id: 'price_1StejnQ7FtTiAL4aq3NSiByW',
+    amount: 49900,
+    category: 'dream',
+    difficulty: 'pro',
+    tags: ['autonomous', 'learning'],
+    features: ['Dream Cycles', 'Memory Consolidation', 'Pattern Recognition', 'Self-Improvement'],
+  },
+  {
+    id: 'personality-guard-system',
+    name: 'Personality Guard System',
+    description: 'Protects AI personality consistency, preventing identity drift and jailbreak attempts.',
+    product_id: 'prod_TrNUHTtOuxwm5N',
+    price_id: 'price_1StejoQ7FtTiAL4aYggLSaZC',
+    amount: 34900,
+    category: 'defense',
+    difficulty: 'premium',
+    tags: ['personality', 'security'],
+    features: ['Identity Protection', 'Jailbreak Defense', 'Personality Lock', 'Consistency Scoring'],
+  },
+  {
+    id: 'goal-persistence-module',
+    name: 'Goal Persistence Module',
+    description: 'Ensures AI maintains goal-directed behavior without drifting from objectives.',
+    product_id: 'prod_TrNUjbHlVdaPL1',
+    price_id: 'price_1StejpQ7FtTiAL4a4Qkxgpf1',
+    amount: 34900,
+    category: 'brain',
+    difficulty: 'premium',
+    tags: ['goals', 'persistence'],
+    features: ['Goal Tracking', 'Objective Memory', 'Progress Scoring', 'Deviation Alerts'],
+  },
+  {
+    id: 'cognitive-firewall',
+    name: 'Cognitive Firewall',
+    description: 'Security layer preventing prompt injection, jailbreaks, and adversarial attacks.',
+    product_id: 'prod_TrNURsxSSouyVF',
+    price_id: 'price_1StejrQ7FtTiAL4aJfSdBWmc',
+    amount: 39900,
+    category: 'defense',
+    difficulty: 'elite',
+    tags: ['security', 'firewall'],
+    features: ['Injection Detection', 'Jailbreak Prevention', 'PII Filtering', 'Threat Analysis'],
+  },
+  {
+    id: 'learning-consolidation-engine',
+    name: 'Learning Consolidation Engine',
+    description: 'Overnight memory consolidation for durable AI learning that persists.',
+    product_id: 'prod_TrNUJlfB2tV3mN',
+    price_id: 'price_1StejrQ7FtTiAL4aeAU6axbp',
+    amount: 44900,
+    category: 'dream',
+    difficulty: 'elite',
+    tags: ['learning', 'consolidation'],
+    features: ['Memory Synthesis', 'Pattern Extraction', 'Durable Storage', 'Dream Processing'],
+  },
+  {
+    id: 'observability-dashboard',
+    name: 'Observability Dashboard',
+    description: 'Real-time AI behavior monitoring, drift detection, and health scoring.',
+    product_id: 'prod_TrNU8VgLTavbOL',
+    price_id: 'price_1StejsQ7FtTiAL4acDh3gyNr',
+    amount: 29900,
+    category: 'vision',
+    difficulty: 'premium',
+    tags: ['observability', 'monitoring'],
+    features: ['Drift Detection', 'Health Metrics', 'Behavior Tracking', 'Alert System'],
+  },
+  {
+    id: 'knowledge-graph-builder',
+    name: 'Knowledge Graph Builder',
+    description: 'Build interconnected knowledge structures for persistent AI understanding.',
+    product_id: 'prod_TrNU3q3MytMWk4',
+    price_id: 'price_1StejtQ7FtTiAL4aWC1L9syI',
+    amount: 39900,
+    category: 'brain',
+    difficulty: 'elite',
+    tags: ['knowledge', 'graph'],
+    features: ['Semantic Graphs', 'Relationship Mapping', 'Cross-Domain Links', 'Synthesis Engine'],
+  },
+] as const;
+
+// ============================================
+// BUSINESS APPLICATION TEMPLATES
+// ============================================
+export const BUSINESS_TEMPLATES = [
+  {
+    id: 'smart-recommendation-engine',
+    name: 'Smart Recommendation Engine',
+    description: 'E-commerce product recommendations with customer preference memory.',
+    product_id: 'prod_TrNUnjsyDF6IIu',
+    price_id: 'price_1StejxQ7FtTiAL4aBA3BR7Xy',
+    amount: 34900,
+    category: 'brain',
+    difficulty: 'premium',
+    features: ['Preference Learning', 'Purchase History', 'Personalization', 'Collaborative Filtering'],
+  },
+  {
+    id: 'support-memory-agent',
+    name: 'Support Memory Agent',
+    description: 'Customer service bot that remembers past interactions and learns resolutions.',
+    product_id: 'prod_TrNUVLOg8zU1qf',
+    price_id: 'price_1StejyQ7FtTiAL4abNlWwkNG',
+    amount: 44900,
+    category: 'decode',
+    difficulty: 'elite',
+    features: ['Interaction Memory', 'Resolution Learning', 'Escalation Intelligence', 'Customer History'],
+  },
+  {
+    id: 'fitness-coach-brain',
+    name: 'Fitness Coach Brain',
+    description: 'Personal fitness coach that adapts to user progress and preferences.',
+    product_id: 'prod_TrNU6eBk8uit3b',
+    price_id: 'price_1StejzQ7FtTiAL4a339rbjFH',
+    amount: 29900,
+    category: 'brain',
+    difficulty: 'premium',
+    features: ['Progress Tracking', 'Workout Memory', 'Goal Adaptation', 'Performance Learning'],
+  },
+  {
+    id: 'wellness-companion-engine',
+    name: 'Wellness Companion Engine',
+    description: 'Mental wellness companion with emotional state tracking and support.',
+    product_id: 'prod_TrNVhh1qidWO92',
+    price_id: 'price_1Stek0Q7FtTiAL4adHBlkBMQ',
+    amount: 34900,
+    category: 'brain',
+    difficulty: 'premium',
+    features: ['Emotional Memory', 'Mood Tracking', 'Supportive Responses', 'Progress Insights'],
+  },
+  {
+    id: 'financial-advisor-brain',
+    name: 'Financial Advisor Brain',
+    description: 'Financial advisor that learns spending habits, goals, and risk tolerance.',
+    product_id: 'prod_TrNVeZuKLBVMNk',
+    price_id: 'price_1Stek1Q7FtTiAL4aYViloOy8',
+    amount: 39900,
+    category: 'brain',
+    difficulty: 'elite',
+    features: ['Spending Analysis', 'Goal Tracking', 'Risk Profiling', 'Investment Memory'],
+  },
+  {
+    id: 'hr-intelligence-agent',
+    name: 'HR Intelligence Agent',
+    description: 'HR assistant with employee interaction memory and policy learning.',
+    product_id: 'prod_TrNVCX9kO6iOcX',
+    price_id: 'price_1Stek3Q7FtTiAL4ajrkyqk5a',
+    amount: 49900,
+    category: 'decode',
+    difficulty: 'pro',
+    features: ['Employee Memory', 'Policy Knowledge', 'Onboarding Assistance', 'FAQ Learning'],
+  },
+  {
+    id: 'it-helpdesk-brain',
+    name: 'IT Helpdesk Brain',
+    description: 'IT helpdesk with solution memory and escalation intelligence.',
+    product_id: 'prod_TrNVLnSVNxFGF2',
+    price_id: 'price_1Stek4Q7FtTiAL4aBHma1eXw',
+    amount: 39900,
+    category: 'decode',
+    difficulty: 'elite',
+    features: ['Solution Memory', 'Issue Patterns', 'Escalation Rules', 'Knowledge Base'],
+  },
+  {
+    id: 'travel-planner-engine',
+    name: 'Travel Planner Engine',
+    description: 'Travel planning assistant with destination preference learning.',
+    product_id: 'prod_TrNVpisHa7urvX',
+    price_id: 'price_1Stek4Q7FtTiAL4ajxq2h1vq',
+    amount: 44900,
+    category: 'brain',
+    difficulty: 'elite',
+    features: ['Preference Memory', 'Budget Tracking', 'Destination Learning', 'Itinerary Memory'],
+  },
+  {
+    id: 'music-discovery-brain',
+    name: 'Music Discovery Brain',
+    description: 'Music discovery assistant that learns taste patterns and preferences.',
+    product_id: 'prod_TrNVjF7RqHH1UB',
+    price_id: 'price_1Stek6Q7FtTiAL4atl10wSfw',
+    amount: 34900,
+    category: 'brain',
+    difficulty: 'premium',
+    features: ['Taste Learning', 'Mood Mapping', 'Discovery Engine', 'Playlist Memory'],
+  },
+  {
+    id: 'real-estate-agent-brain',
+    name: 'Real Estate Agent Brain',
+    description: 'Real estate assistant with property and client preference memory.',
+    product_id: 'prod_TrNVoRmoRCr9KO',
+    price_id: 'price_1Stek7Q7FtTiAL4albJAtOWB',
+    amount: 39900,
+    category: 'brain',
+    difficulty: 'elite',
+    features: ['Property Memory', 'Client Preferences', 'Market Learning', 'Showing History'],
+  },
+] as const;
+
+// ============================================
+// ORIGINAL COMPLEX TEMPLATES (Updated)
+// ============================================
 export const COMPLEX_TEMPLATES = [
   // Learning & Memory Systems ($299)
   {
@@ -300,16 +569,23 @@ export const COMPLEX_TEMPLATES = [
   },
 ] as const;
 
+// Combined templates for marketplace display
+export const ALL_PREMIUM_TEMPLATES = [
+  ...DRIFT_PREVENTION_TEMPLATES,
+  ...BUSINESS_TEMPLATES,
+  ...COMPLEX_TEMPLATES,
+] as const;
+
 // Premium template IDs that cost more
-export const PREMIUM_TEMPLATE_IDS = COMPLEX_TEMPLATES
+export const PREMIUM_TEMPLATE_IDS = ALL_PREMIUM_TEMPLATES
   .filter(t => t.difficulty === 'premium')
   .map(t => t.id);
 
-export const ELITE_TEMPLATE_IDS = COMPLEX_TEMPLATES
+export const ELITE_TEMPLATE_IDS = ALL_PREMIUM_TEMPLATES
   .filter(t => t.difficulty === 'elite')
   .map(t => t.id);
 
-export const PRO_TEMPLATE_IDS = COMPLEX_TEMPLATES
+export const PRO_TEMPLATE_IDS = ALL_PREMIUM_TEMPLATES
   .filter(t => t.difficulty === 'pro')
   .map(t => t.id);
 
@@ -320,7 +596,7 @@ export function getTemplatePricing(
 ) {
   // Check for specific template first
   if (templateId) {
-    const template = COMPLEX_TEMPLATES.find(t => t.id === templateId);
+    const template = ALL_PREMIUM_TEMPLATES.find(t => t.id === templateId);
     if (template) {
       return {
         product_id: template.product_id,
@@ -352,7 +628,7 @@ export function getTemplatePricing(
 
 // Get template by ID
 export function getTemplateById(id: string) {
-  return COMPLEX_TEMPLATES.find(t => t.id === id);
+  return ALL_PREMIUM_TEMPLATES.find(t => t.id === id);
 }
 
 // Format price for display
@@ -366,3 +642,23 @@ export function formatPrice(cents: number): string {
 
 // SDK is free messaging
 export const SDK_FREE_MESSAGE = "The promptfluid® SDK is 100% free for developers to build on. Templates and OS licenses are sold separately for those who want pre-built solutions or self-hosted deployments.";
+
+// SEO Keywords for AI Drift Prevention
+export const DRIFT_PREVENTION_KEYWORDS = [
+  'AI chatbot drift',
+  'chatbot behavioral drift',
+  'AI personality drift',
+  'LLM memory persistence',
+  'chatbot memory loss',
+  'AI context collapse',
+  'prevent AI drift',
+  'AI self-correction',
+  'chatbot consistency',
+  'AI behavioral stability',
+  'persistent AI memory',
+  'cognitive AI architecture',
+  'AI governance OS',
+  'autonomous AI improvement',
+  'AI dream cycles',
+  'chatbot self-healing',
+] as const;
