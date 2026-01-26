@@ -180,23 +180,28 @@ export function MarketplaceHero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 1 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 mb-12 max-w-4xl mx-auto"
+            className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 mb-12 max-w-5xl mx-auto"
           >
-            <div className="text-center p-4 rounded-2xl bg-card/50 border border-border/50">
-              <div className="text-3xl md:text-4xl font-black bg-gradient-to-r from-rose-500 to-purple-500 bg-clip-text text-transparent">{TEMPLATES.length}+</div>
-              <div className="text-sm text-muted-foreground">Production Templates</div>
+            <div className="text-center p-4 rounded-2xl bg-gradient-to-br from-rose-500/10 to-amber-500/10 border border-rose-500/30 col-span-2 md:col-span-1">
+              <div className="text-2xl md:text-3xl font-black bg-gradient-to-r from-rose-500 to-amber-500 bg-clip-text text-transparent">$39</div>
+              <div className="text-xs text-muted-foreground">AI Generator</div>
+              <Badge className="mt-1 text-[10px] bg-rose-500/20 text-rose-400 border-rose-500/30">NEW</Badge>
             </div>
             <div className="text-center p-4 rounded-2xl bg-card/50 border border-border/50">
-              <div className="text-3xl md:text-4xl font-black bg-gradient-to-r from-purple-500 to-cyan-500 bg-clip-text text-transparent">13</div>
-              <div className="text-sm text-muted-foreground">Kernel Modules</div>
+              <div className="text-2xl md:text-3xl font-black bg-gradient-to-r from-rose-500 to-purple-500 bg-clip-text text-transparent">{TEMPLATES.length}+</div>
+              <div className="text-xs text-muted-foreground">Templates</div>
             </div>
             <div className="text-center p-4 rounded-2xl bg-card/50 border border-border/50">
-              <div className="text-3xl md:text-4xl font-black text-emerald-500">FREE</div>
-              <div className="text-sm text-muted-foreground">SDK Access</div>
+              <div className="text-2xl md:text-3xl font-black bg-gradient-to-r from-purple-500 to-cyan-500 bg-clip-text text-transparent">13</div>
+              <div className="text-xs text-muted-foreground">Modules</div>
             </div>
             <div className="text-center p-4 rounded-2xl bg-card/50 border border-border/50">
-              <div className="text-3xl md:text-4xl font-black bg-gradient-to-r from-amber-500 to-rose-500 bg-clip-text text-transparent">$27</div>
-              <div className="text-sm text-muted-foreground">Templates From</div>
+              <div className="text-2xl md:text-3xl font-black text-emerald-500">FREE</div>
+              <div className="text-xs text-muted-foreground">SDK Access</div>
+            </div>
+            <div className="text-center p-4 rounded-2xl bg-card/50 border border-border/50">
+              <div className="text-2xl md:text-3xl font-black bg-gradient-to-r from-amber-500 to-rose-500 bg-clip-text text-transparent">$27</div>
+              <div className="text-xs text-muted-foreground">From</div>
             </div>
           </motion.div>
 
@@ -239,10 +244,11 @@ export function MarketplaceHero() {
           >
             <Button 
               size="lg" 
-              className="gap-2 px-8 py-6 text-lg font-bold bg-gradient-to-r from-rose-500 via-purple-500 to-cyan-500 hover:opacity-90 transition-opacity text-white"
+              className="gap-2 px-8 py-6 text-lg font-bold bg-gradient-to-r from-rose-500 via-amber-500 to-emerald-500 hover:opacity-90 transition-opacity text-white"
+              onClick={() => document.getElementById('ai-generator')?.scrollIntoView({ behavior: 'smooth' })}
             >
               <Sparkles className="w-5 h-5" />
-              Start Free with SDK
+              Generate Unique Template — $39
             </Button>
             <Button 
               variant="outline" 
@@ -267,7 +273,7 @@ export function MarketplaceHero() {
             </div>
             <div className="flex items-center gap-2">
               <Star className="w-4 h-4 text-amber-500" />
-              <span>Production-ready</span>
+              <span>82,944+ unique combinations</span>
             </div>
             <div className="flex items-center gap-2">
               <Globe className="w-4 h-4 text-cyan-500" />

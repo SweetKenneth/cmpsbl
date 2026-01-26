@@ -5061,6 +5061,63 @@ export type Database = {
         }
         Relationships: []
       }
+      marketplace_generated_templates: {
+        Row: {
+          ai_provider: string | null
+          category: string
+          code: string
+          created_at: string
+          description: string | null
+          difficulty: string
+          download_count: number | null
+          downloaded_at: string | null
+          estimated_value_cents: number | null
+          features: string[] | null
+          id: string
+          metadata: Json | null
+          name: string
+          rarity: string
+          session_id: string
+          user_id: string
+        }
+        Insert: {
+          ai_provider?: string | null
+          category: string
+          code: string
+          created_at?: string
+          description?: string | null
+          difficulty: string
+          download_count?: number | null
+          downloaded_at?: string | null
+          estimated_value_cents?: number | null
+          features?: string[] | null
+          id: string
+          metadata?: Json | null
+          name: string
+          rarity: string
+          session_id: string
+          user_id: string
+        }
+        Update: {
+          ai_provider?: string | null
+          category?: string
+          code?: string
+          created_at?: string
+          description?: string | null
+          difficulty?: string
+          download_count?: number | null
+          downloaded_at?: string | null
+          estimated_value_cents?: number | null
+          features?: string[] | null
+          id?: string
+          metadata?: Json | null
+          name?: string
+          rarity?: string
+          session_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       marketplace_licenses: {
         Row: {
           activated: boolean | null
