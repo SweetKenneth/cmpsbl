@@ -133,9 +133,9 @@ export default function Marketplace() {
   return (
     <>
       <SEO
-        title="Developer Marketplace | CMPSBL — World's First AI Governance OS"
-        description="The only operating system that gives LLMs persistent memory, real-time governance, and autonomous improvement. Templates from $27, OS License $3,999. SDK is FREE."
-        keywords={["CMPSBL", "AI governance OS", "cognitive operating system", "AI templates", "LLM memory", "AI security", "AI SDK", "World Engine"]}
+        title="AI Drift Prevention Templates | CMPSBL — Stop Chatbot Behavioral Drift"
+        description="50+ templates to prevent AI chatbot drift. Persistent memory, self-correction, dream cycles. The ONLY OS-level solution. Templates from $27, OS License $3,999."
+        keywords={["AI chatbot drift", "chatbot behavioral drift", "AI memory persistence", "prevent AI drift", "LLM self-correction", "AI dream cycles", "chatbot stability", "cognitive OS", "CMPSBL", "AI governance"]}
       />
       <div className="min-h-screen bg-background">
         <PublicNav />
