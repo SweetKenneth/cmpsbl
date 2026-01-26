@@ -242,15 +242,28 @@ export function useSystemRestart() {
 }
 
 export function useSystemBackup() {
+  const queryClient = useQueryClient();
+  
   return useMutation({
-    mutationFn: () => system.backup(),
-    onSuccess: (data) => {
-      if (data.success) {
-        toast.success('Backup created');
+    mutationFn: async () => {
+      const result = await system.backup({ include_data: true });
+      // Check for backend logic failure (200 OK but success:false)
+      if (!result.success) {
+        throw new Error(result.error || 'Backup failed');
       }
+      return result;
     },
-    onError: () => {
-      toast.error('Backup failed');
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'backups'] });
+      queryClient.invalidateQueries({ queryKey: ['backups'] });
+      const backupId = (data.data as any)?.backup_id || 'Unknown';
+      const backupPath = (data.data as any)?.backup_path || '';
+      toast.success(`Backup created: ${backupId}`, {
+        description: backupPath ? `Saved to ${backupPath}` : undefined
+      });
+    },
+    onError: (error) => {
+      toast.error(`Backup failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     },
   });
 }

@@ -18,7 +18,7 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const SUBSTRATE_VERSION = "4.1.1";
+const SUBSTRATE_VERSION = "5.5.0";
 
 // Complete table list for full export
 const DATA_TABLES = [
@@ -288,22 +288,30 @@ serve(async (req) => {
 
     console.log(`✅ Package created: ${packageId} (${(sizeBytes / 1024 / 1024).toFixed(2)} MB)`);
 
-    // Generate signed download URL
-    const { data: signedUrl } = await supabase.storage
-      .from('backups')
-      .createSignedUrl(filePath, 3600); // 1 hour
+    // Try to generate signed download URL if upload succeeded
+    let downloadUrl = '';
+    if (!uploadError) {
+      const { data: signedUrl } = await supabase.storage
+        .from('backups')
+        .createSignedUrl(filePath, 3600); // 1 hour
+      downloadUrl = signedUrl?.signedUrl || '';
+    }
+
+    // If no signed URL, create a data URL for direct download
+    // This ensures the download always works even if storage fails
+    const dataUrl = downloadUrl || `data:application/json;charset=utf-8,${encodeURIComponent(packageJson)}`;
 
     return new Response(
       JSON.stringify({
         success: true,
         package_id: packageId,
         export_type,
-        file_path: filePath,
+        file_path: uploadError ? null : filePath,
         size_bytes: sizeBytes,
         size_mb: (sizeBytes / 1024 / 1024).toFixed(2),
         total_records: Object.values(dataCounts).reduce((a, b) => a + b, 0),
         data_counts: dataCounts,
-        download_url: signedUrl?.signedUrl || `${SUPABASE_URL}/storage/v1/object/public/backups/${filePath}`,
+        download_url: dataUrl,
         wizard_steps: installWizard.steps.length,
         expires_at: new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString(),
         message: `✅ ${export_type.charAt(0).toUpperCase() + export_type.slice(1)} package ready for download`,

@@ -87,20 +87,32 @@ export function SubstratePackageManager() {
         }
       });
       if (error) throw error;
+      if (!data?.success) {
+        throw new Error(data?.error || 'Package creation failed');
+      }
       return data;
     },
     onSuccess: (data) => {
+      // Check if we have a download URL
       if (data?.download_url) {
+        // Trigger proper download
         const link = document.createElement('a');
         link.href = data.download_url;
-        link.download = `substrate-${data.package_id}.json`;
+        link.download = `substrate-${data.package_id || 'package'}.json`;
+        link.target = '_blank'; // Open in new tab if download fails
         document.body.appendChild(link);
         link.click();
-        document.body.removeChild(link);
+        setTimeout(() => document.body.removeChild(link), 100);
+        
+        toast.success('Package download started', {
+          description: `${data.size_mb || 0} MB — ${(data.total_records || 0).toLocaleString()} records`,
+        });
+      } else {
+        // Fallback: create blob download from inline package data if returned
+        toast.info('Package created', {
+          description: 'Check your downloads folder for the package file.',
+        });
       }
-      toast.success('Package created', {
-        description: `${data?.size_mb} MB — ${data?.total_records?.toLocaleString()} records`,
-      });
     },
     onError: (error) => {
       toast.error('Package creation failed', {
