@@ -1,6 +1,7 @@
 /**
  * Marketplace — Fiverr/eBay-style browsable template store
  * Complete redesign with visual previews, search, and clear separation
+ * Features: AI Template Generator, 97+ curated templates
  */
 
 import { useState, useMemo } from "react";
@@ -27,9 +28,10 @@ import { PopularSection } from "@/components/marketplace/PopularSection";
 import { UserPurchases } from "@/components/marketplace/UserPurchases";
 import { MarketplaceAuthPrompt } from "@/components/marketplace/MarketplaceAuthPrompt";
 import { MailingListSignup } from "@/components/marketplace/MailingListSignup";
+import { AITemplateGenerator } from "@/components/marketplace/AITemplateGenerator";
 
 import {
-  Code, Server, Grid3X3, LayoutList, Sparkles
+  Code, Server, Grid3X3, LayoutList, Sparkles, Dices
 } from "lucide-react";
 
 type SortOption = 'featured' | 'price-low' | 'price-high' | 'name';
@@ -216,6 +218,9 @@ export default function Marketplace() {
           onSearchChange={setSearchQuery}
           resultCount={filteredTemplates.length}
         />
+
+        {/* AI Template Generator - Featured prominently */}
+        <AITemplateGenerator featured />
 
         {/* Featured Products */}
         <FeaturedSection
