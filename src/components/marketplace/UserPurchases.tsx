@@ -16,6 +16,7 @@ import { useMarketplaceUser } from '@/hooks/useMarketplaceUser';
 import { TEMPLATES, type Template } from '@/data/templates';
 import { getTemplatePricing, formatPrice } from '@/config/marketplace-products';
 import { formatDistanceToNow } from 'date-fns';
+import { generateDisplayName, getRarityBadge } from '@/lib/templateNames';
 
 interface UserPurchasesProps {
   onPreview: (template: Template) => void;
@@ -74,6 +75,8 @@ export function UserPurchases({ onPreview, onBuy, isLoading }: UserPurchasesProp
                 {purchasedTemplates.map((purchase, index) => {
                   const template = purchase.template!;
                   const Icon = template.icon;
+                  const displayName = generateDisplayName(template.id, template.category, template.difficulty);
+                  const rarity = getRarityBadge(template.difficulty);
                   
                   return (
                     <motion.div
@@ -93,15 +96,16 @@ export function UserPurchases({ onPreview, onBuy, isLoading }: UserPurchasesProp
                             </div>
                             <div className="flex-1 min-w-0">
                               <h3 className="font-semibold text-sm truncate">
-                                {template.name}
+                                {displayName}
                               </h3>
-                              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                              <p className="text-[10px] text-muted-foreground/70 truncate">{template.name}</p>
+                              <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
                                 <Clock className="w-3 h-3" />
                                 {formatDistanceToNow(new Date(purchase.purchased_at), { addSuffix: true })}
                               </div>
                             </div>
-                            <Badge className="bg-system-green/10 text-system-green border-system-green/30 text-[10px]">
-                              Owned
+                            <Badge className={cn("text-[10px]", rarity.bgColor, rarity.color, rarity.borderColor)}>
+                              {rarity.label}
                             </Badge>
                           </div>
                           
@@ -136,6 +140,8 @@ export function UserPurchases({ onPreview, onBuy, isLoading }: UserPurchasesProp
                   const Icon = template.icon;
                   const pricing = getTemplatePricing(template.difficulty, template.id);
                   const isPurchased = purchases.some(p => p.template_id === template.id);
+                  const displayName = generateDisplayName(template.id, template.category, template.difficulty);
+                  const rarity = getRarityBadge(template.difficulty);
                   
                   return (
                     <motion.div
@@ -155,11 +161,14 @@ export function UserPurchases({ onPreview, onBuy, isLoading }: UserPurchasesProp
                             </div>
                             <div className="flex-1 min-w-0">
                               <h3 className="font-medium text-sm truncate">
-                                {template.name}
+                                {displayName}
                               </h3>
-                              <p className="text-xs text-muted-foreground truncate">
-                                {template.category}
+                              <p className="text-[10px] text-muted-foreground/70 truncate">
+                                {template.name}
                               </p>
+                              <Badge className={cn("text-[9px] h-4 px-1.5 mt-1", rarity.bgColor, rarity.color, rarity.borderColor)}>
+                                {rarity.label}
+                              </Badge>
                             </div>
                           </div>
                           
@@ -215,6 +224,8 @@ export function UserPurchases({ onPreview, onBuy, isLoading }: UserPurchasesProp
               {recommendations.slice(0, 3).map((template, index) => {
                 const Icon = template.icon;
                 const pricing = getTemplatePricing(template.difficulty, template.id);
+                const displayName = generateDisplayName(template.id, template.category, template.difficulty);
+                const rarity = getRarityBadge(template.difficulty);
                 
                 return (
                   <motion.div
@@ -234,10 +245,16 @@ export function UserPurchases({ onPreview, onBuy, isLoading }: UserPurchasesProp
                           </div>
                           
                           <div className="flex-1 min-w-0">
-                            <h3 className="font-semibold group-hover:text-primary transition-colors">
-                              {template.name}
-                            </h3>
-                            <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
+                            <div className="flex items-center gap-2 mb-1">
+                              <h3 className="font-semibold group-hover:text-primary transition-colors">
+                                {displayName}
+                              </h3>
+                              <Badge className={cn("text-[9px] h-4 px-1.5", rarity.bgColor, rarity.color, rarity.borderColor)}>
+                                {rarity.label}
+                              </Badge>
+                            </div>
+                            <p className="text-[10px] text-muted-foreground/70 -mt-0.5 mb-1">{template.name}</p>
+                            <p className="text-sm text-muted-foreground line-clamp-2">
                               {template.description}
                             </p>
                             
