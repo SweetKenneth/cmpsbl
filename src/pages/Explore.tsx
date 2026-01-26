@@ -46,6 +46,7 @@ import { cn } from "@/lib/utils";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { HeroMetaSubstrate } from "@/components/hero/HeroMetaSubstrate";
+import { UseCaseShowcase } from "@/components/home/UseCaseShowcase";
 import { IndustryShowcase } from "@/components/home/IndustryShowcase";
 import { WhySubstrate } from "@/components/home/WhySubstrate";
 import { BuiltForSection } from "@/components/home/BuiltForSection";
@@ -321,6 +322,9 @@ export default function Explore() {
 
       {/* Hero Section */}
       <HeroMetaSubstrate />
+
+       {/* Use Case Showcase - directly under hero */}
+       <UseCaseShowcase />
 
       {/* Scroll Indicator */}
       <section className="relative z-10 px-4 py-6 sm:py-10">
