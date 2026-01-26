@@ -42,6 +42,7 @@ const difficultyBadgeStyles: Record<string, string> = {
   advanced: "bg-destructive/20 text-destructive border-destructive/30",
   premium: "bg-violet-500/20 text-violet-400 border-violet-500/30",
   elite: "bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-400 border-amber-500/30",
+  pro: "bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-400 border-cyan-500/30",
 };
 
 export default function Marketplace() {
@@ -133,8 +134,8 @@ export default function Marketplace() {
     <>
       <SEO
         title="Developer Marketplace | CMPSBL — World's First AI Governance OS"
-        description="The only operating system that gives LLMs persistent memory, real-time governance, and autonomous improvement. Templates from $9, OS License $599. SDK is FREE."
-        keywords={["CMPSBL", "AI governance OS", "cognitive operating system", "AI templates", "LLM memory", "AI security", "AI SDK"]}
+        description="The only operating system that gives LLMs persistent memory, real-time governance, and autonomous improvement. Templates from $27, OS License $3,999. SDK is FREE."
+        keywords={["CMPSBL", "AI governance OS", "cognitive operating system", "AI templates", "LLM memory", "AI security", "AI SDK", "World Engine"]}
       />
       <div className="min-h-screen bg-background">
         <PublicNav />
@@ -220,6 +221,10 @@ export default function Marketplace() {
                 <div className="flex items-center gap-2">
                   <Badge className={difficultyBadgeStyles.elite}>Elite</Badge>
                   <span className="text-sm font-medium">{formatPrice(MARKETPLACE_PRODUCTS.templates.elite.amount)}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge className={difficultyBadgeStyles.pro}>Pro</Badge>
+                  <span className="text-sm font-medium">{formatPrice(MARKETPLACE_PRODUCTS.templates.pro.amount)}</span>
                 </div>
               </div>
 
@@ -322,8 +327,8 @@ export default function Marketplace() {
                   <CardContent className="space-y-6">
                     {/* Price */}
                     <div className="text-center">
-                      <div className="text-5xl font-black text-primary">$599</div>
-                      <p className="text-sm text-muted-foreground">One-time payment • Single-install license</p>
+                      <div className="text-5xl font-black text-primary">{formatPrice(MARKETPLACE_PRODUCTS.os_license.amount)}</div>
+                      <p className="text-sm text-muted-foreground">One-time payment • Single-install license • Domain-bound</p>
                     </div>
 
                     {/* What's Included */}
