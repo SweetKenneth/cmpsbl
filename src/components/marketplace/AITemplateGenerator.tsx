@@ -151,14 +151,14 @@ ${generatedTemplate.code}
   };
 
   return (
-    <section id="ai-generator" className={`relative overflow-hidden ${featured ? 'py-16' : 'py-8'}`}>
-      {/* Background Effects */}
+    <section id="ai-generator" className={`relative overflow-hidden ${featured ? 'py-12 sm:py-16' : 'py-8'}`}>
+      {/* Background Effects - hidden on mobile for performance */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-neon-purple/5" />
         <motion.div 
           animate={{ rotate: 360 }}
           transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] opacity-20"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] opacity-20 hidden sm:block"
         >
           <div className="absolute inset-0 bg-gradient-conic from-primary via-neon-purple via-neon-cyan to-primary rounded-full blur-3xl" />
         </motion.div>
@@ -166,88 +166,88 @@ ${generatedTemplate.code}
 
       <div className="container mx-auto px-4">
         <Card className={`border-2 border-primary/30 bg-gradient-to-br from-card via-card to-primary/5 ${featured ? 'max-w-5xl mx-auto' : ''}`}>
-          <CardHeader className="text-center pb-4">
+          <CardHeader className="text-center pb-4 px-4 sm:px-6">
             {/* Badge */}
-            <div className="flex justify-center mb-4">
-              <Badge className="gap-2 px-4 py-2 text-sm bg-gradient-to-r from-amber-500/20 to-rose-500/20 text-amber-400 border-amber-500/30">
-                <Dices className="w-4 h-4" />
-                AI-Powered • {FORMATTED_COMBINATIONS}+ Combinations
+            <div className="flex justify-center mb-3 sm:mb-4">
+              <Badge className="gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-gradient-to-r from-amber-500/20 to-rose-500/20 text-amber-400 border-amber-500/30">
+                <Dices className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <span className="hidden xs:inline">AI-Powered •</span> {FORMATTED_COMBINATIONS}+ Combos
               </Badge>
             </div>
 
-            <CardTitle className="text-3xl md:text-4xl font-black">
+            <CardTitle className="text-2xl sm:text-3xl md:text-4xl font-black">
               <span className="bg-gradient-to-r from-rose-500 via-amber-500 to-emerald-500 bg-clip-text text-transparent animate-gradient bg-[length:200%_200%]">
                 AI Template Generator
               </span>
             </CardTitle>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mt-2">
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto mt-2">
               Get a <span className="text-foreground font-semibold">unique, AI-generated template</span> with random difficulty and rarity.
-              Your template may never appear in the public marketplace.
+              <span className="hidden sm:inline"> Your template may never appear in the public marketplace.</span>
             </p>
           </CardHeader>
 
-          <CardContent className="space-y-8">
+          <CardContent className="space-y-6 sm:space-y-8 px-4 sm:px-6">
             {/* Value Proposition Grid */}
-            <div className="grid md:grid-cols-3 gap-4">
-              <div className="p-4 rounded-xl bg-gradient-to-br from-violet-500/10 to-violet-500/5 border border-violet-500/20">
-                <Sparkles className="w-8 h-8 text-violet-500 mb-2" />
-                <h3 className="font-bold mb-1">Truly Unique</h3>
-                <p className="text-sm text-muted-foreground">
-                  {FORMATTED_COMBINATIONS}+ possible combinations. Your template is one-of-a-kind.
+            <div className="grid sm:grid-cols-3 gap-3 sm:gap-4">
+              <div className="p-3 sm:p-4 rounded-xl bg-gradient-to-br from-violet-500/10 to-violet-500/5 border border-violet-500/20">
+                <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-violet-500 mb-2" />
+                <h3 className="font-bold text-sm sm:text-base mb-1">Truly Unique</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground">
+                  {FORMATTED_COMBINATIONS}+ combinations. One-of-a-kind.
                 </p>
               </div>
-              <div className="p-4 rounded-xl bg-gradient-to-br from-amber-500/10 to-amber-500/5 border border-amber-500/20">
-                <Crown className="w-8 h-8 text-amber-500 mb-2" />
-                <h3 className="font-bold mb-1">Variable Value</h3>
-                <p className="text-sm text-muted-foreground">
-                  Templates worth $27-$499 based on rarity. Average value: $147.
+              <div className="p-3 sm:p-4 rounded-xl bg-gradient-to-br from-amber-500/10 to-amber-500/5 border border-amber-500/20">
+                <Crown className="w-6 h-6 sm:w-8 sm:h-8 text-amber-500 mb-2" />
+                <h3 className="font-bold text-sm sm:text-base mb-1">Variable Value</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground">
+                  Worth $27-$499. Avg: $147.
                 </p>
               </div>
-              <div className="p-4 rounded-xl bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border border-emerald-500/20">
-                <Lock className="w-8 h-8 text-emerald-500 mb-2" />
-                <h3 className="font-bold mb-1">Exclusive Ownership</h3>
-                <p className="text-sm text-muted-foreground">
-                  Download and keep forever. May never be listed publicly.
+              <div className="p-3 sm:p-4 rounded-xl bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border border-emerald-500/20">
+                <Lock className="w-6 h-6 sm:w-8 sm:h-8 text-emerald-500 mb-2" />
+                <h3 className="font-bold text-sm sm:text-base mb-1">Exclusive</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground">
+                  Download & keep forever.
                 </p>
               </div>
             </div>
 
             {/* Rarity Display */}
-            <div className="p-4 rounded-xl bg-muted/50 border border-border/50">
-              <div className="flex items-center gap-2 mb-3">
-                <Gift className="w-5 h-5 text-primary" />
-                <span className="font-semibold">Rarity Chances</span>
+            <div className="p-3 sm:p-4 rounded-xl bg-muted/50 border border-border/50">
+              <div className="flex items-center gap-2 mb-2 sm:mb-3">
+                <Gift className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+                <span className="font-semibold text-sm sm:text-base">Rarity Chances</span>
               </div>
-              <div className="grid grid-cols-2 md:grid-cols-6 gap-2">
+              <div className="grid grid-cols-3 sm:grid-cols-6 gap-1.5 sm:gap-2">
                 {RARITIES.map((rarity) => (
-                  <div key={rarity.name} className="text-center p-2 rounded-lg bg-background/50">
-                    <p className={`font-bold ${rarity.color}`}>{rarity.name}</p>
-                    <p className="text-xs text-muted-foreground">{rarity.chance}</p>
+                  <div key={rarity.name} className="text-center p-1.5 sm:p-2 rounded-lg bg-background/50">
+                    <p className={`font-bold text-xs sm:text-sm ${rarity.color}`}>{rarity.name}</p>
+                    <p className="text-[10px] sm:text-xs text-muted-foreground">{rarity.chance}</p>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Category Icons */}
-            <div className="flex flex-wrap justify-center gap-3">
+            {/* Category Icons - hidden on very small screens */}
+            <div className="hidden xs:flex flex-wrap justify-center gap-2 sm:gap-3">
               {[Brain, MessageSquare, Shield, Zap, Eye, Moon, Settings, Globe, Cpu].map((Icon, i) => (
                 <div 
                   key={i}
-                  className="w-10 h-10 rounded-lg bg-muted/50 border border-border/50 flex items-center justify-center"
+                  className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-muted/50 border border-border/50 flex items-center justify-center"
                 >
-                  <Icon className="w-5 h-5 text-muted-foreground" />
+                  <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
                 </div>
               ))}
             </div>
 
             {/* Price & CTA */}
-            <div className="text-center space-y-4">
-              <div className="flex items-center justify-center gap-4">
-                <div className="text-4xl font-black text-foreground">$39</div>
+            <div className="text-center space-y-3 sm:space-y-4">
+              <div className="flex items-center justify-center gap-3 sm:gap-4">
+                <div className="text-3xl sm:text-4xl font-black text-foreground">$39</div>
                 <div className="text-left">
-                  <p className="text-sm text-muted-foreground line-through">$147 avg value</p>
-                  <Badge variant="outline" className="text-emerald-500 border-emerald-500/30">
-                    73% Discount vs Average
+                  <p className="text-xs sm:text-sm text-muted-foreground line-through">$147 avg value</p>
+                  <Badge variant="outline" className="text-[10px] sm:text-xs text-emerald-500 border-emerald-500/30">
+                    73% Discount
                   </Badge>
                 </div>
               </div>
@@ -256,51 +256,52 @@ ${generatedTemplate.code}
                 size="lg"
                 onClick={handleCheckout}
                 disabled={isCheckingOut}
-                className="gap-2 px-8 py-6 text-lg font-bold bg-gradient-to-r from-rose-500 via-amber-500 to-emerald-500 hover:opacity-90 text-white"
+                className="gap-2 px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg font-bold bg-gradient-to-r from-rose-500 via-amber-500 to-emerald-500 hover:opacity-90 text-white w-full sm:w-auto"
               >
                 {isCheckingOut ? (
                   <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    Opening Checkout...
+                    <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+                    Opening...
                   </>
                 ) : (
                   <>
-                    <Dices className="w-5 h-5" />
-                    Generate Random Template — $39
-                    <ArrowRight className="w-5 h-5" />
+                    <Dices className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <span className="hidden sm:inline">Generate Random Template — $39</span>
+                    <span className="sm:hidden">Generate Template — $39</span>
+                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                   </>
                 )}
               </Button>
 
-              <p className="text-xs text-muted-foreground">
-                Instant delivery • Download immediately after payment • Yours to keep forever
+              <p className="text-[10px] sm:text-xs text-muted-foreground">
+                Instant delivery • Download immediately • Yours forever
               </p>
             </div>
 
-            {/* What You Get */}
-            <div className="grid md:grid-cols-2 gap-4 pt-4 border-t border-border/50">
-              <div className="space-y-2">
-                <h4 className="font-semibold flex items-center gap-2">
-                  <Check className="w-4 h-4 text-emerald-500" />
+            {/* What You Get - More compact on mobile */}
+            <div className="grid sm:grid-cols-2 gap-3 sm:gap-4 pt-3 sm:pt-4 border-t border-border/50">
+              <div className="space-y-1.5 sm:space-y-2">
+                <h4 className="font-semibold text-sm sm:text-base flex items-center gap-2">
+                  <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-500" />
                   What's Included
                 </h4>
-                <ul className="text-sm text-muted-foreground space-y-1">
-                  <li>• Production-ready TypeScript code</li>
-                  <li>• 3-7 unique features per template</li>
-                  <li>• Substrate SDK integration</li>
-                  <li>• Documentation & use case guide</li>
+                <ul className="text-xs sm:text-sm text-muted-foreground space-y-0.5 sm:space-y-1">
+                  <li>• Production-ready TypeScript</li>
+                  <li>• 3-7 unique features</li>
+                  <li>• SDK integration ready</li>
+                  <li>• Docs & use case guide</li>
                 </ul>
               </div>
-              <div className="space-y-2">
-                <h4 className="font-semibold flex items-center gap-2">
-                  <Star className="w-4 h-4 text-amber-500" />
-                  Possible Categories
+              <div className="space-y-1.5 sm:space-y-2">
+                <h4 className="font-semibold text-sm sm:text-base flex items-center gap-2">
+                  <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500" />
+                  Categories
                 </h4>
-                <ul className="text-sm text-muted-foreground space-y-1">
-                  <li>• Brain (Memory & Learning)</li>
-                  <li>• Defense (Security & Protection)</li>
-                  <li>• Dream (Evolution & Improvement)</li>
-                  <li>• + 6 more module categories</li>
+                <ul className="text-xs sm:text-sm text-muted-foreground space-y-0.5 sm:space-y-1">
+                  <li>• Brain (Memory)</li>
+                  <li>• Defense (Security)</li>
+                  <li>• Dream (Evolution)</li>
+                  <li>• + 6 more modules</li>
                 </ul>
               </div>
             </div>
