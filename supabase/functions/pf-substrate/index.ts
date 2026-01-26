@@ -11335,11 +11335,53 @@ async function handleAccess(
     }
 
     case "register": {
+      // Allow registration even without auth in local/dev mode (for bootstrap)
+      const { display_name } = data;
+      
       if (!userId) {
-        return jsonResponse({ success: false, error: 'Authentication required' }, headers);
+        // Check if any developers exist - if not, this is a bootstrap scenario
+        const { count: devCount } = await supabase
+          .from('access_developers')
+          .select('*', { count: 'exact', head: true });
+        
+        if (devCount === 0) {
+          // Bootstrap mode - create a local developer without auth binding
+          const { data: newDev, error } = await supabase
+            .from('access_developers')
+            .insert({
+              display_name: display_name || 'Local Operator',
+              status: 'active',
+              metadata: { bootstrap_mode: true, created_without_auth: true },
+            })
+            .select()
+            .single();
+          
+          if (error) {
+            return jsonResponse({ success: false, error: error.message }, headers);
+          }
+          
+          return jsonResponse({
+            success: true,
+            module: 'access',
+            action: 'register',
+            developer: {
+              id: newDev.id,
+              display_name: newDev.display_name,
+              status: newDev.status,
+              created_at: newDev.created_at,
+            },
+            bootstrap_mode: true,
+            message: 'Developer registered in bootstrap mode (no auth binding)',
+          }, headers);
+        }
+        
+        return jsonResponse({ 
+          success: false, 
+          error: 'Authentication required. Use access.bootstrap to create initial operator.',
+          hint: 'Run: access.bootstrap <display_name>',
+        }, headers);
       }
       
-      const { display_name } = data;
       const developer = await getOrCreateDeveloper(userId, display_name);
       
       if (!developer) {
@@ -11357,6 +11399,217 @@ async function handleAccess(
           created_at: developer.created_at,
         },
         message: 'Developer registered successfully',
+      }, headers);
+    }
+
+    case "bootstrap": {
+      // Bootstrap flow: create developer + assign roles
+      // If first developer → auto-seed as operator + governor
+      const { display_name } = data;
+      
+      // Check existing developer count
+      const { count: devCount } = await supabase
+        .from('access_developers')
+        .select('*', { count: 'exact', head: true });
+      
+      const isFirstDeveloper = (devCount || 0) === 0;
+      
+      // Create or get developer
+      let developer;
+      let wasCreated = false;
+      
+      if (userId) {
+        // Check if developer already exists for this user
+        const { data: existing } = await supabase
+          .from('access_developers')
+          .select('*')
+          .eq('user_id', userId)
+          .maybeSingle();
+        
+        if (existing) {
+          developer = existing;
+        } else {
+          const { data: newDev, error } = await supabase
+            .from('access_developers')
+            .insert({
+              user_id: userId,
+              display_name: display_name || `Developer ${userId.substring(0, 8)}`,
+              status: 'active',
+              metadata: { bootstrapped: true, is_first: isFirstDeveloper },
+            })
+            .select()
+            .single();
+          
+          if (error) {
+            return jsonResponse({ success: false, error: error.message }, headers);
+          }
+          developer = newDev;
+          wasCreated = true;
+        }
+      } else {
+        // No auth - create local developer (bootstrap mode)
+        const { data: newDev, error } = await supabase
+          .from('access_developers')
+          .insert({
+            display_name: display_name || 'Local Operator',
+            status: 'active',
+            metadata: { bootstrapped: true, local_mode: true, is_first: isFirstDeveloper },
+          })
+          .select()
+          .single();
+        
+        if (error) {
+          return jsonResponse({ success: false, error: error.message }, headers);
+        }
+        developer = newDev;
+        wasCreated = true;
+      }
+      
+      // Assign roles if userId present
+      const assignedRoles: string[] = [];
+      if (userId) {
+        // Default roles for all developers
+        const defaultRoles = ['observer', 'developer'];
+        
+        // First developer also gets operator + admin (governor)
+        const rolesToAssign = isFirstDeveloper 
+          ? [...defaultRoles, 'operator', 'admin']
+          : defaultRoles;
+        
+        for (const role of rolesToAssign) {
+          try {
+            // Check if role already exists
+            const { data: existingRole } = await supabase
+              .from('user_roles')
+              .select('id')
+              .eq('user_id', userId)
+              .eq('role', role)
+              .maybeSingle();
+            
+            if (!existingRole) {
+              await supabase.from('user_roles').insert({
+                user_id: userId,
+                role: role,
+              });
+              assignedRoles.push(role);
+            } else {
+              assignedRoles.push(`${role} (existing)`);
+            }
+          } catch (e) {
+            console.log(`Role assignment skipped for ${role}:`, e);
+          }
+        }
+      }
+      
+      // Create default subscription if new
+      if (wasCreated) {
+        await supabase.from('access_subscriptions').insert({
+          developer_id: developer.id,
+          tier: isFirstDeveloper ? 'operator' : 'free',
+          plan_slug: isFirstDeveloper ? 'substrate_operator' : 'substrate_free',
+          status: 'active',
+          monthly_quota: isFirstDeveloper ? 100000 : 1000,
+          entitlements: isFirstDeveloper 
+            ? ['substrate_read', 'substrate_write', 'brain_full', 'system_admin']
+            : ['substrate_read', 'brain_query'],
+        });
+      }
+      
+      // Log the bootstrap event
+      await supabase.from('brain_events').insert({
+        module: 'access',
+        event_type: 'developer_bootstrapped',
+        outcome: 'success',
+        data: { 
+          developer_id: developer.id,
+          is_first: isFirstDeveloper,
+          roles_assigned: assignedRoles,
+          user_id: userId || null,
+        },
+      });
+      
+      return jsonResponse({
+        success: true,
+        module: 'access',
+        action: 'bootstrap',
+        developer: {
+          id: developer.id,
+          display_name: developer.display_name,
+          status: developer.status,
+          created_at: developer.created_at,
+        },
+        bootstrap_info: {
+          was_created: wasCreated,
+          is_first_developer: isFirstDeveloper,
+          roles_assigned: assignedRoles,
+          tier: isFirstDeveloper ? 'operator' : 'free',
+          has_auth_binding: !!userId,
+        },
+        message: isFirstDeveloper 
+          ? 'First developer bootstrapped as operator/governor with full access'
+          : 'Developer bootstrapped with observer/developer roles',
+        next_steps: isFirstDeveloper 
+          ? ['System is ready. You have full operator/governor access.', 'Run system.status to verify.']
+          : ['Run access.create_key to generate API key', 'Run access.identity to verify roles'],
+      }, headers);
+    }
+
+    case "identity": {
+      // Return identity info for current session (roles, developer status)
+      let roles: string[] = [];
+      let developer = null;
+      let substrateRole: 'observer' | 'operator' | 'governor' = 'observer';
+      
+      if (userId) {
+        // Get user roles
+        const { data: userRoles } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', userId);
+        
+        roles = userRoles?.map((r: { role: string }) => r.role) || [];
+        
+        // Determine substrate role from user roles
+        if (roles.includes('admin')) {
+          substrateRole = 'governor';
+        } else if (roles.includes('operator') || roles.includes('moderator')) {
+          substrateRole = 'operator';
+        }
+        
+        // Get developer profile
+        const { data: dev } = await supabase
+          .from('access_developers')
+          .select('id, display_name, status, created_at')
+          .eq('user_id', userId)
+          .maybeSingle();
+        
+        developer = dev;
+      }
+      
+      // Get total developer count
+      const { count: devCount } = await supabase
+        .from('access_developers')
+        .select('*', { count: 'exact', head: true });
+      
+      return jsonResponse({
+        success: true,
+        module: 'access',
+        action: 'identity',
+        authenticated: !!userId,
+        user_id: userId || null,
+        substrate_role: substrateRole,
+        roles: roles,
+        developer: developer,
+        has_developer_profile: !!developer,
+        system_info: {
+          total_developers: devCount || 0,
+          needs_bootstrap: (devCount || 0) === 0,
+        },
+        capabilities: {
+          is_observer: true,
+          is_operator: substrateRole === 'operator' || substrateRole === 'governor',
+          is_governor: substrateRole === 'governor',
+        },
       }, headers);
     }
 
@@ -11388,18 +11641,37 @@ async function handleAccess(
       // Admin only - list all developers
       const { limit = 50 } = data;
       
+      // Also include user role info where available
       const { data: developers } = await supabase
         .from('access_developers')
-        .select('id, display_name, status, created_at')
+        .select('id, display_name, status, created_at, user_id')
         .order('created_at', { ascending: false })
         .limit(limit);
+      
+      // Enrich with role info
+      const enriched = [];
+      for (const dev of developers || []) {
+        let roles: string[] = [];
+        if (dev.user_id) {
+          const { data: userRoles } = await supabase
+            .from('user_roles')
+            .select('role')
+            .eq('user_id', dev.user_id);
+          roles = userRoles?.map((r: { role: string }) => r.role) || [];
+        }
+        enriched.push({
+          ...dev,
+          roles: roles,
+          substrate_role: roles.includes('admin') ? 'governor' : roles.includes('operator') ? 'operator' : 'observer',
+        });
+      }
 
       return jsonResponse({
         success: true,
         module: 'access',
         action: 'developers',
-        developers: developers || [],
-        count: developers?.length || 0,
+        developers: enriched,
+        count: enriched.length,
       }, headers);
     }
 

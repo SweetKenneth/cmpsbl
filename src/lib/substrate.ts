@@ -727,6 +727,13 @@ class SubstrateClient {
     register: (display_name?: string) =>
       this.invoke({ module: 'access', action: 'register', payload: { display_name } }),
     
+    /** 
+     * Bootstrap developer identity and roles
+     * Creates developer profile, assigns default roles, auto-seeds governor if first user
+     */
+    bootstrap: (display_name?: string) =>
+      this.invoke({ module: 'access', action: 'bootstrap', payload: { display_name } }),
+    
     /** Get developer profile */
     developer: (developer_id?: string) =>
       this.invoke({ module: 'access', action: 'developer', payload: { developer_id } }),
@@ -734,6 +741,10 @@ class SubstrateClient {
     /** List all developers (admin) */
     developers: () =>
       this.invoke({ module: 'access', action: 'developers' }),
+    
+    /** Get identity info for current session (roles, developer status) */
+    identity: () =>
+      this.invoke({ module: 'access', action: 'identity' }),
     
     /** Create a new API key */
     createKey: (options: { developer_id?: string; name?: string; scopes?: string[]; rate_limit_per_minute?: number; rate_limit_per_day?: number }) =>

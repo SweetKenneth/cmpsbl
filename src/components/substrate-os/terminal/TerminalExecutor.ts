@@ -840,10 +840,15 @@ export async function executeCommand(
       result = await access.subscription(args[0]);
     } else if (base === 'access.register') {
       result = await access.register(args[0]);
+    } else if (base === 'access.bootstrap') {
+      // Bootstrap creates developer + assigns roles + seeds governor if first user
+      result = await access.bootstrap(args[0] || args.join(' ') || undefined);
     } else if (base === 'access.developer') {
       result = await access.developer(args[0]);
     } else if (base === 'access.developers') {
       result = await access.developers();
+    } else if (base === 'access.identity') {
+      result = await access.identity();
     } else if (base === 'access.entitlements') {
       result = await access.entitlements();
     } else if (base === 'access.products') {
