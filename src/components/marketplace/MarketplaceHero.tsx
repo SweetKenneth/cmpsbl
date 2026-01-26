@@ -195,7 +195,7 @@ export function MarketplaceHero() {
               <div className="text-sm text-muted-foreground">SDK Access</div>
             </div>
             <div className="text-center p-4 rounded-2xl bg-card/50 border border-border/50">
-              <div className="text-3xl md:text-4xl font-black bg-gradient-to-r from-amber-500 to-rose-500 bg-clip-text text-transparent">$9</div>
+              <div className="text-3xl md:text-4xl font-black bg-gradient-to-r from-amber-500 to-rose-500 bg-clip-text text-transparent">$27</div>
               <div className="text-sm text-muted-foreground">Templates From</div>
             </div>
           </motion.div>
@@ -250,7 +250,7 @@ export function MarketplaceHero() {
               className="gap-2 px-8 py-6 text-lg font-medium"
             >
               <Server className="w-5 h-5" />
-              Buy OS License — $599
+              Buy OS License — $3,999
             </Button>
           </motion.div>
 
