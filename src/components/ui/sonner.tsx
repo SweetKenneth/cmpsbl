@@ -3,15 +3,17 @@ import { Toaster as Sonner, toast } from "sonner";
 type ToasterProps = React.ComponentProps<typeof Sonner>;
 
 const Toaster = ({ ...props }: ToasterProps) => {
+  // Position toasts at top-right on mobile to avoid bottom nav bar
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  
   return (
     <Sonner
       theme="dark"
-      position="bottom-right"
-      offset="16px"
+      position={isMobile ? "top-right" : "bottom-right"}
+      offset={isMobile ? "80px" : "16px"}
       style={{
         position: 'fixed',
-        bottom: '1rem',
-        right: '1rem',
+        ...(isMobile ? { top: '5rem', right: '1rem' } : { bottom: '1rem', right: '1rem' }),
         zIndex: 999999,
       }}
       richColors
