@@ -1,6 +1,7 @@
 /**
- * TemplateGallery — Now redirects to paid Marketplace
- * Templates are no longer free, must purchase at /marketplace
+ * TemplateGallery — Marketplace Advertisement
+ * Showcases unique templates available in the Marketplace
+ * Does NOT redirect - advertises and links to /marketplace
  */
 
 import { Link } from "react-router-dom";
@@ -8,40 +9,66 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { 
-  Package, ShoppingCart, Sparkles, ArrowRight, Code, Lock
+  Package, ShoppingCart, Sparkles, ArrowRight, Code, Lock, Crown, Star,
+  Brain, Shield, Zap, Moon, Eye, MessageSquare
 } from "lucide-react";
+
+// Highlight the unique value proposition
+const marketplaceHighlights = [
+  { label: "97+ Templates", description: "Production-ready patterns" },
+  { label: "Drift Prevention", description: "Solve AI behavioral drift" },
+  { label: "Memory Systems", description: "Persistent AI memory" },
+  { label: "Self-Healing", description: "Auto-correcting AI" },
+];
 
 export function TemplateGallery() {
   return (
     <div className="space-y-6">
-      {/* Marketplace Redirect Card */}
-      <Card className="border-primary/30 bg-gradient-to-br from-primary/5 via-transparent to-transparent">
+      {/* Marketplace Promo Card */}
+      <Card className="border-primary/30 bg-gradient-to-br from-primary/5 via-transparent to-violet-500/5">
         <CardHeader className="text-center pb-4">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-primary to-violet-600 flex items-center justify-center">
             <Package className="w-8 h-8 text-primary-foreground" />
           </div>
-          <CardTitle className="text-2xl">Templates Marketplace</CardTitle>
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <CardTitle className="text-2xl">Templates Marketplace</CardTitle>
+            <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0">
+              <Crown className="w-3 h-3 mr-1" />
+              Exclusive
+            </Badge>
+          </div>
           <CardDescription className="text-base max-w-lg mx-auto">
-            Browse 72+ production-ready templates. All templates require a purchase for single-project use.
+            97+ production-ready templates with features you can't find anywhere else. 
+            All templates include our proprietary drift prevention technology.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
+          {/* Value Highlights */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {marketplaceHighlights.map((item) => (
+              <div key={item.label} className="p-3 rounded-lg bg-muted/50 border border-border/50 text-center">
+                <p className="font-semibold text-sm text-primary">{item.label}</p>
+                <p className="text-xs text-muted-foreground">{item.description}</p>
+              </div>
+            ))}
+          </div>
+
           {/* Pricing Overview */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="p-4 rounded-lg bg-muted/50 border border-border/50 text-center">
-              <Badge className="mb-2 bg-system-green/20 text-system-green border-system-green/30">Starter</Badge>
-              <p className="text-2xl font-bold">$9</p>
+              <Badge className="mb-2 bg-emerald-500/20 text-emerald-400 border-emerald-500/30">Starter</Badge>
+              <p className="text-2xl font-bold">$27</p>
               <p className="text-xs text-muted-foreground">Beginner templates</p>
             </div>
             <div className="p-4 rounded-lg bg-muted/50 border border-border/50 text-center">
-              <Badge className="mb-2 bg-system-amber/20 text-system-amber border-system-amber/30">Advanced</Badge>
-              <p className="text-2xl font-bold">$29</p>
+              <Badge className="mb-2 bg-amber-500/20 text-amber-400 border-amber-500/30">Advanced</Badge>
+              <p className="text-2xl font-bold">$87-$147</p>
               <p className="text-xs text-muted-foreground">Intermediate templates</p>
             </div>
-            <div className="p-4 rounded-lg bg-muted/50 border border-border/50 text-center">
-              <Badge className="mb-2 bg-destructive/20 text-destructive border-destructive/30">Enterprise</Badge>
-              <p className="text-2xl font-bold">$49+</p>
-              <p className="text-xs text-muted-foreground">Advanced templates</p>
+            <div className="p-4 rounded-lg bg-primary/10 border border-primary/30 text-center">
+              <Badge className="mb-2 bg-primary/20 text-primary border-primary/30">Premium+</Badge>
+              <p className="text-2xl font-bold">$299-$499</p>
+              <p className="text-xs text-muted-foreground">Advanced & Elite</p>
             </div>
           </div>
 
@@ -57,7 +84,7 @@ export function TemplateGallery() {
           </div>
 
           {/* CTA */}
-          <Button asChild size="lg" className="w-full gap-2">
+          <Button asChild size="lg" className="w-full gap-2 bg-gradient-to-r from-primary to-violet-600 hover:opacity-90">
             <Link to="/marketplace">
               <ShoppingCart className="w-5 h-5" />
               Browse Marketplace
@@ -66,11 +93,11 @@ export function TemplateGallery() {
           </Button>
 
           {/* SDK Free Reminder */}
-          <div className="text-center p-4 rounded-lg bg-system-green/5 border border-system-green/20">
-            <Sparkles className="w-5 h-5 mx-auto mb-2 text-system-green" />
+          <div className="text-center p-4 rounded-lg bg-emerald-500/5 border border-emerald-500/20">
+            <Sparkles className="w-5 h-5 mx-auto mb-2 text-emerald-500" />
             <p className="text-sm">
-              <span className="font-medium text-system-green">SDK is 100% free</span>
-              <span className="text-muted-foreground"> — only pay for templates you want to use</span>
+              <span className="font-medium text-emerald-400">SDK is 100% free</span>
+              <span className="text-muted-foreground"> — only pay for templates you want</span>
             </p>
           </div>
         </CardContent>
@@ -79,20 +106,24 @@ export function TemplateGallery() {
       {/* Quick Category Preview */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
-          { name: "Gaming", count: 8, color: "text-violet-500" },
-          { name: "World Engine", count: 5, color: "text-cyan-500" },
-          { name: "AI Agents", count: 12, color: "text-emerald-500" },
-          { name: "RAG Pipelines", count: 9, color: "text-amber-500" },
-        ].map((cat) => (
-          <Link 
-            key={cat.name} 
-            to="/marketplace"
-            className="p-3 rounded-lg bg-muted/50 border border-border/50 hover:border-primary/50 transition-colors text-center group"
-          >
-            <p className={`font-medium text-sm ${cat.color}`}>{cat.name}</p>
-            <p className="text-xs text-muted-foreground">{cat.count} templates</p>
-          </Link>
-        ))}
+          { name: "Brain", count: 25, color: "text-violet-500", icon: Brain },
+          { name: "Defense", count: 15, color: "text-rose-500", icon: Shield },
+          { name: "Nexus", count: 12, color: "text-emerald-500", icon: Zap },
+          { name: "Dream", count: 10, color: "text-purple-500", icon: Moon },
+        ].map((cat) => {
+          const Icon = cat.icon;
+          return (
+            <Link 
+              key={cat.name} 
+              to="/marketplace"
+              className="p-3 rounded-lg bg-muted/50 border border-border/50 hover:border-primary/50 transition-colors text-center group"
+            >
+              <Icon className={`w-5 h-5 mx-auto mb-1 ${cat.color}`} />
+              <p className={`font-medium text-sm ${cat.color}`}>{cat.name}</p>
+              <p className="text-xs text-muted-foreground">{cat.count} templates</p>
+            </Link>
+          );
+        })}
       </div>
     </div>
   );

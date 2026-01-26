@@ -43,7 +43,7 @@ export function CodeLabCTA() {
               </h2>
               
               <p className="text-muted-foreground text-sm sm:text-base md:text-lg mb-6 max-w-xl mx-auto lg:mx-0">
-                CodeLab gives you everything you need to explore and build on the substrate.
+                Free SDK &amp; docs. Plus 97+ exclusive templates in the Marketplace.
               </p>
               
               <Link to="/codelab">

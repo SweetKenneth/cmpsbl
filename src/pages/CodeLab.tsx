@@ -56,8 +56,8 @@ export default function CodeLab() {
           </div>
           
           <p className="text-muted-foreground max-w-3xl text-sm md:text-base">
-            Build apps that dream, remember, self-reflect, and defend themselves. 
-            CodeLab gives you everything you need to explore and build on the substrate.
+            Download the free SDK, explore documentation, and discover 97+ exclusive templates 
+            in our Marketplace that solve AI behavioral drift.
           </p>
         </div>
 
