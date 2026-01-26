@@ -1,6 +1,6 @@
 /**
  * Module Control Card v5.5.0 - Individual module powerhouse control
- * Gradient accents, real-time status, action buttons
+ * Gradient accents, real-time status, action buttons with Substrate Voice
  */
 
 import { useState } from 'react';
@@ -12,7 +12,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
-import { toast } from 'sonner';
+import { useSubstrateVoice } from '@/components/substrate-os/audio';
+import { useSoundEffects } from '@/components/agency/features/SoundEffects';
 
 export interface ModuleAction {
   id: string;
@@ -65,14 +66,18 @@ export function ModuleControlCard({
 }: ModuleControlCardProps) {
   const [pendingAction, setPendingAction] = useState<string | null>(null);
   const layerBadge = layerBadges[layer];
+  const voice = useSubstrateVoice();
+  const { play } = useSoundEffects();
 
   const handleAction = async (actionId: string) => {
     if (!onAction) return;
     setPendingAction(actionId);
+    play('task_start');
     try {
       await onAction(actionId);
+      play('task_complete');
     } catch (e) {
-      toast.error(`${name} action failed`);
+      voice.error(`${name} action failed`, 'Check module health status', name.toUpperCase());
     } finally {
       setPendingAction(null);
     }
