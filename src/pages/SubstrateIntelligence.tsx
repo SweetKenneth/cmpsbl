@@ -129,7 +129,7 @@ export default function SubstrateIntelligence() {
               </h1>
               
               <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-                CMPSBL prevents AI chatbots from losing context, forgetting users, and drifting from their purpose. <strong className="text-foreground">131,000+ lines of battle-tested code.</strong> Not vaporware—live and operational since 2024.
+                CMPSBL prevents AI chatbots from losing context, forgetting users, and drifting from their purpose. <strong className="text-foreground">13 specialized modules with full documentation.</strong> Research published on Zenodo.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
@@ -150,15 +150,15 @@ export default function SubstrateIntelligence() {
               <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
                 <span className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-primary" />
-                  131k+ LOC - Battle-Tested
+                  13 Modules - Fully Documented
                 </span>
                 <span className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-primary" />
-                  13 Modules - Live Since 2024
+                  Academic Research on Zenodo
                 </span>
                 <span className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-primary" />
-                  Production Ready - Not Vaporware
+                  Complete Source Code
                 </span>
               </div>
             </div>

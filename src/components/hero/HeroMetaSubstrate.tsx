@@ -483,11 +483,11 @@ export function HeroMetaSubstrate() {
             
             {/* Subheadline */}
             <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-6 sm:mb-8">
-              A production-grade cognitive substrate with 
+              A cognitive substrate with 
               <span className="text-foreground font-medium"> 13-module architecture</span>, 
               <span className="text-foreground font-medium"> persistent memory</span>, and 
               <span className="text-foreground font-medium"> autonomous self-improvement</span>. 
-              Powers AI from prototypes to millions of users.
+              The infrastructure layer for AI that remembers.
             </p>
             
             {/* CTA Buttons */}
@@ -507,24 +507,22 @@ export function HeroMetaSubstrate() {
               </Button>
             </div>
             
-            {/* Academic Documentation Link */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1 }}
-              className="mt-4 text-center lg:text-left"
-            >
+            {/* Academic Documentation Link - Prominent */}
+            <div className="mt-6 text-center lg:text-left">
               <a 
                 href="https://zenodo.org/records/18234910?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjkxZDYzZjFlLWM2NTctNDAzNi04ZWE4LTIzNWNiMDljMGQ2NyIsImRhdGEiOnt9LCJyYW5kb20iOiIzZTlkMjA5MzQ0ZGFkNDI2ZTZlMTkwMWYxMzFmOTczYSJ9.H3FugoEHTR2ilPEtZEr-kqRiTgW0FeUDXOrcEE92lek4FK0_h0dNUyJWvtxW-KCHuIEeiqbN5Zot8EqEvXq5gQ"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors group"
+                className="inline-flex items-center gap-3 px-4 py-2.5 rounded-lg border border-primary/30 bg-primary/5 hover:bg-primary/10 hover:border-primary/50 transition-all group"
               >
-                <BookOpen className="w-4 h-4 text-primary group-hover:scale-110 transition-transform" />
-                <span>Academic Documentation & Research</span>
-                <ArrowRight className="w-3 h-3 opacity-50 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
+                <BookOpen className="w-5 h-5 text-primary" />
+                <div className="text-left">
+                  <span className="block text-sm font-medium text-foreground group-hover:text-primary transition-colors">Research Documentation</span>
+                  <span className="block text-xs text-muted-foreground">Published on Zenodo • DOI: 10.5281/zenodo.18234910</span>
+                </div>
+                <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
               </a>
-            </motion.div>
+            </div>
           </motion.div>
           
           {/* Right: Substrate Visualization */}
