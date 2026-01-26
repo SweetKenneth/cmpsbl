@@ -203,14 +203,18 @@ export const RIPPLE_COMMANDS: CommandDefinition[] = [
   { command: 'ripple.circuits', description: 'View subscriber circuit breakers', category: 'ripple', icon: Activity, requiresOperator: false },
 ];
 
-// ACCESS module v2.0 — API keys, subscriptions, entitlements, CMPTBL products
+// ACCESS module v2.1 — API keys, subscriptions, entitlements, identity, bootstrap
 export const ACCESS_COMMANDS: CommandDefinition[] = [
   // Status & pulse
-  { command: 'access.status', description: 'Module status (v2.0)', category: 'access', icon: Key, requiresOperator: false },
+  { command: 'access.status', description: 'Module status (v2.1)', category: 'access', icon: Key, requiresOperator: false },
   { command: 'access.pulse', description: 'Lightweight heartbeat', category: 'access', icon: Activity, requiresOperator: false },
   
+  // Identity & Bootstrap (NEW)
+  { command: 'access.bootstrap', description: 'Bootstrap developer identity + roles', category: 'access', icon: Users, requiresOperator: false, args: '[display_name]', example: 'access.bootstrap Kenneth' },
+  { command: 'access.identity', description: 'Get current session identity + roles', category: 'access', icon: Users, requiresOperator: false },
+  
   // Developer CRUD
-  { command: 'access.register', description: 'Register as developer (auto-creates from auth)', category: 'access', icon: Users, requiresOperator: true, args: '[display_name]', example: 'access.register "My App"' },
+  { command: 'access.register', description: 'Register as developer (requires auth)', category: 'access', icon: Users, requiresOperator: true, args: '[display_name]', example: 'access.register "My App"' },
   { command: 'access.developer', description: 'Get developer profile', category: 'access', icon: Users, requiresOperator: false, args: '[developer_id]' },
   { command: 'access.developers', description: 'List all developers (admin)', category: 'access', icon: Users, requiresOperator: true },
   
