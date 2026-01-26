@@ -3598,6 +3598,7 @@ export type Database = {
       }
       daily_backups: {
         Row: {
+          backup_category: string | null
           backup_date: string
           backup_id: string
           backup_path: string
@@ -3606,12 +3607,16 @@ export type Database = {
           data_counts: Json | null
           expires_at: string | null
           id: string
+          is_permanent: boolean | null
+          notes: string | null
           restore_point_enabled: boolean | null
+          size_bytes: number | null
           snapshot: Json
           status: string | null
           substrate_version: string | null
         }
         Insert: {
+          backup_category?: string | null
           backup_date?: string
           backup_id: string
           backup_path: string
@@ -3620,12 +3625,16 @@ export type Database = {
           data_counts?: Json | null
           expires_at?: string | null
           id?: string
+          is_permanent?: boolean | null
+          notes?: string | null
           restore_point_enabled?: boolean | null
+          size_bytes?: number | null
           snapshot: Json
           status?: string | null
           substrate_version?: string | null
         }
         Update: {
+          backup_category?: string | null
           backup_date?: string
           backup_id?: string
           backup_path?: string
@@ -3634,7 +3643,10 @@ export type Database = {
           data_counts?: Json | null
           expires_at?: string | null
           id?: string
+          is_permanent?: boolean | null
+          notes?: string | null
           restore_point_enabled?: boolean | null
+          size_bytes?: number | null
           snapshot?: Json
           status?: string | null
           substrate_version?: string | null

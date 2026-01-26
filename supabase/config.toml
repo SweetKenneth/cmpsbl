@@ -80,3 +80,12 @@ verify_jwt = false
 
 [functions.pf-backup-daily]
 verify_jwt = false
+
+[functions.pf-backup-prune]
+verify_jwt = false
+
+[functions.pf-backup-export]
+verify_jwt = false
+
+[functions.pf-backup-import]
+verify_jwt = false
