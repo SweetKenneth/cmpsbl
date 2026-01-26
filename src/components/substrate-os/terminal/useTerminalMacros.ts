@@ -80,6 +80,33 @@ export const BUILTIN_MACROS: MacroDefinition[] = [
     ],
     createdAt: new Date(),
   },
+  {
+    name: 'upgrade_prepare',
+    description: 'Full scan-to-shadow workflow (stops before production)',
+    commands: [
+      'system.status',
+      'modernizer.refresh',
+      'modernizer.scan deep',
+      'modernizer.propose',
+      'modernizer.plans',
+      'modernizer.apply_shadow',
+      'modernizer.test_shadow',
+      'modernizer.status',
+    ],
+    createdAt: new Date(),
+  },
+  {
+    name: 'upgrade_approve',
+    description: 'Approve and promote shadow patches to production',
+    commands: [
+      'modernizer.status',
+      'modernizer.apply_production',
+      'system.health',
+      'modernizer.refresh',
+      'vision.pulse',
+    ],
+    createdAt: new Date(),
+  },
 ];
 
 const customMacros: Map<string, MacroDefinition> = new Map();
