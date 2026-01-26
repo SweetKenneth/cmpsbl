@@ -90,7 +90,7 @@ export function MarketplaceHeader({ searchQuery, onSearchChange, resultCount }: 
           </h1>
           <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto px-4">
             {TEMPLATES.length}+ production-ready cognitive templates with built-in memory,
-            drift prevention & self-improvement. From <span className="text-primary font-semibold">$27</span>.
+            drift prevention & self-improvement. Plus AI-generated unique templates. From <span className="text-primary font-semibold">$27</span>.
           </p>
         </motion.div>
 
@@ -139,7 +139,7 @@ export function MarketplaceHeader({ searchQuery, onSearchChange, resultCount }: 
           className="flex flex-wrap justify-center gap-6 sm:gap-10 mt-10 pt-8 border-t border-border/30"
         >
           {[
-            { value: '50+', label: 'Templates' },
+            { value: `${TEMPLATES.length}+`, label: 'Templates' },
             { value: '13', label: 'Core Modules' },
             { value: '0%', label: 'AI Drift' },
             { value: '24/7', label: 'Memory' },

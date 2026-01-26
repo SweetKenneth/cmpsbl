@@ -204,8 +204,8 @@ export default function Marketplace() {
   return (
     <>
       <SEO
-        title="AI Template Marketplace | 50+ Drift-Prevention Templates | CMPSBL"
-        description="Browse 50+ production-ready AI templates with memory persistence, drift prevention, and self-improvement. From $27. Build AI that remembers."
+        title={`AI Template Marketplace | ${TEMPLATES.length}+ Drift-Prevention Templates | CMPSBL`}
+        description={`Browse ${TEMPLATES.length}+ production-ready AI templates with memory persistence, drift prevention, and self-improvement. From $27. Build AI that remembers.`}
         keywords={["AI templates", "chatbot templates", "AI memory", "drift prevention", "LLM templates", "cognitive OS"]}
       />
       
