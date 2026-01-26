@@ -4,7 +4,7 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { substrate, vision, brain, defense, nexus, dream, system, modernizer, decode, core, ripple, access, integration } from '@/lib/substrate';
+import { substrate, vision, brain, defense, nexus, dream, system, modernizer, decode, core, ripple, access, integration, cortex } from '@/lib/substrate';
 
 // ═══════════════════════════════════════════════════════════════
 // OBSERVER HOOKS — Read-only telemetry
@@ -142,9 +142,20 @@ export function useBrainReflectOS() {
   
   return useMutation({
     mutationFn: () => brain.reflect(),
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['substrate', 'brain'] });
       queryClient.invalidateQueries({ queryKey: ['substrate', 'vision', 'metrics'] });
+      // Toast notification for action feedback
+      const { toast } = require('sonner');
+      if (data.success) {
+        toast.success('Brain reflection complete');
+      } else {
+        toast.error(data.error || 'Brain reflection failed');
+      }
+    },
+    onError: (error) => {
+      const { toast } = require('sonner');
+      toast.error(`Reflection failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     },
   });
 }
@@ -154,9 +165,19 @@ export function useBrainDreamOS() {
   
   return useMutation({
     mutationFn: () => brain.dream(),
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['substrate', 'brain'] });
       queryClient.invalidateQueries({ queryKey: ['substrate', 'dream'] });
+      const { toast } = require('sonner');
+      if (data.success) {
+        toast.success('Brain dream cycle initiated');
+      } else {
+        toast.error(data.error || 'Dream cycle failed');
+      }
+    },
+    onError: (error) => {
+      const { toast } = require('sonner');
+      toast.error(`Dream cycle failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     },
   });
 }
@@ -177,8 +198,18 @@ export function useDreamCycleOS() {
   
   return useMutation({
     mutationFn: () => dream.cycle(),
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['substrate', 'dream'] });
+      const { toast } = require('sonner');
+      if (data.success) {
+        toast.success('Dream cycle complete');
+      } else {
+        toast.error(data.error || 'Dream cycle failed');
+      }
+    },
+    onError: (error) => {
+      const { toast } = require('sonner');
+      toast.error(`Dream cycle failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     },
   });
 }
@@ -209,7 +240,7 @@ export function useSystemConfig(key?: string) {
   });
 }
 
-// Combined health score for dashboard - all 12 modules
+// Combined health score for dashboard - all 13 modules (12 core + Cortex orchestrator)
 export function useSubstrateHealthScore() {
   const visionHealth = useVisionHealthOS();
   const brainStatus = useBrainStatusOS();
@@ -223,6 +254,7 @@ export function useSubstrateHealthScore() {
   const rippleStatus = useRippleStatusOS();
   const accessStatus = useAccessStatusOS();
   const integrationStatus = useIntegrationStatusOS();
+  const cortexStatus = useCortexStatusOS();
 
   const isLoading = 
     visionHealth.isLoading || 
@@ -236,7 +268,8 @@ export function useSubstrateHealthScore() {
     coreStatus.isLoading ||
     rippleStatus.isLoading ||
     accessStatus.isLoading ||
-    integrationStatus.isLoading;
+    integrationStatus.isLoading ||
+    cortexStatus.isLoading;
 
   const modules = {
     // Kernel Layer
@@ -256,10 +289,12 @@ export function useSubstrateHealthScore() {
     modernizer: modernizerStatus.data?.success ?? false,
     // Integration Layer
     integration: integrationStatus.data?.success ?? false,
+    // Orchestrator Layer
+    cortex: cortexStatus.data?.success ?? false,
   };
 
   const healthyCount = Object.values(modules).filter(Boolean).length;
-  const totalModules = 12;
+  const totalModules = 13; // Updated to 13 modules
   const healthScore = Math.round((healthyCount / totalModules) * 100);
 
   const refetchAll = () => {
@@ -275,6 +310,7 @@ export function useSubstrateHealthScore() {
     rippleStatus.refetch();
     accessStatus.refetch();
     integrationStatus.refetch();
+    cortexStatus.refetch();
   };
 
   return {
@@ -288,6 +324,15 @@ export function useSubstrateHealthScore() {
     isDown: healthScore < 40,
     refetch: refetchAll,
   };
+}
+
+// Cortex orchestrator status hook
+export function useCortexStatusOS() {
+  return useQuery({
+    queryKey: ['substrate', 'cortex', 'status'],
+    queryFn: () => cortex.status(),
+    refetchInterval: 30000,
+  });
 }
 
 // ═══════════════════════════════════════════════════════════════

@@ -6,14 +6,15 @@
 import { 
   Brain, MessageSquare, Shield, Zap, Eye, Moon, Cpu, Sparkles, 
   Radio, Key, Settings, Layers, Plug, Activity, Network, 
-  PlayCircle, RefreshCw, Wrench
+  PlayCircle, RefreshCw, Wrench, GitBranch
 } from 'lucide-react';
 import { ModuleControlCard, ModuleAction } from './ModuleControlCard';
 import { 
   useBrainStatusOS, useDefenseStatusOS, useNexusStatusOS, 
   useDreamStatusOS, useModernizerStatusOS, useDecodeStatusOS,
   useCoreStatusOS, useRippleStatusOS, useAccessStatusOS,
-  useIntegrationStatusOS, useVisionHealthOS, useSystemStatus
+  useIntegrationStatusOS, useVisionHealthOS, useSystemStatus,
+  useCortexStatusOS
 } from '@/hooks/useSubstrateOS';
 import { 
   useBrainReflectOS, useBrainDreamOS, useDreamCycleOS 
@@ -23,14 +24,14 @@ import {
 } from '@/hooks/useSubstrateOSEnhanced';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
-import { brain, defense, nexus, system, dream, modernizer, decode, core, ripple, access, integration, vision } from '@/lib/substrate';
+import { brain, defense, nexus, system, dream, modernizer, decode, core, ripple, access, integration, vision, cortex } from '@/lib/substrate';
 
 interface ModuleControlsGridProps {
   enabled: boolean;
 }
 
 export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
-  // Status hooks for all modules
+  // Status hooks for all 13 modules
   const brainStatus = useBrainStatusOS();
   const defenseStatus = useDefenseStatusOS();
   const nexusStatus = useNexusStatusOS();
@@ -43,6 +44,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
   const integrationStatus = useIntegrationStatusOS();
   const visionStatus = useVisionHealthOS();
   const systemStatusQuery = useSystemStatus();
+  const cortexStatus = useCortexStatusOS();
 
   // Action mutations
   const brainReflect = useBrainReflectOS();
@@ -306,6 +308,34 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
       onAction: async () => {
         const result = await integration.discover();
         toast.info(`Integration: ${result.success ? 'Discovery complete' : 'Failed'}`);
+      },
+    },
+    // Orchestrator Layer
+    {
+      id: 'cortex',
+      name: 'CORTEX',
+      layer: 'orchestrator' as const,
+      icon: GitBranch,
+      description: 'Agency-class orchestrator',
+      gradient: 'bg-gradient-to-r from-indigo-500 to-violet-600',
+      accentColor: 'bg-indigo-500',
+      status: cortexStatus,
+      metrics: [
+        { label: 'Orchestrator', value: cortexStatus.data?.success ? 'Active' : 'Checking' },
+      ],
+      actions: [
+        { id: 'status', label: 'Status', icon: Activity, variant: 'primary' as const },
+        { id: 'summary', label: 'Summary', icon: Layers },
+      ],
+      onAction: async (actionId: string) => {
+        if (actionId === 'status') {
+          const result = await cortex.status();
+          toast.info(`Cortex: ${result.success ? 'Orchestrator active' : 'Check failed'}`);
+        }
+        if (actionId === 'summary') {
+          const result = await cortex.summary();
+          toast.info(`Cortex: ${result.success ? 'Summary generated' : 'Failed'}`);
+        }
       },
     },
   ];
