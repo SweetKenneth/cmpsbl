@@ -206,6 +206,11 @@ serve(async (req) => {
 
     console.log(`✅ Export created: ${exportToken} (${(sizeBytes / 1024 / 1024).toFixed(2)} MB)`);
 
+    // Generate signed URL for secure download (24 hour expiry)
+    const { data: signedUrlData } = await supabase.storage
+      .from('backups')
+      .createSignedUrl(filePath, 86400); // 24 hours
+
     return new Response(
       JSON.stringify({
         success: true,
@@ -217,7 +222,7 @@ serve(async (req) => {
         size_mb: (sizeBytes / 1024 / 1024).toFixed(2),
         table_counts: tableCounts,
         total_records: Object.values(tableCounts).reduce((a, b) => a + b, 0),
-        download_url: `${SUPABASE_URL}/storage/v1/object/public/backups/${filePath}`,
+        download_url: signedUrlData?.signedUrl || null,
         expires_at: new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString(),
         message: `✅ ${export_type.charAt(0).toUpperCase() + export_type.slice(1)} export ready for download`,
       }),
