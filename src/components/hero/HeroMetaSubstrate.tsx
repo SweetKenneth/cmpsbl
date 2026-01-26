@@ -482,10 +482,11 @@ export function HeroMetaSubstrate() {
             
             {/* Subheadline */}
             <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-6 sm:mb-8">
-              CMPSBL is the cognitive infrastructure that gives AI applications 
-              <span className="text-foreground font-medium"> persistent memory</span>, 
-              <span className="text-foreground font-medium"> offline learning</span>, and 
-              <span className="text-foreground font-medium"> autonomous evolution</span>.
+              A production-grade cognitive substrate with 
+              <span className="text-foreground font-medium"> 13-module architecture</span>, 
+              <span className="text-foreground font-medium"> persistent memory</span>, and 
+              <span className="text-foreground font-medium"> autonomous self-improvement</span>. 
+              Powers AI from prototypes to millions of users.
             </p>
             
             {/* CTA Buttons */}

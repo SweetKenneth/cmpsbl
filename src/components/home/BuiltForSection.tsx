@@ -213,7 +213,7 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
           </p>
           
           {/* Description */}
-          <p className="text-sm text-muted-foreground mb-5 flex-grow leading-relaxed">
+          <p className="text-sm text-muted-foreground mb-5 flex-grow leading-relaxed line-clamp-3">
             {audience.description}
           </p>
           
