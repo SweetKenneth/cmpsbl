@@ -154,19 +154,38 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
       if (error) throw error;
       return data;
     },
-    onSuccess: (data: any) => {
+    onSuccess: async (data: any) => {
       if (data?.download_url) {
-        // Trigger download
-        const link = document.createElement('a');
-        link.href = data.download_url;
-        link.download = `substrate-backup-${data.export_token}.json`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        try {
+          // Fetch the file content and create a blob download
+          // This works for cross-origin signed URLs
+          const response = await fetch(data.download_url);
+          if (!response.ok) throw new Error('Download failed');
+          
+          const blob = await response.blob();
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `substrate-backup-${data.export_token}.json`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+          
+          toast.success('Export downloaded', {
+            description: `${data?.size_mb || 0} MB - ${data?.total_records || 0} records`,
+          });
+        } catch (err) {
+          console.error('Download error:', err);
+          // Fallback: open in new tab
+          window.open(data.download_url, '_blank');
+          toast.info('Download opened in new tab');
+        }
+      } else {
+        toast.success('Export ready', {
+          description: `${data?.size_mb || 0} MB - ${data?.total_records || 0} records`,
+        });
       }
-      toast.success('Export ready', {
-        description: `${data?.size_mb || 0} MB - ${data?.total_records || 0} records`,
-      });
     },
     onError: (error) => {
       toast.error('Export failed', {
