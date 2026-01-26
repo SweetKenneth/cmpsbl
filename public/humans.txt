@@ -4,17 +4,23 @@ Location: Palm Springs, California, USA
 Contact: promptfluid@gmail.com
 Twitter: @promptfluid
 
+/* CREATOR */
+Kenneth E Sweet Jr — Founder, Architect, and Chief Cognitive Engineer
+Vision: Building the infrastructure layer for autonomous AI systems
+Focus: Cognitive orchestration, persistent memory, dream cycles, and BYOK architecture
+
 /* THANKS */
-Built with love, caffeine, and AI assistance.
+Built with love, caffeine, and autonomous AI assistance.
 Special thanks to the open source community.
+To the dreamers building AI that actually remembers.
 
 /* SITE */
-Last update: 2026-01-13
+Last update: 2026-01-26
 Language: English
 Doctype: HTML5
 Standards: WCAG 2.2 AA, Schema.org, Open Graph
 Platform: React, TypeScript, Tailwind CSS
-Backend: Supabase
+Backend: Supabase (Lovable Cloud)
 AI: Multi-provider (OpenAI, Anthropic, Google, Groq)
 
 /* TECHNOLOGY */
@@ -24,6 +30,13 @@ AI: Multi-provider (OpenAI, Anthropic, Google, Groq)
 - Supabase Edge Functions
 - Vite
 - PWA Enabled
+
+/* SUBSTRATE OS v5.5.0 */
+- 13 Core Modules (Kernel, Cognitive, Operational, Admin, Orchestrator)
+- 250+ Terminal Commands
+- 5-Layer Architecture
+- BYOK (Bring Your Own Key) Support
+- Dream Cycles & Persistent Memory
 
 /* HISTORY */
 Founded: 2009

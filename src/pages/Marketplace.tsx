@@ -270,9 +270,17 @@ export default function Marketplace() {
                             <CategoryIcon className="w-3 h-3" />
                             {template.category}
                           </Badge>
-                          <Button size="sm" className="gap-1">
+                          <Button 
+                            size="sm" 
+                            className="gap-1"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleCheckout('template', template);
+                            }}
+                            disabled={isCheckingOut}
+                          >
                             <ShoppingCart className="w-3 h-3" />
-                            Buy
+                            {isCheckingOut ? "..." : "Buy"}
                           </Button>
                         </div>
                       </CardContent>
