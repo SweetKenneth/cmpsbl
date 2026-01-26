@@ -11,25 +11,14 @@ import {
   Moon,
   Zap,
   Building2,
-  Heart,
-  Scale,
-  GraduationCap,
-  ShoppingCart,
-  Headphones,
-  FileText,
-  Users,
   Bot,
   Sparkles,
-  Database,
-  Network,
   Shield,
-  Clock,
   Play,
   CheckCircle2,
   BookOpen,
   Rocket,
   MessageSquare,
-  TrendingUp,
   Gamepad2,
   Code,
   Factory,
@@ -39,6 +28,12 @@ import {
   Store,
   Phone,
   Plug,
+  Plane,
+  Car,
+  Utensils,
+  Home,
+  Dumbbell,
+  Clock,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -263,6 +258,130 @@ export default function UseCases() {
     },
   ];
 
+  // Futuristic use cases for after widespread adoption
+  const futureVisions = [
+    {
+      icon: Plane,
+      title: "Self-Healing Aircraft",
+      subtitle: "Aviation AI",
+      description: "Critical flight systems that dream solutions, learning to predict and fix failures before they cascade.",
+      benefits: [
+        "Predictive failure detection",
+        "Real-time system diagnostics",
+        "Autonomous repair sequencing",
+        "Historical incident learning",
+      ],
+      example: "Mid-flight hydraulic anomaly detected—initiating backup routing learned from 1,200 similar patterns.",
+      color: "text-sky-500",
+      timeline: "Future Vision",
+    },
+    {
+      icon: Car,
+      title: "Cars That Fix Themselves",
+      subtitle: "Automotive AI",
+      description: "Vehicles with persistent memory that learn driver behavior, predict maintenance, and self-diagnose issues.",
+      benefits: [
+        "Driver behavior adaptation",
+        "Predictive component failure",
+        "Self-diagnostic repair guidance",
+        "Fleet-wide learning propagation",
+      ],
+      example: "Your braking pattern suggests worn pads—scheduling service and rerouting to avoid steep grades.",
+      color: "text-red-500",
+      timeline: "Future Vision",
+    },
+    {
+      icon: Shield,
+      title: "Tanks That Know Their Crew",
+      subtitle: "Defense AI",
+      description: "Military vehicles that remember operator preferences, adapt to combat patterns, and optimize for each crew.",
+      benefits: [
+        "Operator preference memory",
+        "Combat pattern adaptation",
+        "Crew fatigue detection",
+        "Mission history learning",
+      ],
+      example: "Gunner prefers 2-round bursts at this range—auto-adjusting fire control system.",
+      color: "text-slate-500",
+      timeline: "Future Vision",
+    },
+    {
+      icon: Bot,
+      title: "Drones That Self-Improve",
+      subtitle: "Robotics AI",
+      description: "Autonomous drones that learn from every flight, share knowledge across fleets, and evolve capabilities.",
+      benefits: [
+        "Flight pattern optimization",
+        "Environmental adaptation",
+        "Swarm intelligence sharing",
+        "Autonomous skill evolution",
+      ],
+      example: "Wind pattern learned from 50,000 flights—adjusting approach for optimal battery conservation.",
+      color: "text-cyan-600",
+      timeline: "Future Vision",
+    },
+    {
+      icon: Utensils,
+      title: "Kitchens That Learn You",
+      subtitle: "Consumer AI",
+      description: "Smart kitchen systems that remember dietary preferences, learn cooking habits, and adapt recipes.",
+      benefits: [
+        "Dietary restriction memory",
+        "Taste preference learning",
+        "Ingredient substitution",
+        "Meal timing optimization",
+      ],
+      example: "You've been avoiding gluten for 3 months—here's a modified version of your favorite pasta recipe.",
+      color: "text-yellow-500",
+      timeline: "Available Now",
+    },
+    {
+      icon: Brain,
+      title: "Research Assistants with Memory",
+      subtitle: "Research AI",
+      description: "Scientific research AI that remembers every paper read, connects insights, and dreams new hypotheses.",
+      benefits: [
+        "Literature comprehension",
+        "Cross-domain connection",
+        "Hypothesis generation",
+        "Experiment pattern learning",
+      ],
+      example: "This protein structure reminds me of a 2019 paper you read—potential new binding site discovered.",
+      color: "text-fuchsia-500",
+      timeline: "In Development",
+    },
+    {
+      icon: Home,
+      title: "Smart Homes That Anticipate",
+      subtitle: "Home AI",
+      description: "Home systems that learn family routines, predict needs, and adapt to changing lifestyles.",
+      benefits: [
+        "Routine pattern learning",
+        "Energy optimization",
+        "Security adaptation",
+        "Lifestyle anticipation",
+      ],
+      example: "Kids usually get home in 10 minutes—pre-heating their snacks and unlocking the back door.",
+      color: "text-teal-500",
+      timeline: "Available Now",
+    },
+    {
+      icon: Dumbbell,
+      title: "Fitness AI That Grows With You",
+      subtitle: "Wellness AI",
+      description: "Personal trainers that remember every workout, adapt to your progress, and dream optimal routines.",
+      benefits: [
+        "Progress tracking memory",
+        "Recovery pattern learning",
+        "Injury prevention",
+        "Goal adaptation",
+      ],
+      example: "Your left shoulder shows strain patterns—modifying tomorrow's routine to prevent injury.",
+      color: "text-lime-500",
+      timeline: "Available Now",
+    },
+  ];
+
   const coreCapabilities = [
     { icon: Brain, label: "Persistent Memory", description: "3-tier memory that never forgets" },
     { icon: Moon, label: "Dream Cycles", description: "Offline learning & pattern extraction" },
@@ -335,6 +454,92 @@ export default function UseCases() {
               </Button>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Future Visions Grid */}
+      <section className="py-20 bg-gradient-to-b from-card/20 to-transparent">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <Badge className="mb-4 bg-violet-500/10 text-violet-400 border-violet-500/30">
+              <Clock className="w-3 h-3 mr-1" />
+              What's Possible
+            </Badge>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Future Visions & Emerging Applications
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              From self-healing aircraft to kitchens that learn your taste—see what's possible 
+              when AI has persistent memory and the ability to dream.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {futureVisions.map((vision, idx) => (
+              <motion.div
+                key={vision.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.05 }}
+              >
+                <Card className={cn(
+                  "h-full border-border/50 bg-card/50 backdrop-blur-sm relative overflow-hidden",
+                  "hover:border-current/30 transition-all duration-300",
+                  vision.color
+                )}>
+                  {/* Timeline badge */}
+                  <div className="absolute top-3 right-3">
+                    <Badge 
+                      variant="outline" 
+                      className={cn(
+                        "text-[10px]",
+                        vision.timeline === "Available Now" 
+                          ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
+                          : vision.timeline === "In Development"
+                          ? "bg-amber-500/10 text-amber-400 border-amber-500/30"
+                          : "bg-violet-500/10 text-violet-400 border-violet-500/30"
+                      )}
+                    >
+                      {vision.timeline}
+                    </Badge>
+                  </div>
+                  <CardHeader>
+                    <div className="flex items-start mb-4">
+                      <div className="w-12 h-12 rounded-xl bg-current/10 flex items-center justify-center">
+                        <vision.icon className="w-6 h-6" />
+                      </div>
+                    </div>
+                    <Badge variant="outline" className="w-fit mb-2 text-current border-current/30 text-[10px]">
+                      {vision.subtitle}
+                    </Badge>
+                    <CardTitle className="text-lg">{vision.title}</CardTitle>
+                    <CardDescription className="text-xs">
+                      {vision.description}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <ul className="space-y-1.5">
+                      {vision.benefits.slice(0, 3).map((benefit, idx) => (
+                        <li key={idx} className="flex items-center gap-2 text-xs text-muted-foreground">
+                          <CheckCircle2 className="w-3 h-3 text-current opacity-60 shrink-0" />
+                          {benefit}
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="pt-3 border-t border-border/50">
+                      <p className="text-[11px] italic text-current/80">"{vision.example}"</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 

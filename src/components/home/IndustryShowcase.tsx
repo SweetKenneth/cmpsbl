@@ -1,11 +1,10 @@
 /**
- * Industry Showcase — Homepage section showing CMPSBL versatility
- * Premium cards with hover effects and clear industry-specific messaging
+ * Industry Showcase — Compact 2-column grid of industry chips
+ * Mobile-first design with many industries visible
  */
 
 import { Link } from "react-router-dom";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { useRef, useState } from "react";
+import { motion } from "framer-motion";
 import {
   ArrowRight,
   Gamepad2,
@@ -17,194 +16,80 @@ import {
   Phone,
   Factory,
   Sparkles,
-  Quote,
+  Plane,
+  Car,
+  Home,
+  Utensils,
+  Music,
+  Film,
+  Dumbbell,
+  Landmark,
+  Truck,
+  Leaf,
+  Shield,
+  Wallet,
+  Brain,
+  Bot,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-interface Industry {
+interface IndustryChip {
   icon: React.ElementType;
-  title: string;
-  tagline: string;
-  example: string;
+  label: string;
   color: string;
-  gradient: string;
-  href?: string;
 }
 
-const industries: Industry[] = [
-  {
-    icon: Gamepad2,
-    title: "Gaming",
-    tagline: "NPCs that remember every player interaction",
-    example: "You saved my village 3 sessions ago—take this reward.",
-    color: "text-purple-500",
-    gradient: "from-purple-500/20 to-violet-500/20",
-    href: "/gaming",
-  },
-  {
-    icon: Building2,
-    title: "Enterprise",
-    tagline: "Operations that learn and optimize autonomously",
-    example: "Q4 reports auto-generated based on historical patterns",
-    color: "text-blue-500",
-    gradient: "from-blue-500/20 to-indigo-500/20",
-    href: "/use-cases",
-  },
-  {
-    icon: Stethoscope,
-    title: "Healthcare",
-    tagline: "Patient journeys remembered across encounters",
-    example: "Flagging drug interaction from 2 years ago during triage",
-    color: "text-emerald-500",
-    gradient: "from-emerald-500/20 to-green-500/20",
-    href: "/use-cases",
-  },
-  {
-    icon: Scale,
-    title: "Legal",
-    tagline: "Case precedents learned from every outcome",
-    example: "73% similar cases contested this clause successfully",
-    color: "text-amber-500",
-    gradient: "from-amber-500/20 to-yellow-500/20",
-    href: "/use-cases",
-  },
-  {
-    icon: GraduationCap,
-    title: "Education",
-    tagline: "Student progress tracked across semesters",
-    example: "Adapting curriculum to each learner's pace",
-    color: "text-cyan-500",
-    gradient: "from-cyan-500/20 to-teal-500/20",
-    href: "/use-cases",
-  },
-  {
-    icon: ShoppingCart,
-    title: "Retail",
-    tagline: "Customer preferences remembered forever",
-    example: "Pre-stocking items before seasonal demand",
-    color: "text-rose-500",
-    gradient: "from-rose-500/20 to-pink-500/20",
-    href: "/use-cases",
-  },
-  {
-    icon: Phone,
-    title: "Support",
-    tagline: "Full context from every past interaction",
-    example: "I see you called twice about this—escalating now.",
-    color: "text-violet-500",
-    gradient: "from-violet-500/20 to-purple-500/20",
-    href: "/use-cases",
-  },
-  {
-    icon: Factory,
-    title: "Manufacturing",
-    tagline: "Equipment patterns trigger predictive maintenance",
-    example: "Vibration signature matches pre-failure from 6mo ago",
-    color: "text-orange-500",
-    gradient: "from-orange-500/20 to-red-500/20",
-    href: "/use-cases",
-  },
+const industries: IndustryChip[] = [
+  { icon: Gamepad2, label: "Gaming", color: "text-purple-500 bg-purple-500/10 border-purple-500/20" },
+  { icon: Building2, label: "Enterprise", color: "text-blue-500 bg-blue-500/10 border-blue-500/20" },
+  { icon: Stethoscope, label: "Healthcare", color: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20" },
+  { icon: Scale, label: "Legal", color: "text-amber-500 bg-amber-500/10 border-amber-500/20" },
+  { icon: GraduationCap, label: "Education", color: "text-cyan-500 bg-cyan-500/10 border-cyan-500/20" },
+  { icon: ShoppingCart, label: "Retail", color: "text-rose-500 bg-rose-500/10 border-rose-500/20" },
+  { icon: Phone, label: "Support", color: "text-violet-500 bg-violet-500/10 border-violet-500/20" },
+  { icon: Factory, label: "Manufacturing", color: "text-orange-500 bg-orange-500/10 border-orange-500/20" },
+  { icon: Plane, label: "Aviation", color: "text-sky-500 bg-sky-500/10 border-sky-500/20" },
+  { icon: Car, label: "Automotive", color: "text-red-500 bg-red-500/10 border-red-500/20" },
+  { icon: Home, label: "Real Estate", color: "text-teal-500 bg-teal-500/10 border-teal-500/20" },
+  { icon: Utensils, label: "Food & Dining", color: "text-yellow-500 bg-yellow-500/10 border-yellow-500/20" },
+  { icon: Music, label: "Music & Audio", color: "text-pink-500 bg-pink-500/10 border-pink-500/20" },
+  { icon: Film, label: "Film & Media", color: "text-indigo-500 bg-indigo-500/10 border-indigo-500/20" },
+  { icon: Dumbbell, label: "Fitness", color: "text-lime-500 bg-lime-500/10 border-lime-500/20" },
+  { icon: Landmark, label: "Government", color: "text-slate-400 bg-slate-500/10 border-slate-500/20" },
+  { icon: Truck, label: "Logistics", color: "text-amber-600 bg-amber-600/10 border-amber-600/20" },
+  { icon: Leaf, label: "Agriculture", color: "text-green-600 bg-green-600/10 border-green-600/20" },
+  { icon: Shield, label: "Security", color: "text-red-600 bg-red-600/10 border-red-600/20" },
+  { icon: Wallet, label: "Finance", color: "text-emerald-600 bg-emerald-600/10 border-emerald-600/20" },
+  { icon: Brain, label: "Research", color: "text-fuchsia-500 bg-fuchsia-500/10 border-fuchsia-500/20" },
+  { icon: Bot, label: "Robotics", color: "text-cyan-600 bg-cyan-600/10 border-cyan-600/20" },
 ];
 
-function IndustryCard({ industry, delay = 0 }: { industry: Industry; delay?: number }) {
-  const Icon = industry.icon;
-  const [isHovered, setIsHovered] = useState(false);
+function IndustryChipCard({ chip, delay }: { chip: IndustryChip; delay: number }) {
+  const Icon = chip.icon;
   
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20, scale: 0.95 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true }}
-      transition={{ delay, duration: 0.5, ease: "easeOut" }}
-      className="h-full"
+      initial={{ opacity: 0, scale: 0.9 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true, margin: "-20px" }}
+      transition={{ delay, duration: 0.3 }}
     >
-      <Link 
-        to={industry.href || "/use-cases"} 
-        className="group block h-full"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+      <Link
+        to="/use-cases"
+        className={cn(
+          "group flex items-center gap-2 p-3 rounded-xl border",
+          "hover:scale-[1.02] hover:shadow-md transition-all duration-200",
+          chip.color
+        )}
       >
-        <motion.div 
-          className={cn(
-            "relative h-full p-4 sm:p-5 md:p-6 rounded-xl sm:rounded-2xl border border-border/50 overflow-hidden",
-            "bg-card/50 backdrop-blur-sm",
-            "hover:border-current/50 transition-all duration-300",
-            "hover:shadow-xl",
-            industry.color
-          )}
-          animate={{ y: isHovered ? -4 : 0 }}
-          transition={{ duration: 0.2 }}
-        >
-          {/* Gradient background on hover */}
-          <motion.div 
-            className={cn(
-              "absolute inset-0",
-              "bg-gradient-to-br",
-              industry.gradient
-            )}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: isHovered ? 1 : 0 }}
-            transition={{ duration: 0.3 }}
-          />
-          
-          {/* Glow effect */}
-          <motion.div
-            className="absolute -inset-px rounded-2xl opacity-0"
-            style={{
-              background: `linear-gradient(135deg, currentColor, transparent)`,
-            }}
-            animate={{ opacity: isHovered ? 0.1 : 0 }}
-            transition={{ duration: 0.3 }}
-          />
-          
-          {/* Content */}
-          <div className="relative">
-            <div className="flex items-start gap-3 sm:gap-4 mb-3 sm:mb-4">
-              <motion.div 
-                className={cn(
-                  "w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0",
-                  "bg-current/10 group-hover:bg-current/20 transition-colors"
-                )}
-                animate={{ scale: isHovered ? 1.1 : 1, rotate: isHovered ? 5 : 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
-              </motion.div>
-              <div className="flex-1 min-w-0">
-                <h3 className="font-bold text-sm sm:text-base text-foreground mb-1 group-hover:text-current transition-colors">
-                  {industry.title}
-                </h3>
-                <p className="text-[11px] sm:text-xs text-muted-foreground line-clamp-2">
-                  {industry.tagline}
-                </p>
-              </div>
-            </div>
-            
-            {/* Example quote - enhanced */}
-            <div className={cn(
-              "relative p-3 sm:p-4 rounded-lg sm:rounded-xl bg-background/60 border border-border/30",
-              "group-hover:bg-background/80 transition-all duration-300",
-              "group-hover:border-current/20"
-            )}>
-              <Quote className="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 w-2.5 h-2.5 sm:w-3 sm:h-3 text-current/30" />
-              <p className="text-[11px] sm:text-xs text-foreground/80 italic leading-relaxed pl-3 sm:pl-4">
-                {industry.example}
-              </p>
-            </div>
-            
-            {/* Arrow indicator with animation */}
-            <motion.div 
-              className="absolute top-0 right-0"
-              initial={{ opacity: 0, x: -5 }}
-              animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : -5 }}
-              transition={{ duration: 0.2 }}
-            >
-              <ArrowRight className="w-4 h-4 text-current" />
-            </motion.div>
-          </div>
-        </motion.div>
+        <div className="w-8 h-8 rounded-lg bg-current/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+          <Icon className="w-4 h-4" />
+        </div>
+        <span className="text-sm font-medium text-foreground truncate">
+          {chip.label}
+        </span>
       </Link>
     </motion.div>
   );
@@ -212,58 +97,47 @@ function IndustryCard({ industry, delay = 0 }: { industry: Industry; delay?: num
 
 export function IndustryShowcase() {
   return (
-    <section className="relative py-20 sm:py-32 px-4 overflow-hidden">
-      {/* Background elements */}
+    <section className="relative py-16 sm:py-24 px-4 overflow-hidden">
+      {/* Background */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-gradient-radial from-primary/5 to-transparent rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-radial from-primary/5 to-transparent rounded-full blur-3xl" />
       </div>
       
-      <div className="relative max-w-7xl mx-auto">
-        {/* Header with enhanced styling */}
+      <div className="relative max-w-5xl mx-auto">
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12 sm:mb-16"
+          className="text-center mb-10"
         >
           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
             <Sparkles className="w-3 h-3 text-primary" />
             <span className="text-xs">Universal Infrastructure</span>
           </Badge>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 tracking-tight">
             One CMPSBL,{" "}
-            <span 
-              style={{
-                background: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)), hsl(var(--neon-magenta)))",
-                backgroundSize: "200% 200%",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                animation: "gradientShift 4s ease-in-out infinite",
-              }}
-            >
+            <span className="bg-gradient-to-r from-primary via-violet-500 to-purple-600 bg-clip-text text-transparent">
               Every Industry
             </span>
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Persistent memory and dream cycles adapt to any domain. 
-            From <span className="text-foreground font-medium">NPC brains</span> to 
-            <span className="text-foreground font-medium"> enterprise automation</span>.
+          <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto">
+            Memory and dream cycles adapt to any domain—from game NPCs to enterprise automation.
           </p>
         </motion.div>
         
-        {/* Industry Grid - enhanced spacing */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 mb-12 sm:mb-16">
-          {industries.map((industry, idx) => (
-            <IndustryCard 
-              key={industry.title} 
-              industry={industry} 
-              delay={idx * 0.06} 
+        {/* 2-Column Compact Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3 mb-10">
+          {industries.map((chip, idx) => (
+            <IndustryChipCard 
+              key={chip.label} 
+              chip={chip} 
+              delay={idx * 0.03} 
             />
           ))}
         </div>
         
-        {/* CTA with gradient border */}
+        {/* CTA */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -273,7 +147,7 @@ export function IndustryShowcase() {
           <Button 
             asChild 
             size="lg" 
-            className="gap-2 h-12 px-8 bg-gradient-to-r from-primary via-violet-600 to-purple-600 text-white border-0 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+            className="gap-2 h-11 px-6"
           >
             <Link to="/use-cases">
               Explore All Use Cases
