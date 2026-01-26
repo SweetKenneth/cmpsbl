@@ -38,7 +38,7 @@ serve(async (req) => {
 
     const body = await req.json();
     const { 
-      product_type, // 'os' | 'template'
+      product_type, // 'os' | 'template' | 'bundle' | 'stack' | 'agency' | 'studio'
       price_id,
       product_id,
       template_name,
@@ -63,17 +63,21 @@ serve(async (req) => {
       }
     }
 
-    // Create checkout session - Stripe will collect email if not provided
-    const session = await stripe.checkout.sessions.create({
+    // Determine checkout mode - agency and studio are subscriptions, everything else is one-time
+    const isSubscription = product_type === 'agency' || product_type === 'studio';
+    const checkoutMode = isSubscription ? 'subscription' : 'payment';
+
+    // Build checkout session config
+    const sessionConfig: any = {
       customer: customerId,
-      customer_email: customerId ? undefined : email, // Only set if we have email and no customer
+      customer_email: customerId ? undefined : email,
       line_items: [
         {
           price: price_id,
           quantity: 1,
         },
       ],
-      mode: "payment",
+      mode: checkoutMode,
       success_url: `${origin}/marketplace/success?session_id={CHECKOUT_SESSION_ID}&type=${product_type}`,
       cancel_url: `${origin}/marketplace?canceled=true`,
       metadata: {
@@ -81,9 +85,15 @@ serve(async (req) => {
         product_id: product_id || '',
         template_name: template_name || '',
       },
-      // Allow Stripe to collect email for guest users
-      customer_creation: customerId ? undefined : 'always',
-    });
+    };
+
+    // customer_creation only available in payment mode
+    if (!isSubscription && !customerId) {
+      sessionConfig.customer_creation = 'always';
+    }
+
+    // Create checkout session
+    const session = await stripe.checkout.sessions.create(sessionConfig);
 
     console.log(`Checkout session created: ${session.id}, type: ${product_type}, email: ${email || 'guest'}`);
 
