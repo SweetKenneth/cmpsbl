@@ -2983,10 +2983,3156 @@ class AgencyManager {
 }
 
 export const agencyManager = new AgencyManager();`
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════
+  // ADDITIONAL TEMPLATES — Expanding to 100+ templates
+  // ═══════════════════════════════════════════════════════════════════
+  
+  {
+    id: 'smart-caching',
+    name: 'AI-Powered Cache',
+    description: 'Intelligent caching layer that learns access patterns and pre-fetches data',
+    icon: Database,
+    category: 'brain',
+    difficulty: 'intermediate',
+    estimatedTime: '30 min',
+    features: ['Pattern learning', 'Pre-fetching', 'TTL optimization', 'Cache invalidation'],
+    code: `import { substrate } from './lib/substrate';
+
+// Smart caching with learned access patterns
+class SmartCache<T> {
+  private cache = new Map<string, { value: T; expires: number; hits: number }>();
+  
+  async get(key: string): Promise<T | undefined> {
+    const cached = this.cache.get(key);
+    if (cached && Date.now() < cached.expires) {
+      cached.hits++;
+      await this.recordAccess(key, 'hit');
+      return cached.value;
+    }
+    await this.recordAccess(key, 'miss');
+    return undefined;
+  }
+  
+  async set(key: string, value: T, ttl?: number): Promise<void> {
+    const predictedTTL = ttl || await this.predictOptimalTTL(key);
+    this.cache.set(key, {
+      value,
+      expires: Date.now() + predictedTTL,
+      hits: 0
+    });
+  }
+  
+  private async predictOptimalTTL(key: string): Promise<number> {
+    const patterns = await substrate.brain.query(\`cache_pattern:\${key.split(':')[0]}\`, 5);
+    if (patterns.data?.memories?.length) {
+      const avgHitRate = patterns.data.memories.reduce((a, m) => a + m.metadata.hitRate, 0) / patterns.data.memories.length;
+      return avgHitRate > 0.8 ? 3600000 : 300000; // 1hr vs 5min
+    }
+    return 600000; // 10min default
+  }
+  
+  private async recordAccess(key: string, type: 'hit' | 'miss') {
+    await substrate.brain.learn(\`Cache \${type}: \${key}\`, \`cache_access:\${type}\`);
+  }
+}
+
+export const smartCache = new SmartCache();`
+  },
+  {
+    id: 'sentiment-guardian',
+    name: 'Sentiment Guardian',
+    description: 'Real-time sentiment analysis with automated response escalation',
+    icon: Shield,
+    category: 'defense',
+    difficulty: 'intermediate',
+    estimatedTime: '25 min',
+    features: ['Sentiment detection', 'Escalation rules', 'Trend analysis', 'Alert system'],
+    code: `import { substrate } from './lib/substrate';
+
+interface SentimentResult {
+  score: number; // -1 to 1
+  magnitude: number;
+  category: 'positive' | 'neutral' | 'negative' | 'toxic';
+  shouldEscalate: boolean;
+}
+
+async function analyzeSentiment(text: string): Promise<SentimentResult> {
+  const analysis = await substrate.decode.intent(text);
+  const sentiment = analysis.data?.sentiment || { score: 0, magnitude: 0 };
+  
+  let category: SentimentResult['category'] = 'neutral';
+  if (sentiment.score > 0.3) category = 'positive';
+  else if (sentiment.score < -0.5) category = 'toxic';
+  else if (sentiment.score < -0.2) category = 'negative';
+  
+  const shouldEscalate = category === 'toxic' || sentiment.magnitude > 0.8;
+  
+  if (shouldEscalate) {
+    await substrate.vision.alert('warn', 'Negative sentiment detected', {
+      text: text.slice(0, 100),
+      score: sentiment.score,
+      category
+    });
+  }
+  
+  await substrate.brain.learn(\`Sentiment: \${category} (\${sentiment.score})\`, 'sentiment_analysis');
+  
+  return { ...sentiment, category, shouldEscalate };
+}
+
+// Monitor stream of messages
+async function monitorChannel(messages: AsyncIterable<{ text: string; userId: string }>) {
+  const userScores = new Map<string, number[]>();
+  
+  for await (const msg of messages) {
+    const result = await analyzeSentiment(msg.text);
+    
+    const scores = userScores.get(msg.userId) || [];
+    scores.push(result.score);
+    if (scores.length > 10) scores.shift();
+    userScores.set(msg.userId, scores);
+    
+    const avgScore = scores.reduce((a, b) => a + b, 0) / scores.length;
+    if (avgScore < -0.5 && scores.length >= 5) {
+      await substrate.vision.alert('error', 'Persistent negative user', { userId: msg.userId, avgScore });
+    }
+  }
+}`
+  },
+  {
+    id: 'adaptive-routing',
+    name: 'Adaptive AI Router',
+    description: 'Dynamic routing that learns from response quality and adapts in real-time',
+    icon: Network,
+    category: 'nexus',
+    difficulty: 'advanced',
+    estimatedTime: '45 min',
+    features: ['Quality scoring', 'Cost optimization', 'Latency tracking', 'Automatic failover'],
+    code: `import { substrate } from './lib/substrate';
+
+interface ProviderStats {
+  name: string;
+  qualityScore: number;
+  avgLatency: number;
+  cost: number;
+  successRate: number;
+  lastUpdated: number;
+}
+
+class AdaptiveRouter {
+  private stats = new Map<string, ProviderStats>();
+  
+  async route(prompt: string, requirements?: {
+    maxLatency?: number;
+    maxCost?: number;
+    minQuality?: number;
+  }): Promise<{ provider: string; response: any }> {
+    const providers = await this.getAvailableProviders();
+    const ranked = this.rankProviders(providers, requirements);
+    
+    for (const provider of ranked) {
+      try {
+        const start = Date.now();
+        const response = await substrate.nexus.text(prompt, provider.name);
+        const latency = Date.now() - start;
+        
+        await this.updateStats(provider.name, {
+          latency,
+          success: true,
+          quality: await this.scoreQuality(response.data)
+        });
+        
+        return { provider: provider.name, response: response.data };
+      } catch (error) {
+        await this.updateStats(provider.name, { success: false });
+        continue;
+      }
+    }
+    
+    throw new Error('All providers failed');
+  }
+  
+  private async getAvailableProviders(): Promise<ProviderStats[]> {
+    const cached = await substrate.brain.query('provider_stats', 10);
+    return cached.data?.memories?.map(m => m.metadata as ProviderStats) || [];
+  }
+  
+  private rankProviders(providers: ProviderStats[], requirements?: any): ProviderStats[] {
+    return providers
+      .filter(p => {
+        if (requirements?.maxLatency && p.avgLatency > requirements.maxLatency) return false;
+        if (requirements?.minQuality && p.qualityScore < requirements.minQuality) return false;
+        return true;
+      })
+      .sort((a, b) => (b.qualityScore * b.successRate) - (a.qualityScore * a.successRate));
+  }
+  
+  private async scoreQuality(response: any): Promise<number> {
+    // Use brain to evaluate response quality
+    const eval = await substrate.brain.reflect();
+    return eval.data?.quality_score || 0.7;
+  }
+  
+  private async updateStats(provider: string, update: any) {
+    const current = this.stats.get(provider) || { name: provider, qualityScore: 0.5, avgLatency: 1000, cost: 0.01, successRate: 0.9, lastUpdated: 0 };
+    const updated = {
+      ...current,
+      avgLatency: update.latency ? (current.avgLatency + update.latency) / 2 : current.avgLatency,
+      successRate: update.success ? Math.min(1, current.successRate + 0.01) : Math.max(0, current.successRate - 0.05),
+      qualityScore: update.quality ? (current.qualityScore + update.quality) / 2 : current.qualityScore,
+      lastUpdated: Date.now()
+    };
+    this.stats.set(provider, updated);
+    await substrate.brain.remember(JSON.stringify(updated), 'provider_stats', updated.successRate, updated);
+  }
+}
+
+export const router = new AdaptiveRouter();`
+  },
+  {
+    id: 'context-window-manager',
+    name: 'Context Window Manager',
+    description: 'Intelligent context compression and priority-based token management',
+    icon: Brain,
+    category: 'brain',
+    difficulty: 'advanced',
+    estimatedTime: '40 min',
+    features: ['Token counting', 'Priority ranking', 'Context compression', 'Relevance scoring'],
+    code: `import { substrate } from './lib/substrate';
+
+interface ContextItem {
+  id: string;
+  content: string;
+  tokens: number;
+  priority: number;
+  relevance: number;
+  timestamp: number;
+}
+
+class ContextManager {
+  private maxTokens: number;
+  private items: ContextItem[] = [];
+  
+  constructor(maxTokens = 8000) {
+    this.maxTokens = maxTokens;
+  }
+  
+  async addContext(content: string, priority = 0.5): Promise<void> {
+    const tokens = this.estimateTokens(content);
+    const relevance = await this.scoreRelevance(content);
+    
+    this.items.push({
+      id: crypto.randomUUID(),
+      content,
+      tokens,
+      priority,
+      relevance,
+      timestamp: Date.now()
+    });
+    
+    await this.optimize();
+  }
+  
+  async buildContext(query: string): Promise<string> {
+    // Re-score relevance based on current query
+    for (const item of this.items) {
+      item.relevance = await this.scoreRelevance(item.content, query);
+    }
+    
+    // Sort by combined score
+    const sorted = [...this.items].sort((a, b) => {
+      const scoreA = a.priority * 0.4 + a.relevance * 0.6;
+      const scoreB = b.priority * 0.4 + b.relevance * 0.6;
+      return scoreB - scoreA;
+    });
+    
+    // Build context within token limit
+    let totalTokens = 0;
+    const selected: string[] = [];
+    
+    for (const item of sorted) {
+      if (totalTokens + item.tokens <= this.maxTokens) {
+        selected.push(item.content);
+        totalTokens += item.tokens;
+      }
+    }
+    
+    return selected.join('\\n\\n');
+  }
+  
+  private async optimize(): Promise<void> {
+    const totalTokens = this.items.reduce((a, b) => a + b.tokens, 0);
+    
+    if (totalTokens > this.maxTokens * 1.5) {
+      // Compress or remove lowest priority items
+      this.items.sort((a, b) => b.priority - a.priority);
+      
+      while (this.items.reduce((a, b) => a + b.tokens, 0) > this.maxTokens) {
+        const removed = this.items.pop();
+        if (removed) {
+          await substrate.brain.remember(removed.content, 'archived_context', removed.priority);
+        }
+      }
+    }
+  }
+  
+  private estimateTokens(text: string): number {
+    return Math.ceil(text.length / 4);
+  }
+  
+  private async scoreRelevance(content: string, query?: string): Promise<number> {
+    if (!query) return 0.5;
+    const result = await substrate.brain.query(query, 1);
+    return result.data?.memories?.[0]?.similarity || 0.5;
+  }
+}
+
+export const contextManager = new ContextManager();`
+  },
+  {
+    id: 'anomaly-detector',
+    name: 'Behavioral Anomaly Detector',
+    description: 'ML-powered anomaly detection for user behavior and system metrics',
+    icon: Eye,
+    category: 'vision',
+    difficulty: 'advanced',
+    estimatedTime: '50 min',
+    features: ['Pattern learning', 'Statistical analysis', 'Real-time alerts', 'Trend detection'],
+    code: `import { substrate } from './lib/substrate';
+
+interface DataPoint {
+  timestamp: number;
+  value: number;
+  labels: Record<string, string>;
+}
+
+interface AnomalyResult {
+  isAnomaly: boolean;
+  score: number;
+  expectedRange: [number, number];
+  deviation: number;
+  severity: 'low' | 'medium' | 'high' | 'critical';
+}
+
+class AnomalyDetector {
+  private baselines = new Map<string, { mean: number; stdDev: number; samples: number[] }>();
+  
+  async analyze(metricName: string, value: number): Promise<AnomalyResult> {
+    const baseline = await this.getBaseline(metricName);
+    
+    // Calculate z-score
+    const zScore = Math.abs((value - baseline.mean) / (baseline.stdDev || 1));
+    
+    const expectedRange: [number, number] = [
+      baseline.mean - 2 * baseline.stdDev,
+      baseline.mean + 2 * baseline.stdDev
+    ];
+    
+    const isAnomaly = zScore > 2;
+    const severity = zScore > 4 ? 'critical' : zScore > 3 ? 'high' : zScore > 2.5 ? 'medium' : 'low';
+    
+    if (isAnomaly) {
+      await substrate.vision.alert(severity === 'critical' ? 'error' : 'warn', 
+        \`Anomaly detected: \${metricName}\`, {
+          value,
+          expected: baseline.mean,
+          zScore,
+          severity
+        }
+      );
+      
+      await substrate.brain.remember(
+        \`Anomaly: \${metricName} = \${value} (expected ~\${baseline.mean})\`,
+        'anomaly',
+        zScore / 5,
+        { metricName, value, zScore }
+      );
+    }
+    
+    // Update baseline
+    await this.updateBaseline(metricName, value);
+    
+    return {
+      isAnomaly,
+      score: zScore,
+      expectedRange,
+      deviation: value - baseline.mean,
+      severity
+    };
+  }
+  
+  private async getBaseline(metric: string) {
+    if (this.baselines.has(metric)) {
+      return this.baselines.get(metric)!;
+    }
+    
+    // Load from memory
+    const historical = await substrate.brain.query(\`baseline:\${metric}\`, 100);
+    const samples = historical.data?.memories?.map(m => m.metadata.value) || [];
+    
+    if (samples.length === 0) {
+      return { mean: 0, stdDev: 1, samples: [] };
+    }
+    
+    const mean = samples.reduce((a, b) => a + b, 0) / samples.length;
+    const variance = samples.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / samples.length;
+    const stdDev = Math.sqrt(variance);
+    
+    const baseline = { mean, stdDev, samples };
+    this.baselines.set(metric, baseline);
+    return baseline;
+  }
+  
+  private async updateBaseline(metric: string, value: number) {
+    const baseline = this.baselines.get(metric) || { mean: value, stdDev: 0, samples: [] };
+    baseline.samples.push(value);
+    if (baseline.samples.length > 1000) baseline.samples.shift();
+    
+    baseline.mean = baseline.samples.reduce((a, b) => a + b, 0) / baseline.samples.length;
+    const variance = baseline.samples.reduce((a, b) => a + Math.pow(b - baseline.mean, 2), 0) / baseline.samples.length;
+    baseline.stdDev = Math.sqrt(variance);
+    
+    this.baselines.set(metric, baseline);
+    await substrate.brain.remember(\`baseline:\${metric}\`, 'baseline_update', 1, { value, mean: baseline.mean });
+  }
+}
+
+export const detector = new AnomalyDetector();`
+  },
+  {
+    id: 'dream-journal',
+    name: 'Dream Journal System',
+    description: 'Track, categorize, and analyze dream patterns over time',
+    icon: Moon,
+    category: 'dream',
+    difficulty: 'beginner',
+    estimatedTime: '20 min',
+    features: ['Dream logging', 'Pattern detection', 'Mood correlation', 'Insight generation'],
+    code: `import { substrate } from './lib/substrate';
+
+interface DreamEntry {
+  id: string;
+  content: string;
+  dreamType: 'vivid' | 'lucid' | 'nightmare' | 'recurring' | 'normal';
+  emotions: string[];
+  symbols: string[];
+  clarity: number;
+  timestamp: Date;
+}
+
+class DreamJournal {
+  async logDream(description: string, emotions: string[]): Promise<DreamEntry> {
+    // Feed to Dream-Eater for processing
+    const processed = await substrate.dream.feed(description, 'dream');
+    
+    // Extract symbols and classify
+    const interpretation = await substrate.dream.interpret(description);
+    
+    const entry: DreamEntry = {
+      id: crypto.randomUUID(),
+      content: description,
+      dreamType: this.classifyDream(interpretation.data),
+      emotions,
+      symbols: interpretation.data?.symbols || [],
+      clarity: interpretation.data?.clarity || 0.5,
+      timestamp: new Date()
+    };
+    
+    // Store in memory
+    await substrate.brain.remember(
+      JSON.stringify(entry),
+      'dream_entry',
+      entry.clarity,
+      { dreamType: entry.dreamType, emotions, symbols: entry.symbols }
+    );
+    
+    return entry;
+  }
+  
+  async findPatterns(days = 30): Promise<{
+    commonSymbols: string[];
+    emotionTrends: Record<string, number>;
+    lucidDreamRate: number;
+    insights: string[];
+  }> {
+    const dreams = await substrate.brain.query('dream_entry', 100);
+    const entries = dreams.data?.memories?.filter(m => {
+      const entry = JSON.parse(m.content) as DreamEntry;
+      const age = Date.now() - new Date(entry.timestamp).getTime();
+      return age < days * 24 * 60 * 60 * 1000;
+    }) || [];
+    
+    const symbols: Record<string, number> = {};
+    const emotions: Record<string, number> = {};
+    let lucidCount = 0;
+    
+    for (const memory of entries) {
+      const entry = JSON.parse(memory.content) as DreamEntry;
+      if (entry.dreamType === 'lucid') lucidCount++;
+      entry.symbols.forEach(s => symbols[s] = (symbols[s] || 0) + 1);
+      entry.emotions.forEach(e => emotions[e] = (emotions[e] || 0) + 1);
+    }
+    
+    const commonSymbols = Object.entries(symbols)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10)
+      .map(([s]) => s);
+    
+    // Generate insights
+    const reflection = await substrate.brain.reflect();
+    
+    return {
+      commonSymbols,
+      emotionTrends: emotions,
+      lucidDreamRate: entries.length ? lucidCount / entries.length : 0,
+      insights: reflection.data?.insights || []
+    };
+  }
+  
+  private classifyDream(interpretation: any): DreamEntry['dreamType'] {
+    if (interpretation?.isLucid) return 'lucid';
+    if (interpretation?.isNightmare) return 'nightmare';
+    if (interpretation?.isRecurring) return 'recurring';
+    if (interpretation?.clarity > 0.7) return 'vivid';
+    return 'normal';
+  }
+}
+
+export const dreamJournal = new DreamJournal();`
+  },
+  {
+    id: 'prompt-optimizer',
+    name: 'Prompt Optimizer',
+    description: 'Learn from prompt performance and automatically improve prompts over time',
+    icon: Sparkles,
+    category: 'nexus',
+    difficulty: 'intermediate',
+    estimatedTime: '35 min',
+    features: ['A/B testing', 'Performance tracking', 'Auto-improvement', 'Version control'],
+    code: `import { substrate } from './lib/substrate';
+
+interface PromptVersion {
+  id: string;
+  template: string;
+  variables: string[];
+  performance: {
+    uses: number;
+    avgQuality: number;
+    avgLatency: number;
+  };
+  createdAt: number;
+  isActive: boolean;
+}
+
+class PromptOptimizer {
+  private prompts = new Map<string, PromptVersion[]>();
+  
+  async execute(promptId: string, variables: Record<string, string>): Promise<{
+    response: any;
+    version: string;
+    quality?: number;
+  }> {
+    const versions = this.prompts.get(promptId) || [];
+    const active = versions.filter(v => v.isActive);
+    
+    // A/B test: 80% best performer, 20% random variant
+    let selected: PromptVersion;
+    if (Math.random() < 0.8 && active.length > 0) {
+      selected = active.sort((a, b) => b.performance.avgQuality - a.performance.avgQuality)[0];
+    } else {
+      selected = active[Math.floor(Math.random() * active.length)] || versions[0];
+    }
+    
+    if (!selected) throw new Error('No prompt versions available');
+    
+    // Fill template
+    let prompt = selected.template;
+    for (const [key, value] of Object.entries(variables)) {
+      prompt = prompt.replace(new RegExp(\`{{\${key}}}\`, 'g'), value);
+    }
+    
+    // Execute
+    const start = Date.now();
+    const response = await substrate.nexus.text(prompt);
+    const latency = Date.now() - start;
+    
+    // Score quality
+    const quality = await this.scoreResponse(response.data, prompt);
+    
+    // Update stats
+    await this.recordPerformance(selected.id, { latency, quality });
+    
+    // Trigger optimization if enough data
+    if (selected.performance.uses > 100 && selected.performance.avgQuality < 0.7) {
+      await this.generateImprovedVersion(promptId, selected);
+    }
+    
+    return { response: response.data, version: selected.id, quality };
+  }
+  
+  async addVersion(promptId: string, template: string): Promise<PromptVersion> {
+    const version: PromptVersion = {
+      id: crypto.randomUUID(),
+      template,
+      variables: [...template.matchAll(/{{(\\w+)}}/g)].map(m => m[1]),
+      performance: { uses: 0, avgQuality: 0.5, avgLatency: 0 },
+      createdAt: Date.now(),
+      isActive: true
+    };
+    
+    const versions = this.prompts.get(promptId) || [];
+    versions.push(version);
+    this.prompts.set(promptId, versions);
+    
+    await substrate.brain.remember(\`Prompt version: \${template.slice(0, 100)}\`, 'prompt_version', 1, version);
+    
+    return version;
+  }
+  
+  private async scoreResponse(response: any, prompt: string): Promise<number> {
+    const evaluation = await substrate.decode.intent(\`Rate this response quality 0-1: \${JSON.stringify(response).slice(0, 500)}\`);
+    return evaluation.data?.quality || 0.5;
+  }
+  
+  private async recordPerformance(versionId: string, metrics: { latency: number; quality: number }) {
+    // Find and update version
+    for (const [, versions] of this.prompts) {
+      const version = versions.find(v => v.id === versionId);
+      if (version) {
+        const n = version.performance.uses;
+        version.performance.avgQuality = (version.performance.avgQuality * n + metrics.quality) / (n + 1);
+        version.performance.avgLatency = (version.performance.avgLatency * n + metrics.latency) / (n + 1);
+        version.performance.uses++;
+        break;
+      }
+    }
+  }
+  
+  private async generateImprovedVersion(promptId: string, current: PromptVersion) {
+    const improved = await substrate.nexus.text(
+      \`Improve this prompt for better results: "\${current.template}". Keep the same variables.\`
+    );
+    
+    if (improved.data?.text) {
+      await this.addVersion(promptId, improved.data.text);
+    }
+  }
+}
+
+export const promptOptimizer = new PromptOptimizer();`
+  },
+  {
+    id: 'rate-limit-shield',
+    name: 'Rate Limit Shield',
+    description: 'Distributed rate limiting with token bucket and sliding window algorithms',
+    icon: Shield,
+    category: 'defense',
+    difficulty: 'intermediate',
+    estimatedTime: '30 min',
+    features: ['Token bucket', 'Sliding window', 'Distributed sync', 'Burst handling'],
+    code: `import { substrate } from './lib/substrate';
+
+interface RateLimitConfig {
+  windowMs: number;
+  maxRequests: number;
+  burstLimit?: number;
+  keyGenerator?: (req: any) => string;
+}
+
+interface RateLimitState {
+  count: number;
+  windowStart: number;
+  tokens: number;
+  lastRefill: number;
+}
+
+class RateLimitShield {
+  private states = new Map<string, RateLimitState>();
+  private config: RateLimitConfig;
+  
+  constructor(config: RateLimitConfig) {
+    this.config = {
+      burstLimit: config.maxRequests * 2,
+      keyGenerator: (req) => req.ip || 'anonymous',
+      ...config
+    };
+  }
+  
+  async check(request: any): Promise<{
+    allowed: boolean;
+    remaining: number;
+    resetIn: number;
+    retryAfter?: number;
+  }> {
+    const key = this.config.keyGenerator!(request);
+    const now = Date.now();
+    
+    // Get or create state
+    let state = this.states.get(key);
+    if (!state || now - state.windowStart > this.config.windowMs) {
+      state = {
+        count: 0,
+        windowStart: now,
+        tokens: this.config.maxRequests,
+        lastRefill: now
+      };
+    }
+    
+    // Token bucket refill
+    const elapsed = now - state.lastRefill;
+    const refillRate = this.config.maxRequests / this.config.windowMs;
+    const tokensToAdd = Math.floor(elapsed * refillRate);
+    state.tokens = Math.min(this.config.burstLimit!, state.tokens + tokensToAdd);
+    state.lastRefill = now;
+    
+    // Check limit
+    if (state.tokens < 1) {
+      const retryAfter = Math.ceil((1 - state.tokens) / refillRate);
+      
+      await substrate.vision.alert('warn', 'Rate limit exceeded', {
+        key,
+        count: state.count,
+        resetIn: this.config.windowMs - (now - state.windowStart)
+      });
+      
+      return {
+        allowed: false,
+        remaining: 0,
+        resetIn: this.config.windowMs - (now - state.windowStart),
+        retryAfter
+      };
+    }
+    
+    // Allow and decrement
+    state.tokens--;
+    state.count++;
+    this.states.set(key, state);
+    
+    return {
+      allowed: true,
+      remaining: Math.floor(state.tokens),
+      resetIn: this.config.windowMs - (now - state.windowStart)
+    };
+  }
+  
+  middleware() {
+    return async (req: any, res: any, next: () => void) => {
+      const result = await this.check(req);
+      
+      res.setHeader('X-RateLimit-Limit', this.config.maxRequests);
+      res.setHeader('X-RateLimit-Remaining', result.remaining);
+      res.setHeader('X-RateLimit-Reset', Date.now() + result.resetIn);
+      
+      if (!result.allowed) {
+        res.setHeader('Retry-After', result.retryAfter);
+        res.status(429).json({ error: 'Too many requests' });
+        return;
+      }
+      
+      next();
+    };
+  }
+}
+
+export const rateLimiter = new RateLimitShield({
+  windowMs: 60000, // 1 minute
+  maxRequests: 100,
+  burstLimit: 150
+});`
+  },
+  {
+    id: 'event-sourcing',
+    name: 'Event Sourcing Engine',
+    description: 'Event-driven state management with full audit trail and replay capability',
+    icon: Database,
+    category: 'system',
+    difficulty: 'advanced',
+    estimatedTime: '55 min',
+    features: ['Event store', 'State rebuilding', 'Projections', 'Audit trail'],
+    code: `import { substrate } from './lib/substrate';
+
+interface Event {
+  id: string;
+  aggregateId: string;
+  type: string;
+  payload: any;
+  timestamp: number;
+  version: number;
+}
+
+interface Aggregate {
+  id: string;
+  version: number;
+  state: any;
+}
+
+class EventStore {
+  private events: Event[] = [];
+  private projections = new Map<string, (state: any, event: Event) => any>();
+  
+  async append(aggregateId: string, type: string, payload: any): Promise<Event> {
+    const version = this.events.filter(e => e.aggregateId === aggregateId).length + 1;
+    
+    const event: Event = {
+      id: crypto.randomUUID(),
+      aggregateId,
+      type,
+      payload,
+      timestamp: Date.now(),
+      version
+    };
+    
+    this.events.push(event);
+    
+    // Store in brain for durability
+    await substrate.brain.remember(
+      JSON.stringify(event),
+      \`event:\${aggregateId}\`,
+      1,
+      { type, version, aggregateId }
+    );
+    
+    // Trigger projections
+    for (const [name, projector] of this.projections) {
+      await this.updateProjection(name, projector, event);
+    }
+    
+    return event;
+  }
+  
+  async getAggregate(id: string, projector: (state: any, event: Event) => any): Promise<Aggregate> {
+    const events = await this.getEvents(id);
+    
+    let state = {};
+    for (const event of events) {
+      state = projector(state, event);
+    }
+    
+    return {
+      id,
+      version: events.length,
+      state
+    };
+  }
+  
+  async getEvents(aggregateId: string, fromVersion = 0): Promise<Event[]> {
+    // Try local first
+    let events = this.events.filter(e => e.aggregateId === aggregateId && e.version > fromVersion);
+    
+    // Load from brain if needed
+    if (events.length === 0) {
+      const stored = await substrate.brain.query(\`event:\${aggregateId}\`, 1000);
+      events = (stored.data?.memories || [])
+        .map(m => JSON.parse(m.content) as Event)
+        .filter(e => e.version > fromVersion)
+        .sort((a, b) => a.version - b.version);
+    }
+    
+    return events;
+  }
+  
+  registerProjection(name: string, projector: (state: any, event: Event) => any) {
+    this.projections.set(name, projector);
+  }
+  
+  private async updateProjection(name: string, projector: (state: any, event: Event) => any, event: Event) {
+    const stored = await substrate.brain.query(\`projection:\${name}:\${event.aggregateId}\`, 1);
+    const currentState = stored.data?.memories?.[0]?.metadata?.state || {};
+    const newState = projector(currentState, event);
+    
+    await substrate.brain.remember(
+      \`Projection \${name} updated\`,
+      \`projection:\${name}:\${event.aggregateId}\`,
+      1,
+      { state: newState, version: event.version }
+    );
+  }
+}
+
+export const eventStore = new EventStore();
+
+// Example usage
+eventStore.registerProjection('user-balance', (state, event) => {
+  switch (event.type) {
+    case 'DEPOSIT':
+      return { ...state, balance: (state.balance || 0) + event.payload.amount };
+    case 'WITHDRAW':
+      return { ...state, balance: (state.balance || 0) - event.payload.amount };
+    default:
+      return state;
+  }
+});`
+  },
+  {
+    id: 'circuit-breaker',
+    name: 'Circuit Breaker Pattern',
+    description: 'Fault-tolerant service calls with automatic failure detection and recovery',
+    icon: Zap,
+    category: 'system',
+    difficulty: 'intermediate',
+    estimatedTime: '25 min',
+    features: ['Failure detection', 'Auto-recovery', 'Fallback handling', 'Health monitoring'],
+    code: `import { substrate } from './lib/substrate';
+
+type CircuitState = 'closed' | 'open' | 'half-open';
+
+interface CircuitBreakerConfig {
+  failureThreshold: number;
+  resetTimeout: number;
+  halfOpenRequests: number;
+}
+
+class CircuitBreaker {
+  private state: CircuitState = 'closed';
+  private failures = 0;
+  private successes = 0;
+  private lastFailure = 0;
+  private config: CircuitBreakerConfig;
+  
+  constructor(config: Partial<CircuitBreakerConfig> = {}) {
+    this.config = {
+      failureThreshold: 5,
+      resetTimeout: 30000,
+      halfOpenRequests: 3,
+      ...config
+    };
+  }
+  
+  async execute<T>(operation: () => Promise<T>, fallback?: () => T): Promise<T> {
+    if (this.state === 'open') {
+      if (Date.now() - this.lastFailure > this.config.resetTimeout) {
+        this.state = 'half-open';
+        this.successes = 0;
+        await this.logStateChange('half-open');
+      } else if (fallback) {
+        return fallback();
+      } else {
+        throw new Error('Circuit breaker is open');
+      }
+    }
+    
+    try {
+      const result = await operation();
+      await this.onSuccess();
+      return result;
+    } catch (error) {
+      await this.onFailure(error);
+      if (fallback) return fallback();
+      throw error;
+    }
+  }
+  
+  private async onSuccess() {
+    this.failures = 0;
+    
+    if (this.state === 'half-open') {
+      this.successes++;
+      if (this.successes >= this.config.halfOpenRequests) {
+        this.state = 'closed';
+        await this.logStateChange('closed');
+      }
+    }
+  }
+  
+  private async onFailure(error: any) {
+    this.failures++;
+    this.lastFailure = Date.now();
+    
+    if (this.failures >= this.config.failureThreshold) {
+      this.state = 'open';
+      await this.logStateChange('open', error);
+    }
+  }
+  
+  private async logStateChange(newState: CircuitState, error?: any) {
+    await substrate.vision.alert(
+      newState === 'open' ? 'error' : 'info',
+      \`Circuit breaker: \${newState}\`,
+      { failures: this.failures, error: error?.message }
+    );
+    
+    await substrate.brain.remember(
+      \`Circuit state change: \${newState}\`,
+      'circuit_breaker',
+      newState === 'open' ? 0.3 : 0.8,
+      { state: newState, failures: this.failures }
+    );
+  }
+  
+  getState(): CircuitState {
+    return this.state;
+  }
+}
+
+// Factory for named circuit breakers
+const breakers = new Map<string, CircuitBreaker>();
+
+export function getCircuitBreaker(name: string, config?: Partial<CircuitBreakerConfig>): CircuitBreaker {
+  if (!breakers.has(name)) {
+    breakers.set(name, new CircuitBreaker(config));
+  }
+  return breakers.get(name)!;
+}`
+  },
+  {
+    id: 'memory-consolidation',
+    name: 'Memory Consolidation',
+    description: 'Compress and organize long-term memories for efficient retrieval',
+    icon: Brain,
+    category: 'brain',
+    difficulty: 'advanced',
+    estimatedTime: '45 min',
+    features: ['Memory compression', 'Cluster detection', 'Importance ranking', 'Garbage collection'],
+    code: `import { substrate } from './lib/substrate';
+
+interface MemoryCluster {
+  id: string;
+  theme: string;
+  memories: string[];
+  summary: string;
+  importance: number;
+  lastAccessed: number;
+}
+
+class MemoryConsolidator {
+  async consolidate(): Promise<{
+    clustersCreated: number;
+    memoriesProcessed: number;
+    memoriesArchived: number;
+  }> {
+    // Get all recent memories
+    const memories = await substrate.brain.query('*', 1000);
+    const items = memories.data?.memories || [];
+    
+    // Group by similarity
+    const clusters = await this.clusterMemories(items);
+    
+    // Create summaries for each cluster
+    let memoriesProcessed = 0;
+    for (const cluster of clusters) {
+      const summary = await this.summarizeCluster(cluster);
+      
+      // Store consolidated memory
+      await substrate.brain.remember(
+        summary,
+        \`consolidated:\${cluster.theme}\`,
+        cluster.importance,
+        { originalCount: cluster.memories.length, theme: cluster.theme }
+      );
+      
+      memoriesProcessed += cluster.memories.length;
+    }
+    
+    // Archive old, low-importance memories
+    const archived = await this.archiveOldMemories(items);
+    
+    return {
+      clustersCreated: clusters.length,
+      memoriesProcessed,
+      memoriesArchived: archived
+    };
+  }
+  
+  private async clusterMemories(memories: any[]): Promise<MemoryCluster[]> {
+    const clusters: MemoryCluster[] = [];
+    const processed = new Set<string>();
+    
+    for (const memory of memories) {
+      if (processed.has(memory.id)) continue;
+      
+      // Find similar memories
+      const similar = await substrate.brain.query(memory.content.slice(0, 100), 10);
+      const clusterMemories = similar.data?.memories?.filter(m => 
+        m.similarity > 0.7 && !processed.has(m.id)
+      ) || [];
+      
+      if (clusterMemories.length >= 3) {
+        // Extract theme
+        const theme = await this.extractTheme(clusterMemories);
+        
+        clusters.push({
+          id: crypto.randomUUID(),
+          theme,
+          memories: clusterMemories.map(m => m.id),
+          summary: '',
+          importance: clusterMemories.reduce((a, m) => a + m.confidence, 0) / clusterMemories.length,
+          lastAccessed: Math.max(...clusterMemories.map(m => m.metadata?.accessed || 0))
+        });
+        
+        clusterMemories.forEach(m => processed.add(m.id));
+      }
+    }
+    
+    return clusters;
+  }
+  
+  private async extractTheme(memories: any[]): Promise<string> {
+    const sample = memories.slice(0, 5).map(m => m.content.slice(0, 100)).join(' | ');
+    const theme = await substrate.decode.intent(\`Extract the common theme: \${sample}\`);
+    return theme.data?.theme || 'general';
+  }
+  
+  private async summarizeCluster(cluster: MemoryCluster): Promise<string> {
+    const contents = cluster.memories.slice(0, 10).join('\\n');
+    const summary = await substrate.nexus.text(\`Summarize these related memories:\\n\${contents}\`);
+    return summary.data?.text || contents.slice(0, 200);
+  }
+  
+  private async archiveOldMemories(memories: any[]): Promise<number> {
+    const now = Date.now();
+    const oldThreshold = 30 * 24 * 60 * 60 * 1000; // 30 days
+    let archived = 0;
+    
+    for (const memory of memories) {
+      const age = now - (memory.metadata?.created || now);
+      const accessed = now - (memory.metadata?.accessed || 0);
+      
+      if (age > oldThreshold && accessed > oldThreshold && memory.confidence < 0.5) {
+        // Archive by moving to cold storage
+        await substrate.brain.remember(
+          memory.content,
+          \`archive:\${memory.memory_type}\`,
+          0.1,
+          { ...memory.metadata, archivedAt: now }
+        );
+        archived++;
+      }
+    }
+    
+    return archived;
+  }
+}
+
+export const consolidator = new MemoryConsolidator();
+
+// Run nightly
+setInterval(() => consolidator.consolidate(), 24 * 60 * 60 * 1000);`
+  },
+  {
+    id: 'cognitive-load-balancer',
+    name: 'Cognitive Load Balancer',
+    description: 'Distribute cognitive tasks across multiple brain instances for parallel processing',
+    icon: Server,
+    category: 'system',
+    difficulty: 'elite',
+    estimatedTime: '1+ hour',
+    features: ['Task distribution', 'Result aggregation', 'Health monitoring', 'Auto-scaling'],
+    code: `import { substrate } from './lib/substrate';
+
+interface CognitiveNode {
+  id: string;
+  endpoint: string;
+  load: number;
+  health: number;
+  specialization?: string[];
+}
+
+interface Task {
+  id: string;
+  type: 'query' | 'learn' | 'reflect' | 'synthesize';
+  payload: any;
+  priority: number;
+  timeout?: number;
+}
+
+class CognitiveLoadBalancer {
+  private nodes: CognitiveNode[] = [];
+  private taskQueue: Task[] = [];
+  private results = new Map<string, any>();
+  
+  registerNode(node: CognitiveNode) {
+    this.nodes.push(node);
+  }
+  
+  async distribute(task: Task): Promise<any> {
+    const node = this.selectNode(task);
+    
+    if (!node) {
+      // Queue for later
+      this.taskQueue.push(task);
+      return new Promise((resolve) => {
+        const check = setInterval(() => {
+          if (this.results.has(task.id)) {
+            clearInterval(check);
+            resolve(this.results.get(task.id));
+            this.results.delete(task.id);
+          }
+        }, 100);
+      });
+    }
+    
+    return this.executeOnNode(node, task);
+  }
+  
+  async distributeBatch(tasks: Task[]): Promise<Map<string, any>> {
+    const results = new Map<string, any>();
+    
+    // Group by type for efficient batching
+    const grouped = new Map<string, Task[]>();
+    for (const task of tasks) {
+      const key = task.type;
+      if (!grouped.has(key)) grouped.set(key, []);
+      grouped.get(key)!.push(task);
+    }
+    
+    // Distribute each group to specialized nodes
+    const promises: Promise<void>[] = [];
+    
+    for (const [type, typeTasks] of grouped) {
+      const nodes = this.nodes.filter(n => 
+        n.health > 0.5 && (!n.specialization || n.specialization.includes(type))
+      );
+      
+      // Split across available nodes
+      const perNode = Math.ceil(typeTasks.length / nodes.length);
+      
+      for (let i = 0; i < nodes.length; i++) {
+        const nodeTasks = typeTasks.slice(i * perNode, (i + 1) * perNode);
+        if (nodeTasks.length === 0) continue;
+        
+        promises.push(
+          Promise.all(nodeTasks.map(t => this.executeOnNode(nodes[i], t)))
+            .then(nodeResults => {
+              nodeTasks.forEach((t, j) => results.set(t.id, nodeResults[j]));
+            })
+        );
+      }
+    }
+    
+    await Promise.all(promises);
+    return results;
+  }
+  
+  private selectNode(task: Task): CognitiveNode | undefined {
+    const available = this.nodes
+      .filter(n => n.health > 0.5 && n.load < 0.9)
+      .filter(n => !n.specialization || n.specialization.includes(task.type));
+    
+    if (available.length === 0) return undefined;
+    
+    // Weighted random by inverse load
+    const weights = available.map(n => 1 - n.load);
+    const total = weights.reduce((a, b) => a + b, 0);
+    let random = Math.random() * total;
+    
+    for (let i = 0; i < available.length; i++) {
+      random -= weights[i];
+      if (random <= 0) return available[i];
+    }
+    
+    return available[0];
+  }
+  
+  private async executeOnNode(node: CognitiveNode, task: Task): Promise<any> {
+    node.load += 0.1;
+    
+    try {
+      let result: any;
+      
+      switch (task.type) {
+        case 'query':
+          result = await substrate.brain.query(task.payload.query, task.payload.limit);
+          break;
+        case 'learn':
+          result = await substrate.brain.learn(task.payload.content, task.payload.type);
+          break;
+        case 'reflect':
+          result = await substrate.brain.reflect();
+          break;
+        case 'synthesize':
+          result = await substrate.brain.synthesize();
+          break;
+      }
+      
+      node.health = Math.min(1, node.health + 0.01);
+      return result;
+    } catch (error) {
+      node.health = Math.max(0, node.health - 0.1);
+      throw error;
+    } finally {
+      node.load = Math.max(0, node.load - 0.1);
+    }
+  }
+  
+  // Process queued tasks
+  private async processQueue() {
+    while (this.taskQueue.length > 0) {
+      const task = this.taskQueue.shift()!;
+      const node = this.selectNode(task);
+      if (node) {
+        const result = await this.executeOnNode(node, task);
+        this.results.set(task.id, result);
+      } else {
+        // Re-queue
+        this.taskQueue.unshift(task);
+        await new Promise(r => setTimeout(r, 100));
+      }
+    }
+  }
+}
+
+export const loadBalancer = new CognitiveLoadBalancer();`
+  },
+  {
+    id: 'semantic-search',
+    name: 'Semantic Search Engine',
+    description: 'Natural language search with understanding of meaning and context',
+    icon: Search,
+    category: 'brain',
+    difficulty: 'intermediate',
+    estimatedTime: '30 min',
+    features: ['Meaning extraction', 'Context awareness', 'Fuzzy matching', 'Ranking'],
+    code: `import { substrate } from './lib/substrate';
+
+interface SearchResult {
+  id: string;
+  content: string;
+  score: number;
+  highlights: string[];
+  metadata: any;
+}
+
+class SemanticSearch {
+  async search(query: string, options?: {
+    limit?: number;
+    filters?: Record<string, any>;
+    minScore?: number;
+  }): Promise<SearchResult[]> {
+    const limit = options?.limit || 10;
+    const minScore = options?.minScore || 0.3;
+    
+    // Extract intent and key concepts
+    const intent = await substrate.decode.intent(query);
+    const expandedQuery = await this.expandQuery(query, intent.data);
+    
+    // Search with expanded query
+    const results = await substrate.brain.query(expandedQuery, limit * 2);
+    
+    // Score and filter results
+    const scored = await Promise.all(
+      (results.data?.memories || []).map(async (memory) => {
+        const score = await this.scoreResult(memory, query, intent.data);
+        const highlights = this.extractHighlights(memory.content, query);
+        
+        return {
+          id: memory.id,
+          content: memory.content,
+          score,
+          highlights,
+          metadata: memory.metadata
+        };
+      })
+    );
+    
+    // Apply filters and sort
+    let filtered = scored.filter(r => r.score >= minScore);
+    
+    if (options?.filters) {
+      for (const [key, value] of Object.entries(options.filters)) {
+        filtered = filtered.filter(r => r.metadata?.[key] === value);
+      }
+    }
+    
+    return filtered
+      .sort((a, b) => b.score - a.score)
+      .slice(0, limit);
+  }
+  
+  private async expandQuery(query: string, intent: any): Promise<string> {
+    // Add synonyms and related terms
+    const expansion = await substrate.nexus.text(
+      \`Generate search terms related to: "\${query}". Include synonyms and related concepts. Return only terms, comma-separated.\`
+    );
+    
+    const terms = expansion.data?.text?.split(',').map((t: string) => t.trim()) || [];
+    return [query, ...terms.slice(0, 5)].join(' ');
+  }
+  
+  private async scoreResult(memory: any, query: string, intent: any): Promise<number> {
+    let score = memory.similarity || 0.5;
+    
+    // Boost for exact matches
+    if (memory.content.toLowerCase().includes(query.toLowerCase())) {
+      score += 0.2;
+    }
+    
+    // Boost for recency
+    const age = Date.now() - (memory.metadata?.created || 0);
+    const recencyBoost = Math.max(0, 0.1 - (age / (30 * 24 * 60 * 60 * 1000)) * 0.1);
+    score += recencyBoost;
+    
+    // Boost for high confidence memories
+    score += (memory.confidence || 0.5) * 0.1;
+    
+    return Math.min(1, score);
+  }
+  
+  private extractHighlights(content: string, query: string): string[] {
+    const highlights: string[] = [];
+    const words = query.toLowerCase().split(' ');
+    const sentences = content.split(/[.!?]+/);
+    
+    for (const sentence of sentences) {
+      const lower = sentence.toLowerCase();
+      if (words.some(w => lower.includes(w))) {
+        highlights.push(sentence.trim());
+        if (highlights.length >= 3) break;
+      }
+    }
+    
+    return highlights;
+  }
+}
+
+export const semanticSearch = new SemanticSearch();`
+  },
+  {
+    id: 'webhook-orchestrator',
+    name: 'Webhook Orchestrator',
+    description: 'Manage, retry, and monitor outgoing webhooks with delivery guarantees',
+    icon: Radio,
+    category: 'system',
+    difficulty: 'intermediate',
+    estimatedTime: '35 min',
+    features: ['Retry logic', 'Delivery tracking', 'Signature verification', 'Rate limiting'],
+    code: `import { substrate } from './lib/substrate';
+
+interface WebhookConfig {
+  id: string;
+  url: string;
+  secret: string;
+  events: string[];
+  retryPolicy: {
+    maxAttempts: number;
+    backoffMs: number;
+  };
+}
+
+interface WebhookDelivery {
+  id: string;
+  webhookId: string;
+  event: string;
+  payload: any;
+  status: 'pending' | 'delivered' | 'failed';
+  attempts: number;
+  lastAttempt?: number;
+  response?: { status: number; body: string };
+}
+
+class WebhookOrchestrator {
+  private webhooks = new Map<string, WebhookConfig>();
+  private deliveries: WebhookDelivery[] = [];
+  
+  register(config: WebhookConfig) {
+    this.webhooks.set(config.id, config);
+  }
+  
+  async emit(event: string, payload: any): Promise<string[]> {
+    const deliveryIds: string[] = [];
+    
+    for (const [, webhook] of this.webhooks) {
+      if (webhook.events.includes(event) || webhook.events.includes('*')) {
+        const deliveryId = await this.createDelivery(webhook, event, payload);
+        deliveryIds.push(deliveryId);
+      }
+    }
+    
+    return deliveryIds;
+  }
+  
+  private async createDelivery(webhook: WebhookConfig, event: string, payload: any): Promise<string> {
+    const delivery: WebhookDelivery = {
+      id: crypto.randomUUID(),
+      webhookId: webhook.id,
+      event,
+      payload,
+      status: 'pending',
+      attempts: 0
+    };
+    
+    this.deliveries.push(delivery);
+    await this.attemptDelivery(delivery, webhook);
+    
+    return delivery.id;
+  }
+  
+  private async attemptDelivery(delivery: WebhookDelivery, webhook: WebhookConfig): Promise<boolean> {
+    delivery.attempts++;
+    delivery.lastAttempt = Date.now();
+    
+    const signature = await this.sign(JSON.stringify(delivery.payload), webhook.secret);
+    
+    try {
+      const response = await fetch(webhook.url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Webhook-Signature': signature,
+          'X-Webhook-Event': delivery.event,
+          'X-Delivery-Id': delivery.id
+        },
+        body: JSON.stringify(delivery.payload)
+      });
+      
+      delivery.response = {
+        status: response.status,
+        body: await response.text()
+      };
+      
+      if (response.ok) {
+        delivery.status = 'delivered';
+        await substrate.brain.learn(\`Webhook delivered: \${delivery.event}\`, 'webhook_success');
+        return true;
+      }
+      
+      throw new Error(\`HTTP \${response.status}\`);
+    } catch (error: any) {
+      await substrate.vision.alert('warn', \`Webhook delivery failed: \${webhook.url}\`, {
+        event: delivery.event,
+        attempt: delivery.attempts,
+        error: error.message
+      });
+      
+      if (delivery.attempts < webhook.retryPolicy.maxAttempts) {
+        const delay = webhook.retryPolicy.backoffMs * Math.pow(2, delivery.attempts - 1);
+        setTimeout(() => this.attemptDelivery(delivery, webhook), delay);
+      } else {
+        delivery.status = 'failed';
+        await substrate.vision.alert('error', 'Webhook permanently failed', { deliveryId: delivery.id });
+      }
+      
+      return false;
+    }
+  }
+  
+  private async sign(payload: string, secret: string): Promise<string> {
+    const encoder = new TextEncoder();
+    const key = await crypto.subtle.importKey(
+      'raw',
+      encoder.encode(secret),
+      { name: 'HMAC', hash: 'SHA-256' },
+      false,
+      ['sign']
+    );
+    const signature = await crypto.subtle.sign('HMAC', key, encoder.encode(payload));
+    return Array.from(new Uint8Array(signature)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+  
+  getDeliveryStatus(id: string): WebhookDelivery | undefined {
+    return this.deliveries.find(d => d.id === id);
+  }
+}
+
+export const webhookOrchestrator = new WebhookOrchestrator();`
+  },
+  {
+    id: 'api-gateway',
+    name: 'API Gateway',
+    description: 'Unified API layer with authentication, rate limiting, and request transformation',
+    icon: Globe,
+    category: 'system',
+    difficulty: 'advanced',
+    estimatedTime: '50 min',
+    features: ['Request routing', 'Auth handling', 'Rate limiting', 'Response caching'],
+    code: `import { substrate } from './lib/substrate';
+
+interface Route {
+  path: string;
+  method: string;
+  handler: string;
+  auth?: 'none' | 'api-key' | 'jwt';
+  rateLimit?: { requests: number; window: number };
+  cache?: { ttl: number };
+  transform?: {
+    request?: (req: any) => any;
+    response?: (res: any) => any;
+  };
+}
+
+class APIGateway {
+  private routes: Route[] = [];
+  private cache = new Map<string, { data: any; expires: number }>();
+  private rateLimits = new Map<string, { count: number; reset: number }>();
+  
+  addRoute(route: Route) {
+    this.routes.push(route);
+  }
+  
+  async handle(request: Request): Promise<Response> {
+    const url = new URL(request.url);
+    const method = request.method;
+    
+    // Find matching route
+    const route = this.routes.find(r => 
+      this.matchPath(r.path, url.pathname) && r.method === method
+    );
+    
+    if (!route) {
+      return new Response(JSON.stringify({ error: 'Not found' }), { status: 404 });
+    }
+    
+    // Auth check
+    const authResult = await this.checkAuth(request, route);
+    if (!authResult.valid) {
+      return new Response(JSON.stringify({ error: authResult.error }), { status: 401 });
+    }
+    
+    // Rate limiting
+    const rateLimitResult = this.checkRateLimit(authResult.identity, route);
+    if (!rateLimitResult.allowed) {
+      return new Response(JSON.stringify({ error: 'Rate limit exceeded' }), { 
+        status: 429,
+        headers: { 'Retry-After': String(rateLimitResult.retryAfter) }
+      });
+    }
+    
+    // Check cache
+    const cacheKey = \`\${method}:\${url.pathname}\`;
+    if (route.cache && method === 'GET') {
+      const cached = this.cache.get(cacheKey);
+      if (cached && cached.expires > Date.now()) {
+        return new Response(JSON.stringify(cached.data), {
+          headers: { 'X-Cache': 'HIT' }
+        });
+      }
+    }
+    
+    // Execute handler
+    try {
+      let body = await request.json().catch(() => ({}));
+      
+      if (route.transform?.request) {
+        body = route.transform.request(body);
+      }
+      
+      // Route to substrate module
+      const [module, action] = route.handler.split('.');
+      const response = await substrate.invoke({
+        module: module as any,
+        action,
+        payload: body
+      });
+      
+      let result = response.data;
+      
+      if (route.transform?.response) {
+        result = route.transform.response(result);
+      }
+      
+      // Cache if configured
+      if (route.cache && method === 'GET') {
+        this.cache.set(cacheKey, {
+          data: result,
+          expires: Date.now() + route.cache.ttl
+        });
+      }
+      
+      await substrate.brain.learn(\`API call: \${route.path}\`, 'api_request');
+      
+      return new Response(JSON.stringify(result), { status: 200 });
+    } catch (error: any) {
+      await substrate.vision.alert('error', \`API error: \${route.path}\`, { error: error.message });
+      return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+    }
+  }
+  
+  private matchPath(pattern: string, path: string): boolean {
+    const regex = new RegExp('^' + pattern.replace(/:[^/]+/g, '[^/]+') + '$');
+    return regex.test(path);
+  }
+  
+  private async checkAuth(request: Request, route: Route): Promise<{ valid: boolean; identity?: string; error?: string }> {
+    if (route.auth === 'none') return { valid: true };
+    
+    const authHeader = request.headers.get('Authorization');
+    if (!authHeader) return { valid: false, error: 'Missing authorization' };
+    
+    if (route.auth === 'api-key') {
+      const key = authHeader.replace('Bearer ', '');
+      const validation = await substrate.access.validate(key);
+      return validation.data?.valid 
+        ? { valid: true, identity: validation.data.key_id }
+        : { valid: false, error: 'Invalid API key' };
+    }
+    
+    return { valid: false, error: 'Unknown auth type' };
+  }
+  
+  private checkRateLimit(identity: string | undefined, route: Route): { allowed: boolean; retryAfter?: number } {
+    if (!route.rateLimit || !identity) return { allowed: true };
+    
+    const key = \`\${identity}:\${route.path}\`;
+    const now = Date.now();
+    let state = this.rateLimits.get(key);
+    
+    if (!state || state.reset < now) {
+      state = { count: 0, reset: now + route.rateLimit.window };
+    }
+    
+    if (state.count >= route.rateLimit.requests) {
+      return { allowed: false, retryAfter: Math.ceil((state.reset - now) / 1000) };
+    }
+    
+    state.count++;
+    this.rateLimits.set(key, state);
+    return { allowed: true };
+  }
+}
+
+export const gateway = new APIGateway();`
+  },
+  {
+    id: 'feature-flags',
+    name: 'Feature Flag System',
+    description: 'Dynamic feature toggles with user targeting and gradual rollouts',
+    icon: Target,
+    category: 'system',
+    difficulty: 'intermediate',
+    estimatedTime: '30 min',
+    features: ['Percentage rollouts', 'User targeting', 'A/B testing', 'Real-time updates'],
+    code: `import { substrate } from './lib/substrate';
+
+interface FeatureFlag {
+  key: string;
+  enabled: boolean;
+  rolloutPercentage?: number;
+  userTargets?: string[];
+  rules?: {
+    attribute: string;
+    operator: 'eq' | 'neq' | 'gt' | 'lt' | 'contains';
+    value: any;
+  }[];
+}
+
+interface UserContext {
+  id: string;
+  attributes: Record<string, any>;
+}
+
+class FeatureFlagService {
+  private flags = new Map<string, FeatureFlag>();
+  
+  async isEnabled(key: string, user?: UserContext): Promise<boolean> {
+    const flag = this.flags.get(key);
+    
+    if (!flag) {
+      await substrate.vision.alert('warn', \`Unknown feature flag: \${key}\`);
+      return false;
+    }
+    
+    if (!flag.enabled) return false;
+    
+    // Check user targets
+    if (flag.userTargets?.length && user) {
+      if (flag.userTargets.includes(user.id)) return true;
+    }
+    
+    // Check rules
+    if (flag.rules?.length && user) {
+      for (const rule of flag.rules) {
+        const value = user.attributes[rule.attribute];
+        const matches = this.evaluateRule(rule, value);
+        if (!matches) return false;
+      }
+    }
+    
+    // Percentage rollout
+    if (flag.rolloutPercentage !== undefined && user) {
+      const hash = this.hashUser(user.id + key);
+      if (hash > flag.rolloutPercentage) return false;
+    }
+    
+    // Track usage
+    await substrate.brain.learn(
+      \`Feature flag evaluated: \${key} = true\`,
+      'feature_flag',
+    );
+    
+    return true;
+  }
+  
+  async setFlag(flag: FeatureFlag): Promise<void> {
+    this.flags.set(flag.key, flag);
+    
+    await substrate.brain.remember(
+      JSON.stringify(flag),
+      'feature_flag_config',
+      1,
+      { key: flag.key, enabled: flag.enabled }
+    );
+  }
+  
+  async getVariant(key: string, variants: string[], user?: UserContext): Promise<string> {
+    if (!await this.isEnabled(key, user)) {
+      return variants[0]; // Default/control
+    }
+    
+    // Consistent variant assignment
+    const hash = user ? this.hashUser(user.id + key) : Math.random() * 100;
+    const index = Math.floor((hash / 100) * variants.length);
+    
+    return variants[index];
+  }
+  
+  private evaluateRule(rule: { operator: string; value: any }, value: any): boolean {
+    switch (rule.operator) {
+      case 'eq': return value === rule.value;
+      case 'neq': return value !== rule.value;
+      case 'gt': return value > rule.value;
+      case 'lt': return value < rule.value;
+      case 'contains': return String(value).includes(rule.value);
+      default: return false;
+    }
+  }
+  
+  private hashUser(input: string): number {
+    let hash = 0;
+    for (let i = 0; i < input.length; i++) {
+      hash = ((hash << 5) - hash) + input.charCodeAt(i);
+      hash |= 0;
+    }
+    return Math.abs(hash) % 100;
+  }
+}
+
+export const featureFlags = new FeatureFlagService();
+
+// Example usage
+featureFlags.setFlag({
+  key: 'new-checkout',
+  enabled: true,
+  rolloutPercentage: 25,
+  userTargets: ['beta-tester-1', 'beta-tester-2'],
+  rules: [
+    { attribute: 'country', operator: 'eq', value: 'US' }
+  ]
+});`
+  },
+  {
+    id: 'dream-incubation',
+    name: 'Dream Incubation',
+    description: 'Guide and shape dream synthesis for targeted creative outputs',
+    icon: Moon,
+    category: 'dream',
+    difficulty: 'advanced',
+    estimatedTime: '40 min',
+    features: ['Guided dreaming', 'Symbol injection', 'Theme focusing', 'Creative synthesis'],
+    code: `import { substrate } from './lib/substrate';
+
+interface IncubationSession {
+  id: string;
+  theme: string;
+  symbols: string[];
+  constraints: string[];
+  duration: number;
+  outputs: DreamOutput[];
+}
+
+interface DreamOutput {
+  content: string;
+  type: 'narrative' | 'visual' | 'concept' | 'solution';
+  relevance: number;
+  novelty: number;
+}
+
+class DreamIncubator {
+  async incubate(config: {
+    theme: string;
+    symbols?: string[];
+    constraints?: string[];
+    targetOutputs?: number;
+  }): Promise<IncubationSession> {
+    const session: IncubationSession = {
+      id: crypto.randomUUID(),
+      theme: config.theme,
+      symbols: config.symbols || [],
+      constraints: config.constraints || [],
+      duration: 0,
+      outputs: []
+    };
+    
+    const startTime = Date.now();
+    
+    // Seed the dream with theme
+    await substrate.dream.feed(
+      \`Theme for incubation: \${config.theme}. Symbols: \${session.symbols.join(', ')}\`,
+      'vision'
+    );
+    
+    // Set appropriate mood
+    await substrate.dream.mood('curious');
+    
+    // Generate outputs
+    const targetCount = config.targetOutputs || 5;
+    
+    for (let i = 0; i < targetCount; i++) {
+      const output = await this.generateOutput(session);
+      if (output) {
+        session.outputs.push(output);
+      }
+    }
+    
+    // Trigger synthesis
+    await substrate.dream.mutate();
+    
+    session.duration = Date.now() - startTime;
+    
+    // Store session
+    await substrate.brain.remember(
+      JSON.stringify(session),
+      'dream_incubation',
+      session.outputs.reduce((a, o) => a + o.relevance, 0) / session.outputs.length,
+      { theme: config.theme, outputCount: session.outputs.length }
+    );
+    
+    return session;
+  }
+  
+  private async generateOutput(session: IncubationSession): Promise<DreamOutput | null> {
+    // Build incubation prompt
+    const prompt = this.buildPrompt(session);
+    
+    // Use dream interpretation for creative output
+    const interpretation = await substrate.dream.interpret(prompt);
+    
+    if (!interpretation.data) return null;
+    
+    const output: DreamOutput = {
+      content: interpretation.data.narrative || interpretation.data.insight,
+      type: this.classifyOutput(interpretation.data),
+      relevance: this.scoreRelevance(interpretation.data, session),
+      novelty: interpretation.data.novelty || 0.5
+    };
+    
+    // Check constraints
+    if (!this.meetsConstraints(output, session.constraints)) {
+      return null;
+    }
+    
+    return output;
+  }
+  
+  private buildPrompt(session: IncubationSession): string {
+    let prompt = \`Dream incubation on theme: \${session.theme}\\n\`;
+    
+    if (session.symbols.length > 0) {
+      prompt += \`Incorporate symbols: \${session.symbols.join(', ')}\\n\`;
+    }
+    
+    if (session.constraints.length > 0) {
+      prompt += \`Constraints: \${session.constraints.join('; ')}\\n\`;
+    }
+    
+    prompt += 'Generate a creative dream output.';
+    return prompt;
+  }
+  
+  private classifyOutput(data: any): DreamOutput['type'] {
+    if (data.hasNarrative) return 'narrative';
+    if (data.hasVisual) return 'visual';
+    if (data.hasSolution) return 'solution';
+    return 'concept';
+  }
+  
+  private scoreRelevance(data: any, session: IncubationSession): number {
+    let score = 0.5;
+    
+    // Check theme mention
+    if (data.narrative?.toLowerCase().includes(session.theme.toLowerCase())) {
+      score += 0.2;
+    }
+    
+    // Check symbol incorporation
+    for (const symbol of session.symbols) {
+      if (data.narrative?.toLowerCase().includes(symbol.toLowerCase())) {
+        score += 0.1;
+      }
+    }
+    
+    return Math.min(1, score);
+  }
+  
+  private meetsConstraints(output: DreamOutput, constraints: string[]): boolean {
+    for (const constraint of constraints) {
+      if (constraint.startsWith('min_length:')) {
+        const minLength = parseInt(constraint.split(':')[1]);
+        if (output.content.length < minLength) return false;
+      }
+      if (constraint.startsWith('exclude:')) {
+        const excluded = constraint.split(':')[1];
+        if (output.content.toLowerCase().includes(excluded.toLowerCase())) return false;
+      }
+    }
+    return true;
+  }
+}
+
+export const dreamIncubator = new DreamIncubator();`
+  },
+  {
+    id: 'multi-tenant-isolation',
+    name: 'Multi-Tenant Isolation',
+    description: 'Secure data and cognitive isolation for multi-tenant applications',
+    icon: Users,
+    category: 'defense',
+    difficulty: 'advanced',
+    estimatedTime: '45 min',
+    features: ['Tenant isolation', 'Data partitioning', 'Resource limits', 'Audit logging'],
+    code: `import { substrate } from './lib/substrate';
+
+interface Tenant {
+  id: string;
+  name: string;
+  tier: 'free' | 'pro' | 'enterprise';
+  limits: {
+    memoriesPerDay: number;
+    queriesPerMinute: number;
+    maxMemories: number;
+  };
+  usage: {
+    memories: number;
+    queries: number;
+    lastReset: number;
+  };
+}
+
+class TenantIsolation {
+  private tenants = new Map<string, Tenant>();
+  private currentTenant: string | null = null;
+  
+  setContext(tenantId: string) {
+    if (!this.tenants.has(tenantId)) {
+      throw new Error('Unknown tenant');
+    }
+    this.currentTenant = tenantId;
+  }
+  
+  clearContext() {
+    this.currentTenant = null;
+  }
+  
+  async remember(content: string, type: string, confidence?: number, metadata?: any) {
+    this.ensureContext();
+    await this.checkLimit('memories');
+    
+    const tenant = this.tenants.get(this.currentTenant!)!;
+    
+    // Prefix memory type with tenant ID for isolation
+    const isolatedType = \`tenant:\${tenant.id}:\${type}\`;
+    const isolatedMetadata = { ...metadata, _tenantId: tenant.id };
+    
+    const result = await substrate.brain.remember(content, isolatedType, confidence, isolatedMetadata);
+    
+    tenant.usage.memories++;
+    await this.logAccess('write', type);
+    
+    return result;
+  }
+  
+  async query(queryText: string, limit?: number) {
+    this.ensureContext();
+    await this.checkLimit('queries');
+    
+    const tenant = this.tenants.get(this.currentTenant!)!;
+    
+    // Add tenant filter to query
+    const result = await substrate.brain.query(
+      \`tenant:\${tenant.id}: \${queryText}\`,
+      limit
+    );
+    
+    // Filter results to ensure isolation
+    const filtered = {
+      ...result,
+      data: {
+        ...result.data,
+        memories: result.data?.memories?.filter(m => 
+          m.metadata?._tenantId === tenant.id
+        ) || []
+      }
+    };
+    
+    tenant.usage.queries++;
+    await this.logAccess('read', 'query');
+    
+    return filtered;
+  }
+  
+  async registerTenant(id: string, name: string, tier: Tenant['tier']): Promise<Tenant> {
+    const limits = this.getLimitsForTier(tier);
+    
+    const tenant: Tenant = {
+      id,
+      name,
+      tier,
+      limits,
+      usage: { memories: 0, queries: 0, lastReset: Date.now() }
+    };
+    
+    this.tenants.set(id, tenant);
+    
+    await substrate.brain.remember(
+      \`Tenant registered: \${name}\`,
+      'system:tenant_registration',
+      1,
+      { tenantId: id, tier }
+    );
+    
+    return tenant;
+  }
+  
+  private ensureContext() {
+    if (!this.currentTenant) {
+      throw new Error('No tenant context set');
+    }
+  }
+  
+  private async checkLimit(type: 'memories' | 'queries') {
+    const tenant = this.tenants.get(this.currentTenant!)!;
+    
+    // Reset daily limits
+    const dayMs = 24 * 60 * 60 * 1000;
+    if (Date.now() - tenant.usage.lastReset > dayMs) {
+      tenant.usage = { memories: 0, queries: 0, lastReset: Date.now() };
+    }
+    
+    if (type === 'memories' && tenant.usage.memories >= tenant.limits.memoriesPerDay) {
+      throw new Error('Daily memory limit exceeded');
+    }
+    
+    if (type === 'queries' && tenant.usage.queries >= tenant.limits.queriesPerMinute) {
+      throw new Error('Query rate limit exceeded');
+    }
+  }
+  
+  private getLimitsForTier(tier: Tenant['tier']): Tenant['limits'] {
+    switch (tier) {
+      case 'free':
+        return { memoriesPerDay: 100, queriesPerMinute: 10, maxMemories: 1000 };
+      case 'pro':
+        return { memoriesPerDay: 1000, queriesPerMinute: 100, maxMemories: 50000 };
+      case 'enterprise':
+        return { memoriesPerDay: 10000, queriesPerMinute: 1000, maxMemories: 1000000 };
+    }
+  }
+  
+  private async logAccess(operation: string, resource: string) {
+    await substrate.brain.remember(
+      \`Tenant access: \${operation} \${resource}\`,
+      'system:audit_log',
+      1,
+      { tenantId: this.currentTenant, operation, resource, timestamp: Date.now() }
+    );
+  }
+}
+
+export const tenantIsolation = new TenantIsolation();`
+  },
+  {
+    id: 'persona-engine',
+    name: 'Persona Engine',
+    description: 'Create and manage distinct AI personalities with consistent behavior',
+    icon: Bot,
+    category: 'decode',
+    difficulty: 'intermediate',
+    estimatedTime: '35 min',
+    features: ['Personality traits', 'Behavior consistency', 'Mood states', 'Memory isolation'],
+    code: `import { substrate } from './lib/substrate';
+
+interface Persona {
+  id: string;
+  name: string;
+  traits: {
+    warmth: number;      // -1 cold to 1 warm
+    formality: number;   // -1 casual to 1 formal
+    verbosity: number;   // -1 terse to 1 verbose
+    humor: number;       // 0 to 1
+    empathy: number;     // 0 to 1
+  };
+  voice: string;         // Description of speaking style
+  backstory: string;
+  currentMood: string;
+  memories: string[];
+}
+
+class PersonaEngine {
+  private personas = new Map<string, Persona>();
+  private activePersona: string | null = null;
+  
+  async create(config: Omit<Persona, 'id' | 'currentMood' | 'memories'>): Promise<Persona> {
+    const persona: Persona = {
+      ...config,
+      id: crypto.randomUUID(),
+      currentMood: 'neutral',
+      memories: []
+    };
+    
+    this.personas.set(persona.id, persona);
+    
+    await substrate.brain.remember(
+      \`Persona created: \${persona.name} - \${persona.voice}\`,
+      \`persona:\${persona.id}\`,
+      1,
+      { personaId: persona.id, traits: persona.traits }
+    );
+    
+    return persona;
+  }
+  
+  activate(personaId: string) {
+    if (!this.personas.has(personaId)) {
+      throw new Error('Persona not found');
+    }
+    this.activePersona = personaId;
+  }
+  
+  async respond(userMessage: string): Promise<{
+    response: string;
+    persona: string;
+    mood: string;
+  }> {
+    if (!this.activePersona) {
+      throw new Error('No active persona');
+    }
+    
+    const persona = this.personas.get(this.activePersona)!;
+    
+    // Build persona context
+    const context = this.buildContext(persona);
+    
+    // Get response with persona context
+    const response = await substrate.decode.chat(
+      \`[Persona: \${persona.name}]\\n[Context: \${context}]\\n\\nUser: \${userMessage}\`,
+      \`persona_\${persona.id}\`
+    );
+    
+    // Update mood based on interaction
+    await this.updateMood(persona, userMessage);
+    
+    // Store in persona memory
+    persona.memories.push(\`User: \${userMessage} | Response: \${response.data?.reply?.slice(0, 100)}\`);
+    if (persona.memories.length > 50) persona.memories.shift();
+    
+    return {
+      response: response.data?.reply || '',
+      persona: persona.name,
+      mood: persona.currentMood
+    };
+  }
+  
+  private buildContext(persona: Persona): string {
+    const traits = persona.traits;
+    
+    let style = '';
+    if (traits.warmth > 0.5) style += 'Be warm and friendly. ';
+    if (traits.warmth < -0.5) style += 'Be professional and distant. ';
+    if (traits.formality > 0.5) style += 'Use formal language. ';
+    if (traits.formality < -0.5) style += 'Be casual and relaxed. ';
+    if (traits.verbosity > 0.5) style += 'Give detailed explanations. ';
+    if (traits.verbosity < -0.5) style += 'Be brief and concise. ';
+    if (traits.humor > 0.5) style += 'Include appropriate humor. ';
+    if (traits.empathy > 0.7) style += 'Show empathy and understanding. ';
+    
+    return \`
+      Voice: \${persona.voice}
+      Current mood: \${persona.currentMood}
+      Style: \${style}
+      Recent context: \${persona.memories.slice(-3).join(' | ')}
+    \`.trim();
+  }
+  
+  private async updateMood(persona: Persona, userMessage: string) {
+    const sentiment = await substrate.decode.intent(userMessage);
+    const score = sentiment.data?.sentiment?.score || 0;
+    
+    if (score > 0.5) {
+      persona.currentMood = 'happy';
+    } else if (score < -0.5) {
+      if (persona.traits.empathy > 0.5) {
+        persona.currentMood = 'concerned';
+      } else {
+        persona.currentMood = 'neutral';
+      }
+    } else {
+      persona.currentMood = 'neutral';
+    }
+  }
+  
+  getPersona(id: string): Persona | undefined {
+    return this.personas.get(id);
+  }
+  
+  listPersonas(): Persona[] {
+    return Array.from(this.personas.values());
+  }
+}
+
+export const personaEngine = new PersonaEngine();
+
+// Example persona
+personaEngine.create({
+  name: 'Atlas',
+  traits: { warmth: 0.6, formality: 0.3, verbosity: 0.4, humor: 0.5, empathy: 0.8 },
+  voice: 'Knowledgeable but approachable, like a friendly professor',
+  backstory: 'An AI assistant passionate about helping others learn and grow'
+});`
+  },
+  {
+    id: 'document-analyzer',
+    name: 'Document Analyzer',
+    description: 'Extract insights, entities, and structure from documents',
+    icon: FileText,
+    category: 'decode',
+    difficulty: 'intermediate',
+    estimatedTime: '30 min',
+    features: ['Entity extraction', 'Summarization', 'Key phrase detection', 'Document Q&A'],
+    code: `import { substrate } from './lib/substrate';
+
+interface DocumentAnalysis {
+  id: string;
+  title: string;
+  summary: string;
+  entities: { text: string; type: string; confidence: number }[];
+  keyPhrases: string[];
+  topics: string[];
+  sentiment: { score: number; label: string };
+  wordCount: number;
+  readingTime: number;
+}
+
+class DocumentAnalyzer {
+  async analyze(content: string, title?: string): Promise<DocumentAnalysis> {
+    const id = crypto.randomUUID();
+    
+    // Extract entities
+    const entities = await this.extractEntities(content);
+    
+    // Generate summary
+    const summary = await this.summarize(content);
+    
+    // Extract key phrases
+    const keyPhrases = await this.extractKeyPhrases(content);
+    
+    // Detect topics
+    const topics = await this.detectTopics(content);
+    
+    // Analyze sentiment
+    const sentiment = await this.analyzeSentiment(content);
+    
+    const analysis: DocumentAnalysis = {
+      id,
+      title: title || await this.generateTitle(content),
+      summary,
+      entities,
+      keyPhrases,
+      topics,
+      sentiment,
+      wordCount: content.split(/\\s+/).length,
+      readingTime: Math.ceil(content.split(/\\s+/).length / 200)
+    };
+    
+    // Store for future reference
+    await substrate.brain.remember(
+      \`Document analysis: \${analysis.title}\`,
+      'document_analysis',
+      0.9,
+      { 
+        documentId: id,
+        summary: summary.slice(0, 200),
+        topics,
+        entities: entities.slice(0, 10)
+      }
+    );
+    
+    return analysis;
+  }
+  
+  async askQuestion(documentId: string, question: string): Promise<string> {
+    // Retrieve document context
+    const context = await substrate.brain.query(\`documentId:\${documentId}\`, 5);
+    const memories = context.data?.memories || [];
+    
+    // Build context string
+    const contextStr = memories.map(m => m.content).join('\\n');
+    
+    // Ask with context
+    const answer = await substrate.decode.chat(
+      \`Context:\\n\${contextStr}\\n\\nQuestion: \${question}\`,
+      \`doc_qa_\${documentId}\`
+    );
+    
+    return answer.data?.reply || 'Unable to answer based on the document.';
+  }
+  
+  private async extractEntities(content: string): Promise<DocumentAnalysis['entities']> {
+    const response = await substrate.decode.intent(
+      \`Extract named entities (people, organizations, locations, dates) from: \${content.slice(0, 2000)}\`
+    );
+    
+    return response.data?.entities || [];
+  }
+  
+  private async summarize(content: string): Promise<string> {
+    const response = await substrate.nexus.text(
+      \`Summarize this document in 2-3 sentences:\\n\${content.slice(0, 4000)}\`
+    );
+    
+    return response.data?.text || content.slice(0, 200) + '...';
+  }
+  
+  private async extractKeyPhrases(content: string): Promise<string[]> {
+    const response = await substrate.decode.intent(
+      \`Extract 5-10 key phrases from: \${content.slice(0, 2000)}\`
+    );
+    
+    return response.data?.keyPhrases || [];
+  }
+  
+  private async detectTopics(content: string): Promise<string[]> {
+    const response = await substrate.decode.intent(
+      \`What are the main topics discussed in: \${content.slice(0, 2000)}\`
+    );
+    
+    return response.data?.topics || [];
+  }
+  
+  private async analyzeSentiment(content: string): Promise<DocumentAnalysis['sentiment']> {
+    const response = await substrate.decode.intent(content.slice(0, 1000));
+    const score = response.data?.sentiment?.score || 0;
+    
+    let label = 'neutral';
+    if (score > 0.3) label = 'positive';
+    if (score < -0.3) label = 'negative';
+    
+    return { score, label };
+  }
+  
+  private async generateTitle(content: string): Promise<string> {
+    const response = await substrate.nexus.text(
+      \`Generate a concise title for this document:\\n\${content.slice(0, 500)}\`
+    );
+    
+    return response.data?.text?.slice(0, 100) || 'Untitled Document';
+  }
+}
+
+export const documentAnalyzer = new DocumentAnalyzer();`
+  },
+  {
+    id: 'notification-hub',
+    name: 'Notification Hub',
+    description: 'Centralized notification system with channels, preferences, and delivery tracking',
+    icon: Bell,
+    category: 'system',
+    difficulty: 'intermediate',
+    estimatedTime: '35 min',
+    features: ['Multi-channel delivery', 'User preferences', 'Templating', 'Delivery tracking'],
+    code: `import { substrate } from './lib/substrate';
+
+type Channel = 'email' | 'push' | 'sms' | 'in-app' | 'webhook';
+
+interface Notification {
+  id: string;
+  userId: string;
+  type: string;
+  title: string;
+  body: string;
+  data?: any;
+  channels: Channel[];
+  status: Record<Channel, 'pending' | 'sent' | 'delivered' | 'failed'>;
+  createdAt: number;
+}
+
+interface UserPreferences {
+  userId: string;
+  enabledChannels: Channel[];
+  quiet: { start: number; end: number }; // Hours
+  frequency: 'realtime' | 'digest' | 'weekly';
+  blockedTypes: string[];
+}
+
+class NotificationHub {
+  private preferences = new Map<string, UserPreferences>();
+  private templates = new Map<string, { title: string; body: string }>();
+  private notifications: Notification[] = [];
+  
+  async send(userId: string, type: string, data?: any): Promise<Notification | null> {
+    const prefs = this.getPreferences(userId);
+    
+    // Check if type is blocked
+    if (prefs.blockedTypes.includes(type)) {
+      return null;
+    }
+    
+    // Check quiet hours
+    if (this.isQuietHours(prefs)) {
+      await this.queueForLater(userId, type, data);
+      return null;
+    }
+    
+    // Get template
+    const template = this.templates.get(type);
+    if (!template) {
+      throw new Error(\`No template for notification type: \${type}\`);
+    }
+    
+    // Fill template
+    const title = this.fillTemplate(template.title, data);
+    const body = this.fillTemplate(template.body, data);
+    
+    const notification: Notification = {
+      id: crypto.randomUUID(),
+      userId,
+      type,
+      title,
+      body,
+      data,
+      channels: prefs.enabledChannels,
+      status: Object.fromEntries(prefs.enabledChannels.map(c => [c, 'pending'])) as any,
+      createdAt: Date.now()
+    };
+    
+    this.notifications.push(notification);
+    
+    // Deliver to each channel
+    for (const channel of prefs.enabledChannels) {
+      await this.deliverToChannel(notification, channel);
+    }
+    
+    // Log for analytics
+    await substrate.brain.learn(
+      \`Notification sent: \${type} to \${userId}\`,
+      'notification_sent'
+    );
+    
+    return notification;
+  }
+  
+  registerTemplate(type: string, template: { title: string; body: string }) {
+    this.templates.set(type, template);
+  }
+  
+  setPreferences(userId: string, prefs: Partial<UserPreferences>) {
+    const current = this.getPreferences(userId);
+    this.preferences.set(userId, { ...current, ...prefs });
+  }
+  
+  private getPreferences(userId: string): UserPreferences {
+    return this.preferences.get(userId) || {
+      userId,
+      enabledChannels: ['in-app'],
+      quiet: { start: 22, end: 8 },
+      frequency: 'realtime',
+      blockedTypes: []
+    };
+  }
+  
+  private isQuietHours(prefs: UserPreferences): boolean {
+    const hour = new Date().getHours();
+    if (prefs.quiet.start > prefs.quiet.end) {
+      return hour >= prefs.quiet.start || hour < prefs.quiet.end;
+    }
+    return hour >= prefs.quiet.start && hour < prefs.quiet.end;
+  }
+  
+  private fillTemplate(template: string, data?: any): string {
+    if (!data) return template;
+    return template.replace(/{{(\\w+)}}/g, (_, key) => data[key] || '');
+  }
+  
+  private async deliverToChannel(notification: Notification, channel: Channel) {
+    try {
+      switch (channel) {
+        case 'in-app':
+          // Store for in-app retrieval
+          await substrate.brain.remember(
+            JSON.stringify(notification),
+            \`notification:in-app:\${notification.userId}\`,
+            1,
+            { unread: true }
+          );
+          break;
+        case 'webhook':
+          // Emit webhook
+          await fetch(notification.data?.webhookUrl, {
+            method: 'POST',
+            body: JSON.stringify(notification)
+          });
+          break;
+        // Other channels would integrate with external services
+      }
+      
+      notification.status[channel] = 'sent';
+    } catch (error) {
+      notification.status[channel] = 'failed';
+      await substrate.vision.alert('warn', \`Notification delivery failed: \${channel}\`, { notificationId: notification.id });
+    }
+  }
+  
+  private async queueForLater(userId: string, type: string, data?: any) {
+    await substrate.brain.remember(
+      JSON.stringify({ userId, type, data }),
+      'notification:queued',
+      0.8,
+      { scheduledFor: Date.now() + 8 * 60 * 60 * 1000 }
+    );
+  }
+  
+  async getUnread(userId: string): Promise<Notification[]> {
+    const result = await substrate.brain.query(\`notification:in-app:\${userId}\`, 50);
+    return (result.data?.memories || [])
+      .filter(m => m.metadata?.unread)
+      .map(m => JSON.parse(m.content));
+  }
+}
+
+export const notificationHub = new NotificationHub();
+
+// Register common templates
+notificationHub.registerTemplate('welcome', {
+  title: 'Welcome, {{name}}!',
+  body: 'Thanks for joining us. Get started by exploring the dashboard.'
+});
+
+notificationHub.registerTemplate('alert', {
+  title: 'Alert: {{subject}}',
+  body: '{{message}}'
+});`
+  },
+  {
+    id: 'replay-debugger',
+    name: 'Replay Debugger',
+    description: 'Record and replay cognitive operations for debugging and analysis',
+    icon: PlayCircle,
+    category: 'vision',
+    difficulty: 'advanced',
+    estimatedTime: '45 min',
+    features: ['Operation recording', 'Step-by-step replay', 'State snapshots', 'Diff analysis'],
+    code: `import { substrate } from './lib/substrate';
+
+interface Operation {
+  id: string;
+  timestamp: number;
+  module: string;
+  action: string;
+  payload: any;
+  response?: any;
+  duration?: number;
+  stateBefore?: any;
+  stateAfter?: any;
+}
+
+interface Recording {
+  id: string;
+  name: string;
+  startTime: number;
+  endTime?: number;
+  operations: Operation[];
+}
+
+class ReplayDebugger {
+  private currentRecording: Recording | null = null;
+  private recordings = new Map<string, Recording>();
+  
+  startRecording(name: string): string {
+    const recording: Recording = {
+      id: crypto.randomUUID(),
+      name,
+      startTime: Date.now(),
+      operations: []
+    };
+    
+    this.currentRecording = recording;
+    return recording.id;
+  }
+  
+  async record(module: string, action: string, payload: any): Promise<any> {
+    if (!this.currentRecording) {
+      // Just execute without recording
+      return substrate.invoke({ module: module as any, action, payload });
+    }
+    
+    const operation: Operation = {
+      id: crypto.randomUUID(),
+      timestamp: Date.now(),
+      module,
+      action,
+      payload,
+      stateBefore: await this.captureState()
+    };
+    
+    const start = Date.now();
+    const response = await substrate.invoke({ module: module as any, action, payload });
+    operation.duration = Date.now() - start;
+    operation.response = response;
+    operation.stateAfter = await this.captureState();
+    
+    this.currentRecording.operations.push(operation);
+    
+    return response;
+  }
+  
+  stopRecording(): Recording | null {
+    if (!this.currentRecording) return null;
+    
+    this.currentRecording.endTime = Date.now();
+    this.recordings.set(this.currentRecording.id, this.currentRecording);
+    
+    const recording = this.currentRecording;
+    this.currentRecording = null;
+    
+    // Persist recording
+    substrate.brain.remember(
+      JSON.stringify(recording),
+      'debug_recording',
+      1,
+      { recordingId: recording.id, name: recording.name, operationCount: recording.operations.length }
+    );
+    
+    return recording;
+  }
+  
+  async replay(recordingId: string, options?: {
+    stepByStep?: boolean;
+    onStep?: (op: Operation, index: number) => Promise<void>;
+  }): Promise<{
+    success: boolean;
+    differences: { index: number; original: any; replayed: any }[];
+  }> {
+    const recording = this.recordings.get(recordingId);
+    if (!recording) throw new Error('Recording not found');
+    
+    const differences: { index: number; original: any; replayed: any }[] = [];
+    
+    for (let i = 0; i < recording.operations.length; i++) {
+      const op = recording.operations[i];
+      
+      if (options?.stepByStep && options.onStep) {
+        await options.onStep(op, i);
+      }
+      
+      const replayed = await substrate.invoke({
+        module: op.module as any,
+        action: op.action,
+        payload: op.payload
+      });
+      
+      // Compare results
+      if (JSON.stringify(replayed.data) !== JSON.stringify(op.response?.data)) {
+        differences.push({
+          index: i,
+          original: op.response?.data,
+          replayed: replayed.data
+        });
+      }
+    }
+    
+    return {
+      success: differences.length === 0,
+      differences
+    };
+  }
+  
+  async analyze(recordingId: string): Promise<{
+    totalDuration: number;
+    avgOperationTime: number;
+    slowestOperations: Operation[];
+    moduleBreakdown: Record<string, { count: number; totalTime: number }>;
+    stateChanges: { before: any; after: any; diff: string }[];
+  }> {
+    const recording = this.recordings.get(recordingId);
+    if (!recording) throw new Error('Recording not found');
+    
+    const moduleBreakdown: Record<string, { count: number; totalTime: number }> = {};
+    
+    for (const op of recording.operations) {
+      if (!moduleBreakdown[op.module]) {
+        moduleBreakdown[op.module] = { count: 0, totalTime: 0 };
+      }
+      moduleBreakdown[op.module].count++;
+      moduleBreakdown[op.module].totalTime += op.duration || 0;
+    }
+    
+    const totalDuration = (recording.endTime || Date.now()) - recording.startTime;
+    const avgOperationTime = recording.operations.reduce((a, o) => a + (o.duration || 0), 0) / recording.operations.length;
+    
+    const slowestOperations = [...recording.operations]
+      .sort((a, b) => (b.duration || 0) - (a.duration || 0))
+      .slice(0, 5);
+    
+    const stateChanges = recording.operations
+      .filter(op => JSON.stringify(op.stateBefore) !== JSON.stringify(op.stateAfter))
+      .map(op => ({
+        before: op.stateBefore,
+        after: op.stateAfter,
+        diff: this.computeDiff(op.stateBefore, op.stateAfter)
+      }));
+    
+    return {
+      totalDuration,
+      avgOperationTime,
+      slowestOperations,
+      moduleBreakdown,
+      stateChanges
+    };
+  }
+  
+  private async captureState(): Promise<any> {
+    const health = await substrate.vision.health();
+    return {
+      timestamp: Date.now(),
+      health: health.data?.healthScore,
+      modules: health.data?.modules
+    };
+  }
+  
+  private computeDiff(before: any, after: any): string {
+    const changes: string[] = [];
+    
+    const beforeKeys = Object.keys(before || {});
+    const afterKeys = Object.keys(after || {});
+    
+    for (const key of new Set([...beforeKeys, ...afterKeys])) {
+      if (JSON.stringify(before?.[key]) !== JSON.stringify(after?.[key])) {
+        changes.push(\`\${key}: \${JSON.stringify(before?.[key])} -> \${JSON.stringify(after?.[key])}\`);
+      }
+    }
+    
+    return changes.join('; ');
+  }
+}
+
+export const replayDebugger = new ReplayDebugger();`
+  },
+  {
+    id: 'code-generator',
+    name: 'AI Code Generator',
+    description: 'Generate substrate-compatible code from natural language descriptions',
+    icon: Code,
+    category: 'nexus',
+    difficulty: 'intermediate',
+    estimatedTime: '30 min',
+    features: ['Code generation', 'Syntax validation', 'Best practices', 'Documentation'],
+    code: `import { substrate } from './lib/substrate';
+
+interface GeneratedCode {
+  code: string;
+  language: 'typescript' | 'javascript';
+  explanation: string;
+  dependencies: string[];
+  examples: string[];
+}
+
+class CodeGenerator {
+  async generate(description: string, options?: {
+    language?: 'typescript' | 'javascript';
+    style?: 'functional' | 'oop';
+    includeTests?: boolean;
+  }): Promise<GeneratedCode> {
+    const language = options?.language || 'typescript';
+    const style = options?.style || 'functional';
+    
+    // Build generation prompt
+    const prompt = \`
+      Generate \${language} code for the following requirement:
+      "\${description}"
+      
+      Requirements:
+      - Use the substrate SDK (\`import { substrate } from './lib/substrate'\`)
+      - Follow \${style} programming style
+      - Include proper error handling
+      - Add TypeScript types if applicable
+      \${options?.includeTests ? '- Include unit tests' : ''}
+      
+      Available substrate modules:
+      - substrate.brain (memory, learning, reflection)
+      - substrate.decode (chat, intent extraction)
+      - substrate.defense (security, rate limiting)
+      - substrate.nexus (AI routing, text/image generation)
+      - substrate.vision (monitoring, alerting)
+      - substrate.dream (creative synthesis)
+    \`;
+    
+    const response = await substrate.nexus.text(prompt);
+    const code = this.extractCode(response.data?.text || '');
+    
+    // Validate syntax
+    const isValid = await this.validateCode(code, language);
+    if (!isValid) {
+      // Try to fix
+      const fixed = await this.fixCode(code, language);
+      if (fixed) {
+        return this.packageResult(fixed, language, description);
+      }
+    }
+    
+    return this.packageResult(code, language, description);
+  }
+  
+  async explain(code: string): Promise<string> {
+    const response = await substrate.nexus.text(
+      \`Explain this substrate code in simple terms:\\n\${code}\`
+    );
+    
+    return response.data?.text || 'Unable to generate explanation.';
+  }
+  
+  async improve(code: string): Promise<{
+    improved: string;
+    changes: string[];
+  }> {
+    const response = await substrate.nexus.text(\`
+      Improve this substrate code for:
+      - Performance
+      - Error handling
+      - Best practices
+      - Readability
+      
+      Code:
+      \${code}
+      
+      Return the improved code and list the changes made.
+    \`);
+    
+    const improved = this.extractCode(response.data?.text || code);
+    const changes = this.extractChanges(response.data?.text || '');
+    
+    return { improved, changes };
+  }
+  
+  private extractCode(text: string): string {
+    // Extract code from markdown code blocks
+    const match = text.match(/\`\`\`(?:typescript|javascript)?\\n([\\s\\S]*?)\`\`\`/);
+    return match ? match[1].trim() : text;
+  }
+  
+  private extractChanges(text: string): string[] {
+    const lines = text.split('\\n');
+    return lines
+      .filter(line => line.match(/^[\\-\\*\\d]/))
+      .map(line => line.replace(/^[\\-\\*\\d\\.\\s]+/, '').trim())
+      .filter(Boolean);
+  }
+  
+  private async validateCode(code: string, language: string): Promise<boolean> {
+    try {
+      // Basic syntax check
+      new Function(code);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+  
+  private async fixCode(code: string, language: string): Promise<string | null> {
+    const response = await substrate.nexus.text(\`
+      Fix the syntax errors in this \${language} code:
+      \${code}
+      
+      Return only the fixed code.
+    \`);
+    
+    const fixed = this.extractCode(response.data?.text || '');
+    if (await this.validateCode(fixed, language)) {
+      return fixed;
+    }
+    return null;
+  }
+  
+  private packageResult(code: string, language: 'typescript' | 'javascript', description: string): GeneratedCode {
+    // Extract dependencies from imports
+    const imports = code.match(/import.*from\\s+['"][^'"]+['"]/g) || [];
+    const dependencies = imports
+      .map(i => i.match(/['"]([^'"]+)['"]/)?.[1])
+      .filter(Boolean) as string[];
+    
+    return {
+      code,
+      language,
+      explanation: \`Generated code for: \${description}\`,
+      dependencies: [...new Set(dependencies)],
+      examples: [
+        '// Import and use',
+        'import { generatedFunction } from "./generated";',
+        'await generatedFunction();'
+      ]
+    };
+  }
+}
+
+export const codeGenerator = new CodeGenerator();`
+  },
+  {
+    id: 'image-pipeline',
+    name: 'AI Image Pipeline',
+    description: 'Generate, transform, and analyze images with AI',
+    icon: Image,
+    category: 'nexus',
+    difficulty: 'intermediate',
+    estimatedTime: '35 min',
+    features: ['Image generation', 'Style transfer', 'Analysis', 'Batch processing'],
+    code: `import { substrate } from './lib/substrate';
+
+interface ImageJob {
+  id: string;
+  type: 'generate' | 'analyze' | 'transform';
+  status: 'pending' | 'processing' | 'complete' | 'failed';
+  input: any;
+  output?: any;
+  createdAt: number;
+  completedAt?: number;
+}
+
+class ImagePipeline {
+  private jobs: ImageJob[] = [];
+  
+  async generate(prompt: string, options?: {
+    style?: string;
+    size?: string;
+    quality?: 'draft' | 'standard' | 'hd';
+  }): Promise<ImageJob> {
+    const job = this.createJob('generate', { prompt, ...options });
+    
+    try {
+      const enhancedPrompt = await this.enhancePrompt(prompt, options?.style);
+      const result = await substrate.nexus.image(enhancedPrompt);
+      
+      job.output = {
+        url: result.data?.url,
+        prompt: enhancedPrompt,
+        metadata: result.data?.metadata
+      };
+      job.status = 'complete';
+      
+      // Store for reference
+      await substrate.brain.remember(
+        \`Generated image: \${prompt.slice(0, 100)}\`,
+        'image_generation',
+        0.9,
+        { jobId: job.id, prompt, url: result.data?.url }
+      );
+    } catch (error: any) {
+      job.status = 'failed';
+      job.output = { error: error.message };
+    }
+    
+    job.completedAt = Date.now();
+    return job;
+  }
+  
+  async analyze(imageUrl: string): Promise<{
+    description: string;
+    tags: string[];
+    objects: { name: string; confidence: number }[];
+    colors: string[];
+    sentiment: string;
+  }> {
+    // Use decode for image analysis
+    const analysis = await substrate.decode.intent(
+      \`Analyze this image: \${imageUrl}. Describe content, objects, colors, and mood.\`
+    );
+    
+    return {
+      description: analysis.data?.description || '',
+      tags: analysis.data?.tags || [],
+      objects: analysis.data?.objects || [],
+      colors: analysis.data?.colors || [],
+      sentiment: analysis.data?.sentiment?.label || 'neutral'
+    };
+  }
+  
+  async transform(imageUrl: string, transformation: {
+    type: 'style-transfer' | 'upscale' | 'edit';
+    params: any;
+  }): Promise<ImageJob> {
+    const job = this.createJob('transform', { imageUrl, transformation });
+    
+    try {
+      let prompt: string;
+      
+      switch (transformation.type) {
+        case 'style-transfer':
+          prompt = \`Transform this image in the style of \${transformation.params.style}: \${imageUrl}\`;
+          break;
+        case 'upscale':
+          prompt = \`Enhance and upscale this image: \${imageUrl}\`;
+          break;
+        case 'edit':
+          prompt = \`Edit this image: \${transformation.params.instruction}. Image: \${imageUrl}\`;
+          break;
+        default:
+          throw new Error('Unknown transformation type');
+      }
+      
+      const result = await substrate.nexus.image(prompt);
+      job.output = { url: result.data?.url };
+      job.status = 'complete';
+    } catch (error: any) {
+      job.status = 'failed';
+      job.output = { error: error.message };
+    }
+    
+    job.completedAt = Date.now();
+    return job;
+  }
+  
+  async batch(requests: { type: 'generate' | 'analyze' | 'transform'; input: any }[]): Promise<ImageJob[]> {
+    const jobs: ImageJob[] = [];
+    
+    // Process in parallel with concurrency limit
+    const concurrency = 3;
+    
+    for (let i = 0; i < requests.length; i += concurrency) {
+      const batch = requests.slice(i, i + concurrency);
+      const results = await Promise.all(
+        batch.map(async (req) => {
+          switch (req.type) {
+            case 'generate':
+              return this.generate(req.input.prompt, req.input.options);
+            case 'analyze':
+              const analysis = await this.analyze(req.input.url);
+              return { ...this.createJob('analyze', req.input), output: analysis, status: 'complete' as const };
+            case 'transform':
+              return this.transform(req.input.url, req.input.transformation);
+          }
+        })
+      );
+      jobs.push(...results);
+    }
+    
+    return jobs;
+  }
+  
+  private createJob(type: ImageJob['type'], input: any): ImageJob {
+    const job: ImageJob = {
+      id: crypto.randomUUID(),
+      type,
+      status: 'processing',
+      input,
+      createdAt: Date.now()
+    };
+    this.jobs.push(job);
+    return job;
+  }
+  
+  private async enhancePrompt(prompt: string, style?: string): Promise<string> {
+    const enhancement = await substrate.nexus.text(
+      \`Enhance this image prompt for better results: "\${prompt}"\${style ? \` in \${style} style\` : ''}. Return only the enhanced prompt.\`
+    );
+    
+    return enhancement.data?.text || prompt;
+  }
+  
+  getJob(id: string): ImageJob | undefined {
+    return this.jobs.find(j => j.id === id);
+  }
+}
+
+export const imagePipeline = new ImagePipeline();`
   }
 ];
-
-// Category counts helper
 export function getCategoryCounts(): Record<string, number> {
   const counts: Record<string, number> = {};
   for (const template of TEMPLATES) {
