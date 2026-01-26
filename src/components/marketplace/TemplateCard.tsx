@@ -1,5 +1,5 @@
 /**
- * TemplateCard — Premium visual template card with rarity and dynamic names
+ * TemplateCard — Premium visual template card with rarity, dynamic names, and rarity images
  * Mobile-optimized, designed to make users want to own it
  */
 
@@ -15,6 +15,7 @@ import {
 import type { Template } from '@/data/templates';
 import { getTemplatePricing, formatPrice } from '@/config/marketplace-products';
 import { generateDisplayName, getRarityBadge } from '@/lib/templateNames';
+import { getRarityByDifficulty } from '@/config/marketplace-rarity';
 
 const categoryIcons: Record<string, React.ElementType> = {
   brain: Brain,
@@ -78,6 +79,8 @@ export function TemplateCard({ template, onPreview, onBuy, isLoading, featured }
   const difficulty = difficultyConfig[template.difficulty] || difficultyConfig.beginner;
   const rarity = getRarityBadge(template.difficulty);
   const displayName = generateDisplayName(template.id, template.category, template.difficulty);
+  const rarityConfig = getRarityByDifficulty(template.difficulty);
+  const rarityImage = rarityConfig.image;
 
   return (
     <Card
@@ -91,12 +94,19 @@ export function TemplateCard({ template, onPreview, onBuy, isLoading, featured }
       onMouseLeave={() => setIsHovered(false)}
       onClick={onPreview}
     >
-      {/* Visual Preview Header */}
+      {/* Visual Preview Header with Rarity Image */}
       <div className={cn(
         "relative h-36 sm:h-44 overflow-hidden",
         `bg-gradient-to-br ${gradient}`
       )}>
-        {/* Animated pattern */}
+        {/* Rarity background image */}
+        <img 
+          src={rarityImage} 
+          alt={`${rarity.label} tier`}
+          className="absolute inset-0 w-full h-full object-cover opacity-30"
+        />
+        
+        {/* Animated pattern overlay */}
         <div className="absolute inset-0 bg-grid-white/10 opacity-30" />
         
         {/* Decorative elements */}
