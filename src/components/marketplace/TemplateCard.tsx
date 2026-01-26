@@ -1,16 +1,18 @@
 /**
  * TemplateCard — Premium visual template card with rarity, dynamic names, and rarity images
  * Mobile-optimized, designed to make users want to own it
+ * v5.5.0 - Enhanced with better hover states and visual polish
  */
 
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { 
   ShoppingCart, Eye, Star, Heart, Brain, Shield, Moon, Zap, 
-  MessageSquare, Settings, Server, Sparkles, TrendingUp
+  MessageSquare, Settings, Server, Sparkles, TrendingUp, Lock, Clock
 } from 'lucide-react';
 import type { Template } from '@/data/templates';
 import { getTemplatePricing, formatPrice } from '@/config/marketplace-products';
@@ -50,15 +52,6 @@ const categoryColors: Record<string, string> = {
   world_engine: 'border-orange-500/40 shadow-orange-500/20',
 };
 
-const difficultyConfig: Record<string, { label: string; color: string; bg: string }> = {
-  beginner: { label: 'Beginner', color: 'text-emerald-400', bg: 'bg-emerald-500/15' },
-  intermediate: { label: 'Intermediate', color: 'text-amber-400', bg: 'bg-amber-500/15' },
-  advanced: { label: 'Advanced', color: 'text-rose-400', bg: 'bg-rose-500/15' },
-  premium: { label: 'Premium', color: 'text-violet-400', bg: 'bg-violet-500/15' },
-  elite: { label: 'Elite', color: 'text-amber-400', bg: 'bg-gradient-to-r from-amber-500/20 to-orange-500/20' },
-  pro: { label: 'Pro', color: 'text-cyan-400', bg: 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20' },
-};
-
 interface TemplateCardProps {
   template: Template;
   onPreview: () => void;
@@ -76,167 +69,188 @@ export function TemplateCard({ template, onPreview, onBuy, isLoading, featured }
   const pricing = getTemplatePricing(template.difficulty, template.id);
   const gradient = categoryGradients[template.category] || categoryGradients.brain;
   const borderColor = categoryColors[template.category] || categoryColors.brain;
-  const difficulty = difficultyConfig[template.difficulty] || difficultyConfig.beginner;
   const rarity = getRarityBadge(template.difficulty);
   const displayName = generateDisplayName(template.id, template.category, template.difficulty);
   const rarityConfig = getRarityByDifficulty(template.difficulty);
   const rarityImage = rarityConfig.image;
 
   return (
-    <Card
-      className={cn(
-        "group relative overflow-hidden transition-all duration-300 cursor-pointer",
-        "border-2 hover:shadow-2xl",
-        isHovered ? borderColor : "border-border/50",
-        featured && "ring-2 ring-primary/40 ring-offset-2 ring-offset-background"
-      )}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onClick={onPreview}
+    <motion.div
+      whileHover={{ y: -4 }}
+      transition={{ duration: 0.2 }}
     >
-      {/* Visual Preview Header with Rarity Image */}
-      <div className={cn(
-        "relative h-36 sm:h-44 overflow-hidden",
-        `bg-gradient-to-br ${gradient}`
-      )}>
-        {/* Rarity background image */}
-        <img 
-          src={rarityImage} 
-          alt={`${rarity.label} tier`}
-          className="absolute inset-0 w-full h-full object-cover opacity-30"
-        />
-        
-        {/* Animated pattern overlay */}
-        <div className="absolute inset-0 bg-grid-white/10 opacity-30" />
-        
-        {/* Decorative elements */}
-        <div className="absolute top-4 right-4 w-20 h-20 rounded-full bg-white/5 blur-xl" />
-        <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full bg-black/10 blur-2xl -translate-x-1/2 translate-y-1/2" />
-        
-        {/* Center icon display */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className={cn(
-            "w-20 h-20 sm:w-24 sm:h-24 rounded-2xl flex items-center justify-center",
-            "bg-background/95 border-2 shadow-2xl backdrop-blur-sm",
-            "transition-all duration-300",
-            isHovered && "scale-110 rotate-3",
-            borderColor
-          )}>
-            <Icon className="w-10 h-10 sm:w-12 sm:h-12 text-primary" />
-          </div>
-        </div>
-
-        {/* Featured badge */}
-        {featured && (
-          <div className="absolute top-3 left-3">
-            <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 gap-1 shadow-lg">
-              <TrendingUp className="w-3 h-3" />
-              Featured
-            </Badge>
-          </div>
+      <Card
+        className={cn(
+          "group relative overflow-hidden transition-all duration-300 cursor-pointer h-full",
+          "border-2 hover:shadow-2xl",
+          isHovered ? borderColor : "border-border/50",
+          featured && "ring-2 ring-primary/40 ring-offset-2 ring-offset-background"
         )}
-
-        {/* Like button */}
-        <button
-          className={cn(
-            "absolute top-3 right-3 p-2.5 rounded-full transition-all",
-            "bg-background/90 backdrop-blur-sm hover:bg-background shadow-lg",
-            "border border-border/50",
-            isLiked ? "text-rose-500" : "text-muted-foreground hover:text-rose-500"
-          )}
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsLiked(!isLiked);
-          }}
-        >
-          <Heart className={cn("w-4 h-4", isLiked && "fill-current")} />
-        </button>
-
-        {/* Quick preview overlay on hover */}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        onClick={onPreview}
+      >
+        {/* Visual Preview Header with Rarity Image */}
         <div className={cn(
-          "absolute inset-0 flex items-center justify-center bg-background/70 backdrop-blur-sm transition-all duration-300",
-          isHovered ? "opacity-100" : "opacity-0 pointer-events-none"
+          "relative h-36 sm:h-44 overflow-hidden",
+          `bg-gradient-to-br ${gradient}`
         )}>
-          <Button 
-            variant="secondary" 
-            size="default" 
-            className="gap-2 shadow-xl"
-            onClick={(e) => {
-              e.stopPropagation();
-              onPreview();
-            }}
-          >
-            <Eye className="w-4 h-4" />
-            Preview Template
-          </Button>
-        </div>
-      </div>
-
-      <CardContent className="p-4 sm:p-5 space-y-3">
-        {/* Rarity & Category */}
-        <div className="flex items-center gap-2 flex-wrap">
-          <Badge className={cn("text-[10px] h-6 px-2 border", rarity.bgColor, rarity.color, rarity.borderColor)}>
-            <Sparkles className="w-3 h-3 mr-1" />
-            {rarity.label}
-          </Badge>
-          <Badge variant="outline" className="text-[10px] gap-1 h-6 px-2">
-            <CategoryIcon className="w-3 h-3" />
-            {template.category}
-          </Badge>
-        </div>
-
-        {/* Dynamic Title */}
-        <h3 className="font-bold text-base sm:text-lg leading-tight line-clamp-1 group-hover:text-primary transition-colors">
-          {displayName}
-        </h3>
-        
-        {/* Original Name as Subtitle */}
-        <p className="text-xs text-muted-foreground/70 -mt-2">{template.name}</p>
-
-        {/* Description */}
-        <p className="text-sm text-muted-foreground line-clamp-2 min-h-[40px]">
-          {template.description}
-        </p>
-
-        {/* Feature chips */}
-        <div className="flex flex-wrap gap-1.5">
-          {template.features.slice(0, 3).map((f, i) => (
-            <span 
-              key={i} 
-              className="text-[10px] px-2 py-1 rounded-full bg-muted text-muted-foreground border border-border/50"
+          {/* Rarity background image with better overlay */}
+          <img 
+            src={rarityImage} 
+            alt={`${rarity.label} tier`}
+            className="absolute inset-0 w-full h-full object-cover opacity-25 transition-opacity group-hover:opacity-40"
+          />
+          
+          {/* Animated pattern overlay */}
+          <div className="absolute inset-0 bg-grid-white/10 opacity-30" />
+          
+          {/* Decorative elements with animation */}
+          <motion.div 
+            className="absolute top-4 right-4 w-20 h-20 rounded-full bg-white/5 blur-xl"
+            animate={isHovered ? { scale: 1.5, opacity: 0.8 } : { scale: 1, opacity: 0.5 }}
+            transition={{ duration: 0.3 }}
+          />
+          <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full bg-black/10 blur-2xl -translate-x-1/2 translate-y-1/2" />
+          
+          {/* Center icon display */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <motion.div 
+              className={cn(
+                "w-20 h-20 sm:w-24 sm:h-24 rounded-2xl flex items-center justify-center",
+                "bg-background/95 border-2 shadow-2xl backdrop-blur-sm",
+                borderColor
+              )}
+              animate={isHovered ? { scale: 1.1, rotate: 3 } : { scale: 1, rotate: 0 }}
+              transition={{ duration: 0.3 }}
             >
-              {f}
-            </span>
-          ))}
-          {template.features.length > 3 && (
-            <span className="text-[10px] px-2 py-1 text-primary font-medium">
-              +{template.features.length - 3} more
-            </span>
-          )}
-        </div>
-
-        {/* Price & Actions */}
-        <div className="flex items-center justify-between pt-3 border-t border-border/50">
-          <div>
-            <span className="text-2xl font-black text-primary">
-              {formatPrice(pricing.amount)}
-            </span>
-            <span className="text-[10px] text-muted-foreground ml-1 block">one-time</span>
+              <Icon className="w-10 h-10 sm:w-12 sm:h-12 text-primary" />
+            </motion.div>
           </div>
-          <Button 
-            size="default" 
-            className="gap-2 shadow-md"
+
+          {/* Featured badge */}
+          {featured && (
+            <div className="absolute top-3 left-3">
+              <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 gap-1 shadow-lg">
+                <TrendingUp className="w-3 h-3" />
+                Featured
+              </Badge>
+            </div>
+          )}
+
+          {/* Like button */}
+          <motion.button
+            className={cn(
+              "absolute top-3 right-3 p-2.5 rounded-full transition-all",
+              "bg-background/90 backdrop-blur-sm hover:bg-background shadow-lg",
+              "border border-border/50",
+              isLiked ? "text-rose-500" : "text-muted-foreground hover:text-rose-500"
+            )}
             onClick={(e) => {
               e.stopPropagation();
-              onBuy();
+              setIsLiked(!isLiked);
             }}
-            disabled={isLoading}
+            whileTap={{ scale: 0.9 }}
           >
-            <ShoppingCart className="w-4 h-4" />
-            Buy
-          </Button>
+            <Heart className={cn("w-4 h-4", isLiked && "fill-current")} />
+          </motion.button>
+
+          {/* Quick preview overlay on hover */}
+          <motion.div 
+            className="absolute inset-0 flex items-center justify-center bg-background/70 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isHovered ? 1 : 0 }}
+            transition={{ duration: 0.2 }}
+            style={{ pointerEvents: isHovered ? 'auto' : 'none' }}
+          >
+            <Button 
+              variant="secondary" 
+              size="default" 
+              className="gap-2 shadow-xl"
+              onClick={(e) => {
+                e.stopPropagation();
+                onPreview();
+              }}
+            >
+              <Eye className="w-4 h-4" />
+              Preview Template
+            </Button>
+          </motion.div>
         </div>
-      </CardContent>
-    </Card>
+
+        <CardContent className="p-4 sm:p-5 space-y-3">
+          {/* Rarity & Category */}
+          <div className="flex items-center gap-2 flex-wrap">
+            <Badge className={cn("text-[10px] h-6 px-2 border gap-1", rarity.bgColor, rarity.color, rarity.borderColor)}>
+              <Sparkles className="w-3 h-3" />
+              {rarity.label}
+            </Badge>
+            <Badge variant="outline" className="text-[10px] gap-1 h-6 px-2">
+              <CategoryIcon className="w-3 h-3" />
+              {template.category}
+            </Badge>
+            <div className="flex items-center gap-1 text-[10px] text-muted-foreground ml-auto">
+              <Clock className="w-3 h-3" />
+              {template.estimatedTime}
+            </div>
+          </div>
+
+          {/* Dynamic Title */}
+          <h3 className="font-bold text-base sm:text-lg leading-tight line-clamp-1 group-hover:text-primary transition-colors">
+            {displayName}
+          </h3>
+          
+          {/* Original Name as Subtitle */}
+          <p className="text-xs text-muted-foreground/70 -mt-2">{template.name}</p>
+
+          {/* Description */}
+          <p className="text-sm text-muted-foreground line-clamp-2 min-h-[40px]">
+            {template.description}
+          </p>
+
+          {/* Feature chips with better styling */}
+          <div className="flex flex-wrap gap-1.5">
+            {template.features.slice(0, 3).map((f, i) => (
+              <span 
+                key={i} 
+                className="text-[10px] px-2 py-1 rounded-full bg-primary/5 text-primary/80 border border-primary/10 font-medium"
+              >
+                {f}
+              </span>
+            ))}
+            {template.features.length > 3 && (
+              <span className="text-[10px] px-2 py-1 text-primary font-semibold">
+                +{template.features.length - 3} more
+              </span>
+            )}
+          </div>
+
+          {/* Price & Actions with enhanced styling */}
+          <div className="flex items-center justify-between pt-3 border-t border-border/50">
+            <div>
+              <span className="text-2xl font-black text-primary">
+                {formatPrice(pricing.amount)}
+              </span>
+              <div className="flex items-center gap-1.5 mt-0.5">
+                <Lock className="w-3 h-3 text-muted-foreground" />
+                <span className="text-[10px] text-muted-foreground">one-time</span>
+              </div>
+            </div>
+            <Button 
+              size="default" 
+              className="gap-2 shadow-md hover:shadow-lg transition-shadow"
+              onClick={(e) => {
+                e.stopPropagation();
+                onBuy();
+              }}
+              disabled={isLoading}
+            >
+              <ShoppingCart className="w-4 h-4" />
+              Buy
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 }

@@ -1,6 +1,7 @@
 /**
  * MarketplaceHeader — Premium hero with immersive visuals
  * Mobile-first, visually compelling marketplace entrance
+ * v5.5.0 - Enhanced with funnel CTAs and better animations
  */
 
 import { motion } from 'framer-motion';
@@ -8,10 +9,12 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { 
   Sparkles, Brain, Shield, Moon, Zap, Server, 
-  ChevronRight, Award, TrendingUp, Star 
+  ChevronRight, Award, TrendingUp, Star, Gift, Rocket
 } from 'lucide-react';
 import { MarketplaceSearch } from './MarketplaceSearch';
 import { TEMPLATES } from '@/data/templates';
+import { BUNDLES, AGENCY_PACKS } from '@/config/marketplace-bundles';
+import { Link } from 'react-router-dom';
 
 interface MarketplaceHeaderProps {
   searchQuery: string;
@@ -22,8 +25,10 @@ interface MarketplaceHeaderProps {
 export function MarketplaceHeader({ searchQuery, onSearchChange, resultCount }: MarketplaceHeaderProps) {
   return (
     <section className="relative overflow-hidden">
-      {/* Immersive background */}
+      {/* Immersive background with richer gradients */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-violet-500/5" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,hsl(var(--primary)/0.15),transparent_50%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,hsl(280_100%_60%/0.08),transparent_50%)]" />
       
       {/* Animated orbs - hidden on mobile for GPU performance */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none hidden sm:block">
@@ -56,23 +61,27 @@ export function MarketplaceHeader({ searchQuery, onSearchChange, resultCount }: 
       <div className="absolute inset-0 bg-grid-white/[0.02] [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]" />
 
       <div className="container mx-auto px-4 py-12 md:py-20 relative">
-        {/* Trust badges */}
+        {/* Trust badges with enhanced styling */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className="flex flex-wrap justify-center gap-2 mb-6"
         >
-          <Badge variant="outline" className="gap-1.5 px-3 py-1.5 bg-background/50 backdrop-blur-sm border-primary/30">
+          <Badge variant="outline" className="gap-1.5 px-3 py-1.5 bg-background/50 backdrop-blur-sm border-primary/30 shadow-lg shadow-primary/5">
             <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
             <span className="text-xs font-medium">Trusted by 500+ developers</span>
           </Badge>
-          <Badge variant="outline" className="gap-1.5 px-3 py-1.5 bg-background/50 backdrop-blur-sm border-emerald-500/30">
+          <Badge variant="outline" className="gap-1.5 px-3 py-1.5 bg-background/50 backdrop-blur-sm border-emerald-500/30 shadow-lg shadow-emerald-500/5">
             <Award className="w-3.5 h-3.5 text-emerald-500" />
             <span className="text-xs font-medium">Zero Drift Guarantee</span>
           </Badge>
+          <Badge variant="outline" className="gap-1.5 px-3 py-1.5 bg-background/50 backdrop-blur-sm border-violet-500/30 shadow-lg shadow-violet-500/5 hidden sm:flex">
+            <Rocket className="w-3.5 h-3.5 text-violet-500" />
+            <span className="text-xs font-medium">{TEMPLATES.length}+ Templates</span>
+          </Badge>
         </motion.div>
 
-        {/* Main headline */}
+        {/* Main headline with enhanced typography */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -80,7 +89,7 @@ export function MarketplaceHeader({ searchQuery, onSearchChange, resultCount }: 
           className="text-center mb-8"
         >
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-4 tracking-tight">
-            <span className="bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-foreground via-foreground to-foreground/80 bg-clip-text text-transparent">
               AI Templates That
             </span>
             <br />
@@ -88,13 +97,16 @@ export function MarketplaceHeader({ searchQuery, onSearchChange, resultCount }: 
               Never Forget
             </span>
           </h1>
-          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto px-4">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto px-4 leading-relaxed">
             {TEMPLATES.length}+ production-ready cognitive templates with built-in memory,
-            drift prevention & self-improvement. Plus AI-generated unique templates. From <span className="text-primary font-semibold">$27</span>.
+            drift prevention & self-improvement. 
+            <span className="block mt-1 font-medium text-foreground">
+              From <span className="text-primary">$27</span> • Bundles from <span className="text-emerald-500">${(BUNDLES[2]?.bundlePrice / 100 || 95).toFixed(0)}</span>
+            </span>
           </p>
         </motion.div>
 
-        {/* Search */}
+        {/* Search with enhanced wrapper */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -113,25 +125,27 @@ export function MarketplaceHeader({ searchQuery, onSearchChange, resultCount }: 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="grid grid-cols-2 sm:flex sm:flex-wrap justify-center gap-3 sm:gap-4 max-w-3xl mx-auto"
+          className="grid grid-cols-2 sm:flex sm:flex-wrap justify-center gap-3 sm:gap-4 max-w-4xl mx-auto"
         >
           {[
-            { icon: Brain, label: 'Persistent Memory', color: 'text-violet-500', bg: 'bg-violet-500/10' },
-            { icon: Shield, label: 'Drift Prevention', color: 'text-rose-500', bg: 'bg-rose-500/10' },
-            { icon: Moon, label: 'Dream Cycles', color: 'text-purple-500', bg: 'bg-purple-500/10' },
-            { icon: Server, label: 'World Engine', color: 'text-orange-500', bg: 'bg-orange-500/10' },
-          ].map(({ icon: Icon, label, color, bg }) => (
-            <div 
+            { icon: Brain, label: 'Persistent Memory', color: 'text-violet-500', bg: 'bg-violet-500/10', border: 'border-violet-500/20' },
+            { icon: Shield, label: 'Drift Prevention', color: 'text-rose-500', bg: 'bg-rose-500/10', border: 'border-rose-500/20' },
+            { icon: Moon, label: 'Dream Cycles', color: 'text-purple-500', bg: 'bg-purple-500/10', border: 'border-purple-500/20' },
+            { icon: Server, label: 'World Engine', color: 'text-orange-500', bg: 'bg-orange-500/10', border: 'border-orange-500/20' },
+            { icon: Zap, label: 'Multi-Provider', color: 'text-emerald-500', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20' },
+          ].map(({ icon: Icon, label, color, bg, border }) => (
+            <motion.div 
               key={label}
-              className={`flex items-center gap-2 px-3 py-2 rounded-full ${bg} border border-current/10`}
+              whileHover={{ scale: 1.05 }}
+              className={`flex items-center gap-2 px-3 py-2 rounded-full ${bg} border ${border} cursor-default transition-shadow hover:shadow-lg`}
             >
               <Icon className={`w-4 h-4 ${color}`} />
               <span className="text-xs sm:text-sm font-medium text-foreground">{label}</span>
-            </div>
+            </motion.div>
           ))}
         </motion.div>
 
-        {/* Stats bar */}
+        {/* Stats bar with enhanced styling */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -139,16 +153,37 @@ export function MarketplaceHeader({ searchQuery, onSearchChange, resultCount }: 
           className="flex flex-wrap justify-center gap-6 sm:gap-10 mt-10 pt-8 border-t border-border/30"
         >
           {[
-            { value: `${TEMPLATES.length}+`, label: 'Templates' },
-            { value: '13', label: 'Core Modules' },
-            { value: '0%', label: 'AI Drift' },
-            { value: '24/7', label: 'Memory' },
-          ].map(({ value, label }) => (
-            <div key={label} className="text-center">
-              <div className="text-2xl sm:text-3xl font-black text-foreground">{value}</div>
+            { value: `${TEMPLATES.length}+`, label: 'Templates', accent: 'text-primary' },
+            { value: '13', label: 'Core Modules', accent: 'text-violet-500' },
+            { value: '0%', label: 'AI Drift', accent: 'text-emerald-500' },
+            { value: `${BUNDLES.length}`, label: 'Bundles', accent: 'text-orange-500' },
+          ].map(({ value, label, accent }) => (
+            <div key={label} className="text-center group cursor-default">
+              <div className={`text-2xl sm:text-3xl font-black ${accent} transition-transform group-hover:scale-110`}>{value}</div>
               <div className="text-xs text-muted-foreground">{label}</div>
             </div>
           ))}
+        </motion.div>
+
+        {/* Quick CTAs for funnel */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="flex flex-wrap justify-center gap-3 mt-8"
+        >
+          <Button variant="outline" size="sm" className="gap-2 text-xs" asChild>
+            <Link to="#bundles">
+              <Gift className="w-3.5 h-3.5" />
+              View Bundles
+            </Link>
+          </Button>
+          <Button variant="outline" size="sm" className="gap-2 text-xs border-orange-500/30 text-orange-600 hover:bg-orange-500/10" asChild>
+            <Link to="#agencies">
+              <TrendingUp className="w-3.5 h-3.5" />
+              For Agencies
+            </Link>
+          </Button>
         </motion.div>
       </div>
     </section>
