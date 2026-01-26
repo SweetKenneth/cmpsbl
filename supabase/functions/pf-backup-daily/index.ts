@@ -235,6 +235,9 @@ serve(async (req) => {
       console.log(`✅ Backup uploaded to storage: ${backupPath}`);
     }
 
+    // Calculate backup size
+    const backupSizeBytes = new TextEncoder().encode(backupJson).length;
+
     // Store in daily_backups table for quick access
     const { error: dbError } = await supabase.from('daily_backups').insert({
       backup_id: backupId,
@@ -245,12 +248,17 @@ serve(async (req) => {
       status: uploadError ? 'partial' : 'complete',
       checksum: snapshot.checksum,
       data_counts: snapshot.data_counts,
+      size_bytes: backupSizeBytes,
+      is_permanent: false,
+      backup_category: backupType === 'failsafe' ? 'failsafe' : 'standard',
       snapshot: {
         orchestrator: snapshot.orchestrator,
         ai_quotas: snapshot.ai_quotas,
         created_at: snapshot.created_at,
       },
-      expires_at: new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days
+      expires_at: backupType === 'failsafe' 
+        ? null  // Failsafe never expires
+        : new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days
     });
 
     if (dbError) {
