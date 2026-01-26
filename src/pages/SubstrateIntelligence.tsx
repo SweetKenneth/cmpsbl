@@ -10,6 +10,7 @@ import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { FAQ } from "@/components/FAQ";
 import { 
   Brain, Shield, Eye, Zap, Cpu, Moon, 
@@ -123,25 +124,25 @@ export default function SubstrateIntelligence() {
               
               <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
                 <span className="bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent">
-                  The Solution to AI Behavioral Drift
+                  Stop AI Chatbot Drift. The Only Production Solution.
                 </span>
               </h1>
               
               <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-                CMPSBL is the world's first cognitive orchestration substrate—a 13-module kernel that prevents AI chatbots from losing context, forgetting preferences, and degrading over time.
+                CMPSBL prevents AI chatbots from losing context, forgetting users, and drifting from their purpose. <strong className="text-foreground">131,000+ lines of battle-tested code.</strong> Not vaporware—live and operational since 2024.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
                 <Button size="lg" asChild className="gap-2">
                   <Link to="/marketplace">
                     <Zap className="w-5 h-5" />
-                    License the OS — $3,999
+                    Get the OS — $3,999 • One-Time
                   </Link>
                 </Button>
                 <Button size="lg" variant="outline" asChild className="gap-2">
                   <a href="mailto:promptfluid@gmail.com">
                     <Mail className="w-5 h-5" />
-                    Acquire the IP
+                    Acquire Exclusive IP Rights
                   </a>
                 </Button>
               </div>
@@ -149,15 +150,15 @@ export default function SubstrateIntelligence() {
               <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
                 <span className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-primary" />
-                  131,000+ Lines of Code
+                  131k+ LOC - Battle-Tested
                 </span>
                 <span className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-primary" />
-                  13-Module Architecture
+                  13 Modules - Live Since 2024
                 </span>
                 <span className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-primary" />
-                  Production Live
+                  Production Ready - Not Vaporware
                 </span>
               </div>
             </div>
@@ -172,28 +173,28 @@ export default function SubstrateIntelligence() {
               <div className="grid md:grid-cols-2 gap-6">
                 <Card className="border-destructive/30 bg-destructive/5">
                   <CardHeader>
-                    <CardTitle className="text-lg text-destructive">Without CMPSBL</CardTitle>
+                    <CardTitle className="text-lg text-destructive">❌ Without CMPSBL</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3 text-sm">
-                    <p>• AI loses context between sessions</p>
-                    <p>• Personality and tone drift over time</p>
-                    <p>• Single provider lock-in = single point of failure</p>
-                    <p>• No visibility into AI decision-making</p>
-                    <p>• Manual updates required for improvement</p>
-                    <p>• Security gaps from adversarial inputs</p>
+                    <p>• <strong>Loses context</strong> every session - users repeat themselves</p>
+                    <p>• <strong>Personality drift</strong> - inconsistent responses</p>
+                    <p>• <strong>Vendor lock-in</strong> - stuck with one provider</p>
+                    <p>• <strong>Black box</strong> - can't see what AI is doing</p>
+                    <p>• <strong>Manual updates</strong> - doesn't learn or improve</p>
+                    <p>• <strong>Security risk</strong> - vulnerable to prompt injection</p>
                   </CardContent>
                 </Card>
                 <Card className="border-primary/30 bg-primary/5">
                   <CardHeader>
-                    <CardTitle className="text-lg text-primary">With CMPSBL</CardTitle>
+                    <CardTitle className="text-lg text-primary">✅ With CMPSBL</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3 text-sm">
-                    <p>• <strong>BRAIN</strong>: 3-tier persistent memory</p>
-                    <p>• <strong>DREAM</strong>: Autonomous learning cycles</p>
-                    <p>• <strong>NEXUS</strong>: 8+ provider failover</p>
-                    <p>• <strong>VISION</strong>: Real-time observability</p>
-                    <p>• <strong>MODERNIZER</strong>: Self-improvement engine</p>
-                    <p>• <strong>DEFENSE</strong>: Security perimeter</p>
+                    <p>• <strong>Remembers everything</strong> - 3-tier memory system (hot/warm/cold)</p>
+                    <p>• <strong>Personality locked</strong> - consistent tone & behavior</p>
+                    <p>• <strong>8+ AI providers</strong> - auto-failover, no lock-in</p>
+                    <p>• <strong>Full visibility</strong> - every decision traced & logged</p>
+                    <p>• <strong>Self-improves</strong> - learns overnight via dream cycles</p>
+                    <p>• <strong>Security hardened</strong> - injection detection & blocking</p>
                   </CardContent>
                 </Card>
               </div>
@@ -207,7 +208,7 @@ export default function SubstrateIntelligence() {
             <div className="max-w-5xl mx-auto">
               <div className="text-center mb-12">
                 <h2 className="text-3xl font-bold mb-4">Live System Evidence</h2>
-                <p className="text-muted-foreground">This is not vaporware. CMPSBL is a production system you can verify.</p>
+                <p className="text-muted-foreground"><strong className="text-foreground">Not slides. Not promises. Real code.</strong> CMPSBL is live and operational—you can verify every metric below.</p>
               </div>
               
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-12">
@@ -305,7 +306,7 @@ Boot complete in 109ms`}
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="text-3xl font-bold">$27–$499</div>
-                    <p className="text-sm text-muted-foreground">Pre-built cognitives for specific use cases like drift prevention, memory persistence, and self-healing chatbots.</p>
+                    <p className="text-sm text-muted-foreground">Pre-built drift prevention engines. Drop-in solutions for <strong className="text-foreground">memory persistence, self-correction, and behavioral anchoring.</strong></p>
                     <Button variant="outline" asChild className="w-full">
                       <Link to="/marketplace">Browse Templates</Link>
                     </Button>
@@ -314,12 +315,19 @@ Boot complete in 109ms`}
                 
                 <Card className="relative overflow-hidden border-primary">
                   <div className="absolute top-0 left-0 right-0 h-1 bg-primary" />
+                  <div className="absolute top-2 right-2">
+                    <Badge className="bg-primary/20 text-primary border-primary/30">🔥 Most Popular</Badge>
+                  </div>
                   <CardHeader>
                     <CardTitle className="text-xl">Substrate OS License</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="text-3xl font-bold text-primary">$3,999</div>
-                    <p className="text-sm text-muted-foreground">Complete 13-module kernel, Install Wizard, documentation, and single-domain deployment rights.</p>
+                    <p className="text-sm text-muted-foreground">Complete 13-module kernel. <strong className="text-foreground">Self-host on your infrastructure. BYOK architecture.</strong> One-time payment—no subscriptions.</p>
+                    <div className="flex items-center gap-2 text-xs text-primary">
+                      <CheckCircle2 className="w-4 h-4" />
+                      <span>Instant delivery • License key in minutes</span>
+                    </div>
                     <Button asChild className="w-full">
                       <Link to="/marketplace">Purchase License</Link>
                     </Button>
@@ -333,7 +341,7 @@ Boot complete in 109ms`}
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="text-3xl font-bold">Contact Us</div>
-                    <p className="text-sm text-muted-foreground">Exclusive ownership of all source code, patents pending, trademarks, and documentation.</p>
+                    <p className="text-sm text-muted-foreground"><strong className="text-foreground">Exclusive IP rights.</strong> All source code, patents pending, trademarks, documentation. First-to-market positioning.</p>
                     <Button variant="outline" asChild className="w-full">
                       <a href="mailto:promptfluid@gmail.com">Email for Details</a>
                     </Button>
