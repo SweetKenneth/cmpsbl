@@ -7,9 +7,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useEffect, lazy, Suspense, useState } from "react";
 import { SEOProvider } from "@/contexts/SEOContext";
+import ToasterComponents from "@/components/app/ToasterComponents";
 
-// Lazy load heavy UI components to reduce initial bundle
-const ToasterComponents = lazy(() => import("@/components/app/ToasterComponents"));
 const SubstrateProvider = lazy(() => import("./components/substrate/SubstrateProvider").then(m => ({ default: m.SubstrateProvider })));
 const AuthProvider = lazy(() => import("@/contexts/AuthContext").then(m => ({ default: m.AuthProvider })));
 const TooltipProvider = lazy(() => import("@/components/ui/tooltip").then(m => ({ default: m.TooltipProvider })));
