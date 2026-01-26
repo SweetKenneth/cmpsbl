@@ -305,6 +305,26 @@ export default function Marketplace() {
                   </Button>
                 </div>
               )}
+
+              {/* Intelligence CTA */}
+              <Card className="mt-8 border-primary/20 bg-gradient-to-r from-primary/5 via-transparent to-primary/5">
+                <CardContent className="py-6">
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div className="text-center sm:text-left">
+                      <h3 className="font-bold text-lg">Investor or Looking to Acquire?</h3>
+                      <p className="text-sm text-muted-foreground">
+                        Learn about our 13-module architecture, live system evidence, and IP acquisition options.
+                      </p>
+                    </div>
+                    <Button asChild variant="outline" className="gap-2 shrink-0">
+                      <a href="/intelligence">
+                        <Eye className="w-4 h-4" />
+                        Substrate Intelligence
+                      </a>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
             </TabsContent>
 
             {/* OS Tab */}

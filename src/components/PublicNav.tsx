@@ -57,6 +57,7 @@ export function PublicNav() {
       icon: Building2,
       items: [
         { name: "Use Cases", href: "/use-cases", description: "Industry Applications", icon: Sparkles },
+        { name: "Substrate Intelligence", href: "/intelligence", description: "For Investors & Acquirers", icon: Zap },
         { name: "Projects", href: "/projects", description: "Active Development", icon: Rocket },
       ]
     },
