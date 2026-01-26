@@ -84,6 +84,7 @@ export default function Marketplace() {
   }, []);
 
   const handleCheckout = async (type: 'os' | 'template', template?: Template) => {
+    console.log('[Marketplace] handleCheckout called:', { type, template: template?.name });
     setIsCheckingOut(true);
     try {
       let priceId: string;
@@ -102,6 +103,8 @@ export default function Marketplace() {
         throw new Error("Template required for template purchase");
       }
 
+      console.log('[Marketplace] Invoking marketplace-checkout:', { type, priceId, productId, templateName });
+
       const { data, error } = await supabase.functions.invoke('marketplace-checkout', {
         body: {
           product_type: type,
@@ -111,13 +114,21 @@ export default function Marketplace() {
         },
       });
 
+      console.log('[Marketplace] Edge function response:', { data, error });
+
       if (error) throw error;
+      if (!data) throw new Error('No response from checkout service');
+      if (!data.url) throw new Error('No checkout URL returned');
+      
+      console.log('[Marketplace] Opening checkout URL:', data.url);
       if (data?.url) {
         window.open(data.url, '_blank');
+        toast.success('Opening Stripe Checkout...');
       }
     } catch (error) {
       console.error('Checkout error:', error);
-      toast.error("Checkout failed. Please try again.");
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      toast.error(`Checkout failed: ${errorMessage}. Please try again.`);
     } finally {
       setIsCheckingOut(false);
     }
@@ -133,8 +144,8 @@ export default function Marketplace() {
   return (
     <>
       <SEO
-        title="AI Drift Prevention Templates | CMPSBL — Stop Chatbot Behavioral Drift"
-        description="50+ templates to prevent AI chatbot drift. Persistent memory, self-correction, dream cycles. The ONLY OS-level solution. Templates from $27, OS License $3,999."
+        title="Stop AI Chatbot Drift | 50+ Templates + Full OS | CMPSBL"
+        description="The ONLY production solution for AI chatbot behavioral drift. 50+ templates ($27-$499) or complete OS ($3,999). Persistent memory, self-correction, dream cycles. 131k+ LOC, battle-tested."
         keywords={["AI chatbot drift", "chatbot behavioral drift", "AI memory persistence", "prevent AI drift", "LLM self-correction", "AI dream cycles", "chatbot stability", "cognitive OS", "CMPSBL", "AI governance"]}
       />
       <div className="min-h-screen bg-background">
@@ -381,8 +392,7 @@ export default function Marketplace() {
                         <div>
                           <p className="font-medium text-sm">Single-Install License</p>
                           <p className="text-xs text-muted-foreground">
-                            Each license key can only be activated once. For multiple installations, 
-                            purchase additional licenses. Enterprise volume discounts available.
+                            Each license activates once on one domain. <strong className="text-foreground">Multi-install? Contact us for volume pricing.</strong>
                           </p>
                         </div>
                       </div>

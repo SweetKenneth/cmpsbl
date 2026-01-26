@@ -211,21 +211,21 @@ export function MarketplaceHero() {
               <Brain className="w-8 h-8 text-violet-500 mb-3" />
               <h3 className="font-bold text-foreground mb-2">3-Tier Memory</h3>
               <p className="text-sm text-muted-foreground">
-                Working, episodic, and semantic memory that persists across sessions. No more stateless conversations.
+                Working, episodic, and semantic memory that persists across sessions. <strong className="text-foreground">Prevents context amnesia.</strong>
               </p>
             </div>
             <div className="group p-6 rounded-2xl bg-gradient-to-br from-rose-500/10 to-rose-500/5 border border-rose-500/20 hover:border-rose-500/40 transition-all">
               <Shield className="w-8 h-8 text-rose-500 mb-3" />
               <h3 className="font-bold text-foreground mb-2">Autonomous Governance</h3>
               <p className="text-sm text-muted-foreground">
-                Real-time threat detection, PII filtering, and compliance enforcement. Security built into the kernel.
+                Real-time threat detection, PII filtering, and compliance enforcement. <strong className="text-foreground">Prevents prompt injection & drift attacks.</strong>
               </p>
             </div>
             <div className="group p-6 rounded-2xl bg-gradient-to-br from-purple-500/10 to-purple-500/5 border border-purple-500/20 hover:border-purple-500/40 transition-all">
               <Moon className="w-8 h-8 text-purple-500 mb-3" />
               <h3 className="font-bold text-foreground mb-2">Dream Synthesis</h3>
               <p className="text-sm text-muted-foreground">
-                Autonomous overnight learning cycles. Your AI improves while you sleep. No competitor has this.
+                Autonomous overnight learning cycles. <strong className="text-foreground">Your AI improves while you sleep. No competitor offers this.</strong>
               </p>
             </div>
           </motion.div>

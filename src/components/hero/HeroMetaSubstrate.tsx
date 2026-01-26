@@ -21,6 +21,7 @@ import {
   Network,
   Fingerprint,
   RefreshCw,
+  BookOpen,
   Gamepad2,
   Code,
   Building2,
@@ -505,6 +506,25 @@ export function HeroMetaSubstrate() {
                 </Link>
               </Button>
             </div>
+            
+            {/* Academic Documentation Link */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1 }}
+              className="mt-4 text-center lg:text-left"
+            >
+              <a 
+                href="https://zenodo.org/records/18234910?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjkxZDYzZjFlLWM2NTctNDAzNi04ZWE4LTIzNWNiMDljMGQ2NyIsImRhdGEiOnt9LCJyYW5kb20iOiIzZTlkMjA5MzQ0ZGFkNDI2ZTZlMTkwMWYxMzFmOTczYSJ9.H3FugoEHTR2ilPEtZEr-kqRiTgW0FeUDXOrcEE92lek4FK0_h0dNUyJWvtxW-KCHuIEeiqbN5Zot8EqEvXq5gQ"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors group"
+              >
+                <BookOpen className="w-4 h-4 text-primary group-hover:scale-110 transition-transform" />
+                <span>Academic Documentation & Research</span>
+                <ArrowRight className="w-3 h-3 opacity-50 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
+              </a>
+            </motion.div>
           </motion.div>
           
           {/* Right: Substrate Visualization */}
