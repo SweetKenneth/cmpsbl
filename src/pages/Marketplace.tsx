@@ -1,7 +1,7 @@
 /**
  * Marketplace — Fiverr/eBay-style browsable template store
  * Complete redesign with visual previews, search, and clear separation
- * Features: AI Template Generator, 97+ curated templates
+ * v5.5.0 - Enhanced with Bundles, Stacks, and Agency surfaces
  */
 
 import { useState, useMemo } from "react";
@@ -17,7 +17,7 @@ import { TEMPLATES, type Template } from "@/data/templates";
 import { MARKETPLACE_PRODUCTS, getTemplatePricing } from "@/config/marketplace-products";
 import { useMarketplaceUser } from "@/hooks/useMarketplaceUser";
 
-// New marketplace components
+// Marketplace components
 import { MarketplaceHeader } from "@/components/marketplace/MarketplaceHeader";
 import { MarketplaceSidebar } from "@/components/marketplace/MarketplaceSidebar";
 import { TemplateCard } from "@/components/marketplace/TemplateCard";
@@ -29,9 +29,11 @@ import { UserPurchases } from "@/components/marketplace/UserPurchases";
 import { MarketplaceAuthPrompt } from "@/components/marketplace/MarketplaceAuthPrompt";
 import { MailingListSignup } from "@/components/marketplace/MailingListSignup";
 import { AITemplateGenerator } from "@/components/marketplace/AITemplateGenerator";
+import { BundlesSection } from "@/components/marketplace/BundlesSection";
+import { AgencySection } from "@/components/marketplace/AgencySection";
 
 import {
-  Code, Server, Grid3X3, LayoutList, Sparkles, Dices
+  Code, Server, Grid3X3, LayoutList, Sparkles, Package, Building2
 } from "lucide-react";
 
 type SortOption = 'featured' | 'price-low' | 'price-high' | 'name';
@@ -155,7 +157,7 @@ export default function Marketplace() {
     trackPreview(template.id);
   };
 
-  const handleCheckout = async (type: 'os' | 'world_engine' | 'template', template?: Template) => {
+  const handleCheckout = async (type: 'os' | 'world_engine' | 'template' | 'bundle', template?: Template, bundleId?: string) => {
     setIsCheckingOut(true);
     try {
       let priceId: string;
@@ -168,8 +170,12 @@ export default function Marketplace() {
       } else if (type === 'world_engine') {
         priceId = MARKETPLACE_PRODUCTS.world_engine.price_id;
         productId = MARKETPLACE_PRODUCTS.world_engine.product_id;
+      } else if (type === 'bundle' && bundleId) {
+        // TODO: Implement bundle checkout with Stripe
+        toast.info('Bundle checkout coming soon!');
+        setIsCheckingOut(false);
+        return;
       } else if (template) {
-        // Pass template.id to get specific pricing if available, otherwise tier pricing
         const pricing = getTemplatePricing(template.difficulty, template.id);
         priceId = pricing.price_id;
         productId = pricing.product_id;
@@ -200,6 +206,14 @@ export default function Marketplace() {
     } finally {
       setIsCheckingOut(false);
     }
+  };
+
+  const handleBundleCheckout = (bundleId: string) => {
+    handleCheckout('bundle', undefined, bundleId);
+  };
+
+  const handleAgencyContact = () => {
+    toast.info('Agency licensing inquiry - Contact sales@cmpsbl.com');
   };
 
   return (
@@ -247,6 +261,18 @@ export default function Marketplace() {
           isLoading={isCheckingOut}
         />
 
+        {/* Bundles & Stacks Section */}
+        <BundlesSection
+          onBuyBundle={handleBundleCheckout}
+          isLoading={isCheckingOut}
+        />
+
+        {/* Agency Licensing Section */}
+        <AgencySection
+          onContact={handleAgencyContact}
+          isLoading={isCheckingOut}
+        />
+
         {/* Main Content */}
         <main className="flex-1 container mx-auto px-4 py-8">
           <Tabs defaultValue="templates" className="space-y-6">
@@ -259,8 +285,12 @@ export default function Marketplace() {
                   <Badge variant="secondary" className="ml-1 h-5">{TEMPLATES.length}</Badge>
                 </TabsTrigger>
                 <TabsTrigger value="bundles" className="gap-2">
-                  <Server className="w-4 h-4" />
-                  Complete Solutions
+                  <Package className="w-4 h-4" />
+                  Bundles
+                </TabsTrigger>
+                <TabsTrigger value="licensing" className="gap-2">
+                  <Building2 className="w-4 h-4" />
+                  Licensing
                 </TabsTrigger>
               </TabsList>
 
@@ -374,19 +404,23 @@ export default function Marketplace() {
 
             {/* Bundles Tab */}
             <TabsContent value="bundles">
-              <div className="max-w-4xl mx-auto py-8">
-                <div className="text-center mb-8">
-                  <h2 className="text-2xl font-bold mb-2">Complete Solutions</h2>
-                  <p className="text-muted-foreground">
-                    Get everything you need in one package
-                  </p>
-                </div>
-                <FeaturedSection
-                  onBuyOS={() => handleCheckout('os')}
-                  onBuyWorldEngine={() => handleCheckout('world_engine')}
-                  isLoading={isCheckingOut}
-                />
-              </div>
+              <BundlesSection
+                onBuyBundle={handleBundleCheckout}
+                isLoading={isCheckingOut}
+              />
+            </TabsContent>
+
+            {/* Licensing Tab */}
+            <TabsContent value="licensing">
+              <AgencySection
+                onContact={handleAgencyContact}
+                isLoading={isCheckingOut}
+              />
+              <FeaturedSection
+                onBuyOS={() => handleCheckout('os')}
+                onBuyWorldEngine={() => handleCheckout('world_engine')}
+                isLoading={isCheckingOut}
+              />
             </TabsContent>
           </Tabs>
         </main>
