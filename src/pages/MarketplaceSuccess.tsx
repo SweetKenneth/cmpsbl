@@ -1,5 +1,5 @@
 /**
- * Marketplace Success — Post-purchase license delivery
+ * Marketplace Success — Post-purchase license delivery with download protection
  */
 
 import { useState, useEffect } from "react";
@@ -7,7 +7,7 @@ import { useSearchParams, Link } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
@@ -15,7 +15,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
 import { 
   CheckCircle2, Key, Copy, Check, Download, 
-  ExternalLink, AlertCircle, Loader2, Sparkles 
+  AlertCircle, Loader2, Sparkles, Shield, Lock
 } from "lucide-react";
 
 export default function MarketplaceSuccess() {
@@ -33,6 +33,7 @@ export default function MarketplaceSuccess() {
     already_fulfilled?: boolean;
   } | null>(null);
   const [copied, setCopied] = useState(false);
+  const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
     if (!sessionId) {
@@ -71,6 +72,37 @@ export default function MarketplaceSuccess() {
       setCopied(true);
       toast.success("License key copied!");
       setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  const handleDownload = async () => {
+    if (!licenseData?.license_key) {
+      toast.error("No license key available");
+      return;
+    }
+
+    setDownloading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('marketplace-verify-license', {
+        body: {
+          action: 'download',
+          license_key: licenseData.license_key,
+        },
+      });
+
+      if (error) throw error;
+      
+      if (data?.download_url) {
+        window.open(data.download_url, '_blank');
+        toast.success("Download initiated!");
+      } else {
+        throw new Error("Download URL not available");
+      }
+    } catch (err) {
+      console.error("Download error:", err);
+      toast.error("Download failed. Please try again or contact support.");
+    } finally {
+      setDownloading(false);
     }
   };
 
@@ -138,11 +170,7 @@ export default function MarketplaceSuccess() {
                           <code className="flex-1 p-4 rounded-lg bg-muted font-mono text-lg tracking-wider text-center">
                             {licenseData.license_key}
                           </code>
-                          <Button 
-                            variant="outline" 
-                            size="icon"
-                            onClick={copyLicenseKey}
-                          >
+                          <Button variant="outline" size="icon" onClick={copyLicenseKey}>
                             {copied ? (
                               <Check className="w-4 h-4 text-system-green" />
                             ) : (
@@ -157,6 +185,20 @@ export default function MarketplaceSuccess() {
                       </div>
                     )}
 
+                    {/* Copy Protection Notice */}
+                    <div className="p-4 rounded-lg bg-amber-500/10 border border-amber-500/20">
+                      <div className="flex items-start gap-3">
+                        <Shield className="w-5 h-5 text-amber-500 mt-0.5 shrink-0" />
+                        <div className="text-sm">
+                          <p className="font-medium text-amber-600 dark:text-amber-400 mb-1">Single-Install License Protection</p>
+                          <p className="text-muted-foreground">
+                            This license key is domain-bound and can only be activated once. 
+                            Sharing or duplicate installations will invalidate the license.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
                     {licenseData?.already_fulfilled && (
                       <div className="p-4 rounded-lg bg-muted border">
                         <p className="text-sm text-muted-foreground">
@@ -166,13 +208,29 @@ export default function MarketplaceSuccess() {
                       </div>
                     )}
 
-                    {/* Template Name */}
                     {licenseData?.template_name && (
                       <div className="p-4 rounded-lg bg-primary/5 border border-primary/20">
                         <p className="text-sm">
                           <strong>Template:</strong> {licenseData.template_name}
                         </p>
                       </div>
+                    )}
+
+                    {/* Download Button for OS */}
+                    {productType === 'os' && licenseData?.license_key && (
+                      <Button 
+                        size="lg" 
+                        className="w-full gap-2 bg-gradient-to-r from-primary to-violet-600 hover:from-primary/90 hover:to-violet-600/90"
+                        onClick={handleDownload}
+                        disabled={downloading}
+                      >
+                        {downloading ? (
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                        ) : (
+                          <Download className="w-5 h-5" />
+                        )}
+                        {downloading ? "Preparing Download..." : "Download Substrate OS Package"}
+                      </Button>
                     )}
 
                     {/* Next Steps */}
@@ -182,30 +240,36 @@ export default function MarketplaceSuccess() {
                         {productType === 'os' ? (
                           <>
                             <div className="flex items-start gap-3 text-sm">
-                              <span className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center text-xs font-bold">1</span>
-                              <span>Download the Substrate OS package from your email</span>
+                              <span className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center text-xs font-bold shrink-0">1</span>
+                              <span>Click the download button above to get the Substrate OS package</span>
                             </div>
                             <div className="flex items-start gap-3 text-sm">
-                              <span className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center text-xs font-bold">2</span>
+                              <span className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center text-xs font-bold shrink-0">2</span>
                               <span>Run the installer and enter your license key when prompted</span>
                             </div>
                             <div className="flex items-start gap-3 text-sm">
-                              <span className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center text-xs font-bold">3</span>
+                              <span className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center text-xs font-bold shrink-0">3</span>
                               <span>Configure your BYOK API keys in the admin panel</span>
+                            </div>
+                            <div className="flex items-start gap-3 text-sm">
+                              <span className="w-6 h-6 rounded-full bg-amber-500/20 text-amber-500 flex items-center justify-center text-xs font-bold shrink-0">
+                                <Lock className="w-3 h-3" />
+                              </span>
+                              <span className="text-muted-foreground">License activates on first run and binds to your domain</span>
                             </div>
                           </>
                         ) : (
                           <>
                             <div className="flex items-start gap-3 text-sm">
-                              <span className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center text-xs font-bold">1</span>
+                              <span className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center text-xs font-bold shrink-0">1</span>
                               <span>Copy the template code from the email or download</span>
                             </div>
                             <div className="flex items-start gap-3 text-sm">
-                              <span className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center text-xs font-bold">2</span>
+                              <span className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center text-xs font-bold shrink-0">2</span>
                               <span>Add to your project and configure as needed</span>
                             </div>
                             <div className="flex items-start gap-3 text-sm">
-                              <span className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center text-xs font-bold">3</span>
+                              <span className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center text-xs font-bold shrink-0">3</span>
                               <span>Check the documentation for customization options</span>
                             </div>
                           </>
