@@ -10,11 +10,12 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { 
   TrendingUp, Download, Heart, Eye, ShoppingCart, Star, 
-  Flame, Crown, Zap
+  Flame, Crown, Zap, Sparkles
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { TEMPLATES, type Template } from '@/data/templates';
 import { getTemplatePricing, formatPrice } from '@/config/marketplace-products';
+import { generateDisplayName, getRarityBadge } from '@/lib/templateNames';
 
 interface TemplateStats {
   template_id: string;
@@ -138,6 +139,8 @@ export function PopularSection({ onPreview, onBuy, isLoading }: PopularSectionPr
             const Icon = template.icon;
             const pricing = getTemplatePricing(template.difficulty, template.id);
             const templateStats = 'stats' in template ? template.stats : { view_count: 0, like_count: 0, purchase_count: 0 };
+            const displayName = generateDisplayName(template.id, template.category, template.difficulty);
+            const rarity = getRarityBadge(template.difficulty);
 
             return (
               <motion.div
@@ -173,21 +176,32 @@ export function PopularSection({ onPreview, onBuy, isLoading }: PopularSectionPr
 
                       {/* Content */}
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
+                        <div className="flex items-center gap-2 mb-0.5 flex-wrap">
                           <h3 className="font-semibold text-sm truncate group-hover:text-primary transition-colors">
-                            {template.name}
+                            {displayName}
                           </h3>
+                          <Badge className={cn("text-[9px] h-4 px-1.5", rarity.bgColor, rarity.color, rarity.borderColor)}>
+                            <Sparkles className="w-2.5 h-2.5 mr-0.5" />
+                            {rarity.label}
+                          </Badge>
                           {index === 0 && activeTab === 'trending' && (
-                            <Badge className="bg-orange-500 text-white text-[10px] shrink-0">
-                              <Flame className="w-3 h-3 mr-0.5" />
+                            <Badge className="bg-orange-500 text-white text-[9px] h-4 shrink-0">
+                              <Flame className="w-2.5 h-2.5 mr-0.5" />
                               Hot
                             </Badge>
                           )}
                         </div>
                         
-                        <p className="text-xs text-muted-foreground line-clamp-1 mb-2">
-                          {template.description}
-                        </p>
+                        <p className="text-[10px] text-muted-foreground/70 mb-1">{template.name}</p>
+
+                        {/* Feature chips - show key features */}
+                        <div className="flex flex-wrap gap-1 mb-2">
+                          {template.features.slice(0, 2).map((feature, i) => (
+                            <span key={i} className="text-[9px] px-1.5 py-0.5 rounded bg-primary/10 text-primary font-medium">
+                              {feature}
+                            </span>
+                          ))}
+                        </div>
 
                         {/* Stats */}
                         <div className="flex items-center gap-3 text-xs text-muted-foreground">
