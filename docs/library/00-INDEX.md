@@ -77,6 +77,12 @@
 | [31-PERFORMANCE-BENCHMARKS.md](./31-PERFORMANCE-BENCHMARKS.md) | Performance Benchmarks | Measured system performance |
 | [32-LIVE-SYSTEM-EVIDENCE.md](./32-LIVE-SYSTEM-EVIDENCE.md) | Live System Evidence | Proof of operational status |
 
+### Commercial Documentation
+
+| Document | Title | Description |
+|----------|-------|-------------|
+| [50-MARKETPLACE-REFERENCE.md](./50-MARKETPLACE-REFERENCE.md) | Marketplace Reference | Complete marketplace, templates, pricing, bundles, subscriptions |
+
 ### Supplementary Materials
 
 | Document | Title | Description |
