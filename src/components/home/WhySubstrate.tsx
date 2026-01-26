@@ -1,7 +1,7 @@
 /**
- * Why CMPSBL — Full 12-module capability showcase
+ * Why CMPSBL — Full 13-module capability showcase
  * Premium bento grid with enhanced visuals and micro-animations
- * v4.2.0: Complete representation of the 4-layer kernel architecture
+ * v5.5.0: Complete representation of the 5-layer kernel architecture
  */
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
@@ -26,8 +26,9 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { Hexagon } from "lucide-react";
 
-// All capabilities mapped to the 12 modules in 4-layer architecture
+// All capabilities mapped to the 13 modules in 5-layer architecture
 const differentiators = [
   // KERNEL LAYER - Core infrastructure
   {
@@ -36,7 +37,7 @@ const differentiators = [
     layer: "Kernel",
     description: "CORE module handles task scheduling, cron jobs, and kernel-level coordination across all cognitive functions.",
     highlight: "Central Brain",
-    stat: "12",
+    stat: "13",
     statLabel: "Modules",
     color: "from-orange-500 to-amber-600",
     iconBg: "bg-gradient-to-br from-orange-500/20 to-amber-500/20",
@@ -189,6 +190,20 @@ const differentiators = [
     iconColor: "text-emerald-500",
     glowColor: "emerald",
   },
+  // ORCHESTRATOR LAYER - Autonomous control
+  {
+    icon: Hexagon,
+    title: "Cortex Orchestrator",
+    layer: "Orchestrator",
+    description: "CORTEX module provides autonomous multi-agent coordination, evolution sequencing, and system-wide governance decisions.",
+    highlight: "Agency Control",
+    stat: "AI",
+    statLabel: "Orchestration",
+    color: "from-fuchsia-500 to-violet-600",
+    iconBg: "bg-gradient-to-br from-fuchsia-500/20 to-violet-500/20",
+    iconColor: "text-fuchsia-500",
+    glowColor: "violet",
+  },
 ];
 
 const LAYER_CONFIG = {
@@ -196,6 +211,7 @@ const LAYER_CONFIG = {
   Cognitive: { color: 'text-purple-400', count: 3 },
   Operational: { color: 'text-blue-400', count: 3 },
   Admin: { color: 'text-emerald-400', count: 3 },
+  Orchestrator: { color: 'text-fuchsia-400', count: 1 },
 };
 
 // 3D tilt effect hook for cards
@@ -385,7 +401,7 @@ export function WhySubstrate() {
         >
           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
             <Layers className="w-3 h-3 text-primary" />
-            <span className="text-xs">12 Modules • 4 Layers</span>
+            <span className="text-xs">13 Modules • 5 Layers</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
             What Makes It{" "}
@@ -425,7 +441,7 @@ export function WhySubstrate() {
             whileTap={{ scale: 0.98 }}
           >
             All Modules
-            <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-[10px]">12</Badge>
+            <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-[10px]">13</Badge>
           </motion.button>
           {Object.entries(LAYER_CONFIG).map(([layer, config]) => (
             <motion.button

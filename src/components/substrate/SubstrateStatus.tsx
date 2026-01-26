@@ -15,7 +15,7 @@ export function SubstrateStatus({ compact = false }: SubstrateStatusProps) {
   const { initialized, overallHealth, modules } = useSubstrateContext();
 
   const activeCount = Object.values(modules).filter(m => m.active).length;
-  const totalModules = 12; // v4.2.0: All 12 modules
+  const totalModules = 13; // v5.5.0: All 13 modules
   const isHealthy = overallHealth >= 80;
 
   if (compact) {

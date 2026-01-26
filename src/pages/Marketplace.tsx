@@ -326,7 +326,7 @@ export default function Marketplace() {
                       </h4>
                       <ul className="grid gap-2">
                         {[
-                          "Complete 12-module kernel architecture",
+                          "Complete 13-module kernel architecture",
                           "BYOK (Bring Your Own Keys) configuration",
                           "5 starter templates included",
                           "Self-hosted deployment support",

@@ -47,11 +47,13 @@ const coreModules = [
   { icon: Sparkles, name: "Cortex", desc: "Autonomous orchestrator", color: "hsl(270 80% 60%)" },
 ];
 
-// Use cases that rotate through
+// Use cases that rotate through - compelling future applications
 const useCases = [
-  { icon: Gamepad2, label: "NPCs that dream", industry: "Gaming", color: "text-purple-500" },
-  { icon: Building2, label: "Operations that learn", industry: "Enterprise", color: "text-amber-500" },
-  { icon: Code, label: "Apps that remember", industry: "Development", color: "text-cyan-500" },
+  { icon: Gamepad2, label: "NPCs that dream & evolve", industry: "Gaming", color: "text-purple-500" },
+  { icon: Building2, label: "Self-healing enterprises", industry: "Enterprise", color: "text-amber-500" },
+  { icon: Code, label: "Chatbots with memory", industry: "Development", color: "text-cyan-500" },
+  { icon: Brain, label: "Cooking apps that learn", industry: "Consumer", color: "text-green-500" },
+  { icon: Shield, label: "Mid-flight self-repair", industry: "Aviation", color: "text-red-500" },
 ];
 
 // Floating particle component
@@ -92,7 +94,7 @@ function FloatingParticle({ delay, duration, size, color, startX, startY }: {
 
 // Connection line between modules
 function ConnectionLine({ from, to, delay }: { from: number; to: number; delay: number }) {
-  const moduleCount = 12;
+  const moduleCount = 13; // v5.5.0: 13 modules
   const fromAngle = (from / moduleCount) * Math.PI * 2 - Math.PI / 2;
   const toAngle = (to / moduleCount) * Math.PI * 2 - Math.PI / 2;
   const radius = 140;
