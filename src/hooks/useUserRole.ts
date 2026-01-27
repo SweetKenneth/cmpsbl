@@ -47,39 +47,36 @@ export function useUserRole(): UserRoleState {
     }
 
     try {
-      // Try to get identity from Access module first (unified source of truth)
-      const { data: identityResult, error: identityError } = await supabase.functions.invoke('pf-substrate', {
-        body: { module: 'access', action: 'identity' }
-      });
-
-      if (!identityError && identityResult?.success) {
-        // Use Access module identity as source of truth
-        const substrateRole = identityResult.substrate_role as SubstrateRole;
-        setRole(substrateRole);
-        setDisplayName(identityResult.developer?.display_name || null);
-        setDeveloperId(identityResult.developer?.id || null);
-        setLoading(false);
-        return;
-      }
-
-      // Fallback: Direct role check from user_roles table
+      // Primary: Direct role check from user_roles table (most reliable)
       const { data: isAdmin } = await supabase.rpc('has_role_text', {
         _user_id: user.id,
         _role: 'admin'
       });
 
-      if (isAdmin) {
+      if (isAdmin === true) {
         setRole('governor');
+        // Try to get display name from developer profile
+        const { data: dev } = await supabase
+          .from('access_developers')
+          .select('id, display_name')
+          .eq('user_id', user.id)
+          .maybeSingle();
+        if (dev) {
+          setDisplayName(dev.display_name);
+          setDeveloperId(dev.id);
+        } else {
+          setDisplayName(user.email?.split('@')[0] || 'Governor');
+        }
         setLoading(false);
         return;
       }
 
-      const { data: isOperator } = await supabase.rpc('has_role_text', {
+      const { data: isOperatorRole } = await supabase.rpc('has_role_text', {
         _user_id: user.id,
         _role: 'operator'
       });
 
-      if (isOperator) {
+      if (isOperatorRole === true) {
         setRole('operator');
         setLoading(false);
         return;
@@ -90,10 +87,28 @@ export function useUserRole(): UserRoleState {
         _role: 'moderator'
       });
 
-      if (isModerator) {
+      if (isModerator === true) {
         setRole('operator');
         setLoading(false);
         return;
+      }
+
+      // Fallback: Try Access module identity endpoint
+      try {
+        const { data: identityResult, error: identityError } = await supabase.functions.invoke('pf-substrate', {
+          body: { module: 'access', action: 'identity' }
+        });
+
+        if (!identityError && identityResult?.success) {
+          const substrateRole = identityResult.substrate_role as SubstrateRole;
+          setRole(substrateRole);
+          setDisplayName(identityResult.developer?.display_name || null);
+          setDeveloperId(identityResult.developer?.id || null);
+          setLoading(false);
+          return;
+        }
+      } catch {
+        // Continue to default
       }
 
       // Default to observer for authenticated users

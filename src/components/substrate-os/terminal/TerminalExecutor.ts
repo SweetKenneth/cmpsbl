@@ -141,12 +141,14 @@ export async function executeCommand(
     // Fetch actual identity from Access module for unified role display
     let roleDisplay = isOperator ? 'OPERATOR (full access)' : 'OBSERVER (read-only)';
     let identityLine = '';
+    let subRole = 'observer';
+    let devName = '';
     
     try {
       const identityResult = await access.identity() as any;
       if (identityResult?.success) {
-        const subRole = identityResult.substrate_role || identityResult.data?.substrate_role || 'observer';
-        const devName = identityResult.developer?.display_name || identityResult.data?.developer?.display_name;
+        subRole = identityResult.substrate_role || 'observer';
+        devName = identityResult.developer?.display_name || '';
         
         if (subRole === 'governor') {
           roleDisplay = 'GOVERNOR (full system authority)';
@@ -157,11 +159,42 @@ export async function executeCommand(
         }
         
         if (devName) {
-          identityLine = `│  Identity: ${devName} (${subRole})\n`;
+          identityLine = `│  Identity: ${devName}\n│  Role: ${subRole.toUpperCase()}\n`;
         }
       }
     } catch (e) {
-      // Fall back to isOperator check
+      console.log('Identity fetch failed, using fallback');
+    }
+    
+    // If no identity from API, try to get from Supabase directly
+    if (!devName) {
+      try {
+        const { supabase } = await import('@/integrations/supabase/client');
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          // Check admin role directly
+          const { data: isAdmin } = await supabase.rpc('has_role_text', {
+            _user_id: user.id,
+            _role: 'admin'
+          });
+          if (isAdmin === true) {
+            subRole = 'governor';
+            roleDisplay = 'GOVERNOR (full system authority)';
+          }
+          
+          // Get developer profile
+          const { data: dev } = await supabase
+            .from('access_developers')
+            .select('display_name')
+            .eq('user_id', user.id)
+            .maybeSingle();
+          
+          devName = dev?.display_name || user.email?.split('@')[0] || 'User';
+          identityLine = `│  Identity: ${devName}\n│  Role: ${subRole.toUpperCase()}\n│  Email: ${user.email}\n`;
+        }
+      } catch (e) {
+        // Fallback to basic display
+      }
     }
     
     const identity = `
