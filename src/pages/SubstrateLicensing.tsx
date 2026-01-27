@@ -239,7 +239,7 @@ export default function SubstrateLicensing() {
                         <strong className="text-foreground">CMPSBL is a cognitive substrate:</strong> an operating layer that wraps LLMs and tools with persistent memory, observability, self-improvement (Modernizer), and Defense primitives.
                       </p>
                       <p className="text-lg text-muted-foreground mt-4 leading-relaxed">
-                        It is <strong className="text-foreground">not an app or a plugin</strong> — it is the layer your models and agents run on. 13 specialized modules, 131,000+ lines of production code, solving AI behavioral drift at the infrastructure level.
+                        It is <strong className="text-foreground">not an app or a plugin</strong> — it is the layer your models and agents run on. 14 specialized modules, 131,000+ lines of production code, solving AI behavioral drift at the infrastructure level.
                       </p>
                     </div>
                   </div>

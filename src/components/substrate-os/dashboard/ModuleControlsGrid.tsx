@@ -6,7 +6,7 @@
 import { 
   Brain, MessageSquare, Shield, Zap, Eye, Moon, Cpu, Sparkles, 
   Radio, Key, Settings, Layers, Plug, Activity, Network, 
-  PlayCircle, RefreshCw, Wrench, GitBranch
+  PlayCircle, RefreshCw, Wrench, GitBranch, Accessibility
 } from 'lucide-react';
 import { ModuleControlCard, ModuleAction } from './ModuleControlCard';
 import { 
@@ -14,7 +14,7 @@ import {
   useDreamStatusOS, useModernizerStatusOS, useDecodeStatusOS,
   useCoreStatusOS, useRippleStatusOS, useAccessStatusOS,
   useIntegrationStatusOS, useVisionHealthOS, useSystemStatus,
-  useCortexStatusOS
+  useCortexStatusOS, useInclusiveStatusOS
 } from '@/hooks/useSubstrateOS';
 import { 
   useBrainReflectOS, useBrainDreamOS, useDreamCycleOS 
@@ -24,7 +24,7 @@ import {
 } from '@/hooks/useSubstrateOSEnhanced';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
-import { brain, defense, nexus, system, dream, modernizer, decode, core, ripple, access, integration, vision, cortex } from '@/lib/substrate';
+import { brain, defense, nexus, system, dream, modernizer, decode, core, ripple, access, integration, vision, cortex, inclusive } from '@/lib/substrate';
 
 interface ModuleControlsGridProps {
   enabled: boolean;
@@ -45,6 +45,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
   const visionStatus = useVisionHealthOS();
   const systemStatusQuery = useSystemStatus();
   const cortexStatus = useCortexStatusOS();
+  const inclusiveStatus = useInclusiveStatusOS();
 
   // Action mutations
   const brainReflect = useBrainReflectOS();
@@ -338,6 +339,27 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
         }
       },
     },
+    // Human Compatibility Layer
+    {
+      id: 'inclusive',
+      name: 'INCLUSIVE',
+      layer: 'admin' as const,
+      icon: Accessibility,
+      description: 'Human compatibility pipeline',
+      gradient: 'bg-gradient-to-r from-pink-500 to-rose-600',
+      accentColor: 'bg-pink-500',
+      status: inclusiveStatus,
+      metrics: [
+        { label: 'Scanner', value: inclusiveStatus.data?.success ? 'Ready' : 'Checking' },
+      ],
+      actions: [
+        { id: 'scan', label: 'Scan', icon: Activity },
+      ],
+      onAction: async () => {
+        const result = await inclusive.selfScan();
+        toast.info(`Inclusive: ${result.success ? 'Self-scan complete' : 'Failed'}`);
+      },
+    },
   ];
 
   return (
@@ -353,7 +375,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
         </div>
         <div>
           <h3 className="text-sm font-semibold text-foreground">Module Control Panels</h3>
-          <p className="text-[10px] text-muted-foreground font-mono">13-module kernel architecture</p>
+          <p className="text-[10px] text-muted-foreground font-mono">14-module kernel architecture</p>
         </div>
       </div>
 

@@ -107,7 +107,7 @@ export default function Roadmap() {
     <div className="min-h-screen bg-background">
       <SEO 
         title="2026-2027 Roadmap | CMPSBL — The Future of AI Governance"
-        description="Explore CMPSBL's roadmap: 13-module cognitive OS, template marketplace, enterprise governance, federation protocol, and self-evolving substrate. See what we're building to transform AI infrastructure."
+        description="Explore CMPSBL's roadmap: 14-module cognitive OS, template marketplace, enterprise governance, federation protocol, and self-evolving substrate. See what we're building to transform AI infrastructure."
         canonical="https://promptfluid.com/roadmap"
         keywords={[
           'CMPSBL roadmap',
@@ -152,7 +152,7 @@ export default function Roadmap() {
             </h1>
 
             <p className="text-xl text-foreground/90 mb-8 leading-relaxed [text-shadow:_0_2px_10px_hsl(var(--background))]">
-              CMPSBL is the world's first production-ready AI governance OS. Here's where we're headed—from 13-module kernel to self-evolving cognitive cloud.
+              CMPSBL is the world's first production-ready AI governance OS. Here's where we're headed—from 14-module kernel to self-evolving cognitive cloud.
             </p>
 
             <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">

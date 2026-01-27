@@ -39,7 +39,7 @@ const jsonLd = {
     "description": "Developer License - Annual"
   },
   "featureList": [
-    "13-module kernel architecture",
+    "14-module kernel architecture",
     "Persistent memory (3-tier system)",
     "Self-improvement engine",
     "Autonomous dream cycles",
@@ -66,8 +66,8 @@ const modules = [
 
 const metrics = [
   { label: "Lines of Code", value: "131,000+", detail: "Production codebase" },
-  { label: "Modules", value: "13", detail: "Complete kernel architecture" },
-  { label: "Commands", value: "250+", detail: "Terminal-accessible operations" },
+  { label: "Modules", value: "14", detail: "Complete kernel architecture" },
+  { label: "Commands", value: "260+", detail: "Terminal-accessible operations" },
   { label: "AI Providers", value: "8+", detail: "With auto-failover" },
   { label: "Memory Tiers", value: "3", detail: "Hot, Warm, Cold architecture" },
   { label: "Uptime Target", value: "99.9%", detail: "With auto-heal mechanisms" },
@@ -84,11 +84,11 @@ const faqItems = [
   },
   {
     question: "Is this production-ready?",
-    answer: "Yes. CMPSBL is a live, operational system with 131,000+ lines of production code, 50+ database tables, and 250+ terminal commands. The system boots in ~109ms and maintains 100% module health with circuit breakers for fault isolation."
+    answer: "Yes. CMPSBL is a live, operational system with 131,000+ lines of production code, 50+ database tables, and 260+ terminal commands. The system boots in ~109ms and maintains 100% module health with circuit breakers for fault isolation."
   },
   {
     question: "What's included in a license?",
-    answer: "Developer License ($15,000/yr) includes: complete 13-module kernel, persistent memory system, Dream evolution engine, multi-provider AI routing, security perimeter, observability dashboard, 250+ terminal commands, and deployment bundle. Research, Enterprise, and Strategic licenses available for larger deployments."
+    answer: "Developer License ($15,000/yr) includes: complete 14-module kernel, persistent memory system, Dream evolution engine, multi-provider AI routing, security perimeter, observability dashboard, 260+ terminal commands, and deployment bundle. Research, Enterprise, and Strategic licenses available for larger deployments."
   },
   {
     question: "Can the entire IP be acquired?",
@@ -105,7 +105,7 @@ export default function SubstrateIntelligence() {
     <>
       <SEO 
         title="Substrate Intelligence | CMPSBL - AI Drift Prevention Technology"
-        description="The world's first cognitive orchestration substrate. 13-module kernel solving AI chatbot behavioral drift through persistent memory, self-improvement, and autonomous learning. Developer License from $15,000/yr or acquire the IP."
+        description="The world's first cognitive orchestration substrate. 14-module kernel solving AI chatbot behavioral drift through persistent memory, self-improvement, and autonomous learning. Developer License from $15,000/yr or acquire the IP."
         keywords={["AI behavioral drift", "chatbot consistency", "persistent memory AI", "self-improving AI", "cognitive orchestration", "AI substrate", "CMPSBL", "promptfluid", "autonomous AI", "enterprise AI"]}
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
@@ -130,7 +130,7 @@ export default function SubstrateIntelligence() {
               </h1>
               
               <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-                CMPSBL prevents AI chatbots from losing context, forgetting users, and drifting from their purpose. <strong className="text-foreground">13 specialized modules with full documentation.</strong> Research published on Zenodo.
+                CMPSBL prevents AI chatbots from losing context, forgetting users, and drifting from their purpose. <strong className="text-foreground">14 specialized modules with full documentation.</strong> Research published on Zenodo.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
@@ -151,7 +151,7 @@ export default function SubstrateIntelligence() {
               <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
                 <span className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-primary" />
-                  13 Modules - Fully Documented
+                  14 Modules - Fully Documented
                 </span>
                 <span className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-primary" />
@@ -265,7 +265,7 @@ Boot complete in 117ms`}
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold mb-4">13-Module Kernel Architecture</h2>
+                <h2 className="text-3xl font-bold mb-4">14-Module Kernel Architecture</h2>
                 <p className="text-muted-foreground">Five-layer design for cognitive orchestration</p>
               </div>
               
@@ -325,7 +325,7 @@ Boot complete in 117ms`}
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="text-3xl font-bold text-primary">$15,000<span className="text-lg font-normal text-muted-foreground">/year</span></div>
-                    <p className="text-sm text-muted-foreground">Complete 13-module kernel. <strong className="text-foreground">Self-host on your infrastructure. BYOK architecture.</strong> Research, Enterprise, and Strategic licenses also available.</p>
+                    <p className="text-sm text-muted-foreground">Complete 14-module kernel. <strong className="text-foreground">Self-host on your infrastructure. BYOK architecture.</strong> Research, Enterprise, and Strategic licenses also available.</p>
                     <div className="flex items-center gap-2 text-xs text-primary">
                       <CheckCircle2 className="w-4 h-4" />
                       <span>Instant checkout • Developer access in minutes</span>

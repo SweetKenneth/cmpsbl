@@ -181,7 +181,7 @@ function SectionDivider() {
 export default function Explore() {
   const containerRef = useRef<HTMLDivElement>(null);
   
-  // Core Modules - all 13 pillars (v5.5.0 kernel architecture + Cortex orchestrator)
+  // Core Modules - all 14 pillars (v6.0.0 kernel architecture: 13 core + cortex orchestrator)
   const coreModules = [
     {
       icon: Cpu,
@@ -287,13 +287,21 @@ export default function Explore() {
       href: "/os",
       color: "text-violet-500",
     },
+    {
+      icon: BookOpen,
+      title: "Inclusive",
+      description: "Human-compatibility pipeline for WCAG/ARIA compliance.",
+      features: ["Accessibility scanning", "Auto-repair", "Profile adaptation"],
+      href: "/os",
+      color: "text-pink-500",
+    },
   ];
 
   // System Capabilities
   const capabilities = [
     { icon: Layers, value: "250+", label: "Commands", color: "text-purple-500" },
     { icon: Database, value: "70+", label: "Tables", color: "text-green-500" },
-    { icon: HeartPulse, value: "13", label: "Modules", color: "text-rose-500" },
+    { icon: HeartPulse, value: "14", label: "Modules", color: "text-rose-500" },
     { icon: Clock, value: "<100ms", label: "Latency", color: "text-blue-500" },
     { icon: Lock, value: "BYOK", label: "Architecture", color: "text-cyan-500" },
     { icon: RefreshCw, value: "24/7", label: "Autonomous", color: "text-amber-500" },
@@ -311,10 +319,10 @@ export default function Explore() {
   return (
     <div ref={containerRef} className="min-h-screen bg-background overflow-hidden">
       <SEO 
-        title="CMPSBL v5.5.0 By PromptFluid — AI That Remembers"
-        description="Build AI that remembers, dreams, and evolves. 13 core modules, 250+ commands, persistent memory, dream cycles, and BYOK architecture for gaming, software development, and enterprise."
+        title="CMPSBL v6.0.0 By PromptFluid — AI That Remembers"
+        description="Build AI that remembers, dreams, and evolves. 14 core modules, 260+ commands, persistent memory, dream cycles, and BYOK architecture for gaming, software development, and enterprise."
         canonical="https://promptfluid.com"
-        keywords={['CMPSBL', 'composable AI', 'AI infrastructure', 'persistent AI memory', 'dream cycles', 'NPC AI', 'enterprise AI', 'AI routing', 'BYOK', 'v5.5.0']}
+        keywords={['CMPSBL', 'composable AI', 'AI infrastructure', 'persistent AI memory', 'dream cycles', 'NPC AI', 'enterprise AI', 'AI routing', 'BYOK', 'v6.0.0']}
       />
 
       <PublicNav />
@@ -376,12 +384,12 @@ export default function Explore() {
             viewport={{ once: true }}
             className="text-center mb-10 sm:mb-12"
           >
-            <Badge variant="outline" className="mb-4">13 Core Modules</Badge>
+            <Badge variant="outline" className="mb-4">14 Core Modules</Badge>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
-              The 13-Module Cognitive Substrate
+              The 14-Module Cognitive Substrate
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto">
-              Thirteen specialized modules across five architectural layers. Each operates autonomously 
+              Fourteen specialized modules across five architectural layers. Each operates autonomously 
               while contributing to system-wide intelligence, self-healing, and continuous evolution.
             </p>
           </motion.div>
@@ -414,7 +422,7 @@ export default function Explore() {
               Complete Infrastructure
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto">
-              A fully-documented cognitive operating system with 13 specialized modules, 
+              A fully-documented cognitive operating system with 14 specialized modules, 
               persistent memory architecture, and autonomous self-improvement capabilities.
             </p>
           </motion.div>

@@ -59,7 +59,7 @@ function generateFullHelp(): string {
 │
 │  Total commands: ${totalCommands}
 │  Modules: ${modules.length}
-│  Version: v5.0.0
+│  Version: v6.0.0
 │
 │  Quick navigation:
 │    help <module>  ∷  Show module-specific commands

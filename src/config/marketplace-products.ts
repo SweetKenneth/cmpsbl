@@ -12,8 +12,8 @@ export const MARKETPLACE_PRODUCTS = {
     price_id: 'price_1SteXGQ7FtTiAL4aFfqLPytS',
     amount: 399900, // cents
     name: 'Substrate OS License',
-    description: 'Full promptfluid® Substrate OS with BYOK support. 13 modules, single-install license with domain binding.',
-    includes: ['Core OS', '13 Modules', 'BYOK Configuration', 'Single-Install License', 'Domain Binding'],
+    description: 'Full promptfluid® Substrate OS with BYOK support. 14 modules, single-install license with domain binding.',
+    includes: ['Core OS', '14 Modules', 'BYOK Configuration', 'Single-Install License', 'Domain Binding'],
   },
   
   // World Engine - $1,999
