@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { 
   Menu, X, ChevronDown, Code, 
   Layers, FileText, Mail, Info, Rocket, BookOpen, Users,
-  Zap, Map, Terminal, Cpu, MessageSquare, Moon, Building2, Gamepad2, Sparkles
+  Zap, Map, Terminal, Cpu, MessageSquare, Moon, Building2, Gamepad2, Sparkles, Key
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import {
@@ -57,6 +57,7 @@ export function PublicNav() {
       icon: Building2,
       items: [
         { name: "Use Cases", href: "/use-cases", description: "Industry Applications", icon: Sparkles },
+        { name: "Substrate Licensing", href: "/substrate/licensing", description: "Developer to Enterprise", icon: FileText },
         { name: "Substrate Intelligence", href: "/intelligence", description: "For Investors & Acquirers", icon: Zap },
         { name: "Projects", href: "/projects", description: "Active Development", icon: Rocket },
       ]
@@ -87,7 +88,7 @@ export function PublicNav() {
   const quickLinks = [
     { name: "Developers", href: "/developers" },
     { name: "Marketplace", href: "/marketplace" },
-    { name: "Use Cases", href: "/use-cases" },
+    { name: "Licensing", href: "/substrate/licensing" },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -259,10 +260,10 @@ export function PublicNav() {
             <div className="container mx-auto px-4 py-4">
               {/* Search-like quick access */}
               <div className="flex gap-2 mb-4 overflow-x-auto pb-2 -mx-4 px-4">
-                {["Developers", "Gaming", "Use Cases", "Demo", "Contact"].map((name) => {
+                {["Developers", "Licensing", "Gaming", "Demo", "Contact"].map((name) => {
                   const href = name === "Developers" ? "/developers" :
+                               name === "Licensing" ? "/substrate/licensing" :
                                name === "Gaming" ? "/gaming" :
-                               name === "Use Cases" ? "/use-cases" :
                                name === "Demo" ? "/demo" : "/contact";
                   return (
                     <Link

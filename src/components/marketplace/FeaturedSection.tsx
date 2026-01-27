@@ -2,18 +2,21 @@
  * FeaturedSection — Premium hero products with compelling visuals
  * Mobile-first design, high conversion focus
  * v5.5.0 - Enhanced with better animations and visual polish
+ * OS License now redirects to licensing page (tiered pricing)
  */
 
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { 
   Globe, ShoppingCart, Star, Check, Cpu, Brain, Shield, 
   Moon, Zap, Lock, ArrowRight, Sparkles, Crown, Layers,
-  Users, TrendingUp, Award
+  Users, TrendingUp, Award, FileText
 } from 'lucide-react';
 import { MARKETPLACE_PRODUCTS, formatPrice } from '@/config/marketplace-products';
+import { LICENSING_PRODUCTS } from '@/config/licensing-products';
 
 interface FeaturedSectionProps {
   onBuyOS: () => void;
@@ -49,7 +52,7 @@ export function FeaturedSection({ onBuyOS, onBuyWorldEngine, isLoading }: Featur
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-          {/* OS License Card */}
+          {/* Substrate Licensing Card - Now links to licensing page */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -78,17 +81,17 @@ export function FeaturedSection({ onBuyOS, onBuyWorldEngine, isLoading }: Featur
                   >
                     <Cpu className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
                   </motion.div>
-                  <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 shadow-lg gap-1">
-                    <Star className="w-3 h-3 fill-current" />
-                    Best Value
+                  <Badge className="bg-gradient-to-r from-emerald-500 to-cyan-500 text-white border-0 shadow-lg gap-1">
+                    <FileText className="w-3 h-3" />
+                    Enterprise Licensing
                   </Badge>
                 </div>
 
                 {/* Content */}
-                <h3 className="text-2xl sm:text-3xl font-black mb-2">Substrate OS License</h3>
+                <h3 className="text-2xl sm:text-3xl font-black mb-2">CMPSBL Substrate</h3>
                 <p className="text-muted-foreground text-sm sm:text-base mb-6">
-                  Self-host the complete promptfluid® cognitive operating system. 
-                  13 modules, BYOK configuration, unlimited potential.
+                  Cognitive infrastructure for models, apps, and autonomous systems.
+                  Licensed for Developers, Research, Enterprise, and Strategic partners.
                 </p>
 
                 {/* Features grid with hover effects */}
@@ -113,13 +116,13 @@ export function FeaturedSection({ onBuyOS, onBuyWorldEngine, isLoading }: Featur
                   ))}
                 </div>
 
-                {/* What's included */}
+                {/* Licensing tiers summary */}
                 <div className="space-y-2 mb-6 p-4 rounded-xl bg-muted/50 border border-border/50">
                   {[
-                    { text: 'Full source code', highlight: true },
-                    { text: 'Single-domain license', highlight: false },
-                    { text: '6 months updates', highlight: false },
-                    { text: 'Priority support', highlight: true },
+                    { text: 'Developer License — $15,000/yr', highlight: true },
+                    { text: 'Research License — $80,000/yr', highlight: false },
+                    { text: 'Enterprise License — $180,000/yr', highlight: false },
+                    { text: 'Strategic License — Custom', highlight: true },
                   ].map(({ text, highlight }) => (
                     <div key={text} className="flex items-center gap-2 text-sm">
                       <Check className={`w-4 h-4 shrink-0 ${highlight ? 'text-emerald-500' : 'text-muted-foreground'}`} />
@@ -132,30 +135,33 @@ export function FeaturedSection({ onBuyOS, onBuyWorldEngine, isLoading }: Featur
                 <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
                   <div>
                     <div className="flex items-baseline gap-2">
+                      <span className="text-lg font-medium text-muted-foreground">Starting at</span>
                       <motion.span 
-                        className="text-4xl sm:text-5xl font-black text-primary"
+                        className="text-3xl sm:text-4xl font-black text-primary"
                         initial={{ scale: 0.9 }}
                         whileInView={{ scale: 1 }}
                         viewport={{ once: true }}
                       >
-                        {formatPrice(MARKETPLACE_PRODUCTS.os_license.amount)}
+                        $15k
                       </motion.span>
+                      <span className="text-muted-foreground">/year</span>
                     </div>
                     <p className="text-xs text-muted-foreground flex items-center gap-1">
                       <Lock className="w-3 h-3" />
-                      One-time payment
+                      Tiered licensing options
                     </p>
                   </div>
                   <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                     <Button 
-                      onClick={onBuyOS} 
-                      disabled={isLoading} 
+                      asChild
                       size="lg"
                       className="w-full sm:w-auto gap-2 shadow-lg shadow-primary/25"
                     >
-                      <ShoppingCart className="w-5 h-5" />
-                      Buy Now
-                      <ArrowRight className="w-4 h-4" />
+                      <Link to="/substrate/licensing">
+                        <FileText className="w-5 h-5" />
+                        View Licensing
+                        <ArrowRight className="w-4 h-4" />
+                      </Link>
                     </Button>
                   </motion.div>
                 </div>
