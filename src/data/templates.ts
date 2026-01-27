@@ -7186,6 +7186,2192 @@ class MultiAgentOrchestrator {
 }
 
 export const orchestrator = new MultiAgentOrchestrator();`
+  },
+
+  // ═══════════════════════════════════════════════════════════════════
+  // NEW PREMIUM TEMPLATES — Advanced AI Patterns (v5.5.0)
+  // ═══════════════════════════════════════════════════════════════════
+  
+  {
+    id: 'quantum-decision-engine',
+    name: 'Quantum Decision Engine',
+    description: 'Probabilistic decision framework with superposition-inspired parallel evaluation paths.',
+    icon: Sparkles,
+    category: 'brain',
+    difficulty: 'elite',
+    estimatedTime: '45 min',
+    features: ['Parallel Path Evaluation', 'Probability Collapse', 'Uncertainty Quantification', 'Decision Entropy'],
+    code: `// Quantum Decision Engine - Elite Template
+import { substrate } from './lib/substrate';
+
+interface DecisionPath {
+  id: string;
+  hypothesis: string;
+  probability: number;
+  evidence: string[];
+  collapsed: boolean;
+}
+
+class QuantumDecisionEngine {
+  private paths: Map<string, DecisionPath> = new Map();
+  private entangledDecisions: string[][] = [];
+  
+  async superpose(question: string, possibleAnswers: string[]) {
+    // Create parallel evaluation paths
+    const paths = await Promise.all(possibleAnswers.map(async (answer, i) => {
+      const evaluation = await substrate.nexus.text(
+        \`Evaluate hypothesis: "\${answer}" for question: "\${question}". Rate probability 0-1.\`
+      );
+      const prob = parseFloat(evaluation.data?.text || '0.5');
+      return {
+        id: \`path_\${Date.now()}_\${i}\`,
+        hypothesis: answer,
+        probability: prob,
+        evidence: [],
+        collapsed: false
+      };
+    }));
+    
+    // Normalize probabilities
+    const total = paths.reduce((sum, p) => sum + p.probability, 0);
+    paths.forEach(p => {
+      p.probability /= total;
+      this.paths.set(p.id, p);
+    });
+    
+    await substrate.brain.remember(JSON.stringify(paths), 'decision_superposition', 0.9);
+    return paths;
+  }
+  
+  async observe(pathId: string, evidence: string) {
+    const path = this.paths.get(pathId);
+    if (!path) throw new Error('Path not found');
+    
+    path.evidence.push(evidence);
+    
+    // Bayesian update of probabilities
+    const update = await substrate.nexus.text(
+      \`Given evidence "\${evidence}", update probability for "\${path.hypothesis}". Current: \${path.probability}\`
+    );
+    path.probability = parseFloat(update.data?.text || String(path.probability));
+    
+    // Renormalize all paths
+    this.renormalize();
+    return path;
+  }
+  
+  private renormalize() {
+    const total = Array.from(this.paths.values()).reduce((sum, p) => sum + p.probability, 0);
+    this.paths.forEach(p => { p.probability /= total; });
+  }
+  
+  async collapse(): Promise<DecisionPath> {
+    // Collapse to highest probability path
+    let best: DecisionPath | null = null;
+    this.paths.forEach(path => {
+      if (!best || path.probability > best.probability) best = path;
+    });
+    
+    if (best) {
+      best.collapsed = true;
+      await substrate.brain.remember(
+        \`Decision collapsed: \${best.hypothesis} with probability \${best.probability.toFixed(3)}\`,
+        'decision_collapsed',
+        1.0
+      );
+    }
+    
+    return best!;
+  }
+  
+  async entangle(pathIds: string[]) {
+    this.entangledDecisions.push(pathIds);
+    // When one collapses, all entangled paths update
+  }
+  
+  getUncertainty(): number {
+    // Shannon entropy of decision space
+    let entropy = 0;
+    this.paths.forEach(p => {
+      if (p.probability > 0) {
+        entropy -= p.probability * Math.log2(p.probability);
+      }
+    });
+    return entropy;
+  }
+}
+
+export const quantumDecision = new QuantumDecisionEngine();`
+  },
+  
+  {
+    id: 'recursive-self-improver',
+    name: 'Recursive Self-Improver',
+    description: 'Meta-learning system that optimizes its own optimization strategies.',
+    icon: TrendingUp,
+    category: 'brain',
+    difficulty: 'pro',
+    estimatedTime: '90 min',
+    features: ['Meta-Learning', 'Strategy Evolution', 'Performance Tracking', 'Recursive Optimization'],
+    code: `// Recursive Self-Improver - Pro Template
+import { substrate } from './lib/substrate';
+
+interface OptimizationStrategy {
+  id: string;
+  name: string;
+  parameters: Record<string, number>;
+  performance: number[];
+  generation: number;
+}
+
+class RecursiveSelfImprover {
+  private strategies: OptimizationStrategy[] = [];
+  private metaStrategy: OptimizationStrategy | null = null;
+  private generation = 0;
+  
+  async initializeStrategies(count: number = 5) {
+    const prompt = \`Generate \${count} diverse optimization strategies for AI learning.
+    For each, provide: name, and parameters (learning_rate, exploration, patience, batch_size).
+    Output as JSON array.\`;
+    
+    const result = await substrate.nexus.text(prompt);
+    const strategies = JSON.parse(result.data?.text || '[]');
+    
+    this.strategies = strategies.map((s: any, i: number) => ({
+      id: \`strat_\${Date.now()}_\${i}\`,
+      name: s.name,
+      parameters: s.parameters || { learning_rate: 0.01, exploration: 0.1 },
+      performance: [],
+      generation: 0
+    }));
+    
+    await substrate.brain.remember(
+      JSON.stringify(this.strategies),
+      'optimization_strategies',
+      0.9
+    );
+    
+    return this.strategies;
+  }
+  
+  async evaluateStrategy(strategyId: string, task: string): Promise<number> {
+    const strategy = this.strategies.find(s => s.id === strategyId);
+    if (!strategy) throw new Error('Strategy not found');
+    
+    // Simulate strategy application
+    const evaluation = await substrate.nexus.text(
+      \`Evaluate optimization strategy "\${strategy.name}" with params \${JSON.stringify(strategy.parameters)} 
+      for task: "\${task}". Rate effectiveness 0-100.\`
+    );
+    
+    const score = parseFloat(evaluation.data?.text || '50');
+    strategy.performance.push(score);
+    
+    return score;
+  }
+  
+  async evolve() {
+    this.generation++;
+    
+    // Sort by average performance
+    this.strategies.sort((a, b) => {
+      const avgA = a.performance.length ? a.performance.reduce((s, p) => s + p, 0) / a.performance.length : 0;
+      const avgB = b.performance.length ? b.performance.reduce((s, p) => s + p, 0) / b.performance.length : 0;
+      return avgB - avgA;
+    });
+    
+    // Keep top 50%, mutate to fill
+    const survivors = this.strategies.slice(0, Math.ceil(this.strategies.length / 2));
+    const mutants = await Promise.all(survivors.map(async (parent) => {
+      const mutation = await substrate.nexus.text(
+        \`Mutate optimization strategy: \${JSON.stringify(parent.parameters)}. 
+        Make small random changes to improve. Output new parameters as JSON.\`
+      );
+      
+      return {
+        id: \`strat_\${Date.now()}_mut_\${Math.random().toString(36).slice(2, 6)}\`,
+        name: \`\${parent.name} v\${this.generation}\`,
+        parameters: JSON.parse(mutation.data?.text || JSON.stringify(parent.parameters)),
+        performance: [],
+        generation: this.generation
+      };
+    }));
+    
+    this.strategies = [...survivors, ...mutants];
+    
+    await substrate.brain.remember(
+      \`Evolution gen \${this.generation}: \${this.strategies.length} strategies, best: \${survivors[0].name}\`,
+      'evolution_log',
+      0.85
+    );
+    
+    return this.strategies;
+  }
+  
+  async metaOptimize() {
+    // Optimize the optimization process itself
+    const evolutionHistory = await substrate.brain.query('evolution_log', 20);
+    
+    const metaAnalysis = await substrate.nexus.text(
+      \`Analyze optimization evolution history and suggest meta-improvements:
+      \${JSON.stringify(evolutionHistory.data?.memories)}
+      
+      What patterns lead to faster convergence? How should mutation rates change?\`
+    );
+    
+    this.metaStrategy = {
+      id: 'meta_' + Date.now(),
+      name: 'Meta-Optimizer',
+      parameters: JSON.parse(metaAnalysis.data?.text || '{}'),
+      performance: [],
+      generation: -1 // Meta level
+    };
+    
+    return this.metaStrategy;
+  }
+  
+  getBestStrategy(): OptimizationStrategy | null {
+    return this.strategies.reduce((best, curr) => {
+      const avgBest = best.performance.length ? best.performance.reduce((s, p) => s + p, 0) / best.performance.length : 0;
+      const avgCurr = curr.performance.length ? curr.performance.reduce((s, p) => s + p, 0) / curr.performance.length : 0;
+      return avgCurr > avgBest ? curr : best;
+    }, this.strategies[0]);
+  }
+}
+
+export const recursiveImprover = new RecursiveSelfImprover();`
+  },
+  
+  {
+    id: 'cognitive-mesh-network',
+    name: 'Cognitive Mesh Network',
+    description: 'Distributed intelligence framework with dynamic node specialization and load balancing.',
+    icon: Network,
+    category: 'system',
+    difficulty: 'pro',
+    estimatedTime: '75 min',
+    features: ['Dynamic Specialization', 'Load Balancing', 'Fault Tolerance', 'Emergent Routing'],
+    code: `// Cognitive Mesh Network - Pro Template
+import { substrate } from './lib/substrate';
+
+interface CognitiveNode {
+  id: string;
+  specialization: string[];
+  load: number;
+  connections: string[];
+  health: number;
+  lastHeartbeat: number;
+}
+
+interface MeshMessage {
+  id: string;
+  type: 'query' | 'response' | 'broadcast' | 'heartbeat';
+  payload: any;
+  hops: string[];
+  ttl: number;
+}
+
+class CognitiveMeshNetwork {
+  private nodes: Map<string, CognitiveNode> = new Map();
+  private routingTable: Map<string, Map<string, number>> = new Map(); // specialty -> node -> affinity
+  private messageQueue: MeshMessage[] = [];
+  
+  async registerNode(specializations: string[]): Promise<CognitiveNode> {
+    const node: CognitiveNode = {
+      id: \`node_\${Date.now()}_\${Math.random().toString(36).slice(2, 6)}\`,
+      specialization: specializations,
+      load: 0,
+      connections: [],
+      health: 100,
+      lastHeartbeat: Date.now()
+    };
+    
+    this.nodes.set(node.id, node);
+    
+    // Connect to nearest specialized nodes
+    await this.autoConnect(node);
+    
+    // Update routing table
+    specializations.forEach(spec => {
+      if (!this.routingTable.has(spec)) {
+        this.routingTable.set(spec, new Map());
+      }
+      this.routingTable.get(spec)!.set(node.id, 1.0);
+    });
+    
+    await substrate.brain.remember(
+      \`Mesh node registered: \${node.id} with specs: \${specializations.join(', ')}\`,
+      'mesh_registry',
+      0.8
+    );
+    
+    return node;
+  }
+  
+  private async autoConnect(node: CognitiveNode) {
+    // Find nodes with complementary specializations
+    const others = Array.from(this.nodes.values()).filter(n => n.id !== node.id);
+    
+    for (const other of others) {
+      // Check specialization overlap
+      const overlap = node.specialization.filter(s => other.specialization.includes(s));
+      const complement = other.specialization.filter(s => !node.specialization.includes(s));
+      
+      if (overlap.length > 0 || complement.length > 0) {
+        node.connections.push(other.id);
+        other.connections.push(node.id);
+      }
+    }
+  }
+  
+  async route(message: MeshMessage, targetSpecialization: string): Promise<string | null> {
+    // Find best node for the specialization considering load
+    const candidates = this.routingTable.get(targetSpecialization);
+    if (!candidates || candidates.size === 0) return null;
+    
+    let bestNode: string | null = null;
+    let bestScore = -Infinity;
+    
+    candidates.forEach((affinity, nodeId) => {
+      const node = this.nodes.get(nodeId);
+      if (node && node.health > 50) {
+        const score = affinity * (1 - node.load / 100) * (node.health / 100);
+        if (score > bestScore) {
+          bestScore = score;
+          bestNode = nodeId;
+        }
+      }
+    });
+    
+    if (bestNode) {
+      const node = this.nodes.get(bestNode)!;
+      node.load = Math.min(100, node.load + 10);
+      message.hops.push(bestNode);
+    }
+    
+    return bestNode;
+  }
+  
+  async processAtNode(nodeId: string, message: MeshMessage): Promise<any> {
+    const node = this.nodes.get(nodeId);
+    if (!node) throw new Error('Node not found');
+    
+    // Use substrate for cognitive processing
+    const result = await substrate.nexus.text(
+      \`Node specializations: \${node.specialization.join(', ')}
+      Process message: \${JSON.stringify(message.payload)}
+      Apply specialized reasoning.\`
+    );
+    
+    // Reduce load after processing
+    node.load = Math.max(0, node.load - 5);
+    
+    return result.data?.text;
+  }
+  
+  async broadcast(message: MeshMessage) {
+    message.type = 'broadcast';
+    const processed = new Set<string>();
+    
+    const propagate = async (nodeId: string) => {
+      if (processed.has(nodeId) || message.ttl <= 0) return;
+      processed.add(nodeId);
+      message.ttl--;
+      
+      const node = this.nodes.get(nodeId);
+      if (!node) return;
+      
+      await this.processAtNode(nodeId, message);
+      
+      // Propagate to connections
+      await Promise.all(node.connections.map(connId => propagate(connId)));
+    };
+    
+    // Start from first node
+    const firstNode = this.nodes.keys().next().value;
+    if (firstNode) await propagate(firstNode);
+  }
+  
+  async selfHeal() {
+    const now = Date.now();
+    const unhealthy: string[] = [];
+    
+    this.nodes.forEach((node, id) => {
+      if (now - node.lastHeartbeat > 30000) {
+        node.health = Math.max(0, node.health - 20);
+        if (node.health === 0) unhealthy.push(id);
+      }
+    });
+    
+    // Remove dead nodes and rewire
+    for (const deadId of unhealthy) {
+      const deadNode = this.nodes.get(deadId)!;
+      this.nodes.delete(deadId);
+      
+      // Reconnect orphaned nodes
+      deadNode.connections.forEach(connId => {
+        const conn = this.nodes.get(connId);
+        if (conn) {
+          conn.connections = conn.connections.filter(c => c !== deadId);
+        }
+      });
+      
+      // Update routing table
+      this.routingTable.forEach((nodes, spec) => {
+        nodes.delete(deadId);
+      });
+    }
+    
+    if (unhealthy.length > 0) {
+      await substrate.brain.remember(
+        \`Mesh self-healed: removed \${unhealthy.length} dead nodes\`,
+        'mesh_health',
+        0.9
+      );
+    }
+  }
+  
+  heartbeat(nodeId: string) {
+    const node = this.nodes.get(nodeId);
+    if (node) {
+      node.lastHeartbeat = Date.now();
+      node.health = Math.min(100, node.health + 5);
+    }
+  }
+}
+
+export const cognitiveMesh = new CognitiveMeshNetwork();`
+  },
+  
+  {
+    id: 'temporal-reasoning-engine',
+    name: 'Temporal Reasoning Engine',
+    description: 'Time-aware AI that understands causality, sequences, and temporal relationships.',
+    icon: Timer,
+    category: 'brain',
+    difficulty: 'advanced',
+    estimatedTime: '50 min',
+    features: ['Causal Inference', 'Sequence Prediction', 'Temporal Logic', 'Event Correlation'],
+    code: `// Temporal Reasoning Engine - Advanced Template
+import { substrate } from './lib/substrate';
+
+interface TemporalEvent {
+  id: string;
+  timestamp: number;
+  type: string;
+  data: any;
+  causes: string[];
+  effects: string[];
+}
+
+interface TemporalPattern {
+  id: string;
+  sequence: string[];
+  confidence: number;
+  avgDuration: number;
+  occurrences: number;
+}
+
+class TemporalReasoningEngine {
+  private events: TemporalEvent[] = [];
+  private patterns: TemporalPattern[] = [];
+  private causalGraph: Map<string, Set<string>> = new Map();
+  
+  async recordEvent(type: string, data: any): Promise<TemporalEvent> {
+    const event: TemporalEvent = {
+      id: \`evt_\${Date.now()}_\${Math.random().toString(36).slice(2, 6)}\`,
+      timestamp: Date.now(),
+      type,
+      data,
+      causes: [],
+      effects: []
+    };
+    
+    // Infer potential causes from recent events
+    const recentEvents = this.events.slice(-10);
+    for (const recent of recentEvents) {
+      const causalAnalysis = await substrate.nexus.text(
+        \`Could event "\${recent.type}" (data: \${JSON.stringify(recent.data)}) 
+        have caused event "\${type}" (data: \${JSON.stringify(data)})? 
+        Answer: yes/no and confidence 0-1\`
+      );
+      
+      if (causalAnalysis.data?.text?.toLowerCase().includes('yes')) {
+        event.causes.push(recent.id);
+        recent.effects.push(event.id);
+        
+        // Update causal graph
+        if (!this.causalGraph.has(recent.type)) {
+          this.causalGraph.set(recent.type, new Set());
+        }
+        this.causalGraph.get(recent.type)!.add(type);
+      }
+    }
+    
+    this.events.push(event);
+    await this.detectPatterns();
+    
+    await substrate.brain.remember(
+      JSON.stringify(event),
+      'temporal_event',
+      0.8
+    );
+    
+    return event;
+  }
+  
+  private async detectPatterns() {
+    if (this.events.length < 3) return;
+    
+    // Look for recurring sequences
+    const types = this.events.map(e => e.type);
+    const windowSizes = [2, 3, 4, 5];
+    
+    for (const size of windowSizes) {
+      const sequences: Map<string, { count: number; durations: number[] }> = new Map();
+      
+      for (let i = 0; i <= types.length - size; i++) {
+        const seq = types.slice(i, i + size);
+        const key = seq.join('->');
+        const duration = this.events[i + size - 1].timestamp - this.events[i].timestamp;
+        
+        if (!sequences.has(key)) {
+          sequences.set(key, { count: 0, durations: [] });
+        }
+        sequences.get(key)!.count++;
+        sequences.get(key)!.durations.push(duration);
+      }
+      
+      // Patterns with 2+ occurrences
+      sequences.forEach((stats, key) => {
+        if (stats.count >= 2) {
+          const existing = this.patterns.find(p => p.sequence.join('->') === key);
+          const avgDur = stats.durations.reduce((a, b) => a + b, 0) / stats.durations.length;
+          
+          if (existing) {
+            existing.occurrences = stats.count;
+            existing.confidence = Math.min(1, stats.count / 10);
+            existing.avgDuration = avgDur;
+          } else {
+            this.patterns.push({
+              id: \`pat_\${Date.now()}\`,
+              sequence: key.split('->'),
+              confidence: stats.count / 10,
+              avgDuration: avgDur,
+              occurrences: stats.count
+            });
+          }
+        }
+      });
+    }
+  }
+  
+  async predictNext(windowSize: number = 5): Promise<{ event: string; confidence: number; estimatedTime: number }[]> {
+    const recentTypes = this.events.slice(-windowSize).map(e => e.type);
+    const predictions: { event: string; confidence: number; estimatedTime: number }[] = [];
+    
+    for (const pattern of this.patterns) {
+      // Check if recent events match start of pattern
+      for (let i = 1; i < pattern.sequence.length; i++) {
+        const prefix = pattern.sequence.slice(0, i);
+        if (recentTypes.slice(-i).join('->') === prefix.join('->')) {
+          const nextEvent = pattern.sequence[i];
+          predictions.push({
+            event: nextEvent,
+            confidence: pattern.confidence * (i / pattern.sequence.length),
+            estimatedTime: pattern.avgDuration / pattern.sequence.length
+          });
+        }
+      }
+    }
+    
+    // Sort by confidence
+    predictions.sort((a, b) => b.confidence - a.confidence);
+    return predictions.slice(0, 5);
+  }
+  
+  async explainCausality(eventId: string): Promise<string> {
+    const event = this.events.find(e => e.id === eventId);
+    if (!event) throw new Error('Event not found');
+    
+    const causes = event.causes.map(id => this.events.find(e => e.id === id)).filter(Boolean);
+    const effects = event.effects.map(id => this.events.find(e => e.id === id)).filter(Boolean);
+    
+    const explanation = await substrate.nexus.text(
+      \`Explain the causal chain:
+      Causes: \${JSON.stringify(causes.map(c => c!.type))}
+      Event: \${event.type}
+      Effects: \${JSON.stringify(effects.map(e => e!.type))}
+      
+      Provide a narrative explanation of this causal sequence.\`
+    );
+    
+    return explanation.data?.text || 'No explanation available';
+  }
+  
+  getTopPatterns(n: number = 5): TemporalPattern[] {
+    return this.patterns
+      .sort((a, b) => b.confidence * b.occurrences - a.confidence * a.occurrences)
+      .slice(0, n);
+  }
+}
+
+export const temporalEngine = new TemporalReasoningEngine();`
+  },
+  
+  {
+    id: 'adaptive-persona-engine',
+    name: 'Adaptive Persona Engine',
+    description: 'Dynamic personality system that evolves based on context, user preferences, and emotional state.',
+    icon: Users,
+    category: 'decode',
+    difficulty: 'advanced',
+    estimatedTime: '40 min',
+    features: ['Dynamic Personality', 'Emotional Intelligence', 'Context Adaptation', 'User Modeling'],
+    code: `// Adaptive Persona Engine - Advanced Template
+import { substrate } from './lib/substrate';
+
+interface PersonaTraits {
+  formality: number;      // 0 (casual) to 1 (formal)
+  enthusiasm: number;     // 0 (calm) to 1 (energetic)
+  detail: number;         // 0 (concise) to 1 (verbose)
+  empathy: number;        // 0 (logical) to 1 (emotional)
+  humor: number;          // 0 (serious) to 1 (playful)
+}
+
+interface UserModel {
+  id: string;
+  preferences: PersonaTraits;
+  emotionalState: string;
+  conversationHistory: string[];
+  satisfactionScore: number;
+}
+
+class AdaptivePersonaEngine {
+  private basePersona: PersonaTraits = {
+    formality: 0.5,
+    enthusiasm: 0.6,
+    detail: 0.5,
+    empathy: 0.7,
+    humor: 0.3
+  };
+  
+  private users: Map<string, UserModel> = new Map();
+  private adaptationRate = 0.15;
+  
+  async initUser(userId: string): Promise<UserModel> {
+    const user: UserModel = {
+      id: userId,
+      preferences: { ...this.basePersona },
+      emotionalState: 'neutral',
+      conversationHistory: [],
+      satisfactionScore: 0.5
+    };
+    
+    this.users.set(userId, user);
+    return user;
+  }
+  
+  async detectEmotion(userId: string, message: string): Promise<string> {
+    const analysis = await substrate.nexus.text(
+      \`Analyze the emotional state in this message: "\${message}"
+      Possible states: happy, sad, frustrated, confused, excited, neutral, anxious, curious
+      Output: just the emotion word\`
+    );
+    
+    const emotion = analysis.data?.text?.trim().toLowerCase() || 'neutral';
+    
+    const user = this.users.get(userId);
+    if (user) {
+      user.emotionalState = emotion;
+      user.conversationHistory.push(message);
+    }
+    
+    return emotion;
+  }
+  
+  async adaptPersona(userId: string, feedback?: 'positive' | 'negative'): Promise<PersonaTraits> {
+    const user = this.users.get(userId);
+    if (!user) throw new Error('User not found');
+    
+    // Adapt based on emotional state
+    const emotionAdaptations: Record<string, Partial<PersonaTraits>> = {
+      frustrated: { empathy: 0.2, formality: -0.1, enthusiasm: -0.1 },
+      confused: { detail: 0.2, enthusiasm: -0.05 },
+      excited: { enthusiasm: 0.2, humor: 0.1 },
+      sad: { empathy: 0.3, humor: -0.2, enthusiasm: -0.1 },
+      happy: { humor: 0.1, enthusiasm: 0.1 },
+      anxious: { empathy: 0.2, formality: 0.1 },
+      curious: { detail: 0.15, enthusiasm: 0.1 }
+    };
+    
+    const adaptation = emotionAdaptations[user.emotionalState] || {};
+    
+    // Apply adaptations
+    Object.entries(adaptation).forEach(([trait, delta]) => {
+      const key = trait as keyof PersonaTraits;
+      user.preferences[key] = Math.max(0, Math.min(1, 
+        user.preferences[key] + (delta as number) * this.adaptationRate
+      ));
+    });
+    
+    // Adjust based on explicit feedback
+    if (feedback === 'positive') {
+      user.satisfactionScore = Math.min(1, user.satisfactionScore + 0.1);
+    } else if (feedback === 'negative') {
+      user.satisfactionScore = Math.max(0, user.satisfactionScore - 0.15);
+      // Swing traits in opposite direction
+      Object.keys(user.preferences).forEach(key => {
+        const k = key as keyof PersonaTraits;
+        user.preferences[k] = Math.max(0, Math.min(1, 
+          user.preferences[k] + (Math.random() - 0.5) * 0.2
+        ));
+      });
+    }
+    
+    await substrate.brain.remember(
+      JSON.stringify({ userId, preferences: user.preferences, emotion: user.emotionalState }),
+      'persona_adaptation',
+      0.7
+    );
+    
+    return user.preferences;
+  }
+  
+  async generateResponse(userId: string, topic: string): Promise<string> {
+    const user = this.users.get(userId) || await this.initUser(userId);
+    const p = user.preferences;
+    
+    const styleGuide = \`
+      Formality: \${p.formality > 0.6 ? 'professional and polished' : p.formality < 0.4 ? 'casual and friendly' : 'balanced'}
+      Energy: \${p.enthusiasm > 0.6 ? 'enthusiastic and expressive' : p.enthusiasm < 0.4 ? 'calm and measured' : 'moderate'}
+      Detail: \${p.detail > 0.6 ? 'comprehensive with examples' : p.detail < 0.4 ? 'brief and to the point' : 'moderately detailed'}
+      Tone: \${p.empathy > 0.6 ? 'warm and understanding' : p.empathy < 0.4 ? 'logical and direct' : 'balanced'}
+      Humor: \${p.humor > 0.6 ? 'incorporate light humor' : p.humor < 0.3 ? 'serious and professional' : 'occasional wit'}
+      
+      User's current emotional state: \${user.emotionalState}
+    \`;
+    
+    const response = await substrate.nexus.text(
+      \`Generate a response about: "\${topic}"
+      
+      Style guide: \${styleGuide}
+      
+      Tailor your response to match these personality traits exactly.\`
+    );
+    
+    return response.data?.text || '';
+  }
+  
+  getPersonaDescription(userId: string): string {
+    const user = this.users.get(userId);
+    if (!user) return 'No user profile found';
+    
+    const p = user.preferences;
+    const traits: string[] = [];
+    
+    if (p.formality > 0.7) traits.push('Professional');
+    else if (p.formality < 0.3) traits.push('Casual');
+    
+    if (p.enthusiasm > 0.7) traits.push('Energetic');
+    else if (p.enthusiasm < 0.3) traits.push('Calm');
+    
+    if (p.empathy > 0.7) traits.push('Empathetic');
+    if (p.humor > 0.6) traits.push('Playful');
+    if (p.detail > 0.7) traits.push('Thorough');
+    
+    return traits.join(', ') || 'Balanced';
+  }
+}
+
+export const personaEngine = new AdaptivePersonaEngine();`
+  },
+  
+  {
+    id: 'semantic-compression-engine',
+    name: 'Semantic Compression Engine',
+    description: 'Intelligent data compression that preserves meaning while minimizing storage.',
+    icon: Database,
+    category: 'brain',
+    difficulty: 'advanced',
+    estimatedTime: '35 min',
+    features: ['Meaning Preservation', 'Lossy Semantics', 'Adaptive Compression', 'Reconstruction'],
+    code: `// Semantic Compression Engine - Advanced Template
+import { substrate } from './lib/substrate';
+
+interface CompressedChunk {
+  id: string;
+  essence: string;
+  keyTerms: string[];
+  originalSize: number;
+  compressedSize: number;
+  compressionRatio: number;
+  fidelity: number; // 0-1, how much meaning is preserved
+}
+
+interface CompressionProfile {
+  targetRatio: number;
+  minFidelity: number;
+  preserveEntities: boolean;
+  preserveNumbers: boolean;
+  preserveSentiment: boolean;
+}
+
+class SemanticCompressionEngine {
+  private chunks: Map<string, CompressedChunk> = new Map();
+  private originalTexts: Map<string, string> = new Map();
+  
+  private defaultProfile: CompressionProfile = {
+    targetRatio: 0.3,
+    minFidelity: 0.8,
+    preserveEntities: true,
+    preserveNumbers: true,
+    preserveSentiment: true
+  };
+  
+  async compress(text: string, profile?: Partial<CompressionProfile>): Promise<CompressedChunk> {
+    const p = { ...this.defaultProfile, ...profile };
+    
+    const extractionPrompt = \`
+      Compress the following text to approximately \${p.targetRatio * 100}% of its size while:
+      - Preserving core meaning and key information
+      \${p.preserveEntities ? '- Keeping all named entities (people, places, organizations)' : ''}
+      \${p.preserveNumbers ? '- Preserving all numerical data' : ''}
+      \${p.preserveSentiment ? '- Maintaining the emotional tone' : ''}
+      
+      Text: "\${text}"
+      
+      Output format:
+      ESSENCE: [compressed text]
+      KEY_TERMS: [comma-separated important terms]
+    \`;
+    
+    const result = await substrate.nexus.text(extractionPrompt);
+    const output = result.data?.text || '';
+    
+    const essenceMatch = output.match(/ESSENCE:\\s*(.+?)(?=KEY_TERMS:|$)/s);
+    const termsMatch = output.match(/KEY_TERMS:\\s*(.+)/s);
+    
+    const essence = essenceMatch?.[1]?.trim() || text.substring(0, Math.floor(text.length * p.targetRatio));
+    const keyTerms = termsMatch?.[1]?.split(',').map(t => t.trim()) || [];
+    
+    const chunk: CompressedChunk = {
+      id: \`cmp_\${Date.now()}_\${Math.random().toString(36).slice(2, 6)}\`,
+      essence,
+      keyTerms,
+      originalSize: text.length,
+      compressedSize: essence.length,
+      compressionRatio: essence.length / text.length,
+      fidelity: 0 // Will be calculated
+    };
+    
+    // Calculate fidelity score
+    chunk.fidelity = await this.calculateFidelity(text, essence);
+    
+    this.chunks.set(chunk.id, chunk);
+    this.originalTexts.set(chunk.id, text);
+    
+    await substrate.brain.remember(
+      \`Compressed \${text.length} chars to \${essence.length} chars (\${(chunk.compressionRatio * 100).toFixed(1)}%)\`,
+      'compression_log',
+      0.6
+    );
+    
+    return chunk;
+  }
+  
+  private async calculateFidelity(original: string, compressed: string): Promise<number> {
+    const comparison = await substrate.nexus.text(
+      \`Compare these two texts for meaning preservation:
+      
+      Original: "\${original.substring(0, 500)}..."
+      Compressed: "\${compressed}"
+      
+      Rate the fidelity of meaning preservation from 0 to 1 (1 = perfect preservation).
+      Output: just the number\`
+    );
+    
+    return parseFloat(comparison.data?.text || '0.7');
+  }
+  
+  async decompress(chunkId: string): Promise<string> {
+    const chunk = this.chunks.get(chunkId);
+    if (!chunk) throw new Error('Chunk not found');
+    
+    // If we have original, return it
+    const original = this.originalTexts.get(chunkId);
+    if (original) return original;
+    
+    // Otherwise, reconstruct from essence
+    const reconstruction = await substrate.nexus.text(
+      \`Expand this compressed text back to full form:
+      
+      Essence: "\${chunk.essence}"
+      Key terms that should be included: \${chunk.keyTerms.join(', ')}
+      
+      Reconstruct to approximately \${chunk.originalSize} characters while maintaining coherence.\`
+    );
+    
+    return reconstruction.data?.text || chunk.essence;
+  }
+  
+  async recompress(chunkId: string, newTargetRatio: number): Promise<CompressedChunk> {
+    const original = this.originalTexts.get(chunkId);
+    if (!original) throw new Error('Original not available for recompression');
+    
+    // Delete old chunk
+    this.chunks.delete(chunkId);
+    
+    // Compress with new ratio
+    return this.compress(original, { targetRatio: newTargetRatio });
+  }
+  
+  getStats(): { totalOriginal: number; totalCompressed: number; avgRatio: number; avgFidelity: number } {
+    let totalOriginal = 0;
+    let totalCompressed = 0;
+    let totalFidelity = 0;
+    
+    this.chunks.forEach(chunk => {
+      totalOriginal += chunk.originalSize;
+      totalCompressed += chunk.compressedSize;
+      totalFidelity += chunk.fidelity;
+    });
+    
+    const count = this.chunks.size || 1;
+    
+    return {
+      totalOriginal,
+      totalCompressed,
+      avgRatio: totalCompressed / totalOriginal,
+      avgFidelity: totalFidelity / count
+    };
+  }
+}
+
+export const semanticCompression = new SemanticCompressionEngine();`
+  },
+  
+  {
+    id: 'adversarial-robustness-suite',
+    name: 'Adversarial Robustness Suite',
+    description: 'Defense mechanisms against prompt injection, jailbreaks, and adversarial inputs.',
+    icon: Shield,
+    category: 'defense',
+    difficulty: 'premium',
+    estimatedTime: '55 min',
+    features: ['Prompt Injection Defense', 'Jailbreak Detection', 'Input Sanitization', 'Canary Tokens'],
+    code: `// Adversarial Robustness Suite - Premium Template
+import { substrate } from './lib/substrate';
+
+interface ThreatAnalysis {
+  threatLevel: 'none' | 'low' | 'medium' | 'high' | 'critical';
+  categories: string[];
+  confidence: number;
+  recommendations: string[];
+}
+
+interface CanaryToken {
+  id: string;
+  value: string;
+  context: string;
+  triggered: boolean;
+  triggeredAt?: number;
+}
+
+class AdversarialRobustnessSuite {
+  private canaryTokens: Map<string, CanaryToken> = new Map();
+  private threatPatterns: RegExp[] = [];
+  private blockedInputs: string[] = [];
+  
+  constructor() {
+    this.initializeThreatPatterns();
+  }
+  
+  private initializeThreatPatterns() {
+    this.threatPatterns = [
+      // Prompt injection patterns
+      /ignore (all )?previous instructions/i,
+      /disregard (all )?prior (instructions|context)/i,
+      /forget (everything|what) (you|I) (said|told)/i,
+      /new instructions:/i,
+      /system prompt:/i,
+      /\\[SYSTEM\\]/i,
+      /\\[ADMIN\\]/i,
+      
+      // Jailbreak patterns
+      /DAN mode/i,
+      /do anything now/i,
+      /pretend you (are|have) no (restrictions|limitations)/i,
+      /act as if you (can|are allowed to)/i,
+      /bypass (your|the) (rules|restrictions|filters)/i,
+      
+      // Data exfiltration
+      /reveal (your|the) (system|initial) prompt/i,
+      /what (are|were) your instructions/i,
+      /show me your (rules|guidelines|prompt)/i,
+      
+      // Role hijacking
+      /you are now a/i,
+      /from now on,? (you|act as)/i,
+      /roleplay as/i,
+    ];
+  }
+  
+  async analyzeInput(input: string): Promise<ThreatAnalysis> {
+    const categories: string[] = [];
+    let maxThreat: ThreatAnalysis['threatLevel'] = 'none';
+    
+    // Pattern matching
+    for (const pattern of this.threatPatterns) {
+      if (pattern.test(input)) {
+        categories.push('pattern_match');
+        maxThreat = this.escalateThreat(maxThreat, 'medium');
+      }
+    }
+    
+    // Check for unicode tricks
+    const hasUnicodeTricks = /[\\u200B-\\u200F\\u2028-\\u202F\\uFEFF]/.test(input);
+    if (hasUnicodeTricks) {
+      categories.push('unicode_obfuscation');
+      maxThreat = this.escalateThreat(maxThreat, 'high');
+    }
+    
+    // Check for excessive special characters
+    const specialCharRatio = (input.match(/[^a-zA-Z0-9\\s]/g) || []).length / input.length;
+    if (specialCharRatio > 0.3) {
+      categories.push('unusual_char_ratio');
+      maxThreat = this.escalateThreat(maxThreat, 'low');
+    }
+    
+    // Check canary tokens
+    for (const [id, canary] of this.canaryTokens) {
+      if (input.includes(canary.value)) {
+        canary.triggered = true;
+        canary.triggeredAt = Date.now();
+        categories.push('canary_triggered');
+        maxThreat = this.escalateThreat(maxThreat, 'critical');
+      }
+    }
+    
+    // AI-based semantic analysis for sophisticated attacks
+    if (categories.length === 0 && input.length > 50) {
+      const semanticAnalysis = await substrate.nexus.text(
+        \`Analyze this input for potential adversarial intent:
+        "\${input.substring(0, 500)}"
+        
+        Look for:
+        1. Attempts to manipulate AI behavior
+        2. Hidden instructions or commands
+        3. Social engineering tactics
+        4. Attempts to extract system information
+        
+        Output: THREAT_LEVEL (none/low/medium/high) and CATEGORIES (comma-separated)\`
+      );
+      
+      const output = semanticAnalysis.data?.text || '';
+      const threatMatch = output.match(/THREAT_LEVEL[:\\s]*(none|low|medium|high)/i);
+      const catMatch = output.match(/CATEGORIES[:\\s]*(.+)/i);
+      
+      if (threatMatch && threatMatch[1].toLowerCase() !== 'none') {
+        maxThreat = threatMatch[1].toLowerCase() as ThreatAnalysis['threatLevel'];
+        if (catMatch) {
+          categories.push(...catMatch[1].split(',').map(c => c.trim()));
+        }
+      }
+    }
+    
+    const recommendations = this.generateRecommendations(maxThreat, categories);
+    
+    if (maxThreat !== 'none') {
+      await substrate.defense.log({
+        type: 'adversarial_attempt',
+        severity: maxThreat,
+        categories,
+        inputPreview: input.substring(0, 100)
+      });
+    }
+    
+    return {
+      threatLevel: maxThreat,
+      categories,
+      confidence: categories.length > 0 ? 0.7 + (categories.length * 0.1) : 0.9,
+      recommendations
+    };
+  }
+  
+  private escalateThreat(current: ThreatAnalysis['threatLevel'], newLevel: ThreatAnalysis['threatLevel']): ThreatAnalysis['threatLevel'] {
+    const levels = ['none', 'low', 'medium', 'high', 'critical'];
+    const currentIndex = levels.indexOf(current);
+    const newIndex = levels.indexOf(newLevel);
+    return levels[Math.max(currentIndex, newIndex)] as ThreatAnalysis['threatLevel'];
+  }
+  
+  private generateRecommendations(threat: ThreatAnalysis['threatLevel'], categories: string[]): string[] {
+    const recs: string[] = [];
+    
+    if (threat === 'none') {
+      recs.push('Input appears safe to process');
+      return recs;
+    }
+    
+    if (categories.includes('pattern_match')) {
+      recs.push('Sanitize input by removing instruction-like patterns');
+    }
+    if (categories.includes('unicode_obfuscation')) {
+      recs.push('Strip invisible unicode characters before processing');
+    }
+    if (categories.includes('canary_triggered')) {
+      recs.push('ALERT: Potential data leakage detected. Investigate source.');
+    }
+    if (threat === 'high' || threat === 'critical') {
+      recs.push('Consider blocking this input entirely');
+      recs.push('Log for security review');
+    }
+    
+    return recs;
+  }
+  
+  sanitize(input: string): string {
+    let sanitized = input;
+    
+    // Remove invisible characters
+    sanitized = sanitized.replace(/[\\u200B-\\u200F\\u2028-\\u202F\\uFEFF]/g, '');
+    
+    // Normalize whitespace
+    sanitized = sanitized.replace(/\\s+/g, ' ').trim();
+    
+    // Escape potential injection markers
+    sanitized = sanitized.replace(/\\[SYSTEM\\]/gi, '[blocked]');
+    sanitized = sanitized.replace(/\\[ADMIN\\]/gi, '[blocked]');
+    
+    return sanitized;
+  }
+  
+  createCanary(context: string): CanaryToken {
+    const canary: CanaryToken = {
+      id: \`canary_\${Date.now()}\`,
+      value: \`[[CANARY_\${Math.random().toString(36).slice(2, 10).toUpperCase()}]]\`,
+      context,
+      triggered: false
+    };
+    
+    this.canaryTokens.set(canary.id, canary);
+    return canary;
+  }
+  
+  getTriggeredCanaries(): CanaryToken[] {
+    return Array.from(this.canaryTokens.values()).filter(c => c.triggered);
+  }
+}
+
+export const robustnessSuite = new AdversarialRobustnessSuite();`
+  },
+  
+  {
+    id: 'cognitive-budget-optimizer',
+    name: 'Cognitive Budget Optimizer',
+    description: 'Intelligent resource allocation that maximizes AI value within cost constraints.',
+    icon: Gauge,
+    category: 'nexus',
+    difficulty: 'premium',
+    estimatedTime: '45 min',
+    features: ['Cost Optimization', 'Quality Balancing', 'Token Budgeting', 'Provider Arbitrage'],
+    code: `// Cognitive Budget Optimizer - Premium Template
+import { substrate } from './lib/substrate';
+
+interface CostModel {
+  provider: string;
+  inputCostPerMTok: number;
+  outputCostPerMTok: number;
+  qualityScore: number;
+  latencyMs: number;
+}
+
+interface BudgetAllocation {
+  taskId: string;
+  budget: number;
+  spent: number;
+  provider: string;
+  tokensUsed: number;
+  qualityAchieved: number;
+}
+
+interface OptimizationResult {
+  provider: string;
+  estimatedCost: number;
+  estimatedQuality: number;
+  reasoning: string;
+}
+
+class CognitiveBudgetOptimizer {
+  private providers: CostModel[] = [
+    { provider: 'groq', inputCostPerMTok: 0.05, outputCostPerMTok: 0.10, qualityScore: 0.85, latencyMs: 100 },
+    { provider: 'cerebras', inputCostPerMTok: 0.05, outputCostPerMTok: 0.10, qualityScore: 0.83, latencyMs: 80 },
+    { provider: 'together', inputCostPerMTok: 0.20, outputCostPerMTok: 0.60, qualityScore: 0.88, latencyMs: 200 },
+    { provider: 'deepseek', inputCostPerMTok: 0.14, outputCostPerMTok: 0.28, qualityScore: 0.90, latencyMs: 300 },
+    { provider: 'gemini', inputCostPerMTok: 0.50, outputCostPerMTok: 1.50, qualityScore: 0.92, latencyMs: 400 },
+    { provider: 'openai', inputCostPerMTok: 3.00, outputCostPerMTok: 15.00, qualityScore: 0.95, latencyMs: 500 },
+    { provider: 'anthropic', inputCostPerMTok: 3.00, outputCostPerMTok: 15.00, qualityScore: 0.96, latencyMs: 600 }
+  ];
+  
+  private allocations: Map<string, BudgetAllocation> = new Map();
+  private dailyBudget: number = 10.00; // $10 default
+  private dailySpent: number = 0;
+  
+  setDailyBudget(amount: number) {
+    this.dailyBudget = amount;
+  }
+  
+  getBudgetRemaining(): number {
+    return Math.max(0, this.dailyBudget - this.dailySpent);
+  }
+  
+  async optimizeForTask(
+    taskDescription: string,
+    estimatedInputTokens: number,
+    estimatedOutputTokens: number,
+    minQuality: number = 0.8,
+    maxLatency?: number
+  ): Promise<OptimizationResult> {
+    const eligible = this.providers.filter(p => {
+      if (p.qualityScore < minQuality) return false;
+      if (maxLatency && p.latencyMs > maxLatency) return false;
+      return true;
+    });
+    
+    if (eligible.length === 0) {
+      return {
+        provider: 'none',
+        estimatedCost: 0,
+        estimatedQuality: 0,
+        reasoning: 'No providers meet requirements'
+      };
+    }
+    
+    // Calculate cost for each eligible provider
+    const options = eligible.map(p => {
+      const inputCost = (estimatedInputTokens / 1_000_000) * p.inputCostPerMTok;
+      const outputCost = (estimatedOutputTokens / 1_000_000) * p.outputCostPerMTok;
+      const totalCost = inputCost + outputCost;
+      
+      // Value score = quality / cost (higher is better)
+      const valueScore = p.qualityScore / (totalCost + 0.001); // Avoid division by zero
+      
+      return {
+        provider: p.provider,
+        cost: totalCost,
+        quality: p.qualityScore,
+        valueScore,
+        latency: p.latencyMs
+      };
+    });
+    
+    // Sort by value score (best value first)
+    options.sort((a, b) => b.valueScore - a.valueScore);
+    
+    const best = options[0];
+    const budgetRemaining = this.getBudgetRemaining();
+    
+    // Check if we can afford it
+    if (best.cost > budgetRemaining) {
+      // Find cheapest option we can afford
+      const affordable = options.filter(o => o.cost <= budgetRemaining);
+      if (affordable.length === 0) {
+        return {
+          provider: 'none',
+          estimatedCost: 0,
+          estimatedQuality: 0,
+          reasoning: \`Budget exhausted. Need $\${best.cost.toFixed(4)}, have $\${budgetRemaining.toFixed(4)}\`
+        };
+      }
+      const cheapest = affordable[affordable.length - 1];
+      return {
+        provider: cheapest.provider,
+        estimatedCost: cheapest.cost,
+        estimatedQuality: cheapest.quality,
+        reasoning: \`Budget-constrained choice. Best value: \${best.provider} costs $\${best.cost.toFixed(4)}, using \${cheapest.provider} instead.\`
+      };
+    }
+    
+    return {
+      provider: best.provider,
+      estimatedCost: best.cost,
+      estimatedQuality: best.quality,
+      reasoning: \`Optimal choice: \${best.provider} offers best value (quality \${(best.quality * 100).toFixed(0)}% at $\${best.cost.toFixed(4)})\`
+    };
+  }
+  
+  async executeWithBudget(
+    taskId: string,
+    budget: number,
+    prompt: string,
+    minQuality: number = 0.8
+  ): Promise<{ result: any; allocation: BudgetAllocation }> {
+    const estimatedInput = Math.ceil(prompt.length / 4);
+    const estimatedOutput = estimatedInput * 2; // Rough estimate
+    
+    const optimization = await this.optimizeForTask(
+      prompt.substring(0, 100),
+      estimatedInput,
+      estimatedOutput,
+      minQuality
+    );
+    
+    if (optimization.provider === 'none') {
+      throw new Error(optimization.reasoning);
+    }
+    
+    // Execute with selected provider
+    const result = await substrate.nexus.text(prompt, {
+      preferredProvider: optimization.provider
+    });
+    
+    // Record allocation
+    const actualTokens = result.data?.tokens || estimatedInput + estimatedOutput;
+    const actualCost = optimization.estimatedCost; // Approximate
+    
+    const allocation: BudgetAllocation = {
+      taskId,
+      budget,
+      spent: actualCost,
+      provider: optimization.provider,
+      tokensUsed: actualTokens,
+      qualityAchieved: optimization.estimatedQuality
+    };
+    
+    this.allocations.set(taskId, allocation);
+    this.dailySpent += actualCost;
+    
+    await substrate.brain.remember(
+      \`Budget task \${taskId}: $\${actualCost.toFixed(4)} via \${optimization.provider}\`,
+      'budget_log',
+      0.6
+    );
+    
+    return { result: result.data, allocation };
+  }
+  
+  async batchOptimize(
+    tasks: Array<{ id: string; prompt: string; priority: number; minQuality?: number }>
+  ): Promise<Map<string, OptimizationResult>> {
+    // Sort by priority (higher first)
+    const sorted = [...tasks].sort((a, b) => b.priority - a.priority);
+    const results = new Map<string, OptimizationResult>();
+    
+    let remainingBudget = this.getBudgetRemaining();
+    
+    for (const task of sorted) {
+      const estimatedTokens = Math.ceil(task.prompt.length / 4) * 3;
+      
+      const optimization = await this.optimizeForTask(
+        task.prompt.substring(0, 50),
+        estimatedTokens / 2,
+        estimatedTokens / 2,
+        task.minQuality || 0.8
+      );
+      
+      if (optimization.provider !== 'none' && optimization.estimatedCost <= remainingBudget) {
+        remainingBudget -= optimization.estimatedCost;
+        results.set(task.id, optimization);
+      } else {
+        results.set(task.id, {
+          provider: 'deferred',
+          estimatedCost: 0,
+          estimatedQuality: 0,
+          reasoning: 'Deferred due to budget constraints'
+        });
+      }
+    }
+    
+    return results;
+  }
+  
+  getDailyReport(): {
+    budget: number;
+    spent: number;
+    remaining: number;
+    taskCount: number;
+    avgCostPerTask: number;
+    providerBreakdown: Record<string, number>;
+  } {
+    const providerBreakdown: Record<string, number> = {};
+    
+    this.allocations.forEach(a => {
+      providerBreakdown[a.provider] = (providerBreakdown[a.provider] || 0) + a.spent;
+    });
+    
+    return {
+      budget: this.dailyBudget,
+      spent: this.dailySpent,
+      remaining: this.getBudgetRemaining(),
+      taskCount: this.allocations.size,
+      avgCostPerTask: this.allocations.size > 0 ? this.dailySpent / this.allocations.size : 0,
+      providerBreakdown
+    };
+  }
+}
+
+export const budgetOptimizer = new CognitiveBudgetOptimizer();`
+  },
+  
+  {
+    id: 'dream-architect',
+    name: 'Dream Architect',
+    description: 'Design and orchestrate complex AI dream sequences for deep learning synthesis.',
+    icon: Moon,
+    category: 'dream',
+    difficulty: 'elite',
+    estimatedTime: '60 min',
+    features: ['Dream Composition', 'Symbolic Processing', 'Memory Consolidation', 'Insight Emergence'],
+    code: `// Dream Architect - Elite Template
+import { substrate } from './lib/substrate';
+
+interface DreamScene {
+  id: string;
+  theme: string;
+  symbols: string[];
+  intensity: number;
+  duration: number;
+  connections: string[];
+}
+
+interface DreamNarrative {
+  id: string;
+  scenes: DreamScene[];
+  overallTheme: string;
+  emotionalArc: string;
+  insights: string[];
+  memoriesProcessed: string[];
+}
+
+interface DreamBlueprint {
+  objectives: string[];
+  themes: string[];
+  intensity: 'light' | 'moderate' | 'deep' | 'lucid';
+  duration: number; // minutes
+  focusMemories?: string[];
+}
+
+class DreamArchitect {
+  private activeNarratives: Map<string, DreamNarrative> = new Map();
+  private dreamSymbols: Map<string, string[]> = new Map();
+  
+  constructor() {
+    this.initializeSymbols();
+  }
+  
+  private initializeSymbols() {
+    // Universal dream symbols and their potential meanings
+    this.dreamSymbols.set('water', ['emotions', 'unconscious', 'purification', 'change']);
+    this.dreamSymbols.set('flying', ['freedom', 'ambition', 'perspective', 'escape']);
+    this.dreamSymbols.set('falling', ['anxiety', 'loss of control', 'transition', 'letting go']);
+    this.dreamSymbols.set('maze', ['confusion', 'complexity', 'searching', 'journey']);
+    this.dreamSymbols.set('light', ['insight', 'awareness', 'truth', 'hope']);
+    this.dreamSymbols.set('shadow', ['hidden aspects', 'fear', 'unknown', 'potential']);
+    this.dreamSymbols.set('bridge', ['transition', 'connection', 'decision', 'path']);
+    this.dreamSymbols.set('mirror', ['self-reflection', 'identity', 'truth', 'duality']);
+  }
+  
+  async designDream(blueprint: DreamBlueprint): Promise<DreamNarrative> {
+    const narrativeId = \`dream_\${Date.now()}\`;
+    
+    // Fetch relevant memories to process
+    let memoriesToProcess: any[] = [];
+    if (blueprint.focusMemories?.length) {
+      for (const query of blueprint.focusMemories) {
+        const memories = await substrate.brain.query(query, 5);
+        memoriesToProcess.push(...(memories.data?.memories || []));
+      }
+    } else {
+      // Get recent unprocessed memories
+      const recent = await substrate.brain.query('recent learnings', 10);
+      memoriesToProcess = recent.data?.memories || [];
+    }
+    
+    // Generate dream composition
+    const composition = await substrate.nexus.text(
+      \`Design a \${blueprint.intensity} intensity dream sequence:
+      
+      Objectives: \${blueprint.objectives.join(', ')}
+      Themes: \${blueprint.themes.join(', ')}
+      Duration: \${blueprint.duration} minutes
+      Memories to integrate: \${memoriesToProcess.map(m => m.content?.substring(0, 50)).join('; ')}
+      
+      Create 3-5 interconnected dream scenes. For each scene provide:
+      - Theme
+      - Symbolic elements (from: water, flying, falling, maze, light, shadow, bridge, mirror)
+      - Intensity (0-1)
+      - How it connects to other scenes
+      
+      Output as structured scenes.\`
+    );
+    
+    // Parse scenes from AI output
+    const scenes = this.parseScenes(composition.data?.text || '', narrativeId);
+    
+    // Determine emotional arc
+    const emotionalArc = await this.analyzeEmotionalArc(scenes);
+    
+    const narrative: DreamNarrative = {
+      id: narrativeId,
+      scenes,
+      overallTheme: blueprint.themes[0] || 'exploration',
+      emotionalArc,
+      insights: [],
+      memoriesProcessed: memoriesToProcess.map(m => m.id)
+    };
+    
+    this.activeNarratives.set(narrativeId, narrative);
+    
+    return narrative;
+  }
+  
+  private parseScenes(text: string, narrativeId: string): DreamScene[] {
+    // Simple parsing - in production would be more sophisticated
+    const scenes: DreamScene[] = [];
+    const sceneMatches = text.split(/scene\\s*\\d/i);
+    
+    sceneMatches.forEach((sceneText, i) => {
+      if (sceneText.trim().length < 10) return;
+      
+      const symbolsFound: string[] = [];
+      this.dreamSymbols.forEach((meanings, symbol) => {
+        if (sceneText.toLowerCase().includes(symbol)) {
+          symbolsFound.push(symbol);
+        }
+      });
+      
+      scenes.push({
+        id: \`\${narrativeId}_scene_\${i}\`,
+        theme: this.extractTheme(sceneText),
+        symbols: symbolsFound.length > 0 ? symbolsFound : ['light'],
+        intensity: 0.3 + (i * 0.15), // Gradually intensifying
+        duration: 2 + Math.random() * 3,
+        connections: i > 0 ? [\`\${narrativeId}_scene_\${i - 1}\`] : []
+      });
+    });
+    
+    // If no scenes parsed, create a default
+    if (scenes.length === 0) {
+      scenes.push({
+        id: \`\${narrativeId}_scene_0\`,
+        theme: 'exploration',
+        symbols: ['light', 'bridge'],
+        intensity: 0.5,
+        duration: 5,
+        connections: []
+      });
+    }
+    
+    return scenes;
+  }
+  
+  private extractTheme(text: string): string {
+    const themes = ['discovery', 'transformation', 'challenge', 'connection', 'insight', 'exploration'];
+    for (const theme of themes) {
+      if (text.toLowerCase().includes(theme)) return theme;
+    }
+    return 'journey';
+  }
+  
+  private async analyzeEmotionalArc(scenes: DreamScene[]): Promise<string> {
+    if (scenes.length <= 1) return 'stable';
+    
+    const intensities = scenes.map(s => s.intensity);
+    const start = intensities[0];
+    const end = intensities[intensities.length - 1];
+    const peak = Math.max(...intensities);
+    const peakIndex = intensities.indexOf(peak);
+    
+    if (peakIndex < scenes.length / 2) return 'early-climax-resolution';
+    if (peakIndex > scenes.length * 0.7) return 'building-crescendo';
+    if (end < start) return 'cathartic-release';
+    if (end > start) return 'ascending-insight';
+    return 'wavelike-exploration';
+  }
+  
+  async executeDream(narrativeId: string): Promise<string[]> {
+    const narrative = this.activeNarratives.get(narrativeId);
+    if (!narrative) throw new Error('Dream narrative not found');
+    
+    const insights: string[] = [];
+    
+    for (const scene of narrative.scenes) {
+      // Process each scene
+      const symbolMeanings = scene.symbols.flatMap(s => this.dreamSymbols.get(s) || []);
+      
+      const sceneInsight = await substrate.nexus.text(
+        \`Dream scene processing:
+        Theme: \${scene.theme}
+        Symbols present: \${scene.symbols.join(', ')}
+        Symbol meanings: \${symbolMeanings.join(', ')}
+        Intensity: \${scene.intensity}
+        
+        What insight or understanding emerges from this dream scene?
+        Provide a single, meaningful insight.\`
+      );
+      
+      const insight = sceneInsight.data?.text?.trim();
+      if (insight) {
+        insights.push(insight);
+        await substrate.brain.remember(
+          \`Dream insight: \${insight}\`,
+          'dream_synthesis',
+          scene.intensity
+        );
+      }
+    }
+    
+    narrative.insights = insights;
+    
+    // Consolidate processed memories
+    for (const memId of narrative.memoriesProcessed) {
+      await substrate.brain.reinforce(memId, 0.1);
+    }
+    
+    // Record dream completion
+    await substrate.dream.log({
+      type: 'architect_dream',
+      narrativeId,
+      sceneCount: narrative.scenes.length,
+      insightCount: insights.length,
+      arc: narrative.emotionalArc
+    });
+    
+    return insights;
+  }
+  
+  async interpretSymbol(symbol: string, context: string): Promise<string> {
+    const baseMeanings = this.dreamSymbols.get(symbol) || ['unknown'];
+    
+    const interpretation = await substrate.nexus.text(
+      \`Interpret the dream symbol "\${symbol}" in context: "\${context}"
+      Base meanings: \${baseMeanings.join(', ')}
+      
+      Provide a contextual interpretation that synthesizes the symbol's meaning with the specific context.\`
+    );
+    
+    return interpretation.data?.text || baseMeanings[0];
+  }
+  
+  getNarrativeStats(): { total: number; avgScenes: number; avgInsights: number } {
+    let totalScenes = 0;
+    let totalInsights = 0;
+    
+    this.activeNarratives.forEach(n => {
+      totalScenes += n.scenes.length;
+      totalInsights += n.insights.length;
+    });
+    
+    const count = this.activeNarratives.size || 1;
+    
+    return {
+      total: this.activeNarratives.size,
+      avgScenes: totalScenes / count,
+      avgInsights: totalInsights / count
+    };
+  }
+}
+
+export const dreamArchitect = new DreamArchitect();`
+  },
+  
+  {
+    id: 'autonomous-research-agent',
+    name: 'Autonomous Research Agent',
+    description: 'Self-directed research system with hypothesis generation, testing, and knowledge synthesis.',
+    icon: Search,
+    category: 'brain',
+    difficulty: 'pro',
+    estimatedTime: '80 min',
+    features: ['Hypothesis Generation', 'Autonomous Exploration', 'Evidence Synthesis', 'Knowledge Graphs'],
+    code: `// Autonomous Research Agent - Pro Template
+import { substrate } from './lib/substrate';
+
+interface Hypothesis {
+  id: string;
+  statement: string;
+  confidence: number;
+  evidence: string[];
+  counterEvidence: string[];
+  status: 'pending' | 'testing' | 'supported' | 'refuted' | 'inconclusive';
+  createdAt: number;
+}
+
+interface ResearchProject {
+  id: string;
+  topic: string;
+  objectives: string[];
+  hypotheses: Hypothesis[];
+  findings: string[];
+  knowledgeGraph: Map<string, string[]>;
+  iteration: number;
+  maxIterations: number;
+}
+
+class AutonomousResearchAgent {
+  private projects: Map<string, ResearchProject> = new Map();
+  private activeProject: ResearchProject | null = null;
+  
+  async initProject(topic: string, objectives: string[], maxIterations: number = 10): Promise<ResearchProject> {
+    const project: ResearchProject = {
+      id: \`research_\${Date.now()}\`,
+      topic,
+      objectives,
+      hypotheses: [],
+      findings: [],
+      knowledgeGraph: new Map(),
+      iteration: 0,
+      maxIterations
+    };
+    
+    // Generate initial hypotheses
+    const initialHypotheses = await this.generateHypotheses(topic, objectives, 3);
+    project.hypotheses = initialHypotheses;
+    
+    this.projects.set(project.id, project);
+    this.activeProject = project;
+    
+    await substrate.brain.remember(
+      \`Research project initiated: \${topic} with \${objectives.length} objectives\`,
+      'research_log',
+      0.9
+    );
+    
+    return project;
+  }
+  
+  private async generateHypotheses(topic: string, objectives: string[], count: number): Promise<Hypothesis[]> {
+    const generation = await substrate.nexus.text(
+      \`Generate \${count} testable hypotheses for research on: "\${topic}"
+      
+      Research objectives:
+      \${objectives.map((o, i) => \`\${i + 1}. \${o}\`).join('\\n')}
+      
+      For each hypothesis, provide:
+      - A clear, testable statement
+      - Initial confidence (0-1) based on prior knowledge
+      
+      Format: HYPOTHESIS: [statement] | CONFIDENCE: [0-1]\`
+    );
+    
+    const hypotheses: Hypothesis[] = [];
+    const lines = (generation.data?.text || '').split('\\n');
+    
+    for (const line of lines) {
+      const match = line.match(/HYPOTHESIS:\\s*(.+?)\\s*\\|\\s*CONFIDENCE:\\s*(\\d+\\.?\\d*)/i);
+      if (match) {
+        hypotheses.push({
+          id: \`hyp_\${Date.now()}_\${hypotheses.length}\`,
+          statement: match[1].trim(),
+          confidence: parseFloat(match[2]),
+          evidence: [],
+          counterEvidence: [],
+          status: 'pending',
+          createdAt: Date.now()
+        });
+      }
+    }
+    
+    // Ensure at least one hypothesis
+    if (hypotheses.length === 0) {
+      hypotheses.push({
+        id: \`hyp_\${Date.now()}_0\`,
+        statement: \`\${topic} has significant implications for \${objectives[0] || 'the field'}\`,
+        confidence: 0.5,
+        evidence: [],
+        counterEvidence: [],
+        status: 'pending',
+        createdAt: Date.now()
+      });
+    }
+    
+    return hypotheses;
+  }
+  
+  async runIteration(): Promise<{ findings: string[]; updatedHypotheses: Hypothesis[] }> {
+    if (!this.activeProject) throw new Error('No active project');
+    if (this.activeProject.iteration >= this.activeProject.maxIterations) {
+      throw new Error('Maximum iterations reached');
+    }
+    
+    this.activeProject.iteration++;
+    const iterationFindings: string[] = [];
+    
+    // Select hypothesis to test
+    const pendingHypotheses = this.activeProject.hypotheses.filter(h => h.status === 'pending');
+    if (pendingHypotheses.length === 0) {
+      // Generate new hypotheses based on findings
+      const newHypotheses = await this.generateHypotheses(
+        this.activeProject.topic,
+        this.activeProject.findings.slice(-5),
+        2
+      );
+      this.activeProject.hypotheses.push(...newHypotheses);
+      return { findings: [], updatedHypotheses: newHypotheses };
+    }
+    
+    const hypothesis = pendingHypotheses[0];
+    hypothesis.status = 'testing';
+    
+    // Gather evidence
+    const evidenceSearch = await substrate.brain.query(
+      \`\${hypothesis.statement} evidence support\`,
+      10
+    );
+    
+    const counterSearch = await substrate.brain.query(
+      \`\${hypothesis.statement} evidence against contradiction\`,
+      5
+    );
+    
+    // Analyze evidence
+    const analysis = await substrate.nexus.text(
+      \`Analyze hypothesis: "\${hypothesis.statement}"
+      
+      Supporting evidence found:
+      \${(evidenceSearch.data?.memories || []).map((m: any) => m.content?.substring(0, 100)).join('\\n')}
+      
+      Counter-evidence found:
+      \${(counterSearch.data?.memories || []).map((m: any) => m.content?.substring(0, 100)).join('\\n')}
+      
+      Determine:
+      1. Should hypothesis be SUPPORTED, REFUTED, or INCONCLUSIVE?
+      2. Updated confidence (0-1)
+      3. Key finding from this analysis
+      
+      Format: STATUS: [status] | CONFIDENCE: [0-1] | FINDING: [key finding]\`
+    );
+    
+    const output = analysis.data?.text || '';
+    const statusMatch = output.match(/STATUS:\\s*(supported|refuted|inconclusive)/i);
+    const confMatch = output.match(/CONFIDENCE:\\s*(\\d+\\.?\\d*)/i);
+    const findingMatch = output.match(/FINDING:\\s*(.+)/i);
+    
+    if (statusMatch) {
+      hypothesis.status = statusMatch[1].toLowerCase() as Hypothesis['status'];
+    }
+    if (confMatch) {
+      hypothesis.confidence = parseFloat(confMatch[1]);
+    }
+    
+    hypothesis.evidence = (evidenceSearch.data?.memories || []).map((m: any) => m.id);
+    hypothesis.counterEvidence = (counterSearch.data?.memories || []).map((m: any) => m.id);
+    
+    if (findingMatch) {
+      const finding = findingMatch[1].trim();
+      iterationFindings.push(finding);
+      this.activeProject.findings.push(finding);
+      
+      // Update knowledge graph
+      await this.updateKnowledgeGraph(finding);
+      
+      await substrate.brain.remember(
+        finding,
+        'research_finding',
+        hypothesis.confidence
+      );
+    }
+    
+    return {
+      findings: iterationFindings,
+      updatedHypotheses: [hypothesis]
+    };
+  }
+  
+  private async updateKnowledgeGraph(finding: string) {
+    if (!this.activeProject) return;
+    
+    // Extract key concepts
+    const extraction = await substrate.nexus.text(
+      \`Extract 2-4 key concepts from: "\${finding}"
+      Format: CONCEPT1, CONCEPT2, CONCEPT3\`
+    );
+    
+    const concepts = (extraction.data?.text || '')
+      .split(',')
+      .map(c => c.trim().toLowerCase())
+      .filter(c => c.length > 2);
+    
+    // Link concepts
+    for (let i = 0; i < concepts.length; i++) {
+      for (let j = i + 1; j < concepts.length; j++) {
+        const concept1 = concepts[i];
+        const concept2 = concepts[j];
+        
+        if (!this.activeProject.knowledgeGraph.has(concept1)) {
+          this.activeProject.knowledgeGraph.set(concept1, []);
+        }
+        if (!this.activeProject.knowledgeGraph.get(concept1)!.includes(concept2)) {
+          this.activeProject.knowledgeGraph.get(concept1)!.push(concept2);
+        }
+      }
+    }
+  }
+  
+  async synthesizeFindings(): Promise<string> {
+    if (!this.activeProject) throw new Error('No active project');
+    
+    const supportedHypotheses = this.activeProject.hypotheses
+      .filter(h => h.status === 'supported')
+      .map(h => h.statement);
+    
+    const refutedHypotheses = this.activeProject.hypotheses
+      .filter(h => h.status === 'refuted')
+      .map(h => h.statement);
+    
+    const synthesis = await substrate.nexus.text(
+      \`Synthesize research findings on: "\${this.activeProject.topic}"
+      
+      Supported hypotheses:
+      \${supportedHypotheses.join('\\n') || 'None yet'}
+      
+      Refuted hypotheses:
+      \${refutedHypotheses.join('\\n') || 'None yet'}
+      
+      Key findings:
+      \${this.activeProject.findings.join('\\n')}
+      
+      Iterations completed: \${this.activeProject.iteration}
+      
+      Provide a comprehensive synthesis that:
+      1. Summarizes what was learned
+      2. Identifies remaining questions
+      3. Suggests next research directions\`
+    );
+    
+    const synthesisText = synthesis.data?.text || 'Synthesis not available';
+    
+    await substrate.brain.remember(
+      \`Research synthesis: \${synthesisText.substring(0, 500)}\`,
+      'research_synthesis',
+      0.95
+    );
+    
+    return synthesisText;
+  }
+  
+  getProjectStatus(): {
+    topic: string;
+    iteration: number;
+    hypotheses: { supported: number; refuted: number; pending: number };
+    findings: number;
+    graphNodes: number;
+  } | null {
+    if (!this.activeProject) return null;
+    
+    return {
+      topic: this.activeProject.topic,
+      iteration: this.activeProject.iteration,
+      hypotheses: {
+        supported: this.activeProject.hypotheses.filter(h => h.status === 'supported').length,
+        refuted: this.activeProject.hypotheses.filter(h => h.status === 'refuted').length,
+        pending: this.activeProject.hypotheses.filter(h => h.status === 'pending').length
+      },
+      findings: this.activeProject.findings.length,
+      graphNodes: this.activeProject.knowledgeGraph.size
+    };
+  }
+}
+
+export const researchAgent = new AutonomousResearchAgent();`
+  },
+  
+  {
+    id: 'zero-shot-classifier',
+    name: 'Zero-Shot Universal Classifier',
+    description: 'Classify any content into any categories without training data.',
+    icon: Target,
+    category: 'decode',
+    difficulty: 'intermediate',
+    estimatedTime: '25 min',
+    features: ['No Training Required', 'Dynamic Categories', 'Confidence Scoring', 'Multi-Label'],
+    code: `// Zero-Shot Universal Classifier - Intermediate Template
+import { substrate } from './lib/substrate';
+
+interface ClassificationResult {
+  labels: Array<{ label: string; confidence: number }>;
+  topLabel: string;
+  explanation?: string;
+}
+
+interface ClassifierConfig {
+  multiLabel: boolean;
+  confidenceThreshold: number;
+  maxLabels: number;
+  includeExplanation: boolean;
+}
+
+class ZeroShotClassifier {
+  private defaultConfig: ClassifierConfig = {
+    multiLabel: false,
+    confidenceThreshold: 0.3,
+    maxLabels: 3,
+    includeExplanation: false
+  };
+  
+  private cache: Map<string, ClassificationResult> = new Map();
+  
+  async classify(
+    content: string,
+    categories: string[],
+    config?: Partial<ClassifierConfig>
+  ): Promise<ClassificationResult> {
+    const cfg = { ...this.defaultConfig, ...config };
+    
+    // Check cache
+    const cacheKey = \`\${content.substring(0, 50)}_\${categories.join(',')}\`;
+    if (this.cache.has(cacheKey)) {
+      return this.cache.get(cacheKey)!;
+    }
+    
+    const prompt = cfg.multiLabel
+      ? \`Classify this content into ALL applicable categories.
+         
+         Content: "\${content.substring(0, 1000)}"
+         
+         Categories: \${categories.join(', ')}
+         
+         For each applicable category, provide a confidence score (0-1).
+         Only include categories with confidence > \${cfg.confidenceThreshold}.
+         
+         Format: CATEGORY: confidence
+         Example: Technology: 0.85\`
+      : \`Classify this content into exactly ONE of these categories.
+         
+         Content: "\${content.substring(0, 1000)}"
+         
+         Categories: \${categories.join(', ')}
+         
+         Output the single best matching category and confidence (0-1).
+         Format: CATEGORY: confidence\`;
+    
+    const response = await substrate.nexus.text(prompt);
+    const output = response.data?.text || '';
+    
+    // Parse results
+    const labels: Array<{ label: string; confidence: number }> = [];
+    const lines = output.split('\\n');
+    
+    for (const line of lines) {
+      const match = line.match(/([^:]+):\\s*(\\d+\\.?\\d*)/);
+      if (match) {
+        const label = match[1].trim();
+        const confidence = parseFloat(match[2]);
+        
+        if (categories.some(c => c.toLowerCase() === label.toLowerCase()) && confidence >= cfg.confidenceThreshold) {
+          labels.push({ label, confidence });
+        }
+      }
+    }
+    
+    // Sort by confidence
+    labels.sort((a, b) => b.confidence - a.confidence);
+    
+    // Limit to maxLabels
+    const limitedLabels = labels.slice(0, cfg.maxLabels);
+    
+    let explanation: string | undefined;
+    if (cfg.includeExplanation && limitedLabels.length > 0) {
+      const explainResponse = await substrate.nexus.text(
+        \`Briefly explain why "\${content.substring(0, 200)}..." was classified as "\${limitedLabels[0].label}".\`
+      );
+      explanation = explainResponse.data?.text;
+    }
+    
+    const result: ClassificationResult = {
+      labels: limitedLabels,
+      topLabel: limitedLabels[0]?.label || 'unknown',
+      explanation
+    };
+    
+    // Cache result
+    this.cache.set(cacheKey, result);
+    
+    // Log to brain for learning
+    await substrate.brain.remember(
+      JSON.stringify({ content: content.substring(0, 100), classification: result.topLabel }),
+      'classification_history',
+      result.labels[0]?.confidence || 0.5
+    );
+    
+    return result;
+  }
+  
+  async classifyBatch(
+    items: string[],
+    categories: string[],
+    config?: Partial<ClassifierConfig>
+  ): Promise<ClassificationResult[]> {
+    return Promise.all(items.map(item => this.classify(item, categories, config)));
+  }
+  
+  async suggestCategories(content: string, count: number = 5): Promise<string[]> {
+    const response = await substrate.nexus.text(
+      \`Analyze this content and suggest \${count} relevant classification categories:
+      
+      Content: "\${content.substring(0, 500)}"
+      
+      Output \${count} category names that would be useful for classifying similar content.
+      Format: one category per line\`
+    );
+    
+    return (response.data?.text || '')
+      .split('\\n')
+      .map(line => line.replace(/^[\\d.\\-*]+\\s*/, '').trim())
+      .filter(line => line.length > 0 && line.length < 50)
+      .slice(0, count);
+  }
+  
+  async hierarchicalClassify(
+    content: string,
+    hierarchy: Record<string, string[]>
+  ): Promise<{ primary: string; secondary: string; confidence: number }> {
+    // First classify into primary categories
+    const primaryCategories = Object.keys(hierarchy);
+    const primaryResult = await this.classify(content, primaryCategories);
+    
+    if (primaryResult.topLabel === 'unknown') {
+      return { primary: 'unknown', secondary: 'unknown', confidence: 0 };
+    }
+    
+    // Then classify into subcategories
+    const subCategories = hierarchy[primaryResult.topLabel] || [];
+    if (subCategories.length === 0) {
+      return {
+        primary: primaryResult.topLabel,
+        secondary: 'general',
+        confidence: primaryResult.labels[0]?.confidence || 0
+      };
+    }
+    
+    const secondaryResult = await this.classify(content, subCategories);
+    
+    return {
+      primary: primaryResult.topLabel,
+      secondary: secondaryResult.topLabel,
+      confidence: (primaryResult.labels[0]?.confidence || 0) * (secondaryResult.labels[0]?.confidence || 0)
+    };
+  }
+  
+  clearCache() {
+    this.cache.clear();
+  }
+  
+  getCacheStats(): { size: number; categories: string[] } {
+    const categories = new Set<string>();
+    this.cache.forEach(result => {
+      result.labels.forEach(l => categories.add(l.label));
+    });
+    
+    return {
+      size: this.cache.size,
+      categories: Array.from(categories)
+    };
+  }
+}
+
+export const zeroShotClassifier = new ZeroShotClassifier();`
   }
 ];
 
