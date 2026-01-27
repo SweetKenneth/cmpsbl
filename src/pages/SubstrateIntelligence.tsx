@@ -34,8 +34,9 @@ const jsonLd = {
   },
   "offers": {
     "@type": "Offer",
-    "price": "3999",
-    "priceCurrency": "USD"
+    "price": "15000",
+    "priceCurrency": "USD",
+    "description": "Developer License - Annual"
   },
   "featureList": [
     "13-module kernel architecture",
@@ -87,7 +88,7 @@ const faqItems = [
   },
   {
     question: "What's included in a license?",
-    answer: "The Substrate OS License ($3,999) includes: the complete 13-module kernel, persistent memory system, Dream evolution engine, multi-provider AI routing, security perimeter, observability dashboard, 250+ terminal commands, and the Install Wizard for deployment."
+    answer: "Developer License ($15,000/yr) includes: complete 13-module kernel, persistent memory system, Dream evolution engine, multi-provider AI routing, security perimeter, observability dashboard, 250+ terminal commands, and deployment bundle. Research, Enterprise, and Strategic licenses available for larger deployments."
   },
   {
     question: "Can the entire IP be acquired?",
@@ -104,7 +105,7 @@ export default function SubstrateIntelligence() {
     <>
       <SEO 
         title="Substrate Intelligence | CMPSBL - AI Drift Prevention Technology"
-        description="The world's first cognitive orchestration substrate. 13-module kernel solving AI chatbot behavioral drift through persistent memory, self-improvement, and autonomous learning. License from $3,999 or acquire the IP."
+        description="The world's first cognitive orchestration substrate. 13-module kernel solving AI chatbot behavioral drift through persistent memory, self-improvement, and autonomous learning. Developer License from $15,000/yr or acquire the IP."
         keywords={["AI behavioral drift", "chatbot consistency", "persistent memory AI", "self-improving AI", "cognitive orchestration", "AI substrate", "CMPSBL", "promptfluid", "autonomous AI", "enterprise AI"]}
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
@@ -134,9 +135,9 @@ export default function SubstrateIntelligence() {
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
                 <Button size="lg" asChild className="gap-2">
-                  <Link to="/marketplace">
+                  <Link to="/substrate/licensing">
                     <Zap className="w-5 h-5" />
-                    Get the OS — $3,999 • One-Time
+                    View Licensing Options
                   </Link>
                 </Button>
                 <Button size="lg" variant="outline" asChild className="gap-2">
@@ -316,20 +317,20 @@ Boot complete in 109ms`}
                 <Card className="relative overflow-hidden border-primary">
                   <div className="absolute top-0 left-0 right-0 h-1 bg-primary" />
                   <div className="absolute top-2 right-2">
-                    <Badge className="bg-primary/20 text-primary border-primary/30">🔥 Most Popular</Badge>
+                    <Badge className="bg-primary/20 text-primary border-primary/30">🔥 Developer License</Badge>
                   </div>
                   <CardHeader>
-                    <CardTitle className="text-xl">Substrate OS License</CardTitle>
+                    <CardTitle className="text-xl">Developer License</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className="text-3xl font-bold text-primary">$3,999</div>
-                    <p className="text-sm text-muted-foreground">Complete 13-module kernel. <strong className="text-foreground">Self-host on your infrastructure. BYOK architecture.</strong> One-time payment—no subscriptions.</p>
+                    <div className="text-3xl font-bold text-primary">$15,000<span className="text-lg font-normal text-muted-foreground">/year</span></div>
+                    <p className="text-sm text-muted-foreground">Complete 13-module kernel. <strong className="text-foreground">Self-host on your infrastructure. BYOK architecture.</strong> Research, Enterprise, and Strategic licenses also available.</p>
                     <div className="flex items-center gap-2 text-xs text-primary">
                       <CheckCircle2 className="w-4 h-4" />
-                      <span>Instant delivery • License key in minutes</span>
+                      <span>Instant checkout • Developer access in minutes</span>
                     </div>
                     <Button asChild className="w-full">
-                      <Link to="/marketplace">Purchase License</Link>
+                      <Link to="/substrate/licensing">View All Licensing Options</Link>
                     </Button>
                   </CardContent>
                 </Card>
