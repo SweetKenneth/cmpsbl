@@ -125,7 +125,7 @@
              </span>
            </h2>
            <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto">
-              Production-ready applications built on CMPSBL v5.5.0 today, and the transformative possibilities on the horizon.
+              Production-ready applications built on CMPSBL v6.0.0 today, and the transformative possibilities on the horizon.
            </p>
          </motion.div>
          

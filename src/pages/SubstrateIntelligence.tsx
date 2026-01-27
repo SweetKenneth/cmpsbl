@@ -234,7 +234,7 @@ export default function SubstrateIntelligence() {
                 </CardHeader>
                 <CardContent>
                   <pre className="bg-muted/50 p-4 rounded-lg text-xs md:text-sm overflow-x-auto font-mono">
-{`CMPSBL OS Substrate v5.5.0
+{`CMPSBL OS Substrate v6.0.0
 ─────────────────────────────────
 [CORE]       ████████████ READY      12ms
 [RIPPLE]     ████████████ READY       3ms
@@ -249,9 +249,10 @@ export default function SubstrateIntelligence() {
 [SYSTEM]     ████████████ READY       5ms
 [MODERNIZER] ████████████ READY      11ms
 [CORTEX]     ████████████ READY      14ms
+[INCLUSIVE]  ████████████ READY       8ms
 ─────────────────────────────────
-13 modules loaded | Health: 100%
-Boot complete in 109ms`}
+14 modules loaded | Health: 100%
+Boot complete in 117ms`}
                   </pre>
                 </CardContent>
               </Card>
@@ -259,7 +260,7 @@ Boot complete in 109ms`}
           </div>
         </section>
 
-        {/* 13-Module Architecture */}
+        {/* 14-Module Architecture */}
         <section className="py-16 border-t border-border/50">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">

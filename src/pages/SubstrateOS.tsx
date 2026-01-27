@@ -1,6 +1,6 @@
 /**
- * promptfluid® substrate — OS Surface v5.5.0
- * PREMIUM EDITION — 13 modules, 250+ commands, full introspection
+ * promptfluid® substrate — OS Surface v6.0.0
+ * PREMIUM EDITION — 14 modules, 260+ commands, full introspection
  */
 
 import { Navigate, Link } from 'react-router-dom';

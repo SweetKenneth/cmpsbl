@@ -39,7 +39,7 @@ export const DEFAULT_CONFIG: TerminalConfig = {
 
 // Terminal personality messages
 export const BOOT_MESSAGES = [
-  '▓▓▓▓▓▓▓▓▓▓ promptfluid® substrate os v5.5.0',
+  '▓▓▓▓▓▓▓▓▓▓ promptfluid® substrate os v6.0.0',
   '┌ BOOTSTRAP ──────────────────────────────',
   '│ core ............. ok',
   '│ ripple ........... ok',
@@ -53,9 +53,10 @@ export const BOOT_MESSAGES = [
   '│ nexus ............ ok',
   '│ dream ............ ok',
   '│ integration ...... ok',
+  '│ inclusive ........ ok',
   '└ READY',
   '────────────────────────────────────────',
-  '13 modules | 250+ commands | health: 100%',
+  '14 modules | 260+ commands | health: 100%',
   'type \'help\' for commands • \'cortex.status\' for orchestrator',
   '',
 ];

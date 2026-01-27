@@ -1,7 +1,7 @@
 /**
  * promptfluid® Changelog — Spoken in the Voice of Decode
  * A record of mutations, evolutions, and patterns that have emerged.
- * CMPSBL v5.5.0 — Full System Stabilization
+ * CMPSBL v6.0.0 — Human Compatibility Era
  */
 
 import { PublicNav } from "@/components/PublicNav";
@@ -23,6 +23,25 @@ interface ChangelogEntry {
 }
 
 const changelog: ChangelogEntry[] = [
+  {
+    version: "6.0.0",
+    date: "2026-01-27",
+    title: "Human Compatibility Era",
+    emoji: "♿",
+    description: "The substrate evolves to embrace all humans. 14 modules. 260+ commands. INCLUSIVE module provides WCAG 2.2 scanning, repair, validation, profiling, and reporting. Every interface adapts.",
+    changes: [
+      { type: 'added', text: "Inclusive module (14th) — Human compatibility pipeline with scan, repair, validate, profile, report actions." },
+      { type: 'added', text: "inclusive.scan — WCAG 2.2 accessibility scanning with severity classification." },
+      { type: 'added', text: "inclusive.repair — Automated accessibility fixes with before/after diffs." },
+      { type: 'added', text: "inclusive.validate — Pre-publish validation for template pipeline." },
+      { type: 'added', text: "inclusive.profile — User/context profiling for adaptive interfaces." },
+      { type: 'added', text: "inclusive.report — Detailed compliance reports with recommendations." },
+      { type: 'added', text: "inclusive.self_scan — Substrate self-introspection for internal a11y." },
+      { type: 'changed', text: "Architecture expanded to 14-module, 5-layer kernel." },
+      { type: 'changed', text: "Terminal commands expanded to 260+ across all 14 modules." },
+      { type: 'security', text: "Template pipeline now requires inclusive.validate before approval." },
+    ]
+  },
   {
     version: "5.5.0",
     date: "2026-01-25",
@@ -271,8 +290,8 @@ export default function Changelog() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SEO
-        title="Changelog | CMPSBL v5.5.0 — promptfluid®"
-        description="A record of mutations, evolutions, and patterns that have emerged in the CMPSBL substrate. From v0.1.0 to v5.5.0 — the complete journey."
+        title="Changelog | CMPSBL v6.0.0 — promptfluid®"
+        description="A record of mutations, evolutions, and patterns that have emerged in the CMPSBL substrate. From v0.1.0 to v6.0.0 — the complete journey."
         canonical="https://promptfluid.com/changelog"
       />
       <PublicNav />
@@ -281,7 +300,7 @@ export default function Changelog() {
         {/* Header */}
         <header className="text-center mb-12">
           <Badge variant="outline" className="mb-4 text-primary border-primary">
-            v5.5.0 — Latest
+            v6.0.0 — Latest
           </Badge>
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             Changelog

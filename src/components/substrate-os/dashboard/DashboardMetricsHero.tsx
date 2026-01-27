@@ -1,9 +1,9 @@
 /**
- * Dashboard Metrics Hero v5.5.0 - Premium system overview
- * Large health ring with gradient accents - 13 Modules
+ * Dashboard Metrics Hero v6.0.0 - Premium system overview
+ * Large health ring with gradient accents - 14 Modules
  */
 
-import { Activity, Cpu, Zap, Brain, Shield, Eye, Moon, Radio, Key, Sparkles, Plug, Settings, Layers, GitBranch } from 'lucide-react';
+import { Activity, Cpu, Zap, Brain, Shield, Eye, Moon, Radio, Key, Sparkles, Plug, Settings, Layers, GitBranch, Accessibility } from 'lucide-react';
 import { useSubstrateHealthScore } from '@/hooks/useSubstrateOS';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
@@ -22,6 +22,7 @@ const MODULES_CONFIG = [
   { id: 'modernizer', icon: Sparkles, color: 'text-rose-400', bg: 'bg-rose-500' },
   { id: 'integration', icon: Plug, color: 'text-teal-400', bg: 'bg-teal-500' },
   { id: 'cortex', icon: GitBranch, color: 'text-indigo-400', bg: 'bg-indigo-500' },
+  { id: 'inclusive', icon: Accessibility, color: 'text-pink-400', bg: 'bg-pink-500' },
 ];
 
 export function DashboardMetricsHero() {
@@ -128,12 +129,12 @@ export function DashboardMetricsHero() {
             </div>
             <div className="p-4 rounded-xl bg-gradient-to-br from-amber-500/10 to-amber-500/5 border border-amber-500/30">
               <span className="text-[10px] text-amber-400 font-mono uppercase tracking-wider block mb-1">VERSION</span>
-              <span className="text-lg font-bold text-foreground font-mono">v5.5.0</span>
+              <span className="text-lg font-bold text-foreground font-mono">v6.0.0</span>
             </div>
           </div>
 
-          {/* Module Mini Grid - 13 modules */}
-          <div className="grid grid-cols-7 lg:grid-cols-13 gap-2">
+          {/* Module Mini Grid - 14 modules */}
+          <div className="grid grid-cols-7 lg:grid-cols-14 gap-2">
             {MODULES_CONFIG.map((module, idx) => {
               const ModIcon = module.icon;
               const isActive = healthScore.modules[module.id as keyof typeof healthScore.modules];
