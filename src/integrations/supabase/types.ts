@@ -5061,6 +5061,45 @@ export type Database = {
         }
         Relationships: []
       }
+      licensing_inquiries: {
+        Row: {
+          created_at: string | null
+          email: string
+          id: string
+          license_interest: string | null
+          message: string | null
+          name: string
+          organization: string | null
+          responded_at: string | null
+          role: string | null
+          status: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          id?: string
+          license_interest?: string | null
+          message?: string | null
+          name: string
+          organization?: string | null
+          responded_at?: string | null
+          role?: string | null
+          status?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          id?: string
+          license_interest?: string | null
+          message?: string | null
+          name?: string
+          organization?: string | null
+          responded_at?: string | null
+          role?: string | null
+          status?: string | null
+        }
+        Relationships: []
+      }
       marketplace_generated_templates: {
         Row: {
           ai_provider: string | null
@@ -9015,6 +9054,57 @@ export type Database = {
           updated_at?: string | null
           webhook_secret?: string | null
           webhook_url?: string | null
+        }
+        Relationships: []
+      }
+      substrate_licenses: {
+        Row: {
+          activated_at: string | null
+          created_at: string | null
+          customer_email: string
+          customer_name: string | null
+          expires_at: string | null
+          id: string
+          license_type: string
+          organization: string | null
+          status: string | null
+          stripe_customer_id: string | null
+          stripe_session_id: string | null
+          stripe_subscription_id: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          activated_at?: string | null
+          created_at?: string | null
+          customer_email: string
+          customer_name?: string | null
+          expires_at?: string | null
+          id?: string
+          license_type?: string
+          organization?: string | null
+          status?: string | null
+          stripe_customer_id?: string | null
+          stripe_session_id?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          activated_at?: string | null
+          created_at?: string | null
+          customer_email?: string
+          customer_name?: string | null
+          expires_at?: string | null
+          id?: string
+          license_type?: string
+          organization?: string | null
+          status?: string | null
+          stripe_customer_id?: string | null
+          stripe_session_id?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }

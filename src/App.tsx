@@ -63,6 +63,8 @@ const Modernizer = lazy(() => import("./pages/Modernizer"));
 const Marketplace = lazy(() => import("./pages/Marketplace"));
 const MarketplaceSuccess = lazy(() => import("./pages/MarketplaceSuccess"));
 const SubstrateIntelligence = lazy(() => import("./pages/SubstrateIntelligence"));
+const SubstrateLicensing = lazy(() => import("./pages/SubstrateLicensing"));
+const SubstrateLicensingSuccess = lazy(() => import("./pages/SubstrateLicensingSuccess"));
 
 // Marketing / Info pages
 const About = lazy(() => import("./pages/About"));
@@ -164,6 +166,8 @@ const App = () => {
                       <Route path="/marketplace" element={<Marketplace />} />
                       <Route path="/marketplace/success" element={<MarketplaceSuccess />} />
                       <Route path="/intelligence" element={<SubstrateIntelligence />} />
+                      <Route path="/substrate/licensing" element={<SubstrateLicensing />} />
+                      <Route path="/substrate/licensing/success" element={<SubstrateLicensingSuccess />} />
 
                       {/* Marketing / Info */}
                       <Route path="/about" element={<About />} />
