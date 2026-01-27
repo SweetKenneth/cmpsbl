@@ -141,7 +141,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
     },
   });
 
-  // Export backup mutation
+  // Export backup mutation - with forced download
   const exportBackup = useMutation({
     mutationFn: async ({ backupId, includeSecrets }: { backupId?: string; includeSecrets: boolean }) => {
       const { data, error } = await supabase.functions.invoke('pf-backup-export', {
@@ -152,38 +152,55 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
         }
       });
       if (error) throw error;
+      if (!data?.success && data?.error) throw new Error(data.error);
       return data;
     },
     onSuccess: async (data: any) => {
       if (data?.download_url) {
+        toast.loading('Preparing download...', { id: 'backup-download' });
         try {
-          // Fetch the file content and create a blob download
-          // This works for cross-origin signed URLs
-          const response = await fetch(data.download_url);
-          if (!response.ok) throw new Error('Download failed');
+          // Use fetch with blob to force download instead of opening in browser
+          const response = await fetch(data.download_url, {
+            method: 'GET',
+            mode: 'cors',
+          });
+          
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          }
           
           const blob = await response.blob();
-          const url = URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = url;
-          link.download = `substrate-backup-${data.export_token}.json`;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          URL.revokeObjectURL(url);
+          const fileName = `substrate-backup-${data.export_token || Date.now()}.json`;
           
-          toast.success('Export downloaded', {
-            description: `${data?.size_mb || 0} MB - ${data?.total_records || 0} records`,
+          // Create blob URL and force download
+          const blobUrl = URL.createObjectURL(blob);
+          const downloadLink = document.createElement('a');
+          downloadLink.href = blobUrl;
+          downloadLink.download = fileName;
+          downloadLink.style.display = 'none';
+          document.body.appendChild(downloadLink);
+          downloadLink.click();
+          
+          // Cleanup
+          setTimeout(() => {
+            document.body.removeChild(downloadLink);
+            URL.revokeObjectURL(blobUrl);
+          }, 100);
+          
+          toast.success('Backup downloaded!', {
+            id: 'backup-download',
+            description: `${fileName} (${data?.size_mb || 0} MB)`,
           });
         } catch (err) {
           console.error('Download error:', err);
-          // Fallback: open in new tab
-          window.open(data.download_url, '_blank');
-          toast.info('Download opened in new tab');
+          toast.error('Download failed', {
+            id: 'backup-download',
+            description: err instanceof Error ? err.message : 'Try again or use the export tab',
+          });
         }
       } else {
-        toast.success('Export ready', {
-          description: `${data?.size_mb || 0} MB - ${data?.total_records || 0} records`,
+        toast.error('No download URL returned', {
+          description: 'The backup was created but no download link was generated',
         });
       }
     },
@@ -194,19 +211,43 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
     },
   });
 
-  // Create failsafe mutation
+  // Create failsafe mutation - creates a permanent protected backup
   const createFailsafe = useMutation({
     mutationFn: async (notes?: string) => {
-      const { data, error } = await supabase.functions.invoke('pf-backup-prune', {
-        body: { action: 'create_failsafe', failsafe_notes: notes }
-      });
-      if (error) throw error;
-      return data;
+      // First create a fresh backup
+      const backupResult = await system.backup({ include_data: true });
+      if (!backupResult.success) {
+        throw new Error(backupResult.error || 'Failed to create backup for failsafe');
+      }
+      
+      const backupData = backupResult.data as { backup_id?: string };
+      const backupId = backupData?.backup_id;
+      if (!backupId) {
+        throw new Error('Backup created but no ID returned');
+      }
+      
+      // Mark it as permanent failsafe
+      const { error: updateError } = await supabase
+        .from('daily_backups')
+        .update({
+          is_permanent: true,
+          backup_category: 'failsafe',
+          notes: notes || `Emergency failsafe created at ${new Date().toISOString()}`,
+          expires_at: null, // Never expires
+        })
+        .eq('backup_id', backupId);
+      
+      if (updateError) {
+        console.error('Failed to mark as failsafe:', updateError);
+        throw new Error('Backup created but failed to mark as permanent');
+      }
+      
+      return { failsafe_id: backupId, success: true };
     },
     onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: ['substrate-backups'] });
-      toast.success('Permanent failsafe created', {
-        description: `ID: ${data?.failsafe_id} - Will never be auto-pruned`,
+      toast.success('🛡️ Permanent failsafe created', {
+        description: `ID: ${data?.failsafe_id} - Protected from auto-pruning`,
       });
     },
     onError: (error) => {

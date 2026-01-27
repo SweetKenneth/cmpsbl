@@ -1,33 +1,33 @@
 /**
  * Substrate Demo — Interactive AI OS Showcase
- * Demonstrates the substrate as a cognitive operating system for AI
+ * Completely rebuilt with centered layout and better visualization
  */
 
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Brain, Shield, Eye, Zap, Moon, 
-  Play, Pause, RotateCcw, Terminal, Activity,
+  Play, Pause, RotateCcw, Activity,
   ChevronRight, Sparkles, Code, Layers, ArrowRight,
-  Check, Cpu, Network, Lock
+  Cpu, Network, Lock, Server, Workflow
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { SEO } from '@/components/SEO';
-import { substrate } from '@/lib/substrate';
+import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 
 interface ModuleState {
   id: string;
   name: string;
   icon: React.ElementType;
+  layer: 'kernel' | 'cognitive' | 'operational' | 'admin' | 'orchestrator';
   status: 'idle' | 'active' | 'processing' | 'complete';
   color: string;
-  gradient: string;
   description: string;
-  output?: string;
 }
 
 interface LogEntry {
@@ -37,50 +37,58 @@ interface LogEntry {
   status: 'info' | 'success' | 'warning';
 }
 
+const LAYER_COLORS = {
+  kernel: { bg: 'bg-orange-500/20', border: 'border-orange-500/50', text: 'text-orange-400' },
+  cognitive: { bg: 'bg-violet-500/20', border: 'border-violet-500/50', text: 'text-violet-400' },
+  operational: { bg: 'bg-emerald-500/20', border: 'border-emerald-500/50', text: 'text-emerald-400' },
+  admin: { bg: 'bg-slate-500/20', border: 'border-slate-500/50', text: 'text-slate-400' },
+  orchestrator: { bg: 'bg-fuchsia-500/20', border: 'border-fuchsia-500/50', text: 'text-fuchsia-400' },
+};
+
 const INITIAL_MODULES: ModuleState[] = [
-  // KERNEL LAYER
-  { id: 'core', name: 'Core', icon: Cpu, status: 'idle', color: 'orange', gradient: 'from-orange-500 to-amber-600', description: 'Kernel Scheduling' },
-  { id: 'ripple', name: 'Ripple', icon: Network, status: 'idle', color: 'teal', gradient: 'from-teal-500 to-cyan-600', description: 'Message Bus' },
-  { id: 'access', name: 'Access', icon: Lock, status: 'idle', color: 'yellow', gradient: 'from-yellow-500 to-amber-600', description: 'Identity & Keys' },
-  // COGNITIVE LAYER
-  { id: 'brain', name: 'Brain', icon: Brain, status: 'idle', color: 'violet', gradient: 'from-violet-500 to-purple-600', description: 'Memory & Learning' },
-  { id: 'decode', name: 'Decode', icon: Zap, status: 'idle', color: 'cyan', gradient: 'from-cyan-500 to-blue-600', description: 'Intent Parsing' },
-  { id: 'nexus', name: 'Nexus', icon: Layers, status: 'idle', color: 'amber', gradient: 'from-amber-500 to-orange-600', description: 'AI Routing' },
-  // OPERATIONAL LAYER
-  { id: 'defense', name: 'Defense', icon: Shield, status: 'idle', color: 'emerald', gradient: 'from-emerald-500 to-teal-600', description: 'Threat Detection' },
-  { id: 'vision', name: 'Vision', icon: Eye, status: 'idle', color: 'rose', gradient: 'from-rose-500 to-pink-600', description: 'Observability' },
-  { id: 'dream', name: 'Dream', icon: Moon, status: 'idle', color: 'purple', gradient: 'from-purple-500 to-indigo-600', description: 'Evolution' },
-  // ADMIN LAYER
-  { id: 'system', name: 'System', icon: Cpu, status: 'idle', color: 'slate', gradient: 'from-slate-500 to-gray-600', description: 'Administration' },
-  { id: 'modernizer', name: 'Modernizer', icon: Sparkles, status: 'idle', color: 'pink', gradient: 'from-pink-500 to-rose-600', description: 'Self-Upgrade' },
-  { id: 'integration', name: 'Integration', icon: Code, status: 'idle', color: 'indigo', gradient: 'from-indigo-500 to-blue-600', description: 'Enterprise' },
-  // ORCHESTRATOR LAYER
-  { id: 'cortex', name: 'Cortex', icon: Activity, status: 'idle', color: 'fuchsia', gradient: 'from-fuchsia-500 to-pink-600', description: 'Orchestrator' },
+  // KERNEL LAYER (3)
+  { id: 'core', name: 'Core', icon: Cpu, layer: 'kernel', status: 'idle', color: 'orange', description: 'Kernel Scheduling' },
+  { id: 'ripple', name: 'Ripple', icon: Network, layer: 'kernel', status: 'idle', color: 'teal', description: 'Message Bus' },
+  { id: 'access', name: 'Access', icon: Lock, layer: 'kernel', status: 'idle', color: 'yellow', description: 'Identity & Auth' },
+  // COGNITIVE LAYER (3)
+  { id: 'brain', name: 'Brain', icon: Brain, layer: 'cognitive', status: 'idle', color: 'violet', description: 'Memory & Learning' },
+  { id: 'decode', name: 'Decode', icon: Zap, layer: 'cognitive', status: 'idle', color: 'cyan', description: 'Intent Parsing' },
+  { id: 'nexus', name: 'Nexus', icon: Layers, layer: 'cognitive', status: 'idle', color: 'amber', description: 'AI Routing' },
+  // OPERATIONAL LAYER (3)
+  { id: 'defense', name: 'Defense', icon: Shield, layer: 'operational', status: 'idle', color: 'emerald', description: 'Threat Detection' },
+  { id: 'vision', name: 'Vision', icon: Eye, layer: 'operational', status: 'idle', color: 'rose', description: 'Observability' },
+  { id: 'dream', name: 'Dream', icon: Moon, layer: 'operational', status: 'idle', color: 'purple', description: 'Evolution' },
+  // ADMIN LAYER (3)
+  { id: 'system', name: 'System', icon: Server, layer: 'admin', status: 'idle', color: 'slate', description: 'Administration' },
+  { id: 'modernizer', name: 'Modernizer', icon: Sparkles, layer: 'admin', status: 'idle', color: 'pink', description: 'Self-Upgrade' },
+  { id: 'integration', name: 'Integration', icon: Code, layer: 'admin', status: 'idle', color: 'indigo', description: 'Enterprise' },
+  // ORCHESTRATOR LAYER (1)
+  { id: 'cortex', name: 'Cortex', icon: Workflow, layer: 'orchestrator', status: 'idle', color: 'fuchsia', description: 'Orchestrator' },
 ];
 
 const DEMO_SCENARIOS = [
   {
-    name: 'Cognitive Pipeline',
-    sequence: ['access', 'core', 'decode', 'brain', 'nexus', 'ripple'],
-    description: 'Auth → orchestrate → interpret → memorize → route → broadcast',
+    name: 'User Request Flow',
+    sequence: ['access', 'decode', 'brain', 'nexus', 'ripple'],
+    description: 'Authenticate → Parse intent → Recall memory → Route AI → Broadcast result',
     icon: Zap,
   },
   {
-    name: 'Secure Intelligence',
-    sequence: ['access', 'defense', 'vision', 'brain', 'system', 'ripple'],
-    description: 'Authenticate → scan threats → observe → store intel → admin → notify',
+    name: 'Security Pipeline',
+    sequence: ['defense', 'vision', 'brain', 'system'],
+    description: 'Detect threats → Observe patterns → Store intel → Report status',
     icon: Shield,
   },
   {
-    name: 'Autonomous Evolution',
-    sequence: ['core', 'brain', 'dream', 'modernizer', 'integration', 'vision'],
-    description: 'Schedule → recall → synthesize → upgrade → connect → monitor',
+    name: 'Dream Cycle',
+    sequence: ['brain', 'dream', 'modernizer', 'vision'],
+    description: 'Consolidate memories → Synthesize insights → Apply upgrades → Monitor',
     icon: Moon,
   },
   {
-    name: 'Full System Demo',
-    sequence: ['access', 'core', 'decode', 'defense', 'nexus', 'brain', 'dream', 'vision', 'modernizer', 'system', 'integration', 'ripple', 'cortex'],
-    description: 'Complete 13-module orchestration across all 5 layers',
+    name: 'Full Orchestration',
+    sequence: ['cortex', 'access', 'core', 'decode', 'defense', 'nexus', 'brain', 'dream', 'vision', 'modernizer', 'system', 'integration', 'ripple'],
+    description: 'Complete 13-module orchestration across all 5 architectural layers',
     icon: Sparkles,
   },
 ];
@@ -89,21 +97,19 @@ export default function SubstrateDemo() {
   const [modules, setModules] = useState<ModuleState[]>(INITIAL_MODULES);
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [isRunning, setIsRunning] = useState(false);
-  const [currentScenario, setCurrentScenario] = useState(3); // Start with Full Orchestration
-  const [activeConnections, setActiveConnections] = useState<string[]>([]);
-  const [systemHealth, setSystemHealth] = useState(100);
-  const [totalOperations, setTotalOperations] = useState(0);
+  const [currentScenario, setCurrentScenario] = useState(3);
   const [currentStep, setCurrentStep] = useState(-1);
+  const [totalOperations, setTotalOperations] = useState(0);
+  const [systemHealth, setSystemHealth] = useState(100);
 
   const addLog = useCallback((module: string, action: string, status: 'info' | 'success' | 'warning' = 'info') => {
-    setLogs(prev => [...prev.slice(-20), { timestamp: new Date(), module, action, status }]);
+    setLogs(prev => [...prev.slice(-15), { timestamp: new Date(), module, action, status }]);
   }, []);
 
   const resetDemo = () => {
     setModules(INITIAL_MODULES);
     setLogs([]);
     setIsRunning(false);
-    setActiveConnections([]);
     setCurrentStep(-1);
   };
 
@@ -113,476 +119,388 @@ export default function SubstrateDemo() {
     resetDemo();
 
     const scenario = DEMO_SCENARIOS[currentScenario];
-    addLog('substrate', `→ Initiating: ${scenario.name}`, 'info');
+    addLog('SUBSTRATE', `→ ${scenario.name}`, 'info');
 
     for (let i = 0; i < scenario.sequence.length; i++) {
       const moduleId = scenario.sequence[i];
       setCurrentStep(i);
       
-      // Activate module
       setModules(prev => prev.map(m => 
         m.id === moduleId ? { ...m, status: 'processing' } : m
       ));
-      addLog(moduleId.toUpperCase(), 'Activating...', 'info');
+      addLog(moduleId.toUpperCase(), 'Processing...', 'info');
 
-      // Show connection to next module
-      if (i < scenario.sequence.length - 1) {
-        setActiveConnections(prev => [...prev, `${moduleId}-${scenario.sequence[i + 1]}`]);
-      }
+      await new Promise(r => setTimeout(r, 700));
 
-      await new Promise(r => setTimeout(r, 900));
-
-      // Complete module
       setModules(prev => prev.map(m => 
-        m.id === moduleId ? { ...m, status: 'complete', output: `✓ ${m.name} processed` } : m
+        m.id === moduleId ? { ...m, status: 'complete' } : m
       ));
-      addLog(moduleId.toUpperCase(), 'Complete ✓', 'success');
+      addLog(moduleId.toUpperCase(), '✓ Complete', 'success');
       setTotalOperations(prev => prev + 1);
 
-      await new Promise(r => setTimeout(r, 300));
+      await new Promise(r => setTimeout(r, 200));
     }
 
-    addLog('substrate', '← Pipeline complete', 'success');
-    setSystemHealth(prev => Math.min(100, prev + 2));
+    addLog('SUBSTRATE', '← Pipeline complete', 'success');
+    setSystemHealth(prev => Math.min(100, prev + 1));
     setIsRunning(false);
     setCurrentStep(-1);
   };
 
-  // Live substrate ping on mount
-  useEffect(() => {
-    const ping = async () => {
-      try {
-        await substrate.invoke({ module: 'system', action: 'status' });
-        addLog('SYSTEM', 'Substrate connected', 'success');
-      } catch {
-        addLog('SYSTEM', 'Demo mode active', 'warning');
-      }
-    };
-    ping();
-  }, [addLog]);
-
-  // Responsive radius - smaller on mobile to prevent overflow
-  const getModulePosition = (index: number, total: number, isMobile: boolean = false) => {
-    const angle = (index / total) * 2 * Math.PI - Math.PI / 2;
-    const radius = isMobile ? 95 : 130; // Reduced mobile radius
-    return {
-      x: Math.cos(angle) * radius,
-      y: Math.sin(angle) * radius,
-    };
+  // Group modules by layer for display
+  const groupedModules = {
+    orchestrator: modules.filter(m => m.layer === 'orchestrator'),
+    admin: modules.filter(m => m.layer === 'admin'),
+    operational: modules.filter(m => m.layer === 'operational'),
+    cognitive: modules.filter(m => m.layer === 'cognitive'),
+    kernel: modules.filter(m => m.layer === 'kernel'),
   };
-  
-  // Check if mobile viewport
-  const [isMobileView, setIsMobileView] = useState(false);
-  useEffect(() => {
-    const checkMobile = () => setIsMobileView(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO 
-        title="Substrate Demo — AI Operating System | promptfluid®"
-        description="Interactive demonstration of the cognitive orchestration substrate. Build autonomous AI systems on a unified foundation."
+        title="Interactive Demo — Substrate AI OS | promptfluid®"
+        description="Experience the 13-module cognitive operating system in action. Watch memory, reasoning, defense, and synthesis orchestrate in real-time."
       />
       <PublicNav />
 
-      {/* Hero Section */}
-      <section className="relative py-12 md:py-20 overflow-hidden">
-        {/* Animated Background */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-0 left-1/4 w-[600px] h-[600px] rounded-full bg-primary/10 blur-[120px] animate-pulse" />
-          <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full bg-violet-500/10 blur-[100px]" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-cyan-500/5 blur-[150px]" />
-          
-          {/* Grid Pattern */}
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(139,92,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
-        </div>
+      <main className="flex-1">
+        {/* Hero */}
+        <section className="relative py-12 md:py-16 overflow-hidden">
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-primary/10 blur-[100px]" />
+            <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full bg-violet-500/10 blur-[80px]" />
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(139,92,246,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.02)_1px,transparent_1px)] bg-[size:40px_40px]" />
+          </div>
 
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center max-w-4xl mx-auto mb-10 md:mb-14">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="text-center max-w-3xl mx-auto mb-8">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary/20 to-violet-500/20 border border-primary/30 text-sm mb-6"
+              >
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
+                </span>
+                <span className="font-medium">Interactive Demo</span>
+              </motion.div>
+
+              <motion.h1 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="text-3xl md:text-5xl font-bold mb-4"
+              >
+                <span className="bg-gradient-to-r from-primary via-violet-400 to-cyan-400 bg-clip-text text-transparent">
+                  13 Modules
+                </span>
+                <span className="text-foreground"> · 5 Layers · 1 Substrate</span>
+              </motion.h1>
+
+              <motion.p 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="text-muted-foreground max-w-xl mx-auto"
+              >
+                Watch cognitive modules orchestrate in real-time. Select a scenario and observe data flow through the system.
+              </motion.p>
+            </div>
+
+            {/* Main Demo Card - Centered and Contained */}
+            <motion.div 
+              initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary/20 to-violet-500/20 border border-primary/30 text-sm mb-6"
+              transition={{ delay: 0.3 }}
+              className="max-w-5xl mx-auto"
             >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-              </span>
-              <span className="font-medium bg-gradient-to-r from-primary to-violet-400 bg-clip-text text-transparent">Live Interactive Demo</span>
+              <Card className="border-primary/20 bg-card/80 backdrop-blur-xl overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+                
+                {/* Controls Bar */}
+                <div className="p-4 border-b border-border/50 flex flex-wrap items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className={cn(
+                      "w-3 h-3 rounded-full transition-colors",
+                      isRunning ? "bg-emerald-500 animate-pulse" : "bg-primary/50"
+                    )} />
+                    <span className="text-sm font-medium">
+                      {isRunning ? `Running: ${DEMO_SCENARIOS[currentScenario].name}` : 'Ready'}
+                    </span>
+                    {isRunning && currentStep >= 0 && (
+                      <Badge variant="outline" className="text-xs">
+                        Step {currentStep + 1}/{DEMO_SCENARIOS[currentScenario].sequence.length}
+                      </Badge>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                      <Activity className="w-3.5 h-3.5 text-emerald-500" />
+                      <span>{systemHealth}%</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                      <Cpu className="w-3.5 h-3.5 text-primary" />
+                      <span>{totalOperations} ops</span>
+                    </div>
+                  </div>
+                </div>
+
+                <CardContent className="p-6">
+                  <div className="grid lg:grid-cols-[1fr,280px] gap-6">
+                    {/* Module Visualization - Stacked Layers */}
+                    <div className="space-y-3">
+                      {/* Layer: Orchestrator */}
+                      <LayerRow 
+                        label="Orchestrator" 
+                        modules={groupedModules.orchestrator} 
+                        layerKey="orchestrator"
+                        isRunning={isRunning}
+                        activeSequence={DEMO_SCENARIOS[currentScenario].sequence}
+                        currentStep={currentStep}
+                      />
+                      
+                      {/* Layer: Admin */}
+                      <LayerRow 
+                        label="Admin" 
+                        modules={groupedModules.admin} 
+                        layerKey="admin"
+                        isRunning={isRunning}
+                        activeSequence={DEMO_SCENARIOS[currentScenario].sequence}
+                        currentStep={currentStep}
+                      />
+                      
+                      {/* Layer: Operational */}
+                      <LayerRow 
+                        label="Operational" 
+                        modules={groupedModules.operational} 
+                        layerKey="operational"
+                        isRunning={isRunning}
+                        activeSequence={DEMO_SCENARIOS[currentScenario].sequence}
+                        currentStep={currentStep}
+                      />
+                      
+                      {/* Layer: Cognitive */}
+                      <LayerRow 
+                        label="Cognitive" 
+                        modules={groupedModules.cognitive} 
+                        layerKey="cognitive"
+                        isRunning={isRunning}
+                        activeSequence={DEMO_SCENARIOS[currentScenario].sequence}
+                        currentStep={currentStep}
+                      />
+                      
+                      {/* Layer: Kernel */}
+                      <LayerRow 
+                        label="Kernel" 
+                        modules={groupedModules.kernel} 
+                        layerKey="kernel"
+                        isRunning={isRunning}
+                        activeSequence={DEMO_SCENARIOS[currentScenario].sequence}
+                        currentStep={currentStep}
+                      />
+                    </div>
+
+                    {/* Right Panel: Scenarios + Logs */}
+                    <div className="space-y-4">
+                      {/* Scenario Selection */}
+                      <div className="space-y-2">
+                        <h3 className="text-sm font-semibold text-muted-foreground">Scenarios</h3>
+                        <div className="space-y-1.5">
+                          {DEMO_SCENARIOS.map((scenario, idx) => (
+                            <button
+                              key={scenario.name}
+                              onClick={() => !isRunning && setCurrentScenario(idx)}
+                              disabled={isRunning}
+                              className={cn(
+                                "w-full text-left px-3 py-2 rounded-lg border text-sm transition-all",
+                                currentScenario === idx
+                                  ? "border-primary bg-primary/10 text-foreground"
+                                  : "border-border/50 hover:border-primary/50 text-muted-foreground hover:text-foreground",
+                                isRunning && "opacity-50 cursor-not-allowed"
+                              )}
+                            >
+                              <div className="flex items-center gap-2">
+                                <scenario.icon className="w-4 h-4" />
+                                <span className="font-medium">{scenario.name}</span>
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="flex gap-2">
+                        <Button 
+                          onClick={runScenario}
+                          disabled={isRunning}
+                          className="flex-1 gap-2"
+                        >
+                          {isRunning ? (
+                            <>
+                              <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                              Running...
+                            </>
+                          ) : (
+                            <>
+                              <Play className="w-4 h-4" />
+                              Run Demo
+                            </>
+                          )}
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="icon"
+                          onClick={resetDemo}
+                          disabled={isRunning}
+                        >
+                          <RotateCcw className="w-4 h-4" />
+                        </Button>
+                      </div>
+
+                      {/* Live Log */}
+                      <div className="space-y-2">
+                        <h3 className="text-sm font-semibold text-muted-foreground">Event Log</h3>
+                        <div className="h-[140px] overflow-y-auto bg-muted/30 rounded-lg p-2 font-mono text-xs space-y-0.5">
+                          <AnimatePresence mode="popLayout">
+                            {logs.length === 0 ? (
+                              <p className="text-muted-foreground/50 text-center py-4">
+                                Run a scenario to see events
+                              </p>
+                            ) : (
+                              logs.map((log, idx) => (
+                                <motion.div
+                                  key={`${log.timestamp.getTime()}-${idx}`}
+                                  initial={{ opacity: 0, x: -10 }}
+                                  animate={{ opacity: 1, x: 0 }}
+                                  exit={{ opacity: 0 }}
+                                  className={cn(
+                                    "flex items-start gap-2",
+                                    log.status === 'success' && "text-emerald-400",
+                                    log.status === 'warning' && "text-amber-400",
+                                    log.status === 'info' && "text-muted-foreground"
+                                  )}
+                                >
+                                  <span className="opacity-50 shrink-0">
+                                    {log.timestamp.toLocaleTimeString('en-US', { 
+                                      hour12: false, 
+                                      hour: '2-digit', 
+                                      minute: '2-digit',
+                                      second: '2-digit'
+                                    })}
+                                  </span>
+                                  <span className="font-bold shrink-0">[{log.module}]</span>
+                                  <span className="truncate">{log.action}</span>
+                                </motion.div>
+                              ))
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </motion.div>
 
-            <motion.h1 
+            {/* CTA */}
+            <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
+              transition={{ delay: 0.5 }}
+              className="text-center mt-10"
             >
-              <span className="text-foreground">The </span>
-              <span className="bg-gradient-to-r from-primary via-violet-400 to-cyan-400 bg-clip-text text-transparent">Operating System</span>
-              <span className="block text-foreground mt-2">for Autonomous AI</span>
-            </motion.h1>
-
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto"
-            >
-              Watch cognitive modules orchestrate in real-time. Memory, reasoning, defense, 
-              and synthesis — unified into one coherent substrate.
-            </motion.p>
-          </div>
-
-          {/* Main Demo Area */}
-          <motion.div 
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="max-w-6xl mx-auto"
-          >
-            <Card className="relative overflow-hidden border-primary/20 bg-gradient-to-b from-card/80 to-card/40 backdrop-blur-xl">
-              {/* Decorative top border */}
-              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
-              
-              <div className="grid lg:grid-cols-[1fr,380px] divide-y lg:divide-y-0 lg:divide-x divide-border/50">
-                {/* Visualization Panel */}
-                <div className="p-6 md:p-8 relative">
-                  {/* Status Bar */}
-                  <div className="flex items-center justify-between mb-6 pb-4 border-b border-border/30">
-                    <div className="flex items-center gap-3">
-                      <div className="flex items-center gap-2">
-                        <div className={`w-2.5 h-2.5 rounded-full ${isRunning ? 'bg-emerald-500 animate-pulse' : 'bg-primary/50'}`} />
-                        <span className="text-sm font-medium">
-                          {isRunning ? 'Processing Pipeline' : 'Ready'}
-                        </span>
-                      </div>
-                      {isRunning && currentStep >= 0 && (
-                        <span className="text-xs text-muted-foreground">
-                          Step {currentStep + 1} of {DEMO_SCENARIOS[currentScenario].sequence.length}
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                      <div className="flex items-center gap-1.5">
-                        <Activity className="w-3.5 h-3.5 text-emerald-500" />
-                        <span>{systemHealth}%</span>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <Cpu className="w-3.5 h-3.5 text-primary" />
-                        <span>{totalOperations} ops</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Circular Module Layout - contained within card bounds */}
-                  <div className="relative h-[280px] md:h-[400px] flex items-center justify-center overflow-hidden">
-                    {/* Orbital Rings - scaled for mobile */}
-                    <div className="absolute inset-0 m-auto w-[200px] h-[200px] md:w-[320px] md:h-[320px] rounded-full border border-border/20" />
-                    <div className="absolute inset-0 m-auto w-[150px] h-[150px] md:w-[240px] md:h-[240px] rounded-full border border-border/10" />
-                    
-                    {/* Center Core - smaller on mobile */}
-                    <motion.div 
-                      className="absolute inset-0 m-auto w-14 h-14 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br from-primary/30 via-violet-500/20 to-cyan-500/20 border border-primary/40 flex flex-col items-center justify-center backdrop-blur-sm z-10"
-                      animate={{ 
-                        scale: isRunning ? [1, 1.05, 1] : 1,
-                        boxShadow: isRunning 
-                          ? ['0 0 30px rgba(139,92,246,0.3)', '0 0 60px rgba(139,92,246,0.5)', '0 0 30px rgba(139,92,246,0.3)'] 
-                          : '0 0 40px rgba(139,92,246,0.2)'
-                      }}
-                      transition={{ duration: 2, repeat: isRunning ? Infinity : 0 }}
-                    >
-                      <Sparkles className="w-5 h-5 md:w-8 md:h-8 text-primary mb-0.5" />
-                      <span className="text-[8px] md:text-xs font-medium text-muted-foreground">Substrate</span>
-                    </motion.div>
-
-                    {/* Connection Lines SVG - responsive viewBox */}
-                    <svg 
-                      className="absolute inset-0 w-full h-full pointer-events-none"
-                      viewBox={isMobileView ? "0 0 240 240" : "0 0 320 320"}
-                      preserveAspectRatio="xMidYMid meet"
-                    >
-                      <defs>
-                        <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.8" />
-                          <stop offset="50%" stopColor="hsl(263, 70%, 60%)" stopOpacity="1" />
-                          <stop offset="100%" stopColor="hsl(190, 80%, 50%)" stopOpacity="0.8" />
-                        </linearGradient>
-                        <filter id="glow">
-                          <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                          <feMerge>
-                            <feMergeNode in="coloredBlur"/>
-                            <feMergeNode in="SourceGraphic"/>
-                          </feMerge>
-                        </filter>
-                      </defs>
-                      
-                      {activeConnections.map((conn) => {
-                        const [from, to] = conn.split('-');
-                        const fromIdx = modules.findIndex(m => m.id === from);
-                        const toIdx = modules.findIndex(m => m.id === to);
-                        if (fromIdx === -1 || toIdx === -1) return null;
-                        
-                        const fromPos = getModulePosition(fromIdx, modules.length, isMobileView);
-                        const toPos = getModulePosition(toIdx, modules.length, isMobileView);
-                        const centerX = isMobileView ? 120 : 160;
-                        const centerY = isMobileView ? 120 : 160;
-                        
-                        return (
-                          <motion.line
-                            key={conn}
-                            x1={centerX + fromPos.x}
-                            y1={centerY + fromPos.y}
-                            x2={centerX + toPos.x}
-                            y2={centerY + toPos.y}
-                            stroke="url(#connectionGradient)"
-                            strokeWidth="2"
-                            filter="url(#glow)"
-                            initial={{ pathLength: 0, opacity: 0 }}
-                            animate={{ pathLength: 1, opacity: 1 }}
-                            transition={{ duration: 0.6, ease: "easeOut" }}
-                          />
-                        );
-                      })}
-                    </svg>
-
-                    {/* Module Nodes - positioned via transform, responsive sizing */}
-                    {modules.map((module, index) => {
-                      const pos = getModulePosition(index, modules.length, isMobileView);
-                      const Icon = module.icon;
-                      const isActive = module.status === 'processing';
-                      const isComplete = module.status === 'complete';
-
-                      return (
-                        <motion.div
-                          key={module.id}
-                          className="absolute left-1/2 top-1/2"
-                          style={{ 
-                            transform: `translate(calc(-50% + ${pos.x}px), calc(-50% + ${pos.y}px))`,
-                          }}
-                          initial={{ opacity: 0, scale: 0 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ delay: index * 0.05, type: "spring", stiffness: 200 }}
-                        >
-                          <motion.div 
-                            className={`relative w-10 h-10 md:w-[60px] md:h-[60px] rounded-xl md:rounded-2xl border-2 flex flex-col items-center justify-center gap-0 md:gap-0.5 transition-all duration-300 backdrop-blur-sm ${
-                              isActive 
-                                ? `bg-gradient-to-br ${module.gradient} border-white/30 shadow-lg shadow-${module.color}-500/30` 
-                                : isComplete 
-                                  ? 'bg-emerald-500/20 border-emerald-500/50 shadow-lg shadow-emerald-500/20' 
-                                  : 'bg-card/80 border-border/50 hover:border-primary/40 hover:bg-card'
-                            }`}
-                            animate={isActive ? {
-                              scale: [1, 1.1, 1],
-                              transition: { duration: 0.6, repeat: Infinity }
-                            } : {}}
-                          >
-                            <Icon className={`w-3.5 h-3.5 md:w-5 md:h-5 ${
-                              isActive ? 'text-white' : 
-                              isComplete ? 'text-emerald-400' : 'text-muted-foreground'
-                            }`} />
-                            <span className={`text-[7px] md:text-[9px] font-medium leading-tight ${
-                              isActive ? 'text-white/90' :
-                              isComplete ? 'text-emerald-400' : 'text-muted-foreground'
-                            }`}>{module.name}</span>
-                            
-                            {isComplete && (
-                              <motion.div 
-                                initial={{ scale: 0 }}
-                                animate={{ scale: 1 }}
-                                className="absolute -top-0.5 -right-0.5 md:-top-1 md:-right-1 w-3.5 h-3.5 md:w-4 md:h-4 rounded-full bg-emerald-500 flex items-center justify-center"
-                              >
-                                <Check className="w-2 h-2 md:w-2.5 md:h-2.5 text-white" />
-                              </motion.div>
-                            )}
-                          </motion.div>
-                        </motion.div>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Control Panel */}
-                <div className="p-6 md:p-8 bg-muted/20">
-                  {/* Scenario Selector */}
-                  <div className="mb-6">
-                    <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
-                      <Network className="w-4 h-4 text-primary" />
-                      Select Pipeline
-                    </h3>
-                    <div className="space-y-2">
-                      {DEMO_SCENARIOS.map((scenario, index) => {
-                        const Icon = scenario.icon;
-                        return (
-                          <button
-                            key={index}
-                            onClick={() => setCurrentScenario(index)}
-                            disabled={isRunning}
-                            className={`w-full text-left p-3 rounded-xl border transition-all duration-200 ${
-                              currentScenario === index 
-                                ? 'bg-primary/15 border-primary/40 shadow-sm' 
-                                : 'bg-card/50 border-border/50 hover:border-primary/30 hover:bg-card/80'
-                            } disabled:opacity-50 disabled:cursor-not-allowed`}
-                          >
-                            <div className="flex items-center gap-3">
-                              <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                                currentScenario === index ? 'bg-primary/20' : 'bg-muted/50'
-                              }`}>
-                                <Icon className={`w-4 h-4 ${currentScenario === index ? 'text-primary' : 'text-muted-foreground'}`} />
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <span className="font-medium text-sm block">{scenario.name}</span>
-                                <p className="text-xs text-muted-foreground truncate">{scenario.description}</p>
-                              </div>
-                            </div>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="flex gap-2 mb-6">
-                    <Button 
-                      onClick={runScenario} 
-                      disabled={isRunning}
-                      className="flex-1 h-11 bg-gradient-to-r from-primary to-violet-600 hover:from-primary/90 hover:to-violet-600/90 shadow-lg shadow-primary/25"
-                    >
-                      {isRunning ? (
-                        <><Pause className="w-4 h-4 mr-2" /> Running...</>
-                      ) : (
-                        <><Play className="w-4 h-4 mr-2" /> Run Demo</>
-                      )}
-                    </Button>
-                    <Button variant="outline" onClick={resetDemo} disabled={isRunning} className="h-11 px-4">
-                      <RotateCcw className="w-4 h-4" />
-                    </Button>
-                  </div>
-
-                  {/* Live Log */}
-                  <div>
-                    <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
-                      <Terminal className="w-4 h-4 text-primary" />
-                      System Log
-                    </h3>
-                    <div className="h-40 overflow-y-auto space-y-0.5 font-mono text-xs bg-background/80 rounded-xl p-3 border border-border/30">
-                      <AnimatePresence mode="popLayout">
-                        {logs.length === 0 ? (
-                          <p className="text-muted-foreground/60">$ awaiting commands...</p>
-                        ) : (
-                          logs.map((log, i) => (
-                            <motion.div
-                              key={`${log.timestamp.getTime()}-${i}`}
-                              initial={{ opacity: 0, x: -10 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              exit={{ opacity: 0 }}
-                              className="flex items-start gap-2"
-                            >
-                              <span className="text-muted-foreground/40 shrink-0">
-                                {log.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
-                              </span>
-                              <span className={`font-semibold shrink-0 ${
-                                log.status === 'success' ? 'text-emerald-400' :
-                                log.status === 'warning' ? 'text-amber-400' :
-                                'text-primary'
-                              }`}>
-                                [{log.module}]
-                              </span>
-                              <span className="text-foreground/80">{log.action}</span>
-                            </motion.div>
-                          ))
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  </div>
-                </div>
+              <p className="text-muted-foreground mb-4">
+                Ready to build on the substrate?
+              </p>
+              <div className="flex flex-wrap justify-center gap-3">
+                <Button asChild size="lg" className="gap-2">
+                  <Link to="/marketplace">
+                    Browse Templates
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" size="lg">
+                  <Link to="/intelligence">
+                    View Architecture
+                  </Link>
+                </Button>
               </div>
-            </Card>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Value Props */}
-      <section className="py-16 md:py-24 border-t border-border/30">
-        <div className="container mx-auto px-4">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Build AI Products, Not Infrastructure
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Stop reinventing the wheel. The substrate handles memory, security, routing, 
-              and orchestration — so you can focus on what makes your AI unique.
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {[
-              {
-                icon: Layers,
-                title: 'Unified Foundation',
-                description: 'All AI capabilities through one coherent interface. Memory, reasoning, security, and synthesis — orchestrated.',
-                gradient: 'from-primary to-violet-500',
-              },
-              {
-                icon: Lock,
-                title: 'Enterprise Security',
-                description: 'Built-in threat detection, rate limiting, and audit logging. Your AI infrastructure, hardened by default.',
-                gradient: 'from-emerald-500 to-teal-500',
-              },
-              {
-                icon: Zap,
-                title: 'Instant Integration',
-                description: 'RESTful API with typed contracts. Connect any frontend, any language. Build AI products in hours, not months.',
-                gradient: 'from-amber-500 to-orange-500',
-              }
-            ].map((prop, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-              >
-                <Card className="p-6 h-full bg-card/50 backdrop-blur border-border/50 hover:border-primary/30 transition-all duration-300 group">
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${prop.gradient} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                    <prop.icon className="w-6 h-6 text-white" />
-                  </div>
-                  <h3 className="font-semibold text-lg mb-2">{prop.title}</h3>
-                  <p className="text-sm text-muted-foreground">{prop.description}</p>
-                </Card>
-              </motion.div>
-            ))}
+            </motion.div>
           </div>
-
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mt-12 flex flex-col sm:flex-row items-center justify-center gap-4"
-          >
-            <Link to="/substrate">
-              <Button size="lg" className="group h-12 px-6">
-                Explore Documentation
-                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
-            <Link to="/decode">
-              <Button size="lg" variant="outline" className="h-12 px-6">
-                Try Decode Interface
-              </Button>
-            </Link>
-          </motion.div>
-        </div>
-      </section>
+        </section>
+      </main>
 
       <EnhancedFooter />
+    </div>
+  );
+}
+
+// Layer Row Component
+function LayerRow({ 
+  label, 
+  modules, 
+  layerKey,
+  isRunning,
+  activeSequence,
+  currentStep
+}: { 
+  label: string; 
+  modules: ModuleState[];
+  layerKey: keyof typeof LAYER_COLORS;
+  isRunning: boolean;
+  activeSequence: string[];
+  currentStep: number;
+}) {
+  const colors = LAYER_COLORS[layerKey];
+  
+  return (
+    <div className={cn(
+      "flex items-center gap-3 p-3 rounded-lg border transition-all",
+      colors.bg, colors.border
+    )}>
+      <div className={cn("text-xs font-bold w-20 shrink-0", colors.text)}>
+        {label}
+      </div>
+      <div className="flex-1 flex flex-wrap gap-2 justify-center">
+        {modules.map((module) => {
+          const Icon = module.icon;
+          const isInSequence = activeSequence.includes(module.id);
+          const sequenceIndex = activeSequence.indexOf(module.id);
+          const isCurrentlyActive = isRunning && sequenceIndex === currentStep;
+          const isComplete = module.status === 'complete';
+          
+          return (
+            <motion.div
+              key={module.id}
+              className={cn(
+                "relative flex flex-col items-center gap-1 p-2 rounded-lg border-2 min-w-[60px] transition-all",
+                isComplete 
+                  ? "bg-emerald-500/20 border-emerald-500"
+                  : isCurrentlyActive
+                    ? "bg-primary/20 border-primary animate-pulse"
+                    : isInSequence
+                      ? "bg-muted/50 border-primary/30"
+                      : "bg-muted/20 border-transparent opacity-50"
+              )}
+              animate={isCurrentlyActive ? { scale: [1, 1.05, 1] } : {}}
+              transition={{ duration: 0.5, repeat: isCurrentlyActive ? Infinity : 0 }}
+            >
+              {isInSequence && (
+                <div className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-primary text-[10px] font-bold flex items-center justify-center text-primary-foreground">
+                  {sequenceIndex + 1}
+                </div>
+              )}
+              <Icon className={cn(
+                "w-5 h-5",
+                isComplete ? "text-emerald-400" : isCurrentlyActive ? "text-primary" : "text-muted-foreground"
+              )} />
+              <span className="text-[10px] font-medium">{module.name}</span>
+            </motion.div>
+          );
+        })}
+      </div>
     </div>
   );
 }

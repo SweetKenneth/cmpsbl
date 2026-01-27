@@ -77,7 +77,44 @@ export function BundlesSection({ onBuyBundle, isLoading }: BundlesSectionProps) 
                     </div>
 
                     <h4 className="text-xl font-bold mb-2">{stack.name}</h4>
-                    <p className="text-sm text-muted-foreground mb-4">{stack.description}</p>
+                    <p className="text-sm text-muted-foreground mb-3">{stack.description}</p>
+
+                    {/* Stack Pricing */}
+                    {(() => {
+                      // Calculate stack price from templates
+                      const templatePrices: Record<string, number> = {
+                        'self-healing-chatbot': 8700,
+                        'memory-persistence-core': 8700,
+                        'context-continuity-engine': 8700,
+                        'cognitive-firewall': 8700,
+                        'support-memory-agent': 8700,
+                        'behavioral-anchor-system': 8700,
+                        'goal-persistence-module': 8700,
+                        'observability-dashboard': 8700,
+                        'autonomous-improvement-loop': 29900,
+                        'learning-consolidation-engine': 29900,
+                        'knowledge-graph-builder': 29900,
+                        'drift-prevention-engine': 8700,
+                        'personality-guard-system': 8700,
+                      };
+                      const originalPrice = stack.templateIds.reduce((sum, id) => sum + (templatePrices[id] || 8700), 0);
+                      const discountedPrice = Math.round(originalPrice * (1 - stack.discount));
+                      return (
+                        <div className="mb-3">
+                          <div className="flex items-baseline gap-2">
+                            <span className="text-2xl font-black text-primary">
+                              {formatPriceUtil(discountedPrice)}
+                            </span>
+                            <span className="text-sm text-muted-foreground line-through">
+                              {formatPriceUtil(originalPrice)}
+                            </span>
+                          </div>
+                          <p className="text-xs text-emerald-600 font-medium">
+                            Save {formatPriceUtil(originalPrice - discountedPrice)}
+                          </p>
+                        </div>
+                      );
+                    })()}
 
                     {/* Outcome highlight */}
                     <div className="p-3 rounded-lg bg-primary/5 border border-primary/20 mb-4">
