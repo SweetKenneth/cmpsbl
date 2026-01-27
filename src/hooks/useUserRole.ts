@@ -1,10 +1,16 @@
 /**
- * User Role Detection Hook
+ * User Role Detection Hook — Centralized Access Identity
  * Determines Observer / Operator / Governor access level
  * 
- * Observer: Any authenticated user (read-only telemetry)
- * Operator: Users with 'operator' or higher role (can trigger safe actions)
- * Governor: Admin users only (full system access)
+ * Uses the Access module's identity endpoint for unified role resolution
+ * across Dashboard, Terminal, Modernizer, and all substrate modules.
+ * 
+ * Role Hierarchy (governor ⊇ operator ⊇ observer):
+ * - Observer: Any authenticated user (read-only telemetry)
+ * - Operator: Users with 'operator' or higher role (can trigger safe actions)
+ * - Governor: Admin users only (full system access, including backups/restores)
+ * 
+ * @version 2.1.0 — Unified with Access module identity
  */
 
 import { useState, useEffect, useCallback } from 'react';
@@ -19,6 +25,8 @@ interface UserRoleState {
   isObserver: boolean;
   isOperator: boolean;
   isGovernor: boolean;
+  displayName: string | null;
+  developerId: string | null;
   refresh: () => Promise<void>;
 }
 
@@ -26,16 +34,35 @@ export function useUserRole(): UserRoleState {
   const { user } = useAuth();
   const [role, setRole] = useState<SubstrateRole>('observer');
   const [loading, setLoading] = useState(true);
+  const [displayName, setDisplayName] = useState<string | null>(null);
+  const [developerId, setDeveloperId] = useState<string | null>(null);
 
   const detectRole = useCallback(async () => {
     if (!user) {
       setRole('observer');
+      setDisplayName(null);
+      setDeveloperId(null);
       setLoading(false);
       return;
     }
 
     try {
-      // Check for admin/governor role first
+      // Try to get identity from Access module first (unified source of truth)
+      const { data: identityResult, error: identityError } = await supabase.functions.invoke('pf-substrate', {
+        body: { module: 'access', action: 'identity' }
+      });
+
+      if (!identityError && identityResult?.success) {
+        // Use Access module identity as source of truth
+        const substrateRole = identityResult.substrate_role as SubstrateRole;
+        setRole(substrateRole);
+        setDisplayName(identityResult.developer?.display_name || null);
+        setDeveloperId(identityResult.developer?.id || null);
+        setLoading(false);
+        return;
+      }
+
+      // Fallback: Direct role check from user_roles table
       const { data: isAdmin } = await supabase.rpc('has_role_text', {
         _user_id: user.id,
         _role: 'admin'
@@ -47,7 +74,6 @@ export function useUserRole(): UserRoleState {
         return;
       }
 
-      // Check for operator role
       const { data: isOperator } = await supabase.rpc('has_role_text', {
         _user_id: user.id,
         _role: 'operator'
@@ -59,7 +85,6 @@ export function useUserRole(): UserRoleState {
         return;
       }
 
-      // Check for moderator role (treat as operator)
       const { data: isModerator } = await supabase.rpc('has_role_text', {
         _user_id: user.id,
         _role: 'moderator'
@@ -75,7 +100,6 @@ export function useUserRole(): UserRoleState {
       setRole('observer');
     } catch (error) {
       console.error('Role detection error:', error);
-      // Default to observer on error
       setRole('observer');
     } finally {
       setLoading(false);
@@ -92,6 +116,8 @@ export function useUserRole(): UserRoleState {
     isObserver: true, // Everyone can observe
     isOperator: role === 'operator' || role === 'governor',
     isGovernor: role === 'governor',
+    displayName,
+    developerId,
     refresh: detectRole,
   };
 }

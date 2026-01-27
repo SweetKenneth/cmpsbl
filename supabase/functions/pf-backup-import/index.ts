@@ -17,10 +17,11 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const SUBSTRATE_VERSION = "4.1.1";
+const SUBSTRATE_VERSION = "5.5.0";
 
-// Tables that can be safely restored
+// Tables that can be safely restored (v5.5.0 - extended list)
 const RESTORABLE_TABLES = [
+  // Brain module - memory system
   'brain_memories',
   'brain_memory_hot',
   'brain_memory_warm', 
@@ -32,12 +33,21 @@ const RESTORABLE_TABLES = [
   'brain_cross_insights',
   'brain_curiosity_log',
   'brain_daily_reports',
+  'brain_curiosity_settings',
+  // Dream module
   'cascade_conversations',
   'cascade_dreams',
+  'dream_anomalies',
+  // Learning system
   'learning_logs',
+  // Defense module
   'defense_events',
   'defense_rules',
-  'brain_curiosity_settings',
+  // AI usage tracking
+  'ai_daily_quota',
+  'ai_usage_log',
+  // Agency system (optional)
+  'agency_dream_memory',
 ];
 
 serve(async (req) => {
