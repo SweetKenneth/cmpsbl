@@ -52,24 +52,25 @@ serve(async (req) => {
       throw new Error("Only Developer License is available for online checkout. Contact us for Research/Enterprise/Strategic licenses.");
     }
 
+    // Email is optional - Stripe will collect it if not provided
     const email = userEmail || customer_email;
-    if (!email) {
-      throw new Error("Email is required for checkout");
-    }
 
     const origin = req.headers.get("origin") || "https://promptfluid.com";
 
-    // Check if customer exists
+    // Check if customer exists (only if we have an email)
     let customerId: string | undefined;
-    const customers = await stripe.customers.list({ email, limit: 1 });
-    if (customers.data.length > 0) {
-      customerId = customers.data[0].id;
+    if (email) {
+      const customers = await stripe.customers.list({ email, limit: 1 });
+      if (customers.data.length > 0) {
+        customerId = customers.data[0].id;
+      }
     }
 
     // Create checkout session for Developer License subscription
+    // Stripe will collect email if not provided
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
-      customer_email: customerId ? undefined : email,
+      customer_email: customerId ? undefined : email || undefined,
       line_items: [
         {
           price: DEV_LICENSE.price_id,
