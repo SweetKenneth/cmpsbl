@@ -138,6 +138,32 @@ export async function executeCommand(
   }
 
   if (base === 'whoami') {
+    // Fetch actual identity from Access module for unified role display
+    let roleDisplay = isOperator ? 'OPERATOR (full access)' : 'OBSERVER (read-only)';
+    let identityLine = '';
+    
+    try {
+      const identityResult = await access.identity() as any;
+      if (identityResult?.success) {
+        const subRole = identityResult.substrate_role || identityResult.data?.substrate_role || 'observer';
+        const devName = identityResult.developer?.display_name || identityResult.data?.developer?.display_name;
+        
+        if (subRole === 'governor') {
+          roleDisplay = 'GOVERNOR (full system authority)';
+        } else if (subRole === 'operator') {
+          roleDisplay = 'OPERATOR (full access)';
+        } else {
+          roleDisplay = 'OBSERVER (read-only)';
+        }
+        
+        if (devName) {
+          identityLine = `│  Identity: ${devName} (${subRole})\n`;
+        }
+      }
+    } catch (e) {
+      // Fall back to isOperator check
+    }
+    
     const identity = `
 ┌─ SUBSTRATE IDENTITY ─────────────────────────────────────────
 │ 
@@ -151,7 +177,7 @@ export async function executeCommand(
 │  13-Module Architecture — Full AI Operating System
 │  (12 core modules + Cortex orchestrator)
 │  
-│  Mode: ${isOperator ? 'OPERATOR (full access)' : 'OBSERVER (read-only)'}
+${identityLine}│  Mode: ${roleDisplay}
 │  
 │  ┌─ KERNEL LAYER ────────────────────────────────────────────
 │  │  core://       scheduler, lifecycle, routing
@@ -581,6 +607,47 @@ export async function executeCommand(
       result = await system.backup({ include_data: args[0] !== 'false' });
     } else if (base === 'system.restore') {
       result = await system.restore(args[0] || '', args[1] === 'true');
+    } else if (base === 'system.restore_portable') {
+      // Portable backup restore (governor only) - expects JSON input or file reference
+      if (!isOperator) {
+        return { success: false, output: '▓ ACCESS DENIED: system.restore_portable requires Governor role\n  Only governors can restore portable backups.' };
+      }
+      // Parse mode from args
+      const dryRun = args.includes('--dry-run');
+      const modeArg = args.find(a => a.startsWith('--mode='));
+      const mode = modeArg ? modeArg.split('=')[1] as 'merge' | 'replace' : 'merge';
+      
+      // Check if JSON was provided (would be in first arg as parsed JSON string)
+      const jsonArg = args.find(a => a.startsWith('{') || a === '--json');
+      if (!jsonArg || jsonArg === '--json') {
+        return { 
+          success: false, 
+          output: `▓ USAGE: system.restore_portable requires a JSON export package
+
+┌─ PORTABLE BACKUP RESTORE ────────────────────────────────────
+│
+│  Usage:
+│    system.restore_portable <json_file_content> [--dry-run] [--mode=merge|replace]
+│
+│  Options:
+│    --dry-run      Validate without restoring
+│    --mode=merge   Upsert rows (default)
+│    --mode=replace Truncate tables first
+│
+│  For large backups, use the System panel in /os dashboard.
+│  Upload the portable JSON file there for processing.
+│
+└──────────────────────────────────────────────────────────────`
+        };
+      }
+      
+      try {
+        const exportPackage = JSON.parse(jsonArg);
+        const res = await system.restorePortable({ export_package: exportPackage, dry_run: dryRun, mode });
+        result = { success: !res.error, data: res.data, error: res.error?.message };
+      } catch (e) {
+        result = { success: false, error: `Invalid JSON: ${e instanceof Error ? e.message : 'Parse error'}` };
+      }
     } else if (base === 'system.list_backups') {
       result = await system.listBackups();
     } else if (base === 'system.upgrade.propose') {

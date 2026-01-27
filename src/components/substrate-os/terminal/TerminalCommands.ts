@@ -124,6 +124,7 @@ export const SYSTEM_COMMANDS: CommandDefinition[] = [
   { command: 'system.restart', description: 'Restart service', category: 'system', icon: Cpu, requiresOperator: true, args: '[service]' },
   { command: 'system.backup', description: 'Create backup snapshot', category: 'system', icon: Database, requiresOperator: true, args: '[include_data]' },
   { command: 'system.restore', description: 'Restore from backup', category: 'system', icon: Database, requiresOperator: true, args: '<backup_id> [validate_only]' },
+  { command: 'system.restore_portable', description: 'Restore from portable JSON backup (governor only)', category: 'system', icon: Database, requiresOperator: true, args: '<json> [--dry-run] [--mode=merge|replace]' },
   { command: 'system.list_backups', description: 'List available backups', category: 'system', icon: Database, requiresOperator: false },
   { command: 'system.upgrade.propose', description: 'Propose upgrade (shadow)', category: 'system', icon: Cpu, requiresOperator: true, args: '[scope] [notes]' },
   { command: 'system.upgrade.list', description: 'List upgrade plans', category: 'system', icon: Cpu, requiresOperator: false },

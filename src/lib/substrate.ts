@@ -401,6 +401,10 @@ class SubstrateClient {
     restore: (backup_id: string, validate_only?: boolean) =>
       this.invoke({ module: 'system', action: 'restore', payload: { backup_id, validate_only } }),
     
+    /** v5.5.1: Restore from portable JSON backup (governor only) */
+    restorePortable: (options: { export_package: Record<string, unknown>; dry_run?: boolean; mode?: 'merge' | 'replace' }) =>
+      supabase.functions.invoke('pf-backup-import', { body: options }),
+    
     /** List available backups */
     listBackups: () =>
       this.invoke({ module: 'system', action: 'list_backups' }),
