@@ -1,7 +1,7 @@
 /**
- * Why CMPSBL — Full 13-module capability showcase
+ * Why CMPSBL — Full 14-module capability showcase
  * Premium bento grid with enhanced visuals and micro-animations
- * v5.5.0: Complete representation of the 5-layer kernel architecture
+ * v6.0.0: Complete representation of the 5-layer kernel architecture + Inclusive
  */
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
@@ -28,7 +28,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Hexagon } from "lucide-react";
 
-// All capabilities mapped to the 13 modules in 5-layer architecture
+// All capabilities mapped to the 14 modules in 5-layer architecture
 const differentiators = [
   // KERNEL LAYER - Core infrastructure
   {
@@ -37,7 +37,7 @@ const differentiators = [
     layer: "Kernel",
     description: "CORE module handles task scheduling, cron jobs, and kernel-level coordination across all cognitive functions.",
     highlight: "Central Brain",
-    stat: "13",
+    stat: "14",
     statLabel: "Modules",
     color: "from-orange-500 to-amber-600",
     iconBg: "bg-gradient-to-br from-orange-500/20 to-amber-500/20",
@@ -401,7 +401,7 @@ export function WhySubstrate() {
         >
           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
             <Layers className="w-3 h-3 text-primary" />
-            <span className="text-xs">13 Modules • 5 Layers</span>
+            <span className="text-xs">14 Modules • 5 Layers</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
             What Makes It{" "}

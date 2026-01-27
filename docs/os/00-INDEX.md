@@ -1,6 +1,6 @@
 # Confidential Explanations of The Cognitive Substrate
 
-**For Internal Use Only — promptfluid® v4.0.0**
+**For Internal Use Only — promptfluid® v6.0.0**
 
 ---
 
@@ -25,7 +25,7 @@ Think of this as your "explain it to me like I'm five" guide to a very sophistic
 |---|----------|------------------|
 | 01 | [WHAT-IS-THIS.md](./01-WHAT-IS-THIS.md) | The 30-second elevator pitch and core concept |
 | 02 | [THE-BRAIN.md](./02-THE-BRAIN.md) | How the system remembers, learns, and thinks |
-| 03 | [THE-MODULES.md](./03-THE-MODULES.md) | The 12 building blocks and what each one does |
+| 03 | [THE-MODULES.md](./03-THE-MODULES.md) | The 14 building blocks and what each one does |
 | 04 | [THE-TERMINAL.md](./04-THE-TERMINAL.md) | How to control the system (command reference) |
 | 05 | [THE-MODERNIZER.md](./05-THE-MODERNIZER.md) | How the system proposes improvements |
 | 06 | [ARCHITECTURE-DIAGRAMS.md](./06-ARCHITECTURE-DIAGRAMS.md) | Visual maps of how everything connects |
@@ -60,11 +60,11 @@ Think of this as your "explain it to me like I'm five" guide to a very sophistic
 
 ---
 
-## The Four-Layer Architecture (v4.2.0)
+## The Five-Layer Architecture (v6.0.0)
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                    THE SUBSTRATE v4.2.0                              │
+│                    THE SUBSTRATE v6.0.0                              │
 ├─────────────────────────────────────────────────────────────────────┤
 │  KERNEL LAYER:      CORE → RIPPLE → ACCESS                          │
 │  (Infrastructure)   Scheduling, Messaging, Identity                  │
@@ -75,8 +75,11 @@ Think of this as your "explain it to me like I'm five" guide to a very sophistic
 │  OPERATIONAL LAYER: DEFENSE → NEXUS → VISION → INTEGRATION          │
 │  (Services)         Security, AI Routing, Monitoring, Enterprise     │
 ├─────────────────────────────────────────────────────────────────────┤
-│  ADMIN LAYER:       SYSTEM → MODERNIZER                             │
-│  (Control)          Operations, Self-Upgrade                         │
+│  ADMIN LAYER:       SYSTEM → MODERNIZER → INCLUSIVE                  │
+│  (Control)          Operations, Self-Upgrade, Human Compatibility    │
+├─────────────────────────────────────────────────────────────────────┤
+│  ORCHESTRATOR:      CORTEX                                           │
+│  (Agency)           Autonomous evolution and governance              │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -84,7 +87,7 @@ Think of this as your "explain it to me like I'm five" guide to a very sophistic
 
 ## Quick Reference: The One-Paragraph Summary
 
-**promptfluid** is a "cognitive operating system" for AI. Instead of building AI applications from scratch, developers plug into promptfluid and get instant access to memory (the AI remembers things), learning (the AI gets smarter over time), security (the AI protects itself from attacks), multi-provider routing (the AI can use any AI model from any company), enterprise integration (the AI can connect to Salesforce, SAP, Unity, and 35+ other systems), and self-improvement (the AI can propose upgrades to itself). It's like the difference between building a house from raw lumber vs. buying a pre-fabricated foundation—we provide the foundation so builders can focus on what makes their AI unique.
+**promptfluid** is a "cognitive operating system" for AI. Instead of building AI applications from scratch, developers plug into promptfluid and get instant access to memory (the AI remembers things), learning (the AI gets smarter over time), security (the AI protects itself from attacks), multi-provider routing (the AI can use any AI model from any company), enterprise integration (the AI can connect to Salesforce, SAP, Unity, and 35+ other systems), human compatibility (the AI ensures accessibility and inclusive design), and self-improvement (the AI can propose upgrades to itself). It's like the difference between building a house from raw lumber vs. buying a pre-fabricated foundation—we provide the foundation so builders can focus on what makes their AI unique.
 
 ---
 
@@ -101,5 +104,5 @@ Think of this as your "explain it to me like I'm five" guide to a very sophistic
 ---
 
 *Last Updated: January 2026*
-*Version: v4.2.0*
+*Version: v6.0.0*
 *Classification: CONFIDENTIAL*

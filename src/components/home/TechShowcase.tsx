@@ -1,7 +1,7 @@
 /**
- * Tech Showcase — Interactive demonstration of all 13 CMPSBL modules
+ * Tech Showcase — Interactive demonstration of all 14 CMPSBL modules
  * Premium terminal-style code display with syntax highlighting
- * v5.5.0: Full module coverage for the 4-layer kernel architecture + Cortex orchestrator
+ * v6.0.0: Full module coverage for the 5-layer kernel architecture + Inclusive
  */
 
 import { useState, useEffect } from "react";
@@ -29,7 +29,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-// All 13 modules organized by 4-layer architecture + Cortex orchestrator
+// All 14 modules organized by 5-layer architecture + Inclusive human-compatibility
 const codeExamples = [
   // KERNEL LAYER
   {
@@ -429,7 +429,7 @@ export function TechShowcase() {
         >
           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
             <Layers className="w-3 h-3 text-primary" />
-            <span className="text-xs">13 Modules • 5 Layers • 1 SDK</span>
+            <span className="text-xs">14 Modules • 5 Layers • 1 SDK</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
             Complete{" "}

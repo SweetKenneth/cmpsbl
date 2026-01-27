@@ -4,7 +4,7 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { substrate, vision, brain, defense, nexus, dream, system, modernizer, decode, core, ripple, access, integration, cortex } from '@/lib/substrate';
+import { substrate, vision, brain, defense, nexus, dream, system, modernizer, decode, core, ripple, access, integration, cortex, inclusive } from '@/lib/substrate';
 
 // ═══════════════════════════════════════════════════════════════
 // OBSERVER HOOKS — Read-only telemetry
@@ -240,7 +240,7 @@ export function useSystemConfig(key?: string) {
   });
 }
 
-// Combined health score for dashboard - all 13 modules (12 core + Cortex orchestrator)
+// Combined health score for dashboard - all 14 modules (13 core + Inclusive human-compatibility)
 export function useSubstrateHealthScore() {
   const visionHealth = useVisionHealthOS();
   const brainStatus = useBrainStatusOS();
@@ -255,6 +255,7 @@ export function useSubstrateHealthScore() {
   const accessStatus = useAccessStatusOS();
   const integrationStatus = useIntegrationStatusOS();
   const cortexStatus = useCortexStatusOS();
+  const inclusiveStatus = useInclusiveStatusOS();
 
   const isLoading = 
     visionHealth.isLoading || 
@@ -269,7 +270,8 @@ export function useSubstrateHealthScore() {
     rippleStatus.isLoading ||
     accessStatus.isLoading ||
     integrationStatus.isLoading ||
-    cortexStatus.isLoading;
+    cortexStatus.isLoading ||
+    inclusiveStatus.isLoading;
 
   const modules = {
     // Kernel Layer
@@ -291,10 +293,12 @@ export function useSubstrateHealthScore() {
     integration: integrationStatus.data?.success ?? false,
     // Orchestrator Layer
     cortex: cortexStatus.data?.success ?? false,
+    // Human Compatibility Layer
+    inclusive: inclusiveStatus.data?.success ?? false,
   };
 
   const healthyCount = Object.values(modules).filter(Boolean).length;
-  const totalModules = 13; // Updated to 13 modules
+  const totalModules = 14; // v6.0.0: All 14 modules
   const healthScore = Math.round((healthyCount / totalModules) * 100);
 
   const refetchAll = () => {
@@ -311,6 +315,7 @@ export function useSubstrateHealthScore() {
     accessStatus.refetch();
     integrationStatus.refetch();
     cortexStatus.refetch();
+    inclusiveStatus.refetch();
   };
 
   return {
@@ -387,6 +392,40 @@ export function useIntegrationDiscoverOS() {
       integration.discover(params),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['substrate', 'integration'] });
+    },
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INCLUSIVE MODULE HOOKS — Human Compatibility (v6.0.0)
+// ═══════════════════════════════════════════════════════════════
+
+export function useInclusiveStatusOS() {
+  return useQuery({
+    queryKey: ['substrate', 'inclusive', 'status'],
+    queryFn: () => inclusive.status(),
+    refetchInterval: 30000,
+  });
+}
+
+export function useInclusiveScanOS() {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: (target: string) => inclusive.scan(target),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'inclusive'] });
+    },
+  });
+}
+
+export function useInclusiveRepairOS() {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: (target: string) => inclusive.repair(target),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'inclusive'] });
     },
   });
 }

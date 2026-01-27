@@ -1,12 +1,12 @@
 /**
  * Terminal Command Executor
  * Handles parsing and execution of all substrate commands
- * v5.5.0 - Full-system audit completed 2026-01-25
+ * v6.0.0 - Full-system audit completed 2026-01-27
  * 
- * 13 modules (12 core + cortex) | 250+ commands | All handlers verified
+ * 14 modules (13 core + inclusive) | 260+ commands | All handlers verified
  */
 
-import { substrate, brain, decode, defense, nexus, vision, dream, system, modernizer, core, ripple, access, integration, cortex } from '@/lib/substrate';
+import { substrate, brain, decode, defense, nexus, vision, dream, system, modernizer, core, ripple, access, integration, cortex, inclusive } from '@/lib/substrate';
 import { supabase } from '@/integrations/supabase/client';
 import { ALL_COMMANDS, COMMAND_CATEGORIES, type CommandDefinition } from './TerminalCommands';
 import { getRandomItem, PERSONALITY_RESPONSES } from './TerminalTypes';

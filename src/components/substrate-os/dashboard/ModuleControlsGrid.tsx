@@ -1,6 +1,6 @@
 /**
- * Module Controls Grid v5.5.0 - Power house of module control panels
- * All 13 modules with real-time status and actions
+ * Module Controls Grid v6.0.0 - Power house of module control panels
+ * All 14 modules with real-time status and actions
  */
 
 import { 
@@ -31,7 +31,7 @@ interface ModuleControlsGridProps {
 }
 
 export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
-  // Status hooks for all 13 modules
+  // Status hooks for all 14 modules
   const brainStatus = useBrainStatusOS();
   const defenseStatus = useDefenseStatusOS();
   const nexusStatus = useNexusStatusOS();

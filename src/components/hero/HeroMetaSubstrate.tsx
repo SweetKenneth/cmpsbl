@@ -31,7 +31,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-// The 13 core modules with industries they power (v5.5.0)
+// The 14 core modules with industries they power (v6.0.0)
 const coreModules = [
   { icon: Cpu, name: "Core", desc: "Kernel orchestration", color: "hsl(var(--muted-foreground))" },
   { icon: Network, name: "Ripple", desc: "Event propagation", color: "hsl(150 80% 50%)" },
@@ -46,6 +46,7 @@ const coreModules = [
   { icon: RefreshCw, name: "Modernizer", desc: "Self-improvement", color: "hsl(30 80% 55%)" },
   { icon: Plug, name: "Integration", desc: "Enterprise connect", color: "hsl(280 80% 60%)" },
   { icon: Sparkles, name: "Cortex", desc: "Autonomous orchestrator", color: "hsl(270 80% 60%)" },
+  { icon: BookOpen, name: "Inclusive", desc: "Human compatibility", color: "hsl(330 80% 60%)" },
 ];
 
 // Use cases that rotate through - compelling future applications
@@ -95,7 +96,7 @@ function FloatingParticle({ delay, duration, size, color, startX, startY }: {
 
 // Connection line between modules
 function ConnectionLine({ from, to, delay }: { from: number; to: number; delay: number }) {
-  const moduleCount = 13; // v5.5.0: 13 modules
+  const moduleCount = 14; // v6.0.0: 14 modules
   const fromAngle = (from / moduleCount) * Math.PI * 2 - Math.PI / 2;
   const toAngle = (to / moduleCount) * Math.PI * 2 - Math.PI / 2;
   const radius = 140;

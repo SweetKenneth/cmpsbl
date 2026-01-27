@@ -1,5 +1,5 @@
 /**
- * Quick Actions Panel v5.5.0 - System-wide controls
+ * Quick Actions Panel v6.0.0 - System-wide controls
  * Heal, backup, restart, diagnostics with Substrate Voice notifications
  */
 
@@ -48,7 +48,7 @@ export function QuickActionsPanel({ enabled, onOpenTerminal }: QuickActionsPanel
   };
 
   const handleDiagnostics = async () => {
-    voice.system('Running full diagnostics', 'Analyzing all 13 modules...', 'VISION');
+    voice.system('Running full diagnostics', 'Analyzing all 14 modules...', 'VISION');
     try {
       const result = await system.diagnostics();
       if (result?.success) {

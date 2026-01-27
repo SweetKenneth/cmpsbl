@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Documentation Library
 
-**Version 5.5.0 | Scientific Publication Edition**
+**Version 6.0.0 | Scientific Publication Edition**
 
 ---
 
@@ -9,7 +9,7 @@
 | Field | Value |
 |-------|-------|
 | **System Name** | CMPSBL OS Substrate |
-| **Version** | v5.5.0 |
+| **Version** | v6.0.0 |
 | **Classification** | Cognitive Orchestration Substrate |
 | **Status** | Production (Live System) |
 | **Publication Date** | January 2026 |
@@ -47,7 +47,7 @@
 | Document | Title | Description |
 |----------|-------|-------------|
 | [01-EXECUTIVE-SUMMARY.md](./01-EXECUTIVE-SUMMARY.md) | Executive Summary | High-level overview for researchers and institutions |
-| [02-SYSTEM-ARCHITECTURE.md](./02-SYSTEM-ARCHITECTURE.md) | System Architecture | 13-module kernel architecture with diagrams |
+| [02-SYSTEM-ARCHITECTURE.md](./02-SYSTEM-ARCHITECTURE.md) | System Architecture | 14-module kernel architecture with diagrams |
 | [03-USERS-GUIDE.md](./03-USERS-GUIDE.md) | User's Guide | Complete operational guide for substrate users |
 | [04-API-REFERENCE.md](./04-API-REFERENCE.md) | API Reference | Public interface specification |
 
@@ -68,6 +68,7 @@
 | [20-SYSTEM-MODULE.md](./20-SYSTEM-MODULE.md) | SYSTEM | Administrative operations |
 | [21-MODERNIZER-MODULE.md](./21-MODERNIZER-MODULE.md) | MODERNIZER | Self-improvement engine |
 | [22-CORTEX-MODULE.md](./22-CORTEX-MODULE.md) | CORTEX | Agency-class orchestrator |
+| [23-INCLUSIVE-MODULE.md](./23-INCLUSIVE-MODULE.md) | INCLUSIVE | Human compatibility pipeline |
 
 ### Scientific Validation
 
@@ -119,14 +120,14 @@ Read all documents in order.
   title        = {{CMPSBL OS Substrate: A Cognitive Orchestration 
                    System for Autonomous AI Operations}},
   year         = 2026,
-  version      = {v5.5.0},
+  version      = {v6.0.0},
   publisher    = {PromptFluid},
   url          = {https://promptfluid.com},
-  note         = {Production system with 131,000+ lines of code}
+  note         = {Production system with 140,000+ lines of code}
 }
 ```
 
 ---
 
-*CMPSBL OS Substrate v5.5.0 — Scientific Publication Edition*
+*CMPSBL OS Substrate v6.0.0 — Human Compatibility Era*
 *© 2025-2026 PromptFluid®. All rights reserved.*
