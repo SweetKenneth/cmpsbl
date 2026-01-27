@@ -1,6 +1,6 @@
 /**
  * promptfluid® Substrate Initialization
- * v5.5.0 — Complete AI Operating System with 13 modules
+ * v6.0.0 — Complete AI Operating System with 14 modules
  */
 
 import { substrate } from './substrate';
@@ -11,19 +11,20 @@ export async function initializeSubstrate(): Promise<void> {
   if (initialized) return;
   
   try {
-    console.log('⚡ Booting promptfluid® Substrate v5.5.0...');
+    console.log('⚡ Booting promptfluid® Substrate v6.0.0...');
     console.log('─────────────────────────────────────────');
     
-    // Boot sequence - CORE first, then other modules (13-module architecture: 12 core + cortex)
-    const bootOrder: ('core' | 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'ripple' | 'access' | 'system' | 'modernizer' | 'integration' | 'cortex')[] = [
-      'core', 'brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'ripple', 'access', 'system', 'modernizer', 'integration', 'cortex'
+    // Boot sequence - CORE first, then other modules (14-module architecture: 13 core + cortex)
+    // INCLUSIVE positioned between SYSTEM and DEFENSE in lifecycle
+    const bootOrder: ('core' | 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'ripple' | 'access' | 'system' | 'inclusive' | 'modernizer' | 'integration' | 'cortex')[] = [
+      'core', 'brain', 'decode', 'system', 'inclusive', 'defense', 'nexus', 'vision', 'dream', 'ripple', 'access', 'modernizer', 'integration', 'cortex'
     ];
     
     // First, call core.boot to initialize everything
     const bootResult = await substrate.invoke({ module: 'core', action: 'boot' });
     
     if (bootResult.success) {
-      console.log('✅ Substrate boot complete: 13 modules loaded | Health: 100%');
+      console.log('✅ Substrate boot complete: 14 modules loaded | Health: 100%');
     } else {
       // Fallback to individual pings
       const results = await Promise.allSettled(

@@ -1,8 +1,8 @@
 /**
  * promptfluid® Substrate Provider
- * v5.5.0 — Cognitive Orchestration Substrate (13-Module Architecture)
+ * v6.0.0 — Cognitive Orchestration Substrate (14-Module Architecture)
  * 
- * Full-system audit completed: 2026-01-25
+ * Full-system audit completed: 2026-01-27
  * Wraps the application with substrate context and auto-initialization
  */
 
@@ -43,6 +43,7 @@ const SubstrateContext = createContext<SubstrateContextType>({
     system: defaultModuleStatus,
     modernizer: defaultModuleStatus,
     integration: defaultModuleStatus,
+    inclusive: defaultModuleStatus,
     cortex: defaultModuleStatus,
   },
   overallHealth: 0,
@@ -73,6 +74,7 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
     system: defaultModuleStatus,
     modernizer: defaultModuleStatus,
     integration: defaultModuleStatus,
+    inclusive: defaultModuleStatus,
     cortex: defaultModuleStatus,
   });
 
@@ -94,8 +96,8 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
   };
 
   const refresh = async () => {
-    // Check all 13 substrate modules (12 core + cortex orchestrator)
-    const moduleList: SubstrateModule[] = ['core', 'ripple', 'access', 'brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'system', 'modernizer', 'integration', 'cortex'];
+    // Check all 14 substrate modules (13 core + cortex orchestrator)
+    const moduleList: SubstrateModule[] = ['core', 'ripple', 'access', 'brain', 'decode', 'system', 'inclusive', 'defense', 'nexus', 'vision', 'dream', 'modernizer', 'integration', 'cortex'];
     const results = await Promise.all(moduleList.map(checkModule));
     
     const newModules = moduleList.reduce((acc, module, index) => {

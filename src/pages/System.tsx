@@ -25,7 +25,7 @@ export default function System() {
       <div className="max-w-2xl mx-auto space-y-6">
         <div>
           <h1 className="text-4xl font-bold mb-2">System Control</h1>
-          <p className="text-muted-foreground">Backend connection management | v4.8.0 — Resilience Surface + Audit Wiring</p>
+          <p className="text-muted-foreground">Backend connection management | v6.0.0 — INCLUSIVE Module + 14-Module Architecture</p>
         </div>
 
         <Card>

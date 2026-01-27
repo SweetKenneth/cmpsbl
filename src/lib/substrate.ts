@@ -1,11 +1,11 @@
 /**
  * promptfluid® Substrate Client
- * v5.5.0 — Cognitive Orchestration Substrate (13-Module Architecture)
+ * v6.0.0 — Cognitive Orchestration Substrate (14-Module Architecture)
  * 
- * Full-system audit completed: 2026-01-25
+ * Full-system audit completed: 2026-01-27
  * All module/action handlers verified, terminal commands wired, types synchronized.
  * 
- * Unified API for all 13 substrate modules (12 core + 1 orchestrator):
+ * Unified API for all 14 substrate modules (13 core + 1 orchestrator):
  * - Core: Kernel (scheduler, lifecycle, routing)
  * - Ripple: Message bus (queues, pub/sub, events)
  * - Access: Identity (API keys, quotas, usage)
@@ -18,12 +18,13 @@
  * - System: Administration, backup, healing
  * - Modernizer: Self-upgrade, proposals
  * - Integration: Enterprise adapters, auto-discovery, LLM governance
+ * - Inclusive: Human compatibility pipeline, WCAG scanning, a11y repairs
  * - Cortex: Agency-class orchestrator, governance, evolution
  */
 
 import { supabase } from '@/integrations/supabase/client';
 
-export type SubstrateModule = 'core' | 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'ripple' | 'access' | 'system' | 'modernizer' | 'integration' | 'cortex';
+export type SubstrateModule = 'core' | 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'ripple' | 'access' | 'system' | 'modernizer' | 'integration' | 'inclusive' | 'cortex';
 
 export interface SubstrateRequest {
   module: SubstrateModule;
@@ -1038,11 +1039,67 @@ class SubstrateClient {
     inventory: () =>
       this.invoke({ module: 'cortex' as SubstrateModule, action: 'inventory' }),
   };
+
+  // ═══════════════════════════════════════════════════════════════
+  // INCLUSIVE MODULE v1.0 — Human Compatibility Pipeline
+  // @origin(cmptbl) + @origin(clarity) — Migrated from archived utilities
+  // Position: Between SYSTEM and DEFENSE in lifecycle
+  // ═══════════════════════════════════════════════════════════════
+  
+  inclusive = {
+    /** Get module status with global score and violations */
+    status: () =>
+      this.invoke({ module: 'inclusive' as SubstrateModule, action: 'status' }),
+    
+    /** Health check */
+    health: () =>
+      this.invoke({ module: 'inclusive' as SubstrateModule, action: 'health' }),
+    
+    /** Lightweight heartbeat */
+    pulse: () =>
+      this.invoke({ module: 'inclusive' as SubstrateModule, action: 'pulse' }),
+    
+    /** Scan target URL or HTML for accessibility issues */
+    scan: (target: string, options?: { wcag_level?: 'A' | 'AA' | 'AAA'; scan_depth?: 'quick' | 'standard' | 'deep' }) =>
+      this.invoke({ module: 'inclusive' as SubstrateModule, action: 'scan', payload: { target, ...options } }),
+    
+    /** Self-scan the substrate UI */
+    selfScan: () =>
+      this.invoke({ module: 'inclusive' as SubstrateModule, action: 'self_scan' }),
+    
+    /** Repair accessibility issues */
+    repair: (target: string, issues?: string[]) =>
+      this.invoke({ module: 'inclusive' as SubstrateModule, action: 'repair', payload: { target, issues } }),
+    
+    /** Validate repairs and ensure no regressions */
+    validate: (target: string, originalHtml?: string, repairedHtml?: string) =>
+      this.invoke({ module: 'inclusive' as SubstrateModule, action: 'validate', payload: { target, original_html: originalHtml, repaired_html: repairedHtml } }),
+    
+    /** Build user profile for adaptive experiences */
+    profile: (context: string) =>
+      this.invoke({ module: 'inclusive' as SubstrateModule, action: 'profile', payload: { context } }),
+    
+    /** Generate accessibility report */
+    report: (target: string, format?: 'json' | 'markdown') =>
+      this.invoke({ module: 'inclusive' as SubstrateModule, action: 'report', payload: { target, format } }),
+    
+    /** Scan all marketplace templates */
+    scanAllTemplates: () =>
+      this.invoke({ module: 'inclusive' as SubstrateModule, action: 'scan_all_templates' }),
+    
+    /** Get regressions in last 24h */
+    regressions: (hours?: number) =>
+      this.invoke({ module: 'inclusive' as SubstrateModule, action: 'regressions', payload: { hours } }),
+    
+    /** Get template coverage stats */
+    coverage: () =>
+      this.invoke({ module: 'inclusive' as SubstrateModule, action: 'coverage' }),
+  };
 }
 
 export const substrate = SubstrateClient.getInstance();
 
-// Quick access functions for all 13 modules (12 core + cortex orchestrator)
+// Quick access functions for all 14 modules (13 core + cortex orchestrator)
 export const core = substrate.core;
 export const brain = substrate.brain;
 export const decode = substrate.decode;
@@ -1055,4 +1112,5 @@ export const access = substrate.access;
 export const system = substrate.system;
 export const modernizer = substrate.modernizer;
 export const integration = substrate.integration;
+export const inclusive = substrate.inclusive;
 export const cortex = substrate.cortex;
