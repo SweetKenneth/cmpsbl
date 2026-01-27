@@ -47,7 +47,7 @@ const changelog: ChangelogEntry[] = [
     date: "2026-01-25",
     title: "Full System Stabilization",
     emoji: "🏛️",
-    description: "The substrate achieves stability. 13 modules. 250+ commands. Every introspection surface wired. Every governance command operational. The system sees itself completely.",
+    description: "The substrate achieves stability. 13 modules at the time. 250+ commands. Every introspection surface wired. Every governance command operational. The system sees itself completely.",
     changes: [
       { type: 'added', text: "Cortex module (13th) — Agency-class orchestrator with PROPOSE → EVALUATE → APPLY → AUDIT → LEARN loop." },
       { type: 'added', text: "cortex.world — Full module registry snapshot with --dag, --roles, --eligible flags." },
@@ -58,7 +58,7 @@ const changelog: ChangelogEntry[] = [
       { type: 'added', text: "vision.diagnostics — Observability diagnostics with --full mode." },
       { type: 'fixed', text: "system.diagnostics — Now returns structured diagnostics with --full mode support." },
       { type: 'added', text: "Scientific documentation library — 24 papers under /docs/library/ for OSF/OpenAIRE publication." },
-      { type: 'changed', text: "Terminal commands expanded to 250+ across all 13 modules." },
+      { type: 'changed', text: "Terminal commands expanded to 250+ across all 13 modules (at the time)." },
       { type: 'security', text: "All introspection commands respect proof_mode and read_only constraints." },
     ]
   },
@@ -311,9 +311,9 @@ export default function Changelog() {
             <span className="text-sm italic">— spoken in the voice of Decode</span>
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
-            <span><strong className="text-foreground">13</strong> Modules</span>
+            <span><strong className="text-foreground">14</strong> Modules</span>
             <span>•</span>
-            <span><strong className="text-foreground">250+</strong> Commands</span>
+            <span><strong className="text-foreground">260+</strong> Commands</span>
             <span>•</span>
             <span><strong className="text-foreground">~131K</strong> Lines of Code</span>
           </div>

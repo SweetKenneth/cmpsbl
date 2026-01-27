@@ -1,18 +1,18 @@
-# 03: The Modules — The 12 Building Blocks
+# 03: The Modules — The 14 Building Blocks
 
-**Everything the Substrate Can Do (v4.2.0)**
+**Everything the Substrate Can Do (v6.0.0)**
 
 ---
 
 ## The Module System Explained
 
-Think of the substrate as a toolbox with 12 specialized tools. Each tool (module) does one category of things really well.
+Think of the substrate as a toolbox with 14 specialized tools. Each tool (module) does one category of things really well.
 
-The modules are organized into **4 layers**:
+The modules are organized into **5 layers**:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                    THE SUBSTRATE v4.2.0                              │
+│                    THE SUBSTRATE v6.0.0                              │
 │                                                                      │
 │  ┌─── KERNEL LAYER (Infrastructure) ──────────────────────────────┐ │
 │  │  CORE         RIPPLE        ACCESS                              │ │
@@ -29,9 +29,14 @@ The modules are organized into **4 layers**:
 │  │  Security     AI Routing    Observability Enterprise            │ │
 │  └────────────────────────────────────────────────────────────────┘ │
 │                                                                      │
-│  ┌─── ADMINISTRATIVE LAYER (Control) ─────────────────────────────┐ │
-│  │  SYSTEM       MODERNIZER                                        │ │
-│  │  Operations   Self-Upgrade                                      │ │
+│  ┌─── ADMINISTRATIVE LAYER (Control) ────────────────────────────┐ │
+│  │  SYSTEM       INCLUSIVE     MODERNIZER                         │ │
+│  │  Operations   Accessibility Self-Upgrade                       │ │
+│  └────────────────────────────────────────────────────────────────┘ │
+│                                                                      │
+│  ┌─── ORCHESTRATOR LAYER (Autonomy) ─────────────────────────────┐ │
+│  │  CORTEX                                                         │ │
+│  │  Autonomous Planning & Evolution                                │ │
 │  └────────────────────────────────────────────────────────────────┘ │
 │                                                                      │
 └─────────────────────────────────────────────────────────────────────┘
@@ -488,7 +493,69 @@ Without Integration, connecting to external systems is manual and ungoverned. Wi
 | VISION | Operational | Monitoring | `health` |
 | INTEGRATION | Operational | Enterprise | `connect` |
 | SYSTEM | Administrative | Operations | `heal` |
+| INCLUSIVE | Administrative | Accessibility | `scan` |
 | MODERNIZER | Administrative | Upgrades | `propose` |
+| CORTEX | Orchestrator | Autonomy | `propose` |
+
+---
+
+## Module 13: INCLUSIVE (New in v6.0.0)
+
+**What It Does:** Human-compatibility pipeline, accessibility scanning, repair, and validation
+
+**Plain English:** This is the "accessibility guardian" that ensures everything the substrate produces is compatible with WCAG/ARIA standards and inclusive design principles.
+
+### Key Actions
+
+| Action | What It Does | Example |
+|--------|--------------|---------|
+| `scan` | Scan target for accessibility issues | "Check this page for problems" |
+| `repair` | Auto-fix detected issues | "Fix the alt text issues" |
+| `validate` | Verify WCAG compliance | "Is this page compliant?" |
+| `profile` | Create user profile | "Set preferences for screen reader user" |
+| `report` | Generate compliance report | "Full accessibility audit" |
+| `self_scan` | Scan the substrate itself | "Check our own interfaces" |
+
+### Why It Matters
+
+Without Inclusive, accessibility is an afterthought. With Inclusive:
+- Templates are scanned before approval
+- Issues are auto-repaired when possible
+- Regressions are caught and flagged
+- User profiles adapt the experience
+
+### Integration Points
+
+- **Brain:** Stores findings, repairs, and regression patterns
+- **Defense:** High-severity issues become risk blocks
+- **Modernizer:** Recurring violations become upgrade proposals
+- **Cortex:** Inclusive patterns influence autonomous decisions
+
+---
+
+## Module 14: CORTEX (New in v5.5.0)
+
+**What It Does:** Agency-class orchestrator for autonomous evolution and system governance
+
+**Plain English:** This is the "executive brain" that can propose, evaluate, and apply system-wide changes—with human approval gates.
+
+### Key Actions
+
+| Action | What It Does | Example |
+|--------|--------------|---------|
+| `propose` | Generate improvement proposal | "What should we change?" |
+| `evaluate` | Assess proposal risk/reward | "Is this safe to apply?" |
+| `apply` | Execute approved proposal | "Make it happen" |
+| `status` | Check orchestrator state | "What's Cortex doing?" |
+| `summary` | Get evolution summary | "Recent decisions" |
+
+### Why It Matters
+
+Without Cortex, improvements require constant human attention. With Cortex:
+- System identifies its own improvements
+- Proposals are vetted for safety
+- Evolution happens autonomously (with gates)
+- Governance policies are enforced
 
 ---
 
