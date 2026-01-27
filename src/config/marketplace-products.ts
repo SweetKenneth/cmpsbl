@@ -340,6 +340,156 @@ export const BUSINESS_TEMPLATES = [
 ] as const;
 
 // ============================================
+// NEW PREMIUM TEMPLATES - January 2026
+// ============================================
+export const NEW_PREMIUM_TEMPLATES = [
+  // Reasoning & Logic ($399 - Elite)
+  {
+    id: 'neural-reasoning-engine',
+    name: 'Neural Reasoning Engine',
+    description: 'Multi-step reasoning with chain-of-thought memory, inference caching, and explanation generation',
+    product_id: 'prod_Trkh3EJ5m0Yvcc',
+    price_id: 'price_1Su1CFQ7FtTiAL4alBl7SXlx',
+    amount: 39900,
+    category: 'brain',
+    difficulty: 'elite',
+    features: ['Chain-of-Thought', 'Inference Caching', 'Explanation Gen', 'Logic Memory'],
+  },
+  // Sentiment & Emotion ($299 - Premium)
+  {
+    id: 'sentiment-evolution-tracker',
+    name: 'Sentiment Evolution Tracker',
+    description: 'Track emotional sentiment across conversations with drift alerts and mood stabilization',
+    product_id: 'prod_Trkhx7n5rVP3qc',
+    price_id: 'price_1Su1CGQ7FtTiAL4ayPLEGrMi',
+    amount: 29900,
+    category: 'vision',
+    difficulty: 'premium',
+    features: ['Sentiment Tracking', 'Drift Alerts', 'Mood Stabilization', 'Emotional Memory'],
+  },
+  // Multi-Agent ($499 - Pro)
+  {
+    id: 'multi-agent-orchestrator',
+    name: 'Multi-Agent Orchestrator',
+    description: 'Coordinate multiple AI agents with shared memory, task delegation, and conflict resolution',
+    product_id: 'prod_Trkh3wqgZlXNEV',
+    price_id: 'price_1Su1CHQ7FtTiAL4andrza7AD',
+    amount: 49900,
+    category: 'nexus',
+    difficulty: 'pro',
+    features: ['Shared Memory', 'Task Delegation', 'Conflict Resolution', 'Agent Coordination'],
+  },
+  // Compliance ($449 - Elite)
+  {
+    id: 'compliance-audit-brain',
+    name: 'Compliance Audit Brain',
+    description: 'Regulatory compliance monitoring with policy memory, violation detection, and audit trails',
+    product_id: 'prod_TrkhUkinE1CKX4',
+    price_id: 'price_1Su1CIQ7FtTiAL4aOGnNtXCI',
+    amount: 44900,
+    category: 'defense',
+    difficulty: 'elite',
+    features: ['Policy Memory', 'Violation Detection', 'Audit Trails', 'Regulatory Learning'],
+  },
+  // Creative Writing ($349 - Premium)
+  {
+    id: 'creative-writing-engine',
+    name: 'Creative Writing Engine',
+    description: 'Story generation with character memory, plot continuity, and style consistency across chapters',
+    product_id: 'prod_TrkhyuQ6N7SFSb',
+    price_id: 'price_1Su1CJQ7FtTiAL4a5yh9HC77',
+    amount: 34900,
+    category: 'decode',
+    difficulty: 'premium',
+    features: ['Character Memory', 'Plot Continuity', 'Style Consistency', 'World Building'],
+  },
+  // Data Pipeline ($399 - Elite)
+  {
+    id: 'data-pipeline-intelligence',
+    name: 'Data Pipeline Intelligence',
+    description: 'ETL monitoring with anomaly learning, schema memory, and self-healing data flows',
+    product_id: 'prod_TrkhDZ6X7rCDbN',
+    price_id: 'price_1Su1CLQ7FtTiAL4aIOajfDAN',
+    amount: 39900,
+    category: 'system',
+    difficulty: 'elite',
+    features: ['Anomaly Learning', 'Schema Memory', 'Self-Healing', 'Data Flow Optimization'],
+  },
+  // Threat Intelligence ($449 - Elite)
+  {
+    id: 'threat-intelligence-brain',
+    name: 'Threat Intelligence Brain',
+    description: 'Security threat detection with attack pattern learning, incident memory, and auto-response',
+    product_id: 'prod_TrkhoHJ7NbVxSy',
+    price_id: 'price_1Su1COQ7FtTiAL4atw0i0KWC',
+    amount: 44900,
+    category: 'defense',
+    difficulty: 'elite',
+    features: ['Attack Pattern Learning', 'Incident Memory', 'Auto-Response', 'Threat Scoring'],
+  },
+  // Revenue Prediction ($499 - Pro)
+  {
+    id: 'revenue-prediction-engine',
+    name: 'Revenue Prediction Engine',
+    description: 'Revenue optimization with pricing memory, market learning, and forecast generation',
+    product_id: 'prod_Trkh7vcnYhleUy',
+    price_id: 'price_1Su1CPQ7FtTiAL4aUJTJLoCs',
+    amount: 49900,
+    category: 'brain',
+    difficulty: 'pro',
+    features: ['Pricing Memory', 'Market Learning', 'Forecast Generation', 'Revenue Optimization'],
+  },
+  // Legal Document ($349 - Premium)
+  {
+    id: 'legal-document-analyzer',
+    name: 'Legal Document Analyzer',
+    description: 'Contract extraction with clause memory, version tracking, and risk identification',
+    product_id: 'prod_TrkhbXqqjb5myJ',
+    price_id: 'price_1Su1CQQ7FtTiAL4atcpmnqij',
+    amount: 34900,
+    category: 'decode',
+    difficulty: 'premium',
+    features: ['Clause Memory', 'Version Tracking', 'Risk Identification', 'Contract Extraction'],
+  },
+  // Game Session ($299 - Premium)
+  {
+    id: 'game-session-memory',
+    name: 'Game Session Memory',
+    description: 'Session-based game AI with player preference memory, challenge adaptation, and NPC learning',
+    product_id: 'prod_TrkhHs2M8gjIFj',
+    price_id: 'price_1Su1CSQ7FtTiAL4aJ4uREitJ',
+    amount: 29900,
+    category: 'world_engine',
+    difficulty: 'premium',
+    features: ['Player Preference Memory', 'Challenge Adaptation', 'NPC Learning', 'Session Persistence'],
+  },
+  // Anomaly Detection ($399 - Elite)
+  {
+    id: 'anomaly-detection-system',
+    name: 'Anomaly Detection System',
+    description: 'Anomaly detection with baseline learning, drift alerting, and auto-recovery triggers',
+    product_id: 'prod_TrkhMJz5hVdflX',
+    price_id: 'price_1Su1CSQ7FtTiAL4a94IYYc6f',
+    amount: 39900,
+    category: 'vision',
+    difficulty: 'elite',
+    features: ['Baseline Learning', 'Drift Alerting', 'Auto-Recovery', 'Pattern Recognition'],
+  },
+  // Project Intelligence ($449 - Elite)
+  {
+    id: 'project-intelligence-agent',
+    name: 'Project Intelligence Agent',
+    description: 'Project tracking with task dependency memory, resource learning, and deadline prediction',
+    product_id: 'prod_TrkhGLTTFbYbkl',
+    price_id: 'price_1Su1CTQ7FtTiAL4agOW9aAs9',
+    amount: 44900,
+    category: 'brain',
+    difficulty: 'elite',
+    features: ['Task Dependency Memory', 'Resource Learning', 'Deadline Prediction', 'Progress Tracking'],
+  },
+] as const;
+
+// ============================================
 // ORIGINAL COMPLEX TEMPLATES (Updated)
 // ============================================
 export const COMPLEX_TEMPLATES = [
@@ -573,6 +723,7 @@ export const COMPLEX_TEMPLATES = [
 export const ALL_PREMIUM_TEMPLATES = [
   ...DRIFT_PREVENTION_TEMPLATES,
   ...BUSINESS_TEMPLATES,
+  ...NEW_PREMIUM_TEMPLATES,
   ...COMPLEX_TEMPLATES,
 ] as const;
 

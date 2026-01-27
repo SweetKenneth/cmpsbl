@@ -9372,6 +9372,1272 @@ class ZeroShotClassifier {
 }
 
 export const zeroShotClassifier = new ZeroShotClassifier();`
+  },
+  // ============================================
+  // NEW PREMIUM TEMPLATES - January 2026
+  // ============================================
+  {
+    id: 'neural-reasoning-engine',
+    name: 'Neural Reasoning Engine',
+    description: 'Multi-step reasoning with chain-of-thought memory, inference caching, and explanation generation',
+    icon: Brain,
+    category: 'brain',
+    difficulty: 'elite',
+    estimatedTime: '45 min',
+    features: ['Chain-of-Thought', 'Inference Caching', 'Explanation Generation', 'Logic Memory'],
+    code: `import { substrate } from './lib/substrate';
+
+interface ReasoningStep {
+  premise: string;
+  inference: string;
+  confidence: number;
+}
+
+class NeuralReasoningEngine {
+  private inferenceCache = new Map<string, ReasoningStep[]>();
+  
+  async reason(query: string, depth: number = 3): Promise<{
+    conclusion: string;
+    steps: ReasoningStep[];
+    confidence: number;
+  }> {
+    const cacheKey = \`\${query}_\${depth}\`;
+    
+    if (this.inferenceCache.has(cacheKey)) {
+      const cached = this.inferenceCache.get(cacheKey)!;
+      return {
+        conclusion: cached[cached.length - 1].inference,
+        steps: cached,
+        confidence: cached.reduce((a, s) => a * s.confidence, 1)
+      };
+    }
+    
+    const steps: ReasoningStep[] = [];
+    let currentContext = query;
+    
+    for (let i = 0; i < depth; i++) {
+      const response = await substrate.nexus.text(\`
+        Given: \${currentContext}
+        
+        Perform one logical inference step. Output:
+        - Premise: The key fact or assumption
+        - Inference: What logically follows
+        - Confidence: 0.0-1.0
+      \`);
+      
+      const step = this.parseStep(response.data?.text || '');
+      steps.push(step);
+      
+      await substrate.brain.learn(
+        JSON.stringify(step),
+        'reasoning_step'
+      );
+      
+      currentContext += ' → ' + step.inference;
+    }
+    
+    this.inferenceCache.set(cacheKey, steps);
+    
+    return {
+      conclusion: steps[steps.length - 1].inference,
+      steps,
+      confidence: steps.reduce((a, s) => a * s.confidence, 1)
+    };
+  }
+  
+  private parseStep(text: string): ReasoningStep {
+    return {
+      premise: text.match(/Premise:\\s*(.+)/i)?.[1] || 'Unknown',
+      inference: text.match(/Inference:\\s*(.+)/i)?.[1] || 'Unknown',
+      confidence: parseFloat(text.match(/Confidence:\\s*([\\d.]+)/i)?.[1] || '0.5')
+    };
+  }
+}
+
+export const reasoningEngine = new NeuralReasoningEngine();`
+  },
+  {
+    id: 'sentiment-evolution-tracker',
+    name: 'Sentiment Evolution Tracker',
+    description: 'Track emotional sentiment across conversations with drift alerts and mood stabilization',
+    icon: Activity,
+    category: 'vision',
+    difficulty: 'premium',
+    estimatedTime: '35 min',
+    features: ['Sentiment Tracking', 'Drift Alerts', 'Mood Stabilization', 'Emotional Memory'],
+    code: `import { substrate } from './lib/substrate';
+
+interface SentimentSnapshot {
+  timestamp: number;
+  valence: number; // -1 to 1
+  arousal: number; // 0 to 1
+  dominance: number; // 0 to 1
+  label: string;
+}
+
+class SentimentEvolutionTracker {
+  private history: SentimentSnapshot[] = [];
+  private baselineMood = { valence: 0.3, arousal: 0.5, dominance: 0.5 };
+  
+  async trackSentiment(message: string): Promise<{
+    current: SentimentSnapshot;
+    drift: number;
+    alert?: string;
+  }> {
+    const analysis = await substrate.nexus.text(\`
+      Analyze emotional sentiment of this message:
+      "\${message}"
+      
+      Output JSON: { valence: -1 to 1, arousal: 0-1, dominance: 0-1, label: "emotion" }
+    \`);
+    
+    const sentiment = this.parseSentiment(analysis.data?.text || '');
+    this.history.push(sentiment);
+    
+    const drift = this.calculateDrift(sentiment);
+    
+    await substrate.brain.remember(
+      JSON.stringify(sentiment),
+      'sentiment_snapshot',
+      1 - Math.abs(drift)
+    );
+    
+    return {
+      current: sentiment,
+      drift,
+      alert: drift > 0.4 ? \`Significant mood shift detected: \${sentiment.label}\` : undefined
+    };
+  }
+  
+  private calculateDrift(current: SentimentSnapshot): number {
+    return Math.sqrt(
+      Math.pow(current.valence - this.baselineMood.valence, 2) +
+      Math.pow(current.arousal - this.baselineMood.arousal, 2) +
+      Math.pow(current.dominance - this.baselineMood.dominance, 2)
+    ) / Math.sqrt(3);
+  }
+  
+  private parseSentiment(text: string): SentimentSnapshot {
+    try {
+      const json = JSON.parse(text.match(/\\{[^}]+\\}/)?.[0] || '{}');
+      return {
+        timestamp: Date.now(),
+        valence: json.valence || 0,
+        arousal: json.arousal || 0.5,
+        dominance: json.dominance || 0.5,
+        label: json.label || 'neutral'
+      };
+    } catch {
+      return { timestamp: Date.now(), valence: 0, arousal: 0.5, dominance: 0.5, label: 'neutral' };
+    }
+  }
+  
+  getHistory(): SentimentSnapshot[] { return [...this.history]; }
+}
+
+export const sentimentTracker = new SentimentEvolutionTracker();`
+  },
+  {
+    id: 'multi-agent-orchestrator',
+    name: 'Multi-Agent Orchestrator',
+    description: 'Coordinate multiple AI agents with shared memory, task delegation, and conflict resolution',
+    icon: Network,
+    category: 'nexus',
+    difficulty: 'pro',
+    estimatedTime: '60 min',
+    features: ['Shared Memory', 'Task Delegation', 'Conflict Resolution', 'Agent Coordination'],
+    code: `import { substrate } from './lib/substrate';
+
+interface Agent {
+  id: string;
+  name: string;
+  capabilities: string[];
+  currentTask?: string;
+}
+
+interface Task {
+  id: string;
+  description: string;
+  requiredCapabilities: string[];
+  status: 'pending' | 'assigned' | 'completed' | 'failed';
+  assignedTo?: string;
+}
+
+class MultiAgentOrchestrator {
+  private agents: Map<string, Agent> = new Map();
+  private tasks: Map<string, Task> = new Map();
+  private sharedMemory = new Map<string, any>();
+  
+  registerAgent(agent: Agent): void {
+    this.agents.set(agent.id, agent);
+  }
+  
+  async delegateTask(task: Task): Promise<{
+    assigned: boolean;
+    agent?: Agent;
+    reason: string;
+  }> {
+    const candidates = this.findCapableAgents(task.requiredCapabilities);
+    
+    if (candidates.length === 0) {
+      return { assigned: false, reason: 'No capable agents available' };
+    }
+    
+    const bestAgent = candidates.find(a => !a.currentTask) || candidates[0];
+    
+    if (bestAgent.currentTask) {
+      const conflict = await this.resolveConflict(bestAgent, task);
+      if (!conflict.resolved) {
+        return { assigned: false, reason: conflict.reason };
+      }
+    }
+    
+    bestAgent.currentTask = task.id;
+    task.status = 'assigned';
+    task.assignedTo = bestAgent.id;
+    
+    await substrate.brain.learn(
+      \`Task \${task.id} assigned to \${bestAgent.name}\`,
+      'task_delegation'
+    );
+    
+    return { assigned: true, agent: bestAgent, reason: 'Successfully delegated' };
+  }
+  
+  private findCapableAgents(capabilities: string[]): Agent[] {
+    return Array.from(this.agents.values()).filter(agent =>
+      capabilities.every(cap => agent.capabilities.includes(cap))
+    );
+  }
+  
+  private async resolveConflict(agent: Agent, newTask: Task): Promise<{
+    resolved: boolean;
+    reason: string;
+  }> {
+    const currentTask = this.tasks.get(agent.currentTask!);
+    if (!currentTask) return { resolved: true, reason: 'No conflict' };
+    
+    const priorityCheck = await substrate.nexus.text(\`
+      Compare task priorities:
+      Current: \${currentTask.description}
+      New: \${newTask.description}
+      
+      Which is higher priority? Output: "current" or "new"
+    \`);
+    
+    if (priorityCheck.data?.text?.includes('new')) {
+      currentTask.status = 'pending';
+      currentTask.assignedTo = undefined;
+      return { resolved: true, reason: 'New task takes priority' };
+    }
+    
+    return { resolved: false, reason: 'Current task has higher priority' };
+  }
+  
+  shareData(key: string, value: any): void {
+    this.sharedMemory.set(key, value);
+  }
+  
+  getData(key: string): any {
+    return this.sharedMemory.get(key);
+  }
+}
+
+export const orchestrator = new MultiAgentOrchestrator();`
+  },
+  {
+    id: 'compliance-audit-brain',
+    name: 'Compliance Audit Brain',
+    description: 'Regulatory compliance monitoring with policy memory, violation detection, and audit trails',
+    icon: Shield,
+    category: 'defense',
+    difficulty: 'elite',
+    estimatedTime: '50 min',
+    features: ['Policy Memory', 'Violation Detection', 'Audit Trails', 'Regulatory Learning'],
+    code: `import { substrate } from './lib/substrate';
+
+interface Policy {
+  id: string;
+  regulation: string;
+  requirement: string;
+  severity: 'critical' | 'high' | 'medium' | 'low';
+}
+
+interface AuditEntry {
+  timestamp: number;
+  action: string;
+  policyId?: string;
+  compliant: boolean;
+  notes: string;
+}
+
+class ComplianceAuditBrain {
+  private policies: Map<string, Policy> = new Map();
+  private auditLog: AuditEntry[] = [];
+  
+  async loadPolicy(policy: Policy): Promise<void> {
+    this.policies.set(policy.id, policy);
+    await substrate.brain.remember(
+      JSON.stringify(policy),
+      'compliance_policy',
+      1.0,
+      { regulation: policy.regulation }
+    );
+  }
+  
+  async checkCompliance(action: string): Promise<{
+    compliant: boolean;
+    violations: Policy[];
+    recommendations: string[];
+  }> {
+    const violations: Policy[] = [];
+    const recommendations: string[] = [];
+    
+    for (const policy of this.policies.values()) {
+      const check = await substrate.nexus.text(\`
+        Action: \${action}
+        Policy: \${policy.requirement}
+        Regulation: \${policy.regulation}
+        
+        Is this action compliant? Output: { compliant: boolean, reason: string }
+      \`);
+      
+      try {
+        const result = JSON.parse(check.data?.text?.match(/\\{[^}]+\\}/)?.[0] || '{}');
+        if (!result.compliant) {
+          violations.push(policy);
+          recommendations.push(\`Fix: \${result.reason}\`);
+        }
+      } catch {}
+    }
+    
+    const entry: AuditEntry = {
+      timestamp: Date.now(),
+      action,
+      compliant: violations.length === 0,
+      notes: violations.map(v => v.id).join(', ')
+    };
+    this.auditLog.push(entry);
+    
+    return {
+      compliant: violations.length === 0,
+      violations,
+      recommendations
+    };
+  }
+  
+  getAuditTrail(since?: number): AuditEntry[] {
+    if (!since) return [...this.auditLog];
+    return this.auditLog.filter(e => e.timestamp >= since);
+  }
+}
+
+export const complianceBrain = new ComplianceAuditBrain();`
+  },
+  {
+    id: 'creative-writing-engine',
+    name: 'Creative Writing Engine',
+    description: 'Story generation with character memory, plot continuity, and style consistency',
+    icon: Lightbulb,
+    category: 'decode',
+    difficulty: 'premium',
+    estimatedTime: '40 min',
+    features: ['Character Memory', 'Plot Continuity', 'Style Consistency', 'World Building'],
+    code: `import { substrate } from './lib/substrate';
+
+interface Character {
+  name: string;
+  traits: string[];
+  backstory: string;
+  relationships: Record<string, string>;
+}
+
+interface StoryContext {
+  title: string;
+  genre: string;
+  plotPoints: string[];
+  currentChapter: number;
+  characters: Character[];
+}
+
+class CreativeWritingEngine {
+  private context: StoryContext | null = null;
+  private styleGuide: string = '';
+  
+  async initializeStory(params: {
+    title: string;
+    genre: string;
+    premise: string;
+  }): Promise<void> {
+    this.context = {
+      title: params.title,
+      genre: params.genre,
+      plotPoints: [],
+      currentChapter: 0,
+      characters: []
+    };
+    
+    const outline = await substrate.nexus.text(\`
+      Create a story outline for:
+      Title: \${params.title}
+      Genre: \${params.genre}
+      Premise: \${params.premise}
+      
+      Output 5 major plot points as JSON array.
+    \`);
+    
+    try {
+      this.context.plotPoints = JSON.parse(
+        outline.data?.text?.match(/\\[.*\\]/s)?.[0] || '[]'
+      );
+    } catch {}
+    
+    await substrate.brain.remember(
+      JSON.stringify(this.context),
+      'story_context'
+    );
+  }
+  
+  async addCharacter(character: Character): Promise<void> {
+    if (!this.context) throw new Error('Initialize story first');
+    this.context.characters.push(character);
+    await substrate.brain.remember(
+      JSON.stringify(character),
+      'story_character'
+    );
+  }
+  
+  async generateChapter(): Promise<string> {
+    if (!this.context) throw new Error('Initialize story first');
+    
+    const plotPoint = this.context.plotPoints[this.context.currentChapter] || 'Conclusion';
+    
+    const chapter = await substrate.nexus.text(\`
+      Story: \${this.context.title} (\${this.context.genre})
+      Chapter \${this.context.currentChapter + 1}
+      Plot Point: \${plotPoint}
+      Characters: \${this.context.characters.map(c => c.name).join(', ')}
+      
+      \${this.styleGuide ? 'Style: ' + this.styleGuide : ''}
+      
+      Write this chapter (500-800 words) maintaining character consistency and plot continuity.
+    \`);
+    
+    this.context.currentChapter++;
+    
+    await substrate.brain.learn(
+      \`Chapter \${this.context.currentChapter}: \${chapter.data?.text?.substring(0, 200)}...\`,
+      'chapter_written'
+    );
+    
+    return chapter.data?.text || '';
+  }
+  
+  setStyleGuide(style: string): void {
+    this.styleGuide = style;
+  }
+}
+
+export const writingEngine = new CreativeWritingEngine();`
+  },
+  {
+    id: 'data-pipeline-intelligence',
+    name: 'Data Pipeline Intelligence',
+    description: 'ETL monitoring with anomaly learning, schema memory, and self-healing data flows',
+    icon: Database,
+    category: 'system',
+    difficulty: 'elite',
+    estimatedTime: '45 min',
+    features: ['Anomaly Learning', 'Schema Memory', 'Self-Healing', 'Data Flow Optimization'],
+    code: `import { substrate } from './lib/substrate';
+
+interface SchemaInfo {
+  tableName: string;
+  columns: { name: string; type: string; nullable: boolean }[];
+  lastUpdated: number;
+}
+
+interface PipelineMetrics {
+  recordsProcessed: number;
+  errorRate: number;
+  avgLatency: number;
+  anomalies: string[];
+}
+
+class DataPipelineIntelligence {
+  private schemas: Map<string, SchemaInfo> = new Map();
+  private baselineMetrics: PipelineMetrics | null = null;
+  
+  async learnSchema(tableName: string, schema: SchemaInfo): Promise<void> {
+    this.schemas.set(tableName, { ...schema, lastUpdated: Date.now() });
+    await substrate.brain.remember(
+      JSON.stringify(schema),
+      'schema_definition',
+      1.0,
+      { table: tableName }
+    );
+  }
+  
+  async monitorPipeline(metrics: PipelineMetrics): Promise<{
+    healthy: boolean;
+    anomalies: string[];
+    recommendations: string[];
+  }> {
+    if (!this.baselineMetrics) {
+      this.baselineMetrics = metrics;
+      return { healthy: true, anomalies: [], recommendations: ['Baseline established'] };
+    }
+    
+    const anomalies: string[] = [];
+    const recommendations: string[] = [];
+    
+    if (metrics.errorRate > this.baselineMetrics.errorRate * 2) {
+      anomalies.push('Error rate spike detected');
+      recommendations.push('Check source data quality');
+    }
+    
+    if (metrics.avgLatency > this.baselineMetrics.avgLatency * 1.5) {
+      anomalies.push('Latency increase detected');
+      recommendations.push('Review pipeline stages for bottlenecks');
+    }
+    
+    if (anomalies.length > 0) {
+      await substrate.brain.learn(
+        \`Pipeline anomaly: \${anomalies.join(', ')}\`,
+        'pipeline_anomaly'
+      );
+    }
+    
+    return {
+      healthy: anomalies.length === 0,
+      anomalies,
+      recommendations
+    };
+  }
+  
+  async suggestSchemaFix(error: string): Promise<string> {
+    const context = await substrate.brain.query('schema_definition', 5);
+    
+    const fix = await substrate.nexus.text(\`
+      Schema context: \${JSON.stringify(context.data?.memories?.slice(0, 3))}
+      
+      Error: \${error}
+      
+      Suggest a schema fix or data transformation to resolve this error.
+    \`);
+    
+    return fix.data?.text || 'Unable to suggest fix';
+  }
+}
+
+export const pipelineIntel = new DataPipelineIntelligence();`
+  },
+  {
+    id: 'threat-intelligence-brain',
+    name: 'Threat Intelligence Brain',
+    description: 'Security threat detection with attack pattern learning, incident memory, and auto-response',
+    icon: Lock,
+    category: 'defense',
+    difficulty: 'elite',
+    estimatedTime: '50 min',
+    features: ['Attack Pattern Learning', 'Incident Memory', 'Auto-Response', 'Threat Scoring'],
+    code: `import { substrate } from './lib/substrate';
+
+interface ThreatIndicator {
+  type: 'ip' | 'domain' | 'hash' | 'behavior';
+  value: string;
+  severity: number;
+  source: string;
+}
+
+interface Incident {
+  id: string;
+  timestamp: number;
+  indicators: ThreatIndicator[];
+  severity: 'critical' | 'high' | 'medium' | 'low';
+  status: 'open' | 'investigating' | 'resolved';
+  response?: string;
+}
+
+class ThreatIntelligenceBrain {
+  private indicators = new Map<string, ThreatIndicator>();
+  private incidents: Incident[] = [];
+  private patterns: string[] = [];
+  
+  async ingestIndicator(indicator: ThreatIndicator): Promise<void> {
+    this.indicators.set(\`\${indicator.type}:\${indicator.value}\`, indicator);
+    await substrate.brain.remember(
+      JSON.stringify(indicator),
+      'threat_indicator',
+      indicator.severity
+    );
+  }
+  
+  async analyzeEvent(event: {
+    source_ip: string;
+    action: string;
+    target: string;
+    payload?: string;
+  }): Promise<{
+    threatLevel: number;
+    matchedIndicators: ThreatIndicator[];
+    recommendedAction: string;
+  }> {
+    const matchedIndicators: ThreatIndicator[] = [];
+    
+    const ipIndicator = this.indicators.get(\`ip:\${event.source_ip}\`);
+    if (ipIndicator) matchedIndicators.push(ipIndicator);
+    
+    const analysis = await substrate.defense.analyze({
+      fingerprint: { action: event.action, target: event.target }
+    }, event.source_ip);
+    
+    const threatLevel = Math.max(
+      analysis.data?.risk_score || 0,
+      ...matchedIndicators.map(i => i.severity)
+    );
+    
+    let recommendedAction = 'monitor';
+    if (threatLevel > 0.8) recommendedAction = 'block';
+    else if (threatLevel > 0.5) recommendedAction = 'challenge';
+    
+    if (threatLevel > 0.5) {
+      await this.createIncident(matchedIndicators, threatLevel);
+    }
+    
+    return { threatLevel, matchedIndicators, recommendedAction };
+  }
+  
+  private async createIncident(
+    indicators: ThreatIndicator[],
+    severity: number
+  ): Promise<Incident> {
+    const incident: Incident = {
+      id: \`inc_\${Date.now()}\`,
+      timestamp: Date.now(),
+      indicators,
+      severity: severity > 0.8 ? 'critical' : severity > 0.6 ? 'high' : 'medium',
+      status: 'open'
+    };
+    
+    this.incidents.push(incident);
+    await substrate.brain.learn(
+      \`Incident \${incident.id}: \${incident.severity}\`,
+      'security_incident'
+    );
+    
+    return incident;
+  }
+  
+  getActiveIncidents(): Incident[] {
+    return this.incidents.filter(i => i.status !== 'resolved');
+  }
+}
+
+export const threatBrain = new ThreatIntelligenceBrain();`
+  },
+  {
+    id: 'revenue-prediction-engine',
+    name: 'Revenue Prediction Engine',
+    description: 'Revenue optimization with pricing memory, market learning, and forecast generation',
+    icon: TrendingUp,
+    category: 'brain',
+    difficulty: 'pro',
+    estimatedTime: '55 min',
+    features: ['Pricing Memory', 'Market Learning', 'Forecast Generation', 'Revenue Optimization'],
+    code: `import { substrate } from './lib/substrate';
+
+interface PricingData {
+  productId: string;
+  price: number;
+  salesVolume: number;
+  timestamp: number;
+  marketConditions: string;
+}
+
+interface Forecast {
+  period: string;
+  predictedRevenue: number;
+  confidence: number;
+  factors: string[];
+}
+
+class RevenuePredictionEngine {
+  private pricingHistory: PricingData[] = [];
+  private marketPatterns: Map<string, number> = new Map();
+  
+  async recordPricing(data: PricingData): Promise<void> {
+    this.pricingHistory.push(data);
+    await substrate.brain.remember(
+      JSON.stringify(data),
+      'pricing_data',
+      0.9,
+      { product: data.productId }
+    );
+  }
+  
+  async learnMarketPattern(condition: string, impactFactor: number): Promise<void> {
+    this.marketPatterns.set(condition, impactFactor);
+    await substrate.brain.learn(
+      \`Market condition: \${condition} → impact: \${impactFactor}\`,
+      'market_pattern'
+    );
+  }
+  
+  async generateForecast(params: {
+    productId: string;
+    period: string;
+    currentConditions: string[];
+  }): Promise<Forecast> {
+    const relevantHistory = this.pricingHistory
+      .filter(p => p.productId === params.productId)
+      .slice(-30);
+    
+    const avgRevenue = relevantHistory.length > 0
+      ? relevantHistory.reduce((sum, p) => sum + (p.price * p.salesVolume), 0) / relevantHistory.length
+      : 0;
+    
+    let adjustedRevenue = avgRevenue;
+    const factors: string[] = [];
+    
+    for (const condition of params.currentConditions) {
+      const impact = this.marketPatterns.get(condition) || 1;
+      adjustedRevenue *= impact;
+      if (impact !== 1) {
+        factors.push(\`\${condition}: \${((impact - 1) * 100).toFixed(0)}%\`);
+      }
+    }
+    
+    const aiInsight = await substrate.nexus.text(\`
+      Historical avg revenue: \$\${avgRevenue.toFixed(2)}
+      Current conditions: \${params.currentConditions.join(', ')}
+      Period: \${params.period}
+      
+      Provide a confidence score (0-1) for revenue forecast of \$\${adjustedRevenue.toFixed(2)}
+    \`);
+    
+    const confidence = parseFloat(
+      aiInsight.data?.text?.match(/([\\d.]+)/)?.[1] || '0.7'
+    );
+    
+    return {
+      period: params.period,
+      predictedRevenue: adjustedRevenue,
+      confidence: Math.min(1, Math.max(0, confidence)),
+      factors
+    };
+  }
+  
+  async optimizePrice(productId: string, targetMargin: number): Promise<{
+    suggestedPrice: number;
+    expectedVolume: number;
+    rationale: string;
+  }> {
+    const history = await substrate.brain.query(\`pricing_data \${productId}\`, 10);
+    
+    const optimization = await substrate.nexus.text(\`
+      Pricing history: \${JSON.stringify(history.data?.memories?.slice(0, 5))}
+      Target margin: \${targetMargin * 100}%
+      
+      Suggest optimal price, expected volume change, and rationale.
+    \`);
+    
+    return {
+      suggestedPrice: parseFloat(optimization.data?.text?.match(/\\$([\\d.]+)/)?.[1] || '0'),
+      expectedVolume: 100,
+      rationale: optimization.data?.text || 'Analysis pending'
+    };
+  }
+}
+
+export const revenueEngine = new RevenuePredictionEngine();`
+  },
+  {
+    id: 'legal-document-analyzer',
+    name: 'Legal Document Analyzer',
+    description: 'Contract extraction with clause memory, version tracking, and risk identification',
+    icon: FileText,
+    category: 'decode',
+    difficulty: 'premium',
+    estimatedTime: '40 min',
+    features: ['Clause Memory', 'Version Tracking', 'Risk Identification', 'Contract Extraction'],
+    code: `import { substrate } from './lib/substrate';
+
+interface Clause {
+  id: string;
+  type: string;
+  text: string;
+  riskLevel: 'high' | 'medium' | 'low' | 'none';
+  notes: string;
+}
+
+interface ContractAnalysis {
+  documentId: string;
+  version: number;
+  clauses: Clause[];
+  overallRisk: string;
+  recommendations: string[];
+}
+
+class LegalDocumentAnalyzer {
+  private clauseLibrary = new Map<string, Clause[]>();
+  private versions = new Map<string, ContractAnalysis[]>();
+  
+  async analyzeContract(documentId: string, text: string): Promise<ContractAnalysis> {
+    const extraction = await substrate.nexus.text(\`
+      Extract all clauses from this contract:
+      \${text.substring(0, 3000)}
+      
+      For each clause, identify:
+      - Type (indemnification, termination, liability, etc.)
+      - Risk level (high/medium/low/none)
+      - Key concerns
+      
+      Output as JSON array.
+    \`);
+    
+    let clauses: Clause[] = [];
+    try {
+      const parsed = JSON.parse(extraction.data?.text?.match(/\\[.*\\]/s)?.[0] || '[]');
+      clauses = parsed.map((c: any, i: number) => ({
+        id: \`\${documentId}_clause_\${i}\`,
+        type: c.type || 'unknown',
+        text: c.text || '',
+        riskLevel: c.riskLevel || 'none',
+        notes: c.concerns || ''
+      }));
+    } catch {}
+    
+    const highRiskClauses = clauses.filter(c => c.riskLevel === 'high');
+    
+    const analysis: ContractAnalysis = {
+      documentId,
+      version: (this.versions.get(documentId)?.length || 0) + 1,
+      clauses,
+      overallRisk: highRiskClauses.length > 2 ? 'High' : highRiskClauses.length > 0 ? 'Medium' : 'Low',
+      recommendations: highRiskClauses.map(c => \`Review \${c.type} clause: \${c.notes}\`)
+    };
+    
+    const existing = this.versions.get(documentId) || [];
+    existing.push(analysis);
+    this.versions.set(documentId, existing);
+    
+    for (const clause of clauses) {
+      await substrate.brain.remember(
+        JSON.stringify(clause),
+        'contract_clause',
+        clause.riskLevel === 'high' ? 1.0 : 0.7
+      );
+    }
+    
+    return analysis;
+  }
+  
+  async compareVersions(documentId: string): Promise<{
+    changes: { clause: string; oldRisk: string; newRisk: string }[];
+    summary: string;
+  }> {
+    const versions = this.versions.get(documentId) || [];
+    if (versions.length < 2) {
+      return { changes: [], summary: 'Not enough versions to compare' };
+    }
+    
+    const prev = versions[versions.length - 2];
+    const current = versions[versions.length - 1];
+    
+    const changes = current.clauses
+      .map(c => {
+        const old = prev.clauses.find(p => p.type === c.type);
+        if (old && old.riskLevel !== c.riskLevel) {
+          return { clause: c.type, oldRisk: old.riskLevel, newRisk: c.riskLevel };
+        }
+        return null;
+      })
+      .filter(Boolean) as { clause: string; oldRisk: string; newRisk: string }[];
+    
+    return {
+      changes,
+      summary: \`\${changes.length} clause risk changes between v\${prev.version} and v\${current.version}\`
+    };
+  }
+}
+
+export const legalAnalyzer = new LegalDocumentAnalyzer();`
+  },
+  {
+    id: 'game-session-memory',
+    name: 'Game Session Memory',
+    description: 'Session-based game AI with player preference memory, challenge adaptation, and NPC learning',
+    icon: PlayCircle,
+    category: 'world_engine',
+    difficulty: 'premium',
+    estimatedTime: '35 min',
+    features: ['Player Preference Memory', 'Challenge Adaptation', 'NPC Learning', 'Session Persistence'],
+    code: `import { substrate } from './lib/substrate';
+
+interface PlayerProfile {
+  playerId: string;
+  skillLevel: number;
+  preferences: {
+    difficulty: 'easy' | 'medium' | 'hard';
+    playStyle: string;
+    favoriteActivities: string[];
+  };
+  sessionHistory: { timestamp: number; duration: number; achievements: string[] }[];
+}
+
+interface NPCState {
+  npcId: string;
+  relationshipScore: number;
+  interactionHistory: string[];
+  learnedBehaviors: string[];
+}
+
+class GameSessionMemory {
+  private players = new Map<string, PlayerProfile>();
+  private npcs = new Map<string, NPCState>();
+  
+  async initPlayer(playerId: string): Promise<PlayerProfile> {
+    const existing = await substrate.brain.query(\`player_\${playerId}\`, 1);
+    
+    if (existing.data?.memories?.length > 0) {
+      const profile = JSON.parse(existing.data.memories[0].content);
+      this.players.set(playerId, profile);
+      return profile;
+    }
+    
+    const newProfile: PlayerProfile = {
+      playerId,
+      skillLevel: 50,
+      preferences: { difficulty: 'medium', playStyle: 'balanced', favoriteActivities: [] },
+      sessionHistory: []
+    };
+    
+    this.players.set(playerId, newProfile);
+    return newProfile;
+  }
+  
+  async updatePlayerProgress(playerId: string, performance: {
+    successRate: number;
+    activityType: string;
+    duration: number;
+    achievements: string[];
+  }): Promise<{ newSkillLevel: number; adaptedDifficulty: string }> {
+    const player = this.players.get(playerId);
+    if (!player) throw new Error('Player not initialized');
+    
+    player.skillLevel = Math.min(100, Math.max(0, 
+      player.skillLevel + (performance.successRate - 0.5) * 10
+    ));
+    
+    if (!player.preferences.favoriteActivities.includes(performance.activityType)) {
+      player.preferences.favoriteActivities.push(performance.activityType);
+    }
+    
+    player.sessionHistory.push({
+      timestamp: Date.now(),
+      duration: performance.duration,
+      achievements: performance.achievements
+    });
+    
+    const adaptedDifficulty = player.skillLevel > 70 ? 'hard' : player.skillLevel > 40 ? 'medium' : 'easy';
+    player.preferences.difficulty = adaptedDifficulty;
+    
+    await substrate.brain.remember(
+      JSON.stringify(player),
+      \`player_\${playerId}\`,
+      1.0
+    );
+    
+    return { newSkillLevel: player.skillLevel, adaptedDifficulty };
+  }
+  
+  async npcInteraction(playerId: string, npcId: string, interaction: string): Promise<{
+    npcResponse: string;
+    relationshipChange: number;
+  }> {
+    let npc = this.npcs.get(npcId);
+    if (!npc) {
+      npc = { npcId, relationshipScore: 50, interactionHistory: [], learnedBehaviors: [] };
+      this.npcs.set(npcId, npc);
+    }
+    
+    npc.interactionHistory.push(interaction);
+    
+    const response = await substrate.nexus.text(\`
+      NPC relationship score: \${npc.relationshipScore}
+      Recent interactions: \${npc.interactionHistory.slice(-5).join(', ')}
+      Player action: \${interaction}
+      
+      Generate NPC response and relationship change (-10 to +10).
+    \`);
+    
+    const change = parseInt(response.data?.text?.match(/([+-]?\\d+)/)?.[1] || '0');
+    npc.relationshipScore = Math.min(100, Math.max(0, npc.relationshipScore + change));
+    
+    return {
+      npcResponse: response.data?.text || 'Acknowledged.',
+      relationshipChange: change
+    };
+  }
+}
+
+export const gameMemory = new GameSessionMemory();`
+  },
+  {
+    id: 'anomaly-detection-system',
+    name: 'Anomaly Detection System',
+    description: 'Anomaly detection with baseline learning, drift alerting, and auto-recovery triggers',
+    icon: Eye,
+    category: 'vision',
+    difficulty: 'elite',
+    estimatedTime: '45 min',
+    features: ['Baseline Learning', 'Drift Alerting', 'Auto-Recovery', 'Pattern Recognition'],
+    code: `import { substrate } from './lib/substrate';
+
+interface MetricBaseline {
+  metricName: string;
+  mean: number;
+  stdDev: number;
+  min: number;
+  max: number;
+  samples: number;
+}
+
+interface Anomaly {
+  timestamp: number;
+  metricName: string;
+  value: number;
+  severity: 'critical' | 'warning' | 'info';
+  zScore: number;
+  autoRecoveryTriggered: boolean;
+}
+
+class AnomalyDetectionSystem {
+  private baselines = new Map<string, MetricBaseline>();
+  private anomalyHistory: Anomaly[] = [];
+  private recoveryHandlers = new Map<string, () => Promise<void>>();
+  
+  async learnBaseline(metricName: string, values: number[]): Promise<MetricBaseline> {
+    const mean = values.reduce((a, b) => a + b, 0) / values.length;
+    const variance = values.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / values.length;
+    const stdDev = Math.sqrt(variance);
+    
+    const baseline: MetricBaseline = {
+      metricName,
+      mean,
+      stdDev,
+      min: Math.min(...values),
+      max: Math.max(...values),
+      samples: values.length
+    };
+    
+    this.baselines.set(metricName, baseline);
+    
+    await substrate.brain.remember(
+      JSON.stringify(baseline),
+      'metric_baseline',
+      1.0,
+      { metric: metricName }
+    );
+    
+    return baseline;
+  }
+  
+  registerRecoveryHandler(metricName: string, handler: () => Promise<void>): void {
+    this.recoveryHandlers.set(metricName, handler);
+  }
+  
+  async checkMetric(metricName: string, value: number): Promise<{
+    anomaly: Anomaly | null;
+    status: 'normal' | 'warning' | 'critical';
+  }> {
+    const baseline = this.baselines.get(metricName);
+    if (!baseline) {
+      return { anomaly: null, status: 'normal' };
+    }
+    
+    const zScore = Math.abs((value - baseline.mean) / baseline.stdDev);
+    
+    if (zScore < 2) {
+      return { anomaly: null, status: 'normal' };
+    }
+    
+    const severity = zScore > 4 ? 'critical' : zScore > 3 ? 'warning' : 'info';
+    let autoRecoveryTriggered = false;
+    
+    if (severity === 'critical' && this.recoveryHandlers.has(metricName)) {
+      try {
+        await this.recoveryHandlers.get(metricName)!();
+        autoRecoveryTriggered = true;
+      } catch (e) {
+        console.error('Recovery failed:', e);
+      }
+    }
+    
+    const anomaly: Anomaly = {
+      timestamp: Date.now(),
+      metricName,
+      value,
+      severity,
+      zScore,
+      autoRecoveryTriggered
+    };
+    
+    this.anomalyHistory.push(anomaly);
+    
+    await substrate.brain.learn(
+      \`Anomaly: \${metricName} = \${value} (z=\${zScore.toFixed(2)})\`,
+      'anomaly_detected'
+    );
+    
+    return { anomaly, status: severity === 'info' ? 'warning' : severity };
+  }
+  
+  getAnomalyHistory(since?: number): Anomaly[] {
+    if (!since) return [...this.anomalyHistory];
+    return this.anomalyHistory.filter(a => a.timestamp >= since);
+  }
+}
+
+export const anomalyDetector = new AnomalyDetectionSystem();`
+  },
+  {
+    id: 'project-intelligence-agent',
+    name: 'Project Intelligence Agent',
+    description: 'Project tracking with task dependency memory, resource learning, and deadline prediction',
+    icon: Target,
+    category: 'brain',
+    difficulty: 'elite',
+    estimatedTime: '50 min',
+    features: ['Task Dependency Memory', 'Resource Learning', 'Deadline Prediction', 'Progress Tracking'],
+    code: `import { substrate } from './lib/substrate';
+
+interface Task {
+  id: string;
+  name: string;
+  estimatedHours: number;
+  actualHours?: number;
+  dependencies: string[];
+  assignee?: string;
+  status: 'pending' | 'in-progress' | 'completed' | 'blocked';
+  deadline?: Date;
+}
+
+interface ResourceProfile {
+  resourceId: string;
+  velocity: number; // tasks per week
+  specialties: string[];
+  availability: number; // 0-1
+}
+
+class ProjectIntelligenceAgent {
+  private tasks = new Map<string, Task>();
+  private resources = new Map<string, ResourceProfile>();
+  private completionHistory: { taskId: string; estimatedHours: number; actualHours: number }[] = [];
+  
+  addTask(task: Task): void {
+    this.tasks.set(task.id, task);
+  }
+  
+  addResource(resource: ResourceProfile): void {
+    this.resources.set(resource.resourceId, resource);
+  }
+  
+  async predictDeadline(taskId: string): Promise<{
+    predictedCompletion: Date;
+    confidence: number;
+    blockers: string[];
+  }> {
+    const task = this.tasks.get(taskId);
+    if (!task) throw new Error('Task not found');
+    
+    const blockers: string[] = [];
+    let totalDelay = 0;
+    
+    for (const depId of task.dependencies) {
+      const dep = this.tasks.get(depId);
+      if (dep && dep.status !== 'completed') {
+        blockers.push(\`Waiting for: \${dep.name}\`);
+        totalDelay += dep.estimatedHours;
+      }
+    }
+    
+    const estimationAccuracy = this.calculateEstimationAccuracy();
+    const adjustedHours = task.estimatedHours / estimationAccuracy;
+    
+    const completionDate = new Date();
+    completionDate.setHours(completionDate.getHours() + adjustedHours + totalDelay);
+    
+    await substrate.brain.remember(
+      \`Deadline prediction for \${task.name}: \${completionDate.toISOString()}\`,
+      'deadline_prediction'
+    );
+    
+    return {
+      predictedCompletion: completionDate,
+      confidence: Math.min(0.95, estimationAccuracy),
+      blockers
+    };
+  }
+  
+  private calculateEstimationAccuracy(): number {
+    if (this.completionHistory.length < 3) return 0.7;
+    
+    const ratios = this.completionHistory.map(h => h.estimatedHours / h.actualHours);
+    const avgRatio = ratios.reduce((a, b) => a + b, 0) / ratios.length;
+    
+    return Math.min(1, Math.max(0.5, avgRatio));
+  }
+  
+  async suggestAssignment(taskId: string): Promise<{
+    suggestedResource: string;
+    rationale: string;
+    alternates: string[];
+  }> {
+    const task = this.tasks.get(taskId);
+    if (!task) throw new Error('Task not found');
+    
+    const available = Array.from(this.resources.values())
+      .filter(r => r.availability > 0.5);
+    
+    if (available.length === 0) {
+      return { suggestedResource: 'none', rationale: 'No available resources', alternates: [] };
+    }
+    
+    const aiSuggestion = await substrate.nexus.text(\`
+      Task: \${task.name}
+      Estimated hours: \${task.estimatedHours}
+      
+      Available resources:
+      \${available.map(r => \`- \${r.resourceId}: velocity \${r.velocity}, specialties: \${r.specialties.join(', ')}\`).join('\\n')}
+      
+      Who should be assigned and why?
+    \`);
+    
+    return {
+      suggestedResource: available[0].resourceId,
+      rationale: aiSuggestion.data?.text || 'Best available',
+      alternates: available.slice(1).map(r => r.resourceId)
+    };
+  }
+  
+  completeTask(taskId: string, actualHours: number): void {
+    const task = this.tasks.get(taskId);
+    if (!task) return;
+    
+    task.status = 'completed';
+    task.actualHours = actualHours;
+    
+    this.completionHistory.push({
+      taskId,
+      estimatedHours: task.estimatedHours,
+      actualHours
+    });
+  }
+}
+
+export const projectAgent = new ProjectIntelligenceAgent();`
   }
 ];
 
