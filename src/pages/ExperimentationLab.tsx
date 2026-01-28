@@ -1,6 +1,6 @@
 /**
  * Experimentation Lab — Live Demo Templates
- * Showcases working implementations of top 3 substrate templates
+ * Showcases working implementations of top 5 substrate templates
  */
 
 import { useState } from "react";
@@ -14,13 +14,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Link } from "react-router-dom";
 import {
   MessageSquare, Brain, Moon, ArrowRight, Code, Sparkles, ExternalLink,
-  ShoppingCart, BookOpen, Cpu, GitBranch
+  ShoppingCart, BookOpen, Cpu, GitBranch, BarChart3, GraduationCap
 } from "lucide-react";
 
 // Live Demo Components
 import { PersistentChatbotDemo } from "@/components/lab/PersistentChatbotDemo";
 import { DreamProcessorDemo } from "@/components/lab/DreamProcessorDemo";
 import { KnowledgeGraphDemo } from "@/components/lab/KnowledgeGraphDemo";
+import { SentimentAnalysisDemo } from "@/components/lab/SentimentAnalysisDemo";
+import { AdaptiveLearningDemo } from "@/components/lab/AdaptiveLearningDemo";
 
 // Template Info Cards
 const FEATURED_TEMPLATES = [
@@ -56,10 +58,32 @@ const FEATURED_TEMPLATES = [
     difficulty: 'advanced',
     price: '$147',
     tab: 'knowledge'
+  },
+  {
+    id: 'sentiment-engine',
+    name: 'Sentiment Analysis Engine',
+    description: 'Real-time text analysis with emotion detection, keyword extraction, and confidence scoring.',
+    icon: BarChart3,
+    color: 'from-emerald-500 to-cyan-600',
+    features: ['Emotion Detection', 'Confidence Scoring', 'Keyword Extraction', 'Historical Tracking'],
+    difficulty: 'intermediate',
+    price: '$87',
+    tab: 'sentiment'
+  },
+  {
+    id: 'adaptive-learning',
+    name: 'Adaptive Learning Assistant',
+    description: 'Self-adjusting quiz system that learns from responses and adapts difficulty in real-time.',
+    icon: GraduationCap,
+    color: 'from-violet-500 to-pink-600',
+    features: ['Adaptive Difficulty', 'Topic Mastery Tracking', 'Streak Rewards', 'Learning Analytics'],
+    difficulty: 'advanced',
+    price: '$127',
+    tab: 'learning'
   }
 ];
 
-const TEMPLATE_CODE = {
+const TEMPLATE_CODE: Record<string, string> = {
   chatbot: `import { substrate } from './lib/substrate';
 
 // Self-Learning Chatbot with Persistent Memory
@@ -128,7 +152,104 @@ console.log('Edges:', summary.data.edge_count);
 
 // Synthesize insights across domains
 const insights = await substrate.brain.synthesize();
-console.log('Cross-domain insights:', insights.data.insights);`
+console.log('Cross-domain insights:', insights.data.insights);`,
+
+  sentiment: `import { substrate } from './lib/substrate';
+
+// Analyze text sentiment with emotion detection
+async function analyzeSentiment(text: string) {
+  // 1. Run sentiment analysis through Decode
+  const analysis = await substrate.decode.analyze(text, {
+    analysis_type: 'sentiment',
+    include_emotions: true
+  });
+  
+  // 2. Extract results
+  const { sentiment, confidence, emotions, keywords } = analysis.data;
+  
+  // 3. Store analysis for learning
+  await substrate.brain.learn(
+    \`Sentiment: "\${text.slice(0,50)}..." → \${sentiment} (\${confidence}%)\`,
+    'analysis'
+  );
+  
+  return {
+    sentiment,     // 'positive' | 'negative' | 'neutral' | 'mixed'
+    confidence,    // 0-100
+    emotions: {    // Emotion breakdown
+      joy: emotions.joy,
+      sadness: emotions.sadness,
+      anger: emotions.anger,
+      fear: emotions.fear,
+      surprise: emotions.surprise,
+      trust: emotions.trust
+    },
+    keywords       // Extracted key terms
+  };
+}
+
+// Track sentiment trends over time
+const history = await substrate.brain.query('sentiment analysis', 20);`,
+
+  learning: `import { substrate } from './lib/substrate';
+
+// Adaptive Learning System
+class AdaptiveQuiz {
+  private userProfile = {
+    topicStrengths: {} as Record<string, number>,
+    currentDifficulty: 'easy' as 'easy' | 'medium' | 'hard',
+    streak: 0
+  };
+
+  async getNextQuestion() {
+    // Select question based on user's weak topics
+    const weakTopics = this.getWeakTopics();
+    
+    // Query for appropriate difficulty
+    return await substrate.brain.query(
+      \`quiz \${this.userProfile.currentDifficulty} \${weakTopics.join(' ')}\`,
+      1
+    );
+  }
+
+  async recordAnswer(topic: string, correct: boolean) {
+    // Update topic strength
+    const current = this.userProfile.topicStrengths[topic] || 0.5;
+    this.userProfile.topicStrengths[topic] = correct 
+      ? Math.min(1, current + 0.1)
+      : Math.max(0, current - 0.15);
+
+    // Adapt difficulty based on streak
+    if (correct) {
+      this.userProfile.streak++;
+      if (this.userProfile.streak >= 3) {
+        this.increaseDifficulty();
+      }
+    } else {
+      this.userProfile.streak = 0;
+    }
+
+    // Store learning event
+    await substrate.brain.learn(
+      \`Quiz answer: topic=\${topic}, correct=\${correct}\`,
+      'learning'
+    );
+  }
+
+  private getWeakTopics(): string[] {
+    return Object.entries(this.userProfile.topicStrengths)
+      .filter(([_, score]) => score < 0.5)
+      .map(([topic]) => topic);
+  }
+
+  private increaseDifficulty() {
+    if (this.userProfile.currentDifficulty === 'easy') {
+      this.userProfile.currentDifficulty = 'medium';
+    } else if (this.userProfile.currentDifficulty === 'medium') {
+      this.userProfile.currentDifficulty = 'hard';
+    }
+  }
+}`
 };
 
 export default function ExperimentationLab() {
@@ -190,7 +311,7 @@ export default function ExperimentationLab() {
             <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-cyan-500" />
-                <span>3 live templates</span>
+                <span>5 live templates</span>
               </div>
               <div className="flex items-center gap-2">
                 <Code className="w-4 h-4 text-violet-500" />
@@ -211,42 +332,51 @@ export default function ExperimentationLab() {
         {/* Template Cards */}
         <section className="container mx-auto px-4 py-12">
           <h2 className="text-2xl font-bold mb-6 text-center">Featured Live Templates</h2>
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-12">
             {FEATURED_TEMPLATES.map((template) => {
               const Icon = template.icon;
               return (
                 <Card 
                   key={template.id}
-                  className={`cursor-pointer transition-all duration-300 hover:shadow-lg ${
-                    activeTab === template.tab ? 'ring-2 ring-primary' : ''
+                  className={`cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-[1.02] ${
+                    activeTab === template.tab ? 'ring-2 ring-primary shadow-lg' : ''
                   }`}
                   onClick={() => setActiveTab(template.tab)}
                 >
-                  <CardHeader className="pb-3">
-                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${template.color} flex items-center justify-center mb-3`}>
-                      <Icon className="w-6 h-6 text-white" />
+                  <CardHeader className="pb-2">
+                    <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${template.color} flex items-center justify-center mb-2`}>
+                      <Icon className="w-5 h-5 text-white" />
                     </div>
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-lg">{template.name}</CardTitle>
-                      <Badge variant="secondary">{template.price}</Badge>
+                    <div className="space-y-1">
+                      <CardTitle className="text-sm leading-tight">{template.name}</CardTitle>
+                      <Badge variant="secondary" className="text-[10px]">{template.price}</Badge>
                     </div>
-                    <CardDescription>{template.description}</CardDescription>
+                    <CardDescription className="text-xs line-clamp-2">{template.description}</CardDescription>
                   </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-wrap gap-1.5 mb-4">
-                      {template.features.map((f) => (
-                        <Badge key={f} variant="outline" className="text-xs">
+                  <CardContent className="pt-0">
+                    <div className="flex flex-wrap gap-1 mb-3">
+                      {template.features.slice(0, 2).map((f) => (
+                        <Badge key={f} variant="outline" className="text-[10px]">
                           {f}
                         </Badge>
                       ))}
+                      {template.features.length > 2 && (
+                        <Badge variant="outline" className="text-[10px]">
+                          +{template.features.length - 2}
+                        </Badge>
+                      )}
                     </div>
                     <Button 
                       variant={activeTab === template.tab ? "default" : "outline"} 
-                      className="w-full gap-2"
-                      onClick={() => setActiveTab(template.tab)}
+                      size="sm"
+                      className="w-full gap-1 text-xs"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveTab(template.tab);
+                      }}
                     >
-                      {activeTab === template.tab ? 'Currently Viewing' : 'Try Demo'}
-                      <ArrowRight className="w-4 h-4" />
+                      {activeTab === template.tab ? 'Viewing' : 'Try It'}
+                      <ArrowRight className="w-3 h-3" />
                     </Button>
                   </CardContent>
                 </Card>
@@ -260,18 +390,26 @@ export default function ExperimentationLab() {
           <div className="rounded-2xl border border-border/50 bg-card overflow-hidden">
             <Tabs value={activeTab} onValueChange={setActiveTab}>
               <div className="border-b border-border/50 p-4 bg-muted/30">
-                <TabsList className="grid grid-cols-3 max-w-md mx-auto">
-                  <TabsTrigger value="chatbot" className="gap-2">
-                    <MessageSquare className="w-4 h-4" />
+                <TabsList className="grid grid-cols-5 max-w-2xl mx-auto">
+                  <TabsTrigger value="chatbot" className="gap-1.5 text-xs">
+                    <MessageSquare className="w-3.5 h-3.5" />
                     <span className="hidden sm:inline">Chatbot</span>
                   </TabsTrigger>
-                  <TabsTrigger value="dream" className="gap-2">
-                    <Moon className="w-4 h-4" />
+                  <TabsTrigger value="dream" className="gap-1.5 text-xs">
+                    <Moon className="w-3.5 h-3.5" />
                     <span className="hidden sm:inline">Dream</span>
                   </TabsTrigger>
-                  <TabsTrigger value="knowledge" className="gap-2">
-                    <GitBranch className="w-4 h-4" />
+                  <TabsTrigger value="knowledge" className="gap-1.5 text-xs">
+                    <GitBranch className="w-3.5 h-3.5" />
                     <span className="hidden sm:inline">Graph</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="sentiment" className="gap-1.5 text-xs">
+                    <BarChart3 className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">Sentiment</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="learning" className="gap-1.5 text-xs">
+                    <GraduationCap className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">Quiz</span>
                   </TabsTrigger>
                 </TabsList>
               </div>
@@ -294,6 +432,14 @@ export default function ExperimentationLab() {
                   
                   <TabsContent value="knowledge" className="mt-0">
                     <KnowledgeGraphDemo />
+                  </TabsContent>
+
+                  <TabsContent value="sentiment" className="mt-0">
+                    <SentimentAnalysisDemo />
+                  </TabsContent>
+
+                  <TabsContent value="learning" className="mt-0">
+                    <AdaptiveLearningDemo />
                   </TabsContent>
                 </div>
 

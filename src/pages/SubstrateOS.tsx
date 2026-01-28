@@ -624,6 +624,9 @@ export default function SubstrateOS() {
             {/* Inclusive Accessibility */}
             {activeTab === 'inclusive' && isOperator && <InclusiveTab enabled={isOperator} />}
 
+            {/* Nexus AI Router */}
+            {activeTab === 'nexus' && isOperator && <NexusTab />}
+
             {/* Backups */}
             {activeTab === 'backups' && isOperator && (
               <motion.main 
