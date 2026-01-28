@@ -9,7 +9,7 @@ import type { LucideIcon } from 'lucide-react';
 export interface CommandDefinition {
   command: string;
   description: string;
-  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer' | 'core' | 'ripple' | 'access' | 'integration' | 'cortex' | 'meta';
+  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer' | 'core' | 'ripple' | 'access' | 'integration' | 'cortex' | 'inclusive' | 'meta';
   icon: LucideIcon;
   requiresOperator: boolean;
   args?: string;
@@ -310,6 +310,29 @@ export const CORTEX_COMMANDS: CommandDefinition[] = [
   { command: 'cortex.inventory', description: 'Module inventory with eligibility', category: 'cortex', icon: Box, requiresOperator: false },
 ];
 
+// INCLUSIVE module v1.0 — Human Compatibility Pipeline (WCAG Scanning, Repair, Validation)
+import { Accessibility } from 'lucide-react';
+
+export const INCLUSIVE_COMMANDS: CommandDefinition[] = [
+  // Status & health
+  { command: 'inclusive.status', description: 'Module status with global score', category: 'inclusive', icon: Accessibility, requiresOperator: false },
+  { command: 'inclusive.health', description: 'Health check', category: 'inclusive', icon: Activity, requiresOperator: false },
+  { command: 'inclusive.pulse', description: 'Lightweight heartbeat', category: 'inclusive', icon: Activity, requiresOperator: false },
+  
+  // Core pipeline
+  { command: 'inclusive.scan', description: 'Scan URL/HTML for WCAG issues', category: 'inclusive', icon: Eye, requiresOperator: true, args: '<target> [--wcag A|AA|AAA] [--depth quick|standard|deep]', example: 'inclusive.scan https://example.com' },
+  { command: 'inclusive.self_scan', description: 'Scan the substrate UI itself', category: 'inclusive', icon: Eye, requiresOperator: true },
+  { command: 'inclusive.repair', description: 'Auto-fix accessibility issues', category: 'inclusive', icon: Wand2, requiresOperator: true, args: '<target> [issues...]', example: 'inclusive.repair https://example.com' },
+  { command: 'inclusive.validate', description: 'Validate repairs, check for regressions', category: 'inclusive', icon: Shield, requiresOperator: true, args: '<target>' },
+  { command: 'inclusive.profile', description: 'Build user adaptive profile', category: 'inclusive', icon: Users, requiresOperator: true, args: '<context>' },
+  { command: 'inclusive.report', description: 'Generate compliance report', category: 'inclusive', icon: Database, requiresOperator: false, args: '<target> [json|markdown]' },
+  
+  // Extended operations
+  { command: 'inclusive.scan_all_templates', description: 'Scan all marketplace templates', category: 'inclusive', icon: Search, requiresOperator: true },
+  { command: 'inclusive.regressions', description: 'Get regressions in last N hours', category: 'inclusive', icon: Activity, requiresOperator: false, args: '[hours]', example: 'inclusive.regressions 24' },
+  { command: 'inclusive.coverage', description: 'Template coverage stats', category: 'inclusive', icon: Gauge, requiresOperator: false },
+];
+
 export const META_COMMANDS: CommandDefinition[] = [
   // Help & Navigation
   { command: 'help', description: 'Show all commands', category: 'meta', icon: Terminal, requiresOperator: false },
@@ -326,7 +349,7 @@ export const META_COMMANDS: CommandDefinition[] = [
   { command: 'help ripple', description: 'Message bus commands', category: 'meta', icon: Radio, requiresOperator: false },
   { command: 'help access', description: 'Identity/billing commands', category: 'meta', icon: Key, requiresOperator: false },
   { command: 'help integration', description: 'Enterprise integration commands', category: 'meta', icon: Plug, requiresOperator: false },
-  
+  { command: 'help inclusive', description: 'Accessibility pipeline commands', category: 'meta', icon: Accessibility, requiresOperator: false },
   // Terminal Controls
   { command: 'clear', description: 'Clear terminal history', category: 'meta', icon: Terminal, requiresOperator: false },
   { command: 'whoami', description: 'Display identity', category: 'meta', icon: Cpu, requiresOperator: false },
@@ -372,6 +395,7 @@ export const ALL_COMMANDS: CommandDefinition[] = [
   ...SYSTEM_COMMANDS,
   ...MODERNIZER_COMMANDS,
   ...CORTEX_COMMANDS,
+  ...INCLUSIVE_COMMANDS,
   ...CORE_COMMANDS,
   ...RIPPLE_COMMANDS,
   ...ACCESS_COMMANDS,
@@ -391,6 +415,7 @@ export const COMMAND_CATEGORIES = {
   access: { label: 'ACCESS', color: 'text-amber-500', borderColor: 'border-amber-500/30', commands: ACCESS_COMMANDS },
   integration: { label: 'INTEGRATION', color: 'text-emerald-400', borderColor: 'border-emerald-500/30', commands: INTEGRATION_COMMANDS },
   cortex: { label: 'CORTEX', color: 'text-violet-400', borderColor: 'border-violet-500/30', commands: CORTEX_COMMANDS },
+  inclusive: { label: 'INCLUSIVE', color: 'text-teal-400', borderColor: 'border-teal-500/30', commands: INCLUSIVE_COMMANDS },
   system: { label: 'SYSTEM', color: 'text-gray-400', borderColor: 'border-gray-500/30', commands: SYSTEM_COMMANDS },
   modernizer: { label: 'MODERNIZER', color: 'text-pink-400', borderColor: 'border-pink-500/30', commands: MODERNIZER_COMMANDS },
   meta: { label: 'META', color: 'text-gray-400', borderColor: 'border-gray-500/30', commands: META_COMMANDS },

@@ -41,6 +41,8 @@ import { AgencyMintWizard } from '@/components/agency/AgencyMintWizard';
 import { AgencyGallery } from '@/components/agency/AgencyGallery';
 import { EvolutionTab } from '@/components/substrate-os/EvolutionTab';
 import { CodeAgentTab } from '@/components/substrate-os/CodeAgentTab';
+import { CortexTab } from '@/components/substrate-os/CortexTab';
+import { InclusiveTab } from '@/components/substrate-os/InclusiveTab';
 import { DashboardMetricsHero, QuickActionsPanel, ModuleControlsGrid } from '@/components/substrate-os/dashboard';
 import { cn } from '@/lib/utils';
 
@@ -77,6 +79,8 @@ function getTabGroups(isOperator: boolean, isGovernor: boolean, hasAgency: boole
       { id: 'core', label: 'Core', icon: Cpu, color: 'orange', description: 'Kernel controls', minRole: 'operator' as const },
       { id: 'ripple', label: 'Ripple', icon: Radio, color: 'cyan', description: 'Message bus', minRole: 'operator' as const },
       { id: 'access', label: 'Access', icon: Key, color: 'amber', description: 'Identity & keys', minRole: 'operator' as const },
+      { id: 'cortex', label: 'Cortex', icon: Wand2, color: 'violet', description: 'Orchestrator', minRole: 'operator' as const },
+      { id: 'inclusive', label: 'Inclusive', icon: Users, color: 'teal', description: 'Accessibility', minRole: 'operator' as const },
     ] : []),
   ];
 
@@ -611,6 +615,12 @@ export default function SubstrateOS() {
 
             {/* Access Identity */}
             {activeTab === 'access' && isOperator && <AccessIdentityTab enabled={isOperator} />}
+
+            {/* Cortex Orchestrator */}
+            {activeTab === 'cortex' && isOperator && <CortexTab enabled={isOperator} />}
+
+            {/* Inclusive Accessibility */}
+            {activeTab === 'inclusive' && isOperator && <InclusiveTab enabled={isOperator} />}
 
             {/* Backups */}
             {activeTab === 'backups' && isOperator && (
