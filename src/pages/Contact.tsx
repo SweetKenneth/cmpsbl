@@ -243,6 +243,49 @@ export default function Contact() {
         <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background to-transparent" />
       </section>
 
+      {/* Applied Engagements */}
+      <section className="py-16 px-4 bg-primary/5 border-y border-primary/20">
+        <div className="container mx-auto max-w-4xl">
+          <div className="flex flex-col md:flex-row gap-8 items-start">
+            <div className="flex-1">
+              <Badge variant="outline" className="mb-4 border-primary/30 text-primary">
+                Q1 2026
+              </Badge>
+              <h2 className="text-2xl font-bold mb-4 text-foreground">Applied Engagements</h2>
+              <p className="text-muted-foreground mb-4">
+                Applied engagements are scoped, research-first, and selective. If your problem 
+                touches long-horizon or uncertainty-critical systems, we may be interested.
+              </p>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                  <span>Research-driven approach with documented outcomes</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                  <span>Focus on uncertainty-critical and long-horizon systems</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                  <span>Selective intake — not all inquiries result in engagement</span>
+                </li>
+              </ul>
+            </div>
+            <div className="md:w-64">
+              <div className="bg-card border border-border rounded-lg p-6">
+                <h3 className="font-semibold mb-2">Inquire About Engagements</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Use the contact form to describe your challenge.
+                </p>
+                <a href="#contact-form" className="text-primary hover:underline text-sm">
+                  Scroll to form →
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Enterprise CTA */}
       <section className="py-16 px-4 bg-muted/30">
         <div className="container mx-auto max-w-4xl text-center">

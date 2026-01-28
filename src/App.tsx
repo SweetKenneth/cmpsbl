@@ -76,6 +76,9 @@ const LlmsTxt = lazy(() => import("./pages/LlmsTxt"));
 const HumansTxt = lazy(() => import("./pages/HumansTxt"));
 const Foundations = lazy(() => import("./pages/Foundations"));
 const Namespace = lazy(() => import("./pages/Namespace"));
+const Insights = lazy(() => import("./pages/Insights"));
+const Register = lazy(() => import("./pages/Register"));
+const Library = lazy(() => import("./pages/Library"));
 // Explore is now the homepage (eager loaded above)
 
 // Lazy load blog posts
@@ -181,6 +184,9 @@ const App = () => {
                       <Route path="/humans-txt" element={<HumansTxt />} />
                       <Route path="/foundations" element={<Foundations />} />
                       <Route path="/namespace" element={<Namespace />} />
+                      <Route path="/insights" element={<Insights />} />
+                      <Route path="/register" element={<Register />} />
+                      <Route path="/library" element={<Library />} />
                       <Route path="/explore" element={<Explore />} />
                       
                       {/* Auth & Legal */}
