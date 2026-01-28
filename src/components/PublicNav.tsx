@@ -45,6 +45,7 @@ export function PublicNav() {
       icon: Code,
       items: [
         { name: "For Developers", href: "/developers", description: "Build Intelligent Apps", icon: Code },
+        { name: "Experimentation Lab", href: "/lab", description: "Live Template Demos", icon: Zap },
         { name: "Marketplace", href: "/marketplace", description: "Templates & OS ($9-$599)", icon: Sparkles },
         { name: "Gaming AI", href: "/gaming", description: "NPC Brains & World Engines", icon: Gamepad2 },
         { name: "DevTools", href: "/devtools", description: "SDK & Documentation", icon: Terminal },

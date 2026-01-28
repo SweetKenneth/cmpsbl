@@ -5,6 +5,7 @@
  */
 
 import { useState, useMemo } from "react";
+import { Link } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
@@ -265,6 +266,32 @@ export default function Marketplace() {
 
         {/* AI Template Generator - Featured prominently */}
         <AITemplateGenerator featured />
+
+        {/* Live Lab CTA */}
+        <section className="container mx-auto px-4 py-6">
+          <Link
+            to="/lab"
+            className="block p-6 rounded-xl border border-cyan-500/30 bg-gradient-to-r from-cyan-500/5 via-violet-500/5 to-purple-500/5 hover:border-cyan-500/50 transition-all group"
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-violet-600 flex items-center justify-center">
+                  <Sparkles className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg flex items-center gap-2">
+                    See Templates in Action
+                    <Badge className="bg-cyan-500/20 text-cyan-400 border-cyan-500/30">Live</Badge>
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    Try our Experimentation Lab — 3 live demos with full source code exposed
+                  </p>
+                </div>
+              </div>
+              <Code className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+            </div>
+          </Link>
+        </section>
 
         {/* Featured Products */}
         <FeaturedSection

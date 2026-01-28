@@ -1,0 +1,370 @@
+/**
+ * Experimentation Lab — Live Demo Templates
+ * Showcases working implementations of top 3 substrate templates
+ */
+
+import { useState } from "react";
+import { SEO } from "@/components/SEO";
+import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Link } from "react-router-dom";
+import {
+  MessageSquare, Brain, Moon, ArrowRight, Code, Sparkles, ExternalLink,
+  ShoppingCart, BookOpen, Cpu, GitBranch
+} from "lucide-react";
+
+// Live Demo Components
+import { PersistentChatbotDemo } from "@/components/lab/PersistentChatbotDemo";
+import { DreamProcessorDemo } from "@/components/lab/DreamProcessorDemo";
+import { KnowledgeGraphDemo } from "@/components/lab/KnowledgeGraphDemo";
+
+// Template Info Cards
+const FEATURED_TEMPLATES = [
+  {
+    id: 'learning-agent',
+    name: 'Self-Learning Chatbot',
+    description: 'AI chatbot with persistent memory that learns from every conversation and recalls context across sessions.',
+    icon: MessageSquare,
+    color: 'from-cyan-500 to-blue-600',
+    features: ['Persistent Memory', 'Context Recall', 'Continuous Learning', 'Session Reflection'],
+    difficulty: 'advanced',
+    price: '$147',
+    tab: 'chatbot'
+  },
+  {
+    id: 'dream-feeder',
+    name: 'Dream Processor',
+    description: 'Feed dreams into the cognitive substrate for mood analysis, interpretation, and synthesis.',
+    icon: Moon,
+    color: 'from-violet-500 to-purple-600',
+    features: ['Dream Ingestion', 'Mood Analysis', 'Dream Interpretation', 'Mutation Cycles'],
+    difficulty: 'beginner',
+    price: '$27',
+    tab: 'dream'
+  },
+  {
+    id: 'knowledge-graph',
+    name: 'Knowledge Graph',
+    description: 'Build interconnected knowledge structures with relationship mapping and cross-domain synthesis.',
+    icon: GitBranch,
+    color: 'from-emerald-500 to-teal-600',
+    features: ['Graph Building', 'Relationship Mapping', 'Cross-Domain Synthesis', 'Memory Reinforcement'],
+    difficulty: 'advanced',
+    price: '$147',
+    tab: 'knowledge'
+  }
+];
+
+const TEMPLATE_CODE = {
+  chatbot: `import { substrate } from './lib/substrate';
+
+// Self-Learning Chatbot with Persistent Memory
+async function chat(message: string, sessionId: string) {
+  // 1. Recall relevant context from memory
+  const context = await substrate.brain.query(message, 5);
+  
+  // 2. Process with Decode (includes context)
+  const response = await substrate.decode.chat(message, sessionId);
+  
+  // 3. Learn from this interaction
+  await substrate.brain.learn(
+    \`User: \${message}\\nAssistant: \${response.data?.reply}\`,
+    'conversation'
+  );
+  
+  // 4. Periodically trigger reflection
+  if (shouldReflect()) {
+    await substrate.brain.reflect();
+  }
+  
+  return response.data?.reply;
+}
+
+// Recall memories about a topic
+async function recall(topic: string) {
+  const memories = await substrate.brain.query(topic, 10);
+  return memories.data?.memories || [];
+}`,
+
+  dream: `import { substrate } from './lib/substrate';
+
+// Feed a dream for processing
+const result = await substrate.dream.feed(
+  'I was floating through an endless library...',
+  'dream' // or 'nightmare', 'vision', 'memory'
+);
+
+// Check Dream-Eater state
+const state = await substrate.dream.status();
+console.log('Mood:', state.data.current_mood);
+console.log('Dreams consumed today:', state.data.dreams_consumed_today);
+
+// Interpret a specific dream
+const interpretation = await substrate.dream.interpret(
+  'Flying over silver mountains with crystalline wings'
+);
+
+// Trigger mutation cycle (synthesis)
+await substrate.dream.mutate();`,
+
+  knowledge: `import { substrate } from './lib/substrate';
+
+// Store interconnected knowledge
+await substrate.brain.remember('React is a JavaScript library', 'concept');
+await substrate.brain.remember('React uses virtual DOM', 'fact');
+await substrate.brain.remember('Virtual DOM improves performance', 'fact');
+
+// Build knowledge graph from memories
+await substrate.brain.graphBuild();
+
+// Get graph structure summary
+const summary = await substrate.brain.graphSummary();
+console.log('Nodes:', summary.data.node_count);
+console.log('Edges:', summary.data.edge_count);
+
+// Synthesize insights across domains
+const insights = await substrate.brain.synthesize();
+console.log('Cross-domain insights:', insights.data.insights);`
+};
+
+export default function ExperimentationLab() {
+  const [activeTab, setActiveTab] = useState('chatbot');
+
+  return (
+    <>
+      <SEO
+        title="Experimentation Lab | Live Template Demos | CMPSBL"
+        description="See CMPSBL Substrate templates in action. Try live demos of persistent memory chatbots, dream processors, and knowledge graphs. Full source code included."
+        keywords={["AI demos", "chatbot demo", "persistent memory", "dream processing", "knowledge graph", "live templates"]}
+      />
+
+      <div className="min-h-screen bg-background flex flex-col">
+        <PublicNav />
+
+        {/* Hero Section */}
+        <section className="relative overflow-hidden border-b border-border/50">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-violet-500/5" />
+          <div className="absolute inset-0 opacity-30">
+            <div className="absolute top-20 left-20 w-72 h-72 bg-cyan-500/20 rounded-full blur-3xl animate-pulse" />
+            <div className="absolute bottom-20 right-20 w-96 h-96 bg-violet-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+          </div>
+          
+          <div className="container mx-auto px-4 py-16 relative z-10">
+            <div className="max-w-3xl mx-auto text-center">
+              <Badge className="mb-4 bg-gradient-to-r from-cyan-500 to-violet-500 text-white border-0">
+                <Cpu className="w-3 h-3 mr-1" />
+                Live Demos
+              </Badge>
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-foreground via-primary to-violet-500 bg-clip-text text-transparent">
+                Experimentation Lab
+              </h1>
+              <p className="text-xl text-muted-foreground mb-8">
+                Experience CMPSBL Substrate templates in action. These are <strong>live implementations</strong> running 
+                on the substrate—not mockups. Try them, see the code, and build your own.
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-4">
+                <Button asChild size="lg" className="gap-2">
+                  <Link to="/marketplace">
+                    <ShoppingCart className="w-5 h-5" />
+                    Browse All Templates
+                  </Link>
+                </Button>
+                <Button variant="outline" size="lg" asChild className="gap-2">
+                  <Link to="/code-lab">
+                    <Code className="w-5 h-5" />
+                    View SDK
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Info Banner */}
+        <section className="border-b border-border/50 bg-muted/30">
+          <div className="container mx-auto px-4 py-6">
+            <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-cyan-500" />
+                <span>3 live templates</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Code className="w-4 h-4 text-violet-500" />
+                <span>Full source code exposed</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Brain className="w-4 h-4 text-emerald-500" />
+                <span>Powered by real substrate</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <BookOpen className="w-4 h-4 text-amber-500" />
+                <span>Free to use & learn from</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Template Cards */}
+        <section className="container mx-auto px-4 py-12">
+          <h2 className="text-2xl font-bold mb-6 text-center">Featured Live Templates</h2>
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            {FEATURED_TEMPLATES.map((template) => {
+              const Icon = template.icon;
+              return (
+                <Card 
+                  key={template.id}
+                  className={`cursor-pointer transition-all duration-300 hover:shadow-lg ${
+                    activeTab === template.tab ? 'ring-2 ring-primary' : ''
+                  }`}
+                  onClick={() => setActiveTab(template.tab)}
+                >
+                  <CardHeader className="pb-3">
+                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${template.color} flex items-center justify-center mb-3`}>
+                      <Icon className="w-6 h-6 text-white" />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-lg">{template.name}</CardTitle>
+                      <Badge variant="secondary">{template.price}</Badge>
+                    </div>
+                    <CardDescription>{template.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex flex-wrap gap-1.5 mb-4">
+                      {template.features.map((f) => (
+                        <Badge key={f} variant="outline" className="text-xs">
+                          {f}
+                        </Badge>
+                      ))}
+                    </div>
+                    <Button 
+                      variant={activeTab === template.tab ? "default" : "outline"} 
+                      className="w-full gap-2"
+                      onClick={() => setActiveTab(template.tab)}
+                    >
+                      {activeTab === template.tab ? 'Currently Viewing' : 'Try Demo'}
+                      <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* Live Demo Section */}
+        <section className="container mx-auto px-4 pb-12">
+          <div className="rounded-2xl border border-border/50 bg-card overflow-hidden">
+            <Tabs value={activeTab} onValueChange={setActiveTab}>
+              <div className="border-b border-border/50 p-4 bg-muted/30">
+                <TabsList className="grid grid-cols-3 max-w-md mx-auto">
+                  <TabsTrigger value="chatbot" className="gap-2">
+                    <MessageSquare className="w-4 h-4" />
+                    <span className="hidden sm:inline">Chatbot</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="dream" className="gap-2">
+                    <Moon className="w-4 h-4" />
+                    <span className="hidden sm:inline">Dream</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="knowledge" className="gap-2">
+                    <GitBranch className="w-4 h-4" />
+                    <span className="hidden sm:inline">Graph</span>
+                  </TabsTrigger>
+                </TabsList>
+              </div>
+
+              <div className="grid lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-border/50">
+                {/* Interactive Demo */}
+                <div className="p-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse" />
+                    <span className="text-sm font-medium">Live Demo</span>
+                  </div>
+                  
+                  <TabsContent value="chatbot" className="mt-0">
+                    <PersistentChatbotDemo />
+                  </TabsContent>
+                  
+                  <TabsContent value="dream" className="mt-0">
+                    <DreamProcessorDemo />
+                  </TabsContent>
+                  
+                  <TabsContent value="knowledge" className="mt-0">
+                    <KnowledgeGraphDemo />
+                  </TabsContent>
+                </div>
+
+                {/* Code Preview */}
+                <div className="p-6 bg-muted/20">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2">
+                      <Code className="w-4 h-4 text-primary" />
+                      <span className="text-sm font-medium">Full Template Code</span>
+                    </div>
+                    <Badge variant="outline" className="text-xs">
+                      Copy & use for free
+                    </Badge>
+                  </div>
+                  
+                  <div className="bg-background rounded-lg border border-border/50 overflow-hidden">
+                    <div className="flex items-center gap-2 px-4 py-2 bg-muted/50 border-b border-border/50">
+                      <div className="w-3 h-3 rounded-full bg-red-500/60" />
+                      <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
+                      <div className="w-3 h-3 rounded-full bg-green-500/60" />
+                      <span className="text-xs text-muted-foreground ml-2">template.ts</span>
+                    </div>
+                    <pre className="p-4 text-xs overflow-x-auto max-h-[400px]">
+                      <code className="language-typescript">
+                        {TEMPLATE_CODE[activeTab as keyof typeof TEMPLATE_CODE]}
+                      </code>
+                    </pre>
+                  </div>
+
+                  <div className="mt-4 p-4 rounded-lg bg-primary/5 border border-primary/20">
+                    <p className="text-sm text-muted-foreground">
+                      <strong className="text-foreground">This is what you get</strong> when you purchase a template from the marketplace. 
+                      Full source code, ready to integrate with your application.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </Tabs>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="border-t border-border/50 bg-gradient-to-br from-primary/5 via-transparent to-violet-500/5">
+          <div className="container mx-auto px-4 py-16">
+            <div className="max-w-2xl mx-auto text-center">
+              <h2 className="text-3xl font-bold mb-4">Ready to Build Your Own?</h2>
+              <p className="text-lg text-muted-foreground mb-8">
+                Browse 100+ production-ready templates in the marketplace. Each template includes 
+                full source code, documentation, and integration guides.
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-4">
+                <Button asChild size="lg" className="gap-2 bg-gradient-to-r from-primary to-violet-600 hover:opacity-90">
+                  <Link to="/marketplace">
+                    <ShoppingCart className="w-5 h-5" />
+                    Browse Marketplace
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </Button>
+                <Button variant="outline" size="lg" asChild className="gap-2">
+                  <Link to="/documentation">
+                    <BookOpen className="w-5 h-5" />
+                    Read Documentation
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <EnhancedFooter />
+      </div>
+    </>
+  );
+}
