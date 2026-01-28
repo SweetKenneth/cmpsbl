@@ -211,17 +211,35 @@ export default function Library() {
                 <div className="h-4 bg-muted rounded w-4/6" />
               </div>
             ) : (
-              <article className="prose prose-sm md:prose-base dark:prose-invert max-w-none
+              <article className="prose prose-base md:prose-lg dark:prose-invert max-w-none
                 prose-headings:scroll-mt-20
-                prose-h1:text-3xl prose-h1:font-light prose-h1:border-b prose-h1:pb-4 prose-h1:mb-6
-                prose-h2:text-2xl prose-h2:font-semibold prose-h2:mt-8 prose-h2:mb-4
-                prose-h3:text-xl prose-h3:font-medium
-                prose-table:text-sm prose-table:border prose-table:border-border
-                prose-th:bg-muted prose-th:px-4 prose-th:py-2 prose-th:text-left prose-th:border prose-th:border-border
-                prose-td:px-4 prose-td:py-2 prose-td:border prose-td:border-border
-                prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
-                prose-pre:bg-muted/50 prose-pre:border prose-pre:border-border
-                prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+                
+                prose-h1:text-3xl md:prose-h1:text-4xl prose-h1:font-light prose-h1:border-b prose-h1:border-border prose-h1:pb-6 prose-h1:mb-10 prose-h1:mt-4
+                prose-h2:text-2xl md:prose-h2:text-3xl prose-h2:font-semibold prose-h2:mt-14 prose-h2:mb-6 prose-h2:pt-6 prose-h2:border-t prose-h2:border-border/50
+                prose-h3:text-xl md:prose-h3:text-2xl prose-h3:font-medium prose-h3:mt-10 prose-h3:mb-4
+                prose-h4:text-lg md:prose-h4:text-xl prose-h4:font-medium prose-h4:mt-8 prose-h4:mb-3
+                
+                prose-p:leading-relaxed prose-p:mb-6 prose-p:text-muted-foreground
+                
+                prose-ul:my-6 prose-ul:space-y-3 prose-ul:pl-6
+                prose-ol:my-6 prose-ol:space-y-3 prose-ol:pl-6
+                prose-li:leading-relaxed prose-li:pl-2
+                
+                prose-blockquote:my-8 prose-blockquote:pl-6 prose-blockquote:border-l-4 prose-blockquote:border-primary/50 prose-blockquote:italic prose-blockquote:text-muted-foreground
+                
+                prose-hr:my-12 prose-hr:border-border
+                
+                prose-table:my-8 prose-table:text-sm prose-table:border prose-table:border-border
+                prose-th:bg-muted prose-th:px-4 prose-th:py-3 prose-th:text-left prose-th:font-semibold prose-th:border prose-th:border-border
+                prose-td:px-4 prose-td:py-3 prose-td:border prose-td:border-border prose-td:text-muted-foreground
+                
+                prose-code:bg-muted prose-code:px-2 prose-code:py-1 prose-code:rounded-md prose-code:text-sm prose-code:font-mono
+                prose-pre:bg-muted/50 prose-pre:border prose-pre:border-border prose-pre:my-8 prose-pre:p-6 prose-pre:rounded-lg prose-pre:overflow-x-auto
+                
+                prose-a:text-primary prose-a:font-medium prose-a:no-underline hover:prose-a:underline
+                
+                prose-strong:font-semibold prose-strong:text-foreground
+                prose-em:italic
               ">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
                   {content}
