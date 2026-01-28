@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — MODERNIZER Module Deep Dive
 
-**Version 5.5.0 | Scientific Publication**
+**Version 6.0.0 | Scientific Publication**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-021 |
 | **Module** | MODERNIZER |
 | **Layer** | Administrative |
-| **Version** | v2.0.0 |
+| **Version** | v6.0.0 |
 
 ---
 
@@ -215,5 +215,5 @@ MODERNIZER coordinates with CORTEX for:
 
 ---
 
-*CMPSBL OS Substrate v5.5.0*
+*CMPSBL OS Substrate v6.0.0 — Human Compatibility Era*
 *© 2025-2026 PromptFluid®. All rights reserved.*

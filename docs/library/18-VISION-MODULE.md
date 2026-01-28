@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — VISION Module Deep Dive
 
-**Version 5.5.0 | Scientific Publication**
+**Version 6.0.0 | Scientific Publication**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-018 |
 | **Module** | VISION |
 | **Layer** | Operational |
-| **Version** | v2.0.0 (Vee) |
+| **Version** | v6.0.0 (Vee) |
 
 ---
 
@@ -187,5 +187,5 @@ VISION can operate in "watchdog" mode:
 
 ---
 
-*CMPSBL OS Substrate v5.5.0*
+*CMPSBL OS Substrate v6.0.0 — Human Compatibility Era*
 *© 2025-2026 PromptFluid®. All rights reserved.*

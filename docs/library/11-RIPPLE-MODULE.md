@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — RIPPLE Module Deep Dive
 
-**Version 5.5.0 | Scientific Publication**
+**Version 6.0.0 | Scientific Publication**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-011 |
 | **Module** | RIPPLE |
 | **Layer** | Kernel |
-| **Version** | v5.5.0 |
+| **Version** | v6.0.0 |
 
 ---
 
@@ -39,7 +39,7 @@ RIPPLE is the message bus and event orchestration layer of the substrate, provid
 | **Layer** | Kernel |
 | **Boot Order** | 2 |
 | **Dependencies** | CORE |
-| **Version** | v2.0.0 |
+| **Version** | v6.0.0 |
 
 ---
 
@@ -147,5 +147,5 @@ RIPPLE monitors subscriber health:
 
 ---
 
-*CMPSBL OS Substrate v5.5.0*
+*CMPSBL OS Substrate v6.0.0 — Human Compatibility Era*
 *© 2025-2026 PromptFluid®. All rights reserved.*

@@ -4,6 +4,46 @@
 
 ---
 
+## 2026-01-28 · v6.0.0 (FNDTN)
+
+⟨This entry describes the canonical v6.0.0 release establishing the 14-module architecture, FNDTN standards package, and Human Compatibility Era.⟩
+
+### Architecture
+
+- **14-Module Kernel** — Canonical five-layer architecture: Kernel (CORE, RIPPLE, ACCESS), Cognitive (BRAIN, DECODE, DREAM), Operational (DEFENSE, NEXUS, VISION, INTEGRATION), Administrative (SYSTEM, MODERNIZER, INCLUSIVE), Orchestrator (CORTEX).
+- **INCLUSIVE Module** — First-class human compatibility pipeline with WCAG 2.2 scanning, auto-repair, validation, and accessibility profiles.
+- **CORTEX Module** — Agency-class orchestrator operating in manual mode (no auto-apply without human approval).
+- **260+ Terminal Commands** — Full command registry across all 14 modules.
+
+### BRAIN Cognitive Skills
+
+- **20+ Specialized Actions** — pattern_fusion, systems_reason, causal, ethical, lesson_compress, deep_think, reflexive_plan, context_recall, mood_analysis, relationship_map integrated from archived logic.
+- **Aggressive Tiering Controls** — Hot tier (500 max), Warm (2,000 max), Cold (10,000 max) with automated pruning.
+
+### Experimentation Lab
+
+- **5 Live Demos** at `/lab` — Persistent Chatbot (context), Dream Processor (mood), Knowledge Graph (relationships), Sentiment Analysis (emotions), Adaptive Learning (mastery).
+- **Full Template Code Preview** — Transparency for marketplace conversion.
+
+### Standards & Documentation
+
+- **FNDTN v6 Foundations Paper** — Three-surface standard stack: CMPSBL FNDTN v6 (substrate), AIGVRN (governance), LLMS.txt (machine context).
+- **Documentation Library** — 26 documents updated to v6.0.0 in `/docs/library/`.
+- **Substrate Capabilities SDK** — New `/docs/substrate/capabilities` page with code examples.
+
+### Marketplace
+
+- **109+ Templates** — Production-ready patterns with enchanted naming and rarity badges.
+- **AI Template Generator** — $87 feature generating from 82,944+ combinations.
+- **Tiered Infrastructure Licensing** — Developer ($15k), Research ($80k), Enterprise ($180k), Strategic (custom).
+
+### Website
+
+- **Standards Section** — `/foundations`, `/namespace`, `/llmstxt` pages with download surfaces.
+- **Substrate Capabilities** — Expandable cards on Marketplace showing 48+ features built into every template.
+
+---
+
 ## 2026-01-24 · v4.2.0
 
 ⟨This entry describes the addition of the 12th module: Integration, providing enterprise adapters, auto-discovery, and LLM governance.⟩
