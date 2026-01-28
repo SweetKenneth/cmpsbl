@@ -65,6 +65,7 @@ const MarketplaceSuccess = lazy(() => import("./pages/MarketplaceSuccess"));
 const SubstrateIntelligence = lazy(() => import("./pages/SubstrateIntelligence"));
 const SubstrateLicensing = lazy(() => import("./pages/SubstrateLicensing"));
 const SubstrateLicensingSuccess = lazy(() => import("./pages/SubstrateLicensingSuccess"));
+const ExperimentationLab = lazy(() => import("./pages/ExperimentationLab"));
 
 // Marketing / Info pages
 const About = lazy(() => import("./pages/About"));
@@ -173,6 +174,7 @@ const App = () => {
                       <Route path="/intelligence" element={<SubstrateIntelligence />} />
                       <Route path="/substrate/licensing" element={<SubstrateLicensing />} />
                       <Route path="/substrate/licensing/success" element={<SubstrateLicensingSuccess />} />
+                      <Route path="/lab" element={<ExperimentationLab />} />
 
                       {/* Marketing / Info */}
                       <Route path="/about" element={<About />} />
