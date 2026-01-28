@@ -124,6 +124,15 @@ export const RATE_LIMITS: Record<string, RateLimitConfig> = {
     perMinTokens: Math.floor(60000 * SAFETY_MARGIN),  // 57,000 TPM
     bufferSeconds: 3 
   },
+  // Google AI Studio - aistudio.google.com (NEW - FREE IMAGE GENERATION!)
+  // Gemini 2.0 Flash: 15 RPM, 1,500 RPD for free tier
+  // Gemini 2.0 Flash Image: ~25 images/day free tier
+  googleai: {
+    perMin: Math.floor(15 * SAFETY_MARGIN),           // 14 RPM
+    perDay: Math.floor(1500 * SAFETY_MARGIN),         // 1,425 RPD
+    perMinTokens: Math.floor(100000 * SAFETY_MARGIN), // 95,000 TPM
+    bufferSeconds: 3
+  },
   // OpenRouter - openrouter.ai (NEW!)
   // Free tier: 25+ free models, ~10 RPM, ~200 RPD estimated
   openrouter: {
@@ -200,18 +209,18 @@ const BACKOFF = {
 };
 
 // ═══════════════════════════════════════════════════════════════
-// GRACEFUL DEGRADATION TIERS (8 providers)
+// GRACEFUL DEGRADATION TIERS (9 providers)
 // ═══════════════════════════════════════════════════════════════
 
 const DEGRADATION_TIERS = {
-  tier1: ['groq', 'cerebras', 'openrouter'],    // Primary: fastest inference
-  tier2: ['novita', 'sambanova', 'hyperbolic'], // Secondary: reliable fallback  
-  tier3: ['deepseek', 'together'],               // Tertiary: high capacity
-  emergency: ['local_fallback']                  // Emergency: graceful message
+  tier1: ['groq', 'cerebras', 'googleai'],       // Primary: fastest inference
+  tier2: ['openrouter', 'novita', 'sambanova'],  // Secondary: reliable fallback  
+  tier3: ['hyperbolic', 'deepseek', 'together'], // Tertiary: high capacity
+  emergency: ['local_fallback']                   // Emergency: graceful message
 };
 
 // ═══════════════════════════════════════════════════════════════
-// PROVIDER CONFIGURATIONS (8 providers)
+// PROVIDER CONFIGURATIONS (9 providers)
 // ═══════════════════════════════════════════════════════════════
 
 const PROVIDER_CONFIGS = {
@@ -231,6 +240,17 @@ const PROVIDER_CONFIGS = {
     headers: (key: string) => ({ 
       'Authorization': `Bearer ${key}`, 
       'Content-Type': 'application/json' 
+    })
+  },
+  // Google AI Studio - FREE Gemini 2.0 Flash with native image generation!
+  googleai: {
+    url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
+    model: 'gemini-2.0-flash',
+    imageModel: 'gemini-2.0-flash-exp-image-generation',
+    keyEnv: 'GOOGLE_AI_STUDIO_KEY',
+    headers: (key: string) => ({ 
+      'Content-Type': 'application/json',
+      'x-goog-api-key': key
     })
   },
   openrouter: {
@@ -855,5 +875,200 @@ export function shouldEnterDreamState(): { enter: boolean; dreamType: string; pr
     dreamType,
     probability,
     cstHour
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// GEMINI IMAGE GENERATION (FREE via Google AI Studio)
+// Using Gemini 2.0 Flash native image generation (~25 images/day free)
+// ═══════════════════════════════════════════════════════════════
+
+// Track daily image generation usage
+let imageGenerationToday = 0;
+let imageGenerationDayStart = Date.now();
+
+const IMAGE_DAILY_LIMIT = 25; // Conservative free tier limit
+
+export interface ImageGenerationResult {
+  success: boolean;
+  imageData?: string;      // Base64 encoded image
+  mimeType?: string;       // image/png, image/jpeg, etc.
+  prompt: string;
+  provider: 'googleai' | 'fallback';
+  error?: string;
+  remainingToday: number;
+}
+
+/**
+ * Generate an image using Google AI Studio's Gemini 2.0 Flash
+ * FREE tier: ~25 images/day
+ * 
+ * @param prompt - Text description of the image to generate
+ * @param options - Optional configuration
+ */
+export async function generateImageFree(
+  prompt: string,
+  options: {
+    aspectRatio?: '1:1' | '16:9' | '9:16' | '4:3' | '3:4';
+    style?: string;
+    negativePrompt?: string;
+  } = {}
+): Promise<ImageGenerationResult> {
+  const apiKey = Deno.env.get('GOOGLE_AI_STUDIO_KEY');
+  
+  if (!apiKey) {
+    console.error('❌ GOOGLE_AI_STUDIO_KEY not configured');
+    return {
+      success: false,
+      prompt,
+      provider: 'fallback',
+      error: 'Google AI Studio API key not configured',
+      remainingToday: IMAGE_DAILY_LIMIT
+    };
+  }
+  
+  // Reset daily counter if new day
+  const now = Date.now();
+  if (now - imageGenerationDayStart >= 86400000) {
+    imageGenerationToday = 0;
+    imageGenerationDayStart = now;
+  }
+  
+  // Check daily limit
+  if (imageGenerationToday >= IMAGE_DAILY_LIMIT) {
+    return {
+      success: false,
+      prompt,
+      provider: 'fallback',
+      error: `Daily image limit reached (${IMAGE_DAILY_LIMIT}/day). Resets at midnight UTC.`,
+      remainingToday: 0
+    };
+  }
+  
+  try {
+    // Build enhanced prompt
+    let enhancedPrompt = prompt;
+    if (options.style) {
+      enhancedPrompt = `${prompt}, in ${options.style} style`;
+    }
+    if (options.aspectRatio) {
+      enhancedPrompt += `. Aspect ratio: ${options.aspectRatio}`;
+    }
+    if (options.negativePrompt) {
+      enhancedPrompt += `. Avoid: ${options.negativePrompt}`;
+    }
+    
+    console.log(`🎨 Generating image via Gemini 2.0 Flash...`);
+    
+    // Use Gemini 2.0 Flash with native image generation
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp-image-generation:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{
+              text: `Generate an image: ${enhancedPrompt}`
+            }]
+          }],
+          generationConfig: {
+            responseModalities: ['TEXT', 'IMAGE'],
+            responseMimeType: 'text/plain'
+          }
+        })
+      }
+    );
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`❌ Gemini image generation failed: ${response.status}`, errorText.substring(0, 200));
+      return {
+        success: false,
+        prompt,
+        provider: 'googleai',
+        error: `API error: ${response.status}`,
+        remainingToday: IMAGE_DAILY_LIMIT - imageGenerationToday
+      };
+    }
+    
+    const data = await response.json();
+    
+    // Extract image from response
+    const parts = data.candidates?.[0]?.content?.parts || [];
+    let imageData: string | undefined;
+    let mimeType = 'image/png';
+    
+    for (const part of parts) {
+      if (part.inlineData?.data) {
+        imageData = part.inlineData.data;
+        mimeType = part.inlineData.mimeType || 'image/png';
+        break;
+      }
+    }
+    
+    if (!imageData) {
+      console.error('❌ No image data in Gemini response');
+      return {
+        success: false,
+        prompt,
+        provider: 'googleai',
+        error: 'No image returned from API',
+        remainingToday: IMAGE_DAILY_LIMIT - imageGenerationToday
+      };
+    }
+    
+    // Increment usage counter
+    imageGenerationToday++;
+    
+    console.log(`✅ Image generated successfully (${imageGenerationToday}/${IMAGE_DAILY_LIMIT} today)`);
+    
+    return {
+      success: true,
+      imageData,
+      mimeType,
+      prompt,
+      provider: 'googleai',
+      remainingToday: IMAGE_DAILY_LIMIT - imageGenerationToday
+    };
+    
+  } catch (error) {
+    console.error('❌ Image generation error:', error);
+    return {
+      success: false,
+      prompt,
+      provider: 'googleai',
+      error: error instanceof Error ? error.message : 'Unknown error',
+      remainingToday: IMAGE_DAILY_LIMIT - imageGenerationToday
+    };
+  }
+}
+
+/**
+ * Get current image generation status
+ */
+export function getImageGenerationStatus(): {
+  usedToday: number;
+  remainingToday: number;
+  dailyLimit: number;
+  provider: string;
+  status: 'available' | 'limited' | 'exhausted';
+} {
+  // Reset if new day
+  const now = Date.now();
+  if (now - imageGenerationDayStart >= 86400000) {
+    imageGenerationToday = 0;
+    imageGenerationDayStart = now;
+  }
+  
+  const hasKey = !!Deno.env.get('GOOGLE_AI_STUDIO_KEY');
+  const remaining = IMAGE_DAILY_LIMIT - imageGenerationToday;
+  
+  return {
+    usedToday: imageGenerationToday,
+    remainingToday: remaining,
+    dailyLimit: IMAGE_DAILY_LIMIT,
+    provider: hasKey ? 'Google AI Studio (Gemini 2.0 Flash)' : 'Not configured',
+    status: !hasKey ? 'exhausted' : remaining <= 0 ? 'exhausted' : remaining <= 5 ? 'limited' : 'available'
   };
 }
