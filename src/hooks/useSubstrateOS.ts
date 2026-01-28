@@ -398,6 +398,7 @@ export function useIntegrationDiscoverOS() {
 
 // ═══════════════════════════════════════════════════════════════
 // INCLUSIVE MODULE HOOKS — Human Compatibility (v6.0.0)
+// With full glue layer integration to SYSTEM, VISION, DEFENSE, MODERNIZER
 // ═══════════════════════════════════════════════════════════════
 
 export function useInclusiveStatusOS() {
@@ -414,7 +415,10 @@ export function useInclusiveScanOS() {
   return useMutation({
     mutationFn: (target: string) => inclusive.scan(target),
     onSuccess: () => {
+      // Invalidate INCLUSIVE, VISION (metrics), SYSTEM (audit), DEFENSE (risk)
       queryClient.invalidateQueries({ queryKey: ['substrate', 'inclusive'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'vision', 'health'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'system', 'audit'] });
     },
   });
 }
@@ -425,7 +429,57 @@ export function useInclusiveRepairOS() {
   return useMutation({
     mutationFn: (target: string) => inclusive.repair(target),
     onSuccess: () => {
+      // Invalidate INCLUSIVE, MODERNIZER (may trigger proposal)
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'inclusive'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'modernizer', 'status'] });
+    },
+  });
+}
+
+export function useInclusiveCoverageOS() {
+  return useQuery({
+    queryKey: ['substrate', 'inclusive', 'coverage'],
+    queryFn: () => inclusive.coverage(),
+    refetchInterval: 60000,
+  });
+}
+
+export function useInclusiveRegressionsOS(hours = 24) {
+  return useQuery({
+    queryKey: ['substrate', 'inclusive', 'regressions', hours],
+    queryFn: () => inclusive.regressions(hours),
+    refetchInterval: 60000,
+  });
+}
+
+export function useInclusiveSelfScanOS() {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: () => inclusive.selfScan(),
+    onSuccess: () => {
+      // Invalidate INCLUSIVE, SYSTEM (audit integration)
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'inclusive'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'system', 'audit'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'vision', 'health'] });
+    },
+  });
+}
+
+export function useInclusiveValidateOS() {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: (target: string) => inclusive.validate(target),
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['substrate', 'inclusive'] });
     },
+  });
+}
+
+export function useInclusiveReportOS() {
+  return useMutation({
+    mutationFn: (params: { target: string; format?: 'json' | 'markdown' }) => 
+      inclusive.report(params.target, params.format),
   });
 }
