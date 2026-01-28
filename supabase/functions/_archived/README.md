@@ -2,7 +2,7 @@
 
 These functions have been consolidated into the unified `pf-substrate` endpoint.
 
-## Active Substrate Modules (13 modules)
+## Active Substrate Modules (14 modules)
 
 | Module | Purpose | Endpoint |
 |--------|---------|----------|
@@ -19,44 +19,32 @@ These functions have been consolidated into the unified `pf-substrate` endpoint.
 | **Access** | API keys, billing, metering | `/pf-substrate?module=access&action=*` |
 | **Integration** | Enterprise adapters, auto-discovery | `/pf-substrate?module=integration&action=*` |
 | **Cortex** | Agency-class autonomous proposal/evaluation/execution loop | `/pf-substrate?module=cortex&action=*` |
+| **Inclusive** | Accessibility scanning, WCAG compliance, human-compatibility | `/pf-substrate?module=inclusive&action=*` |
 
-## Cortex (formerly Cascade)
+## Deleted Legacy Redirects (Cleaned Up 2026-01-28)
 
-Cortex is the **resurrected** Cascade module under a new namespace. It implements an Agency-class 
-autonomous agent with a core loop:
+The following functions were legacy 410-redirects that have been fully deleted:
 
-**PROPOSE → EVALUATE → APPLY → AUDIT → LEARN**
-
-### Legacy Cascade Functions (now in Cortex)
-
-| Legacy Function | New Cortex Action |
-|-----------------|-------------------|
-| pf-cascade-operative | cortex.propose + cortex.evaluate |
-| pf-cascade-learner | cortex.learn |
-| pf-cascade-improvement-engine | cortex.propose |
-| pf-cascade-proposals | cortex.propose |
-| pf-cascade-apply | cortex.apply |
-| pf-cascade-audit | cortex.audit |
-| pf-cascade-summary | cortex.summary |
-| pf-cascade-router | (routed through substrate) |
-| pf-cascade-learn | cortex.learn |
-| pf-cascade-chat | decode.chat |
-| pf-cascade-dream | dream.cycle |
-| pf-cascade-generate-dream | dream.feed |
-| pf-cascade-post-dream | (external blog API) |
-| pf-cascade-coder | modernizer.implement |
-
-**Note:** Legacy Cascade code is preserved. Cortex is the modern namespace.
+- `pf-emergency-shutdown` → core.shutdown
+- `pf-generate-api-key` → access.create_key
+- `pf-ripple-queue` → ripple.enqueue
+- `integration-bus` → core.integrate
+- `pf-brain-scheduler` → core.schedule
+- `pf-core-keys` → access.list_keys
+- `pf-core` → core.status
+- `pf-core-unified` → core.config
+- `pf-core-usage` → access.get_usage
+- `pf-defense-rate-limit` → core.authorize
+- `pf-core-status` → core.status
+- `pf-core-gateway` → core.route
+- `pf-core-settings` → core.config
 
 ## Migration Guide
 
-All legacy endpoints now return `410 Gone` and redirect to the substrate.
+All legacy endpoints have been removed. Use the substrate directly:
 
 ```typescript
-// Old way (deprecated)
-const response = await supabase.functions.invoke('pf-cascade-learn', { body: data });
-
-// New way (Cortex via substrate)
+// New way (substrate)
 const response = await supabase.functions.invoke('pf-substrate', {
   body: { module: 'cortex', action: 'learn', ...data }
 });
