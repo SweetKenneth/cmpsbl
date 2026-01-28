@@ -43,6 +43,7 @@ import { EvolutionTab } from '@/components/substrate-os/EvolutionTab';
 import { CodeAgentTab } from '@/components/substrate-os/CodeAgentTab';
 import { CortexTab } from '@/components/substrate-os/CortexTab';
 import { InclusiveTab } from '@/components/substrate-os/InclusiveTab';
+import { NexusTab } from '@/components/substrate-os/NexusTab';
 import { DashboardMetricsHero, QuickActionsPanel, ModuleControlsGrid } from '@/components/substrate-os/dashboard';
 import { cn } from '@/lib/utils';
 
@@ -75,6 +76,7 @@ function getTabGroups(isOperator: boolean, isGovernor: boolean, hasAgency: boole
   const operateTabs: TabConfig[] = [
     { id: 'terminal', label: 'Terminal', icon: Terminal, color: 'emerald', description: 'Command interface' },
     ...(isOperator ? [
+      { id: 'nexus', label: 'Nexus', icon: Zap, color: 'cyan', description: 'AI routing & images', minRole: 'operator' as const },
       { id: 'codeagent', label: 'CodeAgent', icon: Bot, color: 'violet', description: 'AI coding assistant', minRole: 'operator' as const },
       { id: 'core', label: 'Core', icon: Cpu, color: 'orange', description: 'Kernel controls', minRole: 'operator' as const },
       { id: 'ripple', label: 'Ripple', icon: Radio, color: 'cyan', description: 'Message bus', minRole: 'operator' as const },
