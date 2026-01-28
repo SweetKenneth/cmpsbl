@@ -80,6 +80,13 @@ export default function ClarityWebhooks() {
       if (!user) throw new Error('Not authenticated');
 
       const secret = `whsec_${crypto.randomUUID().replace(/-/g, '')}`;
+      
+      // Hash the secret before storing (SHA-256)
+      const encoder = new TextEncoder();
+      const data = encoder.encode(secret);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const secretHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 
       const { error } = await supabase
         .from('pf_clarity_webhooks')
@@ -87,7 +94,7 @@ export default function ClarityWebhooks() {
           user_id: user.id,
           webhook_url: newUrl,
           events: selectedEvents,
-          secret,
+          secret_hash: secretHash,
         });
 
       if (error) throw error;

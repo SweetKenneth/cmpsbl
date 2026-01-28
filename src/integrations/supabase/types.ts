@@ -3015,7 +3015,9 @@ export type Database = {
           metadata: Json | null
           reply: string | null
           session_id: string | null
+          session_token: string | null
           user_email: string | null
+          user_id: string | null
         }
         Insert: {
           created_at?: string | null
@@ -3025,7 +3027,9 @@ export type Database = {
           metadata?: Json | null
           reply?: string | null
           session_id?: string | null
+          session_token?: string | null
           user_email?: string | null
+          user_id?: string | null
         }
         Update: {
           created_at?: string | null
@@ -3035,7 +3039,9 @@ export type Database = {
           metadata?: Json | null
           reply?: string | null
           session_id?: string | null
+          session_token?: string | null
           user_email?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -7097,7 +7103,7 @@ export type Database = {
           id: string
           is_active: boolean | null
           last_triggered_at: string | null
-          secret: string
+          secret_hash: string
           site_id: string | null
           updated_at: string
           user_id: string
@@ -7109,7 +7115,7 @@ export type Database = {
           id?: string
           is_active?: boolean | null
           last_triggered_at?: string | null
-          secret: string
+          secret_hash: string
           site_id?: string | null
           updated_at?: string
           user_id: string
@@ -7121,7 +7127,7 @@ export type Database = {
           id?: string
           is_active?: boolean | null
           last_triggered_at?: string | null
-          secret?: string
+          secret_hash?: string
           site_id?: string | null
           updated_at?: string
           user_id?: string
@@ -9018,7 +9024,7 @@ export type Database = {
           is_active: boolean | null
           last_called_at: string | null
           updated_at: string | null
-          webhook_secret: string | null
+          webhook_secret_hash: string | null
           webhook_url: string | null
         }
         Insert: {
@@ -9035,7 +9041,7 @@ export type Database = {
           is_active?: boolean | null
           last_called_at?: string | null
           updated_at?: string | null
-          webhook_secret?: string | null
+          webhook_secret_hash?: string | null
           webhook_url?: string | null
         }
         Update: {
@@ -9052,7 +9058,7 @@ export type Database = {
           is_active?: boolean | null
           last_called_at?: string | null
           updated_at?: string | null
-          webhook_secret?: string | null
+          webhook_secret_hash?: string | null
           webhook_url?: string | null
         }
         Relationships: []
