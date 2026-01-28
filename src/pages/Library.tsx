@@ -263,11 +263,67 @@ export default function Library() {
                     em: ({children}) => (
                       <em className="italic text-primary/80">{children}</em>
                     ),
-                    a: ({href, children}) => (
-                      <a href={href} className="text-primary font-medium underline underline-offset-4 hover:text-primary/80 transition-colors">
-                        {children}
-                      </a>
-                    ),
+                    a: ({href, children}) => {
+                      // Handle internal library document links
+                      if (href) {
+                        // Match patterns like ./01-EXECUTIVE-SUMMARY.md or 01-EXECUTIVE-SUMMARY.md
+                        const mdMatch = href.match(/(?:\.\/)?(\d{2})-([A-Z-]+)\.md$/i);
+                        if (mdMatch) {
+                          const docId = `${mdMatch[1]}-${mdMatch[2].toUpperCase()}`;
+                          const targetDoc = LIBRARY_DOCS.find(d => `${d.id}-${d.name}` === docId);
+                          if (targetDoc) {
+                            return (
+                              <button
+                                onClick={() => setSearchParams({ doc: docId })}
+                                className="text-primary font-medium underline underline-offset-4 hover:text-primary/80 transition-colors"
+                              >
+                                {children}
+                              </button>
+                            );
+                          }
+                        }
+                        
+                        // Handle FNDTN paper links - route to /foundations
+                        if (href.includes('fndtn-v6-foundations-paper') || href.includes('FNDTN-v6')) {
+                          return (
+                            <Link to="/foundations" className="text-primary font-medium underline underline-offset-4 hover:text-primary/80 transition-colors">
+                              {children}
+                            </Link>
+                          );
+                        }
+                        
+                        // Handle external links
+                        if (href.startsWith('http://') || href.startsWith('https://')) {
+                          return (
+                            <a 
+                              href={href} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="text-primary font-medium underline underline-offset-4 hover:text-primary/80 transition-colors inline-flex items-center gap-1"
+                            >
+                              {children}
+                              <ExternalLink className="w-3 h-3" />
+                            </a>
+                          );
+                        }
+                        
+                        // Handle anchor links within same page
+                        if (href.startsWith('#')) {
+                          return (
+                            <a href={href} className="text-primary font-medium underline underline-offset-4 hover:text-primary/80 transition-colors">
+                              {children}
+                            </a>
+                          );
+                        }
+                      }
+                      
+                      // Fallback: render as styled text (broken link)
+                      return (
+                        <span className="text-primary/60 font-medium">
+                          {children}
+                        </span>
+                      );
+                    },
                     blockquote: ({children}) => (
                       <blockquote className="my-8 pl-6 border-l-4 border-primary bg-primary/5 py-4 pr-4 rounded-r-lg italic text-muted-foreground">
                         {children}
