@@ -221,6 +221,22 @@ The system is production-ready and actively deployed, with comprehensive documen
 
 ---
 
+## 8. FNDTN v6 Foundations & Machine Context
+
+CMPSBL v6 (FNDTN) is presented as part of a **three-surface standard stack**:
+
+1. **Substrate Standard** — CMPSBL FNDTN v6 as the reference implementation for the substrate class.
+2. **Governance Standard** — AI Governance Reference Namespace (AIGVRN) with 12 governance surfaces.
+3. **Machine Context Standard** — LLMS.txt as the machine-readable specification format.
+
+For the complete standards paper, see: **[FNDTN v6 Foundations Paper](../FNDTN-v6/fndtn-v6-foundations-paper.md)**
+
+**Machine Context:** The substrate publishes `/llms.txt` following the llmstxt.dev pattern, enabling AI systems to discover and reason about CMPSBL capabilities, constraints, and governance context.
+
+**Governance Namespace:** CMPSBL aligns with the AI Governance Reference Namespace at [AIGVRN.com](https://aigvrn.com), providing shared vocabulary across 12 surfaces: Governance, Standards, Certification, Verification, Policy, Compliance, Security, Safety, Regulation, Sovereignty, Privacy, and Control.
+
+---
+
 ## Contact Information
 
 For licensing, acquisition, or research collaboration inquiries:
@@ -235,5 +251,5 @@ For licensing, acquisition, or research collaboration inquiries:
 
 ---
 
-*CMPSBL OS Substrate v6.0.0 — Human Compatibility Era*
+*CMPSBL OS Substrate v6.0.0 — FNDTN: Human Compatibility Era*
 *© 2025-2026 PromptFluid®. All rights reserved.*

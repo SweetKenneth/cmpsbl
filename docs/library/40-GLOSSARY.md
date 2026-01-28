@@ -257,5 +257,24 @@ CORTEX's comprehensive view of all 14 modules, their states, and relationships.
 
 ---
 
-*CMPSBL OS Substrate v6.0.0 — Human Compatibility Era*
+## Standards & Governance Terms
+
+**FNDTN-v6.0.0**
+The v6.0.0 release of CMPSBL Substrate OS, designated as the "Foundations" release. Presented as a reference standard for the substrate class, introducing CORTEX and INCLUSIVE as first-class modules.
+
+**LLMS.txt**
+A machine-readable context file placed at a domain root (e.g., `/llms.txt`) that describes AI capabilities, modules, endpoints, roles, and governance context. Developed in the context of CMPSBL and proposed as a general standard for AI system discoverability. Follows the llmstxt.dev pattern.
+
+**AI Governance Reference Namespace (AIGVRN)**
+A governance standard for the substrate class providing 12 surfaces (Governance, Standards, Certification, Verification, Policy, Compliance, Security, Safety, Regulation, Sovereignty, Privacy, Control) with corresponding domain anchors. Root namespace: AIGVRN.com.
+
+**Substrate Class**
+A classification for AI systems characterized by: persistent state, self-improvement cycles, modular architecture, embedded governance, and real-time observability. CMPSBL FNDTN v6 is presented as a reference implementation.
+
+**Three-Surface Standard Stack**
+The unified standards package comprising: (1) CMPSBL FNDTN v6 as substrate standard, (2) AIGVRN as governance standard, (3) LLMS.txt as machine context standard.
+
+---
+
+*CMPSBL OS Substrate v6.0.0 — FNDTN: Human Compatibility Era*
 *© 2025-2026 PromptFluid®. All rights reserved.*

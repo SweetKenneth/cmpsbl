@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Documentation Library
 
-**Version 6.0.0 | Scientific Publication Edition**
+**PromptFluid® CMPSBL OS — FNDTN v6.0.0 Library**
 
 ---
 
@@ -9,11 +9,34 @@
 | Field | Value |
 |-------|-------|
 | **System Name** | CMPSBL OS Substrate |
-| **Version** | v6.0.0 |
+| **Version** | v6.0.0 (FNDTN) |
 | **Classification** | Cognitive Orchestration Substrate |
 | **Status** | Production (Live System) |
 | **Publication Date** | January 2026 |
-| **DOI** | Pending Registration |
+| **Author** | Kenneth E. Sweet Jr. ([ORCID](https://orcid.org/0009-0001-4237-1243)) |
+
+---
+
+## FNDTN v6 Foundations Paper
+
+This library is part of the **FNDTN v6 Foundations** standards package, which presents:
+
+1. **CMPSBL v6 (FNDTN)** as a reference substrate standard for the substrate class.
+2. **AI Governance Reference Namespace (AIGVRN)** as a governance standard for cognitive substrates.
+3. **LLMS.txt** as a machine-readable context standard we follow and recommend.
+
+**→ [Read the FNDTN v6 Foundations Paper](../FNDTN-v6/fndtn-v6-foundations-paper.md)** ([HTML](../FNDTN-v6/fndtn-v6-foundations-paper.html))
+
+---
+
+## Version History
+
+| Version | Date | Record |
+|---------|------|--------|
+| v5.5.0 | 2025 | [OSF](https://osf.io/ah7nx/overview) · [Zenodo](https://zenodo.org/records/18379258) |
+| v6.0.0 (FNDTN) | 2026 | This library |
+
+**AI Governance Reference Namespace:** [Zenodo Record](https://zenodo.org/records/18393018)
 
 ---
 
@@ -22,7 +45,7 @@
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                    CMPSBL OS SUBSTRATE                          │
-│                        v6.0.0                                   │
+│                   v6.0.0 (FNDTN)                                │
 ├─────────────────────────────────────────────────────────────────┤
 │  Created By:        Kenneth E Sweet Jr                          │
 │  Organization:      PromptFluid®                                │

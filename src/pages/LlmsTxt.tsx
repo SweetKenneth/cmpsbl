@@ -13,69 +13,73 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { toast } from "sonner";
 
-const LLMS_TXT_CONTENT = `# promptfluid®
+const LLMS_TXT_CONTENT = `# promptfluid® CMPSBL OS — FNDTN v6.0.0
+# Machine-Readable Context Standard for AI Systems
 
-> Cognitive orchestration substrate for autonomous AI systems.
+## STANDARD CLAIM
+
+LLMS.txt is a machine-readable specification format for AI systems.
+CMPSBL Substrate OS FNDTN v6.0.0 implements LLMS.txt as its primary machine context.
+
+**WE RECOMMEND** that web designers, SaaS builders, and system architects include an LLMS.txt file at the root of their domains to describe AI capabilities, constraints, and governance context.
 
 ## About
 
-promptfluid® is a unified cognitive infrastructure platform that orchestrates AI capabilities across multiple domains. The substrate provides real-time observability, adaptive learning, and secure multi-provider routing.
+promptfluid® is a unified cognitive infrastructure platform (substrate OS) with 14 modules, real-time observability, adaptive learning, and multi-provider routing.
 
-## Core Modules
+## 14-Module Architecture (FNDTN v6)
 
-### Brain
-Memory management, learning cycles, and cognitive synthesis. Handles hot/cold memory tiers, cross-domain insights, and reflection cycles.
+### Kernel Layer
+- CORE — Scheduling, lifecycle, boot sequencing
+- RIPPLE — Event bus, pub/sub, webhooks
+- ACCESS — Identity, API keys, permissions
 
-### Decode
-Epistemic conversation interface. Interprets human input into substrate-structured cognition. Not a chatbot—an interpreter primitive.
+### Cognitive Layer
+- BRAIN — 3-tier persistent memory, learning cycles
+- DECODE — Intent parsing, entity extraction
+- DREAM — Memory consolidation, pattern synthesis
 
-### Defense
-Security layer with behavioral analysis, IP reputation, and threat detection. Protects substrate operations from malicious actors.
+### Operational Layer
+- DEFENSE — Threat detection, cognitive firewall
+- NEXUS — Multi-provider AI routing
+- VISION — Observability, metrics, alerting
 
-### Nexus
-Multi-provider AI routing. Dynamically selects optimal models based on task requirements, cost, and latency.
+### Administrative Layer
+- SYSTEM — Orchestration, diagnostics, configuration
+- MODERNIZER — Self-upgrade engine
+- INTEGRATION — Enterprise connectors (35+)
+- INCLUSIVE — Accessibility, AI governance/ethics
 
-### Vision
-Observability and telemetry. Real-time metrics, health monitoring, audit logging, and system alerts.
+### Orchestrator Layer
+- CORTEX — Policy intent, agency orchestration
 
-### Dream
-Dream-Eater consumption engine. Processes dream submissions, extracts patterns, and feeds insights back into the cognitive loop.
+## AI Governance Reference Namespace
+
+CMPSBL aligns with AIGVRN (12 surfaces):
+Governance · Standards · Certification · Verification · Policy · Compliance
+Security · Safety · Regulation · Sovereignty · Privacy · Control
 
 ## API Endpoints
 
 Base URL: https://promptfluid.com/api/substrate
 
-- POST /brain/learn - Store new memory
-- POST /brain/reflect - Trigger reflection cycle
-- POST /brain/synthesize - Cross-domain synthesis
-- GET /vision/health - System health status
-- GET /vision/metrics - Real-time telemetry
-- POST /decode/chat - Epistemic conversation
-- POST /nexus/route - AI provider routing
-- GET /defense/rules - Active security rules
+- POST /brain/learn — Store new memory
+- POST /brain/reflect — Trigger reflection cycle
+- GET /vision/health — System health status
+- POST /decode/chat — Epistemic conversation
+- POST /nexus/route — AI provider routing
 
-## Dashboard & Observability
+## Access Roles
 
-The Substrate OS dashboard provides:
-- Real-time module status monitoring
-- Live telemetry and metrics
-- Event stream with filtering
-- Command palette for operators
-- Governor controls for administrators
-
-Access levels: Observer (read-only), Operator (actions), Governor (admin)
+Observer (read-only) · Operator (actions) · Governor (admin)
 
 ## Contact
 
-- Website: https://promptfluid.com
-- Documentation: https://promptfluid.com/documentation
-- Contact: https://promptfluid.com/contact
+- Website: https://cmpsbl.com / https://promptfluid.com
+- Documentation: https://cmpsbl.com/docs
+- FNDTN Paper: https://cmpsbl.com/docs/FNDTN-v6/
 
-## Optional
-
-- Blog: https://promptfluid.com/blog
-- Changelog: https://promptfluid.com/changelog
-- Roadmap: https://promptfluid.com/roadmap
+Following: https://llmstxt.dev
 `;
 
 export default function LlmsTxt() {
@@ -89,12 +93,12 @@ export default function LlmsTxt() {
   };
 
   const modules = [
-    { name: "Brain", icon: Brain, color: "text-cyan-500", desc: "Memory & learning" },
-    { name: "Decode", icon: MessageSquare, color: "text-purple-500", desc: "Epistemic interpreter" },
-    { name: "Defense", icon: Shield, color: "text-amber-500", desc: "Security layer" },
-    { name: "Nexus", icon: Zap, color: "text-green-500", desc: "AI routing" },
-    { name: "Vision", icon: Eye, color: "text-blue-500", desc: "Observability" },
-    { name: "Dream", icon: Moon, color: "text-violet-500", desc: "Dream-Eater engine" },
+    { name: "BRAIN", icon: Brain, color: "text-cyan-500", desc: "Memory & learning" },
+    { name: "DECODE", icon: MessageSquare, color: "text-purple-500", desc: "Epistemic interpreter" },
+    { name: "DEFENSE", icon: Shield, color: "text-amber-500", desc: "Security layer" },
+    { name: "NEXUS", icon: Zap, color: "text-green-500", desc: "AI routing" },
+    { name: "VISION", icon: Eye, color: "text-blue-500", desc: "Observability" },
+    { name: "DREAM", icon: Moon, color: "text-violet-500", desc: "Pattern synthesis" },
   ];
 
   return (
@@ -111,14 +115,17 @@ export default function LlmsTxt() {
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-6">
             <Terminal className="w-4 h-4 text-primary" />
-            <span className="text-sm font-mono text-primary">llmstxt.dev</span>
+            <span className="text-sm font-mono text-primary">FNDTN v6.0.0 Standard</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-light mb-4">
-            LLMs.txt
+            LLMS.txt
           </h1>
-          <p className="text-muted-foreground max-w-xl mx-auto">
-            Machine-readable context for AI systems. Helps language models understand 
-            promptfluid® capabilities, API structure, and integration patterns.
+          <p className="text-muted-foreground max-w-xl mx-auto mb-4">
+            Machine-readable context standard for AI systems. We developed LLMS.txt 
+            and recommend it for web designers and system builders.
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Part of the <strong>FNDTN v6 Three-Surface Standard Stack</strong>: Substrate · Governance · Machine Context
           </p>
         </div>
 
