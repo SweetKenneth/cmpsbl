@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — DREAM Module Deep Dive
 
-**Version 5.5.0 | Scientific Publication**
+**Version 6.0.0 | Scientific Publication**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-015 |
 | **Module** | DREAM |
 | **Layer** | Cognitive |
-| **Version** | v4.10.0 |
+| **Version** | v6.0.0 |
 
 ---
 
@@ -153,7 +153,21 @@ The DREAM module maintains a "mood" state:
 
 ---
 
-## 8. Performance Characteristics
+## 8. Lab Experiments (v6.0.0)
+
+The Experimentation Lab (`/lab`) showcases five live DREAM-powered demos:
+
+| Experiment | Capability |
+|------------|------------|
+| **Dream Processor** | Mood analysis and emotional state tracking |
+| **Persistent Chatbot** | Context recall across sessions |
+| **Knowledge Graph** | Relationship mapping and entity connections |
+| **Sentiment Analysis** | Emotional tone detection |
+| **Adaptive Learning** | Mastery-based skill progression |
+
+---
+
+## 9. Performance Characteristics
 
 | Metric | Value |
 |--------|-------|
@@ -164,5 +178,5 @@ The DREAM module maintains a "mood" state:
 
 ---
 
-*CMPSBL OS Substrate v5.5.0*
+*CMPSBL OS Substrate v6.0.0 — Human Compatibility Era*
 *© 2025-2026 PromptFluid®. All rights reserved.*
