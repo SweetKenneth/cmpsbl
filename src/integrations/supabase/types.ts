@@ -9914,6 +9914,7 @@ export type Database = {
             Returns: boolean
           }
         | { Args: { _role: string; _user_id: string }; Returns: boolean }
+        | { Args: { role_name: string }; Returns: boolean }
       has_role_text: {
         Args: { _role: string; _user_id: string }
         Returns: boolean
