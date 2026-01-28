@@ -347,6 +347,7 @@ serve(async (req) => {
       
       case 'apply_shadow': {
         // Apply changes to shadow mode (simulate and track)
+        // SAFETY: Create failsafe backup before any changes
         if (!plan_id) {
           return jsonResponse({
             success: false,
@@ -378,40 +379,104 @@ serve(async (req) => {
           }, corsHeaders, 400);
         }
         
-        // Mark improvements as applied in shadow mode
-        const improvements = plan.diff_summary || [];
-        for (const imp of improvements) {
-          await markImprovementApplied(supabase, imp, plan_id, 'shadow');
-        }
+        // Create pre-apply failsafe backup
+        const preApplyBackupId = `failsafe_shadow_${Date.now().toString(36)}`;
+        console.log(`🛡️ Creating pre-apply failsafe backup: ${preApplyBackupId}`);
         
-        // Update plan status
-        await supabase.from('substrate_upgrade_plans').update({
-          status: 'shadow_applied',
-          mode: 'shadow',
-          operator_notes: `Shadow applied at ${new Date().toISOString()}${notes ? '. ' + notes : ''}`,
-        }).eq('id', plan_id);
-        
-        // Log event
-        await supabase.from('brain_events').insert({
-          event_type: 'upgrade_shadow_applied',
-          module: 'system',
-          outcome: 'success',
-          data: { plan_id, improvements_count: improvements.length }
+        const { data: backupResult, error: backupError } = await supabase.functions.invoke('pf-substrate', {
+          body: { 
+            module: 'system', 
+            action: 'backup', 
+            payload: { 
+              include_data: true, 
+              backup_type: 'failsafe_pre_shadow',
+              backup_id: preApplyBackupId 
+            }
+          }
         });
         
-        return jsonResponse({
-          success: true,
-          plan_id,
-          status: 'shadow_applied',
-          improvements_applied: improvements.length,
-          message: `${improvements.length} improvement(s) applied to shadow mode. Run tests, then promote to production.`,
-          next_step: 'Use apply_production to promote to production after testing.',
-          timestamp: new Date().toISOString(),
-        }, corsHeaders);
+        if (backupError || !backupResult?.success) {
+          console.warn(`⚠️ Failsafe backup warning: ${backupError?.message || backupResult?.error || 'Unknown error'}`);
+          // Don't fail here - continue with original backup_id as fallback
+        }
+        
+        const failsafeBackupId = backupResult?.backup_id || preApplyBackupId;
+        
+        try {
+          // Mark improvements as applied in shadow mode
+          const improvements = plan.diff_summary || [];
+          for (const imp of improvements) {
+            await markImprovementApplied(supabase, imp, plan_id, 'shadow');
+          }
+          
+          // Update plan status with failsafe backup reference
+          await supabase.from('substrate_upgrade_plans').update({
+            status: 'shadow_applied',
+            mode: 'shadow',
+            failsafe_backup_id: failsafeBackupId,
+            operator_notes: `Shadow applied at ${new Date().toISOString()}. Failsafe: ${failsafeBackupId}${notes ? '. ' + notes : ''}`,
+          }).eq('id', plan_id);
+          
+          // Log event
+          await supabase.from('brain_events').insert({
+            event_type: 'upgrade_shadow_applied',
+            module: 'system',
+            outcome: 'success',
+            data: { plan_id, improvements_count: improvements.length, failsafe_backup_id: failsafeBackupId }
+          });
+          
+          return jsonResponse({
+            success: true,
+            plan_id,
+            status: 'shadow_applied',
+            failsafe_backup_id: failsafeBackupId,
+            improvements_applied: improvements.length,
+            message: `${improvements.length} improvement(s) applied to shadow mode. Failsafe backup created. Run tests, then promote to production.`,
+            next_step: 'Use apply_production to promote to production after testing.',
+            timestamp: new Date().toISOString(),
+          }, corsHeaders);
+          
+        } catch (applyError) {
+          // ATOMIC ROLLBACK: Revert changes on any failure
+          console.error(`❌ Shadow apply failed, initiating rollback: ${applyError}`);
+          
+          // Remove any partially applied improvements
+          await removeImprovementApplied(supabase, plan_id);
+          
+          // Restore from failsafe backup
+          if (failsafeBackupId) {
+            console.log(`🔄 Restoring from failsafe backup: ${failsafeBackupId}`);
+            await supabase.functions.invoke('pf-substrate', {
+              body: { module: 'system', action: 'restore', payload: { backup_id: failsafeBackupId } }
+            });
+          }
+          
+          // Log failure
+          await supabase.from('brain_events').insert({
+            event_type: 'upgrade_shadow_failed',
+            module: 'system',
+            outcome: 'failure',
+            data: { 
+              plan_id, 
+              error: applyError instanceof Error ? applyError.message : String(applyError),
+              failsafe_backup_id: failsafeBackupId,
+              auto_rollback: true
+            }
+          });
+          
+          return jsonResponse({
+            success: false,
+            error: 'APPLY_FAILED',
+            error_message: `Shadow apply failed: ${applyError instanceof Error ? applyError.message : String(applyError)}. Auto-rollback completed.`,
+            failsafe_backup_id: failsafeBackupId,
+            auto_rollback: true,
+          }, corsHeaders, 500);
+        }
       }
       
       case 'apply_production': {
         // Promote shadow changes to production
+        // SAFETY: Create failsafe backup before any production changes
         if (!plan_id) {
           return jsonResponse({
             success: false,
@@ -455,58 +520,126 @@ serve(async (req) => {
           return jsonResponse({
             success: false,
             error: 'HEALTH_DEGRADED',
-            error_message: `System health (${currentHealth}%) degraded. Cannot apply to production.`,
+            error_message: `System health (${currentHealth}%) degraded. Cannot apply to production. Run system.heal first.`,
             current_health: currentHealth,
             required_health: healthThreshold,
           }, corsHeaders, 400);
         }
         
-        // Update improvement tracking to production mode
-        const improvements = plan.diff_summary || [];
-        for (const imp of improvements) {
-          await markImprovementApplied(supabase, imp, plan_id, 'production');
-        }
+        // Create pre-production failsafe backup
+        const preProductionBackupId = `failsafe_prod_${Date.now().toString(36)}`;
+        console.log(`🛡️ Creating pre-production failsafe backup: ${preProductionBackupId}`);
         
-        // Create run record
-        const { data: run } = await supabase
-          .from('substrate_upgrade_runs')
-          .insert({
-            plan_id: plan_id,
-            result: 'success',
-            finished_at: new Date().toISOString(),
-            post_health_snapshot: healthData,
-          })
-          .select()
-          .single();
-        
-        // Update plan status
-        await supabase.from('substrate_upgrade_plans').update({
-          status: 'applied',
-          mode: 'production',
-          after_health_snapshot: healthData,
-          operator_notes: `Production applied at ${new Date().toISOString()}${notes ? '. ' + notes : ''}`,
-        }).eq('id', plan_id);
-        
-        // Log event
-        await supabase.from('brain_events').insert({
-          event_type: 'upgrade_production_applied',
-          module: 'system',
-          outcome: 'success',
-          data: { plan_id, run_id: run?.id, improvements_count: improvements.length }
+        const { data: backupResult, error: backupError } = await supabase.functions.invoke('pf-substrate', {
+          body: { 
+            module: 'system', 
+            action: 'backup', 
+            payload: { 
+              include_data: true, 
+              backup_type: 'failsafe_pre_production',
+              backup_id: preProductionBackupId 
+            }
+          }
         });
         
-        return jsonResponse({
-          success: true,
-          plan_id,
-          run_id: run?.id,
-          status: 'applied',
-          mode: 'production',
-          improvements_applied: improvements.length,
-          pre_health: currentHealth,
-          post_health: currentHealth,
-          message: `${improvements.length} improvement(s) promoted to production successfully.`,
-          timestamp: new Date().toISOString(),
-        }, corsHeaders);
+        if (backupError || !backupResult?.success) {
+          console.warn(`⚠️ Failsafe backup warning: ${backupError?.message || backupResult?.error || 'Unknown error'}`);
+        }
+        
+        const failsafeBackupId = backupResult?.backup_id || preProductionBackupId;
+        
+        try {
+          // Update improvement tracking to production mode
+          const improvements = plan.diff_summary || [];
+          for (const imp of improvements) {
+            await markImprovementApplied(supabase, imp, plan_id, 'production');
+          }
+          
+          // Create run record
+          const { data: run } = await supabase
+            .from('substrate_upgrade_runs')
+            .insert({
+              plan_id: plan_id,
+              result: 'success',
+              finished_at: new Date().toISOString(),
+              post_health_snapshot: healthData,
+            })
+            .select()
+            .single();
+          
+          // Update plan status with failsafe backup reference
+          await supabase.from('substrate_upgrade_plans').update({
+            status: 'applied',
+            mode: 'production',
+            failsafe_backup_id: failsafeBackupId,
+            after_health_snapshot: healthData,
+            operator_notes: `Production applied at ${new Date().toISOString()}. Failsafe: ${failsafeBackupId}${notes ? '. ' + notes : ''}`,
+          }).eq('id', plan_id);
+          
+          // Log event
+          await supabase.from('brain_events').insert({
+            event_type: 'upgrade_production_applied',
+            module: 'system',
+            outcome: 'success',
+            data: { plan_id, run_id: run?.id, improvements_count: improvements.length, failsafe_backup_id: failsafeBackupId }
+          });
+          
+          return jsonResponse({
+            success: true,
+            plan_id,
+            run_id: run?.id,
+            status: 'applied',
+            mode: 'production',
+            failsafe_backup_id: failsafeBackupId,
+            improvements_applied: improvements.length,
+            pre_health: currentHealth,
+            post_health: currentHealth,
+            message: `${improvements.length} improvement(s) promoted to production successfully. Failsafe backup: ${failsafeBackupId}`,
+            timestamp: new Date().toISOString(),
+          }, corsHeaders);
+          
+        } catch (applyError) {
+          // ATOMIC ROLLBACK: Revert all changes on production failure
+          console.error(`❌ Production apply failed, initiating emergency rollback: ${applyError}`);
+          
+          // Remove any partially applied improvements
+          await removeImprovementApplied(supabase, plan_id);
+          
+          // Restore from failsafe backup
+          if (failsafeBackupId) {
+            console.log(`🔄 Emergency restore from failsafe: ${failsafeBackupId}`);
+            await supabase.functions.invoke('pf-substrate', {
+              body: { module: 'system', action: 'restore', payload: { backup_id: failsafeBackupId } }
+            });
+          }
+          
+          // Update plan status to reflect failure
+          await supabase.from('substrate_upgrade_plans').update({
+            status: 'apply_failed',
+            operator_notes: `Production apply failed at ${new Date().toISOString()}. Auto-rollback completed. Error: ${applyError instanceof Error ? applyError.message : String(applyError)}`,
+          }).eq('id', plan_id);
+          
+          // Log failure
+          await supabase.from('brain_events').insert({
+            event_type: 'upgrade_production_failed',
+            module: 'system',
+            outcome: 'failure',
+            data: { 
+              plan_id, 
+              error: applyError instanceof Error ? applyError.message : String(applyError),
+              failsafe_backup_id: failsafeBackupId,
+              auto_rollback: true
+            }
+          });
+          
+          return jsonResponse({
+            success: false,
+            error: 'PRODUCTION_APPLY_FAILED',
+            error_message: `Production apply failed: ${applyError instanceof Error ? applyError.message : String(applyError)}. Emergency rollback completed. System restored to failsafe state.`,
+            failsafe_backup_id: failsafeBackupId,
+            auto_rollback: true,
+          }, corsHeaders, 500);
+        }
       }
       
       case 'apply_plan': {

@@ -9391,6 +9391,7 @@ export type Database = {
           created_at: string
           diff_summary: Json | null
           estimated_blast_radius: string | null
+          failsafe_backup_id: string | null
           id: string
           is_shadow: boolean | null
           mode: string
@@ -9415,6 +9416,7 @@ export type Database = {
           created_at?: string
           diff_summary?: Json | null
           estimated_blast_radius?: string | null
+          failsafe_backup_id?: string | null
           id?: string
           is_shadow?: boolean | null
           mode?: string
@@ -9439,6 +9441,7 @@ export type Database = {
           created_at?: string
           diff_summary?: Json | null
           estimated_blast_radius?: string | null
+          failsafe_backup_id?: string | null
           id?: string
           is_shadow?: boolean | null
           mode?: string
