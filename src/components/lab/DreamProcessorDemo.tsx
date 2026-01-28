@@ -34,7 +34,18 @@ export function DreamProcessorDemo() {
   const [dreamsProcessed, setDreamsProcessed] = useState(1247);
 
   useEffect(() => {
-    supabase.from('brain_memory_hot').select('*', { count: 'exact', head: true }).eq('memory_type', 'dream').then(({ count }) => setDreamsProcessed(count || 1247));
+    const fetchCount = async () => {
+      try {
+        const result = await (supabase
+          .from('brain_memory_hot')
+          .select('*', { count: 'exact', head: true }) as any)
+          .eq('memory_type', 'dream');
+        setDreamsProcessed(result?.count || 1247);
+      } catch {
+        setDreamsProcessed(1247);
+      }
+    };
+    fetchCount();
   }, []);
 
   const handleProcessDream = async () => {
