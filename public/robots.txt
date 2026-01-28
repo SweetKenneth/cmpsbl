@@ -1,9 +1,9 @@
-# PromptFluid.com robots.txt - 2026 SEO Optimized
+# CMPSBL Substrate OS v6.0.0 robots.txt - 2026 SEO Optimized
 # https://promptfluid.com/robots.txt
-# Last updated: 2026-01-03
+# Last updated: 2026-01-28
 
 # =============================================================
-# DEFAULT: Allow all crawlers
+# DEFAULT: Allow all crawlers - no blocking loaders
 # =============================================================
 User-agent: *
 Allow: /
@@ -14,11 +14,44 @@ Sitemap: https://promptfluid.com/sitemap.xml
 Sitemap: https://promptfluid.com/sitemap-blog.xml
 
 # 2026 SEO: LLM Context Files
-# These files provide structured data for AI crawlers
 Allow: /llms.txt
+Allow: /llms-txt
 Allow: /humans.txt
+Allow: /humans-txt
 Allow: /.well-known/ai-plugin.json
 Allow: /.well-known/security.txt
+
+# =============================================================
+# v6.0.0 STANDARDS PAGES: High Priority
+# =============================================================
+Allow: /foundations
+Allow: /namespace
+Allow: /library
+Allow: /library/*
+
+# =============================================================
+# SUBSTRATE OS CORE PAGES: High Priority
+# =============================================================
+Allow: /os
+Allow: /substrate
+Allow: /demo
+Allow: /marketplace
+Allow: /marketplace/*
+Allow: /forge
+Allow: /forge/*
+Allow: /decode
+Allow: /agency
+
+# =============================================================
+# DOCUMENTATION & DEVELOPER RESOURCES
+# =============================================================
+Allow: /documentation
+Allow: /docs/*
+Allow: /dev-portal
+Allow: /devtools
+Allow: /developers
+Allow: /changelog
+Allow: /use-cases
 
 # =============================================================
 # PROTECTED AREAS: Block sensitive routes
@@ -35,6 +68,7 @@ Disallow: /_next/
 Disallow: /*.json$
 Disallow: /*?*preview=
 Disallow: /*?*draft=
+Disallow: /a/
 
 # =============================================================
 # PRIORITY CONTENT: Explicitly allow important pages
@@ -43,9 +77,10 @@ Allow: /blog/
 Allow: /blog/*
 Allow: /about
 Allow: /solutions
-Allow: /products/
-Allow: /products/*
-Allow: /projects/
+Allow: /investors
+Allow: /contact
+Allow: /projects
+Allow: /roadmap
 Allow: /sitemap.xml
 Allow: /rss.xml
 
@@ -75,7 +110,10 @@ Crawl-delay: 3
 Allow: /blog/
 Allow: /about
 Allow: /solutions
-Allow: /products/
+Allow: /foundations
+Allow: /namespace
+Allow: /library
+Allow: /marketplace
 
 User-agent: Google-InspectionTool
 Allow: /
@@ -104,7 +142,11 @@ Crawl-delay: 5
 Allow: /blog/
 Allow: /about
 Allow: /solutions
-Allow: /products/
+Allow: /foundations
+Allow: /namespace
+Allow: /library
+Allow: /marketplace
+Allow: /llms.txt
 Disallow: /admin
 Disallow: /dashboard
 Disallow: /api/
@@ -114,7 +156,9 @@ Crawl-delay: 5
 Allow: /blog/
 Allow: /about
 Allow: /solutions
-Allow: /products/
+Allow: /foundations
+Allow: /namespace
+Allow: /library
 
 # Anthropic Claude Crawlers
 User-agent: anthropic-ai
@@ -122,21 +166,27 @@ Crawl-delay: 5
 Allow: /blog/
 Allow: /about
 Allow: /solutions
-Allow: /products/
+Allow: /foundations
+Allow: /namespace
+Allow: /library
 
 User-agent: Claude-Web
 Crawl-delay: 5
 Allow: /blog/
 Allow: /about
 Allow: /solutions
-Allow: /products/
+Allow: /foundations
+Allow: /namespace
+Allow: /library
 
 User-agent: ClaudeBot
 Crawl-delay: 5
 Allow: /blog/
 Allow: /about
 Allow: /solutions
-Allow: /products/
+Allow: /foundations
+Allow: /namespace
+Allow: /library
 
 # Perplexity AI
 User-agent: PerplexityBot
@@ -144,7 +194,9 @@ Crawl-delay: 5
 Allow: /blog/
 Allow: /about
 Allow: /solutions
-Allow: /products/
+Allow: /foundations
+Allow: /namespace
+Allow: /library
 
 # Meta AI
 User-agent: FacebookBot
@@ -155,14 +207,16 @@ User-agent: meta-externalagent
 Crawl-delay: 5
 Allow: /blog/
 Allow: /about
-Allow: /products/
+Allow: /foundations
+Allow: /namespace
 
 # Cohere AI
 User-agent: cohere-ai
 Crawl-delay: 5
 Allow: /blog/
 Allow: /about
-Allow: /products/
+Allow: /foundations
+Allow: /namespace
 
 # Common Crawl (AI training datasets)
 User-agent: CCBot
@@ -170,6 +224,7 @@ Crawl-delay: 10
 Allow: /blog/
 Allow: /about
 Allow: /solutions
+Allow: /foundations
 Disallow: /admin
 Disallow: /dashboard
 
@@ -188,7 +243,8 @@ User-agent: YouBot
 Crawl-delay: 5
 Allow: /blog/
 Allow: /about
-Allow: /products/
+Allow: /foundations
+Allow: /namespace
 
 # Brave Search
 User-agent: BraveBot
