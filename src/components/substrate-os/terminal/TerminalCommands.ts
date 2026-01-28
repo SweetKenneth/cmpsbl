@@ -17,7 +17,8 @@ export interface CommandDefinition {
 }
 
 export const BRAIN_COMMANDS: CommandDefinition[] = [
-  { command: 'brain.status', description: 'Module health status', category: 'brain', icon: Brain, requiresOperator: false },
+  // Core operations
+  { command: 'brain.status', description: 'Full tier status (hot/warm/cold)', category: 'brain', icon: Brain, requiresOperator: false },
   { command: 'brain.query', description: 'Search memories by text', category: 'brain', icon: Search, requiresOperator: true, args: '<query>', example: 'brain.query machine learning' },
   { command: 'brain.remember', description: 'Store a new memory', category: 'brain', icon: Database, requiresOperator: true, args: '<content> [type]', example: 'brain.remember "neural nets learn via backprop" fact' },
   { command: 'brain.recall', description: 'Retrieve specific memories', category: 'brain', icon: Brain, requiresOperator: true, args: '<query> [limit]', example: 'brain.recall quantum 5' },
@@ -25,41 +26,44 @@ export const BRAIN_COMMANDS: CommandDefinition[] = [
   { command: 'brain.dream', description: 'Run autonomous dream cycle', category: 'brain', icon: Moon, requiresOperator: true },
   { command: 'brain.reinforce', description: 'Boost memory confidence', category: 'brain', icon: Brain, requiresOperator: true, args: '<memory_id> [boost]' },
   { command: 'brain.synthesize', description: 'Cross-domain synthesis', category: 'brain', icon: Brain, requiresOperator: true },
+  // Memory management
+  { command: 'brain.tier', description: 'Run hot→warm→cold tiering cycle', category: 'brain', icon: Database, requiresOperator: true, args: '[mode]', example: 'brain.tier aggressive' },
   { command: 'brain.optimize', description: 'Compress and clean memory', category: 'brain', icon: Brain, requiresOperator: true },
-  { command: 'brain.deep_think', description: 'Extended reasoning mode', category: 'brain', icon: Brain, requiresOperator: true, args: '<query> [depth]', example: 'brain.deep_think "consciousness" 3' },
-  { command: 'brain.hypothesis_test', description: 'Test against knowledge graph', category: 'brain', icon: Brain, requiresOperator: true, args: '<hypothesis>' },
+  { command: 'brain.prune', description: 'Remove low-value memories', category: 'brain', icon: Database, requiresOperator: true, args: '[threshold]', example: 'brain.prune 0.1' },
+  // Reasoning
+  { command: 'brain.deep_think', description: 'Extended multi-step reasoning', category: 'brain', icon: Brain, requiresOperator: true, args: '<query> [depth]', example: 'brain.deep_think "consciousness" 3' },
+  { command: 'brain.hypothesis_test', description: 'IF-THEN scenario modeling', category: 'brain', icon: Brain, requiresOperator: true, args: '<claim> [context]', example: 'brain.hypothesis_test "memory compression improves recall"' },
+  { command: 'brain.causal', description: 'Causal reasoning & hypothesis gen', category: 'brain', icon: Brain, requiresOperator: true, args: '[query_id]' },
+  { command: 'brain.ethical', description: 'Ethical/legal risk evaluation', category: 'brain', icon: Shield, requiresOperator: true, args: '<proposed_action>', example: 'brain.ethical "store user data without consent"' },
+  { command: 'brain.self_critique', description: 'Output quality review', category: 'brain', icon: Brain, requiresOperator: true, args: '<output> [output_type]', example: 'brain.self_critique "report content" text' },
+  { command: 'brain.systems_reason', description: 'Multi-layer dependency mapping', category: 'brain', icon: Brain, requiresOperator: true, args: '<system> <issue>', example: 'brain.systems_reason substrate "slow response"' },
+  { command: 'brain.pattern_fusion', description: 'Merge insights from unrelated domains', category: 'brain', icon: Brain, requiresOperator: true, args: '<problem> [domain_1] [domain_2]', example: 'brain.pattern_fusion "optimize memory" biology architecture' },
+  // Learning & knowledge
   { command: 'brain.cognitive_cycle', description: 'Full cognitive loop', category: 'brain', icon: Activity, requiresOperator: true },
   { command: 'brain.continuous_learn', description: 'Toggle 24/7 learning', category: 'brain', icon: Brain, requiresOperator: true, args: '<enabled>', example: 'brain.continuous_learn true' },
   { command: 'brain.graph_build', description: 'Update knowledge graph', category: 'brain', icon: Database, requiresOperator: true },
   { command: 'brain.graph_summary', description: 'Knowledge graph overview', category: 'brain', icon: Database, requiresOperator: false },
   { command: 'brain.graph', description: 'Knowledge graph surfaces', category: 'brain', icon: Database, requiresOperator: false, args: '[--inspect|--stats|--export]' },
+  { command: 'brain.synthesize_knowledge', description: 'Compress findings into core principles', category: 'brain', icon: Brain, requiresOperator: true },
+  { command: 'brain.lesson_compress', description: 'Compress session learnings into lesson cards', category: 'brain', icon: Brain, requiresOperator: true, args: '[timeframe]', example: 'brain.lesson_compress last_hour' },
+  // Analysis & monitoring
   { command: 'brain.curiosity', description: 'Get exploration queries', category: 'brain', icon: Search, requiresOperator: false },
+  { command: 'brain.curiosity_reflect', description: 'Prioritize topics by curiosity score', category: 'brain', icon: Search, requiresOperator: true },
   { command: 'brain.explore', description: 'Active research query', category: 'brain', icon: Search, requiresOperator: true, args: '<query>' },
   { command: 'brain.patterns', description: 'Learning patterns/insights', category: 'brain', icon: Brain, requiresOperator: false },
   { command: 'brain.session_reflection', description: 'Session activity summary', category: 'brain', icon: Clock, requiresOperator: false, args: '[hours]' },
   { command: 'brain.coherence_check', description: 'Memory coherence validation', category: 'brain', icon: Brain, requiresOperator: false, args: '[depth]' },
   { command: 'brain.forecast', description: 'Predictive forecasting', category: 'brain', icon: Activity, requiresOperator: false, args: '[metric] [window]' },
-  // v6.0.1: 8 NEW cognitive actions from archived brain functions
-  { command: 'brain.pattern_fusion', description: 'Merge insights from unrelated domains', category: 'brain', icon: Brain, requiresOperator: true, args: '<problem> [domain_1] [domain_2]', example: 'brain.pattern_fusion "optimize memory" biology architecture' },
-  { command: 'brain.systems_reason', description: 'Multi-layer dependency mapping', category: 'brain', icon: Brain, requiresOperator: true, args: '<system> <issue>', example: 'brain.systems_reason substrate "slow response"' },
-  { command: 'brain.causal', description: 'Causal reasoning & hypothesis gen', category: 'brain', icon: Brain, requiresOperator: true, args: '[query_id]' },
-  { command: 'brain.ethical', description: 'Ethical/legal risk evaluation', category: 'brain', icon: Shield, requiresOperator: true, args: '<proposed_action>', example: 'brain.ethical "store user data without consent"' },
-  { command: 'brain.curiosity_reflect', description: 'Prioritize topics by curiosity score', category: 'brain', icon: Search, requiresOperator: true },
-  { command: 'brain.persona_refine', description: 'Optimize persona patterns', category: 'brain', icon: Brain, requiresOperator: true },
-  { command: 'brain.lesson_compress', description: 'Compress session learnings into lesson cards', category: 'brain', icon: Brain, requiresOperator: true, args: '[timeframe]', example: 'brain.lesson_compress last_hour' },
-  { command: 'brain.reinforce_cycle', description: 'Enhanced reinforcement learning', category: 'brain', icon: Brain, requiresOperator: true, args: '[lookbackHours] [minScore]', example: 'brain.reinforce_cycle 24 0.5' },
-  // v6.0.2: 12 NEW cognitive actions from archived brain functions
-  { command: 'brain.deep_think', description: 'Extended multi-step reasoning', category: 'brain', icon: Brain, requiresOperator: true, args: '<query> [depth]', example: 'brain.deep_think "consciousness" 3' },
-  { command: 'brain.hypothesis_test', description: 'IF-THEN scenario modeling', category: 'brain', icon: Brain, requiresOperator: true, args: '<claim> [context]', example: 'brain.hypothesis_test "memory compression improves recall"' },
-  { command: 'brain.self_critique', description: 'Output quality review (clarity/accuracy/completeness)', category: 'brain', icon: Brain, requiresOperator: true, args: '<output> [output_type]', example: 'brain.self_critique "report content" text' },
+  { command: 'brain.forecast_eval', description: 'Evaluate forecast accuracy', category: 'brain', icon: Activity, requiresOperator: true },
+  // Advanced cognition
   { command: 'brain.tone_detect', description: 'Emotional tone & persona analysis', category: 'brain', icon: Brain, requiresOperator: true, args: '<message>', example: 'brain.tone_detect "I am confused about this feature"' },
   { command: 'brain.insight_aggregate', description: 'Cross-module metric collection', category: 'brain', icon: Database, requiresOperator: true },
   { command: 'brain.insight_synthesize', description: 'Strategic insight generation', category: 'brain', icon: Brain, requiresOperator: true },
   { command: 'brain.temporal_score', description: 'Memory freshness scoring', category: 'brain', icon: Clock, requiresOperator: true, args: '[query] [context_type]', example: 'brain.temporal_score research' },
   { command: 'brain.reflexive_plan', description: 'Task decomposition with context audit', category: 'brain', icon: Brain, requiresOperator: true, args: '<task> [context]', example: 'brain.reflexive_plan "optimize memory tiering"' },
   { command: 'brain.reward', description: 'Apply reward/penalty to memory confidence', category: 'brain', icon: Brain, requiresOperator: true, args: '<memory_id> [reward_score] [outcome_type]', example: 'brain.reward abc123 0.1 positive' },
-  { command: 'brain.synthesize_knowledge', description: 'Compress findings into core principles', category: 'brain', icon: Brain, requiresOperator: true },
-  { command: 'brain.forecast_eval', description: 'Evaluate forecast accuracy against actuals', category: 'brain', icon: Activity, requiresOperator: true },
+  { command: 'brain.reinforce_cycle', description: 'Enhanced reinforcement learning', category: 'brain', icon: Brain, requiresOperator: true, args: '[lookbackHours] [minScore]', example: 'brain.reinforce_cycle 24 0.5' },
+  { command: 'brain.persona_refine', description: 'Optimize persona patterns', category: 'brain', icon: Brain, requiresOperator: true },
 ];
 
 export const DECODE_COMMANDS: CommandDefinition[] = [
