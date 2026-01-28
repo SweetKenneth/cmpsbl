@@ -20,6 +20,8 @@
 
 The INCLUSIVE module provides a complete human-compatibility pipeline for the substrate. It ensures all outputs, interfaces, and generated content meet accessibility standards (WCAG 2.2) and inclusive design principles.
 
+**INCLUSIVE was introduced in v6.0.0 and is now a first-class module** — it is not experimental or optional. All 14-module substrate deployments include INCLUSIVE as a core capability.
+
 The module was created by migrating and normalizing archived CMPTBL/Clarity utilities, preserving their battle-tested accessibility logic while integrating them into the substrate lifecycle.
 
 ---

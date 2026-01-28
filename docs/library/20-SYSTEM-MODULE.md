@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — SYSTEM Module Deep Dive
 
-**Version 5.5.0 | Scientific Publication**
+**Version 6.0.0 | Scientific Publication**
 
 ---
 
@@ -10,8 +10,8 @@
 |-------|-------|
 | **Document ID** | CMPSBL-LIB-020 |
 | **Module** | SYSTEM |
-| **Layer** | Administrative |
-| **Version** | v1.2 |
+| **Layer** | Administrative / Orchestrator |
+| **Version** | v2.0 |
 
 ---
 
@@ -31,31 +31,32 @@
 
 ## 1. Module Overview
 
-SYSTEM is the administrative control module, providing backup/restore capabilities, diagnostics, configuration management, and operational controls.
+SYSTEM is the **orchestrator and lifecycle manager** for the substrate (Option 1 mapping). It provides boot graph management, module lifecycle coordination, backup/restore capabilities, diagnostics, configuration management, and operational controls across all 14 modules.
 
 | Property | Value |
 |----------|-------|
 | **Name** | SYSTEM |
-| **Layer** | Administrative |
+| **Layer** | Administrative / Orchestrator |
 | **Boot Order** | 11 |
 | **Dependencies** | CORE, VISION |
+| **Role** | Top-level substrate kernel/orchestrator |
 
 ---
 
 ## 2. Responsibilities
 
-### 2.1 Backup & Restore
+### 2.1 Orchestration & Lifecycle
+
+SYSTEM manages the substrate boot graph and module lifecycle:
+
+- Boot sequencing for all 14 modules
+- Cross-module coordination and health decisions
+- Routing of `system.*` commands
+- High-level health decisions and healing triggers
+
+### 2.2 Backup & Restore
 
 Complete system state preservation:
-
-- Memory snapshots
-- Configuration export
-- Module state capture
-- Restoration workflows
-
-### 2.2 Diagnostics
-
-Comprehensive health analysis:
 
 - Per-module health checks
 - Circuit breaker status
@@ -185,5 +186,17 @@ The SYSTEM module maintains a centralized resilience log:
 
 ---
 
-*CMPSBL OS Substrate v5.5.0*
+## 8. 14-Module Awareness
+
+SYSTEM is aware of and coordinates all 14 modules:
+
+1. CORE, RIPPLE, ACCESS (Kernel)
+2. BRAIN, DECODE, DREAM (Cognitive)
+3. DEFENSE, NEXUS, VISION, INTEGRATION (Operational)
+4. SYSTEM, MODERNIZER, INCLUSIVE (Admin)
+5. CORTEX (Orchestrator)
+
+---
+
+*CMPSBL OS Substrate v6.0.0 — Human Compatibility Era*
 *© 2025-2026 PromptFluid®. All rights reserved.*

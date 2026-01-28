@@ -31,12 +31,13 @@ AI: Multi-provider (OpenAI, Anthropic, Google, Groq)
 - Vite
 - PWA Enabled
 
-/* SUBSTRATE OS v5.5.0 */
-- 13 Core Modules (Kernel, Cognitive, Operational, Admin, Orchestrator)
-- 250+ Terminal Commands
-- 5-Layer Architecture
+/* SUBSTRATE OS v6.0.0 */
+- 14 Core Modules: CORE, RIPPLE, ACCESS, BRAIN, DECODE, DREAM, DEFENSE, NEXUS, VISION, INTEGRATION, SYSTEM, MODERNIZER, INCLUSIVE, CORTEX
+- 260+ Terminal Commands
+- 5-Layer Architecture (Kernel, Cognitive, Operational, Admin, Orchestrator)
 - BYOK (Bring Your Own Key) Support
 - Dream Cycles & Persistent Memory
+- WCAG 2.2 Accessibility via INCLUSIVE Module
 
 /* HISTORY */
 Founded: 2009

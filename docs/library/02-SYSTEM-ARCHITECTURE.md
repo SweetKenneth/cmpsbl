@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — System Architecture
 
-**Version 5.5.0 | Scientific Publication**
+**Version 6.0.0 | Scientific Publication**
 
 ---
 
@@ -9,7 +9,7 @@
 | Field | Value |
 |-------|-------|
 | **Document ID** | CMPSBL-LIB-002 |
-| **Version** | v5.5.0 |
+| **Version** | v6.0.0 |
 | **Last Updated** | January 2026 |
 | **Classification** | Public Research Document |
 
@@ -31,7 +31,7 @@
 
 ## 1. Architectural Overview
 
-The CMPSBL OS Substrate implements a four-layer kernel architecture with an additional orchestrator layer, comprising 13 specialized modules that work in concert to provide cognitive orchestration capabilities.
+The CMPSBL OS Substrate implements a five-layer kernel architecture with 14 specialized modules that work in concert to provide cognitive orchestration capabilities.
 
 ### 1.1 High-Level Architecture Diagram
 
@@ -77,11 +77,16 @@ The CMPSBL OS Substrate implements a four-layer kernel architecture with an addi
 │                                                                             │
 │  ┌───────────────┐  ┌───────────────┐  ┌───────────────┐  ┌───────────────┐ │
 │  │    DREAM      │  │ INTEGRATION   │  │   SYSTEM      │  │  MODERNIZER   │ │
-│  │   Evolution   │  │  Enterprise   │  │   Admin       │  │  Self-Upgrade │ │
-│  │   Synthesis   │  │   Adapters    │  │   Operations  │  │   Engine      │ │
+│  │   Evolution   │  │  Enterprise   │  │   Orchestrate │  │  Self-Upgrade │ │
+│  │   Synthesis   │  │   Adapters    │  │   Lifecycle   │  │   Engine      │ │
 │  └───────────────┘  └───────────────┘  └───────────────┘  └───────────────┘ │
 │                                                                             │
-│                          CMPSBL OS SUBSTRATE v5.5.0                         │
+│  ┌───────────────────────────────────────────────────────────────────────┐ │
+│  │                           INCLUSIVE                                   │ │
+│  │          Accessibility • Human Compatibility • AI Governance          │ │
+│  └───────────────────────────────────────────────────────────────────────┘ │
+│                                                                             │
+│                          CMPSBL OS SUBSTRATE v6.0.0                         │
 └─────────────────────────────────────────────────────────────────────────────┘
                                        │
                               ┌────────▼────────┐
@@ -129,20 +134,42 @@ The service layer providing security, routing, and monitoring.
 
 ### 2.4 Administrative Layer
 
-The control layer for system operations and self-improvement.
+The control layer for system operations, self-improvement, and human compatibility.
 
 | Module | Purpose | Key Functions |
 |--------|---------|---------------|
-| **SYSTEM** | Operations | Backup, restore, diagnostics, configuration |
+| **SYSTEM** | Orchestration & Lifecycle | Boot graph, module lifecycle, cross-module coordination, `system.status`, `system.heal` |
 | **MODERNIZER** | Self-Upgrade | Proposal generation, shadow testing |
+| **INCLUSIVE** | Human Compatibility | WCAG 2.2 scanning, repair, validation, accessibility profiles |
 
 ### 2.5 Orchestrator Layer
 
-The agency-class coordination layer.
+The policy intent and coordination layer (manual mode in v6.0.0).
 
 | Module | Purpose | Key Functions |
 |--------|---------|---------------|
-| **CORTEX** | Autonomous Orchestration | PROPOSE → EVALUATE → APPLY → AUDIT → LEARN |
+| **CORTEX** | Policy Intent Layer | `cortex.status`, collaborates with SYSTEM and MODERNIZER, no auto-apply without human approval |
+
+---
+
+## 2.6 Module Roles (v6.0.0)
+
+The 14-module substrate follows this canonical role mapping:
+
+- **SYSTEM** — Orchestration & lifecycle (top-level substrate kernel/orchestrator)
+- **CORTEX** — Interpreter & policy intent, bridge between operators and modules (manual mode)
+- **DECODE** — Language interface / epistemic I/O, not the substrate brain
+- **MODERNIZER** — Reflection & upgrade loop (proposals, shadow apply, then live)
+- **RIPPLE** — I/O, event stream, and cognitive bus
+- **INTEGRATION** — Binding glue for modules, adapters, and external surfaces
+- **BRAIN** — Memory, doctrine, learning tiers
+- **VISION** — Telemetry, metrics, observability
+- **DEFENSE** — Threat modeling, security, protections
+- **ACCESS** — Identity, permissions, credentials
+- **DREAM** — Dream cycles, compression, speculative runs
+- **NEXUS** — Provider routing and LLM/multi-model switching
+- **INCLUSIVE** — Accessibility, inclusive operation, AI governance/ethics hooks
+- **CORE** — Foundational config, primitives, and shared types
 
 ---
 
@@ -575,10 +602,11 @@ CMPSBL OS Substrate v5.5.0
 [INTEGRATION]████████████ READY      10ms
 [SYSTEM]     ████████████ READY       5ms
 [MODERNIZER] ████████████ READY      11ms
-[CORTEX]     ████████████ READY      14ms
+[INCLUSIVE]  ████████████ READY       8ms
+[CORTEX]     ████████████ READY      14ms  (mode: manual)
 ─────────────────────────────────
-13 modules loaded | Health: 100%
-Boot complete in 109ms
+14 modules loaded | Health: 100%
+Boot complete in 117ms
 ```
 
 ---
@@ -587,12 +615,13 @@ Boot complete in 109ms
 
 The CMPSBL OS Substrate implements a sophisticated multi-layer architecture designed for autonomous AI operations. Key architectural decisions include:
 
-1. **Separation of Concerns** — 13 specialized modules with clear boundaries
+1. **Separation of Concerns** — 14 specialized modules with clear boundaries
 2. **Resilience by Design** — Circuit breakers, auto-healing, graceful degradation
 3. **Memory as First-Class Citizen** — Three-tier architecture with knowledge graph
 4. **Provider Independence** — Multi-provider routing with automatic fallback
 5. **Observable Operations** — Comprehensive telemetry and monitoring
 6. **Controlled Evolution** — Structured self-improvement with safety gates
+7. **Human Compatibility** — WCAG 2.2 accessibility via INCLUSIVE module
 
 ---
 
@@ -607,5 +636,5 @@ The CMPSBL OS Substrate implements a sophisticated multi-layer architecture desi
 
 ---
 
-*CMPSBL OS Substrate v5.5.0*
+*CMPSBL OS Substrate v6.0.0 — Human Compatibility Era*
 *© 2025-2026 PromptFluid®. All rights reserved.*

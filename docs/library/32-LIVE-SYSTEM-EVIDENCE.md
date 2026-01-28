@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Live System Evidence
 
-**Version 5.5.0 | Scientific Publication**
+**Version 6.0.0 | Scientific Publication**
 
 ---
 
@@ -9,7 +9,7 @@
 | Field | Value |
 |-------|-------|
 | **Document ID** | CMPSBL-LIB-032 |
-| **Version** | v5.5.0 |
+| **Version** | v6.0.0 |
 | **Last Updated** | January 2026 |
 | **Classification** | Public Research Document |
 
@@ -42,7 +42,7 @@ This document provides evidence that the CMPSBL OS Substrate is a live, operatio
 The following represents the actual boot sequence output:
 
 ```
-CMPSBL OS Substrate v5.5.0
+CMPSBL OS Substrate v6.0.0
 ─────────────────────────────────
 [CORE]       ████████████ READY      12ms
 [RIPPLE]     ████████████ READY       3ms
@@ -56,10 +56,11 @@ CMPSBL OS Substrate v5.5.0
 [INTEGRATION]████████████ READY      10ms
 [SYSTEM]     ████████████ READY       5ms
 [MODERNIZER] ████████████ READY      11ms
-[CORTEX]     ████████████ READY      14ms
+[INCLUSIVE]  ████████████ READY       8ms
+[CORTEX]     ████████████ READY      14ms  (mode: manual)
 ─────────────────────────────────
-13 modules loaded | Health: 100%
-Boot complete in 109ms
+14 modules loaded | Health: 100%
+Boot complete in 117ms
 ```
 
 ### 2.2 Version Information
@@ -68,9 +69,9 @@ Boot complete in 109ms
 > version
 
 CMPSBL OS Substrate
-Version: 5.5.0
-Modules: 13
-Commands: 250+
+Version: 6.0.0
+Modules: 14
+Commands: 260+
 Status: Production
 ```
 
@@ -91,12 +92,12 @@ Status: Production
     "state": "running",
     "overall_health": 100,
     "overall_status": "healthy",
-    "modules_count": 13,
+    "modules_count": 14,
     "uptime_ms": 3600000,
-    "version": "5.5.0",
+    "version": "6.0.0",
     "proof_mode": false
   },
-  "timestamp": "2026-01-25T12:00:00.000Z"
+  "timestamp": "2026-01-28T12:00:00.000Z"
 }
 ```
 
@@ -123,7 +124,8 @@ Status: Production
       "integration": { "health": 100, "status": "healthy", "circuit_state": "closed" },
       "system": { "health": 100, "status": "healthy", "circuit_state": "closed" },
       "modernizer": { "health": 100, "status": "healthy", "circuit_state": "closed" },
-      "cortex": { "health": 100, "status": "healthy", "circuit_state": "closed" }
+      "inclusive": { "health": 100, "status": "healthy", "circuit_state": "closed" },
+      "cortex": { "health": 100, "status": "healthy", "circuit_state": "closed", "mode": "manual" }
     }
   }
 }
@@ -182,7 +184,7 @@ Status: Production
 ```
 > help
 
-CMPSBL OS Substrate v5.5.0 — Command Reference
+CMPSBL OS Substrate v6.0.0 — Command Reference
 
 SYSTEM Commands:
   system.status        ∷ Overall system status
@@ -190,6 +192,7 @@ SYSTEM Commands:
   system.diagnostics   ∷ Full diagnostics [--full]
   system.modules       ∷ List all modules [--full]
   system.resilience    ∷ Circuit breaker states
+  system.heal          ∷ Trigger auto-heal
   ...
 
 BRAIN Commands:
@@ -199,7 +202,14 @@ BRAIN Commands:
   brain.graph          ∷ Knowledge graph [--inspect|--stats|--export]
   ...
 
-[250+ total commands across 13 modules]
+INCLUSIVE Commands:
+  inclusive.scan       ∷ Scan target for accessibility issues
+  inclusive.repair     ∷ Repair accessibility issues
+  inclusive.validate   ∷ Validate WCAG 2.2 compliance
+  inclusive.report     ∷ Generate compliance report
+  ...
+
+[260+ total commands across 14 modules]
 ```
 
 ---
@@ -237,14 +247,16 @@ BRAIN Commands:
 {
   "success": true,
   "data": {
-    "timestamp": "2026-01-25T12:00:00.000Z",
+    "timestamp": "2026-01-28T12:00:00.000Z",
     "overall_health": 100,
-    "active_modules": 13,
+    "active_modules": 14,
     "requests_per_minute": 127,
     "error_rate": 0.0,
     "p50_latency_ms": 42,
     "p95_latency_ms": 115,
     "p99_latency_ms": 238
+  }
+}
   }
 }
 ```
@@ -265,16 +277,16 @@ BRAIN Commands:
       "kernel": ["core", "ripple", "access"],
       "cognitive": ["brain", "decode", "dream"],
       "operational": ["defense", "nexus", "vision", "integration"],
-      "admin": ["system", "modernizer"],
+      "admin": ["system", "modernizer", "inclusive"],
       "orchestrator": ["cortex"]
     },
     "counts": {
       "kernel": 3,
       "cognitive": 3,
       "operational": 4,
-      "admin": 2,
+      "admin": 3,
       "orchestrator": 1,
-      "total": 13
+      "total": 14
     }
   }
 }
@@ -288,11 +300,11 @@ BRAIN Commands:
 
 | Metric | Value |
 |--------|-------|
-| Total lines of code | 131,000+ |
+| Total lines of code | 140,000+ |
 | Source files | 500+ |
 | Edge function size | 15,000+ lines |
-| Database tables | 50+ |
-| Terminal commands | 250+ |
+| Database tables | 60+ |
+| Terminal commands | 260+ |
 
 ### 9.2 Technology Stack
 
@@ -330,5 +342,5 @@ To arrange verification or obtain licensed access:
 
 ---
 
-*CMPSBL OS Substrate v5.5.0*
+*CMPSBL OS Substrate v6.0.0 — Human Compatibility Era*
 *© 2025-2026 PromptFluid®. All rights reserved.*

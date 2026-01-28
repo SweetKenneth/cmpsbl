@@ -47,9 +47,9 @@ const changelog: ChangelogEntry[] = [
     date: "2026-01-25",
     title: "Full System Stabilization",
     emoji: "🏛️",
-    description: "The substrate achieves stability. 13 modules at the time. 250+ commands. Every introspection surface wired. Every governance command operational. The system sees itself completely.",
+    description: "The substrate achieves stability. 13 modules at the time. 250+ commands. Every introspection surface wired. Every governance command operational. The system sees itself completely. (Now superseded by v6.0.0 with 14 modules.)",
     changes: [
-      { type: 'added', text: "Cortex module (13th) — Agency-class orchestrator with PROPOSE → EVALUATE → APPLY → AUDIT → LEARN loop." },
+      { type: 'added', text: "Cortex module (13th at the time) — Agency-class orchestrator with PROPOSE → EVALUATE → APPLY → AUDIT → LEARN loop." },
       { type: 'added', text: "cortex.world — Full module registry snapshot with --dag, --roles, --eligible flags." },
       { type: 'added', text: "cortex.inventory — Module inventory with health scores and eligibility filtering." },
       { type: 'added', text: "cortex.plan --eligible — Evolution sequence prioritization based on system state." },
@@ -58,7 +58,7 @@ const changelog: ChangelogEntry[] = [
       { type: 'added', text: "vision.diagnostics — Observability diagnostics with --full mode." },
       { type: 'fixed', text: "system.diagnostics — Now returns structured diagnostics with --full mode support." },
       { type: 'added', text: "Scientific documentation library — 24 papers under /docs/library/ for OSF/OpenAIRE publication." },
-      { type: 'changed', text: "Terminal commands expanded to 250+ across all 13 modules (at the time)." },
+      { type: 'changed', text: "Terminal commands expanded to 250+ across all modules." },
       { type: 'security', text: "All introspection commands respect proof_mode and read_only constraints." },
     ]
   },

@@ -201,14 +201,14 @@ export async function executeCommand(
 ┌─ SUBSTRATE IDENTITY ─────────────────────────────────────────
 │ 
 │  ██████╗ ███████╗     Cognitive Operating System
-│  ██╔═══╝ ██╔════╝     promptfluid® Substrate v5.5.0
+│  ██╔═══╝ ██╔════╝     promptfluid® Substrate v6.0.0
 │  ██║     ███████╗     
 │  ██║     ╚════██║     Environment: Lovable Cloud
 │  ██████╗ ███████║     Status: OPERATIONAL
 │  ╚═════╝ ╚══════╝
 │ 
-│  13-Module Architecture — Full AI Operating System
-│  (12 core modules + Cortex orchestrator)
+│  14-Module Architecture — Full AI Operating System
+│  Where Dreams Come To Adapt
 │  
 ${identityLine}│  Mode: ${roleDisplay}
 │  
@@ -229,17 +229,18 @@ ${identityLine}│  Mode: ${roleDisplay}
 │  │  integration://enterprise adapters, LLM governance
 │  │
 │  ├─ ADMIN LAYER ─────────────────────────────────────────────
-│  │  system://     administration, backups
+│  │  system://     orchestration, lifecycle, heal
 │  │  modernizer:// upgrades, codebase evolution
+│  │  inclusive://  accessibility, human compatibility
 │  │
 │  ├─ ORCHESTRATOR LAYER ──────────────────────────────────────
-│  │  cortex://     governance, evolution, dispatch
+│  │  cortex://     policy intent, manual mode
 │  │
 │  └────────────────────────────────────────────────────────────
 │  
-│  Terminal v5.5.0: aliases, macros, NLP, watch mode, audit
-│  Full-system audit: 2026-01-25 | All handlers verified
-│  promptfluid® — where machines learn to dream
+│  Terminal v6.0.0: aliases, macros, NLP, watch mode, audit
+│  14 modules | 260+ commands | health: 100%
+│  promptfluid® — where dreams come to adapt
 │  
 └──────────────────────────────────────────────────────────────`;
     return { success: true, output: identity };
