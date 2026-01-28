@@ -1,6 +1,6 @@
 /**
  * AgencySection — Commercial licensing for agencies
- * v5.5.0 - New component for funnel phase G
+ * v6.0.0 - Component for funnel phase G
  */
 
 import { useState } from 'react';

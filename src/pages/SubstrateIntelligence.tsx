@@ -61,6 +61,7 @@ const modules = [
   { name: "INTEGRATION", desc: "Enterprise adapter framework", icon: Building2, layer: "Operational" },
   { name: "SYSTEM", desc: "Admin operations, backup/restore", icon: Settings, layer: "Admin" },
   { name: "MODERNIZER", desc: "Self-improvement engine", icon: TrendingUp, layer: "Admin" },
+  { name: "INCLUSIVE", desc: "Human compatibility, WCAG pipeline", icon: BadgeCheck, layer: "Admin" },
   { name: "CORTEX", desc: "Agency-class autonomous orchestration", icon: Sparkles, layer: "Orchestrator" },
 ];
 

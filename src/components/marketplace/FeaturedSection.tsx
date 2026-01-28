@@ -1,7 +1,7 @@
 /**
  * FeaturedSection — Premium hero products with compelling visuals
  * Mobile-first design, high conversion focus
- * v5.5.0 - Enhanced with better animations and visual polish
+ * v6.0.0 - 14-module architecture
  * OS License now redirects to licensing page (tiered pricing)
  */
 

@@ -1,7 +1,7 @@
 /**
  * TemplateCard — Premium visual template card with rarity, dynamic names, and rarity images
  * Mobile-optimized, designed to make users want to own it
- * v5.5.0 - Enhanced with better hover states and visual polish
+ * v6.0.0 - Enhanced with better hover states and visual polish
  */
 
 import { useState } from 'react';

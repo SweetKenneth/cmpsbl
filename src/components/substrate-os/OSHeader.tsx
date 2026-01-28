@@ -1,5 +1,5 @@
 /**
- * OS Header v5.5.0 — Premium Substrate identity with animated status indicators
+ * OS Header v6.0.0 — Premium Substrate identity with animated status indicators
  * Glassmorphic design with live telemetry, gradient accents, and audio controls
  */
 

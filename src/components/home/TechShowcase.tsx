@@ -301,7 +301,33 @@ await cmpsbl.integration.execute({
   payload: { vendor: "V001", amount: 5000 }
 });`,
   },
-  // ORCHESTRATOR LAYER (13th module)
+  // HUMAN COMPATIBILITY LAYER (14th module)
+  {
+    id: "inclusive",
+    icon: Code,
+    layer: "Admin",
+    title: "INCLUSIVE A11y",
+    description: "Human compatibility & accessibility pipeline",
+    color: "text-pink-500",
+    gradient: "from-pink-500 to-rose-600",
+    code: `// Scan a target for accessibility issues
+const result = await cmpsbl.inclusive.scan({
+  target: "https://example.com",
+  wcagLevel: "AA"
+});
+console.log(result.issues); // WCAG violations
+console.log(result.score);  // 0-100 accessibility score
+
+// Auto-repair detected issues
+const repairs = await cmpsbl.inclusive.repair({
+  target: result.target,
+  issues: result.issues.filter(i => i.autoFixable)
+});
+
+// Self-scan the substrate's own interfaces
+const selfCheck = await cmpsbl.inclusive.selfScan();`,
+  },
+  // ORCHESTRATOR LAYER (14th module)
   {
     id: "cortex",
     icon: Layers,
@@ -344,8 +370,8 @@ function highlightCode(code: string): string {
     .replace(/(\/\/.*)/g, '<span class="text-slate-500">$1</span>')
     .replace(/(\bawait\b|\bconst\b|\blet\b|\bvar\b|\bif\b)/g, '<span class="text-purple-400">$1</span>')
     .replace(/(\bcmpsbl\b)/g, '<span class="text-cyan-400 font-semibold">$1</span>')
-    .replace(/(\.core|\.ripple|\.access|\.brain|\.decode|\.nexus|\.defense|\.vision|\.dream|\.system|\.modernizer|\.integration|\.cortex)/g, '<span class="text-blue-400">$1</span>')
-    .replace(/(\.schedule|\.list|\.emit|\.on|\.createKey|\.usage|\.remember|\.recall|\.chat|\.send|\.route|\.posture|\.analyze|\.block|\.health|\.query|\.cycle|\.backup|\.restore|\.scan|\.apply|\.discover|\.connect|\.execute|\.world|\.plan|\.dispatch|\.inventory)/g, '<span class="text-green-400">$1</span>')
+    .replace(/(\.core|\.ripple|\.access|\.brain|\.decode|\.nexus|\.defense|\.vision|\.dream|\.system|\.modernizer|\.integration|\.inclusive|\.cortex)/g, '<span class="text-blue-400">$1</span>')
+    .replace(/(\.schedule|\.list|\.emit|\.on|\.createKey|\.usage|\.remember|\.recall|\.chat|\.send|\.route|\.posture|\.analyze|\.block|\.health|\.query|\.cycle|\.backup|\.restore|\.scan|\.apply|\.discover|\.connect|\.execute|\.world|\.plan|\.dispatch|\.inventory|\.repair|\.selfScan)/g, '<span class="text-green-400">$1</span>')
     .replace(/(&quot;.*?&quot;|".*?")/g, '<span class="text-amber-300">$1</span>')
     .replace(/(\d+)/g, '<span class="text-orange-400">$1</span>')
     .replace(/(true|false|null)/g, '<span class="text-rose-400">$1</span>');
@@ -464,7 +490,7 @@ export function TechShowcase() {
             className="h-8 px-4 text-xs font-medium"
           >
             All Modules
-            <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-[10px]">13</Badge>
+            <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-[10px]">14</Badge>
           </Button>
           {Object.entries(LAYER_CONFIG).map(([layer, config]) => {
             const count = codeExamples.filter(e => e.layer === layer).length;
