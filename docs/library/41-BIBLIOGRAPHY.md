@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Bibliography
 
-**Version 5.5.0 | Scientific Publication**
+**Version 6.0.0 (FNDTN) | Scientific Publication**
 
 ---
 
@@ -9,7 +9,7 @@
 | Field | Value |
 |-------|-------|
 | **Document ID** | CMPSBL-LIB-041 |
-| **Version** | v5.5.0 |
+| **Version** | v6.0.0 (FNDTN) |
 | **Last Updated** | January 2026 |
 
 ---
@@ -148,7 +148,25 @@ ECMA-404: The JSON Data Interchange Format (2017).
 
 ---
 
-## 10. Citation for This Work
+## 10. FNDTN v6 Standards Package
+
+### 10.1 Prior Substrate Records
+
+Sweet Jr, K. E. (2025). *CMPSBL OS Substrate v5.5.0*. Open Science Framework. https://osf.io/ah7nx/overview
+
+Sweet Jr, K. E. (2025). *CMPSBL OS Substrate v5.5.0*. Zenodo. https://zenodo.org/records/18379258
+
+### 10.2 AI Governance Reference Namespace
+
+Sweet Jr, K. E. (2025). *AI Governance Reference Namespace*. Zenodo. https://zenodo.org/records/18393018
+
+### 10.3 Author ORCID
+
+Kenneth E. Sweet Jr. ORCID: https://orcid.org/0009-0001-4237-1243
+
+---
+
+## 11. Citation for This Work
 
 ```bibtex
 @software{cmpsbl_substrate_2026,
@@ -156,14 +174,33 @@ ECMA-404: The JSON Data Interchange Format (2017).
   title        = {{CMPSBL OS Substrate: A Cognitive Orchestration 
                    System for Autonomous AI Operations}},
   year         = 2026,
-  version      = {v5.5.0},
+  version      = {v6.0.0-FNDTN},
   publisher    = {PromptFluid},
   url          = {https://promptfluid.com},
-  note         = {Production system with 131,000+ lines of code}
+  note         = {Production system with 131,000+ lines of code, 14 modules}
+}
+
+@misc{cmpsbl_fndtn_foundations_2026,
+  author       = {Sweet Jr, Kenneth E},
+  title        = {{CMPSBL Substrate OS v6.0.0 — FNDTN: Foundations for 
+                   Cognitive Substrates, Governance, and Machine Context}},
+  year         = 2026,
+  publisher    = {PromptFluid},
+  url          = {https://cmpsbl.com/docs/FNDTN-v6/},
+  note         = {Standards paper for substrate class, governance namespace, and LLMS.txt}
+}
+
+@misc{aigvrn_namespace_2025,
+  author       = {Sweet Jr, Kenneth E},
+  title        = {{AI Governance Reference Namespace}},
+  year         = 2025,
+  publisher    = {PromptFluid},
+  url          = {https://zenodo.org/records/18393018},
+  note         = {12-surface governance standard for cognitive substrates}
 }
 ```
 
 ---
 
-*CMPSBL OS Substrate v5.5.0*
+*CMPSBL OS Substrate v6.0.0 — FNDTN: Human Compatibility Era*
 *© 2025-2026 PromptFluid®. All rights reserved.*
