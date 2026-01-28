@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { 
   Menu, X, ChevronDown, Code, 
-  Layers, FileText, Mail, Info, Rocket, BookOpen, Users,
+  Layers, FileText, Mail, Info, Rocket, BookOpen, Users, Eye,
   Zap, Map, Terminal, Cpu, MessageSquare, Moon, Building2, Gamepad2, Sparkles, Key, Globe, ScrollText
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
@@ -66,9 +66,11 @@ export function PublicNav() {
       name: "Standards",
       icon: ScrollText,
       items: [
+        { name: "Library", href: "/library", description: "FNDTN v6 Documentation", icon: BookOpen },
         { name: "Foundations", href: "/foundations", description: "FNDTN v6.0.0 Standard", icon: Layers },
         { name: "Namespace", href: "/namespace", description: "AI Governance Namespace", icon: Globe },
         { name: "LLMS.txt", href: "/llms-txt", description: "Machine Context Standard", icon: Terminal },
+        { name: "Insights", href: "/insights", description: "Observer Access", icon: Eye },
       ]
     },
     {
@@ -269,11 +271,11 @@ export function PublicNav() {
             <div className="container mx-auto px-4 py-4">
               {/* Search-like quick access */}
               <div className="flex gap-2 mb-4 overflow-x-auto pb-2 -mx-4 px-4">
-                {["Developers", "Licensing", "Gaming", "Demo", "Contact"].map((name) => {
+                {["Developers", "Licensing", "Library", "Insights", "Contact"].map((name) => {
                   const href = name === "Developers" ? "/developers" :
                                name === "Licensing" ? "/substrate/licensing" :
-                               name === "Gaming" ? "/gaming" :
-                               name === "Demo" ? "/demo" : "/contact";
+                               name === "Library" ? "/foundations" :
+                               name === "Insights" ? "/insights" : "/contact";
                   return (
                     <Link
                       key={name}
