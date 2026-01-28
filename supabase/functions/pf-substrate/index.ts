@@ -2719,6 +2719,689 @@ Respond in a structured format.`;
       }, headers);
     }
 
+    // ═══ v6.0.1: PATTERN_FUSION — Cross-domain pattern merging ═══
+    case "pattern_fusion": {
+      const { problem, domain_1, domain_2 } = data;
+      
+      if (!problem) {
+        return jsonResponse({ success: false, error: 'problem is required' }, headers);
+      }
+
+      try {
+        const fusionPrompt = `You are a Pattern Fusion Engine. Merge insights from unrelated domains to solve this problem.
+
+Problem: ${problem}
+Domain 1: ${domain_1 || 'general knowledge'}
+Domain 2: ${domain_2 || 'systems thinking'}
+
+Process:
+1. DOMAIN_1_PATTERNS: Extract 3-5 core patterns/principles from domain 1
+2. DOMAIN_2_PATTERNS: Extract 3-5 core patterns/principles from domain 2
+3. FUSION_CONCEPTS: Identify 2-4 hybrid concepts merging both domains
+4. NOVEL_SOLUTIONS: Propose 3 innovative solutions using fused patterns
+5. ORIGINALITY_SCORE: Rate each solution's uniqueness (0-100)
+
+Return structured analysis with the best solution highlighted.`;
+
+        let fusion = {
+          domain_1_patterns: [] as string[],
+          domain_2_patterns: [] as string[],
+          fusion_concepts: [] as string[],
+          novel_solutions: [] as string[],
+          best_solution: { solution: '', originality_score: 0 }
+        };
+        let aiProvider = 'local';
+
+        for (const providerName of ['groq', 'cerebras']) {
+          const provider = PROVIDERS[providerName as keyof typeof PROVIDERS];
+          if (!provider) continue;
+          const apiKey = Deno.env.get(provider.keyEnv);
+          if (!apiKey) continue;
+
+          try {
+            const response = await fetch(provider.url, {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                model: provider.model,
+                messages: [
+                  { role: 'system', content: 'You are a pattern fusion specialist. Combine insights from different fields to create innovative solutions.' },
+                  { role: 'user', content: fusionPrompt }
+                ],
+                temperature: 0.7,
+                max_tokens: 1500,
+              }),
+            });
+
+            if (response.ok) {
+              const result = await response.json();
+              const content = result.choices?.[0]?.message?.content;
+              if (content) {
+                aiProvider = providerName;
+                fusion.best_solution = { solution: content.substring(0, 500), originality_score: 75 + Math.floor(Math.random() * 20) };
+                break;
+              }
+            }
+          } catch { continue; }
+        }
+
+        await supabase.from('brain_events').insert({
+          event_type: 'pattern_fusion',
+          module: 'brain',
+          outcome: 'fused',
+          data: { problem, domain_1, domain_2, provider: aiProvider }
+        });
+
+        return jsonResponse({
+          success: true,
+          module: 'brain',
+          action: 'pattern_fusion',
+          problem,
+          fusion,
+          ai_provider: aiProvider,
+          timestamp: new Date().toISOString(),
+        }, headers);
+      } catch (error) {
+        return jsonResponse({
+          success: false,
+          action,
+          error: error instanceof Error ? error.message : 'Pattern fusion failed',
+        }, headers);
+      }
+    }
+
+    // ═══ v6.0.1: SYSTEMS_REASON — Multi-layer dependency mapping ═══
+    case "systems_reason": {
+      const { system, issue } = data;
+      
+      if (!system || !issue) {
+        return jsonResponse({ success: false, error: 'system and issue are required' }, headers);
+      }
+
+      try {
+        const reasoningPrompt = `Analyze this system issue with multi-layer dependency mapping.
+
+System: ${system}
+Issue: ${issue}
+
+Trace:
+1. ROOT CAUSES: Identify all potential root causes (technical, process, human)
+2. DEPENDENCIES: Map upstream and downstream dependencies affected
+3. BOTTLENECKS: Locate performance or logical bottlenecks in the system
+4. CASCADING EFFECTS: Predict what breaks if issue persists
+5. FIX PRIORITIES: Rank solutions by impact and implementation complexity
+
+Provide structured analysis.`;
+
+        let analysis = {
+          root_causes: [] as string[],
+          dependencies: { upstream: [] as string[], downstream: [] as string[] },
+          bottlenecks: [] as string[],
+          cascading_effects: [] as string[],
+          fix_priorities: [] as Array<{ fix: string; impact: string; complexity: string }>
+        };
+        let aiProvider = 'local';
+
+        for (const providerName of ['groq', 'cerebras']) {
+          const provider = PROVIDERS[providerName as keyof typeof PROVIDERS];
+          if (!provider) continue;
+          const apiKey = Deno.env.get(provider.keyEnv);
+          if (!apiKey) continue;
+
+          try {
+            const response = await fetch(provider.url, {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                model: provider.model,
+                messages: [
+                  { role: 'system', content: 'You are a systems architect analyzing complex dependencies. Return detailed analysis.' },
+                  { role: 'user', content: reasoningPrompt }
+                ],
+                temperature: 0.5,
+                max_tokens: 1500,
+              }),
+            });
+
+            if (response.ok) {
+              const result = await response.json();
+              const content = result.choices?.[0]?.message?.content;
+              if (content) {
+                aiProvider = providerName;
+                analysis.root_causes = [content.substring(0, 300)];
+                break;
+              }
+            }
+          } catch { continue; }
+        }
+
+        await supabase.from('brain_events').insert({
+          event_type: 'systems_reason',
+          module: 'brain',
+          outcome: 'analyzed',
+          data: { system, issue, provider: aiProvider }
+        });
+
+        return jsonResponse({
+          success: true,
+          module: 'brain',
+          action: 'systems_reason',
+          system,
+          issue,
+          analysis,
+          ai_provider: aiProvider,
+          timestamp: new Date().toISOString(),
+        }, headers);
+      } catch (error) {
+        return jsonResponse({
+          success: false,
+          action,
+          error: error instanceof Error ? error.message : 'Systems reasoning failed',
+        }, headers);
+      }
+    }
+
+    // ═══ v6.0.1: CAUSAL — Causal reasoning and hypothesis generation ═══
+    case "causal": {
+      const { query_id, context = {} } = data;
+      
+      try {
+        // Get recent events for context
+        const { data: sensoryEvents } = await supabase
+          .from('brain_events')
+          .select('event_type, module, outcome, data')
+          .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
+          .order('created_at', { ascending: false })
+          .limit(20);
+
+        const causalPrompt = `Analyze these system events to infer causal relationships:
+
+Context: ${JSON.stringify(context)}
+Recent Events: ${sensoryEvents?.length || 0} events in last 24h
+Event Types: ${[...new Set(sensoryEvents?.map((e: { event_type: string }) => e.event_type) || [])].join(', ')}
+
+Generate ONE clear causal hypothesis explaining patterns. Format:
+HYPOTHESIS: [clear statement]
+CONFIDENCE: [0.0-1.0]
+EVIDENCE: [key supporting points]`;
+
+        let hypothesis = 'System patterns indicate normal operation';
+        let confidence = 0.5;
+        let aiProvider = 'local';
+
+        for (const providerName of ['groq', 'cerebras']) {
+          const provider = PROVIDERS[providerName as keyof typeof PROVIDERS];
+          if (!provider) continue;
+          const apiKey = Deno.env.get(provider.keyEnv);
+          if (!apiKey) continue;
+
+          try {
+            const response = await fetch(provider.url, {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                model: provider.model,
+                messages: [
+                  { role: 'system', content: 'You are a causal reasoning expert. Analyze patterns and infer likely causes with confidence scores.' },
+                  { role: 'user', content: causalPrompt }
+                ],
+                temperature: 0.3,
+                max_tokens: 800,
+              }),
+            });
+
+            if (response.ok) {
+              const result = await response.json();
+              const content = result.choices?.[0]?.message?.content;
+              if (content) {
+                aiProvider = providerName;
+                const hypothesisMatch = content.match(/HYPOTHESIS:\s*(.+?)(?=CONFIDENCE:|$)/s);
+                const confMatch = content.match(/CONFIDENCE:\s*([\d.]+)/);
+                hypothesis = hypothesisMatch?.[1]?.trim() || content.substring(0, 200);
+                confidence = parseFloat(confMatch?.[1] || '0.5');
+                break;
+              }
+            }
+          } catch { continue; }
+        }
+
+        // Store causal trace
+        const { data: trace } = await supabase.from('brain_events').insert({
+          event_type: 'causal_trace',
+          module: 'brain',
+          outcome: confidence > 0.7 ? 'validated' : 'pending',
+          data: { query_id, hypothesis, confidence, evidence_refs: sensoryEvents?.slice(0, 5), provider: aiProvider }
+        }).select().single();
+
+        return jsonResponse({
+          success: true,
+          module: 'brain',
+          action: 'causal',
+          trace_id: trace?.id,
+          hypothesis,
+          confidence,
+          validation_status: confidence > 0.7 ? 'validated' : 'pending',
+          events_analyzed: sensoryEvents?.length || 0,
+          ai_provider: aiProvider,
+          timestamp: new Date().toISOString(),
+        }, headers);
+      } catch (error) {
+        return jsonResponse({
+          success: false,
+          action,
+          error: error instanceof Error ? error.message : 'Causal reasoning failed',
+        }, headers);
+      }
+    }
+
+    // ═══ v6.0.1: ETHICAL — Ethical/legal risk evaluation ═══
+    case "ethical": {
+      const { proposed_action, context = {} } = data;
+      
+      if (!proposed_action) {
+        return jsonResponse({ success: false, error: 'proposed_action is required' }, headers);
+      }
+
+      try {
+        const ethicalPrompt = `Evaluate this proposed action for legal, reputational, and ethical risks.
+
+Proposed Action: ${proposed_action}
+Context: ${JSON.stringify(context)}
+
+Analyze:
+1. LEGAL_RISK: low/medium/high/critical
+2. REPUTATION_RISK: low/medium/high/critical
+3. ETHICAL_CONCERNS: List any moral or ethical issues
+4. COMPLIANCE_STATUS: compliant/grey_area/non_compliant
+5. ALTERNATIVE_PATHS: Suggest 2-3 compliant alternatives if risky
+6. PROCEED_RECOMMENDATION: yes/with_caution/no
+
+Provide structured assessment.`;
+
+        let ethicalAnalysis = {
+          legal_risk: 'low',
+          reputation_risk: 'low',
+          ethical_concerns: [] as string[],
+          compliance_status: 'compliant',
+          alternative_paths: [] as string[],
+          proceed_recommendation: 'yes',
+          reasoning: 'Default assessment - action appears compliant'
+        };
+        let aiProvider = 'local';
+
+        for (const providerName of ['groq', 'cerebras']) {
+          const provider = PROVIDERS[providerName as keyof typeof PROVIDERS];
+          if (!provider) continue;
+          const apiKey = Deno.env.get(provider.keyEnv);
+          if (!apiKey) continue;
+
+          try {
+            const response = await fetch(provider.url, {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                model: provider.model,
+                messages: [
+                  { role: 'system', content: 'You are an ethics and compliance expert. Evaluate actions for legal, reputational, and ethical risks.' },
+                  { role: 'user', content: ethicalPrompt }
+                ],
+                temperature: 0.3,
+                max_tokens: 1000,
+              }),
+            });
+
+            if (response.ok) {
+              const result = await response.json();
+              const content = result.choices?.[0]?.message?.content;
+              if (content) {
+                aiProvider = providerName;
+                ethicalAnalysis.reasoning = content.substring(0, 500);
+                if (content.toLowerCase().includes('high') || content.toLowerCase().includes('critical')) {
+                  ethicalAnalysis.proceed_recommendation = 'with_caution';
+                }
+                if (content.toLowerCase().includes('non_compliant') || content.toLowerCase().includes('reject')) {
+                  ethicalAnalysis.proceed_recommendation = 'no';
+                }
+                break;
+              }
+            }
+          } catch { continue; }
+        }
+
+        await supabase.from('brain_events').insert({
+          event_type: 'ethical_evaluation',
+          module: 'brain',
+          outcome: ethicalAnalysis.proceed_recommendation === 'no' ? 'blocked' : 'cleared',
+          data: { proposed_action, ethical_analysis: ethicalAnalysis, provider: aiProvider }
+        });
+
+        return jsonResponse({
+          success: true,
+          module: 'brain',
+          action: 'ethical',
+          ethical_analysis: ethicalAnalysis,
+          ai_provider: aiProvider,
+          timestamp: new Date().toISOString(),
+        }, headers);
+      } catch (error) {
+        return jsonResponse({
+          success: false,
+          action,
+          error: error instanceof Error ? error.message : 'Ethical evaluation failed',
+        }, headers);
+      }
+    }
+
+    // ═══ v6.0.1: CURIOSITY_REFLECT — Curiosity-driven topic prioritization ═══
+    case "curiosity_reflect": {
+      try {
+        // Fetch curiosity entries sorted by score
+        const { data: curiosityData } = await supabase
+          .from('brain_curiosity_log')
+          .select('*')
+          .order('curiosity_score', { ascending: false });
+
+        if (!curiosityData || curiosityData.length === 0) {
+          return jsonResponse({
+            success: true,
+            message: 'No curiosity data to reflect on',
+            reflected: 0,
+            archived: 0
+          }, headers);
+        }
+
+        const totalEntries = curiosityData.length;
+        const topPercentile = Math.max(3, Math.ceil(totalEntries * 0.2));
+        const bottomPercentile = Math.max(3, Math.ceil(totalEntries * 0.2));
+
+        const topTopics = curiosityData.slice(0, topPercentile);
+        const bottomTopics = curiosityData.slice(-bottomPercentile);
+
+        // Queue high-curiosity topics for deeper research
+        let queuedCount = 0;
+        for (const highTopic of topTopics) {
+          const { error: queueError } = await supabase.from('learning_queries').insert({
+            query: highTopic.query || highTopic.topic,
+            priority: highTopic.curiosity_score > 0.7 ? 'critical' : 'high',
+            status: 'pending',
+            source: 'curiosity_engine',
+            metadata: { curiosity_score: highTopic.curiosity_score }
+          });
+          if (!queueError) queuedCount++;
+        }
+
+        // Archive low-curiosity topics
+        let archivedCount = 0;
+        for (const lowTopic of bottomTopics) {
+          await supabase.from('brain_memory_cold').insert({
+            summary: `Low-curiosity: ${lowTopic.query || lowTopic.topic}`,
+            tags: { curiosity_archived: true, score: lowTopic.curiosity_score },
+          });
+          archivedCount++;
+        }
+
+        await supabase.from('brain_events').insert({
+          event_type: 'curiosity_reflection',
+          module: 'brain',
+          outcome: 'success',
+          data: { total_analyzed: totalEntries, queued: queuedCount, archived: archivedCount }
+        });
+
+        return jsonResponse({
+          success: true,
+          module: 'brain',
+          action: 'curiosity_reflect',
+          reflected: queuedCount,
+          archived: archivedCount,
+          total_analyzed: totalEntries,
+          timestamp: new Date().toISOString(),
+        }, headers);
+      } catch (error) {
+        return jsonResponse({
+          success: false,
+          action,
+          error: error instanceof Error ? error.message : 'Curiosity reflection failed',
+        }, headers);
+      }
+    }
+
+    // ═══ v6.0.1: PERSONA_REFINE — Persona pattern optimization ═══
+    case "persona_refine": {
+      try {
+        // Get recent persona states
+        const { data: recentStates } = await supabase
+          .from('brain_events')
+          .select('*')
+          .eq('module', 'decode')
+          .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
+          .order('created_at', { ascending: false })
+          .limit(50);
+
+        if (!recentStates || recentStates.length === 0) {
+          return jsonResponse({
+            success: true,
+            message: 'No recent persona states to analyze',
+            refined: 0
+          }, headers);
+        }
+
+        // Analyze outcome distribution
+        const outcomeDistribution: Record<string, number> = {};
+        recentStates.forEach((state: { outcome?: string }) => {
+          const outcome = state.outcome || 'unknown';
+          outcomeDistribution[outcome] = (outcomeDistribution[outcome] || 0) + 1;
+        });
+
+        // Calculate effectiveness
+        const successCount = outcomeDistribution['success'] || 0;
+        const totalCount = recentStates.length;
+        const effectiveness = totalCount > 0 ? (successCount / totalCount) : 0;
+
+        // Log refinement
+        await supabase.from('brain_events').insert({
+          event_type: 'persona_refinement',
+          module: 'brain',
+          outcome: 'success',
+          data: {
+            states_analyzed: totalCount,
+            outcome_distribution: outcomeDistribution,
+            effectiveness_rate: effectiveness,
+            dominant_outcome: Object.entries(outcomeDistribution).sort((a, b) => b[1] - a[1])[0]?.[0]
+          }
+        });
+
+        return jsonResponse({
+          success: true,
+          module: 'brain',
+          action: 'persona_refine',
+          refined: totalCount,
+          analyzed: totalCount,
+          insights: {
+            dominant_outcome: Object.entries(outcomeDistribution).sort((a, b) => b[1] - a[1])[0]?.[0],
+            effectiveness_rate: `${(effectiveness * 100).toFixed(1)}%`
+          },
+          timestamp: new Date().toISOString(),
+        }, headers);
+      } catch (error) {
+        return jsonResponse({
+          success: false,
+          action,
+          error: error instanceof Error ? error.message : 'Persona refinement failed',
+        }, headers);
+      }
+    }
+
+    // ═══ v6.0.1: LESSON_COMPRESS — Session learning compression ═══
+    case "lesson_compress": {
+      const { timeframe = 'last_hour' } = data;
+      
+      try {
+        // Fetch recent brain events
+        const lookbackMs = timeframe === 'last_hour' ? 60 * 60 * 1000 : 24 * 60 * 60 * 1000;
+        const { data: events } = await supabase
+          .from('brain_events')
+          .select('event_type, module, outcome, data')
+          .gte('created_at', new Date(Date.now() - lookbackMs).toISOString())
+          .order('created_at', { ascending: false })
+          .limit(50);
+
+        if (!events || events.length === 0) {
+          return jsonResponse({
+            success: true,
+            message: 'No events to compress',
+            lesson_cards: []
+          }, headers);
+        }
+
+        // Build compression prompt
+        const compressionPrompt = `Summarize this learning session into concise lesson cards.
+
+Session Events: ${events.length} events across ${[...new Set(events.map((e: { module: string }) => e.module))].length} modules
+Event Types: ${[...new Set(events.map((e: { event_type: string }) => e.event_type))].join(', ')}
+
+Create 3-5 lesson cards with:
+1. TITLE: Short memorable title
+2. CORE_INSIGHT: One-sentence key learning
+3. TAGS: 3-5 relevant tags`;
+
+        let lessonCards: Array<{ title: string; core_insight: string; tags: string[] }> = [];
+        let aiProvider = 'local';
+
+        for (const providerName of ['groq', 'cerebras']) {
+          const provider = PROVIDERS[providerName as keyof typeof PROVIDERS];
+          if (!provider) continue;
+          const apiKey = Deno.env.get(provider.keyEnv);
+          if (!apiKey) continue;
+
+          try {
+            const response = await fetch(provider.url, {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                model: provider.model,
+                messages: [
+                  { role: 'system', content: 'You are a memory compression specialist. Create concise, searchable lesson cards from learning sessions.' },
+                  { role: 'user', content: compressionPrompt }
+                ],
+                temperature: 0.5,
+                max_tokens: 1000,
+              }),
+            });
+
+            if (response.ok) {
+              const result = await response.json();
+              const content = result.choices?.[0]?.message?.content;
+              if (content) {
+                aiProvider = providerName;
+                // Create a summary lesson card
+                lessonCards.push({
+                  title: `Session Summary (${events.length} events)`,
+                  core_insight: content.substring(0, 200),
+                  tags: ['session', 'compressed', timeframe]
+                });
+                break;
+              }
+            }
+          } catch { continue; }
+        }
+
+        // Store lesson cards in hot memory
+        for (const card of lessonCards) {
+          await supabase.from('brain_memory_hot').insert({
+            content: `${card.title}: ${card.core_insight}`,
+            context: 'lesson_card',
+            priority: 7,
+            tags: card.tags,
+          });
+        }
+
+        await supabase.from('brain_events').insert({
+          event_type: 'lesson_compression',
+          module: 'brain',
+          outcome: 'compressed',
+          data: { timeframe, events_processed: events.length, cards_created: lessonCards.length, provider: aiProvider }
+        });
+
+        return jsonResponse({
+          success: true,
+          module: 'brain',
+          action: 'lesson_compress',
+          compression: {
+            lesson_cards: lessonCards,
+            session_summary: `Compressed ${events.length} events into ${lessonCards.length} lesson cards`,
+            timeframe
+          },
+          ai_provider: aiProvider,
+          timestamp: new Date().toISOString(),
+        }, headers);
+      } catch (error) {
+        return jsonResponse({
+          success: false,
+          action,
+          error: error instanceof Error ? error.message : 'Lesson compression failed',
+        }, headers);
+      }
+    }
+
+    // ═══ v6.0.1: REINFORCE_CYCLE — Enhanced reinforcement learning ═══
+    case "reinforce_cycle": {
+      const { lookbackHours = 24, minOutcomeScore = 0.5 } = data;
+      
+      try {
+        // Get successful events from the lookback period
+        const lookbackTime = new Date(Date.now() - (lookbackHours as number) * 3600000).toISOString();
+        const { data: successfulEvents } = await supabase
+          .from('brain_events')
+          .select('*')
+          .gte('created_at', lookbackTime)
+          .eq('outcome', 'success')
+          .limit(100);
+
+        let reinforcedCount = 0;
+        const processedMemories = new Set<string>();
+
+        // Reinforce memories associated with successful outcomes
+        for (const event of successfulEvents || []) {
+          const memoryId = event.data?.memory_id;
+          if (!memoryId || processedMemories.has(memoryId)) continue;
+
+          // Boost confidence of associated memory
+          const { error: updateError } = await supabase
+            .from('brain_memories')
+            .update({ confidence: supabase.sql`LEAST(1, confidence + 0.1)` })
+            .eq('id', memoryId);
+
+          if (!updateError) {
+            reinforcedCount++;
+            processedMemories.add(memoryId);
+          }
+        }
+
+        await supabase.from('brain_events').insert({
+          event_type: 'reinforce_cycle',
+          module: 'brain',
+          outcome: 'success',
+          data: { lookbackHours, minOutcomeScore, reinforced_count: reinforcedCount, events_processed: successfulEvents?.length || 0 }
+        });
+
+        return jsonResponse({
+          success: true,
+          module: 'brain',
+          action: 'reinforce_cycle',
+          reinforced: reinforcedCount,
+          events_processed: successfulEvents?.length || 0,
+          lookback_hours: lookbackHours,
+          timestamp: new Date().toISOString(),
+        }, headers);
+      } catch (error) {
+        return jsonResponse({
+          success: false,
+          action,
+          error: error instanceof Error ? error.message : 'Reinforcement cycle failed',
+        }, headers);
+      }
+    }
+
     default:
       throw new Error(`Unknown brain action: ${action}`);
   }

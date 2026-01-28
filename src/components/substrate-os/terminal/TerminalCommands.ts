@@ -39,6 +39,15 @@ export const BRAIN_COMMANDS: CommandDefinition[] = [
   { command: 'brain.session_reflection', description: 'Session activity summary', category: 'brain', icon: Clock, requiresOperator: false, args: '[hours]' },
   { command: 'brain.coherence_check', description: 'Memory coherence validation', category: 'brain', icon: Brain, requiresOperator: false, args: '[depth]' },
   { command: 'brain.forecast', description: 'Predictive forecasting', category: 'brain', icon: Activity, requiresOperator: false, args: '[metric] [window]' },
+  // v6.0.1: 8 NEW cognitive actions from archived brain functions
+  { command: 'brain.pattern_fusion', description: 'Merge insights from unrelated domains', category: 'brain', icon: Brain, requiresOperator: true, args: '<problem> [domain_1] [domain_2]', example: 'brain.pattern_fusion "optimize memory" biology architecture' },
+  { command: 'brain.systems_reason', description: 'Multi-layer dependency mapping', category: 'brain', icon: Brain, requiresOperator: true, args: '<system> <issue>', example: 'brain.systems_reason substrate "slow response"' },
+  { command: 'brain.causal', description: 'Causal reasoning & hypothesis gen', category: 'brain', icon: Brain, requiresOperator: true, args: '[query_id]' },
+  { command: 'brain.ethical', description: 'Ethical/legal risk evaluation', category: 'brain', icon: Shield, requiresOperator: true, args: '<proposed_action>', example: 'brain.ethical "store user data without consent"' },
+  { command: 'brain.curiosity_reflect', description: 'Prioritize topics by curiosity score', category: 'brain', icon: Search, requiresOperator: true },
+  { command: 'brain.persona_refine', description: 'Optimize persona patterns', category: 'brain', icon: Brain, requiresOperator: true },
+  { command: 'brain.lesson_compress', description: 'Compress session learnings into lesson cards', category: 'brain', icon: Brain, requiresOperator: true, args: '[timeframe]', example: 'brain.lesson_compress last_hour' },
+  { command: 'brain.reinforce_cycle', description: 'Enhanced reinforcement learning', category: 'brain', icon: Brain, requiresOperator: true, args: '[lookbackHours] [minScore]', example: 'brain.reinforce_cycle 24 0.5' },
 ];
 
 export const DECODE_COMMANDS: CommandDefinition[] = [
