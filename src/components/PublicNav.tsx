@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { 
   Menu, X, ChevronDown, Code, 
   Layers, FileText, Mail, Info, Rocket, BookOpen, Users,
-  Zap, Map, Terminal, Cpu, MessageSquare, Moon, Building2, Gamepad2, Sparkles, Key
+  Zap, Map, Terminal, Cpu, MessageSquare, Moon, Building2, Gamepad2, Sparkles, Key, Globe, ScrollText
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import {
@@ -60,6 +60,15 @@ export function PublicNav() {
         { name: "Substrate Licensing", href: "/substrate/licensing", description: "Developer to Enterprise", icon: FileText },
         { name: "Substrate Intelligence", href: "/intelligence", description: "For Investors & Acquirers", icon: Zap },
         { name: "Projects", href: "/projects", description: "Active Development", icon: Rocket },
+      ]
+    },
+    {
+      name: "Standards",
+      icon: ScrollText,
+      items: [
+        { name: "Foundations", href: "/foundations", description: "FNDTN v6.0.0 Standard", icon: Layers },
+        { name: "Namespace", href: "/namespace", description: "AI Governance Namespace", icon: Globe },
+        { name: "LLMS.txt", href: "/llms-txt", description: "Machine Context Standard", icon: Terminal },
       ]
     },
     {
