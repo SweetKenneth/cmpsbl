@@ -1,6 +1,6 @@
 /**
  * BundlesSection — Volume packs and stacks with discounts
- * v5.5.0 - New component for funnel phase F
+ * v6.0.0 - Component for funnel phase F
  */
 
 import { motion } from 'framer-motion';

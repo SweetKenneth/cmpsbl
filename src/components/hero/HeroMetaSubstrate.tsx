@@ -485,9 +485,9 @@ export function HeroMetaSubstrate() {
             {/* Subheadline */}
             <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-6 sm:mb-8">
               A cognitive substrate with 
-              <span className="text-foreground font-medium"> 13-module architecture</span>, 
+              <span className="text-foreground font-medium"> 14-module architecture</span>, 
               <span className="text-foreground font-medium"> persistent memory</span>, and 
-              <span className="text-foreground font-medium"> autonomous self-improvement</span>. 
+              <span className="text-foreground font-medium"> autonomous self-improvement</span>.
               The infrastructure layer for AI that remembers.
             </p>
             

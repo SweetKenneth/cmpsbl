@@ -58,10 +58,11 @@ const INITIAL_MODULES: ModuleState[] = [
   { id: 'defense', name: 'Defense', icon: Shield, layer: 'operational', status: 'idle', color: 'emerald', description: 'Threat Detection' },
   { id: 'vision', name: 'Vision', icon: Eye, layer: 'operational', status: 'idle', color: 'rose', description: 'Observability' },
   { id: 'dream', name: 'Dream', icon: Moon, layer: 'operational', status: 'idle', color: 'purple', description: 'Evolution' },
-  // ADMIN LAYER (3)
+  // ADMIN LAYER (4)
   { id: 'system', name: 'System', icon: Server, layer: 'admin', status: 'idle', color: 'slate', description: 'Administration' },
   { id: 'modernizer', name: 'Modernizer', icon: Sparkles, layer: 'admin', status: 'idle', color: 'pink', description: 'Self-Upgrade' },
   { id: 'integration', name: 'Integration', icon: Code, layer: 'admin', status: 'idle', color: 'indigo', description: 'Enterprise' },
+  { id: 'inclusive', name: 'Inclusive', icon: Activity, layer: 'admin', status: 'idle', color: 'rose', description: 'Human Compatibility' },
   // ORCHESTRATOR LAYER (1)
   { id: 'cortex', name: 'Cortex', icon: Workflow, layer: 'orchestrator', status: 'idle', color: 'fuchsia', description: 'Orchestrator' },
 ];
@@ -87,8 +88,8 @@ const DEMO_SCENARIOS = [
   },
   {
     name: 'Full Orchestration',
-    sequence: ['cortex', 'access', 'core', 'decode', 'defense', 'nexus', 'brain', 'dream', 'vision', 'modernizer', 'system', 'integration', 'ripple'],
-    description: 'Complete 13-module orchestration across all 5 architectural layers',
+    sequence: ['cortex', 'access', 'core', 'decode', 'defense', 'nexus', 'brain', 'dream', 'vision', 'modernizer', 'inclusive', 'system', 'integration', 'ripple'],
+    description: 'Complete 14-module orchestration across all 5 architectural layers',
     icon: Sparkles,
   },
 ];
@@ -160,7 +161,7 @@ export default function SubstrateDemo() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO 
         title="Interactive Demo — Substrate AI OS | promptfluid®"
-        description="Experience the 13-module cognitive operating system in action. Watch memory, reasoning, defense, and synthesis orchestrate in real-time."
+        description="Experience the 14-module cognitive operating system in action. Watch memory, reasoning, defense, and synthesis orchestrate in real-time."
       />
       <PublicNav />
 

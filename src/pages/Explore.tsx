@@ -299,7 +299,7 @@ export default function Explore() {
 
   // System Capabilities
   const capabilities = [
-    { icon: Layers, value: "250+", label: "Commands", color: "text-purple-500" },
+    { icon: Layers, value: "260+", label: "Commands", color: "text-purple-500" },
     { icon: Database, value: "70+", label: "Tables", color: "text-green-500" },
     { icon: HeartPulse, value: "14", label: "Modules", color: "text-rose-500" },
     { icon: Clock, value: "<100ms", label: "Latency", color: "text-blue-500" },

@@ -1,7 +1,7 @@
 /**
  * MarketplaceHeader — Premium hero with immersive visuals
  * Mobile-first, visually compelling marketplace entrance
- * v5.5.0 - Enhanced with funnel CTAs and better animations
+ * v6.0.0 - 14 modules, full human compatibility
  */
 
 import { motion } from 'framer-motion';

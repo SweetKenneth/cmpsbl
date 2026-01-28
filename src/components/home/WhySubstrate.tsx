@@ -204,13 +204,27 @@ const differentiators = [
     iconColor: "text-fuchsia-500",
     glowColor: "violet",
   },
+  // HUMAN COMPATIBILITY (14th module)
+  {
+    icon: Lock,
+    title: "Inclusive A11y",
+    layer: "Admin",
+    description: "INCLUSIVE module provides human-compatibility pipeline with WCAG 2.2 scanning, accessibility repairs, and AI ethics governance.",
+    highlight: "Human Compatibility",
+    stat: "WCAG",
+    statLabel: "2.2 AA",
+    color: "from-pink-500 to-rose-600",
+    iconBg: "bg-gradient-to-br from-pink-500/20 to-rose-500/20",
+    iconColor: "text-pink-500",
+    glowColor: "rose",
+  },
 ];
 
 const LAYER_CONFIG = {
   Kernel: { color: 'text-orange-400', count: 3 },
   Cognitive: { color: 'text-purple-400', count: 3 },
   Operational: { color: 'text-blue-400', count: 3 },
-  Admin: { color: 'text-emerald-400', count: 3 },
+  Admin: { color: 'text-emerald-400', count: 4 },
   Orchestrator: { color: 'text-fuchsia-400', count: 1 },
 };
 
@@ -441,7 +455,7 @@ export function WhySubstrate() {
             whileTap={{ scale: 0.98 }}
           >
             All Modules
-            <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-[10px]">13</Badge>
+            <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-[10px]">14</Badge>
           </motion.button>
           {Object.entries(LAYER_CONFIG).map(([layer, config]) => (
             <motion.button
