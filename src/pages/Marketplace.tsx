@@ -33,6 +33,7 @@ import { MailingListSignup } from "@/components/marketplace/MailingListSignup";
 import { AITemplateGenerator } from "@/components/marketplace/AITemplateGenerator";
 import { BundlesSection } from "@/components/marketplace/BundlesSection";
 import { AgencySection } from "@/components/marketplace/AgencySection";
+import { SubstrateCapabilities } from "@/components/marketplace/SubstrateCapabilities";
 
 import {
   Code, Server, Grid3X3, LayoutList, Sparkles, Package, Building2
@@ -266,6 +267,9 @@ export default function Marketplace() {
 
         {/* AI Template Generator - Featured prominently */}
         <AITemplateGenerator featured />
+
+        {/* Substrate Capabilities - Expandable showcase */}
+        <SubstrateCapabilities compact />
 
         {/* Live Lab CTA */}
         <section className="container mx-auto px-4 py-6">
