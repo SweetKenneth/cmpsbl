@@ -41,12 +41,24 @@ export const BUILTIN_ALIASES: AliasDefinition[] = [
   { alias: 'dp', expansion: 'defense.posture', description: 'Security posture' },
   { alias: 'da', expansion: 'defense.anomaly_probe', description: 'Anomaly probe' },
   
-  // Cortex (Agency) shortcuts
+  // Cortex (Orchestrator) shortcuts
   { alias: 'cp', expansion: 'cortex.propose', description: 'Cortex propose' },
   { alias: 'ce', expansion: 'cortex.evaluate', description: 'Cortex evaluate' },
   { alias: 'ca', expansion: 'cortex.apply', description: 'Cortex apply' },
   { alias: 'cs', expansion: 'cortex.status', description: 'Cortex status' },
   { alias: 'csum', expansion: 'cortex.summary', description: 'Cortex summary' },
+  
+  // INCLUSIVE (Human Compatibility) shortcuts
+  { alias: 'inc.scan', expansion: 'inclusive.scan', description: 'Accessibility scan' },
+  { alias: 'inc.repair', expansion: 'inclusive.repair', description: 'Auto-repair issues' },
+  { alias: 'inc.report', expansion: 'inclusive.report', description: 'Generate report' },
+  { alias: 'inc.validate', expansion: 'inclusive.validate', description: 'Validate repairs' },
+  { alias: 'inc.status', expansion: 'inclusive.status', description: 'Module status' },
+  { alias: 'inc.coverage', expansion: 'inclusive.coverage', description: 'Template coverage' },
+  { alias: 'inc.regressions', expansion: 'inclusive.regressions', description: 'Check regressions' },
+  { alias: 'is', expansion: 'inclusive.status', description: 'Inclusive status' },
+  { alias: 'isc', expansion: 'inclusive.scan', description: 'Inclusive scan' },
+  { alias: 'ir', expansion: 'inclusive.report', description: 'Inclusive report' },
   
   // Ripple v2 shortcuts
   { alias: 'rs', expansion: 'ripple.status', description: 'Ripple bus status' },

@@ -1,6 +1,15 @@
 /**
  * INCLUSIVE Module Tab — Human Compatibility Pipeline
  * v6.0.0 — WCAG Scanning, Repair, Validation, Profiling, Reporting
+ * 
+ * Full glue layer integration:
+ * - SYSTEM: self_scan → system.audit
+ * - VISION: score → vision.health metrics  
+ * - DEFENSE: severity → defense risk pipeline
+ * - MODERNIZER: regressions → proposals
+ * - TEMPLATES: scan→repair→validate→approve pipeline
+ * - MARKETPLACE: block publishing on critical violations
+ * - ACCESS: Role-based capability gating
  */
 
 import { useState } from 'react';
@@ -9,7 +18,8 @@ import { motion } from 'framer-motion';
 import { 
   Accessibility, Activity, CheckCircle, XCircle, AlertTriangle,
   Lock, RefreshCw, Loader2, Eye, Wrench, FileText, Users,
-  ChevronRight, BarChart3, Target, Sparkles
+  ChevronRight, BarChart3, Target, Sparkles, Shield, TrendingDown,
+  Bell
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -28,6 +38,11 @@ import {
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { inclusive } from '@/lib/substrate';
+import { 
+  useInclusiveStatusOS, 
+  useInclusiveCoverageOS, 
+  useInclusiveRegressionsOS 
+} from '@/hooks/useSubstrateOS';
 
 interface InclusiveTabProps {
   enabled: boolean;
@@ -51,29 +66,17 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
   const [scanUrl, setScanUrl] = useState('');
   const [wcagLevel, setWcagLevel] = useState<'A' | 'AA' | 'AAA'>('AA');
 
-  // Fetch module status
-  const { data: status, isLoading: statusLoading, refetch: refetchStatus } = useQuery({
-    queryKey: ['inclusive-status'],
-    queryFn: async () => {
-      const result = await inclusive.status();
-      return result.data as any;
-    },
-    refetchInterval: 60000,
-    enabled,
-  });
+  // Use glue-integrated hooks for real-time data
+  const { data: statusData, isLoading: statusLoading, refetch: refetchStatus } = useInclusiveStatusOS();
+  const { data: coverageData, isLoading: coverageLoading } = useInclusiveCoverageOS();
+  const { data: regressionsData, isLoading: regressionsLoading } = useInclusiveRegressionsOS(24);
+  
+  // Extract status from response
+  const status = statusData?.data as any;
+  const coverage = coverageData?.data as any;
+  const regressions = (regressionsData?.data as any)?.regressions || [];
 
-  // Fetch coverage stats
-  const { data: coverage, isLoading: coverageLoading } = useQuery({
-    queryKey: ['inclusive-coverage'],
-    queryFn: async () => {
-      const result = await inclusive.coverage();
-      return result.data as any;
-    },
-    refetchInterval: 120000,
-    enabled,
-  });
-
-  // Scan mutation
+  // Scan mutation - invalidates VISION + SYSTEM audit integration
   const scanMutation = useMutation({
     mutationFn: async (target: string) => {
       const result = await inclusive.scan(target, { wcag_level: wcagLevel, scan_depth: 'standard' });
@@ -81,7 +84,11 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
       return result.data as ScanResult;
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['inclusive-status'] });
+      // Invalidate all glue-connected modules
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'inclusive'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'vision', 'health'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'system', 'audit'] });
+      
       if (data.score >= 90) {
         toast.success(`Accessibility score: ${data.score}%`, { description: `${data.passes} checks passed` });
       } else {
@@ -93,7 +100,7 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
     },
   });
 
-  // Self-scan mutation
+  // Self-scan mutation - connects to SYSTEM.audit
   const selfScanMutation = useMutation({
     mutationFn: async () => {
       const result = await inclusive.selfScan();
@@ -101,7 +108,9 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
       return result.data as ScanResult;
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['inclusive-status'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'inclusive'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'system', 'audit'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'vision', 'health'] });
       toast.success(`Substrate UI score: ${data?.score || 100}%`);
     },
     onError: (error) => {
@@ -109,7 +118,7 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
     },
   });
 
-  // Repair mutation
+  // Repair mutation - may trigger MODERNIZER proposal
   const repairMutation = useMutation({
     mutationFn: async (target: string) => {
       const result = await inclusive.repair(target);
@@ -117,7 +126,8 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
       return result.data;
     },
     onSuccess: (data: any) => {
-      queryClient.invalidateQueries({ queryKey: ['inclusive-status'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'inclusive'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'modernizer', 'status'] });
       toast.success('Accessibility repairs applied', { description: `${data?.fixes_applied || 0} issues fixed` });
     },
     onError: (error) => {
@@ -127,6 +137,8 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
 
   const globalScore = status?.global_score || status?.score || 100;
   const totalViolations = status?.total_violations || 0;
+  const regressionsCount = regressions?.length || status?.regressions_24h || 0;
+  const pendingRepairs = status?.pending_repairs || 0;
 
   if (!enabled) {
     return (
