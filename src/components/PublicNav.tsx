@@ -99,6 +99,7 @@ export function PublicNav() {
   // Quick access items shown directly in nav
   const quickLinks = [
     { name: "Developers", href: "/developers" },
+    { name: "CodeLab", href: "/codelab" },
     { name: "Marketplace", href: "/marketplace" },
     { name: "Licensing", href: "/substrate/licensing" },
   ];
