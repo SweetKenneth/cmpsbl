@@ -211,37 +211,115 @@ export default function Library() {
                 <div className="h-4 bg-muted rounded w-4/6" />
               </div>
             ) : (
-              <article className="prose prose-base md:prose-lg dark:prose-invert max-w-none
-                prose-headings:scroll-mt-20
-                
-                prose-h1:text-3xl md:prose-h1:text-4xl prose-h1:font-light prose-h1:border-b prose-h1:border-border prose-h1:pb-6 prose-h1:mb-10 prose-h1:mt-4
-                prose-h2:text-2xl md:prose-h2:text-3xl prose-h2:font-semibold prose-h2:mt-14 prose-h2:mb-6 prose-h2:pt-6 prose-h2:border-t prose-h2:border-border/50
-                prose-h3:text-xl md:prose-h3:text-2xl prose-h3:font-medium prose-h3:mt-10 prose-h3:mb-4
-                prose-h4:text-lg md:prose-h4:text-xl prose-h4:font-medium prose-h4:mt-8 prose-h4:mb-3
-                
-                prose-p:leading-relaxed prose-p:mb-6 prose-p:text-muted-foreground
-                
-                prose-ul:my-6 prose-ul:space-y-3 prose-ul:pl-6
-                prose-ol:my-6 prose-ol:space-y-3 prose-ol:pl-6
-                prose-li:leading-relaxed prose-li:pl-2
-                
-                prose-blockquote:my-8 prose-blockquote:pl-6 prose-blockquote:border-l-4 prose-blockquote:border-primary/50 prose-blockquote:italic prose-blockquote:text-muted-foreground
-                
-                prose-hr:my-12 prose-hr:border-border
-                
-                prose-table:my-8 prose-table:text-sm prose-table:border prose-table:border-border
-                prose-th:bg-muted prose-th:px-4 prose-th:py-3 prose-th:text-left prose-th:font-semibold prose-th:border prose-th:border-border
-                prose-td:px-4 prose-td:py-3 prose-td:border prose-td:border-border prose-td:text-muted-foreground
-                
-                prose-code:bg-muted prose-code:px-2 prose-code:py-1 prose-code:rounded-md prose-code:text-sm prose-code:font-mono
-                prose-pre:bg-muted/50 prose-pre:border prose-pre:border-border prose-pre:my-8 prose-pre:p-6 prose-pre:rounded-lg prose-pre:overflow-x-auto
-                
-                prose-a:text-primary prose-a:font-medium prose-a:no-underline hover:prose-a:underline
-                
-                prose-strong:font-semibold prose-strong:text-foreground
-                prose-em:italic
-              ">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              <article className="library-content max-w-none">
+                <ReactMarkdown 
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                    h1: ({children}) => (
+                      <h1 className="text-3xl md:text-4xl font-bold text-primary border-b-2 border-primary/30 pb-6 mb-10 mt-4">
+                        {children}
+                      </h1>
+                    ),
+                    h2: ({children}) => (
+                      <h2 className="text-2xl md:text-3xl font-bold text-foreground mt-14 mb-6 pt-8 border-t border-border flex items-center gap-3">
+                        <span className="w-1.5 h-8 bg-primary rounded-full" />
+                        {children}
+                      </h2>
+                    ),
+                    h3: ({children}) => (
+                      <h3 className="text-xl md:text-2xl font-semibold text-primary/90 mt-10 mb-5">
+                        {children}
+                      </h3>
+                    ),
+                    h4: ({children}) => (
+                      <h4 className="text-lg md:text-xl font-semibold text-foreground mt-8 mb-4">
+                        {children}
+                      </h4>
+                    ),
+                    p: ({children}) => (
+                      <p className="text-base md:text-lg leading-relaxed text-muted-foreground mb-6">
+                        {children}
+                      </p>
+                    ),
+                    ul: ({children}) => (
+                      <ul className="my-6 ml-2 space-y-3">
+                        {children}
+                      </ul>
+                    ),
+                    ol: ({children}) => (
+                      <ol className="my-6 ml-2 space-y-3 list-decimal list-inside">
+                        {children}
+                      </ol>
+                    ),
+                    li: ({children}) => (
+                      <li className="flex items-start gap-3 text-base md:text-lg leading-relaxed text-muted-foreground">
+                        <span className="w-2 h-2 bg-primary rounded-full mt-2.5 shrink-0" />
+                        <span>{children}</span>
+                      </li>
+                    ),
+                    strong: ({children}) => (
+                      <strong className="font-bold text-foreground">{children}</strong>
+                    ),
+                    em: ({children}) => (
+                      <em className="italic text-primary/80">{children}</em>
+                    ),
+                    a: ({href, children}) => (
+                      <a href={href} className="text-primary font-medium underline underline-offset-4 hover:text-primary/80 transition-colors">
+                        {children}
+                      </a>
+                    ),
+                    blockquote: ({children}) => (
+                      <blockquote className="my-8 pl-6 border-l-4 border-primary bg-primary/5 py-4 pr-4 rounded-r-lg italic text-muted-foreground">
+                        {children}
+                      </blockquote>
+                    ),
+                    hr: () => (
+                      <hr className="my-12 border-t-2 border-border" />
+                    ),
+                    table: ({children}) => (
+                      <div className="my-8 overflow-x-auto rounded-lg border border-border">
+                        <table className="w-full text-sm md:text-base">
+                          {children}
+                        </table>
+                      </div>
+                    ),
+                    thead: ({children}) => (
+                      <thead className="bg-primary/10 border-b border-border">
+                        {children}
+                      </thead>
+                    ),
+                    th: ({children}) => (
+                      <th className="px-4 py-3 text-left font-bold text-primary">
+                        {children}
+                      </th>
+                    ),
+                    td: ({children}) => (
+                      <td className="px-4 py-3 border-t border-border text-muted-foreground">
+                        {children}
+                      </td>
+                    ),
+                    code: ({className, children}) => {
+                      const isBlock = className?.includes('language-');
+                      if (isBlock) {
+                        return (
+                          <code className={`${className} block`}>
+                            {children}
+                          </code>
+                        );
+                      }
+                      return (
+                        <code className="bg-primary/10 text-primary px-2 py-1 rounded-md text-sm font-mono">
+                          {children}
+                        </code>
+                      );
+                    },
+                    pre: ({children}) => (
+                      <pre className="my-8 p-6 bg-muted/50 border border-border rounded-xl overflow-x-auto text-sm">
+                        {children}
+                      </pre>
+                    ),
+                  }}
+                >
                   {content}
                 </ReactMarkdown>
               </article>
