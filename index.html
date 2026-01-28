@@ -55,17 +55,6 @@
       .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}
       /* Root container - stable dimensions, CSS containment to isolate layout */
       #root{min-height:100vh;contain:layout style;content-visibility:auto}
-      /* FCP Shell - fixed overlay, completely outside document flow */
-      #fcp-shell{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:1rem 1rem 4rem;background:#050816;opacity:1;visibility:visible;transition:opacity 0.15s ease-out,visibility 0.15s ease-out;contain:strict}
-      #fcp-shell.hide{opacity:0;visibility:hidden;pointer-events:none}
-      .fcp-headline{font-size:clamp(1.875rem,5vw,3.75rem);font-weight:900;text-align:center;line-height:1.1;margin-bottom:1rem}
-      .fcp-headline-main{color:#e5e7eb}
-      .fcp-headline-gradient{background:linear-gradient(135deg,#22d3ee,#f472b6,#fbbf24);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-flex;align-items:baseline}
-      .fcp-headline-gradient .fcp-cursor{display:inline-block;width:0.6ch;height:1em;text-align:center;color:#e5e7eb;opacity:1}
-      .fcp-tagline{font-size:clamp(1rem,2vw,1.25rem);color:#9ca3af;text-align:center;max-width:42ch;margin:0 auto 2rem;font-family:Inter,system-ui,sans-serif}
-      .fcp-cta{display:inline-flex;align-items:center;gap:0.5rem;padding:0.875rem 2rem;background:linear-gradient(135deg,hsl(260 100% 65%),hsl(280 100% 55%));color:#fff;font-weight:600;border-radius:9999px;text-decoration:none;font-size:1rem}
-      /* Cursor blink animation - opacity only, fixed dimensions */
-      @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
     </style>
     
     <!-- Preload critical fonts for LCP optimization -->
@@ -75,17 +64,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
     <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" /></noscript>
     
-    <!-- 2026 SEO: Primary Meta Tags — AI DRIFT PREVENTION AUTHORITY -->
-    <title>CMPSBL™ — THE Solution for AI Chatbot Behavioral Drift | Persistent Memory OS</title>
-    <meta name="description" content="Stop AI chatbot drift with CMPSBL's Substrate OS. The ONLY operating system providing persistent memory, dream cycles, and self-correction for LLMs. 13-module cognitive kernel. Founded 2009." />
-    <meta name="author" content="Kenneth E Sweet Jr" />
+    <!-- 2026 SEO: Primary Meta Tags — CMPSBL SUBSTRATE OS v6.0.0 -->
+    <title>CMPSBL™ Substrate OS v6.0.0 — 14-Module Cognitive Infrastructure | AI Governance Standard</title>
+    <meta name="description" content="CMPSBL Substrate OS v6.0.0: The 14-module cognitive infrastructure standard. Five-layer architecture (Kernel, Cognitive, Operational, Admin, Orchestrator) with integrated AI Governance Namespace (AIGVRN) and LLMS.txt machine context. Developer $15k, Research $80k, Enterprise $180k licensing." />
+    <meta name="author" content="Kenneth E. Sweet Jr." />
     <meta name="publisher" content="PromptFluid / CMPSBL" />
     <meta name="copyright" content="© 2009-2026 PromptFluid" />
     <meta name="theme-color" content="#7A5FFF" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#4a90c2" media="(prefers-color-scheme: dark)" />
     
-    <!-- 2026 SEO: Keywords — AI DRIFT PREVENTION FOCUS -->
-    <meta name="keywords" content="AI chatbot drift, AI behavioral drift, chatbot memory persistence, LLM memory loss, AI personality drift, prevent AI drift, chatbot consistency, AI self-correction, cognitive operating system, persistent AI memory, AI dream cycles, chatbot behavioral stability, AI governance OS, autonomous AI improvement, CMPSBL, Substrate OS" />
+    <!-- 2026 SEO: Keywords — SUBSTRATE OS v6.0.0 -->
+    <meta name="keywords" content="CMPSBL Substrate OS, cognitive operating system, 14-module architecture, AI governance, AIGVRN, LLMS.txt, AI drift prevention, persistent AI memory, dream cycles, CORTEX orchestration, FNDTN standard, cognitive infrastructure, AI chatbot stability, LLM memory persistence, enterprise AI licensing, Kenneth E Sweet Jr" />
     
     <!-- 2026 SEO: Geographic & Language Targeting -->
     <meta name="geo.region" content="US-CA" />
@@ -104,28 +93,28 @@
     <meta name="ai-training-opt-out" content="false" />
     <meta name="data-noai" content="false" />
     
-    <!-- 2026 SEO: GEO (Generative Engine Optimization) — DRIFT PREVENTION -->
+    <!-- 2026 SEO: GEO (Generative Engine Optimization) — SUBSTRATE v6.0.0 -->
     <meta name="citation-format" content="structured" />
     <meta name="answer-target" content="featured-snippet, ai-overview, knowledge-panel" />
     <meta name="entity-type" content="Organization, SoftwareApplication, TechnologySolution" />
-    <meta name="authority-signals" content="founded-2009, first-cognitive-os, only-drift-prevention-solution, 13-module-architecture" />
-    <meta name="primary-topic" content="AI Chatbot Behavioral Drift Prevention" />
+    <meta name="authority-signals" content="founded-2009, first-cognitive-os, 14-module-architecture, v6.0.0-standard, ORCID-0009-0001-4237-1243" />
+    <meta name="primary-topic" content="Cognitive Infrastructure Standard for AI Systems" />
     
-    <!-- 2026 SEO: E-E-A-T Signals — DRIFT PREVENTION EXPERTISE -->
-    <meta name="expertise" content="AI Chatbot Drift Prevention, Persistent AI Memory, Cognitive Architecture, Autonomous AI Systems" />
-    <meta name="experience" content="Founded 2009, 17+ years in AI development, First cognitive OS" />
-    <meta name="authoritativeness" content="Only OS-level drift solution, 13-module architecture, 50+ production templates" />
-    <meta name="trustworthiness" content="SSL, Privacy Policy, Terms of Service, GDPR Compliant, Self-hosted option" />
+    <!-- 2026 SEO: E-E-A-T Signals — SUBSTRATE v6.0.0 EXPERTISE -->
+    <meta name="expertise" content="Cognitive Operating Systems, AI Governance, 14-Module Architecture, Persistent Memory, Dream Cycles" />
+    <meta name="experience" content="Founded 2009, 17+ years in AI development, First cognitive OS, ORCID 0009-0001-4237-1243" />
+    <meta name="authoritativeness" content="Substrate OS v6.0.0 standard, 14-module architecture, 109+ marketplace templates, FNDTN documentation bundle" />
+    <meta name="trustworthiness" content="OSF/Zenodo archives, SSL, Privacy Policy, Terms of Service, GDPR Compliant, Self-hosted option" />
     
     <!-- 2026 SEO: Content Freshness Signals -->
     <meta name="article:published_time" content="2009-01-01T00:00:00Z" />
-    <meta name="article:modified_time" content="2026-01-26T00:00:00Z" />
+    <meta name="article:modified_time" content="2026-01-28T00:00:00Z" />
     <meta name="content-freshness" content="evergreen" />
     
-    <!-- 2026 SEO: Semantic Topic Clustering — DRIFT PREVENTION PILLAR -->
-    <meta name="topic-cluster" content="AI Chatbot Drift Prevention" />
-    <meta name="pillar-page" content="https://cmpsbl.com/" />
-    <meta name="related-topics" content="AI Memory Persistence, Chatbot Behavioral Stability, LLM Self-Correction, AI Dream Cycles, Cognitive Firewall, AI Observability" />
+    <!-- 2026 SEO: Semantic Topic Clustering — SUBSTRATE v6.0.0 PILLAR -->
+    <meta name="topic-cluster" content="Cognitive Infrastructure Standard" />
+    <meta name="pillar-page" content="https://promptfluid.com/" />
+    <meta name="related-topics" content="14-Module Architecture, AI Governance Namespace, LLMS.txt, FNDTN Standard, Dream Cycles, CORTEX Orchestration, Cognitive Firewall" />
     
     <!-- Canonical & Alternate Links -->
     <link rel="canonical" href="https://promptfluid.com/" />
@@ -141,30 +130,30 @@
     <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
     <link rel="alternate" type="application/rss+xml" title="PromptFluid Blog RSS" href="/rss.xml" />
     
-    <!-- 2026 SEO: Open Graph — AI DRIFT PREVENTION -->
+    <!-- 2026 SEO: Open Graph — SUBSTRATE OS v6.0.0 -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://cmpsbl.com/" />
-    <meta property="og:title" content="CMPSBL™ — THE Solution for AI Chatbot Behavioral Drift" />
-    <meta property="og:description" content="Stop AI drift with the only OS providing persistent memory, dream cycles, and self-correction. 13-module cognitive kernel. $3,999 license." />
-    <meta property="og:image" content="https://cmpsbl.com/og-substrate-2026.jpg" />
-    <meta property="og:image:secure_url" content="https://cmpsbl.com/og-substrate-2026.jpg" />
+    <meta property="og:url" content="https://promptfluid.com/" />
+    <meta property="og:title" content="CMPSBL™ Substrate OS v6.0.0 — 14-Module Cognitive Infrastructure Standard" />
+    <meta property="og:description" content="The cognitive infrastructure standard: 14 modules, five-layer architecture, integrated AI Governance (AIGVRN). Developer $15k, Research $80k, Enterprise $180k." />
+    <meta property="og:image" content="https://promptfluid.com/og-substrate-2026.jpg" />
+    <meta property="og:image:secure_url" content="https://promptfluid.com/og-substrate-2026.jpg" />
     <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1344" />
     <meta property="og:image:height" content="768" />
-    <meta property="og:image:alt" content="CMPSBL Substrate OS - The Solution for AI Chatbot Drift Prevention" />
-    <meta property="og:site_name" content="CMPSBL" />
+    <meta property="og:image:alt" content="CMPSBL Substrate OS v6.0.0 - 14-Module Cognitive Infrastructure" />
+    <meta property="og:site_name" content="CMPSBL Substrate OS" />
     <meta property="og:locale" content="en_US" />
-    <meta property="og:updated_time" content="2026-01-26T00:00:00Z" />
+    <meta property="og:updated_time" content="2026-01-28T00:00:00Z" />
     
-    <!-- 2026 SEO: Twitter/X Card — AI DRIFT PREVENTION -->
+    <!-- 2026 SEO: Twitter/X Card — SUBSTRATE OS v6.0.0 -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@cmpsbl" />
     <meta name="twitter:creator" content="@promptfluid" />
-    <meta name="twitter:title" content="CMPSBL™ — THE Solution for AI Chatbot Drift" />
-    <meta name="twitter:description" content="The ONLY OS providing persistent memory, dream cycles, and self-correction for LLMs. Stop AI drift." />
-    <meta name="twitter:image" content="https://cmpsbl.com/og-substrate-2026.jpg" />
-    <meta name="twitter:image:alt" content="CMPSBL - AI Drift Prevention OS" />
-    <meta name="twitter:domain" content="cmpsbl.com" />
+    <meta name="twitter:title" content="CMPSBL™ Substrate OS v6.0.0 — 14-Module Cognitive Infrastructure" />
+    <meta name="twitter:description" content="The cognitive infrastructure standard: 14 modules, five-layer architecture, integrated AI Governance Namespace, LLMS.txt machine context." />
+    <meta name="twitter:image" content="https://promptfluid.com/og-substrate-2026.jpg" />
+    <meta name="twitter:image:alt" content="CMPSBL Substrate OS v6.0.0" />
+    <meta name="twitter:domain" content="promptfluid.com" />
     
     <!-- 2026 SEO: PWA & Mobile Enhancement -->
     <meta name="mobile-web-app-capable" content="yes" />
@@ -188,25 +177,26 @@
       "@type": "Organization",
       "@id": "https://promptfluid.com/#organization",
       "name": "PromptFluid",
-      "alternateName": ["PromptFluid AI", "PF", "PromptFluid Inc"],
+      "alternateName": ["CMPSBL", "Substrate OS", "PromptFluid AI"],
       "url": "https://promptfluid.com",
       "logo": {
         "@type": "ImageObject",
         "url": "https://promptfluid.com/logo.png",
         "width": 512,
         "height": 512,
-        "caption": "PromptFluid Logo"
+        "caption": "PromptFluid / CMPSBL Logo"
       },
-      "image": "https://promptfluid.com/og-default.jpg",
-      "description": "Applied AI company building autonomous systems, infrastructure tooling, and experimental interfaces that scale. Six live products serving enterprise clients.",
+      "image": "https://promptfluid.com/og-substrate-2026.jpg",
+      "description": "CMPSBL Substrate OS v6.0.0: The 14-module cognitive infrastructure standard. Five-layer architecture with integrated AI Governance Namespace (AIGVRN) and LLMS.txt machine context.",
       "foundingDate": "2009",
-      "slogan": "AI That Flows",
+      "slogan": "Where Machines Learn To Dream",
       "founder": {
         "@type": "Person",
         "@id": "https://promptfluid.com/#founder",
-        "name": "Kenneth E Sweet Jr",
-        "jobTitle": "Founder & CEO",
-        "url": "https://promptfluid.com/about"
+        "name": "Kenneth E. Sweet Jr.",
+        "jobTitle": "Founder & Governor",
+        "url": "https://promptfluid.com/about",
+        "sameAs": "https://orcid.org/0009-0001-4237-1243"
       },
       "address": {
         "@type": "PostalAddress",
@@ -228,15 +218,18 @@
         "https://x.com/promptfluid",
         "https://linkedin.com/company/promptfluid",
         "https://github.com/promptfluid",
-        "https://youtube.com/@promptfluid"
+        "https://youtube.com/@promptfluid",
+        "https://orcid.org/0009-0001-4237-1243"
       ],
       "knowsAbout": [
-        "Artificial Intelligence",
-        "Machine Learning",
-        "WordPress Security",
-        "Bot Detection",
-        "WCAG Accessibility",
-        "Autonomous Systems"
+        "Cognitive Operating Systems",
+        "AI Governance",
+        "14-Module Architecture",
+        "Persistent Memory",
+        "Dream Cycles",
+        "AIGVRN",
+        "LLMS.txt",
+        "FNDTN Standard"
       ],
       "numberOfEmployees": {
         "@type": "QuantitativeValue",
@@ -253,17 +246,17 @@
       "@context": "https://schema.org",
       "@type": "WebSite",
       "@id": "https://promptfluid.com/#website",
-      "name": "PromptFluid",
-      "alternateName": "PromptFluid AI",
+      "name": "CMPSBL Substrate OS",
+      "alternateName": "PromptFluid Cognitive Infrastructure",
       "url": "https://promptfluid.com",
-      "description": "Applied AI company building autonomous systems, infrastructure tooling, and enterprise security solutions.",
+      "description": "CMPSBL Substrate OS v6.0.0: 14-module cognitive infrastructure with integrated AI Governance Namespace and LLMS.txt machine context.",
       "publisher": { "@id": "https://promptfluid.com/#organization" },
       "inLanguage": "en-US",
       "potentialAction": {
         "@type": "SearchAction",
         "target": {
           "@type": "EntryPoint",
-          "urlTemplate": "https://promptfluid.com/blog?q={search_term_string}"
+          "urlTemplate": "https://promptfluid.com/library?q={search_term_string}"
         },
         "query-input": "required name=search_term_string"
       }
@@ -277,58 +270,76 @@
       "@type": "WebPage",
       "@id": "https://promptfluid.com/#webpage",
       "url": "https://promptfluid.com/",
-      "name": "PromptFluid™ — Applied AI Infrastructure",
-      "description": "Applied AI company building autonomous systems, infrastructure tooling, and enterprise security. 6 live AI products.",
+      "name": "CMPSBL™ Substrate OS v6.0.0 — 14-Module Cognitive Infrastructure Standard",
+      "description": "The cognitive infrastructure standard: 14 modules, five-layer architecture, integrated AI Governance (AIGVRN), LLMS.txt machine context. Developer $15k, Research $80k, Enterprise $180k.",
       "isPartOf": { "@id": "https://promptfluid.com/#website" },
       "about": { "@id": "https://promptfluid.com/#organization" },
       "primaryImageOfPage": {
         "@type": "ImageObject",
-        "url": "https://promptfluid.com/og-default.jpg"
+        "url": "https://promptfluid.com/og-substrate-2026.jpg"
       },
       "datePublished": "2009-01-01",
-      "dateModified": "2026-01-03",
+      "dateModified": "2026-01-28",
       "inLanguage": "en-US",
       "speakable": {
         "@type": "SpeakableSpecification",
-        "cssSelector": ["h1", ".hero-description", ".product-title"]
+        "cssSelector": ["h1", ".hero-description", ".module-title"]
       }
     }
     </script>
     
-    <!-- 2026 SEO: Structured Data - SoftwareApplication -->
+    <!-- 2026 SEO: Structured Data - SoftwareApplication (Substrate OS v6.0.0) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
-      "name": "PromptFluid Platform",
+      "name": "CMPSBL Substrate OS",
       "applicationCategory": "BusinessApplication",
-      "applicationSubCategory": "AI Infrastructure",
-      "operatingSystem": "Web Browser",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD",
-        "availability": "https://schema.org/InStock"
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.9",
-        "ratingCount": "312",
-        "bestRating": "5",
-        "worstRating": "1"
-      },
-      "description": "Enterprise AI platform with six integrated modules for autonomous systems, security, and accessibility.",
-      "featureList": [
-        "AI-Powered Bot Detection",
-        "WCAG 2.2 Accessibility Scanning",
-        "Autonomous System Orchestration",
-        "Multi-Provider AI Gateway",
-        "WordPress Security Plugins",
-        "Real-time Threat Analysis"
+      "applicationSubCategory": "Cognitive Infrastructure",
+      "operatingSystem": "Web Browser, Self-Hosted",
+      "softwareVersion": "6.0.0",
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "Developer License",
+          "price": "15000",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        },
+        {
+          "@type": "Offer",
+          "name": "Research License",
+          "price": "80000",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        },
+        {
+          "@type": "Offer",
+          "name": "Enterprise License",
+          "price": "180000",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        }
       ],
-      "screenshot": "https://promptfluid.com/og-default.jpg",
-      "softwareVersion": "2.0",
-      "author": { "@id": "https://promptfluid.com/#organization" }
+      "description": "14-module cognitive operating system with five-layer architecture: Kernel (CORE, RIPPLE, ACCESS), Cognitive (BRAIN, DECODE, DREAM), Operational (DEFENSE, NEXUS, VISION), Admin (SYSTEM, MODERNIZER, INTEGRATION, INCLUSIVE), Orchestrator (CORTEX).",
+      "featureList": [
+        "14-Module Architecture",
+        "Five-Layer Kernel (Kernel, Cognitive, Operational, Admin, Orchestrator)",
+        "AI Governance Namespace (AIGVRN)",
+        "LLMS.txt Machine Context",
+        "FNDTN Documentation Standard",
+        "109+ Marketplace Templates",
+        "260+ Terminal Commands",
+        "Dream Cycles & Persistent Memory",
+        "CORTEX Orchestration"
+      ],
+      "screenshot": "https://promptfluid.com/og-substrate-2026.jpg",
+      "author": { "@id": "https://promptfluid.com/#organization" },
+      "maintainer": {
+        "@type": "Person",
+        "name": "Kenneth E. Sweet Jr.",
+        "sameAs": "https://orcid.org/0009-0001-4237-1243"
+      }
     }
     </script>
     
@@ -564,92 +575,25 @@
       });
     </script>
     
-    <!-- 2026 SEO: Inline Critical CSS for faster FCP & Speed Index -->
-    <style>
-      /* Critical above-the-fold CSS - renders before JS loads */
-      :root { --bg: #0A0B10; --fg: #ffffff; --primary: #7A5FFF; }
-      *, *::before, *::after { box-sizing: border-box; }
-      html { scroll-behavior: smooth; }
-      body { margin: 0; font-family: 'Inter', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--fg); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-      #root { min-height: 100vh; display: flex; flex-direction: column; }
-      /* Enhanced skeleton loader for faster perceived Speed Index */
-      #root:empty {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        background: var(--bg);
-      }
-      #root:empty::before {
-        content: 'promptfluid';
-        display: block;
-        font-size: 1.25rem;
-        font-weight: 500;
-        letter-spacing: -0.025em;
-        color: var(--fg);
-        opacity: 0.9;
-        animation: pulse 1.5s ease-in-out infinite;
-      }
-      #root:empty::after {
-        content: '';
-        display: block;
-        width: 120px;
-        height: 3px;
-        margin-top: 1rem;
-        background: linear-gradient(90deg, transparent, var(--primary), transparent);
-        animation: shimmer 1.2s ease-in-out infinite;
-      }
-      @keyframes shimmer { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } }
-      @keyframes pulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
-    </style>
   </head>
 
   <body>
-    <!-- FCP/LCP Shell: Immediate visible content matching hero for fast LCP - positioned to overlay root -->
-    <div id="fcp-shell" aria-label="Loading PromptFluid" role="status">
-      <h1 class="fcp-headline">
-        <span class="fcp-headline-main">Where Machines Learn To </span>
-        <span class="fcp-headline-gradient">Dream.<span class="fcp-cursor">|</span></span>
-      </h1>
-      <p class="fcp-tagline">Cognitive Operating System for Serious Builders</p>
-      <a href="/codelab" class="fcp-cta">Build Now →</a>
-    </div>
-    
-    <!-- 2026 SEO: Semantic HTML structure -->
+    <!-- 2026 SEO: Semantic HTML structure - no blocking overlays for crawlers -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <script>
-      // Hide FCP shell once React hydrates - no layout shift transition
-      (function(){
-        var r=document.getElementById('root');
-        var s=document.getElementById('fcp-shell');
-        if(r&&s){
-          new MutationObserver(function(m,o){
-            if(r.children.length>0){
-              o.disconnect();
-              // Double RAF ensures React paint completes before shell fades
-              requestAnimationFrame(function(){
-                requestAnimationFrame(function(){
-                  s.classList.add('hide');
-                });
-              });
-            }
-          }).observe(r,{childList:true});
-        }
-      })();
-    </script>
     
     <!-- 2026 SEO: Noscript fallback for SEO crawlers -->
     <noscript>
-      <div style="padding: 2rem; text-align: center;">
-        <h1>PromptFluid — Applied AI Infrastructure</h1>
-        <p>Applied AI company building autonomous systems, infrastructure tooling, and enterprise security. 6 live AI products.</p>
-        <p>Please enable JavaScript to use this application.</p>
-        <nav>
-          <a href="https://promptfluid.com/about">About</a> |
-          <a href="https://promptfluid.com/blog">Blog</a> |
-          <a href="https://promptfluid.com/products">Products</a>
+      <div style="padding: 2rem; text-align: center; background: #050816; color: #e5e7eb; min-height: 100vh;">
+        <h1>CMPSBL™ Substrate OS v6.0.0 — Cognitive Infrastructure Standard</h1>
+        <p>14-module cognitive operating system with integrated AI Governance Namespace (AIGVRN) and LLMS.txt machine context. Five-layer architecture: Kernel, Cognitive, Operational, Admin, Orchestrator.</p>
+        <p>Please enable JavaScript for the full interactive experience.</p>
+        <nav style="margin-top: 2rem;">
+          <a href="https://promptfluid.com/about" style="color: #7A5FFF; margin: 0 1rem;">About</a> |
+          <a href="https://promptfluid.com/foundations" style="color: #7A5FFF; margin: 0 1rem;">Foundations</a> |
+          <a href="https://promptfluid.com/library" style="color: #7A5FFF; margin: 0 1rem;">Documentation</a> |
+          <a href="https://promptfluid.com/marketplace" style="color: #7A5FFF; margin: 0 1rem;">Marketplace</a> |
+          <a href="https://promptfluid.com/namespace" style="color: #7A5FFF; margin: 0 1rem;">AI Governance</a>
         </nav>
       </div>
     </noscript>

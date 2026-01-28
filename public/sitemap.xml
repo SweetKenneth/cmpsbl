@@ -1,110 +1,286 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- PromptFluid Main Sitemap - 2026 SEO Optimized -->
-<!-- Last Updated: 2026-01-13 -->
+<!-- CMPSBL Substrate OS v6.0.0 Sitemap - 2026 SEO Optimized -->
+<!-- Last Updated: 2026-01-28 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
-        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <!-- HOMEPAGE - Highest Priority -->
   <url>
     <loc>https://promptfluid.com/</loc>
-    <lastmod>2026-01-13</lastmod>
+    <lastmod>2026-01-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://promptfluid.com/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://promptfluid.com/" />
-    <image:image>
-      <image:loc>https://promptfluid.com/og-default.jpg</image:loc>
-      <image:title>PromptFluid Applied AI Infrastructure Platform</image:title>
-      <image:caption>Enterprise AI platform with autonomous systems, security, and accessibility</image:caption>
-    </image:image>
+  </url>
+  
+  <!-- STANDARDS SECTION - v6.0.0 Core -->
+  <url>
+    <loc>https://promptfluid.com/foundations</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://promptfluid.com/foundations" />
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/namespace</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://promptfluid.com/namespace" />
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/llms-txt</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://promptfluid.com/llms-txt" />
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/library</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://promptfluid.com/library" />
+  </url>
+  
+  <!-- SUBSTRATE OS PAGES -->
+  <url>
+    <loc>https://promptfluid.com/os</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/substrate</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/demo</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/marketplace</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/substrate/licensing</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
   </url>
   
   <!-- DECODE - AI Interface -->
   <url>
     <loc>https://promptfluid.com/decode</loc>
-    <lastmod>2026-01-13</lastmod>
+    <lastmod>2026-01-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://promptfluid.com/decode" />
   </url>
   
-  <!-- ABOUT PAGE -->
+  <!-- COGNITIVE FORGE -->
   <url>
-    <loc>https://promptfluid.com/about</loc>
-    <lastmod>2026-01-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://promptfluid.com/about" />
-  </url>
-  
-  <!-- SOLUTIONS PAGE -->
-  <url>
-    <loc>https://promptfluid.com/solutions</loc>
-    <lastmod>2026-01-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://promptfluid.com/solutions" />
-  </url>
-  
-  <!-- PRODUCTS INDEX -->
-  <url>
-    <loc>https://promptfluid.com/products</loc>
-    <lastmod>2026-01-13</lastmod>
+    <loc>https://promptfluid.com/forge</loc>
+    <lastmod>2026-01-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://promptfluid.com/products" />
   </url>
   
-  <!-- INVESTORS PAGE -->
   <url>
-    <loc>https://promptfluid.com/investors</loc>
-    <lastmod>2026-01-13</lastmod>
+    <loc>https://promptfluid.com/forge/catalog</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  
+  <!-- AGENCY -->
+  <url>
+    <loc>https://promptfluid.com/agency</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  
+  <!-- ABOUT & INFO PAGES -->
+  <url>
+    <loc>https://promptfluid.com/about</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/solutions</loc>
+    <lastmod>2026-01-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://promptfluid.com/investors" />
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/investors</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/contact</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/roadmap</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/projects</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
   </url>
   
   <!-- DOCUMENTATION -->
   <url>
     <loc>https://promptfluid.com/documentation</loc>
-    <lastmod>2026-01-13</lastmod>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/changelog</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/dev-portal</loc>
+    <lastmod>2026-01-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://promptfluid.com/documentation" />
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/devtools</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/developers</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- USE CASES & VERTICALS -->
+  <url>
+    <loc>https://promptfluid.com/use-cases</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/gaming</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  
+  <!-- INTERACTIVE FEATURES -->
+  <url>
+    <loc>https://promptfluid.com/feed-dream-eater</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/proof</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/lab</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/intelligence</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/insights</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  
+  <!-- BLOG -->
+  <url>
+    <loc>https://promptfluid.com/blog</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+  </url>
+  
+  <url>
+    <loc>https://promptfluid.com/publication</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   
   <!-- LEGAL PAGES -->
   <url>
     <loc>https://promptfluid.com/privacy</loc>
-    <lastmod>2026-01-13</lastmod>
+    <lastmod>2026-01-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://promptfluid.com/terms</loc>
-    <lastmod>2026-01-13</lastmod>
+    <lastmod>2026-01-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
-  <!-- DREAM FEEDER (Interactive Feature) -->
+  <!-- MACHINE-READABLE FILES -->
   <url>
-    <loc>https://promptfluid.com/feed-dream-eater</loc>
-    <lastmod>2026-01-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <!-- BLOG INDEX -->
-  <url>
-    <loc>https://promptfluid.com/blog</loc>
-    <lastmod>2026-01-13</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.95</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://promptfluid.com/blog" />
+    <loc>https://promptfluid.com/humans-txt</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
 
 </urlset>

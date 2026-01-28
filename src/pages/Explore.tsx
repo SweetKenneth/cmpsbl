@@ -319,10 +319,10 @@ export default function Explore() {
   return (
     <div ref={containerRef} className="min-h-screen bg-background overflow-hidden">
       <SEO 
-        title="CMPSBL v6.0.0 By PromptFluid — AI That Remembers"
-        description="Build AI that remembers, dreams, and evolves. 14 core modules, 260+ commands, persistent memory, dream cycles, and BYOK architecture for gaming, software development, and enterprise."
+        title="CMPSBL™ Substrate OS v6.0.0 — 14-Module Cognitive Infrastructure Standard"
+        description="The cognitive infrastructure standard: 14 modules, five-layer architecture (Kernel, Cognitive, Operational, Admin, Orchestrator), integrated AI Governance Namespace (AIGVRN), LLMS.txt machine context. 109+ templates, 260+ commands. Developer $15k, Research $80k, Enterprise $180k."
         canonical="https://promptfluid.com"
-        keywords={['CMPSBL', 'composable AI', 'AI infrastructure', 'persistent AI memory', 'dream cycles', 'NPC AI', 'enterprise AI', 'AI routing', 'BYOK', 'v6.0.0']}
+        keywords={['CMPSBL', 'Substrate OS', 'v6.0.0', '14-module architecture', 'cognitive OS', 'AI governance', 'AIGVRN', 'LLMS.txt', 'FNDTN', 'persistent memory', 'dream cycles', 'CORTEX', 'Kenneth E Sweet Jr']}
       />
 
       <PublicNav />

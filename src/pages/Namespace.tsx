@@ -36,8 +36,9 @@ export default function Namespace() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
-        <title>AI Governance Namespace | promptfluid®</title>
-        <meta name="description" content="AI Governance Reference Namespace — 12 governance surfaces for the substrate class. Standards, Certification, Policy, Compliance, Security, Safety, and more." />
+        <title>AIGVRN — AI Governance Reference Namespace | CMPSBL Substrate OS v6.0.0</title>
+        <meta name="description" content="AI Governance Reference Namespace (AIGVRN): 12 governance surfaces for the substrate class — Standards, Certification, Verification, Policy, Compliance, Security, Safety, Regulation, Sovereignty, Privacy, Control. Part of CMPSBL Substrate OS v6.0.0." />
+        <meta name="keywords" content="AIGVRN, AI governance, AISTNDRD, AICRTFY, AIVRFY, AIPLCY, AICMPLY, AISCRTY, AISFTY, AIRGLTN, AISVRGN, AIPRVCY, AICNTRL, CMPSBL, Substrate OS v6.0.0" />
       </Helmet>
 
       <PublicNav />
