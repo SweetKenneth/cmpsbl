@@ -1134,6 +1134,52 @@ ${identityLine}│  Mode: ${roleDisplay}
       });
     }
 
+    // INCLUSIVE module (Human Compatibility Pipeline)
+    else if (base === 'inclusive.status') {
+      result = await inclusive.status();
+    } else if (base === 'inclusive.health') {
+      result = await inclusive.health();
+    } else if (base === 'inclusive.pulse') {
+      result = await inclusive.pulse();
+    } else if (base === 'inclusive.scan') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Target required\n  Usage: inclusive.scan <url_or_html> [--wcag A|AA|AAA] [--depth quick|standard|deep]\n  Example: inclusive.scan https://example.com --wcag AA' };
+      }
+      const wcagLevel = args.includes('--wcag') ? args[args.indexOf('--wcag') + 1] as 'A' | 'AA' | 'AAA' : undefined;
+      const depth = args.includes('--depth') ? args[args.indexOf('--depth') + 1] as 'quick' | 'standard' | 'deep' : undefined;
+      result = await inclusive.scan(args[0], { wcag_level: wcagLevel, scan_depth: depth });
+    } else if (base === 'inclusive.self_scan') {
+      result = await inclusive.selfScan();
+    } else if (base === 'inclusive.repair') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Target required\n  Usage: inclusive.repair <url_or_html> [issue_ids...]' };
+      }
+      result = await inclusive.repair(args[0], args.slice(1).length > 0 ? args.slice(1) : undefined);
+    } else if (base === 'inclusive.validate') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Target required\n  Usage: inclusive.validate <url_or_html>' };
+      }
+      result = await inclusive.validate(args[0]);
+    } else if (base === 'inclusive.profile') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Context required\n  Usage: inclusive.profile <context>\n  Example: inclusive.profile "user prefers high contrast"' };
+      }
+      result = await inclusive.profile(args.join(' '));
+    } else if (base === 'inclusive.report') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Target required\n  Usage: inclusive.report <url_or_html> [json|markdown]' };
+      }
+      const format = args[1] as 'json' | 'markdown' | undefined;
+      result = await inclusive.report(args[0], format);
+    } else if (base === 'inclusive.scan_all_templates') {
+      result = await inclusive.scanAllTemplates();
+    } else if (base === 'inclusive.regressions') {
+      const hours = args[0] ? parseInt(args[0]) : undefined;
+      result = await inclusive.regressions(hours);
+    } else if (base === 'inclusive.coverage') {
+      result = await inclusive.coverage();
+    }
+
     // Unknown command
     else {
       return {
