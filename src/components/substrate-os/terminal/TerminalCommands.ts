@@ -48,6 +48,18 @@ export const BRAIN_COMMANDS: CommandDefinition[] = [
   { command: 'brain.persona_refine', description: 'Optimize persona patterns', category: 'brain', icon: Brain, requiresOperator: true },
   { command: 'brain.lesson_compress', description: 'Compress session learnings into lesson cards', category: 'brain', icon: Brain, requiresOperator: true, args: '[timeframe]', example: 'brain.lesson_compress last_hour' },
   { command: 'brain.reinforce_cycle', description: 'Enhanced reinforcement learning', category: 'brain', icon: Brain, requiresOperator: true, args: '[lookbackHours] [minScore]', example: 'brain.reinforce_cycle 24 0.5' },
+  // v6.0.2: 12 NEW cognitive actions from archived brain functions
+  { command: 'brain.deep_think', description: 'Extended multi-step reasoning', category: 'brain', icon: Brain, requiresOperator: true, args: '<query> [depth]', example: 'brain.deep_think "consciousness" 3' },
+  { command: 'brain.hypothesis_test', description: 'IF-THEN scenario modeling', category: 'brain', icon: Brain, requiresOperator: true, args: '<claim> [context]', example: 'brain.hypothesis_test "memory compression improves recall"' },
+  { command: 'brain.self_critique', description: 'Output quality review (clarity/accuracy/completeness)', category: 'brain', icon: Brain, requiresOperator: true, args: '<output> [output_type]', example: 'brain.self_critique "report content" text' },
+  { command: 'brain.tone_detect', description: 'Emotional tone & persona analysis', category: 'brain', icon: Brain, requiresOperator: true, args: '<message>', example: 'brain.tone_detect "I am confused about this feature"' },
+  { command: 'brain.insight_aggregate', description: 'Cross-module metric collection', category: 'brain', icon: Database, requiresOperator: true },
+  { command: 'brain.insight_synthesize', description: 'Strategic insight generation', category: 'brain', icon: Brain, requiresOperator: true },
+  { command: 'brain.temporal_score', description: 'Memory freshness scoring', category: 'brain', icon: Clock, requiresOperator: true, args: '[query] [context_type]', example: 'brain.temporal_score research' },
+  { command: 'brain.reflexive_plan', description: 'Task decomposition with context audit', category: 'brain', icon: Brain, requiresOperator: true, args: '<task> [context]', example: 'brain.reflexive_plan "optimize memory tiering"' },
+  { command: 'brain.reward', description: 'Apply reward/penalty to memory confidence', category: 'brain', icon: Brain, requiresOperator: true, args: '<memory_id> [reward_score] [outcome_type]', example: 'brain.reward abc123 0.1 positive' },
+  { command: 'brain.synthesize_knowledge', description: 'Compress findings into core principles', category: 'brain', icon: Brain, requiresOperator: true },
+  { command: 'brain.forecast_eval', description: 'Evaluate forecast accuracy against actuals', category: 'brain', icon: Activity, requiresOperator: true },
 ];
 
 export const DECODE_COMMANDS: CommandDefinition[] = [
