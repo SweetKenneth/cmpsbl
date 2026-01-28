@@ -343,25 +343,25 @@ export default function ExperimentationLab() {
                   }`}
                   onClick={() => setActiveTab(template.tab)}
                 >
-                  <CardHeader className="pb-2">
-                    <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${template.color} flex items-center justify-center mb-2`}>
-                      <Icon className="w-5 h-5 text-white" />
+                  <CardHeader className="pb-3">
+                    <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${template.color} flex items-center justify-center mb-3`}>
+                      <Icon className="w-6 h-6 text-white" />
                     </div>
-                    <div className="space-y-1">
-                      <CardTitle className="text-sm leading-tight">{template.name}</CardTitle>
-                      <Badge variant="secondary" className="text-[10px]">{template.price}</Badge>
+                    <div className="space-y-1.5">
+                      <CardTitle className="text-base md:text-sm leading-tight">{template.name}</CardTitle>
+                      <Badge variant="secondary" className="text-xs">{template.price}</Badge>
                     </div>
-                    <CardDescription className="text-xs line-clamp-2">{template.description}</CardDescription>
+                    <CardDescription className="text-sm md:text-xs line-clamp-2 leading-relaxed">{template.description}</CardDescription>
                   </CardHeader>
                   <CardContent className="pt-0">
-                    <div className="flex flex-wrap gap-1 mb-3">
+                    <div className="flex flex-wrap gap-1.5 mb-4">
                       {template.features.slice(0, 2).map((f) => (
-                        <Badge key={f} variant="outline" className="text-[10px]">
+                        <Badge key={f} variant="outline" className="text-xs md:text-[10px]">
                           {f}
                         </Badge>
                       ))}
                       {template.features.length > 2 && (
-                        <Badge variant="outline" className="text-[10px]">
+                        <Badge variant="outline" className="text-xs md:text-[10px]">
                           +{template.features.length - 2}
                         </Badge>
                       )}
@@ -369,14 +369,14 @@ export default function ExperimentationLab() {
                     <Button 
                       variant={activeTab === template.tab ? "default" : "outline"} 
                       size="sm"
-                      className="w-full gap-1 text-xs"
+                      className="w-full gap-2 text-sm"
                       onClick={(e) => {
                         e.stopPropagation();
                         setActiveTab(template.tab);
                       }}
                     >
                       {activeTab === template.tab ? 'Viewing' : 'Try It'}
-                      <ArrowRight className="w-3 h-3" />
+                      <ArrowRight className="w-4 h-4" />
                     </Button>
                   </CardContent>
                 </Card>
