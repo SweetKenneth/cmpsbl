@@ -74,6 +74,8 @@ const CurrentProjects = lazy(() => import("./pages/CurrentProjects"));
 const Roadmap = lazy(() => import("./pages/Roadmap"));
 const LlmsTxt = lazy(() => import("./pages/LlmsTxt"));
 const HumansTxt = lazy(() => import("./pages/HumansTxt"));
+const Foundations = lazy(() => import("./pages/Foundations"));
+const Namespace = lazy(() => import("./pages/Namespace"));
 // Explore is now the homepage (eager loaded above)
 
 // Lazy load blog posts
@@ -177,6 +179,8 @@ const App = () => {
                       <Route path="/contact" element={<Contact />} />
                       <Route path="/llms-txt" element={<LlmsTxt />} />
                       <Route path="/humans-txt" element={<HumansTxt />} />
+                      <Route path="/foundations" element={<Foundations />} />
+                      <Route path="/namespace" element={<Namespace />} />
                       <Route path="/explore" element={<Explore />} />
                       
                       {/* Auth & Legal */}

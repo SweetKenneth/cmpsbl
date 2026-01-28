@@ -1,15 +1,17 @@
 /**
- * LLMs.txt — Machine-readable context for AI systems
- * Follows llmstxt.dev specification
+ * LLMS.txt Standard
+ * Machine-readable context standard for AI systems
  */
 
 import { Helmet } from "react-helmet-async";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Terminal, Brain, Shield, Zap, MessageSquare, Eye, Moon, Copy, Check } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Link } from "react-router-dom";
+import { Terminal, Brain, Shield, Zap, MessageSquare, Eye, Moon, Copy, Check, Download, FileText, ExternalLink, Code, Globe, Layers } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -82,14 +84,49 @@ Observer (read-only) · Operator (actions) · Governor (admin)
 Following: https://llmstxt.dev
 `;
 
-export default function LlmsTxt() {
-  const [copied, setCopied] = useState(false);
+const LLMS_TEMPLATE = `# [Your Product/Service Name] — Machine Context
+# Following the LLMS.txt specification
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(LLMS_TXT_CONTENT);
-    setCopied(true);
-    toast.success("Copied to clipboard");
-    setTimeout(() => setCopied(false), 2000);
+## About
+
+[Brief description of your product/service and its AI capabilities]
+
+## Capabilities
+
+- [Capability 1]
+- [Capability 2]
+- [Capability 3]
+
+## API Endpoints (if applicable)
+
+Base URL: [Your API base URL]
+
+- [METHOD] [endpoint] — [description]
+
+## Access Roles (if applicable)
+
+[Role 1] · [Role 2] · [Role 3]
+
+## Constraints
+
+- [Any limitations or constraints AI systems should know]
+
+## Contact
+
+- Website: [Your website]
+- Documentation: [Your docs URL]
+
+Following: https://llmstxt.dev
+`;
+
+export default function LlmsTxt() {
+  const [copied, setCopied] = useState<string | null>(null);
+
+  const copyToClipboard = (content: string, type: string) => {
+    navigator.clipboard.writeText(content);
+    setCopied(type);
+    toast.success(`${type} copied to clipboard`);
+    setTimeout(() => setCopied(null), 2000);
   };
 
   const modules = [
@@ -104,62 +141,265 @@ export default function LlmsTxt() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
-        <title>LLMs.txt — promptfluid®</title>
-        <meta name="description" content="Machine-readable context for AI systems following the llmstxt.dev specification." />
+        <title>LLMS.txt Standard | promptfluid®</title>
+        <meta name="description" content="LLMS.txt is a machine-readable context standard for AI systems. We developed it, we follow it, and we recommend it for web designers and system builders." />
       </Helmet>
 
       <PublicNav />
 
-      <main className="flex-1 container mx-auto px-4 py-12 max-w-4xl">
+      <main className="flex-1 container mx-auto px-4 py-12 max-w-5xl">
         {/* Header */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-6">
             <Terminal className="w-4 h-4 text-primary" />
-            <span className="text-sm font-mono text-primary">FNDTN v6.0.0 Standard</span>
+            <span className="text-sm font-mono text-primary">Machine Context Standard</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-light mb-4">
             LLMS.txt
           </h1>
-          <p className="text-muted-foreground max-w-xl mx-auto mb-4">
-            Machine-readable context standard for AI systems. We developed LLMS.txt 
-            and recommend it for web designers and system builders.
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-4">
+            A machine-readable context format for AI systems. We developed LLMS.txt 
+            and recommend it for web designers, SaaS builders, and system architects.
           </p>
           <p className="text-sm text-muted-foreground">
             Part of the <strong>FNDTN v6 Three-Surface Standard Stack</strong>: Substrate · Governance · Machine Context
           </p>
         </div>
 
+        {/* Standard Claim */}
+        <Card className="mb-8 border-primary/20 bg-primary/5">
+          <CardContent className="p-6">
+            <div className="flex items-start gap-4">
+              <div className="p-2 rounded-lg bg-primary/10">
+                <Code className="w-6 h-6 text-primary" />
+              </div>
+              <div>
+                <h3 className="font-semibold mb-2">Standard Claim</h3>
+                <p className="text-sm text-muted-foreground mb-3">
+                  LLMS.txt is a machine-readable specification format for AI systems. 
+                  CMPSBL Substrate OS FNDTN v6.0.0 implements LLMS.txt as its primary machine context.
+                </p>
+                <p className="text-sm font-medium text-primary">
+                  We recommend that web designers and system builders include an LLMS.txt file 
+                  at the root of their domains.
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Cross-links */}
+        <Card className="mb-8 bg-muted/30">
+          <CardContent className="p-6">
+            <h3 className="font-semibold mb-4">Three-Surface Standard Stack</h3>
+            <div className="grid md:grid-cols-3 gap-4">
+              <Link to="/foundations" className="p-4 rounded-lg bg-muted border border-border hover:border-primary/30 transition-colors">
+                <h4 className="font-medium mb-1">Substrate Standard</h4>
+                <p className="text-sm text-muted-foreground">CMPSBL FNDTN v6.0.0</p>
+              </Link>
+              <Link to="/namespace" className="p-4 rounded-lg bg-muted border border-border hover:border-primary/30 transition-colors">
+                <h4 className="font-medium mb-1">Governance Standard</h4>
+                <p className="text-sm text-muted-foreground">AI Governance Namespace</p>
+              </Link>
+              <Link to="/llms-txt" className="p-4 rounded-lg bg-primary/10 border border-primary/30">
+                <h4 className="font-medium text-primary mb-1">Machine Context Standard</h4>
+                <p className="text-sm text-muted-foreground">LLMS.txt</p>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Module Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-12">
-          {modules.map((mod) => (
-            <Card key={mod.name} className="border-border/50">
-              <CardContent className="p-4 flex items-center gap-3">
-                <div className={`w-10 h-10 rounded-lg bg-current/10 flex items-center justify-center ${mod.color}`}>
-                  <mod.icon className="w-5 h-5" />
-                </div>
-                <div>
-                  <p className="font-medium">{mod.name}</p>
-                  <p className="text-xs text-muted-foreground">{mod.desc}</p>
-                </div>
+        <section className="mb-8">
+          <h2 className="text-lg font-semibold mb-4">Featured Modules in CMPSBL LLMS.txt</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {modules.map((mod) => (
+              <Card key={mod.name} className="border-border/50">
+                <CardContent className="p-4 flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-lg bg-current/10 flex items-center justify-center ${mod.color}`}>
+                    <mod.icon className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p className="font-medium">{mod.name}</p>
+                    <p className="text-xs text-muted-foreground">{mod.desc}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        <Separator className="my-8" />
+
+        {/* Downloads */}
+        <section className="mb-8">
+          <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
+            <Download className="w-6 h-6 text-primary" />
+            Downloads
+          </h2>
+          
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Canonical LLMS.txt */}
+            <Card className="border-primary/30">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <FileText className="w-5 h-5 text-primary" />
+                  Canonical llms.txt
+                </CardTitle>
+                <CardDescription>
+                  CMPSBL FNDTN v6.0.0 implementation
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <Button variant="outline" className="w-full gap-2" asChild>
+                  <a href="/llms.txt" target="_blank">
+                    <ExternalLink className="w-4 h-4" />
+                    View in Browser
+                  </a>
+                </Button>
+                <Button variant="outline" className="w-full gap-2" asChild>
+                  <a href="/llms.txt" download="llms.txt">
+                    <Download className="w-4 h-4" />
+                    Download llms.txt
+                  </a>
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  className="w-full gap-2"
+                  onClick={() => copyToClipboard(LLMS_TXT_CONTENT, "llms.txt")}
+                >
+                  {copied === "llms.txt" ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                  {copied === "llms.txt" ? "Copied!" : "Copy to Clipboard"}
+                </Button>
               </CardContent>
             </Card>
-          ))}
-        </div>
 
-        {/* Raw Content */}
+            {/* Template */}
+            <Card className="border-border/50">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Code className="w-5 h-5 text-primary" />
+                  llms-template.txt
+                </CardTitle>
+                <CardDescription>
+                  Starter template for adopters
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <Button 
+                  variant="outline" 
+                  className="w-full gap-2"
+                  onClick={() => {
+                    const blob = new Blob([LLMS_TEMPLATE], { type: 'text/plain' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'llms-template.txt';
+                    a.click();
+                    URL.revokeObjectURL(url);
+                  }}
+                >
+                  <Download className="w-4 h-4" />
+                  Download Template
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  className="w-full gap-2"
+                  onClick={() => copyToClipboard(LLMS_TEMPLATE, "template")}
+                >
+                  {copied === "template" ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                  {copied === "template" ? "Copied!" : "Copy Template"}
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        <Separator className="my-8" />
+
+        {/* Schema Overview */}
+        <section className="mb-8">
+          <h2 className="text-2xl font-semibold mb-6">Schema Overview</h2>
+          
+          <div className="grid md:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Required Sections</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm space-y-2">
+                <p><code className="bg-muted px-1.5 py-0.5 rounded">## About</code> — Brief description of the system</p>
+                <p><code className="bg-muted px-1.5 py-0.5 rounded">## Capabilities</code> — What the system can do</p>
+                <p><code className="bg-muted px-1.5 py-0.5 rounded">## Contact</code> — Website and documentation links</p>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Optional Sections</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm space-y-2">
+                <p><code className="bg-muted px-1.5 py-0.5 rounded">## API Endpoints</code> — Available endpoints</p>
+                <p><code className="bg-muted px-1.5 py-0.5 rounded">## Access Roles</code> — Permission levels</p>
+                <p><code className="bg-muted px-1.5 py-0.5 rounded">## Constraints</code> — Limitations and boundaries</p>
+                <p><code className="bg-muted px-1.5 py-0.5 rounded">## Governance</code> — Policy alignment</p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        <Separator className="my-8" />
+
+        {/* Adoption */}
+        <section className="mb-8">
+          <h2 className="text-2xl font-semibold mb-6">Who Should Adopt LLMS.txt?</h2>
+          
+          <div className="grid sm:grid-cols-3 gap-4">
+            <Card className="bg-muted/30">
+              <CardContent className="p-6 text-center">
+                <Globe className="w-8 h-8 mx-auto mb-3 text-primary" />
+                <h3 className="font-medium mb-2">Web Designers</h3>
+                <p className="text-sm text-muted-foreground">
+                  Help AI systems understand your site's capabilities and constraints.
+                </p>
+              </CardContent>
+            </Card>
+            
+            <Card className="bg-muted/30">
+              <CardContent className="p-6 text-center">
+                <Code className="w-8 h-8 mx-auto mb-3 text-primary" />
+                <h3 className="font-medium mb-2">SaaS Builders</h3>
+                <p className="text-sm text-muted-foreground">
+                  Expose your API and features in a machine-readable format.
+                </p>
+              </CardContent>
+            </Card>
+            
+            <Card className="bg-muted/30">
+              <CardContent className="p-6 text-center">
+                <Layers className="w-8 h-8 mx-auto mb-3 text-primary" />
+                <h3 className="font-medium mb-2">Substrate Implementers</h3>
+                <p className="text-sm text-muted-foreground">
+                  Align with the FNDTN v6 standard for substrate-class systems.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        {/* Raw Content Preview */}
         <Card className="border-primary/20">
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-lg flex items-center gap-2">
               <Terminal className="w-5 h-5 text-primary" />
-              Raw llms.txt
+              CMPSBL llms.txt Preview
             </CardTitle>
-            <Button variant="outline" size="sm" onClick={copyToClipboard} className="gap-2">
-              {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-              {copied ? "Copied" : "Copy"}
+            <Button variant="outline" size="sm" onClick={() => copyToClipboard(LLMS_TXT_CONTENT, "preview")} className="gap-2">
+              {copied === "preview" ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+              {copied === "preview" ? "Copied" : "Copy"}
             </Button>
           </CardHeader>
           <CardContent>
-            <pre className="bg-muted/30 rounded-lg p-4 overflow-x-auto text-sm font-mono whitespace-pre-wrap">
+            <pre className="bg-muted/30 rounded-lg p-4 overflow-x-auto text-xs font-mono whitespace-pre-wrap max-h-96 overflow-y-auto">
               {LLMS_TXT_CONTENT}
             </pre>
           </CardContent>
@@ -178,6 +418,22 @@ export default function LlmsTxt() {
               llmstxt.dev
             </a>{" "}
             specification for AI-readable context.
+          </p>
+        </div>
+
+        {/* Author Attribution */}
+        <div className="mt-12 p-6 rounded-lg bg-muted/30 text-center">
+          <p className="text-sm text-muted-foreground">
+            LLMS.txt Standard by{" "}
+            <a 
+              href="https://orcid.org/0009-0001-4237-1243" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-primary hover:underline"
+            >
+              Kenneth E. Sweet Jr.
+            </a>
+            {" "}• PromptFluid • January 2026
           </p>
         </div>
       </main>
