@@ -21,6 +21,37 @@ export interface ExecutionResult {
   data?: unknown;
 }
 
+// Resolve short Plan ID (8+ chars) to full UUID
+async function resolveShortPlanId(shortId: string): Promise<string | null> {
+  // If it's already a full UUID (36 chars with dashes), return as-is
+  if (shortId.length === 36 && shortId.includes('-')) {
+    return shortId;
+  }
+  
+  // Query for plans that start with this prefix
+  try {
+    const { data: plans } = await supabase
+      .from('substrate_upgrade_plans')
+      .select('id')
+      .ilike('id', `${shortId}%`)
+      .neq('status', 'deleted')
+      .limit(2);
+    
+    if (!plans || plans.length === 0) {
+      return null;
+    }
+    
+    if (plans.length > 1) {
+      console.warn(`Multiple plans match prefix '${shortId}', using first match`);
+    }
+    
+    return plans[0].id;
+  } catch (e) {
+    console.error('Failed to resolve short plan ID:', e);
+    return null;
+  }
+}
+
 // Parse command arguments
 function parseArgs(command: string): { base: string; args: string[] } {
   const parts = command.match(/(?:[^\s"]+|"[^"]*")+/g) || [];
@@ -761,41 +792,109 @@ ${identityLine}│  Mode: ${roleDisplay}
       if (!args[0]) {
         return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.apply <plan_id>\n\n  Workflow: proposed → shadow_applied → applied (production)' };
       }
-      const res = await modernizer.apply(args[0]);
-      result = { success: !res.error, data: res.data, error: res.error?.message };
+      // Resolve short plan ID to full UUID
+      const planId = await resolveShortPlanId(args[0]);
+      if (!planId) {
+        return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found\n  Use 'modernizer.plans' to list available plans.` };
+      }
+      const res = await modernizer.apply(planId);
+      // Check both fetch error and success:false in response data
+      const data = res.data as any;
+      if (res.error || (data && data.success === false)) {
+        const errMsg = res.error?.message || data?.error_message || data?.error || 'Apply failed';
+        result = { success: false, data: res.data, error: errMsg };
+      } else {
+        result = { success: true, data: res.data };
+      }
     } else if (base === 'modernizer.apply_shadow') {
       if (!args[0]) {
         return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.apply_shadow <plan_id>' };
       }
-      const res = await modernizer.applyShadow(args[0]);
-      result = { success: !res.error, data: res.data, error: res.error?.message };
+      const planId = await resolveShortPlanId(args[0]);
+      if (!planId) {
+        return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found\n  Use 'modernizer.plans' to list available plans.` };
+      }
+      const res = await modernizer.applyShadow(planId);
+      const data = res.data as any;
+      if (res.error || (data && data.success === false)) {
+        const errMsg = res.error?.message || data?.error_message || data?.error || 'Shadow apply failed';
+        result = { success: false, data: res.data, error: errMsg };
+      } else {
+        result = { success: true, data: res.data };
+      }
     } else if (base === 'modernizer.test_shadow') {
       if (!args[0]) {
         return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.test_shadow <plan_id>' };
       }
-      const res = await modernizer.testShadow(args[0]);
-      result = { success: !res.error, data: res.data, error: res.error?.message };
+      const planId = await resolveShortPlanId(args[0]);
+      if (!planId) {
+        return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found` };
+      }
+      const res = await modernizer.testShadow(planId);
+      const data = res.data as any;
+      if (res.error || (data && data.success === false)) {
+        const errMsg = res.error?.message || data?.error_message || data?.error || 'Shadow test failed';
+        result = { success: false, data: res.data, error: errMsg };
+      } else {
+        result = { success: true, data: res.data };
+      }
     } else if (base === 'modernizer.apply_production') {
       if (!args[0]) {
         return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.apply_production <plan_id>\n\n  Note: Plan must be in shadow_applied status first.' };
       }
-      const res = await modernizer.applyProduction(args[0]);
-      result = { success: !res.error, data: res.data, error: res.error?.message };
+      const planId = await resolveShortPlanId(args[0]);
+      if (!planId) {
+        return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found\n  Use 'modernizer.plans' to list available plans.` };
+      }
+      const res = await modernizer.applyProduction(planId);
+      const data = res.data as any;
+      if (res.error || (data && data.success === false)) {
+        const errMsg = res.error?.message || data?.error_message || data?.error || 'Production apply failed';
+        result = { success: false, data: res.data, error: errMsg };
+      } else {
+        result = { success: true, data: res.data };
+      }
     } else if (base === 'modernizer.rollback') {
       if (!args[0]) {
         return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.rollback <plan_id>' };
       }
-      const res = await modernizer.rollback(args[0]);
-      result = { success: !res.error, data: res.data, error: res.error?.message };
+      const planId = await resolveShortPlanId(args[0]);
+      if (!planId) {
+        return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found` };
+      }
+      const res = await modernizer.rollback(planId);
+      const data = res.data as any;
+      if (res.error || (data && data.success === false)) {
+        const errMsg = res.error?.message || data?.error_message || data?.error || 'Rollback failed';
+        result = { success: false, data: res.data, error: errMsg };
+      } else {
+        result = { success: true, data: res.data };
+      }
     } else if (base === 'modernizer.delete') {
       if (!args[0]) {
         return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.delete <plan_id> [reason]' };
       }
-      const res = await modernizer.delete(args[0], args.slice(1).join(' ') || undefined);
-      result = { success: !res.error, data: res.data, error: res.error?.message };
+      const planId = await resolveShortPlanId(args[0]);
+      if (!planId) {
+        return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found` };
+      }
+      const res = await modernizer.delete(planId, args.slice(1).join(' ') || undefined);
+      const data = res.data as any;
+      if (res.error || (data && data.success === false)) {
+        const errMsg = res.error?.message || data?.error_message || data?.error || 'Delete failed';
+        result = { success: false, data: res.data, error: errMsg };
+      } else {
+        result = { success: true, data: res.data };
+      }
     } else if (base === 'modernizer.applied') {
       const res = await modernizer.applied();
-      result = { success: !res.error, data: res.data, error: res.error?.message };
+      const data = res.data as any;
+      if (res.error || (data && data.success === false)) {
+        const errMsg = res.error?.message || data?.error_message || data?.error || 'Failed to fetch applied';
+        result = { success: false, data: res.data, error: errMsg };
+      } else {
+        result = { success: true, data: res.data };
+      }
     } else if (base === 'modernizer.archived') {
       result = await modernizer.archived();
     } else if (base === 'modernizer.implement') {
