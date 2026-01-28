@@ -1398,20 +1398,24 @@ async function handleBrain(
         { count: coldMemoryCount },
         { count: reflectionCount },
         { count: graphEdgeCount },
+        { count: warmMemoryCount },
         { data: recentEvents },
         { data: recentDisruptions },
         { data: latestReflection },
         { data: latestDream },
+        { data: tieringConfig },
       ] = await Promise.all([
         supabase.from("brain_memories").select("*", { count: "exact", head: true }),
         supabase.from("brain_memory_hot").select("*", { count: "exact", head: true }),
         supabase.from("brain_memory_cold").select("*", { count: "exact", head: true }),
         supabase.from("brain_reflections").select("*", { count: "exact", head: true }),
         supabase.from("brain_graph_edges").select("*", { count: "exact", head: true }),
+        supabase.from("brain_memory_warm").select("*", { count: "exact", head: true }),
         supabase.from("brain_events").select("event_type, outcome").gte("created_at", oneDayAgo).limit(100),
         supabase.from("brain_events").select("*").eq("event_type", "cognitive_disruption").gte("created_at", oneDayAgo).limit(10),
         supabase.from("brain_reflections").select("reflection_date, summary").order("reflection_date", { ascending: false }).limit(1),
         supabase.from("cascade_dreams").select("timestamp, mood").order("timestamp", { ascending: false }).limit(1),
+        supabase.from("brain_tiering_config").select("tier_name, max_entries, min_value_score"),
       ]);
 
       // Calculate health metrics
@@ -1428,8 +1432,14 @@ async function handleBrain(
       const reflectionOk = latestReflection && latestReflection.length > 0;
       const dreamOk = latestDream && latestDream.length > 0;
       
-      const healthScore = [memoryWriteOk, memoryReadOk, graphOk, reflectionOk, dreamOk]
-        .filter(Boolean).length * 20;
+      // Tiering health check
+      const hotConfig = tieringConfig?.find((c: { tier_name: string }) => c.tier_name === 'hot');
+      const hotLimit = hotConfig?.max_entries || 500;
+      const hotOverflow = (hotMemoryCount || 0) > hotLimit;
+      const tieringHealthy = !hotOverflow;
+      
+      const healthScore = [memoryWriteOk, memoryReadOk, graphOk, reflectionOk, dreamOk, tieringHealthy]
+        .filter(Boolean).length * 17; // ~100 max
 
       // Calculate last activity times
       const lastReflectionDate = latestReflection?.[0]?.reflection_date;
@@ -1454,17 +1464,35 @@ async function handleBrain(
         module: "brain",
         version: SUBSTRATE_VERSION,
         health: {
-          score: healthScore,
+          score: Math.min(100, healthScore),
           status: healthScore >= 80 ? 'healthy' : healthScore >= 60 ? 'degraded' : 'critical',
           memory_write_ok: memoryWriteOk,
           memory_read_ok: memoryReadOk,
           graph_ok: graphOk,
           reflection_ok: reflectionOk,
           dream_ok: dreamOk,
+          tiering_healthy: tieringHealthy,
+        },
+        tiers: {
+          hot: {
+            count: hotMemoryCount || 0,
+            limit: hotLimit,
+            overflow: hotOverflow,
+            status: hotOverflow ? 'OVERFLOW' : 'OK',
+          },
+          warm: {
+            count: warmMemoryCount || 0,
+            limit: tieringConfig?.find((c: { tier_name: string }) => c.tier_name === 'warm')?.max_entries || 2000,
+          },
+          cold: {
+            count: coldMemoryCount || 0,
+            limit: tieringConfig?.find((c: { tier_name: string }) => c.tier_name === 'cold')?.max_entries || 10000,
+          },
         },
         stats: {
           memories: memoryCount || 0,
           hot_memories: hotMemoryCount || 0,
+          warm_memories: warmMemoryCount || 0,
           cold_memories: coldMemoryCount || 0,
           reflections: reflectionCount || 0,
           graph_edges: graphEdgeCount || 0,
@@ -1482,6 +1510,7 @@ async function handleBrain(
           last_dream: lastDreamDate || null,
         },
         recommendations: [
+          ...(hotOverflow ? [`CRITICAL: Run brain.tier aggressive — hot tier at ${hotMemoryCount}/${hotLimit}`] : []),
           ...(daysSinceReflection > 1 ? ['Run brain.reflect to update insights'] : []),
           ...(hoursSinceDream > 24 ? ['Run brain.dream to process memories'] : []),
           ...((graphEdgeCount || 0) < 10 ? ['Run brain.graph_build to strengthen knowledge connections'] : []),
@@ -1781,6 +1810,257 @@ async function handleBrain(
           action,
           topic,
           error: error instanceof Error ? error.message : 'Training failed',
+        }, headers);
+      }
+    }
+
+    case "tier": {
+      // v6.0.3: Memory tiering - demote hot→warm→cold with aggressive mode support
+      const mode = String(data.mode || 'standard').toLowerCase();
+      const isAggressive = mode === 'aggressive';
+      const startTime = Date.now();
+      
+      // Batch sizes - aggressive mode processes 10x more
+      const DEMOTE_HOT_LIMIT = isAggressive ? 2000 : 200;
+      const DEMOTE_WARM_LIMIT = isAggressive ? 1000 : 100;
+      const SCORE_LIMIT = isAggressive ? 2000 : 500;
+      
+      const stats = {
+        scored: 0,
+        demoted_to_warm: 0,
+        demoted_to_cold: 0,
+        promoted_to_hot: 0,
+        errors: 0,
+      };
+
+      try {
+        // Fetch tier config
+        const { data: configs } = await supabase.from('brain_tiering_config').select('*');
+        const tierConfig: Record<string, { min_value_score: number; max_entries: number }> = {};
+        for (const c of configs || []) {
+          tierConfig[c.tier_name] = c;
+        }
+        const hotConfig = tierConfig['hot'] || { min_value_score: 0.6, max_entries: 500 };
+        const warmConfig = tierConfig['warm'] || { min_value_score: 0.35, max_entries: 2000 };
+
+        // Get current counts
+        const [{ count: hotCount }, { count: warmCount }, { count: coldCount }] = await Promise.all([
+          supabase.from('brain_memory_hot').select('*', { count: 'exact', head: true }),
+          supabase.from('brain_memory_warm').select('*', { count: 'exact', head: true }),
+          supabase.from('brain_memory_cold').select('*', { count: 'exact', head: true }),
+        ]);
+
+        // STEP 1: Score unscored hot memories
+        const { data: unscoredHot } = await supabase
+          .from('brain_memory_hot')
+          .select('id, access_count, importance_score, created_at, decay_rate')
+          .is('value_score', null)
+          .order('created_at', { ascending: true })
+          .limit(SCORE_LIMIT);
+
+        for (const memory of unscoredHot || []) {
+          const ageDays = Math.floor((Date.now() - new Date(memory.created_at).getTime()) / (1000 * 60 * 60 * 24));
+          const accessCount = memory.access_count || 0;
+          const importance = memory.importance_score || 0.5;
+          const decayRate = memory.decay_rate || 0.02;
+          
+          const recencyFactor = Math.exp(-decayRate * ageDays);
+          const accessFactor = Math.min(1.0, 0.3 + 0.1 * Math.log(Math.max(1, accessCount)));
+          const valueScore = Math.min(1.0, Math.max(0, 
+            (importance * 0.4) + (recencyFactor * 0.35) + (accessFactor * 0.25)
+          ));
+
+          await supabase.from('brain_memory_hot').update({ value_score: valueScore }).eq('id', memory.id);
+          stats.scored++;
+        }
+
+        // STEP 2: Demote low-value hot → warm
+        const { data: hotToDemote } = await supabase
+          .from('brain_memory_hot')
+          .select('*')
+          .lt('value_score', hotConfig.min_value_score)
+          .order('value_score', { ascending: true })
+          .limit(DEMOTE_HOT_LIMIT);
+
+        for (const memory of hotToDemote || []) {
+          try {
+            await supabase.from('brain_memory_warm').insert({
+              content: memory.content,
+              core_summary: String(memory.content || '').substring(0, 200),
+              embedding: memory.embedding,
+              context: memory.context,
+              goal_ref: memory.goal_ref,
+              priority: memory.priority,
+              value_score: memory.value_score || 0.4,
+              access_count: memory.access_count || 0,
+              decay_rate: 0.01,
+              source_memory_id: memory.id,
+              tags: memory.tags,
+              metadata: memory.metadata,
+              demoted_at: new Date().toISOString(),
+            });
+            await supabase.from('brain_memory_hot').delete().eq('id', memory.id);
+            stats.demoted_to_warm++;
+          } catch {
+            stats.errors++;
+          }
+        }
+
+        // STEP 3: Demote low-value warm → cold
+        const { data: warmToDemote } = await supabase
+          .from('brain_memory_warm')
+          .select('*')
+          .lt('value_score', warmConfig.min_value_score)
+          .order('value_score', { ascending: true })
+          .limit(DEMOTE_WARM_LIMIT);
+
+        for (const memory of warmToDemote || []) {
+          try {
+            await supabase.from('brain_memory_cold').insert({
+              summary: memory.content,
+              core_summary: memory.core_summary || String(memory.content || '').substring(0, 100),
+              embedding: memory.embedding,
+              compression_level: 3,
+              source_refs: [memory.id],
+              tags: { ...memory.tags, context: memory.context },
+              value_score: memory.value_score,
+              archived_at: new Date().toISOString(),
+            });
+            await supabase.from('brain_memory_warm').delete().eq('id', memory.id);
+            stats.demoted_to_cold++;
+          } catch {
+            stats.errors++;
+          }
+        }
+
+        // Log tiering event
+        const duration = Date.now() - startTime;
+        await supabase.from('brain_events').insert({
+          event_type: 'memory_tiering',
+          module: 'brain',
+          outcome: stats.errors === 0 ? 'success' : 'partial',
+          data: {
+            mode,
+            stats,
+            duration_ms: duration,
+            before: { hot: hotCount, warm: warmCount, cold: coldCount },
+            after: {
+              hot: (hotCount || 0) - stats.demoted_to_warm,
+              warm: (warmCount || 0) + stats.demoted_to_warm - stats.demoted_to_cold,
+              cold: (coldCount || 0) + stats.demoted_to_cold,
+            },
+          },
+        });
+
+        return jsonResponse({
+          success: true,
+          module: 'brain',
+          action: 'tier',
+          mode,
+          stats,
+          duration_ms: duration,
+          before: { hot: hotCount, warm: warmCount, cold: coldCount },
+          after: {
+            hot: (hotCount || 0) - stats.demoted_to_warm,
+            warm: (warmCount || 0) + stats.demoted_to_warm - stats.demoted_to_cold,
+            cold: (coldCount || 0) + stats.demoted_to_cold,
+          },
+          message: isAggressive 
+            ? `Aggressive tiering: ${stats.demoted_to_warm} hot→warm, ${stats.demoted_to_cold} warm→cold`
+            : `Standard tiering complete`,
+          timestamp: new Date().toISOString(),
+        }, headers);
+      } catch (error) {
+        return jsonResponse({
+          success: false,
+          action: 'tier',
+          mode,
+          stats,
+          error: error instanceof Error ? error.message : 'Tiering failed',
+        }, headers);
+      }
+    }
+
+    case "prune": {
+      // v6.0.3: Prune low-value memories
+      const threshold = Number(data.threshold) || 0.1;
+      const limit = Number(data.limit) || 500;
+      let pruned = 0;
+      let errors = 0;
+
+      try {
+        // Prune from cold tier
+        const { data: coldToPrune } = await supabase
+          .from('brain_memory_cold')
+          .select('id, summary, tags, value_score')
+          .lt('value_score', threshold)
+          .limit(limit);
+
+        for (const memory of coldToPrune || []) {
+          try {
+            await supabase.from('brain_memory_pruned').insert({
+              original_memory_id: memory.id,
+              original_tier: 'cold',
+              content_preview: String(memory.summary || '').substring(0, 200),
+              context: (memory.tags as Record<string, unknown>)?.context || 'unknown',
+              value_score: memory.value_score,
+              prune_reason: 'low_value_score',
+            });
+            await supabase.from('brain_memory_cold').delete().eq('id', memory.id);
+            pruned++;
+          } catch {
+            errors++;
+          }
+        }
+
+        // Also prune noise patterns from hot
+        const noisePatterns = ['%diagnostic%', '%test cycle%', '%heartbeat%', '%status check%', '%ping%'];
+        for (const pattern of noisePatterns) {
+          const { data: noiseMemories } = await supabase
+            .from('brain_memory_hot')
+            .select('id, content, context, value_score')
+            .ilike('content', pattern)
+            .limit(100);
+
+          for (const memory of noiseMemories || []) {
+            try {
+              await supabase.from('brain_memory_pruned').insert({
+                original_memory_id: memory.id,
+                original_tier: 'hot',
+                content_preview: String(memory.content || '').substring(0, 200),
+                context: memory.context,
+                value_score: memory.value_score || 0.1,
+                prune_reason: 'noise_pattern',
+              });
+              await supabase.from('brain_memory_hot').delete().eq('id', memory.id);
+              pruned++;
+            } catch {
+              errors++;
+            }
+          }
+        }
+
+        await supabase.from('brain_events').insert({
+          event_type: 'memory_prune',
+          module: 'brain',
+          outcome: errors === 0 ? 'success' : 'partial',
+          data: { threshold, pruned, errors },
+        });
+
+        return jsonResponse({
+          success: true,
+          module: 'brain',
+          action: 'prune',
+          pruned,
+          errors,
+          threshold,
+          message: `Pruned ${pruned} low-value memories (threshold: ${threshold})`,
+        }, headers);
+      } catch (error) {
+        return jsonResponse({
+          success: false,
+          action: 'prune',
+          error: error instanceof Error ? error.message : 'Prune failed',
         }, headers);
       }
     }
