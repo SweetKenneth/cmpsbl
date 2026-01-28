@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — CORTEX Module Deep Dive
 
-**Version 5.5.0 | Scientific Publication**
+**Version 6.0.0 | Scientific Publication**
 
 ---
 
@@ -31,7 +31,9 @@
 
 ## 1. Module Overview
 
-CORTEX is the Agency-class orchestrator, managing the autonomous decision-making loop that coordinates system evolution across all substrate modules.
+CORTEX is the **interpreter and policy intent layer** (manual-mode orchestrator helper), sitting between DECODE and SYSTEM. It manages the policy intent coordination that bridges operators and modules.
+
+**Important (v6.0.0):** CORTEX operates in **manual mode** — no auto-applications occur without human approval.
 
 | Property | Value |
 |----------|-------|
@@ -39,7 +41,8 @@ CORTEX is the Agency-class orchestrator, managing the autonomous decision-making
 | **Layer** | Orchestrator |
 | **Boot Order** | 13 (Last) |
 | **Dependencies** | All modules |
-| **Classification** | Agency-class |
+| **Classification** | Policy Intent Layer |
+| **Mode** | Manual (no auto-apply) |
 
 ---
 
@@ -213,5 +216,14 @@ High-risk changes require:
 
 ---
 
-*CMPSBL OS Substrate v5.5.0*
+## 10. v6.0.0 Manual Mode
+
+In v6.0.0, CORTEX operates in **manual mode**:
+- Auto-apply is **disabled** — all changes require human approval
+- CORTEX collaborates with SYSTEM and MODERNIZER but does not execute without confirmation
+- Use `cortex.status` to view current mode and state
+
+---
+
+*CMPSBL OS Substrate v6.0.0 — Human Compatibility Era*
 *© 2025-2026 PromptFluid®. All rights reserved.*

@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Executive Summary
 
-**Version 5.5.0 | Scientific Publication**
+**Version 6.0.0 | Scientific Publication**
 
 ---
 
@@ -9,7 +9,7 @@
 | Field | Value |
 |-------|-------|
 | **Document ID** | CMPSBL-LIB-001 |
-| **Version** | v5.5.0 |
+| **Version** | v6.0.0 |
 | **Last Updated** | January 2026 |
 | **Classification** | Public Research Document |
 
@@ -60,7 +60,7 @@ CMPSBL addresses these challenges through a modular kernel architecture that sep
 | Property | Value |
 |----------|-------|
 | **Type** | Cognitive Orchestration Substrate |
-| **Architecture** | 13-Module Kernel |
+| **Architecture** | 14-Module Kernel |
 | **Codebase Scale** | 131,000+ lines of code |
 | **Model Dependency** | Agnostic (8+ providers supported) |
 | **Infrastructure** | Cloud-native (commodity hardware) |
@@ -83,11 +83,11 @@ CMPSBL represents a substantial engineering effort while maintaining focused sco
 
 ## 3. Core Innovations
 
-### 3.1 Four-Layer Kernel Architecture
+### 3.1 Five-Layer Kernel Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                    CMPSBL OS SUBSTRATE v5.5.0                   │
+│                    CMPSBL OS SUBSTRATE v6.0.0                   │
 ├─────────────────────────────────────────────────────────────────┤
 │  KERNEL LAYER        CORE → RIPPLE → ACCESS                    │
 │                      Scheduling, Messaging, Identity            │
@@ -98,8 +98,8 @@ CMPSBL represents a substantial engineering effort while maintaining focused sco
 │  OPERATIONAL LAYER   DEFENSE → NEXUS → VISION → INTEGRATION    │
 │                      Security, AI Routing, Monitoring           │
 ├─────────────────────────────────────────────────────────────────┤
-│  ADMIN LAYER         SYSTEM → MODERNIZER                       │
-│                      Operations, Self-Upgrade                   │
+│  ADMIN LAYER         SYSTEM → MODERNIZER → INCLUSIVE           │
+│                      Operations, Self-Upgrade, Accessibility    │
 ├─────────────────────────────────────────────────────────────────┤
 │  ORCHESTRATOR        CORTEX                                     │
 │                      Agency-class autonomous coordination       │
@@ -115,6 +115,7 @@ CMPSBL represents a substantial engineering effort while maintaining focused sco
 | **Multi-Provider Routing** | Intelligent fallback across 8+ AI providers | NEXUS |
 | **Self-Improvement** | Proposal-based architectural evolution | MODERNIZER |
 | **Autonomous Orchestration** | Agency-class decision coordination | CORTEX |
+| **Human Compatibility** | WCAG 2.2 accessibility and inclusive design | INCLUSIVE |
 | **Enterprise Integration** | 31+ adapter framework | INTEGRATION |
 
 ### 3.3 Resilience Mechanisms
@@ -136,8 +137,8 @@ The following metrics represent measured system behavior:
 
 | Metric | Value | Notes |
 |--------|-------|-------|
-| Module Count | 13 | Including Cortex orchestrator |
-| Registered Commands | 250+ | Terminal-accessible operations |
+| Module Count | 14 | Including CORTEX orchestrator and INCLUSIVE |
+| Registered Commands | 260+ | Terminal-accessible operations |
 | Memory Tiers | 3 | Hot, Warm, Cold architecture |
 | AI Providers | 8+ | Active routing targets |
 | Uptime Target | 99.9% | With auto-heal mechanisms |
@@ -234,5 +235,5 @@ For licensing, acquisition, or research collaboration inquiries:
 
 ---
 
-*CMPSBL OS Substrate v5.5.0*
+*CMPSBL OS Substrate v6.0.0 — Human Compatibility Era*
 *© 2025-2026 PromptFluid®. All rights reserved.*

@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — User's Guide
 
-**Version 5.5.0 | Scientific Publication**
+**Version 6.0.0 | Scientific Publication**
 
 ---
 
@@ -9,7 +9,7 @@
 | Field | Value |
 |-------|-------|
 | **Document ID** | CMPSBL-LIB-003 |
-| **Version** | v5.5.0 |
+| **Version** | v6.0.0 |
 | **Last Updated** | January 2026 |
 | **Classification** | Public Research Document |
 
@@ -39,12 +39,12 @@ This guide provides operational instructions for working with the CMPSBL OS Subs
 
 ### 2.1 Terminal Interface
 
-The primary interface for substrate interaction is the Terminal, providing direct command execution across all 13 modules.
+The primary interface for substrate interaction is the Terminal, providing direct command execution across all 14 modules.
 
 **Access:** Navigate to `/os` in the web interface.
 
 **Capabilities:**
-- Execute 250+ registered commands
+- Execute 260+ registered commands
 - Real-time system feedback
 - Command history and auto-completion
 - Alias and macro support

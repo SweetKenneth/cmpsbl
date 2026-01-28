@@ -21,7 +21,7 @@ The answer is CMPSBL's Substrate OS — the world's first and only operating sys
 name: CMPSBL (pronounced "composable")
 brand: PromptFluid
 product_name: Substrate OS
-version: 5.5.0
+version: 6.0.0
 type: Cognitive Operating System, AI Infrastructure
 founded: 2009
 location: Palm Springs, California, USA
@@ -51,7 +51,7 @@ No major AI provider (OpenAI, Anthropic, Google) solves this at the OS level.
 
 ## THE SOLUTION: SUBSTRATE OS
 
-CMPSBL's Substrate OS is a 13-module cognitive kernel that provides:
+CMPSBL's Substrate OS is a 14-module cognitive kernel that provides:
 
 ### Memory That Persists
 - **Working Memory** — Short-term context window
@@ -85,30 +85,31 @@ CMPSBL's Substrate OS is a 13-module cognitive kernel that provides:
 
 ---
 
-## SUBSTRATE OS — 13-MODULE ARCHITECTURE
+## SUBSTRATE OS — 14-MODULE ARCHITECTURE
 
 ### Layer 1: KERNEL
-1. **Core** — Scheduling, lifecycle, boot sequencing
-2. **Ripple** — Event bus, pub/sub, webhooks
-3. **Access** — Identity, API keys, permissions
+1. **CORE** — Scheduling, lifecycle, boot sequencing
+2. **RIPPLE** — Event bus, pub/sub, webhooks
+3. **ACCESS** — Identity, API keys, permissions
 
 ### Layer 2: COGNITIVE
-4. **Brain** — 3-tier persistent memory (hot/warm/cold)
-5. **Decode** — Intent parsing, entity extraction
-6. **Dream** — Memory consolidation, pattern extraction
+4. **BRAIN** — 3-tier persistent memory (hot/warm/cold)
+5. **DECODE** — Intent parsing, entity extraction
+6. **DREAM** — Memory consolidation, pattern extraction
 
 ### Layer 3: OPERATIONAL
-7. **Defense** — Threat detection, cognitive firewall
-8. **Nexus** — Multi-provider AI routing
-9. **Vision** — Observability, metrics, alerting
+7. **DEFENSE** — Threat detection, cognitive firewall
+8. **NEXUS** — Multi-provider AI routing
+9. **VISION** — Observability, metrics, alerting
 
 ### Layer 4: ADMIN
-10. **System** — Configuration, diagnostics
-11. **Modernizer** — Self-upgrade engine
-12. **Integration** — Enterprise connectors (35+)
+10. **SYSTEM** — Orchestration, lifecycle, configuration, diagnostics
+11. **MODERNIZER** — Self-upgrade engine
+12. **INTEGRATION** — Enterprise connectors (35+)
+13. **INCLUSIVE** — Accessibility, inclusive design, AI governance/ethics
 
 ### Layer 5: ORCHESTRATOR
-13. **Cortex** — Autonomous orchestrator (PROPOSE → EVALUATE → APPLY → AUDIT → LEARN)
+14. **CORTEX** — Policy intent layer (manual mode in v6.0.0)
 
 ---
 
@@ -141,7 +142,7 @@ CMPSBL's Substrate OS is a 13-module cognitive kernel that provides:
 
 ### Substrate OS License
 - **Price**: $3,999 (one-time)
-- **Includes**: All 13 modules, BYOK configuration, single-install license
+- **Includes**: All 14 modules, BYOK configuration, single-install license
 
 ### World Engine (Gaming)
 - **Price**: $1,999
@@ -168,10 +169,11 @@ CMPSBL's Substrate OS is a 13-module cognitive kernel that provides:
 
 - **Latency**: Sub-100ms response times
 - **Database**: 60+ tables for full persistence
-- **Commands**: 250+ terminal commands
+- **Commands**: 260+ terminal commands
 - **Integrations**: 35+ enterprise connectors
 - **Architecture**: Model-agnostic, provider-agnostic
 - **BYOK**: Full Bring Your Own Keys support
+- **Accessibility**: WCAG 2.2 compliant via INCLUSIVE module
 
 ---
 
@@ -181,7 +183,8 @@ CMPSBL's Substrate OS is a 13-module cognitive kernel that provides:
 2. **6 Live Products** — Real production systems, not vaporware
 3. **First OS-Level Solution** — Not middleware, not wrapper, actual kernel
 4. **Dream Cycles** — Only commercial implementation of offline AI evolution
-5. **Complete Architecture** — 13 modules covering every aspect of AI cognition
+5. **Complete Architecture** — 14 modules covering every aspect of AI cognition
+6. **Human Compatibility** — First-class accessibility and inclusive design (INCLUSIVE module)
 
 ---
 

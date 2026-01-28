@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Validation Methodology
 
-**Version 5.5.0 | Scientific Publication**
+**Version 6.0.0 | Scientific Publication**
 
 ---
 
@@ -9,7 +9,7 @@
 | Field | Value |
 |-------|-------|
 | **Document ID** | CMPSBL-LIB-030 |
-| **Version** | v5.5.0 |
+| **Version** | v6.0.0 |
 | **Last Updated** | January 2026 |
 | **Classification** | Public Research Document |
 
@@ -53,13 +53,13 @@ This document describes the validation methodology used to verify the CMPSBL OS 
 
 ### 3.1 Module Health Testing
 
-Each of the 13 modules undergoes health validation:
+Each of the 14 modules undergoes health validation:
 
 ```
 Test: Module Health Check
 For each module in [core, ripple, access, brain, decode, dream,
                     defense, nexus, vision, integration, system,
-                    modernizer, cortex]:
+                    modernizer, inclusive, cortex]:
   1. Execute: module.status
   2. Verify: Response contains health_score
   3. Verify: health_score >= 0 and <= 100
@@ -73,12 +73,14 @@ Each registered command is validated:
 ```
 Test: Command Registry Validation
 1. Execute: help
-2. Verify: Returns 250+ commands
+2. Verify: Returns 260+ commands
 3. For each module:
    a. Execute: help <module>
    b. Verify: Module commands listed
    c. Execute: <module>.status
    d. Verify: Valid response received
+4. Verify: system.status and system.heal return valid responses
+5. Verify: cortex.status shows manual mode
 ```
 
 ### 3.3 Memory System Testing
@@ -157,7 +159,7 @@ Test: Auto-Heal Mechanism
 | Metric | Target | Measured |
 |--------|--------|----------|
 | Requests/second | >100 | 150+ |
-| Concurrent modules | 13 | 13 |
+| Concurrent modules | 14 | 14 |
 | Event processing | >1000/min | 1500+/min |
 
 ---
@@ -237,8 +239,9 @@ Tests can be reproduced by:
 ### 9.1 What Validation Proves
 
 - System boots and runs successfully
-- All 13 modules are functional
+- All 14 modules are functional (including INCLUSIVE)
 - Commands execute and return valid responses
+- `system.status`, `system.heal`, and `cortex.status` work as documented
 - Resilience mechanisms activate correctly
 - Performance meets specified targets
 
@@ -261,5 +264,5 @@ For validation inquiries or licensed access:
 
 ---
 
-*CMPSBL OS Substrate v5.5.0*
+*CMPSBL OS Substrate v6.0.0 — Human Compatibility Era*
 *© 2025-2026 PromptFluid®. All rights reserved.*

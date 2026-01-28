@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — API Reference
 
-**Version 5.5.0 | Scientific Publication**
+**Version 6.0.0 | Scientific Publication**
 
 ---
 
@@ -9,7 +9,7 @@
 | Field | Value |
 |-------|-------|
 | **Document ID** | CMPSBL-LIB-004 |
-| **Version** | v5.5.0 |
+| **Version** | v6.0.0 |
 | **Last Updated** | January 2026 |
 | **Classification** | Public Research Document |
 
@@ -31,7 +31,7 @@
 
 ## 1. API Overview
 
-The CMPSBL OS Substrate exposes a unified API for all 13 modules. This document provides the public interface specification for integration and development.
+The CMPSBL OS Substrate exposes a unified API for all 14 modules. This document provides the public interface specification for integration and development.
 
 ### 1.1 Base Endpoint
 
@@ -132,11 +132,11 @@ Returns current system status.
 {
   "success": true,
   "data": {
-    "state": "running",
     "overall_health": 100,
     "overall_status": "healthy",
-    "modules_count": 13,
+    "modules_count": 14,
     "uptime_ms": 3600000,
+    "version": "6.0.0",
     "version": "5.5.0",
     "proof_mode": false
   }
@@ -165,7 +165,7 @@ Returns detailed health metrics for all modules.
     "modules": {
       "core": { "health": 100, "status": "healthy", "circuit_state": "closed" },
       "brain": { "health": 100, "status": "healthy", "circuit_state": "closed" }
-      // ... all 13 modules
+      // ... all 14 modules
     }
   }
 }
@@ -196,12 +196,12 @@ Returns comprehensive system diagnostics.
     "error_rate": 0.0,
     "heal_attempts": 0,
     "open_circuits": 0,
-    "module_count": 13,
+    "module_count": 14,
     "categories": {
       "kernel": 3,
       "cognitive": 3,
       "operational": 4,
-      "admin": 2,
+      "admin": 3,
       "orchestrator": 1
     },
     "proof_mode": false
@@ -240,7 +240,7 @@ Returns module registry information.
         "eligible_for_upgrade": true,
         "capabilities": ["scheduling", "routing", "lifecycle"]
       }
-      // ... all 13 modules
+      // ... all 14 modules
     ]
   }
 }

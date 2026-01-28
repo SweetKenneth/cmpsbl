@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Glossary
 
-**Version 5.5.0 | Scientific Publication**
+**Version 6.0.0 | Scientific Publication**
 
 ---
 
@@ -9,7 +9,7 @@
 | Field | Value |
 |-------|-------|
 | **Document ID** | CMPSBL-LIB-040 |
-| **Version** | v5.5.0 |
+| **Version** | v6.0.0 |
 | **Last Updated** | January 2026 |
 
 ---
@@ -157,10 +157,17 @@ The automatic process of promoting and demoting memories between hot, warm, and 
 The self-improvement module that analyzes the codebase and proposes architectural upgrades.
 
 **Module**
-A discrete functional unit within the substrate. The system comprises 13 modules.
+A discrete functional unit within the substrate. The system comprises 14 modules (v6.0.0).
 
 **Mutation**
 A learned improvement or adaptation generated through dream cycles.
+
+---
+
+## I (continued)
+
+**INCLUSIVE**
+The human compatibility module providing WCAG 2.2 accessibility scanning, repair, validation, and inclusive design enforcement. Introduced in v6.0.0 as a first-class module.
 
 ---
 
@@ -219,7 +226,7 @@ Executing proposed changes in a parallel environment before production deploymen
 The complete CMPSBL operating system providing cognitive orchestration services.
 
 **SYSTEM**
-The administrative module for backup, restore, diagnostics, and configuration.
+The orchestrator and lifecycle manager module for boot graph, module coordination, backup, restore, diagnostics, configuration, and `system.heal` operations.
 
 ---
 
@@ -246,9 +253,9 @@ The observability module providing health monitoring, distributed tracing, and a
 The middle memory tier for active reference. Contains memories with scores between 0.35 and 0.6.
 
 **World Model**
-CORTEX's comprehensive view of all modules, their states, and relationships.
+CORTEX's comprehensive view of all 14 modules, their states, and relationships.
 
 ---
 
-*CMPSBL OS Substrate v5.5.0*
+*CMPSBL OS Substrate v6.0.0 — Human Compatibility Era*
 *© 2025-2026 PromptFluid®. All rights reserved.*
