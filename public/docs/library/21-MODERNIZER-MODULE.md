@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — MODERNIZER Module Deep Dive
 
-**Version 0.7.7 | Scientific Publication**
+**Version 0.7.8 | Scientific Publication**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-021 |
 | **Module** | MODERNIZER |
 | **Layer** | Administrative |
-| **Version** | v0.7.7 |
+| **Version** | v0.7.8 |
 
 ---
 
@@ -33,6 +33,8 @@
 
 MODERNIZER is the self-improvement engine, responsible for analyzing the substrate, proposing improvements, and managing the upgrade lifecycle through shadow testing and governed autonomy.
 
+**v0.7.8 Key Insight:** Scan produces *proposals*, not *plans*. Only the Normalization Layer can convert proposals into executable plans.
+
 | Property | Value |
 |----------|-------|
 | **Name** | MODERNIZER |
@@ -42,13 +44,13 @@ MODERNIZER is the self-improvement engine, responsible for analyzing the substra
 
 ---
 
-## 2. Cognitive Scan Pipeline (v0.7.7)
+## 2. Cognitive Scan Pipeline (v0.7.8)
 
-### 2.1 Four-Phase Parallel Architecture
+### 2.1 Five-Stage Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                  MODERNIZER.SCAN v0.7.7                          │
+│                  MODERNIZER.SCAN v0.7.8                          │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
 │   ┌────────────┐  ┌────────────┐  ┌────────────┐  ┌──────────┐ │
@@ -66,9 +68,18 @@ MODERNIZER is the self-improvement engine, responsible for analyzing the substra
 │                     └──────┬───────┘                            │
 │                            │                                    │
 │                            ▼                                    │
-│                     ┌──────────────┐                            │
-│                     │ PLAN READY?  │                            │
-│                     └──────────────┘                            │
+│                  ┌─────────────────┐                            │
+│                  │ NORMALIZATION   │  ◀── v0.7.8                │
+│                  │ (proposals →    │                            │
+│                  │  typed actions) │                            │
+│                  └────────┬────────┘                            │
+│                           │                                     │
+│                           ▼                                     │
+│                  ┌─────────────────┐                            │
+│                  │  PLAN READY?    │                            │
+│                  │  (only if       │                            │
+│                  │  normalized=true)│                            │
+│                  └─────────────────┘                            │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -81,15 +92,65 @@ MODERNIZER is the self-improvement engine, responsible for analyzing the substra
 | **B: System** | Check evolution state, circuits, anomalies | `system_state` |
 | **C: Health** | Calculate stability, security, upgrade pressure | `code_health` |
 | **D: LLM** | L7 Systems Engineer reasoning pass | `llm_recommendations` |
+| **Normalize** | Convert proposals to typed actions | `normalized_actions` |
 
 ### 2.3 Scan Commands
 
 | Command | Description |
 |---------|-------------|
-| `modernizer.scan` | Full cognitive scan |
-| `modernizer.scan --explain` | Human-readable output |
-| `modernizer.scan --llm-report` | Show LLM reasoning |
-| `modernizer.scan --dry-run` | Analysis only, no plan |
+| `modernizer.scan` | Full cognitive scan with normalization |
+| `modernizer.scan --explain` | Human-readable output with rejection details |
+| `modernizer.scan --llm-report` | Show LLM reasoning (advisory only) |
+| `modernizer.scan --dry-run` | Run normalization but do NOT create plan |
+
+---
+
+## 2.4 Normalization Layer (v0.7.8)
+
+### Purpose
+
+The Normalization Layer ensures only deterministically-typed actions become evolution plans.
+
+### Rules
+
+Every proposal MUST resolve to:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `action_type` | Enum | `code_mutation`, `config_mutation`, `cleanup_mutation`, `edge_mutation`, etc. |
+| `target_scope` | Enum | `module`, `system`, `edge`, `api`, `database` |
+| `risk_level` | Enum | `low` or `medium` only (high is rejected) |
+| `confidence_score` | Number | 0.0–1.0 (minimum 0.7 required) |
+
+### Rejection Codes
+
+| Code | Description |
+|------|-------------|
+| `INVALID_ACTION_TYPE` | Cannot determine executable action type |
+| `MISSING_SCOPE` | Target scope cannot be inferred |
+| `CONFIDENCE_TOO_LOW` | Below 70% confidence threshold |
+| `UNSUPPORTED_RISK_LEVEL` | High risk not allowed |
+| `AMBIGUOUS_INTENT` | Proposal intent unclear |
+| `MISSING_TARGET` | No target module/file identified |
+
+### If Normalization Fails
+
+- NO plan is created
+- System remains healthy
+- Scan results preserved for review
+- Terminal shows: "⚠️ PLAN BLOCKED — proposals could not be normalized"
+
+---
+
+## 2.5 Why Some Scans Do Not Produce Plans
+
+Scans can complete successfully without creating a plan. This is by design:
+
+1. **LLM output is advisory** — Phase D recommendations are suggestions, not commands
+2. **Confidence threshold** — Proposals below 70% confidence are rejected
+3. **Risk filtering** — High-risk proposals require human approval
+4. **Scope resolution** — Ambiguous proposals cannot become typed actions
+5. **No silent failures** — The system tells you exactly why no plan was created
 
 ---
 

@@ -1,6 +1,6 @@
 /**
  * Evolve Module — Unified Exports
- * v0.7.6 — Governed Autonomy Era
+ * v0.7.8 — Scan Normalization Era
  */
 
 // Core context
@@ -100,6 +100,11 @@ export interface EvolveResult {
 /**
  * Execute evolution with proper context
  * This is the SINGLE entry point for all evolve operations
+ * 
+ * v0.7.8 SAFETY GUARANTEE:
+ * - Refuses any plan not marked normalized=true
+ * - Logs rejection with receipt entry
+ * - Never auto-repairs malformed plans
  */
 export async function evolve(options: EvolveOptions): Promise<EvolveResult> {
   // Create context
@@ -122,6 +127,27 @@ export async function evolve(options: EvolveOptions): Promise<EvolveResult> {
       message: `Invalid context: ${validation.errors.join(', ')}`,
       error: validation.errors.join(', '),
     };
+  }
+
+  // v0.7.8 SAFETY: Validate plan normalization for production mode
+  if (isProductionMode(context) && options.metadata) {
+    const planData = options.metadata as { normalized?: boolean; actions?: unknown[] };
+    if (!planData.normalized) {
+      emitEvolveEvent('evolve_error', {
+        evolution_id: context.evolution_id,
+        error: 'Plan is not normalized. Only normalized plans can be evolved.',
+        rejection_type: 'UNNORMALIZED_PLAN',
+      });
+      return {
+        success: false,
+        mode: options.mode,
+        evolution_id: context.evolution_id,
+        short_id: getShortId(context),
+        phase: 'gate',
+        message: 'Evolution rejected: Plan is not normalized. Only normalized plans can be evolved.',
+        error: 'UNNORMALIZED_PLAN',
+      };
+    }
   }
 
   // Route based on mode

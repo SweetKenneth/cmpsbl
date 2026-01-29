@@ -61,6 +61,10 @@ export type EvolveEventType =
   | 'scan_started'
   | 'scan_completed'
   | 'scan_failed'
+  // Normalization events (v0.7.8)
+  | 'proposals_normalized'
+  | 'plan_created'
+  | 'plan_blocked'
   // Error events
   | 'evolve_error';
 

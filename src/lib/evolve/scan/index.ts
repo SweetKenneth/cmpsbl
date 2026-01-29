@@ -1,13 +1,18 @@
 /**
  * Modernizer Scan — Cognitive Systems Scan
- * v0.7.7 — Intelligent Multi-Source Analysis
+ * v0.7.8 — Intelligent Multi-Source Analysis + Normalization
  * 
- * SCAN = 4 PARALLEL PHASES → MERGE → PLAN
+ * SCAN = 4 PARALLEL PHASES → MERGE → NORMALIZE → PLAN
  * 
  * Phase A: Edge Function Introspection
  * Phase B: System State Scan
  * Phase C: Code Health Snapshot
  * Phase D: LLM-Governed Reasoning
+ * 
+ * NORMALIZATION LAYER (v0.7.8):
+ * - Converts raw proposals to typed, executable actions
+ * - Only normalized actions can become plans
+ * - Deterministic, no silent failures
  */
 
 import { phaseAEdge } from './phase-a-edge';
@@ -15,13 +20,26 @@ import { phaseBSystem } from './phase-b-system';
 import { phaseCHealth } from './phase-c-health';
 import { phaseDLLM } from './phase-d-llm';
 import { scanMerger } from './merger';
-import type { ScanResult, ScanOptions, ScanConfig, DEFAULT_SCAN_CONFIG } from './types';
+import { normalizeProposals, type NormalizationResult } from './normalizer';
+import { createPlanFromNormalized, type PlanCreationResult } from './plan-constructor';
+import type { ScanResult, ScanOptions } from './types';
 import { evolutionRuns } from '../evolution-runs';
 import { circuitBreaker } from '../circuit-breaker';
 import { emitEvolveEvent } from '../telemetry';
 
 // Re-export types
 export * from './types';
+export * from './normalizer';
+export * from './plan-constructor';
+
+// ═══════════════════════════════════════════════════════════════
+// EXTENDED SCAN RESULT (v0.7.8)
+// ═══════════════════════════════════════════════════════════════
+
+export interface ScanResultExtended extends ScanResult {
+  normalization?: NormalizationResult;
+  normalized_actions_count?: number;
+}
 
 // ═══════════════════════════════════════════════════════════════
 // MODERNIZER SCAN
@@ -31,7 +49,7 @@ export * from './types';
  * Execute cognitive systems scan
  * Returns real, actionable evolution proposals
  */
-export async function modernizerScan(options: ScanOptions = {}): Promise<ScanResult> {
+export async function modernizerScan(options: ScanOptions = {}): Promise<ScanResultExtended> {
   const startTime = Date.now();
   const scanId = `scan_${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 8)}`;
   
@@ -69,33 +87,59 @@ export async function modernizerScan(options: ScanOptions = {}): Promise<ScanRes
     });
     
     // ═══════════════════════════════════════════════════════════════
-    // PLAN GENERATION (if ready)
+    // v0.7.8: NORMALIZATION LAYER
+    // ═══════════════════════════════════════════════════════════════
+    
+    const normalizationResult = normalizeProposals(mergeResult.proposals);
+    
+    // ═══════════════════════════════════════════════════════════════
+    // PLAN GENERATION (v0.7.8: Only from normalized actions)
     // ═══════════════════════════════════════════════════════════════
     
     let planId: string | undefined;
-    const planReady = mergeResult.proposals.length > 0 && 
-                      mergeResult.blocked_reasons.length === 0;
+    let planReady = false;
+    const blockedReasons = [...mergeResult.blocked_reasons];
     
-    if (planReady && !options.dry_run) {
-      // Auto-create evolution plan
-      const planResult = await createPlanFromProposals(scanId, mergeResult.proposals);
-      if (planResult.success) {
-        planId = planResult.plan_id;
-      } else {
-        mergeResult.blocked_reasons.push(`Plan creation failed: ${planResult.error}`);
+    if (normalizationResult.can_create_plan && !options.dry_run) {
+      // Create plan from normalized actions only
+      const planResult = await createPlanFromNormalized(scanId, normalizationResult);
+      
+      if (planResult.success && planResult.run_id) {
+        planId = planResult.run_id;
+        planReady = true;
+      } else if (planResult.error) {
+        blockedReasons.push(`Plan creation failed: ${planResult.error.code} - ${planResult.error.message}`);
+        emitEvolveEvent('plan_blocked', {
+          scan_id: scanId,
+          error_code: planResult.error.code,
+          message: planResult.error.message,
+        });
       }
+    } else if (!normalizationResult.can_create_plan && mergeResult.proposals.length > 0) {
+      // Proposals exist but normalization failed
+      blockedReasons.push(normalizationResult.blocking_reason || 'Proposals could not be normalized');
+      emitEvolveEvent('plan_blocked', {
+        scan_id: scanId,
+        reason: 'normalization_failed',
+        normalized_count: normalizationResult.normalized_actions.length,
+        rejected_count: normalizationResult.rejected_proposals.length,
+      });
     }
     
     // Determine recommended action
-    const recommendedAction = determineNextAction(mergeResult, planId);
+    const recommendedAction = determineNextAction(
+      { ...mergeResult, blocked_reasons: blockedReasons }, 
+      planId,
+      normalizationResult
+    );
     
     const scanDuration = Date.now() - startTime;
     
-    const result: ScanResult = {
+    const result: ScanResultExtended = {
       scan_id: scanId,
       system_snapshot: {
         timestamp: new Date().toISOString(),
-        substrate_version: '6.0.0',
+        substrate_version: '6.3.0',
         modules_active: 14,
         health_overall: codeHealth.stability_score,
       },
@@ -106,14 +150,19 @@ export async function modernizerScan(options: ScanOptions = {}): Promise<ScanRes
       proposals: mergeResult.proposals,
       plan_ready: planReady,
       plan_id: planId,
-      blocked_reasons: mergeResult.blocked_reasons,
+      blocked_reasons: blockedReasons,
       recommended_next_action: recommendedAction,
       scan_duration_ms: scanDuration,
+      // v0.7.8 additions
+      normalization: normalizationResult,
+      normalized_actions_count: normalizationResult.normalized_actions.length,
     };
     
     emitEvolveEvent('scan_completed', {
       scan_id: scanId,
       proposals_count: mergeResult.proposals.length,
+      normalized_count: normalizationResult.normalized_actions.length,
+      rejected_count: normalizationResult.rejected_proposals.length,
       plan_ready: planReady,
       duration_ms: scanDuration,
     });
@@ -129,7 +178,7 @@ export async function modernizerScan(options: ScanOptions = {}): Promise<ScanRes
       scan_id: scanId,
       system_snapshot: {
         timestamp: new Date().toISOString(),
-        substrate_version: '6.0.0',
+        substrate_version: '6.3.0',
         modules_active: 14,
         health_overall: 0,
       },
@@ -200,62 +249,28 @@ function getArchitectureMap(): Record<string, string[]> {
 }
 
 /**
- * Create evolution plan from proposals
- */
-async function createPlanFromProposals(
-  scanId: string, 
-  proposals: ScanResult['proposals']
-): Promise<{ success: boolean; plan_id?: string; error?: string }> {
-  try {
-    // Check for existing active run
-    const activeRun = await evolutionRuns.getActiveRun();
-    if (activeRun) {
-      return {
-        success: false,
-        error: `Active evolution ${activeRun.run_id.substring(0, 8)} must complete first`,
-      };
-    }
-    
-    // Create new evolution run linked to scan
-    const result = await evolutionRuns.createRun({
-      plan_id: scanId,
-      initiated_by: 'system',
-      confidence_score: Math.max(...proposals.map(p => p.confidence_score)),
-      risk_level: proposals.some(p => p.risk_level === 'high') ? 'high' : 
-                  proposals.some(p => p.risk_level === 'medium') ? 'medium' : 'low',
-    });
-    
-    if (!result.success || !result.run) {
-      return { success: false, error: result.error };
-    }
-    
-    return { success: true, plan_id: result.run.run_id };
-    
-  } catch (error) {
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Plan creation failed',
-    };
-  }
-}
-
-/**
  * Determine recommended next action
  */
 function determineNextAction(
-  mergeResult: Awaited<ReturnType<typeof scanMerger.merge>>,
-  planId?: string
+  mergeResult: { blocked_reasons: string[]; proposals: unknown[] },
+  planId?: string,
+  normalization?: NormalizationResult
 ): string {
   if (mergeResult.blocked_reasons.length > 0) {
     return `Resolve blockers: ${mergeResult.blocked_reasons[0]}`;
   }
   
   if (planId) {
-    return `Plan ${planId.substring(0, 8)} ready. Run 'modernizer.evolve shadow' to apply.`;
+    const actionCount = normalization?.normalized_actions.length || 0;
+    return `Plan ${planId.substring(0, 8)} ready — ${actionCount} actions normalized. Run 'modernizer.evolve shadow' to apply.`;
   }
   
   if (mergeResult.proposals.length === 0) {
     return 'System healthy — no changes recommended';
+  }
+  
+  if (normalization && !normalization.can_create_plan) {
+    return `${normalization.rejected_proposals.length} proposals rejected — review with --explain flag`;
   }
   
   return 'Review proposals and create evolution plan when ready';
@@ -263,8 +278,9 @@ function determineNextAction(
 
 /**
  * Format scan result for terminal display
+ * v0.7.8: Updated for truthful plan status
  */
-export function formatScanResult(result: ScanResult, options: ScanOptions = {}): string {
+export function formatScanResult(result: ScanResultExtended, options: ScanOptions = {}): string {
   const lines: string[] = [];
   
   lines.push('╔══════════════════════════════════════════════════════════════╗');
@@ -311,14 +327,37 @@ export function formatScanResult(result: ScanResult, options: ScanOptions = {}):
     }
   }
   
-  // Status
+  // v0.7.8: Normalization Summary
+  if (result.normalization) {
+    lines.push('╠══════════════════════════════════════════════════════════════╣');
+    lines.push('║  🔄 NORMALIZATION                                            ║');
+    lines.push(`║    Normalized: ${result.normalization.normalized_actions.length} | Rejected: ${result.normalization.rejected_proposals.length}                          ║`);
+    
+    if (result.normalization.rejected_proposals.length > 0) {
+      const breakdown = result.normalization.summary.rejection_breakdown;
+      const reasons = Object.entries(breakdown)
+        .filter(([, count]) => count > 0)
+        .map(([code, count]) => `${code}: ${count}`)
+        .join(', ');
+      if (reasons) {
+        lines.push(`║    Rejections: ${reasons.substring(0, 42).padEnd(42)}  ║`);
+      }
+    }
+  }
+  
+  // Status — v0.7.8: Truthful messaging
   lines.push('╠══════════════════════════════════════════════════════════════╣');
-  if (result.plan_ready) {
-    lines.push(`║  ✅ PLAN READY: ${(result.plan_id || '').substring(0, 20).padEnd(20)}                   ║`);
+  if (result.plan_ready && result.plan_id) {
+    const actionCount = result.normalized_actions_count || 0;
+    lines.push(`║  ✅ PLAN READY — ${actionCount} actions normalized                    ║`);
+    lines.push(`║     Plan ID: ${result.plan_id.substring(0, 20).padEnd(20)}                   ║`);
   } else if (result.blocked_reasons.length > 0) {
-    lines.push(`║  ❌ BLOCKED: ${result.blocked_reasons[0].substring(0, 40).padEnd(40)}  ║`);
+    lines.push(`║  ⚠️  PLAN BLOCKED — proposals could not be normalized        ║`);
+    lines.push(`║     Reason: ${result.blocked_reasons[0].substring(0, 42).padEnd(42)}  ║`);
+  } else if (result.proposals.length === 0) {
+    lines.push('║  ✨ SYSTEM HEALTHY — no changes needed                       ║');
   } else {
-    lines.push('║  ⏳ NO PLAN — no actionable proposals                        ║');
+    lines.push('║  ⏳ NO PLAN — review proposals with --explain                ║');
   }
   
   lines.push('╠══════════════════════════════════════════════════════════════╣');
@@ -335,6 +374,17 @@ export function formatScanResult(result: ScanResult, options: ScanOptions = {}):
       lines.push(`  Impact: ${prop.rationale}`);
       lines.push(`  Confidence: ${(prop.confidence_score * 100).toFixed(0)}% | Risk: ${prop.risk_level} | Sources: ${prop.source_phases.join(', ')}`);
       lines.push(`  Requires Human: ${prop.requires_human ? 'Yes' : 'No'}`);
+    }
+    
+    // Show rejection details if available
+    if (result.normalization && result.normalization.rejected_proposals.length > 0) {
+      lines.push('');
+      lines.push('═══ REJECTED PROPOSALS ═══');
+      for (const rej of result.normalization.rejected_proposals) {
+        lines.push(`\n❌ ${rej.title}`);
+        lines.push(`   Code: ${rej.rejection_code}`);
+        lines.push(`   Reason: ${rej.reason}`);
+      }
     }
   }
   
