@@ -136,9 +136,9 @@ Example:
  * Routes through the free-tier AI spine for governed reasoning
  */
 async function callLLM(prompt: string): Promise<string> {
-  // In production, this would call pf-nexus-router with the L7 Systems Engineer prompt
-  // For now, return structured recommendations based on deterministic input analysis
+  // Deterministic analysis that parses prompt indicators
   // This ensures no hallucinated fixes and all recommendations have evidence
+  // For actual LLM reasoning, this would call pf-nexus-router
   
   // Deterministic LLM analysis based on prompt content
   const recommendations: LLMRecommendation[] = [];
