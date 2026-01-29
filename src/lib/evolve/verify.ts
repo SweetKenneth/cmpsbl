@@ -1,0 +1,190 @@
+/**
+ * Shadow Verification Gate
+ * v1.0.0 — Verification required before production apply
+ */
+
+import { shadowStore, type ShadowArtifact } from './shadow-store';
+import { type EvolveContext } from './context';
+
+// ═══════════════════════════════════════════════════════════════
+// TYPES
+// ═══════════════════════════════════════════════════════════════
+
+export interface VerificationResult {
+  passed: boolean;
+  evolution_id: string;
+  checks: VerificationCheck[];
+  artifact_count: number;
+  errors: string[];
+  warnings: string[];
+  verified_at?: Date;
+}
+
+export interface VerificationCheck {
+  name: string;
+  passed: boolean;
+  message: string;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// VERIFICATION LOGIC
+// ═══════════════════════════════════════════════════════════════
+
+/**
+ * Verify shadow artifacts before production apply
+ */
+export function verifyShadowArtifacts(evolution_id: string): VerificationResult {
+  const result: VerificationResult = {
+    passed: false,
+    evolution_id,
+    checks: [],
+    artifact_count: 0,
+    errors: [],
+    warnings: [],
+  };
+
+  // Check 1: Entry exists
+  const entry = shadowStore.getEntry(evolution_id);
+  result.checks.push({
+    name: 'entry_exists',
+    passed: !!entry,
+    message: entry ? 'Shadow entry found' : 'No shadow entry for this evolution',
+  });
+
+  if (!entry) {
+    result.errors.push('Shadow entry not found. Run evolve.shadow first.');
+    return result;
+  }
+
+  // Check 2: Has artifacts
+  const artifacts = entry.artifacts;
+  result.artifact_count = artifacts.length;
+  result.checks.push({
+    name: 'has_artifacts',
+    passed: artifacts.length > 0,
+    message: `Found ${artifacts.length} artifact(s)`,
+  });
+
+  if (artifacts.length === 0) {
+    result.errors.push('No artifacts in shadow store. Nothing was written.');
+    return result;
+  }
+
+  // Check 3: Diffs non-empty
+  const artifactsWithDiffs = artifacts.filter(a => a.diff && a.diff.trim().length > 0);
+  const hasNonEmptyContent = artifacts.every(a => a.content && a.content.trim().length > 0);
+  result.checks.push({
+    name: 'content_valid',
+    passed: hasNonEmptyContent,
+    message: hasNonEmptyContent ? 'All artifacts have content' : 'Some artifacts have empty content',
+  });
+
+  if (!hasNonEmptyContent) {
+    result.errors.push('Some artifacts have empty content.');
+  }
+
+  // Check 4: No production paths touched (safety check)
+  const prodPathPatterns = [
+    /^supabase\/migrations\//,
+    /^\.env$/,
+    /^\.env\./,
+  ];
+  
+  const prodPathViolations = artifacts.filter(a => 
+    prodPathPatterns.some(pattern => pattern.test(a.file_path))
+  );
+  
+  result.checks.push({
+    name: 'no_prod_paths',
+    passed: prodPathViolations.length === 0,
+    message: prodPathViolations.length === 0 
+      ? 'No protected paths modified' 
+      : `${prodPathViolations.length} protected path(s) modified`,
+  });
+
+  if (prodPathViolations.length > 0) {
+    result.errors.push(`Protected paths cannot be modified: ${prodPathViolations.map(a => a.file_path).join(', ')}`);
+  }
+
+  // Check 5: Status is valid for verification
+  const validStatuses = ['written', 'pending'];
+  result.checks.push({
+    name: 'valid_status',
+    passed: validStatuses.includes(entry.status) || entry.status === 'verified',
+    message: `Status: ${entry.status}`,
+  });
+
+  // Check 6: Artifacts have valid operations
+  const validOperations = ['create', 'modify', 'delete'];
+  const invalidOps = artifacts.filter(a => !validOperations.includes(a.operation));
+  result.checks.push({
+    name: 'valid_operations',
+    passed: invalidOps.length === 0,
+    message: invalidOps.length === 0 ? 'All operations valid' : 'Invalid operations found',
+  });
+
+  // Compute final result
+  result.passed = result.errors.length === 0 && result.checks.every(c => c.passed);
+  
+  if (result.passed) {
+    result.verified_at = new Date();
+    shadowStore.markVerified(evolution_id);
+  }
+
+  return result;
+}
+
+/**
+ * Check if evolution is ready for production apply
+ */
+export function canApplyProduction(evolution_id: string): { allowed: boolean; reason: string } {
+  const entry = shadowStore.getEntry(evolution_id);
+  
+  if (!entry) {
+    return { allowed: false, reason: 'No shadow entry found. Run evolve.shadow first.' };
+  }
+  
+  if (entry.artifacts.length === 0) {
+    return { allowed: false, reason: 'No artifacts in shadow store.' };
+  }
+  
+  if (!shadowStore.isVerified(evolution_id)) {
+    // Run verification
+    const verification = verifyShadowArtifacts(evolution_id);
+    if (!verification.passed) {
+      return { 
+        allowed: false, 
+        reason: `Verification failed: ${verification.errors.join('; ')}` 
+      };
+    }
+  }
+  
+  return { allowed: true, reason: 'Shadow verified and ready for production.' };
+}
+
+/**
+ * Gate production apply on verified shadow
+ */
+export function requireVerifiedShadow(
+  context: EvolveContext
+): { allowed: boolean; reason: string; verification?: VerificationResult } {
+  if (context.mode !== 'production') {
+    return { allowed: true, reason: 'Not production mode' };
+  }
+  
+  const verification = verifyShadowArtifacts(context.evolution_id);
+  
+  if (!verification.passed) {
+    return {
+      allowed: false,
+      reason: `Cannot apply to production: ${verification.errors.join('; ')}`,
+      verification,
+    };
+  }
+  
+  return {
+    allowed: true,
+    reason: 'Shadow verified',
+    verification,
+  };
+}
