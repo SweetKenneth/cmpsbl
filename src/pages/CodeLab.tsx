@@ -16,7 +16,7 @@ import {
   Code, Terminal, Rocket, Download, BookOpen, Layers, Play, Copy, Check,
   Zap, Package, FileCode, ExternalLink, Sparkles, Brain, Shield, Moon,
   MessageSquare, Eye, Network, Settings, Activity, ArrowRight, Star,
-  ChevronRight, Command
+  ChevronRight, Command, Plug
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -30,6 +30,7 @@ import { ProjectStarter } from "@/components/codelab/ProjectStarter";
 import { ObservabilityHUD } from "@/components/codelab/ObservabilityHUD";
 import { DialectSelector } from "@/components/codelab/DialectSelector";
 import { CodeViewer } from "@/components/codelab/CodeViewer";
+import { IntegrationsHub } from "@/components/codelab/IntegrationsHub";
 import { useObsMode } from "@/lib/ui/obsfunction-mode";
 import { renderDialect } from "@/lib/ui/dialect-render";
 import { DIALECT_LABELS } from "@/lib/ui/display-dialect";
@@ -228,6 +229,14 @@ export default function CodeLab() {
               >
                 <Terminal className="w-4 h-4" />
                 <span className="hidden sm:inline">Workbench</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="integrations"
+                className="flex items-center gap-2 data-[state=active]:bg-violet-500/10 data-[state=active]:text-violet-500 data-[state=active]:border-violet-500/30 px-4 py-2.5 rounded-lg border border-transparent"
+              >
+                <Plug className="w-4 h-4" />
+                <span className="hidden sm:inline">Integrations</span>
+                <Badge variant="secondary" className="ml-1 text-xs bg-violet-500/20 text-violet-400">New</Badge>
               </TabsTrigger>
               <TabsTrigger 
                 value="starter"
@@ -593,6 +602,11 @@ const response = await substrate.nexus.text(
           {/* Workbench Tab */}
           <TabsContent value="workbench">
             <CodeWorkbench />
+          </TabsContent>
+
+          {/* Integrations Tab */}
+          <TabsContent value="integrations">
+            <IntegrationsHub />
           </TabsContent>
 
           {/* Starter Tab */}
