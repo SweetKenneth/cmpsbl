@@ -32,10 +32,11 @@ export const BUILTIN_ALIASES: AliasDefinition[] = [
   { alias: 'dc', expansion: 'dream.cycle', description: 'Dream cycle' },
   { alias: 'ds', expansion: 'dream.status', description: 'Dream status' },
   
-  // Modernizer shortcuts
-  { alias: 'ms', expansion: 'modernizer.scan', description: 'Modernizer scan' },
-  { alias: 'mp', expansion: 'modernizer.plans', description: 'List plans' },
-  { alias: 'ma', expansion: 'modernizer.apply', description: 'Apply plan' },
+  // Modernizer shortcuts (v6.5.0 Evolution Cycle)
+  { alias: 'me', expansion: 'modernizer.evolve', description: 'Evolution Cycle' },
+  { alias: 'ms', expansion: 'modernizer.evolve status', description: 'Evolution status' },
+  { alias: 'ma', expansion: 'modernizer.evolve shadow', description: 'Apply shadow' },
+  { alias: 'mp', expansion: 'modernizer.evolve production', description: 'Apply production' },
   
   // Defense shortcuts
   { alias: 'dp', expansion: 'defense.posture', description: 'Security posture' },

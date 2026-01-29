@@ -163,27 +163,30 @@ export const SYSTEM_COMMANDS: CommandDefinition[] = [
 export const MODERNIZER_COMMANDS: CommandDefinition[] = [
   { command: 'modernizer.status', description: 'Modernizer service status', category: 'modernizer', icon: Sparkles, requiresOperator: false },
   { command: 'modernizer.jobs', description: 'List recent modernization jobs', category: 'modernizer', icon: Activity, requiresOperator: false, args: '[limit]' },
-  { command: 'modernizer.scan', description: 'Scan substrate for improvements', category: 'modernizer', icon: Search, requiresOperator: true, args: '[depth]', example: 'modernizer.scan deep' },
+  
+  // ═══ EVOLUTION CYCLE v6.5.0 (Primary Commands) ═══
+  { command: 'modernizer.evolve', description: 'Unified Evolution Cycle (scan → plan → apply → verify)', category: 'modernizer', icon: Sparkles, requiresOperator: true, args: '[scan|shadow|production|verify|abort|status] [--confirm]', example: 'modernizer.evolve' },
+  
+  // Legacy commands (forward to Evolution Cycle)
+  { command: 'modernizer.scan', description: '[Legacy] Scan substrate for improvements', category: 'modernizer', icon: Search, requiresOperator: true, args: '[depth]', example: 'modernizer.scan deep' },
   { command: 'modernizer.analyze', description: 'Quick analysis of a module', category: 'modernizer', icon: Search, requiresOperator: true, args: '[module]' },
-  { command: 'modernizer.propose', description: 'Generate upgrade proposal (shadow)', category: 'modernizer', icon: Sparkles, requiresOperator: true, args: '[scope] [notes]', example: 'modernizer.propose brain "optimize memory"' },
-  { command: 'modernizer.plans', description: 'List all upgrade plans', category: 'modernizer', icon: Activity, requiresOperator: false },
-  { command: 'modernizer.review', description: 'Review a specific plan', category: 'modernizer', icon: Eye, requiresOperator: false, args: '<plan_id>' },
-  { command: 'modernizer.validate', description: 'Validate plan readiness', category: 'modernizer', icon: Shield, requiresOperator: false, args: '<plan_id>', example: 'modernizer.validate abc123' },
+  { command: 'modernizer.propose', description: '[Legacy] Generate upgrade proposal', category: 'modernizer', icon: Sparkles, requiresOperator: true, args: '[scope] [notes]' },
+  { command: 'modernizer.plans', description: '[Legacy] List active evolution plan', category: 'modernizer', icon: Activity, requiresOperator: false },
+  { command: 'modernizer.review', description: '[Legacy] Review a specific plan', category: 'modernizer', icon: Eye, requiresOperator: false, args: '<plan_id>' },
+  { command: 'modernizer.validate', description: 'Validate plan readiness', category: 'modernizer', icon: Shield, requiresOperator: false, args: '<plan_id>' },
   { command: 'modernizer.diff', description: 'View plan diff and health comparison', category: 'modernizer', icon: Eye, requiresOperator: false, args: '<plan_id>' },
-  { command: 'modernizer.apply', description: 'Apply plan (auto-routes shadow→prod)', category: 'modernizer', icon: Sparkles, requiresOperator: true, args: '<plan_id>' },
-  { command: 'modernizer.apply_shadow', description: 'Apply plan to shadow mode only', category: 'modernizer', icon: Sparkles, requiresOperator: true, args: '<plan_id>' },
+  { command: 'modernizer.apply', description: '[Legacy] Apply plan (use evolve instead)', category: 'modernizer', icon: Sparkles, requiresOperator: true, args: '<plan_id>' },
+  { command: 'modernizer.apply_shadow', description: '[Legacy] Apply to shadow mode', category: 'modernizer', icon: Sparkles, requiresOperator: true, args: '<plan_id>' },
   { command: 'modernizer.test_shadow', description: 'Test shadow mode changes', category: 'modernizer', icon: Activity, requiresOperator: true, args: '<plan_id>' },
-  { command: 'modernizer.apply_production', description: 'Promote shadow to production', category: 'modernizer', icon: Sparkles, requiresOperator: true, args: '<plan_id>' },
+  { command: 'modernizer.apply_production', description: '[Legacy] Promote shadow to production', category: 'modernizer', icon: Sparkles, requiresOperator: true, args: '<plan_id>' },
   { command: 'modernizer.rollback', description: 'Rollback an applied plan', category: 'modernizer', icon: Shield, requiresOperator: true, args: '<plan_id>' },
   { command: 'modernizer.delete', description: 'Delete/reject a plan', category: 'modernizer', icon: Shield, requiresOperator: true, args: '<plan_id>' },
   { command: 'modernizer.applied', description: 'List all applied improvements', category: 'modernizer', icon: Activity, requiresOperator: false },
   { command: 'modernizer.archived', description: 'Scan archived functions to repurpose', category: 'modernizer', icon: Database, requiresOperator: false },
-  { command: 'modernizer.implement', description: 'Generate code for archived function repurposing', category: 'modernizer', icon: Sparkles, requiresOperator: true, args: '<archived_function> <target_action>', example: 'modernizer.implement pf-brain-systems-reasoning brain.deep_think' },
+  { command: 'modernizer.implement', description: 'Generate code for archived function repurposing', category: 'modernizer', icon: Sparkles, requiresOperator: true, args: '<archived_function> <target_action>' },
   { command: 'modernizer.export', description: 'Export job assets', category: 'modernizer', icon: Database, requiresOperator: true, args: '<job_id>' },
   { command: 'modernizer.quota', description: 'Check usage limits', category: 'modernizer', icon: Gauge, requiresOperator: false },
   { command: 'modernizer.refresh', description: 'Resync metrics and clear stale hints', category: 'modernizer', icon: Activity, requiresOperator: true },
-  { command: 'modernizer.autopilot', description: 'Confidence-gated auto-apply cycle', category: 'modernizer', icon: Sparkles, requiresOperator: true },
-  { command: 'modernizer.confidence', description: 'Evaluate plan confidence score', category: 'modernizer', icon: Gauge, requiresOperator: false, args: '<plan_id>' },
 ];
 
 // CORE module — Kernel, scheduler, lifecycle

@@ -541,8 +541,8 @@ class SubstrateClient {
       this.invoke({ module: 'dream', action: 'reflect' }),
   };
 
-  // Modernizer Module — Substrate Codebase Analysis & Improvement Engine (v3.13.0)
-  // Scans the substrate architecture for improvements, NOT external websites
+  // Modernizer Module — Substrate Codebase Analysis & Improvement Engine (v6.5.0)
+  // Unified Evolution Cycle for substrate self-improvement
   modernizer = {
     /** Get modernizer service status with substrate health metrics */
     status: () =>
@@ -552,7 +552,10 @@ class SubstrateClient {
     jobs: (limit?: number) =>
       this.invoke({ module: 'modernizer', action: 'jobs', payload: { limit } }),
     
-    /** Scan the substrate codebase for architecture improvements */
+    /** 
+     * @deprecated Use evolve() instead - Unified Evolution Cycle
+     * Scan the substrate codebase for architecture improvements 
+     */
     scan: (options?: { module?: string; depth?: 'quick' | 'standard' | 'deep' }) =>
       this.invoke({ module: 'modernizer', action: 'scan', payload: options }),
     
@@ -580,21 +583,72 @@ class SubstrateClient {
     pulse: () =>
       this.invoke({ module: 'modernizer', action: 'pulse' }),
     
-    // ═══ NEW: Shadow-mode upgrade workflow ═══
+    // ═══ EVOLUTION CYCLE v6.5.0 ═══
+    // Unified engine replacing scan, plans, review, verify, analyze
     
-    /** Generate an upgrade proposal (shadow mode - requires human approval) */
+    /**
+     * Unified Evolution Cycle - Single authoritative modernizer workflow
+     * Replaces: scan, plans, review, verify, analyze
+     * 
+     * Usage:
+     *   evolve()                    - Start new scan (prompts if plan exists)
+     *   evolve({ target: 'shadow' }) - Apply to shadow
+     *   evolve({ target: 'production' }) - Apply to production (requires shadow first)
+     *   evolve({ target: 'verify' })  - Verify current cycle
+     *   evolve({ target: 'abort' })   - Abort current plan
+     *   evolve({ target: 'status' })  - Get current evolution status
+     *   evolve({ confirm_override: true }) - Override existing plan
+     */
+    evolve: async (options?: {
+      depth?: 'quick' | 'standard' | 'deep';
+      confirm_override?: boolean;
+      target?: 'scan' | 'shadow' | 'production' | 'verify' | 'abort' | 'status';
+    }) => {
+      const { evolutionCycle } = await import('./substrate/evolution-cycle');
+      return evolutionCycle.evolve(options);
+    },
+    
+    /** Get current evolution cycle state */
+    evolutionStatus: async () => {
+      const { evolutionCycle } = await import('./substrate/evolution-cycle');
+      return evolutionCycle.status();
+    },
+    
+    // ═══ LEGACY COMMANDS (forwarded to Evolution Cycle) ═══
+    
+    /** @deprecated Use evolve() - Generate an upgrade proposal */
     propose: (options?: { scope?: string; notes?: string; max_changes?: number }) =>
       this.invoke({ module: 'modernizer', action: 'propose', payload: options }),
     
-    /** List all upgrade plans */
-    plans: () =>
-      this.invoke({ module: 'modernizer', action: 'plans' }),
+    /** @deprecated Use evolve({ target: 'status' }) - List all upgrade plans */
+    plans: async () => {
+      const { evolutionCycle } = await import('./substrate/evolution-cycle');
+      const state = await evolutionCycle.getState();
+      if (state.has_active_plan && state.current_plan) {
+        return {
+          success: true,
+          plans: [{
+            id: state.current_plan.plan_id,
+            short_id: state.current_plan.short_id,
+            phase: state.current_plan.phase,
+            status: state.current_plan.phase,
+            created_at: state.current_plan.created_at,
+          }],
+          message: 'Use `modernizer.evolve` for the unified Evolution Cycle workflow.',
+        };
+      }
+      return {
+        success: true,
+        plans: [],
+        message: 'No active evolution plan. Run `modernizer.evolve` to start.',
+      };
+    },
     
-    /** Review a specific upgrade plan */
+    /** @deprecated Use evolve({ target: 'status' }) - Review a specific upgrade plan */
     review: (plan_id: string) =>
       this.invoke({ module: 'modernizer', action: 'review', payload: { plan_id } }),
     
-    /** Validate plan readiness (checks health, modules, backup) */
+    /** Validate plan readiness */
     validate: (plan_id: string) =>
       supabase.functions.invoke('pf-substrate-upgrade', {
         body: { action: 'validate_plan', plan_id }
@@ -606,13 +660,13 @@ class SubstrateClient {
         body: { action: 'diff_view', plan_id }
       }),
     
-    /** Apply an approved upgrade plan (auto-routes shadow→production) */
+    /** @deprecated Use evolve({ target: 'shadow' }) then evolve({ target: 'production' }) */
     apply: (plan_id: string) =>
       supabase.functions.invoke('pf-substrate-upgrade', {
         body: { action: 'apply_plan', plan_id }
       }),
     
-    /** Apply plan to shadow mode only */
+    /** @deprecated Use evolve({ target: 'shadow' }) */
     applyShadow: (plan_id: string) =>
       supabase.functions.invoke('pf-substrate-upgrade', {
         body: { action: 'apply_shadow', plan_id }
@@ -624,7 +678,7 @@ class SubstrateClient {
         body: { action: 'test_shadow', plan_id }
       }),
     
-    /** Promote shadow changes to production */
+    /** @deprecated Use evolve({ target: 'production' }) */
     applyProduction: (plan_id: string) =>
       supabase.functions.invoke('pf-substrate-upgrade', {
         body: { action: 'apply_production', plan_id }
@@ -636,7 +690,7 @@ class SubstrateClient {
         body: { action: 'rollback_plan', plan_id }
       }),
     
-    /** Delete/reject an upgrade plan (cannot delete applied plans) */
+    /** @deprecated Use evolve({ target: 'abort' }) - Delete/reject an upgrade plan */
     delete: (plan_id: string, reason?: string) =>
       supabase.functions.invoke('pf-substrate-upgrade', {
         body: { action: 'delete_plan', plan_id, reason }
