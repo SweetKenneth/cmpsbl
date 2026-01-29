@@ -10,28 +10,24 @@ import { Slider } from '@/components/ui/slider';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 
+import composableDreamin from '@/assets/audio/Composable_Dreamin.mp3';
+import composableDreamin2 from '@/assets/audio/Composable_Dreamin_2.mp3';
+
 // ============================================================================
 // AMBIENT TRACKS
 // ============================================================================
 const AMBIENT_TRACKS = [
   {
-    id: 'lofi-beats',
-    name: 'Neural Flow',
-    description: 'Lo-fi hip hop for focus',
-    // Using a royalty-free lo-fi beat URL (you can replace with actual hosted files)
-    url: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3',
+    id: 'composable-dreamin',
+    name: 'Composable Dreamin',
+    description: 'Original substrate vibes',
+    url: composableDreamin,
   },
   {
-    id: 'synthwave',
-    name: 'Substrate Drift',
-    description: 'Synthwave ambient',
-    url: 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_8cb749d484.mp3',
-  },
-  {
-    id: 'chill-hop',
-    name: 'Cognitive Loop',
-    description: 'Chill hop vibes',
-    url: 'https://cdn.pixabay.com/download/audio/2021/11/25/audio_91b32e02f9.mp3',
+    id: 'composable-dreamin-2',
+    name: 'Composable Dreamin 2',
+    description: 'Extended substrate flow',
+    url: composableDreamin2,
   },
 ];
 
