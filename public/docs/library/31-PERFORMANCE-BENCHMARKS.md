@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Performance Benchmarks
 
-**Version 5.5.0 | Scientific Publication**
+**Version 6.3.0 | Scientific Publication**
 
 ---
 
@@ -9,7 +9,7 @@
 | Field | Value |
 |-------|-------|
 | **Document ID** | CMPSBL-LIB-031 |
-| **Version** | v5.5.0 |
+| **Version** | v6.3.0 |
 | **Last Updated** | January 2026 |
 | **Classification** | Public Research Document |
 
@@ -62,14 +62,15 @@ This document presents measured performance characteristics of the CMPSBL OS Sub
 | INTEGRATION | 10ms | ✓ |
 | SYSTEM | 5ms | ✓ |
 | MODERNIZER | 11ms | ✓ |
+| INCLUSIVE | 8ms | ✓ |
 | CORTEX | 14ms | ✓ |
 
 ### 2.2 Total Boot Time
 
 | Metric | Value |
 |--------|-------|
-| Total boot time | 109ms |
-| Modules loaded | 13 |
+| Total boot time | 117ms |
+| Modules loaded | 14 |
 | Initial health | 100% |
 
 ---
@@ -193,7 +194,7 @@ This document presents measured performance characteristics of the CMPSBL OS Sub
 | Factor | Scaling Behavior |
 |--------|------------------|
 | Memory count | Linear |
-| Module count | Constant (13) |
+| Module count | Constant (14) |
 | Event throughput | Linear |
 | Concurrent requests | Linear to limit |
 
@@ -213,10 +214,10 @@ This document presents measured performance characteristics of the CMPSBL OS Sub
 
 | System | LOC | Ratio |
 |--------|-----|-------|
-| CMPSBL OS Substrate | 131,000+ | 1.0x |
-| SpaceX Falcon 9 | ~400,000 | 3x larger |
-| VS Code | ~600,000 | 4.6x larger |
-| Linux Kernel | ~35,000,000 | 267x larger |
+| CMPSBL OS Substrate | 140,000+ | 1.0x |
+| SpaceX Falcon 9 | ~400,000 | 2.9x larger |
+| VS Code | ~600,000 | 4.3x larger |
+| Linux Kernel | ~35,000,000 | 250x larger |
 
 ---
 
@@ -246,5 +247,5 @@ For benchmark inquiries or detailed results:
 
 ---
 
-*CMPSBL OS Substrate v5.5.0*
+*CMPSBL OS Substrate v6.0.0 — Human Compatibility Era*
 *© 2025-2026 PromptFluid®. All rights reserved.*

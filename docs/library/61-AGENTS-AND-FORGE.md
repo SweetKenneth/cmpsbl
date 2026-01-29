@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Agents and Forge
 
-**Version 6.0.0 | Experimental Documentation**
+**Version 6.3.0 | Experimental Documentation**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-061 |
 | **Component** | Code Agents, Forge Agencies, Mint |
 | **Classification** | Experimental / Roadmap |
-| **Version** | v6.0.0 |
+| **Version** | v6.3.0 |
 
 ---
 

@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Licensing Information
 
-**Version 5.5.0 | Scientific Publication**
+**Version 6.3.0 | Scientific Publication**
 
 ---
 
@@ -9,7 +9,7 @@
 | Field | Value |
 |-------|-------|
 | **Document ID** | CMPSBL-LIB-042 |
-| **Version** | v5.5.0 |
+| **Version** | v6.3.0 |
 | **Last Updated** | January 2026 |
 | **Classification** | Public |
 
@@ -43,7 +43,7 @@ The CMPSBL OS Substrate is the proprietary intellectual property of Kenneth E Sw
 
 Copyright © 2025-2026 PromptFluid®. All rights reserved.
 
-The complete codebase (131,000+ lines), documentation, architectural designs, and associated materials are protected by copyright law.
+The complete codebase (140,000+ lines), documentation, architectural designs, and associated materials are protected by copyright law.
 
 ---
 
@@ -133,7 +133,7 @@ This documentation is published under the following terms:
 Any citation or reference must include:
 
 ```
-CMPSBL OS Substrate v5.5.0
+CMPSBL OS Substrate v6.0.0
 Created by Kenneth E Sweet Jr
 PromptFluid® — https://promptfluid.com
 ```
@@ -241,7 +241,7 @@ This licensing agreement is governed by the laws of the State of Texas, United S
 
 | Question | Answer |
 |----------|--------|
-| Is the system real? | Yes, 131,000+ LOC in production |
+| Is the system real? | Yes, 140,000+ LOC in production |
 | Can I use it? | With appropriate license |
 | Can I recreate it? | Not from this documentation |
 | Can I cite it? | Yes, with attribution |
@@ -249,5 +249,5 @@ This licensing agreement is governed by the laws of the State of Texas, United S
 
 ---
 
-*CMPSBL OS Substrate v5.5.0*
+*CMPSBL OS Substrate v6.0.0 — Human Compatibility Era*
 *© 2025-2026 PromptFluid®. All rights reserved.*

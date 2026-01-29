@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — CodeLab
 
-**Version 6.0.0 | Developer Documentation**
+**Version 6.3.0 | Developer Documentation**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-060 |
 | **Component** | CodeLab |
 | **Classification** | Developer Environment |
-| **Version** | v6.0.0 |
+| **Version** | v6.3.0 |
 
 ---
 

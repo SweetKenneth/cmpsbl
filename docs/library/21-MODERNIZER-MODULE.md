@@ -234,5 +234,5 @@ MODERNIZER is the self-improvement engine, responsible for analyzing the substra
 
 ---
 
-*CMPSBL OS Substrate v0.7.7 — Human Compatibility Era*
+*CMPSBL OS Substrate v6.3.0 (Modernizer Patch 0.7.7) — Human Compatibility Era*
 *© 2025-2026 PromptFluid®. All rights reserved.*

@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Template Generator
 
-**Version 6.0.0 | Commercial Documentation**
+**Version 6.3.0 | Commercial Documentation**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-062 |
 | **Component** | AI Template Generator |
 | **Classification** | Commercial Feature |
-| **Version** | v6.0.0 |
+| **Version** | v6.3.0 |
 
 ---
 

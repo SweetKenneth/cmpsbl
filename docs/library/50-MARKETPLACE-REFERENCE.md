@@ -1,6 +1,6 @@
 # CMPSBL Marketplace — Complete Reference
 
-**Version 6.0.0 | Commercial Documentation**
+**Version 6.3.0 | Commercial Documentation**
 
 ---
 
@@ -9,7 +9,7 @@
 | Field | Value |
 |-------|-------|
 | **System Name** | CMPSBL Marketplace |
-| **Version** | v6.0.0 |
+| **Version** | v6.3.0 |
 | **Classification** | Commercial Distribution Platform |
 | **Status** | Production (Live System) |
 | **Publication Date** | January 2026 |
