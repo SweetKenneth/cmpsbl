@@ -28,8 +28,21 @@ export function PublicNav() {
   const location = useLocation();
   const { user } = useAuth();
 
-  // Organized navigation sections
+  // Organized navigation sections - reordered by importance hierarchy
   const navSections: NavSection[] = [
+    {
+      name: "Build",
+      icon: Code,
+      items: [
+        { name: "CodeLab", href: "/codelab", description: "Execution-First Playground", icon: Terminal },
+        { name: "For Developers", href: "/developers", description: "Build Intelligent Apps", icon: Code },
+        { name: "Marketplace", href: "/marketplace", description: "Templates & OS ($9-$599)", icon: Sparkles },
+        { name: "Experimentation Lab", href: "/lab", description: "Live Template Demos", icon: Zap },
+        { name: "Gaming AI", href: "/gaming", description: "NPC Brains & World Engines", icon: Gamepad2 },
+        { name: "DevTools", href: "/devtools", description: "SDK & Documentation", icon: Terminal },
+        ...(user ? [{ name: "Control Panel", href: "/os", description: "Admin Console", icon: Cpu }] : []),
+      ]
+    },
     {
       name: "CMPSBL",
       icon: Layers,
@@ -38,19 +51,6 @@ export function PublicNav() {
         { name: "Decode", href: "/decode", description: "Intent Interpreter", icon: MessageSquare },
         { name: "Dream Feeder", href: "/feed-dream-eater", description: "Dream Processing", icon: Moon },
         { name: "Demo", href: "/demo", description: "Interactive Demo", icon: Zap },
-      ]
-    },
-    {
-      name: "Build",
-      icon: Code,
-      items: [
-        { name: "For Developers", href: "/developers", description: "Build Intelligent Apps", icon: Code },
-        { name: "Experimentation Lab", href: "/lab", description: "Live Template Demos", icon: Zap },
-        { name: "Marketplace", href: "/marketplace", description: "Templates & OS ($9-$599)", icon: Sparkles },
-        { name: "Gaming AI", href: "/gaming", description: "NPC Brains & World Engines", icon: Gamepad2 },
-        { name: "DevTools", href: "/devtools", description: "SDK & Documentation", icon: Terminal },
-        { name: "Documentation", href: "/documentation", description: "API Reference", icon: FileText },
-        ...(user ? [{ name: "Control Panel", href: "/os", description: "Admin Console", icon: Cpu }] : []),
       ]
     },
     {
@@ -67,6 +67,7 @@ export function PublicNav() {
       name: "Standards",
       icon: ScrollText,
       items: [
+        { name: "Documentation", href: "/documentation", description: "API Reference", icon: FileText },
         { name: "Library", href: "/library", description: "FNDTN v6 Documentation", icon: BookOpen },
         { name: "Foundations", href: "/foundations", description: "FNDTN v6.0.0 Standard", icon: Layers },
         { name: "Namespace", href: "/namespace", description: "AI Governance Namespace", icon: Globe },
@@ -96,10 +97,10 @@ export function PublicNav() {
   // Flat list for mobile
   const allNavItems = navSections.flatMap(section => section.items);
   
-  // Quick access items shown directly in nav
+  // Quick access items shown directly in nav - reordered by importance
   const quickLinks = [
-    { name: "Developers", href: "/developers" },
     { name: "CodeLab", href: "/codelab" },
+    { name: "Developers", href: "/developers" },
     { name: "Marketplace", href: "/marketplace" },
     { name: "Licensing", href: "/substrate/licensing" },
   ];
@@ -203,18 +204,8 @@ export function PublicNav() {
             )}
           </div>
 
-          {/* Tablet Menu - simplified */}
+          {/* Tablet Menu - simplified - reordered by importance */}
           <div className="hidden md:flex lg:hidden items-center gap-1">
-            <Link
-              to="/demo"
-              className={`px-3 py-2 rounded-lg text-sm transition-colors ${
-                isActive("/demo")
-                  ? "text-foreground bg-muted font-medium"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-              }`}
-            >
-              Demo
-            </Link>
             <Link
               to="/codelab"
               className={`px-3 py-2 rounded-lg text-sm transition-colors ${
@@ -234,6 +225,16 @@ export function PublicNav() {
               }`}
             >
               Developers
+            </Link>
+            <Link
+              to="/demo"
+              className={`px-3 py-2 rounded-lg text-sm transition-colors ${
+                isActive("/demo")
+                  ? "text-foreground bg-muted font-medium"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+              }`}
+            >
+              Demo
             </Link>
             <Link
               to="/contact"
@@ -273,11 +274,11 @@ export function PublicNav() {
             <div className="container mx-auto px-4 py-4">
               {/* Search-like quick access */}
               <div className="flex gap-2 mb-4 overflow-x-auto pb-2 -mx-4 px-4">
-                {["Developers", "Licensing", "Library", "Insights", "Contact"].map((name) => {
-                  const href = name === "Developers" ? "/developers" :
+                {["CodeLab", "Developers", "Licensing", "Library", "Contact"].map((name) => {
+                  const href = name === "CodeLab" ? "/codelab" :
+                               name === "Developers" ? "/developers" :
                                name === "Licensing" ? "/substrate/licensing" :
-                               name === "Library" ? "/foundations" :
-                               name === "Insights" ? "/insights" : "/contact";
+                               name === "Library" ? "/library" : "/contact";
                   return (
                     <Link
                       key={name}
