@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Validation Methodology
 
-**Version 6.0.0 | Scientific Publication**
+**Version 6.3.0 | Scientific Publication**
 
 ---
 
@@ -9,7 +9,7 @@
 | Field | Value |
 |-------|-------|
 | **Document ID** | CMPSBL-LIB-030 |
-| **Version** | v6.0.0 |
+| **Version** | v6.3.0 |
 | **Last Updated** | January 2026 |
 | **Classification** | Public Research Document |
 

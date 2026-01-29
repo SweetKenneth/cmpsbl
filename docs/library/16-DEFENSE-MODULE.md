@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — DEFENSE Module Deep Dive
 
-**Version 6.0.0 | Scientific Publication**
+**Version 6.3.0 | Scientific Publication**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-016 |
 | **Module** | DEFENSE |
 | **Layer** | Operational |
-| **Version** | v6.0.0 |
+| **Version** | v6.3.0 |
 
 ---
 

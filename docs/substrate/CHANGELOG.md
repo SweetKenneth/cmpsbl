@@ -4,6 +4,68 @@
 
 ---
 
+## 2026-01-29 · v6.3.0 (FNDTN Patch 0.7.7)
+
+⟨This entry describes the Modernizer cognitive scan pipeline upgrade, LLM-governed reasoning, and production hardening.⟩
+
+### Modernizer (Patch 0.7.7)
+
+- **Cognitive 4-Phase Scan Pipeline** — Parallel architecture: Phase A (Edge Function Introspection), Phase B (System State Scan), Phase C (Code Health Snapshot), Phase D (LLM-Governed Reasoning via Nexus).
+- **LLM-Governed Reasoning** — L7 Systems Engineer pass through `pf-nexus-router` for architectural analysis. Strict prompt contract prevents hallucinated fixes.
+- **Real Plan Generation** — Proposals become plan items only if supported by ≥2 data sources (telemetry + reasoning), confidence ≥80%, and circuit=closed.
+- **Evolution Lifecycle** — Six-stage workflow: Scan → Planning → Shadow Applied → Production Applied → Verified (or Aborted/Failed).
+- **Circuit Breaker** — `modernizer.circuit status|reset|open <reason>` for evolution safety.
+- **Governed Autonomy** — `modernizer.autonomy set <off|advisory|governed>` for autonomy control.
+- **Audit Trail** — `modernizer.receipts` and `modernizer.receipt <run_id>` for immutable evolution receipts.
+
+### Terminal
+
+- **Updated Commands** — `modernizer.scan --explain`, `modernizer.scan --llm-report`, `modernizer.scan --dry-run`.
+- **Nexus Routing** — All LLM reasoning routes through `pf-nexus-router` (no Lovable AI gateway).
+- **Full Command Parity** — Terminal and API return identical 200 OK responses.
+
+### Documentation
+
+- **All Library Docs** — Updated to v6.3.0 headers/footers.
+- **MODERNIZER Deep Dive** — Rewritten for Patch 0.7.7 cognitive scan pipeline.
+- **Evolution Lifecycle Docs** — New detailed phase diagrams.
+
+---
+
+## 2026-01-29 · v6.2.0 (Intelligence Compression Phase 3)
+
+⟨This entry describes the Reasoning Engine and Governance Guard compression.⟩
+
+### BRAIN Cognitive Compression
+
+- **Reasoning Engine** (`brain.reasoning_engine`) — Unifies `causal`, `systems_reason`, and `hypothesis_test` into 5-stage lifecycle: causal_mapping → dependency_analysis → hypothesis_generation → hypothesis_validation → impact_projection.
+- **Governance Guard** (`brain.governance_guard`) — Merges `ethical` and `coherence_check` into 3-stage lifecycle: coherence_validation → ethical_constraint_check → governance_signal_emission.
+- **Backward Compatibility** — Legacy command aliases preserved in SubstrateClient.
+
+### Architecture
+
+- **Engine Bus Routing** — Phase 4A telemetry and state contracts for engine orchestration.
+- **14-Module Canonical Model** — All modules verified operational with 260+ commands.
+
+---
+
+## 2026-01-28 · v6.1.0 (Intelligence Compression Phase 2)
+
+⟨This entry describes the Learning Engine and Imagination Engine unification.⟩
+
+### BRAIN Cognitive Compression
+
+- **Learning Engine** (`brain.learning_engine`) — Consolidates `training`, `optimization`, and `reinforcement` into 5-stage loop: input → feedback → adjustment → reinforcement → stabilization.
+- **Imagination Engine** (`brain.imagination_engine`) — Merges `dreaming`, `synthesis`, and `pattern_fusion` into 4-stage generative lifecycle: latent_extraction → recombination → simulation → synthesis.
+- **Backward Compatibility** — All legacy cognitive commands resolve to new engines via SubstrateClient aliases.
+
+### Architecture
+
+- **Memory Core Unification** — Phase 1 memory consolidation complete.
+- **Terminal Synchronization** — Terminal commands aligned with engine architecture.
+
+---
+
 ## 2026-01-28 · v6.0.0 (FNDTN)
 
 ⟨This entry describes the canonical v6.0.0 release establishing the 14-module architecture, FNDTN standards package, and Human Compatibility Era.⟩

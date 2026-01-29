@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — CORE Module Deep Dive
 
-**Version 5.5.0 | Scientific Publication**
+**Version 6.3.0 | Scientific Publication**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-010 |
 | **Module** | CORE |
 | **Layer** | Kernel |
-| **Version** | v5.5.0 |
+| **Version** | v6.3.0 |
 
 ---
 
@@ -161,5 +161,5 @@ CORE integrates with all modules:
 
 ---
 
-*CMPSBL OS Substrate v5.5.0*
+*CMPSBL OS Substrate v6.0.0 — Human Compatibility Era*
 *© 2025-2026 PromptFluid®. All rights reserved.*

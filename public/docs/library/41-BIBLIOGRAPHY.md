@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Bibliography
 
-**Version 6.0.0 (FNDTN) | Scientific Publication**
+**Version 6.3.0 (FNDTN) | Scientific Publication**
 
 ---
 
@@ -9,7 +9,7 @@
 | Field | Value |
 |-------|-------|
 | **Document ID** | CMPSBL-LIB-041 |
-| **Version** | v6.0.0 (FNDTN) |
+| **Version** | v6.3.0 (FNDTN) |
 | **Last Updated** | January 2026 |
 
 ---
