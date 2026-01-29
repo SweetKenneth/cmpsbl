@@ -1,6 +1,6 @@
 /**
  * Evolve Telemetry — Event Emission for Observability
- * v1.0.0 — Structured events for evolve lifecycle
+ * v0.7.5 — Structured events for evolve lifecycle with receipts
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -10,7 +10,28 @@ import { supabase } from '@/integrations/supabase/client';
 // ═══════════════════════════════════════════════════════════════
 
 export type EvolveEventType =
-  // Lifecycle events
+  // Evolution run lifecycle
+  | 'evolution_run_created'
+  | 'evolution_phase_changed'
+  | 'evolution_run_aborted'
+  | 'evolution_run_failed'
+  | 'evolution_verified'
+  | 'evolution_receipt_created'
+  // Shadow execution
+  | 'shadow_execute_started'
+  | 'shadow_execute_idempotent'
+  | 'shadow_execute_completed'
+  | 'shadow_execute_failed'
+  // Production execution
+  | 'production_execute_started'
+  | 'production_backup_created'
+  | 'production_execute_completed'
+  | 'production_execute_failed'
+  // Decode fallback
+  | 'decode_fallback_detected'
+  // Diagnostics
+  | 'diagnostics_completed'
+  // Legacy lifecycle events
   | 'evolve_shadow_started'
   | 'evolve_shadow_written'
   | 'evolve_shadow_verified'

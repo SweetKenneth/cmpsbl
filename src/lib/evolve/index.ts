@@ -1,7 +1,41 @@
 /**
- * Evolve Engine — Unified Evolution Execution
- * v1.0.0 — Context-based shadow and production evolution
+ * Evolve Module — Unified Exports
+ * v0.7.5 — Evolution lifecycle management with receipts & integrity
  */
+
+// Core context
+export * from './context';
+
+// Shadow mode
+export * from './shadow-store';
+export * from './shadow-executor';
+export * from './verify';
+
+// Production mode
+export * from './apply';
+export * from './production-executor';
+
+// Evolution state (single source of truth)
+export * from './evolution-runs';
+export * from './evolution-receipts';
+
+// CodeAgent
+export * from './codeagent-types';
+export * from './write-guard';
+export * from './ts-verify';
+export * from './codeagent-controller';
+
+// Commands & diagnostics
+export * from './modernizer-commands';
+export * from './decode-fallback';
+export * from './diagnostics';
+
+// Telemetry
+export * from './telemetry';
+
+// ═══════════════════════════════════════════════════════════════
+// RE-EXPORT MAIN EVOLVE FUNCTION
+// ═══════════════════════════════════════════════════════════════
 
 import { 
   createEvolveContext, 
@@ -18,7 +52,6 @@ import { verifyShadowArtifacts, requireVerifiedShadow } from './verify';
 import { applyProduction } from './apply';
 import { executeCodeAgent } from './codeagent-controller';
 import { emitEvolveEvent } from './telemetry';
-import { evolutionCycle } from '@/lib/substrate/evolution-cycle';
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES
@@ -302,18 +335,6 @@ export async function evolveStatus(evolution_id?: string): Promise<{
     return {
       has_shadow: !!entry,
       is_verified: shadowStore.isVerified(evolution_id),
-      artifacts: entry?.artifacts.length || 0,
-      entry,
-    };
-  }
-
-  // Get state from evolution cycle
-  const state = await evolutionCycle.getState();
-  if (state.current_plan) {
-    const entry = shadowStore.getEntry(state.current_plan.plan_id);
-    return {
-      has_shadow: !!entry,
-      is_verified: shadowStore.isVerified(state.current_plan.plan_id),
       artifacts: entry?.artifacts.length || 0,
       entry,
     };

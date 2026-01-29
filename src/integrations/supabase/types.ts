@@ -4422,6 +4422,102 @@ export type Database = {
         }
         Relationships: []
       }
+      evolution_receipts: {
+        Row: {
+          backup_id: string | null
+          changes_applied: Json
+          health_after: Json | null
+          health_before: Json | null
+          phase: Database["public"]["Enums"]["evolution_phase"]
+          plan_id: string
+          receipt_id: string
+          run_id: string
+          tests_passed: number | null
+          tests_run: number | null
+          timestamp: string
+        }
+        Insert: {
+          backup_id?: string | null
+          changes_applied?: Json
+          health_after?: Json | null
+          health_before?: Json | null
+          phase: Database["public"]["Enums"]["evolution_phase"]
+          plan_id: string
+          receipt_id?: string
+          run_id: string
+          tests_passed?: number | null
+          tests_run?: number | null
+          timestamp?: string
+        }
+        Update: {
+          backup_id?: string | null
+          changes_applied?: Json
+          health_after?: Json | null
+          health_before?: Json | null
+          phase?: Database["public"]["Enums"]["evolution_phase"]
+          plan_id?: string
+          receipt_id?: string
+          run_id?: string
+          tests_passed?: number | null
+          tests_run?: number | null
+          timestamp?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "evolution_receipts_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "evolution_runs"
+            referencedColumns: ["run_id"]
+          },
+        ]
+      }
+      evolution_runs: {
+        Row: {
+          completed_at: string | null
+          confidence_score: number | null
+          created_at: string
+          initiated_by: Database["public"]["Enums"]["evolution_initiator"]
+          metadata: Json | null
+          phase: Database["public"]["Enums"]["evolution_phase"]
+          plan_id: string
+          receipt_id: string | null
+          risk_level: Database["public"]["Enums"]["evolution_risk_level"] | null
+          run_id: string
+          updated_at: string
+        }
+        Insert: {
+          completed_at?: string | null
+          confidence_score?: number | null
+          created_at?: string
+          initiated_by?: Database["public"]["Enums"]["evolution_initiator"]
+          metadata?: Json | null
+          phase?: Database["public"]["Enums"]["evolution_phase"]
+          plan_id: string
+          receipt_id?: string | null
+          risk_level?:
+            | Database["public"]["Enums"]["evolution_risk_level"]
+            | null
+          run_id?: string
+          updated_at?: string
+        }
+        Update: {
+          completed_at?: string | null
+          confidence_score?: number | null
+          created_at?: string
+          initiated_by?: Database["public"]["Enums"]["evolution_initiator"]
+          metadata?: Json | null
+          phase?: Database["public"]["Enums"]["evolution_phase"]
+          plan_id?: string
+          receipt_id?: string | null
+          risk_level?:
+            | Database["public"]["Enums"]["evolution_risk_level"]
+            | null
+          run_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       execution_traces: {
         Row: {
           action_count: number | null
@@ -9962,6 +10058,15 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
+      evolution_initiator: "system" | "human"
+      evolution_phase:
+        | "planning"
+        | "shadow_applied"
+        | "production_applied"
+        | "verified"
+        | "aborted"
+        | "failed"
+      evolution_risk_level: "low" | "medium" | "high"
       upgrade_mode: "shadow" | "auto_safe" | "auto_full"
       upgrade_status:
         | "proposed"
@@ -10097,6 +10202,16 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "moderator", "user"],
+      evolution_initiator: ["system", "human"],
+      evolution_phase: [
+        "planning",
+        "shadow_applied",
+        "production_applied",
+        "verified",
+        "aborted",
+        "failed",
+      ],
+      evolution_risk_level: ["low", "medium", "high"],
       upgrade_mode: ["shadow", "auto_safe", "auto_full"],
       upgrade_status: [
         "proposed",
