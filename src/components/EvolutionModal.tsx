@@ -78,22 +78,22 @@ export function EvolutionModal({ isOpen, onClose }: EvolutionModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100000] flex items-center justify-center">
+    <div className="fixed inset-0 z-[100000] overflow-y-auto">
       {/* Backdrop */}
       <div 
-        className="absolute inset-0 bg-black/95 backdrop-blur-xl"
+        className="fixed inset-0 bg-black/95 backdrop-blur-xl"
         onClick={phase === 'ended' ? onClose : undefined}
       />
       
-      {/* Content */}
-      <div className="relative w-full h-full flex items-center justify-center p-4 md:p-8">
+      {/* Content - centered with safe area padding */}
+      <div className="relative min-h-screen flex items-center justify-center p-4 sm:p-8">
         {/* Close button - only visible when not loading */}
         {phase !== 'loading' && (
           <Button
             variant="ghost"
             size="icon"
             onClick={onClose}
-            className="absolute top-4 right-4 md:top-8 md:right-8 z-10 text-white/60 hover:text-white hover:bg-white/10 transition-colors"
+            className="fixed top-4 right-4 z-10 text-white/60 hover:text-white hover:bg-white/10 transition-colors"
           >
             <X className="w-6 h-6" />
           </Button>
@@ -101,9 +101,9 @@ export function EvolutionModal({ isOpen, onClose }: EvolutionModalProps) {
 
         {/* Loading Phase - Bio-substrate Organism */}
         {phase === 'loading' && (
-          <div className="flex flex-col items-center justify-center gap-8">
-            {/* Organism container */}
-            <div className="relative w-64 h-64 md:w-80 md:h-80">
+          <div className="flex flex-col items-center justify-center gap-6 sm:gap-8 w-full max-w-sm mx-auto">
+            {/* Organism container - scaled for mobile */}
+            <div className="relative w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80">
               {/* Outer pulsing ring */}
               <div 
                 className="absolute inset-0 rounded-full border-2 border-fuchsia-500/30 animate-ping"
@@ -119,7 +119,7 @@ export function EvolutionModal({ isOpen, onClose }: EvolutionModalProps) {
                     {[...Array(12)].map((_, i) => (
                       <div
                         key={i}
-                        className="absolute w-3 h-3 md:w-4 md:h-4 rounded-full bg-gradient-to-r from-cyan-400 to-fuchsia-500"
+                        className="absolute w-2 h-2 sm:w-3 sm:h-3 md:w-4 md:h-4 rounded-full bg-gradient-to-r from-cyan-400 to-fuchsia-500"
                         style={{
                           left: `${20 + Math.random() * 60}%`,
                           top: `${20 + Math.random() * 60}%`,
@@ -142,7 +142,7 @@ export function EvolutionModal({ isOpen, onClose }: EvolutionModalProps) {
               {[...Array(6)].map((_, i) => (
                 <div
                   key={`tendril-${i}`}
-                  className="absolute w-1 h-16 md:h-20 bg-gradient-to-b from-fuchsia-500/60 to-transparent rounded-full"
+                  className="absolute w-1 h-12 sm:h-16 md:h-20 bg-gradient-to-b from-fuchsia-500/60 to-transparent rounded-full"
                   style={{
                     left: '50%',
                     top: '50%',
@@ -155,13 +155,13 @@ export function EvolutionModal({ isOpen, onClose }: EvolutionModalProps) {
             </div>
 
             {/* Loading text */}
-            <div className="flex flex-col items-center gap-3">
-              <div className="text-lg md:text-xl font-light tracking-[0.3em] text-white/80 uppercase">
+            <div className="flex flex-col items-center gap-3 text-center">
+              <div className="text-base sm:text-lg md:text-xl font-light tracking-[0.3em] text-white/80 uppercase">
                 Evolution
               </div>
               
               {/* Progress bar */}
-              <div className="w-48 md:w-64 h-1 bg-white/10 rounded-full overflow-hidden">
+              <div className="w-40 sm:w-48 md:w-64 h-1 bg-white/10 rounded-full overflow-hidden">
                 <div 
                   className="h-full bg-gradient-to-r from-cyan-400 via-fuchsia-500 to-purple-500 transition-all duration-100 ease-linear"
                   style={{ width: `${loadingProgress}%` }}
@@ -169,7 +169,7 @@ export function EvolutionModal({ isOpen, onClose }: EvolutionModalProps) {
               </div>
               
               {/* Progress text */}
-              <div className="text-sm font-mono text-white/40">
+              <div className="text-xs sm:text-sm font-mono text-white/40">
                 Synthesizing... {Math.round(loadingProgress)}%
               </div>
             </div>
@@ -178,41 +178,50 @@ export function EvolutionModal({ isOpen, onClose }: EvolutionModalProps) {
 
         {/* Video Phase */}
         {(phase === 'playing' || phase === 'ended') && (
-          <div className="relative w-full max-w-5xl aspect-video">
-            <video
-              ref={videoRef}
-              src="/videos/evolution.mp4"
-              className="w-full h-full object-contain rounded-lg"
-              playsInline
-              onEnded={handleVideoEnd}
-              controls={phase === 'playing'}
-            />
+          <div className="relative w-full max-w-5xl mx-auto">
+            {/* Hero text above video */}
+            <div className="text-center mb-4 sm:mb-6">
+              <h2 className="text-xl sm:text-2xl md:text-4xl font-light tracking-wider text-white">
+                What will you build?
+              </h2>
+            </div>
             
-            {/* End state overlay */}
-            {phase === 'ended' && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 bg-black/60 backdrop-blur-sm rounded-lg">
-                <h2 className="text-2xl md:text-3xl font-light tracking-wider text-white">
-                  Evolution Complete
-                </h2>
-                <div className="flex gap-4">
-                  <Button
-                    onClick={handleReplay}
-                    variant="outline"
-                    className="gap-2 border-white/20 bg-white/5 text-white hover:bg-white/10 hover:text-white"
-                  >
-                    <RefreshCcw className="w-4 h-4" />
-                    Replay
-                  </Button>
-                  <Button
-                    onClick={onClose}
-                    className="gap-2 bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white hover:from-fuchsia-500 hover:to-purple-500"
-                  >
-                    <X className="w-4 h-4" />
-                    Close
-                  </Button>
+            <div className="relative aspect-video">
+              <video
+                ref={videoRef}
+                src="/videos/evolution.mp4"
+                className="w-full h-full object-contain rounded-lg"
+                playsInline
+                onEnded={handleVideoEnd}
+                controls={phase === 'playing'}
+              />
+              
+              {/* End state overlay */}
+              {phase === 'ended' && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 sm:gap-6 bg-black/60 backdrop-blur-sm rounded-lg p-4">
+                  <h3 className="text-lg sm:text-2xl md:text-3xl font-light tracking-wider text-white text-center">
+                    Evolution Complete
+                  </h3>
+                  <div className="flex flex-wrap gap-3 justify-center">
+                    <Button
+                      onClick={handleReplay}
+                      variant="outline"
+                      className="gap-2 border-white/20 bg-white/5 text-white hover:bg-white/10 hover:text-white"
+                    >
+                      <RefreshCcw className="w-4 h-4" />
+                      Replay
+                    </Button>
+                    <Button
+                      onClick={onClose}
+                      className="gap-2 bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white hover:from-fuchsia-500 hover:to-purple-500"
+                    >
+                      <X className="w-4 h-4" />
+                      Close
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         )}
       </div>

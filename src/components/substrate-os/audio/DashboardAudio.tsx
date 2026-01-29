@@ -58,6 +58,7 @@ export function DashboardAudio({ className }: DashboardAudioProps) {
           <Settings2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
         </Button>
         
+        {/* Settings panel - positioned in viewport on mobile */}
         <AnimatePresence>
           {showSettings && (
             <motion.div
@@ -65,7 +66,11 @@ export function DashboardAudio({ className }: DashboardAudioProps) {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 10, scale: 0.95 }}
               className={cn(
-                "absolute right-0 top-full mt-2 z-50",
+                "fixed sm:absolute z-[9999]",
+                // Mobile: center in viewport
+                "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
+                // Desktop: position below button
+                "sm:left-auto sm:top-full sm:right-0 sm:translate-x-0 sm:translate-y-0 sm:mt-2",
                 "w-64 max-w-[calc(100vw-2rem)] p-4 rounded-xl",
                 "bg-card/95 backdrop-blur-xl border border-border/50",
                 "shadow-xl shadow-black/20"

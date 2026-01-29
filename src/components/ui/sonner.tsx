@@ -1,25 +1,26 @@
 import { Toaster as Sonner, toast } from "sonner";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type ToasterProps = React.ComponentProps<typeof Sonner>;
 
 const Toaster = ({ ...props }: ToasterProps) => {
-  // Position toasts at top-right on mobile to avoid bottom nav bar
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const isMobile = useIsMobile();
   
   return (
     <Sonner
       theme="dark"
-      position={isMobile ? "top-right" : "bottom-right"}
-      offset={isMobile ? "80px" : "16px"}
+      // On mobile: center top for visibility regardless of scroll
+      // On desktop: bottom-right as standard
+      position={isMobile ? "top-center" : "bottom-right"}
+      offset={isMobile ? 16 : 16}
       style={{
         position: 'fixed',
-        ...(isMobile ? { top: '5rem', right: '1rem' } : { bottom: '1rem', right: '1rem' }),
         zIndex: 999999,
       }}
       richColors
       closeButton
       expand
-      visibleToasts={5}
+      visibleToasts={3}
       className="toaster group"
       toastOptions={{
         classNames: {
@@ -29,7 +30,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
           actionButton: "group-[.toast]:bg-primary group-[.toast]:text-primary-foreground",
           cancelButton: "group-[.toast]:bg-muted group-[.toast]:text-muted-foreground",
         },
-        duration: 8000,
+        duration: 6000,
         style: {
           position: 'relative',
           pointerEvents: 'auto',
