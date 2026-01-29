@@ -28,6 +28,11 @@ import { ExplorerCards } from "@/components/codelab/ExplorerCards";
 import { CodeWorkbench } from "@/components/codelab/CodeWorkbench";
 import { ProjectStarter } from "@/components/codelab/ProjectStarter";
 import { ObservabilityHUD } from "@/components/codelab/ObservabilityHUD";
+import { DialectSelector } from "@/components/codelab/DialectSelector";
+import { CodeViewer } from "@/components/codelab/CodeViewer";
+import { useObsMode } from "@/lib/ui/obsfunction-mode";
+import { renderDialect } from "@/lib/ui/dialect-render";
+import { DIALECT_LABELS } from "@/lib/ui/display-dialect";
 
 // Filter FREE templates only (beginner & intermediate, not premium/elite/pro)
 const FREE_TEMPLATES = TEMPLATES.filter(t => 
@@ -57,12 +62,21 @@ export default function CodeLab() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [expandedTemplate, setExpandedTemplate] = useState<string | null>(null);
+  
+  // Display dialect state
+  const { enabled: obsEnabled, dialect } = useObsMode();
 
+  // Always copy RAW code, never dialect-rendered
   const copyCode = (code: string, id: string) => {
-    navigator.clipboard.writeText(code);
+    navigator.clipboard.writeText(code); // RAW modern code only!
     setCopiedId(id);
-    toast.success("Copied to clipboard!");
+    toast.success("Copied raw code to clipboard!");
     setTimeout(() => setCopiedId(null), 2000);
+  };
+  
+  // Render code for display (dialect transformation)
+  const displayCode = (code: string) => {
+    return obsEnabled ? renderDialect(code, dialect) : code;
   };
 
   const filteredTemplates = selectedCategory 
@@ -145,10 +159,10 @@ export default function CodeLab() {
         </div>
       </section>
 
-      {/* Quick Stats Bar */}
+      {/* Quick Stats Bar + Dialect Selector */}
       <section className="border-b border-border/50 bg-muted/30">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex flex-wrap justify-center gap-6 md:gap-12 text-sm">
+          <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8 text-sm">
             <div className="flex items-center gap-2">
               <Package className="w-4 h-4 text-emerald-500" />
               <span className="font-mono font-bold">{FREE_TEMPLATES.length}</span>
@@ -168,6 +182,13 @@ export default function CodeLab() {
               <Star className="w-4 h-4 text-yellow-500" />
               <span className="font-mono font-bold">MIT</span>
               <span className="text-muted-foreground">License</span>
+            </div>
+            
+            {/* Dialect Selector - Display Only Toggle */}
+            <div className="flex items-center gap-2 pl-4 border-l border-border/50">
+              <Eye className="w-4 h-4 text-violet-500" />
+              <span className="text-muted-foreground text-xs">Display:</span>
+              <DialectSelector compact />
             </div>
           </div>
         </div>
@@ -271,19 +292,10 @@ export default function CodeLab() {
                   </div>
                 </div>
 
-                {/* Quick Code Example */}
+                {/* Quick Code Example - Uses dialect rendering */}
                 <div className="flex-1 lg:max-w-md">
-                  <div className="relative">
-                    <div className="flex items-center gap-2 px-4 py-2 bg-muted/50 rounded-t-lg border border-b-0 border-border/50">
-                      <div className="flex gap-1.5">
-                        <div className="w-3 h-3 rounded-full bg-red-500/50" />
-                        <div className="w-3 h-3 rounded-full bg-yellow-500/50" />
-                        <div className="w-3 h-3 rounded-full bg-green-500/50" />
-                      </div>
-                      <span className="text-xs text-muted-foreground font-mono">example.ts</span>
-                    </div>
-                    <pre className="bg-muted/80 p-4 rounded-b-lg font-mono text-xs overflow-x-auto border border-t-0 border-border/50 max-h-48">
-{`import { substrate } from './lib/substrate';
+                  <CodeViewer 
+                    code={`import { substrate } from './lib/substrate';
 
 // Query brain memories
 const memories = await substrate.brain.query(
@@ -294,26 +306,9 @@ const memories = await substrate.brain.query(
 const response = await substrate.nexus.text(
   "Summarize: " + memories.data
 );`}
-                    </pre>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="absolute bottom-2 right-2"
-                      onClick={() => copyCode(`import { substrate } from './lib/substrate';
-
-// Query brain memories
-const memories = await substrate.brain.query(
-  "What did the user prefer?"
-);
-
-// Generate with context
-const response = await substrate.nexus.text(
-  "Summarize: " + memories.data
-);`, "example")}
-                    >
-                      {copiedId === "example" ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                    </Button>
-                  </div>
+                    filename="example.ts"
+                    maxHeight="max-h-48"
+                  />
                 </div>
               </div>
             </Card>
@@ -368,9 +363,15 @@ const response = await substrate.nexus.text(
                               <Badge key={i} variant="secondary" className="text-xs">{f}</Badge>
                             ))}
                           </div>
-                          <div className="relative">
+                          <div className="relative group">
+                            {dialect !== 'modern' && (
+                              <Badge variant="outline" className="absolute top-2 left-2 text-xs border-dashed z-10 bg-background/80">
+                                <Eye className="w-3 h-3 mr-1" />
+                                {DIALECT_LABELS[dialect]} · Display Only
+                              </Badge>
+                            )}
                             <pre className="bg-muted/50 p-3 rounded text-xs font-mono overflow-auto max-h-40">
-                              {template.code.slice(0, 400)}...
+                              {displayCode(template.code.slice(0, 400))}...
                             </pre>
                             <Button
                               variant="default"
@@ -378,11 +379,11 @@ const response = await substrate.nexus.text(
                               className="absolute bottom-2 right-2 gap-1"
                               onClick={(e) => {
                                 e.stopPropagation();
-                                copyCode(template.code, template.id);
+                                copyCode(template.code, template.id); // Always raw code!
                               }}
                             >
                               {copiedId === template.id ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                              Copy
+                              Copy Raw
                             </Button>
                           </div>
                         </div>
@@ -538,9 +539,15 @@ const response = await substrate.nexus.text(
                             <Badge key={i} variant="secondary" className="text-xs">{f}</Badge>
                           ))}
                         </div>
-                        <div className="relative">
+                        <div className="relative group">
+                          {dialect !== 'modern' && (
+                            <Badge variant="outline" className="absolute top-2 left-2 text-xs border-dashed z-10 bg-background/80">
+                              <Eye className="w-3 h-3 mr-1" />
+                              {DIALECT_LABELS[dialect]} · Display Only
+                            </Badge>
+                          )}
                           <pre className="bg-muted/50 p-3 rounded text-xs font-mono overflow-auto max-h-64">
-                            {template.code}
+                            {displayCode(template.code)}
                           </pre>
                           <Button
                             variant="default"
@@ -548,11 +555,11 @@ const response = await substrate.nexus.text(
                             className="absolute bottom-2 right-2 gap-1"
                             onClick={(e) => {
                               e.stopPropagation();
-                              copyCode(template.code, template.id);
+                              copyCode(template.code, template.id); // Always raw code!
                             }}
                           >
                             {copiedId === template.id ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                            Copy Code
+                            Copy Raw
                           </Button>
                         </div>
                       </div>
