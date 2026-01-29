@@ -161,16 +161,17 @@ export function AudioControlModal({ isOpen, onClose }: AudioControlModalProps) {
             onClick={onClose}
           />
           
-          {/* Modal wrapper: handles centering via CSS transform so Framer Motion doesn't override it */}
+          {/* Modal wrapper: fullscreen flex centers content and respects safe areas */}
           <div
             className={cn(
-              "fixed z-[9999]",
-              "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
-              // Ensure the modal always fits within the visible viewport on mobile
-              "max-h-[calc(100dvh-2rem)] max-w-[calc(100vw-2rem)]",
-              // Respect iOS safe areas
-              "[padding-top:env(safe-area-inset-top)] [padding-bottom:env(safe-area-inset-bottom)]",
-              "[padding-left:env(safe-area-inset-left)] [padding-right:env(safe-area-inset-right)]"
+              "fixed inset-0 z-[9999]",
+              "flex items-center justify-center",
+              // Base padding + iOS safe-area padding so content is never under browser UI
+              "p-4",
+              "[padding-top:calc(1rem+env(safe-area-inset-top))]",
+              "[padding-bottom:calc(1rem+env(safe-area-inset-bottom))]",
+              "[padding-left:calc(1rem+env(safe-area-inset-left))]",
+              "[padding-right:calc(1rem+env(safe-area-inset-right))]"
             )}
           >
             <motion.div
@@ -178,28 +179,31 @@ export function AudioControlModal({ isOpen, onClose }: AudioControlModalProps) {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
               className={cn(
-                "w-[calc(100vw-2rem)] max-w-sm",
+                "w-full max-w-sm",
+                // Fit inside padded wrapper; never exceed viewport
                 "max-h-[calc(100dvh-2rem)]",
-                "rounded-2xl overflow-auto",
+                "rounded-2xl overflow-hidden",
                 "bg-card border border-border/50",
                 "shadow-2xl shadow-foreground/20"
               )}
             >
-            {/* Header with close button */}
-            <div className="flex items-center justify-between p-4 border-b border-border/30">
-              <h3 className="text-base font-semibold">Audio Controls</h3>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={onClose}
-                className="h-8 w-8 rounded-full"
-              >
-                <X className="w-4 h-4" />
-              </Button>
-            </div>
-            
-            {/* Tabs */}
-            <Tabs defaultValue="music" className="w-full">
+            <div className="flex max-h-full flex-col">
+              {/* Header with close button (always visible) */}
+              <div className="flex items-center justify-between p-4 border-b border-border/30 shrink-0">
+                <h3 className="text-base font-semibold">Audio Controls</h3>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={onClose}
+                  className="h-8 w-8 rounded-full"
+                >
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
+              
+              {/* Scrollable content */}
+              <div className="min-h-0 flex-1 overflow-auto">
+                <Tabs defaultValue="music" className="w-full">
               <TabsList className="w-full grid grid-cols-2 p-1 mx-4 my-3" style={{ width: 'calc(100% - 2rem)' }}>
                 <TabsTrigger value="music" className="gap-1.5">
                   <Music className="w-3.5 h-3.5" />
@@ -353,7 +357,9 @@ export function AudioControlModal({ isOpen, onClose }: AudioControlModalProps) {
                   </Badge>
                 </div>
               </TabsContent>
-            </Tabs>
+                </Tabs>
+              </div>
+            </div>
             </motion.div>
           </div>
         </>
