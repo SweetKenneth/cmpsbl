@@ -39,6 +39,9 @@ export * from './autonomy';
 export * from './self-repair';
 export * from './public-receipts';
 
+// v0.7.7 — Intelligent Scan
+export * from './scan';
+
 // ═══════════════════════════════════════════════════════════════
 // RE-EXPORT MAIN EVOLVE FUNCTION
 // ═══════════════════════════════════════════════════════════════

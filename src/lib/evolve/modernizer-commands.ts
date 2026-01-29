@@ -8,6 +8,7 @@ import { evolutionReceipts, type EvolutionReceipt } from './evolution-receipts';
 import { shadowExecutor } from './shadow-executor';
 import { productionExecutor } from './production-executor';
 import { emitEvolveEvent } from './telemetry';
+import { modernizerScan, formatScanResult, type ScanOptions } from './scan';
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES
@@ -296,6 +297,19 @@ export const modernizerCommands = {
       success: true,
       data: receipt,
       formatted: evolutionReceipts.formatReceipt(receipt),
+    };
+  },
+
+  /**
+   * modernizer.scan — Cognitive systems scan (v0.7.7)
+   */
+  async scan(options: ScanOptions = {}): Promise<CommandResult> {
+    const result = await modernizerScan(options);
+
+    return {
+      success: result.plan_ready || result.proposals.length === 0,
+      data: result,
+      formatted: formatScanResult(result, options),
     };
   },
 };
