@@ -178,15 +178,23 @@ export function AudioControlModal({ isOpen, onClose }: AudioControlModalProps) {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              className={cn(
-                "w-full max-w-sm",
-                // Fit inside padded wrapper; never exceed viewport
-                "max-h-[calc(100dvh-2rem)]",
-                "rounded-2xl overflow-hidden",
-                "bg-card border border-border/50",
-                "shadow-2xl shadow-foreground/20"
-              )}
             >
+              {/*
+                Mobile offset: nudge the modal down slightly so the header/close button
+                never sits under the browser chrome (Safari address bar).
+                Use a non-motion wrapper to avoid transform conflicts.
+              */}
+              <div className="w-full max-w-sm translate-y-[35px]">
+                <div
+                  className={cn(
+                    "w-full",
+                    // Fit inside padded wrapper; never exceed viewport
+                    "max-h-[calc(100dvh-2rem)]",
+                    "rounded-2xl overflow-hidden",
+                    "bg-card border border-border/50",
+                    "shadow-2xl shadow-foreground/20"
+                  )}
+                >
             <div className="flex max-h-full flex-col">
               {/* Header with close button (always visible) */}
               <div className="flex items-center justify-between p-4 border-b border-border/30 shrink-0">
@@ -360,6 +368,8 @@ export function AudioControlModal({ isOpen, onClose }: AudioControlModalProps) {
                 </Tabs>
               </div>
             </div>
+                </div>
+              </div>
             </motion.div>
           </div>
         </>
