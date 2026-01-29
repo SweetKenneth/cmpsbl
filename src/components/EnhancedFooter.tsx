@@ -75,6 +75,15 @@ export function EnhancedFooter() {
                     </Link>
                   </li>
                 ))}
+                {/* Evolution link at bottom of Build menu */}
+                <li>
+                  <button
+                    onClick={() => setEvolutionOpen(true)}
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors hover:text-fuchsia-400 cursor-pointer text-left"
+                  >
+                    Evolution
+                  </button>
+                </li>
               </ul>
             </div>
 
@@ -109,15 +118,6 @@ export function EnhancedFooter() {
                     </Link>
                   </li>
                 ))}
-                {/* Evolution link - positioned after Contact on mobile */}
-                <li>
-                  <button
-                    onClick={() => setEvolutionOpen(true)}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors hover:text-fuchsia-400 cursor-pointer text-left"
-                  >
-                    Evolution
-                  </button>
-                </li>
               </ul>
             </div>
           </div>
