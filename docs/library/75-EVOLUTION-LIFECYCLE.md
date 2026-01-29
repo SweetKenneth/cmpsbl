@@ -232,5 +232,11 @@ If `decode.propose` falls back:
 
 ---
 
-*CMPSBL OS Substrate v0.7.5 — Evolution Integrity Era*
+## 9. Related Documentation
+
+- [Evolution Autonomy v0.7.6](./76-EVOLUTION-AUTONOMY.md) — Governed autonomy, circuit breaker, self-repair
+
+---
+
+*CMPSBL OS Substrate v0.7.5 → v0.7.6 — Evolution Integrity Era*
 *© 2025-2026 PromptFluid®. All rights reserved.*

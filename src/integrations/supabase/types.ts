@@ -4374,6 +4374,66 @@ export type Database = {
         }
         Relationships: []
       }
+      evolution_autonomy_config: {
+        Row: {
+          autonomy_mode: string
+          config_id: string
+          created_at: string
+          max_auto_runs_per_day: number
+          min_confidence_prod: number
+          require_confidence_threshold: boolean
+          updated_at: string
+        }
+        Insert: {
+          autonomy_mode?: string
+          config_id?: string
+          created_at?: string
+          max_auto_runs_per_day?: number
+          min_confidence_prod?: number
+          require_confidence_threshold?: boolean
+          updated_at?: string
+        }
+        Update: {
+          autonomy_mode?: string
+          config_id?: string
+          created_at?: string
+          max_auto_runs_per_day?: number
+          min_confidence_prod?: number
+          require_confidence_threshold?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      evolution_circuit: {
+        Row: {
+          auto_reset_after: unknown
+          circuit_id: string
+          created_at: string
+          last_trip_at: string | null
+          reason: string | null
+          state: string
+          updated_at: string
+        }
+        Insert: {
+          auto_reset_after?: unknown
+          circuit_id?: string
+          created_at?: string
+          last_trip_at?: string | null
+          reason?: string | null
+          state?: string
+          updated_at?: string
+        }
+        Update: {
+          auto_reset_after?: unknown
+          circuit_id?: string
+          created_at?: string
+          last_trip_at?: string | null
+          reason?: string | null
+          state?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       evolution_proposals: {
         Row: {
           confidence: number
@@ -4472,8 +4532,47 @@ export type Database = {
           },
         ]
       }
+      evolution_repair_log: {
+        Row: {
+          actions_taken: Json
+          completed_at: string | null
+          outcome: string | null
+          repair_id: string
+          run_id: string | null
+          started_at: string
+          trigger_reason: string
+        }
+        Insert: {
+          actions_taken?: Json
+          completed_at?: string | null
+          outcome?: string | null
+          repair_id?: string
+          run_id?: string | null
+          started_at?: string
+          trigger_reason: string
+        }
+        Update: {
+          actions_taken?: Json
+          completed_at?: string | null
+          outcome?: string | null
+          repair_id?: string
+          run_id?: string | null
+          started_at?: string
+          trigger_reason?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "evolution_repair_log_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "evolution_runs"
+            referencedColumns: ["run_id"]
+          },
+        ]
+      }
       evolution_runs: {
         Row: {
+          auto_initiated: boolean | null
           completed_at: string | null
           confidence_score: number | null
           created_at: string
@@ -4487,6 +4586,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          auto_initiated?: boolean | null
           completed_at?: string | null
           confidence_score?: number | null
           created_at?: string
@@ -4502,6 +4602,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          auto_initiated?: boolean | null
           completed_at?: string | null
           confidence_score?: number | null
           created_at?: string

@@ -31,6 +31,15 @@ export type EvolveEventType =
   | 'decode_fallback_detected'
   // Diagnostics
   | 'diagnostics_completed'
+  // Circuit breaker
+  | 'circuit_tripped'
+  | 'circuit_reset'
+  // Autonomy
+  | 'autonomy_mode_changed'
+  | 'autonomy_check_completed'
+  // Self-repair
+  | 'self_repair_started'
+  | 'self_repair_completed'
   // Legacy lifecycle events
   | 'evolve_shadow_started'
   | 'evolve_shadow_written'

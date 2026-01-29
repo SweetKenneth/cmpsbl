@@ -1,6 +1,6 @@
 /**
  * Evolve Module — Unified Exports
- * v0.7.5 — Evolution lifecycle management with receipts & integrity
+ * v0.7.6 — Governed Autonomy Era
  */
 
 // Core context
@@ -32,6 +32,12 @@ export * from './diagnostics';
 
 // Telemetry
 export * from './telemetry';
+
+// v0.7.6 — Governed Autonomy
+export * from './circuit-breaker';
+export * from './autonomy';
+export * from './self-repair';
+export * from './public-receipts';
 
 // ═══════════════════════════════════════════════════════════════
 // RE-EXPORT MAIN EVOLVE FUNCTION
