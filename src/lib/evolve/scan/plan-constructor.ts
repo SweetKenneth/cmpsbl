@@ -121,8 +121,9 @@ export async function createPlanFromNormalized(
     const requiresHumanReview = normalizationResult.normalized_actions.some(a => a.requires_human);
 
     // Build normalized plan object
+    // plan_id must be a valid UUID for database compatibility
     const plan: NormalizedPlan = {
-      plan_id: `plan_${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 8)}`,
+      plan_id: crypto.randomUUID(),
       scan_id: scanId,
       normalized: true,
       actions: normalizationResult.normalized_actions,
