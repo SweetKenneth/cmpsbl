@@ -1,6 +1,6 @@
-# CMPSBL OS Substrate — Evolution Autonomy v0.7.7
+# CMPSBL OS Substrate — Evolution Autonomy v0.7.8
 
-**Version 6.3.0 (Modernizer 0.7.7) | Scientific Publication**
+**Version 6.3.1 (Modernizer 0.7.8) | Scientific Publication**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-076 |
 | **Module** | MODERNIZER |
 | **Layer** | Administrative |
-| **Version** | v6.3.0 (Modernizer 0.7.7) |
+| **Version** | v6.3.1 (Modernizer 0.7.8) |
 
 ---
 
@@ -177,7 +177,18 @@ Receipts are **facts**, not **methods**.
 
 ---
 
-## 6. Changelog v0.7.6
+## 6. Changelog
+
+### v0.7.8
+
+- ✅ Added Proposal Normalization Layer
+- ✅ Strict plan creation contract (only normalized actions)
+- ✅ Explicit rejection codes for normalization failures
+- ✅ Terminal truthfulness ("N actions normalized" or "proposals could not be normalized")
+- ✅ Evolve safety guarantee (rejects unnormalized plans)
+- ✅ Normalization test suite
+
+### v0.7.6/v0.7.7
 
 - ✅ Added governed autonomy mode
 - ✅ Implemented circuit breaker with auto-reset
@@ -191,5 +202,5 @@ Receipts are **facts**, not **methods**.
 
 ---
 
-*CMPSBL OS Substrate v0.7.6 — Governed Autonomy Era*
+*CMPSBL OS Substrate v0.7.8 — Scan Normalization Era*
 *© 2025-2026 PromptFluid®. All rights reserved.*

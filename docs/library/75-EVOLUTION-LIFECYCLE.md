@@ -1,6 +1,6 @@
-# CMPSBL OS Substrate — Evolution Lifecycle v0.7.7
+# CMPSBL OS Substrate — Evolution Lifecycle v0.7.8
 
-**Version 6.3.0 (Modernizer 0.7.7) | Scientific Publication**
+**Version 6.3.1 (Modernizer 0.7.8) | Scientific Publication**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-075 |
 | **Module** | MODERNIZER |
 | **Layer** | Administrative |
-| **Version** | v6.3.0 (Modernizer 0.7.7) |
+| **Version** | v6.3.1 (Modernizer 0.7.8) |
 
 ---
 
