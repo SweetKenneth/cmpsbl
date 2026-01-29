@@ -747,8 +747,115 @@ ${identityLine}│  Mode: ${roleDisplay}
     } else if (base === 'modernizer.jobs') {
       const limit = args[0] ? parseInt(args[0]) : 10;
       result = await modernizer.jobs(limit);
-    } else if (base === 'modernizer.scan') {
-      // Scan substrate codebase - optional depth filter
+    }
+    // ═══ EVOLUTION CYCLE v6.5.0 ═══
+    else if (base === 'modernizer.evolve') {
+      const { evolutionCycle } = await import('@/lib/substrate/evolution-cycle');
+      
+      // Parse target from args
+      const targetArg = args[0]?.toLowerCase();
+      const hasConfirm = args.includes('--confirm') || args.includes('-y');
+      const depthArg = args.find(a => ['quick', 'standard', 'deep'].includes(a)) as 'quick' | 'standard' | 'deep' | undefined;
+      
+      let target: 'scan' | 'shadow' | 'production' | 'verify' | 'abort' | 'status' = 'scan';
+      if (targetArg === 'shadow' || targetArg === 'apply_shadow') target = 'shadow';
+      else if (targetArg === 'production' || targetArg === 'apply_production' || targetArg === 'prod') target = 'production';
+      else if (targetArg === 'verify' || targetArg === 'test') target = 'verify';
+      else if (targetArg === 'abort' || targetArg === 'cancel' || targetArg === 'delete') target = 'abort';
+      else if (targetArg === 'status' || targetArg === 'state') target = 'status';
+      
+      const cycleResult = await evolutionCycle.evolve({
+        target,
+        depth: depthArg || 'standard',
+        confirm_override: hasConfirm,
+      });
+      
+      // Handle confirmation prompt
+      if (cycleResult.requires_confirmation) {
+        return {
+          success: false,
+          output: `
+┌─ EVOLUTION CYCLE — CONFIRMATION REQUIRED ────────────────────
+│
+│  ⚠  An active evolution plan exists: ${cycleResult.existing_plan_id}
+│
+│  Running a new scan will DELETE the existing plan and
+│  start a fresh Evolution Cycle.
+│
+│  To confirm override, run:
+│    modernizer.evolve --confirm
+│
+│  To view current plan status:
+│    modernizer.evolve status
+│
+│  To abort current plan:
+│    modernizer.evolve abort
+│
+└──────────────────────────────────────────────────────────────`,
+        };
+      }
+      
+      // Format evolution result
+      const phaseIcon = cycleResult.success ? '✓' : '✗';
+      const phaseDisplay = cycleResult.phase.toUpperCase().replace('_', ' ');
+      
+      let output = `
+┌─ EVOLUTION CYCLE ────────────────────────────────────────────
+│
+│  ${phaseIcon} Phase: ${phaseDisplay}
+${cycleResult.plan_id ? `│  Plan ID: ${cycleResult.short_id} (${cycleResult.plan_id.substring(0, 20)}...)` : ''}
+│
+│  ${cycleResult.message}
+│`;
+
+      // Add scan results if available
+      const data = cycleResult.data as any;
+      if (data?.scan_results) {
+        const sr = data.scan_results;
+        output += `
+│  ┌─ SCAN RESULTS ───────────────────────────────────────────
+│  │  Modules scanned: ${sr.modules_scanned}
+│  │  Improvements found: ${sr.improvements_found}
+│  │  Risk level: ${sr.risk_level}
+│  │  Health before: ${sr.health_before}%
+│  └──────────────────────────────────────────────────────────`;
+      }
+      
+      // Add verification results if available
+      if (data?.verification) {
+        const v = data.verification;
+        output += `
+│  ┌─ VERIFICATION ───────────────────────────────────────────
+│  │  Tests run: ${v.tests_run}
+│  │  Tests passed: ${v.tests_passed}
+│  │  Health after: ${v.health_after}%
+│  │  Health delta: ${v.health_delta >= 0 ? '+' : ''}${v.health_delta}%
+│  └──────────────────────────────────────────────────────────`;
+      }
+      
+      // Add next steps
+      if (cycleResult.success && cycleResult.phase === 'planning') {
+        output += `
+│
+│  Next steps:
+│    1. modernizer.evolve shadow    — Apply to shadow environment
+│    2. modernizer.evolve production — Promote to production
+│    3. modernizer.evolve verify    — Run verification tests`;
+      } else if (cycleResult.phase === 'shadow_apply') {
+        output += `
+│
+│  Next step:
+│    modernizer.evolve production   — Promote to production`;
+      }
+      
+      output += `
+│
+└──────────────────────────────────────────────────────────────`;
+      
+      return { success: cycleResult.success, output };
+    }
+    else if (base === 'modernizer.scan') {
+      // Legacy: forward to evolution cycle
       const depth = args[0] as 'quick' | 'standard' | 'deep' | undefined;
       result = await modernizer.scan({ depth: depth || 'standard' });
     } else if (base === 'modernizer.analyze') {
@@ -765,11 +872,12 @@ ${identityLine}│  Mode: ${roleDisplay}
     } else if (base === 'modernizer.pulse') {
       result = await modernizer.pulse();
     } else if (base === 'modernizer.propose') {
-      // Generate upgrade proposal in shadow mode
+      // Legacy: Generate upgrade proposal in shadow mode
       const scope = args[0] || 'all';
       const notes = args.slice(1).join(' ') || '';
       result = await modernizer.propose({ scope, notes });
     } else if (base === 'modernizer.plans') {
+      // Forward to evolution cycle
       result = await modernizer.plans();
     } else if (base === 'modernizer.review') {
       if (!args[0]) {

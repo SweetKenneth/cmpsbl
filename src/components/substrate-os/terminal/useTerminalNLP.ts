@@ -149,14 +149,14 @@ const INTENT_PATTERNS: Array<{
   
   // Modernizer
   {
-    patterns: [/upgrade/i, /improve/i, /optimize/i, /modernize/i, /scan.*improvements/i],
-    command: 'modernizer.scan',
-    explanation: 'Scan for improvements',
+    patterns: [/upgrade/i, /improve/i, /optimize/i, /modernize/i, /scan.*improvements/i, /evolve/i, /evolution/i],
+    command: 'modernizer.evolve',
+    explanation: 'Start Evolution Cycle',
   },
   {
-    patterns: [/pending.*upgrades/i, /upgrade.*plans/i, /what.*upgrade/i],
-    command: 'modernizer.plans',
-    explanation: 'List upgrade plans',
+    patterns: [/pending.*upgrades/i, /upgrade.*plans/i, /what.*upgrade/i, /evolution.*status/i, /evolve.*status/i],
+    command: 'modernizer.evolve status',
+    explanation: 'Check evolution status',
   },
   
   // Cortex (Agency module, resurrected from Cascade)

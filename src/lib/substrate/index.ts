@@ -1,6 +1,6 @@
 /**
  * Substrate Core Exports
- * v6.4.0 — Unified Cognitive Architecture (Phase 4A: Engine Bus)
+ * v6.5.0 — Unified Cognitive Architecture (Phase 4B: Evolution Cycle)
  */
 
 // Engine Bus - Canonical Routing Layer (v6.4.0)
@@ -16,6 +16,20 @@ export {
   type BusState,
   type ExecutionEvent,
 } from './engine-bus';
+
+// Evolution Cycle - Unified Modernizer Engine (v6.5.0)
+export {
+  evolutionCycle,
+  EvolutionCycleClient,
+  type EvolutionPhase,
+  type EvolutionPlan,
+  type EvolutionState,
+  type EvolutionCycleResult,
+  type ScanResult,
+  type ProposalItem,
+  type VerificationResult,
+  type GovernanceSignal,
+} from './evolution-cycle';
 
 // Memory Core - Unified Memory Lifecycle
 export { 
@@ -73,7 +87,7 @@ export {
   type GovernanceState,
   type GovernanceInput,
   type GovernanceResult,
-  type GovernanceSignal,
+  type GovernanceSignal as GovernanceGuardSignal,
   type CoherenceResult,
   type EthicalResult,
 } from './governance-guard';
