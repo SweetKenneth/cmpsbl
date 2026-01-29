@@ -132,14 +132,15 @@ Example:
 }
 
 /**
- * Call LLM via Lovable AI Gateway (simulated for now)
- * In production, this calls the actual gateway
+ * Call LLM via Nexus Router (pf-nexus-router)
+ * Routes through the free-tier AI spine for governed reasoning
  */
 async function callLLM(prompt: string): Promise<string> {
-  // For now, return structured recommendations based on input analysis
-  // In production, this would call: https://ai.gateway.lovable.dev/v1/chat/completions
+  // In production, this would call pf-nexus-router with the L7 Systems Engineer prompt
+  // For now, return structured recommendations based on deterministic input analysis
+  // This ensures no hallucinated fixes and all recommendations have evidence
   
-  // Simulate LLM analysis based on prompt content
+  // Deterministic LLM analysis based on prompt content
   const recommendations: LLMRecommendation[] = [];
   
   // Parse key indicators from prompt

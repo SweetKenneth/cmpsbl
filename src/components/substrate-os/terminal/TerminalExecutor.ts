@@ -874,9 +874,30 @@ ${cycleResult.plan_id ? `│  Plan ID: ${cycleResult.short_id} (${cycleResult.pl
       return { success: cycleResult.success, output };
     }
     else if (base === 'modernizer.scan') {
-      // Legacy: forward to evolution cycle
-      const depth = args[0] as 'quick' | 'standard' | 'deep' | undefined;
-      result = await modernizer.scan({ depth: depth || 'standard' });
+      // v0.7.7: Cognitive Systems Scan with options
+      const hasExplain = args.includes('--explain');
+      const hasLLMReport = args.includes('--llm-report');
+      const hasDryRun = args.includes('--dry-run');
+      
+      // Import and execute the new scan pipeline
+      try {
+        const { modernizerScan, formatScanResult } = await import('@/lib/evolve/scan');
+        const scanResult = await modernizerScan({
+          explain: hasExplain,
+          llm_report: hasLLMReport,
+          dry_run: hasDryRun,
+        });
+        
+        return {
+          success: scanResult.plan_ready || scanResult.proposals.length === 0,
+          output: formatScanResult(scanResult, { explain: hasExplain, llm_report: hasLLMReport, dry_run: hasDryRun }),
+          data: scanResult,
+        };
+      } catch (err) {
+        // Fallback to legacy scan if new pipeline not available
+        const depth = args[0] as 'quick' | 'standard' | 'deep' | undefined;
+        result = await modernizer.scan({ depth: depth || 'standard' });
+      }
     } else if (base === 'modernizer.analyze') {
       // Quick analysis of a specific module
       const targetModule = args[0];
@@ -1040,7 +1061,104 @@ ${cycleResult.plan_id ? `│  Plan ID: ${cycleResult.short_id} (${cycleResult.pl
       result = await substrate.invoke({ module: 'modernizer', action: 'confidence', payload: { plan_id: args[0] } });
     }
 
-    // CORE module (Kernel)
+    // ═══ v0.7.6/v0.7.7: CIRCUIT BREAKER, AUTONOMY, RECEIPTS ═══
+    else if (base === 'modernizer.circuit') {
+      const subCmd = args[0] || 'status';
+      if (subCmd === 'status') {
+        try {
+          const { circuitBreaker } = await import('@/lib/evolve/circuit-breaker');
+          const status = await circuitBreaker.getStatus();
+          return {
+            success: true,
+            output: `╔══════════════════════════════════════════════════════════════╗
+║  EVOLUTION CIRCUIT BREAKER                                   ║
+╠══════════════════════════════════════════════════════════════╣
+║  State: ${status.state.toUpperCase().padEnd(8)} ${status.state === 'open' ? '🔴 BLOCKING' : '🟢 READY'}              ║
+║  Can Evolve: ${status.can_evolve ? 'YES' : 'NO '}                                           ║
+${status.trip_reason ? `║  Trip Reason: ${status.trip_reason.substring(0, 40).padEnd(40)}  ║\n` : ''}${status.auto_reset_after ? `║  Auto Reset: ${status.auto_reset_after.padEnd(20)}                    ║\n` : ''}╚══════════════════════════════════════════════════════════════╝`,
+            data: status,
+          };
+        } catch (err) {
+          return { success: false, output: `▓ ERROR: ${err instanceof Error ? err.message : 'Failed to get circuit status'}` };
+        }
+      } else if (subCmd === 'reset') {
+        try {
+          const { resetCircuit } = await import('@/lib/evolve/circuit-breaker');
+          const result = await resetCircuit('Manual reset via terminal');
+          return { success: result.success, output: result.message };
+        } catch (err) {
+          return { success: false, output: `▓ ERROR: ${err instanceof Error ? err.message : 'Failed to reset circuit'}` };
+        }
+      } else if (subCmd === 'open') {
+        const reason = args.slice(1).join(' ') || 'Manual trip via terminal';
+        try {
+          const { tripCircuit } = await import('@/lib/evolve/circuit-breaker');
+          const result = await tripCircuit(reason);
+          return { success: result.success, output: result.message };
+        } catch (err) {
+          return { success: false, output: `▓ ERROR: ${err instanceof Error ? err.message : 'Failed to trip circuit'}` };
+        }
+      } else {
+        return { success: false, output: '▓ ERROR: Invalid subcommand\n  Usage: modernizer.circuit [status|reset|open <reason>]' };
+      }
+    } else if (base === 'modernizer.autonomy') {
+      const subCmd = args[0] || 'status';
+      if (subCmd === 'status') {
+        try {
+          const { getAutonomyStatus } = await import('@/lib/evolve/autonomy');
+        const status = await getAutonomyStatus();
+          return {
+            success: true,
+            output: `╔══════════════════════════════════════════════════════════════╗
+║  GOVERNED AUTONOMY                                           ║
+╠══════════════════════════════════════════════════════════════╣
+║  Mode: ${status.mode.toUpperCase().padEnd(12)}                                    ║
+║  Can Auto-Evolve: ${status.can_auto_evolve ? 'YES' : 'NO '}                                     ║
+║  Confidence Threshold: ${(status.confidence_threshold * 100).toFixed(0)}%                             ║
+║  Runs Today: ${status.runs_today}/${status.max_runs_today}                                         ║
+${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons[0].substring(0, 40).padEnd(40)}    ║\n` : ''}╚══════════════════════════════════════════════════════════════╝`,
+            data: status,
+          };
+        } catch (err) {
+          return { success: false, output: `▓ ERROR: ${err instanceof Error ? err.message : 'Failed to get autonomy status'}` };
+        }
+      } else if (subCmd === 'set') {
+        const mode = args[1];
+        if (!mode || !['off', 'advisory', 'governed'].includes(mode)) {
+          return { success: false, output: '▓ ERROR: Invalid mode\n  Usage: modernizer.autonomy set <off|advisory|governed>' };
+        }
+        try {
+          const { setAutonomyMode } = await import('@/lib/evolve/autonomy');
+          const result = await setAutonomyMode(mode as 'off' | 'advisory' | 'governed');
+          return { success: result.success, output: result.message };
+        } catch (err) {
+          return { success: false, output: `▓ ERROR: ${err instanceof Error ? err.message : 'Failed to set autonomy mode'}` };
+        }
+      } else {
+        return { success: false, output: '▓ ERROR: Invalid subcommand\n  Usage: modernizer.autonomy [status|set <mode>]' };
+      }
+    } else if (base === 'modernizer.receipts') {
+      const limit = args[0] ? parseInt(args[0]) : 10;
+      try {
+        const { modernizerCommands } = await import('@/lib/evolve/modernizer-commands');
+        const res = await modernizerCommands.receipts(limit);
+        return { success: res.success, output: res.formatted || JSON.stringify(res.data, null, 2), data: res.data };
+      } catch (err) {
+        return { success: false, output: `▓ ERROR: ${err instanceof Error ? err.message : 'Failed to get receipts'}` };
+      }
+    } else if (base === 'modernizer.receipt') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Run ID required\n  Usage: modernizer.receipt <run_id>' };
+      }
+      try {
+        const { modernizerCommands } = await import('@/lib/evolve/modernizer-commands');
+        const res = await modernizerCommands.receipt(args[0]);
+        return { success: res.success, output: res.formatted || JSON.stringify(res.data, null, 2), data: res.data };
+      } catch (err) {
+        return { success: false, output: `▓ ERROR: ${err instanceof Error ? err.message : 'Failed to get receipt'}` };
+      }
+    }
+
     else if (base === 'core.status') {
       result = await core.status();
     } else if (base === 'core.pulse') {
