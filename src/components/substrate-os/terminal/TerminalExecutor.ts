@@ -117,15 +117,34 @@ function generateFullHelp(): string {
 │  dream.cycle        ∷  Dream-Eater cycle
 │  system.heal        ∷  Self-healing
 │
-├─ MODERNIZER WORKFLOW ─────────────────────────────────────────
+├─ EVOLUTION CYCLE v0.7.7 ──────────────────────────────────────
 │
-│  1. modernizer.scan               ∷  Scan for improvements
-│  2. modernizer.propose            ∷  Generate proposal (shadow)
-│  3. modernizer.validate <id>      ∷  Validate readiness
-│  4. modernizer.apply_shadow <id>  ∷  Apply to shadow mode
-│  5. modernizer.test_shadow <id>   ∷  Test shadow changes
-│  6. modernizer.apply_production <id> ∷  Promote to production
-│     OR: modernizer.apply <id>     ∷  Auto-route (shadow→prod)
+│  ┌─ COGNITIVE SCAN (4-phase parallel pipeline) ─────────────┐
+│  │  modernizer.scan               ∷  Full systems scan       │
+│  │  modernizer.scan --explain     ∷  Human-readable output   │
+│  │  modernizer.scan --llm-report  ∷  Show LLM reasoning      │
+│  │  modernizer.scan --dry-run     ∷  Analysis only, no plan  │
+│  └───────────────────────────────────────────────────────────┘
+│
+│  ┌─ EVOLUTION LIFECYCLE ────────────────────────────────────┐
+│  │  1. modernizer.scan            → Auto-creates plan        │
+│  │  2. modernizer.evolve shadow   → Apply to shadow env      │
+│  │  3. modernizer.evolve production → Promote (requires 2)   │
+│  │  4. modernizer.evolve verify   → Complete cycle           │
+│  │     modernizer.evolve abort    → Cancel active run        │
+│  └───────────────────────────────────────────────────────────┘
+│
+│  ┌─ CIRCUIT BREAKER & AUTONOMY ─────────────────────────────┐
+│  │  modernizer.circuit status     ∷  Check circuit state     │
+│  │  modernizer.circuit reset      ∷  Close circuit           │
+│  │  modernizer.autonomy status    ∷  View autonomy mode      │
+│  │  modernizer.autonomy set <m>   ∷  off|advisory|governed   │
+│  └───────────────────────────────────────────────────────────┘
+│
+│  ┌─ RECEIPTS (Audit Trail) ─────────────────────────────────┐
+│  │  modernizer.receipts           ∷  List all receipts       │
+│  │  modernizer.receipt <run_id>   ∷  View specific receipt   │
+│  └───────────────────────────────────────────────────────────┘
 │
 ├─ v5.0.0 TERMINAL FEATURES ────────────────────────────────────
 │

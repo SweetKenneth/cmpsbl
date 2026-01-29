@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — MODERNIZER Module Deep Dive
 
-**Version 5.5.0 | Scientific Publication**
+**Version 0.7.7 | Scientific Publication**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-021 |
 | **Module** | MODERNIZER |
 | **Layer** | Administrative |
-| **Version** | v2.0.0 |
+| **Version** | v0.7.7 |
 
 ---
 
@@ -31,149 +31,168 @@
 
 ## 1. Module Overview
 
-MODERNIZER is the self-improvement engine, responsible for analyzing the substrate, proposing improvements, and managing the upgrade lifecycle through shadow testing.
+MODERNIZER is the self-improvement engine, responsible for analyzing the substrate, proposing improvements, and managing the upgrade lifecycle through shadow testing and governed autonomy.
 
 | Property | Value |
 |----------|-------|
 | **Name** | MODERNIZER |
 | **Layer** | Administrative |
 | **Boot Order** | 12 |
-| **Dependencies** | BRAIN, VISION, SYSTEM |
+| **Dependencies** | BRAIN, VISION, SYSTEM, NEXUS |
 
 ---
 
-## 2. Improvement Pipeline
+## 2. Cognitive Scan Pipeline (v0.7.7)
 
-### 2.1 Six-Stage Workflow
+### 2.1 Four-Phase Parallel Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                  MODERNIZER PIPELINE                             │
+│                  MODERNIZER.SCAN v0.7.7                          │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
-│   ┌──────┐   ┌──────┐   ┌──────┐   ┌──────┐   ┌──────┐         │
-│   │ SCAN │──►│PROPOSE│──►│VALIDATE│─►│SHADOW│──►│ TEST │        │
-│   └──────┘   └──────┘   └──────┘   └──────┘   └──────┘         │
-│                                                        │        │
-│                                                        ▼        │
-│                                                   ┌──────┐      │
-│                                                   │DEPLOY│      │
-│                                                   └──────┘      │
+│   ┌────────────┐  ┌────────────┐  ┌────────────┐  ┌──────────┐ │
+│   │ PHASE A    │  │ PHASE B    │  │ PHASE C    │  │ PHASE D  │ │
+│   │ Edge       │  │ System     │  │ Code       │  │ LLM      │ │
+│   │ Analysis   │  │ State      │  │ Health     │  │ Reason   │ │
+│   └─────┬──────┘  └─────┬──────┘  └─────┬──────┘  └────┬─────┘ │
+│         │               │               │              │       │
+│         └───────────────┴───────────────┴──────────────┘       │
+│                              │                                  │
+│                              ▼                                  │
+│                     ┌──────────────┐                            │
+│                     │    MERGER    │                            │
+│                     │  Validation  │                            │
+│                     └──────┬───────┘                            │
+│                            │                                    │
+│                            ▼                                    │
+│                     ┌──────────────┐                            │
+│                     │ PLAN READY?  │                            │
+│                     └──────────────┘                            │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### 2.2 Stage Details
+### 2.2 Phase Details
 
-| Stage | Purpose |
-|-------|---------|
-| **SCAN** | Analyze current codebase and metrics |
-| **PROPOSE** | Generate improvement proposals |
-| **VALIDATE** | Verify safety and compatibility |
-| **SHADOW** | Deploy to shadow environment |
-| **TEST** | Execute validation tests |
-| **DEPLOY** | Promote to production |
+| Phase | Purpose | Output |
+|-------|---------|--------|
+| **A: Edge** | Introspect live vs archived edge functions | `edge_analysis` |
+| **B: System** | Check evolution state, circuits, anomalies | `system_state` |
+| **C: Health** | Calculate stability, security, upgrade pressure | `code_health` |
+| **D: LLM** | L7 Systems Engineer reasoning pass | `llm_recommendations` |
 
----
+### 2.3 Scan Commands
 
-## 3. Dynamic Analysis
-
-### 3.1 Analysis Sources
-
-| Source | Data |
-|--------|------|
-| Codebase | Structure, patterns, complexity |
-| Metrics | Performance, error rates |
-| Events | Error patterns in brain_events |
-| Health | Module health scores |
-
-### 3.2 Pattern Detection
-
-MODERNIZER identifies:
-- Code duplication
-- Performance bottlenecks
-- Error patterns
-- Security vulnerabilities
-- Optimization opportunities
+| Command | Description |
+|---------|-------------|
+| `modernizer.scan` | Full cognitive scan |
+| `modernizer.scan --explain` | Human-readable output |
+| `modernizer.scan --llm-report` | Show LLM reasoning |
+| `modernizer.scan --dry-run` | Analysis only, no plan |
 
 ---
 
-## 4. Proposal System
+## 3. Evolution Lifecycle
 
-### 4.1 Proposal Structure
-
-```json
-{
-  "proposal_id": "prop_001",
-  "title": "Optimize memory retrieval",
-  "description": "...",
-  "impact": "medium",
-  "risk": "low",
-  "confidence": 0.87,
-  "target_modules": ["brain"],
-  "changes": [...],
-  "rollback_strategy": "..."
-}
-```
-
-### 4.2 Proposal Governance
-
-| Origin | Authority | Auto-Apply |
-|--------|-----------|------------|
-| MODERNIZER | Operator | Low-risk only |
-| Manual | Admin | With approval |
-
-### 4.3 Auto-Apply Criteria
-
-Auto-apply is limited to proposals that meet ALL:
-- Risk: LOW
-- Impact: LOW
-- Confidence: > 85%
-- Test coverage: Verified
-
----
-
-## 5. Shadow Testing
-
-### 5.1 Shadow Environment
-
-A parallel execution environment that:
-- Mirrors production configuration
-- Receives duplicate traffic
-- Validates changes safely
-- Measures impact
-
-### 5.2 Shadow Workflow
+### 3.1 Six-Stage Workflow
 
 ```
-Production ──► Shadow Clone ──► Apply Changes ──► Compare Results
-                                                       │
-                                                       ▼
-                                              Pass? ──► Promote
-                                              Fail? ──► Rollback
+┌─────────────────────────────────────────────────────────────────┐
+│                  EVOLUTION LIFECYCLE                             │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   ┌────────┐   ┌────────────┐   ┌────────────────┐             │
+│   │ SCAN   │──►│  PLANNING  │──►│ SHADOW_APPLIED │             │
+│   └────────┘   └────────────┘   └───────┬────────┘             │
+│                                         │                       │
+│                                         ▼                       │
+│                              ┌────────────────────┐             │
+│                              │ PRODUCTION_APPLIED │             │
+│                              └─────────┬──────────┘             │
+│                                        │                        │
+│                                        ▼                        │
+│                              ┌────────────────────┐             │
+│                              │     VERIFIED       │             │
+│                              └────────────────────┘             │
+│                                                                 │
+│   Abort paths: Any phase → ABORTED                              │
+│   Failure paths: Any phase → FAILED                             │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
 ```
+
+### 3.2 Phase Transitions
+
+| Phase | Next Valid | Command |
+|-------|------------|---------|
+| `planning` | `shadow_applied` | `modernizer.evolve shadow` |
+| `shadow_applied` | `production_applied` | `modernizer.evolve production` |
+| `production_applied` | `verified` | `modernizer.evolve verify` |
+| Any | `aborted` | `modernizer.evolve abort` |
 
 ---
 
-## 6. Job Tracking
+## 4. Circuit Breaker
 
-### 6.1 Job States
+### 4.1 States
 
 | State | Description |
 |-------|-------------|
-| `pending` | Awaiting execution |
-| `running` | Currently processing |
-| `completed` | Successfully finished |
-| `failed` | Execution failed |
-| `cancelled` | Manually cancelled |
+| `open` | Evolution blocked (after failure) |
+| `closed` | Evolution allowed |
 
-### 6.2 Job Persistence
+### 4.2 Commands
 
-Jobs are tracked in `modernizer_jobs` table for:
-- Audit trail
-- Retry logic
-- Status monitoring
-- Historical analysis
+| Command | Description |
+|---------|-------------|
+| `modernizer.circuit status` | View circuit state |
+| `modernizer.circuit reset` | Close circuit (allow evolution) |
+| `modernizer.circuit open <reason>` | Manually open circuit |
+
+---
+
+## 5. Governed Autonomy
+
+### 5.1 Modes
+
+| Mode | Behavior |
+|------|----------|
+| `off` | No autonomous evolution |
+| `advisory` | Scan + propose only |
+| `governed` | Auto-evolve if: confidence ≥80%, risk=low, circuit=closed |
+
+### 5.2 Commands
+
+| Command | Description |
+|---------|-------------|
+| `modernizer.autonomy status` | Current autonomy settings |
+| `modernizer.autonomy set <mode>` | Set autonomy mode |
+
+---
+
+## 6. Receipts (Audit Trail)
+
+### 6.1 Receipt Fields
+
+| Field | Description |
+|-------|-------------|
+| `receipt_id` | Unique receipt ID |
+| `run_id` | Evolution run ID |
+| `phase` | Phase at time of receipt |
+| `changes_applied` | JSON of changes |
+| `tests_run` | Number of tests executed |
+| `tests_passed` | Number of tests passed |
+| `health_before` | Health score before |
+| `health_after` | Health score after |
+| `backup_id` | Associated backup |
+
+### 6.2 Commands
+
+| Command | Description |
+|---------|-------------|
+| `modernizer.receipts` | List all receipts |
+| `modernizer.receipt <run_id>` | View specific receipt |
 
 ---
 
@@ -182,38 +201,38 @@ Jobs are tracked in `modernizer_jobs` table for:
 | Operation | Description |
 |-----------|-------------|
 | `modernizer.status` | Engine status |
-| `modernizer.scan` | Trigger analysis |
-| `modernizer.proposals` | List proposals |
-| `modernizer.apply` | Apply proposal |
-| `modernizer.shadow` | Shadow test |
-| `modernizer.validate` | Validate changes |
-| `modernizer.diff` | View changes |
+| `modernizer.scan` | Cognitive systems scan |
+| `modernizer.evolve` | Evolution lifecycle |
+| `modernizer.circuit` | Circuit breaker control |
+| `modernizer.autonomy` | Autonomy settings |
+| `modernizer.receipts` | Audit trail |
+| `modernizer.jobs` | Evolution runs |
 | `modernizer.refresh` | Resync metrics |
 | `modernizer.rollback` | Revert changes |
 
 ---
 
-## 8. Integration with CORTEX
-
-MODERNIZER coordinates with CORTEX for:
-- Evolution sequencing
-- Priority ranking
-- Execution scheduling
-- Outcome learning
-
----
-
-## 9. Performance Characteristics
+## 8. Performance Characteristics
 
 | Metric | Value |
 |--------|-------|
 | Boot time | ~11ms |
-| Full scan | 30-120s |
-| Proposal generation | 10-30s |
-| Shadow deploy | 5-15s |
-| Validation | 10-60s |
+| Full scan (4-phase) | 15-45s |
+| Shadow apply | 5-15s |
+| Production apply | 10-30s |
+| Verification | 10-60s |
 
 ---
 
-*CMPSBL OS Substrate v5.5.0*
+## 9. Changelog
+
+| Version | Changes |
+|---------|---------|
+| v0.7.7 | Cognitive 4-phase scan pipeline, LLM governance |
+| v0.7.6 | Circuit breaker, governed autonomy, self-repair |
+| v0.7.5 | Evolution runs, receipts, phase enforcement |
+
+---
+
+*CMPSBL OS Substrate v0.7.7 — Human Compatibility Era*
 *© 2025-2026 PromptFluid®. All rights reserved.*
