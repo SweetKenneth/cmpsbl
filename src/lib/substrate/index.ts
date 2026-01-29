@@ -1,6 +1,6 @@
 /**
  * Substrate Core Exports
- * v6.5.0 — Unified Cognitive Architecture (Phase 4B: Evolution Cycle)
+ * v6.5.0 — Unified Cognitive Architecture (Phase 4B: Telemetry + State)
  */
 
 // Engine Bus - Canonical Routing Layer (v6.4.0)
@@ -16,6 +16,28 @@ export {
   type BusState,
   type ExecutionEvent,
 } from './engine-bus';
+
+// Telemetry Engine - Canonical Observability Layer (v6.5.0)
+export {
+  telemetryEngine,
+  TelemetryEngineClient,
+  type TelemetryEventType,
+  type TelemetrySeverity,
+  type TelemetryEvent,
+  type TelemetryState,
+  type TelemetryQuery,
+} from './telemetry-engine';
+
+// State Engine - Canonical State Contract Layer (v6.5.0)
+export {
+  stateEngine,
+  StateEngineClient,
+  type StateSchemaName,
+  type StateField,
+  type StateSchema,
+  type StateValidationResult,
+  type StateEngineState,
+} from './state-engine';
 
 // Evolution Cycle - Unified Modernizer Engine (v6.5.0)
 export {
