@@ -1,42 +1,109 @@
 /**
  * DashboardAudio - Central audio control panel for the Substrate OS dashboard
- * Combines sound effects toggle, ambient music, and volume controls
+ * On mobile: opens a centered modal with tabs for music and settings
+ * On desktop: shows individual dropdown panels
  */
 
 import { useState } from 'react';
-import { Volume2, VolumeX, Settings2 } from 'lucide-react';
+import { Volume2, VolumeX, Settings2, Music } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
-import { motion, AnimatePresence } from 'framer-motion';
 import { useSoundSettings } from '@/components/agency/features/SoundEffects';
-import { AmbientMusicPlayer } from './AmbientMusicPlayer';
+import { AudioControlModal } from './AudioControlModal';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface DashboardAudioProps {
   className?: string;
 }
 
 export function DashboardAudio({ className }: DashboardAudioProps) {
+  const { settings, toggleEnabled } = useSoundSettings();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const isMobile = useIsMobile();
+  
+  // On mobile, show a single button that opens the combined modal
+  if (isMobile) {
+    return (
+      <div className={cn("flex items-center gap-1.5", className)}>
+        {/* Quick Sound Toggle */}
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={toggleEnabled}
+          className={cn(
+            "h-8 w-8 relative shrink-0",
+            settings.enabled && "text-emerald-400"
+          )}
+          title={settings.enabled ? 'Mute sounds' : 'Enable sounds'}
+        >
+          {settings.enabled ? (
+            <Volume2 className="w-3.5 h-3.5" />
+          ) : (
+            <VolumeX className="w-3.5 h-3.5 text-muted-foreground" />
+          )}
+        </Button>
+        
+        {/* Music Button - opens modal */}
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setIsModalOpen(true)}
+          className="h-8 w-8 relative shrink-0"
+          title="Audio Controls"
+        >
+          <Music className="w-3.5 h-3.5" />
+        </Button>
+        
+        {/* Settings Button - opens modal */}
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setIsModalOpen(true)}
+          className="h-8 w-8 shrink-0"
+          title="Audio Settings"
+        >
+          <Settings2 className="w-3.5 h-3.5" />
+        </Button>
+        
+        {/* Combined Modal */}
+        <AudioControlModal 
+          isOpen={isModalOpen} 
+          onClose={() => setIsModalOpen(false)} 
+        />
+      </div>
+    );
+  }
+  
+  // Desktop: Import and render the desktop components
+  return <DesktopAudioControls className={className} />;
+}
+
+// Desktop version with dropdown panels
+import { Badge } from '@/components/ui/badge';
+import { motion, AnimatePresence } from 'framer-motion';
+import { AmbientMusicPlayer } from './AmbientMusicPlayer';
+
+function DesktopAudioControls({ className }: { className?: string }) {
   const { settings, toggleEnabled, updateSettings } = useSoundSettings();
   const [showSettings, setShowSettings] = useState(false);
   
   return (
-    <div className={cn("flex items-center gap-1.5 sm:gap-2", className)}>
+    <div className={cn("flex items-center gap-2", className)}>
       {/* Quick Sound Toggle */}
       <Button
         variant="ghost"
         size="icon"
         onClick={toggleEnabled}
         className={cn(
-          "h-8 w-8 sm:h-9 sm:w-9 relative shrink-0",
+          "h-9 w-9 relative shrink-0",
           settings.enabled && "text-emerald-400"
         )}
         title={settings.enabled ? 'Mute sounds' : 'Enable sounds'}
       >
         {settings.enabled ? (
-          <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+          <Volume2 className="w-4 h-4" />
         ) : (
-          <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-muted-foreground" />
+          <VolumeX className="w-4 h-4 text-muted-foreground" />
         )}
         {settings.enabled && (
           <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-emerald-500 rounded-full" />
@@ -52,13 +119,13 @@ export function DashboardAudio({ className }: DashboardAudioProps) {
           variant="ghost"
           size="icon"
           onClick={() => setShowSettings(!showSettings)}
-          className="h-8 w-8 sm:h-9 sm:w-9 shrink-0"
+          className="h-9 w-9 shrink-0"
           title="Audio Settings"
         >
-          <Settings2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+          <Settings2 className="w-4 h-4" />
         </Button>
         
-        {/* Settings panel - positioned in viewport on mobile */}
+        {/* Settings panel */}
         <AnimatePresence>
           {showSettings && (
             <motion.div
@@ -66,12 +133,8 @@ export function DashboardAudio({ className }: DashboardAudioProps) {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 10, scale: 0.95 }}
               className={cn(
-                "fixed sm:absolute z-[9999]",
-                // Mobile: center in viewport
-                "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
-                // Desktop: position below button
-                "sm:left-auto sm:top-full sm:right-0 sm:translate-x-0 sm:translate-y-0 sm:mt-2",
-                "w-64 max-w-[calc(100vw-2rem)] p-4 rounded-xl",
+                "absolute z-[9999] top-full right-0 mt-2",
+                "w-64 p-4 rounded-xl",
                 "bg-card/95 backdrop-blur-xl border border-border/50",
                 "shadow-xl shadow-black/20"
               )}
