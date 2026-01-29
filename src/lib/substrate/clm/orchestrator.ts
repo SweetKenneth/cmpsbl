@@ -1,0 +1,530 @@
+/**
+ * CLM Learning Orchestrator
+ * v6.7.0 — Coordinates the constant learning loop
+ * 
+ * Responsibilities:
+ * - Pick next topic (curriculum, gaps, SR, deep dives)
+ * - Build and execute learning jobs
+ * - Run reflection after each job
+ * - Trigger prune/dream cycles periodically
+ * - Enforce budget and safety constraints
+ */
+
+import { supabase } from '@/integrations/supabase/client';
+import { budgetGovernor } from './budget-governor';
+import { topicBank, type TopicSelection, type Topic } from './topic-bank';
+import { spacedRepetition, type ReviewResult } from './spaced-repetition';
+import { learningEngine } from '../learning-engine';
+import { memoryCore } from '../memory-core';
+import type { CLMConfig, LearningJobResult } from './config';
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// TYPES
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export interface LearningJob {
+  id: string;
+  topic: Topic;
+  source: string;
+  prompt: string;
+  systemPrompt: string;
+  maxTokens: number;
+  estimatedUnits: number;
+  createdAt: string;
+}
+
+export interface OrchestratorState {
+  isRunning: boolean;
+  currentJob: LearningJob | null;
+  lastJobAt: string | null;
+  totalJobsToday: number;
+  jobsSinceLastDream: number;
+  lastDreamAt: string | null;
+  lastPruneAt: string | null;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// CONSTANTS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const JOBS_BEFORE_DREAM = 6;
+const MAX_TOKENS_STANDARD = 1200;
+const MAX_TOKENS_MICRO = 300;
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ORCHESTRATOR CLASS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+class LearningOrchestratorClient {
+  private static instance: LearningOrchestratorClient;
+  private state: OrchestratorState = {
+    isRunning: false,
+    currentJob: null,
+    lastJobAt: null,
+    totalJobsToday: 0,
+    jobsSinceLastDream: 0,
+    lastDreamAt: null,
+    lastPruneAt: null,
+  };
+
+  private constructor() {
+    this.loadState();
+  }
+
+  static getInstance(): LearningOrchestratorClient {
+    if (!LearningOrchestratorClient.instance) {
+      LearningOrchestratorClient.instance = new LearningOrchestratorClient();
+    }
+    return LearningOrchestratorClient.instance;
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // MAIN ORCHESTRATION LOOP
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  /**
+   * Run a single learning cycle (called by scheduler)
+   */
+  async runCycle(): Promise<LearningJobResult | null> {
+    // Check if we can execute
+    const canExecute = budgetGovernor.canExecute();
+    if (!canExecute.allowed) {
+      console.log(`[CLM] Cannot execute: ${canExecute.reason}`);
+      return null;
+    }
+
+    // Prevent concurrent runs
+    if (this.state.isRunning) {
+      console.log('[CLM] Already running, skipping');
+      return null;
+    }
+
+    this.state.isRunning = true;
+    const startTime = Date.now();
+    let result: LearningJobResult;
+
+    try {
+      // 1. Select topic
+      const srQueue = [spacedRepetition.getNextDueTopic()].filter(Boolean) as Topic[];
+      const selection = await topicBank.selectNextTopic(srQueue);
+      
+      if (!selection) {
+        throw new Error('No topics available for study');
+      }
+
+      // 2. Check budget
+      if (!budgetGovernor.requestBudget(selection.estimatedUnits)) {
+        throw new Error('Insufficient budget for selected topic');
+      }
+
+      // 3. Build learning job
+      const job = this.buildLearningJob(selection);
+      this.state.currentJob = job;
+
+      // 4. Execute learning
+      const learningResult = await this.executeLearningJob(job);
+
+      // 5. Run reflection
+      const reflectionGenerated = await this.runDeepReflection(job, learningResult);
+
+      // 6. Update memory graph
+      const { nodes, edges } = await this.updateMemoryGraph(job, learningResult);
+
+      // 7. Add to spaced repetition queue
+      if (selection.source === 'core_curriculum' || selection.source === 'deep_dive') {
+        spacedRepetition.addToQueue(selection.topic, learningResult.confidence || 0.7);
+      } else if (selection.source === 'spaced_repetition') {
+        // Process SR review
+        spacedRepetition.processReview(selection.topic.id, {
+          recallQuality: learningResult.success ? 4 : 2,
+          confidence: learningResult.confidence || 0.5,
+          durationMs: Date.now() - startTime,
+        } as ReviewResult);
+      }
+
+      // 8. Check for dream/prune cycle
+      this.state.jobsSinceLastDream++;
+      if (this.state.jobsSinceLastDream >= JOBS_BEFORE_DREAM) {
+        await this.runPruneAndDream();
+        this.state.jobsSinceLastDream = 0;
+      }
+
+      result = {
+        jobId: job.id,
+        topic: job.topic.name,
+        success: true,
+        unitsUsed: selection.estimatedUnits,
+        durationMs: Date.now() - startTime,
+        reflectionGenerated,
+        graphNodesCreated: nodes,
+        graphEdgesCreated: edges,
+        timestamp: new Date().toISOString(),
+      };
+
+    } catch (error) {
+      result = {
+        jobId: this.state.currentJob?.id || crypto.randomUUID(),
+        topic: this.state.currentJob?.topic.name || 'unknown',
+        success: false,
+        unitsUsed: 1, // Charge minimum for failed attempt
+        durationMs: Date.now() - startTime,
+        reflectionGenerated: false,
+        graphNodesCreated: 0,
+        graphEdgesCreated: 0,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        timestamp: new Date().toISOString(),
+      };
+    } finally {
+      this.state.isRunning = false;
+      this.state.currentJob = null;
+      this.state.lastJobAt = new Date().toISOString();
+      this.state.totalJobsToday++;
+      this.persistState();
+    }
+
+    // Record with budget governor
+    budgetGovernor.recordJobCompletion(result);
+
+    return result;
+  }
+
+  /**
+   * Run a single job on demand (for manual triggers)
+   */
+  async runOnce(topicId?: string): Promise<LearningJobResult | null> {
+    if (topicId) {
+      const topic = topicBank.getTopic(topicId);
+      if (topic) {
+        const selection: TopicSelection = {
+          topic,
+          source: topic.category,
+          reason: 'Manual trigger',
+          estimatedUnits: 10,
+        };
+        
+        const job = this.buildLearningJob(selection);
+        // Execute directly...
+        // (simplified for manual runs)
+      }
+    }
+    
+    return this.runCycle();
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // JOB BUILDING
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  private buildLearningJob(selection: TopicSelection): LearningJob {
+    const budgetState = budgetGovernor.getState();
+    const maxTokens = budgetState.microLearningMode ? MAX_TOKENS_MICRO : MAX_TOKENS_STANDARD;
+
+    const prompt = this.buildLearningPrompt(selection.topic);
+    const systemPrompt = this.buildSystemPrompt(selection);
+
+    return {
+      id: crypto.randomUUID(),
+      topic: selection.topic,
+      source: selection.source,
+      prompt,
+      systemPrompt,
+      maxTokens,
+      estimatedUnits: selection.estimatedUnits,
+      createdAt: new Date().toISOString(),
+    };
+  }
+
+  private buildLearningPrompt(topic: Topic): string {
+    return `Study and analyze the following topic in depth:
+
+**Topic:** ${topic.name}
+
+**Related Domains:** ${topic.domainAnchors.join(', ')}
+
+**Related Modules:** ${topic.moduleRefs.join(', ')}
+
+**Key Performance Indicators to Consider:**
+${topic.kpis.map(k => `- ${k}`).join('\n')}
+
+Provide:
+1. Core concepts and principles
+2. Common pitfalls and anti-patterns
+3. Best practices and recommendations
+4. How this connects to other substrate capabilities
+5. Actionable insights for improvement
+
+Focus on practical, implementable knowledge.`;
+  }
+
+  private buildSystemPrompt(selection: TopicSelection): string {
+    return `You are the Substrate Brain's learning engine, studying "${selection.topic.name}" (source: ${selection.source}, reason: ${selection.reason}).
+
+Your role is to:
+- Extract essential knowledge and patterns
+- Identify connections to existing substrate modules
+- Generate actionable insights
+- Flag potential risks or gaps
+
+Be concise, precise, and focused on practical utility. This learning will be stored in the memory graph and used for future decision-making.`;
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // EXECUTION
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  private async executeLearningJob(job: LearningJob): Promise<{
+    success: boolean;
+    content: string;
+    confidence: number;
+  }> {
+    try {
+      // Use Nexus router via edge function
+      const { data, error } = await supabase.functions.invoke('pf-nexus-router', {
+        body: {
+          prompt: job.prompt,
+          systemPrompt: job.systemPrompt,
+          maxTokens: job.maxTokens,
+          temperature: 0.7,
+          metadata: {
+            routeKey: 'clm-learning',
+            topicId: job.topic.id,
+            jobId: job.id,
+          },
+        },
+      });
+
+      if (error) throw error;
+
+      const content = data?.content || data?.response || '';
+      const confidence = this.assessConfidence(content);
+
+      // Store the learning as a memory
+      await learningEngine.input({
+        content: `[CLM Learning: ${job.topic.name}]\n\n${content}`,
+        source: 'clm_orchestrator',
+        topic: job.topic.id,
+        confidence,
+        metadata: {
+          job_id: job.id,
+          topic_category: job.topic.category,
+          learning_source: job.source,
+        },
+      });
+
+      return { success: true, content, confidence };
+    } catch (error) {
+      console.error('[CLM] Learning job failed:', error);
+      return { success: false, content: '', confidence: 0 };
+    }
+  }
+
+  private assessConfidence(content: string): number {
+    // Simple heuristic for confidence assessment
+    if (!content || content.length < 100) return 0.3;
+    if (content.length < 500) return 0.5;
+    if (content.length < 1000) return 0.7;
+    return 0.85;
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // REFLECTION
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  private async runDeepReflection(job: LearningJob, learningResult: {
+    success: boolean;
+    content: string;
+    confidence: number;
+  }): Promise<boolean> {
+    if (!learningResult.success) return false;
+
+    try {
+      // Use memory core's reflect capability
+      const reflection = await memoryCore.reflect({
+        scope: 'session',
+        depth: 'standard',
+        minConfidence: 0.5,
+      });
+
+      if (reflection.success && reflection.insights && reflection.insights.length > 0) {
+        // Store reflection insights
+        await memoryCore.ingest(
+          `[CLM Reflection: ${job.topic.name}]\n\n${reflection.insights.join('\n')}`,
+          {
+            type: 'reflection',
+            source: 'clm_deep_reflection',
+            confidence: 0.8,
+            tags: ['clm', 'reflection', job.topic.id],
+            metadata: {
+              job_id: job.id,
+              insights_count: reflection.insights.length,
+            },
+          }
+        );
+        return true;
+      }
+    } catch (error) {
+      console.error('[CLM] Reflection failed:', error);
+    }
+
+    return false;
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // MEMORY GRAPH
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  private async updateMemoryGraph(job: LearningJob, learningResult: {
+    success: boolean;
+    content: string;
+    confidence: number;
+  }): Promise<{ nodes: number; edges: number }> {
+    if (!learningResult.success) return { nodes: 0, edges: 0 };
+
+    let nodesCreated = 0;
+    let edgesCreated = 0;
+
+    try {
+      // Create topic node
+      const { data: nodeData, error: nodeError } = await supabase
+        .from('brain_knowledge_edges' as any)
+        .insert({
+          source_id: job.id,
+          target_id: job.topic.id,
+          relation_type: 'learning',
+          weight: learningResult.confidence,
+          metadata: {
+            topic_name: job.topic.name,
+            learning_source: job.source,
+            created_by: 'clm_orchestrator',
+          },
+        } as any);
+
+      if (!nodeError) {
+        nodesCreated++;
+
+        // Create edges to module references
+        for (const moduleRef of job.topic.moduleRefs) {
+          try {
+            await supabase.from('brain_knowledge_edges' as any).insert({
+              source_id: job.topic.id,
+              target_id: moduleRef.toLowerCase(),
+              relation_type: 'concept_module',
+              weight: 0.7,
+              metadata: { created_by: 'clm_orchestrator' },
+            } as any);
+            edgesCreated++;
+          } catch {
+            // Non-critical
+          }
+        }
+
+        // Create edges to domain anchors
+        for (const anchor of job.topic.domainAnchors) {
+          try {
+            await supabase.from('brain_knowledge_edges' as any).insert({
+              source_id: job.topic.id,
+              target_id: anchor,
+              relation_type: 'topic_concept',
+              weight: 0.6,
+              metadata: { created_by: 'clm_orchestrator' },
+            } as any);
+            edgesCreated++;
+          } catch {
+            // Non-critical
+          }
+        }
+      }
+    } catch (error) {
+      console.error('[CLM] Graph update failed:', error);
+    }
+
+    return { nodes: nodesCreated, edges: edgesCreated };
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // DREAM & PRUNE CYCLES
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  private async runPruneAndDream(): Promise<void> {
+    try {
+      // Run prune first
+      const { data: pruneResult } = await supabase.functions.invoke('pf-brain-memory-prune', {
+        body: { tier: 'all', aggressive: false },
+      });
+      this.state.lastPruneAt = new Date().toISOString();
+
+      // Then run dream cycle
+      const { data: dreamResult } = await supabase.functions.invoke('pf-dream-cycle', {
+        body: { source: 'clm_orchestrator' },
+      });
+      this.state.lastDreamAt = new Date().toISOString();
+
+      // Store dream output as speculative hypothesis
+      if (dreamResult?.insights) {
+        await memoryCore.ingest(
+          `[CLM Dream Hypothesis]\n\n${dreamResult.insights}`,
+          {
+            type: 'dream',
+            source: 'clm_dream_cycle',
+            confidence: 0.5, // Speculative until reinforced
+            tags: ['clm', 'dream', 'hypothesis'],
+            metadata: {
+              is_speculative: true,
+              needs_reinforcement: true,
+            },
+          }
+        );
+      }
+
+      this.persistState();
+    } catch (error) {
+      console.error('[CLM] Prune/dream cycle failed:', error);
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // STATE MANAGEMENT
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  getState(): OrchestratorState {
+    return { ...this.state };
+  }
+
+  private loadState(): void {
+    try {
+      if (typeof localStorage !== 'undefined') {
+        const stored = localStorage.getItem('clm_orchestrator_state');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          // Check if same day
+          const today = new Date().toISOString().split('T')[0];
+          const lastJobDay = parsed.lastJobAt?.split('T')[0];
+          
+          if (lastJobDay === today) {
+            this.state = { ...this.state, ...parsed };
+          }
+          // Different day = fresh state
+        }
+      }
+    } catch {
+      // Use default state
+    }
+  }
+
+  private persistState(): void {
+    try {
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('clm_orchestrator_state', JSON.stringify(this.state));
+      }
+    } catch {
+      // Non-critical
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// EXPORTS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export const learningOrchestrator = LearningOrchestratorClient.getInstance();
+export { LearningOrchestratorClient };

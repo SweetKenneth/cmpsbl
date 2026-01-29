@@ -186,5 +186,36 @@ export {
   type TelemetrySummary,
 } from './utils';
 
+// Constant Learning Mode (CLM) v6.7.0
+export {
+  budgetGovernor,
+  topicBank,
+  spacedRepetition,
+  learningOrchestrator,
+  tierCommand,
+  DEFAULT_CLM_CONFIG,
+  CORE_CURRICULUM,
+  TIERS,
+  getCLMStatus,
+  runCLMCycle,
+  enableCLM,
+  disableCLM,
+  activateKillSwitch,
+  deactivateKillSwitch,
+  isCLMReady,
+  type CLMConfig,
+  type BudgetState,
+  type LearningJobResult,
+  type Topic,
+  type TopicCategory,
+  type TopicSelection,
+  type SpacedRepItem,
+  type TierInfo,
+  type TierLimits,
+  type OrchestratorState as CLMOrchestratorState,
+} from './clm';
+
+export { useCLM, type UseCLMReturn } from './clm/useCLM';
+
 // Re-export substrate client from lib
 export { substrate, type SubstrateModule, type SubstrateRequest, type SubstrateResponse } from '../substrate';
