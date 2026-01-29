@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — BRAIN Module Deep Dive
 
-**Version 6.1.0 | Scientific Publication**
+**Version 6.2.0 | Phase 2: Intelligence Compression**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-013 |
 | **Module** | BRAIN |
 | **Layer** | Cognitive |
-| **Version** | v6.1.0 |
+| **Version** | v6.2.0 |
 
 ---
 
@@ -42,26 +42,23 @@ BRAIN is the persistent memory and learning system of the substrate, providing l
 
 ---
 
-## 2. Memory Core Architecture (v6.1.0)
+## 2. Phase 2: Intelligence Compression (v6.2.0)
 
-### 2.1 Unified Lifecycle
+### 2.1 Learning Engine
 
-The **memory_core** module provides a unified memory lifecycle:
+Unified learning lifecycle merging `train`, `optimize`, and `reinforce`:
 
 ```
-Ingest → Store → Index → Reflect → Retrieve
-   │        │       │        │         │
-   ▼        ▼       ▼        ▼         ▼
- Capture  Persist  Graph   Insights  Search
+Input → Feedback → Adjustment → Reinforcement → Stabilization
 ```
 
 | Stage | Description |
 |-------|-------------|
-| **Ingest** | Capture raw input, calculate importance |
-| **Store** | Persist to appropriate tier (hot/warm/cold) |
-| **Index** | Build knowledge graph connections |
-| **Reflect** | Generate insights from accumulated memories |
-| **Retrieve** | Multi-strategy recall with semantic search |
+| **Input** | Capture learning signals from sources |
+| **Feedback** | Process outcome signals (positive/negative/neutral) |
+| **Adjustment** | Adjust memory weights based on feedback |
+| **Reinforcement** | Strengthen successful patterns |
+| **Stabilization** | Consolidate gains, apply decay, cleanup |
 
 ### 2.2 Memory State Schema
 
@@ -224,15 +221,21 @@ Query → Parse → Strategy Selection → Parallel Search → Merge → Rank
 
 ## 9. Backward Compatibility
 
-Legacy commands remain functional:
+Legacy commands remain functional via aliases:
 
 | Legacy | Routes To |
 |--------|-----------|
 | `remember()` | `memory_core.ingest()` |
 | `recall()` | `memory_core.retrieve()` |
 | `reflect()` | `memory_core.reflect()` |
+| `train()` | `learning_engine.input()` |
+| `optimize()` | `learning_engine.stabilization()` |
+| `reinforce()` | `learning_engine.reinforcement()` |
+| `dream()` | `imagination_engine.dream()` |
+| `synthesize()` | `imagination_engine.runCycle()` |
+| `pattern_fusion()` | `imagination_engine.patternFusion()` |
 
 ---
 
-*CMPSBL OS Substrate v6.1.0*
+*CMPSBL OS Substrate v6.2.0 — Phase 2: Intelligence Compression*
 *© 2025-2026 PromptFluid®. All rights reserved.*

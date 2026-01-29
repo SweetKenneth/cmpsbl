@@ -1,14 +1,19 @@
 /**
  * promptfluid® Substrate React Hooks
- * v6.1.0 — Cognitive Orchestration Substrate
+ * v6.2.0 — Cognitive Orchestration Substrate (Phase 2: Intelligence Compression)
  * 
- * Includes hooks for unified memory_core lifecycle
+ * Includes hooks for:
+ * - Memory Core lifecycle
+ * - Learning Engine lifecycle
+ * - Imagination Engine lifecycle
  */
 
 import { useState, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { substrate, SubstrateModule, SubstrateResponse } from '@/lib/substrate';
 import { memoryCore, type MemoryQuery, type MemoryStateSchema } from '@/lib/substrate/memory-core';
+import { learningEngine, type LearningInput } from '@/lib/substrate/learning-engine';
+import { imaginationEngine } from '@/lib/substrate/imagination-engine';
 
 // Generic substrate hook
 export function useSubstrateQuery<T = unknown>(
@@ -124,6 +129,112 @@ export function useMemoryCycle() {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['memory-core'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'brain'] });
+    },
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// v6.2.0: LEARNING ENGINE HOOKS — Unified Learning Lifecycle
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/** Hook for learning engine state */
+export function useLearningState() {
+  return useQuery({
+    queryKey: ['learning-engine', 'state'],
+    queryFn: () => learningEngine.getState(),
+    refetchInterval: 30000,
+  });
+}
+
+/** Hook for learning input (replaces train) */
+export function useLearningInput() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (input: LearningInput) => learningEngine.input(input),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['learning-engine'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'brain'] });
+    },
+  });
+}
+
+/** Hook for learning feedback */
+export function useLearningFeedback() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (signal: { memory_id?: string; outcome: 'positive' | 'negative' | 'neutral'; score: number; context?: string }) =>
+      learningEngine.feedback(signal),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['learning-engine'] });
+    },
+  });
+}
+
+/** Hook for full learning cycle */
+export function useLearningCycle() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (input?: LearningInput) => learningEngine.runCycle(input),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['learning-engine'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'brain'] });
+    },
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// v6.2.0: IMAGINATION ENGINE HOOKS — Unified Imagination Lifecycle
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/** Hook for imagination engine state */
+export function useImaginationState() {
+  return useQuery({
+    queryKey: ['imagination-engine', 'state'],
+    queryFn: () => imaginationEngine.getState(),
+    refetchInterval: 30000,
+  });
+}
+
+/** Hook for imagination dream cycle */
+export function useImaginationDream() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (options?: { force?: boolean; send_email?: boolean }) =>
+      imaginationEngine.dream(options),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['imagination-engine'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'brain'] });
+    },
+  });
+}
+
+/** Hook for pattern fusion */
+export function usePatternFusion() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (params: { problem: string; domain_1: string; domain_2: string }) =>
+      imaginationEngine.patternFusion(params.problem, params.domain_1, params.domain_2),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['imagination-engine'] });
+    },
+  });
+}
+
+/** Hook for full imagination cycle */
+export function useImaginationCycle() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (options?: { tier?: 'hot' | 'warm' | 'cold'; type?: 'dream' | 'insight' | 'fusion' | 'pattern' }) =>
+      imaginationEngine.runCycle(options),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['imagination-engine'] });
       queryClient.invalidateQueries({ queryKey: ['substrate', 'brain'] });
     },
   });

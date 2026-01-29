@@ -1,15 +1,19 @@
 /**
  * promptfluid® Substrate Client
- * v6.0.0 — Cognitive Orchestration Substrate (14-Module Architecture)
+ * v6.2.0 — Cognitive Orchestration Substrate (14-Module Architecture)
  * 
- * Full-system audit completed: 2026-01-27
+ * Phase 2: Intelligence Compression
+ * - Learning Engine: Unified train + optimize + reinforce
+ * - Imagination Engine: Unified dream + synthesize + pattern_fusion
+ * 
+ * Full-system audit completed: 2026-01-29
  * All module/action handlers verified, terminal commands wired, types synchronized.
  * 
  * Unified API for all 14 substrate modules (13 core + 1 orchestrator):
  * - Core: Kernel (scheduler, lifecycle, routing)
  * - Ripple: Message bus (queues, pub/sub, events)
  * - Access: Identity (API keys, quotas, usage)
- * - Brain: Three-tier memory, learning, knowledge graph
+ * - Brain: Three-tier memory, learning engine, imagination engine, knowledge graph
  * - Decode: Intent decoding, cognitive interface
  * - Defense: Security, bot detection, threats
  * - Nexus: AI routing, multi-provider
@@ -109,8 +113,10 @@ class SubstrateClient {
     }
   }
 
-  // Brain Module — Memory, Learning, Reflection, Intelligence
+  // Brain Module — Memory, Learning Engine, Imagination Engine
   // NOTE: memory_core provides unified lifecycle (ingest → store → index → reflect → retrieve)
+  // NOTE: learning_engine provides unified learning lifecycle (input → feedback → adjustment → reinforcement → stabilization)
+  // NOTE: imagination_engine provides unified imagination lifecycle (latent_extraction → recombination → simulation → synthesis)
   brain = {
     learn: (content: string, source?: string) =>
       this.invoke({ module: 'brain', action: 'learn', payload: { content, source } }),
@@ -121,7 +127,7 @@ class SubstrateClient {
     recall: (query: string, limit?: number) =>
       this.invoke({ module: 'brain', action: 'recall', payload: { query, limit } }),
     
-    /** Cross-domain cognitive synthesis - connects patterns across memory tiers */
+    /** @deprecated Use imaginationEngine.runCycle() - Cross-domain cognitive synthesis */
     synthesize: () =>
       this.invoke({ module: 'brain', action: 'synthesize' }),
     
@@ -139,14 +145,15 @@ class SubstrateClient {
     remember: (content: string, memory_type: string, confidence?: number, metadata?: Record<string, unknown>) =>
       this.invoke({ module: 'brain', action: 'remember', payload: { content, memory_type, confidence, metadata } }),
     
+    /** @deprecated Use learningEngine.reinforcement() - Strengthen memory weights */
     reinforce: (memory_id: string, boost?: number) =>
       this.invoke({ module: 'brain', action: 'reinforce', payload: { memory_id, boost } }),
     
+    /** @deprecated Use imaginationEngine.dream() - Autonomous dream processing */
     dream: () =>
       this.invoke({ module: 'brain', action: 'dream' }),
     
-    // NEW: Advanced Intelligence Methods
-    /** Memory optimization - compress old memories, clean duplicates */
+    /** @deprecated Use learningEngine.stabilization() - Memory optimization */
     optimize: () =>
       this.invoke({ module: 'brain', action: 'optimize' }),
     
