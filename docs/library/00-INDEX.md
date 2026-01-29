@@ -107,6 +107,14 @@ This library is part of the **FNDTN v6 Foundations** standards package, which pr
 |----------|-------|-------------|
 | [50-MARKETPLACE-REFERENCE.md](./50-MARKETPLACE-REFERENCE.md) | Marketplace Reference | Complete marketplace, templates, pricing, bundles, subscriptions |
 
+### Developer Resources
+
+| Document | Title | Description |
+|----------|-------|-------------|
+| [60-CODELAB.md](./60-CODELAB.md) | CodeLab | Live executable development environment |
+| [61-AGENTS-AND-FORGE.md](./61-AGENTS-AND-FORGE.md) | Agents and Forge | Experimental autonomous agent systems (EXPERIMENTAL) |
+| [62-TEMPLATE-GENERATOR.md](./62-TEMPLATE-GENERATOR.md) | Template Generator | AI-synthesized cognitive template system |
+
 ### Supplementary Materials
 
 | Document | Title | Description |
