@@ -46,7 +46,11 @@ export function CortexTab({ enabled }: CortexTabProps) {
     queryKey: ['cortex-status'],
     queryFn: async () => {
       const result = await cortex.status();
-      return result.data as any;
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to fetch cortex status');
+      }
+      // The data can be in result.data or in result itself
+      return (result.data || result) as any;
     },
     refetchInterval: 30000,
     enabled,
@@ -57,7 +61,10 @@ export function CortexTab({ enabled }: CortexTabProps) {
     queryKey: ['cortex-world'],
     queryFn: async () => {
       const result = await cortex.world({ dag: false, roles: true, eligible: false });
-      return result.data as any;
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to fetch world model');
+      }
+      return (result.data || result) as any;
     },
     refetchInterval: 60000,
     enabled,
@@ -95,9 +102,9 @@ export function CortexTab({ enabled }: CortexTabProps) {
     },
   });
 
-  const currentMode = status?.mode || 'manual';
-  const isPanic = status?.panic_state === 'frozen' || status?.panic_state === 'emergency';
-  const healthScore = status?.health_score || status?.health || 100;
+  const currentMode = status?.runtime?.mode || status?.mode || 'manual';
+  const isPanic = status?.runtime?.panic_frozen || status?.panic_state === 'frozen' || status?.panic_state === 'emergency';
+  const healthScore = status?.health?.healthScore || status?.health_score || status?.health || 100;
 
   if (!enabled) {
     return (

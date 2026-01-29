@@ -1,9 +1,13 @@
 /**
  * promptfluid® Engine Bus
- * v6.4.0 — Canonical Routing Layer
+ * v6.5.0 — Canonical Routing Layer with Telemetry Integration
  * 
  * The Engine Bus is the single execution router for all substrate engines.
  * All engine execution must route through engine_bus.dispatch().
+ * 
+ * v6.5.0 Updates:
+ * - Integrated with Telemetry Engine for observability
+ * - Emits telemetry before/after execution and on failure
  * 
  * Responsibilities:
  * - Resolve command → engine mapping
@@ -11,6 +15,7 @@
  * - Normalize errors and return codes
  * - Apply retries and timeouts
  * - Emit execution events for observability
+ * - Emit telemetry events via TelemetryEngine
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -172,6 +177,7 @@ class EngineBusClient {
     options: DispatchOptions = {}
   ): Promise<DispatchResult<T>> {
     const startTime = new Date();
+    const correlationId = crypto.randomUUID();
     const {
       timeout = 30000,
       retries = 0,
@@ -185,6 +191,9 @@ class EngineBusClient {
     if (!engine) {
       return this.createErrorResult<T>(command, 'memory_core', startTime, 'COMMAND_NOT_FOUND');
     }
+
+    // Emit telemetry start (lazy import to avoid circular dep)
+    this.emitTelemetryStart(engine, command, correlationId);
 
     this.state.activeDispatches++;
     this.state.totalDispatches++;
@@ -214,7 +223,7 @@ class EngineBusClient {
         // Log event
         this.logEvent(engine, command, true, durationMs);
 
-        return {
+        const successResult: DispatchResult<T> = {
           success: true,
           engine,
           command,
@@ -225,6 +234,11 @@ class EngineBusClient {
           retryCount: attempt,
           stage: 'completed',
         };
+
+        // Emit telemetry end
+        this.emitTelemetryEnd(successResult, correlationId);
+
+        return successResult;
       } catch (error) {
         lastError = error instanceof Error ? error : new Error(String(error));
         retryCount = attempt;
@@ -246,7 +260,7 @@ class EngineBusClient {
     const errorCode: DispatchErrorCode = retryCount > 0 ? 'RETRY_EXHAUSTED' : 'EXECUTION_FAILED';
     this.logEvent(engine, command, false, durationMs, errorCode);
 
-    return {
+    const failResult: DispatchResult<T> = {
       success: false,
       engine,
       command,
@@ -258,6 +272,11 @@ class EngineBusClient {
       retryCount,
       stage: 'failed',
     };
+
+    // Emit telemetry end (with failure)
+    this.emitTelemetryEnd(failResult, correlationId);
+
+    return failResult;
   }
 
   /**
@@ -513,6 +532,19 @@ class EngineBusClient {
 
   private sleep(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  // Telemetry integration (lazy import to avoid circular dependency)
+  private emitTelemetryStart(engine: EngineName, command: string, correlationId: string): void {
+    import('./telemetry-engine').then(({ telemetryEngine }) => {
+      telemetryEngine.emitDispatchStart(engine, command, correlationId);
+    }).catch(() => { /* silently fail */ });
+  }
+
+  private emitTelemetryEnd<T>(result: DispatchResult<T>, correlationId: string): void {
+    import('./telemetry-engine').then(({ telemetryEngine }) => {
+      telemetryEngine.emitDispatchEnd(result, correlationId);
+    }).catch(() => { /* silently fail */ });
   }
 }
 
