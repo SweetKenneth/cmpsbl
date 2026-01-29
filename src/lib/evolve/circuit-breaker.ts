@@ -195,3 +195,25 @@ export async function isEvolutionAllowed(): Promise<{ allowed: boolean; reason: 
     reason: 'Circuit closed - evolution allowed',
   };
 }
+
+// ═══════════════════════════════════════════════════════════════
+// CIRCUIT BREAKER SINGLETON (for scan module)
+// ═══════════════════════════════════════════════════════════════
+
+export const circuitBreaker = {
+  getStatus: async () => {
+    const status = await getCircuitStatus();
+    const evolutionCheck = await isEvolutionAllowed();
+    return {
+      state: status.state,
+      trip_reason: status.reason,
+      can_evolve: evolutionCheck.allowed,
+      last_trip_at: status.last_trip_at,
+      auto_reset_after: status.auto_reset_after,
+    };
+  },
+  trip: tripCircuit,
+  reset: resetCircuit,
+  open: openCircuit,
+  isAllowed: isEvolutionAllowed,
+};

@@ -57,6 +57,10 @@ export type EvolveEventType =
   | 'codeagent_ts_failed'
   | 'codeagent_finalized'
   | 'codeagent_failed'
+  // Scan events (v0.7.7)
+  | 'scan_started'
+  | 'scan_completed'
+  | 'scan_failed'
   // Error events
   | 'evolve_error';
 
