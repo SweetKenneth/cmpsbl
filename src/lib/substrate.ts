@@ -1,6 +1,10 @@
 /**
  * promptfluid® Substrate Client
- * v6.3.0 — Cognitive Orchestration Substrate (14-Module Architecture)
+ * v6.4.0 — Cognitive Orchestration Substrate (14-Module Architecture)
+ * 
+ * Phase 4A: Engine Bus Integration
+ * - Engine Bus: Canonical routing layer for all engine execution
+ * - All engine dispatch routes through engineBus.dispatch()
  * 
  * Phase 3: Reasoning + Governance Integration
  * - Reasoning Engine: Unified causal + systems_reason + hypothesis_test

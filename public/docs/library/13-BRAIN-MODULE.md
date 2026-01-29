@@ -278,6 +278,14 @@ Legacy commands remain functional via aliases:
 
 ## 10. Changelog
 
+### v6.4.0 (2026-01-29) — Phase 4A: Engine Bus
+- **Engine Bus**: Canonical routing layer for all engine execution
+- All dispatch routes through `engineBus.dispatch()`
+- Unified command → engine resolution
+- Retry/timeout/error normalization
+- Bus-level execution logging and observability
+- React hooks: `useEngineBusState`, `useEngineBusDispatch`, `useEngineBusChain`
+
 ### v6.3.0 (2026-01-29) — Phase 3: Reasoning + Governance
 - **Reasoning Engine**: Unified `causal`, `systems_reason`, `hypothesis_test`
 - **Governance Guard**: Unified `ethical`, `coherence_check`
@@ -299,5 +307,5 @@ Legacy commands remain functional via aliases:
 
 ---
 
-*CMPSBL OS Substrate v6.3.0 — Phase 3: Reasoning + Governance Integration*
+*CMPSBL OS Substrate v6.4.0 — Phase 4A: Engine Bus*
 *© 2025-2026 PromptFluid®. All rights reserved.*
