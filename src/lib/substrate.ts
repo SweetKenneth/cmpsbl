@@ -110,6 +110,7 @@ class SubstrateClient {
   }
 
   // Brain Module — Memory, Learning, Reflection, Intelligence
+  // NOTE: memory_core provides unified lifecycle (ingest → store → index → reflect → retrieve)
   brain = {
     learn: (content: string, source?: string) =>
       this.invoke({ module: 'brain', action: 'learn', payload: { content, source } }),
@@ -196,6 +197,24 @@ class SubstrateClient {
     /** v3.11.0: Memory coherence validation - cross-tier coherence check (read-only) */
     coherenceCheck: (depth?: 'standard' | 'deep') =>
       this.invoke({ module: 'brain', action: 'coherence_check', payload: { depth } }),
+    
+    // ═══ v6.1.0: MEMORY CORE LIFECYCLE ═══
+    
+    /** Unified memory ingest - routes through memory_core lifecycle */
+    memoryIngest: (content: string, options?: { type?: string; source?: string; confidence?: number; tags?: string[] }) =>
+      this.invoke({ module: 'brain', action: 'memory_ingest', payload: { content, ...options } }),
+    
+    /** Unified memory retrieve - multi-strategy recall */
+    memoryRetrieve: (query: string, options?: { tier?: string; type?: string; limit?: number; strategy?: string }) =>
+      this.invoke({ module: 'brain', action: 'memory_retrieve', payload: { query, ...options } }),
+    
+    /** Get memory state schema (short-term/long-term/latent) */
+    memoryState: () =>
+      this.invoke({ module: 'brain', action: 'memory_state' }),
+    
+    /** Run full cognitive memory cycle */
+    memoryCycle: (content: string, options?: { autoIndex?: boolean; autoReflect?: boolean }) =>
+      this.invoke({ module: 'brain', action: 'memory_cycle', payload: { content, ...options } }),
   };
 
   // Decode Module — Interpreter Primitive (NOT a chatbot, persona, or agent)

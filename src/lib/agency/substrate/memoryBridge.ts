@@ -1,10 +1,14 @@
 /**
  * Substrate Memory Bridge
  * Routes successful tasks to global substrate brain
+ * 
+ * v6.1.0: Now integrates with unified memory_core lifecycle
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { memoryCore, type MemoryType as CoreMemoryType } from '@/lib/substrate/memory-core';
 
+// Legacy types maintained for backward compatibility
 export type MemoryType = 'template' | 'heuristic' | 'insight' | 'error' | 'improvement';
 export type MemoryTier = 'hot' | 'cold';
 
@@ -18,6 +22,18 @@ export interface SubstrateMemory {
   confidence: number;
   tags: string[];
 }
+
+// Map legacy types to core types
+const mapLegacyType = (type: MemoryType): CoreMemoryType => {
+  const typeMap: Record<MemoryType, CoreMemoryType> = {
+    template: 'template',
+    heuristic: 'heuristic',
+    insight: 'insight',
+    error: 'error_pattern',
+    improvement: 'insight',
+  };
+  return typeMap[type] || 'general';
+};
 
 /**
  * Store a template (how a task was completed)
@@ -97,6 +113,7 @@ export async function storeHeuristic(
 
 /**
  * Store an insight (summary from successful task)
+ * v6.1.0: Routes through memory_core lifecycle
  */
 export async function storeInsight(
   content: string,
@@ -105,22 +122,22 @@ export async function storeInsight(
   taskId: string,
   tier: MemoryTier = 'hot'
 ): Promise<boolean> {
-  const table = tier === 'hot' ? 'brain_memory_hot' : 'brain_memory_cold';
-
-  const { error } = await supabase.from(table).insert({
-    content: content,
-    context: context,
-    priority: 7,
-    tags: ['insight', 'agency', 'task-derived'],
+  // Use memory_core for unified lifecycle
+  const result = await memoryCore.ingest(content, {
+    type: 'insight',
+    source: 'agency.task',
+    confidence: 0.75,
+    tags: ['insight', 'agency', 'task-derived', context],
     metadata: {
       source_agency_id: agencyId,
       source_task_id: taskId,
       tier: tier,
+      context: context,
     },
   });
 
-  if (error) {
-    console.error('Failed to store insight:', error);
+  if (!result.success) {
+    console.error('Failed to store insight via memory_core:', result.error);
     return false;
   }
 

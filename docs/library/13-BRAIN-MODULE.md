@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — BRAIN Module Deep Dive
 
-**Version 5.5.0 | Scientific Publication**
+**Version 6.1.0 | Scientific Publication**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-013 |
 | **Module** | BRAIN |
 | **Layer** | Cognitive |
-| **Version** | v4.6.0 |
+| **Version** | v6.1.0 |
 
 ---
 
@@ -42,9 +42,36 @@ BRAIN is the persistent memory and learning system of the substrate, providing l
 
 ---
 
-## 2. Memory Architecture
+## 2. Memory Core Architecture (v6.1.0)
 
-### 2.1 Three-Tier Model
+### 2.1 Unified Lifecycle
+
+The **memory_core** module provides a unified memory lifecycle:
+
+```
+Ingest → Store → Index → Reflect → Retrieve
+   │        │       │        │         │
+   ▼        ▼       ▼        ▼         ▼
+ Capture  Persist  Graph   Insights  Search
+```
+
+| Stage | Description |
+|-------|-------------|
+| **Ingest** | Capture raw input, calculate importance |
+| **Store** | Persist to appropriate tier (hot/warm/cold) |
+| **Index** | Build knowledge graph connections |
+| **Reflect** | Generate insights from accumulated memories |
+| **Retrieve** | Multi-strategy recall with semantic search |
+
+### 2.2 Memory State Schema
+
+| State | Description | Persistence |
+|-------|-------------|-------------|
+| **short_term** | Session-based, volatile | RAM only |
+| **long_term** | Tiered persistent storage | Database |
+| **latent** | Pending consolidation | Queue |
+
+### 2.3 Three-Tier Model
 
 | Tier | Threshold | Capacity | Latency |
 |------|-----------|----------|---------|
@@ -52,7 +79,7 @@ BRAIN is the persistent memory and learning system of the substrate, providing l
 | **Warm** | Score > 0.35 | 2,000 | <50ms |
 | **Cold** | Score > 0.1 | 10,000 | <200ms |
 
-### 2.2 Memory Scoring
+### 2.4 Memory Scoring
 
 Memory value is calculated using:
 
@@ -60,8 +87,9 @@ Memory value is calculated using:
 - **Frequency** — Number of accesses
 - **Relevance** — Semantic importance
 - **Confidence** — Source reliability
+- **Type** — Memory classification weight
 
-### 2.3 Automatic Tiering
+### 2.5 Automatic Tiering
 
 The BRAIN module continuously evaluates memories:
 
@@ -145,12 +173,21 @@ Query → Parse → Strategy Selection → Parallel Search → Merge → Rank
 | Operation | Description |
 |-----------|-------------|
 | `brain.status` | Memory system status |
-| `brain.remember` | Store memory |
-| `brain.recall` | Search memories |
+| `brain.remember` | Store memory (legacy) |
+| `brain.recall` | Search memories (legacy) |
 | `brain.reflect` | Trigger reflection |
 | `brain.tier` | Run tiering |
 | `brain.prune` | Remove low-value |
 | `brain.graph` | Knowledge graph |
+
+### 6.1 Memory Core Operations (v6.1.0)
+
+| Operation | Description |
+|-----------|-------------|
+| `brain.memory_ingest` | Unified ingest with lifecycle |
+| `brain.memory_retrieve` | Multi-strategy retrieval |
+| `brain.memory_state` | Get state schema |
+| `brain.memory_cycle` | Run full lifecycle |
 
 ---
 
@@ -165,6 +202,10 @@ Query → Parse → Strategy Selection → Parallel Search → Merge → Rank
 | `conversation` | Dialogue history |
 | `dream` | Dream cycle outputs |
 | `general` | Uncategorized |
+| `insight` | Task-derived insights |
+| `template` | Execution templates |
+| `heuristic` | Learned strategies |
+| `error_pattern` | Failure patterns |
 
 ---
 
@@ -181,5 +222,17 @@ Query → Parse → Strategy Selection → Parallel Search → Merge → Rank
 
 ---
 
-*CMPSBL OS Substrate v5.5.0*
+## 9. Backward Compatibility
+
+Legacy commands remain functional:
+
+| Legacy | Routes To |
+|--------|-----------|
+| `remember()` | `memory_core.ingest()` |
+| `recall()` | `memory_core.retrieve()` |
+| `reflect()` | `memory_core.reflect()` |
+
+---
+
+*CMPSBL OS Substrate v6.1.0*
 *© 2025-2026 PromptFluid®. All rights reserved.*
