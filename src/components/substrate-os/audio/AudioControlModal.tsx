@@ -157,24 +157,34 @@ export function AudioControlModal({ isOpen, onClose }: AudioControlModalProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9998]"
+            className="fixed inset-0 bg-foreground/40 backdrop-blur-sm z-[9998]"
             onClick={onClose}
           />
           
-          {/* Modal */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
+          {/* Modal wrapper: handles centering via CSS transform so Framer Motion doesn't override it */}
+          <div
             className={cn(
               "fixed z-[9999]",
               "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
-              "w-[calc(100vw-2rem)] max-w-sm",
-              "rounded-2xl overflow-hidden",
-              "bg-card border border-border/50",
-              "shadow-2xl shadow-black/30"
+              // Ensure the modal always fits within the visible viewport on mobile
+              "max-h-[calc(100dvh-2rem)] max-w-[calc(100vw-2rem)]",
+              // Respect iOS safe areas
+              "[padding-top:env(safe-area-inset-top)] [padding-bottom:env(safe-area-inset-bottom)]",
+              "[padding-left:env(safe-area-inset-left)] [padding-right:env(safe-area-inset-right)]"
             )}
           >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className={cn(
+                "w-[calc(100vw-2rem)] max-w-sm",
+                "max-h-[calc(100dvh-2rem)]",
+                "rounded-2xl overflow-auto",
+                "bg-card border border-border/50",
+                "shadow-2xl shadow-foreground/20"
+              )}
+            >
             {/* Header with close button */}
             <div className="flex items-center justify-between p-4 border-b border-border/30">
               <h3 className="text-base font-semibold">Audio Controls</h3>
@@ -344,7 +354,8 @@ export function AudioControlModal({ isOpen, onClose }: AudioControlModalProps) {
                 </div>
               </TabsContent>
             </Tabs>
-          </motion.div>
+            </motion.div>
+          </div>
         </>
       )}
     </AnimatePresence>
