@@ -162,23 +162,30 @@ export const SYSTEM_COMMANDS: CommandDefinition[] = [
 
 export const MODERNIZER_COMMANDS: CommandDefinition[] = [
   { command: 'modernizer.status', description: 'Modernizer service status', category: 'modernizer', icon: Sparkles, requiresOperator: false },
-  { command: 'modernizer.jobs', description: 'List recent modernization jobs', category: 'modernizer', icon: Activity, requiresOperator: false, args: '[limit]' },
+  { command: 'modernizer.jobs', description: 'List evolution runs (active + completed)', category: 'modernizer', icon: Activity, requiresOperator: false, args: '[limit]' },
   
-  // ═══ EVOLUTION CYCLE v6.5.0 (Primary Commands) ═══
-  { command: 'modernizer.evolve', description: 'Unified Evolution Cycle (scan → plan → apply → verify)', category: 'modernizer', icon: Sparkles, requiresOperator: true, args: '[scan|shadow|production|verify|abort|status] [--confirm]', example: 'modernizer.evolve' },
+  // ═══ EVOLUTION CYCLE v0.7.7 (Primary Commands) ═══
+  { command: 'modernizer.evolve', description: 'Unified Evolution Cycle (scan → plan → shadow → production → verify)', category: 'modernizer', icon: Sparkles, requiresOperator: true, args: '[shadow|production|verify|abort|status] [--confirm]', example: 'modernizer.evolve shadow' },
   
-  // Legacy commands (forward to Evolution Cycle)
-  { command: 'modernizer.scan', description: '[Legacy] Scan substrate for improvements', category: 'modernizer', icon: Search, requiresOperator: true, args: '[depth]', example: 'modernizer.scan deep' },
+  // ═══ COGNITIVE SCAN v0.7.7 ═══
+  { command: 'modernizer.scan', description: 'Cognitive systems scan (4-phase: edge/system/health/LLM)', category: 'modernizer', icon: Search, requiresOperator: true, args: '[--explain|--llm-report|--dry-run]', example: 'modernizer.scan --explain' },
+  
+  // ═══ CIRCUIT BREAKER v0.7.6 ═══
+  { command: 'modernizer.circuit', description: 'Evolution circuit breaker control', category: 'modernizer', icon: Shield, requiresOperator: false, args: '[status|reset|open <reason>]', example: 'modernizer.circuit status' },
+  
+  // ═══ AUTONOMY v0.7.6 ═══
+  { command: 'modernizer.autonomy', description: 'Governed autonomy settings', category: 'modernizer', icon: Settings, requiresOperator: true, args: '[status|set <mode>]', example: 'modernizer.autonomy set governed' },
+  
+  // ═══ RECEIPTS v0.7.5 ═══
+  { command: 'modernizer.receipts', description: 'List evolution receipts (audit trail)', category: 'modernizer', icon: Database, requiresOperator: false, args: '[limit]' },
+  { command: 'modernizer.receipt', description: 'View specific evolution receipt', category: 'modernizer', icon: Eye, requiresOperator: false, args: '<run_id>' },
+  
+  // Plan management
   { command: 'modernizer.analyze', description: 'Quick analysis of a module', category: 'modernizer', icon: Search, requiresOperator: true, args: '[module]' },
-  { command: 'modernizer.propose', description: '[Legacy] Generate upgrade proposal', category: 'modernizer', icon: Sparkles, requiresOperator: true, args: '[scope] [notes]' },
-  { command: 'modernizer.plans', description: '[Legacy] List active evolution plan', category: 'modernizer', icon: Activity, requiresOperator: false },
-  { command: 'modernizer.review', description: '[Legacy] Review a specific plan', category: 'modernizer', icon: Eye, requiresOperator: false, args: '<plan_id>' },
+  { command: 'modernizer.plans', description: 'List active evolution plan', category: 'modernizer', icon: Activity, requiresOperator: false },
+  { command: 'modernizer.review', description: 'Review a specific plan', category: 'modernizer', icon: Eye, requiresOperator: false, args: '<plan_id>' },
   { command: 'modernizer.validate', description: 'Validate plan readiness', category: 'modernizer', icon: Shield, requiresOperator: false, args: '<plan_id>' },
   { command: 'modernizer.diff', description: 'View plan diff and health comparison', category: 'modernizer', icon: Eye, requiresOperator: false, args: '<plan_id>' },
-  { command: 'modernizer.apply', description: '[Legacy] Apply plan (use evolve instead)', category: 'modernizer', icon: Sparkles, requiresOperator: true, args: '<plan_id>' },
-  { command: 'modernizer.apply_shadow', description: '[Legacy] Apply to shadow mode', category: 'modernizer', icon: Sparkles, requiresOperator: true, args: '<plan_id>' },
-  { command: 'modernizer.test_shadow', description: 'Test shadow mode changes', category: 'modernizer', icon: Activity, requiresOperator: true, args: '<plan_id>' },
-  { command: 'modernizer.apply_production', description: '[Legacy] Promote shadow to production', category: 'modernizer', icon: Sparkles, requiresOperator: true, args: '<plan_id>' },
   { command: 'modernizer.rollback', description: 'Rollback an applied plan', category: 'modernizer', icon: Shield, requiresOperator: true, args: '<plan_id>' },
   { command: 'modernizer.delete', description: 'Delete/reject a plan', category: 'modernizer', icon: Shield, requiresOperator: true, args: '<plan_id>' },
   { command: 'modernizer.applied', description: 'List all applied improvements', category: 'modernizer', icon: Activity, requiresOperator: false },
