@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — BRAIN Module Deep Dive
 
-**Version 6.2.0 | Phase 2: Intelligence Compression**
+**Version 6.3.0 | Phase 3: Reasoning + Governance Integration**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-013 |
 | **Module** | BRAIN |
 | **Layer** | Cognitive |
-| **Version** | v6.2.0 |
+| **Version** | v6.3.0 |
 
 ---
 
@@ -31,7 +31,7 @@
 
 ## 1. Module Overview
 
-BRAIN is the persistent memory and learning system of the substrate, providing long-term context retention, semantic retrieval, and knowledge synthesis.
+BRAIN is the persistent memory, learning, reasoning, and governance system of the substrate, providing long-term context retention, semantic retrieval, knowledge synthesis, higher-order reasoning, and ethical guardrails.
 
 | Property | Value |
 |----------|-------|
@@ -42,9 +42,48 @@ BRAIN is the persistent memory and learning system of the substrate, providing l
 
 ---
 
-## 2. Phase 2: Intelligence Compression (v6.2.0)
+## 2. Phase 3: Reasoning + Governance Integration (v6.3.0)
 
-### 2.1 Learning Engine
+### 2.1 Reasoning Engine
+
+Unified higher-order reasoning merging `causal`, `systems_reason`, and `hypothesis_test`:
+
+```
+causal_mapping → dependency_analysis → hypothesis_generation → hypothesis_validation → impact_projection
+```
+
+| Stage | Description |
+|-------|-------------|
+| **causal_mapping** | Map cause-effect relationships from context |
+| **dependency_analysis** | Analyze system dependencies and relationships |
+| **hypothesis_generation** | Generate hypotheses from patterns |
+| **hypothesis_validation** | Validate against existing knowledge |
+| **impact_projection** | Project impact based on causal chains |
+
+### 2.2 Governance Guard
+
+Unified ethical and coherence constraints merging `ethical` and `coherence_check`:
+
+```
+coherence_validation → ethical_constraint_check → governance_signal_emission
+```
+
+| Stage | Description |
+|-------|-------------|
+| **coherence_validation** | Check for logical consistency and contradictions |
+| **ethical_constraint_check** | Validate against ethical guardrails |
+| **governance_signal_emission** | Emit governance metadata for audits |
+
+**Governance Capabilities:**
+- Block unsafe reasoning paths
+- Flag incoherent cognition
+- Emit governance metadata for audit trails
+
+---
+
+## 3. Phase 2: Intelligence Compression (v6.2.0)
+
+### 3.1 Learning Engine
 
 Unified learning lifecycle merging `train`, `optimize`, and `reinforce`:
 
@@ -60,7 +99,26 @@ Input → Feedback → Adjustment → Reinforcement → Stabilization
 | **Reinforcement** | Strengthen successful patterns |
 | **Stabilization** | Consolidate gains, apply decay, cleanup |
 
-### 2.2 Memory State Schema
+### 3.2 Imagination Engine
+
+Unified imagination lifecycle merging `dream`, `synthesize`, and `pattern_fusion`:
+
+```
+latent_extraction → recombination → simulation → synthesis
+```
+
+| Stage | Description |
+|-------|-------------|
+| **latent_extraction** | Extract latent patterns from memory |
+| **recombination** | Recombine patterns in novel ways |
+| **simulation** | Simulate potential outcomes |
+| **synthesis** | Synthesize new insights |
+
+---
+
+## 4. Phase 1: Memory Core (v6.1.0)
+
+### 4.1 Memory State Schema
 
 | State | Description | Persistence |
 |-------|-------------|-------------|
@@ -68,7 +126,7 @@ Input → Feedback → Adjustment → Reinforcement → Stabilization
 | **long_term** | Tiered persistent storage | Database |
 | **latent** | Pending consolidation | Queue |
 
-### 2.3 Three-Tier Model
+### 4.2 Three-Tier Model
 
 | Tier | Threshold | Capacity | Latency |
 |------|-----------|----------|---------|
@@ -76,7 +134,7 @@ Input → Feedback → Adjustment → Reinforcement → Stabilization
 | **Warm** | Score > 0.35 | 2,000 | <50ms |
 | **Cold** | Score > 0.1 | 10,000 | <200ms |
 
-### 2.4 Memory Scoring
+### 4.3 Memory Scoring
 
 Memory value is calculated using:
 
@@ -86,20 +144,11 @@ Memory value is calculated using:
 - **Confidence** — Source reliability
 - **Type** — Memory classification weight
 
-### 2.5 Automatic Tiering
-
-The BRAIN module continuously evaluates memories:
-
-1. Score calculation (hourly)
-2. Tier promotion/demotion
-3. Capacity enforcement
-4. Pruning of low-value entries
-
 ---
 
-## 3. Knowledge Graph
+## 5. Knowledge Graph
 
-### 3.1 Graph Structure
+### 5.1 Graph Structure
 
 **Nodes:** Memory entries
 - ID, content, type, confidence, tier
@@ -107,7 +156,7 @@ The BRAIN module continuously evaluates memories:
 **Edges:** Relationships
 - Source, target, relation type, weight
 
-### 3.2 Relation Types
+### 5.2 Relation Types
 
 | Type | Description |
 |------|-------------|
@@ -117,65 +166,9 @@ The BRAIN module continuously evaluates memories:
 | `HIERARCHICAL` | Parent-child structure |
 | `ASSOCIATIVE` | General correlation |
 
-### 3.3 Graph Operations
-
-| Operation | Description |
-|-----------|-------------|
-| `brain.graph` | Summary statistics |
-| `brain.graph --inspect` | Edge/node browser |
-| `brain.graph --stats` | Connectivity metrics |
-| `brain.graph --export` | JSON export |
-
----
-
-## 4. Learning Cycle
-
-### 4.1 Reflection Process
-
-```
-Input → Store → Accumulate → Reflect → Synthesize
-                                │
-                                ▼
-                         New Memories
-                        (reflection type)
-```
-
-### 4.2 Reflection Triggers
-
-- Scheduled (daily)
-- Threshold-based (memory count)
-- Manual (`brain.reflect`)
-
----
-
-## 5. Retrieval Strategies
-
-### 5.1 Multi-Strategy Search
-
-1. **Full-Text Search** — PostgreSQL websearch
-2. **Pattern Matching** — ILIKE queries
-3. **Hot Memory Scan** — In-tier search
-4. **Semantic Similarity** — Embedding-based (when available)
-
-### 5.2 Query Processing
-
-```
-Query → Parse → Strategy Selection → Parallel Search → Merge → Rank
-```
-
 ---
 
 ## 6. Key Operations
-
-| Operation | Description |
-|-----------|-------------|
-| `brain.status` | Memory system status |
-| `brain.remember` | Store memory (legacy) |
-| `brain.recall` | Search memories (legacy) |
-| `brain.reflect` | Trigger reflection |
-| `brain.tier` | Run tiering |
-| `brain.prune` | Remove low-value |
-| `brain.graph` | Knowledge graph |
 
 ### 6.1 Memory Core Operations (v6.1.0)
 
@@ -185,6 +178,45 @@ Query → Parse → Strategy Selection → Parallel Search → Merge → Rank
 | `brain.memory_retrieve` | Multi-strategy retrieval |
 | `brain.memory_state` | Get state schema |
 | `brain.memory_cycle` | Run full lifecycle |
+
+### 6.2 Learning Engine Operations (v6.2.0)
+
+| Operation | Description |
+|-----------|-------------|
+| `learning_engine.input()` | Capture learning signal |
+| `learning_engine.feedback()` | Process outcome signal |
+| `learning_engine.reinforcement()` | Strengthen patterns |
+| `learning_engine.stabilization()` | Consolidate gains |
+| `learning_engine.runCycle()` | Full learning loop |
+
+### 6.3 Imagination Engine Operations (v6.2.0)
+
+| Operation | Description |
+|-----------|-------------|
+| `imagination_engine.dream()` | Autonomous dream processing |
+| `imagination_engine.synthesize()` | Cross-domain synthesis |
+| `imagination_engine.patternFusion()` | Multi-domain pattern fusion |
+| `imagination_engine.runCycle()` | Full imagination loop |
+
+### 6.4 Reasoning Engine Operations (v6.3.0)
+
+| Operation | Description |
+|-----------|-------------|
+| `reasoning_engine.causalMapping()` | Map cause-effect relationships |
+| `reasoning_engine.dependencyAnalysis()` | Analyze dependencies |
+| `reasoning_engine.hypothesisGeneration()` | Generate hypotheses |
+| `reasoning_engine.hypothesisValidation()` | Validate hypotheses |
+| `reasoning_engine.impactProjection()` | Project impact |
+| `reasoning_engine.runCycle()` | Full reasoning loop |
+
+### 6.5 Governance Guard Operations (v6.3.0)
+
+| Operation | Description |
+|-----------|-------------|
+| `governance_guard.coherenceValidation()` | Check logical consistency |
+| `governance_guard.ethicalConstraintCheck()` | Validate ethical constraints |
+| `governance_guard.emitGovernanceSignal()` | Emit audit signals |
+| `governance_guard.runCycle()` | Full governance loop |
 
 ---
 
@@ -216,6 +248,8 @@ Query → Parse → Strategy Selection → Parallel Search → Merge → Rank
 | Cold recall | <200ms |
 | Reflection time | 30-60s |
 | Tiering cycle | ~5s |
+| Reasoning cycle | ~100ms |
+| Governance check | ~50ms |
 
 ---
 
@@ -234,8 +268,36 @@ Legacy commands remain functional via aliases:
 | `dream()` | `imagination_engine.dream()` |
 | `synthesize()` | `imagination_engine.runCycle()` |
 | `pattern_fusion()` | `imagination_engine.patternFusion()` |
+| `causal()` | `reasoning_engine.causalMapping()` |
+| `systems_reason()` | `reasoning_engine.dependencyAnalysis()` |
+| `hypothesis_test()` | `reasoning_engine.hypothesisValidation()` |
+| `ethical()` | `governance_guard.ethicalConstraintCheck()` |
+| `coherence_check()` | `governance_guard.coherenceValidation()` |
 
 ---
 
-*CMPSBL OS Substrate v6.2.0 — Phase 2: Intelligence Compression*
+## 10. Changelog
+
+### v6.3.0 (2026-01-29) — Phase 3: Reasoning + Governance
+- **Reasoning Engine**: Unified `causal`, `systems_reason`, `hypothesis_test`
+- **Governance Guard**: Unified `ethical`, `coherence_check`
+- New 5-stage reasoning lifecycle
+- New 3-stage governance lifecycle
+- Backward-compatible aliases for all deprecated commands
+
+### v6.2.0 (2026-01-29) — Phase 2: Intelligence Compression
+- **Learning Engine**: Unified `train`, `optimize`, `reinforce`
+- **Imagination Engine**: Unified `dream`, `synthesize`, `pattern_fusion`
+- New 5-stage learning lifecycle
+- New 4-stage imagination lifecycle
+
+### v6.1.0 (2026-01-29) — Phase 1: Memory Core
+- **Memory Core**: Unified memory lifecycle
+- 5-stage pipeline: ingest → store → index → reflect → retrieve
+- React hooks for frontend integration
+- Knowledge graph indexing via `brain_knowledge_edges`
+
+---
+
+*CMPSBL OS Substrate v6.3.0 — Phase 3: Reasoning + Governance Integration*
 *© 2025-2026 PromptFluid®. All rights reserved.*

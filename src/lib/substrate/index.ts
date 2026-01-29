@@ -1,6 +1,6 @@
 /**
  * Substrate Core Exports
- * v6.2.0 — Unified Cognitive Architecture (Phase 2: Intelligence Compression)
+ * v6.3.0 — Unified Cognitive Architecture (Phase 3: Reasoning + Governance)
  */
 
 // Memory Core - Unified Memory Lifecycle
@@ -38,6 +38,31 @@ export {
   type SynthesisOutput,
   type ImaginationResult,
 } from './imagination-engine';
+
+// Reasoning Engine - Unified Higher-Order Reasoning (causal + systems_reason + hypothesis_test)
+export {
+  reasoningEngine,
+  ReasoningEngineClient,
+  type ReasoningStage,
+  type ReasoningState,
+  type ReasoningInput,
+  type ReasoningResult,
+  type CausalLink,
+  type Hypothesis,
+} from './reasoning-engine';
+
+// Governance Guard - Unified Ethical & Coherence Constraints (ethical + coherence_check)
+export {
+  governanceGuard,
+  GovernanceGuardClient,
+  type GovernanceStage,
+  type GovernanceState,
+  type GovernanceInput,
+  type GovernanceResult,
+  type GovernanceSignal,
+  type CoherenceResult,
+  type EthicalResult,
+} from './governance-guard';
 
 // Re-export substrate client from lib
 export { substrate, type SubstrateModule, type SubstrateRequest, type SubstrateResponse } from '../substrate';

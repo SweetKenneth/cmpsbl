@@ -1,11 +1,13 @@
 /**
  * promptfluid® Substrate React Hooks
- * v6.2.0 — Cognitive Orchestration Substrate (Phase 2: Intelligence Compression)
+ * v6.3.0 — Cognitive Orchestration Substrate (Phase 3: Reasoning + Governance)
  * 
  * Includes hooks for:
  * - Memory Core lifecycle
  * - Learning Engine lifecycle
  * - Imagination Engine lifecycle
+ * - Reasoning Engine lifecycle (Phase 3)
+ * - Governance Guard lifecycle (Phase 3)
  */
 
 import { useState, useCallback } from 'react';
@@ -14,6 +16,8 @@ import { substrate, SubstrateModule, SubstrateResponse } from '@/lib/substrate';
 import { memoryCore, type MemoryQuery, type MemoryStateSchema } from '@/lib/substrate/memory-core';
 import { learningEngine, type LearningInput } from '@/lib/substrate/learning-engine';
 import { imaginationEngine } from '@/lib/substrate/imagination-engine';
+import { reasoningEngine, type ReasoningInput } from '@/lib/substrate/reasoning-engine';
+import { governanceGuard, type GovernanceInput } from '@/lib/substrate/governance-guard';
 
 // Generic substrate hook
 export function useSubstrateQuery<T = unknown>(
@@ -235,6 +239,107 @@ export function useImaginationCycle() {
       imaginationEngine.runCycle(options),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['imagination-engine'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'brain'] });
+    },
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// v6.3.0: REASONING ENGINE HOOKS — Unified Reasoning Lifecycle
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/** Hook for reasoning engine state */
+export function useReasoningState() {
+  return useQuery({
+    queryKey: ['reasoning-engine', 'state'],
+    queryFn: () => reasoningEngine.getState(),
+    refetchInterval: 30000,
+  });
+}
+
+/** Hook for causal mapping */
+export function useCausalMapping() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (input: ReasoningInput) => reasoningEngine.causalMapping(input),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['reasoning-engine'] });
+    },
+  });
+}
+
+/** Hook for hypothesis validation */
+export function useHypothesisValidation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (hypothesis: { id: string; statement: string; confidence: number; supporting_evidence: string[]; contradicting_evidence: string[]; status: 'pending' | 'validated' | 'rejected' | 'uncertain' }) =>
+      reasoningEngine.hypothesisValidation(hypothesis),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['reasoning-engine'] });
+    },
+  });
+}
+
+/** Hook for full reasoning cycle */
+export function useReasoningCycle() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (input: ReasoningInput) => reasoningEngine.runCycle(input),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['reasoning-engine'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'brain'] });
+    },
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// v6.3.0: GOVERNANCE GUARD HOOKS — Unified Governance Lifecycle
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/** Hook for governance guard state */
+export function useGovernanceState() {
+  return useQuery({
+    queryKey: ['governance-guard', 'state'],
+    queryFn: () => governanceGuard.getState(),
+    refetchInterval: 30000,
+  });
+}
+
+/** Hook for coherence validation */
+export function useCoherenceValidation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (input: GovernanceInput) => governanceGuard.coherenceValidation(input),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['governance-guard'] });
+    },
+  });
+}
+
+/** Hook for ethical constraint check */
+export function useEthicalCheck() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (input: GovernanceInput) => governanceGuard.ethicalConstraintCheck(input),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['governance-guard'] });
+    },
+  });
+}
+
+/** Hook for full governance cycle */
+export function useGovernanceCycle() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (input: GovernanceInput) => governanceGuard.runCycle(input),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['governance-guard'] });
       queryClient.invalidateQueries({ queryKey: ['substrate', 'brain'] });
     },
   });

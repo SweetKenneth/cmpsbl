@@ -1,8 +1,10 @@
 /**
  * promptfluid® Substrate Client
- * v6.2.0 — Cognitive Orchestration Substrate (14-Module Architecture)
+ * v6.3.0 — Cognitive Orchestration Substrate (14-Module Architecture)
  * 
- * Phase 2: Intelligence Compression
+ * Phase 3: Reasoning + Governance Integration
+ * - Reasoning Engine: Unified causal + systems_reason + hypothesis_test
+ * - Governance Guard: Unified ethical + coherence_check
  * - Learning Engine: Unified train + optimize + reinforce
  * - Imagination Engine: Unified dream + synthesize + pattern_fusion
  * 
@@ -13,7 +15,7 @@
  * - Core: Kernel (scheduler, lifecycle, routing)
  * - Ripple: Message bus (queues, pub/sub, events)
  * - Access: Identity (API keys, quotas, usage)
- * - Brain: Three-tier memory, learning engine, imagination engine, knowledge graph
+ * - Brain: Three-tier memory, learning engine, imagination engine, reasoning engine, governance guard, knowledge graph
  * - Decode: Intent decoding, cognitive interface
  * - Defense: Security, bot detection, threats
  * - Nexus: AI routing, multi-provider
@@ -113,10 +115,12 @@ class SubstrateClient {
     }
   }
 
-  // Brain Module — Memory, Learning Engine, Imagination Engine
+  // Brain Module — Memory, Learning Engine, Imagination Engine, Reasoning Engine, Governance Guard
   // NOTE: memory_core provides unified lifecycle (ingest → store → index → reflect → retrieve)
   // NOTE: learning_engine provides unified learning lifecycle (input → feedback → adjustment → reinforcement → stabilization)
   // NOTE: imagination_engine provides unified imagination lifecycle (latent_extraction → recombination → simulation → synthesis)
+  // NOTE: reasoning_engine provides unified reasoning lifecycle (causal_mapping → dependency_analysis → hypothesis_generation → hypothesis_validation → impact_projection)
+  // NOTE: governance_guard provides unified governance lifecycle (coherence_validation → ethical_constraint_check → governance_signal_emission)
   brain = {
     learn: (content: string, source?: string) =>
       this.invoke({ module: 'brain', action: 'learn', payload: { content, source } }),
@@ -161,7 +165,7 @@ class SubstrateClient {
     deepThink: (query: string, depth?: number) =>
       this.invoke({ module: 'brain', action: 'deep_think', payload: { query, depth } }),
     
-    /** Test a hypothesis against the knowledge graph */
+    /** @deprecated Use reasoningEngine.hypothesisValidation() - Test a hypothesis against the knowledge graph */
     hypothesisTest: (hypothesis: string) =>
       this.invoke({ module: 'brain', action: 'hypothesis_test', payload: { hypothesis } }),
     
@@ -201,7 +205,7 @@ class SubstrateClient {
     sessionReflection: (hours?: number) =>
       this.invoke({ module: 'brain', action: 'session_reflection', payload: { hours } }),
     
-    /** v3.11.0: Memory coherence validation - cross-tier coherence check (read-only) */
+    /** @deprecated Use governanceGuard.coherenceValidation() - Memory coherence validation */
     coherenceCheck: (depth?: 'standard' | 'deep') =>
       this.invoke({ module: 'brain', action: 'coherence_check', payload: { depth } }),
     
@@ -222,6 +226,30 @@ class SubstrateClient {
     /** Run full cognitive memory cycle */
     memoryCycle: (content: string, options?: { autoIndex?: boolean; autoReflect?: boolean }) =>
       this.invoke({ module: 'brain', action: 'memory_cycle', payload: { content, ...options } }),
+    
+    // ═══ v6.3.0: REASONING ENGINE (Phase 3) ═══
+    
+    /** @deprecated Use reasoningEngine.causalMapping() - Map causal relationships */
+    causal: (context: string) =>
+      this.invoke({ module: 'brain', action: 'causal', payload: { context } }),
+    
+    /** @deprecated Use reasoningEngine.dependencyAnalysis() - Analyze system dependencies */
+    systemsReason: (context: string) =>
+      this.invoke({ module: 'brain', action: 'systems_reason', payload: { context } }),
+    
+    /** v6.3.0: Reasoning Engine - run full reasoning cycle */
+    reasoningCycle: (context: string, options?: { domain?: string; depth?: 'shallow' | 'standard' | 'deep' }) =>
+      this.invoke({ module: 'brain', action: 'reasoning_cycle', payload: { context, ...options } }),
+    
+    // ═══ v6.3.0: GOVERNANCE GUARD (Phase 3) ═══
+    
+    /** @deprecated Use governanceGuard.ethicalConstraintCheck() - Ethical validation */
+    ethical: (content: string) =>
+      this.invoke({ module: 'brain', action: 'ethical', payload: { content } }),
+    
+    /** v6.3.0: Governance Guard - run full governance cycle */
+    governanceCycle: (content: string, options?: { context?: string; strict_mode?: boolean }) =>
+      this.invoke({ module: 'brain', action: 'governance_cycle', payload: { content, ...options } }),
   };
 
   // Decode Module — Interpreter Primitive (NOT a chatbot, persona, or agent)
