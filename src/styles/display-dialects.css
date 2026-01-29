@@ -1,0 +1,112 @@
+/**
+ * Display Dialect Themes — Visual polish for legacy code skins
+ * 
+ * IMPORTANT: These styles are DISPLAY ONLY and scoped to CodeLab.
+ * They do not affect docs, marketing pages, or execution.
+ */
+
+/* Base dialect styling for code blocks */
+.dialect-container {
+  @apply font-mono;
+}
+
+/* Lisp dialect - functional/mathematical aesthetic */
+.dialect-lisp pre,
+.dialect-lisp code {
+  @apply text-emerald-200;
+  font-family: 'Fira Code', 'JetBrains Mono', monospace;
+  letter-spacing: -0.02em;
+}
+
+.dialect-lisp pre::before {
+  content: ';;; ';
+  @apply text-emerald-500/50;
+}
+
+/* C dialect - systems programming aesthetic */
+.dialect-c pre,
+.dialect-c code {
+  @apply text-amber-200;
+  font-family: 'Source Code Pro', 'Consolas', monospace;
+}
+
+.dialect-c pre::before {
+  content: '/* ';
+}
+
+.dialect-c pre::after {
+  content: ' */';
+}
+
+/* Smalltalk dialect - message-passing aesthetic */
+.dialect-smalltalk pre,
+.dialect-smalltalk code {
+  @apply text-violet-200;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.dialect-smalltalk pre::before {
+  content: '" ';
+  @apply text-violet-500/50;
+}
+
+/* Hacker dialect - terminal aesthetic */
+.dialect-hacker pre,
+.dialect-hacker code {
+  @apply text-green-400;
+  font-family: 'VT323', 'Courier New', monospace;
+  text-shadow: 0 0 5px rgb(34 197 94 / 0.3);
+}
+
+.dialect-hacker pre::before {
+  content: '$ ';
+  @apply text-green-500;
+}
+
+/* Modern dialect - default, no special styling */
+.dialect-modern pre,
+.dialect-modern code {
+  /* Uses default font-mono from Tailwind */
+}
+
+/* Dialect badge styling */
+.dialect-badge {
+  @apply inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs;
+  @apply bg-muted/50 border border-dashed border-border;
+}
+
+.dialect-badge.dialect-lisp {
+  @apply border-emerald-500/30 text-emerald-400;
+}
+
+.dialect-badge.dialect-c {
+  @apply border-amber-500/30 text-amber-400;
+}
+
+.dialect-badge.dialect-smalltalk {
+  @apply border-violet-500/30 text-violet-400;
+}
+
+.dialect-badge.dialect-hacker {
+  @apply border-green-500/30 text-green-400;
+}
+
+/* Subtle animation for dialect switch */
+.dialect-transition {
+  @apply transition-all duration-300 ease-in-out;
+}
+
+/* Scanline effect for hacker mode (optional) */
+.dialect-hacker .scanlines::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.1) 2px,
+    rgba(0, 0, 0, 0.1) 4px
+  );
+}

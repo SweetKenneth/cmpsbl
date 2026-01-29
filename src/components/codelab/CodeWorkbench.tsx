@@ -1,6 +1,7 @@
 /**
  * Surface B — Code Editor Workbench
  * JSON request builder, response inspector, console, history
+ * Now with Display Dialect support for legacy code skins
  */
 
 import { useState, useEffect } from "react";
@@ -18,10 +19,14 @@ import {
 } from "@/components/ui/select";
 import { 
   Play, Trash2, Clock, Copy, Check, Download, 
-  Loader2, Terminal, ChevronRight, Save, FolderOpen
+  Loader2, Terminal, ChevronRight, Save, FolderOpen, Eye, Settings2
 } from "lucide-react";
 import { substrate, SubstrateModule } from "@/lib/substrate";
 import { toast } from "sonner";
+import { useObsMode } from "@/lib/ui/obsfunction-mode";
+import { renderDialect } from "@/lib/ui/dialect-render";
+import { DIALECT_LABELS } from "@/lib/ui/display-dialect";
+import { DialectSelector } from "./DialectSelector";
 
 interface HistoryItem {
   id: string;
@@ -56,7 +61,10 @@ export function CodeWorkbench() {
   const [copied, setCopied] = useState(false);
   const [selectedModule, setSelectedModule] = useState<SubstrateModule>("vision");
   const [savedScripts, setSavedScripts] = useState<SavedScript[]>([]);
-
+  const [showDialectSettings, setShowDialectSettings] = useState(false);
+  
+  // Display dialect state
+  const { enabled: obsEnabled, dialect } = useObsMode();
   // Load history and scripts from localStorage
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -274,7 +282,32 @@ export function CodeWorkbench() {
                 {latency}ms
               </Badge>
             )}
+            
+            {/* Dialect Settings Toggle */}
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => setShowDialectSettings(!showDialectSettings)}
+              title="Display Dialect Settings"
+              className={showDialectSettings ? "bg-muted" : ""}
+            >
+              <Settings2 className="w-4 h-4" />
+            </Button>
           </div>
+          
+          {/* Dialect Settings Panel */}
+          {showDialectSettings && (
+            <div className="mb-4 p-3 rounded-lg bg-muted/30 border border-border/50">
+              <div className="flex items-center gap-3">
+                <Eye className="w-4 h-4 text-violet-500" />
+                <span className="text-sm font-medium">Code Display Dialect</span>
+                <DialectSelector compact />
+                <span className="text-xs text-muted-foreground ml-auto">
+                  Display only · Copy always returns raw code
+                </span>
+              </div>
+            </div>
+          )}
           
           <div className="font-mono">
             <label className="text-xs text-muted-foreground mb-1 block">Request JSON</label>
