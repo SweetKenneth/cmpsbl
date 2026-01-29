@@ -159,6 +159,6 @@ export const DEFAULT_SCAN_CONFIG: ScanConfig = {
   min_confidence_for_plan: 0.7,
   allowed_risk_levels: ['low', 'medium'],
   min_validation_sources: 2,
-  llm_model: 'google/gemini-3-flash-preview',
+  llm_model: 'nexus/llama-3.3-70b', // Routes through pf-nexus-router
   max_proposals: 10,
 };
