@@ -4,6 +4,18 @@
 
 ---
 
+## 2026-01-29 · v6.3.1 (FNDTN Patch 0.7.8 Hotfix)
+
+⟨This entry describes the UUID schema fix for plan creation.⟩
+
+### Modernizer (Patch 0.7.8 Hotfix)
+
+- **UUID Schema Fix** — `plan_id` and `action_id` now use `crypto.randomUUID()` for database compatibility. Previous non-UUID formats (`plan_mkxyz...`, `act_mkxyz...`) caused `INTERNAL_ERROR - invalid input syntax for type uuid` during plan creation.
+- **Plan Creation Contract** — Plan constructor and normalizer generate proper UUIDs for all identifiers stored in `evolution_runs` table.
+- **E2E Verification** — Full evolution lifecycle (scan → plan → shadow → production → verify) tested end-to-end.
+
+---
+
 ## 2026-01-29 · v6.3.1 (FNDTN Patch 0.7.8)
 
 ⟨This entry describes the Scan → Plan Normalization Layer hardening patch.⟩

@@ -230,8 +230,9 @@ function normalizeProposal(proposal: ScanProposal): {
   const targetModule = resolveTargetModule(proposal);
 
   // Create normalized action
+  // action_id uses UUID for database compatibility
   const action: NormalizedAction = {
-    action_id: `act_${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 8)}`,
+    action_id: crypto.randomUUID(),
     action_type: actionType,
     target_scope: targetScope,
     target_module: targetModule,
