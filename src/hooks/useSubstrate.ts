@@ -1,11 +1,14 @@
 /**
  * promptfluid® Substrate React Hooks
- * v2026.01 — Cognitive Orchestration Substrate
+ * v6.1.0 — Cognitive Orchestration Substrate
+ * 
+ * Includes hooks for unified memory_core lifecycle
  */
 
 import { useState, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { substrate, SubstrateModule, SubstrateResponse } from '@/lib/substrate';
+import { memoryCore, type MemoryQuery, type MemoryStateSchema } from '@/lib/substrate/memory-core';
 
 // Generic substrate hook
 export function useSubstrateQuery<T = unknown>(
@@ -49,6 +52,81 @@ export function useBrainReflect() {
 
 export function useBrainRecall() {
   return useSubstrateMutation('brain', 'recall');
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// v6.1.0: MEMORY CORE HOOKS — Unified Memory Lifecycle
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/** Hook for memory state schema (short-term/long-term/latent) */
+export function useMemoryState() {
+  return useQuery({
+    queryKey: ['memory-core', 'state'],
+    queryFn: () => memoryCore.getState(),
+    refetchInterval: 30000,
+  });
+}
+
+/** Hook for ingesting new memories into the lifecycle */
+export function useMemoryIngest() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (params: { 
+      content: string; 
+      type?: string; 
+      source?: string; 
+      confidence?: number; 
+      tags?: string[] 
+    }) => memoryCore.ingest(params.content, {
+      type: params.type as any,
+      source: params.source,
+      confidence: params.confidence,
+      tags: params.tags,
+    }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['memory-core'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'brain'] });
+    },
+  });
+}
+
+/** Hook for retrieving memories with multi-strategy search */
+export function useMemoryRetrieve() {
+  return useMutation({
+    mutationFn: (query: MemoryQuery) => memoryCore.retrieve(query),
+  });
+}
+
+/** Hook for triggering reflection cycle */
+export function useMemoryReflect() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (options?: { scope?: 'session' | 'daily' | 'weekly'; depth?: 'shallow' | 'standard' | 'deep' }) =>
+      memoryCore.reflect(options),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['memory-core'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'brain'] });
+    },
+  });
+}
+
+/** Hook for running full memory lifecycle cycle */
+export function useMemoryCycle() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (params: { content: string; autoIndex?: boolean; autoReflect?: boolean }) =>
+      memoryCore.runFullCycle(params.content, {
+        autoIndex: params.autoIndex,
+        autoReflect: params.autoReflect,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['memory-core'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'brain'] });
+    },
+  });
 }
 
 // Decode hooks
