@@ -1,6 +1,8 @@
 /**
  * Substrate Core Exports
- * v6.5.0 — Unified Cognitive Architecture (Phase 4B: Telemetry + State)
+ * v6.6.0 — Unified Cognitive Architecture (Phase 5: Orchestration Layer)
+ * 
+ * Complete export of all substrate engines, hooks, and utilities.
  */
 
 // Engine Bus - Canonical Routing Layer (v6.4.0)
@@ -113,6 +115,76 @@ export {
   type CoherenceResult,
   type EthicalResult,
 } from './governance-guard';
+
+// Orchestrator Engine - Unified Cognitive Pipeline (v6.6.0)
+export {
+  orchestratorEngine,
+  OrchestratorEngineClient,
+  PRESET_PIPELINES,
+  type OrchestratorMode,
+  type PipelineStage,
+  type PipelineConfig,
+  type PipelineStageResult,
+  type PipelineResult,
+  type CognitiveCycleOptions,
+  type CognitiveCycleResult,
+  type OrchestratorState,
+} from './orchestrator-engine';
+
+// React Hooks (v6.6.0)
+export {
+  useMemory,
+  useLearning,
+  useImagination,
+  useReasoning,
+  useGovernance,
+  useOrchestrator,
+  useTelemetry,
+  useEngineBus,
+  useSubstrateState,
+  type UseMemoryOptions,
+  type UseMemoryReturn,
+  type UseLearningReturn,
+  type UseImaginationReturn,
+  type UseReasoningReturn,
+  type UseGovernanceReturn,
+  type UseOrchestratorReturn,
+  type UseTelemetryReturn,
+  type UseEngineBusReturn,
+} from './hooks';
+
+// Utilities (v6.6.0)
+export {
+  // Quick actions
+  remember,
+  recall,
+  learn,
+  dream,
+  analyze,
+  validate,
+  // Composite operations
+  rememberAndLearn,
+  analyzeAndSynthesize,
+  cognize,
+  // Health & diagnostics
+  checkHealth,
+  getTelemetrySummary,
+  getStateSnapshot,
+  // Pipeline shortcuts
+  runMemoryPipeline,
+  runCreativePipeline,
+  runAnalyticalPipeline,
+  runFullCognitive,
+  // Format helpers
+  formatMemory,
+  formatTelemetryEvent,
+  formatDuration,
+  // Batch operations
+  batchIngest,
+  batchDispatch,
+  type SubstrateHealthReport,
+  type TelemetrySummary,
+} from './utils';
 
 // Re-export substrate client from lib
 export { substrate, type SubstrateModule, type SubstrateRequest, type SubstrateResponse } from '../substrate';
