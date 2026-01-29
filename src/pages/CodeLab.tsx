@@ -31,6 +31,10 @@ import { ObservabilityHUD } from "@/components/codelab/ObservabilityHUD";
 import { DialectSelector } from "@/components/codelab/DialectSelector";
 import { CodeViewer } from "@/components/codelab/CodeViewer";
 import { IntegrationsHub } from "@/components/codelab/IntegrationsHub";
+import { SDKQuickReference } from "@/components/codelab/SDKQuickReference";
+import { RecipeBuilder } from "@/components/codelab/RecipeBuilder";
+import { EnvironmentSetup } from "@/components/codelab/EnvironmentSetup";
+import { CommunityShowcase } from "@/components/codelab/CommunityShowcase";
 import { useObsMode } from "@/lib/ui/obsfunction-mode";
 import { renderDialect } from "@/lib/ui/dialect-render";
 import { DIALECT_LABELS } from "@/lib/ui/display-dialect";
@@ -236,7 +240,28 @@ export default function CodeLab() {
               >
                 <Plug className="w-4 h-4" />
                 <span className="hidden sm:inline">Integrations</span>
-                <Badge variant="secondary" className="ml-1 text-xs bg-violet-500/20 text-violet-400">New</Badge>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="recipes"
+                className="flex items-center gap-2 data-[state=active]:bg-amber-500/10 data-[state=active]:text-amber-500 data-[state=active]:border-amber-500/30 px-4 py-2.5 rounded-lg border border-transparent"
+              >
+                <Sparkles className="w-4 h-4" />
+                <span className="hidden sm:inline">Recipes</span>
+                <Badge variant="secondary" className="ml-1 text-xs bg-amber-500/20 text-amber-400">New</Badge>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="sdk"
+                className="flex items-center gap-2 data-[state=active]:bg-cyan-500/10 data-[state=active]:text-cyan-500 data-[state=active]:border-cyan-500/30 px-4 py-2.5 rounded-lg border border-transparent"
+              >
+                <BookOpen className="w-4 h-4" />
+                <span className="hidden sm:inline">SDK Ref</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="showcase"
+                className="flex items-center gap-2 data-[state=active]:bg-purple-500/10 data-[state=active]:text-purple-500 data-[state=active]:border-purple-500/30 px-4 py-2.5 rounded-lg border border-transparent"
+              >
+                <Star className="w-4 h-4" />
+                <span className="hidden sm:inline">Showcase</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="starter"
@@ -607,6 +632,21 @@ const response = await substrate.nexus.text(
           {/* Integrations Tab */}
           <TabsContent value="integrations">
             <IntegrationsHub />
+          </TabsContent>
+
+          {/* Recipes Tab */}
+          <TabsContent value="recipes">
+            <RecipeBuilder />
+          </TabsContent>
+
+          {/* SDK Reference Tab */}
+          <TabsContent value="sdk">
+            <SDKQuickReference />
+          </TabsContent>
+
+          {/* Showcase Tab */}
+          <TabsContent value="showcase">
+            <CommunityShowcase />
           </TabsContent>
 
           {/* Starter Tab */}
