@@ -1,8 +1,9 @@
 /**
  * promptfluid® Substrate React Hooks
- * v6.3.0 — Cognitive Orchestration Substrate (Phase 3: Reasoning + Governance)
+ * v6.4.0 — Cognitive Orchestration Substrate (Phase 4A: Engine Bus)
  * 
  * Includes hooks for:
+ * - Engine Bus dispatch and state
  * - Memory Core lifecycle
  * - Learning Engine lifecycle
  * - Imagination Engine lifecycle
@@ -13,11 +14,84 @@
 import { useState, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { substrate, SubstrateModule, SubstrateResponse } from '@/lib/substrate';
+import { engineBus, type EngineName, type DispatchOptions } from '@/lib/substrate/engine-bus';
 import { memoryCore, type MemoryQuery, type MemoryStateSchema } from '@/lib/substrate/memory-core';
 import { learningEngine, type LearningInput } from '@/lib/substrate/learning-engine';
 import { imaginationEngine } from '@/lib/substrate/imagination-engine';
 import { reasoningEngine, type ReasoningInput } from '@/lib/substrate/reasoning-engine';
 import { governanceGuard, type GovernanceInput } from '@/lib/substrate/governance-guard';
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// v6.4.0: ENGINE BUS HOOKS — Canonical Dispatch Layer
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/** Hook for engine bus state */
+export function useEngineBusState() {
+  return useQuery({
+    queryKey: ['engine-bus', 'state'],
+    queryFn: () => engineBus.getState(),
+    refetchInterval: 10000,
+  });
+}
+
+/** Hook for dispatching commands through the engine bus */
+export function useEngineBusDispatch() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (params: { 
+      command: string; 
+      payload?: Record<string, unknown>; 
+      options?: DispatchOptions 
+    }) => engineBus.dispatch(params.command, params.payload, params.options),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['engine-bus'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'brain'] });
+    },
+  });
+}
+
+/** Hook for dispatching to a specific engine */
+export function useEngineDispatch(engine: EngineName) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (params: { 
+      command: string; 
+      payload?: Record<string, unknown>; 
+      options?: DispatchOptions 
+    }) => engineBus.dispatchToEngine(engine, params.command, params.payload, params.options),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['engine-bus'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'brain'] });
+    },
+  });
+}
+
+/** Hook for chained dispatch operations */
+export function useEngineBusChain() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (params: { 
+      chain: Array<{ command: string; payload?: Record<string, unknown> }>; 
+      options?: DispatchOptions 
+    }) => engineBus.dispatchChain(params.chain, params.options),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['engine-bus'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'brain'] });
+    },
+  });
+}
+
+/** Hook for engine bus execution events */
+export function useEngineBusEvents(limit: number = 20) {
+  return useQuery({
+    queryKey: ['engine-bus', 'events', limit],
+    queryFn: () => engineBus.getEvents(limit),
+    refetchInterval: 5000,
+  });
+}
 
 // Generic substrate hook
 export function useSubstrateQuery<T = unknown>(

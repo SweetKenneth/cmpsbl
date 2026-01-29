@@ -1,7 +1,21 @@
 /**
  * Substrate Core Exports
- * v6.3.0 — Unified Cognitive Architecture (Phase 3: Reasoning + Governance)
+ * v6.4.0 — Unified Cognitive Architecture (Phase 4A: Engine Bus)
  */
+
+// Engine Bus - Canonical Routing Layer (v6.4.0)
+export {
+  engineBus,
+  EngineBusClient,
+  type EngineName,
+  type DispatchOptions,
+  type DispatchResult,
+  type DispatchStage,
+  type DispatchErrorCode,
+  type ChainContext,
+  type BusState,
+  type ExecutionEvent,
+} from './engine-bus';
 
 // Memory Core - Unified Memory Lifecycle
 export { 
