@@ -184,7 +184,7 @@ export function AudioControlModal({ isOpen, onClose }: AudioControlModalProps) {
                 never sits under the browser chrome (Safari address bar).
                 Use a non-motion wrapper to avoid transform conflicts.
               */}
-              <div className="w-full max-w-sm translate-y-[35px]">
+              <div className="w-full max-w-sm translate-y-[125px]">
                 <div
                   className={cn(
                     "w-full",
