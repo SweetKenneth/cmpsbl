@@ -14,6 +14,120 @@ import { resolveAlias, addAlias, removeAlias, formatAliasHelp } from './useTermi
 import { getMacro, createMacro, deleteMacro, formatMacroHelp, formatMacroDetail } from './useTerminalMacros';
 import { scheduleCommand, cancelScheduled, clearScheduled, formatScheduledList, formatScheduleConfirmation, getPendingCommands } from './useTerminalScheduler';
 import { getLocalAuditLog, formatAuditLog, getSessionStats, exportAuditLog } from './useTerminalAudit';
+import { renderForMobile, getOptimalCharWidth } from './TerminalMobileRenderer';
+
+// Mobile-first changelog formatter with no mid-word breaks
+function formatChangelogForTerminal(version?: string): string {
+  const charWidth = getOptimalCharWidth();
+  const isMobile = charWidth < 50;
+  
+  // Changelog entries (1.x.x versioning only)
+  const entries = [
+    {
+      version: '1.3.1',
+      date: '2025-01-30',
+      state: [
+        'Synergy Registry observable',
+        'Nightmare channel active',
+        'Proposal metadata enriched'
+      ],
+      shift: [
+        'MODERNIZER: affected modules',
+        'DREAM: threat scenarios',
+        'Evolution tags: v6.3.1'
+      ],
+      stability: 'Confidence gating active',
+      receipts: ['synergy-init', 'nightmare-v1']
+    },
+    {
+      version: '1.3.0',
+      date: '2025-01-29',
+      state: [
+        '14-module architecture locked',
+        'CLM budget governance live',
+        'Terminal responsive contract'
+      ],
+      shift: [
+        'BRAIN: spaced repetition',
+        'RIPPLE: event bus routing',
+        'DEFENSE: static rules only'
+      ],
+      stability: 'Circuit breakers active',
+      receipts: ['fndtn-v6', 'clm-v1']
+    }
+  ];
+  
+  // Filter to specific version if requested
+  const filtered = version 
+    ? entries.filter(e => e.version === version || e.version.startsWith(version))
+    : entries;
+  
+  if (filtered.length === 0) {
+    return `▓ No changelog entries for version ${version}
+  
+  Available: ${entries.map(e => e.version).join(', ')}`;
+  }
+  
+  let output = `
+┌─ EVOLUTION CHANGELOG ─────────────────`;
+  
+  if (isMobile) {
+    output += `
+│ Version Lock: 1.x.x only
+│ Post-foundation releases
+└───────────────────────────────────────`;
+  } else {
+    output += `──────────────────────┐
+│ Version Lock: 1.x.x (post-foundation)                        │
+│ Doctrine: State changes, not implementation                  │
+└──────────────────────────────────────────────────────────────┘`;
+  }
+  
+  for (const entry of filtered) {
+    if (isMobile) {
+      // Compact mobile format
+      output += `
+
+┌─ v${entry.version} ─ ${entry.date} ────────
+│
+│ STATE:`;
+      for (const s of entry.state) {
+        output += `
+│  • ${s}`;
+      }
+      output += `
+│
+│ SHIFT:`;
+      for (const s of entry.shift) {
+        output += `
+│  • ${s}`;
+      }
+      output += `
+│
+│ STABILITY: ${entry.stability}
+│ RECEIPTS: ${entry.receipts.join(', ')}
+└─────────────────────────────────────`;
+    } else {
+      // Full desktop format
+      output += `
+
+┌─ Version ${entry.version} ─ ${entry.date} ─────────────────────────────────────
+│
+│ ◆ SYSTEM STATE
+│   ${entry.state.join('\n│   ')}
+│
+│ ◆ BEHAVIORAL SHIFT
+│   ${entry.shift.join('\n│   ')}
+│
+│ ◆ STABILITY: ${entry.stability}
+│ ◆ RECEIPTS: ${entry.receipts.join(', ')}
+│
+└──────────────────────────────────────────────────────────────`;
+    }
+  }
+  
+  return output;
+}
 
 export interface ExecutionResult {
   success: boolean;
@@ -713,6 +827,11 @@ ${identityLine}│  Mode: ${roleDisplay}
       result = await system.health();
     } else if (base === 'system.version') {
       result = await system.version();
+    } else if (base === 'system.changelog') {
+      // Mobile-first changelog display with no mid-word breaks
+      const version = args[0];
+      const changelog = formatChangelogForTerminal(version);
+      return { success: true, output: changelog };
     } else if (base === 'system.config') {
       result = await system.config(args[0]);
     } else if (base === 'system.audit') {
