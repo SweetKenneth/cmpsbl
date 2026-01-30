@@ -272,6 +272,37 @@ class BudgetGovernorClient {
   }
 
   /**
+   * Get status for terminal display (matches clm.budget command expectations)
+   */
+  getStatus(): {
+    daily_limit: number;
+    used_today: number;
+    remaining: number;
+    remaining_pct: number;
+    calls_per_hour: number;
+    reset_time: string;
+    kill_switch: boolean;
+    enabled: boolean;
+  } {
+    this.checkDayRollover();
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+    
+    return {
+      daily_limit: this.state.totalBudgetUnits,
+      used_today: this.state.usedUnits,
+      remaining: this.state.remainingUnits,
+      remaining_pct: this.state.remainingPct,
+      calls_per_hour: 10, // Rate limit per hour
+      reset_time: tomorrow.toLocaleTimeString(),
+      kill_switch: this.config.killSwitch,
+      enabled: this.config.enabled,
+    };
+  }
+
+  /**
    * Get tier limits (for tier command)
    */
   getTierLimits(): {

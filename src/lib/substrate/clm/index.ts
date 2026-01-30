@@ -67,6 +67,7 @@ import { budgetGovernor } from './budget-governor';
 import { learningOrchestrator } from './orchestrator';
 import { tierCommand } from './tier-command';
 import { spacedRepetition } from './spaced-repetition';
+import { topicBank } from './topic-bank';
 
 /**
  * Check if CLM is ready to run
@@ -84,11 +85,16 @@ export async function runCLMCycle(): Promise<LearningJobResult | null> {
 }
 
 /**
- * Get CLM status summary
+ * Get CLM status summary (terminal-compatible format)
  */
 export function getCLMStatus(): {
   enabled: boolean;
   running: boolean;
+  kill_switch: boolean;
+  budget_used: number;
+  budget_total: number;
+  topics_count: number;
+  review_queue_size: number;
   budget: BudgetState;
   tier: TierInfo;
   srQueueSize: number;
@@ -99,10 +105,16 @@ export function getCLMStatus(): {
   const tier = tierCommand.getCurrentTier();
   const orchestratorState = learningOrchestrator.getState();
   const srSummary = spacedRepetition.getQueueSummary();
+  const curriculum = topicBank.getCoreCurriculum();
 
   return {
     enabled: config.enabled && !config.killSwitch,
     running: orchestratorState.isRunning,
+    kill_switch: config.killSwitch,
+    budget_used: budgetState.usedUnits,
+    budget_total: budgetState.totalBudgetUnits,
+    topics_count: curriculum.length,
+    review_queue_size: srSummary.total,
     budget: budgetState,
     tier,
     srQueueSize: srSummary.total,

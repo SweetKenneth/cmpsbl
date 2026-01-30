@@ -141,6 +141,25 @@ class SpacedRepetitionClient {
   }
 
   /**
+   * Get full queue for display
+   */
+  getQueue(): Array<{
+    id: string;
+    topic: string;
+    next_review: string | null;
+    confidence: number;
+    repetitions: number;
+  }> {
+    return this.queue.map(item => ({
+      id: item.id,
+      topic: item.topicName,
+      next_review: item.nextReviewAt,
+      confidence: item.confidence,
+      repetitions: item.repetitions,
+    }));
+  }
+
+  /**
    * Get queue summary
    */
   getQueueSummary(): {

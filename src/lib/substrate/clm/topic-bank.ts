@@ -28,6 +28,8 @@ export interface Topic {
   lastStudiedAt?: string;
   confidenceLevel: number;
   studyCount: number;
+  /** Mastery level 0.0-1.0 (for terminal display) */
+  mastery?: number;
 }
 
 export type TopicCategory = 
@@ -250,6 +252,21 @@ class TopicBankClient {
       lastStudiedAt: undefined,
       studyCount: 0,
     }));
+  }
+
+  /**
+   * Get all topics (combines curriculum with cache)
+   */
+  getTopics(): Topic[] {
+    const curriculum = this.getCoreCurriculum();
+    // Merge with any cached updates, add mastery from confidence
+    return curriculum.map(topic => {
+      const cached = this.topicCache.get(topic.id);
+      if (cached && cached.expiresAt > Date.now()) {
+        return { ...cached.topic, mastery: cached.topic.confidenceLevel };
+      }
+      return { ...topic, mastery: topic.confidenceLevel };
+    });
   }
 
   /**
