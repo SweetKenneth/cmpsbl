@@ -9063,9 +9063,9 @@ async function handleSystem(
         checks.defense = !error; 
       } catch { checks.defense = false; }
       
-      // Nexus - AI providers
+      // Nexus - AI providers (guard against empty keyEnv for local provider)
       for (const config of Object.values(PROVIDERS)) {
-        if (Deno.env.get(config.keyEnv)) { checks.nexus = true; break; }
+        if (config.type === 'local' || (config.keyEnv && Deno.env.get(config.keyEnv))) { checks.nexus = true; break; }
       }
       
       // Vision - observability (check orchestrator state)
@@ -10031,10 +10031,15 @@ async function handleSystem(
         };
       });
       
-      // Provider availability
+      // Provider availability (guard against empty keyEnv for local provider)
       const providerStatus: Record<string, boolean> = {};
       for (const [name, config] of Object.entries(PROVIDERS)) {
-        providerStatus[name] = !!Deno.env.get(config.keyEnv);
+        // Local provider has empty keyEnv, so check before calling Deno.env.get
+        if (!config.keyEnv || config.type === 'local') {
+          providerStatus[name] = config.type === 'local'; // local is always available
+        } else {
+          providerStatus[name] = !!Deno.env.get(config.keyEnv);
+        }
       }
       
       return jsonResponse({
