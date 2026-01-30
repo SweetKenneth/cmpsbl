@@ -197,30 +197,30 @@ class EvolutionReceiptManager {
    */
   formatReceipt(receipt: EvolutionReceipt): string {
     const lines = [
-      `╔══════════════════════════════════════════════════════════════╗`,
-      `║  EVOLUTION RECEIPT 🔥                                        ║`,
-      `╠══════════════════════════════════════════════════════════════╣`,
-      `║  Receipt ID: ${receipt.receipt_id.substring(0, 8)}...                                  ║`,
-      `║  Run ID:     ${receipt.run_id.substring(0, 8)}...                                  ║`,
-      `║  Phase:      ${receipt.phase.padEnd(20)}                       ║`,
-      `║  Timestamp:  ${new Date(receipt.timestamp).toISOString()}        ║`,
-      `╠══════════════════════════════════════════════════════════════╣`,
-      `║  Changes Applied: ${receipt.changes_applied.length.toString().padEnd(5)}                                  ║`,
-      `║  Tests Run:       ${receipt.tests_run.toString().padEnd(5)}                                  ║`,
-      `║  Tests Passed:    ${receipt.tests_passed.toString().padEnd(5)}                                  ║`,
+      `╔══════════════════════════════════════════════════════════════════════════╗`,
+      `║  EVOLUTION RECEIPT 🔥                                                    ║`,
+      `╠══════════════════════════════════════════════════════════════════════════╣`,
+      `║  Receipt ID: ${receipt.receipt_id}`,
+      `║  Run ID:     ${receipt.run_id}`,
+      `║  Phase:      ${receipt.phase}`,
+      `║  Timestamp:  ${new Date(receipt.timestamp).toISOString()}`,
+      `╠══════════════════════════════════════════════════════════════════════════╣`,
+      `║  Changes Applied: ${receipt.changes_applied.length}`,
+      `║  Tests Run:       ${receipt.tests_run}`,
+      `║  Tests Passed:    ${receipt.tests_passed}`,
     ];
 
     if (receipt.backup_id) {
-      lines.push(`║  Backup ID:       ${receipt.backup_id.substring(0, 8)}...                          ║`);
+      lines.push(`║  Backup ID:       ${receipt.backup_id}`);
     }
 
     if (receipt.health_before && receipt.health_after) {
-      lines.push(`╠══════════════════════════════════════════════════════════════╣`);
-      lines.push(`║  Health Before: ${receipt.health_before.overall_score.toFixed(2).padEnd(8)}                              ║`);
-      lines.push(`║  Health After:  ${receipt.health_after.overall_score.toFixed(2).padEnd(8)}                              ║`);
+      lines.push(`╠══════════════════════════════════════════════════════════════════════════╣`);
+      lines.push(`║  Health Before: ${receipt.health_before.overall_score.toFixed(2)}`);
+      lines.push(`║  Health After:  ${receipt.health_after.overall_score.toFixed(2)}`);
     }
 
-    lines.push(`╚══════════════════════════════════════════════════════════════╝`);
+    lines.push(`╚══════════════════════════════════════════════════════════════════════════╝`);
 
     return lines.join('\n');
   }

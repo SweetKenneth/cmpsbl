@@ -179,6 +179,15 @@ Receipts are **facts**, not **methods**.
 
 ## 6. Changelog
 
+### v0.7.9 (v6.0.0 FNDTN)
+
+- ✅ Updated SUBSTRATE_VERSION to 6.0.0
+- ✅ Fixed backup output bloat (removed data_export from inline response)
+- ✅ Fixed UUID display in terminal (full UUIDs shown instead of truncated)
+- ✅ Fixed modernizer.receipts command formatting
+- ✅ Added failsafe backup override capability
+- ✅ RLS policies for backup table visibility
+
 ### v0.7.8
 
 - ✅ Added Proposal Normalization Layer
@@ -202,5 +211,5 @@ Receipts are **facts**, not **methods**.
 
 ---
 
-*CMPSBL OS Substrate v0.7.8 — Scan Normalization Era*
+*CMPSBL OS Substrate v6.0.0 — FNDTN Release*
 *© 2025-2026 PromptFluid®. All rights reserved.*
