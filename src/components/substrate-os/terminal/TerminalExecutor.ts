@@ -1697,6 +1697,44 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
       } catch (err) {
         return { success: false, output: `▓ Queue error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
+    } else if (base === 'clm.add_topic') {
+      if (args.length < 2) {
+        return { success: false, output: '▓ ERROR: Missing arguments\n  Usage: clm.add_topic <topic> <category>\n  Categories: core_curriculum, gap_detection, spaced_repetition, deep_dive' };
+      }
+      const topicName = args[0];
+      const category = args[1] as any;
+      try {
+        const { topicBank } = await import('@/lib/substrate/clm');
+        const topic = topicBank.addTopic(topicName, category);
+        return {
+          success: true,
+          output: `◉ Topic added to CLM bank: "${topic.name}" (${topic.category})`,
+          data: topic,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ Failed to add topic: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'clm.next_review') {
+      try {
+        const { spacedRepetition } = await import('@/lib/substrate/clm');
+        const next = spacedRepetition.getNextDueTopic();
+        if (!next) {
+          return { success: true, output: '◉ No items due for review — all caught up!' };
+        }
+        return {
+          success: true,
+          output: `╔══════════════════════════════════════════════════════════════╗
+║  NEXT REVIEW ITEM                                            ║
+╠══════════════════════════════════════════════════════════════╣
+║  Topic:      ${next.name.substring(0, 45).padEnd(45)} ║
+║  Confidence: ${((next.confidenceLevel || 0) * 100).toFixed(0)}%                                           ║
+║  Studied:    ${next.studyCount || 0} times                                        ║
+╚══════════════════════════════════════════════════════════════╝`,
+          data: next,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ Next review error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
     }
 
     // Unknown command

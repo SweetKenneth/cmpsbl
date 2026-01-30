@@ -286,6 +286,34 @@ class TopicBankClient {
     return null;
   }
 
+  /**
+   * Add a custom topic to the topic bank
+   */
+  addTopic(name: string, category: TopicCategory = 'core_curriculum'): Topic {
+    const id = `custom-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    const topic: Topic = {
+      id,
+      name,
+      category,
+      weight: 0.6,
+      priority: 11, // Lower priority than core curriculum
+      domainAnchors: [],
+      moduleRefs: [],
+      kpis: [],
+      lastStudiedAt: undefined,
+      confidenceLevel: 0,
+      studyCount: 0,
+      mastery: 0,
+    };
+
+    this.topicCache.set(id, {
+      topic,
+      expiresAt: Date.now() + this.CACHE_TTL_MS,
+    });
+
+    return topic;
+  }
+
   // ═══════════════════════════════════════════════════════════════════════════
   // SELECTION STRATEGIES
   // ═══════════════════════════════════════════════════════════════════════════

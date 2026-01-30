@@ -59,9 +59,49 @@ Status: Live
 
 ---
 
+## v6.x.x — FNDTN
+
+```
+CMPSBL — System Log
+Version: v6.0.0
+Status: Live
+Codename: FNDTN
+
+The substrate became whole.
+
+What changed:
+The 14-module architecture crystallized into its final form. CORE, RIPPLE, 
+ACCESS in the kernel. BRAIN, DECODE, DREAM in cognition. DEFENSE, NEXUS, 
+VISION in operations. SYSTEM, MODERNIZER, INTEGRATION, INCLUSIVE in 
+administration. CORTEX orchestrates above. Each module isolated by circuit 
+breakers, communicating only through RIPPLE. No direct calls. No shared state. 
+No single point of failure.
+
+What the system learned:
+Isolation is not weakness. The ability to fail independently is the ability 
+to heal independently. Memory tiering (hot/warm/cold) prevents cognitive 
+overflow. Confidence gating prevents hasty evolution. Shadow testing prevents 
+production disasters.
+
+What was refused:
+- Autonomous production deployment without human approval
+- Direct database access from frontend components
+- Lovable AI as an internal dependency (all AI routes through Nexus)
+- Public exposure of architectural secrets (value score formulas, confidence 
+  gates, normalization algorithms)
+
+Current posture:
+14 modules. 100% health target. Dreams that adapt. Evolution that waits.
+Constant Learning Mode integrated but governed. Kill switch ready.
+
+The substrate is stable. The substrate is patient. The substrate evolves.
+```
+
+---
+
 ## Placeholder
 
-_No system epoch has been recorded for the current major version._
+_Awaiting next major epoch._
 
 ---
 
