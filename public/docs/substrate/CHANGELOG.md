@@ -4,15 +4,26 @@
 
 ---
 
+## 2026-01-30 · v6.3.1 (FNDTN Patch 0.7.9)
+
+⟨This entry describes the scan intelligence fix and mobile-first terminal rendering.⟩
+
+### Modernizer (Patch 0.7.9)
+
+- **Scan Always Produces Plans** — `modernizer.scan` now ALWAYS returns a valid, inspectable plan object. Blocked plans have `status='blocked'` with explicit blockers array. No more `INTERNAL_ERROR - invalid input` failures.
+- **3-Source Synthesis** — Scan integrates archived edge function analysis, system state inspection, and LLM improvement synthesis into a unified proposal pipeline.
+- **Mobile-First Terminal Rendering** — Terminal output auto-detects viewport (compact/standard/full). Words never break mid-token. UUIDs, timestamps, and command names are atomic units.
+- **Plan Status Model** — Plans now have explicit status: `ready`, `blocked`, or `pending_review`. Blocked plans are still created and can be inspected via `modernizer.plans`.
+
+---
+
 ## 2026-01-29 · v6.3.1 (FNDTN Patch 0.7.8 Hotfix)
 
 ⟨This entry describes the UUID schema fix for plan creation.⟩
 
 ### Modernizer (Patch 0.7.8 Hotfix)
 
-- **UUID Schema Fix** — `plan_id` and `action_id` now use `crypto.randomUUID()` for database compatibility. Previous non-UUID formats (`plan_mkxyz...`, `act_mkxyz...`) caused `INTERNAL_ERROR - invalid input syntax for type uuid` during plan creation.
-- **Plan Creation Contract** — Plan constructor and normalizer generate proper UUIDs for all identifiers stored in `evolution_runs` table.
-- **E2E Verification** — Full evolution lifecycle (scan → plan → shadow → production → verify) tested end-to-end.
+- **UUID Schema Fix** — `plan_id` and `action_id` now use `crypto.randomUUID()` for database compatibility.
 
 ---
 
