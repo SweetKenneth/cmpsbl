@@ -1524,6 +1524,138 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
       result = await inclusive.coverage();
     }
 
+    // ═══════════════════════════════════════════════════════════════
+    // CLM (Constant Learning Mode) v6.7.0
+    // ═══════════════════════════════════════════════════════════════
+    else if (base === 'clm.status') {
+      try {
+        const { getCLMStatus } = await import('@/lib/substrate/clm');
+        const status = await getCLMStatus();
+        return {
+          success: true,
+          output: `╔══════════════════════════════════════════════════════════════╗
+║  CONSTANT LEARNING MODE — v6.7.0                             ║
+╠══════════════════════════════════════════════════════════════╣
+║  Status:      ${status.enabled ? '🟢 ENABLED' : '🔴 DISABLED'}                                    ║
+║  Kill Switch: ${status.kill_switch ? '🛑 ACTIVE' : '✅ OFF'}                                      ║
+║  Budget Used: ${((status.budget_used / status.budget_total) * 100).toFixed(0)}% (${status.budget_used}/${status.budget_total} tokens)              ║
+║  Topics:      ${status.topics_count} in bank                                  ║
+║  Queue:       ${status.review_queue_size} items pending review                      ║
+╚══════════════════════════════════════════════════════════════╝`,
+          data: status,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ CLM not initialized or error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'clm.enable') {
+      try {
+        const { enableCLM } = await import('@/lib/substrate/clm');
+        await enableCLM();
+        return { success: true, output: '◉ Constant Learning Mode ENABLED — autonomous learning active' };
+      } catch (err) {
+        return { success: false, output: `▓ Failed to enable CLM: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'clm.disable') {
+      try {
+        const { disableCLM } = await import('@/lib/substrate/clm');
+        await disableCLM();
+        return { success: true, output: '◉ Constant Learning Mode DISABLED' };
+      } catch (err) {
+        return { success: false, output: `▓ Failed to disable CLM: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'clm.cycle') {
+      try {
+        const { runCLMCycle } = await import('@/lib/substrate/clm');
+        const result = await runCLMCycle();
+        return { 
+          success: result.success, 
+          output: result.success 
+            ? `◉ CLM cycle complete — ${result.topics_learned || 0} topics processed, ${result.tokens_used || 0} tokens used` 
+            : `▓ CLM cycle failed: ${result.error}`,
+          data: result,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ CLM cycle error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'clm.kill_switch') {
+      const action = args[0];
+      if (!action || !['on', 'off'].includes(action)) {
+        return { success: false, output: '▓ ERROR: Specify on or off\n  Usage: clm.kill_switch <on|off>' };
+      }
+      try {
+        if (action === 'on') {
+          const { activateKillSwitch } = await import('@/lib/substrate/clm');
+          await activateKillSwitch();
+          return { success: true, output: '🛑 CLM Kill Switch ACTIVATED — all learning halted' };
+        } else {
+          const { deactivateKillSwitch } = await import('@/lib/substrate/clm');
+          await deactivateKillSwitch();
+          return { success: true, output: '✅ CLM Kill Switch deactivated — learning resumed' };
+        }
+      } catch (err) {
+        return { success: false, output: `▓ Kill switch error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'clm.budget') {
+      try {
+        const { budgetGovernor } = await import('@/lib/substrate/clm');
+        const status = budgetGovernor.getStatus();
+        return {
+          success: true,
+          output: `╔══════════════════════════════════════════════════════════════╗
+║  CLM BUDGET GOVERNOR                                         ║
+╠══════════════════════════════════════════════════════════════╣
+║  Daily Budget:  ${status.daily_limit.toLocaleString()} tokens                           ║
+║  Used Today:    ${status.used_today.toLocaleString()} tokens (${((status.used_today / status.daily_limit) * 100).toFixed(1)}%)                    ║
+║  Remaining:     ${status.remaining.toLocaleString()} tokens                           ║
+║  Rate Limit:    ${status.calls_per_hour}/hr                                   ║
+║  Reset Time:    ${status.reset_time}                                ║
+╚══════════════════════════════════════════════════════════════╝`,
+          data: status,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ Budget error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'clm.topics') {
+      try {
+        const { topicBank } = await import('@/lib/substrate/clm');
+        const topics = topicBank.getTopics();
+        const lines = ['╔══════════════════════════════════════════════════════════════╗'];
+        lines.push('║  CLM TOPIC BANK                                              ║');
+        lines.push('╠══════════════════════════════════════════════════════════════╣');
+        for (const topic of topics.slice(0, 15)) {
+          const mastery = `${(topic.mastery * 100).toFixed(0)}%`.padEnd(5);
+          const name = topic.name.substring(0, 40).padEnd(40);
+          lines.push(`║  ${mastery} ${name}     ║`);
+        }
+        if (topics.length > 15) {
+          lines.push(`║  ... and ${topics.length - 15} more topics                               ║`);
+        }
+        lines.push('╚══════════════════════════════════════════════════════════════╝');
+        return { success: true, output: lines.join('\n'), data: topics };
+      } catch (err) {
+        return { success: false, output: `▓ Topics error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'clm.review_queue') {
+      try {
+        const { spacedRepetition } = await import('@/lib/substrate/clm');
+        const queue = spacedRepetition.getQueue();
+        if (queue.length === 0) {
+          return { success: true, output: '◉ Review queue is empty — all caught up!' };
+        }
+        const lines = ['╔══════════════════════════════════════════════════════════════╗'];
+        lines.push('║  SPACED REPETITION QUEUE                                     ║');
+        lines.push('╠══════════════════════════════════════════════════════════════╣');
+        for (const item of queue.slice(0, 10)) {
+          const due = item.next_review ? new Date(item.next_review).toLocaleDateString() : 'Now';
+          lines.push(`║  📚 ${item.topic.substring(0, 35).padEnd(35)} Due: ${due.padEnd(10)} ║`);
+        }
+        lines.push('╚══════════════════════════════════════════════════════════════╝');
+        return { success: true, output: lines.join('\n'), data: queue };
+      } catch (err) {
+        return { success: false, output: `▓ Queue error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+
     // Unknown command
     else {
       return {

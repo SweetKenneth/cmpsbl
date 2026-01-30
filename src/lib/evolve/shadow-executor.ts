@@ -190,6 +190,20 @@ class ShadowExecutor {
 
     return { valid: true };
   }
+
+  /**
+   * Get applied changes count for reporting
+   */
+  getChangesCount(run_id: string): number {
+    return shadowStore.getArtifacts(run_id).length;
+  }
+
+  /**
+   * Get shadow artifacts for a run
+   */
+  getArtifacts(run_id: string) {
+    return shadowStore.getArtifacts(run_id);
+  }
 }
 
 export const shadowExecutor = new ShadowExecutor();
