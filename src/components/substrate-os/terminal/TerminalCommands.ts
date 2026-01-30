@@ -158,7 +158,8 @@ export const SYSTEM_COMMANDS: CommandDefinition[] = [
   // v5.6.0: Module Registry + Inventory
   { command: 'system.modules', description: 'List all registered modules', category: 'system', icon: Box, requiresOperator: false, args: '[--full|--health|--dag|--roles|--boot|--inventory]' },
   { command: 'system.module', description: 'Get specific module details', category: 'system', icon: Box, requiresOperator: false, args: '<module_name>' },
-  { command: 'system.changelog', description: 'View evolution changelog', category: 'system', icon: FileText, requiresOperator: false, args: '[version]' },
+  { command: 'system.changelog', description: 'View living evolution log', category: 'system', icon: FileText, requiresOperator: false },
+  { command: 'system.evolution', description: 'View living evolution log (alias)', category: 'system', icon: FileText, requiresOperator: false },
 ];
 
 export const MODERNIZER_COMMANDS: CommandDefinition[] = [

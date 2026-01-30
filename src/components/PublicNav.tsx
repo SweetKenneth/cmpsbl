@@ -80,7 +80,7 @@ export function PublicNav() {
       icon: BookOpen,
       items: [
         { name: "Blog", href: "/blog", description: "Articles & Research", icon: FileText },
-        { name: "Changelog", href: "/changelog", description: "Version History", icon: BookOpen },
+        { name: "Evolution Log", href: "/changelog", description: "System Evolution", icon: BookOpen },
         { name: "Roadmap", href: "/roadmap", description: "Development Plan", icon: Map },
       ]
     },

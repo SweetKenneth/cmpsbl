@@ -788,10 +788,10 @@ export default function SubstrateOS() {
               <span>promptfluid® substrate os</span>
             </div>
             <span>•</span>
-            <span>v6.0.0</span>
+            <span>v6.x.x</span>
           </div>
           <div className="flex items-center gap-4">
-            <a href="/changelog" className="hover:text-cyan-400 transition-colors">changelog</a>
+            <a href="/changelog" className="hover:text-cyan-400 transition-colors">evolution</a>
             <a href="/documentation" className="hover:text-cyan-400 transition-colors">docs</a>
           </div>
         </div>
