@@ -778,10 +778,27 @@ serve(async (req) => {
   const startTime = Date.now();
   state.totalRequests++;
   
-  const supabase = createClient(
-    Deno.env.get("SUPABASE_URL") ?? "",
-    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
-  );
+  // Validate required environment variables
+  const supabaseUrl = Deno.env.get("SUPABASE_URL");
+  const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  
+  if (!supabaseUrl || !supabaseKey) {
+    console.error("❌ Missing required env vars: SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY");
+    return new Response(
+      JSON.stringify({
+        success: false,
+        error: "Configuration error: Missing required environment variables",
+        substrate: "promptfluid®",
+        version: SUBSTRATE_VERSION,
+        health: Object.fromEntries(
+          Object.entries(state.modules).map(([k, v]) => [k, { score: v.healthScore, status: v.status }])
+        ),
+      }),
+      { status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
+  }
+  
+  const supabase = createClient(supabaseUrl, supabaseKey);
 
   try {
     const body = await req.json();
