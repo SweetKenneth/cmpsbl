@@ -371,22 +371,22 @@ export const INCLUSIVE_COMMANDS: CommandDefinition[] = [
 // CLM (Constant Learning Mode) commands — v6.7.0
 export const CLM_COMMANDS: CommandDefinition[] = [
   // Status & control
-  { command: 'clm.status', description: 'CLM status (budget, topics, queue)', category: 'brain', icon: Brain, requiresOperator: false },
-  { command: 'clm.enable', description: 'Enable Constant Learning Mode', category: 'brain', icon: Brain, requiresOperator: true },
-  { command: 'clm.disable', description: 'Disable Constant Learning Mode', category: 'brain', icon: Brain, requiresOperator: true },
-  { command: 'clm.cycle', description: 'Run a manual CLM cycle', category: 'brain', icon: Activity, requiresOperator: true },
+  { command: 'clm.status', description: 'CLM status (budget, topics, queue)', category: 'clm', icon: Brain, requiresOperator: false },
+  { command: 'clm.enable', description: 'Enable Constant Learning Mode', category: 'clm', icon: Brain, requiresOperator: true },
+  { command: 'clm.disable', description: 'Disable Constant Learning Mode', category: 'clm', icon: Brain, requiresOperator: true },
+  { command: 'clm.cycle', description: 'Run a manual CLM cycle', category: 'clm', icon: Activity, requiresOperator: true },
   
   // Budget & governance
-  { command: 'clm.budget', description: 'View daily budget allocation', category: 'brain', icon: Gauge, requiresOperator: false },
-  { command: 'clm.kill_switch', description: 'Activate/deactivate kill switch', category: 'brain', icon: Shield, requiresOperator: true, args: '<on|off>', example: 'clm.kill_switch on' },
+  { command: 'clm.budget', description: 'View daily budget allocation', category: 'clm', icon: Gauge, requiresOperator: false },
+  { command: 'clm.kill_switch', description: 'Activate/deactivate kill switch', category: 'clm', icon: Shield, requiresOperator: true, args: '<on|off>', example: 'clm.kill_switch on' },
   
   // Topics & curriculum
-  { command: 'clm.topics', description: 'View topic bank with mastery scores', category: 'brain', icon: List, requiresOperator: false },
-  { command: 'clm.add_topic', description: 'Add custom topic to bank', category: 'brain', icon: Brain, requiresOperator: true, args: '<topic> <category>', example: 'clm.add_topic "quantum computing" science' },
+  { command: 'clm.topics', description: 'View topic bank with mastery scores', category: 'clm', icon: List, requiresOperator: false },
+  { command: 'clm.add_topic', description: 'Add custom topic to bank', category: 'clm', icon: Brain, requiresOperator: true, args: '<topic> <category>', example: 'clm.add_topic "quantum computing" science' },
   
   // Spaced repetition
-  { command: 'clm.review_queue', description: 'View spaced repetition queue', category: 'brain', icon: Clock, requiresOperator: false },
-  { command: 'clm.next_review', description: 'Get next review item', category: 'brain', icon: Brain, requiresOperator: false },
+  { command: 'clm.review_queue', description: 'View spaced repetition queue', category: 'clm', icon: Clock, requiresOperator: false },
+  { command: 'clm.next_review', description: 'Get next review item', category: 'clm', icon: Brain, requiresOperator: false },
 ];
 
 export const META_COMMANDS: CommandDefinition[] = [

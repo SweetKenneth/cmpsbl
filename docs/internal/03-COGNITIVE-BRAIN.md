@@ -174,4 +174,58 @@ Every 7 days:
 
 ---
 
-*CMPSBL OS Substrate v6.0.0 — Internal Engineering Library*
+## Constant Learning Mode (CLM) v6.7.0
+
+**CLM is the substrate's always-on learning capability.**
+
+### Core Principles
+
+| Principle | Description |
+|-----------|-------------|
+| **Budget-Governed** | 70% of daily Nexus allocation dedicated to learning |
+| **Spaced Repetition** | SM-2 algorithm for memory consolidation |
+| **Kill Switch** | Emergency halt for runaway learning |
+| **Quiet Hours** | Respects operator-defined rest periods |
+
+### Budget Governor
+
+The Budget Governor ensures CLM never starves production workloads:
+
+```
+Daily Budget = DAILY_NEXUS_LIMIT × 0.70
+
+Enforcement:
+- Budget resets at midnight
+- Micro-learning mode activates below 5% remaining
+- Kill switch halts all learning immediately
+- Consecutive failures trigger auto-pause
+```
+
+### Topic Selection Algorithm
+
+```
+Roll random 0.0–1.0:
+
+0.00–0.50 → Core Curriculum (highest priority foundational topics)
+0.50–0.75 → Gap Detection (topics from recent failures)
+0.75–0.90 → Spaced Repetition (due for review)
+0.90–1.00 → Deep Dive (exploratory, only if budget > 20%)
+```
+
+### Spaced Repetition (SM-2)
+
+```
+After each review:
+  new_ease = ease + (0.1 - (5 - quality) × (0.08 + (5 - quality) × 0.02))
+  new_ease = max(1.3, new_ease)
+
+Interval calculation:
+  if quality < 3: reset to 1 day (failed recall)
+  else: new_interval = previous_interval × ease
+
+Max interval: 180 days
+```
+
+---
+
+*CMPSBL OS Substrate v6.3.1 — Internal Engineering Library*
