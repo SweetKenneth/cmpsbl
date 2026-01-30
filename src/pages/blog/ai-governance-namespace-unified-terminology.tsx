@@ -78,107 +78,107 @@ export default function AIGovernanceNamespaceUnifiedTerminology() {
         <div className="container mx-auto px-4 py-16">
           <div className="max-w-3xl mx-auto">
             
-            <div className="prose prose-lg prose-invert max-w-none">
-              <p className="text-xl text-muted-foreground leading-relaxed mb-8">
+            <div className="prose prose-lg prose-invert max-w-none space-y-6">
+              <p className="text-xl text-muted-foreground leading-relaxed !mb-10">
                 Language shapes thought. In the emerging field of autonomous AI systems, inconsistent terminology creates real problems: miscommunication between teams, confusion in documentation, and ambiguity in governance policies. At CMPSBL, we've addressed this by establishing a unified governance vocabulary—and we've backed it with strategic domain registrations to anchor these concepts in a persistent namespace.
               </p>
 
-              <h2 className="text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-3">
+              <h2 className="text-2xl font-bold text-foreground !mt-16 !mb-8 flex items-center gap-3">
                 <Scale className="w-6 h-6 text-primary" />
                 The Terminology Problem in AI Governance
               </h2>
               
-              <p>
+              <p className="text-muted-foreground leading-relaxed">
                 Consider how different teams might describe the same concept: one calls it "AI supervision," another says "model oversight," a third uses "cognitive governance." Are these synonyms? Slightly different concepts? It's often unclear. This ambiguity becomes dangerous when you're writing policies that govern autonomous behavior.
               </p>
               
-              <p>
+              <p className="text-muted-foreground leading-relaxed">
                 We encountered this problem internally as CMPSBL grew. Different modules used different terms for the same governance concepts. Documentation became inconsistent. New team members struggled to understand the relationships between concepts. We needed a canonical vocabulary.
               </p>
               
-              <p>
+              <p className="text-muted-foreground leading-relaxed">
                 The solution wasn't just creating a glossary—it was establishing authoritative definitions tied to persistent identifiers. When we say "confidence threshold," there's one definition, one namespace, one source of truth.
               </p>
 
-              <h2 className="text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-3">
+              <h2 className="text-2xl font-bold text-foreground !mt-16 !mb-8 flex items-center gap-3">
                 <Link2 className="w-6 h-6 text-primary" />
                 Strategic Domain Registration
               </h2>
               
-              <p>
+              <p className="text-muted-foreground leading-relaxed">
                 To anchor our governance vocabulary, we registered a family of domains that capture key concepts in AI governance:
               </p>
               
-              <div className="bg-card border border-border rounded-lg p-6 my-8">
+              <div className="bg-card border border-border rounded-lg p-6 !my-10">
                 <h4 className="text-lg font-semibold text-foreground mb-4">Reserved Namespace Domains</h4>
-                <ul className="space-y-3 text-muted-foreground">
+                <ul className="space-y-4 text-muted-foreground">
                   <li className="flex items-center gap-3">
                     <Globe className="w-4 h-4 text-primary flex-shrink-0" />
-                    <span><strong>cognitivegovernance.com</strong> — Core governance framework definitions</span>
+                    <span><strong className="text-foreground">cognitivegovernance.com</strong> — Core governance framework definitions</span>
                   </li>
                   <li className="flex items-center gap-3">
                     <Globe className="w-4 h-4 text-primary flex-shrink-0" />
-                    <span><strong>aiconfidence.dev</strong> — Confidence scoring and threshold standards</span>
+                    <span><strong className="text-foreground">aiconfidence.dev</strong> — Confidence scoring and threshold standards</span>
                   </li>
                   <li className="flex items-center gap-3">
                     <Globe className="w-4 h-4 text-primary flex-shrink-0" />
-                    <span><strong>autonomousreflection.ai</strong> — Self-assessment and dream cycle terminology</span>
+                    <span><strong className="text-foreground">autonomousreflection.ai</strong> — Self-assessment and dream cycle terminology</span>
                   </li>
                   <li className="flex items-center gap-3">
                     <Globe className="w-4 h-4 text-primary flex-shrink-0" />
-                    <span><strong>governedautonomy.org</strong> — Bounded autonomy and constraint definitions</span>
+                    <span><strong className="text-foreground">governedautonomy.org</strong> — Bounded autonomy and constraint definitions</span>
                   </li>
                 </ul>
               </div>
               
-              <p>
+              <p className="text-muted-foreground leading-relaxed">
                 These domains serve as permanent reference points. When our documentation references "confidence threshold," it links to the authoritative definition. When external systems integrate with CMPSBL, they can trace terminology to its source.
               </p>
 
-              <h2 className="text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-3">
+              <h2 className="text-2xl font-bold text-foreground !mt-16 !mb-8 flex items-center gap-3">
                 <Globe className="w-6 h-6 text-primary" />
                 Core Vocabulary: What We've Standardized
               </h2>
               
-              <p>
+              <p className="text-muted-foreground leading-relaxed">
                 Our governance namespace includes several concept families:
               </p>
               
-              <p>
-                <strong>Confidence Semantics:</strong> Terms like "confidence score," "confidence threshold," "confidence decay," and "confidence validation" have precise definitions. A confidence score isn't just "how sure the AI is"—it's a normalized measure with specific calculation methods and interpretation guidelines.
+              <p className="text-muted-foreground leading-relaxed">
+                <strong className="text-foreground">Confidence Semantics:</strong> Terms like "confidence score," "confidence threshold," "confidence decay," and "confidence validation" have precise definitions. A confidence score isn't just "how sure the AI is"—it's a normalized measure with specific calculation methods and interpretation guidelines.
               </p>
               
-              <p>
-                <strong>Autonomy Boundaries:</strong> "Governed autonomy," "bounded self-modification," "constraint envelope," and "escalation trigger" define the vocabulary for discussing how much freedom an AI system has and what limits apply.
+              <p className="text-muted-foreground leading-relaxed">
+                <strong className="text-foreground">Autonomy Boundaries:</strong> "Governed autonomy," "bounded self-modification," "constraint envelope," and "escalation trigger" define the vocabulary for discussing how much freedom an AI system has and what limits apply.
               </p>
               
-              <p>
-                <strong>Reflection Patterns:</strong> "Dream cycle," "cognitive reflection," "improvement hypothesis," and "learning validation" describe how systems assess and improve their own behavior.
+              <p className="text-muted-foreground leading-relaxed">
+                <strong className="text-foreground">Reflection Patterns:</strong> "Dream cycle," "cognitive reflection," "improvement hypothesis," and "learning validation" describe how systems assess and improve their own behavior.
               </p>
               
-              <p>
-                <strong>Governance Actions:</strong> "Approval gate," "audit checkpoint," "rollback trigger," and "freeze state" define the mechanisms humans use to maintain oversight of autonomous behavior.
+              <p className="text-muted-foreground leading-relaxed">
+                <strong className="text-foreground">Governance Actions:</strong> "Approval gate," "audit checkpoint," "rollback trigger," and "freeze state" define the mechanisms humans use to maintain oversight of autonomous behavior.
               </p>
 
-              <h2 className="text-2xl font-bold text-foreground mt-12 mb-6">Our Hope for Broader Adoption</h2>
+              <h2 className="text-2xl font-bold text-foreground !mt-16 !mb-8">Our Hope for Broader Adoption</h2>
               
-              <p>
+              <p className="text-muted-foreground leading-relaxed">
                 We've established this namespace primarily to solve our own problems—but we believe the broader AI community would benefit from terminological consistency. As more organizations build autonomous systems, the lack of shared vocabulary will create increasing friction.
               </p>
               
-              <p>
+              <p className="text-muted-foreground leading-relaxed">
                 We're not claiming ownership of these concepts. We're offering a starting point: a well-defined vocabulary, backed by persistent identifiers, that others can adopt, adapt, or use as reference.
               </p>
               
-              <p>
+              <p className="text-muted-foreground leading-relaxed">
                 If you're building AI governance frameworks, we invite you to examine our terminology. Where our definitions align with your needs, adoption is straightforward. Where they don't, the explicit definitions at least provide a clear basis for discussion about differences.
               </p>
               
-              <p>
+              <p className="text-muted-foreground leading-relaxed">
                 The goal isn't uniformity for its own sake—it's clarity. When different teams use the same words to mean the same things, collaboration becomes possible. When governance policies use precise terminology, ambiguity decreases. When AI systems are described in consistent language, oversight becomes more effective.
               </p>
               
-              <p className="text-lg text-muted-foreground mt-8 p-6 border-l-4 border-amber-500 bg-amber-500/5">
+              <p className="text-lg text-muted-foreground !mt-12 p-6 border-l-4 border-amber-500 bg-amber-500/5 rounded-r-lg">
                 Language is infrastructure. As AI governance becomes increasingly critical, the terminology we use to describe it matters. We've built our namespace—and we hope others will find it useful.
               </p>
             </div>

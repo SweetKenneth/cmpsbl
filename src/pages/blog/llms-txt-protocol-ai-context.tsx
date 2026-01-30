@@ -78,49 +78,49 @@ export default function LLMsTxtProtocolAIContext() {
         <div className="container mx-auto px-4 py-16">
           <div className="max-w-3xl mx-auto">
             
-            <div className="prose prose-lg prose-invert max-w-none">
-              <p className="text-xl text-muted-foreground leading-relaxed mb-8">
+            <div className="prose prose-lg prose-invert max-w-none space-y-6">
+              <p className="text-xl text-muted-foreground leading-relaxed !mb-10">
                 When we first started building CMPSBL, we faced a fundamental problem: how do you help an AI system understand the context it's operating in? Not just the immediate request, but the broader environment—the capabilities available, the constraints in place, the conventions being followed. The solution we developed internally has proven so useful that we're now advocating for its broader adoption: LLMs.txt.
               </p>
 
-              <h2 className="text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-3">
+              <h2 className="text-2xl font-bold text-foreground !mt-16 !mb-8 flex items-center gap-3">
                 <FileText className="w-6 h-6 text-primary" />
                 The Problem: Context Without Structure
               </h2>
               
-              <p>
+              <p className="text-muted-foreground leading-relaxed">
                 Large language models are remarkably capable at understanding natural language. But they struggle with the same problem humans struggle with: extracting relevant information from unstructured sources. When an AI agent needs to understand how to interact with a system, it faces a maze of documentation pages, API references, README files, and scattered comments—none of which are optimized for machine consumption.
               </p>
               
-              <p>
+              <p className="text-muted-foreground leading-relaxed">
                 This creates inefficiency at scale. Every AI interaction wastes tokens on discovery. Every agent has to re-learn the same context. And because there's no standard format, different systems require different approaches to context gathering.
               </p>
               
-              <p>
+              <p className="text-muted-foreground leading-relaxed">
                 We needed something analogous to robots.txt—a simple, standardized file that tells AI systems what they need to know about a project or service, in a format optimized for their consumption.
               </p>
 
-              <h2 className="text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-3">
+              <h2 className="text-2xl font-bold text-foreground !mt-16 !mb-8 flex items-center gap-3">
                 <Network className="w-6 h-6 text-primary" />
                 Our Solution: The LLMs.txt Standard
               </h2>
               
-              <p>
+              <p className="text-muted-foreground leading-relaxed">
                 LLMs.txt is a plaintext file placed at the root of a project or domain that provides structured context specifically for AI consumption. It's designed to be:
               </p>
               
-              <ul className="space-y-4 my-6">
-                <li><strong>Human-readable:</strong> Anyone can open and understand the file without special tools.</li>
-                <li><strong>Machine-parseable:</strong> Consistent formatting allows AI systems to extract information reliably.</li>
-                <li><strong>Lightweight:</strong> Token-efficient, avoiding the bloat of full documentation.</li>
-                <li><strong>Extensible:</strong> Projects can add custom sections while maintaining core compatibility.</li>
+              <ul className="space-y-4 !my-8">
+                <li className="text-muted-foreground"><strong className="text-foreground">Human-readable:</strong> Anyone can open and understand the file without special tools.</li>
+                <li className="text-muted-foreground"><strong className="text-foreground">Machine-parseable:</strong> Consistent formatting allows AI systems to extract information reliably.</li>
+                <li className="text-muted-foreground"><strong className="text-foreground">Lightweight:</strong> Token-efficient, avoiding the bloat of full documentation.</li>
+                <li className="text-muted-foreground"><strong className="text-foreground">Extensible:</strong> Projects can add custom sections while maintaining core compatibility.</li>
               </ul>
               
-              <p>
+              <p className="text-muted-foreground leading-relaxed">
                 A typical LLMs.txt file includes sections for: system identity, available capabilities, interaction conventions, constraints and boundaries, and pointers to deeper documentation when needed.
               </p>
               
-              <div className="bg-card border border-border rounded-lg p-6 my-8">
+              <div className="bg-card border border-border rounded-lg p-6 !my-10">
                 <h4 className="text-lg font-semibold text-foreground mb-4">Example LLMs.txt Structure</h4>
                 <pre className="text-sm text-muted-foreground overflow-x-auto">
 {`# System Identity
@@ -145,53 +145,53 @@ purpose: Evolving cognitive infrastructure
                 </pre>
               </div>
 
-              <h2 className="text-2xl font-bold text-foreground mt-12 mb-6 flex items-center gap-3">
+              <h2 className="text-2xl font-bold text-foreground !mt-16 !mb-8 flex items-center gap-3">
                 <CheckCircle className="w-6 h-6 text-primary" />
                 Why We Recommend Adoption
               </h2>
               
-              <p>
+              <p className="text-muted-foreground leading-relaxed">
                 After using LLMs.txt internally for over a year, we've observed consistent benefits that we believe would extend to any project working with AI systems:
               </p>
               
-              <p>
-                <strong>Reduced Token Waste:</strong> AI agents can immediately understand context without crawling documentation. For high-volume systems, this translates to meaningful cost savings.
+              <p className="text-muted-foreground leading-relaxed">
+                <strong className="text-foreground">Reduced Token Waste:</strong> AI agents can immediately understand context without crawling documentation. For high-volume systems, this translates to meaningful cost savings.
               </p>
               
-              <p>
-                <strong>Consistent Behavior:</strong> When context is explicitly defined, AI interactions become more predictable. The system knows what's expected of it from the first interaction.
+              <p className="text-muted-foreground leading-relaxed">
+                <strong className="text-foreground">Consistent Behavior:</strong> When context is explicitly defined, AI interactions become more predictable. The system knows what's expected of it from the first interaction.
               </p>
               
-              <p>
-                <strong>Simplified Onboarding:</strong> New team members (human or AI) can quickly understand system conventions by reading a single file.
+              <p className="text-muted-foreground leading-relaxed">
+                <strong className="text-foreground">Simplified Onboarding:</strong> New team members (human or AI) can quickly understand system conventions by reading a single file.
               </p>
               
-              <p>
-                <strong>Governance Transparency:</strong> Constraints and boundaries are explicitly documented, making it clear what the AI should and shouldn't do.
+              <p className="text-muted-foreground leading-relaxed">
+                <strong className="text-foreground">Governance Transparency:</strong> Constraints and boundaries are explicitly documented, making it clear what the AI should and shouldn't do.
               </p>
               
-              <p>
-                <strong>Future-Proofing:</strong> As AI agents become more prevalent in development workflows, having standardized context sharing will become increasingly valuable.
+              <p className="text-muted-foreground leading-relaxed">
+                <strong className="text-foreground">Future-Proofing:</strong> As AI agents become more prevalent in development workflows, having standardized context sharing will become increasingly valuable.
               </p>
 
-              <h2 className="text-2xl font-bold text-foreground mt-12 mb-6">Implementation Guidance</h2>
+              <h2 className="text-2xl font-bold text-foreground !mt-16 !mb-8">Implementation Guidance</h2>
               
-              <p>
+              <p className="text-muted-foreground leading-relaxed">
                 If you're interested in adopting LLMs.txt for your project, here's our recommended approach:
               </p>
               
-              <ol className="space-y-4 my-6 list-decimal list-inside">
-                <li><strong>Start minimal:</strong> Include only the most essential context. You can expand later.</li>
-                <li><strong>Focus on constraints:</strong> AI systems benefit most from knowing what they shouldn't do.</li>
-                <li><strong>Keep it current:</strong> An outdated LLMs.txt is worse than none at all.</li>
-                <li><strong>Test with real AI:</strong> Verify that AI agents can actually use the information provided.</li>
+              <ol className="space-y-4 !my-8 list-decimal list-inside">
+                <li className="text-muted-foreground"><strong className="text-foreground">Start minimal:</strong> Include only the most essential context. You can expand later.</li>
+                <li className="text-muted-foreground"><strong className="text-foreground">Focus on constraints:</strong> AI systems benefit most from knowing what they shouldn't do.</li>
+                <li className="text-muted-foreground"><strong className="text-foreground">Keep it current:</strong> An outdated LLMs.txt is worse than none at all.</li>
+                <li className="text-muted-foreground"><strong className="text-foreground">Test with real AI:</strong> Verify that AI agents can actually use the information provided.</li>
               </ol>
               
-              <p>
+              <p className="text-muted-foreground leading-relaxed">
                 We've published our internal LLMs.txt specification and example files in our documentation. We encourage other projects to adopt compatible formats, contributing to an emerging standard for AI context sharing.
               </p>
               
-              <p className="text-lg text-muted-foreground mt-8 p-6 border-l-4 border-blue-500 bg-blue-500/5">
+              <p className="text-lg text-muted-foreground !mt-12 p-6 border-l-4 border-blue-500 bg-blue-500/5 rounded-r-lg">
                 The web has robots.txt to guide search crawlers. The AI era needs LLMs.txt to guide language models. We're building that standard, and we invite others to join us.
               </p>
             </div>
