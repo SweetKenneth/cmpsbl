@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Internal Engineering Library
 
-**Version 6.0.0 | FNDTN Release | CONFIDENTIAL**
+**Version 6.3.1 | FNDTN Release | CONFIDENTIAL**
 
 ---
 
@@ -29,7 +29,7 @@
 
 ## Quick Reference
 
-### The 14 Modules
+### The 14 Modules (+ CLM)
 
 ```
 KERNEL LAYER (Boot Order 1-3)
@@ -37,22 +37,27 @@ KERNEL LAYER (Boot Order 1-3)
 ├── RIPPLE ......... Event bus, pub/sub, cross-module messaging
 └── ACCESS ......... API keys, rate limits, entitlements
 
-COGNITIVE LAYER (Boot Order 4-7)
+COGNITIVE LAYER (Boot Order 4-6)
 ├── BRAIN .......... Memory storage, recall, consolidation
-├── VISION ......... Future state modeling, trend analysis
-├── CORTEX ......... Orchestration, phase management
-└── MODERNIZER ..... Evolution engine, self-improvement
+├── DECODE ......... NLP interpretation, intent parsing
+└── DREAM .......... Dream-Eater, mutation cycles
 
-INTERFACE LAYER (Boot Order 8-11)
-├── DECODE ......... Natural language → structured commands
+OPERATIONS LAYER (Boot Order 7-9)
 ├── DEFENSE ........ Security, threat detection, rate limiting
 ├── NEXUS .......... AI provider routing, fallback chains
-└── DREAM .......... Autonomous cycles, doctrine extraction
+└── VISION ......... Observability, metrics, tracing
 
-ADMINISTRATIVE LAYER (Boot Order 12-14)
-├── INTEGRATION .... External APIs, webhooks, adapters
-├── INCLUSIVE ...... Accessibility scanning, WCAG enforcement
-└── SYSTEM ......... Health, diagnostics, backup/restore
+ADMIN LAYER (Boot Order 10-12)
+├── SYSTEM ......... Health, diagnostics, backup/restore
+├── MODERNIZER ..... Evolution engine, self-improvement
+└── INCLUSIVE ...... Accessibility scanning, WCAG enforcement
+
+ORCHESTRATOR LAYER (Boot Order 13-14)
+├── CORTEX ......... Policy intent, PAAEL loop, manual mode
+└── INTEGRATION .... External APIs, webhooks, adapters
+
+LEARNING MODE (v6.7.0)
+└── CLM ............ Constant Learning Mode, curriculum, spaced repetition
 ```
 
 ### Key Secrets Summary
@@ -64,8 +69,18 @@ ADMINISTRATIVE LAYER (Boot Order 12-14)
 | Circuit Isolation | Resilience | Each module fails independently |
 | Weighted A11y Score | Inclusive | `100 - (critical×20) - (serious×10) - (moderate×5) - (minor×1)` |
 | Provider Fallback | Nexus | 7-provider chain ensures 99.9% uptime |
+| CLM Budget Governor | CLM | Daily token budget with kill switch for runaway learning |
+
+### Version History
+
+| Version | Codename | Key Features |
+|---------|----------|--------------|
+| 6.3.1 | FNDTN | CLM integration, mobile terminal, 260+ commands |
+| 6.0.0 | FNDTN | 14-module architecture, Evolution Cycle |
+| 5.6.0 | — | Module registry, inventory system |
+| 5.0.0 | — | Terminal v5: aliases, macros, watch mode |
 
 ---
 
-*CMPSBL OS Substrate v6.0.0 — FNDTN Release*
+*CMPSBL OS Substrate v6.3.1 — FNDTN Release*
 *© 2025-2026 PromptFluid®. All rights reserved.*
