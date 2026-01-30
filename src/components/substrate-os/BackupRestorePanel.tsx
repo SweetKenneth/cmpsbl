@@ -213,8 +213,23 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
 
   // Create failsafe mutation - creates a permanent protected backup
   const createFailsafe = useMutation({
-    mutationFn: async (notes?: string) => {
-      // First create a fresh backup
+    mutationFn: async ({ notes, override }: { notes?: string; override?: boolean }) => {
+      // If override, demote existing failsafe first
+      if (override) {
+        const { error: demoteError } = await supabase
+          .from('daily_backups')
+          .update({
+            is_permanent: false,
+            backup_category: 'standard',
+          })
+          .eq('backup_category', 'failsafe');
+        
+        if (demoteError) {
+          console.error('Failed to demote existing failsafe:', demoteError);
+        }
+      }
+      
+      // Create a fresh backup
       const backupResult = await system.backup({ include_data: true });
       if (!backupResult.success) {
         throw new Error(backupResult.error || 'Failed to create backup for failsafe');
@@ -242,11 +257,11 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
         throw new Error('Backup created but failed to mark as permanent');
       }
       
-      return { failsafe_id: backupId, success: true };
+      return { failsafe_id: backupId, success: true, wasOverride: override };
     },
     onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: ['substrate-backups'] });
-      toast.success('🛡️ Permanent failsafe created', {
+      toast.success(data?.wasOverride ? '🛡️ Failsafe overridden' : '🛡️ Permanent failsafe created', {
         description: `ID: ${data?.failsafe_id} - Protected from auto-pruning`,
       });
     },
@@ -789,14 +804,52 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
               </CardHeader>
               <CardContent className="space-y-3">
                 {hasFailsafe ? (
-                  <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-3">
-                    <div className="flex items-center gap-2 mb-2">
-                      <CheckCircle2 className="w-4 h-4 text-green-400" />
-                      <span className="text-sm font-medium text-green-400">Failsafe Active</span>
+                  <div className="space-y-3">
+                    <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-3">
+                      <div className="flex items-center gap-2 mb-2">
+                        <CheckCircle2 className="w-4 h-4 text-green-400" />
+                        <span className="text-sm font-medium text-green-400">Failsafe Active</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Your permanent failsafe backup is protected and will never be deleted.
+                      </p>
                     </div>
-                    <p className="text-xs text-muted-foreground">
-                      Your permanent failsafe backup is protected and will never be deleted.
-                    </p>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className="w-full gap-2 border-amber-500/30 text-amber-400 hover:bg-amber-500/10"
+                        >
+                          <RefreshCw className="w-4 h-4" />
+                          Override Failsafe
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent className="bg-background/95 backdrop-blur-xl border-amber-500/30">
+                        <AlertDialogHeader>
+                          <AlertDialogTitle className="flex items-center gap-2">
+                            <AlertTriangle className="w-5 h-5 text-amber-400" />
+                            Override Failsafe Backup?
+                          </AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This will create a new failsafe backup from the current system state. 
+                            The previous failsafe will be demoted to a regular backup and may be auto-pruned.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => createFailsafe.mutate({ override: true, notes: `Failsafe override on ${new Date().toISOString()}` })}
+                            disabled={createFailsafe.isPending}
+                            className="bg-amber-500/20 text-amber-400 hover:bg-amber-500/30"
+                          >
+                            {createFailsafe.isPending ? (
+                              <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                            ) : null}
+                            Override Failsafe
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </div>
                 ) : (
                   <>
@@ -810,7 +863,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
                       </p>
                     </div>
                     <Button
-                      onClick={() => createFailsafe.mutate(`Failsafe created on ${new Date().toISOString()}`)}
+                      onClick={() => createFailsafe.mutate({ notes: `Failsafe created on ${new Date().toISOString()}` })}
                       disabled={createFailsafe.isPending}
                       className="w-full gap-2 bg-amber-500/20 border border-amber-500/40 text-amber-400 hover:bg-amber-500/30"
                     >
