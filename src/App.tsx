@@ -110,6 +110,11 @@ const WordPressAccessibilityGuide = lazy(() => import("./pages/blog/WordPressAcc
 const WCAG22Changes = lazy(() => import("./pages/blog/WCAG22Changes"));
 const AIAccessibilityFixes = lazy(() => import("./pages/blog/AIAccessibilityFixes"));
 
+// New v6.x.x pillar/cluster posts
+const EvolvingSoftwareV6Breakthrough = lazy(() => import("./pages/blog/evolving-software-v6-breakthrough"));
+const LLMsTxtProtocol = lazy(() => import("./pages/blog/llms-txt-protocol-ai-context"));
+const AIGovernanceNamespace = lazy(() => import("./pages/blog/ai-governance-namespace-unified-terminology"));
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -225,6 +230,11 @@ const App = () => {
                       <Route path="/blog/wordpress-accessibility-guide" element={<WordPressAccessibilityGuide />} />
                       <Route path="/blog/wcag-2-2-wordpress-changes" element={<WCAG22Changes />} />
                       <Route path="/blog/automated-accessibility-fixes-wordpress" element={<AIAccessibilityFixes />} />
+                      
+                      {/* v6.x.x Pillar/Cluster Posts */}
+                      <Route path="/blog/evolving-software-v6-breakthrough" element={<EvolvingSoftwareV6Breakthrough />} />
+                      <Route path="/blog/llms-txt-protocol-ai-context" element={<LLMsTxtProtocol />} />
+                      <Route path="/blog/ai-governance-namespace-unified-terminology" element={<AIGovernanceNamespace />} />
                       
                       {/* ===== ORPHANED PAGE REDIRECTS ===== */}
                       {/* These pages exist but are not accessible via nav/footer/CTAs */}

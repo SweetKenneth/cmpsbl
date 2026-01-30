@@ -35,6 +35,11 @@ import wcag22Img from "@/assets/blog/wcag-2-2-wordpress-changes.jpg";
 import autoAccessibilityImg from "@/assets/blog/automated-accessibility-fixes.jpg";
 import earthWindowImage from "@/assets/hero/cognitive-pathways.jpg";
 
+// New v6.x.x pillar/cluster images
+import evolvingSoftwareImg from "@/assets/blog/evolving-software-v6-breakthrough.jpg";
+import llmsTxtImg from "@/assets/blog/llms-txt-protocol-standard.jpg";
+import aiGovernanceImg from "@/assets/blog/ai-governance-namespace-unified.jpg";
+
 export default function Blog() {
   const [searchQuery, setSearchQuery] = useState("");
   const [autoPosts, setAutoPosts] = useState<Array<{
@@ -62,6 +67,40 @@ export default function Blog() {
   }, []);
 
   const blogPosts = [
+    // v6.x.x Pillar Post - Featured
+    {
+      title: "Evolving Software v6.x.x: The Breakthrough",
+      excerpt: "CMPSBL v6.x.x represents a paradigm shift—systems that learn, adapt, and evolve autonomously. Now available via API.",
+      href: "/blog/evolving-software-v6-breakthrough",
+      category: "Technology",
+      date: "2026-01-30",
+      readTime: "22 min",
+      image: evolvingSoftwareImg,
+      imageAlt: "Digital DNA helix representing evolving software systems",
+      featured: true,
+      isPillar: true
+    },
+    // v6.x.x Cluster Posts
+    {
+      title: "LLMs.txt: The Protocol for AI Context",
+      excerpt: "How we use LLMs.txt internally and why we recommend adoption as a standard for AI-human interaction.",
+      href: "/blog/llms-txt-protocol-ai-context",
+      category: "Protocol",
+      date: "2026-01-30",
+      readTime: "14 min",
+      image: llmsTxtImg,
+      imageAlt: "Visualization of LLMs.txt protocol structure"
+    },
+    {
+      title: "AI Governance Namespace: Unified Terminology",
+      excerpt: "How we established unified AI governance vocabulary through strategic domain registration.",
+      href: "/blog/ai-governance-namespace-unified-terminology",
+      category: "Governance",
+      date: "2026-01-30",
+      readTime: "12 min",
+      image: aiGovernanceImg,
+      imageAlt: "Network visualization of AI governance terminology"
+    },
     {
       title: "Experimental AI Systems That Dream",
       excerpt: "Cascade and SimNap explore autonomous dreaming, reflection, and self-improvement.",
@@ -70,8 +109,7 @@ export default function Blog() {
       date: "2025-01-18",
       readTime: "6 min",
       image: cascadeAIImg,
-      imageAlt: "Cascade AI autonomous dreaming system",
-      featured: true
+      imageAlt: "Cascade AI autonomous dreaming system"
     },
     {
       title: "WordPress Bot Defense Guide",
