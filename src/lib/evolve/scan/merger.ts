@@ -92,7 +92,7 @@ export async function mergeAndValidate(input: MergeInput): Promise<MergeResult> 
       continue;
     }
     
-    // Create validated proposal
+    // Create validated proposal with enriched metadata (v6.3.1)
     proposals.push({
       proposal_id: generateProposalId(),
       title: rec.title,
@@ -105,6 +105,9 @@ export async function mergeAndValidate(input: MergeInput): Promise<MergeResult> 
       source_phases: supportingSources.phases,
       validation_sources: supportingSources.count,
       action_type: inferActionType(rec.category, rec.title),
+      affected_modules: inferAffectedModules(rec.title, rec.rationale),
+      reversible: rec.risk_level !== 'high',
+      metadata_version: '6.3.1',
     });
   }
   
@@ -252,6 +255,39 @@ function inferActionType(
 }
 
 /**
+ * Infer affected modules from proposal content (v6.3.1)
+ */
+function inferAffectedModules(title: string, description: string): string[] {
+  const modules: string[] = [];
+  const text = `${title} ${description}`.toLowerCase();
+  
+  const moduleMap: Record<string, string> = {
+    'brain': 'BRAIN', 'memory': 'BRAIN', 'recall': 'BRAIN',
+    'decode': 'DECODE', 'explain': 'DECODE', 'interpret': 'DECODE',
+    'dream': 'DREAM', 'learning': 'DREAM', 'synthesis': 'DREAM',
+    'core': 'CORE', 'circuit': 'CORE', 'boot': 'CORE',
+    'ripple': 'RIPPLE', 'event': 'RIPPLE', 'emit': 'RIPPLE',
+    'access': 'ACCESS', 'quota': 'ACCESS', 'rate': 'ACCESS',
+    'defense': 'DEFENSE', 'security': 'DEFENSE', 'threat': 'DEFENSE',
+    'nexus': 'NEXUS', 'router': 'NEXUS', 'provider': 'NEXUS',
+    'vision': 'VISION', 'metric': 'VISION', 'anomaly': 'VISION',
+    'system': 'SYSTEM', 'health': 'SYSTEM', 'heal': 'SYSTEM',
+    'modernizer': 'MODERNIZER', 'evolve': 'MODERNIZER', 'evolution': 'MODERNIZER',
+    'integration': 'INTEGRATION', 'webhook': 'INTEGRATION',
+    'inclusive': 'INCLUSIVE', 'accessibility': 'INCLUSIVE',
+    'cortex': 'CORTEX', 'orchestrat': 'CORTEX',
+  };
+  
+  for (const [keyword, module] of Object.entries(moduleMap)) {
+    if (text.includes(keyword) && !modules.includes(module)) {
+      modules.push(module);
+    }
+  }
+  
+  return modules.length > 0 ? modules : ['SYSTEM'];
+}
+
+/**
  * Derive proposals directly from phase data
  */
 function deriveProposals(input: MergeInput, config: ScanConfig): ScanProposal[] {
@@ -267,11 +303,14 @@ function deriveProposals(input: MergeInput, config: ScanConfig): ScanProposal[] 
         description: anomaly.description,
         rationale: `Detected anomaly affecting: ${anomaly.affected_components.join(', ')}`,
         risk_level: anomaly.severity === 'critical' ? 'high' : 'medium',
-        confidence_score: 0.9, // High confidence from direct detection
+        confidence_score: 0.9,
         requires_human: true,
         source_phases: ['system'],
         validation_sources: 1,
         action_type: 'manual_review',
+        affected_modules: anomaly.affected_components,
+        reversible: anomaly.severity !== 'critical',
+        metadata_version: '6.3.1',
       });
     }
   }
@@ -291,6 +330,9 @@ function deriveProposals(input: MergeInput, config: ScanConfig): ScanProposal[] 
         source_phases: ['health'],
         validation_sources: 1,
         action_type: 'code_change',
+        affected_modules: inferAffectedModules(cap.capability, cap.recommendation),
+        reversible: true,
+        metadata_version: '6.3.1',
       });
     }
   }

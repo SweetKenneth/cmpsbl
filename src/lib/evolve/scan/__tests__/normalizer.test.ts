@@ -1,5 +1,5 @@
 /**
- * Normalizer Tests — v0.7.8 Scan → Plan Normalization
+ * Normalizer Tests — v0.7.9 Scan → Plan Normalization
  * 
  * Test coverage:
  * - Scan returns proposals → normalization succeeds → plan created
@@ -15,23 +15,43 @@ import { describe, it, expect } from 'vitest';
 import { normalizeProposals, validateNormalizedPlan, type NormalizedAction } from '../normalizer';
 import type { ScanProposal } from '../types';
 
+// Helper to create test proposals with v6.3.1 metadata
+function createTestProposal(overrides: Partial<ScanProposal>): ScanProposal {
+  return {
+    proposal_id: 'prop_test_default',
+    title: 'Test proposal',
+    category: 'capability',
+    description: 'Test description',
+    rationale: 'Test rationale',
+    risk_level: 'low',
+    confidence_score: 0.85,
+    requires_human: false,
+    source_phases: ['llm'],
+    validation_sources: 1,
+    action_type: 'code_change',
+    // v6.3.1 enriched metadata
+    affected_modules: ['SYSTEM'],
+    reversible: true,
+    metadata_version: '6.3.1',
+    ...overrides,
+  };
+}
+
 describe('Proposal Normalization', () => {
   describe('normalizeProposals', () => {
     it('should normalize valid proposals with sufficient confidence', () => {
       const proposals: ScanProposal[] = [
-        {
+        createTestProposal({
           proposal_id: 'prop_test_001',
           title: 'Add rate limiting to API module',
           category: 'security',
           description: 'Implement rate limiting for API endpoints',
           rationale: 'Prevent abuse and ensure fair usage',
-          risk_level: 'low',
           confidence_score: 0.85,
-          requires_human: false,
           source_phases: ['health', 'llm'],
           validation_sources: 2,
-          action_type: 'code_change',
-        },
+          affected_modules: ['ACCESS', 'NEXUS'],
+        }),
       ];
 
       const result = normalizeProposals(proposals);
@@ -46,19 +66,14 @@ describe('Proposal Normalization', () => {
 
     it('should reject proposals with low confidence', () => {
       const proposals: ScanProposal[] = [
-        {
+        createTestProposal({
           proposal_id: 'prop_test_002',
           title: 'Maybe refactor something',
-          category: 'capability',
           description: 'Unclear improvement suggestion',
           rationale: 'Could be better',
-          risk_level: 'low',
           confidence_score: 0.5, // Below threshold
-          requires_human: false,
-          source_phases: ['llm'],
           validation_sources: 1,
-          action_type: 'code_change',
-        },
+        }),
       ];
 
       const result = normalizeProposals(proposals);
@@ -72,10 +87,9 @@ describe('Proposal Normalization', () => {
 
     it('should reject proposals with high risk level', () => {
       const proposals: ScanProposal[] = [
-        {
+        createTestProposal({
           proposal_id: 'prop_test_003',
           title: 'Restructure entire database schema',
-          category: 'capability',
           description: 'Major schema overhaul',
           rationale: 'Better performance',
           risk_level: 'high', // Not allowed
@@ -83,8 +97,8 @@ describe('Proposal Normalization', () => {
           requires_human: true,
           source_phases: ['health', 'llm'],
           validation_sources: 2,
-          action_type: 'code_change',
-        },
+          reversible: false,
+        }),
       ];
 
       const result = normalizeProposals(proposals);
@@ -97,33 +111,26 @@ describe('Proposal Normalization', () => {
 
     it('should handle mixed proposals - partial normalization', () => {
       const proposals: ScanProposal[] = [
-        {
+        createTestProposal({
           proposal_id: 'prop_good',
           title: 'Add monitoring to brain module',
-          category: 'capability',
           description: 'Add observability metrics',
           rationale: 'Better debugging',
-          risk_level: 'low',
           confidence_score: 0.9,
-          requires_human: false,
           source_phases: ['health', 'llm'],
           validation_sources: 2,
           action_type: 'monitoring',
-        },
-        {
+          affected_modules: ['BRAIN', 'VISION'],
+        }),
+        createTestProposal({
           proposal_id: 'prop_bad_confidence',
           title: 'Low confidence suggestion',
-          category: 'capability',
           description: 'Not sure',
           rationale: 'Maybe',
-          risk_level: 'low',
           confidence_score: 0.4, // Too low
-          requires_human: false,
-          source_phases: ['llm'],
           validation_sources: 1,
-          action_type: 'code_change',
-        },
-        {
+        }),
+        createTestProposal({
           proposal_id: 'prop_bad_risk',
           title: 'High risk change',
           category: 'hardening',
@@ -134,8 +141,8 @@ describe('Proposal Normalization', () => {
           requires_human: true,
           source_phases: ['system', 'llm'],
           validation_sources: 2,
-          action_type: 'code_change',
-        },
+          reversible: false,
+        }),
       ];
 
       const result = normalizeProposals(proposals);
@@ -152,32 +159,19 @@ describe('Proposal Normalization', () => {
 
     it('should block plan when all proposals are rejected', () => {
       const proposals: ScanProposal[] = [
-        {
+        createTestProposal({
           proposal_id: 'prop_reject_1',
           title: 'Low confidence',
-          category: 'capability',
-          description: 'Test',
-          rationale: 'Test',
-          risk_level: 'low',
           confidence_score: 0.3,
-          requires_human: false,
-          source_phases: ['llm'],
-          validation_sources: 1,
-          action_type: 'code_change',
-        },
-        {
+        }),
+        createTestProposal({
           proposal_id: 'prop_reject_2',
           title: 'High risk',
-          category: 'capability',
-          description: 'Test',
-          rationale: 'Test',
           risk_level: 'high',
           confidence_score: 0.95,
           requires_human: true,
-          source_phases: ['llm'],
-          validation_sources: 1,
-          action_type: 'code_change',
-        },
+          reversible: false,
+        }),
       ];
 
       const result = normalizeProposals(proposals);
@@ -199,19 +193,17 @@ describe('Proposal Normalization', () => {
 
     it('should infer correct action type from content', () => {
       const proposals: ScanProposal[] = [
-        {
+        createTestProposal({
           proposal_id: 'prop_edge',
           title: 'Fix edge function timeout',
           category: 'resilience',
           description: 'The pf-nexus-router edge function needs timeout adjustment',
           rationale: 'Improve reliability',
-          risk_level: 'low',
           confidence_score: 0.88,
-          requires_human: false,
           source_phases: ['edge', 'llm'],
           validation_sources: 2,
-          action_type: 'code_change',
-        },
+          affected_modules: ['NEXUS'],
+        }),
       ];
 
       const result = normalizeProposals(proposals);
@@ -223,7 +215,7 @@ describe('Proposal Normalization', () => {
 
     it('should strip decorations from descriptions', () => {
       const proposals: ScanProposal[] = [
-        {
+        createTestProposal({
           proposal_id: 'prop_decorated',
           title: 'Fix brain module issue',
           category: 'resilience',
@@ -231,11 +223,10 @@ describe('Proposal Normalization', () => {
           rationale: 'Improve stability',
           risk_level: 'medium',
           confidence_score: 0.82,
-          requires_human: false,
           source_phases: ['system', 'llm'],
           validation_sources: 2,
-          action_type: 'code_change',
-        },
+          affected_modules: ['BRAIN'],
+        }),
       ];
 
       const result = normalizeProposals(proposals);
