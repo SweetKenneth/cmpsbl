@@ -583,11 +583,29 @@
   line-height: 1.5;
 }
 
-/* Mobile-friendly text */
+/* Mobile-friendly text with no mid-word breaks */
 .biohack-terminal .terminal-output {
   word-wrap: break-word;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
+  word-break: normal;
   hyphens: none;
+  white-space: pre-wrap;
+  line-height: 1.4;
+}
+
+/* Atomic tokens that should never break (UUIDs, hashes, etc.) */
+.biohack-terminal .terminal-output .atomic-token,
+.biohack-terminal .terminal-output code,
+.biohack-terminal .terminal-output .uuid {
+  white-space: nowrap;
+  display: inline-block;
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.biohack-terminal .terminal-output .atomic-token::-webkit-scrollbar {
+  display: none;
 }
 
 /* Preserve box-drawing characters on their own lines */
@@ -595,6 +613,32 @@
   white-space: pre;
   overflow: hidden;
   text-overflow: clip;
+}
+
+/* JSON blocks with horizontal scroll on mobile */
+.biohack-terminal .terminal-json {
+  white-space: pre;
+  overflow-x: auto;
+  max-width: 100%;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  scrollbar-width: thin;
+}
+
+/* Copy affordance for long content */
+.biohack-terminal .terminal-copyable {
+  position: relative;
+  cursor: pointer;
+}
+
+.biohack-terminal .terminal-copyable:hover::after {
+  content: '📋';
+  position: absolute;
+  right: 4px;
+  top: 2px;
+  font-size: 10px;
+  opacity: 0.6;
 }
 
 /* Mobile breakpoint: < 480px (compact mode) */

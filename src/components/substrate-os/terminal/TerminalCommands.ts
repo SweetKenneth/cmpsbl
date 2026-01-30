@@ -3,13 +3,13 @@
  * Complete list of all substrate commands organized by module
  */
 
-import { Brain, Shield, Eye, Zap, MessageSquare, Moon, Settings, Terminal, Cpu, Clock, Search, Database, Activity, Lock, Router, Gauge, Sparkles, Radio, Key, Server, Send, List, PlayCircle, Plug, Globe, Workflow, Users, CreditCard, GitBranch, Box, Wand2, FileText } from 'lucide-react';
+import { Brain, Shield, Eye, Zap, MessageSquare, Moon, Settings, Terminal, Cpu, Clock, Search, Database, Activity, Lock, Router, Gauge, Sparkles, Radio, Key, Server, Send, List, PlayCircle, Plug, Globe, Workflow, Users, CreditCard, GitBranch, Box, Wand2, FileText, PenTool, FileEdit } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
 export interface CommandDefinition {
   command: string;
   description: string;
-  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer' | 'core' | 'ripple' | 'access' | 'integration' | 'cortex' | 'inclusive' | 'clm' | 'meta';
+  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer' | 'core' | 'ripple' | 'access' | 'integration' | 'cortex' | 'inclusive' | 'clm' | 'autoblog' | 'meta';
   icon: LucideIcon;
   requiresOperator: boolean;
   args?: string;
@@ -409,6 +409,7 @@ export const META_COMMANDS: CommandDefinition[] = [
   { command: 'help integration', description: 'Enterprise integration commands', category: 'meta', icon: Plug, requiresOperator: false },
   { command: 'help inclusive', description: 'Accessibility pipeline commands', category: 'meta', icon: Accessibility, requiresOperator: false },
   { command: 'help clm', description: 'Constant Learning Mode commands', category: 'meta', icon: Brain, requiresOperator: false },
+  { command: 'help autoblog', description: 'AutoBlog primitive commands', category: 'meta', icon: PenTool, requiresOperator: false },
   // Terminal Controls
   { command: 'clear', description: 'Clear terminal history', category: 'meta', icon: Terminal, requiresOperator: false },
   { command: 'whoami', description: 'Display identity', category: 'meta', icon: Cpu, requiresOperator: false },
@@ -444,6 +445,34 @@ export const META_COMMANDS: CommandDefinition[] = [
   { command: 'audit export', description: 'Export audit log as JSON', category: 'meta', icon: Database, requiresOperator: false },
 ];
 
+// AUTOBLOG module — Governed blog automation primitive
+export const AUTOBLOG_COMMANDS: CommandDefinition[] = [
+  // Status & control
+  { command: 'autoblog.status', description: 'AutoBlog status and circuit state', category: 'autoblog', icon: PenTool, requiresOperator: false },
+  { command: 'autoblog.enable', description: 'Enable AutoBlog (Governor only)', category: 'autoblog', icon: PlayCircle, requiresOperator: true },
+  { command: 'autoblog.disable', description: 'Disable AutoBlog (Governor only)', category: 'autoblog', icon: Shield, requiresOperator: true },
+  
+  // Lifecycle
+  { command: 'autoblog.plan', description: 'Plan next blog post', category: 'autoblog', icon: FileEdit, requiresOperator: true },
+  { command: 'autoblog.draft', description: 'Generate draft for queued item', category: 'autoblog', icon: FileEdit, requiresOperator: true, args: '<queue_id>' },
+  { command: 'autoblog.verify', description: 'Verify draft safety and quality', category: 'autoblog', icon: Shield, requiresOperator: true, args: '<queue_id>' },
+  { command: 'autoblog.publish', description: 'Publish verified draft (Governor)', category: 'autoblog', icon: Send, requiresOperator: true, args: '<queue_id>' },
+  { command: 'autoblog.abort', description: 'Abort queued/drafting item', category: 'autoblog', icon: Shield, requiresOperator: true, args: '<queue_id> [reason]' },
+  
+  // Queue & history
+  { command: 'autoblog.queue', description: 'View post queue', category: 'autoblog', icon: List, requiresOperator: false },
+  { command: 'autoblog.runs', description: 'View run history and audit trail', category: 'autoblog', icon: Activity, requiresOperator: false, args: '[limit]' },
+  
+  // Settings
+  { command: 'autoblog.settings', description: 'View or update settings', category: 'autoblog', icon: Settings, requiresOperator: false, args: '[set <key> <value>]', example: 'autoblog.settings set cadence_minutes 480' },
+  
+  // Circuit breaker
+  { command: 'autoblog.circuit', description: 'Circuit breaker control', category: 'autoblog', icon: Shield, requiresOperator: false, args: '[reset]' },
+  
+  // Healing
+  { command: 'autoblog.heal', description: 'Self-heal AutoBlog subsystem', category: 'autoblog', icon: Shield, requiresOperator: true, args: '[--full]' },
+];
+
 export const ALL_COMMANDS: CommandDefinition[] = [
   ...BRAIN_COMMANDS,
   ...DECODE_COMMANDS,
@@ -460,6 +489,7 @@ export const ALL_COMMANDS: CommandDefinition[] = [
   ...RIPPLE_COMMANDS,
   ...ACCESS_COMMANDS,
   ...INTEGRATION_COMMANDS,
+  ...AUTOBLOG_COMMANDS,
   ...META_COMMANDS,
 ];
 
@@ -479,6 +509,7 @@ export const COMMAND_CATEGORIES = {
   system: { label: 'SYSTEM', color: 'text-gray-400', borderColor: 'border-gray-500/30', commands: SYSTEM_COMMANDS },
   modernizer: { label: 'MODERNIZER', color: 'text-pink-400', borderColor: 'border-pink-500/30', commands: MODERNIZER_COMMANDS },
   clm: { label: 'CLM', color: 'text-indigo-400', borderColor: 'border-indigo-500/30', commands: CLM_COMMANDS },
+  autoblog: { label: 'AUTOBLOG', color: 'text-rose-400', borderColor: 'border-rose-500/30', commands: AUTOBLOG_COMMANDS },
   meta: { label: 'META', color: 'text-gray-400', borderColor: 'border-gray-500/30', commands: META_COMMANDS },
 } as const;
 

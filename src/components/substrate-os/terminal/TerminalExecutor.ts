@@ -1873,6 +1873,300 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
       }
     }
 
+    // ═══════════════════════════════════════════════════════════════
+    // AUTOBLOG (Governed Blog Automation) v1.0.0
+    // ═══════════════════════════════════════════════════════════════
+    else if (base === 'autoblog.status') {
+      try {
+        const { getAutoblogStatus } = await import('@/lib/autoblog');
+        const status = await getAutoblogStatus();
+        const s = status.settings;
+        const modeIcon = s?.enabled ? '🟢' : '🔴';
+        const circuitIcon = status.circuit.state === 'closed' ? '✅' : status.circuit.state === 'open' ? '🛑' : '⚡';
+        
+        return {
+          success: true,
+          output: `╔══════════════════════════════════════════════════════════════╗
+║  AUTOBLOG PRIMITIVE — v1.0.0                                 ║
+╠══════════════════════════════════════════════════════════════╣
+║  Status:     ${modeIcon} ${s?.enabled ? 'ENABLED' : 'DISABLED'}                                       ║
+║  Mode:       ${(s?.mode || 'off').toUpperCase().padEnd(10)}                                      ║
+║  Circuit:    ${circuitIcon} ${status.circuit.state.toUpperCase().padEnd(10)}                                 ║
+║  Dry Run:    ${s?.dry_run ? '✓ ON (publish blocked)' : '✗ OFF'}                      ║
+║  Cadence:    ${s?.cadence_minutes || 360} min between posts                        ║
+║  Max/Day:    ${s?.max_posts_per_day || 2} posts                                        ║
+╚══════════════════════════════════════════════════════════════╝`,
+          data: status,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ AutoBlog error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'autoblog.enable') {
+      try {
+        const { updateAutoblogSettings } = await import('@/lib/autoblog');
+        const result = await updateAutoblogSettings({ enabled: true });
+        if (!result.ok) {
+          return { success: false, output: `▓ Failed to enable AutoBlog: ${result.error}` };
+        }
+        return { success: true, output: '◉ AutoBlog ENABLED — governed automation active\n  Note: dry_run is still ON by default' };
+      } catch (err) {
+        return { success: false, output: `▓ Enable error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'autoblog.disable') {
+      try {
+        const { updateAutoblogSettings } = await import('@/lib/autoblog');
+        const result = await updateAutoblogSettings({ enabled: false });
+        if (!result.ok) {
+          return { success: false, output: `▓ Failed to disable AutoBlog: ${result.error}` };
+        }
+        return { success: true, output: '◉ AutoBlog DISABLED' };
+      } catch (err) {
+        return { success: false, output: `▓ Disable error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'autoblog.plan') {
+      try {
+        const { autoblogPlan } = await import('@/lib/autoblog');
+        const result = await autoblogPlan();
+        if (!result.ok) {
+          return { success: false, output: `▓ Plan blocked: ${result.reason}` };
+        }
+        return {
+          success: true,
+          output: `◉ Blog post planned and queued
+  Queue ID:  ${result.queueId?.slice(0, 8)}...
+  Channel:   ${result.data?.channel}
+  Topic:     ${result.data?.topic}`,
+          data: result,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ Plan error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'autoblog.draft') {
+      const queueId = args[0];
+      if (!queueId) {
+        return { success: false, output: '▓ ERROR: Queue ID required\n  Usage: autoblog.draft <queue_id>' };
+      }
+      try {
+        const { autoblogDraft } = await import('@/lib/autoblog');
+        const result = await autoblogDraft(queueId);
+        if (!result.ok) {
+          return { success: false, output: `▓ Draft failed: ${result.reason}` };
+        }
+        return { success: true, output: `◉ Draft generated for ${queueId.slice(0, 8)}... — ready for verification` };
+      } catch (err) {
+        return { success: false, output: `▓ Draft error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'autoblog.verify') {
+      const queueId = args[0];
+      if (!queueId) {
+        return { success: false, output: '▓ ERROR: Queue ID required\n  Usage: autoblog.verify <queue_id>' };
+      }
+      try {
+        const { autoblogVerify } = await import('@/lib/autoblog');
+        const result = await autoblogVerify(queueId);
+        if (!result.ok) {
+          return { success: false, output: `▓ Verification failed: ${result.reason}` };
+        }
+        return {
+          success: true,
+          output: `◉ Draft verified — confidence: ${((result.data?.confidence as number) * 100).toFixed(0)}%
+  Checks passed: ${(result.data?.checks as string[])?.join(', ')}`,
+          data: result,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ Verify error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'autoblog.publish') {
+      const queueId = args[0];
+      if (!queueId) {
+        return { success: false, output: '▓ ERROR: Queue ID required\n  Usage: autoblog.publish <queue_id>' };
+      }
+      try {
+        const { autoblogPublish } = await import('@/lib/autoblog');
+        const result = await autoblogPublish(queueId);
+        if (!result.ok) {
+          return { success: false, output: `▓ Publish blocked: ${result.reason}` };
+        }
+        return { success: true, output: `◉ Draft published successfully — ${queueId.slice(0, 8)}...` };
+      } catch (err) {
+        return { success: false, output: `▓ Publish error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'autoblog.abort') {
+      const queueId = args[0];
+      const reason = args.slice(1).join(' ') || 'Aborted by operator';
+      if (!queueId) {
+        return { success: false, output: '▓ ERROR: Queue ID required\n  Usage: autoblog.abort <queue_id> [reason]' };
+      }
+      try {
+        const { autoblogAbort } = await import('@/lib/autoblog');
+        const result = await autoblogAbort(queueId, reason);
+        return { success: true, output: `◉ Aborted ${queueId.slice(0, 8)}... — ${reason}` };
+      } catch (err) {
+        return { success: false, output: `▓ Abort error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'autoblog.queue') {
+      try {
+        const { getAutoblogQueue } = await import('@/lib/autoblog');
+        const queue = await getAutoblogQueue();
+        if (queue.length === 0) {
+          return { success: true, output: '◉ Queue is empty — no pending posts' };
+        }
+        const charWidth = getOptimalCharWidth();
+        const isMobile = charWidth < 50;
+        
+        let output = '╔══════════════════════════════════════════════════════════════╗\n';
+        output += '║  AUTOBLOG QUEUE                                              ║\n';
+        output += '╠══════════════════════════════════════════════════════════════╣\n';
+        
+        for (const item of queue.slice(0, 10)) {
+          const id = item.id.slice(0, 8);
+          const status = item.status.toUpperCase().padEnd(10);
+          const channel = item.channel.padEnd(12);
+          if (isMobile) {
+            output += `║ ${id} ${status}           ║\n`;
+            output += `║   └─ ${channel}                    ║\n`;
+          } else {
+            output += `║  ${id}  ${status}  ${channel}                    ║\n`;
+          }
+        }
+        output += '╚══════════════════════════════════════════════════════════════╝';
+        
+        return { success: true, output, data: queue };
+      } catch (err) {
+        return { success: false, output: `▓ Queue error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'autoblog.runs') {
+      const limit = parseInt(args[0]) || 20;
+      try {
+        const { getAutoblogRuns } = await import('@/lib/autoblog');
+        const runs = await getAutoblogRuns(limit);
+        if (runs.length === 0) {
+          return { success: true, output: '◉ No runs recorded yet' };
+        }
+        let output = '╔══════════════════════════════════════════════════════════════╗\n';
+        output += '║  AUTOBLOG RUNS (Audit Trail)                                 ║\n';
+        output += '╠══════════════════════════════════════════════════════════════╣\n';
+        
+        for (const run of runs.slice(0, 15)) {
+          const phase = run.phase.toUpperCase().padEnd(8);
+          const outcome = run.outcome === 'success' ? '✓' : run.outcome === 'blocked' ? '⚠' : '✗';
+          const reason = (run.reason || '').substring(0, 35);
+          output += `║  ${outcome} ${phase}  ${reason.padEnd(40)} ║\n`;
+        }
+        output += '╚══════════════════════════════════════════════════════════════╝';
+        
+        return { success: true, output, data: runs };
+      } catch (err) {
+        return { success: false, output: `▓ Runs error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'autoblog.settings') {
+      const action = args[0];
+      
+      if (action === 'set' && args.length >= 3) {
+        const key = args[1];
+        const value = args.slice(2).join(' ');
+        try {
+          const { updateAutoblogSettings } = await import('@/lib/autoblog');
+          const updates: Record<string, unknown> = {};
+          
+          // Parse value based on key
+          if (key === 'cadence_minutes' || key === 'max_posts_per_day' || key === 'max_failures_per_hour') {
+            updates[key] = parseInt(value);
+          } else if (key === 'min_confidence_publish') {
+            updates[key] = parseFloat(value);
+          } else if (key === 'dry_run' || key === 'enabled') {
+            updates[key] = value === 'true';
+          } else if (key === 'mode') {
+            if (!['governed', 'shadow', 'off'].includes(value)) {
+              return { success: false, output: '▓ Invalid mode. Use: governed, shadow, or off' };
+            }
+            updates[key] = value;
+          } else {
+            return { success: false, output: `▓ Unknown setting: ${key}` };
+          }
+          
+          const result = await updateAutoblogSettings(updates as any);
+          if (!result.ok) {
+            return { success: false, output: `▓ Update failed: ${result.error}` };
+          }
+          return { success: true, output: `◉ Updated ${key} = ${value}` };
+        } catch (err) {
+          return { success: false, output: `▓ Settings error: ${err instanceof Error ? err.message : 'Unknown'}` };
+        }
+      }
+      
+      // View settings
+      try {
+        const { getAutoblogSettings } = await import('@/lib/autoblog');
+        const settings = await getAutoblogSettings();
+        if (!settings) {
+          return { success: false, output: '▓ Settings not found' };
+        }
+        return {
+          success: true,
+          output: `╔══════════════════════════════════════════════════════════════╗
+║  AUTOBLOG SETTINGS                                           ║
+╠══════════════════════════════════════════════════════════════╣
+║  enabled:              ${settings.enabled}                              ║
+║  mode:                 ${settings.mode}                           ║
+║  dry_run:              ${settings.dry_run}                             ║
+║  cadence_minutes:      ${settings.cadence_minutes}                              ║
+║  max_posts_per_day:    ${settings.max_posts_per_day}                                ║
+║  max_failures_per_hour: ${settings.max_failures_per_hour}                               ║
+║  min_confidence:       ${settings.min_confidence_publish}                             ║
+║  allowed_channels:     ${settings.allowed_channels.join(', ')}   ║
+║  circuit_state:        ${settings.circuit_state}                          ║
+╚══════════════════════════════════════════════════════════════╝`,
+          data: settings,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ Settings error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'autoblog.circuit') {
+      const action = args[0];
+      try {
+        if (action === 'reset') {
+          const { resetAutoblogCircuit } = await import('@/lib/autoblog');
+          await resetAutoblogCircuit();
+          return { success: true, output: '◉ AutoBlog circuit reset to CLOSED' };
+        }
+        
+        const { checkAutoblogCircuit } = await import('@/lib/autoblog');
+        const circuit = await checkAutoblogCircuit();
+        const icon = circuit.state === 'closed' ? '✅' : circuit.state === 'open' ? '🛑' : '⚡';
+        return {
+          success: true,
+          output: `◉ AutoBlog Circuit: ${icon} ${circuit.state.toUpperCase()}
+  Can proceed: ${circuit.canProceed ? 'Yes' : 'No'}
+  Reason:      ${circuit.reason || 'None'}`,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ Circuit error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'autoblog.heal') {
+      const full = args.includes('--full');
+      try {
+        const { healAutoblog } = await import('@/lib/autoblog');
+        const result = await healAutoblog({ full, source: 'terminal' });
+        
+        let output = full
+          ? '🔧 AutoBlog FULL HEAL executed:\n'
+          : '🔧 AutoBlog soft heal executed:\n';
+        
+        for (const action of result.actions) {
+          output += `  ▸ ${action}\n`;
+        }
+        output += `\nFinal state: enabled=${result.finalState.enabled}, circuit=${result.finalState.circuitState}`;
+        if (result.finalState.itemsCleared > 0) {
+          output += `, cleared=${result.finalState.itemsCleared}`;
+        }
+        
+        return { success: result.ok, output, data: result };
+      } catch (err) {
+        return { success: false, output: `▓ Heal error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+
     // Unknown command
     else {
       return {
