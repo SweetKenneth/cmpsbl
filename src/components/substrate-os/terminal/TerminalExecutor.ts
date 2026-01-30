@@ -16,114 +16,132 @@ import { scheduleCommand, cancelScheduled, clearScheduled, formatScheduledList, 
 import { getLocalAuditLog, formatAuditLog, getSessionStats, exportAuditLog } from './useTerminalAudit';
 import { renderForMobile, getOptimalCharWidth } from './TerminalMobileRenderer';
 
-// Mobile-first changelog formatter with no mid-word breaks
-function formatChangelogForTerminal(version?: string): string {
+// Mobile-first evolution log formatter (organism-focused, no implementation details)
+function formatEvolutionLogForTerminal(): string {
   const charWidth = getOptimalCharWidth();
   const isMobile = charWidth < 50;
   
-  // Changelog entries (1.x.x versioning only)
+  // Evolution entries (v6.x.x public versioning)
   const entries = [
     {
-      version: '1.3.1',
-      date: '2025-01-30',
-      state: [
-        'Synergy Registry observable',
-        'Nightmare channel active',
-        'Proposal metadata enriched'
+      id: '014',
+      date: '2026-01-30',
+      pressures: [
+        'Visibility into emergent behaviors',
+        'Context for informed decisions',
+        'Hypothetical threat analysis'
       ],
-      shift: [
-        'MODERNIZER: affected modules',
-        'DREAM: threat scenarios',
-        'Evolution tags: v6.3.1'
+      responses: [
+        'Synergy patterns documented',
+        'Proposals self-descriptive',
+        'Simulation channel emerged'
       ],
-      stability: 'Confidence gating active',
-      receipts: ['synergy-init', 'nightmare-v1']
+      capabilities: [
+        'Pipelines observable',
+        'Full proposal context',
+        'Safe failure exploration'
+      ]
     },
     {
-      version: '1.3.0',
-      date: '2025-01-29',
-      state: [
-        '14-module architecture locked',
-        'CLM budget governance live',
-        'Terminal responsive contract'
+      id: '013',
+      date: '2026-01-29',
+      pressures: [
+        'Adapt to all screen sizes',
+        'Sustainable resource governance',
+        'Stronger isolation guarantees'
       ],
-      shift: [
-        'BRAIN: spaced repetition',
-        'RIPPLE: event bus routing',
-        'DEFENSE: static rules only'
+      responses: [
+        'Rendering respects constraints',
+        'Budget governance integral',
+        'Circuit breakers crystallized'
       ],
-      stability: 'Circuit breakers active',
-      receipts: ['fndtn-v6', 'clm-v1']
+      capabilities: [
+        'Graceful adaptation',
+        'Defined resource envelopes',
+        'Contained failures'
+      ]
     }
   ];
   
-  // Filter to specific version if requested
-  const filtered = version 
-    ? entries.filter(e => e.version === version || e.version.startsWith(version))
-    : entries;
-  
-  if (filtered.length === 0) {
-    return `▓ No changelog entries for version ${version}
-  
-  Available: ${entries.map(e => e.version).join(', ')}`;
-  }
-  
   let output = `
-┌─ EVOLUTION CHANGELOG ─────────────────`;
+┌─ LIVING EVOLUTION LOG ────────────────`;
   
   if (isMobile) {
     output += `
-│ Version Lock: 1.x.x only
-│ Post-foundation releases
+│ v6.x.x — Human Compatibility Era
+│ Major versions only (public)
 └───────────────────────────────────────`;
   } else {
-    output += `──────────────────────┐
-│ Version Lock: 1.x.x (post-foundation)                        │
-│ Doctrine: State changes, not implementation                  │
+    output += `─────────────────────┐
+│ v6.x.x — Human Compatibility Era                             │
+│ One living log per major version. Patches abstracted.        │
 └──────────────────────────────────────────────────────────────┘`;
   }
   
-  for (const entry of filtered) {
+  for (const entry of entries) {
     if (isMobile) {
       // Compact mobile format
       output += `
 
-┌─ v${entry.version} ─ ${entry.date} ────────
+┌─ Evolution ${entry.id} ─ ${entry.date} ───
 │
-│ STATE:`;
-      for (const s of entry.state) {
+│ PRESSURES:`;
+      for (const p of entry.pressures) {
         output += `
-│  • ${s}`;
+│  ▸ ${p}`;
       }
       output += `
 │
-│ SHIFT:`;
-      for (const s of entry.shift) {
+│ RESPONSES:`;
+      for (const r of entry.responses) {
         output += `
-│  • ${s}`;
+│  ▸ ${r}`;
       }
       output += `
 │
-│ STABILITY: ${entry.stability}
-│ RECEIPTS: ${entry.receipts.join(', ')}
+│ CAPABILITIES:`;
+      for (const c of entry.capabilities) {
+        output += `
+│  ▸ ${c}`;
+      }
+      output += `
 └─────────────────────────────────────`;
     } else {
       // Full desktop format
       output += `
 
-┌─ Version ${entry.version} ─ ${entry.date} ─────────────────────────────────────
+┌─ Evolution ${entry.id} ─ ${entry.date} ──────────────────────────────────────
 │
-│ ◆ SYSTEM STATE
-│   ${entry.state.join('\n│   ')}
+│ ◆ OBSERVED PRESSURES
+│   ${entry.pressures.join('\n│   ')}
 │
-│ ◆ BEHAVIORAL SHIFT
-│   ${entry.shift.join('\n│   ')}
+│ ◆ LEARNED RESPONSES
+│   ${entry.responses.join('\n│   ')}
 │
-│ ◆ STABILITY: ${entry.stability}
-│ ◆ RECEIPTS: ${entry.receipts.join(', ')}
+│ ◆ RESULTING CAPABILITIES
+│   ${entry.capabilities.join('\n│   ')}
 │
 └──────────────────────────────────────────────────────────────`;
     }
+  }
+  
+  output += `
+
+┌─ Archived Versions ──────────────────`;
+  if (isMobile) {
+    output += `
+│ v5.x.x: Stabilization Era
+│ v4.x.x: Kernel Architecture
+│ v3.x.x: Resilience Architecture
+│ v1-2.x.x: Genesis & Formation
+└───────────────────────────────────────`;
+  } else {
+    output += `─────────────────────┐
+│ v5.x.x — Full System Stabilization (frozen)                  │
+│ v4.x.x — Kernel Architecture (frozen)                        │
+│ v3.x.x — Resilience Architecture (frozen)                    │
+│ v1-2.x.x — Genesis & Formation (frozen)                      │
+└──────────────────────────────────────────────────────────────┘`;
   }
   
   return output;
@@ -827,11 +845,10 @@ ${identityLine}│  Mode: ${roleDisplay}
       result = await system.health();
     } else if (base === 'system.version') {
       result = await system.version();
-    } else if (base === 'system.changelog') {
-      // Mobile-first changelog display with no mid-word breaks
-      const version = args[0];
-      const changelog = formatChangelogForTerminal(version);
-      return { success: true, output: changelog };
+    } else if (base === 'system.changelog' || base === 'system.evolution') {
+      // Mobile-first evolution log display (organism-focused, no internals)
+      const evolutionLog = formatEvolutionLogForTerminal();
+      return { success: true, output: evolutionLog };
     } else if (base === 'system.config') {
       result = await system.config(args[0]);
     } else if (base === 'system.audit') {

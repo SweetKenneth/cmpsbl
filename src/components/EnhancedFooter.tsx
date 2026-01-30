@@ -23,7 +23,7 @@ export function EnhancedFooter() {
 
   const resourceLinks = [
     { name: "Blog", href: "/blog" },
-    { name: "Changelog", href: "/changelog" },
+    { name: "Evolution Log", href: "/changelog" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
   ];

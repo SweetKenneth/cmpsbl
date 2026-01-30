@@ -306,7 +306,7 @@ export default function DevTools() {
                       { title: "API Reference", href: "/documentation#api", desc: "Full SDK API docs" },
                       { title: "Examples", href: "/documentation#examples", desc: "Code samples" },
                       { title: "Templates", href: "/marketplace", desc: "Pre-built starters" },
-                      { title: "Changelog", href: "/changelog", desc: "Version history" },
+                      { title: "Evolution Log", href: "/changelog", desc: "System evolution" },
                       { title: "GitHub", href: "https://github.com/promptfluid", desc: "Source code" },
                     ].map((link) => (
                       <Link
