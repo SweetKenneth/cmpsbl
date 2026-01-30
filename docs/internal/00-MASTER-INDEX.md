@@ -75,10 +75,18 @@ LEARNING MODE (v6.7.0)
 
 | Version | Codename | Key Features |
 |---------|----------|--------------|
-| 6.3.1 | FNDTN | CLM integration, mobile terminal, 260+ commands |
+| 6.3.1 | FNDTN | CLM integration, mobile terminal, 260+ commands, Synergy Pipeline Registry, enriched proposal metadata, DREAM Nightmare Mode (simulation-only) |
 | 6.0.0 | FNDTN | 14-module architecture, Evolution Cycle |
 | 5.6.0 | — | Module registry, inventory system |
 | 5.0.0 | — | Terminal v5: aliases, macros, watch mode |
+
+### Recent Additions (v6.3.1 Patch)
+
+| Addition | Location | Purpose |
+|----------|----------|---------|
+| Synergy Pipeline Registry | `docs/library/77-SYNERGY-PIPELINES.md`, `src/lib/registry/pipelines.ts` | Documents emergent cross-module capabilities (descriptive only) |
+| Enriched Proposal Metadata | `src/lib/evolve/scan/types.ts` | `affected_modules`, `reversible`, `metadata_version` for traceability |
+| DREAM Nightmare Mode | `src/lib/dream/nightmares.ts` | Hypothetical threat simulation artifacts (read-only, no feedback loops) |
 
 ---
 

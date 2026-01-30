@@ -1,6 +1,10 @@
 /**
  * Scan Types — Type definitions for cognitive systems scan
- * v0.7.7 — Intelligent Multi-Source Analysis
+ * v6.3.1 FNDTN — Intelligent Multi-Source Analysis with Enriched Metadata
+ * 
+ * Changelog v6.3.1:
+ * - Added affected_modules, reversible, metadata_version to ScanProposal
+ * - All proposals now carry complete traceability metadata
  */
 
 // ═══════════════════════════════════════════════════════════════
@@ -115,6 +119,10 @@ export interface ScanProposal {
   source_phases: ('edge' | 'system' | 'health' | 'llm')[];
   validation_sources: number; // How many phases support this
   action_type: 'code_change' | 'config_change' | 'cleanup' | 'monitoring' | 'manual_review';
+  // v6.3.1 Enriched Metadata (Read-Only, Non-Executable)
+  affected_modules: string[];      // Modules impacted by this proposal
+  reversible: boolean;             // Whether the change can be rolled back
+  metadata_version: '6.3.1';       // Metadata schema version
 }
 
 export interface ScanResult {
