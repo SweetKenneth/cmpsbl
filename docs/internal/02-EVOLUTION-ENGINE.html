@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>02. Evolution Engine — Substrate OS Internal</title>
+  <style>
+    :root {
+      --bg-primary: #0d1117;
+      --bg-secondary: #161b22;
+      --bg-tertiary: #21262d;
+      --text-primary: #f0f6fc;
+      --text-secondary: #8b949e;
+      --accent-cyan: #58a6ff;
+      --accent-green: #3fb950;
+      --accent-orange: #d29922;
+      --accent-red: #f85149;
+      --accent-purple: #a371f7;
+      --border-color: #30363d;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.7; padding: 2rem; }
+    .container { max-width: 900px; margin: 0 auto; }
+    .breadcrumb { color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.9rem; }
+    .breadcrumb a { color: var(--accent-cyan); text-decoration: none; }
+    h1 { font-size: 2rem; color: var(--accent-cyan); margin-bottom: 0.5rem; }
+    .subtitle { color: var(--text-secondary); margin-bottom: 2rem; }
+    h2 { color: var(--accent-green); font-size: 1.4rem; margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border-color); }
+    h3 { color: var(--accent-orange); font-size: 1.1rem; margin: 1.5rem 0 0.75rem; }
+    p { margin-bottom: 1rem; }
+    .diagram { background: var(--bg-tertiary); padding: 1.5rem; border-radius: 8px; font-family: monospace; white-space: pre; overflow-x: auto; margin: 1.5rem 0; color: var(--accent-cyan); font-size: 0.85rem; line-height: 1.4; }
+    .secret-box { background: var(--bg-tertiary); border-left: 4px solid var(--accent-orange); padding: 1rem 1.5rem; margin: 1.5rem 0; border-radius: 0 6px 6px 0; }
+    .secret-box strong { color: var(--accent-orange); }
+    .highlight { color: var(--accent-green); font-weight: 600; }
+    code { background: var(--bg-tertiary); padding: 0.2rem 0.5rem; border-radius: 4px; font-family: monospace; font-size: 0.9em; color: var(--accent-purple); }
+    pre { background: var(--bg-tertiary); padding: 1rem; border-radius: 6px; overflow-x: auto; margin: 1rem 0; border: 1px solid var(--border-color); }
+    pre code { background: transparent; padding: 0; }
+    ul, ol { margin: 1rem 0 1rem 2rem; }
+    li { margin-bottom: 0.5rem; }
+    table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+    th, td { padding: 0.75rem 1rem; text-align: left; border: 1px solid var(--border-color); }
+    th { background: var(--bg-tertiary); color: var(--accent-cyan); }
+    .warning-box { background: rgba(248, 81, 73, 0.1); border-left: 4px solid var(--accent-red); padding: 1rem 1.5rem; margin: 1.5rem 0; border-radius: 0 6px 6px 0; }
+    .phase-box { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 1rem 0; }
+    .phase-box h4 { color: var(--accent-cyan); margin-bottom: 0.5rem; }
+    footer { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border-color); color: var(--text-secondary); text-align: center; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav class="breadcrumb">
+      <a href="00-MASTER-INDEX.html">← Internal Library</a> / Evolution Engine
+    </nav>
+    
+    <h1>🔄 Evolution Engine (Modernizer)</h1>
+    <p class="subtitle">How the System Improves Itself — The Complete Picture</p>
+    
+    <h2>What Makes Evolution Work?</h2>
+    <p>The Evolution Engine is the system that allows Substrate OS to <strong>autonomously identify problems and apply fixes</strong>. When someone asks "How does the system evolve itself?", this is the complete answer.</p>
+    
+    <div class="secret-box">
+      <strong>🔐 The Core Secret:</strong> Evolution is NOT magic AI. It's a <span class="highlight">deterministic pipeline</span> with strict gates at every step. Raw AI suggestions are forced through a normalization layer that converts them into typed, validated actions. The system <em>cannot</em> execute anything that hasn't passed all validation gates.
+    </div>
+    
+    <h2>The 5-Phase Evolution Lifecycle</h2>
+    
+    <div class="diagram">
+┌─────────────────────────────────────────────────────────────────────────┐
+│                        EVOLUTION LIFECYCLE                               │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                          │
+│   ┌──────┐    ┌──────┐    ┌────────┐    ┌────────────┐    ┌────────┐   │
+│   │ SCAN │───►│ PLAN │───►│ SHADOW │───►│ PRODUCTION │───►│ VERIFY │   │
+│   └──────┘    └──────┘    └────────┘    └────────────┘    └────────┘   │
+│       │           │            │               │               │        │
+│       │           │            │               │               │        │
+│       ▼           ▼            ▼               ▼               ▼        │
+│   Analyze     Normalize    Test in       Apply with       Health       │
+│   3 sources   proposals    isolation     backup           check        │
+│                                                                          │
+│   [aborted] or [failed] can be reached from ANY phase                   │
+└─────────────────────────────────────────────────────────────────────────┘
+    </div>
+    
+    <div class="phase-box">
+      <h4>Phase 1: SCAN (Cognitive Analysis)</h4>
+      <p>The scan phase synthesizes data from 3 independent sources:</p>
+      <ol>
+        <li><strong>Phase A (Edge Analysis):</strong> Inspects deployed edge functions, finds archived/repurposed code</li>
+        <li><strong>Phase B (System State):</strong> Checks evolution state, circuit breakers, stuck runs, anomalies</li>
+        <li><strong>Phase C (Code Health):</strong> Stability score, security posture, upgrade pressure</li>
+        <li><strong>Phase D (LLM Synthesis):</strong> AI-powered reasoning over all gathered data</li>
+      </ol>
+      <p><em>Output: Raw proposals with varying confidence levels</em></p>
+    </div>
+    
+    <div class="phase-box">
+      <h4>Phase 2: PLAN (Normalization Layer)</h4>
+      <p>This is the critical gate. Raw proposals are forced into a strict schema:</p>
+      <pre><code>{
+  action_type: 'code_change' | 'config_update' | 'schema_migration' | 'function_toggle',
+  scope: 'module' | 'function' | 'file' | 'config',
+  risk_level: 'low' | 'medium' | 'high',
+  confidence: 0.0 - 1.0,
+  target_file?: string,
+  description: string,
+  normalized: true  // MUST be true to proceed
+}</code></pre>
+      <p>If normalization fails, the proposal is <strong>rejected</strong> and cannot enter the plan.</p>
+    </div>
+    
+    <div class="phase-box">
+      <h4>Phase 3: SHADOW (Isolated Testing)</h4>
+      <p>Changes are applied to a shadow store—not production. This includes:</p>
+      <ul>
+        <li>Writing artifacts to shadow store (in-memory or temp storage)</li>
+        <li>Running validation tests against shadow state</li>
+        <li>Creating a receipt documenting exactly what was done</li>
+      </ul>
+      <p><em>Key: If shadow fails, production is never touched.</em></p>
+    </div>
+    
+    <div class="phase-box">
+      <h4>Phase 4: PRODUCTION (Gated Apply)</h4>
+      <p>Production apply has multiple gates:</p>
+      <ol>
+        <li><strong>Phase Gate:</strong> Must be in <code>shadow_applied</code> phase</li>
+        <li><strong>Verification Gate:</strong> Shadow artifacts must exist and be valid</li>
+        <li><strong>Backup Gate:</strong> Failsafe backup created BEFORE apply</li>
+        <li><strong>Atomicity Gate:</strong> Phase transition is atomic</li>
+      </ol>
+      <p>If ANY gate fails → automatic rollback + mark run as <code>failed</code>.</p>
+    </div>
+    
+    <div class="phase-box">
+      <h4>Phase 5: VERIFY (Health Confirmation)</h4>
+      <p>After production apply:</p>
+      <ul>
+        <li>System health is re-measured</li>
+        <li>Health before/after is compared</li>
+        <li>If health degraded significantly, flag for review</li>
+        <li>Final receipt is created with complete audit trail</li>
+      </ul>
+    </div>
+    
+    <h2>Evolution Receipts</h2>
+    <p>Every shadow and production apply generates an <strong>immutable receipt</strong>:</p>
+    
+    <pre><code>// Receipt structure
+{
+  receipt_id: "uuid",
+  run_id: "uuid",
+  plan_id: "uuid",
+  phase: "shadow_applied" | "production_applied",
+  changes_applied: [
+    { file_path: "...", operation: "create" | "update" | "delete", diff_summary: "..." }
+  ],
+  tests_run: 4,
+  tests_passed: 4,
+  health_before: { overall_score: 0.92, module_health: {...} },
+  health_after: { overall_score: 0.95, module_health: {...} },
+  backup_id: "uuid",
+  timestamp: "ISO8601"
+}</code></pre>
+    
+    <div class="secret-box">
+      <strong>🔐 The Secret:</strong> Receipts are write-once. There is no UPDATE or DELETE on the receipts table. This creates an <span class="highlight">immutable audit trail</span> that cannot be tampered with—essential for compliance and debugging.
+    </div>
+    
+    <h2>Confidence-Gated Autonomy</h2>
+    
+    <p>The system has 3 autonomy modes that control how much human approval is needed:</p>
+    
+    <table>
+      <thead>
+        <tr><th>Mode</th><th>Behavior</th><th>When to Use</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>off</code></td>
+          <td>Human approval required for everything</td>
+          <td>Initial deployment, untrusted environments</td>
+        </tr>
+        <tr>
+          <td><code>advisory</code></td>
+          <td>System suggests changes but never executes</td>
+          <td>Learning phase, monitoring only</td>
+        </tr>
+        <tr>
+          <td><code>governed</code></td>
+          <td>Auto-execute IF all conditions met</td>
+          <td>Mature systems with proven track record</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <h3>Governed Mode Requirements</h3>
+    <p>For a proposal to auto-execute in governed mode, ALL conditions must be true:</p>
+    <ul>
+      <li>✅ Confidence score ≥ 80%</li>
+      <li>✅ Risk level = "low"</li>
+      <li>✅ No other evolution currently active</li>
+      <li>✅ Previous run succeeded (no recent failures)</li>
+      <li>✅ Under daily evolution limit</li>
+      <li>✅ Evolution circuit is CLOSED (not tripped)</li>
+    </ul>
+    
+    <div class="warning-box">
+      <strong>⚠️ Critical Safety:</strong> Even in governed mode, a <span class="highlight">circuit breaker</span> immediately opens if ANY production apply fails. One mistake and the system stops itself—it cannot run away with failures.
+    </div>
+    
+    <h2>The Evolution Circuit Breaker</h2>
+    
+    <p>The evolution circuit is a specialized circuit breaker that controls whether evolutions can run:</p>
+    
+    <div class="diagram">
+    ┌───────────────────────────────────────────────────────────┐
+    │              EVOLUTION CIRCUIT BREAKER                     │
+    ├───────────────────────────────────────────────────────────┤
+    │                                                            │
+    │   ┌────────┐   production fail   ┌────────┐               │
+    │   │ CLOSED │─────────────────────► │  OPEN  │               │
+    │   │(evolve)│                      │(blocked)│               │
+    │   └────────┘                      └────────┘               │
+    │       ▲                               │                    │
+    │       │   2 successes          60s timeout                 │
+    │       │   (manual or auto)           │                    │
+    │       │                               ▼                    │
+    │       │           ┌───────────────────┐                    │
+    │       └───────────│     HALF-OPEN     │                    │
+    │                   │  (testing single)  │                    │
+    │                   └───────────────────┘                    │
+    │                                                            │
+    │   Terminal commands:                                       │
+    │   • modernizer.circuit status   - Check state              │
+    │   • modernizer.circuit reset    - Force close              │
+    │   • modernizer.circuit trip     - Force open               │
+    │                                                            │
+    └───────────────────────────────────────────────────────────┘
+    </div>
+    
+    <h2>Key Files & Functions</h2>
+    
+    <table>
+      <thead>
+        <tr><th>File</th><th>Purpose</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>src/lib/evolve/scan/index.ts</code></td><td>Main scan orchestration, 4-phase synthesis</td></tr>
+        <tr><td><code>src/lib/evolve/scan/normalizer.ts</code></td><td>Proposal normalization layer</td></tr>
+        <tr><td><code>src/lib/evolve/evolution-runs.ts</code></td><td>Run state management, phase transitions</td></tr>
+        <tr><td><code>src/lib/evolve/shadow-executor.ts</code></td><td>Shadow apply with idempotency</td></tr>
+        <tr><td><code>src/lib/evolve/production-executor.ts</code></td><td>Production apply with backup gates</td></tr>
+        <tr><td><code>src/lib/evolve/evolution-receipts.ts</code></td><td>Immutable receipt creation</td></tr>
+        <tr><td><code>src/lib/evolve/circuit-breaker.ts</code></td><td>Evolution circuit management</td></tr>
+        <tr><td><code>src/lib/evolve/autonomy.ts</code></td><td>Governed autonomy logic</td></tr>
+      </tbody>
+    </table>
+    
+    <h2>Terminal Commands Reference</h2>
+    
+    <pre><code>// Status & inspection
+modernizer.status          // Current evolution status
+modernizer.jobs            // List all evolution runs
+modernizer.receipts        // List recent receipts with full details
+
+// Evolution lifecycle
+modernizer.scan            // Run cognitive scan
+modernizer.scan --explain  // Scan with detailed explanations
+modernizer.scan --llm-report  // Include AI recommendations
+
+modernizer.evolve shadow   // Apply changes to shadow
+modernizer.evolve production  // Apply to production (gated)
+modernizer.evolve verify   // Verify and complete
+modernizer.evolve abort    // Abort active evolution
+
+// Circuit management
+modernizer.circuit status  // Check circuit state
+modernizer.circuit reset   // Reset (close) circuit
+modernizer.circuit trip    // Force open (block evolutions)
+
+// Autonomy control
+modernizer.autonomy status // Check autonomy mode
+modernizer.autonomy set off|advisory|governed</code></pre>
+    
+    <footer>
+      <p>🔄 Evolution Engine — Substrate OS Internal Library v6.0.0</p>
+      <p><a href="00-MASTER-INDEX.html" style="color: var(--accent-cyan);">← Back to Index</a></p>
+    </footer>
+  </div>
+</body>
+</html>
