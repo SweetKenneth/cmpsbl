@@ -1718,6 +1718,190 @@ export type Database = {
         }
         Relationships: []
       }
+      autoblog_drafts: {
+        Row: {
+          body: string | null
+          created_at: string
+          format: string
+          id: string
+          preview_url: string | null
+          queue_id: string | null
+          title: string | null
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          format?: string
+          id?: string
+          preview_url?: string | null
+          queue_id?: string | null
+          title?: string | null
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          format?: string
+          id?: string
+          preview_url?: string | null
+          queue_id?: string | null
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "autoblog_drafts_queue_id_fkey"
+            columns: ["queue_id"]
+            isOneToOne: false
+            referencedRelation: "autoblog_queue"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      autoblog_queue: {
+        Row: {
+          channel: string
+          completed_at: string | null
+          confidence: number | null
+          created_at: string
+          dedupe_key: string | null
+          error: string | null
+          fallback_used: boolean
+          id: string
+          planned_at: string | null
+          provider_used: string | null
+          risk: string | null
+          started_at: string | null
+          status: string
+          topic: string | null
+        }
+        Insert: {
+          channel: string
+          completed_at?: string | null
+          confidence?: number | null
+          created_at?: string
+          dedupe_key?: string | null
+          error?: string | null
+          fallback_used?: boolean
+          id?: string
+          planned_at?: string | null
+          provider_used?: string | null
+          risk?: string | null
+          started_at?: string | null
+          status?: string
+          topic?: string | null
+        }
+        Update: {
+          channel?: string
+          completed_at?: string | null
+          confidence?: number | null
+          created_at?: string
+          dedupe_key?: string | null
+          error?: string | null
+          fallback_used?: boolean
+          id?: string
+          planned_at?: string | null
+          provider_used?: string | null
+          risk?: string | null
+          started_at?: string | null
+          status?: string
+          topic?: string | null
+        }
+        Relationships: []
+      }
+      autoblog_runs: {
+        Row: {
+          circuit_state: string
+          created_at: string
+          failures: number
+          heal_attempted: boolean
+          id: string
+          outcome: string
+          phase: string
+          queue_id: string | null
+          reason: string | null
+        }
+        Insert: {
+          circuit_state?: string
+          created_at?: string
+          failures?: number
+          heal_attempted?: boolean
+          id?: string
+          outcome: string
+          phase: string
+          queue_id?: string | null
+          reason?: string | null
+        }
+        Update: {
+          circuit_state?: string
+          created_at?: string
+          failures?: number
+          heal_attempted?: boolean
+          id?: string
+          outcome?: string
+          phase?: string
+          queue_id?: string | null
+          reason?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "autoblog_runs_queue_id_fkey"
+            columns: ["queue_id"]
+            isOneToOne: false
+            referencedRelation: "autoblog_queue"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      autoblog_settings: {
+        Row: {
+          allowed_channels: string[]
+          allowed_risk_levels: string[]
+          cadence_minutes: number
+          circuit_opened_at: string | null
+          circuit_state: string
+          created_at: string
+          dry_run: boolean
+          enabled: boolean
+          id: string
+          max_failures_per_hour: number
+          max_posts_per_day: number
+          min_confidence_publish: number
+          mode: string
+          updated_at: string
+        }
+        Insert: {
+          allowed_channels?: string[]
+          allowed_risk_levels?: string[]
+          cadence_minutes?: number
+          circuit_opened_at?: string | null
+          circuit_state?: string
+          created_at?: string
+          dry_run?: boolean
+          enabled?: boolean
+          id?: string
+          max_failures_per_hour?: number
+          max_posts_per_day?: number
+          min_confidence_publish?: number
+          mode?: string
+          updated_at?: string
+        }
+        Update: {
+          allowed_channels?: string[]
+          allowed_risk_levels?: string[]
+          cadence_minutes?: number
+          circuit_opened_at?: string | null
+          circuit_state?: string
+          created_at?: string
+          dry_run?: boolean
+          enabled?: boolean
+          id?: string
+          max_failures_per_hour?: number
+          max_posts_per_day?: number
+          min_confidence_publish?: number
+          mode?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       backup_exports: {
         Row: {
           backup_id: string
