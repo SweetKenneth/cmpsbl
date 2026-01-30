@@ -55,7 +55,7 @@ export const modernizerCommands = {
         plan_id: activeRun.plan_id,
         created_at: activeRun.created_at,
       },
-      formatted: `🔄 Active evolution: ${activeRun.run_id.substring(0, 8)}... (phase: ${activeRun.phase})`,
+      formatted: `🔄 Active evolution: ${activeRun.run_id} (phase: ${activeRun.phase})`,
     };
   },
 
@@ -77,13 +77,15 @@ export const modernizerCommands = {
     lines.push('╠══════════════════════════════════════════════════════════════╣');
     
     if (activeRun) {
-      lines.push(`║  🔄 ACTIVE: ${activeRun.run_id.substring(0, 8)}... | ${activeRun.phase.padEnd(20)} ║`);
+      lines.push(`║  🔄 ACTIVE: ${activeRun.run_id}`);
+      lines.push(`║     Phase: ${activeRun.phase}`);
       lines.push('╠══════════════════════════════════════════════════════════════╣');
     }
 
     for (const run of allRuns.slice(0, 5)) {
       const status = run.phase === 'verified' ? '✅' : run.phase === 'failed' ? '❌' : '⏳';
-      lines.push(`║  ${status} ${run.run_id.substring(0, 8)}... | ${run.phase.padEnd(20)} | ${new Date(run.created_at).toLocaleDateString()} ║`);
+      lines.push(`║  ${status} ${run.run_id}`);
+      lines.push(`║     Phase: ${run.phase} | ${new Date(run.created_at).toLocaleDateString()}`);
     }
 
     lines.push('╚══════════════════════════════════════════════════════════════╝');
@@ -132,7 +134,7 @@ export const modernizerCommands = {
       return {
         success: true,
         data: result,
-        formatted: `✅ Shadow already applied for run ${result.run_id.substring(0, 8)}... (idempotent)`,
+        formatted: `✅ Shadow already applied for run ${result.run_id} (idempotent)`,
       };
     }
 
@@ -147,7 +149,7 @@ export const modernizerCommands = {
     return {
       success: true,
       data: result,
-      formatted: `✅ Shadow applied: ${result.changes_applied} changes | Receipt: ${result.receipt_id?.substring(0, 8)}...`,
+      formatted: `✅ Shadow applied: ${result.changes_applied} changes\n   Receipt: ${result.receipt_id}`,
     };
   },
 
@@ -186,7 +188,7 @@ export const modernizerCommands = {
     return {
       success: true,
       data: result,
-      formatted: `✅ Production applied: ${result.changes_applied} changes | Backup: ${result.backup_id?.substring(0, 8)}... | Receipt: ${result.receipt_id?.substring(0, 8)}...`,
+      formatted: `✅ Production applied: ${result.changes_applied} changes\n   Backup: ${result.backup_id}\n   Receipt: ${result.receipt_id}`,
     };
   },
 
@@ -217,7 +219,7 @@ export const modernizerCommands = {
     return {
       success: true,
       data: { run_id: run.run_id, phase: 'verified' },
-      formatted: `✅ Evolution verified and complete: ${run.run_id.substring(0, 8)}...`,
+      formatted: `✅ Evolution verified and complete\n   Run: ${run.run_id}`,
     };
   },
 
@@ -248,7 +250,7 @@ export const modernizerCommands = {
     return {
       success: true,
       data: { run_id: run.run_id, phase: 'aborted' },
-      formatted: `✅ Evolution aborted: ${run.run_id.substring(0, 8)}...${reason ? ` (reason: ${reason})` : ''}`,
+      formatted: `✅ Evolution aborted\n   Run: ${run.run_id}${reason ? `\n   Reason: ${reason}` : ''}`,
     };
   },
 
@@ -266,7 +268,8 @@ export const modernizerCommands = {
       lines.push('║  No receipts found                                           ║');
     } else {
       for (const receipt of recentReceipts) {
-        lines.push(`║  📜 ${receipt.receipt_id.substring(0, 8)}... | ${receipt.phase.padEnd(18)} | ${receipt.changes_applied.length} changes ║`);
+        lines.push(`║  📜 ${receipt.receipt_id}`);
+        lines.push(`║     Phase: ${receipt.phase} | Changes: ${receipt.changes_applied.length}`);
       }
     }
 
@@ -289,7 +292,7 @@ export const modernizerCommands = {
       return {
         success: false,
         error: 'Receipt not found',
-        formatted: `❌ No receipt found for run ${run_id.substring(0, 8)}...`,
+        formatted: `❌ No receipt found for run ${run_id}`,
       };
     }
 

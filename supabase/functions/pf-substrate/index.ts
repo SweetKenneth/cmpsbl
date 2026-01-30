@@ -46,7 +46,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const SUBSTRATE_VERSION = "5.4.0"; // Modernizer v2.0 — Confidence-Gated Autonomy, Working Jobs/Plans/Apply, Refresh - v2026.01.25
+const SUBSTRATE_VERSION = "6.0.0"; // v6.0.0 FNDTN — Intelligence Compression, Reasoning/Governance Engines, Evolution Normalization - v2026.01.30
 
 // ═══════════════════════════════════════════════════════════════
 // RESILIENCE EVENT LOGGING — Circuit breaker + heal audit trail
@@ -9570,23 +9570,7 @@ async function handleSystem(
         expires_at: new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString(),
       });
       
-      // Optionally include sample data
-      let dataExport: Record<string, unknown> | null = null;
-      if (include_data) {
-        const tablestoBackup = (tables as string[]).length > 0 ? tables as string[] : ['brain_memories', 'cascade_dreams'];
-        dataExport = {};
-        
-        for (const table of tablestoBackup.slice(0, 3)) {
-          try {
-            const { data: tableData } = await supabase.from(table).select("*").limit(100);
-            dataExport[table] = tableData || [];
-          } catch {
-            dataExport[table] = { error: 'Could not export table' };
-          }
-        }
-      }
-      
-      // Store backup event
+      // Store backup event (no longer exporting data inline - use restore_portable for data export)
       await supabase.from('brain_events').insert({
         event_type: `backup_${backup_type}`,
         module: 'system',
@@ -9599,7 +9583,6 @@ async function handleSystem(
             data_counts: snapshot.data_counts,
             orchestrator_health: snapshot.orchestrator.health_score,
           },
-          has_data_export: !!dataExport,
         }
       });
       
@@ -9609,14 +9592,20 @@ async function handleSystem(
         backup_type,
         backup_path: `backups/${backupPath}`,
         restore_point_enabled: true,
-        snapshot,
-        data_export: dataExport,
+        snapshot: {
+          backup_id: snapshot.backup_id,
+          backup_type: snapshot.backup_type,
+          substrate_version: snapshot.substrate_version,
+          created_at: snapshot.created_at,
+          data_counts: snapshot.data_counts,
+          checksum: snapshot.checksum,
+        },
         validation: {
           checksum: snapshot.checksum,
           validated_at: now.toISOString(),
           integrity: 'verified',
         },
-        message: `✅ ${backup_type.charAt(0).toUpperCase() + backup_type.slice(1)} backup created at /backups/${backupPath}`,
+        message: `✅ Backup created: ${backupId}`,
       }, headers);
     }
 
