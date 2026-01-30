@@ -80,89 +80,129 @@ function generateModuleHelp(module: keyof typeof COMMAND_CATEGORIES): string {
   return output;
 }
 
-// Generate full help text
+// Generate full help text with all modules
 function generateFullHelp(): string {
   const modules = Object.keys(COMMAND_CATEGORIES) as Array<keyof typeof COMMAND_CATEGORIES>;
   const totalCommands = ALL_COMMANDS.length;
   
   let output = `
-┌─ SUBSTRATE COMMAND REFERENCE ────────────────────────────────
-│
-│  Total commands: ${totalCommands}
-│  Modules: ${modules.length}
-│  Version: v6.0.0
-│
-│  Quick navigation:
-│    help <module>  ∷  Show module-specific commands
-│    <cmd> --help   ∷  Show command usage
-│
-├─ MODULES ─────────────────────────────────────────────────────
-│
-`;
+┌─────────────────────────────────────────────────────────────┐
+│         SUBSTRATE OS v6.3.1 — COMMAND REFERENCE             │
+├─────────────────────────────────────────────────────────────┤
+│  Total commands: ${totalCommands.toString().padEnd(5)}    Modules: 15                     │
+│  Architecture: 14-module + CLM                              │
+│                                                             │
+│  Quick navigation:                                          │
+│    help <module>   Show module commands                     │
+│    <cmd> --help    Show command usage                       │
+└─────────────────────────────────────────────────────────────┘
 
-  for (const mod of modules) {
-    const cat = COMMAND_CATEGORIES[mod];
-    const count = cat.commands.length;
-    const label = cat.label.padEnd(12);
-    output += `│  • ${label} (${count.toString().padStart(2)} commands)  ∷  help ${mod}\n`;
-  }
+┌─ MODULE INDEX ──────────────────────────────────────────────┐
+│                                                             │
+│  ⬢ KERNEL LAYER                                             │
+│    core         (${COMMAND_CATEGORIES.core.commands.length.toString().padStart(2)} cmds)  Scheduler, lifecycle, routing      │
+│    ripple       (${COMMAND_CATEGORIES.ripple.commands.length.toString().padStart(2)} cmds)  Message bus, pub/sub, queues       │
+│    access       (${COMMAND_CATEGORIES.access.commands.length.toString().padStart(2)} cmds)  API keys, billing, metering        │
+│                                                             │
+│  ◈ COGNITIVE LAYER                                          │
+│    brain        (${COMMAND_CATEGORIES.brain.commands.length.toString().padStart(2)} cmds)  Memory, learning, reflection       │
+│    decode       (${COMMAND_CATEGORIES.decode.commands.length.toString().padStart(2)} cmds)  Interpretation, intent parsing     │
+│    dream        (${COMMAND_CATEGORIES.dream.commands.length.toString().padStart(2)} cmds)  Dream-Eater, mutation, cycles      │
+│                                                             │
+│  ◆ OPERATIONS LAYER                                         │
+│    defense      (${COMMAND_CATEGORIES.defense.commands.length.toString().padStart(2)} cmds)  Security, threats, anomalies       │
+│    nexus        (${COMMAND_CATEGORIES.nexus.commands.length.toString().padStart(2)} cmds)  AI routing, multi-provider         │
+│    vision       (${COMMAND_CATEGORIES.vision.commands.length.toString().padStart(2)} cmds)  Observability, metrics, logs       │
+│                                                             │
+│  ◇ ADMIN LAYER                                              │
+│    system       (${COMMAND_CATEGORIES.system.commands.length.toString().padStart(2)} cmds)  Orchestration, heal, backup        │
+│    modernizer   (${COMMAND_CATEGORIES.modernizer.commands.length.toString().padStart(2)} cmds)  Evolution engine, upgrades         │
+│    inclusive    (${COMMAND_CATEGORIES.inclusive.commands.length.toString().padStart(2)} cmds)  Accessibility, WCAG scanning       │
+│                                                             │
+│  ★ ORCHESTRATOR LAYER                                       │
+│    cortex       (${COMMAND_CATEGORIES.cortex.commands.length.toString().padStart(2)} cmds)  Policy intent, PAAEL loop          │
+│    integration  (${COMMAND_CATEGORIES.integration.commands.length.toString().padStart(2)} cmds)  Enterprise adapters, discovery     │
+│                                                             │
+│  ◉ CONSTANT LEARNING MODE (CLM)                             │
+│    clm          (10 cmds)  Autonomous learning, curriculum     │
+│                                                             │
+│  ⚙ META COMMANDS                                            │
+│    meta         (${COMMAND_CATEGORIES.meta.commands.length.toString().padStart(2)} cmds)  Terminal controls, help, aliases    │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
 
-  output += `│
-├─ QUICK COMMANDS ──────────────────────────────────────────────
-│
-│  system.status      ∷  Global status check
-│  system.health      ∷  Full health report
-│  vision.pulse       ∷  Quick heartbeat
-│  brain.reflect      ∷  Trigger reflection
-│  dream.cycle        ∷  Dream-Eater cycle
-│  system.heal        ∷  Self-healing
-│
-├─ EVOLUTION CYCLE v0.7.7 ──────────────────────────────────────
-│
-│  ┌─ COGNITIVE SCAN (4-phase parallel pipeline) ─────────────┐
-│  │  modernizer.scan               ∷  Full systems scan       │
-│  │  modernizer.scan --explain     ∷  Human-readable output   │
-│  │  modernizer.scan --llm-report  ∷  Show LLM reasoning      │
-│  │  modernizer.scan --dry-run     ∷  Analysis only, no plan  │
-│  └───────────────────────────────────────────────────────────┘
-│
-│  ┌─ EVOLUTION LIFECYCLE ────────────────────────────────────┐
-│  │  1. modernizer.scan            → Auto-creates plan        │
-│  │  2. modernizer.evolve shadow   → Apply to shadow env      │
-│  │  3. modernizer.evolve production → Promote (requires 2)   │
-│  │  4. modernizer.evolve verify   → Complete cycle           │
-│  │     modernizer.evolve abort    → Cancel active run        │
-│  └───────────────────────────────────────────────────────────┘
-│
-│  ┌─ CIRCUIT BREAKER & AUTONOMY ─────────────────────────────┐
-│  │  modernizer.circuit status     ∷  Check circuit state     │
-│  │  modernizer.circuit reset      ∷  Close circuit           │
-│  │  modernizer.autonomy status    ∷  View autonomy mode      │
-│  │  modernizer.autonomy set <m>   ∷  off|advisory|governed   │
-│  └───────────────────────────────────────────────────────────┘
-│
-│  ┌─ RECEIPTS (Audit Trail) ─────────────────────────────────┐
-│  │  modernizer.receipts           ∷  List all receipts       │
-│  │  modernizer.receipt <run_id>   ∷  View specific receipt   │
-│  └───────────────────────────────────────────────────────────┘
-│
-├─ v5.0.0 TERMINAL FEATURES ────────────────────────────────────
-│
-│  alias              ∷  Shorthand commands (e.g., 'st' → system.status)
-│  macro              ∷  Multi-command scripts (@health_check)
-│  schedule           ∷  Delayed execution (schedule 5m brain.reflect)
-│  watch              ∷  Periodic execution (watch 10s vision.pulse)
-│  audit              ∷  Session audit trail & stats
-│
-├─ KEYBOARD SHORTCUTS ──────────────────────────────────────────
-│
-│  ↑/↓                ∷  Navigate command history
-│  Ctrl+R             ∷  Reverse search history
-│  Tab                ∷  Autocomplete command
-│  Ctrl+C             ∷  Clear current input
-│  Ctrl+L             ∷  Clear terminal
-│
-└──────────────────────────────────────────────────────────────`;
+┌─ QUICK COMMANDS ────────────────────────────────────────────┐
+│                                                             │
+│  system.status      Global status check                     │
+│  system.health      Full health report                      │
+│  vision.pulse       Quick heartbeat                         │
+│  brain.reflect      Trigger reflection                      │
+│  dream.cycle        Dream-Eater cycle                       │
+│  system.heal        Self-healing                            │
+│  cortex.status      Orchestrator mode                       │
+│  clm.status         CLM status & budget                     │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
+┌─ EVOLUTION CYCLE v0.7.7 ────────────────────────────────────┐
+│                                                             │
+│  ┌─ COGNITIVE SCAN ─────────────────────────────────────┐   │
+│  │  modernizer.scan              Full systems scan       │   │
+│  │  modernizer.scan --explain    Human-readable output   │   │
+│  │  modernizer.scan --llm-report LLM reasoning included  │   │
+│  └───────────────────────────────────────────────────────┘   │
+│                                                             │
+│  ┌─ LIFECYCLE ──────────────────────────────────────────┐   │
+│  │  1. modernizer.scan           Creates plan            │   │
+│  │  2. modernizer.evolve shadow  Apply to shadow env     │   │
+│  │  3. modernizer.evolve production  Promote (needs 2)   │   │
+│  │  4. modernizer.evolve verify  Complete cycle          │   │
+│  │     modernizer.evolve abort   Cancel active run       │   │
+│  └───────────────────────────────────────────────────────┘   │
+│                                                             │
+│  ┌─ CIRCUIT BREAKER ────────────────────────────────────┐   │
+│  │  modernizer.circuit status    Check circuit state     │   │
+│  │  modernizer.circuit reset     Close circuit           │   │
+│  │  modernizer.autonomy status   View autonomy mode      │   │
+│  │  modernizer.autonomy set <m>  off|advisory|governed   │   │
+│  └───────────────────────────────────────────────────────┘   │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
+┌─ CLM (CONSTANT LEARNING MODE) v6.7.0 ───────────────────────┐
+│                                                             │
+│  clm.status          Status, budget, queue size             │
+│  clm.enable          Enable autonomous learning             │
+│  clm.disable         Disable autonomous learning            │
+│  clm.cycle           Run a manual CLM cycle                 │
+│  clm.budget          View daily budget allocation           │
+│  clm.kill_switch     Activate/deactivate kill switch        │
+│  clm.topics          View topic bank with mastery           │
+│  clm.add_topic       Add custom topic to bank               │
+│  clm.review_queue    View spaced repetition queue           │
+│  clm.next_review     Get next review item                   │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
+┌─ TERMINAL FEATURES v5.0.0 ──────────────────────────────────┐
+│                                                             │
+│  alias               Shorthand commands                     │
+│  macro               Multi-command scripts (@name)          │
+│  schedule            Delayed execution (schedule 5m cmd)    │
+│  watch               Periodic execution (watch 10s cmd)     │
+│  audit               Session audit trail & stats            │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
+┌─ KEYBOARD SHORTCUTS ────────────────────────────────────────┐
+│                                                             │
+│  ↑/↓                 Navigate command history               │
+│  Tab                 Autocomplete command                   │
+│  Ctrl+C              Clear current input                    │
+│  Ctrl+L              Clear terminal                         │
+│  1-4                 Execute smart suggestions              │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘`;
 
   return output;
 }

@@ -9,7 +9,7 @@ import type { LucideIcon } from 'lucide-react';
 export interface CommandDefinition {
   command: string;
   description: string;
-  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer' | 'core' | 'ripple' | 'access' | 'integration' | 'cortex' | 'inclusive' | 'meta';
+  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer' | 'core' | 'ripple' | 'access' | 'integration' | 'cortex' | 'inclusive' | 'clm' | 'meta';
   icon: LucideIcon;
   requiresOperator: boolean;
   args?: string;
@@ -406,6 +406,7 @@ export const META_COMMANDS: CommandDefinition[] = [
   { command: 'help access', description: 'Identity/billing commands', category: 'meta', icon: Key, requiresOperator: false },
   { command: 'help integration', description: 'Enterprise integration commands', category: 'meta', icon: Plug, requiresOperator: false },
   { command: 'help inclusive', description: 'Accessibility pipeline commands', category: 'meta', icon: Accessibility, requiresOperator: false },
+  { command: 'help clm', description: 'Constant Learning Mode commands', category: 'meta', icon: Brain, requiresOperator: false },
   // Terminal Controls
   { command: 'clear', description: 'Clear terminal history', category: 'meta', icon: Terminal, requiresOperator: false },
   { command: 'whoami', description: 'Display identity', category: 'meta', icon: Cpu, requiresOperator: false },
@@ -475,6 +476,7 @@ export const COMMAND_CATEGORIES = {
   inclusive: { label: 'INCLUSIVE', color: 'text-teal-400', borderColor: 'border-teal-500/30', commands: INCLUSIVE_COMMANDS },
   system: { label: 'SYSTEM', color: 'text-gray-400', borderColor: 'border-gray-500/30', commands: SYSTEM_COMMANDS },
   modernizer: { label: 'MODERNIZER', color: 'text-pink-400', borderColor: 'border-pink-500/30', commands: MODERNIZER_COMMANDS },
+  clm: { label: 'CLM', color: 'text-indigo-400', borderColor: 'border-indigo-500/30', commands: CLM_COMMANDS },
   meta: { label: 'META', color: 'text-gray-400', borderColor: 'border-gray-500/30', commands: META_COMMANDS },
 } as const;
 

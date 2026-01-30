@@ -69,6 +69,13 @@ export const BUILTIN_ALIASES: AliasDefinition[] = [
   { alias: 'rd', expansion: 'ripple.drain', description: 'Drain queue' },
   { alias: 'rc', expansion: 'ripple.circuits', description: 'Circuit breakers' },
   
+  // CLM (Constant Learning Mode) shortcuts
+  { alias: 'clms', expansion: 'clm.status', description: 'CLM status' },
+  { alias: 'clmc', expansion: 'clm.cycle', description: 'CLM cycle' },
+  { alias: 'clmb', expansion: 'clm.budget', description: 'CLM budget' },
+  { alias: 'clmt', expansion: 'clm.topics', description: 'CLM topics' },
+  { alias: 'clmr', expansion: 'clm.review_queue', description: 'Review queue' },
+  
   // Quick actions
   { alias: 'heal', expansion: 'system.heal', description: 'Self-healing' },
   { alias: 'fix', expansion: 'system.heal auto true', description: 'Auto-fix issues' },
