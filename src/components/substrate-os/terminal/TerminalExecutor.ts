@@ -860,7 +860,7 @@ ${cycleResult.plan_id ? `│  Plan ID: ${cycleResult.short_id} (${cycleResult.pl
 │    1. modernizer.evolve shadow    — Apply to shadow environment
 │    2. modernizer.evolve production — Promote to production
 │    3. modernizer.evolve verify    — Run verification tests`;
-      } else if (cycleResult.phase === 'shadow_apply') {
+      } else if (cycleResult.phase === 'shadow_applied') {
         output += `
 │
 │  Next step:
