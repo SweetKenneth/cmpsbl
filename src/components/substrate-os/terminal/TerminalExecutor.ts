@@ -1567,11 +1567,14 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
       try {
         const { runCLMCycle } = await import('@/lib/substrate/clm');
         const result = await runCLMCycle();
+        if (!result) {
+          return { success: false, output: '▓ CLM cycle returned no result — check if CLM is enabled' };
+        }
         return { 
           success: result.success, 
           output: result.success 
-            ? `◉ CLM cycle complete — ${result.topics_learned || 0} topics processed, ${result.tokens_used || 0} tokens used` 
-            : `▓ CLM cycle failed: ${result.error}`,
+            ? `◉ CLM cycle complete — topic: ${result.topic || 'unknown'}, ${result.unitsUsed || 0} units used` 
+            : `▓ CLM cycle failed: ${result.error || 'Unknown error'}`,
           data: result,
         };
       } catch (err) {
