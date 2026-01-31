@@ -3,13 +3,14 @@
  * PREMIUM EDITION — 14 modules, 260+ commands, full introspection
  */
 
-import { Navigate, Link } from 'react-router-dom';
+import { Navigate, Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { 
   Loader2, Lock, Terminal, AlertTriangle, RefreshCw, FileText,
   Settings, Zap, LayoutDashboard, Activity, Bot, Users, Sparkles,
   Building2, ExternalLink, HardDrive, Wand2, Cpu, Radio, Key, Dna,
-  ChevronRight, Menu, Shield, Layers, Gauge, ArrowUpRight, Eye
+  ChevronRight, Menu, Shield, Layers, Gauge, ArrowUpRight, Eye,
+  LogOut, Home
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -145,9 +146,10 @@ interface SidebarNavProps {
   onTabChange: (tab: string) => void;
   collapsed?: boolean;
   onClose?: () => void;
+  onLogout: () => void;
 }
 
-function SidebarNav({ groups, activeTab, onTabChange, collapsed = false, onClose }: SidebarNavProps) {
+function SidebarNav({ groups, activeTab, onTabChange, collapsed = false, onClose, onLogout }: SidebarNavProps) {
   const colorClasses: Record<string, { active: string; icon: string }> = {
     cyan: { active: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/40', icon: 'text-cyan-400' },
     emerald: { active: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/40', icon: 'text-emerald-400' },
@@ -219,15 +221,43 @@ function SidebarNav({ groups, activeTab, onTabChange, collapsed = false, onClose
         </nav>
       </ScrollArea>
       
-      {/* Footer */}
-      {!collapsed && (
-        <div className="p-4 border-t border-border/30">
-          <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-mono">
+      {/* Footer with navigation */}
+      <div className={cn("border-t border-border/30", collapsed ? "p-2" : "p-3")}>
+        <div className={cn("flex gap-2", collapsed ? "flex-col" : "")}>
+          <Button
+            variant="ghost"
+            size="sm"
+            asChild
+            className={cn(
+              "text-muted-foreground hover:text-foreground",
+              collapsed ? "w-full justify-center px-2" : "flex-1"
+            )}
+          >
+            <Link to="/">
+              <Home className="w-4 h-4" />
+              {!collapsed && <span className="ml-2">Home</span>}
+            </Link>
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onLogout}
+            className={cn(
+              "text-muted-foreground hover:text-destructive",
+              collapsed ? "w-full justify-center px-2" : "flex-1"
+            )}
+          >
+            <LogOut className="w-4 h-4" />
+            {!collapsed && <span className="ml-2">Logout</span>}
+          </Button>
+        </div>
+        {!collapsed && (
+          <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-mono mt-3 pt-3 border-t border-border/20">
             <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <span>CMPSBL v6.0.0</span>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
@@ -431,19 +461,29 @@ function GovernorPanel({ enabled }: { enabled: boolean }) {
 // Main Component
 // ============================================
 export default function SubstrateOS() {
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, signOut } = useAuth();
   const { role, isOperator, isGovernor, loading: roleLoading } = useUserRole();
   const { data: userAgency, isLoading: agencyLoading } = useUserAgency();
   const healthScore = useSubstrateHealthScore();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [mintSubTab, setMintSubTab] = useState<'forge' | 'agency'>('agency');
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const navigate = useNavigate();
   
   // Observer-only mode: user is authenticated but only has observer role
   const isObserverOnly = !!user && role === 'observer';
   
   const isCritical = healthScore.healthScore < 40;
   const tabGroups = getTabGroups(isOperator, isGovernor, !!userAgency, isObserverOnly);
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      navigate('/');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
 
   if (!authLoading && !user) {
     return <Navigate to="/auth" replace />;
@@ -492,7 +532,7 @@ export default function SubstrateOS() {
       <div className="flex-1 flex overflow-hidden">
         {/* Desktop Sidebar */}
         <div className="hidden lg:block">
-          <SidebarNav groups={tabGroups} activeTab={activeTab} onTabChange={setActiveTab} />
+          <SidebarNav groups={tabGroups} activeTab={activeTab} onTabChange={setActiveTab} onLogout={handleLogout} />
         </div>
 
         {/* Mobile Navigation - simplified for observers */}
@@ -533,7 +573,7 @@ export default function SubstrateOS() {
             <div className="p-4 border-b border-border/50">
               <h3 className="font-semibold">Navigation</h3>
             </div>
-            <SidebarNav groups={tabGroups} activeTab={activeTab} onTabChange={setActiveTab} onClose={() => setSidebarOpen(false)} />
+            <SidebarNav groups={tabGroups} activeTab={activeTab} onTabChange={setActiveTab} onClose={() => setSidebarOpen(false)} onLogout={handleLogout} />
           </SheetContent>
         </Sheet>
 
