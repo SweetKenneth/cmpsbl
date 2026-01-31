@@ -8,6 +8,7 @@ export { getAutoblogSettings, updateAutoblogSettings, getAutoblogQueue, getAutob
 export { checkAutoblogCircuit, tripAutoblogCircuit, resetAutoblogCircuit } from './circuit';
 export { healAutoblog } from './heal';
 export { startAutonomousMode, stopAutonomousMode, getAutonomousState } from './autonomous-engine';
+export { seedAutoblogPosts } from './seeder';
 export type { AutoblogSettings, AutoblogQueueItem, AutoblogDraft, AutoblogRun, AutonomousState } from './types';
 
 export const AUTOBLOG_VERSION = '2.0.0';
