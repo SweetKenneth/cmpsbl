@@ -42,6 +42,13 @@ export * from './public-receipts';
 // v0.7.7 — Intelligent Scan
 export * from './scan';
 
+// v1.0.0 — Omega Observer Engine
+export * from './change-ledger';
+export * from './eligibility-gate';
+export * from './forward-analyzer';
+export * from './forensics';
+export * from './omega-observer';
+
 // ═══════════════════════════════════════════════════════════════
 // RE-EXPORT MAIN EVOLVE FUNCTION
 // ═══════════════════════════════════════════════════════════════
