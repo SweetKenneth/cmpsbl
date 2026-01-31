@@ -2083,29 +2083,111 @@ async function handleBrain(
     }
 
     case "optimize": {
-      // Memory optimization - compress and clean
-      const { data: oldMemories } = await supabase
-        .from('brain_memories')
-        .select('id, content, confidence')
-        .lt('confidence', 0.3)
-        .order('created_at', { ascending: true })
-        .limit(50);
-
-      const lowConfidenceCount = oldMemories?.length || 0;
+      // Call the dedicated optimization edge function
+      const mode = (data.mode as string) || 'standard';
       
-      // Log optimization event
+      try {
+        const optimizeResponse = await fetch(`${Deno.env.get('SUPABASE_URL')}/functions/v1/pf-brain-optimize`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')}`,
+          },
+          body: JSON.stringify({ mode }),
+        });
+        
+        const optimizeResult = await optimizeResponse.json();
+        
+        return jsonResponse({
+          success: optimizeResult.success,
+          mode,
+          stats: optimizeResult.stats,
+          tiers: optimizeResult.tiers,
+          duration_ms: optimizeResult.duration_ms,
+          message: optimizeResult.success 
+            ? `Optimization complete (${mode} mode). Demoted ${optimizeResult.stats?.demoted_to_warm || 0} to warm, ${optimizeResult.stats?.demoted_to_cold || 0} to cold.`
+            : optimizeResult.error,
+        }, headers);
+      } catch (err) {
+        return jsonResponse({
+          success: false,
+          error: err instanceof Error ? err.message : 'Optimization failed',
+        }, headers);
+      }
+    }
+
+    case "tier": {
+      // Run tiering cycle via dedicated edge function
+      const mode = (data.mode as string) || 'standard';
+      
+      try {
+        const tierResponse = await fetch(`${Deno.env.get('SUPABASE_URL')}/functions/v1/pf-brain-memory-tiering`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')}`,
+          },
+          body: JSON.stringify({ operation: 'rebalance' }),
+        });
+        
+        const tierResult = await tierResponse.json();
+        
+        return jsonResponse({
+          success: tierResult.success,
+          operation: 'tier',
+          mode,
+          stats: tierResult.stats,
+          duration_ms: tierResult.duration_ms,
+          message: tierResult.success 
+            ? `Tiering complete. Promoted ${tierResult.stats?.promoted_to_hot || 0}, demoted ${tierResult.stats?.demoted_to_warm || 0} to warm, ${tierResult.stats?.demoted_to_cold || 0} to cold.`
+            : tierResult.error,
+        }, headers);
+      } catch (err) {
+        return jsonResponse({
+          success: false,
+          error: err instanceof Error ? err.message : 'Tiering failed',
+        }, headers);
+      }
+    }
+
+    case "prune": {
+      // Prune low-value memories
+      const threshold = Number(data.threshold) || 0.1;
+      
+      const { data: toPrune } = await supabase
+        .from('brain_memory_hot')
+        .select('id, content, context, value_score')
+        .lt('value_score', threshold)
+        .limit(100);
+      
+      let pruned = 0;
+      for (const memory of toPrune || []) {
+        try {
+          await supabase.from('brain_memory_pruned').insert({
+            original_memory_id: memory.id,
+            original_tier: 'hot',
+            content_preview: memory.content?.substring(0, 200),
+            context: memory.context,
+            value_score: memory.value_score || 0.1,
+            prune_reason: 'manual_prune',
+          });
+          await supabase.from('brain_memory_hot').delete().eq('id', memory.id);
+          pruned++;
+        } catch { /* continue */ }
+      }
+      
       await supabase.from('brain_events').insert({
-        event_type: 'memory_optimization',
+        event_type: 'memory_prune',
         module: 'brain',
         outcome: 'success',
-        data: { low_confidence_found: lowConfidenceCount, timestamp: new Date().toISOString() }
+        data: { threshold, pruned },
       });
-
+      
       return jsonResponse({
         success: true,
-        optimized: true,
-        low_confidence_memories: lowConfidenceCount,
-        message: `Optimization complete. Found ${lowConfidenceCount} low-confidence memories.`,
+        pruned,
+        threshold,
+        message: `Pruned ${pruned} memories below threshold ${threshold}`,
       }, headers);
     }
 

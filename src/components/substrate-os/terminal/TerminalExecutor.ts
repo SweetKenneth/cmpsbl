@@ -664,7 +664,14 @@ ${identityLine}│  Mode: ${roleDisplay}
     } else if (base === 'brain.synthesize') {
       result = await brain.synthesize();
     } else if (base === 'brain.optimize') {
-      result = await brain.optimize();
+      const mode = args[0] as 'standard' | 'aggressive' | 'deep' || 'standard';
+      result = await brain.optimize(mode);
+    } else if (base === 'brain.tier') {
+      const mode = args[0] as 'standard' | 'aggressive' | 'deep' || 'standard';
+      result = await brain.tier(mode);
+    } else if (base === 'brain.prune') {
+      const threshold = args[0] ? parseFloat(args[0]) : 0.1;
+      result = await brain.prune(threshold);
     } else if (base === 'brain.deep_think') {
       result = await brain.deepThink(args[0] || '', args[1] ? parseInt(args[1]) : undefined);
     } else if (base === 'brain.hypothesis_test') {

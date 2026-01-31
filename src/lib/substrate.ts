@@ -161,9 +161,17 @@ class SubstrateClient {
     dream: () =>
       this.invoke({ module: 'brain', action: 'dream' }),
     
-    /** @deprecated Use learningEngine.stabilization() - Memory optimization */
-    optimize: () =>
-      this.invoke({ module: 'brain', action: 'optimize' }),
+    /** Memory optimization - prune, decay, and rebalance tiers */
+    optimize: (mode?: 'standard' | 'aggressive' | 'deep') =>
+      this.invoke({ module: 'brain', action: 'optimize', payload: { mode: mode || 'standard' } }),
+    
+    /** Run hot→warm→cold tiering cycle */
+    tier: (mode?: 'standard' | 'aggressive' | 'deep') =>
+      this.invoke({ module: 'brain', action: 'tier', payload: { mode: mode || 'standard' } }),
+    
+    /** Prune low-value memories */
+    prune: (threshold?: number) =>
+      this.invoke({ module: 'brain', action: 'prune', payload: { threshold: threshold || 0.1 } }),
     
     /** Deep thinking mode - extended reasoning with chain of thought */
     deepThink: (query: string, depth?: number) =>
