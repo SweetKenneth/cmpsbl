@@ -1,15 +1,13 @@
 /**
- * AutoBlog Primitive v1.0.0
- * Governed, bounded, observable blog automation
- * 
- * Safe defaults: enabled=false, dry_run=true
- * Modes: governed | shadow | off
+ * AutoBlog Primitive v2.0.0
+ * Governed, autonomous, self-learning blog automation
  */
 
 export { getAutoblogStatus, autoblogPlan, autoblogDraft, autoblogVerify, autoblogPublish, autoblogAbort } from './orchestrator';
 export { getAutoblogSettings, updateAutoblogSettings, getAutoblogQueue, getAutoblogRuns } from './store';
 export { checkAutoblogCircuit, tripAutoblogCircuit, resetAutoblogCircuit } from './circuit';
 export { healAutoblog } from './heal';
-export type { AutoblogSettings, AutoblogQueueItem, AutoblogDraft, AutoblogRun } from './types';
+export { startAutonomousMode, stopAutonomousMode, getAutonomousState } from './autonomous-engine';
+export type { AutoblogSettings, AutoblogQueueItem, AutoblogDraft, AutoblogRun, AutonomousState } from './types';
 
-export const AUTOBLOG_VERSION = '1.0.0';
+export const AUTOBLOG_VERSION = '2.0.0';
