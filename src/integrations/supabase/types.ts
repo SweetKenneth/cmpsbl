@@ -3286,6 +3286,51 @@ export type Database = {
         }
         Relationships: []
       }
+      change_ledger: {
+        Row: {
+          artifacts_touched: string[] | null
+          change_type: string
+          component: string
+          evolution_id: string | null
+          id: string
+          metadata: Json | null
+          metrics_after: Json | null
+          metrics_before: Json | null
+          phase: string
+          source: string
+          summary: string
+          timestamp: string
+        }
+        Insert: {
+          artifacts_touched?: string[] | null
+          change_type: string
+          component: string
+          evolution_id?: string | null
+          id?: string
+          metadata?: Json | null
+          metrics_after?: Json | null
+          metrics_before?: Json | null
+          phase?: string
+          source?: string
+          summary: string
+          timestamp?: string
+        }
+        Update: {
+          artifacts_touched?: string[] | null
+          change_type?: string
+          component?: string
+          evolution_id?: string | null
+          id?: string
+          metadata?: Json | null
+          metrics_after?: Json | null
+          metrics_before?: Json | null
+          phase?: string
+          source?: string
+          summary?: string
+          timestamp?: string
+        }
+        Relationships: []
+      }
       cognitive_registry: {
         Row: {
           api_url: string | null
