@@ -85,7 +85,7 @@ This evolution represents the system's continuous self-improvement. The cognitiv
 
     return {
       queueId: queued.id,
-      channel: 'user_updates',
+      channel: 'changelog',
       topic: `System Evolution: ${totalActions} Improvements Applied`,
     };
   } catch (error) {

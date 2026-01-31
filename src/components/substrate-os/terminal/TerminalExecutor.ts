@@ -1074,10 +1074,8 @@ ${cycleResult.plan_id ? `│  Plan ID: ${cycleResult.short_id} (${cycleResult.pl
         const depth = args[0] as 'quick' | 'standard' | 'deep' | undefined;
         result = await modernizer.scan({ depth: depth || 'standard' });
       }
-    } else if (base === 'modernizer.analyze') {
-      // Quick analysis of a specific module
-      const targetModule = args[0];
-      result = await modernizer.analyze(targetModule);
+    // NOTE: modernizer.analyze is handled by Omega Observer Engine (see line ~1354)
+    // Legacy handler removed to prevent duplicate handling
     } else if (base === 'modernizer.export') {
       if (!args[0]) {
         return { success: false, output: '▓ ERROR: Job ID required\n  Usage: modernizer.export <job_id>' };
