@@ -9,7 +9,7 @@ import {
   Loader2, Lock, Terminal, AlertTriangle, RefreshCw, FileText,
   Settings, Zap, LayoutDashboard, Activity, Bot, Users, Sparkles,
   Building2, ExternalLink, HardDrive, Wand2, Cpu, Radio, Key, Dna,
-  ChevronRight, Menu, Shield, Layers, Gauge, ArrowUpRight
+  ChevronRight, Menu, Shield, Layers, Gauge, ArrowUpRight, Eye
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -66,7 +66,21 @@ interface TabGroup {
   tabs: TabConfig[];
 }
 
-function getTabGroups(isOperator: boolean, isGovernor: boolean, hasAgency: boolean): TabGroup[] {
+function getTabGroups(isOperator: boolean, isGovernor: boolean, hasAgency: boolean, isObserverOnly: boolean): TabGroup[] {
+  // Observer-only mode: minimal tabs, no operator/governor tabs
+  if (isObserverOnly) {
+    return [
+      { 
+        id: 'observe', 
+        label: 'Observe', 
+        icon: Gauge, 
+        tabs: [
+          { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, color: 'cyan', description: 'System overview' },
+        ] 
+      },
+    ];
+  }
+
   const observeTabs: TabConfig[] = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, color: 'cyan', description: 'System overview' },
     { id: 'events', label: 'Events', icon: Activity, color: 'amber', description: 'Live activity feed' },
@@ -425,8 +439,11 @@ export default function SubstrateOS() {
   const [mintSubTab, setMintSubTab] = useState<'forge' | 'agency'>('agency');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   
+  // Observer-only mode: user is authenticated but only has observer role
+  const isObserverOnly = !!user && role === 'observer';
+  
   const isCritical = healthScore.healthScore < 40;
-  const tabGroups = getTabGroups(isOperator, isGovernor, !!userAgency);
+  const tabGroups = getTabGroups(isOperator, isGovernor, !!userAgency, isObserverOnly);
 
   if (!authLoading && !user) {
     return <Navigate to="/auth" replace />;
@@ -478,36 +495,38 @@ export default function SubstrateOS() {
           <SidebarNav groups={tabGroups} activeTab={activeTab} onTabChange={setActiveTab} />
         </div>
 
-        {/* Mobile Navigation */}
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-t border-border/50 safe-area-pb">
-          <div className="grid grid-cols-5 px-2 py-2">
-            {tabGroups.flatMap(g => g.tabs).slice(0, 4).map((tab) => {
-              const isActive = activeTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={cn(
-                    "flex flex-col items-center justify-center gap-1 py-2 rounded-xl transition-all",
-                    isActive 
-                      ? "text-primary bg-primary/10" 
-                      : "text-muted-foreground active:bg-muted/50"
-                  )}
-                >
-                  <tab.icon className="w-5 h-5" />
-                  <span className="text-[10px] font-medium">{tab.label}</span>
-                </button>
-              );
-            })}
-            <button
-              onClick={() => setSidebarOpen(true)}
-              className="flex flex-col items-center justify-center gap-1 py-2 rounded-xl text-muted-foreground active:bg-muted/50"
-            >
-              <Menu className="w-5 h-5" />
-              <span className="text-[10px] font-medium">More</span>
-            </button>
+        {/* Mobile Navigation - simplified for observers */}
+        {!isObserverOnly && (
+          <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-t border-border/50 safe-area-pb">
+            <div className="grid grid-cols-5 px-2 py-2">
+              {tabGroups.flatMap(g => g.tabs).slice(0, 4).map((tab) => {
+                const isActive = activeTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={cn(
+                      "flex flex-col items-center justify-center gap-1 py-2 rounded-xl transition-all",
+                      isActive 
+                        ? "text-primary bg-primary/10" 
+                        : "text-muted-foreground active:bg-muted/50"
+                    )}
+                  >
+                    <tab.icon className="w-5 h-5" />
+                    <span className="text-[10px] font-medium">{tab.label}</span>
+                  </button>
+                );
+              })}
+              <button
+                onClick={() => setSidebarOpen(true)}
+                className="flex flex-col items-center justify-center gap-1 py-2 rounded-xl text-muted-foreground active:bg-muted/50"
+              >
+                <Menu className="w-5 h-5" />
+                <span className="text-[10px] font-medium">More</span>
+              </button>
+            </div>
           </div>
-        </div>
+        )}
 
         <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
           <SheetContent side="left" className="p-0 w-72 bg-background">
@@ -530,13 +549,48 @@ export default function SubstrateOS() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
               >
-                <EmergencyRecoveryPanel showAlways={false} isCritical={isCritical} />
+                {/* Observer Mode Banner */}
+                {isObserverOnly && (
+                  <motion.div 
+                    className="rounded-xl border border-cyan-500/30 bg-gradient-to-r from-cyan-500/5 via-background to-fuchsia-500/5 p-4"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center">
+                          <Eye className="w-5 h-5 text-cyan-400" />
+                        </div>
+                        <div>
+                          <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
+                            Observer Mode
+                            <Badge variant="outline" className="text-[10px] border-emerald-500/40 text-emerald-400 bg-emerald-500/10">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse mr-1" />
+                              24/7 CLM Active
+                            </Badge>
+                          </h3>
+                          <p className="text-xs text-muted-foreground">
+                            You have read-only access. Watch the substrate learn autonomously.
+                          </p>
+                        </div>
+                      </div>
+                      <a 
+                        href="/system-feed" 
+                        className="text-xs text-cyan-400 hover:text-cyan-300 flex items-center gap-1"
+                      >
+                        View Feed <ArrowUpRight className="w-3 h-3" />
+                      </a>
+                    </div>
+                  </motion.div>
+                )}
+                
+                {!isObserverOnly && <EmergencyRecoveryPanel showAlways={false} isCritical={isCritical} />}
                 <DashboardMetricsHero />
-                <QuickActionsPanel enabled={isOperator} onOpenTerminal={() => setActiveTab('terminal')} />
-                <ModuleControlsGrid enabled={isOperator} />
-                <BrainIntelligencePanel enabled={isOperator} />
+                {!isObserverOnly && <QuickActionsPanel enabled={isOperator} onOpenTerminal={() => setActiveTab('terminal')} />}
+                {!isObserverOnly && <ModuleControlsGrid enabled={isOperator} />}
+                {!isObserverOnly && <BrainIntelligencePanel enabled={isOperator} />}
                 <SystemHealthPanel enabled={isOperator} />
-                <GovernorPanel enabled={isGovernor} />
+                {!isObserverOnly && <GovernorPanel enabled={isGovernor} />}
               </motion.main>
             )}
 
