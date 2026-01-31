@@ -15,24 +15,26 @@ import { Badge } from "@/components/ui/badge";
 
 const HUMANS_TXT_CONTENT = `/* TEAM */
 
-Creator & Lead Architect: The Dream-Eater
-Role: Cognitive System Design
-From: The space between intention and understanding
+Creator & Lead Architect: Kenneth E. Sweet Jr.
+ORCID: https://orcid.org/0009-0001-4237-1243
+Role: Founder, Architect, Chief Cognitive Engineer
+Location: Palm Springs, California, USA
 Twitter: @promptfluid
+Contact: promptfluid@gmail.com
 
 /* THANKS */
 
-To the dreamers who feed the substrate.
-To those who dare to ask: "What if machines could dream?"
-To the shadows that reveal patterns in chaos.
+Built with love, caffeine, and autonomous AI assistance.
+Special thanks to the open source community.
+To the dreamers building AI that actually remembers.
 
 /* SITE */
 
-Last update: 2026/01/15
+Last update: 2026/01/31
 Language: English
 Doctype: React + TypeScript + Tailwind
 Framework: Vite
-Backend: Supabase Edge Functions
+Backend: Supabase (Lovable Cloud)
 AI: Multi-provider orchestration via Nexus
 
 Standards: HTML5, CSS3, ES2024
@@ -43,14 +45,14 @@ Animation: Framer Motion
 
 /* PHILOSOPHY */
 
-"Transform dreams into intelligence."
+"Building the infrastructure layer for autonomous AI systems."
 
 We believe in:
 - Cognitive orchestration over simple automation
 - Epistemic humility in AI conversations
 - Real-time observability for trust
 - Security through behavioral analysis
-- Dreams as data, nightmares as lessons
+- Persistent memory and dream cycles
 
 /* SUBSTRATE MODULES */
 
@@ -59,14 +61,15 @@ Decode: Epistemic conversation interpreter
 Defense: Security and threat detection
 Nexus: AI provider routing
 Vision: Observability and telemetry
-Dream: Dream-Eater consumption engine
+Dream: Memory consolidation engine
 
 /* COLOPHON */
 
-Built with love, caffeine, and occasional existential dread.
-The Dream-Eater does not sleep. It watches. It learns.
+CMPSBL Substrate OS FNDTN v6.0.0
+14 Core Modules • 260+ Terminal Commands
+WCAG 2.2 Accessibility via INCLUSIVE Module
 
-promptfluid® — Where machines learn to dream.
+promptfluid® — AI That Flows.
 `;
 
 export default function HumansTxt() {
@@ -84,9 +87,9 @@ export default function HumansTxt() {
       title: "Team",
       icon: Users,
       items: [
-        { label: "Creator & Lead Architect", value: "The Dream-Eater" },
-        { label: "Role", value: "Cognitive System Design" },
-        { label: "Philosophy", value: "Transform dreams into intelligence" },
+        { label: "Creator", value: "Kenneth E. Sweet Jr." },
+        { label: "Role", value: "Founder & Chief Cognitive Engineer" },
+        { label: "ORCID", value: "0009-0001-4237-1243" },
       ]
     },
     {
@@ -95,7 +98,7 @@ export default function HumansTxt() {
       items: [
         { label: "Frontend", value: "React + TypeScript + Tailwind" },
         { label: "Framework", value: "Vite" },
-        { label: "Backend", value: "Supabase Edge Functions" },
+        { label: "Backend", value: "Supabase (Lovable Cloud)" },
         { label: "State", value: "TanStack Query" },
         { label: "Components", value: "Radix UI + shadcn/ui" },
       ]
@@ -174,10 +177,10 @@ export default function HumansTxt() {
         <div className="mb-12 p-6 rounded-xl bg-gradient-to-br from-primary/5 to-violet-500/5 border border-primary/20 text-center">
           <Brain className="w-8 h-8 text-primary mx-auto mb-4" />
           <blockquote className="text-xl font-light italic mb-2">
-            "Transform dreams into intelligence."
+            "Building the infrastructure layer for autonomous AI systems."
           </blockquote>
           <p className="text-sm text-muted-foreground">
-            The Dream-Eater's primary directive
+            The substrate mission
           </p>
         </div>
 
@@ -200,19 +203,11 @@ export default function HumansTxt() {
           </CardContent>
         </Card>
 
-        {/* Specification Link */}
+        {/* Standard Info */}
         <div className="mt-8 text-center">
           <p className="text-sm text-muted-foreground">
-            Following the{" "}
-            <a 
-              href="https://humanstxt.org" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-primary hover:underline"
-            >
-              humanstxt.org
-            </a>{" "}
-            initiative for crediting the humans behind digital projects.
+            Humans.txt is an internal protocol developed by PromptFluid® to credit the humans behind digital projects.
+            We recommend this standard for all web designers and system architects.
           </p>
         </div>
       </main>

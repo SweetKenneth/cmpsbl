@@ -200,18 +200,20 @@ export default function AutoBlogPost() {
             </div>
 
             {/* Main Content with Beautiful Typography */}
-            <div className="prose prose-lg prose-invert max-w-none
+            <div className="prose prose-lg prose-invert max-w-none space-y-8
               prose-headings:font-bold prose-headings:text-foreground prose-headings:tracking-tight
-              prose-h2:text-2xl prose-h2:mt-16 prose-h2:mb-6 prose-h2:border-b prose-h2:border-border/30 prose-h2:pb-4
-              prose-h3:text-xl prose-h3:mt-10 prose-h3:mb-4
-              prose-p:text-muted-foreground prose-p:leading-relaxed prose-p:mb-6
+              prose-h2:text-2xl prose-h2:!mt-12 prose-h2:!mb-6 prose-h2:border-b prose-h2:border-border/30 prose-h2:pb-4
+              prose-h3:text-xl prose-h3:!mt-8 prose-h3:!mb-4
+              prose-p:text-muted-foreground prose-p:leading-[1.8] prose-p:!mb-6
               prose-a:text-primary prose-a:no-underline hover:prose-a:underline
               prose-strong:text-foreground prose-strong:font-semibold
               prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:text-primary
-              prose-pre:bg-card prose-pre:border prose-pre:border-border/50 prose-pre:rounded-xl prose-pre:p-6
-              prose-ul:space-y-3 prose-ul:my-6
-              prose-li:text-muted-foreground prose-li:leading-relaxed
-              prose-blockquote:border-l-primary prose-blockquote:bg-muted/30 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:rounded-r-xl prose-blockquote:not-italic
+              prose-pre:bg-card prose-pre:border prose-pre:border-border/50 prose-pre:rounded-xl prose-pre:p-6 prose-pre:!my-8
+              prose-ul:!space-y-3 prose-ul:!my-6 prose-ul:pl-6
+              prose-ol:!space-y-3 prose-ol:!my-6 prose-ol:pl-6
+              prose-li:text-muted-foreground prose-li:leading-relaxed prose-li:!my-2
+              prose-blockquote:border-l-primary prose-blockquote:bg-muted/30 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:rounded-r-xl prose-blockquote:not-italic prose-blockquote:!my-8
+              prose-hr:!my-10 prose-hr:border-border/50
             ">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
                 {post.content}
