@@ -17,6 +17,8 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { PublicNav } from '@/components/PublicNav';
+import { EnhancedFooter } from '@/components/EnhancedFooter';
 
 // Animated background particles
 function ObserverParticles() {
@@ -151,13 +153,16 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col lg:flex-row bg-background relative overflow-hidden">
-      {/* Background effects */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-[150px]" />
-        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-fuchsia-500/5 rounded-full blur-[120px]" />
-      </div>
-      <ObserverParticles />
+    <div className="min-h-screen flex flex-col bg-background relative overflow-hidden">
+      <PublicNav />
+      
+      <div className="flex-1 flex flex-col lg:flex-row relative">
+        {/* Background effects */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-[150px]" />
+          <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-fuchsia-500/5 rounded-full blur-[120px]" />
+        </div>
+        <ObserverParticles />
 
       {/* Left Panel - Observer Mode Info */}
       <div className="lg:w-1/2 p-8 lg:p-12 flex flex-col justify-center relative">
@@ -437,6 +442,8 @@ export default function Auth() {
           </div>
         </motion.div>
       </div>
+      </div>
+      <EnhancedFooter />
     </div>
   );
 }
