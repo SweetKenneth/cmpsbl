@@ -6,7 +6,7 @@
 
 ## The Memory Secret
 
-The BRAIN module doesn't just store memories—it **values them**. Every memory has a score that determines whether it lives in fast "hot" storage or slow "cold" archive.
+The BRAIN module doesn't just store memories—it **values them**. Every memory has a score that determines whether it lives in fast "hot" storage or slow "cold" archive. **No memory is ever truly lost**—they cascade through tiers based on access patterns.
 
 ---
 
@@ -14,27 +14,32 @@ The BRAIN module doesn't just store memories—it **values them**. Every memory 
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                      HOT MEMORY                              │
-│  Fast access • Last 90 days • Frequently recalled            │
+│                      HOT MEMORY (500 max)                    │
+│  Fast access • High value (≥0.6) • Frequently recalled       │
 │  Storage: brain_memory_hot table                             │
+│  Protected types: core_identity, principles, safety_laws     │
 └─────────────────────────────────────────────────────────────┘
                            │
-                    [value drops below 0.3]
+                    [value drops below 0.6]
                            ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                     WARM MEMORY                              │
-│  Standard access • 90-365 days • Occasional recall           │
-│  Storage: brain_memories table                               │
+│                    WARM MEMORY (2,000 max)                   │
+│  Standard access • Medium value (0.35-0.6) • Occasional      │
+│  Storage: brain_memory_warm table                            │
+│  Promotes back to hot if value rises above 0.75              │
 └─────────────────────────────────────────────────────────────┘
                            │
-                    [value drops below 0.1]
+                    [value drops below 0.35]
                            ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                     COLD MEMORY                              │
-│  Archived • 365+ days • Rarely accessed                      │
+│                    COLD MEMORY (10,000 max)                  │
+│  Archived • Low value (<0.35) • Rarely accessed              │
 │  Storage: brain_memory_cold table                            │
+│  Pruned when value drops below 0.05                          │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+**Persistent Memory Guarantee**: Apps and substrate components can recall ANY memory regardless of tier. The recall engine searches hot→warm→cold automatically, with hot being fastest.
 
 ---
 

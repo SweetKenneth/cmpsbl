@@ -1537,39 +1537,103 @@ async function handleBrain(
       }, headers);
     }
 
-    // ═══ v3.12.0: RECALL — Semantic memory retrieval ═══
+    // ═══ v6.3.2: RECALL — Unified multi-tier memory retrieval ═══
     case "recall": {
-      const { query, limit = 10 } = data;
+      const { query, limit = 10, tier = 'all' } = data;
       
       try {
-        // Search across multiple memory sources
+        // Search across ALL THREE memory tiers + legacy
+        const searchPromises: Promise<any>[] = [];
+        
+        if (tier === 'all' || tier === 'hot') {
+          searchPromises.push(
+            supabase.from('brain_memory_hot')
+              .select('id, content, context, priority, tags, value_score, access_count, created_at')
+              .textSearch('content', String(query))
+              .order('value_score', { ascending: false })
+              .limit(limit)
+          );
+        } else {
+          searchPromises.push(Promise.resolve({ data: [] }));
+        }
+        
+        if (tier === 'all' || tier === 'warm') {
+          searchPromises.push(
+            supabase.from('brain_memory_warm')
+              .select('id, content, context, core_summary, tags, value_score, access_count, created_at')
+              .textSearch('content', String(query))
+              .order('value_score', { ascending: false })
+              .limit(Math.ceil(limit / 2))
+          );
+        } else {
+          searchPromises.push(Promise.resolve({ data: [] }));
+        }
+        
+        if (tier === 'all' || tier === 'cold') {
+          searchPromises.push(
+            supabase.from('brain_memory_cold')
+              .select('id, summary, core_summary, tags, value_score, archived_at')
+              .textSearch('summary', String(query))
+              .limit(Math.ceil(limit / 3))
+          );
+        } else {
+          searchPromises.push(Promise.resolve({ data: [] }));
+        }
+        
+        // Legacy table fallback
+        if (tier === 'all') {
+          searchPromises.push(
+            supabase.from('brain_memories')
+              .select('id, content, memory_type, confidence, source, created_at')
+              .textSearch('content', String(query))
+              .order('confidence', { ascending: false })
+              .limit(Math.ceil(limit / 2))
+          );
+        } else {
+          searchPromises.push(Promise.resolve({ data: [] }));
+        }
+
         const [
           { data: hotMemories },
+          { data: warmMemories },
           { data: coldMemories },
           { data: mainMemories },
-        ] = await Promise.all([
-          supabase.from('brain_memory_hot')
-            .select('id, content, context, priority, tags, created_at')
-            .textSearch('content', String(query))
-            .order('priority', { ascending: false })
-            .limit(limit),
-          supabase.from('brain_memory_cold')
-            .select('id, summary, core_summary, tags, archived_at')
-            .textSearch('summary', String(query))
-            .limit(Math.ceil(limit / 2)),
-          supabase.from('brain_memories')
-            .select('id, content, memory_type, confidence, source, created_at')
-            .textSearch('content', String(query))
-            .order('confidence', { ascending: false })
-            .limit(limit),
-        ]);
+        ] = await Promise.all(searchPromises);
 
-        // Merge and rank results
-        // deno-lint-ignore no-explicit-any
+        // Boost access counts for retrieved memories (reinforcement learning)
+        const hotIds = (hotMemories || []).map((m: { id: string }) => m.id);
+        const warmIds = (warmMemories || []).map((m: { id: string }) => m.id);
+        
+        if (hotIds.length > 0) {
+          await supabase.rpc('increment_access_count_batch', { memory_ids: hotIds, tier_name: 'hot' }).catch(() => {});
+        }
+        if (warmIds.length > 0) {
+          await supabase.rpc('increment_access_count_batch', { memory_ids: warmIds, tier_name: 'warm' }).catch(() => {});
+        }
+
+        // Merge and rank results by tier priority + value_score
         const allResults = [
-          ...(hotMemories || []).map((m: any) => ({ ...m, tier: 'hot', relevance: (m.priority || 5) / 10 })),
-          ...(coldMemories || []).map((m: any) => ({ ...m, tier: 'cold', relevance: 0.5 })),
-          ...(mainMemories || []).map((m: any) => ({ ...m, tier: 'main', relevance: m.confidence || 0.5 })),
+          ...(hotMemories || []).map((m: any) => ({ 
+            ...m, 
+            tier: 'hot', 
+            relevance: 0.9 + (m.value_score || 0.5) * 0.1 
+          })),
+          ...(warmMemories || []).map((m: any) => ({ 
+            ...m, 
+            tier: 'warm', 
+            relevance: 0.6 + (m.value_score || 0.4) * 0.1 
+          })),
+          ...(coldMemories || []).map((m: any) => ({ 
+            ...m, 
+            content: m.summary, // Normalize field name
+            tier: 'cold', 
+            relevance: 0.3 + (m.value_score || 0.2) * 0.1 
+          })),
+          ...(mainMemories || []).map((m: any) => ({ 
+            ...m, 
+            tier: 'legacy', 
+            relevance: m.confidence || 0.5 
+          })),
         ].sort((a, b) => b.relevance - a.relevance).slice(0, limit);
 
         // Log recall event
@@ -1577,7 +1641,17 @@ async function handleBrain(
           event_type: 'memory_recall',
           module: 'brain',
           outcome: 'success',
-          data: { query, results_count: allResults.length, tiers_searched: 3 }
+          data: { 
+            query, 
+            results_count: allResults.length, 
+            tiers_searched: tier === 'all' ? 4 : 1,
+            tier_breakdown: {
+              hot: hotMemories?.length || 0,
+              warm: warmMemories?.length || 0,
+              cold: coldMemories?.length || 0,
+              legacy: mainMemories?.length || 0
+            }
+          }
         });
 
         return jsonResponse({
@@ -1587,7 +1661,13 @@ async function handleBrain(
           query,
           memories: allResults,
           count: allResults.length,
-          tiers_searched: { hot: hotMemories?.length || 0, cold: coldMemories?.length || 0, main: mainMemories?.length || 0 },
+          tiers_searched: { 
+            hot: hotMemories?.length || 0, 
+            warm: warmMemories?.length || 0,
+            cold: coldMemories?.length || 0, 
+            legacy: mainMemories?.length || 0 
+          },
+          message: `Found ${allResults.length} memories across ${tier === 'all' ? 'all tiers' : tier}`,
           timestamp: new Date().toISOString(),
         }, headers);
       } catch (error) {
@@ -1832,34 +1912,33 @@ async function handleBrain(
     }
 
     case "tier": {
-      // v6.0.3: Memory tiering - demote hot→warm→cold with aggressive mode support
+      // v6.3.2: Memory tiering - demote hot→warm→cold with mode support
+      // Protected memory types are NEVER demoted
+      const PROTECTED_MEMORY_TYPES = ['core_identity', 'system_awareness', 'principles', 'safety_laws', 'doctrine_integrated'];
+      
       const mode = String(data.mode || 'standard').toLowerCase();
       const isAggressive = mode === 'aggressive';
+      const isDeep = mode === 'deep';
       const startTime = Date.now();
       
-      // Batch sizes - aggressive mode processes 10x more
-      const DEMOTE_HOT_LIMIT = isAggressive ? 2000 : 200;
-      const DEMOTE_WARM_LIMIT = isAggressive ? 1000 : 100;
-      const SCORE_LIMIT = isAggressive ? 2000 : 500;
+      // Batch sizes - deep/aggressive modes process more
+      const DEMOTE_HOT_LIMIT = isDeep ? 5000 : isAggressive ? 2000 : 200;
+      const DEMOTE_WARM_LIMIT = isDeep ? 2000 : isAggressive ? 1000 : 100;
+      const SCORE_LIMIT = isDeep ? 5000 : isAggressive ? 2000 : 500;
+      const VALUE_THRESHOLD_HOT = isAggressive ? 0.5 : 0.6;
+      const VALUE_THRESHOLD_WARM = isAggressive ? 0.25 : 0.35;
       
       const stats = {
         scored: 0,
         demoted_to_warm: 0,
         demoted_to_cold: 0,
         promoted_to_hot: 0,
+        protected_kept: 0,
+        pruned: 0,
         errors: 0,
       };
 
       try {
-        // Fetch tier config
-        const { data: configs } = await supabase.from('brain_tiering_config').select('*');
-        const tierConfig: Record<string, { min_value_score: number; max_entries: number }> = {};
-        for (const c of configs || []) {
-          tierConfig[c.tier_name] = c;
-        }
-        const hotConfig = tierConfig['hot'] || { min_value_score: 0.6, max_entries: 500 };
-        const warmConfig = tierConfig['warm'] || { min_value_score: 0.35, max_entries: 2000 };
-
         // Get current counts
         const [{ count: hotCount }, { count: warmCount }, { count: coldCount }] = await Promise.all([
           supabase.from('brain_memory_hot').select('*', { count: 'exact', head: true }),
@@ -1867,15 +1946,27 @@ async function handleBrain(
           supabase.from('brain_memory_cold').select('*', { count: 'exact', head: true }),
         ]);
 
-        // STEP 1: Score unscored hot memories
+        // STEP 1: Score unscored hot memories (skip protected)
         const { data: unscoredHot } = await supabase
           .from('brain_memory_hot')
-          .select('id, access_count, importance_score, created_at, decay_rate')
+          .select('id, access_count, importance_score, created_at, decay_rate, tags, memory_type')
           .is('value_score', null)
           .order('created_at', { ascending: true })
           .limit(SCORE_LIMIT);
 
         for (const memory of unscoredHot || []) {
+          const memoryType = (memory.tags as any)?.type || memory.memory_type || '';
+          const isProtected = PROTECTED_MEMORY_TYPES.includes(memoryType) || (memory.tags as any)?.protected === true;
+          
+          if (isProtected) {
+            // Protected memories get max score and no decay
+            await supabase.from('brain_memory_hot')
+              .update({ value_score: 1.0, decay_rate: 0 })
+              .eq('id', memory.id);
+            stats.protected_kept++;
+            continue;
+          }
+
           const ageDays = Math.floor((Date.now() - new Date(memory.created_at).getTime()) / (1000 * 60 * 60 * 24));
           const accessCount = memory.access_count || 0;
           const importance = memory.importance_score || 0.5;
@@ -1891,15 +1982,23 @@ async function handleBrain(
           stats.scored++;
         }
 
-        // STEP 2: Demote low-value hot → warm
+        // STEP 2: Demote low-value hot → warm (skip protected)
         const { data: hotToDemote } = await supabase
           .from('brain_memory_hot')
           .select('*')
-          .lt('value_score', hotConfig.min_value_score)
+          .lt('value_score', VALUE_THRESHOLD_HOT)
           .order('value_score', { ascending: true })
           .limit(DEMOTE_HOT_LIMIT);
 
         for (const memory of hotToDemote || []) {
+          const memoryType = (memory.tags as any)?.type || memory.memory_type || '';
+          const isProtected = PROTECTED_MEMORY_TYPES.includes(memoryType) || (memory.tags as any)?.protected === true;
+          
+          if (isProtected) {
+            stats.protected_kept++;
+            continue;
+          }
+
           try {
             await supabase.from('brain_memory_warm').insert({
               content: memory.content,
@@ -1913,7 +2012,7 @@ async function handleBrain(
               decay_rate: 0.01,
               source_memory_id: memory.id,
               tags: memory.tags,
-              metadata: memory.metadata,
+              metadata: { ...memory.metadata, demoted_from: 'hot' },
               demoted_at: new Date().toISOString(),
             });
             await supabase.from('brain_memory_hot').delete().eq('id', memory.id);
@@ -1927,7 +2026,7 @@ async function handleBrain(
         const { data: warmToDemote } = await supabase
           .from('brain_memory_warm')
           .select('*')
-          .lt('value_score', warmConfig.min_value_score)
+          .lt('value_score', VALUE_THRESHOLD_WARM)
           .order('value_score', { ascending: true })
           .limit(DEMOTE_WARM_LIMIT);
 
@@ -1939,7 +2038,7 @@ async function handleBrain(
               embedding: memory.embedding,
               compression_level: 3,
               source_refs: [memory.id],
-              tags: { ...memory.tags, context: memory.context },
+              tags: { ...(memory.tags || {}), context: memory.context },
               value_score: memory.value_score,
               archived_at: new Date().toISOString(),
             });
@@ -1947,6 +2046,67 @@ async function handleBrain(
             stats.demoted_to_cold++;
           } catch {
             stats.errors++;
+          }
+        }
+
+        // STEP 4: Prune noise patterns (deep/aggressive only)
+        if (isDeep || isAggressive) {
+          const noisePatterns = ['%diagnostic%', '%test cycle%', '%heartbeat%', '%ping%', '%health check%'];
+          for (const pattern of noisePatterns) {
+            const { data: noiseMemories } = await supabase
+              .from('brain_memory_hot')
+              .select('id, content, context, value_score')
+              .ilike('content', pattern)
+              .limit(50);
+
+            for (const memory of noiseMemories || []) {
+              try {
+                await supabase.from('brain_memory_pruned').insert({
+                  original_memory_id: memory.id,
+                  original_tier: 'hot',
+                  content_preview: (memory.content || '').substring(0, 200),
+                  context: memory.context,
+                  value_score: memory.value_score || 0.1,
+                  prune_reason: 'noise_pattern',
+                });
+                await supabase.from('brain_memory_hot').delete().eq('id', memory.id);
+                stats.pruned++;
+              } catch { stats.errors++; }
+            }
+          }
+        }
+
+        // STEP 5: Promote high-value warm → hot (if space available)
+        const newHotCount = (hotCount || 0) - stats.demoted_to_warm - stats.pruned;
+        const slotsAvailable = 500 - newHotCount;
+        
+        if (slotsAvailable > 10) {
+          const { data: toPromote } = await supabase
+            .from('brain_memory_warm')
+            .select('*')
+            .gte('value_score', 0.75)
+            .order('value_score', { ascending: false })
+            .limit(Math.min(50, slotsAvailable));
+
+          for (const memory of toPromote || []) {
+            try {
+              await supabase.from('brain_memory_hot').insert({
+                content: memory.content,
+                embedding: memory.embedding,
+                context: memory.context,
+                goal_ref: memory.goal_ref,
+                priority: 'high',
+                importance_score: memory.value_score,
+                value_score: memory.value_score,
+                access_count: memory.access_count,
+                decay_rate: 0.02,
+                tags: memory.tags,
+                metadata: { ...memory.metadata, promoted_from: 'warm' },
+                last_used: new Date().toISOString(),
+              });
+              await supabase.from('brain_memory_warm').delete().eq('id', memory.id);
+              stats.promoted_to_hot++;
+            } catch { stats.errors++; }
           }
         }
 
@@ -1962,8 +2122,8 @@ async function handleBrain(
             duration_ms: duration,
             before: { hot: hotCount, warm: warmCount, cold: coldCount },
             after: {
-              hot: (hotCount || 0) - stats.demoted_to_warm,
-              warm: (warmCount || 0) + stats.demoted_to_warm - stats.demoted_to_cold,
+              hot: (hotCount || 0) - stats.demoted_to_warm - stats.pruned + stats.promoted_to_hot,
+              warm: (warmCount || 0) + stats.demoted_to_warm - stats.demoted_to_cold - stats.promoted_to_hot,
               cold: (coldCount || 0) + stats.demoted_to_cold,
             },
           },
@@ -1978,13 +2138,11 @@ async function handleBrain(
           duration_ms: duration,
           before: { hot: hotCount, warm: warmCount, cold: coldCount },
           after: {
-            hot: (hotCount || 0) - stats.demoted_to_warm,
-            warm: (warmCount || 0) + stats.demoted_to_warm - stats.demoted_to_cold,
+            hot: (hotCount || 0) - stats.demoted_to_warm - stats.pruned + stats.promoted_to_hot,
+            warm: (warmCount || 0) + stats.demoted_to_warm - stats.demoted_to_cold - stats.promoted_to_hot,
             cold: (coldCount || 0) + stats.demoted_to_cold,
           },
-          message: isAggressive 
-            ? `Aggressive tiering: ${stats.demoted_to_warm} hot→warm, ${stats.demoted_to_cold} warm→cold`
-            : `Standard tiering complete`,
+          message: `Tiering [${mode}]: ${stats.demoted_to_warm} hot→warm, ${stats.demoted_to_cold} warm→cold, ${stats.pruned} pruned, ${stats.protected_kept} protected`,
           timestamp: new Date().toISOString(),
         }, headers);
       } catch (error) {
@@ -2082,114 +2240,10 @@ async function handleBrain(
       }
     }
 
-    case "optimize": {
-      // Call the dedicated optimization edge function
-      const mode = (data.mode as string) || 'standard';
-      
-      try {
-        const optimizeResponse = await fetch(`${Deno.env.get('SUPABASE_URL')}/functions/v1/pf-brain-optimize`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')}`,
-          },
-          body: JSON.stringify({ mode }),
-        });
-        
-        const optimizeResult = await optimizeResponse.json();
-        
-        return jsonResponse({
-          success: optimizeResult.success,
-          mode,
-          stats: optimizeResult.stats,
-          tiers: optimizeResult.tiers,
-          duration_ms: optimizeResult.duration_ms,
-          message: optimizeResult.success 
-            ? `Optimization complete (${mode} mode). Demoted ${optimizeResult.stats?.demoted_to_warm || 0} to warm, ${optimizeResult.stats?.demoted_to_cold || 0} to cold.`
-            : optimizeResult.error,
-        }, headers);
-      } catch (err) {
-        return jsonResponse({
-          success: false,
-          error: err instanceof Error ? err.message : 'Optimization failed',
-        }, headers);
-      }
-    }
-
-    case "tier": {
-      // Run tiering cycle via dedicated edge function
-      const mode = (data.mode as string) || 'standard';
-      
-      try {
-        const tierResponse = await fetch(`${Deno.env.get('SUPABASE_URL')}/functions/v1/pf-brain-memory-tiering`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')}`,
-          },
-          body: JSON.stringify({ operation: 'rebalance' }),
-        });
-        
-        const tierResult = await tierResponse.json();
-        
-        return jsonResponse({
-          success: tierResult.success,
-          operation: 'tier',
-          mode,
-          stats: tierResult.stats,
-          duration_ms: tierResult.duration_ms,
-          message: tierResult.success 
-            ? `Tiering complete. Promoted ${tierResult.stats?.promoted_to_hot || 0}, demoted ${tierResult.stats?.demoted_to_warm || 0} to warm, ${tierResult.stats?.demoted_to_cold || 0} to cold.`
-            : tierResult.error,
-        }, headers);
-      } catch (err) {
-        return jsonResponse({
-          success: false,
-          error: err instanceof Error ? err.message : 'Tiering failed',
-        }, headers);
-      }
-    }
-
-    case "prune": {
-      // Prune low-value memories
-      const threshold = Number(data.threshold) || 0.1;
-      
-      const { data: toPrune } = await supabase
-        .from('brain_memory_hot')
-        .select('id, content, context, value_score')
-        .lt('value_score', threshold)
-        .limit(100);
-      
-      let pruned = 0;
-      for (const memory of toPrune || []) {
-        try {
-          await supabase.from('brain_memory_pruned').insert({
-            original_memory_id: memory.id,
-            original_tier: 'hot',
-            content_preview: memory.content?.substring(0, 200),
-            context: memory.context,
-            value_score: memory.value_score || 0.1,
-            prune_reason: 'manual_prune',
-          });
-          await supabase.from('brain_memory_hot').delete().eq('id', memory.id);
-          pruned++;
-        } catch { /* continue */ }
-      }
-      
-      await supabase.from('brain_events').insert({
-        event_type: 'memory_prune',
-        module: 'brain',
-        outcome: 'success',
-        data: { threshold, pruned },
-      });
-      
-      return jsonResponse({
-        success: true,
-        pruned,
-        threshold,
-        message: `Pruned ${pruned} memories below threshold ${threshold}`,
-      }, headers);
-    }
+    // NOTE: "optimize", "tier", "prune" handlers defined at lines 1834-2083
+    // These case statements below are DUPLICATES and have been removed.
+    // The primary handlers are the inline implementations above that support
+    // both standard and aggressive modes for memory tiering.
 
     case "curiosity": {
       const { data: queries } = await supabase
