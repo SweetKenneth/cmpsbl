@@ -40,6 +40,27 @@ import evolvingSoftwareImg from "@/assets/blog/evolving-software-v6-breakthrough
 import llmsTxtImg from "@/assets/blog/llms-txt-protocol-standard.jpg";
 import aiGovernanceImg from "@/assets/blog/ai-governance-namespace-unified.jpg";
 
+// AutoBlog images
+import autoblog1 from '@/assets/autoblog/autoblog-1.jpg';
+import autoblog2 from '@/assets/autoblog/autoblog-2.jpg';
+import autoblog3 from '@/assets/autoblog/autoblog-3.jpg';
+import autoblog4 from '@/assets/autoblog/autoblog-4.jpg';
+import autoblog5 from '@/assets/autoblog/autoblog-5.jpg';
+import autoblog6 from '@/assets/autoblog/autoblog-6.jpg';
+import autoblog7 from '@/assets/autoblog/autoblog-7.jpg';
+import autoblog8 from '@/assets/autoblog/autoblog-8.jpg';
+
+const AUTOBLOG_IMAGES = [
+  autoblog1, autoblog2, autoblog3, autoblog4,
+  autoblog5, autoblog6, autoblog7, autoblog8
+];
+
+// Get consistent image for a post based on its ID
+function getAutoblogImage(postId: string): string {
+  const hash = postId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  return AUTOBLOG_IMAGES[hash % AUTOBLOG_IMAGES.length];
+}
+
 export default function Blog() {
   const [searchQuery, setSearchQuery] = useState("");
   const [autoPosts, setAutoPosts] = useState<Array<{
@@ -404,17 +425,32 @@ export default function Blog() {
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {autoPosts.map((post) => (
                   <Link key={post.id} to={`/blog/auto/${post.slug}`}>
-                    <Card className="group h-full p-6 bg-card border-border hover:border-primary/40 transition-all">
-                      <Badge variant="outline" className="mb-3 text-xs border-primary/30 text-primary">
-                        {post.category}
-                      </Badge>
-                      <h3 className="text-lg font-semibold mb-2 text-foreground group-hover:text-primary transition-colors line-clamp-2">
-                        {post.title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground mb-4 line-clamp-3">{post.excerpt}</p>
-                      <span className="text-xs text-muted-foreground">
-                        {new Date(post.published_at).toLocaleDateString()}
-                      </span>
+                    <Card className="group h-full overflow-hidden bg-card border-border hover:border-primary/40 transition-all">
+                      <div className="aspect-video overflow-hidden">
+                        <img 
+                          src={getAutoblogImage(post.id)} 
+                          alt={post.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      </div>
+                      <div className="p-6">
+                        <div className="flex items-center gap-2 mb-3">
+                          <Badge variant="outline" className="text-xs border-primary/30 text-primary">
+                            {post.category}
+                          </Badge>
+                          <Badge variant="outline" className="text-xs border-cyan-500/30 text-cyan-400">
+                            <Bot className="w-3 h-3 mr-1" />
+                            AutoBlog
+                          </Badge>
+                        </div>
+                        <h3 className="text-lg font-semibold mb-2 text-foreground group-hover:text-primary transition-colors line-clamp-2">
+                          {post.title}
+                        </h3>
+                        <p className="text-sm text-muted-foreground mb-4 line-clamp-2 leading-relaxed">{post.excerpt}</p>
+                        <span className="text-xs text-muted-foreground">
+                          {new Date(post.published_at).toLocaleDateString()}
+                        </span>
+                      </div>
                     </Card>
                   </Link>
                 ))}
