@@ -230,5 +230,31 @@ export {
 
 export { useModuleCLM, type UseModuleCLMReturn } from './module-clm/useModuleCLM';
 
+// Self-Evolving Bounded Agent (SEBA) v1.0.0
+export {
+  sebaAgent,
+  SEBAAgent,
+  CognitiveAnalyzer,
+  ProposalGenerator,
+  GovernanceGate,
+  EvolutionExecutor,
+  DEFAULT_SEBA_CONFIG,
+  type SEBAPhase,
+  type SEBAMode,
+  type ImprovementCategory,
+  type RiskLevel,
+  type ImprovementProposal,
+  type ProposedAction,
+  type GovernanceDecision,
+  type EvolutionExecution,
+  type SEBAState,
+  type SEBACycleResult,
+  type SEBAAuditEntry,
+  type CognitiveInsight,
+  type SEBAConfig,
+  type SEBACommand,
+  type SEBACommandResult,
+} from './seba';
+
 // Re-export substrate client from lib
 export { substrate, type SubstrateModule, type SubstrateRequest, type SubstrateResponse } from '../substrate';
