@@ -53,6 +53,7 @@ export const adminNavConfig: NavGroup[] = [
       { id: "defense", label: "Defense", path: "/admin/defense", icon: Shield },
       { id: "clarity", label: "Clarity", path: "/clarity/dashboard", icon: Eye },
       { id: "dream-eater", label: "Dream Eater", path: "/feed-dream-eater", icon: Moon },
+      { id: "system-feed", label: "System Feed", path: "/system-feed", icon: Brain, isNew: true },
     ],
   },
   {

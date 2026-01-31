@@ -217,5 +217,18 @@ export {
 
 export { useCLM, type UseCLMReturn } from './clm/useCLM';
 
+// Module-Specific CLM v6.8.0
+export {
+  moduleCLM,
+  ModuleCLMClient,
+  MODULE_CLM_CONFIGS,
+  type ModuleName,
+  type ModuleLearningConfig,
+  type ModuleSelfAnalysis,
+  type ModuleCLMState,
+} from './module-clm';
+
+export { useModuleCLM, type UseModuleCLMReturn } from './module-clm/useModuleCLM';
+
 // Re-export substrate client from lib
 export { substrate, type SubstrateModule, type SubstrateRequest, type SubstrateResponse } from '../substrate';
