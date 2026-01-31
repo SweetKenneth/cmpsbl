@@ -491,6 +491,14 @@ export const AUTOBLOG_COMMANDS: CommandDefinition[] = [
   { command: 'autoblog.heal', description: 'Self-heal AutoBlog subsystem', category: 'autoblog', icon: Shield, requiresOperator: true, args: '[--full]' },
 ];
 
+// MODULE CLM — Module-specific self-learning v6.8.0
+export const MODULE_CLM_COMMANDS: CommandDefinition[] = [
+  { command: 'mclm.status', description: 'View all module CLM states', category: 'clm', icon: Brain, requiresOperator: false },
+  { command: 'mclm.run', description: 'Run CLM for a specific module', category: 'clm', icon: Sparkles, requiresOperator: true, args: '<module>', example: 'mclm.run brain' },
+  { command: 'mclm.run.all', description: 'Run CLM for all modules', category: 'clm', icon: Sparkles, requiresOperator: true },
+  { command: 'mclm.feed', description: 'View latest intelligence feed', category: 'clm', icon: Activity, requiresOperator: false, args: '[limit]', example: 'mclm.feed 10' },
+];
+
 export const ALL_COMMANDS: CommandDefinition[] = [
   ...BRAIN_COMMANDS,
   ...DECODE_COMMANDS,

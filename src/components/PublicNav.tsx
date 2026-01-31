@@ -3,7 +3,8 @@ import { Link, useLocation } from "react-router-dom";
 import { 
   Menu, X, ChevronDown, Code, 
   Layers, FileText, Mail, Info, Rocket, BookOpen, Users, Eye,
-  Zap, Map, Terminal, Cpu, MessageSquare, Moon, Building2, Gamepad2, Sparkles, Key, Globe, ScrollText
+  Zap, Map, Terminal, Cpu, MessageSquare, Moon, Building2, Gamepad2, Sparkles, Key, Globe, ScrollText,
+  Brain
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import {
@@ -48,6 +49,7 @@ export function PublicNav() {
       icon: Layers,
       items: [
         { name: "CMPSBL OS", href: "/substrate", description: "Cognitive Runtime", icon: Cpu },
+        { name: "System Feed", href: "/system-feed", description: "Live System Intelligence", icon: Brain },
         { name: "Decode", href: "/decode", description: "Intent Interpreter", icon: MessageSquare },
         { name: "Dream Feeder", href: "/feed-dream-eater", description: "Dream Processing", icon: Moon },
         { name: "Demo", href: "/demo", description: "Interactive Demo", icon: Zap },
