@@ -557,17 +557,20 @@ Format as JSON: { title, content, requests, priority, confidence }`,
   }
 
   private extractModuleId(reflectionType: string): ModuleName {
-    const match = reflectionType.match(/module_clm_(\w+)_/);
-    if (match && match[1] in MODULE_CLM_CONFIGS) {
-      return match[1] as ModuleName;
+    // reflection_type format: module_clm_MODULE_TYPE e.g., module_clm_cortex_performance
+    const parts = reflectionType.replace('module_clm_', '').split('_');
+    const moduleId = parts[0] as ModuleName;
+    if (moduleId in MODULE_CLM_CONFIGS) {
+      return moduleId;
     }
     return 'brain';
   }
 
   private extractAnalysisType(reflectionType: string): ModuleSelfAnalysis['analysisType'] {
-    if (reflectionType.includes('request')) return 'request';
-    if (reflectionType.includes('improvement')) return 'improvement';
-    if (reflectionType.includes('insight')) return 'insight';
+    // Extract from end of reflection_type after module name
+    if (reflectionType.endsWith('_request')) return 'request';
+    if (reflectionType.endsWith('_improvement')) return 'improvement';
+    if (reflectionType.endsWith('_insight')) return 'insight';
     return 'performance';
   }
 
