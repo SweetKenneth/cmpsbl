@@ -116,6 +116,9 @@ const EvolvingSoftwareV6Breakthrough = lazy(() => import("./pages/blog/evolving-
 const LLMsTxtProtocol = lazy(() => import("./pages/blog/llms-txt-protocol-ai-context"));
 const AIGovernanceNamespace = lazy(() => import("./pages/blog/ai-governance-namespace-unified-terminology"));
 
+// Dynamic AutoBlog post page
+const AutoBlogPost = lazy(() => import("./pages/blog/AutoBlogPost"));
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -237,6 +240,9 @@ const App = () => {
                       <Route path="/blog/evolving-software-v6-breakthrough" element={<EvolvingSoftwareV6Breakthrough />} />
                       <Route path="/blog/llms-txt-protocol-ai-context" element={<LLMsTxtProtocol />} />
                       <Route path="/blog/ai-governance-namespace-unified-terminology" element={<AIGovernanceNamespace />} />
+                      
+                      {/* Dynamic AutoBlog Posts */}
+                      <Route path="/blog/auto/:slug" element={<AutoBlogPost />} />
                       
                       {/* ===== ORPHANED PAGE REDIRECTS ===== */}
                       {/* These pages exist but are not accessible via nav/footer/CTAs */}

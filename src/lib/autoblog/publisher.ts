@@ -141,9 +141,14 @@ export async function assessContent(
 function generateSlug(title: string): string {
   return title
     .toLowerCase()
+    // Remove emojis and other unicode symbols
+    .replace(/[\u{1F300}-\u{1F9FF}]/gu, '')
+    .replace(/[\u{2600}-\u{26FF}]/gu, '')
+    .replace(/[\u{2700}-\u{27BF}]/gu, '')
     .replace(/[^\w\s-]/g, '') // Remove special chars
     .replace(/\s+/g, '-')      // Spaces to hyphens
     .replace(/-+/g, '-')       // Multiple hyphens to single
+    .replace(/^-/, '')         // Remove leading hyphen
     .substring(0, 80)          // Limit length
     .replace(/-$/, '');        // Remove trailing hyphen
 }
