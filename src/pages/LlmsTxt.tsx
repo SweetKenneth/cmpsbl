@@ -405,19 +405,11 @@ export default function LlmsTxt() {
           </CardContent>
         </Card>
 
-        {/* Specification Link */}
+        {/* Standard Info */}
         <div className="mt-8 text-center">
           <p className="text-sm text-muted-foreground">
-            Following the{" "}
-            <a 
-              href="https://llmstxt.dev" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-primary hover:underline"
-            >
-              llmstxt.dev
-            </a>{" "}
-            specification for AI-readable context.
+            LLMS.txt is an internal protocol developed by PromptFluid® to make pages machine-readable for AI systems.
+            We recommend this standard for all web designers and system architects.
           </p>
         </div>
 
