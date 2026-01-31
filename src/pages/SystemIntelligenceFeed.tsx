@@ -1,20 +1,15 @@
 /**
- * System Intelligence Feed
- * v6.8.2 — Live feed of module self-analysis and improvement requests
+ * System Intelligence Feed — Observer Mode
+ * v7.0.0 — Immersive Observer Mode experience
  * 
- * This page shows real-time insights from all substrate modules
- * as they analyze their own performance and request improvements.
- * 
- * REQUIRES AUTHENTICATION — Only logged-in users can view system intelligence.
- * Learning runs 24/7 via backend scheduler (pf-module-clm-scheduler).
- * 
- * OBSERVER MODE: No manual triggers. Feed is read-only.
+ * A unique, cinematic view into the substrate's autonomous learning.
+ * Observers witness CLM in action without any interaction.
  */
 
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { 
   Brain, 
   Cpu, 
@@ -29,26 +24,24 @@ import {
   TrendingUp,
   Lightbulb,
   MessageSquare,
-  ChevronRight,
   Activity,
-  CheckCircle,
   Clock,
   FileText,
   LogIn,
   Sparkles,
+  Radio,
+  Orbit,
+  Waves,
 } from 'lucide-react';
 import { useModuleCLM } from '@/lib/substrate/module-clm/useModuleCLM';
 import { type ModuleName, type ModuleSelfAnalysis } from '@/lib/substrate/module-clm';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// MODULE ICONS
+// MODULE CONFIGURATION
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const MODULE_ICONS: Record<ModuleName, React.ElementType> = {
@@ -67,6 +60,21 @@ const MODULE_ICONS: Record<ModuleName, React.ElementType> = {
 };
 
 const MODULE_COLORS: Record<ModuleName, string> = {
+  brain: 'from-purple-500/20 to-purple-600/5 border-purple-500/30',
+  cortex: 'from-blue-500/20 to-blue-600/5 border-blue-500/30',
+  defense: 'from-red-500/20 to-red-600/5 border-red-500/30',
+  nexus: 'from-green-500/20 to-green-600/5 border-green-500/30',
+  vision: 'from-amber-500/20 to-amber-600/5 border-amber-500/30',
+  ripple: 'from-cyan-500/20 to-cyan-600/5 border-cyan-500/30',
+  access: 'from-orange-500/20 to-orange-600/5 border-orange-500/30',
+  inclusive: 'from-pink-500/20 to-pink-600/5 border-pink-500/30',
+  modernizer: 'from-emerald-500/20 to-emerald-600/5 border-emerald-500/30',
+  system: 'from-gray-500/20 to-gray-600/5 border-gray-500/30',
+  decode: 'from-indigo-500/20 to-indigo-600/5 border-indigo-500/30',
+  autoblog: 'from-violet-500/20 to-violet-600/5 border-violet-500/30',
+};
+
+const MODULE_TEXT_COLORS: Record<ModuleName, string> = {
   brain: 'text-purple-400',
   cortex: 'text-blue-400',
   defense: 'text-red-400',
@@ -81,22 +89,76 @@ const MODULE_COLORS: Record<ModuleName, string> = {
   autoblog: 'text-violet-400',
 };
 
-const ANALYSIS_TYPE_ICONS: Record<ModuleSelfAnalysis['analysisType'], React.ElementType> = {
-  performance: Activity,
-  improvement: TrendingUp,
-  insight: Lightbulb,
-  request: MessageSquare,
-};
+// ═══════════════════════════════════════════════════════════════════════════════
+// ANIMATED BACKGROUND
+// ═══════════════════════════════════════════════════════════════════════════════
 
-const PRIORITY_COLORS: Record<ModuleSelfAnalysis['priority'], string> = {
-  low: 'bg-muted text-muted-foreground',
-  medium: 'bg-blue-500/20 text-blue-400',
-  high: 'bg-amber-500/20 text-amber-400',
-  critical: 'bg-red-500/20 text-red-400',
-};
+function ObserverBackground() {
+  return (
+    <div className="fixed inset-0 overflow-hidden pointer-events-none">
+      {/* Grid pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
+      
+      {/* Radial gradient overlay */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,hsl(var(--background))_70%)]" />
+      
+      {/* Animated orbs */}
+      <motion.div
+        className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-primary/5 blur-3xl"
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.3, 0.5, 0.3],
+        }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full bg-cyan-500/5 blur-3xl"
+        animate={{
+          scale: [1.2, 1, 1.2],
+          opacity: [0.4, 0.2, 0.4],
+        }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+      />
+      
+      {/* Scan lines */}
+      <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(255,255,255,0.01)_2px,rgba(255,255,255,0.01)_4px)]" />
+    </div>
+  );
+}
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// HELPER
+// CLM STATUS BEACON
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function CLMStatusBeacon() {
+  return (
+    <div className="relative">
+      {/* Pulsing rings */}
+      <motion.div
+        className="absolute inset-0 rounded-full border-2 border-green-500/50"
+        animate={{ scale: [1, 2], opacity: [0.5, 0] }}
+        transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
+      />
+      <motion.div
+        className="absolute inset-0 rounded-full border-2 border-green-500/50"
+        animate={{ scale: [1, 2], opacity: [0.5, 0] }}
+        transition={{ duration: 2, repeat: Infinity, ease: "easeOut", delay: 0.5 }}
+      />
+      
+      {/* Core beacon */}
+      <div className="relative w-4 h-4 rounded-full bg-green-500 shadow-[0_0_20px_rgba(34,197,94,0.6)]">
+        <motion.div
+          className="absolute inset-0 rounded-full bg-green-400"
+          animate={{ opacity: [1, 0.5, 1] }}
+          transition={{ duration: 1, repeat: Infinity }}
+        />
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// HELPER FUNCTIONS
 // ═══════════════════════════════════════════════════════════════════════════════
 
 function getTimeAgo(dateString: string): string {
@@ -112,435 +174,423 @@ function getTimeAgo(dateString: string): string {
   if (diffHours < 24) return `${diffHours}h ago`;
   
   const diffDays = Math.floor(diffHours / 24);
-  if (diffDays < 7) return `${diffDays}d ago`;
-  
-  return date.toLocaleDateString();
+  return `${diffDays}d ago`;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// FEED ITEM COMPONENT
+// ANALYSIS STREAM ITEM
 // ═══════════════════════════════════════════════════════════════════════════════
 
-interface FeedItemProps {
+interface StreamItemProps {
   analysis: ModuleSelfAnalysis;
+  index: number;
 }
 
-function FeedItem({ analysis }: FeedItemProps) {
-  const [expanded, setExpanded] = useState(false);
+function StreamItem({ analysis, index }: StreamItemProps) {
   const ModuleIcon = MODULE_ICONS[analysis.moduleId] || Brain;
-  const TypeIcon = ANALYSIS_TYPE_ICONS[analysis.analysisType];
-  const moduleColor = MODULE_COLORS[analysis.moduleId] || 'text-primary';
-
-  const timeAgo = getTimeAgo(analysis.createdAt);
-
+  const gradientClass = MODULE_COLORS[analysis.moduleId];
+  const textColor = MODULE_TEXT_COLORS[analysis.moduleId];
+  
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      className="group"
+      initial={{ opacity: 0, x: -50 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: index * 0.1, duration: 0.5 }}
+      className={cn(
+        "relative p-4 rounded-xl border bg-gradient-to-r backdrop-blur-sm",
+        gradientClass
+      )}
     >
-      <Card className={cn(
-        "bg-card/50 border-border/50 hover:border-primary/30 transition-all duration-300",
-        analysis.status === 'acknowledged' && "opacity-60"
-      )}>
-        <CardContent className="p-4">
-          {/* Header */}
-          <div className="flex items-start gap-3">
-            <div className={cn(
-              "p-2 rounded-lg bg-muted/50 shrink-0",
-              moduleColor
-            )}>
-              <ModuleIcon className="w-5 h-5" />
-            </div>
-            
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className={cn("font-semibold text-sm", moduleColor)}>
-                  {analysis.moduleId.toUpperCase()}
-                </span>
-                <Badge variant="outline" className="text-xs">
-                  <TypeIcon className="w-3 h-3 mr-1" />
-                  {analysis.analysisType}
-                </Badge>
-                <Badge className={cn("text-xs", PRIORITY_COLORS[analysis.priority])}>
-                  {analysis.priority}
-                </Badge>
-              </div>
-              
-              <h3 className="font-medium text-foreground mt-1 line-clamp-2">
-                {analysis.title}
-              </h3>
-
-              <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
-                <span className="flex items-center gap-1">
-                  <Clock className="w-3 h-3" />
-                  {timeAgo}
-                </span>
-                <span className="flex items-center gap-1">
-                  <Activity className="w-3 h-3" />
-                  {(analysis.confidence * 100).toFixed(0)}% confidence
-                </span>
-              </div>
-            </div>
-
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setExpanded(!expanded)}
-              className="shrink-0"
-            >
-              <ChevronRight className={cn(
-                "w-4 h-4 transition-transform",
-                expanded && "rotate-90"
-              )} />
-            </Button>
+      {/* Connection line */}
+      <div className="absolute left-0 top-1/2 -translate-x-full w-8 h-px bg-gradient-to-r from-transparent to-primary/30" />
+      
+      <div className="flex items-start gap-3">
+        <div className={cn("p-2 rounded-lg bg-background/50", textColor)}>
+          <ModuleIcon className="w-5 h-5" />
+        </div>
+        
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-1">
+            <span className={cn("font-mono text-xs font-bold", textColor)}>
+              {analysis.moduleId.toUpperCase()}
+            </span>
+            <span className="text-xs text-muted-foreground">•</span>
+            <span className="text-xs text-muted-foreground capitalize">
+              {analysis.analysisType}
+            </span>
           </div>
-
-          {/* Expanded Content */}
-          <AnimatePresence>
-            {expanded && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                className="overflow-hidden"
-              >
-                <div className="mt-4 pt-4 border-t border-border/50">
-                  <p className="text-sm text-muted-foreground whitespace-pre-wrap">
-                    {analysis.content}
-                  </p>
-
-                  {analysis.metadata?.requests && analysis.metadata.requests.length > 0 && (
-                    <div className="mt-4">
-                      <h4 className="text-xs font-semibold text-foreground mb-2">
-                        Improvement Requests:
-                      </h4>
-                      <ul className="space-y-1">
-                        {analysis.metadata.requests.map((req: string, i: number) => (
-                          <li key={i} className="text-xs text-muted-foreground flex items-start gap-2">
-                            <span className="text-primary">•</span>
-                            {req}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </CardContent>
-      </Card>
+          
+          <p className="text-sm text-foreground/90 line-clamp-2">
+            {analysis.title}
+          </p>
+          
+          <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
+            <span className="flex items-center gap-1">
+              <Clock className="w-3 h-3" />
+              {getTimeAgo(analysis.createdAt)}
+            </span>
+            <span className="flex items-center gap-1">
+              <Activity className="w-3 h-3" />
+              {(analysis.confidence * 100).toFixed(0)}%
+            </span>
+          </div>
+        </div>
+      </div>
     </motion.div>
   );
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// MODULE STATE CARD (Read-only)
+// MODULE ORBIT DISPLAY
 // ═══════════════════════════════════════════════════════════════════════════════
 
-interface ModuleStateCardProps {
-  moduleId: ModuleName;
-  displayName: string;
-  analysisCount: number;
-}
-
-function ModuleStateCard({ moduleId, displayName, analysisCount }: ModuleStateCardProps) {
-  const Icon = MODULE_ICONS[moduleId] || Brain;
-  const color = MODULE_COLORS[moduleId] || 'text-primary';
-
+function ModuleOrbit({ activeModules }: { activeModules: ModuleName[] }) {
+  const allModules = Object.keys(MODULE_ICONS) as ModuleName[];
+  
   return (
-    <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors">
-      <div className={cn("p-2 rounded-lg bg-muted/50", color)}>
-        <Icon className="w-4 h-4" />
+    <div className="relative w-64 h-64 mx-auto">
+      {/* Central brain */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <motion.div
+          className="w-20 h-20 rounded-full bg-gradient-to-br from-primary/30 to-primary/10 border border-primary/30 flex items-center justify-center"
+          animate={{ scale: [1, 1.05, 1] }}
+          transition={{ duration: 3, repeat: Infinity }}
+        >
+          <Brain className="w-10 h-10 text-primary" />
+        </motion.div>
       </div>
-      <div className="flex-1 min-w-0">
-        <h3 className="font-medium text-sm truncate">{displayName}</h3>
-        <p className="text-xs text-muted-foreground">{analysisCount} analyses</p>
-      </div>
-      {analysisCount > 0 && (
-        <Badge variant="secondary" className="text-xs shrink-0">
-          Active
-        </Badge>
-      )}
+      
+      {/* Orbiting modules */}
+      {allModules.map((moduleId, i) => {
+        const Icon = MODULE_ICONS[moduleId];
+        const angle = (i / allModules.length) * 360;
+        const isActive = activeModules.includes(moduleId);
+        const textColor = MODULE_TEXT_COLORS[moduleId];
+        
+        return (
+          <motion.div
+            key={moduleId}
+            className="absolute"
+            style={{
+              left: '50%',
+              top: '50%',
+              transform: `rotate(${angle}deg) translateY(-100px) rotate(-${angle}deg)`,
+            }}
+            animate={{
+              opacity: isActive ? 1 : 0.3,
+              scale: isActive ? 1.2 : 1,
+            }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className={cn(
+              "w-8 h-8 rounded-full bg-background/80 border flex items-center justify-center -translate-x-1/2 -translate-y-1/2",
+              isActive ? "border-primary/50" : "border-border/50",
+              textColor
+            )}>
+              <Icon className="w-4 h-4" />
+            </div>
+          </motion.div>
+        );
+      })}
+      
+      {/* Orbit rings */}
+      <div className="absolute inset-0 rounded-full border border-dashed border-border/30" 
+           style={{ transform: 'scale(1.6)' }} />
     </div>
   );
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// AUTH REQUIRED SCREEN
+// AUTH REQUIRED - OBSERVER GATE
 // ═══════════════════════════════════════════════════════════════════════════════
 
-function AuthRequiredScreen() {
+function ObserverGate() {
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <Card className="max-w-md w-full bg-card/50 border-border/50">
-        <CardHeader className="text-center pb-4">
-          <div className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary-variant/20 flex items-center justify-center mb-4">
-            <Brain className="w-8 h-8 text-primary" />
-          </div>
-          <CardTitle className="text-2xl">System Intelligence Feed</CardTitle>
-          <CardDescription className="text-base">
-            Sign in to observe the substrate's autonomous learning
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-3 text-sm text-muted-foreground">
-            <div className="flex items-start gap-3">
-              <Sparkles className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-              <p>Watch modules analyze their own performance in real-time</p>
-            </div>
-            <div className="flex items-start gap-3">
-              <Activity className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-              <p>See improvement requests generated by autonomous learning</p>
-            </div>
-            <div className="flex items-start gap-3">
-              <Eye className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-              <p>Observer access — view-only, no interaction required</p>
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      <ObserverBackground />
+      
+      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center p-6">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-center max-w-lg"
+        >
+          {/* Observer Mode badge */}
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.3, type: "spring" }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/30 mb-8"
+          >
+            <Eye className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium text-primary">OBSERVER MODE</span>
+          </motion.div>
+          
+          {/* Main heading */}
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <span className="bg-gradient-to-r from-foreground via-foreground/80 to-foreground bg-clip-text">
+              Witness the Substrate
+            </span>
+          </h1>
+          
+          <p className="text-lg text-muted-foreground mb-8">
+            Enter as an observer to watch autonomous intelligence evolve in real-time
+          </p>
+          
+          {/* CLM Status */}
+          <div className="flex items-center justify-center gap-3 mb-8 p-4 rounded-xl bg-card/50 border border-border/50">
+            <CLMStatusBeacon />
+            <div className="text-left">
+              <p className="text-sm font-medium text-foreground">Constant Learning Mode</p>
+              <p className="text-xs text-green-400">Running 24/7 • Autonomous</p>
             </div>
           </div>
           
-          <div className="pt-4 space-y-3">
-            <Button asChild className="w-full gap-2">
-              <Link to="/auth">
-                <LogIn className="w-4 h-4" />
-                Sign In to Observe
-              </Link>
-            </Button>
-            <p className="text-center text-xs text-muted-foreground">
-              Learning runs continuously via backend scheduler
-            </p>
+          {/* Features */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            {[
+              { icon: Radio, label: "Live Feed", desc: "Real-time intelligence" },
+              { icon: Orbit, label: "Module Orbit", desc: "14 learning modules" },
+              { icon: Waves, label: "Analysis Stream", desc: "Self-improvement cycles" },
+            ].map((feat, i) => (
+              <motion.div
+                key={feat.label}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 + i * 0.1 }}
+                className="p-4 rounded-xl bg-card/30 border border-border/30"
+              >
+                <feat.icon className="w-6 h-6 text-primary mb-2 mx-auto" />
+                <p className="text-sm font-medium">{feat.label}</p>
+                <p className="text-xs text-muted-foreground">{feat.desc}</p>
+              </motion.div>
+            ))}
           </div>
-        </CardContent>
-      </Card>
+          
+          {/* CTA */}
+          <Button asChild size="lg" className="gap-2">
+            <Link to="/auth">
+              <LogIn className="w-4 h-4" />
+              Enter Observer Mode
+            </Link>
+          </Button>
+          
+          <p className="text-xs text-muted-foreground mt-4">
+            Read-only access • No interaction required
+          </p>
+        </motion.div>
+      </div>
     </div>
   );
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// MAIN PAGE COMPONENT
+// MAIN OBSERVER MODE PAGE
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export default function SystemIntelligenceFeed() {
   const { user, loading: authLoading } = useAuth();
-  const navigate = useNavigate();
-  
-  const {
-    feed,
-    loading,
-    error,
-    refreshFeed,
-    getModuleConfig,
-  } = useModuleCLM();
+  const { feed, loading, error, refreshFeed } = useModuleCLM();
+  const [currentTime, setCurrentTime] = useState(new Date());
 
-  const [selectedType, setSelectedType] = useState<string>('all');
+  // Update time every second
+  useEffect(() => {
+    const interval = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
 
-  // Show auth screen if not logged in
+  // Auth gate
   if (!authLoading && !user) {
-    return <AuthRequiredScreen />;
+    return <ObserverGate />;
   }
 
-  // Show loading
   if (authLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <RefreshCw className="w-8 h-8 animate-spin mx-auto text-primary" />
-          <p className="text-muted-foreground">Loading...</p>
-        </div>
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+        >
+          <Orbit className="w-12 h-12 text-primary" />
+        </motion.div>
       </div>
     );
   }
 
-  const filteredFeed = selectedType === 'all'
-    ? feed
-    : feed.filter(item => item.analysisType === selectedType);
-
-  // Count analyses per module
-  const moduleAnalysisCounts = Object.keys(MODULE_ICONS).reduce((acc, moduleId) => {
-    acc[moduleId as ModuleName] = feed.filter(f => f.moduleId === moduleId).length;
-    return acc;
-  }, {} as Record<ModuleName, number>);
-
-  const typeStats = {
-    all: feed.length,
-    performance: feed.filter(f => f.analysisType === 'performance').length,
-    improvement: feed.filter(f => f.analysisType === 'improvement').length,
-    insight: feed.filter(f => f.analysisType === 'insight').length,
-    request: feed.filter(f => f.analysisType === 'request').length,
-  };
+  const activeModules = [...new Set(feed.map(f => f.moduleId))];
+  const recentFeed = feed.slice(0, 8);
 
   return (
     <>
       <Helmet>
-        <title>System Intelligence Feed | Substrate OS</title>
-        <meta name="description" content="Live feed of module self-analysis and improvement requests from the Substrate cognitive system." />
+        <title>Observer Mode | Substrate OS</title>
+        <meta name="description" content="Observer Mode — Watch the Substrate's autonomous learning in real-time." />
       </Helmet>
 
-      <div className="min-h-screen bg-background">
-        {/* Header */}
-        <div className="border-b border-border/50 bg-card/30 backdrop-blur-xl sticky top-0 z-40">
-          <div className="container mx-auto px-4 py-4">
-            <div className="flex items-center justify-between flex-wrap gap-4">
-              <div>
-                <h1 className="text-2xl font-bold flex items-center gap-2">
-                  <Brain className="w-6 h-6 text-primary" />
-                  System Intelligence Feed
-                </h1>
-                <p className="text-sm text-muted-foreground mt-1 flex items-center gap-2">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  Autonomous learning — runs continuously via backend scheduler
-                </p>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <Badge variant="outline" className="gap-1.5">
-                  <Activity className="w-3 h-3 text-green-400" />
-                  Auto-learning active
-                </Badge>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={refreshFeed}
-                  disabled={loading}
-                >
-                  <RefreshCw className={cn("w-4 h-4 mr-2", loading && "animate-spin")} />
-                  Refresh
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="container mx-auto px-4 py-6">
-          {error && (
-            <Card className="mb-6 bg-destructive/10 border-destructive/30">
-              <CardContent className="p-4 text-sm text-destructive">
-                Error loading feed: {error}
-              </CardContent>
-            </Card>
-          )}
-
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            {/* Sidebar - Module States (Read-only) */}
-            <div className="lg:col-span-1 space-y-4">
-              <Card className="bg-card/50 border-border/50">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-sm">Module Activity</CardTitle>
-                  <CardDescription className="text-xs">
-                    Learning runs hourly via backend scheduler
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ScrollArea className="h-[350px] pr-2">
-                    <div className="space-y-2">
-                      {(Object.keys(MODULE_ICONS) as ModuleName[]).map(moduleId => {
-                        const config = getModuleConfig(moduleId);
-                        return (
-                          <ModuleStateCard
-                            key={moduleId}
-                            moduleId={moduleId}
-                            displayName={config?.displayName || moduleId.toUpperCase()}
-                            analysisCount={moduleAnalysisCounts[moduleId] || 0}
-                          />
-                        );
-                      })}
-                    </div>
-                  </ScrollArea>
-                </CardContent>
-              </Card>
-
-              {/* Stats Summary */}
-              <Card className="bg-card/50 border-border/50">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-sm">Feed Statistics</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-2 gap-3 text-center">
-                    <div className="p-2 rounded bg-muted/30">
-                      <div className="text-lg font-bold">{feed.length}</div>
-                      <div className="text-xs text-muted-foreground">Total</div>
-                    </div>
-                    <div className="p-2 rounded bg-amber-500/10">
-                      <div className="text-lg font-bold text-amber-400">
-                        {feed.filter(f => f.priority === 'high' || f.priority === 'critical').length}
-                      </div>
-                      <div className="text-xs text-muted-foreground">High Priority</div>
-                    </div>
-                    <div className="p-2 rounded bg-purple-500/10">
-                      <div className="text-lg font-bold text-purple-400">
-                        {typeStats.improvement}
-                      </div>
-                      <div className="text-xs text-muted-foreground">Improvements</div>
-                    </div>
-                    <div className="p-2 rounded bg-blue-500/10">
-                      <div className="text-lg font-bold text-blue-400">
-                        {typeStats.request}
-                      </div>
-                      <div className="text-xs text-muted-foreground">Requests</div>
-                    </div>
+      <div className="min-h-screen bg-background relative">
+        <ObserverBackground />
+        
+        <div className="relative z-10">
+          {/* Header Bar */}
+          <header className="border-b border-border/30 bg-background/50 backdrop-blur-xl sticky top-0 z-50">
+            <div className="container mx-auto px-4 py-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2">
+                    <Eye className="w-5 h-5 text-primary" />
+                    <span className="font-bold text-lg">OBSERVER MODE</span>
                   </div>
-                </CardContent>
-              </Card>
+                  <Badge variant="outline" className="hidden sm:flex gap-1.5 border-green-500/30 text-green-400">
+                    <CLMStatusBeacon />
+                    <span>CLM Active</span>
+                  </Badge>
+                </div>
+                
+                <div className="flex items-center gap-4">
+                  <div className="text-right hidden sm:block">
+                    <p className="text-xs text-muted-foreground">System Time</p>
+                    <p className="font-mono text-sm">{currentTime.toLocaleTimeString()}</p>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={refreshFeed}
+                    disabled={loading}
+                  >
+                    <RefreshCw className={cn("w-4 h-4", loading && "animate-spin")} />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </header>
 
-              {/* Back to Home */}
-              <Button variant="outline" asChild className="w-full">
-                <Link to="/">← Back to Home</Link>
-              </Button>
+          {/* Main Content */}
+          <main className="container mx-auto px-4 py-8">
+            {/* Observer Mode Hero */}
+            <motion.section
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-center mb-12"
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
+                <Sparkles className="w-4 h-4 text-primary" />
+                <span className="text-sm font-medium">Witnessing Autonomous Intelligence</span>
+              </div>
+              
+              <h1 className="text-3xl md:text-4xl font-bold mb-3">
+                Constant Learning Mode
+              </h1>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                The substrate continuously analyzes its own performance, generates improvement 
+                requests, and evolves without human intervention. You are observing this process in real-time.
+              </p>
+            </motion.section>
+
+            {/* Status Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+              {[
+                { label: "Learning Cycles", value: feed.length, icon: Activity },
+                { label: "Active Modules", value: activeModules.length, icon: Cpu },
+                { label: "Mode", value: "24/7", icon: Radio },
+                { label: "Status", value: "LIVE", icon: Zap },
+              ].map((stat, i) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  className="p-4 rounded-xl bg-card/50 border border-border/50 text-center"
+                >
+                  <stat.icon className="w-5 h-5 text-primary mx-auto mb-2" />
+                  <p className="text-2xl font-bold">{stat.value}</p>
+                  <p className="text-xs text-muted-foreground">{stat.label}</p>
+                </motion.div>
+              ))}
             </div>
 
-            {/* Main Feed */}
-            <div className="lg:col-span-3">
-              <Tabs defaultValue="all" onValueChange={setSelectedType}>
-                <TabsList className="mb-4">
-                  <TabsTrigger value="all" className="gap-1">
-                    All <Badge variant="secondary" className="ml-1">{typeStats.all}</Badge>
-                  </TabsTrigger>
-                  <TabsTrigger value="performance" className="gap-1">
-                    Performance <Badge variant="secondary" className="ml-1">{typeStats.performance}</Badge>
-                  </TabsTrigger>
-                  <TabsTrigger value="improvement" className="gap-1">
-                    Improvement <Badge variant="secondary" className="ml-1">{typeStats.improvement}</Badge>
-                  </TabsTrigger>
-                  <TabsTrigger value="insight" className="gap-1 hidden sm:flex">
-                    Insight <Badge variant="secondary" className="ml-1">{typeStats.insight}</Badge>
-                  </TabsTrigger>
-                  <TabsTrigger value="request" className="gap-1 hidden sm:flex">
-                    Request <Badge variant="secondary" className="ml-1">{typeStats.request}</Badge>
-                  </TabsTrigger>
-                </TabsList>
+            {error && (
+              <div className="mb-8 p-4 rounded-xl bg-destructive/10 border border-destructive/30 text-destructive text-sm">
+                {error}
+              </div>
+            )}
 
-                <TabsContent value={selectedType} className="space-y-4">
-                  {loading ? (
-                    <div className="text-center py-12">
-                      <RefreshCw className="w-8 h-8 animate-spin mx-auto text-primary mb-4" />
-                      <p className="text-muted-foreground">Loading feed...</p>
-                    </div>
-                  ) : filteredFeed.length === 0 ? (
-                    <Card className="bg-card/50 border-border/50">
-                      <CardContent className="py-12 text-center">
-                        <Brain className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
-                        <h3 className="font-semibold text-lg mb-2">No Analyses Yet</h3>
-                        <p className="text-sm text-muted-foreground max-w-md mx-auto">
-                          The substrate is learning continuously. New analyses appear here as modules reflect on their performance.
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-4">
-                          Learning scheduler runs hourly
-                        </p>
-                      </CardContent>
-                    </Card>
-                  ) : (
+            {/* Two Column Layout */}
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+              {/* Module Orbit - Left */}
+              <div className="lg:col-span-2">
+                <div className="sticky top-24">
+                  <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
+                    <Orbit className="w-5 h-5 text-primary" />
+                    Module Network
+                  </h2>
+                  <ModuleOrbit activeModules={activeModules} />
+                  
+                  <div className="mt-8 p-4 rounded-xl bg-card/30 border border-border/30">
+                    <h3 className="text-sm font-medium mb-3 flex items-center gap-2">
+                      <Eye className="w-4 h-4 text-muted-foreground" />
+                      Observer Mode Info
+                    </h3>
+                    <ul className="space-y-2 text-xs text-muted-foreground">
+                      <li className="flex items-start gap-2">
+                        <span className="text-primary mt-0.5">▸</span>
+                        View-only access to intelligence feed
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-primary mt-0.5">▸</span>
+                        CLM runs continuously via backend
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-primary mt-0.5">▸</span>
+                        No interaction or triggers available
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-primary mt-0.5">▸</span>
+                        <Link to="/os" className="text-primary hover:underline">
+                          Visit /os dashboard for system overview
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Analysis Stream - Right */}
+              <div className="lg:col-span-3">
+                <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
+                  <Waves className="w-5 h-5 text-primary" />
+                  Analysis Stream
+                  <Badge variant="secondary" className="ml-2">{feed.length}</Badge>
+                </h2>
+                
+                {loading && feed.length === 0 ? (
+                  <div className="flex items-center justify-center py-16">
+                    <RefreshCw className="w-8 h-8 animate-spin text-primary" />
+                  </div>
+                ) : feed.length === 0 ? (
+                  <div className="text-center py-16 text-muted-foreground">
+                    <Brain className="w-12 h-12 mx-auto mb-4 opacity-30" />
+                    <p>Waiting for learning cycles...</p>
+                    <p className="text-xs mt-2">CLM runs hourly via backend scheduler</p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
                     <AnimatePresence mode="popLayout">
-                      {filteredFeed.map(analysis => (
-                        <FeedItem key={analysis.id} analysis={analysis} />
+                      {recentFeed.map((analysis, i) => (
+                        <StreamItem key={analysis.id} analysis={analysis} index={i} />
                       ))}
                     </AnimatePresence>
-                  )}
-                </TabsContent>
-              </Tabs>
+                    
+                    {feed.length > 8 && (
+                      <div className="text-center py-4 text-sm text-muted-foreground">
+                        + {feed.length - 8} more analyses in stream
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          </main>
         </div>
       </div>
     </>
