@@ -27,11 +27,26 @@ serve(async (req) => {
       .order('created_at', { ascending: false })
       .limit(50);
 
-    // Check hot memory
-    const { data: hotMemoryStats, error: memoryError } = await supabaseClient
-      .from('brain_memory_hot')
-      .select('content, context', { count: 'exact', head: false })
-      .limit(100);
+    // Check all three memory tiers
+    const [hotResult, warmResult, coldResult] = await Promise.all([
+      supabaseClient.from('brain_memory_hot').select('id', { count: 'exact', head: true }),
+      supabaseClient.from('brain_memory_warm').select('id', { count: 'exact', head: true }),
+      supabaseClient.from('brain_memory_cold').select('id', { count: 'exact', head: true }),
+    ]);
+
+    const tierCounts = {
+      hot: { current: hotResult.count || 0, max: 500, health: 'healthy' as string },
+      warm: { current: warmResult.count || 0, max: 2000, health: 'healthy' as string },
+      cold: { current: coldResult.count || 0, max: 10000, health: 'healthy' as string },
+    };
+
+    // Calculate tier health
+    tierCounts.hot.health = tierCounts.hot.current > tierCounts.hot.max ? 'overloaded' : 
+                            tierCounts.hot.current > tierCounts.hot.max * 0.8 ? 'warning' : 'healthy';
+    tierCounts.warm.health = tierCounts.warm.current > tierCounts.warm.max ? 'overloaded' : 
+                             tierCounts.warm.current > tierCounts.warm.max * 0.8 ? 'warning' : 'healthy';
+    tierCounts.cold.health = tierCounts.cold.current > tierCounts.cold.max ? 'overloaded' : 
+                             tierCounts.cold.current > tierCounts.cold.max * 0.8 ? 'warning' : 'healthy';
 
     // Check learning data (AI usage)
     const { data: learningData, error: learningError } = await supabaseClient
@@ -49,7 +64,7 @@ serve(async (req) => {
       .limit(10);
 
     const totalEvents = recentEvents?.length || 0;
-    const totalMemories = hotMemoryStats?.length || 0;
+    const totalMemories = tierCounts.hot.current + tierCounts.warm.current + tierCounts.cold.current;
     const totalLearning = learningData?.length || 0;
     const activeActions = queuedActions?.length || 0;
 
@@ -80,15 +95,25 @@ serve(async (req) => {
       outcome: 'success'
     });
 
+    // Check if tiering is needed
+    const needsTiering = tierCounts.hot.health !== 'healthy' || tierCounts.warm.health !== 'healthy';
+
     const status = {
       healthy: isHealthy,
       learning: isLearning,
       timestamp: new Date().toISOString(),
       metrics: {
         events_24h: totalEvents,
-        hot_memories: totalMemories,
+        total_memories: totalMemories,
         learning_cycles_24h: totalLearning,
         queued_actions: activeActions,
+      },
+      tiers: tierCounts,
+      tier_summary: {
+        hot: `${tierCounts.hot.current}/${tierCounts.hot.max} (${tierCounts.hot.health})`,
+        warm: `${tierCounts.warm.current}/${tierCounts.warm.max} (${tierCounts.warm.health})`,
+        cold: `${tierCounts.cold.current}/${tierCounts.cold.max} (${tierCounts.cold.health})`,
+        needs_tiering: needsTiering,
       },
       event_breakdown: eventBreakdown,
       recent_activity: recentEvents?.slice(0, 5).map(event => ({
@@ -102,6 +127,7 @@ serve(async (req) => {
         last_activity: recentEvents?.[0]?.created_at || null,
         orchestration: totalEvents > 5 ? 'active' : 'limited',
         learning_engine: isLearning ? 'active' : 'idle',
+        memory_health: needsTiering ? 'needs_rebalance' : 'balanced',
       }
     };
 
