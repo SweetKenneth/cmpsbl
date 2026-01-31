@@ -1,18 +1,20 @@
 /**
  * System Intelligence Feed
- * v6.8.1 — Live feed of module self-analysis and improvement requests
+ * v6.8.2 — Live feed of module self-analysis and improvement requests
  * 
  * This page shows real-time insights from all substrate modules
  * as they analyze their own performance and request improvements.
  * 
  * REQUIRES AUTHENTICATION — Only logged-in users can view system intelligence.
  * Learning runs 24/7 via backend scheduler (pf-module-clm-scheduler).
+ * 
+ * OBSERVER MODE: No manual triggers. Feed is read-only.
  */
 
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { 
   Brain, 
   Cpu, 
@@ -33,6 +35,7 @@ import {
   Clock,
   FileText,
   LogIn,
+  Sparkles,
 } from 'lucide-react';
 import { useModuleCLM } from '@/lib/substrate/module-clm/useModuleCLM';
 import { type ModuleName, type ModuleSelfAnalysis } from '@/lib/substrate/module-clm';
@@ -42,7 +45,7 @@ import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
-import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // MODULE ICONS
@@ -93,15 +96,36 @@ const PRIORITY_COLORS: Record<ModuleSelfAnalysis['priority'], string> = {
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// HELPER
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function getTimeAgo(dateString: string): string {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  
+  if (diffMins < 1) return 'just now';
+  if (diffMins < 60) return `${diffMins}m ago`;
+  
+  const diffHours = Math.floor(diffMins / 60);
+  if (diffHours < 24) return `${diffHours}h ago`;
+  
+  const diffDays = Math.floor(diffHours / 24);
+  if (diffDays < 7) return `${diffDays}d ago`;
+  
+  return date.toLocaleDateString();
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // FEED ITEM COMPONENT
 // ═══════════════════════════════════════════════════════════════════════════════
 
 interface FeedItemProps {
   analysis: ModuleSelfAnalysis;
-  onAcknowledge: (id: string) => void;
 }
 
-function FeedItem({ analysis, onAcknowledge }: FeedItemProps) {
+function FeedItem({ analysis }: FeedItemProps) {
   const [expanded, setExpanded] = useState(false);
   const ModuleIcon = MODULE_ICONS[analysis.moduleId] || Brain;
   const TypeIcon = ANALYSIS_TYPE_ICONS[analysis.analysisType];
@@ -142,12 +166,6 @@ function FeedItem({ analysis, onAcknowledge }: FeedItemProps) {
                 <Badge className={cn("text-xs", PRIORITY_COLORS[analysis.priority])}>
                   {analysis.priority}
                 </Badge>
-                {analysis.status === 'acknowledged' && (
-                  <Badge variant="outline" className="text-xs text-green-400 border-green-400/30">
-                    <CheckCircle className="w-3 h-3 mr-1" />
-                    Acknowledged
-                  </Badge>
-                )}
               </div>
               
               <h3 className="font-medium text-foreground mt-1 line-clamp-2">
@@ -208,19 +226,6 @@ function FeedItem({ analysis, onAcknowledge }: FeedItemProps) {
                       </ul>
                     </div>
                   )}
-
-                  {analysis.status === 'pending' && (
-                    <div className="mt-4 flex gap-2">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => onAcknowledge(analysis.id)}
-                      >
-                        <CheckCircle className="w-3 h-3 mr-1" />
-                        Acknowledge
-                      </Button>
-                    </div>
-                  )}
                 </div>
               </motion.div>
             )}
@@ -232,58 +237,84 @@ function FeedItem({ analysis, onAcknowledge }: FeedItemProps) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// MODULE CARD COMPONENT
+// MODULE STATE CARD (Read-only)
 // ═══════════════════════════════════════════════════════════════════════════════
 
-interface ModuleCardProps {
+interface ModuleStateCardProps {
   moduleId: ModuleName;
   displayName: string;
-  state: { improvementScore: number; totalLearnings: number; lastLearnedAt: string | null; isLearning: boolean };
-  onTrigger: () => void;
+  analysisCount: number;
 }
 
-function ModuleCard({ moduleId, displayName, state, onTrigger }: ModuleCardProps) {
+function ModuleStateCard({ moduleId, displayName, analysisCount }: ModuleStateCardProps) {
   const Icon = MODULE_ICONS[moduleId] || Brain;
   const color = MODULE_COLORS[moduleId] || 'text-primary';
 
   return (
-    <Card className="bg-card/50 border-border/50 hover:border-primary/30 transition-all">
-      <CardContent className="p-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className={cn("p-2 rounded-lg bg-muted/50", color)}>
-              <Icon className="w-5 h-5" />
-            </div>
-            <div>
-              <h3 className="font-semibold text-sm">{displayName}</h3>
-              <p className="text-xs text-muted-foreground">
-                {state.totalLearnings} learnings
-              </p>
-            </div>
-          </div>
+    <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors">
+      <div className={cn("p-2 rounded-lg bg-muted/50", color)}>
+        <Icon className="w-4 h-4" />
+      </div>
+      <div className="flex-1 min-w-0">
+        <h3 className="font-medium text-sm truncate">{displayName}</h3>
+        <p className="text-xs text-muted-foreground">{analysisCount} analyses</p>
+      </div>
+      {analysisCount > 0 && (
+        <Badge variant="secondary" className="text-xs shrink-0">
+          Active
+        </Badge>
+      )}
+    </div>
+  );
+}
 
-          <div className="text-right">
-            <div className="text-lg font-bold text-foreground">
-              {state.improvementScore.toFixed(0)}
-              <span className="text-xs text-muted-foreground">%</span>
-            </div>
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={onTrigger}
-              disabled={state.isLearning}
-              className="text-xs"
-            >
-              {state.isLearning ? (
-                <RefreshCw className="w-3 h-3 animate-spin" />
-              ) : (
-                <Activity className="w-3 h-3" />
-              )}
-            </Button>
+// ═══════════════════════════════════════════════════════════════════════════════
+// AUTH REQUIRED SCREEN
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function AuthRequiredScreen() {
+  return (
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      <Card className="max-w-md w-full bg-card/50 border-border/50">
+        <CardHeader className="text-center pb-4">
+          <div className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary-variant/20 flex items-center justify-center mb-4">
+            <Brain className="w-8 h-8 text-primary" />
           </div>
-        </div>
-      </CardContent>
-    </Card>
+          <CardTitle className="text-2xl">System Intelligence Feed</CardTitle>
+          <CardDescription className="text-base">
+            Sign in to observe the substrate's autonomous learning
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-3 text-sm text-muted-foreground">
+            <div className="flex items-start gap-3">
+              <Sparkles className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+              <p>Watch modules analyze their own performance in real-time</p>
+            </div>
+            <div className="flex items-start gap-3">
+              <Activity className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+              <p>See improvement requests generated by autonomous learning</p>
+            </div>
+            <div className="flex items-start gap-3">
+              <Eye className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+              <p>Observer access — view-only, no interaction required</p>
+            </div>
+          </div>
+          
+          <div className="pt-4 space-y-3">
+            <Button asChild className="w-full gap-2">
+              <Link to="/auth">
+                <LogIn className="w-4 h-4" />
+                Sign In to Observe
+              </Link>
+            </Button>
+            <p className="text-center text-xs text-muted-foreground">
+              Learning runs continuously via backend scheduler
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
 
@@ -292,29 +323,45 @@ function ModuleCard({ moduleId, displayName, state, onTrigger }: ModuleCardProps
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export default function SystemIntelligenceFeed() {
+  const { user, loading: authLoading } = useAuth();
+  const navigate = useNavigate();
+  
   const {
     feed,
     loading,
-    moduleStates,
-    runModuleLearning,
-    runAllLearning,
-    acknowledgeAnalysis,
+    error,
     refreshFeed,
     getModuleConfig,
   } = useModuleCLM();
 
   const [selectedType, setSelectedType] = useState<string>('all');
-  const [isRunningAll, setIsRunningAll] = useState(false);
+
+  // Show auth screen if not logged in
+  if (!authLoading && !user) {
+    return <AuthRequiredScreen />;
+  }
+
+  // Show loading
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <RefreshCw className="w-8 h-8 animate-spin mx-auto text-primary" />
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   const filteredFeed = selectedType === 'all'
     ? feed
     : feed.filter(item => item.analysisType === selectedType);
 
-  const handleRunAll = async () => {
-    setIsRunningAll(true);
-    await runAllLearning();
-    setIsRunningAll(false);
-  };
+  // Count analyses per module
+  const moduleAnalysisCounts = Object.keys(MODULE_ICONS).reduce((acc, moduleId) => {
+    acc[moduleId as ModuleName] = feed.filter(f => f.moduleId === moduleId).length;
+    return acc;
+  }, {} as Record<ModuleName, number>);
 
   const typeStats = {
     all: feed.length,
@@ -341,12 +388,17 @@ export default function SystemIntelligenceFeed() {
                   <Brain className="w-6 h-6 text-primary" />
                   System Intelligence Feed
                 </h1>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Real-time module self-analysis and improvement requests
+                <p className="text-sm text-muted-foreground mt-1 flex items-center gap-2">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  Autonomous learning — runs continuously via backend scheduler
                 </p>
               </div>
 
               <div className="flex items-center gap-2">
+                <Badge variant="outline" className="gap-1.5">
+                  <Activity className="w-3 h-3 text-green-400" />
+                  Auto-learning active
+                </Badge>
                 <Button
                   variant="outline"
                   size="sm"
@@ -356,42 +408,41 @@ export default function SystemIntelligenceFeed() {
                   <RefreshCw className={cn("w-4 h-4 mr-2", loading && "animate-spin")} />
                   Refresh
                 </Button>
-                <Button
-                  size="sm"
-                  onClick={handleRunAll}
-                  disabled={isRunningAll}
-                >
-                  <Activity className={cn("w-4 h-4 mr-2", isRunningAll && "animate-pulse")} />
-                  {isRunningAll ? 'Analyzing...' : 'Run All CLM'}
-                </Button>
               </div>
             </div>
           </div>
         </div>
 
         <div className="container mx-auto px-4 py-6">
+          {error && (
+            <Card className="mb-6 bg-destructive/10 border-destructive/30">
+              <CardContent className="p-4 text-sm text-destructive">
+                Error loading feed: {error}
+              </CardContent>
+            </Card>
+          )}
+
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            {/* Sidebar - Module States */}
+            {/* Sidebar - Module States (Read-only) */}
             <div className="lg:col-span-1 space-y-4">
               <Card className="bg-card/50 border-border/50">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-sm">Module States</CardTitle>
+                  <CardTitle className="text-sm">Module Activity</CardTitle>
                   <CardDescription className="text-xs">
-                    Trigger individual module learning
+                    Learning runs hourly via backend scheduler
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-2">
-                  <ScrollArea className="h-[400px] pr-2">
+                <CardContent>
+                  <ScrollArea className="h-[350px] pr-2">
                     <div className="space-y-2">
-                      {moduleStates.map(state => {
-                        const config = getModuleConfig(state.moduleId);
+                      {(Object.keys(MODULE_ICONS) as ModuleName[]).map(moduleId => {
+                        const config = getModuleConfig(moduleId);
                         return (
-                          <ModuleCard
-                            key={state.moduleId}
-                            moduleId={state.moduleId}
-                            displayName={config?.displayName || state.moduleId.toUpperCase()}
-                            state={state}
-                            onTrigger={() => runModuleLearning(state.moduleId)}
+                          <ModuleStateCard
+                            key={moduleId}
+                            moduleId={moduleId}
+                            displayName={config?.displayName || moduleId.toUpperCase()}
+                            analysisCount={moduleAnalysisCounts[moduleId] || 0}
                           />
                         );
                       })}
@@ -417,21 +468,26 @@ export default function SystemIntelligenceFeed() {
                       </div>
                       <div className="text-xs text-muted-foreground">High Priority</div>
                     </div>
-                    <div className="p-2 rounded bg-green-500/10">
-                      <div className="text-lg font-bold text-green-400">
-                        {feed.filter(f => f.status === 'acknowledged').length}
+                    <div className="p-2 rounded bg-purple-500/10">
+                      <div className="text-lg font-bold text-purple-400">
+                        {typeStats.improvement}
                       </div>
-                      <div className="text-xs text-muted-foreground">Acknowledged</div>
+                      <div className="text-xs text-muted-foreground">Improvements</div>
                     </div>
                     <div className="p-2 rounded bg-blue-500/10">
                       <div className="text-lg font-bold text-blue-400">
-                        {feed.filter(f => f.status === 'pending').length}
+                        {typeStats.request}
                       </div>
-                      <div className="text-xs text-muted-foreground">Pending</div>
+                      <div className="text-xs text-muted-foreground">Requests</div>
                     </div>
                   </div>
                 </CardContent>
               </Card>
+
+              {/* Back to Home */}
+              <Button variant="outline" asChild className="w-full">
+                <Link to="/">← Back to Home</Link>
+              </Button>
             </div>
 
             {/* Main Feed */}
@@ -442,54 +498,44 @@ export default function SystemIntelligenceFeed() {
                     All <Badge variant="secondary" className="ml-1">{typeStats.all}</Badge>
                   </TabsTrigger>
                   <TabsTrigger value="performance" className="gap-1">
-                    <Activity className="w-3 h-3" />
                     Performance <Badge variant="secondary" className="ml-1">{typeStats.performance}</Badge>
                   </TabsTrigger>
                   <TabsTrigger value="improvement" className="gap-1">
-                    <TrendingUp className="w-3 h-3" />
-                    Improvements <Badge variant="secondary" className="ml-1">{typeStats.improvement}</Badge>
+                    Improvement <Badge variant="secondary" className="ml-1">{typeStats.improvement}</Badge>
                   </TabsTrigger>
-                  <TabsTrigger value="insight" className="gap-1">
-                    <Lightbulb className="w-3 h-3" />
-                    Insights <Badge variant="secondary" className="ml-1">{typeStats.insight}</Badge>
+                  <TabsTrigger value="insight" className="gap-1 hidden sm:flex">
+                    Insight <Badge variant="secondary" className="ml-1">{typeStats.insight}</Badge>
                   </TabsTrigger>
-                  <TabsTrigger value="request" className="gap-1">
-                    <MessageSquare className="w-3 h-3" />
-                    Requests <Badge variant="secondary" className="ml-1">{typeStats.request}</Badge>
+                  <TabsTrigger value="request" className="gap-1 hidden sm:flex">
+                    Request <Badge variant="secondary" className="ml-1">{typeStats.request}</Badge>
                   </TabsTrigger>
                 </TabsList>
 
-                <TabsContent value={selectedType} className="mt-0">
-                  {loading && filteredFeed.length === 0 ? (
-                    <div className="flex items-center justify-center py-12">
-                      <RefreshCw className="w-6 h-6 animate-spin text-muted-foreground" />
+                <TabsContent value={selectedType} className="space-y-4">
+                  {loading ? (
+                    <div className="text-center py-12">
+                      <RefreshCw className="w-8 h-8 animate-spin mx-auto text-primary mb-4" />
+                      <p className="text-muted-foreground">Loading feed...</p>
                     </div>
                   ) : filteredFeed.length === 0 ? (
                     <Card className="bg-card/50 border-border/50">
                       <CardContent className="py-12 text-center">
-                        <Brain className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                        <h3 className="font-semibold mb-2">No Intelligence Data Yet</h3>
-                        <p className="text-sm text-muted-foreground mb-4">
-                          Run module CLM to generate self-analysis and improvement requests.
+                        <Brain className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
+                        <h3 className="font-semibold text-lg mb-2">No Analyses Yet</h3>
+                        <p className="text-sm text-muted-foreground max-w-md mx-auto">
+                          The substrate is learning continuously. New analyses appear here as modules reflect on their performance.
                         </p>
-                        <Button onClick={handleRunAll} disabled={isRunningAll}>
-                          <Activity className="w-4 h-4 mr-2" />
-                          Start System Learning
-                        </Button>
+                        <p className="text-xs text-muted-foreground mt-4">
+                          Learning scheduler runs hourly
+                        </p>
                       </CardContent>
                     </Card>
                   ) : (
-                    <div className="space-y-3">
-                      <AnimatePresence mode="popLayout">
-                        {filteredFeed.map(analysis => (
-                          <FeedItem
-                            key={analysis.id}
-                            analysis={analysis}
-                            onAcknowledge={acknowledgeAnalysis}
-                          />
-                        ))}
-                      </AnimatePresence>
-                    </div>
+                    <AnimatePresence mode="popLayout">
+                      {filteredFeed.map(analysis => (
+                        <FeedItem key={analysis.id} analysis={analysis} />
+                      ))}
+                    </AnimatePresence>
                   )}
                 </TabsContent>
               </Tabs>
@@ -499,23 +545,4 @@ export default function SystemIntelligenceFeed() {
       </div>
     </>
   );
-}
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// HELPERS
-// ═══════════════════════════════════════════════════════════════════════════════
-
-function getTimeAgo(dateString: string): string {
-  const date = new Date(dateString);
-  const now = new Date();
-  const diffMs = now.getTime() - date.getTime();
-  const diffMins = Math.floor(diffMs / 60000);
-  const diffHours = Math.floor(diffMs / 3600000);
-  const diffDays = Math.floor(diffMs / 86400000);
-
-  if (diffMins < 1) return 'just now';
-  if (diffMins < 60) return `${diffMins}m ago`;
-  if (diffHours < 24) return `${diffHours}h ago`;
-  if (diffDays < 7) return `${diffDays}d ago`;
-  return date.toLocaleDateString();
 }

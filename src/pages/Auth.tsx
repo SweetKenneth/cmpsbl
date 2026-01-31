@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Shield } from 'lucide-react';
+import { Shield, Eye, Brain, Activity, Sparkles } from 'lucide-react';
 
 export default function Auth() {
   const { signIn, signUp } = useAuth();
@@ -55,10 +55,10 @@ export default function Auth() {
           </div>
         </div>
 
-        <Tabs defaultValue="login" className="w-full">
+        <Tabs defaultValue="signup" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="login">Sign In</TabsTrigger>
-            <TabsTrigger value="signup">Sign Up</TabsTrigger>
+            <TabsTrigger value="signup">Become Observer</TabsTrigger>
           </TabsList>
           
           <TabsContent value="login">
@@ -67,7 +67,7 @@ export default function Auth() {
                 <CardHeader>
                   <CardTitle>Welcome Back</CardTitle>
                   <CardDescription>
-                    Sign in to access your PromptFluid dashboard
+                    Sign in to observe the substrate
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -109,12 +109,37 @@ export default function Auth() {
             <Card>
               <form onSubmit={handleSignup}>
                 <CardHeader>
-                  <CardTitle>Create Account</CardTitle>
+                  <CardTitle className="flex items-center gap-2">
+                    <Eye className="w-5 h-5 text-primary" />
+                    Become an Observer
+                  </CardTitle>
                   <CardDescription>
-                    Get started with PromptFluid
+                    Sign up to observe the substrate's autonomous learning
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
+                  {/* Observer benefits */}
+                  <div className="bg-muted/30 rounded-lg p-4 space-y-3">
+                    <h4 className="text-sm font-medium flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-primary" />
+                      Observer Access Includes:
+                    </h4>
+                    <ul className="space-y-2 text-sm text-muted-foreground">
+                      <li className="flex items-start gap-2">
+                        <Brain className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                        <span>Watch 12 modules learn and improve autonomously</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <Activity className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                        <span>Real-time System Intelligence Feed updates</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <Eye className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                        <span>View-only access — no interaction required</span>
+                      </li>
+                    </ul>
+                  </div>
+
                   <div className="space-y-2">
                     <Label htmlFor="signup-name">Display Name</Label>
                     <Input
@@ -156,8 +181,9 @@ export default function Auth() {
                   </div>
                 </CardContent>
                 <CardFooter>
-                  <Button type="submit" className="w-full" disabled={loading}>
-                    {loading ? 'Creating account...' : 'Create Account'}
+                  <Button type="submit" className="w-full gap-2" disabled={loading}>
+                    <Eye className="w-4 h-4" />
+                    {loading ? 'Creating account...' : 'Sign Up as Observer'}
                   </Button>
                 </CardFooter>
               </form>
@@ -175,20 +201,16 @@ export default function Auth() {
             </a>
           </div>
           <div className="flex flex-wrap justify-center gap-3 text-xs">
-            <a href="/blog/wordpress-bot-defense" className="text-muted-foreground hover:text-primary transition-colors">
-              WordPress Security
+            <a href="/system-feed" className="text-muted-foreground hover:text-primary transition-colors">
+              System Intelligence Feed
             </a>
             <span className="text-muted-foreground">•</span>
-            <a href="/blog/top-security-plugins-2025" className="text-muted-foreground hover:text-primary transition-colors">
-              Top Plugins 2025
+            <a href="/library" className="text-muted-foreground hover:text-primary transition-colors">
+              Documentation
             </a>
             <span className="text-muted-foreground">•</span>
-            <a href="/blog/ai-cybersecurity-evolution-2025" className="text-muted-foreground hover:text-primary transition-colors">
-              AI Security
-            </a>
-            <span className="text-muted-foreground">•</span>
-            <a href="/blog/ai-hackers-underground-2025" className="text-muted-foreground hover:text-primary transition-colors">
-              AI Hackers
+            <a href="/blog" className="text-muted-foreground hover:text-primary transition-colors">
+              Blog
             </a>
           </div>
           <p className="text-center text-sm text-muted-foreground mt-4">
