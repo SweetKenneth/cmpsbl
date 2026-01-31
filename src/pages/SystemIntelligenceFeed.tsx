@@ -39,6 +39,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
+import { PublicNav } from '@/components/PublicNav';
+import { EnhancedFooter } from '@/components/EnhancedFooter';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // MODULE CONFIGURATION
@@ -248,54 +250,56 @@ function ModuleOrbit({ activeModules }: { activeModules: ModuleName[] }) {
   const allModules = Object.keys(MODULE_ICONS) as ModuleName[];
   
   return (
-    <div className="relative w-64 h-64 mx-auto">
+    <div className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 mx-auto">
       {/* Central brain */}
       <div className="absolute inset-0 flex items-center justify-center">
         <motion.div
-          className="w-20 h-20 rounded-full bg-gradient-to-br from-primary/30 to-primary/10 border border-primary/30 flex items-center justify-center"
+          className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-primary/30 to-primary/10 border border-primary/30 flex items-center justify-center"
           animate={{ scale: [1, 1.05, 1] }}
           transition={{ duration: 3, repeat: Infinity }}
         >
-          <Brain className="w-10 h-10 text-primary" />
+          <Brain className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 text-primary" />
         </motion.div>
       </div>
       
-      {/* Orbiting modules */}
+      {/* Orbiting modules - use percentage-based positioning */}
       {allModules.map((moduleId, i) => {
         const Icon = MODULE_ICONS[moduleId];
-        const angle = (i / allModules.length) * 360;
+        const angle = (i / allModules.length) * 2 * Math.PI;
         const isActive = activeModules.includes(moduleId);
         const textColor = MODULE_TEXT_COLORS[moduleId];
+        
+        // Calculate position as percentage from center (40% radius)
+        const x = 50 + 38 * Math.cos(angle - Math.PI / 2);
+        const y = 50 + 38 * Math.sin(angle - Math.PI / 2);
         
         return (
           <motion.div
             key={moduleId}
-            className="absolute"
+            className="absolute -translate-x-1/2 -translate-y-1/2"
             style={{
-              left: '50%',
-              top: '50%',
-              transform: `rotate(${angle}deg) translateY(-100px) rotate(-${angle}deg)`,
+              left: `${x}%`,
+              top: `${y}%`,
             }}
             animate={{
               opacity: isActive ? 1 : 0.3,
-              scale: isActive ? 1.2 : 1,
+              scale: isActive ? 1.15 : 1,
             }}
             transition={{ duration: 0.5 }}
           >
             <div className={cn(
-              "w-8 h-8 rounded-full bg-background/80 border flex items-center justify-center -translate-x-1/2 -translate-y-1/2",
+              "w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 rounded-full bg-background/80 border flex items-center justify-center",
               isActive ? "border-primary/50" : "border-border/50",
               textColor
             )}>
-              <Icon className="w-4 h-4" />
+              <Icon className="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" />
             </div>
           </motion.div>
         );
       })}
       
-      {/* Orbit rings */}
-      <div className="absolute inset-0 rounded-full border border-dashed border-border/30" 
-           style={{ transform: 'scale(1.6)' }} />
+      {/* Orbit ring - contained within parent */}
+      <div className="absolute inset-[10%] rounded-full border border-dashed border-border/30" />
     </div>
   );
 }
@@ -306,10 +310,11 @@ function ModuleOrbit({ activeModules }: { activeModules: ModuleName[] }) {
 
 function ObserverGate() {
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
+    <div className="min-h-screen bg-background relative overflow-hidden flex flex-col">
+      <PublicNav />
       <ObserverBackground />
       
-      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center p-6">
+      <div className="relative z-10 flex-1 flex flex-col items-center justify-center p-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -381,6 +386,7 @@ function ObserverGate() {
           </p>
         </motion.div>
       </div>
+      <EnhancedFooter />
     </div>
   );
 }
@@ -428,12 +434,13 @@ export default function SystemIntelligenceFeed() {
         <meta name="description" content="Observer Mode — Watch the Substrate's autonomous learning in real-time." />
       </Helmet>
 
-      <div className="min-h-screen bg-background relative">
+      <div className="min-h-screen bg-background relative flex flex-col">
+        <PublicNav />
         <ObserverBackground />
         
-        <div className="relative z-10">
+        <div className="relative z-10 flex-1">
           {/* Header Bar */}
-          <header className="border-b border-border/30 bg-background/50 backdrop-blur-xl sticky top-0 z-50">
+          <header className="border-b border-border/30 bg-background/50 backdrop-blur-xl sticky top-0 z-40">
             <div className="container mx-auto px-4 py-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
@@ -592,6 +599,7 @@ export default function SystemIntelligenceFeed() {
             </div>
           </main>
         </div>
+        <EnhancedFooter />
       </div>
     </>
   );
