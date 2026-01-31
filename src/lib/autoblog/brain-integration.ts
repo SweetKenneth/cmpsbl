@@ -13,6 +13,9 @@ export interface SelfAuditResult {
   quality_score: number;
   improvement_areas: string[];
 }
+// Research sources for cognitive substrate insights
+const RESEARCH_SOURCES = [
+  { name: 'Anthropic Blog', domain: 'anthropic.com/research', focus: ['alignment', 'interpretability', 'safety'] },
   { name: 'OpenAI Blog', domain: 'openai.com/blog', focus: ['GPT', 'reasoning', 'agents'] },
   { name: 'DeepMind Research', domain: 'deepmind.google/research', focus: ['reinforcement learning', 'neuroscience', 'AGI'] },
   { name: 'Meta AI', domain: 'ai.meta.com', focus: ['open source', 'multimodal', 'efficiency'] },
