@@ -14,6 +14,7 @@ import {
 import { guardAutoblogAction } from './policy';
 import { shouldPostNow, computeDedupeKey } from './rules';
 import { checkAutoblogCircuit, reportSuccess, reportFailure } from './circuit';
+import { publishDraft, publishAllReady } from './publisher';
 import type { AutoblogSettings, AutoblogQueueItem, AutoblogDraft } from './types';
 
 export interface AutoblogStatusResult {
@@ -212,41 +213,43 @@ export async function autoblogPublish(queueId: string): Promise<AutoblogOperatio
     return { ok: false, blocked: true, reason: gate.reason };
   }
 
-  const draft = await getDraft(queueId);
+  // Use the new publisher module
+  const result = await publishDraft(queueId);
   
-  if (!draft) {
-    return { ok: false, reason: 'No draft found to publish' };
+  if (result.ok) {
+    return { 
+      ok: true, 
+      queueId,
+      data: {
+        postId: result.postId,
+        slug: result.slug,
+      }
+    };
+  } else {
+    return { ok: false, reason: result.error };
+  }
+}
+
+/**
+ * Publish all ready drafts
+ */
+export async function autoblogPublishAll(): Promise<AutoblogOperationResult> {
+  const settings = await getAutoblogSettings();
+  const gate = await guardAutoblogAction('publish', settings);
+  
+  if (!gate.allowed) {
+    return { ok: false, blocked: true, reason: gate.reason };
   }
 
-  try {
-    // Publishing logic is internal
-    // For now, mark as published (actual publishing integrates with site)
-    await updateQueueStatus(queueId, 'published');
-    
-    await recordRun({
-      queueId,
-      phase: 'publish',
-      outcome: 'success',
-      reason: 'Published under governed intent'
-    });
-
-    await reportSuccess();
-
-    return { ok: true, queueId };
-  } catch (error) {
-    const message = error instanceof Error ? error.message : 'Publish failed';
-    await updateQueueStatus(queueId, 'failed', { error: message });
-    await reportFailure(message);
-
-    await recordRun({
-      queueId,
-      phase: 'publish',
-      outcome: 'failed',
-      reason: message
-    });
-
-    return { ok: false, reason: message };
-  }
+  const result = await publishAllReady();
+  
+  return {
+    ok: result.published > 0 || result.failed === 0,
+    data: {
+      published: result.published,
+      failed: result.failed,
+    }
+  };
 }
 
 /**

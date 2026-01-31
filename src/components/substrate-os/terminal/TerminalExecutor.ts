@@ -2052,7 +2052,7 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
     } else if (base === 'autoblog.publish') {
       const queueId = args[0];
       if (!queueId) {
-        return { success: false, output: '▓ ERROR: Queue ID required\n  Usage: autoblog.publish <queue_id>' };
+        return { success: false, output: '▓ ERROR: Queue ID required\n  Usage: autoblog.publish <queue_id>\n  Or use: autoblog.publish.all' };
       }
       try {
         const { autoblogPublish } = await import('@/lib/autoblog');
@@ -2060,9 +2060,37 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
         if (!result.ok) {
           return { success: false, output: `▓ Publish blocked: ${result.reason}` };
         }
-        return { success: true, output: `◉ Draft published successfully — ${queueId.slice(0, 8)}...` };
+        return { 
+          success: true, 
+          output: `◉ POST PUBLISHED SUCCESSFULLY
+  Queue ID:  ${queueId.slice(0, 8)}...
+  Post ID:   ${result.data?.postId || 'N/A'}
+  Slug:      ${result.data?.slug || 'N/A'}
+  
+  View at: /blog/${result.data?.slug || ''}`,
+          data: result.data
+        };
       } catch (err) {
         return { success: false, output: `▓ Publish error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'autoblog.publish.all') {
+      try {
+        const { autoblogPublishAll } = await import('@/lib/autoblog');
+        const result = await autoblogPublishAll();
+        if (!result.ok) {
+          return { success: false, output: `▓ Publish all failed: ${result.reason}` };
+        }
+        return { 
+          success: true, 
+          output: `◉ BATCH PUBLISH COMPLETE
+  Published: ${result.data?.published || 0} posts
+  Failed:    ${result.data?.failed || 0} posts
+  
+  Use 'autoblog.queue' to verify status`,
+          data: result.data
+        };
+      } catch (err) {
+        return { success: false, output: `▓ Publish all error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
     } else if (base === 'autoblog.abort') {
       const queueId = args[0];
@@ -2316,6 +2344,76 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
         return { success: true, output, data: result };
       } catch (err) {
         return { success: false, output: `▓ Seed error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+    // CLM (Constant Learning Mode) COMMANDS v2.1
+    else if (base === 'autoblog.clm' || base === 'autoblog.clm.start') {
+      try {
+        const { startCLMMode } = await import('@/lib/autoblog');
+        const result = await startCLMMode();
+        if (!result.ok) {
+          return { success: false, output: `▓ CLM start failed: ${result.message}` };
+        }
+        return {
+          success: true,
+          output: `◉ CLM (CONSTANT LEARNING MODE) ACTIVATED
+  ┌────────────────────────────────────────┐
+  │  Target:      3-6 posts per week       │
+  │  Intelligence: Weighing enabled        │
+  │  Tone:        Changelog unified        │
+  │  Learning:    24/7 continuous          │
+  └────────────────────────────────────────┘
+  
+  The system will:
+  ▸ Assess importance before publishing
+  ▸ Check uniqueness vs recent posts
+  ▸ Match changelog tone guidelines
+  ▸ Self-audit every 5 cycles
+  
+  Use 'autoblog.clm.status' to monitor
+  Use 'autoblog.clm.stop' to halt`,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ CLM start error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'autoblog.clm.stop') {
+      try {
+        const { stopCLMMode } = await import('@/lib/autoblog');
+        const result = stopCLMMode();
+        if (!result.ok) {
+          return { success: false, output: `▓ CLM stop failed: ${result.message}` };
+        }
+        return { success: true, output: `◉ CLM stopped — ${result.message}` };
+      } catch (err) {
+        return { success: false, output: `▓ CLM stop error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'autoblog.clm.status') {
+      try {
+        const { getCLMStatus } = await import('@/lib/autoblog');
+        const status = getCLMStatus();
+        const runningIcon = status.running ? '🟢' : '⚫';
+        const qualityBar = '█'.repeat(Math.floor(status.stats.quality_avg * 10)) + '░'.repeat(10 - Math.floor(status.stats.quality_avg * 10));
+        
+        return {
+          success: true,
+          output: `╔══════════════════════════════════════════════════════════════╗
+║  CLM (CONSTANT LEARNING MODE) STATUS                         ║
+╠══════════════════════════════════════════════════════════════╣
+║  Status:       ${runningIcon} ${status.running ? 'RUNNING 24/7' : 'STOPPED'}                              ║
+║  Mode:         ${status.mode.toUpperCase().padEnd(12)}                                ║
+╠══════════════════════════════════════════════════════════════╣
+║  WEEKLY PROGRESS                                             ║
+║  Posts:        ${String(status.stats.posts_this_week).padEnd(2)}/${status.config.MAX_POSTS_PER_WEEK} target (${status.config.MIN_POSTS_PER_WEEK}-${status.config.MAX_POSTS_PER_WEEK}/week)              ║
+║  Total Posts:  ${String(status.stats.posts_total).padEnd(5)}                                          ║
+║  Cycles:       ${String(status.stats.cycles).padEnd(5)}                                          ║
+╠══════════════════════════════════════════════════════════════╣
+║  QUALITY TREND                                               ║
+║  ${qualityBar} ${(status.stats.quality_avg * 100).toFixed(0)}%                        ║
+╚══════════════════════════════════════════════════════════════╝`,
+          data: status,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ CLM status error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
     }
 
