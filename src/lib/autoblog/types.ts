@@ -1,14 +1,25 @@
 /**
- * AutoBlog Type Definitions
+ * AutoBlog Type Definitions v2.0
+ * Extended for autonomous, self-learning operation
  */
 
-export type AutoblogMode = 'governed' | 'shadow' | 'off';
+// Database-compatible channel types (must match schema)
 export type AutoblogChannel = 'changelog' | 'blog' | 'release_notes';
+
+export type AutoblogMode = 'autonomous' | 'governed' | 'shadow' | 'off';
 export type AutoblogQueueStatus = 'queued' | 'drafting' | 'ready' | 'published' | 'aborted' | 'failed';
-export type AutoblogPhase = 'plan' | 'draft' | 'verify' | 'publish' | 'heal';
+export type AutoblogPhase = 'plan' | 'draft' | 'verify' | 'publish' | 'heal' | 'reflect';
 export type AutoblogOutcome = 'success' | 'blocked' | 'failed';
 export type CircuitState = 'closed' | 'open' | 'half_open';
 export type RiskLevel = 'low' | 'medium' | 'high';
+
+export type ContentSourceType = 
+  | 'evolution_cycle'
+  | 'brain_reflection'
+  | 'external_research'
+  | 'knowledge_synthesis'
+  | 'self_audit'
+  | 'operator_trigger';
 
 export interface AutoblogSettings {
   id: string;
@@ -77,4 +88,33 @@ export interface AutoblogPlanDecision {
   channel?: AutoblogChannel;
   topic?: string;
   plannedAt?: string;
+}
+
+export interface EvolutionDigest {
+  run_id: string;
+  phase: string;
+  improvements: string[];
+  health_delta: number;
+  summary: string;
+  completed_at: string;
+}
+
+export interface ResearchInsight {
+  source: string;
+  title: string;
+  summary: string;
+  relevance: number;
+  topics: string[];
+  discovered_at: string;
+}
+
+export interface AutonomousState {
+  is_running: boolean;
+  last_cycle_at: string | null;
+  next_cycle_at: string | null;
+  cycles_completed: number;
+  posts_generated: number;
+  research_insights_captured: number;
+  evolution_updates_posted: number;
+  current_focus: AutoblogChannel | null;
 }
