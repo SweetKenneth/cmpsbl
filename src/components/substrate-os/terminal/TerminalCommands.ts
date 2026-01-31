@@ -445,12 +445,18 @@ export const META_COMMANDS: CommandDefinition[] = [
   { command: 'audit export', description: 'Export audit log as JSON', category: 'meta', icon: Database, requiresOperator: false },
 ];
 
-// AUTOBLOG module — Governed blog automation primitive
+// AUTOBLOG module — Governed blog automation primitive v2.0
 export const AUTOBLOG_COMMANDS: CommandDefinition[] = [
   // Status & control
   { command: 'autoblog.status', description: 'AutoBlog status and circuit state', category: 'autoblog', icon: PenTool, requiresOperator: false },
   { command: 'autoblog.enable', description: 'Enable AutoBlog (Governor only)', category: 'autoblog', icon: PlayCircle, requiresOperator: true },
   { command: 'autoblog.disable', description: 'Disable AutoBlog (Governor only)', category: 'autoblog', icon: Shield, requiresOperator: true },
+  
+  // Autonomous mode v2.0
+  { command: 'autoblog.start', description: 'Start autonomous continuous mode', category: 'autoblog', icon: PlayCircle, requiresOperator: true },
+  { command: 'autoblog.stop', description: 'Stop autonomous mode', category: 'autoblog', icon: Shield, requiresOperator: true },
+  { command: 'autoblog.state', description: 'View autonomous engine state', category: 'autoblog', icon: Activity, requiresOperator: false },
+  { command: 'autoblog.seed', description: 'Seed posts from evolution + community topics', category: 'autoblog', icon: Database, requiresOperator: true, args: '[count]', example: 'autoblog.seed 3' },
   
   // Lifecycle
   { command: 'autoblog.plan', description: 'Plan next blog post', category: 'autoblog', icon: FileEdit, requiresOperator: true },

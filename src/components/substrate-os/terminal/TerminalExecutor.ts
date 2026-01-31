@@ -2166,6 +2166,85 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
         return { success: false, output: `▓ Heal error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
     }
+    // AUTONOMOUS MODE COMMANDS v2.0
+    else if (base === 'autoblog.start') {
+      try {
+        const { startAutonomousMode } = await import('@/lib/autoblog');
+        const result = await startAutonomousMode();
+        if (!result.ok) {
+          return { success: false, output: `▓ Start failed: ${result.message}` };
+        }
+        return {
+          success: true,
+          output: `◉ AUTONOMOUS MODE ACTIVATED
+  Status:   Running continuously
+  Cadence:  Posts generated on schedule
+  Learning: Brain integration active
+  
+  Use 'autoblog.state' to monitor
+  Use 'autoblog.stop' to halt`,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ Start error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'autoblog.stop') {
+      try {
+        const { stopAutonomousMode } = await import('@/lib/autoblog');
+        const result = stopAutonomousMode();
+        if (!result.ok) {
+          return { success: false, output: `▓ Stop failed: ${result.message}` };
+        }
+        return { success: true, output: `◉ Autonomous mode stopped — ${result.message}` };
+      } catch (err) {
+        return { success: false, output: `▓ Stop error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'autoblog.state') {
+      try {
+        const { getAutonomousState } = await import('@/lib/autoblog');
+        const state = getAutonomousState();
+        const runningIcon = state.is_running ? '🟢' : '⚫';
+        
+        return {
+          success: true,
+          output: `╔══════════════════════════════════════════════════════════════╗
+║  AUTONOMOUS ENGINE STATE                                     ║
+╠══════════════════════════════════════════════════════════════╣
+║  Status:     ${runningIcon} ${state.is_running ? 'RUNNING' : 'STOPPED'}                                      ║
+║  Cycles:     ${String(state.cycles_completed).padEnd(5)} completed                             ║
+║  Posts:      ${String(state.posts_generated).padEnd(5)} generated                             ║
+║  Insights:   ${String(state.research_insights_captured).padEnd(5)} captured                              ║
+║  Evolutions: ${String(state.evolution_updates_posted).padEnd(5)} posted                               ║
+╠══════════════════════════════════════════════════════════════╣
+║  Last Cycle: ${(state.last_cycle_at || 'Never').toString().substring(0, 20).padEnd(20)}                     ║
+║  Next Cycle: ${(state.next_cycle_at || 'Not scheduled').toString().substring(0, 20).padEnd(20)}                     ║
+╚══════════════════════════════════════════════════════════════╝`,
+          data: state,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ State error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'autoblog.seed') {
+      const count = parseInt(args[0]) || 3;
+      try {
+        const { seedAutoblogPosts } = await import('@/lib/autoblog');
+        const result = await seedAutoblogPosts(count);
+        
+        if (!result.ok) {
+          return { success: false, output: `▓ Seed failed: ${result.errors.join(', ')}` };
+        }
+        
+        let output = `◉ SEEDED ${result.seeded} POSTS\n\n`;
+        for (const post of result.posts) {
+          output += `  ▸ [${post.channel.toUpperCase()}] ${post.topic.substring(0, 40)}...\n`;
+          output += `    Queue ID: ${post.queueId.slice(0, 8)}...\n\n`;
+        }
+        output += `All posts are in 'ready' status.\nUse 'autoblog.queue' to view them.\nUse 'autoblog.publish <id>' to publish.`;
+        
+        return { success: true, output, data: result };
+      } catch (err) {
+        return { success: false, output: `▓ Seed error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
 
     // Unknown command
     else {
