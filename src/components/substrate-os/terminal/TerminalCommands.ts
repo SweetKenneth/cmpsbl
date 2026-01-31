@@ -186,7 +186,7 @@ export const MODERNIZER_COMMANDS: CommandDefinition[] = [
   { command: 'modernizer.verify', description: 'Eligibility gate (plan-independent)', category: 'modernizer', icon: Shield, requiresOperator: false, args: '[component]', example: 'modernizer.verify brain' },
   { command: 'modernizer.analyze', description: 'Forward intent projection (what will change)', category: 'modernizer', icon: Search, requiresOperator: false, args: '[component]', example: 'modernizer.analyze memory' },
   { command: 'modernizer.forensics', description: 'Historical truth (what has changed)', category: 'modernizer', icon: Eye, requiresOperator: false, args: '<component> [--since 24h|7d|last_run]', example: 'modernizer.forensics brain --since 24h' },
-  { command: 'modernizer.omega', description: 'Ω Unified observer (can/will/has changed)', category: 'modernizer', icon: Eye, requiresOperator: false, args: '<component> [--since 24h|7d]', example: 'modernizer.omega substrate' },
+  { command: 'modernizer.omega', description: 'Ω Unified observer v2.0 (can/will/has)', category: 'modernizer', icon: Eye, requiresOperator: false, args: '[component] [--since 24h|7d|30d] [--compact]', example: 'modernizer.omega brain --since 7d' },
   
   // Plan management
   { command: 'modernizer.plans', description: 'List active evolution plan', category: 'modernizer', icon: Activity, requiresOperator: false },
