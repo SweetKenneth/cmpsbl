@@ -458,16 +458,23 @@ export const AUTOBLOG_COMMANDS: CommandDefinition[] = [
   { command: 'autoblog.disable', description: 'Disable AutoBlog (Governor only)', category: 'autoblog', icon: Shield, requiresOperator: true },
   
   // Autonomous mode v2.0
-  { command: 'autoblog.start', description: 'Start autonomous continuous mode', category: 'autoblog', icon: PlayCircle, requiresOperator: true },
+  { command: 'autoblog.start', description: 'Start basic autonomous mode', category: 'autoblog', icon: PlayCircle, requiresOperator: true },
   { command: 'autoblog.stop', description: 'Stop autonomous mode', category: 'autoblog', icon: Shield, requiresOperator: true },
   { command: 'autoblog.state', description: 'View autonomous engine state', category: 'autoblog', icon: Activity, requiresOperator: false },
   { command: 'autoblog.seed', description: 'Seed posts from evolution + community topics', category: 'autoblog', icon: Database, requiresOperator: true, args: '[count]', example: 'autoblog.seed 3' },
+  
+  // CLM (Constant Learning Mode) v2.1
+  { command: 'autoblog.clm', description: 'Start CLM - 3-6 posts/week, intelligent publishing', category: 'autoblog', icon: PlayCircle, requiresOperator: true },
+  { command: 'autoblog.clm.start', description: 'Start CLM (alias for autoblog.clm)', category: 'autoblog', icon: PlayCircle, requiresOperator: true },
+  { command: 'autoblog.clm.stop', description: 'Stop CLM mode', category: 'autoblog', icon: Shield, requiresOperator: true },
+  { command: 'autoblog.clm.status', description: 'View CLM status, weekly progress, quality trend', category: 'autoblog', icon: Activity, requiresOperator: false },
   
   // Lifecycle
   { command: 'autoblog.plan', description: 'Plan next blog post', category: 'autoblog', icon: FileEdit, requiresOperator: true },
   { command: 'autoblog.draft', description: 'Generate draft for queued item', category: 'autoblog', icon: FileEdit, requiresOperator: true, args: '<queue_id>' },
   { command: 'autoblog.verify', description: 'Verify draft safety and quality', category: 'autoblog', icon: Shield, requiresOperator: true, args: '<queue_id>' },
-  { command: 'autoblog.publish', description: 'Publish verified draft (Governor)', category: 'autoblog', icon: Send, requiresOperator: true, args: '<queue_id>' },
+  { command: 'autoblog.publish', description: 'Publish verified draft to blog', category: 'autoblog', icon: Send, requiresOperator: true, args: '<queue_id>' },
+  { command: 'autoblog.publish.all', description: 'Publish all ready drafts', category: 'autoblog', icon: Send, requiresOperator: true },
   { command: 'autoblog.abort', description: 'Abort queued/drafting item', category: 'autoblog', icon: Shield, requiresOperator: true, args: '<queue_id> [reason]' },
   
   // Queue & history
