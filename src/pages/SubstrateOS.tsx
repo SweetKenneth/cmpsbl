@@ -535,28 +535,56 @@ export default function SubstrateOS() {
           <SidebarNav groups={tabGroups} activeTab={activeTab} onTabChange={setActiveTab} onLogout={handleLogout} />
         </div>
 
-        {/* Mobile Navigation - simplified for observers */}
-        {!isObserverOnly && (
-          <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-t border-border/50 safe-area-pb">
-            <div className="grid grid-cols-5 px-2 py-2">
-              {tabGroups.flatMap(g => g.tabs).slice(0, 4).map((tab) => {
-                const isActive = activeTab === tab.id;
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={cn(
-                      "flex flex-col items-center justify-center gap-1 py-2 rounded-xl transition-all",
-                      isActive 
-                        ? "text-primary bg-primary/10" 
-                        : "text-muted-foreground active:bg-muted/50"
-                    )}
-                  >
-                    <tab.icon className="w-5 h-5" />
-                    <span className="text-[10px] font-medium">{tab.label}</span>
-                  </button>
-                );
-              })}
+        {/* Mobile Navigation - all users get access to navigation */}
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-t border-border/50 safe-area-pb">
+          <div className={cn(
+            "grid px-2 py-2",
+            isObserverOnly ? "grid-cols-3" : "grid-cols-5"
+          )}>
+            {/* Show available tabs */}
+            {tabGroups.flatMap(g => g.tabs).slice(0, isObserverOnly ? 1 : 4).map((tab) => {
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={cn(
+                    "flex flex-col items-center justify-center gap-1 py-2 rounded-xl transition-all",
+                    isActive 
+                      ? "text-primary bg-primary/10" 
+                      : "text-muted-foreground active:bg-muted/50"
+                  )}
+                >
+                  <tab.icon className="w-5 h-5" />
+                  <span className="text-[10px] font-medium">{tab.label}</span>
+                </button>
+              );
+            })}
+            
+            {/* System Feed link for observers */}
+            {isObserverOnly && (
+              <Link
+                to="/system-feed"
+                className="flex flex-col items-center justify-center gap-1 py-2 rounded-xl text-muted-foreground active:bg-muted/50"
+              >
+                <Activity className="w-5 h-5" />
+                <span className="text-[10px] font-medium">Feed</span>
+              </Link>
+            )}
+            
+            {/* Sign Out button for observers (they don't have sidebar access) */}
+            {isObserverOnly && (
+              <button
+                onClick={handleLogout}
+                className="flex flex-col items-center justify-center gap-1 py-2 rounded-xl text-muted-foreground active:bg-muted/50"
+              >
+                <LogOut className="w-5 h-5" />
+                <span className="text-[10px] font-medium">Sign Out</span>
+              </button>
+            )}
+            
+            {/* More menu for operators/governors */}
+            {!isObserverOnly && (
               <button
                 onClick={() => setSidebarOpen(true)}
                 className="flex flex-col items-center justify-center gap-1 py-2 rounded-xl text-muted-foreground active:bg-muted/50"
@@ -564,9 +592,9 @@ export default function SubstrateOS() {
                 <Menu className="w-5 h-5" />
                 <span className="text-[10px] font-medium">More</span>
               </button>
-            </div>
+            )}
           </div>
-        )}
+        </div>
 
         <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
           <SheetContent side="left" className="p-0 w-72 bg-background">

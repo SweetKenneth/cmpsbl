@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { 
   Menu, X, ChevronDown, Code, 
   Layers, FileText, Mail, Info, Rocket, BookOpen, Users, Eye,
   Zap, Map, Terminal, Cpu, MessageSquare, Moon, Building2, Gamepad2, Sparkles, Key, Globe, ScrollText,
-  Brain
+  Brain, LogOut
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import {
@@ -16,6 +16,7 @@ import {
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
 import { CmpsblLogo } from "@/components/CmpsblLogo";
+import { Button } from "@/components/ui/button";
 
 interface NavSection {
   name: string;
@@ -27,7 +28,13 @@ export function PublicNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
   const location = useLocation();
-  const { user } = useAuth();
+  const navigate = useNavigate();
+  const { user, signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
+  };
 
   // Organized navigation sections - reordered by importance hierarchy
   const navSections: NavSection[] = [
@@ -190,12 +197,23 @@ export function PublicNav() {
 
             {/* Auth / CTA */}
             {user ? (
-              <Link
-                to="/os"
-                className="ml-2 px-4 py-2 rounded-lg text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
-              >
-                Dashboard
-              </Link>
+              <div className="flex items-center gap-2 ml-2">
+                <Link
+                  to="/os"
+                  className="px-4 py-2 rounded-lg text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                >
+                  Dashboard
+                </Link>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleSignOut}
+                  className="h-9 w-9 text-muted-foreground hover:text-foreground"
+                  title="Sign Out"
+                >
+                  <LogOut className="w-4 h-4" />
+                </Button>
+              </div>
             ) : (
               <Link
                 to="/auth"
@@ -351,16 +369,28 @@ export function PublicNav() {
                   </div>
                 ))}
 
-                {/* Auth Link */}
+                {/* Auth Links */}
                 {user ? (
-                  <Link
-                    to="/os"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center gap-3 p-4 rounded-xl border border-primary/30 bg-primary/5 text-primary"
-                  >
-                    <Cpu className="w-5 h-5" />
-                    <span className="font-medium">CMPSBL OS</span>
-                  </Link>
+                  <>
+                    <Link
+                      to="/os"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="flex items-center gap-3 p-4 rounded-xl border border-primary/30 bg-primary/5 text-primary"
+                    >
+                      <Cpu className="w-5 h-5" />
+                      <span className="font-medium">CMPSBL OS</span>
+                    </Link>
+                    <button
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        handleSignOut();
+                      }}
+                      className="flex items-center gap-3 p-4 rounded-xl border border-border hover:bg-muted/30 text-muted-foreground"
+                    >
+                      <LogOut className="w-5 h-5" />
+                      <span className="font-medium">Sign Out</span>
+                    </button>
+                  </>
                 ) : (
                   <Link
                     to="/auth"
