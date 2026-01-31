@@ -1,14 +1,18 @@
 /**
  * System Intelligence Feed
- * v6.8.0 — Live feed of module self-analysis and improvement requests
+ * v6.8.1 — Live feed of module self-analysis and improvement requests
  * 
  * This page shows real-time insights from all substrate modules
  * as they analyze their own performance and request improvements.
+ * 
+ * REQUIRES AUTHENTICATION — Only logged-in users can view system intelligence.
+ * Learning runs 24/7 via backend scheduler (pf-module-clm-scheduler).
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { 
   Brain, 
   Cpu, 
@@ -21,15 +25,14 @@ import {
   RefreshCw,
   Settings,
   TrendingUp,
-  AlertCircle,
   Lightbulb,
   MessageSquare,
   ChevronRight,
-  Sparkles,
   Activity,
   CheckCircle,
   Clock,
   FileText,
+  LogIn,
 } from 'lucide-react';
 import { useModuleCLM } from '@/lib/substrate/module-clm/useModuleCLM';
 import { type ModuleName, type ModuleSelfAnalysis } from '@/lib/substrate/module-clm';
@@ -39,6 +42,7 @@ import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
+import { supabase } from '@/integrations/supabase/client';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // MODULE ICONS
@@ -56,7 +60,7 @@ const MODULE_ICONS: Record<ModuleName, React.ElementType> = {
   modernizer: RefreshCw,
   system: Settings,
   decode: FileText,
-  autoblog: Sparkles,
+  autoblog: TrendingUp,
 };
 
 const MODULE_COLORS: Record<ModuleName, string> = {
@@ -273,7 +277,7 @@ function ModuleCard({ moduleId, displayName, state, onTrigger }: ModuleCardProps
               {state.isLearning ? (
                 <RefreshCw className="w-3 h-3 animate-spin" />
               ) : (
-                <Sparkles className="w-3 h-3" />
+                <Activity className="w-3 h-3" />
               )}
             </Button>
           </div>
@@ -357,7 +361,7 @@ export default function SystemIntelligenceFeed() {
                   onClick={handleRunAll}
                   disabled={isRunningAll}
                 >
-                  <Sparkles className={cn("w-4 h-4 mr-2", isRunningAll && "animate-pulse")} />
+                  <Activity className={cn("w-4 h-4 mr-2", isRunningAll && "animate-pulse")} />
                   {isRunningAll ? 'Analyzing...' : 'Run All CLM'}
                 </Button>
               </div>
@@ -469,7 +473,7 @@ export default function SystemIntelligenceFeed() {
                           Run module CLM to generate self-analysis and improvement requests.
                         </p>
                         <Button onClick={handleRunAll} disabled={isRunningAll}>
-                          <Sparkles className="w-4 h-4 mr-2" />
+                          <Activity className="w-4 h-4 mr-2" />
                           Start System Learning
                         </Button>
                       </CardContent>

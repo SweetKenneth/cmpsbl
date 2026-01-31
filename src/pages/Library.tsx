@@ -49,6 +49,15 @@ const LIBRARY_DOCS = [
   { id: "41", name: "BIBLIOGRAPHY", title: "Bibliography" },
   { id: "42", name: "LICENSING-INFO", title: "Licensing Information" },
   { id: "50", name: "MARKETPLACE-REFERENCE", title: "Marketplace Reference" },
+  { id: "60", name: "CODELAB", title: "CodeLab" },
+  { id: "61", name: "AGENTS-AND-FORGE", title: "Agents and Forge" },
+  { id: "62", name: "TEMPLATE-GENERATOR", title: "Template Generator" },
+  { id: "63", name: "CLM", title: "Constant Learning Mode" },
+  { id: "64", name: "MEMORY-ARCHITECTURE", title: "Memory Architecture" },
+  { id: "65", name: "SPACED-REPETITION", title: "Spaced Repetition System" },
+  { id: "75", name: "EVOLUTION-LIFECYCLE", title: "Evolution Lifecycle" },
+  { id: "76", name: "EVOLUTION-AUTONOMY", title: "Evolution Autonomy" },
+  { id: "77", name: "SYNERGY-PIPELINES", title: "Synergy Pipelines" },
 ];
 
 export default function Library() {
@@ -142,7 +151,7 @@ export default function Library() {
                 <Layers className="w-5 h-5 text-primary" />
                 <h2 className="font-semibold text-base">FNDTN v6 Library</h2>
               </div>
-              <Badge variant="outline" className="mb-4 ml-2 lg:ml-0">26 Documents</Badge>
+              <Badge variant="outline" className="mb-4 ml-2 lg:ml-0">{LIBRARY_DOCS.length} Documents</Badge>
               
               <nav className="space-y-1">
                 {LIBRARY_DOCS.map((doc) => (
