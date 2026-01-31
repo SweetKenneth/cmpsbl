@@ -1387,20 +1387,24 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
     }
     
     else if (base === 'modernizer.omega') {
-      if (!args[0]) {
-        return { success: false, output: '▓ ERROR: Component required\n  Usage: modernizer.omega <component> [--since 24h|7d]' };
-      }
       try {
-        const { observeOmega, formatOmega } = await import('@/lib/evolve/omega-observer');
-        const component = args[0];
+        const { observeOmega, formatOmega, formatOmegaCompact } = await import('@/lib/evolve/omega-observer');
+        
+        // Parse component (optional now)
+        const component = args[0] && !args[0].startsWith('--') ? args[0] : undefined;
+        
+        // Parse --since flag
         const sinceArg = args.find(a => a.startsWith('--since'))?.split('=')[1] || 
                          (args.indexOf('--since') !== -1 ? args[args.indexOf('--since') + 1] : '24h');
+        
+        // Parse --compact flag
+        const isCompact = args.includes('--compact') || args.includes('-c');
         
         const result = await observeOmega(component, sinceArg as 'last_phase' | 'last_run' | '24h' | '7d' | '30d');
         
         return {
           success: true,
-          output: formatOmega(result),
+          output: isCompact ? formatOmegaCompact(result) : formatOmega(result),
           data: result,
         };
       } catch (err) {
