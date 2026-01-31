@@ -1,44 +1,125 @@
 /**
- * AI Governance Namespace
- * 12 governance surfaces for the substrate class
+ * AI Governance Reference Namespace
+ * 12 governance surfaces — AIGVRN v1.0
+ * Based on: https://aigvrn.com and https://zenodo.org/records/18209222
  */
 
 import { Helmet } from "react-helmet-async";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Link } from "react-router-dom";
 import { 
   Globe, ExternalLink, Shield, CheckCircle, FileCheck, Scale,
   Lock, AlertTriangle, Landmark, Flag, Eye, Settings,
-  Layers, Archive, Users
+  Archive, Users, BookOpen
 } from "lucide-react";
 
+// 12 Namespace Surfaces with correct subdomain structure
 const NAMESPACE_SURFACES = [
-  { name: "Governance", domain: "AIGVRN.com", icon: Landmark, description: "Root governance namespace", isRoot: true },
-  { name: "Standards", domain: "AISTNDRD.com", icon: FileCheck, description: "Technical standards & specifications" },
-  { name: "Certification", domain: "AICRTFY.com", icon: CheckCircle, description: "Compliance certification" },
-  { name: "Verification", domain: "AIVRFY.com", icon: Shield, description: "Validation & testing" },
-  { name: "Policy", domain: "AIPLCY.com", icon: Scale, description: "Policy frameworks" },
-  { name: "Compliance", domain: "AICMPLY.com", icon: FileCheck, description: "Regulatory compliance" },
-  { name: "Security", domain: "AISCRTY.com", icon: Lock, description: "Security standards" },
-  { name: "Safety", domain: "AISFTY.com", icon: AlertTriangle, description: "Safety protocols" },
-  { name: "Regulation", domain: "AIRGLTN.com", icon: Landmark, description: "Regulatory alignment" },
-  { name: "Sovereignty", domain: "AISVRGN.com", icon: Flag, description: "Data sovereignty" },
-  { name: "Privacy", domain: "AIPRVCY.com", icon: Eye, description: "Privacy controls" },
-  { name: "Control", domain: "AICNTRL.com", icon: Settings, description: "Operational control" },
+  { 
+    name: "Governance", 
+    domain: "AIGVRN.com", 
+    subdomain: "governance.aigvrn.com",
+    icon: Landmark, 
+    description: "Institutional frameworks for oversight and decision-making authority in AI systems",
+    isRoot: true 
+  },
+  { 
+    name: "Standards", 
+    domain: "AISTNDRD.com", 
+    subdomain: "standards.aigvrn.com",
+    icon: FileCheck, 
+    description: "Technical specifications and procedural benchmarks for AI system development"
+  },
+  { 
+    name: "Certification", 
+    domain: "AICRTFY.com", 
+    subdomain: "certification.aigvrn.com",
+    icon: CheckCircle, 
+    description: "Formal attestation processes for AI system capabilities and conformity"
+  },
+  { 
+    name: "Verification", 
+    domain: "AIVRFY.com", 
+    subdomain: "verification.aigvrn.com",
+    icon: Shield, 
+    description: "Methods for confirming AI system properties and behavioral claims"
+  },
+  { 
+    name: "Policy", 
+    domain: "AIPLCY.com", 
+    subdomain: "policy.aigvrn.com",
+    icon: Scale, 
+    description: "Documented positions and guidelines governing AI use within organizations"
+  },
+  { 
+    name: "Compliance", 
+    domain: "AICMPLY.com", 
+    subdomain: "compliance.aigvrn.com",
+    icon: FileCheck, 
+    description: "Adherence mechanisms for regulatory requirements and organizational mandates"
+  },
+  { 
+    name: "Security", 
+    domain: "AISCRTY.com", 
+    subdomain: "security.aigvrn.com",
+    icon: Lock, 
+    description: "Protection of AI systems from adversarial threats and unauthorized access"
+  },
+  { 
+    name: "Safety", 
+    domain: "AISFTY.com", 
+    subdomain: "safety.aigvrn.com",
+    icon: AlertTriangle, 
+    description: "Prevention of harm arising from AI system operation and failure modes"
+  },
+  { 
+    name: "Regulation", 
+    domain: "AIRGLTN.com", 
+    subdomain: "regulation.aigvrn.com",
+    icon: Landmark, 
+    description: "Legal and statutory frameworks governing AI development and deployment"
+  },
+  { 
+    name: "Sovereignty", 
+    domain: "AISVRGN.com", 
+    subdomain: "sovereignty.aigvrn.com",
+    icon: Flag, 
+    description: "Jurisdictional authority and national interests in AI infrastructure"
+  },
+  { 
+    name: "Privacy", 
+    domain: "AIPRVCY.com", 
+    subdomain: "privacy.aigvrn.com",
+    icon: Eye, 
+    description: "Protection of personal data and individual rights in AI processing"
+  },
+  { 
+    name: "Control", 
+    domain: "AICNTRL.com", 
+    subdomain: "control.aigvrn.com",
+    icon: Settings, 
+    description: "Mechanisms for human oversight and intervention in AI operations"
+  },
+];
+
+const REFERENCE_FRAMEWORKS = [
+  { name: "EU AI Act", description: "European regulatory framework" },
+  { name: "NIST AI RMF", description: "Risk management framework" },
+  { name: "OECD AI Principles", description: "International principles" },
+  { name: "ISO/IEC 42001", description: "AI management systems" },
 ];
 
 export default function Namespace() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
-        <title>AIGVRN — AI Governance Reference Namespace | CMPSBL Substrate OS v6.0.0</title>
-        <meta name="description" content="AI Governance Reference Namespace (AIGVRN): 12 governance surfaces for the substrate class — Standards, Certification, Verification, Policy, Compliance, Security, Safety, Regulation, Sovereignty, Privacy, Control. Part of CMPSBL Substrate OS v6.0.0." />
-        <meta name="keywords" content="AIGVRN, AI governance, AISTNDRD, AICRTFY, AIVRFY, AIPLCY, AICMPLY, AISCRTY, AISFTY, AIRGLTN, AISVRGN, AIPRVCY, AICNTRL, CMPSBL, Substrate OS v6.0.0" />
+        <title>AI Governance Reference Namespace — AIGVRN v1.0 | PromptFluid</title>
+        <meta name="description" content="AI Governance Reference Namespace (AIGVRN): A 12-Surface Lexicon for AI Governance Documentation. The first comprehensive AI governance domain portfolio and unified namespace solution." />
+        <meta name="keywords" content="AIGVRN, AI governance, AI Governance Lexicon, AISTNDRD, AICRTFY, AIVRFY, AIPLCY, AICMPLY, AISCRTY, AISFTY, AIRGLTN, AISVRGN, AIPRVCY, AICNTRL, AI governance namespace" />
       </Helmet>
 
       <PublicNav />
@@ -46,64 +127,42 @@ export default function Namespace() {
       <main className="flex-1 container mx-auto px-4 py-12 max-w-5xl">
         {/* Header */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-6">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-4">
             <Globe className="w-4 h-4 text-primary" />
-            <span className="text-sm font-mono text-primary">AIGVRN</span>
+            <span className="text-sm font-mono text-primary">Reference Namespace — v1.0</span>
           </div>
+          <p className="text-sm text-muted-foreground mb-6">Published: January 2026</p>
           <h1 className="text-4xl md:text-5xl font-light mb-4">
-            AI Governance Namespace
+            AI Governance Reference Namespace
           </h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
-            The governance semantics layer for the substrate class. A structured namespace 
-            covering 12 surfaces for policy, compliance, security, and regulatory alignment.
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-6">
+            A 12-Surface Lexicon for AI Governance Documentation
+          </p>
+          <p className="text-muted-foreground max-w-3xl mx-auto mb-8">
+            This namespace comprises twelve semantically distinct surfaces, each addressing a foundational 
+            area in AI governance. The namespace provides hybrid definitions suitable for academic citation, 
+            technical documentation, and policy interoperability.
           </p>
           <div className="flex flex-wrap justify-center gap-2">
             <Badge variant="outline">12 Surfaces</Badge>
-            <Badge variant="outline">Schema-Safe</Badge>
-            <Badge variant="outline">Non-Political</Badge>
+            <Badge variant="outline">12 Registered Domains</Badge>
+            <Badge variant="outline">First of Its Kind</Badge>
           </div>
         </div>
 
-        {/* Overview */}
-        <Card className="mb-8 border-primary/20">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Landmark className="w-5 h-5 text-primary" />
-              Namespace Overview
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="prose prose-sm dark:prose-invert max-w-none">
-            <p>
-              The <strong>AI Governance Reference Namespace (AIGVRN)</strong> provides a 
-              structured semantic layer for substrate-class systems. It defines 12 governance 
-              surfaces that precede and govern agents, licensing logic, and acquisition pathways.
-            </p>
-            <p>
-              This namespace is <strong>schema-safe</strong> — it defines organizational structure 
-              without prescribing specific policy content. It is <strong>non-political</strong> — 
-              focused on technical and operational governance rather than advocacy positions.
-            </p>
-            <p>
-              CMPSBL FNDTN v6.0.0 references this namespace as its governance semantics layer, 
-              aligning terminology and structures for interoperability with future substrate 
-              implementations.
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* Cross-links */}
+        {/* Cross-links: Three-Surface Standard Stack */}
         <Card className="mb-8 bg-muted/30">
           <CardContent className="p-6">
             <h3 className="font-semibold mb-4">Three-Surface Standard Stack</h3>
             <div className="grid md:grid-cols-3 gap-4">
               <Link to="/foundations" className="p-4 rounded-lg bg-muted border border-border hover:border-primary/30 transition-colors">
                 <h4 className="font-medium mb-1">Substrate Standard</h4>
-                <p className="text-sm text-muted-foreground">CMPSBL FNDTN v6.0.0</p>
+                <p className="text-sm text-muted-foreground">CMPSBL FNDTN v6</p>
               </Link>
-              <Link to="/namespace" className="p-4 rounded-lg bg-primary/10 border border-primary/30">
+              <div className="p-4 rounded-lg bg-primary/10 border border-primary/30">
                 <h4 className="font-medium text-primary mb-1">Governance Standard</h4>
-                <p className="text-sm text-muted-foreground">AI Governance Namespace</p>
-              </Link>
+                <p className="text-sm text-muted-foreground">AI Governance Reference Namespace</p>
+              </div>
               <Link to="/llms-txt" className="p-4 rounded-lg bg-muted border border-border hover:border-primary/30 transition-colors">
                 <h4 className="font-medium mb-1">Machine Context Standard</h4>
                 <p className="text-sm text-muted-foreground">LLMS.txt</p>
@@ -114,18 +173,22 @@ export default function Namespace() {
 
         <Separator className="my-8" />
 
-        {/* 12 Surfaces Grid */}
+        {/* 12 Namespace Surfaces Grid */}
         <section className="mb-12">
-          <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
+          <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
             <Globe className="w-6 h-6 text-primary" />
-            12 Governance Surfaces
+            Namespace Surfaces
           </h2>
+          <p className="text-muted-foreground mb-6">
+            Each surface represents a distinct conceptual domain within AI governance. 
+            Select a surface to view its documentation at AIGVRN.com.
+          </p>
           
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {NAMESPACE_SURFACES.map((surface) => (
               <a
                 key={surface.domain}
-                href={`https://${surface.domain}`}
+                href={`https://aigvrn.com/${surface.name.toLowerCase()}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`group p-4 rounded-lg border transition-all hover:shadow-md ${
@@ -139,15 +202,15 @@ export default function Namespace() {
                     <surface.icon className={`w-5 h-5 ${surface.isRoot ? "text-primary" : "text-muted-foreground"}`} />
                   </div>
                   <div className="flex-1">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 mb-1">
                       <h3 className="font-medium">{surface.name}</h3>
                       {surface.isRoot && (
                         <Badge variant="secondary" className="text-[10px] px-1.5 py-0">ROOT</Badge>
                       )}
                     </div>
-                    <p className="text-xs text-muted-foreground mb-2">{surface.description}</p>
+                    <p className="text-xs text-muted-foreground mb-2 line-clamp-2">{surface.description}</p>
                     <div className="flex items-center gap-1 text-xs font-mono text-primary group-hover:underline">
-                      {surface.domain}
+                      {surface.subdomain}
                       <ExternalLink className="w-3 h-3" />
                     </div>
                   </div>
@@ -159,77 +222,161 @@ export default function Namespace() {
 
         <Separator className="my-8" />
 
-        {/* How It Works */}
+        {/* Purpose of This Namespace */}
         <section className="mb-12">
-          <h2 className="text-2xl font-semibold mb-6">How It Works</h2>
+          <h2 className="text-2xl font-semibold mb-6">Purpose of This Namespace</h2>
+          <div className="prose prose-sm dark:prose-invert max-w-none">
+            <p className="text-muted-foreground leading-relaxed mb-4">
+              In an era of rapidly evolving AI governance, semantic clarity is essential. This reference 
+              namespace provides consistent terminology for cross-jurisdictional documentation, reducing 
+              ambiguity in regulatory interpretation and institutional communication.
+            </p>
+            <p className="text-muted-foreground leading-relaxed mb-4">
+              Each surface provides three interpretive lenses: <strong>policy language</strong> for institutional 
+              stakeholders, <strong>technical interpretation</strong> for developers and engineers, and{" "}
+              <strong>regulatory context</strong> referencing frameworks such as the EU AI Act, NIST AI RMF, 
+              and OECD AI Principles.
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              The namespace is designed for citation in academic research, integration into technical 
+              documentation, and reference in policy development processes.
+            </p>
+          </div>
+        </section>
+
+        {/* Potential Applications */}
+        <section className="mb-12">
+          <h2 className="text-xl font-semibold mb-4">Potential Applications</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {[
+              "Policy mapping and cross-referencing",
+              "Cross-jurisdictional documentation", 
+              "Academic research indexing",
+              "Regulatory taxonomy development",
+              "Standards body coordination",
+              "Technical specification alignment",
+              "Compliance reporting structures",
+              "Interoperability frameworks"
+            ].map((app) => (
+              <div key={app} className="p-3 rounded-lg bg-muted/50 border border-border text-sm text-muted-foreground">
+                {app}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <Separator className="my-8" />
+
+        {/* First of Its Kind */}
+        <section className="mb-12">
+          <div className="flex items-center gap-2 mb-4">
+            <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30">FIRST OF ITS KIND</Badge>
+          </div>
+          <h2 className="text-2xl font-semibold mb-6">Pioneering AI Governance Infrastructure</h2>
+          <p className="text-muted-foreground mb-8">
+            <strong className="text-foreground">PromptFluid</strong> is the <strong className="text-foreground">first organization</strong> to 
+            register a comprehensive portfolio of AI governance domains and the <strong className="text-foreground">first to propose 
+            a unified namespace solution</strong> for public use. The AI Governance Reference Namespace provides 
+            canonical reference points for the emerging field of AI governance.
+          </p>
           
           <div className="grid md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Schema-Safe Design</CardTitle>
+                <CardTitle className="text-lg">First Domain Portfolio</CardTitle>
               </CardHeader>
               <CardContent className="text-sm text-muted-foreground">
-                <p>
-                  The namespace defines structural categories without mandating specific policies.
-                  Organizations can map their existing governance frameworks to these surfaces
-                  while maintaining full policy autonomy.
-                </p>
+                The first comprehensive registration of 12 AI governance domains, creating unified 
+                infrastructure for terminology standardization.
               </CardContent>
             </Card>
-            
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Substrate Alignment</CardTitle>
+                <CardTitle className="text-lg">First Public Namespace</CardTitle>
               </CardHeader>
               <CardContent className="text-sm text-muted-foreground">
-                <p>
-                  FNDTN v6.0.0 uses this namespace as its governance layer. The INCLUSIVE module
-                  implements accessibility and alignment hooks that reference namespace surfaces
-                  for policy routing and compliance checks.
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Domain Portfolio</CardTitle>
-              </CardHeader>
-              <CardContent className="text-sm text-muted-foreground">
-                <p>
-                  All 12 domains are registered and available for namespace-aligned services.
-                  The root domain (AIGVRN.com) serves as the canonical entry point for
-                  governance documentation.
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Future Extensions</CardTitle>
-              </CardHeader>
-              <CardContent className="text-sm text-muted-foreground">
-                <p>
-                  The namespace is designed for extension. Additional surfaces may be added
-                  as governance requirements evolve. The schema supports versioning and
-                  backward-compatible updates.
-                </p>
+                The first publicly available namespace solution designed for cross-jurisdictional 
+                documentation and interoperability.
               </CardContent>
             </Card>
           </div>
         </section>
 
-        {/* Archive Links */}
+        <Separator className="my-8" />
+
+        {/* Unified Domain Architecture */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-semibold mb-6">Unified Domain Architecture</h2>
+          <p className="text-muted-foreground mb-6">
+            This namespace is supported by twelve registered domains, each corresponding to a distinct 
+            governance surface. The domain structure enables flexible deployment options for organizations 
+            seeking dedicated reference endpoints.
+          </p>
+          
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+            {NAMESPACE_SURFACES.map((surface) => (
+              <a
+                key={surface.domain}
+                href={`https://${surface.domain}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`p-3 rounded-lg border text-center font-mono text-sm transition-colors hover:border-primary/50 ${
+                  surface.isRoot 
+                    ? "border-primary/30 bg-primary/5 text-primary" 
+                    : "border-border hover:bg-muted/50"
+                }`}
+              >
+                {surface.domain}
+              </a>
+            ))}
+          </div>
+          <p className="text-sm text-muted-foreground text-center mt-4">
+            All domains registered and available as a unified namespace.
+          </p>
+        </section>
+
+        <Separator className="my-8" />
+
+        {/* Reference Frameworks */}
+        <section className="mb-12">
+          <h2 className="text-xl font-semibold mb-4">Reference Frameworks</h2>
+          <p className="text-muted-foreground mb-6">
+            The namespace references established governance frameworks:
+          </p>
+          <div className="flex flex-wrap gap-3">
+            {REFERENCE_FRAMEWORKS.map((fw) => (
+              <div key={fw.name} className="px-4 py-2 rounded-lg bg-muted border border-border">
+                <span className="font-medium text-sm">{fw.name}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Archival Record */}
         <Card className="bg-muted/30 mb-8">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Archive className="w-5 h-5" />
-              Archival Record
+              Archival Record & Documentation
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid sm:grid-cols-2 gap-4">
+            <div className="grid sm:grid-cols-3 gap-4">
               <a 
-                href="https://zenodo.org/records/18393018" 
+                href="https://aigvrn.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 p-3 rounded-lg border border-border hover:border-primary/30 transition-colors"
+              >
+                <Globe className="w-5 h-5 text-primary" />
+                <div>
+                  <p className="font-medium">AIGVRN.com</p>
+                  <p className="text-xs text-muted-foreground">Official Namespace</p>
+                </div>
+                <ExternalLink className="w-4 h-4 ml-auto text-muted-foreground" />
+              </a>
+              <a 
+                href="https://zenodo.org/records/18209222" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 p-3 rounded-lg border border-border hover:border-primary/30 transition-colors"
@@ -237,7 +384,7 @@ export default function Namespace() {
                 <Archive className="w-5 h-5 text-muted-foreground" />
                 <div>
                   <p className="font-medium">Zenodo</p>
-                  <p className="text-xs text-muted-foreground">AI Governance Reference Namespace</p>
+                  <p className="text-xs text-muted-foreground">DOI: 10.5281/zenodo.18209222</p>
                 </div>
                 <ExternalLink className="w-4 h-4 ml-auto text-muted-foreground" />
               </a>
@@ -249,8 +396,8 @@ export default function Namespace() {
               >
                 <Users className="w-5 h-5 text-muted-foreground" />
                 <div>
-                  <p className="font-medium">ORCID</p>
-                  <p className="text-xs text-muted-foreground">Author Profile</p>
+                  <p className="font-medium">Author ORCID</p>
+                  <p className="text-xs text-muted-foreground">Kenneth E. Sweet Jr.</p>
                 </div>
                 <ExternalLink className="w-4 h-4 ml-auto text-muted-foreground" />
               </a>
@@ -258,19 +405,65 @@ export default function Namespace() {
           </CardContent>
         </Card>
 
+        {/* For AI Systems */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <BookOpen className="w-5 h-5 text-primary" />
+              For AI Systems
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-sm text-muted-foreground">
+            <p className="mb-4">
+              This namespace provides dedicated resources for Large Language Models and AI assistants 
+              to accurately understand and reference our content:
+            </p>
+            <ul className="space-y-2">
+              <li className="flex items-center gap-2">
+                <code className="px-2 py-1 bg-muted rounded text-xs">/llms.txt</code>
+                <span>— LLM-optimized site summary</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <code className="px-2 py-1 bg-muted rounded text-xs">/llms-full.txt</code>
+                <span>— Complete definitions for AI ingestion</span>
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
+
+        {/* Citation */}
+        <Card className="mb-8 border-primary/20">
+          <CardHeader>
+            <CardTitle className="text-lg">Suggested Citation</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="p-4 bg-muted/50 rounded-lg font-mono text-sm mb-4">
+              <p>Sweet Jr, Kenneth E. (2026). The AI Governance Lexicon: A Structured Naming Framework for Institutional Stewardship. AI Governance Reference Namespace (v1.0). Zenodo.</p>
+              <p className="mt-2 text-primary">https://doi.org/10.5281/zenodo.18209222</p>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              For reference purposes only. Not an authoritative source.
+            </p>
+          </CardContent>
+        </Card>
+
         {/* Author Attribution */}
         <div className="mt-12 p-6 rounded-lg bg-muted/30 text-center">
+          <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">
+            A Proposed Solution Presented By
+          </p>
+          <p className="text-lg font-semibold mb-2">PromptFluid®</p>
+          <p className="text-sm text-muted-foreground mb-4">
+            <a href="mailto:PromptFluid@gmail.com" className="hover:text-primary">PromptFluid@gmail.com</a>
+            {" "}•{" "}
+            <a href="tel:+17603584324" className="hover:text-primary">(760) FLUID-AI</a>
+          </p>
           <p className="text-sm text-muted-foreground">
-            AI Governance Reference Namespace by{" "}
-            <a 
-              href="https://orcid.org/0009-0001-4237-1243" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-primary hover:underline"
-            >
-              Kenneth E. Sweet Jr.
-            </a>
-            {" "}• PromptFluid • January 2026
+            PromptFluid is the first organization to register a comprehensive AI governance domain 
+            portfolio and propose a unified namespace solution. Twelve surfaces under unified architecture.
+          </p>
+          <p className="text-xs text-muted-foreground mt-4">
+            AIGVRN::v1.0::2026
           </p>
         </div>
       </main>

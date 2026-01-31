@@ -129,26 +129,29 @@ Base URL: https://promptfluid.com/api/substrate
 
 ---
 
-## AI GOVERNANCE REFERENCE NAMESPACE
+## AI GOVERNANCE REFERENCE NAMESPACE (AIGVRN v1.0)
 
 CMPSBL FNDTN v6 aligns with the AI Governance Reference Namespace (AIGVRN):
+A 12-Surface Lexicon for AI Governance Documentation
 
-| Surface | Domain | Purpose |
-|---------|--------|---------|
-| Governance | AIGVRN.com | Root namespace |
-| Standards | AISTNDRD.com | Technical standards |
-| Certification | AICRTFY.com | Compliance certification |
-| Verification | AIVRFY.com | Audit and validation |
-| Policy | AIPLCY.com | Policy documentation |
-| Compliance | AICMPLY.com | Regulatory compliance |
-| Security | AISCRTY.com | Security posture |
-| Safety | AISFTY.com | Safety constraints |
-| Regulation | AIRGLTN.com | Regulatory mapping |
-| Sovereignty | AISVRGN.com | Data sovereignty |
-| Privacy | AIPRVCY.com | Privacy protection |
-| Control | AICNTRL.com | Human control |
+| Surface | Domain | Subdomain | Purpose |
+|---------|--------|-----------|---------|
+| Governance | AIGVRN.com | governance.aigvrn.com | Root namespace - institutional oversight frameworks |
+| Standards | AISTNDRD.com | standards.aigvrn.com | Technical specifications and benchmarks |
+| Certification | AICRTFY.com | certification.aigvrn.com | Formal attestation processes |
+| Verification | AIVRFY.com | verification.aigvrn.com | System property confirmation methods |
+| Policy | AIPLCY.com | policy.aigvrn.com | Organizational guidelines |
+| Compliance | AICMPLY.com | compliance.aigvrn.com | Regulatory adherence mechanisms |
+| Security | AISCRTY.com | security.aigvrn.com | Threat protection |
+| Safety | AISFTY.com | safety.aigvrn.com | Harm prevention |
+| Regulation | AIRGLTN.com | regulation.aigvrn.com | Legal frameworks |
+| Sovereignty | AISVRGN.com | sovereignty.aigvrn.com | Jurisdictional authority |
+| Privacy | AIPRVCY.com | privacy.aigvrn.com | Data protection |
+| Control | AICNTRL.com | control.aigvrn.com | Human oversight mechanisms |
 
-Zenodo Record: https://zenodo.org/records/18393018
+Official Namespace: https://aigvrn.com
+Zenodo Record: https://zenodo.org/records/18209222
+DOI: 10.5281/zenodo.18209222
 
 ---
 
