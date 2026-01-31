@@ -1911,6 +1911,249 @@ async function handleBrain(
       }
     }
 
+    case "optimize": {
+      // v6.4.0: Memory optimization - prune noise, score memories, and rebalance tiers
+      const mode = String(data.mode || 'standard').toLowerCase();
+      const isAggressive = mode === 'aggressive';
+      const isDeep = mode === 'deep';
+      const startTime = Date.now();
+
+      const BATCH_SIZE = isDeep ? 1000 : isAggressive ? 500 : 200;
+      const limits = { hot: 500, warm: 2000, cold: 10000 };
+
+      const stats = {
+        demoted_to_warm: 0,
+        demoted_to_cold: 0,
+        pruned: 0,
+        decayed: 0,
+        scored: 0,
+        errors: 0,
+      };
+
+      try {
+        // Get current tier counts
+        const [hotResult, warmResult, coldResult] = await Promise.all([
+          supabase.from('brain_memory_hot').select('id', { count: 'exact', head: true }),
+          supabase.from('brain_memory_warm').select('id', { count: 'exact', head: true }),
+          supabase.from('brain_memory_cold').select('id', { count: 'exact', head: true }),
+        ]);
+
+        const counts = {
+          hot: { before: hotResult.count || 0, after: 0 },
+          warm: { before: warmResult.count || 0, after: 0 },
+          cold: { before: coldResult.count || 0, after: 0 },
+        };
+
+        console.log(`⚡ Brain optimization [${mode}]: Hot=${counts.hot.before}, Warm=${counts.warm.before}, Cold=${counts.cold.before}`);
+
+        // STEP 1: Prune noise patterns from hot tier
+        const noisePatterns = [
+          '%diagnostic%', '%test cycle%', '%heartbeat%',
+          '%status check%', '%ping%', '%health check%',
+          '%status_check%', '%brain_status%'
+        ];
+
+        for (const pattern of noisePatterns) {
+          const { data: noiseMemories } = await supabase
+            .from('brain_memory_hot')
+            .select('id, content, context, value_score')
+            .ilike('content', pattern)
+            .limit(100);
+
+          for (const memory of noiseMemories || []) {
+            try {
+              await supabase.from('brain_memory_pruned').insert({
+                original_memory_id: memory.id,
+                original_tier: 'hot',
+                content_preview: memory.content?.substring(0, 200),
+                context: memory.context,
+                value_score: memory.value_score || 0.1,
+                prune_reason: 'noise_pattern',
+              });
+              await supabase.from('brain_memory_hot').delete().eq('id', memory.id);
+              stats.pruned++;
+            } catch {
+              stats.errors++;
+            }
+          }
+        }
+
+        // STEP 2: Demote excess hot tier to warm
+        const hotOverflow = (counts.hot.before - stats.pruned) - limits.hot;
+        
+        if (hotOverflow > 0) {
+          const toDemoteCount = Math.min(hotOverflow + 100, BATCH_SIZE);
+          console.log(`🔄 Demoting ${toDemoteCount} hot memories to warm...`);
+
+          const { data: toDemote } = await supabase
+            .from('brain_memory_hot')
+            .select('*')
+            .order('value_score', { ascending: true, nullsFirst: true })
+            .order('created_at', { ascending: true })
+            .limit(toDemoteCount);
+
+          for (const memory of toDemote || []) {
+            try {
+              await supabase.from('brain_memory_warm').insert({
+                content: memory.content,
+                core_summary: memory.content?.substring(0, 200),
+                embedding: memory.embedding,
+                context: memory.context,
+                goal_ref: memory.goal_ref,
+                priority: memory.priority,
+                value_score: memory.value_score || 0.4,
+                access_count: memory.access_count || 0,
+                decay_rate: 0.01,
+                source_memory_id: memory.id,
+                tags: memory.tags,
+                metadata: memory.metadata,
+                demoted_at: new Date().toISOString(),
+              });
+              await supabase.from('brain_memory_hot').delete().eq('id', memory.id);
+              stats.demoted_to_warm++;
+            } catch (err) {
+              console.error('Demote to warm error:', err);
+              stats.errors++;
+            }
+          }
+        }
+
+        // STEP 3: Demote excess warm tier to cold
+        const warmAfterStep2 = counts.warm.before + stats.demoted_to_warm;
+        const warmOverflow = warmAfterStep2 - limits.warm;
+
+        if (warmOverflow > 0) {
+          const toDemoteCount = Math.min(warmOverflow + 50, isAggressive ? 300 : 100);
+          console.log(`🔄 Demoting ${toDemoteCount} warm memories to cold...`);
+
+          const { data: warmToDemote } = await supabase
+            .from('brain_memory_warm')
+            .select('*')
+            .order('value_score', { ascending: true, nullsFirst: true })
+            .order('created_at', { ascending: true })
+            .limit(toDemoteCount);
+
+          for (const memory of warmToDemote || []) {
+            try {
+              await supabase.from('brain_memory_cold').insert({
+                summary: memory.content,
+                core_summary: memory.core_summary || memory.content?.substring(0, 100),
+                embedding: memory.embedding,
+                compression_level: 3,
+                source_refs: [memory.id],
+                tags: { ...(memory.tags as object || {}), context: memory.context },
+                value_score: memory.value_score,
+                archived_at: new Date().toISOString(),
+              });
+              await supabase.from('brain_memory_warm').delete().eq('id', memory.id);
+              stats.demoted_to_cold++;
+            } catch (err) {
+              console.error('Demote to cold error:', err);
+              stats.errors++;
+            }
+          }
+        }
+
+        // STEP 4: Decay old unused memories
+        const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+        const { data: stale } = await supabase
+          .from('brain_memory_hot')
+          .select('id, value_score')
+          .lt('last_used', oneWeekAgo.toISOString())
+          .gt('value_score', 0.1)
+          .limit(100);
+
+        for (const memory of stale || []) {
+          try {
+            const newScore = Math.max(0.1, (memory.value_score || 0.5) - 0.1);
+            await supabase.from('brain_memory_hot').update({ value_score: newScore }).eq('id', memory.id);
+            stats.decayed++;
+          } catch {
+            stats.errors++;
+          }
+        }
+
+        // STEP 5: Score unscored memories
+        const { data: unscored } = await supabase
+          .from('brain_memory_hot')
+          .select('id, access_count, importance_score, created_at, decay_rate')
+          .is('value_score', null)
+          .limit(200);
+
+        for (const memory of unscored || []) {
+          try {
+            const ageDays = Math.floor((Date.now() - new Date(memory.created_at).getTime()) / (1000 * 60 * 60 * 24));
+            const accessCount = memory.access_count || 0;
+            const importance = memory.importance_score || 0.5;
+            const decayRate = memory.decay_rate || 0.02;
+
+            const recencyFactor = Math.exp(-decayRate * ageDays);
+            const accessFactor = Math.min(1.0, 0.3 + 0.1 * Math.log(Math.max(1, accessCount)));
+            const valueScore = Math.min(1.0, Math.max(0.1,
+              (importance * 0.4) + (recencyFactor * 0.35) + (accessFactor * 0.25)
+            ));
+
+            await supabase.from('brain_memory_hot').update({ value_score: valueScore }).eq('id', memory.id);
+            stats.scored++;
+          } catch {
+            stats.errors++;
+          }
+        }
+
+        // Get final counts
+        const [hotFinal, warmFinal, coldFinal] = await Promise.all([
+          supabase.from('brain_memory_hot').select('id', { count: 'exact', head: true }),
+          supabase.from('brain_memory_warm').select('id', { count: 'exact', head: true }),
+          supabase.from('brain_memory_cold').select('id', { count: 'exact', head: true }),
+        ]);
+
+        counts.hot.after = hotFinal.count || 0;
+        counts.warm.after = warmFinal.count || 0;
+        counts.cold.after = coldFinal.count || 0;
+
+        // Log event
+        await supabase.from('brain_events').insert({
+          event_type: 'brain_optimization',
+          module: 'brain',
+          data: {
+            mode,
+            stats,
+            before: { hot: counts.hot.before, warm: counts.warm.before, cold: counts.cold.before },
+            after: { hot: counts.hot.after, warm: counts.warm.after, cold: counts.cold.after },
+            duration_ms: Date.now() - startTime,
+          },
+          outcome: stats.errors === 0 ? 'success' : 'partial',
+        });
+
+        console.log(`✅ Optimization complete in ${Date.now() - startTime}ms:`, stats);
+
+        return jsonResponse({
+          success: true,
+          module: 'brain',
+          action: 'optimize',
+          mode,
+          stats,
+          tiers: {
+            hot: { before: counts.hot.before, after: counts.hot.after, limit: limits.hot },
+            warm: { before: counts.warm.before, after: counts.warm.after, limit: limits.warm },
+            cold: { before: counts.cold.before, after: counts.cold.after, limit: limits.cold },
+          },
+          duration_ms: Date.now() - startTime,
+          message: `Optimization [${mode}]: ${stats.pruned} pruned, ${stats.demoted_to_warm} hot→warm, ${stats.demoted_to_cold} warm→cold, ${stats.scored} scored`,
+          timestamp: new Date().toISOString(),
+        }, headers);
+      } catch (error) {
+        console.error('❌ Error optimizing brain:', error);
+        return jsonResponse({
+          success: false,
+          action: 'optimize',
+          mode,
+          stats,
+          error: error instanceof Error ? error.message : 'Unknown error',
+        }, headers);
+      }
+    }
+
     case "tier": {
       // v6.3.2: Memory tiering - demote hot→warm→cold with mode support
       // Protected memory types are NEVER demoted
@@ -1949,13 +2192,13 @@ async function handleBrain(
         // STEP 1: Score unscored hot memories (skip protected)
         const { data: unscoredHot } = await supabase
           .from('brain_memory_hot')
-          .select('id, access_count, importance_score, created_at, decay_rate, tags, memory_type')
+          .select('id, access_count, importance_score, created_at, decay_rate, tags')
           .is('value_score', null)
           .order('created_at', { ascending: true })
           .limit(SCORE_LIMIT);
 
         for (const memory of unscoredHot || []) {
-          const memoryType = (memory.tags as any)?.type || memory.memory_type || '';
+          const memoryType = (memory.tags as any)?.type || '';
           const isProtected = PROTECTED_MEMORY_TYPES.includes(memoryType) || (memory.tags as any)?.protected === true;
           
           if (isProtected) {
@@ -1991,7 +2234,7 @@ async function handleBrain(
           .limit(DEMOTE_HOT_LIMIT);
 
         for (const memory of hotToDemote || []) {
-          const memoryType = (memory.tags as any)?.type || memory.memory_type || '';
+          const memoryType = (memory.tags as any)?.type || '';
           const isProtected = PROTECTED_MEMORY_TYPES.includes(memoryType) || (memory.tags as any)?.protected === true;
           
           if (isProtected) {
