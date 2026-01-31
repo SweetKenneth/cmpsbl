@@ -89,3 +89,6 @@ verify_jwt = false
 
 [functions.pf-backup-import]
 verify_jwt = false
+
+[functions.pf-module-clm-scheduler]
+verify_jwt = false
