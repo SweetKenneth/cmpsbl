@@ -38,6 +38,11 @@ export const BUILTIN_ALIASES: AliasDefinition[] = [
   { alias: 'ma', expansion: 'modernizer.evolve shadow', description: 'Apply shadow' },
   { alias: 'mp', expansion: 'modernizer.evolve production', description: 'Apply production' },
   
+  // Omega Observer shortcuts (v1.0.0)
+  { alias: 'mv', expansion: 'modernizer.verify', description: 'Eligibility gate' },
+  { alias: 'mf', expansion: 'modernizer.forensics', description: 'Historical forensics' },
+  { alias: 'mo', expansion: 'modernizer.omega', description: 'Omega observer' },
+  
   // Defense shortcuts
   { alias: 'dp', expansion: 'defense.posture', description: 'Security posture' },
   { alias: 'da', expansion: 'defense.anomaly_probe', description: 'Anomaly probe' },

@@ -1335,6 +1335,81 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
       }
     }
 
+    // ═══ OMEGA OBSERVER ENGINE v1.0.0 ═══
+    else if (base === 'modernizer.verify') {
+      try {
+        const { checkEligibility, formatEligibility } = await import('@/lib/evolve/eligibility-gate');
+        const result = await checkEligibility();
+        
+        return {
+          success: true,
+          output: formatEligibility(result),
+          data: result,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ ERROR: ${err instanceof Error ? err.message : 'Verify failed'}` };
+      }
+    }
+    
+    else if (base === 'modernizer.analyze') {
+      try {
+        const { analyzeForwardIntent, formatAnalysis } = await import('@/lib/evolve/forward-analyzer');
+        const result = await analyzeForwardIntent();
+        
+        return {
+          success: true,
+          output: formatAnalysis(result),
+          data: result,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ ERROR: ${err instanceof Error ? err.message : 'Analyze failed'}` };
+      }
+    }
+    
+    else if (base === 'modernizer.forensics') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Component required\n  Usage: modernizer.forensics <component> [--since 24h|7d|last_run]' };
+      }
+      try {
+        const { runForensics, formatForensics } = await import('@/lib/evolve/forensics');
+        const component = args[0];
+        const sinceArg = args.find(a => a.startsWith('--since'))?.split('=')[1] || 
+                         (args.indexOf('--since') !== -1 ? args[args.indexOf('--since') + 1] : '24h');
+        
+        const result = await runForensics(component, sinceArg as 'last_phase' | 'last_run' | '24h' | '7d' | '30d');
+        
+        return {
+          success: true,
+          output: formatForensics(result),
+          data: result,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ ERROR: ${err instanceof Error ? err.message : 'Forensics failed'}` };
+      }
+    }
+    
+    else if (base === 'modernizer.omega') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Component required\n  Usage: modernizer.omega <component> [--since 24h|7d]' };
+      }
+      try {
+        const { observeOmega, formatOmega } = await import('@/lib/evolve/omega-observer');
+        const component = args[0];
+        const sinceArg = args.find(a => a.startsWith('--since'))?.split('=')[1] || 
+                         (args.indexOf('--since') !== -1 ? args[args.indexOf('--since') + 1] : '24h');
+        
+        const result = await observeOmega(component, sinceArg as 'last_phase' | 'last_run' | '24h' | '7d' | '30d');
+        
+        return {
+          success: true,
+          output: formatOmega(result),
+          data: result,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ ERROR: ${err instanceof Error ? err.message : 'Omega observation failed'}` };
+      }
+    }
+
     else if (base === 'core.status') {
       result = await core.status();
     } else if (base === 'core.pulse') {
