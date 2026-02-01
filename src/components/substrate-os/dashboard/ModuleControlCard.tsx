@@ -11,7 +11,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useSubstrateVoice } from '@/components/substrate-os/audio';
 import { useSoundEffects } from '@/components/agency/features/SoundEffects';
 
@@ -65,6 +65,8 @@ export function ModuleControlCard({
   delay = 0,
 }: ModuleControlCardProps) {
   const [pendingAction, setPendingAction] = useState<string | null>(null);
+  const [recentSuccess, setRecentSuccess] = useState<string | null>(null);
+  const [isHovered, setIsHovered] = useState(false);
   const layerBadge = layerBadges[layer];
   const voice = useSubstrateVoice();
   const { play } = useSoundEffects();
@@ -76,6 +78,8 @@ export function ModuleControlCard({
     try {
       await onAction(actionId);
       play('task_complete');
+      setRecentSuccess(actionId);
+      setTimeout(() => setRecentSuccess(null), 2000);
     } catch (e) {
       voice.error(`${name} action failed`, 'Check module health status', name.toUpperCase());
     } finally {
@@ -86,40 +90,51 @@ export function ModuleControlCard({
   return (
     <motion.div
       className={cn(
-        "relative rounded-2xl border backdrop-blur-xl overflow-hidden",
-        "transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl",
+        "group relative rounded-2xl border backdrop-blur-xl overflow-hidden",
+        "transition-all duration-300",
         isActive 
-          ? "border-border/50 bg-gradient-to-br from-card/90 to-card/60" 
+          ? "border-border/50 bg-gradient-to-br from-card/95 to-card/70 hover:border-border/70" 
           : "border-border/30 bg-muted/20 opacity-60"
       )}
       initial={{ opacity: 0, y: 20, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.4, delay }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      whileHover={isActive ? { y: -4, scale: 1.01 } : {}}
     >
       {/* Gradient accent bar */}
       <div className={cn("h-1 w-full", gradient)} />
 
-      {/* Glow effect */}
-      {isActive && (
-        <div className={cn(
-          "absolute inset-0 opacity-10 blur-3xl -z-10",
-          accentColor
-        )} />
-      )}
+      {/* Hover glow effect */}
+      <AnimatePresence>
+        {isActive && isHovered && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className={cn("absolute inset-0 opacity-20 blur-3xl -z-10", accentColor)}
+          />
+        )}
+      </AnimatePresence>
 
       <div className="p-4 space-y-4">
         {/* Header */}
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
-            <div className={cn(
-              "w-10 h-10 rounded-xl flex items-center justify-center border",
-              isActive ? gradient : "bg-muted/50 border-border/50"
-            )}>
+            <motion.div 
+              className={cn(
+                "w-11 h-11 rounded-xl flex items-center justify-center border shadow-lg",
+                isActive ? gradient : "bg-muted/50 border-border/50"
+              )}
+              whileHover={isActive ? { scale: 1.1, rotate: 5 } : {}}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
               <Icon className={cn(
                 "w-5 h-5",
                 isActive ? "text-white" : "text-muted-foreground"
               )} />
-            </div>
+            </motion.div>
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="font-semibold text-foreground">{name}</h3>
@@ -132,18 +147,25 @@ export function ModuleControlCard({
           </div>
           
           <div className="flex items-center gap-2">
-            <Badge variant="outline" className={cn("text-[8px] h-5", layerBadge.color)}>
+            <Badge variant="outline" className={cn("text-[8px] h-5 font-mono", layerBadge.color)}>
               {layerBadge.label}
             </Badge>
-            <div className="flex items-center gap-1.5">
-              <span className={cn(
-                "w-2 h-2 rounded-full",
-                isActive ? "bg-emerald-500" : "bg-red-500"
-              )}>
-                {isActive && (
-                  <span className="absolute w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+            <div className="relative flex items-center">
+              <motion.span 
+                className={cn(
+                  "w-2.5 h-2.5 rounded-full",
+                  isActive ? "bg-emerald-500" : "bg-red-500"
                 )}
-              </span>
+                animate={isActive ? { scale: [1, 1.2, 1] } : {}}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+              {isActive && (
+                <motion.span 
+                  className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-emerald-400"
+                  animate={{ scale: [1, 2], opacity: [0.5, 0] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                />
+              )}
             </div>
           </div>
         </div>
@@ -151,10 +173,13 @@ export function ModuleControlCard({
         {/* Metrics */}
         {metrics.length > 0 && (
           <div className="grid grid-cols-2 gap-2">
-            {metrics.slice(0, 4).map((metric) => (
-              <div 
+            {metrics.slice(0, 4).map((metric, i) => (
+              <motion.div 
                 key={metric.label}
-                className="px-3 py-2 rounded-lg bg-muted/30 border border-border/30"
+                className="px-3 py-2.5 rounded-lg bg-muted/30 border border-border/30 hover:bg-muted/40 transition-colors"
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: delay + 0.1 + i * 0.05 }}
               >
                 <span className="text-[9px] text-muted-foreground uppercase font-mono block mb-0.5">
                   {metric.label}
@@ -162,7 +187,7 @@ export function ModuleControlCard({
                 <span className="text-sm font-bold font-mono text-foreground">
                   {metric.value}
                 </span>
-              </div>
+              </motion.div>
             ))}
           </div>
         )}
@@ -173,6 +198,7 @@ export function ModuleControlCard({
             {actions.slice(0, 3).map((action) => {
               const ActionIcon = action.icon || PlayCircle;
               const isPending = pendingAction === action.id;
+              const isSuccess = recentSuccess === action.id;
               
               return (
                 <Button
@@ -182,14 +208,23 @@ export function ModuleControlCard({
                   onClick={() => handleAction(action.id)}
                   disabled={action.disabled || isPending || isLoading}
                   className={cn(
-                    "h-8 text-xs gap-1.5 flex-1",
-                    action.variant === 'primary' && "border-cyan-500/40 text-cyan-400 hover:bg-cyan-500/10",
-                    action.variant === 'success' && "border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/10",
-                    action.variant === 'warning' && "border-amber-500/40 text-amber-400 hover:bg-amber-500/10"
+                    "h-8 text-xs gap-1.5 flex-1 transition-all",
+                    action.variant === 'primary' && "border-cyan-500/40 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-500/60",
+                    action.variant === 'success' && "border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/10 hover:border-emerald-500/60",
+                    action.variant === 'warning' && "border-amber-500/40 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500/60",
+                    isSuccess && "border-emerald-500/60 bg-emerald-500/10"
                   )}
                 >
                   {isPending ? (
                     <Loader2 className="w-3 h-3 animate-spin" />
+                  ) : isSuccess ? (
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: "spring" }}
+                    >
+                      <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                    </motion.div>
                   ) : (
                     <ActionIcon className="w-3 h-3" />
                   )}
@@ -202,9 +237,10 @@ export function ModuleControlCard({
                 variant="ghost"
                 size="sm"
                 onClick={onRefresh}
-                className="h-8 w-8 p-0"
+                disabled={isLoading}
+                className="h-8 w-8 p-0 hover:bg-muted/50"
               >
-                <RefreshCw className="w-3.5 h-3.5" />
+                <RefreshCw className={cn("w-3.5 h-3.5", isLoading && "animate-spin")} />
               </Button>
             )}
           </div>

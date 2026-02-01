@@ -8,18 +8,17 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Activity, Brain, Zap, Play, Pause, CheckCircle2, XCircle,
   AlertTriangle, Clock, RefreshCw, ChevronRight, Shield,
-  Sparkles, Radio, CircleDot, Eye, Settings2
+  Sparkles, Radio, CircleDot, Eye, Settings2, Loader2
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Switch } from '@/components/ui/switch';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { toast } from 'sonner';
 import { useSEBA } from '@/hooks/useSEBA';
 import { useModuleCLM } from '@/lib/substrate/module-clm/useModuleCLM';
 import { cn } from '@/lib/utils';
-import type { SEBAMode, ImprovementProposal } from '@/lib/substrate/seba';
+import type { SEBAMode } from '@/lib/substrate/seba';
 
 interface PendingProposal {
   id: string;
@@ -39,6 +38,7 @@ export function AtlasAutonomyPanel() {
   const [pendingProposals, setPendingProposals] = useState<PendingProposal[]>([]);
   const [systemActive, setSystemActive] = useState(false);
   const [activating, setActivating] = useState(false);
+  const [processingProposal, setProcessingProposal] = useState<string | null>(null);
 
   // Check system active state
   useEffect(() => {
@@ -48,21 +48,25 @@ export function AtlasAutonomyPanel() {
 
   // Load pending proposals
   const loadProposals = useCallback(async () => {
-    const result = await seba.review();
-    if (result.success && result.data) {
-      const data = result.data as { proposals: any[] };
-      if (data.proposals) {
-        setPendingProposals(data.proposals.map((p: any) => ({
-          id: p.id,
-          short_id: p.data?.proposal_id || p.id.slice(0, 8),
-          title: p.data?.title || 'Improvement Proposal',
-          category: p.data?.category || 'general',
-          risk_level: p.data?.risk_level || 'low',
-          confidence_score: p.data?.confidence || 0.7,
-          created_at: p.created_at,
-          requires_human_approval: true,
-        })));
+    try {
+      const result = await seba.review();
+      if (result.success && result.data) {
+        const data = result.data as { proposals: any[] };
+        if (data.proposals) {
+          setPendingProposals(data.proposals.map((p: any) => ({
+            id: p.id,
+            short_id: p.data?.proposal_id || p.id.slice(0, 8),
+            title: p.data?.title || 'Improvement Proposal',
+            category: p.data?.category || 'general',
+            risk_level: p.data?.risk_level || 'low',
+            confidence_score: p.data?.confidence || 0.7,
+            created_at: p.created_at,
+            requires_human_approval: true,
+          })));
+        }
       }
+    } catch (err) {
+      console.error('Failed to load proposals:', err);
     }
   }, [seba]);
 
@@ -89,7 +93,9 @@ export function AtlasAutonomyPanel() {
       await seba.runCycle();
       
       setSystemActive(true);
-      toast.success('Autonomous operation activated — SEBA advisory mode + CLM 24/7');
+      toast.success('Autonomous operation activated', { 
+        description: 'SEBA advisory mode + CLM 24/7 enabled' 
+      });
     } catch (err) {
       toast.error('Failed to activate system');
     } finally {
@@ -103,33 +109,26 @@ export function AtlasAutonomyPanel() {
     toast.info('Autonomous operation paused');
   };
 
-  const approveProposal = async (proposalId: string) => {
-    const result = await seba.approve(proposalId);
-    if (result.success) {
-      toast.success(`Proposal ${proposalId.slice(0, 8)} approved`);
-      loadProposals();
-    } else {
-      toast.error(result.message);
-    }
-  };
-
-  const rejectProposal = async (proposalId: string) => {
-    const result = await seba.reject(proposalId);
-    if (result.success) {
-      toast.success(`Proposal ${proposalId.slice(0, 8)} rejected`);
-      loadProposals();
-    } else {
-      toast.error(result.message);
-    }
-  };
-
-  const executeProposal = async (proposalId: string) => {
-    const result = await seba.execute(proposalId);
-    if (result.success) {
-      toast.success(`Proposal ${proposalId.slice(0, 8)} executed`);
-      loadProposals();
-    } else {
-      toast.error(result.message);
+  const handleProposalAction = async (proposalId: string, action: 'approve' | 'reject' | 'execute') => {
+    setProcessingProposal(proposalId);
+    try {
+      let result;
+      if (action === 'approve') {
+        result = await seba.approve(proposalId);
+      } else if (action === 'reject') {
+        result = await seba.reject(proposalId);
+      } else {
+        result = await seba.execute(proposalId);
+      }
+      
+      if (result.success) {
+        toast.success(`Proposal ${proposalId.slice(0, 8)} ${action}d`);
+        loadProposals();
+      } else {
+        toast.error(result.message || `Failed to ${action} proposal`);
+      }
+    } finally {
+      setProcessingProposal(null);
     }
   };
 
@@ -158,33 +157,56 @@ export function AtlasAutonomyPanel() {
   return (
     <div className="space-y-6">
       {/* Master Control */}
-      <Card className="border-2 border-primary/30 bg-gradient-to-br from-primary/5 to-transparent">
-        <CardHeader className="pb-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+      <Card className="border-2 border-primary/30 bg-gradient-to-br from-primary/5 via-background to-transparent overflow-hidden">
+        <CardHeader className="pb-4 relative">
+          {/* Background pulse for active state */}
+          {systemActive && (
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-emerald-500/5 to-cyan-500/5"
+              animate={{ opacity: [0.3, 0.6, 0.3] }}
+              transition={{ duration: 3, repeat: Infinity }}
+            />
+          )}
+          
+          <div className="flex items-center justify-between relative z-10">
+            <div className="flex items-center gap-4">
               <div className={cn(
-                "w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-500",
+                "relative w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-500",
                 systemActive 
-                  ? "bg-gradient-to-br from-emerald-500/30 to-cyan-500/30 border border-emerald-500/50" 
-                  : "bg-muted/50 border border-border"
+                  ? "bg-gradient-to-br from-emerald-500/30 to-cyan-500/30 border-2 border-emerald-500/50" 
+                  : "bg-muted/50 border-2 border-border"
               )}>
                 <Radio className={cn(
-                  "w-6 h-6 transition-colors",
+                  "w-7 h-7 transition-colors",
                   systemActive ? "text-emerald-400" : "text-muted-foreground"
                 )} />
                 {systemActive && (
-                  <motion.div
-                    className="absolute inset-0 rounded-xl border-2 border-emerald-400/50"
-                    animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0, 0.5] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
+                  <>
+                    <motion.div
+                      className="absolute inset-0 rounded-2xl border-2 border-emerald-400/50"
+                      animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0, 0.5] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    />
+                    <motion.div
+                      className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center"
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 1, repeat: Infinity }}
+                    >
+                      <Zap className="w-2.5 h-2.5 text-white" />
+                    </motion.div>
+                  </>
                 )}
               </div>
               <div>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle className="flex items-center gap-3 text-lg">
                   <span>Autonomous Operation</span>
                   {systemActive ? (
-                    <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/40">
+                    <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/40 animate-pulse">
+                      <motion.span 
+                        className="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5"
+                        animate={{ opacity: [1, 0.5, 1] }}
+                        transition={{ duration: 1, repeat: Infinity }}
+                      />
                       LIVE 24/7
                     </Badge>
                   ) : (
@@ -193,9 +215,9 @@ export function AtlasAutonomyPanel() {
                     </Badge>
                   )}
                 </CardTitle>
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="text-xs text-muted-foreground mt-1.5 font-mono">
                   {systemActive 
-                    ? `SEBA ${seba.mode} mode • CLM active • ${seba.state?.pending_proposals || 0} pending`
+                    ? `SEBA ${seba.mode} • CLM active • ${seba.state?.pending_proposals || 0} pending proposals`
                     : 'Activate to enable autonomous learning and evolution'
                   }
                 </p>
@@ -209,6 +231,7 @@ export function AtlasAutonomyPanel() {
                   variant="outline"
                   onClick={runManualCycle}
                   disabled={seba.isCycleRunning}
+                  className="border-cyan-500/40 text-cyan-400 hover:bg-cyan-500/10"
                 >
                   <RefreshCw className={cn("w-4 h-4 mr-2", seba.isCycleRunning && "animate-spin")} />
                   Run Cycle
@@ -220,15 +243,15 @@ export function AtlasAutonomyPanel() {
                 onClick={systemActive ? deactivateSystem : activateSystem}
                 disabled={activating}
                 className={cn(
-                  "min-w-[140px] transition-all",
+                  "min-w-[160px] h-11 transition-all font-semibold",
                   systemActive 
                     ? "border-red-500/40 text-red-400 hover:bg-red-500/10" 
-                    : "bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500"
+                    : "bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 shadow-lg shadow-emerald-500/20"
                 )}
               >
                 {activating ? (
                   <>
-                    <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                     Activating...
                   </>
                 ) : systemActive ? (
@@ -239,7 +262,7 @@ export function AtlasAutonomyPanel() {
                 ) : (
                   <>
                     <Play className="w-4 h-4 mr-2" />
-                    Activate
+                    Activate System
                   </>
                 )}
               </Button>
@@ -253,46 +276,47 @@ export function AtlasAutonomyPanel() {
         <Card className="border-purple-500/20 bg-gradient-to-br from-purple-500/5 to-transparent">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-purple-400" />
+              <div className="w-7 h-7 rounded-lg bg-purple-500/20 flex items-center justify-center">
+                <Sparkles className="w-4 h-4 text-purple-400" />
+              </div>
               SEBA Agent
-              <Badge variant="outline" className="ml-auto text-[10px]">
+              <Badge variant="outline" className="ml-auto text-[10px] uppercase font-mono">
                 {seba.mode}
               </Badge>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
-              <div className="p-3 rounded-lg bg-background/50 border border-border/50">
-                <p className="text-xs text-muted-foreground">Phase</p>
-                <p className="text-lg font-bold capitalize">{seba.phase}</p>
-              </div>
-              <div className="p-3 rounded-lg bg-background/50 border border-border/50">
-                <p className="text-xs text-muted-foreground">Cycles</p>
-                <p className="text-lg font-bold">{seba.state?.total_cycles || 0}</p>
-              </div>
-              <div className="p-3 rounded-lg bg-background/50 border border-border/50">
-                <p className="text-xs text-muted-foreground">Success</p>
-                <p className="text-lg font-bold text-emerald-400">{seba.state?.successful_cycles || 0}</p>
-              </div>
-              <div className="p-3 rounded-lg bg-background/50 border border-border/50">
-                <p className="text-xs text-muted-foreground">Health</p>
-                <p className="text-lg font-bold">{seba.state?.agent_health || 100}%</p>
-              </div>
+              {[
+                { label: 'Phase', value: seba.phase, capitalize: true },
+                { label: 'Cycles', value: seba.state?.total_cycles || 0 },
+                { label: 'Success', value: seba.state?.successful_cycles || 0, color: 'text-emerald-400' },
+                { label: 'Health', value: `${seba.state?.agent_health || 100}%` },
+              ].map(stat => (
+                <div key={stat.label} className="p-3 rounded-xl bg-background/50 border border-border/50">
+                  <p className="text-[10px] text-muted-foreground uppercase font-mono">{stat.label}</p>
+                  <p className={cn(
+                    "text-lg font-bold",
+                    stat.capitalize && "capitalize",
+                    stat.color
+                  )}>
+                    {stat.value}
+                  </p>
+                </div>
+              ))}
             </div>
 
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs">
-                <span className="text-muted-foreground">Pending Proposals</span>
-                <span className="font-bold">{seba.state?.pending_proposals || 0}</span>
-              </div>
-              <div className="flex items-center justify-between text-xs">
-                <span className="text-muted-foreground">Approved</span>
-                <span className="font-bold text-emerald-400">{seba.state?.approved_proposals || 0}</span>
-              </div>
-              <div className="flex items-center justify-between text-xs">
-                <span className="text-muted-foreground">Rejected</span>
-                <span className="font-bold text-red-400">{seba.state?.rejected_proposals || 0}</span>
-              </div>
+            <div className="space-y-2 pt-2">
+              {[
+                { label: 'Pending', value: seba.state?.pending_proposals || 0 },
+                { label: 'Approved', value: seba.state?.approved_proposals || 0, color: 'text-emerald-400' },
+                { label: 'Rejected', value: seba.state?.rejected_proposals || 0, color: 'text-red-400' },
+              ].map(item => (
+                <div key={item.label} className="flex items-center justify-between text-xs">
+                  <span className="text-muted-foreground">{item.label} Proposals</span>
+                  <span className={cn("font-bold font-mono", item.color)}>{item.value}</span>
+                </div>
+              ))}
             </div>
           </CardContent>
         </Card>
@@ -301,35 +325,37 @@ export function AtlasAutonomyPanel() {
         <Card className="border-cyan-500/20 bg-gradient-to-br from-cyan-500/5 to-transparent">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm flex items-center gap-2">
-              <Brain className="w-4 h-4 text-cyan-400" />
+              <div className="w-7 h-7 rounded-lg bg-cyan-500/20 flex items-center justify-center">
+                <Brain className="w-4 h-4 text-cyan-400" />
+              </div>
               CLM Status
-              <Badge variant="outline" className="ml-auto text-[10px] bg-emerald-500/20 text-emerald-400 border-emerald-500/40">
+              <Badge className="ml-auto text-[10px] bg-emerald-500/20 text-emerald-400 border-emerald-500/40">
                 24/7
               </Badge>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
-              <div className="p-3 rounded-lg bg-background/50 border border-border/50">
-                <p className="text-xs text-muted-foreground">Modules</p>
+              <div className="p-3 rounded-xl bg-background/50 border border-border/50">
+                <p className="text-[10px] text-muted-foreground uppercase font-mono">Modules</p>
                 <p className="text-lg font-bold">{clm.moduleStates.length}</p>
               </div>
-              <div className="p-3 rounded-lg bg-background/50 border border-border/50">
-                <p className="text-xs text-muted-foreground">Feed Items</p>
+              <div className="p-3 rounded-xl bg-background/50 border border-border/50">
+                <p className="text-[10px] text-muted-foreground uppercase font-mono">Feed Items</p>
                 <p className="text-lg font-bold">{clm.feed.length}</p>
               </div>
             </div>
 
             <div className="space-y-2">
-              <p className="text-xs text-muted-foreground mb-2">Learning Modules</p>
+              <p className="text-[10px] text-muted-foreground uppercase font-mono mb-2">Learning Modules</p>
               <div className="flex flex-wrap gap-1.5">
                 {clm.moduleStates.slice(0, 8).map(mod => (
                   <Badge 
                     key={mod.moduleId} 
                     variant="outline" 
                     className={cn(
-                      "text-[9px]",
-                      mod.isLearning ? "border-cyan-500/50 text-cyan-400" : ""
+                      "text-[9px] font-mono",
+                      mod.isLearning ? "border-cyan-500/50 text-cyan-400 bg-cyan-500/10" : ""
                     )}
                   >
                     {mod.moduleId.toUpperCase()}
@@ -342,7 +368,7 @@ export function AtlasAutonomyPanel() {
             <Button 
               size="sm" 
               variant="outline" 
-              className="w-full"
+              className="w-full border-cyan-500/40 text-cyan-400 hover:bg-cyan-500/10"
               onClick={clm.runAllLearning}
               disabled={clm.loading}
             >
@@ -356,44 +382,50 @@ export function AtlasAutonomyPanel() {
         <Card className="border-amber-500/20 bg-gradient-to-br from-amber-500/5 to-transparent">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm flex items-center gap-2">
-              <Settings2 className="w-4 h-4 text-amber-400" />
+              <div className="w-7 h-7 rounded-lg bg-amber-500/20 flex items-center justify-center">
+                <Settings2 className="w-4 h-4 text-amber-400" />
+              </div>
               SEBA Mode
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-3">
-              {(['off', 'observe', 'advisory', 'governed'] as SEBAMode[]).map(mode => (
-                <button
-                  key={mode}
-                  onClick={() => seba.setMode(mode)}
+          <CardContent className="space-y-3">
+            {(['off', 'observe', 'advisory', 'governed'] as SEBAMode[]).map(mode => (
+              <motion.button
+                key={mode}
+                onClick={() => seba.setMode(mode)}
+                className={cn(
+                  "w-full flex items-center gap-3 p-3 rounded-xl border transition-all text-left",
+                  seba.mode === mode 
+                    ? "border-primary bg-primary/10 shadow-sm shadow-primary/20" 
+                    : "border-border/50 hover:border-border hover:bg-muted/30"
+                )}
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.99 }}
+              >
+                <motion.div 
                   className={cn(
-                    "w-full flex items-center gap-3 p-3 rounded-lg border transition-all text-left",
-                    seba.mode === mode 
-                      ? "border-primary bg-primary/10" 
-                      : "border-border/50 hover:border-border hover:bg-muted/50"
-                  )}
-                >
-                  <div className={cn(
-                    "w-3 h-3 rounded-full",
+                    "w-3 h-3 rounded-full transition-colors",
                     seba.mode === mode ? "bg-primary" : "bg-muted"
-                  )} />
-                  <div className="flex-1">
-                    <p className="text-sm font-medium capitalize">{mode}</p>
-                    <p className="text-[10px] text-muted-foreground">
-                      {mode === 'off' && 'SEBA disabled'}
-                      {mode === 'observe' && 'Watch only, no proposals'}
-                      {mode === 'advisory' && 'Proposes, requires approval'}
-                      {mode === 'governed' && 'Auto-execute if safe'}
-                    </p>
-                  </div>
-                  {mode === 'advisory' && (
-                    <Badge className="text-[9px] bg-emerald-500/20 text-emerald-400">
-                      RECOMMENDED
-                    </Badge>
                   )}
-                </button>
-              ))}
-            </div>
+                  animate={seba.mode === mode ? { scale: [1, 1.2, 1] } : {}}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                />
+                <div className="flex-1">
+                  <p className="text-sm font-medium capitalize">{mode}</p>
+                  <p className="text-[10px] text-muted-foreground">
+                    {mode === 'off' && 'SEBA disabled'}
+                    {mode === 'observe' && 'Watch only, no proposals'}
+                    {mode === 'advisory' && 'Proposes, requires approval'}
+                    {mode === 'governed' && 'Auto-execute if safe'}
+                  </p>
+                </div>
+                {mode === 'advisory' && (
+                  <Badge className="text-[9px] bg-emerald-500/20 text-emerald-400 border-emerald-500/40">
+                    RECOMMENDED
+                  </Badge>
+                )}
+              </motion.button>
+            ))}
           </CardContent>
         </Card>
       </div>
@@ -403,90 +435,109 @@ export function AtlasAutonomyPanel() {
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <CardTitle className="text-sm flex items-center gap-2">
-              <Shield className="w-4 h-4 text-emerald-400" />
+              <div className="w-7 h-7 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+                <Shield className="w-4 h-4 text-emerald-400" />
+              </div>
               Pending Proposals
               {pendingProposals.length > 0 && (
-                <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/40">
+                <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/40 animate-pulse">
                   {pendingProposals.length} awaiting
                 </Badge>
               )}
             </CardTitle>
-            <Button size="sm" variant="ghost" onClick={loadProposals}>
-              <RefreshCw className="w-3 h-3" />
+            <Button size="sm" variant="ghost" onClick={loadProposals} className="h-8">
+              <RefreshCw className="w-3 h-3 mr-1" />
+              Refresh
             </Button>
           </div>
         </CardHeader>
         <CardContent>
-          <ScrollArea className="h-[300px]">
+          <ScrollArea className="h-[320px]">
             <AnimatePresence mode="popLayout">
               {pendingProposals.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
-                  <CheckCircle2 className="w-10 h-10 mb-3 opacity-40" />
-                  <p className="text-sm">No pending proposals</p>
-                  <p className="text-xs mt-1">SEBA will generate proposals when improvements are detected</p>
-                </div>
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex flex-col items-center justify-center py-16 text-muted-foreground"
+                >
+                  <div className="w-16 h-16 rounded-2xl bg-muted/20 flex items-center justify-center mb-4">
+                    <CheckCircle2 className="w-8 h-8 opacity-40" />
+                  </div>
+                  <p className="text-sm font-medium">No pending proposals</p>
+                  <p className="text-xs mt-1 text-center max-w-xs">
+                    SEBA will generate proposals when improvements are detected
+                  </p>
+                </motion.div>
               ) : (
                 <div className="space-y-3">
-                  {pendingProposals.map((proposal, i) => (
-                    <motion.div
-                      key={proposal.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      transition={{ delay: i * 0.05 }}
-                      className="p-4 rounded-xl border border-border/50 bg-background/50 hover:bg-background/80 transition-colors"
-                    >
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-1">
-                            <Badge variant="outline" className="text-[10px]">
-                              {proposal.short_id}
-                            </Badge>
-                            <Badge className={cn("text-[10px]", riskColor(proposal.risk_level))}>
+                  {pendingProposals.map((proposal, i) => {
+                    const isProcessing = processingProposal === proposal.id;
+                    
+                    return (
+                      <motion.div
+                        key={proposal.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                        transition={{ delay: i * 0.05 }}
+                        className={cn(
+                          "p-4 rounded-xl border border-border/50 bg-background/50 hover:bg-background/80 transition-all",
+                          isProcessing && "opacity-60"
+                        )}
+                      >
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="flex items-center gap-2">
+                            <Badge variant="outline" className={cn("text-[10px] uppercase", riskColor(proposal.risk_level))}>
                               {proposal.risk_level}
                             </Badge>
+                            <Badge variant="outline" className="text-[10px] font-mono">
+                              {proposal.category}
+                            </Badge>
                           </div>
-                          <h4 className="font-medium text-sm">{proposal.title}</h4>
-                          <p className="text-xs text-muted-foreground mt-1">
-                            {proposal.category} • {Math.round(proposal.confidence_score * 100)}% confidence
-                          </p>
+                          <span className="text-[10px] text-muted-foreground font-mono">
+                            {Math.round(proposal.confidence_score * 100)}% conf
+                          </span>
                         </div>
-                        <div className="text-right">
-                          <p className="text-[10px] text-muted-foreground">
-                            {new Date(proposal.created_at).toLocaleTimeString()}
-                          </p>
+                        
+                        <h4 className="text-sm font-medium mb-1">{proposal.title}</h4>
+                        <p className="text-[10px] text-muted-foreground font-mono mb-4">
+                          ID: {proposal.short_id} • {new Date(proposal.created_at).toLocaleString()}
+                        </p>
+                        
+                        <div className="flex gap-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="flex-1 h-8 border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/10"
+                            onClick={() => handleProposalAction(proposal.id, 'approve')}
+                            disabled={isProcessing}
+                          >
+                            {isProcessing ? <Loader2 className="w-3 h-3 animate-spin" /> : <CheckCircle2 className="w-3 h-3 mr-1" />}
+                            Approve
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="flex-1 h-8 border-cyan-500/40 text-cyan-400 hover:bg-cyan-500/10"
+                            onClick={() => handleProposalAction(proposal.id, 'execute')}
+                            disabled={isProcessing}
+                          >
+                            {isProcessing ? <Loader2 className="w-3 h-3 animate-spin" /> : <Zap className="w-3 h-3 mr-1" />}
+                            Execute
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="h-8 w-8 p-0 border-red-500/40 text-red-400 hover:bg-red-500/10"
+                            onClick={() => handleProposalAction(proposal.id, 'reject')}
+                            disabled={isProcessing}
+                          >
+                            <XCircle className="w-3 h-3" />
+                          </Button>
                         </div>
-                      </div>
-                      
-                      <div className="flex items-center gap-2">
-                        <Button 
-                          size="sm" 
-                          className="flex-1 bg-emerald-600 hover:bg-emerald-500"
-                          onClick={() => approveProposal(proposal.id)}
-                        >
-                          <CheckCircle2 className="w-3 h-3 mr-1" />
-                          Approve
-                        </Button>
-                        <Button 
-                          size="sm" 
-                          variant="outline"
-                          className="flex-1"
-                          onClick={() => executeProposal(proposal.id)}
-                        >
-                          <Zap className="w-3 h-3 mr-1" />
-                          Execute
-                        </Button>
-                        <Button 
-                          size="sm" 
-                          variant="ghost"
-                          className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
-                          onClick={() => rejectProposal(proposal.id)}
-                        >
-                          <XCircle className="w-3 h-3" />
-                        </Button>
-                      </div>
-                    </motion.div>
-                  ))}
+                      </motion.div>
+                    );
+                  })}
                 </div>
               )}
             </AnimatePresence>
@@ -494,22 +545,22 @@ export function AtlasAutonomyPanel() {
         </CardContent>
       </Card>
 
-      {/* Recent CLM Insights */}
-      <Card className="border-blue-500/20 bg-gradient-to-br from-blue-500/5 to-transparent">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-sm flex items-center gap-2">
-            <Eye className="w-4 h-4 text-blue-400" />
-            Recent CLM Insights
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ScrollArea className="h-[200px]">
-            {clm.feed.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-8 text-muted-foreground">
-                <Brain className="w-8 h-8 mb-2 opacity-40" />
-                <p className="text-xs">Waiting for learning cycles...</p>
+      {/* Activity Feed */}
+      {clm.feed.length > 0 && (
+        <Card className="border-indigo-500/20 bg-gradient-to-br from-indigo-500/5 to-transparent">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-indigo-500/20 flex items-center justify-center">
+                <Activity className="w-4 h-4 text-indigo-400" />
               </div>
-            ) : (
+              CLM Learning Feed
+              <Badge variant="outline" className="ml-auto text-[10px] font-mono">
+                {clm.feed.length} items
+              </Badge>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ScrollArea className="h-[200px]">
               <div className="space-y-2">
                 {clm.feed.slice(0, 10).map((item, i) => (
                   <motion.div
@@ -517,33 +568,27 @@ export function AtlasAutonomyPanel() {
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.03 }}
-                    className="flex items-start gap-3 p-3 rounded-lg border border-border/30 bg-background/30"
+                    className="flex items-center gap-3 p-3 rounded-lg border border-border/30 bg-background/30"
                   >
-                    <Badge variant="outline" className="text-[9px] shrink-0">
-                      {item.moduleId.toUpperCase()}
-                    </Badge>
+                    <div className={cn(
+                      "w-2 h-2 rounded-full",
+                      item.priority === 'high' ? "bg-red-400" :
+                      item.priority === 'medium' ? "bg-amber-400" : "bg-emerald-400"
+                    )} />
                     <div className="flex-1 min-w-0">
                       <p className="text-xs font-medium truncate">{item.title}</p>
-                      <p className="text-[10px] text-muted-foreground line-clamp-2">{item.content.slice(0, 100)}...</p>
+                      <p className="text-[10px] text-muted-foreground font-mono">{item.moduleId}</p>
                     </div>
-                    <div className="shrink-0">
-                      <Badge className={cn(
-                        "text-[9px]",
-                        item.priority === 'critical' ? 'bg-red-500/20 text-red-400' :
-                        item.priority === 'high' ? 'bg-amber-500/20 text-amber-400' :
-                        item.priority === 'medium' ? 'bg-blue-500/20 text-blue-400' :
-                        'bg-muted text-muted-foreground'
-                      )}>
-                        {item.priority}
-                      </Badge>
-                    </div>
+                    <Badge variant="outline" className="text-[9px] font-mono shrink-0">
+                      {Math.round(item.confidence * 100)}%
+                    </Badge>
                   </motion.div>
                 ))}
               </div>
-            )}
-          </ScrollArea>
-        </CardContent>
-      </Card>
+            </ScrollArea>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }
