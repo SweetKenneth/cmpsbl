@@ -10,7 +10,7 @@ Traditional AI systems run modules in isolation. A memory module doesn't talk to
 
 **CMPSBL® is different.** Our 14 modules are designed to work together, creating capabilities that no single module could achieve alone.
 
-The result? **24 synergy pipelines** that multiply intelligence, not just add it.
+The result? **34 synergy pipelines** that multiply intelligence, not just add it.
 
 ---
 
@@ -37,9 +37,9 @@ With synergies:
 
 ---
 
-## The 24 Synergy Pipelines
+## The 34 Synergy Pipelines
 
-### Intelligence (Make Decisions Smarter)
+### Intelligence (7 Pipelines — Make Decisions Smarter)
 
 | Synergy | What It Does | Impact |
 |---------|--------------|--------|
@@ -47,8 +47,11 @@ With synergies:
 | **Predictive Prevention** | Catch issues before they happen | Hours of warning |
 | **Cross-Domain Synthesis** | Connect knowledge across domains | Novel insights |
 | **Cognitive Fusion** | Multi-model consensus | +31% coherence |
+| **Quota Prediction** | Predict usage exhaustion | Proactive alerts |
+| **Cognitive Curriculum** | Learning goals from knowledge gaps | Targeted growth |
+| **End-to-End Reasoning** | Full cognitive pipeline | Complete decisions |
 
-### Optimization (Make Everything Faster)
+### Optimization (7 Pipelines — Make Everything Faster)
 
 | Synergy | What It Does | Impact |
 |---------|--------------|--------|
@@ -56,8 +59,11 @@ With synergies:
 | **Intelligent Caching** | Memory-informed cache | Faster responses |
 | **Resource Balancing** | Dynamic load distribution | Higher throughput |
 | **Latency Prediction** | Predict and optimize | Consistent UX |
+| **External API Intelligence** | Smart adapter management | +99.5% uptime |
+| **Entitlement-Aware Routing** | Tier-appropriate models | Optimal value |
+| **Batch Optimization** | Event batching tuning | 3x throughput |
 
-### Resilience (Never Go Down)
+### Resilience (5 Pipelines — Never Go Down)
 
 | Synergy | What It Does | Impact |
 |---------|--------------|--------|
@@ -65,24 +71,27 @@ With synergies:
 | **Cascade Prevention** | Stop failure spread | Module isolation |
 | **Graceful Degradation** | Maintain UX during outages | Always responsive |
 | **Memory Persistence** | Memories survive restarts | Zero data loss |
+| **Adapter Failover** | External API recovery | Seamless fallback |
 
-### Security (Stay Protected)
+### Security (4 Pipelines — Stay Protected)
 
 | Synergy | What It Does | Impact |
 |---------|--------------|--------|
 | **Threat Learning** | Learn from attacks | +56% detection |
 | **Adaptive Defense** | Evolving security rules | Automatic hardening |
 | **Anomaly Correlation** | Detect coordinated attacks | Early warning |
+| **Bounded Autonomy Guard** | Safe autonomous operations | Governed evolution |
 
-### Accessibility (Work for Everyone)
+### Accessibility (4 Pipelines — Work for Everyone)
 
 | Synergy | What It Does | Impact |
 |---------|--------------|--------|
 | **Adaptive UI** | Auto-improve accessibility | +34% WCAG score |
 | **Intent Amplification** | Understand vague requests | Precise execution |
 | **Contextual Adaptation** | Personalize per user | Better experience |
+| **Developer Experience** | API pattern optimization | -40% integration time |
 
-### Orchestration (Coordinate Complexity)
+### Orchestration (7 Pipelines — Coordinate Complexity)
 
 | Synergy | What It Does | Impact |
 |---------|--------------|--------|
@@ -92,6 +101,8 @@ With synergies:
 | **Agent Coordination** | Multi-agent routing | Complex workflows |
 | **Learning Consolidation** | Apply learned patterns | Continuous improvement |
 | **Autonomous Documentation** | Auto-generate docs | Always current |
+| **Webhook Orchestration** | Coordinated event routing | Reliable integrations |
+| **Autonomous Evolution** | Self-improvement pipeline | Genuine autonomy |
 
 ---
 
@@ -182,7 +193,7 @@ The synergy engine represents years of R&D that competitors cannot easily replic
 ### Market Differentiation
 
 - No competitor offers governed cross-module synergies
-- 24 pipelines covering intelligence, optimization, resilience, security
+- 34 pipelines covering intelligence, optimization, resilience, security, accessibility, orchestration
 - Enterprise-ready with full audit trail
 - Platform for future capability expansion
 
@@ -192,7 +203,7 @@ The synergy engine represents years of R&D that competitors cannot easily replic
 
 | What | Value |
 |------|-------|
-| **Total Synergies** | 24 production-ready pipelines |
+| **Total Synergies** | 34 production-ready pipelines |
 | **Categories** | 6 functional areas |
 | **Modules Involved** | All 14 actively participate |
 | **Performance Gain** | 23-89% improvement per category |

@@ -80,7 +80,7 @@ ADVANCED MODES (v7.0.0)
 
 | Version | Codename | Key Features |
 |---------|----------|--------------|
-| **7.0.0** | **SEBA** | 24 synergy pipelines, 8 executors, SEBA bounded autonomy, 67 tests |
+| **7.0.0** | **SEBA** | 34 synergy pipelines, 13 executors, SEBA bounded autonomy, 67 tests |
 | 6.3.1 | FNDTN | CLM integration, mobile terminal, 260+ commands |
 | 6.0.0 | FNDTN | 14-module architecture, Evolution Cycle |
 | 5.6.0 | — | Module registry, inventory system |
@@ -90,22 +90,22 @@ ADVANCED MODES (v7.0.0)
 
 | Addition | Location | Purpose |
 |----------|----------|---------|
-| **Synergy Engine** | `src/lib/capabilities/synergies/` | 24 governed cross-module pipelines |
-| **Custom Executors** | `src/lib/capabilities/synergies/executors.ts` | 8 implementations (smart-recall, adaptive-routing, etc.) |
+| **Synergy Engine** | `src/lib/capabilities/synergies/` | 34 governed cross-module pipelines |
+| **Custom Executors** | `src/lib/capabilities/synergies/executors.ts` | 13 implementations (smart-recall, adaptive-routing, autonomous-evolution, etc.) |
 | **Synergy Hook** | `src/hooks/useSynergies.ts` | React integration for UI |
 | **Internal Secrets Doc** | `docs/internal/11-SYNERGY-ENGINE.md` | All secret algorithms and thresholds |
-| **Module Matrix** | `docs/library/77-SYNERGY-PIPELINES.md` | 14×24 module dependency grid |
+| **Module Matrix** | `docs/library/77-SYNERGY-PIPELINES.md` | 14×34 module dependency grid |
 
 ### Synergy Categories
 
 | Category | Count | Key Synergies |
 |----------|-------|---------------|
-| Intelligence | 4 | smart-recall, cognitive-fusion, predictive-prevention |
-| Optimization | 4 | adaptive-routing, intelligent-caching, latency-prediction |
-| Resilience | 4 | self-healing, cascade-prevention, graceful-degradation |
-| Security | 3 | threat-learning, adaptive-defense, anomaly-correlation |
-| Accessibility | 3 | adaptive-ui, intent-amplification, contextual-adaptation |
-| Orchestration | 6 | evolution-confidence, agent-coordination, autonomous-docs |
+| Intelligence | 7 | smart-recall, cognitive-fusion, predictive-prevention, end-to-end-reasoning, quota-prediction |
+| Optimization | 7 | adaptive-routing, intelligent-caching, latency-prediction, external-api-intelligence, entitlement-aware-routing |
+| Resilience | 5 | self-healing, cascade-prevention, graceful-degradation, adapter-failover, memory-persistence |
+| Security | 4 | threat-learning, adaptive-defense, anomaly-correlation, bounded-autonomy-guard |
+| Accessibility | 4 | adaptive-ui, intent-amplification, inclusive-content, developer-experience-optimization |
+| Orchestration | 7 | evolution-confidence, autonomous-documentation, webhook-orchestration, autonomous-evolution, cognitive-curriculum |
 
 ---
 
