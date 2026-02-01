@@ -118,12 +118,13 @@ export function useLiveBrainEvents() {
         .from('brain_events')
         .select('*')
         .order('created_at', { ascending: false })
-        .limit(20);
+        .limit(50);
       
       if (error) throw error;
-      return { events: data ?? [] };
+      return { events: data ?? [], fetchedAt: Date.now() };
     },
-    refetchInterval: 15000,
+    refetchInterval: 5000, // Poll every 5 seconds for live feed
+    staleTime: 4000,
   });
 }
 
