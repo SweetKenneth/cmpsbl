@@ -258,7 +258,7 @@ export function MarketplaceHero() {
               className="gap-2 px-8 py-6 text-lg font-medium"
             >
               <Server className="w-5 h-5" />
-              Buy OS License — $3,999
+              Buy OS License — $999
             </Button>
           </motion.div>
 
