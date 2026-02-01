@@ -87,11 +87,10 @@ export function isDirectInvocationBlocked(edgeFunctionName: string): boolean {
   // Block direct invocation of adapted capabilities
   // They must go through the adapter
   const adaptedPrefixes = [
-    'pf-clarity-scan',
     'pf-marketing-strategy',
-    'pf-defense-security-report',
     'pf-modernizer-export',
-    // pf-ripple-image deleted 2026-02-01
+    // DELETED 2026-02-01: pf-clarity-scan → INCLUSIVE.scan
+    // DELETED 2026-02-01: pf-defense-security-report → DEFENSE.security_report
   ];
   
   return adaptedPrefixes.some(prefix => edgeFunctionName.startsWith(prefix));

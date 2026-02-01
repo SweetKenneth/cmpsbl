@@ -29,13 +29,13 @@ const SUBSTRATE_MODULES: Record<string, string[]> = {
   CORE: ['kernel', 'scheduler', 'lifecycle'],
 };
 
-// Edge functions known to be FULLY migrated to substrate
+// Edge functions that were FULLY migrated to substrate and DELETED
+// History: pf-clarity-scan → INCLUSIVE.scan (deleted 2026-02-01)
+// History: pf-defense-security-report → DEFENSE.security_report (deleted 2026-02-01)
+// History: pf-ripple-image → was 402 stub (deleted 2026-01-28)
 const FULL_OVERLAP_FUNCTIONS = [
-  'pf-clarity-scan',           // → INCLUSIVE.scan
   'pf-marketing-strategy',     // → Uses free-tier router, standalone OK
-  'pf-defense-security-report', // → DEFENSE.security_report
-  'pf-modernizer-export',      // → MODERNIZER.export (but has active usage)
-  // 'pf-ripple-image' — DELETED 2026-02-01 (was 402 stub)
+  'pf-modernizer-export',      // → MODERNIZER.export (has active usage - ModernizerJobStatus.tsx)
 ];
 
 // Edge functions with partial overlap (DO NOT DELETE)
@@ -176,13 +176,12 @@ export function runScanAdapt(options: {
   let deletedCount = 0;
   let blockedCount = 0;
   
-  // Audit known edge functions from context
+  // Audit remaining edge functions (post v7.0.3 cleanup)
   const edgeFunctionsToAudit = [
-    { name: 'pf-clarity-scan', path: 'supabase/functions/pf-clarity-scan/index.ts' },
     { name: 'pf-marketing-strategy', path: 'supabase/functions/pf-marketing-strategy/index.ts' },
-    { name: 'pf-defense-security-report', path: 'supabase/functions/pf-defense-security-report/index.ts' },
     { name: 'pf-modernizer-export', path: 'supabase/functions/pf-modernizer-export/index.ts' },
-    // pf-ripple-image deleted 2026-02-01
+    // DELETED 2026-02-01: pf-clarity-scan → INCLUSIVE.scan
+    // DELETED 2026-02-01: pf-defense-security-report → DEFENSE.security_report
   ];
   
   for (const ef of edgeFunctionsToAudit) {

@@ -211,6 +211,43 @@ v7.0.0 canonical across all surfaces. Documentation synchronized. SEBA era live.
 
 ---
 
+## v7.0.4 — Edge Function Pruning
+
+```
+CMPSBL — System Log
+Version: v7.0.4
+Status: Live
+
+The substrate pruned its dead branches.
+
+What changed:
+Comprehensive audit of all archived edge functions identified functions with
+FULL overlap to substrate modules. Two edge functions permanently deleted:
+pf-clarity-scan (→ INCLUSIVE.scan), pf-defense-security-report (→ DEFENSE.security_report).
+Previous deletion pf-ripple-image (2026-01-28) recorded for completeness.
+
+The 10 high-value capabilities (hypothesis-test, systems-reasoning, self-critique,
+pattern-fusion, anomaly-detection, resilience-monitor, temporal-score, ethical-boundary,
+improvement-engine, curiosity-reflect) remain active via archived-adapters.ts—they
+are implementations, not duplicates.
+
+Remaining standalone functions (pf-marketing-strategy, pf-modernizer-export) kept
+as they serve distinct user-facing purposes with no substrate overlap.
+
+What was refused:
+- Deleting functions with active usage (pf-modernizer-export)
+- Deleting functions that ARE the capability implementations (10 adapted capabilities)
+- Automatic mass deletion without invocation analysis
+
+Current posture:
+Edge function debt reduced. Clarity scan dead, code lives in INCLUSIVE. Security
+report dead, code lives in DEFENSE. The substrate is lighter.
+
+The substrate prunes. The substrate clarifies. The substrate remains.
+```
+
+---
+
 ## Placeholder
 
 _Awaiting next major epoch._
