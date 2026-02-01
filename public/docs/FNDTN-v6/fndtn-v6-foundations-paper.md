@@ -174,7 +174,7 @@ CMPSBL FNDTN v6 publishes a complete LLMS.txt file that:
 
 ### 4.4 Recommendation for Adoption
 
-> **We developed LLMS.txt in the context of CMPSBL and propose it as a general standard for machine-readable AI context.**
+> **LLMS.txt was designed by [llmstxt.org](https://llmstxt.org). CMPSBL adopts this standard and recommends it for machine-readable AI context.**
 
 **Recommended Adopters:**
 - Web designers building AI-facing interfaces.
@@ -308,7 +308,7 @@ Potential extensions in future versions may include:
 
 3. Sweet Jr., K. E. (2025). *AI Governance Reference Namespace*. Zenodo. https://zenodo.org/records/18393018
 
-4. llmstxt.dev. *LLMs.txt Specification*. https://llmstxt.dev
+4. llmstxt.org. *LLMs.txt Specification*. https://llmstxt.org
 
 5. PromptFluid. *CMPSBL Substrate OS Documentation*. https://cmpsbl.com/docs
 

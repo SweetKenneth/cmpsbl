@@ -104,7 +104,7 @@ export default function Blog() {
     // v6.x.x Cluster Posts
     {
       title: "LLMs.txt: The Protocol for AI Context",
-      excerpt: "How we use LLMs.txt internally and why we recommend adoption as a standard for AI-human interaction.",
+      excerpt: "How we follow the llmstxt.org protocol and why we recommend adoption as a standard for AI-human interaction.",
       href: "/blog/llms-txt-protocol-ai-context",
       category: "Protocol",
       date: "2026-01-30",

@@ -263,7 +263,7 @@ CORTEX's comprehensive view of all 14 modules, their states, and relationships.
 The v6.0.0 release of CMPSBL Substrate OS, designated as the "Foundations" release. Presented as a reference standard for the substrate class, introducing CORTEX and INCLUSIVE as first-class modules.
 
 **LLMS.txt**
-A machine-readable context file placed at a domain root (e.g., `/llms.txt`) that describes AI capabilities, modules, endpoints, roles, and governance context. Developed in the context of CMPSBL and proposed as a general standard for AI system discoverability. Follows the llmstxt.dev pattern.
+A machine-readable context file placed at a domain root (e.g., `/llms.txt`) that describes AI capabilities, modules, endpoints, roles, and governance context. Originally designed by [llmstxt.org](https://llmstxt.org), adopted by CMPSBL as a standard for AI system discoverability.
 
 **AI Governance Reference Namespace (AIGVRN)**
 A governance standard for the substrate class providing 12 surfaces (Governance, Standards, Certification, Verification, Policy, Compliance, Security, Safety, Regulation, Sovereignty, Privacy, Control) with corresponding domain anchors. Root namespace: AIGVRN.com.

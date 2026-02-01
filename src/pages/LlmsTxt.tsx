@@ -20,8 +20,8 @@ const LLMS_TXT_CONTENT = `# promptfluid® CMPSBL OS — FNDTN v6.0.0
 
 ## STANDARD CLAIM
 
-LLMS.txt is a machine-readable specification format for AI systems.
-CMPSBL Substrate OS FNDTN v6.0.0 implements LLMS.txt as its primary machine context.
+LLMS.txt is a machine-readable specification format for AI systems, designed by llmstxt.org.
+CMPSBL Substrate OS FNDTN v6.0.0 adopts and implements LLMS.txt as its primary machine context.
 
 **WE RECOMMEND** that web designers, SaaS builders, and system architects include an LLMS.txt file at the root of their domains to describe AI capabilities, constraints, and governance context.
 
@@ -81,7 +81,7 @@ Observer (read-only) · Operator (actions) · Governor (admin)
 - Documentation: https://cmpsbl.com/docs
 - FNDTN Paper: https://cmpsbl.com/docs/FNDTN-v6/
 
-Following: https://llmstxt.dev
+Following the llmstxt.org standard: https://llmstxt.org
 `;
 
 const LLMS_TEMPLATE = `# [Your Product/Service Name] — Machine Context
@@ -142,7 +142,7 @@ export default function LlmsTxt() {
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
         <title>LLMS.txt Standard | promptfluid®</title>
-        <meta name="description" content="LLMS.txt is a machine-readable context standard for AI systems. We developed it, we follow it, and we recommend it for web designers and system builders." />
+        <meta name="description" content="LLMS.txt is a machine-readable context standard for AI systems developed by llmstxt.org. We follow it and recommend it for web designers and system builders." />
       </Helmet>
 
       <PublicNav />
@@ -152,14 +152,17 @@ export default function LlmsTxt() {
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-6">
             <Terminal className="w-4 h-4 text-primary" />
-            <span className="text-sm font-mono text-primary">Machine Context Standard</span>
+            <span className="text-sm font-mono text-primary">
+              <a href="https://llmstxt.org" target="_blank" rel="noopener noreferrer" className="hover:underline">llmstxt.org</a>
+            </span>
           </div>
           <h1 className="text-4xl md:text-5xl font-light mb-4">
             LLMS.txt
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto mb-4">
-            A machine-readable context format for AI systems. We developed LLMS.txt 
-            and recommend it for web designers, SaaS builders, and system architects.
+            A machine-readable context format for AI systems, designed by{" "}
+            <a href="https://llmstxt.org" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">llmstxt.org</a>. 
+            We follow this protocol and recommend it for web designers, SaaS builders, and system architects.
           </p>
           <p className="text-sm text-muted-foreground">
             Part of the <strong>FNDTN v6 Three-Surface Standard Stack</strong>: Substrate · Governance · Machine Context
@@ -408,24 +411,26 @@ export default function LlmsTxt() {
         {/* Standard Info */}
         <div className="mt-8 text-center">
           <p className="text-sm text-muted-foreground">
-            LLMS.txt is an internal protocol developed by PromptFluid® to make pages machine-readable for AI systems.
-            We recommend this standard for all web designers and system architects.
+            LLMS.txt is a protocol designed by{" "}
+            <a href="https://llmstxt.org" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">llmstxt.org</a>
+            {" "}to make pages machine-readable for AI systems.
+            PromptFluid® follows this standard and recommends it for all web designers and system architects.
           </p>
         </div>
 
-        {/* Author Attribution */}
+        {/* Attribution */}
         <div className="mt-12 p-6 rounded-lg bg-muted/30 text-center">
           <p className="text-sm text-muted-foreground">
-            LLMS.txt Standard by{" "}
+            LLMS.txt protocol by{" "}
             <a 
-              href="https://orcid.org/0009-0001-4237-1243" 
+              href="https://llmstxt.org" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-primary hover:underline"
             >
-              Kenneth E. Sweet Jr.
+              llmstxt.org
             </a>
-            {" "}• PromptFluid • January 2026
+            {" "}• CMPSBL implementation by PromptFluid®
           </p>
         </div>
       </main>

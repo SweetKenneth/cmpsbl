@@ -80,7 +80,9 @@ export default function LLMsTxtProtocolAIContext() {
             
             <div className="prose prose-lg prose-invert max-w-none space-y-6">
               <p className="text-xl text-muted-foreground leading-relaxed !mb-10">
-                When we first started building CMPSBL, we faced a fundamental problem: how do you help an AI system understand the context it's operating in? Not just the immediate request, but the broader environment—the capabilities available, the constraints in place, the conventions being followed. The solution we developed internally has proven so useful that we're now advocating for its broader adoption: LLMs.txt.
+                When we first started building CMPSBL, we faced a fundamental problem: how do you help an AI system understand the context it's operating in? Not just the immediate request, but the broader environment—the capabilities available, the constraints in place, the conventions being followed. The solution came from{" "}
+                <a href="https://llmstxt.org" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">llmstxt.org</a>
+                —a protocol that has proven so useful that we're now advocating for its broader adoption: LLMs.txt.
               </p>
 
               <h2 className="text-2xl font-bold text-foreground !mt-16 !mb-8 flex items-center gap-3">
@@ -97,16 +99,16 @@ export default function LLMsTxtProtocolAIContext() {
               </p>
               
               <p className="text-muted-foreground leading-relaxed">
-                We needed something analogous to robots.txt—a simple, standardized file that tells AI systems what they need to know about a project or service, in a format optimized for their consumption.
+                The team at llmstxt.org recognized this need and created something analogous to robots.txt—a simple, standardized file that tells AI systems what they need to know about a project or service, in a format optimized for their consumption.
               </p>
 
               <h2 className="text-2xl font-bold text-foreground !mt-16 !mb-8 flex items-center gap-3">
                 <Network className="w-6 h-6 text-primary" />
-                Our Solution: The LLMs.txt Standard
+                The LLMs.txt Standard
               </h2>
               
               <p className="text-muted-foreground leading-relaxed">
-                LLMs.txt is a plaintext file placed at the root of a project or domain that provides structured context specifically for AI consumption. It's designed to be:
+                LLMs.txt, designed by <a href="https://llmstxt.org" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">llmstxt.org</a>, is a plaintext file placed at the root of a project or domain that provides structured context specifically for AI consumption. It's designed to be:
               </p>
               
               <ul className="space-y-4 !my-8">
@@ -151,7 +153,7 @@ purpose: Evolving cognitive infrastructure
               </h2>
               
               <p className="text-muted-foreground leading-relaxed">
-                After using LLMs.txt internally for over a year, we've observed consistent benefits that we believe would extend to any project working with AI systems:
+                After adopting LLMs.txt for CMPSBL, we've observed consistent benefits that we believe extend to any project working with AI systems:
               </p>
               
               <p className="text-muted-foreground leading-relaxed">
@@ -188,11 +190,11 @@ purpose: Evolving cognitive infrastructure
               </ol>
               
               <p className="text-muted-foreground leading-relaxed">
-                We've published our internal LLMs.txt specification and example files in our documentation. We encourage other projects to adopt compatible formats, contributing to an emerging standard for AI context sharing.
+                We've published our CMPSBL LLMs.txt implementation and example files in our documentation. We encourage other projects to adopt the <a href="https://llmstxt.org" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">llmstxt.org</a> standard, contributing to a growing ecosystem for AI context sharing.
               </p>
               
               <p className="text-lg text-muted-foreground !mt-12 p-6 border-l-4 border-blue-500 bg-blue-500/5 rounded-r-lg">
-                The web has robots.txt to guide search crawlers. The AI era needs LLMs.txt to guide language models. We're building that standard, and we invite others to join us.
+                The web has robots.txt to guide search crawlers. The AI era needs LLMs.txt to guide language models. Thanks to <a href="https://llmstxt.org" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">llmstxt.org</a> for pioneering this standard—we follow it and recommend you do too.
               </p>
             </div>
 
