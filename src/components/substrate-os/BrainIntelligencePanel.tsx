@@ -466,10 +466,13 @@ export function BrainIntelligencePanel({ enabled }: BrainIntelligencePanelProps)
           </CardHeader>
           <CardContent className="px-4 pb-4 space-y-2">
             <Button
+              type="button"
               variant="outline"
               size="sm"
-              className="w-full justify-start gap-2 h-9"
-              onClick={() => {
+              className="w-full justify-start gap-2 h-9 touch-manipulation"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 toast.info('Tiering memories...');
                 tieringMutation.mutate(500);
               }}
@@ -484,10 +487,13 @@ export function BrainIntelligencePanel({ enabled }: BrainIntelligencePanelProps)
             </Button>
             
             <Button
+              type="button"
               variant="outline"
               size="sm"
-              className="w-full justify-start gap-2 h-9"
-              onClick={() => {
+              className="w-full justify-start gap-2 h-9 touch-manipulation"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 toast.info('Running batch tiering...');
                 batchTieringMutation.mutate({ batch_size: 500, max_batches: 10 });
               }}
@@ -502,10 +508,13 @@ export function BrainIntelligencePanel({ enabled }: BrainIntelligencePanelProps)
             </Button>
             
             <Button
+              type="button"
               variant="outline"
               size="sm"
-              className="w-full justify-start gap-2 h-9 text-amber-600 hover:text-amber-500 border-amber-500/30 hover:border-amber-500/50"
-              onClick={() => {
+              className="w-full justify-start gap-2 h-9 text-amber-600 hover:text-amber-500 border-amber-500/30 hover:border-amber-500/50 touch-manipulation"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 toast.info('Preview pruning...');
                 pruneMutation.mutate({ dry_run: true });
               }}
@@ -520,10 +529,13 @@ export function BrainIntelligencePanel({ enabled }: BrainIntelligencePanelProps)
             </Button>
             
             <Button
+              type="button"
               variant="outline"
               size="sm"
-              className="w-full justify-start gap-2 h-9 text-destructive hover:text-destructive border-destructive/30 hover:border-destructive/50"
-              onClick={() => {
+              className="w-full justify-start gap-2 h-9 text-destructive hover:text-destructive border-destructive/30 hover:border-destructive/50 touch-manipulation"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 toast.info('Pruning low-value memories...');
                 pruneMutation.mutate({});
               }}
