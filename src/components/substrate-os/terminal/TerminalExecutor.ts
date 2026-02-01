@@ -959,6 +959,112 @@ ${identityLine}│  Mode: ${roleDisplay}
     } else if (base === 'system.module') {
       result = await system.module(args[0] || '');
     }
+    // v7.0.0: Capability Auto-Adapt System
+    else if (base === 'system.scan_adapt') {
+      const { runScanAdapt, getManifest, listCapabilities, getCapability } = await import('@/lib/capabilities');
+      
+      const dryRun = !args.includes('--confirm');
+      const pruneUnused = args.includes('--prune-unused');
+      const verbose = args.includes('--verbose');
+      
+      const scanResult = runScanAdapt({ dryRun, confirm: !dryRun, pruneUnused, verbose });
+      
+      let output = `
+┌─ EDGE FUNCTION SCAN & ADAPT ─────────────────────────────────
+│ Mode: ${scanResult.mode.toUpperCase()}   Timestamp: ${scanResult.timestamp}
+├──────────────────────────────────────────────────────────────
+│ Findings: ${scanResult.findings.length}
+│ Adapted: ${scanResult.adaptedCount}   Deleted: ${scanResult.deletedCount}   Blocked: ${scanResult.blockedCount}
+│`;
+
+      for (const finding of scanResult.findings) {
+        output += `
+├─ ${finding.name}
+│  Path: ${finding.path}
+│  Overlap: ${finding.overlap}${finding.overlap === 'FULL' ? ' ⚠️ DELETE RECOMMENDED' : ''}
+│  Modules: ${finding.mergedLocations.join(', ') || 'NONE'}
+│  Reason: ${finding.reason}
+│  Metadata: ${finding.hasMetadata ? '✓ Valid' : '✗ Missing'}`;
+      }
+
+      if (scanResult.errors.length > 0) {
+        output += `
+├─ ERRORS:`;
+        for (const err of scanResult.errors) {
+          output += `
+│  ✗ ${err}`;
+        }
+      }
+
+      output += `
+└──────────────────────────────────────────────────────────────`;
+
+      if (dryRun) {
+        output += `
+
+  Dry-run complete. Use --confirm to apply safe adaptations.
+  Use --prune-unused to suggest deletions.`;
+      }
+
+      result = { success: true, data: scanResult };
+      return { success: true, output, data: scanResult };
+    }
+    else if (base === 'system.capabilities') {
+      const { listCapabilities } = await import('@/lib/capabilities');
+      
+      let filter: { status?: 'active' | 'deprecated' } | undefined;
+      if (args.includes('--active')) filter = { status: 'active' };
+      else if (args.includes('--deprecated')) filter = { status: 'deprecated' };
+      
+      const caps = listCapabilities(filter);
+      
+      let output = `
+┌─ REGISTERED CAPABILITIES ────────────────────────────────────
+│ Total: ${caps.length}   Filter: ${filter?.status || 'ALL'}
+├──────────────────────────────────────────────────────────────`;
+
+      for (const cap of caps) {
+        output += `
+│ ${cap.status === 'active' ? '●' : '○'} ${cap.id}
+│   Source: ${cap.source}   Risk: ${cap.risk}   Invokes: ${cap.invokeCount}`;
+      }
+
+      output += `
+└──────────────────────────────────────────────────────────────`;
+
+      return { success: true, output, data: caps };
+    }
+    else if (base === 'system.capability') {
+      const { getCapability } = await import('@/lib/capabilities');
+      
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Capability ID required\\n  Usage: system.capability <id>' };
+      }
+      
+      const cap = getCapability(args[0]);
+      if (!cap) {
+        return { success: false, output: `▓ Capability '${args[0]}' not found in registry` };
+      }
+      
+      const output = `
+┌─ CAPABILITY: ${cap.id} ──────────────────────────────────────
+│ Name: ${cap.name}
+│ Status: ${cap.status}
+│ Source: ${cap.source}
+│ Modules: ${cap.modules.join(', ')}
+│ Risk: ${cap.risk}
+│ Reversible: ${cap.reversible ? 'Yes' : 'No'}
+│ Description: ${cap.description}
+├──────────────────────────────────────────────────────────────
+│ Edge Path: ${cap.edgeFunctionPath || 'N/A'}
+│ Registered: ${cap.registeredAt}
+│ Last Invoked: ${cap.lastInvokedAt || 'Never'}
+│ Invoke Count: ${cap.invokeCount}
+│ Confidence: ${(cap.confidence * 100).toFixed(1)}%
+└──────────────────────────────────────────────────────────────`;
+
+      return { success: true, output, data: cap };
+    }
 
     // MODERNIZER module (via substrate)
     else if (base === 'modernizer.status') {

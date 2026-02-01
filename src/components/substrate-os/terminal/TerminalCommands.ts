@@ -160,6 +160,10 @@ export const SYSTEM_COMMANDS: CommandDefinition[] = [
   { command: 'system.module', description: 'Get specific module details', category: 'system', icon: Box, requiresOperator: false, args: '<module_name>' },
   { command: 'system.changelog', description: 'View living evolution log', category: 'system', icon: FileText, requiresOperator: false },
   { command: 'system.evolution', description: 'View living evolution log (alias)', category: 'system', icon: FileText, requiresOperator: false },
+  // v7.0.0: Capability Auto-Adapt System
+  { command: 'system.scan_adapt', description: 'Scan edge functions for overlap and auto-adapt capabilities', category: 'system', icon: Search, requiresOperator: true, args: '[--dry-run|--confirm|--prune-unused|--verbose]', example: 'system.scan_adapt --dry-run' },
+  { command: 'system.capabilities', description: 'List all registered capabilities', category: 'system', icon: Box, requiresOperator: false, args: '[--active|--deprecated|--all]' },
+  { command: 'system.capability', description: 'Get capability details', category: 'system', icon: Box, requiresOperator: false, args: '<capability_id>' },
 ];
 
 export const MODERNIZER_COMMANDS: CommandDefinition[] = [
