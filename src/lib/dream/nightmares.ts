@@ -1,6 +1,6 @@
 /**
  * DREAM Nightmare Mode — Simulation-Only Artifact Generator
- * v6.3.1 FNDTN — Read-Only, No Feedback Loops
+ * v7.0.0 FNDTN — Read-Only, No Feedback Loops
  * 
  * Nightmare Mode generates hypothetical threat scenarios for analysis.
  * These are ARTIFACTS ONLY — they do not trigger any system actions.

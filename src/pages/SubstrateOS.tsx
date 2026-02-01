@@ -1,5 +1,5 @@
 /**
- * promptfluid® substrate — OS Surface v6.0.0
+ * promptfluid® substrate — OS Surface v7.0.0
  * PREMIUM EDITION — 14 modules, 260+ commands, full introspection
  */
 
@@ -258,7 +258,7 @@ function SidebarNav({ groups, activeTab, onTabChange, collapsed = false, onClose
         {!collapsed && (
           <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-mono mt-3 pt-3 border-t border-border/20">
             <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>CMPSBL v6.0.0</span>
+            <span>CMPSBL v7.0.0</span>
           </div>
         )}
       </div>
@@ -946,7 +946,7 @@ export default function SubstrateOS() {
               <span>promptfluid® substrate os</span>
             </div>
             <span>•</span>
-            <span>v6.x.x</span>
+            <span>v7.x.x</span>
           </div>
           <div className="flex items-center gap-4">
             <a href="/changelog" className="hover:text-cyan-400 transition-colors">evolution</a>

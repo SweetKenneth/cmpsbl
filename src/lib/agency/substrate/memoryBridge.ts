@@ -2,7 +2,7 @@
  * Substrate Memory Bridge
  * Routes successful tasks to global substrate brain
  * 
- * v6.1.0: Now integrates with unified memory_core lifecycle
+ * v7.0.0: Now integrates with unified memory_core lifecycle
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -113,7 +113,7 @@ export async function storeHeuristic(
 
 /**
  * Store an insight (summary from successful task)
- * v6.1.0: Routes through memory_core lifecycle
+ * v7.0.0: Routes through memory_core lifecycle
  */
 export async function storeInsight(
   content: string,

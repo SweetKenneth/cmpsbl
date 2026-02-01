@@ -207,7 +207,7 @@ export default function Foundations() {
                   </Link>
                 </Button>
                 <Button variant="outline" className="w-full gap-2" asChild>
-                  <a href="/docs/FNDTN-v6/fndtn-v6-foundations-metadata.json" download>
+                  <a href="/docs/FNDTN-v7/fndtn-v7-foundations-metadata.json" download>
                     <Download className="w-4 h-4" />
                     Download Metadata (JSON)
                   </a>

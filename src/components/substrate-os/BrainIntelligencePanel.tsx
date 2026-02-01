@@ -206,9 +206,14 @@ function ReflectionCard({ reflection }: { reflection: any }) {
       )}
     >
       {/* Header - improved touch targets */}
-      <div 
-        className="flex items-center justify-between p-3 md:p-3 pb-2 min-h-[44px] cursor-pointer"
-        onClick={() => setIsExpanded(!isExpanded)}
+      <button 
+        type="button"
+        className="flex items-center justify-between p-3 md:p-3 pb-2 min-h-[44px] cursor-pointer w-full text-left touch-manipulation"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setIsExpanded(!isExpanded);
+        }}
       >
         <div className="flex items-center gap-2 flex-1 min-w-0">
           <Brain className="w-4 h-4 md:w-3.5 md:h-3.5 text-primary/70 shrink-0" />
@@ -220,10 +225,20 @@ function ReflectionCard({ reflection }: { reflection: any }) {
             isExpanded && "rotate-180"
           )} 
         />
-      </div>
+      </button>
       
       {/* Summary Preview - collapsed shows first 2 lines on mobile, 3 on desktop */}
-      <div className="px-3 pb-3" onClick={() => !isExpanded && setIsExpanded(true)}>
+      <button 
+        type="button"
+        className="px-3 pb-3 w-full text-left touch-manipulation"
+        onClick={(e) => {
+          if (!isExpanded) {
+            e.preventDefault();
+            e.stopPropagation();
+            setIsExpanded(true);
+          }
+        }}
+      >
         <FormattedText 
           text={parsed.summary || 'Processing reflection data...'} 
           className={cn(
@@ -231,7 +246,7 @@ function ReflectionCard({ reflection }: { reflection: any }) {
             !isExpanded && "line-clamp-2 md:line-clamp-3"
           )}
         />
-      </div>
+      </button>
       
       {/* Expanded content - FULL readable view with scrolling */}
       {isExpanded && (
