@@ -1,83 +1,74 @@
-# PromptFluid Test Suite
+# Substrate Test Suite
 
-Automated testing suite for PromptFluid creative generation and core functionality.
+Automated testing suite for the Substrate platform — v7.0.0
 
-## Setup
+## Test Framework
 
-```bash
-npm install --save-dev @jest/globals jest @types/jest ts-jest
-```
+This project uses **Vitest** (not Jest). Tests are configured via `vitest.config.ts`.
 
 ## Running Tests
 
 ```bash
 # Run all tests
-npm test
+bun run test
 
 # Run specific test file
-npm test tests/api/creative-generation.test.ts
+bun run test src/test/seba.test.ts
 
 # Run with coverage
-npm test -- --coverage
+bun run test --coverage
 
 # Run in watch mode
-npm test -- --watch
+bun run test --watch
 ```
 
 ## Test Structure
 
 ```
+src/
+├── test/                   # Test setup and utilities
+│   └── setup.ts
+├── lib/
+│   └── evolve/scan/__tests__/  # Unit tests co-located with modules
+│       └── normalizer.test.ts
 tests/
-├── api/                    # API endpoint tests
-│   └── creative-generation.test.ts
-├── integration/            # Integration tests
-├── unit/                   # Unit tests for utilities
-└── setup.ts               # Test configuration
+├── api/                    # Integration tests (require live backend)
+│   └── creative-generation.test.ts  # SKIPPED by default
+└── setup.ts                # Legacy setup (being migrated)
 ```
 
-## Environment Variables
+## Test Categories
 
-Tests require the following environment variables:
-- `VITE_SUPABASE_URL` - Supabase project URL
-- `VITE_SUPABASE_PUBLISHABLE_KEY` - Supabase anon key
-
-## Test Coverage Goals
-
-- **API Endpoints:** 90%+
-- **Critical Paths:** 100%
-- **Edge Functions:** Integration tests only
-- **UI Components:** Snapshot testing (future)
+| Category | Location | Status |
+|----------|----------|--------|
+| Unit Tests | `src/**/*.test.ts` | ✅ Active (33 tests) |
+| Integration Tests | `tests/api/` | ⏸️ Skipped (require live backend) |
 
 ## Writing New Tests
 
-### API Tests
+### Unit Tests (Vitest)
 ```typescript
-import { describe, it, expect, beforeAll } from '@jest/globals';
-import { createClient } from '@supabase/supabase-js';
+import { describe, it, expect, vi } from 'vitest';
 
-describe('My Feature', () => {
-  it('should do something', async () => {
-    // Test implementation
+describe('MyModule', () => {
+  it('should do something', () => {
+    expect(true).toBe(true);
   });
 });
 ```
 
-### Best Practices
-1. Use descriptive test names
-2. Test both success and error cases
-3. Mock external dependencies when needed
-4. Clean up test data after tests
-5. Use `beforeAll` for setup, `afterAll` for cleanup
+### Integration Tests
+Integration tests in `tests/api/` are skipped by default because they require:
+1. Deployed edge functions
+2. Valid Supabase credentials  
+3. Configured API keys
 
-## CI/CD Integration
+To run manually, remove `.skip` from the describe block.
 
-Tests run automatically on:
-- Pull requests
-- Main branch commits
-- Pre-deployment checks
+## Best Practices
 
-## Monitoring Tests
-
-- Tests report to test monitoring dashboard
-- Failed tests trigger alerts
-- Coverage reports generated on each run
+1. Co-locate unit tests with their modules (`__tests__/` folder)
+2. Use `vi.fn()` for mocks (not `jest.fn()`)
+3. Use `import.meta.env` for environment variables (not `process.env`)
+4. Test both success and error cases
+5. Keep integration tests separate and clearly marked
