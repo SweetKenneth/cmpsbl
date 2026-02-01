@@ -332,11 +332,17 @@ export function startDiscussion(input: string): DiscussionStep {
   discussionState.startedAt = new Date();
   discussionState.context = { originalInput: input, analysis };
   
-  if (analysis.hasAmbiguity && analysis.confidence < 0.7) {
-    // Need clarification first
+  // Be more lenient - only ask questions for very low confidence
+  if (analysis.hasAmbiguity && analysis.confidence < 0.5) {
+    // Need clarification first - but only for truly ambiguous requests
     discussionState.mode = 'clarify';
     discussionState.questions = generateClarifyingQuestions(analysis);
     discussionState.pendingQuestions = discussionState.questions.filter(q => q.required).length;
+    
+    // If we have a module and can infer the rest, skip questions
+    if (analysis.module !== 'system' || input.length > 50) {
+      return skipToPreview(analysis.module, analysis.changeType, analysis.description);
+    }
     
     const firstQuestion = discussionState.questions[0];
     return {
@@ -346,7 +352,17 @@ export function startDiscussion(input: string): DiscussionStep {
     };
   }
   
-  // High confidence — skip to preview
+  // Good enough confidence — skip directly to proceed (no preview gate)
+  if (analysis.confidence >= 0.7) {
+    discussionState.mode = 'complete';
+    return {
+      type: 'proceed',
+      content: null,
+      message: `📋 **Got it!** I'll work on: *${analysis.description.slice(0, 100)}*\n\nModule: **${analysis.module}** | Type: **${analysis.changeType.replace('_', ' ')}**\n\nStarting workflow...`,
+    };
+  }
+  
+  // Medium confidence — show preview but auto-approve for low complexity
   return skipToPreview(analysis.module, analysis.changeType, analysis.description);
 }
 
