@@ -204,3 +204,7 @@ export function buildScanResult(
     },
   };
 }
+
+// Version info
+export const INCLUSIVE_VERSION = '7.0.0';
+export const INCLUSIVE_CODENAME = 'Clarity';

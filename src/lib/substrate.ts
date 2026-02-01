@@ -1,6 +1,6 @@
 /**
  * promptfluid® Substrate Client
- * v6.4.0 — Cognitive Orchestration Substrate (14-Module Architecture)
+ * v7.0.0 — Cognitive Orchestration Substrate (14-Module Architecture)
  * 
  * Phase 4A: Engine Bus Integration
  * - Engine Bus: Canonical routing layer for all engine execution

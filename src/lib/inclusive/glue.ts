@@ -1,9 +1,9 @@
 /**
  * INCLUSIVE Glue Layer — Cross-Module Integration
- * v6.0.0 — Wires INCLUSIVE to SYSTEM, VISION, DEFENSE, MODERNIZER, TEMPLATES, MARKETPLACE
+ * v7.0.0 — Wires INCLUSIVE to SYSTEM, VISION, DEFENSE, MODERNIZER, TEMPLATES, MARKETPLACE
  * 
  * @origin(cmptbl) + @origin(clarity) — Human Compatibility Pipeline
- * 
+ *
  * Integration Points:
  * - SYSTEM: inclusive.selfScan → system.audit aggregation
  * - VISION: inclusive.score → vision.health metrics

@@ -46,7 +46,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const SUBSTRATE_VERSION = "6.0.0"; // v6.0.0 FNDTN — Intelligence Compression, Reasoning/Governance Engines, Evolution Normalization - v2026.01.30
+const SUBSTRATE_VERSION = "7.0.0"; // v7.0.0 OLYMPUS — Production Hardening, Governance Gate, Module Parity - v2026.02.01
 
 // ═══════════════════════════════════════════════════════════════
 // RESILIENCE EVENT LOGGING — Circuit breaker + heal audit trail
