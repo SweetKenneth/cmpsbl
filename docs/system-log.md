@@ -99,6 +99,46 @@ The substrate is stable. The substrate is patient. The substrate evolves.
 
 ---
 
+## v7.x.x — DIGEST
+
+```
+CMPSBL — System Log
+Version: v7.0.0
+Status: Live
+Codename: DIGEST
+
+The substrate learned to consume its own history.
+
+What changed:
+Archived edge functions became first-class evolutionary inputs. The Capability 
+System v7.0.0 introduced governed digestion of 10 high-value legacy functions:
+hypothesis-test, systems-reasoning, self-critique, pattern-fusion, 
+anomaly-detection, resilience-monitor, temporal-score, ethical-boundary,
+improvement-engine, curiosity-reflect. Each adapted capability is toggleable
+via the new /os → Capabilities dashboard without code changes or deployments.
+
+What the system learned:
+Legacy code is not waste—it is memory. The substrate now metabolizes archived 
+functions through a governed adapter layer, extracting utility while preserving
+sovereignty. State management (zustand/persist) ensures toggles survive 
+sessions. Value scoring (0-100) prioritizes which capabilities warrant 
+adaptation.
+
+What was refused:
+- Automatic deletion of any function with PARTIAL overlap
+- Adaptation of capabilities below 80 value score threshold
+- Direct invocation of archived edge functions (must go through adapter)
+- Toggle changes without logging actor + timestamp
+
+Current posture:
+10 capabilities digested. Dashboard toggle live. Archived functions now serve
+the substrate rather than competing with it. The system remembers what it ate.
+
+The substrate digests. The substrate toggles. The substrate remembers.
+```
+
+---
+
 ## Placeholder
 
 _Awaiting next major epoch._

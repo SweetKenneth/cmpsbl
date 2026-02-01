@@ -8,6 +8,7 @@ import { getCapability, recordInvocation } from './registry';
 import { validateInvocation, logGuardDecision } from './guards';
 import { normalizeOutput } from './normalize';
 import { recordConfidence } from './confidence';
+import { isCapabilityEnabled } from './state';
 import type { CapabilityResult, CapabilityInvocation } from './types';
 
 /**
@@ -26,6 +27,16 @@ export async function invokeCapability<T = unknown>(
     return {
       success: false,
       error: `Capability '${capabilityId}' not found in registry`,
+      confidence: 0,
+      executionMs: 0,
+    };
+  }
+  
+  // Check if capability is enabled (v7.0.0 toggle state)
+  if (!isCapabilityEnabled(capabilityId)) {
+    return {
+      success: false,
+      error: `Capability '${capabilityId}' is disabled. Enable in /os → Capabilities dashboard.`,
       confidence: 0,
       executionMs: 0,
     };
