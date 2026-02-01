@@ -78,31 +78,32 @@ export function EnhancedFooter() {
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
         
         {/* Main Footer Content */}
-        <div className="container mx-auto max-w-7xl px-4 py-12 md:py-16">
-          <div className="grid grid-cols-2 gap-8 sm:grid-cols-2 md:grid-cols-5 lg:gap-12">
-            {/* Brand Column */}
-            <div className="col-span-2 sm:col-span-2 md:col-span-1 mb-4 md:mb-0">
-              <Link to="/" className="inline-block hover:opacity-80 transition-opacity mb-4">
-                <CmpsblLogo size="md" />
+        <div className="container mx-auto max-w-7xl px-4 py-10 sm:py-12 md:py-16">
+          <div className="grid grid-cols-2 gap-6 sm:gap-8 md:grid-cols-5 lg:gap-12">
+            {/* Brand Column - Full width on mobile */}
+            <div className="col-span-2 md:col-span-1 mb-6 md:mb-0">
+              <Link to="/" className="inline-block hover:opacity-80 transition-opacity mb-3 sm:mb-4">
+                <CmpsblLogo size="sm" className="sm:hidden" />
+                <CmpsblLogo size="md" className="hidden sm:block" />
               </Link>
-              <p className="text-sm text-muted-foreground leading-relaxed mb-4 max-w-xs">
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-4 max-w-[280px]">
                 The cognitive operating system where machines learn to dream.
               </p>
               
-              {/* Social Links */}
-              <div className="flex items-center gap-2">
+              {/* Social Links - Larger touch targets on mobile */}
+              <div className="flex items-center gap-2 sm:gap-2">
                 {socialLinks.map((social) => (
                   <motion.a
                     key={social.name}
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-9 h-9 rounded-lg bg-muted/50 hover:bg-primary/10 hover:text-primary flex items-center justify-center transition-all duration-200"
+                    className="w-10 h-10 sm:w-9 sm:h-9 rounded-xl sm:rounded-lg bg-muted/50 hover:bg-primary/10 hover:text-primary flex items-center justify-center transition-all duration-200 touch-target tap-highlight-none"
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     title={social.name}
                   >
-                    <social.icon className="w-4 h-4" />
+                    <social.icon className="w-5 h-5 sm:w-4 sm:h-4" />
                   </motion.a>
                 ))}
               </div>
@@ -165,20 +166,20 @@ export function EnhancedFooter() {
           </div>
         </div>
 
-        {/* Bottom Bar */}
+        {/* Bottom Bar - Extra padding for mobile nav bar */}
         <div className="border-t border-border/50 bg-muted/20">
-          <div className="container mx-auto max-w-7xl px-4 py-5">
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+          <div className="container mx-auto max-w-7xl px-4 py-4 sm:py-5 pb-20 sm:pb-5">
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4">
               {/* Copyright */}
-              <p className="text-xs text-muted-foreground text-center sm:text-left">
+              <p className="text-[11px] sm:text-xs text-muted-foreground text-center sm:text-left">
                 © 2009-{currentYear} promptfluid® — All rights reserved
               </p>
               
-              {/* Brand Line */}
-              <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-xs text-muted-foreground">
+              {/* Brand Line - Stack on very small screens */}
+              <div className="flex flex-col sm:flex-row items-center gap-1.5 sm:gap-4 text-[11px] sm:text-xs text-muted-foreground text-center">
                 <span>CMPSBL (Composable) By PromptFluid</span>
                 <span className="hidden sm:inline text-border">•</span>
-                <span className="inline-flex items-center gap-1.5">
+                <span className="inline-flex items-center gap-1">
                   Made with <Heart className="w-3 h-3 text-red-500 fill-red-500 animate-pulse" /> by humans who care
                 </span>
               </div>

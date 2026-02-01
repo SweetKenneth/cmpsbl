@@ -214,7 +214,7 @@ function ScrollIndicator() {
 
 export function HeroMetaSubstrate() {
   return (
-    <section className="relative min-h-[100dvh] flex flex-col items-center justify-center px-4 sm:px-6 pt-20 pb-10 sm:py-20 overflow-hidden">
+    <section className="relative min-h-[100dvh] flex flex-col items-center justify-center px-4 sm:px-6 pt-16 sm:pt-20 pb-8 sm:pb-10 overflow-hidden safe-area-inset">
       {/* Multi-layer animated background */}
       <div className="absolute inset-0 bg-background">
         {/* Animated gradient orbs */}
@@ -342,7 +342,7 @@ export function HeroMetaSubstrate() {
               <span className="hidden sm:inline text-muted-foreground/80"> The infrastructure layer for AI that remembers.</span>
             </motion.p>
             
-            {/* CTA Buttons with enhanced styling */}
+            {/* CTA Buttons with enhanced mobile styling */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -352,7 +352,7 @@ export function HeroMetaSubstrate() {
               <Button 
                 asChild 
                 size="lg" 
-                className="gap-2.5 px-7 sm:px-10 h-13 sm:h-14 text-sm sm:text-base font-bold shadow-xl shadow-primary/25 hover:shadow-primary/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                className="gap-2.5 px-6 sm:px-10 h-14 sm:h-14 text-base font-bold shadow-xl shadow-primary/25 hover:shadow-primary/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] touch-target tap-highlight-none"
               >
                 <Link to="/codelab">
                   <Code className="w-5 h-5" />
@@ -364,7 +364,7 @@ export function HeroMetaSubstrate() {
                 asChild 
                 variant="outline" 
                 size="lg" 
-                className="gap-2.5 px-7 sm:px-10 h-13 sm:h-14 text-sm sm:text-base font-semibold group border-border/60 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300"
+                className="gap-2.5 px-6 sm:px-10 h-14 sm:h-14 text-base font-semibold group border-border/60 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 touch-target tap-highlight-none active:scale-[0.98]"
               >
                 <Link to="/demo">
                   <motion.div
