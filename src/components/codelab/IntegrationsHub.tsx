@@ -440,22 +440,24 @@ export function IntegrationsHub() {
             </div>
           </div>
 
-          {/* Section tabs */}
+          {/* Section tabs - mobile optimized */}
           <Tabs value={activeSection} onValueChange={(v) => setActiveSection(v as typeof activeSection)}>
-            <TabsList className="grid w-full grid-cols-3 max-w-md">
-              <TabsTrigger value="overview" className="gap-2">
-                <Sparkles className="w-4 h-4" />
-                Overview
-              </TabsTrigger>
-              <TabsTrigger value="template" className="gap-2">
-                <Code className="w-4 h-4" />
-                Template
-              </TabsTrigger>
-              <TabsTrigger value="guide" className="gap-2">
-                <BookOpen className="w-4 h-4" />
-                Guide
-              </TabsTrigger>
-            </TabsList>
+            <div className="overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 pb-2">
+              <TabsList className="inline-flex w-auto min-w-max sm:grid sm:w-full sm:grid-cols-3 sm:max-w-md">
+                <TabsTrigger value="overview" className="gap-2 whitespace-nowrap px-4">
+                  <Sparkles className="w-4 h-4" />
+                  Overview
+                </TabsTrigger>
+                <TabsTrigger value="template" className="gap-2 whitespace-nowrap px-4">
+                  <Code className="w-4 h-4" />
+                  Template
+                </TabsTrigger>
+                <TabsTrigger value="guide" className="gap-2 whitespace-nowrap px-4">
+                  <BookOpen className="w-4 h-4" />
+                  Guide
+                </TabsTrigger>
+              </TabsList>
+            </div>
 
             {/* Overview Tab */}
             <TabsContent value="overview" className="space-y-6 mt-6">

@@ -166,34 +166,36 @@ export default function CodeLab() {
 
       {/* Quick Stats Bar + Dialect Selector */}
       <section className="border-b border-border/50 bg-muted/30">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8 text-sm">
-            <div className="flex items-center gap-2">
-              <Package className="w-4 h-4 text-emerald-500" />
-              <span className="font-mono font-bold">{FREE_TEMPLATES.length}</span>
-              <span className="text-muted-foreground">Free Templates</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Layers className="w-4 h-4 text-cyan-500" />
-              <span className="font-mono font-bold">14</span>
-              <span className="text-muted-foreground">Modules</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Zap className="w-4 h-4 text-amber-500" />
-              <span className="font-mono font-bold">100%</span>
-              <span className="text-muted-foreground">Free SDK</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Star className="w-4 h-4 text-yellow-500" />
-              <span className="font-mono font-bold">MIT</span>
-              <span className="text-muted-foreground">License</span>
-            </div>
-            
-            {/* Dialect Selector - Display Only Toggle */}
-            <div className="flex items-center gap-2 pl-4 border-l border-border/50">
-              <Eye className="w-4 h-4 text-violet-500" />
-              <span className="text-muted-foreground text-xs">Display:</span>
-              <DialectSelector compact />
+        <div className="container mx-auto px-4 py-3 md:py-4">
+          <div className="overflow-x-auto scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
+            <div className="flex items-center justify-start md:justify-center gap-4 md:gap-8 text-sm min-w-max">
+              <div className="flex items-center gap-2 shrink-0">
+                <Package className="w-4 h-4 text-emerald-500" />
+                <span className="font-mono font-bold">{FREE_TEMPLATES.length}</span>
+                <span className="text-muted-foreground whitespace-nowrap">Free Templates</span>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <Layers className="w-4 h-4 text-cyan-500" />
+                <span className="font-mono font-bold">14</span>
+                <span className="text-muted-foreground">Modules</span>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <Zap className="w-4 h-4 text-amber-500" />
+                <span className="font-mono font-bold">100%</span>
+                <span className="text-muted-foreground whitespace-nowrap">Free SDK</span>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <Star className="w-4 h-4 text-yellow-500" />
+                <span className="font-mono font-bold">MIT</span>
+                <span className="text-muted-foreground">License</span>
+              </div>
+              
+              {/* Dialect Selector - Display Only Toggle */}
+              <div className="flex items-center gap-2 pl-4 border-l border-border/50 shrink-0">
+                <Eye className="w-4 h-4 text-violet-500" />
+                <span className="text-muted-foreground text-xs">Display:</span>
+                <DialectSelector compact />
+              </div>
             </div>
           </div>
         </div>
@@ -202,75 +204,77 @@ export default function CodeLab() {
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8 md:py-12">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
-          {/* Tab Navigation - Unique dev-style */}
-          <div className="flex justify-center">
-            <TabsList className="inline-flex h-auto gap-1 p-1 bg-muted/50 rounded-xl border border-border/50">
-              <TabsTrigger 
-                value="playground" 
-                className="flex items-center gap-2 data-[state=active]:bg-emerald-500/10 data-[state=active]:text-emerald-500 data-[state=active]:border-emerald-500/30 px-4 py-2.5 rounded-lg border border-transparent"
-              >
-                <Command className="w-4 h-4" />
-                <span className="hidden sm:inline">Playground</span>
-              </TabsTrigger>
-              <TabsTrigger 
-                value="templates"
-                className="flex items-center gap-2 data-[state=active]:bg-cyan-500/10 data-[state=active]:text-cyan-500 data-[state=active]:border-cyan-500/30 px-4 py-2.5 rounded-lg border border-transparent"
-              >
-                <Package className="w-4 h-4" />
-                <span className="hidden sm:inline">Templates</span>
-                <Badge variant="secondary" className="ml-1 text-xs">{FREE_TEMPLATES.length}</Badge>
-              </TabsTrigger>
-              <TabsTrigger 
-                value="explorer"
-                className="flex items-center gap-2 data-[state=active]:bg-violet-500/10 data-[state=active]:text-violet-500 data-[state=active]:border-violet-500/30 px-4 py-2.5 rounded-lg border border-transparent"
-              >
-                <Layers className="w-4 h-4" />
-                <span className="hidden sm:inline">Explorer</span>
-              </TabsTrigger>
-              <TabsTrigger 
-                value="workbench"
-                className="flex items-center gap-2 data-[state=active]:bg-amber-500/10 data-[state=active]:text-amber-500 data-[state=active]:border-amber-500/30 px-4 py-2.5 rounded-lg border border-transparent"
-              >
-                <Terminal className="w-4 h-4" />
-                <span className="hidden sm:inline">Workbench</span>
-              </TabsTrigger>
-              <TabsTrigger 
-                value="integrations"
-                className="flex items-center gap-2 data-[state=active]:bg-violet-500/10 data-[state=active]:text-violet-500 data-[state=active]:border-violet-500/30 px-4 py-2.5 rounded-lg border border-transparent"
-              >
-                <Plug className="w-4 h-4" />
-                <span className="hidden sm:inline">Integrations</span>
-              </TabsTrigger>
-              <TabsTrigger 
-                value="recipes"
-                className="flex items-center gap-2 data-[state=active]:bg-amber-500/10 data-[state=active]:text-amber-500 data-[state=active]:border-amber-500/30 px-4 py-2.5 rounded-lg border border-transparent"
-              >
-                <Sparkles className="w-4 h-4" />
-                <span className="hidden sm:inline">Recipes</span>
-                <Badge variant="secondary" className="ml-1 text-xs bg-amber-500/20 text-amber-400">New</Badge>
-              </TabsTrigger>
-              <TabsTrigger 
-                value="sdk"
-                className="flex items-center gap-2 data-[state=active]:bg-cyan-500/10 data-[state=active]:text-cyan-500 data-[state=active]:border-cyan-500/30 px-4 py-2.5 rounded-lg border border-transparent"
-              >
-                <BookOpen className="w-4 h-4" />
-                <span className="hidden sm:inline">SDK Ref</span>
-              </TabsTrigger>
-              <TabsTrigger 
-                value="showcase"
-                className="flex items-center gap-2 data-[state=active]:bg-purple-500/10 data-[state=active]:text-purple-500 data-[state=active]:border-purple-500/30 px-4 py-2.5 rounded-lg border border-transparent"
-              >
-                <Star className="w-4 h-4" />
-                <span className="hidden sm:inline">Showcase</span>
-              </TabsTrigger>
-              <TabsTrigger 
-                value="starter"
-                className="flex items-center gap-2 data-[state=active]:bg-rose-500/10 data-[state=active]:text-rose-500 data-[state=active]:border-rose-500/30 px-4 py-2.5 rounded-lg border border-transparent"
-              >
-                <Rocket className="w-4 h-4" />
-                <span className="hidden sm:inline">Launch</span>
-              </TabsTrigger>
-            </TabsList>
+          {/* Tab Navigation - Mobile-optimized horizontal scroll */}
+          <div className="w-full overflow-x-auto scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
+            <div className="flex justify-start md:justify-center min-w-max pb-2">
+              <TabsList className="inline-flex h-auto gap-1 p-1.5 bg-muted/50 rounded-xl border border-border/50">
+                <TabsTrigger 
+                  value="playground" 
+                  className="flex items-center gap-1.5 data-[state=active]:bg-emerald-500/10 data-[state=active]:text-emerald-500 data-[state=active]:border-emerald-500/30 px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-transparent text-sm whitespace-nowrap touch-target"
+                >
+                  <Command className="w-4 h-4 flex-shrink-0" />
+                  <span className="hidden xs:inline">Playground</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="templates"
+                  className="flex items-center gap-1.5 data-[state=active]:bg-cyan-500/10 data-[state=active]:text-cyan-500 data-[state=active]:border-cyan-500/30 px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-transparent text-sm whitespace-nowrap touch-target"
+                >
+                  <Package className="w-4 h-4 flex-shrink-0" />
+                  <span className="hidden xs:inline">Templates</span>
+                  <Badge variant="secondary" className="ml-1 text-[10px] md:text-xs h-5">{FREE_TEMPLATES.length}</Badge>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="explorer"
+                  className="flex items-center gap-1.5 data-[state=active]:bg-violet-500/10 data-[state=active]:text-violet-500 data-[state=active]:border-violet-500/30 px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-transparent text-sm whitespace-nowrap touch-target"
+                >
+                  <Layers className="w-4 h-4 flex-shrink-0" />
+                  <span className="hidden xs:inline">Explorer</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="workbench"
+                  className="flex items-center gap-1.5 data-[state=active]:bg-amber-500/10 data-[state=active]:text-amber-500 data-[state=active]:border-amber-500/30 px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-transparent text-sm whitespace-nowrap touch-target"
+                >
+                  <Terminal className="w-4 h-4 flex-shrink-0" />
+                  <span className="hidden xs:inline">Workbench</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="integrations"
+                  className="flex items-center gap-1.5 data-[state=active]:bg-violet-500/10 data-[state=active]:text-violet-500 data-[state=active]:border-violet-500/30 px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-transparent text-sm whitespace-nowrap touch-target"
+                >
+                  <Plug className="w-4 h-4 flex-shrink-0" />
+                  <span className="hidden xs:inline">Integrations</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="recipes"
+                  className="flex items-center gap-1.5 data-[state=active]:bg-amber-500/10 data-[state=active]:text-amber-500 data-[state=active]:border-amber-500/30 px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-transparent text-sm whitespace-nowrap touch-target"
+                >
+                  <Sparkles className="w-4 h-4 flex-shrink-0" />
+                  <span className="hidden xs:inline">Recipes</span>
+                  <Badge variant="secondary" className="ml-1 text-[10px] md:text-xs h-5 bg-amber-500/20 text-amber-400">New</Badge>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="sdk"
+                  className="flex items-center gap-1.5 data-[state=active]:bg-cyan-500/10 data-[state=active]:text-cyan-500 data-[state=active]:border-cyan-500/30 px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-transparent text-sm whitespace-nowrap touch-target"
+                >
+                  <BookOpen className="w-4 h-4 flex-shrink-0" />
+                  <span className="hidden xs:inline">SDK</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="showcase"
+                  className="flex items-center gap-1.5 data-[state=active]:bg-purple-500/10 data-[state=active]:text-purple-500 data-[state=active]:border-purple-500/30 px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-transparent text-sm whitespace-nowrap touch-target"
+                >
+                  <Star className="w-4 h-4 flex-shrink-0" />
+                  <span className="hidden xs:inline">Showcase</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="starter"
+                  className="flex items-center gap-1.5 data-[state=active]:bg-rose-500/10 data-[state=active]:text-rose-500 data-[state=active]:border-rose-500/30 px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-transparent text-sm whitespace-nowrap touch-target"
+                >
+                  <Rocket className="w-4 h-4 flex-shrink-0" />
+                  <span className="hidden xs:inline">Launch</span>
+                </TabsTrigger>
+              </TabsList>
+            </div>
           </div>
 
           {/* Playground Tab - Main landing with quick access */}
