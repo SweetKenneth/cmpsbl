@@ -1,6 +1,6 @@
 /**
  * INCLUSIVE Module — Human Compatibility Pipeline
- * v6.0.0 — 14th Substrate Module
+ * v7.0.0 — 14th Substrate Module
  * 
  * @origin(cmptbl) + @origin(clarity) — Migrated from archived CMPTBL/Clarity utilities
  * 

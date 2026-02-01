@@ -398,5 +398,17 @@ export {
   type EventQueryOptions,
 } from './events';
 
+// Version Registry v7.0.0
+export {
+  MODULE_VERSIONS,
+  CONTROL_PLANE_VERSIONS,
+  SUBSTRATE_VERSION,
+  SUBSTRATE_CODENAME,
+  SUBSTRATE_BUILD,
+  getModuleVersion,
+  getAllVersions,
+  isVersionCompatible,
+} from './versions';
+
 // Re-export substrate client from lib
 export { substrate, type SubstrateModule, type SubstrateRequest, type SubstrateResponse } from '../substrate';

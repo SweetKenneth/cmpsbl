@@ -443,3 +443,23 @@ export const atlas = AtlasControlPlane.getInstance();
 
 // Re-export types
 export type { AtlasControlPlane };
+
+// Re-export capability gate system
+export {
+  checkGate,
+  executeWithGate,
+  getCapabilityConfig,
+  updateCapabilityConfig,
+  type ExecutionMode,
+  type CapabilityConfig,
+  type GateRequest,
+  type GateResult,
+  type ExecuteResult,
+} from './capability-gate';
+
+// React hooks
+export { useAtlas, type UseAtlasReturn } from './useAtlas';
+
+// Version info
+export const ATLAS_VERSION = '7.0.0';
+export const ATLAS_CODENAME = 'Prometheus';

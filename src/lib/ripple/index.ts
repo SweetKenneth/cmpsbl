@@ -422,3 +422,7 @@ export const ripple = RippleEventBus.getInstance();
 
 // Re-export types
 export type { RippleEventBus };
+
+// Version info
+export const RIPPLE_VERSION = '7.0.0';
+export const RIPPLE_CODENAME = 'Cascade';
