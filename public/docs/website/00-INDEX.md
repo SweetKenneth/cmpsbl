@@ -22,6 +22,7 @@ This documentation provides everything you need to understand, evaluate, and bui
 | [Getting Started](./06-GETTING-STARTED.md) | Developers |
 | [Pricing & Licensing](./07-LICENSING.md) | Decision Makers |
 | [FAQ](./08-FAQ.md) | Everyone |
+| [**Synergy Capabilities**](./09-SYNERGY-CAPABILITIES.md) | **Technical Evaluators, Investors** |
 
 ---
 
