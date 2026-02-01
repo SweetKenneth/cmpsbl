@@ -149,23 +149,28 @@ function SubstrateVisualization() {
 
   const currentUseCase = useCases[activeUseCase];
   
+  // Calculate orbit radius as percentage based on container
+  const orbitRadius = 42; // percentage from center for icons
+  
   return (
-    <div className="relative w-full max-w-[280px] sm:max-w-[380px] md:max-w-[460px] aspect-square mx-auto">
-      {/* Floating particles */}
-      {Array.from({ length: 20 }).map((_, i) => (
-        <FloatingParticle
-          key={i}
-          delay={i * 0.5}
-          duration={4 + Math.random() * 2}
-          size={2 + Math.random() * 3}
-          color={`hsl(${180 + Math.random() * 60} 80% 60% / 0.6)`}
-          startX={20 + Math.random() * 60}
-          startY={70 + Math.random() * 30}
-        />
-      ))}
+    <div className="relative w-full max-w-[260px] sm:max-w-[380px] md:max-w-[460px] aspect-square mx-auto flex items-center justify-center">
+      {/* Floating particles - hidden on mobile for cleaner look */}
+      <div className="hidden sm:block">
+        {Array.from({ length: 20 }).map((_, i) => (
+          <FloatingParticle
+            key={i}
+            delay={i * 0.5}
+            duration={4 + Math.random() * 2}
+            size={2 + Math.random() * 3}
+            color={`hsl(${180 + Math.random() * 60} 80% 60% / 0.6)`}
+            startX={20 + Math.random() * 60}
+            startY={70 + Math.random() * 30}
+          />
+        ))}
+      </div>
       
-      {/* SVG container for rings and connections */}
-      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 320 320">
+      {/* SVG container for rings and connections - centered */}
+      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 320 320" preserveAspectRatio="xMidYMid meet">
         <defs>
           <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="hsl(var(--neon-cyan))" stopOpacity="0.8" />
@@ -222,12 +227,11 @@ function SubstrateVisualization() {
         />
       </svg>
       
-      {/* Module icons orbiting */}
+      {/* Module icons orbiting - properly centered */}
       {coreModules.map((mod, i) => {
         const angle = (i / coreModules.length) * Math.PI * 2 - Math.PI / 2;
-        const radius = 44; // percentage
-        const x = 50 + Math.cos(angle) * radius;
-        const y = 50 + Math.sin(angle) * radius;
+        const x = 50 + Math.cos(angle) * orbitRadius;
+        const y = 50 + Math.sin(angle) * orbitRadius;
         const isActive = i === activeModule;
         
         return (
@@ -445,14 +449,14 @@ export function HeroMetaSubstrate() {
       />
 
       <div className="relative z-10 w-full max-w-7xl mx-auto">
-        {/* Top section: Text + Visualization side by side */}
-        <div className="grid lg:grid-cols-2 gap-4 sm:gap-8 lg:gap-12 items-center mb-8 sm:mb-16">
-          {/* Left: Headlines and CTAs */}
+        {/* Top section: Text + Visualization side by side - TEXT FIRST on mobile */}
+        <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center mb-8 sm:mb-16">
+          {/* Left: Headlines and CTAs - ORDER 1 on all screens */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-center lg:text-left order-2 lg:order-1"
+            className="text-center lg:text-left order-1"
           >
             {/* Tagline */}
             <motion.div
@@ -526,12 +530,12 @@ export function HeroMetaSubstrate() {
             </div>
           </motion.div>
           
-          {/* Right: Substrate Visualization - shows first on mobile, smaller on mobile */}
+          {/* Right: Substrate Visualization - ORDER 2 on all screens */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="order-1 lg:order-2 -mx-2 sm:mx-0"
+            className="order-2 flex items-center justify-center"
           >
             <SubstrateVisualization />
           </motion.div>
