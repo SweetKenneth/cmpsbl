@@ -119,9 +119,10 @@ export function FeaturedSection({ onBuyOS, onBuyWorldEngine, isLoading }: Featur
                 {/* Licensing tiers summary */}
                 <div className="space-y-2 mb-6 p-4 rounded-xl bg-muted/50 border border-border/50">
                   {[
-                    { text: 'Developer License — $15,000/yr', highlight: true },
-                    { text: 'Research License — $80,000/yr', highlight: false },
-                    { text: 'Enterprise License — $180,000/yr', highlight: false },
+                    { text: 'Developer License — $2,999/yr', highlight: true },
+                    { text: 'Team License — $9,999/yr', highlight: false },
+                    { text: 'Research License — $19,999/yr', highlight: false },
+                    { text: 'Enterprise License — $49,999/yr', highlight: false },
                     { text: 'Strategic License — Custom', highlight: true },
                   ].map(({ text, highlight }) => (
                     <div key={text} className="flex items-center gap-2 text-sm">
@@ -142,7 +143,7 @@ export function FeaturedSection({ onBuyOS, onBuyWorldEngine, isLoading }: Featur
                         whileInView={{ scale: 1 }}
                         viewport={{ once: true }}
                       >
-                        $15k
+                        $2,999
                       </motion.span>
                       <span className="text-muted-foreground">/year</span>
                     </div>

@@ -34,7 +34,7 @@ const jsonLd = {
   },
   "offers": {
     "@type": "Offer",
-    "price": "15000",
+    "price": "2999",
     "priceCurrency": "USD",
     "description": "Developer License - Annual"
   },
@@ -89,7 +89,7 @@ const faqItems = [
   },
   {
     question: "What's included in a license?",
-    answer: "Developer License ($15,000/yr) includes: complete 14-module kernel, persistent memory system, Dream evolution engine, multi-provider AI routing, security perimeter, observability dashboard, 260+ terminal commands, and deployment bundle. Research, Enterprise, and Strategic licenses available for larger deployments."
+    answer: "Developer License ($2,999/yr) includes: complete 14-module kernel, persistent memory system, Dream evolution engine, multi-provider AI routing, security perimeter, observability dashboard, 260+ terminal commands, and deployment bundle. Team, Research, Enterprise, and Strategic licenses available for larger deployments."
   },
   {
     question: "Can the entire IP be acquired?",
@@ -106,7 +106,7 @@ export default function SubstrateIntelligence() {
     <>
       <SEO 
         title="Substrate Intelligence | CMPSBL - AI Drift Prevention Technology"
-        description="The world's first cognitive orchestration substrate. 14-module kernel solving AI chatbot behavioral drift through persistent memory, self-improvement, and autonomous learning. Developer License from $15,000/yr or acquire the IP."
+        description="The world's first cognitive orchestration substrate. 14-module kernel solving AI chatbot behavioral drift through persistent memory, self-improvement, and autonomous learning. Developer License from $2,999/yr or acquire the IP."
         keywords={["AI behavioral drift", "chatbot consistency", "persistent memory AI", "self-improving AI", "cognitive orchestration", "AI substrate", "CMPSBL", "promptfluid", "autonomous AI", "enterprise AI"]}
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
@@ -325,8 +325,8 @@ Boot complete in 117ms`}
                     <CardTitle className="text-xl">Developer License</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className="text-3xl font-bold text-primary">$15,000<span className="text-lg font-normal text-muted-foreground">/year</span></div>
-                    <p className="text-sm text-muted-foreground">Complete 14-module kernel. <strong className="text-foreground">Self-host on your infrastructure. BYOK architecture.</strong> Research, Enterprise, and Strategic licenses also available.</p>
+                    <div className="text-3xl font-bold text-primary">$2,999<span className="text-lg font-normal text-muted-foreground">/year</span></div>
+                    <p className="text-sm text-muted-foreground">Complete 14-module kernel. <strong className="text-foreground">Self-host on your infrastructure. BYOK architecture.</strong> Team, Research, Enterprise, and Strategic licenses also available.</p>
                     <div className="flex items-center gap-2 text-xs text-primary">
                       <CheckCircle2 className="w-4 h-4" />
                       <span>Instant checkout • Developer access in minutes</span>

@@ -179,7 +179,7 @@ export default function SubstrateLicensing() {
     <>
       <SEO
         title="Substrate Licensing | CMPSBL - Cognitive Infrastructure"
-        description="License CMPSBL cognitive infrastructure for your models, apps, and autonomous systems. Developer ($15K/yr), Research ($80K/yr), Enterprise ($180K/yr), and Strategic options."
+        description="License CMPSBL cognitive infrastructure for your models, apps, and autonomous systems. Developer ($2,999/yr), Team ($9,999/yr), Research ($19,999/yr), Enterprise ($49,999/yr), and Strategic options."
         keywords={["CMPSBL licensing", "cognitive infrastructure", "AI substrate", "developer license", "enterprise AI"]}
       />
 
