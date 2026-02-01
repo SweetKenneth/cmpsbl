@@ -126,14 +126,14 @@ This library is part of the **FNDTN v7** standards package, which presents:
 | [65-SPACED-REPETITION.md](./65-SPACED-REPETITION.md) | Spaced Repetition | SM-2 algorithm implementation |
 | [66-SEBA-MODULE.md](./66-SEBA-MODULE.md) | **SEBA** | Self-Evolving Bounded Agent — genuine bounded autonomy |
 
-### Evolution & Capabilities
+### Evolution & Synergy Engine
 
 | Document | Title | Description |
 |----------|--------|-------------|
 | [75-EVOLUTION-LIFECYCLE.md](./75-EVOLUTION-LIFECYCLE.md) | Evolution Lifecycle | Modernizer 5-phase cycle |
 | [76-EVOLUTION-AUTONOMY.md](./76-EVOLUTION-AUTONOMY.md) | Evolution Autonomy | Governed autonomy settings |
-| [77-SYNERGY-PIPELINES.md](./77-SYNERGY-PIPELINES.md) | Synergy Pipelines | Emergent module combinations |
-| [78-CAPABILITIES.md](./78-CAPABILITIES.md) | **Synergy Capabilities** | Complete capability catalog with 10 cross-module features |
+| [77-SYNERGY-PIPELINES.md](./77-SYNERGY-PIPELINES.md) | **Synergy Pipelines** | 24 cross-module executable pipelines |
+| [78-CAPABILITIES.md](./78-CAPABILITIES.md) | **Synergy Capabilities** | 34 total capabilities (24 synergies + 10 adapted) |
 
 ### Supplementary Materials
 
