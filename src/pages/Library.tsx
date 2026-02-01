@@ -22,60 +22,18 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
+// Curated public-facing documentation for investors and users
+// Removed internal implementation details, kept business-value focused content
 const LIBRARY_DOCS = [
-  // Core Documentation
-  { id: "00", name: "INDEX", title: "Document Library Index" },
+  { id: "00", name: "INDEX", title: "Documentation Overview" },
   { id: "01", name: "EXECUTIVE-SUMMARY", title: "Executive Summary" },
-  { id: "02", name: "SYSTEM-ARCHITECTURE", title: "System Architecture" },
-  { id: "03", name: "USERS-GUIDE", title: "User's Guide" },
-  { id: "04", name: "API-REFERENCE", title: "API Reference" },
-  
-  // Module Documentation
-  { id: "10", name: "CORE-MODULE", title: "CORE Module" },
-  { id: "11", name: "RIPPLE-MODULE", title: "RIPPLE Module" },
-  { id: "12", name: "ACCESS-MODULE", title: "ACCESS Module" },
-  { id: "13", name: "BRAIN-MODULE", title: "BRAIN Module" },
-  { id: "14", name: "DECODE-MODULE", title: "DECODE Module" },
-  { id: "15", name: "DREAM-MODULE", title: "DREAM Module" },
-  { id: "16", name: "DEFENSE-MODULE", title: "DEFENSE Module" },
-  { id: "17", name: "NEXUS-MODULE", title: "NEXUS Module" },
-  { id: "18", name: "VISION-MODULE", title: "VISION Module" },
-  { id: "19", name: "INTEGRATION-MODULE", title: "INTEGRATION Module" },
-  { id: "20", name: "SYSTEM-MODULE", title: "SYSTEM Module" },
-  { id: "21", name: "MODERNIZER-MODULE", title: "MODERNIZER Module" },
-  { id: "22", name: "CORTEX-MODULE", title: "CORTEX Module" },
-  { id: "23", name: "INCLUSIVE-MODULE", title: "INCLUSIVE Module" },
-  
-  // Validation & Evidence
-  { id: "30", name: "VALIDATION-METHODOLOGY", title: "Validation Methodology" },
-  { id: "31", name: "PERFORMANCE-BENCHMARKS", title: "Performance Benchmarks" },
-  { id: "32", name: "LIVE-SYSTEM-EVIDENCE", title: "Live System Evidence" },
-  
-  // Reference
-  { id: "40", name: "GLOSSARY", title: "Glossary" },
-  { id: "41", name: "BIBLIOGRAPHY", title: "Bibliography" },
-  { id: "42", name: "LICENSING-INFO", title: "Licensing Information" },
-  { id: "50", name: "MARKETPLACE-REFERENCE", title: "Marketplace Reference" },
-  
-  // Advanced Topics
-  { id: "60", name: "CODELAB", title: "CodeLab" },
-  { id: "61", name: "AGENTS-AND-FORGE", title: "Agents and Forge" },
-  { id: "62", name: "TEMPLATE-GENERATOR", title: "Template Generator" },
-  { id: "63", name: "CLM", title: "Constant Learning Mode" },
-  { id: "64", name: "MEMORY-ARCHITECTURE", title: "Memory Architecture" },
-  { id: "65", name: "SPACED-REPETITION", title: "Spaced Repetition System" },
-  { id: "66", name: "SEBA-MODULE", title: "SEBA Module" },
-  
-  // Evolution & Synergy
-  { id: "75", name: "EVOLUTION-LIFECYCLE", title: "Evolution Lifecycle" },
-  { id: "76", name: "EVOLUTION-AUTONOMY", title: "Evolution Autonomy" },
-  { id: "77", name: "SYNERGY-PIPELINES", title: "Synergy Pipelines" },
-  { id: "78", name: "CAPABILITIES", title: "Synergy Capabilities Reference" },
-  
-  // Evolving Systems
-  { id: "95", name: "SUPPORT-BOT", title: "Support Bot" },
-  { id: "96", name: "DECODE-PERSONALITY", title: "DECODE Personality Profiles" },
-  { id: "97", name: "SUPPORT-BOT-TRAINING", title: "Support Bot Training Data" },
+  { id: "02", name: "WHAT-IS-PROMPTFLUID", title: "What is promptfluid?" },
+  { id: "03", name: "KEY-CAPABILITIES", title: "Key Capabilities" },
+  { id: "04", name: "USE-CASES", title: "Use Cases" },
+  { id: "05", name: "ARCHITECTURE", title: "Architecture Overview" },
+  { id: "06", name: "GETTING-STARTED", title: "Getting Started" },
+  { id: "07", name: "LICENSING", title: "Pricing & Licensing" },
+  { id: "08", name: "FAQ", title: "FAQ" },
 ];
 
 export default function Library() {
@@ -96,7 +54,8 @@ export default function Library() {
       setLoading(true);
       try {
         const filename = `${currentDoc.id}-${currentDoc.name}.md`;
-        const response = await fetch(`/docs/library/${filename}`);
+        // Load from public-facing website docs
+        const response = await fetch(`/docs/website/${filename}`);
         if (response.ok) {
           const text = await response.text();
           setContent(text);
@@ -128,7 +87,7 @@ export default function Library() {
   const downloadDoc = () => {
     const filename = `${currentDoc.id}-${currentDoc.name}.md`;
     const a = document.createElement("a");
-    a.href = `/docs/library/${filename}`;
+    a.href = `/docs/website/${filename}`;
     a.download = filename;
     a.click();
   };
@@ -136,8 +95,8 @@ export default function Library() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
-        <title>{currentDoc.title} — FNDTN v6 Library | promptfluid®</title>
-        <meta name="description" content={`${currentDoc.title} - CMPSBL Substrate OS v6.0.0 documentation library.`} />
+        <title>{currentDoc.title} — Documentation | promptfluid®</title>
+        <meta name="description" content={`${currentDoc.title} - promptfluid® cognitive infrastructure documentation.`} />
       </Helmet>
 
       <PublicNav />
@@ -167,9 +126,9 @@ export default function Library() {
             <div className="p-4 lg:p-4">
               <div className="flex items-center gap-2 mb-4 px-2 lg:px-0">
                 <Layers className="w-5 h-5 text-primary" />
-                <h2 className="font-semibold text-base">FNDTN v6 Library</h2>
+                <h2 className="font-semibold text-base">Documentation</h2>
               </div>
-              <Badge variant="outline" className="mb-4 ml-2 lg:ml-0">{LIBRARY_DOCS.length} Documents</Badge>
+              <Badge variant="outline" className="mb-4 ml-2 lg:ml-0">v7.0.0</Badge>
               
               <nav className="space-y-1">
                 {LIBRARY_DOCS.map((doc) => (
