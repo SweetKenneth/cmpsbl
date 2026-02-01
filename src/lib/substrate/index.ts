@@ -297,5 +297,42 @@ export {
 
 export { useArchivedCapabilities, type UseArchivedCapabilitiesReturn } from './capabilities/useArchivedCapabilities';
 
+// Support Bot v1.0.0 — Governed Evolving Support System
+export {
+  supportBot,
+  SupportBotEngine,
+  DEFAULT_SUPPORT_BOT_CONFIG,
+  type SupportBotState,
+  type SupportBotConfig,
+  type SupportBotPhase,
+  type SupportCommand,
+  type SupportCommandResult,
+  type SupportResponse,
+  type SupportTicket,
+  type Resolution,
+  type SupportMemory,
+  type MemoryMatch as SupportMemoryMatch,
+  type RecallResult as SupportRecallResult,
+  type DetectedIntent,
+  type DetectedSentiment,
+  type IntentCategory,
+  type PainPattern,
+  type PatternAnalysis,
+  type LearningEvent,
+  type ConversationMessage,
+  type AuditEntry,
+  type EscalationReason,
+  type UserFeedback,
+  type TicketStatus,
+  type ResolutionVerification,
+  type LearningState as SupportLearningState,
+  type SessionState,
+  type BotStats,
+  type ComplianceReport,
+  type SuggestedAction,
+} from './support-bot';
+
+export { useSupportBot, type UseSupportBotReturn } from './support-bot/useSupportBot';
+
 // Re-export substrate client from lib
 export { substrate, type SubstrateModule, type SubstrateRequest, type SubstrateResponse } from '../substrate';
