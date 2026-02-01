@@ -18,9 +18,10 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { 
   FileText, Download, ChevronLeft, ChevronRight, 
-  BookOpen, Layers, Menu, X, ExternalLink, Copy, Check
+  BookOpen, Layers, Menu, X, ExternalLink, Copy, Check, Printer
 } from "lucide-react";
 import { toast } from "sonner";
+import { usePrintDocument } from "@/hooks/usePrintDocument";
 
 // Curated public-facing documentation for investors and users
 // Removed internal implementation details, kept business-value focused content
@@ -42,7 +43,7 @@ export default function Library() {
   const [loading, setLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [copied, setCopied] = useState(false);
-  
+  const { printDocument } = usePrintDocument();
   const docParam = searchParams.get("doc");
   const currentDoc = LIBRARY_DOCS.find(d => `${d.id}-${d.name}` === docParam) || LIBRARY_DOCS[0];
   const currentIndex = LIBRARY_DOCS.findIndex(d => d === currentDoc);
@@ -84,12 +85,12 @@ export default function Library() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const downloadDoc = () => {
-    const filename = `${currentDoc.id}-${currentDoc.name}.md`;
-    const a = document.createElement("a");
-    a.href = `/docs/website/${filename}`;
-    a.download = filename;
-    a.click();
+  const handlePrintDownload = () => {
+    printDocument({
+      content,
+      title: currentDoc.title,
+      docId: currentDoc.id,
+    });
   };
 
   return (
@@ -177,11 +178,11 @@ export default function Library() {
                 <h1 className="font-semibold truncate text-sm sm:text-base">{currentDoc.title}</h1>
               </div>
               <div className="flex items-center gap-1 shrink-0">
-                <Button variant="ghost" size="icon" onClick={copyLink} className="h-10 w-10 sm:h-9 sm:w-9">
+                <Button variant="ghost" size="icon" onClick={copyLink} className="h-10 w-10 sm:h-9 sm:w-9" title="Copy link">
                   {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                 </Button>
-                <Button variant="ghost" size="icon" onClick={downloadDoc} className="h-10 w-10 sm:h-9 sm:w-9">
-                  <Download className="w-4 h-4" />
+                <Button variant="ghost" size="icon" onClick={handlePrintDownload} className="h-10 w-10 sm:h-9 sm:w-9" title="Download as PDF">
+                  <Printer className="w-4 h-4" />
                 </Button>
               </div>
             </div>
