@@ -21,7 +21,18 @@ export type CapabilityId =
   | 'cross_domain_insight_synthesis'
   | 'graceful_degradation_chain'
   | 'intent_amplification'
-  | 'evolution_confidence_scoring';
+  | 'evolution_confidence_scoring'
+  // Archived function integrations
+  | 'hypothesis_validation'
+  | 'systems_causal_analysis'
+  | 'autonomous_quality_review'
+  | 'pattern_fusion_synthesis'
+  | 'behavioral_drift_detection'
+  | 'resilience_orchestration'
+  | 'temporal_memory_scoring'
+  | 'ethical_guardrails'
+  | 'continuous_improvement_engine'
+  | 'active_learning_triggers';
 
 export type ModuleLayer = 'Kernel' | 'Cognitive' | 'Operational' | 'Admin' | 'Orchestrator';
 
@@ -156,6 +167,111 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     userBenefit: 'Safe evolution with transparent risk assessment',
     status: 'active',
     emergentFrom: 'SEP-001',
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ARCHIVED EDGE FUNCTION INTEGRATIONS (Top 10)
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  hypothesis_validation: {
+    id: 'hypothesis_validation',
+    name: 'Hypothesis Validation',
+    description: 'Validates hunches with IF-THEN scenarios before costly execution',
+    modules: ['BRAIN', 'MODERNIZER'],
+    layer: 'Cognitive',
+    userBenefit: 'Test assumptions before committing resources',
+    status: 'active',
+    emergentFrom: 'pf-brain-hypothesis-test',
+  },
+  systems_causal_analysis: {
+    id: 'systems_causal_analysis',
+    name: 'Systems Causal Analysis',
+    description: 'Multi-factor dependency mapping with root cause identification',
+    modules: ['BRAIN', 'CORTEX'],
+    layer: 'Cognitive',
+    userBenefit: 'Understand why things break, not just what',
+    status: 'active',
+    emergentFrom: 'pf-brain-systems-reasoning',
+  },
+  autonomous_quality_review: {
+    id: 'autonomous_quality_review',
+    name: 'Autonomous Quality Review',
+    description: 'Self-evaluates outputs on clarity, accuracy, aesthetics, completeness',
+    modules: ['MODERNIZER', 'CORTEX'],
+    layer: 'Orchestrator',
+    userBenefit: 'Auto-polished outputs without manual review',
+    status: 'active',
+    emergentFrom: 'pf-brain-self-critique',
+  },
+  pattern_fusion_synthesis: {
+    id: 'pattern_fusion_synthesis',
+    name: 'Pattern Fusion Synthesis',
+    description: 'Merges insights from unrelated domains to solve problems',
+    modules: ['DREAM', 'BRAIN'],
+    layer: 'Cognitive',
+    userBenefit: 'Creative solutions from unexpected combinations',
+    status: 'active',
+    emergentFrom: 'pf-brain-pattern-fusion',
+  },
+  behavioral_drift_detection: {
+    id: 'behavioral_drift_detection',
+    name: 'Behavioral Drift Detection',
+    description: 'Statistical anomaly detection for novel attack patterns',
+    modules: ['DEFENSE', 'VISION'],
+    layer: 'Operational',
+    userBenefit: 'Catch threats traditional rules miss',
+    status: 'active',
+    emergentFrom: 'pf-defense-anomaly-detection',
+  },
+  resilience_orchestration: {
+    id: 'resilience_orchestration',
+    name: 'Resilience Orchestration',
+    description: 'Detects failures and applies automatic fixes with high confidence',
+    modules: ['CORE', 'SYSTEM'],
+    layer: 'Kernel',
+    userBenefit: 'Self-healing infrastructure',
+    status: 'active',
+    emergentFrom: 'pf-resilience-monitor',
+  },
+  temporal_memory_scoring: {
+    id: 'temporal_memory_scoring',
+    name: 'Temporal Memory Scoring',
+    description: 'Time-weighted freshness scoring for memory relevance',
+    modules: ['BRAIN', 'DECODE'],
+    layer: 'Cognitive',
+    userBenefit: 'Right memories surface at the right time',
+    status: 'active',
+    emergentFrom: 'pf-brain-temporal-score',
+  },
+  ethical_guardrails: {
+    id: 'ethical_guardrails',
+    name: 'Ethical Guardrails',
+    description: 'Evaluates actions for legal, reputational, and ethical risks',
+    modules: ['CORTEX', 'DECODE'],
+    layer: 'Orchestrator',
+    userBenefit: 'Safe outputs with compliance built-in',
+    status: 'active',
+    emergentFrom: 'pf-brain-ethical-boundary',
+  },
+  continuous_improvement_engine: {
+    id: 'continuous_improvement_engine',
+    name: 'Continuous Improvement Engine',
+    description: 'Generates substrate upgrade proposals during idle time',
+    modules: ['MODERNIZER', 'DREAM'],
+    layer: 'Admin',
+    userBenefit: 'System that improves itself 24/7',
+    status: 'active',
+    emergentFrom: 'pf-cascade-improvement-engine',
+  },
+  active_learning_triggers: {
+    id: 'active_learning_triggers',
+    name: 'Active Learning Triggers',
+    description: 'Identifies knowledge gaps and queues them for exploration',
+    modules: ['BRAIN', 'DREAM'],
+    layer: 'Cognitive',
+    userBenefit: 'Curiosity-driven continuous learning',
+    status: 'active',
+    emergentFrom: 'pf-brain-curiosity-reflect',
   },
 };
 

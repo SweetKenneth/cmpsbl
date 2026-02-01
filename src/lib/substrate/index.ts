@@ -270,5 +270,32 @@ export {
 
 export { useCapabilities, type UseCapabilitiesReturn } from './capabilities/useCapabilities';
 
+// Archived Edge Function Adapters v6.9.1
+export {
+  archivedAdapters,
+  invokeHypothesisTest,
+  invokeSystemsReasoning,
+  invokeSelfCritique,
+  invokePatternFusion,
+  invokeAnomalyDetection,
+  invokeResilienceMonitor,
+  invokeTemporalScore,
+  invokeEthicalBoundary,
+  invokeImprovementEngine,
+  invokeCuriosityReflect,
+  type HypothesisTestResult,
+  type SystemsReasoningResult,
+  type SelfCritiqueResult,
+  type PatternFusionResult,
+  type AnomalyDetectionResult,
+  type ResilienceMonitorResult,
+  type TemporalScoreResult,
+  type EthicalBoundaryResult,
+  type ImprovementEngineResult,
+  type CuriosityReflectResult,
+} from './capabilities/archived-adapters';
+
+export { useArchivedCapabilities, type UseArchivedCapabilitiesReturn } from './capabilities/useArchivedCapabilities';
+
 // Re-export substrate client from lib
 export { substrate, type SubstrateModule, type SubstrateRequest, type SubstrateResponse } from '../substrate';
