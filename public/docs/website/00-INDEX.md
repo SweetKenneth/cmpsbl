@@ -36,8 +36,8 @@ This documentation provides everything you need to understand, evaluate, and bui
 
 | Channel | Details |
 |---------|---------|
-| **Email** | hello@cmpsbl.ai |
-| **Web** | https://cmpsbl.ai |
+| **Email** | PromptFluid@gmail.com |
+| **Web** | https://cmpsbl.com |
 
 ---
 

@@ -158,13 +158,13 @@ If you prefer direct API access:
 
 ```bash
 # Remember something
-curl -X POST https://api.cmpsbl.ai/v1/brain/remember \
+curl -X POST https://api.cmpsbl.com/v1/brain/remember \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"content": "User prefers dark mode", "category": "preference"}'
 
 # Route a request
-curl -X POST https://api.cmpsbl.ai/v1/nexus/route \
+curl -X POST https://api.cmpsbl.com/v1/nexus/route \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"prompt": "Hello, how are you?"}'
@@ -231,9 +231,9 @@ const substrate = new Substrate({
 
 ## Support
 
-- **Documentation:** https://cmpsbl.ai/docs
-- **Email:** support@cmpsbl.ai
-- **Enterprise:** enterprise@cmpsbl.ai
+- **Documentation:** https://cmpsbl.com/docs
+- **Email:** support@cmpsbl.com
+- **Enterprise:** enterprise@cmpsbl.com
 
 ---
 

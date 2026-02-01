@@ -133,10 +133,10 @@ The substrate has achieved full operational capability with all 14 modules deplo
 
 | Channel | Purpose |
 |---------|---------|
-| **Feature Requests** | feedback@cmpsbl.ai |
-| **Enterprise Needs** | enterprise@cmpsbl.ai |
-| **Research Ideas** | research@cmpsbl.ai |
-| **Partnership Proposals** | partners@cmpsbl.ai |
+| **Feature Requests** | feedback@cmpsbl.com |
+| **Enterprise Needs** | enterprise@cmpsbl.com |
+| **Research Ideas** | research@cmpsbl.com |
+| **Partnership Proposals** | partners@cmpsbl.com |
 
 ### Voting on Features
 

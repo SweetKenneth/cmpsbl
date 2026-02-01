@@ -144,10 +144,10 @@ Yes. Professional services are available for custom integrations, specialized mo
 
 | Question Type | Contact |
 |---------------|---------|
-| General | hello@cmpsbl.ai |
-| Sales | sales@cmpsbl.ai |
-| Enterprise | enterprise@cmpsbl.ai |
-| Technical | support@cmpsbl.ai |
+| General | PromptFluid@gmail.com |
+| Sales | sales@cmpsbl.com |
+| Enterprise | enterprise@cmpsbl.com |
+| Technical | support@cmpsbl.com |
 
 ---
 
