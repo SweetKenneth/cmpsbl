@@ -1,5 +1,5 @@
 /**
- * OS Header v7.0.0 — Premium Substrate identity with animated status indicators
+ * OS Header v7.0.0 — SEBA Era Substrate identity with animated status indicators
  * Glassmorphic design with live telemetry, gradient accents, and audio controls
  */
 
@@ -260,11 +260,11 @@ export function OSHeader({ userEmail, role }: OSHeaderProps) {
               </h1>
               <div className="flex items-center gap-2 mt-0.5">
                 <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest">
-                  cognitive orchestration
+                  seba era • cognitive orchestration
                 </p>
                 <span className="text-muted-foreground/30">|</span>
                 <span className="text-[10px] font-mono text-cyan-400/80">
-                  v{versionData?.version || '4.2.0'}
+                  v7.0.0
                 </span>
               </div>
             </div>

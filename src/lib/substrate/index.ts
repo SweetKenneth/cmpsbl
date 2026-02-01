@@ -1,8 +1,10 @@
 /**
- * Substrate Core Exports
- * v6.6.0 — Unified Cognitive Architecture (Phase 5: Orchestration Layer)
+ * promptfluid® Substrate Core Exports
+ * v7.0.0 — SEBA Era (Self-Evolving Bounded Agent)
  * 
  * Complete export of all substrate engines, hooks, and utilities.
+ * 14-module architecture: Kernel (CORE, RIPPLE, ACCESS) + Cognitive (BRAIN, DECODE, NEXUS)
+ * + Operational (DEFENSE, VISION, DREAM, INTEGRATION) + Admin (SYSTEM, MODERNIZER, INCLUSIVE) + Orchestrator (CORTEX)
  */
 
 // Engine Bus - Canonical Routing Layer (v6.4.0)

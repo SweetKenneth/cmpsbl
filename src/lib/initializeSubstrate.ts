@@ -11,7 +11,7 @@ export async function initializeSubstrate(): Promise<void> {
   if (initialized) return;
   
   try {
-    console.log('⚡ Booting promptfluid® Substrate v7.0.0...');
+    console.log('⚡ Booting promptfluid® Substrate v7.0.0 (SEBA Era)...');
     console.log('─────────────────────────────────────────');
     
     // Boot sequence - CORE first, then other modules (14-module architecture: 13 core + cortex)

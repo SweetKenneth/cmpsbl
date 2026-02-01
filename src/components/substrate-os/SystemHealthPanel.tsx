@@ -1,10 +1,10 @@
 /**
- * System Health Panel — Live health diagnostics and auto-heal
- * Real-time system status with healing controls
+ * System Health Panel v7.0.0 — Live health diagnostics and auto-heal
+ * Real-time system status with healing controls for 14-module architecture
  */
 
 import { useState } from 'react';
-import { Heart, Activity, RefreshCw, Loader2, CheckCircle2, XCircle, AlertTriangle, Wrench, Server, Cpu } from 'lucide-react';
+import { Heart, Activity, RefreshCw, Loader2, CheckCircle2, XCircle, AlertTriangle, Wrench, Server, Cpu, Brain, Shield, Zap, Moon, Eye, MessageSquare, Plug, Accessibility, GitBranch } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -40,12 +40,22 @@ export function SystemHealthPanel({ enabled }: SystemHealthPanelProps) {
     }
   };
 
+  // All 14 modules in the substrate architecture
   const moduleStatus = [
-    { name: 'Vision', key: 'vision', healthy: healthScore.modules.vision },
-    { name: 'Brain', key: 'brain', healthy: healthScore.modules.brain },
-    { name: 'Defense', key: 'defense', healthy: healthScore.modules.defense },
-    { name: 'Nexus', key: 'nexus', healthy: healthScore.modules.nexus },
-    { name: 'Dream', key: 'dream', healthy: healthScore.modules.dream },
+    { name: 'Core', key: 'core', healthy: healthScore.modules.core, icon: Cpu, color: 'text-orange-400' },
+    { name: 'Ripple', key: 'ripple', healthy: healthScore.modules.ripple, icon: Activity, color: 'text-cyan-400' },
+    { name: 'Access', key: 'access', healthy: healthScore.modules.access, icon: Server, color: 'text-amber-400' },
+    { name: 'Brain', key: 'brain', healthy: healthScore.modules.brain, icon: Brain, color: 'text-purple-400' },
+    { name: 'Decode', key: 'decode', healthy: healthScore.modules.decode, icon: MessageSquare, color: 'text-fuchsia-400' },
+    { name: 'Nexus', key: 'nexus', healthy: healthScore.modules.nexus, icon: Zap, color: 'text-green-400' },
+    { name: 'Defense', key: 'defense', healthy: healthScore.modules.defense, icon: Shield, color: 'text-red-400' },
+    { name: 'Vision', key: 'vision', healthy: healthScore.modules.vision, icon: Eye, color: 'text-blue-400' },
+    { name: 'Dream', key: 'dream', healthy: healthScore.modules.dream, icon: Moon, color: 'text-violet-400' },
+    { name: 'Integration', key: 'integration', healthy: healthScore.modules.integration, icon: Plug, color: 'text-teal-400' },
+    { name: 'System', key: 'system', healthy: healthScore.modules.system, icon: Server, color: 'text-emerald-400' },
+    { name: 'Modernizer', key: 'modernizer', healthy: healthScore.modules.modernizer, icon: Wrench, color: 'text-rose-400' },
+    { name: 'Inclusive', key: 'inclusive', healthy: healthScore.modules.inclusive, icon: Accessibility, color: 'text-sky-400' },
+    { name: 'Cortex', key: 'cortex', healthy: healthScore.modules.cortex, icon: GitBranch, color: 'text-indigo-400' },
   ];
 
   return (
@@ -102,18 +112,20 @@ export function SystemHealthPanel({ enabled }: SystemHealthPanelProps) {
                     "[&>div]:bg-red-500"
                   )}
                 />
-                <div className="flex flex-wrap gap-1 pt-1">
+                <div className="grid grid-cols-7 gap-1 pt-1">
                   {moduleStatus.map((mod) => (
                     <Badge 
                       key={mod.key}
                       variant="outline" 
                       className={cn(
-                        "text-[9px] h-5",
-                        mod.healthy ? "border-green-500/30 text-green-500" : "border-red-500/30 text-red-500"
+                        "text-[8px] h-5 px-1.5 flex items-center gap-0.5",
+                        mod.healthy ? "border-green-500/30" : "border-red-500/30"
                       )}
                     >
-                      {mod.healthy ? <CheckCircle2 className="w-2 h-2 mr-1" /> : <XCircle className="w-2 h-2 mr-1" />}
-                      {mod.name}
+                      <mod.icon className={cn("w-2 h-2", mod.healthy ? "text-green-500" : "text-red-500")} />
+                      <span className={mod.healthy ? "text-green-500" : "text-red-500"}>
+                        {mod.name.substring(0, 3).toUpperCase()}
+                      </span>
                     </Badge>
                   ))}
                 </div>
