@@ -70,17 +70,19 @@ export function DecodeOperativeControls() {
     refetchInterval: 30000
   });
 
-  // Trigger learning cycle
+  // Trigger learning cycle via substrate unified endpoint
   const triggerLearning = async () => {
     setIsTriggering('learning');
     try {
-      const { data, error } = await supabase.functions.invoke('pf-decode-operative');
+      const { data, error } = await supabase.functions.invoke('pf-substrate', {
+        body: { module: 'brain', action: 'cognitive_cycle' }
+      });
       
       if (error) throw error;
       
       toast({
         title: '🜂 Learning Cycle Triggered',
-        description: `Processed ${data?.signals?.total || 0} signals. Mode: ${data?.mode}`,
+        description: data?.success ? 'Cognitive cycle completed' : 'Cycle initiated',
       });
       
       queryClient.invalidateQueries({ queryKey: ['decode-operative-status'] });

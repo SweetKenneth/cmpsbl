@@ -24,7 +24,10 @@
 ├───────┬───────┼───────┬───────┼───────┬───────┬───────┬─────────┤
 │ BRAIN │DECODE │DEFENSE│ NEXUS │ VISION│ DREAM │SYSTEM │MODERNIZER│
 │Memory │Intent │Security│  AI   │Observe│Evolve │Admin  │Self-Heal │
-└───────┴───────┴───────┴───────┴───────┴───────┴───────┴─────────┘
+├───────┴───────┴───────┴───────┴───────┴───────┴───────┴─────────┤
+│               CORTEX (Orchestrator) | INCLUSIVE (a11y)           │
+│          INTEGRATION (Enterprise) | CLM (Learning Mode)          │
+└──────────────────────────────────────────────────────────────────┘
                               │
                     ┌─────────┴─────────┐
                     │    SUPABASE       │
@@ -264,7 +267,7 @@ Required secrets:
 ### Boot Sequence
 
 ```
-promptfluid® Substrate v2026.10
+promptfluid® Substrate v6.0.0
 ─────────────────────────────────
 [CORE]       ████████████ READY     12ms
 [BRAIN]      ████████████ READY     8ms
@@ -277,8 +280,11 @@ promptfluid® Substrate v2026.10
 [ACCESS]     ████████████ READY     9ms
 [SYSTEM]     ████████████ READY     5ms
 [MODERNIZER] ████████████ READY     11ms
+[INTEGRATION]████████████ READY     8ms
+[INCLUSIVE]  ████████████ READY     7ms
+[CORTEX]     ████████████ READY     10ms
 ─────────────────────────────────
-11 modules loaded | Health: 100%
+14 modules loaded | Health: 100%
 ```
 
 ---
