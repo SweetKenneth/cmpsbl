@@ -68,8 +68,8 @@ const epistemic: EpistemicContract = {
  */
 const conversational: ConversationalContract = {
   format(output: string): string {
-    // Wrap in epistemic markers to indicate non-assertive output
-    return `⟨${output}⟩`;
+    // v7.1.0: Return plain text without cryptic markers for clarity
+    return output;
   },
   
   // Decode behavioral constraints
