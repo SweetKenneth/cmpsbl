@@ -20,31 +20,31 @@
 // ============================================
 export const TEMPLATE_TIERS = {
   starter: {
-    amount: 1900, // $19 (was $27)
+    amount: 1900, // $19
     label: 'Starter',
     difficulty: 'beginner',
     hoursValue: '2-4 hours saved',
   },
   advanced: {
-    amount: 4900, // $49 (was $87)
+    amount: 4900, // $49
     label: 'Advanced', 
     difficulty: 'intermediate',
     hoursValue: '8-16 hours saved',
   },
   premium: {
-    amount: 7900, // $79 (was $147-$299)
+    amount: 9900, // $99
     label: 'Premium',
     difficulty: 'premium',
     hoursValue: '16-32 hours saved',
   },
   elite: {
-    amount: 9900, // $99 (was $399)
+    amount: 12900, // $129
     label: 'Elite',
     difficulty: 'elite',
     hoursValue: '32-48 hours saved',
   },
   pro: {
-    amount: 14900, // $149 (was $499)
+    amount: 14900, // $149
     label: 'Pro',
     difficulty: 'pro',
     hoursValue: '48-64+ hours saved',
