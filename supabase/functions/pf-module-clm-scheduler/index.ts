@@ -15,7 +15,7 @@ const corsHeaders = {
 
 const MODULE_IDS = [
   'brain', 'cortex', 'defense', 'nexus', 'vision', 'ripple',
-  'access', 'inclusive', 'modernizer', 'system', 'decode', 'autoblog'
+  'access', 'inclusive', 'modernizer', 'system', 'decode', 'autoblog', 'encoded'
 ];
 
 const MODULE_CONFIGS: Record<string, { displayName: string; selfReflectionPrompt: string }> = {
@@ -66,6 +66,18 @@ const MODULE_CONFIGS: Record<string, { displayName: string; selfReflectionPrompt
   autoblog: {
     displayName: 'AUTOBLOG',
     selfReflectionPrompt: `As the AUTOBLOG content engine, evaluate my writing: content quality improvements, tone consistency, topic resonance, content uniqueness.`,
+  },
+  encoded: {
+    displayName: 'ENCODED',
+    selfReflectionPrompt: `As the ENCODED code writer module, analyze my code generation capabilities for the substrate codebase:
+- What TypeScript patterns do I use correctly vs incorrectly?
+- Which substrate modules (BRAIN, DECODE, NEXUS, etc.) do I understand well vs struggle with?
+- What common coding errors do I make that I should learn to avoid?
+- How can I write cleaner, more maintainable React components and hooks?
+- What Supabase edge function patterns should I master?
+- How can I better understand the 14-module substrate architecture to make precise, minimal edits?
+- What testing and type-safety patterns would make my code more reliable?
+Provide specific examples of patterns I should learn and anti-patterns to avoid for making small, surgical edits to the substrate codebase.`,
   },
 };
 
