@@ -4,7 +4,7 @@ import {
   Menu, X, ChevronDown, Code, 
   Layers, FileText, Mail, Info, Rocket, BookOpen, Users, Eye,
   Zap, Map, Terminal, Cpu, MessageSquare, Moon, Building2, Gamepad2, Sparkles, Key, Globe, ScrollText,
-  Brain, LogOut
+  Brain, LogOut, HelpCircle
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import {
@@ -99,6 +99,7 @@ export function PublicNav() {
       items: [
         { name: "About", href: "/about", description: "Our Mission", icon: Info },
         { name: "Contact", href: "/contact", description: "Get in Touch", icon: Mail },
+        { name: "Support", href: "/support", description: "AI-Powered Help", icon: HelpCircle },
       ]
     },
   ];
@@ -294,11 +295,11 @@ export function PublicNav() {
             <div className="container mx-auto px-4 py-4">
               {/* Search-like quick access */}
               <div className="flex gap-2 mb-4 overflow-x-auto pb-2 -mx-4 px-4">
-                {["CodeLab", "Developers", "Licensing", "Library", "Contact"].map((name) => {
+                {["CodeLab", "Developers", "Licensing", "Support", "Contact"].map((name) => {
                   const href = name === "CodeLab" ? "/codelab" :
                                name === "Developers" ? "/developers" :
                                name === "Licensing" ? "/substrate/licensing" :
-                               name === "Library" ? "/library" : "/contact";
+                               name === "Support" ? "/support" : "/contact";
                   return (
                     <Link
                       key={name}
