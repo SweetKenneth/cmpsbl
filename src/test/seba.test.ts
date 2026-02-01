@@ -1,6 +1,13 @@
 /**
  * SEBA — Self-Evolving Bounded Agent Tests
  * v1.0.0 — Full Cognitive × Evolution × Governance
+ * 
+ * ⚠️ TEST-ONLY MOCKS ⚠️
+ * The Supabase client is mocked ONLY for unit testing to avoid hitting
+ * the real database during test runs. Production SEBA code uses REAL
+ * Supabase queries and real-time data exclusively.
+ * 
+ * @see src/lib/substrate/seba/ for production implementation
  */
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
