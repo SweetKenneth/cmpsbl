@@ -20,98 +20,113 @@ import {
   CheckCircle2,
   AlertTriangle,
   Activity,
+  Cpu,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-// SEBA's 5 evolution phases
+// SEBA's 5 evolution phases with enhanced styling
 const sebaPhases = [
   { 
     id: "cognize", 
     name: "Cognize", 
     icon: Brain, 
-    color: "from-cyan-400 to-blue-500",
-    glowColor: "rgba(34, 211, 238, 0.6)",
-    borderColor: "border-cyan-400/50",
-    bgColor: "bg-cyan-500/10",
+    color: "from-cyan-400 via-cyan-500 to-blue-500",
+    glowColor: "185 100% 50%",
+    borderColor: "border-cyan-400/60",
+    bgColor: "bg-cyan-500/15",
+    shadowColor: "shadow-cyan-500/30",
     description: "Analyze memory, learning patterns, reasoning gaps"
   },
   { 
     id: "propose", 
     name: "Propose", 
     icon: Lightbulb, 
-    color: "from-amber-400 to-orange-500",
-    glowColor: "rgba(251, 191, 36, 0.6)",
-    borderColor: "border-amber-400/50",
-    bgColor: "bg-amber-500/10",
+    color: "from-amber-400 via-orange-400 to-orange-500",
+    glowColor: "38 100% 55%",
+    borderColor: "border-amber-400/60",
+    bgColor: "bg-amber-500/15",
+    shadowColor: "shadow-amber-500/30",
     description: "Map insights to improvement actions"
   },
   { 
     id: "evaluate", 
     name: "Evaluate", 
     icon: Scale, 
-    color: "from-purple-400 to-violet-500",
-    glowColor: "rgba(192, 132, 252, 0.6)",
-    borderColor: "border-purple-400/50",
-    bgColor: "bg-purple-500/10",
+    color: "from-purple-400 via-violet-500 to-violet-600",
+    glowColor: "280 100% 65%",
+    borderColor: "border-purple-400/60",
+    bgColor: "bg-purple-500/15",
+    shadowColor: "shadow-purple-500/30",
     description: "Risk assessment & impact scoring"
   },
   { 
     id: "gate", 
     name: "Gate", 
     icon: ShieldCheck, 
-    color: "from-emerald-400 to-green-500",
-    glowColor: "rgba(52, 211, 153, 0.6)",
-    borderColor: "border-emerald-400/50",
-    bgColor: "bg-emerald-500/10",
+    color: "from-emerald-400 via-emerald-500 to-green-500",
+    glowColor: "145 80% 50%",
+    borderColor: "border-emerald-400/60",
+    bgColor: "bg-emerald-500/15",
+    shadowColor: "shadow-emerald-500/30",
     description: "Governance safety check"
   },
   { 
     id: "apply", 
     name: "Apply", 
     icon: Sparkles, 
-    color: "from-rose-400 to-pink-500",
-    glowColor: "rgba(251, 113, 133, 0.6)",
-    borderColor: "border-rose-400/50",
-    bgColor: "bg-rose-500/10",
+    color: "from-rose-400 via-pink-500 to-pink-600",
+    glowColor: "340 100% 60%",
+    borderColor: "border-rose-400/60",
+    bgColor: "bg-rose-500/15",
+    shadowColor: "shadow-rose-500/30",
     description: "Evolution execution with rollback"
   },
 ];
 
-// Animated connection between phases
+// Enhanced animated connection between phases
 const PhaseConnector = memo(function PhaseConnector({ 
   isActive, 
   isPassed,
-  delay 
+  delay,
+  fromColor,
+  toColor,
 }: { 
   isActive: boolean;
   isPassed: boolean;
   delay: number;
+  fromColor: string;
+  toColor: string;
 }) {
   return (
-    <div className="hidden sm:flex items-center justify-center w-8 md:w-12 lg:w-16 relative">
-      {/* Base line */}
+    <div className="hidden sm:flex items-center justify-center w-6 md:w-10 lg:w-14 relative">
+      {/* Base line with gradient when passed */}
       <div className="absolute inset-0 flex items-center">
         <div className={cn(
-          "h-0.5 w-full transition-all duration-500",
-          isPassed ? "bg-gradient-to-r from-primary/60 to-primary/40" : "bg-border/30"
+          "h-[2px] w-full transition-all duration-700",
+          isPassed 
+            ? "bg-gradient-to-r from-primary/70 via-primary/50 to-primary/30" 
+            : "bg-gradient-to-r from-border/40 to-border/20"
         )} />
       </div>
       
-      {/* Animated pulse */}
+      {/* Animated energy pulse */}
       {isActive && (
         <motion.div
-          className="absolute inset-0 flex items-center"
+          className="absolute inset-0 flex items-center overflow-hidden"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
           <motion.div
-            className="h-1 w-3 rounded-full bg-primary shadow-[0_0_10px_hsl(var(--primary))]"
+            className="h-1.5 w-4 rounded-full bg-gradient-to-r from-primary/0 via-primary to-primary/0"
+            style={{
+              boxShadow: "0 0 12px hsl(var(--primary)), 0 0 24px hsl(var(--primary) / 0.5)",
+            }}
             animate={{
-              x: [0, 32, 64],
-              opacity: [0, 1, 0],
+              x: [-20, 60],
+              opacity: [0, 1, 1, 0],
             }}
             transition={{
-              duration: 1.2,
+              duration: 1,
               delay,
               repeat: Infinity,
               ease: "easeInOut",
@@ -121,15 +136,23 @@ const PhaseConnector = memo(function PhaseConnector({
       )}
       
       {/* Arrow indicator */}
-      <ArrowRight className={cn(
-        "w-3 h-3 z-10 transition-colors duration-300",
-        isPassed ? "text-primary/60" : "text-muted-foreground/30"
-      )} />
+      <motion.div
+        animate={{
+          scale: isActive ? [1, 1.2, 1] : 1,
+          opacity: isPassed || isActive ? 1 : 0.3,
+        }}
+        transition={{ duration: 0.5 }}
+      >
+        <ArrowRight className={cn(
+          "w-3 h-3 z-10 transition-colors duration-300",
+          isPassed ? "text-primary" : isActive ? "text-primary" : "text-muted-foreground/30"
+        )} />
+      </motion.div>
     </div>
   );
 });
 
-// Individual phase node
+// Enhanced individual phase node with 3D depth
 const PhaseNode = memo(function PhaseNode({
   phase,
   index,
@@ -153,90 +176,145 @@ const PhaseNode = memo(function PhaseNode({
       className="relative flex flex-col items-center"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1 }}
+      transition={{ delay: index * 0.08, duration: 0.5 }}
       onMouseEnter={() => onHover(true)}
       onMouseLeave={() => onHover(false)}
     >
-      {/* Glow effect */}
+      {/* Multi-layer glow effect for depth */}
       <motion.div
-        className={cn(
-          "absolute -inset-4 rounded-full blur-xl transition-opacity duration-500",
-          phase.bgColor
-        )}
+        className="absolute -inset-6 rounded-3xl blur-2xl pointer-events-none"
+        style={{ background: `hsl(${phase.glowColor} / 0.3)` }}
         animate={{
-          opacity: isActive ? 0.8 : isHovered ? 0.5 : 0,
-          scale: isActive ? 1.2 : 1,
+          opacity: isActive ? 0.9 : isHovered ? 0.5 : 0,
+          scale: isActive ? 1.3 : 1,
         }}
+        transition={{ duration: 0.4 }}
+      />
+      <motion.div
+        className="absolute -inset-3 rounded-2xl blur-lg pointer-events-none"
+        style={{ background: `hsl(${phase.glowColor} / 0.4)` }}
+        animate={{
+          opacity: isActive ? 0.8 : isHovered ? 0.3 : 0,
+          scale: isActive ? 1.15 : 1,
+        }}
+        transition={{ duration: 0.3 }}
       />
       
-      {/* Outer ring animation */}
+      {/* Animated pulse rings */}
       {isActive && (
-        <motion.div
-          className={cn(
-            "absolute -inset-2 rounded-2xl border-2",
-            phase.borderColor
-          )}
-          animate={{
-            scale: [1, 1.1, 1],
-            opacity: [0.5, 0.8, 0.5],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
+        <>
+          <motion.div
+            className={cn(
+              "absolute -inset-3 rounded-2xl border-2",
+              phase.borderColor
+            )}
+            animate={{
+              scale: [1, 1.15, 1],
+              opacity: [0.6, 0.2, 0.6],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+          <motion.div
+            className={cn(
+              "absolute -inset-5 rounded-2xl border",
+              phase.borderColor.replace('/60', '/30')
+            )}
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.1, 0.3],
+            }}
+            transition={{
+              duration: 2.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 0.3,
+            }}
+          />
+        </>
       )}
       
-      {/* Main node */}
+      {/* Main node with enhanced styling */}
       <motion.div
         className={cn(
-          "relative w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-2xl",
+          "relative w-14 h-14 sm:w-16 sm:h-16 md:w-[72px] md:h-[72px] lg:w-20 lg:h-20 rounded-2xl",
           "flex items-center justify-center cursor-pointer",
-          "border-2 backdrop-blur-sm transition-all duration-300",
+          "border-2 backdrop-blur-md transition-all duration-300",
+          "shadow-lg",
           isActive || isPassed ? phase.borderColor : "border-border/40",
-          isActive ? `bg-gradient-to-br ${phase.color}` : isPassed ? phase.bgColor : "bg-card/60"
+          isActive 
+            ? `bg-gradient-to-br ${phase.color}` 
+            : isPassed 
+              ? phase.bgColor 
+              : "bg-card/70 dark:bg-card/50"
         )}
         animate={{
-          scale: isActive ? 1.1 : isHovered ? 1.05 : 1,
+          scale: isActive ? 1.12 : isHovered ? 1.06 : 1,
+          y: isActive ? -4 : 0,
         }}
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
         style={{
-          boxShadow: isActive ? `0 0 30px ${phase.glowColor}` : "none",
+          boxShadow: isActive 
+            ? `0 8px 32px hsl(${phase.glowColor} / 0.4), 0 0 60px hsl(${phase.glowColor} / 0.2), inset 0 1px 0 rgba(255,255,255,0.2)` 
+            : isHovered
+              ? `0 4px 20px hsl(${phase.glowColor} / 0.2)`
+              : "0 4px 12px rgba(0,0,0,0.1)",
         }}
       >
+        {/* Inner glow overlay */}
+        {isActive && (
+          <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-white/0 to-white/20 pointer-events-none" />
+        )}
+        
         <Icon className={cn(
-          "w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 transition-colors duration-300",
-          isActive ? "text-white" : isPassed ? "text-foreground" : "text-muted-foreground"
+          "w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 transition-all duration-300 relative z-10",
+          isActive ? "text-white drop-shadow-lg" : isPassed ? "text-foreground" : "text-muted-foreground"
         )} />
         
-        {/* Completion indicator */}
-        {isPassed && !isActive && (
-          <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center shadow-lg">
-            <CheckCircle2 className="w-3 h-3 text-white" />
-          </div>
-        )}
+        {/* Completion indicator with animation */}
+        <AnimatePresence>
+          {isPassed && !isActive && (
+            <motion.div 
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/30"
+            >
+              <CheckCircle2 className="w-3 h-3 text-white" />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
       
-      {/* Phase label */}
+      {/* Phase label with enhanced typography */}
       <div className={cn(
-        "mt-2 sm:mt-3 text-center transition-all duration-300",
+        "mt-3 sm:mt-4 text-center transition-all duration-300",
         isActive ? "opacity-100" : "opacity-70"
       )}>
-        <span className={cn(
-          "text-xs sm:text-sm font-semibold block",
-          isActive ? "text-foreground" : "text-muted-foreground"
-        )}>
+        <motion.span 
+          className={cn(
+            "text-xs sm:text-sm font-bold block tracking-wide",
+            isActive ? "text-foreground" : "text-muted-foreground"
+          )}
+          animate={{
+            scale: isActive ? 1.05 : 1,
+          }}
+        >
           {phase.name}
-        </span>
+        </motion.span>
         
-        {/* Phase description - show on active/hover */}
-        <AnimatePresence>
+        {/* Phase description with smooth reveal */}
+        <AnimatePresence mode="wait">
           {showDetails && (
             <motion.span
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="text-[10px] sm:text-xs text-muted-foreground block max-w-[80px] sm:max-w-[100px] mt-1"
+              initial={{ opacity: 0, height: 0, y: -5 }}
+              animate={{ opacity: 1, height: "auto", y: 0 }}
+              exit={{ opacity: 0, height: 0, y: -5 }}
+              transition={{ duration: 0.2 }}
+              className="text-[10px] sm:text-xs text-muted-foreground block max-w-[85px] sm:max-w-[100px] mt-1.5 leading-tight"
             >
               {phase.description}
             </motion.span>
@@ -247,64 +325,17 @@ const PhaseNode = memo(function PhaseNode({
   );
 });
 
-// Central brain core visualization
-function CentralCore({ isProcessing }: { isProcessing: boolean }) {
-  return (
-    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-      {/* Outer pulse rings */}
-      {[1, 2, 3].map((ring) => (
-        <motion.div
-          key={ring}
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-primary/20"
-          style={{
-            width: 60 + ring * 40,
-            height: 60 + ring * 40,
-          }}
-          animate={{
-            scale: isProcessing ? [1, 1.1, 1] : 1,
-            opacity: isProcessing ? [0.3, 0.1, 0.3] : 0.1,
-          }}
-          transition={{
-            duration: 2,
-            delay: ring * 0.3,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-      ))}
-      
-      {/* Central glow */}
-      <motion.div
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full"
-        animate={{
-          background: isProcessing 
-            ? [
-                "radial-gradient(circle, hsl(var(--primary) / 0.4) 0%, transparent 70%)",
-                "radial-gradient(circle, hsl(var(--primary) / 0.6) 0%, transparent 70%)",
-                "radial-gradient(circle, hsl(var(--primary) / 0.4) 0%, transparent 70%)",
-              ]
-            : "radial-gradient(circle, hsl(var(--primary) / 0.2) 0%, transparent 70%)",
-        }}
-        transition={{
-          duration: 1.5,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
-    </div>
-  );
-}
-
-// Floating data particles
+// Enhanced floating data particles with variety
 function DataParticles({ isActive }: { isActive: boolean }) {
   const particles = useMemo(() => 
-    Array.from({ length: 12 }).map((_, i) => ({
+    Array.from({ length: 16 }).map((_, i) => ({
       id: i,
-      delay: i * 0.3,
-      duration: 3 + Math.random() * 2,
-      size: 2 + Math.random() * 3,
-      startX: Math.random() * 100,
-      startY: 80 + Math.random() * 20,
+      delay: i * 0.2,
+      duration: 2.5 + Math.random() * 2,
+      size: 2 + Math.random() * 4,
+      startX: 10 + Math.random() * 80,
+      startY: 75 + Math.random() * 25,
+      hue: [185, 280, 340, 145, 38][Math.floor(Math.random() * 5)],
     })), []
   );
   
@@ -315,19 +346,20 @@ function DataParticles({ isActive }: { isActive: boolean }) {
       {particles.map((p) => (
         <motion.div
           key={p.id}
-          className="absolute rounded-full bg-primary/60"
+          className="absolute rounded-full"
           style={{
             width: p.size,
             height: p.size,
             left: `${p.startX}%`,
             top: `${p.startY}%`,
-            filter: "blur(0.5px)",
+            background: `hsl(${p.hue} 80% 60%)`,
+            boxShadow: `0 0 ${p.size * 2}px hsl(${p.hue} 80% 60% / 0.6)`,
           }}
           animate={{
-            y: [0, -150, -300],
-            x: [0, Math.random() * 40 - 20, Math.random() * 60 - 30],
-            opacity: [0, 0.8, 0],
-            scale: [0.5, 1, 0.3],
+            y: [0, -180, -350],
+            x: [0, Math.random() * 50 - 25, Math.random() * 80 - 40],
+            opacity: [0, 0.9, 0],
+            scale: [0.4, 1.2, 0.2],
           }}
           transition={{
             duration: p.duration,
@@ -341,7 +373,7 @@ function DataParticles({ isActive }: { isActive: boolean }) {
   );
 }
 
-// Status indicators
+// Enhanced status indicators with micro-animations
 function StatusPanel({ 
   activePhase, 
   cycleCount, 
@@ -355,39 +387,70 @@ function StatusPanel({
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.8 }}
-      className="flex flex-wrap justify-center gap-2 sm:gap-4 mt-4 sm:mt-6"
+      transition={{ delay: 0.6 }}
+      className="flex flex-wrap justify-center gap-2.5 sm:gap-4 mt-5 sm:mt-8"
     >
       {/* Phase indicator */}
-      <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border border-border/40">
-        <Activity className="w-3 h-3 text-primary" />
-        <span className="text-[10px] sm:text-xs font-mono">
+      <motion.div 
+        className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-gradient-to-r from-card/80 to-card/60 backdrop-blur-md border border-border/50 shadow-sm"
+        whileHover={{ scale: 1.03 }}
+      >
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+        >
+          <Cpu className="w-3.5 h-3.5 text-primary" />
+        </motion.div>
+        <span className="text-[11px] sm:text-xs font-mono font-medium">
           PHASE {activePhase + 1}/5
         </span>
-      </div>
+      </motion.div>
       
-      {/* Gate status */}
-      <div className={cn(
-        "flex items-center gap-2 px-3 py-1.5 rounded-full backdrop-blur-sm border",
-        gateStatus === "open" ? "bg-emerald-500/10 border-emerald-500/40" :
-        gateStatus === "closed" ? "bg-rose-500/10 border-rose-500/40" :
-        "bg-amber-500/10 border-amber-500/40"
-      )}>
-        {gateStatus === "open" ? <Unlock className="w-3 h-3 text-emerald-400" /> :
-         gateStatus === "closed" ? <Lock className="w-3 h-3 text-rose-400" /> :
-         <AlertTriangle className="w-3 h-3 text-amber-400" />}
-        <span className="text-[10px] sm:text-xs font-mono uppercase">
-          GATE {gateStatus}
+      {/* Gate status with color coding */}
+      <motion.div 
+        className={cn(
+          "flex items-center gap-2 px-3.5 py-2 rounded-full backdrop-blur-md border shadow-sm",
+          gateStatus === "open" ? "bg-emerald-500/10 border-emerald-500/40" :
+          gateStatus === "closed" ? "bg-rose-500/10 border-rose-500/40" :
+          "bg-amber-500/10 border-amber-500/40"
+        )}
+        animate={{
+          boxShadow: gateStatus === "open" 
+            ? "0 0 20px rgba(52, 211, 153, 0.2)" 
+            : gateStatus === "closed"
+              ? "0 0 20px rgba(251, 113, 133, 0.2)"
+              : "0 0 20px rgba(251, 191, 36, 0.2)"
+        }}
+        whileHover={{ scale: 1.03 }}
+      >
+        <motion.div
+          animate={gateStatus === "pending" ? { rotate: [0, 10, -10, 0] } : {}}
+          transition={{ duration: 0.5, repeat: gateStatus === "pending" ? Infinity : 0 }}
+        >
+          {gateStatus === "open" ? <Unlock className="w-3.5 h-3.5 text-emerald-400" /> :
+           gateStatus === "closed" ? <Lock className="w-3.5 h-3.5 text-rose-400" /> :
+           <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />}
+        </motion.div>
+        <span className="text-[11px] sm:text-xs font-mono font-medium uppercase">
+          {gateStatus}
         </span>
-      </div>
+      </motion.div>
       
       {/* Cycle counter */}
-      <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border border-border/40">
-        <RotateCcw className="w-3 h-3 text-violet-400" />
-        <span className="text-[10px] sm:text-xs font-mono">
+      <motion.div 
+        className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-gradient-to-r from-card/80 to-card/60 backdrop-blur-md border border-border/50 shadow-sm"
+        whileHover={{ scale: 1.03 }}
+      >
+        <motion.div
+          animate={{ rotate: -360 }}
+          transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+        >
+          <RotateCcw className="w-3.5 h-3.5 text-violet-400" />
+        </motion.div>
+        <span className="text-[11px] sm:text-xs font-mono font-medium">
           CYCLE #{cycleCount}
         </span>
-      </div>
+      </motion.div>
     </motion.div>
   );
 }
@@ -406,7 +469,7 @@ export function SEBAEvolutionHero() {
         // Update gate status when reaching gate phase
         if (next === 3) {
           setGateStatus("pending");
-          setTimeout(() => setGateStatus(Math.random() > 0.2 ? "open" : "closed"), 800);
+          setTimeout(() => setGateStatus(Math.random() > 0.15 ? "open" : "closed"), 800);
         }
         // Increment cycle when completing
         if (next === 0) {
@@ -414,60 +477,82 @@ export function SEBAEvolutionHero() {
         }
         return next;
       });
-    }, 2500);
+    }, 2800);
     
     return () => clearInterval(interval);
   }, []);
   
   return (
-    <div className="relative w-full max-w-[320px] sm:max-w-[500px] md:max-w-[600px] lg:max-w-[700px] mx-auto py-4">
-      {/* Background effects */}
+    <div className="relative w-full max-w-[340px] sm:max-w-[520px] md:max-w-[620px] lg:max-w-[720px] mx-auto py-6">
+      {/* Enhanced background effects */}
       <div className="absolute inset-0 overflow-hidden rounded-3xl">
-        {/* Gradient mesh */}
+        {/* Gradient mesh base */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-violet-500/5" />
         
-        {/* Animated glow blobs */}
+        {/* Animated aurora blobs */}
         <motion.div
-          className="absolute top-0 left-1/4 w-32 h-32 bg-cyan-500/20 rounded-full blur-3xl"
+          className="absolute -top-20 -left-20 w-64 h-64 bg-gradient-to-br from-cyan-500/25 to-blue-500/15 rounded-full blur-3xl"
           animate={{
-            x: [0, 30, 0],
-            y: [0, 20, 0],
-            opacity: [0.3, 0.5, 0.3],
+            x: [0, 40, 0],
+            y: [0, 30, 0],
+            scale: [1, 1.15, 1],
+            opacity: [0.4, 0.6, 0.4],
           }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div
-          className="absolute bottom-0 right-1/4 w-32 h-32 bg-violet-500/20 rounded-full blur-3xl"
+          className="absolute -bottom-20 -right-20 w-64 h-64 bg-gradient-to-br from-violet-500/25 to-purple-500/15 rounded-full blur-3xl"
           animate={{
-            x: [0, -30, 0],
-            y: [0, -20, 0],
+            x: [0, -40, 0],
+            y: [0, -30, 0],
+            scale: [1, 1.15, 1],
+            opacity: [0.4, 0.6, 0.4],
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+        />
+        <motion.div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-gradient-to-br from-amber-500/15 to-orange-500/10 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.2, 1],
             opacity: [0.3, 0.5, 0.3],
           }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
         />
       </div>
       
-      {/* Data particles */}
+      {/* Data particles on apply phase */}
       <DataParticles isActive={activePhase === 4} />
       
-      {/* SEBA Label */}
+      {/* SEBA Label with enhanced styling */}
       <motion.div
-        initial={{ opacity: 0, y: -10 }}
+        initial={{ opacity: 0, y: -15 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center mb-4 sm:mb-6"
+        transition={{ duration: 0.5 }}
+        className="text-center mb-5 sm:mb-8"
       >
-        <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-gradient-to-r from-primary/10 to-violet-500/10 border border-primary/20">
-          <Zap className="w-3 h-3 sm:w-4 sm:h-4 text-primary" />
-          <span className="text-[10px] sm:text-xs font-bold tracking-wider text-foreground/90">
-            SELF-EVOLVING BOUNDED AGENT
+        <div className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full bg-gradient-to-r from-primary/15 via-primary/10 to-violet-500/15 border border-primary/25 shadow-lg shadow-primary/5 backdrop-blur-sm">
+          <motion.div
+            animate={{ 
+              rotate: [0, 360],
+              scale: [1, 1.1, 1],
+            }}
+            transition={{ 
+              rotate: { duration: 8, repeat: Infinity, ease: "linear" },
+              scale: { duration: 2, repeat: Infinity, ease: "easeInOut" },
+            }}
+          >
+            <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary" />
+          </motion.div>
+          <span className="text-[11px] sm:text-xs font-bold tracking-widest text-foreground/90 uppercase">
+            Self-Evolving Bounded Agent
           </span>
         </div>
       </motion.div>
       
-      {/* Phase pipeline - horizontal on desktop, compact grid on mobile */}
+      {/* Phase pipeline */}
       <div className="relative">
         {/* Desktop: Horizontal pipeline */}
-        <div className="hidden sm:flex items-start justify-center gap-0">
+        <div className="hidden sm:flex items-start justify-center gap-0 px-2">
           {sebaPhases.map((phase, index) => (
             <React.Fragment key={phase.id}>
               <PhaseNode
@@ -482,7 +567,9 @@ export function SEBAEvolutionHero() {
                 <PhaseConnector
                   isActive={activePhase === index}
                   isPassed={index < activePhase}
-                  delay={index * 0.2}
+                  delay={index * 0.15}
+                  fromColor={phase.glowColor}
+                  toColor={sebaPhases[index + 1].glowColor}
                 />
               )}
             </React.Fragment>
@@ -490,7 +577,7 @@ export function SEBAEvolutionHero() {
         </div>
         
         {/* Mobile: Compact 5-column grid */}
-        <div className="flex sm:hidden items-start justify-between px-2">
+        <div className="flex sm:hidden items-start justify-between px-1">
           {sebaPhases.map((phase, index) => (
             <PhaseNode
               key={phase.id}
@@ -504,15 +591,18 @@ export function SEBAEvolutionHero() {
           ))}
         </div>
         
-        {/* Mobile progress bar */}
-        <div className="sm:hidden mt-4 mx-4">
-          <div className="h-1 bg-border/30 rounded-full overflow-hidden">
+        {/* Mobile progress bar with gradient */}
+        <div className="sm:hidden mt-5 mx-3">
+          <div className="h-1.5 bg-border/30 rounded-full overflow-hidden shadow-inner">
             <motion.div
-              className="h-full bg-gradient-to-r from-primary to-violet-500"
+              className="h-full bg-gradient-to-r from-cyan-500 via-violet-500 to-pink-500 rounded-full"
               animate={{
                 width: `${((activePhase + 1) / sebaPhases.length) * 100}%`,
               }}
               transition={{ duration: 0.5, ease: "easeOut" }}
+              style={{
+                boxShadow: "0 0 12px hsl(var(--primary) / 0.5)",
+              }}
             />
           </div>
         </div>
@@ -525,32 +615,44 @@ export function SEBAEvolutionHero() {
         gateStatus={gateStatus}
       />
       
-      {/* Active phase description card */}
-      <motion.div
-        key={activePhase}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -10 }}
-        className="mt-4 sm:mt-6 mx-auto max-w-xs sm:max-w-sm"
-      >
-        <div className={cn(
-          "p-3 sm:p-4 rounded-xl border backdrop-blur-sm text-center",
-          sebaPhases[activePhase].bgColor,
-          sebaPhases[activePhase].borderColor
-        )}>
-          <div className="flex items-center justify-center gap-2 mb-1">
-            {React.createElement(sebaPhases[activePhase].icon, {
-              className: "w-4 h-4 text-foreground"
-            })}
-            <span className="text-sm font-semibold">
-              {sebaPhases[activePhase].name}
-            </span>
+      {/* Active phase description card with enhanced styling */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activePhase}
+          initial={{ opacity: 0, y: 15, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -10, scale: 0.95 }}
+          transition={{ duration: 0.3 }}
+          className="mt-5 sm:mt-8 mx-auto max-w-xs sm:max-w-sm"
+        >
+          <div className={cn(
+            "p-4 sm:p-5 rounded-2xl border backdrop-blur-md text-center shadow-lg",
+            sebaPhases[activePhase].bgColor,
+            sebaPhases[activePhase].borderColor
+          )}
+          style={{
+            boxShadow: `0 8px 32px hsl(${sebaPhases[activePhase].glowColor} / 0.15)`,
+          }}
+          >
+            <div className="flex items-center justify-center gap-2.5 mb-2">
+              <motion.div
+                animate={{ scale: [1, 1.15, 1] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              >
+                {React.createElement(sebaPhases[activePhase].icon, {
+                  className: "w-5 h-5 text-foreground"
+                })}
+              </motion.div>
+              <span className="text-sm sm:text-base font-bold tracking-wide">
+                {sebaPhases[activePhase].name}
+              </span>
+            </div>
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+              {sebaPhases[activePhase].description}
+            </p>
           </div>
-          <p className="text-xs text-muted-foreground">
-            {sebaPhases[activePhase].description}
-          </p>
-        </div>
-      </motion.div>
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }
