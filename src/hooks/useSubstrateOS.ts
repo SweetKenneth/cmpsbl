@@ -232,6 +232,26 @@ export function useSystemAudit() {
   });
 }
 
+// Live audit feed from brain_events - real system activity
+export function useLiveAuditFeed(limit: number = 15) {
+  return useQuery({
+    queryKey: ['substrate', 'audit', 'live-feed', limit],
+    queryFn: async () => {
+      const { supabase } = await import('@/integrations/supabase/client');
+      const { data, error } = await supabase
+        .from('brain_events')
+        .select('id, event_type, module, outcome, created_at, data')
+        .order('created_at', { ascending: false })
+        .limit(limit);
+      
+      if (error) throw error;
+      return data || [];
+    },
+    refetchInterval: 5000, // Live updates every 5s
+    staleTime: 2000,
+  });
+}
+
 export function useSystemConfig(key?: string) {
   return useQuery({
     queryKey: ['substrate', 'system', 'config', key],

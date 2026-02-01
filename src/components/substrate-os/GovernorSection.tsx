@@ -3,8 +3,8 @@
  * Audit view, rate limits, system config, backup/restore (guarded)
  */
 
-import { useState } from 'react';
-import { ShieldAlert, FileText, Settings, AlertTriangle, Lock, Database, RefreshCw, Loader2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { ShieldAlert, FileText, Settings, AlertTriangle, Lock, Database, RefreshCw, Loader2, Activity, Clock } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -23,7 +23,9 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
-import { useSystemAudit, useSystemConfig, useSystemVersion } from '@/hooks/useSubstrateOS';
+import { useSystemAudit, useSystemConfig, useSystemVersion, useLiveAuditFeed } from '@/hooks/useSubstrateOS';
+import { cn } from '@/lib/utils';
+import { formatDistanceToNow } from 'date-fns';
 
 function ConfirmActionDialog({
   trigger,
@@ -91,10 +93,36 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
   const systemAudit = useSystemAudit();
   const systemConfig = useSystemConfig('rate_limits');
   const systemVersion = useSystemVersion();
+  const liveAuditFeed = useLiveAuditFeed(15);
 
   const auditData = systemAudit.data?.data as { entries?: Array<{ action: string; entity: string; timestamp: string }> } | undefined;
   const configData = systemConfig.data?.data as { config?: Record<string, unknown> } | undefined;
   const versionData = systemVersion.data?.data as { version?: string; build?: string } | undefined;
+
+  // Get outcome badge styling
+  const getOutcomeBadge = (outcome: string) => {
+    switch (outcome) {
+      case 'success':
+      case 'completed':
+        return 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20';
+      case 'error':
+      case 'failed':
+        return 'bg-destructive/10 text-destructive border-destructive/20';
+      case 'warning':
+        return 'bg-amber-500/10 text-amber-600 border-amber-500/20';
+      default:
+        return 'bg-muted text-muted-foreground';
+    }
+  };
+
+  // Format event type for display
+  const formatEventType = (type: string) => {
+    return type
+      .replace(/_/g, ' ')
+      .split(' ')
+      .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+      .join(' ');
+  };
 
   if (!enabled) {
     return (
@@ -166,40 +194,75 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
 
       {/* Audit Log + Rate Limits Grid */}
       <div className="grid md:grid-cols-2 gap-4">
-        {/* Audit Log */}
+        {/* Live Audit Log */}
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-base flex items-center gap-2">
               <FileText className="w-4 h-4 text-blue-500" />
               Audit Log
+              {liveAuditFeed.isFetching && !liveAuditFeed.isLoading && (
+                <Loader2 className="w-3 h-3 animate-spin text-muted-foreground ml-auto" />
+              )}
+              {liveAuditFeed.data && liveAuditFeed.data.length > 0 && (
+                <Badge variant="outline" className="ml-auto text-[9px] h-4 bg-emerald-500/10 text-emerald-600 border-emerald-500/20">
+                  <Activity className="w-2.5 h-2.5 mr-1" />
+                  LIVE
+                </Badge>
+              )}
             </CardTitle>
             <CardDescription className="text-xs">
-              Recent administrative actions
+              Real-time system activity feed
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {systemAudit.isLoading ? (
+            {liveAuditFeed.isLoading ? (
               <div className="space-y-2">
-                {[1, 2, 3].map(i => <Skeleton key={i} className="h-8 w-full" />)}
+                {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-10 w-full" />)}
               </div>
-            ) : auditData?.entries && auditData.entries.length > 0 ? (
-              <ScrollArea className="h-[150px]">
-                <div className="space-y-2">
-                  {auditData.entries.map((entry, idx) => (
+            ) : liveAuditFeed.data && liveAuditFeed.data.length > 0 ? (
+              <ScrollArea className="h-[200px]">
+                <div className="space-y-2 pr-2">
+                  {liveAuditFeed.data.map((event: any) => (
                     <div 
-                      key={idx}
-                      className="flex items-center gap-2 p-2 rounded-lg bg-muted/30 text-sm"
+                      key={event.id}
+                      className="flex flex-col gap-1 p-2.5 rounded-lg bg-muted/30 text-xs border border-border/30 hover:bg-muted/50 transition-colors"
                     >
-                      <Badge variant="outline" className="text-xs">{entry.action}</Badge>
-                      <span className="text-muted-foreground truncate">{entry.entity}</span>
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2 flex-1 min-w-0">
+                          <Badge 
+                            variant="outline" 
+                            className={cn("text-[10px] shrink-0", getOutcomeBadge(event.outcome))}
+                          >
+                            {event.outcome}
+                          </Badge>
+                          <span className="font-medium truncate text-foreground">
+                            {formatEventType(event.event_type)}
+                          </span>
+                        </div>
+                        <Badge variant="outline" className="text-[9px] shrink-0 bg-primary/5">
+                          {event.module}
+                        </Badge>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-muted-foreground">
+                        <Clock className="w-3 h-3" />
+                        <span className="text-[10px]">
+                          {formatDistanceToNow(new Date(event.created_at), { addSuffix: true })}
+                        </span>
+                      </div>
                     </div>
                   ))}
                 </div>
               </ScrollArea>
             ) : (
-              <p className="text-sm text-muted-foreground italic">
-                Audit trail clean. The substrate waits for governance actions.
-              </p>
+              <div className="text-center py-6">
+                <Activity className="w-6 h-6 mx-auto mb-2 text-muted-foreground/50" />
+                <p className="text-sm text-muted-foreground italic">
+                  No recent audit events
+                </p>
+                <p className="text-xs text-muted-foreground/70 mt-1">
+                  System activity is being monitored
+                </p>
+              </div>
             )}
           </CardContent>
         </Card>
