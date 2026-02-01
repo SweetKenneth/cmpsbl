@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Internal Engineering Library
 
-**Version 6.3.1 | FNDTN Release | CONFIDENTIAL**
+**Version 7.0.0 | SEBA Release | CONFIDENTIAL**
 
 ---
 
@@ -24,12 +24,13 @@
 | 08 | [AI Router (Nexus)](./08-NEXUS-ROUTER.md) | Provider fallback, cost optimization, model selection |
 | 09 | [Terminal Reference](./09-TERMINAL-REFERENCE.md) | All 260+ commands, module prefixes, output formats |
 | 10 | [Integration Layer](./10-INTEGRATION-LAYER.md) | External APIs, webhook handling, adapter patterns |
+| 11 | [Synergy Engine](./11-SYNERGY-ENGINE.md) | **24 cross-module pipelines, executor secrets, governance** |
 
 ---
 
 ## Quick Reference
 
-### The 14 Modules (+ CLM)
+### The 14 Modules (+ CLM + SEBA)
 
 ```
 KERNEL LAYER (Boot Order 1-3)
@@ -56,8 +57,9 @@ ORCHESTRATOR LAYER (Boot Order 13-14)
 ├── CORTEX ......... Policy intent, PAAEL loop, manual mode
 └── INTEGRATION .... External APIs, webhooks, adapters
 
-LEARNING MODE (v6.7.0)
-└── CLM ............ Constant Learning Mode, curriculum, spaced repetition
+ADVANCED MODES (v7.0.0)
+├── CLM ............ Constant Learning Mode, curriculum, spaced repetition
+└── SEBA ........... Self-Evolving Bounded Agent, genuine autonomy
 ```
 
 ### Key Secrets Summary
@@ -70,25 +72,42 @@ LEARNING MODE (v6.7.0)
 | Weighted A11y Score | Inclusive | `100 - (critical×20) - (serious×10) - (moderate×5) - (minor×1)` |
 | Provider Fallback | Nexus | 7-provider chain ensures 99.9% uptime |
 | CLM Budget Governor | CLM | Daily token budget with kill switch for runaway learning |
+| **Synergy Confidence** | Synergy Engine | 0.85 auto-execute with -0.02 per module penalty |
+| **Module Priority Weights** | Synergy Engine | BRAIN 0.25, VISION 0.20, DECODE 0.15... |
+| **Cascade Isolation Duration** | Synergy Engine | Base 30s × threat level multiplier (1-8x) |
 
 ### Version History
 
 | Version | Codename | Key Features |
 |---------|----------|--------------|
-| 6.3.1 | FNDTN | CLM integration, mobile terminal, 260+ commands, Synergy Pipeline Registry, enriched proposal metadata, DREAM Nightmare Mode (simulation-only) |
+| **7.0.0** | **SEBA** | 24 synergy pipelines, 8 executors, SEBA bounded autonomy, 67 tests |
+| 6.3.1 | FNDTN | CLM integration, mobile terminal, 260+ commands |
 | 6.0.0 | FNDTN | 14-module architecture, Evolution Cycle |
 | 5.6.0 | — | Module registry, inventory system |
 | 5.0.0 | — | Terminal v5: aliases, macros, watch mode |
 
-### Recent Additions (v6.3.1 Patch)
+### v7.0.0 Additions (SYNERGY ENGINE)
 
 | Addition | Location | Purpose |
 |----------|----------|---------|
-| Synergy Pipeline Registry | `docs/library/77-SYNERGY-PIPELINES.md`, `src/lib/registry/pipelines.ts` | Documents emergent cross-module capabilities (descriptive only) |
-| Enriched Proposal Metadata | `src/lib/evolve/scan/types.ts` | `affected_modules`, `reversible`, `metadata_version` for traceability |
-| DREAM Nightmare Mode | `src/lib/dream/nightmares.ts` | Hypothetical threat simulation artifacts (read-only, no feedback loops) |
+| **Synergy Engine** | `src/lib/capabilities/synergies/` | 24 governed cross-module pipelines |
+| **Custom Executors** | `src/lib/capabilities/synergies/executors.ts` | 8 implementations (smart-recall, adaptive-routing, etc.) |
+| **Synergy Hook** | `src/hooks/useSynergies.ts` | React integration for UI |
+| **Internal Secrets Doc** | `docs/internal/11-SYNERGY-ENGINE.md` | All secret algorithms and thresholds |
+| **Module Matrix** | `docs/library/77-SYNERGY-PIPELINES.md` | 14×24 module dependency grid |
+
+### Synergy Categories
+
+| Category | Count | Key Synergies |
+|----------|-------|---------------|
+| Intelligence | 4 | smart-recall, cognitive-fusion, predictive-prevention |
+| Optimization | 4 | adaptive-routing, intelligent-caching, latency-prediction |
+| Resilience | 4 | self-healing, cascade-prevention, graceful-degradation |
+| Security | 3 | threat-learning, adaptive-defense, anomaly-correlation |
+| Accessibility | 3 | adaptive-ui, intent-amplification, contextual-adaptation |
+| Orchestration | 6 | evolution-confidence, agent-coordination, autonomous-docs |
 
 ---
 
-*CMPSBL OS Substrate v6.3.1 — FNDTN Release*
+*CMPSBL OS Substrate v7.0.0 — SEBA Release*
 *© 2025-2026 PromptFluid®. All rights reserved.*
