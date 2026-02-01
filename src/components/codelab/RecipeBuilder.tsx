@@ -264,20 +264,22 @@ ${params || "      // No parameters"}
       </div>
 
       <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as typeof activeTab)}>
-        <TabsList className="grid w-full grid-cols-3 max-w-md">
-          <TabsTrigger value="templates" className="gap-2">
-            <Sparkles className="w-4 h-4" />
-            Starter Recipes
-          </TabsTrigger>
-          <TabsTrigger value="builder" className="gap-2">
-            <Wand2 className="w-4 h-4" />
-            Builder
-          </TabsTrigger>
-          <TabsTrigger value="code" className="gap-2">
-            <FileCode className="w-4 h-4" />
-            Code
-          </TabsTrigger>
-        </TabsList>
+        <div className="overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 pb-2">
+          <TabsList className="inline-flex w-auto min-w-max sm:grid sm:w-full sm:grid-cols-3 sm:max-w-md">
+            <TabsTrigger value="templates" className="gap-2 whitespace-nowrap px-4">
+              <Sparkles className="w-4 h-4" />
+              <span className="hidden xs:inline">Starter</span> Recipes
+            </TabsTrigger>
+            <TabsTrigger value="builder" className="gap-2 whitespace-nowrap px-4">
+              <Wand2 className="w-4 h-4" />
+              Builder
+            </TabsTrigger>
+            <TabsTrigger value="code" className="gap-2 whitespace-nowrap px-4">
+              <FileCode className="w-4 h-4" />
+              Code
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
         {/* Starter Recipes Tab */}
         <TabsContent value="templates" className="mt-6">

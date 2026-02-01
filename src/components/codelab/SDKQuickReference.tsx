@@ -343,26 +343,28 @@ export function SDKQuickReference() {
             className="pl-10"
           />
         </div>
-        <div className="flex gap-1 overflow-x-auto pb-1">
-          {modules.map(mod => {
-            const meta = MODULE_META[mod];
-            const Icon = meta?.icon || Layers;
-            return (
-              <Button
-                key={mod}
-                variant={selectedModule === mod ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSelectedModule(mod)}
-                className={cn(
-                  "gap-1.5 shrink-0 capitalize",
-                  selectedModule === mod && mod !== "all" && meta?.color
-                )}
-              >
-                {mod !== "all" && <Icon className="w-3.5 h-3.5" />}
-                {mod}
-              </Button>
-            );
-          })}
+        <div className="overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 pb-2">
+          <div className="flex gap-1 min-w-max">
+            {modules.map(mod => {
+              const meta = MODULE_META[mod];
+              const Icon = meta?.icon || Layers;
+              return (
+                <Button
+                  key={mod}
+                  variant={selectedModule === mod ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setSelectedModule(mod)}
+                  className={cn(
+                    "gap-1.5 shrink-0 capitalize whitespace-nowrap",
+                    selectedModule === mod && mod !== "all" && meta?.color
+                  )}
+                >
+                  {mod !== "all" && <Icon className="w-3.5 h-3.5" />}
+                  {mod}
+                </Button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
