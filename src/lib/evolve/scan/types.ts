@@ -17,6 +17,7 @@ export interface EdgeAnalysis {
   repurpose_candidates: RepurposeCandidate[];
   risk_flags: RiskFlag[];
   scan_timestamp: string;
+  capability_scan?: import('@/lib/capabilities').ScanAdaptResult;
 }
 
 export interface RepurposeCandidate {

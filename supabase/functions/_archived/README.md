@@ -39,6 +39,45 @@ The following functions were legacy 410-redirects that have been fully deleted:
 - `pf-core-gateway` → core.route
 - `pf-core-settings` → core.config
 
+## Full Overlap — Pending Deletion (Identified 2026-02-01)
+
+The following edge functions have FULL overlap with substrate modules and are recommended for deletion:
+
+| Edge Function | Substrate Module | Status |
+|---------------|------------------|--------|
+| `pf-clarity-scan` | INCLUSIVE.scan | ⚠️ Delete when ready |
+| `pf-ripple-image` | Disabled (402) | ✓ Safe to delete |
+| `pf-defense-security-report` | DEFENSE.security_report | ⚠️ Review usage |
+| `pf-marketing-strategy` | Uses free-tier router | Standalone OK |
+| `pf-modernizer-export` | MODERNIZER.export | Has active usage |
+
+## Partial Overlap — DO NOT DELETE
+
+These functions have logic split across substrate modules and require TODO markers:
+
+- `pf-brain-reflect` → Logic split across BRAIN engines
+- `pf-cascade-improvement-engine` → Shared with CORTEX
+
+## Capability Auto-Adapt System v7.0.0
+
+Drop-in edge functions can now be auto-adapted into governed capabilities:
+
+1. Place function in `/edge/capabilities/`
+2. Include metadata comment:
+```typescript
+/*
+@capability my-capability
+@modules BRAIN,DECODE
+@risk low
+@reversible true
+@description My capability description
+*/
+```
+3. Run `system.scan_adapt --confirm` in terminal
+4. Capability is now governed and invokable via adapter
+
+See `/src/lib/capabilities/` for the full system.
+
 ## Migration Guide
 
 All legacy endpoints have been removed. Use the substrate directly:
@@ -52,4 +91,4 @@ const response = await supabase.functions.invoke('pf-substrate', {
 
 ---
 
-promptfluid® v2026.01 — Cognitive Orchestration Substrate
+promptfluid® v2026.02 — Cognitive Orchestration Substrate

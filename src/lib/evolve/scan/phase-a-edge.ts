@@ -1,12 +1,13 @@
 /**
  * Phase A — Edge Function Introspection
- * v0.7.7 — Archived Technique Analysis
+ * v7.0.0 — Capability Auto-Adapt Integration
  * 
- * Scans deployed edge functions and cross-references against archived catalog.
+ * Scans deployed edge functions and cross-references against capability registry.
  * ⚠️ No source code exposed. Metadata only.
  */
 
 import type { EdgeAnalysis, RepurposeCandidate, RiskFlag } from './types';
+import { runScanAdapt, listCapabilities } from '@/lib/capabilities';
 
 // ═══════════════════════════════════════════════════════════════
 // ARCHIVED FUNCTION CATALOG
@@ -18,22 +19,24 @@ interface ArchivedFunction {
   reason: string;
   replacement?: string;
   can_repurpose: boolean;
+  deleted?: boolean;
 }
 
-// Known archived/deprecated functions (from custom knowledge)
+// Known archived/deprecated functions (updated 2026-02-01)
 const ARCHIVED_CATALOG: ArchivedFunction[] = [
   { name: 'pf-brain-reflect', deprecated_at: '2025-10', reason: 'Replaced by substrate brain module', can_repurpose: false },
   { name: 'pf-modernizer-v1', deprecated_at: '2025-11', reason: 'Replaced by evolution system', can_repurpose: true },
   { name: 'pf-decode-legacy', deprecated_at: '2025-10', reason: 'Replaced by substrate decode', can_repurpose: false },
   { name: 'agency-webhooks-v1', deprecated_at: '2025-09', reason: 'Replaced by agency-webhooks', can_repurpose: false },
   { name: 'dream-feeder-v1', deprecated_at: '2025-08', reason: 'Superseded by dream module', can_repurpose: true },
+  { name: 'pf-ripple-image', deprecated_at: '2026-02', reason: 'Deleted - was 402 stub', can_repurpose: false, deleted: true },
 ];
 
 // Expected active functions for substrate
 const EXPECTED_ACTIVE: string[] = [
-  'substrate',
+  'pf-substrate',
   'evolution-receipts',
-  'agency-execute-task',
+  'pf-agency-execute-task',
   'agency-webhooks',
   'pf-modernizer-rebuild',
   'pf-orchestrator',
@@ -51,11 +54,25 @@ const EXPECTED_ACTIVE: string[] = [
 export async function scanEdgeFunctions(): Promise<EdgeAnalysis> {
   const startTime = Date.now();
   
-  // In a real implementation, this would call Supabase Management API
-  // For now, we simulate based on known project structure
+  // Use the new capability auto-loader for analysis
+  const scanResult = runScanAdapt({ dryRun: true, verbose: false });
+  
   const liveFunction = await detectLiveFunctions();
   const repurposeCandidates = analyzeRepurposeCandidates(liveFunction);
   const riskFlags = detectRiskFlags(liveFunction);
+  
+  // Merge capability scan findings
+  for (const finding of scanResult.findings) {
+    if (finding.overlap === 'FULL' && finding.deletionRecommended) {
+      repurposeCandidates.push({
+        function_name: finding.name,
+        archived_name: finding.name,
+        overlap_type: 'deprecated',
+        confidence: 0.95,
+        reason: `FULL overlap detected: ${finding.reason}`,
+      });
+    }
+  }
   
   return {
     live_functions_count: liveFunction.length,
@@ -63,6 +80,7 @@ export async function scanEdgeFunctions(): Promise<EdgeAnalysis> {
     repurpose_candidates: repurposeCandidates,
     risk_flags: riskFlags,
     scan_timestamp: new Date().toISOString(),
+    capability_scan: scanResult,
   };
 }
 
