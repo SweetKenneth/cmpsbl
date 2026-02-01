@@ -58,6 +58,16 @@ const LIBRARY_DOCS = [
   { id: "75", name: "EVOLUTION-LIFECYCLE", title: "Evolution Lifecycle" },
   { id: "76", name: "EVOLUTION-AUTONOMY", title: "Evolution Autonomy" },
   { id: "77", name: "SYNERGY-PIPELINES", title: "Synergy Pipelines" },
+  { id: "78", name: "PREDICTIVE-PREVENTION", title: "Predictive Issue Prevention" },
+  { id: "79", name: "ADAPTIVE-PERSONALIZATION", title: "Adaptive Personalization" },
+  { id: "80", name: "INTELLIGENT-DELEGATION", title: "Intelligent Task Delegation" },
+  { id: "81", name: "SECURITY-HARDENING", title: "Real-time Security Hardening" },
+  { id: "82", name: "CONTEXTUAL-MEMORY", title: "Context-Aware Memory Recall" },
+  { id: "83", name: "AUTONOMOUS-DOCS", title: "Autonomous Documentation" },
+  { id: "84", name: "INSIGHT-SYNTHESIS", title: "Cross-Domain Insight Synthesis" },
+  { id: "85", name: "GRACEFUL-DEGRADATION", title: "Graceful Degradation Chain" },
+  { id: "86", name: "INTENT-AMPLIFICATION", title: "Intent Amplification" },
+  { id: "87", name: "EVOLUTION-CONFIDENCE", title: "Evolution Confidence Scoring" },
 ];
 
 export default function Library() {
