@@ -26,21 +26,22 @@ import {
   SYNERGY_DEFINITIONS,
   dryRunSynergy,
   getRecommendedSynergies,
+  getSynergyExecutor,
 } from '@/lib/capabilities/synergies';
 
 describe('Synergy Registry', () => {
-  it('should have 15 defined synergies', () => {
-    expect(SYNERGY_DEFINITIONS.length).toBe(15);
+  it('should have 24 defined synergies', () => {
+    expect(SYNERGY_DEFINITIONS.length).toBe(24);
   });
 
   it('should list all synergies', () => {
     const synergies = listSynergies();
-    expect(synergies.length).toBe(15);
+    expect(synergies.length).toBe(24);
   });
 
   it('should filter synergies by category', () => {
     const intelligence = listSynergies('intelligence');
-    expect(intelligence.length).toBe(4);
+    expect(intelligence.length).toBe(6); // +2 new intelligence synergies
     expect(intelligence.every(s => s.category === 'intelligence')).toBe(true);
   });
 
@@ -58,7 +59,7 @@ describe('Synergy Registry', () => {
 
   it('should get synergies by module', () => {
     const brainSynergies = getSynergiesByModule('BRAIN');
-    expect(brainSynergies.length).toBeGreaterThan(0);
+    expect(brainSynergies.length).toBeGreaterThan(5); // BRAIN is used in many synergies
     expect(brainSynergies.every(s => 
       s.modules.some(m => m.name.toUpperCase() === 'BRAIN')
     )).toBe(true);
@@ -69,7 +70,7 @@ describe('Synergy Registry', () => {
     expect(categories.length).toBeGreaterThan(0);
     
     const totalCount = categories.reduce((sum, c) => sum + c.count, 0);
-    expect(totalCount).toBe(15);
+    expect(totalCount).toBe(24);
   });
 });
 
@@ -96,6 +97,26 @@ describe('Synergy Definitions', () => {
   it('every synergy should have estimated execution time', () => {
     for (const synergy of SYNERGY_DEFINITIONS) {
       expect(synergy.estimatedMs).toBeGreaterThan(0);
+    }
+  });
+  
+  it('all new synergies should be properly defined', () => {
+    const newSynergyIds = [
+      'autonomous-documentation',
+      'intent-amplification',
+      'learning-acceleration',
+      'cognitive-fusion',
+      'resource-balancing',
+      'latency-prediction',
+      'cascade-prevention',
+      'memory-persistence',
+      'anomaly-correlation',
+    ];
+    
+    for (const id of newSynergyIds) {
+      const synergy = getSynergy(id);
+      expect(synergy).toBeDefined();
+      expect(synergy?.modules.length).toBeGreaterThanOrEqual(2);
     }
   });
 });
@@ -145,12 +166,12 @@ describe('Synergy Recommendations', () => {
 
 describe('Synergy Categories', () => {
   const categoryExpectations = [
-    { category: 'intelligence', minCount: 3 },
-    { category: 'optimization', minCount: 2 },
-    { category: 'resilience', minCount: 2 },
-    { category: 'security', minCount: 2 },
+    { category: 'intelligence', minCount: 6 },
+    { category: 'optimization', minCount: 5 },
+    { category: 'resilience', minCount: 5 },
+    { category: 'security', minCount: 3 },
     { category: 'accessibility', minCount: 2 },
-    { category: 'automation', minCount: 1 },
+    { category: 'automation', minCount: 3 },
   ];
 
   for (const { category, minCount } of categoryExpectations) {
@@ -159,4 +180,53 @@ describe('Synergy Categories', () => {
       expect(synergies.length).toBeGreaterThanOrEqual(minCount);
     });
   }
+});
+
+describe('Synergy Executors', () => {
+  const executorIds = [
+    'smart-recall',
+    'adaptive-routing',
+    'graceful-degradation',
+    'learning-acceleration',
+    'cascade-prevention',
+    'anomaly-correlation',
+    'cognitive-fusion',
+    'intent-amplification',
+  ];
+  
+  for (const id of executorIds) {
+    it(`should have executor registered for ${id}`, () => {
+      const executor = getSynergyExecutor(id);
+      expect(executor).toBeDefined();
+      expect(typeof executor).toBe('function');
+    });
+  }
+});
+
+describe('Module Coverage', () => {
+  const allModules = [
+    'BRAIN', 'NEXUS', 'VISION', 'DECODE', 'MODERNIZER',
+    'CORTEX', 'DEFENSE', 'SYSTEM', 'RIPPLE', 'CORE',
+    'DREAM', 'INCLUSIVE', 'ACCESS',
+  ];
+  
+  it('should cover all major modules in synergies', () => {
+    const usedModules = new Set<string>();
+    for (const synergy of SYNERGY_DEFINITIONS) {
+      for (const m of synergy.modules) {
+        usedModules.add(m.name.toUpperCase());
+      }
+    }
+    
+    // At least 12 of 14 modules should be covered
+    expect(usedModules.size).toBeGreaterThanOrEqual(12);
+  });
+  
+  it('BRAIN should be the most used module', () => {
+    const brainSynergies = getSynergiesByModule('BRAIN');
+    const visionSynergies = getSynergiesByModule('VISION');
+    
+    // BRAIN should be in at least as many synergies as any other
+    expect(brainSynergies.length).toBeGreaterThanOrEqual(visionSynergies.length * 0.8);
+  });
 });

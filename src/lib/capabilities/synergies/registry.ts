@@ -254,6 +254,149 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     estimatedMs: 700,
     minModulesRequired: 3,
   },
+  {
+    id: 'autonomous-documentation',
+    name: 'Autonomous Documentation',
+    description: 'MODERNIZER code analysis combined with DECODE explanation and SYSTEM versioning',
+    category: 'automation',
+    modules: [
+      { name: 'MODERNIZER', role: 'primary', required: true },
+      { name: 'DECODE', role: 'enhancer', required: true },
+      { name: 'SYSTEM', role: 'validator', required: false },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 450,
+    minModulesRequired: 2,
+  },
+  {
+    id: 'intent-amplification',
+    name: 'Intent Amplification',
+    description: 'DECODE intent parsing amplified by RIPPLE event context and INCLUSIVE clarity',
+    category: 'automation',
+    modules: [
+      { name: 'DECODE', role: 'primary', required: true },
+      { name: 'RIPPLE', role: 'enhancer', required: true },
+      { name: 'INCLUSIVE', role: 'validator', required: false },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 200,
+    minModulesRequired: 2,
+  },
+
+  // === ADDITIONAL INTELLIGENCE SYNERGIES ===
+  {
+    id: 'learning-acceleration',
+    name: 'Learning Acceleration',
+    description: 'BRAIN learning enhanced by DREAM pattern synthesis and CORTEX prioritization',
+    category: 'intelligence',
+    modules: [
+      { name: 'BRAIN', role: 'primary', required: true },
+      { name: 'DREAM', role: 'enhancer', required: true },
+      { name: 'CORTEX', role: 'validator', required: false },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 350,
+    minModulesRequired: 2,
+  },
+  {
+    id: 'cognitive-fusion',
+    name: 'Cognitive Fusion',
+    description: 'NEXUS multi-provider reasoning fused with BRAIN memory and VISION performance data',
+    category: 'intelligence',
+    modules: [
+      { name: 'NEXUS', role: 'primary', required: true },
+      { name: 'BRAIN', role: 'enhancer', required: true },
+      { name: 'VISION', role: 'enhancer', required: true },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 600,
+    minModulesRequired: 3,
+  },
+
+  // === ADDITIONAL OPTIMIZATION SYNERGIES ===
+  {
+    id: 'resource-balancing',
+    name: 'Resource Balancing',
+    description: 'CORTEX orchestration tuned by VISION metrics and SYSTEM quota management',
+    category: 'optimization',
+    modules: [
+      { name: 'CORTEX', role: 'primary', required: true },
+      { name: 'VISION', role: 'enhancer', required: true },
+      { name: 'SYSTEM', role: 'validator', required: true },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 120,
+    minModulesRequired: 3,
+  },
+  {
+    id: 'latency-prediction',
+    name: 'Latency Prediction',
+    description: 'VISION historical latency analyzed by BRAIN patterns to predict NEXUS route timing',
+    category: 'optimization',
+    modules: [
+      { name: 'VISION', role: 'primary', required: true },
+      { name: 'BRAIN', role: 'enhancer', required: true },
+      { name: 'NEXUS', role: 'validator', required: true },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 80,
+    minModulesRequired: 3,
+  },
+
+  // === ADDITIONAL RESILIENCE SYNERGIES ===
+  {
+    id: 'cascade-prevention',
+    name: 'Cascade Prevention',
+    description: 'DEFENSE circuit breakers coordinated with RIPPLE event isolation and CORE fallbacks',
+    category: 'resilience',
+    modules: [
+      { name: 'DEFENSE', role: 'primary', required: true },
+      { name: 'RIPPLE', role: 'enhancer', required: true },
+      { name: 'CORE', role: 'fallback', required: true },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 50,
+    minModulesRequired: 3,
+  },
+  {
+    id: 'memory-persistence',
+    name: 'Memory Persistence',
+    description: 'BRAIN consolidation backed by SYSTEM storage and VISION integrity checks',
+    category: 'resilience',
+    modules: [
+      { name: 'BRAIN', role: 'primary', required: true },
+      { name: 'SYSTEM', role: 'enhancer', required: true },
+      { name: 'VISION', role: 'validator', required: false },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 200,
+    minModulesRequired: 2,
+  },
+
+  // === ADDITIONAL SECURITY SYNERGIES ===
+  {
+    id: 'anomaly-correlation',
+    name: 'Anomaly Correlation',
+    description: 'VISION anomaly detection correlated with DEFENSE threat intel and BRAIN patterns',
+    category: 'security',
+    modules: [
+      { name: 'VISION', role: 'primary', required: true },
+      { name: 'DEFENSE', role: 'enhancer', required: true },
+      { name: 'BRAIN', role: 'validator', required: true },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 180,
+    minModulesRequired: 3,
+  },
 ];
 
 /**
