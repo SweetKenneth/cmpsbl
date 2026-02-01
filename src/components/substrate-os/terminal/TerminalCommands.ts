@@ -491,6 +491,31 @@ export const AUTOBLOG_COMMANDS: CommandDefinition[] = [
   { command: 'autoblog.heal', description: 'Self-heal AutoBlog subsystem', category: 'autoblog', icon: Shield, requiresOperator: true, args: '[--full]' },
 ];
 
+// SEBA — Self-Evolving Bounded Agent v1.0.0
+export const SEBA_COMMANDS: CommandDefinition[] = [
+  // Status & control
+  { command: 'seba.status', description: 'SEBA agent state and mode', category: 'clm', icon: Brain, requiresOperator: false },
+  { command: 'seba.enable', description: 'Enable SEBA agent', category: 'clm', icon: PlayCircle, requiresOperator: true },
+  { command: 'seba.disable', description: 'Disable SEBA agent', category: 'clm', icon: Shield, requiresOperator: true },
+  { command: 'seba.mode', description: 'Get/set operating mode', category: 'clm', icon: Settings, requiresOperator: true, args: '[off|observe|advisory|governed]', example: 'seba.mode governed' },
+  
+  // Cycle operations
+  { command: 'seba.cycle', description: 'Run complete SEBA cycle (5-phase)', category: 'clm', icon: Sparkles, requiresOperator: true },
+  { command: 'seba.propose', description: 'Generate proposals only (no execution)', category: 'clm', icon: Wand2, requiresOperator: true },
+  { command: 'seba.review', description: 'View pending proposals', category: 'clm', icon: Eye, requiresOperator: false },
+  
+  // Proposal management
+  { command: 'seba.approve', description: 'Approve a proposal', category: 'clm', icon: Shield, requiresOperator: true, args: '<proposal_id>', example: 'seba.approve SEBA-001' },
+  { command: 'seba.reject', description: 'Reject a proposal', category: 'clm', icon: Shield, requiresOperator: true, args: '<proposal_id>', example: 'seba.reject SEBA-001' },
+  { command: 'seba.execute', description: 'Execute approved proposal', category: 'clm', icon: PlayCircle, requiresOperator: true, args: '<proposal_id>' },
+  { command: 'seba.rollback', description: 'Rollback an execution', category: 'clm', icon: Shield, requiresOperator: true, args: '<execution_id>' },
+  
+  // Configuration
+  { command: 'seba.config', description: 'View/update configuration', category: 'clm', icon: Settings, requiresOperator: false, args: '[key=value]' },
+  { command: 'seba.thresholds', description: 'Adjust safety thresholds', category: 'clm', icon: Gauge, requiresOperator: true, args: '[auto_approve <val>|risk <level>]', example: 'seba.thresholds auto_approve 0.9' },
+  { command: 'seba.history', description: 'View evolution history', category: 'clm', icon: Activity, requiresOperator: false, args: '[limit]', example: 'seba.history 20' },
+];
+
 // MODULE CLM — Module-specific self-learning v6.8.0
 export const MODULE_CLM_COMMANDS: CommandDefinition[] = [
   { command: 'mclm.status', description: 'View all module CLM states', category: 'clm', icon: Brain, requiresOperator: false },
@@ -511,6 +536,7 @@ export const ALL_COMMANDS: CommandDefinition[] = [
   ...CORTEX_COMMANDS,
   ...INCLUSIVE_COMMANDS,
   ...CLM_COMMANDS,
+  ...SEBA_COMMANDS,
   ...CORE_COMMANDS,
   ...RIPPLE_COMMANDS,
   ...ACCESS_COMMANDS,

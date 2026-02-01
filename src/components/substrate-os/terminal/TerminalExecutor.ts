@@ -316,6 +316,23 @@ function generateFullHelp(): string {
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
+┌─ SEBA (SELF-EVOLVING BOUNDED AGENT) v1.0.0 ─────────────────┐
+│                                                             │
+│  seba.status         Agent state, mode, and statistics      │
+│  seba.enable         Enable bounded autonomy                │
+│  seba.disable        Disable agent                          │
+│  seba.mode [mode]    Get/set: off|observe|advisory|governed │
+│  seba.cycle          Run complete 5-phase evolution cycle   │
+│  seba.propose        Generate proposals only (no execution) │
+│  seba.review         View pending proposals                 │
+│  seba.approve <id>   Approve a proposal                     │
+│  seba.reject <id>    Reject a proposal                      │
+│  seba.execute <id>   Execute approved proposal              │
+│  seba.rollback <id>  Rollback an execution                  │
+│  seba.history [n]    View evolution history                 │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
 ┌─ TERMINAL FEATURES v5.0.0 ──────────────────────────────────┐
 │                                                             │
 │  alias               Shorthand commands                     │
@@ -1954,6 +1971,286 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
         };
       } catch (err) {
         return { success: false, output: `▓ Next review error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // SEBA (Self-Evolving Bounded Agent) v1.0.0
+    // ═══════════════════════════════════════════════════════════════
+    else if (base === 'seba.status') {
+      try {
+        const { sebaAgent } = await import('@/lib/substrate/seba');
+        const result = await sebaAgent.handleCommand('status');
+        if (!result.success) {
+          return { success: false, output: `▓ SEBA error: ${result.message}` };
+        }
+        const data = result.data as { state: any; config: any };
+        const state = data?.state || {};
+        const config = data?.config || {};
+        const modeIcon = config.enabled ? '🟢' : '🔴';
+        const phaseIcon = state.current_phase === 'idle' ? '⚪' : state.current_phase === 'complete' ? '✅' : '🔄';
+        
+        return {
+          success: true,
+          output: `╔══════════════════════════════════════════════════════════════╗
+║  SEBA — Self-Evolving Bounded Agent v1.0.0                   ║
+╠══════════════════════════════════════════════════════════════╣
+║  Status:     ${modeIcon} ${config.enabled ? 'ENABLED' : 'DISABLED'}                                       ║
+║  Mode:       ${(config.mode || 'advisory').toUpperCase().padEnd(12)}                                ║
+║  Phase:      ${phaseIcon} ${(state.current_phase || 'idle').toUpperCase().padEnd(10)}                              ║
+╠══════════════════════════════════════════════════════════════╣
+║  CYCLE STATS                                                 ║
+║  Total:      ${String(state.total_cycles || 0).padEnd(5)} cycles                                   ║
+║  Successful: ${String(state.successful_cycles || 0).padEnd(5)}                                          ║
+║  Failed:     ${String(state.failed_cycles || 0).padEnd(5)}                                          ║
+║  Blocked:    ${String(state.blocked_cycles || 0).padEnd(5)}                                          ║
+╠══════════════════════════════════════════════════════════════╣
+║  PROPOSALS                                                   ║
+║  Pending:    ${String(state.pending_proposals || 0).padEnd(5)}                                          ║
+║  Approved:   ${String(state.approved_proposals || 0).padEnd(5)}                                          ║
+║  Rejected:   ${String(state.rejected_proposals || 0).padEnd(5)}                                          ║
+╠══════════════════════════════════════════════════════════════╣
+║  THRESHOLDS                                                  ║
+║  Auto-approve: ≥${(state.auto_approve_threshold || 0.85).toFixed(2)} confidence                        ║
+║  Risk tolerance: ${(state.risk_tolerance || 'low').toUpperCase()}                                 ║
+╚══════════════════════════════════════════════════════════════╝`,
+          data: result.data,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ SEBA not initialized or error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'seba.enable') {
+      try {
+        const { sebaAgent } = await import('@/lib/substrate/seba');
+        await sebaAgent.handleCommand('enable');
+        return { success: true, output: '◉ SEBA ENABLED — bounded autonomy active' };
+      } catch (err) {
+        return { success: false, output: `▓ Enable error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'seba.disable') {
+      try {
+        const { sebaAgent } = await import('@/lib/substrate/seba');
+        await sebaAgent.handleCommand('disable');
+        return { success: true, output: '◉ SEBA DISABLED' };
+      } catch (err) {
+        return { success: false, output: `▓ Disable error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'seba.mode') {
+      const mode = args[0];
+      try {
+        const { sebaAgent } = await import('@/lib/substrate/seba');
+        const result = await sebaAgent.handleCommand('mode', mode ? { mode } : undefined);
+        if (!result.success) {
+          return { 
+            success: false, 
+            output: `▓ ${result.message}\n  Valid modes: off, observe, advisory, governed`,
+          };
+        }
+        return { success: true, output: `◉ ${result.message}`, data: result.data };
+      } catch (err) {
+        return { success: false, output: `▓ Mode error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'seba.cycle') {
+      try {
+        const { sebaAgent } = await import('@/lib/substrate/seba');
+        const result = await sebaAgent.handleCommand('cycle');
+        if (!result.success) {
+          return { success: false, output: `▓ Cycle failed: ${result.message}` };
+        }
+        const cycleData = result.data as any;
+        return {
+          success: true,
+          output: `◉ SEBA CYCLE COMPLETE
+  ┌────────────────────────────────────────┐
+  │  Duration:     ${cycleData?.duration_ms || 0}ms                   │
+  │  Phases:       ${cycleData?.phases_completed?.length || 0} completed             │
+  │  Final Phase:  ${(cycleData?.final_phase || 'complete').toUpperCase().padEnd(15)}      │
+  ├────────────────────────────────────────┤
+  │  Proposals:    ${cycleData?.proposals_generated || 0} generated             │
+  │  Approved:     ${cycleData?.proposals_approved || 0}                        │
+  │  Rejected:     ${cycleData?.proposals_rejected || 0}                        │
+  │  Applied:      ${cycleData?.evolutions_applied || 0} evolutions            │
+  └────────────────────────────────────────┘`,
+          data: result.data,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ Cycle error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'seba.propose') {
+      try {
+        const { sebaAgent } = await import('@/lib/substrate/seba');
+        const result = await sebaAgent.handleCommand('propose');
+        if (!result.success) {
+          return { success: false, output: `▓ Propose failed: ${result.message}` };
+        }
+        const data = result.data as any;
+        let output = `◉ PROPOSALS GENERATED\n\n`;
+        output += `  Insights analyzed: ${data?.insights || 0}\n`;
+        output += `  Proposals created: ${data?.proposals?.length || 0}\n\n`;
+        
+        for (const p of data?.proposals || []) {
+          output += `  ┌─ ${p.id} ─────────────────────────────\n`;
+          output += `  │  ${p.title}\n`;
+          output += `  │  Category:   ${p.category}\n`;
+          output += `  │  Confidence: ${(p.confidence * 100).toFixed(0)}%\n`;
+          output += `  │  Risk:       ${p.risk.toUpperCase()}\n`;
+          output += `  └─────────────────────────────────────────\n\n`;
+        }
+        
+        if ((data?.proposals?.length || 0) === 0) {
+          output += `  No proposals generated — system is healthy.\n`;
+        }
+        
+        return { success: true, output, data: result.data };
+      } catch (err) {
+        return { success: false, output: `▓ Propose error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'seba.review') {
+      try {
+        const { sebaAgent } = await import('@/lib/substrate/seba');
+        const result = await sebaAgent.handleCommand('review');
+        const data = result.data as any;
+        
+        if ((data?.pending_count || 0) === 0) {
+          return { success: true, output: '◉ No proposals pending review' };
+        }
+        
+        return {
+          success: true,
+          output: `◉ ${data.pending_count} PROPOSALS PENDING REVIEW\n\n  Use 'seba.approve <id>' or 'seba.reject <id>' to process`,
+          data: result.data,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ Review error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'seba.approve') {
+      const proposalId = args[0];
+      if (!proposalId) {
+        return { success: false, output: '▓ ERROR: Proposal ID required\n  Usage: seba.approve <proposal_id>' };
+      }
+      try {
+        const { sebaAgent } = await import('@/lib/substrate/seba');
+        const result = await sebaAgent.handleCommand('approve', { proposal_id: proposalId });
+        return { success: result.success, output: result.success ? `◉ ${result.message}` : `▓ ${result.message}` };
+      } catch (err) {
+        return { success: false, output: `▓ Approve error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'seba.reject') {
+      const proposalId = args[0];
+      if (!proposalId) {
+        return { success: false, output: '▓ ERROR: Proposal ID required\n  Usage: seba.reject <proposal_id>' };
+      }
+      try {
+        const { sebaAgent } = await import('@/lib/substrate/seba');
+        const result = await sebaAgent.handleCommand('reject', { proposal_id: proposalId });
+        return { success: result.success, output: result.success ? `◉ ${result.message}` : `▓ ${result.message}` };
+      } catch (err) {
+        return { success: false, output: `▓ Reject error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'seba.execute') {
+      const proposalId = args[0];
+      if (!proposalId) {
+        return { success: false, output: '▓ ERROR: Proposal ID required\n  Usage: seba.execute <proposal_id>' };
+      }
+      try {
+        const { sebaAgent } = await import('@/lib/substrate/seba');
+        const result = await sebaAgent.handleCommand('execute', { proposal_id: proposalId });
+        return { success: result.success, output: result.success ? `◉ ${result.message}` : `▓ ${result.message}` };
+      } catch (err) {
+        return { success: false, output: `▓ Execute error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'seba.rollback') {
+      const executionId = args[0];
+      if (!executionId) {
+        return { success: false, output: '▓ ERROR: Execution ID required\n  Usage: seba.rollback <execution_id>' };
+      }
+      try {
+        const { sebaAgent } = await import('@/lib/substrate/seba');
+        const result = await sebaAgent.handleCommand('rollback', { execution_id: executionId });
+        return { success: result.success, output: result.success ? `◉ ${result.message}` : `▓ ${result.message}` };
+      } catch (err) {
+        return { success: false, output: `▓ Rollback error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'seba.config') {
+      try {
+        const { sebaAgent } = await import('@/lib/substrate/seba');
+        // Check if setting a value
+        if (args.length > 0 && args[0].includes('=')) {
+          const [key, value] = args[0].split('=');
+          const updates: Record<string, unknown> = {};
+          updates[key] = isNaN(Number(value)) ? value : Number(value);
+          const result = await sebaAgent.handleCommand('config', { updates });
+          return { success: result.success, output: result.success ? `◉ Config updated: ${key} = ${value}` : `▓ ${result.message}` };
+        }
+        
+        const result = await sebaAgent.handleCommand('config');
+        const data = result.data as any;
+        return {
+          success: true,
+          output: `╔══════════════════════════════════════════════════════════════╗
+║  SEBA CONFIGURATION                                          ║
+╠══════════════════════════════════════════════════════════════╣
+║  mode:                    ${(data?.mode || 'advisory').padEnd(12)}                    ║
+║  enabled:                 ${String(data?.enabled ?? true).padEnd(12)}                    ║
+║  auto_approve_threshold:  ${String(data?.auto_approve_threshold || 0.85).padEnd(12)}                    ║
+║  risk_tolerance:          ${(data?.risk_tolerance || 'low').padEnd(12)}                    ║
+╚══════════════════════════════════════════════════════════════╝`,
+          data: result.data,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ Config error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'seba.thresholds') {
+      const key = args[0];
+      const value = args[1];
+      
+      if (!key) {
+        return {
+          success: true,
+          output: `◉ SEBA THRESHOLDS
+  Usage: seba.thresholds <key> <value>
+  
+  Available thresholds:
+    auto_approve <0.0-1.0>  — Minimum confidence for auto-approval (default: 0.85)
+    risk <level>            — Maximum risk: minimal, low, medium, high (default: low)
+    
+  Example: seba.thresholds auto_approve 0.9`,
+        };
+      }
+      
+      try {
+        const { sebaAgent } = await import('@/lib/substrate/seba');
+        const result = await sebaAgent.handleCommand('thresholds', { [key]: key === 'auto_approve' ? parseFloat(value) : value });
+        return { success: result.success, output: result.success ? `◉ ${result.message}` : `▓ ${result.message}` };
+      } catch (err) {
+        return { success: false, output: `▓ Thresholds error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'seba.history') {
+      const limit = parseInt(args[0]) || 20;
+      try {
+        const { sebaAgent } = await import('@/lib/substrate/seba');
+        const result = await sebaAgent.handleCommand('history', { limit });
+        if (!result.success) {
+          return { success: false, output: `▓ History error: ${result.message}` };
+        }
+        
+        const data = result.data as any;
+        const events = data?.events || [];
+        
+        if (events.length === 0) {
+          return { success: true, output: '◉ No evolution history yet — run seba.cycle to start' };
+        }
+        
+        let output = `◉ SEBA EVOLUTION HISTORY (last ${limit})\n\n`;
+        for (const event of events.slice(0, limit)) {
+          const icon = event.outcome === 'success' ? '✅' : event.outcome === 'error' ? '❌' : '⚠️';
+          output += `  ${icon} [${event.phase}] ${event.action}\n`;
+          output += `     ${event.timestamp}\n\n`;
+        }
+        
+        return { success: true, output, data: result.data };
+      } catch (err) {
+        return { success: false, output: `▓ History error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
     }
 

@@ -81,6 +81,14 @@ export const BUILTIN_ALIASES: AliasDefinition[] = [
   { alias: 'clmt', expansion: 'clm.topics', description: 'CLM topics' },
   { alias: 'clmr', expansion: 'clm.review_queue', description: 'Review queue' },
   
+  // SEBA (Self-Evolving Bounded Agent) shortcuts
+  { alias: 'ss', expansion: 'seba.status', description: 'SEBA status' },
+  { alias: 'sc', expansion: 'seba.cycle', description: 'SEBA cycle' },
+  { alias: 'sm', expansion: 'seba.mode', description: 'SEBA mode' },
+  { alias: 'sp', expansion: 'seba.propose', description: 'SEBA propose' },
+  { alias: 'sr', expansion: 'seba.review', description: 'SEBA review' },
+  { alias: 'sh', expansion: 'seba.history', description: 'SEBA history' },
+  
   // Quick actions
   { alias: 'heal', expansion: 'system.heal', description: 'Self-healing' },
   { alias: 'fix', expansion: 'system.heal auto true', description: 'Auto-fix issues' },
