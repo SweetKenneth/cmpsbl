@@ -4,7 +4,7 @@
  * v6.0.0: Full module coverage for the 5-layer kernel architecture + Inclusive
  */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Brain, 
@@ -400,20 +400,37 @@ export function TechShowcase() {
     ? codeExamples.filter(e => e.layer === activeLayer)
     : codeExamples;
   
-  // Typing effect when tab changes
+  // Memoize code lines to prevent recomputation
+  const memoizedCodeLines = useMemo(() => activeExample.code.split('\n'), [activeExample.code]);
+  const totalLines = memoizedCodeLines.length;
+  
+  // Optimized typing effect - batch updates and use refs to avoid stale closures
   useEffect(() => {
     setTypedLines(0);
-    const interval = setInterval(() => {
-      setTypedLines(prev => {
-        if (prev >= codeLines.length) {
-          clearInterval(interval);
-          return prev;
-        }
-        return prev + 1;
-      });
-    }, 40);
-    return () => clearInterval(interval);
-  }, [activeTab, codeLines.length]);
+    let currentLine = 0;
+    let rafId: number;
+    let lastTime = 0;
+    const BATCH_SIZE = 3; // Type 3 lines at once for smoother animation
+    const INTERVAL_MS = 50; // Slightly longer interval but batched
+    
+    const animate = (timestamp: number) => {
+      if (!lastTime) lastTime = timestamp;
+      const elapsed = timestamp - lastTime;
+      
+      if (elapsed >= INTERVAL_MS) {
+        lastTime = timestamp;
+        currentLine = Math.min(currentLine + BATCH_SIZE, totalLines);
+        setTypedLines(currentLine);
+        
+        if (currentLine >= totalLines) return;
+      }
+      
+      rafId = requestAnimationFrame(animate);
+    };
+    
+    rafId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(rafId);
+  }, [activeTab, totalLines]);
   
   const handleCopy = () => {
     navigator.clipboard.writeText(activeExample.code);

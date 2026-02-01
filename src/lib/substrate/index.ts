@@ -256,5 +256,19 @@ export {
   type SEBACommandResult,
 } from './seba';
 
+// Cross-Module Capabilities v6.9.0
+export {
+  capabilityEngine,
+  CapabilityEngineClient,
+  CAPABILITY_REGISTRY,
+  type CapabilityId,
+  type CapabilityDefinition,
+  type CapabilityExecutionResult,
+  type CapabilityState,
+  type ModuleLayer,
+} from './capabilities';
+
+export { useCapabilities, type UseCapabilitiesReturn } from './capabilities/useCapabilities';
+
 // Re-export substrate client from lib
 export { substrate, type SubstrateModule, type SubstrateRequest, type SubstrateResponse } from '../substrate';
