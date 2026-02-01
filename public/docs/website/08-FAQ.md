@@ -73,7 +73,7 @@ Yes. All license tiers allow commercial use. Enterprise tier includes additional
 
 ### Do you offer trials?
 
-Enterprise evaluations include a 30-day pilot program. Developer licenses have a 30-day money-back guarantee.
+Developer licenses include a 30-day money-back guarantee. Enterprise evaluations are available upon request.
 
 ---
 
