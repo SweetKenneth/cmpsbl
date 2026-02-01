@@ -169,8 +169,8 @@ export async function executeCodeAgent(
       throw new Error(writeValidation.error);
     }
 
-    // Phase 3: VERIFY_TS
-    state = transitionTo(state, CodeAgentPhase.VERIFY_TS);
+    // Phase 3: VERIFY
+    state = transitionTo(state, CodeAgentPhase.VERIFY);
     setState(state);
     
     const tsResult = runTSVerificationLoop(state.files_written);

@@ -9,10 +9,13 @@
 
 export enum CodeAgentPhase {
   IDLE = 'IDLE',
-  PLAN = 'PLAN',
-  WRITE = 'WRITE',
-  VERIFY_TS = 'VERIFY_TS',
-  FINALIZE = 'FINALIZE',
+  READ = 'READ',           // Gather context, read related files
+  PLAN = 'PLAN',           // Analyze and plan changes
+  WRITE = 'WRITE',         // Generate code
+  READ_VERIFY = 'READ_VERIFY', // Re-read to check output
+  FIX_ERRORS = 'FIX_ERRORS',   // Fix any issues found
+  VERIFY = 'VERIFY',       // Final validation
+  FINALIZE = 'FINALIZE',   // Apply and record
   FAILED = 'FAILED',
 }
 
