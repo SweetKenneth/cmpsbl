@@ -34,3 +34,21 @@ export {
   dryRunSynergy,
   getRecommendedSynergies,
 } from './engine';
+
+// Executors
+export {
+  registerAllExecutors,
+  executeSmartRecall,
+  executeAdaptiveRouting,
+  executeGracefulDegradation,
+  executeLearningAcceleration,
+  executeCascadePrevention,
+  executeAnomalyCorrelation,
+  executeCognitiveFusion,
+  executeIntentAmplification,
+} from './executors';
+
+// Auto-register executors
+import { registerSynergyExecutor } from './registry';
+import { registerAllExecutors } from './executors';
+registerAllExecutors(registerSynergyExecutor);

@@ -9,7 +9,8 @@ export type SynergyCategory =
   | 'resilience'        // Fault tolerance/recovery
   | 'security'          // Hardening/protection
   | 'accessibility'     // Inclusive design
-  | 'automation';       // Autonomous workflows
+  | 'automation'        // Autonomous workflows
+  | 'orchestration';    // Multi-module coordination
 
 export type SynergyStatus = 'ready' | 'running' | 'completed' | 'failed' | 'disabled';
 
