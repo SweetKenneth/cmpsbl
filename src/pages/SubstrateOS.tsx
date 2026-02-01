@@ -46,6 +46,7 @@ import { CortexTab } from '@/components/substrate-os/CortexTab';
 import { InclusiveTab } from '@/components/substrate-os/InclusiveTab';
 import { NexusTab } from '@/components/substrate-os/NexusTab';
 import { CapabilitiesTab } from '@/components/substrate-os/CapabilitiesTab';
+import { AtlasTab } from '@/components/substrate-os/AtlasTab';
 import { DashboardMetricsHero, QuickActionsPanel, ModuleControlsGrid } from '@/components/substrate-os/dashboard';
 import { cn } from '@/lib/utils';
 
@@ -104,6 +105,7 @@ function getTabGroups(isOperator: boolean, isGovernor: boolean, hasAgency: boole
 
   const evolveTabs: TabConfig[] = [
     ...(isOperator ? [
+      { id: 'atlas', label: 'Atlas', icon: Gauge, color: 'cyan', description: 'Control plane', minRole: 'operator' as const },
       { id: 'capabilities', label: 'Capabilities', icon: ToggleRight, color: 'cyan', description: 'Toggle capabilities', minRole: 'operator' as const },
       { id: 'modernizer', label: 'Modernizer', icon: Wand2, color: 'fuchsia', description: 'Self-upgrade', minRole: 'operator' as const },
     ] : []),
@@ -761,6 +763,19 @@ export default function SubstrateOS() {
                 exit={{ opacity: 0 }}
               >
                 <BackupRestorePanel enabled={isOperator} />
+              </motion.main>
+            )}
+
+            {/* Atlas Control Plane */}
+            {activeTab === 'atlas' && isOperator && (
+              <motion.main 
+                key="atlas"
+                className="container mx-auto px-4 py-6 max-w-7xl"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <AtlasTab />
               </motion.main>
             )}
 

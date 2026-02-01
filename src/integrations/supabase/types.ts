@@ -9194,6 +9194,51 @@ export type Database = {
         }
         Relationships: []
       }
+      substrate_audit_log: {
+        Row: {
+          actor: string | null
+          actor_role: string | null
+          dry_run: boolean | null
+          execution_ms: number | null
+          id: string
+          op: string
+          payload_redacted: Json | null
+          result_summary: string | null
+          status: string
+          target: string | null
+          trace_id: string
+          ts: string
+        }
+        Insert: {
+          actor?: string | null
+          actor_role?: string | null
+          dry_run?: boolean | null
+          execution_ms?: number | null
+          id?: string
+          op: string
+          payload_redacted?: Json | null
+          result_summary?: string | null
+          status: string
+          target?: string | null
+          trace_id: string
+          ts?: string
+        }
+        Update: {
+          actor?: string | null
+          actor_role?: string | null
+          dry_run?: boolean | null
+          execution_ms?: number | null
+          id?: string
+          op?: string
+          payload_redacted?: Json | null
+          result_summary?: string | null
+          status?: string
+          target?: string | null
+          trace_id?: string
+          ts?: string
+        }
+        Relationships: []
+      }
       substrate_brain_improvements: {
         Row: {
           adoption_count: number | null
@@ -9255,6 +9300,30 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      substrate_capabilities: {
+        Row: {
+          enabled: boolean
+          key: string
+          notes: string | null
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          enabled?: boolean
+          key: string
+          notes?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          enabled?: boolean
+          key?: string
+          notes?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
       }
       substrate_developer_keys: {
         Row: {
