@@ -60,7 +60,7 @@ export const LICENSING_PRODUCTS = {
       'Academic support channel',
       'Research collaboration opportunities',
     ],
-    checkout_enabled: true,
+    checkout_enabled: false, // Contact-based for high-value licenses
   },
   enterprise: {
     product_id: 'prod_Ttq6Zkso5r2axG',
@@ -77,7 +77,7 @@ export const LICENSING_PRODUCTS = {
       'Custom deployment assistance',
       'Quarterly roadmap alignment calls',
     ],
-    checkout_enabled: true, // Now enabled for Stripe checkout
+    checkout_enabled: false, // Contact-based for high-value licenses
   },
   strategic: {
     product_id: null,
