@@ -1,15 +1,17 @@
 /**
  * Encoded Workflow Engine — READ → PLAN → WRITE → READ → FIX → VERIFY → FINALIZE
- * v2.0.0 — Complete 7-phase execution pattern for reliable code changes
+ * v3.0.0 — Complete 7-phase execution with real AI generation via Nexus
  * 
  * Workflow stages:
- * 1. READ: Gather context, understand scope, read related files
+ * 1. READ: Gather context, understand scope, query Brain for patterns
  * 2. PLAN: Analyze impact, check dependencies, plan changes  
- * 3. WRITE: Generate code with templates and patterns
+ * 3. WRITE: Generate code via Nexus router (free-tier AI)
  * 4. READ_VERIFY: Re-read output to check for issues
  * 5. FIX_ERRORS: Correct any problems found during read-verify
  * 6. VERIFY: Final validation, security checks, pattern compliance
  * 7. FINALIZE: Apply changes, record for rollback, learn from outcome
+ * 
+ * Learning: Every action persists patterns to Brain memory for CLM
  */
 
 import { 
@@ -19,9 +21,12 @@ import {
   type ShadowGenerationRequest,
   type ShadowGenerationResult 
 } from './shadow-mode';
+import { generateWithNexus, type NexusGenerationResult } from './nexus-generator';
 import { recordChange, getRecentChanges } from './rollback';
 import { assessAction, checkForbiddenPatterns, checkRequiredPatterns } from './knowledge';
 import { getServiceHealth } from './circuit-breaker';
+import { checkBrainFirst } from './brain-first';
+import { learnFromCodeAction } from './learning-engine';
 
 // ═══════════════════════════════════════════════════════════════
 // WORKFLOW TYPES
@@ -208,10 +213,24 @@ function getDependencies(module: string): string[] {
 }
 
 async function queryBrainKnowledge(description: string, module: string): Promise<WorkflowContext['brainKnowledge']> {
-  await delay(100);
+  // Query real Brain memory for relevant patterns
+  try {
+    const brainCheck = await checkBrainFirst(description, module, 'edge_function');
+    
+    if (brainCheck.hasRelevantSkills) {
+      return brainCheck.skills.slice(0, 5).map(skill => ({
+        id: skill.id,
+        title: skill.title,
+        confidence: skill.confidence,
+        content: skill.content,
+      }));
+    }
+  } catch (error) {
+    console.warn('[Workflow] Brain query failed, using fallback:', error);
+  }
   
-  // Return simulated brain knowledge based on module
-  const knowledge: Record<string, WorkflowContext['brainKnowledge']> = {
+  // Fallback to static knowledge if brain query fails
+  const fallbackKnowledge: Record<string, WorkflowContext['brainKnowledge']> = {
     brain: [
       { id: 'k1', title: 'Memory persistence patterns', confidence: 0.92, content: 'Use brain_memories table with proper RLS' },
       { id: 'k2', title: 'Event logging standards', confidence: 0.88, content: 'Log to brain_events with module and outcome' },
@@ -220,13 +239,13 @@ async function queryBrainKnowledge(description: string, module: string): Promise
       { id: 'k3', title: 'Circuit breaker implementation', confidence: 0.95, content: 'Use 3-failure threshold with 60s recovery' },
       { id: 'k4', title: 'Rate limiting patterns', confidence: 0.91, content: 'Sliding window with token bucket fallback' },
     ],
-    modernizer: [
-      { id: 'k5', title: 'Job status management', confidence: 0.89, content: 'Use modernizer_jobs table with status enum' },
-      { id: 'k6', title: 'Accessibility scanning', confidence: 0.87, content: 'WCAG 2.1 AA compliance checks' },
+    nexus: [
+      { id: 'k5', title: 'Free-tier routing', confidence: 0.95, content: 'Use callFreeTierAI with fallback chain' },
+      { id: 'k6', title: 'Health monitoring', confidence: 0.90, content: 'Track provider health scores 0-100' },
     ],
   };
   
-  return knowledge[module] || [];
+  return fallbackKnowledge[module] || [];
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -380,11 +399,50 @@ async function stageWrite(
   currentWorkflow.stage = 'writing';
   currentWorkflow.currentStageProgress = 0;
   
-  emitProgress('writing', 'Generating code using shadow mode', `Patterns: ${thinking.patterns.slice(0, 2).join(', ')}`);
+  emitProgress('writing', 'Generating code via Nexus router (free-tier AI)', `Patterns: ${thinking.patterns.slice(0, 2).join(', ')}`);
   
-  // Generate code using shadow mode
   currentWorkflow.currentStageProgress = 30;
   
+  // Try real Nexus generation first, fallback to shadow mode
+  try {
+    emitProgress('writing', 'Calling Nexus router...');
+    const nexusResult = await generateWithNexus({
+      module: request.module,
+      changeType: request.changeType,
+      description: request.description,
+      filePath: request.filePath,
+      existingCode: request.existingCode,
+      priority: 'speed',
+    });
+    
+    currentWorkflow.currentStageProgress = 100;
+    
+    if (nexusResult.success) {
+      emitProgress('writing', `Generated ${nexusResult.code.split('\n').length} lines via ${nexusResult.provider}`, `Brain-assisted: ${nexusResult.brainAssisted}`);
+      currentWorkflow.completedStages.push('writing');
+      
+      return {
+        success: true,
+        code: nexusResult.code,
+        filePath: nexusResult.filePath,
+        operation: nexusResult.operation,
+        confidence: nexusResult.confidence,
+        provider: nexusResult.provider,
+        model: nexusResult.model,
+        latencyMs: nexusResult.latencyMs,
+        validation: nexusResult.validation,
+        shadowMode: false as unknown as true, // Type compatibility
+      };
+    }
+    
+    // Fall through to shadow mode if Nexus fails
+    emitProgress('writing', 'Nexus unavailable, using template fallback...');
+  } catch (error) {
+    console.warn('[Workflow] Nexus generation failed, using shadow mode:', error);
+    emitProgress('writing', 'Using template fallback...');
+  }
+  
+  // Fallback to shadow mode
   const shadowRequest: ShadowGenerationRequest = {
     module: request.module,
     changeType: request.changeType,
@@ -392,12 +450,11 @@ async function stageWrite(
     filePath: request.filePath,
   };
   
-  currentWorkflow.currentStageProgress = 50;
-  emitProgress('writing', 'Applying templates and patterns...');
+  currentWorkflow.currentStageProgress = 80;
   const generated = await shadowGenerate(shadowRequest);
   
   currentWorkflow.currentStageProgress = 100;
-  emitProgress('writing', `Generated ${generated.code.split('\n').length} lines`, `File: ${generated.filePath}`);
+  emitProgress('writing', `Generated ${generated.code.split('\n').length} lines (template)`, `File: ${generated.filePath}`);
   currentWorkflow.completedStages.push('writing');
   
   return generated;
