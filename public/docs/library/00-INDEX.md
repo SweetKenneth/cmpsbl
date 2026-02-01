@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Documentation Library
 
-**PromptFluid® CMPSBL OS — v6.x.x Library**
+**PromptFluid® CMPSBL OS — FNDTN v6.3.0 Library**
 
 ---
 
@@ -9,7 +9,7 @@
 | Field | Value |
 |-------|-------|
 | **System Name** | CMPSBL OS Substrate |
-| **Version** | v6.x.x (FNDTN) |
+| **Version** | v6.3.0 (FNDTN) |
 | **Classification** | Cognitive Orchestration Substrate |
 | **Status** | Production (Live System) |
 | **Publication Date** | January 2026 |
@@ -33,8 +33,11 @@ This library is part of the **FNDTN v6 Foundations** standards package, which pr
 
 | Version | Date | Record |
 |---------|------|--------|
-| v5.x.x | 2025 | [OSF](https://osf.io/ah7nx/overview) · [Zenodo](https://zenodo.org/records/18379258) |
-| v6.x.x (FNDTN) | 2026 | Human Compatibility Era (Living) |
+| v5.5.0 | 2025 | [OSF](https://osf.io/ah7nx/overview) · [Zenodo](https://zenodo.org/records/18379258) |
+| v6.0.0 (FNDTN) | 2026-01-28 | Initial FNDTN release |
+| v6.1.0 | 2026-01-28 | Intelligence Compression Phase 2 |
+| v6.2.0 | 2026-01-29 | Reasoning & Governance Compression |
+| v6.3.0 (FNDTN) | 2026-01-29 | Modernizer Patch 0.7.7 (Current) |
 
 **AI Governance Reference Namespace:** [Zenodo Record](https://zenodo.org/records/18393018)
 
@@ -124,28 +127,14 @@ This library is part of the **FNDTN v6 Foundations** standards package, which pr
 | [65-SPACED-REPETITION.md](./65-SPACED-REPETITION.md) | Spaced Repetition | SM-2 algorithm implementation |
 | [66-SEBA-MODULE.md](./66-SEBA-MODULE.md) | **SEBA** | Self-Evolving Bounded Agent — genuine bounded autonomy |
 
-### Evolution & Synergy
+### Evolution & Capabilities
 
 | Document | Title | Description |
 |----------|--------|-------------|
 | [75-EVOLUTION-LIFECYCLE.md](./75-EVOLUTION-LIFECYCLE.md) | Evolution Lifecycle | Modernizer 5-phase cycle |
 | [76-EVOLUTION-AUTONOMY.md](./76-EVOLUTION-AUTONOMY.md) | Evolution Autonomy | Governed autonomy settings |
 | [77-SYNERGY-PIPELINES.md](./77-SYNERGY-PIPELINES.md) | Synergy Pipelines | Emergent module combinations |
-
-### Cross-Module Capabilities
-
-| Document | Capability | Modules |
-|----------|------------|---------|
-| [78-PREDICTIVE-PREVENTION.md](./78-PREDICTIVE-PREVENTION.md) | Predictive Issue Prevention | VISION + BRAIN + MODERNIZER |
-| [79-ADAPTIVE-PERSONALIZATION.md](./79-ADAPTIVE-PERSONALIZATION.md) | Adaptive Personalization | BRAIN + DECODE + INCLUSIVE |
-| [80-INTELLIGENT-DELEGATION.md](./80-INTELLIGENT-DELEGATION.md) | Intelligent Task Delegation | CORTEX + NEXUS + DECODE |
-| [81-SECURITY-HARDENING.md](./81-SECURITY-HARDENING.md) | Real-time Security Hardening | DEFENSE + VISION + SYSTEM |
-| [82-CONTEXTUAL-MEMORY.md](./82-CONTEXTUAL-MEMORY.md) | Context-Aware Memory Recall | BRAIN + DREAM + DECODE |
-| [83-AUTONOMOUS-DOCS.md](./83-AUTONOMOUS-DOCS.md) | Autonomous Documentation | MODERNIZER + DECODE + SYSTEM |
-| [84-INSIGHT-SYNTHESIS.md](./84-INSIGHT-SYNTHESIS.md) | Cross-Domain Insight Synthesis | DREAM + NEXUS + BRAIN |
-| [85-GRACEFUL-DEGRADATION.md](./85-GRACEFUL-DEGRADATION.md) | Graceful Degradation Chain | CORE + DEFENSE + VISION |
-| [86-INTENT-AMPLIFICATION.md](./86-INTENT-AMPLIFICATION.md) | Intent Amplification | DECODE + RIPPLE + INCLUSIVE |
-| [87-EVOLUTION-CONFIDENCE.md](./87-EVOLUTION-CONFIDENCE.md) | Evolution Confidence Scoring | MODERNIZER + BRAIN + CORTEX |
+| [78-CAPABILITIES.md](./78-CAPABILITIES.md) | **Synergy Capabilities** | Complete capability catalog with 10 cross-module features |
 
 ### Supplementary Materials
 
@@ -192,5 +181,5 @@ Read all documents in order.
 
 ---
 
-*CMPSBL OS Substrate v6.x.x — Human Compatibility Era*
+*CMPSBL OS Substrate v6.3.0 — Human Compatibility Era*
 *© 2025-2026 PromptFluid®. All rights reserved.*

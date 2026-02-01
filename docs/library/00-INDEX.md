@@ -118,6 +118,24 @@ This library is part of the **FNDTN v6 Foundations** standards package, which pr
 | [61-AGENTS-AND-FORGE.md](./61-AGENTS-AND-FORGE.md) | Agents and Forge | Experimental autonomous agent systems (EXPERIMENTAL) |
 | [62-TEMPLATE-GENERATOR.md](./62-TEMPLATE-GENERATOR.md) | Template Generator | AI-synthesized cognitive template system |
 
+### Advanced Cognitive Systems
+
+| Document | Title | Description |
+|----------|--------|-------------|
+| [63-CLM.md](./63-CLM.md) | Constant Learning Mode | Autonomous curriculum-based learning |
+| [64-MEMORY-ARCHITECTURE.md](./64-MEMORY-ARCHITECTURE.md) | Memory Architecture | Hot/Warm/Cold tiered memory system |
+| [65-SPACED-REPETITION.md](./65-SPACED-REPETITION.md) | Spaced Repetition | SM-2 algorithm implementation |
+| [66-SEBA-MODULE.md](./66-SEBA-MODULE.md) | **SEBA** | Self-Evolving Bounded Agent — genuine bounded autonomy |
+
+### Evolution & Capabilities
+
+| Document | Title | Description |
+|----------|--------|-------------|
+| [75-EVOLUTION-LIFECYCLE.md](./75-EVOLUTION-LIFECYCLE.md) | Evolution Lifecycle | Modernizer 5-phase cycle |
+| [76-EVOLUTION-AUTONOMY.md](./76-EVOLUTION-AUTONOMY.md) | Evolution Autonomy | Governed autonomy settings |
+| [77-SYNERGY-PIPELINES.md](./77-SYNERGY-PIPELINES.md) | Synergy Pipelines | Emergent module combinations |
+| [78-CAPABILITIES.md](./78-CAPABILITIES.md) | **Synergy Capabilities** | Complete capability catalog with 10 cross-module features |
+
 ### Supplementary Materials
 
 | Document | Title | Description |
