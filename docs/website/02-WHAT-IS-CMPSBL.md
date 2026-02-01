@@ -1,4 +1,4 @@
-# What is promptfluid®?
+# What is CMPSBL?
 
 **The Cognitive Infrastructure Layer for AI Applications**
 
@@ -6,13 +6,13 @@
 
 ## In Plain English
 
-promptfluid® is the **operating system for AI applications**. Just like your computer needs an operating system to manage memory, security, and applications, AI applications need a cognitive infrastructure layer to manage memory, learning, and intelligence.
+CMPSBL® (Composable) is the **operating system for AI applications**. Just like your computer needs an operating system to manage memory, security, and applications, AI applications need a cognitive infrastructure layer to manage memory, learning, and intelligence.
 
 ---
 
 ## The Problem We Solve
 
-### Without promptfluid
+### Without CMPSBL
 
 Every AI application today faces the same challenges:
 
@@ -24,7 +24,7 @@ Every AI application today faces the same challenges:
 | **Security gaps** | Vulnerable to attacks |
 | **Black box** | No visibility into what's happening |
 
-### With promptfluid
+### With CMPSBL
 
 | Capability | Result |
 |------------|--------|
@@ -48,7 +48,7 @@ Every AI application today faces the same challenges:
                    │
                    ▼
 ┌─────────────────────────────────────────┐
-│         promptfluid® SUBSTRATE          │
+│           CMPSBL® SUBSTRATE             │
 │  Memory • Learning • Routing • Security │
 └──────────────────┬──────────────────────┘
                    │
@@ -59,7 +59,7 @@ Every AI application today faces the same challenges:
 └─────────────────────────────────────────┘
 ```
 
-Your application talks to promptfluid. promptfluid handles everything else.
+Your application talks to CMPSBL. CMPSBL handles everything else.
 
 ---
 
@@ -103,7 +103,7 @@ The system proposes improvements to its own code. Human-approved changes are aut
 ## Quick Start
 
 ```typescript
-import { substrate } from '@promptfluid/sdk';
+import { substrate } from '@cmpsbl/sdk';
 
 // Store a memory
 await substrate.brain.remember('User prefers dark mode', 'preference');
@@ -125,4 +125,4 @@ const health = await substrate.vision.health();
 
 ---
 
-*promptfluid® — Where Machines Learn To Think*
+*CMPSBL® — Where Machines Learn To Think*

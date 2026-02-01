@@ -1,12 +1,12 @@
 # Licensing & Pricing
 
-**promptfluid® Infrastructure Licensing**
+**CMPSBL® Infrastructure Licensing**
 
 ---
 
 ## Overview
 
-promptfluid® is licensed as cognitive infrastructure — you bring your own AI provider keys, deploy on your infrastructure, and get access to the full substrate.
+CMPSBL® is licensed as cognitive infrastructure — you bring your own AI provider keys, deploy on your infrastructure, and get access to the full substrate.
 
 ---
 
@@ -191,10 +191,10 @@ Enterprise evaluations include a 30-day pilot program. Contact sales.
 | Action | Contact |
 |--------|---------|
 | **Developer License** | [Automated Checkout](/substrate/licensing) |
-| **Research License** | research@promptfluid.com |
-| **Enterprise License** | enterprise@promptfluid.com |
-| **Strategic Partnership** | founders@promptfluid.com |
+| **Research License** | research@cmpsbl.ai |
+| **Enterprise License** | enterprise@cmpsbl.ai |
+| **Strategic Partnership** | founders@cmpsbl.ai |
 
 ---
 
-*promptfluid® — Cognitive Infrastructure at Scale*
+*CMPSBL® — Cognitive Infrastructure at Scale*

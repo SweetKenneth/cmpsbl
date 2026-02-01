@@ -1,12 +1,12 @@
 # Architecture Overview
 
-**Technical Foundation of promptfluid®**
+**Technical Foundation of CMPSBL®**
 
 ---
 
 ## Design Philosophy
 
-promptfluid® is built on three core principles:
+CMPSBL® is built on three core principles:
 
 1. **Composability** — Discrete modules that can be assembled in any configuration
 2. **Observability** — Complete visibility into every layer of execution  
@@ -228,4 +228,4 @@ ripple.on('brain.memory.created', (event) => {
 
 ---
 
-*promptfluid® — Architecture for the Cognitive Era*
+*CMPSBL® — Architecture for the Cognitive Era*
