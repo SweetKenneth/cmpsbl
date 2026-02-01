@@ -259,8 +259,8 @@ CMPSBL provides complete cognitive infrastructure:
 ## Contact
 
 **Kenneth E. Sweet Jr., Founder**
-- Email: hello@cmpsbl.ai
-- Web: https://cmpsbl.ai
+- Email: PromptFluid@gmail.com
+- Web: https://cmpsbl.com
 
 ---
 

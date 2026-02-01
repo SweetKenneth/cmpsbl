@@ -193,9 +193,9 @@ Enterprise evaluations include a 30-day pilot program. Contact sales.
 | Action | Contact |
 |--------|---------|
 | **Developer License** | [Automated Checkout](/substrate/licensing) |
-| **Research License** | research@cmpsbl.ai |
-| **Enterprise License** | enterprise@cmpsbl.ai |
-| **Strategic Partnership** | founders@cmpsbl.ai |
+| **Research License** | research@cmpsbl.com |
+| **Enterprise License** | enterprise@cmpsbl.com |
+| **Strategic Partnership** | founders@cmpsbl.com |
 
 ---
 

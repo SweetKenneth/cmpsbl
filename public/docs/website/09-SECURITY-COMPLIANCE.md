@@ -213,7 +213,7 @@ Enterprise customers may conduct penetration testing with:
 ### Bug Bounty
 
 We maintain a responsible disclosure program:
-- security@cmpsbl.ai for vulnerability reports
+- security@cmpsbl.com for vulnerability reports
 - Recognition for valid findings
 - Coordinated disclosure timeline
 
@@ -233,9 +233,9 @@ We maintain a responsible disclosure program:
 
 | Purpose | Contact |
 |---------|---------|
-| **Vulnerability Report** | security@cmpsbl.ai |
-| **Compliance Questions** | compliance@cmpsbl.ai |
-| **Enterprise Security** | enterprise@cmpsbl.ai |
+| **Vulnerability Report** | security@cmpsbl.com |
+| **Compliance Questions** | compliance@cmpsbl.com |
+| **Enterprise Security** | enterprise@cmpsbl.com |
 
 ---
 
