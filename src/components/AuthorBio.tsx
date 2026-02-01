@@ -24,7 +24,7 @@ export function AuthorBio({ publishDate, readTime }: AuthorBioProps) {
               <h3 className="text-xl font-bold text-foreground">Kenneth E Sweet Jr</h3>
               <p className="text-sm text-muted-foreground">Founder & Security Engineer</p>
               <div className="flex gap-2 mt-2">
-                <a href="https://www.linkedin.com/in/kennethesweetjr" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                <a href="https://www.linkedin.com/in/kennethesweetjr?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                   <Linkedin className="w-4 h-4" />
                 </a>
                 <a href="https://x.com/kennethesweetjr" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
