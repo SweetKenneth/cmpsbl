@@ -14,16 +14,17 @@ CMPSBL® is licensed as cognitive infrastructure — you bring your own AI provi
 
 | Tier | Annual Price | Best For |
 |------|--------------|----------|
-| **Developer** | $15,000/year | Startups, small teams, prototyping |
-| **Research** | $80,000/year | Academic institutions, R&D labs |
-| **Enterprise** | $180,000/year | Production deployment, enterprise features |
+| **Developer** | $2,999/year | Startups, small teams, prototyping |
+| **Team** | $9,999/year | Teams up to 10 developers |
+| **Research** | $19,999/year | Academic institutions, R&D labs |
+| **Enterprise** | $49,999/year | Production deployment, enterprise features |
 | **Strategic** | Custom | Cloud providers, OEM partnerships |
 
 ---
 
 ## Developer License
 
-**$15,000/year**
+**$2,999/year**
 
 Perfect for startups and small teams building AI-powered products.
 
@@ -47,7 +48,7 @@ Automated checkout available — get access today.
 
 ## Research License
 
-**$80,000/year**
+**$19,999/year**
 
 For academic institutions and research labs exploring cognitive AI.
 
@@ -72,7 +73,7 @@ Contact us for institutional licensing.
 
 ## Enterprise License
 
-**$180,000/year**
+**$49,999/year**
 
 For production deployments with enterprise requirements.
 
@@ -159,9 +160,10 @@ All licenses are annual. Monthly billing is available at 25% premium.
 
 | Tier | Annual | Monthly (25% premium) |
 |------|--------|----------------------|
-| Developer | $15,000 | $1,562.50/month |
-| Research | $80,000 | $8,333.33/month |
-| Enterprise | $180,000 | $18,750/month |
+| Developer | $2,999 | $312.50/month |
+| Team | $9,999 | $1,041.67/month |
+| Research | $19,999 | $2,083.33/month |
+| Enterprise | $49,999 | $5,208.33/month |
 
 ---
 

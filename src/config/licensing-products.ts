@@ -63,7 +63,9 @@ export const LICENSING_PRODUCTS = {
     checkout_enabled: true,
   },
   enterprise: {
-    amount: 4999900, // $49,999/year (was $180,000)
+    product_id: 'prod_Ttq6Zkso5r2axG',
+    price_id: 'price_1Sw2QSQ7FtTiAL4auZzswJIF',
+    amount: 4999900, // $49,999/year
     interval: 'year' as const,
     name: 'Enterprise License',
     description: 'For enterprises embedding CMPSBL into products and platforms',
@@ -75,9 +77,11 @@ export const LICENSING_PRODUCTS = {
       'Custom deployment assistance',
       'Quarterly roadmap alignment calls',
     ],
-    checkout_enabled: false, // Contact-based for custom terms
+    checkout_enabled: true, // Now enabled for Stripe checkout
   },
   strategic: {
+    product_id: null,
+    price_id: null,
     amount: null, // Custom pricing
     interval: 'custom' as const,
     name: 'Strategic / Exclusive License',
