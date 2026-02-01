@@ -47,7 +47,7 @@ export default function Marketplace() {
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([27, 499]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([19, 499]);
   const [sortBy, setSortBy] = useState<SortOption>('featured');
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   
@@ -58,7 +58,7 @@ export default function Marketplace() {
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   
   // User personalization
-  const { trackView, trackPreview, isLoggedIn } = useMarketplaceUser();
+  const { trackView, trackPreview, isLoggedIn, isLiked, toggleLike, savedTemplates } = useMarketplaceUser();
 
   // Filter templates
   const filteredTemplates = useMemo(() => {
@@ -134,7 +134,7 @@ export default function Marketplace() {
     let count = 0;
     if (categoryFilter) count++;
     count += selectedDifficulties.length;
-    if (priceRange[0] > 27 || priceRange[1] < 499) count++;
+    if (priceRange[0] > 19 || priceRange[1] < 499) count++;
     return count;
   }, [categoryFilter, selectedDifficulties, priceRange]);
 
@@ -150,7 +150,7 @@ export default function Marketplace() {
   const clearFilters = () => {
     setCategoryFilter(null);
     setSelectedDifficulties([]);
-    setPriceRange([27, 499]);
+    setPriceRange([19, 499]);
     setSearchQuery("");
   };
 
@@ -443,6 +443,8 @@ export default function Marketplace() {
                           onBuy={() => handleCheckout('template', template)}
                           isLoading={isCheckingOut}
                           featured={index < 3 && !searchQuery && !categoryFilter}
+                          isLiked={isLiked(template.id)}
+                          onToggleLike={() => toggleLike(template.id)}
                         />
                       ))}
                     </div>

@@ -57,7 +57,7 @@ export function MarketplaceSidebar({
   totalCount,
   onClearFilters,
 }: MarketplaceSidebarProps) {
-  const hasActiveFilters = selectedCategory !== null || selectedDifficulties.length > 0 || priceRange[0] > 27 || priceRange[1] < 499;
+  const hasActiveFilters = selectedCategory !== null || selectedDifficulties.length > 0 || priceRange[0] > 19 || priceRange[1] < 499;
 
   return (
     <aside className="w-64 shrink-0 hidden lg:block">

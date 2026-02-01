@@ -1,7 +1,7 @@
 /**
  * TemplateCard — Premium visual template card with rarity, dynamic names, and rarity images
  * Mobile-optimized, designed to make users want to own it
- * v6.0.0 - Enhanced with better hover states and visual polish
+ * v6.0.1 - Fixed checkout and like functionality
  */
 
 import { useState } from 'react';
@@ -58,11 +58,20 @@ interface TemplateCardProps {
   onBuy: () => void;
   isLoading?: boolean;
   featured?: boolean;
+  isLiked?: boolean;
+  onToggleLike?: () => void;
 }
 
-export function TemplateCard({ template, onPreview, onBuy, isLoading, featured }: TemplateCardProps) {
+export function TemplateCard({ 
+  template, 
+  onPreview, 
+  onBuy, 
+  isLoading, 
+  featured,
+  isLiked = false,
+  onToggleLike 
+}: TemplateCardProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const [isLiked, setIsLiked] = useState(false);
   
   const Icon = template.icon;
   const CategoryIcon = categoryIcons[template.category] || Zap;
@@ -73,6 +82,29 @@ export function TemplateCard({ template, onPreview, onBuy, isLoading, featured }
   const displayName = generateDisplayName(template.id, template.category, template.difficulty);
   const rarityConfig = getRarityByDifficulty(template.difficulty);
   const rarityImage = rarityConfig.image;
+
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Only trigger preview if clicking on the card background, not buttons
+    onPreview();
+  };
+
+  const handleBuyClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    onBuy();
+  };
+
+  const handleLikeClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    onToggleLike?.();
+  };
+
+  const handlePreviewButtonClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    onPreview();
+  };
 
   return (
     <motion.div
@@ -88,7 +120,7 @@ export function TemplateCard({ template, onPreview, onBuy, isLoading, featured }
         )}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        onClick={onPreview}
+        onClick={handleCardClick}
       >
         {/* Visual Preview Header with Rarity Image */}
         <div className={cn(
@@ -139,21 +171,20 @@ export function TemplateCard({ template, onPreview, onBuy, isLoading, featured }
           )}
 
           {/* Like button */}
-          <motion.button
-            className={cn(
-              "absolute top-3 right-3 p-2.5 rounded-full transition-all",
-              "bg-background/90 backdrop-blur-sm hover:bg-background shadow-lg",
-              "border border-border/50",
-              isLiked ? "text-rose-500" : "text-muted-foreground hover:text-rose-500"
-            )}
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsLiked(!isLiked);
-            }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <Heart className={cn("w-4 h-4", isLiked && "fill-current")} />
-          </motion.button>
+          {onToggleLike && (
+            <motion.button
+              className={cn(
+                "absolute top-3 right-3 p-2.5 rounded-full transition-all",
+                "bg-background/90 backdrop-blur-sm hover:bg-background shadow-lg",
+                "border border-border/50",
+                isLiked ? "text-rose-500" : "text-muted-foreground hover:text-rose-500"
+              )}
+              onClick={handleLikeClick}
+              whileTap={{ scale: 0.9 }}
+            >
+              <Heart className={cn("w-4 h-4", isLiked && "fill-current")} />
+            </motion.button>
+          )}
 
           {/* Quick preview overlay on hover */}
           <motion.div 
@@ -167,10 +198,7 @@ export function TemplateCard({ template, onPreview, onBuy, isLoading, featured }
               variant="secondary" 
               size="default" 
               className="gap-2 shadow-xl"
-              onClick={(e) => {
-                e.stopPropagation();
-                onPreview();
-              }}
+              onClick={handlePreviewButtonClick}
             >
               <Eye className="w-4 h-4" />
               Preview Template
@@ -239,10 +267,7 @@ export function TemplateCard({ template, onPreview, onBuy, isLoading, featured }
             <Button 
               size="default" 
               className="gap-2 shadow-md hover:shadow-lg transition-shadow"
-              onClick={(e) => {
-                e.stopPropagation();
-                onBuy();
-              }}
+              onClick={handleBuyClick}
               disabled={isLoading}
             >
               <ShoppingCart className="w-4 h-4" />

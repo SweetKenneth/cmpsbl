@@ -97,11 +97,11 @@ export function MarketplaceHeader({ searchQuery, onSearchChange, resultCount }: 
               Never Forget
             </span>
           </h1>
-          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto px-4 leading-relaxed">
+        <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto px-4 leading-relaxed">
             {TEMPLATES.length}+ production-ready cognitive templates with built-in memory,
             drift prevention & self-improvement. 
             <span className="block mt-1 font-medium text-foreground">
-              From <span className="text-primary">$27</span> • Bundles from <span className="text-emerald-500">${(BUNDLES[2]?.bundlePrice / 100 || 95).toFixed(0)}</span>
+              From <span className="text-primary">$19</span> • Bundles from <span className="text-emerald-500">${(BUNDLES[2]?.bundlePrice / 100 || 95).toFixed(0)}</span>
             </span>
           </p>
         </motion.div>
