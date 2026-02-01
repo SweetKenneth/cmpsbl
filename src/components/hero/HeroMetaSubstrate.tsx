@@ -1,305 +1,25 @@
 /**
  * META HERO: CMPSBL (Composable) By PromptFluid
- * Cinematic, head-turning showcase of substrate versatility
+ * Cinematic SEBA-focused showcase with evolution pipeline visualization
  * Mobile-first, performance-optimized
  */
 
 import React, { useEffect, useState, useRef, useMemo } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { 
   ArrowRight, 
-  Brain, 
-  Moon, 
-  Shield, 
-  Zap, 
-  Eye,
-  MessageSquare,
-  Settings,
-  Cpu,
-  Network,
-  Fingerprint,
-  RefreshCw,
   BookOpen,
   Gamepad2,
   Code,
   Building2,
   Play,
   Sparkles,
-  Plug,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-// The 14 core modules with industries they power (v6.0.0)
-const coreModules = [
-  { icon: Cpu, name: "Core", desc: "Kernel orchestration", color: "hsl(var(--muted-foreground))" },
-  { icon: Network, name: "Ripple", desc: "Event propagation", color: "hsl(150 80% 50%)" },
-  { icon: Fingerprint, name: "Access", desc: "Identity & auth", color: "hsl(220 80% 60%)" },
-  { icon: Brain, name: "Brain", desc: "Persistent memory", color: "hsl(var(--neon-cyan))" },
-  { icon: MessageSquare, name: "Decode", desc: "Multi-modal AI", color: "hsl(var(--neon-purple))" },
-  { icon: Shield, name: "Defense", desc: "Threat detection", color: "hsl(var(--neon-amber))" },
-  { icon: Zap, name: "Nexus", desc: "Smart routing", color: "hsl(150 80% 50%)" },
-  { icon: Eye, name: "Vision", desc: "Observability", color: "hsl(var(--neon-blue))" },
-  { icon: Moon, name: "Dream", desc: "Offline learning", color: "hsl(var(--neon-magenta))" },
-  { icon: Settings, name: "System", desc: "Configuration", color: "hsl(var(--destructive))" },
-  { icon: RefreshCw, name: "Modernizer", desc: "Self-improvement", color: "hsl(30 80% 55%)" },
-  { icon: Plug, name: "Integration", desc: "Enterprise connect", color: "hsl(280 80% 60%)" },
-  { icon: Sparkles, name: "Cortex", desc: "Autonomous orchestrator", color: "hsl(270 80% 60%)" },
-  { icon: BookOpen, name: "Inclusive", desc: "Human compatibility", color: "hsl(330 80% 60%)" },
-];
-
-// Use cases that rotate through - compelling future applications
-const useCases = [
-  { icon: Gamepad2, label: "NPCs that dream & evolve", industry: "Gaming", color: "text-purple-500" },
-  { icon: Building2, label: "Self-healing enterprises", industry: "Enterprise", color: "text-amber-500" },
-  { icon: Code, label: "Chatbots with memory", industry: "Development", color: "text-cyan-500" },
-  { icon: Brain, label: "Cooking apps that learn", industry: "Consumer", color: "text-green-500" },
-  { icon: Shield, label: "Mid-flight self-repair", industry: "Aviation", color: "text-red-500" },
-];
-
-// Floating particle component
-function FloatingParticle({ delay, duration, size, color, startX, startY }: {
-  delay: number;
-  duration: number;
-  size: number;
-  color: string;
-  startX: number;
-  startY: number;
-}) {
-  return (
-    <motion.div
-      className="absolute rounded-full pointer-events-none"
-      style={{
-        width: size,
-        height: size,
-        background: color,
-        left: `${startX}%`,
-        top: `${startY}%`,
-        filter: "blur(1px)",
-      }}
-      animate={{
-        y: [0, -100, -200],
-        x: [0, Math.random() * 50 - 25, Math.random() * 100 - 50],
-        opacity: [0, 0.8, 0],
-        scale: [0.5, 1, 0.3],
-      }}
-      transition={{
-        duration,
-        delay,
-        repeat: Infinity,
-        ease: "easeOut",
-      }}
-    />
-  );
-}
-
-// Connection line between modules
-function ConnectionLine({ from, to, delay }: { from: number; to: number; delay: number }) {
-  const moduleCount = 14; // v6.0.0: 14 modules
-  const fromAngle = (from / moduleCount) * Math.PI * 2 - Math.PI / 2;
-  const toAngle = (to / moduleCount) * Math.PI * 2 - Math.PI / 2;
-  const radius = 140;
-  
-  const x1 = Math.cos(fromAngle) * radius + 160;
-  const y1 = Math.sin(fromAngle) * radius + 160;
-  const x2 = Math.cos(toAngle) * radius + 160;
-  const y2 = Math.sin(toAngle) * radius + 160;
-  
-  return (
-    <motion.line
-      x1={x1}
-      y1={y1}
-      x2={x2}
-      y2={y2}
-      stroke="url(#lineGradient)"
-      strokeWidth="1"
-      initial={{ pathLength: 0, opacity: 0 }}
-      animate={{ pathLength: 1, opacity: [0, 0.6, 0] }}
-      transition={{
-        duration: 2,
-        delay,
-        repeat: Infinity,
-        repeatDelay: 3,
-      }}
-    />
-  );
-}
-
-// Central substrate visualization
-function SubstrateVisualization() {
-  const [activeModule, setActiveModule] = useState(0);
-  const [activeUseCase, setActiveUseCase] = useState(0);
-  
-  // Rotate through modules
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveModule((prev) => (prev + 1) % coreModules.length);
-    }, 2000);
-    return () => clearInterval(interval);
-  }, []);
-  
-  // Rotate through use cases
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveUseCase((prev) => (prev + 1) % useCases.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const currentUseCase = useCases[activeUseCase];
-  
-  // Calculate orbit radius as percentage based on container
-  const orbitRadius = 42; // percentage from center for icons
-  
-  return (
-    <div className="relative w-full max-w-[260px] sm:max-w-[380px] md:max-w-[460px] aspect-square mx-auto flex items-center justify-center">
-      {/* Floating particles - hidden on mobile for cleaner look */}
-      <div className="hidden sm:block">
-        {Array.from({ length: 20 }).map((_, i) => (
-          <FloatingParticle
-            key={i}
-            delay={i * 0.5}
-            duration={4 + Math.random() * 2}
-            size={2 + Math.random() * 3}
-            color={`hsl(${180 + Math.random() * 60} 80% 60% / 0.6)`}
-            startX={20 + Math.random() * 60}
-            startY={70 + Math.random() * 30}
-          />
-        ))}
-      </div>
-      
-      {/* SVG container for rings and connections - centered */}
-      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 320 320" preserveAspectRatio="xMidYMid meet">
-        <defs>
-          <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="hsl(var(--neon-cyan))" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="hsl(var(--neon-magenta))" stopOpacity="0.8" />
-          </linearGradient>
-          <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="hsl(var(--neon-cyan))" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="transparent" stopOpacity="0" />
-          </radialGradient>
-        </defs>
-        
-        {/* Animated connection lines */}
-        <ConnectionLine from={0} to={3} delay={0} />
-        <ConnectionLine from={3} to={8} delay={1} />
-        <ConnectionLine from={8} to={4} delay={2} />
-        <ConnectionLine from={4} to={6} delay={3} />
-        <ConnectionLine from={6} to={10} delay={4} />
-        
-        {/* Outer orbit ring */}
-        <motion.circle
-          cx="160"
-          cy="160"
-          r="140"
-          fill="none"
-          stroke="hsl(var(--border))"
-          strokeWidth="1"
-          strokeDasharray="4 8"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-          style={{ transformOrigin: "center" }}
-        />
-        
-        {/* Middle ring with glow */}
-        <circle
-          cx="160"
-          cy="160"
-          r="90"
-          fill="none"
-          stroke="hsl(var(--neon-cyan) / 0.2)"
-          strokeWidth="1"
-        />
-        
-        {/* Inner ring */}
-        <motion.circle
-          cx="160"
-          cy="160"
-          r="50"
-          fill="url(#coreGlow)"
-          stroke="hsl(var(--primary) / 0.4)"
-          strokeWidth="2"
-          animate={{ scale: [1, 1.05, 1] }}
-          transition={{ duration: 3, repeat: Infinity }}
-          style={{ transformOrigin: "center" }}
-        />
-      </svg>
-      
-      {/* Module icons orbiting - properly centered */}
-      {coreModules.map((mod, i) => {
-        const angle = (i / coreModules.length) * Math.PI * 2 - Math.PI / 2;
-        const x = 50 + Math.cos(angle) * orbitRadius;
-        const y = 50 + Math.sin(angle) * orbitRadius;
-        const isActive = i === activeModule;
-        
-        return (
-          <motion.div
-            key={mod.name}
-            className="absolute flex items-center justify-center cursor-pointer z-20"
-            style={{
-              left: `${x}%`,
-              top: `${y}%`,
-              transform: "translate(-50%, -50%)",
-            }}
-            animate={{
-              scale: isActive ? 1.3 : 1,
-            }}
-            transition={{ duration: 0.3 }}
-            onMouseEnter={() => setActiveModule(i)}
-          >
-            <div
-              className={cn(
-                "w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center transition-all duration-300",
-                isActive ? "shadow-lg" : ""
-              )}
-              style={{
-                background: isActive ? mod.color : "hsl(var(--background))",
-                border: `2px solid ${mod.color}`,
-                boxShadow: isActive ? `0 0 20px ${mod.color}60` : `0 0 8px ${mod.color}40`,
-              }}
-            >
-              <mod.icon 
-                className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" 
-                style={{ color: isActive ? "hsl(var(--background))" : mod.color }}
-              />
-            </div>
-            
-            {/* Module label on active */}
-            {isActive && (
-              <motion.div
-                initial={{ opacity: 0, y: 5 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="absolute -bottom-6 sm:-bottom-7 left-1/2 -translate-x-1/2 whitespace-nowrap"
-              >
-                <span className="text-[10px] sm:text-xs font-medium px-2 py-0.5 rounded-full bg-background/80 backdrop-blur-sm border border-border/50">
-                  {mod.name}
-                </span>
-              </motion.div>
-            )}
-          </motion.div>
-        );
-      })}
-      
-      {/* Central core content */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <motion.div 
-          className="text-center"
-          key={activeUseCase}
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.9 }}
-          transition={{ duration: 0.5 }}
-        >
-          <currentUseCase.icon className={cn("w-8 h-8 sm:w-10 sm:h-10 mx-auto mb-2", currentUseCase.color)} />
-          <div className="text-xs sm:text-sm font-bold text-foreground">{currentUseCase.label}</div>
-          <div className="text-[10px] sm:text-xs text-muted-foreground">{currentUseCase.industry}</div>
-        </motion.div>
-      </div>
-    </div>
-  );
-}
+import { SEBAEvolutionHero } from "./SEBAEvolutionHero";
+// No legacy SubstrateVisualization - using SEBAEvolutionHero instead
 
 // Typing animation for headline with gradient colors - optimized to prevent forced reflows
 function TypedText({ texts, gradientColors, className }: { 
@@ -530,14 +250,14 @@ export function HeroMetaSubstrate() {
             </div>
           </motion.div>
           
-          {/* Right: Substrate Visualization - ORDER 2 on all screens */}
+          {/* Right: SEBA Evolution Hero - ORDER 2 on all screens */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.1 }}
             className="order-2 flex items-center justify-center"
           >
-            <SubstrateVisualization />
+            <SEBAEvolutionHero />
           </motion.div>
         </div>
         
