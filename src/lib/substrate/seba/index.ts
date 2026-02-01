@@ -31,3 +31,6 @@ export { CognitiveAnalyzer } from './cognitive-analyzer';
 export { ProposalGenerator } from './proposal-generator';
 export { GovernanceGate } from './governance-gate';
 export { EvolutionExecutor } from './evolution-executor';
+
+// React Hook
+export { useSEBA, type UseSEBAReturn } from './useSEBA';

@@ -574,7 +574,8 @@ export const COMMAND_CATEGORIES = {
   inclusive: { label: 'INCLUSIVE', color: 'text-teal-400', borderColor: 'border-teal-500/30', commands: INCLUSIVE_COMMANDS },
   system: { label: 'SYSTEM', color: 'text-gray-400', borderColor: 'border-gray-500/30', commands: SYSTEM_COMMANDS },
   modernizer: { label: 'MODERNIZER', color: 'text-pink-400', borderColor: 'border-pink-500/30', commands: MODERNIZER_COMMANDS },
-  clm: { label: 'CLM', color: 'text-indigo-400', borderColor: 'border-indigo-500/30', commands: CLM_COMMANDS },
+  seba: { label: 'SEBA', color: 'text-emerald-400', borderColor: 'border-emerald-500/30', commands: SEBA_COMMANDS },
+  clm: { label: 'CLM', color: 'text-indigo-400', borderColor: 'border-indigo-500/30', commands: [...CLM_COMMANDS, ...MODULE_CLM_COMMANDS] },
   autoblog: { label: 'AUTOBLOG', color: 'text-rose-400', borderColor: 'border-rose-500/30', commands: AUTOBLOG_COMMANDS },
   meta: { label: 'META', color: 'text-gray-400', borderColor: 'border-gray-500/30', commands: META_COMMANDS },
 } as const;

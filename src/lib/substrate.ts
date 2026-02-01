@@ -1267,11 +1267,101 @@ class SubstrateClient {
     coverage: () =>
       this.invoke({ module: 'inclusive' as SubstrateModule, action: 'coverage' }),
   };
+
+  // ═══════════════════════════════════════════════════════════════
+  // SEBA MODULE — Self-Evolving Bounded Agent (v7.0.0)
+  // ═══════════════════════════════════════════════════════════════
+  
+  seba = {
+    /** Get SEBA agent status with state and config */
+    status: async () => {
+      const { sebaAgent } = await import('./substrate/seba');
+      return sebaAgent.handleCommand('status');
+    },
+    
+    /** Enable SEBA agent */
+    enable: async () => {
+      const { sebaAgent } = await import('./substrate/seba');
+      return sebaAgent.handleCommand('enable');
+    },
+    
+    /** Disable SEBA agent */
+    disable: async () => {
+      const { sebaAgent } = await import('./substrate/seba');
+      return sebaAgent.handleCommand('disable');
+    },
+    
+    /** Get or set SEBA mode (off, observe, advisory, governed, autonomous) */
+    mode: async (newMode?: 'off' | 'observe' | 'advisory' | 'governed' | 'autonomous') => {
+      const { sebaAgent } = await import('./substrate/seba');
+      return sebaAgent.handleCommand('mode', { mode: newMode });
+    },
+    
+    /** Run a complete SEBA cognitive-evolution cycle */
+    cycle: async () => {
+      const { sebaAgent } = await import('./substrate/seba');
+      return sebaAgent.runCycle();
+    },
+    
+    /** Generate improvement proposals from cognitive analysis */
+    propose: async () => {
+      const { sebaAgent } = await import('./substrate/seba');
+      return sebaAgent.handleCommand('propose');
+    },
+    
+    /** Review pending proposals awaiting approval */
+    review: async () => {
+      const { sebaAgent } = await import('./substrate/seba');
+      return sebaAgent.handleCommand('review');
+    },
+    
+    /** Approve a proposal */
+    approve: async (proposalId: string) => {
+      const { sebaAgent } = await import('./substrate/seba');
+      return sebaAgent.handleCommand('approve', { proposal_id: proposalId });
+    },
+    
+    /** Reject a proposal */
+    reject: async (proposalId: string) => {
+      const { sebaAgent } = await import('./substrate/seba');
+      return sebaAgent.handleCommand('reject', { proposal_id: proposalId });
+    },
+    
+    /** Execute an approved proposal */
+    execute: async (proposalId: string) => {
+      const { sebaAgent } = await import('./substrate/seba');
+      return sebaAgent.handleCommand('execute', { proposal_id: proposalId });
+    },
+    
+    /** Rollback an executed evolution */
+    rollback: async (executionId: string) => {
+      const { sebaAgent } = await import('./substrate/seba');
+      return sebaAgent.handleCommand('rollback', { execution_id: executionId });
+    },
+    
+    /** Get SEBA evolution history */
+    history: async (limit = 20) => {
+      const { sebaAgent } = await import('./substrate/seba');
+      return sebaAgent.handleCommand('history', { limit });
+    },
+    
+    /** Get or update SEBA config */
+    config: async (updates?: Record<string, unknown>) => {
+      const { sebaAgent } = await import('./substrate/seba');
+      return sebaAgent.handleCommand('config', updates ? { updates } : undefined);
+    },
+    
+    /** Get or set thresholds (auto_approve, risk_tolerance) */
+    thresholds: async (updates?: { auto_approve?: number; risk_tolerance?: string }) => {
+      const { sebaAgent } = await import('./substrate/seba');
+      return sebaAgent.handleCommand('thresholds', updates);
+    },
+  };
 }
 
 export const substrate = SubstrateClient.getInstance();
 
-// Quick access functions for all 14 modules (13 core + cortex orchestrator)
+// Quick access functions for all 14 modules (13 core + cortex orchestrator) + SEBA
 export const core = substrate.core;
 export const brain = substrate.brain;
 export const decode = substrate.decode;
@@ -1286,3 +1376,4 @@ export const modernizer = substrate.modernizer;
 export const integration = substrate.integration;
 export const inclusive = substrate.inclusive;
 export const cortex = substrate.cortex;
+export const seba = substrate.seba;
