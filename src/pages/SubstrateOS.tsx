@@ -10,7 +10,7 @@ import {
   Settings, Zap, LayoutDashboard, Activity, Bot, Users, Sparkles,
   Building2, ExternalLink, HardDrive, Wand2, Cpu, Radio, Key, Dna,
   ChevronRight, Menu, Shield, Layers, Gauge, ArrowUpRight, Eye,
-  LogOut, Home
+  LogOut, Home, ToggleRight
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -45,6 +45,7 @@ import { CodeAgentTab } from '@/components/substrate-os/CodeAgentTab';
 import { CortexTab } from '@/components/substrate-os/CortexTab';
 import { InclusiveTab } from '@/components/substrate-os/InclusiveTab';
 import { NexusTab } from '@/components/substrate-os/NexusTab';
+import { CapabilitiesTab } from '@/components/substrate-os/CapabilitiesTab';
 import { DashboardMetricsHero, QuickActionsPanel, ModuleControlsGrid } from '@/components/substrate-os/dashboard';
 import { cn } from '@/lib/utils';
 
@@ -103,6 +104,7 @@ function getTabGroups(isOperator: boolean, isGovernor: boolean, hasAgency: boole
 
   const evolveTabs: TabConfig[] = [
     ...(isOperator ? [
+      { id: 'capabilities', label: 'Capabilities', icon: ToggleRight, color: 'cyan', description: 'Toggle capabilities', minRole: 'operator' as const },
       { id: 'modernizer', label: 'Modernizer', icon: Wand2, color: 'fuchsia', description: 'Self-upgrade', minRole: 'operator' as const },
     ] : []),
     ...(isGovernor ? [
@@ -759,6 +761,25 @@ export default function SubstrateOS() {
                 exit={{ opacity: 0 }}
               >
                 <BackupRestorePanel enabled={isOperator} />
+              </motion.main>
+            )}
+
+            {/* Capabilities */}
+            {activeTab === 'capabilities' && isOperator && (
+              <motion.main 
+                key="capabilities"
+                className="container mx-auto px-4 py-6 max-w-7xl"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <TabHeader 
+                  icon={ToggleRight}
+                  title="Capabilities"
+                  subtitle="archived edge function adapters • toggle controls"
+                  color="cyan"
+                />
+                <CapabilitiesTab />
               </motion.main>
             )}
 

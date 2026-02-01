@@ -62,7 +62,7 @@ These functions have logic split across substrate modules and require TODO marke
 
 Drop-in edge functions can now be auto-adapted into governed capabilities:
 
-1. Place function in `/edge/capabilities/`
+1. Place function in `supabase/functions/_archived/`
 2. Include metadata comment:
 ```typescript
 /*
@@ -73,10 +73,28 @@ Drop-in edge functions can now be auto-adapted into governed capabilities:
 @description My capability description
 */
 ```
-3. Run `system.scan_adapt --confirm` in terminal
+3. Run `system.scan_archived --confirm` in terminal
 4. Capability is now governed and invokable via adapter
+5. Toggle on/off in `/os` → **Evolve** → **Capabilities** dashboard
 
 See `/src/lib/capabilities/` for the full system.
+
+### Adapted Capabilities (v7.0.0)
+
+The following 10 high-value archived functions are now governed capabilities:
+
+| Capability | Function | Value Score |
+|------------|----------|-------------|
+| `hypothesis-test` | pf-brain-hypothesis-test | 95 |
+| `resilience-monitor` | pf-resilience-monitor | 96 |
+| `ethical-boundary` | pf-brain-ethical-boundary | 97 |
+| `anomaly-detection` | pf-defense-anomaly-detection | 93 |
+| `systems-reasoning` | pf-brain-systems-reasoning | 92 |
+| `improvement-engine` | pf-cascade-improvement-engine | 91 |
+| `self-critique` | pf-brain-self-critique | 90 |
+| `pattern-fusion` | pf-brain-pattern-fusion | 88 |
+| `temporal-score` | pf-brain-temporal-score | 85 |
+| `curiosity-reflect` | pf-brain-curiosity-reflect | 84 |
 
 ## Migration Guide
 
