@@ -10,11 +10,20 @@ import { sebaAgent, DEFAULT_SEBA_CONFIG } from '@/lib/substrate/seba';
 const mockChain = () => {
   const chain: any = {
     select: () => chain,
+    insert: () => Promise.resolve({ data: null, error: null }),
+    update: () => chain,
+    delete: () => chain,
     eq: () => chain,
+    neq: () => chain,
     lt: () => chain,
+    lte: () => chain,
+    gt: () => chain,
     gte: () => chain,
+    in: () => chain,
+    is: () => chain,
     order: () => chain,
     limit: () => Promise.resolve({ data: [], count: 0, error: null }),
+    single: () => Promise.resolve({ data: null, error: null }),
     maybeSingle: () => Promise.resolve({ data: null, error: null }),
   };
   return chain;
