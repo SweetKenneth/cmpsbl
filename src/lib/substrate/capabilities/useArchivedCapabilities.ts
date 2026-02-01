@@ -23,17 +23,17 @@ export interface UseArchivedCapabilitiesReturn {
   loading: boolean;
   error: string | null;
   
-  // Capability functions
-  testHypothesis: (claim: string, strategy?: string, context?: Record<string, unknown>) => Promise<HypothesisTestResult | null>;
+  // Capability functions (v7.0.5 simplified signatures)
+  testHypothesis: (claim: string, strategy?: string) => Promise<HypothesisTestResult | null>;
   analyzeSystem: (system: string, issue: string) => Promise<SystemsReasoningResult | null>;
-  critiqueOutput: (output: string, outputType?: string, taskContext?: Record<string, unknown>) => Promise<SelfCritiqueResult | null>;
+  critiqueOutput: (output: string) => Promise<SelfCritiqueResult | null>;
   fusePatterns: (problem: string, domain1: string, domain2: string) => Promise<PatternFusionResult | null>;
   detectAnomalies: (lookbackHours?: number) => Promise<AnomalyDetectionResult | null>;
   checkResilience: () => Promise<ResilienceMonitorResult | null>;
-  scoreTemporally: (query: string, contextType?: string) => Promise<TemporalScoreResult | null>;
-  checkEthics: (proposedAction: string, context?: Record<string, unknown>) => Promise<EthicalBoundaryResult | null>;
-  runImprovement: (focusDomain?: string, force?: boolean) => Promise<ImprovementEngineResult | null>;
-  reflectCuriosity: (forceReflection?: boolean, minScore?: number) => Promise<CuriosityReflectResult | null>;
+  scoreTemporally: (query: string) => Promise<TemporalScoreResult | null>;
+  checkEthics: (proposedAction: string) => Promise<EthicalBoundaryResult | null>;
+  runImprovement: (focusDomain?: string) => Promise<ImprovementEngineResult | null>;
+  reflectCuriosity: (forceReflection?: boolean) => Promise<CuriosityReflectResult | null>;
   
   // Utilities
   clearError: () => void;
@@ -61,11 +61,10 @@ export function useArchivedCapabilities(): UseArchivedCapabilitiesReturn {
   
   const testHypothesis = useCallback(async (
     claim: string,
-    strategy?: string,
-    context?: Record<string, unknown>
+    strategy?: string
   ): Promise<HypothesisTestResult | null> => {
     return wrapAsync(async () => {
-      const result = await archivedAdapters.hypothesisTest(claim, strategy, context);
+      const result = await archivedAdapters.hypothesisTest(claim, strategy);
       return result.hypothesis_test;
     });
   }, [wrapAsync]);
@@ -81,12 +80,10 @@ export function useArchivedCapabilities(): UseArchivedCapabilitiesReturn {
   }, [wrapAsync]);
   
   const critiqueOutput = useCallback(async (
-    output: string,
-    outputType?: string,
-    taskContext?: Record<string, unknown>
+    output: string
   ): Promise<SelfCritiqueResult | null> => {
     return wrapAsync(async () => {
-      const result = await archivedAdapters.selfCritique(output, outputType, taskContext);
+      const result = await archivedAdapters.selfCritique(output);
       return result.critique;
     });
   }, [wrapAsync]);
@@ -117,11 +114,10 @@ export function useArchivedCapabilities(): UseArchivedCapabilitiesReturn {
   }, [wrapAsync]);
   
   const scoreTemporally = useCallback(async (
-    query: string,
-    contextType?: string
+    query: string
   ): Promise<TemporalScoreResult | null> => {
     return wrapAsync(async () => {
-      const result = await archivedAdapters.temporalScore(query, contextType);
+      const result = await archivedAdapters.temporalScore(query);
       return {
         ranked_memories: result.ranked_memories,
         temporal_stats: result.temporal_stats,
@@ -130,30 +126,27 @@ export function useArchivedCapabilities(): UseArchivedCapabilitiesReturn {
   }, [wrapAsync]);
   
   const checkEthics = useCallback(async (
-    proposedAction: string,
-    context?: Record<string, unknown>
+    proposedAction: string
   ): Promise<EthicalBoundaryResult | null> => {
     return wrapAsync(async () => {
-      const result = await archivedAdapters.ethicalBoundary(proposedAction, context);
+      const result = await archivedAdapters.ethicalBoundary(proposedAction);
       return result.ethical_analysis;
     });
   }, [wrapAsync]);
   
   const runImprovement = useCallback(async (
-    focusDomain?: string,
-    force?: boolean
+    focusDomain?: string
   ): Promise<ImprovementEngineResult | null> => {
     return wrapAsync(async () => {
-      return archivedAdapters.improvementEngine(focusDomain, force);
+      return archivedAdapters.improvementEngine(focusDomain);
     });
   }, [wrapAsync]);
   
   const reflectCuriosity = useCallback(async (
-    forceReflection?: boolean,
-    minScore?: number
+    forceReflection?: boolean
   ): Promise<CuriosityReflectResult | null> => {
     return wrapAsync(async () => {
-      return archivedAdapters.curiosityReflect(forceReflection, minScore);
+      return archivedAdapters.curiosityReflect(forceReflection);
     });
   }, [wrapAsync]);
   
