@@ -187,6 +187,30 @@ Library consolidated. One capability page, not ten. Sync complete.
 
 ---
 
+## v7.0.3 — Version Consolidation
+
+```
+CMPSBL — System Log
+Version: v7.0.3
+Status: Live
+
+Unified version references across the substrate.
+
+What changed:
+Evolution Log updated with complete v6→v7 transition history. All version
+references across codebase updated from v5.x/v6.x to v7.0.0. Documentation
+library synced between internal and public surfaces. SEBA era properly
+reflected in all headers, footers, and dashboard components.
+
+Files updated: Changelog.tsx, OSHeader.tsx, initializeSubstrate.ts, System.tsx,
+SubstrateCapabilitiesDocs.tsx, 15+ component headers, docs/library/00-INDEX.md.
+
+Current posture:
+v7.0.0 canonical across all surfaces. Documentation synchronized. SEBA era live.
+```
+
+---
+
 ## Placeholder
 
 _Awaiting next major epoch._

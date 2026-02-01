@@ -7189,7 +7189,7 @@ export const orchestrator = new MultiAgentOrchestrator();`
   },
 
   // ═══════════════════════════════════════════════════════════════════
-  // NEW PREMIUM TEMPLATES — Advanced AI Patterns (v5.5.0)
+  // NEW PREMIUM TEMPLATES — Advanced AI Patterns (v7.0.0)
   // ═══════════════════════════════════════════════════════════════════
   
   {

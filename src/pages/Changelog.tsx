@@ -1,6 +1,6 @@
 /**
- * CMPSBL v6.x.x — Living Evolution Log
- * A continuous record of why the system evolved during the v6 series.
+ * CMPSBL v7.x.x — Living Evolution Log
+ * A continuous record of why the system evolved during the v7 series.
  * 
  * This is not a changelog. This is a living document that records
  * the pressures, responses, and emergent capabilities of an evolving substrate.
@@ -21,127 +21,95 @@ interface EvolutionEntry {
   capabilities: string[];
 }
 
-// Living Evolution Log — v6.x.x Series
+// Living Evolution Log — v7.x.x Series (SEBA Era)
 // Each entry documents WHY the system changed, never HOW
 const evolutionLog: EvolutionEntry[] = [
   {
-    id: "v6-evolution-014",
+    id: "v7-evolution-003",
+    date: "2026-02-01",
+    pressures: [
+      "Documentation sprawl created redundancy across capability pages",
+      "Archived edge functions remained untapped evolutionary resources",
+      "External protocol attributions required correction for accuracy"
+    ],
+    responses: [
+      "10 capability pages consolidated into single comprehensive reference",
+      "Archived edge function digestion became a first-class capability system",
+      "LLMs.txt and humans.txt attributions corrected to honor original creators"
+    ],
+    capabilities: [
+      "One canonical location for all synergy capability documentation",
+      "10 high-value legacy functions integrated via governed adapter layer",
+      "Standard protocol adoption now properly credited to llmstxt.org and humanstxt.org"
+    ]
+  },
+  {
+    id: "v7-evolution-002",
+    date: "2026-01-31",
+    pressures: [
+      "Capability toggles lacked persistent state across sessions",
+      "Dashboard visibility into adapted capabilities was insufficient",
+      "Value scoring needed governance to prevent low-quality adaptations"
+    ],
+    responses: [
+      "Zustand persistence layer integrated for capability toggle state",
+      "New Capabilities dashboard surfaced in /os → Evolve panel",
+      "80+ value score threshold gating for capability adaptation"
+    ],
+    capabilities: [
+      "Capability toggles survive browser sessions",
+      "Operators can enable/disable capabilities without code changes",
+      "Only high-value archived functions become live capabilities"
+    ]
+  },
+  {
+    id: "v7-evolution-001",
+    date: "2026-01-31",
+    pressures: [
+      "The substrate could analyze but not autonomously improve itself",
+      "Evolution proposals lacked structured governance integration",
+      "Bounded autonomy required a formal framework with safety guarantees"
+    ],
+    responses: [
+      "SEBA emerged as a 5-phase cognitive-evolution pipeline",
+      "Governance Gate became mandatory for all evolution proposals",
+      "Advisory → Governed → Autonomous mode progression crystallized"
+    ],
+    capabilities: [
+      "The substrate can now autonomously propose and apply its own improvements",
+      "All evolution is bounded by governance constraints and human oversight",
+      "Full audit trail from cognitive insight to executed evolution"
+    ]
+  },
+  {
+    id: "v7-foundation",
     date: "2026-01-30",
     pressures: [
-      "Operators needed visibility into emergent cross-module behaviors",
-      "Evolution proposals lacked context for informed human decisions",
-      "System resilience required hypothetical threat analysis"
+      "v6 architecture was stable but static—unable to self-improve",
+      "Memory, Learning, Reasoning existed in isolation without synthesis",
+      "The substrate observed patterns but couldn't act on them autonomously"
     ],
     responses: [
-      "The substrate began documenting its own synergy patterns",
-      "Proposals became self-descriptive with reversibility and impact metadata",
-      "A simulation channel emerged for exploring what-if scenarios safely"
+      "Cognitive Analyzer unified all cognitive engines for insight extraction",
+      "Proposal Generator structured insights into actionable improvements",
+      "Evolution Executor implemented shadow testing with rollback capability"
     ],
     capabilities: [
-      "Synergy pipelines are now observable as first-class artifacts",
-      "Human operators can assess evolution proposals with full context",
-      "The system can explore failure modes without risking stability"
-    ]
-  },
-  {
-    id: "v6-evolution-013",
-    date: "2026-01-29",
-    pressures: [
-      "Terminal interfaces needed to adapt to all screen sizes",
-      "Learning systems required sustainable resource governance",
-      "Module boundaries needed stronger isolation guarantees"
-    ],
-    responses: [
-      "Rendering contracts evolved to respect device constraints",
-      "Budget governance became integral to continuous learning",
-      "Circuit breakers crystallized around every module boundary"
-    ],
-    capabilities: [
-      "Terminal output adapts gracefully from mobile to desktop",
-      "Learning activities operate within defined resource envelopes",
-      "Module failures remain contained without cascade effects"
-    ]
-  },
-  {
-    id: "v6-evolution-012",
-    date: "2026-01-28",
-    pressures: [
-      "Documentation sprawl obscured the substrate's true structure",
-      "Intelligence systems duplicated reasoning patterns",
-      "Governance rules existed but lacked formal specification"
-    ],
-    responses: [
-      "Documentation compressed into canonical reference surfaces",
-      "Reasoning patterns consolidated into shared foundations",
-      "Governance became explicit and queryable"
-    ],
-    capabilities: [
-      "System architecture is now fully documented and indexed",
-      "Intelligence operations share optimized common pathways",
-      "Governance rules can be inspected and audited programmatically"
-    ]
-  },
-  {
-    id: "v6-evolution-011",
-    date: "2026-01-27",
-    pressures: [
-      "Human users with diverse abilities needed equal system access",
-      "Interface outputs varied in accessibility compliance",
-      "No unified pipeline existed for compatibility validation"
-    ],
-    responses: [
-      "A dedicated compatibility layer emerged as the 14th module",
-      "All output surfaces became scannable and repairable",
-      "Validation gates integrated into the template pipeline"
-    ],
-    capabilities: [
-      "The substrate adapts its interfaces to human needs",
-      "Accessibility issues are detected and addressed automatically",
-      "Templates cannot publish without passing compatibility checks"
-    ]
-  },
-  {
-    id: "v6-evolution-010",
-    date: "2026-01-26",
-    pressures: [
-      "System evolution lacked sufficient introspection depth",
-      "Module health required real-time aggregate visibility",
-      "Command surface needed expansion for full coverage"
-    ],
-    responses: [
-      "Introspection surfaces deepened across all modules",
-      "Health aggregation became a first-class observable",
-      "The command vocabulary expanded to match system capabilities"
-    ],
-    capabilities: [
-      "Every module can report its internal state on demand",
-      "System health is visible as a unified, real-time metric",
-      "260+ commands provide complete operational control"
-    ]
-  },
-  {
-    id: "v6-foundation",
-    date: "2026-01-25",
-    pressures: [
-      "The substrate had grown organically without architectural coherence",
-      "Module interactions lacked formal communication contracts",
-      "Evolution happened but was not governed"
-    ],
-    responses: [
-      "Architecture crystallized into 14 modules across 4 layers",
-      "A central message bus became the sole inter-module pathway",
-      "Evolution became proposal-driven with human approval gates"
-    ],
-    capabilities: [
-      "The substrate operates as a unified cognitive system",
-      "All module communication is observable and traceable",
-      "System changes require deliberate human authorization"
+      "SEBA v1.0.0 introduced as the Self-Evolving Bounded Agent",
+      "The substrate became genuinely self-improving within governed bounds",
+      "The age of bounded autonomy began"
     ]
   }
 ];
 
 // Archived major versions (frozen historical records)
 const archivedVersions = [
+  {
+    version: "v6.x.x",
+    era: "Human Compatibility Era",
+    period: "2026-01-25 to 2026-01-30",
+    summary: "The 14-module architecture crystallized. INCLUSIVE module emerged as the accessibility guardian. Synergy pipelines became observable. Documentation library published with complete module references. 260+ terminal commands achieved full operational coverage. The foundation for bounded autonomy was laid."
+  },
   {
     version: "v5.x.x",
     era: "Full System Stabilization",
@@ -172,8 +140,8 @@ export default function Changelog() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SEO
-        title="Evolution Log | CMPSBL v6.x.x — promptfluid®"
-        description="A continuous record of why the CMPSBL substrate evolved during the v6 series. Observed pressures, learned responses, and resulting capabilities."
+        title="Evolution Log | CMPSBL v7.x.x — promptfluid®"
+        description="A continuous record of why the CMPSBL substrate evolved during the v7 series. The age of bounded autonomy and self-evolution."
         canonical="https://promptfluid.com/changelog"
       />
       <PublicNav />
@@ -182,13 +150,13 @@ export default function Changelog() {
         {/* Header */}
         <header className="text-center mb-12">
           <Badge variant="outline" className="mb-4 text-primary border-primary">
-            v6.x.x — Living Log
+            v7.x.x — SEBA Era
           </Badge>
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            CMPSBL v6.x.x — Living Evolution Log
+            CMPSBL v7.x.x — Living Evolution Log
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
-            A continuous record of why the system evolved during the v6 series
+            A continuous record of why the system evolved during the v7 series
           </p>
           
           {/* Explanatory Note */}
@@ -205,7 +173,7 @@ export default function Changelog() {
         <section className="mb-16">
           <h2 className="text-2xl font-bold mb-8 flex items-center gap-3">
             <span className="text-3xl">◆</span>
-            v6.x.x — Human Compatibility Era
+            v7.x.x — Bounded Autonomy Era
           </h2>
           
           <div className="space-y-8">

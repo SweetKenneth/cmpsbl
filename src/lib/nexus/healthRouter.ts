@@ -1,5 +1,5 @@
 /**
- * PromptFluid Nexus - Health-Weighted Provider Routing v5.0
+ * PromptFluid Nexus - Health-Weighted Provider Routing v7.0.0
  * Intelligent provider selection based on health scores and performance
  */
 

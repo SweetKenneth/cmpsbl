@@ -1,6 +1,6 @@
 /**
  * promptfluid® Substrate Initialization
- * v6.0.0 — Complete AI Operating System with 14 modules
+ * v7.0.0 — Complete AI Operating System with 14 modules + SEBA
  */
 
 import { substrate } from './substrate';
@@ -11,7 +11,7 @@ export async function initializeSubstrate(): Promise<void> {
   if (initialized) return;
   
   try {
-    console.log('⚡ Booting promptfluid® Substrate v6.0.0...');
+    console.log('⚡ Booting promptfluid® Substrate v7.0.0...');
     console.log('─────────────────────────────────────────');
     
     // Boot sequence - CORE first, then other modules (14-module architecture: 13 core + cortex)

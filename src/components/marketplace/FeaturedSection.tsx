@@ -1,7 +1,7 @@
 /**
  * FeaturedSection — Premium hero products with compelling visuals
  * Mobile-first design, high conversion focus
- * v6.0.0 - 14-module architecture
+ * v7.0.0 - 14-module architecture + SEBA
  * OS License now redirects to licensing page (tiered pricing)
  */
 

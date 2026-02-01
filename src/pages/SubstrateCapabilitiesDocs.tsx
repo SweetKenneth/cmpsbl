@@ -336,7 +336,7 @@ export default function SubstrateCapabilitiesDocs() {
             </div>
             <div>
               <Badge className="mb-2 bg-cyan-500/20 text-cyan-400 border-cyan-500/30">
-                v6.0.0 SDK Reference
+                v7.0.0 SDK Reference
               </Badge>
               <h1 className="text-3xl sm:text-4xl font-bold">
                 Substrate Capabilities

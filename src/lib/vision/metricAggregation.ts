@@ -1,5 +1,5 @@
 /**
- * PromptFluid Vision - Real-Time Metric Aggregation v5.0
+ * PromptFluid Vision - Real-Time Metric Aggregation v7.0.0
  * Live metric collection, aggregation, and streaming
  */
 

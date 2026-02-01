@@ -1,6 +1,6 @@
 /**
  * Constant Learning Mode (CLM) Module
- * v6.7.0 — Always-on, rate-limited, spaced, reflective learning
+ * v7.0.0 — Always-on, rate-limited, spaced, reflective learning
  * 
  * Exports all CLM components for substrate integration.
  */
