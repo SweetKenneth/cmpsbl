@@ -23,11 +23,14 @@ import {
 import { toast } from "sonner";
 
 const LIBRARY_DOCS = [
+  // Core Documentation
   { id: "00", name: "INDEX", title: "Document Library Index" },
   { id: "01", name: "EXECUTIVE-SUMMARY", title: "Executive Summary" },
   { id: "02", name: "SYSTEM-ARCHITECTURE", title: "System Architecture" },
   { id: "03", name: "USERS-GUIDE", title: "User's Guide" },
   { id: "04", name: "API-REFERENCE", title: "API Reference" },
+  
+  // Module Documentation
   { id: "10", name: "CORE-MODULE", title: "CORE Module" },
   { id: "11", name: "RIPPLE-MODULE", title: "RIPPLE Module" },
   { id: "12", name: "ACCESS-MODULE", title: "ACCESS Module" },
@@ -42,32 +45,35 @@ const LIBRARY_DOCS = [
   { id: "21", name: "MODERNIZER-MODULE", title: "MODERNIZER Module" },
   { id: "22", name: "CORTEX-MODULE", title: "CORTEX Module" },
   { id: "23", name: "INCLUSIVE-MODULE", title: "INCLUSIVE Module" },
+  
+  // Validation & Evidence
   { id: "30", name: "VALIDATION-METHODOLOGY", title: "Validation Methodology" },
   { id: "31", name: "PERFORMANCE-BENCHMARKS", title: "Performance Benchmarks" },
   { id: "32", name: "LIVE-SYSTEM-EVIDENCE", title: "Live System Evidence" },
+  
+  // Reference
   { id: "40", name: "GLOSSARY", title: "Glossary" },
   { id: "41", name: "BIBLIOGRAPHY", title: "Bibliography" },
   { id: "42", name: "LICENSING-INFO", title: "Licensing Information" },
   { id: "50", name: "MARKETPLACE-REFERENCE", title: "Marketplace Reference" },
+  
+  // Advanced Topics
   { id: "60", name: "CODELAB", title: "CodeLab" },
   { id: "61", name: "AGENTS-AND-FORGE", title: "Agents and Forge" },
   { id: "62", name: "TEMPLATE-GENERATOR", title: "Template Generator" },
   { id: "63", name: "CLM", title: "Constant Learning Mode" },
   { id: "64", name: "MEMORY-ARCHITECTURE", title: "Memory Architecture" },
   { id: "65", name: "SPACED-REPETITION", title: "Spaced Repetition System" },
+  { id: "66", name: "SEBA-MODULE", title: "SEBA Module" },
+  
+  // Evolution & Synergy
   { id: "75", name: "EVOLUTION-LIFECYCLE", title: "Evolution Lifecycle" },
   { id: "76", name: "EVOLUTION-AUTONOMY", title: "Evolution Autonomy" },
   { id: "77", name: "SYNERGY-PIPELINES", title: "Synergy Pipelines" },
-  { id: "78", name: "PREDICTIVE-PREVENTION", title: "Predictive Issue Prevention" },
-  { id: "79", name: "ADAPTIVE-PERSONALIZATION", title: "Adaptive Personalization" },
-  { id: "80", name: "INTELLIGENT-DELEGATION", title: "Intelligent Task Delegation" },
-  { id: "81", name: "SECURITY-HARDENING", title: "Real-time Security Hardening" },
-  { id: "82", name: "CONTEXTUAL-MEMORY", title: "Context-Aware Memory Recall" },
-  { id: "83", name: "AUTONOMOUS-DOCS", title: "Autonomous Documentation" },
-  { id: "84", name: "INSIGHT-SYNTHESIS", title: "Cross-Domain Insight Synthesis" },
-  { id: "85", name: "GRACEFUL-DEGRADATION", title: "Graceful Degradation Chain" },
-  { id: "86", name: "INTENT-AMPLIFICATION", title: "Intent Amplification" },
-  { id: "87", name: "EVOLUTION-CONFIDENCE", title: "Evolution Confidence Scoring" },
+  { id: "78", name: "CAPABILITIES", title: "Synergy Capabilities Reference" },
+  
+  // Evolving Systems
+  { id: "95", name: "SUPPORT-BOT", title: "Support Bot" },
 ];
 
 export default function Library() {
