@@ -75,6 +75,7 @@ const defaultConfigs: Record<string, CapabilityConfig> = {
   core: { enabled: true, mode: 'governed', requiresApproval: false },
   seba: { enabled: true, mode: 'governed', requiresApproval: true },
   encoded: { enabled: true, mode: 'governed', requiresApproval: true },
+  synergy: { enabled: true, mode: 'governed', requiresApproval: false }, // Cross-module pipelines
 };
 
 // Rate limit tracking

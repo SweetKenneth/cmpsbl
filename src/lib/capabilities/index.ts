@@ -1,6 +1,6 @@
 /**
  * Capability System
- * v7.0.0 — Auto-Adapt Edge Function Ingestion
+ * v7.0.0 — Auto-Adapt Edge Function Ingestion + Cross-Module Synergies
  * 
  * This module provides:
  * - Registry: Single source of truth for capabilities
@@ -11,6 +11,7 @@
  * - State: Enable/disable toggle management
  * - Confidence: Feedback + scoring
  * - Normalize: Output shaping
+ * - Synergies: Cross-module pipeline orchestration
  */
 
 export * from './types';
@@ -23,9 +24,21 @@ export * from './auto-loader';
 export * from './archived-loader';
 export * from './state';
 
+// Synergy system exports
+export * from './synergies';
+
 // Re-export key functions for convenience
 export { invokeCapability, canInvoke, invokeBatch } from './adapter';
 export { registerCapability, getCapability, listCapabilities, getManifest } from './registry';
 export { runScanAdapt, auditEdgeFunction, adaptCapability } from './auto-loader';
 export { runScanArchived, adaptArchivedCapabilities, ARCHIVED_CAPABILITIES } from './archived-loader';
 export { setCapabilityEnabled, isCapabilityEnabled, useCapabilityState } from './state';
+export { 
+  executeSynergy, 
+  dryRunSynergy, 
+  getRecommendedSynergies,
+  listSynergies,
+  getSynergy,
+  getSynergiesByModule,
+  SYNERGY_DEFINITIONS,
+} from './synergies';
