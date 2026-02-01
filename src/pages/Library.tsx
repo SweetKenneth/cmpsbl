@@ -1,6 +1,6 @@
 /**
- * Library — FNDTN v6 Documentation Library
- * Properly renders Markdown documentation with navigation
+ * Library — CMPSBL® Documentation Library
+ * Premium documentation experience for investors and users
  */
 
 import { useState, useEffect } from "react";
@@ -8,7 +8,7 @@ import { useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -16,26 +16,163 @@ import { Separator } from "@/components/ui/separator";
 import { Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { motion, AnimatePresence } from "framer-motion";
 import { 
   FileText, Download, ChevronLeft, ChevronRight, 
-  BookOpen, Layers, Menu, X, ExternalLink, Copy, Check, Printer
+  BookOpen, Layers, Menu, X, ExternalLink, Copy, Check, Printer,
+  Sparkles, Shield, TrendingUp, Users, Briefcase, Code, 
+  Building2, Rocket, BarChart3, Lock, Map, GitCompare
 } from "lucide-react";
 import { toast } from "sonner";
 import { usePrintDocument } from "@/hooks/usePrintDocument";
 
-// Curated public-facing documentation for investors and users
-// Removed internal implementation details, kept business-value focused content
+// Document categories for organization
+const CATEGORIES = {
+  overview: { label: "Overview", icon: BookOpen, color: "from-primary to-violet-500" },
+  technical: { label: "Technical", icon: Code, color: "from-blue-500 to-cyan-500" },
+  business: { label: "Business", icon: Briefcase, color: "from-emerald-500 to-teal-500" },
+  investor: { label: "Investor", icon: TrendingUp, color: "from-amber-500 to-orange-500" },
+};
+
+// Curated public-facing documentation with categories and metadata
 const LIBRARY_DOCS = [
-  { id: "00", name: "INDEX", title: "Documentation Overview" },
-  { id: "01", name: "EXECUTIVE-SUMMARY", title: "Executive Summary" },
-  { id: "02", name: "WHAT-IS-CMPSBL", title: "What is CMPSBL?" },
-  { id: "03", name: "KEY-CAPABILITIES", title: "Key Capabilities" },
-  { id: "04", name: "USE-CASES", title: "Use Cases" },
-  { id: "05", name: "ARCHITECTURE", title: "Architecture Overview" },
-  { id: "06", name: "GETTING-STARTED", title: "Getting Started" },
-  { id: "07", name: "LICENSING", title: "Pricing & Licensing" },
-  { id: "08", name: "FAQ", title: "FAQ" },
+  { 
+    id: "00", 
+    name: "INDEX", 
+    title: "Documentation Overview",
+    category: "overview",
+    description: "Complete guide to CMPSBL documentation",
+    featured: false,
+    readTime: "2 min"
+  },
+  { 
+    id: "01", 
+    name: "EXECUTIVE-SUMMARY", 
+    title: "Executive Summary",
+    category: "investor",
+    description: "High-level overview for decision makers and investors",
+    featured: true,
+    readTime: "5 min"
+  },
+  { 
+    id: "02", 
+    name: "WHAT-IS-CMPSBL", 
+    title: "What is CMPSBL?",
+    category: "overview",
+    description: "Introduction to the cognitive infrastructure layer",
+    featured: true,
+    readTime: "4 min"
+  },
+  { 
+    id: "03", 
+    name: "KEY-CAPABILITIES", 
+    title: "Key Capabilities",
+    category: "technical",
+    description: "Deep dive into the 14-module architecture",
+    featured: true,
+    readTime: "8 min"
+  },
+  { 
+    id: "04", 
+    name: "USE-CASES", 
+    title: "Use Cases",
+    category: "business",
+    description: "Real-world applications and industry examples",
+    featured: false,
+    readTime: "6 min"
+  },
+  { 
+    id: "05", 
+    name: "ARCHITECTURE", 
+    title: "Architecture Overview",
+    category: "technical",
+    description: "Technical foundation and system design",
+    featured: true,
+    readTime: "7 min"
+  },
+  { 
+    id: "06", 
+    name: "GETTING-STARTED", 
+    title: "Getting Started",
+    category: "technical",
+    description: "Quick start guide for developers",
+    featured: false,
+    readTime: "5 min"
+  },
+  { 
+    id: "07", 
+    name: "LICENSING", 
+    title: "Pricing & Licensing",
+    category: "business",
+    description: "License tiers and pricing structure",
+    featured: false,
+    readTime: "4 min"
+  },
+  { 
+    id: "08", 
+    name: "FAQ", 
+    title: "FAQ",
+    category: "overview",
+    description: "Frequently asked questions",
+    featured: false,
+    readTime: "6 min"
+  },
+  { 
+    id: "09", 
+    name: "SECURITY-COMPLIANCE", 
+    title: "Security & Compliance",
+    category: "business",
+    description: "Enterprise security architecture and compliance frameworks",
+    featured: true,
+    readTime: "8 min"
+  },
+  { 
+    id: "10", 
+    name: "ROADMAP", 
+    title: "Product Roadmap",
+    category: "investor",
+    description: "Vision and development timeline through 2028",
+    featured: false,
+    readTime: "5 min"
+  },
+  { 
+    id: "11", 
+    name: "CASE-STUDIES", 
+    title: "Case Studies",
+    category: "business",
+    description: "Real implementation success stories",
+    featured: true,
+    readTime: "10 min"
+  },
+  { 
+    id: "12", 
+    name: "COMPARISONS", 
+    title: "Market Comparison",
+    category: "investor",
+    description: "How CMPSBL compares to alternatives",
+    featured: false,
+    readTime: "7 min"
+  },
+  { 
+    id: "13", 
+    name: "INVESTOR-OVERVIEW", 
+    title: "Investor Overview",
+    category: "investor",
+    description: "Investment thesis and market opportunity",
+    featured: true,
+    readTime: "10 min"
+  },
 ];
+
+const getCategoryIcon = (category: string) => {
+  const icons = {
+    overview: BookOpen,
+    technical: Code,
+    business: Briefcase,
+    investor: TrendingUp,
+  };
+  return icons[category as keyof typeof icons] || FileText;
+};
 
 export default function Library() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -43,19 +180,27 @@ export default function Library() {
   const [loading, setLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const { printDocument } = usePrintDocument();
   const docParam = searchParams.get("doc");
-  const currentDoc = LIBRARY_DOCS.find(d => `${d.id}-${d.name}` === docParam) || LIBRARY_DOCS[0];
-  const currentIndex = LIBRARY_DOCS.findIndex(d => d === currentDoc);
+  const currentDoc = LIBRARY_DOCS.find(d => `${d.id}-${d.name}` === docParam) || null;
+  const currentIndex = currentDoc ? LIBRARY_DOCS.findIndex(d => d === currentDoc) : -1;
   const prevDoc = currentIndex > 0 ? LIBRARY_DOCS[currentIndex - 1] : null;
   const nextDoc = currentIndex < LIBRARY_DOCS.length - 1 ? LIBRARY_DOCS[currentIndex + 1] : null;
 
+  const filteredDocs = activeCategory 
+    ? LIBRARY_DOCS.filter(d => d.category === activeCategory)
+    : LIBRARY_DOCS;
+
+  const featuredDocs = LIBRARY_DOCS.filter(d => d.featured);
+
   useEffect(() => {
+    if (!currentDoc) return;
+    
     const loadDocument = async () => {
       setLoading(true);
       try {
         const filename = `${currentDoc.id}-${currentDoc.name}.md`;
-        // Load from public-facing website docs
         const response = await fetch(`/docs/website/${filename}`);
         if (response.ok) {
           const text = await response.text();
@@ -78,6 +223,7 @@ export default function Library() {
   };
 
   const copyLink = () => {
+    if (!currentDoc) return;
     const url = `${window.location.origin}/library?doc=${currentDoc.id}-${currentDoc.name}`;
     navigator.clipboard.writeText(url);
     setCopied(true);
@@ -86,6 +232,7 @@ export default function Library() {
   };
 
   const handlePrintDownload = () => {
+    if (!currentDoc) return;
     printDocument({
       content,
       title: currentDoc.title,
@@ -93,11 +240,303 @@ export default function Library() {
     });
   };
 
+  // Library Landing View
+  if (!currentDoc) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col">
+        <Helmet>
+          <title>Documentation Library | CMPSBL®</title>
+          <meta name="description" content="Complete documentation for CMPSBL cognitive infrastructure. Executive summaries, technical guides, case studies, and investor materials." />
+        </Helmet>
+
+        <PublicNav />
+
+        <main className="flex-1">
+          {/* Hero Section */}
+          <section className="relative py-16 sm:py-24 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-violet-500/5" />
+            <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl" />
+            <div className="absolute bottom-10 right-10 w-96 h-96 bg-violet-500/10 rounded-full blur-3xl" />
+            
+            <div className="relative max-w-6xl mx-auto px-4 sm:px-6 text-center">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+              >
+                <Badge className="mb-6 px-4 py-2 text-sm bg-primary/10 text-primary border-primary/20">
+                  <Sparkles className="w-4 h-4 mr-2" />
+                  v7.0.0 Documentation
+                </Badge>
+                
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
+                  <span className="bg-gradient-to-r from-primary via-violet-500 to-primary bg-clip-text text-transparent">
+                    Documentation Library
+                  </span>
+                </h1>
+                
+                <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
+                  Everything you need to understand, evaluate, and build with CMPSBL® 
+                  — the cognitive infrastructure layer for AI applications.
+                </p>
+                
+                <div className="flex flex-wrap justify-center gap-4">
+                  <Button 
+                    size="lg" 
+                    onClick={() => navigateTo(LIBRARY_DOCS.find(d => d.id === "01")!)}
+                    className="gap-2"
+                  >
+                    <Briefcase className="w-5 h-5" />
+                    Executive Summary
+                  </Button>
+                  <Button 
+                    size="lg" 
+                    variant="outline"
+                    onClick={() => navigateTo(LIBRARY_DOCS.find(d => d.id === "06")!)}
+                    className="gap-2"
+                  >
+                    <Rocket className="w-5 h-5" />
+                    Getting Started
+                  </Button>
+                </div>
+              </motion.div>
+            </div>
+          </section>
+
+          {/* Featured Documents */}
+          <section className="py-12 sm:py-16 bg-muted/30">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6">
+              <div className="flex items-center gap-3 mb-8">
+                <div className="p-2 rounded-lg bg-primary/10">
+                  <Sparkles className="w-5 h-5 text-primary" />
+                </div>
+                <h2 className="text-2xl sm:text-3xl font-bold">Featured Documents</h2>
+              </div>
+              
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                {featuredDocs.map((doc, index) => {
+                  const CategoryIcon = getCategoryIcon(doc.category);
+                  const category = CATEGORIES[doc.category as keyof typeof CATEGORIES];
+                  
+                  return (
+                    <motion.div
+                      key={doc.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                    >
+                      <Card 
+                        className="group cursor-pointer h-full border-border/50 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300"
+                        onClick={() => navigateTo(doc)}
+                      >
+                        <CardContent className="p-6">
+                          <div className="flex items-start justify-between mb-4">
+                            <div className={`p-2.5 rounded-xl bg-gradient-to-br ${category.color} bg-opacity-10`}>
+                              <CategoryIcon className="w-5 h-5 text-white" />
+                            </div>
+                            <Badge variant="outline" className="text-xs">
+                              {doc.readTime}
+                            </Badge>
+                          </div>
+                          
+                          <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors">
+                            {doc.title}
+                          </h3>
+                          <p className="text-sm text-muted-foreground line-clamp-2">
+                            {doc.description}
+                          </p>
+                          
+                          <div className="mt-4 pt-4 border-t border-border/50 flex items-center justify-between">
+                            <Badge variant="secondary" className="text-xs capitalize">
+                              {category.label}
+                            </Badge>
+                            <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+
+          {/* Category Filter & All Documents */}
+          <section className="py-12 sm:py-16">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-muted">
+                    <FileText className="w-5 h-5 text-foreground" />
+                  </div>
+                  <h2 className="text-2xl sm:text-3xl font-bold">All Documents</h2>
+                  <Badge variant="outline" className="ml-2">{LIBRARY_DOCS.length}</Badge>
+                </div>
+                
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    variant={activeCategory === null ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setActiveCategory(null)}
+                    className="text-xs"
+                  >
+                    All
+                  </Button>
+                  {Object.entries(CATEGORIES).map(([key, cat]) => (
+                    <Button
+                      key={key}
+                      variant={activeCategory === key ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setActiveCategory(key)}
+                      className="text-xs gap-1.5"
+                    >
+                      <cat.icon className="w-3.5 h-3.5" />
+                      {cat.label}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="grid gap-3">
+                <AnimatePresence mode="popLayout">
+                  {filteredDocs.map((doc, index) => {
+                    const CategoryIcon = getCategoryIcon(doc.category);
+                    const category = CATEGORIES[doc.category as keyof typeof CATEGORIES];
+                    
+                    return (
+                      <motion.div
+                        key={doc.id}
+                        layout
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 20 }}
+                        transition={{ delay: index * 0.03 }}
+                      >
+                        <Card 
+                          className="group cursor-pointer border-border/50 hover:border-primary/30 hover:bg-muted/30 transition-all duration-200"
+                          onClick={() => navigateTo(doc)}
+                        >
+                          <CardContent className="p-4 sm:p-5 flex items-center gap-4">
+                            <div className={`hidden sm:flex p-2.5 rounded-xl bg-gradient-to-br ${category.color} shrink-0`}>
+                              <CategoryIcon className="w-5 h-5 text-white" />
+                            </div>
+                            
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 mb-1">
+                                <span className="font-mono text-xs text-muted-foreground">{doc.id}</span>
+                                {doc.featured && (
+                                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                                )}
+                              </div>
+                              <h3 className="font-semibold group-hover:text-primary transition-colors truncate">
+                                {doc.title}
+                              </h3>
+                              <p className="text-sm text-muted-foreground truncate hidden sm:block">
+                                {doc.description}
+                              </p>
+                            </div>
+                            
+                            <div className="flex items-center gap-3 shrink-0">
+                              <Badge variant="outline" className="text-xs hidden sm:inline-flex">
+                                {doc.readTime}
+                              </Badge>
+                              <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </motion.div>
+                    );
+                  })}
+                </AnimatePresence>
+              </div>
+            </div>
+          </section>
+
+          {/* Quick Links */}
+          <section className="py-12 sm:py-16 bg-muted/30">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6">
+              <h2 className="text-2xl font-bold mb-8 text-center">Additional Resources</h2>
+              
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <Link to="/foundations">
+                  <Card className="group cursor-pointer h-full hover:border-primary/30 transition-colors">
+                    <CardContent className="p-6 text-center">
+                      <div className="w-12 h-12 mx-auto mb-4 rounded-xl bg-gradient-to-br from-primary to-violet-500 flex items-center justify-center">
+                        <FileText className="w-6 h-6 text-white" />
+                      </div>
+                      <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors">
+                        Foundations Paper
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        Deep technical research documentation
+                      </p>
+                    </CardContent>
+                  </Card>
+                </Link>
+                
+                <Link to="/namespace">
+                  <Card className="group cursor-pointer h-full hover:border-primary/30 transition-colors">
+                    <CardContent className="p-6 text-center">
+                      <div className="w-12 h-12 mx-auto mb-4 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
+                        <Layers className="w-6 h-6 text-white" />
+                      </div>
+                      <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors">
+                        AI Governance Namespace
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        Standardized AI terminology
+                      </p>
+                    </CardContent>
+                  </Card>
+                </Link>
+                
+                <Link to="/changelog">
+                  <Card className="group cursor-pointer h-full hover:border-primary/30 transition-colors">
+                    <CardContent className="p-6 text-center">
+                      <div className="w-12 h-12 mx-auto mb-4 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+                        <GitCompare className="w-6 h-6 text-white" />
+                      </div>
+                      <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors">
+                        Changelog
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        Version history and updates
+                      </p>
+                    </CardContent>
+                  </Card>
+                </Link>
+                
+                <Link to="/substrate/licensing">
+                  <Card className="group cursor-pointer h-full hover:border-primary/30 transition-colors">
+                    <CardContent className="p-6 text-center">
+                      <div className="w-12 h-12 mx-auto mb-4 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
+                        <Building2 className="w-6 h-6 text-white" />
+                      </div>
+                      <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors">
+                        Get a License
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        Start building with CMPSBL
+                      </p>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <EnhancedFooter />
+      </div>
+    );
+  }
+
+  // Document Reader View
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
         <title>{currentDoc.title} — Documentation | CMPSBL®</title>
-        <meta name="description" content={`${currentDoc.title} - CMPSBL® cognitive infrastructure documentation.`} />
+        <meta name="description" content={currentDoc.description} />
       </Helmet>
 
       <PublicNav />
@@ -120,32 +559,44 @@ export default function Library() {
 
         {/* Sidebar */}
         <aside className={`
-          lg:w-72 lg:border-r lg:border-border bg-background
+          lg:w-80 lg:border-r lg:border-border bg-background
           ${sidebarOpen ? 'fixed inset-x-0 top-[117px] bottom-0 z-30 bg-background/98 backdrop-blur-md' : 'hidden lg:block'}
         `}>
           <ScrollArea className="h-full">
-            <div className="p-4 lg:p-4">
-              <div className="flex items-center gap-2 mb-4 px-2 lg:px-0">
+            <div className="p-4 lg:p-5">
+              <Link to="/library" className="flex items-center gap-2 mb-4 px-2 lg:px-0 hover:text-primary transition-colors">
+                <ChevronLeft className="w-4 h-4" />
+                <span className="text-sm">Back to Library</span>
+              </Link>
+              
+              <div className="flex items-center gap-2 mb-2 px-2 lg:px-0">
                 <Layers className="w-5 h-5 text-primary" />
                 <h2 className="font-semibold text-base">Documentation</h2>
               </div>
-              <Badge variant="outline" className="mb-4 ml-2 lg:ml-0">v7.0.0</Badge>
+              <Badge variant="outline" className="mb-4 ml-2 lg:ml-0">v7.0.0 • {LIBRARY_DOCS.length} docs</Badge>
               
               <nav className="space-y-1">
-                {LIBRARY_DOCS.map((doc) => (
-                  <button
-                    key={doc.id}
-                    onClick={() => navigateTo(doc)}
-                    className={`w-full text-left px-4 py-3.5 lg:px-3 lg:py-2 rounded-lg text-sm transition-all active:scale-[0.98] ${
-                      currentDoc === doc 
-                        ? "bg-primary/10 text-primary font-medium border-l-2 border-primary" 
-                        : "hover:bg-muted text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    <span className="font-mono text-xs mr-2 opacity-50">{doc.id}</span>
-                    {doc.title}
-                  </button>
-                ))}
+                {LIBRARY_DOCS.map((doc) => {
+                  const CategoryIcon = getCategoryIcon(doc.category);
+                  
+                  return (
+                    <button
+                      key={doc.id}
+                      onClick={() => navigateTo(doc)}
+                      className={`w-full text-left px-4 py-3.5 lg:px-3 lg:py-2.5 rounded-lg text-sm transition-all active:scale-[0.98] flex items-center gap-3 ${
+                        currentDoc.id === doc.id 
+                          ? "bg-primary/10 text-primary font-medium border-l-2 border-primary" 
+                          : "hover:bg-muted text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      <CategoryIcon className="w-4 h-4 shrink-0 opacity-60" />
+                      <span className="truncate flex-1">{doc.title}</span>
+                      {doc.featured && (
+                        <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                      )}
+                    </button>
+                  );
+                })}
               </nav>
 
               <Separator className="my-5" />
@@ -173,11 +624,18 @@ export default function Library() {
           {/* Document Header */}
           <div className="sticky top-14 lg:top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border px-4 lg:px-8 py-3">
             <div className="flex items-center justify-between max-w-4xl mx-auto gap-3">
-              <div className="flex items-center gap-2 min-w-0">
+              <div className="flex items-center gap-3 min-w-0">
                 <Badge variant="outline" className="font-mono shrink-0 text-xs">{currentDoc.id}</Badge>
+                <Separator orientation="vertical" className="h-4" />
                 <h1 className="font-semibold truncate text-sm sm:text-base">{currentDoc.title}</h1>
+                {currentDoc.featured && (
+                  <Sparkles className="w-4 h-4 text-amber-500 shrink-0" />
+                )}
               </div>
               <div className="flex items-center gap-1 shrink-0">
+                <Badge variant="secondary" className="text-xs hidden sm:inline-flex mr-2">
+                  {currentDoc.readTime}
+                </Badge>
                 <Button variant="ghost" size="icon" onClick={copyLink} className="h-10 w-10 sm:h-9 sm:w-9" title="Copy link">
                   {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                 </Button>
@@ -198,7 +656,11 @@ export default function Library() {
                 <div className="h-4 bg-muted rounded w-4/6" />
               </div>
             ) : (
-              <article className="library-content max-w-none">
+              <motion.article 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="library-content max-w-none"
+              >
                 <ReactMarkdown 
                   remarkPlugins={[remarkGfm]}
                   components={{
@@ -251,9 +713,7 @@ export default function Library() {
                       <em className="italic text-primary/80">{children}</em>
                     ),
                     a: ({href, children}) => {
-                      // Handle internal library document links
                       if (href) {
-                        // Match patterns like ./01-EXECUTIVE-SUMMARY.md or 01-EXECUTIVE-SUMMARY.md
                         const mdMatch = href.match(/(?:\.\/)?(\d{2})-([A-Z-]+)\.md$/i);
                         if (mdMatch) {
                           const docId = `${mdMatch[1]}-${mdMatch[2].toUpperCase()}`;
@@ -270,7 +730,6 @@ export default function Library() {
                           }
                         }
                         
-                        // Handle FNDTN paper links - route to /foundations
                         if (href.includes('fndtn-v6-foundations-paper') || href.includes('FNDTN-v6')) {
                           return (
                             <Link to="/foundations" className="text-primary font-medium underline underline-offset-4 hover:text-primary/80 transition-colors">
@@ -279,7 +738,6 @@ export default function Library() {
                           );
                         }
                         
-                        // Handle external links
                         if (href.startsWith('http://') || href.startsWith('https://')) {
                           return (
                             <a 
@@ -294,7 +752,6 @@ export default function Library() {
                           );
                         }
                         
-                        // Handle anchor links within same page
                         if (href.startsWith('#')) {
                           return (
                             <a href={href} className="text-primary font-medium underline underline-offset-4 hover:text-primary/80 transition-colors">
@@ -304,7 +761,6 @@ export default function Library() {
                         }
                       }
                       
-                      // Fallback: render as styled text (broken link)
                       return (
                         <span className="text-primary/60 font-medium">
                           {children}
@@ -367,7 +823,7 @@ export default function Library() {
                 >
                   {content}
                 </ReactMarkdown>
-              </article>
+              </motion.article>
             )}
           </div>
 
