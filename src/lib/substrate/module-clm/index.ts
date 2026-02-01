@@ -29,7 +29,8 @@ export type ModuleName =
   | 'modernizer'
   | 'system'
   | 'decode'
-  | 'autoblog';
+  | 'autoblog'
+  | 'encoded';
 
 export interface ModuleLearningConfig {
   moduleId: ModuleName;
@@ -258,6 +259,30 @@ What specific improvements would make me a better memory system?`,
 - Am I maintaining consistent tone?
 - What topics resonate best?
 - How can I make content more unique?`,
+  },
+  encoded: {
+    moduleId: 'encoded',
+    displayName: 'ENCODED',
+    learningTopics: [
+      'TypeScript best practices for substrate',
+      'React component patterns and hooks',
+      'Supabase edge function architecture',
+      'Code refactoring and maintainability',
+      'Error handling and type safety',
+      'Substrate module integration patterns',
+      'Testing strategies for cognitive systems',
+      'Performance optimization techniques',
+    ],
+    kpis: ['code_quality_score', 'ts_error_rate', 'refactor_success_rate', 'pattern_adherence'],
+    selfReflectionPrompt: `As the ENCODED code writer, analyze my code generation capabilities:
+- What TypeScript patterns am I using correctly vs incorrectly?
+- Which substrate modules do I understand well vs struggle with?
+- What common errors do I make that I should learn to avoid?
+- How can I write cleaner, more maintainable code?
+- What Supabase/edge function patterns should I master?
+- How can I better understand the substrate architecture to make precise edits?
+- What testing and validation patterns would make my code more reliable?
+Provide specific examples of patterns I should learn and anti-patterns to avoid.`,
   },
 };
 

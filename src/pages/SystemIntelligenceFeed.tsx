@@ -59,6 +59,7 @@ const MODULE_ICONS: Record<ModuleName, React.ElementType> = {
   system: Settings,
   decode: FileText,
   autoblog: TrendingUp,
+  encoded: FileText,
 };
 
 const MODULE_COLORS: Record<ModuleName, string> = {
@@ -74,6 +75,7 @@ const MODULE_COLORS: Record<ModuleName, string> = {
   system: 'from-gray-500/20 to-gray-600/5 border-gray-500/30',
   decode: 'from-indigo-500/20 to-indigo-600/5 border-indigo-500/30',
   autoblog: 'from-violet-500/20 to-violet-600/5 border-violet-500/30',
+  encoded: 'from-fuchsia-500/20 to-fuchsia-600/5 border-fuchsia-500/30',
 };
 
 const MODULE_TEXT_COLORS: Record<ModuleName, string> = {
@@ -89,6 +91,7 @@ const MODULE_TEXT_COLORS: Record<ModuleName, string> = {
   system: 'text-gray-400',
   decode: 'text-indigo-400',
   autoblog: 'text-violet-400',
+  encoded: 'text-fuchsia-400',
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════
