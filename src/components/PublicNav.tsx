@@ -153,20 +153,20 @@ export function PublicNav() {
         }}
         transition={{ duration: 0.2 }}
         className={cn(
-          "sticky top-0 z-[10000] backdrop-blur-xl border-b transition-shadow duration-300",
+          "sticky top-0 z-[10000] backdrop-blur-xl border-b transition-shadow duration-300 safe-area-pt",
           scrolled && "shadow-lg shadow-background/10"
         )}
         role="navigation"
         aria-label="Main navigation"
       >
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+        <div className="container mx-auto px-3 sm:px-4 py-2.5 sm:py-3 flex items-center justify-between">
           {/* Logo */}
           <Link 
             to="/" 
-            className="shrink-0 hover:opacity-80 transition-all duration-300 hover:scale-[1.02]"
+            className="shrink-0 hover:opacity-80 transition-all duration-300 hover:scale-[1.02] tap-highlight-none touch-target flex items-center"
           >
             <CmpsblLogo size="sm" className="hidden sm:block" />
-            <CmpsblLogo size="sm" iconOnly className="sm:hidden h-8 w-8" />
+            <CmpsblLogo size="sm" iconOnly className="sm:hidden h-9 w-9" />
           </Link>
 
           {/* Desktop Menu */}
@@ -299,7 +299,7 @@ export function PublicNav() {
                   key={name}
                   to={href}
                   className={cn(
-                    "px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                    "px-3 py-2 rounded-lg text-sm font-medium transition-colors touch-target tap-highlight-none",
                     isActive(href)
                       ? "text-foreground bg-primary/10"
                       : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
@@ -309,17 +309,17 @@ export function PublicNav() {
                 </Link>
               );
             })}
-            <Button asChild size="sm" className="ml-2 font-semibold">
+            <Button asChild size="sm" className="ml-2 font-semibold touch-target">
               <Link to="/contact">Contact</Link>
             </Button>
           </div>
 
-          {/* Mobile Toggle */}
+          {/* Mobile Toggle - Larger touch target */}
           <motion.button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className={cn(
-              "md:hidden p-2.5 rounded-xl transition-colors",
-              mobileMenuOpen ? "bg-primary/10 text-primary" : "hover:bg-muted"
+              "md:hidden p-3 rounded-xl transition-colors touch-target tap-highlight-none",
+              mobileMenuOpen ? "bg-primary/10 text-primary" : "hover:bg-muted active:bg-muted/80"
             )}
             aria-label="Toggle menu"
             aria-expanded={mobileMenuOpen}
@@ -365,10 +365,10 @@ export function PublicNav() {
               role="dialog"
               aria-modal="true"
             >
-              <div className="px-4 py-5 pb-24 safe-area-pb">
-                {/* Quick Access Pills */}
-                <div className="flex gap-2 mb-6 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide">
-                  {["CodeLab", "Developers", "Licensing", "Support", "Contact"].map((name) => {
+              <div className="px-4 py-4 pb-28 safe-area-pb momentum-scroll">
+                {/* Quick Access Pills - Horizontally scrollable */}
+                <div className="flex gap-2.5 mb-6 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide touch-pan-x">
+                  {["CodeLab", "Developers", "Licensing", "Support", "Contact"].map((name, idx) => {
                     const href = name === "CodeLab" ? "/codelab" :
                                  name === "Developers" ? "/developers" :
                                  name === "Licensing" ? "/substrate/licensing" :
@@ -378,15 +378,15 @@ export function PublicNav() {
                         key={name}
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.05 }}
+                        transition={{ delay: 0.02 + idx * 0.02 }}
                       >
                         <Link
                           to={href}
                           className={cn(
-                            "shrink-0 px-4 py-2.5 rounded-full text-sm font-semibold transition-all duration-200",
+                            "shrink-0 px-4 py-3 rounded-full text-sm font-semibold transition-all duration-200 touch-target tap-highlight-none",
                             isActive(href)
                               ? "bg-primary text-primary-foreground shadow-md shadow-primary/25"
-                              : "bg-muted/50 text-foreground hover:bg-muted border border-border/50"
+                              : "bg-muted/50 text-foreground hover:bg-muted border border-border/50 active:scale-95"
                           )}
                         >
                           {name}
@@ -411,13 +411,13 @@ export function PublicNav() {
                           expandedSection === section.name ? null : section.name
                         )}
                         className={cn(
-                          "w-full flex items-center justify-between p-4 text-left transition-colors",
-                          expandedSection === section.name ? "bg-muted/30" : "hover:bg-muted/20"
+                          "w-full flex items-center justify-between p-4 text-left transition-colors touch-target tap-highlight-none",
+                          expandedSection === section.name ? "bg-muted/30" : "hover:bg-muted/20 active:bg-muted/30"
                         )}
                       >
                         <div className="flex items-center gap-3">
                           <div className={cn(
-                            "w-10 h-10 rounded-xl flex items-center justify-center transition-colors",
+                            "w-11 h-11 rounded-xl flex items-center justify-center transition-colors",
                             isInSection(section) 
                               ? "bg-primary/15 text-primary" 
                               : "bg-muted/50 text-muted-foreground"
@@ -457,15 +457,15 @@ export function PublicNav() {
                                   <Link
                                     to={item.href}
                                     className={cn(
-                                      "flex items-center gap-3 px-4 py-3.5 transition-colors",
+                                      "flex items-center gap-3 px-4 py-4 transition-colors touch-target tap-highlight-none",
                                       isActive(item.href)
                                         ? "bg-primary/10 text-primary"
-                                        : "hover:bg-muted/30"
+                                        : "hover:bg-muted/30 active:bg-muted/50"
                                     )}
                                   >
                                     {item.icon && (
                                       <div className={cn(
-                                        "w-9 h-9 rounded-lg flex items-center justify-center shrink-0",
+                                        "w-10 h-10 rounded-lg flex items-center justify-center shrink-0",
                                         isActive(item.href) 
                                           ? "bg-primary/20 text-primary" 
                                           : "bg-muted/30 text-muted-foreground"
@@ -473,13 +473,13 @@ export function PublicNav() {
                                         <item.icon className="w-4 h-4" />
                                       </div>
                                     )}
-                                    <div className="flex flex-col min-w-0">
+                                    <div className="flex flex-col min-w-0 flex-1">
                                       <span className="font-medium text-sm">{item.name}</span>
                                       {item.description && (
                                         <span className="text-xs text-muted-foreground truncate">{item.description}</span>
                                       )}
                                     </div>
-                                    <ChevronRight className="w-4 h-4 ml-auto text-muted-foreground/50" />
+                                    <ChevronRight className="w-4 h-4 ml-auto text-muted-foreground/50 shrink-0" />
                                   </Link>
                                 </motion.div>
                               ))}
@@ -496,22 +496,22 @@ export function PublicNav() {
                       <>
                         <Link
                           to="/os"
-                          className="flex items-center gap-3 p-4 rounded-2xl bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/30 text-primary"
+                          className="flex items-center gap-3 p-4 rounded-2xl bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/30 text-primary touch-target tap-highlight-none active:scale-[0.98] transition-transform"
                         >
-                          <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
+                          <div className="w-11 h-11 rounded-xl bg-primary/20 flex items-center justify-center">
                             <Cpu className="w-5 h-5" />
                           </div>
-                          <div>
+                          <div className="flex-1">
                             <span className="font-semibold block">CMPSBL OS</span>
                             <span className="text-xs text-primary/70">Open Dashboard</span>
                           </div>
-                          <ChevronRight className="w-5 h-5 ml-auto" />
+                          <ChevronRight className="w-5 h-5" />
                         </Link>
                         <button
                           onClick={handleSignOut}
-                          className="flex items-center gap-3 p-4 rounded-2xl border border-border/50 hover:bg-muted/30 text-muted-foreground w-full transition-colors"
+                          className="flex items-center gap-3 p-4 rounded-2xl border border-border/50 hover:bg-muted/30 active:bg-muted/50 text-muted-foreground w-full transition-colors touch-target tap-highlight-none"
                         >
-                          <div className="w-10 h-10 rounded-xl bg-muted/50 flex items-center justify-center">
+                          <div className="w-11 h-11 rounded-xl bg-muted/50 flex items-center justify-center">
                             <LogOut className="w-5 h-5" />
                           </div>
                           <span className="font-medium">Sign Out</span>
@@ -520,7 +520,7 @@ export function PublicNav() {
                     ) : (
                       <Link
                         to="/auth"
-                        className="flex items-center justify-center gap-2 p-4 rounded-2xl bg-primary text-primary-foreground font-semibold shadow-lg shadow-primary/25 hover:shadow-xl transition-all"
+                        className="flex items-center justify-center gap-2 p-4 rounded-2xl bg-primary text-primary-foreground font-semibold shadow-lg shadow-primary/25 hover:shadow-xl transition-all touch-target tap-highlight-none active:scale-[0.98]"
                       >
                         <Users className="w-5 h-5" />
                         Sign In to CMPSBL
