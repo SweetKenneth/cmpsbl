@@ -253,10 +253,10 @@ class MemoryCoreClient {
         // Try to insert edges, gracefully handle if table doesn't exist
         try {
           await supabase
-            .from('brain_knowledge_edges' as any)
+            .from('brain_graph_edges')
             .insert(edges as any);
         } catch {
-          console.warn('Graph indexing: brain_knowledge_edges table may not exist');
+          console.warn('Graph indexing: Failed to insert edges');
         }
       }
 
