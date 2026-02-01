@@ -1,8 +1,9 @@
 /**
- * FNDTN v6 — Foundations
+ * FNDTN v7 — Foundations
  * Standards release page with documentation index and download surface
  */
 
+import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
@@ -14,36 +15,27 @@ import { Link } from "react-router-dom";
 import { 
   FileText, Download, ExternalLink, Archive, BookOpen, 
   Layers, Terminal, Brain, Shield, Eye, Zap, Users,
-  Globe, Cpu, Settings, Code, Moon, Network
+  Globe, Cpu, Settings, Code, Moon, Network, Printer
 } from "lucide-react";
+import { toast } from "sonner";
+import { usePrintDocument } from "@/hooks/usePrintDocument";
 
+// Curated website documentation (matches Library.tsx)
 const LIBRARY_DOCS = [
-  { id: "00", name: "INDEX", description: "Document Library Index" },
-  { id: "01", name: "EXECUTIVE-SUMMARY", description: "System Overview" },
-  { id: "02", name: "SYSTEM-ARCHITECTURE", description: "14-Module Architecture" },
-  { id: "03", name: "USERS-GUIDE", description: "Operator Manual" },
-  { id: "04", name: "API-REFERENCE", description: "Endpoint Documentation" },
-  { id: "10", name: "CORE-MODULE", description: "Scheduling & Lifecycle" },
-  { id: "11", name: "RIPPLE-MODULE", description: "Event Bus & Webhooks" },
-  { id: "12", name: "ACCESS-MODULE", description: "Identity & Permissions" },
-  { id: "13", name: "BRAIN-MODULE", description: "3-Tier Memory System" },
-  { id: "14", name: "DECODE-MODULE", description: "Intent Parsing" },
-  { id: "15", name: "DREAM-MODULE", description: "Pattern Synthesis" },
-  { id: "16", name: "DEFENSE-MODULE", description: "Threat Detection" },
-  { id: "17", name: "NEXUS-MODULE", description: "AI Provider Routing" },
-  { id: "18", name: "VISION-MODULE", description: "Observability & Metrics" },
-  { id: "19", name: "INTEGRATION-MODULE", description: "Enterprise Connectors" },
-  { id: "20", name: "SYSTEM-MODULE", description: "Orchestration Core" },
-  { id: "21", name: "MODERNIZER-MODULE", description: "Self-Upgrade Engine" },
-  { id: "22", name: "CORTEX-MODULE", description: "Policy & Agency Orchestration" },
-  { id: "23", name: "INCLUSIVE-MODULE", description: "Accessibility & Governance" },
-  { id: "30", name: "VALIDATION-METHODOLOGY", description: "Testing Framework" },
-  { id: "31", name: "PERFORMANCE-BENCHMARKS", description: "Metrics & Results" },
-  { id: "32", name: "LIVE-SYSTEM-EVIDENCE", description: "Production Proof" },
-  { id: "40", name: "GLOSSARY", description: "Terminology Reference" },
-  { id: "41", name: "BIBLIOGRAPHY", description: "Citations & Sources" },
-  { id: "42", name: "LICENSING-INFO", description: "License Details" },
-  { id: "50", name: "MARKETPLACE-REFERENCE", description: "Template & Revenue Systems" },
+  { id: "00", name: "INDEX", title: "Documentation Overview", description: "Complete guide to CMPSBL documentation" },
+  { id: "01", name: "EXECUTIVE-SUMMARY", title: "Executive Summary", description: "High-level overview for investors" },
+  { id: "02", name: "WHAT-IS-CMPSBL", title: "What is CMPSBL?", description: "Introduction to cognitive infrastructure" },
+  { id: "03", name: "KEY-CAPABILITIES", title: "Key Capabilities", description: "14-module architecture deep dive" },
+  { id: "04", name: "USE-CASES", title: "Use Cases", description: "Real-world applications" },
+  { id: "05", name: "ARCHITECTURE", title: "Architecture Overview", description: "Technical foundation" },
+  { id: "06", name: "GETTING-STARTED", title: "Getting Started", description: "Quick start guide" },
+  { id: "07", name: "LICENSING", title: "Pricing & Licensing", description: "License tiers" },
+  { id: "08", name: "FAQ", title: "FAQ", description: "Frequently asked questions" },
+  { id: "09", name: "SECURITY-COMPLIANCE", title: "Security & Compliance", description: "Enterprise security" },
+  { id: "10", name: "ROADMAP", title: "Product Roadmap", description: "Vision through 2028" },
+  { id: "11", name: "CASE-STUDIES", title: "Case Studies", description: "Implementation success stories" },
+  { id: "12", name: "COMPARISONS", title: "Market Comparison", description: "Competitive analysis" },
+  { id: "13", name: "INVESTOR-OVERVIEW", title: "Investor Overview", description: "Investment thesis" },
 ];
 
 const MODULES = [
@@ -64,11 +56,35 @@ const MODULES = [
 ];
 
 export default function Foundations() {
+  const { printDocument } = usePrintDocument();
+  const [loadingDoc, setLoadingDoc] = useState<string | null>(null);
+
+  const handlePrintDownload = async (doc: typeof LIBRARY_DOCS[0]) => {
+    setLoadingDoc(doc.id);
+    try {
+      const filename = `${doc.id}-${doc.name}.md`;
+      const response = await fetch(`/docs/website/${filename}`);
+      if (response.ok) {
+        const content = await response.text();
+        printDocument({
+          content,
+          title: doc.title,
+          docId: doc.id,
+        });
+      } else {
+        toast.error("Failed to load document");
+      }
+    } catch (error) {
+      toast.error("Error loading document");
+    }
+    setLoadingDoc(null);
+  };
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
-        <title>FNDTN v6 — Foundations | promptfluid®</title>
-        <meta name="description" content="CMPSBL Substrate OS v6.0.0 (FNDTN) — Reference standard for the substrate class. Download documentation, browse the 14-module architecture, and access archival records." />
+        <title>FNDTN v7 — Foundations | promptfluid®</title>
+        <meta name="description" content="CMPSBL Substrate OS v7.0.0 (FNDTN) — Reference standard for the substrate class. Download documentation, browse the 14-module architecture, and access archival records." />
       </Helmet>
 
       <PublicNav />
@@ -78,13 +94,13 @@ export default function Foundations() {
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-6">
             <Layers className="w-4 h-4 text-primary" />
-            <span className="text-sm font-mono text-primary">FNDTN v6.0.0</span>
+            <span className="text-sm font-mono text-primary">FNDTN v7.0.0</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-light mb-4">
             Foundations
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
-            CMPSBL Substrate OS v6.0.0 is the reference implementation and proposed standard 
+            CMPSBL Substrate OS v7.0.0 is the reference implementation and proposed standard 
             for the <strong>substrate class</strong> of AI systems — persistent runtime, memory, 
             doctrine, and self-improvement.
           </p>
@@ -105,7 +121,7 @@ export default function Foundations() {
           </CardHeader>
           <CardContent className="prose prose-sm dark:prose-invert max-w-none">
             <p>
-              CMPSBL v6.0.0 (FNDTN) presents a unified cognitive infrastructure platform 
+              CMPSBL v7.0.0 (FNDTN) presents a unified cognitive infrastructure platform 
               implementing a five-layer, 14-module kernel architecture. The system provides 
               persistent runtime with 3-tier memory (Hot/Warm/Cold), adaptive learning cycles, 
               multi-provider AI routing, real-time observability, and self-improvement pipelines.
@@ -145,7 +161,7 @@ export default function Foundations() {
             <div className="grid md:grid-cols-3 gap-4">
               <Link to="/foundations" className="p-4 rounded-lg bg-primary/10 border border-primary/30">
                 <h4 className="font-medium text-primary mb-1">Substrate Standard</h4>
-                <p className="text-sm text-muted-foreground">CMPSBL FNDTN v6.0.0</p>
+                <p className="text-sm text-muted-foreground">CMPSBL FNDTN v7.0.0</p>
               </Link>
               <Link to="/namespace" className="p-4 rounded-lg bg-muted border border-border hover:border-primary/30 transition-colors">
                 <h4 className="font-medium mb-1">Governance Standard</h4>
@@ -180,21 +196,15 @@ export default function Foundations() {
                   Complete Bundle
                 </CardTitle>
                 <CardDescription>
-                  Full FNDTN v6.0.0 documentation package
+                  Full FNDTN v7.0.0 documentation package
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
                 <Button className="w-full gap-2" asChild>
-                  <a href="/docs/FNDTN-v6/fndtn-v6-foundations-paper.html" target="_blank">
-                    <FileText className="w-4 h-4" />
-                    Browse Foundations Paper (HTML)
-                  </a>
-                </Button>
-                <Button variant="outline" className="w-full gap-2" asChild>
-                  <a href="/docs/FNDTN-v6/fndtn-v6-foundations-paper.md" download>
-                    <Download className="w-4 h-4" />
-                    Download Foundations Paper (MD)
-                  </a>
+                  <Link to="/library">
+                    <BookOpen className="w-4 h-4" />
+                    Browse Documentation Library
+                  </Link>
                 </Button>
                 <Button variant="outline" className="w-full gap-2" asChild>
                   <a href="/docs/FNDTN-v6/fndtn-v6-foundations-metadata.json" download>
@@ -295,8 +305,11 @@ export default function Foundations() {
         <section>
           <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
             <FileText className="w-6 h-6 text-primary" />
-            Document Library (26 Documents)
+            Document Library ({LIBRARY_DOCS.length} Documents)
           </h2>
+          <p className="text-muted-foreground mb-6">
+            Curated documentation with printer-friendly PDF export. Click the printer icon for high-fidelity A4 documents.
+          </p>
           
           <div className="grid gap-2">
             {LIBRARY_DOCS.map((doc) => (
@@ -304,23 +317,32 @@ export default function Foundations() {
                 key={doc.id} 
                 className="flex items-center justify-between p-3 rounded-lg border border-border hover:border-primary/30 transition-colors"
               >
-                <div className="flex items-center gap-3">
-                  <Badge variant="outline" className="font-mono text-xs">
+                <div className="flex items-center gap-3 min-w-0">
+                  <Badge variant="outline" className="font-mono text-xs shrink-0">
                     {doc.id}
                   </Badge>
-                  <div>
-                    <p className="font-medium text-sm">{doc.name}</p>
-                    <p className="text-xs text-muted-foreground">{doc.description}</p>
+                  <div className="min-w-0">
+                    <p className="font-medium text-sm truncate">{doc.title}</p>
+                    <p className="text-xs text-muted-foreground truncate">{doc.description}</p>
                   </div>
                 </div>
-                <div className="flex gap-2">
-                  <Button variant="ghost" size="sm" asChild>
-                    <a href={`/docs/library/${doc.id}-${doc.name}.md`} target="_blank">
+                <div className="flex gap-1 shrink-0">
+                  <Button variant="ghost" size="sm" asChild title="View in Library">
+                    <Link to={`/library?doc=${doc.id}-${doc.name}`}>
                       <FileText className="w-4 h-4" />
-                    </a>
+                    </Link>
                   </Button>
-                  <Button variant="ghost" size="sm" asChild>
-                    <a href={`/docs/library/${doc.id}-${doc.name}.md`} download>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => handlePrintDownload(doc)}
+                    disabled={loadingDoc === doc.id}
+                    title="Print / Download PDF"
+                  >
+                    <Printer className={`w-4 h-4 ${loadingDoc === doc.id ? 'animate-pulse' : ''}`} />
+                  </Button>
+                  <Button variant="ghost" size="sm" asChild title="Download Markdown">
+                    <a href={`/docs/website/${doc.id}-${doc.name}.md`} download>
                       <Download className="w-4 h-4" />
                     </a>
                   </Button>
@@ -333,7 +355,7 @@ export default function Foundations() {
         {/* Author Attribution */}
         <div className="mt-12 p-6 rounded-lg bg-muted/30 text-center">
           <p className="text-sm text-muted-foreground">
-            FNDTN v6.0.0 by{" "}
+            FNDTN v7.0.0 by{" "}
             <a 
               href="https://orcid.org/0009-0001-4237-1243" 
               target="_blank" 
