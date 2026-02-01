@@ -49,7 +49,7 @@ CMPSBL® (Composable) is the **cognitive infrastructure layer** — the "operati
 
 | Stream | Description |
 |--------|-------------|
-| **Infrastructure Licensing** | Annual licenses: Developer ($15K) → Enterprise ($180K+) |
+| **Infrastructure Licensing** | Annual licenses: Developer ($2,999) → Team ($9,999) → Research ($19,999) → Enterprise ($49,999) |
 | **Usage-Based SaaS** | Per-memory, per-request, per-learning-cycle |
 | **Marketplace** | Templates, trained specialists, knowledge graphs |
 
@@ -101,8 +101,8 @@ CMPSBL® (Composable) is the **cognitive infrastructure layer** — the "operati
 ## Contact
 
 **Kenneth E Sweet Jr, Founder**
-- Email: hello@cmpsbl.ai
-- Web: https://cmpsbl.ai
+- Email: PromptFluid@gmail.com
+- Web: https://CMPSBL.com
 
 ---
 
