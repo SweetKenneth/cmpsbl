@@ -27,7 +27,7 @@ import { toast } from "sonner";
 const LIBRARY_DOCS = [
   { id: "00", name: "INDEX", title: "Documentation Overview" },
   { id: "01", name: "EXECUTIVE-SUMMARY", title: "Executive Summary" },
-  { id: "02", name: "WHAT-IS-PROMPTFLUID", title: "What is promptfluid?" },
+  { id: "02", name: "WHAT-IS-CMPSBL", title: "What is CMPSBL?" },
   { id: "03", name: "KEY-CAPABILITIES", title: "Key Capabilities" },
   { id: "04", name: "USE-CASES", title: "Use Cases" },
   { id: "05", name: "ARCHITECTURE", title: "Architecture Overview" },
@@ -95,8 +95,8 @@ export default function Library() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
-        <title>{currentDoc.title} — Documentation | promptfluid®</title>
-        <meta name="description" content={`${currentDoc.title} - promptfluid® cognitive infrastructure documentation.`} />
+        <title>{currentDoc.title} — Documentation | CMPSBL®</title>
+        <meta name="description" content={`${currentDoc.title} - CMPSBL® cognitive infrastructure documentation.`} />
       </Helmet>
 
       <PublicNav />

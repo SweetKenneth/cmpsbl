@@ -1,22 +1,22 @@
 # Frequently Asked Questions
 
-**Common Questions About promptfluid®**
+**Common Questions About CMPSBL®**
 
 ---
 
 ## General
 
-### What is promptfluid?
+### What is CMPSBL?
 
-promptfluid® is a cognitive infrastructure layer for AI applications. It provides memory, learning, multi-provider AI routing, security, and self-evolution capabilities that your AI applications can use. Think of it as the "operating system" for AI.
+CMPSBL® (Composable) is a cognitive infrastructure layer for AI applications. It provides memory, learning, multi-provider AI routing, security, and self-evolution capabilities that your AI applications can use. Think of it as the "operating system" for AI.
 
 ### How is this different from OpenAI or Anthropic?
 
-We don't compete with AI model providers — we make them more valuable. promptfluid sits between your application and AI providers, adding memory, learning, security, and routing. You can use any AI provider (or multiple) through promptfluid.
+We don't compete with AI model providers — we make them more valuable. CMPSBL sits between your application and AI providers, adding memory, learning, security, and routing. You can use any AI provider (or multiple) through CMPSBL.
 
 ### Do I need to use a specific AI provider?
 
-No. promptfluid is model-agnostic and provider-agnostic. You can use OpenAI, Anthropic, Google AI, Mistral, open-source models, or any combination. We handle routing between them.
+No. CMPSBL is model-agnostic and provider-agnostic. You can use OpenAI, Anthropic, Google AI, Mistral, open-source models, or any combination. We handle routing between them.
 
 ### Can the system really improve itself?
 
@@ -26,14 +26,14 @@ Yes. The MODERNIZER module proposes code improvements, which go through confiden
 
 ## Technical
 
-### What technology stack does promptfluid use?
+### What technology stack does CMPSBL use?
 
 - **Frontend:** React + TypeScript + Vite + Tailwind
 - **Backend:** Supabase (PostgreSQL + Edge Functions)
 - **AI:** Model-agnostic, connects to any provider
 - **Infrastructure:** Runs on any cloud or on-premise
 
-### Can I self-host promptfluid?
+### Can I self-host CMPSBL?
 
 Yes. All license tiers include the ability to deploy on your own infrastructure. You have complete control over where your data lives.
 
@@ -81,10 +81,10 @@ Enterprise evaluations include a 30-day pilot program. Developer licenses have a
 
 ### How is this different from LangChain?
 
-LangChain is a library — you still build everything yourself. promptfluid is a complete system. It's the difference between buying lumber vs. buying a pre-built house.
+LangChain is a library — you still build everything yourself. CMPSBL is a complete system. It's the difference between buying lumber vs. buying a pre-built house.
 
-| Aspect | LangChain | promptfluid |
-|--------|-----------|-------------|
+| Aspect | LangChain | CMPSBL |
+|--------|-----------|--------|
 | Type | Library | Infrastructure |
 | Memory | You build it | Built-in, multi-tier |
 | Learning | None | Autonomous |
@@ -93,7 +93,7 @@ LangChain is a library — you still build everything yourself. promptfluid is a
 
 ### How is this different from Mem0?
 
-Mem0 is focused specifically on memory. promptfluid includes memory (BRAIN module) plus 13 other integrated modules for routing, security, learning, observability, and more.
+Mem0 is focused specifically on memory. CMPSBL includes memory (BRAIN module) plus 13 other integrated modules for routing, security, learning, observability, and more.
 
 ### Why haven't others built this?
 
@@ -103,7 +103,7 @@ They have, partially. There are memory solutions, routing solutions, security so
 
 ## Security
 
-### Is promptfluid secure for enterprise use?
+### Is CMPSBL secure for enterprise use?
 
 Yes. Security is built into the core with:
 - Rate limiting and bot detection
@@ -114,7 +114,7 @@ Yes. Security is built into the core with:
 
 ### Where does my data live?
 
-On your infrastructure. promptfluid is self-hosted — your data never leaves your control.
+On your infrastructure. CMPSBL is self-hosted — your data never leaves your control.
 
 ### How do you handle API keys?
 
@@ -144,11 +144,11 @@ Yes. Professional services are available for custom integrations, specialized mo
 
 | Question Type | Contact |
 |---------------|---------|
-| General | promptfluid@gmail.com |
-| Sales | sales@promptfluid.com |
-| Enterprise | enterprise@promptfluid.com |
-| Technical | support@promptfluid.com |
+| General | hello@cmpsbl.ai |
+| Sales | sales@cmpsbl.ai |
+| Enterprise | enterprise@cmpsbl.ai |
+| Technical | support@cmpsbl.ai |
 
 ---
 
-*promptfluid® — Questions? We Have Answers.*
+*CMPSBL® — Questions? We Have Answers.*

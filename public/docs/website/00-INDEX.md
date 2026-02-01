@@ -1,4 +1,4 @@
-# promptfluid® Documentation
+# CMPSBL® Documentation
 
 **v7.0.0 — Cognitive Orchestration Substrate for AI Systems**
 
@@ -6,7 +6,7 @@
 
 ## Welcome
 
-This documentation provides everything you need to understand, evaluate, and build with promptfluid® — the cognitive infrastructure layer that makes AI applications smarter, safer, and self-improving.
+This documentation provides everything you need to understand, evaluate, and build with CMPSBL® (Composable) — the cognitive infrastructure layer that makes AI applications smarter, safer, and self-improving.
 
 ---
 
@@ -15,7 +15,7 @@ This documentation provides everything you need to understand, evaluate, and bui
 | Document | For |
 |----------|-----|
 | [Executive Summary](./01-EXECUTIVE-SUMMARY.md) | Investors, Executives |
-| [What is promptfluid?](./02-WHAT-IS-PROMPTFLUID.md) | Everyone |
+| [What is CMPSBL?](./02-WHAT-IS-CMPSBL.md) | Everyone |
 | [Key Capabilities](./03-KEY-CAPABILITIES.md) | Technical Evaluators |
 | [Use Cases](./04-USE-CASES.md) | Business Leaders, Developers |
 | [Architecture Overview](./05-ARCHITECTURE.md) | Engineers, CTOs |
@@ -35,9 +35,9 @@ This documentation provides everything you need to understand, evaluate, and bui
 
 | Channel | Details |
 |---------|---------|
-| **Email** | promptfluid@gmail.com |
-| **Web** | https://promptfluid.com |
+| **Email** | hello@cmpsbl.ai |
+| **Web** | https://cmpsbl.ai |
 
 ---
 
-*promptfluid® v7.0.0 — Cognitive Infrastructure for the AI Era*
+*CMPSBL® v7.0.0 — Cognitive Infrastructure for the AI Era*

@@ -1,6 +1,6 @@
 # Key Capabilities
 
-**What promptfluid® Does — Technical Overview**
+**What CMPSBL® Does — Technical Overview**
 
 ---
 
@@ -170,7 +170,7 @@ POST /api/substrate
 
 ### SDK (TypeScript)
 ```typescript
-import { substrate } from '@promptfluid/sdk';
+import { substrate } from '@cmpsbl/sdk';
 
 await substrate.brain.remember('User prefers dark mode');
 const response = await substrate.nexus.route('Hello');
@@ -186,4 +186,4 @@ const response = await substrate.nexus.route('Hello');
 
 ---
 
-*promptfluid® — Cognitive Infrastructure for Production AI*
+*CMPSBL® — Cognitive Infrastructure for Production AI*

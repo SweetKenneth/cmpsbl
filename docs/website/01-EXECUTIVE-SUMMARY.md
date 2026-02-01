@@ -1,6 +1,6 @@
 # Executive Summary
 
-**promptfluid® — The Cognitive Infrastructure Layer for AI**
+**CMPSBL® — The Cognitive Infrastructure Layer for AI**
 
 ---
 
@@ -19,7 +19,7 @@ Every company building AI is solving the same problems from scratch:
 
 ## Our Solution
 
-promptfluid® is the **cognitive infrastructure layer** — the "operating system" for AI applications.
+CMPSBL® (Composable) is the **cognitive infrastructure layer** — the "operating system" for AI applications.
 
 | Capability | What It Does | Business Value |
 |------------|--------------|----------------|
@@ -94,15 +94,15 @@ promptfluid® is the **cognitive infrastructure layer** — the "operating syste
 
 ## The Vision
 
-> **In 5 years, promptfluid is the default infrastructure for production AI — like AWS for compute or Stripe for payments.**
+> **In 5 years, CMPSBL is the default infrastructure for production AI — like AWS for compute or Stripe for payments.**
 
 ---
 
 ## Contact
 
 **Kenneth E Sweet Jr, Founder**
-- Email: promptfluid@gmail.com
-- Web: https://promptfluid.com
+- Email: hello@cmpsbl.ai
+- Web: https://cmpsbl.ai
 
 ---
 

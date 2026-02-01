@@ -1,6 +1,6 @@
 # Getting Started
 
-**Quick Start Guide for promptfluid®**
+**Quick Start Guide for CMPSBL®**
 
 ---
 
@@ -8,7 +8,7 @@
 
 - Node.js 18+ 
 - API keys for at least one AI provider (OpenAI, Anthropic, etc.)
-- promptfluid license (Developer tier or higher)
+- CMPSBL license (Developer tier or higher)
 
 ---
 
@@ -17,7 +17,7 @@
 ### Option 1: SDK (Recommended)
 
 ```bash
-npm install @promptfluid/sdk
+npm install @cmpsbl/sdk
 ```
 
 ### Option 2: Direct API
@@ -31,10 +31,10 @@ No installation needed — use REST API directly.
 ### 1. Initialize the Client
 
 ```typescript
-import { Substrate } from '@promptfluid/sdk';
+import { Substrate } from '@cmpsbl/sdk';
 
 const substrate = new Substrate({
-  apiKey: process.env.PROMPTFLUID_API_KEY,
+  apiKey: process.env.CMPSBL_API_KEY,
   providers: {
     openai: process.env.OPENAI_API_KEY,
     anthropic: process.env.ANTHROPIC_API_KEY,
@@ -158,13 +158,13 @@ If you prefer direct API access:
 
 ```bash
 # Remember something
-curl -X POST https://api.promptfluid.com/v1/brain/remember \
+curl -X POST https://api.cmpsbl.ai/v1/brain/remember \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"content": "User prefers dark mode", "category": "preference"}'
 
 # Route a request
-curl -X POST https://api.promptfluid.com/v1/nexus/route \
+curl -X POST https://api.cmpsbl.ai/v1/nexus/route \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"prompt": "Hello, how are you?"}'
@@ -178,7 +178,7 @@ curl -X POST https://api.promptfluid.com/v1/nexus/route \
 
 ```env
 # Required
-PROMPTFLUID_API_KEY=your_license_key
+CMPSBL_API_KEY=your_license_key
 
 # AI Providers (at least one required)
 OPENAI_API_KEY=sk-...
@@ -186,15 +186,15 @@ ANTHROPIC_API_KEY=sk-ant-...
 GOOGLE_AI_KEY=...
 
 # Optional
-PROMPTFLUID_LOG_LEVEL=info
-PROMPTFLUID_MEMORY_TIER=hot
+CMPSBL_LOG_LEVEL=info
+CMPSBL_MEMORY_TIER=hot
 ```
 
 ### Advanced Configuration
 
 ```typescript
 const substrate = new Substrate({
-  apiKey: process.env.PROMPTFLUID_API_KEY,
+  apiKey: process.env.CMPSBL_API_KEY,
   
   // Memory settings
   memory: {
@@ -231,10 +231,10 @@ const substrate = new Substrate({
 
 ## Support
 
-- **Documentation:** https://promptfluid.com/docs
-- **Email:** support@promptfluid.com
-- **Enterprise:** enterprise@promptfluid.com
+- **Documentation:** https://cmpsbl.ai/docs
+- **Email:** support@cmpsbl.ai
+- **Enterprise:** enterprise@cmpsbl.ai
 
 ---
 
-*promptfluid® — Start Building Smarter AI*
+*CMPSBL® — Start Building Smarter AI*

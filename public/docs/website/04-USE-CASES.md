@@ -1,12 +1,12 @@
 # Use Cases
 
-**Real-World Applications of promptfluid®**
+**Real-World Applications of CMPSBL®**
 
 ---
 
 ## Overview
 
-promptfluid® isn't just technology — it's infrastructure that enables entirely new categories of AI applications. Here's what you can build.
+CMPSBL® isn't just technology — it's infrastructure that enables entirely new categories of AI applications. Here's what you can build.
 
 ---
 
@@ -15,7 +15,7 @@ promptfluid® isn't just technology — it's infrastructure that enables entirel
 ### The Challenge
 Traditional chatbots forget everything. Customers repeat themselves endlessly. No learning from past interactions.
 
-### With promptfluid
+### With CMPSBL
 
 | Feature | Benefit |
 |---------|---------|
@@ -40,7 +40,7 @@ AI: "Hi Sarah! I see you ordered the Pro Plan last week and had
 ### The Challenge
 Assistants start fresh every time. No persistent preferences. No accumulated knowledge.
 
-### With promptfluid
+### With CMPSBL
 
 | Feature | Benefit |
 |---------|---------|
@@ -66,7 +66,7 @@ AI: "Got it — booking Blue Bottle on Market St, Tuesday 10am
 ### The Challenge
 Research requires accumulating knowledge over time. Traditional AI can't do this.
 
-### With promptfluid
+### With CMPSBL
 
 | Feature | Benefit |
 |---------|---------|
@@ -91,7 +91,7 @@ Agent: "After analyzing 200+ papers on battery technology,
 ### The Challenge
 Content AI produces generic output. No brand voice. No learning from performance.
 
-### With promptfluid
+### With CMPSBL
 
 | Feature | Benefit |
 |---------|---------|
@@ -116,7 +116,7 @@ System: "Based on last month's performance, technical deep-dives
 ### The Challenge
 Organizational knowledge is scattered, siloed, and hard to find.
 
-### With promptfluid
+### With CMPSBL
 
 | Feature | Benefit |
 |---------|---------|
@@ -142,7 +142,7 @@ AI: "Here's the policy document from Legal, plus 3 recent
 ### The Challenge
 Building AI into products requires solving memory, learning, security, and scaling.
 
-### With promptfluid
+### With CMPSBL
 
 | Feature | Benefit |
 |---------|---------|
@@ -182,8 +182,8 @@ const response = await substrate.route({
 
 ### vs. Building In-House
 
-| Factor | In-House | promptfluid |
-|--------|----------|-------------|
+| Factor | In-House | CMPSBL |
+|--------|----------|--------|
 | Time to market | 6-12 months | Days |
 | Engineering cost | $500K+ | Licensing fee |
 | Maintenance | Ongoing | Included |
@@ -191,8 +191,8 @@ const response = await substrate.route({
 
 ### vs. Other Platforms
 
-| Factor | Others | promptfluid |
-|--------|--------|-------------|
+| Factor | Others | CMPSBL |
+|--------|--------|--------|
 | Memory | Basic | Multi-tier, compressed |
 | Learning | None | Autonomous dream cycles |
 | Routing | Single provider | Multi-provider |
@@ -208,4 +208,4 @@ Ready to build? See:
 
 ---
 
-*promptfluid® — Build AI That Actually Remembers*
+*CMPSBL® — Build AI That Actually Remembers*
