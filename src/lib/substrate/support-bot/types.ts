@@ -287,6 +287,8 @@ export interface BotStats {
   memories_created: number;
   patterns_detected: number;
   uptime_hours: number;
+  knowledge_base_entries: number;
+  kb_matches_used: number;
 }
 
 // ============================================================================
@@ -303,7 +305,8 @@ export type SupportCommand =
   | { type: 'status' }
   | { type: 'history'; limit?: number }
   | { type: 'purge_session' }
-  | { type: 'configure'; config: Partial<SupportBotConfig> };
+  | { type: 'configure'; config: Partial<SupportBotConfig> }
+  | { type: 'knowledge_base'; action?: 'list' | 'stats' | 'search'; query?: string };
 
 export interface SupportCommandResult {
   success: boolean;

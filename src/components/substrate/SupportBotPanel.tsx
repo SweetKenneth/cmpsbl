@@ -273,7 +273,12 @@ export function SupportBotPanel() {
                   </p>
                   
                   <div className="flex flex-wrap gap-2 justify-center mt-6">
-                    {['How do I get started?', 'What features are available?', 'Report an issue'].map((q) => (
+                    {[
+                      'What is CodeLab?',
+                      'What licensing options are available?',
+                      'How do I buy a template?',
+                      'How do I contact support?',
+                    ].map((q) => (
                       <Button 
                         key={q}
                         variant="outline" 
@@ -435,12 +440,12 @@ export function SupportBotPanel() {
 
             <div className="grid grid-cols-2 gap-3">
               <div className="p-3 bg-muted/30 rounded-lg">
-                <p className="text-xs text-muted-foreground">Total Memories</p>
-                <p className="text-2xl font-bold">{state.learning.total_memories}</p>
+                <p className="text-xs text-muted-foreground">Knowledge Base</p>
+                <p className="text-2xl font-bold">{state.stats.knowledge_base_entries || 0}</p>
               </div>
               <div className="p-3 bg-muted/30 rounded-lg">
-                <p className="text-xs text-muted-foreground">Verified</p>
-                <p className="text-2xl font-bold">{state.learning.verified_memories}</p>
+                <p className="text-xs text-muted-foreground">KB Matches Used</p>
+                <p className="text-2xl font-bold">{state.stats.kb_matches_used || 0}</p>
               </div>
               <div className="p-3 bg-muted/30 rounded-lg">
                 <p className="text-xs text-muted-foreground">Budget Remaining</p>
@@ -449,6 +454,20 @@ export function SupportBotPanel() {
               <div className="p-3 bg-muted/30 rounded-lg">
                 <p className="text-xs text-muted-foreground">Memories Created</p>
                 <p className="text-2xl font-bold">{state.stats.memories_created}</p>
+              </div>
+            </div>
+
+            <div className="p-3 bg-primary/5 border border-primary/20 rounded-lg">
+              <h5 className="text-sm font-medium flex items-center gap-2 mb-2">
+                <Sparkles className="w-4 h-4 text-primary" />
+                Pre-trained Topics
+              </h5>
+              <div className="flex flex-wrap gap-1">
+                {['CodeLab', 'Marketplace', 'Licensing', 'General'].map((topic) => (
+                  <Badge key={topic} variant="outline" className="text-xs">
+                    {topic}
+                  </Badge>
+                ))}
               </div>
             </div>
 

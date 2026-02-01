@@ -75,6 +75,7 @@ const LIBRARY_DOCS = [
   // Evolving Systems
   { id: "95", name: "SUPPORT-BOT", title: "Support Bot" },
   { id: "96", name: "DECODE-PERSONALITY", title: "DECODE Personality Profiles" },
+  { id: "97", name: "SUPPORT-BOT-TRAINING", title: "Support Bot Training Data" },
 ];
 
 export default function Library() {
