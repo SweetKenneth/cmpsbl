@@ -132,6 +132,21 @@ This library is part of the **FNDTN v6 Foundations** standards package, which pr
 | [76-EVOLUTION-AUTONOMY.md](./76-EVOLUTION-AUTONOMY.md) | Evolution Autonomy | Governed autonomy settings |
 | [77-SYNERGY-PIPELINES.md](./77-SYNERGY-PIPELINES.md) | Synergy Pipelines | Emergent module combinations |
 
+### Cross-Module Capabilities
+
+| Document | Capability | Modules |
+|----------|------------|---------|
+| [78-PREDICTIVE-PREVENTION.md](./78-PREDICTIVE-PREVENTION.md) | Predictive Issue Prevention | VISION + BRAIN + MODERNIZER |
+| [79-ADAPTIVE-PERSONALIZATION.md](./79-ADAPTIVE-PERSONALIZATION.md) | Adaptive Personalization | BRAIN + DECODE + INCLUSIVE |
+| [80-INTELLIGENT-DELEGATION.md](./80-INTELLIGENT-DELEGATION.md) | Intelligent Task Delegation | CORTEX + NEXUS + DECODE |
+| [81-SECURITY-HARDENING.md](./81-SECURITY-HARDENING.md) | Real-time Security Hardening | DEFENSE + VISION + SYSTEM |
+| [82-CONTEXTUAL-MEMORY.md](./82-CONTEXTUAL-MEMORY.md) | Context-Aware Memory Recall | BRAIN + DREAM + DECODE |
+| [83-AUTONOMOUS-DOCS.md](./83-AUTONOMOUS-DOCS.md) | Autonomous Documentation | MODERNIZER + DECODE + SYSTEM |
+| [84-INSIGHT-SYNTHESIS.md](./84-INSIGHT-SYNTHESIS.md) | Cross-Domain Insight Synthesis | DREAM + NEXUS + BRAIN |
+| [85-GRACEFUL-DEGRADATION.md](./85-GRACEFUL-DEGRADATION.md) | Graceful Degradation Chain | CORE + DEFENSE + VISION |
+| [86-INTENT-AMPLIFICATION.md](./86-INTENT-AMPLIFICATION.md) | Intent Amplification | DECODE + RIPPLE + INCLUSIVE |
+| [87-EVOLUTION-CONFIDENCE.md](./87-EVOLUTION-CONFIDENCE.md) | Evolution Confidence Scoring | MODERNIZER + BRAIN + CORTEX |
+
 ### Supplementary Materials
 
 | Document | Title | Description |
