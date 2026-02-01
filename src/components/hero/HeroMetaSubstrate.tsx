@@ -150,7 +150,7 @@ function SubstrateVisualization() {
   const currentUseCase = useCases[activeUseCase];
   
   return (
-    <div className="relative w-full max-w-[320px] sm:max-w-[400px] md:max-w-[500px] aspect-square mx-auto">
+    <div className="relative w-full max-w-[280px] sm:max-w-[380px] md:max-w-[460px] aspect-square mx-auto">
       {/* Floating particles */}
       {Array.from({ length: 20 }).map((_, i) => (
         <FloatingParticle
@@ -405,17 +405,17 @@ function AnimatedStat({ value, label, suffix = "" }: { value: number; label: str
   
   return (
     <div ref={ref} className="text-center" style={{ contain: "layout style" }}>
-      <div className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground">
+      <div className="text-xl sm:text-3xl md:text-4xl font-black text-foreground">
         {count}{suffix}
       </div>
-      <div className="text-xs sm:text-sm text-muted-foreground">{label}</div>
+      <div className="text-[10px] sm:text-sm text-muted-foreground">{label}</div>
     </div>
   );
 }
 
 export function HeroMetaSubstrate() {
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center px-4 py-12 sm:py-16 overflow-hidden">
+    <section className="relative min-h-[100dvh] flex flex-col items-center justify-center px-4 sm:px-6 pt-20 pb-10 sm:py-20 overflow-hidden">
       {/* Animated background gradient */}
       <div className="absolute inset-0 bg-background">
         <motion.div
@@ -434,38 +434,38 @@ export function HeroMetaSubstrate() {
       
       {/* Grid overlay */}
       <div 
-        className="absolute inset-0 opacity-[0.015] dark:opacity-[0.03]"
+        className="absolute inset-0 opacity-[0.02] dark:opacity-[0.04]"
         style={{
           backgroundImage: `
             linear-gradient(hsl(var(--primary) / 0.5) 1px, transparent 1px), 
             linear-gradient(90deg, hsl(var(--primary) / 0.5) 1px, transparent 1px)
           `,
-          backgroundSize: "80px 80px",
+          backgroundSize: "60px 60px",
         }}
       />
 
       <div className="relative z-10 w-full max-w-7xl mx-auto">
         {/* Top section: Text + Visualization side by side */}
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center mb-12 sm:mb-16">
+        <div className="grid lg:grid-cols-2 gap-4 sm:gap-8 lg:gap-12 items-center mb-8 sm:mb-16">
           {/* Left: Headlines and CTAs */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-center lg:text-left"
+            className="text-center lg:text-left order-2 lg:order-1"
           >
             {/* Tagline */}
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-border/50 bg-muted/30 backdrop-blur-sm mb-4 sm:mb-6"
+              className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-primary/30 bg-primary/5 backdrop-blur-sm mb-4 sm:mb-6"
             >
-              <Sparkles className="w-3 h-3 text-primary" />
-              <span className="text-xs sm:text-sm text-muted-foreground">Cognitive Operating System</span>
+              <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-primary" />
+              <span className="text-[11px] sm:text-sm font-medium text-foreground/90">Cognitive Operating System</span>
             </motion.div>
             
-            {/* Main headline - fixed height and containment to prevent CLS and forced reflows */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] mb-4 sm:mb-6" style={{ contain: "layout" }}>
+            {/* Main headline - fixed height and containment to prevent CLS */}
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] mb-3 sm:mb-6" style={{ contain: "layout" }}>
               <span className="text-foreground block">Where Machines Learn To</span>
               <span className="block mt-1 sm:mt-2" style={{ minHeight: "1.2em", height: "1.2em", contain: "strict", overflow: "hidden" }}>
                 <TypedText 
@@ -483,24 +483,24 @@ export function HeroMetaSubstrate() {
             </h1>
             
             {/* Subheadline */}
-            <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-6 sm:mb-8">
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-5 sm:mb-8 leading-relaxed">
               A cognitive substrate with 
-              <span className="text-foreground font-medium"> 14-module architecture</span>, 
-              <span className="text-foreground font-medium"> persistent memory</span>, and 
-              <span className="text-foreground font-medium"> autonomous self-improvement</span>.
-              The infrastructure layer for AI that remembers.
+              <span className="text-foreground font-semibold"> 14-module architecture</span>, 
+              <span className="text-foreground font-semibold"> persistent memory</span>, and 
+              <span className="text-foreground font-semibold"> autonomous self-improvement</span>.
+              <span className="hidden sm:inline"> The infrastructure layer for AI that remembers.</span>
             </p>
             
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4">
-              <Button asChild size="lg" className="w-full sm:w-auto gap-2 px-6 sm:px-8 h-12 text-base">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-2.5 sm:gap-4">
+              <Button asChild size="lg" className="gap-2 px-6 sm:px-8 h-12 sm:h-12 text-sm sm:text-base font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-shadow">
                 <Link to="/codelab">
-                  <Code className="w-5 h-5" />
+                  <Code className="w-4 h-4 sm:w-5 sm:h-5" />
                   Start Building
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="w-full sm:w-auto gap-2 px-6 sm:px-8 h-12 text-base group">
+              <Button asChild variant="outline" size="lg" className="gap-2 px-6 sm:px-8 h-12 sm:h-12 text-sm sm:text-base font-medium group border-border/60 hover:border-primary/50">
                 <Link to="/demo">
                   <Play className="w-4 h-4 group-hover:scale-110 transition-transform" />
                   Watch Demo
@@ -509,67 +509,67 @@ export function HeroMetaSubstrate() {
             </div>
             
             {/* Academic Documentation Link - Prominent */}
-            <div className="mt-6 text-center lg:text-left">
+            <div className="mt-4 sm:mt-6 text-center lg:text-left">
               <a 
                 href="https://zenodo.org/records/18234910?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjkxZDYzZjFlLWM2NTctNDAzNi04ZWE4LTIzNWNiMDljMGQ2NyIsImRhdGEiOnt9LCJyYW5kb20iOiIzZTlkMjA5MzQ0ZGFkNDI2ZTZlMTkwMWYxMzFmOTczYSJ9.H3FugoEHTR2ilPEtZEr-kqRiTgW0FeUDXOrcEE92lek4FK0_h0dNUyJWvtxW-KCHuIEeiqbN5Zot8EqEvXq5gQ"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-4 py-2.5 rounded-lg border border-primary/30 bg-primary/5 hover:bg-primary/10 hover:border-primary/50 transition-all group"
+                className="inline-flex items-center gap-2.5 sm:gap-3 px-3.5 sm:px-4 py-2.5 sm:py-2.5 rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/40 transition-all group"
               >
-                <BookOpen className="w-5 h-5 text-primary" />
-                <div className="text-left">
-                  <span className="block text-sm font-medium text-foreground group-hover:text-primary transition-colors">Research Documentation</span>
-                  <span className="block text-xs text-muted-foreground">Published on Zenodo • DOI: 10.5281/zenodo.18234910</span>
+                <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 text-primary shrink-0" />
+                <div className="text-left min-w-0">
+                  <span className="block text-xs sm:text-sm font-medium text-foreground group-hover:text-primary transition-colors">Research Documentation</span>
+                  <span className="block text-[10px] sm:text-xs text-muted-foreground truncate">Zenodo • DOI: 10.5281/zenodo.18234910</span>
                 </div>
-                <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
+                <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all shrink-0 hidden sm:block" />
               </a>
             </div>
           </motion.div>
           
-          {/* Right: Substrate Visualization */}
+          {/* Right: Substrate Visualization - shows first on mobile, smaller on mobile */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="order-1 lg:order-2 -mx-2 sm:mx-0"
           >
             <SubstrateVisualization />
           </motion.div>
         </div>
         
-        {/* Use case pills */}
+        {/* Use case pills - horizontal scroll on mobile */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-12 sm:mb-16"
+          className="flex justify-start sm:justify-center gap-2 sm:gap-4 mb-8 sm:mb-16 -mx-4 px-4 sm:mx-0 sm:px-0 overflow-x-auto scrollbar-hide pb-1 sm:pb-0"
         >
           {[
-            { icon: Gamepad2, label: "Gaming AI", href: "/gaming", color: "text-purple-500 hover:border-purple-500/50" },
-            { icon: Code, label: "Developer Tools", href: "/developers", color: "text-cyan-500 hover:border-cyan-500/50" },
-            { icon: Building2, label: "Enterprise", href: "/use-cases", color: "text-amber-500 hover:border-amber-500/50" },
+            { icon: Gamepad2, label: "Gaming AI", href: "/gaming", color: "text-purple-500 hover:border-purple-500/50 hover:bg-purple-500/10" },
+            { icon: Code, label: "Developer Tools", href: "/developers", color: "text-cyan-500 hover:border-cyan-500/50 hover:bg-cyan-500/10" },
+            { icon: Building2, label: "Enterprise", href: "/use-cases", color: "text-amber-500 hover:border-amber-500/50 hover:bg-amber-500/10" },
           ].map((item) => (
             <Link
               key={item.label}
               to={item.href}
               className={cn(
-                "flex items-center gap-2 px-4 py-2 rounded-full border border-border/50 bg-card/50 backdrop-blur-sm",
-                "hover:bg-card/80 transition-all duration-300",
+                "flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-full border border-border/50 bg-card/50 backdrop-blur-sm shrink-0",
+                "hover:bg-card/80 active:scale-[0.98] transition-all duration-200",
                 item.color
               )}
             >
-              <item.icon className="w-4 h-4" />
-              <span className="text-sm font-medium text-foreground">{item.label}</span>
-              <ArrowRight className="w-3 h-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+              <item.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              <span className="text-xs sm:text-sm font-medium text-foreground whitespace-nowrap">{item.label}</span>
             </Link>
           ))}
         </motion.div>
         
-        {/* Stats bar */}
+        {/* Stats bar - 2x2 grid on mobile for balance */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 p-6 sm:p-8 rounded-2xl border border-border/50 bg-card/30 backdrop-blur-sm"
+          className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-8 p-4 sm:p-8 rounded-2xl border border-border/40 bg-card/40 backdrop-blur-md"
         >
           <AnimatedStat value={14} label="Core Modules" />
           <AnimatedStat value={124} suffix="+" label="API Actions" />
