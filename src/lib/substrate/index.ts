@@ -366,5 +366,37 @@ export {
 
 export { useDecodePersonality, type UseDecodePersonalityReturn } from './decode/useDecodePersonality';
 
+// Module Parity Enforcement v7.0.0
+export {
+  checkModuleParity,
+  runParityCheck,
+  getModulesNeedingWork,
+  SUBSTRATE_MODULES_LIST,
+  type ParityRequirement,
+  type ModuleParityResult,
+  type ParityReport,
+} from './parity';
+
+// Event System v7.0.0
+export {
+  emit,
+  emitStarted,
+  emitSucceeded,
+  emitFailed,
+  forceFlush,
+  queryEvents,
+  getRecentEvents,
+  getModuleEvents,
+  getTraceEvents,
+  getEventStats,
+  subscribeToEvents,
+  invalidateEventCache,
+  type SubstrateEvent,
+  type EventOutcome,
+  type EmitOptions,
+  type EventRecord,
+  type EventQueryOptions,
+} from './events';
+
 // Re-export substrate client from lib
 export { substrate, type SubstrateModule, type SubstrateRequest, type SubstrateResponse } from '../substrate';

@@ -89,8 +89,6 @@ export function isDirectInvocationBlocked(edgeFunctionName: string): boolean {
   const adaptedPrefixes = [
     'pf-marketing-strategy',
     'pf-modernizer-export',
-    // DELETED 2026-02-01: pf-clarity-scan → INCLUSIVE.scan
-    // DELETED 2026-02-01: pf-defense-security-report → DEFENSE.security_report
   ];
   
   return adaptedPrefixes.some(prefix => edgeFunctionName.startsWith(prefix));

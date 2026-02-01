@@ -1,6 +1,8 @@
 /**
  * Module Parity Checker
  * v7.0.0 — Ensures every module meets the substrate standard
+ * 
+ * Validates: exports, hooks, terminal commands, event emission, documentation
  */
 
 import { log } from '@/lib/system/log';
@@ -32,23 +34,25 @@ export interface ParityReport {
   errors: string[];
 }
 
-// All 14 substrate modules
+// All 14 substrate modules in boot order
 const SUBSTRATE_MODULES = [
   'core',
+  'ripple',
+  'access',
   'brain',
+  'vision',
+  'cortex',
+  'modernizer',
   'decode',
   'defense',
   'nexus',
-  'vision',
   'dream',
-  'ripple',
-  'access',
-  'system',
-  'modernizer',
   'integration',
   'inclusive',
-  'cortex',
-];
+  'system',
+] as const;
+
+export type SubstrateModuleName = typeof SUBSTRATE_MODULES[number];
 
 // Standard requirements every module must meet
 const PARITY_REQUIREMENTS: ParityRequirement[] = [
