@@ -65,7 +65,9 @@ const MODULES = [
   { id: 'dream', name: 'Dream', icon: Moon, color: 'text-purple-400', desc: 'Cognitive synthesis & evolution' },
   { id: 'system', name: 'System', icon: Settings, color: 'text-slate-400', desc: 'Configuration & backups' },
   { id: 'modernizer', name: 'Modernizer', icon: Sparkles, color: 'text-pink-400', desc: 'Self-improvement engine' },
-  { id: 'integration', name: 'Integration', icon: Cpu, color: 'text-emerald-400', desc: 'Enterprise adapters' },
+  { id: 'inclusive', name: 'Inclusive', icon: Eye, color: 'text-indigo-400', desc: 'Accessibility scanning & WCAG enforcement' },
+  { id: 'cortex', name: 'Cortex', icon: Brain, color: 'text-rose-400', desc: 'Policy intent & PAAEL orchestration' },
+  { id: 'integration', name: 'Integration', icon: Cpu, color: 'text-emerald-400', desc: 'Enterprise adapters & webhooks' },
 ];
 
 const DOWNLOADABLE_DOCS = [
