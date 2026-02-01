@@ -1,10 +1,20 @@
+/**
+ * Creative Generation Integration Tests
+ * 
+ * These tests are SKIPPED by default because they require:
+ * 1. A running Supabase instance with edge functions deployed
+ * 2. Valid authentication credentials
+ * 3. API keys configured for AI providers
+ * 
+ * To run manually: Remove .skip and ensure environment is configured
+ */
 import { describe, it, expect, beforeAll } from 'vitest';
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.VITE_SUPABASE_URL || '';
-const supabaseKey = process.env.VITE_SUPABASE_PUBLISHABLE_KEY || '';
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || '';
 
-// Skip in CI - requires authenticated environment
+// Skip in CI - requires authenticated environment with deployed edge functions
 describe.skip('Creative Generation API Tests', () => {
   let supabase: any;
 

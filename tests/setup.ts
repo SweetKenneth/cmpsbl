@@ -1,27 +1,21 @@
-import { config } from 'dotenv';
-
-// Load environment variables for testing
-config();
+import { vi } from 'vitest';
 
 // Global test configuration
 global.console = {
   ...console,
   // Suppress console logs during tests unless explicitly needed
-  log: jest.fn(),
-  debug: jest.fn(),
-  info: jest.fn(),
+  log: vi.fn(),
+  debug: vi.fn(),
+  info: vi.fn(),
   warn: console.warn,
   error: console.error,
 };
 
-// Test timeouts
-jest.setTimeout(30000); // 30 seconds for API calls
-
 // Mock timers if needed
 export const setupMockTimers = () => {
-  jest.useFakeTimers();
+  vi.useFakeTimers();
 };
 
 export const teardownMockTimers = () => {
-  jest.useRealTimers();
+  vi.useRealTimers();
 };
