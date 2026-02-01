@@ -193,9 +193,8 @@ Developer licenses include a 30-day money-back guarantee. Enterprise evaluations
 | Action | Contact |
 |--------|---------|
 | **Developer License** | [Automated Checkout](/substrate/licensing) |
-| **Research License** | research@cmpsbl.com |
-| **Enterprise License** | enterprise@cmpsbl.com |
-| **Strategic Partnership** | founders@cmpsbl.com |
+| **All Inquiries** | PromptFluid@gmail.com |
+| **Web** | https://cmpsbl.com |
 
 ---
 
