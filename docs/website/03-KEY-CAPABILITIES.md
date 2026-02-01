@@ -27,15 +27,18 @@ Traditional AI has no memory. Every conversation starts fresh.
 ### Our Solution
 Multi-tier memory architecture with automatic compression:
 
-| Tier | Retention | Use Case |
-|------|-----------|----------|
-| **Hot** | 7 days | Recent context, active sessions |
-| **Cold** | Forever | Compressed patterns, long-term knowledge |
+| Tier | Capacity | Retention | Use Case |
+|------|----------|-----------|----------|
+| **Hot** | 127 records | 7 days | Recent context, active sessions |
+| **Warm** | 2,000 records | 30 days | Frequently accessed, intermediate recall |
+| **Cold** | 200 records | Forever | Compressed patterns, long-term knowledge |
+| **Legacy** | Unlimited | Forever | Archived, rarely accessed |
 
 ### Features
 - **Semantic Search** — Find memories by meaning, not keywords
 - **Automatic Compression** — Old memories compressed, not lost
 - **Value Scoring** — Frequently accessed memories score higher
+- **Protected Memory** — Core identity and principles are locked with 1.0 value, zero decay
 - **Cross-Session Persistence** — Memories survive restarts
 
 ---
