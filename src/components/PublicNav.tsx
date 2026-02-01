@@ -1,7 +1,12 @@
-import { useState } from "react";
+/**
+ * PublicNav — Premium Navigation with Glass Effects
+ * Mobile-first, smooth animations, professional polish
+ */
+
+import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { 
-  Menu, X, ChevronDown, Code, 
+  Menu, X, ChevronDown, ChevronRight, Code, 
   Layers, FileText, Mail, Info, Rocket, BookOpen, Users, Eye,
   Zap, Map, Terminal, Cpu, MessageSquare, Moon, Building2, Gamepad2, Sparkles, Key, Globe, ScrollText,
   Brain, LogOut, HelpCircle
@@ -17,6 +22,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { CmpsblLogo } from "@/components/CmpsblLogo";
 import { Button } from "@/components/ui/button";
+import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 interface NavSection {
   name: string;
@@ -27,16 +34,36 @@ interface NavSection {
 export function PublicNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
+  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
+
+  // Handle scroll state for nav background
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+    setExpandedSection(null);
+  }, [location.pathname]);
+
+  // Prevent body scroll when mobile menu open
+  useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileMenuOpen]);
 
   const handleSignOut = async () => {
     await signOut();
     navigate('/');
   };
 
-  // Organized navigation sections - reordered by importance hierarchy
+  // Organized navigation sections
   const navSections: NavSection[] = [
     {
       name: "Build",
@@ -103,11 +130,8 @@ export function PublicNav() {
       ]
     },
   ];
-
-  // Flat list for mobile
-  const allNavItems = navSections.flatMap(section => section.items);
   
-  // Quick access items shown directly in nav - reordered by importance
+  // Quick access items shown directly in nav
   const quickLinks = [
     { name: "CodeLab", href: "/codelab" },
     { name: "Developers", href: "/developers" },
@@ -121,8 +145,17 @@ export function PublicNav() {
 
   return (
     <>
-      <nav
-        className="sticky top-0 z-[10000] bg-background/95 backdrop-blur-md border-b border-border/50"
+      <motion.nav
+        initial={false}
+        animate={{ 
+          backgroundColor: scrolled ? "hsl(var(--background) / 0.95)" : "hsl(var(--background) / 0.8)",
+          borderBottomColor: scrolled ? "hsl(var(--border) / 0.5)" : "transparent",
+        }}
+        transition={{ duration: 0.2 }}
+        className={cn(
+          "sticky top-0 z-[10000] backdrop-blur-xl border-b transition-shadow duration-300",
+          scrolled && "shadow-lg shadow-background/10"
+        )}
         role="navigation"
         aria-label="Main navigation"
       >
@@ -130,7 +163,7 @@ export function PublicNav() {
           {/* Logo */}
           <Link 
             to="/" 
-            className="shrink-0 hover:opacity-80 transition-opacity"
+            className="shrink-0 hover:opacity-80 transition-all duration-300 hover:scale-[1.02]"
           >
             <CmpsblLogo size="sm" className="hidden sm:block" />
             <CmpsblLogo size="sm" iconOnly className="sm:hidden h-8 w-8" />
@@ -143,13 +176,21 @@ export function PublicNav() {
               <Link
                 key={item.href}
                 to={item.href}
-                className={`px-3 py-2 rounded-lg text-sm transition-colors ${
+                className={cn(
+                  "relative px-3.5 py-2 rounded-lg text-sm font-medium transition-all duration-200",
                   isActive(item.href)
-                    ? "text-foreground bg-muted font-medium"
+                    ? "text-foreground bg-primary/10"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                }`}
+                )}
               >
                 {item.name}
+                {isActive(item.href) && (
+                  <motion.div
+                    layoutId="nav-active"
+                    className="absolute inset-0 rounded-lg bg-primary/10 -z-10"
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
+                  />
+                )}
               </Link>
             ))}
 
@@ -158,35 +199,52 @@ export function PublicNav() {
               <DropdownMenu key={section.name}>
                 <DropdownMenuTrigger asChild>
                   <button
-                    className={`flex items-center gap-1 px-3 py-2 rounded-lg text-sm transition-colors ${
+                    className={cn(
+                      "flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-medium transition-all duration-200",
                       isInSection(section)
-                        ? "text-foreground bg-muted font-medium"
+                        ? "text-foreground bg-primary/10"
                         : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                    }`}
+                    )}
                   >
                     {section.name}
-                    <ChevronDown className="w-3 h-3" />
+                    <ChevronDown className="w-3.5 h-3.5 transition-transform duration-200 group-data-[state=open]:rotate-180" />
                   </button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-56 bg-background border border-border">
-                  <DropdownMenuLabel className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <section.icon className="w-3 h-3" />
+                <DropdownMenuContent 
+                  align="start" 
+                  className="w-64 p-2 bg-background/95 backdrop-blur-xl border border-border/50 shadow-xl shadow-background/20"
+                  sideOffset={8}
+                >
+                  <DropdownMenuLabel className="flex items-center gap-2 text-xs text-muted-foreground px-2 py-1.5">
+                    <section.icon className="w-3.5 h-3.5" />
                     {section.name}
                   </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
+                  <DropdownMenuSeparator className="bg-border/50" />
                   {section.items.map((item) => (
                     <DropdownMenuItem key={item.href} asChild>
                       <Link
                         to={item.href}
-                        className={`flex items-center gap-3 w-full cursor-pointer ${
-                          isActive(item.href) ? "bg-muted" : ""
-                        }`}
+                        className={cn(
+                          "flex items-center gap-3 w-full px-2 py-2.5 rounded-lg cursor-pointer transition-colors",
+                          isActive(item.href) 
+                            ? "bg-primary/10 text-primary" 
+                            : "hover:bg-muted/50"
+                        )}
                       >
-                        {item.icon && <item.icon className="w-4 h-4 text-muted-foreground" />}
-                        <div className="flex flex-col">
-                          <span className="font-medium">{item.name}</span>
+                        {item.icon && (
+                          <div className={cn(
+                            "w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors",
+                            isActive(item.href) 
+                              ? "bg-primary/20 text-primary" 
+                              : "bg-muted/50 text-muted-foreground"
+                          )}>
+                            <item.icon className="w-4 h-4" />
+                          </div>
+                        )}
+                        <div className="flex flex-col min-w-0">
+                          <span className="font-medium text-sm">{item.name}</span>
                           {item.description && (
-                            <span className="text-xs text-muted-foreground">{item.description}</span>
+                            <span className="text-xs text-muted-foreground truncate">{item.description}</span>
                           )}
                         </div>
                       </Link>
@@ -197,243 +255,302 @@ export function PublicNav() {
             ))}
 
             {/* Auth / CTA */}
-            {user ? (
-              <div className="flex items-center gap-2 ml-2">
-                <Link
-                  to="/os"
-                  className="px-4 py-2 rounded-lg text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
-                >
-                  Dashboard
-                </Link>
+            <div className="flex items-center gap-2 ml-3 pl-3 border-l border-border/50">
+              {user ? (
+                <>
+                  <Button
+                    asChild
+                    size="sm"
+                    className="gap-2 font-semibold shadow-md hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
+                  >
+                    <Link to="/os">
+                      <Cpu className="w-4 h-4" />
+                      Dashboard
+                    </Link>
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={handleSignOut}
+                    className="h-9 w-9 text-muted-foreground hover:text-foreground"
+                    title="Sign Out"
+                  >
+                    <LogOut className="w-4 h-4" />
+                  </Button>
+                </>
+              ) : (
                 <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={handleSignOut}
-                  className="h-9 w-9 text-muted-foreground hover:text-foreground"
-                  title="Sign Out"
+                  asChild
+                  size="sm"
+                  className="font-semibold shadow-md hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
                 >
-                  <LogOut className="w-4 h-4" />
+                  <Link to="/auth">Sign In</Link>
                 </Button>
-              </div>
-            ) : (
-              <Link
-                to="/auth"
-                className="ml-2 px-4 py-2 rounded-lg text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
-              >
-                Sign In
-              </Link>
-            )}
+              )}
+            </div>
           </div>
 
-          {/* Tablet Menu - simplified - reordered by importance */}
+          {/* Tablet Menu - simplified */}
           <div className="hidden md:flex lg:hidden items-center gap-1">
-            <Link
-              to="/codelab"
-              className={`px-3 py-2 rounded-lg text-sm transition-colors ${
-                isActive("/codelab")
-                  ? "text-foreground bg-muted font-medium"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-              }`}
-            >
-              CodeLab
-            </Link>
-            <Link
-              to="/developers"
-              className={`px-3 py-2 rounded-lg text-sm transition-colors ${
-                isActive("/developers")
-                  ? "text-foreground bg-muted font-medium"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-              }`}
-            >
-              Developers
-            </Link>
-            <Link
-              to="/demo"
-              className={`px-3 py-2 rounded-lg text-sm transition-colors ${
-                isActive("/demo")
-                  ? "text-foreground bg-muted font-medium"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-              }`}
-            >
-              Demo
-            </Link>
-            <Link
-              to="/contact"
-              className="ml-2 px-4 py-2 rounded-lg text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
-            >
-              Contact
-            </Link>
+            {["CodeLab", "Developers", "Demo"].map((name) => {
+              const href = name === "CodeLab" ? "/codelab" : name === "Developers" ? "/developers" : "/demo";
+              return (
+                <Link
+                  key={name}
+                  to={href}
+                  className={cn(
+                    "px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                    isActive(href)
+                      ? "text-foreground bg-primary/10"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                  )}
+                >
+                  {name}
+                </Link>
+              );
+            })}
+            <Button asChild size="sm" className="ml-2 font-semibold">
+              <Link to="/contact">Contact</Link>
+            </Button>
           </div>
 
           {/* Mobile Toggle */}
-          <div className="flex md:hidden items-center gap-2">
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg hover:bg-muted transition-colors"
-              aria-label="Toggle menu"
-              aria-expanded={mobileMenuOpen}
-            >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      {/* Mobile Menu - Full Screen */}
-      {mobileMenuOpen && (
-        <>
-          <div
-            className="fixed inset-0 z-[9998] md:hidden bg-background/80 backdrop-blur-sm"
-            onClick={() => setMobileMenuOpen(false)}
-            aria-hidden="true"
-          />
-          <div 
-            className="fixed top-[57px] left-0 right-0 bottom-0 z-[9999] md:hidden bg-background overflow-y-auto"
-            role="dialog"
-            aria-modal="true"
+          <motion.button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className={cn(
+              "md:hidden p-2.5 rounded-xl transition-colors",
+              mobileMenuOpen ? "bg-primary/10 text-primary" : "hover:bg-muted"
+            )}
+            aria-label="Toggle menu"
+            aria-expanded={mobileMenuOpen}
+            whileTap={{ scale: 0.95 }}
           >
-            <div className="container mx-auto px-4 py-4">
-              {/* Search-like quick access */}
-              <div className="flex gap-2 mb-4 overflow-x-auto pb-2 -mx-4 px-4">
-                {["CodeLab", "Developers", "Licensing", "Support", "Contact"].map((name) => {
-                  const href = name === "CodeLab" ? "/codelab" :
-                               name === "Developers" ? "/developers" :
-                               name === "Licensing" ? "/substrate/licensing" :
-                               name === "Support" ? "/support" : "/contact";
-                  return (
-                    <Link
-                      key={name}
-                      to={href}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className={`shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                        isActive(href)
-                          ? "bg-primary text-primary-foreground"
-                          : "bg-muted text-foreground hover:bg-muted/80"
-                      }`}
-                    >
-                      {name}
-                    </Link>
-                  );
-                })}
-              </div>
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={mobileMenuOpen ? "close" : "open"}
+                initial={{ opacity: 0, rotate: -90 }}
+                animate={{ opacity: 1, rotate: 0 }}
+                exit={{ opacity: 0, rotate: 90 }}
+                transition={{ duration: 0.15 }}
+              >
+                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </motion.div>
+            </AnimatePresence>
+          </motion.button>
+        </div>
+      </motion.nav>
 
-              {/* Sections */}
-              <nav className="flex flex-col gap-2">
-                {navSections.map((section) => (
-                  <div key={section.name} className="border border-border rounded-xl overflow-hidden">
-                    <button
-                      onClick={() => setExpandedSection(
-                        expandedSection === section.name ? null : section.name
-                      )}
-                      className={`w-full flex items-center justify-between p-4 text-left transition-colors ${
-                        isInSection(section) ? "bg-muted/50" : "hover:bg-muted/30"
-                      }`}
+      {/* Mobile Menu - Full Screen Overlay */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-[9998] md:hidden bg-background/80 backdrop-blur-md"
+              onClick={() => setMobileMenuOpen(false)}
+              aria-hidden="true"
+            />
+            
+            {/* Menu Panel */}
+            <motion.div 
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              className="fixed top-[57px] left-0 right-0 bottom-0 z-[9999] md:hidden bg-background overflow-y-auto overscroll-contain"
+              role="dialog"
+              aria-modal="true"
+            >
+              <div className="px-4 py-5 pb-24 safe-area-pb">
+                {/* Quick Access Pills */}
+                <div className="flex gap-2 mb-6 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide">
+                  {["CodeLab", "Developers", "Licensing", "Support", "Contact"].map((name) => {
+                    const href = name === "CodeLab" ? "/codelab" :
+                                 name === "Developers" ? "/developers" :
+                                 name === "Licensing" ? "/substrate/licensing" :
+                                 name === "Support" ? "/support" : "/contact";
+                    return (
+                      <motion.div
+                        key={name}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.05 }}
+                      >
+                        <Link
+                          to={href}
+                          className={cn(
+                            "shrink-0 px-4 py-2.5 rounded-full text-sm font-semibold transition-all duration-200",
+                            isActive(href)
+                              ? "bg-primary text-primary-foreground shadow-md shadow-primary/25"
+                              : "bg-muted/50 text-foreground hover:bg-muted border border-border/50"
+                          )}
+                        >
+                          {name}
+                        </Link>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+
+                {/* Sections */}
+                <nav className="flex flex-col gap-3">
+                  {navSections.map((section, sectionIdx) => (
+                    <motion.div 
+                      key={section.name}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.05 + sectionIdx * 0.03 }}
+                      className="rounded-2xl border border-border/50 overflow-hidden bg-card/50 backdrop-blur-sm"
                     >
-                      <div className="flex items-center gap-3">
-                        <section.icon className="w-5 h-5 text-primary" />
-                        <span className="font-medium">{section.name}</span>
-                        {isInSection(section) && (
-                          <span className="w-2 h-2 rounded-full bg-primary" />
+                      <button
+                        onClick={() => setExpandedSection(
+                          expandedSection === section.name ? null : section.name
                         )}
-                      </div>
-                      <ChevronDown 
-                        className={`w-4 h-4 text-muted-foreground transition-transform ${
-                          expandedSection === section.name ? "rotate-180" : ""
-                        }`} 
-                      />
-                    </button>
-                    
-                    {expandedSection === section.name && (
-                      <div className="border-t border-border bg-muted/20">
-                        {section.items.map((item) => (
-                          <Link
-                            key={item.href}
-                            to={item.href}
-                            onClick={() => setMobileMenuOpen(false)}
-                            className={`flex items-center gap-3 p-4 transition-colors ${
-                              isActive(item.href)
-                                ? "bg-primary/10 text-primary"
-                                : "hover:bg-muted/50"
-                            }`}
+                        className={cn(
+                          "w-full flex items-center justify-between p-4 text-left transition-colors",
+                          expandedSection === section.name ? "bg-muted/30" : "hover:bg-muted/20"
+                        )}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className={cn(
+                            "w-10 h-10 rounded-xl flex items-center justify-center transition-colors",
+                            isInSection(section) 
+                              ? "bg-primary/15 text-primary" 
+                              : "bg-muted/50 text-muted-foreground"
+                          )}>
+                            <section.icon className="w-5 h-5" />
+                          </div>
+                          <span className="font-semibold text-foreground">{section.name}</span>
+                          {isInSection(section) && (
+                            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                          )}
+                        </div>
+                        <motion.div
+                          animate={{ rotate: expandedSection === section.name ? 90 : 0 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <ChevronRight className="w-5 h-5 text-muted-foreground" />
+                        </motion.div>
+                      </button>
+                      
+                      <AnimatePresence>
+                        {expandedSection === section.name && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.25, ease: "easeInOut" }}
+                            className="overflow-hidden"
                           >
-                            {item.icon && <item.icon className="w-4 h-4" />}
-                            <div className="flex flex-col">
-                              <span className="font-medium">{item.name}</span>
-                              {item.description && (
-                                <span className="text-xs text-muted-foreground">{item.description}</span>
-                              )}
+                            <div className="border-t border-border/30 bg-muted/10">
+                              {section.items.map((item, idx) => (
+                                <motion.div
+                                  key={item.href}
+                                  initial={{ opacity: 0, x: -10 }}
+                                  animate={{ opacity: 1, x: 0 }}
+                                  transition={{ delay: idx * 0.03 }}
+                                >
+                                  <Link
+                                    to={item.href}
+                                    className={cn(
+                                      "flex items-center gap-3 px-4 py-3.5 transition-colors",
+                                      isActive(item.href)
+                                        ? "bg-primary/10 text-primary"
+                                        : "hover:bg-muted/30"
+                                    )}
+                                  >
+                                    {item.icon && (
+                                      <div className={cn(
+                                        "w-9 h-9 rounded-lg flex items-center justify-center shrink-0",
+                                        isActive(item.href) 
+                                          ? "bg-primary/20 text-primary" 
+                                          : "bg-muted/30 text-muted-foreground"
+                                      )}>
+                                        <item.icon className="w-4 h-4" />
+                                      </div>
+                                    )}
+                                    <div className="flex flex-col min-w-0">
+                                      <span className="font-medium text-sm">{item.name}</span>
+                                      {item.description && (
+                                        <span className="text-xs text-muted-foreground truncate">{item.description}</span>
+                                      )}
+                                    </div>
+                                    <ChevronRight className="w-4 h-4 ml-auto text-muted-foreground/50" />
+                                  </Link>
+                                </motion.div>
+                              ))}
                             </div>
-                          </Link>
-                        ))}
-                      </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </motion.div>
+                  ))}
+
+                  {/* Auth Links */}
+                  <div className="mt-4 pt-4 border-t border-border/50 space-y-3">
+                    {user ? (
+                      <>
+                        <Link
+                          to="/os"
+                          className="flex items-center gap-3 p-4 rounded-2xl bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/30 text-primary"
+                        >
+                          <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
+                            <Cpu className="w-5 h-5" />
+                          </div>
+                          <div>
+                            <span className="font-semibold block">CMPSBL OS</span>
+                            <span className="text-xs text-primary/70">Open Dashboard</span>
+                          </div>
+                          <ChevronRight className="w-5 h-5 ml-auto" />
+                        </Link>
+                        <button
+                          onClick={handleSignOut}
+                          className="flex items-center gap-3 p-4 rounded-2xl border border-border/50 hover:bg-muted/30 text-muted-foreground w-full transition-colors"
+                        >
+                          <div className="w-10 h-10 rounded-xl bg-muted/50 flex items-center justify-center">
+                            <LogOut className="w-5 h-5" />
+                          </div>
+                          <span className="font-medium">Sign Out</span>
+                        </button>
+                      </>
+                    ) : (
+                      <Link
+                        to="/auth"
+                        className="flex items-center justify-center gap-2 p-4 rounded-2xl bg-primary text-primary-foreground font-semibold shadow-lg shadow-primary/25 hover:shadow-xl transition-all"
+                      >
+                        <Users className="w-5 h-5" />
+                        Sign In to CMPSBL
+                      </Link>
                     )}
                   </div>
-                ))}
 
-                {/* Auth Links */}
-                {user ? (
-                  <>
-                    <Link
-                      to="/os"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="flex items-center gap-3 p-4 rounded-xl border border-primary/30 bg-primary/5 text-primary"
-                    >
-                      <Cpu className="w-5 h-5" />
-                      <span className="font-medium">CMPSBL OS</span>
-                    </Link>
-                    <button
-                      onClick={() => {
-                        setMobileMenuOpen(false);
-                        handleSignOut();
-                      }}
-                      className="flex items-center gap-3 p-4 rounded-xl border border-border hover:bg-muted/30 text-muted-foreground"
-                    >
-                      <LogOut className="w-5 h-5" />
-                      <span className="font-medium">Sign Out</span>
-                    </button>
-                  </>
-                ) : (
-                  <Link
-                    to="/auth"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center gap-3 p-4 rounded-xl border border-border hover:bg-muted/30"
-                  >
-                    <Users className="w-5 h-5" />
-                    <span className="font-medium">Sign In</span>
-                  </Link>
-                )}
-
-                {/* Legal */}
-                <div className="mt-4 pt-4 border-t border-border">
-                  <div className="flex gap-4 text-sm text-muted-foreground">
-                    <Link 
-                      to="/privacy" 
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="hover:text-foreground"
-                    >
-                      Privacy
-                    </Link>
-                    <Link 
-                      to="/terms" 
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="hover:text-foreground"
-                    >
-                      Terms
-                    </Link>
-                    <Link 
-                      to="/llms-txt" 
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="hover:text-foreground"
-                    >
-                      llms.txt
-                    </Link>
+                  {/* Legal Links */}
+                  <div className="mt-6 flex flex-wrap gap-x-4 gap-y-2 text-sm text-muted-foreground">
+                    {[
+                      { name: "Privacy", href: "/privacy" },
+                      { name: "Terms", href: "/terms" },
+                      { name: "llms.txt", href: "/llms-txt" },
+                      { name: "humans.txt", href: "/humans-txt" },
+                    ].map((link) => (
+                      <Link 
+                        key={link.href}
+                        to={link.href}
+                        className="hover:text-foreground transition-colors"
+                      >
+                        {link.name}
+                      </Link>
+                    ))}
                   </div>
-                </div>
-              </nav>
-            </div>
-          </div>
-        </>
-      )}
+                </nav>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </>
   );
 }
