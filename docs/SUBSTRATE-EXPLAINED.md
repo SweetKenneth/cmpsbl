@@ -61,7 +61,7 @@ Network Security     →          Bot Detection & Defense
 
 ---
 
-## The 12 Modules
+## The 14 Modules
 
 ### 🎛️ Kernel Layer (How the OS Works)
 
@@ -94,6 +94,13 @@ Network Security     →          Bot Detection & Defense
 |--------|---------|--------------|
 | **SYSTEM** | Administration | Backups, restores, diagnostics, healing, configuration |
 | **MODERNIZER** | Self-Upgrade | Scans for improvements, proposes updates, shadow testing |
+| **INCLUSIVE** | Accessibility | WCAG scanning, a11y repairs, human compatibility pipeline |
+
+### 🔮 Orchestrator Layer (How the OS Coordinates)
+
+| Module | Purpose | What It Does |
+|--------|---------|--------------|
+| **CORTEX** | Orchestrator | Agency-class orchestration, cross-module coordination, governance |
 
 ---
 
@@ -251,7 +258,7 @@ const adapters = await substrate.integration.adapters();
 
 ## Key Principles
 
-1. **One Endpoint** — All 12 modules accessible via `pf-substrate`
+1. **One Endpoint** — All 14 modules accessible via `pf-substrate`
 2. **Module Isolation** — Modules don't directly call each other (use RIPPLE)
 3. **Health Always** — Every module has a `pulse` action for monitoring
 4. **Fail Gracefully** — Circuit breakers prevent cascade failures
@@ -264,7 +271,7 @@ const adapters = await substrate.integration.adapters();
 | Aspect | Value |
 |--------|-------|
 | **Endpoint** | `POST /functions/v1/pf-substrate` |
-| **Modules** | 12 (CORE, RIPPLE, ACCESS, BRAIN, DECODE, DEFENSE, NEXUS, VISION, DREAM, SYSTEM, MODERNIZER, INTEGRATION) |
+| **Modules** | 14 (CORE, RIPPLE, ACCESS, BRAIN, DECODE, DEFENSE, NEXUS, VISION, DREAM, SYSTEM, MODERNIZER, INTEGRATION, INCLUSIVE, CORTEX) |
 | **Database** | PostgreSQL via Supabase |
 | **Edge Functions** | Deno runtime |
 | **Authentication** | JWT (Supabase Auth) or API Key |

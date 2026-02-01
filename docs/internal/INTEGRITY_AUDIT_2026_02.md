@@ -1,14 +1,14 @@
-# System Integrity Audit — 2026-02-01
+# System Integrity Audit — 2026-02-01 (Audit #2)
 
 **Audit Type:** Full End-to-End Scan  
-**Status:** ✅ PASS (with minor fixes applied)  
+**Status:** ✅ PASS (fixes applied)  
 **Version:** Substrate OS v6.0.0 (FNDTN Era)
 
 ---
 
 ## Executive Summary
 
-Complete system integrity audit performed across all 9 phases. The substrate is operational with all 14 modules healthy, all tests passing, and core architecture aligned.
+Complete 9-phase integrity audit performed. The substrate is operational with all 14 modules healthy, all 33 tests passing, and core architecture aligned. Two issues were found and fixed.
 
 ---
 
@@ -17,19 +17,20 @@ Complete system integrity audit performed across all 9 phases. The substrate is 
 ### ✅ Structure Verified
 - **Root directories:** All expected directories exist
 - **Source structure:** `src/lib/substrate/` contains all 12 engine files + CLM + SEBA subsystems
-- **Edge functions:** 268+ functions deployed in `supabase/functions/`
+- **Edge functions:** 270+ functions deployed in `supabase/functions/`
 - **Documentation:** Complete library in `docs/` with archived OSF materials
 
 ### No Missing Critical Files
 - Substrate index exports all engines correctly
 - All terminal command files present in `src/components/substrate-os/terminal/`
+- 35 files import from `@/lib/substrate` — all paths resolve
 
 ---
 
 ## Phase 2-3: Import & Module Coherence
 
 ### ✅ Import Graph Valid
-- 32 files import from `@/lib/substrate` — all paths resolve
+- All 35 importing files verified
 - No circular import issues detected
 - Module registry exports: 14 core modules + CLM + SEBA
 
@@ -48,16 +49,20 @@ Complete system integrity audit performed across all 9 phases. The substrate is 
 
 ### ✅ Edge Functions Healthy
 - `pf-substrate` (main orchestrator): v6.0.0 — 17,310 lines
-- All 14 module status calls responding (verified via logs)
-- Boot times: 38-113ms per invocation
+- All 14 module status calls responding (verified via curl)
+- Boot times: 0-1ms per module
 
-### 🔧 Fixed: Dead Endpoint Reference
-**Issue:** `DecodeOperativeControls.tsx` called non-existent `pf-decode-operative`  
-**Fix:** Routed through unified `pf-substrate` endpoint with `{ module: 'brain', action: 'cognitive_cycle' }`
+### 🔧 Fixed: Boot Sequence Missing Modules
+**Issue:** `core.boot` only initialized 12 modules, missing CORTEX and INCLUSIVE  
+**Fix:** Updated `pf-substrate/index.ts` boot sequence to include all 14 modules
+
+### 🔧 Fixed: Hardcoded Module Count
+**Issue:** Boot message hardcoded "12 modules loaded"  
+**Fix:** Changed to dynamic `${bootSequence.length} modules loaded`
 
 ### Terminal Commands Verified
 - 260+ commands registered in `TerminalCommands.ts`
-- All handlers wired in `TerminalExecutor.ts` (2,752 lines)
+- All handlers wired in `TerminalExecutor.ts` (3,047 lines)
 - Categories: brain, decode, defense, nexus, vision, dream, system, modernizer, core, ripple, access, integration, cortex, inclusive, clm, autoblog, meta
 
 ---
@@ -66,7 +71,7 @@ Complete system integrity audit performed across all 9 phases. The substrate is 
 
 ### ✅ Dashboard Bindings
 - All dashboard components import from canonical `@/lib/substrate`
-- 97 files invoke edge functions — all paths valid
+- 100+ files invoke edge functions — all paths valid
 - SubstrateProvider lazy-loads correctly at App root
 
 ### ✅ Execution Flows
@@ -78,14 +83,15 @@ Complete system integrity audit performed across all 9 phases. The substrate is 
 
 ## Phase 8: Documentation Sync
 
-### 🔧 Fixed: ARCHITECTURE.md
-**Issue:** Showed 11 modules, missing INTEGRATION, INCLUSIVE, CORTEX  
-**Fix:** Updated module diagram and boot sequence to reflect 14-module architecture
+### 🔧 Fixed: Multiple Docs
+**Issue:** SUBSTRATE-EXPLAINED.md, API-REFERENCE.md showed 12 modules  
+**Fix:** Updated all references to 14 modules, added INCLUSIVE and CORTEX descriptions
 
 ### Documentation Status
-- `docs/ARCHITECTURE.md`: ✅ Synced to v6.0.0
+- `docs/ARCHITECTURE.md`: ✅ Synced to v6.0.0 (14 modules)
+- `docs/SUBSTRATE-EXPLAINED.md`: ✅ Updated to 14 modules
+- `docs/API-REFERENCE.md`: ✅ Updated to v6.0.0, 14 modules
 - `docs/internal/`: 10 engineering documents current
-- `docs/_archived/osf/`: Legacy OSF materials preserved
 
 ---
 
@@ -104,9 +110,9 @@ Complete system integrity audit performed across all 9 phases. The substrate is 
 ## Test Results
 
 ```
-Test Files:  2 passed | 1 skipped (3 total)
-Tests:       33 passed | 12 skipped (45 total)
-Duration:    1.07s
+Test Files:  2 passed (2 total)
+Tests:       33 passed (33 total)
+Duration:    1.04s
 ```
 
 All substrate tests pass. SEBA mock warnings are expected (Supabase not available in test environment).
@@ -117,9 +123,10 @@ All substrate tests pass. SEBA mock warnings are expected (Supabase not availabl
 
 | File | Issue | Resolution |
 |------|-------|------------|
-| `src/components/admin/DecodeOperativeControls.tsx` | Called non-existent `pf-decode-operative` | Routed through `pf-substrate` |
-| `docs/ARCHITECTURE.md` | Module count showed 11 | Updated to 14 modules |
-| `docs/ARCHITECTURE.md` | Missing boot entries | Added INTEGRATION, INCLUSIVE, CORTEX |
+| `supabase/functions/pf-substrate/index.ts` | Boot sequence had 12 modules | Added cortex + inclusive (14 total) |
+| `supabase/functions/pf-substrate/index.ts` | Hardcoded "12 modules" message | Dynamic `${bootSequence.length}` |
+| `docs/SUBSTRATE-EXPLAINED.md` | Showed 12 modules | Updated to 14 modules |
+| `docs/API-REFERENCE.md` | Version v4.3.0, 12 modules | Updated to v6.0.0, 14 modules |
 
 ---
 
@@ -143,6 +150,7 @@ None. Full integrity achieved.
 - [x] No phantom commands
 - [x] Terminal, dashboard, edge, and core aligned
 - [x] All tests pass
+- [x] 14-module architecture fully synced
 
 ---
 
@@ -161,7 +169,7 @@ None. Full integrity achieved.
 ---
 
 **Audited by:** Lovable AI  
-**Audit Duration:** ~3 minutes  
+**Audit Duration:** ~4 minutes  
 **Next Audit:** On-demand or post-major-release
 
 ---
