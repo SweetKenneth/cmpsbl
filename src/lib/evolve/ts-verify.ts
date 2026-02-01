@@ -16,6 +16,8 @@ export interface TSVerifyResult {
   fix_attempts: number;
   partial_fail: boolean;
   error_report?: string;
+  /** Final file contents after auto-fix attempts (best-effort) */
+  final_files?: FileWriteRecord[];
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -238,6 +240,9 @@ export function runTSVerificationLoop(
     result.partial_fail = true;
     result.error_report = generateErrorReport(result.errors);
   }
+
+  // Expose the best-effort final file set after attempted fixes
+  result.final_files = currentFiles;
   
   return result;
 }
