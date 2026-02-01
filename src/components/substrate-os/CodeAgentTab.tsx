@@ -1,5 +1,5 @@
 /**
- * CodeAgent Tab — Self-Evolution Coding Interface
+ * Encoded Tab — Self-Evolution Coding Interface
  * v3.0.0 — Full v3 with PR Queue, Diff Viewer, and Deploy Pipeline
  * Provides chat interface to the Substrate Coder + Sandbox validation preview
  */
@@ -139,7 +139,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
     
     // Start 24/7 background learning (15 min cycles)
     startBackgroundLearning(15 * 60 * 1000);
-    console.log('[CodeAgent] 24/7 learning engine started');
+    console.log('[Encoded] 24/7 learning engine started');
   }, []);
 
   // Auto-scroll on new messages
@@ -206,7 +206,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
         const overall = getOverallHealth();
         
         addAgentMessage(
-          `**🔧 CodeAgent Health Report**\n\n` +
+          `**🔧 Encoded Health Report**\n\n` +
           `**Services**\n` +
           `- Coder: ${health.coder.state === 'closed' ? '✅' : '⚠️'} ${health.coder.healthScore}% (${health.coder.state})\n` +
           `- Sandbox: ${health.sandbox.state === 'closed' ? '✅' : '⚠️'} ${health.sandbox.healthScore}% (${health.sandbox.state})\n` +
@@ -302,6 +302,17 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
 
       // Handle discussion mode responses
       if (discussionMode) {
+        // Check for explicit proceed/continue command to skip discussion
+        if (['proceed', 'continue', 'go', 'do it', 'just do it'].includes(lowerInput.trim())) {
+          resetDiscussion();
+          setDiscussionMode(false);
+          setPendingQuestion(null);
+          setPendingApproval(null);
+          addAgentMessage('✅ **Proceeding with code generation...**');
+          executeCodeGeneration();
+          return;
+        }
+        
         if (pendingQuestion) {
           // Answer the pending question
           const step = answerQuestion(pendingQuestion.id, input);
@@ -310,24 +321,35 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
         }
         if (pendingApproval) {
           // Handle approval response
-          if (['yes', 'approve', 'proceed', 'ok', 'y'].includes(lowerInput.trim())) {
+          if (['yes', 'approve', 'proceed', 'ok', 'y', 'continue'].includes(lowerInput.trim())) {
             const step = approveGate(pendingApproval.id);
             handleDiscussionStep(step);
-          } else {
+          } else if (['no', 'cancel', 'abort', 'stop', 'n'].includes(lowerInput.trim())) {
             resetDiscussion();
             setDiscussionMode(false);
             setPendingQuestion(null);
             setPendingApproval(null);
             addAgentMessage('❌ **Change cancelled.** Let me know when you want to try again.');
+          } else {
+            // Treat other input as additional context and proceed
+            addAgentMessage(`📝 Noted: "${input}". Proceeding...`);
+            const step = approveGate(pendingApproval.id);
+            handleDiscussionStep(step);
           }
           return;
         }
+        // No pending question or approval but in discussion mode - proceed directly
+        resetDiscussion();
+        setDiscussionMode(false);
+        setPendingQuestion(null);
+        setPendingApproval(null);
+        executeCodeGeneration();
+        return;
       }
       
       // Default: Start discussion mode for clarity before coding
       setDiscussionMode(true);
       const step = startDiscussion(input);
-      handleDiscussionStep(step);
       
     } catch (error) {
       console.error('CodeAgent error:', error);
@@ -609,7 +631,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
         <Card className="border-dashed border-system-amber/30 bg-muted/50">
           <CardContent className="py-12 text-center">
             <Bot className="w-12 h-12 mx-auto mb-4 text-muted-foreground/30" />
-            <p className="text-sm text-muted-foreground">CodeAgent requires Operator privileges</p>
+            <p className="text-sm text-muted-foreground">Encoded requires Operator privileges</p>
           </CardContent>
         </Card>
       </main>
@@ -621,13 +643,13 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/30 to-accent/30 border border-primary/40 flex items-center justify-center">
-            <Code className="w-5 h-5 text-primary" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-fuchsia-500/30 to-violet-500/30 border border-fuchsia-500/40 flex items-center justify-center">
+            <Code className="w-5 h-5 text-fuchsia-400" />
           </div>
           <div>
             <h2 className="text-lg font-semibold flex items-center gap-2">
-              CodeAgent
-              <Badge variant="outline" className="text-[10px] border-primary/40 text-primary bg-primary/10">
+              Encoded
+              <Badge variant="outline" className="text-[10px] border-fuchsia-500/40 text-fuchsia-400 bg-fuchsia-500/10">
                 v3.0.0
               </Badge>
               {discussionMode && (
@@ -644,7 +666,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
               )}
             </h2>
             <p className="text-xs text-muted-foreground font-mono">
-              discuss → read → think → write → confirm → deploy
+              plan → write → verify → finalize
             </p>
           </div>
         </div>
@@ -778,7 +800,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
                            msg.role === 'question' ? 'Clarification' :
                            msg.role === 'preview' ? 'Impact Preview' :
                            msg.role === 'approval' ? 'Approval Required' :
-                           'CodeAgent'}
+                           'Encoded'}
                         </span>
                         <span className="text-[10px] text-muted-foreground/50">
                           {msg.timestamp.toLocaleTimeString()}
@@ -1106,7 +1128,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
             <div className="text-sm">
               <p className="font-medium text-system-amber mb-1">v3.0 — Full Autonomous Pipeline</p>
               <p className="text-xs text-muted-foreground">
-                CodeAgent v3 includes PR-style review queues, split-diff viewing, 6-stage deployment pipelines
+                Encoded v3 includes PR-style review queues, split-diff viewing, 6-stage deployment pipelines
                 (syntax → AST → style → performance → security → deploy), type-safe refactoring, and
                 multi-project pattern learning. Every change is validated before deployment.
               </p>

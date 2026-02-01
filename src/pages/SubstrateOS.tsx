@@ -94,7 +94,7 @@ function getTabGroups(isOperator: boolean, isGovernor: boolean, hasAgency: boole
     { id: 'terminal', label: 'Terminal', icon: Terminal, color: 'emerald', description: 'Command interface' },
     ...(isOperator ? [
       { id: 'nexus', label: 'Nexus', icon: Zap, color: 'cyan', description: 'AI routing & images', minRole: 'operator' as const },
-      { id: 'codeagent', label: 'CodeAgent', icon: Bot, color: 'violet', description: 'AI coding assistant', minRole: 'operator' as const },
+      { id: 'codeagent', label: 'Encoded', icon: Bot, color: 'fuchsia', description: 'Substrate coder', minRole: 'operator' as const },
       { id: 'core', label: 'Core', icon: Cpu, color: 'orange', description: 'Kernel controls', minRole: 'operator' as const },
       { id: 'ripple', label: 'Ripple', icon: Radio, color: 'cyan', description: 'Message bus', minRole: 'operator' as const },
       { id: 'access', label: 'Access', icon: Key, color: 'amber', description: 'Identity & keys', minRole: 'operator' as const },
@@ -662,6 +662,7 @@ export default function SubstrateOS() {
                 {!isObserverOnly && <ModuleControlsGrid enabled={isOperator} />}
                 {!isObserverOnly && <BrainIntelligencePanel enabled={isOperator} />}
                 <SystemHealthPanel enabled={isOperator} />
+                {!isObserverOnly && <EventStream />}
                 {!isObserverOnly && <GovernorPanel enabled={isGovernor} />}
               </motion.main>
             )}
