@@ -147,6 +147,106 @@ function formatEvolutionLogForTerminal(): string {
   return output;
 }
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// PERSONALITY FORMATTERS (v7.1.0)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function formatPersonalityList(profiles: Array<{ id: string; name: string; description: string }>): string {
+  let output = `
+┌─ DECODE PERSONALITY PROFILES ─────────────────────────────────┐
+│ Interpretive filters only — do NOT affect execution/memory    │
+├───────────────────────────────────────────────────────────────┤`;
+
+  for (const p of profiles) {
+    output += `
+│ ◆ ${p.id.toUpperCase().padEnd(12)} ${p.name.padEnd(12)} │
+│   ${p.description.substring(0, 55).padEnd(55)} │`;
+  }
+
+  output += `
+├───────────────────────────────────────────────────────────────┤
+│ Set: decode.personality.set <profile>                         │
+│ Auto: decode.personality.auto   Lock: decode.personality.lock │
+└───────────────────────────────────────────────────────────────┘`;
+
+  return output;
+}
+
+function formatPersonalityGet(
+  profile: { id: string; name: string; description: string; ambiguityTolerance: number; escalationThreshold: number },
+  state: { active: string; autoDetect: boolean; locked: boolean; lastDetected: string | null; detectionConfidence: number }
+): string {
+  const lockIcon = state.locked ? '🔒' : '🔓';
+  const autoIcon = state.autoDetect ? '✓' : '✗';
+  
+  return `
+┌─ ACTIVE PERSONALITY ──────────────────────────────────────────┐
+│                                                               │
+│  Profile:     ${profile.name.padEnd(15)} (${profile.id})${' '.repeat(20)}│
+│  ${profile.description.padEnd(61)}│
+│                                                               │
+│  ${lockIcon} Locked:      ${(state.locked ? 'Yes' : 'No').padEnd(10)} Auto-detect: ${autoIcon} ${state.autoDetect ? 'Enabled' : 'Disabled'}         │
+│  Last detected: ${(state.lastDetected || 'none').padEnd(12)} Confidence: ${(state.detectionConfidence * 100).toFixed(0)}%         │
+│                                                               │
+│  Ambiguity tolerance:   ${(profile.ambiguityTolerance * 100).toFixed(0)}%                                │
+│  Escalation threshold:  ${(profile.escalationThreshold * 100).toFixed(0)}%                                │
+│                                                               │
+└───────────────────────────────────────────────────────────────┘`;
+}
+
+function formatPersonalityDetection(result: {
+  profile: string;
+  confidence: number;
+  markers: string[];
+  sentiment: number;
+  applied: boolean;
+}): string {
+  const appliedIcon = result.applied ? '✓ Applied' : '○ Not applied (locked or low confidence)';
+  const sentimentBar = result.sentiment >= 0 
+    ? `${'█'.repeat(Math.round(result.sentiment * 5))}${'░'.repeat(5 - Math.round(result.sentiment * 5))} +${(result.sentiment * 100).toFixed(0)}%`
+    : `${'░'.repeat(5 - Math.round(Math.abs(result.sentiment) * 5))}${'█'.repeat(Math.round(Math.abs(result.sentiment) * 5))} ${(result.sentiment * 100).toFixed(0)}%`;
+
+  return `
+┌─ PERSONALITY DETECTION ───────────────────────────────────────┐
+│                                                               │
+│  Detected:    ${result.profile.toUpperCase().padEnd(15)} Confidence: ${(result.confidence * 100).toFixed(0)}%            │
+│  ${appliedIcon.padEnd(61)}│
+│                                                               │
+│  Sentiment:   ${sentimentBar.padEnd(47)}│
+│  Markers:     ${(result.markers.slice(0, 4).join(', ') || 'none').padEnd(47)}│
+│                                                               │
+└───────────────────────────────────────────────────────────────┘`;
+}
+
+function formatPersonalityInterpret(result: {
+  primaryIntent: string;
+  secondaryIntent: string | null;
+  confidence: number;
+  detectedPersonality: string;
+  ambiguityFlags: string[];
+  shouldEscalate: boolean;
+  metadata: { processingTimeMs: number; profileUsed: string; confidenceModified: boolean };
+}): string {
+  const escIcon = result.shouldEscalate ? '⚠ Yes' : '○ No';
+  const confBar = '█'.repeat(Math.round(result.confidence * 10)) + '░'.repeat(10 - Math.round(result.confidence * 10));
+
+  return `
+┌─ PERSONALITY-ADJUSTED INTERPRETATION ─────────────────────────┐
+│                                                               │
+│  Primary Intent:   ${result.primaryIntent.padEnd(42)}│
+│  Secondary:        ${(result.secondaryIntent || '—').padEnd(42)}│
+│                                                               │
+│  Confidence:       ${confBar} ${(result.confidence * 100).toFixed(0)}%                    │
+│  Profile Used:     ${result.metadata.profileUsed.padEnd(42)}│
+│                                                               │
+│  Ambiguity Flags:  ${(result.ambiguityFlags.join(', ') || 'none').padEnd(42)}│
+│  Escalate:         ${escIcon.padEnd(42)}│
+│                                                               │
+│  Processing:       ${result.metadata.processingTimeMs}ms                                      │
+│                                                               │
+└───────────────────────────────────────────────────────────────┘`;
+}
+
 export interface ExecutionResult {
   success: boolean;
   output: string;
@@ -738,6 +838,95 @@ ${identityLine}│  Mode: ${roleDisplay}
       result = await decode.propose(args[0] || '');
     } else if (base === 'decode.learn') {
       result = await decode.learn(args[0] || '', args[1]);
+    }
+    // DECODE Personality subsystem (v7.1.0)
+    else if (base === 'decode.personality.list') {
+      const { personalityEngine } = await import('@/lib/substrate/decode');
+      const profiles = personalityEngine.list();
+      return {
+        success: true,
+        output: formatPersonalityList(profiles),
+        data: profiles,
+      };
+    } else if (base === 'decode.personality.get') {
+      const { personalityEngine } = await import('@/lib/substrate/decode');
+      const { profile, state } = personalityEngine.get();
+      return {
+        success: true,
+        output: formatPersonalityGet(profile, state),
+        data: { profile, state },
+      };
+    } else if (base === 'decode.personality.set') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Profile required\n  Usage: decode.personality.set <profile>\n  Profiles: neutral, technical, frustrated, exploratory, adversarial, playful, urgent' };
+      }
+      const { personalityEngine } = await import('@/lib/substrate/decode');
+      try {
+        const result = personalityEngine.set(args[0] as any);
+        return {
+          success: true,
+          output: `◈ Personality set: ${result.previous} → ${result.current}`,
+          data: result,
+        };
+      } catch (e) {
+        return { success: false, output: `▓ ERROR: ${(e as Error).message}` };
+      }
+    } else if (base === 'decode.personality.auto') {
+      const { personalityEngine } = await import('@/lib/substrate/decode');
+      const result = personalityEngine.enableAuto();
+      return {
+        success: true,
+        output: `◈ Auto-detection enabled. Current profile: ${result.currentProfile}`,
+        data: result,
+      };
+    } else if (base === 'decode.personality.lock') {
+      const { personalityEngine } = await import('@/lib/substrate/decode');
+      const result = personalityEngine.lock();
+      return {
+        success: true,
+        output: `◈ Profile locked: ${result.profile} (auto-switching disabled)`,
+        data: result,
+      };
+    } else if (base === 'decode.personality.unlock') {
+      const { personalityEngine } = await import('@/lib/substrate/decode');
+      const result = personalityEngine.unlock();
+      return {
+        success: true,
+        output: `◈ Profile unlocked: ${result.profile} (auto-switching enabled)`,
+        data: result,
+      };
+    } else if (base === 'decode.personality.detect') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Text required\n  Usage: decode.personality.detect <text>' };
+      }
+      const { personalityEngine } = await import('@/lib/substrate/decode');
+      const text = args.join(' ');
+      const result = personalityEngine.detect(text);
+      return {
+        success: true,
+        output: formatPersonalityDetection(result),
+        data: result,
+      };
+    } else if (base === 'decode.personality.interpret') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Text required\n  Usage: decode.personality.interpret <text>' };
+      }
+      const { personalityEngine } = await import('@/lib/substrate/decode');
+      const text = args.join(' ');
+      const result = personalityEngine.interpret(text);
+      return {
+        success: true,
+        output: formatPersonalityInterpret(result),
+        data: result,
+      };
+    } else if (base === 'decode.personality.reset') {
+      const { personalityEngine } = await import('@/lib/substrate/decode');
+      const result = personalityEngine.reset();
+      return {
+        success: true,
+        output: `◈ Personality reset to neutral. Auto-detection: enabled, Locked: false`,
+        data: result,
+      };
     }
 
     // DEFENSE module
