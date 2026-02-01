@@ -31,47 +31,47 @@ export const MARKETPLACE_PRODUCTS = {
     includes: ['NPC Memory System', 'Dream Cycles', 'Physics Integration', 'World Persistence', 'Multi-Agent Coordination'],
   },
 
-  // Template tiers - Market-aligned pricing
+  // Template tiers - Market-aligned pricing (Updated Feb 2026)
   templates: {
     starter: {
-      product_id: 'prod_TrNIeWc11aZXQH',
-      price_id: 'price_1SteXUQ7FtTiAL4aC3pLc3U2',
-      amount: 1900, // $19 (was $27)
+      product_id: 'prod_TtqCfqsTbEotq7',
+      price_id: 'price_1Sw2WDQ7FtTiAL4aTYgwWe14',
+      amount: 1900, // $19
       label: 'Starter',
       difficulty: 'beginner',
     },
     advanced: {
-      product_id: 'prod_TrNIEVGUUZAIui',
-      price_id: 'price_1SteXVQ7FtTiAL4aa5XLW33U',
-      amount: 4900, // $49 (was $87)
+      product_id: 'prod_TtqCPOOhWdDsSC',
+      price_id: 'price_1Sw2WEQ7FtTiAL4a8JGOAyvU',
+      amount: 4900, // $49
       label: 'Advanced',
       difficulty: 'intermediate',
     },
     enterprise: {
-      product_id: 'prod_TrNIAiAbjgJWCz',
-      price_id: 'price_1SteXWQ7FtTiAL4aKfd2qxqN',
-      amount: 7900, // $79 (was $147)
+      product_id: 'prod_TtqCBeeI0qxL64',
+      price_id: 'price_1Sw2WFQ7FtTiAL4aDuTRW0Np',
+      amount: 7900, // $79
       label: 'Enterprise',
       difficulty: 'advanced',
     },
     premium: {
-      product_id: 'prod_TrNIgrPVXQo9DL',
-      price_id: 'price_1SteXRQ7FtTiAL4a6trXwxvb',
-      amount: 9900, // $99 (was $299)
+      product_id: 'prod_TtqCTxAuwBlaNs',
+      price_id: 'price_1Sw2WGQ7FtTiAL4aOxUZzchj',
+      amount: 9900, // $99
       label: 'Premium',
       difficulty: 'premium',
     },
     elite: {
-      product_id: 'prod_TrNHcsTcQp0T1a',
-      price_id: 'price_1SteXPQ7FtTiAL4a3hCkMTpo',
-      amount: 12900, // $129 (was $399)
+      product_id: 'prod_TtqCmkCJUmwoBP',
+      price_id: 'price_1Sw2WHQ7FtTiAL4aTh3BJ5tE',
+      amount: 12900, // $129
       label: 'Elite',
       difficulty: 'elite',
     },
     pro: {
-      product_id: 'prod_TrNIfBeckAvirt',
-      price_id: 'price_1SteXSQ7FtTiAL4azZw0I4bb',
-      amount: 14900, // $149 (was $499)
+      product_id: 'prod_TtqCBUjvTa45Tm',
+      price_id: 'price_1Sw2WIQ7FtTiAL4a2MBwpMWi',
+      amount: 14900, // $149
       label: 'Pro',
       difficulty: 'pro',
     },
