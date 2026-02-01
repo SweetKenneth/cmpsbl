@@ -1,7 +1,7 @@
 /**
- * BIOHACK TERMINAL THEME v2026
+ * BIOHACK TERMINAL THEME v2026.2
  * Space Age Bio-Hacking Neural Interface
- * A completely unique terminal experience
+ * Premium cognitive terminal experience
  */
 
 /* ═══════════════════════════════════════════════════════════
@@ -90,6 +90,33 @@
     opacity: 0.2;
     background-size: 22px 22px;
   }
+}
+
+/* Command typing cursor blink */
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* Neural particle float */
+@keyframes particle-float {
+  0%, 100% { transform: translateY(0) translateX(0); opacity: 0.4; }
+  25% { transform: translateY(-10px) translateX(5px); opacity: 0.7; }
+  50% { transform: translateY(-5px) translateX(-5px); opacity: 0.5; }
+  75% { transform: translateY(-15px) translateX(3px); opacity: 0.6; }
+}
+
+/* Success pulse */
+@keyframes success-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 hsl(160 100% 50% / 0); }
+  50% { box-shadow: 0 0 20px 4px hsl(160 100% 50% / 0.3); }
+}
+
+/* Error shake */
+@keyframes error-shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+  20%, 40%, 60%, 80% { transform: translateX(2px); }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -513,6 +540,39 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
+   COMMAND RESULT STATES
+   ═══════════════════════════════════════════════════════════ */
+
+.biohack-result-success {
+  animation: success-pulse 0.5s ease-out;
+}
+
+.biohack-result-error {
+  animation: error-shake 0.3s ease-out;
+}
+
+.biohack-result-pending {
+  position: relative;
+}
+
+.biohack-result-pending::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, hsl(45 100% 60%), transparent);
+  animation: neural-fire 1.5s ease-in-out infinite;
+}
+
+/* Loading spinner enhancement */
+.biohack-loading-spinner {
+  animation: dna-rotate 2s linear infinite;
+  filter: drop-shadow(0 0 8px hsl(180 100% 60%));
+}
+
+/* ═══════════════════════════════════════════════════════════
    KEYBOARD HINTS
    ═══════════════════════════════════════════════════════════ */
 
@@ -525,6 +585,12 @@
   font-size: 9px;
   font-family: 'Courier New', monospace;
   box-shadow: 0 0 5px hsl(180 100% 50% / 0.2);
+  transition: all 0.2s ease;
+}
+
+.biohack-kbd:hover {
+  background: hsl(180 100% 50% / 0.2);
+  box-shadow: 0 0 10px hsl(180 100% 50% / 0.4);
 }
 
 .biohack-kbd-smart {
@@ -532,6 +598,69 @@
   border-color: hsl(280 100% 60% / 0.4);
   color: hsl(280 100% 75%);
   box-shadow: 0 0 5px hsl(280 100% 60% / 0.3);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   COMMAND OUTPUT SYNTAX HIGHLIGHTING
+   ═══════════════════════════════════════════════════════════ */
+
+.biohack-output-key {
+  color: hsl(200 100% 70%);
+  font-weight: 500;
+}
+
+.biohack-output-value-string {
+  color: hsl(120 70% 60%);
+}
+
+.biohack-output-value-number {
+  color: hsl(35 100% 65%);
+}
+
+.biohack-output-value-boolean {
+  color: hsl(280 80% 70%);
+}
+
+.biohack-output-separator {
+  color: hsl(240 20% 50%);
+}
+
+.biohack-output-module {
+  color: hsl(160 100% 60%);
+  font-weight: 600;
+}
+
+.biohack-output-action {
+  color: hsl(45 100% 60%);
+}
+
+.biohack-output-status-ok {
+  color: hsl(160 100% 60%);
+  text-shadow: 0 0 5px hsl(160 100% 50% / 0.5);
+}
+
+.biohack-output-status-warn {
+  color: hsl(45 100% 60%);
+  text-shadow: 0 0 5px hsl(45 100% 50% / 0.5);
+}
+
+.biohack-output-status-error {
+  color: hsl(350 100% 65%);
+  text-shadow: 0 0 5px hsl(350 100% 50% / 0.5);
+}
+
+/* Box drawing character styling */
+.biohack-box-top,
+.biohack-box-bottom {
+  color: hsl(280 60% 55%);
+}
+
+.biohack-box-side {
+  color: hsl(280 60% 50%);
+}
+
+.biohack-box-corner {
+  color: hsl(280 80% 60%);
 }
 
 /* ═══════════════════════════════════════════════════════════

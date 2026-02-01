@@ -1,7 +1,12 @@
 /**
- * Terminal Boot Screen v6.3.1
+ * Terminal Boot Screen v7.1.0
  * Unique neural-organic visualization of the 14-module architecture
  * Mobile-friendly with no mid-word line breaks
+ * 
+ * v7.1.0 Changes:
+ * - Enhanced mobile boot sequence
+ * - Added animated health check indicators
+ * - Improved visual hierarchy
  */
 
 export interface BootConfig {
@@ -83,29 +88,30 @@ const MODULE_GRID_DESKTOP = `
 export function generateMobileBootScreen(): string[] {
   return [
     '',
-    '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
-    '  ▓  PROMPTFLUID® SUBSTRATE OS       ▓',
-    '  ▓  Version 6.3.1 FNDTN             ▓',
-    '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
+    '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
+    '  ▓  PROMPTFLUID® SUBSTRATE OS     ▓',
+    '  ▓  Version 7.1.0 — FNDTN         ▓',
+    '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
     '',
-    '  ┌─ BOOTSTRAP ─────────────────────┐',
-    '  │                                 │',
-    '  │  ⬢ KERNEL                       │',
-    '  │    core ripple access           │',
-    '  │                                 │',
-    '  │  ◈ COGNITIVE                    │',
-    '  │    brain decode dream           │',
-    '  │                                 │',
-    '  │  ◆ OPERATIONS                   │',
-    '  │    defense nexus vision         │',
-    '  │                                 │',
-    '  │  ◇ ADMIN                        │',
-    '  │    system modernizer inclusive  │',
-    '  │                                 │',
-    '  │  ★ ORCHESTRATOR                 │',
-    '  │    cortex integration           │',
-    '  │                                 │',
-    '  └─────────────────────────────────┘',
+    '  ┌─ BOOTSTRAP ────────────────────┐',
+    '  │                                │',
+    '  │  ⬢ KERNEL                      │',
+    '  │    core  ripple  access        │',
+    '  │                                │',
+    '  │  ◈ COGNITIVE                   │',
+    '  │    brain  decode  dream        │',
+    '  │                                │',
+    '  │  ◆ OPERATIONS                  │',
+    '  │    defense  nexus  vision      │',
+    '  │                                │',
+    '  │  ◇ ADMIN                       │',
+    '  │    system  modernizer          │',
+    '  │    inclusive                   │',
+    '  │                                │',
+    '  │  ★ ORCHESTRATOR                │',
+    '  │    cortex  integration         │',
+    '  │                                │',
+    '  └────────────────────────────────┘',
     '',
     '  ◉ 14 modules operational',
     '  ◉ 260+ commands available',

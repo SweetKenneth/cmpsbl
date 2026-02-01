@@ -1,12 +1,18 @@
 /**
- * Enhanced Terminal v7.0.0 - BIOHACK EDITION
+ * Enhanced Terminal v7.1.0 - BIOHACK EDITION
  * Space Age Bio-Hacking Neural Interface Terminal
  * Full-featured terminal with comprehensive commands, autocomplete,
  * aliases, macros, scheduling, watch mode, audit trail, and smart suggestions
+ * 
+ * v7.1.0 Changes:
+ * - Improved visual feedback for command execution
+ * - Better animation states for results
+ * - Enhanced mobile responsiveness
+ * - Syntax highlighting for output
  */
 
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
-import { Terminal, ChevronRight, Loader2, CheckCircle2, XCircle, Download, Maximize2, Minimize2, X, Sparkles, Dna, Zap, Activity, Brain } from 'lucide-react';
+import { Terminal, ChevronRight, Loader2, CheckCircle2, XCircle, Download, Maximize2, Minimize2, X, Sparkles, Dna, Zap, Activity, Brain, Copy, Check } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -29,6 +35,7 @@ import { scheduleCommand, parseDelay, formatScheduleConfirmation } from './termi
 import { useTerminalWatch, formatWatchListOutput } from './terminal/useTerminalWatch';
 import { recordAuditEntry, exportAuditLog } from './terminal/useTerminalAudit';
 import { generateSmartSuggestions, getSuggestionDefinition, type SmartSuggestion } from './terminal/useSmartSuggestions';
+import { getBootMessages } from './terminal/TerminalBootScreen';
 
 interface EnhancedTerminalProps {
   enabled: boolean;
@@ -51,23 +58,35 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
   const [sessionStats, setSessionStats] = useState({ commands: 0, success: 0, errors: 0 });
   const [smartSuggestions, setSmartSuggestions] = useState<SmartSuggestion[]>([]);
   const [showSmartSuggestions, setShowSmartSuggestions] = useState(false);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
   
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Boot animation
+  // Boot animation with viewport-aware messages
   useEffect(() => {
+    // Use viewport-aware boot messages
+    const bootMessages = getBootMessages(window.innerWidth);
     let idx = 0;
     const interval = setInterval(() => {
-      if (idx < BOOT_MESSAGES.length) {
-        setBootLines(prev => [...prev, BOOT_MESSAGES[idx]]);
+      if (idx < bootMessages.length) {
+        setBootLines(prev => [...prev, bootMessages[idx]]);
         idx++;
       } else {
         setBootComplete(true);
         clearInterval(interval);
       }
-    }, 80);
+    }, 60); // Slightly faster boot animation
     return () => clearInterval(interval);
+  }, []);
+
+  // Copy to clipboard handler
+  const handleCopy = useCallback((text: string, id: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopiedId(id);
+      toast.success('Copied to clipboard');
+      setTimeout(() => setCopiedId(null), 2000);
+    });
   }, []);
 
   // Auto-scroll to bottom
@@ -613,18 +632,47 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
 
           {/* Command History */}
           {history.map((result) => (
-            <div key={result.id} className="space-y-1">
+            <div 
+              key={result.id} 
+              className={cn(
+                "space-y-1 transition-all duration-300",
+                isBiohack && result.status === 'success' && "biohack-result-success",
+                isBiohack && result.status === 'error' && "biohack-result-error",
+                isBiohack && result.status === 'pending' && "biohack-result-pending"
+              )}
+            >
               {/* Command Line */}
-              <div className={cn("flex items-center gap-2", isBiohack && "biohack-command")}>
+              <div className={cn("flex items-center gap-2 group", isBiohack && "biohack-command")}>
                 {!isBiohack && <ChevronRight className={cn("w-3 h-3 shrink-0", currentTheme.accent)} />}
                 <span className={isBiohack ? "biohack-command-text" : currentTheme.accent}>{result.command}</span>
+                
+                {/* Copy button - visible on hover */}
+                <button
+                  onClick={() => handleCopy(result.output || '', result.id)}
+                  className={cn(
+                    "opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded hover:bg-white/10",
+                    copiedId === result.id && "opacity-100"
+                  )}
+                  title="Copy output"
+                >
+                  {copiedId === result.id ? (
+                    <Check className="w-3 h-3 text-emerald-400" />
+                  ) : (
+                    <Copy className="w-3 h-3 text-muted-foreground" />
+                  )}
+                </button>
+                
                 <span className={cn(
                   "text-[10px] ml-auto flex items-center gap-2",
                   isBiohack ? "text-[hsl(200_60%_50%)]" : "text-muted-foreground/50"
                 )}>
                   {result.duration !== undefined && (
-                    <span className={isBiohack ? "text-[hsl(280_100%_70%)]" : "text-muted-foreground/70"}>
-                      {result.duration}ms
+                    <span className={cn(
+                      isBiohack ? "text-[hsl(280_100%_70%)]" : "text-muted-foreground/70",
+                      result.duration > 1000 && "text-amber-400",
+                      result.duration > 3000 && "text-red-400"
+                    )}>
+                      {result.duration < 1000 ? `${result.duration}ms` : `${(result.duration / 1000).toFixed(1)}s`}
                     </span>
                   )}
                   {result.timestamp.toLocaleTimeString()}
@@ -633,7 +681,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
 
               {/* Output */}
               <div className={cn(
-                "pl-5 text-xs leading-relaxed",
+                "pl-5 text-xs leading-relaxed relative",
                 isBiohack ? (
                   result.status === 'pending' ? "biohack-output-pending" :
                   result.status === 'success' ? "biohack-output-success" :
@@ -646,7 +694,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
               )}>
                 {result.status === 'pending' ? (
                   <div className="flex items-center gap-2">
-                    <Loader2 className="w-3 h-3 animate-spin" />
+                    <Loader2 className={cn("w-3 h-3 animate-spin", isBiohack && "biohack-loading-spinner")} />
                     <span className="animate-pulse">{result.output || 'Processing neural pathways...'}</span>
                   </div>
                 ) : (
@@ -656,7 +704,12 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
                     ) : (
                       <XCircle className="w-3 h-3 shrink-0 mt-0.5" />
                     )}
-                    <pre className="whitespace-pre-wrap break-all font-mono overflow-x-auto">{result.output}</pre>
+                    <pre className={cn(
+                      "whitespace-pre-wrap break-words font-mono overflow-x-auto max-w-full",
+                      "terminal-output"
+                    )}>
+                      {result.output}
+                    </pre>
                   </div>
                 )}
               </div>
