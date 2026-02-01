@@ -1,6 +1,6 @@
 /**
  * Defense Module Exports
- * v7.0.0 — Security, Rate Limiting, and Circuit Breakers
+ * v7.0.0 — Security, Rate Limiting, Circuit Breakers, and Secret Redaction
  */
 
 // Core threat detection and risk analysis
@@ -34,6 +34,15 @@ export {
   type CircuitStatus,
   type CircuitBreakersState,
 } from './circuit-breaker';
+
+// Secret redaction
+export {
+  redactSecrets,
+  redactHeaders,
+  redactUrl,
+  redactError,
+  mightContainSecrets,
+} from './redact';
 
 // Learning from threats
 export {
