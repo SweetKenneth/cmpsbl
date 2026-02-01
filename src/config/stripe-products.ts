@@ -11,14 +11,14 @@
 export const DEFENSE_PRODUCTS = {
   pro: {
     monthly: {
-      price_id: 'price_1SOM93Q7FtTiAL4aKHUZjHCU',
-      product_id: 'prod_TL2DYghg32lYzo',
-      amount: 1900, // $19/mo (was $19)
+      price_id: 'price_1Sw2KmQ7FtTiAL4aMZqtgKvU',
+      product_id: 'prod_Ttq0hn2IK2Avy4',
+      amount: 1900, // $19/mo
       interval: 'month' as const
     },
     annual: {
-      price_id: 'price_1SOM94Q7FtTiAL4aIqLLRGkt',
-      product_id: 'prod_TL2DyiBcKA6I5D',
+      price_id: 'price_1Sw2KnQ7FtTiAL4a6muJlQaU',
+      product_id: 'prod_Ttq0Z9FBCQTfUU',
       amount: 14900, // $149/yr (35% off)
       interval: 'year' as const,
       savings: 7900 // $79 savings
@@ -26,14 +26,14 @@ export const DEFENSE_PRODUCTS = {
   },
   complete: {
     monthly: {
-      price_id: 'price_1SOM96Q7FtTiAL4aYbLYDXDV',
-      product_id: 'prod_TL2DLZvV10hql4',
+      price_id: 'price_1Sw2KoQ7FtTiAL4awHMK987t',
+      product_id: 'prod_Ttq038ZizZZ6AM',
       amount: 3900, // $39/mo
       interval: 'month' as const
     },
     annual: {
-      price_id: 'price_1SOM98Q7FtTiAL4agbuHYcuh',
-      product_id: 'prod_TL2DzusHpJombN',
+      price_id: 'price_1Sw2KpQ7FtTiAL4asO8qeJof',
+      product_id: 'prod_Ttq0apABjobPWl',
       amount: 34900, // $349/yr (25% off)
       interval: 'year' as const,
       savings: 11900 // $119 savings
@@ -41,14 +41,14 @@ export const DEFENSE_PRODUCTS = {
   },
   sentinel: {
     monthly: {
-      price_id: 'price_1SOM99Q7FtTiAL4aelFhu7Ej',
-      product_id: 'prod_TL2DcGTfW7PTYm',
+      price_id: 'price_1Sw2KrQ7FtTiAL4aYVhCnyvR',
+      product_id: 'prod_Ttq0S8wJPKyVON',
       amount: 7900, // $79/mo
       interval: 'month' as const
     },
     annual: {
-      price_id: 'price_1SOMBzQ7FtTiAL4aGf0eVISx',
-      product_id: 'prod_TL2GWmbIXRKePm',
+      price_id: 'price_1Sw2KsQ7FtTiAL4aDBSHOPKh',
+      product_id: 'prod_Ttq0kPPGuRuWTD',
       amount: 66400, // $664/yr (30% off)
       interval: 'year' as const,
       savings: 28400 // $284 savings
