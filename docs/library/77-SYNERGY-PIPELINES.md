@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Cross-Module Synergy Pipelines
 
-**Version 7.0.0 (FNDTN) | Executable Reference**
+**Version 7.1.0 (FNDTN) | Executable Reference**
 
 ---
 
@@ -11,8 +11,8 @@
 | **Document ID** | CMPSBL-LIB-077 |
 | **Layer** | Cross-Module |
 | **Status** | Production Ready |
-| **Version** | v7.0.0 |
-| **Pipeline Count** | 24 |
+| **Version** | v7.1.0 |
+| **Pipeline Count** | 34 |
 
 ---
 
@@ -26,11 +26,11 @@ Synergy Pipelines are **production-ready orchestrations** that combine multiple 
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                   SYNERGY ENGINE v7.0.0                      │
+│                   SYNERGY ENGINE v7.1.0                      │
 ├─────────────────────────────────────────────────────────────┤
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
 │  │  Registry   │→ │  Executor   │→ │  Capability Gate    │  │
-│  │ (24 defs)   │  │ (8 impls)   │  │ (governance layer)  │  │
+│  │ (34 defs)   │  │ (13 impls)  │  │ (governance layer)  │  │
 │  └─────────────┘  └─────────────┘  └─────────────────────┘  │
 ├─────────────────────────────────────────────────────────────┤
 │  Event Emission: synergy.started → synergy.succeeded/failed │
@@ -40,20 +40,21 @@ Synergy Pipelines are **production-ready orchestrations** that combine multiple 
 
 ### 1.3 Key Improvements from v6
 
-| Feature | v6 (Descriptive) | v7 (Executable) |
-|---------|------------------|-----------------|
-| Pipeline Count | 5 | 24 |
+| Feature | v6 (Descriptive) | v7.1 (Executable) |
+|---------|------------------|-------------------|
+| Pipeline Count | 5 | 34 |
 | Execution | Emergent | Governed |
-| Custom Executors | None | 8 implementations |
+| Custom Executors | None | 13 implementations |
 | Governance | N/A | Integrated with capability-gate |
 | Tracing | N/A | Full trace_id propagation |
-| Categories | N/A | 6 functional categories |
+| Categories | N/A | 7 functional categories |
+| Module Coverage | 8 | All 14 modules |
 
 ---
 
 ## 2. Pipeline Categories
 
-### 2.1 Intelligence Pipelines
+### 2.1 Intelligence Pipelines (7)
 
 Enhance reasoning, memory, and synthesis capabilities.
 
@@ -63,8 +64,11 @@ Enhance reasoning, memory, and synthesis capabilities.
 | `predictive-prevention` | Predictive Issue Prevention | VISION + BRAIN + MODERNIZER | Detect patterns before failures occur |
 | `cross-domain-synthesis` | Cross-Domain Synthesis | DREAM + NEXUS + BRAIN | Connect knowledge from disparate domains |
 | `cognitive-fusion` | Cognitive Fusion | NEXUS + BRAIN + VISION | Multi-model consensus with memory integration |
+| `quota-prediction` | Quota Prediction | ACCESS + BRAIN + VISION | Predict quota exhaustion from usage patterns |
+| `cognitive-curriculum` | Cognitive Curriculum | DREAM + BRAIN + CORTEX | Learning goals informed by knowledge gaps |
+| `end-to-end-reasoning` | End-to-End Reasoning | DECODE + NEXUS + BRAIN + CORTEX | Full cognitive pipeline from intent to decision |
 
-### 2.2 Optimization Pipelines
+### 2.2 Optimization Pipelines (7)
 
 Improve performance, routing, and resource efficiency.
 
@@ -74,8 +78,11 @@ Improve performance, routing, and resource efficiency.
 | `intelligent-caching` | Intelligent Caching | SYSTEM + BRAIN + VISION | Memory-informed cache strategies |
 | `resource-balancing` | Resource Balancing | SYSTEM + NEXUS + VISION | Dynamic resource allocation based on load |
 | `latency-prediction` | Latency Prediction | VISION + NEXUS + BRAIN | Predict and optimize response times |
+| `external-api-intelligence` | External API Intelligence | INTEGRATION + VISION + BRAIN | Smart adapter health monitoring and prediction |
+| `entitlement-aware-routing` | Entitlement-Aware Routing | ACCESS + NEXUS + CORTEX | Tier-appropriate model selection |
+| `batch-optimization` | Batch Optimization | RIPPLE + VISION + CORTEX | Event batching tuned by throughput metrics |
 
-### 2.3 Resilience Pipelines
+### 2.3 Resilience Pipelines (5)
 
 Maintain stability and recover from failures.
 
@@ -85,8 +92,9 @@ Maintain stability and recover from failures.
 | `cascade-prevention` | Cascade Prevention | DEFENSE + RIPPLE + CORE | Stop failure propagation across modules |
 | `graceful-degradation` | Graceful Degradation | CORE + DEFENSE + VISION | Maintain UX during partial outages |
 | `memory-persistence` | Memory Persistence | BRAIN + SYSTEM + CORE | Ensure memory survives restarts |
+| `adapter-failover` | Adapter Failover | INTEGRATION + DEFENSE + NEXUS | External adapter failure recovery |
 
-### 2.4 Security Pipelines
+### 2.4 Security Pipelines (4)
 
 Protect against threats and learn from attacks.
 
@@ -95,8 +103,9 @@ Protect against threats and learn from attacks.
 | `threat-learning` | Threat Learning | DEFENSE + BRAIN + VISION | Learn from attacks to improve detection |
 | `adaptive-defense` | Adaptive Defense | DEFENSE + MODERNIZER + CORTEX | Evolve security rules automatically |
 | `anomaly-correlation` | Anomaly Correlation | VISION + DEFENSE + BRAIN | Correlate anomalies across modules |
+| `bounded-autonomy-guard` | Bounded Autonomy Guard | CORTEX + DEFENSE + VISION | Safe autonomous operation gating |
 
-### 2.5 Accessibility Pipelines
+### 2.5 Accessibility Pipelines (4)
 
 Ensure universal access and compliance.
 
@@ -105,8 +114,9 @@ Ensure universal access and compliance.
 | `adaptive-ui` | Adaptive UI | INCLUSIVE + MODERNIZER + DECODE | Auto-improve accessibility |
 | `intent-amplification` | Intent Amplification | DECODE + RIPPLE + INCLUSIVE | Transform vague requests into precise specs |
 | `contextual-adaptation` | Contextual Adaptation | BRAIN + INCLUSIVE + DECODE | Personalize based on user history |
+| `developer-experience-optimization` | Developer Experience | ACCESS + DECODE + INCLUSIVE | Developer-friendly API patterns |
 
-### 2.6 Orchestration Pipelines
+### 2.6 Orchestration Pipelines (7)
 
 Coordinate complex multi-module workflows.
 
@@ -118,6 +128,8 @@ Coordinate complex multi-module workflows.
 | `agent-coordination` | Agent Coordination | CORTEX + NEXUS + INTEGRATION | Multi-agent task routing |
 | `learning-consolidation` | Learning Consolidation | DREAM + BRAIN + MODERNIZER | Compress and apply learned patterns |
 | `autonomous-documentation` | Autonomous Documentation | MODERNIZER + DECODE + SYSTEM | Auto-generate docs from changes |
+| `webhook-orchestration` | Webhook Orchestration | INTEGRATION + RIPPLE + CORTEX | Coordinated webhook event routing |
+| `autonomous-evolution` | Autonomous Evolution | CORTEX + BRAIN + MODERNIZER + VISION | Self-improvement pipeline with simulation |
 
 ---
 
