@@ -97,19 +97,37 @@ High-level coordination and external integration.
 
 ## Memory Architecture
 
-### Dual-Tier Storage
+### Four-Tier Storage
 
 ```
 ┌───────────────────────────────────────┐
 │            HOT MEMORY                  │
 │   Fast access, recent context          │
+│   Capacity: 127 records                │
 │   Retention: 7 days                    │
+└─────────────────┬─────────────────────┘
+                  │ Demotion
+                  ▼
+┌───────────────────────────────────────┐
+│           WARM MEMORY                  │
+│   Frequently accessed, intermediate    │
+│   Capacity: 2,000 records              │
+│   Retention: 30 days                   │
 └─────────────────┬─────────────────────┘
                   │ Compression
                   ▼
 ┌───────────────────────────────────────┐
 │           COLD MEMORY                  │
 │   Compressed patterns, long-term       │
+│   Capacity: 200 records                │
+│   Retention: Forever                   │
+└─────────────────┬─────────────────────┘
+                  │ Archive
+                  ▼
+┌───────────────────────────────────────┐
+│          LEGACY MEMORY                 │
+│   Archived, rarely accessed            │
+│   Capacity: Unlimited                  │
 │   Retention: Forever                   │
 └───────────────────────────────────────┘
 ```
@@ -119,6 +137,12 @@ Each memory is scored based on:
 - **Recency** — When was it last accessed?
 - **Frequency** — How often is it accessed?
 - **Confidence** — How reliable is the information?
+
+### Protected Memory Types
+Foundational knowledge is protected with special handling:
+- **Core Identity** — Locked at 1.0 value, zero decay
+- **Principles** — Never demoted or pruned
+- **Safety Laws** — Immutable system constraints
 
 ---
 
