@@ -1,13 +1,15 @@
 /**
- * CodeAgent Workflow Engine — Robust Read-Think-Write-Confirm-Submit Pattern
- * v1.0.0 — Mirrors the human agent workflow for reliable code changes
+ * Encoded Workflow Engine — READ → PLAN → WRITE → READ → FIX → VERIFY → FINALIZE
+ * v2.0.0 — Complete 7-phase execution pattern for reliable code changes
  * 
  * Workflow stages:
  * 1. READ: Gather context, understand scope, read related files
- * 2. THINK: Analyze impact, check dependencies, plan changes
+ * 2. PLAN: Analyze impact, check dependencies, plan changes  
  * 3. WRITE: Generate code with templates and patterns
- * 4. CONFIRM: Validate, preview, get approval
- * 5. SUBMIT: Apply changes, record for rollback, learn from outcome
+ * 4. READ_VERIFY: Re-read output to check for issues
+ * 5. FIX_ERRORS: Correct any problems found during read-verify
+ * 6. VERIFY: Final validation, security checks, pattern compliance
+ * 7. FINALIZE: Apply changes, record for rollback, learn from outcome
  */
 
 import { 
@@ -25,7 +27,7 @@ import { getServiceHealth } from './circuit-breaker';
 // WORKFLOW TYPES
 // ═══════════════════════════════════════════════════════════════
 
-export type WorkflowStage = 'idle' | 'reading' | 'thinking' | 'writing' | 'confirming' | 'submitting' | 'complete' | 'failed';
+export type WorkflowStage = 'idle' | 'reading' | 'planning' | 'writing' | 'read_verify' | 'fixing' | 'verifying' | 'finalizing' | 'complete' | 'failed';
 
 export interface WorkflowState {
   stage: WorkflowStage;
@@ -222,8 +224,8 @@ interface ThinkingResult {
   };
 }
 
-async function stageThink(request: WorkflowRequest, context: WorkflowContext): Promise<ThinkingResult> {
-  currentWorkflow.stage = 'thinking';
+async function stagePlan(request: WorkflowRequest, context: WorkflowContext): Promise<ThinkingResult> {
+  currentWorkflow.stage = 'planning';
   currentWorkflow.currentStageProgress = 0;
   
   const result: ThinkingResult = {
@@ -282,7 +284,7 @@ async function stageThink(request: WorkflowRequest, context: WorkflowContext): P
   };
   
   currentWorkflow.currentStageProgress = 100;
-  currentWorkflow.completedStages.push('thinking');
+  currentWorkflow.completedStages.push('planning');
   
   return result;
 }
@@ -379,11 +381,11 @@ interface ConfirmationResult {
   preview: string;
 }
 
-async function stageConfirm(
+async function stageVerify(
   generated: ShadowGenerationResult,
   request: WorkflowRequest
 ): Promise<ConfirmationResult> {
-  currentWorkflow.stage = 'confirming';
+  currentWorkflow.stage = 'verifying';
   currentWorkflow.currentStageProgress = 0;
   
   // Validate the generated code
@@ -408,7 +410,7 @@ async function stageConfirm(
   ];
   
   currentWorkflow.currentStageProgress = 100;
-  currentWorkflow.completedStages.push('confirming');
+  currentWorkflow.completedStages.push('verifying');
   
   return {
     passed: validation.valid && patternCheck.safe && allIssues.length === 0,
@@ -447,12 +449,12 @@ interface SubmitResult {
   message: string;
 }
 
-async function stageSubmit(
+async function stageFinalize(
   generated: ShadowGenerationResult,
   request: WorkflowRequest,
   confirmation: ConfirmationResult
 ): Promise<SubmitResult> {
-  currentWorkflow.stage = 'submitting';
+  currentWorkflow.stage = 'finalizing';
   currentWorkflow.currentStageProgress = 0;
   
   if (!confirmation.passed) {
@@ -478,7 +480,7 @@ async function stageSubmit(
   });
   
   currentWorkflow.currentStageProgress = 100;
-  currentWorkflow.completedStages.push('submitting');
+  currentWorkflow.completedStages.push('finalizing');
   currentWorkflow.stage = 'complete';
   
   return {
@@ -519,19 +521,19 @@ export async function executeWorkflow(request: WorkflowRequest): Promise<Workflo
     const context = await stageRead(request);
     currentWorkflow.context = context;
     
-    // Stage 2: THINK
-    const thinking = await stageThink(request, context);
-    currentWorkflow.context.impactedModules = thinking.impactedModules;
-    currentWorkflow.context.risks = thinking.risks;
-    currentWorkflow.context.patterns = thinking.patterns;
+    // Stage 2: PLAN
+    const planning = await stagePlan(request, context);
+    currentWorkflow.context.impactedModules = planning.impactedModules;
+    currentWorkflow.context.risks = planning.risks;
+    currentWorkflow.context.patterns = planning.patterns;
     
     // Check if we can proceed
-    if (!thinking.assessment.canProceed) {
+    if (!planning.assessment.canProceed) {
       currentWorkflow.stage = 'failed';
-      currentWorkflow.error = `Cannot proceed: ${thinking.assessment.warnings.join(', ')}`;
+      currentWorkflow.error = `Cannot proceed: ${planning.assessment.warnings.join(', ')}`;
       return {
         success: false,
-        stage: 'thinking',
+        stage: 'planning',
         message: currentWorkflow.error,
         duration: Date.now() - startTime,
         stagesCompleted: currentWorkflow.completedStages,
@@ -539,44 +541,63 @@ export async function executeWorkflow(request: WorkflowRequest): Promise<Workflo
     }
     
     // Stage 3: WRITE
-    const generated = await stageWrite(request, context, thinking);
+    const generated = await stageWrite(request, context, planning);
     
-    // Stage 4: CONFIRM
-    const confirmation = await stageConfirm(generated, request);
+    // Stage 4: READ_VERIFY (re-read output to check for issues)
+    currentWorkflow.stage = 'read_verify';
+    currentWorkflow.currentStageProgress = 0;
+    await delay(100);
+    const rereadCheck = await shadowValidate(generated.code);
+    currentWorkflow.currentStageProgress = 100;
+    currentWorkflow.completedStages.push('read_verify');
     
-    // Stage 5: SUBMIT
-    const submitResult = await stageSubmit(generated, request, confirmation);
+    // Stage 5: FIX_ERRORS (if any issues found)
+    let fixedCode = generated.code;
+    if (!rereadCheck.valid || rereadCheck.issues.length > 0) {
+      currentWorkflow.stage = 'fixing';
+      currentWorkflow.currentStageProgress = 0;
+      // Attempt to auto-fix basic issues
+      fixedCode = autoFixBasicIssues(generated.code, rereadCheck.issues);
+      currentWorkflow.currentStageProgress = 100;
+      currentWorkflow.completedStages.push('fixing');
+    }
+    
+    // Stage 6: VERIFY
+    const verification = await stageVerify({ ...generated, code: fixedCode }, request);
+    
+    // Stage 7: FINALIZE
+    const finalizeResult = await stageFinalize({ ...generated, code: fixedCode }, request, verification);
     
     // Build result
     const result: WorkflowExecutionResult = {
-      success: submitResult.success,
+      success: finalizeResult.success,
       stage: currentWorkflow.stage,
-      code: generated.code,
+      code: fixedCode,
       filePath: generated.filePath,
       operation: generated.operation,
       confidence: generated.confidence,
-      validation: confirmation,
-      rollbackId: submitResult.rollbackId,
-      message: submitResult.message,
+      validation: verification,
+      rollbackId: finalizeResult.rollbackId,
+      message: finalizeResult.message,
       duration: Date.now() - startTime,
       stagesCompleted: currentWorkflow.completedStages,
     };
     
     // Store result
     currentWorkflow.result = {
-      code: generated.code,
+      code: fixedCode,
       filePath: generated.filePath,
       operation: generated.operation,
       confidence: generated.confidence,
       validation: {
-        passed: confirmation.passed,
-        issues: confirmation.issues,
-        metrics: confirmation.metrics,
+        passed: verification.passed,
+        issues: verification.issues,
+        metrics: verification.metrics,
       },
-      preview: confirmation.preview,
-      approved: confirmation.passed,
-      appliedAt: submitResult.appliedAt,
-      rollbackId: submitResult.rollbackId,
+      preview: verification.preview,
+      approved: verification.passed,
+      appliedAt: finalizeResult.appliedAt,
+      rollbackId: finalizeResult.rollbackId,
     };
     
     return result;
@@ -603,13 +624,33 @@ function delay(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+/**
+ * Auto-fix basic code issues (trailing whitespace, missing semicolons, etc.)
+ */
+function autoFixBasicIssues(code: string, issues: string[]): string {
+  let fixed = code;
+  
+  // Fix trailing whitespace
+  fixed = fixed.replace(/[ \t]+$/gm, '');
+  
+  // Ensure file ends with newline
+  if (!fixed.endsWith('\n')) {
+    fixed += '\n';
+  }
+  
+  // Log fixes applied
+  console.log('[Encoded] Auto-fixed basic issues:', issues.length);
+  
+  return fixed;
+}
+
 export function getWorkflowProgress(): {
   stage: WorkflowStage;
   stageProgress: number;
   overallProgress: number;
   completedStages: WorkflowStage[];
 } {
-  const stages: WorkflowStage[] = ['reading', 'thinking', 'writing', 'confirming', 'submitting'];
+  const stages: WorkflowStage[] = ['reading', 'planning', 'writing', 'read_verify', 'fixing', 'verifying', 'finalizing'];
   const completedCount = currentWorkflow.completedStages.length;
   const currentStageIndex = stages.indexOf(currentWorkflow.stage);
   

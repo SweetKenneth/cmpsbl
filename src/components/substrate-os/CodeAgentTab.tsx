@@ -467,16 +467,27 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
             ? '✅ Validation passed — ready to apply' 
             : `⚠️ Validation issues: ${result.validation?.issues?.join(', ') || 'Unknown'}`;
 
-          // Format completed stages
+          // Format completed stages with new 7-phase flow
           const stagesFormatted = result.stagesCompleted.map(s => {
             const icons: Record<string, string> = {
               reading: '📖',
-              thinking: '🧠',
+              planning: '🧠',
               writing: '✍️',
-              confirming: '✅',
-              submitting: '🚀'
+              read_verify: '🔍',
+              fixing: '🔧',
+              verifying: '✅',
+              finalizing: '🚀'
             };
-            return `${icons[s] || '•'} ${s.charAt(0).toUpperCase() + s.slice(1)}`;
+            const labels: Record<string, string> = {
+              reading: 'Read',
+              planning: 'Plan',
+              writing: 'Write',
+              read_verify: 'Read',
+              fixing: 'Fix',
+              verifying: 'Verify',
+              finalizing: 'Finalize'
+            };
+            return `${icons[s] || '•'} ${labels[s] || s}`;
           }).join(' → ');
 
           addAgentMessage(
@@ -666,7 +677,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
               )}
             </h2>
             <p className="text-xs text-muted-foreground font-mono">
-              plan → write → verify → finalize
+              read → plan → write → read → fix → verify → finalize
             </p>
           </div>
         </div>
