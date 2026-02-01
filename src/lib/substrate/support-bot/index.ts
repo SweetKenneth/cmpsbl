@@ -1,6 +1,6 @@
 /**
  * Support Bot Engine
- * v1.0.0 — Governed Evolving Support System
+ * v1.1.0 — Governed Evolving Support System
  * 
  * A proof-of-concept for evolving software: learns from verified resolutions,
  * escalates uncertainty, and produces audit-safe responses.
@@ -11,11 +11,18 @@
  * - VISION: Pain pattern detection across support history
  * - SYSTEM: Ticket state + escalation hooks
  * - GOVERNANCE: Safety checks on responses
+ * - KNOWLEDGE BASE: Pre-trained FAQ data for immediate utility
  */
 
 import { memoryCore, MemoryEntry } from '../memory-core';
 import { governanceGuard } from '../governance-guard';
 import { telemetryEngine } from '../telemetry-engine';
+import { 
+  FULL_KNOWLEDGE_BASE, 
+  KNOWLEDGE_CATEGORIES,
+  type KnowledgeEntry,
+  type KnowledgeCategory 
+} from './knowledge-base';
 import type {
   SupportBotState,
   SupportBotConfig,
@@ -104,6 +111,8 @@ export class SupportBotEngine {
         memories_created: 0,
         patterns_detected: 0,
         uptime_hours: 0,
+        knowledge_base_entries: FULL_KNOWLEDGE_BASE.length,
+        kb_matches_used: 0,
       },
     };
   }
@@ -212,7 +221,71 @@ export class SupportBotEngine {
   }
 
   // ==========================================================================
-  // Memory Recall (BRAIN integration)
+  // Knowledge Base Search (Pre-trained FAQ matching)
+  // ==========================================================================
+
+  private searchKnowledgeBase(question: string, intent: DetectedIntent): MemoryMatch[] {
+    const lowerQuestion = question.toLowerCase();
+    const matches: MemoryMatch[] = [];
+
+    for (const entry of FULL_KNOWLEDGE_BASE) {
+      let score = 0;
+
+      // Keyword matching
+      const matchingKeywords = entry.keywords.filter(k => lowerQuestion.includes(k.toLowerCase()));
+      score += matchingKeywords.length * 0.15;
+
+      // Category match
+      if (entry.category === intent.category) score += 0.25;
+
+      // Question pattern similarity (simple word overlap)
+      const questionWords = new Set(lowerQuestion.split(/\s+/));
+      const patternWords = entry.question_pattern.toLowerCase().split(/\s+/);
+      const overlap = patternWords.filter(w => questionWords.has(w)).length;
+      score += overlap * 0.05;
+
+      // Priority boost
+      const priorityBoosts: Record<string, number> = {
+        critical: 0.15,
+        high: 0.1,
+        medium: 0.05,
+        low: 0,
+      };
+      score += priorityBoosts[entry.priority] || 0;
+
+      // Only include if there's meaningful relevance
+      if (score >= 0.2) {
+        const supportMemory: SupportMemory = {
+          id: entry.id,
+          question_pattern: entry.question_pattern,
+          answer: entry.answer,
+          confidence: entry.confidence,
+          times_used: 0,
+          times_helpful: 0,
+          times_escalated: 0,
+          category: entry.category,
+          keywords: entry.keywords,
+          created_at: new Date().toISOString(),
+          last_used_at: new Date().toISOString(),
+          verified: entry.verified,
+        };
+
+        matches.push({
+          memory: supportMemory,
+          similarity: Math.min(1, score + 0.3), // Boost KB matches
+          relevance_score: score,
+          recency_boost: 1, // KB entries are always "fresh"
+        });
+      }
+    }
+
+    // Sort by similarity
+    matches.sort((a, b) => b.similarity - a.similarity);
+    return matches.slice(0, 5); // Top 5 KB matches
+  }
+
+  // ==========================================================================
+  // Memory Recall (BRAIN integration + Knowledge Base)
   // ==========================================================================
 
   private async recallRelevantMemories(question: string, intent: DetectedIntent): Promise<RecallResult> {
@@ -220,41 +293,61 @@ export class SupportBotEngine {
     
     const startTime = Date.now();
     
+    // First, search the pre-trained knowledge base
+    const kbMatches = this.searchKnowledgeBase(question, intent);
+    
     try {
       // Query from memory core using the recall method (legacy alias for retrieve)
       const result = await memoryCore.recall(question, this.state.config.recall_limit);
 
-      if (!result.success || !result.memories) {
-        return {
-          matches: [],
-          total_searched: 0,
-          search_time_ms: Date.now() - startTime,
-          coverage_score: 0,
-        };
+      let memoryMatches: MemoryMatch[] = [];
+      
+      if (result.success && result.memories) {
+        memoryMatches = result.memories.map((m: MemoryEntry, i: number) => ({
+          memory: this.convertToSupportMemory(m),
+          similarity: 1 - (i * 0.1), // Approximate similarity decay
+          relevance_score: this.calculateRelevance(m, intent),
+          recency_boost: this.calculateRecencyBoost(m.created_at || new Date().toISOString()),
+        }));
       }
 
-      const matches: MemoryMatch[] = result.memories.map((m: MemoryEntry, i: number) => ({
-        memory: this.convertToSupportMemory(m),
-        similarity: 1 - (i * 0.1), // Approximate similarity decay
-        relevance_score: this.calculateRelevance(m, intent),
-        recency_boost: this.calculateRecencyBoost(m.created_at || new Date().toISOString()),
-      }));
-
+      // Merge KB matches with memory matches, prioritizing KB for high-confidence matches
+      const allMatches = [...kbMatches, ...memoryMatches];
+      
       // Sort by combined score
-      matches.sort((a, b) => {
+      allMatches.sort((a, b) => {
         const scoreA = a.similarity * 0.4 + a.relevance_score * 0.4 + a.recency_boost * 0.2;
         const scoreB = b.similarity * 0.4 + b.relevance_score * 0.4 + b.recency_boost * 0.2;
         return scoreB - scoreA;
       });
 
+      // Dedupe by ID
+      const seen = new Set<string>();
+      const uniqueMatches = allMatches.filter(m => {
+        if (seen.has(m.memory.id)) return false;
+        seen.add(m.memory.id);
+        return true;
+      });
+
       return {
-        matches: matches.slice(0, this.state.config.recall_limit),
-        total_searched: result.memories.length,
+        matches: uniqueMatches.slice(0, this.state.config.recall_limit),
+        total_searched: kbMatches.length + (result.memories?.length || 0),
         search_time_ms: Date.now() - startTime,
-        coverage_score: matches.length > 0 ? matches[0].similarity : 0,
+        coverage_score: uniqueMatches.length > 0 ? uniqueMatches[0].similarity : 0,
       };
     } catch (error) {
       console.error('Memory recall failed:', error);
+      
+      // Fall back to KB matches if memory recall fails
+      if (kbMatches.length > 0) {
+        return {
+          matches: kbMatches,
+          total_searched: kbMatches.length,
+          search_time_ms: Date.now() - startTime,
+          coverage_score: kbMatches[0].similarity,
+        };
+      }
+      
       return {
         matches: [],
         total_searched: 0,
@@ -330,6 +423,13 @@ export class SupportBotEngine {
     // Build response from best matches
     const topMatches = recall.matches.slice(0, 3);
     const avgConfidence = topMatches.reduce((sum, m) => sum + m.similarity * m.memory.confidence, 0) / topMatches.length;
+
+    // Track KB usage - count matches that came from knowledge base (IDs starting with known prefixes)
+    const kbPrefixes = ['codelab_', 'marketplace_', 'licensing_', 'general_'];
+    const kbUsed = topMatches.filter(m => kbPrefixes.some(p => m.memory.id.startsWith(p))).length;
+    if (kbUsed > 0) {
+      this.state.stats.kb_matches_used += kbUsed;
+    }
 
     // Check confidence threshold
     if (avgConfidence < this.state.config.escalation_threshold) {
@@ -702,6 +802,10 @@ export class SupportBotEngine {
           data = this.updateConfig(command.config);
           break;
 
+        case 'knowledge_base':
+          data = this.handleKnowledgeBase(command.action, command.query);
+          break;
+
         default:
           throw new Error(`Unknown command type`);
       }
@@ -840,6 +944,68 @@ export class SupportBotEngine {
     return this.state.config;
   }
 
+  private handleKnowledgeBase(
+    action: 'list' | 'stats' | 'search' = 'stats',
+    query?: string
+  ): {
+    action: string;
+    total_entries: number;
+    categories: Record<string, number>;
+    entries?: Array<{ id: string; question: string; category: string; priority: string }>;
+    search_results?: Array<{ id: string; question: string; answer: string; score: number }>;
+  } {
+    const categoryStats: Record<string, number> = {
+      codelab: KNOWLEDGE_CATEGORIES.codelab.length,
+      marketplace: KNOWLEDGE_CATEGORIES.marketplace.length,
+      licensing: KNOWLEDGE_CATEGORIES.licensing.length,
+      general: KNOWLEDGE_CATEGORIES.general.length,
+    };
+
+    const result: ReturnType<typeof this.handleKnowledgeBase> = {
+      action,
+      total_entries: FULL_KNOWLEDGE_BASE.length,
+      categories: categoryStats,
+    };
+
+    if (action === 'list') {
+      result.entries = FULL_KNOWLEDGE_BASE.map(e => ({
+        id: e.id,
+        question: e.question_pattern,
+        category: e.category,
+        priority: e.priority,
+      }));
+    }
+
+    if (action === 'search' && query) {
+      const lowerQuery = query.toLowerCase();
+      const matches = FULL_KNOWLEDGE_BASE
+        .map(entry => {
+          let score = 0;
+          // Keyword match
+          entry.keywords.forEach(k => {
+            if (lowerQuery.includes(k.toLowerCase())) score += 0.2;
+          });
+          // Question pattern match
+          if (entry.question_pattern.toLowerCase().includes(lowerQuery)) score += 0.5;
+          // Content match
+          if (entry.answer.toLowerCase().includes(lowerQuery)) score += 0.3;
+          return { entry, score };
+        })
+        .filter(m => m.score > 0)
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 10);
+
+      result.search_results = matches.map(m => ({
+        id: m.entry.id,
+        question: m.entry.question_pattern,
+        answer: m.entry.answer.substring(0, 200) + (m.entry.answer.length > 200 ? '...' : ''),
+        score: m.score,
+      }));
+    }
+
+    return result;
+  }
+
   // ==========================================================================
   // State Access
   // ==========================================================================
@@ -867,5 +1033,15 @@ export class SupportBotEngine {
 
 export const supportBot = new SupportBotEngine();
 
-// Re-export types
+// Re-export types and knowledge base
 export * from './types';
+export { 
+  FULL_KNOWLEDGE_BASE, 
+  KNOWLEDGE_CATEGORIES,
+  CODELAB_KNOWLEDGE,
+  MARKETPLACE_KNOWLEDGE,
+  LICENSING_KNOWLEDGE,
+  GENERAL_KNOWLEDGE,
+  type KnowledgeEntry,
+  type KnowledgeCategory,
+} from './knowledge-base';
