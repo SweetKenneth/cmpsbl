@@ -1,10 +1,10 @@
 /**
- * Module Status Bar v2026 — Premium module indicators with animated states
- * Visual representation of all 11 substrate modules with enhanced UX
+ * Module Status Bar v7.0.0 — Premium 14-module indicators with animated states
+ * Visual representation of all 14 substrate modules (SEBA Era architecture)
  */
 
 import { useState, useEffect } from 'react';
-import { Brain, MessageSquare, Shield, Zap, Eye, Moon, Cpu, Sparkles, Radio, Key, RefreshCw, Settings, Layers, Plug } from 'lucide-react';
+import { Brain, MessageSquare, Shield, Zap, Eye, Moon, Cpu, Sparkles, Radio, Key, RefreshCw, Settings, Layers, Plug, Accessibility, GitBranch } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -16,7 +16,7 @@ interface ModuleConfig {
   id: string;
   name: string;
   shortName: string;
-  layer: 'kernel' | 'cognitive' | 'operational' | 'admin';
+  layer: 'kernel' | 'cognitive' | 'operational' | 'admin' | 'orchestrator';
   icon: React.ElementType;
   description: string;
   color: string;
@@ -24,22 +24,25 @@ interface ModuleConfig {
 }
 
 const MODULES: ModuleConfig[] = [
-  // Kernel Layer
+  // Kernel Layer (3 modules)
   { id: 'core', name: 'CORE', shortName: 'COR', layer: 'kernel', icon: Cpu, description: 'Kernel orchestration & scheduling', color: 'text-orange-400', glowColor: 'bg-orange-500' },
   { id: 'ripple', name: 'RIPPLE', shortName: 'RIP', layer: 'kernel', icon: Radio, description: 'Message bus & event sourcing', color: 'text-cyan-400', glowColor: 'bg-cyan-500' },
   { id: 'access', name: 'ACCESS', shortName: 'ACC', layer: 'kernel', icon: Key, description: 'Identity, API keys & metering', color: 'text-amber-400', glowColor: 'bg-amber-500' },
-  // Cognitive Layer
+  // Cognitive Layer (3 modules)
   { id: 'brain', name: 'BRAIN', shortName: 'BRN', layer: 'cognitive', icon: Brain, description: 'Cognitive processing & memory', color: 'text-purple-400', glowColor: 'bg-purple-500' },
   { id: 'decode', name: 'DECODE', shortName: 'DEC', layer: 'cognitive', icon: MessageSquare, description: 'Epistemic conversation engine', color: 'text-fuchsia-400', glowColor: 'bg-fuchsia-500' },
   { id: 'nexus', name: 'NEXUS', shortName: 'NEX', layer: 'cognitive', icon: Zap, description: 'AI provider routing', color: 'text-green-400', glowColor: 'bg-green-500' },
-  // Operational Layer
+  // Operational Layer (4 modules)
   { id: 'defense', name: 'DEFENSE', shortName: 'DEF', layer: 'operational', icon: Shield, description: 'Security & threat detection', color: 'text-red-400', glowColor: 'bg-red-500' },
   { id: 'vision', name: 'VISION', shortName: 'VIS', layer: 'operational', icon: Eye, description: 'Observability & telemetry', color: 'text-blue-400', glowColor: 'bg-blue-500' },
   { id: 'dream', name: 'DREAM', shortName: 'DRM', layer: 'operational', icon: Moon, description: 'Dream-Eater consumption engine', color: 'text-violet-400', glowColor: 'bg-violet-500' },
-  // Admin Layer
+  { id: 'integration', name: 'INTEGRATION', shortName: 'INT', layer: 'operational', icon: Plug, description: 'Enterprise adapters & LLM governance', color: 'text-teal-400', glowColor: 'bg-teal-500' },
+  // Admin Layer (3 modules)
   { id: 'system', name: 'SYSTEM', shortName: 'SYS', layer: 'admin', icon: Settings, description: 'Core administration & control', color: 'text-emerald-400', glowColor: 'bg-emerald-500' },
   { id: 'modernizer', name: 'MODERNIZER', shortName: 'MOD', layer: 'admin', icon: Sparkles, description: 'Self-improvement engine', color: 'text-rose-400', glowColor: 'bg-rose-500' },
-  { id: 'integration', name: 'INTEGRATION', shortName: 'INT', layer: 'admin', icon: Plug, description: 'Enterprise adapters & LLM governance', color: 'text-teal-400', glowColor: 'bg-teal-500' },
+  { id: 'inclusive', name: 'INCLUSIVE', shortName: 'INC', layer: 'admin', icon: Accessibility, description: 'WCAG compliance & accessibility', color: 'text-sky-400', glowColor: 'bg-sky-500' },
+  // Orchestrator Layer (1 module)
+  { id: 'cortex', name: 'CORTEX', shortName: 'CTX', layer: 'orchestrator', icon: GitBranch, description: 'Autonomous orchestration & SEBA', color: 'text-indigo-400', glowColor: 'bg-indigo-500' },
 ];
 
 const LAYER_CONFIG = {
@@ -47,6 +50,7 @@ const LAYER_CONFIG = {
   cognitive: { label: 'Cognitive', color: 'text-purple-400', border: 'border-purple-500/30' },
   operational: { label: 'Operational', color: 'text-blue-400', border: 'border-blue-500/30' },
   admin: { label: 'Admin', color: 'text-emerald-400', border: 'border-emerald-500/30' },
+  orchestrator: { label: 'Orchestrator', color: 'text-indigo-400', border: 'border-indigo-500/30' },
 };
 
 function ModuleIndicator({ module, isActive, isLoading, index }: { 
@@ -194,7 +198,7 @@ export function ModuleStatusBar() {
           </div>
           <div>
             <h3 className="text-sm font-semibold text-foreground">Module Status</h3>
-            <p className="text-[10px] text-muted-foreground font-mono">4-layer kernel architecture</p>
+            <p className="text-[10px] text-muted-foreground font-mono">5-layer / 14-module architecture</p>
           </div>
         </div>
         
@@ -233,7 +237,7 @@ export function ModuleStatusBar() {
       </div>
       
       {/* Layer Labels - Desktop only */}
-      <div className="hidden lg:grid lg:grid-cols-4 gap-2 mb-2 px-1">
+      <div className="hidden lg:grid lg:grid-cols-5 gap-2 mb-2 px-1">
         {Object.entries(LAYER_CONFIG).map(([layer, config]) => (
           <div key={layer} className="flex items-center gap-1.5">
             <span className={cn("w-1.5 h-1.5 rounded-full", config.color.replace('text-', 'bg-'))} />
@@ -245,8 +249,8 @@ export function ModuleStatusBar() {
       </div>
       
       {/* Modules Grid - Grouped by layer on desktop */}
-      <div className="hidden lg:grid lg:grid-cols-4 gap-3">
-        {(['kernel', 'cognitive', 'operational', 'admin'] as const).map(layer => (
+      <div className="hidden lg:grid lg:grid-cols-5 gap-3">
+        {(['kernel', 'cognitive', 'operational', 'admin', 'orchestrator'] as const).map(layer => (
           <div key={layer} className={cn("flex flex-col gap-2 p-2 rounded-xl border", LAYER_CONFIG[layer].border, "bg-muted/5")}>
             {modulesByLayer[layer]?.map((module, idx) => (
               <ModuleIndicator
@@ -262,7 +266,7 @@ export function ModuleStatusBar() {
       </div>
       
       {/* Modules Grid - Flat on mobile/tablet */}
-      <div className="lg:hidden grid grid-cols-4 sm:grid-cols-6 gap-2">
+      <div className="lg:hidden grid grid-cols-4 sm:grid-cols-7 gap-2">
         {MODULES.map((module, idx) => (
           <ModuleIndicator
             key={module.id}

@@ -1,13 +1,15 @@
 /**
- * Metrics Grid v2026 — Premium live system metrics with animations
+ * Metrics Grid v7.0.0 — Premium live system metrics with animations
  * Enhanced visual indicators, mini charts, and glassmorphic design
+ * SEBA Era: Includes CLM and autonomous learning metrics
  */
 
-import { Activity, Brain, MessageSquare, Shield, Zap, Moon, TrendingUp, TrendingDown, Database, Cpu, Minus } from 'lucide-react';
+import { Activity, Brain, MessageSquare, Shield, Zap, Moon, TrendingUp, TrendingDown, Database, Cpu, Minus, Sparkles, GitBranch } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useLiveDashboardMetrics, useLiveBrainEvents, useLiveForecasts } from '@/hooks/useSubstrateOSLive';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
+import { Badge } from '@/components/ui/badge';
 
 interface MetricCardProps {
   label: string;
@@ -302,15 +304,21 @@ export function MetricsGrid() {
           </div>
           <div>
             <h3 className="text-sm font-semibold text-foreground">Live Telemetry</h3>
-            <p className="text-[10px] text-muted-foreground font-mono">real-time substrate metrics</p>
+            <p className="text-[10px] text-muted-foreground font-mono">seba era • real-time substrate metrics</p>
           </div>
         </div>
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-          </span>
-          <span className="text-[10px] text-emerald-400 font-mono font-medium">STREAMING</span>
+        <div className="flex items-center gap-2">
+          <Badge variant="outline" className="text-[9px] h-5 border-indigo-500/30 text-indigo-400">
+            <GitBranch className="w-3 h-3 mr-1" />
+            v7.0.0
+          </Badge>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+            </span>
+            <span className="text-[10px] text-emerald-400 font-mono font-medium">STREAMING</span>
+          </div>
         </div>
       </div>
       
@@ -326,7 +334,7 @@ export function MetricsGrid() {
       </div>
       
       {/* Status Panels */}
-      <div className="grid md:grid-cols-2 gap-4">
+      <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
         {/* Orchestrator Status */}
         {dashboard.orchestrator && (
           <StatusPanel title="Orchestrator" icon={Database} color="cyan" delay={0.3}>
@@ -380,6 +388,42 @@ export function MetricsGrid() {
             </div>
           </StatusPanel>
         )}
+        
+        {/* SEBA Status Panel - New for v7.0.0 */}
+        <motion.div 
+          className="p-4 rounded-xl border bg-gradient-to-br from-indigo-500/10 via-muted/20 to-transparent backdrop-blur-xl border-indigo-500/20"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.4 }}
+        >
+          <div className="flex items-center gap-2 mb-4">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center border bg-indigo-500/20 border-indigo-500/40">
+              <Sparkles className="w-4 h-4 text-indigo-400" />
+            </div>
+            <span className="text-xs font-mono uppercase tracking-widest text-indigo-400">SEBA • Bounded Autonomy</span>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div className="p-3 rounded-lg bg-muted/30 border border-border/30">
+              <span className="text-muted-foreground text-[9px] uppercase font-mono block mb-1">Mode</span>
+              <p className="font-medium text-sm text-indigo-400">Autonomous</p>
+            </div>
+            <div className="p-3 rounded-lg bg-muted/30 border border-border/30">
+              <span className="text-muted-foreground text-[9px] uppercase font-mono block mb-1">CLM</span>
+              <div className="flex items-center gap-1">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <p className="font-medium text-sm text-emerald-400">Active</p>
+              </div>
+            </div>
+            <div className="p-3 rounded-lg bg-muted/30 border border-border/30">
+              <span className="text-muted-foreground text-[9px] uppercase font-mono block mb-1">Proposals</span>
+              <p className="font-medium text-sm text-foreground">0 pending</p>
+            </div>
+            <div className="p-3 rounded-lg bg-muted/30 border border-border/30">
+              <span className="text-muted-foreground text-[9px] uppercase font-mono block mb-1">Governance</span>
+              <p className="font-medium text-sm text-emerald-400">Gated</p>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </div>
   );
