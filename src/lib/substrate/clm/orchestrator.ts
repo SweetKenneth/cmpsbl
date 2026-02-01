@@ -384,20 +384,15 @@ Be concise, precise, and focused on practical utility. This learning will be sto
     let edgesCreated = 0;
 
     try {
-      // Create topic node
+      // Create topic node in graph
       const { data: nodeData, error: nodeError } = await supabase
-        .from('brain_knowledge_edges' as any)
+        .from('brain_graph_edges')
         .insert({
           source_id: job.id,
           target_id: job.topic.id,
-          relation_type: 'learning',
+          relation: 'learning',
           weight: learningResult.confidence,
-          metadata: {
-            topic_name: job.topic.name,
-            learning_source: job.source,
-            created_by: 'clm_orchestrator',
-          },
-        } as any);
+        });
 
       if (!nodeError) {
         nodesCreated++;
@@ -405,13 +400,12 @@ Be concise, precise, and focused on practical utility. This learning will be sto
         // Create edges to module references
         for (const moduleRef of job.topic.moduleRefs) {
           try {
-            await supabase.from('brain_knowledge_edges' as any).insert({
+            await supabase.from('brain_graph_edges').insert({
               source_id: job.topic.id,
               target_id: moduleRef.toLowerCase(),
-              relation_type: 'concept_module',
+              relation: 'concept_module',
               weight: 0.7,
-              metadata: { created_by: 'clm_orchestrator' },
-            } as any);
+            });
             edgesCreated++;
           } catch {
             // Non-critical
@@ -421,13 +415,12 @@ Be concise, precise, and focused on practical utility. This learning will be sto
         // Create edges to domain anchors
         for (const anchor of job.topic.domainAnchors) {
           try {
-            await supabase.from('brain_knowledge_edges' as any).insert({
+            await supabase.from('brain_graph_edges').insert({
               source_id: job.topic.id,
               target_id: anchor,
-              relation_type: 'topic_concept',
+              relation: 'topic_concept',
               weight: 0.6,
-              metadata: { created_by: 'clm_orchestrator' },
-            } as any);
+            });
             edgesCreated++;
           } catch {
             // Non-critical

@@ -26,15 +26,15 @@ export async function runGraphPruning(options?: {
   try {
     const cutoffDate = new Date(Date.now() - maxAgeDays * 24 * 3600000).toISOString();
 
-    // Find low-confidence stale edges
+    // Find low-confidence stale edges (uses brain_graph_edges - the actual table)
     const { data: staleEdges } = await supabase
-      .from('brain_knowledge_edges' as any)
-      .select('id, source_id, target_id, weight, metadata')
+      .from('brain_graph_edges')
+      .select('id, source_id, target_id, weight')
       .lt('weight', confidenceThreshold)
       .lt('created_at', cutoffDate)
       .limit(100);
 
-    const edges = ((staleEdges || []) as unknown) as Array<{ id: string; source_id: string; target_id: string; weight: number; metadata: any }>;
+    const edges = ((staleEdges || []) as unknown) as Array<{ id: string; source_id: string; target_id: string; weight: number }>;
 
     if (!dryRun && edges.length) {
       // Create tombstone records
@@ -50,7 +50,7 @@ export async function runGraphPruning(options?: {
 
       // Delete edges
       const ids = edges.map(e => e.id);
-      await supabase.from('brain_knowledge_edges' as any).delete().in('id', ids);
+      await supabase.from('brain_graph_edges').delete().in('id', ids);
       result.nodesDecayed = ids.length;
     }
 
@@ -74,13 +74,13 @@ export async function getGraphMetrics(): Promise<{
 }> {
   try {
     const { count: edgeCount } = await supabase
-      .from('brain_knowledge_edges' as any)
+      .from('brain_graph_edges')
       .select('*', { count: 'exact', head: true });
 
     const { data: learningEdges } = await supabase
-      .from('brain_knowledge_edges' as any)
+      .from('brain_graph_edges')
       .select('weight')
-      .eq('relation_type', 'learning');
+      .eq('relation', 'learning');
 
     const avgWeight = learningEdges?.length
       ? learningEdges.reduce((sum: number, e: any) => sum + (e.weight || 0), 0) / learningEdges.length
