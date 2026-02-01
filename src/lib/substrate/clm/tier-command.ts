@@ -1,6 +1,6 @@
 /**
  * CLM Tier Command
- * v6.7.0 — First-class tier command for CLM governance
+ * v7.0.0 — First-class tier command for CLM governance
  * 
  * Provides:
  * - tier.get → current tier + limits + budget settings

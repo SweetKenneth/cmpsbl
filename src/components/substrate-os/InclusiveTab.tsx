@@ -1,6 +1,6 @@
 /**
  * INCLUSIVE Module Tab — Human Compatibility Pipeline
- * v6.0.0 — WCAG Scanning, Repair, Validation, Profiling, Reporting
+ * v7.0.0 — WCAG Scanning, Repair, Validation, Profiling, Reporting
  * 
  * Full glue layer integration:
  * - SYSTEM: self_scan → system.audit
