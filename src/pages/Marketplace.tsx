@@ -1,7 +1,7 @@
 /**
  * Marketplace — Fiverr/eBay-style browsable template store
  * Complete redesign with visual previews, search, and clear separation
- * v5.5.0 - Enhanced with Bundles, Stacks, and Agency surfaces
+ * v7.0.0 - Enhanced with Bundles, Stacks, and Agency surfaces
  */
 
 import { useState, useMemo } from "react";

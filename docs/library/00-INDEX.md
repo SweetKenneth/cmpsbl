@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Documentation Library
 
-**PromptFluid® CMPSBL OS — FNDTN v6.3.0 Library**
+**PromptFluid® CMPSBL OS — v7.0.0 Library (SEBA Era)**
 
 ---
 
@@ -9,21 +9,21 @@
 | Field | Value |
 |-------|-------|
 | **System Name** | CMPSBL OS Substrate |
-| **Version** | v6.3.0 (FNDTN) |
+| **Version** | v7.0.0 (SEBA) |
 | **Classification** | Cognitive Orchestration Substrate |
 | **Status** | Production (Live System) |
-| **Publication Date** | January 2026 |
+| **Publication Date** | February 2026 |
 | **Author** | Kenneth E. Sweet Jr. ([ORCID](https://orcid.org/0009-0001-4237-1243)) |
 
 ---
 
-## FNDTN v6 Foundations Paper
+## FNDTN v7 — Bounded Autonomy
 
-This library is part of the **FNDTN v6 Foundations** standards package, which presents:
+This library is part of the **FNDTN v7** standards package, which presents:
 
-1. **CMPSBL v6 (FNDTN)** as a reference substrate standard for the substrate class.
+1. **CMPSBL v7 (SEBA)** as a reference substrate standard with bounded autonomy.
 2. **AI Governance Reference Namespace (AIGVRN)** as a governance standard for cognitive substrates.
-3. **LLMS.txt** as a machine-readable context standard we follow and recommend.
+3. **LLMS.txt** as a machine-readable context standard we follow and recommend (designed by llmstxt.org).
 
 **→ [Read the FNDTN v6 Foundations Paper](../FNDTN-v6/fndtn-v6-foundations-paper.md)** ([HTML](../FNDTN-v6/fndtn-v6-foundations-paper.html))
 
@@ -35,9 +35,8 @@ This library is part of the **FNDTN v6 Foundations** standards package, which pr
 |---------|------|--------|
 | v5.5.0 | 2025 | [OSF](https://osf.io/ah7nx/overview) · [Zenodo](https://zenodo.org/records/18379258) |
 | v6.0.0 (FNDTN) | 2026-01-28 | Initial FNDTN release |
-| v6.1.0 | 2026-01-28 | Intelligence Compression Phase 2 |
-| v6.2.0 | 2026-01-29 | Reasoning & Governance Compression |
-| v6.3.0 (FNDTN) | 2026-01-29 | Modernizer Patch 0.7.7 (Current) |
+| v6.3.0 (FNDTN) | 2026-01-29 | Human Compatibility Era |
+| **v7.0.0 (SEBA)** | 2026-02-01 | Bounded Autonomy Era (Current) |
 
 **AI Governance Reference Namespace:** [Zenodo Record](https://zenodo.org/records/18393018)
 
@@ -48,7 +47,7 @@ This library is part of the **FNDTN v6 Foundations** standards package, which pr
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                    CMPSBL OS SUBSTRATE                          │
-│                   v6.0.0 (FNDTN)                                │
+│                   v7.0.0 (SEBA)                                 │
 ├─────────────────────────────────────────────────────────────────┤
 │  Created By:        Kenneth E Sweet Jr                          │
 │  Organization:      PromptFluid®                                │
@@ -172,7 +171,7 @@ Read all documents in order.
   title        = {{CMPSBL OS Substrate: A Cognitive Orchestration 
                    System for Autonomous AI Operations}},
   year         = 2026,
-  version      = {v6.0.0},
+  version      = {v7.0.0},
   publisher    = {PromptFluid},
   url          = {https://promptfluid.com},
   note         = {Production system with 140,000+ lines of code}
@@ -181,5 +180,5 @@ Read all documents in order.
 
 ---
 
-*CMPSBL OS Substrate v6.3.0 — Human Compatibility Era*
+*CMPSBL OS Substrate v7.0.0 — Bounded Autonomy Era*
 *© 2025-2026 PromptFluid®. All rights reserved.*

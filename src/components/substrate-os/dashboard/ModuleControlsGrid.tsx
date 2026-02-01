@@ -1,5 +1,5 @@
 /**
- * Module Controls Grid v6.0.0 - Power house of module control panels
+ * Module Controls Grid v7.0.0 - Power house of module control panels
  * All 14 modules with real-time status and actions
  */
 

@@ -1,5 +1,5 @@
 /**
- * Enhanced Terminal v5.2.0 - BIOHACK EDITION
+ * Enhanced Terminal v7.0.0 - BIOHACK EDITION
  * Space Age Bio-Hacking Neural Interface Terminal
  * Full-featured terminal with comprehensive commands, autocomplete,
  * aliases, macros, scheduling, watch mode, audit trail, and smart suggestions
