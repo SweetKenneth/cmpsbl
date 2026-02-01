@@ -163,6 +163,30 @@ Attribution corrected. Standards adopted, not claimed. Credit where due.
 
 ---
 
+## v7.0.2 — Library Consolidation
+
+```
+CMPSBL — System Log
+Version: v7.0.2
+Status: Live
+
+Consolidated documentation library.
+
+What changed:
+10 individual capability pages (78-87) merged into single comprehensive
+78-CAPABILITIES.md reference document. Individual docs deleted. Library
+index updated. Both docs/library and public/docs/library synchronized.
+
+Structure reduced from 37 docs to 28 docs without information loss.
+Synergy Capabilities now documented in one canonical location alongside
+Archived Edge Function Digestion and capability toggle documentation.
+
+Current posture:
+Library consolidated. One capability page, not ten. Sync complete.
+```
+
+---
+
 ## Placeholder
 
 _Awaiting next major epoch._
