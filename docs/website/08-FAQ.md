@@ -39,11 +39,13 @@ Yes. All license tiers include the ability to deploy on your own infrastructure.
 
 ### How does memory work?
 
-Memory is stored in a dual-tier system:
-- **Hot memory:** Recent context, fast access, 7-day default retention
-- **Cold memory:** Compressed patterns, long-term storage, forever retention
+Memory is stored in a four-tier system:
+- **Hot memory:** Recent context, fast access, 127 records, 7-day retention
+- **Warm memory:** Frequently accessed, intermediate recall, 2,000 records, 30-day retention
+- **Cold memory:** Compressed patterns, long-term storage, 200 records, forever retention
+- **Legacy memory:** Archived, rarely accessed, unlimited capacity, forever retention
 
-The system automatically compresses and optimizes memory over time.
+The system automatically demotes, compresses, and optimizes memory over time. Protected memory types (core identity, principles, safety laws) are locked at 1.0 value with zero decay.
 
 ### What about data privacy?
 
@@ -56,9 +58,10 @@ Your data stays on your infrastructure. We never see your memories, prompts, or 
 ### How much does it cost?
 
 Annual licensing:
-- **Developer:** $15,000/year
-- **Research:** $80,000/year  
-- **Enterprise:** $180,000/year
+- **Developer:** $2,999/year
+- **Team:** $9,999/year
+- **Research:** $19,999/year  
+- **Enterprise:** $49,999/year
 - **Strategic:** Custom
 
 Plus your own AI provider costs (you pay OpenAI, Anthropic, etc. directly).
