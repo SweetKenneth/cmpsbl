@@ -258,6 +258,8 @@ export {
   type SEBACommandResult,
 } from './seba';
 
+export { useSEBA, type UseSEBAReturn } from './seba/useSEBA';
+
 // Cross-Module Capabilities v6.9.0
 export {
   capabilityEngine,
