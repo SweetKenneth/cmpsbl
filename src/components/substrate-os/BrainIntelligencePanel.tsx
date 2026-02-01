@@ -193,140 +193,135 @@ function parseReflectionContent(reflection: any): {
   return result;
 }
 
-// Collapsible Reflection Card Component
+// Collapsible Reflection Card Component with proper expand/scroll
 function ReflectionCard({ reflection }: { reflection: any }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const parsed = parseReflectionContent(reflection);
   
+  const handleToggle = () => {
+    setIsExpanded(prev => !prev);
+  };
+  
   return (
     <div 
       className={cn(
-        "rounded-lg bg-muted/20 text-xs transition-all duration-200 border border-border/30",
+        "rounded-lg bg-muted/20 text-xs transition-all duration-300 border border-border/30",
         isExpanded ? "ring-1 ring-primary/30 bg-muted/30" : "cursor-pointer hover:bg-muted/30"
       )}
     >
       {/* Header - improved touch targets */}
       <button 
         type="button"
-        className="flex items-center justify-between p-3 md:p-3 pb-2 min-h-[44px] cursor-pointer w-full text-left touch-manipulation"
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          setIsExpanded(!isExpanded);
-        }}
+        className="flex items-center justify-between p-3 pb-2 min-h-[48px] cursor-pointer w-full text-left touch-manipulation"
+        onClick={handleToggle}
       >
         <div className="flex items-center gap-2 flex-1 min-w-0">
-          <Brain className="w-4 h-4 md:w-3.5 md:h-3.5 text-primary/70 shrink-0" />
-          <span className="font-medium text-foreground text-sm md:text-xs truncate">{parsed.title}</span>
+          <Brain className="w-4 h-4 text-primary/70 shrink-0" />
+          <span className="font-medium text-foreground text-sm truncate">{parsed.title}</span>
         </div>
         <ChevronDown 
           className={cn(
-            "w-5 h-5 md:w-4 md:h-4 text-muted-foreground/50 shrink-0 transition-transform duration-200 ml-2",
+            "w-5 h-5 text-muted-foreground/50 shrink-0 transition-transform duration-300 ml-2",
             isExpanded && "rotate-180"
           )} 
         />
       </button>
       
-      {/* Summary Preview - collapsed shows first 2 lines on mobile, 3 on desktop */}
-      <button 
-        type="button"
-        className="px-3 pb-3 w-full text-left touch-manipulation"
-        onClick={(e) => {
-          if (!isExpanded) {
-            e.preventDefault();
-            e.stopPropagation();
-            setIsExpanded(true);
-          }
-        }}
-      >
-        <FormattedText 
-          text={parsed.summary || 'Processing reflection data...'} 
-          className={cn(
-            "text-muted-foreground leading-relaxed text-sm md:text-xs block",
-            !isExpanded && "line-clamp-2 md:line-clamp-3"
-          )}
-        />
-      </button>
+      {/* Summary Preview - collapsed shows first 2 lines */}
+      {!isExpanded && (
+        <button 
+          type="button"
+          className="px-3 pb-3 w-full text-left touch-manipulation"
+          onClick={handleToggle}
+        >
+          <FormattedText 
+            text={parsed.summary || 'Processing reflection data...'} 
+            className="text-muted-foreground leading-relaxed text-sm block line-clamp-2"
+          />
+        </button>
+      )}
       
-      {/* Expanded content - FULL readable view with scrolling */}
+      {/* Expanded content - FULL readable view with proper scrolling */}
       {isExpanded && (
-        <ScrollArea className="max-h-[50vh] border-t border-border/30">
-          <div className="px-3 py-4 space-y-4">
-            {/* Full Summary if longer */}
-            {parsed.summary && parsed.summary.length > 150 && (
-              <div>
-                <p className="text-xs md:text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Full Summary</p>
-                <FormattedText 
-                  text={parsed.summary} 
-                  className="text-sm md:text-xs text-muted-foreground leading-relaxed block"
-                />
-              </div>
-            )}
-            
-            {/* Metrics - displayed as readable list with mobile-friendly grid */}
-            {parsed.metrics.length > 0 && (
-              <div>
-                <p className="text-xs md:text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">System Metrics</p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {parsed.metrics.map((m, idx) => (
-                    <div key={idx} className="bg-background/50 rounded px-3 py-2 flex justify-between items-center">
-                      <span className="text-sm md:text-xs text-muted-foreground/70">{m.label}</span>
-                      <span className={cn(
-                        "text-sm md:text-xs font-medium",
-                        m.value === 'No data' ? 'text-muted-foreground/50' : 'text-foreground'
-                      )}>
-                        {m.value}
-                      </span>
-                    </div>
-                  ))}
+        <div className="border-t border-border/30 overflow-hidden">
+          <div className="max-h-[400px] overflow-y-auto overscroll-contain">
+            <div className="px-3 py-4 space-y-4">
+              {/* Full Summary if longer */}
+              {parsed.summary && parsed.summary.length > 150 && (
+                <div>
+                  <p className="text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Full Summary</p>
+                  <FormattedText 
+                    text={parsed.summary} 
+                    className="text-sm text-muted-foreground leading-relaxed block"
+                  />
                 </div>
-              </div>
-            )}
-            
-            {/* Insights - FULL TEXT with bold formatting */}
-            {parsed.insights.length > 0 && (
-              <div>
-                <p className="text-xs md:text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Key Insights</p>
-                <ul className="space-y-3">
-                  {parsed.insights.map((insight, idx) => (
-                    <li key={idx} className="flex items-start gap-3">
-                      <Lightbulb className="w-4 h-4 md:w-3.5 md:h-3.5 text-amber-500/70 mt-0.5 shrink-0" />
-                      <FormattedText 
-                        text={insight} 
-                        className="text-sm md:text-xs text-muted-foreground leading-relaxed"
-                      />
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            
-            {/* Recommendations - FULL TEXT with bold formatting */}
-            {parsed.recommendations && (
-              <div>
-                <p className="text-xs md:text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Recommendations</p>
-                <FormattedText 
-                  text={parsed.recommendations} 
-                  className="text-sm md:text-xs text-muted-foreground leading-relaxed block"
-                />
-              </div>
-            )}
-            
-            {/* Top Memories - readable with better mobile sizing */}
-            {reflection.top_memories && Array.isArray(reflection.top_memories) && reflection.top_memories.length > 0 && (
-              <div>
-                <p className="text-xs md:text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Associated Memories</p>
-                <div className="space-y-2">
-                  {reflection.top_memories.map((mem: any, idx: number) => (
-                    <div key={idx} className="bg-background/30 rounded px-3 py-2.5 text-sm md:text-xs text-muted-foreground/80">
-                      <FormattedText text={typeof mem === 'string' ? mem : extractReadableText(mem)} />
-                    </div>
-                  ))}
+              )}
+              
+              {/* Metrics - displayed as readable list */}
+              {parsed.metrics.length > 0 && (
+                <div>
+                  <p className="text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">System Metrics</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {parsed.metrics.map((m, idx) => (
+                      <div key={idx} className="bg-background/50 rounded px-3 py-2 flex justify-between items-center">
+                        <span className="text-sm text-muted-foreground/70">{m.label}</span>
+                        <span className={cn(
+                          "text-sm font-medium",
+                          m.value === 'No data' ? 'text-muted-foreground/50' : 'text-foreground'
+                        )}>
+                          {m.value}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+              
+              {/* Insights - FULL TEXT with bold formatting */}
+              {parsed.insights.length > 0 && (
+                <div>
+                  <p className="text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Key Insights</p>
+                  <ul className="space-y-3">
+                    {parsed.insights.map((insight, idx) => (
+                      <li key={idx} className="flex items-start gap-3">
+                        <Lightbulb className="w-4 h-4 text-amber-500/70 mt-0.5 shrink-0" />
+                        <FormattedText 
+                          text={insight} 
+                          className="text-sm text-muted-foreground leading-relaxed"
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              
+              {/* Recommendations - FULL TEXT with bold formatting */}
+              {parsed.recommendations && (
+                <div>
+                  <p className="text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Recommendations</p>
+                  <FormattedText 
+                    text={parsed.recommendations} 
+                    className="text-sm text-muted-foreground leading-relaxed block"
+                  />
+                </div>
+              )}
+              
+              {/* Top Memories - readable with better mobile sizing */}
+              {reflection.top_memories && Array.isArray(reflection.top_memories) && reflection.top_memories.length > 0 && (
+                <div>
+                  <p className="text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wide mb-2">Associated Memories</p>
+                  <div className="space-y-2">
+                    {reflection.top_memories.map((mem: any, idx: number) => (
+                      <div key={idx} className="bg-background/30 rounded px-3 py-2.5 text-sm text-muted-foreground/80">
+                        <FormattedText text={typeof mem === 'string' ? mem : extractReadableText(mem)} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-        </ScrollArea>
+        </div>
       )}
     </div>
   );
