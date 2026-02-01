@@ -213,7 +213,7 @@ Enterprise customers may conduct penetration testing with:
 ### Bug Bounty
 
 We maintain a responsible disclosure program:
-- security@cmpsbl.com for vulnerability reports
+- PromptFluid@gmail.com for vulnerability reports
 - Recognition for valid findings
 - Coordinated disclosure timeline
 
@@ -233,9 +233,8 @@ We maintain a responsible disclosure program:
 
 | Purpose | Contact |
 |---------|---------|
-| **Vulnerability Report** | security@cmpsbl.com |
-| **Compliance Questions** | compliance@cmpsbl.com |
-| **Enterprise Security** | enterprise@cmpsbl.com |
+| **All Security Inquiries** | PromptFluid@gmail.com |
+| **Web** | https://cmpsbl.com |
 
 ---
 

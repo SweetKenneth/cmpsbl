@@ -232,8 +232,7 @@ const substrate = new Substrate({
 ## Support
 
 - **Documentation:** https://cmpsbl.com/docs
-- **Email:** support@cmpsbl.com
-- **Enterprise:** enterprise@cmpsbl.com
+- **Email:** PromptFluid@gmail.com
 
 ---
 
