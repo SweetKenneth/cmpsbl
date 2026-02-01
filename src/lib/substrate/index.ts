@@ -219,6 +219,20 @@ export {
 
 export { useCLM, type UseCLMReturn } from './clm/useCLM';
 
+// CLM Module Hooks v7.0.0
+export {
+  registerModuleHooks,
+  getRegisteredModules,
+  getModuleHook,
+  runModuleLearningCycle,
+  getAllModuleKPIs,
+  runModuleReflection,
+  type SubstrateModule as CLMSubstrateModule,
+  type ModuleKPIs,
+  type ReflectionResult as CLMReflectionResult,
+  type ModuleLearningHook,
+} from './clm/module-hooks';
+
 // Module-Specific CLM v6.8.0
 export {
   moduleCLM,
