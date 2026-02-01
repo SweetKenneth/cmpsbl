@@ -292,6 +292,58 @@ class SubstrateClient {
     /** v3.2.0: Extract structured intent from a message */
     intent: (message: string) =>
       this.invoke({ module: 'decode', action: 'intent', payload: { message } }),
+    
+    // ═══ v7.1.0: PERSONALITY SUBSYSTEM ═══
+    // Interpretive filters only — do NOT affect execution, permissions, or memory
+    
+    /** Personality subsystem - access via personalityEngine for full API */
+    personality: {
+      /** List all personality profiles */
+      list: async () => {
+        const { personalityEngine } = await import('@/lib/substrate/decode');
+        return { success: true, data: personalityEngine.list() };
+      },
+      /** Get current personality state */
+      get: async () => {
+        const { personalityEngine } = await import('@/lib/substrate/decode');
+        return { success: true, data: personalityEngine.get() };
+      },
+      /** Set personality profile */
+      set: async (profile: string) => {
+        const { personalityEngine } = await import('@/lib/substrate/decode');
+        return { success: true, data: personalityEngine.set(profile as any) };
+      },
+      /** Enable auto-detection */
+      auto: async () => {
+        const { personalityEngine } = await import('@/lib/substrate/decode');
+        return { success: true, data: personalityEngine.enableAuto() };
+      },
+      /** Lock current profile */
+      lock: async () => {
+        const { personalityEngine } = await import('@/lib/substrate/decode');
+        return { success: true, data: personalityEngine.lock() };
+      },
+      /** Unlock profile */
+      unlock: async () => {
+        const { personalityEngine } = await import('@/lib/substrate/decode');
+        return { success: true, data: personalityEngine.unlock() };
+      },
+      /** Detect personality from text */
+      detect: async (text: string) => {
+        const { personalityEngine } = await import('@/lib/substrate/decode');
+        return { success: true, data: personalityEngine.detect(text) };
+      },
+      /** Interpret with personality lens */
+      interpret: async (text: string) => {
+        const { personalityEngine } = await import('@/lib/substrate/decode');
+        return { success: true, data: personalityEngine.interpret(text) };
+      },
+      /** Reset to neutral */
+      reset: async () => {
+        const { personalityEngine } = await import('@/lib/substrate/decode');
+        return { success: true, data: personalityEngine.reset() };
+      },
+    },
   };
 
   // Defense Module — Security & Threat Analysis

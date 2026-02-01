@@ -334,5 +334,19 @@ export {
 
 export { useSupportBot, type UseSupportBotReturn } from './support-bot/useSupportBot';
 
+// DECODE Personality Profiles v7.1.0
+export {
+  personalityEngine,
+  PersonalityEngineClient,
+  PERSONALITY_PROFILES,
+  type PersonalityProfile,
+  type PersonalityConfig,
+  type PersonalityState,
+  type PersonalityDetectionResult,
+  type DecodeInterpretation,
+} from './decode';
+
+export { useDecodePersonality, type UseDecodePersonalityReturn } from './decode/useDecodePersonality';
+
 // Re-export substrate client from lib
 export { substrate, type SubstrateModule, type SubstrateRequest, type SubstrateResponse } from '../substrate';

@@ -73,6 +73,16 @@ export const DECODE_COMMANDS: CommandDefinition[] = [
   { command: 'decode.dream', description: 'Generate dream content', category: 'decode', icon: Moon, requiresOperator: true },
   { command: 'decode.propose', description: 'Submit substrate proposal', category: 'decode', icon: MessageSquare, requiresOperator: true, args: '<idea>' },
   { command: 'decode.learn', description: 'Ingest learning content', category: 'decode', icon: Brain, requiresOperator: true, args: '<content> [source]' },
+  // Personality subsystem (v7.1.0) - interpretive filters only
+  { command: 'decode.personality.list', description: 'List personality profiles', category: 'decode', icon: MessageSquare, requiresOperator: false },
+  { command: 'decode.personality.get', description: 'Get current personality', category: 'decode', icon: MessageSquare, requiresOperator: false },
+  { command: 'decode.personality.set', description: 'Set personality profile', category: 'decode', icon: MessageSquare, requiresOperator: true, args: '<profile>', example: 'decode.personality.set technical' },
+  { command: 'decode.personality.auto', description: 'Enable auto-detection', category: 'decode', icon: MessageSquare, requiresOperator: true },
+  { command: 'decode.personality.lock', description: 'Lock current profile', category: 'decode', icon: MessageSquare, requiresOperator: true },
+  { command: 'decode.personality.unlock', description: 'Unlock profile switching', category: 'decode', icon: MessageSquare, requiresOperator: true },
+  { command: 'decode.personality.detect', description: 'Detect personality from text', category: 'decode', icon: MessageSquare, requiresOperator: false, args: '<text>', example: 'decode.personality.detect "why is this broken again?!"' },
+  { command: 'decode.personality.interpret', description: 'Interpret with personality lens', category: 'decode', icon: MessageSquare, requiresOperator: false, args: '<text>', example: 'decode.personality.interpret "explain how this works"' },
+  { command: 'decode.personality.reset', description: 'Reset to neutral profile', category: 'decode', icon: MessageSquare, requiresOperator: true },
 ];
 
 export const DEFENSE_COMMANDS: CommandDefinition[] = [
