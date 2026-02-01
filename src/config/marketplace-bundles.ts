@@ -1,6 +1,7 @@
 /**
- * Marketplace Bundles & Stacks Configuration
- * Volume packs and developer outcome recipes with 20-30% discounts
+ * Marketplace Bundles & Stacks Configuration v7.0.0
+ * Market-aligned pricing based on competitor research (Jan 2026)
+ * Volume packs and developer outcome recipes with 25-35% discounts
  */
 
 import type { Template } from '@/data/templates';
@@ -64,6 +65,7 @@ export type CapabilityTag = keyof typeof CAPABILITY_TAGS;
 
 // ============================================
 // TEMPLATE STACKS - Developer Outcome Recipes
+// Market-aligned: $99-$199 (25-30% savings)
 // ============================================
 export interface TemplateStack {
   id: string;
@@ -75,6 +77,7 @@ export interface TemplateStack {
   discount: number; // 0.20 = 20% off
   price_id?: string;
   product_id?: string;
+  amount: number; // cents
 }
 
 export const TEMPLATE_STACKS: TemplateStack[] = [
@@ -93,6 +96,7 @@ export const TEMPLATE_STACKS: TemplateStack[] = [
     discount: 0.25,
     product_id: 'prod_TrTXD7AJqm3FHZ',
     price_id: 'price_1StkaXQ7FtTiAL4a58DIgguO',
+    amount: 14900, // $149 (was ~$1,100)
   },
   {
     id: 'stack-support-agent',
@@ -109,6 +113,7 @@ export const TEMPLATE_STACKS: TemplateStack[] = [
     discount: 0.25,
     product_id: 'prod_TrTXdxrGQFR9dX',
     price_id: 'price_1StkaZQ7FtTiAL4a6bayDLa9',
+    amount: 14900, // $149
   },
   {
     id: 'stack-learning-platform',
@@ -125,6 +130,7 @@ export const TEMPLATE_STACKS: TemplateStack[] = [
     discount: 0.30,
     product_id: 'prod_TrTX07cvn2Cja9',
     price_id: 'price_1StkaaQ7FtTiAL4a7cOKlhD1',
+    amount: 19900, // $199
   },
   {
     id: 'stack-secure-enterprise',
@@ -141,6 +147,7 @@ export const TEMPLATE_STACKS: TemplateStack[] = [
     discount: 0.25,
     product_id: 'prod_TrTXGcYdqrJmeO',
     price_id: 'price_1StkacQ7FtTiAL4a3D3NMPo6',
+    amount: 14900, // $149
   },
 ];
 

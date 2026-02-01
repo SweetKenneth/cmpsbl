@@ -1,72 +1,77 @@
 /**
- * Marketplace Product Configuration
- * Stripe product/price mappings for templates and OS
- * CMPSBL: THE Solution for AI Chatbot Behavioral Drift
- * Updated: 50+ templates with drift prevention focus
+ * Marketplace Product Configuration v7.0.0
+ * Market-aligned pricing based on competitor research (Jan 2026)
+ * 
+ * Competitor Benchmarks:
+ * - Envato/CodeCanyon Templates: $19-$99
+ * - AI SaaS Templates: $49-$149
+ * - Premium Design Systems: $79-$199
+ * 
+ * CMPSBL Positioning: Premium cognitive AI templates at accessible prices
  */
 
 export const MARKETPLACE_PRODUCTS = {
-  // Substrate OS License - $3,999
+  // Substrate OS License - $999 (was $3,999)
   os_license: {
     product_id: 'prod_TrNHM2ONKXkipj',
     price_id: 'price_1SteXGQ7FtTiAL4aFfqLPytS',
-    amount: 399900, // cents
+    amount: 99900, // $999 (was $3,999)
     name: 'Substrate OS License',
-    description: 'Full promptfluid® Substrate OS with BYOK support. 14 modules, single-install license with domain binding.',
+    description: 'Full CMPSBL Substrate OS with BYOK support. 14 modules, single-install license with domain binding.',
     includes: ['Core OS', '14 Modules', 'BYOK Configuration', 'Single-Install License', 'Domain Binding'],
   },
   
-  // World Engine - $1,999
+  // World Engine - $499 (was $1,999)
   world_engine: {
     product_id: 'prod_TrNHPBGWkXxyQr',
     price_id: 'price_1SteXHQ7FtTiAL4ae0ZrtL9S',
-    amount: 199900,
+    amount: 49900, // $499 (was $1,999)
     name: 'World Engine Complete',
     description: 'Full game world engine with NPC memory, physics integration, dream cycles, and persistent world state.',
     includes: ['NPC Memory System', 'Dream Cycles', 'Physics Integration', 'World Persistence', 'Multi-Agent Coordination'],
   },
 
-  // Template tiers by difficulty (tripled from original)
+  // Template tiers - Market-aligned pricing
   templates: {
     starter: {
       product_id: 'prod_TrNIeWc11aZXQH',
       price_id: 'price_1SteXUQ7FtTiAL4aC3pLc3U2',
-      amount: 2700, // $27 (was $9)
+      amount: 1900, // $19 (was $27)
       label: 'Starter',
       difficulty: 'beginner',
     },
     advanced: {
       product_id: 'prod_TrNIEVGUUZAIui',
       price_id: 'price_1SteXVQ7FtTiAL4aa5XLW33U',
-      amount: 8700, // $87 (was $29)
+      amount: 4900, // $49 (was $87)
       label: 'Advanced',
       difficulty: 'intermediate',
     },
     enterprise: {
       product_id: 'prod_TrNIAiAbjgJWCz',
       price_id: 'price_1SteXWQ7FtTiAL4aKfd2qxqN',
-      amount: 14700, // $147 (was $49)
+      amount: 7900, // $79 (was $147)
       label: 'Enterprise',
       difficulty: 'advanced',
     },
     premium: {
       product_id: 'prod_TrNIgrPVXQo9DL',
       price_id: 'price_1SteXRQ7FtTiAL4a6trXwxvb',
-      amount: 29900, // $299
+      amount: 9900, // $99 (was $299)
       label: 'Premium',
       difficulty: 'premium',
     },
     elite: {
       product_id: 'prod_TrNHcsTcQp0T1a',
       price_id: 'price_1SteXPQ7FtTiAL4a3hCkMTpo',
-      amount: 39900, // $399
+      amount: 12900, // $129 (was $399)
       label: 'Elite',
       difficulty: 'elite',
     },
     pro: {
       product_id: 'prod_TrNIfBeckAvirt',
       price_id: 'price_1SteXSQ7FtTiAL4azZw0I4bb',
-      amount: 49900, // $499
+      amount: 14900, // $149 (was $499)
       label: 'Pro',
       difficulty: 'pro',
     },

@@ -1,13 +1,19 @@
 /**
- * RCKBL (Rockable) Stripe Product Configuration
+ * RCKBL (Rockable) Stripe Product Configuration v7.0.0
+ * Market-aligned pricing based on competitor research (Jan 2026)
+ * 
+ * Competitor Benchmarks:
+ * - Cloudflare Bot Management: $25-$100/mo
+ * - DataDome: Custom ($5k-$50k/yr)
+ * - PerimeterX: Custom enterprise
  */
 
 export const RCKBL_PRODUCTS = {
   base: {
     monthly: {
-      price_id: 'price_1SOMBzQ7FtTiAL4aGf0eVISx', // Update after Stripe product creation
+      price_id: 'price_1SOMBzQ7FtTiAL4aGf0eVISx',
       product_id: 'prod_TL2GWmbIXRKePm',
-      amount: 900,
+      amount: 900, // $9/mo - entry point
       interval: 'month' as const,
       features: [
         '10,000 requests per month',
@@ -23,7 +29,7 @@ export const RCKBL_PRODUCTS = {
     monthly: {
       price_id: 'price_1SOM96Q7FtTiAL4aYbLYDXDV',
       product_id: 'prod_TL2DLZvV10hql4',
-      amount: 3900,
+      amount: 3900, // $39/mo
       interval: 'month' as const,
       promo_first_month: 100, // $1 first month
       features: [
@@ -43,5 +49,5 @@ export const RCKBL_PRODUCTS = {
 } as const;
 
 export function formatPrice(cents: number): string {
-  return `$${(cents / 100).toFixed(2)}`;
+  return `$${(cents / 100).toFixed(0)}`;
 }
