@@ -1,7 +1,62 @@
 /**
- * promptfluid® System Module v7.0.0
- * Administration, Healing, and Health Monitoring
+ * System Module Exports
+ * v7.0.0 — Administration, Healing, and Production Hardening
  */
+
+// Error handling
+export {
+  createAppError,
+  fromError,
+  isAppError,
+  isRetryableError,
+  formatErrorForUI,
+  type AppError,
+  type ErrorCode,
+} from './errors';
+
+// Retry policy
+export {
+  withRetry,
+  sleep,
+  createRetryableOperation,
+  calculateDelay,
+  RetryPresets,
+  type RetryConfig,
+} from './retry';
+
+// Logging
+export { log } from './log';
+
+// Tracing
+export {
+  generateTraceId,
+  generateSpanId,
+  createTraceContext,
+  getContext,
+  updateContext,
+  endContext,
+  cleanupOldTraces,
+  withTrace,
+  extractTraceId,
+  getActiveTraceCount,
+  type TraceContext,
+} from './trace';
+
+// Caching
+export {
+  cacheManager,
+  CacheTTL,
+  withCache,
+  type CacheEntry,
+} from './cache';
+
+// Rate limiting
+export {
+  rateLimiter,
+  RateLimitPresets,
+  enforceRateLimit,
+  type RateLimitConfig,
+} from './rateLimit';
 
 // Health monitoring
 export {
@@ -46,7 +101,7 @@ export { getLocalModeStatus } from './localMode';
 
 // Version info
 export const SYSTEM_VERSION = '7.0.0';
-export const SYSTEM_CODENAME = 'Admin';
+export const SYSTEM_CODENAME = 'Production';
 
 export type SystemStatus = 'healthy' | 'degraded' | 'critical' | 'maintenance';
 

@@ -1,10 +1,10 @@
 /**
  * Event Stream — Live system events feed
- * Real-time log viewer with filtering
+ * Real-time log viewer with filtering and LIVE indicator
  */
 
-import { useState } from 'react';
-import { Radio, Filter, ChevronDown, Brain, MessageSquare, Shield, Zap, Eye, Moon } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Radio, Filter, ChevronDown, Brain, MessageSquare, Shield, Zap, Eye, Moon, Activity } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -25,6 +25,10 @@ const MODULE_ICONS: Record<string, React.ElementType> = {
   nexus: Zap,
   vision: Eye,
   dream: Moon,
+  terminal: Activity,
+  atlas: Activity,
+  seba: Activity,
+  encoded: Activity,
 };
 
 const MODULE_COLORS: Record<string, string> = {
@@ -34,20 +38,42 @@ const MODULE_COLORS: Record<string, string> = {
   nexus: 'text-green-400 bg-green-500/10 border-green-500/30',
   vision: 'text-blue-400 bg-blue-500/10 border-blue-500/30',
   dream: 'text-violet-400 bg-violet-500/10 border-violet-500/30',
+  terminal: 'text-slate-400 bg-slate-500/10 border-slate-500/30',
+  atlas: 'text-rose-400 bg-rose-500/10 border-rose-500/30',
+  seba: 'text-orange-400 bg-orange-500/10 border-orange-500/30',
+  encoded: 'text-teal-400 bg-teal-500/10 border-teal-500/30',
 };
 
-const ALL_MODULES = ['brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'core', 'ripple', 'access', 'system', 'modernizer', 'integration'];
+const OUTCOME_COLORS: Record<string, string> = {
+  started: 'text-blue-400',
+  succeeded: 'text-green-400',
+  failed: 'text-red-400',
+  skipped: 'text-muted-foreground',
+};
+
+const ALL_MODULES = ['brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'core', 'ripple', 'access', 'system', 'modernizer', 'integration', 'terminal', 'atlas', 'seba', 'encoded'];
 
 export function EventStream() {
   const [selectedModules, setSelectedModules] = useState<string[]>(ALL_MODULES);
+  const [isLive, setIsLive] = useState(false);
   const brainEvents = useLiveBrainEvents();
+  
+  // Detect if events are live (updated within last 10 seconds)
+  useEffect(() => {
+    if (brainEvents.data?.fetchedAt) {
+      const timeSinceFetch = Date.now() - brainEvents.data.fetchedAt;
+      setIsLive(timeSinceFetch < 10000);
+    }
+  }, [brainEvents.data?.fetchedAt]);
   
   // Map brain_events to the format expected by the UI
   const events = brainEvents.data?.events?.map(event => ({
+    id: event.id,
     module: event.module || 'system',
     action: event.event_type || 'unknown',
     timestamp: event.created_at,
-    outcome: event.outcome,
+    outcome: event.outcome || 'succeeded',
+    trace_id: event.trace_id,
     data: event.data
   })) || [];
   
@@ -73,14 +99,30 @@ export function EventStream() {
       return '--:--:--';
     }
   };
+
+  const formatRelativeTime = (timestamp: string) => {
+    try {
+      const diff = Date.now() - new Date(timestamp).getTime();
+      if (diff < 60000) return `${Math.floor(diff / 1000)}s ago`;
+      if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`;
+      return formatTime(timestamp);
+    } catch {
+      return '--:--:--';
+    }
+  };
   
   return (
     <div className="border border-border/50 rounded-xl bg-card/30 overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-border/30 bg-muted/20">
         <div className="flex items-center gap-2">
-          <Radio className="w-4 h-4 text-primary animate-pulse" />
+          <Radio className={cn("w-4 h-4", isLive ? "text-green-400 animate-pulse" : "text-muted-foreground")} />
           <span className="text-sm font-medium">Event Stream</span>
+          {isLive && (
+            <Badge variant="outline" className="text-[10px] h-5 font-mono text-green-400 border-green-500/30 bg-green-500/10">
+              LIVE
+            </Badge>
+          )}
           <Badge variant="outline" className="text-[10px] h-5 font-mono">
             {filteredLogs.length} events
           </Badge>
@@ -89,7 +131,7 @@ export function EventStream() {
         {/* Filter Dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm" className="h-7 gap-1">
+            <Button variant="ghost" size="sm" className="h-7 gap-1 touch-manipulation">
               <Filter className="w-3 h-3" />
               <span className="text-xs">Filter</span>
               <ChevronDown className="w-3 h-3" />
@@ -97,7 +139,7 @@ export function EventStream() {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-40">
             {ALL_MODULES.map((module) => {
-              const Icon = MODULE_ICONS[module];
+              const Icon = MODULE_ICONS[module] || Radio;
               return (
                 <DropdownMenuCheckboxItem
                   key={module}
@@ -124,25 +166,49 @@ export function EventStream() {
                 <Skeleton className="h-4 flex-1" />
               </div>
             ))
+          ) : brainEvents.isError ? (
+            <div className="flex flex-col items-center justify-center h-[240px] text-center">
+              <Shield className="w-8 h-8 text-red-400/50 mb-3" />
+              <p className="text-sm text-red-400">
+                Failed to load events
+              </p>
+              <p className="text-xs text-muted-foreground/60 mt-1">
+                Check connection and try again
+              </p>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="mt-3 touch-manipulation"
+                onClick={() => brainEvents.refetch()}
+              >
+                Retry
+              </Button>
+            </div>
           ) : filteredLogs.length > 0 ? (
             filteredLogs.map((event, idx) => {
               const moduleKey = event.module.toLowerCase();
               const Icon = MODULE_ICONS[moduleKey] || Radio;
               const colorClass = MODULE_COLORS[moduleKey] || 'text-muted-foreground bg-muted/30 border-border/30';
+              const outcomeColor = OUTCOME_COLORS[event.outcome] || '';
               
               return (
-                <div 
-                  key={idx}
+                <button 
+                  type="button"
+                  key={event.id || idx}
                   className={cn(
-                    "flex items-center gap-3 p-2 rounded-lg text-sm",
-                    "hover:bg-muted/30 transition-colors",
+                    "flex items-center gap-3 p-2 rounded-lg text-sm w-full text-left",
+                    "hover:bg-muted/30 transition-colors touch-manipulation",
                     "animate-in slide-in-from-right-2 duration-200"
                   )}
                   style={{ animationDelay: `${idx * 20}ms` }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    // Could open event details modal here
+                  }}
                 >
                   {/* Timestamp */}
-                  <span className="text-[10px] font-mono text-muted-foreground/70 w-16 shrink-0">
-                    {formatTime(event.timestamp)}
+                  <span className="text-[10px] font-mono text-muted-foreground/70 w-14 shrink-0">
+                    {formatRelativeTime(event.timestamp)}
                   </span>
                   
                   {/* Module Badge */}
@@ -154,11 +220,18 @@ export function EventStream() {
                     {event.module}
                   </Badge>
                   
-                  {/* Action */}
-                  <span className="text-muted-foreground truncate">
+                  {/* Action + Outcome */}
+                  <span className={cn("truncate", outcomeColor)}>
                     {event.action}
                   </span>
-                </div>
+
+                  {/* Trace ID (if present) */}
+                  {event.trace_id && (
+                    <span className="text-[9px] font-mono text-muted-foreground/50 ml-auto shrink-0">
+                      {event.trace_id.slice(0, 12)}
+                    </span>
+                  )}
+                </button>
               );
             })
           ) : (
