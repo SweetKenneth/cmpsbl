@@ -231,7 +231,7 @@ CMPSBL v6 (FNDTN) is presented as part of a **three-surface standard stack**:
 
 For the complete standards paper, see: **[FNDTN v6 Foundations Paper](../FNDTN-v6/fndtn-v6-foundations-paper.md)**
 
-**Machine Context:** The substrate publishes `/llms.txt` following the llmstxt.dev pattern, enabling AI systems to discover and reason about CMPSBL capabilities, constraints, and governance context.
+**Machine Context:** The substrate publishes `/llms.txt` following the [llmstxt.org](https://llmstxt.org) protocol, enabling AI systems to discover and reason about CMPSBL capabilities, constraints, and governance context.
 
 **Governance Namespace:** CMPSBL aligns with the AI Governance Reference Namespace at [AIGVRN.com](https://aigvrn.com), providing shared vocabulary across 12 surfaces: Governance, Standards, Certification, Verification, Policy, Compliance, Security, Safety, Regulation, Sovereignty, Privacy, and Control.
 

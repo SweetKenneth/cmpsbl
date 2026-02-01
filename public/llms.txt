@@ -4,9 +4,9 @@
 
 ## STANDARD CLAIM
 
-LLMS.txt is a machine-readable specification format for AI systems.
+LLMS.txt is a machine-readable specification format for AI systems, designed by llmstxt.org.
 
-CMPSBL Substrate OS FNDTN v6.0.0 implements LLMS.txt as its primary machine context.
+CMPSBL Substrate OS FNDTN v6.0.0 adopts and implements LLMS.txt as its primary machine context.
 
 **WE RECOMMEND** that web designers, SaaS builders, and system architects include an LLMS.txt file at the root of their domains to describe AI capabilities, constraints, and governance context. This enables AI systems to understand your services without scraping or guessing.
 
@@ -211,8 +211,8 @@ To implement LLMS.txt for your own service:
 4. Reference governance context if applicable
 5. Keep the format machine-parseable (Markdown-like structure)
 
-This standard is inspired by robots.txt and humans.txt patterns.
-Following: https://llmstxt.dev
+This standard was created by llmstxt.org, inspired by robots.txt and humans.txt patterns.
+Following: https://llmstxt.org
 
 ---
 

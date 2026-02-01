@@ -139,6 +139,30 @@ The substrate digests. The substrate toggles. The substrate remembers.
 
 ---
 
+## v7.0.1 — Attribution Correction
+
+```
+CMPSBL — System Log
+Version: v7.0.1
+Status: Live
+
+Corrected protocol attributions to honor original creators.
+
+What changed:
+LLMs.txt attribution updated across all documentation, pages, and llms.txt file
+to properly credit llmstxt.org as the protocol's original designers. Similarly,
+humans.txt attribution updated to credit humanstxt.org. PromptFluid adopts and
+recommends these standards rather than claiming creation.
+
+Files updated: LlmsTxt.tsx, HumansTxt.tsx, Blog.tsx, blog article, public/llms.txt,
+public/humans.txt, glossary, foundations paper (md + html), executive summary.
+
+Current posture:
+Attribution corrected. Standards adopted, not claimed. Credit where due.
+```
+
+---
+
 ## Placeholder
 
 _Awaiting next major epoch._

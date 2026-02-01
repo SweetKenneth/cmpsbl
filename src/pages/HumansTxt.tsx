@@ -13,7 +13,9 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 
-const HUMANS_TXT_CONTENT = `/* TEAM */
+const HUMANS_TXT_CONTENT = `/* HUMANS.TXT — Following humanstxt.org standard */
+
+/* TEAM */
 
 Creator & Lead Architect: Kenneth E. Sweet Jr.
 ORCID: https://orcid.org/0009-0001-4237-1243
@@ -30,7 +32,7 @@ To the dreamers building AI that actually remembers.
 
 /* SITE */
 
-Last update: 2026/01/31
+Last update: 2026/02/01
 Language: English
 Doctype: React + TypeScript + Tailwind
 Framework: Vite
@@ -70,6 +72,9 @@ CMPSBL Substrate OS FNDTN v6.0.0
 WCAG 2.2 Accessibility via INCLUSIVE Module
 
 promptfluid® — AI That Flows.
+
+/* STANDARD */
+This file follows the humans.txt standard from humanstxt.org
 `;
 
 export default function HumansTxt() {
@@ -138,7 +143,7 @@ export default function HumansTxt() {
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-6">
             <Users className="w-4 h-4 text-primary" />
-            <span className="text-sm font-mono text-primary">humanstxt.org</span>
+            <a href="https://humanstxt.org" target="_blank" rel="noopener noreferrer" className="text-sm font-mono text-primary hover:underline">humanstxt.org</a>
           </div>
           <h1 className="text-4xl md:text-5xl font-light mb-4">
             Humans.txt
@@ -206,8 +211,10 @@ export default function HumansTxt() {
         {/* Standard Info */}
         <div className="mt-8 text-center">
           <p className="text-sm text-muted-foreground">
-            Humans.txt is an internal protocol developed by PromptFluid® to credit the humans behind digital projects.
-            We recommend this standard for all web designers and system architects.
+            Humans.txt is a protocol designed by{" "}
+            <a href="https://humanstxt.org" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">humanstxt.org</a>
+            {" "}to credit the humans behind digital projects.
+            PromptFluid® follows this standard and recommends it for all web designers and system architects.
           </p>
         </div>
       </main>
