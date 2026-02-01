@@ -179,7 +179,7 @@ Your deployment continues to run, but you won't receive updates or support. Rene
 Yes. Contact us for nonprofit pricing.
 
 ### Is there a free trial?
-Enterprise evaluations include a 30-day pilot program. Contact sales.
+Developer licenses include a 30-day money-back guarantee. Enterprise evaluations are available upon request.
 
 ### What's not included?
 - AI provider API costs (you pay providers directly)

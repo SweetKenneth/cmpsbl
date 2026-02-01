@@ -172,7 +172,7 @@ CMPSBL provides complete cognitive infrastructure:
 |---------|--------|--------|
 | **Developer** | Startups | Self-serve, automated checkout |
 | **Research** | Institutions | Outbound, academic network |
-| **Enterprise** | Large companies | Direct sales, pilots |
+| **Enterprise** | Large companies | Direct sales |
 | **Strategic** | Cloud providers | Partnership development |
 
 ### Early Focus
