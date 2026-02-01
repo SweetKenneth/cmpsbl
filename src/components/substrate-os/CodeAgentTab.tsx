@@ -38,6 +38,7 @@ import {
   getWorkflowProgress, 
   getWorkflowState, 
   resetWorkflow,
+  setProgressCallback,
   type WorkflowStage,
   type WorkflowExecutionResult
 } from '@/lib/codeagent/workflow';
@@ -129,6 +130,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
   const [changeHistory, setChangeHistory] = useState<ChangeRecord[]>([]);
   const [diffMode, setDiffMode] = useState<'split' | 'unified'>('split');
   const [deployPipeline, setDeployPipeline] = useState<PipelineRun | null>(null);
+  const [progressUpdates, setProgressUpdates] = useState<{ stage: string; message: string; detail?: string; timestamp: Date }[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // Fetch status and start learning on mount
@@ -140,6 +142,15 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
     // Start 24/7 background learning (15 min cycles)
     startBackgroundLearning(15 * 60 * 1000);
     console.log('[Encoded] 24/7 learning engine started');
+    
+    // Set up progress callback so Encoded reports what it's doing
+    setProgressCallback((stage, message, detail) => {
+      setProgressUpdates(prev => [...prev.slice(-10), { stage, message, detail, timestamp: new Date() }]);
+    });
+    
+    return () => {
+      setProgressCallback(null);
+    };
   }, []);
 
   // Auto-scroll on new messages
@@ -350,6 +361,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
       // Default: Start discussion mode for clarity before coding
       setDiscussionMode(true);
       const step = startDiscussion(input);
+      handleDiscussionStep(step); // Handle the step immediately
       
     } catch (error) {
       console.error('CodeAgent error:', error);
@@ -416,6 +428,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
 
   async function executeCodeGeneration() {
     setIsLoading(true);
+    setProgressUpdates([]); // Clear previous progress
     const state = getDiscussionState();
     const ctx = state.context as any;
     
@@ -430,16 +443,42 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
     const contextSummary = summarizeContext(fileContexts);
     
     addAgentMessage(
-      `📖 **Reading File Context**\n\n${contextSummary}\n\n🔄 Starting code generation...`,
+      `📖 **Reading File Context**\n\n${contextSummary}\n\n🔄 Starting workflow: **read → plan → write → read → fix → verify → finalize**`,
       undefined,
       'system'
     );
       
-      // Start workflow progress tracking
+      // Start workflow progress tracking + live updates
       const progressInterval = setInterval(() => {
         const progress = getWorkflowProgress();
         setWorkflowProgress(progress);
-      }, 100);
+        
+        // Add live progress updates to chat
+        if (progressUpdates.length > 0) {
+          const latest = progressUpdates[progressUpdates.length - 1];
+          // Only add if it's new (check by timestamp)
+          const existingUpdate = messages.find(m => m.content.includes(latest.message) && m.role === 'system');
+          if (!existingUpdate && latest.message) {
+            const stageIcons: Record<string, string> = {
+              reading: '📖',
+              planning: '🧠',
+              writing: '✍️',
+              read_verify: '🔍',
+              fixing: '🔧',
+              verifying: '✅',
+              finalizing: '🚀',
+              complete: '✨',
+              failed: '❌'
+            };
+            const icon = stageIcons[latest.stage] || '•';
+            addAgentMessage(
+              `${icon} **${latest.stage.replace('_', ' ').toUpperCase()}**: ${latest.message}${latest.detail ? `\n> ${latest.detail}` : ''}`,
+              undefined,
+              'system'
+            );
+          }
+        }
+      }, 300);
       
       try {
         const result: WorkflowExecutionResult = await executeWorkflow({

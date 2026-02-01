@@ -29,6 +29,22 @@ import { getServiceHealth } from './circuit-breaker';
 
 export type WorkflowStage = 'idle' | 'reading' | 'planning' | 'writing' | 'read_verify' | 'fixing' | 'verifying' | 'finalizing' | 'complete' | 'failed';
 
+// Progress callback for real-time updates
+export type ProgressCallback = (stage: WorkflowStage, message: string, detail?: string) => void;
+
+let progressCallback: ProgressCallback | null = null;
+
+export function setProgressCallback(callback: ProgressCallback | null): void {
+  progressCallback = callback;
+}
+
+function emitProgress(stage: WorkflowStage, message: string, detail?: string): void {
+  console.log(`[Encoded] ${stage}: ${message}${detail ? ` — ${detail}` : ''}`);
+  if (progressCallback) {
+    progressCallback(stage, message, detail);
+  }
+}
+
 export interface WorkflowState {
   stage: WorkflowStage;
   startedAt: Date;
@@ -126,6 +142,8 @@ async function stageRead(request: WorkflowRequest): Promise<WorkflowContext> {
   currentWorkflow.stage = 'reading';
   currentWorkflow.currentStageProgress = 0;
   
+  emitProgress('reading', 'Starting context gathering', `Module: ${request.module}`);
+  
   const context: WorkflowContext = {
     relatedFiles: [],
     dependencies: [],
@@ -137,19 +155,23 @@ async function stageRead(request: WorkflowRequest): Promise<WorkflowContext> {
   
   // Simulate reading related files based on module
   currentWorkflow.currentStageProgress = 25;
+  emitProgress('reading', 'Scanning related files...');
   await delay(200);
   
   // Determine related files
   context.relatedFiles = getRelatedFiles(request.module, request.changeType);
   currentWorkflow.currentStageProgress = 50;
+  emitProgress('reading', `Found ${context.relatedFiles.length} related files`, context.relatedFiles.slice(0, 2).join(', '));
   
   // Check dependencies
   context.dependencies = getDependencies(request.module);
   currentWorkflow.currentStageProgress = 75;
+  emitProgress('reading', `Identified ${context.dependencies.length} dependencies`);
   
   // Query brain for relevant knowledge
   context.brainKnowledge = await queryBrainKnowledge(request.description, request.module);
   currentWorkflow.currentStageProgress = 100;
+  emitProgress('reading', `Loaded ${context.brainKnowledge.length} knowledge entries from Brain`, 'Ready to plan');
   
   currentWorkflow.completedStages.push('reading');
   return context;
@@ -228,6 +250,8 @@ async function stagePlan(request: WorkflowRequest, context: WorkflowContext): Pr
   currentWorkflow.stage = 'planning';
   currentWorkflow.currentStageProgress = 0;
   
+  emitProgress('planning', 'Analyzing request and planning approach', request.description.slice(0, 80));
+  
   const result: ThinkingResult = {
     impactedModules: [],
     risks: [],
@@ -244,16 +268,23 @@ async function stagePlan(request: WorkflowRequest, context: WorkflowContext): Pr
   // Analyze impacted modules
   currentWorkflow.currentStageProgress = 25;
   result.impactedModules = analyzeImpact(request.module, request.changeType);
+  emitProgress('planning', `Impact analysis: ${result.impactedModules.length} modules affected`, result.impactedModules.join(', '));
   await delay(150);
   
   // Identify risks
   currentWorkflow.currentStageProgress = 50;
   result.risks = identifyRisks(request, context);
+  if (result.risks.length > 0) {
+    emitProgress('planning', `Identified ${result.risks.length} risk(s)`, result.risks[0]);
+  } else {
+    emitProgress('planning', 'No significant risks identified');
+  }
   await delay(150);
   
   // Determine patterns to use
   currentWorkflow.currentStageProgress = 75;
   result.patterns = selectPatterns(request.changeType);
+  emitProgress('planning', `Selected ${result.patterns.length} patterns`, result.patterns.slice(0, 3).join(', '));
   
   // Run assessment
   currentWorkflow.currentStageProgress = 90;
@@ -282,6 +313,8 @@ async function stagePlan(request: WorkflowRequest, context: WorkflowContext): Pr
     warnings: assessment.warnings,
     suggestions: assessment.suggestions,
   };
+  
+  emitProgress('planning', `Assessment complete`, `Confidence: ${assessment.confidenceLevel}, Can proceed: ${assessment.canProceed}`);
   
   currentWorkflow.currentStageProgress = 100;
   currentWorkflow.completedStages.push('planning');
@@ -347,6 +380,8 @@ async function stageWrite(
   currentWorkflow.stage = 'writing';
   currentWorkflow.currentStageProgress = 0;
   
+  emitProgress('writing', 'Generating code using shadow mode', `Patterns: ${thinking.patterns.slice(0, 2).join(', ')}`);
+  
   // Generate code using shadow mode
   currentWorkflow.currentStageProgress = 30;
   
@@ -358,9 +393,11 @@ async function stageWrite(
   };
   
   currentWorkflow.currentStageProgress = 50;
+  emitProgress('writing', 'Applying templates and patterns...');
   const generated = await shadowGenerate(shadowRequest);
   
   currentWorkflow.currentStageProgress = 100;
+  emitProgress('writing', `Generated ${generated.code.split('\n').length} lines`, `File: ${generated.filePath}`);
   currentWorkflow.completedStages.push('writing');
   
   return generated;
@@ -388,13 +425,17 @@ async function stageVerify(
   currentWorkflow.stage = 'verifying';
   currentWorkflow.currentStageProgress = 0;
   
+  emitProgress('verifying', 'Running validation checks', `Checking ${generated.code.split('\n').length} lines`);
+  
   // Validate the generated code
   currentWorkflow.currentStageProgress = 25;
   const validation = await shadowValidate(generated.code);
+  emitProgress('verifying', 'Syntax validation complete', validation.valid ? 'No issues' : `${validation.issues.length} issues found`);
   
   // Check for forbidden patterns
   currentWorkflow.currentStageProgress = 50;
   const patternCheck = checkForbiddenPatterns(generated.code);
+  emitProgress('verifying', 'Security pattern check complete', patternCheck.safe ? 'All clear' : `${patternCheck.violations.length} violations`);
   
   // Check for required patterns
   currentWorkflow.currentStageProgress = 75;
@@ -410,10 +451,12 @@ async function stageVerify(
   ];
   
   currentWorkflow.currentStageProgress = 100;
+  const passed = validation.valid && patternCheck.safe && allIssues.length === 0;
+  emitProgress('verifying', passed ? 'All checks passed ✓' : `Found ${allIssues.length} issue(s)`, allIssues[0] || '');
   currentWorkflow.completedStages.push('verifying');
   
   return {
-    passed: validation.valid && patternCheck.safe && allIssues.length === 0,
+    passed,
     issues: allIssues,
     metrics: {
       lines: validation.metrics?.lines || 0,
@@ -457,9 +500,12 @@ async function stageFinalize(
   currentWorkflow.stage = 'finalizing';
   currentWorkflow.currentStageProgress = 0;
   
+  emitProgress('finalizing', 'Preparing to finalize changes');
+  
   if (!confirmation.passed) {
     currentWorkflow.stage = 'failed';
     currentWorkflow.error = `Validation failed: ${confirmation.issues.join(', ')}`;
+    emitProgress('failed', 'Cannot finalize — validation failed', confirmation.issues[0]);
     return {
       success: false,
       rollbackId: '',
@@ -470,6 +516,7 @@ async function stageFinalize(
   
   // Record the change for rollback
   currentWorkflow.currentStageProgress = 50;
+  emitProgress('finalizing', 'Recording change for rollback capability');
   const changeRecord = recordChange({
     changeType: 'code',
     module: request.module,
@@ -480,6 +527,7 @@ async function stageFinalize(
   });
   
   currentWorkflow.currentStageProgress = 100;
+  emitProgress('complete', 'Code generation complete!', `Rollback ID: ${changeRecord.id.slice(0, 8)}`);
   currentWorkflow.completedStages.push('finalizing');
   currentWorkflow.stage = 'complete';
   
@@ -546,9 +594,11 @@ export async function executeWorkflow(request: WorkflowRequest): Promise<Workflo
     // Stage 4: READ_VERIFY (re-read output to check for issues)
     currentWorkflow.stage = 'read_verify';
     currentWorkflow.currentStageProgress = 0;
+    emitProgress('read_verify', 'Re-reading generated code to check for issues');
     await delay(100);
     const rereadCheck = await shadowValidate(generated.code);
     currentWorkflow.currentStageProgress = 100;
+    emitProgress('read_verify', rereadCheck.valid ? 'Code looks good' : `Found ${rereadCheck.issues.length} issue(s) to fix`);
     currentWorkflow.completedStages.push('read_verify');
     
     // Stage 5: FIX_ERRORS (if any issues found)
@@ -556,10 +606,14 @@ export async function executeWorkflow(request: WorkflowRequest): Promise<Workflo
     if (!rereadCheck.valid || rereadCheck.issues.length > 0) {
       currentWorkflow.stage = 'fixing';
       currentWorkflow.currentStageProgress = 0;
+      emitProgress('fixing', 'Auto-fixing basic issues', rereadCheck.issues[0]);
       // Attempt to auto-fix basic issues
       fixedCode = autoFixBasicIssues(generated.code, rereadCheck.issues);
       currentWorkflow.currentStageProgress = 100;
+      emitProgress('fixing', 'Applied automatic fixes');
       currentWorkflow.completedStages.push('fixing');
+    } else {
+      emitProgress('read_verify', 'No fixes needed, proceeding to verification');
     }
     
     // Stage 6: VERIFY
