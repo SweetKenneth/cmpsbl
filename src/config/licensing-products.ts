@@ -12,9 +12,9 @@
 
 export const LICENSING_PRODUCTS = {
   developer: {
-    product_id: 'prod_TrlBfjavZnDpP0',
-    price_id: 'price_1Su1eoQ7FtTiAL4aqoXJj48x', // Will need new price
-    amount: 299900, // $2,999/year (was $15,000)
+    product_id: 'prod_Ttq0whvqEE87FV',
+    price_id: 'price_1Sw2KuQ7FtTiAL4aMhocFXuv',
+    amount: 299900, // $2,999/year
     interval: 'year' as const,
     name: 'Developer License',
     description: 'For individual developers and small teams building with CMPSBL',
@@ -29,7 +29,9 @@ export const LICENSING_PRODUCTS = {
     checkout_enabled: true,
   },
   team: {
-    amount: 999900, // $9,999/year (new tier)
+    product_id: 'prod_Ttq0wdWQ4OhVuk',
+    price_id: 'price_1Sw2KvQ7FtTiAL4a0wR7WWFH',
+    amount: 999900, // $9,999/year
     interval: 'year' as const,
     name: 'Team License',
     description: 'For development teams up to 10 seats',
@@ -44,7 +46,9 @@ export const LICENSING_PRODUCTS = {
     checkout_enabled: true,
   },
   research: {
-    amount: 1999900, // $19,999/year (was $80,000)
+    product_id: 'prod_Ttq00PbOT1Ou1Q',
+    price_id: 'price_1Sw2KxQ7FtTiAL4aUbRt0VoW',
+    amount: 1999900, // $19,999/year
     interval: 'year' as const,
     name: 'Research License',
     description: 'For universities, research labs, and academic institutions',
@@ -56,7 +60,7 @@ export const LICENSING_PRODUCTS = {
       'Academic support channel',
       'Research collaboration opportunities',
     ],
-    checkout_enabled: true, // Now available via Stripe checkout
+    checkout_enabled: true,
   },
   enterprise: {
     amount: 4999900, // $49,999/year (was $180,000)
