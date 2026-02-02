@@ -373,7 +373,7 @@ function DataParticles({ isActive }: { isActive: boolean }) {
   );
 }
 
-// Enhanced status indicators with micro-animations
+// Premium status indicators with micro-animations and glass styling
 function StatusPanel({ 
   activePhase, 
   cycleCount, 
@@ -388,68 +388,144 @@ function StatusPanel({
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.6 }}
-      className="flex flex-wrap justify-center gap-2.5 sm:gap-4 mt-5 sm:mt-8"
+      className="flex flex-wrap justify-center gap-2 sm:gap-3 mt-5 sm:mt-8"
     >
-      {/* Phase indicator */}
+      {/* Phase indicator with progress ring */}
       <motion.div 
-        className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-gradient-to-r from-card/80 to-card/60 backdrop-blur-md border border-border/50 shadow-sm"
-        whileHover={{ scale: 1.03 }}
+        className="relative flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-gradient-to-br from-card/90 to-card/70 backdrop-blur-md border border-border/50 shadow-lg shadow-black/5"
+        whileHover={{ scale: 1.05, y: -2 }}
+        transition={{ type: "spring", stiffness: 400 }}
       >
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-        >
-          <Cpu className="w-3.5 h-3.5 text-primary" />
-        </motion.div>
-        <span className="text-[11px] sm:text-xs font-mono font-medium">
-          PHASE {activePhase + 1}/5
-        </span>
+        {/* Mini progress ring */}
+        <div className="relative w-5 h-5">
+          <svg className="w-5 h-5 -rotate-90">
+            <circle
+              cx="10"
+              cy="10"
+              r="8"
+              className="fill-none stroke-border/30"
+              strokeWidth="2"
+            />
+            <motion.circle
+              cx="10"
+              cy="10"
+              r="8"
+              className="fill-none stroke-primary"
+              strokeWidth="2"
+              strokeLinecap="round"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: (activePhase + 1) / 5 }}
+              transition={{ duration: 0.5 }}
+              style={{ pathLength: (activePhase + 1) / 5 }}
+            />
+          </svg>
+          <motion.div
+            className="absolute inset-0 flex items-center justify-center"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+          >
+            <Cpu className="w-2.5 h-2.5 text-primary" />
+          </motion.div>
+        </div>
+        <div className="flex flex-col">
+          <span className="text-[10px] text-muted-foreground/70 font-medium uppercase tracking-wider">Phase</span>
+          <span className="text-xs font-bold font-mono text-foreground">
+            {activePhase + 1} / 5
+          </span>
+        </div>
       </motion.div>
       
-      {/* Gate status with color coding */}
+      {/* Gate status with enhanced visual feedback */}
       <motion.div 
         className={cn(
-          "flex items-center gap-2 px-3.5 py-2 rounded-full backdrop-blur-md border shadow-sm",
-          gateStatus === "open" ? "bg-emerald-500/10 border-emerald-500/40" :
-          gateStatus === "closed" ? "bg-rose-500/10 border-rose-500/40" :
-          "bg-amber-500/10 border-amber-500/40"
+          "relative flex items-center gap-2.5 px-4 py-2.5 rounded-full backdrop-blur-md border shadow-lg overflow-hidden",
+          gateStatus === "open" ? "bg-gradient-to-br from-emerald-500/15 to-emerald-500/5 border-emerald-500/40" :
+          gateStatus === "closed" ? "bg-gradient-to-br from-rose-500/15 to-rose-500/5 border-rose-500/40" :
+          "bg-gradient-to-br from-amber-500/15 to-amber-500/5 border-amber-500/40"
         )}
         animate={{
           boxShadow: gateStatus === "open" 
-            ? "0 0 20px rgba(52, 211, 153, 0.2)" 
+            ? "0 4px 24px rgba(52, 211, 153, 0.25)" 
             : gateStatus === "closed"
-              ? "0 0 20px rgba(251, 113, 133, 0.2)"
-              : "0 0 20px rgba(251, 191, 36, 0.2)"
+              ? "0 4px 24px rgba(251, 113, 133, 0.25)"
+              : "0 4px 24px rgba(251, 191, 36, 0.25)"
         }}
-        whileHover={{ scale: 1.03 }}
+        whileHover={{ scale: 1.05, y: -2 }}
+        transition={{ type: "spring", stiffness: 400 }}
       >
+        {/* Animated background pulse */}
         <motion.div
-          animate={gateStatus === "pending" ? { rotate: [0, 10, -10, 0] } : {}}
-          transition={{ duration: 0.5, repeat: gateStatus === "pending" ? Infinity : 0 }}
+          className={cn(
+            "absolute inset-0 opacity-30",
+            gateStatus === "open" ? "bg-emerald-500" :
+            gateStatus === "closed" ? "bg-rose-500" : "bg-amber-500"
+          )}
+          animate={{ opacity: [0.1, 0.2, 0.1] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        />
+        
+        <motion.div
+          animate={gateStatus === "pending" ? { rotate: [0, 15, -15, 0] } : {}}
+          transition={{ duration: 0.6, repeat: gateStatus === "pending" ? Infinity : 0 }}
+          className="relative z-10"
         >
-          {gateStatus === "open" ? <Unlock className="w-3.5 h-3.5 text-emerald-400" /> :
-           gateStatus === "closed" ? <Lock className="w-3.5 h-3.5 text-rose-400" /> :
-           <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />}
+          {gateStatus === "open" ? <Unlock className="w-4 h-4 text-emerald-400" /> :
+           gateStatus === "closed" ? <Lock className="w-4 h-4 text-rose-400" /> :
+           <AlertTriangle className="w-4 h-4 text-amber-400" />}
         </motion.div>
-        <span className="text-[11px] sm:text-xs font-mono font-medium uppercase">
-          {gateStatus}
-        </span>
+        <div className="flex flex-col relative z-10">
+          <span className="text-[10px] text-muted-foreground/70 font-medium uppercase tracking-wider">Gate</span>
+          <span className={cn(
+            "text-xs font-bold uppercase tracking-wide",
+            gateStatus === "open" ? "text-emerald-400" :
+            gateStatus === "closed" ? "text-rose-400" : "text-amber-400"
+          )}>
+            {gateStatus}
+          </span>
+        </div>
       </motion.div>
       
-      {/* Cycle counter */}
+      {/* Cycle counter with animated number */}
       <motion.div 
-        className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-gradient-to-r from-card/80 to-card/60 backdrop-blur-md border border-border/50 shadow-sm"
-        whileHover={{ scale: 1.03 }}
+        className="relative flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-gradient-to-br from-card/90 to-card/70 backdrop-blur-md border border-violet-500/30 shadow-lg shadow-violet-500/10"
+        whileHover={{ scale: 1.05, y: -2 }}
+        transition={{ type: "spring", stiffness: 400 }}
       >
         <motion.div
           animate={{ rotate: -360 }}
-          transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
         >
-          <RotateCcw className="w-3.5 h-3.5 text-violet-400" />
+          <RotateCcw className="w-4 h-4 text-violet-400" />
         </motion.div>
-        <span className="text-[11px] sm:text-xs font-mono font-medium">
-          CYCLE #{cycleCount}
-        </span>
+        <div className="flex flex-col">
+          <span className="text-[10px] text-muted-foreground/70 font-medium uppercase tracking-wider">Cycle</span>
+          <motion.span 
+            key={cycleCount}
+            initial={{ y: -10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            className="text-xs font-bold font-mono text-violet-400"
+          >
+            #{cycleCount}
+          </motion.span>
+        </div>
+      </motion.div>
+      
+      {/* Activity indicator */}
+      <motion.div 
+        className="hidden sm:flex relative items-center gap-2.5 px-4 py-2.5 rounded-full bg-gradient-to-br from-card/90 to-card/70 backdrop-blur-md border border-primary/30 shadow-lg shadow-primary/10"
+        whileHover={{ scale: 1.05, y: -2 }}
+        transition={{ type: "spring", stiffness: 400 }}
+      >
+        <motion.div
+          animate={{ scale: [1, 1.2, 1] }}
+          transition={{ duration: 1, repeat: Infinity }}
+        >
+          <Activity className="w-4 h-4 text-primary" />
+        </motion.div>
+        <div className="flex flex-col">
+          <span className="text-[10px] text-muted-foreground/70 font-medium uppercase tracking-wider">Status</span>
+          <span className="text-xs font-bold text-primary">Active</span>
+        </div>
       </motion.div>
     </motion.div>
   );
@@ -523,29 +599,55 @@ export function SEBAEvolutionHero() {
       {/* Data particles on apply phase */}
       <DataParticles isActive={activePhase === 4} />
       
-      {/* SEBA Label with enhanced styling */}
+      {/* SEBA Label with premium glass styling */}
       <motion.div
         initial={{ opacity: 0, y: -15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="text-center mb-5 sm:mb-8"
+        className="text-center mb-6 sm:mb-8"
       >
-        <div className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full bg-gradient-to-r from-primary/15 via-primary/10 to-violet-500/15 border border-primary/25 shadow-lg shadow-primary/5 backdrop-blur-sm">
+        <div className="relative inline-flex items-center gap-3 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-gradient-to-r from-primary/20 via-primary/10 to-violet-500/20 border border-primary/30 shadow-xl shadow-primary/10 backdrop-blur-md overflow-hidden">
+          {/* Animated gradient border */}
           <motion.div
-            animate={{ 
-              rotate: [0, 360],
-              scale: [1, 1.1, 1],
-            }}
-            transition={{ 
-              rotate: { duration: 8, repeat: Infinity, ease: "linear" },
-              scale: { duration: 2, repeat: Infinity, ease: "easeInOut" },
-            }}
-          >
-            <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary" />
-          </motion.div>
-          <span className="text-[11px] sm:text-xs font-bold tracking-widest text-foreground/90 uppercase">
-            Self-Evolving Bounded Agent
-          </span>
+            className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/20 to-primary/0"
+            animate={{ x: ["-100%", "100%"] }}
+            transition={{ duration: 3, repeat: Infinity, repeatDelay: 1 }}
+          />
+          
+          <div className="relative flex items-center gap-3">
+            <motion.div
+              className="relative"
+              animate={{ 
+                rotate: [0, 360],
+              }}
+              transition={{ 
+                rotate: { duration: 8, repeat: Infinity, ease: "linear" },
+              }}
+            >
+              <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+              <motion.div
+                className="absolute inset-0"
+                animate={{ scale: [1, 1.4, 1], opacity: [0.5, 0, 0.5] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+              </motion.div>
+            </motion.div>
+            
+            <div className="flex flex-col items-start">
+              <span className="text-[10px] sm:text-[11px] font-medium text-muted-foreground tracking-wider uppercase">
+                Autonomous Engine
+              </span>
+              <span className="text-xs sm:text-sm font-bold tracking-wide text-foreground">
+                Self-Evolving Bounded Agent
+              </span>
+            </div>
+            
+            {/* Version badge */}
+            <div className="hidden sm:flex items-center px-2 py-0.5 rounded bg-primary/20 border border-primary/30">
+              <span className="text-[9px] font-bold text-primary tracking-wider">v1.1</span>
+            </div>
+          </div>
         </div>
       </motion.div>
       
@@ -615,7 +717,7 @@ export function SEBAEvolutionHero() {
         gateStatus={gateStatus}
       />
       
-      {/* Active phase description card with enhanced styling */}
+      {/* Active phase description card with premium styling */}
       <AnimatePresence mode="wait">
         <motion.div
           key={activePhase}
@@ -623,33 +725,55 @@ export function SEBAEvolutionHero() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -10, scale: 0.95 }}
           transition={{ duration: 0.3 }}
-          className="mt-5 sm:mt-8 mx-auto max-w-xs sm:max-w-sm"
+          className="mt-6 sm:mt-8 mx-auto max-w-xs sm:max-w-sm"
         >
           <div className={cn(
-            "p-4 sm:p-5 rounded-2xl border backdrop-blur-md text-center shadow-lg",
+            "relative p-5 sm:p-6 rounded-2xl border-2 backdrop-blur-md text-center shadow-xl overflow-hidden",
             sebaPhases[activePhase].bgColor,
             sebaPhases[activePhase].borderColor
           )}
           style={{
-            boxShadow: `0 8px 32px hsl(${sebaPhases[activePhase].glowColor} / 0.15)`,
+            boxShadow: `0 12px 40px hsl(${sebaPhases[activePhase].glowColor} / 0.2), inset 0 1px 0 rgba(255,255,255,0.1)`,
           }}
           >
-            <div className="flex items-center justify-center gap-2.5 mb-2">
+            {/* Inner glow effect */}
+            <div 
+              className="absolute inset-0 opacity-30"
+              style={{
+                background: `radial-gradient(circle at 50% 0%, hsl(${sebaPhases[activePhase].glowColor} / 0.3) 0%, transparent 60%)`,
+              }}
+            />
+            
+            <div className="relative z-10 flex items-center justify-center gap-3 mb-3">
               <motion.div
-                animate={{ scale: [1, 1.15, 1] }}
+                className="p-2 rounded-xl bg-gradient-to-br from-white/10 to-white/5"
+                animate={{ scale: [1, 1.1, 1] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
               >
                 {React.createElement(sebaPhases[activePhase].icon, {
-                  className: "w-5 h-5 text-foreground"
+                  className: "w-5 h-5 sm:w-6 sm:h-6 text-foreground"
                 })}
               </motion.div>
-              <span className="text-sm sm:text-base font-bold tracking-wide">
+              <span className="text-base sm:text-lg font-bold tracking-wide">
                 {sebaPhases[activePhase].name}
               </span>
             </div>
-            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+            <p className="relative z-10 text-xs sm:text-sm text-muted-foreground leading-relaxed">
               {sebaPhases[activePhase].description}
             </p>
+            
+            {/* Active indicator dots */}
+            <div className="flex justify-center gap-1.5 mt-4">
+              {sebaPhases.map((_, idx) => (
+                <motion.div
+                  key={idx}
+                  className={cn(
+                    "w-1.5 h-1.5 rounded-full transition-all duration-300",
+                    idx === activePhase ? "bg-foreground w-4" : idx < activePhase ? "bg-foreground/50" : "bg-foreground/20"
+                  )}
+                />
+              ))}
+            </div>
           </div>
         </motion.div>
       </AnimatePresence>
