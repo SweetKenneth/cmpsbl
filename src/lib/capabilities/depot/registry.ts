@@ -14,6 +14,7 @@ import type {
 } from './types';
 import { getTierFromPrice } from './pricing';
 import { CAPABILITY_EXPANSION } from './registry-expansion';
+import { CAPABILITY_ULTRA } from './registry-ultra';
 
 // === Core Capability Registry (Metadata Only) ===
 const CORE_CAPABILITIES: CapabilityArtifact[] = [
@@ -556,10 +557,11 @@ const CORE_CAPABILITIES: CapabilityArtifact[] = [
   },
 ];
 
-// === Merged Registry (Core + Expansion) ===
+// === Merged Registry (Core + Expansion + Ultra) ===
 export const CAPABILITY_REGISTRY: CapabilityArtifact[] = [
   ...CORE_CAPABILITIES,
   ...CAPABILITY_EXPANSION,
+  ...CAPABILITY_ULTRA,
 ];
 
 // === Get All Capabilities ===
@@ -652,6 +654,7 @@ export function getCategoryStats(): Record<CapabilityCategory, number> {
     security: 0,
     accessibility: 0,
     automation: 0,
+    orchestration: 0,
   };
 
   for (const cap of CAPABILITY_REGISTRY) {

@@ -1,7 +1,7 @@
 /**
  * Capabilities Depot — Main Export
  * Downloadable, licensed capability artifacts (no support, no hosting)
- * v1.2.0 — 56+ Capabilities with Advanced SEO
+ * v1.3.0 — 86+ Capabilities with Full Stripe Checkout
  */
 
 // === Types ===
@@ -81,8 +81,14 @@ export {
   hasExpansionStripeConfig,
 } from './stripe-expansion';
 
+export {
+  ULTRA_STRIPE_CONFIG,
+  getUltraStripeConfig,
+  hasUltraStripeConfig,
+} from './stripe-ultra';
+
 // === Constants ===
-export const DEPOT_VERSION = '1.2.0';
+export const DEPOT_VERSION = '1.3.0';
 export const DEPOT_NAME = 'Capabilities Depot';
 
 // === Legal Disclaimer ===

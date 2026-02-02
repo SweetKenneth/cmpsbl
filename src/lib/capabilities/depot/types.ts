@@ -11,7 +11,8 @@ export type CapabilityCategory =
   | 'resilience'
   | 'security'
   | 'accessibility'
-  | 'automation';
+  | 'automation'
+  | 'orchestration';
 
 // === Executor Types ===
 export type ExecutorType = 'js' | 'edge' | 'wasm' | 'container';
