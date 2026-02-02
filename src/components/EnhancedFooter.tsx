@@ -39,7 +39,7 @@ export function EnhancedFooter() {
     {
       title: "Build",
       links: [
-        { name: "Gaming AI", href: "/gaming" },
+        { name: "Capabilities Depot", href: "/capabilities", highlight: true },
         { name: "Developers", href: "/developers" },
         { name: "CodeLab", href: "/codelab" },
         { name: "Documentation", href: "/documentation" },
@@ -116,6 +116,18 @@ export function EnhancedFooter() {
                   {section.title}
                 </h3>
                 <ul className="space-y-2.5">
+                  {/* Add Evolution button to Platform section */}
+                  {section.title === "Platform" && (
+                    <li>
+                      <button
+                        onClick={() => setEvolutionOpen(true)}
+                        className="group inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors"
+                      >
+                        <Sparkles className="w-3.5 h-3.5 group-hover:animate-pulse" />
+                        Evolution
+                      </button>
+                    </li>
+                  )}
                   {section.links.map((link) => (
                     <li key={link.href}>
                       {link.external ? (
@@ -148,18 +160,6 @@ export function EnhancedFooter() {
                       )}
                     </li>
                   ))}
-                  {/* Add Evolution button to Build section */}
-                  {section.title === "Build" && (
-                    <li>
-                      <button
-                        onClick={() => setEvolutionOpen(true)}
-                        className="group inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors"
-                      >
-                        <Sparkles className="w-3.5 h-3.5 group-hover:animate-pulse" />
-                        Evolution
-                      </button>
-                    </li>
-                  )}
                 </ul>
               </div>
             ))}
