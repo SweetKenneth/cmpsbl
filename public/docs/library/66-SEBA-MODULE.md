@@ -551,6 +551,149 @@ SEBA and MODERNIZER are complementary:
 
 ---
 
+## Proposal Persistence
+
+### Overview
+
+SEBA proposals are persisted to the `evolution_proposals` database table, ensuring proposals survive restarts and can be reviewed through Atlas or terminal commands.
+
+### Proposal Store
+
+```typescript
+import { ProposalStore } from '@/lib/substrate/seba';
+
+// Save a proposal
+await ProposalStore.save(proposal);
+
+// Get pending proposals
+const pending = await ProposalStore.getPending();
+
+// Update proposal status
+await ProposalStore.updateStatus('SEBA-001', 'approved');
+
+// Get proposal by ID
+const proposal = await ProposalStore.getById('SEBA-001');
+```
+
+### Proposal Lifecycle
+
+```
+┌────────────┐    ┌──────────┐    ┌──────────┐    ┌───────────┐
+│  pending   │───▶│ approved │───▶│ executed │───▶│ verified  │
+└────────────┘    └──────────┘    └──────────┘    └───────────┘
+       │                │                │
+       └────────────────┴────────────────┘
+                        │
+                  ┌─────┴─────┐
+                  │  rejected │
+                  └───────────┘
+```
+
+### Database Schema
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | UUID | Primary key |
+| `short_id` | VARCHAR | Human-readable ID (e.g., SEBA-001) |
+| `category` | VARCHAR | Improvement category |
+| `title` | VARCHAR | Proposal title |
+| `description` | TEXT | Full description |
+| `status` | ENUM | pending/approved/rejected/executed/verified |
+| `confidence_score` | FLOAT | 0-1 confidence |
+| `risk_level` | VARCHAR | minimal/low/medium/high/critical |
+| `proposed_actions` | JSONB | Array of proposed actions |
+| `created_at` | TIMESTAMPTZ | Creation time |
+| `updated_at` | TIMESTAMPTZ | Last update |
+
+---
+
+## Evolution Stamps (Traceability)
+
+### Overview
+
+Every code change applied by SEBA generates a cryptographically verifiable **Evolution Stamp**. This provides irrefutable proof that the substrate is modifying its own code.
+
+### Stamp Structure
+
+```typescript
+interface EvolutionStamp {
+  stamp_id: string;      // Unique stamp identifier
+  proposal_id: string;   // Source proposal
+  execution_id: string;  // Execution record
+  files_modified: string[];
+  change_hash: string;   // SHA-256 of changes
+  applied_at: string;    // ISO timestamp
+  applied_by: 'seba' | 'human';
+}
+```
+
+### Mandatory Code Comments
+
+When SEBA modifies code, it inserts a **mandatory traceability comment**:
+
+```typescript
+// [SEBA-EVOLUTION] stamp_id: SEBA-abc123-def456 | proposal: SEBA-001 | applied: 2026-02-02T12:00:00Z
+```
+
+This comment:
+- **Cannot be removed** without triggering integrity alerts
+- **Links back** to the original proposal and execution
+- **Provides audit trail** for code archaeology
+
+### Stamp Verification
+
+```typescript
+import { EvolutionStampStore } from '@/lib/substrate/seba';
+
+// Verify a stamp exists
+const isValid = await EvolutionStampStore.verify('SEBA-abc123-def456');
+
+// Get all stamps for a proposal
+const stamps = await EvolutionStampStore.getByProposal('SEBA-001');
+
+// Get stamp by file
+const fileStamps = await EvolutionStampStore.getByFile('src/lib/substrate/brain/memory-core.ts');
+```
+
+### Terminal Commands
+
+| Command | Description |
+|---------|-------------|
+| `seba.stamps` | List recent evolution stamps |
+| `seba.stamp <stamp_id>` | View stamp details |
+| `seba.verify <stamp_id>` | Verify stamp integrity |
+| `seba.stamps --proposal <id>` | List stamps for proposal |
+| `seba.stamps --file <path>` | List stamps for file |
+
+### Database Storage
+
+Stamps are logged to `brain_events` with:
+
+```json
+{
+  "module": "seba",
+  "event_type": "evolution_stamp",
+  "data": {
+    "stamp_id": "SEBA-abc123-def456",
+    "proposal_id": "SEBA-001",
+    "execution_id": "exec-789",
+    "change_hash": "sha256:abcd1234...",
+    "files_modified": ["src/lib/substrate/brain/memory-core.ts"]
+  },
+  "outcome": "success"
+}
+```
+
+### Observability Integration
+
+Evolution stamps integrate with the VISION module for real-time observability:
+
+- Stamps appear in the System Intelligence Feed
+- Health dashboards show evolution activity
+- Alerts trigger on stamp verification failures
+
+---
+
 ## Future Roadmap
 
 ### v1.1.0 (Planned)
