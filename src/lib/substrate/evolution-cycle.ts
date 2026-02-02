@@ -12,6 +12,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { EvolutionStampStore } from './seba/evolution-stamp';
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES
@@ -415,6 +416,11 @@ class EvolutionCycleClient {
       // Emit governance signal
       this.emitGovernanceSignal('production_apply', { plan_id: plan.plan_id });
 
+      // ══════════════════════════════════════════════════════════════════════
+      // CREATE EVOLUTION STAMP — Mandatory traceability for modernizer cycles
+      // ══════════════════════════════════════════════════════════════════════
+      await this.createEvolutionStamp(plan);
+
       // Auto-run verification
       return await this.verify();
     } catch (e) {
@@ -599,6 +605,58 @@ class EvolutionCycleClient {
       default:
         return this.start(options);
     }
+  }
+
+  /**
+   * Create evolution stamp for traceability
+   * Records the evolution in brain_events for full audit trail
+   */
+  private async createEvolutionStamp(plan: EvolutionPlan): Promise<void> {
+    try {
+      const stampId = `MOD-${plan.short_id}-${Date.now().toString(36)}`;
+      
+      // Store stamp to brain_events (same format as SEBA stamps)
+      await EvolutionStampStore.store({
+        stamp_id: stampId,
+        stamp_short: stampId.substring(0, 16),
+        proposal_id: plan.plan_id,
+        execution_id: plan.run_id,
+        applied_at: new Date().toISOString(),
+        change_type: 'evolution_cycle',
+        target: 'substrate',
+        before_state: { phase: 'shadow_applied', health: plan.scan_results?.health_before || 100 },
+        after_state: { phase: 'production_applied', improvements: plan.scan_results?.improvements_found || 0 },
+        description: `Modernizer evolution cycle ${plan.short_id} applied to production`,
+        change_hash: this.generateChangeHash(plan),
+        reversible: true,
+        initiator: 'modernizer_governed',
+      });
+
+      console.log(`[EvolutionCycle] ✅ Created stamp ${stampId} for plan ${plan.short_id}`);
+    } catch (e) {
+      console.error('[EvolutionCycle] Failed to create evolution stamp:', e);
+      // Non-fatal - don't block evolution for stamp failure
+    }
+  }
+
+  /**
+   * Generate a change hash for verification
+   */
+  private generateChangeHash(plan: EvolutionPlan): string {
+    const payload = JSON.stringify({
+      plan_id: plan.plan_id,
+      run_id: plan.run_id,
+      phase: plan.phase,
+      timestamp: Date.now(),
+    });
+    // Simple hash for verification (in production, use crypto.subtle)
+    let hash = 0;
+    for (let i = 0; i < payload.length; i++) {
+      const char = payload.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash;
+    }
+    return Math.abs(hash).toString(16).padStart(8, '0');
   }
 
   /**
