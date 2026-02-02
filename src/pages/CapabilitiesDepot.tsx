@@ -332,15 +332,13 @@ export default function CapabilitiesDepotPage() {
       </AnimatePresence>
 
       {/* Capability Detail Modal */}
-      <AnimatePresence>
-        {selectedCapability && (
-          <CapabilityDetailModal
-            capability={selectedCapability}
-            categoryConfig={CATEGORY_CONFIG}
-            onClose={() => setSelectedCapability(null)}
-          />
-        )}
-      </AnimatePresence>
+      {selectedCapability && (
+        <CapabilityDetailModal
+          capability={selectedCapability}
+          categoryConfig={CATEGORY_CONFIG}
+          onClose={() => setSelectedCapability(null)}
+        />
+      )}
     </>
   );
 }

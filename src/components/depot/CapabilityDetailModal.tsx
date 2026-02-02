@@ -1,11 +1,9 @@
 /**
  * Capability Detail Modal
- * Shows detailed capability information in a modal
- * v1.1.0 — Mobile-First Design
+ * Shows detailed capability information
+ * v1.2.0 — Fixed viewport centering on mobile using Drawer pattern
  */
 
-import { useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { 
   X, 
   Download, 
@@ -20,6 +18,22 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerClose,
+} from '@/components/ui/drawer';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
 import { 
   formatPrice, 
   getTierConfig, 
@@ -27,6 +41,7 @@ import {
   type CapabilityCategory,
 } from '@/lib/capabilities/depot';
 import { useCapabilityCheckout } from '@/hooks/useCapabilityCheckout';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 
 interface CapabilityDetailModalProps {
@@ -49,26 +64,140 @@ const difficultyColors: Record<string, string> = {
   expert: 'text-rose-500',
 };
 
-export function CapabilityDetailModal({ capability, categoryConfig, onClose }: CapabilityDetailModalProps) {
+function ModalContent({ capability, categoryConfig }: { capability: CapabilityArtifact; categoryConfig: CapabilityDetailModalProps['categoryConfig'] }) {
   const config = categoryConfig[capability.category];
   const CategoryIcon = config?.icon;
-  const tierConfig = getTierConfig(capability.pricingTier);
-  const { checkout, loading, isAvailable } = useCapabilityCheckout();
-  
   const isSynergy = capability.id.startsWith('syn-');
-  const hasCheckout = isAvailable(capability.id);
   
   const lastUpdated = new Date(capability.lastUpdated);
   const daysAgo = Math.floor((Date.now() - lastUpdated.getTime()) / (1000 * 60 * 60 * 24));
   const updatedLabel = daysAgo === 0 ? 'Today' : daysAgo === 1 ? 'Yesterday' : `${daysAgo}d ago`;
 
-  // Lock body scroll when modal is open
-  useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, []);
+  return (
+    <div className="space-y-5">
+      {/* Badges row */}
+      <div className="flex flex-wrap items-center gap-2">
+        <div className={cn(
+          "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium",
+          config?.colorClass || 'bg-muted text-muted-foreground'
+        )}>
+          {CategoryIcon && <CategoryIcon className="w-3 h-3" />}
+          {config?.label || capability.category}
+        </div>
+        
+        {isSynergy && (
+          <Badge variant="outline" className="text-xs border-violet-500/30 bg-violet-500/10 text-violet-400">
+            <Zap className="w-2.5 h-2.5 mr-1" />
+            Synergy
+          </Badge>
+        )}
+        <Badge variant="outline" className={cn("text-xs", tierColors[capability.pricingTier])}>
+          {getTierConfig(capability.pricingTier).badge}
+        </Badge>
+      </div>
+      
+      {/* Version info */}
+      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+        <span className="font-mono">v{capability.version}</span>
+        <span className="text-muted-foreground/30">•</span>
+        <span className="flex items-center gap-1">
+          <Clock className="w-3 h-3" />
+          {updatedLabel}
+        </span>
+      </div>
+
+      {/* Description */}
+      <div>
+        <h4 className="text-sm font-semibold text-foreground mb-2">Description</h4>
+        <p className="text-sm text-muted-foreground leading-relaxed">{capability.description}</p>
+      </div>
+      
+      {/* Features */}
+      {capability.features && capability.features.length > 0 && (
+        <div>
+          <h4 className="text-sm font-semibold text-foreground mb-3">Features</h4>
+          <ul className="space-y-2">
+            {capability.features.map((feature, i) => (
+              <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                <span>{feature}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      
+      {/* Technical Details - 2x2 grid */}
+      <div className="grid grid-cols-2 gap-3">
+        <div className="p-3 rounded-lg border border-border/50 bg-muted/30">
+          <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground mb-1">
+            <Cpu className="w-3 h-3" />
+            Executor
+          </div>
+          <div className="text-sm font-medium text-foreground capitalize">
+            {capability.executorType}
+          </div>
+        </div>
+        
+        <div className="p-3 rounded-lg border border-border/50 bg-muted/30">
+          <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground mb-1">
+            <Package className="w-3 h-3" />
+            Format
+          </div>
+          <div className="text-sm font-medium text-foreground uppercase">
+            {capability.artifactFormat}
+          </div>
+        </div>
+        
+        {capability.difficulty && (
+          <div className="p-3 rounded-lg border border-border/50 bg-muted/30">
+            <div className="text-[10px] text-muted-foreground mb-1">Difficulty</div>
+            <div className={cn("text-sm font-medium capitalize", difficultyColors[capability.difficulty])}>
+              {capability.difficulty}
+            </div>
+          </div>
+        )}
+        
+        {capability.setupTimeMinutes && (
+          <div className="p-3 rounded-lg border border-border/50 bg-muted/30">
+            <div className="text-[10px] text-muted-foreground mb-1">Setup</div>
+            <div className="text-sm font-medium text-foreground">
+              ~{capability.setupTimeMinutes}m
+            </div>
+          </div>
+        )}
+      </div>
+      
+      {/* Required Modules */}
+      <div>
+        <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+          <Layers className="w-4 h-4" />
+          Required Modules
+        </h4>
+        <div className="flex flex-wrap gap-2">
+          {capability.requiredModules.map((module) => (
+            <Badge key={module} variant="secondary" className="text-xs">
+              {module}
+            </Badge>
+          ))}
+        </div>
+      </div>
+      
+      {/* Downloads */}
+      {capability.downloads && (
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <Download className="w-4 h-4" />
+          {capability.downloads.toLocaleString()} downloads
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ModalFooter({ capability, onClose }: { capability: CapabilityArtifact; onClose: () => void }) {
+  const { checkout, loading, isAvailable } = useCapabilityCheckout();
+  const isSynergy = capability.id.startsWith('syn-');
+  const hasCheckout = isAvailable(capability.id);
 
   const handleBuy = async () => {
     if (hasCheckout) {
@@ -77,212 +206,103 @@ export function CapabilityDetailModal({ capability, categoryConfig, onClose }: C
   };
 
   return (
-    <>
-      {/* Backdrop */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        onClick={onClose}
-        className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm"
-      />
+    <div className="flex flex-col gap-4">
+      {/* Price */}
+      <div className="flex items-center justify-between">
+        <div>
+          <div className="text-2xl font-black text-foreground">
+            {formatPrice(capability.priceUsd)}
+          </div>
+          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+            <Download className="w-3 h-3" />
+            Licensed Artifact
+          </div>
+        </div>
+      </div>
       
-      {/* Modal - Full screen on mobile, centered card on desktop */}
-      <motion.div
-        initial={{ opacity: 0, y: '100%' }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: '100%' }}
-        transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-        className={cn(
-          "fixed z-50 bg-card shadow-2xl flex flex-col",
-          // Mobile: full screen with safe areas
-          "inset-0 rounded-none",
-          // Tablet and up: centered modal
-          "md:inset-auto md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2",
-          "md:w-full md:max-w-2xl md:max-h-[85vh] md:rounded-2xl md:border md:border-border"
-        )}
-      >
-        {/* Header - Sticky with safe area padding */}
-        <div className="sticky top-0 z-10 flex items-start justify-between gap-3 p-4 sm:p-6 border-b border-border/50 bg-card safe-area-pt">
-          <div className="flex-1 min-w-0">
-            {/* Category & Tier badges - horizontally scrollable on mobile */}
-            <div className="flex items-center gap-2 mb-2 overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap">
-              <div className={cn(
-                "shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium",
-                config?.colorClass || 'bg-muted text-muted-foreground'
-              )}>
-                {CategoryIcon && <CategoryIcon className="w-3 h-3" />}
-                {config?.label || capability.category}
-              </div>
-              
-              {isSynergy && (
-                <Badge variant="outline" className="shrink-0 text-xs border-violet-500/30 bg-violet-500/10 text-violet-400">
-                  <Zap className="w-2.5 h-2.5 mr-1" />
-                  Synergy
-                </Badge>
-              )}
-              <Badge variant="outline" className={cn("shrink-0 text-xs", tierColors[capability.pricingTier])}>
-                {tierConfig.badge}
-              </Badge>
-            </div>
-            
-            <h2 className="text-xl sm:text-2xl font-bold text-foreground leading-tight">{capability.name}</h2>
-            <div className="flex items-center gap-2 mt-1 text-xs sm:text-sm">
-              <span className="font-mono text-muted-foreground">v{capability.version}</span>
-              <span className="text-muted-foreground/30">•</span>
-              <span className="text-muted-foreground flex items-center gap-1">
-                <Clock className="w-3 h-3" />
-                {updatedLabel}
-              </span>
-            </div>
+      {/* Action Buttons */}
+      <div className="flex items-center gap-3">
+        <Button 
+          variant="outline" 
+          asChild 
+          className="flex-1 h-12 text-base touch-manipulation"
+        >
+          <a href="/support">
+            Support
+            <ExternalLink className="w-3 h-3 ml-1" />
+          </a>
+        </Button>
+        <Button 
+          size="lg"
+          onClick={handleBuy}
+          disabled={loading || !hasCheckout}
+          className={cn(
+            "flex-1 h-12 text-base touch-manipulation",
+            isSynergy && "bg-violet-600 hover:bg-violet-700"
+          )}
+        >
+          {loading ? (
+            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+          ) : (
+            <Package className="w-4 h-4 mr-2" />
+          )}
+          Buy Now
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+export function CapabilityDetailModal({ capability, categoryConfig, onClose }: CapabilityDetailModalProps) {
+  const isMobile = useIsMobile();
+
+  // Mobile: Use Drawer (slides up from bottom, proper viewport handling)
+  if (isMobile) {
+    return (
+      <Drawer open onOpenChange={(open) => !open && onClose()}>
+        <DrawerContent className="max-h-[90vh]">
+          <DrawerHeader className="text-left pb-2">
+            <DrawerTitle className="text-xl font-bold pr-8">
+              {capability.name}
+            </DrawerTitle>
+            <DrawerDescription className="sr-only">
+              Details for {capability.name} capability
+            </DrawerDescription>
+          </DrawerHeader>
+          
+          <div className="px-4 pb-4 overflow-y-auto flex-1">
+            <ModalContent capability={capability} categoryConfig={categoryConfig} />
           </div>
           
-          {/* Close button - Large touch target */}
-          <button
-            type="button"
-            onClick={onClose}
-            className="shrink-0 p-3 -m-2 rounded-full hover:bg-muted/50 active:bg-muted transition-colors touch-manipulation"
-            aria-label="Close modal"
-          >
-            <X className="w-6 h-6" />
-          </button>
+          <DrawerFooter className="pt-2 border-t border-border/50">
+            <ModalFooter capability={capability} onClose={onClose} />
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    );
+  }
+
+  // Desktop: Use Dialog (centered modal)
+  return (
+    <Dialog open onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="max-w-2xl max-h-[85vh] overflow-hidden flex flex-col">
+        <DialogHeader>
+          <DialogTitle className="text-2xl font-bold pr-8">
+            {capability.name}
+          </DialogTitle>
+          <DialogDescription className="sr-only">
+            Details for {capability.name} capability
+          </DialogDescription>
+        </DialogHeader>
+        
+        <div className="overflow-y-auto flex-1 pr-2 -mr-2">
+          <ModalContent capability={capability} categoryConfig={categoryConfig} />
         </div>
         
-        {/* Content - Scrollable */}
-        <div className="flex-1 overflow-y-auto overscroll-contain p-4 sm:p-6 space-y-5 sm:space-y-6">
-          {/* Description */}
-          <div>
-            <h3 className="text-sm font-semibold text-foreground mb-2">Description</h3>
-            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{capability.description}</p>
-          </div>
-          
-          {/* Features */}
-          {capability.features && capability.features.length > 0 && (
-            <div>
-              <h3 className="text-sm font-semibold text-foreground mb-3">Features</h3>
-              <ul className="space-y-2.5">
-                {capability.features.map((feature, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-sm text-muted-foreground">
-                    <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                    <span className="leading-relaxed">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-          
-          {/* Technical Details - 2x2 grid */}
-          <div className="grid grid-cols-2 gap-3">
-            <div className="p-3 sm:p-4 rounded-xl border border-border/50 bg-muted/30">
-              <div className="flex items-center gap-1.5 text-[10px] sm:text-xs text-muted-foreground mb-1">
-                <Cpu className="w-3 h-3" />
-                Executor
-              </div>
-              <div className="text-xs sm:text-sm font-medium text-foreground capitalize">
-                {capability.executorType}
-              </div>
-            </div>
-            
-            <div className="p-3 sm:p-4 rounded-xl border border-border/50 bg-muted/30">
-              <div className="flex items-center gap-1.5 text-[10px] sm:text-xs text-muted-foreground mb-1">
-                <Package className="w-3 h-3" />
-                Format
-              </div>
-              <div className="text-xs sm:text-sm font-medium text-foreground uppercase">
-                {capability.artifactFormat}
-              </div>
-            </div>
-            
-            {capability.difficulty && (
-              <div className="p-3 sm:p-4 rounded-xl border border-border/50 bg-muted/30">
-                <div className="text-[10px] sm:text-xs text-muted-foreground mb-1">Difficulty</div>
-                <div className={cn("text-xs sm:text-sm font-medium capitalize", difficultyColors[capability.difficulty])}>
-                  {capability.difficulty}
-                </div>
-              </div>
-            )}
-            
-            {capability.setupTimeMinutes && (
-              <div className="p-3 sm:p-4 rounded-xl border border-border/50 bg-muted/30">
-                <div className="text-[10px] sm:text-xs text-muted-foreground mb-1">Setup</div>
-                <div className="text-xs sm:text-sm font-medium text-foreground">
-                  ~{capability.setupTimeMinutes}m
-                </div>
-              </div>
-            )}
-          </div>
-          
-          {/* Required Modules - Scrollable on mobile */}
-          <div>
-            <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
-              <Layers className="w-4 h-4" />
-              Required Modules
-            </h3>
-            <div className="flex flex-wrap gap-2 -mx-4 px-4 sm:mx-0 sm:px-0 overflow-x-auto scrollbar-hide">
-              {capability.requiredModules.map((module) => (
-                <Badge key={module} variant="secondary" className="shrink-0 text-xs">
-                  {module}
-                </Badge>
-              ))}
-            </div>
-          </div>
-          
-          {/* Downloads */}
-          {capability.downloads && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Download className="w-4 h-4" />
-              {capability.downloads.toLocaleString()} downloads
-            </div>
-          )}
-          
-          {/* Bottom padding for safe area on mobile */}
-          <div className="h-2 sm:h-0" />
+        <div className="pt-4 mt-4 border-t border-border/50">
+          <ModalFooter capability={capability} onClose={onClose} />
         </div>
-        
-        {/* Footer - Fixed at bottom with safe area */}
-        <div className="sticky bottom-0 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4 p-4 sm:p-6 border-t border-border/50 bg-card safe-area-pb">
-          {/* Price */}
-          <div className="flex items-center justify-between sm:block">
-            <div className="text-2xl sm:text-3xl font-black text-foreground">
-              {formatPrice(capability.priceUsd)}
-            </div>
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
-              <Download className="w-3 h-3" />
-              Licensed Artifact
-            </div>
-          </div>
-          
-          {/* Action Buttons - Full width on mobile */}
-          <div className="flex items-center gap-3 w-full sm:w-auto">
-            <Button 
-              variant="outline" 
-              asChild 
-              className="flex-1 sm:flex-none h-12 sm:h-10 text-base sm:text-sm touch-manipulation"
-            >
-              <a href="/support">
-                Support
-                <ExternalLink className="w-3 h-3 ml-1" />
-              </a>
-            </Button>
-            <Button 
-              size="lg"
-              onClick={handleBuy}
-              disabled={loading || !hasCheckout}
-              className={cn(
-                "flex-1 sm:flex-none h-12 sm:h-10 text-base sm:text-sm touch-manipulation",
-                isSynergy && "bg-violet-600 hover:bg-violet-700"
-              )}
-            >
-              {loading ? (
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              ) : (
-                <Package className="w-4 h-4 mr-2" />
-              )}
-              Buy Now
-            </Button>
-          </div>
-        </div>
-      </motion.div>
-    </>
+      </DialogContent>
+    </Dialog>
   );
 }
