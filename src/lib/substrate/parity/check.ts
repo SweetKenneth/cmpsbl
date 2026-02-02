@@ -54,22 +54,22 @@ const SUBSTRATE_MODULES = [
 
 export type SubstrateModuleName = typeof SUBSTRATE_MODULES[number];
 
-// Expected hook file paths for each module
+// Expected hook file paths for each module (all now in src/hooks/substrate/)
 const MODULE_HOOK_PATHS: Record<string, string> = {
   core: 'src/hooks/substrate/useCore.ts',
   ripple: 'src/hooks/substrate/useRipple.ts',
   access: 'src/hooks/substrate/useAccess.ts',
-  brain: 'src/lib/substrate/hooks.ts', // useMemory, useLearning, etc.
+  brain: 'src/hooks/substrate/useBrain.ts',
   vision: 'src/hooks/substrate/useVision.ts',
-  cortex: 'src/hooks/useSubstrateOS.ts', // useCortexStatusOS
-  modernizer: 'src/hooks/useSubstrateOS.ts', // useModernizerStatusOS
-  decode: 'src/lib/substrate/decode/useDecodePersonality.ts',
+  cortex: 'src/hooks/substrate/useCortex.ts',
+  modernizer: 'src/hooks/substrate/useModernizer.ts',
+  decode: 'src/hooks/substrate/useDecode.ts',
   defense: 'src/hooks/substrate/useDefense.ts',
   nexus: 'src/hooks/substrate/useNexus.ts',
   dream: 'src/hooks/substrate/useDream.ts',
   integration: 'src/hooks/substrate/useIntegration.ts',
   inclusive: 'src/hooks/substrate/useInclusive.ts',
-  system: 'src/hooks/useSubstrateOS.ts', // useSystemStatus
+  system: 'src/hooks/substrate/useSystem.ts',
 };
 
 // Module configuration registry - tracks what exists for each module
@@ -78,23 +78,31 @@ const MODULE_CONFIG: Record<string, {
   hasTerminalCommands: boolean;
   emitsEvents: boolean;
   hasDocumentation: boolean;
-  hookPath?: string;
+  hookPath: string;
+  hookName: string;
 }> = {
-  core: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.core },
-  ripple: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.ripple },
-  access: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.access },
-  brain: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.brain },
-  vision: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.vision },
-  cortex: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.cortex },
-  modernizer: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.modernizer },
-  decode: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.decode },
-  defense: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.defense },
-  nexus: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.nexus },
-  dream: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.dream },
-  integration: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.integration },
-  inclusive: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.inclusive },
-  system: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.system },
+  core: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.core, hookName: 'useCore' },
+  ripple: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.ripple, hookName: 'useRipple' },
+  access: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.access, hookName: 'useAccess' },
+  brain: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.brain, hookName: 'useBrain' },
+  vision: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.vision, hookName: 'useVision' },
+  cortex: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.cortex, hookName: 'useCortex' },
+  modernizer: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.modernizer, hookName: 'useModernizer' },
+  decode: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.decode, hookName: 'useDecode' },
+  defense: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.defense, hookName: 'useDefense' },
+  nexus: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.nexus, hookName: 'useNexus' },
+  dream: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.dream, hookName: 'useDream' },
+  integration: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.integration, hookName: 'useIntegration' },
+  inclusive: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.inclusive, hookName: 'useInclusive' },
+  system: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.system, hookName: 'useSystem' },
 };
+
+// Get module hook info
+export function getModuleHookInfo(module: string): { hookPath: string; hookName: string } | null {
+  const config = MODULE_CONFIG[module];
+  if (!config) return null;
+  return { hookPath: config.hookPath, hookName: config.hookName };
+}
 
 // Standard requirements every module must meet with REAL validation
 const PARITY_REQUIREMENTS: ParityRequirement[] = [
@@ -154,6 +162,15 @@ const PARITY_REQUIREMENTS: ParityRequirement[] = [
     },
     severity: 'error',
   },
+  {
+    name: 'hook path standardized',
+    check: (module) => {
+      // All hooks should be in src/hooks/substrate/
+      const config = MODULE_CONFIG[module];
+      return config?.hookPath?.startsWith('src/hooks/substrate/') ?? false;
+    },
+    severity: 'warning',
+  },
 ];
 
 export async function checkModuleParity(module: string): Promise<ModuleParityResult> {
@@ -166,7 +183,6 @@ export async function checkModuleParity(module: string): Promise<ModuleParityRes
   );
 
   const errorsFailed = results.filter(r => !r.passed && r.severity === 'error').length;
-  const warningsFailed = results.filter(r => !r.passed && r.severity === 'warning').length;
   const totalChecks = results.length;
   const passedChecks = results.filter(r => r.passed).length;
 
@@ -237,6 +253,11 @@ export function getModulesNeedingWork(report: ParityReport): string[] {
     .filter(m => m.score < 100)
     .sort((a, b) => a.score - b.score)
     .map(m => `${m.module} (${m.score}%)`);
+}
+
+// Get module config for external use
+export function getModuleConfig(module: string) {
+  return MODULE_CONFIG[module] ?? null;
 }
 
 // Export for CI/build integration

@@ -9,7 +9,7 @@ export const MODULE_VERSIONS = {
   ripple: { version: '7.0.0', codename: 'Cascade' },
   access: { version: '7.0.0', codename: 'Gatekeeper' },
   brain: { version: '7.0.0', codename: 'Memoria' },
-  vision: { version: '2.0.0', codename: 'Vee' },
+  vision: { version: '7.0.0', codename: 'Vee' },
   cortex: { version: '7.0.0', codename: 'Orchestrator' },
   modernizer: { version: '7.0.0', codename: 'Architect' },
   decode: { version: '7.0.0', codename: 'Interpreter' },
