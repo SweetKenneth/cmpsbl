@@ -105,8 +105,26 @@ export {
   isSelfImprovementCapability,
 } from './stripe-stier';
 
+// === Recursive Self-Improvement Stripe ===
+export {
+  RECURSIVE_STRIPE_CONFIG,
+  getRecursiveStripeConfig,
+  hasRecursiveStripeConfig,
+  isApexTierCapability,
+  getAllRecursiveStripeConfigs,
+} from './stripe-recursive';
+
+// === Recursive Self-Improvement Registry ===
+export {
+  RECURSIVE_CAPABILITIES,
+  getAllRecursiveCapabilities,
+  getRecursiveCapabilityById,
+  getApexCapabilities,
+  getRecursiveCapabilityCount,
+} from './registry-recursive';
+
 // === Constants ===
-export const DEPOT_VERSION = '1.4.0';
+export const DEPOT_VERSION = '1.5.0';
 export const DEPOT_NAME = 'Capabilities Depot';
 
 // === Legal Disclaimer ===

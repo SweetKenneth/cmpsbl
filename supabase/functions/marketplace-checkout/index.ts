@@ -38,7 +38,7 @@ serve(async (req) => {
 
     const body = await req.json();
     const { 
-      product_type, // 'os' | 'template' | 'bundle' | 'stack' | 'agency' | 'studio' | 'capability' | 'stier'
+      product_type, // 'os' | 'template' | 'bundle' | 'stack' | 'agency' | 'studio' | 'capability' | 'stier' | 'recursive'
       price_id,
       product_id,
       template_name,
@@ -66,7 +66,8 @@ serve(async (req) => {
 
     // Determine checkout mode - agency and studio are subscriptions, everything else is one-time
     const isSubscription = product_type === 'agency' || product_type === 'studio';
-    const isCapability = product_type === 'capability' || product_type === 'stier';
+    const isCapability = product_type === 'capability' || product_type === 'stier' || product_type === 'recursive';
+    const isRecursive = product_type === 'recursive';
     const checkoutMode = isSubscription ? 'subscription' : 'payment';
 
     // Build checkout session config
@@ -81,7 +82,7 @@ serve(async (req) => {
       ],
       mode: checkoutMode,
       success_url: isCapability 
-        ? `${origin}/capabilities/success?session_id={CHECKOUT_SESSION_ID}&capability=${capability_id || product_id}`
+        ? `${origin}/capabilities/success?session_id={CHECKOUT_SESSION_ID}&capability=${capability_id || product_id}&tier=${isRecursive ? 'recursive' : product_type}`
         : `${origin}/marketplace/success?session_id={CHECKOUT_SESSION_ID}&type=${product_type}`,
       cancel_url: isCapability 
         ? `${origin}/capabilities?canceled=true`
@@ -92,6 +93,8 @@ serve(async (req) => {
         template_name: template_name || '',
         capability_id: capability_id || '',
         is_stier: product_type === 'stier' ? 'true' : 'false',
+        is_recursive: product_type === 'recursive' ? 'true' : 'false',
+        tier: isRecursive ? 'apex' : (product_type === 'stier' ? 'crown' : 'standard'),
       },
     };
 
