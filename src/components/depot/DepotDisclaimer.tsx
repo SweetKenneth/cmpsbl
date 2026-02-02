@@ -14,7 +14,7 @@ interface DepotDisclaimerProps {
 const disclaimerPoints = [
   { icon: Download, title: 'Local Execution', description: 'All capabilities are designed for local execution within your own infrastructure.' },
   { icon: Server, title: 'Self-Hosted', description: 'Capabilities are not hosted or executed by us. Execution is within your environment.' },
-  { icon: Shield, title: 'Licensed Artifacts', description: 'A valid license is required to download. All sales are final for digital downloads.' },
+  { icon: Shield, title: 'Licensed Artifacts', description: 'A valid license is required to download. Support available during your licensing period.' },
   { icon: FileText, title: 'Need Help?', description: 'Visit our Support page for assistance with integration or technical questions.' },
 ];
 

@@ -16,9 +16,9 @@ The Capabilities Depot is a **downloadable artifact marketplace** for cognitive 
 
 **Key Differentiators:**
 - No SaaS / no hosting obligations
-- No support / no warranty
 - License enforcement at download time only
 - Customer responsible for all execution
+- Support available during licensing period
 
 ---
 
@@ -64,7 +64,7 @@ interface CapabilityArtifact {
   releaseNotes: string;
   governanceLevel: GovernanceLevel;
   executionMode: 'local_only';
-  supportPolicy: 'unsupported';
+  supportPolicy: 'licensed_support';
   licenseRequired: true;
   priceUsd: number;
   pricingTier: PricingTier;
@@ -125,15 +125,15 @@ const CAPABILITY_PRICE_IDS: Record<string, string> = {
 2. **Record**: License created in database
 3. **Download**: License validated at download time
 4. **Deliver**: Signed URL generated (1-hour expiry)
-5. **No Further Checks**: Post-download, no validation
+5. **Support**: Available during licensing period
 
 ### License States
 
-| Status | Download Allowed |
-|--------|------------------|
-| active | ✓ |
-| revoked | ✗ |
-| expired | ✗ |
+| Status | Download Allowed | Support Eligible |
+|--------|------------------|------------------|
+| active | ✓ | ✓ |
+| revoked | ✗ | ✗ |
+| expired | ✗ | ✗ |
 
 ### Validation Function
 
@@ -187,17 +187,18 @@ function validateLicense(
 - ✓ Generate time-limited signed URLs
 - ✓ Verify artifact checksums
 - ✓ Track download counts (aggregate only)
+- ✓ Provide support during licensing period
 
 ---
 
 ## Legal Framework
 
-### Standard Disclaimer (All Capabilities)
+### Standard Terms (All Capabilities)
 
 ```
-UNSUPPORTED — No technical support, no warranty, no hosting, 
-no SLA, no uptime guarantee. Execution responsibility lies 
-with the licensee. All sales final.
+LICENSED — Capability provided with support during licensing period.
+No hosting, no SLA, no uptime guarantee. Execution responsibility 
+lies with the licensee. All sales final.
 ```
 
 ### License.txt Template
@@ -207,8 +208,8 @@ CMPSBL CAPABILITY LICENSE
 
 1. GRANT: Non-exclusive license to use this capability
 2. RESTRICTIONS: No redistribution, no sublicensing
-3. NO SUPPORT: Capability provided AS-IS
-4. NO WARRANTY: Express or implied warranties disclaimed
+3. SUPPORT: Available during licensing period via /support
+4. LIMITED WARRANTY: See terms for details
 5. LIABILITY: Maximum liability equals purchase price
 ```
 
@@ -244,6 +245,7 @@ CREATE TABLE capability_licenses (
 | Downloads per capability | Popularity tracking |
 | Revenue by tier | Pricing optimization |
 | Conversion rate | Funnel analysis |
+| Support tickets | Customer satisfaction |
 
 ---
 

@@ -27,12 +27,11 @@ The Capabilities Depot is a marketplace for purchasing and downloading licensed 
 - No background jobs, callbacks, or telemetry from us
 - Full control over your data and infrastructure
 
-### 4. UNSUPPORTED Policy
-All capabilities are sold AS-IS with:
-- No technical support
-- No warranty
-- No maintenance guarantees
-- No SLA or uptime commitments
+### 4. Support Available
+All capability purchases include:
+- Access to our [Support Page](/support) for assistance
+- Integration guidance during your licensing period
+- Technical documentation and examples
 
 ---
 
@@ -102,20 +101,26 @@ capability-name/
 
 ## Legal Terms
 
-### NO SUPPORT
-Capabilities are sold without any technical support, maintenance, or bug fix commitments.
-
-### NO WARRANTY
-There is no warranty of any kind, express or implied.
+### LOCAL EXECUTION
+Capabilities are designed for local execution within your infrastructure. All execution responsibility lies with the licensee.
 
 ### NO HOSTING
-Capabilities are not hosted, executed, or managed by PromptFluid. All execution responsibility lies with the licensee.
+Capabilities are not hosted or executed by PromptFluid. You manage deployment in your environment.
 
-### LOCAL EXECUTION ONLY
-All capabilities are designed for local execution within your infrastructure.
+### LIMITED WARRANTY
+Capabilities are provided with limited warranty. See individual capability license terms for details.
 
 ### NO REFUNDS
 Due to the nature of digital downloads, all sales are final.
+
+---
+
+## Support
+
+We're here to help with your capability purchases:
+- **Support Page:** [/support](/support)
+- **Email:** PromptFluid@gmail.com
+- **Enterprise Inquiries:** Contact for custom licensing and dedicated support
 
 ---
 
@@ -124,6 +129,7 @@ Due to the nature of digital downloads, all sales are final.
 For enterprise licensing inquiries:
 - **Email:** PromptFluid@gmail.com
 - **Web:** https://cmpsbl.com/capabilities
+- **Support:** https://cmpsbl.com/support
 
 ---
 
