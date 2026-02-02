@@ -14,6 +14,9 @@ interface DepotSEOProps {
 export function DepotSEO({ totalCount }: DepotSEOProps) {
   const capabilities = getAllCapabilities();
   const categoryStats = getCategoryStats();
+
+  // Helmet requires <title> to be a plain string child (not mixed nodes)
+  const pageTitle = `Capabilities Depot — ${totalCount}+ Cognitive AI Artifacts | PromptFluid`;
   
   // Generate structured product list for SEO
   const topCapabilities = capabilities
@@ -205,8 +208,8 @@ export function DepotSEO({ totalCount }: DepotSEOProps) {
   return (
     <Helmet>
       {/* Primary Meta Tags */}
-      <title>Capabilities Depot — {totalCount}+ Cognitive AI Artifacts | PromptFluid</title>
-      <meta name="title" content={`Capabilities Depot — ${totalCount}+ Cognitive AI Artifacts | PromptFluid`} />
+      <title>{pageTitle}</title>
+      <meta name="title" content={pageTitle} />
       <meta name="description" content={metaDescription} />
       <meta name="keywords" content={keywords} />
       <meta name="author" content="PromptFluid" />
