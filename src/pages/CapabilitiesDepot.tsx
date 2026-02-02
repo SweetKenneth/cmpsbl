@@ -142,7 +142,7 @@ export default function CapabilitiesDepotPage() {
               </div>
               <div className="hidden md:block w-px h-10 bg-border/50" />
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-black text-violet-500">10</div>
+                <div className="text-3xl md:text-4xl font-black text-cyan-500">10</div>
                 <div className="text-xs text-muted-foreground">Self-Improvement</div>
               </div>
               <div className="hidden md:block w-px h-10 bg-border/50" />
@@ -299,7 +299,7 @@ export default function CapabilitiesDepotPage() {
         {/* Bottom CTA — Enterprise */}
         <section className="border-t border-border/50 bg-gradient-to-b from-muted/30 to-background">
           <div className="container mx-auto px-4 py-16 md:py-20 text-center">
-            <Badge className="mb-4 bg-violet-500/10 text-violet-400 border-violet-500/30">
+            <Badge className="mb-4 bg-primary/10 text-primary border-primary/30">
               <Crown className="w-3 h-3 mr-1" />
               Enterprise
             </Badge>

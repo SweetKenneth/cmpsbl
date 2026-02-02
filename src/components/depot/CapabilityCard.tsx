@@ -36,7 +36,7 @@ interface CapabilityCardProps {
 const tierColors: Record<string, string> = {
   utility: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-500',
   advanced: 'border-cyan-500/30 bg-cyan-500/10 text-cyan-500',
-  system: 'border-violet-500/30 bg-violet-500/10 text-violet-500',
+  system: 'border-primary/30 bg-primary/10 text-primary',
   flagship: 'border-amber-500/30 bg-amber-500/10 text-amber-500',
 };
 
@@ -73,11 +73,11 @@ export function CapabilityCard({ capability, categoryConfig, onViewDetails }: Ca
   // Determine premium styling
   const isPremium = isRecursiveCapability || isSTierCapability;
   const premiumGradient = isApexCapability 
-    ? 'from-amber-500/20 via-violet-500/10 to-fuchsia-500/20'
+    ? 'from-amber-500/20 via-primary/10 to-cyan-500/20'
     : isRecursiveCapability 
-      ? 'from-violet-500/15 via-fuchsia-500/10 to-cyan-500/15'
+      ? 'from-primary/15 via-cyan-500/10 to-emerald-500/15'
       : isSTierCapability
-        ? 'from-violet-500/10 to-cyan-500/10'
+        ? 'from-primary/10 to-cyan-500/10'
         : '';
 
   return (
@@ -85,7 +85,7 @@ export function CapabilityCard({ capability, categoryConfig, onViewDetails }: Ca
       <Card className={cn(
         "h-full flex flex-col overflow-hidden transition-all duration-200 hover:-translate-y-1",
         "border-border/50 hover:border-primary/30",
-        isPremium && "ring-1 ring-violet-500/20",
+        isPremium && "ring-1 ring-primary/20",
         isApexCapability && "ring-2 ring-amber-500/30 shadow-lg shadow-amber-500/10"
       )}>
         {/* Premium gradient overlay */}
@@ -115,19 +115,19 @@ export function CapabilityCard({ capability, categoryConfig, onViewDetails }: Ca
                 </Badge>
               )}
               {isRecursiveCapability && !isApexCapability && (
-                <Badge variant="outline" className="text-[10px] border-violet-500/30 bg-violet-500/10 text-violet-400">
+                <Badge variant="outline" className="text-[10px] border-primary/30 bg-primary/10 text-primary">
                   <Sparkles className="w-2.5 h-2.5 mr-1" />
                   Recursive
                 </Badge>
               )}
               {isSTierCapability && !isRecursiveCapability && (
-                <Badge variant="outline" className="text-[10px] border-violet-500/30 bg-violet-500/10 text-violet-400">
+                <Badge variant="outline" className="text-[10px] border-cyan-500/30 bg-cyan-500/10 text-cyan-400">
                   <Zap className="w-2.5 h-2.5 mr-1" />
                   S-Tier
                 </Badge>
               )}
               {isSynergy && !isPremium && (
-                <Badge variant="outline" className="text-[10px] border-violet-500/30 bg-violet-500/10 text-violet-400">
+                <Badge variant="outline" className="text-[10px] border-primary/30 bg-primary/10 text-primary">
                   <Zap className="w-2.5 h-2.5 mr-1" />
                   Synergy
                 </Badge>
@@ -206,7 +206,7 @@ export function CapabilityCard({ capability, categoryConfig, onViewDetails }: Ca
           <div>
             <div className={cn(
               "text-xl md:text-2xl font-black",
-              isApexCapability ? "text-amber-400" : isPremium ? "text-violet-400" : "text-foreground"
+              isApexCapability ? "text-amber-400" : isPremium ? "text-primary" : "text-foreground"
             )}>
               {formatPrice(capability.priceUsd)}
             </div>
@@ -234,9 +234,9 @@ export function CapabilityCard({ capability, categoryConfig, onViewDetails }: Ca
               className={cn(
                 "h-9 px-3 touch-manipulation text-xs md:text-sm",
                 isApexCapability && "bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400",
-                isRecursiveCapability && !isApexCapability && "bg-violet-600 hover:bg-violet-500",
-                isSTierCapability && !isRecursiveCapability && "bg-violet-600 hover:bg-violet-500",
-                isSynergy && !isPremium && "bg-violet-600 hover:bg-violet-700"
+                isRecursiveCapability && !isApexCapability && "bg-primary hover:bg-primary/90",
+                isSTierCapability && !isRecursiveCapability && "bg-cyan-600 hover:bg-cyan-500",
+                isSynergy && !isPremium && "bg-primary hover:bg-primary/90"
               )}
             >
               {loading ? (
