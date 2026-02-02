@@ -1,9 +1,8 @@
 /**
  * Capability Card — Individual capability display for depot
- * v1.1.0 — With Stripe Checkout
+ * v1.2.0 — Performance Optimized with Static Classes
  */
 
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { 
   Download, 
@@ -30,7 +29,7 @@ import { cn } from '@/lib/utils';
 
 interface CapabilityCardProps {
   capability: CapabilityArtifact;
-  categoryConfig: Record<CapabilityCategory, { icon: React.ElementType; label: string; color: string }>;
+  categoryConfig: Record<CapabilityCategory, { icon: React.ElementType; label: string; colorClass: string }>;
 }
 
 const tierColors: Record<string, string> = {
@@ -48,7 +47,8 @@ const difficultyColors: Record<string, string> = {
 };
 
 export function CapabilityCard({ capability, categoryConfig }: CapabilityCardProps) {
-  const CategoryIcon = categoryConfig[capability.category]?.icon;
+  const config = categoryConfig[capability.category];
+  const CategoryIcon = config?.icon;
   const tierConfig = getTierConfig(capability.pricingTier);
   const { checkout, loading, isAvailable } = useCapabilityCheckout();
   
@@ -67,16 +67,9 @@ export function CapabilityCard({ capability, categoryConfig }: CapabilityCardPro
   };
 
   return (
-    <motion.div
-      variants={{
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0 },
-      }}
-      whileHover={{ y: -4 }}
-      transition={{ duration: 0.2 }}
-    >
+    <div className="group">
       <Card className={cn(
-        "h-full flex flex-col overflow-hidden border-border/50 hover:border-primary/30 transition-colors group",
+        "h-full flex flex-col overflow-hidden border-border/50 hover:border-primary/30 transition-colors hover:-translate-y-1 duration-200",
         isSynergy && "ring-1 ring-violet-500/20"
       )}>
         <CardContent className="flex-1 p-5">
@@ -84,10 +77,10 @@ export function CapabilityCard({ capability, categoryConfig }: CapabilityCardPro
           <div className="flex items-center justify-between mb-4">
             <div className={cn(
               "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium",
-              `bg-${categoryConfig[capability.category]?.color}-500/10 text-${categoryConfig[capability.category]?.color}-500`
+              config?.colorClass || 'bg-muted text-muted-foreground'
             )}>
               {CategoryIcon && <CategoryIcon className="w-3 h-3" />}
-              {categoryConfig[capability.category]?.label}
+              {config?.label || capability.category}
             </div>
             
             <div className="flex items-center gap-1.5">
@@ -200,6 +193,6 @@ export function CapabilityCard({ capability, categoryConfig }: CapabilityCardPro
           </div>
         </CardFooter>
       </Card>
-    </motion.div>
+    </div>
   );
 }
