@@ -1,6 +1,6 @@
 /**
  * Synergy System Exports
- * v7.4.0 — Cross-Module Pipeline Infrastructure (98 Pipelines, 76 Executors)
+ * v7.5.0 — Cross-Module Pipeline Infrastructure (120 Pipelines, 98 Executors)
  */
 
 // Types
@@ -122,7 +122,15 @@ export {
   executeAutonomousOptimizationLoop,
 } from './executors';
 
+// S-tier exports
+export * from './stier';
+
+// Operations integration
+export * from './operations';
+
 // Auto-register executors
 import { registerSynergyExecutor } from './registry';
 import { registerAllExecutors } from './executors';
+import { registerSTierExecutors } from './stier';
 registerAllExecutors(registerSynergyExecutor);
+registerSTierExecutors(registerSynergyExecutor);

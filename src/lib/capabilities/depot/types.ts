@@ -73,8 +73,8 @@ export interface CapabilityArtifact {
   /** Execution mode — always local_only for depot */
   executionMode: 'local_only';
   
-  /** Support policy — always unsupported for depot */
-  supportPolicy: 'unsupported';
+  /** Support policy */
+  supportPolicy: 'unsupported' | 'licensed_support';
   
   /** License required for download */
   licenseRequired: true;
@@ -111,6 +111,12 @@ export interface CapabilityArtifact {
   
   /** Difficulty level */
   difficulty?: 'beginner' | 'intermediate' | 'advanced' | 'expert';
+  
+  /** Target buyer persona (S-tier) */
+  buyerPersona?: string;
+  
+  /** Sales pitch tagline (S-tier) */
+  salesPitch?: string;
 }
 
 // === Version History Entry ===
