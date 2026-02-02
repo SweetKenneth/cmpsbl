@@ -132,18 +132,19 @@ export const SYNERGY_STRIPE_CONFIG: Record<string, CapabilityStripeConfig> = {
 };
 
 import { EXPANSION_STRIPE_CONFIG } from './stripe-expansion';
+import { ULTRA_STRIPE_CONFIG } from './stripe-ultra';
 
 // Get all Stripe configs
 export function getAllStripeConfigs(): Record<string, CapabilityStripeConfig> {
-  return { ...CAPABILITY_STRIPE_CONFIG, ...SYNERGY_STRIPE_CONFIG, ...EXPANSION_STRIPE_CONFIG };
+  return { ...CAPABILITY_STRIPE_CONFIG, ...SYNERGY_STRIPE_CONFIG, ...EXPANSION_STRIPE_CONFIG, ...ULTRA_STRIPE_CONFIG };
 }
 
 // Get config by capability ID
 export function getStripeConfig(capabilityId: string): CapabilityStripeConfig | undefined {
-  return CAPABILITY_STRIPE_CONFIG[capabilityId] || SYNERGY_STRIPE_CONFIG[capabilityId] || EXPANSION_STRIPE_CONFIG[capabilityId];
+  return CAPABILITY_STRIPE_CONFIG[capabilityId] || SYNERGY_STRIPE_CONFIG[capabilityId] || EXPANSION_STRIPE_CONFIG[capabilityId] || ULTRA_STRIPE_CONFIG[capabilityId];
 }
 
 // Check if capability has Stripe integration
 export function hasStripeConfig(capabilityId: string): boolean {
-  return capabilityId in CAPABILITY_STRIPE_CONFIG || capabilityId in SYNERGY_STRIPE_CONFIG || capabilityId in EXPANSION_STRIPE_CONFIG;
+  return capabilityId in CAPABILITY_STRIPE_CONFIG || capabilityId in SYNERGY_STRIPE_CONFIG || capabilityId in EXPANSION_STRIPE_CONFIG || capabilityId in ULTRA_STRIPE_CONFIG;
 }

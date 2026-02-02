@@ -57,6 +57,7 @@ const CATEGORY_CONFIG: Record<CapabilityCategory, { icon: typeof Brain; label: s
   security: { icon: Shield, label: 'Security', color: 'rose' },
   accessibility: { icon: Accessibility, label: 'Accessibility', color: 'violet' },
   automation: { icon: Settings, label: 'Automation', color: 'blue' },
+  orchestration: { icon: Settings, label: 'Orchestration', color: 'purple' },
 };
 
 const EXECUTOR_LABELS: Record<ExecutorType, string> = {

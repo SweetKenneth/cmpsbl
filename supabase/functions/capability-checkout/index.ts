@@ -1,7 +1,7 @@
 /**
  * Capability Checkout Edge Function
  * Creates Stripe checkout session for capability purchases
- * v1.2.0 — All 56+ capabilities supported
+ * v1.3.0 — All 86+ capabilities supported
  */
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
@@ -13,7 +13,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-// Complete capability price ID mapping — ALL 56+ capabilities
+// Complete capability price ID mapping — ALL 86+ capabilities
 const CAPABILITY_PRICES: Record<string, string> = {
   // === Core Capabilities ===
   'cap-causal-inference': 'price_1SwBSPQ7FtTiAL4aJycn6czm',
@@ -88,6 +88,38 @@ const CAPABILITY_PRICES: Record<string, string> = {
   'cap-cognitive-platform': 'price_1SwBmhQ7FtTiAL4aU89A5AEH',
   'cap-security-suite': 'price_1SwBmiQ7FtTiAL4aenCVhynX',
   'cap-resilience-platform': 'price_1SwBmjQ7FtTiAL4aU1oKwtPF',
+
+  // === Ultra Expansion (NEW) ===
+  'cap-data-pipeline-orchestrator': 'price_1SwBtNQ7FtTiAL4a3VGhbd8A',
+  'cap-vector-similarity': 'price_1SwBtNQ7FtTiAL4a2P0fIupg',
+  'cap-prompt-engineering': 'price_1SwBtOQ7FtTiAL4abBdbZwYB',
+  'cap-multi-modal-fusion': 'price_1SwBtPQ7FtTiAL4azbo2ffUr',
+  'cap-agent-collaboration': 'price_1SwBtRQ7FtTiAL4a5AvVYYFU',
+  'cap-streaming-response': 'price_1SwBtSQ7FtTiAL4aKnm16SBY',
+  'cap-context-window-manager': 'price_1SwBtTQ7FtTiAL4a2s7dIYCQ',
+  'cap-embedding-cache': 'price_1SwBtVQ7FtTiAL4a80Abl3hf',
+  'cap-function-calling': 'price_1SwBtWQ7FtTiAL4ahG4wAOsj',
+  'cap-rag-pipeline-pro': 'price_1SwBtXQ7FtTiAL4a7kK7saus',
+  'cap-document-intelligence': 'price_1SwBtaQ7FtTiAL4aNUJGvTsT',
+  'cap-structured-output': 'price_1SwBtbQ7FtTiAL4aFGRG80tP',
+  'cap-model-fine-tuning': 'price_1SwBtdQ7FtTiAL4aZbEHzQYe',
+  'cap-conversation-threading': 'price_1SwBteQ7FtTiAL4aSEuVClZA',
+  'cap-semantic-search-platform': 'price_1SwBtfQ7FtTiAL4ad6KCrRWH',
+  'cap-language-processing-hub': 'price_1SwBtgQ7FtTiAL4aclzHNIv8',
+  'cap-response-quality': 'price_1SwBthQ7FtTiAL4aZi2g2dUK',
+  'cap-output-parser-pro': 'price_1SwBtiQ7FtTiAL4amwXjdgsk',
+  'cap-workflow-automation': 'price_1SwBtjQ7FtTiAL4aDhfTewRL',
+  'cap-advanced-memory': 'price_1SwBtlQ7FtTiAL4a5oH7LP9P',
+  'cap-code-generation': 'price_1SwBtoQ7FtTiAL4aVr8rHLUv',
+  'cap-sentiment-analysis': 'price_1SwBtpQ7FtTiAL4aCV4ncJT2',
+  'cap-entity-extraction': 'price_1SwBtqQ7FtTiAL4aDbplLSoa',
+  'cap-text-classification': 'price_1SwBtrQ7FtTiAL4ax6s9J55f',
+  'cap-content-moderation': 'price_1SwBtsQ7FtTiAL4amFozzfI3',
+  'cap-knowledge-graph-builder': 'price_1SwBttQ7FtTiAL4ajyeEVVy1',
+  'cap-question-answering': 'price_1SwBtuQ7FtTiAL4azvmjr3qw',
+  'cap-document-summarizer': 'price_1SwBtvQ7FtTiAL4aqlmIpR36',
+  'cap-model-evaluation': 'price_1SwBtwQ7FtTiAL4aMnpm3rzf',
+  'cap-privacy-protection': 'price_1SwBtxQ7FtTiAL4axNxbuNXI',
 };
 
 serve(async (req) => {
