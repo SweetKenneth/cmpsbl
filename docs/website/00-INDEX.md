@@ -23,6 +23,7 @@ This documentation provides everything you need to understand, evaluate, and bui
 | [Pricing & Licensing](./07-LICENSING.md) | Decision Makers |
 | [FAQ](./08-FAQ.md) | Everyone |
 | [**Synergy Capabilities**](./09-SYNERGY-CAPABILITIES.md) | **Technical Evaluators, Investors** |
+| [**Marketplace Features**](./10-MARKETPLACE-FEATURES.md) | **Developers, Buyers** |
 
 ---
 
