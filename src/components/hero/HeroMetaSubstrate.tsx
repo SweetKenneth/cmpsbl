@@ -467,9 +467,9 @@ export function HeroMetaSubstrate() {
           className="flex justify-start sm:justify-center gap-2.5 sm:gap-4 mb-10 sm:mb-20 -mx-4 px-4 sm:mx-0 sm:px-0 overflow-x-auto scrollbar-hide pb-2 sm:pb-0"
         >
           {[
+            { icon: Sparkles, label: "Synergy Pipelines", href: "/synergies", hoverColor: "hover:border-violet-500/50 hover:bg-violet-500/10 hover:shadow-violet-500/10" },
             { icon: Gamepad2, label: "Gaming AI", href: "/gaming", hoverColor: "hover:border-purple-500/50 hover:bg-purple-500/10 hover:shadow-purple-500/10" },
             { icon: Code, label: "Developer Tools", href: "/developers", hoverColor: "hover:border-cyan-500/50 hover:bg-cyan-500/10 hover:shadow-cyan-500/10" },
-            { icon: Building2, label: "Enterprise", href: "/use-cases", hoverColor: "hover:border-amber-500/50 hover:bg-amber-500/10 hover:shadow-amber-500/10" },
             { icon: Layers, label: "Substrate Docs", href: "/substrate", hoverColor: "hover:border-emerald-500/50 hover:bg-emerald-500/10 hover:shadow-emerald-500/10" },
           ].map((item, index) => (
             <motion.div

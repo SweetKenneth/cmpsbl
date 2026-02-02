@@ -39,7 +39,8 @@ export function EnhancedFooter() {
     {
       title: "Build",
       links: [
-        { name: "Capabilities Depot", href: "/capabilities", highlight: true },
+        { name: "Synergy Pipelines", href: "/synergies", highlight: true },
+        { name: "Capabilities Depot", href: "/capabilities" },
         { name: "Developers", href: "/developers" },
         { name: "CodeLab", href: "/codelab" },
         { name: "Documentation", href: "/documentation" },
