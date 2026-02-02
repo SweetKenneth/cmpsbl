@@ -25,6 +25,7 @@
 | 09 | [Terminal Reference](./09-TERMINAL-REFERENCE.md) | All 260+ commands, module prefixes, output formats |
 | 10 | [Integration Layer](./10-INTEGRATION-LAYER.md) | External APIs, webhook handling, adapter patterns |
 | 11 | [Synergy Engine](./11-SYNERGY-ENGINE.md) | **54 cross-module pipelines, 32 executors, governance** |
+| 12 | [Capabilities Depot](./12-CAPABILITIES-DEPOT.md) | Downloadable artifacts, licensing, pricing tiers |
 
 ---
 
