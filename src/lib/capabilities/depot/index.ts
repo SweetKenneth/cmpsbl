@@ -98,25 +98,18 @@ CAPABILITIES DEPOT — TERMS OF USE
 All capabilities available through the Capabilities Depot are provided as downloadable 
 artifacts only. By purchasing and downloading any capability, you acknowledge and agree:
 
-1. NO SUPPORT: Capabilities are sold AS-IS with no technical support, maintenance, or 
-   bug fixes guaranteed. The "UNSUPPORTED" designation applies to all items.
+1. LICENSED ARTIFACTS: A valid license is required to download capabilities. Licenses 
+   are validated at download time.
 
-2. NO WARRANTY: There is no warranty of any kind, express or implied, including but 
-   not limited to warranties of merchantability or fitness for a particular purpose.
+2. LOCAL EXECUTION: All capabilities are designed for local execution within your own 
+   infrastructure. No data is processed or stored by us.
 
-3. NO HOSTING: Capabilities are not hosted, executed, or managed by the seller. All 
-   execution responsibility lies with the licensee.
+3. SELF-HOSTED: Capabilities are not hosted, executed, or managed by us. All execution 
+   responsibility lies with the licensee.
 
-4. NO UPTIME GUARANTEE: There are no SLAs, uptime commitments, or availability 
-   guarantees associated with any capability.
+4. DIGITAL DOWNLOADS: Due to the nature of digital downloads, all sales are final.
 
-5. LOCAL EXECUTION ONLY: All capabilities are designed for local execution within 
-   your own infrastructure. No data is processed or stored by the seller.
-
-6. LICENSE REQUIRED: A valid license is required to download capabilities. Licenses 
-   are validated at download time only.
-
-7. NO REFUNDS: Due to the nature of digital downloads, all sales are final.
+5. SUPPORT AVAILABLE: For technical questions or integration help, visit our Support page.
 
 For questions, contact: PromptFluid@gmail.com
 `;

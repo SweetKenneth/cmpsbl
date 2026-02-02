@@ -8,7 +8,6 @@ import {
   Download, 
   Clock, 
   Package, 
-  AlertTriangle,
   ChevronRight,
   Layers,
   Cpu,
@@ -161,9 +160,9 @@ export function CapabilityCard({ capability, categoryConfig }: CapabilityCardPro
             <div className="text-2xl font-black text-foreground">
               {formatPrice(capability.priceUsd)}
             </div>
-            <div className="flex items-center gap-1 text-[10px] text-amber-500">
-              <AlertTriangle className="w-2.5 h-2.5" />
-              UNSUPPORTED
+            <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
+              <Download className="w-2.5 h-2.5" />
+              Licensed
             </div>
           </div>
 

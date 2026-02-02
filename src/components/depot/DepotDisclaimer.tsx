@@ -3,19 +3,19 @@
  */
 
 import { motion } from 'framer-motion';
-import { X, AlertTriangle, FileText, Download, Shield, Server, HeartOff } from 'lucide-react';
+import { X, FileText, Download, Shield, Server, Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { LEGAL_DISCLAIMER } from '@/lib/capabilities/depot';
+import { Link } from 'react-router-dom';
 
 interface DepotDisclaimerProps {
   onClose: () => void;
 }
 
 const disclaimerPoints = [
-  { icon: HeartOff, title: 'No Support', description: 'Capabilities are sold AS-IS with no technical support, maintenance, or bug fixes guaranteed.' },
-  { icon: Shield, title: 'No Warranty', description: 'No warranty of any kind, express or implied, including merchantability or fitness for purpose.' },
-  { icon: Server, title: 'No Hosting', description: 'Capabilities are not hosted or executed by the seller. All execution is your responsibility.' },
   { icon: Download, title: 'Local Execution', description: 'All capabilities are designed for local execution within your own infrastructure.' },
+  { icon: Server, title: 'Self-Hosted', description: 'Capabilities are not hosted or executed by us. Execution is within your environment.' },
+  { icon: Shield, title: 'Licensed Artifacts', description: 'A valid license is required to download. All sales are final for digital downloads.' },
+  { icon: FileText, title: 'Need Help?', description: 'Visit our Support page for assistance with integration or technical questions.' },
 ];
 
 export function DepotDisclaimer({ onClose }: DepotDisclaimerProps) {
@@ -37,8 +37,8 @@ export function DepotDisclaimer({ onClose }: DepotDisclaimerProps) {
         {/* Header */}
         <div className="sticky top-0 flex items-center justify-between p-5 border-b border-border bg-card/95 backdrop-blur-sm">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-amber-500/10">
-              <AlertTriangle className="w-5 h-5 text-amber-500" />
+            <div className="p-2 rounded-lg bg-primary/10">
+              <Info className="w-5 h-5 text-primary" />
             </div>
             <div>
               <h2 className="text-lg font-bold text-foreground">Terms of Use</h2>
@@ -60,8 +60,8 @@ export function DepotDisclaimer({ onClose }: DepotDisclaimerProps) {
                 className="p-4 rounded-xl border border-border/50 bg-muted/30"
               >
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="p-1.5 rounded-lg bg-amber-500/10">
-                    <point.icon className="w-4 h-4 text-amber-500" />
+                  <div className="p-1.5 rounded-lg bg-primary/10">
+                    <point.icon className="w-4 h-4 text-primary" />
                   </div>
                   <h3 className="font-semibold text-foreground">{point.title}</h3>
                 </div>
@@ -70,15 +70,38 @@ export function DepotDisclaimer({ onClose }: DepotDisclaimerProps) {
             ))}
           </div>
 
-          {/* Full disclaimer */}
+          {/* Terms summary */}
           <div className="p-4 rounded-xl border border-border/50 bg-muted/20">
             <div className="flex items-center gap-2 mb-3">
               <FileText className="w-4 h-4 text-muted-foreground" />
-              <h3 className="font-semibold text-foreground">Full Legal Terms</h3>
+              <h3 className="font-semibold text-foreground">Terms Summary</h3>
             </div>
-            <pre className="text-xs text-muted-foreground whitespace-pre-wrap font-mono leading-relaxed">
-              {LEGAL_DISCLAIMER.trim()}
-            </pre>
+            <ul className="text-sm text-muted-foreground space-y-2">
+              <li>• Capabilities are downloadable artifacts for local execution</li>
+              <li>• A valid license is required for download access</li>
+              <li>• All sales are final for digital downloads</li>
+              <li>• Execution and deployment is within your infrastructure</li>
+            </ul>
+          </div>
+
+          {/* Support CTA */}
+          <div className="p-4 rounded-xl border border-primary/20 bg-primary/5">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-primary/10">
+                <Shield className="w-5 h-5 text-primary" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-foreground">Need Help?</h3>
+                <p className="text-sm text-muted-foreground">Our team is here to assist with any questions.</p>
+              </div>
+              <Link 
+                to="/support" 
+                onClick={onClose}
+                className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
+              >
+                Get Support
+              </Link>
+            </div>
           </div>
         </div>
 
