@@ -1,6 +1,6 @@
 /**
  * Synergy System Exports
- * v7.1.0 — Cross-Module Pipeline Infrastructure
+ * v7.2.0 — Cross-Module Pipeline Infrastructure
  */
 
 // Types
@@ -52,7 +52,7 @@ export {
   executeAutonomousEvolution,
   executeEndToEndReasoning,
   executeBoundedAutonomyGuard,
-  // v7.1 NEW executors
+  // v7.1 executors
   executeContextualPreload,
   executeSemanticDeduplication,
   executeBehavioralFingerprinting,
@@ -62,6 +62,17 @@ export {
   executeCognitiveLoadOptimization,
   executeHypothesisTesting,
   executeKnowledgeDistillation,
+  // v7.2 NEW executors
+  executeCapacityForecasting,
+  executeCostOptimizationEngine,
+  executeCausalInference,
+  executeEmergentPatternDetection,
+  executeThreatPrediction,
+  executeComplianceAutomation,
+  executePredictiveHealing,
+  executeChaosResilience,
+  executeSLAGuardian,
+  executeResourceContentionResolver,
 } from './executors';
 
 // Auto-register executors

@@ -1,6 +1,6 @@
 /**
  * Synergy Registry
- * v7.0.0 — Cross-Module Pipeline Registration
+ * v7.2.0 — Cross-Module Pipeline Registration
  * 
  * Defines all available synergies that combine 2+ modules
  */
@@ -13,7 +13,7 @@ const registry: SynergyRegistry = {
 };
 
 /**
- * All 44 cross-module synergies
+ * All 54 cross-module synergies
  * Each combines 2-4 modules for enhanced capability
  */
 export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
@@ -717,6 +717,168 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     risk: 'low',
     reversible: true,
     estimatedMs: 700,
+    minModulesRequired: 3,
+  },
+  
+  // === v7.2.0 NEXT-GEN SYNERGIES ===
+  
+  // Predictive Operations
+  {
+    id: 'capacity-forecasting',
+    name: 'Capacity Forecasting',
+    description: 'VISION usage trends combined with BRAIN seasonality patterns to predict SYSTEM capacity needs',
+    category: 'optimization',
+    modules: [
+      { name: 'VISION', role: 'primary', required: true },
+      { name: 'BRAIN', role: 'enhancer', required: true },
+      { name: 'SYSTEM', role: 'validator', required: true },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 200,
+    minModulesRequired: 3,
+  },
+  {
+    id: 'cost-optimization-engine',
+    name: 'Cost Optimization Engine',
+    description: 'ACCESS billing analysis with NEXUS provider costing and CORTEX budget governance',
+    category: 'optimization',
+    modules: [
+      { name: 'ACCESS', role: 'primary', required: true },
+      { name: 'NEXUS', role: 'enhancer', required: true },
+      { name: 'CORTEX', role: 'validator', required: true },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 150,
+    minModulesRequired: 3,
+  },
+  
+  // Advanced Intelligence
+  {
+    id: 'causal-inference',
+    name: 'Causal Inference',
+    description: 'BRAIN correlation analysis enhanced by VISION metrics and DREAM causal graph synthesis',
+    category: 'intelligence',
+    modules: [
+      { name: 'BRAIN', role: 'primary', required: true },
+      { name: 'VISION', role: 'enhancer', required: true },
+      { name: 'DREAM', role: 'validator', required: true },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 450,
+    minModulesRequired: 3,
+  },
+  {
+    id: 'emergent-pattern-detection',
+    name: 'Emergent Pattern Detection',
+    description: 'DREAM novel pattern discovery validated by BRAIN historical comparison and NEXUS interpretation',
+    category: 'intelligence',
+    modules: [
+      { name: 'DREAM', role: 'primary', required: true },
+      { name: 'BRAIN', role: 'enhancer', required: true },
+      { name: 'NEXUS', role: 'validator', required: true },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 550,
+    minModulesRequired: 3,
+  },
+  
+  // Proactive Security
+  {
+    id: 'threat-prediction',
+    name: 'Threat Prediction',
+    description: 'DEFENSE threat intelligence combined with BRAIN attack patterns and VISION anomaly baselines',
+    category: 'security',
+    modules: [
+      { name: 'DEFENSE', role: 'primary', required: true },
+      { name: 'BRAIN', role: 'enhancer', required: true },
+      { name: 'VISION', role: 'validator', required: true },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 220,
+    minModulesRequired: 3,
+  },
+  {
+    id: 'compliance-automation',
+    name: 'Compliance Automation',
+    description: 'CORTEX policy engine with INCLUSIVE accessibility checks and VISION audit trail',
+    category: 'security',
+    modules: [
+      { name: 'CORTEX', role: 'primary', required: true },
+      { name: 'INCLUSIVE', role: 'enhancer', required: true },
+      { name: 'VISION', role: 'validator', required: true },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 180,
+    minModulesRequired: 3,
+  },
+  
+  // Enhanced Resilience
+  {
+    id: 'predictive-healing',
+    name: 'Predictive Healing',
+    description: 'BRAIN failure pattern prediction triggers MODERNIZER proactive fixes before issues occur',
+    category: 'resilience',
+    modules: [
+      { name: 'BRAIN', role: 'primary', required: true },
+      { name: 'MODERNIZER', role: 'enhancer', required: true },
+      { name: 'VISION', role: 'validator', required: true },
+    ],
+    risk: 'medium',
+    reversible: true,
+    estimatedMs: 380,
+    minModulesRequired: 3,
+  },
+  {
+    id: 'chaos-resilience',
+    name: 'Chaos Resilience',
+    description: 'DEFENSE controlled chaos testing with CORE recovery validation and VISION impact analysis',
+    category: 'resilience',
+    modules: [
+      { name: 'DEFENSE', role: 'primary', required: true },
+      { name: 'CORE', role: 'enhancer', required: true },
+      { name: 'VISION', role: 'validator', required: true },
+    ],
+    risk: 'medium',
+    reversible: true,
+    estimatedMs: 500,
+    minModulesRequired: 3,
+  },
+  
+  // Enterprise Orchestration
+  {
+    id: 'sla-guardian',
+    name: 'SLA Guardian',
+    description: 'VISION SLA monitoring with CORTEX priority management and DEFENSE throttle activation',
+    category: 'orchestration',
+    modules: [
+      { name: 'VISION', role: 'primary', required: true },
+      { name: 'CORTEX', role: 'enhancer', required: true },
+      { name: 'DEFENSE', role: 'validator', required: true },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 100,
+    minModulesRequired: 3,
+  },
+  {
+    id: 'resource-contention-resolver',
+    name: 'Resource Contention Resolver',
+    description: 'RIPPLE event prioritization with CORTEX scheduling and SYSTEM resource allocation',
+    category: 'orchestration',
+    modules: [
+      { name: 'RIPPLE', role: 'primary', required: true },
+      { name: 'CORTEX', role: 'enhancer', required: true },
+      { name: 'SYSTEM', role: 'validator', required: true },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 80,
     minModulesRequired: 3,
   },
 ];

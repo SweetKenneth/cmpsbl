@@ -1,6 +1,6 @@
 /**
  * useSynergies Hook
- * v7.1.0 — React hook for cross-module synergy execution
+ * v7.2.0 — React hook for cross-module synergy execution
  */
 
 import { useState, useCallback, useMemo } from 'react';
