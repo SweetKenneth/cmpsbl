@@ -1,6 +1,6 @@
 /**
  * SEBA Evolution Executor
- * v1.0.0 — Safe Execution of Approved Proposals
+ * v1.1.0 — Safe Execution of Approved Proposals
  * 
  * Executes governance-approved improvement proposals with full
  * rollback capability and health monitoring.

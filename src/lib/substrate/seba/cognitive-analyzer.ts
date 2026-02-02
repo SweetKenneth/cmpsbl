@@ -1,6 +1,6 @@
 /**
  * SEBA Cognitive Analyzer
- * v1.0.0 — Full Cognitive Pipeline Integration
+ * v1.1.0 — Full Cognitive Pipeline Integration
  * 
  * Runs the full cognitive stack to generate insights that can become
  * improvement proposals.

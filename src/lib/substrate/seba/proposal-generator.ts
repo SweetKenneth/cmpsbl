@@ -1,6 +1,6 @@
 /**
  * SEBA Proposal Generator
- * v1.0.0 — Converts Insights to Actionable Proposals
+ * v1.1.0 — Converts Insights to Actionable Proposals
  * 
  * Takes cognitive insights and generates structured improvement proposals
  * that can be governance-gated and applied to the system.
@@ -112,6 +112,7 @@ export class ProposalGenerator {
         id: proposalId,
         short_id: shortId,
         created_at: new Date().toISOString(),
+        status: 'pending_review',
         
         category,
         title: this.generateTitle(insight, category),
@@ -123,6 +124,7 @@ export class ProposalGenerator {
                          insight.urgency === 'medium' ? 'medium' : 'low',
         risk_level: riskLevel,
         confidence_score: confidence,
+        priority: insight.urgency === 'critical' ? 10 : insight.urgency === 'high' ? 7 : insight.urgency === 'medium' ? 5 : 3,
         
         proposed_actions: actions,
         rollback_strategy: this.generateRollbackStrategy(actions),
@@ -306,6 +308,8 @@ export class ProposalGenerator {
       error_recovery: 'Error Recovery',
       pattern_discovery: 'Pattern Discovery',
       architecture_evolution: 'Architecture Evolution',
+      security_hardening: 'Security Hardening',
+      resource_optimization: 'Resource Optimization',
     };
 
     return `[${categoryLabels[category]}] ${insight.title}`;
