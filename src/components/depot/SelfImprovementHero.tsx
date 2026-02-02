@@ -30,31 +30,31 @@ interface SelfImprovementHeroProps {
 export function SelfImprovementHero({ onExplore, onViewApex }: SelfImprovementHeroProps) {
   return (
     <section className="relative overflow-hidden bg-background">
-      {/* Layered gradient backgrounds */}
-      <div className="absolute inset-0 bg-gradient-to-b from-violet-950/20 via-background to-background" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_center,_var(--tw-gradient-stops))] from-violet-500/15 via-transparent to-transparent" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-cyan-500/10 via-transparent to-transparent" />
+      {/* Subtle gradient backgrounds - no purple tint */}
+      <div className="absolute inset-0 bg-gradient-to-b from-muted/30 via-background to-background" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-cyan-500/5 via-transparent to-transparent" />
       
-      {/* Animated glow orbs */}
+      {/* Animated glow orbs - subtle cyan/primary tones */}
       <motion.div 
-        className="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-violet-600/20 via-fuchsia-500/10 to-transparent blur-3xl"
+        className="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-primary/10 via-cyan-500/5 to-transparent blur-3xl"
         animate={{ 
           scale: [1, 1.1, 1],
-          opacity: [0.3, 0.5, 0.3],
+          opacity: [0.2, 0.3, 0.2],
         }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div 
-        className="absolute -bottom-20 right-0 w-[400px] h-[400px] rounded-full bg-gradient-to-tl from-cyan-500/15 via-blue-500/10 to-transparent blur-3xl"
+        className="absolute -bottom-20 right-0 w-[400px] h-[400px] rounded-full bg-gradient-to-tl from-cyan-500/8 via-primary/5 to-transparent blur-3xl"
         animate={{ 
           scale: [1, 1.15, 1],
-          opacity: [0.2, 0.4, 0.2],
+          opacity: [0.15, 0.25, 0.15],
         }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
       />
       
-      {/* Grid pattern overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(139,92,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
+      {/* Grid pattern overlay - neutral tone */}
+      <div className="absolute inset-0 bg-[linear-gradient(hsl(var(--border)/0.3)_1px,transparent_1px),linear-gradient(90deg,hsl(var(--border)/0.3)_1px,transparent_1px)] bg-[size:60px_60px]" />
       
       <div className="relative container mx-auto px-4 py-16 md:py-24 lg:py-32">
         <div className="max-w-5xl mx-auto">
@@ -65,9 +65,9 @@ export function SelfImprovementHero({ onExplore, onViewApex }: SelfImprovementHe
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-violet-500/30 bg-violet-500/10 backdrop-blur-sm">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm">
               <Crown className="w-4 h-4 text-amber-400" />
-              <span className="text-sm font-semibold text-violet-300">
+              <span className="text-sm font-semibold text-primary">
                 World's First Self-Improving AI Marketplace
               </span>
               <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30 text-[10px]">
@@ -87,7 +87,7 @@ export function SelfImprovementHero({ onExplore, onViewApex }: SelfImprovementHe
               <span className="block text-foreground mb-2">
                 Systems That
               </span>
-              <span className="block bg-gradient-to-r from-violet-400 via-fuchsia-400 to-cyan-400 bg-clip-text text-transparent pb-2">
+              <span className="block bg-gradient-to-r from-primary via-cyan-400 to-emerald-400 bg-clip-text text-transparent pb-2">
                 Improve Themselves
               </span>
             </h1>
@@ -103,9 +103,9 @@ export function SelfImprovementHero({ onExplore, onViewApex }: SelfImprovementHe
             The first marketplace for{' '}
             <span className="text-foreground font-semibold">recursive self-improvement</span>{' '}
             capabilities. Download cognitive artifacts that{' '}
-            <span className="text-violet-400 font-semibold">learn to learn</span>,{' '}
+            <span className="text-primary font-semibold">learn to learn</span>,{' '}
             <span className="text-cyan-400 font-semibold">optimize their own optimization</span>, and{' '}
-            <span className="text-fuchsia-400 font-semibold">compound intelligence</span>{' '}
+            <span className="text-emerald-400 font-semibold">compound intelligence</span>{' '}
             over time.
           </motion.p>
 
@@ -119,7 +119,7 @@ export function SelfImprovementHero({ onExplore, onViewApex }: SelfImprovementHe
             <Button 
               size="lg" 
               onClick={onViewApex}
-              className="w-full sm:w-auto h-14 px-8 text-lg bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 shadow-lg shadow-violet-500/25 border-0 touch-manipulation"
+              className="w-full sm:w-auto h-14 px-8 text-lg bg-gradient-to-r from-primary to-cyan-500 hover:from-primary/90 hover:to-cyan-400 shadow-lg shadow-primary/25 border-0 touch-manipulation"
             >
               <Crown className="w-5 h-5 mr-2" />
               View Apex Capabilities
@@ -129,7 +129,7 @@ export function SelfImprovementHero({ onExplore, onViewApex }: SelfImprovementHe
               size="lg" 
               variant="outline" 
               onClick={onExplore}
-              className="w-full sm:w-auto h-14 px-8 text-lg border-violet-500/30 hover:bg-violet-500/10 touch-manipulation"
+              className="w-full sm:w-auto h-14 px-8 text-lg border-primary/30 hover:bg-primary/10 touch-manipulation"
             >
               <Sparkles className="w-5 h-5 mr-2" />
               Explore All Capabilities
@@ -147,7 +147,7 @@ export function SelfImprovementHero({ onExplore, onViewApex }: SelfImprovementHe
               icon={Brain}
               label="Recursive"
               value="Self-Optimization"
-              color="violet"
+              color="cyan"
             />
             <TrustCard 
               icon={TrendingUp}
@@ -178,13 +178,13 @@ export function SelfImprovementHero({ onExplore, onViewApex }: SelfImprovementHe
           >
             <div className="relative group">
               {/* Glow effect */}
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-violet-600 via-fuchsia-500 to-cyan-500 rounded-2xl blur opacity-30 group-hover:opacity-50 transition-opacity" />
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-primary via-cyan-500 to-emerald-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition-opacity" />
               
-              <div className="relative p-6 md:p-8 rounded-2xl border border-violet-500/30 bg-gradient-to-br from-violet-950/80 via-background to-background backdrop-blur-xl">
+              <div className="relative p-6 md:p-8 rounded-2xl border border-primary/30 bg-gradient-to-br from-muted/80 via-background to-background backdrop-blur-xl">
                 <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6">
                   {/* Icon */}
-                  <div className="shrink-0 p-4 rounded-xl bg-gradient-to-br from-violet-500/20 to-fuchsia-500/20 border border-violet-500/20">
-                    <Zap className="w-8 h-8 text-violet-400" />
+                  <div className="shrink-0 p-4 rounded-xl bg-gradient-to-br from-primary/20 to-cyan-500/20 border border-primary/20">
+                    <Zap className="w-8 h-8 text-primary" />
                   </div>
                   
                   {/* Content */}
@@ -193,7 +193,7 @@ export function SelfImprovementHero({ onExplore, onViewApex }: SelfImprovementHe
                       <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30">
                         APEX TIER
                       </Badge>
-                      <Badge variant="outline" className="border-violet-500/30 text-violet-400">
+                      <Badge variant="outline" className="border-primary/30 text-primary">
                         $6,999
                       </Badge>
                     </div>
@@ -209,7 +209,7 @@ export function SelfImprovementHero({ onExplore, onViewApex }: SelfImprovementHe
                   {/* CTA */}
                   <Button 
                     onClick={onViewApex}
-                    className="shrink-0 w-full md:w-auto bg-violet-600 hover:bg-violet-500 touch-manipulation"
+                    className="shrink-0 w-full md:w-auto bg-primary hover:bg-primary/90 touch-manipulation"
                   >
                     Learn More
                     <ArrowRight className="w-4 h-4 ml-2" />
