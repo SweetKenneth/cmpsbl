@@ -1,5 +1,6 @@
 /**
  * Capability Card — Individual capability display for depot
+ * v1.1.0 — With Stripe Checkout
  */
 
 import { motion } from 'framer-motion';
@@ -12,6 +13,8 @@ import {
   ChevronRight,
   Layers,
   Cpu,
+  Loader2,
+  Zap,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -22,6 +25,7 @@ import {
   type CapabilityArtifact,
   type CapabilityCategory,
 } from '@/lib/capabilities/depot';
+import { useCapabilityCheckout } from '@/hooks/useCapabilityCheckout';
 import { cn } from '@/lib/utils';
 
 interface CapabilityCardProps {
@@ -46,11 +50,21 @@ const difficultyColors: Record<string, string> = {
 export function CapabilityCard({ capability, categoryConfig }: CapabilityCardProps) {
   const CategoryIcon = categoryConfig[capability.category]?.icon;
   const tierConfig = getTierConfig(capability.pricingTier);
+  const { checkout, loading, isAvailable } = useCapabilityCheckout();
+  
+  const isSynergy = capability.id.startsWith('syn-');
+  const hasCheckout = isAvailable(capability.id);
   
   // Format last updated
   const lastUpdated = new Date(capability.lastUpdated);
   const daysAgo = Math.floor((Date.now() - lastUpdated.getTime()) / (1000 * 60 * 60 * 24));
   const updatedLabel = daysAgo === 0 ? 'Today' : daysAgo === 1 ? 'Yesterday' : `${daysAgo}d ago`;
+
+  const handleBuy = async () => {
+    if (hasCheckout) {
+      await checkout(capability.id);
+    }
+  };
 
   return (
     <motion.div
@@ -61,7 +75,10 @@ export function CapabilityCard({ capability, categoryConfig }: CapabilityCardPro
       whileHover={{ y: -4 }}
       transition={{ duration: 0.2 }}
     >
-      <Card className="h-full flex flex-col overflow-hidden border-border/50 hover:border-primary/30 transition-colors group">
+      <Card className={cn(
+        "h-full flex flex-col overflow-hidden border-border/50 hover:border-primary/30 transition-colors group",
+        isSynergy && "ring-1 ring-violet-500/20"
+      )}>
         <CardContent className="flex-1 p-5">
           {/* Header: Category + Tier */}
           <div className="flex items-center justify-between mb-4">
@@ -73,9 +90,17 @@ export function CapabilityCard({ capability, categoryConfig }: CapabilityCardPro
               {categoryConfig[capability.category]?.label}
             </div>
             
-            <Badge variant="outline" className={cn("text-xs", tierColors[capability.pricingTier])}>
-              {tierConfig.badge}
-            </Badge>
+            <div className="flex items-center gap-1.5">
+              {isSynergy && (
+                <Badge variant="outline" className="text-xs border-violet-500/30 bg-violet-500/10 text-violet-400">
+                  <Zap className="w-2.5 h-2.5 mr-1" />
+                  Synergy
+                </Badge>
+              )}
+              <Badge variant="outline" className={cn("text-xs", tierColors[capability.pricingTier])}>
+                {tierConfig.badge}
+              </Badge>
+            </div>
           </div>
 
           {/* Title + Version */}
@@ -157,8 +182,19 @@ export function CapabilityCard({ capability, categoryConfig }: CapabilityCardPro
                 <ChevronRight className="w-3 h-3 ml-1" />
               </Link>
             </Button>
-            <Button size="sm">
-              <Package className="w-3 h-3 mr-1" />
+            <Button 
+              size="sm" 
+              onClick={handleBuy}
+              disabled={loading || !hasCheckout}
+              className={cn(
+                isSynergy && "bg-violet-600 hover:bg-violet-700"
+              )}
+            >
+              {loading ? (
+                <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+              ) : (
+                <Package className="w-3 h-3 mr-1" />
+              )}
               Buy
             </Button>
           </div>

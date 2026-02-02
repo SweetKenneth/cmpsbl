@@ -1,7 +1,7 @@
 /**
  * Capabilities Depot — Main Export
  * Downloadable, licensed capability artifacts (no support, no hosting)
- * v1.0.0
+ * v1.1.0 — With Stripe Integration
  */
 
 // === Types ===
@@ -65,8 +65,18 @@ export {
   createManifestTemplate,
 } from './package';
 
+// === Stripe ===
+export {
+  CAPABILITY_STRIPE_CONFIG,
+  SYNERGY_STRIPE_CONFIG,
+  getAllStripeConfigs,
+  getStripeConfig,
+  hasStripeConfig,
+  type CapabilityStripeConfig,
+} from './stripe-config';
+
 // === Constants ===
-export const DEPOT_VERSION = '1.0.0';
+export const DEPOT_VERSION = '1.1.0';
 export const DEPOT_NAME = 'Capabilities Depot';
 
 // === Legal Disclaimer ===
