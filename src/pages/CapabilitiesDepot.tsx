@@ -1,7 +1,7 @@
 /**
  * Capabilities Depot — Main Page
  * Marketplace surface for downloadable capability artifacts
- * v1.3.1 — Performance Optimized
+ * v1.4.0 — Fixed layout and modal details
  */
 
 import { useState, useMemo, lazy, Suspense } from 'react';
@@ -35,6 +35,7 @@ import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { CapabilityCard } from '@/components/depot/CapabilityCard';
 import { DepotSEO } from '@/components/depot/DepotSEO';
+import { CapabilityDetailModal } from '@/components/depot/CapabilityDetailModal';
 import {
   filterCapabilities,
   getCategoryStats,
@@ -44,6 +45,7 @@ import {
   type ExecutorType,
   type PricingTier,
   type CapabilityFilters,
+  type CapabilityArtifact,
 } from '@/lib/capabilities/depot';
 import { cn } from '@/lib/utils';
 
@@ -75,7 +77,7 @@ export default function CapabilitiesDepotPage() {
   });
   const [searchQuery, setSearchQuery] = useState('');
   const [showDisclaimer, setShowDisclaimer] = useState(false);
-
+  const [selectedCapability, setSelectedCapability] = useState<CapabilityArtifact | null>(null);
   // Memoize expensive calculations
   const categoryStats = useMemo(() => getCategoryStats(), []);
   const totalCount = useMemo(() => getTotalCapabilityCount(), []);
@@ -103,7 +105,7 @@ export default function CapabilitiesDepotPage() {
 
       <PublicNav />
 
-      <main className="min-h-screen bg-background pt-20">
+      <main className="min-h-screen bg-background">
         {/* Hero Section — Lightweight Performance Optimized */}
         <section className="relative overflow-hidden border-b border-border/50">
           {/* Static gradient background - no animations */}
@@ -293,6 +295,7 @@ export default function CapabilitiesDepotPage() {
                     key={capability.id} 
                     capability={capability} 
                     categoryConfig={CATEGORY_CONFIG}
+                    onViewDetails={() => setSelectedCapability(capability)}
                   />
                 ))}
               </div>
@@ -325,6 +328,17 @@ export default function CapabilitiesDepotPage() {
           <Suspense fallback={null}>
             <DepotDisclaimer onClose={() => setShowDisclaimer(false)} />
           </Suspense>
+        )}
+      </AnimatePresence>
+
+      {/* Capability Detail Modal */}
+      <AnimatePresence>
+        {selectedCapability && (
+          <CapabilityDetailModal
+            capability={selectedCapability}
+            categoryConfig={CATEGORY_CONFIG}
+            onClose={() => setSelectedCapability(null)}
+          />
         )}
       </AnimatePresence>
     </>

@@ -1,9 +1,8 @@
 /**
  * Capability Card — Individual capability display for depot
- * v1.2.0 — Performance Optimized with Static Classes
+ * v1.3.0 — Modal-based details view
  */
 
-import { Link } from 'react-router-dom';
 import { 
   Download, 
   Clock, 
@@ -29,6 +28,7 @@ import { cn } from '@/lib/utils';
 interface CapabilityCardProps {
   capability: CapabilityArtifact;
   categoryConfig: Record<CapabilityCategory, { icon: React.ElementType; label: string; colorClass: string }>;
+  onViewDetails: () => void;
 }
 
 const tierColors: Record<string, string> = {
@@ -45,7 +45,7 @@ const difficultyColors: Record<string, string> = {
   expert: 'text-rose-500',
 };
 
-export function CapabilityCard({ capability, categoryConfig }: CapabilityCardProps) {
+export function CapabilityCard({ capability, categoryConfig, onViewDetails }: CapabilityCardProps) {
   const config = categoryConfig[capability.category];
   const CategoryIcon = config?.icon;
   const tierConfig = getTierConfig(capability.pricingTier);
@@ -168,11 +168,9 @@ export function CapabilityCard({ capability, categoryConfig }: CapabilityCardPro
 
           {/* Actions */}
           <div className="flex items-center gap-2">
-            <Button size="sm" variant="outline" asChild>
-              <Link to={`/capabilities/${capability.slug}`}>
-                Details
-                <ChevronRight className="w-3 h-3 ml-1" />
-              </Link>
+            <Button size="sm" variant="outline" onClick={onViewDetails}>
+              Details
+              <ChevronRight className="w-3 h-3 ml-1" />
             </Button>
             <Button 
               size="sm" 
