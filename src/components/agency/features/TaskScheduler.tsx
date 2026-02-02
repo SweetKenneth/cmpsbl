@@ -37,8 +37,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import { format, addDays, startOfWeek, isSameDay, isToday } from 'date-fns';
+import { format, addDays, startOfWeek, isToday, startOfDay } from 'date-fns';
 import { TASK_TYPES, TaskTypeId } from '@/lib/agency/agencyTasks';
+
+// date-fns v3 type exports are missing for some helpers in our build;
+// keep behavior identical via a local helper.
+const isSameDayLocal = (a: Date, b: Date) => startOfDay(a).getTime() === startOfDay(b).getTime();
 
 // ============================================================================
 // TYPES
@@ -323,7 +327,7 @@ function WeekView({ tasks, currentDate, onDayClick, selectedDate }: WeekViewProp
   const days = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
   
   const getTasksForDay = (day: Date) => 
-    tasks.filter(t => isSameDay(t.scheduledTime, day) || 
+    tasks.filter(t => isSameDayLocal(t.scheduledTime, day) || 
       (t.isRecurring && t.recurrenceType === 'daily') ||
       (t.isRecurring && t.recurrenceType === 'weekly' && t.scheduledTime.getDay() === day.getDay())
     );
@@ -332,7 +336,7 @@ function WeekView({ tasks, currentDate, onDayClick, selectedDate }: WeekViewProp
     <div className="grid grid-cols-7 gap-1">
       {days.map((day) => {
         const dayTasks = getTasksForDay(day);
-        const isSelected = selectedDate && isSameDay(day, selectedDate);
+        const isSelected = selectedDate && isSameDayLocal(day, selectedDate);
         
         return (
           <button
@@ -410,7 +414,7 @@ export function TaskScheduler({
   const filteredTasks = useMemo(() => {
     if (!selectedDate) return orderedTasks;
     return orderedTasks.filter(t => 
-      isSameDay(t.scheduledTime, selectedDate) ||
+      isSameDayLocal(t.scheduledTime, selectedDate) ||
       (t.isRecurring && t.recurrenceType === 'daily') ||
       (t.isRecurring && t.recurrenceType === 'weekly' && t.scheduledTime.getDay() === selectedDate.getDay())
     );

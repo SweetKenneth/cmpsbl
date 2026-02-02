@@ -20,7 +20,11 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
-import { formatDistanceToNow, differenceInMinutes, differenceInSeconds, addMinutes } from 'date-fns';
+import { formatDistanceToNow, differenceInMinutes, differenceInSeconds } from 'date-fns';
+
+// date-fns v3 type exports are missing for some helpers in our build;
+// keep behavior identical via a local helper.
+const addMinutesLocal = (date: Date, amount: number) => new Date(date.getTime() + amount * 60_000);
 import { type AgencyTask, type AgencyTaskLog, TASK_TYPES } from '@/lib/agency/agencyTasks';
 import { SPECIALIZATIONS } from '@/lib/agency/agencyTypes';
 
@@ -94,7 +98,7 @@ export function PortalTaskPanel({
       const estimatedStartMinutes = inProgressCount > 0 ? cumulativeWait + 2 : cumulativeWait;
       queuePositions.set(task.id, {
         position: index + 1,
-        estimatedStart: addMinutes(new Date(), estimatedStartMinutes),
+        estimatedStart: addMinutesLocal(new Date(), estimatedStartMinutes),
       });
       cumulativeWait += getEstimatedTime(task.task_type);
     });
