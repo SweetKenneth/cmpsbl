@@ -1,7 +1,7 @@
 /**
  * Capability Checkout Edge Function
  * Creates Stripe checkout session for capability purchases
- * v1.0.0
+ * v1.2.0 — All 56+ capabilities supported
  */
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
@@ -13,9 +13,9 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-// Capability price ID mapping
+// Complete capability price ID mapping — ALL 56+ capabilities
 const CAPABILITY_PRICES: Record<string, string> = {
-  // Core capabilities
+  // === Core Capabilities ===
   'cap-causal-inference': 'price_1SwBSPQ7FtTiAL4aJycn6czm',
   'cap-emergent-pattern': 'price_1SwBSQQ7FtTiAL4aScJzym5y',
   'cap-capacity-forecast': 'price_1SwBSRQ7FtTiAL4a0kpjBPwU',
@@ -29,7 +29,7 @@ const CAPABILITY_PRICES: Record<string, string> = {
   'cap-resource-contention': 'price_1SwBScQ7FtTiAL4aImHXOxKy',
   'cap-cognitive-mesh': 'price_1SwBSeQ7FtTiAL4aPMhYfp5b',
   
-  // Synergy capabilities
+  // === Synergy Pipeline Capabilities ===
   'syn-smart-recall': 'price_1SwBSgQ7FtTiAL4as6Nob9DC',
   'syn-adaptive-routing': 'price_1SwBShQ7FtTiAL4aS2j350wK',
   'syn-graceful-degradation': 'price_1SwBSjQ7FtTiAL4aGALKx0Bu',
@@ -38,6 +38,56 @@ const CAPABILITY_PRICES: Record<string, string> = {
   'syn-self-healing': 'price_1SwBSnQ7FtTiAL4aokUoXhju',
   'syn-threat-learning': 'price_1SwBSoQ7FtTiAL4aS60aQaSc',
   'syn-end-to-end-reasoning': 'price_1SwBSqQ7FtTiAL4aq47IP62M',
+
+  // === Intelligence Expansion ===
+  'cap-semantic-reasoning': 'price_1SwBlwQ7FtTiAL4axAqaaiTg',
+  'cap-intent-disambiguation': 'price_1SwBlxQ7FtTiAL4aojDNaJDU',
+  'cap-knowledge-distillation': 'price_1SwBlzQ7FtTiAL4agQtOhCXp',
+  'cap-temporal-reasoning': 'price_1SwBm1Q7FtTiAL4aFKteQKtG',
+  'cap-analogy-engine': 'price_1SwBm2Q7FtTiAL4aDXET9GYH',
+  'cap-hypothesis-generator': 'price_1SwBm3Q7FtTiAL4aWyb1S3tw',
+
+  // === Optimization Expansion ===
+  'cap-latency-optimizer': 'price_1SwBm5Q7FtTiAL4aZrf4zrxL',
+  'cap-token-budgeting': 'price_1SwBm6Q7FtTiAL4aH1qYI1x6',
+  'cap-context-compression': 'price_1SwBm7Q7FtTiAL4aEkQMyRSG',
+  'cap-batch-orchestrator': 'price_1SwBm9Q7FtTiAL4aqrrJa9El',
+  'cap-memory-pooling': 'price_1SwBmCQ7FtTiAL4aXnsUiSvW',
+  'cap-query-optimizer': 'price_1SwBmEQ7FtTiAL4aR17K6lqz',
+
+  // === Resilience Expansion ===
+  'cap-circuit-breaker-pro': 'price_1SwBmFQ7FtTiAL4aGeDJ49wo',
+  'cap-retry-orchestrator': 'price_1SwBmGQ7FtTiAL4aEzdQ1yAo',
+  'cap-failover-manager': 'price_1SwBmHQ7FtTiAL4a7w6HiMc6',
+  'cap-load-shedding': 'price_1SwBmJQ7FtTiAL4aTilnaSPM',
+  'cap-bulkhead-isolation': 'price_1SwBmKQ7FtTiAL4a2GMfg1k9',
+
+  // === Security Expansion ===
+  'cap-anomaly-detection': 'price_1SwBmLQ7FtTiAL4ajGBip76w',
+  'cap-secret-rotation': 'price_1SwBmNQ7FtTiAL4aeZMBO1mK',
+  'cap-rate-limiter-pro': 'price_1SwBmNQ7FtTiAL4aZpKIxPEY',
+  'cap-input-sanitization': 'price_1SwBmRQ7FtTiAL4aj5N0S5oe',
+  'cap-access-control': 'price_1SwBmSQ7FtTiAL4acUBQEvgv',
+  'cap-encryption-toolkit': 'price_1SwBmTQ7FtTiAL4aQMw5mQSo',
+
+  // === Accessibility Expansion ===
+  'cap-screen-reader-optimizer': 'price_1SwBmUQ7FtTiAL4aE12zwxSu',
+  'cap-color-contrast': 'price_1SwBmVQ7FtTiAL4ac7kvOVbR',
+  'cap-keyboard-nav': 'price_1SwBmWQ7FtTiAL4ahM73IRqp',
+  'cap-alt-text-generator': 'price_1SwBmXQ7FtTiAL4aOEPYI97x',
+
+  // === Automation Expansion ===
+  'cap-workflow-engine': 'price_1SwBmYQ7FtTiAL4ayzfrPMjB',
+  'cap-event-sourcing': 'price_1SwBmZQ7FtTiAL4a6kToI2pr',
+  'cap-scheduler-pro': 'price_1SwBmaQ7FtTiAL4akhbkVCeo',
+  'cap-notification-hub': 'price_1SwBmdQ7FtTiAL4aroaj2Vx8',
+  'cap-state-machine': 'price_1SwBmfQ7FtTiAL4aTRIOPWQB',
+
+  // === Flagship Expansion ===
+  'cap-enterprise-mesh': 'price_1SwBmgQ7FtTiAL4aDaRGvBMd',
+  'cap-cognitive-platform': 'price_1SwBmhQ7FtTiAL4aU89A5AEH',
+  'cap-security-suite': 'price_1SwBmiQ7FtTiAL4aenCVhynX',
+  'cap-resilience-platform': 'price_1SwBmjQ7FtTiAL4aU1oKwtPF',
 };
 
 serve(async (req) => {
@@ -54,7 +104,7 @@ serve(async (req) => {
 
     const priceId = CAPABILITY_PRICES[capability_id];
     if (!priceId) {
-      throw new Error(`Unknown capability: ${capability_id}`);
+      throw new Error(`Unknown capability: ${capability_id}. Total available: ${Object.keys(CAPABILITY_PRICES).length}`);
     }
 
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {

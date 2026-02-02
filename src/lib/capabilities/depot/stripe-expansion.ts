@@ -1,204 +1,204 @@
 /**
  * Capabilities Depot — Stripe Expansion
- * Product/price mappings for expanded capabilities
+ * Real Stripe product/price mappings for expanded capabilities
  * v1.2.0
  */
 
 import type { CapabilityStripeConfig } from './stripe-config';
 
-// Expansion capabilities Stripe config
+// Expansion capabilities Stripe config with REAL Stripe IDs
 export const EXPANSION_STRIPE_CONFIG: Record<string, CapabilityStripeConfig> = {
   // Intelligence Expansion
   'cap-semantic-reasoning': {
-    productId: 'prod_expansion_sem_rea',
-    priceId: 'price_expansion_sem_rea',
+    productId: 'prod_TtzloV6im9GRSR',
+    priceId: 'price_1SwBlwQ7FtTiAL4axAqaaiTg',
     priceUsd: 399,
   },
   'cap-intent-disambiguation': {
-    productId: 'prod_expansion_int_dis',
-    priceId: 'price_expansion_int_dis',
+    productId: 'prod_Ttzll69BZyTqgg',
+    priceId: 'price_1SwBlxQ7FtTiAL4aojDNaJDU',
     priceUsd: 149,
   },
   'cap-knowledge-distillation': {
-    productId: 'prod_expansion_kno_dis',
-    priceId: 'price_expansion_kno_dis',
+    productId: 'prod_TtzltM7DxEj6i8',
+    priceId: 'price_1SwBlzQ7FtTiAL4agQtOhCXp',
     priceUsd: 899,
   },
   'cap-temporal-reasoning': {
-    productId: 'prod_expansion_tem_rea',
-    priceId: 'price_expansion_tem_rea',
+    productId: 'prod_TtzleIMTD9JPAF',
+    priceId: 'price_1SwBm1Q7FtTiAL4aFKteQKtG',
     priceUsd: 349,
   },
   'cap-analogy-engine': {
-    productId: 'prod_expansion_ana_eng',
-    priceId: 'price_expansion_ana_eng',
+    productId: 'prod_TtzlnRuuRtTaFq',
+    priceId: 'price_1SwBm2Q7FtTiAL4aDXET9GYH',
     priceUsd: 249,
   },
   'cap-hypothesis-generator': {
-    productId: 'prod_expansion_hyp_gen',
-    priceId: 'price_expansion_hyp_gen',
+    productId: 'prod_TtzltMEBacTdVb',
+    priceId: 'price_1SwBm3Q7FtTiAL4aWyb1S3tw',
     priceUsd: 299,
   },
 
   // Optimization Expansion
   'cap-latency-optimizer': {
-    productId: 'prod_expansion_lat_opt',
-    priceId: 'price_expansion_lat_opt',
+    productId: 'prod_TtzlPp3QtGVJIT',
+    priceId: 'price_1SwBm5Q7FtTiAL4aZrf4zrxL',
     priceUsd: 249,
   },
   'cap-token-budgeting': {
-    productId: 'prod_expansion_tok_bud',
-    priceId: 'price_expansion_tok_bud',
+    productId: 'prod_TtzlzcMnQYWa5M',
+    priceId: 'price_1SwBm6Q7FtTiAL4aH1qYI1x6',
     priceUsd: 199,
   },
   'cap-context-compression': {
-    productId: 'prod_expansion_ctx_cmp',
-    priceId: 'price_expansion_ctx_cmp',
+    productId: 'prod_TtzlwQSR40kqCy',
+    priceId: 'price_1SwBm7Q7FtTiAL4aEkQMyRSG',
     priceUsd: 179,
   },
   'cap-batch-orchestrator': {
-    productId: 'prod_expansion_bat_orc',
-    priceId: 'price_expansion_bat_orc',
+    productId: 'prod_TtzltvFJkFH3Fc',
+    priceId: 'price_1SwBm9Q7FtTiAL4aqrrJa9El',
     priceUsd: 299,
   },
   'cap-memory-pooling': {
-    productId: 'prod_expansion_mem_poo',
-    priceId: 'price_expansion_mem_poo',
+    productId: 'prod_TtzlZuzA9ANWpB',
+    priceId: 'price_1SwBmCQ7FtTiAL4aXnsUiSvW',
     priceUsd: 449,
   },
   'cap-query-optimizer': {
-    productId: 'prod_expansion_que_opt',
-    priceId: 'price_expansion_que_opt',
+    productId: 'prod_Ttzlygb6GPydLN',
+    priceId: 'price_1SwBmEQ7FtTiAL4aR17K6lqz',
     priceUsd: 219,
   },
 
   // Resilience Expansion
   'cap-circuit-breaker-pro': {
-    productId: 'prod_expansion_cir_bre',
-    priceId: 'price_expansion_cir_bre',
+    productId: 'prod_TtzlFmr8QoaHVM',
+    priceId: 'price_1SwBmFQ7FtTiAL4aGeDJ49wo',
     priceUsd: 349,
   },
   'cap-retry-orchestrator': {
-    productId: 'prod_expansion_ret_orc',
-    priceId: 'price_expansion_ret_orc',
+    productId: 'prod_Ttzl2sQOHq84d2',
+    priceId: 'price_1SwBmGQ7FtTiAL4aEzdQ1yAo',
     priceUsd: 149,
   },
   'cap-failover-manager': {
-    productId: 'prod_expansion_fai_mgr',
-    priceId: 'price_expansion_fai_mgr',
+    productId: 'prod_TtzlOyJNIskWbM',
+    priceId: 'price_1SwBmHQ7FtTiAL4a7w6HiMc6',
     priceUsd: 549,
   },
   'cap-load-shedding': {
-    productId: 'prod_expansion_loa_she',
-    priceId: 'price_expansion_loa_she',
+    productId: 'prod_Ttzl69EoofFcj6',
+    priceId: 'price_1SwBmJQ7FtTiAL4aTilnaSPM',
     priceUsd: 279,
   },
   'cap-bulkhead-isolation': {
-    productId: 'prod_expansion_bul_iso',
-    priceId: 'price_expansion_bul_iso',
+    productId: 'prod_TtzlZhIMooOCpd',
+    priceId: 'price_1SwBmKQ7FtTiAL4a2GMfg1k9',
     priceUsd: 329,
   },
 
   // Security Expansion
   'cap-anomaly-detection': {
-    productId: 'prod_expansion_ano_det',
-    priceId: 'price_expansion_ano_det',
+    productId: 'prod_TtzlTzg7xzDU38',
+    priceId: 'price_1SwBmLQ7FtTiAL4ajGBip76w',
     priceUsd: 449,
   },
   'cap-secret-rotation': {
-    productId: 'prod_expansion_sec_rot',
-    priceId: 'price_expansion_sec_rot',
+    productId: 'prod_TtzlwPpuI2A2lu',
+    priceId: 'price_1SwBmNQ7FtTiAL4aeZMBO1mK',
     priceUsd: 399,
   },
   'cap-rate-limiter-pro': {
-    productId: 'prod_expansion_rat_lim',
-    priceId: 'price_expansion_rat_lim',
+    productId: 'prod_TtzlCLws10jBGP',
+    priceId: 'price_1SwBmNQ7FtTiAL4aZpKIxPEY',
     priceUsd: 199,
   },
   'cap-input-sanitization': {
-    productId: 'prod_expansion_inp_san',
-    priceId: 'price_expansion_inp_san',
+    productId: 'prod_TtzljjMeqohbBq',
+    priceId: 'price_1SwBmRQ7FtTiAL4aj5N0S5oe',
     priceUsd: 99,
   },
   'cap-access-control': {
-    productId: 'prod_expansion_acc_ctl',
-    priceId: 'price_expansion_acc_ctl',
+    productId: 'prod_Ttzmh104kAtFEL',
+    priceId: 'price_1SwBmSQ7FtTiAL4acUBQEvgv',
     priceUsd: 549,
   },
   'cap-encryption-toolkit': {
-    productId: 'prod_expansion_enc_too',
-    priceId: 'price_expansion_enc_too',
+    productId: 'prod_TtzmkHLDBbvpaO',
+    priceId: 'price_1SwBmTQ7FtTiAL4aQMw5mQSo',
     priceUsd: 649,
   },
 
   // Accessibility Expansion
   'cap-screen-reader-optimizer': {
-    productId: 'prod_expansion_scr_rea',
-    priceId: 'price_expansion_scr_rea',
+    productId: 'prod_Ttzm2TfuhFB8wS',
+    priceId: 'price_1SwBmUQ7FtTiAL4aE12zwxSu',
     priceUsd: 79,
   },
   'cap-color-contrast': {
-    productId: 'prod_expansion_col_con',
-    priceId: 'price_expansion_col_con',
+    productId: 'prod_Ttzme5CAYklhuV',
+    priceId: 'price_1SwBmVQ7FtTiAL4ac7kvOVbR',
     priceUsd: 39,
   },
   'cap-keyboard-nav': {
-    productId: 'prod_expansion_key_nav',
-    priceId: 'price_expansion_key_nav',
+    productId: 'prod_TtzmBlT1gZElJP',
+    priceId: 'price_1SwBmWQ7FtTiAL4ahM73IRqp',
     priceUsd: 59,
   },
   'cap-alt-text-generator': {
-    productId: 'prod_expansion_alt_txt',
-    priceId: 'price_expansion_alt_txt',
+    productId: 'prod_TtzmtLQ9yUHflL',
+    priceId: 'price_1SwBmXQ7FtTiAL4aOEPYI97x',
     priceUsd: 129,
   },
 
   // Automation Expansion
   'cap-workflow-engine': {
-    productId: 'prod_expansion_wor_eng',
-    priceId: 'price_expansion_wor_eng',
+    productId: 'prod_TtzmrBef2LkWed',
+    priceId: 'price_1SwBmYQ7FtTiAL4ayzfrPMjB',
     priceUsd: 399,
   },
   'cap-event-sourcing': {
-    productId: 'prod_expansion_evt_src',
-    priceId: 'price_expansion_evt_src',
+    productId: 'prod_TtzmQTCCNbUaau',
+    priceId: 'price_1SwBmZQ7FtTiAL4a6kToI2pr',
     priceUsd: 449,
   },
   'cap-scheduler-pro': {
-    productId: 'prod_expansion_sch_pro',
-    priceId: 'price_expansion_sch_pro',
+    productId: 'prod_TtzmJVYOMpHtEz',
+    priceId: 'price_1SwBmaQ7FtTiAL4akhbkVCeo',
     priceUsd: 179,
   },
   'cap-notification-hub': {
-    productId: 'prod_expansion_not_hub',
-    priceId: 'price_expansion_not_hub',
+    productId: 'prod_TtzmOAvynTetXT',
+    priceId: 'price_1SwBmdQ7FtTiAL4aroaj2Vx8',
     priceUsd: 149,
   },
   'cap-state-machine': {
-    productId: 'prod_expansion_sta_mac',
-    priceId: 'price_expansion_sta_mac',
+    productId: 'prod_Ttzmc1UJZcPB4T',
+    priceId: 'price_1SwBmfQ7FtTiAL4aTRIOPWQB',
     priceUsd: 199,
   },
 
   // Flagship Expansion
   'cap-enterprise-mesh': {
-    productId: 'prod_expansion_ent_mes',
-    priceId: 'price_expansion_ent_mes',
+    productId: 'prod_Ttzm3IGLUnxtXg',
+    priceId: 'price_1SwBmgQ7FtTiAL4aDaRGvBMd',
     priceUsd: 2999,
   },
   'cap-cognitive-platform': {
-    productId: 'prod_expansion_cog_pla',
-    priceId: 'price_expansion_cog_pla',
+    productId: 'prod_Ttzm98E4Mv7UQ5',
+    priceId: 'price_1SwBmhQ7FtTiAL4aU89A5AEH',
     priceUsd: 2499,
   },
   'cap-security-suite': {
-    productId: 'prod_expansion_sec_sui',
-    priceId: 'price_expansion_sec_sui',
+    productId: 'prod_TtzmmOP8HKoEKM',
+    priceId: 'price_1SwBmiQ7FtTiAL4aenCVhynX',
     priceUsd: 1999,
   },
   'cap-resilience-platform': {
-    productId: 'prod_expansion_res_pla',
-    priceId: 'price_expansion_res_pla',
+    productId: 'prod_Ttzmse1gqAIhDb',
+    priceId: 'price_1SwBmjQ7FtTiAL4aU1oKwtPF',
     priceUsd: 1799,
   },
 };
