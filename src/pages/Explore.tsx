@@ -52,6 +52,7 @@ import { WhySubstrate } from "@/components/home/WhySubstrate";
 import { BuiltForSection } from "@/components/home/BuiltForSection";
 import { TechShowcase } from "@/components/home/TechShowcase";
 import { CodeLabCTA } from "@/components/codelab/CodeLabCTA";
+import { SynergyDepotCTA } from "@/components/explore/SynergyDepotCTA";
 
 // Animated gradient orb
 function GradientOrb({ className, delay = 0 }: { className?: string; delay?: number }) {
@@ -336,6 +337,9 @@ export default function Explore() {
 
       {/* Hero Section */}
       <HeroMetaSubstrate />
+
+      {/* Synergy Pipelines & Capabilities Depot CTA */}
+      <SynergyDepotCTA />
 
        {/* Use Case Showcase - directly under hero */}
        <UseCaseShowcase />
