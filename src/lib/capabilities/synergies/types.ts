@@ -1,6 +1,6 @@
 /**
  * Synergy System Types
- * v7.1.0 — Cross-Module Pipeline Definitions
+ * v7.3.0 — Cross-Module Pipeline Definitions
  */
 
 export type SynergyCategory = 
@@ -14,9 +14,11 @@ export type SynergyCategory =
 
 export type SynergyStatus = 'ready' | 'running' | 'completed' | 'failed' | 'disabled';
 
+export type SynergyModuleRole = 'primary' | 'enhancer' | 'validator' | 'fallback';
+
 export interface SynergyModule {
   name: string;
-  role: 'primary' | 'enhancer' | 'validator' | 'fallback';
+  role: SynergyModuleRole;
   required: boolean;
 }
 
@@ -48,6 +50,12 @@ export interface SynergyStepResult {
   durationMs: number;
 }
 
+export interface SynergyEnhancement {
+  speedMultiplier: number;
+  qualityGain: number;
+  costSavings: number;
+}
+
 export interface SynergyResult<T = unknown> {
   success: boolean;
   synergyId: string;
@@ -56,11 +64,7 @@ export interface SynergyResult<T = unknown> {
   steps: SynergyStepResult[];
   totalDurationMs: number;
   confidence: number;
-  enhancement: {
-    speedMultiplier: number;
-    qualityGain: number;
-    costSavings: number;
-  };
+  enhancement: SynergyEnhancement;
 }
 
 export interface SynergyRegistry {
@@ -71,3 +75,23 @@ export interface SynergyRegistry {
 export type SynergyExecutor<T = unknown> = (
   context: SynergyExecutionContext
 ) => Promise<SynergyResult<T>>;
+
+/**
+ * Synergy execution options
+ */
+export interface SynergyExecuteOptions {
+  caller?: string;
+  dryRun?: boolean;
+  timeout?: number;
+  retries?: number;
+}
+
+/**
+ * Synergy pipeline configuration
+ */
+export interface SynergyPipelineConfig {
+  synergies: string[];
+  mode: 'sequential' | 'parallel';
+  stopOnFailure?: boolean;
+  aggregateResults?: boolean;
+}
