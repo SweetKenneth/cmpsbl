@@ -38,10 +38,11 @@ serve(async (req) => {
 
     const body = await req.json();
     const { 
-      product_type, // 'os' | 'template' | 'bundle' | 'stack' | 'agency' | 'studio'
+      product_type, // 'os' | 'template' | 'bundle' | 'stack' | 'agency' | 'studio' | 'capability' | 'stier'
       price_id,
       product_id,
       template_name,
+      capability_id, // For capability purchases
       customer_email 
     } = body;
 
@@ -65,6 +66,7 @@ serve(async (req) => {
 
     // Determine checkout mode - agency and studio are subscriptions, everything else is one-time
     const isSubscription = product_type === 'agency' || product_type === 'studio';
+    const isCapability = product_type === 'capability' || product_type === 'stier';
     const checkoutMode = isSubscription ? 'subscription' : 'payment';
 
     // Build checkout session config
@@ -78,12 +80,18 @@ serve(async (req) => {
         },
       ],
       mode: checkoutMode,
-      success_url: `${origin}/marketplace/success?session_id={CHECKOUT_SESSION_ID}&type=${product_type}`,
-      cancel_url: `${origin}/marketplace?canceled=true`,
+      success_url: isCapability 
+        ? `${origin}/capabilities/success?session_id={CHECKOUT_SESSION_ID}&capability=${capability_id || product_id}`
+        : `${origin}/marketplace/success?session_id={CHECKOUT_SESSION_ID}&type=${product_type}`,
+      cancel_url: isCapability 
+        ? `${origin}/capabilities?canceled=true`
+        : `${origin}/marketplace?canceled=true`,
       metadata: {
         product_type,
         product_id: product_id || '',
         template_name: template_name || '',
+        capability_id: capability_id || '',
+        is_stier: product_type === 'stier' ? 'true' : 'false',
       },
     };
 
@@ -95,7 +103,7 @@ serve(async (req) => {
     // Create checkout session
     const session = await stripe.checkout.sessions.create(sessionConfig);
 
-    console.log(`Checkout session created: ${session.id}, type: ${product_type}, email: ${email || 'guest'}`);
+    console.log(`Checkout session created: ${session.id}, type: ${product_type}, capability: ${capability_id || 'none'}, email: ${email || 'guest'}`);
 
     return new Response(
       JSON.stringify({ url: session.url, session_id: session.id }),

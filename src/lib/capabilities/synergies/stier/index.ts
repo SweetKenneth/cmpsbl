@@ -3,6 +3,7 @@
  * v7.5.0 — 22 Premium Cross-Module Pipelines
  * 
  * The highest-value pipelines for enterprise buyers
+ * Stripe config now in depot/stripe-stier.ts
  */
 
 export { STIER_SYNERGY_DEFINITIONS } from './definitions';
@@ -49,3 +50,12 @@ export {
   // Registration
   registerSTierExecutors,
 } from './executors';
+
+// Re-export Stripe config from depot
+export {
+  STIER_STRIPE_CONFIG,
+  getSTierStripeConfig,
+  hasSTierStripeConfig,
+  getAllSTierStripeConfigs,
+  isSelfImprovementCapability,
+} from '../../depot/stripe-stier';
