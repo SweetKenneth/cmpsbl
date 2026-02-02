@@ -561,13 +561,32 @@ class SEBAAgent {
       };
     }
 
-    // Find and approve the proposal
+    // Update status in evolution_proposals table (critical for preventing re-scan)
+    const updateResult = await ProposalStore.updateStatus(proposalId, 'approved', 'HUMAN_OPERATOR');
+    
+    if (!updateResult.success) {
+      // Try matching by short_id prefix
+      const { data: matchingProposals } = await supabase
+        .from('evolution_proposals')
+        .select('id')
+        .ilike('id', `${proposalId}%`)
+        .limit(1);
+        
+      if (matchingProposals && matchingProposals.length > 0) {
+        await ProposalStore.updateStatus(matchingProposals[0].id, 'approved', 'HUMAN_OPERATOR');
+      }
+    }
+
+    // Log approval event for audit
     await supabase.from('brain_events').insert({
       module: 'seba',
       event_type: 'manual_approval',
       data: { proposal_id: proposalId, approved_by: 'human' },
       outcome: 'success',
     });
+
+    this.state.approved_proposals++;
+    this.state.pending_proposals = Math.max(0, this.state.pending_proposals - 1);
 
     return {
       success: true,

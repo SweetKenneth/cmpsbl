@@ -3,7 +3,7 @@
  * Complete list of all substrate commands organized by module
  */
 
-import { Brain, Shield, Eye, Zap, MessageSquare, Moon, Settings, Terminal, Cpu, Clock, Search, Database, Activity, Lock, Router, Gauge, Sparkles, Radio, Key, Server, Send, List, PlayCircle, Plug, Globe, Workflow, Users, CreditCard, GitBranch, Box, Wand2, FileText, PenTool, FileEdit } from 'lucide-react';
+import { Brain, Shield, Eye, Zap, MessageSquare, Moon, Settings, Terminal, Cpu, Clock, Search, Database, Activity, Lock, Router, Gauge, Sparkles, Radio, Key, Server, Send, List, PlayCircle, Plug, Globe, Workflow, Users, CreditCard, GitBranch, Box, Wand2, FileText, PenTool, FileEdit, FileCheck } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
 export interface CommandDefinition {
@@ -215,6 +215,7 @@ export const MODERNIZER_COMMANDS: CommandDefinition[] = [
   { command: 'modernizer.export', description: 'Export job assets', category: 'modernizer', icon: Database, requiresOperator: true, args: '<job_id>' },
   { command: 'modernizer.quota', description: 'Check usage limits', category: 'modernizer', icon: Gauge, requiresOperator: false },
   { command: 'modernizer.refresh', description: 'Resync metrics and clear stale hints', category: 'modernizer', icon: Activity, requiresOperator: true },
+  { command: 'modernizer.stamps', description: 'View evolution stamps for verification', category: 'modernizer', icon: FileCheck, requiresOperator: false, args: '[limit]', example: 'modernizer.stamps 5' },
 ];
 
 // CORE module — Kernel, scheduler, lifecycle
@@ -539,6 +540,8 @@ export const SEBA_COMMANDS: CommandDefinition[] = [
   { command: 'seba.config', description: 'View/update configuration', category: 'clm', icon: Settings, requiresOperator: false, args: '[key=value]' },
   { command: 'seba.thresholds', description: 'Adjust safety thresholds', category: 'clm', icon: Gauge, requiresOperator: true, args: '[auto_approve <val>|risk <level>]', example: 'seba.thresholds auto_approve 0.9' },
   { command: 'seba.history', description: 'View evolution history', category: 'clm', icon: Activity, requiresOperator: false, args: '[limit]', example: 'seba.history 20' },
+  { command: 'seba.stamps', description: 'View evolution stamps for verification', category: 'clm', icon: FileCheck, requiresOperator: false, args: '[limit]', example: 'seba.stamps 5' },
+  { command: 'seba.cooldown', description: 'View/manage insight cooldowns', category: 'clm', icon: Clock, requiresOperator: false },
 ];
 
 // MODULE CLM — Module-specific self-learning v6.8.0
