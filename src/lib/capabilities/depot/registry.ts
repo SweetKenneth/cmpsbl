@@ -2,7 +2,7 @@
  * Capabilities Depot — Registry
  * Metadata only, no execution logic, no runtime hooks
  * Used exclusively for UI, licensing, and downloads
- * v1.0.0
+ * v1.2.0 — 56+ Capabilities
  */
 
 import type { 
@@ -13,9 +13,10 @@ import type {
   VersionHistoryEntry 
 } from './types';
 import { getTierFromPrice } from './pricing';
+import { CAPABILITY_EXPANSION } from './registry-expansion';
 
-// === Capability Registry (Metadata Only) ===
-export const CAPABILITY_REGISTRY: CapabilityArtifact[] = [
+// === Core Capability Registry (Metadata Only) ===
+const CORE_CAPABILITIES: CapabilityArtifact[] = [
   // === INTELLIGENCE CATEGORY ===
   {
     id: 'cap-causal-inference',
@@ -553,6 +554,12 @@ export const CAPABILITY_REGISTRY: CapabilityArtifact[] = [
     difficulty: 'expert',
     setupTimeMinutes: 120,
   },
+];
+
+// === Merged Registry (Core + Expansion) ===
+export const CAPABILITY_REGISTRY: CapabilityArtifact[] = [
+  ...CORE_CAPABILITIES,
+  ...CAPABILITY_EXPANSION,
 ];
 
 // === Get All Capabilities ===

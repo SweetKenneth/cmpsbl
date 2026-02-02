@@ -37,6 +37,8 @@ Allow: /substrate
 Allow: /demo
 Allow: /marketplace
 Allow: /marketplace/*
+Allow: /capabilities
+Allow: /capabilities/*
 Allow: /forge
 Allow: /forge/*
 Allow: /decode
