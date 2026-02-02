@@ -17,6 +17,8 @@ import { CognitiveAnalyzer } from './cognitive-analyzer';
 import { ProposalGenerator } from './proposal-generator';
 import { GovernanceGate } from './governance-gate';
 import { EvolutionExecutor } from './evolution-executor';
+import { ProposalStore } from './proposal-store';
+import { EvolutionStampGenerator, EvolutionStampStore } from './evolution-stamp';
 import { 
   DEFAULT_SEBA_CONFIG,
   type SEBAState,
@@ -127,6 +129,16 @@ class SEBAAgent {
       phasesCompleted.push('proposing');
       this.log(auditLog, 'proposing', 'Proposals generated', { proposals_count: proposals.length });
 
+      // ═══ PERSIST PROPOSALS TO DATABASE ═══
+      // This is critical for Atlas to display and manage proposals
+      if (proposals.length > 0) {
+        const storeResult = await ProposalStore.storeBatch(proposals);
+        this.log(auditLog, 'proposing', 'Proposals persisted', { 
+          stored: storeResult.stored, 
+          failed: storeResult.failed 
+        });
+      }
+
       if (proposals.length === 0) {
         this.state.current_phase = 'idle';
         this.state.total_cycles++;
@@ -182,6 +194,26 @@ class SEBAAgent {
 
           if (execution.phase === 'verified') {
             evolutionsApplied++;
+            
+            // ═══ CREATE EVOLUTION STAMPS ═══
+            // Mandatory traceability for all applied changes
+            for (const action of proposal.proposed_actions) {
+              const stamp = EvolutionStampGenerator.createStamp(
+                action, 
+                proposal, 
+                execution,
+                this.config.mode === 'autonomous' ? 'seba_auto' : 'seba_governed'
+              );
+              await EvolutionStampStore.store(stamp);
+              await EvolutionStampStore.logStamp(stamp);
+            }
+            
+            // Update proposal status in database
+            await ProposalStore.markApplied(proposal.id, decision);
+            
+            this.log(auditLog, 'applying', 'Evolution stamps created', {
+              stamps_created: proposal.proposed_actions.length,
+            });
           }
 
           // ═══ PHASE 5: VERIFICATION ═══
@@ -450,20 +482,24 @@ class SEBAAgent {
   }
 
   private async cmdReview(): Promise<SEBACommandResult> {
-    const { data: pending } = await supabase
-      .from('brain_events')
-      .select('*')
-      .eq('module', 'seba')
-      .eq('event_type', 'governance_decision')
-      .eq('outcome', 'conditional')
-      .order('created_at', { ascending: false })
-      .limit(10);
+    // Get pending proposals from the actual evolution_proposals table
+    const pending = await ProposalStore.getPending();
 
     return {
       success: true,
       command: 'review',
-      data: { pending_count: pending?.length || 0, proposals: pending },
-      message: `${pending?.length || 0} proposals pending review`,
+      data: { 
+        pending_count: pending.length, 
+        proposals: pending.map(p => ({
+          id: p.id,
+          title: p.title,
+          target_system: p.target_system,
+          confidence: p.confidence,
+          status: p.status,
+          created_at: p.created_at,
+        })),
+      },
+      message: `${pending.length} proposals pending review`,
     };
   }
 

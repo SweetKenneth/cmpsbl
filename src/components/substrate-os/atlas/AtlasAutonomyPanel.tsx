@@ -17,6 +17,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { toast } from 'sonner';
 import { useSEBA } from '@/hooks/useSEBA';
 import { useModuleCLM } from '@/lib/substrate/module-clm/useModuleCLM';
+import { ProposalStore } from '@/lib/substrate/seba/proposal-store';
 import { cn } from '@/lib/utils';
 import type { SEBAMode } from '@/lib/substrate/seba';
 
@@ -46,25 +47,27 @@ export function AtlasAutonomyPanel() {
     setSystemActive(isActive);
   }, [seba.isEnabled, seba.mode]);
 
-  // Load pending proposals
+  // Load pending proposals from actual database
   const loadProposals = useCallback(async () => {
     try {
-      const result = await seba.review();
-      if (result.success && result.data) {
-        const data = result.data as { proposals: any[] };
-        if (data.proposals) {
-          setPendingProposals(data.proposals.map((p: any) => ({
-            id: p.id,
-            short_id: p.data?.proposal_id || p.id.slice(0, 8),
-            title: p.data?.title || 'Improvement Proposal',
-            category: p.data?.category || 'general',
-            risk_level: p.data?.risk_level || 'low',
-            confidence_score: p.data?.confidence || 0.7,
-            created_at: p.created_at,
-            requires_human_approval: true,
-          })));
-        }
-      }
+      // Fetch directly from ProposalStore for real persistence
+      const stored = await ProposalStore.getPending();
+      setPendingProposals(stored.map((p) => {
+        const suggestedChange = p.suggested_change as Record<string, any> || {};
+        const expectedImpact = p.expected_impact as Record<string, any> || {};
+        const diffs = p.diffs as Record<string, any> || {};
+        
+        return {
+          id: p.id,
+          short_id: diffs.proposal_short_id || p.id.slice(0, 8),
+          title: p.title,
+          category: suggestedChange.category || 'general',
+          risk_level: expectedImpact.risk_level || 'low',
+          confidence_score: p.confidence,
+          created_at: p.created_at,
+          requires_human_approval: expectedImpact.requires_human_approval ?? true,
+        };
+      }));
     } catch (err) {
       console.error('Failed to load proposals:', err);
     }
@@ -114,8 +117,12 @@ export function AtlasAutonomyPanel() {
     try {
       let result;
       if (action === 'approve') {
+        // Update proposal status in database
+        await ProposalStore.updateStatus(proposalId, 'approved', 'ATLAS_USER');
         result = await seba.approve(proposalId);
       } else if (action === 'reject') {
+        // Update proposal status in database
+        await ProposalStore.updateStatus(proposalId, 'rejected', 'ATLAS_USER');
         result = await seba.reject(proposalId);
       } else {
         result = await seba.execute(proposalId);
