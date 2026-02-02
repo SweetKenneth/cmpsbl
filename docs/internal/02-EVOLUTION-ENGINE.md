@@ -180,4 +180,120 @@ Receipt Fields:
 
 ---
 
-*CMPSBL OS Substrate v6.0.0 — Internal Engineering Library*
+## Proposal Persistence (SEBA Integration)
+
+**The Secret:** Proposals are no longer ephemeral. They persist to database.
+
+### Storage Flow
+
+```
+SEBA.propose() 
+    │
+    ▼
+┌─────────────────────────────┐
+│   ProposalStore.save()      │
+│   → evolution_proposals     │
+│   → status: 'pending'       │
+└─────────────────────────────┘
+    │
+    ▼
+Atlas / Terminal can query pending proposals
+    │
+    ▼
+Human or auto-approval → status: 'approved'
+    │
+    ▼
+Execution → status: 'executed'
+    │
+    ▼
+Verification → status: 'verified'
+```
+
+### Why This Matters
+
+- Proposals survive system restarts
+- Atlas can display proposals for review
+- Terminal `seba.review` shows real database data
+- Full audit trail from insight → proposal → execution
+
+---
+
+## Evolution Stamps (Traceability)
+
+**The Big Secret:** We can PROVE the substrate rewrites its own code.
+
+### What Is A Stamp?
+
+Every code change by SEBA generates a cryptographic stamp:
+
+```typescript
+{
+  stamp_id: "SEBA-abc123-def456",  // Unique identifier
+  proposal_id: "SEBA-001",         // Source proposal
+  execution_id: "exec-789",        // Execution record
+  files_modified: ["src/lib/substrate/brain/memory-core.ts"],
+  change_hash: "sha256:abcd1234...",  // Cryptographic proof
+  applied_at: "2026-02-02T12:00:00Z",
+  applied_by: "seba"               // Not human
+}
+```
+
+### Mandatory Code Comments
+
+**THIS IS NOT OPTIONAL.** When SEBA modifies code, it MUST insert:
+
+```typescript
+// [SEBA-EVOLUTION] stamp_id: SEBA-abc123-def456 | proposal: SEBA-001 | applied: 2026-02-02T12:00:00Z
+```
+
+### Why Mandatory?
+
+1. **Audit trail** — Every change is traceable
+2. **Proof of self-modification** — The substrate isn't just optimizing, it's REWRITING
+3. **Integrity verification** — Removing comments triggers alerts
+4. **Investor demonstration** — Observable evidence of self-evolution
+
+### Verification Chain
+
+```
+Code file contains [SEBA-EVOLUTION] comment
+    │
+    ▼
+Parse stamp_id from comment
+    │
+    ▼
+Query brain_events for matching stamp
+    │
+    ▼
+Compare change_hash with actual file hash
+    │
+    ▼
+If match → VERIFIED ✅
+If mismatch → INTEGRITY ALERT 🚨
+```
+
+### Storage
+
+Stamps are logged to `brain_events`:
+
+```json
+{
+  "module": "seba",
+  "event_type": "evolution_stamp",
+  "data": { ...stamp },
+  "outcome": "success"
+}
+```
+
+### Terminal Commands
+
+```bash
+seba.stamps                    # List recent stamps
+seba.stamp SEBA-abc123-def456  # View stamp details
+seba.verify SEBA-abc123-def456 # Verify integrity
+seba.stamps --file <path>      # Stamps for specific file
+```
+
+---
+
+*CMPSBL OS Substrate v7.0.0 — Internal Engineering Library*
