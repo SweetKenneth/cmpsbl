@@ -1,6 +1,6 @@
 /**
  * Capability Card — Individual capability display for depot
- * v1.3.0 — Modal-based details view
+ * v1.4.0 — Premium tier badges, mobile-first touch targets
  */
 
 import { 
@@ -12,6 +12,8 @@ import {
   Cpu,
   Loader2,
   Zap,
+  Crown,
+  Sparkles,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -49,10 +51,13 @@ export function CapabilityCard({ capability, categoryConfig, onViewDetails }: Ca
   const config = categoryConfig[capability.category];
   const CategoryIcon = config?.icon;
   const tierConfig = getTierConfig(capability.pricingTier);
-  const { checkout, loading, isAvailable } = useCapabilityCheckout();
+  const { checkout, loading, isAvailable, isRecursive, isSTier, isApex } = useCapabilityCheckout();
   
   const isSynergy = capability.id.startsWith('syn-');
   const hasCheckout = isAvailable(capability.id);
+  const isRecursiveCapability = isRecursive(capability.id);
+  const isSTierCapability = isSTier(capability.id);
+  const isApexCapability = isApex(capability.id);
   
   // Format last updated
   const lastUpdated = new Date(capability.lastUpdated);
@@ -65,45 +70,86 @@ export function CapabilityCard({ capability, categoryConfig, onViewDetails }: Ca
     }
   };
 
+  // Determine premium styling
+  const isPremium = isRecursiveCapability || isSTierCapability;
+  const premiumGradient = isApexCapability 
+    ? 'from-amber-500/20 via-violet-500/10 to-fuchsia-500/20'
+    : isRecursiveCapability 
+      ? 'from-violet-500/15 via-fuchsia-500/10 to-cyan-500/15'
+      : isSTierCapability
+        ? 'from-violet-500/10 to-cyan-500/10'
+        : '';
+
   return (
     <div className="group">
       <Card className={cn(
-        "h-full flex flex-col overflow-hidden border-border/50 hover:border-primary/30 transition-colors hover:-translate-y-1 duration-200",
-        isSynergy && "ring-1 ring-violet-500/20"
+        "h-full flex flex-col overflow-hidden transition-all duration-200 hover:-translate-y-1",
+        "border-border/50 hover:border-primary/30",
+        isPremium && "ring-1 ring-violet-500/20",
+        isApexCapability && "ring-2 ring-amber-500/30 shadow-lg shadow-amber-500/10"
       )}>
-        <CardContent className="flex-1 p-5">
-          {/* Header: Category + Tier */}
-          <div className="flex items-center justify-between mb-4">
+        {/* Premium gradient overlay */}
+        {isPremium && (
+          <div className={cn(
+            "absolute inset-0 bg-gradient-to-br pointer-events-none opacity-50",
+            premiumGradient
+          )} />
+        )}
+        
+        <CardContent className="relative flex-1 p-4 md:p-5">
+          {/* Header: Category + Tier Badges */}
+          <div className="flex items-start justify-between gap-2 mb-3 md:mb-4">
             <div className={cn(
-              "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium",
+              "inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-[10px] md:text-xs font-medium",
               config?.colorClass || 'bg-muted text-muted-foreground'
             )}>
               {CategoryIcon && <CategoryIcon className="w-3 h-3" />}
               {config?.label || capability.category}
             </div>
             
-            <div className="flex items-center gap-1.5">
-              {isSynergy && (
-                <Badge variant="outline" className="text-xs border-violet-500/30 bg-violet-500/10 text-violet-400">
+            <div className="flex items-center gap-1.5 flex-wrap justify-end">
+              {isApexCapability && (
+                <Badge className="text-[10px] bg-gradient-to-r from-amber-500/20 to-amber-600/20 text-amber-400 border-amber-500/30">
+                  <Crown className="w-2.5 h-2.5 mr-1" />
+                  APEX
+                </Badge>
+              )}
+              {isRecursiveCapability && !isApexCapability && (
+                <Badge variant="outline" className="text-[10px] border-violet-500/30 bg-violet-500/10 text-violet-400">
+                  <Sparkles className="w-2.5 h-2.5 mr-1" />
+                  Recursive
+                </Badge>
+              )}
+              {isSTierCapability && !isRecursiveCapability && (
+                <Badge variant="outline" className="text-[10px] border-violet-500/30 bg-violet-500/10 text-violet-400">
+                  <Zap className="w-2.5 h-2.5 mr-1" />
+                  S-Tier
+                </Badge>
+              )}
+              {isSynergy && !isPremium && (
+                <Badge variant="outline" className="text-[10px] border-violet-500/30 bg-violet-500/10 text-violet-400">
                   <Zap className="w-2.5 h-2.5 mr-1" />
                   Synergy
                 </Badge>
               )}
-              <Badge variant="outline" className={cn("text-xs", tierColors[capability.pricingTier])}>
+              <Badge variant="outline" className={cn("text-[10px]", tierColors[capability.pricingTier])}>
                 {tierConfig.badge}
               </Badge>
             </div>
           </div>
 
           {/* Title + Version */}
-          <div className="mb-3">
-            <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors line-clamp-1">
+          <div className="mb-2 md:mb-3">
+            <h3 className={cn(
+              "text-base md:text-lg font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2",
+              isApexCapability && "text-amber-50"
+            )}>
               {capability.name}
             </h3>
             <div className="flex items-center gap-2 mt-1">
-              <span className="text-xs font-mono text-muted-foreground">v{capability.version}</span>
+              <span className="text-[10px] md:text-xs font-mono text-muted-foreground">v{capability.version}</span>
               <span className="text-muted-foreground/30">•</span>
-              <span className="text-xs text-muted-foreground flex items-center gap-1">
+              <span className="text-[10px] md:text-xs text-muted-foreground flex items-center gap-1">
                 <Clock className="w-3 h-3" />
                 {updatedLabel}
               </span>
@@ -111,53 +157,57 @@ export function CapabilityCard({ capability, categoryConfig, onViewDetails }: Ca
           </div>
 
           {/* Description */}
-          <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
+          <p className="text-xs md:text-sm text-muted-foreground line-clamp-2 mb-3 md:mb-4">
             {capability.description}
           </p>
 
-          {/* Meta info */}
-          <div className="flex flex-wrap gap-2 mb-4">
-            {/* Required modules */}
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
-              <Layers className="w-3 h-3" />
-              {capability.requiredModules.slice(0, 3).join(', ')}
-              {capability.requiredModules.length > 3 && ` +${capability.requiredModules.length - 3}`}
+          {/* Meta info - compact on mobile */}
+          <div className="flex flex-wrap gap-1.5 md:gap-2 mb-3 md:mb-4">
+            <div className="flex items-center gap-1 text-[10px] md:text-xs text-muted-foreground">
+              <Layers className="w-3 h-3 shrink-0" />
+              <span className="truncate max-w-[120px] md:max-w-none">
+                {capability.requiredModules.slice(0, 2).join(', ')}
+                {capability.requiredModules.length > 2 && ` +${capability.requiredModules.length - 2}`}
+              </span>
             </div>
           </div>
 
-          {/* Executor type + Difficulty */}
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1.5 text-xs">
+          {/* Executor type + Difficulty - row on mobile */}
+          <div className="flex items-center gap-2 md:gap-3 flex-wrap">
+            <div className="flex items-center gap-1 text-[10px] md:text-xs">
               <Cpu className="w-3 h-3 text-muted-foreground" />
               <span className="text-muted-foreground capitalize">{capability.executorType}</span>
             </div>
             
             {capability.difficulty && (
-              <div className={cn("text-xs font-medium capitalize", difficultyColors[capability.difficulty])}>
+              <div className={cn("text-[10px] md:text-xs font-medium capitalize", difficultyColors[capability.difficulty])}>
                 {capability.difficulty}
               </div>
             )}
 
             {capability.setupTimeMinutes && (
-              <div className="text-xs text-muted-foreground">
-                ~{capability.setupTimeMinutes}m setup
+              <div className="text-[10px] md:text-xs text-muted-foreground">
+                ~{capability.setupTimeMinutes}m
               </div>
             )}
           </div>
 
           {/* Downloads */}
           {capability.downloads && (
-            <div className="flex items-center gap-1.5 mt-3 text-xs text-muted-foreground">
+            <div className="flex items-center gap-1.5 mt-2 md:mt-3 text-[10px] md:text-xs text-muted-foreground">
               <Download className="w-3 h-3" />
               {capability.downloads.toLocaleString()} downloads
             </div>
           )}
         </CardContent>
 
-        <CardFooter className="p-4 pt-0 flex items-center justify-between border-t border-border/30 mt-auto">
+        <CardFooter className="relative p-3 md:p-4 pt-0 flex items-center justify-between border-t border-border/30 mt-auto">
           {/* Price */}
           <div>
-            <div className="text-2xl font-black text-foreground">
+            <div className={cn(
+              "text-xl md:text-2xl font-black",
+              isApexCapability ? "text-amber-400" : isPremium ? "text-violet-400" : "text-foreground"
+            )}>
               {formatPrice(capability.priceUsd)}
             </div>
             <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
@@ -166,9 +216,14 @@ export function CapabilityCard({ capability, categoryConfig, onViewDetails }: Ca
             </div>
           </div>
 
-          {/* Actions */}
+          {/* Actions - touch-friendly */}
           <div className="flex items-center gap-2">
-            <Button size="sm" variant="outline" onClick={onViewDetails}>
+            <Button 
+              size="sm" 
+              variant="outline" 
+              onClick={onViewDetails}
+              className="h-9 px-3 touch-manipulation text-xs md:text-sm"
+            >
               Details
               <ChevronRight className="w-3 h-3 ml-1" />
             </Button>
@@ -177,7 +232,11 @@ export function CapabilityCard({ capability, categoryConfig, onViewDetails }: Ca
               onClick={handleBuy}
               disabled={loading || !hasCheckout}
               className={cn(
-                isSynergy && "bg-violet-600 hover:bg-violet-700"
+                "h-9 px-3 touch-manipulation text-xs md:text-sm",
+                isApexCapability && "bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400",
+                isRecursiveCapability && !isApexCapability && "bg-violet-600 hover:bg-violet-500",
+                isSTierCapability && !isRecursiveCapability && "bg-violet-600 hover:bg-violet-500",
+                isSynergy && !isPremium && "bg-violet-600 hover:bg-violet-700"
               )}
             >
               {loading ? (
