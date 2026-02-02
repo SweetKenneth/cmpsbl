@@ -1,6 +1,6 @@
 /**
  * Self-Evolving Bounded Agent (SEBA)
- * v1.0.0 — The Holy Grail: Full Cognitive × Evolution × Governance
+ * v1.1.0 — The Holy Grail: Full Cognitive × Evolution × Governance
  * 
  * Complete cognitive pipeline that:
  * 1. Runs full cognitive analysis (Memory, Learning, Imagination, Reasoning)
@@ -63,10 +63,12 @@ class SEBAAgent {
       successful_cycles: 0,
       failed_cycles: 0,
       blocked_cycles: 0,
+      cycles_today: 0,
       
       pending_proposals: 0,
       approved_proposals: 0,
       rejected_proposals: 0,
+      executed_proposals: 0,
       
       auto_approve_threshold: this.config.auto_approve_threshold,
       risk_tolerance: this.config.risk_tolerance,
@@ -74,6 +76,10 @@ class SEBAAgent {
       agent_health: 100,
       cognitive_utilization: 0,
       governance_compliance: 100,
+      
+      insights_processed: 0,
+      evolutions_applied: 0,
+      rollbacks_executed: 0,
     };
   }
 
@@ -245,56 +251,78 @@ class SEBAAgent {
    * Handle terminal commands
    */
   async handleCommand(command: SEBACommand, args?: Record<string, unknown>): Promise<SEBACommandResult> {
+    const startTime = performance.now();
+    
+    const wrapResult = (result: SEBACommandResult): SEBACommandResult => ({
+      ...result,
+      duration_ms: Math.round(performance.now() - startTime),
+    });
+
     switch (command) {
       case 'status':
-        return this.cmdStatus();
+        return wrapResult(this.cmdStatus());
 
       case 'enable':
-        return this.cmdEnable();
+        return wrapResult(this.cmdEnable());
 
       case 'disable':
-        return this.cmdDisable();
+        return wrapResult(this.cmdDisable());
 
       case 'mode':
-        return this.cmdMode(args?.mode as SEBAMode);
+        return wrapResult(this.cmdMode(args?.mode as SEBAMode));
 
       case 'cycle':
-        return this.cmdCycle();
+        return wrapResult(await this.cmdCycle());
 
       case 'propose':
-        return this.cmdPropose();
+        return wrapResult(await this.cmdPropose());
 
       case 'review':
-        return this.cmdReview();
+        return wrapResult(await this.cmdReview());
 
       case 'approve':
-        return this.cmdApprove(args?.proposal_id as string);
+        return wrapResult(await this.cmdApprove(args?.proposal_id as string));
 
       case 'reject':
-        return this.cmdReject(args?.proposal_id as string);
+        return wrapResult(await this.cmdReject(args?.proposal_id as string, args?.reason as string));
 
       case 'execute':
-        return this.cmdExecute(args?.proposal_id as string);
+        return wrapResult(await this.cmdExecute(args?.proposal_id as string));
 
       case 'rollback':
-        return this.cmdRollback(args?.execution_id as string);
+        return wrapResult(await this.cmdRollback(args?.execution_id as string));
 
       case 'history':
-        return this.cmdHistory(args?.limit as number);
+        return wrapResult(await this.cmdHistory(args?.limit as number));
 
       case 'config':
-        return this.cmdConfig(args?.updates as Partial<SEBAConfig>);
+        return wrapResult(this.cmdConfig(args?.updates as Partial<SEBAConfig>));
 
       case 'thresholds':
-        return this.cmdThresholds(args);
+        return wrapResult(this.cmdThresholds(args));
+
+      case 'health':
+        return wrapResult(await this.cmdHealth());
+
+      case 'metrics':
+        return wrapResult(await this.cmdMetrics());
+
+      case 'queue':
+        return wrapResult(await this.cmdQueue());
+
+      case 'pause':
+        return wrapResult(this.cmdPause());
+
+      case 'resume':
+        return wrapResult(this.cmdResume());
 
       default:
-        return {
+        return wrapResult({
           success: false,
           command,
           message: `Unknown command: ${command}`,
-          suggestions: ['status', 'enable', 'mode', 'cycle', 'review', 'history'],
-        };
+          suggestions: ['status', 'enable', 'mode', 'cycle', 'review', 'history', 'health', 'metrics'],
+        });
     }
   }
 
@@ -463,7 +491,7 @@ class SEBAAgent {
     };
   }
 
-  private async cmdReject(proposalId?: string): Promise<SEBACommandResult> {
+  private async cmdReject(proposalId?: string, reason?: string): Promise<SEBACommandResult> {
     if (!proposalId) {
       return {
         success: false,
@@ -475,7 +503,7 @@ class SEBAAgent {
     await supabase.from('brain_events').insert({
       module: 'seba',
       event_type: 'manual_rejection',
-      data: { proposal_id: proposalId, rejected_by: 'human' },
+      data: { proposal_id: proposalId, rejected_by: 'human', reason: reason || 'Manual rejection' },
       outcome: 'rejected',
     });
 
@@ -483,7 +511,7 @@ class SEBAAgent {
     return {
       success: true,
       command: 'reject',
-      message: `Proposal ${proposalId} rejected`,
+      message: `Proposal ${proposalId} rejected${reason ? `: ${reason}` : ''}`,
     };
   }
 
@@ -577,6 +605,116 @@ class SEBAAgent {
         min_confidence_for_proposal: this.config.min_confidence_for_proposal,
       },
       message: `Thresholds: auto-approve=${this.config.auto_approve_threshold}, risk=${this.config.risk_tolerance}`,
+    };
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // NEW v1.1.0 COMMANDS
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  private async cmdHealth(): Promise<SEBACommandResult> {
+    const health = {
+      overall: this.state.agent_health,
+      cognitive_utilization: this.state.cognitive_utilization,
+      governance_compliance: this.state.governance_compliance,
+      phase: this.state.current_phase,
+      mode: this.state.mode,
+      cooldown: this.state.cooldown_until ? {
+        until: this.state.cooldown_until,
+        reason: this.state.cooldown_reason,
+      } : null,
+    };
+
+    return {
+      success: true,
+      command: 'health',
+      data: health,
+      message: `Health: ${health.overall}% | Phase: ${health.phase} | Mode: ${health.mode}`,
+    };
+  }
+
+  private async cmdMetrics(): Promise<SEBACommandResult> {
+    const { data: events } = await supabase
+      .from('brain_events')
+      .select('*')
+      .eq('module', 'seba')
+      .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+
+    const proposals = events?.filter(e => e.event_type === 'proposal_generated') || [];
+    const executions = events?.filter(e => e.event_type === 'evolution_execution') || [];
+    const rollbacks = events?.filter(e => e.event_type === 'rollback') || [];
+
+    const metrics = {
+      total_cycles: this.state.total_cycles,
+      successful_cycles: this.state.successful_cycles,
+      failed_cycles: this.state.failed_cycles,
+      success_rate: this.state.total_cycles > 0 
+        ? Math.round((this.state.successful_cycles / this.state.total_cycles) * 100) 
+        : 0,
+      proposals_24h: proposals.length,
+      executions_24h: executions.length,
+      rollbacks_24h: rollbacks.length,
+      pending_proposals: this.state.pending_proposals,
+      approved_proposals: this.state.approved_proposals,
+      rejected_proposals: this.state.rejected_proposals,
+    };
+
+    return {
+      success: true,
+      command: 'metrics',
+      data: metrics,
+      message: `Cycles: ${metrics.total_cycles} (${metrics.success_rate}% success) | 24h: ${metrics.proposals_24h} proposals, ${metrics.executions_24h} executions`,
+    };
+  }
+
+  private async cmdQueue(): Promise<SEBACommandResult> {
+    const { data: pending } = await supabase
+      .from('brain_events')
+      .select('*')
+      .eq('module', 'seba')
+      .in('event_type', ['governance_decision', 'proposal_generated'])
+      .eq('outcome', 'conditional')
+      .order('created_at', { ascending: false })
+      .limit(20);
+
+    return {
+      success: true,
+      command: 'queue',
+      data: { 
+        pending_count: pending?.length || 0, 
+        items: pending?.map(p => ({
+          id: (p.data as any)?.proposal_id || (p.data as any)?.proposal_short_id,
+          type: p.event_type,
+          created_at: p.created_at,
+        })),
+      },
+      message: `${pending?.length || 0} items in queue`,
+    };
+  }
+
+  private cmdPause(): SEBACommandResult {
+    this.state.cooldown_until = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+    this.state.cooldown_reason = 'Manual pause';
+    this.state.current_phase = 'cooling_down';
+
+    return {
+      success: true,
+      command: 'pause',
+      message: 'SEBA paused for 24 hours. Use seba.resume to continue.',
+    };
+  }
+
+  private cmdResume(): SEBACommandResult {
+    this.state.cooldown_until = undefined;
+    this.state.cooldown_reason = undefined;
+    if (this.state.current_phase === 'cooling_down') {
+      this.state.current_phase = 'idle';
+    }
+
+    return {
+      success: true,
+      command: 'resume',
+      message: 'SEBA resumed. Ready for next cycle.',
     };
   }
 
