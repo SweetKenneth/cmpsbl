@@ -68,6 +68,7 @@ const SubstrateLicensingSuccess = lazy(() => import("./pages/SubstrateLicensingS
 const ExperimentationLab = lazy(() => import("./pages/ExperimentationLab"));
 const SubstrateCapabilitiesDocs = lazy(() => import("./pages/SubstrateCapabilitiesDocs"));
 const CapabilitiesDepot = lazy(() => import("./pages/CapabilitiesDepot"));
+const SynergyPipelines = lazy(() => import("./pages/SynergyPipelines"));
 const SystemIntelligenceFeed = lazy(() => import("./pages/SystemIntelligenceFeed"));
 const ClearCache = lazy(() => import("./pages/ClearCache"));
 
@@ -190,6 +191,7 @@ const App = () => {
                       <Route path="/lab" element={<ExperimentationLab />} />
                       <Route path="/docs/substrate/capabilities" element={<SubstrateCapabilitiesDocs />} />
                       <Route path="/capabilities" element={<CapabilitiesDepot />} />
+                      <Route path="/synergies" element={<SynergyPipelines />} />
                       <Route path="/system-feed" element={<SystemIntelligenceFeed />} />
                       <Route path="/clear-cache" element={<ClearCache />} />
 
