@@ -37,6 +37,14 @@ export { CognitiveAnalyzer } from './cognitive-analyzer';
 export { ProposalGenerator } from './proposal-generator';
 export { GovernanceGate } from './governance-gate';
 export { EvolutionExecutor } from './evolution-executor';
+export { ProposalStore, type StoredProposal } from './proposal-store';
+export { 
+  EvolutionStampGenerator, 
+  EvolutionStampStore, 
+  generateEvolutionComment,
+  parseEvolutionComment,
+  type EvolutionStamp,
+} from './evolution-stamp';
 
 // React Hook (deprecated - use src/hooks/useSEBA.ts instead)
 export { useSEBA, type UseSEBAReturn } from './useSEBA';
