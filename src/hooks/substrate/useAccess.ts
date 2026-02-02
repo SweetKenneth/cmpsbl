@@ -4,7 +4,10 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { access } from '@/lib/substrate';
+import { substrate } from '@/lib/substrate';
+
+// Access access module from substrate singleton
+const access = substrate.access;
 
 export interface UseAccessReturn {
   // Status & Health

@@ -4,7 +4,10 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { modernizer } from '@/lib/substrate';
+import { substrate } from '@/lib/substrate';
+
+// Access modernizer module from substrate singleton
+const modernizer = substrate.modernizer;
 
 export interface UseModernizerReturn {
   // Status & Health

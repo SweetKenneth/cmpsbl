@@ -4,7 +4,10 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { inclusive } from '@/lib/substrate';
+import { substrate } from '@/lib/substrate';
+
+// Access inclusive module from substrate singleton
+const inclusive = substrate.inclusive;
 
 export interface UseInclusiveReturn {
   // Status & Health

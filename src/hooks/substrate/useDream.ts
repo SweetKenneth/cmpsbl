@@ -4,7 +4,10 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { dream } from '@/lib/substrate';
+import { substrate } from '@/lib/substrate';
+
+// Access dream module from substrate singleton
+const dream = substrate.dream;
 
 export interface UseDreamReturn {
   // Status & Health

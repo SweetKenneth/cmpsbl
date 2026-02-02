@@ -4,7 +4,10 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { decode } from '@/lib/substrate';
+import { substrate } from '@/lib/substrate';
+
+// Access decode module from substrate singleton
+const decode = substrate.decode;
 
 export interface UseDecodeReturn {
   // Status & Health

@@ -4,7 +4,10 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { defense } from '@/lib/substrate';
+import { substrate } from '@/lib/substrate';
+
+// Access defense module from substrate singleton
+const defense = substrate.defense;
 
 export interface UseDefenseReturn {
   // Status & Health

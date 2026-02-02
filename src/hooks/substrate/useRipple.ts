@@ -4,7 +4,10 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { ripple, type SubstrateModule } from '@/lib/substrate';
+import { substrate, type SubstrateModule } from '@/lib/substrate';
+
+// Access ripple module from substrate singleton
+const ripple = substrate.ripple;
 
 export interface UseRippleReturn {
   // Status & Health

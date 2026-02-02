@@ -4,7 +4,10 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { core } from '@/lib/substrate';
+import { substrate } from '@/lib/substrate';
+
+// Access core module from substrate singleton
+const core = substrate.core;
 
 export interface UseCoreReturn {
   // Status & Health

@@ -4,7 +4,10 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { seba } from '@/lib/substrate';
+import { substrate } from '@/lib/substrate';
+
+// Access seba module from substrate singleton
+const seba = substrate.seba;
 
 export interface UseSEBAHookReturn {
   // Status & Health

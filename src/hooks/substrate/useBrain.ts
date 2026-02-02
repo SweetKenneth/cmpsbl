@@ -4,7 +4,10 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { brain } from '@/lib/substrate';
+import { substrate } from '@/lib/substrate';
+
+// Access brain module from substrate singleton
+const brain = substrate.brain;
 
 export interface UseBrainReturn {
   // Status & Health
