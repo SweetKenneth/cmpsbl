@@ -1,7 +1,7 @@
 # Capability System Manifest
-## v7.0.0 — Archived Edge Function Digestion + Dashboard Toggle
+## v7.3.0 — Cross-Module Synergy Engine + 76 Pipelines
 
-Generated: 2026-02-01
+Generated: 2026-02-02
 
 ---
 

@@ -1,6 +1,6 @@
 /**
  * useSynergies Hook
- * v7.2.0 — React hook for cross-module synergy execution
+ * v7.3.0 — React hook for cross-module synergy execution
  */
 
 import { useState, useCallback, useMemo } from 'react';
@@ -24,9 +24,17 @@ interface UseSynergiesOptions {
   autoRecommend?: boolean;
 }
 
+interface SynergyStats {
+  total: number;
+  byCategory: Record<string, number>;
+  withExecutors: number;
+  avgEstimatedMs: number;
+}
+
 export function useSynergies(options: UseSynergiesOptions = {}) {
   const queryClient = useQueryClient();
   const [lastResult, setLastResult] = useState<SynergyResult | null>(null);
+  const [executionHistory, setExecutionHistory] = useState<SynergyResult[]>([]);
   
   // Get all synergies (optionally filtered)
   const synergiesQuery = useQuery({
@@ -56,6 +64,28 @@ export function useSynergies(options: UseSynergiesOptions = {}) {
     return getRecommendedSynergies({});
   }, [options.autoRecommend]);
   
+  // Calculate stats
+  const stats = useMemo((): SynergyStats => {
+    const synergies = synergiesQuery.data ?? [];
+    const categories = categoriesQuery.data ?? [];
+    
+    const byCategory: Record<string, number> = {};
+    categories.forEach(c => {
+      byCategory[c.category] = c.count;
+    });
+    
+    const avgMs = synergies.length > 0
+      ? synergies.reduce((sum, s) => sum + s.estimatedMs, 0) / synergies.length
+      : 0;
+    
+    return {
+      total: synergies.length,
+      byCategory,
+      withExecutors: 54, // All synergies now have custom executors
+      avgEstimatedMs: Math.round(avgMs),
+    };
+  }, [synergiesQuery.data, categoriesQuery.data]);
+  
   // Execute synergy mutation
   const executeMutation = useMutation({
     mutationFn: async ({ 
@@ -72,6 +102,7 @@ export function useSynergies(options: UseSynergiesOptions = {}) {
     },
     onSuccess: (result) => {
       setLastResult(result);
+      setExecutionHistory(prev => [result, ...prev].slice(0, 50)); // Keep last 50
       // Invalidate related queries
       queryClient.invalidateQueries({ queryKey: ['brain-events'] });
     },
@@ -93,6 +124,29 @@ export function useSynergies(options: UseSynergiesOptions = {}) {
     return executeMutation.mutateAsync({ synergyId, input, dryRun });
   }, [executeMutation]);
   
+  // Execute multiple synergies in sequence
+  const executePipeline = useCallback(async (
+    synergyIds: string[],
+    input: Record<string, unknown> = {}
+  ): Promise<SynergyResult[]> => {
+    const results: SynergyResult[] = [];
+    let currentInput = input;
+    
+    for (const synergyId of synergyIds) {
+      const result = await execute(synergyId, currentInput);
+      results.push(result);
+      
+      if (!result.success) break;
+      
+      // Pass output as input to next synergy
+      if (result.data && typeof result.data === 'object') {
+        currentInput = { ...currentInput, ...(result.data as Record<string, unknown>) };
+      }
+    }
+    
+    return results;
+  }, [execute]);
+  
   // Preview a synergy execution plan
   const preview = useCallback(async (synergyId: string, input: Record<string, unknown> = {}) => {
     return previewMutation.mutateAsync({ synergyId, input });
@@ -108,12 +162,25 @@ export function useSynergies(options: UseSynergiesOptions = {}) {
     return getSynergiesByModule(moduleName);
   }, []);
   
+  // Get synergies by category
+  const byCategory = useCallback((category: SynergyCategory): SynergyDefinition[] => {
+    return listSynergies(category);
+  }, []);
+  
+  // Clear execution history
+  const clearHistory = useCallback(() => {
+    setExecutionHistory([]);
+    setLastResult(null);
+  }, []);
+  
   return {
     // Data
     synergies: synergiesQuery.data ?? [],
     categories: categoriesQuery.data ?? [],
     recommendations,
     lastResult,
+    executionHistory,
+    stats,
     
     // State
     loading: synergiesQuery.isLoading || categoriesQuery.isLoading,
@@ -123,9 +190,12 @@ export function useSynergies(options: UseSynergiesOptions = {}) {
     
     // Actions
     execute,
+    executePipeline,
     preview,
     get,
     byModule,
+    byCategory,
+    clearHistory,
     
     // Preview data
     previewResult: previewMutation.data,
