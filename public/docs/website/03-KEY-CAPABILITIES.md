@@ -1,6 +1,6 @@
 # Key Capabilities
 
-**What CMPSBL® Does — Technical Overview**
+**What CMPSBL® Does — Technical Overview v7.4.0**
 
 ---
 
@@ -16,6 +16,56 @@
 | Self-Evolution | MODERNIZER | Code proposals, confidence gating, auto-upgrades |
 | Intent Parsing | DECODE | Natural language interpretation, command routing |
 | Orchestration | CORTEX | Policy intent, autonomous decision-making |
+| Accessibility | INCLUSIVE | WCAG scanning, auto-repair, compliance reporting |
+| **Cross-Module Synergies** | CORTEX | **98 pipelines, 76 executors for multi-module coordination** |
+
+---
+
+## Cross-Module Synergy Engine (v7.4.0)
+
+### The Problem
+Traditional AI systems operate as isolated modules. No coordination, no emergent intelligence.
+
+### Our Solution
+**98 synergy pipelines** that orchestrate 2-5 modules together for emergent capabilities:
+
+| Category | Pipelines | Description |
+|----------|-----------|-------------|
+| **Intelligence** | 24 | Cognitive fusion, causal inference, hypothesis testing |
+| **Security** | 16 | Attack surface mapping, zero-day defense, threat prediction |
+| **Resilience** | 18 | Predictive healing, blast radius containment, failover chains |
+| **Optimization** | 14 | Cost routing, token budget, resource allocation |
+| **Accessibility** | 8 | Universal design, adaptive content, compliance automation |
+| **Automation** | 10 | Autonomous repair, workflow synthesis, deprecation management |
+| **Orchestration** | 8 | Multi-agent coordination, pipeline orchestration, team coordination |
+
+### Example Synergies
+
+| Synergy | Modules | What It Does |
+|---------|---------|--------------|
+| `holistic-system-insight` | VISION + BRAIN + CORTEX + DREAM | Full system awareness with predictive insights |
+| `full-stack-evolution` | CORTEX + MODERNIZER + BRAIN + VISION + DEFENSE | Autonomous code evolution with security validation |
+| `zero-day-defense` | DEFENSE + BRAIN + VISION + CORTEX | Proactive threat detection and response |
+| `cognitive-state-preservation` | BRAIN + DREAM + VISION + CORTEX | Memory state backup with cognitive continuity |
+
+### Terminal Commands
+
+```bash
+# List all synergies
+cortex.synergy.list
+
+# Get synergy details
+cortex.synergy.get smart-recall
+
+# Execute a synergy
+cortex.synergy.execute adaptive-routing
+
+# Dry-run (no side effects)
+cortex.synergy.dry_run cognitive-fusion
+
+# Chain synergies together
+cortex.synergy.pipeline smart-recall,cognitive-fusion
+```
 
 ---
 
@@ -159,6 +209,29 @@ The system proposes improvements to its own code:
 
 ---
 
+## 7. Accessibility (INCLUSIVE)
+
+### The Problem
+Most AI applications are not accessible to users with disabilities.
+
+### Our Solution
+Built-in accessibility compliance pipeline:
+
+| Feature | Description |
+|---------|-------------|
+| **WCAG Scanning** | Automated A, AA, AAA compliance checks |
+| **Auto-Repair** | Intelligent fix generation for common issues |
+| **Validation** | Regression detection on repairs |
+| **Reporting** | Compliance reports in JSON or Markdown |
+
+### Features
+- **Template Scanning** — Scan all marketplace templates automatically
+- **User Profiles** — Adaptive experiences for different needs
+- **Coverage Tracking** — Monitor accessibility coverage over time
+- **Self-Scan** — The substrate scans its own UI
+
+---
+
 ## Integration Patterns
 
 ### REST API
@@ -177,6 +250,23 @@ import { substrate } from '@cmpsbl/sdk';
 
 await substrate.brain.remember('User prefers dark mode');
 const response = await substrate.nexus.route('Hello');
+
+// Execute synergy pipeline
+const result = await substrate.cortex.synergy.execute('smart-recall', {
+  query: 'user preferences'
+});
+```
+
+### Terminal
+```bash
+# Memory
+brain.remember "Important fact" observation
+
+# Synergies
+cortex.synergy.execute cognitive-fusion
+
+# Health
+system.health
 ```
 
 ---
@@ -186,7 +276,8 @@ const response = await substrate.nexus.route('Hello');
 - [Use Cases](./04-USE-CASES.md) — See it in action
 - [Architecture](./05-ARCHITECTURE.md) — Deep technical dive
 - [Getting Started](./06-GETTING-STARTED.md) — Start building
+- [Synergy Capabilities](./09-SYNERGY-CAPABILITIES.md) — Full synergy reference
 
 ---
 
-*CMPSBL® — Cognitive Infrastructure for Production AI*
+*CMPSBL® v7.4.0 — Cognitive Infrastructure for Production AI*

@@ -364,6 +364,17 @@ export const CORTEX_COMMANDS: CommandDefinition[] = [
   // v5.6.0: World Model + Introspection
   { command: 'cortex.world', description: 'Full module registry snapshot', category: 'cortex', icon: Globe, requiresOperator: false, args: '[--dag|--roles|--eligible]' },
   { command: 'cortex.inventory', description: 'Module inventory with eligibility', category: 'cortex', icon: Box, requiresOperator: false },
+  
+  // v7.4.0: Cross-Module Synergy Engine (98 Pipelines, 76 Executors)
+  { command: 'cortex.synergy.status', description: 'Synergy engine overview (pipelines, executors, health)', category: 'cortex', icon: Workflow, requiresOperator: false },
+  { command: 'cortex.synergy.list', description: 'List all 98 synergy pipelines', category: 'cortex', icon: List, requiresOperator: false, args: '[--category <cat>|--module <mod>]', example: 'cortex.synergy.list --category intelligence' },
+  { command: 'cortex.synergy.get', description: 'Get synergy pipeline details', category: 'cortex', icon: Eye, requiresOperator: false, args: '<synergy_id>', example: 'cortex.synergy.get smart-recall' },
+  { command: 'cortex.synergy.execute', description: 'Execute a synergy pipeline', category: 'cortex', icon: PlayCircle, requiresOperator: true, args: '<synergy_id> [input_json]', example: 'cortex.synergy.execute adaptive-routing' },
+  { command: 'cortex.synergy.dry_run', description: 'Dry-run a synergy (no side effects)', category: 'cortex', icon: Eye, requiresOperator: false, args: '<synergy_id> [input_json]', example: 'cortex.synergy.dry_run cognitive-fusion' },
+  { command: 'cortex.synergy.recommend', description: 'Get recommended synergies for context', category: 'cortex', icon: Sparkles, requiresOperator: false, args: '[context_json]' },
+  { command: 'cortex.synergy.pipeline', description: 'Execute chained synergy pipeline', category: 'cortex', icon: Workflow, requiresOperator: true, args: '<synergy1,synergy2,...> [input_json]', example: 'cortex.synergy.pipeline smart-recall,cognitive-fusion' },
+  { command: 'cortex.synergy.categories', description: 'List synergy categories with counts', category: 'cortex', icon: Box, requiresOperator: false },
+  { command: 'cortex.synergy.modules', description: 'List synergies by module involvement', category: 'cortex', icon: Database, requiresOperator: false, args: '[module]', example: 'cortex.synergy.modules brain' },
 ];
 
 // INCLUSIVE module v1.0 — Human Compatibility Pipeline (WCAG Scanning, Repair, Validation)

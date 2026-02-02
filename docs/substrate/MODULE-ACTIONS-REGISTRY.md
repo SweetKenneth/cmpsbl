@@ -6,10 +6,12 @@
 |-------|-------|
 | Document ID | PF-MAR-001 |
 | Version | v2026.01 |
-| Last Updated | 2026-01-24 |
+| Last Updated | 2026-02-02 |
 | Status | ACTIVE |
-| Substrate Version | 4.2.0 |
+| Substrate Version | 7.4.0 |
 | Type | Cognitive Orchestration Substrate |
+| Synergy Pipelines | 98 |
+| Synergy Executors | 76 |
 | Changelog | [CHANGELOG.md](./CHANGELOG.md) |
 
 ---
