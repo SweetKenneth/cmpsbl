@@ -10,7 +10,7 @@ import {
   Search, 
   Filter, 
   Package, 
-  AlertTriangle,
+  FileText,
   Brain,
   Zap,
   Shield,
@@ -163,14 +163,14 @@ export default function CapabilitiesDepotPage() {
                 </div>
               </div>
 
-              {/* Disclaimer banner */}
+              {/* Terms button */}
               <button
                 onClick={() => setShowDisclaimer(true)}
-                className="group inline-flex items-center gap-3 px-5 py-3 rounded-xl border border-amber-500/30 bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-orange-500/10 text-amber-600 dark:text-amber-400 hover:bg-amber-500/20 hover:border-amber-500/50 transition-all duration-200"
+                className="group inline-flex items-center gap-3 px-5 py-3 rounded-xl border border-border/50 bg-muted/30 text-muted-foreground hover:bg-muted/50 hover:border-border transition-all duration-200"
               >
-                <AlertTriangle className="w-5 h-5 shrink-0" />
+                <FileText className="w-5 h-5 shrink-0" />
                 <span className="text-sm font-medium text-left">
-                  Artifacts sold as-is. No support, hosting, or SLA included.
+                  View Terms of Use
                 </span>
                 <ChevronDown className="w-4 h-4 shrink-0 group-hover:translate-y-0.5 transition-transform" />
               </button>
@@ -281,9 +281,9 @@ export default function CapabilitiesDepotPage() {
                 <p className="text-sm text-muted-foreground">
                   Showing <span className="font-semibold text-foreground">{capabilities.length}</span> capabilities
                 </p>
-                <Badge variant="outline" className="text-amber-500 border-amber-500/30">
-                  <AlertTriangle className="w-3 h-3 mr-1" />
-                  UNSUPPORTED
+                <Badge variant="outline" className="text-primary border-primary/30">
+                  <Package className="w-3 h-3 mr-1" />
+                  Licensed Artifacts
                 </Badge>
               </div>
 
