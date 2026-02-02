@@ -464,6 +464,14 @@ class SEBAAgent {
     const generator = new ProposalGenerator(this.config);
     const proposals = await generator.generateProposals(insights);
 
+    // ═══ PERSIST PROPOSALS TO DATABASE ═══
+    // Critical: Without this, seba.review will show nothing
+    if (proposals.length > 0) {
+      const storeResult = await ProposalStore.storeBatch(proposals);
+      this.state.pending_proposals += storeResult.stored;
+      console.log(`[SEBA] Persisted ${storeResult.stored} proposals to database`);
+    }
+
     return {
       success: true,
       command: 'propose',
@@ -471,14 +479,55 @@ class SEBAAgent {
         insights: insights.length, 
         proposals: proposals.map(p => ({
           id: p.short_id,
+          full_id: p.id,
           title: p.title,
           category: p.category,
           confidence: p.confidence_score,
           risk: p.risk_level,
+          // Impact predictions for observability
+          predicted_impact: this.calculatePredictedImpact(p),
         })),
       },
-      message: `Generated ${proposals.length} proposals from ${insights.length} insights`,
+      message: `Generated ${proposals.length} proposals from ${insights.length} insights. Use seba.review to see pending.`,
     };
+  }
+
+  /**
+   * Calculate predicted impact metrics for a proposal
+   */
+  private calculatePredictedImpact(proposal: ImprovementProposal): Record<string, string> {
+    const impact: Record<string, string> = {};
+    
+    // Base estimates on category and confidence
+    const confidence = proposal.confidence_score;
+    const category = proposal.category;
+    
+    switch (category) {
+      case 'memory_optimization':
+        impact.memory = `+${Math.round(confidence * 15)}% efficiency`;
+        impact.speed = `+${Math.round(confidence * 5)}% faster retrieval`;
+        break;
+      case 'learning_enhancement':
+        impact.learning = `+${Math.round(confidence * 20)}% faster convergence`;
+        impact.accuracy = `+${Math.round(confidence * 10)}% better predictions`;
+        break;
+      case 'performance_boost':
+        impact.speed = `+${Math.round(confidence * 25)}% faster`;
+        impact.latency = `-${Math.round(confidence * 15)}ms avg response`;
+        break;
+      case 'error_recovery':
+        impact.resilience = `+${Math.round(confidence * 30)}% uptime`;
+        impact.mttr = `-${Math.round(confidence * 20)}% recovery time`;
+        break;
+      case 'resource_optimization':
+        impact.cpu = `-${Math.round(confidence * 10)}% usage`;
+        impact.memory = `-${Math.round(confidence * 15)}% footprint`;
+        break;
+      default:
+        impact.health = `+${Math.round(confidence * 5)}% system health`;
+    }
+    
+    return impact;
   }
 
   private async cmdReview(): Promise<SEBACommandResult> {
