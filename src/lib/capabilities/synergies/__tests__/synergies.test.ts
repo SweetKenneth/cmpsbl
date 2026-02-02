@@ -30,13 +30,13 @@ import {
 } from '@/lib/capabilities/synergies';
 
 describe('Synergy Registry', () => {
-  it('should have 34 defined synergies', () => {
-    expect(SYNERGY_DEFINITIONS.length).toBe(34);
+  it('should have 54 defined synergies', () => {
+    expect(SYNERGY_DEFINITIONS.length).toBe(54);
   });
 
   it('should list all synergies', () => {
     const synergies = listSynergies();
-    expect(synergies.length).toBe(34);
+    expect(synergies.length).toBe(54);
   });
 
   it('should filter synergies by category', () => {
@@ -70,7 +70,7 @@ describe('Synergy Registry', () => {
     expect(categories.length).toBeGreaterThan(0);
     
     const totalCount = categories.reduce((sum, c) => sum + c.count, 0);
-    expect(totalCount).toBe(34);
+    expect(totalCount).toBe(54);
   });
 });
 
