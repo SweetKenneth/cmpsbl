@@ -27,12 +27,11 @@ The Capabilities Depot is a marketplace for purchasing and downloading licensed 
 - No background jobs, callbacks, or telemetry from us
 - Full control over your data and infrastructure
 
-### 4. UNSUPPORTED Policy
-All capabilities are sold AS-IS with:
-- No technical support
-- No warranty
-- No maintenance guarantees
-- No SLA or uptime commitments
+### 4. Support Available
+All capability purchases include:
+- Access to our [Support Page](/support) for assistance
+- Integration guidance during your licensing period
+- Technical documentation and examples
 
 ---
 
@@ -133,33 +132,36 @@ Templates in the Marketplace may reference compatible capabilities:
 
 ## Legal Terms
 
-### NO SUPPORT
-Capabilities are sold without any technical support, maintenance, or bug fix commitments. The "UNSUPPORTED" designation applies to all items in the Depot.
-
-### NO WARRANTY
-There is no warranty of any kind, express or implied, including warranties of merchantability or fitness for a particular purpose.
+### LOCAL EXECUTION
+Capabilities are designed for local execution within your infrastructure. All execution responsibility lies with the licensee.
 
 ### NO HOSTING
-Capabilities are not hosted, executed, or managed by PromptFluid. All execution responsibility lies with the licensee.
+Capabilities are not hosted or executed by PromptFluid. You manage deployment in your environment.
 
-### NO UPTIME GUARANTEE
-There are no SLAs, uptime commitments, or availability guarantees.
-
-### LOCAL EXECUTION ONLY
-All capabilities are designed for local execution within your infrastructure. No customer data is processed or stored by us.
+### LIMITED WARRANTY
+Capabilities are provided with limited warranty. See individual capability license terms for details.
 
 ### NO REFUNDS
 Due to the nature of digital downloads, all sales are final.
 
 ---
 
+## Support
+
+We're here to help with your capability purchases:
+- **Support Page:** [/support](/support)
+- **Email:** PromptFluid@gmail.com
+- **Enterprise Inquiries:** Contact for custom licensing and dedicated support
+
+---
+
 ## FAQ
 
-**Q: Can I get support for a capability?**
-A: No. All capabilities are unsupported. Integration and maintenance are your responsibility.
+**Q: Can I get help with integration?**
+A: Yes! Visit our [Support Page](/support) for assistance during your licensing period.
 
 **Q: Can I get a refund?**
-A: No. Digital downloads are non-refundable.
+A: Digital downloads are non-refundable, but we're happy to help resolve any issues.
 
 **Q: Do you host the capabilities?**
 A: No. Capabilities run entirely in your infrastructure.
@@ -177,6 +179,7 @@ A: Yes, subject to the license terms included with each capability.
 For enterprise licensing inquiries:
 - **Email:** PromptFluid@gmail.com
 - **Web:** https://cmpsbl.com/capabilities
+- **Support:** https://cmpsbl.com/support
 
 ---
 
