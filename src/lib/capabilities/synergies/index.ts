@@ -1,6 +1,6 @@
 /**
  * Synergy System Exports
- * v7.0.0 — Cross-Module Pipeline Infrastructure
+ * v7.1.0 — Cross-Module Pipeline Infrastructure
  */
 
 // Types
@@ -46,6 +46,22 @@ export {
   executeAnomalyCorrelation,
   executeCognitiveFusion,
   executeIntentAmplification,
+  // v7.0 executors
+  executeExternalApiIntelligence,
+  executeEntitlementAwareRouting,
+  executeAutonomousEvolution,
+  executeEndToEndReasoning,
+  executeBoundedAutonomyGuard,
+  // v7.1 NEW executors
+  executeContextualPreload,
+  executeSemanticDeduplication,
+  executeBehavioralFingerprinting,
+  executeZeroTrustValidation,
+  executeWorkflowSynthesis,
+  executeMultiAgentCoordination,
+  executeCognitiveLoadOptimization,
+  executeHypothesisTesting,
+  executeKnowledgeDistillation,
 } from './executors';
 
 // Auto-register executors

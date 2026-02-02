@@ -1,6 +1,6 @@
 /**
  * Synergy System Types
- * v7.0.0 — Cross-Module Pipeline Definitions
+ * v7.1.0 — Cross-Module Pipeline Definitions
  */
 
 export type SynergyCategory = 

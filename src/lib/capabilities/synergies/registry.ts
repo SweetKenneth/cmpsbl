@@ -13,7 +13,7 @@ const registry: SynergyRegistry = {
 };
 
 /**
- * All 15 cross-module synergies
+ * All 44 cross-module synergies
  * Each combines 2-4 modules for enhanced capability
  */
 export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
@@ -556,6 +556,168 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     reversible: true,
     estimatedMs: 900,
     minModulesRequired: 4,
+  },
+
+  // === v7.1.0 NEW HIGH-VALUE SYNERGIES ===
+  
+  // Predictive Intelligence
+  {
+    id: 'contextual-preload',
+    name: 'Contextual Preload',
+    description: 'BRAIN predicts upcoming needs based on RIPPLE event patterns and DECODE session analysis',
+    category: 'optimization',
+    modules: [
+      { name: 'BRAIN', role: 'primary', required: true },
+      { name: 'RIPPLE', role: 'enhancer', required: true },
+      { name: 'DECODE', role: 'enhancer', required: true },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 120,
+    minModulesRequired: 3,
+  },
+  {
+    id: 'semantic-deduplication',
+    name: 'Semantic Deduplication',
+    description: 'BRAIN memory consolidation guided by DECODE semantic similarity and DREAM pattern matching',
+    category: 'optimization',
+    modules: [
+      { name: 'BRAIN', role: 'primary', required: true },
+      { name: 'DECODE', role: 'enhancer', required: true },
+      { name: 'DREAM', role: 'validator', required: true },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 250,
+    minModulesRequired: 3,
+  },
+  
+  // Advanced Security
+  {
+    id: 'behavioral-fingerprinting',
+    name: 'Behavioral Fingerprinting',
+    description: 'ACCESS usage patterns analyzed by BRAIN to create DEFENSE behavioral baselines',
+    category: 'security',
+    modules: [
+      { name: 'ACCESS', role: 'primary', required: true },
+      { name: 'BRAIN', role: 'enhancer', required: true },
+      { name: 'DEFENSE', role: 'validator', required: true },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 180,
+    minModulesRequired: 3,
+  },
+  {
+    id: 'zero-trust-validation',
+    name: 'Zero-Trust Validation',
+    description: 'CORTEX policy enforcement enhanced by DEFENSE continuous verification and VISION audit logging',
+    category: 'security',
+    modules: [
+      { name: 'CORTEX', role: 'primary', required: true },
+      { name: 'DEFENSE', role: 'enhancer', required: true },
+      { name: 'VISION', role: 'validator', required: true },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 100,
+    minModulesRequired: 3,
+  },
+  
+  // Intelligent Orchestration
+  {
+    id: 'workflow-synthesis',
+    name: 'Workflow Synthesis',
+    description: 'CORTEX workflow generation informed by BRAIN learned patterns and DECODE user intent',
+    category: 'orchestration',
+    modules: [
+      { name: 'CORTEX', role: 'primary', required: true },
+      { name: 'BRAIN', role: 'enhancer', required: true },
+      { name: 'DECODE', role: 'enhancer', required: true },
+    ],
+    risk: 'medium',
+    reversible: true,
+    estimatedMs: 450,
+    minModulesRequired: 3,
+  },
+  {
+    id: 'multi-agent-coordination',
+    name: 'Multi-Agent Coordination',
+    description: 'CORTEX agent orchestration with RIPPLE message routing and VISION task monitoring',
+    category: 'orchestration',
+    modules: [
+      { name: 'CORTEX', role: 'primary', required: true },
+      { name: 'RIPPLE', role: 'enhancer', required: true },
+      { name: 'VISION', role: 'validator', required: true },
+    ],
+    risk: 'medium',
+    reversible: true,
+    estimatedMs: 350,
+    minModulesRequired: 3,
+  },
+  
+  // Enhanced Accessibility
+  {
+    id: 'cognitive-load-optimization',
+    name: 'Cognitive Load Optimization',
+    description: 'INCLUSIVE complexity analysis combined with DECODE simplification and BRAIN personalization',
+    category: 'accessibility',
+    modules: [
+      { name: 'INCLUSIVE', role: 'primary', required: true },
+      { name: 'DECODE', role: 'enhancer', required: true },
+      { name: 'BRAIN', role: 'enhancer', required: true },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 200,
+    minModulesRequired: 3,
+  },
+  {
+    id: 'multimodal-adaptation',
+    name: 'Multimodal Adaptation',
+    description: 'NEXUS content generation adapted by INCLUSIVE guidelines and VISION usage analytics',
+    category: 'accessibility',
+    modules: [
+      { name: 'NEXUS', role: 'primary', required: true },
+      { name: 'INCLUSIVE', role: 'enhancer', required: true },
+      { name: 'VISION', role: 'validator', required: true },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 500,
+    minModulesRequired: 3,
+  },
+  
+  // Deep Learning Integration
+  {
+    id: 'knowledge-distillation',
+    name: 'Knowledge Distillation',
+    description: 'DREAM pattern extraction distilled into BRAIN permanent memory with CORTEX governance',
+    category: 'intelligence',
+    modules: [
+      { name: 'DREAM', role: 'primary', required: true },
+      { name: 'BRAIN', role: 'enhancer', required: true },
+      { name: 'CORTEX', role: 'validator', required: true },
+    ],
+    risk: 'medium',
+    reversible: true,
+    estimatedMs: 600,
+    minModulesRequired: 3,
+  },
+  {
+    id: 'hypothesis-testing',
+    name: 'Hypothesis Testing',
+    description: 'NEXUS generates hypotheses validated by BRAIN historical data and VISION A/B metrics',
+    category: 'intelligence',
+    modules: [
+      { name: 'NEXUS', role: 'primary', required: true },
+      { name: 'BRAIN', role: 'enhancer', required: true },
+      { name: 'VISION', role: 'validator', required: true },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 700,
+    minModulesRequired: 3,
   },
 ];
 
