@@ -102,73 +102,155 @@ export default function CapabilitiesDepotPage() {
       <PublicNav />
 
       <main className="min-h-screen bg-background pt-20">
-        {/* Hero Section */}
+        {/* Hero Section — Premium Polish */}
         <section className="relative overflow-hidden border-b border-border/50">
-          {/* Background effects */}
+          {/* Multi-layer background effects */}
           <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent opacity-60" />
+          
+          {/* Animated gradient orbs */}
           <motion.div
-            className="absolute top-0 left-1/4 w-96 h-96 rounded-full bg-primary/10 blur-3xl"
-            animate={{ x: [0, 50, 0], opacity: [0.3, 0.5, 0.3] }}
-            transition={{ duration: 10, repeat: Infinity }}
+            className="absolute -top-20 left-1/4 w-[500px] h-[500px] rounded-full bg-gradient-to-br from-primary/20 via-cyan-500/10 to-transparent blur-3xl"
+            animate={{ 
+              x: [0, 80, 0], 
+              y: [0, -30, 0],
+              scale: [1, 1.1, 1],
+              opacity: [0.4, 0.6, 0.4] 
+            }}
+            transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
           />
           <motion.div
-            className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full bg-violet-500/10 blur-3xl"
-            animate={{ x: [0, -50, 0], opacity: [0.3, 0.5, 0.3] }}
-            transition={{ duration: 12, repeat: Infinity }}
+            className="absolute -bottom-20 right-1/4 w-[400px] h-[400px] rounded-full bg-gradient-to-tr from-violet-500/15 via-fuchsia-500/10 to-transparent blur-3xl"
+            animate={{ 
+              x: [0, -60, 0], 
+              y: [0, 40, 0],
+              scale: [1, 1.15, 1],
+              opacity: [0.3, 0.5, 0.3] 
+            }}
+            transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-r from-emerald-500/5 via-transparent to-amber-500/5 blur-3xl"
+            animate={{ 
+              rotate: [0, 180, 360],
+              opacity: [0.2, 0.35, 0.2] 
+            }}
+            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
           />
 
-          <div className="relative container mx-auto px-4 py-16 md:py-24">
+          {/* Grid pattern overlay */}
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0wIDBoNjB2NjBIMHoiLz48cGF0aCBkPSJNMzAgMzBoMXYxaC0xeiIgZmlsbD0icmdiYSgxMjgsMTI4LDEyOCwwLjEpIi8+PC9nPjwvc3ZnPg==')] opacity-30" />
+
+          <div className="relative container mx-auto px-4 py-20 md:py-28">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
               className="max-w-4xl mx-auto text-center"
             >
-              {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm mb-6">
-                <Package className="w-4 h-4 text-primary" />
-                <span className="text-sm font-semibold">Downloadable Artifacts</span>
-              </div>
-
-              <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-6">
-                <span className="text-foreground">Capabilities</span>{' '}
-                <span className="bg-gradient-to-r from-primary via-cyan-500 to-violet-500 bg-clip-text text-transparent">
-                  Depot
+              {/* Premium badge with glow */}
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.1 }}
+                className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border border-primary/40 bg-gradient-to-r from-primary/15 via-primary/10 to-cyan-500/15 backdrop-blur-md mb-8 shadow-lg shadow-primary/10"
+              >
+                <motion.div
+                  animate={{ rotate: [0, 360] }}
+                  transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                >
+                  <Package className="w-4 h-4 text-primary" />
+                </motion.div>
+                <span className="text-sm font-semibold bg-gradient-to-r from-primary to-cyan-400 bg-clip-text text-transparent">
+                  86+ Cognitive Artifacts
                 </span>
-              </h1>
+                <span className="w-px h-4 bg-border/50" />
+                <span className="text-xs text-muted-foreground">v1.3.0</span>
+              </motion.div>
 
-              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-                Licensed cognitive capabilities for local execution. 
-                Download, integrate, and run in your own infrastructure.
-              </p>
+              {/* Main headline with enhanced typography */}
+              <motion.h1 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-6"
+              >
+                <span className="text-foreground">Capabilities</span>
+                <br className="sm:hidden" />
+                <span className="relative ml-2 sm:ml-4">
+                  <span className="bg-gradient-to-r from-primary via-cyan-400 to-violet-500 bg-clip-text text-transparent">
+                    Depot
+                  </span>
+                  <motion.span
+                    className="absolute -inset-1 bg-gradient-to-r from-primary/20 via-cyan-400/20 to-violet-500/20 blur-xl -z-10"
+                    animate={{ opacity: [0.5, 0.8, 0.5] }}
+                    transition={{ duration: 3, repeat: Infinity }}
+                  />
+                </span>
+              </motion.h1>
 
-              {/* Stats */}
-              <div className="flex flex-wrap justify-center gap-6 md:gap-10 mb-8">
-                <div className="text-center">
-                  <div className="text-3xl md:text-4xl font-black text-foreground">{totalCount}</div>
-                  <div className="text-sm text-muted-foreground">Capabilities</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl md:text-4xl font-black text-foreground">6</div>
-                  <div className="text-sm text-muted-foreground">Categories</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl md:text-4xl font-black text-foreground">4</div>
-                  <div className="text-sm text-muted-foreground">Pricing Tiers</div>
-                </div>
-              </div>
+              {/* Enhanced description */}
+              <motion.p 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="text-lg md:text-xl lg:text-2xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed"
+              >
+                Licensed cognitive capabilities for{' '}
+                <span className="text-foreground font-medium">local execution</span>.{' '}
+                Download, integrate, and run in{' '}
+                <span className="text-foreground font-medium">your own infrastructure</span>.
+              </motion.p>
 
-              {/* Disclaimer banner */}
+              {/* Premium Stats with glass cards */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="flex flex-wrap justify-center gap-4 md:gap-6 mb-10"
+              >
+                {[
+                  { value: totalCount, label: 'Capabilities', color: 'primary' },
+                  { value: 7, label: 'Categories', color: 'cyan-500' },
+                  { value: 4, label: 'Pricing Tiers', color: 'violet-500' },
+                  { value: '$19', label: 'Starting at', color: 'emerald-500' },
+                ].map((stat, idx) => (
+                  <motion.div
+                    key={stat.label}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.5 + idx * 0.1 }}
+                    className="relative group"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="relative px-6 py-4 rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm hover:border-primary/30 transition-colors">
+                      <div className={cn(
+                        "text-3xl md:text-4xl font-black",
+                        stat.color === 'primary' ? 'text-primary' : `text-${stat.color}`
+                      )}>
+                        {stat.value}
+                      </div>
+                      <div className="text-xs md:text-sm text-muted-foreground mt-1">{stat.label}</div>
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
+
+              {/* Enhanced disclaimer banner */}
               <motion.button
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6 }}
                 onClick={() => setShowDisclaimer(true)}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-amber-500/30 bg-amber-500/10 text-amber-600 dark:text-amber-400 hover:bg-amber-500/20 transition-colors"
-                whileHover={{ scale: 1.02 }}
+                className="group inline-flex items-center gap-3 px-5 py-3 rounded-xl border border-amber-500/30 bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-orange-500/10 text-amber-600 dark:text-amber-400 hover:bg-amber-500/20 hover:border-amber-500/50 transition-all duration-300 shadow-lg shadow-amber-500/5"
+                whileHover={{ scale: 1.02, y: -2 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <AlertTriangle className="w-4 h-4" />
-                <span className="text-sm font-medium">
-                  Capabilities are downloadable artifacts. Execution, hosting, and support are the responsibility of the licensee.
+                <AlertTriangle className="w-5 h-5 shrink-0" />
+                <span className="text-sm font-medium text-left">
+                  Artifacts sold as-is for local execution. No support, hosting, or SLA included.
                 </span>
-                <ChevronDown className="w-4 h-4" />
+                <ChevronDown className="w-4 h-4 shrink-0 group-hover:translate-y-0.5 transition-transform" />
               </motion.button>
             </motion.div>
           </div>

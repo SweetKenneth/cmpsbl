@@ -69,9 +69,10 @@ export function PublicNav() {
       name: "Build",
       icon: Code,
       items: [
+        { name: "Capabilities Depot", href: "/capabilities", description: "86+ Licensed Cognitive Artifacts", icon: Sparkles },
         { name: "CodeLab", href: "/codelab", description: "Execution-First Playground", icon: Terminal },
         { name: "For Developers", href: "/developers", description: "Build Intelligent Apps", icon: Code },
-        { name: "Marketplace", href: "/marketplace", description: "Templates & OS", icon: Sparkles },
+        { name: "Marketplace", href: "/marketplace", description: "Templates & OS", icon: Layers },
         { name: "Experimentation Lab", href: "/lab", description: "Live Template Demos", icon: Zap },
         { name: "Gaming AI", href: "/gaming", description: "NPC Brains & World Engines", icon: Gamepad2 },
         { name: "DevTools", href: "/devtools", description: "SDK & Documentation", icon: Terminal },
@@ -368,11 +369,11 @@ export function PublicNav() {
               <div className="px-4 py-4 pb-28 safe-area-pb momentum-scroll">
                 {/* Quick Access Pills - Horizontally scrollable */}
                 <div className="flex gap-2.5 mb-6 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide touch-pan-x">
-                  {["CodeLab", "Developers", "Licensing", "Support", "Contact"].map((name, idx) => {
-                    const href = name === "CodeLab" ? "/codelab" :
+                  {["Capabilities", "CodeLab", "Developers", "Licensing", "Support"].map((name, idx) => {
+                    const href = name === "Capabilities" ? "/capabilities" :
+                                 name === "CodeLab" ? "/codelab" :
                                  name === "Developers" ? "/developers" :
-                                 name === "Licensing" ? "/substrate/licensing" :
-                                 name === "Support" ? "/support" : "/contact";
+                                 name === "Licensing" ? "/substrate/licensing" : "/support";
                     return (
                       <motion.div
                         key={name}
