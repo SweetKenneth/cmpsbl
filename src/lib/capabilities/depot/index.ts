@@ -1,7 +1,7 @@
 /**
  * Capabilities Depot — Main Export
- * Downloadable, licensed capability artifacts (no support, no hosting)
- * v1.3.0 — 86+ Capabilities with Full Stripe Checkout
+ * Downloadable, licensed capability artifacts with full Stripe checkout
+ * v1.4.0 — 108+ Capabilities (22 S-tier, Self-Improvement Premium)
  */
 
 // === Types ===
@@ -33,6 +33,15 @@ export {
   getCategoryStats,
   getTotalCapabilityCount,
 } from './registry';
+
+// === S-Tier Registry ===
+export {
+  STIER_CAPABILITIES,
+  getAllSTierCapabilities,
+  getSelfImprovementCapabilities,
+  getSTierCapabilityById,
+  getSTierCount,
+} from './registry-stier';
 
 // === Pricing ===
 export {
@@ -87,8 +96,17 @@ export {
   hasUltraStripeConfig,
 } from './stripe-ultra';
 
+// === S-Tier Stripe ===
+export {
+  STIER_STRIPE_CONFIG,
+  getSTierStripeConfig,
+  hasSTierStripeConfig,
+  getAllSTierStripeConfigs,
+  isSelfImprovementCapability,
+} from './stripe-stier';
+
 // === Constants ===
-export const DEPOT_VERSION = '1.3.0';
+export const DEPOT_VERSION = '1.4.0';
 export const DEPOT_NAME = 'Capabilities Depot';
 
 // === Legal Disclaimer ===
