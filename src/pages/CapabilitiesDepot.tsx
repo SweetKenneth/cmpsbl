@@ -1,17 +1,16 @@
 /**
  * Capabilities Depot — Main Page
  * Marketplace surface for downloadable capability artifacts
+ * v1.3.1 — Performance Optimized
  */
 
-import { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useMemo, lazy, Suspense } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { 
   Search, 
   Filter, 
   Package, 
-  Download, 
   AlertTriangle,
-  Sparkles,
   Brain,
   Zap,
   Shield,
@@ -19,8 +18,8 @@ import {
   Accessibility,
   TrendingUp,
   ChevronDown,
-  Info,
   ExternalLink,
+  Layers,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -35,7 +34,6 @@ import {
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { CapabilityCard } from '@/components/depot/CapabilityCard';
-import { DepotDisclaimer } from '@/components/depot/DepotDisclaimer';
 import { DepotSEO } from '@/components/depot/DepotSEO';
 import {
   filterCapabilities,
@@ -49,15 +47,18 @@ import {
 } from '@/lib/capabilities/depot';
 import { cn } from '@/lib/utils';
 
-// Category config with icons
-const CATEGORY_CONFIG: Record<CapabilityCategory, { icon: typeof Brain; label: string; color: string }> = {
-  intelligence: { icon: Brain, label: 'Intelligence', color: 'cyan' },
-  optimization: { icon: TrendingUp, label: 'Optimization', color: 'emerald' },
-  resilience: { icon: Zap, label: 'Resilience', color: 'amber' },
-  security: { icon: Shield, label: 'Security', color: 'rose' },
-  accessibility: { icon: Accessibility, label: 'Accessibility', color: 'violet' },
-  automation: { icon: Settings, label: 'Automation', color: 'blue' },
-  orchestration: { icon: Settings, label: 'Orchestration', color: 'purple' },
+// Lazy load the disclaimer modal
+const DepotDisclaimer = lazy(() => import('@/components/depot/DepotDisclaimer').then(m => ({ default: m.DepotDisclaimer })));
+
+// Category config with icons - static color classes for production build
+const CATEGORY_CONFIG: Record<CapabilityCategory, { icon: typeof Brain; label: string; colorClass: string }> = {
+  intelligence: { icon: Brain, label: 'Intelligence', colorClass: 'bg-cyan-500/10 text-cyan-500' },
+  optimization: { icon: TrendingUp, label: 'Optimization', colorClass: 'bg-emerald-500/10 text-emerald-500' },
+  resilience: { icon: Zap, label: 'Resilience', colorClass: 'bg-amber-500/10 text-amber-500' },
+  security: { icon: Shield, label: 'Security', colorClass: 'bg-rose-500/10 text-rose-500' },
+  accessibility: { icon: Accessibility, label: 'Accessibility', colorClass: 'bg-violet-500/10 text-violet-500' },
+  automation: { icon: Settings, label: 'Automation', colorClass: 'bg-blue-500/10 text-blue-500' },
+  orchestration: { icon: Layers, label: 'Orchestration', colorClass: 'bg-purple-500/10 text-purple-500' },
 };
 
 const EXECUTOR_LABELS: Record<ExecutorType, string> = {
@@ -75,6 +76,7 @@ export default function CapabilitiesDepotPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showDisclaimer, setShowDisclaimer] = useState(false);
 
+  // Memoize expensive calculations
   const categoryStats = useMemo(() => getCategoryStats(), []);
   const totalCount = useMemo(() => getTotalCapabilityCount(), []);
 
@@ -102,157 +104,77 @@ export default function CapabilitiesDepotPage() {
       <PublicNav />
 
       <main className="min-h-screen bg-background pt-20">
-        {/* Hero Section — Premium Polish */}
+        {/* Hero Section — Lightweight Performance Optimized */}
         <section className="relative overflow-hidden border-b border-border/50">
-          {/* Multi-layer background effects */}
+          {/* Static gradient background - no animations */}
           <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent opacity-60" />
-          
-          {/* Animated gradient orbs */}
-          <motion.div
-            className="absolute -top-20 left-1/4 w-[500px] h-[500px] rounded-full bg-gradient-to-br from-primary/20 via-cyan-500/10 to-transparent blur-3xl"
-            animate={{ 
-              x: [0, 80, 0], 
-              y: [0, -30, 0],
-              scale: [1, 1.1, 1],
-              opacity: [0.4, 0.6, 0.4] 
-            }}
-            transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div
-            className="absolute -bottom-20 right-1/4 w-[400px] h-[400px] rounded-full bg-gradient-to-tr from-violet-500/15 via-fuchsia-500/10 to-transparent blur-3xl"
-            animate={{ 
-              x: [0, -60, 0], 
-              y: [0, 40, 0],
-              scale: [1, 1.15, 1],
-              opacity: [0.3, 0.5, 0.3] 
-            }}
-            transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-r from-emerald-500/5 via-transparent to-amber-500/5 blur-3xl"
-            animate={{ 
-              rotate: [0, 180, 360],
-              opacity: [0.2, 0.35, 0.2] 
-            }}
-            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          />
 
-          {/* Grid pattern overlay */}
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0wIDBoNjB2NjBIMHoiLz48cGF0aCBkPSJNMzAgMzBoMXYxaC0xeiIgZmlsbD0icmdiYSgxMjgsMTI4LDEyOCwwLjEpIi8+PC9nPjwvc3ZnPg==')] opacity-30" />
+          {/* Static decorative orbs - CSS only, no JS animation */}
+          <div className="absolute -top-20 left-1/4 w-80 h-80 rounded-full bg-gradient-to-br from-primary/15 via-cyan-500/5 to-transparent blur-2xl opacity-50" />
+          <div className="absolute -bottom-20 right-1/4 w-64 h-64 rounded-full bg-gradient-to-tr from-violet-500/10 to-transparent blur-2xl opacity-40" />
 
-          <div className="relative container mx-auto px-4 py-20 md:py-28">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="max-w-4xl mx-auto text-center"
-            >
-              {/* Premium badge with glow */}
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.1 }}
-                className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border border-primary/40 bg-gradient-to-r from-primary/15 via-primary/10 to-cyan-500/15 backdrop-blur-md mb-8 shadow-lg shadow-primary/10"
-              >
-                <motion.div
-                  animate={{ rotate: [0, 360] }}
-                  transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                >
-                  <Package className="w-4 h-4 text-primary" />
-                </motion.div>
+          <div className="relative container mx-auto px-4 py-16 md:py-24">
+            <div className="max-w-4xl mx-auto text-center">
+              {/* Premium badge */}
+              <div className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border border-primary/40 bg-gradient-to-r from-primary/15 via-primary/10 to-cyan-500/15 backdrop-blur-sm mb-8 shadow-lg shadow-primary/10">
+                <Package className="w-4 h-4 text-primary" />
                 <span className="text-sm font-semibold bg-gradient-to-r from-primary to-cyan-400 bg-clip-text text-transparent">
-                  86+ Cognitive Artifacts
+                  {totalCount}+ Cognitive Artifacts
                 </span>
                 <span className="w-px h-4 bg-border/50" />
-                <span className="text-xs text-muted-foreground">v1.3.0</span>
-              </motion.div>
+                <span className="text-xs text-muted-foreground">v1.3.1</span>
+              </div>
 
-              {/* Main headline with enhanced typography */}
-              <motion.h1 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-6"
-              >
+              {/* Main headline */}
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter mb-6">
                 <span className="text-foreground">Capabilities</span>
                 <br className="sm:hidden" />
-                <span className="relative ml-2 sm:ml-4">
-                  <span className="bg-gradient-to-r from-primary via-cyan-400 to-violet-500 bg-clip-text text-transparent">
-                    Depot
-                  </span>
-                  <motion.span
-                    className="absolute -inset-1 bg-gradient-to-r from-primary/20 via-cyan-400/20 to-violet-500/20 blur-xl -z-10"
-                    animate={{ opacity: [0.5, 0.8, 0.5] }}
-                    transition={{ duration: 3, repeat: Infinity }}
-                  />
+                <span className="ml-2 sm:ml-4 bg-gradient-to-r from-primary via-cyan-400 to-violet-500 bg-clip-text text-transparent">
+                  Depot
                 </span>
-              </motion.h1>
+              </h1>
 
-              {/* Enhanced description */}
-              <motion.p 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="text-lg md:text-xl lg:text-2xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed"
-              >
+              {/* Description */}
+              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
                 Licensed cognitive capabilities for{' '}
                 <span className="text-foreground font-medium">local execution</span>.{' '}
                 Download, integrate, and run in{' '}
                 <span className="text-foreground font-medium">your own infrastructure</span>.
-              </motion.p>
+              </p>
 
-              {/* Premium Stats with glass cards */}
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-                className="flex flex-wrap justify-center gap-4 md:gap-6 mb-10"
-              >
-                {[
-                  { value: totalCount, label: 'Capabilities', color: 'primary' },
-                  { value: 7, label: 'Categories', color: 'cyan-500' },
-                  { value: 4, label: 'Pricing Tiers', color: 'violet-500' },
-                  { value: '$19', label: 'Starting at', color: 'emerald-500' },
-                ].map((stat, idx) => (
-                  <motion.div
-                    key={stat.label}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.5 + idx * 0.1 }}
-                    className="relative group"
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                    <div className="relative px-6 py-4 rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm hover:border-primary/30 transition-colors">
-                      <div className={cn(
-                        "text-3xl md:text-4xl font-black",
-                        stat.color === 'primary' ? 'text-primary' : `text-${stat.color}`
-                      )}>
-                        {stat.value}
-                      </div>
-                      <div className="text-xs md:text-sm text-muted-foreground mt-1">{stat.label}</div>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
+              {/* Stats - static, no animations */}
+              <div className="flex flex-wrap justify-center gap-3 md:gap-4 mb-8">
+                <div className="px-5 py-3 rounded-xl border border-border/50 bg-card/50 backdrop-blur-sm">
+                  <div className="text-2xl md:text-3xl font-black text-primary">{totalCount}</div>
+                  <div className="text-xs text-muted-foreground">Capabilities</div>
+                </div>
+                <div className="px-5 py-3 rounded-xl border border-border/50 bg-card/50 backdrop-blur-sm">
+                  <div className="text-2xl md:text-3xl font-black text-cyan-500">7</div>
+                  <div className="text-xs text-muted-foreground">Categories</div>
+                </div>
+                <div className="px-5 py-3 rounded-xl border border-border/50 bg-card/50 backdrop-blur-sm">
+                  <div className="text-2xl md:text-3xl font-black text-violet-500">4</div>
+                  <div className="text-xs text-muted-foreground">Tiers</div>
+                </div>
+                <div className="px-5 py-3 rounded-xl border border-border/50 bg-card/50 backdrop-blur-sm">
+                  <div className="text-2xl md:text-3xl font-black text-emerald-500">$19</div>
+                  <div className="text-xs text-muted-foreground">Starting</div>
+                </div>
+              </div>
 
-              {/* Enhanced disclaimer banner */}
-              <motion.button
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.6 }}
+              {/* Disclaimer banner */}
+              <button
                 onClick={() => setShowDisclaimer(true)}
-                className="group inline-flex items-center gap-3 px-5 py-3 rounded-xl border border-amber-500/30 bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-orange-500/10 text-amber-600 dark:text-amber-400 hover:bg-amber-500/20 hover:border-amber-500/50 transition-all duration-300 shadow-lg shadow-amber-500/5"
-                whileHover={{ scale: 1.02, y: -2 }}
-                whileTap={{ scale: 0.98 }}
+                className="group inline-flex items-center gap-3 px-5 py-3 rounded-xl border border-amber-500/30 bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-orange-500/10 text-amber-600 dark:text-amber-400 hover:bg-amber-500/20 hover:border-amber-500/50 transition-all duration-200"
               >
                 <AlertTriangle className="w-5 h-5 shrink-0" />
                 <span className="text-sm font-medium text-left">
-                  Artifacts sold as-is for local execution. No support, hosting, or SLA included.
+                  Artifacts sold as-is. No support, hosting, or SLA included.
                 </span>
                 <ChevronDown className="w-4 h-4 shrink-0 group-hover:translate-y-0.5 transition-transform" />
-              </motion.button>
-            </motion.div>
+              </button>
+            </div>
           </div>
         </section>
 
@@ -284,7 +206,7 @@ export default function CapabilitiesDepotPage() {
                   <SelectItem value="all">All Categories</SelectItem>
                   {(Object.keys(CATEGORY_CONFIG) as CapabilityCategory[]).map((cat) => (
                     <SelectItem key={cat} value={cat}>
-                      {CATEGORY_CONFIG[cat].label} ({categoryStats[cat]})
+                      {CATEGORY_CONFIG[cat].label} ({categoryStats[cat] || 0})
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -348,15 +270,11 @@ export default function CapabilitiesDepotPage() {
         {/* Capabilities Grid */}
         <section className="container mx-auto px-4 py-12">
           {capabilities.length === 0 ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-center py-20"
-            >
+            <div className="text-center py-20">
               <Package className="w-16 h-16 mx-auto text-muted-foreground/50 mb-4" />
               <h3 className="text-xl font-semibold text-foreground mb-2">No capabilities found</h3>
               <p className="text-muted-foreground">Try adjusting your filters</p>
-            </motion.div>
+            </div>
           ) : (
             <>
               <div className="flex items-center justify-between mb-6">
@@ -369,16 +287,7 @@ export default function CapabilitiesDepotPage() {
                 </Badge>
               </div>
 
-              <motion.div
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                initial="hidden"
-                animate="visible"
-                variants={{
-                  visible: {
-                    transition: { staggerChildren: 0.05 },
-                  },
-                }}
-              >
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {capabilities.map((capability) => (
                   <CapabilityCard 
                     key={capability.id} 
@@ -386,7 +295,7 @@ export default function CapabilitiesDepotPage() {
                     categoryConfig={CATEGORY_CONFIG}
                   />
                 ))}
-              </motion.div>
+              </div>
             </>
           )}
         </section>
@@ -413,7 +322,9 @@ export default function CapabilitiesDepotPage() {
       {/* Disclaimer Modal */}
       <AnimatePresence>
         {showDisclaimer && (
-          <DepotDisclaimer onClose={() => setShowDisclaimer(false)} />
+          <Suspense fallback={null}>
+            <DepotDisclaimer onClose={() => setShowDisclaimer(false)} />
+          </Suspense>
         )}
       </AnimatePresence>
     </>
