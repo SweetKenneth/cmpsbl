@@ -1,0 +1,450 @@
+/**
+ * Capabilities Depot — Registry
+ * Metadata only, no execution logic, no runtime hooks
+ * Used exclusively for UI, licensing, and downloads
+ * v1.0.0
+ */
+
+import type { 
+  CapabilityArtifact, 
+  CapabilityCategory, 
+  CapabilityFilters,
+  CapabilityWithHistory,
+  VersionHistoryEntry 
+} from './types';
+import { getTierFromPrice } from './pricing';
+
+// === Capability Registry (Metadata Only) ===
+export const CAPABILITY_REGISTRY: CapabilityArtifact[] = [
+  // === INTELLIGENCE CATEGORY ===
+  {
+    id: 'cap-causal-inference',
+    slug: 'causal-inference',
+    name: 'Causal Inference Engine',
+    category: 'intelligence',
+    description: 'Derive cause-effect relationships from correlated signals across modules',
+    longDescription: 'Advanced causal inference engine that analyzes patterns across BRAIN, CLM, and NERVE modules to establish probabilistic cause-effect relationships. Implements Pearl\'s causal hierarchy for robust intervention analysis.',
+    requiredModules: ['BRAIN', 'CLM', 'NERVE'],
+    compatibleModules: ['SEBA', 'DREAM'],
+    executorType: 'js',
+    artifactFormat: 'zip',
+    version: '1.2.0',
+    checksum: 'a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0',
+    releaseNotes: '## v1.2.0\n- Improved counterfactual analysis\n- Added intervention simulation\n- Performance optimizations for large datasets',
+    governanceLevel: 'governed',
+    executionMode: 'local_only',
+    supportPolicy: 'unsupported',
+    licenseRequired: true,
+    priceUsd: 299,
+    pricingTier: 'advanced',
+    lastUpdated: '2025-01-28T00:00:00Z',
+    releaseDate: '2024-09-15T00:00:00Z',
+    downloads: 847,
+    features: ['Counterfactual analysis', 'Intervention simulation', 'DAG visualization', 'Confidence scoring'],
+    tags: ['causality', 'inference', 'analysis', 'ml'],
+    difficulty: 'advanced',
+    setupTimeMinutes: 30,
+  },
+  {
+    id: 'cap-emergent-pattern',
+    slug: 'emergent-pattern-detection',
+    name: 'Emergent Pattern Detection',
+    category: 'intelligence',
+    description: 'Identify novel behavioral patterns that emerge from multi-agent interactions',
+    requiredModules: ['CLM', 'NERVE', 'ATLAS'],
+    executorType: 'js',
+    artifactFormat: 'zip',
+    version: '1.0.1',
+    checksum: 'b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1',
+    releaseNotes: '## v1.0.1\n- Fixed edge case in pattern clustering\n- Added temporal decay support',
+    governanceLevel: 'governed',
+    executionMode: 'local_only',
+    supportPolicy: 'unsupported',
+    licenseRequired: true,
+    priceUsd: 199,
+    pricingTier: 'advanced',
+    lastUpdated: '2025-01-20T00:00:00Z',
+    releaseDate: '2024-11-01T00:00:00Z',
+    downloads: 423,
+    features: ['Real-time detection', 'Anomaly classification', 'Pattern history'],
+    tags: ['patterns', 'emergence', 'detection'],
+    difficulty: 'intermediate',
+    setupTimeMinutes: 20,
+  },
+
+  // === OPTIMIZATION CATEGORY ===
+  {
+    id: 'cap-capacity-forecast',
+    slug: 'capacity-forecasting',
+    name: 'Capacity Forecasting',
+    category: 'optimization',
+    description: 'Predict resource needs and optimize allocation ahead of demand spikes',
+    requiredModules: ['NERVE', 'NEXUS'],
+    executorType: 'js',
+    artifactFormat: 'zip',
+    version: '2.1.0',
+    checksum: 'c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2',
+    releaseNotes: '## v2.1.0\n- Added multi-horizon forecasting\n- Improved confidence intervals\n- New seasonality detection',
+    governanceLevel: 'manual',
+    executionMode: 'local_only',
+    supportPolicy: 'unsupported',
+    licenseRequired: true,
+    priceUsd: 149,
+    pricingTier: 'advanced',
+    lastUpdated: '2025-01-25T00:00:00Z',
+    releaseDate: '2024-06-01T00:00:00Z',
+    downloads: 1203,
+    features: ['Multi-horizon forecasting', 'Anomaly detection', 'Auto-scaling recommendations'],
+    tags: ['capacity', 'forecasting', 'resources'],
+    difficulty: 'intermediate',
+    setupTimeMinutes: 15,
+  },
+  {
+    id: 'cap-cost-optimizer',
+    slug: 'cost-optimization-engine',
+    name: 'Cost Optimization Engine',
+    category: 'optimization',
+    description: 'Minimize operational costs through intelligent resource and provider routing',
+    requiredModules: ['NEXUS', 'ECONOMICS'],
+    executorType: 'js',
+    artifactFormat: 'zip',
+    version: '1.5.0',
+    checksum: 'd4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3',
+    releaseNotes: '## v1.5.0\n- Added multi-provider cost comparison\n- Token budget optimization\n- Real-time spend tracking',
+    governanceLevel: 'bounded',
+    executionMode: 'local_only',
+    supportPolicy: 'unsupported',
+    licenseRequired: true,
+    priceUsd: 499,
+    pricingTier: 'system',
+    lastUpdated: '2025-01-15T00:00:00Z',
+    releaseDate: '2024-08-01T00:00:00Z',
+    downloads: 892,
+    features: ['Provider arbitrage', 'Budget enforcement', 'Cost attribution'],
+    tags: ['cost', 'optimization', 'economics'],
+    difficulty: 'advanced',
+    setupTimeMinutes: 45,
+  },
+
+  // === RESILIENCE CATEGORY ===
+  {
+    id: 'cap-predictive-healing',
+    slug: 'predictive-healing',
+    name: 'Predictive Healing',
+    category: 'resilience',
+    description: 'Anticipate and auto-remediate failures before they impact operations',
+    requiredModules: ['NERVE', 'MEDIC', 'CLM'],
+    executorType: 'edge',
+    artifactFormat: 'zip',
+    version: '1.3.0',
+    checksum: 'e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4',
+    releaseNotes: '## v1.3.0\n- Added failure prediction models\n- Improved remediation playbooks\n- Reduced false positive rate by 40%',
+    governanceLevel: 'governed',
+    executionMode: 'local_only',
+    supportPolicy: 'unsupported',
+    licenseRequired: true,
+    priceUsd: 599,
+    pricingTier: 'system',
+    lastUpdated: '2025-01-22T00:00:00Z',
+    releaseDate: '2024-07-15T00:00:00Z',
+    downloads: 567,
+    features: ['Failure prediction', 'Auto-remediation', 'Health scoring', 'Incident prevention'],
+    tags: ['healing', 'resilience', 'automation'],
+    difficulty: 'advanced',
+    setupTimeMinutes: 60,
+  },
+  {
+    id: 'cap-chaos-resilience',
+    slug: 'chaos-resilience',
+    name: 'Chaos Resilience Framework',
+    category: 'resilience',
+    description: 'Simulate and recover from catastrophic failures with bounded chaos testing',
+    requiredModules: ['NERVE', 'MEDIC', 'SEBA'],
+    executorType: 'js',
+    artifactFormat: 'zip',
+    version: '1.1.0',
+    checksum: 'f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5',
+    releaseNotes: '## v1.1.0\n- Added bounded chaos modes\n- Improved recovery orchestration\n- New failure injection types',
+    governanceLevel: 'bounded',
+    executionMode: 'local_only',
+    supportPolicy: 'unsupported',
+    licenseRequired: true,
+    priceUsd: 799,
+    pricingTier: 'system',
+    lastUpdated: '2025-01-18T00:00:00Z',
+    releaseDate: '2024-10-01T00:00:00Z',
+    downloads: 312,
+    features: ['Chaos engineering', 'Failure injection', 'Recovery validation'],
+    tags: ['chaos', 'testing', 'resilience'],
+    difficulty: 'expert',
+    setupTimeMinutes: 90,
+  },
+
+  // === SECURITY CATEGORY ===
+  {
+    id: 'cap-threat-prediction',
+    slug: 'threat-prediction',
+    name: 'Threat Prediction System',
+    category: 'security',
+    description: 'Predict and preemptively block emerging attack vectors using behavioral analysis',
+    requiredModules: ['AEGIS', 'CLM', 'NERVE'],
+    executorType: 'edge',
+    artifactFormat: 'zip',
+    version: '2.0.0',
+    checksum: 'g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6',
+    releaseNotes: '## v2.0.0\n- Major rewrite with ML-based detection\n- Added zero-day pattern recognition\n- Improved threat intelligence integration',
+    governanceLevel: 'bounded',
+    executionMode: 'local_only',
+    supportPolicy: 'unsupported',
+    licenseRequired: true,
+    priceUsd: 999,
+    pricingTier: 'system',
+    lastUpdated: '2025-01-30T00:00:00Z',
+    releaseDate: '2024-05-01T00:00:00Z',
+    downloads: 1456,
+    features: ['Behavioral analysis', 'Zero-day detection', 'Threat intelligence', 'Attack prediction'],
+    tags: ['security', 'threats', 'prediction'],
+    difficulty: 'expert',
+    setupTimeMinutes: 120,
+  },
+  {
+    id: 'cap-compliance-auto',
+    slug: 'compliance-automation',
+    name: 'Compliance Automation',
+    category: 'security',
+    description: 'Automatically enforce and audit compliance policies across the substrate',
+    requiredModules: ['AEGIS', 'AUDIT', 'INCLUSIVE'],
+    executorType: 'js',
+    artifactFormat: 'zip',
+    version: '1.4.0',
+    checksum: 'h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7',
+    releaseNotes: '## v1.4.0\n- Added GDPR compliance templates\n- SOC2 audit automation\n- Custom policy builder',
+    governanceLevel: 'governed',
+    executionMode: 'local_only',
+    supportPolicy: 'unsupported',
+    licenseRequired: true,
+    priceUsd: 699,
+    pricingTier: 'system',
+    lastUpdated: '2025-01-12T00:00:00Z',
+    releaseDate: '2024-04-01T00:00:00Z',
+    downloads: 734,
+    features: ['Policy enforcement', 'Audit trails', 'Compliance reports', 'GDPR/SOC2 templates'],
+    tags: ['compliance', 'audit', 'gdpr', 'soc2'],
+    difficulty: 'intermediate',
+    setupTimeMinutes: 45,
+  },
+
+  // === ACCESSIBILITY CATEGORY ===
+  {
+    id: 'cap-wcag-auditor',
+    slug: 'wcag-auditor',
+    name: 'WCAG Compliance Auditor',
+    category: 'accessibility',
+    description: 'Deep accessibility analysis with automated WCAG 2.2 compliance checking',
+    requiredModules: ['INCLUSIVE'],
+    executorType: 'js',
+    artifactFormat: 'zip',
+    version: '3.0.0',
+    checksum: 'i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8',
+    releaseNotes: '## v3.0.0\n- Full WCAG 2.2 support\n- Added AAA level checks\n- Improved remediation suggestions',
+    governanceLevel: 'manual',
+    executionMode: 'local_only',
+    supportPolicy: 'unsupported',
+    licenseRequired: true,
+    priceUsd: 49,
+    pricingTier: 'utility',
+    lastUpdated: '2025-01-29T00:00:00Z',
+    releaseDate: '2024-02-01T00:00:00Z',
+    downloads: 2341,
+    features: ['WCAG 2.2', 'Auto-fix suggestions', 'Accessibility scores'],
+    tags: ['accessibility', 'wcag', 'a11y'],
+    difficulty: 'beginner',
+    setupTimeMinutes: 10,
+  },
+
+  // === AUTOMATION CATEGORY ===
+  {
+    id: 'cap-sla-guardian',
+    slug: 'sla-guardian',
+    name: 'SLA Guardian',
+    category: 'automation',
+    description: 'Monitor and enforce SLA commitments with automated escalation and reporting',
+    requiredModules: ['NERVE', 'ECONOMICS'],
+    executorType: 'js',
+    artifactFormat: 'zip',
+    version: '1.2.0',
+    checksum: 'j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9',
+    releaseNotes: '## v1.2.0\n- Added breach prediction\n- Improved escalation workflows\n- SLA dashboard widgets',
+    governanceLevel: 'governed',
+    executionMode: 'local_only',
+    supportPolicy: 'unsupported',
+    licenseRequired: true,
+    priceUsd: 249,
+    pricingTier: 'advanced',
+    lastUpdated: '2025-01-10T00:00:00Z',
+    releaseDate: '2024-09-01T00:00:00Z',
+    downloads: 623,
+    features: ['SLA monitoring', 'Breach prediction', 'Auto-escalation', 'Reporting'],
+    tags: ['sla', 'monitoring', 'automation'],
+    difficulty: 'intermediate',
+    setupTimeMinutes: 25,
+  },
+  {
+    id: 'cap-resource-contention',
+    slug: 'resource-contention-resolver',
+    name: 'Resource Contention Resolver',
+    category: 'automation',
+    description: 'Intelligently resolve resource conflicts across competing module demands',
+    requiredModules: ['NEXUS', 'ATLAS', 'SEBA'],
+    executorType: 'js',
+    artifactFormat: 'zip',
+    version: '1.0.0',
+    checksum: 'k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0',
+    releaseNotes: '## v1.0.0\n- Initial release\n- Priority-based allocation\n- Deadlock prevention',
+    governanceLevel: 'bounded',
+    executionMode: 'local_only',
+    supportPolicy: 'unsupported',
+    licenseRequired: true,
+    priceUsd: 349,
+    pricingTier: 'advanced',
+    lastUpdated: '2025-01-05T00:00:00Z',
+    releaseDate: '2025-01-05T00:00:00Z',
+    downloads: 156,
+    features: ['Conflict resolution', 'Priority queuing', 'Deadlock prevention'],
+    tags: ['resources', 'contention', 'allocation'],
+    difficulty: 'advanced',
+    setupTimeMinutes: 35,
+  },
+
+  // === FLAGSHIP CAPABILITIES ===
+  {
+    id: 'cap-cognitive-mesh',
+    slug: 'cognitive-mesh-orchestrator',
+    name: 'Cognitive Mesh Orchestrator',
+    category: 'intelligence',
+    description: 'Enterprise-grade multi-agent coordination with distributed cognition and consensus',
+    requiredModules: ['BRAIN', 'CLM', 'NERVE', 'ATLAS', 'SEBA', 'DREAM'],
+    executorType: 'container',
+    artifactFormat: 'container',
+    version: '1.0.0',
+    checksum: 'l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1',
+    releaseNotes: '## v1.0.0\n- Full cognitive mesh implementation\n- Distributed consensus protocols\n- Multi-agent orchestration',
+    governanceLevel: 'bounded',
+    executionMode: 'local_only',
+    supportPolicy: 'unsupported',
+    licenseRequired: true,
+    priceUsd: 2499,
+    pricingTier: 'flagship',
+    lastUpdated: '2025-02-01T00:00:00Z',
+    releaseDate: '2025-02-01T00:00:00Z',
+    downloads: 47,
+    features: ['Multi-agent coordination', 'Distributed cognition', 'Consensus protocols', 'Enterprise scale'],
+    tags: ['enterprise', 'mesh', 'orchestration', 'flagship'],
+    difficulty: 'expert',
+    setupTimeMinutes: 180,
+  },
+];
+
+// === Get All Capabilities ===
+export function getAllCapabilities(): CapabilityArtifact[] {
+  return [...CAPABILITY_REGISTRY];
+}
+
+// === Get Capability by ID ===
+export function getCapabilityById(id: string): CapabilityArtifact | undefined {
+  return CAPABILITY_REGISTRY.find(c => c.id === id);
+}
+
+// === Get Capability by Slug ===
+export function getCapabilityBySlug(slug: string): CapabilityArtifact | undefined {
+  return CAPABILITY_REGISTRY.find(c => c.slug === slug);
+}
+
+// === Get Capabilities by Category ===
+export function getCapabilitiesByCategory(category: CapabilityCategory): CapabilityArtifact[] {
+  return CAPABILITY_REGISTRY.filter(c => c.category === category);
+}
+
+// === Filter Capabilities ===
+export function filterCapabilities(filters: CapabilityFilters): CapabilityArtifact[] {
+  let results = [...CAPABILITY_REGISTRY];
+
+  // Category filter
+  if (filters.category) {
+    results = results.filter(c => c.category === filters.category);
+  }
+
+  // Executor type filter
+  if (filters.executorType) {
+    results = results.filter(c => c.executorType === filters.executorType);
+  }
+
+  // Pricing tier filter
+  if (filters.pricingTier) {
+    results = results.filter(c => c.pricingTier === filters.pricingTier);
+  }
+
+  // Search filter
+  if (filters.search) {
+    const search = filters.search.toLowerCase();
+    results = results.filter(c => 
+      c.name.toLowerCase().includes(search) ||
+      c.description.toLowerCase().includes(search) ||
+      c.tags?.some(t => t.toLowerCase().includes(search))
+    );
+  }
+
+  // Tags filter
+  if (filters.tags && filters.tags.length > 0) {
+    results = results.filter(c => 
+      filters.tags!.some(tag => c.tags?.includes(tag))
+    );
+  }
+
+  // Sorting
+  if (filters.sortBy) {
+    results.sort((a, b) => {
+      let comparison = 0;
+      switch (filters.sortBy) {
+        case 'price':
+          comparison = a.priceUsd - b.priceUsd;
+          break;
+        case 'name':
+          comparison = a.name.localeCompare(b.name);
+          break;
+        case 'downloads':
+          comparison = (b.downloads || 0) - (a.downloads || 0);
+          break;
+        case 'lastUpdated':
+          comparison = new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime();
+          break;
+      }
+      return filters.sortOrder === 'desc' ? -comparison : comparison;
+    });
+  }
+
+  return results;
+}
+
+// === Get Category Stats ===
+export function getCategoryStats(): Record<CapabilityCategory, number> {
+  const stats: Record<CapabilityCategory, number> = {
+    intelligence: 0,
+    optimization: 0,
+    resilience: 0,
+    security: 0,
+    accessibility: 0,
+    automation: 0,
+  };
+
+  for (const cap of CAPABILITY_REGISTRY) {
+    stats[cap.category]++;
+  }
+
+  return stats;
+}
+
+// === Get Total Count ===
+export function getTotalCapabilityCount(): number {
+  return CAPABILITY_REGISTRY.length;
+}
