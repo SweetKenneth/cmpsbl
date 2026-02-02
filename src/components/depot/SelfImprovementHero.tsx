@@ -30,31 +30,21 @@ interface SelfImprovementHeroProps {
 export function SelfImprovementHero({ onExplore, onViewApex }: SelfImprovementHeroProps) {
   return (
     <section className="relative overflow-hidden bg-background">
-      {/* Subtle gradient backgrounds - no purple tint */}
-      <div className="absolute inset-0 bg-gradient-to-b from-muted/30 via-background to-background" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-cyan-500/5 via-transparent to-transparent" />
+      {/* Clean background - no color tints at all */}
+      <div className="absolute inset-0 bg-gradient-to-b from-muted/10 via-background to-background" />
       
-      {/* Animated glow orbs - subtle cyan/primary tones */}
+      {/* Subtle animated orb - neutral grayscale only */}
       <motion.div 
-        className="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-primary/10 via-cyan-500/5 to-transparent blur-3xl"
+        className="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-muted/20 blur-3xl"
         animate={{ 
           scale: [1, 1.1, 1],
-          opacity: [0.2, 0.3, 0.2],
+          opacity: [0.1, 0.15, 0.1],
         }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       />
-      <motion.div 
-        className="absolute -bottom-20 right-0 w-[400px] h-[400px] rounded-full bg-gradient-to-tl from-cyan-500/8 via-primary/5 to-transparent blur-3xl"
-        animate={{ 
-          scale: [1, 1.15, 1],
-          opacity: [0.15, 0.25, 0.15],
-        }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-      />
       
-      {/* Grid pattern overlay - neutral tone */}
-      <div className="absolute inset-0 bg-[linear-gradient(hsl(var(--border)/0.3)_1px,transparent_1px),linear-gradient(90deg,hsl(var(--border)/0.3)_1px,transparent_1px)] bg-[size:60px_60px]" />
+      {/* Grid pattern overlay - very subtle */}
+      <div className="absolute inset-0 bg-[linear-gradient(hsl(var(--border)/0.15)_1px,transparent_1px),linear-gradient(90deg,hsl(var(--border)/0.15)_1px,transparent_1px)] bg-[size:60px_60px]" />
       
       <div className="relative container mx-auto px-4 py-16 md:py-24 lg:py-32">
         <div className="max-w-5xl mx-auto">
@@ -177,14 +167,14 @@ export function SelfImprovementHero({ onExplore, onViewApex }: SelfImprovementHe
             transition={{ duration: 0.7, delay: 0.5 }}
           >
             <div className="relative group">
-              {/* Glow effect */}
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-primary via-cyan-500 to-emerald-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition-opacity" />
+              {/* Subtle border glow - neutral */}
+              <div className="absolute -inset-0.5 bg-border/50 rounded-2xl blur opacity-30 group-hover:opacity-50 transition-opacity" />
               
-              <div className="relative p-6 md:p-8 rounded-2xl border border-primary/30 bg-gradient-to-br from-muted/80 via-background to-background backdrop-blur-xl">
+              <div className="relative p-6 md:p-8 rounded-2xl border border-border/50 bg-card/90 backdrop-blur-xl">
                 <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6">
                   {/* Icon */}
-                  <div className="shrink-0 p-4 rounded-xl bg-gradient-to-br from-primary/20 to-cyan-500/20 border border-primary/20">
-                    <Zap className="w-8 h-8 text-primary" />
+                  <div className="shrink-0 p-4 rounded-xl bg-muted border border-border/50">
+                    <Zap className="w-8 h-8 text-foreground" />
                   </div>
                   
                   {/* Content */}
