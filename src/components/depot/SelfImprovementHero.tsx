@@ -30,21 +30,28 @@ interface SelfImprovementHeroProps {
 export function SelfImprovementHero({ onExplore, onViewApex }: SelfImprovementHeroProps) {
   return (
     <section className="relative overflow-hidden bg-background">
-      {/* Clean background - no color tints at all */}
-      <div className="absolute inset-0 bg-gradient-to-b from-muted/10 via-background to-background" />
-      
-      {/* Subtle animated orb - neutral grayscale only */}
-      <motion.div 
-        className="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-muted/20 blur-3xl"
-        animate={{ 
-          scale: [1, 1.1, 1],
-          opacity: [0.1, 0.15, 0.1],
-        }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      {/* Zero-tint background: only background + ultra-low-opacity foreground texture */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_hsl(var(--foreground)/0.06)_0%,_transparent_60%)]"
       />
-      
-      {/* Grid pattern overlay - very subtle */}
-      <div className="absolute inset-0 bg-[linear-gradient(hsl(var(--border)/0.15)_1px,transparent_1px),linear-gradient(90deg,hsl(var(--border)/0.15)_1px,transparent_1px)] bg-[size:60px_60px]" />
+
+      {/* Subtle animated orb: foreground only (no theme-tinted tokens like muted/primary) */}
+      <motion.div
+        aria-hidden
+        className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-foreground/5 blur-3xl"
+        animate={{
+          scale: [1, 1.08, 1],
+          opacity: [0.06, 0.1, 0.06],
+        }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      {/* Grid pattern overlay: foreground only */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(hsl(var(--foreground)/0.06)_1px,transparent_1px),linear-gradient(90deg,hsl(var(--foreground)/0.06)_1px,transparent_1px)] bg-[size:64px_64px]"
+      />
       
       <div className="relative container mx-auto px-4 py-16 md:py-24 lg:py-32">
         <div className="max-w-5xl mx-auto">
@@ -55,12 +62,12 @@ export function SelfImprovementHero({ onExplore, onViewApex }: SelfImprovementHe
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm">
-              <Crown className="w-4 h-4 text-amber-400" />
-              <span className="text-sm font-semibold text-primary">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/60 bg-card/60 backdrop-blur-sm">
+              <Crown className="w-4 h-4 text-foreground" />
+              <span className="text-sm font-semibold text-foreground">
                 World's First Self-Improving AI Marketplace
               </span>
-              <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30 text-[10px]">
+              <Badge className="bg-background text-foreground border-border/60 text-[10px]">
                 PIONEERING
               </Badge>
             </div>
@@ -77,7 +84,7 @@ export function SelfImprovementHero({ onExplore, onViewApex }: SelfImprovementHe
               <span className="block text-foreground mb-2">
                 Systems That
               </span>
-              <span className="block bg-gradient-to-r from-primary via-cyan-400 to-emerald-400 bg-clip-text text-transparent pb-2">
+              <span className="block text-foreground pb-2">
                 Improve Themselves
               </span>
             </h1>
@@ -93,9 +100,9 @@ export function SelfImprovementHero({ onExplore, onViewApex }: SelfImprovementHe
             The first marketplace for{' '}
             <span className="text-foreground font-semibold">recursive self-improvement</span>{' '}
             capabilities. Download cognitive artifacts that{' '}
-            <span className="text-primary font-semibold">learn to learn</span>,{' '}
-            <span className="text-cyan-400 font-semibold">optimize their own optimization</span>, and{' '}
-            <span className="text-emerald-400 font-semibold">compound intelligence</span>{' '}
+            <span className="text-foreground font-semibold">learn to learn</span>,{' '}
+            <span className="text-foreground font-semibold">optimize their own optimization</span>, and{' '}
+            <span className="text-foreground font-semibold">compound intelligence</span>{' '}
             over time.
           </motion.p>
 
@@ -109,7 +116,7 @@ export function SelfImprovementHero({ onExplore, onViewApex }: SelfImprovementHe
             <Button 
               size="lg" 
               onClick={onViewApex}
-              className="w-full sm:w-auto h-14 px-8 text-lg bg-gradient-to-r from-primary to-cyan-500 hover:from-primary/90 hover:to-cyan-400 shadow-lg shadow-primary/25 border-0 touch-manipulation"
+              className="w-full sm:w-auto h-14 px-8 text-lg bg-foreground text-background hover:bg-foreground/90 border-0 touch-manipulation"
             >
               <Crown className="w-5 h-5 mr-2" />
               View Apex Capabilities
@@ -119,7 +126,7 @@ export function SelfImprovementHero({ onExplore, onViewApex }: SelfImprovementHe
               size="lg" 
               variant="outline" 
               onClick={onExplore}
-              className="w-full sm:w-auto h-14 px-8 text-lg border-primary/30 hover:bg-primary/10 touch-manipulation"
+              className="w-full sm:w-auto h-14 px-8 text-lg border-border/60 hover:bg-foreground/5 touch-manipulation"
             >
               <Sparkles className="w-5 h-5 mr-2" />
               Explore All Capabilities
@@ -180,10 +187,10 @@ export function SelfImprovementHero({ onExplore, onViewApex }: SelfImprovementHe
                   {/* Content */}
                   <div className="flex-1">
                     <div className="flex flex-wrap items-center gap-2 mb-2">
-                      <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30">
+                      <Badge className="bg-background text-foreground border-border/60">
                         APEX TIER
                       </Badge>
-                      <Badge variant="outline" className="border-primary/30 text-primary">
+                      <Badge variant="outline" className="border-border/60 text-foreground">
                         $6,999
                       </Badge>
                     </div>
@@ -199,7 +206,7 @@ export function SelfImprovementHero({ onExplore, onViewApex }: SelfImprovementHe
                   {/* CTA */}
                   <Button 
                     onClick={onViewApex}
-                    className="shrink-0 w-full md:w-auto bg-primary hover:bg-primary/90 touch-manipulation"
+                    className="shrink-0 w-full md:w-auto bg-foreground text-background hover:bg-foreground/90 touch-manipulation"
                   >
                     Learn More
                     <ArrowRight className="w-4 h-4 ml-2" />
@@ -225,26 +232,16 @@ interface TrustCardProps {
 }
 
 function TrustCard({ icon: Icon, label, value, color }: TrustCardProps) {
-  const colorClasses = {
-    violet: 'text-violet-400 bg-violet-500/10 border-violet-500/20',
-    cyan: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/20',
-    emerald: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20',
-    amber: 'text-amber-400 bg-amber-500/10 border-amber-500/20',
-  };
-
-  const iconColors = {
-    violet: 'text-violet-400',
-    cyan: 'text-cyan-400',
-    emerald: 'text-emerald-400',
-    amber: 'text-amber-400',
-  };
+  // Intentionally neutral — avoid any theme-tinted semantic tokens and all direct colors.
+  // Keep the prop for API stability; styling is uniform.
+  void color;
 
   return (
     <div className={cn(
       "p-4 rounded-xl border backdrop-blur-sm text-center transition-all hover:scale-[1.02]",
-      colorClasses[color]
+      "border-border/60 bg-card/60 text-foreground"
     )}>
-      <Icon className={cn("w-6 h-6 mx-auto mb-2", iconColors[color])} />
+      <Icon className="w-6 h-6 mx-auto mb-2 text-foreground" />
       <div className="text-[10px] md:text-xs text-muted-foreground uppercase tracking-wider mb-1">
         {label}
       </div>
