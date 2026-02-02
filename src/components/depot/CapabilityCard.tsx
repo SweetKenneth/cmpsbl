@@ -33,19 +33,19 @@ interface CapabilityCardProps {
   onViewDetails: () => void;
 }
 
-// Neutral-only styling to prevent page-wide color casts (no direct colors, no tinted tokens like muted/primary).
+// Colorful tier badges (applied to badge only, not as page overlay)
 const tierColors: Record<string, string> = {
-  utility: 'border-border/60 bg-card/60 text-foreground',
-  advanced: 'border-border/60 bg-card/60 text-foreground',
-  system: 'border-border/60 bg-card/60 text-foreground',
-  flagship: 'border-border/60 bg-card/60 text-foreground',
+  utility: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-400',
+  advanced: 'border-cyan-500/30 bg-cyan-500/10 text-cyan-400',
+  system: 'border-primary/30 bg-primary/10 text-primary',
+  flagship: 'border-amber-500/30 bg-amber-500/10 text-amber-400',
 };
 
 const difficultyColors: Record<string, string> = {
-  beginner: 'text-muted-foreground',
-  intermediate: 'text-muted-foreground',
-  advanced: 'text-muted-foreground',
-  expert: 'text-muted-foreground',
+  beginner: 'text-emerald-400',
+  intermediate: 'text-cyan-400',
+  advanced: 'text-amber-400',
+  expert: 'text-rose-400',
 };
 
 export function CapabilityCard({ capability, categoryConfig, onViewDetails }: CapabilityCardProps) {
@@ -71,16 +71,22 @@ export function CapabilityCard({ capability, categoryConfig, onViewDetails }: Ca
     }
   };
 
-  // Determine premium styling (neutral only)
+  // Premium styling (colorful accents on card borders, not overlays)
   const isPremium = isRecursiveCapability || isSTierCapability;
+  const premiumBorder = isApexCapability 
+    ? 'ring-2 ring-amber-500/40 hover:ring-amber-500/60'
+    : isRecursiveCapability 
+      ? 'ring-1 ring-primary/30 hover:ring-primary/50'
+      : isSTierCapability
+        ? 'ring-1 ring-cyan-500/30 hover:ring-cyan-500/50'
+        : '';
 
   return (
     <div className="group">
       <Card className={cn(
         "h-full flex flex-col overflow-hidden transition-all duration-200 hover:-translate-y-1",
-        "border-border/60 hover:border-border/80",
-        isPremium && "ring-1 ring-border/60",
-        isApexCapability && "ring-2 ring-border/80"
+        "border-border/50 hover:border-border",
+        premiumBorder
       )}>
         <CardContent className="relative flex-1 p-4 md:p-5">
           {/* Header: Category + Tier Badges */}
@@ -95,25 +101,25 @@ export function CapabilityCard({ capability, categoryConfig, onViewDetails }: Ca
             
             <div className="flex items-center gap-1.5 flex-wrap justify-end">
               {isApexCapability && (
-                <Badge className="text-[10px] bg-background text-foreground border-border/60">
+                <Badge className="text-[10px] bg-amber-500/20 text-amber-400 border-amber-500/30">
                   <Crown className="w-2.5 h-2.5 mr-1" />
                   APEX
                 </Badge>
               )}
               {isRecursiveCapability && !isApexCapability && (
-                <Badge variant="outline" className="text-[10px] border-border/60 bg-card/60 text-foreground">
+                <Badge variant="outline" className="text-[10px] border-primary/30 bg-primary/10 text-primary">
                   <Sparkles className="w-2.5 h-2.5 mr-1" />
                   Recursive
                 </Badge>
               )}
               {isSTierCapability && !isRecursiveCapability && (
-                <Badge variant="outline" className="text-[10px] border-border/60 bg-card/60 text-foreground">
+                <Badge variant="outline" className="text-[10px] border-cyan-500/30 bg-cyan-500/10 text-cyan-400">
                   <Zap className="w-2.5 h-2.5 mr-1" />
                   S-Tier
                 </Badge>
               )}
               {isSynergy && !isPremium && (
-                <Badge variant="outline" className="text-[10px] border-border/60 bg-card/60 text-foreground">
+                <Badge variant="outline" className="text-[10px] border-primary/30 bg-primary/10 text-primary">
                   <Zap className="w-2.5 h-2.5 mr-1" />
                   Synergy
                 </Badge>
@@ -127,7 +133,8 @@ export function CapabilityCard({ capability, categoryConfig, onViewDetails }: Ca
           {/* Title + Version */}
           <div className="mb-2 md:mb-3">
             <h3 className={cn(
-              "text-base md:text-lg font-bold text-foreground transition-colors line-clamp-2"
+              "text-base md:text-lg font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2",
+              isApexCapability && "group-hover:text-amber-400"
             )}>
               {capability.name}
             </h3>
@@ -191,7 +198,7 @@ export function CapabilityCard({ capability, categoryConfig, onViewDetails }: Ca
           <div>
             <div className={cn(
               "text-xl md:text-2xl font-black",
-              "text-foreground"
+              isApexCapability ? "text-amber-400" : isPremium ? "text-primary" : "text-foreground"
             )}>
               {formatPrice(capability.priceUsd)}
             </div>
@@ -218,7 +225,10 @@ export function CapabilityCard({ capability, categoryConfig, onViewDetails }: Ca
               disabled={loading || !hasCheckout}
               className={cn(
                 "h-9 px-3 touch-manipulation text-xs md:text-sm",
-                "bg-foreground text-background hover:bg-foreground/90"
+                isApexCapability && "bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500",
+                isRecursiveCapability && !isApexCapability && "bg-primary hover:bg-primary/90",
+                isSTierCapability && !isRecursiveCapability && "bg-cyan-600 hover:bg-cyan-500",
+                !isPremium && "bg-primary hover:bg-primary/90"
               )}
             >
               {loading ? (

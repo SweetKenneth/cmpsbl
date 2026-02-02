@@ -55,15 +55,15 @@ import { cn } from '@/lib/utils';
 // Lazy load the disclaimer modal
 const DepotDisclaimer = lazy(() => import('@/components/depot/DepotDisclaimer').then(m => ({ default: m.DepotDisclaimer })));
 
-// Category config with icons - keep styling intentionally neutral to avoid page-wide color casts
+// Category config with icons - colorful badges (not overlays)
 const CATEGORY_CONFIG: Record<CapabilityCategory, { icon: typeof Brain; label: string; colorClass: string }> = {
-  intelligence: { icon: Brain, label: 'Intelligence', colorClass: 'bg-card/60 text-foreground border border-border/60' },
-  optimization: { icon: TrendingUp, label: 'Optimization', colorClass: 'bg-card/60 text-foreground border border-border/60' },
-  resilience: { icon: Zap, label: 'Resilience', colorClass: 'bg-card/60 text-foreground border border-border/60' },
-  security: { icon: Shield, label: 'Security', colorClass: 'bg-card/60 text-foreground border border-border/60' },
-  accessibility: { icon: Accessibility, label: 'Accessibility', colorClass: 'bg-card/60 text-foreground border border-border/60' },
-  automation: { icon: Settings, label: 'Automation', colorClass: 'bg-card/60 text-foreground border border-border/60' },
-  orchestration: { icon: Layers, label: 'Orchestration', colorClass: 'bg-card/60 text-foreground border border-border/60' },
+  intelligence: { icon: Brain, label: 'Intelligence', colorClass: 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20' },
+  optimization: { icon: TrendingUp, label: 'Optimization', colorClass: 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' },
+  resilience: { icon: Zap, label: 'Resilience', colorClass: 'bg-amber-500/10 text-amber-400 border border-amber-500/20' },
+  security: { icon: Shield, label: 'Security', colorClass: 'bg-rose-500/10 text-rose-400 border border-rose-500/20' },
+  accessibility: { icon: Accessibility, label: 'Accessibility', colorClass: 'bg-violet-500/10 text-violet-400 border border-violet-500/20' },
+  automation: { icon: Settings, label: 'Automation', colorClass: 'bg-blue-500/10 text-blue-400 border border-blue-500/20' },
+  orchestration: { icon: Layers, label: 'Orchestration', colorClass: 'bg-purple-500/10 text-purple-400 border border-purple-500/20' },
 };
 
 const EXECUTOR_LABELS: Record<ExecutorType, string> = {
@@ -132,27 +132,27 @@ export default function CapabilitiesDepotPage() {
           onViewApex={handleViewApex}
         />
 
-        {/* Stats Bar — Social Proof (neutral) */}
-        <section className="border-b border-border/50 bg-background">
+        {/* Stats Bar — Social Proof */}
+        <section className="border-b border-border/50 bg-card/50">
           <div className="container mx-auto px-4 py-6">
             <div className="flex flex-wrap items-center justify-center gap-6 md:gap-12">
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-black text-foreground">{totalCount}+</div>
+                <div className="text-3xl md:text-4xl font-black text-primary">{totalCount}+</div>
                 <div className="text-xs text-muted-foreground">Capabilities</div>
               </div>
               <div className="hidden md:block w-px h-10 bg-border/50" />
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-black text-foreground">10</div>
+                <div className="text-3xl md:text-4xl font-black text-cyan-400">10</div>
                 <div className="text-xs text-muted-foreground">Self-Improvement</div>
               </div>
               <div className="hidden md:block w-px h-10 bg-border/50" />
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-black text-foreground">22</div>
+                <div className="text-3xl md:text-4xl font-black text-amber-400">22</div>
                 <div className="text-xs text-muted-foreground">S-Tier Premium</div>
               </div>
               <div className="hidden md:block w-px h-10 bg-border/50" />
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-black text-foreground">$19</div>
+                <div className="text-3xl md:text-4xl font-black text-emerald-400">$19</div>
                 <div className="text-xs text-muted-foreground">Starting Price</div>
               </div>
             </div>
@@ -296,10 +296,10 @@ export default function CapabilitiesDepotPage() {
           )}
         </section>
 
-        {/* Bottom CTA — Enterprise (neutral) */}
-        <section className="border-t border-border/50 bg-background">
+        {/* Bottom CTA — Enterprise */}
+        <section className="border-t border-border/50 bg-card/50">
           <div className="container mx-auto px-4 py-16 md:py-20 text-center">
-            <Badge className="mb-4 bg-card/60 text-foreground border-border/60">
+            <Badge className="mb-4 bg-amber-500/10 text-amber-400 border-amber-500/30">
               <Crown className="w-3 h-3 mr-1" />
               Enterprise
             </Badge>
