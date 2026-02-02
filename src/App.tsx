@@ -69,6 +69,7 @@ const ExperimentationLab = lazy(() => import("./pages/ExperimentationLab"));
 const SubstrateCapabilitiesDocs = lazy(() => import("./pages/SubstrateCapabilitiesDocs"));
 const CapabilitiesDepot = lazy(() => import("./pages/CapabilitiesDepot"));
 const SystemIntelligenceFeed = lazy(() => import("./pages/SystemIntelligenceFeed"));
+const ClearCache = lazy(() => import("./pages/ClearCache"));
 
 // Marketing / Info pages
 const About = lazy(() => import("./pages/About"));
@@ -190,6 +191,7 @@ const App = () => {
                       <Route path="/docs/substrate/capabilities" element={<SubstrateCapabilitiesDocs />} />
                       <Route path="/capabilities" element={<CapabilitiesDepot />} />
                       <Route path="/system-feed" element={<SystemIntelligenceFeed />} />
+                      <Route path="/clear-cache" element={<ClearCache />} />
 
                       {/* Marketing / Info */}
                       <Route path="/about" element={<About />} />
