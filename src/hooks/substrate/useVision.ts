@@ -4,8 +4,11 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { vision } from '@/lib/substrate';
+import { substrate } from '@/lib/substrate';
 import type { SubstrateModule } from '@/lib/substrate';
+
+// Access vision module from substrate singleton
+const vision = substrate.vision;
 
 export interface UseVisionReturn {
   // Status & Health

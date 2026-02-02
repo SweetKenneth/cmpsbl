@@ -4,7 +4,10 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { nexus } from '@/lib/substrate';
+import { substrate } from '@/lib/substrate';
+
+// Access nexus module from substrate singleton
+const nexus = substrate.nexus;
 
 export interface UseNexusReturn {
   // Status & Health

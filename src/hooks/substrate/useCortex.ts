@@ -4,7 +4,10 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { cortex } from '@/lib/substrate';
+import { substrate } from '@/lib/substrate';
+
+// Access cortex module from substrate singleton
+const cortex = substrate.cortex;
 
 export interface UseCortexReturn {
   // Status & Health

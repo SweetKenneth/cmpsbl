@@ -4,7 +4,10 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { system } from '@/lib/substrate';
+import { substrate } from '@/lib/substrate';
+
+// Access system module from substrate singleton
+const system = substrate.system;
 
 export interface UseSystemReturn {
   // Status & Health

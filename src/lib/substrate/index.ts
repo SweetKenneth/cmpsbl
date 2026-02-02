@@ -411,4 +411,26 @@ export {
 } from './versions';
 
 // Re-export substrate client from lib
-export { substrate, type SubstrateModule, type SubstrateRequest, type SubstrateResponse } from '../substrate';
+export { 
+  substrate, 
+  // Quick access module aliases (all 14 modules + SEBA)
+  // Use 'Mod' suffix to avoid conflicts with utility functions
+  core,
+  brain,
+  decode,
+  defense,
+  nexus,
+  vision,
+  dream as dreamModule,  // Avoid conflict with dream utility function
+  ripple,
+  access,
+  system,
+  modernizer,
+  integration,
+  inclusive,
+  cortex,
+  seba,
+  type SubstrateModule, 
+  type SubstrateRequest, 
+  type SubstrateResponse 
+} from '../substrate';
