@@ -54,27 +54,46 @@ const SUBSTRATE_MODULES = [
 
 export type SubstrateModuleName = typeof SUBSTRATE_MODULES[number];
 
-// Module configuration registry (modules with known hooks/commands)
+// Expected hook file paths for each module
+const MODULE_HOOK_PATHS: Record<string, string> = {
+  core: 'src/hooks/substrate/useCore.ts',
+  ripple: 'src/hooks/substrate/useRipple.ts',
+  access: 'src/hooks/substrate/useAccess.ts',
+  brain: 'src/lib/substrate/hooks.ts', // useMemory, useLearning, etc.
+  vision: 'src/hooks/substrate/useVision.ts',
+  cortex: 'src/hooks/useSubstrateOS.ts', // useCortexStatusOS
+  modernizer: 'src/hooks/useSubstrateOS.ts', // useModernizerStatusOS
+  decode: 'src/lib/substrate/decode/useDecodePersonality.ts',
+  defense: 'src/hooks/substrate/useDefense.ts',
+  nexus: 'src/hooks/substrate/useNexus.ts',
+  dream: 'src/hooks/substrate/useDream.ts',
+  integration: 'src/hooks/substrate/useIntegration.ts',
+  inclusive: 'src/hooks/substrate/useInclusive.ts',
+  system: 'src/hooks/useSubstrateOS.ts', // useSystemStatus
+};
+
+// Module configuration registry - tracks what exists for each module
 const MODULE_CONFIG: Record<string, { 
   hasHook: boolean; 
   hasTerminalCommands: boolean;
   emitsEvents: boolean;
   hasDocumentation: boolean;
+  hookPath?: string;
 }> = {
-  core: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true },
-  ripple: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true },
-  access: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true },
-  brain: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true },
-  vision: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true },
-  cortex: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true },
-  modernizer: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true },
-  decode: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true },
-  defense: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true },
-  nexus: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true },
-  dream: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true },
-  integration: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true },
-  inclusive: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true },
-  system: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true },
+  core: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.core },
+  ripple: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.ripple },
+  access: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.access },
+  brain: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.brain },
+  vision: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.vision },
+  cortex: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.cortex },
+  modernizer: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.modernizer },
+  decode: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.decode },
+  defense: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.defense },
+  nexus: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.nexus },
+  dream: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.dream },
+  integration: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.integration },
+  inclusive: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.inclusive },
+  system: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.system },
 };
 
 // Standard requirements every module must meet with REAL validation
