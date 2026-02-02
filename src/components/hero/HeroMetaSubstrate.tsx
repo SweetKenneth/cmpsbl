@@ -92,12 +92,12 @@ function TypedText({ texts, gradientColors, className }: {
   );
 }
 
-// Enhanced stats with animated counters and polish
-function AnimatedStat({ value, label, suffix = "", icon: Icon }: { 
+// Enhanced stats with animated counters, shimmer effect and premium polish
+function AnimatedStat({ value, label, suffix = "", delay = 0 }: { 
   value: number; 
   label: string; 
   suffix?: string;
-  icon?: React.ElementType;
+  delay?: number;
 }) {
   const [count, setCount] = useState(0);
   const [hasAnimated, setHasAnimated] = useState(false);
@@ -114,11 +114,11 @@ function AnimatedStat({ value, label, suffix = "", icon: Icon }: {
         if (entry.isIntersecting && !hasAnimated) {
           setHasAnimated(true);
           let start = 0;
-          const duration = 1800;
+          const duration = 2000;
           const step = (timestamp: number) => {
             if (!start) start = timestamp;
             const progress = Math.min((timestamp - start) / duration, 1);
-            const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+            const eased = 1 - Math.pow(1 - progress, 4); // ease-out quart
             setCount(Math.floor(eased * value));
             if (progress < 1) requestAnimationFrame(step);
           };
@@ -136,16 +136,31 @@ function AnimatedStat({ value, label, suffix = "", icon: Icon }: {
   return (
     <motion.div 
       ref={ref} 
-      className="text-center p-3 sm:p-4 rounded-xl transition-all duration-300 hover:bg-primary/5" 
+      className="relative text-center p-4 sm:p-5 rounded-2xl transition-all duration-300 group cursor-default overflow-hidden" 
       style={{ contain: "layout style" }}
-      whileHover={{ scale: 1.03, y: -2 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.9 + delay * 0.1, duration: 0.5 }}
+      whileHover={{ scale: 1.04, y: -3 }}
     >
-      <div className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground tabular-nums">
-        <span className="bg-gradient-to-br from-foreground via-foreground to-foreground/70 bg-clip-text">
-          {count}{suffix}
-        </span>
+      {/* Hover glow effect */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/0 via-primary/0 to-primary/0 group-hover:from-primary/10 group-hover:via-primary/5 group-hover:to-violet-500/10 transition-all duration-500 rounded-2xl" />
+      
+      {/* Border glow on hover */}
+      <div className="absolute inset-0 rounded-2xl border border-transparent group-hover:border-primary/20 transition-all duration-300" />
+      
+      <div className="relative z-10">
+        <motion.div 
+          className="text-3xl sm:text-4xl md:text-5xl font-black tabular-nums"
+          animate={hasAnimated ? { scale: [1, 1.02, 1] } : {}}
+          transition={{ duration: 0.3 }}
+        >
+          <span className="bg-gradient-to-br from-foreground via-foreground to-foreground/60 bg-clip-text text-transparent">
+            {count}{suffix}
+          </span>
+        </motion.div>
+        <div className="text-[11px] sm:text-sm text-muted-foreground font-semibold mt-2 tracking-wide uppercase">{label}</div>
       </div>
-      <div className="text-[10px] sm:text-sm text-muted-foreground font-medium mt-1">{label}</div>
     </motion.div>
   );
 }
@@ -286,34 +301,64 @@ export function HeroMetaSubstrate() {
             transition={{ duration: 0.7, ease: "easeOut" }}
             className="text-center lg:text-left order-1"
           >
-            {/* Tagline badge */}
+            {/* Tagline badge with shimmer */}
             <motion.div
               initial={{ opacity: 0, y: -15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full border border-primary/30 bg-gradient-to-r from-primary/10 via-primary/5 to-violet-500/10 backdrop-blur-md mb-5 sm:mb-8 shadow-lg shadow-primary/5"
+              className="relative inline-flex items-center gap-2.5 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full border border-primary/40 bg-gradient-to-r from-primary/15 via-primary/10 to-violet-500/15 backdrop-blur-md mb-6 sm:mb-8 shadow-xl shadow-primary/10 overflow-hidden group"
             >
+              {/* Animated shimmer */}
               <motion.div
-                animate={{ rotate: 360, scale: [1, 1.1, 1] }}
-                transition={{ 
-                  rotate: { duration: 10, repeat: Infinity, ease: "linear" },
-                  scale: { duration: 2, repeat: Infinity }
-                }}
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full"
+                animate={{ translateX: ["−100%", "200%"] }}
+                transition={{ duration: 3, repeat: Infinity, repeatDelay: 2 }}
+              />
+              
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
               >
-                <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary" />
+                <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
               </motion.div>
-              <span className="text-[11px] sm:text-sm font-semibold text-foreground/90 tracking-wide">Cognitive Operating System</span>
+              <span className="text-xs sm:text-sm font-bold text-foreground tracking-wide">Cognitive Operating System</span>
+              
+              {/* Live indicator */}
+              <div className="flex items-center gap-1.5 pl-2.5 border-l border-primary/30">
+                <motion.div
+                  className="w-2 h-2 rounded-full bg-emerald-500"
+                  animate={{ scale: [1, 1.2, 1], opacity: [1, 0.7, 1] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                />
+                <span className="text-[10px] sm:text-xs font-semibold text-emerald-500 uppercase tracking-wider">Live</span>
+              </div>
             </motion.div>
             
-            {/* Main headline */}
-            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05] mb-4 sm:mb-8" style={{ contain: "layout" }}>
-              <span className="text-foreground block">
+            {/* Main headline with gradient accent */}
+            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05] mb-5 sm:mb-8" style={{ contain: "layout" }}>
+              <motion.span 
+                className="text-foreground block"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.15 }}
+              >
                 Where Machines
-              </span>
-              <span className="text-foreground block mt-1">
+              </motion.span>
+              <motion.span 
+                className="text-foreground block mt-1"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.25 }}
+              >
                 Learn To
-              </span>
-              <span className="block mt-2 sm:mt-3" style={{ minHeight: "1.15em", height: "1.15em", contain: "strict", overflow: "hidden" }}>
+              </motion.span>
+              <motion.span 
+                className="block mt-2 sm:mt-3"
+                style={{ minHeight: "1.15em", height: "1.15em", contain: "strict", overflow: "hidden" }}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.35 }}
+              >
                 <TypedText 
                   texts={["Dream.", "Remember.", "Self-Improve.", "Evolve.", "Think.", "Adapt."]}
                   gradientColors={[
@@ -325,7 +370,7 @@ export function HeroMetaSubstrate() {
                     "linear-gradient(135deg, hsl(280 90% 65%), hsl(260 80% 60%))",
                   ]}
                 />
-              </span>
+              </motion.span>
             </h1>
             
             {/* Subheadline */}
@@ -448,21 +493,28 @@ export function HeroMetaSubstrate() {
           ))}
         </motion.div>
         
-        {/* Stats bar with enhanced styling */}
+        {/* Stats bar with premium glass styling */}
         <motion.div
           initial={{ opacity: 0, y: 35 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.9 }}
           className="relative"
         >
-          {/* Glow effect behind stats */}
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-violet-500/5 blur-3xl" />
+          {/* Multi-layer glow effect */}
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-violet-500/10 blur-3xl" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent blur-2xl" />
           
-          <div className="relative grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-6 p-5 sm:p-10 rounded-3xl border border-border/40 bg-gradient-to-br from-card/60 via-card/40 to-card/60 backdrop-blur-xl shadow-2xl shadow-black/5">
-            <AnimatedStat value={14} label="Core Modules" />
-            <AnimatedStat value={124} suffix="+" label="API Actions" />
-            <AnimatedStat value={60} suffix="+" label="Data Tables" />
-            <AnimatedStat value={100} suffix="ms" label="Avg Latency" />
+          <div className="relative grid grid-cols-2 md:grid-cols-4 gap-1 sm:gap-4 p-4 sm:p-8 rounded-3xl border border-border/50 bg-gradient-to-br from-card/70 via-card/50 to-card/70 backdrop-blur-xl shadow-2xl shadow-black/10 overflow-hidden">
+            {/* Animated border gradient */}
+            <div className="absolute inset-0 rounded-3xl p-px bg-gradient-to-br from-primary/30 via-transparent to-violet-500/30 pointer-events-none" style={{ mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)", maskComposite: "xor" }} />
+            
+            {/* Inner glow */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+            
+            <AnimatedStat value={14} label="Core Modules" delay={0} />
+            <AnimatedStat value={124} suffix="+" label="API Actions" delay={1} />
+            <AnimatedStat value={60} suffix="+" label="Data Tables" delay={2} />
+            <AnimatedStat value={100} suffix="ms" label="Avg Latency" delay={3} />
           </div>
         </motion.div>
       </div>
