@@ -1,6 +1,6 @@
 /**
  * Terminal Module Exports
- * v7.0.0 — Command execution, validation, and governance
+ * v7.5.0 — Command execution, validation, governance, and synergy commands
  */
 
 // Command execution with governance
@@ -25,3 +25,10 @@ export {
   type CommandDefinition,
   type ValidationResult,
 } from './validate-registry';
+
+// Synergy handlers
+export {
+  registerSynergyHandlers,
+  executeSynergyCommand,
+  getSynergiesByModuleCommand,
+} from './synergy-handlers';

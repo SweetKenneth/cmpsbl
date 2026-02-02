@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Synergy Capabilities Reference
 
-**Version 7.0.0 (FNDTN) | Production Ready**
+**Version 7.5.0 (SYNERGY) | Production Ready**
 
 ---
 
@@ -11,8 +11,8 @@
 | **Document ID** | CMPSBL-LIB-078 |
 | **Layer** | Cross-Module |
 | **Status** | Production Ready |
-| **Version** | v7.0.0 |
-| **Capability Count** | 24 Synergies + 10 Adapted Functions |
+| **Version** | v7.5.0 |
+| **Capability Count** | 120 Synergies (98 Core + 22 S-Tier) |
 
 ---
 
@@ -26,18 +26,24 @@ Synergy Capabilities are **production-ready features** that emerge from the orch
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                   CAPABILITY LAYER v7.0.0                    │
+│                   CAPABILITY LAYER v7.5.0                    │
 ├─────────────────────────────────────────────────────────────┤
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │  24 SYNERGY PIPELINES                                   ││
-│  │  ├── 4 Intelligence    ├── 4 Optimization              ││
-│  │  ├── 4 Resilience      ├── 3 Security                  ││
-│  │  ├── 3 Accessibility   └── 6 Orchestration             ││
+│  │  120 SYNERGY PIPELINES                                  ││
+│  │  ├── 98 Core Pipelines (7 categories)                   ││
+│  │  └── 22 S-Tier Premium Pipelines                        ││
 │  └─────────────────────────────────────────────────────────┘│
 ├─────────────────────────────────────────────────────────────┤
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │  10 ADAPTED LEGACY FUNCTIONS                            ││
-│  │  hypothesis-test, systems-reasoning, self-critique...   ││
+│  │  22 S-TIER PREMIUM PIPELINES                            ││
+│  │  ├── Intelligence × Control (3)                         ││
+│  │  ├── Autonomy × Operations (3)                          ││
+│  │  ├── Security × Trust (3)                               ││
+│  │  ├── Cost × Performance (3)                             ││
+│  │  ├── Product × UX (3)                                   ││
+│  │  ├── Platform × Scale (3)                               ││
+│  │  ├── Compliance × Legitimacy (3)                        ││
+│  │  └── Meta / Crown-Class (1)                             ││
 │  └─────────────────────────────────────────────────────────┘│
 ├─────────────────────────────────────────────────────────────┤
 │  ┌─────────────────────────────────────────────────────────┐│
@@ -50,510 +56,694 @@ Synergy Capabilities are **production-ready features** that emerge from the orch
 ### 1.3 Dashboard Access
 
 Navigate to `/os` → **Evolve** → **Capabilities** to:
-- View all 34 registered capabilities
+- View all 120 registered capabilities
 - Toggle enable/disable per capability
 - Filter by module, category, or risk level
 - Monitor invocation counts and confidence scores
 
+### 1.4 Support
+
+All capability purchases include support during your licensing period. Visit [/support](/support) for assistance.
+
 ---
 
-## 2. Synergy Capability Catalog
+## 2. S-Tier Premium Pipelines
 
-### 2.1 Intelligence Synergies
+The 22 S-tier pipelines represent the highest-value cross-module synergies, designed for enterprise buyers seeking competitive advantage.
 
-#### Smart Recall
+### 2.1 Intelligence × Control ($999–$1,999)
+
+#### Strategic Foresight Engine
 
 | Property | Value |
 |----------|-------|
-| **ID** | `smart-recall` |
-| **Modules** | BRAIN + DECODE + DREAM |
-| **Risk** | Low |
-| **Reversible** | Yes |
+| **ID** | `strategic-foresight-engine` |
+| **Modules** | VISION × DREAM × BRAIN × CORTEX |
+| **Risk** | Medium |
+| **Price** | $1,999 |
+| **Buyer** | CTO / Strategy / Defense |
 
-**Description:** Context-aware memory retrieval with semantic understanding. DECODE parses intent, BRAIN retrieves matches, DREAM enriches with synthesized patterns.
+**Description:** Long-horizon scenario forecasting with confidence weighting. Predicts what breaks next quarter before it happens.
 
 **Capabilities:**
-- Semantic query parsing beyond keywords
-- Multi-tier memory search (hot + cold)
-- Pattern enrichment from dream synthesis
-- Relevance ranking with recency decay
-
-**Usage:**
-```typescript
-const memories = await capabilities.execute('smart-recall', {
-  query: 'What were the API design decisions?',
-  contextWindow: '7d',
-  maxResults: 10
-});
-```
+- Multi-variable scenario modeling
+- Confidence-weighted predictions
+- Risk factor correlation
+- Strategic timeline generation
 
 ---
 
-#### Predictive Issue Prevention
+#### Decision Confidence Governor
 
 | Property | Value |
 |----------|-------|
-| **ID** | `predictive-prevention` |
-| **Modules** | VISION + BRAIN + MODERNIZER |
+| **ID** | `decision-confidence-governor` |
+| **Modules** | CORTEX × VISION × BRAIN |
 | **Risk** | Low |
-| **Reversible** | Yes |
+| **Price** | $999 |
+| **Buyer** | Enterprise AI Governance |
 
-**Description:** Detects operational patterns before failures occur. VISION monitors telemetry, BRAIN provides historical context, MODERNIZER suggests fixes.
+**Description:** Blocks high-impact decisions unless confidence is justified. No reckless AI decisions.
 
 **Capabilities:**
-- Anomaly signature monitoring
-- Historical pattern correlation
-- Proactive alerting with confidence scores
-- Auto-remediation suggestions
+- Confidence threshold enforcement
+- Impact assessment scoring
+- Decision audit trail
+- Governance policy integration
 
 ---
 
-#### Cross-Domain Synthesis
+#### Explainable Intelligence Compiler
 
 | Property | Value |
 |----------|-------|
-| **ID** | `cross-domain-synthesis` |
-| **Modules** | DREAM + NEXUS + BRAIN |
+| **ID** | `explainable-intelligence-compiler` |
+| **Modules** | DECODE × CORTEX × BRAIN × SYSTEM |
 | **Risk** | Low |
-| **Reversible** | Yes |
+| **Price** | $1,499 |
+| **Buyer** | Executives, Compliance |
 
-**Description:** Connects knowledge from disparate domains to generate novel insights during dream cycles.
+**Description:** Turns deep reasoning into exec-ready explanations. "I need to explain this to the board."
 
 **Capabilities:**
-- Domain bridging with conceptual parallels
-- Insight generation with novelty scoring
-- Validation pipeline with coherence testing
-- Runs automatically during idle periods
+- Reasoning chain extraction
+- Executive summary generation
+- Technical-to-business translation
+- Audit-ready documentation
 
 ---
 
-#### Cognitive Fusion
+### 2.2 Autonomy × Operations ($999–$1,999)
+
+#### Autonomous Ops Steward
 
 | Property | Value |
 |----------|-------|
-| **ID** | `cognitive-fusion` |
-| **Modules** | NEXUS + BRAIN + VISION |
-| **Risk** | Medium |
-| **Reversible** | Yes |
+| **ID** | `autonomous-ops-steward` |
+| **Modules** | SYSTEM × CORTEX × VISION × MODERNIZER |
+| **Risk** | High |
+| **Price** | $1,999 |
+| **Buyer** | CTO / SRE |
 
-**Description:** Multi-model consensus with memory integration. Routes queries to multiple providers, synthesizes responses with memory context.
+**Description:** Fully self-maintaining infrastructure with guardrails. Fire half the ops tickets.
 
 **Capabilities:**
-- Parallel multi-model routing
-- Memory context injection per model
-- Response quality tracking via VISION
-- Consensus synthesis with confidence
+- Proactive issue detection
+- Autonomous remediation
+- Guardrail enforcement
+- Ops ticket reduction
 
 ---
 
-### 2.2 Optimization Synergies
-
-#### Adaptive Routing
+#### Autonomy Budget Manager
 
 | Property | Value |
 |----------|-------|
-| **ID** | `adaptive-routing` |
-| **Modules** | NEXUS + VISION + CORTEX |
-| **Risk** | Low |
-| **Reversible** | Yes |
+| **ID** | `autonomy-budget-manager` |
+| **Modules** | ACCESS × CORTEX × VISION × DEFENSE |
+| **Risk** | Medium |
+| **Price** | $999 |
+| **Buyer** | Risk / Compliance |
 
-**Description:** Context-aware model selection with governance. VISION provides metrics, NEXUS evaluates providers, CORTEX applies policies.
+**Description:** Limits how much autonomy a system can spend per day. Autonomy isn't free.
 
 **Capabilities:**
-- Real-time latency and cost metrics
-- Task-appropriate model selection
-- Budget constraint enforcement
-- Automatic failover chains
+- Daily autonomy quota management
+- Spend tracking and limits
+- Override approval workflow
+- Budget forecasting
 
 ---
 
-#### Intelligent Caching
+#### Autonomy Rollback Authority
 
 | Property | Value |
 |----------|-------|
-| **ID** | `intelligent-caching` |
-| **Modules** | SYSTEM + BRAIN + VISION |
-| **Risk** | Low |
-| **Reversible** | Yes |
-
-**Description:** Memory-informed cache strategies. Uses access patterns from BRAIN to predict cache priorities.
-
----
-
-#### Resource Balancing
-
-| Property | Value |
-|----------|-------|
-| **ID** | `resource-balancing` |
-| **Modules** | SYSTEM + NEXUS + VISION |
-| **Risk** | Low |
-| **Reversible** | Yes |
-
-**Description:** Dynamic resource allocation based on load. Redistributes capacity across providers and modules.
-
----
-
-#### Latency Prediction
-
-| Property | Value |
-|----------|-------|
-| **ID** | `latency-prediction` |
-| **Modules** | VISION + NEXUS + BRAIN |
-| **Risk** | Low |
-| **Reversible** | Yes |
-
-**Description:** Predict and optimize response times using historical patterns and current load.
-
----
-
-### 2.3 Resilience Synergies
-
-#### Self-Healing
-
-| Property | Value |
-|----------|-------|
-| **ID** | `self-healing` |
-| **Modules** | SYSTEM + MODERNIZER + VISION |
+| **ID** | `autonomy-rollback-authority` |
+| **Modules** | CORTEX × DEFENSE × RIPPLE × SYSTEM |
 | **Risk** | Medium |
-| **Reversible** | Yes |
+| **Price** | $1,499 |
+| **Buyer** | CISO / Legal |
 
-**Description:** Detect anomalies and auto-remediate. VISION spots issues, MODERNIZER proposes fixes, SYSTEM applies.
+**Description:** One-command rollback of autonomous behavior. Kill switch with receipts.
 
 **Capabilities:**
-- Anomaly detection with root cause analysis
-- Auto-remediation with confidence gating
-- Rollback on failed fixes
-- Complete audit trail
+- Instant rollback capability
+- Complete action audit trail
+- State restoration
+- Legal compliance logging
 
 ---
 
-#### Cascade Prevention
+### 2.3 Security × Trust ($999–$1,999)
+
+#### Intelligence Containment Engine
 
 | Property | Value |
 |----------|-------|
-| **ID** | `cascade-prevention` |
-| **Modules** | DEFENSE + RIPPLE + CORE |
+| **ID** | `intelligence-containment-engine` |
+| **Modules** | DEFENSE × BRAIN × DECODE × SYSTEM |
 | **Risk** | Low |
-| **Reversible** | Yes |
+| **Price** | $1,999 |
+| **Buyer** | Enterprise Legal |
 
-**Description:** Stop failure propagation across modules. RIPPLE detects abnormal patterns, CORE activates circuit breakers.
+**Description:** Prevents learned IP leakage through outputs. Our data never leaves.
 
----
-
-#### Graceful Degradation
-
-| Property | Value |
-|----------|-------|
-| **ID** | `graceful-degradation` |
-| **Modules** | CORE + DEFENSE + VISION |
-| **Risk** | Low |
-| **Reversible** | Yes |
-
-**Description:** Maintain user experience during partial outages. Prioritizes critical features, serves cached responses.
+**Capabilities:**
+- Output scanning for IP
+- Memory isolation
+- Data classification
+- Leakage prevention
 
 ---
 
-#### Memory Persistence
+#### Emergent Threat Anticipator
 
 | Property | Value |
 |----------|-------|
-| **ID** | `memory-persistence` |
-| **Modules** | BRAIN + SYSTEM + CORE |
-| **Risk** | Low |
-| **Reversible** | Yes |
-
-**Description:** Ensure memory survives restarts through coordinated backup and restore.
-
----
-
-### 2.4 Security Synergies
-
-#### Threat Learning
-
-| Property | Value |
-|----------|-------|
-| **ID** | `threat-learning` |
-| **Modules** | DEFENSE + BRAIN + VISION |
+| **ID** | `emergent-threat-anticipator` |
+| **Modules** | VISION × DREAM × DEFENSE × BRAIN |
 | **Risk** | Medium |
-| **Reversible** | Yes |
+| **Price** | $1,499 |
+| **Buyer** | Security |
 
-**Description:** Learn from attacks to improve detection. Stores threat signatures in BRAIN for pattern matching.
+**Description:** Predicts new attack classes before signatures exist. Pre-zero-day defense.
+
+**Capabilities:**
+- Pattern-based threat prediction
+- Behavioral anomaly detection
+- Attack class modeling
+- Proactive defense deployment
 
 ---
 
-#### Adaptive Defense
+#### Behavioral Trust Scoring
 
 | Property | Value |
 |----------|-------|
-| **ID** | `adaptive-defense` |
-| **Modules** | DEFENSE + MODERNIZER + CORTEX |
+| **ID** | `behavioral-trust-scoring` |
+| **Modules** | VISION × BRAIN × ACCESS |
+| **Risk** | Low |
+| **Price** | $999 |
+| **Buyer** | Regulated industries |
+
+**Description:** Scores system trustworthiness over time. Can we trust it today?
+
+**Capabilities:**
+- Continuous trust assessment
+- Behavioral baseline tracking
+- Anomaly flagging
+- Trust trend analysis
+
+---
+
+### 2.4 Cost × Performance ($499–$1,499)
+
+#### Autonomous Cost Arbitrage Engine
+
+| Property | Value |
+|----------|-------|
+| **ID** | `autonomous-cost-arbitrage-engine` |
+| **Modules** | NEXUS × ACCESS × VISION × CORTEX |
+| **Risk** | Low |
+| **Price** | $1,499 |
+| **Buyer** | CFO / FinOps |
+
+**Description:** Dynamically exploits price/performance gaps. AI that saves money by itself.
+
+**Capabilities:**
+- Real-time cost optimization
+- Provider arbitrage
+- Performance-adjusted routing
+- Cost savings tracking
+
+---
+
+#### Value-Weighted Reasoning Router
+
+| Property | Value |
+|----------|-------|
+| **ID** | `value-weighted-reasoning-router` |
+| **Modules** | NEXUS × CORTEX × BRAIN |
+| **Risk** | Low |
+| **Price** | $999 |
+| **Buyer** | Finance + Product |
+
+**Description:** Routes expensive reasoning only when payoff justifies it. Spend where it matters.
+
+**Capabilities:**
+- ROI-based routing decisions
+- Value threshold enforcement
+- Cost-quality tradeoff optimization
+- Reasoning investment tracking
+
+---
+
+#### Waste Detection Intelligence
+
+| Property | Value |
+|----------|-------|
+| **ID** | `waste-detection-intelligence` |
+| **Modules** | VISION × SYSTEM × BRAIN |
+| **Risk** | Low |
+| **Price** | $499 |
+| **Buyer** | Infra / Finance |
+
+**Description:** Finds silent compute & logic waste. Stop burning money invisibly.
+
+**Capabilities:**
+- Silent waste identification
+- Compute efficiency analysis
+- Logic redundancy detection
+- Cost recovery recommendations
+
+---
+
+### 2.5 Product × UX ($499–$999)
+
+#### Intent Drift Tracker
+
+| Property | Value |
+|----------|-------|
+| **ID** | `intent-drift-tracker` |
+| **Modules** | DECODE × BRAIN × RIPPLE × VISION |
+| **Risk** | Low |
+| **Price** | $499 |
+| **Buyer** | Product |
+
+**Description:** Detects when users change goals mid-journey. The system keeps up with users.
+
+**Capabilities:**
+- Real-time intent detection
+- Goal change recognition
+- Journey adaptation
+- User behavior modeling
+
+---
+
+#### Adaptive Product Brain
+
+| Property | Value |
+|----------|-------|
+| **ID** | `adaptive-product-brain` |
+| **Modules** | BRAIN × VISION × DECODE |
+| **Risk** | Low |
+| **Price** | $999 |
+| **Buyer** | SaaS founders |
+
+**Description:** Product behavior evolves with usage patterns. The product learns.
+
+**Capabilities:**
+- Usage pattern learning
+- Feature adaptation
+- Personalization engine
+- Product evolution tracking
+
+---
+
+#### Friction Auto-Removal Engine
+
+| Property | Value |
+|----------|-------|
+| **ID** | `friction-auto-removal-engine` |
+| **Modules** | VISION × CORTEX × MODERNIZER |
 | **Risk** | Medium |
-| **Reversible** | Yes |
+| **Price** | $999 |
+| **Buyer** | Growth teams |
 
-**Description:** Evolve security rules automatically based on observed threats and attack patterns.
+**Description:** Detects and removes UX friction automatically. Conversion rate that improves itself.
 
----
-
-#### Anomaly Correlation
-
-| Property | Value |
-|----------|-------|
-| **ID** | `anomaly-correlation` |
-| **Modules** | VISION + DEFENSE + BRAIN |
-| **Risk** | Low |
-| **Reversible** | Yes |
-
-**Description:** Correlate anomalies across modules to identify coordinated attacks or systemic issues.
+**Capabilities:**
+- Friction point detection
+- Automatic UX improvements
+- Conversion optimization
+- A/B testing integration
 
 ---
 
-### 2.5 Accessibility Synergies
+### 2.6 Platform × Scale ($999–$1,999)
 
-#### Adaptive UI
-
-| Property | Value |
-|----------|-------|
-| **ID** | `adaptive-ui` |
-| **Modules** | INCLUSIVE + MODERNIZER + DECODE |
-| **Risk** | Low |
-| **Reversible** | Yes |
-
-**Description:** Auto-improve accessibility based on WCAG scans and user interaction patterns.
-
----
-
-#### Intent Amplification
+#### Cross-Pipeline Arbitration Engine
 
 | Property | Value |
 |----------|-------|
-| **ID** | `intent-amplification` |
-| **Modules** | DECODE + RIPPLE + INCLUSIVE |
-| **Risk** | Low |
-| **Reversible** | Yes |
-
-**Description:** Transform vague requests into precise, actionable specifications with accessibility.
-
-**Example:**
-- Input: "make the dashboard better"
-- Output: "Improve analytics dashboard: add filter controls, optimize load time, enhance data visualization clarity"
-
----
-
-#### Contextual Adaptation
-
-| Property | Value |
-|----------|-------|
-| **ID** | `contextual-adaptation` |
-| **Modules** | BRAIN + INCLUSIVE + DECODE |
-| **Risk** | Low |
-| **Reversible** | Yes |
-
-**Description:** Personalize responses based on user history and accessibility preferences.
-
----
-
-### 2.6 Orchestration Synergies
-
-#### Evolution Confidence Scoring
-
-| Property | Value |
-|----------|-------|
-| **ID** | `evolution-confidence` |
-| **Modules** | CORTEX + BRAIN + MODERNIZER |
-| **Risk** | Low |
-| **Reversible** | Yes |
-
-**Description:** Quantify risk/reward of proposed changes before execution.
-
-**Score Interpretation:**
-
-| Score Range | Interpretation | Action |
-|-------------|----------------|--------|
-| 90-100% | Very High | Auto-apply |
-| 70-89% | High | Apply with monitoring |
-| 50-69% | Moderate | Human review |
-| 30-49% | Low | Analysis required |
-| 0-29% | Very Low | Defer or redesign |
-
----
-
-#### Policy Synthesis
-
-| Property | Value |
-|----------|-------|
-| **ID** | `policy-synthesis` |
-| **Modules** | CORTEX + DECODE + BRAIN |
+| **ID** | `cross-pipeline-arbitration-engine` |
+| **Modules** | CORTEX × RIPPLE × DEFENSE |
 | **Risk** | Medium |
-| **Reversible** | Yes |
+| **Price** | $1,499 |
+| **Buyer** | Platform teams |
 
-**Description:** Generate governance rules from observed patterns and historical decisions.
+**Description:** Resolves conflicts between autonomous pipelines. No emergent chaos.
+
+**Capabilities:**
+- Pipeline conflict detection
+- Priority-based arbitration
+- Resource contention resolution
+- Emergent behavior control
 
 ---
 
-#### Workflow Optimization
+#### Capability Impact Forecaster
 
 | Property | Value |
 |----------|-------|
-| **ID** | `workflow-optimization` |
-| **Modules** | CORTEX + VISION + MODERNIZER |
+| **ID** | `capability-impact-forecaster` |
+| **Modules** | VISION × CORTEX × SYSTEM |
 | **Risk** | Low |
-| **Reversible** | Yes |
+| **Price** | $999 |
+| **Buyer** | Architects |
 
-**Description:** Improve orchestration efficiency by analyzing workflow patterns and bottlenecks.
+**Description:** Predicts second-order effects before enabling features. Don't break prod later.
 
----
-
-#### Agent Coordination
-
-| Property | Value |
-|----------|-------|
-| **ID** | `agent-coordination` |
-| **Modules** | CORTEX + NEXUS + INTEGRATION |
-| **Risk** | Medium |
-| **Reversible** | Yes |
-
-**Description:** Multi-agent task routing for complex workflows requiring external integration.
+**Capabilities:**
+- Impact chain analysis
+- Second-order effect prediction
+- Risk assessment
+- Feature enablement guidance
 
 ---
 
-#### Learning Consolidation
+#### Self-Scaling Intelligence Fabric
 
 | Property | Value |
 |----------|-------|
-| **ID** | `learning-consolidation` |
-| **Modules** | DREAM + BRAIN + MODERNIZER |
+| **ID** | `self-scaling-intelligence-fabric` |
+| **Modules** | SYSTEM × VISION × CORTEX × RIPPLE |
+| **Risk** | High |
+| **Price** | $1,999 |
+| **Buyer** | Enterprise infra |
+
+**Description:** Intelligence scales itself under load. Scale cognition, not just servers.
+
+**Capabilities:**
+- Automatic capacity scaling
+- Load-based intelligence distribution
+- Resource optimization
+- Cognitive load balancing
+
+---
+
+### 2.7 Compliance × Legitimacy ($999–$1,499)
+
+#### Regulatory Mode Switcher
+
+| Property | Value |
+|----------|-------|
+| **ID** | `regulatory-mode-switcher` |
+| **Modules** | ACCESS × INCLUSIVE × DECODE × CORTEX |
 | **Risk** | Low |
-| **Reversible** | Yes |
+| **Price** | $999 |
+| **Buyer** | Global enterprises |
 
-**Description:** Compress and apply learned patterns from dream cycles to system improvements.
+**Description:** One system, many compliance personas. Same AI everywhere, legal everywhere.
+
+**Capabilities:**
+- Multi-jurisdiction compliance
+- Regulatory persona switching
+- Policy enforcement
+- Compliance audit support
 
 ---
 
-#### Autonomous Documentation
+#### Audit-Grade Decision Ledger
 
 | Property | Value |
 |----------|-------|
-| **ID** | `autonomous-documentation` |
-| **Modules** | MODERNIZER + DECODE + SYSTEM |
+| **ID** | `audit-grade-decision-ledger` |
+| **Modules** | VISION × RIPPLE × SYSTEM × DEFENSE |
 | **Risk** | Low |
-| **Reversible** | Yes |
+| **Price** | $1,499 |
+| **Buyer** | Regulated sectors |
 
-**Description:** Auto-generate documentation from code changes, keeping docs synchronized.
+**Description:** Immutable reasoning + action logs. Prove why the AI did it.
+
+**Capabilities:**
+- Immutable decision logs
+- Complete reasoning trails
+- Tamper-proof storage
+- Regulatory report generation
 
 ---
 
-## 3. Adapted Legacy Capabilities
+#### Policy-Aware Intelligence Gate
 
-### 3.1 High-Value Adaptations
+| Property | Value |
+|----------|-------|
+| **ID** | `policy-aware-intelligence-gate` |
+| **Modules** | CORTEX × DEFENSE × ACCESS |
+| **Risk** | Low |
+| **Price** | $999 |
+| **Buyer** | Governance |
 
-| Capability | Edge Function | Modules | Risk | Value |
-|------------|---------------|---------|------|-------|
-| `hypothesis-test` | `pf-brain-hypothesis-test` | BRAIN, DECODE | Low | 95 |
-| `systems-reasoning` | `pf-brain-systems-reasoning` | BRAIN, CORTEX | Low | 92 |
-| `self-critique` | `pf-brain-self-critique` | BRAIN, DECODE | Low | 90 |
-| `pattern-fusion` | `pf-brain-pattern-fusion` | BRAIN, DREAM | Low | 88 |
-| `anomaly-detection` | `pf-defense-anomaly-detection` | DEFENSE, VISION | Medium | 93 |
-| `resilience-monitor` | `pf-resilience-monitor` | SYSTEM, CORE | Medium | 96 |
-| `temporal-score` | `pf-brain-temporal-score` | BRAIN, DREAM | Low | 85 |
-| `ethical-boundary` | `pf-brain-ethical-boundary` | BRAIN, CORTEX, DEFENSE | Low | 97 |
-| `improvement-engine` | `pf-cascade-improvement-engine` | MODERNIZER, CORTEX | Medium | 91 |
-| `curiosity-reflect` | `pf-brain-curiosity-reflect` | BRAIN, DREAM | Low | 84 |
+**Description:** Decisions filtered through live policy. AI that obeys the rules.
 
-### 3.2 Terminal Commands
+**Capabilities:**
+- Real-time policy enforcement
+- Decision filtering
+- Rule compliance checking
+- Policy update propagation
+
+---
+
+### 2.8 Meta / Crown-Class ($2,999)
+
+#### Intelligence Governance Kernel
+
+| Property | Value |
+|----------|-------|
+| **ID** | `intelligence-governance-kernel` |
+| **Modules** | CORTEX × DEFENSE × VISION × SYSTEM |
+| **Risk** | High |
+| **Price** | $2,999 |
+| **Buyer** | Boards, regulators |
+
+**Description:** Governs all intelligence behavior globally. Who controls the AI?
+
+**Capabilities:**
+- Global intelligence governance
+- Cross-system policy enforcement
+- Behavioral boundary enforcement
+- Regulatory compliance orchestration
+
+---
+
+## 3. Core Synergy Categories
+
+### 3.1 Intelligence Synergies (18 pipelines)
+
+| ID | Name | Modules | Est. Time |
+|----|------|---------|-----------|
+| `smart-recall` | Smart Recall | BRAIN + DECODE + DREAM | 150ms |
+| `predictive-issue-prevention` | Predictive Issue Prevention | VISION + BRAIN + MODERNIZER | 500ms |
+| `context-aware-generation` | Context-Aware Generation | NEXUS + BRAIN + DECODE | 800ms |
+| `cross-domain-synthesis` | Cross-Domain Synthesis | DREAM + NEXUS + BRAIN | 600ms |
+| `learning-acceleration` | Learning Acceleration | BRAIN + DREAM + CORTEX | 350ms |
+| `cognitive-fusion` | Cognitive Fusion | NEXUS + BRAIN + VISION | 600ms |
+| `quota-prediction` | Quota Prediction | ACCESS + BRAIN + VISION | 100ms |
+
+### 3.2 Optimization Synergies (15 pipelines)
+
+| ID | Name | Modules | Est. Time |
+|----|------|---------|-----------|
+| `adaptive-routing` | Adaptive Routing | NEXUS + VISION + CORTEX | 100ms |
+| `intelligent-caching` | Intelligent Caching | SYSTEM + BRAIN + VISION | 50ms |
+| `batch-optimization` | Batch Optimization | RIPPLE + VISION + CORTEX | 80ms |
+| `resource-balancing` | Resource Balancing | CORTEX + VISION + SYSTEM | 120ms |
+| `latency-prediction` | Latency Prediction | VISION + BRAIN + NEXUS | 80ms |
+
+### 3.3 Resilience Synergies (12 pipelines)
+
+| ID | Name | Modules | Est. Time |
+|----|------|---------|-----------|
+| `graceful-degradation` | Graceful Degradation | CORE + DEFENSE + VISION | 30ms |
+| `self-healing` | Self-Healing | SYSTEM + MODERNIZER + VISION | 1000ms |
+| `distributed-trace-recovery` | Distributed Trace Recovery | RIPPLE + VISION + BRAIN | 300ms |
+| `cascade-prevention` | Cascade Prevention | DEFENSE + RIPPLE + CORE | 50ms |
+| `memory-persistence` | Memory Persistence | BRAIN + SYSTEM + VISION | 200ms |
+
+### 3.4 Security Synergies (10 pipelines)
+
+| ID | Name | Modules | Est. Time |
+|----|------|---------|-----------|
+| `threat-learning` | Threat Learning | DEFENSE + BRAIN + VISION | 200ms |
+| `access-pattern-hardening` | Access Pattern Hardening | ACCESS + BRAIN + DEFENSE + SYSTEM | 150ms |
+| `anomaly-correlation` | Anomaly Correlation | VISION + DEFENSE + BRAIN | 180ms |
+
+### 3.5 Accessibility Synergies (8 pipelines)
+
+| ID | Name | Modules | Est. Time |
+|----|------|---------|-----------|
+| `inclusive-content` | Inclusive Content | NEXUS + INCLUSIVE + DECODE | 400ms |
+| `adaptive-ui` | Adaptive UI | INCLUSIVE + MODERNIZER + DECODE | 350ms |
+| `developer-experience-optimization` | Developer Experience Optimization | ACCESS + DECODE + INCLUSIVE | 150ms |
+
+### 3.6 Automation & Orchestration (35 pipelines)
+
+| ID | Name | Modules | Est. Time |
+|----|------|---------|-----------|
+| `evolution-confidence` | Evolution Confidence | CORTEX + BRAIN + MODERNIZER | 700ms |
+| `autonomous-documentation` | Autonomous Documentation | MODERNIZER + DECODE + SYSTEM | 450ms |
+| `intent-amplification` | Intent Amplification | DECODE + RIPPLE + INCLUSIVE | 200ms |
+| `webhook-orchestration` | Webhook Orchestration | INTEGRATION + RIPPLE + CORTEX | 120ms |
+
+---
+
+## 4. Terminal Commands
+
+### 4.1 Synergy Namespace
 
 ```bash
-# Scan archived edge functions (dry-run by default)
-system.scan_archived --dry-run
+# List all synergies
+cortex.synergy.list
 
-# Adapt eligible functions
-system.scan_archived --confirm
+# List S-tier premium pipelines
+cortex.synergy.stier
 
-# Delete fully-merged functions
-system.scan_archived --prune-merged --confirm
+# Get synergy engine statistics
+cortex.synergy.stats
+
+# Execute a synergy
+cortex.synergy.execute <synergy-id>
+
+# Dry-run preview
+cortex.synergy.dry_run <synergy-id>
+
+# Get synergy details
+cortex.synergy.get <synergy-id>
+
+# List synergies by module
+cortex.synergy.by_module <module-name>
+
+# Chain multiple synergies
+cortex.synergy.pipeline <id-1> <id-2> ...
+
+# Get context-aware recommendations
+cortex.synergy.recommend
+
+# List categories with counts
+cortex.synergy.categories
+```
+
+### 4.2 Example Sessions
+
+```bash
+$ cortex.synergy.stats
+→ version: 7.5.0
+→ totalPipelines: 120
+→ stierPipelines: 22
+→ customExecutors: 98
+→ avgEstimatedMs: 285
+
+$ cortex.synergy.execute strategic-foresight-engine
+→ Initializing VISION scenario analysis...
+→ Engaging DREAM pattern synthesis...
+→ Correlating with BRAIN historical data...
+→ Orchestrating via CORTEX governance...
+✓ Pipeline complete: 1200ms, confidence: 0.91
+
+$ cortex.synergy.stier
+→ 22 S-Tier Premium Pipelines
+→ Strategic Foresight Engine ($1,999)
+→ Decision Confidence Governor ($999)
+→ Intelligence Governance Kernel ($2,999)
+→ ...
 ```
 
 ---
 
-## 4. Usage Guide
+## 5. Usage Guide
 
-### 4.1 React Hook
+### 5.1 React Hook
 
 ```typescript
 import { useSynergies } from '@/hooks/useSynergies';
-import { useCapabilities } from '@/hooks/useCapabilities';
 
 function MyComponent() {
-  // For synergy pipelines
-  const { execute, planSynergy, recommendations } = useSynergies();
-  
-  // For legacy capabilities
-  const { capabilities, invoke, scanAndAdapt } = useCapabilities();
+  const { 
+    synergies, 
+    execute, 
+    executePipeline, 
+    stats,
+    preview 
+  } = useSynergies();
   
   // Execute synergy
-  const result = await execute('smart-recall', {
-    query: 'API patterns',
-    contextWindow: '7d'
+  const result = await execute('strategic-foresight-engine', {
+    horizon: '90d',
+    riskFactors: ['market', 'technical', 'regulatory']
   });
   
-  // Get context-aware recommendations
-  const recs = recommendations('performance');
+  // Chain synergies
+  const results = await executePipeline([
+    'decision-confidence-governor',
+    'audit-grade-decision-ledger'
+  ], { decisionContext: { ... } });
+  
+  // Check stats
+  console.log(`${stats.stierCount} S-tier pipelines available`);
 }
 ```
 
-### 4.2 Direct Import
+### 5.2 Direct Import
 
 ```typescript
 import { 
   executeSynergy, 
   listSynergies,
-  getSynergyRecommendations 
+  getRecommendedSynergies 
 } from '@/lib/capabilities/synergies';
 
-import { 
-  invokeCapability, 
-  listCapabilities,
-  setCapabilityEnabled 
-} from '@/lib/capabilities';
-
-// List synergies by category
-const intelligence = listSynergies({ category: 'intelligence' });
+// List S-tier synergies
+const stier = listSynergies().filter(s => 
+  s.id.includes('engine') || s.id.includes('kernel')
+);
 
 // Execute with governance
-const result = await executeSynergy('adaptive-routing', {
-  task: 'Complex analysis',
-  requirements: { quality: 'high' }
+const result = await executeSynergy('intelligence-governance-kernel', {
+  scope: 'global',
+  policySet: 'enterprise'
 });
-
-// Toggle capability
-setCapabilityEnabled('hypothesis-test', false, 'admin');
 ```
 
 ---
 
-## 5. Capability Properties
+## 6. Daily Operations Integration
 
-### 5.1 Common Characteristics
+The substrate integrates synergy pipelines into automated daily cycles:
 
-| Property | Description |
-|----------|-------------|
-| **Governed** | Safety guards enforce policies |
-| **Observable** | All invocations logged with metrics |
-| **Toggleable** | Can be disabled without code changes |
-| **Reversible** | No permanent state changes without approval |
+### 6.1 Morning Optimization Cycle
 
-### 5.2 Risk Levels
+- `autonomous-cost-arbitrage-engine`
+- `value-weighted-reasoning-router`
+- `waste-detection-intelligence`
+- `adaptive-routing`
 
-| Level | Description | Auto-Execute |
-|-------|-------------|--------------|
-| **Low** | Read-only or easily reversible | Yes (if enabled) |
-| **Medium** | May modify state, monitored | With confirmation |
-| **High** | Significant system impact | Manual only |
+### 6.2 Security Monitoring Cycle
+
+- `emergent-threat-anticipator`
+- `behavioral-trust-scoring`
+- `intelligence-containment-engine`
+- `threat-learning`
+
+### 6.3 Intelligence Enhancement Cycle
+
+- `strategic-foresight-engine`
+- `decision-confidence-governor`
+- `adaptive-product-brain`
+- `cognitive-fusion`
+
+### 6.4 Governance Enforcement Cycle
+
+- `intelligence-governance-kernel`
+- `policy-aware-intelligence-gate`
+- `audit-grade-decision-ledger`
+- `autonomy-budget-manager`
 
 ---
 
-## 6. Performance Summary
+## 7. Performance Summary
 
-### 6.1 Synergy Impact
+### 7.1 Synergy Impact
 
 | Category | Avg Improvement | Key Metric |
 |----------|-----------------|------------|
@@ -564,47 +754,50 @@ setCapabilityEnabled('hypothesis-test', false, 'admin');
 | Accessibility | +34% | WCAG compliance |
 | Orchestration | +28% | Workflow efficiency |
 
-### 6.2 Module Utilization
+### 7.2 S-Tier Value Proposition
 
-| Module | Synergy Count | Role |
-|--------|---------------|------|
-| BRAIN | 14 | Memory integration |
-| VISION | 11 | Observability |
-| MODERNIZER | 9 | Evolution |
-| CORTEX | 7 | Governance |
-| DECODE | 7 | NLP |
-| DEFENSE | 5 | Security |
-| NEXUS | 6 | Routing |
-| DREAM | 5 | Learning |
-| SYSTEM | 6 | Operations |
-| CORE | 4 | Foundation |
-| INCLUSIVE | 4 | Accessibility |
-| RIPPLE | 3 | Events |
-| INTEGRATION | 2 | External |
+| Category | Pipelines | Price Range | Buyer Persona |
+|----------|-----------|-------------|---------------|
+| Intelligence × Control | 3 | $999–$1,999 | CTO, Strategy |
+| Autonomy × Operations | 3 | $999–$1,999 | CTO, SRE |
+| Security × Trust | 3 | $999–$1,999 | CISO, Legal |
+| Cost × Performance | 3 | $499–$1,499 | CFO, FinOps |
+| Product × UX | 3 | $499–$999 | Product, Growth |
+| Platform × Scale | 3 | $999–$1,999 | Platform, Infra |
+| Compliance × Legitimacy | 3 | $999–$1,499 | Governance |
+| Meta / Crown-Class | 1 | $2,999 | Boards, Regulators |
 
 ---
 
-## 7. Related Documentation
+## 8. Related Documentation
 
-- [77-SYNERGY-PIPELINES.md](./77-SYNERGY-PIPELINES.md) — Full pipeline specifications
-- [21-MODERNIZER-MODULE.md](./21-MODERNIZER-MODULE.md) — Evolution engine
-- [13-BRAIN-MODULE.md](./13-BRAIN-MODULE.md) — Memory and learning
-- [22-CORTEX-MODULE.md](./22-CORTEX-MODULE.md) — Agency orchestration
+- [Synergy Pipelines Page](/synergies) — Interactive pipeline explorer
+- [Capabilities Depot](/capabilities) — Purchase premium pipelines
+- [Terminal Guide](/os) — Execute pipelines via terminal
+- [Support](/support) — Get help during your licensing period
 
 ---
 
-## 8. Changelog
+## 9. Changelog
+
+### v7.5.0 (S-TIER EXPANSION)
+
+- ✅ Expanded from 98 to 120 total pipelines
+- ✅ Added 22 S-tier premium pipelines
+- ✅ Implemented 98 custom executors
+- ✅ Added daily operations integration
+- ✅ Stripe pricing for all S-tier offerings
+- ✅ Terminal commands for synergy execution
+- ✅ React hook with S-tier filtering
+- ✅ Support provided during licensing period
 
 ### v7.0.0 (SYNERGY ENGINE)
 
-- ✅ Expanded from 10 to 34 total capabilities (24 synergies + 10 adapted)
-- ✅ Added 6 functional categories for synergies
-- ✅ Implemented 8 custom executors with governance
-- ✅ Added module utilization metrics
-- ✅ Documented performance impact per category
-- ✅ Added React hooks for UI integration
+- ✅ Initial 98 synergy pipelines
+- ✅ 7 functional categories
+- ✅ Cross-module orchestration
 
 ---
 
-*CMPSBL OS Substrate v7.0.0 — SYNERGY Epoch*  
+*CMPSBL OS Substrate v7.5.0 — SYNERGY Epoch*  
 *© 2025-2026 PromptFluid®. All rights reserved.*

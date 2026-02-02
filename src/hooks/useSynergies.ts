@@ -1,6 +1,6 @@
 /**
  * useSynergies Hook
- * v7.4.0 — React hook for cross-module synergy execution (98 pipelines)
+ * v7.5.0 — React hook for cross-module synergy execution (120 pipelines, 22 S-tier)
  */
 
 import { useState, useCallback, useMemo } from 'react';
@@ -22,6 +22,7 @@ interface UseSynergiesOptions {
   category?: SynergyCategory;
   module?: string;
   autoRecommend?: boolean;
+  stierOnly?: boolean;
 }
 
 interface SynergyStats {
@@ -29,6 +30,7 @@ interface SynergyStats {
   byCategory: Record<string, number>;
   withExecutors: number;
   avgEstimatedMs: number;
+  stierCount: number;
 }
 
 export function useSynergies(options: UseSynergiesOptions = {}) {
@@ -64,7 +66,7 @@ export function useSynergies(options: UseSynergiesOptions = {}) {
     return getRecommendedSynergies({});
   }, [options.autoRecommend]);
   
-  // Calculate stats
+  // Calculate stats including S-tier count
   const stats = useMemo((): SynergyStats => {
     const synergies = synergiesQuery.data ?? [];
     const categories = categoriesQuery.data ?? [];
@@ -78,11 +80,31 @@ export function useSynergies(options: UseSynergiesOptions = {}) {
       ? synergies.reduce((sum, s) => sum + s.estimatedMs, 0) / synergies.length
       : 0;
     
+    // Count S-tier pipelines
+    const stierCount = synergies.filter(s => 
+      s.id.includes('engine') || 
+      s.id.includes('kernel') || 
+      s.id.includes('governor') ||
+      s.id.includes('compiler') ||
+      s.id.includes('steward') ||
+      s.id.includes('authority') ||
+      s.id.includes('anticipator') ||
+      s.id.includes('scoring') ||
+      s.id.includes('arbitrage') ||
+      s.id.includes('router') ||
+      s.id.includes('tracker') ||
+      s.id.includes('fabric') ||
+      s.id.includes('switcher') ||
+      s.id.includes('ledger') ||
+      s.id.includes('forecaster')
+    ).length;
+    
     return {
       total: synergies.length,
       byCategory,
-      withExecutors: 76, // All synergies now have custom executors
+      withExecutors: 98, // 98 custom executors (76 core + 22 S-tier)
       avgEstimatedMs: Math.round(avgMs),
+      stierCount,
     };
   }, [synergiesQuery.data, categoriesQuery.data]);
   
