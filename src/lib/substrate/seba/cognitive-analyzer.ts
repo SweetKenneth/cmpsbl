@@ -27,6 +27,7 @@ export class CognitiveAnalyzer {
 
   /**
    * Run full cognitive analysis to discover improvement opportunities
+   * Skips insights that have recently been addressed (cooldown period)
    */
   async analyze(): Promise<CognitiveInsight[]> {
     const insights: CognitiveInsight[] = [];
@@ -37,6 +38,9 @@ export class CognitiveAnalyzer {
     }, this.correlationId);
 
     try {
+      // Load recently addressed insights for deduplication
+      const recentlyAddressed = await this.getRecentlyAddressedInsights();
+      
       // 1. Memory Analysis — Look for patterns in stored knowledge
       const memoryInsights = await this.analyzeMemory();
       insights.push(...memoryInsights);
@@ -53,13 +57,27 @@ export class CognitiveAnalyzer {
       const reasoningInsights = await this.analyzeReasoning();
       insights.push(...reasoningInsights);
 
+      // ═══ COOLDOWN FILTER — Skip recently addressed insights ═══
+      const filteredInsights = insights.filter(insight => {
+        const insightKey = this.generateInsightKey(insight);
+        const wasRecentlyAddressed = recentlyAddressed.has(insightKey);
+        if (wasRecentlyAddressed) {
+          console.log(`[SEBA] Skipping insight "${insight.title}" — recently addressed (cooldown)`);
+        }
+        return !wasRecentlyAddressed;
+      });
+
       telemetryEngine.emit('custom', 'info', { module: 'seba' }, {
         metadata: { 
           action: 'cognitive_analysis_complete',
           insights_found: insights.length,
+          insights_after_cooldown: filteredInsights.length,
+          insights_filtered: insights.length - filteredInsights.length,
           duration_ms: Date.now() - startTime,
         },
       }, this.correlationId);
+
+      return filteredInsights;
 
     } catch (error) {
       telemetryEngine.emit('custom', 'error', { module: 'seba' }, {
@@ -68,9 +86,64 @@ export class CognitiveAnalyzer {
           error: error instanceof Error ? error.message : 'Unknown error',
         },
       }, this.correlationId);
+      return [];
     }
+  }
 
-    return insights;
+  /**
+   * Get recently addressed insights (approved/applied in last 24 hours)
+   * Used to implement cooldown and prevent re-proposing the same fixes
+   */
+  private async getRecentlyAddressedInsights(): Promise<Set<string>> {
+    const cooldownHours = 24; // 24-hour cooldown period
+    const cutoff = new Date(Date.now() - cooldownHours * 60 * 60 * 1000).toISOString();
+    
+    const addressed = new Set<string>();
+    
+    try {
+      // Check evolution_proposals for approved/applied proposals
+      const { data: proposals } = await supabase
+        .from('evolution_proposals')
+        .select('title, target_system, reviewed_at')
+        .in('status', ['approved', 'applied'])
+        .gte('reviewed_at', cutoff);
+        
+      if (proposals) {
+        for (const p of proposals) {
+          // Create a normalized key from the proposal
+          const key = `${p.target_system}:${p.title}`.toLowerCase().replace(/\s+/g, '_');
+          addressed.add(key);
+        }
+      }
+
+      // Also check substrate_applied_improvements for Modernizer cooldowns
+      const { data: applied } = await supabase
+        .from('substrate_applied_improvements')
+        .select('improvement_key, applied_at')
+        .eq('is_active', true)
+        .gte('applied_at', cutoff);
+        
+      if (applied) {
+        for (const a of applied) {
+          addressed.add(a.improvement_key.toLowerCase());
+        }
+      }
+      
+      console.log(`[SEBA] Loaded ${addressed.size} recently addressed insights for cooldown check`);
+    } catch (error) {
+      console.error('[SEBA] Failed to load cooldown data:', error);
+    }
+    
+    return addressed;
+  }
+
+  /**
+   * Generate a normalized key for insight deduplication
+   */
+  private generateInsightKey(insight: CognitiveInsight): string {
+    const engine = insight.source_engine || 'unknown';
+    const title = insight.title.toLowerCase().replace(/\s+/g, '_').substring(0, 50);
+    return `${engine}:${title}`;
   }
 
   /**

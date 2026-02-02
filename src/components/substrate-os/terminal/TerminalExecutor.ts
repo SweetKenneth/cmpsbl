@@ -1442,8 +1442,19 @@ ${cycleResult.plan_id ? `│  Plan ID: ${cycleResult.short_id} (${cycleResult.pl
       if (!args[0]) {
         return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.diff <plan_id>' };
       }
-      const res = await modernizer.diff(args[0]);
-      result = { success: !res.error, data: res.data, error: res.error?.message };
+      // Resolve short plan ID to full UUID (matching other commands)
+      const planId = await resolveShortPlanId(args[0]);
+      if (!planId) {
+        return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found\n  Use 'modernizer.plans' to list available plans.` };
+      }
+      const res = await modernizer.diff(planId);
+      const data = res.data as any;
+      if (res.error || (data && data.success === false)) {
+        const errMsg = res.error?.message || data?.error_message || data?.error || 'Diff view failed';
+        result = { success: false, data: res.data, error: errMsg };
+      } else {
+        result = { success: true, data: res.data };
+      }
     } else if (base === 'modernizer.apply') {
       if (!args[0]) {
         return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.apply <plan_id>\n\n  Workflow: proposed → shadow_applied → applied (production)' };
@@ -2809,6 +2820,108 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         return { success: true, output, data: result.data };
       } catch (err) {
         return { success: false, output: `▓ History error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'seba.stamps') {
+      // Evolution stamp verification command
+      const limit = parseInt(args[0]) || 10;
+      try {
+        const { supabase } = await import('@/integrations/supabase/client');
+        const { data: stamps, error } = await supabase
+          .from('brain_events')
+          .select('*')
+          .eq('event_type', 'evolution_stamp')
+          .order('created_at', { ascending: false })
+          .limit(limit);
+          
+        if (error) {
+          return { success: false, output: `▓ Stamp query error: ${error.message}` };
+        }
+        
+        if (!stamps || stamps.length === 0) {
+          return { 
+            success: true, 
+            output: '◉ No evolution stamps found\n  Stamps are created when evolutions apply to production.\n  Run: modernizer.evolve → shadow → production to generate stamps.' 
+          };
+        }
+        
+        let output = `╔══════════════════════════════════════════════════════════════════════════╗
+║  EVOLUTION STAMPS — Verification Trail                                   ║
+╠══════════════════════════════════════════════════════════════════════════╣\n`;
+        
+        for (const stamp of stamps) {
+          const data = stamp.data as Record<string, any>;
+          const stampId = data?.stamp_id || 'N/A';
+          const planId = data?.proposal_id?.substring(0, 8) || data?.plan_id?.substring(0, 8) || 'N/A';
+          const initiator = data?.initiator || 'unknown';
+          const changeType = data?.change_type || 'evolution';
+          const createdAt = new Date(stamp.created_at).toLocaleString();
+          
+          output += `║  🔏 ${stampId}\n`;
+          output += `║     Plan: ${planId}  |  Initiator: ${initiator}\n`;
+          output += `║     Type: ${changeType}  |  Created: ${createdAt}\n`;
+          output += `╠──────────────────────────────────────────────────────────────────────────╣\n`;
+        }
+        
+        output = output.slice(0, -76) + '╚══════════════════════════════════════════════════════════════════════════╝';
+        
+        return { success: true, output, data: stamps };
+      } catch (err) {
+        return { success: false, output: `▓ Stamps error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'seba.cooldown') {
+      // View/manage insight cooldowns
+      try {
+        const { supabase } = await import('@/integrations/supabase/client');
+        const cooldownHours = 24;
+        const cutoff = new Date(Date.now() - cooldownHours * 60 * 60 * 1000).toISOString();
+        
+        // Get recently addressed proposals
+        const { data: proposals } = await supabase
+          .from('evolution_proposals')
+          .select('title, status, reviewed_at')
+          .in('status', ['approved', 'applied'])
+          .gte('reviewed_at', cutoff)
+          .order('reviewed_at', { ascending: false });
+          
+        // Get recently applied improvements
+        const { data: improvements } = await supabase
+          .from('substrate_applied_improvements')
+          .select('improvement_key, applied_at, applied_mode')
+          .eq('is_active', true)
+          .gte('applied_at', cutoff)
+          .order('applied_at', { ascending: false });
+        
+        const proposalCount = proposals?.length || 0;
+        const improvementCount = improvements?.length || 0;
+        const total = proposalCount + improvementCount;
+        
+        let output = `╔══════════════════════════════════════════════════════════════╗
+║  INSIGHT COOLDOWN STATUS                                     ║
+╠══════════════════════════════════════════════════════════════╣
+║  Cooldown Period: ${cooldownHours} hours                                   ║
+║  Active Cooldowns: ${String(total).padEnd(3)} insights                            ║
+╠══════════════════════════════════════════════════════════════╣\n`;
+
+        if (proposalCount > 0) {
+          output += `║  SEBA PROPOSALS (${proposalCount}):\n`;
+          for (const p of (proposals || []).slice(0, 5)) {
+            output += `║    • ${p.title.substring(0, 45)}...\n`;
+          }
+        }
+        
+        if (improvementCount > 0) {
+          output += `║  MODERNIZER IMPROVEMENTS (${improvementCount}):\n`;
+          for (const i of (improvements || []).slice(0, 5)) {
+            const key = i.improvement_key.substring(0, 45);
+            output += `║    • ${key}...\n`;
+          }
+        }
+        
+        output += `╚══════════════════════════════════════════════════════════════╝`;
+        
+        return { success: true, output, data: { proposals, improvements } };
+      } catch (err) {
+        return { success: false, output: `▓ Cooldown error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
     }
 
