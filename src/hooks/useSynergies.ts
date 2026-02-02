@@ -1,6 +1,6 @@
 /**
  * useSynergies Hook
- * v7.3.0 — React hook for cross-module synergy execution
+ * v7.4.0 — React hook for cross-module synergy execution (98 pipelines)
  */
 
 import { useState, useCallback, useMemo } from 'react';
@@ -81,7 +81,7 @@ export function useSynergies(options: UseSynergiesOptions = {}) {
     return {
       total: synergies.length,
       byCategory,
-      withExecutors: 54, // All synergies now have custom executors
+      withExecutors: 76, // All synergies now have custom executors
       avgEstimatedMs: Math.round(avgMs),
     };
   }, [synergiesQuery.data, categoriesQuery.data]);

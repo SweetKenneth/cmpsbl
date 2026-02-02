@@ -1,5 +1,5 @@
 # Capability System Manifest
-## v7.3.0 — Cross-Module Synergy Engine + 76 Pipelines
+## v7.4.0 — Cross-Module Synergy Engine + 98 Pipelines
 
 Generated: 2026-02-02
 

@@ -1,6 +1,6 @@
 /**
  * Synergy System Exports
- * v7.3.0 — Cross-Module Pipeline Infrastructure
+ * v7.4.0 — Cross-Module Pipeline Infrastructure (98 Pipelines, 76 Executors)
  */
 
 // Types
@@ -74,7 +74,7 @@ export {
   executeChaosResilience,
   executeSLAGuardian,
   executeResourceContentionResolver,
-  // v7.3 NEW executors
+  // v7.3 executors
   executeRecursiveSelfImprovement,
   executeTemporalReasoning,
   executeCounterfactualAnalysis,
@@ -97,6 +97,29 @@ export {
   executePipelineOrchestration,
   executeUniversalDesignSynthesis,
   executeAdaptivePersonalization,
+  // v7.4 NEW executors (22)
+  executeHolisticSystemInsight,
+  executeMetaCognitiveReflection,
+  executeNeuralSymbolicFusion,
+  executeCognitiveLoadBalancer,
+  executeIntentEvolutionChain,
+  executeZeroDayDefense,
+  executeComprehensiveAuditTrail,
+  executeAdaptiveThreatResponse,
+  executeDistributedRecoveryOrchestration,
+  executeIntelligentFailoverChain,
+  executeCognitiveStatePreservation,
+  executeFullStackEvolution,
+  executeMultiModalTaskRouting,
+  executeAdaptiveWorkflowEngine,
+  executePredictiveResourceAllocation,
+  executeIntelligentBatchProcessing,
+  executeCostAwareRouting,
+  executeComprehensiveAccessibilityAudit,
+  executeAdaptiveContentTransformation,
+  executeSelfDocumentingEvolution,
+  executeIntelligentDeprecationManager,
+  executeAutonomousOptimizationLoop,
 } from './executors';
 
 // Auto-register executors

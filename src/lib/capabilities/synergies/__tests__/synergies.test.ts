@@ -1,6 +1,6 @@
 /**
  * Synergy System Tests
- * v7.3.0 — Cross-module pipeline validation
+ * v7.4.0 — Cross-module pipeline validation (98 pipelines, 76 executors)
  */
 
 import { describe, it, expect, vi, beforeAll } from 'vitest';
@@ -30,18 +30,18 @@ import {
 } from '@/lib/capabilities/synergies';
 
 describe('Synergy Registry', () => {
-  it('should have 76 defined synergies', () => {
-    expect(SYNERGY_DEFINITIONS.length).toBe(76);
+  it('should have 98 defined synergies', () => {
+    expect(SYNERGY_DEFINITIONS.length).toBe(98);
   });
 
   it('should list all synergies', () => {
     const synergies = listSynergies();
-    expect(synergies.length).toBe(76);
+    expect(synergies.length).toBe(98);
   });
 
   it('should filter synergies by category', () => {
     const intelligence = listSynergies('intelligence');
-    expect(intelligence.length).toBeGreaterThanOrEqual(12);
+    expect(intelligence.length).toBeGreaterThanOrEqual(17);
     expect(intelligence.every(s => s.category === 'intelligence')).toBe(true);
   });
 
@@ -59,7 +59,7 @@ describe('Synergy Registry', () => {
 
   it('should get synergies by module', () => {
     const brainSynergies = getSynergiesByModule('BRAIN');
-    expect(brainSynergies.length).toBeGreaterThan(10);
+    expect(brainSynergies.length).toBeGreaterThan(20);
     expect(brainSynergies.every(s => 
       s.modules.some(m => m.name.toUpperCase() === 'BRAIN')
     )).toBe(true);
@@ -70,7 +70,7 @@ describe('Synergy Registry', () => {
     expect(categories.length).toBeGreaterThan(0);
     
     const totalCount = categories.reduce((sum, c) => sum + c.count, 0);
-    expect(totalCount).toBe(76);
+    expect(totalCount).toBe(98);
   });
 });
 
@@ -132,6 +132,39 @@ describe('Synergy Definitions', () => {
       expect(synergy?.modules.length).toBeGreaterThanOrEqual(2);
     }
   });
+  
+  it('all new v7.4 synergies should be properly defined', () => {
+    const v74SynergyIds = [
+      'holistic-system-insight',
+      'meta-cognitive-reflection',
+      'neural-symbolic-fusion',
+      'cognitive-load-balancer',
+      'intent-evolution-chain',
+      'zero-day-defense',
+      'comprehensive-audit-trail',
+      'adaptive-threat-response',
+      'distributed-recovery-orchestration',
+      'intelligent-failover-chain',
+      'cognitive-state-preservation',
+      'full-stack-evolution',
+      'multi-modal-task-routing',
+      'adaptive-workflow-engine',
+      'predictive-resource-allocation',
+      'intelligent-batch-processing',
+      'cost-aware-routing',
+      'comprehensive-accessibility-audit',
+      'adaptive-content-transformation',
+      'self-documenting-evolution',
+      'intelligent-deprecation-manager',
+      'autonomous-optimization-loop',
+    ];
+    
+    for (const id of v74SynergyIds) {
+      const synergy = getSynergy(id);
+      expect(synergy).toBeDefined();
+      expect(synergy?.modules.length).toBeGreaterThanOrEqual(4); // v7.4 synergies use 4+ modules
+    }
+  });
 });
 
 describe('Synergy Preview', () => {
@@ -179,13 +212,13 @@ describe('Synergy Recommendations', () => {
 
 describe('Synergy Categories', () => {
   const categoryExpectations = [
-    { category: 'intelligence', minCount: 12 },
-    { category: 'optimization', minCount: 10 },
-    { category: 'resilience', minCount: 8 },
-    { category: 'security', minCount: 8 },
-    { category: 'accessibility', minCount: 5 },
-    { category: 'automation', minCount: 5 },
-    { category: 'orchestration', minCount: 6 },
+    { category: 'intelligence', minCount: 17 },
+    { category: 'optimization', minCount: 15 },
+    { category: 'resilience', minCount: 10 },
+    { category: 'security', minCount: 11 },
+    { category: 'accessibility', minCount: 7 },
+    { category: 'automation', minCount: 8 },
+    { category: 'orchestration', minCount: 10 },
   ];
 
   for (const { category, minCount } of categoryExpectations) {
@@ -257,15 +290,38 @@ describe('Synergy Executors', () => {
     'pipeline-orchestration',
     'universal-design-synthesis',
     'adaptive-personalization',
+    // v7.4 NEW executors
+    'holistic-system-insight',
+    'meta-cognitive-reflection',
+    'neural-symbolic-fusion',
+    'cognitive-load-balancer',
+    'intent-evolution-chain',
+    'zero-day-defense',
+    'comprehensive-audit-trail',
+    'adaptive-threat-response',
+    'distributed-recovery-orchestration',
+    'intelligent-failover-chain',
+    'cognitive-state-preservation',
+    'full-stack-evolution',
+    'multi-modal-task-routing',
+    'adaptive-workflow-engine',
+    'predictive-resource-allocation',
+    'intelligent-batch-processing',
+    'cost-aware-routing',
+    'comprehensive-accessibility-audit',
+    'adaptive-content-transformation',
+    'self-documenting-evolution',
+    'intelligent-deprecation-manager',
+    'autonomous-optimization-loop',
   ];
   
-  it('should have 54 custom executors registered', () => {
+  it('should have 76 custom executors registered', () => {
     let count = 0;
     for (const id of executorIds) {
       const executor = getSynergyExecutor(id);
       if (executor) count++;
     }
-    expect(count).toBe(54);
+    expect(count).toBe(76);
   });
   
   for (const id of executorIds) {
@@ -298,17 +354,17 @@ describe('Module Coverage', () => {
   
   it('BRAIN should be heavily used across synergies', () => {
     const brainSynergies = getSynergiesByModule('BRAIN');
-    expect(brainSynergies.length).toBeGreaterThanOrEqual(30);
+    expect(brainSynergies.length).toBeGreaterThanOrEqual(50);
   });
   
   it('CORTEX should be used in orchestration synergies', () => {
     const cortexSynergies = getSynergiesByModule('CORTEX');
-    expect(cortexSynergies.length).toBeGreaterThanOrEqual(15);
+    expect(cortexSynergies.length).toBeGreaterThanOrEqual(30);
   });
   
   it('VISION should be used in monitoring synergies', () => {
     const visionSynergies = getSynergiesByModule('VISION');
-    expect(visionSynergies.length).toBeGreaterThanOrEqual(20);
+    expect(visionSynergies.length).toBeGreaterThanOrEqual(40);
   });
   
   it('INTEGRATION module should be used in external synergies', () => {
@@ -318,11 +374,55 @@ describe('Module Coverage', () => {
   
   it('ACCESS module should be used in entitlement synergies', () => {
     const accessSynergies = getSynergiesByModule('ACCESS');
-    expect(accessSynergies.length).toBeGreaterThanOrEqual(6);
+    expect(accessSynergies.length).toBeGreaterThanOrEqual(8);
   });
   
   it('DEFENSE module should be used in security synergies', () => {
     const defenseSynergies = getSynergiesByModule('DEFENSE');
-    expect(defenseSynergies.length).toBeGreaterThanOrEqual(15);
+    expect(defenseSynergies.length).toBeGreaterThanOrEqual(20);
+  });
+});
+
+describe('v7.4 Enterprise Synergies', () => {
+  it('should have 22 new enterprise synergies with 4+ modules', () => {
+    const v74Synergies = [
+      'holistic-system-insight',
+      'meta-cognitive-reflection',
+      'neural-symbolic-fusion',
+      'cognitive-load-balancer',
+      'intent-evolution-chain',
+      'zero-day-defense',
+      'comprehensive-audit-trail',
+      'adaptive-threat-response',
+      'distributed-recovery-orchestration',
+      'intelligent-failover-chain',
+      'cognitive-state-preservation',
+      'full-stack-evolution',
+      'multi-modal-task-routing',
+      'adaptive-workflow-engine',
+      'predictive-resource-allocation',
+      'intelligent-batch-processing',
+      'cost-aware-routing',
+      'comprehensive-accessibility-audit',
+      'adaptive-content-transformation',
+      'self-documenting-evolution',
+      'intelligent-deprecation-manager',
+      'autonomous-optimization-loop',
+    ];
+    
+    expect(v74Synergies.length).toBe(22);
+    
+    for (const id of v74Synergies) {
+      const synergy = getSynergy(id);
+      expect(synergy).toBeDefined();
+      expect(synergy?.modules.length).toBeGreaterThanOrEqual(4);
+    }
+  });
+  
+  it('full-stack-evolution should use 5 modules', () => {
+    const synergy = getSynergy('full-stack-evolution');
+    expect(synergy).toBeDefined();
+    expect(synergy?.modules.length).toBe(5);
+    expect(synergy?.risk).toBe('high');
   });
 });
