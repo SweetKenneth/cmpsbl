@@ -319,8 +319,10 @@ function generateFullHelp(): string {
   
   let output = `
 ┌─────────────────────────────────────────────────────────────┐
-│         SUBSTRATE OS v6.3.1 — COMMAND REFERENCE             │
+│         SUBSTRATE OS v7.4.0 — COMMAND REFERENCE             │
 ├─────────────────────────────────────────────────────────────┤
+│  Total commands: ${totalCommands.toString().padEnd(5)}    Modules: 15 + Synergies          │
+│  Architecture: 14-module + CLM + 98 Synergy Pipelines       │
 │  Total commands: ${totalCommands.toString().padEnd(5)}    Modules: 15                     │
 │  Architecture: 14-module + CLM                              │
 │                                                             │
@@ -430,6 +432,19 @@ function generateFullHelp(): string {
 │  seba.execute <id>   Execute approved proposal              │
 │  seba.rollback <id>  Rollback an execution                  │
 │  seba.history [n]    View evolution history                 │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
+┌─ SYNERGY ENGINE v7.4.0 (98 Pipelines) ──────────────────────┐
+│                                                             │
+│  cortex.synergy.status    Engine overview                   │
+│  cortex.synergy.list      List all 98 pipelines             │
+│  cortex.synergy.get <id>  Get pipeline details              │
+│  cortex.synergy.execute   Execute a pipeline                │
+│  cortex.synergy.dry_run   Preview execution (no effects)    │
+│  cortex.synergy.recommend Get recommended synergies         │
+│  cortex.synergy.categories  List categories                 │
+│  cortex.synergy.modules     Synergies by module             │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
@@ -2048,6 +2063,254 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
         action: 'inventory', 
         payload: { eligible } 
       });
+    }
+    // v7.4.0: Cross-Module Synergy Engine (98 Pipelines, 76 Executors)
+    else if (base === 'cortex.synergy.status') {
+      try {
+        const { listSynergies } = await import('@/lib/capabilities/synergies');
+        const all = listSynergies();
+        
+        return {
+          success: true,
+          output: `
+┌─ SYNERGY ENGINE v7.4.0 ──────────────────────────────────────
+│
+│  Pipelines:  98 total
+│  Executors:  76 custom
+│  Categories: 7
+│
+├─ COMMANDS ──────────────────────────────────────────────────
+│  cortex.synergy.list      List all pipelines
+│  cortex.synergy.get <id>  Get pipeline details
+│  cortex.synergy.execute   Execute pipeline
+│  cortex.synergy.dry_run   Preview execution
+│
+└──────────────────────────────────────────────────────────────`,
+          data: { total: all.length },
+        };
+      } catch (err) {
+        return { success: false, output: `▓ Synergy engine error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+    else if (base === 'cortex.synergy.list') {
+      try {
+        const { listSynergies } = await import('@/lib/capabilities/synergies');
+        
+        const categoryFilter = args.includes('--category') ? args[args.indexOf('--category') + 1] : undefined;
+        let synergies = listSynergies();
+        if (categoryFilter) {
+          synergies = synergies.filter(s => s.category.toLowerCase() === categoryFilter.toLowerCase());
+        }
+        
+        let output = `
+┌─ SYNERGY PIPELINES ──────────────────────────────────────────
+│  Total: ${synergies.length}${categoryFilter ? ` (category: ${categoryFilter})` : ''}
+├──────────────────────────────────────────────────────────────`;
+
+        for (const s of synergies.slice(0, 25)) {
+          const mods = s.modules.slice(0, 3).map(m => m.name).join('+');
+          output += `
+│  ${s.id.padEnd(30)} ${s.category.padEnd(14)} ${mods}`;
+        }
+        
+        if (synergies.length > 25) {
+          output += `
+│  ... and ${synergies.length - 25} more`;
+        }
+        
+        output += `
+└──────────────────────────────────────────────────────────────`;
+        
+        return { success: true, output, data: synergies };
+      } catch (err) {
+        return { success: false, output: `▓ List error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+    else if (base === 'cortex.synergy.get') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Synergy ID required\n  Usage: cortex.synergy.get <synergy_id>' };
+      }
+      try {
+        const { getSynergy } = await import('@/lib/capabilities/synergies');
+        const synergy = getSynergy(args[0]);
+        
+        if (!synergy) {
+          return { success: false, output: `▓ Synergy '${args[0]}' not found` };
+        }
+        
+        const moduleList = synergy.modules.map(m => m.name).join(' → ');
+        
+        return {
+          success: true,
+          output: `
+┌─ SYNERGY: ${synergy.id} ──────────────────────────────────────
+│
+│  Name:        ${synergy.name}
+│  Category:    ${synergy.category}
+│  Risk:        ${synergy.risk}
+│
+│  Modules:     ${moduleList}
+│
+│  Description:
+│    ${synergy.description}
+│
+└──────────────────────────────────────────────────────────────`,
+          data: synergy,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ Get error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+    else if (base === 'cortex.synergy.execute') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Synergy ID required\n  Usage: cortex.synergy.execute <synergy_id> [input_json]' };
+      }
+      if (!isOperator) {
+        return { success: false, output: '▓ OPERATOR required for synergy execution' };
+      }
+      try {
+        const { executeSynergy } = await import('@/lib/capabilities/synergies');
+        const input = args[1] ? JSON.parse(args[1]) : {};
+        const result = await executeSynergy(args[0], input, { caller: 'terminal' });
+        
+        const icon = result.success ? '✓' : '✗';
+        return {
+          success: result.success,
+          output: `
+┌─ SYNERGY EXECUTION ──────────────────────────────────────────
+│
+│  ${icon} Synergy:  ${result.synergyId}
+│  Duration:  ${result.totalDurationMs}ms
+│  Steps:     ${result.steps.length} completed
+│
+${result.steps.map(s => `│    ${s.success ? '✓' : '✗'} [${s.module}] (${s.durationMs}ms)`).join('\n')}
+│
+└──────────────────────────────────────────────────────────────`,
+          data: result,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ Execute error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+    else if (base === 'cortex.synergy.dry_run') {
+      if (!args[0]) {
+        return { success: false, output: '▓ ERROR: Synergy ID required\n  Usage: cortex.synergy.dry_run <synergy_id>' };
+      }
+      try {
+        const { dryRunSynergy } = await import('@/lib/capabilities/synergies');
+        const input = args[1] ? JSON.parse(args[1]) : {};
+        const result = await dryRunSynergy(args[0], input);
+        
+        return {
+          success: true,
+          output: `
+┌─ SYNERGY DRY-RUN (Preview Only) ─────────────────────────────
+│
+│  Synergy:  ${result.synergy.id}
+│  Risk:     ${result.riskLevel}
+│  Est. Time: ${result.estimatedMs}ms
+│
+│  Execution Plan:
+${result.plan.map((step, i) => `│    ${i + 1}. ${step}`).join('\n')}
+│
+│  ⚠ No side effects — use cortex.synergy.execute to run
+│
+└──────────────────────────────────────────────────────────────`,
+          data: result,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ Dry-run error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+    else if (base === 'cortex.synergy.recommend') {
+      try {
+        const { getRecommendedSynergies } = await import('@/lib/capabilities/synergies');
+        const context = args[0] ? JSON.parse(args[0]) : {};
+        const recommended = await getRecommendedSynergies(context);
+        
+        let output = `
+┌─ RECOMMENDED SYNERGIES ──────────────────────────────────────
+│  Based on current context
+├──────────────────────────────────────────────────────────────`;
+
+        for (const s of recommended.slice(0, 10)) {
+          output += `
+│  ★ ${s.id.padEnd(30)} ${s.category.padEnd(12)}`;
+        }
+        
+        output += `
+│
+│  Execute: cortex.synergy.execute <id>
+└──────────────────────────────────────────────────────────────`;
+        
+        return { success: true, output, data: recommended };
+      } catch (err) {
+        return { success: false, output: `▓ Recommend error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+    else if (base === 'cortex.synergy.categories') {
+      try {
+        const { getSynergyCategories } = await import('@/lib/capabilities/synergies');
+        const categories = getSynergyCategories();
+        
+        return {
+          success: true,
+          output: `
+┌─ SYNERGY CATEGORIES ─────────────────────────────────────────
+│
+${categories.map(c => `│  ${c.category.padEnd(15)} ${c.count.toString().padStart(2)} pipelines`).join('\n')}
+│
+└──────────────────────────────────────────────────────────────`,
+          data: categories,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ Categories error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+    else if (base === 'cortex.synergy.modules') {
+      try {
+        const { getSynergiesByModule, listSynergies } = await import('@/lib/capabilities/synergies');
+        const moduleFilter = args[0]?.toUpperCase();
+        
+        if (moduleFilter) {
+          const synergies = getSynergiesByModule(moduleFilter);
+          return {
+            success: true,
+            output: `
+┌─ SYNERGIES FOR MODULE: ${moduleFilter} ─────────────────────────
+│  Total: ${synergies.length} pipelines
+├──────────────────────────────────────────────────────────────
+${synergies.slice(0, 20).map(s => `│  ${s.id.padEnd(30)} ${s.category}`).join('\n')}
+${synergies.length > 20 ? `│  ... and ${synergies.length - 20} more` : ''}
+└──────────────────────────────────────────────────────────────`,
+            data: synergies,
+          };
+        }
+        
+        // Show all modules with counts
+        const all = listSynergies();
+        const moduleCounts: Record<string, number> = {};
+        for (const s of all) {
+          for (const m of s.modules) {
+            moduleCounts[m.name] = (moduleCounts[m.name] || 0) + 1;
+          }
+        }
+        const sorted = Object.entries(moduleCounts).sort((a, b) => b[1] - a[1]);
+        
+        return {
+          success: true,
+          output: `
+┌─ SYNERGIES BY MODULE ────────────────────────────────────────
+│
+${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipelines`).join('\n')}
+│
+│  Filter: cortex.synergy.modules <MODULE>
+└──────────────────────────────────────────────────────────────`,
+          data: moduleCounts,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ Modules error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
     }
 
     // INCLUSIVE module (Human Compatibility Pipeline)
