@@ -5,7 +5,6 @@
 
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Helmet } from 'react-helmet-async';
 import { 
   Search, 
   Filter, 
@@ -37,6 +36,7 @@ import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { CapabilityCard } from '@/components/depot/CapabilityCard';
 import { DepotDisclaimer } from '@/components/depot/DepotDisclaimer';
+import { DepotSEO } from '@/components/depot/DepotSEO';
 import {
   filterCapabilities,
   getCategoryStats,
@@ -96,10 +96,7 @@ export default function CapabilitiesDepotPage() {
 
   return (
     <>
-      <Helmet>
-        <title>Capabilities Depot — CMPSBL Substrate</title>
-        <meta name="description" content="Download licensed cognitive capabilities for local execution. No support, no hosting — pure artifacts." />
-      </Helmet>
+      <DepotSEO totalCount={totalCount} />
 
       <PublicNav />
 
