@@ -204,7 +204,11 @@ Example: 90% confidence on memory_optimization → +13% memory efficiency
 
 ## Verification: Proving Code Was Rewritten
 
+Both SEBA and `modernizer.evolve` create **evolution stamps** in the `brain_events` table.
+
 ### Method 1: Evolution Stamps in Database
+
+Query for ALL evolution stamps (both SEBA and Modernizer):
 
 ```sql
 SELECT 
@@ -213,25 +217,28 @@ SELECT
   data->>'change_type' as type,
   data->>'target' as target,
   data->>'change_hash' as hash,
+  data->>'initiator' as initiator,
   created_at
 FROM brain_events 
-WHERE module = 'seba' 
-  AND event_type = 'evolution_stamp'
+WHERE event_type = 'evolution_stamp'
 ORDER BY created_at DESC;
 ```
 
-### Method 2: Code Comments (Mandatory Format)
+**Stamp Initiator Types:**
+- `seba_auto` — SEBA autonomous mode (high confidence)
+- `seba_governed` — SEBA with human approval
+- `human_approved` — Manual approval
+- `modernizer_governed` — Modernizer.evolve cycle ← **NEW**
 
-Every SEBA-applied change MUST include this comment:
+### Method 2: Code Comments (SEBA Only)
+
+SEBA-applied changes include mandatory comments:
 
 ```typescript
 // [SEBA-EVOLUTION] stamp_id: SEBA-M2ABC123-X4Y5Z6 | proposal: 6e0c677f | applied: 2026-02-02T12:00:00Z
 ```
 
-Search for these comments:
-```bash
-grep -r "SEBA-EVOLUTION" src/
-```
+**Note**: Modernizer cycles create stamps but don't modify source files directly (they're applied by the platform).
 
 ### Method 3: Change Hash Verification
 
@@ -253,8 +260,9 @@ modernizer.receipts
 
 Each receipt shows:
 - Health before/after delta
-- Test pass rate
+- Test pass rate  
 - Timestamp chain
+- Associated stamp IDs
 
 ---
 
