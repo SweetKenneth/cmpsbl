@@ -1,6 +1,10 @@
 /**
  * SEBA Module Exports
- * v1.1.0 — Self-Evolving Bounded Agent
+ * v2.0.0 — Self-Evolving Bounded Agent (24/7 Autonomous Evolution)
+ * 
+ * SEBA runs continuously in the background, scanning for improvements,
+ * generating proposals, and (when approved) applying changes with full
+ * rollback capability and cryptographic audit trails.
  */
 
 // Main Agent
@@ -38,6 +42,11 @@ export { ProposalGenerator } from './proposal-generator';
 export { GovernanceGate } from './governance-gate';
 export { EvolutionExecutor } from './evolution-executor';
 export { ProposalStore, type StoredProposal } from './proposal-store';
+export { 
+  SEBAReceiptStore,
+  type SEBAReceipt,
+  type SEBAProposalSummary,
+} from './receipt-store';
 export { 
   EvolutionStampGenerator, 
   EvolutionStampStore, 
