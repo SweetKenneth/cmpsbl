@@ -1,10 +1,39 @@
 /**
  * Encoded Guardrail Policy — Single Source of Truth
- * v1.0.0 — Non-destructive defaults, narrative bans, approval gates
+ * v2.0.0 — Non-destructive defaults, narrative bans, approval gates, execution modes
  */
 
 export type ChangeClass = 'comment_only' | 'additive' | 'localized' | 'destructive';
 export type RiskBand = 'minimal' | 'low' | 'medium' | 'high' | 'critical';
+export type ExecutionMode = 'dry_run' | 'human_approval' | 'semi_autonomous' | 'autonomous';
+export type PrimaryModel = 'lovable_ai' | 'free_tier';
+
+/**
+ * Encoded configuration for runtime behavior
+ */
+export interface EncodedConfig {
+  /** Execution mode - controls whether changes are applied */
+  executionMode: ExecutionMode;
+  /** Whether SEBA can send proposals to Encoded */
+  sebaIntegration: boolean;
+  /** Whether to learn from every execution */
+  clmTraining: boolean;
+  /** Primary AI model to use */
+  primaryModel: PrimaryModel;
+  /** Max self-fix attempts */
+  maxRetries: number;
+}
+
+/**
+ * Default configuration for Encoded v2.0.0
+ */
+export const DEFAULT_ENCODED_CONFIG: EncodedConfig = {
+  executionMode: 'dry_run',        // Default: show, don't write
+  sebaIntegration: false,          // Default: independent from SEBA
+  clmTraining: true,               // Default: learn from everything
+  primaryModel: 'lovable_ai',      // Use Lovable AI (GPT-5-mini) first
+  maxRetries: 3,                   // Max self-fix attempts
+};
 
 /**
  * Core policy for Encoded operations

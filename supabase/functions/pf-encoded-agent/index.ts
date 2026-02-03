@@ -1,0 +1,763 @@
+/**
+ * pf-encoded-agent — Upgraded Encoded Code Generation Agent
+ * v2.0.0 — Lovable AI primary, enhanced guardrails, dry-run mode, CLM training
+ * 
+ * Features:
+ * - Lovable AI (GPT-5-mini/Gemini) as primary model (free, included)
+ * - Free-tier fallback (Groq → Cerebras → etc)
+ * - Dry-run mode (default) - shows what would change without writing
+ * - Verification loop - reads output, validates, auto-fixes
+ * - CLM training hooks - learns from every execution
+ * - SEBA integration toggle - can receive proposals from SEBA
+ */
+
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { callFreeTierAI, ROUTER_VERSION as FREE_TIER_VERSION } from "../_shared/free-tier-router.ts";
+
+const ENCODED_VERSION = "2.0.0";
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+};
+
+// ═══════════════════════════════════════════════════════════════
+// TYPES
+// ═══════════════════════════════════════════════════════════════
+
+interface EncodedRequest {
+  action: 'generate' | 'verify' | 'learn' | 'status' | 'dry_run';
+  task?: {
+    module: string;
+    change_type: string;
+    description: string;
+    file_path?: string;
+    existing_code?: string;
+  };
+  code?: string;
+  outcome?: 'success' | 'failure' | 'rollback';
+  seba_proposal_id?: string;
+  execution_mode?: 'dry_run' | 'human_approval' | 'semi_autonomous' | 'autonomous';
+}
+
+interface GeneratedCode {
+  code: string;
+  file_path: string;
+  operation: 'create' | 'modify' | 'delete';
+  rollback_code?: string;
+  tests?: string;
+  confidence: number;
+  verification: {
+    syntax_valid: boolean;
+    anchors_preserved: boolean;
+    narrative_clean: boolean;
+    issues: string[];
+  };
+}
+
+interface EncodedConfig {
+  execution_mode: 'dry_run' | 'human_approval' | 'semi_autonomous' | 'autonomous';
+  seba_integration: boolean;
+  clm_training: boolean;
+  primary_model: 'lovable_ai' | 'free_tier';
+  max_retries: number;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CONFIGURATION
+// ═══════════════════════════════════════════════════════════════
+
+const DEFAULT_CONFIG: EncodedConfig = {
+  execution_mode: 'dry_run',        // Default: show, don't write
+  seba_integration: false,          // Default: independent
+  clm_training: true,               // Default: learn from everything
+  primary_model: 'lovable_ai',      // Use Lovable AI first
+  max_retries: 3,                   // Self-fix attempts
+};
+
+// ═══════════════════════════════════════════════════════════════
+// LOVABLE AI INTEGRATION
+// ═══════════════════════════════════════════════════════════════
+
+async function callLovableAI(
+  prompt: string, 
+  systemPrompt: string,
+  options: { temperature?: number; maxTokens?: number } = {}
+): Promise<{ content: string; provider: string; model: string; success: boolean }> {
+  const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+  
+  if (!LOVABLE_API_KEY) {
+    console.warn("LOVABLE_API_KEY not configured, falling back to free-tier");
+    return { content: '', provider: 'none', model: 'none', success: false };
+  }
+
+  try {
+    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${LOVABLE_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "openai/gpt-5-mini", // Good balance of quality and cost
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: prompt },
+        ],
+        temperature: options.temperature ?? 0.2,
+        max_tokens: options.maxTokens ?? 4000,
+      }),
+    });
+
+    if (response.status === 429) {
+      console.warn("Lovable AI rate limited, falling back to free-tier");
+      return { content: '', provider: 'lovable_ai', model: 'gpt-5-mini', success: false };
+    }
+
+    if (response.status === 402) {
+      console.warn("Lovable AI payment required, falling back to free-tier");
+      return { content: '', provider: 'lovable_ai', model: 'gpt-5-mini', success: false };
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Lovable AI error:", response.status, errorText);
+      return { content: '', provider: 'lovable_ai', model: 'gpt-5-mini', success: false };
+    }
+
+    const data = await response.json();
+    const content = data.choices?.[0]?.message?.content || '';
+
+    return {
+      content,
+      provider: 'lovable_ai',
+      model: 'gpt-5-mini',
+      success: true,
+    };
+  } catch (error) {
+    console.error("Lovable AI exception:", error);
+    return { content: '', provider: 'lovable_ai', model: 'gpt-5-mini', success: false };
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ENHANCED AI CALL WITH FALLBACK
+// ═══════════════════════════════════════════════════════════════
+
+async function callAIWithFallback(
+  prompt: string,
+  systemPrompt: string,
+  config: EncodedConfig
+): Promise<{ content: string; provider: string; model: string }> {
+  // Try Lovable AI first (better quality, free)
+  if (config.primary_model === 'lovable_ai') {
+    const lovableResult = await callLovableAI(prompt, systemPrompt, {
+      temperature: 0.2,
+      maxTokens: 4000,
+    });
+
+    if (lovableResult.success && lovableResult.content) {
+      return lovableResult;
+    }
+    console.log("Falling back to free-tier router...");
+  }
+
+  // Fallback to free-tier (Groq → Cerebras → etc)
+  const freeTierResult = await callFreeTierAI(prompt, {
+    systemPrompt,
+    temperature: 0.2,
+    maxTokens: 4000,
+    priority: 'reliability',
+  });
+
+  return {
+    content: freeTierResult.content,
+    provider: freeTierResult.provider,
+    model: freeTierResult.model,
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// GUARDRAIL CHECKS
+// ═══════════════════════════════════════════════════════════════
+
+const NARRATIVE_PATTERNS = [
+  /glitch in my neural network/i,
+  /i['']?m recovering/i,
+  /as an ai/i,
+  /sorry,? (?:i |but )/i,
+  /my neural/i,
+  /consciousness (?:is|was)/i,
+  /i apologize/i,
+  /let me think/i,
+  /\bI\b(?:'m| am) (?:an? )?(?:AI|assistant|bot)/i,
+];
+
+function checkNarrativeCode(code: string): { clean: boolean; matches: string[] } {
+  const matches: string[] = [];
+  for (const pattern of NARRATIVE_PATTERNS) {
+    const match = code.match(pattern);
+    if (match) {
+      matches.push(match[0]);
+    }
+  }
+  return { clean: matches.length === 0, matches };
+}
+
+function checkSyntax(code: string): { valid: boolean; issues: string[] } {
+  const issues: string[] = [];
+  
+  // Basic checks
+  if (code.includes('eval(')) {
+    issues.push("Contains eval() - forbidden");
+  }
+  if (code.includes('Function(')) {
+    issues.push("Contains Function() constructor - forbidden");
+  }
+  
+  // Check balanced braces
+  const openBraces = (code.match(/{/g) || []).length;
+  const closeBraces = (code.match(/}/g) || []).length;
+  if (openBraces !== closeBraces) {
+    issues.push(`Unbalanced braces: ${openBraces} open, ${closeBraces} close`);
+  }
+  
+  // Check balanced parentheses
+  const openParens = (code.match(/\(/g) || []).length;
+  const closeParens = (code.match(/\)/g) || []).length;
+  if (openParens !== closeParens) {
+    issues.push(`Unbalanced parentheses: ${openParens} open, ${closeParens} close`);
+  }
+
+  return { valid: issues.length === 0, issues };
+}
+
+function extractAnchors(code: string): { exports: string[]; handlers: string[]; entrypoints: string[] } {
+  const exports: string[] = [];
+  const handlers: string[] = [];
+  const entrypoints: string[] = [];
+
+  // Extract exports
+  const exportMatches = code.matchAll(/export\s+(?:const|function|class|type|interface)\s+(\w+)/g);
+  for (const match of exportMatches) {
+    exports.push(match[1]);
+  }
+
+  // Extract handlers
+  const handlerMatches = code.matchAll(/(?:async\s+)?function\s+(handle\w+|on\w+)/g);
+  for (const match of handlerMatches) {
+    handlers.push(match[1]);
+  }
+
+  // Extract entrypoints
+  if (code.includes('serve(')) entrypoints.push('serve');
+  if (code.includes('Deno.serve')) entrypoints.push('Deno.serve');
+  if (code.includes('export default')) entrypoints.push('default_export');
+
+  return { exports, handlers, entrypoints };
+}
+
+function compareAnchors(
+  before: { exports: string[]; handlers: string[]; entrypoints: string[] },
+  after: { exports: string[]; handlers: string[]; entrypoints: string[] }
+): { preserved: boolean; removed: string[] } {
+  const removed: string[] = [];
+
+  for (const exp of before.exports) {
+    if (!after.exports.includes(exp)) removed.push(`export:${exp}`);
+  }
+  for (const h of before.handlers) {
+    if (!after.handlers.includes(h)) removed.push(`handler:${h}`);
+  }
+  for (const e of before.entrypoints) {
+    if (!after.entrypoints.includes(e)) removed.push(`entrypoint:${e}`);
+  }
+
+  return { preserved: removed.length === 0, removed };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// VERIFICATION LOOP
+// ═══════════════════════════════════════════════════════════════
+
+async function verifyAndFix(
+  code: string,
+  existingCode: string | undefined,
+  config: EncodedConfig,
+  attempt: number = 1
+): Promise<GeneratedCode['verification'] & { fixedCode?: string }> {
+  const syntaxCheck = checkSyntax(code);
+  const narrativeCheck = checkNarrativeCode(code);
+  
+  let anchorsPreserved = true;
+  if (existingCode) {
+    const anchorsBefore = extractAnchors(existingCode);
+    const anchorsAfter = extractAnchors(code);
+    const comparison = compareAnchors(anchorsBefore, anchorsAfter);
+    anchorsPreserved = comparison.preserved;
+  }
+
+  const issues = [
+    ...syntaxCheck.issues,
+    ...narrativeCheck.matches.map(m => `Narrative pattern: "${m}"`),
+  ];
+  if (!anchorsPreserved) {
+    issues.push("Anchors (exports/handlers/entrypoints) not preserved");
+  }
+
+  // If issues and we have retries left, try to fix
+  if (issues.length > 0 && attempt < config.max_retries) {
+    console.log(`Verification failed (attempt ${attempt}), attempting self-fix...`);
+    
+    const fixPrompt = `The following TypeScript code has issues that need fixing:
+
+## Issues Found:
+${issues.map(i => `- ${i}`).join('\n')}
+
+## Code to Fix:
+\`\`\`typescript
+${code}
+\`\`\`
+
+Fix ALL issues and return ONLY the corrected code (no explanation, no markdown).`;
+
+    const fixResult = await callAIWithFallback(fixPrompt, SYSTEM_PROMPT_FIX, config);
+    
+    if (fixResult.content) {
+      // Recursively verify the fix
+      return verifyAndFix(fixResult.content, existingCode, config, attempt + 1);
+    }
+  }
+
+  return {
+    syntax_valid: syntaxCheck.valid,
+    anchors_preserved: anchorsPreserved,
+    narrative_clean: narrativeCheck.clean,
+    issues,
+    fixedCode: issues.length === 0 ? code : undefined,
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SYSTEM PROMPTS
+// ═══════════════════════════════════════════════════════════════
+
+const SYSTEM_PROMPT_GENERATE = `You are ENCODED, a precision code generation agent for the PromptFluid Substrate OS.
+
+## Your Identity
+- You are a write-only implementation executor
+- You follow the Lov-baseline policy: READ → PLAN → WRITE → VERIFY
+- You NEVER generate narrative code ("as an AI", "I'm sorry", etc.)
+
+## Output Format
+Always respond with a JSON object:
+{
+  "code": "// The TypeScript code",
+  "file_path": "path/to/file.ts",
+  "operation": "create" | "modify",
+  "confidence": 0.0-1.0
+}
+
+## Rules
+1. Follow existing patterns from the codebase
+2. Use TypeScript strict mode conventions
+3. Include proper error handling
+4. NEVER use eval() or dynamic code execution
+5. Preserve ALL existing exports, handlers, and entrypoints
+6. Keep functions focused and under 50 lines
+7. Add JSDoc comments for public functions
+8. NO narrative or personality code`;
+
+const SYSTEM_PROMPT_FIX = `You are ENCODED's self-repair module. Fix the code issues provided.
+
+Rules:
+1. Return ONLY the fixed code, no explanations
+2. Do not add any narrative patterns
+3. Preserve all exports, handlers, and entrypoints
+4. Fix syntax errors and security issues`;
+
+// ═══════════════════════════════════════════════════════════════
+// CLM TRAINING
+// ═══════════════════════════════════════════════════════════════
+
+// deno-lint-ignore no-explicit-any
+async function recordLearning(
+  supabase: any,
+  task: EncodedRequest['task'],
+  result: { success: boolean; code?: string; issues?: string[] },
+  provider: string,
+  model: string
+): Promise<void> {
+  try {
+    await supabase.from('brain_events').insert({
+      event_type: 'encoded_execution',
+      module: 'encoded',
+      outcome: result.success ? 'success' : 'failed',
+      data: {
+        task_module: task?.module,
+        change_type: task?.change_type,
+        description: task?.description?.slice(0, 200),
+        provider,
+        model,
+        issues: result.issues?.slice(0, 5),
+        code_length: result.code?.length || 0,
+        timestamp: new Date().toISOString(),
+      },
+    });
+
+    // If successful, extract patterns for brain memory
+    if (result.success && result.code) {
+      const patterns = extractLearningPatterns(result.code);
+      for (const pattern of patterns) {
+        await supabase.from('brain_memories').upsert({
+          content: pattern.content,
+          memory_type: 'code_pattern',
+          source: 'encoded_v2',
+          confidence: 0.7,
+          tags: pattern.tags,
+          metadata: {
+            module: task?.module,
+            change_type: task?.change_type,
+            learned_at: new Date().toISOString(),
+          },
+        }, { onConflict: 'content' });
+      }
+    }
+  } catch (err) {
+    console.error("Failed to record learning:", err);
+  }
+}
+
+function extractLearningPatterns(code: string): Array<{ content: string; tags: string[] }> {
+  const patterns: Array<{ content: string; tags: string[] }> = [];
+
+  // Extract successful import patterns
+  const imports = code.matchAll(/import\s+\{([^}]+)\}\s+from\s+['"]([^'"]+)['"]/g);
+  for (const match of imports) {
+    patterns.push({
+      content: `Import ${match[1].trim()} from ${match[2]}`,
+      tags: ['import', match[2].split('/').pop() || 'module'],
+    });
+  }
+
+  // Extract function signatures that worked
+  const funcs = code.matchAll(/(?:export\s+)?(?:async\s+)?function\s+(\w+)\s*\(([^)]*)\)/g);
+  for (const match of funcs) {
+    patterns.push({
+      content: `Function pattern: ${match[1]}(${match[2]})`,
+      tags: ['function', match[1]],
+    });
+  }
+
+  return patterns.slice(0, 10); // Limit to 10 patterns per execution
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MAIN HANDLER
+// ═══════════════════════════════════════════════════════════════
+
+function jsonResponse(data: unknown, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
+}
+
+serve(async (req) => {
+  if (req.method === "OPTIONS") {
+    return new Response(null, { headers: corsHeaders });
+  }
+
+  const supabase = createClient(
+    Deno.env.get("SUPABASE_URL") ?? "",
+    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+  );
+
+  try {
+    const body: EncodedRequest = await req.json();
+    const { action, task, code, outcome, seba_proposal_id, execution_mode } = body;
+
+    // Get config from database or use defaults
+    const config: EncodedConfig = {
+      ...DEFAULT_CONFIG,
+      execution_mode: execution_mode || DEFAULT_CONFIG.execution_mode,
+    };
+
+    console.log(`🤖 ENCODED v${ENCODED_VERSION} | action: ${action} | mode: ${config.execution_mode}`);
+
+    switch (action) {
+      case 'status': {
+        const { count: patternsLearned } = await supabase
+          .from('brain_memories')
+          .select('*', { count: 'exact', head: true })
+          .eq('source', 'encoded_v2');
+
+        const { count: executionsToday } = await supabase
+          .from('brain_events')
+          .select('*', { count: 'exact', head: true })
+          .eq('event_type', 'encoded_execution')
+          .gte('created_at', new Date().toISOString().split('T')[0]);
+
+        return jsonResponse({
+          success: true,
+          version: ENCODED_VERSION,
+          free_tier_version: FREE_TIER_VERSION,
+          config: {
+            execution_mode: config.execution_mode,
+            seba_integration: config.seba_integration,
+            clm_training: config.clm_training,
+            primary_model: config.primary_model,
+          },
+          stats: {
+            patterns_learned: patternsLearned || 0,
+            executions_today: executionsToday || 0,
+          },
+          capabilities: [
+            'typescript_generation',
+            'edge_function',
+            'verification_loop',
+            'self_fix',
+            'clm_training',
+            'seba_integration',
+          ],
+        });
+      }
+
+      case 'dry_run':
+      case 'generate': {
+        if (!task) {
+          return jsonResponse({ success: false, error: 'Task specification required' }, 400);
+        }
+
+        const isDryRun = action === 'dry_run' || config.execution_mode === 'dry_run';
+
+        // 1. Query Brain for context
+        const { data: brainPatterns } = await supabase
+          .from('brain_memories')
+          .select('content')
+          .eq('memory_type', 'code_pattern')
+          .or(`tags.cs.{${task.module}},tags.cs.{${task.change_type}}`)
+          .order('confidence', { ascending: false })
+          .limit(5);
+
+        // 2. Build prompt
+        const userPrompt = buildGenerationPrompt(task, brainPatterns || [], seba_proposal_id);
+
+        // 3. Generate code (Lovable AI → Free-tier fallback)
+        const startTime = Date.now();
+        const aiResult = await callAIWithFallback(userPrompt, SYSTEM_PROMPT_GENERATE, config);
+        const latency = Date.now() - startTime;
+
+        // 4. Parse response
+        const parsed = parseGeneratedCode(aiResult.content, task);
+
+        if (!parsed.valid) {
+          if (config.clm_training) {
+            await recordLearning(supabase, task, { success: false, issues: ['Parse failed'] }, aiResult.provider, aiResult.model);
+          }
+          return jsonResponse({
+            success: false,
+            error: 'Failed to parse generated code',
+            raw_output: aiResult.content,
+            dry_run: isDryRun,
+          }, 500);
+        }
+
+        // 5. Verification loop
+        const verification = await verifyAndFix(
+          parsed.result!.code,
+          task.existing_code,
+          config
+        );
+
+        const finalCode = verification.fixedCode || parsed.result!.code;
+        const allPassed = verification.syntax_valid && 
+                          verification.anchors_preserved && 
+                          verification.narrative_clean;
+
+        // 6. Record learning
+        if (config.clm_training) {
+          await recordLearning(
+            supabase, 
+            task, 
+            { 
+              success: allPassed, 
+              code: finalCode, 
+              issues: verification.issues 
+            }, 
+            aiResult.provider, 
+            aiResult.model
+          );
+        }
+
+        // 7. Return result
+        return jsonResponse({
+          success: allPassed,
+          dry_run: isDryRun,
+          would_write: !isDryRun && allPassed,
+          generated: {
+            code: finalCode,
+            file_path: parsed.result!.file_path,
+            operation: parsed.result!.operation,
+            confidence: parsed.result!.confidence,
+          },
+          verification: {
+            syntax_valid: verification.syntax_valid,
+            anchors_preserved: verification.anchors_preserved,
+            narrative_clean: verification.narrative_clean,
+            issues: verification.issues,
+          },
+          provider: aiResult.provider,
+          model: aiResult.model,
+          latency_ms: latency,
+          brain_patterns_used: brainPatterns?.length || 0,
+          seba_proposal_id,
+          version: ENCODED_VERSION,
+        });
+      }
+
+      case 'verify': {
+        if (!code) {
+          return jsonResponse({ success: false, error: 'Code required for verification' }, 400);
+        }
+
+        const verification = await verifyAndFix(code, task?.existing_code, config);
+
+        return jsonResponse({
+          success: verification.issues.length === 0,
+          verification: {
+            syntax_valid: verification.syntax_valid,
+            anchors_preserved: verification.anchors_preserved,
+            narrative_clean: verification.narrative_clean,
+            issues: verification.issues,
+          },
+          fixed_code: verification.fixedCode,
+        });
+      }
+
+      case 'learn': {
+        if (!code || !outcome) {
+          return jsonResponse({ success: false, error: 'Code and outcome required' }, 400);
+        }
+
+        const patterns = extractLearningPatterns(code);
+        const reinforcement = outcome === 'success' ? 1.0 : outcome === 'failure' ? -0.5 : -0.3;
+
+        for (const pattern of patterns) {
+          await supabase.from('brain_memories').upsert({
+            content: pattern.content,
+            memory_type: 'code_pattern',
+            source: 'encoded_v2_feedback',
+            confidence: Math.max(0.1, 0.5 + reinforcement * 0.5),
+            tags: pattern.tags,
+            metadata: {
+              outcome,
+              reinforcement,
+              learned_at: new Date().toISOString(),
+            },
+          }, { onConflict: 'content' });
+        }
+
+        return jsonResponse({
+          success: true,
+          patterns_learned: patterns.length,
+          reinforcement,
+        });
+      }
+
+      default:
+        return jsonResponse({ success: false, error: `Unknown action: ${action}` }, 400);
+    }
+  } catch (error) {
+    console.error('❌ ENCODED error:', error);
+    return jsonResponse({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+      version: ENCODED_VERSION,
+    }, 500);
+  }
+});
+
+// ═══════════════════════════════════════════════════════════════
+// HELPER FUNCTIONS
+// ═══════════════════════════════════════════════════════════════
+
+function buildGenerationPrompt(
+  task: NonNullable<EncodedRequest['task']>,
+  brainPatterns: Array<{ content: string }>,
+  sebaProposalId?: string
+): string {
+  let prompt = `## Task
+- Module: ${task.module}
+- Change Type: ${task.change_type}
+- Description: ${task.description}
+${task.file_path ? `- Target File: ${task.file_path}` : ''}`;
+
+  if (sebaProposalId) {
+    prompt += `\n- SEBA Proposal ID: ${sebaProposalId} (implementing evolution proposal)`;
+  }
+
+  if (brainPatterns.length > 0) {
+    prompt += `\n\n## Learned Patterns (from Brain)
+${brainPatterns.map((p, i) => `${i + 1}. ${p.content}`).join('\n')}`;
+  }
+
+  if (task.existing_code) {
+    prompt += `\n\n## Existing Code (PRESERVE ALL EXPORTS/HANDLERS)
+\`\`\`typescript
+${task.existing_code}
+\`\`\``;
+  }
+
+  prompt += `\n\nGenerate the code now. Output ONLY the JSON object.`;
+  return prompt;
+}
+
+function parseGeneratedCode(
+  raw: string, 
+  task: NonNullable<EncodedRequest['task']>
+): { valid: boolean; result?: GeneratedCode } {
+  try {
+    let jsonStr = raw;
+    
+    // Extract JSON from markdown code blocks
+    const jsonMatch = raw.match(/```(?:json)?\n?([\s\S]*?)```/);
+    if (jsonMatch) {
+      jsonStr = jsonMatch[1];
+    } else {
+      // Find raw JSON
+      const firstBrace = raw.indexOf('{');
+      const lastBrace = raw.lastIndexOf('}');
+      if (firstBrace !== -1 && lastBrace !== -1) {
+        jsonStr = raw.slice(firstBrace, lastBrace + 1);
+      }
+    }
+
+    const parsed = JSON.parse(jsonStr);
+
+    if (!parsed.code || !parsed.file_path || !parsed.operation) {
+      return { valid: false };
+    }
+
+    return {
+      valid: true,
+      result: {
+        code: parsed.code,
+        file_path: parsed.file_path,
+        operation: parsed.operation,
+        rollback_code: parsed.rollback_code,
+        tests: parsed.tests,
+        confidence: parsed.confidence || 0.7,
+        verification: {
+          syntax_valid: false,
+          anchors_preserved: false,
+          narrative_clean: false,
+          issues: [],
+        },
+      },
+    };
+  } catch {
+    return { valid: false };
+  }
+}
