@@ -5562,6 +5562,36 @@ export type Database = {
         }
         Relationships: []
       }
+      lovable_ai_usage: {
+        Row: {
+          calls_used: number
+          category: string | null
+          created_at: string
+          date: string
+          id: string
+          tokens_used: number
+          updated_at: string
+        }
+        Insert: {
+          calls_used?: number
+          category?: string | null
+          created_at?: string
+          date?: string
+          id?: string
+          tokens_used?: number
+          updated_at?: string
+        }
+        Update: {
+          calls_used?: number
+          category?: string | null
+          created_at?: string
+          date?: string
+          id?: string
+          tokens_used?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       marketplace_generated_templates: {
         Row: {
           ai_provider: string | null
@@ -10459,6 +10489,10 @@ export type Database = {
           p_member_id: string
           p_skill_usage?: Json
         }
+        Returns: undefined
+      }
+      increment_lovable_ai_usage: {
+        Args: { p_calls?: number; p_category?: string; p_tokens?: number }
         Returns: undefined
       }
       reset_daily_quotas: { Args: never; Returns: undefined }
