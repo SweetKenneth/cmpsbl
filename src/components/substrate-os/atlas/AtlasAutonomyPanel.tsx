@@ -1,6 +1,6 @@
 /**
  * Atlas Autonomy Panel
- * v7.0.0 — CLM + SEBA unified control for 24/7 autonomous operation
+ * v7.1.0 — CLM + SEBA unified control with Lovable AI usage tracking
  */
 
 import { useState, useEffect, useCallback } from 'react';
@@ -20,6 +20,7 @@ import { useModuleCLM } from '@/lib/substrate/module-clm/useModuleCLM';
 import { ProposalStore } from '@/lib/substrate/seba/proposal-store';
 import { cn } from '@/lib/utils';
 import type { SEBAMode } from '@/lib/substrate/seba';
+import { LovableAIUsageCard } from './LovableAIUsageCard';
 
 interface PendingProposal {
   id: string;
@@ -490,6 +491,9 @@ export function AtlasAutonomyPanel() {
             </CardContent>
           </Card>
         </motion.div>
+
+        {/* Lovable AI Usage Card */}
+        <LovableAIUsageCard />
       </div>
 
       {/* Pending Proposals */}

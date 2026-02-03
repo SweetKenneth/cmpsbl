@@ -129,6 +129,22 @@ async function callLovableAI(
 
     const data = await response.json();
     const content = data.choices?.[0]?.message?.content || '';
+    const tokensUsed = data.usage?.total_tokens || 0;
+
+    // Track usage in database
+    try {
+      const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+      const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+      const supabase = createClient(supabaseUrl, supabaseKey);
+      
+      await supabase.rpc('increment_lovable_ai_usage', {
+        p_calls: 1,
+        p_tokens: tokensUsed,
+        p_category: 'evolution'
+      });
+    } catch (trackErr) {
+      console.warn("Failed to track Lovable AI usage:", trackErr);
+    }
 
     return {
       content,
