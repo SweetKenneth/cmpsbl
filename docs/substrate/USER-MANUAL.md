@@ -1,25 +1,27 @@
-# promptfluid® Substrate — User Manual
+# CMPSBL Substrate — User Manual
 
-**v4.2.0 — Cognitive Orchestration Substrate**
+**v7.0.0 — SEBA Era (Self-Evolving Bounded Agent)**
 
-*Last Updated: 2026-01-24*
+*Last Updated: 2026-02-03*
 
 ---
 
 ## What is the Substrate?
 
-The promptfluid® Substrate is a unified API gateway for cognitive AI operations. It provides:
+The CMPSBL Substrate is a unified API gateway for cognitive AI operations. It provides:
 
-- **Memory & Learning** — Store, retrieve, and evolve knowledge
-- **Conversational AI** — Intent decoding and dream generation
-- **Security** — Bot detection and threat analysis
-- **AI Routing** — Multi-provider model selection
-- **Observability** — Real-time health and metrics
-- **Dream Processing** — Autonomous cognition cycles
-- **Kernel Operations** — Job scheduling, lifecycle, state machine
+- **Memory & Learning** — 3-tier persistent memory (Hot/Warm/Cold), knowledge graphs, learning cycles
+- **Conversational AI** — Intent decoding, epistemic translation, dream generation
+- **Security** — Bot detection, threat analysis, behavioral firewalls
+- **AI Routing** — Multi-provider model selection with intelligent failover
+- **Observability** — Real-time health, distributed tracing, audit logs
+- **Dream Processing** — Autonomous cognition cycles for pattern extraction
+- **Kernel Operations** — Job scheduling, lifecycle management, state machine
 - **Message Bus** — Async queues, pub/sub, event sourcing
 - **Identity & Billing** — API keys, quotas, usage metering
 - **Enterprise Integration** — 35+ adapters for external systems with LLM governance
+- **Self-Evolution** — SEBA (Self-Evolving Bounded Agent) for autonomous improvement
+- **120 Synergy Pipelines** — Cross-module orchestration with 98 custom executors
 
 All capabilities are accessed through a single endpoint.
 

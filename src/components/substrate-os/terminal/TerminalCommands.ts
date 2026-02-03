@@ -366,9 +366,9 @@ export const CORTEX_COMMANDS: CommandDefinition[] = [
   { command: 'cortex.world', description: 'Full module registry snapshot', category: 'cortex', icon: Globe, requiresOperator: false, args: '[--dag|--roles|--eligible]' },
   { command: 'cortex.inventory', description: 'Module inventory with eligibility', category: 'cortex', icon: Box, requiresOperator: false },
   
-  // v7.4.0: Cross-Module Synergy Engine (98 Pipelines, 76 Executors)
+  // v7.0.0: Cross-Module Synergy Engine (120 Pipelines, 98 Executors)
   { command: 'cortex.synergy.status', description: 'Synergy engine overview (pipelines, executors, health)', category: 'cortex', icon: Workflow, requiresOperator: false },
-  { command: 'cortex.synergy.list', description: 'List all 98 synergy pipelines', category: 'cortex', icon: List, requiresOperator: false, args: '[--category <cat>|--module <mod>]', example: 'cortex.synergy.list --category intelligence' },
+  { command: 'cortex.synergy.list', description: 'List all 120 synergy pipelines', category: 'cortex', icon: List, requiresOperator: false, args: '[--category <cat>|--module <mod>]', example: 'cortex.synergy.list --category intelligence' },
   { command: 'cortex.synergy.get', description: 'Get synergy pipeline details', category: 'cortex', icon: Eye, requiresOperator: false, args: '<synergy_id>', example: 'cortex.synergy.get smart-recall' },
   { command: 'cortex.synergy.execute', description: 'Execute a synergy pipeline', category: 'cortex', icon: PlayCircle, requiresOperator: true, args: '<synergy_id> [input_json]', example: 'cortex.synergy.execute adaptive-routing' },
   { command: 'cortex.synergy.dry_run', description: 'Dry-run a synergy (no side effects)', category: 'cortex', icon: Eye, requiresOperator: false, args: '<synergy_id> [input_json]', example: 'cortex.synergy.dry_run cognitive-fusion' },

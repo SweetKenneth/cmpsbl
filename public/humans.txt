@@ -2,8 +2,9 @@
 
 /* TEAM */
 Founder & CEO: Kenneth E Sweet Jr
-Location: Palm Springs, California, USA
-Contact: promptfluid@gmail.com
+Location: Dallas, Texas, USA
+Contact: PromptFluid@gmail.com
+Phone: (214) 548-0883
 Twitter: @promptfluid
 
 /* CREATOR */
@@ -17,7 +18,7 @@ Special thanks to the open source community.
 To the dreamers building AI that actually remembers.
 
 /* SITE */
-Last update: 2026-01-26
+Last update: 2026-02-03
 Language: English
 Doctype: HTML5
 Standards: WCAG 2.2 AA, Schema.org, Open Graph
@@ -33,17 +34,19 @@ AI: Multi-provider (OpenAI, Anthropic, Google, Groq)
 - Vite
 - PWA Enabled
 
-/* SUBSTRATE OS v6.0.0 */
+/* SUBSTRATE OS v7.0.0 SEBA Era */
 - 14 Core Modules: CORE, RIPPLE, ACCESS, BRAIN, DECODE, DREAM, DEFENSE, NEXUS, VISION, INTEGRATION, SYSTEM, MODERNIZER, INCLUSIVE, CORTEX
 - 260+ Terminal Commands
+- 120 Synergy Pipelines with 98 Custom Executors
 - 5-Layer Architecture (Kernel, Cognitive, Operational, Admin, Orchestrator)
 - BYOK (Bring Your Own Key) Support
 - Dream Cycles & Persistent Memory
+- SEBA (Self-Evolving Bounded Agent) for Autonomous Improvement
 - WCAG 2.2 Accessibility via INCLUSIVE Module
 
 /* HISTORY */
 Founded: 2009
-Domain: promptfluid.com
+Domain: cmpsbl.com
 Products: 6 live AI products
 Mission: Building the cognitive orchestration substrate for autonomous AI systems
 

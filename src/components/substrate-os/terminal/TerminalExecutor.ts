@@ -319,12 +319,10 @@ function generateFullHelp(): string {
   
   let output = `
 ┌─────────────────────────────────────────────────────────────┐
-│         SUBSTRATE OS v7.4.0 — COMMAND REFERENCE             │
+│         SUBSTRATE OS v7.0.0 — COMMAND REFERENCE             │
 ├─────────────────────────────────────────────────────────────┤
 │  Total commands: ${totalCommands.toString().padEnd(5)}    Modules: 15 + Synergies          │
-│  Architecture: 14-module + CLM + 98 Synergy Pipelines       │
-│  Total commands: ${totalCommands.toString().padEnd(5)}    Modules: 15                     │
-│  Architecture: 14-module + CLM                              │
+│  Architecture: 14-module + CLM + 120 Synergy Pipelines      │
 │                                                             │
 │  Quick navigation:                                          │
 │    help <module>   Show module commands                     │
@@ -435,10 +433,10 @@ function generateFullHelp(): string {
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
-┌─ SYNERGY ENGINE v7.4.0 (98 Pipelines) ──────────────────────┐
+┌─ SYNERGY ENGINE v7.0.0 (120 Pipelines) ─────────────────────┐
 │                                                             │
 │  cortex.synergy.status    Engine overview                   │
-│  cortex.synergy.list      List all 98 pipelines             │
+│  cortex.synergy.list      List all 120 pipelines            │
 │  cortex.synergy.get <id>  Get pipeline details              │
 │  cortex.synergy.execute   Execute a pipeline                │
 │  cortex.synergy.dry_run   Preview execution (no effects)    │

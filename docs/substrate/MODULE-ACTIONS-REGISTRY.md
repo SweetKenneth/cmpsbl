@@ -1,24 +1,24 @@
-# promptfluid® Module Actions Registry
+# CMPSBL Module Actions Registry
 
 ## Document Metadata
 
 | Field | Value |
 |-------|-------|
-| Document ID | PF-MAR-001 |
-| Version | v2026.01 |
-| Last Updated | 2026-02-02 |
+| Document ID | CMPSBL-MAR-001 |
+| Version | v2026.02 |
+| Last Updated | 2026-02-03 |
 | Status | ACTIVE |
-| Substrate Version | 7.4.0 |
+| Substrate Version | 7.0.0 |
 | Type | Cognitive Orchestration Substrate |
-| Synergy Pipelines | 98 |
-| Synergy Executors | 76 |
+| Synergy Pipelines | 120 |
+| Synergy Executors | 98 |
 | Changelog | [CHANGELOG.md](./CHANGELOG.md) |
 
 ---
 
 ## Overview
 
-This document catalogs all registered module actions across the promptfluid® substrate. Each module exposes a set of actions via the unified `pf-substrate` endpoint or dedicated edge functions.
+This document catalogs all registered module actions across the CMPSBL substrate v7.0.0. Each module exposes a set of actions via the unified `pf-substrate` endpoint or dedicated edge functions. The SEBA Era introduces 120 synergy pipelines and 98 custom executors for cross-module orchestration.
 
 ### Invocation Pattern
 

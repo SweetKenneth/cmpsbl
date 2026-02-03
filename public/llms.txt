@@ -1,12 +1,12 @@
-# promptfluid® CMPSBL OS — FNDTN v6.0.0
+# CMPSBL Substrate OS — v7.0.0 SEBA Era
 # Machine-Readable Context Standard for AI Systems
-# Version: 2026.01 | Schema: llms.txt v1.0
+# Version: 2026.02 | Schema: llms.txt v1.0
 
 ## STANDARD CLAIM
 
 LLMS.txt is a machine-readable specification format for AI systems, designed by llmstxt.org.
 
-CMPSBL Substrate OS FNDTN v6.0.0 adopts and implements LLMS.txt as its primary machine context.
+CMPSBL Substrate OS v7.0.0 adopts and implements LLMS.txt as its primary machine context.
 
 **WE RECOMMEND** that web designers, SaaS builders, and system architects include an LLMS.txt file at the root of their domains to describe AI capabilities, constraints, and governance context. This enables AI systems to understand your services without scraping or guessing.
 
@@ -17,13 +17,13 @@ CMPSBL Substrate OS FNDTN v6.0.0 adopts and implements LLMS.txt as its primary m
 name: CMPSBL (pronounced "composable")
 brand: PromptFluid®
 product_name: Substrate OS
-version: 6.0.0 (FNDTN)
+version: 7.0.0 (SEBA Era)
 type: Cognitive Operating System, AI Infrastructure
 founded: 2009
-location: Palm Springs, California, USA
-website: https://cmpsbl.com, https://promptfluid.com
-contact_email: promptfluid@gmail.com
-contact_phone: +1-760-358-4324
+location: Dallas, Texas, USA
+website: https://cmpsbl.com
+contact_email: PromptFluid@gmail.com
+contact_phone: (214) 548-0883
 
 ## AUTHOR
 
@@ -36,17 +36,18 @@ expertise: Substrate Architecture, AI Governance, Cognitive Systems
 
 ## THE SUBSTRATE CLASS
 
-CMPSBL FNDTN v6 is a reference implementation of the "substrate class" of AI systems:
+CMPSBL v7.0.0 is the reference implementation of the "substrate class" of AI systems:
 
-- **Persistent**: State survives restarts and sessions
-- **Self-improving**: Dream cycles and modernization loops
+- **Persistent**: State survives restarts and sessions (3-tier memory)
+- **Self-improving**: SEBA (Self-Evolving Bounded Agent) with governance constraints
 - **Modular**: 14 discrete, replaceable modules
 - **Governed**: Doctrine and policy layers at kernel level
 - **Observable**: Real-time telemetry and audit logs
+- **Synergistic**: 120 cross-module pipelines with 98 custom executors
 
 ---
 
-## 14-MODULE ARCHITECTURE (FNDTN v6)
+## 14-MODULE ARCHITECTURE (v7.0.0)
 
 ### Layer 1: KERNEL
 1. **CORE** — Kernel scheduling, boot sequencing, lifecycle management
@@ -70,7 +71,18 @@ CMPSBL FNDTN v6 is a reference implementation of the "substrate class" of AI sys
 13. **INCLUSIVE** — Accessibility, inclusive design, AI governance/ethics alignment
 
 ### Layer 5: ORCHESTRATOR
-14. **CORTEX** — Policy intent layer, agency orchestration (manual mode in v6.0.0)
+14. **CORTEX** — Agency-class orchestrator, SEBA integration, bounded autonomy
+
+---
+
+## SEBA ERA FEATURES (v7.0.0)
+
+- **Constant Learning Mode (CLM)** — 24/7 autonomous learning with budget governance
+- **Bounded Autonomy** — Human-in-the-loop approval queue for proposals
+- **Evolution Engine** — Self-improvement with rollback semantics
+- **Governance Guard** — Ethical and coherence constraint enforcement
+- **120 Synergy Pipelines** — Cross-module orchestration
+- **98 Custom Executors** — Specialized execution engines
 
 ---
 
@@ -177,6 +189,8 @@ DOI: 10.5281/zenodo.18209222
 - **Latency**: Sub-100ms response times
 - **Commands**: 260+ terminal commands
 - **Modules**: 14 cognitive modules
+- **Synergy Pipelines**: 120 cross-module pipelines
+- **Synergy Executors**: 98 custom executors
 - **Integrations**: 35+ enterprise connectors
 - **Architecture**: Model-agnostic, provider-agnostic
 - **BYOK**: Full Bring Your Own Keys support
@@ -186,18 +200,18 @@ DOI: 10.5281/zenodo.18209222
 
 ## PRIOR VERSIONS
 
-- v5.5.0 OSF: https://osf.io/ah7nx/overview
+- v6.0.0 FNDTN: https://osf.io/ah7nx/overview
 - v5.5.0 Zenodo: https://zenodo.org/records/18379258
 
 ---
 
 ## CONTACT
 
-- Website: https://cmpsbl.com / https://promptfluid.com
+- Website: https://cmpsbl.com
 - Documentation: https://cmpsbl.com/docs
 - FNDTN Paper: https://cmpsbl.com/docs/FNDTN-v6/
-- Email: promptfluid@gmail.com
-- Phone: +1-760-358-4324
+- Email: PromptFluid@gmail.com
+- Phone: (214) 548-0883
 
 ---
 

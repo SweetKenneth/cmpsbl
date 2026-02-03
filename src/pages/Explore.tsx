@@ -182,7 +182,7 @@ function SectionDivider() {
 export default function Explore() {
   const containerRef = useRef<HTMLDivElement>(null);
   
-  // Core Modules - all 14 pillars (v6.0.0 kernel architecture: 13 core + cortex orchestrator)
+  // Core Modules - all 14 pillars (v7.0.0 SEBA kernel architecture)
   const coreModules = [
     {
       icon: Cpu,
@@ -321,9 +321,9 @@ export default function Explore() {
     <div ref={containerRef} className="min-h-screen bg-background overflow-hidden">
       <SEO 
         title="CMPSBL™ Substrate OS v7.0.0 — 14-Module Cognitive Infrastructure"
-        description="The cognitive infrastructure standard: 14 modules, hosted API access for developers ($2,999/yr), self-hosted Enterprise ($49,999/yr). 109+ templates, 98 synergy pipelines, 260+ commands."
+        description="The cognitive infrastructure standard: 14 modules, hosted API access for developers ($2,999/yr), self-hosted Enterprise ($49,999/yr). 109+ templates, 120 synergy pipelines, 260+ commands."
         canonical="https://cmpsbl.com"
-        keywords={['CMPSBL', 'Substrate OS', 'v7.0.0', '14-module architecture', 'cognitive OS', 'AI governance', 'hosted API', 'enterprise self-hosted', 'persistent memory', 'dream cycles']}
+        keywords={['CMPSBL', 'Substrate OS', 'v7.0.0', '14-module architecture', 'cognitive OS', 'AI governance', 'hosted API', 'enterprise self-hosted', 'persistent memory', 'dream cycles', '120 synergy pipelines']}
       />
 
       <PublicNav />
