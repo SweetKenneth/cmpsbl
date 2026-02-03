@@ -1,17 +1,22 @@
 /**
- * Encoded Workflow Engine — READ → PLAN → WRITE → READ → FIX → VERIFY → FINALIZE
- * v3.0.0 — Complete 7-phase execution with real AI generation via Nexus
+ * Encoded Workflow Engine — READ → PLAN → WRITE → GUARD → READ → FIX → VERIFY → FINALIZE
+ * v4.0.0 — Lov-baseline implementation with guardrails, anchor checks, and narrative bans
  * 
  * Workflow stages:
  * 1. READ: Gather context, understand scope, query Brain for patterns
  * 2. PLAN: Analyze impact, check dependencies, plan changes  
  * 3. WRITE: Generate code via Nexus router (free-tier AI)
- * 4. READ_VERIFY: Re-read output to check for issues
- * 5. FIX_ERRORS: Correct any problems found during read-verify
- * 6. VERIFY: Final validation, security checks, pattern compliance
- * 7. FINALIZE: Apply changes, record for rollback, learn from outcome
+ * 4. GUARD: Run guardrail checks (anchor preservation, narrative ban, destructive detection)
+ * 5. READ_VERIFY: Re-read output to check for issues
+ * 6. FIX_ERRORS: Correct any problems found during read-verify
+ * 7. VERIFY: Final validation, security checks, pattern compliance
+ * 8. FINALIZE: Apply changes, record for rollback, learn from outcome
  * 
- * Learning: Every action persists patterns to Brain memory for CLM
+ * Invariants (fail-closed):
+ * - Must read actual file contents before writing
+ * - Must preserve exports, handlers, entrypoints
+ * - Destructive changes require human approval
+ * - Narrative/personality code is forbidden
  */
 
 import { 
@@ -27,12 +32,17 @@ import { assessAction, checkForbiddenPatterns, checkRequiredPatterns } from './k
 import { getServiceHealth } from './circuit-breaker';
 import { checkBrainFirst } from './brain-first';
 import { learnFromCodeAction } from './learning-engine';
+import { 
+  runEncodedGuard, 
+  summarizeGuardResult,
+  type GuardResult,
+} from './encoded';
 
 // ═══════════════════════════════════════════════════════════════
 // WORKFLOW TYPES
 // ═══════════════════════════════════════════════════════════════
 
-export type WorkflowStage = 'idle' | 'reading' | 'planning' | 'writing' | 'read_verify' | 'fixing' | 'verifying' | 'finalizing' | 'complete' | 'failed';
+export type WorkflowStage = 'idle' | 'reading' | 'planning' | 'writing' | 'guarding' | 'read_verify' | 'fixing' | 'verifying' | 'finalizing' | 'complete' | 'failed' | 'blocked';
 
 // Progress callback for real-time updates
 export type ProgressCallback = (stage: WorkflowStage, message: string, detail?: string) => void;
@@ -68,6 +78,8 @@ export interface WorkflowRequest {
   filePath?: string;
   existingCode?: string;
   priority?: 'low' | 'medium' | 'high' | 'critical';
+  /** Explicit human approval for destructive changes */
+  humanApproved?: boolean;
 }
 
 export interface WorkflowContext {
@@ -103,6 +115,8 @@ export interface WorkflowResult {
   approved: boolean;
   appliedAt?: Date;
   rollbackId?: string;
+  /** Guard check result from Lov-baseline enforcement */
+  guardResult?: GuardResult;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -612,6 +626,10 @@ export interface WorkflowExecutionResult {
   message: string;
   duration: number;
   stagesCompleted: WorkflowStage[];
+  /** Guard result from Lov-baseline enforcement */
+  guardResult?: GuardResult;
+  /** Whether the change was blocked by guardrails */
+  blocked?: boolean;
 }
 
 export async function executeWorkflow(request: WorkflowRequest): Promise<WorkflowExecutionResult> {
@@ -648,7 +666,47 @@ export async function executeWorkflow(request: WorkflowRequest): Promise<Workflo
     // Stage 3: WRITE
     const generated = await stageWrite(request, context, planning);
     
-    // Stage 4: READ_VERIFY (re-read output to check for issues)
+    // Stage 4: GUARD — Run Lov-baseline guardrail checks
+    currentWorkflow.stage = 'guarding';
+    currentWorkflow.currentStageProgress = 0;
+    emitProgress('guarding', 'Running guardrail checks', 'Anchor preservation, narrative ban, destructive detection');
+    
+    const existingCode = request.existingCode || '';
+    const guardResult = runEncodedGuard(
+      existingCode,
+      generated.code,
+      request.humanApproved || false,
+      generated.filePath
+    );
+    
+    currentWorkflow.currentStageProgress = 100;
+    
+    if (!guardResult.ok) {
+      // BLOCKED — fail closed
+      currentWorkflow.stage = 'blocked';
+      currentWorkflow.error = `Guardrail violation: ${guardResult.reasons.join('; ')}`;
+      emitProgress('blocked', 'Change blocked by guardrails', guardResult.reasons[0]);
+      
+      return {
+        success: false,
+        stage: 'blocked',
+        code: generated.code,
+        filePath: generated.filePath,
+        operation: generated.operation,
+        confidence: generated.confidence,
+        message: `🚫 BLOCKED: ${guardResult.reasons.join('; ')}`,
+        duration: Date.now() - startTime,
+        stagesCompleted: currentWorkflow.completedStages,
+        guardResult,
+        blocked: true,
+      };
+    }
+    
+    emitProgress('guarding', `Guard passed: ${guardResult.changeClass.toUpperCase()}`, 
+      `Risk: ${guardResult.risk}, Anchors: ${guardResult.anchorsPreserved ? 'preserved' : 'modified'}`);
+    currentWorkflow.completedStages.push('guarding');
+    
+    // Stage 5: READ_VERIFY (re-read output to check for issues)
     currentWorkflow.stage = 'read_verify';
     currentWorkflow.currentStageProgress = 0;
     emitProgress('read_verify', 'Re-reading generated code to check for issues');
@@ -658,7 +716,7 @@ export async function executeWorkflow(request: WorkflowRequest): Promise<Workflo
     emitProgress('read_verify', rereadCheck.valid ? 'Code looks good' : `Found ${rereadCheck.issues.length} issue(s) to fix`);
     currentWorkflow.completedStages.push('read_verify');
     
-    // Stage 5: FIX_ERRORS (if any issues found)
+    // Stage 6: FIX_ERRORS (if any issues found)
     let fixedCode = generated.code;
     if (!rereadCheck.valid || rereadCheck.issues.length > 0) {
       currentWorkflow.stage = 'fixing';
@@ -673,10 +731,10 @@ export async function executeWorkflow(request: WorkflowRequest): Promise<Workflo
       emitProgress('read_verify', 'No fixes needed, proceeding to verification');
     }
     
-    // Stage 6: VERIFY
+    // Stage 7: VERIFY
     const verification = await stageVerify({ ...generated, code: fixedCode }, request);
     
-    // Stage 7: FINALIZE
+    // Stage 8: FINALIZE
     const finalizeResult = await stageFinalize({ ...generated, code: fixedCode }, request, verification);
     
     // Build result
@@ -692,6 +750,8 @@ export async function executeWorkflow(request: WorkflowRequest): Promise<Workflo
       message: finalizeResult.message,
       duration: Date.now() - startTime,
       stagesCompleted: currentWorkflow.completedStages,
+      guardResult,
+      blocked: false,
     };
     
     // Store result
@@ -709,6 +769,7 @@ export async function executeWorkflow(request: WorkflowRequest): Promise<Workflo
       approved: verification.passed,
       appliedAt: finalizeResult.appliedAt,
       rollbackId: finalizeResult.rollbackId,
+      guardResult,
     };
     
     return result;
@@ -761,7 +822,7 @@ export function getWorkflowProgress(): {
   overallProgress: number;
   completedStages: WorkflowStage[];
 } {
-  const stages: WorkflowStage[] = ['reading', 'planning', 'writing', 'read_verify', 'fixing', 'verifying', 'finalizing'];
+  const stages: WorkflowStage[] = ['reading', 'planning', 'writing', 'guarding', 'read_verify', 'fixing', 'verifying', 'finalizing'];
   const completedCount = currentWorkflow.completedStages.length;
   const currentStageIndex = stages.indexOf(currentWorkflow.stage);
   

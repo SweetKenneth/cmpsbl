@@ -1,6 +1,6 @@
 /**
  * Encoded Tab — Self-Evolution Coding Interface
- * v3.0.0 — Full v3 with PR Queue, Diff Viewer, and Deploy Pipeline
+ * v4.0.0 — Lov-baseline with guardrails, anchor checks, and change classification
  * Provides chat interface to the Substrate Coder + Sandbox validation preview
  */
 
@@ -10,7 +10,7 @@ import {
   Terminal, Zap, Bot, FileCode, Play, RefreshCw, Copy, Check,
   Heart, ShieldCheck, Activity, Eye, Brain, Cog, Rocket,
   MessageSquare, HelpCircle, FileText, Shield, Undo2, GitPullRequest, 
-  BarChart3, Layers
+  BarChart3, Layers, Ban, Lock, Anchor
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -67,10 +67,14 @@ import {
   runLearningCycle,
   type CodeAction 
 } from '@/lib/codeagent/learning-engine';
+import { 
+  summarizeGuardResult, 
+  type GuardResult 
+} from '@/lib/codeagent/encoded';
 
 interface Message {
   id: string;
-  role: 'user' | 'agent' | 'system' | 'question' | 'preview' | 'approval';
+  role: 'user' | 'agent' | 'system' | 'question' | 'preview' | 'approval' | 'blocked';
   content: string;
   timestamp: Date;
   metadata?: {
@@ -87,6 +91,7 @@ interface Message {
     question?: ClarifyingQuestion;
     preview?: ImpactPreview;
     gate?: ApprovalGate;
+    guardResult?: GuardResult;
   };
 }
 
@@ -131,6 +136,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
   const [diffMode, setDiffMode] = useState<'split' | 'unified'>('split');
   const [deployPipeline, setDeployPipeline] = useState<PipelineRun | null>(null);
   const [progressUpdates, setProgressUpdates] = useState<{ stage: string; message: string; detail?: string; timestamp: Date }[]>([]);
+  const [lastGuardResult, setLastGuardResult] = useState<GuardResult | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // Fetch status and start learning on mount
@@ -265,14 +271,77 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
         return;
       }
       
+      // Command: approve - Explicitly approve a blocked destructive change
+      if (lowerInput.includes('approve') && lastGuardResult && !lastGuardResult.ok) {
+        // Re-run the workflow with explicit approval
+        resetDiscussion();
+        setDiscussionMode(false);
+        setPendingQuestion(null);
+        setPendingApproval(null);
+        
+        addAgentMessage('🔓 **Explicit Approval Granted**\n\nRe-running code generation with destructive change approval...', undefined, 'system');
+        
+        // Get the last discussion context and re-execute with approval
+        const state = getDiscussionState();
+        const ctx = state.context as any;
+        
+        const module = ctx.module || ctx.analysis?.module || 'system';
+        const changeType = ctx.changeType || ctx.analysis?.changeType || 'edge_function';
+        const description = ctx.additionalDetails 
+          ? `${ctx.originalInput}. ${ctx.additionalDetails}`
+          : ctx.originalInput || input;
+        
+        try {
+          setIsLoading(true);
+          const result = await executeWorkflow({
+            description,
+            module,
+            changeType,
+            humanApproved: true, // Explicitly approved!
+          });
+          
+          if (result.success && result.code) {
+            setCurrentCode(result.code);
+            setLastGuardResult(result.guardResult || null);
+            addAgentMessage(
+              `✅ **Approved Change Generated**\n\n` +
+              `Change classification: ${result.guardResult?.changeClass.toUpperCase() || 'UNKNOWN'}\n` +
+              `Risk: ${result.guardResult?.risk || 'unknown'}\n\n` +
+              `💡 Type "apply" to deploy this change.`
+            );
+            setActiveTab('preview');
+            toast.success('Approved change generated');
+          } else {
+            addAgentMessage(`❌ **Still Blocked**\n\n${result.message}`, undefined, 'system');
+          }
+        } catch (error) {
+          addAgentMessage(`❌ **Error**\n${error instanceof Error ? error.message : 'Unknown error'}`, undefined, 'system');
+        } finally {
+          setIsLoading(false);
+        }
+        return;
+      }
+      
       // Command: apply - Execute/deploy generated code (fixes approval loop)
       if (lowerInput.includes('apply') || lowerInput.includes('deploy') || lowerInput.includes('execute')) {
+        // Block if guard result shows it's not safe
+        if (lastGuardResult && !lastGuardResult.ok) {
+          addAgentMessage(
+            '🚫 **Cannot Apply — Blocked by Guardrails**\n\n' +
+            'This change was blocked. Type "approve" to explicitly approve the destructive change, or modify your request.',
+            undefined,
+            'blocked'
+          );
+          return;
+        }
+        
         if (currentCode) {
           // Clear discussion state to prevent re-asking
           resetDiscussion();
           setDiscussionMode(false);
           setPendingQuestion(null);
           setPendingApproval(null);
+          setLastGuardResult(null);
           
           toast.success('Applying generated code...', { description: 'Code deployed successfully' });
           addAgentMessage('✅ **Code Applied Successfully**\n\nThe generated code has been deployed to the codebase. You can now:\n- Type "status" to check system health\n- Type "generate" with a new request to create more code\n- Type "rollback" if you need to undo this change');
@@ -493,8 +562,36 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
         // Remove the processing message
         setMessages(prev => prev.slice(0, -1));
 
+        // Handle blocked by guardrails
+        if (result.blocked && result.guardResult) {
+          setLastGuardResult(result.guardResult);
+          setCurrentCode(result.code || '');
+          
+          const guardSummary = summarizeGuardResult(result.guardResult);
+          
+          addAgentMessage(
+            `🚫 **BLOCKED BY GUARDRAILS**\n\n` +
+            `${guardSummary}\n\n` +
+            `---\n\n` +
+            `💡 **Options:**\n` +
+            `- Type "approve" to explicitly approve this destructive change\n` +
+            `- Modify your request to be less destructive\n` +
+            `- Type "status" to check current policy settings`,
+            {
+              guardResult: result.guardResult,
+            },
+            'blocked'
+          );
+          
+          toast.error('Change blocked by guardrails', {
+            description: result.guardResult.reasons[0] || 'Policy violation'
+          });
+          return;
+        }
+
         if (result.success && result.code) {
           setCurrentCode(result.code);
+          setLastGuardResult(result.guardResult || null);
           setValidationResult(result.validation ? { 
             valid: result.validation.passed, 
             issues: result.validation.issues 
@@ -506,12 +603,13 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
             ? '✅ Validation passed — ready to apply' 
             : `⚠️ Validation issues: ${result.validation?.issues?.join(', ') || 'Unknown'}`;
 
-          // Format completed stages with new 7-phase flow
+          // Format completed stages with 8-phase flow including guard
           const stagesFormatted = result.stagesCompleted.map(s => {
             const icons: Record<string, string> = {
               reading: '📖',
               planning: '🧠',
               writing: '✍️',
+              guarding: '🛡️',
               read_verify: '🔍',
               fixing: '🔧',
               verifying: '✅',
@@ -521,6 +619,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
               reading: 'Read',
               planning: 'Plan',
               writing: 'Write',
+              guarding: 'Guard',
               read_verify: 'Read',
               fixing: 'Fix',
               verifying: 'Verify',
@@ -528,10 +627,17 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
             };
             return `${icons[s] || '•'} ${labels[s] || s}`;
           }).join(' → ');
+          
+          // Guard status badge
+          const guardStatus = result.guardResult 
+            ? `🛡️ **Guard:** ${result.guardResult.changeClass.toUpperCase()} (${result.guardResult.risk} risk)\n` +
+              `⚓ **Anchors:** ${result.guardResult.anchorsPreserved ? 'Preserved ✓' : 'Modified ⚠️'}\n`
+            : '';
 
           addAgentMessage(
             `**✅ Code Generated Successfully**\n\n` +
             `**Workflow:** ${stagesFormatted}\n\n` +
+            guardStatus +
             `\`\`\`typescript\n${result.code.substring(0, 600)}${result.code.length > 600 ? '\n// ... (truncated)' : ''}\n\`\`\`\n\n` +
             `---\n` +
             `📁 **File:** \`${result.filePath || 'N/A'}\`\n` +
@@ -549,6 +655,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
               file_path: result.filePath,
               confidence: result.confidence,
               validation: result.validation ? { valid: result.validation.passed, issues: result.validation.issues } : undefined,
+              guardResult: result.guardResult,
             }
           );
 
@@ -700,8 +807,22 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
             <h2 className="text-lg font-semibold flex items-center gap-2">
               Encoded
               <Badge variant="outline" className="text-[10px] border-fuchsia-500/40 text-fuchsia-400 bg-fuchsia-500/10">
-                v3.0.0
+                v4.0.0
               </Badge>
+              {lastGuardResult && (
+                <Badge 
+                  variant="outline" 
+                  className={cn(
+                    "text-[10px]",
+                    lastGuardResult.ok 
+                      ? "border-system-green/40 text-system-green bg-system-green/10"
+                      : "border-destructive/40 text-destructive bg-destructive/10"
+                  )}
+                >
+                  <Shield className="w-3 h-3 mr-1" />
+                  {lastGuardResult.ok ? lastGuardResult.changeClass.toUpperCase() : 'BLOCKED'}
+                </Badge>
+              )}
               {discussionMode && (
                 <Badge variant="outline" className="text-[10px] border-accent/40 text-accent bg-accent/10">
                   <MessageSquare className="w-3 h-3 mr-1" />
@@ -716,7 +837,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
               )}
             </h2>
             <p className="text-xs text-muted-foreground font-mono">
-              read → plan → write → read → fix → verify → finalize
+              read → plan → write → guard → read → fix → verify → finalize
             </p>
           </div>
         </div>
@@ -827,6 +948,8 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
                           ? "bg-neon-blue/10 border border-neon-blue/20"
                           : msg.role === 'approval'
                           ? "bg-system-green/10 border border-system-green/20"
+                          : msg.role === 'blocked'
+                          ? "bg-destructive/10 border border-destructive/30"
                           : "bg-muted/50 border border-border/50 mr-8"
                       )}
                     >
@@ -841,6 +964,8 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
                           <FileText className="w-3 h-3 text-neon-blue" />
                         ) : msg.role === 'approval' ? (
                           <Shield className="w-3 h-3 text-system-green" />
+                        ) : msg.role === 'blocked' ? (
+                          <Ban className="w-3 h-3 text-destructive" />
                         ) : (
                           <Bot className="w-3 h-3 text-primary" />
                         )}
@@ -850,15 +975,36 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
                            msg.role === 'question' ? 'Clarification' :
                            msg.role === 'preview' ? 'Impact Preview' :
                            msg.role === 'approval' ? 'Approval Required' :
+                           msg.role === 'blocked' ? 'BLOCKED' :
                            'Encoded'}
                         </span>
                         <span className="text-[10px] text-muted-foreground/50">
                           {msg.timestamp.toLocaleTimeString()}
                         </span>
+                        {msg.role === 'blocked' && (
+                          <Badge variant="destructive" className="ml-auto text-[9px] h-4">
+                            GUARDRAIL VIOLATION
+                          </Badge>
+                        )}
                       </div>
                       <div className="prose prose-sm prose-invert max-w-none">
                         <pre className="whitespace-pre-wrap font-sans text-foreground/90">{msg.content}</pre>
                       </div>
+                      
+                      {/* Blocked change buttons */}
+                      {msg.role === 'blocked' && msg.metadata?.guardResult && (
+                        <div className="mt-3 flex gap-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="border-system-amber/30 text-system-amber hover:bg-system-amber/20"
+                            onClick={() => setInput('approve')}
+                          >
+                            <Lock className="w-3 h-3 mr-1" />
+                            Approve Destructive Change
+                          </Button>
+                        </div>
+                      )}
                       
                       {/* Question options UI */}
                       {msg.role === 'question' && msg.metadata?.question?.options && (
