@@ -1,6 +1,6 @@
 # Key Capabilities
 
-**What CMPSBL® Does — Technical Overview v7.4.0**
+**What CMPSBL® Does — Technical Overview v7.0.0**
 
 ---
 
@@ -17,27 +17,27 @@
 | Intent Parsing | DECODE | Natural language interpretation, command routing |
 | Orchestration | CORTEX | Policy intent, autonomous decision-making |
 | Accessibility | INCLUSIVE | WCAG scanning, auto-repair, compliance reporting |
-| **Cross-Module Synergies** | CORTEX | **98 pipelines, 76 executors for multi-module coordination** |
+| **Cross-Module Synergies** | CORTEX | **120 pipelines, 98 executors for multi-module coordination** |
 
 ---
 
-## Cross-Module Synergy Engine (v7.4.0)
+## Cross-Module Synergy Engine (v7.0.0)
 
 ### The Problem
 Traditional AI systems operate as isolated modules. No coordination, no emergent intelligence.
 
 ### Our Solution
-**98 synergy pipelines** that orchestrate 2-5 modules together for emergent capabilities:
+**120 synergy pipelines** that orchestrate 2-5 modules together for emergent capabilities:
 
 | Category | Pipelines | Description |
 |----------|-----------|-------------|
 | **Intelligence** | 24 | Cognitive fusion, causal inference, hypothesis testing |
-| **Security** | 16 | Attack surface mapping, zero-day defense, threat prediction |
-| **Resilience** | 18 | Predictive healing, blast radius containment, failover chains |
-| **Optimization** | 14 | Cost routing, token budget, resource allocation |
-| **Accessibility** | 8 | Universal design, adaptive content, compliance automation |
-| **Automation** | 10 | Autonomous repair, workflow synthesis, deprecation management |
-| **Orchestration** | 8 | Multi-agent coordination, pipeline orchestration, team coordination |
+| **Security** | 18 | Attack surface mapping, zero-day defense, threat prediction |
+| **Resilience** | 20 | Predictive healing, blast radius containment, failover chains |
+| **Optimization** | 18 | Cost routing, token budget, resource allocation |
+| **Accessibility** | 14 | Universal design, adaptive content, compliance automation |
+| **Automation** | 14 | Autonomous repair, workflow synthesis, deprecation management |
+| **Orchestration** | 12 | Multi-agent coordination, pipeline orchestration, team coordination |
 
 ### Example Synergies
 

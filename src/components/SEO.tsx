@@ -126,17 +126,17 @@ export function SEO({
     slogan: 'Cognitive Orchestration Substrate',
     founder: {
       '@type': 'Person',
-      '@id': 'https://promptfluid.com/#founder',
+      '@id': 'https://cmpsbl.com/#founder',
       name: 'Kenneth E Sweet Jr',
       jobTitle: 'Founder',
-      email: 'promptfluid@gmail.com',
-      url: 'https://promptfluid.com/about'
+      email: 'PromptFluid@gmail.com',
+      url: 'https://cmpsbl.com/about'
     },
     address: {
       '@type': 'PostalAddress',
-      addressLocality: 'Palm Springs',
-      addressRegion: 'CA',
-      postalCode: '92262',
+      addressLocality: 'Dallas',
+      addressRegion: 'TX',
+      postalCode: '75201',
       addressCountry: 'US'
     },
     sameAs: [
@@ -149,8 +149,8 @@ export function SEO({
       {
         '@type': 'ContactPoint',
         contactType: 'general',
-        email: 'promptfluid@gmail.com',
-        telephone: '+1-760-358-4324',
+        email: 'PromptFluid@gmail.com',
+        telephone: '+1-214-548-0883',
         availableLanguage: ['English'],
         areaServed: 'Worldwide'
       }

@@ -1,6 +1,6 @@
 /**
- * promptfluid® Substrate Status Widget
- * Compact status indicator for the substrate
+ * CMPSBL Substrate Status Widget
+ * Compact status indicator for the substrate v7.0.0
  */
 
 import { Activity, CheckCircle2, AlertCircle } from 'lucide-react';
@@ -15,7 +15,7 @@ export function SubstrateStatus({ compact = false }: SubstrateStatusProps) {
   const { initialized, overallHealth, modules } = useSubstrateContext();
 
   const activeCount = Object.values(modules).filter(m => m.active).length;
-  const totalModules = 14; // v6.0.0: All 14 modules
+  const totalModules = 14; // v7.0.0: All 14 modules
   const isHealthy = overallHealth >= 80;
 
   if (compact) {
@@ -38,10 +38,10 @@ export function SubstrateStatus({ compact = false }: SubstrateStatusProps) {
         <AlertCircle className="h-4 w-4 text-amber-500" />
       )}
       <span className="text-muted-foreground">
-        promptfluid® substrate: {activeCount}/{totalModules} modules
+        CMPSBL substrate: {activeCount}/{totalModules} modules
       </span>
       <Badge variant="outline" className="text-xs">
-        v6.0.0
+        v7.0.0
       </Badge>
     </div>
   );

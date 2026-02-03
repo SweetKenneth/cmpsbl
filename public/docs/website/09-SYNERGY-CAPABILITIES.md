@@ -1,4 +1,4 @@
-# Cross-Module Synergy Capabilities v7.5.0
+# Cross-Module Synergy Capabilities v7.0.0
 
 **120 Synergy Pipelines with 98 Custom Executors — The CMPSBL® Advantage**
 
@@ -39,7 +39,7 @@ With synergies:
 
 ## The 120 Synergy Pipelines
 
-### Intelligence (17 Pipelines — Make Decisions Smarter)
+### Intelligence (22 Pipelines — Make Decisions Smarter)
 
 | Synergy | What It Does | Impact |
 |---------|--------------|--------|

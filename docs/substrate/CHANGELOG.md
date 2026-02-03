@@ -1,6 +1,34 @@
-# promptfluid® Substrate Changelog
+# CMPSBL Substrate Changelog
 
 > ⟨Entries on this page are recorded in the Decode interpreter's epistemic voice. They describe observed behavior of the substrate, not guarantees. No imperatives, no identity claims, no agency assertions.⟩
+
+---
+
+## 2026-02-03 · v7.0.0 (SEBA Era)
+
+⟨This entry describes the SEBA Era canonical release establishing the Self-Evolving Bounded Agent architecture, 120 synergy pipelines, and 98 custom executors.⟩
+
+### Architecture
+
+- **v7.0.0 SEBA Era** — Canonical release of Self-Evolving Bounded Agent with autonomous improvement under governance constraints.
+- **120 Synergy Pipelines** — Cross-module orchestration pipelines across Intelligence, Autonomy, Security, Cost, and Compliance categories.
+- **98 Custom Executors** — Specialized execution engines for synergy pipeline operations.
+- **14-Module Kernel** — Full v7.0.0 alignment across CORE, RIPPLE, ACCESS, BRAIN, DECODE, NEXUS, DEFENSE, VISION, DREAM, SYSTEM, MODERNIZER, INTEGRATION, INCLUSIVE, CORTEX.
+
+### SEBA Features
+
+- **Constant Learning Mode (CLM)** — 24/7 autonomous learning with budget governance and kill switch.
+- **Bounded Autonomy** — Human-in-the-loop approval queue for all evolution proposals.
+- **Evolution Engine** — Self-improvement with rollback semantics and shadow testing.
+- **Governance Guard** — Ethical and coherence constraint enforcement at kernel level.
+
+### Synergy Categories
+
+- **Intelligence** — Strategic Foresight, Decision Confidence, Pattern Recognition.
+- **Autonomy** — Ops Steward, Rollback Authority, Self-Healing Pipelines.
+- **Security** — IP Containment, Behavioral Trust, Threat Correlation.
+- **Cost** — Arbitrage, Waste Detection, Budget Optimization.
+- **Compliance** — Audit Ledger, Policy Gate, Governance Alignment.
 
 ---
 
