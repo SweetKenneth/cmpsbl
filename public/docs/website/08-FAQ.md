@@ -117,11 +117,15 @@ Yes. Security is built into the core with:
 
 ### Where does my data live?
 
-On your infrastructure. CMPSBL is self-hosted — your data never leaves your control.
+**API tiers (Developer/Team/Research):** Your data is processed on our secure hosted infrastructure. We follow strict data isolation and never share or use your data for training.
+
+**Enterprise tier:** Full self-hosted deployment — your data stays entirely on your infrastructure.
 
 ### How do you handle API keys?
 
-Your AI provider keys are stored in your own environment (environment variables or secrets manager). We never see them.
+**API tiers:** You provide your AI provider keys via secure environment configuration. Keys are encrypted and never logged.
+
+**Enterprise tier:** Keys are stored in your own environment (environment variables or secrets manager). We never see them.
 
 ---
 
