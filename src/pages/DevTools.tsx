@@ -20,14 +20,16 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-const SDK_INSTALL = `npm install @promptfluid/substrate`;
+// SDK Installation - Current method via local import
+const SDK_INSTALL_LOCAL = `// Current installation — import from local SDK
+import { SubstrateClient } from '@/lib/substrate';
 
-const SDK_USAGE = `import { Substrate } from '@promptfluid/substrate';
+const substrate = new SubstrateClient();`;
 
-// Initialize with your API key
-const substrate = new Substrate({
-  apiKey: process.env.PROMPTFLUID_API_KEY,
-});
+const SDK_USAGE = `// Initialize the Substrate client
+import { SubstrateClient } from '@/lib/substrate';
+
+const substrate = new SubstrateClient();
 
 // Brain module - persistent memory
 await substrate.brain.remember('User prefers dark mode', 'preference');
@@ -186,27 +188,47 @@ export default function DevTools() {
                     Quick Start
                   </CardTitle>
                   <CardDescription>
-                    Install the SDK and start building in minutes
+                    Import the SDK and start building in minutes
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  {/* Install Command */}
-                  <div className="relative">
-                    <pre className="bg-muted p-4 rounded-lg font-mono text-sm overflow-x-auto">
-                      {SDK_INSTALL}
-                    </pre>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="absolute top-2 right-2"
-                      onClick={() => copyCode(SDK_INSTALL, 'install')}
-                    >
-                      {copied === 'install' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                    </Button>
+                <CardContent className="space-y-6">
+                  {/* Current Installation Method */}
+                  <div>
+                    <div className="flex items-center gap-2 mb-3">
+                      <Badge variant="outline" className="text-xs">Current Method</Badge>
+                    </div>
+                    <div className="relative">
+                      <pre className="bg-muted p-4 rounded-lg font-mono text-sm overflow-x-auto">
+                        {SDK_INSTALL_LOCAL}
+                      </pre>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="absolute top-2 right-2"
+                        onClick={() => copyCode(SDK_INSTALL_LOCAL, 'install')}
+                      >
+                        {copied === 'install' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* NPM Coming Soon */}
+                  <div className="p-4 rounded-lg border border-dashed border-muted-foreground/30 bg-muted/30">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Package className="w-4 h-4 text-muted-foreground" />
+                      <span className="text-sm font-medium text-muted-foreground">Public NPM Package</span>
+                      <Badge variant="secondary" className="text-xs">Coming Soon</Badge>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      A public NPM package will be available in the future. Stay tuned for updates.
+                    </p>
                   </div>
 
                   {/* Usage Example */}
                   <div className="relative">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Badge variant="outline" className="text-xs">Usage Example</Badge>
+                    </div>
                     <ScrollArea className="h-[400px]">
                       <pre className="bg-muted p-4 rounded-lg font-mono text-xs overflow-x-auto">
                         {SDK_USAGE}
