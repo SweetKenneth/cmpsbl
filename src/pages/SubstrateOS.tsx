@@ -47,7 +47,7 @@ import { InclusiveTab } from '@/components/substrate-os/InclusiveTab';
 import { NexusTab } from '@/components/substrate-os/NexusTab';
 import { CapabilitiesTab } from '@/components/substrate-os/CapabilitiesTab';
 import { AtlasTab } from '@/components/substrate-os/AtlasTab';
-import { DashboardMetricsHero, QuickActionsPanel, ModuleControlsGrid } from '@/components/substrate-os/dashboard';
+import { DashboardMetricsHero, QuickActionsPanel, ModuleControlsGrid, CapacityMonitor } from '@/components/substrate-os/dashboard';
 import { cn } from '@/lib/utils';
 
 // ============================================
@@ -658,6 +658,7 @@ export default function SubstrateOS() {
                 
                 {!isObserverOnly && <EmergencyRecoveryPanel showAlways={false} isCritical={isCritical} />}
                 <DashboardMetricsHero />
+                {isOperator && <CapacityMonitor />}
                 {!isObserverOnly && <QuickActionsPanel enabled={isOperator} onOpenTerminal={() => setActiveTab('terminal')} />}
                 {!isObserverOnly && <ModuleControlsGrid enabled={isOperator} />}
                 {!isObserverOnly && <BrainIntelligencePanel enabled={isOperator} />}
