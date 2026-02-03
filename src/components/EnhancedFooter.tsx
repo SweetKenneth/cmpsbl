@@ -67,9 +67,9 @@ export function EnhancedFooter() {
   ];
 
   const socialLinks = [
-    { name: "GitHub", icon: Github, href: "https://github.com/promptfluid" },
-    { name: "Twitter", icon: Twitter, href: "https://twitter.com/promptfluid" },
-    { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com/company/promptfluid" },
+    { name: "GitHub", icon: Github, href: "https://github.com/cmpsbl" },
+    { name: "Twitter", icon: Twitter, href: "https://twitter.com/cmpsbl" },
+    { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com/company/cmpsbl" },
   ];
 
   return (

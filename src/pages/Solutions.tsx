@@ -77,10 +77,10 @@ export default function Solutions() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Solutions — PromptFluid Products & Services"
-        description="Explore PromptFluid's product suite: RCKBL security, PTCHBL accessibility, Cascade AI, AI Nexus, and more. Real systems that ship."
-        canonical="https://promptfluid.com/solutions"
-        keywords={['AI solutions', 'WordPress security', 'accessibility tools', 'AI gateway', 'autonomous AI']}
+        title="Solutions — CMPSBL Products & Services"
+        description="Explore CMPSBL's product suite: RCKBL security, PTCHBL accessibility, Cascade AI, AI Nexus, and more. Real systems that ship."
+        canonical="https://cmpsbl.com/solutions"
+        keywords={['AI solutions', 'WordPress security', 'accessibility tools', 'AI gateway', 'autonomous AI', 'CMPSBL']}
       />
       
       <PublicNav />

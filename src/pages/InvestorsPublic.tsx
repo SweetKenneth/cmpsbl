@@ -1,5 +1,5 @@
 /**
- * promptfluid® — Investor Relations
+ * CMPSBL® — Investor Relations
  * v2026.01 — Seed Investment Opportunity
  */
 
@@ -130,10 +130,10 @@ export default function InvestorsPublic() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Investors — promptfluid® Funding Opportunity"
-        description="Invest in promptfluid's cognitive substrate infrastructure. 100+ projects shipped over 15 years. Six live products. Seeking seed investment."
-        canonical="https://promptfluid.com/investors"
-        keywords={['AI startup investment', 'cognitive substrate', 'AI infrastructure funding', 'seed investment opportunity']}
+        title="Investors — CMPSBL® Funding Opportunity"
+        description="Invest in CMPSBL's cognitive substrate infrastructure. 100+ projects shipped over 15 years. Six live products. Seeking seed investment."
+        canonical="https://cmpsbl.com/investors"
+        keywords={['AI startup investment', 'cognitive substrate', 'AI infrastructure funding', 'seed investment opportunity', 'CMPSBL']}
       />
       
       {/* Ambient Background */}

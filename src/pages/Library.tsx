@@ -131,7 +131,7 @@ const LIBRARY_DOCS = [
     name: "SYNERGY-CAPABILITIES", 
     title: "Synergy Capabilities",
     category: "technical",
-    description: "98 cross-module pipelines that multiply intelligence",
+    description: "120 cross-module pipelines that multiply intelligence",
     featured: true,
     readTime: "12 min"
   },
