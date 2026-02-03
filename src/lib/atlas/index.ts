@@ -460,6 +460,15 @@ export {
 // React hooks
 export { useAtlas, type UseAtlasReturn } from './useAtlas';
 
+// Command Interpreter v7.2.0
+export {
+  atlasInterpreter,
+  AtlasCommandInterpreter,
+  type CommandCategory,
+  type ParsedCommand,
+  type CommandResult,
+} from './command-interpreter';
+
 // Version info
-export const ATLAS_VERSION = '7.0.0';
+export const ATLAS_VERSION = '7.2.0';
 export const ATLAS_CODENAME = 'Prometheus';
