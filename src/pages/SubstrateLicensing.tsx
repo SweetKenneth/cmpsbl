@@ -393,11 +393,11 @@ export default function SubstrateLicensing() {
               ))}
             </div>
 
-            <Card className="max-w-2xl mx-auto bg-amber-500/10 border-amber-500/30">
+            <Card className="max-w-2xl mx-auto bg-primary/10 border-primary/30">
               <CardContent className="p-4 flex items-center gap-3">
-                <Server className="w-5 h-5 text-amber-500 shrink-0" />
+                <Server className="w-5 h-5 text-primary shrink-0" />
                 <p className="text-sm text-muted-foreground">
-                  <strong className="text-foreground">Note:</strong> Developer Licenses do not include hosting. You deploy and run CMPSBL on your own infrastructure.
+                  <strong className="text-foreground">Delivery Model:</strong> Developer, Team, and Research licenses provide hosted API access. Enterprise licenses include source code for self-hosted deployment.
                 </p>
               </CardContent>
             </Card>

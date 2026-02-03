@@ -25,9 +25,9 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
         <Menu className="w-5 h-5" />
       </Button>
       
-      {/* promptfluid text for mobile */}
+      {/* CMPSBL text for mobile */}
       <div className="lg:hidden flex items-center">
-        <span className="text-xl font-bold glow-text">promptfluid®</span>
+        <span className="text-xl font-bold glow-text">CMPSBL</span>
       </div>
 
       <div className="hidden lg:flex items-center gap-4 flex-1">

@@ -28,9 +28,9 @@ export default function Awake() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Decode Whisper | PromptFluid"
+        title="Decode Whisper | CMPSBL"
         description="The secret dream journal of Decode AI"
-        canonical="https://promptfluid.com/awake"
+        canonical="https://cmpsbl.com/awake"
       />
       <Helmet>
         <meta name="robots" content="noindex, nofollow" />

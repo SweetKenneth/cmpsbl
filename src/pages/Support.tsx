@@ -15,10 +15,10 @@ export default function Support() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
-        <title>Support — Evolving AI Assistant | promptfluid®</title>
+        <title>Support — Evolving AI Assistant | CMPSBL</title>
         <meta 
           name="description" 
-          content="Get help from our evolving AI support system. Memory-backed, governed assistance that learns from verified resolutions." 
+          content="Get help from the CMPSBL evolving AI support system. Memory-backed, governed assistance that learns from verified resolutions." 
         />
       </Helmet>
 

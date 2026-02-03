@@ -108,7 +108,7 @@ export default function Roadmap() {
       <SEO 
         title="2026-2027 Roadmap | CMPSBL — The Future of AI Governance"
         description="Explore CMPSBL's roadmap: 14-module cognitive OS, template marketplace, enterprise governance, federation protocol, and self-evolving substrate. See what we're building to transform AI infrastructure."
-        canonical="https://promptfluid.com/roadmap"
+        canonical="https://cmpsbl.com/roadmap"
         keywords={[
           'CMPSBL roadmap',
           'AI governance OS',

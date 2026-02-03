@@ -111,7 +111,7 @@ export default function ForgeCatalog() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <SEO title="Bot Catalog — promptfluid®" description="Browse and manage cognitive bots" />
+      <SEO title="Bot Catalog — CMPSBL" description="Browse and manage cognitive bots" />
       <OSHeader userEmail={user?.email} role={role} />
 
       <main className="flex-1 container mx-auto px-4 py-6 max-w-6xl">

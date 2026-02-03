@@ -1,7 +1,7 @@
 /**
- * promptfluid® substrate — Dashboard
- * v6.0.0 — Cognitive Orchestration Substrate (14-Module Architecture)
- * 
+ * CMPSBL Substrate — Dashboard
+ * v7.0.0 — Cognitive Orchestration Substrate (14-Module Architecture)
+ *
  * Unified control center for all 14 substrate modules:
  * 
  * KERNEL LAYER:
@@ -260,10 +260,10 @@ export default function SubstrateDashboard() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Substrate Dashboard — promptfluid® v6.0.0"
+        title="Substrate Dashboard — CMPSBL v7.0.0"
         description="Cognitive orchestration substrate control center. Monitor all 14 modules including brain, decode, defense, nexus, vision, dream, integration, inclusive, cortex, and more."
-        canonical="https://promptfluid.com/substrate"
-        keywords={["cognitive orchestration", "AI substrate", "promptfluid dashboard", "14 modules", "cortex"]}
+        canonical="https://cmpsbl.com/substrate"
+        keywords={["cognitive orchestration", "AI substrate", "CMPSBL dashboard", "14 modules", "cortex"]}
       />
 
       <PublicNav />
@@ -280,8 +280,8 @@ export default function SubstrateDashboard() {
               <Activity className="w-6 h-6 md:w-7 md:h-7 text-primary" />
             </div>
             <div>
-              <h1 className="text-2xl md:text-4xl font-bold">promptfluid® substrate</h1>
-              <p className="text-sm md:text-base text-muted-foreground">v6.0.0 — Cognitive Orchestration Substrate</p>
+              <h1 className="text-2xl md:text-4xl font-bold">CMPSBL Substrate</h1>
+              <p className="text-sm md:text-base text-muted-foreground">v7.0.0 — Cognitive Orchestration Substrate</p>
             </div>
           </div>
           
@@ -545,12 +545,12 @@ export default function SubstrateDashboard() {
         <Card className="p-6 md:p-8 mt-8 border-primary/20 bg-primary/5">
           <h2 className="text-lg md:text-xl font-bold mb-2">Licensing & Inquiries</h2>
           <p className="text-sm text-muted-foreground mb-4">
-            promptfluid® is a registered trademark. For ownership inquiries, licensing arrangements, or enterprise partnerships:
+            CMPSBL® is a registered trademark. For ownership inquiries, licensing arrangements, or enterprise partnerships:
           </p>
           <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-4 text-xs md:text-sm">
             <span><strong>Founder:</strong> Kenneth E Sweet Jr</span>
-            <span><strong>Email:</strong> promptfluid@gmail.com</span>
-            <span><strong>Phone:</strong> (760) FLUID-AI</span>
+            <span><strong>Email:</strong> PromptFluid@gmail.com</span>
+            <span><strong>Phone:</strong> (214) 548-0883</span>
           </div>
         </Card>
         </div>

@@ -140,9 +140,9 @@ export default function Changelog() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SEO
-        title="Evolution Log | CMPSBL v7.x.x — promptfluid®"
+        title="Evolution Log | CMPSBL v7.x.x"
         description="A continuous record of why the CMPSBL substrate evolved during the v7 series. The age of bounded autonomy and self-evolution."
-        canonical="https://promptfluid.com/changelog"
+        canonical="https://cmpsbl.com/changelog"
       />
       <PublicNav />
 

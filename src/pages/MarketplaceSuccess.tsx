@@ -109,8 +109,8 @@ export default function MarketplaceSuccess() {
   return (
     <>
       <SEO
-        title="Purchase Complete | promptfluid® Marketplace"
-        description="Your promptfluid® purchase is complete. Access your license key and start building."
+        title="Purchase Complete | CMPSBL Marketplace"
+        description="Your CMPSBL purchase is complete. Access your license key and start building."
       />
       <div className="min-h-screen bg-background">
         <PublicNav />
