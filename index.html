@@ -42,8 +42,8 @@
       /* Accessibility */
       .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}
       
-      /* Root container - stable layout, CSS containment */
-      #root{min-height:100vh;display:flex;flex-direction:column;contain:layout style;content-visibility:auto}
+      /* Root container - stable layout, CSS containment for paint optimization */
+      #root{min-height:100vh;display:flex;flex-direction:column;contain:layout style paint;content-visibility:auto}
       
       /* Navigation shell - critical for above-the-fold */
       nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);background:hsla(230,84%,5%,0.8);border-bottom:1px solid hsl(var(--border)/0.5)}
@@ -71,9 +71,12 @@
       /* Glass effect for nav/cards */
       .glass{background:hsla(230,84%,5%,0.6);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
       
-      /* Skeleton loading animation */
+      /* Framer Motion optimization - reduce forced reflows */
+      [data-framer-motion],[style*="transform"]{will-change:transform,opacity;contain:layout style paint}
+      
+      /* Skeleton loading animation - GPU accelerated */
       @keyframes skeleton-pulse{0%,100%{opacity:1}50%{opacity:0.5}}
-      .skeleton{animation:skeleton-pulse 2s cubic-bezier(0.4,0,0.6,1) infinite;background:hsl(var(--muted))}
+      .skeleton{animation:skeleton-pulse 2s cubic-bezier(0.4,0,0.6,1) infinite;background:hsl(var(--muted));will-change:opacity}
     </style>
     
     <!-- Preload critical fonts for LCP optimization -->
