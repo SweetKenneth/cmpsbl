@@ -24,47 +24,47 @@
     <!-- 2026 SEO: Break Network Dependency Chain -->
     <!-- Inline script to inject preload hints for Vite-hashed assets immediately -->
     <script>
-      // Optimized: Convert render-blocking CSS to non-blocking & add preload hints
+      // 2026 SEO: Aggressive non-blocking CSS - runs BEFORE DOMContentLoaded
       (function() {
         var h = document.head, d = document;
-        // Create preload hint immediately (before Vite injects)
-        function preloadAsset(href, as, crossorigin, isModule) {
-          var l = d.createElement('link');
-          l.rel = isModule ? 'modulepreload' : 'preload';
-          l.href = href;
-          if (as) l.as = as;
-          if (crossorigin) l.crossOrigin = 'anonymous';
-          h.appendChild(l);
-        }
+        
         // Convert stylesheet to non-blocking using print/onload pattern
         function makeNonBlocking(link) {
+          if (link.dataset.nbProcessed) return;
+          link.dataset.nbProcessed = '1';
           var href = link.href;
           link.media = 'print';
           link.onload = function() { this.media = 'all'; this.onload = null; };
-          // Add noscript fallback for accessibility
-          var ns = d.createElement('noscript');
-          var fallback = d.createElement('link');
-          fallback.rel = 'stylesheet';
-          fallback.href = href;
-          ns.appendChild(fallback);
-          link.parentNode.insertBefore(ns, link.nextSibling);
         }
-        // Observer to catch Vite-injected assets
+        
+        // Process ANY existing stylesheets immediately (catches Vite-injected CSS)
+        function processExisting() {
+          var links = h.querySelectorAll('link[rel="stylesheet"]');
+          for (var i = 0; i < links.length; i++) {
+            if (links[i].href && links[i].href.includes('/assets/')) {
+              makeNonBlocking(links[i]);
+            }
+          }
+        }
+        
+        // Run immediately to catch anything already in DOM
+        processExisting();
+        
+        // Observer to catch dynamically-added assets
         var observer = new MutationObserver(function(mutations) {
-          mutations.forEach(function(m) {
-            m.addedNodes.forEach(function(n) {
+          for (var i = 0; i < mutations.length; i++) {
+            var nodes = mutations[i].addedNodes;
+            for (var j = 0; j < nodes.length; j++) {
+              var n = nodes[j];
               if (n.tagName === 'LINK' && n.rel === 'stylesheet' && n.href && n.href.includes('/assets/')) {
-                preloadAsset(n.href, 'style', true);
                 makeNonBlocking(n);
               }
-              if (n.tagName === 'SCRIPT' && n.type === 'module' && n.src && n.src.includes('/assets/')) {
-                preloadAsset(n.src, null, true, true);
-              }
-            });
-          });
+            }
+          }
         });
         observer.observe(h, { childList: true });
-        // Disconnect after initial load
+        
+        // Disconnect after load
         window.addEventListener('load', function() { observer.disconnect(); }, { once: true });
       })();
     </script>
