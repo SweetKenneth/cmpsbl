@@ -1,6 +1,6 @@
-# CMPSBL OS Substrate — Evolution Autonomy v0.7.8
+# CMPSBL OS Substrate — SEBA Safety & Governance v2.1.0
 
-**Version 6.3.1 (Modernizer 0.7.8) | Scientific Publication**
+**Version 7.0.0 (SEBA 2.1.0) | Safety-First Evolution Framework**
 
 ---
 
@@ -9,198 +9,209 @@
 | Field | Value |
 |-------|-------|
 | **Document ID** | CMPSBL-LIB-076 |
-| **Module** | MODERNIZER |
+| **Module** | SEBA |
 | **Layer** | Administrative |
-| **Version** | v6.3.1 (Modernizer 0.7.8) |
+| **Version** | v7.0.0 (SEBA 2.1.0) |
+| **Status** | ACTIVE - Safety Controls Enforced |
 
 ---
 
-## 1. Autonomy Modes
+## 1. SEBA Safety Architecture
 
-### 1.1 Overview
+### 1.1 Core Safety Principle
 
-Evolution autonomy controls whether the system can self-evolve without human approval.
+**ALL proposals require human approval.** SEBA is designed to PROPOSE improvements, not autonomously apply them.
 
-### 1.2 Modes
+### 1.2 Safety Controls (v2.1.0)
 
-| Mode | Behavior |
-|------|----------|
-| `off` | No autonomous evolution. Human approval required for all changes. |
-| `advisory` | System suggests evolutions but does not execute. Human decides. |
-| `governed` | Autonomous execution with strict guardrails. See rules below. |
+| Control | Setting | Purpose |
+|---------|---------|---------|
+| `AUTO_APPROVE_ENABLED` | `false` | All proposals go to `pending` status |
+| `MAX_CYCLES_PER_DAY` | 12 | Prevents runaway scanning |
+| `MAX_PROPOSALS_PER_DAY` | 20 | Limits proposal generation |
+| `COOLDOWN_HOURS` | 2 | Enforces gap between cycles |
+| `NEXUS_BUDGET_THRESHOLD` | 50% | Halts if AI budget exceeded |
 
-### 1.3 Governed Mode Rules
+### 1.3 Cron Status
 
-Autonomous evolution MAY run ONLY if ALL conditions are met:
+The automatic hourly cron job (`seba-hourly-cycle`) is **DISABLED by default**. SEBA must be triggered manually.
+
+---
+
+## 2. Governance Modes
+
+| Mode | Behavior | Auto-Apply |
+|------|----------|------------|
+| `off` | SEBA disabled. No scanning or proposals. | ❌ |
+| `observe` | SEBA scans but generates no proposals. | ❌ |
+| `advisory` | SEBA generates proposals for review. **DEFAULT** | ❌ |
+| `governed` | SEBA can auto-approve LOW-RISK proposals only. | ⚠️ Restricted |
+
+### 2.1 Governed Mode Restrictions
+
+Even in `governed` mode, auto-approval ONLY applies when ALL conditions are met:
 
 | Condition | Requirement |
 |-----------|-------------|
-| Confidence | `confidence_score >= min_confidence_prod` (default 80%) |
-| Risk | `risk_level === 'low'` |
-| No Active Run | No other evolution run is active |
-| Last Success | Previous run completed successfully |
-| No Fallback | Proposal is NOT a fallback (requires human approval) |
-| Daily Limit | `runs_today < max_auto_runs_per_day` |
-
-If ANY condition fails → evolution blocked + logged.
+| Confidence | `confidence >= 0.85` |
+| Risk | `risk_level === 'low' OR 'minimal'` |
+| Auto-approve flag | `AUTO_APPROVE_ENABLED === true` |
+| No circuit breaker | Circuit must be `closed` |
 
 ---
 
-## 2. Circuit Breaker
-
-### 2.1 Purpose
-
-Hard-stop protection against runaway evolution failures.
-
-### 2.2 States
-
-| State | Meaning |
-|-------|---------|
-| `closed` | Evolution allowed |
-| `open` | Evolution blocked |
-
-### 2.3 Trip Conditions
-
-- Any failed production apply → OPEN circuit
-- Manual admin action
-
-### 2.4 Reset Conditions
-
-- Manual admin reset
-- Successful self-repair cycle
-- Auto-reset timer expiration (if configured)
-
-### 2.5 Commands
+## 3. Proposal Lifecycle
 
 ```
-modernizer.circuit status    # View current state
-modernizer.circuit reset     # Close circuit (admin only)
-modernizer.circuit open      # Open circuit manually
+INSIGHT → PROPOSAL (pending) → HUMAN REVIEW → approved/rejected
+                                    ↓
+                               [If approved]
+                                    ↓
+                              EXECUTE → applied
+                                    ↓
+                              [If error]
+                                    ↓
+                              ROLLBACK → rolled_back
 ```
 
----
+### 3.1 Proposal Statuses
 
-## 3. Self-Repair Loop
-
-### 3.1 Purpose
-
-When evolution fails, the system stabilizes itself before allowing further attempts.
-
-### 3.2 Safe Mode Actions
-
-ONLY these actions are allowed during self-repair:
-
-| Action | Purpose |
+| Status | Meaning |
 |--------|---------|
-| `system.heal` | Diagnostic health check |
-| `brain.optimize` | Memory optimization (read-only) |
-| `vision.resilience` | Resilience assessment |
-| `decode.explain` | Read-only failure analysis |
-
-### 3.3 Forbidden During Repair
-
-- Code mutation
-- Production writes
-- Schema changes
-- External API calls
-
-### 3.4 Outcome
-
-| Result | Effect |
-|--------|--------|
-| `success` | Circuit closed, evolution allowed |
-| `partial` | Circuit remains open, retry possible |
-| `failed` | Circuit remains open, admin intervention needed |
+| `pending` | Awaiting human review (default) |
+| `approved` | Human approved, ready to execute |
+| `rejected` | Human rejected, will not execute |
+| `applied` | Successfully executed |
+| `rolled_back` | Reverted after error |
 
 ---
 
-## 4. Public Receipts
+## 4. Terminal Commands
 
-### 4.1 Endpoint
+### 4.1 SEBA Control
 
-```
-GET /evolution/receipts
-GET /evolution/receipts?run_id=<uuid>
-GET /evolution/receipts?page=1&page_size=20
-```
+| Command | Description |
+|---------|-------------|
+| `seba.status` | View SEBA health and pending proposals |
+| `seba.mode <mode>` | Set mode (off/observe/advisory/governed) |
+| `seba.enable` | Enable SEBA in advisory mode |
+| `seba.disable` | Disable SEBA completely |
 
-### 4.2 Public Fields
+### 4.2 Proposal Management
+
+| Command | Description |
+|---------|-------------|
+| `seba.review` | List pending proposals with impact previews |
+| `seba.approve <id>` | Approve a proposal for execution |
+| `seba.reject <id>` | Reject a proposal |
+| `seba.execute <id>` | Execute an approved proposal |
+| `seba.rollback <id>` | Rollback an applied proposal |
+
+### 4.3 Cycle Control
+
+| Command | Description |
+|---------|-------------|
+| `seba.cycle` | Trigger a manual SEBA scan cycle |
+| `seba.propose` | Generate proposals from current insights |
+| `seba.history <limit>` | View recent cycle receipts |
+
+---
+
+## 5. Rollback System
+
+### 5.1 How Rollbacks Work
+
+Every applied proposal creates a `system_updates` record containing:
+- `prev_config`: The state before the change
+- `new_config`: The state after the change
+- `applied_by`: Who approved the change
+
+Rollback restores `prev_config` and marks the proposal as `rolled_back`.
+
+### 5.2 Rollback Limitations
+
+| Scenario | Rollback Support |
+|----------|-----------------|
+| Config changes | ✅ Full rollback |
+| Database schema changes | ⚠️ Requires manual intervention |
+| Code changes | ❌ Use git revert instead |
+
+---
+
+## 6. Receipts & Audit Trail
+
+### 6.1 Receipt Contents
+
+Every SEBA cycle generates a receipt stored in `brain_events`:
 
 | Field | Description |
 |-------|-------------|
-| `run_id` | Evolution run identifier |
-| `phase` | Final phase (verified/failed/aborted) |
-| `confidence_score` | Confidence percentage |
-| `risk_level` | low/medium/high |
-| `tests_run` | Number of tests executed |
-| `tests_passed` | Number of tests passed |
-| `health_before` | Health score before evolution |
-| `health_after` | Health score after evolution |
-| `timestamp` | Receipt creation time |
-| `initiated_by` | system/human |
+| `cycle_id` | Unique identifier |
+| `insights_found` | Number of issues detected |
+| `proposals_generated` | Number of proposals created |
+| `proposals_pending_review` | Awaiting human approval |
+| `scan_summary` | Categories scanned, issues by type |
+| `duration_ms` | Cycle execution time |
 
-### 4.3 Security
+### 6.2 Viewing Receipts
 
-**NOT EXPOSED:**
-- Payload diffs
-- Code changes
-- Internal state
-- Debug information
-
-Receipts are **facts**, not **methods**.
+```
+seba.history 10    # Last 10 cycle receipts
+seba.receipts      # Detailed receipt view
+```
 
 ---
 
-## 5. Terminal Commands
+## 7. Emergency Procedures
 
-### 5.1 Autonomy Commands
+### 7.1 Stop All SEBA Activity
 
-| Command | Description |
-|---------|-------------|
-| `modernizer.autonomy status` | View current autonomy mode |
-| `modernizer.autonomy set <mode>` | Set mode (off/advisory/governed) |
+```bash
+# Via Terminal
+seba.disable
 
-### 5.2 Receipt Commands
+# Via Database (emergency)
+UPDATE atlas_capabilities SET enabled = false WHERE key = 'seba_enabled';
+UPDATE evolution_proposals SET status = 'rejected' WHERE status IN ('pending', 'approved');
+SELECT cron.unschedule('seba-hourly-cycle');
+```
 
-| Command | Description |
-|---------|-------------|
-| `modernizer.receipts` | List recent receipts |
-| `modernizer.receipt <run_id>` | View specific receipt |
+### 7.2 Rollback All Applied Changes
 
-### 5.3 Circuit Commands
+```sql
+-- Find applied proposals from today
+SELECT id, title, created_at FROM evolution_proposals 
+WHERE status = 'applied' AND created_at > CURRENT_DATE;
 
-| Command | Description |
-|---------|-------------|
-| `modernizer.circuit status` | View circuit state |
-| `modernizer.circuit reset` | Reset (close) circuit |
-| `modernizer.circuit open <reason>` | Open circuit manually |
+-- Rollback each via terminal
+seba.rollback <proposal_id>
+```
 
 ---
 
-## 6. Changelog
+## 8. Changelog
+
+### v2.1.0 (Current)
+
+- 🔒 **DISABLED auto-approval by default** (`AUTO_APPROVE_ENABLED = false`)
+- 🔒 **Disabled cron job** - SEBA requires manual trigger
+- 📉 Reduced daily limits (12 cycles, 20 proposals)
+- ⏱️ Increased cooldown to 2 hours
+- 📝 All proposals now go to `pending` for human review
+
+### v2.0.0
+
+- ✅ Full cognitive-evolution pipeline
+- ✅ 8 scan categories including synergy discovery
+- ✅ Predicted impact metrics
+- ✅ Receipt logging
 
 ### v0.7.8
 
-- ✅ Added Proposal Normalization Layer
-- ✅ Strict plan creation contract (only normalized actions)
-- ✅ Explicit rejection codes for normalization failures
-- ✅ Terminal truthfulness ("N actions normalized" or "proposals could not be normalized")
-- ✅ Evolve safety guarantee (rejects unnormalized plans)
-- ✅ Normalization test suite
-
-### v0.7.6/v0.7.7
-
-- ✅ Added governed autonomy mode
-- ✅ Implemented circuit breaker with auto-reset
-- ✅ Added safe-mode self-repair loop
-- ✅ Created public receipts endpoint
-- ✅ Added admin receipts dashboard
-- ✅ Added autonomy terminal commands
-- ✅ Added circuit breaker terminal commands
-- ✅ Created self-repair log table
-- ✅ Documented all security constraints
+- ✅ Proposal Normalization Layer
+- ✅ Strict plan creation contract
 
 ---
 
-*CMPSBL OS Substrate v0.7.8 — Scan Normalization Era*
+*CMPSBL OS Substrate v7.0.0 — Safety-First Evolution*
 *© 2025-2026 PromptFluid®. All rights reserved.*
