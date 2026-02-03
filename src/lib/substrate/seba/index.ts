@@ -41,6 +41,18 @@ export { CognitiveAnalyzer } from './cognitive-analyzer';
 export { ProposalGenerator } from './proposal-generator';
 export { GovernanceGate } from './governance-gate';
 export { EvolutionExecutor } from './evolution-executor';
+
+// LLM-Enhanced Analysis (v1.0.0)
+export { 
+  LLMAnalyzer, 
+  formatPredictedImpact, 
+  summarizePredictedImpacts,
+  type PredictedImpact,
+  type EnhancedInsight,
+  type LLMAnalysisResult,
+} from './llm-analyzer';
+
+// Persistence
 export { ProposalStore, type StoredProposal } from './proposal-store';
 export { 
   SEBAReceiptStore,
