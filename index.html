@@ -573,34 +573,57 @@
       })();
     </script>
 
-    <!-- Google tag (gtag.js) - Aggressively deferred for Core Web Vitals -->
+    <!-- Google tag (gtag.js) - User-interaction deferred for Core Web Vitals -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       
-      // Delay analytics initialization until after LCP (typically 2.5s)
-      function loadAnalytics() {
-        gtag('js', new Date());
-        gtag('config', 'G-88CLWS1QHK', {
-          'anonymize_ip': true,
-          'link_attribution': true,
-          'allow_google_signals': true
-        });
+      // Ultra-deferred: only load after user interaction OR 8s timeout
+      // This prevents unused JS from impacting LCP/FCP scores
+      (function() {
+        var loaded = false;
         
-        var script = document.createElement('script');
-        script.async = true;
-        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-88CLWS1QHK';
-        document.head.appendChild(script);
-      }
-      
-      // Use multiple deferral layers: wait for load, then idle, then timeout
-      window.addEventListener('load', function() {
-        if ('requestIdleCallback' in window) {
-          requestIdleCallback(loadAnalytics, { timeout: 5000 });
-        } else {
-          setTimeout(loadAnalytics, 3000);
+        function loadAnalytics() {
+          if (loaded) return;
+          loaded = true;
+          
+          gtag('js', new Date());
+          gtag('config', 'G-88CLWS1QHK', {
+            'anonymize_ip': true,
+            'link_attribution': true,
+            'allow_google_signals': true,
+            'transport_type': 'beacon'
+          });
+          
+          var script = document.createElement('script');
+          script.async = true;
+          script.src = 'https://www.googletagmanager.com/gtag/js?id=G-88CLWS1QHK';
+          document.head.appendChild(script);
+          
+          // Cleanup listeners
+          document.removeEventListener('click', loadAnalytics);
+          document.removeEventListener('scroll', loadAnalytics);
+          document.removeEventListener('keydown', loadAnalytics);
+          document.removeEventListener('touchstart', loadAnalytics);
         }
-      });
+        
+        // Load on first user interaction (ensures engagement before loading 144KB)
+        document.addEventListener('click', loadAnalytics, { once: true, passive: true });
+        document.addEventListener('scroll', loadAnalytics, { once: true, passive: true });
+        document.addEventListener('keydown', loadAnalytics, { once: true, passive: true });
+        document.addEventListener('touchstart', loadAnalytics, { once: true, passive: true });
+        
+        // Fallback: load after 8s if no interaction (for passive visitors)
+        window.addEventListener('load', function() {
+          setTimeout(function() {
+            if (!loaded && 'requestIdleCallback' in window) {
+              requestIdleCallback(loadAnalytics, { timeout: 2000 });
+            } else if (!loaded) {
+              loadAnalytics();
+            }
+          }, 8000);
+        });
+      })();
     </script>
     
   </head>
