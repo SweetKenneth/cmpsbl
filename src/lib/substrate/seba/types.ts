@@ -353,23 +353,48 @@ export interface SEBAConfig {
   priority_modules?: string[];
 }
 
+/**
+ * SEBA v2.1.0 Safety Controls
+ * ALL proposals require human approval by default
+ */
+export const SEBA_SAFETY_CONTROLS = {
+  AUTO_APPROVE_ENABLED: false,       // All proposals go to pending status
+  MAX_CYCLES_PER_DAY: 12,            // Prevents runaway scanning
+  MAX_PROPOSALS_PER_DAY: 20,         // Limits proposal generation
+  COOLDOWN_HOURS: 2,                 // Enforces gap between cycles
+  NEXUS_BUDGET_THRESHOLD: 0.5,       // Halts if AI budget exceeded (50%)
+  
+  // Free tier limits (conservative estimates)
+  FREE_TIER_DAILY_CALLS: 50,
+  FREE_TIER_MONTHLY_CALLS: 1000,
+  CALLS_PER_CYCLE: 2.5,              // Each cycle uses ~2-3 LLM calls
+} as const;
+
 export const DEFAULT_SEBA_CONFIG: SEBAConfig = {
+  // ═══ CRITICAL: Advisory mode with NO auto-approval ═══
   mode: 'advisory',
   enabled: true,
   
-  auto_approve_threshold: 0.85,
+  // Threshold set to 1.0 = effectively disables auto-approve
+  // ALL proposals require human review
+  auto_approve_threshold: 1.0,
   risk_tolerance: 'low',
   min_confidence_for_proposal: 0.6,
   
+  // Budget-aware limits for free tier
+  // ~50 calls/day ÷ 2.5 calls/cycle = ~20 cycles/day max
+  // Actual limit set lower for safety margin
   max_proposals_per_cycle: 3,
-  max_executions_per_day: 10,
-  cooldown_after_failure_ms: 300000,
-  cycle_interval_ms: 3600000,
+  max_executions_per_day: 8,          // Conservative for free tier
+  cooldown_after_failure_ms: 300000,  // 5 min
+  cycle_interval_ms: 7200000,         // 2 hours between auto-cycles
   
+  // ═══ MANDATORY: Human approval for everything ═══
   require_human_approval_for_high_risk: true,
   log_all_proposals: true,
   proposal_expiry_hours: 24,
   
+  // Safety
   max_health_degradation: 20,
   shadow_test_enabled: true,
   verification_enabled: true,

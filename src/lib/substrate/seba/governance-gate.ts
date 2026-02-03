@@ -286,8 +286,18 @@ export class GovernanceGate {
 
   /**
    * Check if proposal can auto-execute
+   * 
+   * SEBA v2.1.0 SAFETY: Auto-execution is DISABLED by default.
+   * All proposals require human approval via seba.approve + seba.execute
    */
   canAutoExecute(proposal: ImprovementProposal, decision: GovernanceDecision): boolean {
+    // ═══ SAFETY: AUTO_APPROVE_ENABLED is false by default ═══
+    // This means ALL proposals go to pending status for human review
+    if (this.config.auto_approve_threshold >= 1.0) {
+      console.log('[SEBA] Auto-execution disabled - all proposals require human approval');
+      return false;
+    }
+    
     // Must be in governed or autonomous mode
     if (this.config.mode !== 'governed' && this.config.mode !== 'autonomous') {
       return false;
@@ -298,7 +308,7 @@ export class GovernanceGate {
       return false;
     }
 
-    // Must meet confidence threshold
+    // Must meet confidence threshold (set to 1.0 = effectively always false)
     if (proposal.confidence_score < this.config.auto_approve_threshold) {
       return false;
     }
