@@ -1,5 +1,5 @@
 /**
- * CodeLab — Free Developer Playground for the promptfluid® Substrate
+ * CodeLab — Free Developer Playground for the CMPSBL Substrate
  * A unique space for devs to explore, build, and launch with free templates
  */
 
@@ -91,10 +91,10 @@ export default function CodeLab() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="CodeLab — Free Developer Playground | promptfluid®"
+        title="CodeLab — Free Developer Playground | CMPSBL"
         description="Build apps that dream, remember, and self-improve. Free templates, SDK, docs, and interactive workbench for the cognitive substrate."
-        canonical="https://promptfluid.com/codelab"
-        keywords={["substrate", "AI development", "codelab", "promptfluid", "developer tools", "free templates"]}
+        canonical="https://cmpsbl.com/codelab"
+        keywords={["substrate", "AI development", "codelab", "CMPSBL", "developer tools", "free templates"]}
       />
 
       <PublicNav />

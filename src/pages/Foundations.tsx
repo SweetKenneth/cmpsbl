@@ -83,7 +83,7 @@ export default function Foundations() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
-        <title>FNDTN v7 — Foundations | promptfluid®</title>
+        <title>FNDTN v7 — Foundations | CMPSBL</title>
         <meta name="description" content="CMPSBL Substrate OS v7.0.0 (FNDTN) — Reference standard for the substrate class. Download documentation, browse the 14-module architecture, and access archival records." />
       </Helmet>
 

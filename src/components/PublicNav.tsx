@@ -105,7 +105,7 @@ export function PublicNav() {
       icon: ScrollText,
       items: [
         { name: "Documentation", href: "/documentation", description: "API Reference", icon: FileText },
-        { name: "Library", href: "/library", description: "FNDTN v6 Documentation", icon: BookOpen },
+        { name: "Library", href: "/library", description: "FNDTN v7 Documentation", icon: BookOpen },
         { name: "Foundations", href: "/foundations", description: "FNDTN v6.0.0 Standard", icon: Layers },
         { name: "Namespace", href: "/namespace", description: "AI Governance Namespace", icon: Globe },
         { name: "LLMS.txt", href: "/llms-txt", description: "Machine Context Standard", icon: Terminal },

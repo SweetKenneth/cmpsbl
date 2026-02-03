@@ -394,9 +394,9 @@ export default function UseCases() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="Use Cases — CMPSBL for Every Industry | promptfluid®"
+        title="Use Cases — CMPSBL for Every Industry"
         description="Explore how CMPSBL powers intelligent applications across gaming, enterprise, healthcare, legal, education, and more."
-        canonical="https://promptfluid.com/use-cases"
+        canonical="https://cmpsbl.com/use-cases"
         keywords={[
           "AI use cases",
           "enterprise AI",

@@ -13,10 +13,10 @@ export default function Documentation() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Documentation — promptfluid® substrate Developer Guides"
-        description="Complete developer documentation for the promptfluid® cognitive orchestration substrate. API references, BYOK architecture, integration guides, and technical resources."
-        canonical="https://promptfluid.com/docs"
-        keywords={['promptfluid documentation', 'cognitive orchestration substrate', 'API reference', 'developer guides', 'AI integration', 'BYOK', 'bring your own keys']}
+        title="Documentation — CMPSBL Substrate Developer Guides"
+        description="Complete developer documentation for the CMPSBL cognitive orchestration substrate. API references, BYOK architecture, integration guides, and technical resources."
+        canonical="https://cmpsbl.com/docs"
+        keywords={['CMPSBL documentation', 'cognitive orchestration substrate', 'API reference', 'developer guides', 'AI integration', 'BYOK', 'bring your own keys']}
       />
 
       <PublicNav />
@@ -49,7 +49,7 @@ export default function Documentation() {
             </h1>
             
             <p className="text-xl text-muted-foreground">
-              Complete guide to the promptfluid® substrate. Everything you need to integrate, build, and scale cognitive orchestration for AI systems.
+              Complete guide to the CMPSBL substrate. Everything you need to integrate, build, and scale cognitive orchestration for AI systems.
               <span className="block mt-2 text-primary font-medium">100% BYOK — Zero compute costs for substrate operators.</span>
             </p>
           </div>
@@ -75,9 +75,9 @@ export default function Documentation() {
 
             <TabsContent value="overview" className="space-y-6">
               <Card className="p-8 bg-card border-border">
-                <h2 className="text-2xl font-bold mb-4 text-foreground">promptfluid® substrate</h2>
+                <h2 className="text-2xl font-bold mb-4 text-foreground">CMPSBL Substrate</h2>
                 <p className="text-muted-foreground mb-6 leading-relaxed">
-                  promptfluid® is a cognitive orchestration substrate that provides routing, memory, learning cycles,
+                  CMPSBL is a cognitive orchestration substrate that provides routing, memory, learning cycles,
                   observability, defense, and execution coordination for AI systems. It is model-agnostic, provider-agnostic, and runs on commodity cloud.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

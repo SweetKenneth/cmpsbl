@@ -179,15 +179,15 @@ export default function BrainProduct() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Cascade — Brain Substrate | promptfluid®"
-        description="Cascade is the brain substrate of the promptfluid® cognitive orchestration system. Memory reflection cycles, autonomous learning, and dreaming capabilities."
-        canonical="https://promptfluid.com/projects/brain"
+        title="Cascade — Brain Substrate | CMPSBL"
+        description="Cascade is the brain substrate of the CMPSBL cognitive orchestration system. Memory reflection cycles, autonomous learning, and dreaming capabilities."
+        canonical="https://cmpsbl.com/projects/brain"
         keywords={[
           'cognitive orchestration substrate',
           'autonomous AI',
           'brain substrate',
           'machine learning',
-          'promptfluid'
+          'CMPSBL'
         ]}
       />
 

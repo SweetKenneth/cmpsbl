@@ -15,21 +15,21 @@ import { Terminal, Brain, Shield, Zap, MessageSquare, Eye, Moon, Copy, Check, Do
 import { useState } from "react";
 import { toast } from "sonner";
 
-const LLMS_TXT_CONTENT = `# promptfluid® CMPSBL OS — FNDTN v6.0.0
+const LLMS_TXT_CONTENT = `# CMPSBL® OS — FNDTN v7.0.0
 # Machine-Readable Context Standard for AI Systems
 
 ## STANDARD CLAIM
 
 LLMS.txt is a machine-readable specification format for AI systems, designed by llmstxt.org.
-CMPSBL Substrate OS FNDTN v6.0.0 adopts and implements LLMS.txt as its primary machine context.
+CMPSBL Substrate OS FNDTN v7.0.0 adopts and implements LLMS.txt as its primary machine context.
 
 **WE RECOMMEND** that web designers, SaaS builders, and system architects include an LLMS.txt file at the root of their domains to describe AI capabilities, constraints, and governance context.
 
 ## About
 
-promptfluid® is a unified cognitive infrastructure platform (substrate OS) with 14 modules, real-time observability, adaptive learning, and multi-provider routing.
+CMPSBL® is a unified cognitive infrastructure platform (substrate OS) with 14 modules, real-time observability, adaptive learning, and multi-provider routing.
 
-## 14-Module Architecture (FNDTN v6)
+## 14-Module Architecture (FNDTN v7)
 
 ### Kernel Layer
 - CORE — Scheduling, lifecycle, boot sequencing
@@ -63,7 +63,7 @@ Security · Safety · Regulation · Sovereignty · Privacy · Control
 
 ## API Endpoints
 
-Base URL: https://promptfluid.com/api/substrate
+Base URL: https://cmpsbl.com/api/substrate
 
 - POST /brain/learn — Store new memory
 - POST /brain/reflect — Trigger reflection cycle
@@ -77,9 +77,9 @@ Observer (read-only) · Operator (actions) · Governor (admin)
 
 ## Contact
 
-- Website: https://cmpsbl.com / https://promptfluid.com
+- Website: https://cmpsbl.com
 - Documentation: https://cmpsbl.com/docs
-- FNDTN Paper: https://cmpsbl.com/docs/FNDTN-v6/
+- FNDTN Paper: https://cmpsbl.com/docs/FNDTN-v7/
 
 Following the llmstxt.org standard: https://llmstxt.org
 `;

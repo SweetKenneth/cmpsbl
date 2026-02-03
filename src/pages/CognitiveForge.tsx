@@ -78,9 +78,9 @@ export default function CognitiveForge() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="Cognitive Forge — promptfluid®"
+        title="Cognitive Forge — CMPSBL"
         description="Mint cognitive research bots with configurable attributes."
-        canonical="https://promptfluid.com/forge"
+        canonical="https://cmpsbl.com/forge"
       />
 
       <OSHeader userEmail={user?.email} role={role} />

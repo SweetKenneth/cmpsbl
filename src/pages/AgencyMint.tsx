@@ -88,9 +88,9 @@ export default function AgencyMint() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="Agency Mint — promptfluid®"
+        title="Agency Mint — CMPSBL"
         description="Create and deploy AI agencies with specialized cognitive teams."
-        canonical="https://promptfluid.com/agency"
+        canonical="https://cmpsbl.com/agency"
       />
 
       {/* Header */}
