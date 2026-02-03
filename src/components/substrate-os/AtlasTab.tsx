@@ -30,6 +30,7 @@ import {
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserRole } from '@/hooks/useUserRole';
 import { AtlasAutonomyPanel } from './atlas/AtlasAutonomyPanel';
+import { AtlasChatInterface } from './atlas/AtlasChatInterface';
 
 export function AtlasTab() {
   const { user } = useAuth();
@@ -41,7 +42,7 @@ export function AtlasTab() {
   const [autoblogStatus, setAutoblogStatus] = useState<{ enabled: boolean; mode: string; queue_length: number } | null>(null);
   const [loading, setLoading] = useState(true);
   const [executing, setExecuting] = useState(false);
-  const [activeTab, setActiveTab] = useState('autonomy');
+  const [activeTab, setActiveTab] = useState('command');
 
   useEffect(() => {
     loadData();
@@ -159,24 +160,33 @@ export function AtlasTab() {
 
       {/* Main Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
+          <TabsTrigger value="command" className="flex items-center gap-2">
+            <Compass className="w-3 h-3" />
+            <span className="hidden sm:inline">Command</span>
+          </TabsTrigger>
           <TabsTrigger value="autonomy" className="flex items-center gap-2">
             <Radio className="w-3 h-3" />
-            Autonomy
+            <span className="hidden sm:inline">Autonomy</span>
           </TabsTrigger>
           <TabsTrigger value="capabilities" className="flex items-center gap-2">
             <ToggleRight className="w-3 h-3" />
-            Capabilities
+            <span className="hidden sm:inline">Caps</span>
           </TabsTrigger>
           <TabsTrigger value="intel" className="flex items-center gap-2">
             <Brain className="w-3 h-3" />
-            Intel
+            <span className="hidden sm:inline">Intel</span>
           </TabsTrigger>
           <TabsTrigger value="audit" className="flex items-center gap-2">
             <FileText className="w-3 h-3" />
-            Audit
+            <span className="hidden sm:inline">Audit</span>
           </TabsTrigger>
         </TabsList>
+
+        {/* Command Tab - Conversational Control */}
+        <TabsContent value="command" className="mt-6">
+          <AtlasChatInterface />
+        </TabsContent>
 
         {/* Autonomy Tab - CLM + SEBA */}
         <TabsContent value="autonomy" className="mt-6">
