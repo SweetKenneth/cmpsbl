@@ -1,16 +1,27 @@
 /**
  * promptfluid® Substrate Initialization
  * v7.0.0 — Complete AI Operating System with 14 modules + SEBA
+ * 
+ * Performance: Uses requestIdleCallback for zero main-thread blocking
  */
 
-import { substrate } from './substrate';
-
 let initialized = false;
+let substrateModule: typeof import('./substrate') | null = null;
+
+// Lazy load substrate module only when needed
+async function getSubstrate() {
+  if (!substrateModule) {
+    substrateModule = await import('./substrate');
+  }
+  return substrateModule.substrate;
+}
 
 export async function initializeSubstrate(): Promise<void> {
   if (initialized) return;
   
   try {
+    const substrate = await getSubstrate();
+    
     console.log('⚡ Booting promptfluid® Substrate v7.0.0 (SEBA Era)...');
     console.log('─────────────────────────────────────────');
     
@@ -45,10 +56,23 @@ export async function initializeSubstrate(): Promise<void> {
   }
 }
 
-// Auto-initialize on import in browser environment
+// Auto-initialize on import in browser environment - heavily deferred
 if (typeof window !== 'undefined') {
-  // Delay initialization to not block page load
-  setTimeout(() => {
-    initializeSubstrate();
-  }, 1000);
+  // Use double-deferred initialization: wait for idle, then delay further
+  const scheduleInit = () => {
+    if ('requestIdleCallback' in window) {
+      (window as any).requestIdleCallback(() => {
+        initializeSubstrate();
+      }, { timeout: 5000 }); // 5s timeout, very low priority
+    } else {
+      setTimeout(() => initializeSubstrate(), 3000);
+    }
+  };
+  
+  // Wait for load event first, then schedule idle init
+  if (document.readyState === 'complete') {
+    scheduleInit();
+  } else {
+    window.addEventListener('load', scheduleInit, { once: true });
+  }
 }

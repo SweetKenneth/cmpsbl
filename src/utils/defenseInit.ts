@@ -1,13 +1,15 @@
 // PromptFluid Defense System Initialization
-import { 
-  logBotDetection, 
-  logBehaviorEvent, 
-  logCaptchaEvent, 
-  logDeviceEvent, 
-  logThreatEvent,
-  getBotDetections,
-  clearAllDefenseData
-} from './defenseTracking';
+// Performance: Lazy-loads defenseTracking module
+
+let defenseTrackingModule: typeof import('./defenseTracking') | null = null;
+
+// Lazy load defense tracking only when needed
+async function getDefenseTracking() {
+  if (!defenseTrackingModule) {
+    defenseTrackingModule = await import('./defenseTracking');
+  }
+  return defenseTrackingModule;
+}
 
 export const installDefenseSystem = (): void => {
   console.log('🛡️ PromptFluid Defense System - Installing...');
@@ -49,13 +51,15 @@ export const installDefenseSystem = (): void => {
   console.log(`\n🌐 PromptFluid Vision™ | AI That Flows\n`);
 };
 
-export const getDefenseSystemInfo = () => {
+export const getDefenseSystemInfo = async () => {
   const isInitialized = localStorage.getItem('pf_defense_initialized') === 'true';
   const installedAt = localStorage.getItem('pf_defense_installed_at');
   const version = localStorage.getItem('pf_defense_version');
   
+  // Lazy load for stats only when this function is called
+  const tracking = await getDefenseTracking();
   const stats = {
-    botDetections: getBotDetections().length,
+    botDetections: tracking.getBotDetections().length,
   };
   
   return {
@@ -88,9 +92,10 @@ export const getDefenseSystemInfo = () => {
 };
 
 // Reset entire defense system (use with caution)
-export const resetDefenseSystem = (): void => {
+export const resetDefenseSystem = async (): Promise<void> => {
   console.warn('⚠️ Resetting PromptFluid Defense System...');
-  clearAllDefenseData();
+  const tracking = await getDefenseTracking();
+  tracking.clearAllDefenseData();
   localStorage.removeItem('pf_defense_initialized');
   localStorage.removeItem('pf_defense_installed_at');
   localStorage.removeItem('pf_defense_version');

@@ -2,12 +2,13 @@
  * promptfluid® Substrate Provider
  * v6.0.0 — Cognitive Orchestration Substrate (14-Module Architecture)
  * 
+ * Performance: Lazy-loads substrate module, uses requestIdleCallback
  * Full-system audit completed: 2026-01-27
  * Wraps the application with substrate context and auto-initialization
  */
 
-import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { substrate, SubstrateModule } from '@/lib/substrate';
+import React, { createContext, useContext, useEffect, useState, ReactNode, useCallback, useRef } from 'react';
+import type { SubstrateModule } from '@/lib/substrate';
 
 interface ModuleStatus {
   active: boolean;
@@ -77,9 +78,21 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
     inclusive: defaultModuleStatus,
     cortex: defaultModuleStatus,
   });
+  
+  const substrateRef = useRef<typeof import('@/lib/substrate').substrate | null>(null);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  const checkModule = async (module: SubstrateModule): Promise<ModuleStatus> => {
+  const getSubstrate = useCallback(async () => {
+    if (!substrateRef.current) {
+      const mod = await import('@/lib/substrate');
+      substrateRef.current = mod.substrate;
+    }
+    return substrateRef.current;
+  }, []);
+
+  const checkModule = useCallback(async (module: SubstrateModule): Promise<ModuleStatus> => {
     try {
+      const substrate = await getSubstrate();
       const response = await substrate.invoke({ module, action: 'status' });
       return {
         active: response.success,
@@ -93,9 +106,9 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
         health: 0,
       };
     }
-  };
+  }, [getSubstrate]);
 
-  const refresh = async () => {
+  const refresh = useCallback(async () => {
     // Check all 14 substrate modules (13 core + cortex orchestrator)
     const moduleList: SubstrateModule[] = ['core', 'ripple', 'access', 'brain', 'decode', 'system', 'inclusive', 'defense', 'nexus', 'vision', 'dream', 'modernizer', 'integration', 'cortex'];
     const results = await Promise.all(moduleList.map(checkModule));
@@ -107,31 +120,52 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
 
     setModules(prev => ({ ...prev, ...newModules }));
     setInitialized(true);
-  };
+  }, [checkModule]);
 
   useEffect(() => {
-    if (autoInit) {
-      // Defer initialization to avoid blocking main thread during initial render
-      const deferredInit = () => {
-        refresh();
-        const interval = setInterval(refresh, 60000); // Refresh every minute
-        return () => clearInterval(interval);
-      };
-      
-      // Use requestIdleCallback if available, otherwise use setTimeout
+    if (!autoInit) return;
+    
+    // Defer initialization to avoid blocking main thread during initial render
+    const startRefreshInterval = () => {
+      refresh();
+      intervalRef.current = setInterval(refresh, 60000); // Refresh every minute
+    };
+    
+    // Use requestIdleCallback if available, otherwise use setTimeout
+    // Wait for page load first to minimize main-thread work during critical render
+    const scheduleInit = () => {
       if ('requestIdleCallback' in window) {
-        const handle = (window as Window & { requestIdleCallback: (cb: () => void, options?: { timeout: number }) => number }).requestIdleCallback(deferredInit, { timeout: 3000 });
+        const handle = (window as Window & { requestIdleCallback: (cb: () => void, options?: { timeout: number }) => number }).requestIdleCallback(startRefreshInterval, { timeout: 5000 });
         return () => {
           if ('cancelIdleCallback' in window) {
             (window as Window & { cancelIdleCallback: (handle: number) => void }).cancelIdleCallback(handle);
           }
+          if (intervalRef.current) clearInterval(intervalRef.current);
         };
       } else {
-        const timeout = setTimeout(deferredInit, 1000);
-        return () => clearTimeout(timeout);
+        const timeout = setTimeout(startRefreshInterval, 2000);
+        return () => {
+          clearTimeout(timeout);
+          if (intervalRef.current) clearInterval(intervalRef.current);
+        };
       }
+    };
+    
+    // Wait for document to be fully loaded before scheduling
+    if (document.readyState === 'complete') {
+      return scheduleInit();
+    } else {
+      const cleanup = { fn: () => {} };
+      const onLoad = () => {
+        cleanup.fn = scheduleInit() || (() => {});
+      };
+      window.addEventListener('load', onLoad, { once: true });
+      return () => {
+        window.removeEventListener('load', onLoad);
+        cleanup.fn();
+      };
     }
-  }, [autoInit]);
+  }, [autoInit, refresh]);
 
   // Calculate overall health from all initialized modules
   const activeModules = Object.values(modules).filter(m => m.health > 0);
