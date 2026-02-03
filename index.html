@@ -24,7 +24,7 @@
     <!-- 2026 SEO: Break Network Dependency Chain -->
     <!-- Inline script to inject preload hints for Vite-hashed assets immediately -->
     <script>
-      // Optimized: Inject preload/modulepreload hints at parse time to parallelize critical requests
+      // Optimized: Convert render-blocking CSS to non-blocking & add preload hints
       (function() {
         var h = document.head, d = document;
         // Create preload hint immediately (before Vite injects)
@@ -36,12 +36,26 @@
           if (crossorigin) l.crossOrigin = 'anonymous';
           h.appendChild(l);
         }
-        // Observer to catch Vite-injected assets and preload them
+        // Convert stylesheet to non-blocking using print/onload pattern
+        function makeNonBlocking(link) {
+          var href = link.href;
+          link.media = 'print';
+          link.onload = function() { this.media = 'all'; this.onload = null; };
+          // Add noscript fallback for accessibility
+          var ns = d.createElement('noscript');
+          var fallback = d.createElement('link');
+          fallback.rel = 'stylesheet';
+          fallback.href = href;
+          ns.appendChild(fallback);
+          link.parentNode.insertBefore(ns, link.nextSibling);
+        }
+        // Observer to catch Vite-injected assets
         var observer = new MutationObserver(function(mutations) {
           mutations.forEach(function(m) {
             m.addedNodes.forEach(function(n) {
-              if (n.tagName === 'LINK' && n.rel === 'stylesheet' && n.href.includes('/assets/')) {
+              if (n.tagName === 'LINK' && n.rel === 'stylesheet' && n.href && n.href.includes('/assets/')) {
                 preloadAsset(n.href, 'style', true);
+                makeNonBlocking(n);
               }
               if (n.tagName === 'SCRIPT' && n.type === 'module' && n.src && n.src.includes('/assets/')) {
                 preloadAsset(n.src, null, true, true);
