@@ -76,6 +76,18 @@ export function AtlasChatInterface({ className, compact = false }: AtlasChatInte
       // Execute command
       const result: CommandResult = await atlasInterpreter.execute(parsed);
 
+      // Handle clear session
+      if (result.data && typeof result.data === 'object' && 'action' in result.data && result.data.action === 'clear_session') {
+        setMessages([{
+          id: 'welcome',
+          role: 'system',
+          content: "Session cleared. Atlas Command ready. Try: \"activate SEBA\", \"show status\", or \"help\" for commands.",
+          timestamp: new Date(),
+        }]);
+        setIsProcessing(false);
+        return;
+      }
+
       const assistantMessage: ChatMessage = {
         id: crypto.randomUUID(),
         role: 'assistant',
@@ -116,8 +128,10 @@ export function AtlasChatInterface({ className, compact = false }: AtlasChatInte
   // Quick commands
   const quickCommands = [
     { label: 'Status', command: 'show status' },
+    { label: 'Usage', command: 'check usage' },
     { label: 'SEBA On', command: 'activate SEBA' },
     { label: 'Run Cycle', command: 'run evolution cycle' },
+    { label: 'Health', command: 'health check' },
     { label: 'Help', command: 'help' },
   ];
 
