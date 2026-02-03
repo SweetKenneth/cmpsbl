@@ -59,9 +59,9 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          // Only eagerly load react core - everything else deferred
+          // Aggressive code-splitting to reduce unused JS
           if (id.includes('node_modules')) {
-            // React core - essential for initial render
+            // React core - essential for initial render (minimal)
             if (id.includes('react-dom') || id.includes('/react/')) {
               return 'react-vendor';
             }
@@ -69,7 +69,13 @@ export default defineConfig(({ mode }) => ({
             if (id.includes('react-router')) {
               return 'react-vendor';
             }
-            // Supabase - defer to when auth is actually needed
+            // Supabase - split into auth vs realtime vs core for granular loading
+            if (id.includes('@supabase/realtime')) {
+              return 'supabase-realtime';
+            }
+            if (id.includes('@supabase/auth')) {
+              return 'supabase-auth';
+            }
             if (id.includes('@supabase/')) {
               return 'supabase';
             }
@@ -77,16 +83,46 @@ export default defineConfig(({ mode }) => ({
             if (id.includes('recharts') || id.includes('d3-')) {
               return 'charts';
             }
-            // Radix UI - split by usage pattern
+            // Radix UI - split into micro-chunks by component for tree-shaking
+            // Critical UI (needed immediately)
+            if (id.includes('@radix-ui/react-slot') || id.includes('@radix-ui/react-primitive')) {
+              return 'ui-core';
+            }
+            // Tooltip - separate chunk (often lazy-triggered)
             if (id.includes('@radix-ui/react-tooltip')) {
               return 'tooltip';
             }
+            // Dialog/Modal components - defer (user action triggered)
+            if (id.includes('@radix-ui/react-dialog') || id.includes('@radix-ui/react-alert-dialog')) {
+              return 'ui-dialog';
+            }
+            // Dropdown/Menu components - defer (user action triggered)
+            if (id.includes('@radix-ui/react-dropdown') || id.includes('@radix-ui/react-menu') || id.includes('@radix-ui/react-context-menu')) {
+              return 'ui-menu';
+            }
+            // Form components - defer (not on initial render)
+            if (id.includes('@radix-ui/react-select') || id.includes('@radix-ui/react-checkbox') || id.includes('@radix-ui/react-radio') || id.includes('@radix-ui/react-switch') || id.includes('@radix-ui/react-slider')) {
+              return 'ui-form';
+            }
+            // Navigation components
+            if (id.includes('@radix-ui/react-navigation') || id.includes('@radix-ui/react-tabs') || id.includes('@radix-ui/react-accordion')) {
+              return 'ui-nav';
+            }
+            // Popover/HoverCard - defer (user action triggered)
+            if (id.includes('@radix-ui/react-popover') || id.includes('@radix-ui/react-hover-card')) {
+              return 'ui-popover';
+            }
+            // All other Radix UI
             if (id.includes('@radix-ui/')) {
-              return 'ui-vendor';
+              return 'ui-misc';
             }
             // Framer Motion - defer animations
             if (id.includes('framer-motion')) {
               return 'motion';
+            }
+            // TanStack Query - essential but separate
+            if (id.includes('@tanstack/react-query')) {
+              return 'query';
             }
           }
         },
