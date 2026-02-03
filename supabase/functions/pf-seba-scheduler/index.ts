@@ -1,16 +1,18 @@
 /**
  * SEBA Scheduler Edge Function
- * v2.0.0 — 24/7 Autonomous Evolution Cycles with Full Pipeline
+ * v2.1.0 — Controlled Evolution with Manual Approval Gate
  * 
- * Runs complete SEBA cycles including:
- * - Full cognitive analysis (Memory, Learning, Imagination, Reasoning)
- * - Synergy pipeline opportunities
- * - Feature/enhancement/optimization scanning
- * - Proposal generation with predicted impact
- * - Governance evaluation
- * - Receipt logging
+ * SAFETY: This function ONLY generates proposals for human review.
+ * NO automatic application of changes. All proposals require manual approval.
  * 
- * Intended to be triggered by a cron job (hourly).
+ * Features:
+ * - Cognitive analysis (Memory, Learning, Imagination, Reasoning)
+ * - Synergy pipeline opportunity scanning
+ * - Proposal generation with predicted impact metrics
+ * - Governance evaluation (proposals only, no auto-apply)
+ * - Receipt logging for full audit trail
+ * 
+ * CRITICAL: Auto-apply is DISABLED. All proposals go to pending_review.
  */
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
@@ -21,11 +23,12 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Budget limits
-const MAX_CYCLES_PER_DAY = 24;
-const MAX_PROPOSALS_PER_DAY = 50;
-const NEXUS_BUDGET_THRESHOLD = 0.7;
-const COOLDOWN_HOURS = 1; // Minimum hours between full cycles
+// SAFETY CONTROLS - Conservative defaults
+const MAX_CYCLES_PER_DAY = 12; // Reduced from 24
+const MAX_PROPOSALS_PER_DAY = 20; // Reduced from 50
+const NEXUS_BUDGET_THRESHOLD = 0.5; // Reduced from 0.7
+const COOLDOWN_HOURS = 2; // Increased from 1
+const AUTO_APPROVE_ENABLED = false; // DISABLED - All proposals require manual review
 
 // Scan categories for comprehensive analysis
 const SCAN_CATEGORIES = [
@@ -533,7 +536,8 @@ serve(async (req) => {
     let pendingReviewCount = 0;
 
     for (const proposal of topProposals) {
-      const status = proposal.auto_approvable ? 'approved' : 'pending';
+      // SAFETY: All proposals go to pending review - no auto-approval
+      const status = AUTO_APPROVE_ENABLED && proposal.auto_approvable ? 'approved' : 'pending';
 
       const { error } = await supabase.from('evolution_proposals').insert({
         id: proposal.id,
@@ -616,12 +620,13 @@ serve(async (req) => {
       event_type: 'scheduler_cycle_complete',
       data: {
         cycle_id: cycleId,
-        version: '2.0.0',
+        version: '2.1.0',
         duration_ms: durationMs,
         insights_found: insights.length,
         proposals_generated: topProposals.length,
         proposals_auto_approved: autoApprovedCount,
         proposals_pending_review: pendingReviewCount,
+        auto_approve_disabled: !AUTO_APPROVE_ENABLED,
         scan_summary: {
           categories_scanned: SCAN_CATEGORIES,
           issues_found: issuesFound,
@@ -637,11 +642,12 @@ serve(async (req) => {
       outcome: 'success',
     });
 
-    console.log(`✅ SEBA Scheduler v2.0.0: Cycle ${cycleId.substring(0, 8)} complete in ${durationMs}ms`);
+    console.log(`✅ SEBA Scheduler v2.1.0: Cycle ${cycleId.substring(0, 8)} complete in ${durationMs}ms`);
     console.log(`   • Insights: ${insights.length} found`);
-    console.log(`   • Proposals: ${topProposals.length} generated (${autoApprovedCount} auto-approved)`);
+    console.log(`   • Proposals: ${topProposals.length} generated (ALL PENDING MANUAL REVIEW)`);
     console.log(`   • Synergies: ${synergiesDiscovered} discovered`);
-    console.log(`   • Next cycle: ${nextCycleAt}`);
+    console.log(`   • Auto-approve: DISABLED for safety`);
+    console.log(`   • Next cycle: Manual trigger only (cron disabled)`);
 
     return createResponse({
       success: true,
