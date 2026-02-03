@@ -93,6 +93,7 @@ async function callLovableAI(
   }
 
   try {
+    // Use Gemini model to avoid max_tokens vs max_completion_tokens issues
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -100,7 +101,7 @@ async function callLovableAI(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "openai/gpt-5-mini", // Good balance of quality and cost
+        model: "google/gemini-3-flash-preview", // Fast, reliable, no token param issues
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: prompt },
@@ -112,18 +113,18 @@ async function callLovableAI(
 
     if (response.status === 429) {
       console.warn("Lovable AI rate limited, falling back to free-tier");
-      return { content: '', provider: 'lovable_ai', model: 'gpt-5-mini', success: false };
+      return { content: '', provider: 'lovable_ai', model: 'gemini-3-flash', success: false };
     }
 
     if (response.status === 402) {
       console.warn("Lovable AI payment required, falling back to free-tier");
-      return { content: '', provider: 'lovable_ai', model: 'gpt-5-mini', success: false };
+      return { content: '', provider: 'lovable_ai', model: 'gemini-3-flash', success: false };
     }
 
     if (!response.ok) {
       const errorText = await response.text();
       console.error("Lovable AI error:", response.status, errorText);
-      return { content: '', provider: 'lovable_ai', model: 'gpt-5-mini', success: false };
+      return { content: '', provider: 'lovable_ai', model: 'gemini-3-flash', success: false };
     }
 
     const data = await response.json();
@@ -132,12 +133,12 @@ async function callLovableAI(
     return {
       content,
       provider: 'lovable_ai',
-      model: 'gpt-5-mini',
+      model: 'gemini-3-flash',
       success: true,
     };
   } catch (error) {
     console.error("Lovable AI exception:", error);
-    return { content: '', provider: 'lovable_ai', model: 'gpt-5-mini', success: false };
+    return { content: '', provider: 'lovable_ai', model: 'gemini-3-flash', success: false };
   }
 }
 
