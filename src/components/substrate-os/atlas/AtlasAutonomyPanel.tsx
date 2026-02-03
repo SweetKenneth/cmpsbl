@@ -22,15 +22,28 @@ import { cn } from '@/lib/utils';
 import type { SEBAMode } from '@/lib/substrate/seba';
 import { LovableAIUsageCard } from './LovableAIUsageCard';
 
+interface ProposedAction {
+  type: string;
+  target: string;
+  current?: unknown;
+  proposed?: unknown;
+  reversible?: boolean;
+  risk_factor?: number;
+}
+
 interface PendingProposal {
   id: string;
   short_id: string;
   title: string;
+  summary: string;
   category: string;
   risk_level: string;
   confidence_score: number;
   created_at: string;
   requires_human_approval: boolean;
+  // Code visibility fields
+  proposed_actions: ProposedAction[];
+  rollback_strategy?: string;
 }
 
 export function AtlasAutonomyPanel() {
@@ -48,7 +61,7 @@ export function AtlasAutonomyPanel() {
     setSystemActive(isActive);
   }, [seba.isEnabled, seba.mode]);
 
-  // Load pending proposals from actual database
+  // Load pending proposals from actual database with full code visibility
   const loadProposals = useCallback(async () => {
     try {
       // Fetch directly from ProposalStore for real persistence
@@ -62,11 +75,15 @@ export function AtlasAutonomyPanel() {
           id: p.id,
           short_id: diffs.proposal_short_id || p.id.slice(0, 8),
           title: p.title,
+          summary: p.summary || '',
           category: suggestedChange.category || 'general',
           risk_level: expectedImpact.risk_level || 'low',
           confidence_score: p.confidence,
           created_at: p.created_at,
           requires_human_approval: expectedImpact.requires_human_approval ?? true,
+          // Code visibility: what EXACTLY will change
+          proposed_actions: (suggestedChange.actions || []) as ProposedAction[],
+          rollback_strategy: suggestedChange.rollback_strategy || 'Restore previous config',
         };
       }));
     } catch (err) {
@@ -545,7 +562,7 @@ export function AtlasAutonomyPanel() {
                     </p>
                   </motion.div>
                 ) : (
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     {pendingProposals.map((proposal, i) => {
                       const isProcessing = processingProposal === proposal.id;
                       
@@ -569,6 +586,9 @@ export function AtlasAutonomyPanel() {
                               <Badge variant="outline" className="text-[10px] font-mono border-border/50 text-muted-foreground">
                                 {proposal.category}
                               </Badge>
+                              <Badge variant="outline" className="text-[10px] border-amber-400/40 text-amber-300">
+                                REQUIRES APPROVAL
+                              </Badge>
                             </div>
                             <span className="text-[10px] text-muted-foreground font-mono bg-muted/30 px-2 py-0.5 rounded-full">
                               {Math.round(proposal.confidence_score * 100)}% conf
@@ -576,9 +596,59 @@ export function AtlasAutonomyPanel() {
                           </div>
                           
                           <h4 className="text-sm font-medium mb-1.5 text-foreground/90">{proposal.title}</h4>
-                          <p className="text-[10px] text-muted-foreground font-mono mb-4">
+                          <p className="text-[10px] text-muted-foreground font-mono mb-3">
                             ID: {proposal.short_id} • {new Date(proposal.created_at).toLocaleString()}
                           </p>
+                          
+                          {/* Summary / Rationale */}
+                          {proposal.summary && (
+                            <div className="mb-3 p-2.5 rounded-lg bg-muted/20 border border-border/30">
+                              <p className="text-[11px] text-muted-foreground leading-relaxed">{proposal.summary}</p>
+                            </div>
+                          )}
+                          
+                          {/* CODE VISIBILITY: Show exactly what will change */}
+                          {proposal.proposed_actions.length > 0 && (
+                            <div className="mb-3 space-y-2">
+                              <p className="text-[10px] font-semibold text-foreground/70 uppercase tracking-wider flex items-center gap-1.5">
+                                <Eye className="w-3 h-3" />
+                                Proposed Changes ({proposal.proposed_actions.length})
+                              </p>
+                              <div className="space-y-1.5 p-2.5 rounded-lg bg-black/30 border border-border/30 font-mono text-[10px]">
+                                {proposal.proposed_actions.map((action, actionIdx) => (
+                                  <div key={actionIdx} className="flex items-start gap-2">
+                                    <span className="text-cyan-400 shrink-0">[{action.type}]</span>
+                                    <div className="flex-1 min-w-0">
+                                      <span className="text-amber-300">{action.target}</span>
+                                      {action.current !== undefined && (
+                                        <div className="text-red-400 mt-0.5">
+                                          - {typeof action.current === 'object' ? JSON.stringify(action.current) : String(action.current)}
+                                        </div>
+                                      )}
+                                      {action.proposed !== undefined && (
+                                        <div className="text-emerald-400">
+                                          + {typeof action.proposed === 'object' ? JSON.stringify(action.proposed) : String(action.proposed)}
+                                        </div>
+                                      )}
+                                      {action.reversible !== undefined && (
+                                        <span className={cn(
+                                          "text-[9px] px-1.5 py-0.5 rounded ml-1",
+                                          action.reversible ? "bg-emerald-500/20 text-emerald-400" : "bg-amber-500/20 text-amber-400"
+                                        )}>
+                                          {action.reversible ? 'reversible' : 'NOT reversible'}
+                                        </span>
+                                      )}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                              {proposal.rollback_strategy && (
+                                <p className="text-[9px] text-muted-foreground">
+                                  <strong>Rollback:</strong> {proposal.rollback_strategy}
+                                </p>
+                              )}
+                            </div>
+                          )}
                           
                           <div className="flex gap-2">
                             <Button

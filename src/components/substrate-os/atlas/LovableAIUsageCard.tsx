@@ -19,7 +19,8 @@ interface UsageStats {
   thisMonth: { calls: number; tokens: number };
 }
 
-// Free tier estimates (Lovable doesn't publish exact numbers, these are conservative)
+// Budget limits synced with SEBA v2.1.0 safety controls
+// These are conservative free tier estimates based on Lovable AI gateway
 const FREE_TIER_LIMITS = {
   daily: 50,      // ~50 calls/day included free
   weekly: 300,    // ~300 calls/week
@@ -28,6 +29,17 @@ const FREE_TIER_LIMITS = {
 
 // Cost per call estimate (after free tier)
 const COST_PER_CALL_CENTS = 0.1; // ~$0.001 per call
+
+// Each SEBA evolution cycle uses ~2-3 LLM calls:
+// 1. SEBA analyze (pf-seba-llm-analyze)
+// 2. Encoded generate (pf-encoded-agent) 
+// 3. Optional: verification call
+const CALLS_PER_CYCLE = 2.5;
+
+// Budget-aware limits (conservative for safety)
+// 50 calls/day ÷ 2.5 calls/cycle = ~20 cycles/day max
+const DAILY_CYCLE_LIMIT = Math.floor(FREE_TIER_LIMITS.daily / CALLS_PER_CYCLE);
+const MONTHLY_CYCLE_LIMIT = Math.floor(FREE_TIER_LIMITS.monthly / CALLS_PER_CYCLE);
 
 export function LovableAIUsageCard() {
   const [usage, setUsage] = useState<UsageStats | null>(null);
@@ -108,12 +120,13 @@ export function LovableAIUsageCard() {
   };
 
   const estimateCycles = (callsRemaining: number) => {
-    // Each evolution cycle = ~2-3 LLM calls (SEBA analyze + Encoded generate)
-    return Math.floor(callsRemaining / 2.5);
+    return Math.floor(callsRemaining / CALLS_PER_CYCLE);
   };
 
   const dailyRemaining = Math.max(0, FREE_TIER_LIMITS.daily - (usage?.today.calls || 0));
   const monthlyRemaining = Math.max(0, FREE_TIER_LIMITS.monthly - (usage?.thisMonth.calls || 0));
+  const dailyCyclesRemaining = estimateCycles(dailyRemaining);
+  const monthlyCyclesRemaining = estimateCycles(monthlyRemaining);
 
   return (
     <motion.div
@@ -236,7 +249,10 @@ export function LovableAIUsageCard() {
           )}
 
           <p className="text-[10px] text-muted-foreground/70 text-center pt-1">
-            Free tier: ~50/day, ~1000/month • Each cycle ≈ 2-3 calls
+            Free tier: ~{FREE_TIER_LIMITS.daily}/day, ~{FREE_TIER_LIMITS.monthly}/month calls
+          </p>
+          <p className="text-[10px] text-muted-foreground/60 text-center">
+            ≈ {DAILY_CYCLE_LIMIT} cycles/day, {MONTHLY_CYCLE_LIMIT} cycles/month (SEBA advisory mode)
           </p>
         </CardContent>
       </Card>

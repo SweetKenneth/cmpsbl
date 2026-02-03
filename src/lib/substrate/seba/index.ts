@@ -15,6 +15,7 @@ export {
   SEBA_VERSION,
   SEBA_CODENAME,
   DEFAULT_SEBA_CONFIG,
+  SEBA_SAFETY_CONTROLS,
   type SEBAPhase,
   type SEBAMode,
   type ImprovementCategory,
