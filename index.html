@@ -21,23 +21,37 @@
     <link rel="dns-prefetch" href="https://www.google-analytics.com" />
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
     
-    <!-- 2026 SEO: Preload Critical Assets (LCP optimization) -->
-    <!-- Early resource hints for critical rendering path - breaks dependency chain -->
-    <link rel="preload" as="style" href="/assets/index.css" onload="this.onload=null;this.rel='stylesheet'" />
-    <noscript><link rel="stylesheet" href="/assets/index.css" /></noscript>
+    <!-- 2026 SEO: Break Network Dependency Chain -->
+    <!-- Inline script to inject preload hints for Vite-hashed assets immediately -->
     <script>
-      // Break network dependency chain by preloading critical assets in parallel
+      // Optimized: Inject preload/modulepreload hints at parse time to parallelize critical requests
       (function() {
-        var head = document.head;
-        // Find and preload main CSS (Vite injects actual hashed filename)
-        var links = document.querySelectorAll('link[rel="stylesheet"][href*="index"]');
-        links.forEach(function(link) {
-          var preload = document.createElement('link');
-          preload.rel = 'preload';
-          preload.as = 'style';
-          preload.href = link.href;
-          head.insertBefore(preload, head.firstChild);
+        var h = document.head, d = document;
+        // Create preload hint immediately (before Vite injects)
+        function preloadAsset(href, as, crossorigin, isModule) {
+          var l = d.createElement('link');
+          l.rel = isModule ? 'modulepreload' : 'preload';
+          l.href = href;
+          if (as) l.as = as;
+          if (crossorigin) l.crossOrigin = 'anonymous';
+          h.appendChild(l);
+        }
+        // Observer to catch Vite-injected assets and preload them
+        var observer = new MutationObserver(function(mutations) {
+          mutations.forEach(function(m) {
+            m.addedNodes.forEach(function(n) {
+              if (n.tagName === 'LINK' && n.rel === 'stylesheet' && n.href.includes('/assets/')) {
+                preloadAsset(n.href, 'style', true);
+              }
+              if (n.tagName === 'SCRIPT' && n.type === 'module' && n.src && n.src.includes('/assets/')) {
+                preloadAsset(n.src, null, true, true);
+              }
+            });
+          });
         });
+        observer.observe(h, { childList: true });
+        // Disconnect after initial load
+        window.addEventListener('load', function() { observer.disconnect(); }, { once: true });
       })();
     </script>
     <!-- Critical CSS for FCP - inline above-the-fold styles -->
