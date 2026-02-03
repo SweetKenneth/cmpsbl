@@ -8,31 +8,45 @@
 
 This documentation provides everything you need to understand, evaluate, and build with CMPSBL® (Composable) — the cognitive infrastructure layer that makes AI applications smarter, safer, and self-improving.
 
+**What's Inside:** 14 integrated modules, 120 synergy pipelines, 98 custom executors, and the SEBA (Self-Evolving Bounded Agent) architecture.
+
 ---
 
 ## Quick Navigation
 
-| Document | For |
-|----------|-----|
-| [Executive Summary](./01-EXECUTIVE-SUMMARY.md) | Investors, Executives |
-| [What is CMPSBL?](./02-WHAT-IS-CMPSBL.md) | Everyone |
-| [Key Capabilities](./03-KEY-CAPABILITIES.md) | Technical Evaluators |
-| [Use Cases](./04-USE-CASES.md) | Business Leaders, Developers |
-| [Architecture Overview](./05-ARCHITECTURE.md) | Engineers, CTOs |
-| [Getting Started](./06-GETTING-STARTED.md) | Developers |
-| [Pricing & Licensing](./07-LICENSING.md) | Decision Makers |
-| [FAQ](./08-FAQ.md) | Everyone |
-| [Security & Compliance](./09-SECURITY-COMPLIANCE.md) | Enterprise, Compliance |
-| [Synergy Capabilities](./09-SYNERGY-CAPABILITIES.md) | Technical Evaluators |
-| [Roadmap](./10-ROADMAP.md) | Investors, Planners |
-| [Marketplace Features](./10-MARKETPLACE-FEATURES.md) | Developers, Buyers |
-| [Case Studies](./11-CASE-STUDIES.md) | Business Leaders |
-| [Market Comparison](./12-COMPARISONS.md) | Decision Makers |
-| [Investor Overview](./13-INVESTOR-OVERVIEW.md) | Investors |
+### For Everyone
+| Document | Description |
+|----------|-------------|
+| [What is CMPSBL?](./02-WHAT-IS-CMPSBL.md) | Plain-English introduction |
+| [FAQ](./08-FAQ.md) | Common questions answered |
+
+### For Developers
+| Document | Description |
+|----------|-------------|
+| [Getting Started](./06-GETTING-STARTED.md) | Quick start guide |
+| [Architecture Overview](./05-ARCHITECTURE.md) | Technical deep dive |
+| [Key Capabilities](./03-KEY-CAPABILITIES.md) | Feature reference |
+| [Synergy Capabilities](./09-SYNERGY-CAPABILITIES.md) | 120-pipeline matrix |
+
+### For Business Leaders
+| Document | Description |
+|----------|-------------|
+| [Executive Summary](./01-EXECUTIVE-SUMMARY.md) | Strategic overview |
+| [Use Cases](./04-USE-CASES.md) | Industry applications |
+| [Case Studies](./11-CASE-STUDIES.md) | Real-world examples |
+| [Market Comparison](./12-COMPARISONS.md) | Competitive analysis |
+
+### For Decision Makers
+| Document | Description |
+|----------|-------------|
+| [Pricing & Licensing](./07-LICENSING.md) | Hybrid licensing model |
+| [Security & Compliance](./09-SECURITY-COMPLIANCE.md) | Enterprise requirements |
+| [Roadmap](./10-ROADMAP.md) | 2028 development plan |
+| [Investor Overview](./13-INVESTOR-OVERVIEW.md) | Investment thesis |
 
 ---
 
-## The One-Sentence Pitch
+## The Pitch
 
 > **"We built the operating system for AI applications — memory, learning, security, and multi-provider routing that literally improves itself over time."**
 
@@ -54,6 +68,7 @@ See [Pricing & Licensing](./07-LICENSING.md) for details.
 | Channel | Details |
 |---------|---------|
 | **Email** | PromptFluid@gmail.com |
+| **Phone** | (214) 548-0883 |
 | **Web** | https://cmpsbl.com |
 
 ---

@@ -26,8 +26,9 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
       </Button>
       
       {/* CMPSBL text for mobile */}
-      <div className="lg:hidden flex items-center">
+      <div className="lg:hidden flex items-center gap-2">
         <span className="text-xl font-bold glow-text">CMPSBL</span>
+        <span className="text-[10px] font-mono text-muted-foreground hidden sm:inline">v7.0.0</span>
       </div>
 
       <div className="hidden lg:flex items-center gap-4 flex-1">
