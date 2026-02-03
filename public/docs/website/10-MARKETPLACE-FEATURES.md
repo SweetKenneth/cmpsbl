@@ -218,22 +218,36 @@ await workflow.deploy();
 
 ## Licensing & Terms
 
+### Hybrid Model
+
+CMPSBL uses a hybrid licensing model:
+
+**API Tiers (Developer/Team/Research):**
+- Hosted API access — no source code distribution
+- We handle infrastructure, updates, and scaling
+- Your data stays on our secure infrastructure
+
+**Enterprise Tier ($49,999/year):**
+- Full source code access for self-hosted deployment
+- Air-gapped / on-premise deployment rights
+- Complete infrastructure control
+
 ### Templates
 - One-time purchase
-- Unlimited deployments
-- Source code included
+- Unlimited deployments via API
+- Source code for template configuration
 - Updates available
 
 ### Capabilities
 - Licensed download
-- Local execution only
+- Executes via hosted API (API tiers) or local (Enterprise)
 - No runtime license checks
 - Version updates purchasable
 
 ### CodeLab
 - Free tier with limits
 - Pro tier for production
-- Enterprise for teams
+- Enterprise for self-hosted
 
 ---
 

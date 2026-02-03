@@ -320,10 +320,10 @@ export default function Explore() {
   return (
     <div ref={containerRef} className="min-h-screen bg-background overflow-hidden">
       <SEO 
-        title="CMPSBL™ Substrate OS v6.0.0 — 14-Module Cognitive Infrastructure Standard"
-        description="The cognitive infrastructure standard: 14 modules, five-layer architecture (Kernel, Cognitive, Operational, Admin, Orchestrator), integrated AI Governance Namespace (AIGVRN), LLMS.txt machine context. 109+ templates, 260+ commands. Developer $2,999, Team $9,999, Research $19,999, Enterprise $49,999."
-        canonical="https://promptfluid.com"
-        keywords={['CMPSBL', 'Substrate OS', 'v6.0.0', '14-module architecture', 'cognitive OS', 'AI governance', 'AIGVRN', 'LLMS.txt', 'FNDTN', 'persistent memory', 'dream cycles', 'CORTEX', 'Kenneth E Sweet Jr']}
+        title="CMPSBL™ Substrate OS v7.0.0 — 14-Module Cognitive Infrastructure"
+        description="The cognitive infrastructure standard: 14 modules, hosted API access for developers ($2,999/yr), self-hosted Enterprise ($49,999/yr). 109+ templates, 98 synergy pipelines, 260+ commands."
+        canonical="https://cmpsbl.com"
+        keywords={['CMPSBL', 'Substrate OS', 'v7.0.0', '14-module architecture', 'cognitive OS', 'AI governance', 'hosted API', 'enterprise self-hosted', 'persistent memory', 'dream cycles']}
       />
 
       <PublicNav />
