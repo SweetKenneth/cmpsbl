@@ -6,7 +6,9 @@
 
 ## Overview
 
-CMPSBL® is licensed as cognitive infrastructure — you bring your own AI provider keys, deploy on your infrastructure, and get access to the full substrate.
+CMPSBL® is licensed as cognitive infrastructure with a hybrid model:
+- **API tiers (Developer/Team/Research):** Access via our hosted API — no source code distribution
+- **Enterprise tier:** Full source code with self-hosted deployment rights
 
 ---
 
@@ -29,16 +31,21 @@ CMPSBL® is licensed as cognitive infrastructure — you bring your own AI provi
 Perfect for startups and small teams building AI-powered products.
 
 ### Includes
-- ✓ Full substrate access (all 14 modules)
-- ✓ Local deployment on your infrastructure
+- ✓ Full API access (all 14 modules via hosted API)
+- ✓ Unlimited API calls (fair use)
 - ✓ Unlimited memory storage
 - ✓ Unlimited AI routing
 - ✓ Email support
 - ✓ Documentation access
 - ✓ Community forum access
 
+### What You Get
+- Hosted API access — no source code distribution
+- Your data stays on our secure infrastructure
+- We handle updates, scaling, and maintenance
+
 ### Limits
-- Single production deployment
+- API access only (no self-hosted deployment)
 - Standard SLA
 
 ### Get Started
@@ -79,7 +86,8 @@ For production deployments with enterprise requirements.
 
 ### Includes
 - Everything in Research, plus:
-- ✓ Unlimited deployments
+- ✓ **Source code access** — deploy on your infrastructure
+- ✓ Unlimited self-hosted deployments
 - ✓ 99.9% SLA guarantee
 - ✓ Dedicated support channel
 - ✓ Custom integration support
@@ -87,10 +95,15 @@ For production deployments with enterprise requirements.
 - ✓ Compliance documentation
 - ✓ Training sessions
 
+### What You Get
+- Full source code for self-hosted deployment
+- Air-gapped / on-premise deployment rights
+- Complete infrastructure control
+
 ### Best For
-- Production AI applications
-- Enterprise companies
-- Regulated industries
+- Production AI applications requiring source access
+- Enterprise companies with compliance requirements
+- Regulated industries (healthcare, finance, government)
 
 ### Get Started
 Contact us for enterprise evaluation.
@@ -146,11 +159,11 @@ Contact founders directly.
 
 ## What You Provide (BYOK)
 
-| Item | Description |
-|------|-------------|
-| **AI Provider Keys** | OpenAI, Anthropic, Google, etc. |
-| **Infrastructure** | Your servers or cloud account |
-| **Database** | PostgreSQL (Supabase recommended) |
+| Item | Tier | Description |
+|------|------|-------------|
+| **AI Provider Keys** | All tiers | OpenAI, Anthropic, Google, etc. |
+| **Infrastructure** | Enterprise only | Your servers or cloud account |
+| **Database** | Enterprise only | PostgreSQL (Supabase recommended) |
 
 ---
 

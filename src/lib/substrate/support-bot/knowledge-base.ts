@@ -390,11 +390,13 @@ Contact promptfluid@gmail.com for quotes and custom arrangements.`,
 5. Receive instant access and download links
 
 **Included:**
-• Full SDK access
-• Local deployment rights
+• Full API access (all 14 modules via hosted API)
+• Unlimited API calls (fair use)
 • Documentation library
 • 12 months of updates
 • Community support channel
+
+Note: Developer license provides hosted API access. For self-hosted deployment with source code, see Enterprise tier ($49,999/yr).
 
 For Research, Enterprise, or Strategic licenses, contact promptfluid@gmail.com for contract-based purchase.`,
     category: 'how_to',
