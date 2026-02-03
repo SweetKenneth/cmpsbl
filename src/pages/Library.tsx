@@ -127,6 +127,15 @@ const LIBRARY_DOCS = [
     readTime: "8 min"
   },
   { 
+    id: "09", 
+    name: "SYNERGY-CAPABILITIES", 
+    title: "Synergy Capabilities",
+    category: "technical",
+    description: "98 cross-module pipelines that multiply intelligence",
+    featured: true,
+    readTime: "12 min"
+  },
+  { 
     id: "10", 
     name: "ROADMAP", 
     title: "Product Roadmap",
@@ -134,6 +143,15 @@ const LIBRARY_DOCS = [
     description: "Vision and development timeline through 2028",
     featured: false,
     readTime: "5 min"
+  },
+  { 
+    id: "10", 
+    name: "MARKETPLACE-FEATURES", 
+    title: "Marketplace Features",
+    category: "technical",
+    description: "CodeLab, Templates, and Capabilities Depot",
+    featured: false,
+    readTime: "6 min"
   },
   { 
     id: "11", 

@@ -22,14 +22,30 @@ This documentation provides everything you need to understand, evaluate, and bui
 | [Getting Started](./06-GETTING-STARTED.md) | Developers |
 | [Pricing & Licensing](./07-LICENSING.md) | Decision Makers |
 | [FAQ](./08-FAQ.md) | Everyone |
-| [**Synergy Capabilities**](./09-SYNERGY-CAPABILITIES.md) | **Technical Evaluators, Investors** |
-| [**Marketplace Features**](./10-MARKETPLACE-FEATURES.md) | **Developers, Buyers** |
+| [Security & Compliance](./09-SECURITY-COMPLIANCE.md) | Enterprise, Compliance |
+| [Synergy Capabilities](./09-SYNERGY-CAPABILITIES.md) | Technical Evaluators |
+| [Roadmap](./10-ROADMAP.md) | Investors, Planners |
+| [Marketplace Features](./10-MARKETPLACE-FEATURES.md) | Developers, Buyers |
+| [Case Studies](./11-CASE-STUDIES.md) | Business Leaders |
+| [Market Comparison](./12-COMPARISONS.md) | Decision Makers |
+| [Investor Overview](./13-INVESTOR-OVERVIEW.md) | Investors |
 
 ---
 
 ## The One-Sentence Pitch
 
 > **"We built the operating system for AI applications — memory, learning, security, and multi-provider routing that literally improves itself over time."**
+
+---
+
+## Licensing Model
+
+CMPSBL® uses a **hybrid licensing model**:
+
+- **API Tiers (Developer/Team/Research):** Hosted API access — no source code distribution
+- **Enterprise Tier:** Full source code with self-hosted deployment rights
+
+See [Pricing & Licensing](./07-LICENSING.md) for details.
 
 ---
 
