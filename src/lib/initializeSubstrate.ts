@@ -2,7 +2,10 @@
  * promptfluid® Substrate Initialization
  * v7.0.0 — Complete AI Operating System with 14 modules + SEBA
  * 
- * Performance: Uses requestIdleCallback for zero main-thread blocking
+ * Performance: Triple-deferred initialization for zero main-thread blocking
+ * - Waits for document idle state
+ * - Uses requestIdleCallback with low priority
+ * - Yields to main thread between module pings
  */
 
 let initialized = false;
@@ -16,11 +19,23 @@ async function getSubstrate() {
   return substrateModule.substrate;
 }
 
+// Yield to main thread to prevent long tasks
+const yieldToMain = () => new Promise<void>(resolve => {
+  if ('scheduler' in window && 'yield' in (window as any).scheduler) {
+    (window as any).scheduler.yield().then(resolve);
+  } else {
+    setTimeout(resolve, 0);
+  }
+});
+
 export async function initializeSubstrate(): Promise<void> {
   if (initialized) return;
   
   try {
     const substrate = await getSubstrate();
+    
+    // Yield before heavy work
+    await yieldToMain();
     
     console.log('⚡ Booting promptfluid® Substrate v7.0.0 (SEBA Era)...');
     console.log('─────────────────────────────────────────');
@@ -37,14 +52,13 @@ export async function initializeSubstrate(): Promise<void> {
     if (bootResult.success) {
       console.log('✅ Substrate boot complete: 14 modules loaded | Health: 100%');
     } else {
-      // Fallback to individual pings
-      const results = await Promise.allSettled(
-        bootOrder.map(module => 
-          substrate.invoke({ module, action: 'pulse' })
-        )
-      );
-      
-      const activeModules = results.filter(r => r.status === 'fulfilled' && (r.value as { success?: boolean }).success).length;
+      // Fallback to individual pings with yielding between each
+      let activeModules = 0;
+      for (const module of bootOrder) {
+        await yieldToMain(); // Yield between each module ping
+        const result = await substrate.invoke({ module, action: 'pulse' });
+        if (result.success) activeModules++;
+      }
       
       console.log(`✅ Substrate initialized: ${activeModules}/${bootOrder.length} modules active`);
     }
@@ -58,14 +72,15 @@ export async function initializeSubstrate(): Promise<void> {
 
 // Auto-initialize on import in browser environment - heavily deferred
 if (typeof window !== 'undefined') {
-  // Use double-deferred initialization: wait for idle, then delay further
+  // Use triple-deferred initialization: wait for idle, then delay further
   const scheduleInit = () => {
     if ('requestIdleCallback' in window) {
       (window as any).requestIdleCallback(() => {
-        initializeSubstrate();
-      }, { timeout: 5000 }); // 5s timeout, very low priority
+        // Use setTimeout to break up the task
+        setTimeout(() => initializeSubstrate(), 100);
+      }, { timeout: 10000 }); // 10s timeout, very low priority
     } else {
-      setTimeout(() => initializeSubstrate(), 3000);
+      setTimeout(() => initializeSubstrate(), 5000);
     }
   };
   
@@ -73,6 +88,6 @@ if (typeof window !== 'undefined') {
   if (document.readyState === 'complete') {
     scheduleInit();
   } else {
-    window.addEventListener('load', scheduleInit, { once: true });
+    window.addEventListener('load', scheduleInit, { once: true, passive: true });
   }
 }
