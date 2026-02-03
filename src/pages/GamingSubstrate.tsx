@@ -286,7 +286,7 @@ export default function GamingSubstrate() {
       <SEO
         title="Gaming AI — NPCs That Dream & Remember | CMPSBL"
         description="Give your NPCs persistent memory, dream cycles, and genuine personalities. CMPSBL cognitive infrastructure for video game AI."
-        canonical="https://promptfluid.com/gaming"
+        canonical="https://cmpsbl.com/gaming"
         keywords={[
           "NPC AI",
           "game AI",

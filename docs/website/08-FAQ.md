@@ -35,7 +35,7 @@ Yes. The MODERNIZER module proposes code improvements, which go through confiden
 
 ### Can I self-host CMPSBL?
 
-Yes. All license tiers include the ability to deploy on your own infrastructure. You have complete control over where your data lives.
+**Enterprise tier only.** Developer, Team, and Research tiers use our hosted API infrastructure. Enterprise tier ($49,999/year) includes full source code access and self-hosted deployment rights for on-premise or air-gapped environments.
 
 ### How does memory work?
 
@@ -49,7 +49,9 @@ The system automatically demotes, compresses, and optimizes memory over time. Pr
 
 ### What about data privacy?
 
-Your data stays on your infrastructure. We never see your memories, prompts, or responses. The substrate runs entirely in your environment.
+**API tiers (Developer/Team/Research):** Your data is processed on our secure hosted infrastructure with strict isolation — we never share or use your data for training.
+
+**Enterprise tier:** Full self-hosted deployment means your data stays entirely on your infrastructure.
 
 ---
 
@@ -68,7 +70,7 @@ Plus your own AI provider costs (you pay OpenAI, Anthropic, etc. directly).
 
 ### What's included in the license?
 
-All 14 modules, full documentation, version updates, and support appropriate to your tier. You bring your own AI provider keys and infrastructure.
+All 14 modules, full documentation, version updates, and support appropriate to your tier. API tiers receive hosted access; Enterprise tier receives source code and self-hosted deployment rights. You bring your own AI provider keys.
 
 ### Can I use this for commercial products?
 
@@ -117,11 +119,15 @@ Yes. Security is built into the core with:
 
 ### Where does my data live?
 
-On your infrastructure. CMPSBL is self-hosted — your data never leaves your control.
+**API tiers (Developer/Team/Research):** Your data is processed on our secure hosted infrastructure. We follow strict data isolation and never share or use your data for training.
+
+**Enterprise tier:** Full self-hosted deployment — your data stays entirely on your infrastructure.
 
 ### How do you handle API keys?
 
-Your AI provider keys are stored in your own environment (environment variables or secrets manager). We never see them.
+**API tiers:** You provide your AI provider keys via secure environment configuration. Keys are encrypted and never logged.
+
+**Enterprise tier:** Keys are stored in your own environment (environment variables or secrets manager). We never see them.
 
 ---
 

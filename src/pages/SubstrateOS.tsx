@@ -1,5 +1,5 @@
 /**
- * promptfluid® substrate — OS Surface v7.0.0
+ * CMPSBL® substrate — OS Surface v7.0.0
  * PREMIUM EDITION — 14 modules, 260+ commands, full introspection
  */
 

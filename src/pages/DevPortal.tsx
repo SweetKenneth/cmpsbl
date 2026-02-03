@@ -1,5 +1,5 @@
 /**
- * promptfluid® Developer Portal
+ * CMPSBL® Developer Portal
  * Public-facing page for developers and researchers to discover,
  * integrate, and build with the substrate.
  * 

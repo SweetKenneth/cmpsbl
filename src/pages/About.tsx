@@ -23,7 +23,7 @@ export default function About() {
       <SEO 
         title="About CMPSBL | Cognitive Orchestration Substrate"
         description="CMPSBL is a cognitive orchestration substrate that provides routing, memory, learning cycles, observability, defense, and execution coordination for AI systems."
-        canonical="https://promptfluid.com/about"
+        canonical="https://cmpsbl.com/about"
         keywords={['CMPSBL', 'cognitive orchestration', 'AI infrastructure', 'autonomous systems', 'accessibility tools']}
       />
       
@@ -31,12 +31,13 @@ export default function About() {
         {JSON.stringify({
           "@context": "https://schema.org",
           "@type": "AboutPage",
-          "name": "About PromptFluid",
-          "description": "PromptFluid is building AI-powered infrastructure for security, accessibility, and autonomous systems",
-          "url": "https://promptfluid.com/about",
+          "name": "About CMPSBL",
+          "description": "CMPSBL is building cognitive infrastructure for AI applications — memory, learning, security, and multi-provider routing.",
+          "url": "https://cmpsbl.com/about",
           "mainEntity": {
             "@type": "Organization",
-            "name": "PromptFluid",
+            "name": "CMPSBL",
+            "alternateName": "PromptFluid",
             "foundingDate": "2009",
             "founder": { "@type": "Person", "name": "Kenneth E Sweet Jr", "jobTitle": "Founder" }
           }

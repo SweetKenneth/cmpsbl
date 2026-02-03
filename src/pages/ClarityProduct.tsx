@@ -37,7 +37,7 @@ export default function ClarityProduct() {
     },
     {
       icon: Sparkles,
-      title: "PromptFluid Ecosystem Integration",
+      title: "CMPSBL Ecosystem Integration",
       description: "Seamlessly connects with Cascade AI for learning, Vision for monitoring, and Nexus for AI model routing."
     }
   ];
@@ -53,9 +53,9 @@ export default function ClarityProduct() {
   return (
     <>
       <SEO
-        title="PromptFluid Clarity — Free AI-Powered WordPress Accessibility | WCAG 2.2 Compliance"
+        title="CMPSBL Clarity — Free AI-Powered WordPress Accessibility | WCAG 2.2 Compliance"
         description="100% free accessibility scanning and AI-powered fixes. Ensure WCAG 2.2 compliance with one-click remediation, continuous monitoring, and intelligent learning. Accessibility should never be behind a paywall."
-        canonical="https://promptfluid.com/projects/clarity"
+        canonical="https://cmpsbl.com/projects/clarity"
         keywords={[
           'free wordpress accessibility',
           'free wcag compliance',
@@ -66,7 +66,8 @@ export default function ClarityProduct() {
           'free automated accessibility fixes',
           'free web accessibility',
           'free accessibility scanner',
-          'wcag 2.2 free'
+          'wcag 2.2 free',
+          'CMPSBL'
         ]}
       />
       <div className="min-h-screen">

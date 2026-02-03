@@ -19,10 +19,10 @@ export const LICENSING_PRODUCTS = {
     name: 'Developer License',
     description: 'For individual developers and small teams building with CMPSBL',
     features: [
-      'Local deployment on your own infrastructure',
-      'Full runtime + docs + restore pipeline',
-      'Internal use only — no redistribution or resale',
-      'Single-seat license per purchase',
+      'Full API access to all 14 modules',
+      'Unlimited API calls (fair use)',
+      'Unlimited memory storage',
+      'Email support + documentation',
       'Community forum access',
       '1-year updates included',
     ],
@@ -39,7 +39,7 @@ export const LICENSING_PRODUCTS = {
       'Everything in Developer License',
       'Up to 10 developer seats included',
       'Priority email support',
-      'Shared deployment keys',
+      'API key management dashboard',
       'Team onboarding session (90 min)',
       'Slack/Discord priority channel',
     ],
@@ -53,12 +53,12 @@ export const LICENSING_PRODUCTS = {
     name: 'Research License',
     description: 'For universities, research labs, and academic institutions',
     features: [
-      'Full substrate runtime for internal research',
-      'Non-exclusive, non-transferable license',
+      'Full API access for internal research',
+      'Multi-deployment (up to 5 instances)',
       'Publication rights with attribution',
-      'Support for experimental setups and validation',
+      'Quarterly technical calls',
       'Academic support channel',
-      'Research collaboration opportunities',
+      'Early access to new features',
     ],
     checkout_enabled: false, // Contact-based for high-value licenses
   },
@@ -70,11 +70,11 @@ export const LICENSING_PRODUCTS = {
     name: 'Enterprise License',
     description: 'For enterprises embedding CMPSBL into products and platforms',
     features: [
-      'Product and platform embedding rights',
-      'Architecture + safety integration support',
-      'Performance + observability best practices',
-      'Priority support with SLA options',
-      'Custom deployment assistance',
+      'Source code access — self-hosted deployment',
+      'Unlimited on-premise/air-gapped instances',
+      '99.9% SLA guarantee',
+      'Dedicated support channel',
+      'Custom integration support',
       'Quarterly roadmap alignment calls',
     ],
     checkout_enabled: false, // Contact-based for high-value licenses
@@ -98,5 +98,5 @@ export const LICENSING_PRODUCTS = {
   },
 } as const;
 
-export const CONTACT_EMAIL = 'licensing@cmpsbl.ai';
+export const CONTACT_EMAIL = 'PromptFluid@gmail.com';
 export const CONTACT_PHONE = '(214) 548-0883';

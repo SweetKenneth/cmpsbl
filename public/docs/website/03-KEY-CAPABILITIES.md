@@ -1,6 +1,6 @@
 # Key Capabilities
 
-**What CMPSBL® Does — Technical Overview v7.4.0**
+**What CMPSBL® Does — Technical Overview v7.0.0**
 
 ---
 
@@ -17,17 +17,17 @@
 | Intent Parsing | DECODE | Natural language interpretation, command routing |
 | Orchestration | CORTEX | Policy intent, autonomous decision-making |
 | Accessibility | INCLUSIVE | WCAG scanning, auto-repair, compliance reporting |
-| **Cross-Module Synergies** | CORTEX | **98 pipelines, 76 executors for multi-module coordination** |
+| **Cross-Module Synergies** | CORTEX | **120 pipelines, 98 executors for multi-module coordination** |
 
 ---
 
-## Cross-Module Synergy Engine (v7.4.0)
+## Cross-Module Synergy Engine (v7.5.0)
 
 ### The Problem
 Traditional AI systems operate as isolated modules. No coordination, no emergent intelligence.
 
 ### Our Solution
-**98 synergy pipelines** that orchestrate 2-5 modules together for emergent capabilities:
+**120 synergy pipelines** that orchestrate 2-5 modules together for emergent capabilities:
 
 | Category | Pipelines | Description |
 |----------|-----------|-------------|
@@ -280,4 +280,4 @@ system.health
 
 ---
 
-*CMPSBL® v7.4.0 — Cognitive Infrastructure for Production AI*
+*CMPSBL® v7.0.0 — Cognitive Infrastructure for Production AI*

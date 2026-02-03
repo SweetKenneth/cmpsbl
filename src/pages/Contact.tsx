@@ -46,10 +46,10 @@ export default function Contact() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Contact promptfluid® | Get in Touch"
-        description="Contact promptfluid for ownership inquiries, licensing arrangements, or enterprise partnerships. Founder-led support for all inquiries."
-        canonical="https://promptfluid.com/contact"
-        keywords={['contact promptfluid', 'licensing', 'ownership inquiries', 'enterprise partnerships']}
+        title="Contact CMPSBL® | Get in Touch"
+        description="Contact CMPSBL for licensing arrangements, enterprise partnerships, or substrate inquiries. Founder-led support for all inquiries."
+        canonical="https://cmpsbl.com/contact"
+        keywords={['contact CMPSBL', 'licensing', 'enterprise partnerships', 'cognitive infrastructure']}
       />
       
       <PublicNav />
@@ -76,10 +76,10 @@ export default function Contact() {
           </Badge>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground [text-shadow:_0_2px_20px_hsl(var(--background))]">
-            Ownership & Licensing
+            Licensing & Partnerships
           </h1>
           <p className="text-xl text-foreground/90 max-w-3xl [text-shadow:_0_2px_10px_hsl(var(--background))]">
-            Inquire about ownership, licensing arrangements, or enterprise partnerships for promptfluid® substrate.
+            Inquire about licensing arrangements, enterprise partnerships, or CMPSBL® substrate access.
           </p>
         </div>
       </section>
@@ -96,15 +96,15 @@ export default function Contact() {
                 <div className="space-y-4">
                   <div>
                     <p className="text-muted-foreground mb-2">Phone:</p>
-                    <a href="tel:7603584324" className="text-primary hover:underline text-lg font-medium block">
-                      (760) FLUID-AI
+                    <a href="tel:2145480883" className="text-primary hover:underline text-lg font-medium block">
+                      (214) 548-0883
                     </a>
                   </div>
                   
                   <div>
                     <p className="text-muted-foreground mb-2">Email:</p>
-                    <a href="mailto:promptfluid@gmail.com" className="text-primary hover:underline text-lg font-medium">
-                      promptfluid@gmail.com
+                    <a href="mailto:PromptFluid@gmail.com" className="text-primary hover:underline text-lg font-medium">
+                      PromptFluid@gmail.com
                     </a>
                   </div>
                 </div>
@@ -132,13 +132,13 @@ export default function Contact() {
               <div className="bg-card border border-border rounded-lg p-8">
                 <h3 className="text-xl font-bold mb-4 text-foreground">Connect With Us</h3>
                 <div className="space-y-2">
-                  <a href="https://twitter.com/promptfluid" target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">
+                  <a href="https://twitter.com/cmpsbl" target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">
                     Twitter/X
                   </a>
-                  <a href="https://linkedin.com/company/promptfluid" target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">
+                  <a href="https://linkedin.com/company/cmpsbl" target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">
                     LinkedIn
                   </a>
-                  <a href="https://github.com/promptfluid" target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">
+                  <a href="https://github.com/cmpsbl" target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">
                     GitHub
                   </a>
                 </div>
