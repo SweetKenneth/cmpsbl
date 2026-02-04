@@ -84,7 +84,7 @@ const knowledgeGraph = new Map<string, KnowledgeFragment>();
  * Extract insights from dream cycle patterns
  */
 export async function extractInsights(
-  patterns: DreamPattern[],
+  patterns: DreamPatternInput[],
   dreamCycleId: string
 ): Promise<InsightSynthesis> {
   const startTime = Date.now();
