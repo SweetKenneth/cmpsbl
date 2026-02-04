@@ -1,37 +1,39 @@
 /**
- * Marketplace Product Configuration v7.0.0
- * Market-aligned pricing based on competitor research (Jan 2026)
+ * Marketplace Product Configuration v8.0.0
+ * PATCH pricing-stripe-unification-v1
  * 
- * Competitor Benchmarks:
- * - Envato/CodeCanyon Templates: $19-$99
- * - AI SaaS Templates: $49-$149
- * - Premium Design Systems: $79-$199
+ * PRICING RULES:
+ * - Price floor: $19
+ * - Price ceiling: $299
+ * - All templates and capabilities capped at $299
+ * - Self-improvement/autonomous items are off-menu (Contact Us)
  * 
  * CMPSBL Positioning: Premium cognitive AI templates at accessible prices
  */
 
 export const MARKETPLACE_PRODUCTS = {
-  // Substrate OS License - $999 (was $3,999)
+  // Substrate OS License - $299 (normalized from $999)
   os_license: {
     product_id: 'prod_TrNHM2ONKXkipj',
     price_id: 'price_1SteXGQ7FtTiAL4aFfqLPytS',
-    amount: 99900, // $999 (was $3,999)
+    amount: 29900, // $299 (normalized ceiling)
     name: 'Substrate OS License',
     description: 'Full CMPSBL Substrate OS with BYOK support. 14 modules, single-install license with domain binding.',
     includes: ['Core OS', '14 Modules', 'BYOK Configuration', 'Single-Install License', 'Domain Binding'],
   },
   
-  // World Engine - $499 (was $1,999)
+  // World Engine - $299 (normalized from $499)
   world_engine: {
     product_id: 'prod_TrNHPBGWkXxyQr',
     price_id: 'price_1SteXHQ7FtTiAL4ae0ZrtL9S',
-    amount: 49900, // $499 (was $1,999)
+    amount: 29900, // $299 (normalized ceiling)
     name: 'World Engine Complete',
     description: 'Full game world engine with NPC memory, physics integration, dream cycles, and persistent world state.',
     includes: ['NPC Memory System', 'Dream Cycles', 'Physics Integration', 'World Persistence', 'Multi-Agent Coordination'],
   },
 
-  // Template tiers - Market-aligned pricing (Updated Feb 2026)
+  // Template tiers - Normalized pricing (Feb 2026)
+  // All tiers capped at $299 max
   templates: {
     starter: {
       product_id: 'prod_TtqCfqsTbEotq7',
@@ -50,28 +52,28 @@ export const MARKETPLACE_PRODUCTS = {
     enterprise: {
       product_id: 'prod_TtqCBeeI0qxL64',
       price_id: 'price_1Sw2WFQ7FtTiAL4aDuTRW0Np',
-      amount: 7900, // $79
+      amount: 9900, // $99 (normalized from $79)
       label: 'Enterprise',
       difficulty: 'advanced',
     },
     premium: {
       product_id: 'prod_TtqCTxAuwBlaNs',
       price_id: 'price_1Sw2WGQ7FtTiAL4aOxUZzchj',
-      amount: 9900, // $99
+      amount: 14900, // $149 (normalized from $99)
       label: 'Premium',
       difficulty: 'premium',
     },
     elite: {
       product_id: 'prod_TtqCmkCJUmwoBP',
       price_id: 'price_1Sw2WHQ7FtTiAL4aTh3BJ5tE',
-      amount: 12900, // $129
+      amount: 19900, // $199 (normalized from $129)
       label: 'Elite',
       difficulty: 'elite',
     },
     pro: {
       product_id: 'prod_TtqCBUjvTa45Tm',
       price_id: 'price_1Sw2WIQ7FtTiAL4a2MBwpMWi',
-      amount: 14900, // $149
+      amount: 29900, // $299 (normalized ceiling)
       label: 'Pro',
       difficulty: 'pro',
     },
