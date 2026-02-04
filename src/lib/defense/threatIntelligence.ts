@@ -450,7 +450,7 @@ function matchesPattern(request: { path: string; body?: string }, pattern: Attac
            (request.body && pattern.signature.test(request.body));
   }
   
-  const regex = new RegExp(pattern.signature.replace(/^\\/|\\/[gimsuy]*$/g, ''), 'i');
+  const regex = new RegExp(pattern.signature.replace(/^[/]|[/][gimsuy]*$/g, ''), 'i');
   return regex.test(request.path);
 }
 
