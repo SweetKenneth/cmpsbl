@@ -1,6 +1,6 @@
 /**
  * S-Tier Capabilities — Stripe Configuration
- * v3.0.0 — Updated: Only recursive code compilation is off-menu
+ * v3.1.0 — Updated: Correct price IDs for all public items ($149-$299)
  * 
  * RULE: Only capabilities that compile/generate their own code are off-menu
  * Everything else is for sale at $299 or less
@@ -11,6 +11,7 @@ import type { CapabilityStripeConfig } from './stripe-config';
 /**
  * S-Tier Stripe Configuration
  * Most items are NOW FOR SALE (only code self-improvement is off-menu)
+ * ALL PRICE IDs UPDATED to correct $149-$299 amounts
  */
 export const STIER_STRIPE_CONFIG: Record<string, CapabilityStripeConfig> = {
   // ═══════════════════════════════════════════════════════════════════════════
@@ -34,149 +35,156 @@ export const STIER_STRIPE_CONFIG: Record<string, CapabilityStripeConfig> = {
 
   // ═══════════════════════════════════════════════════════════════════════════
   // 🧠 INTELLIGENCE × CONTROL — FOR SALE ($199-$299)
+  // NEW CORRECT PRICE IDs
   // ═══════════════════════════════════════════════════════════════════════════
 
   'stier-autonomous-ops-steward': {
-    productId: 'prod_TuAsJZkIZMZMKn',
-    priceId: 'price_1SwMX7Q7FtTiAL4ay1KCY2P7',
+    productId: 'prod_TuzXQoWEZvQ4rH',
+    priceId: 'price_1Sx9Y5Q7FtTiAL4a99I5zImC',
     priceUsd: 299, // FOR SALE - Operations automation, not code compilation
   },
 
   'stier-strategic-foresight-engine': {
-    productId: 'prod_TuAsvfPG4cRW6o',
-    priceId: 'price_1SwMX8Q7FtTiAL4aibodEaBK',
+    productId: 'prod_TuzXff4qDOJwYz',
+    priceId: 'price_1Sx9Y6Q7FtTiAL4aGiw4fiSn',
     priceUsd: 299, // FOR SALE - Strategic analysis
   },
 
   'stier-explainable-intelligence-compiler': {
-    productId: 'prod_TuAsMPxMUWO3og',
-    priceId: 'price_1SwMXAQ7FtTiAL4asGaVk3wQ',
+    productId: 'prod_TuzXRCVH0NL5N1',
+    priceId: 'price_1Sx9Y7Q7FtTiAL4aXqbi3R9q',
     priceUsd: 299, // FOR SALE - Explanation generation
   },
 
   'stier-decision-confidence-governor': {
-    productId: 'prod_TuAtTulcem0crw',
-    priceId: 'price_1SwMXNQ7FtTiAL4aiyiRl2NT',
+    productId: 'prod_TuzXoUwQXhwffv',
+    priceId: 'price_1Sx9Y8Q7FtTiAL4aYq3GOmTS',
     priceUsd: 199, // FOR SALE - Decision scoring
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
   // 🔐 SECURITY × TRUST — FOR SALE ($199-$299)
+  // NEW CORRECT PRICE IDs
   // ═══════════════════════════════════════════════════════════════════════════
 
   'stier-intelligence-containment-engine': {
-    productId: 'prod_TuAsAovFtvcvVs',
-    priceId: 'price_1SwMXBQ7FtTiAL4aEFVwnbhV',
+    productId: 'prod_TuzX0v7INznlvZ',
+    priceId: 'price_1Sx9Y9Q7FtTiAL4aSyfPA7nn',
     priceUsd: 299, // FOR SALE - Containment logic
   },
 
   'stier-emergent-threat-anticipator': {
-    productId: 'prod_TuAso2hWNvBZpN',
-    priceId: 'price_1SwMXDQ7FtTiAL4aIqQeWZIX',
+    productId: 'prod_TuzXVqMWdB2gOd',
+    priceId: 'price_1Sx9YAQ7FtTiAL4aY4TmT0ta',
     priceUsd: 299, // FOR SALE - Threat detection
   },
 
   'stier-behavioral-trust-scoring': {
-    productId: 'prod_TuAtTA5UQAybKD',
-    priceId: 'price_1SwMXQQ7FtTiAL4aBZIwbjf4',
+    productId: 'prod_TuzXzWHObMwJdN',
+    priceId: 'price_1Sx9YBQ7FtTiAL4aZgxO7184',
     priceUsd: 199, // FOR SALE - Trust scoring
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
   // ⚙️ AUTONOMY × OPERATIONS — FOR SALE ($199-$299)
+  // NEW CORRECT PRICE IDs
   // ═══════════════════════════════════════════════════════════════════════════
 
   'stier-autonomy-rollback-authority': {
-    productId: 'prod_TuAtLdjXGe6YZK',
-    priceId: 'price_1SwMXGQ7FtTiAL4aMOrbH0qd',
+    productId: 'prod_TuzXzG2uwK750D',
+    priceId: 'price_1Sx9YCQ7FtTiAL4a66IUi3pN',
     priceUsd: 299, // FOR SALE - Rollback automation
   },
 
   'stier-autonomy-budget-manager': {
-    productId: 'prod_TuAtPEMmXeM2N5',
-    priceId: 'price_1SwMXOQ7FtTiAL4ajI0ql6ZW',
+    productId: 'prod_TuzXSbQlk8eT3d',
+    priceId: 'price_1Sx9YEQ7FtTiAL4aU01UXNDA',
     priceUsd: 199, // FOR SALE - Budget management
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
   // 💸 COST × PERFORMANCE — FOR SALE ($149-$299)
+  // NEW CORRECT PRICE IDs
   // ═══════════════════════════════════════════════════════════════════════════
 
   'stier-autonomous-cost-arbitrage-engine': {
-    productId: 'prod_TuAtqw8KipLqEF',
-    priceId: 'price_1SwMXEQ7FtTiAL4avInrW8Z0',
+    productId: 'prod_TuzXaQvApY2EVV',
+    priceId: 'price_1Sx9YEQ7FtTiAL4aO3ispvIs',
     priceUsd: 299, // FOR SALE - Cost optimization
   },
 
   'stier-value-weighted-reasoning-router': {
-    productId: 'prod_TuAtiqXn66EChS',
-    priceId: 'price_1SwMXRQ7FtTiAL4ampIbvW2N',
+    productId: 'prod_TuzXc8Oq4wmMHZ',
+    priceId: 'price_1Sx9YJQ7FtTiAL4aZG7TU1Y9',
     priceUsd: 199, // FOR SALE - Routing optimization
   },
 
   'stier-waste-detection-intelligence': {
-    productId: 'prod_TuAtLB8Teb6f5N',
-    priceId: 'price_1SwMXSQ7FtTiAL4aqw1XZdoe',
+    productId: 'prod_TuzXo7a6w57x2z',
+    priceId: 'price_1Sx9YKQ7FtTiAL4aux9kVMzu',
     priceUsd: 149, // FOR SALE - Waste detection
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
   // 🧩 PRODUCT × UX — FOR SALE ($149-$199)
+  // NEW CORRECT PRICE IDs
   // ═══════════════════════════════════════════════════════════════════════════
 
   'stier-intent-drift-tracker': {
-    productId: 'prod_TuAtxQiz6RxFye',
-    priceId: 'price_1SwMXUQ7FtTiAL4aG87eNikh',
+    productId: 'prod_TuzXlb5i7iIsQc',
+    priceId: 'price_1Sx9YLQ7FtTiAL4apa7lQoGJ',
     priceUsd: 149, // FOR SALE - Intent tracking
   },
 
   'stier-adaptive-product-brain': {
-    productId: 'prod_TuAtesOPMLhlvA',
-    priceId: 'price_1SwMXVQ7FtTiAL4aLqijpxjb',
+    productId: 'prod_TuzXvqrrRb1Fsr',
+    priceId: 'price_1Sx9YMQ7FtTiAL4aup85lkRq',
     priceUsd: 199, // FOR SALE - Product intelligence
   },
 
   'stier-friction-auto-removal-engine': {
-    productId: 'prod_TuAtraIyPs1SrM',
-    priceId: 'price_1SwMXWQ7FtTiAL4ateKy5q2O',
+    productId: 'prod_TuzXntYHSfLsEZ',
+    priceId: 'price_1Sx9YNQ7FtTiAL4auBI8NSnP',
     priceUsd: 199, // FOR SALE - UX optimization
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
   // 🧬 PLATFORM × SCALE — FOR SALE ($199-$299)
+  // NEW CORRECT PRICE IDs
   // ═══════════════════════════════════════════════════════════════════════════
 
   'stier-cross-pipeline-arbitration-engine': {
-    productId: 'prod_TuAt93FGccXB1Q',
-    priceId: 'price_1SwMXYQ7FtTiAL4a8XWNUZhx',
+    productId: 'prod_TuzXQtcnVU9dpi',
+    priceId: 'price_1Sx9YOQ7FtTiAL4aL7Kzo3k9',
     priceUsd: 299, // FOR SALE - Pipeline orchestration
   },
 
   'stier-capability-impact-forecaster': {
-    productId: 'prod_TuAtFoWAb6MdhI',
-    priceId: 'price_1SwMXZQ7FtTiAL4aKoPR15p1',
+    productId: 'prod_TuzXS9G9PTPRFQ',
+    priceId: 'price_1Sx9YPQ7FtTiAL4atyujUF2y',
     priceUsd: 199, // FOR SALE - Impact forecasting
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
   // 🏛️ COMPLIANCE × LEGITIMACY — FOR SALE ($199-$299)
+  // NEW CORRECT PRICE IDs
   // ═══════════════════════════════════════════════════════════════════════════
 
   'stier-audit-grade-decision-ledger': {
-    productId: 'prod_TuAtuuTNevNEjA',
-    priceId: 'price_1SwMXHQ7FtTiAL4ayC2APFIR',
+    productId: 'prod_TuzXu6qn6CZFBN',
+    priceId: 'price_1Sx9YQQ7FtTiAL4ay16bgAno',
     priceUsd: 299, // FOR SALE - Audit logging
   },
 
   'stier-regulatory-mode-switcher': {
-    productId: 'prod_TuAti76SVZY5Eu',
-    priceId: 'price_1SwMXaQ7FtTiAL4a6RJ79sqT',
+    productId: 'prod_TuzX0ex1pNUvUC',
+    priceId: 'price_1Sx9YRQ7FtTiAL4a1YaK7Odt',
     priceUsd: 199, // FOR SALE - Regulatory compliance
   },
 
   'stier-policy-aware-intelligence-gate': {
-    productId: 'prod_TuAt9k18BMdcWc',
-    priceId: 'price_1SwMXcQ7FtTiAL4ag3nZaC5x',
+    productId: 'prod_TuzXm2ar0jAAKy',
+    priceId: 'price_1Sx9YSQ7FtTiAL4aweMQJ6A4',
     priceUsd: 199, // FOR SALE - Policy enforcement
   },
 };

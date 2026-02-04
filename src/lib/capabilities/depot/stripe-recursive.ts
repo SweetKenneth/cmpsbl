@@ -1,6 +1,6 @@
 /**
  * Capabilities Depot — Stripe Recursive Self-Improvement
- * v3.0.0 — Updated: Only code compilation capabilities are off-menu
+ * v3.1.0 — Updated: Correct $299 price IDs for all public items
  * 
  * RULE: Only capabilities that generate/compile their own code are off-menu
  * Learning, optimization, and analysis capabilities are FOR SALE
@@ -39,51 +39,53 @@ export const RECURSIVE_STRIPE_CONFIG: Record<string, CapabilityStripeConfig> = {
   // ═══════════════════════════════════════════════════════════════════════════
   // 🔥 ENTERPRISE — Learning & Analysis — FOR SALE ($199-$299)
   // These LEARN but don't compile their own code
+  // NEW PRICE IDs — Correct $299/$199 amounts
   // ═══════════════════════════════════════════════════════════════════════════
 
   'recursive-meta-learning-accelerator': {
-    productId: 'prod_TuB0pmYh0qsquD',
-    priceId: 'price_1SwMeYQ7FtTiAL4aNnweXZDh',
+    productId: 'prod_TuzWIwQXo9MY1L',
+    priceId: 'price_1Sx9XwQ7FtTiAL4aPZOrtZmx',
     priceUsd: 299, // FOR SALE - Meta-learning (not code gen)
   },
 
   'recursive-self-healing-mesh': {
-    productId: 'prod_TuB0vxtbuI1Iuv',
-    priceId: 'price_1SwMebQ7FtTiAL4aRTFY7atC',
+    productId: 'prod_TuzWdcYn4CPTBm',
+    priceId: 'price_1Sx9XvQ7FtTiAL4aegq9sqrA',
     priceUsd: 299, // FOR SALE - Self-healing (runtime, not code)
   },
 
   'recursive-infinite-context': {
-    productId: 'prod_TuB0aMNiFkp86j',
-    priceId: 'price_1SwMedQ7FtTiAL4auaXh4d0F',
+    productId: 'prod_TuzXpGnq8jFm1s',
+    priceId: 'price_1Sx9XxQ7FtTiAL4ahaQga1P5',
     priceUsd: 299, // FOR SALE - Context management
   },
 
   'recursive-capability-discoverer': {
-    productId: 'prod_TuB0lcU7SzU0QM',
-    priceId: 'price_1SwMeeQ7FtTiAL4aIlmYdJ7x',
+    productId: 'prod_TuzXVhADV9zHbe',
+    priceId: 'price_1Sx9XyQ7FtTiAL4adUZxZlxO',
     priceUsd: 299, // FOR SALE - Capability analysis
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // 🧠 PLATFORM — Optimization & Knowledge — FOR SALE ($149-$299)
+  // 🧠 PLATFORM — Optimization & Knowledge — FOR SALE ($149-$199)
+  // NEW PRICE IDs — Correct $199 amounts
   // ═══════════════════════════════════════════════════════════════════════════
 
   'recursive-prompt-optimizer': {
-    productId: 'prod_TuB02pWJEguQvO',
-    priceId: 'price_1SwMefQ7FtTiAL4ao9Mmso1Y',
+    productId: 'prod_TuzXWKn5ZwEbPW',
+    priceId: 'price_1Sx9XyQ7FtTiAL4aBkBxXp0A',
     priceUsd: 199, // FOR SALE - Prompt optimization
   },
 
   'recursive-knowledge-crystallization': {
-    productId: 'prod_TuB0gRCB6xGuzT',
-    priceId: 'price_1SwMegQ7FtTiAL4arI2lIXl7',
+    productId: 'prod_TuzXP4FdaS5hhW',
+    priceId: 'price_1Sx9XzQ7FtTiAL4a0h4H4blZ',
     priceUsd: 199, // FOR SALE - Knowledge extraction
   },
 
   'recursive-goal-optimizer': {
-    productId: 'prod_TuB0Wtkl5apARp',
-    priceId: 'price_1SwMeiQ7FtTiAL4aKPUUJRNI',
+    productId: 'prod_TuzXg2uQ5Nmj8z',
+    priceId: 'price_1Sx9Y0Q7FtTiAL4a4glo8bR4',
     priceUsd: 199, // FOR SALE - Goal optimization
   },
 };
