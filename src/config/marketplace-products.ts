@@ -90,7 +90,7 @@ export const DRIFT_PREVENTION_TEMPLATES = [
     description: 'THE solution for AI behavioral drift. Memory anchoring, self-correction loops, and personality stability.',
     product_id: 'prod_TrNUK82cim3vP7',
     price_id: 'price_1StejiQ7FtTiAL4a4axcHYQv',
-    amount: 39900,
+    amount: 29900, // $299 (normalized from $399)
     category: 'brain',
     difficulty: 'elite',
     tags: ['drift-prevention', 'core'],
@@ -102,7 +102,7 @@ export const DRIFT_PREVENTION_TEMPLATES = [
     description: '3-tier memory system (working, episodic, semantic) that prevents AI amnesia across sessions.',
     product_id: 'prod_TrNUtnvNOI8A7o',
     price_id: 'price_1StejjQ7FtTiAL4abQJ5BmyA',
-    amount: 34900,
+    amount: 29900, // $299 (normalized from $349)
     category: 'brain',
     difficulty: 'premium',
     tags: ['memory', 'persistence'],
@@ -114,7 +114,7 @@ export const DRIFT_PREVENTION_TEMPLATES = [
     description: 'Chatbot that detects its own behavioral errors and auto-corrects drift in real-time.',
     product_id: 'prod_TrNUwfKCUk06WV',
     price_id: 'price_1StejkQ7FtTiAL4azxvOUmBh',
-    amount: 44900,
+    amount: 29900, // $299 (normalized from $449)
     category: 'decode',
     difficulty: 'elite',
     tags: ['chatbot', 'self-healing'],
@@ -126,7 +126,7 @@ export const DRIFT_PREVENTION_TEMPLATES = [
     description: 'Anchors AI personality and behavior patterns to prevent drift over time.',
     product_id: 'prod_TrNU4sW4CdG8r2',
     price_id: 'price_1StejlQ7FtTiAL4aItBweWfQ',
-    amount: 29900,
+    amount: 19900, // $199 (normalized from $299)
     category: 'brain',
     difficulty: 'premium',
     tags: ['behavior', 'anchor'],
@@ -138,7 +138,7 @@ export const DRIFT_PREVENTION_TEMPLATES = [
     description: 'Maintains conversation context across sessions, preventing context collapse and drift.',
     product_id: 'prod_TrNUEvaAyTdRuo',
     price_id: 'price_1StejmQ7FtTiAL4aOJNUMiuY',
-    amount: 29900,
+    amount: 19900, // $199 (normalized from $299)
     category: 'decode',
     difficulty: 'premium',
     tags: ['context', 'continuity'],
@@ -150,7 +150,7 @@ export const DRIFT_PREVENTION_TEMPLATES = [
     description: 'AI that learns and improves autonomously through overnight dream cycles.',
     product_id: 'prod_TrNUXjUXIE7DxP',
     price_id: 'price_1StejnQ7FtTiAL4aq3NSiByW',
-    amount: 49900,
+    amount: 29900, // $299 (normalized from $499)
     category: 'dream',
     difficulty: 'pro',
     tags: ['autonomous', 'learning'],
@@ -162,7 +162,7 @@ export const DRIFT_PREVENTION_TEMPLATES = [
     description: 'Protects AI personality consistency, preventing identity drift and jailbreak attempts.',
     product_id: 'prod_TrNUHTtOuxwm5N',
     price_id: 'price_1StejoQ7FtTiAL4aYggLSaZC',
-    amount: 34900,
+    amount: 29900, // $299 (normalized from $349)
     category: 'defense',
     difficulty: 'premium',
     tags: ['personality', 'security'],
@@ -174,7 +174,7 @@ export const DRIFT_PREVENTION_TEMPLATES = [
     description: 'Ensures AI maintains goal-directed behavior without drifting from objectives.',
     product_id: 'prod_TrNUjbHlVdaPL1',
     price_id: 'price_1StejpQ7FtTiAL4a4Qkxgpf1',
-    amount: 34900,
+    amount: 29900, // $299 (normalized from $349)
     category: 'brain',
     difficulty: 'premium',
     tags: ['goals', 'persistence'],
@@ -186,7 +186,7 @@ export const DRIFT_PREVENTION_TEMPLATES = [
     description: 'Security layer preventing prompt injection, jailbreaks, and adversarial attacks.',
     product_id: 'prod_TrNURsxSSouyVF',
     price_id: 'price_1StejrQ7FtTiAL4aJfSdBWmc',
-    amount: 39900,
+    amount: 29900, // $299 (normalized from $399)
     category: 'defense',
     difficulty: 'elite',
     tags: ['security', 'firewall'],
@@ -198,7 +198,7 @@ export const DRIFT_PREVENTION_TEMPLATES = [
     description: 'Overnight memory consolidation for durable AI learning that persists.',
     product_id: 'prod_TrNUJlfB2tV3mN',
     price_id: 'price_1StejrQ7FtTiAL4aeAU6axbp',
-    amount: 44900,
+    amount: 29900, // $299 (normalized from $449)
     category: 'dream',
     difficulty: 'elite',
     tags: ['learning', 'consolidation'],
@@ -210,7 +210,7 @@ export const DRIFT_PREVENTION_TEMPLATES = [
     description: 'Real-time AI behavior monitoring, drift detection, and health scoring.',
     product_id: 'prod_TrNU8VgLTavbOL',
     price_id: 'price_1StejsQ7FtTiAL4acDh3gyNr',
-    amount: 29900,
+    amount: 19900, // $199 (normalized from $299)
     category: 'vision',
     difficulty: 'premium',
     tags: ['observability', 'monitoring'],
@@ -222,7 +222,7 @@ export const DRIFT_PREVENTION_TEMPLATES = [
     description: 'Build interconnected knowledge structures for persistent AI understanding.',
     product_id: 'prod_TrNU3q3MytMWk4',
     price_id: 'price_1StejtQ7FtTiAL4aWC1L9syI',
-    amount: 39900,
+    amount: 29900, // $299 (normalized from $399)
     category: 'brain',
     difficulty: 'elite',
     tags: ['knowledge', 'graph'],
