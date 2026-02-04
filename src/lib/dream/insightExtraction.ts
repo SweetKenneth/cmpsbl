@@ -226,7 +226,7 @@ function extractAnomalyInsights(patterns: DreamPatternInput[]): DreamInsight[] {
 /**
  * Extract trend-related insights
  */
-function extractTrendInsights(patterns: DreamPattern[]): DreamInsight[] {
+function extractTrendInsights(patterns: DreamPatternInput[]): DreamInsight[] {
   const insights: DreamInsight[] = [];
 
   // Group patterns by module and look for trends
