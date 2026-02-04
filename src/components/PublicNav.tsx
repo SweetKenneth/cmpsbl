@@ -345,13 +345,13 @@ export function PublicNav() {
       <AnimatePresence>
         {mobileMenuOpen && (
           <>
-            {/* Backdrop */}
+            {/* Backdrop - Solid background for clean light/dark mode support */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-[9998] md:hidden bg-background/80 backdrop-blur-md"
+              className="fixed inset-0 z-[9998] md:hidden bg-background"
               onClick={() => setMobileMenuOpen(false)}
               aria-hidden="true"
             />
