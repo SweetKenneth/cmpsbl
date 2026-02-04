@@ -7,7 +7,17 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import type { DreamPattern } from './crossPatternRecognition';
+
+// Local DreamPattern interface for insight extraction
+interface DreamPatternInput {
+  id: string;
+  name: string;
+  type: 'recurring' | 'emerging' | 'declining';
+  modules: string[];
+  frequency?: number;
+  confidence: number;
+  metadata?: Record<string, unknown>;
+}
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // TYPES
