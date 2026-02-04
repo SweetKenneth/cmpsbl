@@ -1,37 +1,39 @@
 /**
- * Marketplace Product Configuration v7.0.0
- * Market-aligned pricing based on competitor research (Jan 2026)
+ * Marketplace Product Configuration v8.0.0
+ * PATCH pricing-stripe-unification-v1
  * 
- * Competitor Benchmarks:
- * - Envato/CodeCanyon Templates: $19-$99
- * - AI SaaS Templates: $49-$149
- * - Premium Design Systems: $79-$199
+ * PRICING RULES:
+ * - Price floor: $19
+ * - Price ceiling: $299
+ * - All templates and capabilities capped at $299
+ * - Self-improvement/autonomous items are off-menu (Contact Us)
  * 
  * CMPSBL Positioning: Premium cognitive AI templates at accessible prices
  */
 
 export const MARKETPLACE_PRODUCTS = {
-  // Substrate OS License - $999 (was $3,999)
+  // Substrate OS License - $299 (normalized from $999)
   os_license: {
     product_id: 'prod_TrNHM2ONKXkipj',
     price_id: 'price_1SteXGQ7FtTiAL4aFfqLPytS',
-    amount: 99900, // $999 (was $3,999)
+    amount: 29900, // $299 (normalized ceiling)
     name: 'Substrate OS License',
     description: 'Full CMPSBL Substrate OS with BYOK support. 14 modules, single-install license with domain binding.',
     includes: ['Core OS', '14 Modules', 'BYOK Configuration', 'Single-Install License', 'Domain Binding'],
   },
   
-  // World Engine - $499 (was $1,999)
+  // World Engine - $299 (normalized from $499)
   world_engine: {
     product_id: 'prod_TrNHPBGWkXxyQr',
     price_id: 'price_1SteXHQ7FtTiAL4ae0ZrtL9S',
-    amount: 49900, // $499 (was $1,999)
+    amount: 29900, // $299 (normalized ceiling)
     name: 'World Engine Complete',
     description: 'Full game world engine with NPC memory, physics integration, dream cycles, and persistent world state.',
     includes: ['NPC Memory System', 'Dream Cycles', 'Physics Integration', 'World Persistence', 'Multi-Agent Coordination'],
   },
 
-  // Template tiers - Market-aligned pricing (Updated Feb 2026)
+  // Template tiers - Normalized pricing (Feb 2026)
+  // All tiers capped at $299 max
   templates: {
     starter: {
       product_id: 'prod_TtqCfqsTbEotq7',
@@ -50,28 +52,28 @@ export const MARKETPLACE_PRODUCTS = {
     enterprise: {
       product_id: 'prod_TtqCBeeI0qxL64',
       price_id: 'price_1Sw2WFQ7FtTiAL4aDuTRW0Np',
-      amount: 7900, // $79
+      amount: 9900, // $99 (normalized from $79)
       label: 'Enterprise',
       difficulty: 'advanced',
     },
     premium: {
       product_id: 'prod_TtqCTxAuwBlaNs',
       price_id: 'price_1Sw2WGQ7FtTiAL4aOxUZzchj',
-      amount: 9900, // $99
+      amount: 14900, // $149 (normalized from $99)
       label: 'Premium',
       difficulty: 'premium',
     },
     elite: {
       product_id: 'prod_TtqCmkCJUmwoBP',
       price_id: 'price_1Sw2WHQ7FtTiAL4aTh3BJ5tE',
-      amount: 12900, // $129
+      amount: 19900, // $199 (normalized from $129)
       label: 'Elite',
       difficulty: 'elite',
     },
     pro: {
       product_id: 'prod_TtqCBUjvTa45Tm',
       price_id: 'price_1Sw2WIQ7FtTiAL4a2MBwpMWi',
-      amount: 14900, // $149
+      amount: 29900, // $299 (normalized ceiling)
       label: 'Pro',
       difficulty: 'pro',
     },
@@ -88,7 +90,7 @@ export const DRIFT_PREVENTION_TEMPLATES = [
     description: 'THE solution for AI behavioral drift. Memory anchoring, self-correction loops, and personality stability.',
     product_id: 'prod_TrNUK82cim3vP7',
     price_id: 'price_1StejiQ7FtTiAL4a4axcHYQv',
-    amount: 39900,
+    amount: 29900, // $299 (normalized from $399)
     category: 'brain',
     difficulty: 'elite',
     tags: ['drift-prevention', 'core'],
@@ -100,7 +102,7 @@ export const DRIFT_PREVENTION_TEMPLATES = [
     description: '3-tier memory system (working, episodic, semantic) that prevents AI amnesia across sessions.',
     product_id: 'prod_TrNUtnvNOI8A7o',
     price_id: 'price_1StejjQ7FtTiAL4abQJ5BmyA',
-    amount: 34900,
+    amount: 29900, // $299 (normalized from $349)
     category: 'brain',
     difficulty: 'premium',
     tags: ['memory', 'persistence'],
@@ -112,7 +114,7 @@ export const DRIFT_PREVENTION_TEMPLATES = [
     description: 'Chatbot that detects its own behavioral errors and auto-corrects drift in real-time.',
     product_id: 'prod_TrNUwfKCUk06WV',
     price_id: 'price_1StejkQ7FtTiAL4azxvOUmBh',
-    amount: 44900,
+    amount: 29900, // $299 (normalized from $449)
     category: 'decode',
     difficulty: 'elite',
     tags: ['chatbot', 'self-healing'],
@@ -124,7 +126,7 @@ export const DRIFT_PREVENTION_TEMPLATES = [
     description: 'Anchors AI personality and behavior patterns to prevent drift over time.',
     product_id: 'prod_TrNU4sW4CdG8r2',
     price_id: 'price_1StejlQ7FtTiAL4aItBweWfQ',
-    amount: 29900,
+    amount: 19900, // $199 (normalized from $299)
     category: 'brain',
     difficulty: 'premium',
     tags: ['behavior', 'anchor'],
@@ -136,7 +138,7 @@ export const DRIFT_PREVENTION_TEMPLATES = [
     description: 'Maintains conversation context across sessions, preventing context collapse and drift.',
     product_id: 'prod_TrNUEvaAyTdRuo',
     price_id: 'price_1StejmQ7FtTiAL4aOJNUMiuY',
-    amount: 29900,
+    amount: 19900, // $199 (normalized from $299)
     category: 'decode',
     difficulty: 'premium',
     tags: ['context', 'continuity'],
@@ -148,7 +150,7 @@ export const DRIFT_PREVENTION_TEMPLATES = [
     description: 'AI that learns and improves autonomously through overnight dream cycles.',
     product_id: 'prod_TrNUXjUXIE7DxP',
     price_id: 'price_1StejnQ7FtTiAL4aq3NSiByW',
-    amount: 49900,
+    amount: 29900, // $299 (normalized from $499)
     category: 'dream',
     difficulty: 'pro',
     tags: ['autonomous', 'learning'],
@@ -160,7 +162,7 @@ export const DRIFT_PREVENTION_TEMPLATES = [
     description: 'Protects AI personality consistency, preventing identity drift and jailbreak attempts.',
     product_id: 'prod_TrNUHTtOuxwm5N',
     price_id: 'price_1StejoQ7FtTiAL4aYggLSaZC',
-    amount: 34900,
+    amount: 29900, // $299 (normalized from $349)
     category: 'defense',
     difficulty: 'premium',
     tags: ['personality', 'security'],
@@ -172,7 +174,7 @@ export const DRIFT_PREVENTION_TEMPLATES = [
     description: 'Ensures AI maintains goal-directed behavior without drifting from objectives.',
     product_id: 'prod_TrNUjbHlVdaPL1',
     price_id: 'price_1StejpQ7FtTiAL4a4Qkxgpf1',
-    amount: 34900,
+    amount: 29900, // $299 (normalized from $349)
     category: 'brain',
     difficulty: 'premium',
     tags: ['goals', 'persistence'],
@@ -184,7 +186,7 @@ export const DRIFT_PREVENTION_TEMPLATES = [
     description: 'Security layer preventing prompt injection, jailbreaks, and adversarial attacks.',
     product_id: 'prod_TrNURsxSSouyVF',
     price_id: 'price_1StejrQ7FtTiAL4aJfSdBWmc',
-    amount: 39900,
+    amount: 29900, // $299 (normalized from $399)
     category: 'defense',
     difficulty: 'elite',
     tags: ['security', 'firewall'],
@@ -196,7 +198,7 @@ export const DRIFT_PREVENTION_TEMPLATES = [
     description: 'Overnight memory consolidation for durable AI learning that persists.',
     product_id: 'prod_TrNUJlfB2tV3mN',
     price_id: 'price_1StejrQ7FtTiAL4aeAU6axbp',
-    amount: 44900,
+    amount: 29900, // $299 (normalized from $449)
     category: 'dream',
     difficulty: 'elite',
     tags: ['learning', 'consolidation'],
@@ -208,7 +210,7 @@ export const DRIFT_PREVENTION_TEMPLATES = [
     description: 'Real-time AI behavior monitoring, drift detection, and health scoring.',
     product_id: 'prod_TrNU8VgLTavbOL',
     price_id: 'price_1StejsQ7FtTiAL4acDh3gyNr',
-    amount: 29900,
+    amount: 19900, // $199 (normalized from $299)
     category: 'vision',
     difficulty: 'premium',
     tags: ['observability', 'monitoring'],
@@ -220,7 +222,7 @@ export const DRIFT_PREVENTION_TEMPLATES = [
     description: 'Build interconnected knowledge structures for persistent AI understanding.',
     product_id: 'prod_TrNU3q3MytMWk4',
     price_id: 'price_1StejtQ7FtTiAL4aWC1L9syI',
-    amount: 39900,
+    amount: 29900, // $299 (normalized from $399)
     category: 'brain',
     difficulty: 'elite',
     tags: ['knowledge', 'graph'],
@@ -238,7 +240,7 @@ export const BUSINESS_TEMPLATES = [
     description: 'E-commerce product recommendations with customer preference memory.',
     product_id: 'prod_TrNUnjsyDF6IIu',
     price_id: 'price_1StejxQ7FtTiAL4aBA3BR7Xy',
-    amount: 34900,
+    amount: 29900, // $299 (normalized from $349)
     category: 'brain',
     difficulty: 'premium',
     features: ['Preference Learning', 'Purchase History', 'Personalization', 'Collaborative Filtering'],
@@ -249,7 +251,7 @@ export const BUSINESS_TEMPLATES = [
     description: 'Customer service bot that remembers past interactions and learns resolutions.',
     product_id: 'prod_TrNUVLOg8zU1qf',
     price_id: 'price_1StejyQ7FtTiAL4abNlWwkNG',
-    amount: 44900,
+    amount: 29900, // $299 (normalized from $449)
     category: 'decode',
     difficulty: 'elite',
     features: ['Interaction Memory', 'Resolution Learning', 'Escalation Intelligence', 'Customer History'],
@@ -260,7 +262,7 @@ export const BUSINESS_TEMPLATES = [
     description: 'Personal fitness coach that adapts to user progress and preferences.',
     product_id: 'prod_TrNU6eBk8uit3b',
     price_id: 'price_1StejzQ7FtTiAL4a339rbjFH',
-    amount: 29900,
+    amount: 19900, // $199 (normalized from $299)
     category: 'brain',
     difficulty: 'premium',
     features: ['Progress Tracking', 'Workout Memory', 'Goal Adaptation', 'Performance Learning'],
@@ -271,7 +273,7 @@ export const BUSINESS_TEMPLATES = [
     description: 'Mental wellness companion with emotional state tracking and support.',
     product_id: 'prod_TrNVhh1qidWO92',
     price_id: 'price_1Stek0Q7FtTiAL4adHBlkBMQ',
-    amount: 34900,
+    amount: 29900, // $299 (normalized from $349)
     category: 'brain',
     difficulty: 'premium',
     features: ['Emotional Memory', 'Mood Tracking', 'Supportive Responses', 'Progress Insights'],
@@ -282,7 +284,7 @@ export const BUSINESS_TEMPLATES = [
     description: 'Financial advisor that learns spending habits, goals, and risk tolerance.',
     product_id: 'prod_TrNVeZuKLBVMNk',
     price_id: 'price_1Stek1Q7FtTiAL4aYViloOy8',
-    amount: 39900,
+    amount: 29900, // $299 (normalized from $399)
     category: 'brain',
     difficulty: 'elite',
     features: ['Spending Analysis', 'Goal Tracking', 'Risk Profiling', 'Investment Memory'],
@@ -293,7 +295,7 @@ export const BUSINESS_TEMPLATES = [
     description: 'HR assistant with employee interaction memory and policy learning.',
     product_id: 'prod_TrNVCX9kO6iOcX',
     price_id: 'price_1Stek3Q7FtTiAL4ajrkyqk5a',
-    amount: 49900,
+    amount: 29900, // $299 (normalized from $499)
     category: 'decode',
     difficulty: 'pro',
     features: ['Employee Memory', 'Policy Knowledge', 'Onboarding Assistance', 'FAQ Learning'],
@@ -304,7 +306,7 @@ export const BUSINESS_TEMPLATES = [
     description: 'IT helpdesk with solution memory and escalation intelligence.',
     product_id: 'prod_TrNVLnSVNxFGF2',
     price_id: 'price_1Stek4Q7FtTiAL4aBHma1eXw',
-    amount: 39900,
+    amount: 29900, // $299 (normalized from $399)
     category: 'decode',
     difficulty: 'elite',
     features: ['Solution Memory', 'Issue Patterns', 'Escalation Rules', 'Knowledge Base'],
@@ -315,7 +317,7 @@ export const BUSINESS_TEMPLATES = [
     description: 'Travel planning assistant with destination preference learning.',
     product_id: 'prod_TrNVpisHa7urvX',
     price_id: 'price_1Stek4Q7FtTiAL4ajxq2h1vq',
-    amount: 44900,
+    amount: 29900, // $299 (normalized from $449)
     category: 'brain',
     difficulty: 'elite',
     features: ['Preference Memory', 'Budget Tracking', 'Destination Learning', 'Itinerary Memory'],
@@ -326,7 +328,7 @@ export const BUSINESS_TEMPLATES = [
     description: 'Music discovery assistant that learns taste patterns and preferences.',
     product_id: 'prod_TrNVjF7RqHH1UB',
     price_id: 'price_1Stek6Q7FtTiAL4atl10wSfw',
-    amount: 34900,
+    amount: 29900, // $299 (normalized from $349)
     category: 'brain',
     difficulty: 'premium',
     features: ['Taste Learning', 'Mood Mapping', 'Discovery Engine', 'Playlist Memory'],
@@ -337,7 +339,7 @@ export const BUSINESS_TEMPLATES = [
     description: 'Real estate assistant with property and client preference memory.',
     product_id: 'prod_TrNVoRmoRCr9KO',
     price_id: 'price_1Stek7Q7FtTiAL4albJAtOWB',
-    amount: 39900,
+    amount: 29900, // $299 (normalized from $399)
     category: 'brain',
     difficulty: 'elite',
     features: ['Property Memory', 'Client Preferences', 'Market Learning', 'Showing History'],
@@ -348,146 +350,146 @@ export const BUSINESS_TEMPLATES = [
 // NEW PREMIUM TEMPLATES - January 2026
 // ============================================
 export const NEW_PREMIUM_TEMPLATES = [
-  // Reasoning & Logic ($399 - Elite)
+  // Reasoning & Logic ($299 - Elite)
   {
     id: 'neural-reasoning-engine',
     name: 'Neural Reasoning Engine',
     description: 'Multi-step reasoning with chain-of-thought memory, inference caching, and explanation generation',
     product_id: 'prod_Trkh3EJ5m0Yvcc',
     price_id: 'price_1Su1CFQ7FtTiAL4alBl7SXlx',
-    amount: 39900,
+    amount: 29900, // $299 (normalized from $399)
     category: 'brain',
     difficulty: 'elite',
     features: ['Chain-of-Thought', 'Inference Caching', 'Explanation Gen', 'Logic Memory'],
   },
-  // Sentiment & Emotion ($299 - Premium)
+  // Sentiment & Emotion ($199 - Premium)
   {
     id: 'sentiment-evolution-tracker',
     name: 'Sentiment Evolution Tracker',
     description: 'Track emotional sentiment across conversations with drift alerts and mood stabilization',
     product_id: 'prod_Trkhx7n5rVP3qc',
     price_id: 'price_1Su1CGQ7FtTiAL4ayPLEGrMi',
-    amount: 29900,
+    amount: 19900, // $199 (normalized from $299)
     category: 'vision',
     difficulty: 'premium',
     features: ['Sentiment Tracking', 'Drift Alerts', 'Mood Stabilization', 'Emotional Memory'],
   },
-  // Multi-Agent ($499 - Pro)
+  // Multi-Agent ($299 - Pro)
   {
     id: 'multi-agent-orchestrator',
     name: 'Multi-Agent Orchestrator',
     description: 'Coordinate multiple AI agents with shared memory, task delegation, and conflict resolution',
     product_id: 'prod_Trkh3wqgZlXNEV',
     price_id: 'price_1Su1CHQ7FtTiAL4andrza7AD',
-    amount: 49900,
+    amount: 29900, // $299 (normalized from $499)
     category: 'nexus',
     difficulty: 'pro',
     features: ['Shared Memory', 'Task Delegation', 'Conflict Resolution', 'Agent Coordination'],
   },
-  // Compliance ($449 - Elite)
+  // Compliance ($299 - Elite)
   {
     id: 'compliance-audit-brain',
     name: 'Compliance Audit Brain',
     description: 'Regulatory compliance monitoring with policy memory, violation detection, and audit trails',
     product_id: 'prod_TrkhUkinE1CKX4',
     price_id: 'price_1Su1CIQ7FtTiAL4aOGnNtXCI',
-    amount: 44900,
+    amount: 29900, // $299 (normalized from $449)
     category: 'defense',
     difficulty: 'elite',
     features: ['Policy Memory', 'Violation Detection', 'Audit Trails', 'Regulatory Learning'],
   },
-  // Creative Writing ($349 - Premium)
+  // Creative Writing ($199 - Premium)
   {
     id: 'creative-writing-engine',
     name: 'Creative Writing Engine',
     description: 'Story generation with character memory, plot continuity, and style consistency across chapters',
     product_id: 'prod_TrkhyuQ6N7SFSb',
     price_id: 'price_1Su1CJQ7FtTiAL4a5yh9HC77',
-    amount: 34900,
+    amount: 19900, // $199 (normalized from $349)
     category: 'decode',
     difficulty: 'premium',
     features: ['Character Memory', 'Plot Continuity', 'Style Consistency', 'World Building'],
   },
-  // Data Pipeline ($399 - Elite)
+  // Data Pipeline ($299 - Elite)
   {
     id: 'data-pipeline-intelligence',
     name: 'Data Pipeline Intelligence',
     description: 'ETL monitoring with anomaly learning, schema memory, and self-healing data flows',
     product_id: 'prod_TrkhDZ6X7rCDbN',
     price_id: 'price_1Su1CLQ7FtTiAL4aIOajfDAN',
-    amount: 39900,
+    amount: 29900, // $299 (normalized from $399)
     category: 'system',
     difficulty: 'elite',
     features: ['Anomaly Learning', 'Schema Memory', 'Self-Healing', 'Data Flow Optimization'],
   },
-  // Threat Intelligence ($449 - Elite)
+  // Threat Intelligence ($299 - Elite)
   {
     id: 'threat-intelligence-brain',
     name: 'Threat Intelligence Brain',
     description: 'Security threat detection with attack pattern learning, incident memory, and auto-response',
     product_id: 'prod_TrkhoHJ7NbVxSy',
     price_id: 'price_1Su1COQ7FtTiAL4atw0i0KWC',
-    amount: 44900,
+    amount: 29900, // $299 (normalized from $449)
     category: 'defense',
     difficulty: 'elite',
     features: ['Attack Pattern Learning', 'Incident Memory', 'Auto-Response', 'Threat Scoring'],
   },
-  // Revenue Prediction ($499 - Pro)
+  // Revenue Prediction ($299 - Pro)
   {
     id: 'revenue-prediction-engine',
     name: 'Revenue Prediction Engine',
     description: 'Revenue optimization with pricing memory, market learning, and forecast generation',
     product_id: 'prod_Trkh7vcnYhleUy',
     price_id: 'price_1Su1CPQ7FtTiAL4aUJTJLoCs',
-    amount: 49900,
+    amount: 29900, // $299 (normalized from $499)
     category: 'brain',
     difficulty: 'pro',
     features: ['Pricing Memory', 'Market Learning', 'Forecast Generation', 'Revenue Optimization'],
   },
-  // Legal Document ($349 - Premium)
+  // Legal Document ($199 - Premium)
   {
     id: 'legal-document-analyzer',
     name: 'Legal Document Analyzer',
     description: 'Contract extraction with clause memory, version tracking, and risk identification',
     product_id: 'prod_TrkhbXqqjb5myJ',
     price_id: 'price_1Su1CQQ7FtTiAL4atcpmnqij',
-    amount: 34900,
+    amount: 19900, // $199 (normalized from $349)
     category: 'decode',
     difficulty: 'premium',
     features: ['Clause Memory', 'Version Tracking', 'Risk Identification', 'Contract Extraction'],
   },
-  // Game Session ($299 - Premium)
+  // Game Session ($199 - Premium)
   {
     id: 'game-session-memory',
     name: 'Game Session Memory',
     description: 'Session-based game AI with player preference memory, challenge adaptation, and NPC learning',
     product_id: 'prod_TrkhHs2M8gjIFj',
     price_id: 'price_1Su1CSQ7FtTiAL4aJ4uREitJ',
-    amount: 29900,
+    amount: 19900, // $199 (normalized from $299)
     category: 'world_engine',
     difficulty: 'premium',
     features: ['Player Preference Memory', 'Challenge Adaptation', 'NPC Learning', 'Session Persistence'],
   },
-  // Anomaly Detection ($399 - Elite)
+  // Anomaly Detection ($299 - Elite)
   {
     id: 'anomaly-detection-system',
     name: 'Anomaly Detection System',
     description: 'Anomaly detection with baseline learning, drift alerting, and auto-recovery triggers',
     product_id: 'prod_TrkhMJz5hVdflX',
     price_id: 'price_1Su1CSQ7FtTiAL4a94IYYc6f',
-    amount: 39900,
+    amount: 29900, // $299 (normalized from $399)
     category: 'vision',
     difficulty: 'elite',
     features: ['Baseline Learning', 'Drift Alerting', 'Auto-Recovery', 'Pattern Recognition'],
   },
-  // Project Intelligence ($449 - Elite)
+  // Project Intelligence ($299 - Elite)
   {
     id: 'project-intelligence-agent',
     name: 'Project Intelligence Agent',
     description: 'Project tracking with task dependency memory, resource learning, and deadline prediction',
     product_id: 'prod_TrkhGLTTFbYbkl',
     price_id: 'price_1Su1CTQ7FtTiAL4agOW9aAs9',
-    amount: 44900,
+    amount: 29900, // $299 (normalized from $449)
     category: 'brain',
     difficulty: 'elite',
     features: ['Task Dependency Memory', 'Resource Learning', 'Deadline Prediction', 'Progress Tracking'],
@@ -498,14 +500,14 @@ export const NEW_PREMIUM_TEMPLATES = [
 // ORIGINAL COMPLEX TEMPLATES (Updated)
 // ============================================
 export const COMPLEX_TEMPLATES = [
-  // Learning & Memory Systems ($299)
+  // Learning & Memory Systems ($199-$299)
   {
     id: 'adaptive-chatbot',
     name: 'Adaptive Learning Chatbot',
     description: 'Self-improving conversational AI with memory persistence, personality evolution, and user preference learning',
     product_id: 'prod_TrNKjGI3bP28xD',
     price_id: 'price_1SteZkQ7FtTiAL4aGeq1CA0C',
-    amount: 29900,
+    amount: 19900, // $199 (normalized from $299)
     category: 'chatbot',
     difficulty: 'premium',
     features: ['Memory Persistence', 'Personality Evolution', 'Preference Learning', 'Self-Improvement Loops'],
@@ -516,7 +518,7 @@ export const COMPLEX_TEMPLATES = [
     description: 'RAG-powered document intelligence with memory consolidation and self-improving retrieval accuracy',
     product_id: 'prod_TrNKhkCdPtPKF8',
     price_id: 'price_1SteZlQ7FtTiAL4aodqhA3nL',
-    amount: 34900,
+    amount: 29900, // $299 (normalized from $349)
     category: 'rag',
     difficulty: 'premium',
     features: ['RAG Pipeline', 'Memory Consolidation', 'Accuracy Evolution', 'Document Understanding'],
@@ -527,20 +529,20 @@ export const COMPLEX_TEMPLATES = [
     description: 'Cognitive personal assistant with preference memory, schedule learning, and proactive task automation',
     product_id: 'prod_TrNKtC4J9q1yXC',
     price_id: 'price_1SteZqQ7FtTiAL4avm1K0pIh',
-    amount: 29900,
+    amount: 19900, // $199 (normalized from $299)
     category: 'agent',
     difficulty: 'premium',
     features: ['Preference Memory', 'Schedule Learning', 'Proactive Automation', 'Context Awareness'],
   },
 
-  // Business Applications ($349-$399)
+  // Business Applications ($199-$299)
   {
     id: 'customer-support-agent',
     name: 'Customer Support Agent',
     description: 'Autonomous support agent that learns from resolutions, remembers customer history, improves over time',
     product_id: 'prod_TrNKO7u4yBy1hp',
     price_id: 'price_1SteZnQ7FtTiAL4a6jKzoNhz',
-    amount: 39900,
+    amount: 29900, // $299 (normalized from $399)
     category: 'agent',
     difficulty: 'elite',
     features: ['Resolution Learning', 'Customer Memory', 'Escalation Intelligence', 'Satisfaction Optimization'],
@@ -551,7 +553,7 @@ export const COMPLEX_TEMPLATES = [
     description: 'Self-improving content generation with brand memory, style learning, and audience preference tracking',
     product_id: 'prod_TrNKQHUbrESlOB',
     price_id: 'price_1SteZoQ7FtTiAL4ap2KaU3yA',
-    amount: 34900,
+    amount: 29900, // $299 (normalized from $349)
     category: 'agent',
     difficulty: 'premium',
     features: ['Brand Memory', 'Style Evolution', 'Audience Learning', 'Multi-Format Output'],
@@ -562,46 +564,46 @@ export const COMPLEX_TEMPLATES = [
     description: 'Lead scoring brain with prospect memory, deal pattern learning, and win rate optimization',
     product_id: 'prod_TrNKwhEOnkWNyh',
     price_id: 'price_1SteZtQ7FtTiAL4ajFFcgUai',
-    amount: 44900,
+    amount: 29900, // $299 (normalized from $449)
     category: 'agent',
     difficulty: 'elite',
     features: ['Prospect Memory', 'Deal Pattern Learning', 'Win Rate Optimization', 'Pipeline Intelligence'],
   },
 
-  // Developer Tools ($449)
+  // Developer Tools ($299)
   {
     id: 'code-review-assistant',
     name: 'Code Review Assistant',
     description: 'Self-improving code reviewer that learns team patterns, remembers past issues, evolves best practices',
     product_id: 'prod_TrNKq8uCVlmc05',
     price_id: 'price_1SteZpQ7FtTiAL4aNgUk7jgL',
-    amount: 44900,
+    amount: 29900, // $299 (normalized from $449)
     category: 'utility',
     difficulty: 'elite',
     features: ['Pattern Learning', 'Issue Memory', 'Best Practice Evolution', 'Team Style Adaptation'],
   },
 
-  // Research & Analysis ($499)
+  // Research & Analysis ($299)
   {
     id: 'research-analyst',
     name: 'Research Analyst Engine',
     description: 'Deep research agent with source memory, insight accumulation, and self-improving analysis quality',
     product_id: 'prod_TrNK1l0D4sIN4s',
     price_id: 'price_1SteZsQ7FtTiAL4aL4O2uaro',
-    amount: 49900,
+    amount: 29900, // $299 (normalized from $499)
     category: 'agent',
     difficulty: 'pro',
     features: ['Source Memory', 'Insight Accumulation', 'Analysis Evolution', 'Citation Management'],
   },
 
-  // Education & Coaching ($399-$499)
+  // Education & Coaching ($199-$299)
   {
     id: 'educational-tutor',
     name: 'Educational Tutor Brain',
     description: 'Adaptive learning system with student progress memory, concept mastery tracking, personalized curriculum',
     product_id: 'prod_TrNKReyFhNHzMn',
     price_id: 'price_1SteZyQ7FtTiAL4aExD682bb',
-    amount: 49900,
+    amount: 29900, // $299 (normalized from $499)
     category: 'agent',
     difficulty: 'pro',
     features: ['Progress Memory', 'Mastery Tracking', 'Adaptive Difficulty', 'Personalized Curriculum'],
@@ -612,7 +614,7 @@ export const COMPLEX_TEMPLATES = [
     description: 'Interview preparation brain that learns user strengths, remembers practice sessions, improves coaching',
     product_id: 'prod_TrNKnOfpMvVsYA',
     price_id: 'price_1SteZwQ7FtTiAL4ar79o9mCb',
-    amount: 39900,
+    amount: 29900, // $299 (normalized from $399)
     category: 'agent',
     difficulty: 'elite',
     features: ['Strength Analysis', 'Session Memory', 'Coaching Evolution', 'Industry Adaptation'],
@@ -623,20 +625,20 @@ export const COMPLEX_TEMPLATES = [
     description: 'Language tutor with learner progress memory, error pattern detection, adaptive difficulty',
     product_id: 'prod_TrNKrXV1ep8IO2',
     price_id: 'price_1Stea3Q7FtTiAL4a7TYqHwy9',
-    amount: 39900,
+    amount: 29900, // $299 (normalized from $399)
     category: 'agent',
     difficulty: 'elite',
     features: ['Progress Memory', 'Error Pattern Detection', 'Adaptive Difficulty', 'Pronunciation Learning'],
   },
 
-  // Creative Applications ($349-$449)
+  // Creative Applications ($199-$299)
   {
     id: 'story-writer',
     name: 'Story Writer Brain',
     description: 'Creative writing assistant with style memory, story continuity, and evolving narrative capabilities',
     product_id: 'prod_TrNKC5Q65wcVez',
     price_id: 'price_1SteZzQ7FtTiAL4aWGtc4Uos',
-    amount: 44900,
+    amount: 29900, // $299 (normalized from $449)
     category: 'agent',
     difficulty: 'elite',
     features: ['Style Memory', 'Story Continuity', 'Character Consistency', 'Narrative Evolution'],
@@ -647,20 +649,20 @@ export const COMPLEX_TEMPLATES = [
     description: 'Recipe and meal planning brain with taste memory, nutrition learning, and preference evolution',
     product_id: 'prod_TrNKDivcG8Z2BW',
     price_id: 'price_1Stea1Q7FtTiAL4aVtf45PXV',
-    amount: 34900,
+    amount: 29900, // $299 (normalized from $349)
     category: 'utility',
     difficulty: 'premium',
     features: ['Taste Preference Memory', 'Nutrition Tracking', 'Ingredient Substitution', 'Meal Planning'],
   },
 
-  // Professional Services ($449)
+  // Professional Services ($299)
   {
     id: 'legal-document',
     name: 'Legal Document Assistant',
     description: 'Legal document analyzer with clause memory, precedent learning, and contract intelligence',
     product_id: 'prod_TrNKUC7ARd4kQK',
     price_id: 'price_1Stea2Q7FtTiAL4aDC3Q2AeE',
-    amount: 44900,
+    amount: 29900, // $299 (normalized from $449)
     category: 'utility',
     difficulty: 'elite',
     features: ['Clause Memory', 'Precedent Learning', 'Risk Analysis', 'Contract Intelligence'],
@@ -673,7 +675,7 @@ export const COMPLEX_TEMPLATES = [
     description: 'Persistent NPC memory with overnight learning and personality evolution for games',
     product_id: 'prod_TrNIgrPVXQo9DL',
     price_id: 'price_1SteXRQ7FtTiAL4a6trXwxvb',
-    amount: 29900,
+    amount: 19900, // $199 (normalized from $299)
     category: 'gaming',
     difficulty: 'premium',
     features: ['Dream Cycles', 'Personality Evolution', 'Memory Persistence', 'Behavior Learning'],
@@ -684,7 +686,7 @@ export const COMPLEX_TEMPLATES = [
     description: 'Cognitive agency framework for autonomous agent teams with shared learning',
     product_id: 'prod_TrNHcsTcQp0T1a',
     price_id: 'price_1SteXPQ7FtTiAL4a3hCkMTpo',
-    amount: 39900,
+    amount: 29900, // $299 (normalized from $399)
     category: 'agent',
     difficulty: 'elite',
     features: ['Agent Coordination', 'Shared Learning', 'Task Distribution', 'Collective Intelligence'],
@@ -695,7 +697,7 @@ export const COMPLEX_TEMPLATES = [
     description: 'Production-grade retrieval augmented generation with memory persistence',
     product_id: 'prod_TrNHPvIRLnJEiT',
     price_id: 'price_1SteXOQ7FtTiAL4aMXLWx6a2',
-    amount: 29900,
+    amount: 19900, // $199 (normalized from $299)
     category: 'rag',
     difficulty: 'premium',
     features: ['Production RAG', 'Memory Persistence', 'Source Attribution', 'Query Optimization'],
@@ -706,7 +708,7 @@ export const COMPLEX_TEMPLATES = [
     description: 'Market pattern recognition, risk assessment, portfolio optimization with learning',
     product_id: 'prod_TrNIfBeckAvirt',
     price_id: 'price_1SteXSQ7FtTiAL4azZw0I4bb',
-    amount: 49900,
+    amount: 29900, // $299 (normalized from $499)
     category: 'agent',
     difficulty: 'pro',
     features: ['Pattern Recognition', 'Risk Assessment', 'Portfolio Optimization', 'Market Learning'],
@@ -717,7 +719,7 @@ export const COMPLEX_TEMPLATES = [
     description: 'Patient history learning, treatment optimization, outcome prediction',
     product_id: 'prod_TrNIhUwnEzFjxU',
     price_id: 'price_1SteXTQ7FtTiAL4ayxz7qV7v',
-    amount: 49900,
+    amount: 29900, // $299 (normalized from $499)
     category: 'agent',
     difficulty: 'pro',
     features: ['Patient History Memory', 'Treatment Optimization', 'Outcome Prediction', 'Protocol Learning'],
