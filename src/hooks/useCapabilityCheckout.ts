@@ -1,7 +1,7 @@
 /**
  * useCapabilityCheckout Hook
- * Handles Stripe checkout for capability purchases including S-tier & Recursive
- * v1.2.0 — Recursive Self-Improvement Support (Apex Tier)
+ * Handles Stripe checkout for capability purchases
+ * v2.0.0 — Unified Pricing ($19-$299 public, off-menu licensed on request)
  */
 
 import { useState, useCallback } from 'react';
@@ -12,16 +12,66 @@ import {
   getStripeConfig,
   hasSTierStripeConfig,
   getSTierStripeConfig,
-  isSelfImprovementCapability,
   hasRecursiveStripeConfig,
   getRecursiveStripeConfig,
-  isApexTierCapability,
+  hasExpansionStripeConfig,
+  getExpansionStripeConfig,
+  hasUltraStripeConfig,
+  getUltraStripeConfig,
 } from '@/lib/capabilities/depot';
+import {
+  isOffMenuCapability,
+  getLicenseRequestMailto,
+  PRICE_CONFIG,
+} from '@/lib/capabilities/depot/pricing-normalization';
 
 interface CheckoutState {
   loading: boolean;
   error: string | null;
   capabilityId: string | null;
+}
+
+/**
+ * Get the unified Stripe config for a capability
+ */
+function getUnifiedStripeConfig(capabilityId: string) {
+  // Check all config sources in order of priority
+  const recursiveConfig = getRecursiveStripeConfig(capabilityId);
+  if (recursiveConfig) return { config: recursiveConfig, tier: 'recursive' as const };
+
+  const stierConfig = getSTierStripeConfig(capabilityId);
+  if (stierConfig) return { config: stierConfig, tier: 'stier' as const };
+
+  const coreConfig = getStripeConfig(capabilityId);
+  if (coreConfig) return { config: coreConfig, tier: 'core' as const };
+
+  const expansionConfig = getExpansionStripeConfig(capabilityId);
+  if (expansionConfig) return { config: expansionConfig, tier: 'expansion' as const };
+
+  const ultraConfig = getUltraStripeConfig(capabilityId);
+  if (ultraConfig) return { config: ultraConfig, tier: 'ultra' as const };
+
+  return null;
+}
+
+/**
+ * Check if capability checkout is enabled
+ */
+function isCheckoutEnabledForCapability(capabilityId: string): boolean {
+  const result = getUnifiedStripeConfig(capabilityId);
+  if (!result) return false;
+  
+  // Check if explicitly marked as off-menu
+  if (result.config.offMenu) return false;
+  
+  // Check if capability ID contains off-menu keywords
+  if (isOffMenuCapability(capabilityId)) return false;
+  
+  // Check if price is within public range
+  const price = result.config.priceUsd;
+  if (price < PRICE_CONFIG.min || price > PRICE_CONFIG.max) return false;
+  
+  return true;
 }
 
 export function useCapabilityCheckout() {
@@ -31,43 +81,37 @@ export function useCapabilityCheckout() {
     capabilityId: null,
   });
 
-  const checkout = useCallback(async (capabilityId: string) => {
-    // Check tiers in order: Recursive (highest) → S-tier → Regular
-    const isRecursive = hasRecursiveStripeConfig(capabilityId);
-    const isSTier = hasSTierStripeConfig(capabilityId);
-    const hasConfig = isRecursive || isSTier || hasStripeConfig(capabilityId);
+  const checkout = useCallback(async (capabilityId: string, capabilityName?: string) => {
+    const result = getUnifiedStripeConfig(capabilityId);
     
-    if (!hasConfig) {
+    if (!result) {
       toast.error('Checkout not available for this capability');
+      return;
+    }
+
+    // Check if off-menu — redirect to license request
+    if (result.config.offMenu || isOffMenuCapability(capabilityId)) {
+      const name = capabilityName || capabilityId;
+      const mailto = getLicenseRequestMailto(capabilityId, name);
+      window.location.href = mailto;
+      toast.info('Opening license inquiry email...');
+      return;
+    }
+
+    // Check price bounds
+    if (result.config.priceUsd < PRICE_CONFIG.min || result.config.priceUsd > PRICE_CONFIG.max) {
+      toast.error('This capability requires a custom license. Please contact us.');
       return;
     }
 
     setState({ loading: true, error: null, capabilityId });
 
     try {
-      // Get config from highest tier first
-      const config = isRecursive 
-        ? getRecursiveStripeConfig(capabilityId)
-        : isSTier 
-          ? getSTierStripeConfig(capabilityId)
-          : getStripeConfig(capabilityId);
-
-      if (!config) {
-        throw new Error('No Stripe configuration found');
-      }
-
-      // Determine product type for edge function
-      const productType = isRecursive 
-        ? 'recursive' 
-        : isSTier 
-          ? 'stier' 
-          : 'capability';
-
       const { data, error } = await supabase.functions.invoke('marketplace-checkout', {
         body: { 
-          product_type: productType,
-          price_id: config.priceId,
-          product_id: config.productId,
+          product_type: result.tier,
+          price_id: result.config.priceId,
+          product_id: result.config.productId,
           capability_id: capabilityId,
         },
       });
@@ -77,7 +121,6 @@ export function useCapabilityCheckout() {
       }
 
       if (data?.url) {
-        // Open checkout in new tab
         window.open(data.url, '_blank');
         toast.success('Opening checkout...');
       } else {
@@ -92,47 +135,54 @@ export function useCapabilityCheckout() {
     }
   }, []);
 
-  const getPrice = useCallback((capabilityId: string): number | undefined => {
-    // Check recursive first (highest tier)
-    const recursiveConfig = getRecursiveStripeConfig(capabilityId);
-    if (recursiveConfig) return recursiveConfig.priceUsd;
+  const getPrice = useCallback((capabilityId: string): number | null => {
+    const result = getUnifiedStripeConfig(capabilityId);
+    if (!result) return null;
     
-    // Then S-tier
-    const stierConfig = getSTierStripeConfig(capabilityId);
-    if (stierConfig) return stierConfig.priceUsd;
+    // Return null for off-menu items (display as "Licensed on request")
+    if (result.config.offMenu || isOffMenuCapability(capabilityId)) {
+      return null;
+    }
     
-    // Then regular
-    return getStripeConfig(capabilityId)?.priceUsd;
+    return result.config.priceUsd;
   }, []);
 
   const isAvailable = useCallback((capabilityId: string): boolean => {
-    return hasRecursiveStripeConfig(capabilityId) || hasSTierStripeConfig(capabilityId) || hasStripeConfig(capabilityId);
+    return getUnifiedStripeConfig(capabilityId) !== null;
+  }, []);
+
+  const isCheckoutEnabled = useCallback((capabilityId: string): boolean => {
+    return isCheckoutEnabledForCapability(capabilityId);
+  }, []);
+
+  const isOffMenu = useCallback((capabilityId: string): boolean => {
+    const result = getUnifiedStripeConfig(capabilityId);
+    if (!result) return false;
+    return result.config.offMenu === true || isOffMenuCapability(capabilityId);
   }, []);
 
   const isSTier = useCallback((capabilityId: string): boolean => {
     return hasSTierStripeConfig(capabilityId);
   }, []);
 
-  const isSelfImprovement = useCallback((capabilityId: string): boolean => {
-    return isSelfImprovementCapability(capabilityId);
-  }, []);
-
   const isRecursive = useCallback((capabilityId: string): boolean => {
     return hasRecursiveStripeConfig(capabilityId);
   }, []);
 
-  const isApex = useCallback((capabilityId: string): boolean => {
-    return isApexTierCapability(capabilityId);
+  const getTier = useCallback((capabilityId: string): string | null => {
+    const result = getUnifiedStripeConfig(capabilityId);
+    return result?.tier || null;
   }, []);
 
   return {
     checkout,
     getPrice,
     isAvailable,
+    isCheckoutEnabled,
+    isOffMenu,
     isSTier,
-    isSelfImprovement,
     isRecursive,
-    isApex,
+    getTier,
     loading: state.loading,
     loadingCapability: state.capabilityId,
     error: state.error,

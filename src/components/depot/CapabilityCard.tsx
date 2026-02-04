@@ -1,6 +1,6 @@
 /**
  * Capability Card — Individual capability display for depot
- * v1.4.0 — Premium tier badges, mobile-first touch targets
+ * v2.0.0 — Unified Pricing ($19-$299 public, off-menu licensed on request)
  */
 
 import { 
@@ -14,15 +14,16 @@ import {
   Zap,
   Crown,
   Sparkles,
+  Mail,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { 
-  formatPrice, 
   getTierConfig, 
   type CapabilityArtifact,
   type CapabilityCategory,
+  getPricingLabel,
 } from '@/lib/capabilities/depot';
 import { useCapabilityCheckout } from '@/hooks/useCapabilityCheckout';
 import { cn } from '@/lib/utils';
@@ -52,13 +53,27 @@ export function CapabilityCard({ capability, categoryConfig, onViewDetails }: Ca
   const config = categoryConfig[capability.category];
   const CategoryIcon = config?.icon;
   const tierConfig = getTierConfig(capability.pricingTier);
-  const { checkout, loading, isAvailable, isRecursive, isSTier, isApex } = useCapabilityCheckout();
+  const { 
+    checkout, 
+    loading, 
+    getPrice,
+    isAvailable, 
+    isCheckoutEnabled,
+    isOffMenu,
+    isRecursive, 
+    isSTier,
+  } = useCapabilityCheckout();
   
   const isSynergy = capability.id.startsWith('syn-');
   const hasCheckout = isAvailable(capability.id);
+  const checkoutEnabled = isCheckoutEnabled(capability.id);
+  const isOffMenuCapability = isOffMenu(capability.id);
   const isRecursiveCapability = isRecursive(capability.id);
   const isSTierCapability = isSTier(capability.id);
-  const isApexCapability = isApex(capability.id);
+  
+  // Get normalized price (null for off-menu)
+  const displayPrice = getPrice(capability.id);
+  const priceLabel = getPricingLabel(displayPrice, isOffMenuCapability);
   
   // Format last updated
   const lastUpdated = new Date(capability.lastUpdated);
@@ -67,19 +82,17 @@ export function CapabilityCard({ capability, categoryConfig, onViewDetails }: Ca
 
   const handleBuy = async () => {
     if (hasCheckout) {
-      await checkout(capability.id);
+      await checkout(capability.id, capability.name);
     }
   };
 
   // Premium styling (colorful accents on card borders, not overlays)
   const isPremium = isRecursiveCapability || isSTierCapability;
-  const premiumBorder = isApexCapability 
-    ? 'ring-2 ring-amber-500/40 hover:ring-amber-500/60'
-    : isRecursiveCapability 
-      ? 'ring-1 ring-primary/30 hover:ring-primary/50'
-      : isSTierCapability
-        ? 'ring-1 ring-cyan-500/30 hover:ring-cyan-500/50'
-        : '';
+  const premiumBorder = isRecursiveCapability 
+    ? 'ring-1 ring-primary/30 hover:ring-primary/50'
+    : isSTierCapability
+      ? 'ring-1 ring-cyan-500/30 hover:ring-cyan-500/50'
+      : '';
 
   return (
     <div className="group">
@@ -100,13 +113,13 @@ export function CapabilityCard({ capability, categoryConfig, onViewDetails }: Ca
             </div>
             
             <div className="flex items-center gap-1.5 flex-wrap justify-end">
-              {isApexCapability && (
-                <Badge className="text-[10px] bg-amber-500/20 text-amber-400 border-amber-500/30">
+              {isOffMenuCapability && (
+                <Badge className="text-[10px] bg-muted text-muted-foreground border-border">
                   <Crown className="w-2.5 h-2.5 mr-1" />
-                  APEX
+                  Enterprise
                 </Badge>
               )}
-              {isRecursiveCapability && !isApexCapability && (
+              {isRecursiveCapability && (
                 <Badge variant="outline" className="text-[10px] border-primary/30 bg-primary/10 text-primary">
                   <Sparkles className="w-2.5 h-2.5 mr-1" />
                   Recursive
@@ -118,24 +131,23 @@ export function CapabilityCard({ capability, categoryConfig, onViewDetails }: Ca
                   S-Tier
                 </Badge>
               )}
-              {isSynergy && !isPremium && (
+              {isSynergy && !isPremium && !isOffMenuCapability && (
                 <Badge variant="outline" className="text-[10px] border-primary/30 bg-primary/10 text-primary">
                   <Zap className="w-2.5 h-2.5 mr-1" />
                   Synergy
                 </Badge>
               )}
-              <Badge variant="outline" className={cn("text-[10px]", tierColors[capability.pricingTier])}>
-                {tierConfig.badge}
-              </Badge>
+              {!isOffMenuCapability && (
+                <Badge variant="outline" className={cn("text-[10px]", tierColors[capability.pricingTier])}>
+                  {tierConfig.badge}
+                </Badge>
+              )}
             </div>
           </div>
 
           {/* Title + Version */}
           <div className="mb-2 md:mb-3">
-            <h3 className={cn(
-              "text-base md:text-lg font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2",
-              isApexCapability && "group-hover:text-amber-400"
-            )}>
+            <h3 className="text-base md:text-lg font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2">
               {capability.name}
             </h3>
             <div className="flex items-center gap-2 mt-1">
@@ -198,13 +210,13 @@ export function CapabilityCard({ capability, categoryConfig, onViewDetails }: Ca
           <div>
             <div className={cn(
               "text-xl md:text-2xl font-black",
-              isApexCapability ? "text-amber-400" : isPremium ? "text-primary" : "text-foreground"
+              isOffMenuCapability ? "text-muted-foreground text-base md:text-lg" : isPremium ? "text-primary" : "text-foreground"
             )}>
-              {formatPrice(capability.priceUsd)}
+              {priceLabel}
             </div>
             <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
               <Download className="w-2.5 h-2.5" />
-              Licensed
+              {isOffMenuCapability ? 'Enterprise' : 'Licensed'}
             </div>
           </div>
 
@@ -219,25 +231,37 @@ export function CapabilityCard({ capability, categoryConfig, onViewDetails }: Ca
               Details
               <ChevronRight className="w-3 h-3 ml-1" />
             </Button>
-            <Button 
-              size="sm" 
-              onClick={handleBuy}
-              disabled={loading || !hasCheckout}
-              className={cn(
-                "h-9 px-3 touch-manipulation text-xs md:text-sm",
-                isApexCapability && "bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500",
-                isRecursiveCapability && !isApexCapability && "bg-primary hover:bg-primary/90",
-                isSTierCapability && !isRecursiveCapability && "bg-cyan-600 hover:bg-cyan-500",
-                !isPremium && "bg-primary hover:bg-primary/90"
-              )}
-            >
-              {loading ? (
-                <Loader2 className="w-3 h-3 mr-1 animate-spin" />
-              ) : (
-                <Package className="w-3 h-3 mr-1" />
-              )}
-              Buy
-            </Button>
+            
+            {isOffMenuCapability ? (
+              <Button 
+                size="sm" 
+                variant="secondary"
+                onClick={handleBuy}
+                className="h-9 px-3 touch-manipulation text-xs md:text-sm"
+              >
+                <Mail className="w-3 h-3 mr-1" />
+                Inquire
+              </Button>
+            ) : (
+              <Button 
+                size="sm" 
+                onClick={handleBuy}
+                disabled={loading || !checkoutEnabled}
+                className={cn(
+                  "h-9 px-3 touch-manipulation text-xs md:text-sm",
+                  isRecursiveCapability && "bg-primary hover:bg-primary/90",
+                  isSTierCapability && !isRecursiveCapability && "bg-cyan-600 hover:bg-cyan-500",
+                  !isPremium && "bg-primary hover:bg-primary/90"
+                )}
+              >
+                {loading ? (
+                  <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                ) : (
+                  <Package className="w-3 h-3 mr-1" />
+                )}
+                Buy
+              </Button>
+            )}
           </div>
         </CardFooter>
       </Card>
