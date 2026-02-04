@@ -3,7 +3,7 @@
  * v7.5.0 — Hot reload, graceful shutdown, and dependency resolution
  */
 
-import { SUBSTRATE_MODULES, type SubstrateModuleName, getModuleDependencies, moduleStatuses, markModuleBooted, markModuleFailed } from './index';
+import { SUBSTRATE_MODULES, type SubstrateModuleName, getModuleDependencies, markModuleBooted, markModuleFailed } from './index';
 
 // ============ Types ============
 

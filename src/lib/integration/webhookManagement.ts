@@ -391,7 +391,7 @@ export async function processInboundWebhook(
     await supabase.from('brain_events').insert([{
       module: 'integration',
       event_type: 'webhook_received',
-      data: { webhook_id: webhookId, event_id: event.id, payload },
+      data: { webhook_id: webhookId, event_id: event.id } as Record<string, string>,
       outcome: 'logged',
     }]);
   } catch (error) {

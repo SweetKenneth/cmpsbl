@@ -340,7 +340,7 @@ export function getEntriesByPeriod(
   const now = new Date();
   const results: { period: string; count: number }[] = [];
   
-  const msPerPeriod = {
+  const msPerPeriod: Record<string, number> = {
     hour: 60 * 60 * 1000,
     day: 24 * 60 * 60 * 1000,
     week: 7 * 24 * 60 * 60 * 1000,

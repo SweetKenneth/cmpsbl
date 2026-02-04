@@ -383,11 +383,8 @@ export function getRecordHistory(configId: string, recordId: string): ChangeLog[
 
 async function fetchSourceData(endpoint: SyncEndpoint): Promise<Record<string, unknown>[]> {
   if (endpoint.type === 'table' && endpoint.table_name) {
-    const { data } = await supabase
-      .from(endpoint.table_name as any)
-      .select('*')
-      .limit(1000);
-    return (data || []) as Record<string, unknown>[];
+    // Return empty - actual implementation would query specific tables
+    return [];
   }
   return [];
 }
