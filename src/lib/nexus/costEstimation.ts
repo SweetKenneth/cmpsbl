@@ -131,7 +131,7 @@ export function findCheapestProvider(
   inputTokens: number,
   qualityRequirement: 'low' | 'medium' | 'high' = 'medium'
 ): { provider: SupportedProvider; estimatedCost: number } {
-  const candidates: Array<{ provider: SupportedProvider; cost: number }> = [];
+  const candidates: Array<{ provider: SupportedProvider; estimatedCost: number }> = [];
 
   for (const [provider, pricing] of Object.entries(PROVIDER_PRICING)) {
     // Skip providers that don't support the task type
