@@ -142,8 +142,8 @@ export function findCheapestProvider(
       continue;
     }
 
-    const cost = (inputTokens / 1000) * pricing.input + (inputTokens * 1.5 / 1000) * pricing.output;
-    candidates.push({ provider: provider as SupportedProvider, cost });
+    const estimatedCost = (inputTokens / 1000) * pricing.input + (inputTokens * 1.5 / 1000) * pricing.output;
+    candidates.push({ provider: provider as SupportedProvider, estimatedCost });
   }
 
   // Sort by cost and filter by quality
