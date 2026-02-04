@@ -63,6 +63,9 @@ export {
   flushMetricsToDatabase,
 } from './metricAggregation';
 
+// SLA monitoring & capacity forecasting
+export * from './slaMonitoring';
+
 // Vision module version
 export const VISION_VERSION = '2.0.0';
 export const VISION_CODENAME = 'Vee';

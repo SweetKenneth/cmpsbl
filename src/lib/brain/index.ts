@@ -88,6 +88,12 @@ export {
   getAllLessons,
 } from './reflectionJob';
 
+// Re-export consolidation engine
+export * from './consolidation';
+
+// Re-export batch operations
+export * from './batchOperations';
+
 import { supabase } from '@/integrations/supabase/client';
 import type { TierStats, Memory } from './memoryTiering';
 import { getTierStats } from './memoryTiering';
