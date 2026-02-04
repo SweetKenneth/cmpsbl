@@ -794,9 +794,9 @@ export default function Library() {
                       <hr className="my-8 sm:my-12 border-t-2 border-border" />
                     ),
                     table: ({children}) => (
-                      <div className="my-6 sm:my-8 -mx-5 sm:mx-0 overflow-x-auto">
-                        <div className="inline-block min-w-full sm:rounded-lg border border-border">
-                          <table className="min-w-full text-xs sm:text-sm md:text-base">
+                      <div className="my-6 sm:my-8 -mx-5 sm:mx-0 px-5 sm:px-0 overflow-x-auto">
+                        <div className="min-w-max sm:min-w-full sm:rounded-lg border border-border">
+                          <table className="min-w-max sm:min-w-full text-xs sm:text-sm md:text-base">
                             {children}
                           </table>
                         </div>
