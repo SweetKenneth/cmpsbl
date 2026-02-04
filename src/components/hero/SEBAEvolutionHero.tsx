@@ -242,14 +242,14 @@ const PhaseNode = memo(function PhaseNode({
         className={cn(
           "relative w-14 h-14 sm:w-16 sm:h-16 md:w-[72px] md:h-[72px] lg:w-20 lg:h-20 rounded-2xl",
           "flex items-center justify-center cursor-pointer",
-          "border-2 backdrop-blur-md transition-all duration-300",
+          "border-2 transition-all duration-300",
           "shadow-lg",
           isActive || isPassed ? phase.borderColor : "border-border/40",
           isActive 
             ? `bg-gradient-to-br ${phase.color}` 
             : isPassed 
               ? phase.bgColor 
-              : "bg-card/70 dark:bg-card/50"
+              : "bg-card"
         )}
         animate={{
           scale: isActive ? 1.12 : isHovered ? 1.06 : 1,

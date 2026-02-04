@@ -126,9 +126,10 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
     if (!autoInit) return;
     
     // Defer initialization to avoid blocking main thread during initial render
+    // Increased interval to 5 minutes to reduce polling overhead and improve stability
     const startRefreshInterval = () => {
       refresh();
-      intervalRef.current = setInterval(refresh, 60000); // Refresh every minute
+      intervalRef.current = setInterval(refresh, 300000); // Refresh every 5 minutes
     };
     
     // Use requestIdleCallback if available, otherwise use setTimeout
