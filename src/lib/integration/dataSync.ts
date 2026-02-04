@@ -199,7 +199,7 @@ export async function executeSync(configId: string): Promise<SyncRun> {
     for (const sourceRecord of sourceData) {
       run.stats.records_processed++;
       
-      const sourceId = sourceRecord[config.source.id_field];
+      const sourceId = String(sourceRecord[config.source.id_field]);
       const targetRecord = targetData.find(t => t[config.target.id_field] === sourceId);
       
       if (!targetRecord) {
