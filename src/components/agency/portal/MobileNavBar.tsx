@@ -34,7 +34,7 @@ export function MobileNavBar({
   return (
     <nav className={cn(
       "lg:hidden fixed bottom-0 left-0 right-0 z-50",
-      "border-t border-border/30 bg-card/80 backdrop-blur-xl",
+      "border-t border-border bg-card",
       "safe-area-pb",
       className
     )}>
