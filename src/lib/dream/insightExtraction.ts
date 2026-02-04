@@ -139,7 +139,7 @@ export async function extractInsights(
 /**
  * Extract optimization-related insights
  */
-function extractOptimizationInsights(patterns: DreamPattern[]): DreamInsight[] {
+function extractOptimizationInsights(patterns: DreamPatternInput[]): DreamInsight[] {
   const insights: DreamInsight[] = [];
 
   // Look for performance patterns
