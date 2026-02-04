@@ -43,6 +43,9 @@ export {
   type NightmareArtifact,
 } from './nightmares';
 
+// Insight extraction & knowledge synthesis
+export * from './insightExtraction';
+
 // Version info
 export const DREAM_VERSION = '7.0.0';
 export const DREAM_CODENAME = 'Nocturne';

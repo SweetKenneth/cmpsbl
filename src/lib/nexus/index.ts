@@ -60,6 +60,12 @@ export {
   clearMetrics,
 } from './metrics';
 
+// Cost estimation & budget governance
+export * from './costEstimation';
+
+// Batch routing & failover
+export * from './batchRouting';
+
 // Version info
 export const NEXUS_VERSION = '7.0.0';
 export const NEXUS_CODENAME = 'Router';

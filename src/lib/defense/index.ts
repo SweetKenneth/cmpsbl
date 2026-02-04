@@ -50,3 +50,9 @@ export {
   syncWithBrain,
   type LearningInsights,
 } from './learning';
+
+// Threat intelligence
+export * from './threatIntelligence';
+
+// Incident response
+export * from './incidentResponse';
