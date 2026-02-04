@@ -12,21 +12,41 @@
  */
 
 export const MARKETPLACE_PRODUCTS = {
-  // Substrate OS License - $299 (normalized from $999)
+  // Developer License — $299/year or $39/month subscription
+  developer_license: {
+    monthly: {
+      product_id: 'prod_TuzDdndKiASplG',
+      price_id: 'price_1Sx9F1Q7FtTiAL4aPvHMDh9r',
+      amount: 3900, // $39/month
+      name: 'Developer License Monthly',
+      description: 'Monthly developer access to CMPSBL Substrate SDK and documentation.',
+      billing: 'monthly',
+    },
+    annual: {
+      product_id: 'prod_TuzDyllhVhku0B',
+      price_id: 'price_1Sx9F2Q7FtTiAL4a6vQtPPLe',
+      amount: 29900, // $299/year (2 months free)
+      name: 'Developer License Annual',
+      description: 'Annual developer access to CMPSBL Substrate SDK and documentation. Save 2 months!',
+      billing: 'annual',
+    },
+  },
+
+  // Substrate OS License - $299 (one-time)
   os_license: {
     product_id: 'prod_TrNHM2ONKXkipj',
     price_id: 'price_1SteXGQ7FtTiAL4aFfqLPytS',
-    amount: 29900, // $299 (normalized ceiling)
+    amount: 29900, // $299
     name: 'Substrate OS License',
     description: 'Full CMPSBL Substrate OS with BYOK support. 14 modules, single-install license with domain binding.',
     includes: ['Core OS', '14 Modules', 'BYOK Configuration', 'Single-Install License', 'Domain Binding'],
   },
   
-  // World Engine - $299 (normalized from $499)
+  // World Engine - $299
   world_engine: {
     product_id: 'prod_TrNHPBGWkXxyQr',
     price_id: 'price_1SteXHQ7FtTiAL4ae0ZrtL9S',
-    amount: 29900, // $299 (normalized ceiling)
+    amount: 29900, // $299
     name: 'World Engine Complete',
     description: 'Full game world engine with NPC memory, physics integration, dream cycles, and persistent world state.',
     includes: ['NPC Memory System', 'Dream Cycles', 'Physics Integration', 'World Persistence', 'Multi-Agent Coordination'],
