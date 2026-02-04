@@ -277,8 +277,8 @@ export async function executeSync(configId: string): Promise<SyncRun> {
         config_id: configId, 
         run_id: run.id, 
         status: run.status,
-        stats: run.stats,
-      },
+        records_processed: run.stats.records_processed,
+      } as Record<string, string | number>,
       outcome: run.status === 'completed' ? 'success' : 'partial',
     }]);
   } catch (e) {
