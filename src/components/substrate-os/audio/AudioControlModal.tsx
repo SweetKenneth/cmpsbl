@@ -179,12 +179,8 @@ export function AudioControlModal({ isOpen, onClose }: AudioControlModalProps) {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
             >
-              {/*
-                Mobile offset: nudge the modal down slightly so the header/close button
-                never sits under the browser chrome (Safari address bar).
-                Use a non-motion wrapper to avoid transform conflicts.
-              */}
-              <div className="w-full max-w-sm translate-y-[125px]">
+              {/* Modal container - centered via parent flex */}
+              <div className="w-full max-w-sm">
                 <div
                   className={cn(
                     "w-full",
