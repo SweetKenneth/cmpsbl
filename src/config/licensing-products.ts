@@ -1,21 +1,28 @@
 /**
- * CMPSBL Substrate Licensing Products Configuration v7.0.0
- * Market-aligned pricing based on competitor research (Jan 2026)
+ * CMPSBL Substrate Licensing Products Configuration v8.0.0
+ * Aligned with Stripe pricing (Feb 2026)
  * 
- * Competitor Benchmarks:
- * - CognitiveView: $2,000-$5,000/yr per seat
- * - Enterprise AI Platforms: $25,000-$75,000/yr typical
- * - LangChain Enterprise: Custom (est. $15,000-$50,000/yr)
+ * Developer License:
+ * - Monthly: $39/month
+ * - Annual: $299/year (save ~36%)
  * 
- * Positioning: Accessible category creator, not premium gatekeeper
+ * Research/Enterprise/Strategic: Contact sales
  */
 
 export const LICENSING_PRODUCTS = {
   developer: {
-    product_id: 'prod_Ttq0whvqEE87FV',
-    price_id: 'price_1Sw2KuQ7FtTiAL4aMhocFXuv',
-    amount: 299900, // $2,999/year
-    interval: 'year' as const,
+    monthly: {
+      product_id: 'prod_TuzDdndKiASplG',
+      price_id: 'price_1Sx9F1Q7FtTiAL4aPvHMDh9r',
+      amount: 3900, // $39/month
+      interval: 'month' as const,
+    },
+    annual: {
+      product_id: 'prod_TuzDyllhVhku0B',
+      price_id: 'price_1Sx9F2Q7FtTiAL4a6vQtPPLe',
+      amount: 29900, // $299/year
+      interval: 'year' as const,
+    },
     name: 'Developer License',
     description: 'For individual developers and small teams building with CMPSBL',
     features: [
@@ -24,15 +31,15 @@ export const LICENSING_PRODUCTS = {
       'Unlimited memory storage',
       'Email support + documentation',
       'Community forum access',
-      '1-year updates included',
+      'Updates included during subscription',
     ],
     checkout_enabled: true,
   },
   team: {
-    product_id: 'prod_Ttq0wdWQ4OhVuk',
-    price_id: 'price_1Sw2KvQ7FtTiAL4a0wR7WWFH',
-    amount: 999900, // $9,999/year
-    interval: 'year' as const,
+    product_id: null,
+    price_id: null,
+    amount: null, // Contact sales
+    interval: 'custom' as const,
     name: 'Team License',
     description: 'For development teams up to 10 seats',
     features: [
@@ -43,13 +50,13 @@ export const LICENSING_PRODUCTS = {
       'Team onboarding session (90 min)',
       'Slack/Discord priority channel',
     ],
-    checkout_enabled: true,
+    checkout_enabled: false, // Contact-based
   },
   research: {
-    product_id: 'prod_Ttq00PbOT1Ou1Q',
-    price_id: 'price_1Sw2KxQ7FtTiAL4aUbRt0VoW',
-    amount: 1999900, // $19,999/year
-    interval: 'year' as const,
+    product_id: null,
+    price_id: null,
+    amount: null, // Contact sales
+    interval: 'custom' as const,
     name: 'Research License',
     description: 'For universities, research labs, and academic institutions',
     features: [
@@ -60,13 +67,13 @@ export const LICENSING_PRODUCTS = {
       'Academic support channel',
       'Early access to new features',
     ],
-    checkout_enabled: false, // Contact-based for high-value licenses
+    checkout_enabled: false, // Contact-based
   },
   enterprise: {
-    product_id: 'prod_Ttq6Zkso5r2axG',
-    price_id: 'price_1Sw2QSQ7FtTiAL4auZzswJIF',
-    amount: 4999900, // $49,999/year
-    interval: 'year' as const,
+    product_id: null,
+    price_id: null,
+    amount: null, // Contact sales
+    interval: 'custom' as const,
     name: 'Enterprise License',
     description: 'For enterprises embedding CMPSBL into products and platforms',
     features: [
@@ -77,7 +84,7 @@ export const LICENSING_PRODUCTS = {
       'Custom integration support',
       'Quarterly roadmap alignment calls',
     ],
-    checkout_enabled: false, // Contact-based for high-value licenses
+    checkout_enabled: false, // Contact-based
   },
   strategic: {
     product_id: null,

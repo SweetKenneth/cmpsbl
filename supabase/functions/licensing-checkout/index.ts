@@ -1,6 +1,6 @@
 /**
  * Licensing Checkout — Create Stripe checkout session for Developer License
- * Only Developer License is available for automated checkout
+ * Supports monthly ($39/mo) and annual ($299/yr) billing
  */
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
@@ -12,10 +12,18 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-// Developer License configuration
-const DEV_LICENSE = {
-  price_id: 'price_1Su1eoQ7FtTiAL4aqoXJj48x',
-  product_id: 'prod_TrlBfjavZnDpP0',
+// Developer License pricing configuration
+const DEV_LICENSE_PRICES = {
+  monthly: {
+    price_id: 'price_1Sx9F1Q7FtTiAL4aPvHMDh9r',
+    product_id: 'prod_TuzDdndKiASplG',
+    amount: 3900, // $39/month
+  },
+  annual: {
+    price_id: 'price_1Sx9F2Q7FtTiAL4a6vQtPPLe',
+    product_id: 'prod_TuzDyllhVhku0B',
+    amount: 29900, // $299/year
+  },
 };
 
 serve(async (req) => {
@@ -45,12 +53,23 @@ serve(async (req) => {
     }
 
     const body = await req.json();
-    const { license_type, customer_email, customer_name, organization } = body;
+    const { 
+      license_type, 
+      billing_interval = 'annual', // 'monthly' or 'annual'
+      customer_email, 
+      customer_name, 
+      organization 
+    } = body;
 
     // Only developer license is available for checkout
     if (license_type !== 'developer') {
-      throw new Error("Only Developer License is available for online checkout. Contact us for Research/Enterprise/Strategic licenses.");
+      throw new Error("Only Developer License is available for online checkout. Contact us for Team/Research/Enterprise/Strategic licenses.");
     }
+
+    // Get the appropriate price based on billing interval
+    const priceConfig = billing_interval === 'monthly' 
+      ? DEV_LICENSE_PRICES.monthly 
+      : DEV_LICENSE_PRICES.annual;
 
     // Email is optional - Stripe will collect it if not provided
     const email = userEmail || customer_email;
@@ -67,13 +86,12 @@ serve(async (req) => {
     }
 
     // Create checkout session for Developer License subscription
-    // Stripe will collect email if not provided
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       customer_email: customerId ? undefined : email || undefined,
       line_items: [
         {
-          price: DEV_LICENSE.price_id,
+          price: priceConfig.price_id,
           quantity: 1,
         },
       ],
@@ -82,7 +100,8 @@ serve(async (req) => {
       cancel_url: `${origin}/substrate/licensing?canceled=true`,
       metadata: {
         license_type: 'developer',
-        product_id: DEV_LICENSE.product_id,
+        billing_interval,
+        product_id: priceConfig.product_id,
         user_id: userId || '',
         organization: organization || '',
         customer_name: customer_name || '',
@@ -90,12 +109,13 @@ serve(async (req) => {
       subscription_data: {
         metadata: {
           license_type: 'developer',
+          billing_interval,
           user_id: userId || '',
         },
       },
     });
 
-    console.log(`Developer License checkout created: ${session.id}, email: ${email}`);
+    console.log(`Developer License (${billing_interval}) checkout created: ${session.id}, email: ${email}`);
 
     return new Response(
       JSON.stringify({ url: session.url, session_id: session.id }),

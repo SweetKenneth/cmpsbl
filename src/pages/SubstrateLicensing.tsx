@@ -1,6 +1,7 @@
 /**
  * Substrate Licensing Page
  * CMPSBL as cognitive infrastructure with tiered licensing
+ * Updated: Monthly/Annual Developer pricing
  */
 
 import { useState } from "react";
@@ -15,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { LICENSING_PRODUCTS, CONTACT_EMAIL, CONTACT_PHONE } from "@/config/licensing-products";
@@ -30,8 +32,8 @@ interface LicenseTier {
   color: string;
   name: string;
   description: string;
-  amount: number | null;
-  interval: string;
+  monthlyAmount: number | null;
+  annualAmount: number | null;
   features: readonly string[];
   checkout_enabled: boolean;
   cta: string;
@@ -45,12 +47,24 @@ const licenseTiers: LicenseTier[] = [
     color: 'from-blue-500 to-cyan-500',
     name: LICENSING_PRODUCTS.developer.name,
     description: LICENSING_PRODUCTS.developer.description,
-    amount: LICENSING_PRODUCTS.developer.amount,
-    interval: LICENSING_PRODUCTS.developer.interval,
+    monthlyAmount: LICENSING_PRODUCTS.developer.monthly.amount,
+    annualAmount: LICENSING_PRODUCTS.developer.annual.amount,
     features: LICENSING_PRODUCTS.developer.features,
     checkout_enabled: LICENSING_PRODUCTS.developer.checkout_enabled,
-    cta: 'Start Developer Checkout',
+    cta: 'Start Checkout',
     highlight: true,
+  },
+  {
+    id: 'team',
+    icon: Users,
+    color: 'from-green-500 to-emerald-500',
+    name: LICENSING_PRODUCTS.team.name,
+    description: LICENSING_PRODUCTS.team.description,
+    monthlyAmount: null,
+    annualAmount: null,
+    features: LICENSING_PRODUCTS.team.features,
+    checkout_enabled: LICENSING_PRODUCTS.team.checkout_enabled,
+    cta: 'Contact Sales',
   },
   {
     id: 'research',
@@ -58,8 +72,8 @@ const licenseTiers: LicenseTier[] = [
     color: 'from-purple-500 to-pink-500',
     name: LICENSING_PRODUCTS.research.name,
     description: LICENSING_PRODUCTS.research.description,
-    amount: LICENSING_PRODUCTS.research.amount,
-    interval: LICENSING_PRODUCTS.research.interval,
+    monthlyAmount: null,
+    annualAmount: null,
     features: LICENSING_PRODUCTS.research.features,
     checkout_enabled: LICENSING_PRODUCTS.research.checkout_enabled,
     cta: 'Request Research License',
@@ -70,8 +84,8 @@ const licenseTiers: LicenseTier[] = [
     color: 'from-orange-500 to-red-500',
     name: LICENSING_PRODUCTS.enterprise.name,
     description: LICENSING_PRODUCTS.enterprise.description,
-    amount: LICENSING_PRODUCTS.enterprise.amount,
-    interval: LICENSING_PRODUCTS.enterprise.interval,
+    monthlyAmount: null,
+    annualAmount: null,
     features: LICENSING_PRODUCTS.enterprise.features,
     checkout_enabled: LICENSING_PRODUCTS.enterprise.checkout_enabled,
     cta: 'Talk to Sales',
@@ -82,8 +96,8 @@ const licenseTiers: LicenseTier[] = [
     color: 'from-yellow-500 to-amber-500',
     name: LICENSING_PRODUCTS.strategic.name,
     description: LICENSING_PRODUCTS.strategic.description,
-    amount: LICENSING_PRODUCTS.strategic.amount,
-    interval: LICENSING_PRODUCTS.strategic.interval,
+    monthlyAmount: null,
+    annualAmount: null,
     features: LICENSING_PRODUCTS.strategic.features,
     checkout_enabled: LICENSING_PRODUCTS.strategic.checkout_enabled,
     cta: 'Discuss Strategic License',
@@ -91,13 +105,14 @@ const licenseTiers: LicenseTier[] = [
 ];
 
 const deliverySteps = [
-  { step: 1, title: 'Choose Tier', description: 'Select Developer, Research, Enterprise, or Strategic licensing.' },
+  { step: 1, title: 'Choose Tier', description: 'Select Developer, Team, Research, Enterprise, or Strategic licensing.' },
   { step: 2, title: 'Sign & Checkout', description: 'Complete Stripe checkout (Developer) or sign contract (others).' },
   { step: 3, title: 'Receive Access', description: 'Get substrate runtime, docs, and deployment bundle.' },
 ];
 
 export default function SubstrateLicensing() {
   const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const [billingAnnual, setBillingAnnual] = useState(true); // Default to annual
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -114,6 +129,7 @@ export default function SubstrateLicensing() {
       const { data, error } = await supabase.functions.invoke('licensing-checkout', {
         body: {
           license_type: 'developer',
+          billing_interval: billingAnnual ? 'annual' : 'monthly',
           customer_email: formData.email || undefined,
           customer_name: formData.name || undefined,
           organization: formData.organization || undefined,
@@ -175,11 +191,16 @@ export default function SubstrateLicensing() {
     document.getElementById('developer-license')?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const formatPrice = (amount: number | null, interval: 'month' | 'year') => {
+    if (amount === null) return 'Custom';
+    return `$${(amount / 100).toLocaleString()}/${interval === 'month' ? 'mo' : 'yr'}`;
+  };
+
   return (
     <>
       <SEO
         title="Substrate Licensing | CMPSBL - Cognitive Infrastructure"
-        description="License CMPSBL cognitive infrastructure for your models, apps, and autonomous systems. Developer ($2,999/yr), Team ($9,999/yr), Research ($19,999/yr), Enterprise ($49,999/yr), and Strategic options."
+        description="License CMPSBL cognitive infrastructure for your models, apps, and autonomous systems. Developer ($39/mo or $299/yr), Team, Research, Enterprise, and Strategic options."
         keywords={["CMPSBL licensing", "cognitive infrastructure", "AI substrate", "developer license", "enterprise AI"]}
       />
 
@@ -206,7 +227,7 @@ export default function SubstrateLicensing() {
                 Cognitive infrastructure for models, apps, and autonomous systems.
               </p>
               <p className="text-lg text-muted-foreground mb-8">
-                Licensed for <strong className="text-foreground">Developers</strong>, <strong className="text-foreground">Research</strong>, <strong className="text-foreground">Enterprise</strong>, and <strong className="text-foreground">Strategic</strong> partners.
+                Licensed for <strong className="text-foreground">Developers</strong>, <strong className="text-foreground">Teams</strong>, <strong className="text-foreground">Research</strong>, <strong className="text-foreground">Enterprise</strong>, and <strong className="text-foreground">Strategic</strong> partners.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -253,14 +274,36 @@ export default function SubstrateLicensing() {
         <section id="developer-license" className="py-16 bg-muted/30">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold mb-4 text-center">Licensing Tiers</h2>
-            <p className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
+            <p className="text-muted-foreground text-center mb-8 max-w-2xl mx-auto">
               From individual developers to strategic partnerships. Developer License includes automated checkout.
             </p>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+            {/* Billing Toggle */}
+            <div className="flex items-center justify-center gap-4 mb-12">
+              <span className={`text-sm font-medium ${!billingAnnual ? 'text-foreground' : 'text-muted-foreground'}`}>
+                Monthly
+              </span>
+              <Switch
+                checked={billingAnnual}
+                onCheckedChange={setBillingAnnual}
+                className="data-[state=checked]:bg-primary"
+              />
+              <span className={`text-sm font-medium ${billingAnnual ? 'text-foreground' : 'text-muted-foreground'}`}>
+                Annual
+              </span>
+              {billingAnnual && (
+                <Badge variant="secondary" className="ml-2 bg-green-500/10 text-green-600 border-green-500/30">
+                  Save ~36%
+                </Badge>
+              )}
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 max-w-7xl mx-auto">
               {licenseTiers.map((tier) => {
                 const Icon = tier.icon;
-                const price = tier.amount ? `$${(tier.amount / 100).toLocaleString()}` : 'Custom';
+                const displayAmount = billingAnnual ? tier.annualAmount : tier.monthlyAmount;
+                const interval = billingAnnual ? 'year' : 'month';
+                const price = displayAmount ? formatPrice(displayAmount, interval) : 'Contact Sales';
 
                 return (
                   <Card 
@@ -275,33 +318,36 @@ export default function SubstrateLicensing() {
                       </div>
                     )}
                     <div className={`h-2 bg-gradient-to-r ${tier.color}`} />
-                    <CardHeader>
+                    <CardHeader className="pb-4">
                       <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${tier.color} flex items-center justify-center mb-4`}>
                         <Icon className="w-6 h-6 text-white" />
                       </div>
-                      <CardTitle className="text-xl">{tier.name}</CardTitle>
-                      <CardDescription>{tier.description}</CardDescription>
+                      <CardTitle className="text-lg">{tier.name}</CardTitle>
+                      <CardDescription className="text-sm">{tier.description}</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      <div className="text-3xl font-bold">
+                      <div className="text-2xl font-bold">
                         {price}
-                        {tier.interval !== 'custom' && (
-                          <span className="text-sm font-normal text-muted-foreground"> / {tier.interval}</span>
-                        )}
                       </div>
 
                       <ul className="space-y-2">
-                        {tier.features.map((feature, i) => (
-                          <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
-                            <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                        {tier.features.slice(0, 4).map((feature, i) => (
+                          <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
+                            <CheckCircle2 className="w-3 h-3 text-primary mt-0.5 shrink-0" />
                             {feature}
                           </li>
                         ))}
+                        {tier.features.length > 4 && (
+                          <li className="text-xs text-muted-foreground">
+                            +{tier.features.length - 4} more features
+                          </li>
+                        )}
                       </ul>
 
                       <Button 
                         className="w-full gap-2"
                         variant={tier.highlight ? 'default' : 'outline'}
+                        size="sm"
                         onClick={tier.checkout_enabled ? handleDevCheckout : scrollToContact}
                         disabled={tier.checkout_enabled && isCheckingOut}
                       >
@@ -397,7 +443,7 @@ export default function SubstrateLicensing() {
               <CardContent className="p-4 flex items-center gap-3">
                 <Server className="w-5 h-5 text-primary shrink-0" />
                 <p className="text-sm text-muted-foreground">
-                  <strong className="text-foreground">Delivery Model:</strong> Developer, Team, and Research licenses provide hosted API access. Enterprise licenses include source code for self-hosted deployment.
+                  <strong className="text-foreground">Delivery Model:</strong> Developer and Team licenses provide hosted API access. Enterprise licenses include source code for self-hosted deployment.
                 </p>
               </CardContent>
             </Card>
@@ -407,95 +453,136 @@ export default function SubstrateLicensing() {
         {/* Contact Form */}
         <section id="contact-section" className="py-16 border-t border-border/50">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold mb-4 text-center">Contact / Licensing Request</h2>
-            <p className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
-              For Research, Enterprise, Strategic licenses, or general inquiries.
-            </p>
+            <div className="max-w-2xl mx-auto">
+              <h2 className="text-3xl font-bold mb-4 text-center">Contact Us</h2>
+              <p className="text-muted-foreground text-center mb-8">
+                For Team, Research, Enterprise, or Strategic licenses, or any questions.
+              </p>
 
-            <Card className="max-w-2xl mx-auto">
-              <CardContent className="p-6">
-                <form onSubmit={handleContactSubmit} className="space-y-4">
-                  <div className="grid sm:grid-cols-2 gap-4">
+              <Card>
+                <CardContent className="p-8">
+                  <form onSubmit={handleContactSubmit} className="space-y-6">
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="name">Name *</Label>
+                        <Input
+                          id="name"
+                          required
+                          value={formData.name}
+                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          placeholder="Your name"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="email">Email *</Label>
+                        <Input
+                          id="email"
+                          type="email"
+                          required
+                          value={formData.email}
+                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          placeholder="you@company.com"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="organization">Organization</Label>
+                        <Input
+                          id="organization"
+                          value={formData.organization}
+                          onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
+                          placeholder="Company or institution"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="role">Role</Label>
+                        <Input
+                          id="role"
+                          value={formData.role}
+                          onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                          placeholder="Your role"
+                        />
+                      </div>
+                    </div>
+
                     <div className="space-y-2">
-                      <Label htmlFor="name">Name *</Label>
-                      <Input
-                        id="name"
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        required
+                      <Label htmlFor="licenseInterest">License Interest</Label>
+                      <Select
+                        value={formData.licenseInterest}
+                        onValueChange={(value) => setFormData({ ...formData, licenseInterest: value })}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a license tier" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="developer">Developer License</SelectItem>
+                          <SelectItem value="team">Team License</SelectItem>
+                          <SelectItem value="research">Research License</SelectItem>
+                          <SelectItem value="enterprise">Enterprise License</SelectItem>
+                          <SelectItem value="strategic">Strategic Partnership</SelectItem>
+                          <SelectItem value="other">Other / Not Sure</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="message">Message</Label>
+                      <Textarea
+                        id="message"
+                        value={formData.message}
+                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                        placeholder="Tell us about your use case, requirements, or questions..."
+                        rows={4}
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email *</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        required
-                      />
-                    </div>
+
+                    <Button type="submit" className="w-full gap-2" disabled={isSubmitting}>
+                      {isSubmitting ? 'Submitting...' : 'Submit Inquiry'}
+                      <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  </form>
+
+                  <div className="mt-8 pt-6 border-t border-border/50 flex flex-col sm:flex-row gap-4 justify-center text-sm text-muted-foreground">
+                    <a href={`mailto:${CONTACT_EMAIL}`} className="flex items-center gap-2 hover:text-foreground transition-colors">
+                      <Mail className="w-4 h-4" />
+                      {CONTACT_EMAIL}
+                    </a>
+                    <a href={`tel:${CONTACT_PHONE.replace(/[^0-9]/g, '')}`} className="flex items-center gap-2 hover:text-foreground transition-colors">
+                      <Phone className="w-4 h-4" />
+                      {CONTACT_PHONE}
+                    </a>
                   </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
 
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="organization">Organization</Label>
-                      <Input
-                        id="organization"
-                        value={formData.organization}
-                        onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="role">Role</Label>
-                      <Input
-                        id="role"
-                        value={formData.role}
-                        onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="licenseInterest">License Interest</Label>
-                    <Select
-                      value={formData.licenseInterest}
-                      onValueChange={(value) => setFormData({ ...formData, licenseInterest: value })}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a license tier" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="developer">Developer License</SelectItem>
-                        <SelectItem value="research">Research License</SelectItem>
-                        <SelectItem value="enterprise">Enterprise License</SelectItem>
-                        <SelectItem value="strategic">Strategic License</SelectItem>
-                        <SelectItem value="not-sure">Not Sure</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="message">Message / Use Case</Label>
-                    <Textarea
-                      id="message"
-                      value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder="Describe your use case, team size, deployment needs..."
-                      rows={4}
-                    />
-                  </div>
-
-                  <Button type="submit" className="w-full" disabled={isSubmitting}>
-                    {isSubmitting ? 'Submitting...' : 'Submit Inquiry'}
-                  </Button>
-
-                  <p className="text-xs text-muted-foreground text-center">
-                    Or contact directly: <a href={`mailto:${CONTACT_EMAIL}`} className="text-primary hover:underline">{CONTACT_EMAIL}</a> | <a href={`tel:${CONTACT_PHONE.replace(/[^0-9+]/g, '')}`} className="text-primary hover:underline">{CONTACT_PHONE}</a>
-                  </p>
-                </form>
-              </CardContent>
-            </Card>
+        {/* Quick Links */}
+        <section className="py-16 bg-muted/30">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-wrap justify-center gap-4">
+              <Button variant="outline" asChild className="gap-2">
+                <Link to="/substrate">
+                  <Brain className="w-4 h-4" />
+                  Explore Substrate
+                </Link>
+              </Button>
+              <Button variant="outline" asChild className="gap-2">
+                <Link to="/substrate/architecture">
+                  <FileText className="w-4 h-4" />
+                  Architecture Docs
+                </Link>
+              </Button>
+              <Button variant="outline" asChild className="gap-2">
+                <Link to="/substrate/capabilities">
+                  <Zap className="w-4 h-4" />
+                  Capabilities Depot
+                </Link>
+              </Button>
+            </div>
           </div>
         </section>
       </main>

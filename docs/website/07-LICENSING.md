@@ -12,19 +12,19 @@ CMPSBL® is licensed as cognitive infrastructure — you bring your own AI provi
 
 ## License Tiers
 
-| Tier | Annual Price | Best For |
-|------|--------------|----------|
-| **Developer** | $2,999/year | Startups, small teams, prototyping |
-| **Team** | $9,999/year | Teams up to 10 developers |
-| **Research** | $19,999/year | Academic institutions, R&D labs |
-| **Enterprise** | $49,999/year | Production deployment, enterprise features |
+| Tier | Pricing | Best For |
+|------|---------|----------|
+| **Developer** | $39/mo or $299/yr | Startups, small teams, prototyping |
+| **Team** | Contact Sales | Teams up to 10 developers |
+| **Research** | Contact Sales | Academic institutions, R&D labs |
+| **Enterprise** | Contact Sales | Production deployment, enterprise features |
 | **Strategic** | Custom | Cloud providers, OEM partnerships |
 
 ---
 
 ## Developer License
 
-**$2,999/year**
+**$39/month** or **$299/year** (save ~36%)
 
 Perfect for startups and small teams building AI-powered products.
 
@@ -51,9 +51,33 @@ Automated checkout available — get access today.
 
 ---
 
+## Team License
+
+**Contact Sales**
+
+For development teams needing multi-seat access.
+
+### Includes
+- Everything in Developer, plus:
+- ✓ Up to 10 developer seats
+- ✓ Priority email support
+- ✓ API key management dashboard
+- ✓ Team onboarding session (90 min)
+- ✓ Slack/Discord priority channel
+
+### Best For
+- Startups with engineering teams
+- Development agencies
+- Product teams
+
+### Get Started
+Contact us for team pricing.
+
+---
+
 ## Research License
 
-**$19,999/year**
+**Contact Sales**
 
 For academic institutions and research labs exploring cognitive AI.
 
@@ -78,7 +102,7 @@ Contact us for institutional licensing.
 
 ## Enterprise License
 
-**$49,999/year**
+**Contact Sales**
 
 For production deployments with enterprise requirements.
 
@@ -165,32 +189,19 @@ Contact founders directly.
 
 ---
 
-## Annual Billing Discount
-
-All licenses are annual. Monthly billing is available at 25% premium.
-
-| Tier | Annual | Monthly (25% premium) |
-|------|--------|----------------------|
-| Developer | $2,999 | $312.50/month |
-| Team | $9,999 | $1,041.67/month |
-| Research | $19,999 | $2,083.33/month |
-| Enterprise | $49,999 | $5,208.33/month |
-
----
-
 ## Frequently Asked Questions
 
 ### Can I start with Developer and upgrade later?
 Yes. Upgrades are prorated — pay the difference for the remaining term.
 
-### What happens when my license expires?
-Your deployment continues to run, but you won't receive updates or support. Renew to restore.
+### What happens when my subscription ends?
+Your API access is paused until you renew. No data is deleted for 30 days.
 
 ### Do you offer discounts for nonprofits?
 Yes. Contact us for nonprofit pricing.
 
 ### Is there a free trial?
-Developer licenses include a 30-day money-back guarantee. Enterprise evaluations are available upon request.
+Developer licenses include a 7-day money-back guarantee. Enterprise evaluations are available upon request.
 
 ### What's not included?
 - AI provider API costs (you pay providers directly)
