@@ -184,7 +184,7 @@ function extractOptimizationInsights(patterns: DreamPatternInput[]): DreamInsigh
 /**
  * Extract anomaly-related insights
  */
-function extractAnomalyInsights(patterns: DreamPattern[]): DreamInsight[] {
+function extractAnomalyInsights(patterns: DreamPatternInput[]): DreamInsight[] {
   const insights: DreamInsight[] = [];
 
   // Look for anomalous patterns
