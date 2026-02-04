@@ -21,15 +21,15 @@ export const STIER_STRIPE_CONFIG: Record<string, CapabilityStripeConfig> = {
   'stier-intelligence-governance-kernel': {
     productId: 'prod_TuAsehs143nnEK',
     priceId: 'price_1SwMX5Q7FtTiAL4aOb3kupJR',
-    priceUsd: 4999,
-    offMenu: true, // Kernel-level code self-modification
+    priceUsd: 299,
+    offMenu: true, // Kernel-level code self-modification — Licensed on request
   },
 
   'stier-self-scaling-intelligence-fabric': {
     productId: 'prod_TuAsP1leYcoXYe',
     priceId: 'price_1SwMX6Q7FtTiAL4a2xLxRqAx',
-    priceUsd: 3999,
-    offMenu: true, // Self-scaling code generation
+    priceUsd: 299,
+    offMenu: true, // Self-scaling code generation — Licensed on request
   },
 
   // ═══════════════════════════════════════════════════════════════════════════

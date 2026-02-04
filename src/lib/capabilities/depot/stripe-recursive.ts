@@ -78,7 +78,7 @@ export const RECURSIVE_STRIPE_CONFIG: Record<string, CapabilityStripeConfig> = {
   'recursive-knowledge-crystallization': {
     productId: 'prod_TuB0gRCB6xGuzT',
     priceId: 'price_1SwMegQ7FtTiAL4arI2lIXl7',
-    priceUsd: 249, // FOR SALE - Knowledge extraction
+    priceUsd: 199, // FOR SALE - Knowledge extraction
   },
 
   'recursive-goal-optimizer': {
