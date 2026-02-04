@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { substrate } from "@/lib/substrate";
+import { SUBSTRATE_VERSION } from "@/lib/substrate/versions";
 
 // Types
 type Scenario = "health" | "decode" | "dream";
@@ -42,7 +43,6 @@ interface ExecutionMeta {
 
 const RATE_LIMIT_KEY = "pf_proof_mode_session";
 const MAX_RUNS_PER_HOUR = 10;
-const SUBSTRATE_VERSION = "2026.01";
 const EDGE_REGION = "eu-central-1";
 
 // Scenario configs

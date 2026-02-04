@@ -1,6 +1,6 @@
 /**
  * Modernizer Scan — Cognitive Systems Scan
- * v0.7.9 — Always Produces Valid Plans + Mobile-First Output
+ * v7.5.0 — Always Produces Valid Plans + Mobile-First Output
  * 
  * SCAN = 3-SOURCE SYNTHESIS → NORMALIZE → PLAN (always valid)
  * 
@@ -25,6 +25,7 @@ import { formatScanResultMobile } from './terminal-formatter';
 import type { ScanResult, ScanOptions } from './types';
 import { evolutionRuns } from '../evolution-runs';
 import { emitEvolveEvent } from '../telemetry';
+import { SUBSTRATE_VERSION } from '@/lib/substrate/versions';
 
 // Re-export types
 export * from './types';
@@ -141,7 +142,7 @@ export async function modernizerScan(options: ScanOptions = {}): Promise<ScanRes
       scan_id: scanId,
       system_snapshot: {
         timestamp: new Date().toISOString(),
-        substrate_version: '6.3.1',
+        substrate_version: SUBSTRATE_VERSION,
         modules_active: 14,
         health_overall: codeHealth.stability_score,
       },
@@ -191,7 +192,7 @@ function createErrorResult(scanId: string, errorMessage: string, duration: numbe
     scan_id: scanId,
     system_snapshot: {
       timestamp: new Date().toISOString(),
-      substrate_version: '6.3.1',
+      substrate_version: SUBSTRATE_VERSION,
       modules_active: 14,
       health_overall: 0,
     },
