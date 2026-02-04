@@ -334,10 +334,10 @@ export function CmpsblNav() {
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className={cn(
-                  "lg:hidden relative w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-200 touch-manipulation",
+                  "lg:hidden relative w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-200 touch-manipulation border",
                   mobileMenuOpen 
-                    ? "bg-primary text-primary-foreground" 
-                    : "bg-muted hover:bg-muted/80 text-foreground"
+                    ? "bg-primary text-primary-foreground border-primary" 
+                    : "bg-card hover:bg-secondary border-border text-foreground"
                 )}
                 aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
                 aria-expanded={mobileMenuOpen}
@@ -421,7 +421,7 @@ export function CmpsblNav() {
                     to={item.href}
                     className={cn(
                       "flex items-center gap-3 p-4 rounded-xl transition-colors touch-manipulation",
-                      "bg-muted hover:bg-muted/80 border border-border",
+                      "bg-card hover:bg-secondary border border-border shadow-sm",
                       isActive(item.href) && "bg-primary/10 border-primary/30"
                     )}
                   >
@@ -457,7 +457,7 @@ export function CmpsblNav() {
                       aria-expanded={expandedMobileSection === section.name}
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-lg bg-muted flex items-center justify-center">
+                        <div className="w-9 h-9 rounded-lg bg-secondary flex items-center justify-center">
                           <section.icon className="w-4.5 h-4.5 text-muted-foreground" />
                         </div>
                         <div className="text-left">
@@ -498,7 +498,7 @@ export function CmpsblNav() {
                                 {item.icon && (
                                   <div className={cn(
                                     "w-8 h-8 rounded-lg flex items-center justify-center shrink-0",
-                                    isActive(item.href) ? "bg-primary/10" : "bg-muted"
+                                    isActive(item.href) ? "bg-primary/10" : "bg-secondary"
                                   )}>
                                     <item.icon className={cn(
                                       "w-4 h-4",
