@@ -10,21 +10,16 @@
  */
 
 // === Off-Menu Keywords ===
-// These capabilities are NOT available for public checkout
+// ONLY capabilities that involve recursive code compilation / self-modifying code
+// These are the "Crown Jewels" — software that writes its own code
 export const OFF_MENU_KEYWORDS = [
-  'recursive',
-  'autonomous',
-  'self-improving',
-  'self-scaling',
-  'kernel',
-  'governance',
-  'infinite',
-  'unbounded',
-  'system-wide',
-  'self-healing-mesh',
-  'self-optimization',
-  'meta-learning',
-  'cognitive-bootstrapping',
+  'recursive-self-optimization',     // Core recursive code compilation
+  'recursive-meta-learning',         // Meta-learning code generation
+  'recursive-architecture-refactor', // Self-modifying architecture
+  'recursive-cognitive-bootstrap',   // Cognitive code bootstrapping
+  'self-compiling',                  // Code that compiles itself
+  'self-modifying-code',             // Code that modifies its own source
+  'code-generation-recursive',       // Recursive code generation loops
 ] as const;
 
 // === Price Configuration ===
