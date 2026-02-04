@@ -102,14 +102,11 @@ export async function logAudit(entry: Omit<AuditEntry, 'id' | 'timestamp'>): Pro
       entity_id: auditEntry.resource.id,
       performed_by: auditEntry.actor.id,
       details: {
-        actor: auditEntry.actor,
-        action: auditEntry.action,
-        resource: auditEntry.resource,
+        actor_id: auditEntry.actor.id,
+        actor_type: auditEntry.actor.type,
+        action_type: auditEntry.action.type,
         outcome: auditEntry.outcome,
-        changes: auditEntry.changes,
-        metadata: auditEntry.metadata,
-        ...auditEntry.details,
-      },
+      } as Record<string, string>,
     }]);
   } catch (error) {
     console.error('Failed to persist audit entry:', error);
