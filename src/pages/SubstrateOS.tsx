@@ -154,20 +154,9 @@ interface SidebarNavProps {
 }
 
 function SidebarNav({ groups, activeTab, onTabChange, collapsed = false, onClose, onLogout }: SidebarNavProps) {
-  const colorClasses: Record<string, { active: string; icon: string }> = {
-    cyan: { active: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/40', icon: 'text-cyan-400' },
-    emerald: { active: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/40', icon: 'text-emerald-400' },
-    fuchsia: { active: 'bg-fuchsia-500/10 text-fuchsia-400 border-fuchsia-500/40', icon: 'text-fuchsia-400' },
-    amber: { active: 'bg-amber-500/10 text-amber-400 border-amber-500/40', icon: 'text-amber-400' },
-    orange: { active: 'bg-orange-500/10 text-orange-400 border-orange-500/40', icon: 'text-orange-400' },
-    purple: { active: 'bg-purple-500/10 text-purple-400 border-purple-500/40', icon: 'text-purple-400' },
-    blue: { active: 'bg-blue-500/10 text-blue-400 border-blue-500/40', icon: 'text-blue-400' },
-    violet: { active: 'bg-violet-500/10 text-violet-400 border-violet-500/40', icon: 'text-violet-400' },
-  };
-
   return (
     <div className={cn(
-      "flex flex-col h-full bg-gradient-to-b from-background/95 to-background/80 backdrop-blur-xl border-r border-border/30",
+      "flex flex-col h-full bg-background border-r border-border",
       collapsed ? "w-16" : "w-60"
     )}>
       <ScrollArea className="flex-1 py-4">
@@ -181,16 +170,15 @@ function SidebarNav({ groups, activeTab, onTabChange, collapsed = false, onClose
             >
               {!collapsed && (
                 <div className="flex items-center gap-2 px-3 mb-2">
-                  <group.icon className="w-3.5 h-3.5 text-muted-foreground/70" />
-                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70">
+                  <group.icon className="w-3.5 h-3.5 text-muted-foreground" />
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
                     {group.label}
                   </span>
                 </div>
               )}
               <div className="space-y-1">
-                {group.tabs.map((tab, tabIdx) => {
+                {group.tabs.map((tab) => {
                   const isActive = activeTab === tab.id;
-                  const colors = colorClasses[tab.color] || colorClasses.cyan;
                   
                   return (
                     <motion.button
@@ -203,13 +191,13 @@ function SidebarNav({ groups, activeTab, onTabChange, collapsed = false, onClose
                         "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all",
                         collapsed ? "justify-center" : "",
                         isActive
-                          ? cn("border shadow-sm", colors.active)
-                          : "text-muted-foreground hover:text-foreground hover:bg-muted/30"
+                          ? "bg-primary/10 text-primary border border-primary/30"
+                          : "text-muted-foreground hover:text-foreground hover:bg-muted"
                       )}
                       whileHover={{ x: collapsed ? 0 : 4 }}
                       whileTap={{ scale: 0.98 }}
                     >
-                      <tab.icon className={cn("w-4 h-4 shrink-0", isActive && colors.icon)} />
+                      <tab.icon className={cn("w-4 h-4 shrink-0", isActive && "text-primary")} />
                       {!collapsed && (
                         <>
                           <span className="flex-1 text-left">{tab.label}</span>
@@ -226,7 +214,7 @@ function SidebarNav({ groups, activeTab, onTabChange, collapsed = false, onClose
       </ScrollArea>
       
       {/* Footer with navigation */}
-      <div className={cn("border-t border-border/30", collapsed ? "p-2" : "p-3")}>
+      <div className={cn("border-t border-border", collapsed ? "p-2" : "p-3")}>
         <div className={cn("flex gap-2", collapsed ? "flex-col" : "")}>
           <Button
             variant="ghost"
@@ -256,8 +244,8 @@ function SidebarNav({ groups, activeTab, onTabChange, collapsed = false, onClose
           </Button>
         </div>
         {!collapsed && (
-          <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-mono mt-3 pt-3 border-t border-border/20">
-            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+          <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-mono mt-3 pt-3 border-t border-border">
+            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
             <span>CMPSBL v7.0.0</span>
           </div>
         )}

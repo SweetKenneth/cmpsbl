@@ -405,7 +405,7 @@ export function PublicNav() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.05 + sectionIdx * 0.03 }}
-                      className="rounded-2xl border border-border/50 overflow-hidden bg-card/50 backdrop-blur-sm"
+                      className="rounded-2xl border border-border overflow-hidden bg-card"
                     >
                       <button
                         onClick={() => setExpandedSection(
@@ -413,7 +413,7 @@ export function PublicNav() {
                         )}
                         className={cn(
                           "w-full flex items-center justify-between p-4 text-left transition-colors touch-target tap-highlight-none",
-                          expandedSection === section.name ? "bg-muted/30" : "hover:bg-muted/20 active:bg-muted/30"
+                          expandedSection === section.name ? "bg-muted/50" : "hover:bg-muted/30 active:bg-muted/50"
                         )}
                       >
                         <div className="flex items-center gap-3">
@@ -421,7 +421,7 @@ export function PublicNav() {
                             "w-11 h-11 rounded-xl flex items-center justify-center transition-colors",
                             isInSection(section) 
                               ? "bg-primary/15 text-primary" 
-                              : "bg-muted/50 text-muted-foreground"
+                              : "bg-muted text-muted-foreground"
                           )}>
                             <section.icon className="w-5 h-5" />
                           </div>
@@ -447,7 +447,7 @@ export function PublicNav() {
                             transition={{ duration: 0.25, ease: "easeInOut" }}
                             className="overflow-hidden"
                           >
-                            <div className="border-t border-border/30 bg-muted/10">
+                            <div className="border-t border-border bg-muted/30">
                               {section.items.map((item, idx) => (
                                 <motion.div
                                   key={item.href}
@@ -461,7 +461,7 @@ export function PublicNav() {
                                       "flex items-center gap-3 px-4 py-4 transition-colors touch-target tap-highlight-none",
                                       isActive(item.href)
                                         ? "bg-primary/10 text-primary"
-                                        : "hover:bg-muted/30 active:bg-muted/50"
+                                        : "hover:bg-muted/50 active:bg-muted"
                                     )}
                                   >
                                     {item.icon && (
@@ -469,13 +469,13 @@ export function PublicNav() {
                                         "w-10 h-10 rounded-lg flex items-center justify-center shrink-0",
                                         isActive(item.href) 
                                           ? "bg-primary/20 text-primary" 
-                                          : "bg-muted/30 text-muted-foreground"
+                                          : "bg-background text-muted-foreground"
                                       )}>
                                         <item.icon className="w-4 h-4" />
                                       </div>
                                     )}
                                     <div className="flex flex-col min-w-0 flex-1">
-                                      <span className="font-medium text-sm">{item.name}</span>
+                                      <span className="font-medium text-sm text-foreground">{item.name}</span>
                                       {item.description && (
                                         <span className="text-xs text-muted-foreground truncate">{item.description}</span>
                                       )}
