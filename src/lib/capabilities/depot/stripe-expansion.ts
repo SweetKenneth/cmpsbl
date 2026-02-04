@@ -180,30 +180,26 @@ export const EXPANSION_STRIPE_CONFIG: Record<string, CapabilityStripeConfig> = {
     priceUsd: 149, // normalized from 199
   },
 
-  // Flagship Expansion — OFF-MENU (system-wide capabilities)
+  // Flagship Expansion — Now FOR SALE at $299 ceiling (not code compilation)
   'cap-enterprise-mesh': {
     productId: 'prod_Ttzm3IGLUnxtXg',
     priceId: 'price_1SwBmgQ7FtTiAL4aDaRGvBMd',
-    priceUsd: 2999,
-    offMenu: true, // Enterprise system-wide
+    priceUsd: 299, // FOR SALE - Enterprise mesh (not code gen)
   },
   'cap-cognitive-platform': {
     productId: 'prod_Ttzm98E4Mv7UQ5',
     priceId: 'price_1SwBmhQ7FtTiAL4aU89A5AEH',
-    priceUsd: 2499,
-    offMenu: true, // System-wide cognitive
+    priceUsd: 299, // FOR SALE - Cognitive platform
   },
   'cap-security-suite': {
     productId: 'prod_TtzmmOP8HKoEKM',
     priceId: 'price_1SwBmiQ7FtTiAL4aenCVhynX',
-    priceUsd: 1999,
-    offMenu: true, // System-wide security
+    priceUsd: 299, // FOR SALE - Security suite
   },
   'cap-resilience-platform': {
     productId: 'prod_Ttzmse1gqAIhDb',
     priceId: 'price_1SwBmjQ7FtTiAL4aU1oKwtPF',
-    priceUsd: 1799,
-    offMenu: true, // System-wide resilience
+    priceUsd: 299, // FOR SALE - Resilience platform
   },
 };
 

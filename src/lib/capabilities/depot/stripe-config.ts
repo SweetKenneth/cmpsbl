@@ -83,60 +83,111 @@ export const CAPABILITY_STRIPE_CONFIG: Record<string, CapabilityStripeConfig> = 
     priceUsd: 149, // normalized from 349
   },
   
-  // Flagship — OFF-MENU (requires license)
+  // Flagship — Only true system-wide cognitive mesh remains off-menu
   'cap-cognitive-mesh': {
     productId: 'prod_TtzRdjZUT012dR',
     priceId: 'price_1SwBSeQ7FtTiAL4aPMhYfp5b',
-    priceUsd: 2499,
-    offMenu: true, // System-wide cognitive mesh
+    priceUsd: 299, // FOR SALE - Cognitive mesh (not code compilation)
   },
 };
 
-// Synergy Pipeline Capabilities
-// Synergy Pipeline Capabilities — Normalized
+// Synergy Pipeline Capabilities — Normalized (most now FOR SALE)
 export const SYNERGY_STRIPE_CONFIG: Record<string, CapabilityStripeConfig> = {
   'syn-smart-recall': {
     productId: 'prod_TtzRrsAv2XdHXZ',
     priceId: 'price_1SwBSgQ7FtTiAL4as6Nob9DC',
-    priceUsd: 149, // normalized from 199
+    priceUsd: 149, // FOR SALE
   },
   'syn-adaptive-routing': {
     productId: 'prod_TtzRna6yh7RMcB',
     priceId: 'price_1SwBShQ7FtTiAL4aS2j350wK',
-    priceUsd: 99, // normalized from 249
+    priceUsd: 99, // FOR SALE
   },
   'syn-graceful-degradation': {
     productId: 'prod_TtzR04e49rkeeF',
     priceId: 'price_1SwBSjQ7FtTiAL4aGALKx0Bu',
-    priceUsd: 149, // normalized from 299
+    priceUsd: 149, // FOR SALE
   },
   'syn-autonomous-evolution': {
     productId: 'prod_TtzRHSGLRYBhya',
     priceId: 'price_1SwBSkQ7FtTiAL4auQ8H724n',
-    priceUsd: 1499,
-    offMenu: true, // Contains 'autonomous'
+    priceUsd: 299, // FOR SALE - Autonomous evolution (not code gen)
   },
   'syn-cognitive-fusion': {
     productId: 'prod_TtzRImij78dlk0',
     priceId: 'price_1SwBSmQ7FtTiAL4a2Vcrdxhm',
-    priceUsd: 149, // normalized from 349
+    priceUsd: 149, // FOR SALE
   },
   'syn-self-healing': {
     productId: 'prod_TtzREec5TXBQmF',
     priceId: 'price_1SwBSnQ7FtTiAL4aokUoXhju',
-    priceUsd: 499,
-    offMenu: true, // Contains 'self-healing'
+    priceUsd: 199, // FOR SALE - Self-healing (runtime, not code)
   },
   'syn-threat-learning': {
     productId: 'prod_TtzRZ0ghqy1IOZ',
     priceId: 'price_1SwBSoQ7FtTiAL4aS60aQaSc',
-    priceUsd: 149, // normalized from 399
+    priceUsd: 149, // FOR SALE
   },
   'syn-end-to-end-reasoning': {
     productId: 'prod_TtzRGGaNJiBSWZ',
     priceId: 'price_1SwBSqQ7FtTiAL4aq47IP62M',
-    priceUsd: 1999,
-    offMenu: true, // System-wide capability
+    priceUsd: 299, // FOR SALE - Reasoning pipeline
+  },
+};
+
+// ═══════════════════════════════════════════════════════════════════════════
+// NEW BUDGET CAPABILITIES — $19-$49 range
+// ═══════════════════════════════════════════════════════════════════════════
+export const BUDGET_STRIPE_CONFIG: Record<string, CapabilityStripeConfig> = {
+  'cap-json-validator': {
+    productId: 'prod_TuzD8RJuqCSrNK',
+    priceId: 'price_1Sx9F7Q7FtTiAL4aINxcTOse',
+    priceUsd: 19,
+  },
+  'cap-date-parser': {
+    productId: 'prod_TuzDFXcW3UV9wQ',
+    priceId: 'price_1Sx9F8Q7FtTiAL4ap5MVSPMu',
+    priceUsd: 19,
+  },
+  'cap-token-counter': {
+    productId: 'prod_TuzDyjPRpOK9Ik',
+    priceId: 'price_1Sx9F9Q7FtTiAL4aHQ9VoiET',
+    priceUsd: 19,
+  },
+  'cap-id-generator': {
+    productId: 'prod_TuzDFKDuhNfkMT',
+    priceId: 'price_1Sx9FAQ7FtTiAL4aJ28jMM3y',
+    priceUsd: 29,
+  },
+  'cap-log-formatter': {
+    productId: 'prod_TuzDwKWrVnPLj0',
+    priceId: 'price_1Sx9FBQ7FtTiAL4a7ASOirIC',
+    priceUsd: 29,
+  },
+  'cap-env-loader': {
+    productId: 'prod_TuzDeoM1LQHDS7',
+    priceId: 'price_1Sx9FCQ7FtTiAL4aIXaS1bs9',
+    priceUsd: 39,
+  },
+  'cap-retry-helper': {
+    productId: 'prod_TuzDGLqp7xx4zg',
+    priceId: 'price_1Sx9FDQ7FtTiAL4a8O4wBaPO',
+    priceUsd: 39,
+  },
+  'cap-cache-utility': {
+    productId: 'prod_TuzD9w8U3VBJOa',
+    priceId: 'price_1Sx9FEQ7FtTiAL4aRkuirgsA',
+    priceUsd: 49,
+  },
+  'cap-markdown-converter': {
+    productId: 'prod_TuzDbzgZcgMRHA',
+    priceId: 'price_1Sx9FEQ7FtTiAL4a1Suy4UmY',
+    priceUsd: 49,
+  },
+  'cap-rate-limit-lite': {
+    productId: 'prod_TuzDuWhhhcNfH7',
+    priceId: 'price_1Sx9FFQ7FtTiAL4aXoKdSk61',
+    priceUsd: 49,
   },
 };
 
@@ -153,16 +204,29 @@ export function getAllStripeConfigs(): Record<string, CapabilityStripeConfig> {
     ...CAPABILITY_STRIPE_CONFIG, 
     ...SYNERGY_STRIPE_CONFIG, 
     ...EXPANSION_STRIPE_CONFIG, 
-    ...ULTRA_STRIPE_CONFIG 
+    ...ULTRA_STRIPE_CONFIG,
+    ...BUDGET_STRIPE_CONFIG,
   };
 }
 
 // Get config by capability ID
 export function getStripeConfig(capabilityId: string): CapabilityStripeConfig | undefined {
-  return RECURSIVE_STRIPE_CONFIG[capabilityId] || STIER_STRIPE_CONFIG[capabilityId] || CAPABILITY_STRIPE_CONFIG[capabilityId] || SYNERGY_STRIPE_CONFIG[capabilityId] || EXPANSION_STRIPE_CONFIG[capabilityId] || ULTRA_STRIPE_CONFIG[capabilityId];
+  return RECURSIVE_STRIPE_CONFIG[capabilityId] 
+    || STIER_STRIPE_CONFIG[capabilityId] 
+    || CAPABILITY_STRIPE_CONFIG[capabilityId] 
+    || SYNERGY_STRIPE_CONFIG[capabilityId] 
+    || EXPANSION_STRIPE_CONFIG[capabilityId] 
+    || ULTRA_STRIPE_CONFIG[capabilityId]
+    || BUDGET_STRIPE_CONFIG[capabilityId];
 }
 
 // Check if capability has Stripe integration
 export function hasStripeConfig(capabilityId: string): boolean {
-  return capabilityId in RECURSIVE_STRIPE_CONFIG || capabilityId in STIER_STRIPE_CONFIG || capabilityId in CAPABILITY_STRIPE_CONFIG || capabilityId in SYNERGY_STRIPE_CONFIG || capabilityId in EXPANSION_STRIPE_CONFIG || capabilityId in ULTRA_STRIPE_CONFIG;
+  return capabilityId in RECURSIVE_STRIPE_CONFIG 
+    || capabilityId in STIER_STRIPE_CONFIG 
+    || capabilityId in CAPABILITY_STRIPE_CONFIG 
+    || capabilityId in SYNERGY_STRIPE_CONFIG 
+    || capabilityId in EXPANSION_STRIPE_CONFIG 
+    || capabilityId in ULTRA_STRIPE_CONFIG
+    || capabilityId in BUDGET_STRIPE_CONFIG;
 }

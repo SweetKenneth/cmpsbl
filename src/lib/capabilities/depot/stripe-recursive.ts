@@ -1,92 +1,90 @@
 /**
  * Capabilities Depot — Stripe Recursive Self-Improvement
- * ALL RECURSIVE CAPABILITIES ARE OFF-MENU (licensed on request)
- * These are the highest-tier autonomous/self-improving capabilities
- * v2.0.0 — Unified Pricing (All Recursive = Off-Menu)
+ * v3.0.0 — Updated: Only code compilation capabilities are off-menu
+ * 
+ * RULE: Only capabilities that generate/compile their own code are off-menu
+ * Learning, optimization, and analysis capabilities are FOR SALE
  */
 
 import type { CapabilityStripeConfig } from './stripe-config';
 
-// Recursive Self-Improvement capabilities — ALL OFF-MENU
+// Recursive capabilities — Only code compilation is off-menu
 export const RECURSIVE_STRIPE_CONFIG: Record<string, CapabilityStripeConfig> = {
   // ═══════════════════════════════════════════════════════════════════════════
-  // 👑 APEX TIER — Recursive Self-Improvement — OFF-MENU
+  // 👑 APEX TIER — Recursive Code Compilation — OFF-MENU (Crown Jewels)
+  // Software that writes/compiles its own code
   // ═══════════════════════════════════════════════════════════════════════════
 
   'recursive-self-optimization-core': {
     productId: 'prod_TuB0P1v6HRgyQk',
     priceId: 'price_1SwMeWQ7FtTiAL4ackyGFUOx',
     priceUsd: 6999,
-    offMenu: true, // Contains 'recursive' + 'self-optimization'
+    offMenu: true, // Core self-optimizing code compiler
+  },
+
+  'recursive-architecture-refactorer': {
+    productId: 'prod_TuB0qw5cowOIxj',
+    priceId: 'price_1SwMeZQ7FtTiAL4aVuWqiAvO',
+    priceUsd: 5999,
+    offMenu: true, // Self-modifying architecture code
+  },
+
+  'recursive-cognitive-bootstrapping': {
+    productId: 'prod_TuB0Tzj2abQE7G',
+    priceId: 'price_1SwMeaQ7FtTiAL4a2bYDTkSm',
+    priceUsd: 4999,
+    offMenu: true, // Cognitive code bootstrapping
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // 🔥 CROWN-CLASS — Meta-Learning & Architecture — OFF-MENU
+  // 🔥 ENTERPRISE — Learning & Analysis — FOR SALE ($199-$299)
+  // These LEARN but don't compile their own code
   // ═══════════════════════════════════════════════════════════════════════════
 
   'recursive-meta-learning-accelerator': {
     productId: 'prod_TuB0pmYh0qsquD',
     priceId: 'price_1SwMeYQ7FtTiAL4aNnweXZDh',
-    priceUsd: 5499,
-    offMenu: true, // Contains 'recursive'
+    priceUsd: 299, // FOR SALE - Meta-learning (not code gen)
   },
-  'recursive-architecture-refactorer': {
-    productId: 'prod_TuB0qw5cowOIxj',
-    priceId: 'price_1SwMeZQ7FtTiAL4aVuWqiAvO',
-    priceUsd: 5999,
-    offMenu: true, // Contains 'recursive'
-  },
-  'recursive-cognitive-bootstrapping': {
-    productId: 'prod_TuB0Tzj2abQE7G',
-    priceId: 'price_1SwMeaQ7FtTiAL4a2bYDTkSm',
-    priceUsd: 4999,
-    offMenu: true, // Contains 'recursive' + 'cognitive-bootstrapping'
-  },
-
-  // ═══════════════════════════════════════════════════════════════════════════
-  // ⚡ ENTERPRISE — Self-Healing & Synthesis — OFF-MENU
-  // ═══════════════════════════════════════════════════════════════════════════
 
   'recursive-self-healing-mesh': {
     productId: 'prod_TuB0vxtbuI1Iuv',
     priceId: 'price_1SwMebQ7FtTiAL4aRTFY7atC',
-    priceUsd: 4499,
-    offMenu: true, // Contains 'recursive' + 'self-healing'
+    priceUsd: 299, // FOR SALE - Self-healing (runtime, not code)
   },
+
   'recursive-infinite-context': {
     productId: 'prod_TuB0aMNiFkp86j',
     priceId: 'price_1SwMedQ7FtTiAL4auaXh4d0F',
-    priceUsd: 3999,
-    offMenu: true, // Contains 'recursive' + 'infinite'
+    priceUsd: 299, // FOR SALE - Context management
   },
+
   'recursive-capability-discoverer': {
     productId: 'prod_TuB0lcU7SzU0QM',
     priceId: 'price_1SwMeeQ7FtTiAL4aIlmYdJ7x',
-    priceUsd: 3799,
-    offMenu: true, // Contains 'recursive'
+    priceUsd: 299, // FOR SALE - Capability analysis
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // 🧠 PLATFORM — Knowledge & Optimization — OFF-MENU
+  // 🧠 PLATFORM — Optimization & Knowledge — FOR SALE ($149-$299)
   // ═══════════════════════════════════════════════════════════════════════════
 
   'recursive-prompt-optimizer': {
     productId: 'prod_TuB02pWJEguQvO',
     priceId: 'price_1SwMefQ7FtTiAL4ao9Mmso1Y',
-    priceUsd: 2999,
-    offMenu: true, // Contains 'recursive'
+    priceUsd: 199, // FOR SALE - Prompt optimization
   },
+
   'recursive-knowledge-crystallization': {
     productId: 'prod_TuB0gRCB6xGuzT',
     priceId: 'price_1SwMegQ7FtTiAL4arI2lIXl7',
-    priceUsd: 3499,
-    offMenu: true, // Contains 'recursive'
+    priceUsd: 249, // FOR SALE - Knowledge extraction
   },
+
   'recursive-goal-optimizer': {
     productId: 'prod_TuB0Wtkl5apARp',
     priceId: 'price_1SwMeiQ7FtTiAL4aKPUUJRNI',
-    priceUsd: 3299,
-    offMenu: true, // Contains 'recursive'
+    priceUsd: 199, // FOR SALE - Goal optimization
   },
 };
 
@@ -95,14 +93,18 @@ export function getRecursiveStripeConfig(capabilityId: string): CapabilityStripe
   return RECURSIVE_STRIPE_CONFIG[capabilityId];
 }
 
-// Check if capability is recursive self-improvement
+// Check if capability is recursive
 export function hasRecursiveStripeConfig(capabilityId: string): boolean {
   return capabilityId in RECURSIVE_STRIPE_CONFIG;
 }
 
-// Check if capability is apex tier (highest pricing)
+// Check if capability is apex tier (code compilation - off-menu)
 export function isApexTierCapability(capabilityId: string): boolean {
-  return capabilityId === 'recursive-self-optimization-core';
+  return [
+    'recursive-self-optimization-core',
+    'recursive-architecture-refactorer',
+    'recursive-cognitive-bootstrapping',
+  ].includes(capabilityId);
 }
 
 // Get all recursive configs for display
@@ -110,7 +112,8 @@ export function getAllRecursiveStripeConfigs(): Record<string, CapabilityStripeC
   return RECURSIVE_STRIPE_CONFIG;
 }
 
-// All recursive capabilities are off-menu
+// Only code compilation capabilities are off-menu
 export function isRecursiveOffMenu(capabilityId: string): boolean {
-  return hasRecursiveStripeConfig(capabilityId);
+  const config = RECURSIVE_STRIPE_CONFIG[capabilityId];
+  return config?.offMenu === true;
 }

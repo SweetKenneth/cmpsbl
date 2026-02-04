@@ -78,12 +78,11 @@ export const ULTRA_STRIPE_CONFIG: Record<string, CapabilityStripeConfig> = {
     priceUsd: 149, // normalized from 279
   },
 
-  // === Enterprise & Advanced — OFF-MENU ===
+  // === Enterprise & Advanced — FOR SALE at $299 ceiling ===
   'cap-model-fine-tuning': {
     productId: 'prod_TtztKT0Zd5rP72',
     priceId: 'price_1SwBtdQ7FtTiAL4aZbEHzQYe',
-    priceUsd: 1199,
-    offMenu: true, // Enterprise capability
+    priceUsd: 299, // FOR SALE - Fine-tuning (not code gen)
   },
   'cap-conversation-threading': {
     productId: 'prod_TtztyJ8Hqw0JIo',

@@ -12,21 +12,41 @@
  */
 
 export const MARKETPLACE_PRODUCTS = {
-  // Substrate OS License - $299 (normalized from $999)
+  // Developer License — $299/year or $39/month subscription
+  developer_license: {
+    monthly: {
+      product_id: 'prod_TuzDdndKiASplG',
+      price_id: 'price_1Sx9F1Q7FtTiAL4aPvHMDh9r',
+      amount: 3900, // $39/month
+      name: 'Developer License Monthly',
+      description: 'Monthly developer access to CMPSBL Substrate SDK and documentation.',
+      billing: 'monthly',
+    },
+    annual: {
+      product_id: 'prod_TuzDyllhVhku0B',
+      price_id: 'price_1Sx9F2Q7FtTiAL4a6vQtPPLe',
+      amount: 29900, // $299/year (2 months free)
+      name: 'Developer License Annual',
+      description: 'Annual developer access to CMPSBL Substrate SDK and documentation. Save 2 months!',
+      billing: 'annual',
+    },
+  },
+
+  // Substrate OS License - $299 (one-time)
   os_license: {
     product_id: 'prod_TrNHM2ONKXkipj',
     price_id: 'price_1SteXGQ7FtTiAL4aFfqLPytS',
-    amount: 29900, // $299 (normalized ceiling)
+    amount: 29900, // $299
     name: 'Substrate OS License',
     description: 'Full CMPSBL Substrate OS with BYOK support. 14 modules, single-install license with domain binding.',
     includes: ['Core OS', '14 Modules', 'BYOK Configuration', 'Single-Install License', 'Domain Binding'],
   },
   
-  // World Engine - $299 (normalized from $499)
+  // World Engine - $299
   world_engine: {
     product_id: 'prod_TrNHPBGWkXxyQr',
     price_id: 'price_1SteXHQ7FtTiAL4ae0ZrtL9S',
-    amount: 29900, // $299 (normalized ceiling)
+    amount: 29900, // $299
     name: 'World Engine Complete',
     description: 'Full game world engine with NPC memory, physics integration, dream cycles, and persistent world state.',
     includes: ['NPC Memory System', 'Dream Cycles', 'Physics Integration', 'World Persistence', 'Multi-Agent Coordination'],
@@ -819,4 +839,126 @@ export const DRIFT_PREVENTION_KEYWORDS = [
   'autonomous AI improvement',
   'AI dream cycles',
   'chatbot self-healing',
+] as const;
+
+// ============================================
+// NEW BUDGET TEMPLATES — $19-$49 range
+// ============================================
+export const BUDGET_TEMPLATES = [
+  {
+    id: 'faq-bot-starter',
+    name: 'FAQ Bot Starter',
+    description: 'Simple FAQ chatbot with basic question-answer memory. Perfect for getting started.',
+    product_id: 'prod_TuzDBRthnFACMC',
+    price_id: 'price_1Sx9FLQ7FtTiAL4aa8UGWSof',
+    amount: 1900, // $19
+    category: 'chatbot',
+    difficulty: 'beginner',
+    features: ['Basic Q&A', 'Simple Memory', 'Quick Setup', 'Customizable'],
+  },
+  {
+    id: 'sentiment-analyzer-lite',
+    name: 'Sentiment Analyzer Lite',
+    description: 'Basic sentiment analysis for customer feedback and reviews.',
+    product_id: 'prod_TuzDpDitaFEcgS',
+    price_id: 'price_1Sx9FMQ7FtTiAL4aR7Mi7oAE',
+    amount: 1900, // $19
+    category: 'utility',
+    difficulty: 'beginner',
+    features: ['Positive/Negative Detection', 'Confidence Scores', 'Batch Processing', 'API Ready'],
+  },
+  {
+    id: 'email-template-engine',
+    name: 'Email Template Engine',
+    description: 'Email template generator with personalization and variable substitution.',
+    product_id: 'prod_TuzDGG8RdYbCzN',
+    price_id: 'price_1Sx9FNQ7FtTiAL4aP813cT5b',
+    amount: 2900, // $29
+    category: 'utility',
+    difficulty: 'beginner',
+    features: ['Template Variables', 'Personalization', 'HTML Output', 'Preview Mode'],
+  },
+  {
+    id: 'task-prioritizer',
+    name: 'Task Prioritizer',
+    description: 'Basic AI-powered task prioritization for productivity workflows.',
+    product_id: 'prod_TuzDZvzi34F2l6',
+    price_id: 'price_1Sx9FOQ7FtTiAL4a99iZkQVz',
+    amount: 2900, // $29
+    category: 'agent',
+    difficulty: 'beginner',
+    features: ['Priority Scoring', 'Deadline Awareness', 'Dependency Tracking', 'Simple UI'],
+  },
+  {
+    id: 'document-summarizer-lite',
+    name: 'Document Summarizer Lite',
+    description: 'Simple text summarization for documents and articles.',
+    product_id: 'prod_TuzDtuVp2AD85R',
+    price_id: 'price_1Sx9FPQ7FtTiAL4aCyjVIY77',
+    amount: 3900, // $39
+    category: 'utility',
+    difficulty: 'intermediate',
+    features: ['Key Point Extraction', 'Adjustable Length', 'Multiple Formats', 'Batch Mode'],
+  },
+  {
+    id: 'meeting-notes-parser',
+    name: 'Meeting Notes Parser',
+    description: 'Meeting notes extractor with action items and attendee tracking.',
+    product_id: 'prod_TuzDCZ3WaCpdYV',
+    price_id: 'price_1Sx9FQQ7FtTiAL4aEJcrLgz6',
+    amount: 3900, // $39
+    category: 'utility',
+    difficulty: 'intermediate',
+    features: ['Action Item Extraction', 'Attendee Detection', 'Date Parsing', 'Export Options'],
+  },
+  {
+    id: 'contact-form-handler',
+    name: 'Contact Form Handler',
+    description: 'Contact form processor with spam filtering and categorization.',
+    product_id: 'prod_TuzD6jqj2E1BQL',
+    price_id: 'price_1Sx9FRQ7FtTiAL4aeHw2sr2x',
+    amount: 3900, // $39
+    category: 'utility',
+    difficulty: 'beginner',
+    features: ['Spam Detection', 'Category Routing', 'Auto-Response', 'CRM Integration'],
+  },
+  {
+    id: 'rss-feed-aggregator',
+    name: 'RSS Feed Aggregator',
+    description: 'RSS feed aggregator with basic categorization and filtering.',
+    product_id: 'prod_TuzD3ZA4Zs6mYe',
+    price_id: 'price_1Sx9FRQ7FtTiAL4aAdUvWPbN',
+    amount: 4900, // $49
+    category: 'utility',
+    difficulty: 'intermediate',
+    features: ['Multi-Feed Support', 'Category Filters', 'Update Scheduling', 'Export Options'],
+  },
+  {
+    id: 'bookmark-organizer',
+    name: 'Bookmark Organizer',
+    description: 'Simple bookmark manager with tagging and search.',
+    product_id: 'prod_TuzDLQmG2OyXPS',
+    price_id: 'price_1Sx9FSQ7FtTiAL4a1n16VTT0',
+    amount: 4900, // $49
+    category: 'utility',
+    difficulty: 'beginner',
+    features: ['Tag System', 'Search', 'Import/Export', 'Folder Organization'],
+  },
+  {
+    id: 'quote-generator',
+    name: 'Quote Generator',
+    description: 'Quote generator with attribution tracking and category filtering.',
+    product_id: 'prod_TuzDkVoD272eEe',
+    price_id: 'price_1Sx9FTQ7FtTiAL4azBYrcIF9',
+    amount: 4900, // $49
+    category: 'utility',
+    difficulty: 'beginner',
+    features: ['Category Filters', 'Attribution', 'Random Selection', 'API Access'],
+  },
+] as const;
+
+// Combined templates including budget
+export const ALL_TEMPLATES = [
+  ...BUDGET_TEMPLATES,
+  ...ALL_PREMIUM_TEMPLATES,
 ] as const;

@@ -56,18 +56,19 @@ function getUnifiedStripeConfig(capabilityId: string) {
 
 /**
  * Check if capability checkout is enabled
+ * Only recursive code compilation items are off-menu now
  */
 function isCheckoutEnabledForCapability(capabilityId: string): boolean {
   const result = getUnifiedStripeConfig(capabilityId);
   if (!result) return false;
   
-  // Check if explicitly marked as off-menu
+  // Check if explicitly marked as off-menu in config
   if (result.config.offMenu) return false;
   
-  // Check if capability ID contains off-menu keywords
+  // Check if capability ID contains off-menu keywords (code compilation only)
   if (isOffMenuCapability(capabilityId)) return false;
   
-  // Check if price is within public range
+  // Check if price is within public range ($19-$299)
   const price = result.config.priceUsd;
   if (price < PRICE_CONFIG.min || price > PRICE_CONFIG.max) return false;
   
