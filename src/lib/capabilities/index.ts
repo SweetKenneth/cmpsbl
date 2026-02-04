@@ -1,6 +1,6 @@
 /**
  * Capability System
- * v7.4.0 — Auto-Adapt Edge Function Ingestion + Cross-Module Synergies
+ * v7.5.0 — SYNERGY Epoch: Auto-Adapt Edge Function Ingestion + Cross-Module Synergies
  * 
  * This module provides:
  * - Registry: Single source of truth for capabilities
@@ -11,7 +11,8 @@
  * - State: Enable/disable toggle management
  * - Confidence: Feedback + scoring
  * - Normalize: Output shaping
- * - Synergies: Cross-module pipeline orchestration (98 pipelines, 76 executors)
+ * - Synergies: Cross-module pipeline orchestration (120 pipelines, 98 executors, 22 S-tier)
+ * - Depot: Capability Marketplace components
  */
 
 export * from './types';
