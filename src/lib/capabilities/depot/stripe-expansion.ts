@@ -182,9 +182,9 @@ export const EXPANSION_STRIPE_CONFIG: Record<string, CapabilityStripeConfig> = {
 
   // Flagship Expansion — Now FOR SALE at $299 ceiling (not code compilation)
   'cap-enterprise-mesh': {
-    productId: 'prod_Ttzm3IGLUnxtXg',
-    priceId: 'price_1SwBmgQ7FtTiAL4aDaRGvBMd',
-    priceUsd: 299, // FOR SALE - Enterprise mesh (not code gen)
+    productId: 'prod_TuzkyOPDOPz5cQ',
+    priceId: 'price_1Sx9kYQ7FtTiAL4a2TQtgVOV',
+    priceUsd: 299, // FOR SALE - Enterprise mesh at correct $299 price
   },
   'cap-cognitive-platform': {
     productId: 'prod_Ttzm98E4Mv7UQ5',
