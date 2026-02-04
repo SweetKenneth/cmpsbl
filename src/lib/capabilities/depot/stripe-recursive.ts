@@ -18,22 +18,22 @@ export const RECURSIVE_STRIPE_CONFIG: Record<string, CapabilityStripeConfig> = {
   'recursive-self-optimization-core': {
     productId: 'prod_TuB0P1v6HRgyQk',
     priceId: 'price_1SwMeWQ7FtTiAL4ackyGFUOx',
-    priceUsd: 6999,
-    offMenu: true, // Core self-optimizing code compiler
+    priceUsd: 299,
+    offMenu: true, // Core self-optimizing code compiler — Licensed on request
   },
 
   'recursive-architecture-refactorer': {
     productId: 'prod_TuB0qw5cowOIxj',
     priceId: 'price_1SwMeZQ7FtTiAL4aVuWqiAvO',
-    priceUsd: 5999,
-    offMenu: true, // Self-modifying architecture code
+    priceUsd: 299,
+    offMenu: true, // Self-modifying architecture code — Licensed on request
   },
 
   'recursive-cognitive-bootstrapping': {
     productId: 'prod_TuB0Tzj2abQE7G',
     priceId: 'price_1SwMeaQ7FtTiAL4a2bYDTkSm',
-    priceUsd: 4999,
-    offMenu: true, // Cognitive code bootstrapping
+    priceUsd: 299,
+    offMenu: true, // Cognitive code bootstrapping — Licensed on request
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -78,7 +78,7 @@ export const RECURSIVE_STRIPE_CONFIG: Record<string, CapabilityStripeConfig> = {
   'recursive-knowledge-crystallization': {
     productId: 'prod_TuB0gRCB6xGuzT',
     priceId: 'price_1SwMegQ7FtTiAL4arI2lIXl7',
-    priceUsd: 249, // FOR SALE - Knowledge extraction
+    priceUsd: 199, // FOR SALE - Knowledge extraction
   },
 
   'recursive-goal-optimizer': {
