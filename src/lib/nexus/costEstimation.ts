@@ -147,7 +147,7 @@ export function findCheapestProvider(
   }
 
   // Sort by cost and filter by quality
-  candidates.sort((a, b) => a.cost - b.cost);
+  candidates.sort((a, b) => a.estimatedCost - b.estimatedCost);
 
   // Quality filter
   if (qualityRequirement === 'high') {

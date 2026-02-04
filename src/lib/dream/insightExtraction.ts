@@ -282,7 +282,7 @@ function extractTrendInsights(patterns: DreamPatternInput[]): DreamInsight[] {
 /**
  * Extract correlation-related insights
  */
-function extractCorrelationInsights(patterns: DreamPattern[]): DreamInsight[] {
+function extractCorrelationInsights(patterns: DreamPatternInput[]): DreamInsight[] {
   const insights: DreamInsight[] = [];
 
   // Look for patterns that share multiple modules (cross-module correlation)
