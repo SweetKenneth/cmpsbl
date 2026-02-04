@@ -240,7 +240,7 @@ export const BUSINESS_TEMPLATES = [
     description: 'E-commerce product recommendations with customer preference memory.',
     product_id: 'prod_TrNUnjsyDF6IIu',
     price_id: 'price_1StejxQ7FtTiAL4aBA3BR7Xy',
-    amount: 34900,
+    amount: 29900, // $299 (normalized from $349)
     category: 'brain',
     difficulty: 'premium',
     features: ['Preference Learning', 'Purchase History', 'Personalization', 'Collaborative Filtering'],
@@ -251,7 +251,7 @@ export const BUSINESS_TEMPLATES = [
     description: 'Customer service bot that remembers past interactions and learns resolutions.',
     product_id: 'prod_TrNUVLOg8zU1qf',
     price_id: 'price_1StejyQ7FtTiAL4abNlWwkNG',
-    amount: 44900,
+    amount: 29900, // $299 (normalized from $449)
     category: 'decode',
     difficulty: 'elite',
     features: ['Interaction Memory', 'Resolution Learning', 'Escalation Intelligence', 'Customer History'],
@@ -262,7 +262,7 @@ export const BUSINESS_TEMPLATES = [
     description: 'Personal fitness coach that adapts to user progress and preferences.',
     product_id: 'prod_TrNU6eBk8uit3b',
     price_id: 'price_1StejzQ7FtTiAL4a339rbjFH',
-    amount: 29900,
+    amount: 19900, // $199 (normalized from $299)
     category: 'brain',
     difficulty: 'premium',
     features: ['Progress Tracking', 'Workout Memory', 'Goal Adaptation', 'Performance Learning'],
@@ -273,7 +273,7 @@ export const BUSINESS_TEMPLATES = [
     description: 'Mental wellness companion with emotional state tracking and support.',
     product_id: 'prod_TrNVhh1qidWO92',
     price_id: 'price_1Stek0Q7FtTiAL4adHBlkBMQ',
-    amount: 34900,
+    amount: 29900, // $299 (normalized from $349)
     category: 'brain',
     difficulty: 'premium',
     features: ['Emotional Memory', 'Mood Tracking', 'Supportive Responses', 'Progress Insights'],
@@ -284,7 +284,7 @@ export const BUSINESS_TEMPLATES = [
     description: 'Financial advisor that learns spending habits, goals, and risk tolerance.',
     product_id: 'prod_TrNVeZuKLBVMNk',
     price_id: 'price_1Stek1Q7FtTiAL4aYViloOy8',
-    amount: 39900,
+    amount: 29900, // $299 (normalized from $399)
     category: 'brain',
     difficulty: 'elite',
     features: ['Spending Analysis', 'Goal Tracking', 'Risk Profiling', 'Investment Memory'],
@@ -295,7 +295,7 @@ export const BUSINESS_TEMPLATES = [
     description: 'HR assistant with employee interaction memory and policy learning.',
     product_id: 'prod_TrNVCX9kO6iOcX',
     price_id: 'price_1Stek3Q7FtTiAL4ajrkyqk5a',
-    amount: 49900,
+    amount: 29900, // $299 (normalized from $499)
     category: 'decode',
     difficulty: 'pro',
     features: ['Employee Memory', 'Policy Knowledge', 'Onboarding Assistance', 'FAQ Learning'],
@@ -306,7 +306,7 @@ export const BUSINESS_TEMPLATES = [
     description: 'IT helpdesk with solution memory and escalation intelligence.',
     product_id: 'prod_TrNVLnSVNxFGF2',
     price_id: 'price_1Stek4Q7FtTiAL4aBHma1eXw',
-    amount: 39900,
+    amount: 29900, // $299 (normalized from $399)
     category: 'decode',
     difficulty: 'elite',
     features: ['Solution Memory', 'Issue Patterns', 'Escalation Rules', 'Knowledge Base'],
@@ -317,7 +317,7 @@ export const BUSINESS_TEMPLATES = [
     description: 'Travel planning assistant with destination preference learning.',
     product_id: 'prod_TrNVpisHa7urvX',
     price_id: 'price_1Stek4Q7FtTiAL4ajxq2h1vq',
-    amount: 44900,
+    amount: 29900, // $299 (normalized from $449)
     category: 'brain',
     difficulty: 'elite',
     features: ['Preference Memory', 'Budget Tracking', 'Destination Learning', 'Itinerary Memory'],
@@ -328,7 +328,7 @@ export const BUSINESS_TEMPLATES = [
     description: 'Music discovery assistant that learns taste patterns and preferences.',
     product_id: 'prod_TrNVjF7RqHH1UB',
     price_id: 'price_1Stek6Q7FtTiAL4atl10wSfw',
-    amount: 34900,
+    amount: 29900, // $299 (normalized from $349)
     category: 'brain',
     difficulty: 'premium',
     features: ['Taste Learning', 'Mood Mapping', 'Discovery Engine', 'Playlist Memory'],
@@ -339,7 +339,7 @@ export const BUSINESS_TEMPLATES = [
     description: 'Real estate assistant with property and client preference memory.',
     product_id: 'prod_TrNVoRmoRCr9KO',
     price_id: 'price_1Stek7Q7FtTiAL4albJAtOWB',
-    amount: 39900,
+    amount: 29900, // $299 (normalized from $399)
     category: 'brain',
     difficulty: 'elite',
     features: ['Property Memory', 'Client Preferences', 'Market Learning', 'Showing History'],
