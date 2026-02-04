@@ -230,7 +230,7 @@ function extractTrendInsights(patterns: DreamPatternInput[]): DreamInsight[] {
   const insights: DreamInsight[] = [];
 
   // Group patterns by module and look for trends
-  const moduleGroups = new Map<string, DreamPattern[]>();
+  const moduleGroups = new Map<string, DreamPatternInput[]>();
   
   for (const pattern of patterns) {
     for (const module of pattern.modules) {
