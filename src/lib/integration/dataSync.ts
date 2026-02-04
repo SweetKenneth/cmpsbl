@@ -238,7 +238,7 @@ export async function executeSync(configId: string): Promise<SyncRun> {
           const result = await updateTargetRecord(config, sourceRecord, changes);
           if (result.success) {
             run.stats.records_updated++;
-            logChange(config.id, sourceId, 'update', changes, run.id);
+            logChange(config.id, String(sourceId), 'update', changes, run.id);
           } else {
             run.errors.push(result.error!);
           }
