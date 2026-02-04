@@ -1,20 +1,20 @@
 /**
- * CmpsblNav — Neural-Link Navigation System
- * A radically unique, futuristic navigation experience
+ * CmpsblNav — Enterprise Command Center
+ * Ultra-polished navigation with refined micro-interactions
  */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { 
-  Menu, X, ChevronDown, Code, Layers, FileText, Mail, Info, 
+  Menu, X, ChevronRight, Code, Layers, FileText, Mail, Info, 
   Rocket, BookOpen, Users, Zap, Terminal, Cpu, MessageSquare, 
   Moon, Building2, Gamepad2, Sparkles, Globe, Brain, 
-  LogOut, ArrowRight, Activity, Hexagon
+  LogOut, ArrowRight, Command, Shield, ExternalLink
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { CmpsblLogo } from "@/components/CmpsblLogo";
 import { Button } from "@/components/ui/button";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface NavItem {
@@ -23,33 +23,42 @@ interface NavItem {
   description?: string;
   icon?: React.ElementType;
   badge?: string;
+  external?: boolean;
 }
 
 interface NavSection {
   name: string;
   icon: React.ElementType;
-  color: string;
   items: NavItem[];
 }
 
 export function CmpsblNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [hoveredSection, setHoveredSection] = useState<string | null>(null);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
   const [expandedMobileSection, setExpandedMobileSection] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
+  
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    mouseX.set(e.clientX - rect.left);
+    mouseY.set(e.clientY - rect.top);
+  }, [mouseX, mouseY]);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
     setMobileMenuOpen(false);
-    setHoveredSection(null);
+    setActiveSection(null);
     setExpandedMobileSection(null);
   }, [location.pathname]);
 
@@ -65,58 +74,54 @@ export function CmpsblNav() {
 
   const navSections: NavSection[] = [
     {
-      name: "Build",
-      icon: Code,
-      color: "from-fuchsia-500 to-purple-600",
+      name: "Platform",
+      icon: Cpu,
       items: [
-        { name: "Capabilities", href: "/capabilities", description: "86+ AI Artifacts", icon: Sparkles, badge: "86+" },
-        { name: "CodeLab", href: "/codelab", description: "Execute & Test", icon: Terminal },
-        { name: "Developers", href: "/developers", description: "Build Apps", icon: Code },
-        { name: "Marketplace", href: "/marketplace", description: "Templates", icon: Layers },
-        { name: "Gaming AI", href: "/gaming", description: "NPC Engines", icon: Gamepad2 },
-        ...(user ? [{ name: "Dashboard", href: "/os", description: "Control Panel", icon: Cpu }] : []),
+        { name: "Capabilities Depot", href: "/capabilities", description: "86+ production-ready AI artifacts", icon: Sparkles, badge: "86+" },
+        { name: "CodeLab", href: "/codelab", description: "Execute and test in real-time", icon: Terminal },
+        { name: "Developer Hub", href: "/developers", description: "SDKs, APIs, and integrations", icon: Code },
+        { name: "Marketplace", href: "/marketplace", description: "Pre-built templates & modules", icon: Layers },
+        { name: "Gaming AI", href: "/gaming", description: "NPC engines and game logic", icon: Gamepad2 },
+        ...(user ? [{ name: "Dashboard", href: "/os", description: "Your command center", icon: Cpu }] : []),
       ]
     },
     {
       name: "Substrate",
-      icon: Cpu,
-      color: "from-cyan-500 to-blue-600",
+      icon: Brain,
       items: [
-        { name: "CMPSBL OS", href: "/substrate", description: "Core Runtime", icon: Cpu },
-        { name: "System Feed", href: "/system-feed", description: "Live Intel", icon: Brain, badge: "Live" },
-        { name: "Decode", href: "/decode", description: "Intent Parser", icon: MessageSquare },
-        { name: "Dream Feeder", href: "/feed-dream-eater", description: "Processing", icon: Moon },
+        { name: "CMPSBL OS", href: "/substrate", description: "Core runtime architecture", icon: Cpu },
+        { name: "System Feed", href: "/system-feed", description: "Live intelligence stream", icon: Brain, badge: "Live" },
+        { name: "Decode Engine", href: "/decode", description: "Intent parsing & analysis", icon: MessageSquare },
+        { name: "Dream Feeder", href: "/feed-dream-eater", description: "Background processing", icon: Moon },
       ]
     },
     {
-      name: "Solutions",
+      name: "Enterprise",
       icon: Building2,
-      color: "from-amber-500 to-orange-600",
       items: [
-        { name: "Use Cases", href: "/use-cases", description: "Applications", icon: Sparkles },
-        { name: "Licensing", href: "/substrate/licensing", description: "Enterprise", icon: FileText },
-        { name: "Intelligence", href: "/intelligence", description: "Investors", icon: Zap },
+        { name: "Use Cases", href: "/use-cases", description: "Industry applications", icon: Sparkles },
+        { name: "Licensing", href: "/substrate/licensing", description: "Enterprise agreements", icon: FileText },
+        { name: "Intelligence", href: "/intelligence", description: "Investor relations", icon: Zap },
+        { name: "Security", href: "/security", description: "Compliance & trust", icon: Shield },
       ]
     },
     {
-      name: "Learn",
+      name: "Resources",
       icon: BookOpen,
-      color: "from-emerald-500 to-teal-600",
       items: [
-        { name: "Docs", href: "/documentation", description: "API Reference", icon: FileText },
-        { name: "Library", href: "/library", description: "FNDTN v7", icon: BookOpen },
-        { name: "Namespace", href: "/namespace", description: "Governance", icon: Globe },
-        { name: "LLMS.txt", href: "/llms-txt", description: "Machine CTX", icon: Terminal },
+        { name: "Documentation", href: "/documentation", description: "Complete API reference", icon: FileText },
+        { name: "Library", href: "/library", description: "FNDTN v7 framework", icon: BookOpen },
+        { name: "Namespace", href: "/namespace", description: "Governance standards", icon: Globe },
+        { name: "LLMS.txt", href: "/llms-txt", description: "Machine context files", icon: Terminal },
       ]
     },
     {
-      name: "Connect",
+      name: "Company",
       icon: Users,
-      color: "from-rose-500 to-pink-600",
       items: [
-        { name: "About", href: "/about", description: "Mission", icon: Info },
-        { name: "Blog", href: "/blog", description: "Research", icon: FileText },
-        { name: "Contact", href: "/contact", description: "Reach Us", icon: Mail },
+        { name: "About", href: "/about", description: "Our mission & team", icon: Info },
+        { name: "Blog", href: "/blog", description: "Research & updates", icon: FileText },
+        { name: "Contact", href: "/contact", description: "Get in touch", icon: Mail },
       ]
     },
   ];
@@ -127,188 +132,197 @@ export function CmpsblNav() {
   return (
     <>
       {/* ══════════════════════════════════════════════════════════════════════
-          DESKTOP NAVIGATION — Neural Link Bar
+          DESKTOP NAVIGATION — Enterprise Command Bar
           ══════════════════════════════════════════════════════════════════════ */}
-      <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ type: "spring", damping: 25, stiffness: 200 }}
+      <motion.header
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ type: "spring", damping: 30, stiffness: 300 }}
         className={cn(
-          "fixed top-0 left-0 right-0 z-[10000] transition-all duration-500",
+          "fixed top-0 left-0 right-0 z-[10000] transition-all duration-300",
           scrolled 
-            ? "bg-background border-b border-border/50" 
-            : "bg-transparent"
+            ? "bg-background/95 backdrop-blur-xl border-b border-border shadow-sm" 
+            : "bg-background/80 backdrop-blur-sm"
         )}
+        onMouseMove={handleMouseMove}
       >
-        {/* Neural pulse line */}
-        <div className="absolute bottom-0 left-0 right-0 h-px overflow-hidden">
-          <motion.div 
-            className="absolute inset-y-0 w-32 bg-gradient-to-r from-transparent via-primary to-transparent"
-            animate={{ x: ["-100%", "400%"] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-          />
+        {/* Ambient glow on scroll */}
+        <div className={cn(
+          "absolute inset-x-0 -bottom-px h-px transition-opacity duration-500",
+          scrolled ? "opacity-100" : "opacity-0"
+        )}>
+          <div className="h-full w-full bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
         </div>
 
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="flex items-center justify-between h-16 lg:h-20">
+        <div className="container mx-auto px-4 lg:px-6">
+          <nav className="flex items-center justify-between h-16 lg:h-[72px]" role="navigation" aria-label="Main navigation">
             
             {/* ═══ Logo ═══ */}
-            <Link to="/" className="relative group flex items-center gap-3 shrink-0">
-              <div className="relative">
-                <Hexagon className="w-10 h-10 text-primary transition-transform group-hover:rotate-[30deg] duration-500" strokeWidth={1.5} />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Activity className="w-5 h-5 text-primary" />
-                </div>
-              </div>
-              <div className="hidden sm:block">
-                <div className="text-xl font-black tracking-tighter">CMPSBL</div>
-                <div className="text-[9px] font-mono text-muted-foreground tracking-widest">SUBSTRATE OS</div>
+            <Link 
+              to="/" 
+              className="relative group flex items-center gap-3 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-lg"
+              aria-label="CMPSBL Home"
+            >
+              <CmpsblLogo size="sm" className="transition-transform duration-300 group-hover:scale-105" />
+              <div className="hidden sm:flex flex-col">
+                <span className="text-lg font-bold tracking-tight leading-none">CMPSBL</span>
+                <span className="text-[10px] font-medium text-muted-foreground tracking-widest uppercase">Substrate OS</span>
               </div>
             </Link>
 
-            {/* ═══ Desktop Center Navigation ═══ */}
-            <div className="hidden lg:flex items-center">
-              <div className="flex items-center bg-muted/30 rounded-full p-1.5 border border-border/50">
-                {navSections.map((section) => (
-                  <div 
-                    key={section.name} 
-                    className="relative"
-                    onMouseEnter={() => setHoveredSection(section.name)}
-                    onMouseLeave={() => setHoveredSection(null)}
+            {/* ═══ Desktop Navigation ═══ */}
+            <div className="hidden lg:flex items-center gap-1">
+              {navSections.map((section) => (
+                <div 
+                  key={section.name} 
+                  className="relative"
+                  onMouseEnter={() => setActiveSection(section.name)}
+                  onMouseLeave={() => setActiveSection(null)}
+                >
+                  <button
+                    className={cn(
+                      "relative flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200",
+                      activeSection === section.name 
+                        ? "text-foreground" 
+                        : isInSection(section) 
+                          ? "text-foreground" 
+                          : "text-muted-foreground hover:text-foreground"
+                    )}
+                    aria-expanded={activeSection === section.name}
+                    aria-haspopup="true"
                   >
-                    <button
-                      className={cn(
-                        "relative flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300",
-                        hoveredSection === section.name && "text-foreground",
-                        isInSection(section) && "text-foreground",
-                        !hoveredSection && !isInSection(section) && "text-muted-foreground hover:text-foreground"
-                      )}
-                    >
-                      {/* Active/Hover background pill */}
-                      {(hoveredSection === section.name || (isInSection(section) && !hoveredSection)) && (
-                        <motion.div
-                          layoutId="nav-pill"
-                          className={cn(
-                            "absolute inset-0 rounded-full bg-gradient-to-r",
-                            section.color,
-                            "opacity-15"
-                          )}
-                          transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                        />
-                      )}
-                      <section.icon className="w-4 h-4 relative z-10" />
-                      <span className="relative z-10">{section.name}</span>
-                      <ChevronDown className={cn(
-                        "w-3 h-3 relative z-10 transition-transform duration-200",
-                        hoveredSection === section.name && "rotate-180"
-                      )} />
-                    </button>
+                    <span>{section.name}</span>
+                    <ChevronRight className={cn(
+                      "w-3.5 h-3.5 transition-transform duration-200",
+                      activeSection === section.name && "rotate-90"
+                    )} />
+                    
+                    {/* Active indicator dot */}
+                    {isInSection(section) && !activeSection && (
+                      <motion.span 
+                        layoutId="section-indicator"
+                        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary"
+                      />
+                    )}
+                  </button>
 
-                    {/* ═══ Desktop Mega Dropdown ═══ */}
-                    <AnimatePresence>
-                      {hoveredSection === section.name && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                          transition={{ duration: 0.2 }}
-                          className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-80"
-                        >
-                          {/* Arrow indicator */}
-                          <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 rotate-45 bg-card border-l border-t border-border" />
+                  {/* ═══ Desktop Dropdown ═══ */}
+                  <AnimatePresence>
+                    {activeSection === section.name && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 8, scale: 0.98 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 8, scale: 0.98 }}
+                        transition={{ duration: 0.15, ease: "easeOut" }}
+                        className="absolute top-full left-0 mt-2 w-[340px]"
+                      >
+                        <div className="relative bg-popover rounded-xl border border-border shadow-xl overflow-hidden">
+                          {/* Top accent line */}
+                          <div className="h-0.5 bg-gradient-to-r from-primary via-primary/50 to-transparent" />
                           
-                          <div className="relative bg-card rounded-2xl border border-border shadow-2xl shadow-black/20 overflow-hidden">
-                            {/* Gradient header */}
-                            <div className={cn("h-1.5 bg-gradient-to-r", section.color)} />
-                            
-                            <div className="p-3">
-                              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-2 py-2 flex items-center gap-2">
-                                <section.icon className="w-3.5 h-3.5" />
-                                {section.name}
-                              </div>
-                              
-                              <div className="space-y-1">
-                                {section.items.map((item) => (
-                                  <Link
-                                    key={item.href}
-                                    to={item.href}
-                                    className={cn(
-                                      "flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group/item",
-                                      "hover:bg-muted/50",
-                                      isActive(item.href) && "bg-muted"
+                          <div className="p-2">
+                            {section.items.map((item, idx) => (
+                              <Link
+                                key={item.href}
+                                to={item.href}
+                                className={cn(
+                                  "flex items-start gap-3 p-3 rounded-lg transition-colors duration-150 group/item",
+                                  "hover:bg-muted/60",
+                                  isActive(item.href) && "bg-muted"
+                                )}
+                              >
+                                {item.icon && (
+                                  <div className={cn(
+                                    "w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-colors duration-150",
+                                    "bg-muted group-hover/item:bg-primary/10",
+                                    isActive(item.href) && "bg-primary/10 text-primary"
+                                  )}>
+                                    <item.icon className={cn(
+                                      "w-5 h-5 transition-colors",
+                                      isActive(item.href) ? "text-primary" : "text-muted-foreground group-hover/item:text-primary"
+                                    )} />
+                                  </div>
+                                )}
+                                <div className="flex-1 min-w-0 pt-0.5">
+                                  <div className="flex items-center gap-2">
+                                    <span className={cn(
+                                      "font-semibold text-sm transition-colors",
+                                      isActive(item.href) ? "text-primary" : "text-foreground"
+                                    )}>
+                                      {item.name}
+                                    </span>
+                                    {item.badge && (
+                                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-primary/10 text-primary">
+                                        {item.badge}
+                                      </span>
                                     )}
-                                  >
-                                    {item.icon && (
-                                      <div className={cn(
-                                        "w-9 h-9 rounded-lg flex items-center justify-center shrink-0",
-                                        "bg-gradient-to-br",
-                                        section.color,
-                                        "text-white shadow-lg"
-                                      )}>
-                                        <item.icon className="w-4 h-4" />
-                                      </div>
+                                    {item.external && (
+                                      <ExternalLink className="w-3 h-3 text-muted-foreground" />
                                     )}
-                                    <div className="flex-1 min-w-0">
-                                      <div className="flex items-center gap-2">
-                                        <span className="font-semibold text-sm">{item.name}</span>
-                                        {item.badge && (
-                                          <span className={cn(
-                                            "text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-gradient-to-r",
-                                            section.color,
-                                            "text-white"
-                                          )}>
-                                            {item.badge}
-                                          </span>
-                                        )}
-                                      </div>
-                                      {item.description && (
-                                        <span className="text-xs text-muted-foreground">{item.description}</span>
-                                      )}
-                                    </div>
-                                    <ArrowRight className="w-4 h-4 text-muted-foreground opacity-0 -translate-x-2 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all" />
-                                  </Link>
-                                ))}
-                              </div>
-                            </div>
+                                  </div>
+                                  {item.description && (
+                                    <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
+                                      {item.description}
+                                    </p>
+                                  )}
+                                </div>
+                              </Link>
+                            ))}
                           </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                ))}
-              </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ))}
             </div>
 
             {/* ═══ Right Section ═══ */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               {/* Desktop Auth Buttons */}
               <div className="hidden lg:flex items-center gap-2">
                 {user ? (
                   <>
-                    <Button asChild size="sm" className="rounded-full px-5 font-semibold">
+                    <Button 
+                      asChild 
+                      variant="ghost" 
+                      size="sm" 
+                      className="rounded-lg h-9 px-3 font-medium"
+                    >
                       <Link to="/os">
-                        <Cpu className="w-4 h-4 mr-2" />
+                        <Command className="w-4 h-4 mr-1.5" />
                         Dashboard
                       </Link>
                     </Button>
+                    <div className="w-px h-5 bg-border mx-1" />
                     <Button
                       variant="ghost"
                       size="icon"
                       onClick={handleSignOut}
-                      className="rounded-full"
+                      className="rounded-lg h-9 w-9 text-muted-foreground hover:text-foreground"
+                      aria-label="Sign out"
                     >
                       <LogOut className="w-4 h-4" />
                     </Button>
                   </>
                 ) : (
                   <>
-                    <Button asChild variant="ghost" size="sm" className="rounded-full px-4 font-medium">
-                      <Link to="/auth">Sign In</Link>
+                    <Button 
+                      asChild 
+                      variant="ghost" 
+                      size="sm" 
+                      className="rounded-lg h-9 px-4 font-medium text-muted-foreground hover:text-foreground"
+                    >
+                      <Link to="/auth">Sign in</Link>
                     </Button>
-                    <Button asChild size="sm" className="rounded-full px-5 font-semibold bg-gradient-to-r from-fuchsia-600 to-purple-600 hover:from-fuchsia-500 hover:to-purple-500 border-0">
+                    <Button 
+                      asChild 
+                      size="sm" 
+                      className="rounded-lg h-9 px-4 font-semibold"
+                    >
                       <Link to="/developers">
                         Get Started
-                        <ArrowRight className="w-4 h-4 ml-1" />
+                        <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
                       </Link>
                     </Button>
                   </>
@@ -319,31 +333,33 @@ export function CmpsblNav() {
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className={cn(
-                  "lg:hidden relative w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300",
+                  "lg:hidden relative w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-200 touch-manipulation",
                   mobileMenuOpen 
-                    ? "bg-primary text-primary-foreground rotate-90" 
+                    ? "bg-primary text-primary-foreground" 
                     : "bg-muted/50 hover:bg-muted text-foreground"
                 )}
+                aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+                aria-expanded={mobileMenuOpen}
               >
-                <AnimatePresence mode="wait">
+                <AnimatePresence mode="wait" initial={false}>
                   <motion.div
                     key={mobileMenuOpen ? "close" : "menu"}
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.5 }}
+                    initial={{ opacity: 0, rotate: -90, scale: 0.8 }}
+                    animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                    exit={{ opacity: 0, rotate: 90, scale: 0.8 }}
                     transition={{ duration: 0.15 }}
                   >
-                    {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                    {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                   </motion.div>
                 </AnimatePresence>
               </button>
             </div>
-          </div>
+          </nav>
         </div>
-      </motion.nav>
+      </motion.header>
 
       {/* ══════════════════════════════════════════════════════════════════════
-          MOBILE NAVIGATION — Full Screen Neural Interface
+          MOBILE NAVIGATION — Full Screen Command Interface
           ══════════════════════════════════════════════════════════════════════ */}
       <AnimatePresence>
         {mobileMenuOpen && (
@@ -351,105 +367,110 @@ export function CmpsblNav() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
             className="fixed inset-0 z-[9999] lg:hidden"
           >
-            {/* Solid white/dark background */}
-            <div className="absolute inset-0 bg-background" />
+            {/* Solid background */}
+            <motion.div 
+              className="absolute inset-0 bg-background"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            />
             
             {/* Content */}
             <motion.div 
-              initial={{ y: 50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 50, opacity: 0 }}
-              transition={{ delay: 0.1 }}
-              className="relative h-full pt-20 pb-8 px-6 overflow-y-auto"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ delay: 0.05 }}
+              className="relative h-full pt-20 pb-8 px-5 overflow-y-auto safe-area-inset momentum-scroll"
             >
               {/* Header */}
-              <div className="mb-8">
+              <div className="mb-6">
                 <motion.div 
-                  initial={{ scale: 0.9, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: 0.15 }}
-                  className="flex items-center gap-4 mb-6"
+                  initial={{ y: 10, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.1 }}
+                  className="flex items-center gap-3"
                 >
-                  <div className="relative">
-                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-fuchsia-500 to-purple-600 flex items-center justify-center">
-                      <Activity className="w-7 h-7 text-white" />
-                    </div>
-                    <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-emerald-500 border-2 border-background flex items-center justify-center">
-                      <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
-                    </div>
-                  </div>
+                  <CmpsblLogo size="md" />
                   <div>
-                    <div className="text-2xl font-black tracking-tight">CMPSBL</div>
-                    <div className="text-sm text-muted-foreground">Neural Navigation</div>
+                    <div className="text-xl font-bold tracking-tight">CMPSBL</div>
+                    <div className="text-xs text-muted-foreground font-medium">Substrate OS v7.0</div>
                   </div>
                 </motion.div>
-
-                {/* Quick access buttons */}
-                <div className="grid grid-cols-3 gap-2">
-                  {[
-                    { name: "Capabilities", href: "/capabilities", icon: Sparkles, color: "from-fuchsia-500 to-purple-600" },
-                    { name: "CodeLab", href: "/codelab", icon: Terminal, color: "from-cyan-500 to-blue-600" },
-                    { name: "Docs", href: "/documentation", icon: BookOpen, color: "from-emerald-500 to-teal-600" },
-                  ].map((item, idx) => (
-                    <motion.div
-                      key={item.href}
-                      initial={{ y: 20, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ delay: 0.2 + idx * 0.05 }}
-                    >
-                      <Link
-                        to={item.href}
-                        className={cn(
-                          "flex flex-col items-center gap-2 p-4 rounded-2xl transition-all",
-                          "bg-muted/50 hover:bg-muted border border-border/50",
-                          isActive(item.href) && "bg-gradient-to-br text-white border-0 " + item.color
-                        )}
-                      >
-                        <item.icon className="w-6 h-6" />
-                        <span className="text-xs font-semibold">{item.name}</span>
-                      </Link>
-                    </motion.div>
-                  ))}
-                </div>
               </div>
 
+              {/* Quick Actions */}
+              <motion.div 
+                initial={{ y: 10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.15 }}
+                className="grid grid-cols-2 gap-2 mb-6"
+              >
+                {[
+                  { name: "Capabilities", href: "/capabilities", icon: Sparkles },
+                  { name: "CodeLab", href: "/codelab", icon: Terminal },
+                  { name: "Documentation", href: "/documentation", icon: BookOpen },
+                  { name: "Developers", href: "/developers", icon: Code },
+                ].map((item, idx) => (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    className={cn(
+                      "flex items-center gap-3 p-4 rounded-xl transition-colors touch-manipulation",
+                      "bg-muted/40 hover:bg-muted border border-border/50",
+                      isActive(item.href) && "bg-primary/10 border-primary/20"
+                    )}
+                  >
+                    <item.icon className={cn(
+                      "w-5 h-5",
+                      isActive(item.href) ? "text-primary" : "text-muted-foreground"
+                    )} />
+                    <span className={cn(
+                      "text-sm font-semibold",
+                      isActive(item.href) && "text-primary"
+                    )}>
+                      {item.name}
+                    </span>
+                  </Link>
+                ))}
+              </motion.div>
+
               {/* Navigation Sections */}
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {navSections.map((section, sectionIdx) => (
                   <motion.div
                     key={section.name}
-                    initial={{ x: -30, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ delay: 0.25 + sectionIdx * 0.05 }}
-                    className="rounded-2xl border border-border/50 overflow-hidden bg-card"
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.2 + sectionIdx * 0.03 }}
+                    className="rounded-xl border border-border/50 overflow-hidden bg-card"
                   >
                     <button
                       onClick={() => setExpandedMobileSection(
                         expandedMobileSection === section.name ? null : section.name
                       )}
-                      className="w-full flex items-center justify-between p-4"
+                      className="w-full flex items-center justify-between p-4 touch-manipulation"
+                      aria-expanded={expandedMobileSection === section.name}
                     >
                       <div className="flex items-center gap-3">
-                        <div className={cn(
-                          "w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br text-white",
-                          section.color
-                        )}>
-                          <section.icon className="w-5 h-5" />
+                        <div className="w-9 h-9 rounded-lg bg-muted flex items-center justify-center">
+                          <section.icon className="w-4.5 h-4.5 text-muted-foreground" />
                         </div>
                         <div className="text-left">
-                          <div className="font-bold">{section.name}</div>
+                          <div className="font-semibold text-sm">{section.name}</div>
                           <div className="text-xs text-muted-foreground">
                             {section.items.length} items
                           </div>
                         </div>
                       </div>
                       <motion.div
-                        animate={{ rotate: expandedMobileSection === section.name ? 180 : 0 }}
+                        animate={{ rotate: expandedMobileSection === section.name ? 90 : 0 }}
                         transition={{ duration: 0.2 }}
                       >
-                        <ChevronDown className="w-5 h-5 text-muted-foreground" />
+                        <ChevronRight className="w-4 h-4 text-muted-foreground" />
                       </motion.div>
                     </button>
 
@@ -468,33 +489,43 @@ export function CmpsblNav() {
                                 key={item.href}
                                 to={item.href}
                                 className={cn(
-                                  "flex items-center gap-3 p-3 rounded-xl transition-all",
+                                  "flex items-center gap-3 p-3 rounded-lg transition-colors touch-manipulation",
                                   "hover:bg-muted/50",
-                                  isActive(item.href) && "bg-muted"
+                                  isActive(item.href) && "bg-primary/5"
                                 )}
                               >
                                 {item.icon && (
-                                  <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center shrink-0">
-                                    <item.icon className="w-4 h-4" />
+                                  <div className={cn(
+                                    "w-8 h-8 rounded-lg flex items-center justify-center shrink-0",
+                                    isActive(item.href) ? "bg-primary/10" : "bg-muted"
+                                  )}>
+                                    <item.icon className={cn(
+                                      "w-4 h-4",
+                                      isActive(item.href) ? "text-primary" : "text-muted-foreground"
+                                    )} />
                                   </div>
                                 )}
-                                <div className="flex-1">
+                                <div className="flex-1 min-w-0">
                                   <div className="flex items-center gap-2">
-                                    <span className="font-medium text-sm">{item.name}</span>
+                                    <span className={cn(
+                                      "font-medium text-sm",
+                                      isActive(item.href) && "text-primary"
+                                    )}>
+                                      {item.name}
+                                    </span>
                                     {item.badge && (
-                                      <span className={cn(
-                                        "text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-gradient-to-r text-white",
-                                        section.color
-                                      )}>
+                                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-primary/10 text-primary">
                                         {item.badge}
                                       </span>
                                     )}
                                   </div>
                                   {item.description && (
-                                    <span className="text-xs text-muted-foreground">{item.description}</span>
+                                    <span className="text-xs text-muted-foreground line-clamp-1">
+                                      {item.description}
+                                    </span>
                                   )}
                                 </div>
-                                <ArrowRight className="w-4 h-4 text-muted-foreground" />
+                                <ChevronRight className="w-4 h-4 text-muted-foreground/50" />
                               </Link>
                             ))}
                           </div>
@@ -507,23 +538,23 @@ export function CmpsblNav() {
 
               {/* Auth Section */}
               <motion.div 
-                initial={{ y: 20, opacity: 0 }}
+                initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="mt-8 pt-6 border-t border-border/50"
+                transition={{ delay: 0.4 }}
+                className="mt-8 pt-6 border-t border-border"
               >
                 {user ? (
                   <div className="space-y-3">
-                    <Button asChild className="w-full h-14 rounded-2xl text-lg font-bold bg-gradient-to-r from-fuchsia-600 to-purple-600">
+                    <Button asChild className="w-full h-12 rounded-xl font-semibold">
                       <Link to="/os">
-                        <Cpu className="w-5 h-5 mr-2" />
+                        <Command className="w-4 h-4 mr-2" />
                         Open Dashboard
                       </Link>
                     </Button>
                     <Button 
                       variant="outline" 
                       onClick={handleSignOut}
-                      className="w-full h-12 rounded-2xl"
+                      className="w-full h-11 rounded-xl"
                     >
                       <LogOut className="w-4 h-4 mr-2" />
                       Sign Out
@@ -531,13 +562,13 @@ export function CmpsblNav() {
                   </div>
                 ) : (
                   <div className="space-y-3">
-                    <Button asChild className="w-full h-14 rounded-2xl text-lg font-bold bg-gradient-to-r from-fuchsia-600 to-purple-600 border-0">
+                    <Button asChild className="w-full h-12 rounded-xl font-semibold">
                       <Link to="/developers">
                         Get Started Free
-                        <ArrowRight className="w-5 h-5 ml-2" />
+                        <ArrowRight className="w-4 h-4 ml-2" />
                       </Link>
                     </Button>
-                    <Button asChild variant="outline" className="w-full h-12 rounded-2xl">
+                    <Button asChild variant="outline" className="w-full h-11 rounded-xl">
                       <Link to="/auth">Sign In</Link>
                     </Button>
                   </div>
@@ -548,16 +579,13 @@ export function CmpsblNav() {
               <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.6 }}
-                className="mt-8 text-center"
+                transition={{ delay: 0.5 }}
+                className="mt-8 flex items-center justify-center gap-2 text-xs text-muted-foreground"
               >
-                <div className="text-xs text-muted-foreground font-mono">
-                  CMPSBL SUBSTRATE OS v7.0.0
-                </div>
-                <div className="flex items-center justify-center gap-1 mt-1">
-                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span className="text-xs text-emerald-500 font-medium">All Systems Online</span>
-                </div>
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                <span className="font-mono">v7.0.0</span>
+                <span>•</span>
+                <span>All Systems Operational</span>
               </motion.div>
             </motion.div>
           </motion.div>
@@ -565,7 +593,7 @@ export function CmpsblNav() {
       </AnimatePresence>
 
       {/* Spacer for fixed nav */}
-      <div className="h-16 lg:h-20" />
+      <div className="h-16 lg:h-[72px]" />
     </>
   );
 }
