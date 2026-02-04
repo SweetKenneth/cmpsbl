@@ -54,6 +54,24 @@ export {
   CAPABILITY_PRICE_IDS,
 } from './pricing';
 
+// === Pricing Normalization (Unified $19-$299) ===
+export {
+  normalizePrice,
+  isOffMenuCapability,
+  getPricingLabel,
+  isCheckoutEnabled,
+  getNormalizedPricingInfo,
+  OFF_MENU_KEYWORDS,
+  PRICE_CONFIG,
+  NORMALIZED_PRICE_TIERS,
+  STORE_FOOTER_TEXT,
+  LICENSE_REQUEST_EMAIL,
+  getLicenseRequestSubject,
+  getLicenseRequestMailto,
+  type NormalizedPrice,
+  type NormalizedPricingInfo,
+} from './pricing-normalization';
+
 // === Licensing ===
 export {
   validateLicense,
@@ -103,6 +121,7 @@ export {
   hasSTierStripeConfig,
   getAllSTierStripeConfigs,
   isSelfImprovementCapability,
+  isSTierOffMenu,
 } from './stripe-stier';
 
 // === Recursive Self-Improvement Stripe ===
@@ -112,6 +131,7 @@ export {
   hasRecursiveStripeConfig,
   isApexTierCapability,
   getAllRecursiveStripeConfigs,
+  isRecursiveOffMenu,
 } from './stripe-recursive';
 
 // === Recursive Self-Improvement Registry ===
@@ -124,7 +144,7 @@ export {
 } from './registry-recursive';
 
 // === Constants ===
-export const DEPOT_VERSION = '1.5.0';
+export const DEPOT_VERSION = '2.0.0'; // Unified Pricing Patch
 export const DEPOT_NAME = 'Capabilities Depot';
 
 // === Legal Disclaimer ===

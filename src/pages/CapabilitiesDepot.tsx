@@ -1,7 +1,7 @@
 /**
  * Capabilities Depot — Main Page
  * Marketplace surface for downloadable capability artifacts
- * v1.5.0 — Self-Improvement Hero, Mobile-First Polish
+ * v2.0.0 — Unified Pricing ($19-$299 public, off-menu licensed on request)
  */
 
 import { useState, useMemo, lazy, Suspense, useCallback } from 'react';
@@ -44,6 +44,7 @@ import {
   getTotalCapabilityCount,
   PRICING_TIERS,
   getRecursiveCapabilityById,
+  STORE_FOOTER_TEXT,
   type CapabilityCategory,
   type ExecutorType,
   type PricingTier,
@@ -297,13 +298,23 @@ export default function CapabilitiesDepotPage() {
         </section>
 
         {/* Bottom CTA — Enterprise */}
+        {/* Store Footer */}
+        <section className="border-t border-border/30 bg-muted/30">
+          <div className="container mx-auto px-4 py-8 text-center">
+            <p className="text-sm text-muted-foreground max-w-2xl mx-auto whitespace-pre-line">
+              {STORE_FOOTER_TEXT}
+            </p>
+          </div>
+        </section>
+
+        {/* Enterprise CTA */}
         <section className="border-t border-border/50 bg-card/50">
           <div className="container mx-auto px-4 py-16 md:py-20 text-center">
-            <Badge className="mb-4 bg-amber-500/10 text-amber-400 border-amber-500/30">
+            <Badge className="mb-4 bg-muted text-muted-foreground border-border">
               <Crown className="w-3 h-3 mr-1" />
               Enterprise
             </Badge>
-            <h2 className="text-2xl md:text-4xl font-bold mb-4">Need Custom Self-Improvement Capabilities?</h2>
+            <h2 className="text-2xl md:text-4xl font-bold mb-4">Need Autonomous or System-Wide Capabilities?</h2>
             <p className="text-muted-foreground mb-8 max-w-xl mx-auto text-base md:text-lg">
               Contact us for enterprise licensing, custom recursive development, or capability consulting.
             </p>

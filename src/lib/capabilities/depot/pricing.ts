@@ -1,7 +1,7 @@
 /**
  * Capabilities Depot — Pricing Model
- * Aligned with template pricing tiers
- * v1.0.0
+ * Aligned with unified $19-$299 public pricing
+ * v2.0.0 — Unified Pricing Patch
  */
 
 import type { PricingTier } from './types';
@@ -17,6 +17,7 @@ export interface PricingTierConfig {
   badge: string;
 }
 
+// Updated tiers aligned with unified $19-$299 pricing
 export const PRICING_TIERS: Record<PricingTier, PricingTierConfig> = {
   utility: {
     id: 'utility',
@@ -31,8 +32,8 @@ export const PRICING_TIERS: Record<PricingTier, PricingTierConfig> = {
     id: 'advanced',
     name: 'Advanced',
     description: 'Sophisticated capabilities for complex workflows',
-    minPrice: 99,
-    maxPrice: 299,
+    minPrice: 49,
+    maxPrice: 149,
     color: 'cyan',
     badge: 'Pro',
   },
@@ -40,17 +41,17 @@ export const PRICING_TIERS: Record<PricingTier, PricingTierConfig> = {
     id: 'system',
     name: 'System-Level',
     description: 'Deep integration capabilities for production systems',
-    minPrice: 499,
-    maxPrice: 999,
+    minPrice: 149,
+    maxPrice: 299,
     color: 'violet',
     badge: 'Elite',
   },
   flagship: {
     id: 'flagship',
     name: 'Flagship',
-    description: 'Enterprise-grade capabilities with maximum value',
-    minPrice: 1499,
-    maxPrice: 2999,
+    description: 'Enterprise-grade capabilities (licensed on request)',
+    minPrice: 299,
+    maxPrice: 299, // Cap at $299 for public, higher requires license
     color: 'amber',
     badge: 'Enterprise',
   },
@@ -66,12 +67,12 @@ export function formatPrice(priceUsd: number): string {
   }).format(priceUsd);
 }
 
-// === Determine Tier from Price ===
+// === Determine Tier from Price (Unified $19-$299) ===
 export function getTierFromPrice(priceUsd: number): PricingTier {
   if (priceUsd <= 49) return 'utility';
-  if (priceUsd <= 299) return 'advanced';
-  if (priceUsd <= 999) return 'system';
-  return 'flagship';
+  if (priceUsd <= 149) return 'advanced';
+  if (priceUsd <= 299) return 'system';
+  return 'flagship'; // Off-menu pricing
 }
 
 // === Get Tier Config ===
