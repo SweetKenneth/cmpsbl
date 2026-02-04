@@ -592,8 +592,7 @@ export function CmpsblNav() {
         )}
       </AnimatePresence>
 
-      {/* Spacer for fixed nav */}
-      <div className="h-16 lg:h-[72px]" />
+      {/* Spacer removed - pages handle their own top padding */}
     </>
   );
 }
