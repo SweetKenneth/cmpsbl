@@ -140,9 +140,10 @@ export function CmpsblNav() {
         transition={{ type: "spring", damping: 30, stiffness: 300 }}
         className={cn(
           "fixed top-0 left-0 right-0 z-[10000] transition-all duration-300",
+          // CRITICAL: Use solid bg-background for theme compatibility (light/dark mode)
           scrolled 
-            ? "bg-background/95 backdrop-blur-xl border-b border-border shadow-sm" 
-            : "bg-background/80 backdrop-blur-sm"
+            ? "bg-background border-b border-border shadow-sm" 
+            : "bg-background"
         )}
         onMouseMove={handleMouseMove}
       >
@@ -227,7 +228,7 @@ export function CmpsblNav() {
                                 to={item.href}
                                 className={cn(
                                   "flex items-start gap-3 p-3 rounded-lg transition-colors duration-150 group/item",
-                                  "hover:bg-muted/60",
+                                  "hover:bg-muted",
                                   isActive(item.href) && "bg-muted"
                                 )}
                               >
@@ -336,7 +337,7 @@ export function CmpsblNav() {
                   "lg:hidden relative w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-200 touch-manipulation",
                   mobileMenuOpen 
                     ? "bg-primary text-primary-foreground" 
-                    : "bg-muted/50 hover:bg-muted text-foreground"
+                    : "bg-muted hover:bg-muted/80 text-foreground"
                 )}
                 aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
                 aria-expanded={mobileMenuOpen}
@@ -420,8 +421,8 @@ export function CmpsblNav() {
                     to={item.href}
                     className={cn(
                       "flex items-center gap-3 p-4 rounded-xl transition-colors touch-manipulation",
-                      "bg-muted/40 hover:bg-muted border border-border/50",
-                      isActive(item.href) && "bg-primary/10 border-primary/20"
+                      "bg-muted hover:bg-muted/80 border border-border",
+                      isActive(item.href) && "bg-primary/10 border-primary/30"
                     )}
                   >
                     <item.icon className={cn(
@@ -446,7 +447,7 @@ export function CmpsblNav() {
                     initial={{ y: 10, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.2 + sectionIdx * 0.03 }}
-                    className="rounded-xl border border-border/50 overflow-hidden bg-card"
+                    className="rounded-xl border border-border overflow-hidden bg-card"
                   >
                     <button
                       onClick={() => setExpandedMobileSection(
@@ -490,8 +491,8 @@ export function CmpsblNav() {
                                 to={item.href}
                                 className={cn(
                                   "flex items-center gap-3 p-3 rounded-lg transition-colors touch-manipulation",
-                                  "hover:bg-muted/50",
-                                  isActive(item.href) && "bg-primary/5"
+                                  "hover:bg-muted",
+                                  isActive(item.href) && "bg-primary/10"
                                 )}
                               >
                                 {item.icon && (
@@ -592,7 +593,8 @@ export function CmpsblNav() {
         )}
       </AnimatePresence>
 
-      {/* Spacer removed - pages handle their own top padding */}
+      {/* CRITICAL: Spacer for fixed nav - ensures content clears the header on ALL pages */}
+      <div className="h-16 lg:h-[72px]" />
     </>
   );
 }
