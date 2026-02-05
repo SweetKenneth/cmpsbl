@@ -344,15 +344,15 @@
  async function logAnomaly(anomaly: BehavioralAnomaly): Promise<void> {
    try {
      await supabase.from('brain_events').insert({
-       module: 'defense',
        event_type: `behavior.${anomaly.anomalyType}`,
+       module: 'defense',
        data: {
          anomaly_id: anomaly.id,
          entity_id: anomaly.entityId,
          severity: anomaly.severity,
          deviation: anomaly.deviation,
-       } as Record<string, unknown>,
-     });
+       },
+     } as never);
    } catch {
      // Silent fail
    }

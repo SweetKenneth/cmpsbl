@@ -326,15 +326,15 @@
  async function logAlert(alert: Alert): Promise<void> {
    try {
      await supabase.from('brain_events').insert({
-       module: 'vision',
        event_type: `alert.${alert.state}`,
+       module: 'vision',
        data: {
          alert_id: alert.id,
          severity: alert.severity,
          source: alert.source,
          title: alert.title,
-       } as Record<string, unknown>,
-     });
+       },
+     } as never);
    } catch {
      // Silent fail for logging
    }

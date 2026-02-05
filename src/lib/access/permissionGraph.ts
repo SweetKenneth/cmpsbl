@@ -216,9 +216,12 @@
        return { success: false, error: `Role ${roleId} does not exist` };
      }
      
+     // Map custom role IDs to valid database enum values
+     const dbRole = roleId === 'admin' ? 'admin' : roleId === 'operator' ? 'moderator' : 'user';
+     
      const { error } = await supabase
        .from('user_roles')
-       .insert({ user_id: userId, role: roleId });
+       .insert({ user_id: userId, role: dbRole as 'admin' | 'moderator' | 'user' });
      
      if (error) throw error;
      
@@ -239,11 +242,14 @@
    roleId: string
  ): Promise<{ success: boolean; error?: string }> {
    try {
+     // Map custom role IDs to valid database enum values
+     const dbRole = roleId === 'admin' ? 'admin' : roleId === 'operator' ? 'moderator' : 'user';
+     
      const { error } = await supabase
        .from('user_roles')
        .delete()
        .eq('user_id', userId)
-       .eq('role', roleId);
+       .eq('role', dbRole);
      
      if (error) throw error;
      

@@ -199,15 +199,15 @@
  async function logSynthesis(output: SynthesisOutput): Promise<void> {
    try {
      await supabase.from('brain_events').insert({
-       module: 'dream',
        event_type: 'synthesis.completed',
+       module: 'dream',
        data: {
          synthesis_id: output.id,
          confidence: output.confidence,
          creativity_score: output.creativity_score,
          parent_count: output.parent_patterns.length,
-       } as Record<string, unknown>,
-     });
+       },
+     } as never);
    } catch {
      // Silent fail for logging
    }
