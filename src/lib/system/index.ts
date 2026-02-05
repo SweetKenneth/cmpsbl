@@ -135,3 +135,10 @@ export function updateSystemState(updates: Partial<SystemState>): void {
  
  // Dependency graph
  export * from './dependencyGraph';
+ 
+ // Render loop guard (dev-only utility)
+ export {
+   useRenderGuard,
+   resetRenderGuards,
+   getRenderStats,
+ } from './renderGuard';
