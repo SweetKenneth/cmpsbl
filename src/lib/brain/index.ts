@@ -100,6 +100,9 @@ export * from './batchOperations';
 // Re-export memory index
 export * from './memoryIndex';
 
+// Re-export attention mechanism
+export * from './attentionMechanism';
+
 import { supabase } from '@/integrations/supabase/client';
 import type { TierStats, Memory } from './memoryTiering';
 import { getTierStats } from './memoryTiering';

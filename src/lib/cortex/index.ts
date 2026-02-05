@@ -102,6 +102,9 @@ export async function initializeCortex(): Promise<{
  // Workflow engine
  export * from './workflowEngine';
 
+// Pipeline scheduler
+export * from './pipelineScheduler';
+
 /**
  * Get module health matrix
  */

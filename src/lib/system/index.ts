@@ -157,3 +157,6 @@ export {
   type StorageMetrics as SystemStorageMetrics,
   type ResourceAlert as SystemResourceAlert,
 } from './resourceMonitor';
+
+// Performance profiler
+export * from './performanceProfiler';
