@@ -164,25 +164,25 @@ export function getBreakingChanges(
   toVersion: string
 ): BreakingChange[] {
   // Known breaking changes for common packages
-  const knownBreakingChanges: Record<string, BreakingChange[]> = {
+  const knownBreakingChanges: Record<string, Array<{version: string; desc: string; guide: string; apis: string[]}>> = {
     'react': [
-      { type: 'api', description: 'Concurrent rendering changes', migration_guide: 'Review concurrent mode docs', effort_hours: 2 },
+      { version: '18.0.0', desc: 'Concurrent rendering changes', guide: 'Review concurrent mode docs', apis: ['render', 'ReactDOM'] },
     ],
     'react-router-dom': [
-      { type: 'api', description: 'Route component API changed', migration_guide: 'Use Routes instead of Switch', effort_hours: 4 },
-      { type: 'deprecation', description: 'useHistory replaced with useNavigate', migration_guide: 'Replace all useHistory calls', effort_hours: 2 },
+      { version: '6.0.0', desc: 'Route component API changed', guide: 'Use Routes instead of Switch', apis: ['Switch', 'Route'] },
+      { version: '6.0.0', desc: 'useHistory replaced with useNavigate', guide: 'Replace all useHistory calls', apis: ['useHistory'] },
     ],
     '@tanstack/react-query': [
-      { type: 'api', description: 'useQuery signature changed', migration_guide: 'Update to object syntax', effort_hours: 3 },
+      { version: '5.0.0', desc: 'useQuery signature changed', guide: 'Update to object syntax', apis: ['useQuery', 'useMutation'] },
     ],
     'tailwindcss': [
-      { type: 'config', description: 'Config file format updated', migration_guide: 'Run npx tailwindcss migrate', effort_hours: 1 },
+      { version: '4.0.0', desc: 'Config file format updated', guide: 'Run npx tailwindcss migrate', apis: ['tailwind.config'] },
     ],
     'vite': [
-      { type: 'config', description: 'Plugin API changes', migration_guide: 'Update vite.config.ts', effort_hours: 1 },
+      { version: '5.0.0', desc: 'Plugin API changes', guide: 'Update vite.config.ts', apis: ['plugins'] },
     ],
     'typescript': [
-      { type: 'behavior', description: 'Stricter type checking', migration_guide: 'Fix new type errors', effort_hours: 4 },
+      { version: '5.0.0', desc: 'Stricter type checking', guide: 'Fix new type errors', apis: ['any', 'unknown'] },
     ],
   };
   
@@ -191,16 +191,21 @@ export function getBreakingChanges(
   const toMajor = parseInt(toVersion.split('.')[0], 10);
   
   if (toMajor > fromMajor && knownBreakingChanges[packageName]) {
-    return knownBreakingChanges[packageName];
+    return knownBreakingChanges[packageName].map(bc => ({
+      version: bc.version,
+      description: bc.desc,
+      migration_guide: bc.guide,
+      affected_apis: bc.apis,
+    }));
   }
   
   // Generate generic breaking change for major version bumps
   if (toMajor > fromMajor) {
     return [{
-      type: 'api',
+      version: toVersion,
       description: `Major version upgrade from v${fromMajor} to v${toMajor}`,
       migration_guide: 'Review package changelog',
-      effort_hours: 2,
+      affected_apis: [],
     }];
   }
   
