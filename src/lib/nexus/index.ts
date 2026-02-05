@@ -63,6 +63,9 @@ export {
 // Cost estimation & budget governance
 export * from './costEstimation';
 
+// Budget governance
+export * from './budgetGovernance';
+
 // Batch routing & failover
 export {
   processBatch,

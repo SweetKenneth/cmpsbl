@@ -142,3 +142,6 @@ export function updateSystemState(updates: Partial<SystemState>): void {
    resetRenderGuards,
    getRenderStats,
  } from './renderGuard';
+
+// Resource monitor
+export * from './resourceMonitor';
