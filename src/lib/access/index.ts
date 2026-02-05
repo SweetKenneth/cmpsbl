@@ -14,12 +14,6 @@
 import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
 
-// Re-export permission graph
-export * from './permissionGraph';
-
-// Re-export session manager
-export * from './sessionManager';
-
 // ============ Types ============
 
 export type AccessTier = 'free' | 'starter' | 'pro' | 'enterprise';
