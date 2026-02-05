@@ -274,24 +274,94 @@ export async function autoblogAbort(
 // Internal helpers (no secrets exposed)
 
 async function generateDraftContent(queueId: string): Promise<{ title: string; body: string } | null> {
-  // Placeholder: actual generation is internal
-  // Returns high-level organism-focused content
-  return {
-    title: 'System Evolution Update',
-    body: `## Why the System Changed
+  try {
+    // Get the queue item details
+    const { data: queueItem } = await supabase
+      .from('autoblog_queue')
+      .select('*')
+      .eq('id', queueId)
+      .single();
+    
+    if (!queueItem) return null;
+    
+    const { topic, channel } = queueItem;
+    
+    // Try to use NEXUS for intelligent content generation
+    try {
+      const { substrate } = await import('../substrate');
+      
+      if (substrate.nexus?.text) {
+        const prompt = `Write a concise, informative blog post about "${topic || 'system evolution'}". 
+Channel: ${channel}
+Style: Professional, educational, focused on value to readers.
+Length: 300-500 words.
+Format: Markdown with headers.
+Requirements:
+- Start with a compelling introduction
+- Include practical insights
+- End with actionable takeaways`;
 
-The substrate observed new pressures and adapted accordingly. This update reflects learned responses that improve stability and capability.
+        const response = await substrate.nexus.text(prompt);
+        
+        if (response?.response) {
+          // Extract title from response or generate one
+          const lines = response.response.split('\n').filter((l: string) => l.trim());
+          let title = topic || 'System Update';
+          let body = response.response;
+          
+          // Check if first line is a title (starts with #)
+          if (lines[0]?.startsWith('#')) {
+            title = lines[0].replace(/^#+\s*/, '').trim();
+            body = lines.slice(1).join('\n').trim();
+          }
+          
+          return { title, body };
+        }
+      }
+    } catch (nexusError) {
+      console.warn('[AutoBlog] NEXUS unavailable, using template:', nexusError);
+    }
+    
+    // Fallback: Generate structured template content
+    const timestamp = new Date().toISOString().split('T')[0];
+    const title = topic 
+      ? `${topic.charAt(0).toUpperCase() + topic.slice(1)}: Insights & Updates`
+      : `System Evolution Update - ${timestamp}`;
+    
+    const body = `## Overview
 
-### Observed Pressures
-- System patterns required optimization
-- New behaviors emerged from usage
+${topic ? `This article explores ${topic} and its implications for modern systems.` : 'The substrate observed new patterns and adapted accordingly.'}
 
-### Resulting Capabilities
-- Enhanced operational stability
-- Improved response characteristics
+### Key Observations
 
-*This is an automated evolution log entry.*`
-  };
+${channel === 'blog' ? '- Industry trends indicate shifting priorities' : '- System patterns required optimization'}
+- New behaviors emerged from ongoing analysis
+- Continuous improvement remains the core principle
+
+### Practical Implications
+
+${topic ? `Understanding ${topic} helps organizations make better decisions.` : 'These changes reflect learned responses that improve stability.'}
+
+- **Efficiency**: Streamlined processes reduce overhead
+- **Reliability**: Consistent behavior builds trust
+- **Adaptability**: Flexible systems handle change gracefully
+
+### Looking Forward
+
+As we continue to evolve, these principles guide our development:
+
+1. Data-driven decision making
+2. Incremental improvement over radical change
+3. User-centric design philosophy
+
+---
+*Generated on ${timestamp} | Channel: ${channel}*`;
+
+    return { title, body };
+  } catch (error) {
+    console.error('[AutoBlog] Draft generation failed:', error);
+    return null;
+  }
 }
 
 function containsSecrets(text: string): boolean {

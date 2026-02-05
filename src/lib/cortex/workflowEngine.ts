@@ -311,22 +311,86 @@
  }
  
  /**
-  * Simulate module call (placeholder for actual substrate.invoke)
+  * Execute module call via substrate singleton
   */
  async function simulateModuleCall(
    module: SubstrateModule,
    action: string,
    payload: Record<string, unknown>
  ): Promise<unknown> {
-   // Simulate async operation
-   await new Promise(r => setTimeout(r, 100));
-   
-   return {
-     module,
-     action,
-     success: true,
-     result: payload,
-   };
+   try {
+     // Import substrate singleton
+     const { substrate } = await import('../substrate');
+     
+     // Get the module from substrate
+     const moduleInstance = substrate[module];
+     
+     if (!moduleInstance) {
+       throw new Error(`Module ${module} not found in substrate`);
+     }
+     
+     // Find the action method
+     const actionMethod = (moduleInstance as Record<string, unknown>)[action];
+     
+     if (typeof actionMethod === 'function') {
+       // Execute the action with payload
+       const result = await actionMethod.call(moduleInstance, payload);
+       
+       // Log the execution
+       const { supabase } = await import('@/integrations/supabase/client');
+       await supabase.from('brain_events').insert({
+         module: 'cortex',
+         event_type: `workflow.step.${module}.${action}`,
+         data: { 
+           module, 
+           action, 
+           payloadKeys: Object.keys(payload),
+           success: true 
+         } as unknown as Record<string, never>,
+         outcome: 'success',
+       });
+       
+       return {
+         module,
+         action,
+         success: true,
+         result,
+       };
+     } else {
+       // Fallback: invoke via substrate.invoke if available
+       if (typeof substrate.invoke === 'function') {
+         const result = await substrate.invoke(module, action, payload);
+         return {
+           module,
+           action,
+           success: true,
+           result,
+         };
+       }
+       
+       throw new Error(`Action ${action} not found on module ${module}`);
+     }
+   } catch (error) {
+     // Log the failure
+     try {
+       const { supabase } = await import('@/integrations/supabase/client');
+       await supabase.from('brain_events').insert({
+         module: 'cortex',
+         event_type: `workflow.step.${module}.${action}`,
+         data: { 
+           module, 
+           action, 
+           error: error instanceof Error ? error.message : String(error),
+           success: false 
+         } as unknown as Record<string, never>,
+         outcome: 'failed',
+       });
+     } catch {
+       // Ignore logging errors
+     }
+     
+     throw error;
+   }
  }
  
  /**

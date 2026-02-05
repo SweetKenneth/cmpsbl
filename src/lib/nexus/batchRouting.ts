@@ -264,37 +264,40 @@ async function processWithFailover(
 }
 
 /**
- * Simulate a provider request (placeholder for actual implementation)
+ * Execute a provider request using the Nexus routing system
  */
 async function simulateRequest(
   provider: SupportedProvider,
   request: BatchRequest
 ): Promise<unknown> {
-  // Simulate variable latency
-  const baseLatency = {
-    groq: 100,
-    together: 200,
-    cerebras: 80,
-    openrouter: 300,
-    google: 250,
-    lovable: 150,
-    stability: 2000,
-    fal: 1500,
-  };
-
-  const latency = baseLatency[provider] || 200;
-  await new Promise(resolve => setTimeout(resolve, latency + Math.random() * 100));
-
-  // Simulate occasional failures (5% rate)
-  if (Math.random() < 0.05) {
-    throw new Error(`Provider ${provider} temporarily unavailable`);
+  const startTime = Date.now();
+  
+  try {
+    // Import the nexus router dynamically to avoid circular deps
+    const { routeToProvider } = await import('./core');
+    
+    // Route the request through nexus
+    const result = await routeToProvider({
+      prompt: request.prompt,
+      taskType: request.taskType,
+      preferredProvider: provider,
+      timeout: request.timeout || 30000,
+    });
+    
+    return {
+      provider,
+      response: result.response,
+      model: result.model,
+      latency: Date.now() - startTime,
+      timestamp: new Date().toISOString(),
+    };
+  } catch (error) {
+    // Check provider health and throw with context
+    const health = providerHealth.get(provider);
+    const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+    
+    throw new Error(`Provider ${provider} failed (health: ${health?.successRate.toFixed(2) || 'unknown'}): ${errorMsg}`);
   }
-
-  return {
-    provider,
-    response: `Simulated response for: ${request.prompt.substring(0, 50)}...`,
-    timestamp: new Date().toISOString(),
-  };
 }
 
 /**
