@@ -64,10 +64,29 @@ export {
 export * from './costEstimation';
 
 // Batch routing & failover
-export * from './batchRouting';
+export {
+  processBatch,
+  getProviderHealthStatus,
+  resetProviderHealth,
+  selectProvider,
+  type BatchRequest,
+  type BatchResult,
+  type BatchSummary,
+  type FailoverChain,
+} from './batchRouting';
  
- // Load balancer
- export * from './loadBalancer';
+// Load balancer - explicitly export to avoid LoadBalancerConfig conflict
+export {
+  registerProvider,
+  unregisterProvider,
+  getOptimalProvider,
+  acquireSlot,
+  releaseSlot,
+  getLoadBalancerStats,
+  type ProviderLoad,
+  type BalancingStrategy,
+  type LoadBalancerConfig as NexusLoadBalancerConfig,
+} from './loadBalancer';
 
 // Version info
 export const NEXUS_VERSION = '7.0.0';

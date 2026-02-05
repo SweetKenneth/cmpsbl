@@ -428,7 +428,32 @@ export const RIPPLE_VERSION = '7.0.0';
 export const RIPPLE_CODENAME = 'Cascade';
 
 // Batch events & replay
-export * from './batchEvents';
+export {
+  batchPublish,
+  publishWithRetry,
+  replayEvents,
+  getEventFromHistory,
+  searchEventHistory,
+  getSubscriptionHealth,
+  recordDelivery,
+  clearHistory,
+  type BatchEventItem,
+  type BatchPublishResult,
+  type EventReplayOptions,
+  type EventReplayResult,
+  type SubscriptionHealth,
+} from './batchEvents';
  
- // Event analytics
- export * from './eventAnalytics';
+// Event analytics - explicitly export to avoid conflicts
+export {
+  recordEventForAnalytics,
+  getEventAnalytics,
+  getDetectedPatterns,
+  getEventCorrelations,
+  getEventVelocity,
+  getAnomalies,
+  type EventAnalytics,
+  type EventPattern,
+  type EventCorrelation,
+  type TimeWindow,
+} from './eventAnalytics';

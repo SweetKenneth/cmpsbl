@@ -455,6 +455,8 @@ export async function getIntegrationStatus(): Promise<IntegrationStatus> {
     };
   }
  
+ }
+ 
  // Webhook management
  export * from './webhookManagement';
  
@@ -463,4 +465,3 @@ export async function getIntegrationStatus(): Promise<IntegrationStatus> {
  
  // Transform pipeline
  export * from './transformPipeline';
-}
