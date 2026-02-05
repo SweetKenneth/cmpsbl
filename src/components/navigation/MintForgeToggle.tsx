@@ -17,7 +17,7 @@ export function MintForgeToggle({ className }: MintForgeToggleProps) {
 
   return (
     <div className={cn(
-      "flex items-center p-1 rounded-lg bg-black/60 border border-border/30 backdrop-blur-sm",
+      "flex items-center p-1 rounded-lg bg-card border border-border/50",
       className
     )}>
       <Link

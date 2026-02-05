@@ -186,8 +186,15 @@ All colors MUST be HSL.
 
 @layer utilities {
   .glass {
+    /* Light mode: keep key surfaces solid white (no grey/tint bleed) */
+    @apply bg-card border border-border/50;
+    box-shadow: var(--shadow-elegant);
+  }
+
+  .dark .glass {
+    /* Dark mode: preserve the glassmorphic feel */
     @apply bg-card/40 backdrop-blur-xl border border-border/50;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    box-shadow: var(--shadow-elegant);
   }
 
   .glass-hover {
