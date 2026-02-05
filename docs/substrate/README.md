@@ -1,6 +1,6 @@
 # promptfluid® Substrate — Developer Documentation
 
-**v7.0.0 — SEBA Era (Self-Evolving Bounded Agent)**
+**v7.5.0 — SEBA Era (Self-Evolving Bounded Agent)**
 
 ---
 
@@ -17,7 +17,7 @@ This is **usage documentation only**. You must:
 
 | Document | Description |
 |----------|-------------|
-| [**USER-MANUAL.md**](./USER-MANUAL.md) | API usage guide with all 14 modules |
+| [**USER-MANUAL.md**](./USER-MANUAL.md) | API usage guide with all 14 modules (156 actions) |
 | [**MODULE-ACTIONS-REGISTRY.md**](./MODULE-ACTIONS-REGISTRY.md) | Complete action reference |
 | [**CHANGELOG.md**](./CHANGELOG.md) | Version history |
 
@@ -37,7 +37,7 @@ POST /functions/v1/pf-substrate
 
 ---
 
-## 14-Module Architecture (v7.0.0)
+## 14-Module Architecture (v7.5.0)
 
 | Layer | Modules |
 |-------|---------|
@@ -46,6 +46,21 @@ POST /functions/v1/pf-substrate
 | Operational | DEFENSE, VISION, DREAM, INTEGRATION |
 | Administrative | SYSTEM, MODERNIZER, INCLUSIVE |
 | Orchestrator | CORTEX |
+
+---
+
+## v7.5.0 Enhancements (42 New Functions)
+
+| Category | New Capabilities |
+|----------|------------------|
+| **Memory** | Query optimization, consolidation, batch operations |
+| **Routing** | Load balancing, slot management, request queuing |
+| **Security** | Behavioral analysis, threat intelligence, incident response |
+| **Learning** | Creative synthesis, pattern mutation, insight extraction |
+| **Monitoring** | Alert management, SLA tracking, resource monitoring |
+| **Governance** | Permission graphs, hierarchical RBAC, session management |
+| **Orchestration** | Workflow engine, multi-step pipelines, dependency graphs |
+| **Integration** | Transform pipelines, webhook management, data sync |
 
 ---
 
@@ -58,4 +73,4 @@ POST /functions/v1/pf-substrate
 
 ---
 
-*promptfluid® v7.0.0 — Build on the substrate. Bring your own keys.*
+*promptfluid® v7.5.0 — Build on the substrate. Bring your own keys.*

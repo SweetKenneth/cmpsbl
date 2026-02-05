@@ -1,8 +1,8 @@
 # CMPSBL Substrate — User Manual
 
-**v7.0.0 — SEBA Era (Self-Evolving Bounded Agent)**
+**v7.5.0 — SEBA Era (Self-Evolving Bounded Agent)**
 
-*Last Updated: 2026-02-03*
+*Last Updated: 2026-02-05*
 
 ---
 
@@ -22,8 +22,76 @@ The CMPSBL Substrate is a unified API gateway for cognitive AI operations. It pr
 - **Enterprise Integration** — 35+ adapters for external systems with LLM governance
 - **Self-Evolution** — SEBA (Self-Evolving Bounded Agent) for autonomous improvement
 - **120 Synergy Pipelines** — Cross-module orchestration with 98 custom executors
+- **156 Deployed Actions** — Comprehensive module coverage with v7.5.0 enhancements
 
 All capabilities are accessed through a single endpoint.
+
+---
+
+## v7.5.0 New Capabilities
+
+This version adds **42 new production-grade functions** across all 14 modules:
+
+### BRAIN — Query Optimization & Consolidation
+```json
+{
+  "module": "brain",
+  "action": "query_optimize",
+  "payload": { "query": "user preferences", "use_cache": true }
+}
+```
+
+### NEXUS — Load Balancing
+```json
+{
+  "module": "nexus",
+  "action": "load_balance",
+  "payload": { "task_type": "text", "strategy": "weighted" }
+}
+```
+
+### DEFENSE — Behavioral Analysis
+```json
+{
+  "module": "defense",
+  "action": "behavioral_score",
+  "payload": { "entity_id": "user_123", "entity_type": "user" }
+}
+```
+
+### CORTEX — Workflow Engine
+```json
+{
+  "module": "cortex",
+  "action": "workflow_execute",
+  "payload": {
+    "workflow_id": "data-enrichment",
+    "context": { "userId": "123" }
+  }
+}
+```
+
+### SYSTEM — Dependency Graph
+```json
+{
+  "module": "system",
+  "action": "dependency_graph",
+  "payload": { "target": "brain" }
+}
+```
+
+### VISION — Alert Management
+```json
+{
+  "module": "vision",
+  "action": "alert_create",
+  "payload": {
+    "severity": "warning",
+    "message": "High memory usage",
+    "source": "brain"
+  }
+}
+```
 
 ---
 

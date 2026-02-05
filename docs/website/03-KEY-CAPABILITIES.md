@@ -1,6 +1,6 @@
 # Key Capabilities
 
-**What CMPSBL® Does — Technical Overview v7.0.0**
+**What CMPSBL® Does — Technical Overview v7.5.0**
 
 ---
 
@@ -17,11 +17,11 @@
 | Intent Parsing | DECODE | Natural language interpretation, command routing |
 | Orchestration | CORTEX | Policy intent, autonomous decision-making |
 | Accessibility | INCLUSIVE | WCAG scanning, auto-repair, compliance reporting |
-| **Cross-Module Synergies** | CORTEX | **120 pipelines, 98 executors for multi-module coordination** |
+| **Cross-Module Synergies** | CORTEX | **120 pipelines, 98 executors, 156 deployed actions** |
 
 ---
 
-## Cross-Module Synergy Engine (v7.0.0)
+## Cross-Module Synergy Engine (v7.5.0)
 
 ### The Problem
 Traditional AI systems operate as isolated modules. No coordination, no emergent intelligence.
@@ -47,6 +47,31 @@ Traditional AI systems operate as isolated modules. No coordination, no emergent
 | `full-stack-evolution` | CORTEX + MODERNIZER + BRAIN + VISION + DEFENSE | Autonomous code evolution with security validation |
 | `zero-day-defense` | DEFENSE + BRAIN + VISION + CORTEX | Proactive threat detection and response |
 | `cognitive-state-preservation` | BRAIN + DREAM + VISION + CORTEX | Memory state backup with cognitive continuity |
+
+---
+
+## v7.5.0 New Capabilities
+
+### Production-Grade Additions (42 New Functions)
+
+| Category | New Capabilities | Module |
+|----------|------------------|--------|
+| **Query Optimization** | LRU caching, query planning, execution optimization | BRAIN |
+| **Memory Consolidation** | Similarity grouping, merge detection, importance scoring | BRAIN |
+| **Load Balancing** | Weighted routing, slot management, request queuing | NEXUS |
+| **Behavioral Analysis** | Trust scoring, pattern detection, threat correlation | DEFENSE |
+| **Incident Response** | Workflow automation, escalation, resolution tracking | DEFENSE |
+| **Alert Management** | Deduplication, escalation chains, intelligent routing | VISION |
+| **Dependency Graphs** | Runtime dependency tracking, impact analysis | SYSTEM |
+| **Resource Monitoring** | Memory, CPU, network metrics aggregation | SYSTEM |
+| **Workflow Engine** | Multi-step pipelines, cross-module orchestration | CORTEX |
+| **Permission Graphs** | Hierarchical RBAC, inheritance resolution | ACCESS |
+| **Context Engine** | Multi-turn memory, session state management | DECODE |
+| **Creative Synthesis** | Pattern mutation, novel insight generation | DREAM |
+| **Event Analytics** | Stream analysis, pattern detection, correlations | RIPPLE |
+| **Transform Pipelines** | Data mapping, schema conversion, validation | INTEGRATION |
+| **Adaptive Interfaces** | Dynamic UI adaptation, accessibility profiling | INCLUSIVE |
+| **Impact Analysis** | Change prediction, breaking change detection | MODERNIZER |
 
 ### Terminal Commands
 
@@ -280,4 +305,4 @@ system.health
 
 ---
 
-*CMPSBL® v7.4.0 — Cognitive Infrastructure for Production AI*
+*CMPSBL® v7.5.0 — Cognitive Infrastructure for Production AI*

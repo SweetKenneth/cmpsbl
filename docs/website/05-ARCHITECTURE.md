@@ -1,6 +1,6 @@
 # Architecture Overview
 
-**Technical Foundation of CMPSBL®**
+**Technical Foundation of CMPSBL® v7.5.0**
 
 ---
 
@@ -14,36 +14,63 @@ CMPSBL® is built on three core principles:
 
 ---
 
-## The 14-Module Architecture
+## The 14-Module Architecture (v7.5.0)
+
+**156 deployed actions** across all modules:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                    ORCHESTRATOR LAYER                        │
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │  CORTEX (Policy)  │  INTEGRATION (External APIs)        ││
+│  │  CORTEX (Workflow Engine)  │  INTEGRATION (Transform)   ││
 │  └─────────────────────────────────────────────────────────┘│
 ├─────────────────────────────────────────────────────────────┤
 │                      ADMIN LAYER                             │
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │  SYSTEM (Health)  │  MODERNIZER  │  INCLUSIVE (A11y)    ││
+│  │  SYSTEM (Deps/Audit) │ MODERNIZER (Impact) │ INCLUSIVE  ││
 │  └─────────────────────────────────────────────────────────┘│
 ├─────────────────────────────────────────────────────────────┤
 │                   OPERATIONS LAYER                           │
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │  DEFENSE  │  NEXUS (AI)  │  VISION (Observability)      ││
+│  │  DEFENSE (Behavioral) │ NEXUS (LB) │ VISION (Alerts)    ││
 │  └─────────────────────────────────────────────────────────┘│
 ├─────────────────────────────────────────────────────────────┤
 │                   COGNITIVE LAYER                            │
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │  BRAIN (Memory)  │  DECODE (NLP)  │  DREAM (Learning)   ││
+│  │  BRAIN (Query Opt) │ DECODE (Context) │ DREAM (Synth)   ││
 │  └─────────────────────────────────────────────────────────┘│
 ├─────────────────────────────────────────────────────────────┤
 │                    KERNEL LAYER                              │
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │  CORE (Config)  │  RIPPLE (Events)  │  ACCESS (Auth)    ││
+│  │  CORE (Health Agg) │ RIPPLE (Analytics) │ ACCESS (RBAC) ││
 │  └─────────────────────────────────────────────────────────┘│
 └─────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## v7.5.0 Architecture Enhancements
+
+### New Subsystems (42 Functions)
+
+| Module | New Subsystem | Purpose |
+|--------|---------------|---------|
+| BRAIN | Query Optimizer | LRU caching, query planning |
+| BRAIN | Consolidation Engine | Similarity grouping, merge detection |
+| NEXUS | Load Balancer | Weighted routing, slot management |
+| DEFENSE | Behavioral Analysis | Trust scoring, pattern detection |
+| DEFENSE | Incident Response | Workflow automation, escalation |
+| SYSTEM | Dependency Graph | Runtime dependency tracking |
+| SYSTEM | Resource Monitor | Memory, CPU, network metrics |
+| VISION | Alert Manager | Deduplication, escalation chains |
+| CORTEX | Workflow Engine | Multi-step cross-module pipelines |
+| ACCESS | Permission Graph | Hierarchical RBAC with inheritance |
+| DECODE | Context Engine | Multi-turn memory, session state |
+| DREAM | Creative Synthesis | Pattern mutation, insight generation |
+| RIPPLE | Event Analytics | Stream analysis, correlations |
+| INTEGRATION | Transform Pipeline | Data mapping, schema conversion |
+| INCLUSIVE | Adaptive Interface | Dynamic UI adaptation |
+| MODERNIZER | Impact Analysis | Change prediction, breaking changes |
 
 ---
 
@@ -252,4 +279,4 @@ ripple.on('brain.memory.created', (event) => {
 
 ---
 
-*CMPSBL® — Architecture for the Cognitive Era*
+*CMPSBL® v7.5.0 — Architecture for the Cognitive Era*
