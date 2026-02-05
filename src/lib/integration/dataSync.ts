@@ -434,18 +434,22 @@ async function createTargetRecord(
     
     if (config.target.type === 'table' && config.target.table_name) {
       // Insert into target table
-      const { error } = await supabase
+      // Use type assertion for dynamic table names
+      const { error } = await (supabase as unknown as {
+        from: (table: string) => { insert: (data: unknown) => Promise<{ error: unknown }> }
+      })
         .from(config.target.table_name)
         .insert(mapped);
       
       if (error) {
+        const errObj = error as { message?: string };
         return {
           success: false,
           error: {
             record_id: String(record[config.source.id_field]),
-            error_type: 'database',
-            message: error.message,
-            recoverable: !error.message.includes('duplicate'),
+            error_type: 'connection',
+            message: errObj.message || 'Database error',
+            recoverable: !(errObj.message || '').includes('duplicate'),
           },
         };
       }
