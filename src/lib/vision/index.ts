@@ -65,6 +65,9 @@ export {
 
 // SLA monitoring & capacity forecasting
 export * from './slaMonitoring';
+ 
+ // Alert management
+ export * from './alertManagement';
 
 // Vision module version
 export const VISION_VERSION = '2.0.0';

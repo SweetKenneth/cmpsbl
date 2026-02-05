@@ -56,3 +56,6 @@ export * from './threatIntelligence';
 
 // Incident response
 export * from './incidentResponse';
+ 
+ // Behavioral analysis
+ export * from './behavioralAnalysis';

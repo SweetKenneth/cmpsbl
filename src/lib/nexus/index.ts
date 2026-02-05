@@ -65,6 +65,9 @@ export * from './costEstimation';
 
 // Batch routing & failover
 export * from './batchRouting';
+ 
+ // Load balancer
+ export * from './loadBalancer';
 
 // Version info
 export const NEXUS_VERSION = '7.0.0';

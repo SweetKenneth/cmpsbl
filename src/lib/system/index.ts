@@ -126,3 +126,12 @@ export function getSystemState(): SystemState {
 export function updateSystemState(updates: Partial<SystemState>): void {
   systemState = { ...systemState, ...updates };
 }
+ 
+ // Resource monitoring
+ export * from './resourceMonitoring';
+ 
+ // Audit logging
+ export * from './auditLogging';
+ 
+ // Dependency graph
+ export * from './dependencyGraph';

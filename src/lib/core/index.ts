@@ -345,3 +345,12 @@ export function initModule(module: SubstrateModuleName): void {
   markModuleBooted(module);
   console.log(`[CORE] Module ${module} initialized`);
 }
+ 
+ // Module lifecycle management
+ export * from './moduleLifecycle';
+ 
+ // Configuration management
+ export * from './configManagement';
+ 
+ // Health aggregator
+ export * from './healthAggregator';

@@ -45,6 +45,9 @@ export {
 
 // Insight extraction & knowledge synthesis
 export * from './insightExtraction';
+ 
+ // Creative synthesis
+ export * from './creativeSynthesis';
 
 // Version info
 export const DREAM_VERSION = '7.0.0';

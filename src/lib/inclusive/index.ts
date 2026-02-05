@@ -22,3 +22,9 @@ export * from './profile';
 export * from './report';
 export * from './types';
 export * from './glue';
+ 
+ // Compliance automation
+ export * from './complianceAutomation';
+ 
+ // Adaptive interface
+ export * from './adaptiveInterface';

@@ -395,3 +395,6 @@ export function getDecodeStatus(): DecodeModuleStatus {
     entity_types: Object.keys(ENTITY_PATTERNS),
   };
 }
+ 
+ // Context engine
+ export * from './contextEngine';
