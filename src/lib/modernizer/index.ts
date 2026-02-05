@@ -402,7 +402,8 @@ export async function getModernizerStatus(): Promise<ModernizerStatus> {
  export {
    predictImpact,
    validateImpact,
-   getImpactHistory,
+  getImpactStats,
+  generateImpactReport,
    type ImpactPrediction,
    type BreakingChange as ImpactBreakingChange,
    type ImpactValidation,
