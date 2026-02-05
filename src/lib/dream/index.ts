@@ -52,6 +52,9 @@ export * from './insightExtraction';
 // Pattern mutation
 export * from './patternMutation';
 
+// Insight generator
+export * from './insightGenerator';
+
 // Version info
 export const DREAM_VERSION = '7.0.0';
 export const DREAM_CODENAME = 'Nocturne';

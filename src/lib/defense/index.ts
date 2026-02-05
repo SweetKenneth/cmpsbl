@@ -59,3 +59,6 @@ export * from './incidentResponse';
  
  // Behavioral analysis
  export * from './behavioralAnalysis';
+
+// Anomaly detection
+export * from './anomalyDetector';

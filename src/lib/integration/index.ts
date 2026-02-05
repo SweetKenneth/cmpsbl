@@ -465,3 +465,6 @@ export async function getIntegrationStatus(): Promise<IntegrationStatus> {
  
  // Transform pipeline
  export * from './transformPipeline';
+
+// Health aggregator
+export * from './healthAggregator';

@@ -69,6 +69,9 @@ export * from './slaMonitoring';
  // Alert management
  export * from './alertManagement';
 
+// Predictive alerts
+export * from './predictiveAlerts';
+
 // Vision module version
 export const VISION_VERSION = '2.0.0';
 export const VISION_CODENAME = 'Vee';

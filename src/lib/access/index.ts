@@ -481,7 +481,13 @@ export async function getUserRoles(): Promise<string[]> {
 
 // ============ Module Metadata ============
 
-export const ACCESS_VERSION = '7.0.0';
+// Permission optimizer
+export * from './permissionOptimizer';
+
+// Session manager
+export * from './sessionManager';
+
+export const ACCESS_VERSION = '7.5.0';
 export const ACCESS_CODENAME = 'Gatekeeper';
 
 export interface AccessModuleStatus {

@@ -103,6 +103,9 @@ export {
   type LoadBalancerConfig as NexusLoadBalancerConfig,
 } from './loadBalancer';
 
+// Circuit breaker
+export * from './circuitBreaker';
+
 // Version info
 export const NEXUS_VERSION = '7.0.0';
 export const NEXUS_CODENAME = 'Router';
