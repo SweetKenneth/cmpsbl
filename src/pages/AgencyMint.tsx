@@ -94,7 +94,7 @@ export default function AgencyMint() {
       />
 
       {/* Header */}
-      <div className="border-b border-border/40 bg-black/60 backdrop-blur-md sticky top-0 z-50">
+      <div className="border-b border-border/40 bg-background sticky top-0 z-50">
         <div className="container max-w-6xl mx-auto px-4">
           <div className="h-14 flex items-center justify-between">
             <div className="flex items-center gap-4">
