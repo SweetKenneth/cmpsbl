@@ -28,18 +28,18 @@ export const MODULE_VERSIONS = {
 
 // Control plane versions
 export const CONTROL_PLANE_VERSIONS = {
-  atlas: { version: '7.3.0', codename: 'Prometheus', description: 'Centralized Control Plane' },
+  atlas: { version: '7.5.0', codename: 'Prometheus', description: 'Centralized Control Plane' },
   seba: { version: '1.1.0', codename: 'Autonomy', description: 'Self-Evolving Bounded Agent' },
   encoded: { version: '2.0.0', codename: 'Genesis', description: 'Implementation Executor' },
-  clm: { version: '7.0.0', codename: 'Perpetual', description: 'Constant Learning Mode' },
+  clm: { version: '7.5.0', codename: 'Perpetual', description: 'Constant Learning Mode' },
 } as const;
 
 // Synergy Engine version
 export const SYNERGY_VERSION = {
   version: '7.5.0',
-  pipelines: 120,
-  executors: 98,
-  stierPipelines: 22,
+  pipelines: 130,
+  executors: 108,
+  stierPipelines: 32,
 } as const;
 
 // Substrate version (SYNERGY Epoch)
