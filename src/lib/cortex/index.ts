@@ -98,6 +98,9 @@ export async function initializeCortex(): Promise<{
     worldModelVersion: cortexState.worldModelVersion,
   };
 }
+ 
+ // Workflow engine
+ export * from './workflowEngine';
 
 /**
  * Get module health matrix

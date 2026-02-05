@@ -93,6 +93,9 @@ export * from './consolidation';
 
 // Re-export batch operations
 export * from './batchOperations';
+ 
+ // Re-export query optimizer
+ export * from './queryOptimizer';
 
 import { supabase } from '@/integrations/supabase/client';
 import type { TierStats, Memory } from './memoryTiering';

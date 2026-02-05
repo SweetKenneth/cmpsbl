@@ -429,3 +429,6 @@ export const RIPPLE_CODENAME = 'Cascade';
 
 // Batch events & replay
 export * from './batchEvents';
+ 
+ // Event analytics
+ export * from './eventAnalytics';

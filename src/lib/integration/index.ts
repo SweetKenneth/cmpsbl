@@ -454,4 +454,13 @@ export async function getIntegrationStatus(): Promise<IntegrationStatus> {
       categories: [],
     };
   }
+ 
+ // Webhook management
+ export * from './webhookManagement';
+ 
+ // Data sync
+ export * from './dataSync';
+ 
+ // Transform pipeline
+ export * from './transformPipeline';
 }

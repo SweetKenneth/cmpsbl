@@ -523,3 +523,12 @@ export async function getAccessStatus(): Promise<AccessModuleStatus> {
     roles,
   };
 }
+ 
+ // Permission graph
+ export * from './permissionGraph';
+ 
+ // Quota enforcement
+ export * from './quotaEnforcement';
+ 
+ // Session management
+ export * from './sessionManagement';
