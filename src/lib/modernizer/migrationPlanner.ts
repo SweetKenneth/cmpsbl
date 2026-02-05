@@ -163,8 +163,47 @@ export function getBreakingChanges(
   fromVersion: string,
   toVersion: string
 ): BreakingChange[] {
-  // In production, would fetch from changelog or breaking changes API
-  // Returning simulated data
+  // Known breaking changes for common packages
+  const knownBreakingChanges: Record<string, BreakingChange[]> = {
+    'react': [
+      { type: 'api', description: 'Concurrent rendering changes', migration_guide: 'Review concurrent mode docs', effort_hours: 2 },
+    ],
+    'react-router-dom': [
+      { type: 'api', description: 'Route component API changed', migration_guide: 'Use Routes instead of Switch', effort_hours: 4 },
+      { type: 'deprecation', description: 'useHistory replaced with useNavigate', migration_guide: 'Replace all useHistory calls', effort_hours: 2 },
+    ],
+    '@tanstack/react-query': [
+      { type: 'api', description: 'useQuery signature changed', migration_guide: 'Update to object syntax', effort_hours: 3 },
+    ],
+    'tailwindcss': [
+      { type: 'config', description: 'Config file format updated', migration_guide: 'Run npx tailwindcss migrate', effort_hours: 1 },
+    ],
+    'vite': [
+      { type: 'config', description: 'Plugin API changes', migration_guide: 'Update vite.config.ts', effort_hours: 1 },
+    ],
+    'typescript': [
+      { type: 'behavior', description: 'Stricter type checking', migration_guide: 'Fix new type errors', effort_hours: 4 },
+    ],
+  };
+  
+  // Check for major version bump
+  const fromMajor = parseInt(fromVersion.split('.')[0], 10);
+  const toMajor = parseInt(toVersion.split('.')[0], 10);
+  
+  if (toMajor > fromMajor && knownBreakingChanges[packageName]) {
+    return knownBreakingChanges[packageName];
+  }
+  
+  // Generate generic breaking change for major version bumps
+  if (toMajor > fromMajor) {
+    return [{
+      type: 'api',
+      description: `Major version upgrade from v${fromMajor} to v${toMajor}`,
+      migration_guide: 'Review package changelog',
+      effort_hours: 2,
+    }];
+  }
+  
   return [];
 }
 

@@ -383,14 +383,43 @@ export function getRecordHistory(configId: string, recordId: string): ChangeLog[
 
 async function fetchSourceData(endpoint: SyncEndpoint): Promise<Record<string, unknown>[]> {
   if (endpoint.type === 'table' && endpoint.table_name) {
-    // Return empty - actual implementation would query specific tables
-    return [];
+    try {
+      // Query the specified table with pagination
+      const { data, error } = await supabase
+        .from(endpoint.table_name)
+        .select('*')
+        .limit(1000);
+      
+      if (error) {
+        console.error(`[DataSync] Failed to fetch from ${endpoint.table_name}:`, error);
+        return [];
+      }
+      
+      return (data || []) as Record<string, unknown>[];
+    } catch (err) {
+      console.error('[DataSync] Source fetch error:', err);
+      return [];
+    }
   }
+  
+  // Handle API endpoint type
+  if (endpoint.type === 'api' && endpoint.connection_id) {
+    try {
+      // Would call external API via connection
+      console.log(`[DataSync] API sync not yet implemented for ${endpoint.connection_id}`);
+      return [];
+    } catch (err) {
+      console.error('[DataSync] API fetch error:', err);
+      return [];
+    }
+  }
+  
   return [];
 }
 
 async function fetchTargetData(endpoint: SyncEndpoint): Promise<Record<string, unknown>[]> {
-  return fetchSourceData(endpoint); // Same logic for now
+  // Reuse source fetch logic for same table types
+  return fetchSourceData(endpoint);
 }
 
 async function createTargetRecord(
@@ -401,7 +430,22 @@ async function createTargetRecord(
     const mapped = applyFieldMapping(record, config.field_mapping);
     
     if (config.target.type === 'table' && config.target.table_name) {
-      // Would insert into target table
+      // Insert into target table
+      const { error } = await supabase
+        .from(config.target.table_name)
+        .insert(mapped);
+      
+      if (error) {
+        return {
+          success: false,
+          error: {
+            record_id: String(record[config.source.id_field]),
+            error_type: 'database',
+            message: error.message,
+            recoverable: !error.message.includes('duplicate'),
+          },
+        };
+      }
     }
     
     return { success: true };
