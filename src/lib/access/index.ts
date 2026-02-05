@@ -484,8 +484,20 @@ export async function getUserRoles(): Promise<string[]> {
 // Permission optimizer
 export * from './permissionOptimizer';
 
-// Session manager
-export * from './sessionManager';
+// Session manager (advanced session features)
+export {
+  type SessionConfig,
+  type ManagedSession,
+  type SessionMetrics,
+  getSessionConfig,
+  updateSessionConfig,
+  createManagedSession,
+  getManagedSession,
+  validateManagedSession,
+  terminateManagedSession,
+  getSessionMetrics,
+  cleanupExpiredSessions,
+} from './sessionManager';
 
 export const ACCESS_VERSION = '7.5.0';
 export const ACCESS_CODENAME = 'Gatekeeper';

@@ -53,7 +53,18 @@ export * from './insightExtraction';
 export * from './patternMutation';
 
 // Insight generator
-export * from './insightGenerator';
+export {
+  type InsightType,
+  type InsightConfidence,
+  type GeneratedInsight,
+  type InsightGeneratorConfig,
+  generateInsights,
+  getCachedInsights,
+  acknowledgeInsight as acknowledgeGeneratedInsight,
+  getInsightStats as getGeneratedInsightStats,
+  updateInsightConfig,
+  clearInsightCache,
+} from './insightGenerator';
 
 // Version info
 export const DREAM_VERSION = '7.0.0';

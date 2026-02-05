@@ -61,4 +61,18 @@ export * from './incidentResponse';
  export * from './behavioralAnalysis';
 
 // Anomaly detection
-export * from './anomalyDetector';
+export {
+  type AnomalySignal,
+  type AnomalyDetectorConfig,
+  type DetectionResult,
+  type AnomalySeverity as SignalSeverity,
+  detectRateSpike,
+  detectTemporalAnomaly,
+  detectBehavioralAnomaly,
+  analyzeForAnomalies,
+  getActiveSignals,
+  updateBaseline,
+  updateAnomalyConfig,
+  clearSignals,
+  getAnomalyStats,
+} from './anomalyDetector';
