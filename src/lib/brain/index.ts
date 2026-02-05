@@ -97,6 +97,9 @@ export * from './batchOperations';
  // Re-export query optimizer
  export * from './queryOptimizer';
 
+// Re-export memory index
+export * from './memoryIndex';
+
 import { supabase } from '@/integrations/supabase/client';
 import type { TierStats, Memory } from './memoryTiering';
 import { getTierStats } from './memoryTiering';

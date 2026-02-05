@@ -290,9 +290,88 @@ async function storePatterns(patterns: MemoryPattern[]): Promise<void> {
  * Consolidate related memories into summary memories
  */
 async function consolidateRelatedMemories(threshold: number): Promise<number> {
-  // For now, return 0 as full consolidation requires LLM summarization
-  // This is a placeholder for the actual implementation
-  return 0;
+  let consolidated = 0;
+  
+  try {
+    // Fetch memories grouped by context
+    const { data: memories } = await supabase
+      .from('brain_memory_warm')
+      .select('id, content, context, value_score, created_at')
+      .order('context')
+      .limit(500);
+    
+    if (!memories || memories.length === 0) return 0;
+    
+    // Group by context
+    const contextGroups = new Map<string, typeof memories>();
+    for (const memory of memories) {
+      const group = contextGroups.get(memory.context) || [];
+      group.push(memory);
+      contextGroups.set(memory.context, group);
+    }
+    
+    // Process groups with multiple similar entries
+    for (const [context, group] of contextGroups.entries()) {
+      if (group.length < 3) continue;
+      
+      // Find clusters of similar content
+      const clusters: typeof memories[] = [];
+      const processed = new Set<string>();
+      
+      for (const memory of group) {
+        if (processed.has(memory.id)) continue;
+        
+        const cluster = group.filter(m => {
+          if (processed.has(m.id) || m.id === memory.id) return false;
+          return calculateContentSimilarity(memory.content, m.content) >= threshold;
+        });
+        
+        if (cluster.length > 0) {
+          cluster.push(memory);
+          clusters.push(cluster);
+          cluster.forEach(m => processed.add(m.id));
+        }
+      }
+      
+      // Consolidate each cluster into a summary
+      for (const cluster of clusters) {
+        if (cluster.length < 2) continue;
+        
+        // Create consolidated summary
+        const sortedByValue = [...cluster].sort((a, b) => 
+          (b.value_score ?? 0) - (a.value_score ?? 0)
+        );
+        
+        const primary = sortedByValue[0];
+        const secondaryIds = sortedByValue.slice(1).map(m => m.id);
+        
+        // Update primary with consolidated content
+        const consolidatedContent = `[Consolidated from ${cluster.length} memories]\n\n${primary.content}\n\n---\nRelated: ${sortedByValue.slice(1, 3).map(m => m.content.substring(0, 50)).join(' | ')}`;
+        
+        const { error: updateError } = await supabase
+          .from('brain_memory_warm')
+          .update({
+            content: consolidatedContent,
+            value_score: Math.min(1, (primary.value_score ?? 0.5) + 0.1),
+          })
+          .eq('id', primary.id);
+        
+        if (!updateError) {
+          // Mark secondary memories as consolidated (lower value)
+          await supabase
+            .from('brain_memory_warm')
+            .update({ value_score: 0.1 })
+            .in('id', secondaryIds);
+          
+          consolidated += cluster.length;
+        }
+      }
+    }
+  } catch (error) {
+    console.error('[Consolidation] Error consolidating memories:', error);
+  }
+  
+  return consolidated;
 }
 
 /**

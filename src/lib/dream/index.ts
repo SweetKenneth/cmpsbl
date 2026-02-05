@@ -49,6 +49,9 @@ export * from './insightExtraction';
  // Creative synthesis
  export * from './creativeSynthesis';
 
+// Pattern mutation
+export * from './patternMutation';
+
 // Version info
 export const DREAM_VERSION = '7.0.0';
 export const DREAM_CODENAME = 'Nocturne';

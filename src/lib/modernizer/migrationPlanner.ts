@@ -163,8 +163,52 @@ export function getBreakingChanges(
   fromVersion: string,
   toVersion: string
 ): BreakingChange[] {
-  // In production, would fetch from changelog or breaking changes API
-  // Returning simulated data
+  // Known breaking changes for common packages
+  const knownBreakingChanges: Record<string, Array<{version: string; desc: string; guide: string; apis: string[]}>> = {
+    'react': [
+      { version: '18.0.0', desc: 'Concurrent rendering changes', guide: 'Review concurrent mode docs', apis: ['render', 'ReactDOM'] },
+    ],
+    'react-router-dom': [
+      { version: '6.0.0', desc: 'Route component API changed', guide: 'Use Routes instead of Switch', apis: ['Switch', 'Route'] },
+      { version: '6.0.0', desc: 'useHistory replaced with useNavigate', guide: 'Replace all useHistory calls', apis: ['useHistory'] },
+    ],
+    '@tanstack/react-query': [
+      { version: '5.0.0', desc: 'useQuery signature changed', guide: 'Update to object syntax', apis: ['useQuery', 'useMutation'] },
+    ],
+    'tailwindcss': [
+      { version: '4.0.0', desc: 'Config file format updated', guide: 'Run npx tailwindcss migrate', apis: ['tailwind.config'] },
+    ],
+    'vite': [
+      { version: '5.0.0', desc: 'Plugin API changes', guide: 'Update vite.config.ts', apis: ['plugins'] },
+    ],
+    'typescript': [
+      { version: '5.0.0', desc: 'Stricter type checking', guide: 'Fix new type errors', apis: ['any', 'unknown'] },
+    ],
+  };
+  
+  // Check for major version bump
+  const fromMajor = parseInt(fromVersion.split('.')[0], 10);
+  const toMajor = parseInt(toVersion.split('.')[0], 10);
+  
+  if (toMajor > fromMajor && knownBreakingChanges[packageName]) {
+    return knownBreakingChanges[packageName].map(bc => ({
+      version: bc.version,
+      description: bc.desc,
+      migration_guide: bc.guide,
+      affected_apis: bc.apis,
+    }));
+  }
+  
+  // Generate generic breaking change for major version bumps
+  if (toMajor > fromMajor) {
+    return [{
+      version: toVersion,
+      description: `Major version upgrade from v${fromMajor} to v${toMajor}`,
+      migration_guide: 'Review package changelog',
+      affected_apis: [],
+    }];
+  }
+  
   return [];
 }
 

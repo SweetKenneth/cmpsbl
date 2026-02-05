@@ -63,6 +63,19 @@ export {
 // Cost estimation & budget governance
 export * from './costEstimation';
 
+// Budget governance
+export {
+  canSpend,
+  recordSpend,
+  updateBudgetConfig,
+  getBudgetConfig,
+  resetDailySpending,
+  type BudgetConfig as NexusBudgetConfig,
+  type BudgetStatus as NexusBudgetStatus,
+  type BudgetAlert,
+} from './budgetGovernance';
+export { getBudgetStatus as getNexusBudgetStatus } from './budgetGovernance';
+
 // Batch routing & failover
 export {
   processBatch,
