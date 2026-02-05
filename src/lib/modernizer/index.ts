@@ -125,15 +125,6 @@ export async function runScan(options?: {
     };
   }
 }
- 
- // Code analysis
- export * from './codeAnalysis';
- 
- // Migration planner
- export * from './migrationPlanner';
- 
- // Impact analysis
- export * from './impactAnalysis';
 
 /**
  * Get pending evolution proposals
@@ -381,3 +372,39 @@ export async function getModernizerStatus(): Promise<ModernizerStatus> {
     };
   }
 }
+ 
+ // Code analysis
+ export * from './codeAnalysis';
+ 
+ // Migration planner - explicit re-exports to avoid BreakingChange conflict
+ export {
+   analyzeDependencies,
+   checkForUpdates,
+   getBreakingChanges,
+   createMigrationPlan,
+   getMigrationPlan,
+   getAllMigrationPlans,
+   simulateUpgrade,
+   generateCodemod,
+   applyCodemod,
+   type DependencyInfo,
+   type MigrationPlan,
+   type DependencyMigration,
+   type MigrationPhase,
+   type MigrationTask,
+   type UpgradeSimulation,
+   type SimulationIssue,
+   type TypeChange,
+   type BreakingChange as MigrationBreakingChange,
+ } from './migrationPlanner';
+ 
+ // Impact analysis - explicit re-exports
+ export {
+   predictImpact,
+   validateImpact,
+  getImpactStats,
+  generateImpactReport,
+   type ImpactPrediction,
+   type BreakingChange as ImpactBreakingChange,
+   type ImpactValidation,
+ } from './impactAnalysis';

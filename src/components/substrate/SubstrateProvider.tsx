@@ -2,12 +2,14 @@
  * promptfluid® Substrate Provider
  * v6.0.0 — Cognitive Orchestration Substrate (14-Module Architecture)
  * 
- * Performance: Lazy-loads substrate module, uses requestIdleCallback
+ * Performance: Lazy-loads substrate module, uses requestIdleCallback.
+ * Stability: Single initialization, no polling loops during idle, 
+ *            proper cleanup on unmount.
  * Full-system audit completed: 2026-01-27
  * Wraps the application with substrate context and auto-initialization
  */
 
-import React, { createContext, useContext, useEffect, useState, ReactNode, useCallback, useRef } from 'react';
+import { createContext, useContext, useEffect, useState, ReactNode, useCallback, useRef } from 'react';
 import type { SubstrateModule } from '@/lib/substrate';
 
 interface ModuleStatus {
@@ -81,6 +83,8 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
   
   const substrateRef = useRef<typeof import('@/lib/substrate').substrate | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const mountedRef = useRef(true);
+  const initializedRef = useRef(false);
 
   const getSubstrate = useCallback(async () => {
     if (!substrateRef.current) {
@@ -109,6 +113,9 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
   }, [getSubstrate]);
 
   const refresh = useCallback(async () => {
+    // Don't refresh if unmounted
+    if (!mountedRef.current) return;
+    
     // Check all 14 substrate modules (13 core + cortex orchestrator)
     const moduleList: SubstrateModule[] = ['core', 'ripple', 'access', 'brain', 'decode', 'system', 'inclusive', 'defense', 'nexus', 'vision', 'dream', 'modernizer', 'integration', 'cortex'];
     const results = await Promise.all(moduleList.map(checkModule));
@@ -118,18 +125,34 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
       return acc;
     }, {} as Record<SubstrateModule, ModuleStatus>);
 
-    setModules(prev => ({ ...prev, ...newModules }));
-    setInitialized(true);
+    // Only update state if still mounted
+    if (mountedRef.current) {
+      setModules(prev => ({ ...prev, ...newModules }));
+      setInitialized(true);
+    }
   }, [checkModule]);
 
   useEffect(() => {
     if (!autoInit) return;
     
+    // Prevent double-initialization in strict mode
+    if (initializedRef.current) return;
+    initializedRef.current = true;
+    mountedRef.current = true;
+    
     // Defer initialization to avoid blocking main thread during initial render
     // Increased interval to 5 minutes to reduce polling overhead and improve stability
     const startRefreshInterval = () => {
+      if (!mountedRef.current) return;
       refresh();
-      intervalRef.current = setInterval(refresh, 300000); // Refresh every 5 minutes
+      // Only set up interval if tab is visible
+      if (document.visibilityState === 'visible') {
+        intervalRef.current = setInterval(() => {
+          // Skip refresh if tab is hidden
+          if (document.visibilityState !== 'visible') return;
+          refresh();
+        }, 300000); // Refresh every 5 minutes
+      }
     };
     
     // Use requestIdleCallback if available, otherwise use setTimeout
@@ -166,6 +189,15 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
         cleanup.fn();
       };
     }
+    
+    // Cleanup function
+    return () => {
+      mountedRef.current = false;
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
   }, [autoInit, refresh]);
 
   // Calculate overall health from all initialized modules
