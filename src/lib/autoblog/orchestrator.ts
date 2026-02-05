@@ -11,6 +11,7 @@ import {
   getDraft,
   recordRun
 } from './store';
+import { supabase } from '@/integrations/supabase/client';
 import { guardAutoblogAction } from './policy';
 import { shouldPostNow, computeDedupeKey } from './rules';
 import { checkAutoblogCircuit, reportSuccess, reportFailure } from './circuit';
