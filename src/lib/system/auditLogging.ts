@@ -369,13 +369,13 @@ export function getEntriesByPeriod(
 /**
  * Export audit log for compliance
  */
-export function exportAuditLog(query: AuditQuery): string {
-  const entries = queryAuditLog(query);
-  
-  return JSON.stringify({
+ export async function exportAuditLog(query: AuditQuery): Promise<string> {
+   const entries = await queryAuditLog(query);
+   
+   return JSON.stringify({
     exported_at: new Date().toISOString(),
     query,
-    entries_count: entries.length,
+     entries_count: entries.length,
     entries,
   }, null, 2);
 }
