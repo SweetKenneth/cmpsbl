@@ -385,7 +385,10 @@ async function fetchSourceData(endpoint: SyncEndpoint): Promise<Record<string, u
   if (endpoint.type === 'table' && endpoint.table_name) {
     try {
       // Query the specified table with pagination
-      const { data, error } = await supabase
+      // Use type assertion for dynamic table names
+      const { data, error } = await (supabase as unknown as {
+        from: (table: string) => { select: (cols: string) => { limit: (n: number) => Promise<{ data: unknown[]; error: unknown }> } }
+      })
         .from(endpoint.table_name)
         .select('*')
         .limit(1000);
