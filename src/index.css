@@ -34,7 +34,7 @@ All colors MUST be HSL.
     --input: 220 10% 90%;
     --ring: 210 60% 45%;
     --radius: 0.5rem;
-    --sidebar-background: 220 15% 96%;
+    --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 220 15% 25%;
     --sidebar-primary: 210 60% 45%;
     --sidebar-primary-foreground: 0 0% 100%;
