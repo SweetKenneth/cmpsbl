@@ -358,8 +358,14 @@
        };
      } else {
        // Fallback: invoke via substrate.invoke if available
-       if (typeof substrate.invoke === 'function') {
-         const result = await substrate.invoke(module, action, payload);
+       // Try calling via core.invoke pattern
+       if (typeof (substrate as Record<string, unknown>).invoke === 'function') {
+         const invokeMethod = (substrate as Record<string, unknown>).invoke as (
+           mod: string, 
+           act: string, 
+           pay: Record<string, unknown>
+         ) => Promise<unknown>;
+         const result = await invokeMethod(module, action, payload);
          return {
            module,
            action,

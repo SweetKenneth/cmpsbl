@@ -303,12 +303,17 @@ Requirements:
 - End with actionable takeaways`;
 
         const response = await substrate.nexus.text(prompt);
+       
+        // Check for response content
+        const responseContent = (response as Record<string, unknown>)?.content || 
+                                (response as Record<string, unknown>)?.response ||
+                                (response as Record<string, unknown>)?.data;
         
-        if (response?.response) {
-          // Extract title from response or generate one
-          const lines = response.response.split('\n').filter((l: string) => l.trim());
+        if (responseContent && typeof responseContent === 'string') {
+          // Extract title from responseContent or generate one
+          const lines = responseContent.split('\n').filter((l: string) => l.trim());
           let title = topic || 'System Update';
-          let body = response.response;
+          let body = responseContent;
           
           // Check if first line is a title (starts with #)
           if (lines[0]?.startsWith('#')) {

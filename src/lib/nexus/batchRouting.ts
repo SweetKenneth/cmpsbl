@@ -274,19 +274,23 @@ async function simulateRequest(
   
   try {
     // Import the nexus router dynamically to avoid circular deps
-    const { routeToProvider } = await import('./core');
+    const { processAIRequest } = await import('./core');
     
     // Route the request through nexus
-    const result = await routeToProvider({
+    const result = await processAIRequest({
       prompt: request.prompt,
-      taskType: request.taskType,
-      preferredProvider: provider,
-      timeout: request.timeout || 30000,
+      type: request.taskType === 'text' ? 'generation' : 
+            request.taskType === 'code' ? 'generation' :
+            request.taskType === 'research' ? 'research' : 'generation',
+      priority: request.priority === 'critical' ? 'high' : 
+                request.priority === 'high' ? 'high' : 
+                request.priority === 'low' ? 'low' : 'medium',
+      context: { provider, timeout: request.timeout || 30000 },
     });
     
     return {
       provider,
-      response: result.response,
+      response: result.content,
       model: result.model,
       latency: Date.now() - startTime,
       timestamp: new Date().toISOString(),
