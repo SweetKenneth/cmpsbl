@@ -305,9 +305,8 @@ Requirements:
         const response = await substrate.nexus.text(prompt);
        
         // Check for response content
-        const responseContent = (response as Record<string, unknown>)?.content || 
-                                (response as Record<string, unknown>)?.response ||
-                                (response as Record<string, unknown>)?.data;
+        const respObj = response as unknown as Record<string, unknown>;
+        const responseContent = respObj?.content || respObj?.response || respObj?.data;
         
         if (responseContent && typeof responseContent === 'string') {
           // Extract title from responseContent or generate one

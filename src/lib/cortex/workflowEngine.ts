@@ -359,8 +359,9 @@
      } else {
        // Fallback: invoke via substrate.invoke if available
        // Try calling via core.invoke pattern
-       if (typeof (substrate as Record<string, unknown>).invoke === 'function') {
-         const invokeMethod = (substrate as Record<string, unknown>).invoke as (
+       const substrateAny = substrate as unknown as Record<string, unknown>;
+       if (typeof substrateAny.invoke === 'function') {
+         const invokeMethod = substrateAny.invoke as (
            mod: string, 
            act: string, 
            pay: Record<string, unknown>
