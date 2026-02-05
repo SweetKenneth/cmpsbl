@@ -448,10 +448,8 @@ export {
 export {
   recordEventForAnalytics,
   getEventAnalytics,
-  getDetectedPatterns,
-  getEventCorrelations,
-  getEventVelocity,
-  getAnomalies,
+  getEventPatterns,
+  findCorrelations,
   type EventAnalytics,
   type EventPattern,
   type EventCorrelation,

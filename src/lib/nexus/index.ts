@@ -75,14 +75,16 @@ export {
   type FailoverChain,
 } from './batchRouting';
  
-// Load balancer - explicitly export to avoid LoadBalancerConfig conflict
+// Load balancer
 export {
   registerProvider,
   unregisterProvider,
   getOptimalProvider,
   acquireSlot,
   releaseSlot,
-  getLoadBalancerStats,
+  getLoadBalancerStatus,
+  configureLoadBalancer,
+  drainRequests,
   type ProviderLoad,
   type BalancingStrategy,
   type LoadBalancerConfig as NexusLoadBalancerConfig,
