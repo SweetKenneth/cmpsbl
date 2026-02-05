@@ -144,4 +144,16 @@ export function updateSystemState(updates: Partial<SystemState>): void {
  } from './renderGuard';
 
 // Resource monitor
-export * from './resourceMonitor';
+export {
+  collectMetrics as collectResourceMetrics,
+  recordRequest as recordNetworkRequest,
+  checkAlerts as checkResourceAlerts,
+  getMetricsHistory as getResourceMetricsHistory,
+  getMetricsSummary as getResourceMetricsSummary,
+  type ResourceMetrics as SystemResourceMetrics,
+  type MemoryMetrics as SystemMemoryMetrics,
+  type PerformanceMetrics,
+  type NetworkMetrics,
+  type StorageMetrics as SystemStorageMetrics,
+  type ResourceAlert as SystemResourceAlert,
+} from './resourceMonitor';
