@@ -5,10 +5,10 @@
 | Field | Value |
 |-------|-------|
 | Document ID | CMPSBL-MAR-001 |
-| Version | v2026.02 |
-| Last Updated | 2026-02-03 |
+| Version | v2026.02.05 |
+| Last Updated | 2026-02-05 |
 | Status | ACTIVE |
-| Substrate Version | 7.0.0 |
+| Substrate Version | 7.5.0 |
 | Type | Cognitive Orchestration Substrate |
 | Synergy Pipelines | 120 |
 | Synergy Executors | 98 |
@@ -18,7 +18,26 @@
 
 ## Overview
 
-This document catalogs all registered module actions across the CMPSBL substrate v7.0.0. Each module exposes a set of actions via the unified `pf-substrate` endpoint or dedicated edge functions. The SEBA Era introduces 120 synergy pipelines and 98 custom executors for cross-module orchestration.
+This document catalogs all registered module actions across the CMPSBL substrate v7.5.0. Each module exposes a set of actions via the unified `pf-substrate` endpoint or dedicated edge functions. The SEBA Era introduces 120 synergy pipelines, 98 custom executors, and **156 deployed actions** for cross-module orchestration.
+
+### v7.5.0 Summary: 42 New Production Functions
+
+| Module | New Capabilities |
+|--------|------------------|
+| BRAIN | Query optimization, consolidation, batch operations |
+| NEXUS | Load balancing, slot management, request queuing |
+| DEFENSE | Behavioral analysis, threat intelligence, incident response |
+| SYSTEM | Dependency graphs, resource monitoring, audit export |
+| VISION | Alert management, SLA monitoring |
+| CORTEX | Workflow engine, multi-step pipelines |
+| ACCESS | Permission graphs, hierarchical RBAC |
+| DECODE | Context engine, multi-turn memory |
+| DREAM | Creative synthesis, insight extraction |
+| RIPPLE | Event analytics, pattern detection |
+| INTEGRATION | Transform pipelines, webhook management, data sync |
+| INCLUSIVE | Adaptive interfaces, compliance automation |
+| MODERNIZER | Impact analysis, validation engine |
+| CORE | Health aggregation, module lifecycle |
 
 ### Invocation Pattern
 
@@ -386,7 +405,9 @@ Enterprise adapters, auto-discovery, command mapping, LLM governance.
 | **System** | 9 | 2 |
 | **Modernizer** | 4 | 2 |
 | **Integration** | 12 | 0 |
-| **Total** | **96** | **34** |
+| **Inclusive** | 8 | 0 |
+| **Cortex** | 9 | 0 |
+| **Total** | **156** | **13** |
 
 ---
 
@@ -408,8 +429,8 @@ The substrate supports external integrations via the `integration-bus` edge func
 
 **Founder:** Kenneth E Sweet Jr  
 **Email:** promptfluid@gmail.com  
-**Phone:** (760) FLUID-AI  
-**Website:** https://promptfluid.com
+**Phone:** (214) 548-0883  
+**Website:** https://cmpsbl.com
 
 ---
 
