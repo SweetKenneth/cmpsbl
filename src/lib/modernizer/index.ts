@@ -125,15 +125,6 @@ export async function runScan(options?: {
     };
   }
 }
- 
- // Code analysis
- export * from './codeAnalysis';
- 
- // Migration planner
- export * from './migrationPlanner';
- 
- // Impact analysis
- export * from './impactAnalysis';
 
 /**
  * Get pending evolution proposals
