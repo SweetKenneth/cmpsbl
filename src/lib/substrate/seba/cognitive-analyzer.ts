@@ -490,13 +490,18 @@ export class CognitiveAnalyzer {
         .eq('table_schema', 'public')
         .limit(50);
 
-      // Check for exposed API keys in events
+      // Check for exposed API keys in events (using textSearch for JSONB)
       const { data: keyEvents } = await supabase
         .from('brain_events')
         .select('data')
-        .ilike('data', '%api_key%')
         .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString())
-        .limit(10);
+        .limit(50);
+      
+      // Filter client-side for API key references
+      const apiKeyEvents = keyEvents?.filter(e => {
+        const dataStr = JSON.stringify(e.data || {}).toLowerCase();
+        return dataStr.includes('api_key') || dataStr.includes('apikey') || dataStr.includes('secret');
+      }) || [];
 
       if (keyEvents && keyEvents.length > 0) {
         insights.push({
