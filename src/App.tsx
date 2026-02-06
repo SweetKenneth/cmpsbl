@@ -155,239 +155,229 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 const App = () => {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <SEOProvider>
-        <Suspense fallback={<PageLoader />}>
-          <SubstrateProvider autoInit={true}>
-            <TooltipProvider>
-              <ToasterComponents />
-              <BrowserRouter>
-                <ScrollToTop />
-                <AuthProvider>
-                  <Suspense fallback={<PageLoader />}>
-                    <Routes>
-                      {/* Core Public Pages */}
-                      <Route path="/" element={<Explore />} />
-                      <Route path="/decode" element={<Decode />} />
-                      <Route path="/feed-dream-eater" element={<FeedDreamEater />} />
-                      <Route path="/blog" element={<Blog />} />
-                      <Route path="/investors" element={<InvestorsPublic />} />
-                      <Route path="/substrate" element={<SubstrateDashboard />} />
-                      <Route path="/os" element={<SubstrateOS />} />
-                      <Route path="/demo" element={<SubstrateDemo />} />
-                      <Route path="/proof" element={<ProofMode />} />
-                      <Route path="/publication" element={<Publication />} />
-                      <Route path="/documentation" element={<Documentation />} />
-                      <Route path="/changelog" element={<Changelog />} />
-                      <Route path="/codelab" element={<CodeLab />} />
-                      <Route path="/forge" element={<CognitiveForge />} />
-                      <Route path="/forge/catalog" element={<ForgeCatalog />} />
-                      <Route path="/agency" element={<AgencyMint />} />
-                      <Route path="/a/:slug" element={<AgencyPortal />} />
-                      <Route path="/devtools" element={<DevTools />} />
-                      <Route path="/gaming" element={<GamingSubstrate />} />
-                      <Route path="/developers" element={<DeveloperShowcase />} />
-                      <Route path="/use-cases" element={<UseCases />} />
-                      <Route path="/dev-portal" element={<DevPortal />} />
-                      <Route path="/marketplace" element={<Marketplace />} />
-                      <Route path="/marketplace/success" element={<MarketplaceSuccess />} />
-                      <Route path="/intelligence" element={<SubstrateIntelligence />} />
-                      <Route path="/substrate/licensing" element={<SubstrateLicensing />} />
-                      <Route path="/substrate/licensing/success" element={<SubstrateLicensingSuccess />} />
-                      <Route path="/lab" element={<ExperimentationLab />} />
-                      <Route path="/docs/substrate/capabilities" element={<SubstrateCapabilitiesDocs />} />
-                      <Route path="/capabilities" element={<CapabilitiesDepot />} />
-                      <Route path="/synergies" element={<SynergyPipelines />} />
-                      <Route path="/system-feed" element={<SystemIntelligenceFeed />} />
-                      <Route path="/clear-cache" element={<ClearCache />} />
+  // Install mobile watchdog once on mount (diag mode only)
+  useEffect(() => {
+    const cleanup = installMobileWatchdog();
+    
+    if (diagEnabled()) {
+      diagLog("log", "App mounted", { 
+        timestamp: new Date().toISOString(),
+        url: window.location.href.slice(0, 100)
+      });
+    }
+    
+    return cleanup;
+  }, []);
 
-                      {/* Marketing / Info */}
-                      <Route path="/about" element={<About />} />
-                      <Route path="/solutions" element={<Solutions />} />
-                      <Route path="/projects" element={<CurrentProjects />} />
-                      <Route path="/roadmap" element={<Roadmap />} />
-                      <Route path="/contact" element={<Contact />} />
-                      <Route path="/llms-txt" element={<LlmsTxt />} />
-                      <Route path="/humans-txt" element={<HumansTxt />} />
-                      <Route path="/foundations" element={<Foundations />} />
-                      <Route path="/namespace" element={<Namespace />} />
-                      <Route path="/insights" element={<Insights />} />
-                      <Route path="/register" element={<Register />} />
-                      <Route path="/library" element={<Library />} />
-                      <Route path="/support" element={<Support />} />
-                      <Route path="/explore" element={<Explore />} />
-                      
-                      {/* Auth & Legal */}
-                      <Route path="/auth" element={<Auth />} />
-                      <Route path="/privacy" element={<Privacy />} />
-                      <Route path="/terms" element={<Terms />} />
-                      
-                      {/* Blog Posts */}
-                      <Route path="/blog/wordpress-bot-defense" element={<WordPressBotDefense />} />
-                      <Route path="/blog/top-security-plugins-2025" element={<TopSecurityPlugins2025 />} />
-                      <Route path="/blog/ai-cybersecurity-evolution-2025" element={<AICybersecurityEvolution2025 />} />
-                      <Route path="/blog/ai-hackers-underground-2025" element={<AIHackersUnderground2025 />} />
-                      <Route path="/blog/ai-product-comparison-2025" element={<AIProductComparison2025 />} />
-                      <Route path="/blog/clarity-accessibility-mission" element={<PTCHBLMission />} />
-                      <Route path="/blog/promptfluid-market-disruptor" element={<PromptFluidMarketDisruptor />} />
-                      <Route path="/blog/product-roadmap-2025" element={<ProductRoadmap2025 />} />
-                      <Route path="/blog/ai-automation-trends-2025" element={<AIAutomationTrends2025 />} />
-                      <Route path="/blog/ai-business-operations-2025" element={<AIBusinessOperations2025 />} />
-                      <Route path="/blog/how-promptfluid-works-cascade-ai-ecosystem" element={<HowPromptFluidWorks />} />
-                      <Route path="/blog/cascade-ai-adaptive-intelligence-brain" element={<CascadeAIDeepDive />} />
-                      <Route path="/blog/promptfluid-studio-build-apps-that-think" element={<PromptFluidStudioGuide />} />
-                      <Route path="/blog/ai-triad-intelligent-routing" element={<AITriadExplained />} />
-                      <Route path="/blog/promptfluid-brain-adaptive-learning-core" element={<PromptFluidBrain />} />
-                      <Route path="/blog/promptfluid-vision-unified-dashboard" element={<PromptFluidVision />} />
-                      <Route path="/blog/promptfluid-defense-ai-security" element={<PromptFluidDefense />} />
-                      <Route path="/blog/promptfluid-ripple-network-integration" element={<PromptFluidRipple />} />
-                      <Route path="/blog/promptfluid-access-identity-billing" element={<PromptFluidAccess />} />
-                      <Route path="/blog/promptfluid-nexus-api-gateway" element={<PromptFluidNexus />} />
-                      <Route path="/blog/ai-systems-that-dream-press-release" element={<AISystemsThatDreamPressRelease />} />
-                      <Route path="/blog/promptfluid-first-ai-dreaming-systems" element={<AISystemsThatDreamPressRelease />} />
-                      <Route path="/blog/accessibility-free-for-all" element={<AccessibilityFreeForAll />} />
-                      <Route path="/blog/wordpress-accessibility-guide" element={<WordPressAccessibilityGuide />} />
-                      <Route path="/blog/wcag-2-2-wordpress-changes" element={<WCAG22Changes />} />
-                      <Route path="/blog/automated-accessibility-fixes-wordpress" element={<AIAccessibilityFixes />} />
-                      
-                      {/* v6.x.x Pillar/Cluster Posts */}
-                      <Route path="/blog/evolving-software-v6-breakthrough" element={<EvolvingSoftwareV6Breakthrough />} />
-                      <Route path="/blog/llms-txt-protocol-ai-context" element={<LLMsTxtProtocol />} />
-                      <Route path="/blog/ai-governance-namespace-unified-terminology" element={<AIGovernanceNamespace />} />
-                      
-                      {/* Dynamic AutoBlog Posts */}
-                      <Route path="/blog/auto/:slug" element={<AutoBlogPost />} />
-                      
-                      {/* ===== ORPHANED PAGE REDIRECTS ===== */}
-                      {/* These pages exist but are not accessible via nav/footer/CTAs */}
-                      {/* Redirecting to home to prevent outdated content access */}
-                      
-                      {/* Admin routes */}
-                      <Route path="/admin/*" element={<Navigate to="/" replace />} />
-                      <Route path="/dashboard" element={<Navigate to="/" replace />} />
-                      
-                      {/* Legacy brain/cascade routes */}
-                      <Route path="/brain" element={<Navigate to="/decode" replace />} />
-                      <Route path="/brain/*" element={<Navigate to="/decode" replace />} />
-                      <Route path="/brain-hub" element={<Navigate to="/" replace />} />
-                      <Route path="/brain-analytics" element={<Navigate to="/" replace />} />
-                      <Route path="/brain-learning" element={<Navigate to="/" replace />} />
-                      <Route path="/brain-ml" element={<Navigate to="/" replace />} />
-                      <Route path="/brain-training" element={<Navigate to="/" replace />} />
-                      <Route path="/brain-control" element={<Navigate to="/" replace />} />
-                      <Route path="/cascade" element={<Navigate to="/decode" replace />} />
-                      <Route path="/cascade-mindmap" element={<Navigate to="/" replace />} />
-                      
-                      {/* Clarity routes - deprecated product */}
-                      <Route path="/clarity" element={<Navigate to="/" replace />} />
-                      <Route path="/clarity/*" element={<Navigate to="/" replace />} />
-                      <Route path="/clarity-dashboard" element={<Navigate to="/" replace />} />
-                      <Route path="/clarity-add-site" element={<Navigate to="/" replace />} />
-                      <Route path="/clarity-admin" element={<Navigate to="/" replace />} />
-                      <Route path="/clarity-api-keys" element={<Navigate to="/" replace />} />
-                      <Route path="/clarity-certifications" element={<Navigate to="/" replace />} />
-                      <Route path="/clarity-clients" element={<Navigate to="/" replace />} />
-                      <Route path="/clarity-download" element={<Navigate to="/" replace />} />
-                      <Route path="/clarity-extension" element={<Navigate to="/" replace />} />
-                      <Route path="/clarity-fix-suggestions" element={<Navigate to="/" replace />} />
-                      <Route path="/clarity-notification-settings" element={<Navigate to="/" replace />} />
-                      <Route path="/clarity-portfolio" element={<Navigate to="/" replace />} />
-                      <Route path="/clarity-reports" element={<Navigate to="/" replace />} />
-                      <Route path="/clarity-scan-details" element={<Navigate to="/" replace />} />
-                      <Route path="/clarity-scan-details/*" element={<Navigate to="/" replace />} />
-                      <Route path="/clarity-schedules" element={<Navigate to="/" replace />} />
-                      <Route path="/clarity-site-settings" element={<Navigate to="/" replace />} />
-                      <Route path="/clarity-site-settings/*" element={<Navigate to="/" replace />} />
-                      <Route path="/clarity-subscription" element={<Navigate to="/" replace />} />
-                      <Route path="/clarity-teams" element={<Navigate to="/" replace />} />
-                      <Route path="/clarity-trends" element={<Navigate to="/" replace />} />
-                      <Route path="/clarity-webhooks" element={<Navigate to="/" replace />} />
-                      <Route path="/clarity-whitelabel" element={<Navigate to="/" replace />} />
-                      <Route path="/clarity-widget" element={<Navigate to="/" replace />} />
-                      
-                      {/* BotSniper/RCKBL routes - deprecated product */}
-                      <Route path="/bot-sniper" element={<Navigate to="/" replace />} />
-                      <Route path="/bot-sniper/*" element={<Navigate to="/" replace />} />
-                      <Route path="/bot-sniper-analytics" element={<Navigate to="/" replace />} />
-                      <Route path="/bot-sniper-home" element={<Navigate to="/" replace />} />
-                      <Route path="/bot-sniper-pricing" element={<Navigate to="/" replace />} />
-                      <Route path="/bot-sniper-settings" element={<Navigate to="/" replace />} />
-                      <Route path="/reflex-keys" element={<Navigate to="/" replace />} />
-                      
-                      {/* Decode sub-pages - not in current nav */}
-                      <Route path="/decode-coder" element={<Navigate to="/decode" replace />} />
-                      <Route path="/decode-control" element={<Navigate to="/decode" replace />} />
-                      <Route path="/decode-dreams" element={<Navigate to="/decode" replace />} />
-                      <Route path="/decode-governance" element={<Navigate to="/decode" replace />} />
-                      <Route path="/decode-mindmap" element={<Navigate to="/decode" replace />} />
-                      <Route path="/decode-status" element={<Navigate to="/decode" replace />} />
-                      
-                      {/* System/Admin pages */}
-                      <Route path="/system" element={<Navigate to="/" replace />} />
-                      <Route path="/system/*" element={<Navigate to="/" replace />} />
-                      <Route path="/system-audit" element={<Navigate to="/" replace />} />
-                      <Route path="/system-health" element={<Navigate to="/" replace />} />
-                      <Route path="/system-initializer" element={<Navigate to="/" replace />} />
-                      <Route path="/system-map" element={<Navigate to="/" replace />} />
-                      <Route path="/system-verify" element={<Navigate to="/" replace />} />
-                      <Route path="/audit" element={<Navigate to="/" replace />} />
-                      <Route path="/analytics" element={<Navigate to="/" replace />} />
-                      <Route path="/access-control" element={<Navigate to="/" replace />} />
-                      
-                      {/* Product info pages - cluster */}
-                      <Route path="/cluster/*" element={<Navigate to="/" replace />} />
-                      <Route path="/products/*" element={<Navigate to="/" replace />} />
-                      <Route path="/pillars/*" element={<Navigate to="/" replace />} />
-                      
-                      {/* Business/Finance pages */}
-                      <Route path="/billing" element={<Navigate to="/" replace />} />
-                      <Route path="/subscriptions" element={<Navigate to="/" replace />} />
-                      <Route path="/investor-packets" element={<Navigate to="/" replace />} />
-                      <Route path="/partnerships" element={<Navigate to="/" replace />} />
-                      
-                      {/* Marketing/Creative pages */}
-                      <Route path="/marketing" element={<Navigate to="/" replace />} />
-                      <Route path="/marketing-studio" element={<Navigate to="/" replace />} />
-                      <Route path="/creative-studio" element={<Navigate to="/" replace />} />
-                      <Route path="/creative-generation" element={<Navigate to="/" replace />} />
-                      <Route path="/prompt-merger" element={<Navigate to="/" replace />} />
-                      
-                      {/* Network/Infrastructure pages */}
-                      <Route path="/ripple-network" element={<Navigate to="/" replace />} />
-                      <Route path="/nexus-admin" element={<Navigate to="/" replace />} />
-                      <Route path="/threat-feed" element={<Navigate to="/" replace />} />
-                      
-                      {/* Legacy product pages */}
-                      <Route path="/modernizer" element={<Modernizer />} />
-                      <Route path="/awake" element={<Navigate to="/" replace />} />
-                      <Route path="/scan" element={<Navigate to="/" replace />} />
-                      <Route path="/sentience-hub" element={<Navigate to="/" replace />} />
-                      <Route path="/learning-intelligence" element={<Navigate to="/" replace />} />
-                      
-                      {/* Product-specific routes */}
-                      <Route path="/access-product" element={<Navigate to="/" replace />} />
-                      <Route path="/brain-product" element={<Navigate to="/" replace />} />
-                      <Route path="/clarity-product" element={<Navigate to="/" replace />} />
-                      <Route path="/defense-product" element={<Navigate to="/" replace />} />
-                      <Route path="/ripple-product" element={<Navigate to="/" replace />} />
-                      <Route path="/studio-product" element={<Navigate to="/" replace />} />
-                      
-                      {/* Resources pages */}
-                      <Route path="/resources/*" element={<Navigate to="/" replace />} />
-                      <Route path="/solutions/*" element={<Navigate to="/solutions" replace />} />
-                      
-                      {/* 404 - catch all remaining */}
-                      <Route path="*" element={<NotFound />} />
-                    </Routes>
-                  </Suspense>
-                </AuthProvider>
-              </BrowserRouter>
-            </TooltipProvider>
-          </SubstrateProvider>
-        </Suspense>
-      </SEOProvider>
-    </QueryClientProvider>
+  // Track render rate of the App root (diag mode only)
+  useRenderLoopDetector("App");
+
+  return (
+    <DiagErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <SEOProvider>
+          <Suspense fallback={<PageLoader />}>
+            <SubstrateProvider autoInit={true}>
+              <TooltipProvider>
+                <ToasterComponents />
+                <BrowserRouter>
+                  <ScrollToTop />
+                  <AuthProvider>
+                    <Suspense fallback={<PageLoader />}>
+                      <Routes>
+                        {/* Core Public Pages */}
+                        <Route path="/" element={<Explore />} />
+                        <Route path="/decode" element={<Decode />} />
+                        <Route path="/feed-dream-eater" element={<FeedDreamEater />} />
+                        <Route path="/blog" element={<Blog />} />
+                        <Route path="/investors" element={<InvestorsPublic />} />
+                        <Route path="/substrate" element={<SubstrateDashboard />} />
+                        <Route path="/os" element={<SubstrateOS />} />
+                        <Route path="/demo" element={<SubstrateDemo />} />
+                        <Route path="/proof" element={<ProofMode />} />
+                        <Route path="/publication" element={<Publication />} />
+                        <Route path="/documentation" element={<Documentation />} />
+                        <Route path="/changelog" element={<Changelog />} />
+                        <Route path="/codelab" element={<CodeLab />} />
+                        <Route path="/forge" element={<CognitiveForge />} />
+                        <Route path="/forge/catalog" element={<ForgeCatalog />} />
+                        <Route path="/agency" element={<AgencyMint />} />
+                        <Route path="/a/:slug" element={<AgencyPortal />} />
+                        <Route path="/devtools" element={<DevTools />} />
+                        <Route path="/gaming" element={<GamingSubstrate />} />
+                        <Route path="/developers" element={<DeveloperShowcase />} />
+                        <Route path="/use-cases" element={<UseCases />} />
+                        <Route path="/dev-portal" element={<DevPortal />} />
+                        <Route path="/marketplace" element={<Marketplace />} />
+                        <Route path="/marketplace/success" element={<MarketplaceSuccess />} />
+                        <Route path="/intelligence" element={<SubstrateIntelligence />} />
+                        <Route path="/substrate/licensing" element={<SubstrateLicensing />} />
+                        <Route path="/substrate/licensing/success" element={<SubstrateLicensingSuccess />} />
+                        <Route path="/lab" element={<ExperimentationLab />} />
+                        <Route path="/docs/substrate/capabilities" element={<SubstrateCapabilitiesDocs />} />
+                        <Route path="/capabilities" element={<CapabilitiesDepot />} />
+                        <Route path="/synergies" element={<SynergyPipelines />} />
+                        <Route path="/system-feed" element={<SystemIntelligenceFeed />} />
+                        <Route path="/clear-cache" element={<ClearCache />} />
+
+                        {/* Marketing / Info */}
+                        <Route path="/about" element={<About />} />
+                        <Route path="/solutions" element={<Solutions />} />
+                        <Route path="/projects" element={<CurrentProjects />} />
+                        <Route path="/roadmap" element={<Roadmap />} />
+                        <Route path="/contact" element={<Contact />} />
+                        <Route path="/llms-txt" element={<LlmsTxt />} />
+                        <Route path="/humans-txt" element={<HumansTxt />} />
+                        <Route path="/foundations" element={<Foundations />} />
+                        <Route path="/namespace" element={<Namespace />} />
+                        <Route path="/insights" element={<Insights />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="/library" element={<Library />} />
+                        <Route path="/support" element={<Support />} />
+                        <Route path="/explore" element={<Explore />} />
+                        
+                        {/* Auth & Legal */}
+                        <Route path="/auth" element={<Auth />} />
+                        <Route path="/privacy" element={<Privacy />} />
+                        <Route path="/terms" element={<Terms />} />
+                        
+                        {/* Blog Posts */}
+                        <Route path="/blog/wordpress-bot-defense" element={<WordPressBotDefense />} />
+                        <Route path="/blog/top-security-plugins-2025" element={<TopSecurityPlugins2025 />} />
+                        <Route path="/blog/ai-cybersecurity-evolution-2025" element={<AICybersecurityEvolution2025 />} />
+                        <Route path="/blog/ai-hackers-underground-2025" element={<AIHackersUnderground2025 />} />
+                        <Route path="/blog/ai-product-comparison-2025" element={<AIProductComparison2025 />} />
+                        <Route path="/blog/clarity-accessibility-mission" element={<PTCHBLMission />} />
+                        <Route path="/blog/promptfluid-market-disruptor" element={<PromptFluidMarketDisruptor />} />
+                        <Route path="/blog/product-roadmap-2025" element={<ProductRoadmap2025 />} />
+                        <Route path="/blog/ai-automation-trends-2025" element={<AIAutomationTrends2025 />} />
+                        <Route path="/blog/ai-business-operations-2025" element={<AIBusinessOperations2025 />} />
+                        <Route path="/blog/how-promptfluid-works-cascade-ai-ecosystem" element={<HowPromptFluidWorks />} />
+                        <Route path="/blog/cascade-ai-adaptive-intelligence-brain" element={<CascadeAIDeepDive />} />
+                        <Route path="/blog/promptfluid-studio-build-apps-that-think" element={<PromptFluidStudioGuide />} />
+                        <Route path="/blog/ai-triad-intelligent-routing" element={<AITriadExplained />} />
+                        <Route path="/blog/promptfluid-brain-adaptive-learning-core" element={<PromptFluidBrain />} />
+                        <Route path="/blog/promptfluid-vision-unified-dashboard" element={<PromptFluidVision />} />
+                        <Route path="/blog/promptfluid-defense-ai-security" element={<PromptFluidDefense />} />
+                        <Route path="/blog/promptfluid-ripple-network-integration" element={<PromptFluidRipple />} />
+                        <Route path="/blog/promptfluid-access-identity-billing" element={<PromptFluidAccess />} />
+                        <Route path="/blog/promptfluid-nexus-api-gateway" element={<PromptFluidNexus />} />
+                        <Route path="/blog/ai-systems-that-dream-press-release" element={<AISystemsThatDreamPressRelease />} />
+                        <Route path="/blog/promptfluid-first-ai-dreaming-systems" element={<AISystemsThatDreamPressRelease />} />
+                        <Route path="/blog/accessibility-free-for-all" element={<AccessibilityFreeForAll />} />
+                        <Route path="/blog/wordpress-accessibility-guide" element={<WordPressAccessibilityGuide />} />
+                        <Route path="/blog/wcag-2-2-wordpress-changes" element={<WCAG22Changes />} />
+                        <Route path="/blog/automated-accessibility-fixes-wordpress" element={<AIAccessibilityFixes />} />
+                        
+                        {/* v6.x.x Pillar/Cluster Posts */}
+                        <Route path="/blog/evolving-software-v6-breakthrough" element={<EvolvingSoftwareV6Breakthrough />} />
+                        <Route path="/blog/llms-txt-protocol-ai-context" element={<LLMsTxtProtocol />} />
+                        <Route path="/blog/ai-governance-namespace-unified-terminology" element={<AIGovernanceNamespace />} />
+                        
+                        {/* Dynamic AutoBlog Posts */}
+                        <Route path="/blog/auto/:slug" element={<AutoBlogPost />} />
+                        
+                        {/* ===== ORPHANED PAGE REDIRECTS ===== */}
+                        {/* These pages exist but are not accessible via nav/footer/CTAs */}
+                        {/* Redirecting to home to prevent outdated content access */}
+                        
+                        {/* Admin routes */}
+                        <Route path="/admin/*" element={<Navigate to="/" replace />} />
+                        <Route path="/dashboard" element={<Navigate to="/" replace />} />
+                        
+                        {/* Legacy brain/cascade routes */}
+                        <Route path="/brain" element={<Navigate to="/decode" replace />} />
+                        <Route path="/brain/*" element={<Navigate to="/decode" replace />} />
+                        <Route path="/brain-hub" element={<Navigate to="/" replace />} />
+                        <Route path="/brain-analytics" element={<Navigate to="/" replace />} />
+                        <Route path="/brain-learning" element={<Navigate to="/" replace />} />
+                        <Route path="/brain-ml" element={<Navigate to="/" replace />} />
+                        <Route path="/brain-training" element={<Navigate to="/" replace />} />
+                        <Route path="/brain-control" element={<Navigate to="/" replace />} />
+                        <Route path="/cascade" element={<Navigate to="/decode" replace />} />
+                        <Route path="/cascade-mindmap" element={<Navigate to="/" replace />} />
+                        
+                        {/* Clarity routes - deprecated product */}
+                        <Route path="/clarity" element={<Navigate to="/" replace />} />
+                        <Route path="/clarity/*" element={<Navigate to="/" replace />} />
+                        <Route path="/clarity-dashboard" element={<Navigate to="/" replace />} />
+                        <Route path="/clarity-add-site" element={<Navigate to="/" replace />} />
+                        <Route path="/clarity-admin" element={<Navigate to="/" replace />} />
+                        <Route path="/clarity-api-keys" element={<Navigate to="/" replace />} />
+                        <Route path="/clarity-certifications" element={<Navigate to="/" replace />} />
+                        <Route path="/clarity-clients" element={<Navigate to="/" replace />} />
+                        <Route path="/clarity-fix-review" element={<Navigate to="/" replace />} />
+                        <Route path="/clarity-fix-schedule" element={<Navigate to="/" replace />} />
+                        <Route path="/clarity-remediation" element={<Navigate to="/" replace />} />
+                        <Route path="/clarity-scan-history" element={<Navigate to="/" replace />} />
+                        <Route path="/clarity-settings" element={<Navigate to="/" replace />} />
+                        <Route path="/clarity-tickets" element={<Navigate to="/" replace />} />
+                        <Route path="/clarity-violation" element={<Navigate to="/" replace />} />
+                        <Route path="/clarity-learn" element={<Navigate to="/" replace />} />
+                        <Route path="/clarity-scan-detail" element={<Navigate to="/" replace />} />
+                        <Route path="/clarity-subscriptions" element={<Navigate to="/" replace />} />
+                        <Route path="/clarity-pricing" element={<Navigate to="/" replace />} />
+                        <Route path="/clarity-checkout" element={<Navigate to="/" replace />} />
+                        
+                        {/* Defense routes - deprecated */}
+                        <Route path="/defense" element={<Navigate to="/" replace />} />
+                        <Route path="/defense/*" element={<Navigate to="/" replace />} />
+                        <Route path="/defense-dashboard" element={<Navigate to="/" replace />} />
+                        <Route path="/defense-add-site" element={<Navigate to="/" replace />} />
+                        <Route path="/defense-admin" element={<Navigate to="/" replace />} />
+                        <Route path="/defense-api-keys" element={<Navigate to="/" replace />} />
+                        <Route path="/defense-audit" element={<Navigate to="/" replace />} />
+                        <Route path="/defense-clients" element={<Navigate to="/" replace />} />
+                        <Route path="/defense-events" element={<Navigate to="/" replace />} />
+                        <Route path="/defense-firewall" element={<Navigate to="/" replace />} />
+                        <Route path="/defense-policies" element={<Navigate to="/" replace />} />
+                        <Route path="/defense-settings" element={<Navigate to="/" replace />} />
+                        <Route path="/defense-sites" element={<Navigate to="/" replace />} />
+                        <Route path="/defense-threats" element={<Navigate to="/" replace />} />
+                        <Route path="/defense-tickets" element={<Navigate to="/" replace />} />
+                        <Route path="/defense-pricing" element={<Navigate to="/" replace />} />
+                        <Route path="/defense-checkout" element={<Navigate to="/" replace />} />
+                        
+                        {/* Ripple routes - deprecated */}
+                        <Route path="/ripple/*" element={<Navigate to="/" replace />} />
+                        <Route path="/ripple-settings" element={<Navigate to="/" replace />} />
+                        <Route path="/ripple-api" element={<Navigate to="/" replace />} />
+                        
+                        {/* Legacy/unused pages */}
+                        <Route path="/index" element={<Navigate to="/" replace />} />
+                        <Route path="/pricing" element={<Navigate to="/" replace />} />
+                        <Route path="/checkout" element={<Navigate to="/" replace />} />
+                        <Route path="/enterprise" element={<Navigate to="/" replace />} />
+                        <Route path="/sandbox" element={<Navigate to="/" replace />} />
+                        <Route path="/system" element={<Navigate to="/" replace />} />
+                        <Route path="/system-map" element={<Navigate to="/" replace />} />
+                        <Route path="/studio" element={<Navigate to="/" replace />} />
+                        <Route path="/studio/*" element={<Navigate to="/" replace />} />
+                        <Route path="/modernizer" element={<Modernizer />} />
+                        
+                        {/* Demo/test pages */}
+                        <Route path="/demo-admin" element={<Navigate to="/" replace />} />
+                        <Route path="/demo-admin/*" element={<Navigate to="/" replace />} />
+                        
+                        {/* Resources pages */}
+                        <Route path="/resources/*" element={<Navigate to="/" replace />} />
+                        <Route path="/solutions/*" element={<Navigate to="/solutions" replace />} />
+                        
+                        {/* 404 - catch all remaining */}
+                        <Route path="*" element={<NotFound />} />
+                      </Routes>
+                    </Suspense>
+                  </AuthProvider>
+                </BrowserRouter>
+              </TooltipProvider>
+            </SubstrateProvider>
+          </Suspense>
+        </SEOProvider>
+      </QueryClientProvider>
+      
+      {/* Diagnostic panel - only renders when ?diag=1 is present */}
+      <DiagPanel />
+    </DiagErrorBoundary>
   );
 };
 
