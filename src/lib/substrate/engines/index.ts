@@ -1,6 +1,8 @@
 /**
  * Cognitive Engine System
- * v7.7.0 — ENGINE+ Epoch: 20 Engines Orchestrating 76 Capabilities
+ * v7.8.0 — ENGINE+ Epoch: 3-Layer Orchestration Architecture
+ * 
+ * Architecture: Capabilities (76) → Engines (20) → Meta-Engines (8)
  * 
  * The Engine System consolidates individual capabilities into
  * compound execution units that provide:
@@ -10,13 +12,22 @@
  * 3. **Simplified API** — Fewer, more powerful abstractions
  * 4. **Optimized Execution** — Shared context, batched operations
  * 
- * Engine Categories:
+ * Engine Categories (20):
  * - Cognitive (4): Reasoning, Learning, Memory, Foresight
  * - Operational (4): Resilience, Optimization, Orchestration, Scheduling
  * - Intelligence (4): Synthesis, Adaptation, Insight, Prediction
  * - Governance (3): Compliance, Quality, Audit
  * - Security (3): Threat, Defense, Trust
  * - Evolution (2): Evolution, Modernization
+ * 
+ * Meta-Engine Categories (8):
+ * - Cognitive (1): cognitive_mesh
+ * - Protection (2): system_guardian, security_fortress
+ * - Autonomous (1): autonomous_operator
+ * - Governance (1): quality_fabric
+ * - Intelligence (1): intelligence_pipeline
+ * - Experience (1): adaptation_suite
+ * - Performance (1): performance_optimizer
  */
 
 // Types
@@ -89,3 +100,51 @@ export {
 
 // Hook
 export { useEngines } from './useEngines';
+
+// ============================================================================
+// META-ENGINE LAYER (v7.8.0)
+// ============================================================================
+
+// Meta-Engine Types
+export type {
+  MetaEngineCategory,
+  MetaEngineId,
+  MetaEngineDefinition,
+  MetaEngineExecutionContext,
+  MetaEngineExecutionOptions,
+  MetaEngineStageResult,
+  MetaEngineExecutionResult,
+  MetaEngineSummary,
+  MetaEngineExecutor,
+} from './meta';
+
+// Meta-Engine Registry
+export {
+  META_ENGINE_REGISTRY,
+  META_ENGINE_IDS,
+  META_ENGINES_BY_CATEGORY,
+  getMetaEngine,
+  listMetaEngines,
+  getMetaEnginesByCategory,
+  getMetaEnginesByEngine,
+  getTotalCapabilitiesReached,
+  getMetaEngineSummary,
+} from './meta';
+
+// Meta-Engine Executors
+export {
+  META_ENGINE_EXECUTORS,
+  runMetaEngine,
+  runMetaEnginesBatch,
+  executeCognitiveMesh,
+  executeSystemGuardian,
+  executeAutonomousOperator,
+  executeQualityFabric,
+  executeIntelligencePipeline,
+  executeAdaptationSuite,
+  executeSecurityFortress,
+  executePerformanceOptimizer,
+} from './meta';
+
+// Meta-Engine Hook
+export { useMetaEngines } from './meta';

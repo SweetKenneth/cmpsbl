@@ -1,9 +1,9 @@
 /**
  * promptfluid® Substrate Core Exports
- * v7.7.0 — ENGINE+ Epoch (Cognitive Engine Architecture)
+ * v7.8.0 — ENGINE+ Epoch (3-Layer Architecture)
  * 
  * Complete export of all substrate engines, hooks, and utilities.
- * 14-module architecture + 20 Cognitive Engines orchestrating 76 capabilities
+ * 3-Layer Architecture: Capabilities (76) → Engines (20) → Meta-Engines (8)
  * 
  * Engines consolidate capabilities into compound execution units:
  * - Cognitive (4): Reasoning, Learning, Memory, Foresight
@@ -12,6 +12,10 @@
  * - Governance (3): Compliance, Quality, Audit
  * - Security (3): Threat, Defense, Trust
  * - Evolution (2): Evolution, Modernization
+ * 
+ * Meta-Engines orchestrate engines into unified pipelines (4.6x-7.4x synergy):
+ * - cognitive_mesh, system_guardian, autonomous_operator, quality_fabric
+ * - intelligence_pipeline, adaptation_suite, security_fortress, performance_optimizer
  */
 
 // Engine Bus - Canonical Routing Layer (v6.4.0)

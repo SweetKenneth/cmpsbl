@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Internal Engineering Library
 
-**Version 7.7.0 | ENGINE+ Epoch | CONFIDENTIAL**
+**Version 7.8.0 | ENGINE+ Epoch (3-Layer Architecture) | CONFIDENTIAL**
 
 ---
 

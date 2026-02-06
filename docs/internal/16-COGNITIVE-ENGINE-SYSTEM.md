@@ -1,11 +1,17 @@
 # Cognitive Engine System
-## v7.7.0 — ENGINE+ Epoch
+## v7.8.0 — ENGINE+ Epoch (3-Layer Architecture)
 
 ---
 
 ## Overview
 
-The Cognitive Engine System consolidates 76 individual capabilities into **20 compound execution units** (engines). This architecture provides:
+The Cognitive Engine System implements a **3-layer orchestration architecture**:
+
+```
+Capabilities (76) → Engines (20) → Meta-Engines (8)
+```
+
+This consolidates 76 individual capabilities into 20 compound engines, further orchestrated by 8 meta-engines. Benefits:
 
 1. **Synergy Amplification** — Combined capabilities produce 2-3x more value than individual execution
 2. **IP Protection** — Complex orchestration patterns are significantly harder to replicate
