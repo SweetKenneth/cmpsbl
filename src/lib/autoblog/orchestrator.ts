@@ -287,36 +287,58 @@ async function generateDraftContent(queueId: string): Promise<{ title: string; b
     
     const { topic, channel } = queueItem;
     
-    // Try to use NEXUS for intelligent content generation
+    // Try to use new content intelligence system first
+    try {
+      const { generateInsightfulContent, pickOptimalTopic } = await import('./content-intelligence');
+      
+      // Pick optimal topic if none specified
+      const selection = await pickOptimalTopic();
+      if (selection) {
+        const content = await generateInsightfulContent(selection.category, selection.topicIndex);
+        if (content) {
+          return { title: content.title, body: content.body };
+        }
+      }
+    } catch (contentError) {
+      console.warn('[AutoBlog] Content intelligence unavailable:', contentError);
+    }
+    
+    // Fallback: Try NEXUS for intelligent content generation
     try {
       const { substrate } = await import('../substrate');
       
       if (substrate.nexus?.text) {
-        const prompt = `Write a concise, informative blog post about "${topic || 'system evolution'}". 
+        const prompt = `Write a deeply insightful, technically accurate blog post about "${topic || 'cognitive system architecture'}". 
+
 Channel: ${channel}
-Style: Professional, educational, focused on value to readers.
-Length: 300-500 words.
-Format: Markdown with headers.
-Requirements:
-- Start with a compelling introduction
-- Include practical insights
-- End with actionable takeaways`;
+Style: Technical but accessible, like Anthropic's research blog meets a senior engineer's notes.
+Length: 500-800 words.
+Format: Markdown with clear headers and code examples where relevant.
+
+REQUIREMENTS:
+- Start with a compelling hook that challenges assumptions
+- Include real technical depth, not marketing fluff
+- Reference specific architectural patterns or algorithms
+- End with actionable insights for developers/researchers
+- Avoid: "revolutionary", "game-changing", "exciting!", "incredible"
+- Include terminal commands readers can try
+
+EXAMPLES OF GOOD HOOKS:
+- "Your brain forgets 90% of what it experiences. AI systems face the same challenge."
+- "The most dangerous capability isn't intelligence—it's self-modification without constraints."`;
 
         const response = await substrate.nexus.text(prompt);
        
-        // Check for response content
         const respObj = response as unknown as Record<string, unknown>;
         const responseContent = respObj?.content || respObj?.response || respObj?.data;
         
         if (responseContent && typeof responseContent === 'string') {
-          // Extract title from responseContent or generate one
           const lines = responseContent.split('\n').filter((l: string) => l.trim());
-          let title = topic || 'System Update';
+          let title = topic || 'System Architecture Deep-Dive';
           let body = responseContent;
           
-          // Check if first line is a title (starts with #)
           if (lines[0]?.startsWith('#')) {
-            title = lines[0].replace(/^#+\s*/, '').trim();
+            title = `🧠 ${lines[0].replace(/^#+\s*/, '').trim()}`;
             body = lines.slice(1).join('\n').trim();
           }
           
@@ -324,43 +346,54 @@ Requirements:
         }
       }
     } catch (nexusError) {
-      console.warn('[AutoBlog] NEXUS unavailable, using template:', nexusError);
+      console.warn('[AutoBlog] NEXUS unavailable:', nexusError);
     }
     
-    // Fallback: Generate structured template content
+    // Final fallback: Rich template content
     const timestamp = new Date().toISOString().split('T')[0];
     const title = topic 
-      ? `${topic.charAt(0).toUpperCase() + topic.slice(1)}: Insights & Updates`
-      : `System Evolution Update - ${timestamp}`;
+      ? `🧠 ${topic.charAt(0).toUpperCase() + topic.slice(1)}: Architecture & Insights`
+      : `🧬 Cognitive Substrate: Evolution Update - ${timestamp}`;
     
-    const body = `## Overview
+    const body = `## Why This Matters
 
-${topic ? `This article explores ${topic} and its implications for modern systems.` : 'The substrate observed new patterns and adapted accordingly.'}
+${topic ? `Understanding ${topic} is fundamental to building systems that improve themselves.` : 'Autonomous systems that learn from their own operation represent the next frontier of software architecture.'}
 
-### Key Observations
+### The Core Challenge
 
-${channel === 'blog' ? '- Industry trends indicate shifting priorities' : '- System patterns required optimization'}
-- New behaviors emerged from ongoing analysis
-- Continuous improvement remains the core principle
+Every cognitive system faces the same tension: **capability vs. stability**. Add too much flexibility and the system becomes unpredictable. Add too much constraint and it can't adapt.
 
-### Practical Implications
+### Our Approach
 
-${topic ? `Understanding ${topic} helps organizations make better decisions.` : 'These changes reflect learned responses that improve stability.'}
+The substrate implements a **bounded evolution model**:
 
-- **Efficiency**: Streamlined processes reduce overhead
-- **Reliability**: Consistent behavior builds trust
-- **Adaptability**: Flexible systems handle change gracefully
+1. **Observe**: Gather telemetry on system behavior
+2. **Propose**: Generate potential improvements
+3. **Evaluate**: Score proposals by risk and benefit
+4. **Shadow**: Test in parallel before applying
+5. **Verify**: Confirm no regressions after change
 
-### Looking Forward
+### For Developers
 
-As we continue to evolve, these principles guide our development:
+Query the system state:
+\`\`\`
+system.status       # Global health
+brain.status        # Memory distribution
+evolve.receipts     # Audit trail
+\`\`\`
 
-1. Data-driven decision making
-2. Incremental improvement over radical change
-3. User-centric design philosophy
+### Key Insights
+
+- **Emergence is a feature, not a bug** — when properly constrained
+- **Rollback semantics are non-negotiable** — every change must be reversible
+- **Confidence > speed** — it's better to wait than to break production
 
 ---
-*Generated on ${timestamp} | Channel: ${channel}*`;
+
+*This update reflects ongoing learning from ${new Date().toLocaleDateString()} operations.*
+
+**Classification**: System Log  
+**Visibility**: Public`;
 
     return { title, body };
   } catch (error) {
