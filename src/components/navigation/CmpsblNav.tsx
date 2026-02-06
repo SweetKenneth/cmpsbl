@@ -5,12 +5,36 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { 
-  Menu, X, ChevronRight, Code, Layers, FileText, Mail, Info, 
-  Rocket, BookOpen, Users, Zap, Terminal, Cpu, MessageSquare, 
-  Moon, Building2, Gamepad2, Sparkles, Globe, Brain, 
-  LogOut, ArrowRight, Command, Shield, ExternalLink
+import {
+  Menu,
+  X,
+  ChevronRight,
+  Code,
+  Layers,
+  FileText,
+  Mail,
+  Info,
+  Rocket,
+  BookOpen,
+  Users,
+  Zap,
+  Terminal,
+  Cpu,
+  MessageSquare,
+  Moon,
+  Sun,
+  Building2,
+  Gamepad2,
+  Sparkles,
+  Globe,
+  Brain,
+  LogOut,
+  ArrowRight,
+  Command,
+  Shield,
+  ExternalLink,
 } from "lucide-react";
+import { useTheme } from "next-themes";
 import { useAuth } from "@/contexts/AuthContext";
 import { CmpsblLogo } from "@/components/CmpsblLogo";
 import { Button } from "@/components/ui/button";
