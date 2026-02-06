@@ -52,7 +52,29 @@ Traditional AI systems operate as isolated modules. No coordination, no emergent
 
 ---
 
-## v7.5.0 New Capabilities
+## v7.5.2 New Discoveries (15 Pipelines)
+
+| Synergy | Modules | Category | Description |
+|---------|---------|----------|-------------|
+| `external-data-enrichment` | INTEGRATION + BRAIN + DECODE + NEXUS | Intelligence | External data enhanced with semantic indexing |
+| `api-intelligence-layer` | INTEGRATION + BRAIN + CORTEX + VISION | Intelligence | API responses transformed with contextual logic |
+| `creative-threat-modeling` | DREAM + DEFENSE + BRAIN | Security | AI imagines novel attack vectors |
+| `accessibility-event-stream` | RIPPLE + INCLUSIVE + VISION | Accessibility | Accessibility events captured and analyzed |
+| `config-optimization-learning` | CORE + DREAM + BRAIN + VISION | Optimization | Configuration tuned via pattern discovery |
+| `entitlement-evolution` | ACCESS + DREAM + CORTEX | Automation | Entitlements optimized via usage patterns |
+| `proactive-maintenance-engine` | MODERNIZER + VISION + BRAIN | Resilience | Maintenance predicted from degradation patterns |
+| `resource-demand-imagination` | SYSTEM + DREAM + CORTEX | Optimization | Capacity planning via demand synthesis |
+| `accessible-ai-generation` | NEXUS + INCLUSIVE + DECODE | Accessibility | AI outputs adapted for accessibility |
+| `security-posture-evolution` | DEFENSE + MODERNIZER + BRAIN + CORTEX | Security | Security policies evolved autonomously |
+| `semantic-event-enrichment` | RIPPLE + DECODE + BRAIN + VISION | Intelligence | Events enriched with semantic context |
+| `distributed-config-sync` | CORE + INTEGRATION + RIPPLE + DEFENSE | Orchestration | Config synchronized across adapters |
+| `predictive-evolution-engine` | VISION + DREAM + MODERNIZER | Automation | Degradation detected, fixes synthesized |
+| `api-entitlement-fortress` | ACCESS + INTEGRATION + DEFENSE + VISION | Security | API access controlled with threat prevention |
+| `cognitive-accessibility-profiler` | BRAIN + INCLUSIVE + VISION + DECODE | Accessibility | User accessibility needs learned over time |
+
+---
+
+## v7.5.0 Capabilities
 
 ### Production-Grade Additions (42 New Functions)
 
