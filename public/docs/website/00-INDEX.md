@@ -26,7 +26,7 @@ This documentation provides everything you need to understand, evaluate, and bui
 | [Getting Started](./06-GETTING-STARTED.md) | Quick start guide |
 | [Architecture Overview](./05-ARCHITECTURE.md) | Technical deep dive |
 | [Key Capabilities](./03-KEY-CAPABILITIES.md) | Feature reference |
-| [Synergy Capabilities](./09-SYNERGY-CAPABILITIES.md) | 120-pipeline matrix |
+| [Synergy Capabilities](./09-SYNERGY-CAPABILITIES.md) | 147-pipeline matrix |
 
 ### For Business Leaders
 | Document | Description |
