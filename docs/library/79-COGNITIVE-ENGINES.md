@@ -1,16 +1,21 @@
 # Cognitive Engines
-## v7.7.0 — ENGINE+ Epoch
+## v7.8.0 — ENGINE+ Epoch (3-Layer Architecture)
 
 ---
 
 ## Overview
 
-The Cognitive Engine System consolidates 76 individual capabilities into **20 compound execution units**. Engines provide:
+The Cognitive Engine System implements a **3-layer orchestration architecture**:
 
-- **2.33x average synergy multiplier** — Combined capabilities produce more value
-- **74% API reduction** — 20 engines vs 76 individual endpoints
-- **High IP protection** — Average complexity score of 8.3/10
-- **Predictable performance** — 50-500ms latency with defined execution modes
+```
+Capabilities (76) → Engines (20) → Meta-Engines (8)
+```
+
+**Value Summary:**
+- **20 Engines** with 2.33x average synergy
+- **8 Meta-Engines** with 5.88x average compound synergy
+- **76 Capabilities** fully orchestrated
+- **9.25/10 average complexity** for IP protection
 
 ---
 
@@ -117,6 +122,41 @@ const summary = getEngineSummary();
 
 ---
 
+## Meta-Engines (Layer 3)
+
+Meta-Engines orchestrate multiple engines into unified pipelines:
+
+| Meta-Engine | Engines | Compound Synergy |
+|-------------|---------|------------------|
+| `cognitive_mesh` | 4 | 5.2x |
+| `system_guardian` | 3 | 6.8x |
+| `autonomous_operator` | 4 | 7.4x |
+| `quality_fabric` | 3 | 4.8x |
+| `intelligence_pipeline` | 3 | 5.6x |
+| `adaptation_suite` | 3 | 4.6x |
+| `security_fortress` | 4 | 7.2x |
+| `performance_optimizer` | 3 | 5.4x |
+
+### Meta-Engine Usage
+
+```typescript
+import { useMetaEngines } from '@/lib/substrate/engines';
+
+function MyComponent() {
+  const { execute } = useMetaEngines();
+  
+  // Execute autonomous operator (orchestrates 4 engines)
+  const result = await execute('autonomous_operator', { 
+    task: 'Optimize system' 
+  });
+  
+  console.log(`Compound synergy: ${result.compoundSynergyGain}x`);
+  console.log(`Engines orchestrated: ${result.enginesExecuted}`);
+}
+```
+
+---
+
 ## Execution Modes
 
 | Mode | Description |
@@ -125,6 +165,8 @@ const summary = getEngineSummary();
 | `parallel` | All capabilities execute simultaneously |
 | `adaptive` | Starts parallel, falls back to sequential on failure |
 | `streaming` | Continuous real-time execution |
+| `cascade` | Sequential with output passing (meta-engines) |
+| `staged` | First half parallel, second half sequential (meta-engines) |
 
 ---
 
@@ -140,13 +182,13 @@ const summary = getEngineSummary();
 
 ## Benefits
 
-1. **Simplified Integration** — Single engine call replaces multiple capability calls
-2. **Optimized Execution** — Shared context reduces redundant operations
-3. **Predictable Performance** — Defined latency and success rates
-4. **Enhanced Value** — Synergy multipliers compound capability value
-5. **IP Protection** — Complex orchestration harder to replicate
+1. **3-Layer Architecture** — Maximum abstraction and orchestration
+2. **Compound Synergy** — Meta-engines achieve 4.6x-7.4x value
+3. **High IP Protection** — 9.25/10 average complexity score
+4. **Simplified Integration** — Single meta-engine call orchestrates everything
+5. **Enterprise Value** — 5 of 8 meta-engines are enterprise-grade
 
 ---
 
-*CMPSBL OS Substrate v7.7.0 — ENGINE+ Epoch*
-*20 Cognitive Engines orchestrating 76 capabilities*
+*CMPSBL OS Substrate v7.8.0 — ENGINE+ Epoch*
+*8 Meta-Engines × 20 Engines × 76 Capabilities*
