@@ -44,6 +44,7 @@ export function EnhancedFooter() {
         { name: "Capabilities Depot", href: "/capabilities" },
         { name: "Developers", href: "/developers" },
         { name: "CodeLab", href: "/codelab" },
+        { name: "Marketplace", href: "/marketplace" },
         { name: "Documentation", href: "/documentation" },
       ]
     },
