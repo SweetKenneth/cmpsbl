@@ -1,6 +1,6 @@
 /**
  * Synergy Pipelines Discovery Page
- * v7.5.0 — Showcasing 120 cross-module pipelines with 22 S-tier premium offerings
+ * v7.5.2 — Showcasing 135 cross-module pipelines with 22 S-tier + 15 discoveries
  * 
  * A unique exploration interface visualizing how standalone modules
  * combine to create emergent capabilities beyond their individual functions
@@ -187,7 +187,7 @@ function HeroSection() {
             className="mb-6 px-4 py-2 text-sm border-primary/30 bg-primary/5"
           >
             <Combine className="w-4 h-4 mr-2" />
-            Synergy Engine v7.5.0 — 120 Active Pipelines
+            Synergy Engine v7.5.2 — 135 Active Pipelines
           </Badge>
           
           {/* Main title */}
@@ -201,17 +201,17 @@ function HeroSection() {
           {/* Subtitle */}
           <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto mb-8 leading-relaxed">
             When standalone cognitive modules unite, they create emergent capabilities 
-            that transcend their individual functions. Discover 120 synergy pipelines 
-            including 22 S-tier premium offerings that power the next generation of AI intelligence.
+            that transcend their individual functions. Discover 135 synergy pipelines 
+            including 22 S-tier premium offerings + 15 v7.5.2 discoveries that power the next generation of AI intelligence.
           </p>
           
           {/* Stats row */}
           <div className="flex flex-wrap justify-center gap-8 mb-10">
             {[
-              { value: "120", label: "Pipelines", icon: GitMerge },
+              { value: "135", label: "Pipelines", icon: GitMerge },
               { value: "14", label: "Modules", icon: Cpu },
               { value: "7", label: "Categories", icon: Layers },
-              { value: "98", label: "Executors", icon: Workflow },
+              { value: "113", label: "Executors", icon: Workflow },
             ].map((stat) => (
               <motion.div
                 key={stat.label}
@@ -373,7 +373,7 @@ function SynergyExplorer() {
             Pipeline Explorer
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Browse all 120 synergy pipelines including 22 S-tier premium offerings, filter by category, and discover how modules combine
+            Browse all 135 synergy pipelines including 22 S-tier + 15 v7.5.2 discoveries, filter by category, and discover how modules combine
           </p>
         </div>
         

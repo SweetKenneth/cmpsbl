@@ -1,6 +1,6 @@
 # Key Capabilities
 
-**What CMPSBL® Does — Technical Overview v7.5.0**
+**What CMPSBL® Does — Technical Overview v7.5.2**
 
 ---
 
@@ -17,27 +17,27 @@
 | Intent Parsing | DECODE | Natural language interpretation, command routing |
 | Orchestration | CORTEX | Policy intent, autonomous decision-making |
 | Accessibility | INCLUSIVE | WCAG scanning, auto-repair, compliance reporting |
-| **Cross-Module Synergies** | CORTEX | **120 pipelines, 98 executors, 156 deployed actions** |
+| **Cross-Module Synergies** | CORTEX | **135 pipelines, 113 executors, 171 deployed actions** |
 
 ---
 
-## Cross-Module Synergy Engine (v7.5.0)
+## Cross-Module Synergy Engine (v7.5.2)
 
 ### The Problem
 Traditional AI systems operate as isolated modules. No coordination, no emergent intelligence.
 
 ### Our Solution
-**120 synergy pipelines** that orchestrate 2-5 modules together for emergent capabilities:
+**135 synergy pipelines** that orchestrate 2-5 modules together for emergent capabilities:
 
 | Category | Pipelines | Description |
 |----------|-----------|-------------|
-| **Intelligence** | 24 | Cognitive fusion, causal inference, hypothesis testing |
-| **Security** | 18 | Attack surface mapping, zero-day defense, threat prediction |
-| **Resilience** | 20 | Predictive healing, blast radius containment, failover chains |
-| **Optimization** | 18 | Cost routing, token budget, resource allocation |
-| **Accessibility** | 14 | Universal design, adaptive content, compliance automation |
-| **Automation** | 14 | Autonomous repair, workflow synthesis, deprecation management |
-| **Orchestration** | 12 | Multi-agent coordination, pipeline orchestration, team coordination |
+| **Intelligence** | 27 | Cognitive fusion, causal inference, hypothesis testing, API intelligence |
+| **Security** | 21 | Attack surface mapping, zero-day defense, creative threat modeling |
+| **Resilience** | 21 | Predictive healing, blast radius containment, proactive maintenance |
+| **Optimization** | 20 | Cost routing, token budget, config optimization, resource imagination |
+| **Accessibility** | 17 | Universal design, accessible AI, cognitive profiling |
+| **Automation** | 16 | Autonomous repair, predictive evolution, entitlement evolution |
+| **Orchestration** | 13 | Multi-agent coordination, distributed config sync, team coordination |
 
 ### Example Synergies
 
@@ -46,11 +46,35 @@ Traditional AI systems operate as isolated modules. No coordination, no emergent
 | `holistic-system-insight` | VISION + BRAIN + CORTEX + DREAM | Full system awareness with predictive insights |
 | `full-stack-evolution` | CORTEX + MODERNIZER + BRAIN + VISION + DEFENSE | Autonomous code evolution with security validation |
 | `zero-day-defense` | DEFENSE + BRAIN + VISION + CORTEX | Proactive threat detection and response |
-| `cognitive-state-preservation` | BRAIN + DREAM + VISION + CORTEX | Memory state backup with cognitive continuity |
+| `creative-threat-modeling` | DREAM + DEFENSE + BRAIN | AI imagines novel attack vectors **(v7.5.2)** |
+| `predictive-evolution-engine` | VISION + DREAM + MODERNIZER | Predictive fix synthesis **(v7.5.2)** |
+| `accessible-ai-generation` | NEXUS + INCLUSIVE + DECODE | AI outputs adapted for accessibility **(v7.5.2)** |
 
 ---
 
-## v7.5.0 New Capabilities
+## v7.5.2 New Discoveries (15 Pipelines)
+
+| Synergy | Modules | Category | Description |
+|---------|---------|----------|-------------|
+| `external-data-enrichment` | INTEGRATION + BRAIN + DECODE + NEXUS | Intelligence | External data enhanced with semantic indexing |
+| `api-intelligence-layer` | INTEGRATION + BRAIN + CORTEX + VISION | Intelligence | API responses transformed with contextual logic |
+| `creative-threat-modeling` | DREAM + DEFENSE + BRAIN | Security | AI imagines novel attack vectors |
+| `accessibility-event-stream` | RIPPLE + INCLUSIVE + VISION | Accessibility | Accessibility events captured and analyzed |
+| `config-optimization-learning` | CORE + DREAM + BRAIN + VISION | Optimization | Configuration tuned via pattern discovery |
+| `entitlement-evolution` | ACCESS + DREAM + CORTEX | Automation | Entitlements optimized via usage patterns |
+| `proactive-maintenance-engine` | MODERNIZER + VISION + BRAIN | Resilience | Maintenance predicted from degradation patterns |
+| `resource-demand-imagination` | SYSTEM + DREAM + CORTEX | Optimization | Capacity planning via demand synthesis |
+| `accessible-ai-generation` | NEXUS + INCLUSIVE + DECODE | Accessibility | AI outputs adapted for accessibility |
+| `security-posture-evolution` | DEFENSE + MODERNIZER + BRAIN + CORTEX | Security | Security policies evolved autonomously |
+| `semantic-event-enrichment` | RIPPLE + DECODE + BRAIN + VISION | Intelligence | Events enriched with semantic context |
+| `distributed-config-sync` | CORE + INTEGRATION + RIPPLE + DEFENSE | Orchestration | Config synchronized across adapters |
+| `predictive-evolution-engine` | VISION + DREAM + MODERNIZER | Automation | Degradation detected, fixes synthesized |
+| `api-entitlement-fortress` | ACCESS + INTEGRATION + DEFENSE + VISION | Security | API access controlled with threat prevention |
+| `cognitive-accessibility-profiler` | BRAIN + INCLUSIVE + VISION + DECODE | Accessibility | User accessibility needs learned over time |
+
+---
+
+## v7.5.0 Capabilities
 
 ### Production-Grade Additions (42 New Functions)
 
@@ -305,4 +329,4 @@ system.health
 
 ---
 
-*CMPSBL® v7.5.0 — Cognitive Infrastructure for Production AI*
+*CMPSBL® v7.5.2 — Cognitive Infrastructure for Production AI*
