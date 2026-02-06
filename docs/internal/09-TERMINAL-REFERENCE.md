@@ -1,7 +1,8 @@
 # 09. Terminal Command Reference
 
 **CMPSBL OS Substrate — Internal Engineering Library**
-**Version 7.5.2 SYNERGY+ | Updated 2026-02-06**
+**Version 7.5.3 SYNERGY+ Epoch | Updated 2026-02-06**
+**295+ Commands | 14 Modules | Full Observability**
 
 ---
 
