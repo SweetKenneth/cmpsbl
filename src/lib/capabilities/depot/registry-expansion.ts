@@ -27,7 +27,7 @@ export const CAPABILITY_EXPANSION: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'unsupported',
     licenseRequired: true,
-    priceUsd: 399,
+    priceUsd: 199, // normalized from $399
     pricingTier: 'advanced',
     lastUpdated: '2025-02-01T00:00:00Z',
     releaseDate: '2024-10-01T00:00:00Z',
@@ -79,7 +79,7 @@ export const CAPABILITY_EXPANSION: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'unsupported',
     licenseRequired: true,
-    priceUsd: 899,
+    priceUsd: 299, // normalized from $899
     pricingTier: 'system',
     lastUpdated: '2025-02-01T00:00:00Z',
     releaseDate: '2025-01-15T00:00:00Z',
@@ -105,7 +105,7 @@ export const CAPABILITY_EXPANSION: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'unsupported',
     licenseRequired: true,
-    priceUsd: 349,
+    priceUsd: 199, // normalized from $349
     pricingTier: 'advanced',
     lastUpdated: '2025-01-30T00:00:00Z',
     releaseDate: '2024-07-01T00:00:00Z',
@@ -289,7 +289,7 @@ export const CAPABILITY_EXPANSION: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'unsupported',
     licenseRequired: true,
-    priceUsd: 449,
+    priceUsd: 199, // normalized from $449
     pricingTier: 'system',
     lastUpdated: '2025-02-01T00:00:00Z',
     releaseDate: '2025-01-01T00:00:00Z',
@@ -343,7 +343,7 @@ export const CAPABILITY_EXPANSION: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'unsupported',
     licenseRequired: true,
-    priceUsd: 349,
+    priceUsd: 199, // normalized from $349
     pricingTier: 'advanced',
     lastUpdated: '2025-02-01T00:00:00Z',
     releaseDate: '2024-05-01T00:00:00Z',
@@ -395,7 +395,7 @@ export const CAPABILITY_EXPANSION: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'unsupported',
     licenseRequired: true,
-    priceUsd: 549,
+    priceUsd: 299, // normalized from $549
     pricingTier: 'system',
     lastUpdated: '2025-01-28T00:00:00Z',
     releaseDate: '2024-06-15T00:00:00Z',
@@ -447,7 +447,7 @@ export const CAPABILITY_EXPANSION: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'unsupported',
     licenseRequired: true,
-    priceUsd: 329,
+    priceUsd: 199, // normalized from $329
     pricingTier: 'advanced',
     lastUpdated: '2025-01-26T00:00:00Z',
     releaseDate: '2024-10-15T00:00:00Z',
@@ -475,7 +475,7 @@ export const CAPABILITY_EXPANSION: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'unsupported',
     licenseRequired: true,
-    priceUsd: 449,
+    priceUsd: 199, // normalized from $449
     pricingTier: 'system',
     lastUpdated: '2025-02-01T00:00:00Z',
     releaseDate: '2024-04-01T00:00:00Z',
@@ -501,7 +501,7 @@ export const CAPABILITY_EXPANSION: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'unsupported',
     licenseRequired: true,
-    priceUsd: 399,
+    priceUsd: 199, // normalized from $399
     pricingTier: 'advanced',
     lastUpdated: '2025-01-30T00:00:00Z',
     releaseDate: '2024-05-15T00:00:00Z',
@@ -579,7 +579,7 @@ export const CAPABILITY_EXPANSION: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'unsupported',
     licenseRequired: true,
-    priceUsd: 549,
+    priceUsd: 299, // normalized from $549
     pricingTier: 'system',
     lastUpdated: '2025-01-27T00:00:00Z',
     releaseDate: '2024-02-01T00:00:00Z',
@@ -605,7 +605,7 @@ export const CAPABILITY_EXPANSION: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'unsupported',
     licenseRequired: true,
-    priceUsd: 649,
+    priceUsd: 299, // normalized from $649
     pricingTier: 'system',
     lastUpdated: '2025-01-26T00:00:00Z',
     releaseDate: '2024-06-01T00:00:00Z',
@@ -739,7 +739,7 @@ export const CAPABILITY_EXPANSION: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'unsupported',
     licenseRequired: true,
-    priceUsd: 399,
+    priceUsd: 199, // normalized from $399
     pricingTier: 'advanced',
     lastUpdated: '2025-02-01T00:00:00Z',
     releaseDate: '2024-03-15T00:00:00Z',
@@ -765,7 +765,7 @@ export const CAPABILITY_EXPANSION: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'unsupported',
     licenseRequired: true,
-    priceUsd: 449,
+    priceUsd: 199, // normalized from $449
     pricingTier: 'system',
     lastUpdated: '2025-01-30T00:00:00Z',
     releaseDate: '2024-05-01T00:00:00Z',
@@ -871,7 +871,7 @@ export const CAPABILITY_EXPANSION: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'unsupported',
     licenseRequired: true,
-    priceUsd: 2999,
+    priceUsd: 299, // normalized from $2999
     pricingTier: 'flagship',
     lastUpdated: '2025-02-01T00:00:00Z',
     releaseDate: '2025-02-01T00:00:00Z',
@@ -897,7 +897,7 @@ export const CAPABILITY_EXPANSION: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'unsupported',
     licenseRequired: true,
-    priceUsd: 2499,
+    priceUsd: 299, // normalized from $2499
     pricingTier: 'flagship',
     lastUpdated: '2025-02-01T00:00:00Z',
     releaseDate: '2025-02-01T00:00:00Z',
@@ -923,7 +923,7 @@ export const CAPABILITY_EXPANSION: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'unsupported',
     licenseRequired: true,
-    priceUsd: 1999,
+    priceUsd: 299, // normalized from $1999
     pricingTier: 'flagship',
     lastUpdated: '2025-02-01T00:00:00Z',
     releaseDate: '2025-02-01T00:00:00Z',
@@ -949,7 +949,7 @@ export const CAPABILITY_EXPANSION: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'unsupported',
     licenseRequired: true,
-    priceUsd: 1799,
+    priceUsd: 299, // normalized from $1799
     pricingTier: 'flagship',
     lastUpdated: '2025-02-01T00:00:00Z',
     releaseDate: '2025-02-01T00:00:00Z',

@@ -31,7 +31,7 @@ export const STIER_DEPOT_CAPABILITIES: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'licensed_support',
     licenseRequired: true,
-    priceUsd: 1999,
+    priceUsd: 299, // normalized from $1999
     pricingTier: 'flagship',
     lastUpdated: '2025-02-02T00:00:00Z',
     releaseDate: '2025-02-02T00:00:00Z',
@@ -61,7 +61,7 @@ export const STIER_DEPOT_CAPABILITIES: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'licensed_support',
     licenseRequired: true,
-    priceUsd: 999,
+    priceUsd: 299, // normalized from $999
     pricingTier: 'system',
     lastUpdated: '2025-02-02T00:00:00Z',
     releaseDate: '2025-02-02T00:00:00Z',
@@ -91,7 +91,7 @@ export const STIER_DEPOT_CAPABILITIES: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'licensed_support',
     licenseRequired: true,
-    priceUsd: 1499,
+    priceUsd: 299, // normalized from $1499
     pricingTier: 'flagship',
     lastUpdated: '2025-02-02T00:00:00Z',
     releaseDate: '2025-02-02T00:00:00Z',
@@ -125,7 +125,7 @@ export const STIER_DEPOT_CAPABILITIES: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'licensed_support',
     licenseRequired: true,
-    priceUsd: 1999,
+    priceUsd: 299, // normalized from $1999
     pricingTier: 'flagship',
     lastUpdated: '2025-02-02T00:00:00Z',
     releaseDate: '2025-02-02T00:00:00Z',
@@ -155,7 +155,7 @@ export const STIER_DEPOT_CAPABILITIES: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'licensed_support',
     licenseRequired: true,
-    priceUsd: 999,
+    priceUsd: 299, // normalized from $999
     pricingTier: 'system',
     lastUpdated: '2025-02-02T00:00:00Z',
     releaseDate: '2025-02-02T00:00:00Z',
@@ -185,7 +185,7 @@ export const STIER_DEPOT_CAPABILITIES: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'licensed_support',
     licenseRequired: true,
-    priceUsd: 1499,
+    priceUsd: 299, // normalized from $1499
     pricingTier: 'flagship',
     lastUpdated: '2025-02-02T00:00:00Z',
     releaseDate: '2025-02-02T00:00:00Z',
@@ -219,7 +219,7 @@ export const STIER_DEPOT_CAPABILITIES: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'licensed_support',
     licenseRequired: true,
-    priceUsd: 1999,
+    priceUsd: 299, // normalized from $1999
     pricingTier: 'flagship',
     lastUpdated: '2025-02-02T00:00:00Z',
     releaseDate: '2025-02-02T00:00:00Z',
@@ -249,7 +249,7 @@ export const STIER_DEPOT_CAPABILITIES: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'licensed_support',
     licenseRequired: true,
-    priceUsd: 1499,
+    priceUsd: 299, // normalized from $1499
     pricingTier: 'flagship',
     lastUpdated: '2025-02-02T00:00:00Z',
     releaseDate: '2025-02-02T00:00:00Z',
@@ -279,7 +279,7 @@ export const STIER_DEPOT_CAPABILITIES: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'licensed_support',
     licenseRequired: true,
-    priceUsd: 999,
+    priceUsd: 299, // normalized from $999
     pricingTier: 'system',
     lastUpdated: '2025-02-02T00:00:00Z',
     releaseDate: '2025-02-02T00:00:00Z',
@@ -313,7 +313,7 @@ export const STIER_DEPOT_CAPABILITIES: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'licensed_support',
     licenseRequired: true,
-    priceUsd: 1499,
+    priceUsd: 299, // normalized from $1499
     pricingTier: 'flagship',
     lastUpdated: '2025-02-02T00:00:00Z',
     releaseDate: '2025-02-02T00:00:00Z',
@@ -343,7 +343,7 @@ export const STIER_DEPOT_CAPABILITIES: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'licensed_support',
     licenseRequired: true,
-    priceUsd: 999,
+    priceUsd: 299, // normalized from $999
     pricingTier: 'system',
     lastUpdated: '2025-02-02T00:00:00Z',
     releaseDate: '2025-02-02T00:00:00Z',
@@ -373,7 +373,7 @@ export const STIER_DEPOT_CAPABILITIES: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'licensed_support',
     licenseRequired: true,
-    priceUsd: 499,
+    priceUsd: 199, // normalized from $499
     pricingTier: 'advanced',
     lastUpdated: '2025-02-02T00:00:00Z',
     releaseDate: '2025-02-02T00:00:00Z',
@@ -407,7 +407,7 @@ export const STIER_DEPOT_CAPABILITIES: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'licensed_support',
     licenseRequired: true,
-    priceUsd: 499,
+    priceUsd: 199, // normalized from $499
     pricingTier: 'advanced',
     lastUpdated: '2025-02-02T00:00:00Z',
     releaseDate: '2025-02-02T00:00:00Z',
@@ -437,7 +437,7 @@ export const STIER_DEPOT_CAPABILITIES: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'licensed_support',
     licenseRequired: true,
-    priceUsd: 999,
+    priceUsd: 299, // normalized from $999
     pricingTier: 'system',
     lastUpdated: '2025-02-02T00:00:00Z',
     releaseDate: '2025-02-02T00:00:00Z',
@@ -467,7 +467,7 @@ export const STIER_DEPOT_CAPABILITIES: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'licensed_support',
     licenseRequired: true,
-    priceUsd: 999,
+    priceUsd: 299, // normalized from $999
     pricingTier: 'system',
     lastUpdated: '2025-02-02T00:00:00Z',
     releaseDate: '2025-02-02T00:00:00Z',
@@ -501,7 +501,7 @@ export const STIER_DEPOT_CAPABILITIES: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'licensed_support',
     licenseRequired: true,
-    priceUsd: 1499,
+    priceUsd: 299, // normalized from $1499
     pricingTier: 'flagship',
     lastUpdated: '2025-02-02T00:00:00Z',
     releaseDate: '2025-02-02T00:00:00Z',
@@ -531,7 +531,7 @@ export const STIER_DEPOT_CAPABILITIES: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'licensed_support',
     licenseRequired: true,
-    priceUsd: 999,
+    priceUsd: 299, // normalized from $999
     pricingTier: 'system',
     lastUpdated: '2025-02-02T00:00:00Z',
     releaseDate: '2025-02-02T00:00:00Z',
@@ -561,7 +561,7 @@ export const STIER_DEPOT_CAPABILITIES: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'licensed_support',
     licenseRequired: true,
-    priceUsd: 1999,
+    priceUsd: 299, // normalized from $1999
     pricingTier: 'flagship',
     lastUpdated: '2025-02-02T00:00:00Z',
     releaseDate: '2025-02-02T00:00:00Z',
@@ -595,7 +595,7 @@ export const STIER_DEPOT_CAPABILITIES: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'licensed_support',
     licenseRequired: true,
-    priceUsd: 999,
+    priceUsd: 299, // normalized from $999
     pricingTier: 'system',
     lastUpdated: '2025-02-02T00:00:00Z',
     releaseDate: '2025-02-02T00:00:00Z',
@@ -625,7 +625,7 @@ export const STIER_DEPOT_CAPABILITIES: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'licensed_support',
     licenseRequired: true,
-    priceUsd: 1499,
+    priceUsd: 299, // normalized from $1499
     pricingTier: 'flagship',
     lastUpdated: '2025-02-02T00:00:00Z',
     releaseDate: '2025-02-02T00:00:00Z',
@@ -655,7 +655,7 @@ export const STIER_DEPOT_CAPABILITIES: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'licensed_support',
     licenseRequired: true,
-    priceUsd: 999,
+    priceUsd: 299, // normalized from $999
     pricingTier: 'system',
     lastUpdated: '2025-02-02T00:00:00Z',
     releaseDate: '2025-02-02T00:00:00Z',
@@ -689,7 +689,7 @@ export const STIER_DEPOT_CAPABILITIES: CapabilityArtifact[] = [
     executionMode: 'local_only',
     supportPolicy: 'licensed_support',
     licenseRequired: true,
-    priceUsd: 2999,
+    priceUsd: 299, // normalized from $2999
     pricingTier: 'flagship',
     lastUpdated: '2025-02-02T00:00:00Z',
     releaseDate: '2025-02-02T00:00:00Z',
