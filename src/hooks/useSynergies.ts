@@ -102,7 +102,7 @@ export function useSynergies(options: UseSynergiesOptions = {}) {
     return {
       total: synergies.length,
       byCategory,
-      withExecutors: 113, // 113 custom executors (76 core + 22 S-tier + 15 v7.5.2)
+      withExecutors: 125, // 125 custom executors (76 core + 22 S-tier + 15 v7.5.2 + 12 v7.5.3)
       avgEstimatedMs: Math.round(avgMs),
       stierCount,
     };

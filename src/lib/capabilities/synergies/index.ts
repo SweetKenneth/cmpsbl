@@ -97,7 +97,7 @@ export {
   executePipelineOrchestration,
   executeUniversalDesignSynthesis,
   executeAdaptivePersonalization,
-  // v7.4 NEW executors (22)
+  // v7.4 executors (22)
   executeHolisticSystemInsight,
   executeMetaCognitiveReflection,
   executeNeuralSymbolicFusion,
@@ -120,6 +120,19 @@ export {
   executeSelfDocumentingEvolution,
   executeIntelligentDeprecationManager,
   executeAutonomousOptimizationLoop,
+  // v7.5.3 discovery executors (12 NEW)
+  executeMetaLearningOrchestrator,
+  executeIntentAccessibilitySynthesis,
+  executeThreatIntelligenceMesh,
+  executeResourceGovernanceEngine,
+  executeReasoningQualityAmplifier,
+  executeSecureEvolutionPipeline,
+  executeExternalApiGuardian,
+  executeCreativeProblemSolver,
+  executeUsagePatternIntelligence,
+  executePersonalizedAccessibilityEngine,
+  executeAdaptiveConfigurationIntelligence,
+  executeEventDrivenOrchestration,
 } from './executors';
 
 // S-tier exports
