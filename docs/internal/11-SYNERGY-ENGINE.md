@@ -27,14 +27,14 @@ src/lib/capabilities/synergies/
 
 | Category | Count | Key Pipelines |
 |----------|-------|---------------|
-| **Intelligence** | 12 | smart-recall, cognitive-fusion, knowledge-distillation, hypothesis-testing, causal-inference, emergent-pattern-detection |
-| **Optimization** | 11 | adaptive-routing, contextual-preload, semantic-deduplication, capacity-forecasting, cost-optimization-engine |
-| **Resilience** | 7 | self-healing, cascade-prevention, graceful-degradation, predictive-healing, chaos-resilience |
-| **Security** | 7 | threat-learning, behavioral-fingerprinting, zero-trust-validation, threat-prediction, compliance-automation |
-| **Accessibility** | 5 | adaptive-ui, cognitive-load-optimization, multimodal-adaptation |
-| **Orchestration** | 6 | autonomous-evolution, workflow-synthesis, multi-agent-coordination, sla-guardian, resource-contention-resolver |
-| **Automation** | 3 | evolution-confidence, intent-amplification |
-| **Total** | **54** | Production-ready pipelines |
+| **Intelligence** | 27 | smart-recall, cognitive-fusion, knowledge-distillation, api-intelligence-layer, external-data-enrichment, semantic-event-enrichment |
+| **Optimization** | 20 | adaptive-routing, contextual-preload, config-optimization-learning, resource-demand-imagination, cost-optimization-engine |
+| **Resilience** | 21 | self-healing, cascade-prevention, graceful-degradation, proactive-maintenance-engine, predictive-healing |
+| **Security** | 21 | threat-learning, creative-threat-modeling, security-posture-evolution, api-entitlement-fortress, compliance-automation |
+| **Accessibility** | 17 | adaptive-ui, accessible-ai-generation, accessibility-event-stream, cognitive-accessibility-profiler |
+| **Orchestration** | 13 | autonomous-evolution, workflow-synthesis, distributed-config-sync, multi-agent-coordination |
+| **Automation** | 16 | evolution-confidence, entitlement-evolution, predictive-evolution-engine |
+| **Total** | **135** | Production-ready pipelines (+15 v7.5.2 discoveries)
 
 ### 1.3 Execution Flow (SECRET)
 
