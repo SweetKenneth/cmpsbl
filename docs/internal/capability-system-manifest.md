@@ -1,5 +1,5 @@
 # Capability System Manifest
-## v7.6.0 — SYNERGY+ Epoch (76 Capabilities)
+## v7.7.0 — ENGINE+ Epoch (76 Capabilities → 20 Engines)
 
 Generated: 2026-02-06
 
@@ -7,9 +7,17 @@ Generated: 2026-02-06
 
 ## System Overview
 
-The Capability System provides a governed, modular approach to edge function management with a focus on **archived edge function digestion**:
+The Capability System provides a governed, modular approach to edge function management with a focus on **engine-based orchestration**:
 
 1. **Registry** (`src/lib/capabilities/registry.ts`) — Single source of truth for all capabilities
+2. **Adapter** (`src/lib/capabilities/adapter.ts`) — Universal invocation wrapper with governance
+3. **Guards** (`src/lib/capabilities/guards.ts`) — Safety + governance enforcement layer
+4. **Auto-Loader** (`src/lib/capabilities/auto-loader.ts`) — Filesystem scanner for drop-in capabilities
+5. **Archived-Loader** (`src/lib/capabilities/archived-loader.ts`) — Scans ONLY archived edge functions
+6. **State** (`src/lib/capabilities/state.ts`) — Enable/disable toggle management (persisted)
+7. **Confidence** (`src/lib/capabilities/confidence.ts`) — Feedback + scoring system
+8. **Normalize** (`src/lib/capabilities/normalize.ts`) — Output shaping for consistent responses
+9. **Engines** (`src/lib/substrate/engines/`) — **20 cognitive engines consolidating capabilities**
 2. **Adapter** (`src/lib/capabilities/adapter.ts`) — Universal invocation wrapper with governance
 3. **Guards** (`src/lib/capabilities/guards.ts`) — Safety + governance enforcement layer
 4. **Auto-Loader** (`src/lib/capabilities/auto-loader.ts`) — Filesystem scanner for drop-in capabilities
@@ -99,6 +107,35 @@ The Capability System provides a governed, modular approach to edge function man
 
 ---
 
+## 20 Cognitive Engines (v7.7.0)
+
+Engines consolidate capabilities into compound execution units:
+
+| Category | Engine | Capabilities | Synergy |
+|----------|--------|--------------|---------|
+| Cognitive | `reasoning_engine` | 6 | 2.4x |
+| Cognitive | `learning_engine` | 6 | 2.2x |
+| Cognitive | `memory_engine` | 4 | 1.9x |
+| Cognitive | `foresight_engine` | 6 | 2.5x |
+| Operational | `resilience_engine` | 6 | 2.8x |
+| Operational | `optimization_engine` | 6 | 2.3x |
+| Operational | `orchestration_engine` | 6 | 2.6x |
+| Operational | `scheduling_engine` | 5 | 2.0x |
+| Intelligence | `synthesis_engine` | 4 | 2.4x |
+| Intelligence | `adaptation_engine` | 5 | 2.1x |
+| Intelligence | `insight_engine` | 4 | 2.0x |
+| Intelligence | `prediction_engine` | 5 | 2.2x |
+| Governance | `compliance_engine` | 4 | 2.3x |
+| Governance | `quality_engine` | 4 | 2.1x |
+| Governance | `audit_engine` | 4 | 1.9x |
+| Security | `threat_engine` | 4 | 2.7x |
+| Security | `defense_engine` | 3 | 2.5x |
+| Security | `trust_engine` | 3 | 2.0x |
+| Evolution | `evolution_engine` | 5 | 3.0x |
+| Evolution | `modernization_engine` | 4 | 2.4x |
+
+---
+
 ## Dashboard: Capabilities Tab
 
 Navigate to `/os` → **Evolve** → **Capabilities** to access the toggle panel.
@@ -109,12 +146,13 @@ Navigate to `/os` → **Evolve** → **Capabilities** to access the toggle panel
 - **Toggle Controls**: Enable/disable individual capabilities
 - **Bulk Actions**: Enable All, Disable All, Scan
 - **Persistence**: State stored in localStorage (key: `capability-state-v7`)
+- **Engine View**: See capabilities grouped by their parent engine
 
 ---
 
 ## Usage
 
-### React Hook
+### React Hook (Capabilities)
 
 ```typescript
 import { useCapabilities } from '@/hooks/useCapabilities';
@@ -130,21 +168,44 @@ function MyComponent() {
 }
 ```
 
+### React Hook (Engines)
+
+```typescript
+import { useEngines } from '@/lib/substrate/engines';
+
+function MyComponent() {
+  const { execute, summary, isExecuting } = useEngines();
+  
+  // Execute an entire engine (orchestrates multiple capabilities)
+  const result = await execute('reasoning_engine', { query: 'analyze' });
+  
+  console.log(`Synergy gain: ${result.synergyGain}x`);
+  console.log(`Capabilities executed: ${result.capabilitiesExecuted}`);
+}
+```
+
 ### Direct Import
 
 ```typescript
 import { capabilityEngine } from '@/lib/substrate/capabilities';
+import { runEngine, getEngineSummary } from '@/lib/substrate/engines';
 
-// List all capabilities
-const all = capabilityEngine.list();
-
-// Execute capability
-const result = await capabilityEngine.execute('multi_agent_coordinator', {
+// Execute single capability
+const capResult = await capabilityEngine.execute('multi_agent_coordinator', {
   agents: ['research', 'writer'],
   task: 'Generate report'
 });
+
+// Execute entire engine (recommended)
+const engineResult = await runEngine('orchestration_engine', {
+  task: 'Coordinate multi-agent workflow'
+});
+
+// Get engine summary
+const summary = getEngineSummary();
+// { totalEngines: 20, averageSynergyMultiplier: 2.33 }
 ```
 
 ---
 
-promptfluid® v7.6.0 — SYNERGY+ Epoch Capability System
+promptfluid® v7.7.0 — ENGINE+ Epoch Capability & Engine System

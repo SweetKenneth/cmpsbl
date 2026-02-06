@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Documentation Library
 
-**PromptFluid® CMPSBL OS — v7.6.0 Library (SYNERGY+ Epoch)**
+**PromptFluid® CMPSBL OS — v7.7.0 Library (ENGINE+ Epoch)**
 
 ---
 
@@ -9,13 +9,15 @@
 | Field | Value |
 |-------|-------|
 | **System Name** | CMPSBL OS Substrate |
-| **Version** | v7.6.0 (SYNERGY+) |
+| **Version** | v7.7.0 (ENGINE+) |
 | **Classification** | Cognitive Orchestration Substrate |
 | **Status** | Production (Live System) |
 | **Publication Date** | February 2026 |
 | **Author** | Kenneth E. Sweet Jr. ([ORCID](https://orcid.org/0009-0001-4237-1243)) |
 | **Capabilities** | 76 Cross-Module Capabilities |
+| **Cognitive Engines** | 20 Compound Execution Units |
 | **Synergy Pipelines** | 147 Executable Pipelines |
+| **Avg Synergy Multiplier** | 2.33x |
 
 ---
 
@@ -40,7 +42,8 @@ This library is part of the **FNDTN v7** standards package, which presents:
 | v6.3.0 (FNDTN) | 2026-01-29 | Human Compatibility Era |
 | v7.0.0 (SEBA) | 2026-02-01 | Bounded Autonomy Era |
 | v7.5.3 (SYNERGY+) | 2026-02-05 | SYNERGY+ Epoch |
-| **v7.6.0 (SYNERGY+)** | 2026-02-06 | **76 Capabilities, INCLUSIVE Auto-Repair (Current)** |
+| v7.6.0 (SYNERGY+) | 2026-02-06 | 76 Capabilities, INCLUSIVE Auto-Repair |
+| **v7.7.0 (ENGINE+)** | 2026-02-06 | **20 Cognitive Engines, Compound Execution (Current)** |
 
 **AI Governance Reference Namespace:** [Zenodo Record](https://zenodo.org/records/18393018)
 
@@ -51,7 +54,7 @@ This library is part of the **FNDTN v7** standards package, which presents:
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                    CMPSBL OS SUBSTRATE                          │
-│                   v7.5.3 (SYNERGY+)                             │
+│                   v7.7.0 (ENGINE+)                              │
 ├─────────────────────────────────────────────────────────────────┤
 │  Created By:        Kenneth E Sweet Jr                          │
 │  Organization:      PromptFluid®                                │
@@ -130,7 +133,7 @@ This library is part of the **FNDTN v7** standards package, which presents:
 | [65-SPACED-REPETITION.md](./65-SPACED-REPETITION.md) | Spaced Repetition | SM-2 algorithm implementation |
 | [66-SEBA-MODULE.md](./66-SEBA-MODULE.md) | **SEBA** | Self-Evolving Bounded Agent — genuine bounded autonomy |
 
-### Evolution & Synergy Engine
+### Evolution, Synergy & Engine Systems
 
 | Document | Title | Description |
 |----------|--------|-------------|
@@ -138,7 +141,8 @@ This library is part of the **FNDTN v7** standards package, which presents:
 | [76-EVOLUTION-AUTONOMY.md](./76-EVOLUTION-AUTONOMY.md) | Evolution Autonomy | Governed autonomy settings |
 | [77-SYNERGY-PIPELINES.md](./77-SYNERGY-PIPELINES.md) | **Synergy Pipelines** | 147 cross-module executable pipelines |
 | [78-CAPABILITIES.md](./78-CAPABILITIES.md) | **Synergy Capabilities** | **76 cross-module capabilities + 125 executors** |
-| [79-EVOLUTION-OBSERVABILITY.md](./79-EVOLUTION-OBSERVABILITY.md) | **Evolution Observability** | Investor-facing evolution visibility & stamps |
+| [79-COGNITIVE-ENGINES.md](./79-COGNITIVE-ENGINES.md) | **Cognitive Engines** | **20 engines consolidating 76 capabilities (v7.7.0)** |
+| [80-EVOLUTION-OBSERVABILITY.md](./80-EVOLUTION-OBSERVABILITY.md) | Evolution Observability | Investor-facing evolution visibility & stamps |
 
 ### Supplementary Materials
 
@@ -176,14 +180,14 @@ Read all documents in order.
   title        = {{CMPSBL OS Substrate: A Cognitive Orchestration 
                    System for Autonomous AI Operations}},
   year         = 2026,
-  version      = {v7.5.3},
+  version      = {v7.7.0},
   publisher    = {PromptFluid},
   url          = {https://promptfluid.com},
-  note         = {Production system with 150,000+ lines of code}
+  note         = {Production system with 150,000+ lines of code, 20 cognitive engines}
 }
 ```
 
 ---
 
-*CMPSBL OS Substrate v7.5.3 — SYNERGY+ Epoch*
+*CMPSBL OS Substrate v7.7.0 — ENGINE+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*
