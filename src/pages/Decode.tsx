@@ -70,7 +70,7 @@ export default function Decode() {
           { role: 'user', content: initialMessage, timestamp: new Date() },
           { 
             role: 'interpreter', 
-            content: response.reply || "Interpretation received. Patterns forming.", 
+            content: response.reply || "Intent processed. Ready for next input.", 
             timestamp: new Date(),
             metadata: { provider: response.provider, module: 'decode' }
           }
