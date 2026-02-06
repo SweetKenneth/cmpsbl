@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Internal Engineering Library
 
-**Version 7.2.0 | SEBA+ Release | CONFIDENTIAL**
+**Version 7.5.1 | SYNERGY+ Epoch | CONFIDENTIAL**
 
 ---
 
