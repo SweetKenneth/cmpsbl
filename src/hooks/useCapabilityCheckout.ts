@@ -178,7 +178,7 @@ export function useCapabilityCheckout() {
   const isOffMenu = useCallback((capabilityId: string): boolean => {
     const result = getUnifiedStripeConfig(capabilityId);
     if (!result) return false;
-    return result.config.offMenu === true || isOffMenuCapability(capabilityId);
+    return result.config.offMenu === true || isOffMenuCapability(capabilityId) || result.config.priceUsd > PRICE_CONFIG.max;
   }, []);
 
   const isSTier = useCallback((capabilityId: string): boolean => {
