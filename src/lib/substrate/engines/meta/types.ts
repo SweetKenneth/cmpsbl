@@ -1,9 +1,9 @@
 /**
  * Meta-Engine Types
- * v7.8.0 — Meta-Engine Orchestration Layer
+ * v7.9.0 — Meta-Engine Orchestration Layer
  * 
  * Meta-Engines orchestrate multiple engines into unified execution pipelines.
- * This creates a 3-layer architecture: Capabilities → Engines → Meta-Engines
+ * This creates a 3-layer architecture: Capabilities (76) → Engines (32) → Meta-Engines (12)
  */
 
 import type { EngineId, EngineExecutionResult } from '../types';
@@ -19,7 +19,11 @@ export type MetaEngineCategory =
   | 'governance'     // End-to-end compliance
   | 'intelligence'   // Full intelligence workflows
   | 'experience'     // User experience evolution
-  | 'performance';   // Resource optimization
+  | 'performance'    // Resource optimization
+  | 'communication'  // Event-driven orchestration
+  | 'integration'    // Cross-system coordination
+  | 'knowledge'      // Knowledge management
+  | 'self_management'; // Autonomous self-management
 
 // ============================================================================
 // META-ENGINE DEFINITIONS
@@ -33,7 +37,12 @@ export type MetaEngineId =
   | 'intelligence_pipeline'
   | 'adaptation_suite'
   | 'security_fortress'
-  | 'performance_optimizer';
+  | 'performance_optimizer'
+  // v7.9.0 additions
+  | 'event_fabric'
+  | 'data_highway'
+  | 'knowledge_nexus'
+  | 'self_governance';
 
 export interface MetaEngineDefinition {
   id: MetaEngineId;

@@ -201,6 +201,12 @@ export const executeAdaptationSuite: MetaEngineExecutor = (ctx) => executeMetaEn
 export const executeSecurityFortress: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
 export const executePerformanceOptimizer: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
 
+// v7.9.0 additions
+export const executeEventFabric: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
+export const executeDataHighway: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
+export const executeKnowledgeNexus: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
+export const executeSelfGovernance: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
+
 // ============================================================================
 // EXECUTOR REGISTRY
 // ============================================================================
@@ -214,6 +220,11 @@ export const META_ENGINE_EXECUTORS: Record<MetaEngineId, MetaEngineExecutor> = {
   adaptation_suite: executeAdaptationSuite,
   security_fortress: executeSecurityFortress,
   performance_optimizer: executePerformanceOptimizer,
+  // v7.9.0 additions
+  event_fabric: executeEventFabric,
+  data_highway: executeDataHighway,
+  knowledge_nexus: executeKnowledgeNexus,
+  self_governance: executeSelfGovernance,
 };
 
 // ============================================================================

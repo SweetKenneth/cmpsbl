@@ -22,7 +22,13 @@ export type EngineCategory =
   | 'intelligence'   // Synthesis, adaptation, foresight
   | 'governance'     // Compliance, quality, audit
   | 'security'       // Threat, defense, trust
-  | 'evolution';     // Self-improvement, modernization
+  | 'evolution'      // Self-improvement, modernization
+  | 'communication'  // Event, broadcast, subscription
+  | 'integration'    // Provider routing, data transformation
+  | 'analytics'      // Dashboard, health, capacity
+  | 'experience'     // Accessibility, personalization
+  | 'knowledge'      // Graph, memory, context
+  | 'autonomy';      // Self-documentation, self-healing
 
 // ============================================================================
 // ENGINE DEFINITIONS
@@ -59,7 +65,31 @@ export type EngineId =
   
   // Evolution Engines (2)
   | 'evolution_engine'
-  | 'modernization_engine';
+  | 'modernization_engine'
+  
+  // Communication Engines (2) — v7.9.0
+  | 'broadcast_engine'
+  | 'event_engine'
+  
+  // Integration Engines (2) — v7.9.0
+  | 'routing_engine'
+  | 'transformation_engine'
+  
+  // Analytics Engines (2) — v7.9.0
+  | 'monitoring_engine'
+  | 'capacity_engine'
+  
+  // Experience Engines (2) — v7.9.0
+  | 'accessibility_engine'
+  | 'personalization_engine'
+  
+  // Knowledge Engines (2) — v7.9.0
+  | 'graph_engine'
+  | 'context_engine'
+  
+  // Autonomy Engines (2) — v7.9.0
+  | 'self_healing_engine'
+  | 'self_documentation_engine';
 
 export interface EngineDefinition {
   id: EngineId;
