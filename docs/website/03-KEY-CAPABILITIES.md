@@ -46,7 +46,9 @@ Traditional AI systems operate as isolated modules. No coordination, no emergent
 | `holistic-system-insight` | VISION + BRAIN + CORTEX + DREAM | Full system awareness with predictive insights |
 | `full-stack-evolution` | CORTEX + MODERNIZER + BRAIN + VISION + DEFENSE | Autonomous code evolution with security validation |
 | `zero-day-defense` | DEFENSE + BRAIN + VISION + CORTEX | Proactive threat detection and response |
-| `cognitive-state-preservation` | BRAIN + DREAM + VISION + CORTEX | Memory state backup with cognitive continuity |
+| `creative-threat-modeling` | DREAM + DEFENSE + BRAIN | AI imagines novel attack vectors **(v7.5.2)** |
+| `predictive-evolution-engine` | VISION + DREAM + MODERNIZER | Predictive fix synthesis **(v7.5.2)** |
+| `accessible-ai-generation` | NEXUS + INCLUSIVE + DECODE | AI outputs adapted for accessibility **(v7.5.2)** |
 
 ---
 
