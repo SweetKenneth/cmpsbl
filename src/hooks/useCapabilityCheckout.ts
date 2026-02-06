@@ -124,6 +124,8 @@ export function useCapabilityCheckout() {
           price_id: result.config.priceId,
           product_id: result.config.productId,
           capability_id: capabilityId,
+          unit_amount_usd: result.config.priceUsd,
+          item_name: capabilityName || capabilityId,
         },
       });
 

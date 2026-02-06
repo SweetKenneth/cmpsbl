@@ -52,18 +52,16 @@ export const CAPABILITY_STRIPE_CONFIG: Record<string, CapabilityStripeConfig> = 
     priceUsd: 299, // Stripe: ~$299 (normalized)
   },
   
-  // Security — OFF-MENU (Stripe prices exceed $299)
+  // Security — FOR SALE (normalized to $299 ceiling)
   'cap-threat-prediction': {
     productId: 'prod_TtzRtLTqGfw9ce',
     priceId: 'price_1SwBSXQ7FtTiAL4aqKfXt0h4',
-    priceUsd: 999, // Stripe: $999 — Licensed on request
-    offMenu: true,
+    priceUsd: 299,
   },
   'cap-compliance-auto': {
     productId: 'prod_TtzRrBPukmo6MB',
     priceId: 'price_1SwBSYQ7FtTiAL4aiwr1AAqi',
-    priceUsd: 699, // Stripe: $699 — Licensed on request
-    offMenu: true,
+    priceUsd: 199,
   },
   
   // Accessibility
@@ -85,12 +83,11 @@ export const CAPABILITY_STRIPE_CONFIG: Record<string, CapabilityStripeConfig> = 
     priceUsd: 149, // Stripe: ~$149 (normalized)
   },
   
-  // Flagship — OFF-MENU (Stripe price exceeds $299)
+  // Flagship — FOR SALE at $299 public ceiling
   'cap-cognitive-mesh': {
     productId: 'prod_TtzRdjZUT012dR',
     priceId: 'price_1SwBSeQ7FtTiAL4aPMhYfp5b',
-    priceUsd: 2499, // Stripe: $2,499 — Licensed on request
-    offMenu: true,
+    priceUsd: 299,
   },
 };
 

@@ -37,23 +37,73 @@ serve(async (req) => {
     }
 
     const body = await req.json();
-    const { 
+    const {
       product_type, // 'os' | 'template' | 'bundle' | 'stack' | 'agency' | 'studio' | 'capability' | 'stier' | 'recursive'
       price_id,
       product_id,
       template_name,
       capability_id, // For capability purchases
-      customer_email 
+      customer_email,
+      // NEW: authoritative display price sent by the UI (normalized tiers only)
+      unit_amount_usd,
+      // NEW: optional name to show in checkout when we use price_data
+      item_name,
     } = body;
 
-    if (!price_id || !product_type) {
-      throw new Error("Missing required fields: price_id, product_type");
+    if (!product_type) {
+      throw new Error('Missing required field: product_type');
+    }
+
+    // Determine checkout mode - agency and studio are subscriptions, everything else is one-time
+    const isSubscription = product_type === 'agency' || product_type === 'studio';
+    const isCapability = ['capability', 'stier', 'recursive', 'premium', 'ultra', 'expansion', 'core'].includes(product_type);
+    const isRecursive = product_type === 'recursive';
+    const checkoutMode = isSubscription ? 'subscription' : 'payment';
+
+    // In payment mode, we can use a normalized tiered amount (this is what the cards advertise)
+    const ALLOWED_USD_TIERS = new Set([19, 49, 99, 149, 199, 299]);
+
+    const parseUnitAmountUsd = (v: unknown): number | null => {
+      if (typeof v !== 'number' || !Number.isFinite(v)) return null;
+      const int = Math.round(v);
+      return int;
+    };
+
+    // Fallback normalization for legacy Stripe prices (keeps checkout <= $299 even if price_id is wrong/high)
+    const normalizePriceUsd = (priceUsd: number): number => {
+      if (priceUsd <= 19) return 19;
+      if (priceUsd <= 79) return 19;
+      if (priceUsd <= 149) return 49;
+      if (priceUsd <= 249) return 99;
+      if (priceUsd <= 399) return 149;
+      if (priceUsd <= 699) return 199;
+      return 299;
+    };
+
+    const requestedUsd = parseUnitAmountUsd(unit_amount_usd);
+
+    // If we are not in subscription mode, allow checkout to proceed with either:
+    // 1) a valid tiered amount (preferred), or
+    // 2) a Stripe price_id (legacy callers)
+    if (!isSubscription) {
+      const hasTierAmount = requestedUsd !== null;
+      if (hasTierAmount && !ALLOWED_USD_TIERS.has(requestedUsd)) {
+        throw new Error('Invalid unit_amount_usd (must be one of the normalized tiers)');
+      }
+      if (!hasTierAmount && !price_id) {
+        throw new Error('Missing required fields: price_id (or unit_amount_usd for payment mode)');
+      }
+    } else {
+      // Subscription mode always uses real Stripe price IDs
+      if (!price_id) {
+        throw new Error('Missing required field: price_id (subscription mode)');
+      }
     }
 
     // Use email if available; otherwise Stripe will collect it in checkout
     const email = userEmail || customer_email;
 
-    const origin = req.headers.get("origin") || "https://promptfluid.com";
+    const origin = req.headers.get('origin') || 'https://promptfluid.com';
 
     // Check if customer exists (only if we have an email)
     let customerId: string | undefined;
@@ -64,29 +114,68 @@ serve(async (req) => {
       }
     }
 
-    // Determine checkout mode - agency and studio are subscriptions, everything else is one-time
-    const isSubscription = product_type === 'agency' || product_type === 'studio';
-    const isCapability = ['capability', 'stier', 'recursive', 'premium', 'ultra', 'expansion', 'core'].includes(product_type);
-    const isRecursive = product_type === 'recursive';
-    const checkoutMode = isSubscription ? 'subscription' : 'payment';
+    // Build line item
+    let lineItem: any;
+
+    if (isSubscription) {
+      // Subscriptions must reference a Stripe price
+      lineItem = { price: price_id, quantity: 1 };
+    } else if (requestedUsd !== null) {
+      // Preferred: charge the advertised normalized tier amount
+      const unitAmount = requestedUsd * 100;
+      const isRealStripeProduct = typeof product_id === 'string' && product_id.startsWith('prod_');
+
+      lineItem = {
+        price_data: {
+          currency: 'usd',
+          unit_amount: unitAmount,
+          ...(isRealStripeProduct
+            ? { product: product_id }
+            : {
+                product_data: {
+                  name: item_name || template_name || capability_id || product_id || 'PromptFluid Item',
+                },
+              }),
+        },
+        quantity: 1,
+      };
+    } else {
+      // Legacy fallback: normalize the *actual* Stripe price down to the public tier ceiling
+      const price = await stripe.prices.retrieve(price_id);
+      const rawUsd = Math.round((price.unit_amount ?? 0) / 100);
+      const normalizedUsd = normalizePriceUsd(rawUsd);
+
+      if (normalizedUsd * 100 === price.unit_amount) {
+        lineItem = { price: price_id, quantity: 1 };
+      } else {
+        const product = typeof price.product === 'string' ? price.product : undefined;
+        lineItem = {
+          price_data: {
+            currency: price.currency || 'usd',
+            unit_amount: normalizedUsd * 100,
+            ...(product
+              ? { product }
+              : {
+                  product_data: {
+                    name: item_name || template_name || capability_id || product_id || 'PromptFluid Item',
+                  },
+                }),
+          },
+          quantity: 1,
+        };
+      }
+    }
 
     // Build checkout session config
     const sessionConfig: any = {
       customer: customerId,
       customer_email: customerId ? undefined : email,
-      line_items: [
-        {
-          price: price_id,
-          quantity: 1,
-        },
-      ],
+      line_items: [lineItem],
       mode: checkoutMode,
-      success_url: isCapability 
+      success_url: isCapability
         ? `${origin}/capabilities/success?session_id={CHECKOUT_SESSION_ID}&capability=${capability_id || product_id}&tier=${isRecursive ? 'recursive' : product_type}`
         : `${origin}/marketplace/success?session_id={CHECKOUT_SESSION_ID}&type=${product_type}`,
-      cancel_url: isCapability 
-        ? `${origin}/capabilities?canceled=true`
-        : `${origin}/marketplace?canceled=true`,
+      cancel_url: isCapability ? `${origin}/capabilities?canceled=true` : `${origin}/marketplace?canceled=true`,
       metadata: {
         product_type,
         product_id: product_id || '',
@@ -94,7 +183,10 @@ serve(async (req) => {
         capability_id: capability_id || '',
         is_stier: product_type === 'stier' ? 'true' : 'false',
         is_recursive: product_type === 'recursive' ? 'true' : 'false',
-        tier: isRecursive ? 'apex' : (product_type === 'stier' ? 'crown' : product_type),
+        tier: isRecursive ? 'apex' : product_type === 'stier' ? 'crown' : product_type,
+        // Helpful audit fields
+        requested_unit_amount_usd: requestedUsd !== null ? String(requestedUsd) : '',
+        legacy_price_id: price_id || '',
       },
     };
 

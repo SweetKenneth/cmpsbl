@@ -34,8 +34,7 @@ export const ULTRA_STRIPE_CONFIG: Record<string, CapabilityStripeConfig> = {
   'cap-agent-collaboration': {
     productId: 'prod_TtztDIKUpozn7V',
     priceId: 'price_1SwBtRQ7FtTiAL4a5AvVYYFU',
-    priceUsd: 899, // Stripe: $899 — Licensed on request
-    offMenu: true,
+    priceUsd: 299,
   },
 
   // === Streaming & Real-Time ===
