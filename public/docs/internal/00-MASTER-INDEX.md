@@ -85,7 +85,8 @@ ADVANCED MODES (v7.0.0)
 
 | Version | Codename | Key Features |
 |---------|----------|--------------|
-| **7.1.0** | **SEBA+** | 44 synergy pipelines, 22 executors, 10 new high-value synergies |
+| **7.5.0** | **SYNERGY Epoch** | 56 world-first functions, 120 synergy pipelines, 98 executors |
+| 7.1.0 | SEBA+ | 44 synergy pipelines, 22 executors, 10 new high-value synergies |
 | 7.0.0 | SEBA | 34 synergy pipelines, 13 executors, SEBA bounded autonomy, 67 tests |
 | 6.3.1 | FNDTN | CLM integration, mobile terminal, 260+ commands |
 | 6.0.0 | FNDTN | 14-module architecture, Evolution Cycle |
