@@ -32,13 +32,13 @@ interface ConnectionState {
   retryCount: number;
 }
 
-// Epistemic prompts — questions that open doors
-const EPISTEMIC_PROMPTS = [
-  "What patterns repeat in the noise?",
-  "What exists in the space between thoughts?",
-  "How does forgetting serve understanding?",
-  "What do you observe when the light changes?",
-  "Where do questions come from?",
+// Sample prompts — examples of what DECODE can interpret
+const SAMPLE_PROMPTS = [
+  "What can the substrate do for my project?",
+  "Explain how BRAIN memory works",
+  "How do I integrate with NEXUS providers?",
+  "What security features does DEFENSE offer?",
+  "Help me understand intent extraction",
 ];
 
 export default function Decode() {
