@@ -58,14 +58,24 @@ Foundation services that all other modules depend on.
 | **RIPPLE** | Event bus, pub/sub, cross-module messaging |
 | **ACCESS** | API keys, rate limits, entitlements |
 
-### Cognitive Layer (Boot Order 4-6)
+### Cognitive Layer (Boot Order 4-5)
 Intelligence and memory capabilities.
 
 | Module | Purpose |
 |--------|---------|
 | **BRAIN** | Memory storage, recall, consolidation |
 | **DECODE** | Natural language interpretation |
+
+### Operations Layer (Boot Order 6-10)
+Runtime services for learning, security, AI, and visibility.
+
+| Module | Purpose |
+|--------|---------|
 | **DREAM** | Autonomous learning cycles |
+| **DEFENSE** | Security, threat detection, rate limiting |
+| **NEXUS** | Multi-provider AI routing |
+| **VISION** | Observability, metrics, tracing |
+| **INTEGRATION** | External APIs, webhooks, adapters |
 
 ### Operations Layer (Boot Order 7-9)
 Runtime services for security, AI, and visibility.
