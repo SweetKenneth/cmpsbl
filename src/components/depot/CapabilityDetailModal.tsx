@@ -245,17 +245,30 @@ function ModalFooter({ capability, onClose }: { capability: CapabilityArtifact; 
             <ExternalLink className="w-3 h-3 ml-1" />
           </a>
         </Button>
-        <Button 
-          size="lg"
-          onClick={handleBuy}
-          disabled={loading || !hasCheckout}
-          className={cn(
-            "flex-1 h-12 text-base touch-manipulation",
-            isSynergy && "bg-violet-600 hover:bg-violet-700"
-          )}
-        >
-          {loading ? (
-            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+        {isOffMenuCapability ? (
+          <Button 
+            size="lg"
+            onClick={handleBuy}
+            variant="secondary"
+            className="flex-1 h-12 text-base touch-manipulation"
+          >
+            <ExternalLink className="w-4 h-4 mr-2" />
+            Inquire
+          </Button>
+        ) : (
+          <Button 
+            size="lg"
+            onClick={handleBuy}
+            disabled={loading || !hasCheckout}
+            className={cn(
+              "flex-1 h-12 text-base touch-manipulation",
+              isRecursiveCapability && "bg-primary hover:bg-primary/90",
+              isSTierCapability && !isRecursiveCapability && "bg-cyan-600 hover:bg-cyan-500",
+              isSynergy && !isPremium && "bg-violet-600 hover:bg-violet-700"
+            )}
+          >
+            {loading ? (
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
           ) : (
             <Package className="w-4 h-4 mr-2" />
           )}
