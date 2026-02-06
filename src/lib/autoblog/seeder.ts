@@ -100,7 +100,7 @@ Understanding this architecture helps you design integrations that work *with* t
 
 ---
 
-*This post reflects real architecture running in production. The substrate maintains ${await getMemoryCount()} active memories across tiers.*
+*This post reflects real architecture running in production.*
 
 **Classification**: Architecture Deep-Dive  
 **Audience**: Developers, Researchers, AI Architects`,
