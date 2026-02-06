@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — RIPPLE Module Deep Dive
 
-**Version 6.3.0 | Scientific Publication**
+**Version 7.6.0 (SYNERGY+ Epoch) | Production Ready**
 
 ---
 
@@ -11,7 +11,8 @@
 | **Document ID** | CMPSBL-LIB-011 |
 | **Module** | RIPPLE |
 | **Layer** | Kernel |
-| **Version** | v6.3.0 |
+| **Version** | v7.6.0 |
+| **Capabilities** | 5 |
 
 ---
 
@@ -39,13 +40,50 @@ RIPPLE is the message bus and event orchestration layer of the substrate, provid
 | **Layer** | Kernel |
 | **Boot Order** | 2 |
 | **Dependencies** | CORE |
-| **Version** | v6.0.0 |
+| **Capabilities** | 5 |
 
 ---
 
-## 2. Architecture
+## 2. Capabilities (5)
 
-### 2.1 Hybrid Delivery Model
+### 2.1 Core Synergies (1)
+
+| Capability | Description | Modules | Risk |
+|------------|-------------|---------|------|
+| `intent_amplification` | Transforms vague user intent into precise actions | DECODE, RIPPLE, INCLUSIVE | Low |
+
+### 2.2 NEW High-Value Capabilities (4) — v7.6.0
+
+| Capability | Description | Risk |
+|------------|-------------|------|
+| `event_correlation_engine` | Links related events across time windows to identify patterns and root causes | Low |
+| `message_deduplication_guard` | Prevents duplicate event processing with content-hash and idempotency tracking | Low |
+| `broadcast_throttle_manager` | Intelligent rate limiting for broadcasts to prevent subscriber overload | Low |
+| `subscription_health_monitor` | Monitors subscriber connection health and auto-heals stale subscriptions | Low |
+
+### 2.3 Capability Usage
+
+```typescript
+import { capabilityEngine } from '@/lib/substrate/capabilities';
+
+// Correlate events
+const correlations = await capabilityEngine.execute('event_correlation_engine', {
+  eventTypes: ['user.action', 'system.response'],
+  timeWindow: '5m',
+  correlationKey: 'sessionId'
+});
+
+// Monitor subscription health
+const health = await capabilityEngine.execute('subscription_health_monitor', {
+  namespace: 'brain.*'
+});
+```
+
+---
+
+## 3. Architecture
+
+### 3.1 Hybrid Delivery Model
 
 RIPPLE implements both PUSH and PULL delivery:
 
@@ -59,7 +97,7 @@ RIPPLE implements both PUSH and PULL delivery:
 - Worker loop pattern
 - Explicit acknowledgment required
 
-### 2.2 Event Flow
+### 3.2 Event Flow
 
 ```
 ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
@@ -73,9 +111,9 @@ RIPPLE implements both PUSH and PULL delivery:
 
 ---
 
-## 3. Key Concepts
+## 4. Key Concepts
 
-### 3.1 Topics
+### 4.1 Topics
 
 Events are organized by topic:
 
@@ -86,7 +124,7 @@ Events are organized by topic:
 | `proposal.*` | Evolution proposals |
 | `circuit.*` | Circuit breaker events |
 
-### 3.2 Job States
+### 4.2 Job States
 
 | State | Description |
 |-------|-------------|
@@ -95,27 +133,6 @@ Events are organized by topic:
 | `succeeded` | Completed successfully |
 | `failed` | Execution failed |
 | `dead_letter` | Exceeded retry limit |
-
-### 3.3 Subscription Registry
-
-Modules register subscriptions declaratively:
-
-- Topic patterns (wildcards supported)
-- Handler functions
-- Retry policies
-- Circuit breaker integration
-
----
-
-## 4. Circuit Breaker Integration
-
-RIPPLE monitors subscriber health:
-
-| State | Behavior |
-|-------|----------|
-| `closed` | Normal delivery |
-| `open` | Skip delivery, queue for later |
-| `half-open` | Test delivery |
 
 ---
 
@@ -143,9 +160,18 @@ RIPPLE monitors subscriber health:
 | Publish latency | <5ms |
 | Fan-out capacity | 1,000 subscribers |
 | Queue depth | 10,000 jobs |
-| Retention | 7 days |
+| Event correlation | <20ms |
+| Deduplication check | <2ms |
 
 ---
 
-*CMPSBL OS Substrate v6.0.0 — Human Compatibility Era*
+## 7. Changelog
+
+### v7.6.0 (2026-02-06) — SYNERGY+ Epoch
+- **4 NEW Capabilities**: event_correlation_engine, message_deduplication_guard, broadcast_throttle_manager, subscription_health_monitor
+- **Total Capabilities**: 5
+
+---
+
+*CMPSBL OS Substrate v7.6.0 — SYNERGY+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — CORE Module Deep Dive
 
-**Version 6.3.0 | Scientific Publication**
+**Version 7.6.0 (SYNERGY+ Epoch) | Production Ready**
 
 ---
 
@@ -11,7 +11,8 @@
 | **Document ID** | CMPSBL-LIB-010 |
 | **Module** | CORE |
 | **Layer** | Kernel |
-| **Version** | v6.3.0 |
+| **Version** | v7.6.0 |
+| **Capabilities** | 6 |
 
 ---
 
@@ -40,6 +41,7 @@ The CORE module serves as the kernel of the CMPSBL OS Substrate, providing funda
 | **Boot Order** | 1 (First) |
 | **Dependencies** | None |
 | **Dependents** | All other modules |
+| **Capabilities** | 6 |
 
 ---
 
@@ -125,7 +127,45 @@ Per-module circuit breakers prevent cascade failures:
 
 ---
 
-## 4. Key Operations
+## 4. Capabilities (6)
+
+### 4.1 Core Synergies (2)
+
+| Capability | Description | Modules | Risk |
+|------------|-------------|---------|------|
+| `graceful_degradation_chain` | Seamless fallback when services fail | CORE, DEFENSE, VISION | Low |
+| `resilience_orchestration` | Detects failures and applies automatic fixes | CORE, SYSTEM | Medium |
+
+### 4.2 NEW High-Value Capabilities (4) — v7.6.0
+
+| Capability | Description | Risk |
+|------------|-------------|------|
+| `priority_queue_optimizer` | Dynamically reorders task queues based on urgency, dependencies, and resource availability | Low |
+| `lifecycle_state_predictor` | Forecasts next system states to pre-warm resources and reduce latency | Low |
+| `distributed_lock_coordinator` | Manages cross-module resource locks with deadlock prevention and automatic release | Medium |
+| `fault_boundary_orchestrator` | Isolates module failures to prevent cascade effects across the substrate | Medium |
+
+### 4.3 Capability Usage
+
+```typescript
+import { capabilityEngine } from '@/lib/substrate/capabilities';
+
+// Execute priority queue optimization
+const result = await capabilityEngine.execute('priority_queue_optimizer', {
+  queues: ['critical', 'high', 'normal'],
+  constraints: { maxLatency: 100 }
+});
+
+// Predict lifecycle state
+const prediction = await capabilityEngine.execute('lifecycle_state_predictor', {
+  horizon: '5m',
+  modules: ['BRAIN', 'NEXUS']
+});
+```
+
+---
+
+## 5. Key Operations
 
 | Operation | Description |
 |-----------|-------------|
@@ -137,7 +177,7 @@ Per-module circuit breakers prevent cascade failures:
 
 ---
 
-## 5. Integration Points
+## 6. Integration Points
 
 CORE integrates with all modules:
 
@@ -150,7 +190,7 @@ CORE integrates with all modules:
 
 ---
 
-## 6. Performance Characteristics
+## 7. Performance Characteristics
 
 | Metric | Value |
 |--------|-------|
@@ -158,8 +198,22 @@ CORE integrates with all modules:
 | Routing overhead | <5ms |
 | Max concurrent jobs | 1,000 |
 | Circuit check latency | <1ms |
+| Priority queue optimization | <10ms |
+| State prediction | <50ms |
 
 ---
 
-*CMPSBL OS Substrate v6.0.0 — Human Compatibility Era*
+## 8. Changelog
+
+### v7.6.0 (2026-02-06) — SYNERGY+ Epoch
+- **4 NEW Capabilities**: priority_queue_optimizer, lifecycle_state_predictor, distributed_lock_coordinator, fault_boundary_orchestrator
+- **Total Capabilities**: 6
+
+### v6.3.0 (2026-01-29) — Engine Bus
+- Canonical routing layer for all engine execution
+- Bus-level execution logging and observability
+
+---
+
+*CMPSBL OS Substrate v7.6.0 — SYNERGY+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*
