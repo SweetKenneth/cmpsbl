@@ -189,9 +189,6 @@ function HeroSection() {
             <Combine className="w-4 h-4 mr-2" />
             Synergy Engine v7.5.2 — 135 Active Pipelines
           </Badge>
-            <Combine className="w-4 h-4 mr-2" />
-            Synergy Engine v7.5.0 — 120 Active Pipelines
-          </Badge>
           
           {/* Main title */}
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6">
