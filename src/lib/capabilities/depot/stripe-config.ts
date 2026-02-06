@@ -195,12 +195,14 @@ import { EXPANSION_STRIPE_CONFIG } from './stripe-expansion';
 import { ULTRA_STRIPE_CONFIG } from './stripe-ultra';
 import { STIER_STRIPE_CONFIG } from './stripe-stier';
 import { RECURSIVE_STRIPE_CONFIG } from './stripe-recursive';
+import { PREMIUM_STRIPE_CONFIG } from './stripe-premium';
 
-// Get all Stripe configs (Recursive first as highest tier, then S-tier)
+// Get all Stripe configs (Recursive first as highest tier, then S-tier, then Premium)
 export function getAllStripeConfigs(): Record<string, CapabilityStripeConfig> {
   return { 
     ...RECURSIVE_STRIPE_CONFIG,
-    ...STIER_STRIPE_CONFIG, 
+    ...STIER_STRIPE_CONFIG,
+    ...PREMIUM_STRIPE_CONFIG,
     ...CAPABILITY_STRIPE_CONFIG, 
     ...SYNERGY_STRIPE_CONFIG, 
     ...EXPANSION_STRIPE_CONFIG, 
@@ -212,7 +214,8 @@ export function getAllStripeConfigs(): Record<string, CapabilityStripeConfig> {
 // Get config by capability ID
 export function getStripeConfig(capabilityId: string): CapabilityStripeConfig | undefined {
   return RECURSIVE_STRIPE_CONFIG[capabilityId] 
-    || STIER_STRIPE_CONFIG[capabilityId] 
+    || STIER_STRIPE_CONFIG[capabilityId]
+    || PREMIUM_STRIPE_CONFIG[capabilityId]
     || CAPABILITY_STRIPE_CONFIG[capabilityId] 
     || SYNERGY_STRIPE_CONFIG[capabilityId] 
     || EXPANSION_STRIPE_CONFIG[capabilityId] 
@@ -223,7 +226,8 @@ export function getStripeConfig(capabilityId: string): CapabilityStripeConfig | 
 // Check if capability has Stripe integration
 export function hasStripeConfig(capabilityId: string): boolean {
   return capabilityId in RECURSIVE_STRIPE_CONFIG 
-    || capabilityId in STIER_STRIPE_CONFIG 
+    || capabilityId in STIER_STRIPE_CONFIG
+    || capabilityId in PREMIUM_STRIPE_CONFIG
     || capabilityId in CAPABILITY_STRIPE_CONFIG 
     || capabilityId in SYNERGY_STRIPE_CONFIG 
     || capabilityId in EXPANSION_STRIPE_CONFIG 

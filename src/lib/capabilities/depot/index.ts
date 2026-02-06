@@ -1,7 +1,7 @@
 /**
  * Capabilities Depot — Main Export
  * Downloadable, licensed capability artifacts with full Stripe checkout
- * v1.4.0 — 108+ Capabilities (22 S-tier, Self-Improvement Premium)
+ * v2.1.0 — 136+ Capabilities (22 S-tier, 18 Premium, 10 Recursive Self-Improvement)
  */
 
 // === Types ===
@@ -143,8 +143,24 @@ export {
   getRecursiveCapabilityCount,
 } from './registry-recursive';
 
+// === Premium Capabilities Registry ===
+export {
+  CAPABILITY_PREMIUM,
+  getAllPremiumCapabilities,
+  getPremiumCapabilityById,
+  getPremiumCapabilityCount,
+} from './registry-premium';
+
+// === Premium Stripe ===
+export {
+  PREMIUM_STRIPE_CONFIG,
+  getPremiumStripeConfig,
+  hasPremiumStripeConfig,
+  getAllPremiumStripeConfigs,
+} from './stripe-premium';
+
 // === Constants ===
-export const DEPOT_VERSION = '2.0.0'; // Unified Pricing Patch
+export const DEPOT_VERSION = '2.1.0'; // Premium Expansion
 export const DEPOT_NAME = 'Capabilities Depot';
 
 // === Legal Disclaimer ===

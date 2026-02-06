@@ -133,4 +133,4 @@ For enterprise licensing inquiries:
 
 ---
 
-*CMPSBL® Capabilities Depot — v1.0.0*
+*CMPSBL® Capabilities Depot — v2.1.0 | 136+ Cognitive Artifacts*

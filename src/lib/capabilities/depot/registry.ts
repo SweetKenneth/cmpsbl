@@ -2,7 +2,7 @@
  * Capabilities Depot — Registry
  * Metadata only, no execution logic, no runtime hooks
  * Used exclusively for UI, licensing, and downloads
- * v1.5.0 — 118+ Capabilities (including 22 S-tier, 10 Recursive Self-Improvement)
+ * v2.1.0 — 136+ Capabilities (22 S-tier, 10 Recursive, 18 Premium)
  */
 
 import type { 
@@ -17,6 +17,7 @@ import { CAPABILITY_EXPANSION } from './registry-expansion';
 import { CAPABILITY_ULTRA } from './registry-ultra';
 import { STIER_CAPABILITIES } from './registry-stier';
 import { RECURSIVE_CAPABILITIES } from './registry-recursive';
+import { CAPABILITY_PREMIUM } from './registry-premium';
 
 // === Core Capability Registry (Metadata Only) ===
 const CORE_CAPABILITIES: CapabilityArtifact[] = [
@@ -559,11 +560,12 @@ const CORE_CAPABILITIES: CapabilityArtifact[] = [
   },
 ];
 
-// === Merged Registry (Recursive + S-Tier + Core + Expansion + Ultra) ===
-// Recursive Self-Improvement capabilities first (highest value), then S-Tier
+// === Merged Registry (Recursive + S-Tier + Premium + Core + Expansion + Ultra) ===
+// Recursive Self-Improvement capabilities first (highest value), then S-Tier, then Premium
 export const CAPABILITY_REGISTRY: CapabilityArtifact[] = [
   ...RECURSIVE_CAPABILITIES,
   ...STIER_CAPABILITIES,
+  ...CAPABILITY_PREMIUM,
   ...CORE_CAPABILITIES,
   ...CAPABILITY_EXPANSION,
   ...CAPABILITY_ULTRA,
