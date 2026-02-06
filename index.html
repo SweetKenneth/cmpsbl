@@ -664,9 +664,23 @@
     <!-- Space Analytics Tracker (disabled in Lovable preview) -->
     <script>
       (function () {
-        // In Lovable preview, pages include a __lovable_token param.
-        // Disable analytics in preview to avoid extra work + noisy network errors while editing/typing.
-        const isPreview = new URLSearchParams(location.search).has("__lovable_token");
+        // Disable analytics in Lovable editor/preview to avoid extra work + noisy network errors while editing/typing.
+        const qs = new URLSearchParams(location.search);
+        const host = location.hostname;
+
+        let isEmbedded = false;
+        try {
+          isEmbedded = window.self !== window.top;
+        } catch {
+          isEmbedded = true;
+        }
+
+        const isPreview =
+          qs.has("__lovable_token") ||
+          host.includes("lovableproject.com") ||
+          host.startsWith("id-preview--") ||
+          isEmbedded;
+
         if (isPreview) return;
 
         const ENDPOINT = "https://qxuamypoxrlhfeagmjlj.supabase.co/functions/v1/collect";
