@@ -1,6 +1,6 @@
 # Atlas Command Interface
 
-**Version:** 7.2.0  
+**Version:** 7.5.3  
 **Module:** Atlas Control Plane  
 **Status:** Production
 
