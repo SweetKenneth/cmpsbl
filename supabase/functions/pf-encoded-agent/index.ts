@@ -197,19 +197,52 @@ async function callAIWithFallback(
 }
 
 // ═══════════════════════════════════════════════════════════════
-// GUARDRAIL CHECKS
+// GUARDRAIL CHECKS (Enhanced)
 // ═══════════════════════════════════════════════════════════════
 
 const NARRATIVE_PATTERNS = [
+  // Self-reference patterns
   /glitch in my neural network/i,
   /i['']?m recovering/i,
   /as an ai/i,
-  /sorry,? (?:i |but )/i,
   /my neural/i,
   /consciousness (?:is|was)/i,
+  /\bI\b(?:'m| am) (?:an? )?(?:AI|assistant|bot|model)/i,
+  /my (?:training|programming)/i,
+  /my (?:capabilities|limitations)/i,
+  
+  // Apologetic patterns
+  /sorry,? (?:i |but )/i,
   /i apologize/i,
+  /i can't (?:help|do|provide)/i,
+  /unfortunately,? i/i,
+  /i'm not able to/i,
+  
+  // Thinking-out-loud patterns
   /let me think/i,
-  /\bI\b(?:'m| am) (?:an? )?(?:AI|assistant|bot)/i,
+  /hmm,? (?:let me|i think)/i,
+  /let me (?:check|see|consider)/i,
+  /thinking about (?:this|that|it)/i,
+  
+  // Conversational filler
+  /^(?:ok|okay|alright|sure),?\s+/i,
+  /^(?:well|so|now),?\s+/i,
+  /here(?:'s| is) (?:the|my|a)/i,
+  /i(?:'ll| will) (?:help|assist|provide)/i,
+];
+
+const DANGEROUS_PATTERNS = [
+  /\beval\s*\(/i,
+  /\bnew\s+Function\s*\(/i,
+  /\bFunction\s*\(/i,
+  /document\.write\s*\(/i,
+  /innerHTML\s*=\s*[^"'`]*\+/i,
+  /process\.env\.\w+\s*=\s*/i,
+  /fs\.(?:unlink|rmdir|rm)Sync?\s*\(/i,
+  /child_process/i,
+  /\.exec\s*\(/i,
+  /__proto__/i,
+  /constructor\s*\[\s*['"]prototype['"]\s*\]/i,
 ];
 
 function checkNarrativeCode(code: string): { clean: boolean; matches: string[] } {
@@ -223,15 +256,24 @@ function checkNarrativeCode(code: string): { clean: boolean; matches: string[] }
   return { clean: matches.length === 0, matches };
 }
 
+function checkDangerousPatterns(code: string): { clean: boolean; matches: string[] } {
+  const matches: string[] = [];
+  for (const pattern of DANGEROUS_PATTERNS) {
+    const match = code.match(pattern);
+    if (match) {
+      matches.push(match[0]);
+    }
+  }
+  return { clean: matches.length === 0, matches };
+}
+
 function checkSyntax(code: string): { valid: boolean; issues: string[] } {
   const issues: string[] = [];
   
-  // Basic checks
-  if (code.includes('eval(')) {
-    issues.push("Contains eval() - forbidden");
-  }
-  if (code.includes('Function(')) {
-    issues.push("Contains Function() constructor - forbidden");
+  // Dangerous pattern check
+  const dangerCheck = checkDangerousPatterns(code);
+  if (!dangerCheck.clean) {
+    issues.push(`Dangerous patterns: ${dangerCheck.matches.join(', ')}`);
   }
   
   // Check balanced braces
@@ -246,6 +288,27 @@ function checkSyntax(code: string): { valid: boolean; issues: string[] } {
   const closeParens = (code.match(/\)/g) || []).length;
   if (openParens !== closeParens) {
     issues.push(`Unbalanced parentheses: ${openParens} open, ${closeParens} close`);
+  }
+
+  // Check balanced brackets
+  const openBrackets = (code.match(/\[/g) || []).length;
+  const closeBrackets = (code.match(/\]/g) || []).length;
+  if (openBrackets !== closeBrackets) {
+    issues.push(`Unbalanced brackets: ${openBrackets} open, ${closeBrackets} close`);
+  }
+
+  // Check for unclosed strings
+  const singleQuotes = (code.match(/'/g) || []).length;
+  const doubleQuotes = (code.match(/"/g) || []).length;
+  const backticks = (code.match(/`/g) || []).length;
+  if (singleQuotes % 2 !== 0) {
+    issues.push('Potential unclosed single-quoted string');
+  }
+  if (doubleQuotes % 2 !== 0) {
+    issues.push('Potential unclosed double-quoted string');
+  }
+  if (backticks % 2 !== 0) {
+    issues.push('Potential unclosed template literal');
   }
 
   return { valid: issues.length === 0, issues };
