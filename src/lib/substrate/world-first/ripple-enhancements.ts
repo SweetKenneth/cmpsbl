@@ -429,7 +429,7 @@ export class EventReplay {
       session.progress = (i + 1) / totalEvents;
 
       // Calculate delay for timing accuracy
-      if (i < events.length - 1 && session.options.speed > 0) {
+      if (i < events.length - 1 && session.options.speed > 0 && session.status === 'running') {
         const timeDiff = events[i + 1].timestamp - event.timestamp;
         const delay = timeDiff / session.options.speed;
         if (delay > 0 && delay < 10000) { // Max 10s delay
