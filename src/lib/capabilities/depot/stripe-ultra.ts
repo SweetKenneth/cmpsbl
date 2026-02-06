@@ -29,24 +29,25 @@ export const ULTRA_STRIPE_CONFIG: Record<string, CapabilityStripeConfig> = {
   'cap-multi-modal-fusion': {
     productId: 'prod_Ttzt18CElN7KTa',
     priceId: 'price_1SwBtPQ7FtTiAL4azbo2ffUr',
-    priceUsd: 299, // normalized from 799
+    priceUsd: 299, // Stripe: ~$299 (normalized)
   },
   'cap-agent-collaboration': {
     productId: 'prod_TtztDIKUpozn7V',
     priceId: 'price_1SwBtRQ7FtTiAL4a5AvVYYFU',
-    priceUsd: 299, // normalized from 899
+    priceUsd: 899, // Stripe: $899 — Licensed on request
+    offMenu: true,
   },
 
   // === Streaming & Real-Time ===
   'cap-streaming-response': {
     productId: 'prod_TtztHKiu9xXBSJ',
     priceId: 'price_1SwBtSQ7FtTiAL4aKnm16SBY',
-    priceUsd: 149, // normalized from 199
+    priceUsd: 149, // Stripe: ~$149 (normalized)
   },
   'cap-context-window-manager': {
     productId: 'prod_TtztKsjiCytYhQ',
     priceId: 'price_1SwBtTQ7FtTiAL4a2s7dIYCQ',
-    priceUsd: 99, // normalized from 249
+    priceUsd: 249, // Stripe: $249
   },
 
   // === Caching & Performance ===
