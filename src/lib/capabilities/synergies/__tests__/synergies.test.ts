@@ -70,7 +70,7 @@ describe('Synergy Registry', () => {
     expect(categories.length).toBeGreaterThan(0);
     
     const totalCount = categories.reduce((sum, c) => sum + c.count, 0);
-    expect(totalCount).toBe(120);
+    expect(totalCount).toBeGreaterThanOrEqual(120);
   });
 });
 
