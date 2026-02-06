@@ -1,6 +1,6 @@
 /**
  * Synergy System Exports
- * v7.5.0 — Cross-Module Pipeline Infrastructure (120 Pipelines, 98 Executors)
+ * v7.5.2 — Cross-Module Pipeline Infrastructure (135 Pipelines, 113 Executors)
  */
 
 // Types

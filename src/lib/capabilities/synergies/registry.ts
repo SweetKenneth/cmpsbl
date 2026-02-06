@@ -15,7 +15,7 @@ const registry: SynergyRegistry = {
 };
 
 /**
- * All 120 cross-module synergies (98 core + 22 S-tier)
+ * All 135 cross-module synergies (98 core + 22 S-tier + 15 v7.5.2 discoveries)
  * Each combines 2-5 modules for enhanced capability
  */
 export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [

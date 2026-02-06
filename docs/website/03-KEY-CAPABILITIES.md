@@ -329,4 +329,4 @@ system.health
 
 ---
 
-*CMPSBL® v7.5.0 — Cognitive Infrastructure for Production AI*
+*CMPSBL® v7.5.2 — Cognitive Infrastructure for Production AI*
