@@ -173,7 +173,7 @@ const PhaseNode = memo(function PhaseNode({
   
   return (
     <motion.div
-      className="relative flex flex-col items-center"
+      className="relative flex flex-col items-center overflow-visible"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.08, duration: 0.5 }}

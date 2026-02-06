@@ -639,7 +639,8 @@ export function CmpsblNav() {
       </AnimatePresence>
 
       {/* CRITICAL: Spacer for fixed nav - ensures content clears the header on ALL pages */}
-      <div className="h-16 lg:h-[72px]" />
+      {/* Added extra mobile spacing to prevent content touching nav */}
+      <div className="h-20 sm:h-16 lg:h-[72px]" />
     </>
   );
 }
