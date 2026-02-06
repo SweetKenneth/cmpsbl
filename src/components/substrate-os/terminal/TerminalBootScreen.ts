@@ -56,7 +56,7 @@ const MODULE_STATUS = [
  */
 const MODULE_GRID_DESKTOP = `
   ╔═══════════════════════════════════════════════════════════╗
-  ║              PROMPTFLUID® SUBSTRATE OS v7.5.2             ║
+  ║              PROMPTFLUID® SUBSTRATE OS v7.5.3             ║
   ║               SYNERGY+ Epoch Cognitive OS                  ║
   ╠═══════════════════════════════════════════════════════════╣
   ║                                                           ║
