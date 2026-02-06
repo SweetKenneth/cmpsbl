@@ -94,7 +94,7 @@ serve(async (req) => {
         capability_id: capability_id || '',
         is_stier: product_type === 'stier' ? 'true' : 'false',
         is_recursive: product_type === 'recursive' ? 'true' : 'false',
-        tier: isRecursive ? 'apex' : (product_type === 'stier' ? 'crown' : 'standard'),
+        tier: isRecursive ? 'apex' : (product_type === 'stier' ? 'crown' : product_type),
       },
     };
 
