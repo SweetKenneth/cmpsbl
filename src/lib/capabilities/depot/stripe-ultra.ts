@@ -46,7 +46,7 @@ export const ULTRA_STRIPE_CONFIG: Record<string, CapabilityStripeConfig> = {
   'cap-context-window-manager': {
     productId: 'prod_TtztKsjiCytYhQ',
     priceId: 'price_1SwBtTQ7FtTiAL4a2s7dIYCQ',
-    priceUsd: 249, // Stripe: $249
+    priceUsd: 199, // normalized to $199 (was $249)
   },
 
   // === Caching & Performance ===

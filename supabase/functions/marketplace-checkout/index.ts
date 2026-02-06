@@ -123,7 +123,9 @@ serve(async (req) => {
     } else if (requestedUsd !== null) {
       // Preferred: charge the advertised normalized tier amount
       const unitAmount = requestedUsd * 100;
-      const isRealStripeProduct = typeof product_id === 'string' && product_id.startsWith('prod_');
+      // Real Stripe product IDs are formatted like 'prod_ABC123' (alphanumeric after prod_)
+      // Placeholder IDs like 'prod_premium_cot' contain underscores/letters after prod_
+      const isRealStripeProduct = typeof product_id === 'string' && /^prod_[A-Za-z0-9]{10,}$/.test(product_id);
 
       lineItem = {
         price_data: {
