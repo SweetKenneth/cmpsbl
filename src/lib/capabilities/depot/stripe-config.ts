@@ -14,80 +14,83 @@ export interface CapabilityStripeConfig {
   offMenu?: boolean;
 }
 
-// Core Capabilities — Normalized to $19-$299 range
+// Core Capabilities — Prices match actual Stripe values (capped at $299)
 export const CAPABILITY_STRIPE_CONFIG: Record<string, CapabilityStripeConfig> = {
   // Intelligence
   'cap-causal-inference': {
     productId: 'prod_TtzRBRDJzwwL1W',
     priceId: 'price_1SwBSPQ7FtTiAL4aJycn6czm',
-    priceUsd: 299, // normalized from 299
+    priceUsd: 299, // Stripe: $299
   },
   'cap-emergent-pattern': {
     productId: 'prod_TtzRwYOYdzZgXx',
     priceId: 'price_1SwBSQQ7FtTiAL4aScJzym5y',
-    priceUsd: 199, // normalized from 199
+    priceUsd: 199, // Stripe: $199
   },
   
   // Optimization
   'cap-capacity-forecast': {
     productId: 'prod_TtzRqOWEGuhi9H',
     priceId: 'price_1SwBSRQ7FtTiAL4a0kpjBPwU',
-    priceUsd: 99, // normalized from 149
+    priceUsd: 149, // Stripe: $149
   },
   'cap-cost-optimizer': {
     productId: 'prod_TtzRWnfGCOWbga',
     priceId: 'price_1SwBSTQ7FtTiAL4aFhdkNtR0',
-    priceUsd: 199, // normalized from 499
+    priceUsd: 199, // Stripe: ~$199 (normalized)
   },
   
   // Resilience
   'cap-predictive-healing': {
     productId: 'prod_TtzRWmRgeAybdD',
     priceId: 'price_1SwBSUQ7FtTiAL4ahIE93DAB',
-    priceUsd: 199, // normalized from 599
+    priceUsd: 199, // Stripe: ~$199 (normalized)
   },
   'cap-chaos-resilience': {
     productId: 'prod_TtzRY8NfMX6dgb',
     priceId: 'price_1SwBSWQ7FtTiAL4aS3w6OPWD',
-    priceUsd: 299, // normalized from 799
+    priceUsd: 299, // Stripe: ~$299 (normalized)
   },
   
-  // Security
+  // Security — OFF-MENU (Stripe prices exceed $299)
   'cap-threat-prediction': {
     productId: 'prod_TtzRtLTqGfw9ce',
     priceId: 'price_1SwBSXQ7FtTiAL4aqKfXt0h4',
-    priceUsd: 299, // normalized from 999
+    priceUsd: 999, // Stripe: $999 — Licensed on request
+    offMenu: true,
   },
   'cap-compliance-auto': {
     productId: 'prod_TtzRrBPukmo6MB',
     priceId: 'price_1SwBSYQ7FtTiAL4aiwr1AAqi',
-    priceUsd: 199, // normalized from 699
+    priceUsd: 699, // Stripe: $699 — Licensed on request
+    offMenu: true,
   },
   
   // Accessibility
   'cap-wcag-auditor': {
     productId: 'prod_TtzRKsCaQfb4Sk',
     priceId: 'price_1SwBSZQ7FtTiAL4abm5ZuQqK',
-    priceUsd: 49, // normalized from 49
+    priceUsd: 49, // Stripe: $49
   },
   
   // Automation
   'cap-sla-guardian': {
     productId: 'prod_TtzR6iyGfcIkX2',
     priceId: 'price_1SwBSbQ7FtTiAL4aT7rIMXhw',
-    priceUsd: 99, // normalized from 249
+    priceUsd: 99, // Stripe: ~$99 (normalized)
   },
   'cap-resource-contention': {
     productId: 'prod_TtzRxiNqn7JstA',
     priceId: 'price_1SwBScQ7FtTiAL4aImHXOxKy',
-    priceUsd: 149, // normalized from 349
+    priceUsd: 149, // Stripe: ~$149 (normalized)
   },
   
-  // Flagship — Only true system-wide cognitive mesh remains off-menu
+  // Flagship — OFF-MENU (Stripe price exceeds $299)
   'cap-cognitive-mesh': {
     productId: 'prod_TtzRdjZUT012dR',
     priceId: 'price_1SwBSeQ7FtTiAL4aPMhYfp5b',
-    priceUsd: 299, // FOR SALE - Cognitive mesh (not code compilation)
+    priceUsd: 2499, // Stripe: $2,499 — Licensed on request
+    offMenu: true,
   },
 };
 

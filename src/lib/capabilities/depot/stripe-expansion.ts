@@ -180,26 +180,27 @@ export const EXPANSION_STRIPE_CONFIG: Record<string, CapabilityStripeConfig> = {
     priceUsd: 149, // normalized from 199
   },
 
-  // Flagship Expansion — Now FOR SALE at $299 ceiling (not code compilation)
+  // Flagship Expansion — Prices match Stripe (off-menu if >$299)
   'cap-enterprise-mesh': {
     productId: 'prod_TuzkyOPDOPz5cQ',
     priceId: 'price_1Sx9kYQ7FtTiAL4a2TQtgVOV',
-    priceUsd: 299, // FOR SALE - Enterprise mesh at correct $299 price
+    priceUsd: 299, // Stripe: $299 ✓
   },
   'cap-cognitive-platform': {
     productId: 'prod_Ttzm98E4Mv7UQ5',
     priceId: 'price_1SwBmhQ7FtTiAL4aU89A5AEH',
-    priceUsd: 299, // FOR SALE - Cognitive platform
+    priceUsd: 2499, // Stripe: $2,499 — Licensed on request
+    offMenu: true,
   },
   'cap-security-suite': {
     productId: 'prod_TtzmmOP8HKoEKM',
     priceId: 'price_1SwBmiQ7FtTiAL4aenCVhynX',
-    priceUsd: 299, // FOR SALE - Security suite
+    priceUsd: 299, // Stripe: ~$299 (normalized)
   },
   'cap-resilience-platform': {
     productId: 'prod_Ttzmse1gqAIhDb',
     priceId: 'price_1SwBmjQ7FtTiAL4aU1oKwtPF',
-    priceUsd: 299, // FOR SALE - Resilience platform
+    priceUsd: 299, // Stripe: ~$299 (normalized)
   },
 };
 

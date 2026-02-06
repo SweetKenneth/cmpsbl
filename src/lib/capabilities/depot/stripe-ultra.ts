@@ -22,7 +22,7 @@ export const ULTRA_STRIPE_CONFIG: Record<string, CapabilityStripeConfig> = {
   'cap-prompt-engineering': {
     productId: 'prod_TtztXvWM1m2CBW',
     priceId: 'price_1SwBtOQ7FtTiAL4abBdbZwYB',
-    priceUsd: 149, // normalized from 299
+    priceUsd: 299, // Stripe: $299
   },
 
   // === Multi-Modal & Fusion ===
