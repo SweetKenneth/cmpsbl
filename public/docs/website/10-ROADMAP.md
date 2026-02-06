@@ -148,14 +148,14 @@ Enterprise and Research tier customers participate in quarterly roadmap reviews 
 
 | Version | Date | Highlights |
 |---------|------|------------|
+| v7.5.3 | Feb 2026 | SYNERGY+ Epoch, 147 pipelines, 136+ depot capabilities |
+| v7.5.0 | Jan 2026 | Production-grade additions, 42 new functions |
 | v7.0.0 | Jan 2026 | Production release, 14 modules |
 | v6.3.1 | Jan 2026 | FNDTN documentation suite |
 | v6.0.0 | Dec 2025 | Licensing model, enterprise features |
 | v5.0.0 | Nov 2025 | Self-evolution engine |
 | v4.0.0 | Oct 2025 | Observability layer |
 | v3.0.0 | Sep 2025 | Multi-provider routing |
-| v2.0.0 | Aug 2025 | Memory system |
-| v1.0.0 | Jul 2025 | Initial architecture |
 
 ---
 
