@@ -1,5 +1,5 @@
 /**
- * Dashboard Metrics Hero v7.0.0 - Premium system overview
+ * Dashboard Metrics Hero v7.5.2 - Premium system overview
  * Large health ring with gradient accents - 14 Modules
  */
 
