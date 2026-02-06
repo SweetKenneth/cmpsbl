@@ -503,7 +503,7 @@ export class CognitiveAnalyzer {
         return dataStr.includes('api_key') || dataStr.includes('apikey') || dataStr.includes('secret');
       }) || [];
 
-      if (keyEvents && keyEvents.length > 0) {
+      if (apiKeyEvents.length > 0) {
         insights.push({
           id: crypto.randomUUID(),
           type: 'vulnerability',
