@@ -31,7 +31,7 @@ export function DecodeChat() {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: '✨ Hello! I\'m Decode — the cognitive interface of the promptfluid® substrate.\n\nHow can I help you explore cognitive orchestration today?' }
+    { role: 'assistant', content: 'DECODE online. I interpret natural language into structured intents and route them to the appropriate substrate modules.\n\nHow can I help you?' }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
