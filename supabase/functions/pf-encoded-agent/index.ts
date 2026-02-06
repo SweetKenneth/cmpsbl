@@ -370,26 +370,49 @@ async function verifyAndFix(
 ): Promise<GeneratedCode['verification'] & { fixedCode?: string }> {
   const syntaxCheck = checkSyntax(code);
   const narrativeCheck = checkNarrativeCode(code);
+  const dangerCheck = checkDangerousPatterns(code);
   
   let anchorsPreserved = true;
+  let removedAnchors: string[] = [];
   if (existingCode) {
     const anchorsBefore = extractAnchors(existingCode);
     const anchorsAfter = extractAnchors(code);
     const comparison = compareAnchors(anchorsBefore, anchorsAfter);
     anchorsPreserved = comparison.preserved;
+    removedAnchors = comparison.removed;
   }
 
-  const issues = [
-    ...syntaxCheck.issues,
-    ...narrativeCheck.matches.map(m => `Narrative pattern: "${m}"`),
-  ];
+  const issues: string[] = [];
+  
+  // Syntax issues (includes dangerous patterns now)
+  issues.push(...syntaxCheck.issues);
+  
+  // Narrative patterns (always blocked)
+  if (!narrativeCheck.clean) {
+    issues.push(...narrativeCheck.matches.map(m => `Narrative pattern: "${m}"`));
+  }
+  
+  // Dangerous patterns (always blocked, no retry)
+  if (!dangerCheck.clean) {
+    console.error(`🚫 DANGEROUS CODE BLOCKED: ${dangerCheck.matches.join(', ')}`);
+    return {
+      syntax_valid: false,
+      anchors_preserved: anchorsPreserved,
+      narrative_clean: narrativeCheck.clean,
+      dangerous_patterns_clean: false,
+      issues: [`BLOCKED: Dangerous patterns detected: ${dangerCheck.matches.join(', ')}`],
+      fixedCode: undefined,
+    };
+  }
+  
+  // Anchor preservation
   if (!anchorsPreserved) {
-    issues.push("Anchors (exports/handlers/entrypoints) not preserved");
+    issues.push(`Anchors not preserved: ${removedAnchors.join(', ')}`);
   }
 
-  // If issues and we have retries left, try to fix
+  // If issues and we have retries left, try to fix (but not for dangerous patterns)
   if (issues.length > 0 && attempt < config.max_retries) {
-    console.log(`Verification failed (attempt ${attempt}), attempting self-fix...`);
+    console.log(`Verification failed (attempt ${attempt}/${config.max_retries}), attempting self-fix...`);
     
     const fixPrompt = `The following TypeScript code has issues that need fixing:
 
@@ -401,22 +424,39 @@ ${issues.map(i => `- ${i}`).join('\n')}
 ${code}
 \`\`\`
 
-Fix ALL issues and return ONLY the corrected code (no explanation, no markdown).`;
+## Rules
+1. Fix ALL issues listed above
+2. Do NOT add any narrative patterns (no "I am", "as an AI", "let me", etc.)
+3. PRESERVE all existing exports, handlers, and entrypoints
+4. Return ONLY the corrected code (no explanations, no markdown)`;
 
     const fixResult = await callAIWithFallback(fixPrompt, SYSTEM_PROMPT_FIX, config);
     
     if (fixResult.content) {
+      // Extract code from response if wrapped in markdown
+      let fixedCode = fixResult.content;
+      const codeMatch = fixResult.content.match(/```(?:typescript|ts)?\n?([\s\S]*?)```/);
+      if (codeMatch) {
+        fixedCode = codeMatch[1].trim();
+      }
+      
       // Recursively verify the fix
-      return verifyAndFix(fixResult.content, existingCode, config, attempt + 1);
+      return verifyAndFix(fixedCode, existingCode, config, attempt + 1);
     }
   }
+
+  const allPassed = syntaxCheck.valid && 
+                    narrativeCheck.clean && 
+                    dangerCheck.clean && 
+                    anchorsPreserved;
 
   return {
     syntax_valid: syntaxCheck.valid,
     anchors_preserved: anchorsPreserved,
     narrative_clean: narrativeCheck.clean,
+    dangerous_patterns_clean: dangerCheck.clean,
     issues,
-    fixedCode: issues.length === 0 ? code : undefined,
+    fixedCode: allPassed ? code : undefined,
   };
 }
 
