@@ -35,7 +35,7 @@ Yes. The MODERNIZER module proposes code improvements, which go through confiden
 
 ### Can I self-host CMPSBL?
 
-Yes. All license tiers include the ability to deploy on your own infrastructure. You have complete control over where your data lives.
+Yes, with an Enterprise license. Enterprise tier includes source code access and self-hosted deployment rights. API tiers (Developer/Team/Research) use our secure hosted infrastructure.
 
 ### How does memory work?
 
