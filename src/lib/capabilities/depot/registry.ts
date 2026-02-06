@@ -571,29 +571,57 @@ export const CAPABILITY_REGISTRY: CapabilityArtifact[] = [
   ...CAPABILITY_ULTRA,
 ];
 
-// === Get All Capabilities ===
+// === Import unified pricing to sync prices ===
+import { getStripeConfig } from './stripe-config';
+
+/**
+ * Apply Stripe config prices to a capability.
+ * This ensures displayed prices match checkout prices.
+ */
+function applyUnifiedPricing(capability: CapabilityArtifact): CapabilityArtifact {
+  const stripeConfig = getStripeConfig(capability.id);
+  if (stripeConfig) {
+    return {
+      ...capability,
+      priceUsd: stripeConfig.priceUsd,
+      // Update pricing tier based on new price
+      pricingTier: stripeConfig.priceUsd <= 49 ? 'utility' 
+        : stripeConfig.priceUsd <= 149 ? 'advanced'
+        : stripeConfig.priceUsd <= 299 ? 'system'
+        : 'flagship',
+    };
+  }
+  return capability;
+}
+
+// === Get All Capabilities (with unified pricing) ===
 export function getAllCapabilities(): CapabilityArtifact[] {
-  return [...CAPABILITY_REGISTRY];
+  return CAPABILITY_REGISTRY.map(applyUnifiedPricing);
 }
 
-// === Get Capability by ID ===
+// === Get Capability by ID (with unified pricing) ===
 export function getCapabilityById(id: string): CapabilityArtifact | undefined {
-  return CAPABILITY_REGISTRY.find(c => c.id === id);
+  const capability = CAPABILITY_REGISTRY.find(c => c.id === id);
+  return capability ? applyUnifiedPricing(capability) : undefined;
 }
 
-// === Get Capability by Slug ===
+// === Get Capability by Slug (with unified pricing) ===
 export function getCapabilityBySlug(slug: string): CapabilityArtifact | undefined {
-  return CAPABILITY_REGISTRY.find(c => c.slug === slug);
+  const capability = CAPABILITY_REGISTRY.find(c => c.slug === slug);
+  return capability ? applyUnifiedPricing(capability) : undefined;
 }
 
-// === Get Capabilities by Category ===
+// === Get Capabilities by Category (with unified pricing) ===
 export function getCapabilitiesByCategory(category: CapabilityCategory): CapabilityArtifact[] {
-  return CAPABILITY_REGISTRY.filter(c => c.category === category);
+  return CAPABILITY_REGISTRY
+    .filter(c => c.category === category)
+    .map(applyUnifiedPricing);
 }
 
-// === Filter Capabilities ===
+// === Filter Capabilities (with unified pricing) ===
 export function filterCapabilities(filters: CapabilityFilters): CapabilityArtifact[] {
-  let results = [...CAPABILITY_REGISTRY];
+  // Apply unified pricing first
+  let results = CAPABILITY_REGISTRY.map(applyUnifiedPricing);
 
   // Category filter
   if (filters.category) {
