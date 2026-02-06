@@ -1,6 +1,6 @@
 /**
  * Encoded Guardrails — Module Exports
- * v2.0.0 — Lov-baseline implementation agent with safety guardrails
+ * v2.1.0 — Lov-baseline implementation agent with enhanced safety guardrails
  */
 
 // Policy
@@ -15,6 +15,8 @@ export {
   getRiskBand,
   isProtectedPath,
   getApprovalRequirements,
+  hasDangerousPatterns,
+  validateEdgeFunction,
 } from './policy';
 
 // Configuration

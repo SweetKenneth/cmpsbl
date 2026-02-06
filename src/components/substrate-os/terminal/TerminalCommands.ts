@@ -552,6 +552,23 @@ export const MODULE_CLM_COMMANDS: CommandDefinition[] = [
   { command: 'mclm.feed', description: 'View latest intelligence feed', category: 'clm', icon: Activity, requiresOperator: false, args: '[limit]', example: 'mclm.feed 10' },
 ];
 
+export const ENCODED_COMMANDS: CommandDefinition[] = [
+  { command: 'encoded.status', description: 'Agent status and configuration', category: 'cortex', icon: PenTool, requiresOperator: false },
+  { command: 'encoded.config', description: 'View current configuration', category: 'cortex', icon: Settings, requiresOperator: false },
+  { command: 'encoded.dry_run', description: 'Enable dry-run mode (preview only)', category: 'cortex', icon: FileCheck, requiresOperator: true },
+  { command: 'encoded.enable', description: 'Enable human approval mode', category: 'cortex', icon: PenTool, requiresOperator: true },
+  { command: 'encoded.semi_auto', description: 'Enable semi-autonomous mode', category: 'cortex', icon: PenTool, requiresOperator: true },
+  { command: 'encoded.verify', description: 'Verify code against guardrails', category: 'cortex', icon: FileCheck, requiresOperator: true, args: '<code>' },
+  { command: 'encoded.generate', description: 'Generate code (with task spec)', category: 'cortex', icon: FileEdit, requiresOperator: true },
+  { command: 'encoded.patterns', description: 'List learned code patterns', category: 'cortex', icon: Brain, requiresOperator: false },
+  { command: 'encoded.history', description: 'Recent Encoded executions', category: 'cortex', icon: Clock, requiresOperator: false },
+  { command: 'encoded.seba.enable', description: 'Enable SEBA integration', category: 'cortex', icon: GitBranch, requiresOperator: true },
+  { command: 'encoded.seba.disable', description: 'Disable SEBA integration', category: 'cortex', icon: GitBranch, requiresOperator: true },
+  { command: 'encoded.model.lovable', description: 'Use Lovable AI as primary', category: 'cortex', icon: Sparkles, requiresOperator: true },
+  { command: 'encoded.model.free', description: 'Use free-tier as primary', category: 'cortex', icon: Sparkles, requiresOperator: true },
+  { command: 'encoded.help', description: 'Show all encoded commands', category: 'cortex', icon: Terminal, requiresOperator: false },
+];
+
 export const ALL_COMMANDS: CommandDefinition[] = [
   ...BRAIN_COMMANDS,
   ...DECODE_COMMANDS,
@@ -570,6 +587,7 @@ export const ALL_COMMANDS: CommandDefinition[] = [
   ...ACCESS_COMMANDS,
   ...INTEGRATION_COMMANDS,
   ...AUTOBLOG_COMMANDS,
+  ...ENCODED_COMMANDS,
   ...META_COMMANDS,
 ];
 

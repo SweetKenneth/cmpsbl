@@ -1,6 +1,6 @@
 /**
  * Terminal Module Exports
- * v7.5.3 — Command execution, validation, governance, and synergy commands (280+ commands)
+ * v7.5.4 — Command execution, validation, governance, synergy, and encoded commands (295+ commands)
  */
 
 // Command execution with governance
@@ -32,3 +32,10 @@ export {
   executeSynergyCommand,
   getSynergiesByModuleCommand,
 } from './synergy-handlers';
+
+// Encoded handlers
+export {
+  registerEncodedHandlers,
+  executeEncodedCommand,
+  setEncodedMode,
+} from './encoded-handlers';

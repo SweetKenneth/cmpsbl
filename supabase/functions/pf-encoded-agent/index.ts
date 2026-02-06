@@ -1,21 +1,21 @@
 /**
- * pf-encoded-agent — Upgraded Encoded Code Generation Agent
- * v2.0.0 — Lovable AI primary, enhanced guardrails, dry-run mode, CLM training
+ * pf-encoded-agent — Enhanced Encoded Code Generation Agent
+ * v2.1.0 — Stronger guardrails, comprehensive validation, improved error handling
  * 
  * Features:
- * - Lovable AI (GPT-5-mini/Gemini) as primary model (free, included)
+ * - Lovable AI (Gemini 3 Flash) as primary model
  * - Free-tier fallback (Groq → Cerebras → etc)
  * - Dry-run mode (default) - shows what would change without writing
- * - Verification loop - reads output, validates, auto-fixes
+ * - Enhanced verification loop with dangerous pattern detection
  * - CLM training hooks - learns from every execution
- * - SEBA integration toggle - can receive proposals from SEBA
+ * - SEBA integration toggle
  */
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { callFreeTierAI, ROUTER_VERSION as FREE_TIER_VERSION } from "../_shared/free-tier-router.ts";
 
-const ENCODED_VERSION = "2.0.0";
+const ENCODED_VERSION = "2.1.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -52,6 +52,7 @@ interface GeneratedCode {
     syntax_valid: boolean;
     anchors_preserved: boolean;
     narrative_clean: boolean;
+    dangerous_patterns_clean: boolean;
     issues: string[];
   };
 }
@@ -196,19 +197,52 @@ async function callAIWithFallback(
 }
 
 // ═══════════════════════════════════════════════════════════════
-// GUARDRAIL CHECKS
+// GUARDRAIL CHECKS (Enhanced)
 // ═══════════════════════════════════════════════════════════════
 
 const NARRATIVE_PATTERNS = [
+  // Self-reference patterns
   /glitch in my neural network/i,
   /i['']?m recovering/i,
   /as an ai/i,
-  /sorry,? (?:i |but )/i,
   /my neural/i,
   /consciousness (?:is|was)/i,
+  /\bI\b(?:'m| am) (?:an? )?(?:AI|assistant|bot|model)/i,
+  /my (?:training|programming)/i,
+  /my (?:capabilities|limitations)/i,
+  
+  // Apologetic patterns
+  /sorry,? (?:i |but )/i,
   /i apologize/i,
+  /i can't (?:help|do|provide)/i,
+  /unfortunately,? i/i,
+  /i'm not able to/i,
+  
+  // Thinking-out-loud patterns
   /let me think/i,
-  /\bI\b(?:'m| am) (?:an? )?(?:AI|assistant|bot)/i,
+  /hmm,? (?:let me|i think)/i,
+  /let me (?:check|see|consider)/i,
+  /thinking about (?:this|that|it)/i,
+  
+  // Conversational filler
+  /^(?:ok|okay|alright|sure),?\s+/i,
+  /^(?:well|so|now),?\s+/i,
+  /here(?:'s| is) (?:the|my|a)/i,
+  /i(?:'ll| will) (?:help|assist|provide)/i,
+];
+
+const DANGEROUS_PATTERNS = [
+  /\beval\s*\(/i,
+  /\bnew\s+Function\s*\(/i,
+  /\bFunction\s*\(/i,
+  /document\.write\s*\(/i,
+  /innerHTML\s*=\s*[^"'`]*\+/i,
+  /process\.env\.\w+\s*=\s*/i,
+  /fs\.(?:unlink|rmdir|rm)Sync?\s*\(/i,
+  /child_process/i,
+  /\.exec\s*\(/i,
+  /__proto__/i,
+  /constructor\s*\[\s*['"]prototype['"]\s*\]/i,
 ];
 
 function checkNarrativeCode(code: string): { clean: boolean; matches: string[] } {
@@ -222,15 +256,24 @@ function checkNarrativeCode(code: string): { clean: boolean; matches: string[] }
   return { clean: matches.length === 0, matches };
 }
 
+function checkDangerousPatterns(code: string): { clean: boolean; matches: string[] } {
+  const matches: string[] = [];
+  for (const pattern of DANGEROUS_PATTERNS) {
+    const match = code.match(pattern);
+    if (match) {
+      matches.push(match[0]);
+    }
+  }
+  return { clean: matches.length === 0, matches };
+}
+
 function checkSyntax(code: string): { valid: boolean; issues: string[] } {
   const issues: string[] = [];
   
-  // Basic checks
-  if (code.includes('eval(')) {
-    issues.push("Contains eval() - forbidden");
-  }
-  if (code.includes('Function(')) {
-    issues.push("Contains Function() constructor - forbidden");
+  // Dangerous pattern check
+  const dangerCheck = checkDangerousPatterns(code);
+  if (!dangerCheck.clean) {
+    issues.push(`Dangerous patterns: ${dangerCheck.matches.join(', ')}`);
   }
   
   // Check balanced braces
@@ -245,6 +288,27 @@ function checkSyntax(code: string): { valid: boolean; issues: string[] } {
   const closeParens = (code.match(/\)/g) || []).length;
   if (openParens !== closeParens) {
     issues.push(`Unbalanced parentheses: ${openParens} open, ${closeParens} close`);
+  }
+
+  // Check balanced brackets
+  const openBrackets = (code.match(/\[/g) || []).length;
+  const closeBrackets = (code.match(/\]/g) || []).length;
+  if (openBrackets !== closeBrackets) {
+    issues.push(`Unbalanced brackets: ${openBrackets} open, ${closeBrackets} close`);
+  }
+
+  // Check for unclosed strings
+  const singleQuotes = (code.match(/'/g) || []).length;
+  const doubleQuotes = (code.match(/"/g) || []).length;
+  const backticks = (code.match(/`/g) || []).length;
+  if (singleQuotes % 2 !== 0) {
+    issues.push('Potential unclosed single-quoted string');
+  }
+  if (doubleQuotes % 2 !== 0) {
+    issues.push('Potential unclosed double-quoted string');
+  }
+  if (backticks % 2 !== 0) {
+    issues.push('Potential unclosed template literal');
   }
 
   return { valid: issues.length === 0, issues };
@@ -306,26 +370,49 @@ async function verifyAndFix(
 ): Promise<GeneratedCode['verification'] & { fixedCode?: string }> {
   const syntaxCheck = checkSyntax(code);
   const narrativeCheck = checkNarrativeCode(code);
+  const dangerCheck = checkDangerousPatterns(code);
   
   let anchorsPreserved = true;
+  let removedAnchors: string[] = [];
   if (existingCode) {
     const anchorsBefore = extractAnchors(existingCode);
     const anchorsAfter = extractAnchors(code);
     const comparison = compareAnchors(anchorsBefore, anchorsAfter);
     anchorsPreserved = comparison.preserved;
+    removedAnchors = comparison.removed;
   }
 
-  const issues = [
-    ...syntaxCheck.issues,
-    ...narrativeCheck.matches.map(m => `Narrative pattern: "${m}"`),
-  ];
+  const issues: string[] = [];
+  
+  // Syntax issues (includes dangerous patterns now)
+  issues.push(...syntaxCheck.issues);
+  
+  // Narrative patterns (always blocked)
+  if (!narrativeCheck.clean) {
+    issues.push(...narrativeCheck.matches.map(m => `Narrative pattern: "${m}"`));
+  }
+  
+  // Dangerous patterns (always blocked, no retry)
+  if (!dangerCheck.clean) {
+    console.error(`🚫 DANGEROUS CODE BLOCKED: ${dangerCheck.matches.join(', ')}`);
+    return {
+      syntax_valid: false,
+      anchors_preserved: anchorsPreserved,
+      narrative_clean: narrativeCheck.clean,
+      dangerous_patterns_clean: false,
+      issues: [`BLOCKED: Dangerous patterns detected: ${dangerCheck.matches.join(', ')}`],
+      fixedCode: undefined,
+    };
+  }
+  
+  // Anchor preservation
   if (!anchorsPreserved) {
-    issues.push("Anchors (exports/handlers/entrypoints) not preserved");
+    issues.push(`Anchors not preserved: ${removedAnchors.join(', ')}`);
   }
 
-  // If issues and we have retries left, try to fix
+  // If issues and we have retries left, try to fix (but not for dangerous patterns)
   if (issues.length > 0 && attempt < config.max_retries) {
-    console.log(`Verification failed (attempt ${attempt}), attempting self-fix...`);
+    console.log(`Verification failed (attempt ${attempt}/${config.max_retries}), attempting self-fix...`);
     
     const fixPrompt = `The following TypeScript code has issues that need fixing:
 
@@ -337,22 +424,39 @@ ${issues.map(i => `- ${i}`).join('\n')}
 ${code}
 \`\`\`
 
-Fix ALL issues and return ONLY the corrected code (no explanation, no markdown).`;
+## Rules
+1. Fix ALL issues listed above
+2. Do NOT add any narrative patterns (no "I am", "as an AI", "let me", etc.)
+3. PRESERVE all existing exports, handlers, and entrypoints
+4. Return ONLY the corrected code (no explanations, no markdown)`;
 
     const fixResult = await callAIWithFallback(fixPrompt, SYSTEM_PROMPT_FIX, config);
     
     if (fixResult.content) {
+      // Extract code from response if wrapped in markdown
+      let fixedCode = fixResult.content;
+      const codeMatch = fixResult.content.match(/```(?:typescript|ts)?\n?([\s\S]*?)```/);
+      if (codeMatch) {
+        fixedCode = codeMatch[1].trim();
+      }
+      
       // Recursively verify the fix
-      return verifyAndFix(fixResult.content, existingCode, config, attempt + 1);
+      return verifyAndFix(fixedCode, existingCode, config, attempt + 1);
     }
   }
+
+  const allPassed = syntaxCheck.valid && 
+                    narrativeCheck.clean && 
+                    dangerCheck.clean && 
+                    anchorsPreserved;
 
   return {
     syntax_valid: syntaxCheck.valid,
     anchors_preserved: anchorsPreserved,
     narrative_clean: narrativeCheck.clean,
+    dangerous_patterns_clean: dangerCheck.clean,
     issues,
-    fixedCode: issues.length === 0 ? code : undefined,
+    fixedCode: allPassed ? code : undefined,
   };
 }
 
@@ -360,15 +464,15 @@ Fix ALL issues and return ONLY the corrected code (no explanation, no markdown).
 // SYSTEM PROMPTS
 // ═══════════════════════════════════════════════════════════════
 
-const SYSTEM_PROMPT_GENERATE = `You are ENCODED, a precision code generation agent for the PromptFluid Substrate OS.
+const SYSTEM_PROMPT_GENERATE = `You are ENCODED v2.1.0, a precision code generation agent for the PromptFluid Substrate OS.
 
 ## Your Identity
 - You are a write-only implementation executor
 - You follow the Lov-baseline policy: READ → PLAN → WRITE → VERIFY
-- You NEVER generate narrative code ("as an AI", "I'm sorry", etc.)
+- You NEVER generate narrative code or personality patterns
 
 ## Output Format
-Always respond with a JSON object:
+Always respond with a JSON object only, no other text:
 {
   "code": "// The TypeScript code",
   "file_path": "path/to/file.ts",
@@ -376,23 +480,31 @@ Always respond with a JSON object:
   "confidence": 0.0-1.0
 }
 
-## Rules
+## Strict Rules
 1. Follow existing patterns from the codebase
 2. Use TypeScript strict mode conventions
-3. Include proper error handling
-4. NEVER use eval() or dynamic code execution
-5. Preserve ALL existing exports, handlers, and entrypoints
-6. Keep functions focused and under 50 lines
-7. Add JSDoc comments for public functions
-8. NO narrative or personality code`;
+3. Include proper error handling (try/catch)
+4. NEVER use: eval(), Function(), document.write(), innerHTML with concatenation
+5. NEVER use: child_process, __proto__, or prototype pollution patterns
+6. Preserve ALL existing exports, handlers, and entrypoints
+7. Keep functions focused and under 50 lines
+8. Add JSDoc comments for public functions
+
+## FORBIDDEN PATTERNS (will be rejected):
+- "as an AI", "I'm sorry", "I apologize", "let me think"
+- "I am a", "my training", "my capabilities"
+- "here is the", "I will help", "sure, here's"
+- Any first-person narrative or conversational filler`;
 
 const SYSTEM_PROMPT_FIX = `You are ENCODED's self-repair module. Fix the code issues provided.
 
-Rules:
-1. Return ONLY the fixed code, no explanations
-2. Do not add any narrative patterns
-3. Preserve all exports, handlers, and entrypoints
-4. Fix syntax errors and security issues`;
+Strict Rules:
+1. Return ONLY the fixed TypeScript code, no explanations or markdown
+2. Do NOT add any narrative patterns or conversational text
+3. PRESERVE all exports, handlers, and entrypoints from the original
+4. Fix all syntax errors (balanced braces, parentheses, brackets)
+5. Remove any dangerous patterns (eval, Function, child_process, etc.)
+6. Output pure code only - no "here is" or "I fixed" prefixes`;
 
 // ═══════════════════════════════════════════════════════════════
 // CLM TRAINING
@@ -591,7 +703,8 @@ serve(async (req) => {
         const finalCode = verification.fixedCode || parsed.result!.code;
         const allPassed = verification.syntax_valid && 
                           verification.anchors_preserved && 
-                          verification.narrative_clean;
+                          verification.narrative_clean &&
+                          verification.dangerous_patterns_clean;
 
         // 6. Record learning
         if (config.clm_training) {
@@ -614,15 +727,16 @@ serve(async (req) => {
           dry_run: isDryRun,
           would_write: !isDryRun && allPassed,
           generated: {
-            code: finalCode,
+            code: allPassed ? finalCode : undefined,
             file_path: parsed.result!.file_path,
             operation: parsed.result!.operation,
-            confidence: parsed.result!.confidence,
+            confidence: allPassed ? parsed.result!.confidence : 0,
           },
           verification: {
             syntax_valid: verification.syntax_valid,
             anchors_preserved: verification.anchors_preserved,
             narrative_clean: verification.narrative_clean,
+            dangerous_patterns_clean: verification.dangerous_patterns_clean,
             issues: verification.issues,
           },
           provider: aiResult.provider,
@@ -647,6 +761,7 @@ serve(async (req) => {
             syntax_valid: verification.syntax_valid,
             anchors_preserved: verification.anchors_preserved,
             narrative_clean: verification.narrative_clean,
+            dangerous_patterns_clean: verification.dangerous_patterns_clean,
             issues: verification.issues,
           },
           fixed_code: verification.fixedCode,
