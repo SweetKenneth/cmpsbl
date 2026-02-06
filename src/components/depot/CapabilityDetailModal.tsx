@@ -195,13 +195,23 @@ function ModalContent({ capability, categoryConfig }: { capability: CapabilityAr
 }
 
 function ModalFooter({ capability, onClose }: { capability: CapabilityArtifact; onClose: () => void }) {
-  const { checkout, loading, isAvailable } = useCapabilityCheckout();
+  const { checkout, loading, isAvailable, getPrice, isOffMenu, isRecursive, isSTier } = useCapabilityCheckout();
   const isSynergy = capability.id.startsWith('syn-');
   const hasCheckout = isAvailable(capability.id);
+  const isOffMenuCapability = isOffMenu(capability.id);
+  const isRecursiveCapability = isRecursive(capability.id);
+  const isSTierCapability = isSTier(capability.id);
+  const isPremium = isRecursiveCapability || isSTierCapability;
+  
+  // Get normalized price from Stripe config (null for off-menu)
+  const displayPrice = getPrice(capability.id);
+  const priceLabel = isOffMenuCapability || displayPrice === null 
+    ? 'Licensed on request' 
+    : formatPrice(displayPrice);
 
   const handleBuy = async () => {
     if (hasCheckout) {
-      await checkout(capability.id);
+      await checkout(capability.id, capability.name);
     }
   };
 
@@ -210,12 +220,15 @@ function ModalFooter({ capability, onClose }: { capability: CapabilityArtifact; 
       {/* Price */}
       <div className="flex items-center justify-between">
         <div>
-          <div className="text-2xl font-black text-foreground">
-            {formatPrice(capability.priceUsd)}
+          <div className={cn(
+            "text-2xl font-black",
+            isOffMenuCapability ? "text-muted-foreground text-lg" : isPremium ? "text-primary" : "text-foreground"
+          )}>
+            {priceLabel}
           </div>
           <div className="flex items-center gap-1 text-xs text-muted-foreground">
             <Download className="w-3 h-3" />
-            Licensed Artifact
+            {isOffMenuCapability ? 'Enterprise' : 'Licensed Artifact'}
           </div>
         </div>
       </div>
