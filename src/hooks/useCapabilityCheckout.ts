@@ -42,6 +42,10 @@ function getUnifiedStripeConfig(capabilityId: string) {
   const stierConfig = getSTierStripeConfig(capabilityId);
   if (stierConfig) return { config: stierConfig, tier: 'stier' as const };
 
+  // Add Premium tier check
+  const premiumConfig = getPremiumStripeConfig(capabilityId);
+  if (premiumConfig) return { config: premiumConfig, tier: 'premium' as const };
+
   const coreConfig = getStripeConfig(capabilityId);
   if (coreConfig) return { config: coreConfig, tier: 'core' as const };
 
