@@ -761,6 +761,7 @@ serve(async (req) => {
             syntax_valid: verification.syntax_valid,
             anchors_preserved: verification.anchors_preserved,
             narrative_clean: verification.narrative_clean,
+            dangerous_patterns_clean: verification.dangerous_patterns_clean,
             issues: verification.issues,
           },
           fixed_code: verification.fixedCode,
