@@ -148,10 +148,11 @@ export function registerSEBAHandlers(): void {
         receipts: receipts.map(r => ({
           id: r.id,
           cycle_id: r.cycle_id,
-          phase: r.phase_reached,
-          proposals: r.proposals_generated,
-          applied: r.proposals_applied,
-          created_at: r.created_at,
+          phase: r.phase,
+          insights_found: r.insights_found,
+          proposals_generated: r.proposals_generated,
+          proposals_auto_approved: r.proposals_auto_approved,
+          timestamp: r.timestamp,
         })),
       },
     };
