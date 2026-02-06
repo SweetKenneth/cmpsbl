@@ -405,9 +405,14 @@ export const DEFAULT_SEBA_CONFIG: SEBAConfig = {
     'performance_boost',
     'error_recovery',
     'resource_optimization',
+    'security_hardening',
+    'governance_refinement',
+    'architecture_evolution',
+    'pattern_discovery',
+    'reasoning_upgrade',
   ],
   excluded_modules: [],
-  priority_modules: ['memory', 'learning', 'governance'],
+  priority_modules: ['memory', 'learning', 'governance', 'security'],
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════
