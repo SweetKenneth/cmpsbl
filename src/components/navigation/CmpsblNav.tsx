@@ -129,9 +129,9 @@ export function CmpsblNav() {
       items: [
         { name: "CMPSBL OS", href: "/substrate", description: "Core runtime architecture", icon: Cpu },
         { name: "System Feed", href: "/system-feed", description: "Live intelligence stream", icon: Brain, badge: "Live" },
-        { name: "Audit Trail", href: "/audit", description: "System activity and event history", icon: FileText },
         { name: "Decode Engine", href: "/decode", description: "Intent parsing & analysis", icon: MessageSquare },
         { name: "Dream Feeder", href: "/feed-dream-eater", description: "Background processing", icon: Moon },
+        { name: "Proof Mode", href: "/proof", description: "Validate substrate claims", icon: Shield },
       ]
     },
     {
@@ -140,8 +140,8 @@ export function CmpsblNav() {
       items: [
         { name: "Use Cases", href: "/use-cases", description: "Industry applications", icon: Sparkles },
         { name: "Licensing", href: "/substrate/licensing", description: "Enterprise agreements", icon: FileText },
-        { name: "Intelligence", href: "/intelligence", description: "Investor relations", icon: Zap },
-        { name: "Security", href: "/security", description: "Compliance & trust", icon: Shield },
+        { name: "Investors", href: "/investors", description: "Investment information", icon: Zap },
+        { name: "Support", href: "/support", description: "Get help & resources", icon: Mail },
       ]
     },
     {
@@ -160,6 +160,7 @@ export function CmpsblNav() {
       items: [
         { name: "About", href: "/about", description: "Our mission & team", icon: Info },
         { name: "Blog", href: "/blog", description: "Research & updates", icon: FileText },
+        { name: "Roadmap", href: "/roadmap", description: "Development timeline", icon: Rocket },
         { name: "Contact", href: "/contact", description: "Get in touch", icon: Mail },
       ]
     },
