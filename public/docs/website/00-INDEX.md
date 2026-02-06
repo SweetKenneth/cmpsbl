@@ -73,4 +73,4 @@ See [Pricing & Licensing](./07-LICENSING.md) for details.
 
 ---
 
-*CMPSBL® v7.0.0 — Cognitive Infrastructure for the AI Era*
+*CMPSBL® v7.5.2 — Cognitive Infrastructure for the AI Era*

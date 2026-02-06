@@ -1,6 +1,6 @@
 /**
  * Terminal Module Exports
- * v7.5.0 — Command execution, validation, governance, and synergy commands
+ * v7.5.2 — Command execution, validation, governance, and synergy commands (280+ commands)
  */
 
 // Command execution with governance

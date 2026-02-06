@@ -246,7 +246,7 @@ function SidebarNav({ groups, activeTab, onTabChange, collapsed = false, onClose
         {!collapsed && (
           <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-mono mt-3 pt-3 border-t border-border">
             <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span>CMPSBL v7.0.0</span>
+            <span>CMPSBL v7.5.2</span>
           </div>
         )}
       </div>

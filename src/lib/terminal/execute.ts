@@ -1,6 +1,6 @@
 /**
  * Terminal Execution Wrapper
- * v7.0.0 — Governed command execution with tracing and redaction
+ * v7.5.2 — Governed command execution with tracing and redaction
  */
 
 import { generateTraceId } from '@/lib/system/trace';

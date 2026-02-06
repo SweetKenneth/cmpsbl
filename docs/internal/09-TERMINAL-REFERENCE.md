@@ -1,7 +1,7 @@
 # 09. Terminal Command Reference
 
 **CMPSBL OS Substrate — Internal Engineering Library**
-**Version 6.3.1 FNDTN | Updated 2026-01-30**
+**Version 7.5.2 SYNERGY+ | Updated 2026-02-06**
 
 ---
 
