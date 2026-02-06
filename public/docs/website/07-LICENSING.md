@@ -29,18 +29,18 @@ CMPSBL® is licensed as cognitive infrastructure with a **hybrid model** designe
 
 ## Developer License
 
-**$2,999/year**
+**$39/month or $299/year** (save ~36% annually)
 
-Perfect for startups and small teams building AI-powered products.
+Perfect for startups and individual developers building AI-powered products.
 
 ### Includes
 - ✓ Full API access (all 14 modules via hosted API)
 - ✓ Unlimited API calls (fair use)
 - ✓ Unlimited memory storage
 - ✓ Unlimited AI routing
-- ✓ Email support
-- ✓ Documentation access
+- ✓ Email support + documentation
 - ✓ Community forum access
+- ✓ All updates during subscription
 
 ### What You Get
 - Hosted API access — no source code distribution
@@ -52,7 +52,7 @@ Perfect for startups and small teams building AI-powered products.
 - Standard SLA
 
 ### Get Started
-Automated checkout available — get access today.
+Automated checkout available — [start today](/substrate/licensing).
 
 ---
 

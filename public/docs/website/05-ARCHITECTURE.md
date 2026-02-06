@@ -86,7 +86,7 @@ Runtime services for security, AI, and visibility.
 | **NEXUS** | Multi-provider AI routing |
 | **VISION** | Observability, metrics, tracing |
 
-### Admin Layer (Boot Order 10-12)
+### Admin Layer (Boot Order 11-13)
 System management and self-improvement.
 
 | Module | Purpose |
@@ -95,13 +95,12 @@ System management and self-improvement.
 | **MODERNIZER** | Evolution engine, self-improvement |
 | **INCLUSIVE** | Accessibility scanning, WCAG enforcement |
 
-### Orchestrator Layer (Boot Order 13-14)
-High-level coordination and external integration.
+### Orchestrator Layer (Boot Order 14)
+High-level coordination.
 
 | Module | Purpose |
 |--------|---------|
 | **CORTEX** | Policy intent, autonomous decision-making |
-| **INTEGRATION** | External APIs, webhooks, adapters |
 
 ---
 
