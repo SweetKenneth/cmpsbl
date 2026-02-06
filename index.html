@@ -12,8 +12,23 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/manifest.webmanifest" />
-    
+
+    <!-- PWA manifest is injected only outside Lovable preview to avoid auth-bridge/CORS loops -->
+    <script>
+      (function () {
+        try {
+          const isPreview = new URLSearchParams(location.search).has("__lovable_token");
+          if (isPreview) return;
+          const link = document.createElement("link");
+          link.rel = "manifest";
+          link.href = "/manifest.webmanifest";
+          document.head.appendChild(link);
+        } catch {
+          // ignore
+        }
+      })();
+    </script>
+
     <!-- 2026 SEO: Critical Resource Hints (ordered by priority) -->
     <link rel="preconnect" href="https://bxodolqqczjuahwdrswy.supabase.co" crossorigin />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
