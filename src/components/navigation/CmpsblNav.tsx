@@ -168,6 +168,61 @@ export function CmpsblNav() {
   const isActive = (path: string) => location.pathname === path;
   const isInSection = (section: NavSection) => section.items.some(item => location.pathname === item.href);
 
+  const activeNavSection = activeSection
+    ? (navSections.find((s) => s.name === activeSection) ?? null)
+    : null;
+
+  // Keep dropdown anchored correctly on scroll/resize
+  useEffect(() => {
+    if (!activeSection) {
+      setDropdownAnchor(null);
+      return;
+    }
+
+    const update = () => {
+      const el = sectionButtonRefs.current[activeSection];
+      if (!el) return;
+      setDropdownAnchor(el.getBoundingClientRect());
+    };
+
+    update();
+    window.addEventListener("resize", update);
+    window.addEventListener("scroll", update, true);
+    return () => {
+      window.removeEventListener("resize", update);
+      window.removeEventListener("scroll", update, true);
+    };
+  }, [activeSection]);
+
+  // Close dropdown on outside-click / Escape
+  useEffect(() => {
+    if (!activeSection) return;
+
+    const onPointerDown = (e: PointerEvent) => {
+      const target = e.target as Node | null;
+      if (!target) return;
+      if (dropdownRef.current?.contains(target)) return;
+      if (headerRef.current?.contains(target)) return;
+      setActiveSection(null);
+    };
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setActiveSection(null);
+    };
+
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [activeSection]);
+
+  const dropdownTop = dropdownAnchor ? Math.round(dropdownAnchor.bottom + 8) : 0;
+  const dropdownLeft = dropdownAnchor
+    ? Math.round(Math.min(dropdownAnchor.left, window.innerWidth - 360))
+    : 0;
+
   return (
     <>
       {/* ══════════════════════════════════════════════════════════════════════
