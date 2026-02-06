@@ -73,4 +73,4 @@ See [Pricing & Licensing](./07-LICENSING.md) for details.
 
 ---
 
-*CMPSBL® v7.5.3 — Cognitive Infrastructure for the AI Era*
+*CMPSBL® v7.5.3 SYNERGY+ Epoch — Cognitive Infrastructure for the AI Era*
