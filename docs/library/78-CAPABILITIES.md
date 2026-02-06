@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Synergy Capabilities Reference
 
-**Version 7.5.0 (SYNERGY) | Production Ready**
+**Version 7.5.3 (SYNERGY+) | Production Ready**
 
 ---
 
@@ -11,8 +11,9 @@
 | **Document ID** | CMPSBL-LIB-078 |
 | **Layer** | Cross-Module |
 | **Status** | Production Ready |
-| **Version** | v7.5.0 |
-| **Capability Count** | 120 Synergies (98 Core + 22 S-Tier) |
+| **Version** | v7.5.3 |
+| **Capability Count** | 147 Synergies + 136 Depot Artifacts |
+| **Executor Count** | 125 |
 
 ---
 
