@@ -249,13 +249,13 @@ You can't replicate this by wiring APIs together. The synergies emerge from deep
 
 | What | Value |
 |------|-------|
-| **Total Synergies** | 135 production-ready pipelines |
-| **Custom Executors** | 113 implementations |
+| **Total Synergies** | 147 production-ready pipelines |
+| **Custom Executors** | 125 implementations |
 | **Categories** | 7 functional areas |
 | **Modules Involved** | All 14 actively participate |
-| **3+ Module Synergies** | 91 pipelines |
-| **4+ Module Synergies** | 37 enterprise pipelines |
-| **5 Module Synergies** | 7 full-stack pipelines |
+| **3+ Module Synergies** | 95 pipelines |
+| **4+ Module Synergies** | 41 enterprise pipelines |
+| **5 Module Synergies** | 11 full-stack pipelines |
 | **Performance Gain** | 23-89% improvement per category |
 
 ---
