@@ -1,7 +1,7 @@
 /**
  * Capabilities Depot — Main Page
  * Marketplace surface for downloadable capability artifacts
- * v2.0.0 — Unified Pricing ($19-$299 public, off-menu licensed on request)
+ * v2.1.0 — 136+ Capabilities ($19-$299 public, off-menu licensed on request)
  */
 
 import { useState, useMemo, lazy, Suspense, useCallback } from 'react';
