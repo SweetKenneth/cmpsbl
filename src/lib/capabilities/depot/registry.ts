@@ -560,11 +560,12 @@ const CORE_CAPABILITIES: CapabilityArtifact[] = [
   },
 ];
 
-// === Merged Registry (Recursive + S-Tier + Core + Expansion + Ultra) ===
-// Recursive Self-Improvement capabilities first (highest value), then S-Tier
+// === Merged Registry (Recursive + S-Tier + Premium + Core + Expansion + Ultra) ===
+// Recursive Self-Improvement capabilities first (highest value), then S-Tier, then Premium
 export const CAPABILITY_REGISTRY: CapabilityArtifact[] = [
   ...RECURSIVE_CAPABILITIES,
   ...STIER_CAPABILITIES,
+  ...CAPABILITY_PREMIUM,
   ...CORE_CAPABILITIES,
   ...CAPABILITY_EXPANSION,
   ...CAPABILITY_ULTRA,
