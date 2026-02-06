@@ -274,14 +274,14 @@ const PhaseNode = memo(function PhaseNode({
           isActive ? "text-white drop-shadow-lg" : isPassed ? "text-foreground" : "text-muted-foreground"
         )} />
         
-        {/* Completion indicator with animation */}
+        {/* Completion indicator with animation - z-20 ensures it renders above the node */}
         <AnimatePresence>
           {isPassed && !isActive && (
             <motion.div 
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
-              className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/30"
+              className="absolute -top-1.5 -right-1.5 z-20 w-5 h-5 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/30"
             >
               <CheckCircle2 className="w-3 h-3 text-white" />
             </motion.div>
