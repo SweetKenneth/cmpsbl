@@ -1,5 +1,5 @@
 /**
- * promptfluid® Nexus Module v7.0.0
+ * promptfluid® Nexus Module v7.5.3
  * Multi-Provider AI Routing & Health-Weighted Selection
  * 
  * The nervous system for all AI provider interactions:
