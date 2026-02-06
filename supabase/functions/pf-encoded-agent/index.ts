@@ -1,12 +1,13 @@
 /**
- * pf-encoded-agent — Enhanced Encoded Code Generation Agent
- * v2.1.0 — Stronger guardrails, comprehensive validation, improved error handling
+ * pf-encoded-agent — Precision Code Generation Agent
+ * v2.2.0 — Polished skills, enhanced communication, improved guardrails
  * 
  * Features:
  * - Lovable AI (Gemini 3 Flash) as primary model
  * - Free-tier fallback (Groq → Cerebras → etc)
  * - Dry-run mode (default) - shows what would change without writing
  * - Enhanced verification loop with dangerous pattern detection
+ * - Skill-aware code generation
  * - CLM training hooks - learns from every execution
  * - SEBA integration toggle
  */
@@ -15,7 +16,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { callFreeTierAI, ROUTER_VERSION as FREE_TIER_VERSION } from "../_shared/free-tier-router.ts";
 
-const ENCODED_VERSION = "2.1.0";
+const ENCODED_VERSION = "2.2.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
