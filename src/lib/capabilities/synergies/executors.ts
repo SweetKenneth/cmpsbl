@@ -5312,5 +5312,22 @@ export function registerAllExecutors(
   registerFn('intelligent-deprecation-manager', executeIntelligentDeprecationManager);
   registerFn('autonomous-optimization-loop', executeAutonomousOptimizationLoop);
   
-  log.info('synergy', 'Registered 76 custom synergy executors');
+  // v7.5.2 NEW executors (15 discoveries)
+  registerFn('external-data-enrichment', executeExternalDataEnrichment);
+  registerFn('api-intelligence-layer', executeApiIntelligenceLayer);
+  registerFn('creative-threat-modeling', executeCreativeThreatModeling);
+  registerFn('accessibility-event-stream', executeAccessibilityEventStream);
+  registerFn('config-optimization-learning', executeConfigOptimizationLearning);
+  registerFn('entitlement-evolution', executeEntitlementEvolution);
+  registerFn('proactive-maintenance-engine', executeProactiveMaintenanceEngine);
+  registerFn('resource-demand-imagination', executeResourceDemandImagination);
+  registerFn('accessible-ai-generation', executeAccessibleAiGeneration);
+  registerFn('security-posture-evolution', executeSecurityPostureEvolution);
+  registerFn('semantic-event-enrichment', executeSemanticEventEnrichment);
+  registerFn('distributed-config-sync', executeDistributedConfigSync);
+  registerFn('predictive-evolution-engine', executePredictiveEvolutionEngine);
+  registerFn('api-entitlement-fortress', executeApiEntitlementFortress);
+  registerFn('cognitive-accessibility-profiler', executeCognitiveAccessibilityProfiler);
+  
+  log.info('synergy', 'Registered 91 custom synergy executors');
 }
