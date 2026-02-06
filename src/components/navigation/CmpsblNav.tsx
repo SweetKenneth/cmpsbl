@@ -64,6 +64,12 @@ export function CmpsblNav() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
+  const { resolvedTheme, setTheme } = useTheme();
+  
+  const isDark = resolvedTheme === "dark";
+  const toggleTheme = useCallback(() => {
+    setTheme(isDark ? "light" : "dark");
+  }, [isDark, setTheme]);
   
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
