@@ -50,10 +50,16 @@ export function useInclusive(): UseInclusiveReturn {
   });
   
   const scan = useMutation({
-    mutationFn: (target: string) => inclusive.scan(target),
+    mutationFn: (params: { target: string; autoRepair?: boolean }) => {
+      if (params.autoRepair) {
+        return inclusive.scanAndRepair(params.target);
+      }
+      return inclusive.scan(params.target);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['substrate', 'inclusive'] });
       queryClient.invalidateQueries({ queryKey: ['substrate', 'vision', 'health'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'modernizer', 'status'] });
     },
   });
   
@@ -73,11 +79,17 @@ export function useInclusive(): UseInclusiveReturn {
   });
   
   const selfScan = useMutation({
-    mutationFn: () => inclusive.selfScan(),
+    mutationFn: (params?: { autoRepair?: boolean }) => {
+      if (params?.autoRepair) {
+        return inclusive.selfScanAndRepair();
+      }
+      return inclusive.selfScan();
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['substrate', 'inclusive'] });
       queryClient.invalidateQueries({ queryKey: ['substrate', 'system', 'audit'] });
       queryClient.invalidateQueries({ queryKey: ['substrate', 'vision', 'health'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'modernizer', 'status'] });
     },
   });
   

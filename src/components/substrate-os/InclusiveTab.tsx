@@ -35,6 +35,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { inclusive } from '@/lib/substrate';
@@ -65,6 +67,7 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
   const queryClient = useQueryClient();
   const [scanUrl, setScanUrl] = useState('');
   const [wcagLevel, setWcagLevel] = useState<'A' | 'AA' | 'AAA'>('AA');
+  const [autoRepairEnabled, setAutoRepairEnabled] = useState(true);
 
   // Use glue-integrated hooks for real-time data
   const { data: statusData, isLoading: statusLoading, refetch: refetchStatus } = useInclusiveStatusOS();
@@ -76,23 +79,51 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
   const coverage = coverageData?.data as any;
   const regressions = (regressionsData?.data as any)?.regressions || [];
 
-  // Scan mutation - invalidates VISION + SYSTEM audit integration
+  // Scan mutation with auto-repair capability
   const scanMutation = useMutation({
     mutationFn: async (target: string) => {
-      const result = await inclusive.scan(target, { wcag_level: wcagLevel, scan_depth: 'standard' });
-      if (!result.success) throw new Error(result.error || 'Scan failed');
-      return result.data as ScanResult;
+      if (autoRepairEnabled) {
+        // Use unified scan-and-repair flow
+        const result = await inclusive.scanAndRepair(target, { wcag_level: wcagLevel, scan_depth: 'standard' });
+        if (!result.success) throw new Error(result.error || 'Scan and repair failed');
+        return result.data as any;
+      } else {
+        // Standard scan only
+        const result = await inclusive.scan(target, { wcag_level: wcagLevel, scan_depth: 'standard' });
+        if (!result.success) throw new Error(result.error || 'Scan failed');
+        return result.data as ScanResult;
+      }
     },
     onSuccess: (data) => {
       // Invalidate all glue-connected modules
       queryClient.invalidateQueries({ queryKey: ['substrate', 'inclusive'] });
       queryClient.invalidateQueries({ queryKey: ['substrate', 'vision', 'health'] });
       queryClient.invalidateQueries({ queryKey: ['substrate', 'system', 'audit'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'modernizer', 'status'] });
       
-      if (data.score >= 90) {
-        toast.success(`Accessibility score: ${data.score}%`, { description: `${data.passes} checks passed` });
+      // Handle scan-and-repair result
+      if (data.repair?.applied) {
+        const scanScore = data.scan?.score || 0;
+        const finalScore = data.final_score || scanScore;
+        const fixesApplied = data.repair?.fixes_count || 0;
+        
+        if (fixesApplied > 0) {
+          toast.success(`Auto-repaired ${fixesApplied} issue(s)`, { 
+            description: `Score improved: ${scanScore}% → ${finalScore}%` 
+          });
+        } else if (scanScore >= 90) {
+          toast.success(`Accessibility score: ${finalScore}%`, { description: 'All checks passed' });
+        } else {
+          toast.warning(`Score: ${finalScore}%`, { description: 'Some issues require manual review' });
+        }
       } else {
-        toast.warning(`Accessibility score: ${data.score}%`, { description: `${data.violations?.length || 0} issues found` });
+        // Standard scan result
+        const score = data.score || 0;
+        if (score >= 90) {
+          toast.success(`Accessibility score: ${score}%`, { description: `${data.passes || 0} checks passed` });
+        } else {
+          toast.warning(`Accessibility score: ${score}%`, { description: `${data.violations?.length || 0} issues found` });
+        }
       }
     },
     onError: (error) => {
@@ -332,68 +363,129 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
             </Button>
           </div>
 
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => selfScanMutation.mutate()}
-              disabled={selfScanMutation.isPending}
-              className="gap-2"
-            >
-              {selfScanMutation.isPending ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <Sparkles className="w-4 h-4" />
-              )}
-              Self-Scan Substrate UI
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => scanUrl && repairMutation.mutate(scanUrl)}
-              disabled={!scanUrl || repairMutation.isPending}
-              className="gap-2"
-            >
-              {repairMutation.isPending ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <Wrench className="w-4 h-4" />
-              )}
-              Auto-Repair
-            </Button>
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => selfScanMutation.mutate()}
+                disabled={selfScanMutation.isPending}
+                className="gap-2"
+              >
+                {selfScanMutation.isPending ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Sparkles className="w-4 h-4" />
+                )}
+                Self-Scan Substrate UI
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => scanUrl && repairMutation.mutate(scanUrl)}
+                disabled={!scanUrl || repairMutation.isPending || autoRepairEnabled}
+                className="gap-2"
+                title={autoRepairEnabled ? "Auto-repair is enabled - repairs run automatically after scan" : "Run repair manually"}
+              >
+                {repairMutation.isPending ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Wrench className="w-4 h-4" />
+                )}
+                Manual Repair
+              </Button>
+            </div>
+            
+            {/* Auto-Repair Toggle */}
+            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/30 border border-teal-500/20">
+              <Switch
+                id="auto-repair"
+                checked={autoRepairEnabled}
+                onCheckedChange={setAutoRepairEnabled}
+                className="data-[state=checked]:bg-teal-500"
+              />
+              <Label htmlFor="auto-repair" className="text-xs font-medium cursor-pointer flex items-center gap-1.5">
+                <Wrench className="w-3 h-3" />
+                Auto-Fix After Scan
+              </Label>
+            </div>
           </div>
 
           {/* Scan Results */}
           {scanMutation.data && (
             <div className="mt-4 p-4 rounded-lg bg-muted/20 border border-teal-500/20">
               <div className="flex items-center justify-between mb-3">
-                <h4 className="text-sm font-medium">Scan Results</h4>
-                <Badge variant="outline" className={cn(
-                  "text-xs",
-                  scanMutation.data.score >= 90 
-                    ? "border-emerald-500/50 text-emerald-400 bg-emerald-500/10" 
-                    : "border-amber-500/50 text-amber-400 bg-amber-500/10"
-                )}>
-                  Score: {scanMutation.data.score}%
-                </Badge>
+                <h4 className="text-sm font-medium flex items-center gap-2">
+                  Scan Results
+                  {scanMutation.data.repair?.applied && (
+                    <Badge variant="outline" className="border-teal-500/50 text-teal-400 bg-teal-500/10 text-[10px]">
+                      <Wrench className="w-3 h-3 mr-1" />
+                      Auto-Fixed
+                    </Badge>
+                  )}
+                </h4>
+                <div className="flex items-center gap-2">
+                  {scanMutation.data.repair?.applied && scanMutation.data.repair?.fixes_count > 0 && (
+                    <Badge variant="outline" className="border-emerald-500/50 text-emerald-400 bg-emerald-500/10 text-xs">
+                      +{scanMutation.data.improvement || 0}% improved
+                    </Badge>
+                  )}
+                  <Badge variant="outline" className={cn(
+                    "text-xs",
+                    (scanMutation.data.final_score || scanMutation.data.score || 0) >= 90 
+                      ? "border-emerald-500/50 text-emerald-400 bg-emerald-500/10" 
+                      : "border-amber-500/50 text-amber-400 bg-amber-500/10"
+                  )}>
+                    Score: {scanMutation.data.final_score || scanMutation.data.score || 0}%
+                  </Badge>
+                </div>
               </div>
               
-              {scanMutation.data.violations?.length > 0 ? (
+              {/* Show repairs applied */}
+              {scanMutation.data.repair?.applied && scanMutation.data.repair?.fixes_count > 0 && (
+                <div className="mb-3 p-3 rounded-lg bg-teal-500/10 border border-teal-500/20">
+                  <div className="flex items-center gap-2 text-teal-400 mb-2">
+                    <CheckCircle className="w-4 h-4" />
+                    <span className="text-xs font-medium">
+                      {scanMutation.data.repair.fixes_count} issue(s) automatically fixed
+                    </span>
+                  </div>
+                  {scanMutation.data.repair?.repairs?.length > 0 && (
+                    <div className="space-y-1">
+                      {scanMutation.data.repair.repairs.slice(0, 3).map((r: any, i: number) => (
+                        <div key={i} className="text-[10px] text-muted-foreground">
+                          • {r.explanation || r.wcag_criterion || 'Fixed issue'}
+                        </div>
+                      ))}
+                      {scanMutation.data.repair.repairs.length > 3 && (
+                        <div className="text-[10px] text-muted-foreground">
+                          ...and {scanMutation.data.repair.repairs.length - 3} more
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
+              
+              {/* Show remaining violations */}
+              {(scanMutation.data.violations?.length > 0 || scanMutation.data.scan?.issues?.length > 0) ? (
                 <ScrollArea className="h-48">
                   <div className="space-y-2">
-                    {scanMutation.data.violations.map((v, i) => (
+                    {(scanMutation.data.violations || scanMutation.data.scan?.issues || []).map((v: any, i: number) => (
                       <div key={i} className="flex items-start gap-2 p-2 rounded-lg bg-muted/20">
                         <div className={cn(
                           "w-2 h-2 rounded-full mt-1.5 shrink-0",
-                          v.impact === 'critical' ? "bg-red-500" :
-                          v.impact === 'serious' ? "bg-orange-500" :
-                          v.impact === 'moderate' ? "bg-amber-500" : "bg-blue-500"
+                          (v.impact === 'critical' || v.severity === 'critical') ? "bg-red-500" :
+                          (v.impact === 'serious' || v.severity === 'high') ? "bg-orange-500" :
+                          (v.impact === 'moderate' || v.severity === 'medium') ? "bg-amber-500" : "bg-blue-500"
                         )} />
                         <div className="flex-1 min-w-0">
-                          <p className="text-xs font-medium truncate">{v.id}</p>
+                          <p className="text-xs font-medium truncate">{v.id || v.type}</p>
                           <p className="text-xs text-muted-foreground truncate">{v.description}</p>
                         </div>
-                        <Badge variant="outline" className="text-[10px] shrink-0">{v.impact}</Badge>
+                        <Badge variant="outline" className="text-[10px] shrink-0">
+                          {v.impact || v.severity}
+                        </Badge>
                       </div>
                     ))}
                   </div>
