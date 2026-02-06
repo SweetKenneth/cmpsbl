@@ -162,6 +162,10 @@ export default function Marketplace() {
 
   const handleCheckout = async (type: 'os' | 'world_engine' | 'template' | 'bundle' | 'stack' | 'agency', template?: Template, itemId?: string, billingCycle?: 'monthly' | 'annual') => {
     setIsCheckingOut(true);
+
+    // Open the tab synchronously to avoid popup blockers
+    const checkoutWindow = window.open('about:blank', '_blank');
+
     try {
       let priceId: string;
       let productId: string;
@@ -199,8 +203,8 @@ export default function Marketplace() {
         if (!pack?.product_id) {
           throw new Error('Agency pack pricing not configured');
         }
-        priceId = billingCycle === 'annual' && pack.price_id_annual 
-          ? pack.price_id_annual 
+        priceId = billingCycle === 'annual' && pack.price_id_annual
+          ? pack.price_id_annual
           : pack.price_id_monthly!;
         productId = pack.product_id;
         productName = pack.name;
@@ -224,11 +228,19 @@ export default function Marketplace() {
 
       if (error) throw error;
       if (!data?.url) throw new Error('No checkout URL returned');
-      
-      window.open(data.url, '_blank');
+
+      if (checkoutWindow) {
+        checkoutWindow.opener = null;
+        checkoutWindow.location.href = data.url;
+      } else {
+        window.location.href = data.url;
+      }
+
       toast.success('Opening Stripe Checkout...');
       setPreviewOpen(false);
     } catch (error) {
+      if (checkoutWindow) checkoutWindow.close();
+
       console.error('Checkout error:', error);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       toast.error(`Checkout failed: ${errorMessage}`);

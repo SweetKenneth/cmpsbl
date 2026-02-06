@@ -19,16 +19,26 @@ export default function BotSniperPricing() {
     }
 
     setLoading(tier);
+
+    // Open the tab synchronously to avoid popup blockers
+    const checkoutWindow = window.open('about:blank', '_blank');
+
     try {
       const { data, error } = await supabase.functions.invoke('bot-sniper-create-checkout', {
         body: { tier }
       });
 
       if (error) throw error;
-      if (data?.url) {
-        window.open(data.url, '_blank');
+      if (!data?.url) throw new Error('No checkout URL returned');
+
+      if (checkoutWindow) {
+        checkoutWindow.opener = null;
+        checkoutWindow.location.href = data.url;
+      } else {
+        window.location.href = data.url;
       }
     } catch (error: any) {
+      if (checkoutWindow) checkoutWindow.close();
       toast.error(error.message);
     } finally {
       setLoading(null);

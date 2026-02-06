@@ -71,6 +71,10 @@ export function AITemplateGenerator({ featured = false }: AITemplateGeneratorPro
 
   const handleCheckout = async () => {
     setIsCheckingOut(true);
+
+    // Open the tab synchronously to avoid popup blockers
+    const checkoutWindow = window.open('about:blank', '_blank');
+
     try {
       const { data, error } = await supabase.functions.invoke('marketplace-checkout', {
         body: {
@@ -83,12 +87,17 @@ export function AITemplateGenerator({ featured = false }: AITemplateGeneratorPro
 
       if (error) throw error;
       if (!data?.url) throw new Error('No checkout URL returned');
-      
-      // Store session_id for generation after payment
-      window.open(data.url, '_blank');
+
+      if (checkoutWindow) {
+        checkoutWindow.opener = null;
+        checkoutWindow.location.href = data.url;
+      } else {
+        window.location.href = data.url;
+      }
+
       toast.success('Opening checkout... Generate your template after payment!');
-      
     } catch (error) {
+      if (checkoutWindow) checkoutWindow.close();
       console.error('Checkout error:', error);
       toast.error('Checkout failed. Please try again.');
     } finally {
