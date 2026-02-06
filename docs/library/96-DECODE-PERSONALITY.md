@@ -31,7 +31,7 @@
 
 ## 1. Overview
 
-The DECODE Personality subsystem provides **interpretive filters** that adjust how user input is understood. Personality profiles are cognitive lenses—they affect interpretation, not execution.
+The DECODE Interpretation subsystem provides **context filters** that adjust how user input is parsed. Interpretation profiles are cognitive lenses—they affect parsing strategy, not execution authority.
 
 ### Critical Constraint
 
