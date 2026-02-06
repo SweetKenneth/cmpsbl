@@ -85,7 +85,7 @@ const faqItems = [
   },
   {
     question: "Is this production-ready?",
-    answer: "Yes. CMPSBL is a live, operational system with 131,000+ lines of production code, 50+ database tables, and 260+ terminal commands. The system boots in ~109ms and maintains 100% module health with circuit breakers for fault isolation."
+    answer: "Yes. CMPSBL is a live, operational system with 160,000+ lines of production code, 50+ database tables, and 310+ terminal commands. The system boots in ~109ms and maintains 100% module health with circuit breakers for fault isolation."
   },
   {
     question: "What's included in a license?",
