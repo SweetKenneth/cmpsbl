@@ -1,6 +1,6 @@
 /**
  * useSynergies Hook
- * v7.5.0 — React hook for cross-module synergy execution (120 pipelines, 22 S-tier)
+ * v7.5.2 — React hook for cross-module synergy execution (135 pipelines, 22 S-tier + 15 discoveries)
  */
 
 import { useState, useCallback, useMemo } from 'react';
