@@ -447,6 +447,375 @@ export class CognitiveAnalyzer {
     return insights;
   }
 
+  // ═══════════════════════════════════════════════════════════════════════════════
+  // EXTENDED ANALYSIS ENGINES (v2.0.0)
+  // ═══════════════════════════════════════════════════════════════════════════════
+
+  /**
+   * Security Analysis — Detect vulnerabilities and hardening opportunities
+   */
+  private async analyzeSecurity(): Promise<CognitiveInsight[]> {
+    const insights: CognitiveInsight[] = [];
+
+    try {
+      // Check for auth failures
+      const { data: authFailures } = await supabase
+        .from('brain_events')
+        .select('*')
+        .eq('module', 'auth')
+        .eq('outcome', 'error')
+        .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
+        .limit(50);
+
+      if (authFailures && authFailures.length >= 5) {
+        insights.push({
+          id: crypto.randomUUID(),
+          type: 'vulnerability',
+          source_engine: 'security',
+          title: 'Elevated Auth Failure Rate',
+          description: `${authFailures.length} authentication failures in 24h. May indicate brute-force attempt.`,
+          evidence: [`failure_count: ${authFailures.length}`],
+          confidence: 0.85,
+          actionability: 0.9,
+          urgency: authFailures.length >= 20 ? 'high' : 'medium',
+          suggested_actions: ['Review auth logs', 'Enable rate limiting', 'Check for compromised credentials'],
+          created_at: new Date().toISOString(),
+        });
+      }
+
+      // Check for RLS policy gaps
+      const { data: tables } = await supabase
+        .from('information_schema.tables' as any)
+        .select('table_name')
+        .eq('table_schema', 'public')
+        .limit(50);
+
+      // Check for exposed API keys in events
+      const { data: keyEvents } = await supabase
+        .from('brain_events')
+        .select('data')
+        .ilike('data', '%api_key%')
+        .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString())
+        .limit(10);
+
+      if (keyEvents && keyEvents.length > 0) {
+        insights.push({
+          id: crypto.randomUUID(),
+          type: 'vulnerability',
+          source_engine: 'security',
+          title: 'Potential API Key Exposure in Logs',
+          description: 'API key references detected in event logs. Review for sensitive data leakage.',
+          evidence: [`events_with_keys: ${keyEvents.length}`],
+          confidence: 0.7,
+          actionability: 0.8,
+          urgency: 'medium',
+          suggested_actions: ['Audit logged data', 'Implement key redaction', 'Rotate exposed keys'],
+          created_at: new Date().toISOString(),
+        });
+      }
+
+    } catch (error) {
+      console.error('[SEBA] Security analysis error:', error);
+    }
+
+    return insights;
+  }
+
+  /**
+   * Telemetry Analysis — Performance bottlenecks and optimization targets
+   */
+  private async analyzeTelemetry(): Promise<CognitiveInsight[]> {
+    const insights: CognitiveInsight[] = [];
+
+    try {
+      // Check for slow operations
+      const { data: slowOps } = await supabase
+        .from('brain_events')
+        .select('module, data')
+        .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
+        .order('created_at', { ascending: false })
+        .limit(100);
+
+      if (slowOps) {
+        const moduleCounts: Record<string, number> = {};
+        for (const op of slowOps) {
+          const duration = (op.data as any)?.duration_ms || 0;
+          if (duration > 1000) {
+            moduleCounts[op.module] = (moduleCounts[op.module] || 0) + 1;
+          }
+        }
+
+        const [slowestModule, slowCount] = Object.entries(moduleCounts)
+          .sort(([, a], [, b]) => b - a)[0] || ['', 0];
+
+        if (slowCount >= 5) {
+          insights.push({
+            id: crypto.randomUUID(),
+            type: 'bottleneck',
+            source_engine: 'telemetry',
+            title: `Performance Bottleneck in ${slowestModule}`,
+            description: `${slowCount} slow operations (>1s) in ${slowestModule} module.`,
+            evidence: Object.entries(moduleCounts).map(([m, c]) => `${m}: ${c} slow ops`),
+            confidence: 0.85,
+            actionability: 0.8,
+            urgency: slowCount >= 20 ? 'high' : 'medium',
+            suggested_actions: ['Profile module operations', 'Add caching', 'Optimize queries'],
+            created_at: new Date().toISOString(),
+          });
+        }
+      }
+
+      // Check for high event volume
+      const { count: eventCount } = await supabase
+        .from('brain_events')
+        .select('id', { count: 'exact', head: true })
+        .gte('created_at', new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString());
+
+      if (eventCount && eventCount > 500) {
+        insights.push({
+          id: crypto.randomUUID(),
+          type: 'optimization',
+          source_engine: 'telemetry',
+          title: 'High Event Volume Detected',
+          description: `${eventCount} events in the last hour. Consider batching or sampling.`,
+          evidence: [`events_per_hour: ${eventCount}`],
+          confidence: 0.75,
+          actionability: 0.7,
+          urgency: eventCount > 2000 ? 'high' : 'low',
+          suggested_actions: ['Enable event batching', 'Reduce log verbosity', 'Implement sampling'],
+          created_at: new Date().toISOString(),
+        });
+      }
+
+    } catch (error) {
+      console.error('[SEBA] Telemetry analysis error:', error);
+    }
+
+    return insights;
+  }
+
+  /**
+   * Governance Analysis — Policy drift and compliance opportunities
+   */
+  private async analyzeGovernance(): Promise<CognitiveInsight[]> {
+    const insights: CognitiveInsight[] = [];
+
+    try {
+      // Check for governance overrides
+      const { data: overrides } = await supabase
+        .from('brain_events')
+        .select('*')
+        .eq('module', 'governance')
+        .in('event_type', ['policy_override', 'emergency_bypass', 'manual_override'])
+        .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString());
+
+      if (overrides && overrides.length >= 3) {
+        insights.push({
+          id: crypto.randomUUID(),
+          type: 'drift',
+          source_engine: 'governance',
+          title: 'Frequent Policy Overrides Detected',
+          description: `${overrides.length} governance overrides in 7 days. Policies may need refinement.`,
+          evidence: [`override_count: ${overrides.length}`],
+          confidence: 0.8,
+          actionability: 0.85,
+          urgency: overrides.length >= 10 ? 'high' : 'medium',
+          suggested_actions: ['Review override reasons', 'Update policies', 'Add exception rules'],
+          created_at: new Date().toISOString(),
+        });
+      }
+
+      // Check for capability misconfigurations
+      const { data: capabilities } = await supabase
+        .from('atlas_capabilities')
+        .select('*')
+        .eq('enabled', true);
+
+      if (capabilities) {
+        const conflictingCaps = capabilities.filter(c => 
+          (c.key.includes('auto') && c.key.includes('governed')) ||
+          (c.key.includes('bypass') && c.key.includes('strict'))
+        );
+
+        if (conflictingCaps.length > 0) {
+          insights.push({
+            id: crypto.randomUUID(),
+            type: 'anomaly',
+            source_engine: 'governance',
+            title: 'Potentially Conflicting Capabilities',
+            description: 'Some enabled capabilities may have conflicting behaviors.',
+            evidence: conflictingCaps.map(c => c.key),
+            confidence: 0.6,
+            actionability: 0.7,
+            urgency: 'low',
+            suggested_actions: ['Review capability matrix', 'Disable conflicting features'],
+            created_at: new Date().toISOString(),
+          });
+        }
+      }
+
+    } catch (error) {
+      console.error('[SEBA] Governance analysis error:', error);
+    }
+
+    return insights;
+  }
+
+  /**
+   * Resources Analysis — Quota, budget, and capacity issues
+   */
+  private async analyzeResources(): Promise<CognitiveInsight[]> {
+    const insights: CognitiveInsight[] = [];
+
+    try {
+      // Check AI usage quotas
+      const { data: usageData } = await supabase
+        .from('ai_daily_quota')
+        .select('*')
+        .eq('date', new Date().toISOString().split('T')[0])
+        .limit(10);
+
+      if (usageData) {
+        for (const usage of usageData) {
+          const budgetUsed = (usage.calls_used || 0) / (usage.calls_budget || 1);
+          if (budgetUsed >= 0.8) {
+            insights.push({
+              id: crypto.randomUUID(),
+              type: 'degradation',
+              source_engine: 'resources',
+              title: `AI Budget Nearly Exhausted (${usage.provider})`,
+              description: `${Math.round(budgetUsed * 100)}% of daily ${usage.provider} budget used.`,
+              evidence: [`used: ${usage.calls_used}`, `budget: ${usage.calls_budget}`],
+              confidence: 0.95,
+              actionability: 0.9,
+              urgency: budgetUsed >= 0.95 ? 'critical' : 'high',
+              suggested_actions: ['Enable fallback providers', 'Reduce AI call frequency', 'Upgrade quota'],
+              created_at: new Date().toISOString(),
+            });
+          }
+        }
+      }
+
+      // Check storage usage via brain_memory tables
+      const [hotCount, warmCount, coldCount] = await Promise.all([
+        supabase.from('brain_memory_hot').select('id', { count: 'exact', head: true }),
+        supabase.from('brain_memory_warm').select('id', { count: 'exact', head: true }),
+        supabase.from('brain_memory_cold').select('id', { count: 'exact', head: true }),
+      ]);
+
+      const totalMemories = (hotCount.count || 0) + (warmCount.count || 0) + (coldCount.count || 0);
+      if (totalMemories > 10000) {
+        insights.push({
+          id: crypto.randomUUID(),
+          type: 'optimization',
+          source_engine: 'resources',
+          title: 'High Memory Storage Usage',
+          description: `${totalMemories.toLocaleString()} total memories. Consider archival or cleanup.`,
+          evidence: [`hot: ${hotCount.count}`, `warm: ${warmCount.count}`, `cold: ${coldCount.count}`],
+          confidence: 0.8,
+          actionability: 0.75,
+          urgency: totalMemories > 50000 ? 'high' : 'medium',
+          suggested_actions: ['Run brain.archive', 'Increase decay rates', 'Enable auto-pruning'],
+          created_at: new Date().toISOString(),
+        });
+      }
+
+    } catch (error) {
+      console.error('[SEBA] Resources analysis error:', error);
+    }
+
+    return insights;
+  }
+
+  /**
+   * Architecture Analysis — Structural improvements and evolution
+   */
+  private async analyzeArchitecture(): Promise<CognitiveInsight[]> {
+    const insights: CognitiveInsight[] = [];
+
+    try {
+      // Check module health distribution
+      const { data: moduleEvents } = await supabase
+        .from('brain_events')
+        .select('module, outcome')
+        .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
+        .limit(500);
+
+      if (moduleEvents) {
+        const moduleStats: Record<string, { success: number; error: number }> = {};
+        for (const event of moduleEvents) {
+          if (!moduleStats[event.module]) {
+            moduleStats[event.module] = { success: 0, error: 0 };
+          }
+          if (event.outcome === 'success') {
+            moduleStats[event.module].success++;
+          } else if (event.outcome === 'error') {
+            moduleStats[event.module].error++;
+          }
+        }
+
+        // Find modules with low success rates
+        for (const [module, stats] of Object.entries(moduleStats)) {
+          const total = stats.success + stats.error;
+          if (total >= 10) {
+            const successRate = stats.success / total;
+            if (successRate < 0.7) {
+              insights.push({
+                id: crypto.randomUUID(),
+                type: 'degradation',
+                source_engine: 'architecture',
+                title: `Module Reliability Issue: ${module}`,
+                description: `${module} has ${Math.round(successRate * 100)}% success rate. May need refactoring.`,
+                evidence: [`success: ${stats.success}`, `error: ${stats.error}`, `rate: ${Math.round(successRate * 100)}%`],
+                confidence: 0.85,
+                actionability: 0.8,
+                urgency: successRate < 0.5 ? 'high' : 'medium',
+                suggested_actions: ['Audit module code', 'Add error handling', 'Consider refactoring'],
+                created_at: new Date().toISOString(),
+              });
+            }
+          }
+        }
+
+        // Check for module coupling issues
+        const moduleInteractions: Record<string, Set<string>> = {};
+        for (const event of moduleEvents) {
+          const caller = (event as any).data?.caller_module;
+          if (caller && caller !== event.module) {
+            if (!moduleInteractions[event.module]) {
+              moduleInteractions[event.module] = new Set();
+            }
+            moduleInteractions[event.module].add(caller);
+          }
+        }
+
+        const highCouplingModules = Object.entries(moduleInteractions)
+          .filter(([, callers]) => callers.size >= 5);
+
+        if (highCouplingModules.length > 0) {
+          insights.push({
+            id: crypto.randomUUID(),
+            type: 'opportunity',
+            source_engine: 'architecture',
+            title: 'High Module Coupling Detected',
+            description: `${highCouplingModules.length} modules have 5+ callers. Consider interface abstraction.`,
+            evidence: highCouplingModules.map(([m, c]) => `${m}: ${c.size} callers`),
+            confidence: 0.7,
+            actionability: 0.6,
+            urgency: 'low',
+            suggested_actions: ['Create facade interfaces', 'Reduce direct dependencies', 'Add event-based communication'],
+            created_at: new Date().toISOString(),
+          });
+        }
+      }
+
+    } catch (error) {
+      console.error('[SEBA] Architecture analysis error:', error);
+    }
+
+    return insights;
+  }
+
   /**
    * Map insight to improvement category
    */
@@ -462,6 +831,16 @@ export class CognitiveAnalyzer {
         if (insight.type === 'anomaly') return 'error_recovery';
         if (insight.type === 'optimization') return 'performance_boost';
         return 'reasoning_upgrade';
+      case 'security':
+        return 'security_hardening';
+      case 'telemetry':
+        return 'performance_boost';
+      case 'governance':
+        return 'governance_refinement';
+      case 'resources':
+        return 'resource_optimization';
+      case 'architecture':
+        return 'architecture_evolution';
       default:
         return 'performance_boost';
     }
