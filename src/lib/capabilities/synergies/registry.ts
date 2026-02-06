@@ -1,9 +1,9 @@
 /**
  * Synergy Registry
- * v7.5.0 — Cross-Module Pipeline Registration (120 Pipelines)
+ * v7.5.2 — Cross-Module Pipeline Registration (135 Pipelines)
  * 
  * Defines all available synergies that combine 2+ modules
- * Includes 22 S-tier premium pipelines
+ * Includes 22 S-tier premium pipelines + 15 v7.5.2 discoveries
  */
 
 import type { SynergyDefinition, SynergyExecutor, SynergyRegistry } from './types';
