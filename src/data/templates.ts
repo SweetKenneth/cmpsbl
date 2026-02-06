@@ -10643,9 +10643,12 @@ export const projectAgent = new ProjectIntelligenceAgent();`
   }
 ];
 
+// Merge high-value templates
+export const ALL_TEMPLATES: Template[] = [...TEMPLATES, ...HIGH_VALUE_TEMPLATES];
+
 export function getCategoryCounts(): Record<string, number> {
   const counts: Record<string, number> = {};
-  for (const template of TEMPLATES) {
+  for (const template of ALL_TEMPLATES) {
     counts[template.category] = (counts[template.category] || 0) + 1;
   }
   return counts;
