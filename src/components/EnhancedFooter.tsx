@@ -33,8 +33,7 @@ export function EnhancedFooter() {
         { name: "CMPSBL OS", href: "/substrate" },
         { name: "Decode", href: "/decode" },
         { name: "Dream Feeder", href: "/feed-dream-eater" },
-        { name: "DevTools", href: "/devtools" },
-        { name: "Audit Trail", href: "/audit" },
+        { name: "Proof Mode", href: "/proof" },
         { name: "Demo", href: "/demo" },
       ]
     },
@@ -43,8 +42,6 @@ export function EnhancedFooter() {
       links: [
         { name: "Synergy Pipelines", href: "/synergies", highlight: true },
         { name: "Capabilities Depot", href: "/capabilities" },
-        { name: "DevTools", href: "/devtools" },
-        { name: "Audit Trail", href: "/audit" },
         { name: "Developers", href: "/developers" },
         { name: "CodeLab", href: "/codelab" },
         { name: "Documentation", href: "/documentation" },
@@ -55,7 +52,8 @@ export function EnhancedFooter() {
       links: [
         { name: "About", href: "/about" },
         { name: "Blog", href: "/blog" },
-        { name: "Evolution Log", href: "/changelog" },
+        { name: "Roadmap", href: "/roadmap" },
+        { name: "Investors", href: "/investors" },
         { name: "Contact", href: "/contact" },
       ]
     },
@@ -64,8 +62,8 @@ export function EnhancedFooter() {
       links: [
         { name: "Privacy", href: "/privacy" },
         { name: "Terms", href: "/terms" },
+        { name: "Support", href: "/support" },
         { name: "llms.txt", href: "/llms-txt" },
-        { name: "humans.txt", href: "/humans-txt" },
       ]
     },
   ];

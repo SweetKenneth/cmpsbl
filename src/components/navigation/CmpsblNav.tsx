@@ -160,6 +160,7 @@ export function CmpsblNav() {
       items: [
         { name: "About", href: "/about", description: "Our mission & team", icon: Info },
         { name: "Blog", href: "/blog", description: "Research & updates", icon: FileText },
+        { name: "Roadmap", href: "/roadmap", description: "Development timeline", icon: Rocket },
         { name: "Contact", href: "/contact", description: "Get in touch", icon: Mail },
       ]
     },
