@@ -26,11 +26,11 @@
       /* Reset & Base - Critical for FCP */
       *,*::before,*::after{box-sizing:border-box;border-width:0;border-style:solid}
       html{line-height:1.5;-webkit-text-size-adjust:100%;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,sans-serif;scroll-behavior:smooth}
-      body{margin:0;line-height:inherit;background:hsl(230 84% 5%);color:hsl(220 13% 91%);min-height:100vh;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+      body{margin:0;line-height:inherit;background:hsl(var(--background));color:hsl(var(--foreground));min-height:100vh;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
       
-      /* CSS Variables - Critical theme tokens */
-      :root{--background:230 84% 5%;--foreground:220 13% 91%;--primary:260 100% 68%;--primary-foreground:0 0% 100%;--muted:217.2 32.6% 17.5%;--muted-foreground:215 20.2% 65.1%;--border:217.2 32.6% 17.5%;--card:230 84% 5%;--radius:0.5rem}
-      .dark{--background:230 84% 5%;--foreground:220 13% 91%}
+      /* CSS Variables - Critical theme tokens (match src/index.css) */
+      :root{--background:0 0% 100%;--foreground:220 15% 15%;--primary:210 60% 45%;--primary-foreground:0 0% 100%;--muted:220 10% 96%;--muted-foreground:220 10% 40%;--border:220 10% 85%;--card:0 0% 100%;--radius:0.5rem}
+      .dark{--background:220 25% 4%;--foreground:0 0% 98%;--primary:185 100% 50%;--primary-foreground:220 25% 4%;--muted:220 20% 14%;--muted-foreground:220 15% 55%;--border:220 20% 16%;--card:220 20% 8%}
       
       /* Layout primitives */
       img,video{max-width:100%;height:auto;display:block}
@@ -46,7 +46,7 @@
       #root{min-height:100vh;display:flex;flex-direction:column;contain:layout style paint;content-visibility:auto}
       
       /* Navigation shell - critical for above-the-fold */
-      nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);background:hsla(230,84%,5%,0.8);border-bottom:1px solid hsl(var(--border)/0.5)}
+      nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);background:hsl(var(--background));border-bottom:1px solid hsl(var(--border)/0.5)}
       nav .container{max-width:1400px;margin:0 auto;padding:0 1rem;display:flex;align-items:center;justify-content:space-between;height:64px}
       
       /* Hero section shell */
@@ -69,7 +69,8 @@
       .font-semibold{font-weight:600}.font-bold{font-weight:700}
       
       /* Glass effect for nav/cards */
-      .glass{background:hsla(230,84%,5%,0.6);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+      .glass{background:hsl(var(--card));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+      .dark .glass{background:hsl(var(--card) / 0.4)}
       
       /* Framer Motion optimization - reduce forced reflows */
       [data-framer-motion],[style*="transform"]{will-change:transform,opacity;contain:layout style paint}

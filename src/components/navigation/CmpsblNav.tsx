@@ -186,7 +186,7 @@ export function CmpsblNav() {
         </div>
 
         <div className="container mx-auto px-4 lg:px-6">
-          <nav className="flex items-center justify-between h-16 lg:h-[72px]" role="navigation" aria-label="Main navigation">
+          <nav className="flex items-center justify-between h-16 lg:h-[72px] bg-transparent" role="navigation" aria-label="Main navigation">
             
             {/* ═══ Logo ═══ */}
             <Link 

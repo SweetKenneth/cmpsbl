@@ -13,38 +13,41 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     mode === "development" && componentTagger(),
-    VitePWA({
-      registerType: "autoUpdate",
-      injectRegister: false, // Disable auto-injection to manually defer SW registration
-      includeAssets: ["favicon.png", "pwa-192x192.png", "pwa-512x512.png", "apple-touch-icon.png"],
-      manifest: {
-        name: "PromptFluid",
-        short_name: "PromptFluid",
-        description: "AI That Flows - Advanced AI security and administration platform",
-        theme_color: "#7A5FFF",
-        background_color: "#0A0B10",
-        display: "standalone",
-        start_url: "/",
-        icons: [
-          {
-            src: "/pwa-192x192.png",
-            sizes: "192x192",
-            type: "image/png",
-            purpose: "any",
-          },
-          {
-            src: "/pwa-512x512.png",
-            sizes: "512x512",
-            type: "image/png",
-            purpose: "any maskable",
-          },
-        ],
-      },
-      workbox: {
-        skipWaiting: true,
-        clientsClaim: true,
-      },
-    }),
+
+    // IMPORTANT: Disable PWA in preview/dev to avoid manifest/CORS loops.
+    mode === "production" &&
+      VitePWA({
+        registerType: "autoUpdate",
+        injectRegister: false, // Disable auto-injection to manually defer SW registration
+        includeAssets: ["favicon.png", "pwa-192x192.png", "pwa-512x512.png", "apple-touch-icon.png"],
+        manifest: {
+          name: "PromptFluid",
+          short_name: "PromptFluid",
+          description: "AI That Flows - Advanced AI security and administration platform",
+          theme_color: "#7A5FFF",
+          background_color: "#0A0B10",
+          display: "standalone",
+          start_url: "/",
+          icons: [
+            {
+              src: "/pwa-192x192.png",
+              sizes: "192x192",
+              type: "image/png",
+              purpose: "any",
+            },
+            {
+              src: "/pwa-512x512.png",
+              sizes: "512x512",
+              type: "image/png",
+              purpose: "any maskable",
+            },
+          ],
+        },
+        workbox: {
+          skipWaiting: true,
+          clientsClaim: true,
+        },
+      }),
   ].filter(Boolean),
   resolve: {
     alias: {
