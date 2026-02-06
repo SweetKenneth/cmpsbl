@@ -191,7 +191,7 @@ export function DashboardMetricsHero() {
               whileHover={{ y: -2 }}
             >
               <span className="text-[10px] text-amber-400 font-mono uppercase tracking-wider block mb-1">SUBSTRATE</span>
-              <span className="text-lg font-bold text-foreground font-mono">v7.5.2</span>
+              <span className="text-lg font-bold text-foreground font-mono">v7.5.3</span>
             </motion.div>
           </div>
 

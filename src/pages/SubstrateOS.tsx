@@ -1,5 +1,5 @@
 /**
- * CMPSBL® substrate — OS Surface v7.5.2
+ * CMPSBL® substrate — OS Surface v7.5.3
  * PREMIUM EDITION — 14 modules, 280+ commands, full introspection
  */
 
