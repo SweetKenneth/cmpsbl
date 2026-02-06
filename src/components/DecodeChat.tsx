@@ -133,7 +133,7 @@ export function DecodeChat() {
 
       setMessages(prev => [...prev, { 
         role: 'assistant', 
-        content: data?.reply || 'I received your message.',
+        content: data?.reply || 'Request processed.',
         imageUrl: data?.imageUrl,
         generatedText: data?.generatedText,
         provider: data?.provider,
