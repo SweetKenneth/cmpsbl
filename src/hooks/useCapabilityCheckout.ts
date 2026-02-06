@@ -18,6 +18,8 @@ import {
   getExpansionStripeConfig,
   hasUltraStripeConfig,
   getUltraStripeConfig,
+  hasPremiumStripeConfig,
+  getPremiumStripeConfig,
 } from '@/lib/capabilities/depot';
 import {
   isOffMenuCapability,
