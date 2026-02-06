@@ -17,7 +17,7 @@
 | Intent Parsing | DECODE | Natural language interpretation, command routing |
 | Orchestration | CORTEX | Policy intent, autonomous decision-making |
 | Accessibility | INCLUSIVE | WCAG scanning, auto-repair, compliance reporting |
-| **Cross-Module Synergies** | CORTEX | **135 pipelines, 113 executors, 171 deployed actions** |
+| **Cross-Module Synergies** | CORTEX | **147 pipelines, 125 executors, 171+ deployed actions** |
 
 ---
 
