@@ -194,6 +194,22 @@ export function isProtectedPath(filePath: string): boolean {
 }
 
 /**
+ * Check for dangerous code patterns
+ */
+export function hasDangerousPatterns(code: string): { dangerous: boolean; matches: string[] } {
+  const matches: string[] = [];
+  
+  for (const pattern of ENCODED_POLICY.dangerousPatterns) {
+    const match = code.match(pattern);
+    if (match) {
+      matches.push(match[0]);
+    }
+  }
+
+  return { dangerous: matches.length > 0, matches };
+}
+
+/**
  * Get approval requirements for a change class
  */
 export function getApprovalRequirements(changeClass: ChangeClass): {
@@ -227,4 +243,26 @@ export function getApprovalRequirements(changeClass: ChangeClass): {
         reason: 'Destructive changes require explicit human approval',
       };
   }
+}
+
+/**
+ * Validate edge function requirements
+ */
+export function validateEdgeFunction(code: string): { valid: boolean; issues: string[] } {
+  const issues: string[] = [];
+  const reqs = ENCODED_POLICY.edgeFunctionRequirements;
+
+  if (reqs.mustHaveServe && !/(serve\(|Deno\.serve\()/.test(code)) {
+    issues.push('Missing serve() or Deno.serve() entrypoint');
+  }
+
+  if (reqs.mustHandleCors && !/corsHeaders/.test(code)) {
+    issues.push('Missing CORS headers handling');
+  }
+
+  if (reqs.mustHaveErrorHandling && !/catch\s*\(/.test(code)) {
+    issues.push('Missing error handling (try/catch)');
+  }
+
+  return { valid: issues.length === 0, issues };
 }
