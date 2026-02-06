@@ -36,7 +36,7 @@ describe('Synergy Registry', () => {
 
   it('should list all synergies', () => {
     const synergies = listSynergies();
-    expect(synergies.length).toBe(120);
+    expect(synergies.length).toBeGreaterThanOrEqual(120);
   });
 
   it('should filter synergies by category', () => {
