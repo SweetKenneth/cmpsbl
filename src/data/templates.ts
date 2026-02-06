@@ -1,9 +1,11 @@
 /**
- * CodeLab Templates — 72+ Templates for the promptfluid® Substrate
+ * CodeLab Templates — 92+ Templates for the promptfluid® Substrate
  * Migrated from DevPortal.tsx for use in CodeLab
+ * Includes 20 High-Value Templates (Feb 2026)
  */
 
 import { LucideIcon } from 'lucide-react';
+import { HIGH_VALUE_TEMPLATES } from './templates-high-value';
 import {
   MessageSquare, Brain, Shield, Network, Activity, Moon, Cpu,
   Lock, GitBranch, Gauge, Search, Timer, Workflow, Target,
