@@ -37,7 +37,7 @@ export function PortalHeader({
   return (
     <header className={cn(
       "h-16 border-b border-border/30",
-      "bg-card/60 backdrop-blur-xl",
+      "bg-card dark:bg-card/60 dark:backdrop-blur-xl",
       "flex items-center justify-between px-4 gap-4",
       className
     )}>

@@ -310,6 +310,21 @@ export function CmpsblNav() {
 
             {/* ═══ Right Section ═══ */}
             <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleTheme}
+                className="h-11 w-11 rounded-xl border border-border bg-card hover:bg-secondary"
+                aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+                title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+              >
+                {isDark ? (
+                  <Sun className="w-5 h-5" />
+                ) : (
+                  <Moon className="w-5 h-5" />
+                )}
+              </Button>
+
               {/* Desktop Auth Buttons */}
               <div className="hidden lg:flex items-center gap-2">
                 {user ? (
