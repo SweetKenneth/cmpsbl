@@ -160,7 +160,7 @@ export function useCapabilityCheckout() {
     if (!result) return null;
     
     // Return null for off-menu items (display as "Licensed on request")
-    if (result.config.offMenu || isOffMenuCapability(capabilityId)) {
+    if (result.config.offMenu || isOffMenuCapability(capabilityId) || result.config.priceUsd > PRICE_CONFIG.max) {
       return null;
     }
     
