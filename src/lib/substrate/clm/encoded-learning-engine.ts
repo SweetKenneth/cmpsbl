@@ -432,7 +432,7 @@ Be specific and practical. Focus on immediately applicable knowledge.`;
       await memoryCore.ingest(
         `[Code Pattern: ${job.topic.name}] ${pattern}`,
         {
-          type: 'learned',
+          type: 'heuristic',
           source: 'encoded_learning',
           confidence: 0.9,
           tags: ['encoded', 'pattern', job.topic.id],
