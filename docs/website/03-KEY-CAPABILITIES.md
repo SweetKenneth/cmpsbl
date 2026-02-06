@@ -31,13 +31,13 @@ Traditional AI systems operate as isolated modules. No coordination, no emergent
 
 | Category | Pipelines | Description |
 |----------|-----------|-------------|
-| **Intelligence** | 24 | Cognitive fusion, causal inference, hypothesis testing |
-| **Security** | 18 | Attack surface mapping, zero-day defense, threat prediction |
-| **Resilience** | 20 | Predictive healing, blast radius containment, failover chains |
-| **Optimization** | 18 | Cost routing, token budget, resource allocation |
-| **Accessibility** | 14 | Universal design, adaptive content, compliance automation |
-| **Automation** | 14 | Autonomous repair, workflow synthesis, deprecation management |
-| **Orchestration** | 12 | Multi-agent coordination, pipeline orchestration, team coordination |
+| **Intelligence** | 27 | Cognitive fusion, causal inference, hypothesis testing, API intelligence |
+| **Security** | 21 | Attack surface mapping, zero-day defense, creative threat modeling |
+| **Resilience** | 21 | Predictive healing, blast radius containment, proactive maintenance |
+| **Optimization** | 20 | Cost routing, token budget, config optimization, resource imagination |
+| **Accessibility** | 17 | Universal design, accessible AI, cognitive profiling |
+| **Automation** | 16 | Autonomous repair, predictive evolution, entitlement evolution |
+| **Orchestration** | 13 | Multi-agent coordination, distributed config sync, team coordination |
 
 ### Example Synergies
 
