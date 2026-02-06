@@ -17,12 +17,12 @@ CMPSBL® is licensed as cognitive infrastructure with a **hybrid model** designe
 
 ## License Tiers at a Glance
 
-| Tier | Annual Price | Best For | Deployment |
-|------|--------------|----------|------------|
-| **Developer** | $2,999/year | Startups, solo developers | Hosted API |
-| **Team** | $9,999/year | Teams up to 10 developers | Hosted API |
-| **Research** | $19,999/year | Academic institutions, R&D | Hosted API |
-| **Enterprise** | $49,999/year | Production, compliance needs | Self-hosted |
+| Tier | Price | Best For | Deployment |
+|------|-------|----------|------------|
+| **Developer** | $39/month or $299/year | Startups, solo developers | Hosted API |
+| **Team** | Contact sales | Teams up to 10 developers | Hosted API |
+| **Research** | Contact sales | Academic institutions, R&D | Hosted API |
+| **Enterprise** | Contact sales | Production, compliance needs | Self-hosted |
 | **Strategic** | Custom | Cloud providers, OEM | Custom |
 
 ---
