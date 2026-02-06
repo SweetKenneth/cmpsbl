@@ -77,6 +77,9 @@ ADVANCED MODES (v7.0.0)
 | **Synergy Confidence** | Synergy Engine | 0.85 auto-execute with -0.02 per module penalty |
 | **Module Priority Weights** | Synergy Engine | BRAIN 0.25, VISION 0.20, DECODE 0.15... |
 | **Cascade Isolation Duration** | Synergy Engine | Base 30s × threat level multiplier (1-8x) |
+| **World-First Functions** | SYNERGY Epoch | 56 autonomous functions across 14 modules |
+| **Attention Limit** | AttentionMechanism | Miller's Law 7±2 focus items |
+| **Budget Kill Switch** | BudgetGovernance | Auto-halt at 95% daily token consumption |
 
 ### Version History
 
