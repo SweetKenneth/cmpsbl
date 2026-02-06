@@ -1,6 +1,6 @@
 /**
  * Encoded Guardrail Policy — Single Source of Truth
- * v2.0.0 — Non-destructive defaults, narrative bans, approval gates, execution modes
+ * v2.1.0 — Enhanced destructive detection, comprehensive narrative bans, strict approval gates
  */
 
 export type ChangeClass = 'comment_only' | 'additive' | 'localized' | 'destructive';
@@ -25,13 +25,13 @@ export interface EncodedConfig {
 }
 
 /**
- * Default configuration for Encoded v2.0.0
+ * Default configuration for Encoded v2.1.0
  */
 export const DEFAULT_ENCODED_CONFIG: EncodedConfig = {
   executionMode: 'dry_run',        // Default: show, don't write
   sebaIntegration: false,          // Default: independent from SEBA
   clmTraining: true,               // Default: learn from everything
-  primaryModel: 'lovable_ai',      // Use Lovable AI (GPT-5-mini) first
+  primaryModel: 'lovable_ai',      // Use Lovable AI (Gemini) first
   maxRetries: 3,                   // Max self-fix attempts
 };
 
@@ -57,35 +57,84 @@ export const ENCODED_POLICY = {
   failClosed: true,
 
   // ═══════════════════════════════════════════════════════════════
-  // DESTRUCTIVE CHANGE THRESHOLDS
+  // DESTRUCTIVE CHANGE THRESHOLDS (stricter)
   // ═══════════════════════════════════════════════════════════════
   
   /** Max lines that can be removed before requiring approval */
-  destructiveMaxRemovedLines: 10,
+  destructiveMaxRemovedLines: 8,
   
   /** Max percentage of file that can change before requiring approval */
-  destructiveMaxChangedPercent: 0.20,
+  destructiveMaxChangedPercent: 0.15,
   
   /** Destructive changes MUST have human approval */
   requireHumanApprovalForDestructive: true,
 
   // ═══════════════════════════════════════════════════════════════
-  // NARRATIVE PATTERN DETECTION
+  // DANGEROUS CODE PATTERNS (always blocked)
+  // ═══════════════════════════════════════════════════════════════
+
+  /** Patterns that indicate dangerous code (forbidden) */
+  dangerousPatterns: [
+    /\beval\s*\(/i,                              // eval()
+    /\bnew\s+Function\s*\(/i,                   // new Function()
+    /\bFunction\s*\(/i,                         // Function()
+    /document\.write\s*\(/i,                    // document.write
+    /innerHTML\s*=\s*[^"'`]*\+/i,               // innerHTML with concatenation
+    /\.innerHTML\s*=\s*\$\{/i,                  // innerHTML with template literal
+    /process\.env\.\w+\s*=\s*/i,                // Direct env modification
+    /fs\.(?:unlink|rmdir|rm)Sync?\s*\(/i,       // File deletion
+    /child_process\s*\.\s*exec\s*\(/i,          // Command execution
+    /\brequire\s*\(\s*['"]\s*child_process/i,   // Importing child_process
+  ] as readonly RegExp[],
+
+  // ═══════════════════════════════════════════════════════════════
+  // NARRATIVE PATTERN DETECTION (comprehensive)
   // ═══════════════════════════════════════════════════════════════
   
   /** Patterns that indicate narrative/personality code (forbidden) */
   narrativePatterns: [
+    // Self-reference patterns
     /glitch in my neural network/i,
     /i['']?m recovering/i,
     /as an ai/i,
-    /sorry,? (?:i |but )/i,
-    /brief glitch/i,
     /my neural/i,
     /consciousness (?:is|was)/i,
+    /\bI\b(?:'m| am) (?:an? )?(?:AI|assistant|bot|model)/i,
+    /my (?:training|programming)/i,
+    /my (?:capabilities|limitations)/i,
+    
+    // Apologetic patterns
+    /sorry,? (?:i |but )/i,
     /i apologize/i,
+    /i can't (?:help|do|provide)/i,
+    /unfortunately,? i/i,
+    /i'm not able to/i,
+    
+    // Thinking-out-loud patterns
     /let me think/i,
     /hmm,? (?:let me|i think)/i,
-    /\bI\b(?:'m| am) (?:an? )?(?:AI|assistant|bot)/i,
+    /let me (?:check|see|consider)/i,
+    /thinking about (?:this|that|it)/i,
+    /i (?:think|believe|feel) that/i,
+    
+    // Conversational filler
+    /^(?:ok|okay|alright|sure),?\s+/i,
+    /^(?:well|so|now),?\s+/i,
+    /^(?:great|perfect|excellent)!?\s+/i,
+    /here(?:'s| is) (?:the|my|a)/i,
+    /i(?:'ll| will) (?:help|assist|provide)/i,
+    
+    // Meta commentary
+    /this code (?:will|should|can)/i,
+    /the (?:above|following) code/i,
+    /note that (?:this|the)/i,
+    /please (?:note|remember)/i,
+    
+    // Uncertainty markers
+    /i(?:'m| am) not sure/i,
+    /might (?:be|have|need)/i,
+    /could (?:be|have|need)/i,
+    /perhaps (?:we|you|this)/i,
   ] as readonly RegExp[],
 
   // ═══════════════════════════════════════════════════════════════
@@ -97,10 +146,26 @@ export const ENCODED_POLICY = {
     'src/integrations/supabase/types.ts',
     'supabase/config.toml',
     '.env',
+    '.env.local',
+    '.env.production',
     'package.json',
     'package-lock.json',
     'bun.lockb',
+    'tsconfig.json',
+    'vite.config.ts',
+    'tailwind.config.ts',
   ] as readonly string[],
+
+  // ═══════════════════════════════════════════════════════════════
+  // REQUIRED PATTERNS (must be present in valid code)
+  // ═══════════════════════════════════════════════════════════════
+  
+  /** Edge functions must have these */
+  edgeFunctionRequirements: {
+    mustHaveServe: true,
+    mustHandleCors: true,
+    mustHaveErrorHandling: true,
+  },
 } as const;
 
 /**
