@@ -204,8 +204,8 @@ function HeroSection() {
           {/* Subtitle */}
           <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto mb-8 leading-relaxed">
             When standalone cognitive modules unite, they create emergent capabilities 
-            that transcend their individual functions. Discover 120 synergy pipelines 
-            including 22 S-tier premium offerings that power the next generation of AI intelligence.
+            that transcend their individual functions. Discover 135 synergy pipelines 
+            including 22 S-tier premium offerings + 15 v7.5.2 discoveries that power the next generation of AI intelligence.
           </p>
           
           {/* Stats row */}
