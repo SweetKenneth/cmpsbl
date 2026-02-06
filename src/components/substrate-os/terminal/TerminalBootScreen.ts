@@ -56,8 +56,8 @@ const MODULE_STATUS = [
  */
 const MODULE_GRID_DESKTOP = `
   ╔═══════════════════════════════════════════════════════════╗
-  ║              PROMPTFLUID® SUBSTRATE OS v6.3.1             ║
-  ║               Cognitive Operating System                   ║
+  ║              PROMPTFLUID® SUBSTRATE OS v7.5.2             ║
+  ║               SYNERGY+ Epoch Cognitive OS                  ║
   ╠═══════════════════════════════════════════════════════════╣
   ║                                                           ║
   ║    ┏━━━━━━━━━━ KERNEL LAYER ━━━━━━━━━━┓                   ║
