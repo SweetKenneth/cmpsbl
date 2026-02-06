@@ -133,8 +133,8 @@ This library is part of the **FNDTN v7** standards package, which presents:
 |----------|--------|-------------|
 | [75-EVOLUTION-LIFECYCLE.md](./75-EVOLUTION-LIFECYCLE.md) | Evolution Lifecycle | Modernizer 5-phase cycle |
 | [76-EVOLUTION-AUTONOMY.md](./76-EVOLUTION-AUTONOMY.md) | Evolution Autonomy | Governed autonomy settings |
-| [77-SYNERGY-PIPELINES.md](./77-SYNERGY-PIPELINES.md) | **Synergy Pipelines** | 24 cross-module executable pipelines |
-| [78-CAPABILITIES.md](./78-CAPABILITIES.md) | **Synergy Capabilities** | 34 total capabilities (24 synergies + 10 adapted) |
+| [77-SYNERGY-PIPELINES.md](./77-SYNERGY-PIPELINES.md) | **Synergy Pipelines** | 147 cross-module executable pipelines |
+| [78-CAPABILITIES.md](./78-CAPABILITIES.md) | **Synergy Capabilities** | 136+ depot capabilities + 125 executors |
 | [79-EVOLUTION-OBSERVABILITY.md](./79-EVOLUTION-OBSERVABILITY.md) | **Evolution Observability** | Investor-facing evolution visibility & stamps |
 
 ### Supplementary Materials
