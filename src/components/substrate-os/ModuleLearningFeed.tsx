@@ -37,7 +37,7 @@ interface LearningEntry {
   source: string;
   success: boolean;
   created_at: string;
-  metadata: Record<string, any>;
+  metadata: any;
 }
 
 const MODULE_ICONS: Record<string, React.ElementType> = {
