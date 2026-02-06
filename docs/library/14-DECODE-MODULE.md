@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — DECODE Module Deep Dive
 
-**Version 6.3.0 | Scientific Publication**
+**Version 7.5.3 | Intent Interpretation System**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-014 |
 | **Module** | DECODE |
 | **Layer** | Cognitive |
-| **Version** | v6.3.0 |
+| **Version** | v7.5.3 |
 
 ---
 
@@ -31,7 +31,7 @@
 
 ## 1. Module Overview
 
-DECODE serves as the human-machine interface layer, parsing natural language input into structured intents and routing them to appropriate handlers.
+DECODE is the **intent interpretation system** for the substrate. It parses natural language input into structured intents and routes them to the appropriate module handlers for execution.
 
 | Property | Value |
 |----------|-------|
