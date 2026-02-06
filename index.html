@@ -16,7 +16,23 @@
     <!-- PWA manifest: disabled in Lovable preview to avoid auth-bridge/CORS loops -->
     <script>
       (function () {
-        const isPreview = new URLSearchParams(location.search).has("__lovable_token");
+        const qs = new URLSearchParams(location.search);
+        const host = location.hostname;
+
+        // Treat Lovable editor/preview as "preview" even when no token is present.
+        // (Mobile editor can use different origins.)
+        let isEmbedded = false;
+        try {
+          isEmbedded = window.self !== window.top;
+        } catch {
+          isEmbedded = true;
+        }
+
+        const isPreview =
+          qs.has("__lovable_token") ||
+          host.includes("lovableproject.com") ||
+          host.startsWith("id-preview--") ||
+          isEmbedded;
 
         // In preview: aggressively block any manifest link creation/injection.
         if (isPreview) {
@@ -39,7 +55,7 @@
             const origAppend = head.appendChild.bind(head);
             head.appendChild = function (node) {
               // @ts-ignore
-              if (node?.tagName === 'LINK' && String(node.rel || '').toLowerCase() === 'manifest') {
+              if (node?.tagName === "LINK" && String(node.rel || "").toLowerCase() === "manifest") {
                 return node;
               }
               // @ts-ignore

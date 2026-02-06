@@ -20,29 +20,12 @@ export default defineConfig(({ mode }) => ({
         registerType: "autoUpdate",
         injectRegister: false, // Disable auto-injection to manually defer SW registration
         includeAssets: ["favicon.png", "pwa-192x192.png", "pwa-512x512.png", "apple-touch-icon.png"],
-        manifest: {
-          name: "PromptFluid",
-          short_name: "PromptFluid",
-          description: "AI That Flows - Advanced AI security and administration platform",
-          theme_color: "#7A5FFF",
-          background_color: "#0A0B10",
-          display: "standalone",
-          start_url: "/",
-          icons: [
-            {
-              src: "/pwa-192x192.png",
-              sizes: "192x192",
-              type: "image/png",
-              purpose: "any",
-            },
-            {
-              src: "/pwa-512x512.png",
-              sizes: "512x512",
-              type: "image/png",
-              purpose: "any maskable",
-            },
-          ],
-        },
+
+        // Critical: prevent build-time injection of <link rel="manifest">.
+        // We manage the manifest link manually in index.html (and disable it in editor/preview)
+        // to avoid auth-bridge/CORS loops that can cause mobile reload/crash behavior.
+        manifest: false,
+
         workbox: {
           skipWaiting: true,
           clientsClaim: true,
