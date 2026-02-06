@@ -9,6 +9,13 @@ import { useEffect, lazy, Suspense, useState } from "react";
 import { SEOProvider } from "@/contexts/SEOContext";
 import ToasterComponents from "@/components/app/ToasterComponents";
 
+// Mobile crash diagnostics (opt-in via ?diag=1)
+import { installMobileWatchdog } from "@/lib/client/mobile-watchdog";
+import { useRenderLoopDetector } from "@/lib/client/render-loop-detector";
+import { diagLog, diagEnabled } from "@/lib/client/diag";
+import { DiagPanel } from "@/components/system/DiagPanel";
+import { DiagErrorBoundary } from "@/components/system/DiagErrorBoundary";
+
 const SubstrateProvider = lazy(() => import("./components/substrate/SubstrateProvider").then(m => ({ default: m.SubstrateProvider })));
 const AuthProvider = lazy(() => import("@/contexts/AuthContext").then(m => ({ default: m.AuthProvider })));
 const TooltipProvider = lazy(() => import("@/components/ui/tooltip").then(m => ({ default: m.TooltipProvider })));
