@@ -12,8 +12,57 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/manifest.webmanifest" />
-    
+
+    <!-- PWA manifest: disabled in Lovable preview to avoid auth-bridge/CORS loops -->
+    <script>
+      (function () {
+        const isPreview = new URLSearchParams(location.search).has("__lovable_token");
+
+        // In preview: aggressively block any manifest link creation/injection.
+        if (isPreview) {
+          try {
+            // Remove any existing manifest link (some tooling may inject it).
+            const strip = () => {
+              document
+                .querySelectorAll('link[rel="manifest"]')
+                .forEach((n) => n.parentElement?.removeChild(n));
+            };
+
+            // Run immediately and a few more times (no MutationObserver).
+            strip();
+            setTimeout(strip, 50);
+            setTimeout(strip, 250);
+            setTimeout(strip, 1000);
+
+            // Block future injections via head.appendChild.
+            const head = document.head;
+            const origAppend = head.appendChild.bind(head);
+            head.appendChild = function (node) {
+              // @ts-ignore
+              if (node?.tagName === 'LINK' && String(node.rel || '').toLowerCase() === 'manifest') {
+                return node;
+              }
+              // @ts-ignore
+              return origAppend(node);
+            };
+          } catch {
+            // ignore
+          }
+          return;
+        }
+
+        // Outside preview: add manifest normally.
+        try {
+          const link = document.createElement("link");
+          link.rel = "manifest";
+          link.href = "/manifest.webmanifest";
+          document.head.appendChild(link);
+        } catch {
+          // ignore
+        }
+      })();
+    </script>
+
     <!-- 2026 SEO: Critical Resource Hints (ordered by priority) -->
     <link rel="preconnect" href="https://bxodolqqczjuahwdrswy.supabase.co" crossorigin />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -596,9 +645,14 @@
     }
     </script>
     
-    <!-- Space Analytics Tracker (perf-safe; no DOM MutationObserver) -->
+    <!-- Space Analytics Tracker (disabled in Lovable preview) -->
     <script>
       (function () {
+        // In Lovable preview, pages include a __lovable_token param.
+        // Disable analytics in preview to avoid extra work + noisy network errors while editing/typing.
+        const isPreview = new URLSearchParams(location.search).has("__lovable_token");
+        if (isPreview) return;
+
         const ENDPOINT = "https://qxuamypoxrlhfeagmjlj.supabase.co/functions/v1/collect";
         const sid = localStorage.getItem("space_sid") || crypto.randomUUID();
         localStorage.setItem("space_sid", sid);
@@ -662,56 +716,61 @@
       })();
     </script>
 
-    <!-- Google tag (gtag.js) - User-interaction deferred for Core Web Vitals -->
+    <!-- Google tag (gtag.js) - Disabled in Lovable preview to avoid keydown-triggered load -->
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      
-      // Ultra-deferred: only load after user interaction OR 8s timeout
-      // This prevents unused JS from impacting LCP/FCP scores
-      (function() {
-        var loaded = false;
-        
-        function loadAnalytics() {
-          if (loaded) return;
-          loaded = true;
-          
-          gtag('js', new Date());
-          gtag('config', 'G-88CLWS1QHK', {
-            'anonymize_ip': true,
-            'link_attribution': true,
-            'allow_google_signals': true,
-            'transport_type': 'beacon'
+      (function () {
+        const isPreview = new URLSearchParams(location.search).has("__lovable_token");
+        if (isPreview) return;
+
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+
+        // Ultra-deferred: only load after user interaction OR 8s timeout
+        // This prevents unused JS from impacting LCP/FCP scores
+        (function() {
+          var loaded = false;
+
+          function loadAnalytics() {
+            if (loaded) return;
+            loaded = true;
+
+            gtag('js', new Date());
+            gtag('config', 'G-88CLWS1QHK', {
+              'anonymize_ip': true,
+              'link_attribution': true,
+              'allow_google_signals': true,
+              'transport_type': 'beacon'
+            });
+
+            var script = document.createElement('script');
+            script.async = true;
+            script.src = 'https://www.googletagmanager.com/gtag/js?id=G-88CLWS1QHK';
+            document.head.appendChild(script);
+
+            // Cleanup listeners
+            document.removeEventListener('click', loadAnalytics);
+            document.removeEventListener('scroll', loadAnalytics);
+            document.removeEventListener('keydown', loadAnalytics);
+            document.removeEventListener('touchstart', loadAnalytics);
+          }
+
+          // Load on first user interaction (ensures engagement before loading)
+          document.addEventListener('click', loadAnalytics, { once: true, passive: true });
+          document.addEventListener('scroll', loadAnalytics, { once: true, passive: true });
+          document.addEventListener('keydown', loadAnalytics, { once: true, passive: true });
+          document.addEventListener('touchstart', loadAnalytics, { once: true, passive: true });
+
+          // Fallback: load after 8s if no interaction (for passive visitors)
+          window.addEventListener('load', function() {
+            setTimeout(function() {
+              if (!loaded && 'requestIdleCallback' in window) {
+                requestIdleCallback(loadAnalytics, { timeout: 2000 });
+              } else if (!loaded) {
+                loadAnalytics();
+              }
+            }, 8000);
           });
-          
-          var script = document.createElement('script');
-          script.async = true;
-          script.src = 'https://www.googletagmanager.com/gtag/js?id=G-88CLWS1QHK';
-          document.head.appendChild(script);
-          
-          // Cleanup listeners
-          document.removeEventListener('click', loadAnalytics);
-          document.removeEventListener('scroll', loadAnalytics);
-          document.removeEventListener('keydown', loadAnalytics);
-          document.removeEventListener('touchstart', loadAnalytics);
-        }
-        
-        // Load on first user interaction (ensures engagement before loading 144KB)
-        document.addEventListener('click', loadAnalytics, { once: true, passive: true });
-        document.addEventListener('scroll', loadAnalytics, { once: true, passive: true });
-        document.addEventListener('keydown', loadAnalytics, { once: true, passive: true });
-        document.addEventListener('touchstart', loadAnalytics, { once: true, passive: true });
-        
-        // Fallback: load after 8s if no interaction (for passive visitors)
-        window.addEventListener('load', function() {
-          setTimeout(function() {
-            if (!loaded && 'requestIdleCallback' in window) {
-              requestIdleCallback(loadAnalytics, { timeout: 2000 });
-            } else if (!loaded) {
-              loadAnalytics();
-            }
-          }, 8000);
-        });
+        })();
       })();
     </script>
     
