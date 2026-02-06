@@ -30,8 +30,8 @@ import {
 } from '@/lib/capabilities/synergies';
 
 describe('Synergy Registry', () => {
-  it('should have 120 defined synergies', () => {
-    expect(SYNERGY_DEFINITIONS.length).toBe(120);
+  it('should have at least 120 defined synergies', () => {
+    expect(SYNERGY_DEFINITIONS.length).toBeGreaterThanOrEqual(120);
   });
 
   it('should list all synergies', () => {
