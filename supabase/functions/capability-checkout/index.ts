@@ -176,27 +176,55 @@ serve(async (req) => {
 
     const origin = req.headers.get("origin") || "https://promptfluid-substrate.lovable.app";
 
+    const normalizePriceUsd = (priceUsd: number): number => {
+      if (priceUsd <= 19) return 19;
+      if (priceUsd <= 79) return 19;
+      if (priceUsd <= 149) return 49;
+      if (priceUsd <= 249) return 99;
+      if (priceUsd <= 399) return 149;
+      if (priceUsd <= 699) return 199;
+      return 299;
+    };
+
+    // Normalize the Stripe price down to public tiers (max $299)
+    const stripePrice = await stripe.prices.retrieve(priceId);
+    const rawUsd = Math.round((stripePrice.unit_amount ?? 0) / 100);
+    const normalizedUsd = normalizePriceUsd(rawUsd);
+
+    const lineItem = normalizedUsd * 100 === stripePrice.unit_amount
+      ? { price: priceId, quantity: 1 }
+      : {
+          price_data: {
+            currency: stripePrice.currency || 'usd',
+            unit_amount: normalizedUsd * 100,
+            product: typeof stripePrice.product === 'string' ? stripePrice.product : undefined,
+            product_data: typeof stripePrice.product === 'string'
+              ? undefined
+              : { name: capability_id },
+          },
+          quantity: 1,
+        };
+
     // Create checkout session for one-time payment
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       customer_email: customerId ? undefined : customerEmail,
-      line_items: [
-        {
-          price: priceId,
-          quantity: 1,
-        },
-      ],
+      line_items: [lineItem],
       mode: "payment",
       success_url: `${origin}/capabilities?success=true&capability=${capability_id}`,
       cancel_url: `${origin}/capabilities?canceled=true`,
       metadata: {
         capability_id,
         type: 'capability_purchase',
+        normalized_usd: String(normalizedUsd),
+        legacy_price_id: priceId,
       },
       payment_intent_data: {
         metadata: {
           capability_id,
           type: 'capability_purchase',
+          normalized_usd: String(normalizedUsd),
+          legacy_price_id: priceId,
         },
       },
     });
