@@ -4,7 +4,12 @@ import App from "./App.tsx";
 import "./index.css";
 
 createRoot(document.getElementById("root")!).render(
-  <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+  <ThemeProvider
+    attribute="class"
+    defaultTheme="light"
+    storageKey="pf-theme"
+    disableTransitionOnChange
+  >
     <App />
   </ThemeProvider>
 );
