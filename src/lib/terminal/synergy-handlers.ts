@@ -161,10 +161,10 @@ export function registerSynergyHandlers(): void {
     return {
       success: true,
       data: {
-        version: '7.5.0',
+        version: '7.5.3',
         totalPipelines: all.length,
         stierPipelines: stierCount,
-        customExecutors: 98,
+        customExecutors: 125,
         categories: categories.length,
         avgEstimatedMs: Math.round(avgMs),
         riskBreakdown,
