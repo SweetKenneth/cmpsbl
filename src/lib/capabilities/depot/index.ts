@@ -1,7 +1,7 @@
 /**
  * Capabilities Depot — Main Export
  * Downloadable, licensed capability artifacts with full Stripe checkout
- * v1.4.0 — 108+ Capabilities (22 S-tier, Self-Improvement Premium)
+ * v2.1.0 — 136+ Capabilities (22 S-tier, 18 Premium, 10 Recursive Self-Improvement)
  */
 
 // === Types ===
