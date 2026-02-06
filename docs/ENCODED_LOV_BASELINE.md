@@ -1,7 +1,7 @@
 # Encoded — Lov Baseline Execution Rules
 
-> **Version**: 1.0.0  
-> **Last Updated**: 2026-02-03  
+> **Version**: 2.2.0  
+> **Last Updated**: 2026-02-06  
 > **Status**: Active  
 > **Tests**: 16/16 passing
 
