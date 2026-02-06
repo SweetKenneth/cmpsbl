@@ -41,10 +41,24 @@ export function registerEncodedHandlers(): void {
       console.warn('Failed to fetch encoded stats:', err);
     }
 
+    // Format for display
+    const formatted = formatAgentStatus({
+      version: '2.2.0',
+      mode: config.executionMode,
+      modeLabel: getExecutionModeLabel(config.executionMode),
+      model: config.primaryModel,
+      modelLabel: getPrimaryModelLabel(config.primaryModel),
+      sebaIntegration: config.sebaIntegration,
+      clmTraining: config.clmTraining,
+      patternsLearned: stats.patterns_learned,
+      executionsToday: stats.executions_today,
+    });
+
     return {
       success: true,
+      formatted,
       data: {
-        version: '2.1.0',
+        version: '2.2.0',
         mode: {
           current: config.executionMode,
           label: getExecutionModeLabel(config.executionMode),
@@ -61,14 +75,6 @@ export function registerEncodedHandlers(): void {
           max_retries: config.maxRetries,
         },
         stats,
-        policy: {
-          require_file_read: true,
-          require_anchor_check: true,
-          deny_narrative_code: true,
-          fail_closed: true,
-          max_removed_lines: 10,
-          max_change_percent: '20%',
-        },
       },
     };
   });
