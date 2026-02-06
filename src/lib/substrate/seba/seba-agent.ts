@@ -1,14 +1,13 @@
 /**
  * Self-Evolving Bounded Agent (SEBA)
- * v1.1.0 — The Holy Grail: Full Cognitive × Evolution × Governance
+ * v2.0.0 — Full Spectrum Autonomous Evolution
  * 
- * Complete cognitive pipeline that:
- * 1. Runs full cognitive analysis (Memory, Learning, Imagination, Reasoning)
- * 2. Proposes its own improvements based on insights
- * 3. Governance-gates proposals for safety and coherence
- * 4. Applies approved evolutions with rollback capability
+ * Complete cognitive pipeline with 9 analysis engines:
+ * 1. Core 4: Memory, Learning, Imagination, Reasoning
+ * 2. Extended 5: Security, Telemetry, Governance, Resources, Architecture
  * 
- * Genuine bounded autonomy within governance constraints.
+ * Proposes improvements across all 10 categories with full governance
+ * gating and rollback capability.
  */
 
 import { supabase } from '@/integrations/supabase/client';

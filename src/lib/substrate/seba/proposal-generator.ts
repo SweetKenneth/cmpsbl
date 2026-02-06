@@ -254,6 +254,125 @@ export class ProposalGenerator {
         });
         break;
 
+      case 'security_hardening':
+        if (insight.title.includes('Auth')) {
+          actions.push({
+            id: crypto.randomUUID(),
+            type: 'config_update',
+            target: 'auth.rate_limit.enabled',
+            current_value: false,
+            proposed_value: true,
+            reversible: true,
+            risk_factor: 0.15,
+          });
+          actions.push({
+            id: crypto.randomUUID(),
+            type: 'threshold_adjust',
+            target: 'auth.rate_limit.max_attempts',
+            current_value: 10,
+            proposed_value: 5,
+            reversible: true,
+            risk_factor: 0.2,
+          });
+        }
+        if (insight.title.includes('API Key') || insight.title.includes('Exposure')) {
+          actions.push({
+            id: crypto.randomUUID(),
+            type: 'config_update',
+            target: 'logging.redaction.enabled',
+            current_value: false,
+            proposed_value: true,
+            reversible: true,
+            risk_factor: 0.1,
+          });
+        }
+        break;
+
+      case 'governance_refinement':
+        if (insight.title.includes('Override')) {
+          actions.push({
+            id: crypto.randomUUID(),
+            type: 'rule_modify',
+            target: 'governance.override_policy',
+            current_value: 'permissive',
+            proposed_value: 'strict_with_audit',
+            reversible: true,
+            risk_factor: 0.3,
+          });
+        }
+        if (insight.title.includes('Conflicting')) {
+          actions.push({
+            id: crypto.randomUUID(),
+            type: 'config_update',
+            target: 'governance.capability_validation',
+            current_value: 'off',
+            proposed_value: 'on_startup',
+            reversible: true,
+            risk_factor: 0.15,
+          });
+        }
+        break;
+
+      case 'resource_optimization':
+        if (insight.title.includes('Budget') || insight.title.includes('Quota')) {
+          actions.push({
+            id: crypto.randomUUID(),
+            type: 'config_update',
+            target: 'nexus.fallback.enabled',
+            current_value: false,
+            proposed_value: true,
+            reversible: true,
+            risk_factor: 0.2,
+          });
+          actions.push({
+            id: crypto.randomUUID(),
+            type: 'threshold_adjust',
+            target: 'nexus.budget_threshold',
+            current_value: 0.9,
+            proposed_value: 0.7,
+            reversible: true,
+            risk_factor: 0.15,
+          });
+        }
+        if (insight.title.includes('Storage') || insight.title.includes('Memory')) {
+          actions.push({
+            id: crypto.randomUUID(),
+            type: 'config_update',
+            target: 'brain.auto_archive.enabled',
+            current_value: false,
+            proposed_value: true,
+            reversible: true,
+            risk_factor: 0.2,
+          });
+        }
+        break;
+
+      case 'architecture_evolution':
+        if (insight.title.includes('Reliability')) {
+          const module = insight.title.match(/Issue: (\w+)/)?.[1] || 'unknown';
+          actions.push({
+            id: crypto.randomUUID(),
+            type: 'module_tune',
+            target: `${module}.error_handling`,
+            current_value: 'basic',
+            proposed_value: 'enhanced_with_retry',
+            reversible: true,
+            risk_factor: 0.25,
+          });
+        }
+        if (insight.title.includes('Coupling')) {
+          actions.push({
+            id: crypto.randomUUID(),
+            type: 'config_update',
+            target: 'substrate.event_bus.enabled',
+            current_value: false,
+            proposed_value: true,
+            reversible: true,
+            risk_factor: 0.3,
+          });
+        }
+        break;
+
       default:
         // Generic improvement action
         actions.push({
