@@ -510,7 +510,7 @@ export class CognitiveAnalyzer {
           source_engine: 'security',
           title: 'Potential API Key Exposure in Logs',
           description: 'API key references detected in event logs. Review for sensitive data leakage.',
-          evidence: [`events_with_keys: ${keyEvents.length}`],
+          evidence: [`events_with_keys: ${apiKeyEvents.length}`],
           confidence: 0.7,
           actionability: 0.8,
           urgency: 'medium',
