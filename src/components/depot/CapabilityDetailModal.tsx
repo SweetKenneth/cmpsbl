@@ -195,13 +195,23 @@ function ModalContent({ capability, categoryConfig }: { capability: CapabilityAr
 }
 
 function ModalFooter({ capability, onClose }: { capability: CapabilityArtifact; onClose: () => void }) {
-  const { checkout, loading, isAvailable } = useCapabilityCheckout();
+  const { checkout, loading, isAvailable, getPrice, isOffMenu, isRecursive, isSTier } = useCapabilityCheckout();
   const isSynergy = capability.id.startsWith('syn-');
   const hasCheckout = isAvailable(capability.id);
+  const isOffMenuCapability = isOffMenu(capability.id);
+  const isRecursiveCapability = isRecursive(capability.id);
+  const isSTierCapability = isSTier(capability.id);
+  const isPremium = isRecursiveCapability || isSTierCapability;
+  
+  // Get normalized price from Stripe config (null for off-menu)
+  const displayPrice = getPrice(capability.id);
+  const priceLabel = isOffMenuCapability || displayPrice === null 
+    ? 'Licensed on request' 
+    : formatPrice(displayPrice);
 
   const handleBuy = async () => {
     if (hasCheckout) {
-      await checkout(capability.id);
+      await checkout(capability.id, capability.name);
     }
   };
 
@@ -210,12 +220,15 @@ function ModalFooter({ capability, onClose }: { capability: CapabilityArtifact; 
       {/* Price */}
       <div className="flex items-center justify-between">
         <div>
-          <div className="text-2xl font-black text-foreground">
-            {formatPrice(capability.priceUsd)}
+          <div className={cn(
+            "text-2xl font-black",
+            isOffMenuCapability ? "text-muted-foreground text-lg" : isPremium ? "text-primary" : "text-foreground"
+          )}>
+            {priceLabel}
           </div>
           <div className="flex items-center gap-1 text-xs text-muted-foreground">
             <Download className="w-3 h-3" />
-            Licensed Artifact
+            {isOffMenuCapability ? 'Enterprise' : 'Licensed Artifact'}
           </div>
         </div>
       </div>
@@ -232,22 +245,36 @@ function ModalFooter({ capability, onClose }: { capability: CapabilityArtifact; 
             <ExternalLink className="w-3 h-3 ml-1" />
           </a>
         </Button>
-        <Button 
-          size="lg"
-          onClick={handleBuy}
-          disabled={loading || !hasCheckout}
-          className={cn(
-            "flex-1 h-12 text-base touch-manipulation",
-            isSynergy && "bg-violet-600 hover:bg-violet-700"
-          )}
-        >
-          {loading ? (
-            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-          ) : (
-            <Package className="w-4 h-4 mr-2" />
-          )}
-          Buy Now
-        </Button>
+        {isOffMenuCapability ? (
+          <Button 
+            size="lg"
+            onClick={handleBuy}
+            variant="secondary"
+            className="flex-1 h-12 text-base touch-manipulation"
+          >
+            <ExternalLink className="w-4 h-4 mr-2" />
+            Inquire
+          </Button>
+        ) : (
+          <Button 
+            size="lg"
+            onClick={handleBuy}
+            disabled={loading || !hasCheckout}
+            className={cn(
+              "flex-1 h-12 text-base touch-manipulation",
+              isRecursiveCapability && "bg-primary hover:bg-primary/90",
+              isSTierCapability && !isRecursiveCapability && "bg-cyan-600 hover:bg-cyan-500",
+              isSynergy && !isPremium && "bg-violet-600 hover:bg-violet-700"
+            )}
+          >
+            {loading ? (
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            ) : (
+              <Package className="w-4 h-4 mr-2" />
+            )}
+            Buy Now
+          </Button>
+        )}
       </div>
     </div>
   );

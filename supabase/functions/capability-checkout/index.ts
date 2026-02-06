@@ -84,7 +84,7 @@ const CAPABILITY_PRICES: Record<string, string> = {
   'cap-state-machine': 'price_1SwBmfQ7FtTiAL4aTRIOPWQB',
 
   // === Flagship Expansion ===
-  'cap-enterprise-mesh': 'price_1SwBmgQ7FtTiAL4aDaRGvBMd',
+  'cap-enterprise-mesh': 'price_1Sx9kYQ7FtTiAL4a2TQtgVOV',
   'cap-cognitive-platform': 'price_1SwBmhQ7FtTiAL4aU89A5AEH',
   'cap-security-suite': 'price_1SwBmiQ7FtTiAL4aenCVhynX',
   'cap-resilience-platform': 'price_1SwBmjQ7FtTiAL4aU1oKwtPF',
