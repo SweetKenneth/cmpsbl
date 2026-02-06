@@ -68,7 +68,7 @@ const LIBRARY_DOCS = [
     name: "KEY-CAPABILITIES", 
     title: "Key Capabilities",
     category: "technical",
-    description: "Deep dive into the 14-module architecture",
+    description: "Deep dive into the 14-module architecture and synergies",
     featured: true,
     readTime: "8 min"
   },
@@ -118,7 +118,7 @@ const LIBRARY_DOCS = [
     readTime: "6 min"
   },
   { 
-    id: "09", 
+    id: "09-SEC", 
     name: "SECURITY-COMPLIANCE", 
     title: "Security & Compliance",
     category: "business",
@@ -131,9 +131,18 @@ const LIBRARY_DOCS = [
     name: "SYNERGY-CAPABILITIES", 
     title: "Synergy Capabilities",
     category: "technical",
-    description: "120 cross-module pipelines that multiply intelligence",
+    description: "147 cross-module pipelines that multiply intelligence",
     featured: true,
     readTime: "12 min"
+  },
+  { 
+    id: "10-MKT", 
+    name: "MARKETPLACE-FEATURES", 
+    title: "Marketplace Features",
+    category: "technical",
+    description: "CodeLab, Templates, and Capabilities Depot",
+    featured: false,
+    readTime: "6 min"
   },
   { 
     id: "10", 
@@ -143,15 +152,6 @@ const LIBRARY_DOCS = [
     description: "Vision and development timeline through 2028",
     featured: false,
     readTime: "5 min"
-  },
-  { 
-    id: "10", 
-    name: "MARKETPLACE-FEATURES", 
-    title: "Marketplace Features",
-    category: "technical",
-    description: "CodeLab, Templates, and Capabilities Depot",
-    featured: false,
-    readTime: "6 min"
   },
   { 
     id: "11", 
