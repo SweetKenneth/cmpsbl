@@ -84,7 +84,7 @@ export default function Decode() {
       initializeFresh();
     }
 
-    setEpistemicPrompt(EPISTEMIC_PROMPTS[Math.floor(Math.random() * EPISTEMIC_PROMPTS.length)]);
+    setEpistemicPrompt(SAMPLE_PROMPTS[Math.floor(Math.random() * SAMPLE_PROMPTS.length)]);
   }, []);
 
   const initializeFresh = () => {
