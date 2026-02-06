@@ -1,6 +1,6 @@
 /**
  * Synergy Terminal Handlers
- * v7.5.0 — Terminal commands for 120 synergy pipelines
+ * v7.5.3 — Terminal commands for 147 synergy pipelines with 125 custom executors
  */
 
 import { registerHandler } from './validate-registry';
@@ -161,10 +161,10 @@ export function registerSynergyHandlers(): void {
     return {
       success: true,
       data: {
-        version: '7.5.0',
+        version: '7.5.3',
         totalPipelines: all.length,
         stierPipelines: stierCount,
-        customExecutors: 98,
+        customExecutors: 125,
         categories: categories.length,
         avgEstimatedMs: Math.round(avgMs),
         riskBreakdown,

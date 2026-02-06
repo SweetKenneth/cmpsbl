@@ -1,5 +1,5 @@
 /**
- * Quick Actions Panel v7.0.0 - System-wide controls
+ * Quick Actions Panel v7.5.3 - System-wide controls
  * Heal, backup, restart, diagnostics with Substrate Voice notifications
  */
 

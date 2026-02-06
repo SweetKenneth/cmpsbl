@@ -1,10 +1,10 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 /* Admin System 2026 - Liquid Intelligence UI */
 @import './styles/admin/design-tokens.css';
 @import './styles/admin/animations.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here.
 All colors MUST be HSL.

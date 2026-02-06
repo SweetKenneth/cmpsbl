@@ -100,7 +100,7 @@ Understanding this architecture helps you design integrations that work *with* t
 
 ---
 
-*This post reflects real architecture running in production. The substrate maintains ${await getMemoryCount()} active memories across tiers.*
+*This post reflects real architecture running in production.*
 
 **Classification**: Architecture Deep-Dive  
 **Audience**: Developers, Researchers, AI Architects`,
@@ -207,7 +207,7 @@ But it requires **extreme discipline** in safety engineering.
 
 ---
 
-*The substrate has completed ${await getEvolutionCount()} evolution cycles with ${await getSuccessRate()}% success rate.*
+*This post reflects real autonomous evolution architecture in production.*
 
 **Classification**: Evolution Engineering  
 **Visibility**: Public`,

@@ -1,6 +1,6 @@
 /**
  * Terminal Module Exports
- * v7.5.4 — Command execution, validation, governance, synergy, and encoded commands (295+ commands)
+ * v7.5.4 — Command execution, validation, governance, synergy, SEBA, and encoded commands (310+ commands)
  */
 
 // Command execution with governance
@@ -39,3 +39,9 @@ export {
   executeEncodedCommand,
   setEncodedMode,
 } from './encoded-handlers';
+
+// SEBA handlers
+export {
+  registerSEBAHandlers,
+  executeSEBACommand,
+} from './seba-handlers';
