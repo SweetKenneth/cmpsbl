@@ -749,7 +749,22 @@
     <!-- Google tag (gtag.js) - Disabled in Lovable preview to avoid keydown-triggered load -->
     <script>
       (function () {
-        const isPreview = new URLSearchParams(location.search).has("__lovable_token");
+        const qs = new URLSearchParams(location.search);
+        const host = location.hostname;
+
+        let isEmbedded = false;
+        try {
+          isEmbedded = window.self !== window.top;
+        } catch {
+          isEmbedded = true;
+        }
+
+        const isPreview =
+          qs.has("__lovable_token") ||
+          host.includes("lovableproject.com") ||
+          host.startsWith("id-preview--") ||
+          isEmbedded;
+
         if (isPreview) return;
 
         window.dataLayer = window.dataLayer || [];
