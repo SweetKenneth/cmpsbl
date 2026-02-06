@@ -1233,12 +1233,139 @@ class SubstrateClient {
       this.invoke({ module: 'inclusive' as SubstrateModule, action: 'pulse' }),
     
     /** Scan target URL or HTML for accessibility issues */
-    scan: (target: string, options?: { wcag_level?: 'A' | 'AA' | 'AAA'; scan_depth?: 'quick' | 'standard' | 'deep' }) =>
+    scan: (target: string, options?: { wcag_level?: 'A' | 'AA' | 'AAA'; scan_depth?: 'quick' | 'standard' | 'deep'; auto_repair?: boolean }) =>
       this.invoke({ module: 'inclusive' as SubstrateModule, action: 'scan', payload: { target, ...options } }),
+    
+    /** Scan and automatically repair accessibility issues in one operation */
+    scanAndRepair: async (target: string, options?: { wcag_level?: 'A' | 'AA' | 'AAA'; scan_depth?: 'quick' | 'standard' | 'deep' }) => {
+      // Phase 1: Scan
+      const scanResult = await this.invoke({ 
+        module: 'inclusive' as SubstrateModule, 
+        action: 'scan', 
+        payload: { target, ...options } 
+      });
+      
+      if (!scanResult.success) {
+        return scanResult;
+      }
+      
+      const scanData = scanResult.data as any;
+      const issues = scanData?.issues || scanData?.violations || [];
+      
+      // If no issues or score is perfect, return scan result
+      if (issues.length === 0 || (scanData?.score >= 100)) {
+        return {
+          ...scanResult,
+          data: {
+            ...scanData,
+            auto_repair: { skipped: true, reason: 'No issues to repair' }
+          }
+        };
+      }
+      
+      // Phase 2: Auto-repair
+      const repairResult = await this.invoke({ 
+        module: 'inclusive' as SubstrateModule, 
+        action: 'repair', 
+        payload: { target, issues: issues.map((i: any) => i.id || i.type) } 
+      });
+      
+      const repairData = repairResult.data as any;
+      
+      // Phase 3: Validate repairs
+      const validateResult = await this.invoke({ 
+        module: 'inclusive' as SubstrateModule, 
+        action: 'validate', 
+        payload: { target } 
+      });
+      
+      const validateData = validateResult.data as any;
+      
+      return {
+        success: true,
+        module: 'inclusive' as SubstrateModule,
+        action: 'scan_and_repair',
+        data: {
+          scan: scanData,
+          repair: {
+            applied: true,
+            fixes_count: repairData?.fixes_applied || repairData?.repairs?.length || 0,
+            repairs: repairData?.repairs || [],
+          },
+          validation: validateData,
+          final_score: validateData?.new_score || validateData?.score || scanData?.score,
+          improvement: (validateData?.score_improvement) || 0,
+        },
+        timestamp: new Date().toISOString(),
+      };
+    },
     
     /** Self-scan the substrate UI */
     selfScan: () =>
       this.invoke({ module: 'inclusive' as SubstrateModule, action: 'self_scan' }),
+    
+    /** Self-scan and auto-repair the substrate UI */
+    selfScanAndRepair: async () => {
+      // Phase 1: Self-scan
+      const scanResult = await this.invoke({ 
+        module: 'inclusive' as SubstrateModule, 
+        action: 'self_scan' 
+      });
+      
+      if (!scanResult.success) {
+        return scanResult;
+      }
+      
+      const scanData = scanResult.data as any;
+      const issues = scanData?.issues || scanData?.violations || [];
+      
+      // If no issues, return scan result
+      if (issues.length === 0 || (scanData?.score >= 100)) {
+        return {
+          ...scanResult,
+          data: {
+            ...scanData,
+            auto_repair: { skipped: true, reason: 'No issues to repair' }
+          }
+        };
+      }
+      
+      // Phase 2: Auto-repair using current document
+      const repairResult = await this.invoke({ 
+        module: 'inclusive' as SubstrateModule, 
+        action: 'repair', 
+        payload: { target: 'self', issues: issues.map((i: any) => i.id || i.type) } 
+      });
+      
+      const repairData = repairResult.data as any;
+      
+      // Phase 3: Validate
+      const validateResult = await this.invoke({ 
+        module: 'inclusive' as SubstrateModule, 
+        action: 'validate', 
+        payload: { target: 'self' } 
+      });
+      
+      const validateData = validateResult.data as any;
+      
+      return {
+        success: true,
+        module: 'inclusive' as SubstrateModule,
+        action: 'self_scan_and_repair',
+        data: {
+          scan: scanData,
+          repair: {
+            applied: true,
+            fixes_count: repairData?.fixes_applied || repairData?.repairs?.length || 0,
+            repairs: repairData?.repairs || [],
+          },
+          validation: validateData,
+          final_score: validateData?.new_score || validateData?.score || scanData?.score,
+          improvement: (validateData?.score_improvement) || 0,
+        },
+        timestamp: new Date().toISOString(),
+      };
+    },
     
     /** Repair accessibility issues */
     repair: (target: string, issues?: string[]) =>
