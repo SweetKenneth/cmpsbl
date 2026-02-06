@@ -66,7 +66,7 @@ serve(async (req) => {
 
     // Determine checkout mode - agency and studio are subscriptions, everything else is one-time
     const isSubscription = product_type === 'agency' || product_type === 'studio';
-    const isCapability = product_type === 'capability' || product_type === 'stier' || product_type === 'recursive';
+    const isCapability = ['capability', 'stier', 'recursive', 'premium', 'ultra', 'expansion', 'core'].includes(product_type);
     const isRecursive = product_type === 'recursive';
     const checkoutMode = isSubscription ? 'subscription' : 'payment';
 
