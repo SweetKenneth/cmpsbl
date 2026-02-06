@@ -204,10 +204,10 @@ const App = () => {
                         <Route path="/agency" element={<AgencyMint />} />
                         <Route path="/a/:slug" element={<AgencyPortal />} />
                         <Route path="/devtools" element={<DevTools />} />
+                        <Route path="/audit" element={<Audit />} />
                         <Route path="/gaming" element={<GamingSubstrate />} />
                         <Route path="/developers" element={<DeveloperShowcase />} />
                         <Route path="/use-cases" element={<UseCases />} />
-                        <Route path="/dev-portal" element={<DevPortal />} />
                         <Route path="/marketplace" element={<Marketplace />} />
                         <Route path="/marketplace/success" element={<MarketplaceSuccess />} />
                         <Route path="/intelligence" element={<SubstrateIntelligence />} />

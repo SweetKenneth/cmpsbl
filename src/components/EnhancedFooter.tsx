@@ -33,6 +33,8 @@ export function EnhancedFooter() {
         { name: "CMPSBL OS", href: "/substrate" },
         { name: "Decode", href: "/decode" },
         { name: "Dream Feeder", href: "/feed-dream-eater" },
+        { name: "DevTools", href: "/devtools" },
+        { name: "Audit Trail", href: "/audit" },
         { name: "Demo", href: "/demo" },
       ]
     },
