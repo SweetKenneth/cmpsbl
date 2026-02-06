@@ -71,7 +71,13 @@ export function CmpsblNav() {
   const toggleTheme = useCallback(() => {
     setTheme(isDark ? "light" : "dark");
   }, [isDark, setTheme]);
-  
+
+  // Desktop dropdown stability (prevents z-index / stacking-context issues)
+  const headerRef = useRef<HTMLElement | null>(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const sectionButtonRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const [dropdownAnchor, setDropdownAnchor] = useState<DOMRect | null>(null);
+
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
