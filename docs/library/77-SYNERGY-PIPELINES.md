@@ -41,11 +41,11 @@ Synergy Pipelines are **production-ready orchestrations** that combine multiple 
 
 ### 1.3 Key Improvements from v6
 
-| Feature | v6 (Descriptive) | v7.1 (Executable) |
-|---------|------------------|-------------------|
-| Pipeline Count | 5 | 34 |
+| Feature | v6 (Descriptive) | v7.5.3 (Executable) |
+|---------|------------------|---------------------|
+| Pipeline Count | 5 | 147 |
 | Execution | Emergent | Governed |
-| Custom Executors | None | 13 implementations |
+| Custom Executors | None | 125 implementations |
 | Governance | N/A | Integrated with capability-gate |
 | Tracing | N/A | Full trace_id propagation |
 | Categories | N/A | 7 functional categories |
