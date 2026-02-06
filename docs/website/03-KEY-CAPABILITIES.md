@@ -27,7 +27,7 @@
 Traditional AI systems operate as isolated modules. No coordination, no emergent intelligence.
 
 ### Our Solution
-**135 synergy pipelines** that orchestrate 2-5 modules together for emergent capabilities:
+**147 synergy pipelines** that orchestrate 2-5 modules together for emergent capabilities:
 
 | Category | Pipelines | Description |
 |----------|-----------|-------------|
