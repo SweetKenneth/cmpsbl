@@ -559,9 +559,9 @@ export function SEBAEvolutionHero() {
   }, []);
   
   return (
-    <div className="relative w-full max-w-[340px] sm:max-w-[520px] md:max-w-[620px] lg:max-w-[720px] mx-auto py-6">
+    <div className="relative w-full max-w-[340px] sm:max-w-[520px] md:max-w-[620px] lg:max-w-[720px] mx-auto py-6 overflow-visible">
       {/* Enhanced background effects */}
-      <div className="absolute inset-0 overflow-hidden rounded-3xl">
+      <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none">
         {/* Gradient mesh base */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-violet-500/5" />
         
