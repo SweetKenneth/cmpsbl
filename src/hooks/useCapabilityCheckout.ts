@@ -62,7 +62,7 @@ function getUnifiedStripeConfig(capabilityId: string) {
 
 /**
  * Check if capability checkout is enabled
- * Only recursive code compilation items are off-menu now
+ * Off-menu items and items >$299 require license request
  */
 function isCheckoutEnabledForCapability(capabilityId: string): boolean {
   const result = getUnifiedStripeConfig(capabilityId);
@@ -76,7 +76,8 @@ function isCheckoutEnabledForCapability(capabilityId: string): boolean {
   
   // Check if price is within public range ($19-$299)
   const price = result.config.priceUsd;
-  if (price < PRICE_CONFIG.min || price > PRICE_CONFIG.max) return false;
+  if (price > PRICE_CONFIG.max) return false;
+  if (price < PRICE_CONFIG.min) return false;
   
   return true;
 }
