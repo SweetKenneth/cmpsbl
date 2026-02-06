@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Internal Engineering Library
 
-**Version 7.8.0 | ENGINE+ Epoch (3-Layer Architecture) | CONFIDENTIAL**
+**Version 7.9.0 | ENGINE+ Epoch (3-Layer Architecture) | CONFIDENTIAL**
 
 ---
 
@@ -29,7 +29,8 @@
 | 13 | [SEBA & Evolve Operator Guide](./13-SEBA-EVOLVE-OPERATOR-GUIDE.md) | **Complete workflow for evolution cycles, verification, stamps** |
 | 14 | [Atlas Control Plane](./14-ATLAS-CONTROL-PLANE.md) | Centralized governance, command interface, real-time audit |
 | 15 | [Capability Registry](./15-CAPABILITY-REGISTRY.md) | **76 cross-module capabilities, risk levels, execution modes** |
-| **16** | **[Cognitive Engine System](./16-COGNITIVE-ENGINE-SYSTEM.md)** | **20 engines consolidating capabilities into compound units** |
+| **16** | **[Cognitive Engine System](./16-COGNITIVE-ENGINE-SYSTEM.md)** | **32 engines consolidating 76 capabilities into compound units** |
+| **17** | **[Meta-Engine System](./17-META-ENGINE-SYSTEM.md)** | **12 meta-engines orchestrating 32 engines** |
 
 ---
 

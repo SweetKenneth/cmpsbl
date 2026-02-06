@@ -1,6 +1,6 @@
 /**
  * Engine Registry
- * v7.7.0 — 20 Cognitive Engines Consolidating 76 Capabilities
+ * v7.9.0 — 32 Cognitive Engines Consolidating 76 Capabilities
  * 
  * Each engine orchestrates multiple related capabilities into
  * a compound execution unit with enhanced value and IP protection.
@@ -470,6 +470,281 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
     averageLatencyMs: 350,
     cacheable: true,
   },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // COMMUNICATION ENGINES (2) — v7.9.0
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  broadcast_engine: {
+    id: 'broadcast_engine',
+    name: 'Broadcast Engine',
+    description: 'Intelligent message broadcasting with throttling, deduplication, and subscription health monitoring. Manages system-wide communication.',
+    category: 'communication',
+    capabilities: [
+      'broadcast_throttle_manager',
+      'message_deduplication_guard',
+      'subscription_health_monitor',
+      'event_correlation_engine',
+    ],
+    primaryModules: ['RIPPLE', 'ACCESS', 'VISION'],
+    layer: 'Operational',
+    synergyMultiplier: 2.3,
+    complexityScore: 7,
+    autonomyLevel: 'autonomous',
+    executionMode: 'streaming',
+    averageLatencyMs: 25,
+    cacheable: false,
+  },
+  
+  event_engine: {
+    id: 'event_engine',
+    name: 'Event Engine',
+    description: 'Event-driven orchestration with correlation, amplification, and intent propagation. Real-time event processing pipeline.',
+    category: 'communication',
+    capabilities: [
+      'event_correlation_engine',
+      'intent_amplification',
+      'subscription_health_monitor',
+    ],
+    primaryModules: ['RIPPLE', 'DECODE', 'CORTEX'],
+    layer: 'Operational',
+    synergyMultiplier: 2.1,
+    complexityScore: 6,
+    autonomyLevel: 'autonomous',
+    executionMode: 'streaming',
+    averageLatencyMs: 15,
+    cacheable: false,
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // INTEGRATION ENGINES (2) — v7.9.0
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  routing_engine: {
+    id: 'routing_engine',
+    name: 'Routing Engine',
+    description: 'Intelligent provider routing with health monitoring, fallback chains, and cost optimization. Ensures optimal path selection.',
+    category: 'integration',
+    capabilities: [
+      'provider_health_router',
+      'fallback_chain_orchestrator',
+      'cost_quality_optimizer',
+      'latency_prediction_engine',
+    ],
+    primaryModules: ['NEXUS', 'CORE', 'VISION'],
+    layer: 'Kernel',
+    synergyMultiplier: 2.6,
+    complexityScore: 8,
+    autonomyLevel: 'autonomous',
+    executionMode: 'adaptive',
+    averageLatencyMs: 35,
+    cacheable: true,
+  },
+  
+  transformation_engine: {
+    id: 'transformation_engine',
+    name: 'Transformation Engine',
+    description: 'Data transformation pipeline with compatibility checking, conflict resolution, and format conversion. Universal data adapter.',
+    category: 'integration',
+    capabilities: [
+      'data_transformation_pipeline',
+      'adapter_compatibility_checker',
+      'sync_conflict_resolver',
+      'connection_pool_optimizer',
+    ],
+    primaryModules: ['INTEGRATION', 'DECODE', 'BRAIN'],
+    layer: 'Operational',
+    synergyMultiplier: 2.2,
+    complexityScore: 7,
+    autonomyLevel: 'supervised',
+    executionMode: 'parallel',
+    averageLatencyMs: 80,
+    cacheable: true,
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ANALYTICS ENGINES (2) — v7.9.0
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  monitoring_engine: {
+    id: 'monitoring_engine',
+    name: 'Monitoring Engine',
+    description: 'Comprehensive system monitoring with anomaly forecasting, trend analysis, and health tracking. Central observability hub.',
+    category: 'analytics',
+    capabilities: [
+      'metric_anomaly_forecaster',
+      'health_trend_analyzer',
+      'dashboard_insight_generator',
+      'behavioral_drift_detection',
+    ],
+    primaryModules: ['VISION', 'BRAIN', 'SYSTEM'],
+    layer: 'Operational',
+    synergyMultiplier: 2.4,
+    complexityScore: 7,
+    autonomyLevel: 'autonomous',
+    executionMode: 'streaming',
+    averageLatencyMs: 50,
+    cacheable: false,
+  },
+  
+  capacity_engine: {
+    id: 'capacity_engine',
+    name: 'Capacity Engine',
+    description: 'Resource capacity planning with quota prediction, burst handling, and cleanup scheduling. Ensures resource availability.',
+    category: 'analytics',
+    capabilities: [
+      'capacity_planning_advisor',
+      'quota_burst_predictor',
+      'resource_cleanup_scheduler',
+      'usage_anomaly_detector',
+    ],
+    primaryModules: ['VISION', 'ACCESS', 'SYSTEM'],
+    layer: 'Admin',
+    synergyMultiplier: 2.2,
+    complexityScore: 6,
+    autonomyLevel: 'supervised',
+    executionMode: 'parallel',
+    averageLatencyMs: 120,
+    cacheable: true,
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // EXPERIENCE ENGINES (2) — v7.9.0
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  accessibility_engine: {
+    id: 'accessibility_engine',
+    name: 'Accessibility Engine',
+    description: 'Full accessibility stack with WCAG remediation, regression guards, and inclusive testing. Universal access enabler.',
+    category: 'experience',
+    capabilities: [
+      'wcag_auto_remediation_engine',
+      'accessibility_regression_guard',
+      'inclusive_testing_orchestrator',
+      'adaptive_interface_optimizer',
+    ],
+    primaryModules: ['INCLUSIVE', 'MODERNIZER', 'VISION'],
+    layer: 'Admin',
+    synergyMultiplier: 2.5,
+    complexityScore: 8,
+    autonomyLevel: 'supervised',
+    executionMode: 'parallel',
+    averageLatencyMs: 200,
+    cacheable: false,
+  },
+  
+  personalization_engine: {
+    id: 'personalization_engine',
+    name: 'Personalization Engine',
+    description: 'Adaptive personalization with learning, personality adaptation, and developer onboarding. Tailored experience delivery.',
+    category: 'experience',
+    capabilities: [
+      'personality_adaptation_engine',
+      'adaptive_learning_personalization',
+      'developer_onboarding_optimizer',
+      'adaptive_interface_optimizer',
+    ],
+    primaryModules: ['DECODE', 'BRAIN', 'INCLUSIVE'],
+    layer: 'Cognitive',
+    synergyMultiplier: 2.3,
+    complexityScore: 7,
+    autonomyLevel: 'assisted',
+    executionMode: 'sequential',
+    averageLatencyMs: 90,
+    cacheable: true,
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // KNOWLEDGE ENGINES (2) — v7.9.0
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  graph_engine: {
+    id: 'graph_engine',
+    name: 'Graph Engine',
+    description: 'Knowledge graph operations with navigation, similarity ranking, and cross-domain synthesis. Semantic knowledge network.',
+    category: 'knowledge',
+    capabilities: [
+      'knowledge_graph_navigator',
+      'semantic_similarity_ranker',
+      'cross_domain_insight_synthesis',
+      'latent_pattern_extractor',
+    ],
+    primaryModules: ['BRAIN', 'DREAM', 'CORTEX'],
+    layer: 'Cognitive',
+    synergyMultiplier: 2.7,
+    complexityScore: 9,
+    autonomyLevel: 'supervised',
+    executionMode: 'parallel',
+    averageLatencyMs: 150,
+    cacheable: true,
+  },
+  
+  context_engine: {
+    id: 'context_engine',
+    name: 'Context Engine',
+    description: 'Context management with window optimization, memory recall, and temporal scoring. Smart context assembly.',
+    category: 'knowledge',
+    capabilities: [
+      'context_window_optimizer',
+      'context_aware_memory_recall',
+      'temporal_memory_scoring',
+      'cognitive_load_balancer',
+    ],
+    primaryModules: ['DECODE', 'BRAIN', 'NEXUS'],
+    layer: 'Cognitive',
+    synergyMultiplier: 2.4,
+    complexityScore: 7,
+    autonomyLevel: 'autonomous',
+    executionMode: 'sequential',
+    averageLatencyMs: 40,
+    cacheable: true,
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // AUTONOMY ENGINES (2) — v7.9.0
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  self_healing_engine: {
+    id: 'self_healing_engine',
+    name: 'Self-Healing Engine',
+    description: 'Autonomous self-repair with config drift detection, backup validation, and incident automation. System homeostasis.',
+    category: 'autonomy',
+    capabilities: [
+      'config_drift_detector',
+      'backup_integrity_validator',
+      'incident_response_automator',
+      'fault_boundary_orchestrator',
+    ],
+    primaryModules: ['SYSTEM', 'DEFENSE', 'CORE'],
+    layer: 'Kernel',
+    synergyMultiplier: 2.8,
+    complexityScore: 10,
+    autonomyLevel: 'autonomous',
+    executionMode: 'adaptive',
+    averageLatencyMs: 60,
+    cacheable: false,
+  },
+  
+  self_documentation_engine: {
+    id: 'self_documentation_engine',
+    name: 'Self-Documentation Engine',
+    description: 'Autonomous documentation with audit compliance, quality review, and deprecation tracking. Living documentation system.',
+    category: 'autonomy',
+    capabilities: [
+      'autonomous_documentation',
+      'audit_compliance_reporter',
+      'autonomous_quality_review',
+      'deprecation_path_finder',
+    ],
+    primaryModules: ['MODERNIZER', 'SYSTEM', 'CORTEX'],
+    layer: 'Admin',
+    synergyMultiplier: 2.1,
+    complexityScore: 6,
+    autonomyLevel: 'autonomous',
+    executionMode: 'parallel',
+    averageLatencyMs: 180,
+    cacheable: true,
+  },
 };
 
 // ============================================================================
@@ -513,6 +788,12 @@ export function getEngineSummary() {
     governance: 0,
     security: 0,
     evolution: 0,
+    communication: 0,
+    integration: 0,
+    analytics: 0,
+    experience: 0,
+    knowledge: 0,
+    autonomy: 0,
   };
   
   let totalMultiplier = 0;
@@ -547,4 +828,10 @@ export const ENGINES_BY_CATEGORY: Record<EngineCategory, EngineId[]> = {
   governance: ['compliance_engine', 'quality_engine', 'audit_engine'],
   security: ['threat_engine', 'defense_engine', 'trust_engine'],
   evolution: ['evolution_engine', 'modernization_engine'],
+  communication: ['broadcast_engine', 'event_engine'],
+  integration: ['routing_engine', 'transformation_engine'],
+  analytics: ['monitoring_engine', 'capacity_engine'],
+  experience: ['accessibility_engine', 'personalization_engine'],
+  knowledge: ['graph_engine', 'context_engine'],
+  autonomy: ['self_healing_engine', 'self_documentation_engine'],
 };

@@ -1,6 +1,6 @@
 /**
  * Engine Executors
- * v7.7.0 — Compound Capability Execution
+ * v7.9.0 — 32 Engines Compound Capability Execution
  * 
  * Each executor orchestrates multiple capabilities into a unified result.
  * Executors manage context sharing, error handling, and synergy calculations.
@@ -180,6 +180,30 @@ export const executeTrustEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 export const executeEvolutionEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 export const executeModernizationEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 
+// Communication Engines (v7.9.0)
+export const executeBroadcastEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeEventEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+
+// Integration Engines (v7.9.0)
+export const executeRoutingEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeTransformationEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+
+// Analytics Engines (v7.9.0)
+export const executeMonitoringEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeCapacityEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+
+// Experience Engines (v7.9.0)
+export const executeAccessibilityEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executePersonalizationEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+
+// Knowledge Engines (v7.9.0)
+export const executeGraphEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeContextEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+
+// Autonomy Engines (v7.9.0)
+export const executeSelfHealingEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeSelfDocumentationEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+
 // ============================================================================
 // EXECUTOR REGISTRY
 // ============================================================================
@@ -216,6 +240,30 @@ export const ENGINE_EXECUTORS: Record<EngineId, EngineExecutor> = {
   // Evolution
   evolution_engine: executeEvolutionEngine,
   modernization_engine: executeModernizationEngine,
+  
+  // Communication (v7.9.0)
+  broadcast_engine: executeBroadcastEngine,
+  event_engine: executeEventEngine,
+  
+  // Integration (v7.9.0)
+  routing_engine: executeRoutingEngine,
+  transformation_engine: executeTransformationEngine,
+  
+  // Analytics (v7.9.0)
+  monitoring_engine: executeMonitoringEngine,
+  capacity_engine: executeCapacityEngine,
+  
+  // Experience (v7.9.0)
+  accessibility_engine: executeAccessibilityEngine,
+  personalization_engine: executePersonalizationEngine,
+  
+  // Knowledge (v7.9.0)
+  graph_engine: executeGraphEngine,
+  context_engine: executeContextEngine,
+  
+  // Autonomy (v7.9.0)
+  self_healing_engine: executeSelfHealingEngine,
+  self_documentation_engine: executeSelfDocumentationEngine,
 };
 
 // ============================================================================

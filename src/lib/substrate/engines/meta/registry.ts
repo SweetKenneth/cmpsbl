@@ -1,6 +1,6 @@
 /**
  * Meta-Engine Registry
- * v7.8.0 — 8 Meta-Engines Orchestrating 20 Engines
+ * v7.9.0 — 12 Meta-Engines Orchestrating 32 Engines → 76 Capabilities
  * 
  * Meta-Engines provide the highest level of abstraction,
  * combining multiple engines into unified execution pipelines.
@@ -9,7 +9,7 @@
 import type { MetaEngineId, MetaEngineDefinition, MetaEngineCategory } from './types';
 
 // ============================================================================
-// META-ENGINE DEFINITIONS — 8 TOTAL
+// META-ENGINE DEFINITIONS — 12 TOTAL
 // ============================================================================
 
 export const META_ENGINE_REGISTRY: Record<MetaEngineId, MetaEngineDefinition> = {
@@ -204,6 +204,102 @@ export const META_ENGINE_REGISTRY: Record<MetaEngineId, MetaEngineDefinition> = 
       'Workload optimization',
     ],
   },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // EVENT FABRIC — v7.9.0
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  event_fabric: {
+    id: 'event_fabric',
+    name: 'Event Fabric',
+    description: 'Unified event-driven orchestration combining broadcast, event processing, and monitoring into a real-time communication backbone.',
+    category: 'communication',
+    engines: ['broadcast_engine', 'event_engine', 'monitoring_engine'],
+    totalCapabilities: 11,
+    compoundSynergyMultiplier: 5.0,
+    complexityScore: 8,
+    orchestrationMode: 'parallel',
+    estimatedLatencyMs: 50,
+    enterpriseValue: 'premium',
+    useCases: [
+      'Real-time event processing',
+      'System-wide broadcast orchestration',
+      'Event correlation and analytics',
+      'Pub/sub infrastructure management',
+    ],
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // DATA HIGHWAY — v7.9.0
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  data_highway: {
+    id: 'data_highway',
+    name: 'Data Highway',
+    description: 'Cross-system data orchestration combining routing, transformation, and capacity management for seamless data flow.',
+    category: 'integration',
+    engines: ['routing_engine', 'transformation_engine', 'capacity_engine'],
+    totalCapabilities: 12,
+    compoundSynergyMultiplier: 5.2,
+    complexityScore: 8,
+    orchestrationMode: 'cascade',
+    estimatedLatencyMs: 150,
+    enterpriseValue: 'premium',
+    useCases: [
+      'Multi-provider data routing',
+      'Format transformation pipelines',
+      'Capacity-aware data distribution',
+      'Cross-system synchronization',
+    ],
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // KNOWLEDGE NEXUS — v7.9.0
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  knowledge_nexus: {
+    id: 'knowledge_nexus',
+    name: 'Knowledge Nexus',
+    description: 'Unified knowledge management combining graph, context, and synthesis for intelligent information retrieval and generation.',
+    category: 'knowledge',
+    engines: ['graph_engine', 'context_engine', 'synthesis_engine'],
+    totalCapabilities: 12,
+    compoundSynergyMultiplier: 5.8,
+    complexityScore: 9,
+    orchestrationMode: 'adaptive',
+    estimatedLatencyMs: 300,
+    enterpriseValue: 'enterprise',
+    useCases: [
+      'Semantic knowledge retrieval',
+      'Context-aware synthesis',
+      'Cross-domain insight generation',
+      'Intelligent information assembly',
+    ],
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // SELF GOVERNANCE — v7.9.0
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  self_governance: {
+    id: 'self_governance',
+    name: 'Self Governance',
+    description: 'Autonomous self-management combining healing, documentation, and evolution for a truly self-sustaining system.',
+    category: 'self_management',
+    engines: ['self_healing_engine', 'self_documentation_engine', 'evolution_engine'],
+    totalCapabilities: 13,
+    compoundSynergyMultiplier: 6.5,
+    complexityScore: 10,
+    orchestrationMode: 'staged',
+    estimatedLatencyMs: 600,
+    enterpriseValue: 'enterprise',
+    useCases: [
+      'Autonomous system maintenance',
+      'Self-documenting architecture',
+      'Continuous self-improvement',
+      'Homeostatic system balance',
+    ],
+  },
 };
 
 // ============================================================================
@@ -242,6 +338,10 @@ export function getMetaEngineSummary() {
     intelligence: 0,
     experience: 0,
     performance: 0,
+    communication: 0,
+    integration: 0,
+    knowledge: 0,
+    self_management: 0,
   };
   
   let totalSynergy = 0;
@@ -276,4 +376,8 @@ export const META_ENGINES_BY_CATEGORY: Record<MetaEngineCategory, MetaEngineId[]
   intelligence: ['intelligence_pipeline'],
   experience: ['adaptation_suite'],
   performance: ['performance_optimizer'],
+  communication: ['event_fabric'],
+  integration: ['data_highway'],
+  knowledge: ['knowledge_nexus'],
+  self_management: ['self_governance'],
 };
