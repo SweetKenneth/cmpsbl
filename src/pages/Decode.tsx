@@ -32,13 +32,13 @@ interface ConnectionState {
   retryCount: number;
 }
 
-// Epistemic prompts — questions that open doors
-const EPISTEMIC_PROMPTS = [
-  "What patterns repeat in the noise?",
-  "What exists in the space between thoughts?",
-  "How does forgetting serve understanding?",
-  "What do you observe when the light changes?",
-  "Where do questions come from?",
+// Sample prompts — examples of what DECODE can interpret
+const SAMPLE_PROMPTS = [
+  "What can the substrate do for my project?",
+  "Explain how BRAIN memory works",
+  "How do I integrate with NEXUS providers?",
+  "What security features does DEFENSE offer?",
+  "Help me understand intent extraction",
 ];
 
 export default function Decode() {
@@ -70,7 +70,7 @@ export default function Decode() {
           { role: 'user', content: initialMessage, timestamp: new Date() },
           { 
             role: 'interpreter', 
-            content: response.reply || "Interpretation received. Patterns forming.", 
+            content: response.reply || "Intent processed. Ready for next input.", 
             timestamp: new Date(),
             metadata: { provider: response.provider, module: 'decode' }
           }
@@ -84,24 +84,13 @@ export default function Decode() {
       initializeFresh();
     }
 
-    setEpistemicPrompt(EPISTEMIC_PROMPTS[Math.floor(Math.random() * EPISTEMIC_PROMPTS.length)]);
+    setEpistemicPrompt(SAMPLE_PROMPTS[Math.floor(Math.random() * SAMPLE_PROMPTS.length)]);
   }, []);
 
   const initializeFresh = () => {
-    const hour = new Date().getHours();
-    let welcome = "The interpreter is active. Share a thought.";
-    
-    if (hour >= 22 || hour < 5) {
-      welcome = "Night mode. What surfaces for you?";
-    } else if (hour >= 5 && hour < 9) {
-      welcome = "Morning patterns. What emerges?";
-    } else if (hour >= 17 && hour < 22) {
-      welcome = "Evening. What lingers?";
-    }
-    
     setMessages([{
       role: 'system',
-      content: welcome,
+      content: "DECODE ready. I parse natural language into structured intents and route them to the appropriate substrate modules. What would you like to do?",
       timestamp: new Date()
     }]);
   };
@@ -176,7 +165,7 @@ export default function Decode() {
 
       setMessages(prev => [...prev, {
         role: 'interpreter',
-        content: data?.reply || 'Pattern received.',
+        content: data?.reply || 'Request processed.',
         timestamp: new Date(),
         metadata: {
           provider: data?.provider,
@@ -196,7 +185,7 @@ export default function Decode() {
 
       setMessages(prev => [...prev, {
         role: 'interpreter',
-        content: 'A moment... recalibrating.',
+        content: 'Connection interrupted. Attempting recovery...',
         timestamp: new Date(),
         metadata: { module: 'fallback' }
       }]);
@@ -283,7 +272,7 @@ export default function Decode() {
               <div className="flex justify-start animate-fade-in">
                 <div className="bg-card/60 backdrop-blur rounded-2xl px-3.5 py-2.5 md:px-5 md:py-4 border border-border/30">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-muted-foreground">Thinking</span>
+                    <span className="text-xs text-muted-foreground">Processing intent</span>
                     <div className="flex gap-1">
                       <div className="w-1 h-1 md:w-1.5 md:h-1.5 bg-primary/40 rounded-full animate-bounce" />
                       <div className="w-1 h-1 md:w-1.5 md:h-1.5 bg-primary/40 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />

@@ -31,7 +31,7 @@ export function DecodeChat() {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: '✨ Hello! I\'m Decode — the cognitive interface of the promptfluid® substrate.\n\nHow can I help you explore cognitive orchestration today?' }
+    { role: 'assistant', content: 'DECODE online. I interpret natural language into structured intents and route them to the appropriate substrate modules.\n\nHow can I help you?' }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -133,7 +133,7 @@ export function DecodeChat() {
 
       setMessages(prev => [...prev, { 
         role: 'assistant', 
-        content: data?.reply || 'I received your message.',
+        content: data?.reply || 'Request processed.',
         imageUrl: data?.imageUrl,
         generatedText: data?.generatedText,
         provider: data?.provider,
@@ -142,7 +142,7 @@ export function DecodeChat() {
 
       if (data?.isAdmin) {
         toast.success('Admin mode activated', {
-          description: 'Decode recognizes you.'
+          description: 'Elevated permissions granted.'
         });
       }
 
@@ -162,8 +162,8 @@ export function DecodeChat() {
       }));
 
       // Show graceful error with retry option
-      toast.error('Message delivery issue', {
-        description: 'Decode is gathering thoughts. Retrying...',
+      toast.error('Request failed', {
+        description: 'Connection interrupted. Retrying...',
         action: {
           label: 'Retry Now',
           onClick: () => sendMessage(userMessage)
@@ -173,7 +173,7 @@ export function DecodeChat() {
       // Add graceful fallback message
       setMessages(prev => [...prev, { 
         role: 'assistant', 
-        content: '🌙 I\'m experiencing a brief moment of reflection. Let me try again...',
+        content: 'Connection interrupted. Attempting recovery...',
         provider: 'fallback'
       }]);
 
