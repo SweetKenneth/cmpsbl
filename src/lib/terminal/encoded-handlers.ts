@@ -1,6 +1,6 @@
 /**
  * Encoded Terminal Handlers
- * v2.1.0 — Terminal commands for Encoded agent operations
+ * v2.2.0 — Enhanced terminal commands with polished output
  */
 
 import { registerHandler } from './validate-registry';
@@ -10,8 +10,13 @@ import {
   updateEncodedConfig,
   getExecutionModeLabel,
   getPrimaryModelLabel,
+  getSkillsSummary,
+  formatSkill,
+  ENCODED_SKILLS,
+  formatAgentStatus,
+  formatHelp,
+  formatVerification,
   type ExecutionMode,
-  type PrimaryModel,
 } from '@/lib/codeagent/encoded';
 import { log } from '@/lib/system/log';
 
