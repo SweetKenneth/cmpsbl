@@ -9,6 +9,9 @@
 
 import type { Topic, TopicCategory } from './topic-bank';
 
+// Re-export Topic type for use in learning engine
+export type { Topic } from './topic-bank';
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // ENCODED CODE-WRITING CURRICULUM
 // 50+ Topics focused exclusively on code excellence

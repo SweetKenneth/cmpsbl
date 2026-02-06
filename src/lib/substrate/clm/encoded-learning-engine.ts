@@ -449,7 +449,7 @@ Be specific and practical. Focus on immediately applicable knowledge.`;
       await memoryCore.ingest(
         `[Anti-Pattern Warning: ${job.topic.name}] ${antiPattern}`,
         {
-          type: 'learned',
+          type: 'error_pattern',
           source: 'encoded_learning',
           confidence: 0.9,
           tags: ['encoded', 'anti-pattern', job.topic.id],
