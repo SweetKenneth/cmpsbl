@@ -35,13 +35,13 @@ The DECODE Interpretation subsystem provides **context filters** that adjust how
 
 ### Critical Constraint
 
-Personality profiles **DO NOT** affect:
+Interpretation profiles **DO NOT** affect:
 - Execution of commands
 - Permission levels
 - Memory writes (never persisted to brain.hot)
 - Response authority
 
-Personality profiles **DO** affect:
+Interpretation profiles **DO** affect:
 - Intent weighting
 - Ambiguity tolerance
 - Confidence calibration
