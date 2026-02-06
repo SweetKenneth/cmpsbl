@@ -1,6 +1,6 @@
 # Key Capabilities
 
-**What CMPSBL® Does — Technical Overview v7.5.0**
+**What CMPSBL® Does — Technical Overview v7.5.2**
 
 ---
 
