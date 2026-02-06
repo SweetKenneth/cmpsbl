@@ -27,12 +27,12 @@ Synergy Capabilities are **production-ready features** that emerge from the orch
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                   CAPABILITY LAYER v7.5.0                    │
+│                   CAPABILITY LAYER v7.5.3                   │
 ├─────────────────────────────────────────────────────────────┤
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │  120 SYNERGY PIPELINES                                  ││
-│  │  ├── 98 Core Pipelines (7 categories)                   ││
-│  │  └── 22 S-Tier Premium Pipelines                        ││
+│  │  147 SYNERGY PIPELINES                                  ││
+│  │  ├── 120 Core Pipelines (7 categories)                  ││
+│  │  └── 27 S-Tier Premium Pipelines                        ││
 │  └─────────────────────────────────────────────────────────┘│
 ├─────────────────────────────────────────────────────────────┤
 │  ┌─────────────────────────────────────────────────────────┐│
