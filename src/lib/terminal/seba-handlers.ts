@@ -17,12 +17,15 @@ export function registerSEBAHandlers(): void {
     const result = await sebaAgent.handleCommand('status');
     const healthResult = await sebaAgent.handleCommand('health');
     
+    const statusData = result.data || {};
+    
     return {
       success: result.success,
       data: {
         version: '2.0.0',
         codename: 'Full Spectrum Autonomy',
-        ...result.data,
+        state: (statusData as any).state,
+        config: (statusData as any).config,
         health: healthResult.data,
       },
     };
