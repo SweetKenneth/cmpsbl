@@ -746,12 +746,257 @@ export const COMPLEX_TEMPLATES = [
   },
 ] as const;
 
+// ============================================
+// HIGH-VALUE TEMPLATES - February 2026
+// Strategic templates for enterprise buyers
+// ============================================
+export const HIGH_VALUE_TEMPLATES = [
+  // === ENTERPRISE AI GOVERNANCE ===
+  {
+    id: 'ai-governance-framework',
+    name: 'AI Governance Framework',
+    description: 'Enterprise-grade AI governance with policy enforcement, audit trails, approval workflows, and compliance monitoring.',
+    product_id: 'prod_TuzEGovFramework',
+    price_id: 'price_1Sx9GGQ7FtTiAL4aGovernance',
+    amount: 29900, // $299
+    category: 'defense',
+    difficulty: 'pro',
+    features: ['Policy Enforcement', 'Approval Workflows', 'Audit Trails', 'Compliance Reporting', 'Role-Based Access'],
+  },
+  {
+    id: 'model-registry-manager',
+    name: 'Model Registry Manager',
+    description: 'ML model versioning, deployment tracking, A/B testing orchestration, and rollback management with memory.',
+    product_id: 'prod_TuzEModelRegistry',
+    price_id: 'price_1Sx9GHQ7FtTiAL4aModelReg',
+    amount: 29900, // $299
+    category: 'system',
+    difficulty: 'elite',
+    features: ['Model Versioning', 'Deployment Tracking', 'A/B Testing', 'Rollback Management', 'Performance Memory'],
+  },
+  
+  // === STRATEGIC INTELLIGENCE ===
+  {
+    id: 'competitive-intelligence-engine',
+    name: 'Competitive Intelligence Engine',
+    description: 'Market analysis with competitor tracking, trend detection, strategic insights, and historical pattern memory.',
+    product_id: 'prod_TuzECompetitive',
+    price_id: 'price_1Sx9GIQ7FtTiAL4aCompetitive',
+    amount: 29900, // $299
+    category: 'brain',
+    difficulty: 'elite',
+    features: ['Competitor Tracking', 'Trend Detection', 'Strategic Insights', 'Market Memory', 'Alert System'],
+  },
+  {
+    id: 'decision-support-system',
+    name: 'Decision Support System',
+    description: 'Executive decision support with scenario modeling, risk analysis, outcome prediction, and decision memory.',
+    product_id: 'prod_TuzEDecisionSupport',
+    price_id: 'price_1Sx9GJQ7FtTiAL4aDecision',
+    amount: 29900, // $299
+    category: 'brain',
+    difficulty: 'pro',
+    features: ['Scenario Modeling', 'Risk Analysis', 'Outcome Prediction', 'Decision History', 'Recommendation Engine'],
+  },
+  
+  // === DEVELOPER PRODUCTIVITY ===
+  {
+    id: 'codebase-intelligence',
+    name: 'Codebase Intelligence Agent',
+    description: 'Codebase analysis with architectural insights, technical debt tracking, refactoring suggestions, and pattern memory.',
+    product_id: 'prod_TuzECodebaseIntel',
+    price_id: 'price_1Sx9GKQ7FtTiAL4aCodebase',
+    amount: 29900, // $299
+    category: 'system',
+    difficulty: 'elite',
+    features: ['Architecture Analysis', 'Tech Debt Tracking', 'Refactoring Hints', 'Pattern Memory', 'PR Intelligence'],
+  },
+  {
+    id: 'devops-autopilot',
+    name: 'DevOps Autopilot',
+    description: 'Infrastructure automation with incident prediction, capacity planning, deployment optimization, and operational memory.',
+    product_id: 'prod_TuzEDevOpsAuto',
+    price_id: 'price_1Sx9GLQ7FtTiAL4aDevOps',
+    amount: 29900, // $299
+    category: 'system',
+    difficulty: 'pro',
+    features: ['Incident Prediction', 'Capacity Planning', 'Deploy Optimization', 'Operational Memory', 'Runbook Automation'],
+  },
+  {
+    id: 'api-design-assistant',
+    name: 'API Design Assistant',
+    description: 'API design intelligence with schema validation, versioning strategy, breaking change detection, and design pattern memory.',
+    product_id: 'prod_TuzEAPIDesign',
+    price_id: 'price_1Sx9GMQ7FtTiAL4aAPIDesign',
+    amount: 19900, // $199
+    category: 'system',
+    difficulty: 'premium',
+    features: ['Schema Validation', 'Version Strategy', 'Breaking Change Detection', 'Design Patterns', 'Documentation Gen'],
+  },
+  
+  // === CUSTOMER SUCCESS ===
+  {
+    id: 'customer-success-brain',
+    name: 'Customer Success Brain',
+    description: 'Customer health scoring, churn prediction, expansion opportunities, and complete interaction memory.',
+    product_id: 'prod_TuzECustomerSuccess',
+    price_id: 'price_1Sx9GNQ7FtTiAL4aCustomerSuccess',
+    amount: 29900, // $299
+    category: 'brain',
+    difficulty: 'elite',
+    features: ['Health Scoring', 'Churn Prediction', 'Expansion Detection', 'Interaction Memory', 'Success Playbooks'],
+  },
+  {
+    id: 'voice-of-customer-engine',
+    name: 'Voice of Customer Engine',
+    description: 'Customer feedback analysis with sentiment tracking, theme extraction, priority scoring, and feedback memory.',
+    product_id: 'prod_TuzEVoiceCustomer',
+    price_id: 'price_1Sx9GOQ7FtTiAL4aVoiceCustomer',
+    amount: 19900, // $199
+    category: 'brain',
+    difficulty: 'premium',
+    features: ['Sentiment Analysis', 'Theme Extraction', 'Priority Scoring', 'Trend Detection', 'Feedback Memory'],
+  },
+  
+  // === CONTENT & MARKETING ===
+  {
+    id: 'content-strategy-engine',
+    name: 'Content Strategy Engine',
+    description: 'Content planning with SEO intelligence, topic clustering, performance prediction, and content performance memory.',
+    product_id: 'prod_TuzEContentStrategy',
+    price_id: 'price_1Sx9GPQ7FtTiAL4aContentStrat',
+    amount: 19900, // $199
+    category: 'brain',
+    difficulty: 'premium',
+    features: ['SEO Intelligence', 'Topic Clustering', 'Performance Prediction', 'Calendar Planning', 'Content Memory'],
+  },
+  {
+    id: 'brand-voice-guardian',
+    name: 'Brand Voice Guardian',
+    description: 'Brand consistency enforcement with tone detection, style guidance, terminology management, and brand memory.',
+    product_id: 'prod_TuzEBrandVoice',
+    price_id: 'price_1Sx9GQQ7FtTiAL4aBrandVoice',
+    amount: 19900, // $199
+    category: 'decode',
+    difficulty: 'premium',
+    features: ['Tone Detection', 'Style Guidance', 'Terminology Management', 'Consistency Scoring', 'Brand Memory'],
+  },
+  
+  // === LEGAL & COMPLIANCE ===
+  {
+    id: 'contract-intelligence',
+    name: 'Contract Intelligence Agent',
+    description: 'Contract analysis with clause extraction, risk identification, obligation tracking, and contract memory.',
+    product_id: 'prod_TuzEContractIntel',
+    price_id: 'price_1Sx9GRQ7FtTiAL4aContractIntel',
+    amount: 29900, // $299
+    category: 'brain',
+    difficulty: 'elite',
+    features: ['Clause Extraction', 'Risk Identification', 'Obligation Tracking', 'Comparison Analysis', 'Contract Memory'],
+  },
+  {
+    id: 'privacy-compliance-engine',
+    name: 'Privacy Compliance Engine',
+    description: 'GDPR/CCPA compliance automation with data mapping, consent tracking, breach detection, and regulation memory.',
+    product_id: 'prod_TuzEPrivacyCompliance',
+    price_id: 'price_1Sx9GSQ7FtTiAL4aPrivacyComp',
+    amount: 29900, // $299
+    category: 'defense',
+    difficulty: 'elite',
+    features: ['Data Mapping', 'Consent Tracking', 'Breach Detection', 'SAR Automation', 'Regulation Memory'],
+  },
+  
+  // === OPERATIONS ===
+  {
+    id: 'supply-chain-intelligence',
+    name: 'Supply Chain Intelligence',
+    description: 'Supply chain optimization with demand forecasting, risk assessment, supplier scoring, and supply memory.',
+    product_id: 'prod_TuzESupplyChain',
+    price_id: 'price_1Sx9GTQ7FtTiAL4aSupplyChain',
+    amount: 29900, // $299
+    category: 'brain',
+    difficulty: 'pro',
+    features: ['Demand Forecasting', 'Risk Assessment', 'Supplier Scoring', 'Route Optimization', 'Supply Memory'],
+  },
+  {
+    id: 'resource-allocation-optimizer',
+    name: 'Resource Allocation Optimizer',
+    description: 'Resource planning with capacity modeling, skill matching, utilization optimization, and allocation memory.',
+    product_id: 'prod_TuzEResourceAlloc',
+    price_id: 'price_1Sx9GUQ7FtTiAL4aResourceAlloc',
+    amount: 19900, // $199
+    category: 'brain',
+    difficulty: 'premium',
+    features: ['Capacity Modeling', 'Skill Matching', 'Utilization Optimization', 'Conflict Resolution', 'Allocation Memory'],
+  },
+  
+  // === RESEARCH & ANALYTICS ===
+  {
+    id: 'research-synthesis-engine',
+    name: 'Research Synthesis Engine',
+    description: 'Research aggregation with source validation, insight extraction, citation management, and research memory.',
+    product_id: 'prod_TuzEResearchSynth',
+    price_id: 'price_1Sx9GVQ7FtTiAL4aResearchSynth',
+    amount: 29900, // $299
+    category: 'brain',
+    difficulty: 'elite',
+    features: ['Source Validation', 'Insight Extraction', 'Citation Management', 'Cross-Reference', 'Research Memory'],
+  },
+  {
+    id: 'anomaly-detection-suite',
+    name: 'Anomaly Detection Suite',
+    description: 'Multi-dimensional anomaly detection with pattern learning, alert prioritization, root cause analysis, and anomaly memory.',
+    product_id: 'prod_TuzEAnomalyDetect',
+    price_id: 'price_1Sx9GWQ7FtTiAL4aAnomalyDetect',
+    amount: 29900, // $299
+    category: 'vision',
+    difficulty: 'elite',
+    features: ['Pattern Learning', 'Alert Prioritization', 'Root Cause Analysis', 'Trend Detection', 'Anomaly Memory'],
+  },
+  
+  // === SPECIALIZED AGENTS ===
+  {
+    id: 'sales-intelligence-agent',
+    name: 'Sales Intelligence Agent',
+    description: 'Sales enablement with prospect scoring, opportunity analysis, competitive positioning, and deal memory.',
+    product_id: 'prod_TuzESalesIntel',
+    price_id: 'price_1Sx9GXQ7FtTiAL4aSalesIntel',
+    amount: 29900, // $299
+    category: 'brain',
+    difficulty: 'elite',
+    features: ['Prospect Scoring', 'Opportunity Analysis', 'Competitive Intel', 'Deal Intelligence', 'Sales Memory'],
+  },
+  {
+    id: 'talent-acquisition-brain',
+    name: 'Talent Acquisition Brain',
+    description: 'Recruiting intelligence with candidate matching, skill assessment, culture fit analysis, and hiring memory.',
+    product_id: 'prod_TuzETalentAcq',
+    price_id: 'price_1Sx9GYQ7FtTiAL4aTalentAcq',
+    amount: 29900, // $299
+    category: 'brain',
+    difficulty: 'elite',
+    features: ['Candidate Matching', 'Skill Assessment', 'Culture Fit Analysis', 'Pipeline Intelligence', 'Hiring Memory'],
+  },
+  {
+    id: 'product-feedback-loop',
+    name: 'Product Feedback Loop',
+    description: 'Product intelligence with feature request analysis, user behavior learning, roadmap prioritization, and product memory.',
+    product_id: 'prod_TuzEProductFeedback',
+    price_id: 'price_1Sx9GZQ7FtTiAL4aProductFeedback',
+    amount: 19900, // $199
+    category: 'brain',
+    difficulty: 'premium',
+    features: ['Feature Analysis', 'Behavior Learning', 'Roadmap Prioritization', 'User Segmentation', 'Product Memory'],
+  },
+] as const;
+
 // Combined templates for marketplace display
 export const ALL_PREMIUM_TEMPLATES = [
   ...DRIFT_PREVENTION_TEMPLATES,
   ...BUSINESS_TEMPLATES,
   ...NEW_PREMIUM_TEMPLATES,
   ...COMPLEX_TEMPLATES,
+  ...HIGH_VALUE_TEMPLATES,
 ] as const;
 
 // Premium template IDs that cost more
