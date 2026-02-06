@@ -269,110 +269,128 @@ export function CmpsblNav() {
             {/* ═══ Desktop Navigation ═══ */}
             <div className="hidden lg:flex items-center gap-1">
               {navSections.map((section) => (
-                <div 
-                  key={section.name} 
-                  className="relative"
-                  onMouseEnter={() => setActiveSection(section.name)}
-                  onMouseLeave={() => setActiveSection(null)}
-                >
+                <div key={section.name} className="relative">
                   <button
+                    ref={(el) => {
+                      sectionButtonRefs.current[section.name] = el;
+                    }}
+                    type="button"
+                    onClick={() =>
+                      setActiveSection((prev) => (prev === section.name ? null : section.name))
+                    }
                     className={cn(
                       "relative flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200",
-                      activeSection === section.name 
-                        ? "text-foreground" 
-                        : isInSection(section) 
-                          ? "text-foreground" 
+                      activeSection === section.name
+                        ? "text-foreground"
+                        : isInSection(section)
+                          ? "text-foreground"
                           : "text-muted-foreground hover:text-foreground"
                     )}
                     aria-expanded={activeSection === section.name}
-                    aria-haspopup="true"
+                    aria-haspopup="menu"
                   >
                     <span>{section.name}</span>
-                    <ChevronRight className={cn(
-                      "w-3.5 h-3.5 transition-transform duration-200",
-                      activeSection === section.name && "rotate-90"
-                    )} />
-                    
+                    <ChevronRight
+                      className={cn(
+                        "w-3.5 h-3.5 transition-transform duration-200",
+                        activeSection === section.name && "rotate-90"
+                      )}
+                    />
+
                     {/* Active indicator dot */}
                     {isInSection(section) && !activeSection && (
-                      <motion.span 
+                      <motion.span
                         layoutId="section-indicator"
                         className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary"
                       />
                     )}
                   </button>
-
-                  {/* ═══ Desktop Dropdown ═══ */}
-                  <AnimatePresence>
-                    {activeSection === section.name && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 8, scale: 0.98 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 8, scale: 0.98 }}
-                        transition={{ duration: 0.15, ease: "easeOut" }}
-                        className="absolute top-full left-0 mt-2 w-[340px]"
-                        style={{ zIndex: 99999 }}
-                      >
-                        <div className="relative bg-popover rounded-xl border border-border shadow-xl overflow-hidden">
-                          {/* Top accent line */}
-                          <div className="h-0.5 bg-gradient-to-r from-primary via-primary/50 to-transparent" />
-                          
-                          <div className="p-2">
-                            {section.items.map((item, idx) => (
-                              <Link
-                                key={item.href}
-                                to={item.href}
-                                className={cn(
-                                  "flex items-start gap-3 p-3 rounded-lg transition-colors duration-150 group/item",
-                                  "hover:bg-muted",
-                                  isActive(item.href) && "bg-muted"
-                                )}
-                              >
-                                {item.icon && (
-                                  <div className={cn(
-                                    "w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-colors duration-150",
-                                    "bg-muted group-hover/item:bg-primary/10",
-                                    isActive(item.href) && "bg-primary/10 text-primary"
-                                  )}>
-                                    <item.icon className={cn(
-                                      "w-5 h-5 transition-colors",
-                                      isActive(item.href) ? "text-primary" : "text-muted-foreground group-hover/item:text-primary"
-                                    )} />
-                                  </div>
-                                )}
-                                <div className="flex-1 min-w-0 pt-0.5">
-                                  <div className="flex items-center gap-2">
-                                    <span className={cn(
-                                      "font-semibold text-sm transition-colors",
-                                      isActive(item.href) ? "text-primary" : "text-foreground"
-                                    )}>
-                                      {item.name}
-                                    </span>
-                                    {item.badge && (
-                                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-primary/10 text-primary">
-                                        {item.badge}
-                                      </span>
-                                    )}
-                                    {item.external && (
-                                      <ExternalLink className="w-3 h-3 text-muted-foreground" />
-                                    )}
-                                  </div>
-                                  {item.description && (
-                                    <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
-                                      {item.description}
-                                    </p>
-                                  )}
-                                </div>
-                              </Link>
-                            ))}
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
                 </div>
               ))}
             </div>
+
+            {/* Desktop dropdown rendered in a portal to escape stacking contexts */}
+            {activeNavSection && dropdownAnchor &&
+              createPortal(
+                <AnimatePresence>
+                  <motion.div
+                    key={activeNavSection.name}
+                    initial={{ opacity: 0, y: 8, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 8, scale: 0.98 }}
+                    transition={{ duration: 0.15, ease: "easeOut" }}
+                    className="hidden lg:block fixed w-[340px]"
+                    style={{ top: dropdownTop, left: dropdownLeft, zIndex: 2147483647 }}
+                  >
+                    <div
+                      ref={dropdownRef}
+                      className="relative bg-popover rounded-xl border border-border shadow-xl overflow-hidden pointer-events-auto"
+                    >
+                      {/* Top accent line */}
+                      <div className="h-0.5 bg-gradient-to-r from-primary via-primary/50 to-transparent" />
+
+                      <div className="p-2">
+                        {activeNavSection.items.map((item) => (
+                          <Link
+                            key={item.href}
+                            to={item.href}
+                            className={cn(
+                              "flex items-start gap-3 p-3 rounded-lg transition-colors duration-150 group/item",
+                              "hover:bg-muted",
+                              isActive(item.href) && "bg-muted"
+                            )}
+                          >
+                            {item.icon && (
+                              <div
+                                className={cn(
+                                  "w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-colors duration-150",
+                                  "bg-muted group-hover/item:bg-primary/10",
+                                  isActive(item.href) && "bg-primary/10 text-primary"
+                                )}
+                              >
+                                <item.icon
+                                  className={cn(
+                                    "w-5 h-5 transition-colors",
+                                    isActive(item.href)
+                                      ? "text-primary"
+                                      : "text-muted-foreground group-hover/item:text-primary"
+                                  )}
+                                />
+                              </div>
+                            )}
+                            <div className="flex-1 min-w-0 pt-0.5">
+                              <div className="flex items-center gap-2">
+                                <span
+                                  className={cn(
+                                    "font-semibold text-sm transition-colors",
+                                    isActive(item.href) ? "text-primary" : "text-foreground"
+                                  )}
+                                >
+                                  {item.name}
+                                </span>
+                                {item.badge && (
+                                  <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-primary/10 text-primary">
+                                    {item.badge}
+                                  </span>
+                                )}
+                                {item.external && (
+                                  <ExternalLink className="w-3 h-3 text-muted-foreground" />
+                                )}
+                              </div>
+                              {item.description && (
+                                <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
+                                  {item.description}
+                                </p>
+                              )}
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>,
+                document.body
+              )}
 
             {/* ═══ Right Section ═══ */}
             <div className="flex items-center gap-2">
