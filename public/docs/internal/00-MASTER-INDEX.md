@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Internal Engineering Library
 
-**Version 7.2.0 | SEBA+ Release | CONFIDENTIAL**
+**Version 7.5.0 | SYNERGY Epoch | CONFIDENTIAL**
 
 ---
 
@@ -24,8 +24,9 @@
 | 08 | [AI Router (Nexus)](./08-NEXUS-ROUTER.md) | Provider fallback, cost optimization, model selection |
 | 09 | [Terminal Reference](./09-TERMINAL-REFERENCE.md) | All 260+ commands, module prefixes, output formats |
 | 10 | [Integration Layer](./10-INTEGRATION-LAYER.md) | External APIs, webhook handling, adapter patterns |
-| 11 | [Synergy Engine](./11-SYNERGY-ENGINE.md) | **54 cross-module pipelines, 32 executors, governance** |
+| 11 | [Synergy Engine](./11-SYNERGY-ENGINE.md) | **120 cross-module pipelines, 98 executors, governance** |
 | 12 | [Capabilities Depot](./12-CAPABILITIES-DEPOT.md) | Downloadable artifacts, licensing, pricing tiers |
+| 15 | [World-First Enhancements](./15-WORLD-FIRST-ENHANCEMENTS.md) | **56 autonomous functions, SYNERGY Epoch capabilities** |
 
 ---
 
@@ -76,46 +77,79 @@ ADVANCED MODES (v7.0.0)
 | **Synergy Confidence** | Synergy Engine | 0.85 auto-execute with -0.02 per module penalty |
 | **Module Priority Weights** | Synergy Engine | BRAIN 0.25, VISION 0.20, DECODE 0.15... |
 | **Cascade Isolation Duration** | Synergy Engine | Base 30s × threat level multiplier (1-8x) |
+| **World-First Functions** | SYNERGY Epoch | 56 autonomous functions across 14 modules |
+| **Attention Limit** | AttentionMechanism | Miller's Law 7±2 focus items |
+| **Budget Kill Switch** | BudgetGovernance | Auto-halt at 95% daily token consumption |
 
 ### Version History
 
 | Version | Codename | Key Features |
 |---------|----------|--------------|
-| **7.1.0** | **SEBA+** | 44 synergy pipelines, 22 executors, 10 new high-value synergies |
+| **7.5.0** | **SYNERGY Epoch** | 56 world-first functions, 120 synergy pipelines, 98 executors |
+| 7.1.0 | SEBA+ | 44 synergy pipelines, 22 executors, 10 new high-value synergies |
 | 7.0.0 | SEBA | 34 synergy pipelines, 13 executors, SEBA bounded autonomy, 67 tests |
 | 6.3.1 | FNDTN | CLM integration, mobile terminal, 260+ commands |
 | 6.0.0 | FNDTN | 14-module architecture, Evolution Cycle |
 | 5.6.0 | — | Module registry, inventory system |
 | 5.0.0 | — | Terminal v5: aliases, macros, watch mode |
 
-### v7.1.0 Additions (SYNERGY EXPANSION)
+### v7.5.0 Additions (SYNERGY Epoch)
 
 | Addition | Location | Purpose |
 |----------|----------|---------|
-| **+10 Synergy Pipelines** | `src/lib/capabilities/synergies/registry.ts` | Total now 44 governed pipelines |
-| **+9 Custom Executors** | `src/lib/capabilities/synergies/executors.ts` | Total now 22 implementations |
-| **Contextual Preload** | Intelligence | Predictive content loading based on session patterns |
-| **Semantic Deduplication** | Optimization | Memory consolidation via semantic similarity |
-| **Behavioral Fingerprinting** | Security | Usage-based security baselines |
-| **Zero-Trust Validation** | Security | Continuous verification pipeline |
-| **Workflow Synthesis** | Orchestration | Dynamic workflow generation from goals |
-| **Multi-Agent Coordination** | Orchestration | Agent task decomposition and routing |
-| **Cognitive Load Optimization** | Accessibility | Content simplification for comprehension |
-| **Hypothesis Testing** | Intelligence | Automated A/B experimentation |
-| **Knowledge Distillation** | Intelligence | Pattern extraction to permanent memory |
+| **+56 World-First Functions** | `src/lib/substrate/world-first/` | Autonomous high-value functions across all modules |
+| **+76 Synergy Pipelines** | Synergy Engine | Total now 120 governed pipelines |
+| **+76 Custom Executors** | Synergy Engine | Total now 98 implementations |
+| **AttentionMechanism** | BRAIN | Miller's Law (7±2) focus management |
+| **MemoryConsolidator** | BRAIN | Hot/warm/cold memory tiering |
+| **BudgetGovernance** | NEXUS | Token budget with kill switch |
+| **CostArbitrage** | NEXUS | Provider cost optimization |
+| **BehavioralFingerprint** | DEFENSE | Usage pattern baseline detection |
+| **ZeroTrustValidator** | DEFENSE | Continuous verification pipeline |
+| **PredictiveSLA** | VISION | SLA breach forecasting |
+| **ResourceProfiler** | SYSTEM | CPU/Memory/Network profiling |
+| **MultiAgentCoordinator** | CORTEX | Load-balanced agent distribution |
+| **CreativeMutator** | DREAM | Genetic algorithm knowledge mutation |
+| **EventRouter** | RIPPLE | Intelligent event routing with transforms |
+| **EntitlementGraph** | ACCESS | Permission relationship mapping |
+| **FeatureFlagEngine** | CORE | Dynamic feature toggling |
+| **WebhookOrchestrator** | INTEGRATION | Webhook delivery management |
+| **CognitiveLoadOptimizer** | INCLUSIVE | Content complexity reduction |
+| **EvolutionPredictor** | MODERNIZER | Evolution outcome prediction |
 
-### Synergy Categories (v7.1.0)
+### Synergy Categories (v7.5.0)
 
 | Category | Count | Key Synergies |
 |----------|-------|---------------|
-| Intelligence | 10 | smart-recall, cognitive-fusion, knowledge-distillation, hypothesis-testing, predictive-prevention, quota-prediction, cognitive-curriculum, end-to-end-reasoning |
-| Optimization | 9 | adaptive-routing, intelligent-caching, latency-prediction, contextual-preload, semantic-deduplication, external-api-intelligence, entitlement-aware-routing, batch-optimization, resource-balancing |
-| Resilience | 5 | self-healing, cascade-prevention, graceful-degradation, adapter-failover, memory-persistence |
-| Security | 5 | threat-learning, adaptive-defense, anomaly-correlation, behavioral-fingerprinting, zero-trust-validation, bounded-autonomy-guard |
-| Accessibility | 5 | adaptive-ui, intent-amplification, inclusive-content, cognitive-load-optimization, multimodal-adaptation, developer-experience-optimization |
-| Orchestration | 4 | evolution-confidence, autonomous-documentation, webhook-orchestration, autonomous-evolution, workflow-synthesis, multi-agent-coordination |
+| Intelligence | 18 | smart-recall, cognitive-fusion, knowledge-distillation, hypothesis-testing, predictive-prevention, quota-prediction, cognitive-curriculum, end-to-end-reasoning, attention-allocation, semantic-indexing |
+| Optimization | 16 | adaptive-routing, intelligent-caching, latency-prediction, contextual-preload, semantic-deduplication, external-api-intelligence, entitlement-aware-routing, batch-optimization, resource-balancing, cost-arbitrage, load-balancing |
+| Resilience | 12 | self-healing, cascade-prevention, graceful-degradation, adapter-failover, memory-persistence, backup-integrity, dependency-analysis, self-heal-orchestration |
+| Security | 14 | threat-learning, adaptive-defense, anomaly-correlation, behavioral-fingerprinting, zero-trust-validation, bounded-autonomy-guard, threat-anticipation, ip-containment |
+| Accessibility | 10 | adaptive-ui, intent-amplification, inclusive-content, cognitive-load-optimization, multimodal-adaptation, developer-experience-optimization, accessibility-scoring, remediation |
+| Orchestration | 12 | evolution-confidence, autonomous-documentation, webhook-orchestration, autonomous-evolution, workflow-synthesis, multi-agent-coordination, pipeline-scheduling, goal-decomposition |
+| Creative | 8 | creative-mutation, insight-crystallization, pattern-evolution, dream-journaling, emotional-resonance |
+| Events | 10 | event-routing, priority-queueing, dead-letter-handling, event-replay |
+
+### World-First Functions by Module (v7.5.0)
+
+| Module | Functions | Key Capabilities |
+|--------|-----------|------------------|
+| BRAIN | 4 | AttentionMechanism, MemoryConsolidator, SemanticIndexer, EmotionalResonance |
+| NEXUS | 4 | BudgetGovernance, LoadBalancer, RequestQueue, CostArbitrage |
+| DEFENSE | 4 | BehavioralFingerprint, ZeroTrustValidator, ThreatAnticipator, IPContainment |
+| VISION | 4 | PredictiveSLA, AnomalyForecaster, PerformanceInsight, CapacityPlanner |
+| SYSTEM | 4 | ResourceProfiler, DependencyGraph, SelfHealOrchestrator, BackupIntegrity |
+| CORTEX | 4 | PipelineScheduler, MultiAgentCoordinator, GoalDecomposer, DecisionGovernor |
+| DREAM | 4 | CreativeMutator, InsightCrystallizer, PatternEvolver, DreamJournal |
+| DECODE | 4 | IntentAmplifier, ContextualParser, EmotionDetector, MultimodalFusion |
+| RIPPLE | 4 | EventRouter, PriorityQueue, DeadLetterHandler, EventReplay |
+| ACCESS | 3 | EntitlementGraph, QuotaPredictor, AuditTrail |
+| CORE | 3 | FeatureFlagEngine, ConfigHotReload, EnvironmentValidator |
+| INTEGRATION | 3 | AdapterHealthMonitor, WebhookOrchestrator, DataTransformer |
+| INCLUSIVE | 3 | CognitiveLoadOptimizer, AccessibilityScorer, RemediationEngine |
+| MODERNIZER | 4 | EvolutionPredictor, RollbackAuthority, ImpactAnalyzer, ProposalRanker |
 
 ---
 
-*CMPSBL OS Substrate v7.1.0 — SEBA+ Release*
+*CMPSBL OS Substrate v7.5.0 — SYNERGY Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

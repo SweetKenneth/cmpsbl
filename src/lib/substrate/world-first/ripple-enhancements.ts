@@ -420,7 +420,9 @@ export class EventReplay {
     const totalEvents = events.length;
 
     for (let i = 0; i < events.length; i++) {
-      if (session.status === 'paused') break;
+      // Check current session status (may have been paused externally)
+      const currentSession = this.sessions.get(sessionId);
+      if (!currentSession || currentSession.status === 'paused') break;
 
       const event = events[i];
       await handler(event);
