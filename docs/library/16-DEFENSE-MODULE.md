@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — DEFENSE Module Deep Dive
 
-**Version 6.3.0 | Scientific Publication**
+**Version 7.6.0 (SYNERGY+ Epoch) | Production Ready**
 
 ---
 
@@ -11,7 +11,8 @@
 | **Document ID** | CMPSBL-LIB-016 |
 | **Module** | DEFENSE |
 | **Layer** | Operational |
-| **Version** | v6.3.0 |
+| **Version** | v7.6.0 |
+| **Capabilities** | 6 |
 
 ---
 
@@ -39,12 +40,64 @@ DEFENSE is the security perimeter engine, providing real-time threat detection, 
 | **Layer** | Operational |
 | **Boot Order** | 7 |
 | **Dependencies** | CORE, RIPPLE |
+| **Capabilities** | 6 |
 
 ---
 
-## 2. Security Layers
+## 2. Capabilities (6)
 
-### 2.1 Four-Layer Perimeter
+### 2.1 Core Synergies (1)
+
+| Capability | Description | Modules | Risk |
+|------------|-------------|---------|------|
+| `realtime_security_hardening` | Continuous threat surface monitoring with auto-remediation | DEFENSE, VISION, SYSTEM | Medium |
+
+### 2.2 Archived Integrations (1)
+
+| Capability | Source | Description | Risk |
+|------------|--------|-------------|------|
+| `behavioral_drift_detection` | pf-defense-anomaly-detection | Statistical anomaly detection for novel attack patterns | Medium |
+
+### 2.3 NEW High-Value Capabilities (4) — v7.6.0
+
+| Capability | Description | Risk |
+|------------|-------------|------|
+| `threat_pattern_correlator` | Correlates disparate security signals to identify coordinated attacks | Medium |
+| `attack_surface_mapper` | Continuously maps exposed attack vectors and prioritizes remediation | Medium |
+| `incident_response_automator` | Executes predefined playbooks for common security incidents | High |
+| `compliance_drift_detector` | Monitors configuration drift from compliance baselines | Low |
+
+### 2.4 Capability Usage
+
+```typescript
+import { capabilityEngine } from '@/lib/substrate/capabilities';
+
+// Correlate threat patterns
+const threats = await capabilityEngine.execute('threat_pattern_correlator', {
+  signals: ['failed_auth', 'unusual_api_pattern', 'geo_anomaly'],
+  timeWindow: '15m',
+  minCorrelation: 0.75
+});
+
+// Map attack surface
+const surface = await capabilityEngine.execute('attack_surface_mapper', {
+  scope: 'full',
+  prioritize: true
+});
+
+// Automate incident response
+await capabilityEngine.execute('incident_response_automator', {
+  incidentType: 'brute_force_attack',
+  severity: 'high',
+  autoExecute: true
+});
+```
+
+---
+
+## 3. Security Layers
+
+### 3.1 Four-Layer Perimeter
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -76,91 +129,7 @@ DEFENSE is the security perimeter engine, providing real-time threat detection, 
 
 ---
 
-## 3. User-Agent Classification
-
-DEFENSE classifies 25+ User-Agent families:
-
-| Category | Examples |
-|----------|----------|
-| `browser` | Chrome, Firefox, Safari |
-| `bot` | Googlebot, Bingbot |
-| `cli` | curl, wget, httpie |
-| `library` | axios, requests |
-| `tor-exit` | Tor exit nodes |
-| `headless` | Puppeteer, Playwright |
-| `unknown` | Unclassified |
-
----
-
-## 4. Rule DSL
-
-### 4.1 Rule Structure
-
-Rules are defined using a JSONB-based DSL:
-
-```json
-{
-  "name": "block-tor-exits",
-  "condition": {
-    "ua_family": "tor-exit"
-  },
-  "action": "block",
-  "priority": 100
-}
-```
-
-### 4.2 Condition Operators
-
-| Operator | Description |
-|----------|-------------|
-| `eq` | Equals |
-| `ne` | Not equals |
-| `in` | In list |
-| `contains` | Contains substring |
-| `matches` | Regex match |
-| `gt`, `lt` | Greater/less than |
-
-### 4.3 Actions
-
-| Action | Behavior |
-|--------|----------|
-| `allow` | Permit request |
-| `challenge` | Require verification |
-| `block` | Reject request |
-| `log` | Log only |
-
----
-
-## 5. Reputation System
-
-### 5.1 IP Reputation
-
-Each IP builds a reputation score:
-
-- **Good history:** Score increases
-- **Bad behavior:** Score decreases
-- **Decay:** Scores normalize over time
-
-### 5.2 Fingerprint Tracking
-
-Behavioral fingerprints track:
-- Request patterns
-- Path sensitivity
-- Velocity metrics
-
----
-
-## 6. Operating Modes
-
-| Mode | Behavior |
-|------|----------|
-| `observe` | Log only, no enforcement |
-| `enforce` | Full rule enforcement |
-| `strict` | Enhanced sensitivity |
-
----
-
-## 7. Key Operations
+## 4. Key Operations
 
 | Operation | Description |
 |-----------|-------------|
@@ -174,7 +143,7 @@ Behavioral fingerprints track:
 
 ---
 
-## 8. Performance Characteristics
+## 5. Performance Characteristics
 
 | Metric | Value |
 |--------|-------|
@@ -182,8 +151,18 @@ Behavioral fingerprints track:
 | Classification | <5ms |
 | Scoring | <10ms |
 | Rule evaluation | <5ms |
+| Pattern correlation | <200ms |
+| Attack surface mapping | <5s |
 
 ---
 
-*CMPSBL OS Substrate v6.0.0 — Human Compatibility Era*
+## 6. Changelog
+
+### v7.6.0 (2026-02-06) — SYNERGY+ Epoch
+- **4 NEW Capabilities**: threat_pattern_correlator, attack_surface_mapper, incident_response_automator, compliance_drift_detector
+- **Total Capabilities**: 6
+
+---
+
+*CMPSBL OS Substrate v7.6.0 — SYNERGY+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

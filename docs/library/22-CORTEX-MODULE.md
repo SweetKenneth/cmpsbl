@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — CORTEX Module Deep Dive
 
-**Version 6.3.0 | Scientific Publication**
+**Version 7.6.0 (SYNERGY+ Epoch) | Production Ready**
 
 ---
 
@@ -11,7 +11,8 @@
 | **Document ID** | CMPSBL-LIB-022 |
 | **Module** | CORTEX |
 | **Layer** | Orchestrator |
-| **Version** | v6.3.0 |
+| **Version** | v7.6.0 |
+| **Capabilities** | 7 |
 
 ---
 
@@ -31,24 +32,77 @@
 
 ## 1. Module Overview
 
-CORTEX is the **interpreter and policy intent layer** (manual-mode orchestrator helper), sitting between DECODE and SYSTEM. It manages the policy intent coordination that bridges operators and modules.
-
-**Important (v6.0.0):** CORTEX operates in **manual mode** — no auto-applications occur without human approval.
+CORTEX is the **orchestrator and policy intent layer**, managing multi-agent coordination, task decomposition, goal alignment, and cross-module execution.
 
 | Property | Value |
 |----------|-------|
 | **Name** | CORTEX |
 | **Layer** | Orchestrator |
-| **Boot Order** | 13 (Last) |
-| **Dependencies** | All modules |
-| **Classification** | Policy Intent Layer |
+| **Boot Order** | 14 (Last) |
+| **Dependencies** | All other modules |
+| **Capabilities** | 7 |
 | **Mode** | Manual (no auto-apply) |
 
 ---
 
-## 2. Autonomous Loop
+## 2. Capabilities (7)
 
-### 2.1 PEARL Cycle
+### 2.1 Core Synergies (2)
+
+| Capability | Description | Modules | Risk |
+|------------|-------------|---------|------|
+| `intelligent_task_delegation` | Routes complex tasks to optimal AI models | CORTEX, NEXUS, DECODE | Low |
+| `evolution_confidence_scoring` | Quantifies risk/reward of proposed changes | MODERNIZER, BRAIN, CORTEX | Low |
+
+### 2.2 Archived Integrations (1)
+
+| Capability | Source | Description | Risk |
+|------------|--------|-------------|------|
+| `ethical_guardrails` | pf-brain-ethical-boundary | Evaluates actions for ethical risks | Low |
+
+### 2.3 NEW High-Value Capabilities (4) — v7.6.0
+
+| Capability | Description | Risk |
+|------------|-------------|------|
+| `multi_agent_coordinator` | Coordinates parallel agent execution with dependency resolution | Medium |
+| `task_decomposition_engine` | Breaks complex tasks into atomic, assignable subtasks | Low |
+| `goal_alignment_validator` | Validates agent actions align with stated goals and constraints | Low |
+| `execution_priority_balancer` | Balances execution priorities across competing agent requests | Low |
+
+### 2.4 Capability Usage
+
+```typescript
+import { capabilityEngine } from '@/lib/substrate/capabilities';
+
+// Coordinate multiple agents
+const result = await capabilityEngine.execute('multi_agent_coordinator', {
+  agents: ['researcher', 'writer', 'reviewer', 'publisher'],
+  task: 'Generate comprehensive report on AI trends',
+  dependencies: {
+    writer: ['researcher'],
+    reviewer: ['writer'],
+    publisher: ['reviewer']
+  }
+});
+
+// Decompose complex task
+const subtasks = await capabilityEngine.execute('task_decomposition_engine', {
+  task: 'Build a complete e-commerce checkout flow',
+  maxDepth: 3,
+  granularity: 'atomic'
+});
+
+// Validate goal alignment
+const alignment = await capabilityEngine.execute('goal_alignment_validator', {
+  agentId: 'agent_123',
+  proposedAction: 'delete_user_data',
+  originalGoal: 'cleanup_expired_sessions'
+});
+```
+
+---
+
+## 3. PEARL Cycle
 
 CORTEX implements the PEARL autonomous loop:
 
@@ -69,8 +123,6 @@ CORTEX implements the PEARL autonomous loop:
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### 2.2 Cycle Phases
-
 | Phase | Purpose |
 |-------|---------|
 | **PROPOSE** | Generate architectural proposals using BRAIN context |
@@ -81,131 +133,22 @@ CORTEX implements the PEARL autonomous loop:
 
 ---
 
-## 3. Three-Layer Evolution
-
-### 3.1 Sequencing System
-
-CORTEX manages evolution through three layers:
-
-| Layer | Purpose |
-|-------|---------|
-| **Procedural** | DAG execution order |
-| **Strategic** | Priority scoring via impact/cost/risk |
-| **Evolutionary** | Learning from outcomes |
-
-### 3.2 Sequence Structure
-
-```json
-{
-  "sequence_id": "seq_001",
-  "layer": "strategic",
-  "target_modules": ["brain", "vision"],
-  "steps": [...],
-  "risk_level": "low",
-  "priority_score": 85,
-  "ready": true
-}
-```
-
----
-
-## 4. World Model
-
-### 4.1 Module Registry
-
-CORTEX maintains a complete "world model":
-
-| Field | Description |
-|-------|-------------|
-| `name` | Module identifier |
-| `category` | Layer classification |
-| `roles` | Operator/observer/governor |
-| `dependencies` | Required modules |
-| `dependents` | Dependent modules |
-| `health_score` | Current health |
-| `circuit_state` | Circuit breaker state |
-| `eligible_for_upgrade` | Upgrade eligibility |
-
-### 4.2 DAG Structure
-
-The module dependency graph enables:
-- Safe execution ordering
-- Impact analysis
-- Cascade prevention
-
----
-
-## 5. Panic System
-
-### 5.1 Panic States
-
-| State | Behavior |
-|-------|----------|
-| `normal` | Full operation |
-| `frozen` | Writes halted, observation continues |
-| `emergency` | Minimal operation only |
-
-### 5.2 Panic Controls
-
-| Command | Effect |
-|---------|--------|
-| `cortex.panic.freeze` | Stop all writes |
-| `cortex.panic.thaw` | Resume operation |
-| `cortex.panic.status` | Check panic state |
-
----
-
-## 6. Key Operations
+## 4. Key Operations
 
 | Operation | Description |
 |-----------|-------------|
 | `cortex.status` | Orchestrator status |
 | `cortex.world` | Module world snapshot |
 | `cortex.world --dag` | Dependency graph |
-| `cortex.world --roles` | Modules by role |
-| `cortex.world --eligible` | Upgrade-eligible modules |
 | `cortex.inventory` | Module inventory |
-| `cortex.inventory --eligible` | Eligible modules only |
 | `cortex.plan` | Evolution sequences |
-| `cortex.plan --eligible` | Ready-to-run sequences |
 | `cortex.dispatch` | Execute operation |
 | `cortex.panic.freeze` | Emergency stop |
 | `cortex.panic.thaw` | Resume operations |
 
 ---
 
-## 7. Coordination Points
-
-| Module | Coordination |
-|--------|--------------|
-| BRAIN | Context for proposals |
-| VISION | Health monitoring |
-| MODERNIZER | Improvement execution |
-| SYSTEM | State management |
-
----
-
-## 8. Safety Guardrails
-
-### 8.1 Auto-Apply Limits
-
-| Constraint | Requirement |
-|------------|-------------|
-| Risk level | LOW only |
-| Impact level | LOW only |
-| Confidence | > 85% |
-| Test coverage | Verified |
-
-### 8.2 Human Oversight
-
-High-risk changes require:
-- Explicit approval
-- Manual confirmation
-- Audit logging
-
----
-
-## 9. Performance Characteristics
+## 5. Performance Characteristics
 
 | Metric | Value |
 |--------|-------|
@@ -213,17 +156,18 @@ High-risk changes require:
 | World query | <20ms |
 | Sequence evaluation | <100ms |
 | Dispatch | <50ms |
+| Task decomposition | <200ms |
+| Agent coordination | <500ms |
 
 ---
 
-## 10. v6.0.0 Manual Mode
+## 6. Changelog
 
-In v6.0.0, CORTEX operates in **manual mode**:
-- Auto-apply is **disabled** — all changes require human approval
-- CORTEX collaborates with SYSTEM and MODERNIZER but does not execute without confirmation
-- Use `cortex.status` to view current mode and state
+### v7.6.0 (2026-02-06) — SYNERGY+ Epoch
+- **4 NEW Capabilities**: multi_agent_coordinator, task_decomposition_engine, goal_alignment_validator, execution_priority_balancer
+- **Total Capabilities**: 7
 
 ---
 
-*CMPSBL OS Substrate v6.0.0 — Human Compatibility Era*
+*CMPSBL OS Substrate v7.6.0 — SYNERGY+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*
