@@ -245,7 +245,7 @@ export function CmpsblNav() {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 8, scale: 0.98 }}
                         transition={{ duration: 0.15, ease: "easeOut" }}
-                        className="absolute top-full left-0 mt-2 w-[340px]"
+                        className="absolute top-full left-0 mt-2 w-[340px] z-[10001]"
                       >
                         <div className="relative bg-popover rounded-xl border border-border shadow-xl overflow-hidden">
                           {/* Top accent line */}
@@ -639,7 +639,8 @@ export function CmpsblNav() {
       </AnimatePresence>
 
       {/* CRITICAL: Spacer for fixed nav - ensures content clears the header on ALL pages */}
-      <div className="h-16 lg:h-[72px]" />
+      {/* Added extra mobile spacing to prevent content touching nav */}
+      <div className="h-20 sm:h-16 lg:h-[72px]" />
     </>
   );
 }

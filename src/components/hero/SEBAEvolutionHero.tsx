@@ -173,7 +173,7 @@ const PhaseNode = memo(function PhaseNode({
   
   return (
     <motion.div
-      className="relative flex flex-col items-center"
+      className="relative flex flex-col items-center overflow-visible"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.08, duration: 0.5 }}
@@ -237,13 +237,13 @@ const PhaseNode = memo(function PhaseNode({
         </>
       )}
       
-      {/* Main node with enhanced styling */}
+      {/* Main node with enhanced styling - overflow-visible ensures icons aren't clipped */}
       <motion.div
         className={cn(
           "relative w-14 h-14 sm:w-16 sm:h-16 md:w-[72px] md:h-[72px] lg:w-20 lg:h-20 rounded-2xl",
           "flex items-center justify-center cursor-pointer",
           "border-2 transition-all duration-300",
-          "shadow-lg",
+          "shadow-lg overflow-visible",
           isActive || isPassed ? phase.borderColor : "border-border/40",
           isActive 
             ? `bg-gradient-to-br ${phase.color}` 
@@ -274,14 +274,14 @@ const PhaseNode = memo(function PhaseNode({
           isActive ? "text-white drop-shadow-lg" : isPassed ? "text-foreground" : "text-muted-foreground"
         )} />
         
-        {/* Completion indicator with animation */}
+        {/* Completion indicator with animation - z-20 ensures it renders above the node */}
         <AnimatePresence>
           {isPassed && !isActive && (
             <motion.div 
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
-              className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/30"
+              className="absolute -top-1.5 -right-1.5 z-20 w-5 h-5 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/30"
             >
               <CheckCircle2 className="w-3 h-3 text-white" />
             </motion.div>
