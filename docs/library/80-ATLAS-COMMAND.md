@@ -218,4 +218,4 @@ If a command fails, Atlas provides:
 
 ---
 
-*Atlas Command v7.2.0 — Prometheus*
+*Atlas Command v7.5.3 — SYNERGY+ Epoch*
