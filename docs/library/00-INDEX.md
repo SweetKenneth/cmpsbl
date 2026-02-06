@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Documentation Library
 
-**PromptFluid® CMPSBL OS — v7.0.0 Library (SEBA Era)**
+**PromptFluid® CMPSBL OS — v7.5.3 Library (SYNERGY+ Epoch)**
 
 ---
 
@@ -9,7 +9,7 @@
 | Field | Value |
 |-------|-------|
 | **System Name** | CMPSBL OS Substrate |
-| **Version** | v7.0.0 (SEBA) |
+| **Version** | v7.5.3 (SYNERGY+) |
 | **Classification** | Cognitive Orchestration Substrate |
 | **Status** | Production (Live System) |
 | **Publication Date** | February 2026 |
