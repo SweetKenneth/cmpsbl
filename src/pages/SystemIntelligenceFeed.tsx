@@ -527,6 +527,16 @@ export default function SystemIntelligenceFeed() {
               </div>
             )}
 
+            {/* Encoded Learning - Full Width Priority */}
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="mb-8"
+            >
+              <EncodedLearningCard />
+            </motion.section>
+
             {/* Two Column Layout */}
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
               {/* Module Orbit - Left */}
@@ -554,7 +564,7 @@ export default function SystemIntelligenceFeed() {
                       </li>
                       <li className="flex items-start gap-2">
                         <span className="text-primary mt-0.5">▸</span>
-                        No interaction or triggers available
+                        Encoded learns code patterns 24/7
                       </li>
                       <li className="flex items-start gap-2">
                         <span className="text-primary mt-0.5">▸</span>
@@ -567,39 +577,45 @@ export default function SystemIntelligenceFeed() {
                 </div>
               </div>
 
-              {/* Analysis Stream - Right */}
-              <div className="lg:col-span-3">
-                <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
-                  <Waves className="w-5 h-5 text-primary" />
-                  Analysis Stream
-                  <Badge variant="secondary" className="ml-2">{feed.length}</Badge>
-                </h2>
-                
-                {loading && feed.length === 0 ? (
-                  <div className="flex items-center justify-center py-16">
-                    <RefreshCw className="w-8 h-8 animate-spin text-primary" />
-                  </div>
-                ) : feed.length === 0 ? (
-                  <div className="text-center py-16 text-muted-foreground">
-                    <Brain className="w-12 h-12 mx-auto mb-4 opacity-30" />
-                    <p>Waiting for learning cycles...</p>
-                    <p className="text-xs mt-2">CLM runs hourly via backend scheduler</p>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    <AnimatePresence mode="popLayout">
-                      {recentFeed.map((analysis, i) => (
-                        <StreamItem key={analysis.id} analysis={analysis} index={i} />
-                      ))}
-                    </AnimatePresence>
-                    
-                    {feed.length > 8 && (
-                      <div className="text-center py-4 text-sm text-muted-foreground">
-                        + {feed.length - 8} more analyses in stream
-                      </div>
-                    )}
-                  </div>
-                )}
+              {/* Learning Feed - Right */}
+              <div className="lg:col-span-3 space-y-8">
+                {/* Module Learning Activity */}
+                <ModuleLearningFeed />
+
+                {/* Module CLM Analysis Stream */}
+                <div>
+                  <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
+                    <Waves className="w-5 h-5 text-primary" />
+                    Module Self-Analysis
+                    <Badge variant="secondary" className="ml-2">{feed.length}</Badge>
+                  </h2>
+                  
+                  {loading && feed.length === 0 ? (
+                    <div className="flex items-center justify-center py-16">
+                      <RefreshCw className="w-8 h-8 animate-spin text-primary" />
+                    </div>
+                  ) : feed.length === 0 ? (
+                    <div className="text-center py-16 text-muted-foreground">
+                      <Brain className="w-12 h-12 mx-auto mb-4 opacity-30" />
+                      <p>Waiting for learning cycles...</p>
+                      <p className="text-xs mt-2">CLM runs hourly via backend scheduler</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      <AnimatePresence mode="popLayout">
+                        {recentFeed.map((analysis, i) => (
+                          <StreamItem key={analysis.id} analysis={analysis} index={i} />
+                        ))}
+                      </AnimatePresence>
+                      
+                      {feed.length > 8 && (
+                        <div className="text-center py-4 text-sm text-muted-foreground">
+                          + {feed.length - 8} more analyses in stream
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </main>
