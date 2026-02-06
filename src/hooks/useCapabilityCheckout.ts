@@ -90,7 +90,7 @@ export function useCapabilityCheckout() {
 
   const checkout = useCallback(async (capabilityId: string, capabilityName?: string) => {
     const result = getUnifiedStripeConfig(capabilityId);
-    
+
     if (!result) {
       toast.error('Checkout not available for this capability');
       return;
@@ -111,11 +111,14 @@ export function useCapabilityCheckout() {
       return;
     }
 
+    // Open the tab synchronously to avoid popup blockers (critical for "Buy" buttons)
+    const checkoutWindow = window.open('about:blank', '_blank');
+
     setState({ loading: true, error: null, capabilityId });
 
     try {
       const { data, error } = await supabase.functions.invoke('marketplace-checkout', {
-        body: { 
+        body: {
           product_type: result.tier,
           price_id: result.config.priceId,
           product_id: result.config.productId,
@@ -128,7 +131,13 @@ export function useCapabilityCheckout() {
       }
 
       if (data?.url) {
-        window.open(data.url, '_blank');
+        if (checkoutWindow) {
+          checkoutWindow.opener = null;
+          checkoutWindow.location.href = data.url;
+        } else {
+          // Fallback if blocked
+          window.location.href = data.url;
+        }
         toast.success('Opening checkout...');
       } else {
         throw new Error('No checkout URL received');
@@ -136,6 +145,9 @@ export function useCapabilityCheckout() {
 
       setState({ loading: false, error: null, capabilityId: null });
     } catch (err) {
+      // If we opened a blank tab but checkout failed, close it
+      if (checkoutWindow) checkoutWindow.close();
+
       const errorMessage = err instanceof Error ? err.message : 'Checkout failed';
       setState({ loading: false, error: errorMessage, capabilityId: null });
       toast.error(errorMessage);
