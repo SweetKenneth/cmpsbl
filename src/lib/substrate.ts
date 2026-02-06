@@ -1213,9 +1213,10 @@ class SubstrateClient {
   };
 
   // ═══════════════════════════════════════════════════════════════
-  // INCLUSIVE MODULE v1.0 — Human Compatibility Pipeline
+  // INCLUSIVE MODULE v7.0.0 — Human Compatibility Pipeline
   // @origin(cmptbl) + @origin(clarity) — Migrated from archived utilities
   // Position: Between SYSTEM and DEFENSE in lifecycle
+  // REAL IMPLEMENTATION — Actually fetches and scans URLs for WCAG compliance
   // ═══════════════════════════════════════════════════════════════
   
   inclusive = {
