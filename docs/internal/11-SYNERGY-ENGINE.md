@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Synergy Engine Secrets
 
-**Version 7.2.0 | CONFIDENTIAL**
+**Version 7.5.2 | CONFIDENTIAL**
 
 ---
 
