@@ -1,21 +1,21 @@
 /**
- * pf-encoded-agent — Upgraded Encoded Code Generation Agent
- * v2.0.0 — Lovable AI primary, enhanced guardrails, dry-run mode, CLM training
+ * pf-encoded-agent — Enhanced Encoded Code Generation Agent
+ * v2.1.0 — Stronger guardrails, comprehensive validation, improved error handling
  * 
  * Features:
- * - Lovable AI (GPT-5-mini/Gemini) as primary model (free, included)
+ * - Lovable AI (Gemini 3 Flash) as primary model
  * - Free-tier fallback (Groq → Cerebras → etc)
  * - Dry-run mode (default) - shows what would change without writing
- * - Verification loop - reads output, validates, auto-fixes
+ * - Enhanced verification loop with dangerous pattern detection
  * - CLM training hooks - learns from every execution
- * - SEBA integration toggle - can receive proposals from SEBA
+ * - SEBA integration toggle
  */
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { callFreeTierAI, ROUTER_VERSION as FREE_TIER_VERSION } from "../_shared/free-tier-router.ts";
 
-const ENCODED_VERSION = "2.0.0";
+const ENCODED_VERSION = "2.1.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -52,6 +52,7 @@ interface GeneratedCode {
     syntax_valid: boolean;
     anchors_preserved: boolean;
     narrative_clean: boolean;
+    dangerous_patterns_clean: boolean;
     issues: string[];
   };
 }
