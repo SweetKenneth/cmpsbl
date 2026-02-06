@@ -36,9 +36,9 @@ export const CONTROL_PLANE_VERSIONS = {
 
 // Synergy Engine version
 export const SYNERGY_VERSION = {
-  version: '7.5.0',
-  pipelines: 130,
-  executors: 108,
+  version: '7.5.1',
+  pipelines: 147,
+  executors: 147,
   stierPipelines: 32,
 } as const;
 

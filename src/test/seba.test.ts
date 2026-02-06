@@ -210,7 +210,7 @@ describe('SEBA Agent', () => {
     it('should have correct default values', () => {
       expect(DEFAULT_SEBA_CONFIG.mode).toBe('advisory');
       expect(DEFAULT_SEBA_CONFIG.enabled).toBe(true);
-      expect(DEFAULT_SEBA_CONFIG.auto_approve_threshold).toBe(0.85);
+      expect(DEFAULT_SEBA_CONFIG.auto_approve_threshold).toBe(1.0); // Set to 1.0 to require human approval
       expect(DEFAULT_SEBA_CONFIG.risk_tolerance).toBe('low');
       expect(DEFAULT_SEBA_CONFIG.max_proposals_per_cycle).toBe(3);
       expect(DEFAULT_SEBA_CONFIG.require_human_approval_for_high_risk).toBe(true);

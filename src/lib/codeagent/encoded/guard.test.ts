@@ -3,7 +3,35 @@
  * Validates guardrail enforcement for Lov-baseline implementation
  */
 
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
+
+// Mock Supabase client to avoid localStorage issue in test environment
+const mockChain = () => {
+  const chain: any = {
+    select: () => chain,
+    insert: () => Promise.resolve({ data: null, error: null }),
+    update: () => chain,
+    delete: () => chain,
+    eq: () => chain,
+    neq: () => chain,
+    order: () => chain,
+    limit: () => Promise.resolve({ data: [], count: 0, error: null }),
+    single: () => Promise.resolve({ data: null, error: null }),
+    maybeSingle: () => Promise.resolve({ data: null, error: null }),
+    upsert: () => Promise.resolve({ data: null, error: null }),
+  };
+  return chain;
+};
+
+vi.mock('@/integrations/supabase/client', () => ({
+  supabase: {
+    from: () => mockChain(),
+    functions: {
+      invoke: () => Promise.resolve({ data: {}, error: null }),
+    },
+  },
+}));
+
 import { 
   runEncodedGuard, 
   classifyChange, 
