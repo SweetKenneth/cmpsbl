@@ -129,6 +129,7 @@ export function CmpsblNav() {
       items: [
         { name: "CMPSBL OS", href: "/substrate", description: "Core runtime architecture", icon: Cpu },
         { name: "System Feed", href: "/system-feed", description: "Live intelligence stream", icon: Brain, badge: "Live" },
+        { name: "Audit Trail", href: "/audit", description: "System activity and event history", icon: FileText },
         { name: "Decode Engine", href: "/decode", description: "Intent parsing & analysis", icon: MessageSquare },
         { name: "Dream Feeder", href: "/feed-dream-eater", description: "Background processing", icon: Moon },
       ]
