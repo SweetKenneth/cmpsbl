@@ -1,6 +1,6 @@
 /**
- * CMPSBL® substrate — OS Surface v7.0.0
- * PREMIUM EDITION — 14 modules, 260+ commands, full introspection
+ * CMPSBL® substrate — OS Surface v7.5.2
+ * PREMIUM EDITION — 14 modules, 280+ commands, full introspection
  */
 
 import { Navigate, Link, useNavigate } from 'react-router-dom';
