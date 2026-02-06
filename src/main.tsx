@@ -4,13 +4,18 @@ import App from "./App.tsx";
 import "./index.css";
 
 createRoot(document.getElementById("root")!).render(
-  <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+  <ThemeProvider
+    attribute="class"
+    defaultTheme="light"
+    storageKey="pf-theme"
+    disableTransitionOnChange
+  >
     <App />
   </ThemeProvider>
 );
 
 // Defer service worker registration to avoid render-blocking
-if ('serviceWorker' in navigator) {
+if (import.meta.env.PROD && 'serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Use requestIdleCallback if available for non-blocking registration
     const registerSW = () => {

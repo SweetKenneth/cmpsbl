@@ -34,7 +34,7 @@ export function AgencyPortalLayout({ sidebar, main, header, className }: AgencyP
       {/* Main Layout */}
       <div className="flex h-[calc(100vh-64px)]">
         {/* Sidebar */}
-        <aside className="hidden lg:flex flex-col w-80 border-r border-border/30 bg-card/30 backdrop-blur-xl">
+        <aside className="hidden lg:flex flex-col w-80 border-r border-border/30 bg-card dark:bg-card/30 dark:backdrop-blur-xl">
           {sidebar}
         </aside>
 
