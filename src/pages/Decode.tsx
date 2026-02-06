@@ -165,7 +165,7 @@ export default function Decode() {
 
       setMessages(prev => [...prev, {
         role: 'interpreter',
-        content: data?.reply || 'Pattern received.',
+        content: data?.reply || 'Request processed.',
         timestamp: new Date(),
         metadata: {
           provider: data?.provider,
