@@ -12,8 +12,8 @@ export const PREMIUM_STRIPE_CONFIG: Record<string, CapabilityStripeConfig> = {
   // Intelligence
   'cap-chain-of-thought': {
     productId: 'prod_premium_cot',
-    priceId: 'price_premium_cot_249',
-    priceUsd: 249,
+    priceId: 'price_premium_cot_199',
+    priceUsd: 199, // normalized from $249
   },
   'cap-counterfactual-reasoning': {
     productId: 'prod_premium_cfr',
@@ -39,8 +39,8 @@ export const PREMIUM_STRIPE_CONFIG: Record<string, CapabilityStripeConfig> = {
   },
   'cap-data-exfiltration-guard': {
     productId: 'prod_premium_deg',
-    priceId: 'price_premium_deg_249',
-    priceUsd: 249,
+    priceId: 'price_premium_deg_199',
+    priceUsd: 199, // normalized from $249
   },
   'cap-adversarial-robustness': {
     productId: 'prod_premium_art',
