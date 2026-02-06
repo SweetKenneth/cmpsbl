@@ -1,6 +1,6 @@
 /**
  * Encoded Guardrails — Module Exports
- * v2.1.0 — Lov-baseline implementation agent with enhanced safety guardrails
+ * v2.2.0 — Polished implementation agent with enhanced skills and communication
  */
 
 // Policy
@@ -51,3 +51,34 @@ export {
   type GuardResult,
   type DiffStats,
 } from './guard';
+
+// Skills (v2.2.0)
+export {
+  ENCODED_SKILLS,
+  getSkillsByCategory,
+  getOverallProficiency,
+  getSkillsSummary,
+  formatSkill,
+  getRelevantSkills,
+  type Skill,
+  type SkillCategory,
+} from './skills';
+
+// Communication (v2.2.0)
+export {
+  formatStatus,
+  formatKV,
+  formatHeader,
+  formatFooter,
+  formatProgressBar,
+  formatVerification,
+  formatGeneration,
+  formatAgentStatus,
+  formatHelp,
+  createResponse,
+  type StatusLevel,
+  type VerificationDisplay,
+  type GenerationDisplay,
+  type AgentStatusDisplay,
+  type EncodedResponse,
+} from './communication';
