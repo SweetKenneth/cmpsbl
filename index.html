@@ -611,9 +611,14 @@
     }
     </script>
     
-    <!-- Space Analytics Tracker (perf-safe; no DOM MutationObserver) -->
+    <!-- Space Analytics Tracker (disabled in Lovable preview) -->
     <script>
       (function () {
+        // In Lovable preview, pages include a __lovable_token param.
+        // Disable analytics in preview to avoid extra work + noisy network errors while editing/typing.
+        const isPreview = new URLSearchParams(location.search).has("__lovable_token");
+        if (isPreview) return;
+
         const ENDPOINT = "https://qxuamypoxrlhfeagmjlj.supabase.co/functions/v1/collect";
         const sid = localStorage.getItem("space_sid") || crypto.randomUUID();
         localStorage.setItem("space_sid", sid);
