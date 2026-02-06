@@ -42,6 +42,7 @@ export class CognitiveAnalyzer {
       // Load recently addressed insights for deduplication
       const recentlyAddressed = await this.getRecentlyAddressedInsights();
       
+      // ═══ CORE ENGINES (Original 4) ═══
       // 1. Memory Analysis — Look for patterns in stored knowledge
       const memoryInsights = await this.analyzeMemory();
       insights.push(...memoryInsights);
@@ -57,6 +58,27 @@ export class CognitiveAnalyzer {
       // 4. Reasoning Analysis — Identify causal patterns and opportunities
       const reasoningInsights = await this.analyzeReasoning();
       insights.push(...reasoningInsights);
+
+      // ═══ EXTENDED ENGINES (New 5 in v2.0.0) ═══
+      // 5. Security Analysis — Detect vulnerabilities and hardening opportunities
+      const securityInsights = await this.analyzeSecurity();
+      insights.push(...securityInsights);
+
+      // 6. Telemetry Analysis — Performance bottlenecks and optimization targets
+      const telemetryInsights = await this.analyzeTelemetry();
+      insights.push(...telemetryInsights);
+
+      // 7. Governance Analysis — Policy drift and compliance opportunities
+      const governanceInsights = await this.analyzeGovernance();
+      insights.push(...governanceInsights);
+
+      // 8. Resources Analysis — Quota, budget, and capacity issues
+      const resourceInsights = await this.analyzeResources();
+      insights.push(...resourceInsights);
+
+      // 9. Architecture Analysis — Structural improvements and evolution
+      const architectureInsights = await this.analyzeArchitecture();
+      insights.push(...architectureInsights);
 
       // ═══ COOLDOWN FILTER — Skip recently addressed insights ═══
       const filteredInsights = insights.filter(insight => {
