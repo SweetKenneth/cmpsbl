@@ -162,8 +162,8 @@ export function DecodeChat() {
       }));
 
       // Show graceful error with retry option
-      toast.error('Message delivery issue', {
-        description: 'Decode is gathering thoughts. Retrying...',
+      toast.error('Request failed', {
+        description: 'Connection interrupted. Retrying...',
         action: {
           label: 'Retry Now',
           onClick: () => sendMessage(userMessage)
@@ -173,7 +173,7 @@ export function DecodeChat() {
       // Add graceful fallback message
       setMessages(prev => [...prev, { 
         role: 'assistant', 
-        content: '🌙 I\'m experiencing a brief moment of reflection. Let me try again...',
+        content: 'Connection interrupted. Attempting recovery...',
         provider: 'fallback'
       }]);
 

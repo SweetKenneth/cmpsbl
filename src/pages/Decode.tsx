@@ -272,7 +272,7 @@ export default function Decode() {
               <div className="flex justify-start animate-fade-in">
                 <div className="bg-card/60 backdrop-blur rounded-2xl px-3.5 py-2.5 md:px-5 md:py-4 border border-border/30">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-muted-foreground">Thinking</span>
+                    <span className="text-xs text-muted-foreground">Processing intent</span>
                     <div className="flex gap-1">
                       <div className="w-1 h-1 md:w-1.5 md:h-1.5 bg-primary/40 rounded-full animate-bounce" />
                       <div className="w-1 h-1 md:w-1.5 md:h-1.5 bg-primary/40 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
