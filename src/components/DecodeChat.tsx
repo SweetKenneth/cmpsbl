@@ -142,7 +142,7 @@ export function DecodeChat() {
 
       if (data?.isAdmin) {
         toast.success('Admin mode activated', {
-          description: 'Decode recognizes you.'
+          description: 'Elevated permissions granted.'
         });
       }
 
