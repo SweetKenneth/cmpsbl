@@ -37,9 +37,9 @@ With synergies:
 
 ---
 
-## The 120 Synergy Pipelines
+## The 135 Synergy Pipelines
 
-### Intelligence (22 Pipelines — Make Decisions Smarter)
+### Intelligence (27 Pipelines — Make Decisions Smarter)
 
 | Synergy | What It Does | Impact |
 |---------|--------------|--------|
