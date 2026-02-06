@@ -1,9 +1,9 @@
 /**
  * SEBA Proposal Generator
- * v1.1.0 — Converts Insights to Actionable Proposals
+ * v2.0.0 — Full Spectrum Proposal Engine
  * 
- * Takes cognitive insights and generates structured improvement proposals
- * that can be governance-gated and applied to the system.
+ * Takes cognitive insights from all 9 analysis engines and generates
+ * structured improvement proposals with actions for all 10 categories.
  */
 
 import { telemetryEngine } from '../telemetry-engine';
