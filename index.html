@@ -596,35 +596,69 @@
     }
     </script>
     
-    <!-- Space Analytics Tracker -->
+    <!-- Space Analytics Tracker (perf-safe; no DOM MutationObserver) -->
     <script>
-      (function() {
-        const ENDPOINT = 'https://qxuamypoxrlhfeagmjlj.supabase.co/functions/v1/collect';
-        const sid = localStorage.getItem('space_sid') || crypto.randomUUID();
-        localStorage.setItem('space_sid', sid);
-        
-        window.spaceTrack = function(event, meta) {
-          navigator.sendBeacon(ENDPOINT, JSON.stringify({
+      (function () {
+        const ENDPOINT = "https://qxuamypoxrlhfeagmjlj.supabase.co/functions/v1/collect";
+        const sid = localStorage.getItem("space_sid") || crypto.randomUUID();
+        localStorage.setItem("space_sid", sid);
+
+        function send(event, meta) {
+          const payload = {
             event_name: event,
             path: location.pathname,
             referrer: document.referrer,
             anon_session_id: sid,
             domain: location.hostname,
-            meta: meta || {}
-          }));
-        };
-        
-        // Auto-track pageviews
-        spaceTrack('pageview');
-        
-        // SPA navigation support
-        let lastPath = location.pathname;
-        new MutationObserver(function() {
-          if (location.pathname !== lastPath) {
-            lastPath = location.pathname;
-            spaceTrack('pageview');
+            meta: meta || {},
+          };
+
+          // Defer beacon work slightly to reduce contention during typing/animation.
+          const doSend = () => {
+            try {
+              navigator.sendBeacon(ENDPOINT, JSON.stringify(payload));
+            } catch {
+              // ignore
+            }
+          };
+
+          if ("requestIdleCallback" in window) {
+            requestIdleCallback(doSend, { timeout: 1500 });
+          } else {
+            setTimeout(doSend, 0);
           }
-        }).observe(document, { subtree: true, childList: true });
+        }
+
+        window.spaceTrack = send;
+
+        // Initial pageview
+        send("pageview");
+
+        // SPA navigation support (perf-safe): track when history/location changes.
+        let lastUrl = location.pathname + location.search + location.hash;
+        const maybeTrack = () => {
+          const next = location.pathname + location.search + location.hash;
+          if (next !== lastUrl) {
+            lastUrl = next;
+            send("pageview");
+          }
+        };
+
+        window.addEventListener("popstate", maybeTrack, { passive: true });
+
+        const origPushState = history.pushState;
+        history.pushState = function (...args) {
+          // @ts-ignore
+          origPushState.apply(this, args);
+          maybeTrack();
+        };
+
+        const origReplaceState = history.replaceState;
+        history.replaceState = function (...args) {
+          // @ts-ignore
+          origReplaceState.apply(this, args);
+          maybeTrack();
+        };
       })();
     </script>
 
