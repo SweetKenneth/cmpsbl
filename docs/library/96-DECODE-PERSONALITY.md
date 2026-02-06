@@ -1,6 +1,6 @@
-# CMPSBL OS Substrate — DECODE Personality Profiles
+# CMPSBL OS Substrate — DECODE Interpretation Profiles
 
-**Version 7.1.0 | Interpretive Lens Specification**
+**Version 7.5.3 | Intent Interpretation Specification**
 
 ---
 
@@ -10,8 +10,8 @@
 |-------|-------|
 | **Document ID** | CMPSBL-LIB-096 |
 | **Module** | DECODE |
-| **Subsystem** | Personality |
-| **Version** | v7.1.0 |
+| **Subsystem** | Intent Interpretation |
+| **Version** | v7.5.3 |
 
 ---
 
