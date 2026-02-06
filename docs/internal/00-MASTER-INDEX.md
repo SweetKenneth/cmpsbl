@@ -107,18 +107,20 @@ ADVANCED MODES (v7.0.0)
 | **Hypothesis Testing** | Intelligence | Automated A/B experimentation |
 | **Knowledge Distillation** | Intelligence | Pattern extraction to permanent memory |
 
-### Synergy Categories (v7.1.0)
+### Synergy Categories (v7.5.1)
 
 | Category | Count | Key Synergies |
 |----------|-------|---------------|
-| Intelligence | 10 | smart-recall, cognitive-fusion, knowledge-distillation, hypothesis-testing, predictive-prevention, quota-prediction, cognitive-curriculum, end-to-end-reasoning |
-| Optimization | 9 | adaptive-routing, intelligent-caching, latency-prediction, contextual-preload, semantic-deduplication, external-api-intelligence, entitlement-aware-routing, batch-optimization, resource-balancing |
-| Resilience | 5 | self-healing, cascade-prevention, graceful-degradation, adapter-failover, memory-persistence |
-| Security | 5 | threat-learning, adaptive-defense, anomaly-correlation, behavioral-fingerprinting, zero-trust-validation, bounded-autonomy-guard |
-| Accessibility | 5 | adaptive-ui, intent-amplification, inclusive-content, cognitive-load-optimization, multimodal-adaptation, developer-experience-optimization |
-| Orchestration | 4 | evolution-confidence, autonomous-documentation, webhook-orchestration, autonomous-evolution, workflow-synthesis, multi-agent-coordination |
+| Intelligence | 12 | smart-recall, cognitive-fusion, knowledge-distillation, hypothesis-testing, predictive-prevention, quota-prediction, cognitive-curriculum, end-to-end-reasoning, associative-memory, inference-engine |
+| Optimization | 10 | adaptive-routing, intelligent-caching, latency-prediction, contextual-preload, semantic-deduplication, external-api-intelligence, entitlement-aware-routing, batch-optimization, resource-balancing, flow-optimizer |
+| Resilience | 7 | self-healing, cascade-prevention, graceful-degradation, adapter-failover, memory-persistence, circuit-mesh, anomaly-correlation |
+| Security | 8 | threat-learning, adaptive-defense, anomaly-correlation, behavioral-fingerprinting, zero-trust-validation, bounded-autonomy-guard, threat-graph, compliance-auditor |
+| Accessibility | 6 | adaptive-ui, intent-amplification, inclusive-content, cognitive-load-optimization, multimodal-adaptation, developer-experience-optimization |
+| Orchestration | 6 | evolution-confidence, autonomous-documentation, webhook-orchestration, autonomous-evolution, workflow-synthesis, multi-agent-coordination |
+| Governance | 6 | policy-engine, approval-workflow, audit-chain, quota-governor, change-manager, access-matrix |
+| Cognitive | 5 | cognitive-mesh, temporal-coherence, resource-orchestra, working-memory, metacognition |
 
 ---
 
-*CMPSBL OS Substrate v7.1.0 — SEBA+ Release*
+*CMPSBL OS Substrate v7.5.1 — SYNERGY+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*
