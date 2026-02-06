@@ -1,8 +1,11 @@
 /**
  * Cross-Module Capability Registry
- * v6.9.0 — Synergy-Powered Substrate Capabilities
+ * v7.5.3 — Synergy-Powered Substrate Capabilities (76 Total)
  * 
- * Implements the top 10 emergent capabilities from module intersections.
+ * Implements 76 emergent capabilities from module intersections:
+ * - 10 Core Synergies (original)
+ * - 10 Archived Function Integrations  
+ * - 56 NEW High-Value Module Capabilities
  */
 
 import { engineBus } from '../engine-bus';
@@ -12,6 +15,9 @@ import { engineBus } from '../engine-bus';
 // ============================================================================
 
 export type CapabilityId = 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ORIGINAL 10 CORE SYNERGIES
+  // ═══════════════════════════════════════════════════════════════════════════
   | 'predictive_issue_prevention'
   | 'adaptive_learning_personalization'
   | 'intelligent_task_delegation'
@@ -22,7 +28,10 @@ export type CapabilityId =
   | 'graceful_degradation_chain'
   | 'intent_amplification'
   | 'evolution_confidence_scoring'
-  // Archived function integrations
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ARCHIVED FUNCTION INTEGRATIONS (10)
+  // ═══════════════════════════════════════════════════════════════════════════
   | 'hypothesis_validation'
   | 'systems_causal_analysis'
   | 'autonomous_quality_review'
@@ -32,7 +41,95 @@ export type CapabilityId =
   | 'temporal_memory_scoring'
   | 'ethical_guardrails'
   | 'continuous_improvement_engine'
-  | 'active_learning_triggers';
+  | 'active_learning_triggers'
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // NEW HIGH-VALUE CAPABILITIES (56) — Organized by Module
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  // CORE Module (4)
+  | 'priority_queue_optimizer'
+  | 'lifecycle_state_predictor'
+  | 'distributed_lock_coordinator'
+  | 'fault_boundary_orchestrator'
+  
+  // RIPPLE Module (4)
+  | 'event_correlation_engine'
+  | 'message_deduplication_guard'
+  | 'broadcast_throttle_manager'
+  | 'subscription_health_monitor'
+  
+  // ACCESS Module (4)
+  | 'quota_burst_predictor'
+  | 'api_key_rotation_scheduler'
+  | 'usage_anomaly_detector'
+  | 'developer_onboarding_optimizer'
+  
+  // BRAIN Module (4)
+  | 'knowledge_graph_navigator'
+  | 'memory_consolidation_engine'
+  | 'semantic_similarity_ranker'
+  | 'cognitive_load_balancer'
+  
+  // DECODE Module (4)
+  | 'multi_intent_resolver'
+  | 'context_window_optimizer'
+  | 'personality_adaptation_engine'
+  | 'ambiguity_resolution_chain'
+  
+  // NEXUS Module (4)
+  | 'provider_health_router'
+  | 'cost_quality_optimizer'
+  | 'fallback_chain_orchestrator'
+  | 'latency_prediction_engine'
+  
+  // DEFENSE Module (4)
+  | 'threat_pattern_correlator'
+  | 'attack_surface_mapper'
+  | 'incident_response_automator'
+  | 'compliance_drift_detector'
+  
+  // VISION Module (4)
+  | 'metric_anomaly_forecaster'
+  | 'dashboard_insight_generator'
+  | 'health_trend_analyzer'
+  | 'capacity_planning_advisor'
+  
+  // DREAM Module (4)
+  | 'latent_pattern_extractor'
+  | 'creative_synthesis_engine'
+  | 'nocturnal_optimization_runner'
+  | 'idea_incubation_scheduler'
+  
+  // INTEGRATION Module (4)
+  | 'adapter_compatibility_checker'
+  | 'data_transformation_pipeline'
+  | 'connection_pool_optimizer'
+  | 'sync_conflict_resolver'
+  
+  // SYSTEM Module (4)
+  | 'backup_integrity_validator'
+  | 'resource_cleanup_scheduler'
+  | 'config_drift_detector'
+  | 'audit_compliance_reporter'
+  
+  // MODERNIZER Module (4)
+  | 'proposal_impact_analyzer'
+  | 'migration_risk_scorer'
+  | 'deprecation_path_finder'
+  | 'feature_flag_governor'
+  
+  // INCLUSIVE Module (4)
+  | 'accessibility_regression_guard'
+  | 'adaptive_interface_optimizer'
+  | 'wcag_auto_remediation_engine'
+  | 'inclusive_testing_orchestrator'
+  
+  // CORTEX Module (4)
+  | 'multi_agent_coordinator'
+  | 'task_decomposition_engine'
+  | 'goal_alignment_validator'
+  | 'execution_priority_balancer';
 
 export type ModuleLayer = 'Kernel' | 'Cognitive' | 'Operational' | 'Admin' | 'Orchestrator';
 
@@ -44,7 +141,9 @@ export interface CapabilityDefinition {
   layer: ModuleLayer;
   userBenefit: string;
   status: 'active' | 'pending' | 'experimental';
-  emergentFrom: string; // SEP pipeline reference
+  emergentFrom: string;
+  riskLevel?: 'low' | 'medium' | 'high';
+  executionMode?: 'sync' | 'async' | 'streaming';
 }
 
 export interface CapabilityExecutionResult {
@@ -64,10 +163,14 @@ export interface CapabilityState {
 }
 
 // ============================================================================
-// CAPABILITY REGISTRY
+// CAPABILITY REGISTRY — 76 TOTAL CAPABILITIES
 // ============================================================================
 
 export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ORIGINAL 10 CORE SYNERGIES
+  // ═══════════════════════════════════════════════════════════════════════════
+  
   predictive_issue_prevention: {
     id: 'predictive_issue_prevention',
     name: 'Predictive Issue Prevention',
@@ -77,6 +180,8 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     userBenefit: 'Proactive problem detection before user impact',
     status: 'active',
     emergentFrom: 'SEP-002',
+    riskLevel: 'low',
+    executionMode: 'async',
   },
   adaptive_learning_personalization: {
     id: 'adaptive_learning_personalization',
@@ -87,6 +192,8 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     userBenefit: 'Personalized experience that improves over time',
     status: 'active',
     emergentFrom: 'SEP-003',
+    riskLevel: 'low',
+    executionMode: 'async',
   },
   intelligent_task_delegation: {
     id: 'intelligent_task_delegation',
@@ -97,6 +204,8 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     userBenefit: 'Optimal AI selection for every task type',
     status: 'active',
     emergentFrom: 'SEP-001',
+    riskLevel: 'low',
+    executionMode: 'sync',
   },
   realtime_security_hardening: {
     id: 'realtime_security_hardening',
@@ -107,6 +216,8 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     userBenefit: 'Always-on security without manual intervention',
     status: 'active',
     emergentFrom: 'SEP-005',
+    riskLevel: 'medium',
+    executionMode: 'streaming',
   },
   context_aware_memory_recall: {
     id: 'context_aware_memory_recall',
@@ -117,6 +228,8 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     userBenefit: 'Intelligent context that feels natural',
     status: 'active',
     emergentFrom: 'SEP-001',
+    riskLevel: 'low',
+    executionMode: 'sync',
   },
   autonomous_documentation: {
     id: 'autonomous_documentation',
@@ -127,6 +240,8 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     userBenefit: 'Documentation that writes itself',
     status: 'active',
     emergentFrom: 'SEP-001',
+    riskLevel: 'low',
+    executionMode: 'async',
   },
   cross_domain_insight_synthesis: {
     id: 'cross_domain_insight_synthesis',
@@ -137,6 +252,8 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     userBenefit: 'Novel ideas from unexpected connections',
     status: 'active',
     emergentFrom: 'SEP-001',
+    riskLevel: 'low',
+    executionMode: 'async',
   },
   graceful_degradation_chain: {
     id: 'graceful_degradation_chain',
@@ -147,6 +264,8 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     userBenefit: 'Reliable experience even during issues',
     status: 'active',
     emergentFrom: 'SEP-002',
+    riskLevel: 'low',
+    executionMode: 'sync',
   },
   intent_amplification: {
     id: 'intent_amplification',
@@ -157,6 +276,8 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     userBenefit: 'Natural language becomes precise commands',
     status: 'active',
     emergentFrom: 'SEP-003',
+    riskLevel: 'low',
+    executionMode: 'sync',
   },
   evolution_confidence_scoring: {
     id: 'evolution_confidence_scoring',
@@ -167,10 +288,12 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     userBenefit: 'Safe evolution with transparent risk assessment',
     status: 'active',
     emergentFrom: 'SEP-001',
+    riskLevel: 'low',
+    executionMode: 'sync',
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // ARCHIVED EDGE FUNCTION INTEGRATIONS (Top 10)
+  // ARCHIVED EDGE FUNCTION INTEGRATIONS (10)
   // ═══════════════════════════════════════════════════════════════════════════
   
   hypothesis_validation: {
@@ -182,6 +305,8 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     userBenefit: 'Test assumptions before committing resources',
     status: 'active',
     emergentFrom: 'pf-brain-hypothesis-test',
+    riskLevel: 'low',
+    executionMode: 'async',
   },
   systems_causal_analysis: {
     id: 'systems_causal_analysis',
@@ -192,6 +317,8 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     userBenefit: 'Understand why things break, not just what',
     status: 'active',
     emergentFrom: 'pf-brain-systems-reasoning',
+    riskLevel: 'low',
+    executionMode: 'async',
   },
   autonomous_quality_review: {
     id: 'autonomous_quality_review',
@@ -202,6 +329,8 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     userBenefit: 'Auto-polished outputs without manual review',
     status: 'active',
     emergentFrom: 'pf-brain-self-critique',
+    riskLevel: 'low',
+    executionMode: 'async',
   },
   pattern_fusion_synthesis: {
     id: 'pattern_fusion_synthesis',
@@ -212,6 +341,8 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     userBenefit: 'Creative solutions from unexpected combinations',
     status: 'active',
     emergentFrom: 'pf-brain-pattern-fusion',
+    riskLevel: 'low',
+    executionMode: 'async',
   },
   behavioral_drift_detection: {
     id: 'behavioral_drift_detection',
@@ -222,6 +353,8 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     userBenefit: 'Catch threats traditional rules miss',
     status: 'active',
     emergentFrom: 'pf-defense-anomaly-detection',
+    riskLevel: 'medium',
+    executionMode: 'streaming',
   },
   resilience_orchestration: {
     id: 'resilience_orchestration',
@@ -232,6 +365,8 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     userBenefit: 'Self-healing infrastructure',
     status: 'active',
     emergentFrom: 'pf-resilience-monitor',
+    riskLevel: 'medium',
+    executionMode: 'async',
   },
   temporal_memory_scoring: {
     id: 'temporal_memory_scoring',
@@ -242,6 +377,8 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     userBenefit: 'Right memories surface at the right time',
     status: 'active',
     emergentFrom: 'pf-brain-temporal-score',
+    riskLevel: 'low',
+    executionMode: 'sync',
   },
   ethical_guardrails: {
     id: 'ethical_guardrails',
@@ -252,6 +389,8 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     userBenefit: 'Safe outputs with compliance built-in',
     status: 'active',
     emergentFrom: 'pf-brain-ethical-boundary',
+    riskLevel: 'low',
+    executionMode: 'sync',
   },
   continuous_improvement_engine: {
     id: 'continuous_improvement_engine',
@@ -262,6 +401,8 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     userBenefit: 'System that improves itself 24/7',
     status: 'active',
     emergentFrom: 'pf-cascade-improvement-engine',
+    riskLevel: 'medium',
+    executionMode: 'async',
   },
   active_learning_triggers: {
     id: 'active_learning_triggers',
@@ -272,6 +413,750 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     userBenefit: 'Curiosity-driven continuous learning',
     status: 'active',
     emergentFrom: 'pf-brain-curiosity-reflect',
+    riskLevel: 'low',
+    executionMode: 'async',
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // NEW HIGH-VALUE CAPABILITIES (56) — CORE Module (4)
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  priority_queue_optimizer: {
+    id: 'priority_queue_optimizer',
+    name: 'Priority Queue Optimizer',
+    description: 'Dynamically reorders task queues based on urgency, dependencies, and resource availability',
+    modules: ['CORE', 'CORTEX', 'VISION'],
+    layer: 'Kernel',
+    userBenefit: 'Critical tasks always execute first, maximizing throughput',
+    status: 'active',
+    emergentFrom: 'core-scheduler-v7',
+    riskLevel: 'low',
+    executionMode: 'sync',
+  },
+  lifecycle_state_predictor: {
+    id: 'lifecycle_state_predictor',
+    name: 'Lifecycle State Predictor',
+    description: 'Forecasts next system states to pre-warm resources and reduce latency',
+    modules: ['CORE', 'BRAIN', 'VISION'],
+    layer: 'Kernel',
+    userBenefit: 'Faster response times through predictive resource allocation',
+    status: 'active',
+    emergentFrom: 'core-lifecycle-v7',
+    riskLevel: 'low',
+    executionMode: 'async',
+  },
+  distributed_lock_coordinator: {
+    id: 'distributed_lock_coordinator',
+    name: 'Distributed Lock Coordinator',
+    description: 'Manages cross-module resource locks with deadlock prevention and automatic release',
+    modules: ['CORE', 'SYSTEM', 'RIPPLE'],
+    layer: 'Kernel',
+    userBenefit: 'No race conditions or resource contention across modules',
+    status: 'active',
+    emergentFrom: 'core-locking-v7',
+    riskLevel: 'medium',
+    executionMode: 'sync',
+  },
+  fault_boundary_orchestrator: {
+    id: 'fault_boundary_orchestrator',
+    name: 'Fault Boundary Orchestrator',
+    description: 'Isolates module failures to prevent cascade effects across the substrate',
+    modules: ['CORE', 'DEFENSE', 'SYSTEM'],
+    layer: 'Kernel',
+    userBenefit: 'Single module failures never bring down the system',
+    status: 'active',
+    emergentFrom: 'core-boundaries-v7',
+    riskLevel: 'low',
+    executionMode: 'sync',
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // RIPPLE Module (4)
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  event_correlation_engine: {
+    id: 'event_correlation_engine',
+    name: 'Event Correlation Engine',
+    description: 'Links related events across modules to identify patterns and causality chains',
+    modules: ['RIPPLE', 'BRAIN', 'VISION'],
+    layer: 'Kernel',
+    userBenefit: 'Understand complex event sequences at a glance',
+    status: 'active',
+    emergentFrom: 'ripple-correlation-v7',
+    riskLevel: 'low',
+    executionMode: 'async',
+  },
+  message_deduplication_guard: {
+    id: 'message_deduplication_guard',
+    name: 'Message Deduplication Guard',
+    description: 'Prevents duplicate message processing with intelligent idempotency keys',
+    modules: ['RIPPLE', 'CORE'],
+    layer: 'Kernel',
+    userBenefit: 'No duplicate operations, guaranteed exactly-once semantics',
+    status: 'active',
+    emergentFrom: 'ripple-dedup-v7',
+    riskLevel: 'low',
+    executionMode: 'sync',
+  },
+  broadcast_throttle_manager: {
+    id: 'broadcast_throttle_manager',
+    name: 'Broadcast Throttle Manager',
+    description: 'Intelligently rate-limits broadcasts based on subscriber capacity',
+    modules: ['RIPPLE', 'ACCESS', 'VISION'],
+    layer: 'Kernel',
+    userBenefit: 'Subscribers never overwhelmed, system stays responsive',
+    status: 'active',
+    emergentFrom: 'ripple-throttle-v7',
+    riskLevel: 'low',
+    executionMode: 'sync',
+  },
+  subscription_health_monitor: {
+    id: 'subscription_health_monitor',
+    name: 'Subscription Health Monitor',
+    description: 'Tracks subscription lag, failures, and auto-recovers stale connections',
+    modules: ['RIPPLE', 'VISION', 'SYSTEM'],
+    layer: 'Kernel',
+    userBenefit: 'Real-time subscriptions that self-heal',
+    status: 'active',
+    emergentFrom: 'ripple-health-v7',
+    riskLevel: 'low',
+    executionMode: 'streaming',
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ACCESS Module (4)
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  quota_burst_predictor: {
+    id: 'quota_burst_predictor',
+    name: 'Quota Burst Predictor',
+    description: 'Forecasts API usage spikes and pre-allocates burst capacity',
+    modules: ['ACCESS', 'VISION', 'BRAIN'],
+    layer: 'Kernel',
+    userBenefit: 'Handle traffic spikes without hitting rate limits',
+    status: 'active',
+    emergentFrom: 'access-quota-v7',
+    riskLevel: 'low',
+    executionMode: 'async',
+  },
+  api_key_rotation_scheduler: {
+    id: 'api_key_rotation_scheduler',
+    name: 'API Key Rotation Scheduler',
+    description: 'Automatically rotates API keys based on security policies and usage patterns',
+    modules: ['ACCESS', 'DEFENSE', 'SYSTEM'],
+    layer: 'Kernel',
+    userBenefit: 'Continuous security without manual key management',
+    status: 'active',
+    emergentFrom: 'access-rotation-v7',
+    riskLevel: 'medium',
+    executionMode: 'async',
+  },
+  usage_anomaly_detector: {
+    id: 'usage_anomaly_detector',
+    name: 'Usage Anomaly Detector',
+    description: 'Identifies unusual API usage patterns that may indicate abuse or compromise',
+    modules: ['ACCESS', 'DEFENSE', 'VISION'],
+    layer: 'Kernel',
+    userBenefit: 'Early detection of account misuse or attacks',
+    status: 'active',
+    emergentFrom: 'access-anomaly-v7',
+    riskLevel: 'low',
+    executionMode: 'streaming',
+  },
+  developer_onboarding_optimizer: {
+    id: 'developer_onboarding_optimizer',
+    name: 'Developer Onboarding Optimizer',
+    description: 'Guides new API users through optimal integration paths based on their use case',
+    modules: ['ACCESS', 'DECODE', 'BRAIN'],
+    layer: 'Kernel',
+    userBenefit: 'Faster time-to-first-value for developers',
+    status: 'active',
+    emergentFrom: 'access-onboard-v7',
+    riskLevel: 'low',
+    executionMode: 'async',
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // BRAIN Module (4)
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  knowledge_graph_navigator: {
+    id: 'knowledge_graph_navigator',
+    name: 'Knowledge Graph Navigator',
+    description: 'Traverses knowledge relationships to find hidden connections and insights',
+    modules: ['BRAIN', 'CORTEX', 'VISION'],
+    layer: 'Cognitive',
+    userBenefit: 'Discover non-obvious relationships in your data',
+    status: 'active',
+    emergentFrom: 'brain-graph-v7',
+    riskLevel: 'low',
+    executionMode: 'async',
+  },
+  memory_consolidation_engine: {
+    id: 'memory_consolidation_engine',
+    name: 'Memory Consolidation Engine',
+    description: 'Merges fragmented memories into coherent, compressed knowledge structures',
+    modules: ['BRAIN', 'DREAM', 'SYSTEM'],
+    layer: 'Cognitive',
+    userBenefit: 'Efficient memory that gets smarter over time',
+    status: 'active',
+    emergentFrom: 'brain-consolidate-v7',
+    riskLevel: 'low',
+    executionMode: 'async',
+  },
+  semantic_similarity_ranker: {
+    id: 'semantic_similarity_ranker',
+    name: 'Semantic Similarity Ranker',
+    description: 'Ranks memories by semantic relevance using multi-dimensional embeddings',
+    modules: ['BRAIN', 'DECODE', 'NEXUS'],
+    layer: 'Cognitive',
+    userBenefit: 'Most relevant information surfaces first',
+    status: 'active',
+    emergentFrom: 'brain-semantic-v7',
+    riskLevel: 'low',
+    executionMode: 'sync',
+  },
+  cognitive_load_balancer: {
+    id: 'cognitive_load_balancer',
+    name: 'Cognitive Load Balancer',
+    description: 'Distributes reasoning tasks across brain tiers based on complexity and urgency',
+    modules: ['BRAIN', 'CORE', 'CORTEX'],
+    layer: 'Cognitive',
+    userBenefit: 'Optimal use of cognitive resources, faster responses',
+    status: 'active',
+    emergentFrom: 'brain-loadbal-v7',
+    riskLevel: 'low',
+    executionMode: 'sync',
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // DECODE Module (4)
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  multi_intent_resolver: {
+    id: 'multi_intent_resolver',
+    name: 'Multi-Intent Resolver',
+    description: 'Parses complex queries with multiple intents into actionable task chains',
+    modules: ['DECODE', 'CORTEX', 'BRAIN'],
+    layer: 'Cognitive',
+    userBenefit: 'Handle complex, multi-part requests in one go',
+    status: 'active',
+    emergentFrom: 'decode-multi-v7',
+    riskLevel: 'low',
+    executionMode: 'sync',
+  },
+  context_window_optimizer: {
+    id: 'context_window_optimizer',
+    name: 'Context Window Optimizer',
+    description: 'Intelligently compresses and prioritizes context to maximize LLM effectiveness',
+    modules: ['DECODE', 'BRAIN', 'NEXUS'],
+    layer: 'Cognitive',
+    userBenefit: 'Better AI responses by optimizing what context to include',
+    status: 'active',
+    emergentFrom: 'decode-context-v7',
+    riskLevel: 'low',
+    executionMode: 'sync',
+  },
+  personality_adaptation_engine: {
+    id: 'personality_adaptation_engine',
+    name: 'Personality Adaptation Engine',
+    description: 'Dynamically adjusts response style based on user preferences and context',
+    modules: ['DECODE', 'BRAIN', 'INCLUSIVE'],
+    layer: 'Cognitive',
+    userBenefit: 'AI that speaks your language and matches your style',
+    status: 'active',
+    emergentFrom: 'decode-personality-v7',
+    riskLevel: 'low',
+    executionMode: 'sync',
+  },
+  ambiguity_resolution_chain: {
+    id: 'ambiguity_resolution_chain',
+    name: 'Ambiguity Resolution Chain',
+    description: 'Resolves unclear requests through clarification or intelligent inference',
+    modules: ['DECODE', 'BRAIN', 'CORTEX'],
+    layer: 'Cognitive',
+    userBenefit: 'Fewer misunderstandings, more accurate responses',
+    status: 'active',
+    emergentFrom: 'decode-ambiguity-v7',
+    riskLevel: 'low',
+    executionMode: 'sync',
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // NEXUS Module (4)
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  provider_health_router: {
+    id: 'provider_health_router',
+    name: 'Provider Health Router',
+    description: 'Routes AI requests based on real-time provider health and performance metrics',
+    modules: ['NEXUS', 'VISION', 'CORE'],
+    layer: 'Operational',
+    userBenefit: 'Always use the healthiest, fastest AI provider',
+    status: 'active',
+    emergentFrom: 'nexus-health-v7',
+    riskLevel: 'low',
+    executionMode: 'sync',
+  },
+  cost_quality_optimizer: {
+    id: 'cost_quality_optimizer',
+    name: 'Cost-Quality Optimizer',
+    description: 'Balances response quality against cost for optimal price/performance ratio',
+    modules: ['NEXUS', 'ACCESS', 'CORTEX'],
+    layer: 'Operational',
+    userBenefit: 'Get the best quality you can afford, automatically',
+    status: 'active',
+    emergentFrom: 'nexus-costqual-v7',
+    riskLevel: 'low',
+    executionMode: 'sync',
+  },
+  fallback_chain_orchestrator: {
+    id: 'fallback_chain_orchestrator',
+    name: 'Fallback Chain Orchestrator',
+    description: 'Manages multi-level fallback strategies when primary providers fail',
+    modules: ['NEXUS', 'DEFENSE', 'CORE'],
+    layer: 'Operational',
+    userBenefit: 'Uninterrupted AI service even during outages',
+    status: 'active',
+    emergentFrom: 'nexus-fallback-v7',
+    riskLevel: 'low',
+    executionMode: 'sync',
+  },
+  latency_prediction_engine: {
+    id: 'latency_prediction_engine',
+    name: 'Latency Prediction Engine',
+    description: 'Predicts response times to route time-sensitive requests optimally',
+    modules: ['NEXUS', 'VISION', 'BRAIN'],
+    layer: 'Operational',
+    userBenefit: 'Meet SLAs by predicting and avoiding slow paths',
+    status: 'active',
+    emergentFrom: 'nexus-latency-v7',
+    riskLevel: 'low',
+    executionMode: 'sync',
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // DEFENSE Module (4)
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  threat_pattern_correlator: {
+    id: 'threat_pattern_correlator',
+    name: 'Threat Pattern Correlator',
+    description: 'Links disparate security signals to identify coordinated attack patterns',
+    modules: ['DEFENSE', 'BRAIN', 'VISION'],
+    layer: 'Operational',
+    userBenefit: 'Detect sophisticated multi-vector attacks',
+    status: 'active',
+    emergentFrom: 'defense-correlate-v7',
+    riskLevel: 'medium',
+    executionMode: 'streaming',
+  },
+  attack_surface_mapper: {
+    id: 'attack_surface_mapper',
+    name: 'Attack Surface Mapper',
+    description: 'Continuously maps and monitors all potential attack vectors',
+    modules: ['DEFENSE', 'SYSTEM', 'VISION'],
+    layer: 'Operational',
+    userBenefit: 'Know your vulnerabilities before attackers do',
+    status: 'active',
+    emergentFrom: 'defense-surface-v7',
+    riskLevel: 'low',
+    executionMode: 'async',
+  },
+  incident_response_automator: {
+    id: 'incident_response_automator',
+    name: 'Incident Response Automator',
+    description: 'Executes predefined response playbooks automatically upon threat detection',
+    modules: ['DEFENSE', 'SYSTEM', 'RIPPLE'],
+    layer: 'Operational',
+    userBenefit: 'Instant response to security incidents',
+    status: 'active',
+    emergentFrom: 'defense-response-v7',
+    riskLevel: 'high',
+    executionMode: 'sync',
+  },
+  compliance_drift_detector: {
+    id: 'compliance_drift_detector',
+    name: 'Compliance Drift Detector',
+    description: 'Monitors configurations for deviations from security compliance baselines',
+    modules: ['DEFENSE', 'VISION', 'MODERNIZER'],
+    layer: 'Operational',
+    userBenefit: 'Stay compliant without manual audits',
+    status: 'active',
+    emergentFrom: 'defense-compliance-v7',
+    riskLevel: 'low',
+    executionMode: 'async',
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // VISION Module (4)
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  metric_anomaly_forecaster: {
+    id: 'metric_anomaly_forecaster',
+    name: 'Metric Anomaly Forecaster',
+    description: 'Predicts metric anomalies before they occur using ML-based forecasting',
+    modules: ['VISION', 'BRAIN', 'CORTEX'],
+    layer: 'Operational',
+    userBenefit: 'Fix problems before they become visible',
+    status: 'active',
+    emergentFrom: 'vision-forecast-v7',
+    riskLevel: 'low',
+    executionMode: 'async',
+  },
+  dashboard_insight_generator: {
+    id: 'dashboard_insight_generator',
+    name: 'Dashboard Insight Generator',
+    description: 'Automatically generates natural language insights from dashboard data',
+    modules: ['VISION', 'DECODE', 'BRAIN'],
+    layer: 'Operational',
+    userBenefit: 'Understand metrics without being a data scientist',
+    status: 'active',
+    emergentFrom: 'vision-insights-v7',
+    riskLevel: 'low',
+    executionMode: 'async',
+  },
+  health_trend_analyzer: {
+    id: 'health_trend_analyzer',
+    name: 'Health Trend Analyzer',
+    description: 'Tracks long-term health trends to identify gradual degradation',
+    modules: ['VISION', 'BRAIN', 'SYSTEM'],
+    layer: 'Operational',
+    userBenefit: 'Catch slow-building problems before they escalate',
+    status: 'active',
+    emergentFrom: 'vision-trends-v7',
+    riskLevel: 'low',
+    executionMode: 'async',
+  },
+  capacity_planning_advisor: {
+    id: 'capacity_planning_advisor',
+    name: 'Capacity Planning Advisor',
+    description: 'Recommends resource scaling based on growth trends and usage patterns',
+    modules: ['VISION', 'BRAIN', 'ACCESS'],
+    layer: 'Operational',
+    userBenefit: 'Right-size infrastructure, avoid over/under provisioning',
+    status: 'active',
+    emergentFrom: 'vision-capacity-v7',
+    riskLevel: 'low',
+    executionMode: 'async',
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // DREAM Module (4)
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  latent_pattern_extractor: {
+    id: 'latent_pattern_extractor',
+    name: 'Latent Pattern Extractor',
+    description: 'Discovers hidden patterns in data during nocturnal processing cycles',
+    modules: ['DREAM', 'BRAIN', 'VISION'],
+    layer: 'Cognitive',
+    userBenefit: 'Uncover insights you did not know to look for',
+    status: 'active',
+    emergentFrom: 'dream-patterns-v7',
+    riskLevel: 'low',
+    executionMode: 'async',
+  },
+  creative_synthesis_engine: {
+    id: 'creative_synthesis_engine',
+    name: 'Creative Synthesis Engine',
+    description: 'Combines disparate concepts to generate novel solutions and ideas',
+    modules: ['DREAM', 'BRAIN', 'NEXUS'],
+    layer: 'Cognitive',
+    userBenefit: 'AI-generated creative solutions to complex problems',
+    status: 'active',
+    emergentFrom: 'dream-synthesis-v7',
+    riskLevel: 'low',
+    executionMode: 'async',
+  },
+  nocturnal_optimization_runner: {
+    id: 'nocturnal_optimization_runner',
+    name: 'Nocturnal Optimization Runner',
+    description: 'Executes resource-intensive optimizations during low-traffic periods',
+    modules: ['DREAM', 'SYSTEM', 'MODERNIZER'],
+    layer: 'Cognitive',
+    userBenefit: 'Improve system without impacting users',
+    status: 'active',
+    emergentFrom: 'dream-nocturnal-v7',
+    riskLevel: 'medium',
+    executionMode: 'async',
+  },
+  idea_incubation_scheduler: {
+    id: 'idea_incubation_scheduler',
+    name: 'Idea Incubation Scheduler',
+    description: 'Queues and develops promising ideas over time until they mature',
+    modules: ['DREAM', 'BRAIN', 'CORTEX'],
+    layer: 'Cognitive',
+    userBenefit: 'Ideas improve while you sleep',
+    status: 'active',
+    emergentFrom: 'dream-incubate-v7',
+    riskLevel: 'low',
+    executionMode: 'async',
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // INTEGRATION Module (4)
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  adapter_compatibility_checker: {
+    id: 'adapter_compatibility_checker',
+    name: 'Adapter Compatibility Checker',
+    description: 'Validates integration compatibility before connection attempts',
+    modules: ['INTEGRATION', 'DEFENSE', 'VISION'],
+    layer: 'Operational',
+    userBenefit: 'Avoid failed integrations with pre-validation',
+    status: 'active',
+    emergentFrom: 'integration-compat-v7',
+    riskLevel: 'low',
+    executionMode: 'sync',
+  },
+  data_transformation_pipeline: {
+    id: 'data_transformation_pipeline',
+    name: 'Data Transformation Pipeline',
+    description: 'Automatically transforms data formats between incompatible systems',
+    modules: ['INTEGRATION', 'DECODE', 'BRAIN'],
+    layer: 'Operational',
+    userBenefit: 'Connect any system without manual data mapping',
+    status: 'active',
+    emergentFrom: 'integration-transform-v7',
+    riskLevel: 'low',
+    executionMode: 'async',
+  },
+  connection_pool_optimizer: {
+    id: 'connection_pool_optimizer',
+    name: 'Connection Pool Optimizer',
+    description: 'Dynamically sizes connection pools based on load and health metrics',
+    modules: ['INTEGRATION', 'VISION', 'CORE'],
+    layer: 'Operational',
+    userBenefit: 'Optimal connection efficiency, no pool exhaustion',
+    status: 'active',
+    emergentFrom: 'integration-pool-v7',
+    riskLevel: 'low',
+    executionMode: 'async',
+  },
+  sync_conflict_resolver: {
+    id: 'sync_conflict_resolver',
+    name: 'Sync Conflict Resolver',
+    description: 'Automatically resolves data conflicts during bi-directional sync',
+    modules: ['INTEGRATION', 'BRAIN', 'SYSTEM'],
+    layer: 'Operational',
+    userBenefit: 'No data loss during synchronization conflicts',
+    status: 'active',
+    emergentFrom: 'integration-conflict-v7',
+    riskLevel: 'medium',
+    executionMode: 'sync',
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // SYSTEM Module (4)
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  backup_integrity_validator: {
+    id: 'backup_integrity_validator',
+    name: 'Backup Integrity Validator',
+    description: 'Continuously validates backup health and restorability',
+    modules: ['SYSTEM', 'DEFENSE', 'VISION'],
+    layer: 'Admin',
+    userBenefit: 'Confidence that backups actually work when needed',
+    status: 'active',
+    emergentFrom: 'system-backup-v7',
+    riskLevel: 'low',
+    executionMode: 'async',
+  },
+  resource_cleanup_scheduler: {
+    id: 'resource_cleanup_scheduler',
+    name: 'Resource Cleanup Scheduler',
+    description: 'Automatically cleans up orphaned resources and expired data',
+    modules: ['SYSTEM', 'CORE', 'VISION'],
+    layer: 'Admin',
+    userBenefit: 'No resource leaks, optimal storage efficiency',
+    status: 'active',
+    emergentFrom: 'system-cleanup-v7',
+    riskLevel: 'medium',
+    executionMode: 'async',
+  },
+  config_drift_detector: {
+    id: 'config_drift_detector',
+    name: 'Config Drift Detector',
+    description: 'Monitors configurations for unauthorized or unintended changes',
+    modules: ['SYSTEM', 'DEFENSE', 'MODERNIZER'],
+    layer: 'Admin',
+    userBenefit: 'Catch configuration changes before they cause issues',
+    status: 'active',
+    emergentFrom: 'system-drift-v7',
+    riskLevel: 'low',
+    executionMode: 'streaming',
+  },
+  audit_compliance_reporter: {
+    id: 'audit_compliance_reporter',
+    name: 'Audit Compliance Reporter',
+    description: 'Generates compliance reports from audit logs automatically',
+    modules: ['SYSTEM', 'VISION', 'DEFENSE'],
+    layer: 'Admin',
+    userBenefit: 'Audit-ready reports without manual compilation',
+    status: 'active',
+    emergentFrom: 'system-audit-v7',
+    riskLevel: 'low',
+    executionMode: 'async',
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // MODERNIZER Module (4)
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  proposal_impact_analyzer: {
+    id: 'proposal_impact_analyzer',
+    name: 'Proposal Impact Analyzer',
+    description: 'Simulates proposed changes to predict their system-wide impact',
+    modules: ['MODERNIZER', 'VISION', 'CORTEX'],
+    layer: 'Admin',
+    userBenefit: 'Know the impact of changes before deploying',
+    status: 'active',
+    emergentFrom: 'modernizer-impact-v7',
+    riskLevel: 'low',
+    executionMode: 'async',
+  },
+  migration_risk_scorer: {
+    id: 'migration_risk_scorer',
+    name: 'Migration Risk Scorer',
+    description: 'Quantifies risk levels for proposed migrations and upgrades',
+    modules: ['MODERNIZER', 'DEFENSE', 'BRAIN'],
+    layer: 'Admin',
+    userBenefit: 'Prioritize safe migrations, defer risky ones',
+    status: 'active',
+    emergentFrom: 'modernizer-risk-v7',
+    riskLevel: 'low',
+    executionMode: 'sync',
+  },
+  deprecation_path_finder: {
+    id: 'deprecation_path_finder',
+    name: 'Deprecation Path Finder',
+    description: 'Maps upgrade paths for deprecated features and dependencies',
+    modules: ['MODERNIZER', 'SYSTEM', 'BRAIN'],
+    layer: 'Admin',
+    userBenefit: 'Clear roadmap for upgrading legacy components',
+    status: 'active',
+    emergentFrom: 'modernizer-deprecation-v7',
+    riskLevel: 'low',
+    executionMode: 'async',
+  },
+  feature_flag_governor: {
+    id: 'feature_flag_governor',
+    name: 'Feature Flag Governor',
+    description: 'Manages feature flags with automatic rollback on error thresholds',
+    modules: ['MODERNIZER', 'VISION', 'DEFENSE'],
+    layer: 'Admin',
+    userBenefit: 'Safe feature releases with automatic guardrails',
+    status: 'active',
+    emergentFrom: 'modernizer-flags-v7',
+    riskLevel: 'medium',
+    executionMode: 'streaming',
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // INCLUSIVE Module (4)
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  accessibility_regression_guard: {
+    id: 'accessibility_regression_guard',
+    name: 'Accessibility Regression Guard',
+    description: 'Prevents deployment of changes that degrade accessibility scores',
+    modules: ['INCLUSIVE', 'MODERNIZER', 'DEFENSE'],
+    layer: 'Admin',
+    userBenefit: 'Never accidentally break accessibility',
+    status: 'active',
+    emergentFrom: 'inclusive-guard-v7',
+    riskLevel: 'low',
+    executionMode: 'sync',
+  },
+  adaptive_interface_optimizer: {
+    id: 'adaptive_interface_optimizer',
+    name: 'Adaptive Interface Optimizer',
+    description: 'Dynamically adjusts UI based on user accessibility profiles',
+    modules: ['INCLUSIVE', 'DECODE', 'BRAIN'],
+    layer: 'Admin',
+    userBenefit: 'Personalized accessible experiences for every user',
+    status: 'active',
+    emergentFrom: 'inclusive-adaptive-v7',
+    riskLevel: 'low',
+    executionMode: 'sync',
+  },
+  wcag_auto_remediation_engine: {
+    id: 'wcag_auto_remediation_engine',
+    name: 'WCAG Auto-Remediation Engine',
+    description: 'Automatically fixes WCAG violations with AI-generated patches',
+    modules: ['INCLUSIVE', 'NEXUS', 'MODERNIZER'],
+    layer: 'Admin',
+    userBenefit: 'Automatic accessibility fixes without developer effort',
+    status: 'active',
+    emergentFrom: 'inclusive-remediate-v7',
+    riskLevel: 'medium',
+    executionMode: 'async',
+  },
+  inclusive_testing_orchestrator: {
+    id: 'inclusive_testing_orchestrator',
+    name: 'Inclusive Testing Orchestrator',
+    description: 'Runs comprehensive accessibility test suites across all interfaces',
+    modules: ['INCLUSIVE', 'VISION', 'SYSTEM'],
+    layer: 'Admin',
+    userBenefit: 'Comprehensive accessibility testing on every change',
+    status: 'active',
+    emergentFrom: 'inclusive-testing-v7',
+    riskLevel: 'low',
+    executionMode: 'async',
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // CORTEX Module (4)
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  multi_agent_coordinator: {
+    id: 'multi_agent_coordinator',
+    name: 'Multi-Agent Coordinator',
+    description: 'Orchestrates multiple AI agents working on complex, decomposed tasks',
+    modules: ['CORTEX', 'NEXUS', 'RIPPLE'],
+    layer: 'Orchestrator',
+    userBenefit: 'Complex problems solved by specialized agent teams',
+    status: 'active',
+    emergentFrom: 'cortex-multiagent-v7',
+    riskLevel: 'medium',
+    executionMode: 'async',
+  },
+  task_decomposition_engine: {
+    id: 'task_decomposition_engine',
+    name: 'Task Decomposition Engine',
+    description: 'Breaks complex goals into executable subtasks with dependencies',
+    modules: ['CORTEX', 'BRAIN', 'DECODE'],
+    layer: 'Orchestrator',
+    userBenefit: 'Complex requests handled through intelligent planning',
+    status: 'active',
+    emergentFrom: 'cortex-decompose-v7',
+    riskLevel: 'low',
+    executionMode: 'sync',
+  },
+  goal_alignment_validator: {
+    id: 'goal_alignment_validator',
+    name: 'Goal Alignment Validator',
+    description: 'Ensures all agent actions align with stated goals and constraints',
+    modules: ['CORTEX', 'DEFENSE', 'BRAIN'],
+    layer: 'Orchestrator',
+    userBenefit: 'AI that stays on task and respects boundaries',
+    status: 'active',
+    emergentFrom: 'cortex-alignment-v7',
+    riskLevel: 'low',
+    executionMode: 'sync',
+  },
+  execution_priority_balancer: {
+    id: 'execution_priority_balancer',
+    name: 'Execution Priority Balancer',
+    description: 'Balances competing priorities across orchestrated workflows',
+    modules: ['CORTEX', 'CORE', 'VISION'],
+    layer: 'Orchestrator',
+    userBenefit: 'Optimal resource allocation across concurrent tasks',
+    status: 'active',
+    emergentFrom: 'cortex-priority-v7',
+    riskLevel: 'low',
+    executionMode: 'sync',
   },
 };
 
@@ -321,7 +1206,6 @@ class CapabilityEngine {
     const state = this.state.get(id);
     if (state) {
       state.enabled = enabled;
-      // Log capability state change
       console.debug(`[Capability] ${id} ${enabled ? 'enabled' : 'disabled'}`);
     }
   }
@@ -370,7 +1254,6 @@ class CapabilityEngine {
       state.lastExecuted = new Date();
       state.successRate = (state.successRate * (state.executionCount - 1) + 1) / state.executionCount;
       
-      // Log successful execution
       console.debug(`[Capability] ${id} executed successfully in ${Date.now() - startTime}ms`);
       
       return {
@@ -381,14 +1264,12 @@ class CapabilityEngine {
         modulesInvoked: capability.modules,
       };
     } catch (error) {
-      // Update state on failure
       if (state) {
         state.executionCount++;
         state.lastExecuted = new Date();
         state.successRate = (state.successRate * (state.executionCount - 1)) / state.executionCount;
       }
       
-      // Log execution failure
       console.error(`[Capability] ${id} execution failed:`, error);
       
       return {
@@ -425,12 +1306,21 @@ class CapabilityEngine {
   }
   
   /**
+   * Get capabilities by risk level
+   */
+  getByRiskLevel(risk: 'low' | 'medium' | 'high'): CapabilityDefinition[] {
+    return Object.values(CAPABILITY_REGISTRY).filter(cap => cap.riskLevel === risk);
+  }
+  
+  /**
    * Get summary statistics
    */
   getSummary(): {
     total: number;
     active: number;
     byLayer: Record<ModuleLayer, number>;
+    byRisk: Record<'low' | 'medium' | 'high', number>;
+    byModule: Record<string, number>;
     totalExecutions: number;
   } {
     const byLayer: Record<ModuleLayer, number> = {
@@ -441,8 +1331,20 @@ class CapabilityEngine {
       Orchestrator: 0,
     };
     
+    const byRisk: Record<'low' | 'medium' | 'high', number> = {
+      low: 0,
+      medium: 0,
+      high: 0,
+    };
+    
+    const byModule: Record<string, number> = {};
+    
     Object.values(CAPABILITY_REGISTRY).forEach(cap => {
       byLayer[cap.layer]++;
+      if (cap.riskLevel) byRisk[cap.riskLevel]++;
+      cap.modules.forEach(mod => {
+        byModule[mod] = (byModule[mod] || 0) + 1;
+      });
     });
     
     const totalExecutions = Array.from(this.state.values())
@@ -452,6 +1354,8 @@ class CapabilityEngine {
       total: Object.keys(CAPABILITY_REGISTRY).length,
       active: this.getActiveCount(),
       byLayer,
+      byRisk,
+      byModule,
       totalExecutions,
     };
   }
@@ -469,6 +1373,7 @@ export class CapabilityEngineClient {
   execute = (id: CapabilityId, context?: Record<string, unknown>) => capabilityEngine.execute(id, context);
   getByModule = (module: string) => capabilityEngine.getByModule(module);
   getByLayer = (layer: ModuleLayer) => capabilityEngine.getByLayer(layer);
+  getByRiskLevel = (risk: 'low' | 'medium' | 'high') => capabilityEngine.getByRiskLevel(risk);
   getSummary = () => capabilityEngine.getSummary();
 }
 

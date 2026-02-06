@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Documentation Library
 
-**PromptFluid® CMPSBL OS — v7.5.3 Library (SYNERGY+ Epoch)**
+**PromptFluid® CMPSBL OS — v7.6.0 Library (SYNERGY+ Epoch)**
 
 ---
 
@@ -9,11 +9,13 @@
 | Field | Value |
 |-------|-------|
 | **System Name** | CMPSBL OS Substrate |
-| **Version** | v7.5.3 (SYNERGY+) |
+| **Version** | v7.6.0 (SYNERGY+) |
 | **Classification** | Cognitive Orchestration Substrate |
 | **Status** | Production (Live System) |
 | **Publication Date** | February 2026 |
 | **Author** | Kenneth E. Sweet Jr. ([ORCID](https://orcid.org/0009-0001-4237-1243)) |
+| **Capabilities** | 76 Cross-Module Capabilities |
+| **Synergy Pipelines** | 147 Executable Pipelines |
 
 ---
 
@@ -37,7 +39,8 @@ This library is part of the **FNDTN v7** standards package, which presents:
 | v6.0.0 (FNDTN) | 2026-01-28 | Initial FNDTN release |
 | v6.3.0 (FNDTN) | 2026-01-29 | Human Compatibility Era |
 | v7.0.0 (SEBA) | 2026-02-01 | Bounded Autonomy Era |
-| **v7.5.3 (SYNERGY+)** | 2026-02-06 | SYNERGY+ Epoch (Current) |
+| v7.5.3 (SYNERGY+) | 2026-02-05 | SYNERGY+ Epoch |
+| **v7.6.0 (SYNERGY+)** | 2026-02-06 | **76 Capabilities, INCLUSIVE Auto-Repair (Current)** |
 
 **AI Governance Reference Namespace:** [Zenodo Record](https://zenodo.org/records/18393018)
 
@@ -134,7 +137,7 @@ This library is part of the **FNDTN v7** standards package, which presents:
 | [75-EVOLUTION-LIFECYCLE.md](./75-EVOLUTION-LIFECYCLE.md) | Evolution Lifecycle | Modernizer 5-phase cycle |
 | [76-EVOLUTION-AUTONOMY.md](./76-EVOLUTION-AUTONOMY.md) | Evolution Autonomy | Governed autonomy settings |
 | [77-SYNERGY-PIPELINES.md](./77-SYNERGY-PIPELINES.md) | **Synergy Pipelines** | 147 cross-module executable pipelines |
-| [78-CAPABILITIES.md](./78-CAPABILITIES.md) | **Synergy Capabilities** | 136+ depot capabilities + 125 executors |
+| [78-CAPABILITIES.md](./78-CAPABILITIES.md) | **Synergy Capabilities** | **76 cross-module capabilities + 125 executors** |
 | [79-EVOLUTION-OBSERVABILITY.md](./79-EVOLUTION-OBSERVABILITY.md) | **Evolution Observability** | Investor-facing evolution visibility & stamps |
 
 ### Supplementary Materials

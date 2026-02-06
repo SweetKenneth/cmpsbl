@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Internal Engineering Library
 
-**Version 7.5.3 | SYNERGY+ Epoch | CONFIDENTIAL**
+**Version 7.6.0 | SYNERGY+ Epoch | CONFIDENTIAL**
 
 ---
 
@@ -18,15 +18,17 @@
 | 02 | [Evolution Engine](./02-EVOLUTION-ENGINE.md) | 5-phase lifecycle, confidence gating, shadow testing |
 | 03 | [Cognitive Brain](./03-COGNITIVE-BRAIN.md) | 3-tier memory, value scoring, 5 cognitive engines |
 | 04 | [Resilience & Circuits](./04-RESILIENCE-CIRCUITS.md) | Circuit breakers, auto-heal, health scoring |
-| 05 | [Accessibility Pipeline](./05-ACCESSIBILITY-PIPELINE.md) | WCAG enforcement, weighted scoring, template blocking |
+| 05 | [Accessibility Pipeline](./05-ACCESSIBILITY-PIPELINE.md) | WCAG enforcement, weighted scoring, template blocking, **auto-repair** |
 | 06 | [Dream-Eater Cycles](./06-DREAM-EATER.md) | Autonomous learning, doctrine extraction, sleep cycles |
 | 07 | [Defense & Security](./07-DEFENSE-SECURITY.md) | Rate limiting, API key hashing, threat detection |
 | 08 | [AI Router (Nexus)](./08-NEXUS-ROUTER.md) | Provider fallback, cost optimization, model selection |
-| 09 | [Terminal Reference](./09-TERMINAL-REFERENCE.md) | All 280+ commands, module prefixes, output formats |
+| 09 | [Terminal Reference](./09-TERMINAL-REFERENCE.md) | All 300+ commands, module prefixes, output formats |
 | 10 | [Integration Layer](./10-INTEGRATION-LAYER.md) | External APIs, webhook handling, adapter patterns |
 | 11 | [Synergy Engine](./11-SYNERGY-ENGINE.md) | **147 cross-module pipelines, 125 executors, governance** |
 | 12 | [Capabilities Depot](./12-CAPABILITIES-DEPOT.md) | Downloadable artifacts, licensing, pricing tiers |
 | 13 | [SEBA & Evolve Operator Guide](./13-SEBA-EVOLVE-OPERATOR-GUIDE.md) | **Complete workflow for evolution cycles, verification, stamps** |
+| 14 | [Atlas Control Plane](./14-ATLAS-CONTROL-PLANE.md) | Centralized governance, command interface, real-time audit |
+| 15 | [Capability Registry](./15-CAPABILITY-REGISTRY.md) | **76 cross-module capabilities, risk levels, execution modes** |
 
 ---
 
@@ -53,7 +55,7 @@ OPERATIONS LAYER (Boot Order 7-9)
 ADMIN LAYER (Boot Order 10-12)
 ├── SYSTEM ......... Health, diagnostics, backup/restore
 ├── MODERNIZER ..... Evolution engine, self-improvement
-└── INCLUSIVE ...... Accessibility scanning, WCAG enforcement
+└── INCLUSIVE ...... Accessibility scanning, WCAG enforcement, auto-repair
 
 ORCHESTRATOR LAYER (Boot Order 13-14)
 ├── CORTEX ......... Policy intent, PAAEL loop, manual mode
@@ -77,12 +79,33 @@ ADVANCED MODES (v7.0.0)
 | **Synergy Confidence** | Synergy Engine | 0.85 auto-execute with -0.02 per module penalty |
 | **Module Priority Weights** | Synergy Engine | BRAIN 0.25, VISION 0.20, DECODE 0.15... |
 | **Cascade Isolation Duration** | Synergy Engine | Base 30s × threat level multiplier (1-8x) |
+| **Capability Count** | Capability Registry | **76 total capabilities across 14 modules** |
+
+### v7.6.0 — 56 New Capabilities (Total: 76)
+
+| Module | New Capabilities | Total |
+|--------|------------------|-------|
+| CORE | 4 | 6 |
+| RIPPLE | 4 | 5 |
+| ACCESS | 4 | 5 |
+| BRAIN | 4 | 10 |
+| DECODE | 4 | 7 |
+| NEXUS | 4 | 6 |
+| DEFENSE | 4 | 7 |
+| VISION | 4 | 7 |
+| DREAM | 4 | 9 |
+| INTEGRATION | 4 | 4 |
+| SYSTEM | 4 | 6 |
+| MODERNIZER | 4 | 8 |
+| INCLUSIVE | 4 | 6 |
+| CORTEX | 4 | 8 |
 
 ### Version History
 
 | Version | Codename | Key Features |
 |---------|----------|--------------|
-| **7.5.3** | **SYNERGY+** | 147 synergy pipelines, 125 executors (+12 v7.5.3 discoveries) |
+| **7.6.0** | **SYNERGY+** | **76 capabilities (+56 new), INCLUSIVE auto-repair, updated docs** |
+| 7.5.3 | SYNERGY+ | 147 synergy pipelines, 125 executors (+12 v7.5.3 discoveries) |
 | 7.5.2 | SYNERGY+ | 135 synergy pipelines, 113 executors (+15 v7.5.2 discoveries) |
 | 7.5.1 | SYNERGY+ | 112 world-first functions, 120 synergy pipelines, 98 executors |
 | 7.5.0 | SYNERGY | 56 world-first functions across 14 modules |
@@ -91,22 +114,15 @@ ADVANCED MODES (v7.0.0)
 | 6.3.1 | FNDTN | CLM integration, mobile terminal, 260+ commands |
 | 6.0.0 | FNDTN | 14-module architecture, Evolution Cycle |
 
-### v7.5.3 Discoveries (12 NEW Synergies)
+### 76 Capability Categories
 
-| Synergy | Modules | Category |
-|---------|---------|----------|
-| `meta-learning-orchestrator` | CORTEX + DREAM + BRAIN + NEXUS | Intelligence |
-| `intent-accessibility-synthesis` | DECODE + DREAM + INCLUSIVE | Accessibility |
-| `threat-intelligence-mesh` | VISION + DEFENSE + RIPPLE + BRAIN | Security |
-| `resource-governance-engine` | SYSTEM + CORTEX + VISION + ACCESS | Orchestration |
-| `reasoning-quality-amplifier` | NEXUS + BRAIN + DECODE + VISION | Intelligence |
-| `secure-evolution-pipeline` | MODERNIZER + DEFENSE + BRAIN + CORTEX | Automation |
-| `external-api-guardian` | INTEGRATION + VISION + RIPPLE + DEFENSE | Security |
-| `creative-problem-solver` | DREAM + DECODE + NEXUS + CORTEX | Intelligence |
-| `usage-pattern-intelligence` | ACCESS + BRAIN + VISION + SYSTEM | Optimization |
-| `personalized-accessibility-engine` | INCLUSIVE + BRAIN + NEXUS + DECODE | Accessibility |
-| `adaptive-configuration-intelligence` | CORE + VISION + MODERNIZER + BRAIN | Optimization |
-| `event-driven-orchestration` | RIPPLE + CORTEX + BRAIN + VISION | Orchestration |
+| Category | Count | Examples |
+|----------|-------|----------|
+| Kernel | 12 | priority_queue_optimizer, distributed_lock_coordinator, event_correlation_engine |
+| Cognitive | 20 | knowledge_graph_navigator, semantic_similarity_ranker, multi_intent_resolver |
+| Operational | 20 | provider_health_router, threat_pattern_correlator, metric_anomaly_forecaster |
+| Admin | 16 | backup_integrity_validator, accessibility_regression_guard, proposal_impact_analyzer |
+| Orchestrator | 8 | multi_agent_coordinator, goal_alignment_validator, execution_priority_balancer |
 
 ### Synergy Categories (v7.5.3)
 
@@ -122,5 +138,5 @@ ADVANCED MODES (v7.0.0)
 
 ---
 
-*CMPSBL OS Substrate v7.5.3 — SYNERGY+ Epoch*
+*CMPSBL OS Substrate v7.6.0 — SYNERGY+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*
