@@ -14,82 +14,56 @@ import { log } from '@/lib/system/log';
 export function registerSEBAHandlers(): void {
   // seba.status — Get SEBA agent status
   registerHandler('seba.status', async () => {
-    const status = await sebaAgent.getStatus();
-    const health = await sebaAgent.getHealth();
+    const result = await sebaAgent.handleCommand('status');
+    const healthResult = await sebaAgent.handleCommand('health');
     
     return {
-      success: true,
+      success: result.success,
       data: {
         version: '2.0.0',
         codename: 'Full Spectrum Autonomy',
-        mode: status.mode,
-        phase: status.current_phase,
-        health: {
-          agent_health: health.agent_health,
-          cognitive_utilization: health.cognitive_utilization,
-          governance_compliance: health.governance_compliance,
-        },
-        cycles: {
-          total: status.total_cycles,
-          successful: status.successful_cycles,
-          failed: status.failed_cycles,
-          blocked: status.blocked_cycles,
-          today: status.cycles_today,
-        },
-        proposals: {
-          pending: status.pending_proposals,
-          approved: status.approved_proposals,
-          rejected: status.rejected_proposals,
-          executed: status.executed_proposals,
-        },
-        config: {
-          auto_approve_threshold: status.auto_approve_threshold,
-          risk_tolerance: status.risk_tolerance,
-        },
+        ...result.data,
+        health: healthResult.data,
       },
     };
   });
 
   // seba.health — Get SEBA health metrics
   registerHandler('seba.health', async () => {
-    const health = await sebaAgent.getHealth();
+    const result = await sebaAgent.handleCommand('health');
     
     return {
-      success: true,
-      data: health,
+      success: result.success,
+      data: result.data,
     };
   });
 
   // seba.pulse — Lightweight heartbeat
   registerHandler('seba.pulse', async () => {
-    const health = await sebaAgent.getHealth();
+    const result = await sebaAgent.handleCommand('status');
+    const state = (result.data as any)?.state;
     
     return {
       success: true,
       data: {
-        status: health.agent_health >= 80 ? 'healthy' : health.agent_health >= 50 ? 'degraded' : 'critical',
-        health_score: health.agent_health,
-        mode: 'active',
+        status: state?.agent_health >= 80 ? 'healthy' : state?.agent_health >= 50 ? 'degraded' : 'critical',
+        health_score: state?.agent_health || 100,
+        mode: (result.data as any)?.config?.mode || 'observe',
       },
     };
   });
 
   // seba.cycle — Run a SEBA evolution cycle
   registerHandler('seba.cycle', async () => {
-    const result = await sebaAgent.runCycle();
+    const result = await sebaAgent.handleCommand('cycle');
+    const cycleData = result.data as any;
     
     return {
       success: result.success,
       data: {
-        phase_reached: result.phase_reached,
-        proposals_generated: result.proposals.length,
-        proposals: result.proposals.map(p => ({
-          id: p.id,
-          title: p.title,
-          category: p.category,
-          confidence: p.confidence,
-          status: p.status,
-        })),
+        phases_completed: cycleData?.phases_completed || [],
+        proposals_generated: cycleData?.proposals_generated || 0,
+        evolutions_applied: cycleData?.evolutions_applied || 0,
         message: result.message,
       },
     };
@@ -97,60 +71,72 @@ export function registerSEBAHandlers(): void {
 
   // seba.mode — Get/set SEBA mode
   registerHandler('seba.mode', async () => {
+    const result = await sebaAgent.handleCommand('mode');
     return {
-      success: false,
-      error: 'Usage: seba.mode <off|observe|shadow|autonomous>',
-      modes: {
-        off: 'SEBA disabled',
-        observe: 'Scan only, no proposals',
-        shadow: 'Generate proposals, require approval',
-        autonomous: 'Auto-apply low-risk improvements',
-      },
+      success: result.success,
+      data: result.data,
+      message: result.message,
+      modes: result.suggestions,
     };
   });
 
   // seba.mode.observe — Set observe mode
   registerHandler('seba.mode.observe', async () => {
-    await sebaAgent.setMode('observe');
+    const result = await sebaAgent.handleCommand('mode', { mode: 'observe' });
     return {
-      success: true,
-      message: 'SEBA mode set to OBSERVE — scanning without proposals',
+      success: result.success,
+      message: result.success ? 'SEBA mode set to OBSERVE — scanning without proposals' : result.message,
     };
   });
 
-  // seba.mode.shadow — Set shadow mode
-  registerHandler('seba.mode.shadow', async () => {
-    await sebaAgent.setMode('shadow');
+  // seba.mode.advisory — Set advisory mode (shadow)
+  registerHandler('seba.mode.advisory', async () => {
+    const result = await sebaAgent.handleCommand('mode', { mode: 'advisory' });
     return {
-      success: true,
-      message: 'SEBA mode set to SHADOW — proposals require approval',
+      success: result.success,
+      message: result.success ? 'SEBA mode set to ADVISORY — proposals require approval' : result.message,
     };
   });
 
-  // seba.mode.autonomous — Set autonomous mode
-  registerHandler('seba.mode.autonomous', async () => {
-    await sebaAgent.setMode('autonomous');
+  // seba.mode.governed — Set governed mode
+  registerHandler('seba.mode.governed', async () => {
+    const result = await sebaAgent.handleCommand('mode', { mode: 'governed' });
     return {
-      success: true,
-      message: 'SEBA mode set to AUTONOMOUS — low-risk improvements auto-apply',
-      warning: 'High-risk proposals still require approval',
+      success: result.success,
+      message: result.success ? 'SEBA mode set to GOVERNED — auto-execute if governance approves' : result.message,
     };
   });
 
-  // seba.proposals — List pending proposals
+  // seba.enable — Enable SEBA
+  registerHandler('seba.enable', async () => {
+    const result = await sebaAgent.handleCommand('enable');
+    return {
+      success: result.success,
+      message: result.message,
+    };
+  });
+
+  // seba.disable — Disable SEBA
+  registerHandler('seba.disable', async () => {
+    const result = await sebaAgent.handleCommand('disable');
+    return {
+      success: result.success,
+      message: result.message,
+    };
+  });
+
+  // seba.proposals — List pending proposals (review queue)
   registerHandler('seba.proposals', async () => {
-    const command = await sebaAgent.executeCommand({ action: 'proposals' });
-    
+    const result = await sebaAgent.handleCommand('review');
     return {
-      success: command.success,
-      data: command.data,
+      success: result.success,
+      data: result.data,
     };
   });
 
   // seba.receipts — View evolution receipts
   registerHandler('seba.receipts', async () => {
-    const store = new SEBAReceiptStore();
-    const receipts = await store.getReceipts(10);
+    const receipts = await SEBAReceiptStore.getReceipts(10);
     
     return {
       success: true,
@@ -168,61 +154,48 @@ export function registerSEBAHandlers(): void {
     };
   });
 
-  // seba.stamps — View evolution stamps (code comments)
-  registerHandler('seba.stamps', async () => {
-    const command = await sebaAgent.executeCommand({ action: 'stamps' });
-    
+  // seba.history — View execution history
+  registerHandler('seba.history', async () => {
+    const result = await sebaAgent.handleCommand('history', { limit: 10 });
     return {
-      success: command.success,
-      data: command.data,
+      success: result.success,
+      data: result.data,
     };
   });
 
-  // seba.cooldown — Check/set cooldown status
-  registerHandler('seba.cooldown', async () => {
-    const status = await sebaAgent.getStatus();
-    
+  // seba.metrics — Get SEBA metrics
+  registerHandler('seba.metrics', async () => {
+    const result = await sebaAgent.handleCommand('metrics');
     return {
-      success: true,
-      data: {
-        in_cooldown: status.current_phase === 'cooldown',
-        cycles_today: status.cycles_today,
-        message: status.current_phase === 'cooldown' 
-          ? 'SEBA is in cooldown period' 
-          : 'SEBA ready for next cycle',
-      },
-    };
-  });
-
-  // seba.analyze — Run cognitive analysis
-  registerHandler('seba.analyze', async () => {
-    const command = await sebaAgent.executeCommand({ action: 'analyze' });
-    
-    return {
-      success: command.success,
-      data: {
-        description: 'Cognitive analysis complete',
-        insights: command.data,
-        engines: ['Memory', 'Learning', 'Imagination', 'Reasoning', 'Security', 'Telemetry', 'Governance', 'Resources', 'Architecture'],
-      },
+      success: result.success,
+      data: result.data,
     };
   });
 
   // seba.config — View SEBA configuration
   registerHandler('seba.config', async () => {
-    const config = sebaAgent.getConfig();
-    
+    const result = await sebaAgent.handleCommand('config');
     return {
-      success: true,
-      data: {
-        enabled: config.enabled,
-        mode: config.mode,
-        auto_approve_threshold: config.auto_approve_threshold,
-        risk_tolerance: config.risk_tolerance,
-        max_proposals_per_cycle: config.max_proposals_per_cycle,
-        max_cycles_per_day: config.max_cycles_per_day,
-        cooldown_minutes: config.cooldown_minutes,
-      },
+      success: result.success,
+      data: result.data,
+    };
+  });
+
+  // seba.pause — Pause SEBA
+  registerHandler('seba.pause', async () => {
+    const result = await sebaAgent.handleCommand('pause');
+    return {
+      success: result.success,
+      message: result.message,
+    };
+  });
+
+  // seba.resume — Resume SEBA
+  registerHandler('seba.resume', async () => {
+    const result = await sebaAgent.handleCommand('resume');
+    return {
+      success: result.success,
+      message: result.message,
     };
   });
 
@@ -241,24 +214,28 @@ export function registerSEBAHandlers(): void {
     lines.push('    seba.health      Health metrics');
     lines.push('    seba.pulse       Lightweight heartbeat');
     lines.push('    seba.config      View configuration');
+    lines.push('    seba.metrics     Performance metrics');
     lines.push('');
     lines.push('  Operations:');
     lines.push('  ────────────');
     lines.push('    seba.cycle       Run evolution cycle');
-    lines.push('    seba.analyze     Run cognitive analysis');
-    lines.push('    seba.cooldown    Check cooldown status');
+    lines.push('    seba.enable      Enable SEBA');
+    lines.push('    seba.disable     Disable SEBA');
+    lines.push('    seba.pause       Pause operations');
+    lines.push('    seba.resume      Resume operations');
     lines.push('');
     lines.push('  Mode Control:');
     lines.push('  ──────────────');
-    lines.push('    seba.mode.observe     Scan only mode');
-    lines.push('    seba.mode.shadow      Proposals require approval');
-    lines.push('    seba.mode.autonomous  Auto-apply low-risk');
+    lines.push('    seba.mode            Get current mode');
+    lines.push('    seba.mode.observe    Scan only mode');
+    lines.push('    seba.mode.advisory   Proposals require approval');
+    lines.push('    seba.mode.governed   Auto-execute if approved');
     lines.push('');
     lines.push('  Proposals & History:');
     lines.push('  ─────────────────────');
     lines.push('    seba.proposals   List pending proposals');
     lines.push('    seba.receipts    View evolution receipts');
-    lines.push('    seba.stamps      View evolution stamps');
+    lines.push('    seba.history     View execution history');
     lines.push('');
 
     return {
@@ -266,13 +243,13 @@ export function registerSEBAHandlers(): void {
       formatted: lines,
       data: {
         version: '2.0.0',
-        command_count: 14,
+        command_count: 17,
         categories: ['Status', 'Operations', 'Mode Control', 'History'],
       },
     };
   });
 
-  log.info('terminal', 'SEBA handlers registered', { count: 14 });
+  log.info('terminal', 'SEBA handlers registered', { count: 17 });
 }
 
 /**
@@ -282,6 +259,10 @@ export async function executeSEBACommand(
   action: string,
   args: Record<string, unknown> = {}
 ): Promise<{ success: boolean; data?: unknown; error?: string }> {
-  const result = await sebaAgent.executeCommand({ action, ...args });
-  return result;
+  const result = await sebaAgent.handleCommand(action as any, args);
+  return {
+    success: result.success,
+    data: result.data,
+    error: result.success ? undefined : result.message,
+  };
 }
