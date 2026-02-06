@@ -41,6 +41,8 @@ import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
+import { EncodedLearningCard } from '@/components/substrate-os/EncodedLearningCard';
+import { ModuleLearningFeed } from '@/components/substrate-os/ModuleLearningFeed';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // MODULE CONFIGURATION
