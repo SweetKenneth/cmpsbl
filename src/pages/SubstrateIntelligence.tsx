@@ -66,9 +66,9 @@ const modules = [
 ];
 
 const metrics = [
-  { label: "Lines of Code", value: "131,000+", detail: "Production codebase" },
+  { label: "Lines of Code", value: "160,000+", detail: "Production codebase" },
   { label: "Modules", value: "14", detail: "Complete kernel architecture" },
-  { label: "Commands", value: "260+", detail: "Terminal-accessible operations" },
+  { label: "Commands", value: "310+", detail: "Terminal-accessible operations" },
   { label: "AI Providers", value: "8+", detail: "With auto-failover" },
   { label: "Memory Tiers", value: "3", detail: "Hot, Warm, Cold architecture" },
   { label: "Uptime Target", value: "99.9%", detail: "With auto-heal mechanisms" },
