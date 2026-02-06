@@ -1,9 +1,10 @@
 /**
  * SEBA Cognitive Analyzer
- * v1.1.0 — Full Cognitive Pipeline Integration
+ * v2.0.0 — Full Spectrum Analysis Engine
  * 
- * Runs the full cognitive stack to generate insights that can become
- * improvement proposals.
+ * Runs 9 analysis engines to generate comprehensive insights:
+ * - Memory, Learning, Imagination, Reasoning (Core 4)
+ * - Security, Telemetry, Governance, Resources, Architecture (Extended 5)
  */
 
 import { memoryCore, type MemoryEntry } from '../memory-core';
