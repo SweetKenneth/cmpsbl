@@ -43,7 +43,7 @@ export const DEFAULT_CONFIG: TerminalConfig = {
 export const BOOT_MESSAGES = [
   '',
   '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
-  '  ▓  PROMPTFLUID® SUBSTRATE OS v7.5.2   ▓',
+  '  ▓  PROMPTFLUID® SUBSTRATE OS v7.5.3   ▓',
   '  ▓  SYNERGY+ Epoch Cognitive OS        ▓',
   '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
   '',
@@ -69,7 +69,7 @@ export const BOOT_MESSAGES = [
   '',
   '  ◉ 14 modules operational',
   '  ◉ 280+ commands available',
-  '  ◉ 135 synergy pipelines | 113 executors',
+  '  ◉ 147 synergy pipelines | 125 executors',
   '  ◉ Health: 100%',
   '',
   '  Type \'help\' for commands',
