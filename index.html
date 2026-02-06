@@ -13,12 +13,46 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
-    <!-- PWA manifest is injected only outside Lovable preview to avoid auth-bridge/CORS loops -->
+    <!-- PWA manifest: disabled in Lovable preview to avoid auth-bridge/CORS loops -->
     <script>
       (function () {
+        const isPreview = new URLSearchParams(location.search).has("__lovable_token");
+
+        // In preview: aggressively block any manifest link creation/injection.
+        if (isPreview) {
+          try {
+            // Remove any existing manifest link (some tooling may inject it).
+            const strip = () => {
+              document
+                .querySelectorAll('link[rel="manifest"]')
+                .forEach((n) => n.parentElement?.removeChild(n));
+            };
+
+            // Run immediately and a few more times (no MutationObserver).
+            strip();
+            setTimeout(strip, 50);
+            setTimeout(strip, 250);
+            setTimeout(strip, 1000);
+
+            // Block future injections via head.appendChild.
+            const head = document.head;
+            const origAppend = head.appendChild.bind(head);
+            head.appendChild = function (node) {
+              // @ts-ignore
+              if (node?.tagName === 'LINK' && String(node.rel || '').toLowerCase() === 'manifest') {
+                return node;
+              }
+              // @ts-ignore
+              return origAppend(node);
+            };
+          } catch {
+            // ignore
+          }
+          return;
+        }
+
+        // Outside preview: add manifest normally.
         try {
-          const isPreview = new URLSearchParams(location.search).has("__lovable_token");
-          if (isPreview) return;
           const link = document.createElement("link");
           link.rel = "manifest";
           link.href = "/manifest.webmanifest";
