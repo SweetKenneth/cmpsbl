@@ -117,18 +117,39 @@ ADVANCED MODES (v7.0.0)
 | **CognitiveLoadOptimizer** | INCLUSIVE | Content complexity reduction |
 | **EvolutionPredictor** | MODERNIZER | Evolution outcome prediction |
 
-### Synergy Categories (v7.1.0)
+### Synergy Categories (v7.5.0)
 
 | Category | Count | Key Synergies |
 |----------|-------|---------------|
-| Intelligence | 10 | smart-recall, cognitive-fusion, knowledge-distillation, hypothesis-testing, predictive-prevention, quota-prediction, cognitive-curriculum, end-to-end-reasoning |
-| Optimization | 9 | adaptive-routing, intelligent-caching, latency-prediction, contextual-preload, semantic-deduplication, external-api-intelligence, entitlement-aware-routing, batch-optimization, resource-balancing |
-| Resilience | 5 | self-healing, cascade-prevention, graceful-degradation, adapter-failover, memory-persistence |
-| Security | 5 | threat-learning, adaptive-defense, anomaly-correlation, behavioral-fingerprinting, zero-trust-validation, bounded-autonomy-guard |
-| Accessibility | 5 | adaptive-ui, intent-amplification, inclusive-content, cognitive-load-optimization, multimodal-adaptation, developer-experience-optimization |
-| Orchestration | 4 | evolution-confidence, autonomous-documentation, webhook-orchestration, autonomous-evolution, workflow-synthesis, multi-agent-coordination |
+| Intelligence | 18 | smart-recall, cognitive-fusion, knowledge-distillation, hypothesis-testing, predictive-prevention, quota-prediction, cognitive-curriculum, end-to-end-reasoning, attention-allocation, semantic-indexing |
+| Optimization | 16 | adaptive-routing, intelligent-caching, latency-prediction, contextual-preload, semantic-deduplication, external-api-intelligence, entitlement-aware-routing, batch-optimization, resource-balancing, cost-arbitrage, load-balancing |
+| Resilience | 12 | self-healing, cascade-prevention, graceful-degradation, adapter-failover, memory-persistence, backup-integrity, dependency-analysis, self-heal-orchestration |
+| Security | 14 | threat-learning, adaptive-defense, anomaly-correlation, behavioral-fingerprinting, zero-trust-validation, bounded-autonomy-guard, threat-anticipation, ip-containment |
+| Accessibility | 10 | adaptive-ui, intent-amplification, inclusive-content, cognitive-load-optimization, multimodal-adaptation, developer-experience-optimization, accessibility-scoring, remediation |
+| Orchestration | 12 | evolution-confidence, autonomous-documentation, webhook-orchestration, autonomous-evolution, workflow-synthesis, multi-agent-coordination, pipeline-scheduling, goal-decomposition |
+| Creative | 8 | creative-mutation, insight-crystallization, pattern-evolution, dream-journaling, emotional-resonance |
+| Events | 10 | event-routing, priority-queueing, dead-letter-handling, event-replay |
+
+### World-First Functions by Module (v7.5.0)
+
+| Module | Functions | Key Capabilities |
+|--------|-----------|------------------|
+| BRAIN | 4 | AttentionMechanism, MemoryConsolidator, SemanticIndexer, EmotionalResonance |
+| NEXUS | 4 | BudgetGovernance, LoadBalancer, RequestQueue, CostArbitrage |
+| DEFENSE | 4 | BehavioralFingerprint, ZeroTrustValidator, ThreatAnticipator, IPContainment |
+| VISION | 4 | PredictiveSLA, AnomalyForecaster, PerformanceInsight, CapacityPlanner |
+| SYSTEM | 4 | ResourceProfiler, DependencyGraph, SelfHealOrchestrator, BackupIntegrity |
+| CORTEX | 4 | PipelineScheduler, MultiAgentCoordinator, GoalDecomposer, DecisionGovernor |
+| DREAM | 4 | CreativeMutator, InsightCrystallizer, PatternEvolver, DreamJournal |
+| DECODE | 4 | IntentAmplifier, ContextualParser, EmotionDetector, MultimodalFusion |
+| RIPPLE | 4 | EventRouter, PriorityQueue, DeadLetterHandler, EventReplay |
+| ACCESS | 3 | EntitlementGraph, QuotaPredictor, AuditTrail |
+| CORE | 3 | FeatureFlagEngine, ConfigHotReload, EnvironmentValidator |
+| INTEGRATION | 3 | AdapterHealthMonitor, WebhookOrchestrator, DataTransformer |
+| INCLUSIVE | 3 | CognitiveLoadOptimizer, AccessibilityScorer, RemediationEngine |
+| MODERNIZER | 4 | EvolutionPredictor, RollbackAuthority, ImpactAnalyzer, ProposalRanker |
 
 ---
 
-*CMPSBL OS Substrate v7.1.0 — SEBA+ Release*
+*CMPSBL OS Substrate v7.5.0 — SYNERGY Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*
