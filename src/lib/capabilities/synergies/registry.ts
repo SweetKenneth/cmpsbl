@@ -1866,6 +1866,224 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     minModulesRequired: 4,
   },
   
+  // === v7.5.3 DISCOVERED SYNERGIES (12 NEW) ===
+  // Deep cross-layer intelligence intersections
+  
+  // CORTEX × DREAM × BRAIN × NEXUS (Meta-Learning Orchestration)
+  {
+    id: 'meta-learning-orchestrator',
+    name: 'Meta-Learning Orchestrator',
+    description: 'CORTEX coordinates meta-learning across DREAM imagination, BRAIN consolidation, and NEXUS model selection',
+    category: 'intelligence',
+    modules: [
+      { name: 'CORTEX', role: 'primary', required: true },
+      { name: 'DREAM', role: 'enhancer', required: true },
+      { name: 'BRAIN', role: 'enhancer', required: true },
+      { name: 'NEXUS', role: 'validator', required: true },
+    ],
+    risk: 'medium',
+    reversible: true,
+    estimatedMs: 720,
+    minModulesRequired: 4,
+  },
+  
+  // DECODE × DREAM × INCLUSIVE (Intent Accessibility Synthesis)
+  {
+    id: 'intent-accessibility-synthesis',
+    name: 'Intent Accessibility Synthesis',
+    description: 'DECODE parses complex intents while DREAM synthesizes accessible alternatives validated by INCLUSIVE compliance',
+    category: 'accessibility',
+    modules: [
+      { name: 'DECODE', role: 'primary', required: true },
+      { name: 'DREAM', role: 'enhancer', required: true },
+      { name: 'INCLUSIVE', role: 'validator', required: true },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 380,
+    minModulesRequired: 3,
+  },
+  
+  // VISION × DEFENSE × RIPPLE × BRAIN (Threat Intelligence Mesh)
+  {
+    id: 'threat-intelligence-mesh',
+    name: 'Threat Intelligence Mesh',
+    description: 'VISION detects anomalies distributed via RIPPLE to DEFENSE response with BRAIN pattern memory',
+    category: 'security',
+    modules: [
+      { name: 'VISION', role: 'primary', required: true },
+      { name: 'DEFENSE', role: 'enhancer', required: true },
+      { name: 'RIPPLE', role: 'enhancer', required: true },
+      { name: 'BRAIN', role: 'validator', required: true },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 290,
+    minModulesRequired: 4,
+  },
+  
+  // SYSTEM × CORTEX × VISION × ACCESS (Resource Governance Engine)
+  {
+    id: 'resource-governance-engine',
+    name: 'Resource Governance Engine',
+    description: 'SYSTEM resources governed by CORTEX policy, ACCESS entitlements, and VISION utilization metrics',
+    category: 'orchestration',
+    modules: [
+      { name: 'SYSTEM', role: 'primary', required: true },
+      { name: 'CORTEX', role: 'enhancer', required: true },
+      { name: 'VISION', role: 'enhancer', required: true },
+      { name: 'ACCESS', role: 'validator', required: true },
+    ],
+    risk: 'medium',
+    reversible: true,
+    estimatedMs: 450,
+    minModulesRequired: 4,
+  },
+  
+  // NEXUS × BRAIN × DECODE × VISION (Reasoning Quality Amplifier)
+  {
+    id: 'reasoning-quality-amplifier',
+    name: 'Reasoning Quality Amplifier',
+    description: 'NEXUS reasoning enhanced by BRAIN context, DECODE intent clarity, and VISION quality scoring',
+    category: 'intelligence',
+    modules: [
+      { name: 'NEXUS', role: 'primary', required: true },
+      { name: 'BRAIN', role: 'enhancer', required: true },
+      { name: 'DECODE', role: 'enhancer', required: true },
+      { name: 'VISION', role: 'validator', required: true },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 540,
+    minModulesRequired: 4,
+  },
+  
+  // MODERNIZER × BRAIN × DEFENSE × CORTEX (Secure Evolution Pipeline)
+  {
+    id: 'secure-evolution-pipeline',
+    name: 'Secure Evolution Pipeline',
+    description: 'MODERNIZER evolution proposals vetted by DEFENSE security analysis, BRAIN history, and CORTEX approval',
+    category: 'automation',
+    modules: [
+      { name: 'MODERNIZER', role: 'primary', required: true },
+      { name: 'DEFENSE', role: 'enhancer', required: true },
+      { name: 'BRAIN', role: 'enhancer', required: true },
+      { name: 'CORTEX', role: 'validator', required: true },
+    ],
+    risk: 'medium',
+    reversible: true,
+    estimatedMs: 680,
+    minModulesRequired: 4,
+  },
+  
+  // INTEGRATION × RIPPLE × VISION × DEFENSE (External API Guardian)
+  {
+    id: 'external-api-guardian',
+    name: 'External API Guardian',
+    description: 'INTEGRATION APIs monitored by VISION health, RIPPLE event tracking, and DEFENSE threat prevention',
+    category: 'security',
+    modules: [
+      { name: 'INTEGRATION', role: 'primary', required: true },
+      { name: 'VISION', role: 'enhancer', required: true },
+      { name: 'RIPPLE', role: 'enhancer', required: true },
+      { name: 'DEFENSE', role: 'validator', required: true },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 320,
+    minModulesRequired: 4,
+  },
+  
+  // DREAM × DECODE × NEXUS × CORTEX (Creative Problem Solver)
+  {
+    id: 'creative-problem-solver',
+    name: 'Creative Problem Solver',
+    description: 'DREAM generates novel solutions from DECODE problem parsing, NEXUS reasoning, and CORTEX feasibility check',
+    category: 'intelligence',
+    modules: [
+      { name: 'DREAM', role: 'primary', required: true },
+      { name: 'DECODE', role: 'enhancer', required: true },
+      { name: 'NEXUS', role: 'enhancer', required: true },
+      { name: 'CORTEX', role: 'validator', required: true },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 620,
+    minModulesRequired: 4,
+  },
+  
+  // ACCESS × BRAIN × VISION × SYSTEM (Usage Pattern Intelligence)
+  {
+    id: 'usage-pattern-intelligence',
+    name: 'Usage Pattern Intelligence',
+    description: 'ACCESS usage analyzed by BRAIN pattern learning, VISION trend detection, and SYSTEM capacity planning',
+    category: 'optimization',
+    modules: [
+      { name: 'ACCESS', role: 'primary', required: true },
+      { name: 'BRAIN', role: 'enhancer', required: true },
+      { name: 'VISION', role: 'enhancer', required: true },
+      { name: 'SYSTEM', role: 'validator', required: true },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 280,
+    minModulesRequired: 4,
+  },
+  
+  // INCLUSIVE × BRAIN × NEXUS × DECODE (Personalized Accessibility Engine)
+  {
+    id: 'personalized-accessibility-engine',
+    name: 'Personalized Accessibility Engine',
+    description: 'INCLUSIVE adapts based on BRAIN learned preferences, NEXUS content transformation, and DECODE clarity',
+    category: 'accessibility',
+    modules: [
+      { name: 'INCLUSIVE', role: 'primary', required: true },
+      { name: 'BRAIN', role: 'enhancer', required: true },
+      { name: 'NEXUS', role: 'enhancer', required: true },
+      { name: 'DECODE', role: 'validator', required: true },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 440,
+    minModulesRequired: 4,
+  },
+  
+  // CORE × VISION × MODERNIZER × BRAIN (Adaptive Configuration Intelligence)
+  {
+    id: 'adaptive-configuration-intelligence',
+    name: 'Adaptive Configuration Intelligence',
+    description: 'CORE config optimized by VISION metrics, MODERNIZER recommendations, and BRAIN performance history',
+    category: 'optimization',
+    modules: [
+      { name: 'CORE', role: 'primary', required: true },
+      { name: 'VISION', role: 'enhancer', required: true },
+      { name: 'MODERNIZER', role: 'enhancer', required: true },
+      { name: 'BRAIN', role: 'validator', required: true },
+    ],
+    risk: 'medium',
+    reversible: true,
+    estimatedMs: 390,
+    minModulesRequired: 4,
+  },
+  
+  // RIPPLE × CORTEX × BRAIN × VISION (Event-Driven Orchestration Intelligence)
+  {
+    id: 'event-driven-orchestration',
+    name: 'Event-Driven Orchestration Intelligence',
+    description: 'RIPPLE events orchestrated by CORTEX decisions informed by BRAIN context and VISION patterns',
+    category: 'orchestration',
+    modules: [
+      { name: 'RIPPLE', role: 'primary', required: true },
+      { name: 'CORTEX', role: 'enhancer', required: true },
+      { name: 'BRAIN', role: 'enhancer', required: true },
+      { name: 'VISION', role: 'validator', required: true },
+    ],
+    risk: 'low',
+    reversible: true,
+    estimatedMs: 260,
+    minModulesRequired: 4,
+  },
+  
   // Add S-tier synergies
   ...STIER_SYNERGY_DEFINITIONS,
 ];
