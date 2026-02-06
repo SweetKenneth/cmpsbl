@@ -211,10 +211,10 @@ function HeroSection() {
           {/* Stats row */}
           <div className="flex flex-wrap justify-center gap-8 mb-10">
             {[
-              { value: "120", label: "Pipelines", icon: GitMerge },
+              { value: "135", label: "Pipelines", icon: GitMerge },
               { value: "14", label: "Modules", icon: Cpu },
               { value: "7", label: "Categories", icon: Layers },
-              { value: "98", label: "Executors", icon: Workflow },
+              { value: "113", label: "Executors", icon: Workflow },
             ].map((stat) => (
               <motion.div
                 key={stat.label}
