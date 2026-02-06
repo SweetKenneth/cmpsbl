@@ -207,7 +207,7 @@ But it requires **extreme discipline** in safety engineering.
 
 ---
 
-*The substrate has completed ${await getEvolutionCount()} evolution cycles with ${await getSuccessRate()}% success rate.*
+*This post reflects real autonomous evolution architecture in production.*
 
 **Classification**: Evolution Engineering  
 **Visibility**: Public`,
