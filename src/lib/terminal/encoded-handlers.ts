@@ -171,9 +171,8 @@ export function registerEncodedHandlers(): void {
   registerHandler('encoded.patterns', async () => {
     const { data: patterns, error } = await supabase
       .from('brain_memories')
-      .select('content, confidence, tags, created_at')
+      .select('content, confidence, metadata, created_at')
       .eq('memory_type', 'code_pattern')
-      .in('source', ['encoded_v2', 'encoded_v2_feedback'])
       .order('confidence', { ascending: false })
       .limit(20);
 
@@ -188,7 +187,7 @@ export function registerEncodedHandlers(): void {
         patterns: patterns?.map(p => ({
           content: p.content,
           confidence: p.confidence,
-          tags: p.tags,
+          metadata: p.metadata,
           learned: p.created_at,
         })) || [],
       },
