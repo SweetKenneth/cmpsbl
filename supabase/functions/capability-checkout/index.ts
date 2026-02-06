@@ -136,7 +136,8 @@ serve(async (req) => {
 
     const priceId = CAPABILITY_PRICES[capability_id];
     if (!priceId) {
-      throw new Error(`Unknown capability: ${capability_id}. Total available: ${Object.keys(CAPABILITY_PRICES).length}`);
+      // If no price ID found, this is an off-menu item
+      throw new Error(`This capability requires a custom license. Please contact PromptFluid@gmail.com for pricing.`);
     }
 
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {

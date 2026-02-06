@@ -72,6 +72,18 @@ export {
   type NormalizedPricingInfo,
 } from './pricing-normalization';
 
+// === Unified Pricing (Single Source of Truth) ===
+export {
+  getUnifiedPrice,
+  getCheckoutPriceId,
+  isCheckoutAvailable,
+  getCapabilityStripeConfig,
+  getAllUnifiedPrices,
+  formatDisplayPrice,
+  getCapabilityPricingInfo,
+  type CapabilityPricingInfo,
+} from './unified-pricing';
+
 // === Licensing ===
 export {
   validateLicense,
