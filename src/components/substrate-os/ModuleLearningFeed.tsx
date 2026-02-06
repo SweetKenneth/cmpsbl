@@ -28,6 +28,7 @@ import {
   Code,
   CheckCircle2,
 } from 'lucide-react';
+import type { Json } from '@/integrations/supabase/types';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
 
