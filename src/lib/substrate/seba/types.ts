@@ -296,8 +296,8 @@ export interface SEBAAuditEntry {
 
 export interface CognitiveInsight {
   id: string;
-  type: 'pattern' | 'anomaly' | 'opportunity' | 'degradation' | 'optimization' | 'correlation';
-  source_engine: 'memory' | 'learning' | 'imagination' | 'reasoning' | 'telemetry';
+  type: 'pattern' | 'anomaly' | 'opportunity' | 'degradation' | 'optimization' | 'correlation' | 'vulnerability' | 'bottleneck' | 'drift';
+  source_engine: 'memory' | 'learning' | 'imagination' | 'reasoning' | 'telemetry' | 'security' | 'governance' | 'resources' | 'architecture';
   
   title: string;
   description: string;
