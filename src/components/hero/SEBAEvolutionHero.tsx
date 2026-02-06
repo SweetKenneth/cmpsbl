@@ -559,9 +559,9 @@ export function SEBAEvolutionHero() {
   }, []);
   
   return (
-    <div className="relative w-full max-w-[340px] sm:max-w-[520px] md:max-w-[620px] lg:max-w-[720px] mx-auto py-6">
+    <div className="relative w-full max-w-[340px] sm:max-w-[520px] md:max-w-[620px] lg:max-w-[720px] mx-auto py-6 overflow-visible">
       {/* Enhanced background effects */}
-      <div className="absolute inset-0 overflow-hidden rounded-3xl">
+      <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none">
         {/* Gradient mesh base */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-violet-500/5" />
         
@@ -652,9 +652,9 @@ export function SEBAEvolutionHero() {
       </motion.div>
       
       {/* Phase pipeline */}
-      <div className="relative">
+      <div className="relative overflow-visible">
         {/* Desktop: Horizontal pipeline */}
-        <div className="hidden sm:flex items-start justify-center gap-0 px-2">
+        <div className="hidden sm:flex items-start justify-center gap-0 px-2 py-8 overflow-visible">
           {sebaPhases.map((phase, index) => (
             <React.Fragment key={phase.id}>
               <PhaseNode
@@ -679,7 +679,7 @@ export function SEBAEvolutionHero() {
         </div>
         
         {/* Mobile: Compact 5-column grid */}
-        <div className="flex sm:hidden items-start justify-between px-1">
+        <div className="flex sm:hidden items-start justify-between px-1 py-6 overflow-visible">
           {sebaPhases.map((phase, index) => (
             <PhaseNode
               key={phase.id}
