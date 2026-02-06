@@ -68,11 +68,15 @@ export function getPricingLabel(price: number | null, isOffMenu: boolean): strin
 
 /**
  * Check if checkout is enabled for capability
+ * Items priced over $299 in Stripe are off-menu
  */
-export function isCheckoutEnabled(capabilityId: string, price: number | null): boolean {
+export function isCheckoutEnabled(capabilityId: string, price: number | null, isConfigOffMenu?: boolean): boolean {
   if (price === null) return false;
   if (isOffMenuCapability(capabilityId)) return false;
-  return price >= PRICE_CONFIG.min && price <= PRICE_CONFIG.max;
+  if (isConfigOffMenu) return false;
+  // Items priced over $299 must be purchased via license request
+  if (price > PRICE_CONFIG.max) return false;
+  return price >= PRICE_CONFIG.min;
 }
 
 /**

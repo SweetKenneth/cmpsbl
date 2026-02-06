@@ -62,7 +62,7 @@ function getUnifiedStripeConfig(capabilityId: string) {
 
 /**
  * Check if capability checkout is enabled
- * Only recursive code compilation items are off-menu now
+ * Off-menu items and items >$299 require license request
  */
 function isCheckoutEnabledForCapability(capabilityId: string): boolean {
   const result = getUnifiedStripeConfig(capabilityId);
@@ -76,7 +76,8 @@ function isCheckoutEnabledForCapability(capabilityId: string): boolean {
   
   // Check if price is within public range ($19-$299)
   const price = result.config.priceUsd;
-  if (price < PRICE_CONFIG.min || price > PRICE_CONFIG.max) return false;
+  if (price > PRICE_CONFIG.max) return false;
+  if (price < PRICE_CONFIG.min) return false;
   
   return true;
 }
@@ -97,7 +98,7 @@ export function useCapabilityCheckout() {
     }
 
     // Check if off-menu — redirect to license request
-    if (result.config.offMenu || isOffMenuCapability(capabilityId)) {
+    if (result.config.offMenu || isOffMenuCapability(capabilityId) || result.config.priceUsd > PRICE_CONFIG.max) {
       const name = capabilityName || capabilityId;
       const mailto = getLicenseRequestMailto(capabilityId, name);
       window.location.href = mailto;
@@ -106,7 +107,7 @@ export function useCapabilityCheckout() {
     }
 
     // Check price bounds
-    if (result.config.priceUsd < PRICE_CONFIG.min || result.config.priceUsd > PRICE_CONFIG.max) {
+    if (result.config.priceUsd < PRICE_CONFIG.min) {
       toast.error('This capability requires a custom license. Please contact us.');
       return;
     }
@@ -159,7 +160,7 @@ export function useCapabilityCheckout() {
     if (!result) return null;
     
     // Return null for off-menu items (display as "Licensed on request")
-    if (result.config.offMenu || isOffMenuCapability(capabilityId)) {
+    if (result.config.offMenu || isOffMenuCapability(capabilityId) || result.config.priceUsd > PRICE_CONFIG.max) {
       return null;
     }
     
@@ -177,7 +178,7 @@ export function useCapabilityCheckout() {
   const isOffMenu = useCallback((capabilityId: string): boolean => {
     const result = getUnifiedStripeConfig(capabilityId);
     if (!result) return false;
-    return result.config.offMenu === true || isOffMenuCapability(capabilityId);
+    return result.config.offMenu === true || isOffMenuCapability(capabilityId) || result.config.priceUsd > PRICE_CONFIG.max;
   }, []);
 
   const isSTier = useCallback((capabilityId: string): boolean => {
