@@ -1,6 +1,6 @@
-# CMPSBL OS Substrate — SEBA Safety & Governance v2.1.0
+# CMPSBL OS Substrate — SEBA Safety & Governance v2.0.0
 
-**Version 7.0.0 (SEBA 2.1.0) | Safety-First Evolution Framework**
+**Version 7.5.3 (SEBA 2.0.0) | Full Spectrum Autonomous Evolution**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-076 |
 | **Module** | SEBA |
 | **Layer** | Administrative |
-| **Version** | v7.0.0 (SEBA 2.1.0) |
+| **Version** | v7.5.3 (SEBA 2.0.0) |
 | **Status** | ACTIVE - Safety Controls Enforced |
 
 ---
