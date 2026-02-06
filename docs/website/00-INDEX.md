@@ -8,7 +8,7 @@
 
 This documentation provides everything you need to understand, evaluate, and build with CMPSBL® (Composable) — the cognitive infrastructure layer that makes AI applications smarter, safer, and self-improving.
 
-**What's Inside:** 14 integrated modules, 147 synergy pipelines, 125 custom executors, and the SEBA (Self-Evolving Bounded Agent) architecture.
+**What's Inside:** 14 integrated modules, 147 synergy pipelines, 125 custom executors, 136+ marketplace capabilities, and the SEBA (Self-Evolving Bounded Agent) architecture.
 
 ---
 
