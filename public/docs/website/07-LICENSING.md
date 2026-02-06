@@ -170,16 +170,16 @@ Contact founders directly.
 
 ---
 
-## Annual Billing Discount
+## Billing Options
 
-All licenses are annual. Monthly billing is available at 25% premium.
+Developer license offers both monthly and annual billing:
 
-| Tier | Annual | Monthly (25% premium) |
-|------|--------|----------------------|
-| Developer | $2,999 | $312.50/month |
-| Team | $9,999 | $1,041.67/month |
-| Research | $19,999 | $2,083.33/month |
-| Enterprise | $49,999 | $5,208.33/month |
+| Plan | Price | Savings |
+|------|-------|---------|
+| Monthly | $39/month | — |
+| Annual | $299/year | ~36% savings |
+
+Team, Research, Enterprise, and Strategic licenses are custom-priced — contact sales for details.
 
 ---
 
