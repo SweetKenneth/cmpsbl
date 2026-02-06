@@ -86,9 +86,10 @@ CMPSBL® (Composable) is the **cognitive infrastructure layer** — the "operati
 ## Traction
 
 - 14 integrated modules in production
-- 45+ active edge functions
+- 147 synergy pipelines with 125 custom executors
+- 160,000+ lines of production code
 - Self-healing with 95%+ uptime
-- Auto-upgrading codebase
+- Auto-upgrading codebase (SEBA v2.0)
 
 ---
 
