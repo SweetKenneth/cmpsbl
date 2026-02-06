@@ -11,8 +11,8 @@
 // VERSION & METADATA
 // ═══════════════════════════════════════════════════════════════════════════════
 
-export const SEBA_VERSION = '1.1.0';
-export const SEBA_CODENAME = 'Bounded Autonomy';
+export const SEBA_VERSION = '2.0.0';
+export const SEBA_CODENAME = 'Full Spectrum Autonomy';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // CORE TYPES
