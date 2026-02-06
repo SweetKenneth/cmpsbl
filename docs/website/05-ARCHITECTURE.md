@@ -1,6 +1,6 @@
 # Architecture Overview
 
-**Technical Foundation of CMPSBL® v7.5.0**
+**Technical Foundation of CMPSBL®**
 
 ---
 
@@ -14,63 +14,36 @@ CMPSBL® is built on three core principles:
 
 ---
 
-## The 14-Module Architecture (v7.5.0)
-
-**156 deployed actions** across all modules:
+## The 14-Module Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                    ORCHESTRATOR LAYER                        │
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │  CORTEX (Workflow Engine)  │  INTEGRATION (Transform)   ││
+│  │  CORTEX (Policy)  │  INTEGRATION (External APIs)        ││
 │  └─────────────────────────────────────────────────────────┘│
 ├─────────────────────────────────────────────────────────────┤
 │                      ADMIN LAYER                             │
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │  SYSTEM (Deps/Audit) │ MODERNIZER (Impact) │ INCLUSIVE  ││
+│  │  SYSTEM (Health)  │  MODERNIZER  │  INCLUSIVE (A11y)    ││
 │  └─────────────────────────────────────────────────────────┘│
 ├─────────────────────────────────────────────────────────────┤
 │                   OPERATIONS LAYER                           │
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │  DEFENSE (Behavioral) │ NEXUS (LB) │ VISION (Alerts)    ││
+│  │  DREAM  │  DEFENSE  │  NEXUS  │  VISION  │  INTEGRATION ││
 │  └─────────────────────────────────────────────────────────┘│
 ├─────────────────────────────────────────────────────────────┤
 │                   COGNITIVE LAYER                            │
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │  BRAIN (Query Opt) │ DECODE (Context) │ DREAM (Synth)   ││
+│  │  BRAIN (Memory)  │  DECODE (NLP)  │  NEXUS (AI Routing) ││
 │  └─────────────────────────────────────────────────────────┘│
 ├─────────────────────────────────────────────────────────────┤
 │                    KERNEL LAYER                              │
 │  ┌─────────────────────────────────────────────────────────┐│
-│  │  CORE (Health Agg) │ RIPPLE (Analytics) │ ACCESS (RBAC) ││
+│  │  CORE (Config)  │  RIPPLE (Events)  │  ACCESS (Auth)    ││
 │  └─────────────────────────────────────────────────────────┘│
 └─────────────────────────────────────────────────────────────┘
 ```
-
----
-
-## v7.5.0 Architecture Enhancements
-
-### New Subsystems (42 Functions)
-
-| Module | New Subsystem | Purpose |
-|--------|---------------|---------|
-| BRAIN | Query Optimizer | LRU caching, query planning |
-| BRAIN | Consolidation Engine | Similarity grouping, merge detection |
-| NEXUS | Load Balancer | Weighted routing, slot management |
-| DEFENSE | Behavioral Analysis | Trust scoring, pattern detection |
-| DEFENSE | Incident Response | Workflow automation, escalation |
-| SYSTEM | Dependency Graph | Runtime dependency tracking |
-| SYSTEM | Resource Monitor | Memory, CPU, network metrics |
-| VISION | Alert Manager | Deduplication, escalation chains |
-| CORTEX | Workflow Engine | Multi-step cross-module pipelines |
-| ACCESS | Permission Graph | Hierarchical RBAC with inheritance |
-| DECODE | Context Engine | Multi-turn memory, session state |
-| DREAM | Creative Synthesis | Pattern mutation, insight generation |
-| RIPPLE | Event Analytics | Stream analysis, correlations |
-| INTEGRATION | Transform Pipeline | Data mapping, schema conversion |
-| INCLUSIVE | Adaptive Interface | Dynamic UI adaptation |
-| MODERNIZER | Impact Analysis | Change prediction, breaking changes |
 
 ---
 
@@ -85,14 +58,24 @@ Foundation services that all other modules depend on.
 | **RIPPLE** | Event bus, pub/sub, cross-module messaging |
 | **ACCESS** | API keys, rate limits, entitlements |
 
-### Cognitive Layer (Boot Order 4-6)
+### Cognitive Layer (Boot Order 4-5)
 Intelligence and memory capabilities.
 
 | Module | Purpose |
 |--------|---------|
 | **BRAIN** | Memory storage, recall, consolidation |
 | **DECODE** | Natural language interpretation |
+
+### Operations Layer (Boot Order 6-10)
+Runtime services for learning, security, AI, and visibility.
+
+| Module | Purpose |
+|--------|---------|
 | **DREAM** | Autonomous learning cycles |
+| **DEFENSE** | Security, threat detection, rate limiting |
+| **NEXUS** | Multi-provider AI routing |
+| **VISION** | Observability, metrics, tracing |
+| **INTEGRATION** | External APIs, webhooks, adapters |
 
 ### Operations Layer (Boot Order 7-9)
 Runtime services for security, AI, and visibility.
@@ -103,7 +86,7 @@ Runtime services for security, AI, and visibility.
 | **NEXUS** | Multi-provider AI routing |
 | **VISION** | Observability, metrics, tracing |
 
-### Admin Layer (Boot Order 10-12)
+### Admin Layer (Boot Order 11-13)
 System management and self-improvement.
 
 | Module | Purpose |
@@ -112,13 +95,12 @@ System management and self-improvement.
 | **MODERNIZER** | Evolution engine, self-improvement |
 | **INCLUSIVE** | Accessibility scanning, WCAG enforcement |
 
-### Orchestrator Layer (Boot Order 13-14)
-High-level coordination and external integration.
+### Orchestrator Layer (Boot Order 14)
+High-level coordination.
 
 | Module | Purpose |
 |--------|---------|
 | **CORTEX** | Policy intent, autonomous decision-making |
-| **INTEGRATION** | External APIs, webhooks, adapters |
 
 ---
 
@@ -279,4 +261,4 @@ ripple.on('brain.memory.created', (event) => {
 
 ---
 
-*CMPSBL® v7.5.0 — Architecture for the Cognitive Era*
+*CMPSBL® — Architecture for the Cognitive Era*

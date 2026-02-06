@@ -1,41 +1,46 @@
 # Licensing & Pricing
 
-**CMPSBL® Infrastructure Licensing**
+**CMPSBL® Cognitive Infrastructure Licensing**
 
 ---
 
 ## Overview
 
-CMPSBL® is licensed as cognitive infrastructure — you bring your own AI provider keys, deploy on your infrastructure, and get access to the full substrate.
+CMPSBL® is licensed as cognitive infrastructure with a **hybrid model** designed for accessibility and enterprise flexibility:
+
+- **API Tiers (Developer/Team/Research):** Full access via our secure hosted API — we handle infrastructure, scaling, and updates
+- **Enterprise Tier:** Complete source code with self-hosted deployment rights for air-gapped or on-premise requirements
+
+**All tiers include:** Full access to 14 integrated modules, unlimited API calls (fair use), and all version updates during license term.
 
 ---
 
-## License Tiers
+## License Tiers at a Glance
 
-| Tier | Pricing | Best For |
-|------|---------|----------|
-| **Developer** | $39/mo or $299/yr | Startups, small teams, prototyping |
-| **Team** | Contact Sales | Teams up to 10 developers |
-| **Research** | Contact Sales | Academic institutions, R&D labs |
-| **Enterprise** | Contact Sales | Production deployment, enterprise features |
-| **Strategic** | Custom | Cloud providers, OEM partnerships |
+| Tier | Price | Best For | Deployment |
+|------|-------|----------|------------|
+| **Developer** | $39/month or $299/year | Startups, solo developers | Hosted API |
+| **Team** | Contact sales | Teams up to 10 developers | Hosted API |
+| **Research** | Contact sales | Academic institutions, R&D | Hosted API |
+| **Enterprise** | Contact sales | Production, compliance needs | Self-hosted |
+| **Strategic** | Custom | Cloud providers, OEM | Custom |
 
 ---
 
 ## Developer License
 
-**$39/month** or **$299/year** (save ~36%)
+**$39/month or $299/year** (save ~36% annually)
 
-Perfect for startups and small teams building AI-powered products.
+Perfect for startups and individual developers building AI-powered products.
 
 ### Includes
 - ✓ Full API access (all 14 modules via hosted API)
 - ✓ Unlimited API calls (fair use)
 - ✓ Unlimited memory storage
 - ✓ Unlimited AI routing
-- ✓ Email support
-- ✓ Documentation access
+- ✓ Email support + documentation
 - ✓ Community forum access
+- ✓ All updates during subscription
 
 ### What You Get
 - Hosted API access — no source code distribution
@@ -47,37 +52,13 @@ Perfect for startups and small teams building AI-powered products.
 - Standard SLA
 
 ### Get Started
-Automated checkout available — get access today.
-
----
-
-## Team License
-
-**Contact Sales**
-
-For development teams needing multi-seat access.
-
-### Includes
-- Everything in Developer, plus:
-- ✓ Up to 10 developer seats
-- ✓ Priority email support
-- ✓ API key management dashboard
-- ✓ Team onboarding session (90 min)
-- ✓ Slack/Discord priority channel
-
-### Best For
-- Startups with engineering teams
-- Development agencies
-- Product teams
-
-### Get Started
-Contact us for team pricing.
+Automated checkout available — [start today](/substrate/licensing).
 
 ---
 
 ## Research License
 
-**Contact Sales**
+**$19,999/year**
 
 For academic institutions and research labs exploring cognitive AI.
 
@@ -102,7 +83,7 @@ Contact us for institutional licensing.
 
 ## Enterprise License
 
-**Contact Sales**
+**$49,999/year**
 
 For production deployments with enterprise requirements.
 
@@ -181,11 +162,24 @@ Contact founders directly.
 
 ## What You Provide (BYOK)
 
-| Item | Description |
-|------|-------------|
-| **AI Provider Keys** | OpenAI, Anthropic, Google, etc. |
-| **Infrastructure** | Your servers or cloud account |
-| **Database** | PostgreSQL (Supabase recommended) |
+| Item | Tier | Description |
+|------|------|-------------|
+| **AI Provider Keys** | All tiers | OpenAI, Anthropic, Google, etc. |
+| **Infrastructure** | Enterprise only | Your servers or cloud account |
+| **Database** | Enterprise only | PostgreSQL (Supabase recommended) |
+
+---
+
+## Billing Options
+
+Developer license offers both monthly and annual billing:
+
+| Plan | Price | Savings |
+|------|-------|---------|
+| Monthly | $39/month | — |
+| Annual | $299/year | ~36% savings |
+
+Team, Research, Enterprise, and Strategic licenses are custom-priced — contact sales for details.
 
 ---
 
@@ -194,14 +188,14 @@ Contact founders directly.
 ### Can I start with Developer and upgrade later?
 Yes. Upgrades are prorated — pay the difference for the remaining term.
 
-### What happens when my subscription ends?
-Your API access is paused until you renew. No data is deleted for 30 days.
+### What happens when my license expires?
+Your deployment continues to run, but you won't receive updates or support. Renew to restore.
 
 ### Do you offer discounts for nonprofits?
 Yes. Contact us for nonprofit pricing.
 
 ### Is there a free trial?
-Developer licenses include a 7-day money-back guarantee. Enterprise evaluations are available upon request.
+Developer licenses include a 30-day money-back guarantee. Enterprise evaluations are available upon request.
 
 ### What's not included?
 - AI provider API costs (you pay providers directly)

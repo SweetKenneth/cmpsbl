@@ -66,9 +66,9 @@ const modules = [
 ];
 
 const metrics = [
-  { label: "Lines of Code", value: "131,000+", detail: "Production codebase" },
+  { label: "Lines of Code", value: "160,000+", detail: "Production codebase" },
   { label: "Modules", value: "14", detail: "Complete kernel architecture" },
-  { label: "Commands", value: "260+", detail: "Terminal-accessible operations" },
+  { label: "Commands", value: "310+", detail: "Terminal-accessible operations" },
   { label: "AI Providers", value: "8+", detail: "With auto-failover" },
   { label: "Memory Tiers", value: "3", detail: "Hot, Warm, Cold architecture" },
   { label: "Uptime Target", value: "99.9%", detail: "With auto-heal mechanisms" },
@@ -85,7 +85,7 @@ const faqItems = [
   },
   {
     question: "Is this production-ready?",
-    answer: "Yes. CMPSBL is a live, operational system with 131,000+ lines of production code, 50+ database tables, and 260+ terminal commands. The system boots in ~109ms and maintains 100% module health with circuit breakers for fault isolation."
+    answer: "Yes. CMPSBL is a live, operational system with 160,000+ lines of production code, 50+ database tables, and 310+ terminal commands. The system boots in ~109ms and maintains 100% module health with circuit breakers for fault isolation."
   },
   {
     question: "What's included in a license?",

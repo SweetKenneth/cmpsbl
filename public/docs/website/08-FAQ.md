@@ -35,7 +35,7 @@ Yes. The MODERNIZER module proposes code improvements, which go through confiden
 
 ### Can I self-host CMPSBL?
 
-Yes. All license tiers include the ability to deploy on your own infrastructure. You have complete control over where your data lives.
+Yes, with an Enterprise license. Enterprise tier includes source code access and self-hosted deployment rights. API tiers (Developer/Team/Research) use our secure hosted infrastructure.
 
 ### How does memory work?
 
@@ -57,11 +57,11 @@ Your data stays on your infrastructure. We never see your memories, prompts, or 
 
 ### How much does it cost?
 
-Annual licensing:
-- **Developer:** $2,999/year
-- **Team:** $9,999/year
-- **Research:** $19,999/year  
-- **Enterprise:** $49,999/year
+Pricing options:
+- **Developer:** $39/month or $299/year
+- **Team:** Contact sales
+- **Research:** Contact sales
+- **Enterprise:** Contact sales
 - **Strategic:** Custom
 
 Plus your own AI provider costs (you pay OpenAI, Anthropic, etc. directly).

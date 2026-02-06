@@ -114,7 +114,7 @@ export function CmpsblNav() {
       name: "Platform",
       icon: Cpu,
       items: [
-        { name: "Capabilities Depot", href: "/capabilities", description: "86+ production-ready AI artifacts", icon: Sparkles, badge: "86+" },
+        { name: "Capabilities Depot", href: "/capabilities", description: "136+ production-ready AI artifacts", icon: Sparkles, badge: "136+" },
         { name: "CodeLab", href: "/codelab", description: "Execute and test in real-time", icon: Terminal },
         { name: "DevTools", href: "/devtools", description: "Diagnostics and developer utilities", icon: Terminal, badge: "Tools" },
         { name: "Developer Hub", href: "/developers", description: "SDKs, APIs, and integrations", icon: Code },

@@ -17,30 +17,30 @@ CMPSBL® is licensed as cognitive infrastructure with a **hybrid model** designe
 
 ## License Tiers at a Glance
 
-| Tier | Annual Price | Best For | Deployment |
-|------|--------------|----------|------------|
-| **Developer** | $2,999/year | Startups, solo developers | Hosted API |
-| **Team** | $9,999/year | Teams up to 10 developers | Hosted API |
-| **Research** | $19,999/year | Academic institutions, R&D | Hosted API |
-| **Enterprise** | $49,999/year | Production, compliance needs | Self-hosted |
+| Tier | Price | Best For | Deployment |
+|------|-------|----------|------------|
+| **Developer** | $39/month or $299/year | Startups, solo developers | Hosted API |
+| **Team** | Contact sales | Teams up to 10 developers | Hosted API |
+| **Research** | Contact sales | Academic institutions, R&D | Hosted API |
+| **Enterprise** | Contact sales | Production, compliance needs | Self-hosted |
 | **Strategic** | Custom | Cloud providers, OEM | Custom |
 
 ---
 
 ## Developer License
 
-**$2,999/year**
+**$39/month or $299/year** (save ~36% annually)
 
-Perfect for startups and small teams building AI-powered products.
+Perfect for startups and individual developers building AI-powered products.
 
 ### Includes
 - ✓ Full API access (all 14 modules via hosted API)
 - ✓ Unlimited API calls (fair use)
 - ✓ Unlimited memory storage
 - ✓ Unlimited AI routing
-- ✓ Email support
-- ✓ Documentation access
+- ✓ Email support + documentation
 - ✓ Community forum access
+- ✓ All updates during subscription
 
 ### What You Get
 - Hosted API access — no source code distribution
@@ -52,7 +52,7 @@ Perfect for startups and small teams building AI-powered products.
 - Standard SLA
 
 ### Get Started
-Automated checkout available — get access today.
+Automated checkout available — [start today](/substrate/licensing).
 
 ---
 
@@ -170,16 +170,16 @@ Contact founders directly.
 
 ---
 
-## Annual Billing Discount
+## Billing Options
 
-All licenses are annual. Monthly billing is available at 25% premium.
+Developer license offers both monthly and annual billing:
 
-| Tier | Annual | Monthly (25% premium) |
-|------|--------|----------------------|
-| Developer | $2,999 | $312.50/month |
-| Team | $9,999 | $1,041.67/month |
-| Research | $19,999 | $2,083.33/month |
-| Enterprise | $49,999 | $5,208.33/month |
+| Plan | Price | Savings |
+|------|-------|---------|
+| Monthly | $39/month | — |
+| Annual | $299/year | ~36% savings |
+
+Team, Research, Enterprise, and Strategic licenses are custom-priced — contact sales for details.
 
 ---
 

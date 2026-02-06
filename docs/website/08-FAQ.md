@@ -35,7 +35,7 @@ Yes. The MODERNIZER module proposes code improvements, which go through confiden
 
 ### Can I self-host CMPSBL?
 
-**Enterprise tier only.** Developer, Team, and Research tiers use our hosted API infrastructure. Enterprise tier ($49,999/year) includes full source code access and self-hosted deployment rights for on-premise or air-gapped environments.
+Yes, with an Enterprise license. Enterprise tier includes source code access and self-hosted deployment rights. API tiers (Developer/Team/Research) use our secure hosted infrastructure.
 
 ### How does memory work?
 
@@ -49,9 +49,7 @@ The system automatically demotes, compresses, and optimizes memory over time. Pr
 
 ### What about data privacy?
 
-**API tiers (Developer/Team/Research):** Your data is processed on our secure hosted infrastructure with strict isolation — we never share or use your data for training.
-
-**Enterprise tier:** Full self-hosted deployment means your data stays entirely on your infrastructure.
+Your data stays on your infrastructure. We never see your memories, prompts, or responses. The substrate runs entirely in your environment.
 
 ---
 
@@ -59,18 +57,18 @@ The system automatically demotes, compresses, and optimizes memory over time. Pr
 
 ### How much does it cost?
 
-Annual licensing:
-- **Developer:** $2,999/year
-- **Team:** $9,999/year
-- **Research:** $19,999/year  
-- **Enterprise:** $49,999/year
+Pricing options:
+- **Developer:** $39/month or $299/year
+- **Team:** Contact sales
+- **Research:** Contact sales
+- **Enterprise:** Contact sales
 - **Strategic:** Custom
 
 Plus your own AI provider costs (you pay OpenAI, Anthropic, etc. directly).
 
 ### What's included in the license?
 
-All 14 modules, full documentation, version updates, and support appropriate to your tier. API tiers receive hosted access; Enterprise tier receives source code and self-hosted deployment rights. You bring your own AI provider keys.
+All 14 modules, full documentation, version updates, and support appropriate to your tier. You bring your own AI provider keys and infrastructure.
 
 ### Can I use this for commercial products?
 
