@@ -376,10 +376,6 @@ function SynergyExplorer() {
             Browse all 135 synergy pipelines including 22 S-tier + 15 v7.5.2 discoveries, filter by category, and discover how modules combine
           </p>
         </div>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Browse all 120 synergy pipelines including 22 S-tier premium offerings, filter by category, and discover how modules combine
-          </p>
-        </div>
         
         {/* Search and filters */}
         <div className="flex flex-col sm:flex-row gap-4 mb-8">
