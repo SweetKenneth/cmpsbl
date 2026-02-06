@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Documentation Library
 
-**PromptFluid® CMPSBL OS — v7.0.0 Library (SEBA Era)**
+**PromptFluid® CMPSBL OS — v7.5.3 Library (SYNERGY+ Epoch)**
 
 ---
 
@@ -9,7 +9,7 @@
 | Field | Value |
 |-------|-------|
 | **System Name** | CMPSBL OS Substrate |
-| **Version** | v7.0.0 (SEBA) |
+| **Version** | v7.5.3 (SYNERGY+) |
 | **Classification** | Cognitive Orchestration Substrate |
 | **Status** | Production (Live System) |
 | **Publication Date** | February 2026 |
@@ -36,7 +36,8 @@ This library is part of the **FNDTN v7** standards package, which presents:
 | v5.5.0 | 2025 | [OSF](https://osf.io/ah7nx/overview) · [Zenodo](https://zenodo.org/records/18379258) |
 | v6.0.0 (FNDTN) | 2026-01-28 | Initial FNDTN release |
 | v6.3.0 (FNDTN) | 2026-01-29 | Human Compatibility Era |
-| **v7.0.0 (SEBA)** | 2026-02-01 | Bounded Autonomy Era (Current) |
+| v7.0.0 (SEBA) | 2026-02-01 | Bounded Autonomy Era |
+| **v7.5.3 (SYNERGY+)** | 2026-02-06 | SYNERGY+ Epoch (Current) |
 
 **AI Governance Reference Namespace:** [Zenodo Record](https://zenodo.org/records/18393018)
 
@@ -47,7 +48,7 @@ This library is part of the **FNDTN v7** standards package, which presents:
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                    CMPSBL OS SUBSTRATE                          │
-│                   v7.0.0 (SEBA)                                 │
+│                   v7.5.3 (SYNERGY+)                             │
 ├─────────────────────────────────────────────────────────────────┤
 │  Created By:        Kenneth E Sweet Jr                          │
 │  Organization:      PromptFluid®                                │
@@ -132,8 +133,8 @@ This library is part of the **FNDTN v7** standards package, which presents:
 |----------|--------|-------------|
 | [75-EVOLUTION-LIFECYCLE.md](./75-EVOLUTION-LIFECYCLE.md) | Evolution Lifecycle | Modernizer 5-phase cycle |
 | [76-EVOLUTION-AUTONOMY.md](./76-EVOLUTION-AUTONOMY.md) | Evolution Autonomy | Governed autonomy settings |
-| [77-SYNERGY-PIPELINES.md](./77-SYNERGY-PIPELINES.md) | **Synergy Pipelines** | 24 cross-module executable pipelines |
-| [78-CAPABILITIES.md](./78-CAPABILITIES.md) | **Synergy Capabilities** | 34 total capabilities (24 synergies + 10 adapted) |
+| [77-SYNERGY-PIPELINES.md](./77-SYNERGY-PIPELINES.md) | **Synergy Pipelines** | 147 cross-module executable pipelines |
+| [78-CAPABILITIES.md](./78-CAPABILITIES.md) | **Synergy Capabilities** | 136+ depot capabilities + 125 executors |
 | [79-EVOLUTION-OBSERVABILITY.md](./79-EVOLUTION-OBSERVABILITY.md) | **Evolution Observability** | Investor-facing evolution visibility & stamps |
 
 ### Supplementary Materials
@@ -172,14 +173,14 @@ Read all documents in order.
   title        = {{CMPSBL OS Substrate: A Cognitive Orchestration 
                    System for Autonomous AI Operations}},
   year         = 2026,
-  version      = {v7.0.0},
+  version      = {v7.5.3},
   publisher    = {PromptFluid},
   url          = {https://promptfluid.com},
-  note         = {Production system with 140,000+ lines of code}
+  note         = {Production system with 150,000+ lines of code}
 }
 ```
 
 ---
 
-*CMPSBL OS Substrate v7.0.0 — Bounded Autonomy Era*
+*CMPSBL OS Substrate v7.5.3 — SYNERGY+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

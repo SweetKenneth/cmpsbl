@@ -1,5 +1,5 @@
 /**
- * promptfluid® Nexus Module v7.0.0
+ * promptfluid® Nexus Module v7.5.3
  * Multi-Provider AI Routing & Health-Weighted Selection
  * 
  * The nervous system for all AI provider interactions:
@@ -107,7 +107,7 @@ export {
 export * from './circuitBreaker';
 
 // Version info
-export const NEXUS_VERSION = '7.0.0';
+export const NEXUS_VERSION = '7.5.3';
 export const NEXUS_CODENAME = 'Router';
 
 // Provider registry

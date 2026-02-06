@@ -1,6 +1,6 @@
-# CMPSBL OS Substrate — DECODE Personality Profiles
+# CMPSBL OS Substrate — DECODE Interpretation Profiles
 
-**Version 7.1.0 | Interpretive Lens Specification**
+**Version 7.5.3 | Intent Interpretation Specification**
 
 ---
 
@@ -10,8 +10,8 @@
 |-------|-------|
 | **Document ID** | CMPSBL-LIB-096 |
 | **Module** | DECODE |
-| **Subsystem** | Personality |
-| **Version** | v7.1.0 |
+| **Subsystem** | Intent Interpretation |
+| **Version** | v7.5.3 |
 
 ---
 
@@ -31,17 +31,17 @@
 
 ## 1. Overview
 
-The DECODE Personality subsystem provides **interpretive filters** that adjust how user input is understood. Personality profiles are cognitive lenses—they affect interpretation, not execution.
+The DECODE Interpretation subsystem provides **context filters** that adjust how user input is parsed. Interpretation profiles are cognitive lenses—they affect parsing strategy, not execution authority.
 
 ### Critical Constraint
 
-Personality profiles **DO NOT** affect:
+Interpretation profiles **DO NOT** affect:
 - Execution of commands
 - Permission levels
 - Memory writes (never persisted to brain.hot)
 - Response authority
 
-Personality profiles **DO** affect:
+Interpretation profiles **DO** affect:
 - Intent weighting
 - Ambiguity tolerance
 - Confidence calibration
@@ -49,16 +49,16 @@ Personality profiles **DO** affect:
 
 ---
 
-## 2. Personality Profiles
+## 2. Interpretation Profiles
 
 | Profile | Description |
 |---------|-------------|
 | **neutral** | Balanced interpretation, no bias |
 | **technical** | Precise, detail-oriented, favors structured queries |
-| **frustrated** | User experiencing difficulty, prioritizes support |
+| **support** | User experiencing difficulty, prioritizes assistance |
 | **exploratory** | Curious, learning-oriented, favors discovery |
-| **adversarial** | Challenging, testing boundaries, strict interpretation |
-| **playful** | Lighthearted, creative, more interpretive latitude |
+| **strict** | Challenging input, strict interpretation |
+| **casual** | Lighthearted, creative, more interpretive latitude |
 | **urgent** | Time-sensitive, action-oriented, fast resolution |
 
 ---
@@ -180,5 +180,5 @@ function MyComponent() {
 
 ---
 
-*CMPSBL OS Substrate v7.1.0 — Human Compatibility Era*
+*CMPSBL OS Substrate v7.5.3 — SYNERGY+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

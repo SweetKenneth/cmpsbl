@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Cross-Module Synergy Pipelines
 
-**Version 7.1.0 (FNDTN) | Executable Reference**
+**Version 7.5.3 (SYNERGY+) | Executable Reference**
 
 ---
 
@@ -11,8 +11,9 @@
 | **Document ID** | CMPSBL-LIB-077 |
 | **Layer** | Cross-Module |
 | **Status** | Production Ready |
-| **Version** | v7.1.0 |
-| **Pipeline Count** | 34 |
+| **Version** | v7.5.3 |
+| **Pipeline Count** | 147 |
+| **Executor Count** | 125 |
 
 ---
 
@@ -40,11 +41,11 @@ Synergy Pipelines are **production-ready orchestrations** that combine multiple 
 
 ### 1.3 Key Improvements from v6
 
-| Feature | v6 (Descriptive) | v7.1 (Executable) |
-|---------|------------------|-------------------|
-| Pipeline Count | 5 | 34 |
+| Feature | v6 (Descriptive) | v7.5.3 (Executable) |
+|---------|------------------|---------------------|
+| Pipeline Count | 5 | 147 |
 | Execution | Emergent | Governed |
-| Custom Executors | None | 13 implementations |
+| Custom Executors | None | 125 implementations |
 | Governance | N/A | Integrated with capability-gate |
 | Tracing | N/A | Full trace_id propagation |
 | Categories | N/A | 7 functional categories |
@@ -393,16 +394,23 @@ try {
 
 ## 8. Changelog
 
-### v7.0.0 (SYNERGY ENGINE)
+### v7.5.3 (SYNERGY+ Epoch)
 
-- ✅ Expanded from 5 descriptive to 24 executable pipelines
-- ✅ Implemented 8 custom executors with governance
-- ✅ Added 6 functional categories
+- ✅ Expanded to 147 executable pipelines
+- ✅ Implemented 125 custom executors with governance
+- ✅ Added 7 functional categories
 - ✅ Integrated with capability-gate for safety
 - ✅ Added distributed tracing with trace_id
 - ✅ Created React hook for UI integration
 - ✅ Added module dependency matrix
 - ✅ Documented performance metrics
+- ✅ Added 136+ capabilities to depot
+
+### v7.0.0 (SYNERGY ENGINE)
+
+- Expanded from 5 descriptive to 24 executable pipelines
+- Implemented 8 custom executors with governance
+- Added 6 functional categories
 
 ### v6.3.1 (Initial)
 
@@ -412,5 +420,5 @@ try {
 
 ---
 
-*CMPSBL OS Substrate v7.0.0 — SYNERGY Epoch*  
+*CMPSBL OS Substrate v7.5.3 — SYNERGY+ Epoch*  
 *© 2025-2026 PromptFluid®. All rights reserved.*
