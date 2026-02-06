@@ -218,7 +218,9 @@ export default function Library() {
     const loadDocument = async () => {
       setLoading(true);
       try {
-        const filename = `${currentDoc.id}-${currentDoc.name}.md`;
+        // Handle special suffixed IDs like "09-SEC" → "09-SECURITY-COMPLIANCE.md"
+        const baseId = currentDoc.id.split('-')[0];
+        const filename = `${baseId}-${currentDoc.name}.md`;
         const response = await fetch(`/docs/website/${filename}`);
         if (response.ok) {
           const text = await response.text();

@@ -27,6 +27,7 @@ This documentation provides everything you need to understand, evaluate, and bui
 | [Architecture Overview](./05-ARCHITECTURE.md) | Technical deep dive |
 | [Key Capabilities](./03-KEY-CAPABILITIES.md) | Feature reference |
 | [Synergy Capabilities](./09-SYNERGY-CAPABILITIES.md) | 147-pipeline matrix |
+| [Marketplace Features](./10-MARKETPLACE-FEATURES.md) | CodeLab, Templates, Depot |
 
 ### For Business Leaders
 | Document | Description |
