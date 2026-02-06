@@ -88,20 +88,9 @@ export default function Decode() {
   }, []);
 
   const initializeFresh = () => {
-    const hour = new Date().getHours();
-    let welcome = "The interpreter is active. Share a thought.";
-    
-    if (hour >= 22 || hour < 5) {
-      welcome = "Night mode. What surfaces for you?";
-    } else if (hour >= 5 && hour < 9) {
-      welcome = "Morning patterns. What emerges?";
-    } else if (hour >= 17 && hour < 22) {
-      welcome = "Evening. What lingers?";
-    }
-    
     setMessages([{
       role: 'system',
-      content: welcome,
+      content: "DECODE ready. I parse natural language into structured intents and route them to the appropriate substrate modules. What would you like to do?",
       timestamp: new Date()
     }]);
   };
