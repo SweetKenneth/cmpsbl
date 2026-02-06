@@ -185,7 +185,7 @@ export default function Decode() {
 
       setMessages(prev => [...prev, {
         role: 'interpreter',
-        content: 'A moment... recalibrating.',
+        content: 'Connection interrupted. Attempting recovery...',
         timestamp: new Date(),
         metadata: { module: 'fallback' }
       }]);
