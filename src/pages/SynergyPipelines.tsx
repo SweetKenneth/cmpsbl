@@ -1,6 +1,6 @@
 /**
  * Synergy Pipelines Discovery Page
- * v7.5.2 — Showcasing 135 cross-module pipelines with 22 S-tier + 15 discoveries
+ * v7.5.3 — Showcasing 147 cross-module pipelines with 22 S-tier + 27 discoveries
  * 
  * A unique exploration interface visualizing how standalone modules
  * combine to create emergent capabilities beyond their individual functions
@@ -187,7 +187,7 @@ function HeroSection() {
             className="mb-6 px-4 py-2 text-sm border-primary/30 bg-primary/5"
           >
             <Combine className="w-4 h-4 mr-2" />
-            Synergy Engine v7.5.2 — 135 Active Pipelines
+            Synergy Engine v7.5.3 — 147 Active Pipelines
           </Badge>
           
           {/* Main title */}
@@ -201,17 +201,17 @@ function HeroSection() {
           {/* Subtitle */}
           <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto mb-8 leading-relaxed">
             When standalone cognitive modules unite, they create emergent capabilities 
-            that transcend their individual functions. Discover 135 synergy pipelines 
-            including 22 S-tier premium offerings + 15 v7.5.2 discoveries that power the next generation of AI intelligence.
+            that transcend their individual functions. Discover 147 synergy pipelines 
+            including 22 S-tier premium offerings + 27 discoveries that power the next generation of AI intelligence.
           </p>
           
           {/* Stats row */}
           <div className="flex flex-wrap justify-center gap-8 mb-10">
             {[
-              { value: "135", label: "Pipelines", icon: GitMerge },
+              { value: "147", label: "Pipelines", icon: GitMerge },
               { value: "14", label: "Modules", icon: Cpu },
               { value: "7", label: "Categories", icon: Layers },
-              { value: "113", label: "Executors", icon: Workflow },
+              { value: "125", label: "Executors", icon: Workflow },
             ].map((stat) => (
               <motion.div
                 key={stat.label}

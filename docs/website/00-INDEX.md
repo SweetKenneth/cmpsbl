@@ -1,6 +1,6 @@
 # CMPSBL® Documentation
 
-**v7.5.2 — SYNERGY+ Epoch | Cognitive Orchestration Substrate for AI Systems**
+**v7.5.3 — SYNERGY+ Epoch | Cognitive Orchestration Substrate for AI Systems**
 
 ---
 
@@ -8,7 +8,7 @@
 
 This documentation provides everything you need to understand, evaluate, and build with CMPSBL® (Composable) — the cognitive infrastructure layer that makes AI applications smarter, safer, and self-improving.
 
-**What's Inside:** 14 integrated modules, 135 synergy pipelines, 113 custom executors, and the SEBA (Self-Evolving Bounded Agent) architecture.
+**What's Inside:** 14 integrated modules, 147 synergy pipelines, 125 custom executors, and the SEBA (Self-Evolving Bounded Agent) architecture.
 
 ---
 
@@ -26,7 +26,7 @@ This documentation provides everything you need to understand, evaluate, and bui
 | [Getting Started](./06-GETTING-STARTED.md) | Quick start guide |
 | [Architecture Overview](./05-ARCHITECTURE.md) | Technical deep dive |
 | [Key Capabilities](./03-KEY-CAPABILITIES.md) | Feature reference |
-| [Synergy Capabilities](./09-SYNERGY-CAPABILITIES.md) | 120-pipeline matrix |
+| [Synergy Capabilities](./09-SYNERGY-CAPABILITIES.md) | 147-pipeline matrix |
 
 ### For Business Leaders
 | Document | Description |
@@ -73,4 +73,4 @@ See [Pricing & Licensing](./07-LICENSING.md) for details.
 
 ---
 
-*CMPSBL® v7.5.2 SYNERGY+ Epoch — Cognitive Infrastructure for the AI Era*
+*CMPSBL® v7.5.3 SYNERGY+ Epoch — Cognitive Infrastructure for the AI Era*
