@@ -53,6 +53,7 @@ export function EnhancedFooter() {
       links: [
         { name: "About", href: "/about" },
         { name: "Blog", href: "/blog" },
+        { name: "Changelog", href: "/changelog" },
         { name: "Roadmap", href: "/roadmap" },
         { name: "Investors", href: "/investors" },
         { name: "Contact", href: "/contact" },
