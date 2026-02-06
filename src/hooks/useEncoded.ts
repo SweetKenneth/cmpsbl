@@ -123,7 +123,10 @@ export function useEncoded() {
         dry_run: data?.dry_run || true,
         would_write: data?.would_write || false,
         generated: data?.generated,
-        verification: data?.verification,
+        verification: data?.verification ? {
+          ...data.verification,
+          dangerous_patterns_clean: data.verification.dangerous_patterns_clean ?? true,
+        } : undefined,
         provider: data?.provider,
         model: data?.model,
         latency_ms: data?.latency_ms,
