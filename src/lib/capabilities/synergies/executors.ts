@@ -1,8 +1,9 @@
 /**
  * Synergy Executors
- * v7.4.0 — Real Module Integration for Cross-Module Pipelines
+ * v7.5.2 — Real Module Integration for Cross-Module Pipelines
  * 
- * 76 custom executors that implement actual synergy logic
+ * 91 custom executors that implement actual synergy logic
+ * (76 core + 15 v7.5.2 discoveries)
  */
 
 import type { SynergyExecutionContext, SynergyResult, SynergyStepResult } from './types';
