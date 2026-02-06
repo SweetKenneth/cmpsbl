@@ -116,6 +116,7 @@ export function CmpsblNav() {
       items: [
         { name: "Capabilities Depot", href: "/capabilities", description: "86+ production-ready AI artifacts", icon: Sparkles, badge: "86+" },
         { name: "CodeLab", href: "/codelab", description: "Execute and test in real-time", icon: Terminal },
+        { name: "DevTools", href: "/devtools", description: "Diagnostics and developer utilities", icon: Terminal, badge: "Tools" },
         { name: "Developer Hub", href: "/developers", description: "SDKs, APIs, and integrations", icon: Code },
         { name: "Marketplace", href: "/marketplace", description: "Pre-built templates & modules", icon: Layers },
         { name: "Gaming AI", href: "/gaming", description: "NPC engines and game logic", icon: Gamepad2 },
