@@ -679,7 +679,7 @@ export function SEBAEvolutionHero() {
         </div>
         
         {/* Mobile: Compact 5-column grid */}
-        <div className="flex sm:hidden items-start justify-between px-1">
+        <div className="flex sm:hidden items-start justify-between px-1 py-6 overflow-visible">
           {sebaPhases.map((phase, index) => (
             <PhaseNode
               key={phase.id}
