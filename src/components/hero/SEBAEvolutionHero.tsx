@@ -237,13 +237,13 @@ const PhaseNode = memo(function PhaseNode({
         </>
       )}
       
-      {/* Main node with enhanced styling */}
+      {/* Main node with enhanced styling - overflow-visible ensures icons aren't clipped */}
       <motion.div
         className={cn(
           "relative w-14 h-14 sm:w-16 sm:h-16 md:w-[72px] md:h-[72px] lg:w-20 lg:h-20 rounded-2xl",
           "flex items-center justify-center cursor-pointer",
           "border-2 transition-all duration-300",
-          "shadow-lg",
+          "shadow-lg overflow-visible",
           isActive || isPassed ? phase.borderColor : "border-border/40",
           isActive 
             ? `bg-gradient-to-br ${phase.color}` 
