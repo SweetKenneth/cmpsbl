@@ -146,7 +146,7 @@ export function generateDesktopBootScreen(): string[] {
     '  ░   ██║     ███████╗╚██████╔╝██║██████╔╝                ░',
     '  ░   ╚═╝     ╚══════╝ ╚═════╝ ╚═╝╚═════╝                 ░',
     '  ░                                                       ░',
-    '  ░   SUBSTRATE OS v7.5.2 SYNERGY+                        ░',
+    '  ░   SUBSTRATE OS v7.5.3 SYNERGY+                        ░',
     '  ░   Cognitive Operating System                          ░',
     '  ░   "Where Dreams Come To Adapt"                        ░',
     '  ░                                                       ░',
