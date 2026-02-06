@@ -191,27 +191,29 @@ seba.rollback <proposal_id>
 
 ## 8. Changelog
 
-### v2.1.0 (Current)
+### v2.0.0 (Current)
+
+- 🔬 **9 Analysis Engines** — Extended from 4 to 9 (added Security, Telemetry, Governance, Resources, Architecture)
+- 📊 **10 Improvement Categories** — Full spectrum coverage including security hardening, architecture evolution
+- 🎯 **Enhanced Insight Types** — Added vulnerability, bottleneck, drift detection
+- 📝 **Richer Proposals** — More detailed action mappings for all categories
+
+### v1.1.0
 
 - 🔒 **DISABLED auto-approval by default** (`AUTO_APPROVE_ENABLED = false`)
-- 🔒 **Disabled cron job** - SEBA requires manual trigger
+- 🔒 **Disabled cron job** — SEBA requires manual trigger
 - 📉 Reduced daily limits (12 cycles, 20 proposals)
 - ⏱️ Increased cooldown to 2 hours
 - 📝 All proposals now go to `pending` for human review
 
-### v2.0.0
+### v1.0.0
 
 - ✅ Full cognitive-evolution pipeline
-- ✅ 8 scan categories including synergy discovery
+- ✅ 4 core scan engines (Memory, Learning, Imagination, Reasoning)
 - ✅ Predicted impact metrics
 - ✅ Receipt logging
 
-### v0.7.8
-
-- ✅ Proposal Normalization Layer
-- ✅ Strict plan creation contract
-
 ---
 
-*CMPSBL OS Substrate v7.0.0 — Safety-First Evolution*
+*CMPSBL OS Substrate v7.5.3 — Full Spectrum Autonomous Evolution*
 *© 2025-2026 PromptFluid®. All rights reserved.*
