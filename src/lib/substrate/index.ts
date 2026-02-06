@@ -1,10 +1,17 @@
 /**
  * promptfluid® Substrate Core Exports
- * v7.0.0 — SEBA Era (Self-Evolving Bounded Agent)
+ * v7.7.0 — ENGINE+ Epoch (Cognitive Engine Architecture)
  * 
  * Complete export of all substrate engines, hooks, and utilities.
- * 14-module architecture: Kernel (CORE, RIPPLE, ACCESS) + Cognitive (BRAIN, DECODE, NEXUS)
- * + Operational (DEFENSE, VISION, DREAM, INTEGRATION) + Admin (SYSTEM, MODERNIZER, INCLUSIVE) + Orchestrator (CORTEX)
+ * 14-module architecture + 20 Cognitive Engines orchestrating 76 capabilities
+ * 
+ * Engines consolidate capabilities into compound execution units:
+ * - Cognitive (4): Reasoning, Learning, Memory, Foresight
+ * - Operational (4): Resilience, Optimization, Orchestration, Scheduling
+ * - Intelligence (4): Synthesis, Adaptation, Insight, Prediction
+ * - Governance (3): Compliance, Quality, Audit
+ * - Security (3): Threat, Defense, Trust
+ * - Evolution (2): Evolution, Modernization
  */
 
 // Engine Bus - Canonical Routing Layer (v6.4.0)
@@ -398,7 +405,7 @@ export {
   type EventQueryOptions,
 } from './events';
 
-// Version Registry v7.0.0
+// Version Registry v7.7.0
 export {
   MODULE_VERSIONS,
   CONTROL_PLANE_VERSIONS,
@@ -409,6 +416,42 @@ export {
   getAllVersions,
   isVersionCompatible,
 } from './versions';
+
+// Cognitive Engines v7.7.0 — 20 Engines orchestrating 76 capabilities
+export {
+  // Types
+  type EngineCategory,
+  type EngineId,
+  type EngineDefinition,
+  type EngineExecutionContext,
+  type EngineExecutionOptions,
+  type EngineCapabilityResult,
+  type EngineExecutionResult,
+  type EngineState,
+  type EngineRegistry,
+  type EngineExecutor,
+  type EngineSummary,
+  
+  // Registry
+  ENGINE_REGISTRY,
+  ENGINE_IDS,
+  ENGINES_BY_CATEGORY,
+  getEngine,
+  listEngines,
+  getEnginesByCategory,
+  getEnginesByModule,
+  getEngineCapabilityCount,
+  getTotalCapabilitiesOrchestrated,
+  getEngineSummary,
+  
+  // Executors
+  ENGINE_EXECUTORS,
+  runEngine,
+  runEnginesBatch,
+  
+  // Hook
+  useEngines,
+} from './engines';
 
 // Re-export substrate client from lib
 export { 
