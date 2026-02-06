@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Cross-Module Synergy Pipelines
 
-**Version 7.1.0 (FNDTN) | Executable Reference**
+**Version 7.5.3 (SYNERGY+) | Executable Reference**
 
 ---
 
@@ -11,8 +11,9 @@
 | **Document ID** | CMPSBL-LIB-077 |
 | **Layer** | Cross-Module |
 | **Status** | Production Ready |
-| **Version** | v7.1.0 |
-| **Pipeline Count** | 34 |
+| **Version** | v7.5.3 |
+| **Pipeline Count** | 147 |
+| **Executor Count** | 125 |
 
 ---
 
