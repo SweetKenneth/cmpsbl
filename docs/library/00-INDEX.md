@@ -36,7 +36,8 @@ This library is part of the **FNDTN v7** standards package, which presents:
 | v5.5.0 | 2025 | [OSF](https://osf.io/ah7nx/overview) · [Zenodo](https://zenodo.org/records/18379258) |
 | v6.0.0 (FNDTN) | 2026-01-28 | Initial FNDTN release |
 | v6.3.0 (FNDTN) | 2026-01-29 | Human Compatibility Era |
-| **v7.0.0 (SEBA)** | 2026-02-01 | Bounded Autonomy Era (Current) |
+| v7.0.0 (SEBA) | 2026-02-01 | Bounded Autonomy Era |
+| **v7.5.3 (SYNERGY+)** | 2026-02-06 | SYNERGY+ Epoch (Current) |
 
 **AI Governance Reference Namespace:** [Zenodo Record](https://zenodo.org/records/18393018)
 
