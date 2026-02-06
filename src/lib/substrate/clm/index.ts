@@ -85,6 +85,8 @@ import { learningOrchestrator } from './orchestrator';
 import { tierCommand } from './tier-command';
 import { spacedRepetition } from './spaced-repetition';
 import { topicBank } from './topic-bank';
+import { encodedLearningEngine } from './encoded-learning-engine';
+import { getEncodedCurriculum } from './encoded-curriculum';
 
 /**
  * Check if CLM is ready to run
@@ -116,6 +118,7 @@ export function getCLMStatus(): {
   tier: TierInfo;
   srQueueSize: number;
   orchestratorState: OrchestratorState;
+  encodedLearning: EncodedLearningState;
 } {
   const config = budgetGovernor.getConfig();
   const budgetState = budgetGovernor.getState();
@@ -123,27 +126,30 @@ export function getCLMStatus(): {
   const orchestratorState = learningOrchestrator.getState();
   const srSummary = spacedRepetition.getQueueSummary();
   const curriculum = topicBank.getCoreCurriculum();
+  const encodedCurriculum = getEncodedCurriculum();
 
   return {
     enabled: config.enabled && !config.killSwitch,
-    running: orchestratorState.isRunning,
+    running: orchestratorState.isRunning || encodedLearningEngine.getState().isRunning,
     kill_switch: config.killSwitch,
     budget_used: budgetState.usedUnits,
     budget_total: budgetState.totalBudgetUnits,
-    topics_count: curriculum.length,
+    topics_count: curriculum.length + encodedCurriculum.length,
     review_queue_size: srSummary.total,
     budget: budgetState,
     tier,
     srQueueSize: srSummary.total,
     orchestratorState,
+    encodedLearning: encodedLearningEngine.getState(),
   };
 }
 
 /**
- * Enable CLM
+ * Enable CLM (includes Encoded learning)
  */
 export function enableCLM(): void {
   budgetGovernor.setEnabled(true);
+  encodedLearningEngine.start();
 }
 
 /**
@@ -151,6 +157,7 @@ export function enableCLM(): void {
  */
 export function disableCLM(): void {
   budgetGovernor.setEnabled(false);
+  encodedLearningEngine.stop();
 }
 
 /**
@@ -158,6 +165,7 @@ export function disableCLM(): void {
  */
 export function activateKillSwitch(): void {
   budgetGovernor.activateKillSwitch();
+  encodedLearningEngine.stop();
 }
 
 /**
@@ -165,9 +173,32 @@ export function activateKillSwitch(): void {
  */
 export function deactivateKillSwitch(): void {
   budgetGovernor.deactivateKillSwitch();
+  encodedLearningEngine.start();
+}
+
+/**
+ * Start Encoded 24/7 learning (code-writing only)
+ */
+export function startEncodedLearning(): void {
+  encodedLearningEngine.start();
+}
+
+/**
+ * Stop Encoded learning
+ */
+export function stopEncodedLearning(): void {
+  encodedLearningEngine.stop();
+}
+
+/**
+ * Get Encoded learning mastery
+ */
+export function getEncodedMastery(): number {
+  return encodedLearningEngine.getOverallMastery();
 }
 
 // Re-export types
 import type { OrchestratorState } from './orchestrator';
 import type { TierInfo } from './tier-command';
 import type { LearningJobResult, BudgetState } from './config';
+import type { EncodedLearningState } from './encoded-learning-engine';
