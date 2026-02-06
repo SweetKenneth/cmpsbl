@@ -93,21 +93,29 @@ ADVANCED MODES (v7.0.0)
 | 5.6.0 | — | Module registry, inventory system |
 | 5.0.0 | — | Terminal v5: aliases, macros, watch mode |
 
-### v7.1.0 Additions (SYNERGY EXPANSION)
+### v7.5.0 Additions (SYNERGY Epoch)
 
 | Addition | Location | Purpose |
 |----------|----------|---------|
-| **+10 Synergy Pipelines** | `src/lib/capabilities/synergies/registry.ts` | Total now 44 governed pipelines |
-| **+9 Custom Executors** | `src/lib/capabilities/synergies/executors.ts` | Total now 22 implementations |
-| **Contextual Preload** | Intelligence | Predictive content loading based on session patterns |
-| **Semantic Deduplication** | Optimization | Memory consolidation via semantic similarity |
-| **Behavioral Fingerprinting** | Security | Usage-based security baselines |
-| **Zero-Trust Validation** | Security | Continuous verification pipeline |
-| **Workflow Synthesis** | Orchestration | Dynamic workflow generation from goals |
-| **Multi-Agent Coordination** | Orchestration | Agent task decomposition and routing |
-| **Cognitive Load Optimization** | Accessibility | Content simplification for comprehension |
-| **Hypothesis Testing** | Intelligence | Automated A/B experimentation |
-| **Knowledge Distillation** | Intelligence | Pattern extraction to permanent memory |
+| **+56 World-First Functions** | `src/lib/substrate/world-first/` | Autonomous high-value functions across all modules |
+| **+76 Synergy Pipelines** | Synergy Engine | Total now 120 governed pipelines |
+| **+76 Custom Executors** | Synergy Engine | Total now 98 implementations |
+| **AttentionMechanism** | BRAIN | Miller's Law (7±2) focus management |
+| **MemoryConsolidator** | BRAIN | Hot/warm/cold memory tiering |
+| **BudgetGovernance** | NEXUS | Token budget with kill switch |
+| **CostArbitrage** | NEXUS | Provider cost optimization |
+| **BehavioralFingerprint** | DEFENSE | Usage pattern baseline detection |
+| **ZeroTrustValidator** | DEFENSE | Continuous verification pipeline |
+| **PredictiveSLA** | VISION | SLA breach forecasting |
+| **ResourceProfiler** | SYSTEM | CPU/Memory/Network profiling |
+| **MultiAgentCoordinator** | CORTEX | Load-balanced agent distribution |
+| **CreativeMutator** | DREAM | Genetic algorithm knowledge mutation |
+| **EventRouter** | RIPPLE | Intelligent event routing with transforms |
+| **EntitlementGraph** | ACCESS | Permission relationship mapping |
+| **FeatureFlagEngine** | CORE | Dynamic feature toggling |
+| **WebhookOrchestrator** | INTEGRATION | Webhook delivery management |
+| **CognitiveLoadOptimizer** | INCLUSIVE | Content complexity reduction |
+| **EvolutionPredictor** | MODERNIZER | Evolution outcome prediction |
 
 ### Synergy Categories (v7.1.0)
 
