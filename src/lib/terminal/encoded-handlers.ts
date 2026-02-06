@@ -210,14 +210,17 @@ export function registerEncodedHandlers(): void {
     return {
       success: true,
       data: {
-        executions: events?.map(e => ({
-          outcome: e.outcome,
-          module: e.data?.task_module,
-          change_type: e.data?.change_type,
-          provider: e.data?.provider,
-          model: e.data?.model,
-          timestamp: e.created_at,
-        })) || [],
+        executions: events?.map(e => {
+          const data = e.data as Record<string, unknown> | null;
+          return {
+            outcome: e.outcome,
+            module: data?.task_module,
+            change_type: data?.change_type,
+            provider: data?.provider,
+            model: data?.model,
+            timestamp: e.created_at,
+          };
+        }) || [],
       },
     };
   });
