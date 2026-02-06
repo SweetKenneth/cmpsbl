@@ -49,16 +49,16 @@ Interpretation profiles **DO** affect:
 
 ---
 
-## 2. Personality Profiles
+## 2. Interpretation Profiles
 
 | Profile | Description |
 |---------|-------------|
 | **neutral** | Balanced interpretation, no bias |
 | **technical** | Precise, detail-oriented, favors structured queries |
-| **frustrated** | User experiencing difficulty, prioritizes support |
+| **support** | User experiencing difficulty, prioritizes assistance |
 | **exploratory** | Curious, learning-oriented, favors discovery |
-| **adversarial** | Challenging, testing boundaries, strict interpretation |
-| **playful** | Lighthearted, creative, more interpretive latitude |
+| **strict** | Challenging input, strict interpretation |
+| **casual** | Lighthearted, creative, more interpretive latitude |
 | **urgent** | Time-sensitive, action-oriented, fast resolution |
 
 ---
