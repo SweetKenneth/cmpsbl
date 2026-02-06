@@ -139,5 +139,5 @@ DECODE leverages BRAIN for context:
 
 ---
 
-*CMPSBL OS Substrate v6.0.0 — Human Compatibility Era*
+*CMPSBL OS Substrate v7.5.3 — SYNERGY+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

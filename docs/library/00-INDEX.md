@@ -173,14 +173,14 @@ Read all documents in order.
   title        = {{CMPSBL OS Substrate: A Cognitive Orchestration 
                    System for Autonomous AI Operations}},
   year         = 2026,
-  version      = {v7.0.0},
+  version      = {v7.5.3},
   publisher    = {PromptFluid},
   url          = {https://promptfluid.com},
-  note         = {Production system with 140,000+ lines of code}
+  note         = {Production system with 150,000+ lines of code}
 }
 ```
 
 ---
 
-*CMPSBL OS Substrate v7.0.0 — Bounded Autonomy Era*
+*CMPSBL OS Substrate v7.5.3 — SYNERGY+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

@@ -394,16 +394,23 @@ try {
 
 ## 8. Changelog
 
-### v7.0.0 (SYNERGY ENGINE)
+### v7.5.3 (SYNERGY+ Epoch)
 
-- ✅ Expanded from 5 descriptive to 24 executable pipelines
-- ✅ Implemented 8 custom executors with governance
-- ✅ Added 6 functional categories
+- ✅ Expanded to 147 executable pipelines
+- ✅ Implemented 125 custom executors with governance
+- ✅ Added 7 functional categories
 - ✅ Integrated with capability-gate for safety
 - ✅ Added distributed tracing with trace_id
 - ✅ Created React hook for UI integration
 - ✅ Added module dependency matrix
 - ✅ Documented performance metrics
+- ✅ Added 136+ capabilities to depot
+
+### v7.0.0 (SYNERGY ENGINE)
+
+- Expanded from 5 descriptive to 24 executable pipelines
+- Implemented 8 custom executors with governance
+- Added 6 functional categories
 
 ### v6.3.1 (Initial)
 
@@ -413,5 +420,5 @@ try {
 
 ---
 
-*CMPSBL OS Substrate v7.0.0 — SYNERGY Epoch*  
+*CMPSBL OS Substrate v7.5.3 — SYNERGY+ Epoch*  
 *© 2025-2026 PromptFluid®. All rights reserved.*
