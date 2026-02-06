@@ -98,7 +98,7 @@ export function useCapabilityCheckout() {
     }
 
     // Check if off-menu — redirect to license request
-    if (result.config.offMenu || isOffMenuCapability(capabilityId)) {
+    if (result.config.offMenu || isOffMenuCapability(capabilityId) || result.config.priceUsd > PRICE_CONFIG.max) {
       const name = capabilityName || capabilityId;
       const mailto = getLicenseRequestMailto(capabilityId, name);
       window.location.href = mailto;
@@ -107,7 +107,7 @@ export function useCapabilityCheckout() {
     }
 
     // Check price bounds
-    if (result.config.priceUsd < PRICE_CONFIG.min || result.config.priceUsd > PRICE_CONFIG.max) {
+    if (result.config.priceUsd < PRICE_CONFIG.min) {
       toast.error('This capability requires a custom license. Please contact us.');
       return;
     }
