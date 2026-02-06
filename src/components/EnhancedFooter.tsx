@@ -33,6 +33,8 @@ export function EnhancedFooter() {
         { name: "CMPSBL OS", href: "/substrate" },
         { name: "Decode", href: "/decode" },
         { name: "Dream Feeder", href: "/feed-dream-eater" },
+        { name: "DevTools", href: "/devtools" },
+        { name: "Audit Trail", href: "/audit" },
         { name: "Demo", href: "/demo" },
       ]
     },
@@ -41,6 +43,8 @@ export function EnhancedFooter() {
       links: [
         { name: "Synergy Pipelines", href: "/synergies", highlight: true },
         { name: "Capabilities Depot", href: "/capabilities" },
+        { name: "DevTools", href: "/devtools" },
+        { name: "Audit Trail", href: "/audit" },
         { name: "Developers", href: "/developers" },
         { name: "CodeLab", href: "/codelab" },
         { name: "Documentation", href: "/documentation" },

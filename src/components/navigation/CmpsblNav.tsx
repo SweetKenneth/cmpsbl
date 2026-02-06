@@ -3,7 +3,8 @@
  * Ultra-polished navigation with refined micro-interactions
  */
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { createPortal } from "react-dom";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Menu,
@@ -70,7 +71,13 @@ export function CmpsblNav() {
   const toggleTheme = useCallback(() => {
     setTheme(isDark ? "light" : "dark");
   }, [isDark, setTheme]);
-  
+
+  // Desktop dropdown stability (prevents z-index / stacking-context issues)
+  const headerRef = useRef<HTMLElement | null>(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const sectionButtonRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const [dropdownAnchor, setDropdownAnchor] = useState<DOMRect | null>(null);
+
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -109,6 +116,7 @@ export function CmpsblNav() {
       items: [
         { name: "Capabilities Depot", href: "/capabilities", description: "86+ production-ready AI artifacts", icon: Sparkles, badge: "86+" },
         { name: "CodeLab", href: "/codelab", description: "Execute and test in real-time", icon: Terminal },
+        { name: "DevTools", href: "/devtools", description: "Diagnostics and developer utilities", icon: Terminal, badge: "Tools" },
         { name: "Developer Hub", href: "/developers", description: "SDKs, APIs, and integrations", icon: Code },
         { name: "Marketplace", href: "/marketplace", description: "Pre-built templates & modules", icon: Layers },
         { name: "Gaming AI", href: "/gaming", description: "NPC engines and game logic", icon: Gamepad2 },
@@ -121,6 +129,7 @@ export function CmpsblNav() {
       items: [
         { name: "CMPSBL OS", href: "/substrate", description: "Core runtime architecture", icon: Cpu },
         { name: "System Feed", href: "/system-feed", description: "Live intelligence stream", icon: Brain, badge: "Live" },
+        { name: "Audit Trail", href: "/audit", description: "System activity and event history", icon: FileText },
         { name: "Decode Engine", href: "/decode", description: "Intent parsing & analysis", icon: MessageSquare },
         { name: "Dream Feeder", href: "/feed-dream-eater", description: "Background processing", icon: Moon },
       ]
@@ -159,12 +168,68 @@ export function CmpsblNav() {
   const isActive = (path: string) => location.pathname === path;
   const isInSection = (section: NavSection) => section.items.some(item => location.pathname === item.href);
 
+  const activeNavSection = activeSection
+    ? (navSections.find((s) => s.name === activeSection) ?? null)
+    : null;
+
+  // Keep dropdown anchored correctly on scroll/resize
+  useEffect(() => {
+    if (!activeSection) {
+      setDropdownAnchor(null);
+      return;
+    }
+
+    const update = () => {
+      const el = sectionButtonRefs.current[activeSection];
+      if (!el) return;
+      setDropdownAnchor(el.getBoundingClientRect());
+    };
+
+    update();
+    window.addEventListener("resize", update);
+    window.addEventListener("scroll", update, true);
+    return () => {
+      window.removeEventListener("resize", update);
+      window.removeEventListener("scroll", update, true);
+    };
+  }, [activeSection]);
+
+  // Close dropdown on outside-click / Escape
+  useEffect(() => {
+    if (!activeSection) return;
+
+    const onPointerDown = (e: PointerEvent) => {
+      const target = e.target as Node | null;
+      if (!target) return;
+      if (dropdownRef.current?.contains(target)) return;
+      if (headerRef.current?.contains(target)) return;
+      setActiveSection(null);
+    };
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setActiveSection(null);
+    };
+
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [activeSection]);
+
+  const dropdownTop = dropdownAnchor ? Math.round(dropdownAnchor.bottom + 8) : 0;
+  const dropdownLeft = dropdownAnchor
+    ? Math.round(Math.min(dropdownAnchor.left, window.innerWidth - 360))
+    : 0;
+
   return (
     <>
       {/* ══════════════════════════════════════════════════════════════════════
           DESKTOP NAVIGATION — Enterprise Command Bar
           ══════════════════════════════════════════════════════════════════════ */}
       <motion.header
+        ref={headerRef}
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: "spring", damping: 30, stiffness: 300 }}
@@ -204,110 +269,128 @@ export function CmpsblNav() {
             {/* ═══ Desktop Navigation ═══ */}
             <div className="hidden lg:flex items-center gap-1">
               {navSections.map((section) => (
-                <div 
-                  key={section.name} 
-                  className="relative"
-                  onMouseEnter={() => setActiveSection(section.name)}
-                  onMouseLeave={() => setActiveSection(null)}
-                >
+                <div key={section.name} className="relative">
                   <button
+                    ref={(el) => {
+                      sectionButtonRefs.current[section.name] = el;
+                    }}
+                    type="button"
+                    onClick={() =>
+                      setActiveSection((prev) => (prev === section.name ? null : section.name))
+                    }
                     className={cn(
                       "relative flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200",
-                      activeSection === section.name 
-                        ? "text-foreground" 
-                        : isInSection(section) 
-                          ? "text-foreground" 
+                      activeSection === section.name
+                        ? "text-foreground"
+                        : isInSection(section)
+                          ? "text-foreground"
                           : "text-muted-foreground hover:text-foreground"
                     )}
                     aria-expanded={activeSection === section.name}
-                    aria-haspopup="true"
+                    aria-haspopup="menu"
                   >
                     <span>{section.name}</span>
-                    <ChevronRight className={cn(
-                      "w-3.5 h-3.5 transition-transform duration-200",
-                      activeSection === section.name && "rotate-90"
-                    )} />
-                    
+                    <ChevronRight
+                      className={cn(
+                        "w-3.5 h-3.5 transition-transform duration-200",
+                        activeSection === section.name && "rotate-90"
+                      )}
+                    />
+
                     {/* Active indicator dot */}
                     {isInSection(section) && !activeSection && (
-                      <motion.span 
+                      <motion.span
                         layoutId="section-indicator"
                         className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary"
                       />
                     )}
                   </button>
-
-                  {/* ═══ Desktop Dropdown ═══ */}
-                  <AnimatePresence>
-                    {activeSection === section.name && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 8, scale: 0.98 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 8, scale: 0.98 }}
-                        transition={{ duration: 0.15, ease: "easeOut" }}
-                        className="absolute top-full left-0 mt-2 w-[340px]"
-                        style={{ zIndex: 99999 }}
-                      >
-                        <div className="relative bg-popover rounded-xl border border-border shadow-xl overflow-hidden">
-                          {/* Top accent line */}
-                          <div className="h-0.5 bg-gradient-to-r from-primary via-primary/50 to-transparent" />
-                          
-                          <div className="p-2">
-                            {section.items.map((item, idx) => (
-                              <Link
-                                key={item.href}
-                                to={item.href}
-                                className={cn(
-                                  "flex items-start gap-3 p-3 rounded-lg transition-colors duration-150 group/item",
-                                  "hover:bg-muted",
-                                  isActive(item.href) && "bg-muted"
-                                )}
-                              >
-                                {item.icon && (
-                                  <div className={cn(
-                                    "w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-colors duration-150",
-                                    "bg-muted group-hover/item:bg-primary/10",
-                                    isActive(item.href) && "bg-primary/10 text-primary"
-                                  )}>
-                                    <item.icon className={cn(
-                                      "w-5 h-5 transition-colors",
-                                      isActive(item.href) ? "text-primary" : "text-muted-foreground group-hover/item:text-primary"
-                                    )} />
-                                  </div>
-                                )}
-                                <div className="flex-1 min-w-0 pt-0.5">
-                                  <div className="flex items-center gap-2">
-                                    <span className={cn(
-                                      "font-semibold text-sm transition-colors",
-                                      isActive(item.href) ? "text-primary" : "text-foreground"
-                                    )}>
-                                      {item.name}
-                                    </span>
-                                    {item.badge && (
-                                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-primary/10 text-primary">
-                                        {item.badge}
-                                      </span>
-                                    )}
-                                    {item.external && (
-                                      <ExternalLink className="w-3 h-3 text-muted-foreground" />
-                                    )}
-                                  </div>
-                                  {item.description && (
-                                    <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
-                                      {item.description}
-                                    </p>
-                                  )}
-                                </div>
-                              </Link>
-                            ))}
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
                 </div>
               ))}
             </div>
+
+            {/* Desktop dropdown rendered in a portal to escape stacking contexts */}
+            {activeNavSection && dropdownAnchor &&
+              createPortal(
+                <AnimatePresence>
+                  <motion.div
+                    key={activeNavSection.name}
+                    initial={{ opacity: 0, y: 8, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 8, scale: 0.98 }}
+                    transition={{ duration: 0.15, ease: "easeOut" }}
+                    className="hidden lg:block fixed w-[340px]"
+                    style={{ top: dropdownTop, left: dropdownLeft, zIndex: 2147483647 }}
+                  >
+                    <div
+                      ref={dropdownRef}
+                      className="relative bg-popover rounded-xl border border-border shadow-xl overflow-hidden pointer-events-auto"
+                    >
+                      {/* Top accent line */}
+                      <div className="h-0.5 bg-gradient-to-r from-primary via-primary/50 to-transparent" />
+
+                      <div className="p-2">
+                        {activeNavSection.items.map((item) => (
+                          <Link
+                            key={item.href}
+                            to={item.href}
+                            className={cn(
+                              "flex items-start gap-3 p-3 rounded-lg transition-colors duration-150 group/item",
+                              "hover:bg-muted",
+                              isActive(item.href) && "bg-muted"
+                            )}
+                          >
+                            {item.icon && (
+                              <div
+                                className={cn(
+                                  "w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-colors duration-150",
+                                  "bg-muted group-hover/item:bg-primary/10",
+                                  isActive(item.href) && "bg-primary/10 text-primary"
+                                )}
+                              >
+                                <item.icon
+                                  className={cn(
+                                    "w-5 h-5 transition-colors",
+                                    isActive(item.href)
+                                      ? "text-primary"
+                                      : "text-muted-foreground group-hover/item:text-primary"
+                                  )}
+                                />
+                              </div>
+                            )}
+                            <div className="flex-1 min-w-0 pt-0.5">
+                              <div className="flex items-center gap-2">
+                                <span
+                                  className={cn(
+                                    "font-semibold text-sm transition-colors",
+                                    isActive(item.href) ? "text-primary" : "text-foreground"
+                                  )}
+                                >
+                                  {item.name}
+                                </span>
+                                {item.badge && (
+                                  <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-primary/10 text-primary">
+                                    {item.badge}
+                                  </span>
+                                )}
+                                {item.external && (
+                                  <ExternalLink className="w-3 h-3 text-muted-foreground" />
+                                )}
+                              </div>
+                              {item.description && (
+                                <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
+                                  {item.description}
+                                </p>
+                              )}
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>,
+                document.body
+              )}
 
             {/* ═══ Right Section ═══ */}
             <div className="flex items-center gap-2">
