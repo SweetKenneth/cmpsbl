@@ -310,7 +310,7 @@ export function MetricsGrid() {
         <div className="flex items-center gap-2">
           <Badge variant="outline" className="text-[9px] h-5 border-indigo-500/30 text-indigo-400">
             <GitBranch className="w-3 h-3 mr-1" />
-            v7.0.0
+            v7.5.3
           </Badge>
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30">
             <span className="relative flex h-2 w-2">

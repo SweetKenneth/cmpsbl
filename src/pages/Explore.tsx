@@ -320,10 +320,10 @@ export default function Explore() {
   return (
     <div ref={containerRef} className="min-h-screen bg-background overflow-x-hidden overflow-y-visible">
       <SEO 
-        title="CMPSBL™ Substrate OS v7.0.0 — 14-Module Cognitive Infrastructure"
-        description="The cognitive infrastructure standard: 14 modules, hosted API access for developers ($2,999/yr), self-hosted Enterprise ($49,999/yr). 109+ templates, 120 synergy pipelines, 260+ commands."
+        title="CMPSBL™ Substrate OS v7.5.3 — 14-Module Cognitive Infrastructure"
+        description="The cognitive infrastructure standard: 14 modules, hosted API access for developers ($2,999/yr), self-hosted Enterprise ($49,999/yr). 136+ depot capabilities, 147 synergy pipelines, 260+ commands."
         canonical="https://cmpsbl.com"
-        keywords={['CMPSBL', 'Substrate OS', 'v7.0.0', '14-module architecture', 'cognitive OS', 'AI governance', 'hosted API', 'enterprise self-hosted', 'persistent memory', 'dream cycles', '120 synergy pipelines']}
+        keywords={['CMPSBL', 'Substrate OS', 'v7.5.3', '14-module architecture', 'cognitive OS', 'AI governance', 'hosted API', 'enterprise self-hosted', 'persistent memory', 'dream cycles', '147 synergy pipelines']}
       />
 
       <PublicNav />

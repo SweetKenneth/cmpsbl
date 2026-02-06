@@ -1,7 +1,7 @@
 /**
  * Why CMPSBL — Full 14-module capability showcase
  * Premium bento grid with enhanced visuals and micro-animations
- * v6.0.0: Complete representation of the 5-layer kernel architecture + Inclusive
+ * v7.5.3: Complete representation of the 5-layer kernel architecture + Inclusive
  */
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";

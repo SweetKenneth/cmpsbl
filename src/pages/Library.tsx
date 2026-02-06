@@ -68,7 +68,7 @@ const LIBRARY_DOCS = [
     name: "KEY-CAPABILITIES", 
     title: "Key Capabilities",
     category: "technical",
-    description: "Deep dive into the 14-module architecture",
+    description: "Deep dive into the 14-module architecture and synergies",
     featured: true,
     readTime: "8 min"
   },
@@ -118,7 +118,7 @@ const LIBRARY_DOCS = [
     readTime: "6 min"
   },
   { 
-    id: "09", 
+    id: "09-SEC", 
     name: "SECURITY-COMPLIANCE", 
     title: "Security & Compliance",
     category: "business",
@@ -131,9 +131,18 @@ const LIBRARY_DOCS = [
     name: "SYNERGY-CAPABILITIES", 
     title: "Synergy Capabilities",
     category: "technical",
-    description: "120 cross-module pipelines that multiply intelligence",
+    description: "147 cross-module pipelines that multiply intelligence",
     featured: true,
     readTime: "12 min"
+  },
+  { 
+    id: "10-MKT", 
+    name: "MARKETPLACE-FEATURES", 
+    title: "Marketplace Features",
+    category: "technical",
+    description: "CodeLab, Templates, and Capabilities Depot",
+    featured: false,
+    readTime: "6 min"
   },
   { 
     id: "10", 
@@ -143,15 +152,6 @@ const LIBRARY_DOCS = [
     description: "Vision and development timeline through 2028",
     featured: false,
     readTime: "5 min"
-  },
-  { 
-    id: "10", 
-    name: "MARKETPLACE-FEATURES", 
-    title: "Marketplace Features",
-    category: "technical",
-    description: "CodeLab, Templates, and Capabilities Depot",
-    featured: false,
-    readTime: "6 min"
   },
   { 
     id: "11", 
@@ -218,7 +218,9 @@ export default function Library() {
     const loadDocument = async () => {
       setLoading(true);
       try {
-        const filename = `${currentDoc.id}-${currentDoc.name}.md`;
+        // Handle special suffixed IDs like "09-SEC" → "09-SECURITY-COMPLIANCE.md"
+        const baseId = currentDoc.id.split('-')[0];
+        const filename = `${baseId}-${currentDoc.name}.md`;
         const response = await fetch(`/docs/website/${filename}`);
         if (response.ok) {
           const text = await response.text();
@@ -284,7 +286,7 @@ export default function Library() {
               >
                 <Badge className="mb-6 px-4 py-2 text-sm bg-primary/10 text-primary border-primary/20">
                   <Sparkles className="w-4 h-4 mr-2" />
-                  v7.0.0 Documentation
+                  v7.5.3 Documentation
                 </Badge>
                 
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
