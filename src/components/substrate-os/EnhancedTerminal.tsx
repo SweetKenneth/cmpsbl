@@ -681,7 +681,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
 
               {/* Output */}
               <div className={cn(
-                "pl-5 text-xs leading-relaxed relative",
+                "pl-5 text-xs leading-relaxed relative overflow-hidden",
                 isBiohack ? (
                   result.status === 'pending' ? "biohack-output-pending" :
                   result.status === 'success' ? "biohack-output-success" :
@@ -698,15 +698,16 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
                     <span className="animate-pulse">{result.output || 'Processing neural pathways...'}</span>
                   </div>
                 ) : (
-                  <div className="flex items-start gap-2">
+                  <div className="flex items-start gap-2 min-w-0 w-full">
                     {result.status === 'success' ? (
                       <CheckCircle2 className="w-3 h-3 shrink-0 mt-0.5" />
                     ) : (
                       <XCircle className="w-3 h-3 shrink-0 mt-0.5" />
                     )}
                     <pre className={cn(
-                      "whitespace-pre-wrap break-words font-mono overflow-x-auto max-w-full",
-                      "terminal-output"
+                      "whitespace-pre-wrap break-words font-mono min-w-0 flex-1",
+                      "terminal-output overflow-wrap-anywhere",
+                      "[word-break:break-word] [overflow-wrap:anywhere]"
                     )}>
                       {result.output}
                     </pre>
