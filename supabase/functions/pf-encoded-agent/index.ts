@@ -703,7 +703,8 @@ serve(async (req) => {
         const finalCode = verification.fixedCode || parsed.result!.code;
         const allPassed = verification.syntax_valid && 
                           verification.anchors_preserved && 
-                          verification.narrative_clean;
+                          verification.narrative_clean &&
+                          verification.dangerous_patterns_clean;
 
         // 6. Record learning
         if (config.clm_training) {
@@ -726,15 +727,16 @@ serve(async (req) => {
           dry_run: isDryRun,
           would_write: !isDryRun && allPassed,
           generated: {
-            code: finalCode,
+            code: allPassed ? finalCode : undefined,
             file_path: parsed.result!.file_path,
             operation: parsed.result!.operation,
-            confidence: parsed.result!.confidence,
+            confidence: allPassed ? parsed.result!.confidence : 0,
           },
           verification: {
             syntax_valid: verification.syntax_valid,
             anchors_preserved: verification.anchors_preserved,
             narrative_clean: verification.narrative_clean,
+            dangerous_patterns_clean: verification.dangerous_patterns_clean,
             issues: verification.issues,
           },
           provider: aiResult.provider,
