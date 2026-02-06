@@ -1,8 +1,8 @@
 /**
  * Constant Learning Mode (CLM) Module
- * v7.0.0 — Always-on, rate-limited, spaced, reflective learning
+ * v7.5.3 — Always-on, rate-limited, spaced, reflective learning
  * 
- * Exports all CLM components for substrate integration.
+ * Now includes dedicated Encoded learning engine for 24/7 code-writing improvement.
  */
 
 // Configuration
@@ -32,6 +32,23 @@ export {
   type TopicCategory,
   type TopicSelection,
 } from './topic-bank';
+
+// Encoded Curriculum (Code-Writing Excellence)
+export {
+  ENCODED_CODE_CURRICULUM,
+  getEncodedCurriculum,
+  getEncodedTopic,
+  getEncodedCurriculumStats,
+  ENCODED_CURRICULUM_VERSION,
+} from './encoded-curriculum';
+
+// Encoded Learning Engine (24/7 Code Mastery)
+export {
+  encodedLearningEngine,
+  type CodeLearningJob,
+  type CodeLearningResult,
+  type EncodedLearningState,
+} from './encoded-learning-engine';
 
 // Spaced Repetition
 export {
