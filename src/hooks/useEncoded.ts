@@ -1,6 +1,6 @@
 /**
  * useEncoded Hook
- * v2.0.0 — React hook for Encoded agent management
+ * v2.1.0 — React hook for Encoded agent management with enhanced guards
  */
 
 import { useState, useCallback, useEffect } from 'react';
@@ -40,6 +40,7 @@ export interface EncodedResult {
     syntax_valid: boolean;
     anchors_preserved: boolean;
     narrative_clean: boolean;
+    dangerous_patterns_clean: boolean;
     issues: string[];
   };
   provider?: string;
