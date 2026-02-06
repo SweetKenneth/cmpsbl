@@ -11,8 +11,8 @@
 // VERSION & METADATA
 // ═══════════════════════════════════════════════════════════════════════════════
 
-export const SEBA_VERSION = '1.1.0';
-export const SEBA_CODENAME = 'Bounded Autonomy';
+export const SEBA_VERSION = '2.0.0';
+export const SEBA_CODENAME = 'Full Spectrum Autonomy';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // CORE TYPES
@@ -296,8 +296,8 @@ export interface SEBAAuditEntry {
 
 export interface CognitiveInsight {
   id: string;
-  type: 'pattern' | 'anomaly' | 'opportunity' | 'degradation' | 'optimization' | 'correlation';
-  source_engine: 'memory' | 'learning' | 'imagination' | 'reasoning' | 'telemetry';
+  type: 'pattern' | 'anomaly' | 'opportunity' | 'degradation' | 'optimization' | 'correlation' | 'vulnerability' | 'bottleneck' | 'drift';
+  source_engine: 'memory' | 'learning' | 'imagination' | 'reasoning' | 'telemetry' | 'security' | 'governance' | 'resources' | 'architecture';
   
   title: string;
   description: string;
@@ -405,9 +405,14 @@ export const DEFAULT_SEBA_CONFIG: SEBAConfig = {
     'performance_boost',
     'error_recovery',
     'resource_optimization',
+    'security_hardening',
+    'governance_refinement',
+    'architecture_evolution',
+    'pattern_discovery',
+    'reasoning_upgrade',
   ],
   excluded_modules: [],
-  priority_modules: ['memory', 'learning', 'governance'],
+  priority_modules: ['memory', 'learning', 'governance', 'security'],
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════
