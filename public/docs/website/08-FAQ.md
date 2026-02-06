@@ -57,11 +57,11 @@ Your data stays on your infrastructure. We never see your memories, prompts, or 
 
 ### How much does it cost?
 
-Annual licensing:
-- **Developer:** $2,999/year
-- **Team:** $9,999/year
-- **Research:** $19,999/year  
-- **Enterprise:** $49,999/year
+Pricing options:
+- **Developer:** $39/month or $299/year
+- **Team:** Contact sales
+- **Research:** Contact sales
+- **Enterprise:** Contact sales
 - **Strategic:** Custom
 
 Plus your own AI provider costs (you pay OpenAI, Anthropic, etc. directly).
