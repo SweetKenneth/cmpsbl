@@ -9,7 +9,7 @@ import type { LucideIcon } from 'lucide-react';
 export interface CommandDefinition {
   command: string;
   description: string;
-  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer' | 'core' | 'ripple' | 'access' | 'integration' | 'cortex' | 'inclusive' | 'clm' | 'autoblog' | 'meta';
+  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer' | 'core' | 'ripple' | 'access' | 'integration' | 'cortex' | 'inclusive' | 'clm' | 'autoblog' | 'meta' | 'engine';
   icon: LucideIcon;
   requiresOperator: boolean;
   args?: string;
@@ -572,6 +572,35 @@ export const ENCODED_COMMANDS: CommandDefinition[] = [
   { command: 'encoded.help', description: 'Show all encoded commands', category: 'cortex', icon: Terminal, requiresOperator: false },
 ];
 
+// ENGINE — Cognitive Engine System v8.1.0
+export const ENGINE_COMMANDS: CommandDefinition[] = [
+  // Engine browsing
+  { command: 'engine.status', description: 'Engine system overview', category: 'engine', icon: Cpu, requiresOperator: false },
+  { command: 'engine.list', description: 'List all 62 engines', category: 'engine', icon: List, requiresOperator: false, args: '[category]', example: 'engine.list cognitive' },
+  { command: 'engine.get', description: 'Get engine details', category: 'engine', icon: Search, requiresOperator: false, args: '<engine_id>', example: 'engine.get reasoning_engine' },
+  { command: 'engine.categories', description: 'List engine categories', category: 'engine', icon: Box, requiresOperator: false },
+  
+  // Engine execution
+  { command: 'engine.run', description: 'Execute an engine', category: 'engine', icon: PlayCircle, requiresOperator: true, args: '<engine_id> [json_input]', example: 'engine.run reasoning_engine {"query":"test"}' },
+  { command: 'engine.batch', description: 'Execute multiple engines', category: 'engine', icon: Workflow, requiresOperator: true, args: '<engine_ids> [parallel]', example: 'engine.batch reasoning_engine,learning_engine true' },
+  
+  // Meta-engine browsing
+  { command: 'meta.status', description: 'Meta-engine system overview', category: 'engine', icon: Workflow, requiresOperator: false },
+  { command: 'meta.list', description: 'List all 20 meta-engines', category: 'engine', icon: List, requiresOperator: false },
+  { command: 'meta.get', description: 'Get meta-engine details', category: 'engine', icon: Search, requiresOperator: false, args: '<meta_engine_id>', example: 'meta.get cognitive_mesh' },
+  
+  // Meta-engine execution
+  { command: 'meta.run', description: 'Execute a meta-engine', category: 'engine', icon: PlayCircle, requiresOperator: true, args: '<meta_engine_id> [json_input]', example: 'meta.run cognitive_mesh {"task":"analyze"}' },
+  { command: 'meta.batch', description: 'Execute multiple meta-engines', category: 'engine', icon: Workflow, requiresOperator: true, args: '<meta_engine_ids> [parallel]', example: 'meta.batch cognitive_mesh,system_guardian true' },
+  
+  // World-first engines
+  { command: 'engine.worldfirst', description: 'List 14 world-first enhancement engines', category: 'engine', icon: Sparkles, requiresOperator: false },
+  { command: 'engine.synergy', description: 'View synergy metrics', category: 'engine', icon: Activity, requiresOperator: false },
+  
+  // History
+  { command: 'engine.history', description: 'View recent engine executions', category: 'engine', icon: Clock, requiresOperator: false, args: '[limit]', example: 'engine.history 10' },
+];
+
 export const ALL_COMMANDS: CommandDefinition[] = [
   ...BRAIN_COMMANDS,
   ...DECODE_COMMANDS,
@@ -591,6 +620,7 @@ export const ALL_COMMANDS: CommandDefinition[] = [
   ...INTEGRATION_COMMANDS,
   ...AUTOBLOG_COMMANDS,
   ...ENCODED_COMMANDS,
+  ...ENGINE_COMMANDS,
   ...META_COMMANDS,
 ];
 
@@ -612,6 +642,7 @@ export const COMMAND_CATEGORIES = {
   seba: { label: 'SEBA', color: 'text-emerald-400', borderColor: 'border-emerald-500/30', commands: SEBA_COMMANDS },
   clm: { label: 'CLM', color: 'text-indigo-400', borderColor: 'border-indigo-500/30', commands: [...CLM_COMMANDS, ...MODULE_CLM_COMMANDS] },
   autoblog: { label: 'AUTOBLOG', color: 'text-rose-400', borderColor: 'border-rose-500/30', commands: AUTOBLOG_COMMANDS },
+  engine: { label: 'ENGINE', color: 'text-cyan-400', borderColor: 'border-cyan-500/30', commands: ENGINE_COMMANDS },
   meta: { label: 'META', color: 'text-gray-400', borderColor: 'border-gray-500/30', commands: META_COMMANDS },
 } as const;
 

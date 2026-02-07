@@ -47,6 +47,7 @@ import { InclusiveTab } from '@/components/substrate-os/InclusiveTab';
 import { NexusTab } from '@/components/substrate-os/NexusTab';
 import { CapabilitiesTab } from '@/components/substrate-os/CapabilitiesTab';
 import { AtlasTab } from '@/components/substrate-os/AtlasTab';
+import { EnginesTab } from '@/components/substrate-os/EnginesTab';
 import { DashboardMetricsHero, QuickActionsPanel, ModuleControlsGrid, CapacityMonitor } from '@/components/substrate-os/dashboard';
 import { cn } from '@/lib/utils';
 
@@ -106,6 +107,7 @@ function getTabGroups(isOperator: boolean, isGovernor: boolean, hasAgency: boole
   const evolveTabs: TabConfig[] = [
     ...(isOperator ? [
       { id: 'atlas', label: 'Atlas', icon: Gauge, color: 'cyan', description: 'Control plane', minRole: 'operator' as const },
+      { id: 'engines', label: 'Engines', icon: Layers, color: 'fuchsia', description: 'Execute engines', minRole: 'operator' as const },
       { id: 'capabilities', label: 'Capabilities', icon: ToggleRight, color: 'cyan', description: 'Toggle capabilities', minRole: 'operator' as const },
       { id: 'modernizer', label: 'Modernizer', icon: Wand2, color: 'fuchsia', description: 'Self-upgrade', minRole: 'operator' as const },
     ] : []),
@@ -768,6 +770,9 @@ export default function SubstrateOS() {
                 <AtlasTab />
               </motion.main>
             )}
+
+            {/* Engines */}
+            {activeTab === 'engines' && isOperator && <EnginesTab enabled={isOperator} />}
 
             {/* Capabilities */}
             {activeTab === 'capabilities' && isOperator && (
