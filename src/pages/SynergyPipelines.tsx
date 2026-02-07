@@ -184,10 +184,10 @@ function HeroSection() {
           {/* Badge */}
           <Badge 
             variant="outline" 
-            className="mb-6 px-4 py-2 text-sm border-primary/30 bg-primary/5"
+            className="mb-6 px-4 py-2 text-sm border-emerald-500/30 bg-emerald-500/5"
           >
             <Combine className="w-4 h-4 mr-2" />
-            Synergy Engine v7.5.3 — 147 Active Pipelines
+            FREE — Synergy Pipelines v7.5.3
           </Badge>
           
           {/* Main title */}
@@ -199,10 +199,11 @@ function HeroSection() {
           </h1>
           
           {/* Subtitle */}
-          <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto mb-8 leading-relaxed">
-            When standalone cognitive modules unite, they create emergent capabilities 
-            that transcend their individual functions. Discover 147 synergy pipelines 
-            including 22 S-tier premium offerings + 27 discoveries that power the next generation of AI intelligence.
+          <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto mb-4 leading-relaxed">
+            Synergy Pipelines demonstrate powerful orchestration patterns. Explore freely — engines are the hardened, saved versions.
+          </p>
+          <p className="text-sm text-muted-foreground mb-8">
+            Pipelines are ephemeral: execution and inspection only. No save, register, or version capabilities.
           </p>
           
           {/* Stats row */}

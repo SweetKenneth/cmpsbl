@@ -1,7 +1,7 @@
 /**
- * Capabilities Depot — Main Page
- * Marketplace surface for downloadable capability artifacts
- * v2.1.0 — 136+ Capabilities ($19-$299 public, off-menu licensed on request)
+ * Capability Depot — FREE Exploration Layer
+ * Atomic, stateless building blocks for learning and exploration
+ * v3.0.0 — Free tier, no pricing, no checkout
  */
 
 import { useState, useMemo, lazy, Suspense, useCallback } from 'react';
@@ -17,12 +17,9 @@ import {
   Settings,
   Accessibility,
   TrendingUp,
-  ChevronDown,
-  ExternalLink,
   Layers,
-  Crown,
+  Info,
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { 
@@ -37,17 +34,12 @@ import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { CapabilityCard } from '@/components/depot/CapabilityCard';
 import { DepotSEO } from '@/components/depot/DepotSEO';
 import { CapabilityDetailModal } from '@/components/depot/CapabilityDetailModal';
-import { SelfImprovementHero } from '@/components/depot/SelfImprovementHero';
 import {
   filterCapabilities,
   getCategoryStats,
   getTotalCapabilityCount,
-  PRICING_TIERS,
-  getRecursiveCapabilityById,
-  STORE_FOOTER_TEXT,
   type CapabilityCategory,
   type ExecutorType,
-  type PricingTier,
   type CapabilityFilters,
   type CapabilityArtifact,
 } from '@/lib/capabilities/depot';
@@ -104,22 +96,6 @@ export default function CapabilitiesDepotPage() {
     }));
   };
 
-  // Scroll to grid
-  const scrollToGrid = useCallback(() => {
-    const grid = document.getElementById('capabilities-grid');
-    if (grid) {
-      grid.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, []);
-
-  // View Apex capability
-  const handleViewApex = useCallback(() => {
-    const apex = getRecursiveCapabilityById('recursive-self-optimization-core');
-    if (apex) {
-      setSelectedCapability(apex);
-    }
-  }, []);
-
   return (
     <>
       <DepotSEO totalCount={totalCount} />
@@ -127,13 +103,27 @@ export default function CapabilitiesDepotPage() {
       <PublicNav />
 
       <main className="min-h-screen bg-background">
-        {/* Self-Improvement Hero */}
-        <SelfImprovementHero 
-          onExplore={scrollToGrid}
-          onViewApex={handleViewApex}
-        />
+        {/* FREE Hero Section */}
+        <section className="relative py-16 md:py-24 border-b border-border/50 bg-gradient-to-b from-emerald-500/5 to-background">
+          <div className="container mx-auto px-4 text-center">
+            <Badge className="mb-4 bg-emerald-500/10 text-emerald-500 border-emerald-500/30">
+              FREE
+            </Badge>
+            <h1 className="text-3xl md:text-5xl font-bold mb-4">
+              Capability Depot
+            </h1>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
+              Capabilities are atomic, stateless building blocks provided free for exploration.
+              No persistence, no shared orchestration state, no governance hooks.
+            </p>
+            <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+              <Info className="w-4 h-4" />
+              <span>Everything is free to explore. Engines are canon.</span>
+            </div>
+          </div>
+        </section>
 
-        {/* Stats Bar — Social Proof */}
+        {/* Stats Bar */}
         <section className="border-b border-border/50 bg-card/50">
           <div className="container mx-auto px-4 py-6">
             <div className="flex flex-wrap items-center justify-center gap-6 md:gap-12">
@@ -143,18 +133,18 @@ export default function CapabilitiesDepotPage() {
               </div>
               <div className="hidden md:block w-px h-10 bg-border/50" />
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-black text-cyan-400">10</div>
-                <div className="text-xs text-muted-foreground">Self-Improvement</div>
+                <div className="text-3xl md:text-4xl font-black text-emerald-400">FREE</div>
+                <div className="text-xs text-muted-foreground">Exploration</div>
               </div>
               <div className="hidden md:block w-px h-10 bg-border/50" />
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-black text-amber-400">22</div>
-                <div className="text-xs text-muted-foreground">S-Tier Premium</div>
+                <div className="text-3xl md:text-4xl font-black text-cyan-400">7</div>
+                <div className="text-xs text-muted-foreground">Categories</div>
               </div>
               <div className="hidden md:block w-px h-10 bg-border/50" />
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-black text-emerald-400">$19</div>
-                <div className="text-xs text-muted-foreground">Starting Price</div>
+                <div className="text-3xl md:text-4xl font-black text-amber-400">Stateless</div>
+                <div className="text-xs text-muted-foreground">No Persistence</div>
               </div>
             </div>
           </div>
@@ -197,24 +187,6 @@ export default function CapabilitiesDepotPage() {
                   </SelectContent>
                 </Select>
 
-                {/* Pricing tier filter */}
-                <Select
-                  value={filters.pricingTier || 'all'}
-                  onValueChange={(v) => updateFilter('pricingTier', v === 'all' ? undefined : v as PricingTier)}
-                >
-                  <SelectTrigger className="w-full md:w-40 h-11 touch-manipulation">
-                    <SelectValue placeholder="Tier" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Tiers</SelectItem>
-                    {(Object.keys(PRICING_TIERS) as PricingTier[]).map((tier) => (
-                      <SelectItem key={tier} value={tier}>
-                        {PRICING_TIERS[tier].name} (${PRICING_TIERS[tier].minPrice}+)
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-
                 {/* Executor type filter */}
                 <Select
                   value={filters.executorType || 'all'}
@@ -243,7 +215,6 @@ export default function CapabilitiesDepotPage() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="downloads">Popular</SelectItem>
-                    <SelectItem value="price">Price</SelectItem>
                     <SelectItem value="lastUpdated">Recent</SelectItem>
                     <SelectItem value="name">Name</SelectItem>
                   </SelectContent>
@@ -268,9 +239,8 @@ export default function CapabilitiesDepotPage() {
                   Showing <span className="font-semibold text-foreground">{capabilities.length}</span> capabilities
                 </p>
                 <div className="flex items-center gap-2 flex-wrap">
-                  <Badge variant="outline" className="text-primary border-primary/30">
-                    <Package className="w-3 h-3 mr-1" />
-                    Licensed Artifacts
+                  <Badge variant="outline" className="bg-emerald-500/10 text-emerald-500 border-emerald-500/30">
+                    FREE
                   </Badge>
                   <button
                     onClick={() => setShowDisclaimer(true)}
@@ -297,42 +267,15 @@ export default function CapabilitiesDepotPage() {
           )}
         </section>
 
-        {/* Bottom CTA — Enterprise */}
-        {/* Store Footer */}
+        {/* Philosophy Footer */}
         <section className="border-t border-border/30 bg-muted/30">
           <div className="container mx-auto px-4 py-8 text-center">
-            <p className="text-sm text-muted-foreground max-w-2xl mx-auto whitespace-pre-line">
-              {STORE_FOOTER_TEXT}
+            <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
+              <strong>Capability</strong> = atomic, free, stateless. <strong>Synergy Pipeline</strong> = exploratory, free, non-durable. <strong>Engine</strong> = saved, governed, authoritative.
             </p>
           </div>
         </section>
 
-        {/* Enterprise CTA */}
-        <section className="border-t border-border/50 bg-card/50">
-          <div className="container mx-auto px-4 py-16 md:py-20 text-center">
-            <Badge className="mb-4 bg-muted text-muted-foreground border-border">
-              <Crown className="w-3 h-3 mr-1" />
-              Enterprise
-            </Badge>
-            <h2 className="text-2xl md:text-4xl font-bold mb-4">Need Autonomous or System-Wide Capabilities?</h2>
-            <p className="text-muted-foreground mb-8 max-w-xl mx-auto text-base md:text-lg">
-              Contact us for enterprise licensing, custom recursive development, or capability consulting.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button asChild size="lg" className="w-full sm:w-auto h-12 px-8 touch-manipulation">
-                <a href="mailto:PromptFluid@gmail.com">
-                  Contact Sales
-                  <ExternalLink className="w-4 h-4 ml-2" />
-                </a>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="w-full sm:w-auto h-12 px-8 touch-manipulation">
-                <a href="/support">
-                  Get Support
-                </a>
-              </Button>
-            </div>
-          </div>
-        </section>
       </main>
 
       <EnhancedFooter />

@@ -114,11 +114,13 @@ export function CmpsblNav() {
       name: "Platform",
       icon: Cpu,
       items: [
-        { name: "Capabilities Depot", href: "/capabilities", description: "136+ production-ready AI artifacts", icon: Sparkles, badge: "136+" },
+        { name: "Capability Depot", href: "/capabilities", description: "Atomic, stateless building blocks", icon: Sparkles, badge: "FREE" },
+        { name: "Template Alley", href: "/marketplace", description: "Starting points for learning & remixing", icon: Layers, badge: "FREE" },
+        { name: "Synergy Pipelines", href: "/synergies", description: "Exploratory orchestration patterns", icon: Zap, badge: "FREE" },
+        { name: "Engine Marketplace", href: "/engines", description: "First-party canonized orchestrations", icon: Terminal, badge: "OEM" },
         { name: "CodeLab", href: "/codelab", description: "Execute and test in real-time", icon: Terminal },
-        { name: "DevTools", href: "/devtools", description: "Diagnostics and developer utilities", icon: Terminal, badge: "Tools" },
+        { name: "DevTools", href: "/devtools", description: "Diagnostics and developer utilities", icon: Terminal },
         { name: "Developer Hub", href: "/developers", description: "SDKs, APIs, and integrations", icon: Code },
-        { name: "Marketplace", href: "/marketplace", description: "Pre-built templates & modules", icon: Layers },
         { name: "Gaming AI", href: "/gaming", description: "NPC engines and game logic", icon: Gamepad2 },
         ...(user ? [{ name: "Dashboard", href: "/os", description: "Your command center", icon: Cpu }] : []),
       ]
@@ -540,11 +542,11 @@ export function CmpsblNav() {
                 transition={{ delay: 0.15 }}
                 className="grid grid-cols-2 gap-2 mb-6"
               >
-                {[
-                  { name: "Capabilities", href: "/capabilities", icon: Sparkles },
-                  { name: "CodeLab", href: "/codelab", icon: Terminal },
-                  { name: "Documentation", href: "/documentation", icon: BookOpen },
-                  { name: "Developers", href: "/developers", icon: Code },
+              {[
+                  { name: "Capability Depot", href: "/capabilities", icon: Sparkles, badge: "FREE" },
+                  { name: "Template Alley", href: "/marketplace", icon: Layers, badge: "FREE" },
+                  { name: "Synergy Pipelines", href: "/synergies", icon: Zap, badge: "FREE" },
+                  { name: "Engine Marketplace", href: "/engines", icon: Terminal, badge: "OEM" },
                 ].map((item, idx) => (
                   <Link
                     key={item.href}
@@ -559,12 +561,24 @@ export function CmpsblNav() {
                       "w-5 h-5",
                       isActive(item.href) ? "text-primary" : "text-muted-foreground"
                     )} />
-                    <span className={cn(
-                      "text-sm font-semibold",
-                      isActive(item.href) && "text-primary"
-                    )}>
-                      {item.name}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className={cn(
+                        "text-sm font-semibold",
+                        isActive(item.href) && "text-primary"
+                      )}>
+                        {item.name}
+                      </span>
+                      {item.badge && (
+                        <span className={cn(
+                          "text-[9px] font-bold px-1.5 py-0.5 rounded uppercase",
+                          item.badge === "FREE" 
+                            ? "bg-emerald-500/10 text-emerald-500 border border-emerald-500/30" 
+                            : "bg-primary/10 text-primary border border-primary/30"
+                        )}>
+                          {item.badge}
+                        </span>
+                      )}
+                    </div>
                   </Link>
                 ))}
               </motion.div>
