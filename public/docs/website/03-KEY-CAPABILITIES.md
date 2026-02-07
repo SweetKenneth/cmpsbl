@@ -4,6 +4,37 @@
 
 ---
 
+## Quick Start: Persistent Memory
+
+The fastest way to experience CMPSBL capabilities is through **Persistent Memory** — add memory to any existing agent in under an hour:
+
+```typescript
+import { withPersistentMemory } from '@cmpsbl/memory';
+
+const agent = withPersistentMemory({
+  agentId: 'my-agent',
+  scope: 'project'
+});
+
+const context = await agent.getContext(userMessage);
+```
+
+[Persistent Memory Quickstart →](/docs/persistent-memory)
+
+---
+
+## Platform Tiers
+
+| Layer | Cost | Persistence | Purpose |
+|-------|------|-------------|---------|
+| **Capability Depot** | FREE | None | Atomic, stateless building blocks |
+| **Template Alley** | FREE | None | Starting points for learning |
+| **Synergy Pipelines** | FREE | None | Exploratory orchestration |
+| **Persistent Memory** | FREE | Bounded | Drop-in memory for agents |
+| **Engine Marketplace** | Paid | Governed | Production orchestrations |
+
+---
+
 ## Capability Matrix
 
 | Capability | Module | Description |
@@ -27,7 +58,7 @@
 Traditional AI systems operate as isolated modules. No coordination, no emergent intelligence.
 
 ### Our Solution
-**147 synergy pipelines** that orchestrate 2-5 modules together for emergent capabilities:
+**147 synergy pipelines** that orchestrate 2-5 modules together for emergent capabilities. All synergies are FREE to explore via [Synergy Pipelines](/synergies):
 
 | Category | Pipelines | Description |
 |----------|-----------|-------------|

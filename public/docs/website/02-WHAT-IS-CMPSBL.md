@@ -10,6 +10,16 @@ CMPSBL® (Composable) is the **operating system for AI applications**. Just like
 
 ---
 
+## Philosophy
+
+> **"Everything is free to explore. Engines are canon."**
+
+- **Explore freely:** Capability Depot, Template Alley, and Synergy Pipelines are FREE and non-durable
+- **Canonize when ready:** Engines are saved, governed, and authoritative
+- **Start with memory:** Add persistent memory to any existing agent in under an hour
+
+---
+
 ## The Problem We Solve
 
 ### Without CMPSBL
@@ -33,6 +43,48 @@ Every AI application today faces the same challenges:
 | **Provider Freedom** | Use any AI model, switch anytime |
 | **Built-in Security** | Enterprise-grade protection |
 | **Full Observability** | See every decision, every action |
+
+---
+
+## Quick Start: Persistent Memory
+
+The fastest way to start with CMPSBL is **Persistent Memory**. Add memory to any existing agent or React app in under an hour:
+
+```typescript
+import { withPersistentMemory } from '@cmpsbl/memory';
+
+const agent = withPersistentMemory({
+  agentId: 'my-support-agent',
+  scope: 'project'
+});
+
+// Your agent now remembers
+const context = await agent.getContext(userMessage);
+```
+
+**No rewrites. No new framework. Your agent just stops forgetting.**
+
+[Full Persistent Memory Quickstart →](/docs/persistent-memory)
+
+---
+
+## The Tiered Architecture
+
+### Free Exploration Layers
+
+| Layer | Purpose | Persistence |
+|-------|---------|-------------|
+| **Capability Depot** | Atomic, stateless building blocks | None |
+| **Template Alley** | Starting points for learning & remixing | None |
+| **Synergy Pipelines** | Exploratory orchestration patterns | None |
+| **Persistent Memory** | Drop-in memory for any agent | Bounded, safe defaults |
+
+### Canonized Layers
+
+| Layer | Purpose | Persistence |
+|-------|---------|-------------|
+| **Engine Marketplace (OEM)** | First-party hardened orchestrations | Full governance |
+| **Enterprise Substrate** | Self-hosted full control | Enterprise-grade |
 
 ---
 
@@ -81,12 +133,12 @@ The system proposes improvements to its own code. Human-approved changes are aut
 
 ## Who Is It For?
 
-| Audience | Use Case |
-|----------|----------|
-| **Startups** | Ship AI features 10x faster |
-| **Enterprises** | Compliance-ready AI infrastructure |
-| **Agencies** | Build AI products for clients |
-| **Researchers** | Experiment with memory and learning |
+| Audience | Use Case | Start Here |
+|----------|----------|------------|
+| **Agent Developers** | Add memory to existing agents | [Persistent Memory](/docs/persistent-memory) |
+| **Startups** | Ship AI features 10x faster | [Capability Depot](/capabilities) |
+| **Enterprises** | Compliance-ready AI infrastructure | [Engine Marketplace](/engines) |
+| **Researchers** | Experiment with memory and learning | [Synergy Pipelines](/synergies) |
 
 ---
 
@@ -100,28 +152,23 @@ The system proposes improvements to its own code. Human-approved changes are aut
 
 ---
 
-## Quick Start
+## Definitions
 
-```typescript
-import { substrate } from '@cmpsbl/sdk';
-
-// Store a memory
-await substrate.brain.remember('User prefers dark mode', 'preference');
-
-// Route to best AI provider
-const response = await substrate.nexus.route('Summarize this document');
-
-// Check system health
-const health = await substrate.vision.health();
-```
+| Term | Definition |
+|------|------------|
+| **Capability** | Atomic, free, stateless building block |
+| **Template** | Free starting point for learning and remixing |
+| **Synergy Pipeline** | Exploratory, free, non-durable orchestration |
+| **Engine** | Saved, governed, authoritative orchestration |
 
 ---
 
 ## Next Steps
 
+- [Persistent Memory Quickstart](/docs/persistent-memory) — Add memory in under an hour
 - [Key Capabilities](./03-KEY-CAPABILITIES.md) — Deep dive into features
 - [Use Cases](./04-USE-CASES.md) — Real-world applications
-- [Getting Started](./06-GETTING-STARTED.md) — Start building
+- [Getting Started](./06-GETTING-STARTED.md) — Full SDK setup
 
 ---
 
