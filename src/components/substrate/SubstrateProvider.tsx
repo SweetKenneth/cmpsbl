@@ -11,6 +11,7 @@
 
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback, useRef } from 'react';
 import type { SubstrateModule } from '@/lib/substrate';
+import { debugMode } from '@/lib/debug-mode';
 
 interface ModuleStatus {
   active: boolean;
@@ -113,13 +114,16 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
   }, [getSubstrate]);
 
   const refresh = useCallback(async () => {
+    // Respect debug mode kill-switch
+    if (!debugMode.allowModulePolling()) return;
+
     // Don't refresh if unmounted
     if (!mountedRef.current) return;
-    
+
     // Check all 14 substrate modules (13 core + cortex orchestrator)
     const moduleList: SubstrateModule[] = ['core', 'ripple', 'access', 'brain', 'decode', 'system', 'inclusive', 'defense', 'nexus', 'vision', 'dream', 'modernizer', 'integration', 'cortex'];
     const results = await Promise.all(moduleList.map(checkModule));
-    
+
     const newModules = moduleList.reduce((acc, module, index) => {
       acc[module] = results[index];
       return acc;
@@ -134,20 +138,26 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
 
   useEffect(() => {
     if (!autoInit) return;
-    
+
+    // Respect debug mode kill-switch
+    if (!debugMode.allowModulePolling()) return;
+
     // Prevent double-initialization in strict mode
     if (initializedRef.current) return;
     initializedRef.current = true;
     mountedRef.current = true;
-    
+
     // Defer initialization to avoid blocking main thread during initial render
     // Increased interval to 5 minutes to reduce polling overhead and improve stability
     const startRefreshInterval = () => {
       if (!mountedRef.current) return;
+      if (!debugMode.allowModulePolling()) return;
+
       refresh();
       // Only set up interval if tab is visible
       if (document.visibilityState === 'visible') {
         intervalRef.current = setInterval(() => {
+          if (!debugMode.allowModulePolling()) return;
           // Skip refresh if tab is hidden
           if (document.visibilityState !== 'visible') return;
           refresh();
