@@ -1,4 +1,4 @@
-import { Bell, Search, User, LogOut, Moon, Sun } from "lucide-react";
+import { Bell, Search, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -13,7 +13,6 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
-import { useTheme } from "next-themes";
 import { AdminBreadcrumb } from "./AdminBreadcrumb";
 import { RealtimeIndicator } from "./RealtimeIndicator";
 import { CascadeStatusWidget } from "./CascadeStatusWidget";
@@ -21,7 +20,6 @@ import { CascadeStatusWidget } from "./CascadeStatusWidget";
 export function AdminHeader() {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
-  const { theme, setTheme } = useTheme();
 
   const handleSignOut = async () => {
     await signOut();
@@ -47,20 +45,6 @@ export function AdminHeader() {
         <div className="flex items-center gap-2 flex-1 justify-end">
           {/* Realtime Connection Indicator */}
           <RealtimeIndicator />
-
-          {/* Theme Toggle */}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="hover:bg-muted/50"
-          >
-            {theme === "dark" ? (
-              <Sun className="w-5 h-5" />
-            ) : (
-              <Moon className="w-5 h-5" />
-            )}
-          </Button>
 
           {/* Notifications */}
           <DropdownMenu>

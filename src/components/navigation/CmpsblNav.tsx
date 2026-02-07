@@ -23,7 +23,6 @@ import {
   Cpu,
   MessageSquare,
   Moon,
-  Sun,
   Building2,
   Gamepad2,
   Sparkles,
@@ -35,7 +34,6 @@ import {
   Shield,
   ExternalLink,
 } from "lucide-react";
-import { useTheme } from "next-themes";
 import { useAuth } from "@/contexts/AuthContext";
 import { CmpsblLogo } from "@/components/CmpsblLogo";
 import { Button } from "@/components/ui/button";
@@ -65,12 +63,6 @@ export function CmpsblNav() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
-  const { resolvedTheme, setTheme } = useTheme();
-  
-  const isDark = resolvedTheme === "dark";
-  const toggleTheme = useCallback(() => {
-    setTheme(isDark ? "light" : "dark");
-  }, [isDark, setTheme]);
 
   // Desktop dropdown stability (prevents z-index / stacking-context issues)
   const headerRef = useRef<HTMLElement | null>(null);
@@ -399,21 +391,6 @@ export function CmpsblNav() {
 
             {/* ═══ Right Section ═══ */}
             <div className="flex items-center gap-2">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={toggleTheme}
-                className="h-11 w-11 rounded-xl border border-border bg-card hover:bg-secondary"
-                aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-                title={isDark ? "Switch to light mode" : "Switch to dark mode"}
-              >
-                {isDark ? (
-                  <Sun className="w-5 h-5" />
-                ) : (
-                  <Moon className="w-5 h-5" />
-                )}
-              </Button>
-
               {/* Desktop Auth Buttons */}
               <div className="hidden lg:flex items-center gap-2">
                 {user ? (

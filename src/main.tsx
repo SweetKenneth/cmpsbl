@@ -6,7 +6,8 @@ import "./index.css";
 createRoot(document.getElementById("root")!).render(
   <ThemeProvider
     attribute="class"
-    defaultTheme="light"
+    defaultTheme="system"
+    enableSystem
     storageKey="pf-theme"
     disableTransitionOnChange
   >
