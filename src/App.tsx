@@ -199,19 +199,14 @@ const App = () => {
     return cleanup;
   }, []);
 
-  // In Safe Mode, force-disable all background features (preview only).
+  // Manage debug mode: enable in Safe Mode, disable otherwise for full operation
   useEffect(() => {
-    if (!mobilePreviewSafeMode) return;
-
-    try {
-      const key = "__pf_mobile_preview_safe_mode_applied__";
-      if (sessionStorage.getItem(key) === "1") return;
-      sessionStorage.setItem(key, "1");
-    } catch {
-      // ignore
+    if (mobilePreviewSafeMode) {
+      debugMode.enable();
+    } else {
+      // Ensure all background processes run normally
+      debugMode.disable();
     }
-
-    debugMode.enable();
   }, [mobilePreviewSafeMode]);
 
   // Track render rate of the App root (diag mode only)
