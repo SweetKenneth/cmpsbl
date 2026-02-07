@@ -170,15 +170,18 @@ export default function Marketplace() {
       let priceId: string;
       let productId: string;
       let productName: string | undefined;
+      let unitAmountUsd: number | undefined; // Amount in USD (not cents)
 
       if (type === 'os') {
         priceId = MARKETPLACE_PRODUCTS.os_license.price_id;
         productId = MARKETPLACE_PRODUCTS.os_license.product_id;
-        productName = 'OS License';
+        productName = 'Substrate OS License';
+        unitAmountUsd = Math.round(MARKETPLACE_PRODUCTS.os_license.amount / 100);
       } else if (type === 'world_engine') {
         priceId = MARKETPLACE_PRODUCTS.world_engine.price_id;
         productId = MARKETPLACE_PRODUCTS.world_engine.product_id;
         productName = 'World Engine Complete';
+        unitAmountUsd = Math.round(MARKETPLACE_PRODUCTS.world_engine.amount / 100);
       } else if (type === 'bundle' && itemId) {
         // Find bundle by ID
         const bundle = BUNDLES.find(b => b.id === itemId);
@@ -188,6 +191,7 @@ export default function Marketplace() {
         priceId = bundle.price_id;
         productId = bundle.product_id;
         productName = bundle.name;
+        unitAmountUsd = bundle.bundlePrice ? Math.round(bundle.bundlePrice / 100) : undefined;
       } else if (type === 'stack' && itemId) {
         // Find stack by ID
         const stack = TEMPLATE_STACKS.find(s => s.id === itemId);
@@ -197,8 +201,9 @@ export default function Marketplace() {
         priceId = stack.price_id;
         productId = stack.product_id;
         productName = stack.name;
+        unitAmountUsd = stack.amount ? Math.round(stack.amount / 100) : undefined;
       } else if (type === 'agency' && itemId) {
-        // Find agency pack by ID
+        // Find agency pack by ID — agency is subscription, no unit_amount_usd needed
         const pack = AGENCY_PACKS.find(p => p.id === itemId);
         if (!pack?.product_id) {
           throw new Error('Agency pack pricing not configured');
@@ -208,11 +213,13 @@ export default function Marketplace() {
           : pack.price_id_monthly!;
         productId = pack.product_id;
         productName = pack.name;
+        // Agency packs are subscriptions — don't pass unit_amount_usd
       } else if (template) {
         const pricing = getTemplatePricing(template.difficulty, template.id);
         priceId = pricing.price_id;
         productId = pricing.product_id;
         productName = template.name;
+        unitAmountUsd = Math.round(pricing.amount / 100);
       } else {
         throw new Error("Invalid checkout parameters");
       }
@@ -223,6 +230,9 @@ export default function Marketplace() {
           price_id: priceId,
           product_id: productId,
           template_name: productName,
+          item_name: productName,
+          // Pass unit_amount_usd for one-time payments (enables price_data fallback)
+          ...(unitAmountUsd && type !== 'agency' ? { unit_amount_usd: unitAmountUsd } : {}),
         },
       });
 

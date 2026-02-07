@@ -82,6 +82,8 @@ export function AITemplateGenerator({ featured = false }: AITemplateGeneratorPro
           price_id: GENERATOR_PRICE_ID,
           product_id: GENERATOR_PRODUCT_ID,
           template_name: 'AI Template Generator - Random Unique Template',
+          item_name: 'AI Template Generator',
+          unit_amount_usd: Math.round(GENERATOR_PRICE / 100), // Pass USD amount for price_data fallback
         },
       });
 
