@@ -173,11 +173,13 @@ function formatPersonalityList(profiles: Array<{ id: string; name: string; descr
 }
 
 function formatPersonalityGet(
-  profile: { id: string; name: string; description: string; ambiguityTolerance: number; escalationThreshold: number },
-  state: { active: string; autoDetect: boolean; locked: boolean; lastDetected: string | null; detectionConfidence: number }
+  profile: { id: string; name: string; description: string; traits?: { directness: number; formality: number; verbosity: number; technicality: number } },
+  state: { active: string; autoDetect: boolean; locked: boolean; lastDetected: string | null; detectionConfidence: number; serverSynced?: boolean }
 ): string {
   const lockIcon = state.locked ? '🔒' : '🔓';
   const autoIcon = state.autoDetect ? '✓' : '✗';
+  const syncIcon = state.serverSynced ? '☁️' : '💾';
+  const traits = profile.traits || { directness: 0.5, formality: 0.5, verbosity: 0.5, technicality: 0.5 };
   
   return `
 ┌─ ACTIVE PERSONALITY ──────────────────────────────────────────┐
@@ -187,9 +189,9 @@ function formatPersonalityGet(
 │                                                               │
 │  ${lockIcon} Locked:      ${(state.locked ? 'Yes' : 'No').padEnd(10)} Auto-detect: ${autoIcon} ${state.autoDetect ? 'Enabled' : 'Disabled'}         │
 │  Last detected: ${(state.lastDetected || 'none').padEnd(12)} Confidence: ${(state.detectionConfidence * 100).toFixed(0)}%         │
+│  ${syncIcon} Server sync: ${state.serverSynced ? 'Synced' : 'Local only'}                                  │
 │                                                               │
-│  Ambiguity tolerance:   ${(profile.ambiguityTolerance * 100).toFixed(0)}%                                │
-│  Escalation threshold:  ${(profile.escalationThreshold * 100).toFixed(0)}%                                │
+│  Traits:  Direct ${(traits.directness * 100).toFixed(0)}% │ Formal ${(traits.formality * 100).toFixed(0)}% │ Verbose ${(traits.verbosity * 100).toFixed(0)}% │ Tech ${(traits.technicality * 100).toFixed(0)}% │
 │                                                               │
 └───────────────────────────────────────────────────────────────┘`;
 }
@@ -871,11 +873,11 @@ ${identityLine}│  Mode: ${roleDisplay}
       };
     } else if (base === 'decode.personality.set') {
       if (!args[0]) {
-        return { success: false, output: '▓ ERROR: Profile required\n  Usage: decode.personality.set <profile>\n  Profiles: neutral, technical, frustrated, exploratory, adversarial, playful, urgent' };
+        return { success: false, output: '▓ ERROR: Profile required\n  Usage: decode.personality.set <profile>\n  Profiles: neutral, technical, concise, friendly, admin, exploratory' };
       }
       const { personalityEngine } = await import('@/lib/substrate/decode');
       try {
-        const result = personalityEngine.set(args[0] as any);
+        const result = await personalityEngine.set(args[0] as any);
         return {
           success: true,
           output: `◈ Personality set: ${result.previous} → ${result.current}`,
@@ -934,7 +936,7 @@ ${identityLine}│  Mode: ${roleDisplay}
       };
     } else if (base === 'decode.personality.reset') {
       const { personalityEngine } = await import('@/lib/substrate/decode');
-      const result = personalityEngine.reset();
+      const result = await personalityEngine.reset();
       return {
         success: true,
         output: `◈ Personality reset to neutral. Auto-detection: enabled, Locked: false`,
