@@ -84,6 +84,7 @@ const SynergyPipelines = lazy(() => import("./pages/SynergyPipelines"));
 const SystemIntelligenceFeed = lazy(() => import("./pages/SystemIntelligenceFeed"));
 const ClearCache = lazy(() => import("./pages/ClearCache"));
 const CheckoutRedirect = lazy(() => import("./pages/CheckoutRedirect"));
+const EngineMarketplace = lazy(() => import("./pages/EngineMarketplace"));
 
 // Marketing / Info pages
 const About = lazy(() => import("./pages/About"));
@@ -261,6 +262,7 @@ const App = () => {
                         <Route path="/docs/substrate/capabilities" element={<SubstrateCapabilitiesDocs />} />
                         <Route path="/capabilities" element={<CapabilitiesDepot />} />
                         <Route path="/synergies" element={<SynergyPipelines />} />
+                        <Route path="/engines" element={<EngineMarketplace />} />
                         <Route path="/system-feed" element={<SystemIntelligenceFeed />} />
                         <Route path="/clear-cache" element={<ClearCache />} />
                         <Route path="/checkout/redirect" element={<CheckoutRedirect />} />

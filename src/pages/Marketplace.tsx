@@ -1,7 +1,7 @@
 /**
- * Marketplace — Fiverr/eBay-style browsable template store
- * Complete redesign with visual previews, search, and clear separation
- * v7.0.0 - Enhanced with Bundles, Stacks, and Agency surfaces
+ * Template Alley — FREE Exploration Layer
+ * Starting points for learning and remixing
+ * v8.0.0 - Free templates, no pricing, no checkout
  */
 
 import { useState, useMemo } from "react";
@@ -9,505 +9,134 @@ import { Link } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { toast } from "sonner";
-import { openCheckoutRedirect } from "@/lib/checkout/checkoutRedirect";
 import { TEMPLATES, type Template } from "@/data/templates";
-import { MARKETPLACE_PRODUCTS, getTemplatePricing } from "@/config/marketplace-products";
-import { BUNDLES, TEMPLATE_STACKS, AGENCY_PACKS } from "@/config/marketplace-bundles";
-import { useMarketplaceUser } from "@/hooks/useMarketplaceUser";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Code, Grid3X3, LayoutList, Sparkles, Search, Info } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-// Marketplace components
-import { MarketplaceHeader } from "@/components/marketplace/MarketplaceHeader";
-import { MarketplaceSidebar } from "@/components/marketplace/MarketplaceSidebar";
-import { TemplateCard } from "@/components/marketplace/TemplateCard";
-import { TemplatePreviewModal } from "@/components/marketplace/TemplatePreviewModal";
-import { FeaturedSection } from "@/components/marketplace/FeaturedSection";
-import { MobileFilters } from "@/components/marketplace/MobileFilters";
-import { PopularSection } from "@/components/marketplace/PopularSection";
-import { UserPurchases } from "@/components/marketplace/UserPurchases";
-import { MarketplaceAuthPrompt } from "@/components/marketplace/MarketplaceAuthPrompt";
-import { MailingListSignup } from "@/components/marketplace/MailingListSignup";
-import { AITemplateGenerator } from "@/components/marketplace/AITemplateGenerator";
-import { BundlesSection } from "@/components/marketplace/BundlesSection";
-import { AgencySection } from "@/components/marketplace/AgencySection";
-import { SubstrateCapabilities } from "@/components/marketplace/SubstrateCapabilities";
-
-import {
-  Code, Server, Grid3X3, LayoutList, Sparkles, Package, Building2
-} from "lucide-react";
-
-type SortOption = 'featured' | 'price-low' | 'price-high' | 'name';
+type SortOption = 'featured' | 'name' | 'category';
 type ViewMode = 'grid' | 'list';
 
-export default function Marketplace() {
-  // Search & Filters
+export default function TemplateAlley() {
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
-  const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([19, 499]);
   const [sortBy, setSortBy] = useState<SortOption>('featured');
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
-  
-  // Modal state
-  const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(null);
-  const [previewOpen, setPreviewOpen] = useState(false);
-  
-  const [isCheckingOut, setIsCheckingOut] = useState(false);
-  
-  // User personalization
-  const { trackView, trackPreview, isLoggedIn, isLiked, toggleLike, savedTemplates } = useMarketplaceUser();
 
-  // Filter templates
   const filteredTemplates = useMemo(() => {
     let results = TEMPLATES.filter((template) => {
-      // Search filter
       if (searchQuery) {
         const query = searchQuery.toLowerCase();
         const matches = 
           template.name.toLowerCase().includes(query) ||
           template.description.toLowerCase().includes(query) ||
-          template.features.some(f => f.toLowerCase().includes(query)) ||
           template.category.toLowerCase().includes(query);
         if (!matches) return false;
       }
-      
-      // Category filter
       if (categoryFilter && template.category !== categoryFilter) return false;
-      
-      // Difficulty filter
-      if (selectedDifficulties.length > 0 && !selectedDifficulties.includes(template.difficulty)) {
-        return false;
-      }
-      
-      // Price range filter
-      const pricing = getTemplatePricing(template.difficulty, template.id);
-      const priceInDollars = pricing.amount / 100;
-      if (priceInDollars < priceRange[0] || priceInDollars > priceRange[1]) {
-        return false;
-      }
-      
       return true;
     });
 
-    // Sort
-    switch (sortBy) {
-      case 'price-low':
-        results.sort((a, b) => {
-          const priceA = getTemplatePricing(a.difficulty, a.id).amount;
-          const priceB = getTemplatePricing(b.difficulty, b.id).amount;
-          return priceA - priceB;
-        });
-        break;
-      case 'price-high':
-        results.sort((a, b) => {
-          const priceA = getTemplatePricing(a.difficulty, a.id).amount;
-          const priceB = getTemplatePricing(b.difficulty, b.id).amount;
-          return priceB - priceA;
-        });
-        break;
-      case 'name':
-        results.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-      case 'featured':
-      default:
-        // Keep original order (featured first in data)
-        break;
-    }
+    if (sortBy === 'name') results.sort((a, b) => a.name.localeCompare(b.name));
+    if (sortBy === 'category') results.sort((a, b) => a.category.localeCompare(b.category));
 
     return results;
-  }, [searchQuery, categoryFilter, selectedDifficulties, priceRange, sortBy]);
+  }, [searchQuery, categoryFilter, sortBy]);
 
-  // Category counts
   const categoryCounts = useMemo(() => {
     const counts: Record<string, number> = {};
-    TEMPLATES.forEach(t => {
-      counts[t.category] = (counts[t.category] || 0) + 1;
-    });
+    TEMPLATES.forEach(t => { counts[t.category] = (counts[t.category] || 0) + 1; });
     return counts;
   }, []);
 
-  // Active filter count for mobile badge
-  const activeFilterCount = useMemo(() => {
-    let count = 0;
-    if (categoryFilter) count++;
-    count += selectedDifficulties.length;
-    if (priceRange[0] > 19 || priceRange[1] < 499) count++;
-    return count;
-  }, [categoryFilter, selectedDifficulties, priceRange]);
-
-  // Handlers
-  const handleDifficultyToggle = (difficulty: string) => {
-    setSelectedDifficulties(prev => 
-      prev.includes(difficulty) 
-        ? prev.filter(d => d !== difficulty)
-        : [...prev, difficulty]
-    );
-  };
-
-  const clearFilters = () => {
-    setCategoryFilter(null);
-    setSelectedDifficulties([]);
-    setPriceRange([19, 499]);
-    setSearchQuery("");
-  };
-
-  const handlePreview = (template: Template) => {
-    setSelectedTemplate(template);
-    setPreviewOpen(true);
-    trackPreview(template.id);
-  };
-
-  const handleCheckout = (type: 'os' | 'world_engine' | 'template' | 'bundle' | 'stack' | 'agency', template?: Template, itemId?: string, billingCycle?: 'monthly' | 'annual') => {
-    setIsCheckingOut(true);
-
-    try {
-      let priceId: string;
-      let productId: string;
-      let productName: string | undefined;
-      let unitAmountUsd: number | undefined; // Amount in USD (not cents)
-
-      if (type === 'os') {
-        priceId = MARKETPLACE_PRODUCTS.os_license.price_id;
-        productId = MARKETPLACE_PRODUCTS.os_license.product_id;
-        productName = 'Substrate OS License';
-        unitAmountUsd = Math.round(MARKETPLACE_PRODUCTS.os_license.amount / 100);
-      } else if (type === 'world_engine') {
-        priceId = MARKETPLACE_PRODUCTS.world_engine.price_id;
-        productId = MARKETPLACE_PRODUCTS.world_engine.product_id;
-        productName = 'World Engine Complete';
-        unitAmountUsd = Math.round(MARKETPLACE_PRODUCTS.world_engine.amount / 100);
-      } else if (type === 'bundle' && itemId) {
-        const bundle = BUNDLES.find(b => b.id === itemId);
-        if (!bundle?.price_id || !bundle?.product_id) {
-          throw new Error('Bundle pricing not configured');
-        }
-        priceId = bundle.price_id;
-        productId = bundle.product_id;
-        productName = bundle.name;
-        unitAmountUsd = bundle.bundlePrice ? Math.round(bundle.bundlePrice / 100) : undefined;
-      } else if (type === 'stack' && itemId) {
-        const stack = TEMPLATE_STACKS.find(s => s.id === itemId);
-        if (!stack?.price_id || !stack?.product_id) {
-          throw new Error('Stack pricing not configured');
-        }
-        priceId = stack.price_id;
-        productId = stack.product_id;
-        productName = stack.name;
-        unitAmountUsd = stack.amount ? Math.round(stack.amount / 100) : undefined;
-      } else if (type === 'agency' && itemId) {
-        const pack = AGENCY_PACKS.find(p => p.id === itemId);
-        if (!pack?.product_id) {
-          throw new Error('Agency pack pricing not configured');
-        }
-        priceId = billingCycle === 'annual' && pack.price_id_annual
-          ? pack.price_id_annual
-          : pack.price_id_monthly!;
-        productId = pack.product_id;
-        productName = pack.name;
-      } else if (template) {
-        const pricing = getTemplatePricing(template.difficulty, template.id);
-        priceId = pricing.price_id;
-        productId = pricing.product_id;
-        productName = template.name;
-        unitAmountUsd = Math.round(pricing.amount / 100);
-      } else {
-        throw new Error("Invalid checkout parameters");
-      }
-
-      openCheckoutRedirect({
-        fn: 'marketplace-checkout',
-        body: {
-          product_type: type,
-          price_id: priceId,
-          product_id: productId,
-          template_name: productName,
-          item_name: productName,
-          ...(unitAmountUsd && type !== 'agency' ? { unit_amount_usd: unitAmountUsd } : {}),
-        },
-      });
-
-      toast.success('Opening secure checkout…');
-      setPreviewOpen(false);
-    } catch (error) {
-      console.error('Checkout error:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      toast.error(`Checkout failed: ${errorMessage}`);
-    } finally {
-      setIsCheckingOut(false);
-    }
-  };
-
-  const handleBundleCheckout = (bundleId: string) => {
-    // Determine if it's a stack or bundle
-    const isStack = TEMPLATE_STACKS.some(s => s.id === bundleId);
-    handleCheckout(isStack ? 'stack' : 'bundle', undefined, bundleId);
-  };
-
-  const handleAgencyCheckout = (packId: string, billingCycle: 'monthly' | 'annual') => {
-    handleCheckout('agency', undefined, packId, billingCycle);
-  };
+  const categories = Object.keys(categoryCounts);
 
   return (
     <>
       <SEO
-        title={`AI Template Marketplace | ${TEMPLATES.length}+ Drift-Prevention Templates | CMPSBL`}
-        description={`Browse ${TEMPLATES.length}+ production-ready AI templates with memory persistence, drift prevention, and self-improvement. From $27. Build AI that remembers.`}
-        keywords={["AI templates", "chatbot templates", "AI memory", "drift prevention", "LLM templates", "cognitive OS"]}
+        title={`Template Alley (FREE) | ${TEMPLATES.length}+ AI Templates | CMPSBL`}
+        description={`Explore ${TEMPLATES.length}+ free AI templates for learning and remixing.`}
+        keywords={["AI templates", "free templates", "cognitive templates"]}
       />
       
       <div className="min-h-screen bg-background flex flex-col">
         <PublicNav />
 
-        {/* Header with Search */}
-        <MarketplaceHeader
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-          resultCount={filteredTemplates.length}
-        />
-
-        {/* AI Template Generator - Featured prominently */}
-        <AITemplateGenerator featured />
-
-        {/* Substrate Capabilities - Expandable showcase */}
-        <SubstrateCapabilities compact />
-
-        {/* Live Lab CTA */}
-        <section className="container mx-auto px-4 py-6">
-          <Link
-            to="/lab"
-            className="block p-6 rounded-xl border border-cyan-500/30 bg-gradient-to-r from-cyan-500/5 via-violet-500/5 to-purple-500/5 hover:border-cyan-500/50 transition-all group"
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-violet-600 flex items-center justify-center">
-                  <Sparkles className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-lg flex items-center gap-2">
-                    See Templates in Action
-                    <Badge className="bg-cyan-500/20 text-cyan-400 border-cyan-500/30">Live</Badge>
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    Try our Experimentation Lab — 3 live demos with full source code exposed
-                  </p>
-                </div>
-              </div>
-              <Code className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+        {/* FREE Hero */}
+        <section className="py-16 md:py-24 border-b border-border/50">
+          <div className="container mx-auto px-4 text-center">
+            <Badge className="mb-4">FREE</Badge>
+            <h1 className="text-3xl md:text-5xl font-bold mb-4">Template Alley</h1>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
+              Templates are free starting points designed for learning and remixing.
+            </p>
+            <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+              <Info className="w-4 h-4" />
+              <span>Templates cannot be promoted to engines.</span>
             </div>
-          </Link>
+          </div>
         </section>
 
-        {/* Featured Products */}
-        <FeaturedSection
-          onBuyOS={() => handleCheckout('os')}
-          onBuyWorldEngine={() => handleCheckout('world_engine')}
-          isLoading={isCheckingOut}
-        />
-
-        {/* Auth Prompt for non-logged-in users */}
-        <MarketplaceAuthPrompt />
-
-        {/* User Purchases & Recommendations */}
-        <UserPurchases
-          onPreview={handlePreview}
-          onBuy={(t) => handleCheckout('template', t)}
-          isLoading={isCheckingOut}
-        />
-
-        {/* Popular/Trending Section */}
-        <PopularSection
-          onPreview={handlePreview}
-          onBuy={(t) => handleCheckout('template', t)}
-          isLoading={isCheckingOut}
-        />
-
-        {/* Bundles & Stacks Section */}
-        <BundlesSection
-          onBuyBundle={handleBundleCheckout}
-          isLoading={isCheckingOut}
-        />
-
-        {/* Agency Licensing Section */}
-        <AgencySection
-          onCheckout={handleAgencyCheckout}
-          isLoading={isCheckingOut}
-        />
-
-        {/* Main Content */}
-        <main className="flex-1 container mx-auto px-4 py-8">
-          <Tabs defaultValue="templates" className="space-y-6">
-            {/* Tab Header with Controls */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <TabsList>
-                <TabsTrigger value="templates" className="gap-2">
-                  <Code className="w-4 h-4" />
-                  Templates
-                  <Badge variant="secondary" className="ml-1 h-5">{TEMPLATES.length}</Badge>
-                </TabsTrigger>
-                <TabsTrigger value="bundles" className="gap-2">
-                  <Package className="w-4 h-4" />
-                  Bundles
-                </TabsTrigger>
-                <TabsTrigger value="licensing" className="gap-2">
-                  <Building2 className="w-4 h-4" />
-                  Licensing
-                </TabsTrigger>
-              </TabsList>
-
-              <div className="flex items-center gap-2">
-                {/* Mobile Filters */}
-                <MobileFilters
-                  selectedCategory={categoryFilter}
-                  onCategoryChange={setCategoryFilter}
-                  selectedDifficulties={selectedDifficulties}
-                  onDifficultyToggle={handleDifficultyToggle}
-                  onClearFilters={clearFilters}
-                  activeFilterCount={activeFilterCount}
-                />
-
-                {/* Sort */}
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value as SortOption)}
-                  className="h-9 px-3 rounded-md border bg-background text-sm"
-                >
-                  <option value="featured">Featured</option>
-                  <option value="price-low">Price: Low to High</option>
-                  <option value="price-high">Price: High to Low</option>
-                  <option value="name">Name A-Z</option>
+        {/* Search */}
+        <section className="sticky top-16 z-40 border-b border-border/50 bg-background/95 backdrop-blur-lg">
+          <div className="container mx-auto px-4 py-4">
+            <div className="flex flex-col gap-3 md:flex-row md:gap-4">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input placeholder="Search templates..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="pl-10 h-11" />
+              </div>
+              <div className="flex gap-2">
+                <select value={categoryFilter || ''} onChange={(e) => setCategoryFilter(e.target.value || null)} className="h-11 px-3 rounded-md border bg-background text-sm">
+                  <option value="">All Categories</option>
+                  {categories.map((cat) => (<option key={cat} value={cat}>{cat} ({categoryCounts[cat]})</option>))}
                 </select>
-
-                {/* View Toggle */}
-                <div className="hidden sm:flex items-center border rounded-md">
-                  <Button
-                    variant={viewMode === 'grid' ? 'secondary' : 'ghost'}
-                    size="icon"
-                    className="h-9 w-9 rounded-r-none"
-                    onClick={() => setViewMode('grid')}
-                  >
-                    <Grid3X3 className="w-4 h-4" />
-                  </Button>
-                  <Button
-                    variant={viewMode === 'list' ? 'secondary' : 'ghost'}
-                    size="icon"
-                    className="h-9 w-9 rounded-l-none"
-                    onClick={() => setViewMode('list')}
-                  >
-                    <LayoutList className="w-4 h-4" />
-                  </Button>
-                </div>
+                <select value={sortBy} onChange={(e) => setSortBy(e.target.value as SortOption)} className="h-11 px-3 rounded-md border bg-background text-sm">
+                  <option value="featured">Featured</option>
+                  <option value="name">Name A-Z</option>
+                  <option value="category">Category</option>
+                </select>
               </div>
             </div>
+          </div>
+        </section>
 
-            {/* Templates Tab */}
-            <TabsContent value="templates" className="mt-0">
-              <div className="flex gap-8">
-                {/* Sidebar (Desktop) */}
-                <MarketplaceSidebar
-                  selectedCategory={categoryFilter}
-                  onCategoryChange={setCategoryFilter}
-                  selectedDifficulties={selectedDifficulties}
-                  onDifficultyToggle={handleDifficultyToggle}
-                  priceRange={priceRange}
-                  onPriceRangeChange={setPriceRange}
-                  categoryCounts={categoryCounts}
-                  totalCount={TEMPLATES.length}
-                  onClearFilters={clearFilters}
-                />
-
-                {/* Template Grid */}
-                <div className="flex-1">
-                  {/* Results info */}
-                  <div className="flex items-center justify-between mb-4">
-                    <p className="text-sm text-muted-foreground">
-                      Showing <span className="font-medium text-foreground">{filteredTemplates.length}</span> of {TEMPLATES.length} templates
-                    </p>
-                    {activeFilterCount > 0 && (
-                      <Button variant="ghost" size="sm" onClick={clearFilters} className="text-xs">
-                        Clear filters ({activeFilterCount})
-                      </Button>
-                    )}
+        {/* Grid */}
+        <main className="flex-1 container mx-auto px-4 py-8">
+          <p className="text-sm text-muted-foreground mb-6">Showing {filteredTemplates.length} of {TEMPLATES.length} templates</p>
+          {filteredTemplates.length > 0 ? (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {filteredTemplates.map((template) => (
+                <div key={template.id} className="p-5 rounded-xl border border-border bg-card hover:border-primary/30 transition-all">
+                  <div className="flex items-start justify-between mb-3">
+                    <Badge variant="outline" className="text-xs capitalize">{template.category}</Badge>
+                    <Badge className="text-[10px]">FREE</Badge>
                   </div>
-
-                  {filteredTemplates.length > 0 ? (
-                    <div className={
-                      viewMode === 'grid'
-                        ? "grid gap-6 sm:grid-cols-2 xl:grid-cols-3"
-                        : "space-y-4"
-                    }>
-                      {filteredTemplates.map((template, index) => (
-                        <TemplateCard
-                          key={template.id}
-                          template={template}
-                          onPreview={() => handlePreview(template)}
-                          onBuy={() => handleCheckout('template', template)}
-                          isLoading={isCheckingOut}
-                          featured={index < 3 && !searchQuery && !categoryFilter}
-                          isLiked={isLiked(template.id)}
-                          onToggleLike={() => toggleLike(template.id)}
-                        />
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-16">
-                      <Sparkles className="w-12 h-12 mx-auto mb-4 text-muted-foreground/50" />
-                      <h3 className="text-lg font-medium mb-2">No templates found</h3>
-                      <p className="text-muted-foreground mb-4">
-                        Try adjusting your search or filters
-                      </p>
-                      <Button variant="outline" onClick={clearFilters}>
-                        Clear all filters
-                      </Button>
-                    </div>
-                  )}
+                  <h3 className="font-semibold text-lg mb-2">{template.name}</h3>
+                  <p className="text-sm text-muted-foreground line-clamp-2">{template.description}</p>
                 </div>
-              </div>
-            </TabsContent>
-
-            {/* Bundles Tab */}
-            <TabsContent value="bundles">
-              <BundlesSection
-                onBuyBundle={handleBundleCheckout}
-                isLoading={isCheckingOut}
-              />
-            </TabsContent>
-
-            {/* Licensing Tab */}
-            <TabsContent value="licensing">
-              <AgencySection
-                onCheckout={handleAgencyCheckout}
-                isLoading={isCheckingOut}
-              />
-              <FeaturedSection
-                onBuyOS={() => handleCheckout('os')}
-                onBuyWorldEngine={() => handleCheckout('world_engine')}
-                isLoading={isCheckingOut}
-              />
-            </TabsContent>
-          </Tabs>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-16">
+              <Sparkles className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
+              <h3 className="text-lg font-semibold mb-2">No templates found</h3>
+            </div>
+          )}
         </main>
 
-        {/* Mailing List Signup */}
-        <section className="container mx-auto px-4 py-12">
-          <div className="max-w-xl mx-auto">
-            <MailingListSignup />
+        {/* CTA */}
+        <section className="border-t border-border/50 bg-card/50">
+          <div className="container mx-auto px-4 py-12 text-center">
+            <h2 className="text-2xl font-bold mb-4">Ready for Production?</h2>
+            <p className="text-muted-foreground mb-6">Explore our Engine Marketplace for canonized orchestrations.</p>
+            <Button asChild size="lg"><Link to="/engines"><Code className="w-4 h-4 mr-2" />View Engine Marketplace</Link></Button>
           </div>
         </section>
 
         <EnhancedFooter />
       </div>
-
-      {/* Preview Modal */}
-      <TemplatePreviewModal
-        template={selectedTemplate}
-        open={previewOpen}
-        onOpenChange={setPreviewOpen}
-        onBuy={(t) => handleCheckout('template', t)}
-        isLoading={isCheckingOut}
-      />
     </>
   );
 }
