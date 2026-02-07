@@ -1,9 +1,8 @@
 /**
  * Synergy Pipelines Discovery Page
- * v7.5.3 — Showcasing 147 cross-module pipelines with 22 S-tier + 27 discoveries
+ * v8.0.0 — Showcasing 147 cross-module pipelines with code snippets
  * 
- * A unique exploration interface visualizing how standalone modules
- * combine to create emergent capabilities beyond their individual functions
+ * FREE exploration layer with runnable code examples
  */
 
 import { useState, useMemo } from "react";
@@ -36,9 +35,14 @@ import {
   AlertTriangle,
   Check,
   LucideIcon,
+  Copy,
+  Code,
+  Terminal,
+  Unlock,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SYNERGY_DEFINITIONS } from "@/lib/capabilities/synergies/registry";
+import { toast } from "sonner";
 
 // Category colors and icons
 const categoryConfig: Record<string, { 
@@ -108,6 +112,31 @@ const moduleColors: Record<string, string> = {
   INTEGRATION: "bg-lime-500/20 text-lime-300 border-lime-500/40",
   INCLUSIVE: "bg-yellow-500/20 text-yellow-300 border-yellow-500/40",
 };
+
+// Generate code snippet for a synergy
+function generateSynergyCode(synergy: typeof SYNERGY_DEFINITIONS[0]): string {
+  const modules = synergy.modules.filter(m => m.required).map(m => m.name.toLowerCase());
+  const primaryModule = synergy.modules.find(m => m.role === 'primary')?.name.toLowerCase() || modules[0];
+  
+  return `import { substrate } from './lib/substrate';
+
+// ${synergy.name}
+// ${synergy.description}
+async function ${synergy.id.replace(/-/g, '_')}(input: string) {
+  // Step 1: ${synergy.modules[0]?.name || 'Primary'} processing
+  const result = await substrate.synergy.run('${synergy.id}', {
+    input,
+    modules: [${modules.map(m => `'${m}'`).join(', ')}],
+    options: { dryRun: false }
+  });
+  
+  return result.data;
+}
+
+// Usage
+const output = await ${synergy.id.replace(/-/g, '_')}("your input here");
+console.log('Result:', output);`;
+}
 
 function HeroSection() {
   return (
@@ -532,37 +561,108 @@ function SynergyExplorer() {
                       </span>
                     </div>
                     
-                    {/* Expanded content */}
+                    {/* Expanded content with CODE SNIPPETS */}
                     {isExpanded && (
                       <motion.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
-                        className="mt-6 pt-6 border-t border-border/50"
+                        className="mt-6 pt-6 border-t border-border/50 space-y-6"
                       >
-                        <h4 className="font-medium mb-3">Module Roles</h4>
-                        <div className="grid sm:grid-cols-2 gap-3">
-                          {synergy.modules.map(mod => (
-                            <div 
-                              key={mod.name}
-                              className={cn(
-                                "p-3 rounded-lg border",
-                                moduleColors[mod.name] || "bg-muted"
-                              )}
-                            >
-                              <div className="flex items-center justify-between mb-1">
-                                <span className="font-medium">{mod.name}</span>
-                                <Badge variant="outline" className="text-[10px]">
-                                  {mod.role}
-                                </Badge>
-                              </div>
-                              <p className="text-xs text-muted-foreground">
-                                {mod.required ? "Required for execution" : "Optional enhancement"}
-                              </p>
-                            </div>
-                          ))}
+                        {/* What this does */}
+                        <div>
+                          <h4 className="font-medium mb-2 flex items-center gap-2">
+                            <Sparkles className="w-4 h-4 text-primary" />
+                            What this does
+                          </h4>
+                          <p className="text-sm text-muted-foreground">
+                            {synergy.description}
+                          </p>
                         </div>
                         
-                        <div className="flex gap-3 mt-6">
+                        {/* When to use */}
+                        <div>
+                          <h4 className="font-medium mb-2 flex items-center gap-2">
+                            <Clock className="w-4 h-4 text-cyan-400" />
+                            When to use
+                          </h4>
+                          <p className="text-sm text-muted-foreground">
+                            Use when you need {synergy.modules.filter(m => m.required).map(m => m.name).join(' + ')} to work together.
+                            {synergy.risk === 'low' ? ' Safe for production.' : synergy.risk === 'medium' ? ' Test thoroughly before production.' : ' Requires careful monitoring.'}
+                          </p>
+                        </div>
+                        
+                        {/* Code Snippet */}
+                        <div>
+                          <div className="flex items-center justify-between mb-2">
+                            <h4 className="font-medium flex items-center gap-2">
+                              <Code className="w-4 h-4 text-emerald-400" />
+                              Code Snippet
+                            </h4>
+                            <Badge variant="outline" className="text-xs bg-emerald-500/10 text-emerald-400 border-emerald-500/30">
+                              <Combine className="w-3 h-3 mr-1" />
+                              Composable
+                            </Badge>
+                          </div>
+                          <div className="relative">
+                            <pre className="bg-muted/80 p-4 rounded-lg font-mono text-xs overflow-x-auto border border-border/50">
+                              <code>{generateSynergyCode(synergy)}</code>
+                            </pre>
+                            <Button
+                              variant="secondary"
+                              size="sm"
+                              className="absolute top-2 right-2 gap-1"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                navigator.clipboard.writeText(generateSynergyCode(synergy));
+                                toast.success("Code copied!");
+                              }}
+                            >
+                              <Copy className="w-3 h-3" />
+                              Copy
+                            </Button>
+                          </div>
+                        </div>
+                        
+                        {/* CLI Command */}
+                        <div>
+                          <h4 className="font-medium mb-2 flex items-center gap-2">
+                            <Terminal className="w-4 h-4 text-violet-400" />
+                            CLI Command
+                          </h4>
+                          <div className="relative">
+                            <pre className="bg-muted/80 p-3 rounded-lg font-mono text-xs overflow-x-auto border border-border/50">
+                              <code>synergy.run {synergy.id} --input '&#123;"query": "your input"&#125;'</code>
+                            </pre>
+                          </div>
+                        </div>
+                        
+                        {/* Module Roles */}
+                        <div>
+                          <h4 className="font-medium mb-3">Module Roles</h4>
+                          <div className="grid sm:grid-cols-2 gap-3">
+                            {synergy.modules.map(mod => (
+                              <div 
+                                key={mod.name}
+                                className={cn(
+                                  "p-3 rounded-lg border",
+                                  moduleColors[mod.name] || "bg-muted"
+                                )}
+                              >
+                                <div className="flex items-center justify-between mb-1">
+                                  <span className="font-medium">{mod.name}</span>
+                                  <Badge variant="outline" className="text-[10px]">
+                                    {mod.role}
+                                  </Badge>
+                                </div>
+                                <p className="text-xs text-muted-foreground">
+                                  {mod.required ? "Required for execution" : "Optional enhancement"}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        
+                        <div className="flex gap-3">
                           <Button size="sm" className="gap-2" asChild>
                             <Link to="/os">
                               <Play className="w-3.5 h-3.5" />
