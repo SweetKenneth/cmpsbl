@@ -1,11 +1,11 @@
 /**
- * Engines Membership Hero — Cinematic Visualization
+ * Engines Membership Hero — Mobile-First Cinematic Visualization
  * Showcases the value prop: All dev tools FREE, Engines are the product
  * Unique, premium, completely distinctive to CMPSBL
  */
 
 import React, { useState, useEffect, memo, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { 
   Sparkles, 
@@ -23,13 +23,13 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-// Free tool items with staggered reveal
+// Free tool items
 const freeTools = [
-  { name: "Templates", icon: Package, count: "112+" },
-  { name: "Pipelines", icon: Layers, count: "147" },
-  { name: "Capabilities", icon: Zap, count: "269" },
-  { name: "Memory", icon: Brain, count: "∞" },
-  { name: "CodeLab", icon: Code, count: "Live" },
+  { name: "Templates", icon: Package, count: "112+", color: "text-cyan-500" },
+  { name: "Pipelines", icon: Layers, count: "147", color: "text-violet-500" },
+  { name: "Capabilities", icon: Zap, count: "269", color: "text-amber-500" },
+  { name: "Memory", icon: Brain, count: "∞", color: "text-rose-500" },
+  { name: "CodeLab", icon: Code, count: "Live", color: "text-emerald-500" },
 ];
 
 // Premium engine tiers
@@ -40,7 +40,7 @@ const engineTiers = [
   { name: "Enterprise", price: "Custom", engines: "All+", color: "from-amber-400 to-amber-600" },
 ];
 
-// Floating particle
+// Floating particle with reduced motion for mobile
 const FloatingParticle = memo(function FloatingParticle({ 
   delay, 
   duration, 
@@ -56,18 +56,17 @@ const FloatingParticle = memo(function FloatingParticle({
 }) {
   return (
     <motion.div
-      className="absolute rounded-full"
+      className="absolute rounded-full opacity-40"
       style={{
         width: size,
         height: size,
         left: `${x}%`,
-        bottom: 0,
+        bottom: "20%",
         background: `hsl(${hue} 70% 60%)`,
-        boxShadow: `0 0 ${size * 3}px hsl(${hue} 70% 60% / 0.5)`,
       }}
       animate={{
-        y: [0, -300, -500],
-        opacity: [0, 0.8, 0],
+        y: [0, -80, -160],
+        opacity: [0, 0.5, 0],
         scale: [0.5, 1, 0.3],
       }}
       transition={{
@@ -80,253 +79,169 @@ const FloatingParticle = memo(function FloatingParticle({
   );
 });
 
-// Orbiting ring around the central element
-function OrbitRing({ 
-  radius, 
-  duration, 
-  reverse = false,
-  color,
-  size = 6,
-}: { 
-  radius: number; 
-  duration: number; 
-  reverse?: boolean;
-  color: string;
-  size?: number;
-}) {
-  return (
-    <motion.div
-      className="absolute inset-0 flex items-center justify-center"
-      animate={{ rotate: reverse ? -360 : 360 }}
-      transition={{ duration, repeat: Infinity, ease: "linear" }}
-    >
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          width: size,
-          height: size,
-          top: "50%",
-          left: "50%",
-          marginTop: -radius,
-          marginLeft: -size / 2,
-          background: `linear-gradient(135deg, ${color}, transparent)`,
-          boxShadow: `0 0 12px ${color}`,
-        }}
-      />
-    </motion.div>
-  );
-}
-
-// Free tools floating display
-function FreeToolsOrbit() {
+// Mobile-optimized free tools grid - no overlap, all visible
+function FreeToolsSection() {
   const [activeIndex, setActiveIndex] = useState(0);
   
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % freeTools.length);
-    }, 2000);
+    }, 2500);
     return () => clearInterval(interval);
   }, []);
   
   return (
-    <div className="relative w-full aspect-square max-w-[280px] sm:max-w-[320px] md:max-w-[360px]">
-      {/* Central "FREE" core with glow */}
-      <div className="absolute inset-0 flex items-center justify-center">
+    <div className="relative w-full">
+      {/* Central FREE badge */}
+      <div className="flex justify-center mb-5">
         <motion.div
-          className="relative z-10 w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex flex-col items-center justify-center shadow-2xl shadow-emerald-500/40"
+          className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex flex-col items-center justify-center shadow-xl shadow-emerald-500/30"
           animate={{
-            scale: [1, 1.03, 1],
-            boxShadow: [
-              "0 20px 50px rgba(52, 211, 153, 0.3)",
-              "0 25px 60px rgba(52, 211, 153, 0.45)",
-              "0 20px 50px rgba(52, 211, 153, 0.3)",
-            ],
+            scale: [1, 1.02, 1],
           }}
           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
         >
-          <Gift className="w-8 h-8 sm:w-10 sm:h-10 text-white mb-1" />
-          <span className="text-white font-black text-lg sm:text-xl tracking-tight">FREE</span>
-          <span className="text-emerald-100 text-[10px] sm:text-xs font-medium">Dev Tools</span>
+          <Gift className="w-7 h-7 sm:w-8 sm:h-8 text-white mb-0.5" />
+          <span className="text-white font-black text-base sm:text-lg tracking-tight">FREE</span>
+          <span className="text-emerald-100 text-[9px] sm:text-[10px] font-medium">Dev Tools</span>
         </motion.div>
-        
-        {/* Orbiting rings */}
-        <OrbitRing radius={70} duration={15} color="hsl(185 70% 50%)" size={4} />
-        <OrbitRing radius={90} duration={20} reverse color="hsl(280 70% 55%)" size={5} />
-        <OrbitRing radius={110} duration={25} color="hsl(145 70% 50%)" size={4} />
       </div>
       
-      {/* Floating tool icons */}
-      {freeTools.map((tool, index) => {
-        const angle = (index * 72 - 90) * (Math.PI / 180);
-        const radius = 110;
-        const x = 50 + Math.cos(angle) * (radius / 1.8);
-        const y = 50 + Math.sin(angle) * (radius / 1.8);
-        const isActive = index === activeIndex;
-        const Icon = tool.icon;
+      {/* Tools grid - 3 on top, 2 centered below */}
+      <div className="space-y-2">
+        {/* Top row - 3 items */}
+        <div className="flex justify-center gap-2">
+          {freeTools.slice(0, 3).map((tool, index) => {
+            const Icon = tool.icon;
+            const isActive = index === activeIndex;
+            
+            return (
+              <motion.div
+                key={tool.name}
+                className={cn(
+                  "flex flex-col items-center gap-1 p-2.5 sm:p-3 rounded-xl border backdrop-blur-sm transition-all duration-300 min-w-[70px] sm:min-w-[80px]",
+                  isActive 
+                    ? "bg-card border-primary/50 shadow-md" 
+                    : "bg-card/80 border-border/40"
+                )}
+                animate={{ scale: isActive ? 1.05 : 1 }}
+                transition={{ type: "spring", stiffness: 400, damping: 20 }}
+              >
+                <div className={cn(
+                  "w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center transition-all",
+                  isActive ? "bg-primary/15" : "bg-muted/40"
+                )}>
+                  <Icon className={cn(
+                    "w-4 h-4 sm:w-5 sm:h-5 transition-colors",
+                    isActive ? tool.color : "text-muted-foreground"
+                  )} />
+                </div>
+                <span className="text-[10px] sm:text-xs font-semibold text-foreground">{tool.name}</span>
+                <span className={cn("text-[9px] sm:text-[10px] font-bold", tool.color)}>{tool.count}</span>
+              </motion.div>
+            );
+          })}
+        </div>
         
-        return (
-          <motion.div
-            key={tool.name}
-            className="absolute z-20"
-            style={{
-              left: `${x}%`,
-              top: `${y}%`,
-              transform: "translate(-50%, -50%)",
-            }}
-            animate={{
-              scale: isActive ? 1.15 : 1,
-              y: isActive ? -4 : 0,
-            }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
-            <motion.div
-              className={cn(
-                "flex flex-col items-center gap-1 p-2 sm:p-3 rounded-xl border backdrop-blur-sm transition-all duration-300",
-                isActive 
-                  ? "bg-card border-primary/50 shadow-lg shadow-primary/20" 
-                  : "bg-card/70 border-border/50"
-              )}
-              animate={{
-                boxShadow: isActive 
-                  ? "0 8px 30px rgba(139, 92, 246, 0.25)" 
-                  : "0 4px 12px rgba(0,0,0,0.1)"
-              }}
-            >
-              <div className={cn(
-                "w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center transition-all",
-                isActive ? "bg-primary/20" : "bg-muted/50"
-              )}>
-                <Icon className={cn(
-                  "w-4 h-4 sm:w-5 sm:h-5 transition-colors",
-                  isActive ? "text-primary" : "text-muted-foreground"
-                )} />
-              </div>
-              <span className="text-[10px] sm:text-xs font-semibold text-foreground">{tool.name}</span>
-              <span className="text-[9px] sm:text-[10px] font-bold text-emerald-500">{tool.count}</span>
-            </motion.div>
-          </motion.div>
-        );
-      })}
-      
-      {/* Connection lines */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none">
-        <defs>
-          <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="hsl(var(--primary) / 0.2)" />
-            <stop offset="50%" stopColor="hsl(var(--primary) / 0.4)" />
-            <stop offset="100%" stopColor="hsl(var(--primary) / 0.2)" />
-          </linearGradient>
-        </defs>
-        {freeTools.map((_, index) => {
-          const angle = (index * 72 - 90) * (Math.PI / 180);
-          const radius = 75;
-          const x2 = 50 + Math.cos(angle) * (radius / 1.8);
-          const y2 = 50 + Math.sin(angle) * (radius / 1.8);
-          
-          return (
-            <motion.line
-              key={index}
-              x1="50%"
-              y1="50%"
-              x2={`${x2}%`}
-              y2={`${y2}%`}
-              stroke="url(#lineGradient)"
-              strokeWidth="1"
-              strokeDasharray="4 4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: index === activeIndex ? 0.8 : 0.3 }}
-              transition={{ duration: 0.3 }}
-            />
-          );
-        })}
-      </svg>
+        {/* Bottom row - 2 items centered */}
+        <div className="flex justify-center gap-2">
+          {freeTools.slice(3).map((tool, index) => {
+            const Icon = tool.icon;
+            const realIndex = index + 3;
+            const isActive = realIndex === activeIndex;
+            
+            return (
+              <motion.div
+                key={tool.name}
+                className={cn(
+                  "flex flex-col items-center gap-1 p-2.5 sm:p-3 rounded-xl border backdrop-blur-sm transition-all duration-300 min-w-[70px] sm:min-w-[80px]",
+                  isActive 
+                    ? "bg-card border-primary/50 shadow-md" 
+                    : "bg-card/80 border-border/40"
+                )}
+                animate={{ scale: isActive ? 1.05 : 1 }}
+                transition={{ type: "spring", stiffness: 400, damping: 20 }}
+              >
+                <div className={cn(
+                  "w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center transition-all",
+                  isActive ? "bg-primary/15" : "bg-muted/40"
+                )}>
+                  <Icon className={cn(
+                    "w-4 h-4 sm:w-5 sm:h-5 transition-colors",
+                    isActive ? tool.color : "text-muted-foreground"
+                  )} />
+                </div>
+                <span className="text-[10px] sm:text-xs font-semibold text-foreground">{tool.name}</span>
+                <span className={cn("text-[9px] sm:text-[10px] font-bold", tool.color)}>{tool.count}</span>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }
 
 // Premium engines showcase
 function EnginesShowcase() {
-  const [hoveredTier, setHoveredTier] = useState<number | null>(null);
-  
   return (
     <div className="relative w-full">
       {/* Section header */}
-      <div className="text-center mb-4 sm:mb-6">
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-violet-500/10 to-primary/10 border border-primary/30 mb-3">
-          <Crown className="w-4 h-4 text-primary" />
-          <span className="text-xs sm:text-sm font-bold text-foreground">Engine Subscriptions</span>
+      <div className="text-center mb-4">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-violet-500/10 to-primary/10 border border-primary/30 mb-2">
+          <Crown className="w-3.5 h-3.5 text-primary" />
+          <span className="text-xs font-bold text-foreground">Engine Subscriptions</span>
         </div>
-        <p className="text-xs sm:text-sm text-muted-foreground max-w-xs mx-auto">
+        <p className="text-[11px] sm:text-xs text-muted-foreground">
           The only products. Everything else is free.
         </p>
       </div>
       
-      {/* Tier cards */}
-      <div className="grid grid-cols-2 gap-2 sm:gap-3">
+      {/* Tier cards - 2x2 grid */}
+      <div className="grid grid-cols-2 gap-2">
         {engineTiers.map((tier, index) => (
           <motion.div
             key={tier.name}
             className={cn(
-              "relative p-3 sm:p-4 rounded-xl border transition-all duration-300 cursor-pointer overflow-hidden",
+              "relative p-3 rounded-xl border transition-all duration-300 overflow-hidden",
               tier.featured 
-                ? "bg-gradient-to-br from-violet-500/15 to-primary/10 border-primary/50 ring-1 ring-primary/20" 
-                : "bg-card/80 border-border/50 hover:border-primary/30"
+                ? "bg-gradient-to-br from-violet-500/10 to-primary/5 border-primary/40" 
+                : "bg-card/80 border-border/40"
             )}
-            onMouseEnter={() => setHoveredTier(index)}
-            onMouseLeave={() => setHoveredTier(null)}
-            whileHover={{ scale: 1.02, y: -2 }}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
+            transition={{ delay: index * 0.08 }}
           >
             {tier.featured && (
-              <div className="absolute top-0 right-0 px-2 py-0.5 bg-primary text-primary-foreground text-[9px] font-bold rounded-bl-lg">
+              <div className="absolute top-0 right-0 px-1.5 py-0.5 bg-primary text-primary-foreground text-[8px] font-bold rounded-bl-lg">
                 POPULAR
               </div>
             )}
             
-            {/* Glow effect on hover */}
-            <motion.div
-              className={cn(
-                "absolute inset-0 opacity-0 pointer-events-none rounded-xl",
-                `bg-gradient-to-br ${tier.color}`
-              )}
-              animate={{ opacity: hoveredTier === index ? 0.1 : 0 }}
-              transition={{ duration: 0.3 }}
-            />
-            
             <div className="relative z-10">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs sm:text-sm font-bold text-foreground">{tier.name}</span>
-                <motion.div
-                  animate={{ 
-                    rotate: hoveredTier === index ? 360 : 0,
-                    scale: hoveredTier === index ? 1.2 : 1,
-                  }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {tier.price === "Free" ? (
-                    <Unlock className="w-3.5 h-3.5 text-emerald-500" />
-                  ) : (
-                    <Lock className="w-3.5 h-3.5 text-muted-foreground" />
-                  )}
-                </motion.div>
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-xs font-bold text-foreground">{tier.name}</span>
+                {tier.price === "Free" ? (
+                  <Unlock className="w-3 h-3 text-emerald-500" />
+                ) : (
+                  <Lock className="w-3 h-3 text-muted-foreground" />
+                )}
               </div>
               
-              <div className="flex items-baseline gap-1 mb-1">
+              <div className="flex items-baseline gap-0.5 mb-1">
                 <span className={cn(
-                  "text-lg sm:text-xl font-black bg-clip-text text-transparent",
+                  "text-base sm:text-lg font-black bg-clip-text text-transparent",
                   `bg-gradient-to-r ${tier.color}`
                 )}>
                   {tier.price}
                 </span>
                 {tier.price !== "Free" && tier.price !== "Custom" && (
-                  <span className="text-[10px] text-muted-foreground">/mo</span>
+                  <span className="text-[9px] text-muted-foreground">/mo</span>
                 )}
               </div>
               
-              <div className="flex items-center gap-1 text-[10px] sm:text-xs text-muted-foreground">
-                <Sparkles className="w-3 h-3" />
+              <div className="flex items-center gap-1 text-[9px] sm:text-[10px] text-muted-foreground">
+                <Sparkles className="w-2.5 h-2.5" />
                 <span>{tier.engines} engines</span>
               </div>
             </div>
@@ -338,15 +253,15 @@ function EnginesShowcase() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
-        className="mt-4 text-center"
+        transition={{ delay: 0.4 }}
+        className="mt-4 flex justify-center"
       >
         <Link 
           to="/engines"
-          className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-primary text-primary-foreground font-semibold text-xs sm:text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/30 hover:shadow-primary/40 group"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-primary-foreground font-semibold text-xs hover:bg-primary/90 transition-all shadow-lg shadow-primary/25 group"
         >
           View All 62 Engines
-          <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+          <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
         </Link>
       </motion.div>
     </div>
@@ -354,63 +269,58 @@ function EnginesShowcase() {
 }
 
 export function EnginesMembershipHero() {
-  // Floating particles
+  // Reduced particles for mobile performance
   const particles = useMemo(() => 
-    Array.from({ length: 12 }).map((_, i) => ({
-      delay: i * 0.5,
-      duration: 4 + Math.random() * 3,
-      size: 3 + Math.random() * 4,
-      x: 5 + Math.random() * 90,
-      hue: [145, 185, 280, 340][Math.floor(Math.random() * 4)],
+    Array.from({ length: 6 }).map((_, i) => ({
+      delay: i * 0.8,
+      duration: 5 + Math.random() * 2,
+      size: 2 + Math.random() * 3,
+      x: 10 + Math.random() * 80,
+      hue: [145, 185, 280][Math.floor(Math.random() * 3)],
     })), []
   );
   
   return (
-    <div className="relative w-full max-w-md mx-auto lg:mx-0">
-      {/* Ambient glow */}
-      <motion.div
-        className="absolute inset-0 rounded-3xl blur-3xl"
+    <div className="relative w-full max-w-sm sm:max-w-md mx-auto px-2">
+      {/* Subtle ambient glow - not too heavy for mobile */}
+      <div
+        className="absolute inset-0 rounded-3xl blur-2xl opacity-30 pointer-events-none"
         style={{
-          background: "radial-gradient(circle at 30% 30%, hsl(145 70% 50% / 0.15), transparent 50%), radial-gradient(circle at 70% 70%, hsl(280 70% 50% / 0.15), transparent 50%)",
+          background: "radial-gradient(ellipse at center, hsl(145 60% 50% / 0.2), transparent 70%)",
         }}
-        animate={{
-          opacity: [0.5, 0.8, 0.5],
-        }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
       />
       
       {/* Floating particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-3xl">
         {particles.map((p, i) => (
           <FloatingParticle key={i} {...p} />
         ))}
       </div>
       
-      {/* Main card container */}
-      <div className="relative p-4 sm:p-6 rounded-3xl border border-border/50 bg-gradient-to-br from-card/90 via-card/70 to-card/90 backdrop-blur-xl shadow-2xl shadow-black/10">
+      {/* Main card container - properly padded for mobile */}
+      <div className="relative p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-border/40 bg-gradient-to-br from-card/95 via-card/80 to-card/95 backdrop-blur-lg shadow-xl">
         {/* Animated border gradient */}
         <div 
-          className="absolute inset-0 rounded-3xl p-px bg-gradient-to-br from-emerald-500/30 via-transparent to-violet-500/30 pointer-events-none" 
+          className="absolute inset-0 rounded-2xl sm:rounded-3xl p-px bg-gradient-to-br from-emerald-500/20 via-transparent to-violet-500/20 pointer-events-none" 
           style={{ 
             mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)", 
-            maskComposite: "xor" 
+            maskComposite: "xor",
+            WebkitMaskComposite: "xor",
           }} 
         />
         
-        <div className="relative z-10 space-y-6 sm:space-y-8">
-          {/* Free tools orbit */}
-          <div className="flex justify-center">
-            <FreeToolsOrbit />
-          </div>
+        <div className="relative z-10 space-y-5">
+          {/* Free tools section */}
+          <FreeToolsSection />
           
           {/* Divider */}
-          <div className="relative flex items-center gap-4">
-            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-muted/50 border border-border/50">
+          <div className="relative flex items-center gap-3">
+            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border/60 to-transparent" />
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20">
               <Check className="w-3 h-3 text-emerald-500" />
-              <span className="text-[10px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-wider">All Free</span>
+              <span className="text-[9px] sm:text-[10px] font-bold text-emerald-600 uppercase tracking-wide">All Free</span>
             </div>
-            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border/60 to-transparent" />
           </div>
           
           {/* Engines showcase */}
