@@ -4,31 +4,85 @@
 
 ---
 
-## Prerequisites
+## Choose Your Path
+
+| Goal | Time | Recommended Path |
+|------|------|------------------|
+| **Add memory to existing agent** | < 1 hour | [Persistent Memory Quickstart](/docs/persistent-memory) |
+| **Explore capabilities** | Free | [Capability Depot](/capabilities) |
+| **Build from templates** | Free | [Template Alley](/marketplace) |
+| **Test orchestration patterns** | Free | [Synergy Pipelines](/synergies) |
+| **Deploy production engines** | Subscription | [Engine Marketplace](/engines) |
+
+---
+
+## Path 1: Persistent Memory (Recommended)
+
+Add persistent memory to any existing agent or React app in under an hour. No rewrites. No new framework.
+
+### Step 1: Install
+
+```bash
+npm install @cmpsbl/memory
+```
+
+### Step 2: Wrap Your Agent
+
+```typescript
+import { withPersistentMemory } from '@cmpsbl/memory';
+
+const agent = withPersistentMemory({
+  agentId: 'my-support-agent',
+  scope: 'project'  // or 'session'
+});
+```
+
+### Step 3: Use Memory-Aware Responses
+
+```typescript
+// Get context for any input
+const context = await agent.getContext(userMessage);
+
+// Use context in your LLM prompt
+const prompt = userMessage + context.contextString;
+```
+
+### React Hook
+
+```typescript
+import { usePersistentAgent } from '@cmpsbl/memory';
+
+function ChatComponent() {
+  const { respond, remember, isLoading } = usePersistentAgent('my-agent');
+  
+  const handleSend = async (message: string) => {
+    const context = await respond(message);
+    // Use context.contextString in your LLM call
+  };
+}
+```
+
+[Full Persistent Memory Docs →](/docs/persistent-memory)
+
+---
+
+## Path 2: Full SDK Installation
+
+For production deployments using the complete substrate.
+
+### Prerequisites
 
 - Node.js 18+ 
 - API keys for at least one AI provider (OpenAI, Anthropic, etc.)
 - CMPSBL license (Developer tier or higher)
 
----
-
-## Installation
-
-### Option 1: SDK (Recommended)
+### Installation
 
 ```bash
 npm install @cmpsbl/sdk
 ```
 
-### Option 2: Direct API
-
-No installation needed — use REST API directly.
-
----
-
-## Quick Setup
-
-### 1. Initialize the Client
+### Initialize the Client
 
 ```typescript
 import { Substrate } from '@cmpsbl/sdk';
@@ -42,84 +96,87 @@ const substrate = new Substrate({
 });
 ```
 
-### 2. Store Your First Memory
+### Store Your First Memory
 
 ```typescript
-// Remember something
 await substrate.brain.remember({
   content: 'User prefers dark mode',
   category: 'preference',
   confidence: 0.95
 });
 
-// Recall later
 const memories = await substrate.brain.recall('user preferences');
-// Returns: [{ content: 'User prefers dark mode', ... }]
 ```
 
-### 3. Route an AI Request
+### Route an AI Request
 
 ```typescript
-// Route to best available provider
 const response = await substrate.nexus.route({
   prompt: 'Summarize this document',
   context: await substrate.brain.recall('document context'),
-  optimization: 'quality' // or 'speed' or 'cost'
+  optimization: 'quality'
 });
-```
-
-### 4. Check System Health
-
-```typescript
-const health = await substrate.vision.health();
-// Returns: { status: 'healthy', uptime: '99.9%', ... }
 ```
 
 ---
 
-## Core Patterns
+## Free Exploration Layers
 
-### Memory Pattern
+### Capability Depot (FREE)
 
-```typescript
-// Store memories with categories
-await substrate.brain.remember({
-  content: 'Customer Alex prefers email communication',
-  category: 'customer_preference',
-  tags: ['customer:alex', 'channel:email']
-});
-
-// Semantic recall
-const preferences = await substrate.brain.recall('how does Alex prefer to be contacted?');
-```
-
-### Routing Pattern
+Atomic, stateless building blocks for exploration:
 
 ```typescript
-// Simple routing
-const response = await substrate.nexus.route('Hello, how are you?');
-
-// Advanced routing with context
-const response = await substrate.nexus.route({
-  prompt: 'Analyze this quarterly report',
-  context: memories,
-  model: 'gpt-4', // optional: force specific model
-  fallback: ['claude-3', 'gemini-pro'] // fallback chain
-});
+// Capabilities are free, non-governed, non-persistent
+const capability = await depot.load('semantic-analysis');
+const result = await capability.execute(input);
+// Results are ephemeral - nothing is saved
 ```
 
-### Learning Pattern
+[Explore Capabilities →](/capabilities)
+
+### Template Alley (FREE)
+
+Starting points for learning and remixing:
 
 ```typescript
-// Record an interaction outcome
-await substrate.dream.feedback({
-  interactionId: '123',
-  outcome: 'success',
-  notes: 'Customer was satisfied with response'
-});
-
-// Learning happens automatically during dream cycles
+// Templates are free, for learning only
+const template = await templates.preview('customer-support');
+// Fork, modify, experiment - nothing is canonized
 ```
+
+[Browse Templates →](/marketplace)
+
+### Synergy Pipelines (FREE)
+
+Exploratory orchestration patterns:
+
+```typescript
+// Execute synergy pipelines ephemerally
+const result = await cortex.synergy.execute('smart-recall', {
+  query: 'user preferences'
+});
+// Inspection and execution only - no save, no versioning
+```
+
+[Try Synergies →](/synergies)
+
+---
+
+## Production Engines
+
+When you need governed, reliable orchestration, upgrade to Engines:
+
+| Feature | Free Layers | Engines |
+|---------|-------------|---------|
+| Execution | ✓ | ✓ |
+| Inspection | ✓ | ✓ |
+| Persistence | ✗ | ✓ |
+| Versioning | ✗ | ✓ |
+| Governance | ✗ | ✓ |
+| SLA Guarantees | ✗ | ✓ |
+
+[Engine Marketplace →](/engines)
 
 ---
 
@@ -154,8 +211,6 @@ await substrate.dream.feedback({
 
 ## REST API
 
-If you prefer direct API access:
-
 ```bash
 # Remember something
 curl -X POST https://api.cmpsbl.com/v1/brain/remember \
@@ -177,7 +232,7 @@ curl -X POST https://api.cmpsbl.com/v1/nexus/route \
 ### Environment Variables
 
 ```env
-# Required
+# Required for SDK
 CMPSBL_API_KEY=your_license_key
 
 # AI Providers (at least one required)
@@ -190,41 +245,16 @@ CMPSBL_LOG_LEVEL=info
 CMPSBL_MEMORY_TIER=hot
 ```
 
-### Advanced Configuration
-
-```typescript
-const substrate = new Substrate({
-  apiKey: process.env.CMPSBL_API_KEY,
-  
-  // Memory settings
-  memory: {
-    hotRetention: '7d',
-    compressionThreshold: 0.8,
-  },
-  
-  // Routing preferences
-  routing: {
-    defaultOptimization: 'balanced',
-    cacheTTL: '1h',
-  },
-  
-  // Security settings
-  security: {
-    rateLimit: 1000, // per minute
-    auditLog: true,
-  }
-});
-```
-
 ---
 
 ## Next Steps
 
 | Goal | Resource |
 |------|----------|
-| Understand capabilities | [Key Capabilities](./03-KEY-CAPABILITIES.md) |
+| Add memory to existing agent | [Persistent Memory](/docs/persistent-memory) |
+| Explore capabilities | [Capability Depot](/capabilities) |
+| Understand architecture | [Architecture](./05-ARCHITECTURE.md) |
 | See real examples | [Use Cases](./04-USE-CASES.md) |
-| Deep technical dive | [Architecture](./05-ARCHITECTURE.md) |
 | Choose a plan | [Licensing](./07-LICENSING.md) |
 
 ---

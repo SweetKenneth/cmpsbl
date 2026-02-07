@@ -1,18 +1,148 @@
-# Marketplace & Platform Features
+# Platform Features
 
-**CMPSBL® — Build, Buy, and Deploy Cognitive Infrastructure**
+**CMPSBL® — Explore Free, Canonize When Ready**
+
+---
+
+## Philosophy
+
+> **"Everything is free to explore. Engines are canon."**
+
+CMPSBL provides a tiered platform where exploration is free and unlimited, while production-grade orchestration is available through canonized engines.
 
 ---
 
 ## Overview
 
-The CMPSBL platform provides three integrated marketplaces for building and deploying cognitive applications:
+| Feature | Access | Persistence | Purpose |
+|---------|--------|-------------|---------|
+| **Capability Depot** | FREE | None | Atomic, stateless building blocks |
+| **Template Alley** | FREE | None | Starting points for learning & remixing |
+| **Synergy Pipelines** | FREE | None | Exploratory orchestration patterns |
+| **Persistent Memory** | FREE | Bounded | Drop-in memory for any agent |
+| **CodeLab** | Free tier | Session | Live development environment |
+| **Engine Marketplace (OEM)** | Subscription | Governed | First-party canonized orchestrations |
 
-| Feature | Purpose | Access |
-|---------|---------|--------|
-| **CodeLab** | Live development environment | Free tier available |
-| **Template Marketplace** | Pre-built cognitive patterns | Browse & purchase |
-| **Capabilities Depot** | Downloadable cognitive artifacts | Licensed downloads |
+---
+
+## FREE Layers
+
+### Capability Depot (FREE)
+
+**Atomic, stateless building blocks provided free for exploration.**
+
+Capabilities are the smallest units of cognitive functionality. They execute and return results without persistence or governance.
+
+| Principle | Description |
+|-----------|-------------|
+| **Stateless** | No memory between calls |
+| **Atomic** | Single-purpose functions |
+| **Free** | No cost, no limits |
+| **Exploratory** | For learning and prototyping |
+
+**What you can do:**
+- Execute any capability instantly
+- Inspect results and behavior
+- Chain capabilities manually
+- Remix and experiment
+
+**What you cannot do:**
+- Save capability configurations
+- Version capability usage
+- Govern capability access
+- Share orchestrations
+
+[Explore Capabilities →](/capabilities)
+
+---
+
+### Template Alley (FREE)
+
+**Free starting points designed for learning and remixing.**
+
+Templates are pre-built patterns that demonstrate cognitive architectures. Fork them, modify them, learn from them.
+
+| Tier | Templates | Purpose |
+|------|-----------|---------|
+| **Starter** | 30+ | Basic patterns |
+| **Pro** | 45+ | Advanced workflows |
+| **Elite** | 34+ | Complex orchestrations |
+
+**What you can do:**
+- Browse all templates
+- Preview code and structure
+- Fork for local experimentation
+- Learn from implementations
+
+**What you cannot do:**
+- Canonize templates as engines
+- Promote to governed state
+- Version template modifications
+
+[Browse Templates →](/marketplace)
+
+---
+
+### Synergy Pipelines (FREE)
+
+**Exploratory orchestration patterns demonstrating powerful cross-module coordination.**
+
+Synergy Pipelines are the 147 cross-module orchestrations that combine 2-5 modules for emergent capabilities.
+
+| Category | Pipelines | Description |
+|----------|-----------|-------------|
+| **Intelligence** | 27 | Cognitive fusion, causal inference |
+| **Security** | 21 | Threat modeling, attack mapping |
+| **Resilience** | 21 | Predictive healing, maintenance |
+| **Optimization** | 20 | Cost routing, resource planning |
+| **Accessibility** | 17 | Universal design, profiling |
+| **Automation** | 16 | Autonomous repair, evolution |
+| **Orchestration** | 13 | Multi-agent coordination |
+
+**What you can do:**
+- Execute any pipeline
+- Inspect execution results
+- Dry-run (no side effects)
+- Chain pipelines manually
+
+**What you cannot do:**
+- Save pipeline configurations
+- Register custom pipelines
+- Version pipeline runs
+- Promote to engines
+
+[Try Synergies →](/synergies)
+
+---
+
+### Persistent Memory (FREE)
+
+**Drop-in memory for any existing agent or React app.**
+
+Add persistent memory to your agent in under an hour without rebuilding your architecture.
+
+```typescript
+import { withPersistentMemory } from '@cmpsbl/memory';
+
+const agent = withPersistentMemory({
+  agentId: 'my-agent',
+  scope: 'project'
+});
+```
+
+**What's included free:**
+- Bounded persistent memory
+- Safe recall defaults
+- Per-agent isolation
+- Graceful degradation
+
+**What requires engines:**
+- Recall optimization
+- Long-horizon identity
+- Cross-agent continuity
+- Memory audits
+
+[Persistent Memory Quickstart →](/docs/persistent-memory)
 
 ---
 
@@ -20,7 +150,7 @@ The CMPSBL platform provides three integrated marketplaces for building and depl
 
 ### What is CodeLab?
 
-CodeLab is a **live, execution-first development environment** for building cognitive applications. Unlike demos or sandboxes, CodeLab runs real schedulers and cognition—no mock mode.
+CodeLab is a **live, execution-first development environment** for building cognitive applications. Unlike demos or sandboxes, CodeLab runs real schedulers and cognition.
 
 ### Key Features
 
@@ -28,218 +158,95 @@ CodeLab is a **live, execution-first development environment** for building cogn
 |---------|-------------|
 | **Live Execution** | Real substrate execution, not simulations |
 | **Visual Builder** | Drag-and-drop workflow creation |
-| **Instant Deploy** | Push to production in one click |
 | **Full SDK Access** | All 14 modules available |
 | **Synergy Testing** | Test cross-module pipelines |
 
-### Who It's For
+### Tiers
 
-- **Developers** building cognitive applications
-- **Researchers** exploring AI orchestration
-- **Teams** evaluating CMPSBL for their stack
+| Tier | Features |
+|------|----------|
+| **Free** | Limited executions, session persistence |
+| **Pro** | Unlimited executions, project persistence |
+| **Enterprise** | Team collaboration, audit logs |
 
-### Getting Started
-
-```typescript
-// CodeLab provides full SDK access
-import { Substrate } from '@cmpsbl/sdk';
-
-const substrate = new Substrate({
-  projectId: 'your-project'
-});
-
-// Access any module
-const memory = await substrate.brain.recall('context');
-const analysis = await substrate.decode.understand(input);
-```
+[Open CodeLab →](/codelab)
 
 ---
 
-## Template Marketplace
+## Engine Marketplace (OEM)
 
-### What is the Template Marketplace?
+### What is the Engine Marketplace?
 
-The Template Marketplace offers **109+ production-ready cognitive patterns** that compress weeks of engineering into instant deployment.
+The Engine Marketplace (OEM) offers **first-party, canonized orchestrations** hardened for reliable production execution.
 
-### Template Tiers
+Engines are the governed, versioned, authoritative form of orchestration. When you need guarantees, you need engines.
 
-| Tier | Templates | Value |
-|------|-----------|-------|
-| **Starter** | 30+ | 2-8 hours saved |
-| **Pro** | 45+ | 8-24 hours saved |
-| **Elite** | 34+ | 24-64+ hours saved |
+### Engine vs Free Layers
 
-### Template Categories
+| Feature | Free Layers | Engines |
+|---------|-------------|---------|
+| Execution | ✓ | ✓ |
+| Inspection | ✓ | ✓ |
+| Persistence | ✗ | ✓ |
+| Versioning | ✗ | ✓ |
+| Governance | ✗ | ✓ |
+| SLA Guarantees | ✗ | ✓ |
+| Audit Trail | ✗ | ✓ |
 
-| Category | Examples |
-|----------|----------|
-| **Intelligence** | Decision engines, analysis pipelines |
-| **Automation** | Workflow builders, task orchestrators |
-| **Security** | Threat detection, compliance monitors |
-| **Accessibility** | WCAG auditors, adaptive content |
-| **Integration** | Multi-provider routers, API managers |
+### Available Engines
 
-### Unique Identity System
+| Category | Engines | Description |
+|----------|---------|-------------|
+| **Memory** | 5+ | Recall optimization, long-horizon identity |
+| **Routing** | 8+ | Multi-provider coordination, fallback chains |
+| **Security** | 6+ | Threat detection, compliance automation |
+| **Automation** | 10+ | Workflow orchestration, task automation |
 
-Every template features:
-- **Enchanted Title**: Evocative, deterministic naming
-- **Rarity Badge**: Common to Mythic classification
-- **Difficulty Rating**: Engineering complexity indicator
-- **ROI Estimate**: Hours saved metric
+### Pricing
 
-### Template Structure
+| Tier | Price | Features |
+|------|-------|----------|
+| **Professional** | $99/mo | Core engines, standard support |
+| **Enterprise** | Custom | All engines, SLA, dedicated support |
 
-```
-template-name/
-├── manifest.json     # Configuration
-├── README.md         # Integration guide
-├── src/              # Template code
-│   ├── index.ts      # Entry point
-│   └── modules/      # Module configurations
-├── tests/            # Validation tests
-└── examples/         # Usage examples
-```
-
-### Integration
-
-Templates integrate with BRAIN for persistent context and INCLUSIVE for accessibility auditing out of the box.
+[Browse Engines →](/engines)
 
 ---
 
-## Capabilities Depot
+## Definitions
 
-### What is the Capabilities Depot?
-
-The Capabilities Depot is a marketplace for **downloadable cognitive artifacts**—licensed capabilities for local execution within your infrastructure.
-
-### Key Principles
-
-| Principle | Description |
-|-----------|-------------|
-| **Artifacts, Not Services** | Download packages, not SaaS subscriptions |
-| **Licensed Downloads** | Validated at download, no runtime checks |
-| **Local Execution** | Runs in your infrastructure |
-| **Full Control** | Your data stays with you |
-
-### Capability Categories
-
-| Category | Description | Count |
-|----------|-------------|-------|
-| **Intelligence** | Cognitive analysis, causal inference | 15+ |
-| **Optimization** | Resource and cost management | 12+ |
-| **Resilience** | Failure prediction, auto-remediation | 10+ |
-| **Security** | Threat detection, compliance | 14+ |
-| **Accessibility** | WCAG auditing, adaptive content | 8+ |
-| **Automation** | SLA monitoring, workflows | 12+ |
-| **Orchestration** | Multi-system coordination | 15+ |
-
-### Pricing Tiers
-
-| Tier | Price Range | Use Case |
-|------|-------------|----------|
-| **Utility** | $19 – $49 | Common tasks |
-| **Advanced** | $99 – $299 | Complex workflows |
-| **System-Level** | $499 – $999 | Production systems |
-| **Flagship** | $1,499 – $2,999 | Enterprise coordination |
-
-### Artifact Format
-
-All capabilities follow a standard structure:
-
-```
-capability-name/
-├── capability.json   # Manifest with metadata
-├── README.md         # Integration docs
-├── LICENSE.txt       # Commercial license
-├── CHECKSUM          # SHA-256 verification
-├── executor/         # Capability code
-│   └── index.js      # Entry point
-└── examples/         # Usage examples
-```
-
-### Capability Manifest
-
-```json
-{
-  "name": "causal-inference",
-  "version": "1.2.0",
-  "category": "intelligence",
-  "executorType": "js",
-  "requiredModules": ["BRAIN", "DECODE"],
-  "governanceLevel": "governed"
-}
-```
-
-### Updates & Versioning
-
-- View available updates for owned capabilities
-- Download newer versions when available
-- No auto-updates or forced upgrades
-- Version comparison: "You own v1.2.0 – v1.3.1 available"
+| Term | Definition |
+|------|------------|
+| **Capability** | Atomic, free, stateless building block |
+| **Template** | Free starting point for learning and remixing |
+| **Synergy Pipeline** | Exploratory, free, non-durable orchestration |
+| **Engine** | Saved, governed, authoritative orchestration |
 
 ---
 
-## How They Work Together
-
-### Development Flow
+## Development Flow
 
 ```
-┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│  CodeLab    │───▶│  Templates  │───▶│ Capabilities│
-│  (Build)    │    │  (Extend)   │    │  (Enhance)  │
-└─────────────┘    └─────────────┘    └─────────────┘
-       │                  │                  │
-       └──────────────────┴──────────────────┘
-                          │
-                    ┌─────────────┐
-                    │  Production │
-                    │    Deploy   │
-                    └─────────────┘
+┌───────────────────────────────────────────────────────┐
+│                   FREE EXPLORATION                     │
+├─────────────┬─────────────┬─────────────┬─────────────┤
+│  Capability │   Template  │   Synergy   │  Persistent │
+│    Depot    │    Alley    │  Pipelines  │   Memory    │
+└─────────────┴─────────────┴─────────────┴─────────────┘
+                           │
+                    (When ready)
+                           │
+                           ▼
+┌───────────────────────────────────────────────────────┐
+│               ENGINE MARKETPLACE (OEM)                 │
+│           Canonized • Governed • Guaranteed            │
+└───────────────────────────────────────────────────────┘
 ```
-
-### Integration Example
-
-```typescript
-// Start with a template
-import { loadTemplate } from '@cmpsbl/marketplace';
-
-const workflow = await loadTemplate('intelligent-routing');
-
-// Enhance with a capability
-import { CausalInference } from './capabilities/causal-inference';
-
-workflow.addCapability(CausalInference);
-
-// Deploy from CodeLab
-await workflow.deploy();
-```
-
----
-
-## Licensing & Terms
-
-### Templates
-- One-time purchase
-- Unlimited deployments
-- Source code included
-- Updates available
-
-### Capabilities
-- Licensed download
-- Local execution only
-- No runtime license checks
-- Version updates purchasable
-
-### CodeLab
-- Free tier with limits
-- Pro tier for production
-- Enterprise for teams
 
 ---
 
 ## Support
 
-For technical questions or integration help:
 - **Documentation**: [docs.cmpsbl.com](https://docs.cmpsbl.com)
 - **Support**: [/support](/support)
 - **Email**: PromptFluid@gmail.com
@@ -248,10 +255,11 @@ For technical questions or integration help:
 
 ## Next Steps
 
-- [Getting Started](./06-GETTING-STARTED.md) — Begin building
-- [Synergy Capabilities](./09-SYNERGY-CAPABILITIES.md) — Cross-module pipelines
+- [Persistent Memory Quickstart](/docs/persistent-memory) — Add memory in < 1 hour
+- [Getting Started](./06-GETTING-STARTED.md) — Full SDK setup
+- [Synergy Capabilities](./09-SYNERGY-CAPABILITIES.md) — 147-pipeline reference
 - [Architecture](./05-ARCHITECTURE.md) — Technical deep-dive
 
 ---
 
-*CMPSBL® Marketplace — Build Faster, Deploy Smarter*
+*CMPSBL® — Explore Free, Canonize When Ready*

@@ -4,159 +4,194 @@
 
 ---
 
+## Philosophy
+
+> **"Everything is free to explore. Engines are canon."**
+
+CMPSBL offers a tiered approach: explore for free, pay when you need production-grade guarantees.
+
+---
+
 ## Overview
 
-CMPSBL® is licensed as cognitive infrastructure with a **hybrid model** designed for accessibility and enterprise flexibility:
-
-- **API Tiers (Developer/Team/Research):** Full access via our secure hosted API — we handle infrastructure, scaling, and updates
-- **Enterprise Tier:** Complete source code with self-hosted deployment rights for air-gapped or on-premise requirements
-
-**All tiers include:** Full access to 14 integrated modules, unlimited API calls (fair use), and all version updates during license term.
-
----
-
-## License Tiers at a Glance
-
-| Tier | Price | Best For | Deployment |
-|------|-------|----------|------------|
-| **Developer** | $39/month or $299/year | Startups, solo developers | Hosted API |
-| **Team** | Contact sales | Teams up to 10 developers | Hosted API |
-| **Research** | Contact sales | Academic institutions, R&D | Hosted API |
-| **Enterprise** | Contact sales | Production, compliance needs | Self-hosted |
-| **Strategic** | Custom | Cloud providers, OEM | Custom |
+| Layer | Cost | What You Get |
+|-------|------|--------------|
+| **Free Exploration** | $0 | Capability Depot, Template Alley, Synergy Pipelines, Persistent Memory |
+| **Engine Marketplace (OEM)** | Subscription | First-party canonized orchestrations with SLAs |
+| **Full SDK Access** | $39/mo+ | Complete API access to all 14 modules |
+| **Enterprise** | Custom | Self-hosted source code, compliance, support |
 
 ---
 
-## Developer License
+## Free Tier
+
+**$0 — Always Free**
+
+Explore the full power of CMPSBL without any cost.
+
+### Includes
+
+| Feature | Access |
+|---------|--------|
+| **Capability Depot** | ✓ All atomic capabilities |
+| **Template Alley** | ✓ All templates |
+| **Synergy Pipelines** | ✓ All 147 pipelines |
+| **Persistent Memory** | ✓ Bounded memory for agents |
+| **CodeLab** | ✓ Limited executions |
+
+### Limitations
+
+- No persistence (exploratory only)
+- No governance or versioning
+- No SLA guarantees
+- Community support only
+
+### Get Started
+
+No signup required. [Explore now →](/capabilities)
+
+---
+
+## Persistent Memory (FREE)
+
+Add persistent memory to any agent in under an hour:
+
+```typescript
+import { withPersistentMemory } from '@cmpsbl/memory';
+
+const agent = withPersistentMemory({
+  agentId: 'my-agent',
+  scope: 'project'
+});
+```
+
+**What's free:**
+- Bounded persistent memory
+- Safe recall defaults
+- Per-agent isolation
+- Graceful degradation
+
+**What requires engines:**
+- Recall optimization
+- Long-horizon identity
+- Cross-agent continuity
+- Memory audits
+
+[Persistent Memory Quickstart →](/docs/persistent-memory)
+
+---
+
+## Engine Marketplace (OEM)
+
+**Starting at $99/month**
+
+First-party, canonized orchestrations hardened for production.
+
+### Professional Tier — $99/month
+
+| Feature | Included |
+|---------|----------|
+| **Core Engines** | Memory, Routing, Security |
+| **Execution** | Unlimited |
+| **Persistence** | ✓ Full |
+| **Versioning** | ✓ |
+| **SLA** | 99.5% uptime |
+| **Support** | Email |
+
+### Enterprise Tier — Custom
+
+| Feature | Included |
+|---------|----------|
+| **All Engines** | Full catalog |
+| **SLA** | 99.9% uptime |
+| **Support** | Dedicated |
+| **Custom Engines** | Available |
+| **Audit Trail** | Full |
+
+[Browse Engines →](/engines)
+
+---
+
+## Full SDK Access
+
+For developers who need complete API access beyond free exploration.
+
+### Developer License — $39/month
 
 **$39/month or $299/year** (save ~36% annually)
 
-Perfect for startups and individual developers building AI-powered products.
+| Feature | Included |
+|---------|----------|
+| **All 14 Modules** | Full API access |
+| **API Calls** | Unlimited (fair use) |
+| **Memory Storage** | Unlimited |
+| **AI Routing** | Unlimited |
+| **Support** | Email + docs |
+| **Updates** | All during subscription |
 
-### Includes
-- ✓ Full API access (all 14 modules via hosted API)
-- ✓ Unlimited API calls (fair use)
-- ✓ Unlimited memory storage
-- ✓ Unlimited AI routing
-- ✓ Email support + documentation
-- ✓ Community forum access
-- ✓ All updates during subscription
+### Team License — Contact Sales
 
-### What You Get
-- Hosted API access — no source code distribution
-- Your data stays on our secure infrastructure
-- We handle updates, scaling, and maintenance
-
-### Limits
-- API access only (no self-hosted deployment)
-- Standard SLA
-
-### Get Started
-Automated checkout available — [start today](/substrate/licensing).
-
----
-
-## Research License
-
-**$19,999/year**
-
-For academic institutions and research labs exploring cognitive AI.
-
-### Includes
-- Everything in Developer, plus:
-- ✓ Multi-deployment (up to 5 instances)
-- ✓ Research collaboration features
-- ✓ Priority email support
-- ✓ Quarterly technical calls
-- ✓ Early access to new features
-
-### Best For
-- Universities
-- Research labs
-- PhD programs
-- Grant-funded projects
-
-### Get Started
-Contact us for institutional licensing.
+| Feature | Included |
+|---------|----------|
+| **Everything in Developer** | Plus... |
+| **Team Size** | Up to 10 developers |
+| **Shared Projects** | ✓ |
+| **Team Analytics** | ✓ |
 
 ---
 
 ## Enterprise License
 
-**$49,999/year**
-
-For production deployments with enterprise requirements.
+**$49,999/year** — Full source code with self-hosted deployment.
 
 ### Includes
-- Everything in Research, plus:
-- ✓ **Source code access** — deploy on your infrastructure
+
+- ✓ Everything in SDK licenses
+- ✓ **Source code access**
 - ✓ Unlimited self-hosted deployments
+- ✓ Air-gapped / on-premise
 - ✓ 99.9% SLA guarantee
 - ✓ Dedicated support channel
-- ✓ Custom integration support
-- ✓ Security review assistance
 - ✓ Compliance documentation
 - ✓ Training sessions
 
-### What You Get
-- Full source code for self-hosted deployment
-- Air-gapped / on-premise deployment rights
-- Complete infrastructure control
-
 ### Best For
-- Production AI applications requiring source access
-- Enterprise companies with compliance requirements
-- Regulated industries (healthcare, finance, government)
 
-### Get Started
-Contact us for enterprise evaluation.
+- Regulated industries (healthcare, finance, government)
+- Companies with compliance requirements
+- Production deployments requiring source access
 
 ---
 
-## Strategic Partnership
+## Research License
 
-**Custom Pricing**
-
-For cloud providers, OEMs, and strategic partners.
+**$19,999/year** — For academic institutions and research labs.
 
 ### Includes
-- Custom licensing terms
-- White-label options
-- Revenue sharing models
-- Co-development opportunities
-- Executive sponsorship
 
-### Best For
-- Cloud providers
-- AI platform companies
-- Strategic integrations
-
-### Get Started
-Contact founders directly.
+- ✓ Everything in Developer
+- ✓ Multi-deployment (up to 5 instances)
+- ✓ Research collaboration features
+- ✓ Priority support
+- ✓ Quarterly technical calls
+- ✓ Early access to new features
 
 ---
 
-## What's Included in All Licenses
+## Comparison
 
-### Core Substrate
-- 14 integrated modules
-- Memory system (BRAIN)
-- AI routing (NEXUS)  
-- Security layer (DEFENSE)
-- Observability (VISION)
-- Self-evolution (MODERNIZER)
-- All other modules
-
-### Documentation
-- Complete technical documentation
-- API reference
-- Integration guides
-- Architecture diagrams
-
-### Updates
-- All version updates during license term
-- Security patches
-- New features
+| Feature | Free | Engines | Developer | Enterprise |
+|---------|------|---------|-----------|------------|
+| Capability Depot | ✓ | ✓ | ✓ | ✓ |
+| Template Alley | ✓ | ✓ | ✓ | ✓ |
+| Synergy Pipelines | ✓ | ✓ | ✓ | ✓ |
+| Persistent Memory | ✓ | ✓ | ✓ | ✓ |
+| Engine Access | — | ✓ | — | ✓ |
+| Full SDK | — | — | ✓ | ✓ |
+| Persistence | — | ✓ | ✓ | ✓ |
+| Governance | — | ✓ | — | ✓ |
+| SLA | — | ✓ | — | ✓ |
+| Source Code | — | — | — | ✓ |
 
 ---
 
@@ -164,54 +199,38 @@ Contact founders directly.
 
 | Item | Tier | Description |
 |------|------|-------------|
-| **AI Provider Keys** | All tiers | OpenAI, Anthropic, Google, etc. |
+| **AI Provider Keys** | All paid tiers | OpenAI, Anthropic, Google, etc. |
 | **Infrastructure** | Enterprise only | Your servers or cloud account |
 | **Database** | Enterprise only | PostgreSQL (Supabase recommended) |
 
 ---
 
-## Billing Options
+## FAQs
 
-Developer license offers both monthly and annual billing:
+### Is the free tier really free?
+Yes. Capability Depot, Template Alley, Synergy Pipelines, and Persistent Memory are free forever. No credit card required.
 
-| Plan | Price | Savings |
-|------|-------|---------|
-| Monthly | $39/month | — |
-| Annual | $299/year | ~36% savings |
+### What's the difference between free and engines?
+Free layers are exploratory — execute and inspect, but nothing is saved. Engines are canonized — saved, versioned, governed, with SLA guarantees.
 
-Team, Research, Enterprise, and Strategic licenses are custom-priced — contact sales for details.
-
----
-
-## Frequently Asked Questions
-
-### Can I start with Developer and upgrade later?
-Yes. Upgrades are prorated — pay the difference for the remaining term.
+### Can I start free and upgrade later?
+Absolutely. Explore free, then upgrade to Engines or SDK access when you need production features.
 
 ### What happens when my license expires?
-Your deployment continues to run, but you won't receive updates or support. Renew to restore.
-
-### Do you offer discounts for nonprofits?
-Yes. Contact us for nonprofit pricing.
-
-### Is there a free trial?
-Developer licenses include a 30-day money-back guarantee. Enterprise evaluations are available upon request.
-
-### What's not included?
-- AI provider API costs (you pay providers directly)
-- Infrastructure costs (your servers/cloud)
-- Custom development work (available as professional services)
+Your deployment continues to run, but you won't receive updates or support.
 
 ---
 
 ## Get Started
 
-| Action | Contact |
-|--------|---------|
-| **Developer License** | [Automated Checkout](/substrate/licensing) |
-| **All Inquiries** | PromptFluid@gmail.com |
-| **Web** | https://cmpsbl.com |
+| Action | Link |
+|--------|------|
+| **Explore Free** | [Capability Depot](/capabilities) |
+| **Add Memory** | [Persistent Memory](/docs/persistent-memory) |
+| **Developer License** | [Checkout](/substrate/licensing) |
+| **Engine Marketplace** | [Browse Engines](/engines) |
+| **Contact Sales** | PromptFluid@gmail.com |
 
 ---
 
-*CMPSBL® — Cognitive Infrastructure at Scale*
+*CMPSBL® — Explore Free, Canonize When Ready*

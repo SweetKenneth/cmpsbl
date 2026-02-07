@@ -114,6 +114,7 @@ export function CmpsblNav() {
       name: "Platform",
       icon: Cpu,
       items: [
+        { name: "Persistent Memory", href: "/persistent-memory", description: "Add memory to any agent in under an hour", icon: Brain, badge: "FREE" },
         { name: "Capability Depot", href: "/capabilities", description: "Atomic, stateless building blocks", icon: Sparkles, badge: "FREE" },
         { name: "Template Alley", href: "/marketplace", description: "Starting points for learning & remixing", icon: Layers, badge: "FREE" },
         { name: "Synergy Pipelines", href: "/synergies", description: "Exploratory orchestration patterns", icon: Zap, badge: "FREE" },
@@ -150,6 +151,7 @@ export function CmpsblNav() {
       name: "Resources",
       icon: BookOpen,
       items: [
+        { name: "Persistent Memory Docs", href: "/docs/persistent-memory", description: "Quickstart integration guide", icon: Brain },
         { name: "Documentation", href: "/documentation", description: "Complete API reference", icon: FileText },
         { name: "Library", href: "/library", description: "FNDTN v7 framework", icon: BookOpen },
         { name: "Namespace", href: "/namespace", description: "Governance standards", icon: Globe },

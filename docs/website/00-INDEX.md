@@ -12,22 +12,65 @@ This documentation provides everything you need to understand, evaluate, and bui
 
 ---
 
+## Philosophy
+
+> **"Everything is free to explore. Engines are canon."**
+
+CMPSBL offers a **tiered approach** to AI orchestration:
+
+| Layer | Cost | Persistence | Purpose |
+|-------|------|-------------|---------|
+| **Capability Depot** | FREE | None | Atomic, stateless building blocks |
+| **Template Alley** | FREE | None | Starting points for learning & remixing |
+| **Synergy Pipelines** | FREE | None | Exploratory orchestration patterns |
+| **Persistent Memory** | FREE | Bounded | Drop-in memory for any agent |
+| **Engine Marketplace** | Paid | Canonized | First-party hardened orchestrations |
+
+---
+
+## Quick Start: Persistent Memory
+
+Add persistent memory to your existing agent in under an hour:
+
+```typescript
+import { withPersistentMemory } from '@cmpsbl/memory';
+
+const agent = withPersistentMemory({
+  agentId: 'my-agent',
+  scope: 'project'
+});
+
+// Your agent now remembers
+const context = await agent.getContext(userMessage);
+```
+
+[Full Quickstart Guide →](/docs/persistent-memory)
+
+---
+
 ## Quick Navigation
 
-### For Everyone
+### Getting Started
 | Document | Description |
 |----------|-------------|
+| [Persistent Memory Quickstart](/docs/persistent-memory) | Add memory to any agent in < 1 hour |
 | [What is CMPSBL?](./02-WHAT-IS-CMPSBL.md) | Plain-English introduction |
-| [FAQ](./08-FAQ.md) | Common questions answered |
+| [Getting Started](./06-GETTING-STARTED.md) | Full SDK quick start guide |
+
+### Free Exploration Layers
+| Document | Description |
+|----------|-------------|
+| [Capability Depot](/capabilities) | Atomic, stateless building blocks (FREE) |
+| [Template Alley](/marketplace) | Starting points for remixing (FREE) |
+| [Synergy Pipelines](/synergies) | Exploratory orchestrations (FREE) |
 
 ### For Developers
 | Document | Description |
 |----------|-------------|
-| [Getting Started](./06-GETTING-STARTED.md) | Quick start guide |
 | [Architecture Overview](./05-ARCHITECTURE.md) | Technical deep dive |
 | [Key Capabilities](./03-KEY-CAPABILITIES.md) | Feature reference |
 | [Synergy Capabilities](./09-SYNERGY-CAPABILITIES.md) | 147-pipeline matrix |
-| [Marketplace Features](./10-MARKETPLACE-FEATURES.md) | CodeLab, Templates, Depot |
+| [Platform Features](./10-MARKETPLACE-FEATURES.md) | CodeLab, Templates, Depot |
 
 ### For Business Leaders
 | Document | Description |
@@ -53,11 +96,22 @@ This documentation provides everything you need to understand, evaluate, and bui
 
 ---
 
+## Definitions
+
+| Term | Definition |
+|------|------------|
+| **Capability** | Atomic, free, stateless building block |
+| **Synergy Pipeline** | Exploratory, free, non-durable orchestration |
+| **Engine** | Saved, governed, authoritative orchestration |
+
+---
+
 ## Licensing Model
 
 CMPSBL® uses a **hybrid licensing model**:
 
-- **API Tiers (Developer/Team/Research):** Hosted API access — no source code distribution
+- **Free Tier:** Capability Depot, Template Alley, Synergy Pipelines, Persistent Memory
+- **Engine Marketplace (OEM):** First-party canonized orchestrations with subscriptions
 - **Enterprise Tier:** Full source code with self-hosted deployment rights
 
 See [Pricing & Licensing](./07-LICENSING.md) for details.
