@@ -1,7 +1,7 @@
 /**
- * Template Alley — FREE Template Library
+ * Template Alley — FREE Template Library + Template Generator
  * Starting points for learning and remixing
- * v9.0.0 - All templates free, includes code snippets
+ * v9.1.0 - All templates free, includes code snippets + paid generator
  */
 
 import { useState, useMemo } from "react";
@@ -32,8 +32,11 @@ import {
   Layers,
   ChevronDown,
   ChevronUp,
+  Wand2,
+  Zap,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { openCheckoutRedirect } from "@/lib/checkout/checkoutRedirect";
 import { toast } from "sonner";
 
 type SortOption = 'featured' | 'name' | 'category';
@@ -208,9 +211,55 @@ export default function TemplateAlley() {
           </div>
         </section>
 
+        {/* Template Generator */}
+        <section className="container mx-auto px-4 py-8">
+          <div className="relative overflow-hidden rounded-2xl border-2 border-primary/40 bg-gradient-to-br from-primary/10 via-violet-500/5 to-cyan-500/10 p-6 md:p-8">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+            <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-6">
+              <div className="w-16 h-16 rounded-2xl bg-primary/20 border border-primary/30 flex items-center justify-center shrink-0">
+                <Wand2 className="w-8 h-8 text-primary" />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-2">
+                  <h2 className="text-2xl font-bold">Template Generator</h2>
+                  <Badge className="bg-primary text-primary-foreground">$19</Badge>
+                </div>
+                <p className="text-muted-foreground mb-4">
+                  Generate custom templates from natural language descriptions. Describe what you want to build, 
+                  and get production-ready code with best practices baked in.
+                </p>
+                <ul className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground mb-4">
+                  <li className="flex items-center gap-1"><Zap className="w-3 h-3 text-amber-400" /> Instant generation</li>
+                  <li className="flex items-center gap-1"><Code className="w-3 h-3 text-cyan-400" /> Production-ready code</li>
+                  <li className="flex items-center gap-1"><Sparkles className="w-3 h-3 text-violet-400" /> Unlimited generations</li>
+                </ul>
+              </div>
+              <div className="flex flex-col gap-2 shrink-0 w-full md:w-auto">
+                <Button 
+                  size="lg" 
+                  className="gap-2 w-full md:w-auto"
+                  onClick={() => openCheckoutRedirect({
+                    fn: 'marketplace-checkout',
+                    body: {
+                      item_type: 'template_generator',
+                      item_id: 'template-generator-v1',
+                      item_name: 'Template Generator',
+                      unit_amount_usd: 19
+                    }
+                  })}
+                >
+                  <Wand2 className="w-4 h-4" />
+                  Buy Generator — $19
+                </Button>
+                <span className="text-xs text-center text-muted-foreground">One-time payment • Lifetime access</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Grid */}
-        <main className="flex-1 container mx-auto px-4 py-8">
-          <p className="text-sm text-muted-foreground mb-6">Showing {filteredTemplates.length} of {TEMPLATES.length} templates</p>
+        <main className="flex-1 container mx-auto px-4 py-8 pt-0">
+          <p className="text-sm text-muted-foreground mb-6">Showing {filteredTemplates.length} of {TEMPLATES.length} free templates</p>
           {filteredTemplates.length > 0 ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {filteredTemplates.map((template) => {
