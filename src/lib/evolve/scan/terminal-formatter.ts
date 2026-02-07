@@ -220,7 +220,8 @@ function formatCompactScan(result: ScanResultExtended, options: ScanOptions): st
   // Status
   if (result.plan_ready && result.plan_id) {
     lines.push(`✅ PLAN READY`);
-    lines.push(`ID: ${truncateId(result.plan_id)}`);
+    lines.push(`Short: ${truncateId(result.plan_id)}`);
+    lines.push(`Full: ${result.plan_id}`);
     lines.push(`Actions: ${result.normalized_actions_count || 0}`);
   } else if (result.blocked_reasons.length > 0) {
     lines.push(`⚠️ BLOCKED`);
@@ -272,7 +273,8 @@ function formatStandardScan(result: ScanResultExtended, options: ScanOptions): s
   if (result.plan_ready && result.plan_id) {
     const actionCount = result.normalized_actions_count || 0;
     lines.push(`║  ✅ PLAN READY — ${actionCount} actions${' '.repeat(W - 26 - String(actionCount).length)}║`);
-    lines.push(`║     ID: ${truncateId(result.plan_id).padEnd(W - 12)}║`);
+    lines.push(`║     Short: ${truncateId(result.plan_id).padEnd(W - 14)}║`);
+    lines.push(`║     Full:  ${result.plan_id.padEnd(W - 14)}║`);
   } else if (result.blocked_reasons.length > 0) {
     lines.push(`║  ⚠️ BLOCKED${' '.repeat(W - 13)}║`);
     lines.push(`║  ${truncateAtWord(result.blocked_reasons[0], W - 5).padEnd(W - 3)}║`);
@@ -371,7 +373,8 @@ function formatFullScan(result: ScanResultExtended, options: ScanOptions): strin
   if (result.plan_ready && result.plan_id) {
     const actionCount = result.normalized_actions_count || 0;
     lines.push(`║  ✅ PLAN READY — ${actionCount} actions normalized` + ' '.repeat(W - 38 - String(actionCount).length) + '║');
-    lines.push(`║     Plan ID: ${result.plan_id.substring(0, 20).padEnd(20)}` + ' '.repeat(W - 38) + '║');
+    lines.push(`║     Short ID: ${truncateId(result.plan_id).padEnd(12)}` + ' '.repeat(W - 30) + '║');
+    lines.push(`║     Full ID:  ${result.plan_id}` + ' '.repeat(Math.max(0, W - 17 - result.plan_id.length)) + '║');
   } else if (result.blocked_reasons.length > 0) {
     lines.push(`║  ⚠️  PLAN BLOCKED — proposals could not be normalized` + ' '.repeat(W - 56) + '║');
     lines.push(`║     Reason: ${truncateAtWord(result.blocked_reasons[0], W - 16).padEnd(W - 14)}║`);
