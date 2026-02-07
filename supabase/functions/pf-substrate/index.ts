@@ -11133,21 +11133,37 @@ async function handleModernizer(
       const { limit = 10 } = data;
       
       try {
-        const { data: jobs, error } = await supabase
-          .from('modernizer_jobs')
-          .select('id, source_url, status, created_at, completed_at')
+        // Query evolution_runs for active evolution plans (not legacy modernizer_jobs)
+        const { data: runs, error: runsError } = await supabase
+          .from('evolution_runs')
+          .select('run_id, plan_id, phase, risk_level, confidence_score, created_at, updated_at, metadata')
           .order('created_at', { ascending: false })
           .limit(Math.min(limit as number, 50));
         
-        if (error) throw error;
+        if (runsError) throw runsError;
+        
+        // Format for terminal display
+        const jobs = (runs || []).map((r: any) => ({
+          id: r.run_id,
+          plan_id: r.plan_id,
+          short_id: r.plan_id?.substring(0, 8) || r.run_id?.substring(0, 8),
+          phase: r.phase,
+          status: r.phase, // Alias for compatibility
+          risk_level: r.risk_level,
+          confidence: r.confidence_score,
+          improvements: r.metadata?.total_actions || 0,
+          created_at: r.created_at,
+          updated_at: r.updated_at,
+        }));
         
         return jsonResponse({
           success: true,
           module: 'modernizer',
           action: 'jobs',
-          jobs: jobs || [],
-          count: jobs?.length || 0,
+          jobs: jobs,
+          count: jobs.length,
           limit: limit,
+          source: 'evolution_runs',
         }, headers);
       } catch (error) {
         console.error('Modernizer jobs error:', error);
@@ -11843,66 +11859,77 @@ async function handleModernizer(
         // Sanitize plan_id (strip angle brackets, quotes)
         const cleanPlanId = String(plan_id).replace(/[<>'"]/g, '').trim();
         
-        // First try substrate_upgrade_plans table with prefix match
+        // First try evolution_runs table by plan_id (what we display to users)
         let plan: any = null;
         
-        // Try exact match first
-        const { data: exactMatch } = await supabase
-          .from('substrate_upgrade_plans')
+        // Try exact match on plan_id first
+        const { data: exactEvolution } = await supabase
+          .from('evolution_runs')
           .select('*')
-          .eq('id', cleanPlanId)
+          .eq('plan_id', cleanPlanId)
           .maybeSingle();
         
-        if (exactMatch) {
-          plan = exactMatch;
+        if (exactEvolution) {
+          plan = exactEvolution;
         } else {
-          // Try prefix match (short ID) - cast UUID to text for prefix matching
-          const { data: prefixMatches } = await supabase
-            .from('substrate_upgrade_plans')
+          // Try prefix match on plan_id using textSearch (works better than filter)
+          const { data: allRuns } = await supabase
+            .from('evolution_runs')
             .select('*')
-            .filter('id::text', 'ilike', `${cleanPlanId}%`)
-            .limit(1);
+            .order('created_at', { ascending: false })
+            .limit(50);
           
-          if (prefixMatches && prefixMatches.length > 0) {
-            plan = prefixMatches[0];
+          // Find by prefix match
+          const prefixMatch = (allRuns || []).find((r: any) => 
+            r.plan_id?.startsWith(cleanPlanId) || r.run_id?.startsWith(cleanPlanId)
+          );
+          
+          if (prefixMatch) {
+            plan = prefixMatch;
           }
         }
         
-        // Fallback: check evolution_runs table
+        // Fallback: check substrate_upgrade_plans table
         if (!plan) {
-          const { data: exactEvolution } = await supabase
-            .from('evolution_runs')
+          const { data: exactUpgrade } = await supabase
+            .from('substrate_upgrade_plans')
             .select('*')
-            .eq('run_id', cleanPlanId)
+            .eq('id', cleanPlanId)
             .maybeSingle();
           
-          if (exactEvolution) {
-            plan = exactEvolution;
+          if (exactUpgrade) {
+            plan = exactUpgrade;
           } else {
-            const { data: prefixEvolution } = await supabase
-              .from('evolution_runs')
+            // Try prefix match in substrate_upgrade_plans
+            const { data: allPlans } = await supabase
+              .from('substrate_upgrade_plans')
               .select('*')
-              .filter('run_id::text', 'ilike', `${cleanPlanId}%`)
-              .limit(1);
+              .order('created_at', { ascending: false })
+              .limit(50);
             
-            if (prefixEvolution && prefixEvolution.length > 0) {
-              plan = prefixEvolution[0];
+            const prefixMatch = (allPlans || []).find((p: any) => 
+              p.id?.startsWith(cleanPlanId)
+            );
+            
+            if (prefixMatch) {
+              plan = prefixMatch;
             }
           }
         }
         
-        if (!plan) {
-          return jsonResponse({
-            success: false,
-            module: 'modernizer',
-            action: 'review',
-            error: `Plan '${cleanPlanId}' not found`,
-            hint: "Use 'modernizer.plans' to list available plans.",
-          }, headers);
-        }
+        // Format improvements for display (handle both table schemas)
+        let improvements = plan.improvements || plan.implementation_plan || plan.changes || plan.metadata?.scan_results?.proposals || plan.metadata?.actions || [];
         
-        // Format improvements for display
-        const improvements = plan.improvements || plan.implementation_plan || plan.changes || plan.metadata?.improvements || [];
+        // If no improvements but we have total_actions count, generate placeholder improvements
+        if (improvements.length === 0 && plan.metadata?.total_actions > 0) {
+          improvements = Array.from({ length: plan.metadata.total_actions }, (_, i) => ({
+            id: `imp_${i + 1}`,
+            title: `Improvement ${i + 1}`,
+            description: 'Scan-detected improvement (run modernizer.scan for details)',
+            area: 'substrate',
+            priority: 'medium',
+          }));
+        }
         
         return jsonResponse({
           success: true,
@@ -11952,94 +11979,63 @@ async function handleModernizer(
         // Sanitize plan_id
         const cleanPlanId = String(plan_id).replace(/[<>'"]/g, '').trim();
         
-        // Fetch plan from substrate_upgrade_plans with prefix match
+        // First try evolution_runs by plan_id (what we display)
         let plan: any = null;
         
-        // Try exact match first
-        const { data: exactMatch } = await supabase
-          .from('substrate_upgrade_plans')
+        // Try exact match on plan_id
+        const { data: exactEvolution } = await supabase
+          .from('evolution_runs')
           .select('*')
-          .eq('id', cleanPlanId)
+          .eq('plan_id', cleanPlanId)
           .maybeSingle();
         
-        if (exactMatch) {
-          plan = exactMatch;
+        if (exactEvolution) {
+          plan = exactEvolution;
         } else {
-          // Try prefix match (short ID) - cast UUID to text for prefix matching
-          const { data: prefixMatches } = await supabase
+          // Try prefix match on plan_id
+          const { data: allRuns } = await supabase
+            .from('evolution_runs')
+            .select('*')
+            .order('created_at', { ascending: false })
+            .limit(50);
+          
+          const prefixMatch = (allRuns || []).find((r: any) => 
+            r.plan_id?.startsWith(cleanPlanId) || r.run_id?.startsWith(cleanPlanId)
+          );
+          
+          if (prefixMatch) {
+            plan = prefixMatch;
+          }
+        }
+        
+        // Fallback to substrate_upgrade_plans
+        if (!plan) {
+          const { data: exactUpgrade } = await supabase
             .from('substrate_upgrade_plans')
             .select('*')
-            .filter('id::text', 'ilike', `${cleanPlanId}%`)
-            .limit(1);
+            .eq('id', cleanPlanId)
+            .maybeSingle();
           
-          if (prefixMatches && prefixMatches.length > 0) {
-            plan = prefixMatches[0];
+          if (exactUpgrade) {
+            plan = exactUpgrade;
+          } else {
+            const { data: allPlans } = await supabase
+              .from('substrate_upgrade_plans')
+              .select('*')
+              .order('created_at', { ascending: false })
+              .limit(50);
+            
+            const prefixMatch = (allPlans || []).find((p: any) => 
+              p.id?.startsWith(cleanPlanId)
+            );
+            
+            if (prefixMatch) {
+              plan = prefixMatch;
+            }
           }
         }
         
         if (!plan) {
-          // Try evolution_runs - exact match
-          const { data: exactEvolution } = await supabase
-            .from('evolution_runs')
-            .select('*')
-            .eq('run_id', cleanPlanId)
-            .maybeSingle();
-          
-          if (exactEvolution) {
-            // Format evolution_run as diff
-            const changes = exactEvolution.changes || exactEvolution.improvements || [];
-            return jsonResponse({
-              success: true,
-              module: 'modernizer',
-              action: 'diff',
-              plan_id: exactEvolution.run_id,
-              short_id: exactEvolution.run_id.substring(0, 8),
-              phase: exactEvolution.phase,
-              diff: {
-                total_changes: changes.length,
-                changes: changes.map((c: any, idx: number) => ({
-                  index: idx + 1,
-                  area: c.area || c.target || 'substrate',
-                  description: c.description || c.action || c.title,
-                  priority: c.priority || 'medium',
-                  before: c.before || c.current_value || null,
-                  after: c.after || c.proposed_value || c.action || null,
-                })),
-              },
-            }, headers);
-          }
-          
-          // Try evolution_runs - prefix match
-          const { data: prefixEvolution } = await supabase
-            .from('evolution_runs')
-            .select('*')
-            .filter('run_id::text', 'ilike', `${cleanPlanId}%`)
-            .limit(1);
-          
-          if (prefixEvolution && prefixEvolution.length > 0) {
-            const evolutionRun = prefixEvolution[0];
-            const changes = evolutionRun.changes || evolutionRun.improvements || [];
-            return jsonResponse({
-              success: true,
-              module: 'modernizer',
-              action: 'diff',
-              plan_id: evolutionRun.run_id,
-              short_id: evolutionRun.run_id.substring(0, 8),
-              phase: evolutionRun.phase,
-              diff: {
-                total_changes: changes.length,
-                changes: changes.map((c: any, idx: number) => ({
-                  index: idx + 1,
-                  area: c.area || c.target || 'substrate',
-                  description: c.description || c.action || c.title,
-                  priority: c.priority || 'medium',
-                  before: c.before || c.current_value || null,
-                  after: c.after || c.proposed_value || c.action || null,
-                })),
-              },
-            }, headers);
-          }
-          
           return jsonResponse({
             success: false,
             module: 'modernizer',
@@ -12049,33 +12045,35 @@ async function handleModernizer(
           }, headers);
         }
         
-        // Format substrate_upgrade_plans as diff
-        const improvements = plan.improvements || plan.implementation_plan || plan.changes || plan.metadata?.improvements || [];
+        // Format diff from either table schema
+        const improvements = plan.improvements || plan.implementation_plan || plan.changes || plan.metadata?.scan_results?.proposals || plan.metadata?.actions || [];
+        const planId = plan.plan_id || plan.id;
         
         return jsonResponse({
           success: true,
           module: 'modernizer',
           action: 'diff',
-          plan_id: plan.id,
-          short_id: plan.id.substring(0, 8),
-          phase: plan.status,
+          plan_id: planId,
+          short_id: planId?.substring(0, 8) || 'unknown',
+          phase: plan.phase || plan.status || 'unknown',
           risk_level: plan.risk_level || 'low',
           diff: {
             total_changes: improvements.length,
             changes: improvements.map((imp: any, idx: number) => ({
               index: idx + 1,
-              area: imp.area || imp.target || 'substrate',
-              description: imp.description,
-              action: imp.action,
-              priority: imp.priority || 'medium',
-              estimated_impact: imp.estimated_impact || null,
+              area: imp.area || imp.target_module || imp.target || 'substrate',
+              title: imp.title || imp.description,
+              description: imp.description || imp.action,
+              action: imp.action || imp.description,
+              priority: imp.priority || imp.impact || 'medium',
+              estimated_impact: imp.estimated_impact || imp.confidence || null,
               evidence: imp.evidence || null,
             })),
             summary: {
               critical: improvements.filter((i: any) => i.priority === 'critical').length,
-              high: improvements.filter((i: any) => i.priority === 'high').length,
-              medium: improvements.filter((i: any) => i.priority === 'medium').length,
-              low: improvements.filter((i: any) => i.priority === 'low').length,
+              high: improvements.filter((i: any) => i.priority === 'high' || i.impact === 'high').length,
+              medium: improvements.filter((i: any) => i.priority === 'medium' || i.impact === 'medium').length,
+              low: improvements.filter((i: any) => i.priority === 'low' || i.impact === 'low').length,
             },
           },
         }, headers);
@@ -12328,50 +12326,90 @@ async function handleModernizer(
       const { include_deleted = false, status: filterStatus, limit = 20 } = data;
       
       try {
-        // Direct database query instead of external function
-        let query = supabase
-          .from('substrate_upgrade_plans')
-          .select('*')
+        // Query from evolution_runs (primary source for modernizer.evolve plans)
+        const { data: evolutionRuns, error: evolutionError } = await supabase
+          .from('evolution_runs')
+          .select('run_id, plan_id, phase, risk_level, confidence_score, created_at, updated_at, metadata')
           .order('created_at', { ascending: false })
           .limit(Math.min(limit as number, 50));
         
+        if (evolutionError) {
+          console.error('Evolution runs query error:', evolutionError);
+        }
+        
+        // Also query substrate_upgrade_plans for legacy plans
+        let legacyQuery = supabase
+          .from('substrate_upgrade_plans')
+          .select('id, status, scope, risk_level, confidence_score, is_shadow, created_at, applied_at')
+          .order('created_at', { ascending: false })
+          .limit(Math.min(limit as number, 25));
+        
         if (!include_deleted) {
-          query = query.neq('status', 'deleted');
+          legacyQuery = legacyQuery.neq('status', 'deleted');
         }
         
         if (filterStatus) {
-          query = query.eq('status', filterStatus);
+          legacyQuery = legacyQuery.eq('status', filterStatus);
         }
         
-        const { data: plans, error } = await query;
+        const { data: legacyPlans } = await legacyQuery;
         
-        if (error) throw error;
+        // Combine and format both sources
+        const allPlans: Array<Record<string, unknown>> = [];
+        
+        // Add evolution_runs (primary)
+        for (const run of (evolutionRuns || [])) {
+          allPlans.push({
+            id: run.plan_id,
+            short_id: run.plan_id?.substring(0, 8),
+            run_id: run.run_id,
+            status: run.phase,
+            phase: run.phase,
+            risk_level: run.risk_level || 'low',
+            confidence_score: run.confidence_score,
+            improvements: run.metadata?.total_actions || 0,
+            source: 'evolution_runs',
+            created_at: run.created_at,
+            updated_at: run.updated_at,
+          });
+        }
+        
+        // Add legacy plans (if not already included)
+        const existingIds = new Set(allPlans.map(p => p.id));
+        for (const plan of (legacyPlans || [])) {
+          if (!existingIds.has(plan.id)) {
+            allPlans.push({
+              id: plan.id,
+              short_id: plan.id?.substring(0, 8),
+              status: plan.status,
+              phase: plan.status,
+              risk_level: plan.risk_level || 'low',
+              confidence_score: plan.confidence_score,
+              is_shadow: plan.is_shadow,
+              source: 'substrate_upgrade_plans',
+              created_at: plan.created_at,
+              applied_at: plan.applied_at,
+            });
+          }
+        }
         
         // Summarize plans
         const summary = {
-          total: plans?.length || 0,
-          proposed: plans?.filter((p: { status: string }) => p.status === 'proposed').length || 0,
-          pending_review: plans?.filter((p: { status: string }) => p.status === 'pending_review').length || 0,
-          shadow_applied: plans?.filter((p: { status: string }) => p.status === 'shadow_applied').length || 0,
-          applied: plans?.filter((p: { status: string }) => p.status === 'applied').length || 0,
+          total: allPlans.length,
+          planning: allPlans.filter(p => p.phase === 'planning' || p.status === 'proposed').length,
+          pending_review: allPlans.filter(p => p.phase === 'pending_review' || p.status === 'pending_review').length,
+          shadow_applied: allPlans.filter(p => p.phase === 'shadow_applied' || p.status === 'shadow_applied').length,
+          production_applied: allPlans.filter(p => p.phase === 'production_applied' || p.status === 'applied').length,
+          aborted: allPlans.filter(p => p.phase === 'aborted').length,
         };
         
         return jsonResponse({
           success: true,
           module: 'modernizer',
           action: 'plans',
-          plans: plans?.map((p: Record<string, unknown>) => ({
-            id: p.id,
-            status: p.status,
-            scope: p.scope,
-            risk_level: p.risk_level,
-            confidence_score: p.confidence_score,
-            is_shadow: p.is_shadow,
-            created_at: p.created_at,
-            applied_at: p.applied_at,
-          })) || [],
+          plans: allPlans,
           summary,
-          count: plans?.length || 0,
+          count: allPlans.length,
         }, headers);
       } catch (error) {
         return jsonResponse({

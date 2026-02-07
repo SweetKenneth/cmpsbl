@@ -1465,7 +1465,9 @@ ${identityLine}│  Mode: ${roleDisplay}
         return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.validate <plan_id>' };
       }
       const res = await modernizer.validate(args[0]);
-      result = { success: !res.error, data: res.data, error: res.error?.message };
+      const errObj = res.error as any;
+      const errMsg = typeof errObj === 'string' ? errObj : errObj?.message;
+      result = { success: !res.error, data: res.data, error: errMsg };
     } else if (base === 'modernizer.diff') {
       if (!args[0]) {
         return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.diff <plan_id>' };
@@ -1477,8 +1479,9 @@ ${identityLine}│  Mode: ${roleDisplay}
       }
       const res = await modernizer.diff(planId);
       const data = res.data as any;
+      const errObj = res.error as any;
       if (res.error || (data && data.success === false)) {
-        const errMsg = res.error?.message || data?.error_message || data?.error || 'Diff view failed';
+        const errMsg = typeof errObj === 'string' ? errObj : (errObj?.message || data?.error_message || data?.error || 'Diff view failed');
         result = { success: false, data: res.data, error: errMsg };
       } else {
         result = { success: true, data: res.data };

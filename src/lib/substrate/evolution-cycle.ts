@@ -227,13 +227,23 @@ class EvolutionCycleClient {
       if (newState.has_active_plan && newState.current_plan) {
         // Persist scan results into evolution_runs.metadata so review/diff work later
         try {
-          const scan_results = {
+          // Map ScanProposal[] to ProposalItem[] for local type compatibility
+          const proposalItems: ProposalItem[] = scanResult.proposals.map((p: any) => ({
+            id: p.proposal_id || p.id || crypto.randomUUID(),
+            title: p.title,
+            description: p.description,
+            target_module: p.affected_modules?.[0] || 'system',
+            impact: p.risk_level === 'high' ? 'high' : p.risk_level === 'medium' ? 'medium' : 'low',
+            confidence: p.confidence_score ?? 0.8,
+          }));
+
+          const scan_results: ScanResult = {
             modules_scanned: 14,
             improvements_found: scanResult.proposals.length,
             risk_level: 'low',
-            proposals: scanResult.proposals,
+            proposals: proposalItems,
             health_before: 100,
-          } satisfies ScanResult;
+          };
 
           await supabase
             .from('evolution_runs')
