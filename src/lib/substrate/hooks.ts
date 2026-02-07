@@ -4,6 +4,8 @@
  * 
  * Provides React hooks for all substrate engines.
  * Enables seamless integration of cognitive capabilities into React components.
+ * 
+ * Respects debugMode — when enabled, auto-refresh intervals are skipped
  */
 
 import { useState, useCallback, useEffect, useRef } from 'react';
@@ -16,6 +18,7 @@ import { orchestratorEngine, type PipelineResult, type CognitiveCycleResult, typ
 import { telemetryEngine, type TelemetryEvent, type TelemetryQuery } from './telemetry-engine';
 import { stateEngine, type StateSchemaName } from './state-engine';
 import { engineBus, type DispatchResult, type BusState } from './engine-bus';
+import { debugMode } from '@/lib/debug-mode';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // MEMORY HOOK
@@ -420,7 +423,11 @@ export function useTelemetry(autoRefresh: boolean = false, refreshInterval: numb
   useEffect(() => {
     refresh();
     if (autoRefresh) {
-      const interval = setInterval(refresh, refreshInterval);
+      const interval = setInterval(() => {
+        if (debugMode.allowAutoRefresh()) {
+          refresh();
+        }
+      }, refreshInterval);
       return () => clearInterval(interval);
     }
   }, [autoRefresh, refreshInterval, refresh]);

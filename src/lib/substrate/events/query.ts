@@ -1,10 +1,13 @@
 /**
  * Event Query System
  * v7.0.0 — Query and subscribe to substrate events
+ * 
+ * Respects debugMode — when enabled, realtime subscriptions are skipped
  */
 
 import { supabase } from '@/integrations/supabase/client';
 import { redactSecrets } from '@/lib/defense/redact';
+import { debugMode } from '@/lib/debug-mode';
 import type { EventOutcome } from './emit';
 
 export interface EventRecord {
@@ -143,6 +146,11 @@ export function subscribeToEvents(
   callback: (event: EventRecord) => void,
   options: { modules?: string[] } = {}
 ): () => void {
+  // Skip if debug mode is active
+  if (!debugMode.allowRealtime()) {
+    return () => {}; // Return no-op cleanup
+  }
+  
   const channel = supabase
     .channel('brain-events-live')
     .on(

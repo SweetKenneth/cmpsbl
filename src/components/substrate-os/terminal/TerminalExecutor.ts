@@ -15,6 +15,7 @@ import { getMacro, createMacro, deleteMacro, formatMacroHelp, formatMacroDetail 
 import { scheduleCommand, cancelScheduled, clearScheduled, formatScheduledList, formatScheduleConfirmation, getPendingCommands } from './useTerminalScheduler';
 import { getLocalAuditLog, formatAuditLog, getSessionStats, exportAuditLog } from './useTerminalAudit';
 import { renderForMobile, getOptimalCharWidth } from './TerminalMobileRenderer';
+import { debugMode } from '@/lib/debug-mode';
 
 // Mobile-first evolution log formatter (organism-focused, no implementation details)
 function formatEvolutionLogForTerminal(): string {
@@ -1163,6 +1164,76 @@ ${identityLine}│  Mode: ${roleDisplay}
     } else if (base === 'system.upgrade.rollback') {
       const res = await system.upgrade.rollbackPlan(args[0] || '');
       result = { success: !res.error, data: res.data, error: res.error?.message };
+    }
+    // DEBUG MODE commands (kill-switch for background activity)
+    else if (base === 'debug.on' || base === 'debug.enable') {
+      debugMode.enable();
+      const state = debugMode.getState();
+      return {
+        success: true,
+        output: `
+╔══════════════════════════════════════════════════════════════╗
+║  🔴 DEBUG MODE ENABLED                                        ║
+╠══════════════════════════════════════════════════════════════╣
+║                                                              ║
+║  All background activity has been DISABLED:                  ║
+║    ✓ Polling intervals                                       ║
+║    ✓ Realtime subscriptions                                  ║
+║    ✓ Learning collector                                      ║
+║    ✓ Metrics flush                                           ║
+║    ✓ Background writes                                       ║
+║    ✓ Auto-refresh cycles                                     ║
+║    ✓ Telemetry logging                                       ║
+║                                                              ║
+║  Enabled at: ${state.enabledAt}                  ║
+║                                                              ║
+║  To re-enable: debug.off                                     ║
+║  Or: localStorage.removeItem("substrate_debug_mode")         ║
+║                                                              ║
+║  IMPORTANT: Refresh the page to fully apply changes.         ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝`
+      };
+    } else if (base === 'debug.off' || base === 'debug.disable') {
+      debugMode.disable();
+      return {
+        success: true,
+        output: `
+╔══════════════════════════════════════════════════════════════╗
+║  🟢 DEBUG MODE DISABLED                                       ║
+╠══════════════════════════════════════════════════════════════╣
+║                                                              ║
+║  Background activity has been RE-ENABLED.                    ║
+║                                                              ║
+║  IMPORTANT: Refresh the page to fully restore features.      ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝`
+      };
+    } else if (base === 'debug.status' || base === 'debug') {
+      const state = debugMode.getState();
+      const statusIcon = state.enabled ? '🔴' : '🟢';
+      const statusText = state.enabled ? 'ACTIVE (background disabled)' : 'INACTIVE (normal operation)';
+      return {
+        success: true,
+        output: `
+╔══════════════════════════════════════════════════════════════╗
+║  ${statusIcon} DEBUG MODE: ${statusText.padEnd(35)}║
+╠══════════════════════════════════════════════════════════════╣
+║                                                              ║
+║  Enabled:    ${String(state.enabled).padEnd(40)}║
+║  Since:      ${(state.enabledAt || 'N/A').padEnd(40)}║
+║                                                              ║
+║  Disabled Features:                                          ║
+${state.disabledFeatures.length > 0 
+  ? state.disabledFeatures.map(f => `║    • ${f.padEnd(50)}║`).join('\n')
+  : '║    (none)                                                ║'}
+║                                                              ║
+║  Commands:                                                   ║
+║    debug.on   — Enable debug mode (disable background)       ║
+║    debug.off  — Disable debug mode (restore normal)          ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝`
+      };
     }
     // v5.6.0: Module Registry commands
     else if (base === 'system.modules') {

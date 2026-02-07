@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { toast } from "sonner";
+import { debugMode } from '@/lib/debug-mode';
 
 interface ConnectionStatus {
   isConnected: boolean;
@@ -20,6 +21,12 @@ export function useRealtimeConnection() {
   const [healthChannel, setHealthChannel] = useState<RealtimeChannel | null>(null);
 
   useEffect(() => {
+    // Skip if debug mode is active
+    if (!debugMode.allowRealtime()) {
+      setStatus(prev => ({ ...prev, isConnected: false, channels: ['debug-mode-active'] }));
+      return;
+    }
+    
     // Create a health check channel that's always connected
     const channel = supabase
       .channel('admin-health-check')
@@ -41,8 +48,10 @@ export function useRealtimeConnection() {
 
     setHealthChannel(channel);
 
-    // Monitor all channels
+    // Monitor all channels (respects debug mode)
     const checkConnection = () => {
+      if (!debugMode.allowPolling()) return;
+      
       const channels = supabase.getChannels();
       const isConnected = channels.some(
         (ch) => ch.state === "joined" || ch.state === "joining"

@@ -1,9 +1,12 @@
 /**
  * PromptFluid Nexus Metrics
  * Performance tracking and system health monitoring
+ * 
+ * Respects debugMode — when enabled, metrics recording and flushing is skipped
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { debugMode } from '@/lib/debug-mode';
 
 interface Metric {
   name: string;
@@ -36,6 +39,11 @@ export async function recordMetric(
   name: string,
   metadata?: Record<string, any>
 ): Promise<void> {
+  // Skip if debug mode is active
+  if (!debugMode.allowMetrics()) {
+    return;
+  }
+  
   const metric: Metric = {
     name,
     value: 1,
@@ -55,6 +63,11 @@ export async function recordMetric(
  * Flush metrics buffer to storage
  */
 export async function flushMetrics(): Promise<void> {
+  // Skip if debug mode is active
+  if (!debugMode.allowMetrics()) {
+    return;
+  }
+  
   if (metricsBuffer.length === 0) return;
 
   const batch = [...metricsBuffer];
@@ -114,6 +127,10 @@ function groupByType(metrics: Metric[]): Record<string, number> {
  * Initialize periodic metric flushing
  */
 export function startMetricsCollection(): () => void {
-  const interval = setInterval(flushMetrics, BUFFER_FLUSH_INTERVAL);
+  const interval = setInterval(() => {
+    if (debugMode.allowMetrics()) {
+      flushMetrics();
+    }
+  }, BUFFER_FLUSH_INTERVAL);
   return () => clearInterval(interval);
 }

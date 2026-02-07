@@ -3,10 +3,12 @@
  * v1.0.0 — Governed Evolving Support System
  * 
  * Provides React integration for the support bot engine.
+ * Respects debugMode — when enabled, auto-refresh is disabled
  */
 
 import { useState, useCallback, useEffect } from 'react';
 import { supportBot, SupportBotEngine, DEFAULT_SUPPORT_BOT_CONFIG } from './index';
+import { debugMode } from '@/lib/debug-mode';
 import type {
   SupportBotState,
   SupportBotConfig,
@@ -77,10 +79,12 @@ export function useSupportBot(
     }
   }, []);
 
-  // Refresh state periodically
+  // Refresh state periodically (respects debug mode)
   useEffect(() => {
     const interval = setInterval(() => {
-      setState(supportBot.getState());
+      if (debugMode.allowAutoRefresh()) {
+        setState(supportBot.getState());
+      }
     }, 5000);
     return () => clearInterval(interval);
   }, []);

@@ -448,6 +448,11 @@ export const META_COMMANDS: CommandDefinition[] = [
   { command: 'export', description: 'Export session log', category: 'meta', icon: Database, requiresOperator: false },
   { command: 'theme', description: 'Toggle terminal theme', category: 'meta', icon: Eye, requiresOperator: false, args: '[dark|light|matrix]' },
   
+  // Debug Mode (kill-switch for background activity)
+  { command: 'debug', description: 'Show debug mode status', category: 'meta', icon: Settings, requiresOperator: false },
+  { command: 'debug.on', description: 'Enable debug mode (disable background)', category: 'meta', icon: Shield, requiresOperator: false },
+  { command: 'debug.off', description: 'Disable debug mode (restore normal)', category: 'meta', icon: Zap, requiresOperator: false },
+  
   // v5.0.0: Aliases
   { command: 'alias', description: 'List all command aliases', category: 'meta', icon: Terminal, requiresOperator: false },
   { command: 'alias add', description: 'Create a custom alias', category: 'meta', icon: Terminal, requiresOperator: false, args: '<alias> <command>', example: 'alias add hs system.health' },
