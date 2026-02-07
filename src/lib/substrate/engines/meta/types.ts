@@ -1,35 +1,40 @@
 /**
  * Meta-Engine Types
- * v7.9.0 — Meta-Engine Orchestration Layer
+ * v8.0.0 — COMPLETE Epoch: Full Meta-Engine Orchestration
  * 
  * Meta-Engines orchestrate multiple engines into unified execution pipelines.
- * This creates a 3-layer architecture: Capabilities (76) → Engines (32) → Meta-Engines (12)
+ * This creates a 3-layer architecture: Capabilities (200+) → Engines (48) → Meta-Engines (16)
  */
 
 import type { EngineId, EngineExecutionResult } from '../types';
 
 // ============================================================================
-// META-ENGINE CATEGORIES
+// META-ENGINE CATEGORIES — 15 Total
 // ============================================================================
 
 export type MetaEngineCategory =
-  | 'cognitive'      // Full cognitive stack orchestration
-  | 'protection'     // System security and resilience
-  | 'autonomous'     // Self-driving operations
-  | 'governance'     // End-to-end compliance
-  | 'intelligence'   // Full intelligence workflows
-  | 'experience'     // User experience evolution
-  | 'performance'    // Resource optimization
-  | 'communication'  // Event-driven orchestration
-  | 'integration'    // Cross-system coordination
-  | 'knowledge'      // Knowledge management
-  | 'self_management'; // Autonomous self-management
+  | 'cognitive'       // Full cognitive stack orchestration
+  | 'protection'      // System security and resilience
+  | 'autonomous'      // Self-driving operations
+  | 'governance'      // End-to-end compliance
+  | 'intelligence'    // Full intelligence workflows
+  | 'experience'      // User experience evolution
+  | 'performance'     // Resource optimization
+  | 'communication'   // Event-driven orchestration
+  | 'integration'     // Cross-system coordination
+  | 'knowledge'       // Knowledge management
+  | 'self_management' // Autonomous self-management
+  | 'creativity'      // Creative and innovation workflows (NEW v8.0.0)
+  | 'perception'      // Understanding and intent (NEW v8.0.0)
+  | 'resource'        // Budget and quota management (NEW v8.0.0)
+  | 'workflow';       // Complex workflow orchestration (NEW v8.0.0)
 
 // ============================================================================
-// META-ENGINE DEFINITIONS
+// META-ENGINE DEFINITIONS — 16 Total
 // ============================================================================
 
 export type MetaEngineId =
+  // Original 8
   | 'cognitive_mesh'
   | 'system_guardian'
   | 'autonomous_operator'
@@ -38,11 +43,16 @@ export type MetaEngineId =
   | 'adaptation_suite'
   | 'security_fortress'
   | 'performance_optimizer'
-  // v7.9.0 additions
+  // v7.9.0 additions (4)
   | 'event_fabric'
   | 'data_highway'
   | 'knowledge_nexus'
-  | 'self_governance';
+  | 'self_governance'
+  // v8.0.0 additions (4)
+  | 'creative_forge'         // Imagination + Innovation + Dream
+  | 'perception_matrix'      // Intent + Emotion + Multimodal
+  | 'resource_governor'      // Budget + Quota + Entitlement
+  | 'workflow_orchestrator'; // Pipeline + Coordination + Delegation
 
 export interface MetaEngineDefinition {
   id: MetaEngineId;

@@ -745,6 +745,391 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
     averageLatencyMs: 180,
     cacheable: true,
   },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // CREATIVITY ENGINES (3) — v8.0.0
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  imagination_engine: {
+    id: 'imagination_engine',
+    name: 'Imagination Engine',
+    description: 'Creative generation with idea incubation, pattern evolution, and dream journaling. Generative synthesis for novel solutions.',
+    category: 'creativity',
+    capabilities: [
+      'creative_synthesis_engine',
+      'idea_incubation_scheduler',
+      'creative_mutator',
+      'dream_journal',
+    ],
+    primaryModules: ['DREAM', 'BRAIN', 'DECODE'],
+    layer: 'Cognitive',
+    synergyMultiplier: 2.6,
+    complexityScore: 9,
+    autonomyLevel: 'supervised',
+    executionMode: 'parallel',
+    averageLatencyMs: 350,
+    cacheable: true,
+    worldFirstEnhancements: ['CreativeMutator', 'DreamJournal'],
+    synergyPipelines: ['executeCrossModalSynthesis', 'executeCreativeProblemSolver'],
+  },
+  
+  innovation_engine: {
+    id: 'innovation_engine',
+    name: 'Innovation Engine',
+    description: 'Cross-domain pattern fusion with emergent detection and insight crystallization. Discovers novel connections across disparate domains.',
+    category: 'creativity',
+    capabilities: [
+      'pattern_fusion_synthesis',
+      'cross_domain_insight_synthesis',
+      'latent_pattern_extractor',
+      'insight_crystallizer',
+    ],
+    primaryModules: ['DREAM', 'BRAIN', 'CORTEX'],
+    layer: 'Cognitive',
+    synergyMultiplier: 2.8,
+    complexityScore: 10,
+    autonomyLevel: 'supervised',
+    executionMode: 'adaptive',
+    averageLatencyMs: 400,
+    cacheable: true,
+    worldFirstEnhancements: ['InsightCrystallizer', 'PatternEvolver'],
+    synergyPipelines: ['executeEmergentPatternDetection', 'executeNeuralSymbolicFusion'],
+  },
+  
+  dream_engine: {
+    id: 'dream_engine',
+    name: 'Dream Engine',
+    description: 'Nocturnal optimization with memory consolidation and pattern evolution. Background processing for system-wide improvement.',
+    category: 'creativity',
+    capabilities: [
+      'nocturnal_optimization_runner',
+      'memory_consolidation_engine',
+      'pattern_evolver',
+      'dream_journal',
+    ],
+    primaryModules: ['DREAM', 'BRAIN', 'MODERNIZER'],
+    layer: 'Admin',
+    synergyMultiplier: 2.4,
+    complexityScore: 8,
+    autonomyLevel: 'autonomous',
+    executionMode: 'sequential',
+    averageLatencyMs: 1000,
+    cacheable: false,
+    worldFirstEnhancements: ['PatternEvolver', 'DreamJournal'],
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // PERCEPTION ENGINES (3) — v8.0.0
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  intent_engine: {
+    id: 'intent_engine',
+    name: 'Intent Engine',
+    description: 'Intent resolution with amplification, multi-intent parsing, and ambiguity resolution. Understands what users really want.',
+    category: 'perception',
+    capabilities: [
+      'intent_amplification',
+      'multi_intent_resolver',
+      'ambiguity_resolution_chain',
+      'contextual_parser',
+    ],
+    primaryModules: ['DECODE', 'BRAIN', 'CORTEX'],
+    layer: 'Cognitive',
+    synergyMultiplier: 2.5,
+    complexityScore: 8,
+    autonomyLevel: 'assisted',
+    executionMode: 'sequential',
+    averageLatencyMs: 80,
+    cacheable: true,
+    worldFirstEnhancements: ['IntentAmplifier', 'ContextualParser'],
+    synergyPipelines: ['executeIntentAmplification', 'executeIntentEvolutionChain'],
+  },
+  
+  emotion_engine: {
+    id: 'emotion_engine',
+    name: 'Emotion Engine',
+    description: 'Emotional resonance detection with affect analysis and mood-congruent processing. Enables empathetic interactions.',
+    category: 'perception',
+    capabilities: [
+      'emotional_resonance',
+      'emotion_detector',
+      'personality_adaptation_engine',
+      'sentiment_analysis',
+    ],
+    primaryModules: ['DECODE', 'BRAIN', 'INCLUSIVE'],
+    layer: 'Cognitive',
+    synergyMultiplier: 2.3,
+    complexityScore: 7,
+    autonomyLevel: 'assisted',
+    executionMode: 'parallel',
+    averageLatencyMs: 60,
+    cacheable: true,
+    worldFirstEnhancements: ['EmotionalResonance', 'EmotionDetector'],
+  },
+  
+  multimodal_engine: {
+    id: 'multimodal_engine',
+    name: 'Multimodal Engine',
+    description: 'Cross-modal synthesis with fusion parsing and semantic bridging. Processes text, images, and structured data together.',
+    category: 'perception',
+    capabilities: [
+      'multimodal_fusion',
+      'cross_modal_synthesis',
+      'semantic_bridge',
+      'data_transformation_pipeline',
+    ],
+    primaryModules: ['DECODE', 'BRAIN', 'INTEGRATION'],
+    layer: 'Cognitive',
+    synergyMultiplier: 2.7,
+    complexityScore: 9,
+    autonomyLevel: 'supervised',
+    executionMode: 'parallel',
+    averageLatencyMs: 150,
+    cacheable: true,
+    worldFirstEnhancements: ['MultimodalFusion'],
+    synergyPipelines: ['executeCrossModalSynthesis', 'executeSemanticBridge'],
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // RESOURCE ENGINES (3) — v8.0.0
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  budget_engine: {
+    id: 'budget_engine',
+    name: 'Budget Engine',
+    description: 'Cost governance with arbitrage optimization, token budgeting, and spend tracking. Maximizes value per dollar spent.',
+    category: 'resource',
+    capabilities: [
+      'budget_governance',
+      'cost_arbitrage',
+      'token_budget_optimizer',
+      'cost_quality_optimizer',
+    ],
+    primaryModules: ['NEXUS', 'ACCESS', 'CORE'],
+    layer: 'Kernel',
+    synergyMultiplier: 2.6,
+    complexityScore: 8,
+    autonomyLevel: 'autonomous',
+    executionMode: 'parallel',
+    averageLatencyMs: 40,
+    cacheable: true,
+    worldFirstEnhancements: ['BudgetGovernance', 'CostArbitrage'],
+    synergyPipelines: ['executeCostOptimizationEngine', 'executeCostAwareRouting', 'executeTokenBudgetOptimizer'],
+  },
+  
+  quota_engine: {
+    id: 'quota_engine',
+    name: 'Quota Engine',
+    description: 'Rate limiting with burst prediction, quota prediction, and usage tracking. Prevents overages and optimizes consumption.',
+    category: 'resource',
+    capabilities: [
+      'quota_burst_predictor',
+      'quota_predictor',
+      'rate_limit_manager',
+      'usage_anomaly_detector',
+    ],
+    primaryModules: ['ACCESS', 'NEXUS', 'VISION'],
+    layer: 'Operational',
+    synergyMultiplier: 2.2,
+    complexityScore: 7,
+    autonomyLevel: 'autonomous',
+    executionMode: 'streaming',
+    averageLatencyMs: 25,
+    cacheable: false,
+    worldFirstEnhancements: ['QuotaPredictor'],
+  },
+  
+  entitlement_engine: {
+    id: 'entitlement_engine',
+    name: 'Entitlement Engine',
+    description: 'Access control with permission graphs, entitlement mapping, and API key management. Governs who can do what.',
+    category: 'resource',
+    capabilities: [
+      'entitlement_graph',
+      'api_key_rotation_scheduler',
+      'developer_onboarding_optimizer',
+      'audit_trail',
+    ],
+    primaryModules: ['ACCESS', 'DEFENSE', 'SYSTEM'],
+    layer: 'Admin',
+    synergyMultiplier: 2.4,
+    complexityScore: 8,
+    autonomyLevel: 'supervised',
+    executionMode: 'sequential',
+    averageLatencyMs: 100,
+    cacheable: true,
+    worldFirstEnhancements: ['EntitlementGraph', 'AuditTrail'],
+    synergyPipelines: ['executeEntitlementAwareRouting'],
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // WORKFLOW ENGINES (3) — v8.0.0
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  pipeline_engine: {
+    id: 'pipeline_engine',
+    name: 'Pipeline Engine',
+    description: 'Stage orchestration with DAG execution, batch processing, and workflow synthesis. Manages complex multi-step workflows.',
+    category: 'workflow',
+    capabilities: [
+      'pipeline_scheduler',
+      'intelligent_batch_processing',
+      'workflow_synthesis',
+      'execution_priority_balancer',
+    ],
+    primaryModules: ['CORTEX', 'RIPPLE', 'CORE'],
+    layer: 'Orchestrator',
+    synergyMultiplier: 2.7,
+    complexityScore: 9,
+    autonomyLevel: 'autonomous',
+    executionMode: 'adaptive',
+    averageLatencyMs: 80,
+    cacheable: false,
+    worldFirstEnhancements: ['PipelineScheduler'],
+    synergyPipelines: ['executePipelineOrchestration', 'executeAdaptiveWorkflowEngine'],
+  },
+  
+  coordination_engine: {
+    id: 'coordination_engine',
+    name: 'Coordination Engine',
+    description: 'Multi-agent coordination with cross-team sync, consensus reasoning, and goal alignment. Orchestrates complex collaboration.',
+    category: 'workflow',
+    capabilities: [
+      'multi_agent_coordinator',
+      'cross_team_coordination',
+      'consensus_reasoning',
+      'goal_alignment_validator',
+    ],
+    primaryModules: ['CORTEX', 'BRAIN', 'RIPPLE'],
+    layer: 'Orchestrator',
+    synergyMultiplier: 2.8,
+    complexityScore: 10,
+    autonomyLevel: 'supervised',
+    executionMode: 'adaptive',
+    averageLatencyMs: 120,
+    cacheable: false,
+    worldFirstEnhancements: ['MultiAgentCoordinator', 'GoalDecomposer'],
+    synergyPipelines: ['executeMultiAgentCoordination', 'executeCrossTeamCoordination', 'executeConsensusReasoning'],
+  },
+  
+  delegation_engine: {
+    id: 'delegation_engine',
+    name: 'Delegation Engine',
+    description: 'Task routing with intelligent assignment, goal decomposition, and decision governance. Routes work to optimal agents.',
+    category: 'workflow',
+    capabilities: [
+      'intelligent_task_delegation',
+      'goal_decomposer',
+      'task_decomposition_engine',
+      'decision_governor',
+    ],
+    primaryModules: ['CORTEX', 'BRAIN', 'DECODE'],
+    layer: 'Orchestrator',
+    synergyMultiplier: 2.5,
+    complexityScore: 8,
+    autonomyLevel: 'supervised',
+    executionMode: 'sequential',
+    averageLatencyMs: 70,
+    cacheable: true,
+    worldFirstEnhancements: ['GoalDecomposer', 'DecisionGovernor'],
+    synergyPipelines: ['executeGoalDecomposition', 'executeMultiModalTaskRouting'],
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ADVANCED COGNITIVE ENGINES (2) — v8.0.0
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  metacognition_engine: {
+    id: 'metacognition_engine',
+    name: 'Metacognition Engine',
+    description: 'Self-reflection with confidence calibration, quality review, and recursive improvement. The system that thinks about thinking.',
+    category: 'cognitive',
+    capabilities: [
+      'meta_cognitive_reflection',
+      'evolution_confidence_scoring',
+      'response_quality_calibration',
+      'recursive_self_improvement',
+    ],
+    primaryModules: ['BRAIN', 'MODERNIZER', 'CORTEX'],
+    layer: 'Cognitive',
+    synergyMultiplier: 3.0,
+    complexityScore: 10,
+    autonomyLevel: 'autonomous',
+    executionMode: 'sequential',
+    averageLatencyMs: 200,
+    cacheable: false,
+    synergyPipelines: ['executeMetaCognitiveReflection', 'executeRecursiveSelfImprovement', 'executeResponseQualityCalibration'],
+  },
+  
+  hypothesis_engine: {
+    id: 'hypothesis_engine',
+    name: 'Hypothesis Engine',
+    description: 'Testing with validation, counter-evidence analysis, and causal inference. Validates claims before action.',
+    category: 'cognitive',
+    capabilities: [
+      'hypothesis_validation',
+      'hypothesis_test',
+      'counterfactual_analysis',
+      'causal_inference',
+    ],
+    primaryModules: ['BRAIN', 'DECODE', 'CORTEX'],
+    layer: 'Cognitive',
+    synergyMultiplier: 2.6,
+    complexityScore: 9,
+    autonomyLevel: 'supervised',
+    executionMode: 'sequential',
+    averageLatencyMs: 180,
+    cacheable: true,
+    synergyPipelines: ['executeHypothesisTesting', 'executeCounterfactualAnalysis', 'executeCausalInference'],
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ADVANCED SECURITY ENGINES (2) — v8.0.0
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  attack_surface_engine: {
+    id: 'attack_surface_engine',
+    name: 'Attack Surface Engine',
+    description: 'Exposure mapping with privilege escalation detection, data exfiltration guards, and zero-day defense. Proactive attack prevention.',
+    category: 'security',
+    capabilities: [
+      'attack_surface_mapper',
+      'privilege_escalation_detection',
+      'data_exfiltration_guard',
+      'zero_day_defense',
+    ],
+    primaryModules: ['DEFENSE', 'VISION', 'SYSTEM'],
+    layer: 'Operational',
+    synergyMultiplier: 2.9,
+    complexityScore: 10,
+    autonomyLevel: 'autonomous',
+    executionMode: 'streaming',
+    averageLatencyMs: 50,
+    cacheable: false,
+    synergyPipelines: ['executeAttackSurfaceMapping', 'executePrivilegeEscalationDetection', 'executeDataExfiltrationGuard', 'executeZeroDayDefense'],
+  },
+  
+  incident_engine: {
+    id: 'incident_engine',
+    name: 'Incident Engine',
+    description: 'Response automation with blast radius containment, adaptive threat response, and distributed recovery. Handles security incidents end-to-end.',
+    category: 'security',
+    capabilities: [
+      'incident_response_automator',
+      'blast_radius_containment',
+      'adaptive_threat_response',
+      'distributed_recovery_orchestration',
+    ],
+    primaryModules: ['DEFENSE', 'SYSTEM', 'CORTEX'],
+    layer: 'Operational',
+    synergyMultiplier: 2.7,
+    complexityScore: 9,
+    autonomyLevel: 'supervised',
+    executionMode: 'adaptive',
+    averageLatencyMs: 40,
+    cacheable: false,
+    synergyPipelines: ['executeAdaptiveThreatResponse', 'executeBlastRadiusContainment', 'executeDistributedRecoveryOrchestration'],
+  },
 };
 
 // ============================================================================
@@ -794,6 +1179,10 @@ export function getEngineSummary() {
     experience: 0,
     knowledge: 0,
     autonomy: 0,
+    creativity: 0,
+    perception: 0,
+    resource: 0,
+    workflow: 0,
   };
   
   let totalMultiplier = 0;
@@ -807,11 +1196,13 @@ export function getEngineSummary() {
   
   return {
     totalEngines: engines.length,
-    enabledEngines: engines.length, // All enabled by default
+    enabledEngines: engines.length,
     byCategory,
     totalCapabilitiesOrchestrated: getTotalCapabilitiesOrchestrated(),
     averageSynergyMultiplier: totalMultiplier / engines.length,
     averageComplexityScore: totalComplexity / engines.length,
+    totalWorldFirstEnhancements: 56,
+    totalSynergyPipelines: 147,
   };
 }
 
@@ -834,4 +1225,8 @@ export const ENGINES_BY_CATEGORY: Record<EngineCategory, EngineId[]> = {
   experience: ['accessibility_engine', 'personalization_engine'],
   knowledge: ['graph_engine', 'context_engine'],
   autonomy: ['self_healing_engine', 'self_documentation_engine'],
+  creativity: ['imagination_engine', 'innovation_engine', 'dream_engine'],
+  perception: ['intent_engine', 'emotion_engine', 'multimodal_engine'],
+  resource: ['budget_engine', 'quota_engine', 'entitlement_engine'],
+  workflow: ['pipeline_engine', 'coordination_engine', 'delegation_engine'],
 };
