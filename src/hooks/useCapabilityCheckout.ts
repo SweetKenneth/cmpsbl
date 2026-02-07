@@ -5,8 +5,8 @@
  */
 
 import { useState, useCallback } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { openCheckoutRedirect } from '@/lib/checkout/checkoutRedirect';
 import { 
   hasStripeConfig, 
   getStripeConfig,
@@ -112,13 +112,11 @@ export function useCapabilityCheckout() {
       return;
     }
 
-    // Open the tab synchronously to avoid popup blockers (critical for "Buy" buttons)
-    const checkoutWindow = window.open('about:blank', '_blank');
-
     setState({ loading: true, error: null, capabilityId });
 
     try {
-      const { data, error } = await supabase.functions.invoke('marketplace-checkout', {
+      openCheckoutRedirect({
+        fn: 'marketplace-checkout',
         body: {
           product_type: result.tier,
           price_id: result.config.priceId,
@@ -129,28 +127,9 @@ export function useCapabilityCheckout() {
         },
       });
 
-      if (error) {
-        throw new Error(error.message || 'Checkout failed');
-      }
-
-      if (data?.url) {
-        if (checkoutWindow) {
-          checkoutWindow.opener = null;
-          checkoutWindow.location.href = data.url;
-        } else {
-          // Fallback if blocked
-          window.location.href = data.url;
-        }
-        toast.success('Opening checkout...');
-      } else {
-        throw new Error('No checkout URL received');
-      }
-
+      toast.success('Opening secure checkout…');
       setState({ loading: false, error: null, capabilityId: null });
     } catch (err) {
-      // If we opened a blank tab but checkout failed, close it
-      if (checkoutWindow) checkoutWindow.close();
-
       const errorMessage = err instanceof Error ? err.message : 'Checkout failed';
       setState({ loading: false, error: errorMessage, capabilityId: null });
       toast.error(errorMessage);

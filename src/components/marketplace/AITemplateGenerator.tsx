@@ -16,12 +16,13 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { 
-  GENERATOR_CONFIG, 
-  RARITY_TIERS, 
-  formatValueRange, 
+import { openCheckoutRedirect } from "@/lib/checkout/checkoutRedirect";
+import {
+  GENERATOR_CONFIG,
+  RARITY_TIERS,
+  formatValueRange,
   formatExpectedValue,
-  getGeneratorValueMultiplier 
+  getGeneratorValueMultiplier
 } from "@/config/marketplace-rarity";
 
 // Stripe product/price for the generator - $87 (Rare floor)
@@ -69,37 +70,24 @@ export function AITemplateGenerator({ featured = false }: AITemplateGeneratorPro
   const [generatedTemplate, setGeneratedTemplate] = useState<GeneratedTemplate | null>(null);
   const [showResult, setShowResult] = useState(false);
 
-  const handleCheckout = async () => {
+  const handleCheckout = () => {
     setIsCheckingOut(true);
 
-    // Open the tab synchronously to avoid popup blockers
-    const checkoutWindow = window.open('about:blank', '_blank');
-
     try {
-      const { data, error } = await supabase.functions.invoke('marketplace-checkout', {
+      openCheckoutRedirect({
+        fn: 'marketplace-checkout',
         body: {
           product_type: 'template',
           price_id: GENERATOR_PRICE_ID,
           product_id: GENERATOR_PRODUCT_ID,
           template_name: 'AI Template Generator - Random Unique Template',
           item_name: 'AI Template Generator',
-          unit_amount_usd: Math.round(GENERATOR_PRICE / 100), // Pass USD amount for price_data fallback
+          unit_amount_usd: Math.round(GENERATOR_PRICE / 100),
         },
       });
 
-      if (error) throw error;
-      if (!data?.url) throw new Error('No checkout URL returned');
-
-      if (checkoutWindow) {
-        checkoutWindow.opener = null;
-        checkoutWindow.location.href = data.url;
-      } else {
-        window.location.href = data.url;
-      }
-
-      toast.success('Opening checkout... Generate your template after payment!');
+      toast.success('Opening secure checkout…');
     } catch (error) {
-      if (checkoutWindow) checkoutWindow.close();
       console.error('Checkout error:', error);
       toast.error('Checkout failed. Please try again.');
     } finally {
