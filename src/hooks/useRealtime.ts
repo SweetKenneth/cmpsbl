@@ -1,11 +1,14 @@
 /**
  * Realtime data subscription hook
  * Subscribe to Supabase realtime channels for live updates
+ * 
+ * Respects debugMode — when enabled, subscriptions are skipped
  */
 
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { RealtimeChannel } from '@supabase/supabase-js';
+import { debugMode } from '@/lib/debug-mode';
 
 interface UseRealtimeOptions<T> {
   table: string;
@@ -19,6 +22,11 @@ export function useRealtime<T = any>(options: UseRealtimeOptions<T>) {
   const [channel, setChannel] = useState<RealtimeChannel | null>(null);
 
   useEffect(() => {
+    // Skip if debug mode is active
+    if (!debugMode.allowRealtime()) {
+      return;
+    }
+    
     const channelName = `realtime:${options.table}`;
     
     const realtimeChannel = supabase
@@ -56,11 +64,17 @@ export function useRealtime<T = any>(options: UseRealtimeOptions<T>) {
 
 /**
  * Subscribe to multiple tables at once
+ * Respects debugMode — when enabled, subscriptions are skipped
  */
 export function useMultipleRealtime(subscriptions: UseRealtimeOptions<any>[]) {
   const [channels, setChannels] = useState<RealtimeChannel[]>([]);
 
   useEffect(() => {
+    // Skip if debug mode is active
+    if (!debugMode.allowRealtime()) {
+      return;
+    }
+    
     const newChannels = subscriptions.map((sub, index) => {
       return supabase
         .channel(`realtime:${sub.table}:${index}`)

@@ -1,9 +1,12 @@
 /**
  * useAgencyTelemetry Hook — React hook for accessing agency telemetry data
+ * 
+ * Respects debugMode — when enabled, polling and realtime are disabled
  */
 
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { debugMode } from '@/lib/debug-mode';
 import {
   getAgencyTelemetry,
   getAgentLedgers,
@@ -82,20 +85,27 @@ export function useAgencyTelemetry(options: UseAgencyTelemetryOptions): UseAgenc
     fetchData();
   }, [fetchData]);
   
-  // Auto-refresh
+  // Auto-refresh (respects debug mode)
   useEffect(() => {
     if (!refreshInterval) return;
     
     const interval = setInterval(() => {
-      fetchData(true);
+      if (debugMode.allowAutoRefresh()) {
+        fetchData(true);
+      }
     }, refreshInterval);
     
     return () => clearInterval(interval);
   }, [refreshInterval, fetchData]);
   
-  // Subscribe to realtime updates
+  // Subscribe to realtime updates (respects debug mode)
   useEffect(() => {
     if (!agencyId) return;
+    
+    // Skip if debug mode is active
+    if (!debugMode.allowRealtime()) {
+      return;
+    }
     
     const channel = supabase
       .channel(`telemetry-${agencyId}`)

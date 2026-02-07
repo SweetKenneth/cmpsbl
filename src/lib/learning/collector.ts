@@ -1,4 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
+import { debugMode } from '@/lib/debug-mode';
 
 export interface LearningEvent {
   event_type: string;
@@ -13,6 +14,8 @@ export interface LearningEvent {
 /**
  * Learning Collector
  * Captures system events and sends them to the learning layer
+ * 
+ * Respects debugMode — when enabled, all writes are skipped
  */
 export class LearningCollector {
   private static queue: LearningEvent[] = [];
@@ -21,14 +24,24 @@ export class LearningCollector {
   private static readonly FLUSH_INTERVAL = 5000; // 5 seconds
 
   static {
-    // Auto-flush queue every 5 seconds
-    setInterval(() => this.flush(), this.FLUSH_INTERVAL);
+    // Auto-flush queue every 5 seconds (respects debug mode)
+    setInterval(() => {
+      if (debugMode.allowLearning()) {
+        this.flush();
+      }
+    }, this.FLUSH_INTERVAL);
   }
 
   /**
    * Log a learning event
+   * Skipped when debug mode is enabled
    */
   static async logEvent(event: LearningEvent): Promise<void> {
+    // Skip if debug mode is active
+    if (!debugMode.allowLearning()) {
+      return;
+    }
+    
     this.queue.push({
       ...event,
       metadata: {

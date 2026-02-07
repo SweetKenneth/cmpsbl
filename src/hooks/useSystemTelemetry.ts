@@ -1,10 +1,13 @@
 /**
  * System Telemetry Hook
  * Real-time system logs and metrics via Supabase Realtime
+ * 
+ * Respects debugMode — when enabled, polling and realtime are disabled
  */
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { debugMode } from '@/lib/debug-mode';
 
 interface SystemLog {
   id: string;
@@ -31,6 +34,12 @@ export function useSystemTelemetry(refreshInterval: number = 10000) {
 
   // Fetch initial status
   useEffect(() => {
+    // Skip if debug mode is active
+    if (!debugMode.allowPolling()) {
+      setLoading(false);
+      return;
+    }
+    
     const fetchStatus = async () => {
       try {
         const { data, error } = await supabase.functions.invoke('pf-system-status');
@@ -47,13 +56,22 @@ export function useSystemTelemetry(refreshInterval: number = 10000) {
     };
 
     fetchStatus();
-    const interval = setInterval(fetchStatus, refreshInterval);
+    const interval = setInterval(() => {
+      if (debugMode.allowPolling()) {
+        fetchStatus();
+      }
+    }, refreshInterval);
 
     return () => clearInterval(interval);
   }, [refreshInterval]);
 
-  // Subscribe to real-time log updates
+  // Subscribe to real-time log updates (respects debug mode)
   useEffect(() => {
+    // Skip if debug mode is active
+    if (!debugMode.allowRealtime()) {
+      return;
+    }
+    
     const channel = supabase
       .channel('system-logs')
       .on(
@@ -75,8 +93,13 @@ export function useSystemTelemetry(refreshInterval: number = 10000) {
     };
   }, []);
 
-  // Log function for modules to use
+  // Log function for modules to use (respects debug mode)
   const logEvent = async (module: string, message: string, severity: string = 'info', context: Record<string, any> = {}) => {
+    // Skip if debug mode is active
+    if (!debugMode.allowTelemetry()) {
+      return;
+    }
+    
     try {
       await supabase.functions.invoke('pf-telemetry-log', {
         body: { module, message, severity, context }

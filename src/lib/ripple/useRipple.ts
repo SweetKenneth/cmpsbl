@@ -1,10 +1,13 @@
 /**
  * RIPPLE React Hook
  * v7.0.0 — React integration for RIPPLE Event Bus
+ * 
+ * Respects debugMode — when enabled, auto-refresh is skipped
  */
 
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { ripple, type RippleState, type RippleEvent, type EventStatus, type DeliveryMode } from './index';
+import { debugMode } from '@/lib/debug-mode';
 
 export interface UseRippleReturn {
   state: RippleState;
@@ -97,11 +100,15 @@ export function useRipple(autoRefresh: boolean = false, refreshInterval: number 
     return count;
   }, [refresh]);
 
-  // Auto-refresh
+  // Auto-refresh (respects debug mode)
   useEffect(() => {
     refresh();
     if (autoRefresh) {
-      const interval = setInterval(refresh, refreshInterval);
+      const interval = setInterval(() => {
+        if (debugMode.allowAutoRefresh()) {
+          refresh();
+        }
+      }, refreshInterval);
       return () => clearInterval(interval);
     }
   }, [autoRefresh, refreshInterval, refresh]);
