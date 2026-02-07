@@ -1,54 +1,64 @@
 /* HUMANS.TXT — Following humanstxt.org standard */
 
 /* TEAM */
-Founder & CEO: Kenneth E Sweet Jr
-Location: Dallas, Texas, USA
-Contact: PromptFluid@gmail.com
+
+Creator & Lead Architect: Kenneth E. Sweet Jr.
+ORCID: https://orcid.org/0009-0001-4237-1243
+Role: Founder, Architect, Chief Cognitive Engineer
+Location: Palm Springs, California, USA
+Contact: promptfluid@gmail.com
 Phone: (214) 548-0883
 Twitter: @promptfluid
 
-/* CREATOR */
-Kenneth E Sweet Jr — Founder, Architect, and Chief Cognitive Engineer
-Vision: Building the infrastructure layer for autonomous AI systems
-Focus: Cognitive orchestration, persistent memory, dream cycles, and BYOK architecture
-
 /* THANKS */
+
 Built with love, caffeine, and autonomous AI assistance.
 Special thanks to the open source community.
 To the dreamers building AI that actually remembers.
 
 /* SITE */
-Last update: 2026-02-03
+
+Last update: 2026/02/07
 Language: English
-Doctype: HTML5
-Standards: WCAG 2.2 AA, Schema.org, Open Graph
-Platform: React, TypeScript, Tailwind CSS
+Doctype: React + TypeScript + Tailwind
+Framework: Vite
 Backend: Supabase (Lovable Cloud)
-AI: Multi-provider (OpenAI, Anthropic, Google, Groq)
+AI: Multi-provider orchestration via Nexus
 
-/* TECHNOLOGY */
-- React 18
-- TypeScript 5
-- Tailwind CSS 3
-- Supabase Edge Functions
-- Vite
-- PWA Enabled
+Standards: HTML5, CSS3, ES2024
+Components: Radix UI, shadcn/ui
+State: TanStack Query
+Routing: React Router v7
+Animation: Framer Motion
 
-/* SUBSTRATE OS v7.0.0 SEBA Era */
-- 14 Core Modules: CORE, RIPPLE, ACCESS, BRAIN, DECODE, DREAM, DEFENSE, NEXUS, VISION, INTEGRATION, SYSTEM, MODERNIZER, INCLUSIVE, CORTEX
-- 260+ Terminal Commands
-- 120 Synergy Pipelines with 98 Custom Executors
-- 5-Layer Architecture (Kernel, Cognitive, Operational, Admin, Orchestrator)
-- BYOK (Bring Your Own Key) Support
-- Dream Cycles & Persistent Memory
-- SEBA (Self-Evolving Bounded Agent) for Autonomous Improvement
-- WCAG 2.2 Accessibility via INCLUSIVE Module
+/* PHILOSOPHY */
 
-/* HISTORY */
-Founded: 2009
-Domain: cmpsbl.com
-Products: 6 live AI products
-Mission: Building the cognitive orchestration substrate for autonomous AI systems
+"Building the infrastructure layer for autonomous AI systems."
+
+We believe in:
+- Cognitive orchestration over simple automation
+- Epistemic humility in AI conversations
+- Real-time observability for trust
+- Security through behavioral analysis
+- Persistent memory and dream cycles
+
+/* SUBSTRATE MODULES */
+
+Brain: Memory, learning, reflection cycles
+Decode: Epistemic conversation interpreter
+Defense: Security and threat detection
+Nexus: AI provider routing
+Vision: Observability and telemetry
+Dream: Memory consolidation engine
+
+/* COLOPHON */
+
+CMPSBL Substrate OS v7.5.3 SYNERGY+ Epoch
+14 Core Modules • 260+ Terminal Commands
+147 Synergy Pipelines • 136+ Depot Capabilities
+WCAG 2.2 Accessibility via INCLUSIVE Module
+
+promptfluid® — AI That Flows.
 
 /* STANDARD */
 This file follows the humans.txt standard from humanstxt.org

@@ -51,7 +51,6 @@ export function EnhancedFooter() {
     {
       title: "Company",
       links: [
-        { name: "About", href: "/about" },
         { name: "Blog", href: "/blog" },
         { name: "Changelog", href: "/changelog" },
         { name: "Roadmap", href: "/roadmap" },
@@ -66,6 +65,7 @@ export function EnhancedFooter() {
         { name: "Terms", href: "/terms" },
         { name: "Support", href: "/support" },
         { name: "llms.txt", href: "/llms-txt" },
+        { name: "humans.txt", href: "/humans-txt" },
       ]
     },
   ];
@@ -185,7 +185,7 @@ export function EnhancedFooter() {
                 <span>CMPSBL (Composable) By PromptFluid</span>
                 <span className="hidden sm:inline text-border">•</span>
                 <span className="inline-flex items-center gap-1">
-                  Made with <Heart className="w-3 h-3 text-red-500 fill-red-500 animate-pulse" /> by humans who care
+                  Made with <Heart className="w-3 h-3 text-destructive fill-destructive animate-pulse" /> by humans who care
                 </span>
               </div>
             </div>
