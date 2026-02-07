@@ -1,10 +1,12 @@
 /**
  * useNexus Hook
- * v7.0.0 — Dedicated hook for NEXUS module operations
+ * v7.1.0 — Dedicated hook for NEXUS module operations
+ * Respects debugMode — when enabled, polling is disabled
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { substrate } from '@/lib/substrate';
+import { debugMode } from '@/lib/debug-mode';
 
 // Access nexus module from substrate singleton
 const nexus = substrate.nexus;
@@ -24,25 +26,31 @@ export interface UseNexusReturn {
 export function useNexus(): UseNexusReturn {
   const queryClient = useQueryClient();
   
+  // Only poll if debug mode allows it
+  const pollingEnabled = debugMode.allowModulePolling();
+  
   const status = useQuery({
     queryKey: ['substrate', 'nexus', 'status'],
     queryFn: () => nexus.status(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 15000,
+    enabled: pollingEnabled,
   });
   
   const providers = useQuery({
     queryKey: ['substrate', 'nexus', 'providers'],
     queryFn: () => nexus.providers(),
-    refetchInterval: 60000,
+    refetchInterval: pollingEnabled ? 60000 : false,
     staleTime: 30000,
+    enabled: pollingEnabled,
   });
   
   const routeStats = useQuery({
     queryKey: ['substrate', 'nexus', 'route_stats'],
     queryFn: () => nexus.routeStats(),
-    refetchInterval: 60000,
+    refetchInterval: pollingEnabled ? 60000 : false,
     staleTime: 30000,
+    enabled: pollingEnabled,
   });
   
   const text = useMutation({

@@ -1177,18 +1177,18 @@ ${identityLine}│  Mode: ${roleDisplay}
 ╠══════════════════════════════════════════════════════════════╣
 ║                                                              ║
 ║  All background activity has been DISABLED:                  ║
-║    ✓ Polling intervals                                       ║
-║    ✓ Realtime subscriptions                                  ║
-║    ✓ Learning collector                                      ║
-║    ✓ Metrics flush                                           ║
-║    ✓ Background writes                                       ║
-║    ✓ Auto-refresh cycles                                     ║
-║    ✓ Telemetry logging                                       ║
+║    ✓ polling-intervals      ✓ module-status-polling          ║
+║    ✓ realtime-subscriptions ✓ learning-collector             ║
+║    ✓ metrics-flush          ✓ background-writes              ║
+║    ✓ auto-refresh           ✓ telemetry-log                  ║
 ║                                                              ║
 ║  Enabled at: ${state.enabledAt}                  ║
 ║                                                              ║
-║  To re-enable: debug.off                                     ║
-║  Or: localStorage.removeItem("substrate_debug_mode")         ║
+║  To test features one-by-one:                                 ║
+║    debug.enable <feature>  — Enable single feature           ║
+║    debug.batch <n>         — Enable batch 1-4                 ║
+║                                                              ║
+║  To re-enable all: debug.off                                  ║
 ║                                                              ║
 ║  IMPORTANT: Refresh the page to fully apply changes.         ║
 ║                                                              ║
@@ -1209,10 +1209,155 @@ ${identityLine}│  Mode: ${roleDisplay}
 ║                                                              ║
 ╚══════════════════════════════════════════════════════════════╝`
       };
+    } else if (base === 'debug.batch') {
+      const batchNum = parseInt(args[0] || '0');
+      const batches: Record<number, string[]> = {
+        1: ['polling-intervals'],
+        2: ['polling-intervals', 'module-status-polling'],
+        3: ['polling-intervals', 'module-status-polling', 'auto-refresh'],
+        4: ['polling-intervals', 'module-status-polling', 'auto-refresh', 'realtime-subscriptions'],
+      };
+      
+      if (!batches[batchNum]) {
+        return {
+          success: false,
+          output: `
+╔══════════════════════════════════════════════════════════════╗
+║  DEBUG BATCH TESTING                                          ║
+╠══════════════════════════════════════════════════════════════╣
+║                                                              ║
+║  Usage: debug.batch <1-4>                                     ║
+║                                                              ║
+║  Batches (cumulative — each adds to previous):               ║
+║    1: polling-intervals (basic poll loops)                   ║
+║    2: + module-status-polling (14 module status calls)       ║
+║    3: + auto-refresh (dashboard auto-update)                 ║
+║    4: + realtime-subscriptions (Supabase channels)           ║
+║                                                              ║
+║  Other features to test individually:                        ║
+║    learning-collector, metrics-flush,                        ║
+║    background-writes, telemetry-log                          ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝`
+        };
+      }
+      
+      (debugMode as any).enableOnly(batches[batchNum]);
+      const state = debugMode.getState();
+      const enabled = batches[batchNum];
+      const disabled = state.disabledFeatures;
+      
+      return {
+        success: true,
+        output: `
+╔══════════════════════════════════════════════════════════════╗
+║  🟡 DEBUG BATCH ${batchNum} ENABLED                                    ║
+╠══════════════════════════════════════════════════════════════╣
+║                                                              ║
+║  ENABLED (testing these):                                     ║
+${enabled.map(f => `║    ✅ ${f.padEnd(50)}║`).join('\n')}
+║                                                              ║
+║  STILL DISABLED:                                              ║
+${disabled.map(f => `║    ❌ ${f.padEnd(50)}║`).join('\n')}
+║                                                              ║
+║  If crashing returns, this batch contains the culprit.       ║
+║  Refresh page to apply, then test stability.                 ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝`
+      };
+    } else if (base === 'debug.enable') {
+      const feature = args[0];
+      const allFeatures = debugMode.getAllFeatures();
+      
+      if (!feature || !allFeatures.includes(feature as any)) {
+        return {
+          success: false,
+          output: `
+╔══════════════════════════════════════════════════════════════╗
+║  ENABLE SINGLE FEATURE                                        ║
+╠══════════════════════════════════════════════════════════════╣
+║                                                              ║
+║  Usage: debug.enable <feature>                                ║
+║                                                              ║
+║  Available features:                                          ║
+${allFeatures.map(f => `║    • ${f.padEnd(50)}║`).join('\n')}
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝`
+        };
+      }
+      
+      debugMode.enableFeature(feature as any);
+      const state = debugMode.getState();
+      
+      return {
+        success: true,
+        output: `
+╔══════════════════════════════════════════════════════════════╗
+║  ✅ ENABLED: ${feature.padEnd(43)}║
+╠══════════════════════════════════════════════════════════════╣
+║                                                              ║
+║  Still disabled:                                              ║
+${state.disabledFeatures.length > 0 
+  ? state.disabledFeatures.map(f => `║    ❌ ${f.padEnd(50)}║`).join('\n')
+  : '║    (none — debug mode fully disabled)                    ║'}
+║                                                              ║
+║  Refresh page to apply changes.                               ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝`
+      };
+    } else if (base === 'debug.disable') {
+      const feature = args[0];
+      const allFeatures = debugMode.getAllFeatures();
+      
+      if (!feature) {
+        // No argument = disable debug mode entirely
+        debugMode.disable();
+        return {
+          success: true,
+          output: `
+╔══════════════════════════════════════════════════════════════╗
+║  🟢 DEBUG MODE DISABLED                                       ║
+╠══════════════════════════════════════════════════════════════╣
+║                                                              ║
+║  Background activity has been RE-ENABLED.                    ║
+║                                                              ║
+║  IMPORTANT: Refresh the page to fully restore features.      ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝`
+        };
+      }
+      
+      if (!allFeatures.includes(feature as any)) {
+        return {
+          success: false,
+          output: `Unknown feature: ${feature}. Use 'debug' to see available features.`
+        };
+      }
+      
+      debugMode.disableFeature(feature as any);
+      const state = debugMode.getState();
+      
+      return {
+        success: true,
+        output: `
+╔══════════════════════════════════════════════════════════════╗
+║  ❌ DISABLED: ${feature.padEnd(42)}║
+╠══════════════════════════════════════════════════════════════╣
+║                                                              ║
+║  Currently disabled:                                          ║
+${state.disabledFeatures.map(f => `║    ❌ ${f.padEnd(50)}║`).join('\n')}
+║                                                              ║
+║  Refresh page to apply changes.                               ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝`
+      };
     } else if (base === 'debug.status' || base === 'debug') {
       const state = debugMode.getState();
+      const allFeatures = debugMode.getAllFeatures();
       const statusIcon = state.enabled ? '🔴' : '🟢';
       const statusText = state.enabled ? 'ACTIVE (background disabled)' : 'INACTIVE (normal operation)';
+      const enabledFeatures = allFeatures.filter(f => !state.disabledFeatures.includes(f));
+      
       return {
         success: true,
         output: `
@@ -1220,17 +1365,19 @@ ${identityLine}│  Mode: ${roleDisplay}
 ║  ${statusIcon} DEBUG MODE: ${statusText.padEnd(35)}║
 ╠══════════════════════════════════════════════════════════════╣
 ║                                                              ║
-║  Enabled:    ${String(state.enabled).padEnd(40)}║
-║  Since:      ${(state.enabledAt || 'N/A').padEnd(40)}║
-║                                                              ║
-║  Disabled Features:                                          ║
-${state.disabledFeatures.length > 0 
-  ? state.disabledFeatures.map(f => `║    • ${f.padEnd(50)}║`).join('\n')
-  : '║    (none)                                                ║'}
+║  Feature Status:                                              ║
+${allFeatures.map(f => {
+  const isEnabled = !state.disabledFeatures.includes(f);
+  const icon = isEnabled ? '✅' : '❌';
+  return `║    ${icon} ${f.padEnd(50)}║`;
+}).join('\n')}
 ║                                                              ║
 ║  Commands:                                                   ║
-║    debug.on   — Enable debug mode (disable background)       ║
-║    debug.off  — Disable debug mode (restore normal)          ║
+║    debug.on              — Disable ALL background            ║
+║    debug.off             — Enable ALL background             ║
+║    debug.batch <1-4>     — Enable features in batches        ║
+║    debug.enable <feat>   — Enable single feature             ║
+║    debug.disable <feat>  — Disable single feature            ║
 ║                                                              ║
 ╚══════════════════════════════════════════════════════════════╝`
       };

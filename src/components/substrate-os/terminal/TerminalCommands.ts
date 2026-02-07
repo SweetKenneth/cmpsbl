@@ -3,7 +3,7 @@
  * Complete list of all substrate commands organized by module
  */
 
-import { Brain, Shield, Eye, Zap, MessageSquare, Moon, Settings, Terminal, Cpu, Clock, Search, Database, Activity, Lock, Router, Gauge, Sparkles, Radio, Key, Server, Send, List, PlayCircle, Plug, Globe, Workflow, Users, CreditCard, GitBranch, Box, Wand2, FileText, PenTool, FileEdit, FileCheck } from 'lucide-react';
+import { Brain, Shield, Eye, Zap, MessageSquare, Moon, Settings, Terminal, Cpu, Clock, Search, Database, Activity, Lock, Router, Gauge, Sparkles, Radio, Key, Server, Send, List, PlayCircle, Plug, Globe, Workflow, Users, CreditCard, GitBranch, Box, Wand2, FileText, PenTool, FileEdit, FileCheck, Layers, CheckCircle, XCircle } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
 export interface CommandDefinition {
@@ -449,9 +449,12 @@ export const META_COMMANDS: CommandDefinition[] = [
   { command: 'theme', description: 'Toggle terminal theme', category: 'meta', icon: Eye, requiresOperator: false, args: '[dark|light|matrix]' },
   
   // Debug Mode (kill-switch for background activity)
-  { command: 'debug', description: 'Show debug mode status', category: 'meta', icon: Settings, requiresOperator: false },
-  { command: 'debug.on', description: 'Enable debug mode (disable background)', category: 'meta', icon: Shield, requiresOperator: false },
-  { command: 'debug.off', description: 'Disable debug mode (restore normal)', category: 'meta', icon: Zap, requiresOperator: false },
+  { command: 'debug', description: 'Show debug mode status & feature toggles', category: 'meta', icon: Settings, requiresOperator: false },
+  { command: 'debug.on', description: 'Disable ALL background activity', category: 'meta', icon: Shield, requiresOperator: false },
+  { command: 'debug.off', description: 'Enable ALL background activity', category: 'meta', icon: Zap, requiresOperator: false },
+  { command: 'debug.batch', description: 'Enable features in batches (1-4)', category: 'meta', icon: Layers, requiresOperator: false, args: '<1-4>' },
+  { command: 'debug.enable', description: 'Enable single feature', category: 'meta', icon: CheckCircle, requiresOperator: false, args: '<feature>' },
+  { command: 'debug.disable', description: 'Disable single feature', category: 'meta', icon: XCircle, requiresOperator: false, args: '<feature>' },
   
   // v5.0.0: Aliases
   { command: 'alias', description: 'List all command aliases', category: 'meta', icon: Terminal, requiresOperator: false },

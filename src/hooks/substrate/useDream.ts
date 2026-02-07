@@ -1,10 +1,12 @@
 /**
  * useDream Hook
- * v7.0.0 — Dedicated hook for DREAM module operations
+ * v7.1.0 — Dedicated hook for DREAM module operations
+ * Respects debugMode — when enabled, polling is disabled
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { substrate } from '@/lib/substrate';
+import { debugMode } from '@/lib/debug-mode';
 
 // Access dream module from substrate singleton
 const dream = substrate.dream;
@@ -25,11 +27,15 @@ export interface UseDreamReturn {
 export function useDream(): UseDreamReturn {
   const queryClient = useQueryClient();
   
+  // Only poll if debug mode allows it
+  const pollingEnabled = debugMode.allowModulePolling();
+  
   const status = useQuery({
     queryKey: ['substrate', 'dream', 'status'],
     queryFn: () => dream.status(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 15000,
+    enabled: pollingEnabled,
   });
   
   const cycle = useMutation({
