@@ -3396,6 +3396,380 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
       }
     }
 
+    // ═══════════════════════════════════════════════════════════════════════════
+    // ENGINE — Cognitive Engine System v8.1.0
+    // ═══════════════════════════════════════════════════════════════════════════
+    
+    else if (base === 'engine.status') {
+      try {
+        const { getEngineSummary, getMetaEngineSummary } = await import('@/lib/substrate/engines');
+        const engineSummary = getEngineSummary();
+        const metaSummary = getMetaEngineSummary();
+        
+        return {
+          success: true,
+          output: `
+╔══════════════════════════════════════════════════════════════╗
+║  COGNITIVE ENGINE SYSTEM v8.1.0 — SYNERGY+ Epoch             ║
+╠══════════════════════════════════════════════════════════════╣
+║  Architecture: Capabilities (269) → Engines (62) → Meta (20) ║
+╠══════════════════════════════════════════════════════════════╣
+║  ENGINES                                                     ║
+║  Total:          ${String(engineSummary.totalEngines).padEnd(3)}                                        ║
+║  Categories:     ${String(Object.keys(engineSummary.byCategory).length).padEnd(2)}                                         ║
+║  Avg Synergy:    ${engineSummary.averageSynergyMultiplier.toFixed(1)}x                                       ║
+║  Capabilities:   ${String(engineSummary.totalCapabilitiesOrchestrated).padEnd(3)}                                        ║
+╠══════════════════════════════════════════════════════════════╣
+║  META-ENGINES                                                ║
+║  Total:          ${String(metaSummary.totalMetaEngines).padEnd(2)}                                         ║
+║  Compound Avg:   ${metaSummary.averageCompoundSynergy.toFixed(1)}x                                       ║
+║  Max Synergy:    8.2x (world_first_operational)              ║
+╠══════════════════════════════════════════════════════════════╣
+║  Use 'engine.list' to browse engines                         ║
+║  Use 'meta.list' to browse meta-engines                      ║
+║  Use 'engine.run <id>' to execute                            ║
+╚══════════════════════════════════════════════════════════════╝`,
+          data: { engines: engineSummary, meta: metaSummary },
+        };
+      } catch (err) {
+        return { success: false, output: `▓ Engine status error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+    
+    else if (base === 'engine.list') {
+      try {
+        const { listEngines, ENGINES_BY_CATEGORY } = await import('@/lib/substrate/engines');
+        const categoryFilter = args[0]?.toLowerCase();
+        const engines = listEngines();
+        
+        let filtered = engines;
+        if (categoryFilter && categoryFilter !== 'all') {
+          filtered = engines.filter(e => e.category === categoryFilter);
+        }
+        
+        const categories = categoryFilter 
+          ? [categoryFilter] 
+          : [...new Set(engines.map(e => e.category))].sort();
+        
+        let output = `\n┌─ COGNITIVE ENGINES (${filtered.length} total) ───────────────────────────────\n`;
+        
+        for (const cat of categories) {
+          const catEngines = filtered.filter(e => e.category === cat);
+          if (catEngines.length === 0) continue;
+          
+          output += `│\n│ ▸ ${cat.toUpperCase()} (${catEngines.length})\n`;
+          for (const engine of catEngines) {
+            output += `│   • ${engine.id.padEnd(28)} ${engine.synergyMultiplier}x  ${engine.capabilities.length} caps\n`;
+          }
+        }
+        
+        output += `│\n└───────────────────────────────────────────────────────────────\n`;
+        output += `\n  Use 'engine.get <id>' for details, 'engine.run <id>' to execute`;
+        
+        return { success: true, output, data: filtered };
+      } catch (err) {
+        return { success: false, output: `▓ Engine list error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+    
+    else if (base === 'engine.get') {
+      try {
+        const { getEngine } = await import('@/lib/substrate/engines');
+        const engineId = args[0];
+        if (!engineId) {
+          return { success: false, output: '▓ Usage: engine.get <engine_id>' };
+        }
+        const engine = getEngine(engineId as any);
+        if (!engine) {
+          return { success: false, output: `▓ Engine not found: ${engineId}` };
+        }
+        
+        return {
+          success: true,
+          output: `
+┌─ ENGINE: ${engine.name} ─────────────────────────
+│
+│  ID:          ${engine.id}
+│  Category:    ${engine.category}
+│  Layer:       ${engine.layer}
+│  Synergy:     ${engine.synergyMultiplier}x
+│  Complexity:  ${engine.complexityScore}/10
+│  Latency:     ${engine.averageLatencyMs}ms
+│  Autonomy:    ${engine.autonomyLevel}
+│  Execution:   ${engine.executionMode}
+│  Cacheable:   ${engine.cacheable}
+│
+│  DESCRIPTION
+│  ${engine.description}
+│
+│  CAPABILITIES (${engine.capabilities.length})
+│  ${engine.capabilities.slice(0, 6).join(', ')}${engine.capabilities.length > 6 ? '...' : ''}
+│
+│  MODULES: ${engine.primaryModules.join(', ')}
+│
+└──────────────────────────────────────────────────`,
+          data: engine,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ Engine get error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+    
+    else if (base === 'engine.categories') {
+      try {
+        const { listEngines } = await import('@/lib/substrate/engines');
+        const engines = listEngines();
+        const categories = [...new Set(engines.map(e => e.category))].sort();
+        
+        let output = `\n┌─ ENGINE CATEGORIES (${categories.length}) ────────────────────────────────\n│\n`;
+        
+        for (const cat of categories) {
+          const count = engines.filter(e => e.category === cat).length;
+          const avgSynergy = engines.filter(e => e.category === cat)
+            .reduce((sum, e) => sum + e.synergyMultiplier, 0) / count;
+          output += `│  • ${cat.toUpperCase().padEnd(15)} ${String(count).padStart(2)} engines  avg ${avgSynergy.toFixed(1)}x\n`;
+        }
+        
+        output += `│\n└───────────────────────────────────────────────────────────────\n`;
+        
+        return { success: true, output, data: categories };
+      } catch (err) {
+        return { success: false, output: `▓ Categories error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+    
+    else if (base === 'engine.run') {
+      try {
+        const { runEngine } = await import('@/lib/substrate/engines');
+        const engineId = args[0];
+        if (!engineId) {
+          return { success: false, output: '▓ Usage: engine.run <engine_id> [json_input]' };
+        }
+        
+        let input = {};
+        if (args[1]) {
+          try {
+            input = JSON.parse(args.slice(1).join(' '));
+          } catch {
+            return { success: false, output: '▓ Invalid JSON input' };
+          }
+        }
+        
+        const result = await runEngine(engineId as any, input);
+        
+        if (result.success) {
+          return {
+            success: true,
+            output: `
+◉ ENGINE EXECUTED: ${result.engineId}
+
+┌─ RESULT ─────────────────────────────────────────
+│  Duration:      ${result.totalDurationMs}ms
+│  Synergy Gain:  ${result.synergyGain}x
+│  Confidence:    ${(result.confidenceScore * 100).toFixed(0)}%
+│  Capabilities:  ${result.capabilitiesExecuted} executed
+│  Trace ID:      ${result.traceId.substring(0, 20)}...
+└──────────────────────────────────────────────────`,
+            data: result,
+          };
+        } else {
+          return { success: false, output: `▓ Engine failed: ${result.error}` };
+        }
+      } catch (err) {
+        return { success: false, output: `▓ Engine run error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+    
+    else if (base === 'engine.worldfirst') {
+      try {
+        const { listEngines } = await import('@/lib/substrate/engines');
+        const worldFirst = listEngines().filter(e => e.category === 'enhancement');
+        
+        let output = `\n┌─ WORLD-FIRST ENHANCEMENT ENGINES (14) ────────────────────────\n│\n`;
+        
+        for (const engine of worldFirst) {
+          const module = engine.primaryModules[0] || 'N/A';
+          output += `│  • ${engine.id.padEnd(30)} ${module.padEnd(12)} ${engine.synergyMultiplier}x\n`;
+        }
+        
+        output += `│\n│  These engines orchestrate the substrate's 56 unique world-first\n`;
+        output += `│  enhancements across all 14 modules.\n`;
+        output += `│\n└───────────────────────────────────────────────────────────────\n`;
+        
+        return { success: true, output, data: worldFirst };
+      } catch (err) {
+        return { success: false, output: `▓ World-first list error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+    
+    else if (base === 'engine.synergy') {
+      try {
+        const { getEngineSummary, getMetaEngineSummary } = await import('@/lib/substrate/engines');
+        const engineSummary = getEngineSummary();
+        const metaSummary = getMetaEngineSummary();
+        
+        return {
+          success: true,
+          output: `
+┌─ SYNERGY METRICS ─────────────────────────────────────────────
+│
+│  ENGINE LAYER
+│  Total Engines:        ${engineSummary.totalEngines}
+│  Avg Synergy:          ${engineSummary.averageSynergyMultiplier.toFixed(2)}x
+│  Avg Complexity:       ${engineSummary.averageComplexityScore.toFixed(1)}/10
+│  World-First Engines:  14
+│
+│  META-ENGINE LAYER
+│  Total Meta-Engines:   ${metaSummary.totalMetaEngines}
+│  Avg Compound Synergy: ${metaSummary.averageCompoundSynergy.toFixed(2)}x
+│  Max Synergy:          8.2x (world_first_operational)
+│  Enterprise Grade:     16/20
+│
+│  CAPABILITY COVERAGE
+│  Total Orchestrated:   ${engineSummary.totalCapabilitiesOrchestrated}
+│  Synergy Pipelines:    ${engineSummary.totalSynergyPipelines}
+│  World-First:          ${engineSummary.totalWorldFirstEnhancements}
+│
+└───────────────────────────────────────────────────────────────`,
+          data: { engines: engineSummary, meta: metaSummary },
+        };
+      } catch (err) {
+        return { success: false, output: `▓ Synergy metrics error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+    
+    // META-ENGINE commands
+    else if (base === 'meta.status') {
+      try {
+        const { getMetaEngineSummary } = await import('@/lib/substrate/engines');
+        const summary = getMetaEngineSummary();
+        
+        return {
+          success: true,
+          output: `
+╔══════════════════════════════════════════════════════════════╗
+║  META-ENGINE SYSTEM v8.1.0                                   ║
+╠══════════════════════════════════════════════════════════════╣
+║  Total Meta-Engines:    ${String(summary.totalMetaEngines).padEnd(2)}                                    ║
+║  Engines Orchestrated:  ${String(summary.totalEnginesOrchestrated).padEnd(2)}                                    ║
+║  Capabilities Reached:  ${String(summary.totalCapabilitiesReached).padEnd(3)}                                   ║
+║  Avg Compound Synergy:  ${summary.averageCompoundSynergy.toFixed(1)}x                                   ║
+╠══════════════════════════════════════════════════════════════╣
+║  Use 'meta.list' for all meta-engines                        ║
+║  Use 'meta.run <id>' to execute                              ║
+╚══════════════════════════════════════════════════════════════╝`,
+          data: summary,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ Meta status error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+    
+    else if (base === 'meta.list') {
+      try {
+        const { listMetaEngines } = await import('@/lib/substrate/engines');
+        const metas = listMetaEngines();
+        
+        let output = `\n┌─ META-ENGINES (${metas.length}) ─────────────────────────────────────────\n│\n`;
+        
+        for (const meta of metas) {
+          output += `│  • ${meta.id.padEnd(26)} ${meta.compoundSynergyMultiplier.toFixed(1)}x  ${meta.engines.length} engines\n`;
+        }
+        
+        output += `│\n└───────────────────────────────────────────────────────────────\n`;
+        output += `\n  Use 'meta.get <id>' for details, 'meta.run <id>' to execute`;
+        
+        return { success: true, output, data: metas };
+      } catch (err) {
+        return { success: false, output: `▓ Meta list error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+    
+    else if (base === 'meta.get') {
+      try {
+        const { getMetaEngine } = await import('@/lib/substrate/engines');
+        const metaId = args[0];
+        if (!metaId) {
+          return { success: false, output: '▓ Usage: meta.get <meta_engine_id>' };
+        }
+        const meta = getMetaEngine(metaId as any);
+        if (!meta) {
+          return { success: false, output: `▓ Meta-engine not found: ${metaId}` };
+        }
+        
+        return {
+          success: true,
+          output: `
+┌─ META-ENGINE: ${meta.name} ─────────────────────────
+│
+│  ID:              ${meta.id}
+│  Category:        ${meta.category}
+│  Compound Synergy: ${meta.compoundSynergyMultiplier}x
+│  Complexity:      ${meta.complexityScore}/10
+│  Latency:         ~${meta.estimatedLatencyMs}ms
+│  Orchestration:   ${meta.orchestrationMode}
+│  Enterprise:      ${meta.enterpriseValue}
+│
+│  DESCRIPTION
+│  ${meta.description}
+│
+│  ENGINES (${meta.engines.length})
+│  ${meta.engines.join(', ')}
+│
+│  USE CASES
+│  ${meta.useCases.slice(0, 3).map(u => `• ${u}`).join('\n│  ')}
+│
+└──────────────────────────────────────────────────`,
+          data: meta,
+        };
+      } catch (err) {
+        return { success: false, output: `▓ Meta get error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+    
+    else if (base === 'meta.run') {
+      try {
+        const { runMetaEngine } = await import('@/lib/substrate/engines');
+        const metaId = args[0];
+        if (!metaId) {
+          return { success: false, output: '▓ Usage: meta.run <meta_engine_id> [json_input]' };
+        }
+        
+        let input = {};
+        if (args[1]) {
+          try {
+            input = JSON.parse(args.slice(1).join(' '));
+          } catch {
+            return { success: false, output: '▓ Invalid JSON input' };
+          }
+        }
+        
+        const result = await runMetaEngine(metaId as any, input);
+        
+        if (result.success) {
+          return {
+            success: true,
+            output: `
+◉ META-ENGINE EXECUTED: ${result.metaEngineId}
+
+┌─ RESULT ─────────────────────────────────────────
+│  Duration:      ${result.totalDurationMs}ms
+│  Compound Gain: ${result.compoundSynergyGain}x
+│  Confidence:    ${(result.confidenceScore * 100).toFixed(0)}%
+│  Engines Run:   ${result.enginesExecuted}
+│  Capabilities:  ${result.capabilitiesOrchestrated}
+│  Trace ID:      ${result.traceId.substring(0, 20)}...
+└──────────────────────────────────────────────────`,
+            data: result,
+          };
+        } else {
+          return { success: false, output: `▓ Meta-engine failed: ${result.error}` };
+        }
+      } catch (err) {
+        return { success: false, output: `▓ Meta run error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    }
+
     // Unknown command
     else {
       return {
