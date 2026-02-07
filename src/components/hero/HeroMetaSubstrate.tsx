@@ -1,6 +1,6 @@
 /**
  * META HERO: CMPSBL (Composable) By PromptFluid
- * Cinematic SEBA-focused showcase with evolution pipeline visualization
+ * Classic "Where machines learn to dream" headline with Engines Membership showcase
  * Mobile-first, performance-optimized, visually stunning
  */
 
@@ -21,7 +21,7 @@ import {
   Brain,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { SEBAEvolutionHero } from "./SEBAEvolutionHero";
+import { EnginesMembershipHero } from "./EnginesMembershipHero";
 
 // Enhanced typing animation with smooth morphing
 function TypedText({ texts, gradientColors, className }: { 
@@ -335,7 +335,7 @@ export function HeroMetaSubstrate() {
               </div>
             </motion.div>
             
-            {/* Main headline with gradient accent */}
+            {/* Main headline - Classic "Where machines learn to dream" */}
             <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05] mb-5 sm:mb-8" style={{ contain: "layout" }}>
               <motion.span 
                 className="text-foreground block"
@@ -343,7 +343,7 @@ export function HeroMetaSubstrate() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.15 }}
               >
-                Your AI
+                Where Machines
               </motion.span>
               <motion.span 
                 className="text-foreground block mt-1"
@@ -351,7 +351,7 @@ export function HeroMetaSubstrate() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.25 }}
               >
-                Finally
+                Learn To
               </motion.span>
               <motion.span 
                 className="block mt-2 sm:mt-3"
@@ -361,64 +361,60 @@ export function HeroMetaSubstrate() {
                 transition={{ delay: 0.35 }}
               >
                 <TypedText 
-                  texts={["Remembers.", "Learns.", "Improves.", "Persists.", "Evolves."]}
+                  texts={["Dream.", "Remember.", "Adapt.", "Evolve.", "Persist."]}
                   gradientColors={[
+                    "linear-gradient(135deg, hsl(280 80% 60%), hsl(310 80% 65%))",
                     "linear-gradient(135deg, hsl(185 100% 50%), hsl(200 80% 60%))",
-                    "linear-gradient(135deg, hsl(280 80% 60%), hsl(320 80% 65%))",
                     "linear-gradient(135deg, hsl(30 90% 55%), hsl(45 95% 55%))",
                     "linear-gradient(135deg, hsl(145 80% 50%), hsl(175 70% 50%))",
-                    "linear-gradient(135deg, hsl(var(--primary)), hsl(310 90% 60%))",
+                    "linear-gradient(135deg, hsl(var(--primary)), hsl(260 90% 60%))",
                   ]}
                 />
               </motion.span>
             </h1>
             
-            {/* Subheadline */}
+            {/* Subheadline - Emphasize free dev tools + engines subscription */}
             <motion.p 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
               className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-6 sm:mb-10 leading-relaxed"
             >
-              Add <span className="text-foreground font-semibold">persistent memory</span> to any agent in under an hour.
-              140k+ LOC cognitive substrate with 
-              <span className="text-foreground font-semibold"> 62 engines</span>, 
-              <span className="text-foreground font-semibold"> 20 meta-engines</span>, and 
-              <span className="text-foreground font-semibold"> autonomous self-improvement</span>.
+              <span className="text-emerald-500 font-bold">All dev tools are FREE</span> — 
+              templates, pipelines, memory, CodeLab. 
+              <span className="text-foreground font-semibold"> Subscribe to Engines</span> for 
+              production-ready orchestration with 
+              <span className="text-foreground font-semibold"> 62 engines</span> and 
+              <span className="text-foreground font-semibold"> 20 meta-engines</span>.
             </motion.p>
             
-            {/* CTA Buttons with enhanced mobile styling */}
+            {/* CTA Buttons - NOT full width on mobile */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3 sm:gap-4"
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4"
             >
               <Button 
                 asChild 
                 size="lg" 
-                className="gap-2.5 px-6 sm:px-10 h-14 sm:h-14 text-base font-bold shadow-xl shadow-primary/25 hover:shadow-primary/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] touch-target tap-highlight-none"
+                className="gap-2.5 px-6 sm:px-10 h-12 sm:h-14 text-sm sm:text-base font-bold shadow-xl shadow-primary/25 hover:shadow-primary/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] touch-target tap-highlight-none"
               >
                 <Link to="/codelab">
-                  <Code className="w-5 h-5" />
-                  Start Building
-                  <ArrowRight className="w-4 h-4" />
+                  <Code className="w-4 h-4 sm:w-5 sm:h-5" />
+                  Start Free
+                  <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </Link>
               </Button>
               <Button 
                 asChild 
                 variant="outline" 
                 size="lg" 
-                className="gap-2.5 px-6 sm:px-10 h-14 sm:h-14 text-base font-semibold group border-border/60 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 touch-target tap-highlight-none active:scale-[0.98]"
+                className="gap-2.5 px-6 sm:px-10 h-12 sm:h-14 text-sm sm:text-base font-semibold group border-border/60 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 touch-target tap-highlight-none active:scale-[0.98]"
               >
-                <Link to="/demo">
-                  <motion.div
-                    animate={{ scale: [1, 1.15, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  >
-                    <Play className="w-5 h-5" />
-                  </motion.div>
-                  Watch Demo
+                <Link to="/engines">
+                  <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
+                  View Engines
                 </Link>
               </Button>
             </motion.div>
@@ -448,14 +444,14 @@ export function HeroMetaSubstrate() {
             </motion.div>
           </motion.div>
           
-          {/* Right: SEBA Evolution Hero */}
+          {/* Right: Engines Membership Hero */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             className="order-2 flex items-center justify-center"
           >
-            <SEBAEvolutionHero />
+            <EnginesMembershipHero />
           </motion.div>
         </div>
         
