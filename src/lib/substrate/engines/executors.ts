@@ -236,6 +236,52 @@ export const executeHypothesisEngine: EngineExecutor = (ctx) => executeEngine(ct
 export const executeAttackSurfaceEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 export const executeIncidentEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 
+// ═══════════════════════════════════════════════════════════════════════════
+// v8.1.0 WORLD-FIRST ENHANCEMENT ENGINES — 14 Additional
+// ═══════════════════════════════════════════════════════════════════════════
+
+// BRAIN Module Enhancements
+export const executeAttentionMemoryEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+
+// NEXUS Module Enhancements
+export const executeProviderGovernanceEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+
+// DEFENSE Module Enhancements
+export const executeThreatContainmentEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+
+// VISION Module Enhancements
+export const executePredictiveAnalyticsEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+
+// SYSTEM Module Enhancements
+export const executeSystemResilienceEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+
+// CORTEX Module Enhancements
+export const executeCortexOrchestrationEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+
+// DREAM Module Enhancements
+export const executeCreativeEvolutionEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+
+// DECODE Module Enhancements
+export const executeIntentUnderstandingEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+
+// RIPPLE Module Enhancements
+export const executeEventReplayEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+
+// ACCESS Module Enhancements
+export const executeEntitlementAuditEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+
+// CORE Module Enhancements
+export const executeConfigRuntimeEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+
+// INTEGRATION Module Enhancements
+export const executeAdapterTransformEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+
+// INCLUSIVE Module Enhancements
+export const executeCognitiveAccessibilityEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+
+// MODERNIZER Module Enhancements
+export const executeEvolutionGovernanceEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+
 // ============================================================================
 // EXECUTOR REGISTRY
 // ============================================================================
@@ -328,6 +374,26 @@ export const ENGINE_EXECUTORS: Record<EngineId, EngineExecutor> = {
   // Advanced Security
   attack_surface_engine: executeAttackSurfaceEngine,
   incident_engine: executeIncidentEngine,
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // v8.1.0 WORLD-FIRST ENHANCEMENT ENGINES
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  // Enhancement Engines (14)
+  attention_memory_engine: executeAttentionMemoryEngine,
+  provider_governance_engine: executeProviderGovernanceEngine,
+  threat_containment_engine: executeThreatContainmentEngine,
+  predictive_analytics_engine: executePredictiveAnalyticsEngine,
+  system_resilience_engine: executeSystemResilienceEngine,
+  cortex_orchestration_engine: executeCortexOrchestrationEngine,
+  creative_evolution_engine: executeCreativeEvolutionEngine,
+  intent_understanding_engine: executeIntentUnderstandingEngine,
+  event_replay_engine: executeEventReplayEngine,
+  entitlement_audit_engine: executeEntitlementAuditEngine,
+  config_runtime_engine: executeConfigRuntimeEngine,
+  adapter_transform_engine: executeAdapterTransformEngine,
+  cognitive_accessibility_engine: executeCognitiveAccessibilityEngine,
+  evolution_governance_engine: executeEvolutionGovernanceEngine,
 };
 
 // ============================================================================

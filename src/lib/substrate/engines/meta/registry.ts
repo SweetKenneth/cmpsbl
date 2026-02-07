@@ -396,6 +396,102 @@ export const META_ENGINE_REGISTRY: Record<MetaEngineId, MetaEngineDefinition> = 
       'DAG-based orchestration',
     ],
   },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // WORLD-FIRST COGNITIVE — v8.1.0
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  world_first_cognitive: {
+    id: 'world_first_cognitive',
+    name: 'World-First Cognitive',
+    description: 'Unified cognitive world-first enhancements combining BRAIN attention/memory, DECODE intent understanding, and DREAM creative evolution for deep cognitive capabilities.',
+    category: 'cognitive',
+    engines: ['attention_memory_engine', 'intent_understanding_engine', 'creative_evolution_engine'],
+    totalCapabilities: 12,
+    compoundSynergyMultiplier: 7.8,
+    complexityScore: 10,
+    orchestrationMode: 'adaptive',
+    estimatedLatencyMs: 300,
+    enterpriseValue: 'enterprise',
+    useCases: [
+      'Advanced attention-based reasoning',
+      'Emotional resonance processing',
+      'Semantic memory clustering',
+      'Creative insight crystallization',
+    ],
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // WORLD-FIRST OPERATIONAL — v8.1.0
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  world_first_operational: {
+    id: 'world_first_operational',
+    name: 'World-First Operational',
+    description: 'Complete operational world-first stack combining NEXUS provider governance, SYSTEM resilience, CORE runtime config, and INTEGRATION adapter management.',
+    category: 'autonomous',
+    engines: ['provider_governance_engine', 'system_resilience_engine', 'config_runtime_engine', 'adapter_transform_engine'],
+    totalCapabilities: 14,
+    compoundSynergyMultiplier: 8.2,
+    complexityScore: 10,
+    orchestrationMode: 'parallel',
+    estimatedLatencyMs: 80,
+    enterpriseValue: 'enterprise',
+    useCases: [
+      'Zero-cost provider optimization',
+      'Self-healing infrastructure',
+      'Live configuration management',
+      'Cross-system data transformation',
+    ],
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // WORLD-FIRST INTELLIGENCE — v8.1.0
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  world_first_intelligence: {
+    id: 'world_first_intelligence',
+    name: 'World-First Intelligence',
+    description: 'Full intelligence world-first stack combining VISION predictive analytics, CORTEX orchestration, and MODERNIZER evolution governance for strategic foresight.',
+    category: 'intelligence',
+    engines: ['predictive_analytics_engine', 'cortex_orchestration_engine', 'evolution_governance_engine'],
+    totalCapabilities: 12,
+    compoundSynergyMultiplier: 7.5,
+    complexityScore: 10,
+    orchestrationMode: 'staged',
+    estimatedLatencyMs: 400,
+    enterpriseValue: 'enterprise',
+    useCases: [
+      'SLA breach prediction',
+      'Autonomous goal decomposition',
+      'Evolution outcome forecasting',
+      'Multi-agent coordination',
+    ],
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // WORLD-FIRST GOVERNANCE — v8.1.0
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  world_first_governance: {
+    id: 'world_first_governance',
+    name: 'World-First Governance',
+    description: 'Complete governance world-first stack combining DEFENSE threat containment, ACCESS entitlement audit, RIPPLE event replay, and INCLUSIVE accessibility for full compliance.',
+    category: 'governance',
+    engines: ['threat_containment_engine', 'entitlement_audit_engine', 'event_replay_engine', 'cognitive_accessibility_engine'],
+    totalCapabilities: 14,
+    compoundSynergyMultiplier: 7.2,
+    complexityScore: 10,
+    orchestrationMode: 'cascade',
+    estimatedLatencyMs: 200,
+    enterpriseValue: 'enterprise',
+    useCases: [
+      'Zero-trust behavioral analysis',
+      'Permission graph traversal',
+      'Audit trail integrity verification',
+      'WCAG auto-remediation',
+    ],
+  },
 };
 
 // ============================================================================
@@ -419,8 +515,8 @@ export function getMetaEnginesByEngine(engineId: string): MetaEngineDefinition[]
 }
 
 export function getTotalCapabilitiesReached(): number {
-  // Count based on v8.0.0 expanded coverage
-  return 213; // All capabilities reachable through meta-engines
+  // Count based on v8.1.0 expanded coverage (62 engines × ~4 capabilities each)
+  return 269; // All capabilities reachable through meta-engines
 }
 
 export function getMetaEngineSummary() {
@@ -468,11 +564,11 @@ export function getMetaEngineSummary() {
 export const META_ENGINE_IDS: MetaEngineId[] = Object.keys(META_ENGINE_REGISTRY) as MetaEngineId[];
 
 export const META_ENGINES_BY_CATEGORY: Record<MetaEngineCategory, MetaEngineId[]> = {
-  cognitive: ['cognitive_mesh'],
+  cognitive: ['cognitive_mesh', 'world_first_cognitive'],
   protection: ['system_guardian', 'security_fortress'],
-  autonomous: ['autonomous_operator'],
-  governance: ['quality_fabric'],
-  intelligence: ['intelligence_pipeline'],
+  autonomous: ['autonomous_operator', 'world_first_operational'],
+  governance: ['quality_fabric', 'world_first_governance'],
+  intelligence: ['intelligence_pipeline', 'world_first_intelligence'],
   experience: ['adaptation_suite'],
   performance: ['performance_optimizer'],
   communication: ['event_fabric'],

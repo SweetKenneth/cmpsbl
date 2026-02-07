@@ -213,6 +213,12 @@ export const executePerceptionMatrix: MetaEngineExecutor = (ctx) => executeMetaE
 export const executeResourceGovernor: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
 export const executeWorkflowOrchestrator: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
 
+// v8.1.0 additions — World-First Enhancement Meta-Engines
+export const executeWorldFirstCognitive: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
+export const executeWorldFirstOperational: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
+export const executeWorldFirstIntelligence: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
+export const executeWorldFirstGovernance: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
+
 // ============================================================================
 // EXECUTOR REGISTRY
 // ============================================================================
@@ -236,6 +242,11 @@ export const META_ENGINE_EXECUTORS: Record<MetaEngineId, MetaEngineExecutor> = {
   perception_matrix: executePerceptionMatrix,
   resource_governor: executeResourceGovernor,
   workflow_orchestrator: executeWorkflowOrchestrator,
+  // v8.1.0 additions — World-First Enhancement Meta-Engines
+  world_first_cognitive: executeWorldFirstCognitive,
+  world_first_operational: executeWorldFirstOperational,
+  world_first_intelligence: executeWorldFirstIntelligence,
+  world_first_governance: executeWorldFirstGovernance,
 };
 
 // ============================================================================

@@ -52,7 +52,12 @@ export type MetaEngineId =
   | 'creative_forge'         // Imagination + Innovation + Dream
   | 'perception_matrix'      // Intent + Emotion + Multimodal
   | 'resource_governor'      // Budget + Quota + Entitlement
-  | 'workflow_orchestrator'; // Pipeline + Coordination + Delegation
+  | 'workflow_orchestrator'  // Pipeline + Coordination + Delegation
+  // v8.1.0 additions (4) — World-First Enhancement Meta-Engines
+  | 'world_first_cognitive'     // BRAIN + DECODE + DREAM world-first enhancements
+  | 'world_first_operational'   // NEXUS + SYSTEM + CORE + INTEGRATION world-first enhancements
+  | 'world_first_intelligence'  // VISION + CORTEX + MODERNIZER world-first enhancements
+  | 'world_first_governance';   // DEFENSE + ACCESS + RIPPLE + INCLUSIVE world-first enhancements
 
 export interface MetaEngineDefinition {
   id: MetaEngineId;
