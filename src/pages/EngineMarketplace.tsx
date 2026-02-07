@@ -1,10 +1,10 @@
 /**
- * Orchestration Engine Marketplace (OEM)
- * First-party, canonized orchestrations hardened for reliable execution
- * v2.0.0 — Real pricing tiers, no "contact sales" placeholders
+ * Engine Marketplace — Real Registry-Driven Subscription Commerce
+ * v8.1.0 — All 62 engines + 20 meta-engines from live registries
+ * Self-improvement engines = internal (showcased, not sold)
  */
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
@@ -12,6 +12,7 @@ import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Terminal,
   Shield,
@@ -26,234 +27,148 @@ import {
   Package,
   Network,
   ArrowRight,
+  Cpu,
+  Eye,
+  Lock,
+  RefreshCw,
+  Radio,
+  Plug,
+  BarChart,
+  Heart,
+  BookOpen,
+  Bot,
+  Palette,
+  Wallet,
+  GitBranch,
+  Rocket,
+  ChevronRight,
+  Play,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-// Engine tier types
-type EngineTier = 'free' | 'standard' | 'advanced' | 'meta';
+// Import from real registries
+import {
+  getPublicEngines,
+  getPublicMetaEngines,
+  getInternalEnginesShowcase,
+  getEngineCategories,
+  getCatalogSummary,
+  type PublicEngine,
+  type PublicMetaEngine,
+} from "@/lib/engines/publicCatalog";
+import {
+  SUBSCRIPTION_PLANS,
+  TIER_DISPLAY,
+  ENGINE_CATEGORY_CONFIG,
+  type EngineVisibility,
+  type SubscriptionPlan,
+} from "@/lib/commerce/enginePricing";
 
-// First-party engine definitions with real pricing
-const OEM_ENGINES: {
-  id: string;
-  name: string;
-  description: string;
-  category: string;
-  tier: EngineTier;
-  price: number; // in dollars, 0 = free
-  features: string[];
-  isMetaEngine?: boolean;
-}[] = [
-  // FREE TIER - Core engines included with platform
-  {
-    id: "intent-router",
-    name: "Intent Router",
-    description: "Basic multi-model routing with automatic provider selection",
-    category: "orchestration",
-    tier: "free",
-    price: 0,
-    features: ["Auto-routing", "Provider fallback", "Basic caching"],
-  },
-  {
-    id: "memory-lite",
-    name: "Memory Lite",
-    description: "Simple persistent memory for single-agent applications",
-    category: "intelligence",
-    tier: "free",
-    price: 0,
-    features: ["Session memory", "Basic recall", "Auto-decay"],
-  },
-  {
-    id: "health-monitor",
-    name: "Health Monitor",
-    description: "Basic system health monitoring and alerting",
-    category: "observability",
-    tier: "free",
-    price: 0,
-    features: ["Health checks", "Basic alerts", "Uptime tracking"],
-  },
-  
-  // STANDARD TIER - $19-$49 one-time
-  {
-    id: "cognitive-orchestrator",
-    name: "Cognitive Orchestrator",
-    description: "Multi-model reasoning with automatic fallback and quality gates",
-    category: "intelligence",
-    tier: "standard",
-    price: 29,
-    features: ["Multi-model fusion", "Automatic fallback", "Quality gates", "Confidence scoring"],
-  },
-  {
-    id: "security-sentinel",
-    name: "Security Sentinel",
-    description: "Real-time threat detection and automated response orchestration",
-    category: "security",
-    tier: "standard",
-    price: 39,
-    features: ["Threat detection", "Automated response", "Audit logging", "Risk scoring"],
-  },
-  {
-    id: "workflow-automator",
-    name: "Workflow Automator",
-    description: "Complex multi-step workflow execution with error recovery",
-    category: "automation",
-    tier: "standard",
-    price: 49,
-    features: ["DAG execution", "Error recovery", "Retry logic", "State persistence"],
-  },
-  {
-    id: "performance-optimizer",
-    name: "Performance Optimizer",
-    description: "Continuous performance monitoring with predictive scaling",
-    category: "optimization",
-    tier: "standard",
-    price: 39,
-    features: ["Auto-scaling hints", "Bottleneck detection", "Resource optimization"],
-  },
-  
-  // ADVANCED TIER - $99-$199 one-time
-  {
-    id: "data-synthesizer",
-    name: "Data Synthesizer",
-    description: "Cross-source data fusion with semantic normalization",
-    category: "intelligence",
-    tier: "advanced",
-    price: 149,
-    features: ["Multi-source fusion", "Schema inference", "Semantic mapping", "Quality scoring"],
-  },
-  {
-    id: "compliance-engine",
-    name: "Compliance Engine",
-    description: "Automated regulatory compliance checking and reporting",
-    category: "security",
-    tier: "advanced",
-    price: 199,
-    features: ["GDPR compliance", "SOC2 checks", "Audit trails", "Report generation"],
-  },
-  {
-    id: "resilience-orchestrator",
-    name: "Resilience Orchestrator",
-    description: "Fault tolerance with chaos engineering and auto-remediation",
-    category: "resilience",
-    tier: "advanced",
-    price: 149,
-    features: ["Chaos testing", "Auto-remediation", "Failover management", "Recovery playbooks"],
-  },
-  {
-    id: "knowledge-graph-engine",
-    name: "Knowledge Graph Engine",
-    description: "Build and query interconnected knowledge structures at scale",
-    category: "intelligence",
-    tier: "advanced",
-    price: 99,
-    features: ["Graph building", "Relationship mapping", "Cross-domain synthesis", "Query optimization"],
-  },
-  
-  // META-ENGINES - $199-$299 one-time (compose other engines)
-  {
-    id: "meta-cognitive-pipeline",
-    name: "Meta-Cognitive Pipeline",
-    description: "Orchestrates multiple cognitive engines for complex reasoning chains",
-    category: "orchestration",
-    tier: "meta",
-    price: 249,
-    features: ["Engine composition", "Chain-of-thought", "Multi-step reasoning", "Result aggregation"],
-    isMetaEngine: true,
-  },
-  {
-    id: "meta-security-fortress",
-    name: "Security Fortress",
-    description: "Combines security engines for defense-in-depth architecture",
-    category: "security",
-    tier: "meta",
-    price: 299,
-    features: ["Layered defense", "Threat correlation", "Incident response", "Compliance automation"],
-    isMetaEngine: true,
-  },
-  {
-    id: "meta-autonomous-agent",
-    name: "Autonomous Agent",
-    description: "Self-orchestrating agent with memory, reasoning, and tool use",
-    category: "intelligence",
-    tier: "meta",
-    price: 299,
-    features: ["Self-directed", "Tool orchestration", "Long-term memory", "Goal decomposition"],
-    isMetaEngine: true,
-  },
-];
-
-const TIER_CONFIG: Record<EngineTier, { label: string; color: string; badge: string }> = {
-  free: { label: "Free", color: "text-emerald-400", badge: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30" },
-  standard: { label: "$19-$49", color: "text-cyan-400", badge: "bg-cyan-500/10 text-cyan-400 border-cyan-500/30" },
-  advanced: { label: "$99-$199", color: "text-amber-400", badge: "bg-amber-500/10 text-amber-400 border-amber-500/30" },
-  meta: { label: "$199-$299", color: "text-primary", badge: "bg-primary/10 text-primary border-primary/30" },
+// Icon mapping
+const CATEGORY_ICONS: Record<string, React.ElementType> = {
+  cognitive: Brain,
+  operational: Zap,
+  intelligence: Sparkles,
+  governance: Shield,
+  security: Lock,
+  evolution: RefreshCw,
+  communication: Radio,
+  integration: Plug,
+  analytics: BarChart,
+  experience: Heart,
+  knowledge: BookOpen,
+  autonomy: Bot,
+  creativity: Palette,
+  perception: Eye,
+  resource: Wallet,
+  workflow: GitBranch,
+  enhancement: Rocket,
+  protection: Shield,
+  performance: Zap,
+  self_management: Bot,
+  workflow_orchestration: Network,
 };
 
-const CATEGORY_CONFIG: Record<string, { icon: typeof Brain; color: string }> = {
-  intelligence: { icon: Brain, color: "text-violet-400" },
-  security: { icon: Shield, color: "text-red-400" },
-  optimization: { icon: Zap, color: "text-cyan-400" },
-  automation: { icon: Terminal, color: "text-emerald-400" },
-  orchestration: { icon: Layers, color: "text-blue-400" },
-  resilience: { icon: Network, color: "text-amber-400" },
-  observability: { icon: Sparkles, color: "text-purple-400" },
-};
+function getCategoryIcon(category: string): React.ElementType {
+  return CATEGORY_ICONS[category] || Cpu;
+}
 
 export default function EngineMarketplace() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [tierFilter, setTierFilter] = useState<EngineTier | 'all'>('all');
+  const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
+  const [visibilityFilter, setVisibilityFilter] = useState<EngineVisibility | 'all'>('all');
+  const [activeTab, setActiveTab] = useState<'engines' | 'meta' | 'internal'>('engines');
 
-  const filteredEngines = OEM_ENGINES.filter((engine) => {
-    if (tierFilter !== 'all' && engine.tier !== tierFilter) return false;
-    if (!searchQuery) return true;
-    const query = searchQuery.toLowerCase();
-    return (
-      engine.name.toLowerCase().includes(query) ||
-      engine.description.toLowerCase().includes(query) ||
-      engine.category.toLowerCase().includes(query)
-    );
-  });
+  // Load from real registries
+  const publicEngines = useMemo(() => getPublicEngines(), []);
+  const publicMetaEngines = useMemo(() => getPublicMetaEngines(), []);
+  const internalEngines = useMemo(() => getInternalEnginesShowcase(), []);
+  const categories = useMemo(() => getEngineCategories(), []);
+  const summary = useMemo(() => getCatalogSummary(), []);
 
-  const tierCounts = OEM_ENGINES.reduce((acc, e) => {
-    acc[e.tier] = (acc[e.tier] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
+  // Filter engines
+  const filteredEngines = useMemo(() => {
+    return publicEngines.filter((engine) => {
+      if (visibilityFilter !== 'all' && engine.visibility !== visibilityFilter) return false;
+      if (categoryFilter && engine.category !== categoryFilter) return false;
+      if (!searchQuery) return true;
+      const query = searchQuery.toLowerCase();
+      return (
+        engine.name.toLowerCase().includes(query) ||
+        engine.description.toLowerCase().includes(query) ||
+        engine.category.toLowerCase().includes(query)
+      );
+    });
+  }, [publicEngines, searchQuery, categoryFilter, visibilityFilter]);
+
+  // Filter meta-engines
+  const filteredMetaEngines = useMemo(() => {
+    return publicMetaEngines.filter((meta) => {
+      if (!searchQuery) return true;
+      const query = searchQuery.toLowerCase();
+      return (
+        meta.name.toLowerCase().includes(query) ||
+        meta.description.toLowerCase().includes(query)
+      );
+    });
+  }, [publicMetaEngines, searchQuery]);
 
   return (
     <>
       <SEO
-        title="Engine Marketplace | Production-Ready AI Engines | CMPSBL"
-        description="OEM engines are first-party, canonized orchestrations hardened for reliable execution. One-time purchase, no subscriptions."
-        keywords={["orchestration engines", "AI engines", "production AI", "enterprise engines"]}
+        title={`Engine Marketplace | ${summary.totalEngines} Engines | CMPSBL`}
+        description="Production-ready cognitive engines with subscription access. 62 engines, 20 meta-engines, real pricing."
+        keywords={["cognitive engines", "AI orchestration", "subscription", "enterprise AI"]}
       />
 
       <div className="min-h-screen bg-background flex flex-col">
         <PublicNav />
 
-        {/* Hero Section */}
-        <section className="relative py-16 md:py-24 border-b border-border/50 bg-gradient-to-b from-primary/5 to-background">
+        {/* Hero */}
+        <section className="relative py-16 md:py-20 border-b border-border/50 bg-gradient-to-b from-primary/5 to-background">
           <div className="container mx-auto px-4 text-center">
             <Badge className="mb-4 bg-primary/10 text-primary border-primary/30">
               <Crown className="w-3 h-3 mr-1" />
-              OEM
+              v8.1.0 — {summary.totalEngines} Engines · {summary.totalMetaEngines} Meta-Engines
             </Badge>
             <h1 className="text-3xl md:text-5xl font-bold mb-4">
               Engine Marketplace
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
-              Production-ready orchestration engines. One-time purchase, lifetime access.
-              Capabilities and templates are free — engines are the products.
+              Subscription access to production-ready orchestration engines.
+              Capabilities, templates, and pipelines are free — engines are the products.
             </p>
             
-            {/* Explainer Banner */}
+            {/* What is an Engine */}
             <div className="max-w-3xl mx-auto p-4 rounded-xl bg-muted/50 border border-border/50 mb-6">
               <div className="flex items-start gap-3 text-left">
                 <Info className="w-5 h-5 text-primary mt-0.5 shrink-0" />
                 <div>
                   <h3 className="font-semibold mb-1">What is an Engine?</h3>
                   <p className="text-sm text-muted-foreground">
-                    Engines are <strong>saved, governed orchestrations</strong> that compose multiple capabilities into reliable workflows. 
-                    Unlike free capabilities (atomic, stateless), engines include persistence, versioning, and production guarantees.
-                    Meta-engines compose other engines for even more sophisticated workflows.
+                    Engines are <strong>governed orchestrations</strong> that combine multiple capabilities into reliable, versioned workflows. 
+                    Meta-engines compose engines for even more sophisticated pipelines. 
+                    Self-improvement engines run internally to evolve the platform — they're showcased but not sold.
                   </p>
                 </div>
               </div>
@@ -261,143 +176,172 @@ export default function EngineMarketplace() {
           </div>
         </section>
 
-        {/* Pricing Tiers Overview */}
+        {/* Pricing Plans */}
         <section className="border-b border-border/50 bg-card/50">
-          <div className="container mx-auto px-4 py-6">
-            <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8">
-              {(['free', 'standard', 'advanced', 'meta'] as EngineTier[]).map((tier) => (
-                <button
-                  key={tier}
-                  onClick={() => setTierFilter(tierFilter === tier ? 'all' : tier)}
+          <div className="container mx-auto px-4 py-8">
+            <h2 className="text-xl font-bold text-center mb-6">Subscription Plans</h2>
+            <div className="grid gap-4 md:grid-cols-4">
+              {Object.values(SUBSCRIPTION_PLANS).map((plan) => (
+                <div
+                  key={plan.id}
                   className={cn(
-                    "px-4 py-2 rounded-lg border transition-all",
-                    tierFilter === tier 
-                      ? TIER_CONFIG[tier].badge + " ring-1 ring-current" 
-                      : "border-border/50 hover:border-border"
+                    "p-5 rounded-xl border transition-all",
+                    plan.id === 'pro' 
+                      ? "border-primary bg-primary/5 ring-1 ring-primary/30" 
+                      : "border-border bg-card"
                   )}
                 >
-                  <div className={cn("text-lg font-bold", TIER_CONFIG[tier].color)}>
-                    {tier === 'free' ? 'FREE' : TIER_CONFIG[tier].label}
+                  {plan.id === 'pro' && (
+                    <Badge className="mb-2 bg-primary text-primary-foreground">Most Popular</Badge>
+                  )}
+                  <h3 className="font-bold text-lg">{plan.name}</h3>
+                  <div className="mt-2 mb-3">
+                    <span className="text-3xl font-bold">
+                      {plan.monthlyPrice === 0 ? 'Free' : `$${plan.monthlyPrice}`}
+                    </span>
+                    {plan.monthlyPrice > 0 && (
+                      <span className="text-sm text-muted-foreground">/mo</span>
+                    )}
                   </div>
-                  <div className="text-xs text-muted-foreground capitalize">
-                    {tier === 'meta' ? 'Meta-Engines' : `${tier} Engines`} ({tierCounts[tier] || 0})
-                  </div>
-                </button>
+                  {plan.yearlyPrice > 0 && plan.monthlyPrice > 0 && (
+                    <p className="text-xs text-emerald-500 mb-3">
+                      ${plan.yearlyPrice}/yr (~2 months free)
+                    </p>
+                  )}
+                  <p className="text-sm text-muted-foreground mb-4">{plan.description}</p>
+                  <ul className="space-y-1.5 mb-4">
+                    {plan.features.slice(0, 4).map((feature, i) => (
+                      <li key={i} className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <Check className="w-3 h-3 text-emerald-500 shrink-0" />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                  <Button 
+                    className="w-full" 
+                    variant={plan.id === 'pro' ? 'default' : 'outline'}
+                    size="sm"
+                  >
+                    {plan.id === 'starter' ? 'Get Started' : plan.id === 'enterprise' ? 'Request Access' : 'Subscribe'}
+                  </Button>
+                </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Search */}
+        {/* Search & Filters */}
         <section className="sticky top-16 z-40 border-b border-border/50 bg-background/95 backdrop-blur-lg">
           <div className="container mx-auto px-4 py-4">
-            <div className="relative max-w-md mx-auto">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search engines..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 h-11"
-              />
+            <div className="flex flex-col gap-3 md:flex-row md:gap-4">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search engines..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 h-11"
+                />
+              </div>
+              <div className="flex gap-2 flex-wrap">
+                <select
+                  value={categoryFilter || ''}
+                  onChange={(e) => setCategoryFilter(e.target.value || null)}
+                  className="h-11 px-3 rounded-md border bg-background text-sm"
+                >
+                  <option value="">All Categories</option>
+                  {categories.map((cat) => (
+                    <option key={cat} value={cat} className="capitalize">{cat}</option>
+                  ))}
+                </select>
+                <select
+                  value={visibilityFilter}
+                  onChange={(e) => setVisibilityFilter(e.target.value as EngineVisibility | 'all')}
+                  className="h-11 px-3 rounded-md border bg-background text-sm"
+                >
+                  <option value="all">All Tiers</option>
+                  <option value="free">Free</option>
+                  <option value="standard">Builder ($49/mo)</option>
+                  <option value="advanced">Pro ($149/mo)</option>
+                </select>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Engine Grid */}
+        {/* Tabs */}
         <main className="flex-1 container mx-auto px-4 py-8">
-          <p className="text-sm text-muted-foreground mb-6">
-            Showing {filteredEngines.length} of {OEM_ENGINES.length} engines
-            {tierFilter !== 'all' && ` (${tierFilter} tier)`}
-          </p>
-          
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {filteredEngines.map((engine) => {
-              const catConfig = CATEGORY_CONFIG[engine.category] || CATEGORY_CONFIG.intelligence;
-              const tierConf = TIER_CONFIG[engine.tier];
-              const Icon = catConfig.icon;
+          <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as any)}>
+            <TabsList className="mb-6">
+              <TabsTrigger value="engines" className="gap-2">
+                <Cpu className="w-4 h-4" />
+                Engines ({summary.publicEngines})
+              </TabsTrigger>
+              <TabsTrigger value="meta" className="gap-2">
+                <Layers className="w-4 h-4" />
+                Meta-Engines ({summary.publicMetaEngines})
+              </TabsTrigger>
+              <TabsTrigger value="internal" className="gap-2">
+                <RefreshCw className="w-4 h-4" />
+                Platform Self-Improvement
+              </TabsTrigger>
+            </TabsList>
 
-              return (
-                <div
-                  key={engine.id}
-                  className={cn(
-                    "group p-6 rounded-xl border border-border bg-card hover:border-primary/30 transition-all",
-                    engine.isMetaEngine && "ring-1 ring-primary/20"
-                  )}
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className={cn("w-10 h-10 rounded-lg flex items-center justify-center bg-muted", catConfig.color)}>
-                      <Icon className="w-5 h-5" />
-                    </div>
-                    <div className="flex items-center gap-2">
-                      {engine.isMetaEngine && (
-                        <Badge variant="outline" className="text-xs border-primary/30 text-primary">
-                          <Layers className="w-3 h-3 mr-1" />
-                          Meta
-                        </Badge>
-                      )}
-                      <Badge variant="outline" className={cn("text-xs", tierConf.badge)}>
-                        {engine.tier === 'free' ? 'FREE' : `$${engine.price}`}
-                      </Badge>
-                    </div>
-                  </div>
+            {/* Engines Tab */}
+            <TabsContent value="engines">
+              <p className="text-sm text-muted-foreground mb-6">
+                Showing {filteredEngines.length} of {summary.publicEngines} engines
+              </p>
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {filteredEngines.map((engine) => (
+                  <EngineCard key={engine.id} engine={engine} />
+                ))}
+              </div>
+              {filteredEngines.length === 0 && (
+                <EmptyState message="No engines match your filters" />
+              )}
+            </TabsContent>
 
-                  <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors">
-                    {engine.name}
-                  </h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    {engine.description}
-                  </p>
+            {/* Meta-Engines Tab */}
+            <TabsContent value="meta">
+              <p className="text-sm text-muted-foreground mb-6">
+                Showing {filteredMetaEngines.length} of {summary.publicMetaEngines} meta-engines
+              </p>
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {filteredMetaEngines.map((meta) => (
+                  <MetaEngineCard key={meta.id} meta={meta} />
+                ))}
+              </div>
+              {filteredMetaEngines.length === 0 && (
+                <EmptyState message="No meta-engines match your search" />
+              )}
+            </TabsContent>
 
-                  <div className="space-y-2 mb-4">
-                    {engine.features.map((feature, i) => (
-                      <div key={i} className="flex items-center gap-2 text-xs text-muted-foreground">
-                        <Check className="w-3 h-3 text-emerald-500" />
-                        {feature}
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="flex items-center justify-between pt-4 border-t border-border/30">
-                    <div>
-                      <div className={cn("text-xl font-bold", tierConf.color)}>
-                        {engine.tier === 'free' ? 'Free' : `$${engine.price}`}
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        {engine.tier === 'free' ? 'Included' : 'One-time'}
-                      </div>
-                    </div>
-                    <Button 
-                      className="gap-2" 
-                      variant={engine.tier === 'free' ? 'outline' : 'default'}
-                    >
-                      {engine.tier === 'free' ? (
-                        <>
-                          <Package className="w-4 h-4" />
-                          Use Now
-                        </>
-                      ) : (
-                        <>
-                          <Package className="w-4 h-4" />
-                          Buy
-                        </>
-                      )}
-                    </Button>
+            {/* Internal Showcase Tab */}
+            <TabsContent value="internal">
+              <div className="max-w-3xl mx-auto mb-8 p-6 rounded-xl bg-violet-500/10 border border-violet-500/30">
+                <div className="flex items-start gap-4">
+                  <RefreshCw className="w-8 h-8 text-violet-400 shrink-0" />
+                  <div>
+                    <h3 className="font-bold text-lg mb-2">Platform Self-Improvement</h3>
+                    <p className="text-muted-foreground">
+                      These engines run <strong>inside the platform</strong> to continuously evolve and improve the system.
+                      They're showcased here so you understand how CMPSBL maintains itself — but they're not purchasable.
+                      The platform self-improves; you benefit automatically.
+                    </p>
                   </div>
                 </div>
-              );
-            })}
-          </div>
-
-          {filteredEngines.length === 0 && (
-            <div className="text-center py-16">
-              <Terminal className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
-              <h3 className="text-lg font-semibold mb-2">No engines found</h3>
-              <p className="text-muted-foreground">Try adjusting your search or filter</p>
-            </div>
-          )}
+              </div>
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {internalEngines.map((engine) => (
+                  <EngineCard key={engine.id} engine={engine} isShowcase />
+                ))}
+              </div>
+            </TabsContent>
+          </Tabs>
         </main>
 
-        {/* Free Adoption CTA */}
+        {/* Free CTA */}
         <section className="border-t border-border/50 bg-muted/30">
           <div className="container mx-auto px-4 py-12 text-center">
             <h2 className="text-2xl font-bold mb-4">Explore Free First</h2>
@@ -424,21 +368,172 @@ export default function EngineMarketplace() {
                   Free Pipelines
                 </Link>
               </Button>
+              <Button asChild>
+                <Link to="/docs/persistent-memory">
+                  <Brain className="w-4 h-4 mr-2" />
+                  Add Persistent Memory (FREE)
+                </Link>
+              </Button>
             </div>
-          </div>
-        </section>
-
-        {/* Philosophy Footer */}
-        <section className="border-t border-border/30 bg-muted/30">
-          <div className="container mx-auto px-4 py-8 text-center">
-            <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
-              <strong>Everything is free to explore. Engines are canon.</strong> — Capabilities and templates are free exploration layers. Engines are the only canonized, monetizable orchestration.
-            </p>
           </div>
         </section>
 
         <EnhancedFooter />
       </div>
     </>
+  );
+}
+
+// ============================================================================
+// COMPONENTS
+// ============================================================================
+
+function EngineCard({ engine, isShowcase = false }: { engine: PublicEngine; isShowcase?: boolean }) {
+  const Icon = getCategoryIcon(engine.category);
+  const tierConfig = TIER_DISPLAY[engine.visibility];
+
+  return (
+    <div
+      className={cn(
+        "group p-5 rounded-xl border border-border bg-card hover:border-primary/30 transition-all",
+        isShowcase && "border-violet-500/30 bg-violet-500/5"
+      )}
+    >
+      <div className="flex items-start justify-between mb-3">
+        <div className={cn("w-10 h-10 rounded-lg flex items-center justify-center bg-muted", tierConfig.color)}>
+          <Icon className="w-5 h-5" />
+        </div>
+        <div className="flex items-center gap-2">
+          <Badge variant="outline" className="text-[10px] capitalize">
+            {engine.category}
+          </Badge>
+          <Badge variant="outline" className={cn("text-[10px]", tierConfig.badge)}>
+            {isShowcase ? 'Internal' : tierConfig.label}
+          </Badge>
+        </div>
+      </div>
+
+      <h3 className="font-semibold text-base mb-1.5 group-hover:text-primary transition-colors">
+        {engine.name}
+      </h3>
+      <p className="text-xs text-muted-foreground mb-3 line-clamp-2">
+        {engine.description}
+      </p>
+
+      {/* Stats */}
+      <div className="flex items-center gap-3 text-xs text-muted-foreground mb-4">
+        <span className="flex items-center gap-1">
+          <Sparkles className="w-3 h-3" />
+          {engine.synergyMultiplier}x synergy
+        </span>
+        <span className="flex items-center gap-1">
+          <Layers className="w-3 h-3" />
+          {engine.capabilityCount} caps
+        </span>
+      </div>
+
+      <div className="flex items-center justify-between pt-3 border-t border-border/30">
+        <div>
+          <div className={cn("text-lg font-bold", tierConfig.color)}>
+            {isShowcase ? 'Platform' : tierConfig.priceLabel}
+          </div>
+          <div className="text-[10px] text-muted-foreground">
+            {isShowcase ? 'Self-improvement' : `${engine.requiredPlan} plan`}
+          </div>
+        </div>
+        {!isShowcase && (
+          <Button size="sm" variant={engine.visibility === 'free' ? 'outline' : 'default'} className="gap-1">
+            {engine.visibility === 'free' ? (
+              <>
+                <Play className="w-3 h-3" />
+                Run
+              </>
+            ) : (
+              <>
+                Subscribe
+                <ChevronRight className="w-3 h-3" />
+              </>
+            )}
+          </Button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function MetaEngineCard({ meta }: { meta: PublicMetaEngine }) {
+  const Icon = getCategoryIcon(meta.category);
+  const tierConfig = TIER_DISPLAY[meta.visibility];
+
+  return (
+    <div className="group p-5 rounded-xl border border-primary/20 bg-card hover:border-primary/40 transition-all ring-1 ring-primary/10">
+      <div className="flex items-start justify-between mb-3">
+        <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-primary/10 text-primary">
+          <Icon className="w-5 h-5" />
+        </div>
+        <div className="flex items-center gap-2">
+          <Badge variant="outline" className="text-[10px] border-primary/30 text-primary">
+            <Layers className="w-2.5 h-2.5 mr-1" />
+            Meta
+          </Badge>
+          <Badge variant="outline" className={cn("text-[10px]", tierConfig.badge)}>
+            {tierConfig.label}
+          </Badge>
+        </div>
+      </div>
+
+      <h3 className="font-semibold text-base mb-1.5 group-hover:text-primary transition-colors">
+        {meta.name}
+      </h3>
+      <p className="text-xs text-muted-foreground mb-3 line-clamp-2">
+        {meta.description}
+      </p>
+
+      {/* Stats */}
+      <div className="flex items-center gap-3 text-xs text-muted-foreground mb-3">
+        <span className="flex items-center gap-1">
+          <Sparkles className="w-3 h-3" />
+          {meta.compoundSynergyMultiplier}x compound
+        </span>
+        <span className="flex items-center gap-1">
+          <Cpu className="w-3 h-3" />
+          {meta.enginesOrchestrated} engines
+        </span>
+      </div>
+
+      {/* Use cases */}
+      <div className="flex flex-wrap gap-1 mb-4">
+        {meta.useCases.slice(0, 2).map((uc, i) => (
+          <span key={i} className="text-[10px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
+            {uc}
+          </span>
+        ))}
+      </div>
+
+      <div className="flex items-center justify-between pt-3 border-t border-border/30">
+        <div>
+          <div className={cn("text-lg font-bold", tierConfig.color)}>
+            {tierConfig.priceLabel}
+          </div>
+          <div className="text-[10px] text-muted-foreground">
+            {meta.requiredPlan} plan
+          </div>
+        </div>
+        <Button size="sm" className="gap-1">
+          Subscribe
+          <ChevronRight className="w-3 h-3" />
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+function EmptyState({ message }: { message: string }) {
+  return (
+    <div className="text-center py-16">
+      <Terminal className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
+      <h3 className="text-lg font-semibold mb-2">{message}</h3>
+      <p className="text-muted-foreground">Try adjusting your search or filter</p>
+    </div>
   );
 }

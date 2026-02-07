@@ -18,6 +18,7 @@ import {
   Sparkles,
   ChevronDown,
   Layers,
+  Brain,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SEBAEvolutionHero } from "./SEBAEvolutionHero";
@@ -342,7 +343,7 @@ export function HeroMetaSubstrate() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.15 }}
               >
-                Where Machines
+                Your AI
               </motion.span>
               <motion.span 
                 className="text-foreground block mt-1"
@@ -350,7 +351,7 @@ export function HeroMetaSubstrate() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.25 }}
               >
-                Learn To
+                Finally
               </motion.span>
               <motion.span 
                 className="block mt-2 sm:mt-3"
@@ -360,14 +361,13 @@ export function HeroMetaSubstrate() {
                 transition={{ delay: 0.35 }}
               >
                 <TypedText 
-                  texts={["Dream.", "Remember.", "Self-Improve.", "Evolve.", "Think.", "Adapt."]}
+                  texts={["Remembers.", "Learns.", "Improves.", "Persists.", "Evolves."]}
                   gradientColors={[
-                    "linear-gradient(135deg, hsl(280 80% 60%), hsl(320 80% 65%))",
                     "linear-gradient(135deg, hsl(185 100% 50%), hsl(200 80% 60%))",
+                    "linear-gradient(135deg, hsl(280 80% 60%), hsl(320 80% 65%))",
                     "linear-gradient(135deg, hsl(30 90% 55%), hsl(45 95% 55%))",
                     "linear-gradient(135deg, hsl(145 80% 50%), hsl(175 70% 50%))",
                     "linear-gradient(135deg, hsl(var(--primary)), hsl(310 90% 60%))",
-                    "linear-gradient(135deg, hsl(280 90% 65%), hsl(260 80% 60%))",
                   ]}
                 />
               </motion.span>
@@ -380,11 +380,11 @@ export function HeroMetaSubstrate() {
               transition={{ delay: 0.3 }}
               className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-6 sm:mb-10 leading-relaxed"
             >
-              A cognitive substrate with 
-              <span className="text-foreground font-semibold"> 14-module architecture</span>, 
-              <span className="text-foreground font-semibold"> persistent memory</span>, and 
+              Add <span className="text-foreground font-semibold">persistent memory</span> to any agent in under an hour.
+              140k+ LOC cognitive substrate with 
+              <span className="text-foreground font-semibold"> 62 engines</span>, 
+              <span className="text-foreground font-semibold"> 20 meta-engines</span>, and 
               <span className="text-foreground font-semibold"> autonomous self-improvement</span>.
-              <span className="hidden sm:inline text-muted-foreground/80"> The infrastructure layer for AI that remembers.</span>
             </motion.p>
             
             {/* CTA Buttons with enhanced mobile styling */}
@@ -467,10 +467,10 @@ export function HeroMetaSubstrate() {
           className="flex justify-start sm:justify-center gap-2.5 sm:gap-4 mb-10 sm:mb-20 -mx-4 px-4 sm:mx-0 sm:px-0 overflow-x-auto scrollbar-hide pb-2 sm:pb-0"
         >
           {[
-            { icon: Sparkles, label: "Synergy Pipelines", href: "/synergies", hoverColor: "hover:border-violet-500/50 hover:bg-violet-500/10 hover:shadow-violet-500/10" },
-            { icon: Gamepad2, label: "Gaming AI", href: "/gaming", hoverColor: "hover:border-purple-500/50 hover:bg-purple-500/10 hover:shadow-purple-500/10" },
-            { icon: Code, label: "Developer Tools", href: "/developers", hoverColor: "hover:border-cyan-500/50 hover:bg-cyan-500/10 hover:shadow-cyan-500/10" },
-            { icon: Layers, label: "Substrate Docs", href: "/substrate", hoverColor: "hover:border-emerald-500/50 hover:bg-emerald-500/10 hover:shadow-emerald-500/10" },
+            { icon: Brain, label: "Persistent Memory (FREE)", href: "/persistent-memory", hoverColor: "hover:border-emerald-500/50 hover:bg-emerald-500/10 hover:shadow-emerald-500/10" },
+            { icon: Sparkles, label: "Free Pipelines", href: "/synergies", hoverColor: "hover:border-violet-500/50 hover:bg-violet-500/10 hover:shadow-violet-500/10" },
+            { icon: Code, label: "Free Templates", href: "/marketplace", hoverColor: "hover:border-cyan-500/50 hover:bg-cyan-500/10 hover:shadow-cyan-500/10" },
+            { icon: Layers, label: "Engine Marketplace", href: "/engines", hoverColor: "hover:border-primary/50 hover:bg-primary/10 hover:shadow-primary/10" },
           ].map((item, index) => (
             <motion.div
               key={item.label}
@@ -511,10 +511,10 @@ export function HeroMetaSubstrate() {
             {/* Inner glow */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
             
-            <AnimatedStat value={14} label="Core Modules" delay={0} />
-            <AnimatedStat value={124} suffix="+" label="API Actions" delay={1} />
-            <AnimatedStat value={60} suffix="+" label="Data Tables" delay={2} />
-            <AnimatedStat value={100} suffix="ms" label="Avg Latency" delay={3} />
+            <AnimatedStat value={62} label="Engines" delay={0} />
+            <AnimatedStat value={20} label="Meta-Engines" delay={1} />
+            <AnimatedStat value={140} suffix="k+" label="Lines of Code" delay={2} />
+            <AnimatedStat value={269} label="Capabilities" delay={3} />
           </div>
         </motion.div>
       </div>
