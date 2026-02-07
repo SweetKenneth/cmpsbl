@@ -99,31 +99,14 @@ export function GovernorSelfMintDialog({
     setLoading(true);
     
     try {
+      // Get the current Governor's session first (before any auth changes)
       const { data: { user: currentUser } } = await supabase.auth.getUser();
       
-      // 1. Create user account for the agency owner (auto-confirmed via Supabase config)
-      let newUserId: string | null = null;
-      const { data: newUser, error: signUpError } = await supabase.auth.signUp({
-        email: userEmail,
-        password: userPassword,
-        options: {
-          data: {
-            agency_owner: true,
-            created_by_governor: currentUser?.id,
-          },
-        },
-      });
-      
-      if (signUpError) {
-        // If user already exists, that's OK - they can still access the agency
-        if (!signUpError.message.includes('already registered') && 
-            !signUpError.message.includes('User already registered')) {
-          throw signUpError;
-        }
-        console.log('User already exists, proceeding with agency creation');
-      } else {
-        newUserId = newUser?.user?.id || null;
+      if (!currentUser) {
+        throw new Error('You must be logged in as a Governor to self-mint');
       }
+      
+      const governorId = currentUser.id;
       
       // Auto-generate unique slug from agency name with uniqueness check
       let agencySlug = generateSlug(agencyName);
@@ -142,13 +125,12 @@ export function GovernorSelfMintDialog({
       const portalUrl = getAgencyPortalUrl(agencySlug);
       
       // For RLS to work, set owner_id to the current user (Governor) who is making the insert
-      const ownerId = currentUser?.id;
       
       // 2. Create the agency record (status = deployed, since Governor is self-minting)
       const { data: agency, error: agencyError } = await supabase
         .from('agencies')
         .insert({
-          owner_id: ownerId,
+          owner_id: governorId,
           name: agencyName,
           slug: agencySlug,
           template_id: templateId,
@@ -163,8 +145,9 @@ export function GovernorSelfMintDialog({
             ownerEmail: userEmail,
           },
           metadata: {
-            created_for_user: newUserId,
-            created_by_governor: currentUser?.id,
+            target_owner_email: userEmail,
+            target_owner_password_set: true,
+            created_by_governor: governorId,
           },
         })
         .select()
@@ -212,7 +195,7 @@ export function GovernorSelfMintDialog({
       await supabase
         .from('agency_purchases')
         .insert({
-          user_id: newUserId || currentUser?.id,
+          user_id: governorId,
           agency_id: agency?.id,
           base_price_cents: 0,
           additional_cognitives: Math.max(0, members.filter(m => m.role === 'specialist').length),
@@ -223,8 +206,9 @@ export function GovernorSelfMintDialog({
           onboarding_completed: true,
           metadata: {
             governor_minted: true,
-            minted_by: currentUser?.id,
+            minted_by: governorId,
             minted_at: new Date().toISOString(),
+            target_owner_email: userEmail,
           },
         });
       
