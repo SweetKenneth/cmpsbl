@@ -1,10 +1,12 @@
 /**
  * useSEBA Hook
- * v7.0.0 — Dedicated hook for SEBA (Self-Evolving Bounded Agent) operations
+ * v7.1.0 — Dedicated hook for SEBA (Self-Evolving Bounded Agent) operations
+ * Now respects debug mode kill-switch
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { substrate } from '@/lib/substrate';
+import { debugMode } from '@/lib/debug-mode';
 
 // Access seba module from substrate singleton
 const seba = substrate.seba;
@@ -39,6 +41,7 @@ export interface UseSEBAHookReturn {
 
 export function useSEBAHook(): UseSEBAHookReturn {
   const queryClient = useQueryClient();
+  const pollingEnabled = debugMode.allowModulePolling();
   
   const invalidateSEBA = () => {
     queryClient.invalidateQueries({ queryKey: ['substrate', 'seba'] });
@@ -47,8 +50,9 @@ export function useSEBAHook(): UseSEBAHookReturn {
   const status = useQuery({
     queryKey: ['substrate', 'seba', 'status'],
     queryFn: () => seba.status(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 15000,
+    enabled: pollingEnabled,
   });
   
   const mode = useMutation({

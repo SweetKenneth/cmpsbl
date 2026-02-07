@@ -1,10 +1,12 @@
 /**
  * useCortex Hook
- * v7.0.0 — Dedicated hook for CORTEX (Orchestrator) module operations
+ * v7.1.0 — Dedicated hook for CORTEX (Orchestrator) module operations
+ * Now respects debug mode kill-switch
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { substrate } from '@/lib/substrate';
+import { debugMode } from '@/lib/debug-mode';
 
 // Access cortex module from substrate singleton
 const cortex = substrate.cortex;
@@ -39,6 +41,7 @@ export interface UseCortexReturn {
 
 export function useCortex(): UseCortexReturn {
   const queryClient = useQueryClient();
+  const pollingEnabled = debugMode.allowModulePolling();
   
   const invalidateCortex = () => {
     queryClient.invalidateQueries({ queryKey: ['substrate', 'cortex'] });
@@ -47,22 +50,25 @@ export function useCortex(): UseCortexReturn {
   const status = useQuery({
     queryKey: ['substrate', 'cortex', 'status'],
     queryFn: () => cortex.status(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 15000,
+    enabled: pollingEnabled,
   });
   
   const health = useQuery({
     queryKey: ['substrate', 'cortex', 'health'],
     queryFn: () => cortex.health(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 15000,
+    enabled: pollingEnabled,
   });
   
   const pulse = useQuery({
     queryKey: ['substrate', 'cortex', 'pulse'],
     queryFn: () => cortex.pulse(),
-    refetchInterval: 10000,
+    refetchInterval: pollingEnabled ? 10000 : false,
     staleTime: 5000,
+    enabled: pollingEnabled,
   });
   
   const diagnostics = useQuery({

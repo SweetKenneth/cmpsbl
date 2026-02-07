@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { debugMode } from "@/lib/debug-mode";
 
 // Type assertions needed until Supabase types sync
 const db = supabase as any;
@@ -52,6 +53,8 @@ export function useDebuggerSessions(limit = 10) {
 }
 
 export function useActiveDebuggerSession() {
+  const pollingEnabled = debugMode.allowPolling();
+  
   return useQuery({
     queryKey: ["active-debugger-session"],
     queryFn: async () => {
@@ -65,14 +68,17 @@ export function useActiveDebuggerSession() {
       if (error) throw error;
       return data as DebuggerSession | null;
     },
-    refetchInterval: 5000,
+    refetchInterval: pollingEnabled ? 5000 : false,
+    enabled: pollingEnabled,
   });
 }
 
 export function useDebuggerTraces(sessionId?: string) {
+  const pollingEnabled = debugMode.allowPolling();
+  
   return useQuery({
     queryKey: ["debugger-traces", sessionId],
-    enabled: !!sessionId,
+    enabled: !!sessionId && pollingEnabled,
     queryFn: async () => {
       const { data, error } = await db.from("debugger_traces")
         .select("*")
@@ -83,7 +89,7 @@ export function useDebuggerTraces(sessionId?: string) {
       if (error) throw error;
       return (data || []) as DebuggerTrace[];
     },
-    refetchInterval: 2000,
+    refetchInterval: pollingEnabled ? 2000 : false,
   });
 }
 
