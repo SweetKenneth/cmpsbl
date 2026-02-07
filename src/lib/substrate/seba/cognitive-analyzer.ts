@@ -80,14 +80,13 @@ export class CognitiveAnalyzer {
       const architectureInsights = await this.analyzeArchitecture();
       insights.push(...architectureInsights);
 
-      // ═══ COOLDOWN FILTER — Skip recently addressed insights ═══
+      // ═══ COOLDOWN FILTER — Skip recently addressed OR pending insights ═══
       const filteredInsights = insights.filter(insight => {
-        const insightKey = this.generateInsightKey(insight);
-        const wasRecentlyAddressed = recentlyAddressed.has(insightKey);
-        if (wasRecentlyAddressed) {
-          console.log(`[SEBA] Skipping insight "${insight.title}" — recently addressed (cooldown)`);
+        const wasAddressed = this.isInsightAddressed(insight, recentlyAddressed);
+        if (wasAddressed) {
+          console.log(`[SEBA] Skipping insight "${insight.title}" — already pending or recently addressed`);
         }
-        return !wasRecentlyAddressed;
+        return !wasAddressed;
       });
 
       telemetryEngine.emit('custom', 'info', { module: 'seba' }, {
@@ -115,6 +114,7 @@ export class CognitiveAnalyzer {
 
   /**
    * Get recently addressed insights (approved/applied in last 24 hours)
+   * AND any pending proposals (to prevent duplicate proposals)
    * Used to implement cooldown and prevent re-proposing the same fixes
    */
   private async getRecentlyAddressedInsights(): Promise<Set<string>> {
@@ -124,18 +124,23 @@ export class CognitiveAnalyzer {
     const addressed = new Set<string>();
     
     try {
-      // Check evolution_proposals for approved/applied proposals
+      // Check ALL existing proposals (pending, approved, applied) to prevent duplicates
+      // Pending proposals should block new identical proposals
+      // Approved/applied within cooldown should also block
       const { data: proposals } = await supabase
         .from('evolution_proposals')
-        .select('title, target_system, reviewed_at')
-        .in('status', ['approved', 'applied'])
-        .gte('reviewed_at', cutoff);
+        .select('title, target_system, status, created_at, reviewed_at')
+        .or(`status.eq.pending,and(status.in.(approved,applied),reviewed_at.gte.${cutoff})`);
         
       if (proposals) {
         for (const p of proposals) {
           // Create a normalized key from the proposal
           const key = `${p.target_system}:${p.title}`.toLowerCase().replace(/\s+/g, '_');
           addressed.add(key);
+          
+          // Also add title-only key for broader matching
+          const titleKey = p.title.toLowerCase().replace(/\s+/g, '_');
+          addressed.add(titleKey);
         }
       }
 
@@ -152,7 +157,7 @@ export class CognitiveAnalyzer {
         }
       }
       
-      console.log(`[SEBA] Loaded ${addressed.size} recently addressed insights for cooldown check`);
+      console.log(`[SEBA] Loaded ${addressed.size} insights (pending + cooldown) for deduplication`);
     } catch (error) {
       console.error('[SEBA] Failed to load cooldown data:', error);
     }
@@ -161,12 +166,36 @@ export class CognitiveAnalyzer {
   }
 
   /**
-   * Generate a normalized key for insight deduplication
+   * Generate normalized keys for insight deduplication (multiple for broader matching)
    */
   private generateInsightKey(insight: CognitiveInsight): string {
     const engine = insight.source_engine || 'unknown';
     const title = insight.title.toLowerCase().replace(/\s+/g, '_').substring(0, 50);
     return `${engine}:${title}`;
+  }
+  
+  /**
+   * Check if an insight matches any addressed keys (broader matching)
+   */
+  private isInsightAddressed(insight: CognitiveInsight, addressed: Set<string>): boolean {
+    // Check exact key
+    const exactKey = this.generateInsightKey(insight);
+    if (addressed.has(exactKey)) return true;
+    
+    // Check title-only key
+    const titleKey = insight.title.toLowerCase().replace(/\s+/g, '_');
+    if (addressed.has(titleKey)) return true;
+    
+    // Check if any addressed key contains the title (fuzzy match)
+    const titleWords = insight.title.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+    for (const addressedKey of addressed) {
+      const matchCount = titleWords.filter(w => addressedKey.includes(w)).length;
+      if (matchCount >= Math.ceil(titleWords.length * 0.6)) {
+        return true; // 60%+ word match
+      }
+    }
+    
+    return false;
   }
 
   /**

@@ -706,10 +706,16 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
                       <XCircle className="w-3 h-3 shrink-0 mt-0.5" />
                     )}
                     <pre className={cn(
-                      "whitespace-pre-wrap break-words font-mono min-w-0 flex-1",
-                      "terminal-output overflow-wrap-anywhere",
-                      "[word-break:break-word] [overflow-wrap:anywhere]"
-                    )}>
+                      "whitespace-pre-wrap font-mono min-w-0 flex-1",
+                      "terminal-output",
+                      // Mobile-first word wrapping - never break mid-word
+                      "break-words [word-break:break-word] [overflow-wrap:anywhere]",
+                      "[hyphens:none] [word-wrap:break-word]"
+                    )} style={{ 
+                      wordBreak: 'break-word', 
+                      overflowWrap: 'anywhere',
+                      hyphens: 'none',
+                    }}>
                       {result.output}
                     </pre>
                   </div>

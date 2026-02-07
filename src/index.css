@@ -140,17 +140,30 @@ All colors MUST be HSL.
   /* Mobile-first code block styling - ensures code wraps on small screens */
   pre, code {
     word-wrap: break-word;
-    overflow-wrap: break-word;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    hyphens: none;
   }
   
-  @media (max-width: 639px) {
+  @media (max-width: 768px) {
     pre {
       white-space: pre-wrap;
       word-break: break-word;
+      overflow-wrap: anywhere;
+      hyphens: none;
     }
     
     code {
       word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+    
+    /* Terminal specific - prevent mid-word breaks */
+    .terminal-output {
+      word-break: break-word !important;
+      overflow-wrap: anywhere !important;
+      hyphens: none !important;
+      word-wrap: break-word !important;
     }
   }
   
