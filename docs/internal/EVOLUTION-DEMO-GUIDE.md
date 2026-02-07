@@ -171,37 +171,44 @@ seba.reject prop_abc123
 
 ---
 
-### Step 5: Execute Approved Proposal
+### Step 5: Execute Approved Proposal (Shadow First)
 
-**Command:**
+SEBA follows a **shadow→production** flow. Execute first applies to shadow, then requires a second command for production.
+
+**Step 5a: Shadow Apply**
 ```
 seba.execute prop_abc123
 ```
 
 **Expected Output:**
 ```
-╔══════════════════════════════════════════════════════════════╗
-║  🚀 EXECUTING PROPOSAL                                       ║
-╠══════════════════════════════════════════════════════════════╣
-║  ID: prop_abc123                                             ║
-║  Title: Optimize hot tier capacity                          ║
-║                                                              ║
-║  Progress:                                                   ║
-║  [████████████████████████████████████████] 100%            ║
-║                                                              ║
-║  Actions Completed:                                          ║
-║  ✅ Migrated 234 entries to warm tier                       ║
-║  ✅ Updated hot_tier_threshold: 1000 → 1200                 ║
-║  ✅ Adjusted eviction policy timing                         ║
-║                                                              ║
-║  Results:                                                    ║
-║  • Memory efficiency: 78% → 86% (+8%)                       ║
-║  • Execution stamp: SEBA-2025-0207-001                      ║
-║  • Rollback available: seba.rollback exec_xyz789            ║
-║                                                              ║
-║  Status: APPLIED                                             ║
-╚══════════════════════════════════════════════════════════════╝
+✅ Shadow applied for proposal prop_abc
+   Full ID: prop_abc123-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+   Title: Optimize hot tier capacity
+   
+   Next: seba.execute prop_abc production  — to apply to production
+         seba.rollback prop_abc            — to abort
 ```
+
+**Step 5b: Production Apply**
+```
+seba.execute prop_abc123 production
+```
+
+**Expected Output:**
+```
+🚀 Production applied for proposal prop_abc
+   Full ID: prop_abc123-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+   Title: Optimize hot tier capacity
+   Stamp: SEBA-20260207-PRO
+   
+   Rollback: seba.rollback prop_abc
+```
+
+**Key Points:**
+- First `seba.execute <id>` applies to **shadow** (validation phase)
+- Second `seba.execute <id> production` applies to **production**
+- This two-step flow matches Modernizer's `shadow → production` pipeline
 
 ---
 
@@ -644,17 +651,18 @@ Use the Full ID for all commands.
 
 ### SEBA Commands
 ```
-seba.status              # Check current state
-seba.mode                # Get/set mode (off|observe|advisory|governed|autonomous)
-seba.cycle               # Run full evolution cycle
-seba.review              # Review pending proposals
-seba.approve <id>        # Approve a proposal
-seba.reject <id>         # Reject a proposal
-seba.execute <id>        # Execute approved proposal
-seba.rollback <exec_id>  # Rollback an execution
-seba.history [limit]     # View evolution history
-seba.config              # View/update configuration
-seba.thresholds          # View/update governance thresholds
+seba.status                    # Check current state
+seba.mode                      # Get/set mode (off|observe|advisory|governed)
+seba.cycle                     # Run full evolution cycle
+seba.review                    # Review pending proposals (shows Full IDs)
+seba.approve <id>              # Approve a proposal
+seba.reject <id>               # Reject a proposal
+seba.execute <id>              # Apply to SHADOW (first step)
+seba.execute <id> production   # Apply to PRODUCTION (second step)
+seba.rollback <id>             # Rollback an execution
+seba.history [limit]           # View evolution history
+seba.config                    # View/update configuration
+seba.thresholds                # View/update governance thresholds
 ```
 
 ### Modernizer Commands

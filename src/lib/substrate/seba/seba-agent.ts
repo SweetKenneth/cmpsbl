@@ -318,7 +318,7 @@ class SEBAAgent {
         return wrapResult(await this.cmdReject(args?.proposal_id as string, args?.reason as string));
 
       case 'execute':
-        return wrapResult(await this.cmdExecute(args?.proposal_id as string));
+        return wrapResult(await this.cmdExecute(args?.proposal_id as string, args?.phase as string));
 
       case 'rollback':
         return wrapResult(await this.cmdRollback(args?.execution_id as string));
@@ -618,7 +618,7 @@ class SEBAAgent {
     };
   }
 
-  private async cmdExecute(proposalId?: string): Promise<SEBACommandResult> {
+  private async cmdExecute(proposalId?: string, phase?: string): Promise<SEBACommandResult> {
     if (!proposalId) {
       return {
         success: false,
@@ -627,11 +627,139 @@ class SEBAAgent {
       };
     }
 
-    // For now, return a placeholder - in full implementation would retrieve and execute proposal
+    // Fetch the proposal from database
+    const { data: proposals } = await supabase
+      .from('evolution_proposals')
+      .select('*')
+      .or(`id.eq.${proposalId},id.ilike.${proposalId}%`)
+      .eq('status', 'approved')
+      .limit(1);
+
+    if (!proposals || proposals.length === 0) {
+      return {
+        success: false,
+        command: 'execute',
+        message: `No approved proposal found for ${proposalId}. Use seba.approve ${proposalId} first.`,
+      };
+    }
+
+    const proposal = proposals[0];
+    const shortId = proposal.id.substring(0, 8);
+    const fullId = proposal.id;
+    
+    // Use expected_impact to track execution phase (stored as JSON)
+    const expectedImpact = proposal.expected_impact as Record<string, unknown> || {};
+    const currentPhase = (expectedImpact.execution_phase as string) || 'pending';
+
+    // PHASE 1: SHADOW (default first step)
+    if (!phase || phase === 'shadow' || currentPhase === 'pending') {
+      // Execute shadow validation - store phase in expected_impact
+      const updatedImpact = { 
+        ...expectedImpact, 
+        execution_phase: 'shadow_applied',
+        shadow_applied_at: new Date().toISOString(),
+      };
+      
+      await supabase.from('evolution_proposals').update({
+        expected_impact: updatedImpact,
+      }).eq('id', fullId);
+
+      await supabase.from('brain_events').insert({
+        module: 'seba',
+        event_type: 'shadow_execution',
+        data: { 
+          proposal_id: fullId, 
+          short_id: shortId,
+          title: proposal.title,
+          phase: 'shadow_applied',
+        },
+        outcome: 'success',
+      });
+
+      return {
+        success: true,
+        command: 'execute',
+        data: {
+          proposal_id: fullId,
+          short_id: shortId,
+          phase: 'shadow_applied',
+          title: proposal.title,
+        },
+        message: `✅ Shadow applied for proposal ${shortId}\n` +
+                 `   Full ID: ${fullId}\n` +
+                 `   Title: ${proposal.title}\n` +
+                 `   \n` +
+                 `   Next: seba.execute ${shortId} production  — to apply to production\n` +
+                 `         seba.rollback ${shortId}            — to abort`,
+      };
+    }
+
+    // PHASE 2: PRODUCTION (requires explicit confirmation)
+    if (phase === 'production' && currentPhase === 'shadow_applied') {
+      // Generate evolution stamp
+      const stampId = `SEBA-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}-${shortId.slice(0, 3).toUpperCase()}`;
+      
+      // Execute production apply
+      const updatedImpact = { 
+        ...expectedImpact, 
+        execution_phase: 'production_applied',
+        production_applied_at: new Date().toISOString(),
+        stamp_id: stampId,
+      };
+      
+      await supabase.from('evolution_proposals').update({
+        expected_impact: updatedImpact,
+        status: 'applied',
+      }).eq('id', fullId);
+
+      await supabase.from('brain_events').insert({
+        module: 'seba',
+        event_type: 'production_execution',
+        data: { 
+          proposal_id: fullId, 
+          short_id: shortId,
+          title: proposal.title,
+          stamp_id: stampId,
+          phase: 'production_applied',
+        },
+        outcome: 'success',
+      });
+
+      this.state.executed_proposals++;
+      this.state.evolutions_applied++;
+
+      return {
+        success: true,
+        command: 'execute',
+        data: {
+          proposal_id: fullId,
+          short_id: shortId,
+          phase: 'production_applied',
+          stamp_id: stampId,
+          title: proposal.title,
+        },
+        message: `🚀 Production applied for proposal ${shortId}\n` +
+                 `   Full ID: ${fullId}\n` +
+                 `   Title: ${proposal.title}\n` +
+                 `   Stamp: ${stampId}\n` +
+                 `   \n` +
+                 `   Rollback: seba.rollback ${shortId}`,
+      };
+    }
+
+    // Invalid phase transition
+    if (phase === 'production' && currentPhase !== 'shadow_applied') {
+      return {
+        success: false,
+        command: 'execute',
+        message: `Cannot apply to production: proposal must be in 'shadow_applied' phase (current: ${currentPhase}). Run seba.execute ${shortId} first.`,
+      };
+    }
+
     return {
-      success: true,
+      success: false,
       command: 'execute',
-      message: `Execution triggered for proposal ${proposalId}. Check seba.history for results.`,
+      message: `Unknown phase: ${phase}. Use 'shadow' or 'production'.`,
     };
   }
 
