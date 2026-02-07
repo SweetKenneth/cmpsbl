@@ -1,6 +1,6 @@
 /**
  * Cognitive Engine Types
- * v8.0.0 — COMPLETE Epoch: Full Capability Orchestration
+ * v8.1.0 — SYNERGY+ Epoch: World-First Enhancement Integration
  * 
  * Engines consolidate related capabilities into compound execution units.
  * This architecture provides:
@@ -9,13 +9,15 @@
  * - Simplified API surface for consumers
  * - IP protection through orchestration complexity
  * 
- * v8.0.0 expands coverage from 76 to 200+ capabilities across 48 engines.
+ * v8.1.0 expands coverage to 269+ capabilities across 62 engines:
+ * - 48 original engines (v8.0.0)
+ * - 14 new world-first enhancement engines (one per module)
  */
 
 import type { CapabilityId, ModuleLayer } from '../capabilities';
 
 // ============================================================================
-// ENGINE CATEGORIES — 16 Total
+// ENGINE CATEGORIES — 18 Total
 // ============================================================================
 
 export type EngineCategory =
@@ -31,10 +33,12 @@ export type EngineCategory =
   | 'experience'      // Accessibility, personalization
   | 'knowledge'       // Graph, memory, context
   | 'autonomy'        // Self-documentation, self-healing
-  | 'creativity'      // Dream, synthesis, innovation (NEW v8.0.0)
-  | 'perception'      // Intent, emotion, multimodal (NEW v8.0.0)
-  | 'resource'        // Budget, quota, cost (NEW v8.0.0)
-  | 'workflow';       // Pipeline, coordination, delegation (NEW v8.0.0)
+  | 'creativity'      // Dream, synthesis, innovation
+  | 'perception'      // Intent, emotion, multimodal
+  | 'resource'        // Budget, quota, cost
+  | 'workflow'        // Pipeline, coordination, delegation
+  | 'enhancement'     // World-first enhancement engines (NEW v8.1.0)
+  | 'orchestration';  // High-level meta-engine coordination (NEW v8.1.0)
 
 // ============================================================================
 // ENGINE DEFINITIONS — 48 Total (v8.0.0)
@@ -127,7 +131,27 @@ export type EngineId =
   
   // Advanced Security (2) — Proactive defense
   | 'attack_surface_engine'   // Mapping, exposure analysis
-  | 'incident_engine';        // Response automation, blast radius
+  | 'incident_engine'         // Response automation, blast radius
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // NEW v8.1.0 ENGINES — 14 World-First Enhancement Engines
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  // World-First Enhancement Engines (14) — One per module
+  | 'attention_memory_engine'      // BRAIN: AttentionMechanism, MemoryConsolidator, SemanticIndexer, EmotionalResonance
+  | 'provider_governance_engine'   // NEXUS: BudgetGovernance, LoadBalancer, RequestQueue, CostArbitrage
+  | 'threat_containment_engine'    // DEFENSE: BehavioralFingerprint, ZeroTrustValidator, ThreatAnticipator, IPContainment
+  | 'predictive_analytics_engine'  // VISION: PredictiveSLA, AnomalyForecaster, PerformanceInsight, CapacityPlanner
+  | 'system_resilience_engine'     // SYSTEM: ResourceProfiler, DependencyGraph, SelfHealOrchestrator, BackupIntegrity
+  | 'cortex_orchestration_engine'  // CORTEX: PipelineScheduler, MultiAgentCoordinator, GoalDecomposer, DecisionGovernor
+  | 'creative_evolution_engine'    // DREAM: CreativeMutator, InsightCrystallizer, PatternEvolver, DreamJournal
+  | 'intent_understanding_engine'  // DECODE: IntentAmplifier, ContextualParser, EmotionDetector, MultimodalFusion
+  | 'event_replay_engine'          // RIPPLE: EventRouter, PriorityQueue, DeadLetterHandler, EventReplay
+  | 'entitlement_audit_engine'     // ACCESS: EntitlementGraph, QuotaPredictor, AuditTrail
+  | 'config_runtime_engine'        // CORE: FeatureFlagEngine, ConfigHotReload, EnvironmentValidator
+  | 'adapter_transform_engine'     // INTEGRATION: AdapterHealthMonitor, WebhookOrchestrator, DataTransformer
+  | 'cognitive_accessibility_engine'  // INCLUSIVE: CognitiveLoadOptimizer, AccessibilityScorer, RemediationEngine
+  | 'evolution_governance_engine'; // MODERNIZER: EvolutionPredictor, RollbackAuthority, ImpactAnalyzer, ProposalRanker
 
 export interface EngineDefinition {
   id: EngineId;
@@ -250,10 +274,16 @@ export interface CapabilitySource {
 }
 
 export const CAPABILITY_INVENTORY = {
-  version: '8.0.0',
+  version: '8.1.0',
   synergies: 147,
   worldFirst: 56,
   archived: 10,
   native: 76,
-  total: 213,
+  total: 269,
+  engineCoverage: {
+    originalEngines: 48,
+    worldFirstEngines: 14,
+    totalEngines: 62,
+    metaEngines: 20,
+  },
 };
