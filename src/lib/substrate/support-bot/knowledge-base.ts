@@ -252,7 +252,7 @@ Each tier includes the substrate's INCLUSIVE accessibility module for WCAG compl
 • Duplicate purchases
 
 To request a refund:
-1. Contact promptfluid@gmail.com within 7 days
+1. Contact Dev@CMPSBL.com within 7 days
 2. Include your order ID and reason
 3. Our team will review and respond within 48 hours
 
@@ -371,7 +371,7 @@ Annual billing provides 25% discount.`,
 • Research/Enterprise require contract negotiation
 • Downgrade restrictions apply mid-term
 
-Contact promptfluid@gmail.com for quotes and custom arrangements.`,
+Contact Dev@CMPSBL.com for quotes and custom arrangements.`,
     category: 'question',
     keywords: ['cost', 'price', 'pricing', 'how much', 'fee'],
     confidence: 0.94,
@@ -398,7 +398,7 @@ Contact promptfluid@gmail.com for quotes and custom arrangements.`,
 
 Note: Developer license provides hosted API access. For self-hosted deployment with source code, see Enterprise tier ($49,999/yr).
 
-For Research, Enterprise, or Strategic licenses, contact promptfluid@gmail.com for contract-based purchase.`,
+For Research, Enterprise, or Strategic licenses, contact Dev@CMPSBL.com for contract-based purchase.`,
     category: 'how_to',
     keywords: ['purchase', 'buy', 'developer license', 'checkout', 'how to buy'],
     confidence: 0.93,
@@ -449,7 +449,7 @@ Templates run ON the substrate; licenses give you the substrate itself.`,
 
 This policy ensures predictable infrastructure planning and fair usage of resources.
 
-Contact promptfluid@gmail.com for special circumstances.`,
+Contact Dev@CMPSBL.com for special circumstances.`,
     category: 'account',
     keywords: ['downgrade', 'lower', 'reduce', 'change tier', 'cancel'],
     confidence: 0.88,
@@ -493,8 +493,8 @@ Full matrix available at /substrate/licensing.`,
     question_pattern: 'How do I contact sales for Enterprise licensing?',
     answer: `For Enterprise, Research, or Strategic licensing inquiries:
 
-**Email:** promptfluid@gmail.com
-**Phone:** (214) 548-0883
+**Email:** Dev@CMPSBL.com
+**Phone:** (760) FLUID-AI
 
 **Please include:**
 • Organization name
@@ -530,7 +530,7 @@ Enterprise contracts involve:
 • Marketplace templates ($27-$499) let you experience substrate-powered patterns
 • Developer License ($15,000/yr) is the lowest infrastructure tier
 
-For evaluation discussions or proof-of-concept arrangements, contact promptfluid@gmail.com.`,
+For evaluation discussions or proof-of-concept arrangements, contact Dev@CMPSBL.com.`,
     category: 'question',
     keywords: ['free trial', 'trial', 'demo', 'try', 'test', 'free'],
     confidence: 0.87,
@@ -549,8 +549,8 @@ export const GENERAL_KNOWLEDGE: KnowledgeEntry[] = [
     question_pattern: 'How do I contact support?',
     answer: `You can reach support through several channels:
 
-**Email:** promptfluid@gmail.com
-**Phone:** (214) 548-0883
+**Email:** Dev@CMPSBL.com
+**Phone:** (760) FLUID-AI
 
 **Self-service:**
 • This Support Bot (available 24/7)

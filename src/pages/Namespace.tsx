@@ -454,7 +454,7 @@ export default function Namespace() {
           </p>
           <p className="text-lg font-semibold mb-2">PromptFluid®</p>
           <p className="text-sm text-muted-foreground mb-4">
-            <a href="mailto:PromptFluid@gmail.com" className="hover:text-primary">PromptFluid@gmail.com</a>
+            <a href="mailto:Dev@CMPSBL.com" className="hover:text-primary">Dev@CMPSBL.com</a>
             {" "}•{" "}
             <a href="tel:+17603584324" className="hover:text-primary">(760) FLUID-AI</a>
           </p>

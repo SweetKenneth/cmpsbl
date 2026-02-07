@@ -61,8 +61,8 @@ This library is part of the **FNDTN v7** standards package, which presents:
 │  Type:              Cognitive Orchestration Substrate           │
 ├─────────────────────────────────────────────────────────────────┤
 │  LICENSING & ACQUISITION                                        │
-│  Email:   promptfluid@gmail.com                                 │
-│  Phone:   (214) 548-0883                                        │
+│  Email:   Dev@CMPSBL.com                                 │
+│  Phone:   (760) FLUID-AI                                        │
 │  Web:     https://promptfluid.com                               │
 ├─────────────────────────────────────────────────────────────────┤
 │  © 2025-2026 PromptFluid®. All rights reserved.                 │

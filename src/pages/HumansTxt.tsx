@@ -21,8 +21,8 @@ Creator & Lead Architect: Kenneth E. Sweet Jr.
 ORCID: https://orcid.org/0009-0001-4237-1243
 Role: Founder, Architect, Chief Cognitive Engineer
 Location: Abilene, Texas, USA
-Contact: promptfluid@gmail.com
-Phone: (214) 548-0883
+Contact: Dev@CMPSBL.com
+Phone: (760) FLUID-AI
 Twitter: @promptfluid
 
 /* THANKS */

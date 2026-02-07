@@ -210,7 +210,7 @@ If you encounter issues during migration:
 
 1. Check the 410 response for specific guidance
 2. Review the API Reference: `/docs/API-REFERENCE.md`
-3. Contact: promptfluid@gmail.com
+3. Contact: Dev@CMPSBL.com
 
 ---
 

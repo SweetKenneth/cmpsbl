@@ -137,7 +137,7 @@ serve(async (req) => {
     const priceId = CAPABILITY_PRICES[capability_id];
     if (!priceId) {
       // If no price ID found, this is an off-menu item
-      throw new Error(`This capability requires a custom license. Please contact PromptFluid@gmail.com for pricing.`);
+      throw new Error(`This capability requires a custom license. Please contact Dev@CMPSBL.com for pricing.`);
     }
 
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
