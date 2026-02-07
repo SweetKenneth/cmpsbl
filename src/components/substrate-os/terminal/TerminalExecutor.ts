@@ -256,32 +256,37 @@ export interface ExecutionResult {
 }
 
 // Resolve short Plan ID (8+ chars) to full UUID
-async function resolveShortPlanId(shortId: string): Promise<string | null> {
+async function resolveShortPlanId(ref: string): Promise<string | null> {
+  const cleaned = String(ref || '').replace(/[<>'"]/g, '').trim();
+  if (!cleaned) return null;
+
   // If it's already a full UUID (36 chars with dashes), return as-is
-  if (shortId.length === 36 && shortId.includes('-')) {
-    return shortId;
+  if (cleaned.length === 36 && cleaned.includes('-')) {
+    return cleaned;
   }
-  
-  // Query for plans that start with this prefix
+
   try {
-    const { data: plans } = await supabase
-      .from('substrate_upgrade_plans')
-      .select('id')
-      .ilike('id', `${shortId}%`)
-      .neq('status', 'deleted')
-      .limit(2);
-    
-    if (!plans || plans.length === 0) {
-      return null;
+    // 1) Prefer active Evolution Runs (mobile-first short IDs)
+    const { data: resolvedRun, error: runErr } = await supabase.rpc('resolve_evolution_run', {
+      p_ref: cleaned,
+    });
+
+    if (!runErr && Array.isArray(resolvedRun) && resolvedRun.length > 0) {
+      return resolvedRun[0].plan_id as string;
     }
-    
-    if (plans.length > 1) {
-      console.warn(`Multiple plans match prefix '${shortId}', using first match`);
+
+    // 2) Fallback to legacy Upgrade Plans
+    const { data: resolvedPlan, error: planErr } = await supabase.rpc('resolve_upgrade_plan_id', {
+      p_ref: cleaned,
+    });
+
+    if (!planErr && resolvedPlan) {
+      return resolvedPlan as string;
     }
-    
-    return plans[0].id;
+
+    return null;
   } catch (e) {
-    console.error('Failed to resolve short plan ID:', e);
+    console.error('Failed to resolve plan ID:', e);
     return null;
   }
 }

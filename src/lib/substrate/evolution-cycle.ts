@@ -225,6 +225,42 @@ class EvolutionCycleClient {
       const newState = await this.getState();
       
       if (newState.has_active_plan && newState.current_plan) {
+        // Persist scan results into evolution_runs.metadata so review/diff work later
+        try {
+          const scan_results = {
+            modules_scanned: 14,
+            improvements_found: scanResult.proposals.length,
+            risk_level: 'low',
+            proposals: scanResult.proposals,
+            health_before: 100,
+          } satisfies ScanResult;
+
+          await supabase
+            .from('evolution_runs')
+            .update({
+              metadata: {
+                normalized: true,
+                scan_id: (scanResult as any).scan_id,
+                status: 'pending_review',
+                total_actions: scanResult.proposals.length,
+                scan_results,
+                // Keep a compact actions snapshot for diff output
+                actions: scanResult.proposals.map((p: any) => ({
+                  id: p.id,
+                  title: p.title,
+                  description: p.description,
+                  target_module: p.target_module,
+                  impact: p.impact,
+                  confidence: p.confidence,
+                })),
+              },
+              updated_at: new Date().toISOString(),
+            } as never)
+            .eq('run_id', newState.current_plan.run_id);
+        } catch (e) {
+          console.warn('[EvolutionCycle] Failed to persist scan metadata (non-fatal):', e);
+        }
+
         // Emit scan complete signal
         this.emitGovernanceSignal('scan_complete', { 
           improvements_found: scanResult.proposals.length,

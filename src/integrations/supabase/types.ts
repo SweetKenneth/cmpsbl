@@ -10496,6 +10496,14 @@ export type Database = {
         Returns: undefined
       }
       reset_daily_quotas: { Args: never; Returns: undefined }
+      resolve_evolution_run: {
+        Args: { p_ref: string }
+        Returns: {
+          plan_id: string
+          run_id: string
+        }[]
+      }
+      resolve_upgrade_plan_id: { Args: { p_ref: string }; Returns: string }
       show_limit: { Args: never; Returns: number }
       show_trgm: { Args: { "": string }; Returns: string[] }
       track_template_interaction: {

@@ -708,17 +708,13 @@ class SubstrateClient {
     review: (plan_id: string) =>
       this.invoke({ module: 'modernizer', action: 'review', payload: { plan_id } }),
     
-    /** Validate plan readiness */
+    /** Validate plan readiness (Evolution Cycle) */
     validate: (plan_id: string) =>
-      supabase.functions.invoke('pf-substrate-upgrade', {
-        body: { action: 'validate_plan', plan_id }
-      }),
+      this.invoke({ module: 'modernizer', action: 'validate', payload: { plan_id } }),
     
-    /** View plan diff and health comparison */
+    /** View plan diff and health comparison (Evolution Cycle) */
     diff: (plan_id: string) =>
-      supabase.functions.invoke('pf-substrate-upgrade', {
-        body: { action: 'diff_view', plan_id }
-      }),
+      this.invoke({ module: 'modernizer', action: 'diff', payload: { plan_id } }),
     
     /** @deprecated Use evolve({ target: 'shadow' }) then evolve({ target: 'production' }) */
     apply: (plan_id: string) =>
