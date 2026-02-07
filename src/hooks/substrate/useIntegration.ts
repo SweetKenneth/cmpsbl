@@ -1,10 +1,12 @@
 /**
  * useIntegration Hook
- * v7.0.0 — Dedicated hook for INTEGRATION module operations
+ * v7.1.0 — Dedicated hook for INTEGRATION module operations
+ * Now respects debug mode kill-switch
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { substrate } from '@/lib/substrate';
+import { debugMode } from '@/lib/debug-mode';
 
 // Access integration module from substrate singleton
 const integration = substrate.integration;
@@ -37,19 +39,22 @@ export interface UseIntegrationReturn {
 
 export function useIntegration(): UseIntegrationReturn {
   const queryClient = useQueryClient();
+  const pollingEnabled = debugMode.allowModulePolling();
   
   const status = useQuery({
     queryKey: ['substrate', 'integration', 'status'],
     queryFn: () => integration.status(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 15000,
+    enabled: pollingEnabled,
   });
   
   const pulse = useQuery({
     queryKey: ['substrate', 'integration', 'pulse'],
     queryFn: () => integration.pulse(),
-    refetchInterval: 10000,
+    refetchInterval: pollingEnabled ? 10000 : false,
     staleTime: 5000,
+    enabled: pollingEnabled,
   });
   
   const adapters = useQuery({
@@ -61,8 +66,9 @@ export function useIntegration(): UseIntegrationReturn {
   const connections = useQuery({
     queryKey: ['substrate', 'integration', 'connections'],
     queryFn: () => integration.connections(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 15000,
+    enabled: pollingEnabled,
   });
   
   const discovered = (adapterId?: string) => useQuery({

@@ -1,10 +1,12 @@
 /**
  * useModernizer Hook
- * v7.0.0 — Dedicated hook for MODERNIZER (Self-Upgrade) module operations
+ * v7.1.0 — Dedicated hook for MODERNIZER (Self-Upgrade) module operations
+ * Now respects debug mode kill-switch
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { substrate } from '@/lib/substrate';
+import { debugMode } from '@/lib/debug-mode';
 
 // Access modernizer module from substrate singleton
 const modernizer = substrate.modernizer;
@@ -45,6 +47,7 @@ export interface UseModernizerReturn {
 
 export function useModernizer(): UseModernizerReturn {
   const queryClient = useQueryClient();
+  const pollingEnabled = debugMode.allowModulePolling();
   
   const invalidateModernizer = () => {
     queryClient.invalidateQueries({ queryKey: ['substrate', 'modernizer'] });
@@ -53,29 +56,33 @@ export function useModernizer(): UseModernizerReturn {
   const status = useQuery({
     queryKey: ['substrate', 'modernizer', 'status'],
     queryFn: () => modernizer.status(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 15000,
+    enabled: pollingEnabled,
   });
   
   const pulse = useQuery({
     queryKey: ['substrate', 'modernizer', 'pulse'],
     queryFn: () => modernizer.pulse(),
-    refetchInterval: 10000,
+    refetchInterval: pollingEnabled ? 10000 : false,
     staleTime: 5000,
+    enabled: pollingEnabled,
   });
   
   const quota = useQuery({
     queryKey: ['substrate', 'modernizer', 'quota'],
     queryFn: () => modernizer.quota(),
-    refetchInterval: 60000,
+    refetchInterval: pollingEnabled ? 60000 : false,
     staleTime: 30000,
+    enabled: pollingEnabled,
   });
   
   const evolutionStatus = useQuery({
     queryKey: ['substrate', 'modernizer', 'evolution_status'],
     queryFn: () => modernizer.evolutionStatus(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 15000,
+    enabled: pollingEnabled,
   });
   
   const jobs = (limit = 20) => useQuery({

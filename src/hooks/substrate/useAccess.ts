@@ -1,10 +1,12 @@
 /**
  * useAccess Hook
- * v7.0.0 — Dedicated hook for ACCESS (Identity & Billing) module operations
+ * v7.1.0 — Dedicated hook for ACCESS (Identity & Billing) module operations
+ * Now respects debug mode kill-switch
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { substrate } from '@/lib/substrate';
+import { debugMode } from '@/lib/debug-mode';
 
 // Access access module from substrate singleton
 const access = substrate.access;
@@ -36,19 +38,22 @@ export interface UseAccessReturn {
 
 export function useAccess(): UseAccessReturn {
   const queryClient = useQueryClient();
+  const pollingEnabled = debugMode.allowModulePolling();
   
   const status = useQuery({
     queryKey: ['substrate', 'access', 'status'],
     queryFn: () => access.status(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 15000,
+    enabled: pollingEnabled,
   });
   
   const pulse = useQuery({
     queryKey: ['substrate', 'access', 'pulse'],
     queryFn: () => access.pulse(),
-    refetchInterval: 10000,
+    refetchInterval: pollingEnabled ? 10000 : false,
     staleTime: 5000,
+    enabled: pollingEnabled,
   });
   
   const identity = useQuery({
@@ -90,8 +95,9 @@ export function useAccess(): UseAccessReturn {
   const quota = useQuery({
     queryKey: ['substrate', 'access', 'quota'],
     queryFn: () => access.checkQuota(),
-    refetchInterval: 60000,
+    refetchInterval: pollingEnabled ? 60000 : false,
     staleTime: 30000,
+    enabled: pollingEnabled,
   });
   
   const bootstrap = useMutation({

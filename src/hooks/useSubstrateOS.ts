@@ -1,21 +1,25 @@
 /**
  * Substrate OS Dashboard Hooks
- * Real-time telemetry and control hooks for the OS surface
+ * v7.1.0 — Real-time telemetry and control hooks for the OS surface
+ * Now respects debug mode kill-switch
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { substrate, vision, brain, defense, nexus, dream, system, modernizer, decode, core, ripple, access, integration, cortex, inclusive } from '@/lib/substrate';
+import { debugMode } from '@/lib/debug-mode';
 
 // ═══════════════════════════════════════════════════════════════
-// OBSERVER HOOKS — Read-only telemetry
+// OBSERVER HOOKS — Read-only telemetry (respects debug mode)
 // ═══════════════════════════════════════════════════════════════
 
 export function useSystemStatus() {
+  const pollingEnabled = debugMode.allowModulePolling();
   return useQuery({
     queryKey: ['substrate', 'system', 'status'],
     queryFn: () => system.status(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 10000,
+    enabled: pollingEnabled,
   });
 }
 
@@ -28,28 +32,34 @@ export function useSystemVersion() {
 }
 
 export function useVisionHealthOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
   return useQuery({
     queryKey: ['substrate', 'vision', 'health'],
     queryFn: () => vision.health(),
-    refetchInterval: 15000,
+    refetchInterval: pollingEnabled ? 15000 : false,
     staleTime: 5000,
+    enabled: pollingEnabled,
   });
 }
 
 export function useVisionMetricsOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
   return useQuery({
     queryKey: ['substrate', 'vision', 'metrics'],
     queryFn: () => vision.metrics(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 15000,
+    enabled: pollingEnabled,
   });
 }
 
 export function useVisionLogsOS(moduleFilter?: string, limit: number = 10) {
+  const pollingEnabled = debugMode.allowModulePolling();
   return useQuery({
     queryKey: ['substrate', 'vision', 'logs', moduleFilter, limit],
     queryFn: () => vision.logs(moduleFilter as any, limit),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
   });
 }
 
@@ -62,18 +72,22 @@ export function useVisionAudit() {
 }
 
 export function useBrainStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
   return useQuery({
     queryKey: ['substrate', 'brain', 'status'],
     queryFn: () => brain.status(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
   });
 }
 
 export function useDefenseStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
   return useQuery({
     queryKey: ['substrate', 'defense', 'status'],
     queryFn: () => defense.status(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
   });
 }
 
@@ -86,34 +100,42 @@ export function useDefenseRulesOS() {
 }
 
 export function useNexusStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
   return useQuery({
     queryKey: ['substrate', 'nexus', 'status'],
     queryFn: () => nexus.status(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
   });
 }
 
 export function useDreamStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
   return useQuery({
     queryKey: ['substrate', 'dream', 'status'],
     queryFn: () => dream.status(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
   });
 }
 
 export function useModernizerStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
   return useQuery({
     queryKey: ['substrate', 'modernizer', 'status'],
     queryFn: () => modernizer.status(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
   });
 }
 
 export function useDecodeStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
   return useQuery({
     queryKey: ['substrate', 'decode', 'status'],
     queryFn: () => decode.status(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
   });
 }
 
@@ -234,6 +256,7 @@ export function useSystemAudit() {
 
 // Live audit feed from brain_events - real system activity
 export function useLiveAuditFeed(limit: number = 15) {
+  const pollingEnabled = debugMode.allowPolling();
   return useQuery({
     queryKey: ['substrate', 'audit', 'live-feed', limit],
     queryFn: async () => {
@@ -247,8 +270,9 @@ export function useLiveAuditFeed(limit: number = 15) {
       if (error) throw error;
       return data || [];
     },
-    refetchInterval: 5000, // Live updates every 5s
+    refetchInterval: pollingEnabled ? 5000 : false, // Live updates every 5s
     staleTime: 2000,
+    enabled: pollingEnabled,
   });
 }
 
@@ -353,10 +377,12 @@ export function useSubstrateHealthScore() {
 
 // Cortex orchestrator status hook
 export function useCortexStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
   return useQuery({
     queryKey: ['substrate', 'cortex', 'status'],
     queryFn: () => cortex.status(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
   });
 }
 
@@ -365,34 +391,42 @@ export function useCortexStatusOS() {
 // ═══════════════════════════════════════════════════════════════
 
 export function useCoreStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
   return useQuery({
     queryKey: ['substrate', 'core', 'status'],
     queryFn: () => core.status(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
   });
 }
 
 export function useRippleStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
   return useQuery({
     queryKey: ['substrate', 'ripple', 'status'],
     queryFn: () => ripple.status(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
   });
 }
 
 export function useAccessStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
   return useQuery({
     queryKey: ['substrate', 'access', 'status'],
     queryFn: () => access.status(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
   });
 }
 
 export function useIntegrationStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
   return useQuery({
     queryKey: ['substrate', 'integration', 'status'],
     queryFn: () => integration.status(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
   });
 }
 
@@ -422,10 +456,12 @@ export function useIntegrationDiscoverOS() {
 // ═══════════════════════════════════════════════════════════════
 
 export function useInclusiveStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
   return useQuery({
     queryKey: ['substrate', 'inclusive', 'status'],
     queryFn: () => inclusive.status(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
   });
 }
 
@@ -457,18 +493,22 @@ export function useInclusiveRepairOS() {
 }
 
 export function useInclusiveCoverageOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
   return useQuery({
     queryKey: ['substrate', 'inclusive', 'coverage'],
     queryFn: () => inclusive.coverage(),
-    refetchInterval: 60000,
+    refetchInterval: pollingEnabled ? 60000 : false,
+    enabled: pollingEnabled,
   });
 }
 
 export function useInclusiveRegressionsOS(hours = 24) {
+  const pollingEnabled = debugMode.allowModulePolling();
   return useQuery({
     queryKey: ['substrate', 'inclusive', 'regressions', hours],
     queryFn: () => inclusive.regressions(hours),
-    refetchInterval: 60000,
+    refetchInterval: pollingEnabled ? 60000 : false,
+    enabled: pollingEnabled,
   });
 }
 

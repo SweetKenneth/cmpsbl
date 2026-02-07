@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect } from "react";
+import { debugMode } from "@/lib/debug-mode";
 
 export interface SystemHealth {
   service: string;
@@ -12,6 +13,8 @@ export interface SystemHealth {
 
 export function useDiagnostics() {
   const queryClient = useQueryClient();
+  const pollingEnabled = debugMode.allowPolling();
+  const realtimeEnabled = debugMode.allowRealtime();
   
   const { data: health = [], isLoading } = useQuery({
     queryKey: ["admin-diagnostics"],
@@ -51,11 +54,14 @@ export function useDiagnostics() {
 
       return results;
     },
-    refetchInterval: 10000,
+    refetchInterval: pollingEnabled ? 10000 : false,
+    enabled: pollingEnabled,
   });
 
-  // Real-time health monitoring
+  // Real-time health monitoring - respects debug mode
   useEffect(() => {
+    if (!realtimeEnabled) return;
+    
     const channel = supabase
       .channel("diagnostics-changes")
       .on(
@@ -68,7 +74,7 @@ export function useDiagnostics() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [queryClient]);
+  }, [queryClient, realtimeEnabled]);
 
   return { health, isLoading };
 }

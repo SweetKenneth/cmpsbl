@@ -1,6 +1,7 @@
 /**
  * useSEBA - React hook for Self-Evolving Bounded Agent
- * v1.1.0 — Full Cognitive × Evolution × Governance
+ * v1.2.0 — Full Cognitive × Evolution × Governance
+ * Now respects debug mode kill-switch
  * 
  * Provides comprehensive access to SEBA operations:
  * - State and configuration
@@ -13,6 +14,7 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { sebaAgent } from '@/lib/substrate/seba';
+import { debugMode } from '@/lib/debug-mode';
 import type { 
   SEBAState, 
   SEBAConfig, 
@@ -81,6 +83,7 @@ export function useSEBA(): UseSEBAReturn {
   const queryClient = useQueryClient();
   const [isCycleRunning, setIsCycleRunning] = useState(false);
   const mountedRef = useRef(true);
+  const pollingEnabled = debugMode.allowModulePolling();
 
   useEffect(() => {
     mountedRef.current = true;
@@ -96,7 +99,8 @@ export function useSEBA(): UseSEBAReturn {
       return result.data as { state: SEBAState; config: Partial<SEBAConfig> };
     },
     staleTime: 5000,
-    refetchInterval: 30000, // Auto-refresh every 30s
+    refetchInterval: pollingEnabled ? 30000 : false, // Auto-refresh every 30s
+    enabled: pollingEnabled,
   });
 
   const state = statusQuery.data?.state ?? null;
