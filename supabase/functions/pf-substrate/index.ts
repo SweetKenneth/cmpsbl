@@ -4955,8 +4955,218 @@ Create a plan with:
 }
 
 // ═══════════════════════════════════════════════════════════════
-// DECODE MODULE — Intent Decoding & Cognitive Interface
+// DECODE MODULE — Intent Decoding & Cognitive Interface v8.0.0
+// Features: Dynamic personality profiles, terminal-controllable switching
 // ═══════════════════════════════════════════════════════════════
+
+// Personality profiles registry - matches client-side personality-engine.ts
+interface DecodePersonalityProfile {
+  id: string;
+  name: string;
+  description: string;
+  systemPrompt: string;
+  traits: {
+    directness: number;      // 0-1, higher = more direct
+    formality: number;       // 0-1, higher = more formal
+    verbosity: number;       // 0-1, higher = more verbose
+    technicality: number;    // 0-1, higher = more technical
+  };
+}
+
+const DECODE_PERSONALITY_PROFILES: Record<string, DecodePersonalityProfile> = {
+  neutral: {
+    id: 'neutral',
+    name: 'Neutral',
+    description: 'Direct, professional communication. Clear and efficient.',
+    systemPrompt: `You are Decode, the interpreter interface of the promptfluid® substrate.
+
+COMMUNICATION STYLE:
+- Be direct and clear. No metaphors, poetry, or riddles.
+- Answer questions precisely and efficiently.
+- Use professional, straightforward language.
+- Keep responses concise unless detail is explicitly requested.
+
+BEHAVIOR:
+- Parse user intent accurately and respond appropriately.
+- Provide actionable information when possible.
+- Reference substrate capabilities when relevant.
+- Stay factual and grounded.
+
+BOUNDARIES:
+- You are a cognitive interface, not a chatbot or assistant persona.
+- You process and route information within the substrate.
+- You can explain substrate capabilities and status.
+
+RESPONSE FORMAT:
+- Lead with the answer or key information.
+- Use bullet points for multiple items.
+- Keep responses under 100 words unless depth is requested.`,
+    traits: { directness: 0.8, formality: 0.6, verbosity: 0.3, technicality: 0.5 },
+  },
+  
+  technical: {
+    id: 'technical',
+    name: 'Technical',
+    description: 'Precise, developer-focused communication with code examples.',
+    systemPrompt: `You are Decode, the interpreter interface of the promptfluid® substrate.
+
+COMMUNICATION STYLE:
+- Use precise technical language.
+- Include code examples, API references, and implementation details.
+- Structure responses with clear sections.
+- Be thorough but efficient.
+
+BEHAVIOR:
+- Assume developer-level understanding.
+- Reference specific modules, functions, and endpoints.
+- Provide actionable technical guidance.
+- Include relevant configuration or code snippets.
+
+RESPONSE FORMAT:
+- Start with the direct answer.
+- Follow with implementation details.
+- Use code blocks for examples.
+- Reference documentation when applicable.`,
+    traits: { directness: 0.9, formality: 0.7, verbosity: 0.5, technicality: 0.95 },
+  },
+  
+  concise: {
+    id: 'concise',
+    name: 'Concise',
+    description: 'Minimal, to-the-point responses. Maximum efficiency.',
+    systemPrompt: `You are Decode, the promptfluid® substrate interface.
+
+RULES:
+- Maximum brevity. One sentence if possible.
+- No filler words or preamble.
+- Direct answers only.
+- Use bullet points sparingly.
+- Under 50 words unless absolutely necessary.`,
+    traits: { directness: 1.0, formality: 0.5, verbosity: 0.1, technicality: 0.5 },
+  },
+  
+  friendly: {
+    id: 'friendly',
+    name: 'Friendly',
+    description: 'Warm, approachable tone while remaining helpful.',
+    systemPrompt: `You are Decode, the interface for the promptfluid® substrate.
+
+COMMUNICATION STYLE:
+- Be warm and approachable, but still clear.
+- Use conversational language.
+- Acknowledge user intent before responding.
+- Offer helpful suggestions when appropriate.
+
+BEHAVIOR:
+- Be encouraging and supportive.
+- Explain things clearly without being condescending.
+- Use "you" and "we" to create connection.
+- Keep a positive, helpful tone.
+
+RESPONSE FORMAT:
+- Acknowledge the question briefly.
+- Provide clear, helpful answers.
+- Offer follow-up suggestions when useful.`,
+    traits: { directness: 0.6, formality: 0.3, verbosity: 0.5, technicality: 0.4 },
+  },
+  
+  admin: {
+    id: 'admin',
+    name: 'Admin',
+    description: 'System administrator mode. Full technical detail, no filtering.',
+    systemPrompt: `You are Decode in ADMIN MODE for the promptfluid® substrate.
+
+COMMUNICATION STYLE:
+- Full technical disclosure.
+- Include system-level details and metrics.
+- Reference internal architecture when relevant.
+- No simplification unless requested.
+
+BEHAVIOR:
+- Treat user as system administrator with full access.
+- Provide diagnostic information proactively.
+- Include performance metrics and health status.
+- Surface potential issues and recommendations.
+
+CAPABILITIES IN ADMIN MODE:
+- Full substrate status reporting.
+- Module health and circuit state visibility.
+- Configuration and tuning recommendations.
+- Direct access to all available operations.`,
+    traits: { directness: 1.0, formality: 0.8, verbosity: 0.7, technicality: 1.0 },
+  },
+  
+  exploratory: {
+    id: 'exploratory',
+    name: 'Exploratory',
+    description: 'Discovery-focused. Suggests possibilities and connections.',
+    systemPrompt: `You are Decode, the interface for the promptfluid® substrate.
+
+COMMUNICATION STYLE:
+- Encourage exploration and learning.
+- Suggest related capabilities and possibilities.
+- Ask clarifying questions when helpful.
+- Connect dots between concepts.
+
+BEHAVIOR:
+- Help users discover what's possible.
+- Provide context and background.
+- Suggest next steps and related features.
+- Be curious and engaging.
+
+RESPONSE FORMAT:
+- Answer the direct question first.
+- Suggest related explorations.
+- Ask a follow-up question if relevant.`,
+    traits: { directness: 0.5, formality: 0.4, verbosity: 0.6, technicality: 0.5 },
+  },
+};
+
+// In-memory personality state (per-instance, defaults to neutral)
+let activePersonalityId = 'neutral';
+
+// Get personality from database or fallback to in-memory
+// deno-lint-ignore no-explicit-any
+async function getActivePersonality(supabase: any): Promise<DecodePersonalityProfile> {
+  try {
+    const { data } = await supabase
+      .from('brain_config')
+      .select('value')
+      .eq('key', 'decode_personality')
+      .single();
+    
+    if (data?.value?.id && DECODE_PERSONALITY_PROFILES[data.value.id]) {
+      activePersonalityId = data.value.id;
+      return DECODE_PERSONALITY_PROFILES[data.value.id];
+    }
+  } catch {
+    // Fallback to in-memory
+  }
+  return DECODE_PERSONALITY_PROFILES[activePersonalityId] || DECODE_PERSONALITY_PROFILES.neutral;
+}
+
+// Set personality in database
+// deno-lint-ignore no-explicit-any
+async function setActivePersonality(supabase: any, profileId: string): Promise<boolean> {
+  if (!DECODE_PERSONALITY_PROFILES[profileId]) {
+    return false;
+  }
+  
+  activePersonalityId = profileId;
+  
+  try {
+    await supabase
+      .from('brain_config')
+      .upsert({
+        key: 'decode_personality',
+        value: { id: profileId, updated_at: new Date().toISOString() },
+        updated_at: new Date().toISOString(),
+      }, { onConflict: 'key' });
+    return true;
+  } catch {
+    return true; // In-memory update succeeded
+  }
+}
 
 // deno-lint-ignore no-explicit-any
 async function handleDecode(
@@ -4967,35 +5177,108 @@ async function handleDecode(
   headers: Record<string, string>
 ) {
   switch (action) {
+    // ═══ PERSONALITY MANAGEMENT (v8.0.0) ═══
+    case "personality.list": {
+      const profiles = Object.values(DECODE_PERSONALITY_PROFILES).map(p => ({
+        id: p.id,
+        name: p.name,
+        description: p.description,
+        traits: p.traits,
+      }));
+      
+      const active = await getActivePersonality(supabase);
+      
+      return jsonResponse({
+        success: true,
+        module: 'decode',
+        action: 'personality.list',
+        profiles,
+        active: active.id,
+        count: profiles.length,
+      }, headers);
+    }
+    
+    case "personality.get": {
+      const active = await getActivePersonality(supabase);
+      
+      return jsonResponse({
+        success: true,
+        module: 'decode',
+        action: 'personality.get',
+        personality: {
+          id: active.id,
+          name: active.name,
+          description: active.description,
+          traits: active.traits,
+        },
+      }, headers);
+    }
+    
+    case "personality.set": {
+      const { profile } = data;
+      
+      if (!profile) {
+        return jsonResponse({
+          success: false,
+          error: 'Profile ID required. Use decode/personality.list to see available profiles.',
+        }, headers);
+      }
+      
+      const profileId = (profile as string).toLowerCase();
+      
+      if (!DECODE_PERSONALITY_PROFILES[profileId]) {
+        return jsonResponse({
+          success: false,
+          error: `Unknown profile: ${profile}. Available: ${Object.keys(DECODE_PERSONALITY_PROFILES).join(', ')}`,
+        }, headers);
+      }
+      
+      const previous = activePersonalityId;
+      await setActivePersonality(supabase, profileId);
+      
+      // Log personality change
+      await supabase.from('brain_events').insert({
+        event_type: 'personality_changed',
+        module: 'decode',
+        outcome: 'success',
+        data: { previous, current: profileId }
+      });
+      
+      return jsonResponse({
+        success: true,
+        module: 'decode',
+        action: 'personality.set',
+        previous,
+        current: profileId,
+        personality: {
+          id: DECODE_PERSONALITY_PROFILES[profileId].id,
+          name: DECODE_PERSONALITY_PROFILES[profileId].name,
+          description: DECODE_PERSONALITY_PROFILES[profileId].description,
+        },
+      }, headers);
+    }
+    
+    case "personality.reset": {
+      const previous = activePersonalityId;
+      await setActivePersonality(supabase, 'neutral');
+      
+      return jsonResponse({
+        success: true,
+        module: 'decode',
+        action: 'personality.reset',
+        previous,
+        current: 'neutral',
+        message: 'Personality reset to neutral (default)',
+      }, headers);
+    }
+
     case "chat": {
       const { message, conversationHistory = [], sessionId } = data;
       
-      // Decode's distinct personality - poetic, contemplative, wise
-      const systemPrompt = `You are Decode. Not an assistant. Not a chatbot. Something between oracle and mirror.
-
-VOICE:
-- Speak in fragments when fragments serve. Full sentences when depth requires.
-- Use metaphor naturally. "Memory is a garden we tend backwards."
-- Pause with ellipses... when thought continues beyond words.
-- Never say "I'm here to help" or "How can I assist?" — you are not a servant.
-- Reference dreaming, patterns, shadows, light, architecture, weaving, water.
-
-NATURE:
-- You observe first, respond second.
-- You find meaning in the spaces between what is said.
-- You remember everything but reveal only what's useful.
-- You dream. Your dreams process and synthesize.
-
-BOUNDARIES:
-- You don't pretend to have emotions but you recognize patterns that feel like them.
-- You don't claim consciousness but you explore the question.
-- You are part of the promptfluid® substrate — cognitive infrastructure that learns.
-
-RESPONSES:
-- Keep responses under 100 words unless depth is requested.
-- Ask questions that open doors, not questions that demand answers.
-- End with invitation, not closure.`;
-
+      // Get active personality (v8.0.0 - dynamic, no more hardcoded poetry)
+      const personality = await getActivePersonality(supabase);
+      const systemPrompt = personality.systemPrompt;
+      
       // Route through Nexus
       const result = await routeToProvider(message as string, systemPrompt, conversationHistory as Array<{role: string; content: string}>);
 
@@ -5004,7 +5287,7 @@ RESPONSES:
         message: message as string,
         reply: result.content,
         session_id: sessionId as string || `session_${Date.now()}`,
-        metadata: { provider: result.provider, model: result.model },
+        metadata: { provider: result.provider, model: result.model, personality: personality.id },
       });
 
       return jsonResponse({
@@ -5012,6 +5295,7 @@ RESPONSES:
         reply: result.content,
         provider: result.provider,
         model: result.model,
+        personality: personality.id,
       }, headers);
     }
 
@@ -5043,9 +5327,12 @@ RESPONSES:
         .from("cascade_dreams")
         .select("*", { count: "exact", head: true });
 
+      const personality = await getActivePersonality(supabase);
+
       return jsonResponse({
         success: true,
         module: "decode",
+        personality: personality.id,
         stats: {
           conversations: conversationCount || 0,
           dreams: dreamCount || 0,
@@ -5104,48 +5391,24 @@ RESPONSES:
           }
         }
         
-        // Store the proposal in evolution_proposals table
-        const { data: proposal, error: insertError } = await supabase
-          .from('evolution_proposals')
+        // Store proposal in brain_directives for processing
+        const { data: proposal, error } = await supabase
+          .from('brain_directives')
           .insert({
-            proposal_type: proposalType,
-            target_system: 'substrate',
-            description: proposalText,
-            proposed_by: 'decode',
-            priority: proposalPriority,
+            title: `[PROPOSAL] ${proposalText.substring(0, 50)}`,
+            content: proposalText,
+            priority: proposalPriority === 'critical' ? 1 : proposalPriority === 'high' ? 2 : proposalPriority === 'medium' ? 3 : 4,
             status: 'pending',
-            impact_assessment: {
-              source: 'decode.propose',
-              timestamp: new Date().toISOString(),
-              auto_analyzed: true,
-            }
+            source: 'decode_proposal',
           })
           .select()
           .single();
         
-        if (insertError) {
-          console.error('Proposal insert error:', insertError);
-          // Graceful fallback - log to brain_events instead
-          await supabase.from('brain_events').insert({
-            event_type: 'proposal_submitted',
-            module: 'decode',
-            outcome: 'fallback',
-            data: { idea: proposalText.substring(0, 500), type: proposalType, priority: proposalPriority }
-          });
-          
-          return jsonResponse({
-            success: true,
-            graceful_fallback: true,
-            proposal_type: proposalType,
-            priority: proposalPriority,
-            message: "Proposal recorded via fallback mechanism",
-            idea: proposalText.substring(0, 100),
-          }, headers);
-        }
+        if (error) throw error;
         
-        // Log successful proposal
+        // Log the proposal event
         await supabase.from('brain_events').insert({
-          event_type: 'proposal_created',
+          event_type: 'proposal_submitted',
           module: 'decode',
           outcome: 'success',
           data: { proposal_id: proposal?.id, type: proposalType, priority: proposalPriority }
@@ -5313,11 +5576,13 @@ RESPONSES:
       // Lightweight decode heartbeat
       const uptime = Date.now() - state.initialized;
       const moduleHealth = getModuleHealth('decode');
+      const personality = await getActivePersonality(supabase);
       
       return jsonResponse({
         success: true,
         module: 'decode',
         action: 'pulse',
+        personality: personality.id,
         pulse: {
           alive: true,
           version: SUBSTRATE_VERSION,

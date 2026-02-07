@@ -1,22 +1,18 @@
 /**
  * promptfluid® DECODE Personality Engine
- * v7.1.0 — Interpretive Personality Profiles
+ * v8.0.0 — Dynamic Personality Profiles (Server-Synced)
  * 
- * Personality profiles are INTERPRETIVE FILTERS only.
- * They affect:
- *   - Intent weighting
- *   - Ambiguity tolerance
- *   - Confidence calibration
- *   - Escalation thresholds
+ * Personality profiles now sync with the backend edge function.
+ * Changes made via terminal commands persist to the database.
  * 
- * They do NOT affect:
- *   - Execution
- *   - Permissions
- *   - Memory writes
- *   - Response authority
- * 
- * Profiles are transient (session-scoped) and never persisted to brain.hot.
+ * v8.0.0 Changes:
+ *   - New direct/professional baseline (no more poetry/metaphors)
+ *   - Server-side personality storage in brain_config
+ *   - Terminal commands sync with backend
+ *   - New profiles: neutral, technical, concise, friendly, admin, exploratory
  */
+
+import { substrate } from '@/lib/substrate';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // TYPES
@@ -25,36 +21,25 @@
 export type PersonalityProfile = 
   | 'neutral'
   | 'technical'
-  | 'frustrated'
-  | 'exploratory'
-  | 'adversarial'
-  | 'playful'
-  | 'urgent';
+  | 'concise'
+  | 'friendly'
+  | 'admin'
+  | 'exploratory';
 
 export interface PersonalityConfig {
   /** Profile identifier */
   id: PersonalityProfile;
   /** Human-readable name */
   name: string;
-  /** Description of this personality lens */
+  /** Description of this personality mode */
   description: string;
-  /** Intent weighting adjustments (positive = boost, negative = suppress) */
-  intentWeights: {
-    query: number;      // Question-asking intent
-    command: number;    // Action-requesting intent
-    feedback: number;   // Opinion/complaint intent
-    exploration: number; // Learning/discovery intent
+  /** Personality traits (0-1 scales) */
+  traits: {
+    directness: number;      // Higher = more direct
+    formality: number;       // Higher = more formal
+    verbosity: number;       // Higher = more verbose
+    technicality: number;    // Higher = more technical
   };
-  /** Tolerance for ambiguous input (0-1, higher = more tolerant) */
-  ambiguityTolerance: number;
-  /** Base confidence modifier (-0.3 to +0.3) */
-  confidenceModifier: number;
-  /** Escalation threshold (0-1, lower = faster escalation) */
-  escalationThreshold: number;
-  /** Language markers that indicate this personality */
-  languageMarkers: string[];
-  /** Sentiment indicators */
-  sentimentRange: { min: number; max: number };
 }
 
 export interface PersonalityState {
@@ -72,6 +57,8 @@ export interface PersonalityState {
   sessionId: string | null;
   /** Timestamp of last profile change */
   lastChanged: string;
+  /** Whether synced with server */
+  serverSynced: boolean;
 }
 
 export interface PersonalityDetectionResult {
@@ -111,97 +98,55 @@ export interface DecodeInterpretation {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// PERSONALITY PROFILES REGISTRY
+// PERSONALITY PROFILES REGISTRY (v8.0.0 - Direct, Professional)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export const PERSONALITY_PROFILES: Record<PersonalityProfile, PersonalityConfig> = {
   neutral: {
     id: 'neutral',
     name: 'Neutral',
-    description: 'Balanced interpretation with no bias toward any communication style',
-    intentWeights: { query: 0, command: 0, feedback: 0, exploration: 0 },
-    ambiguityTolerance: 0.5,
-    confidenceModifier: 0,
-    escalationThreshold: 0.5,
-    languageMarkers: [],
-    sentimentRange: { min: -0.3, max: 0.3 },
+    description: 'Direct, professional communication. Clear and efficient.',
+    traits: { directness: 0.8, formality: 0.6, verbosity: 0.3, technicality: 0.5 },
   },
   
   technical: {
     id: 'technical',
     name: 'Technical',
-    description: 'Precise, detail-oriented interpretation favoring structured queries',
-    intentWeights: { query: 0.2, command: 0.1, feedback: -0.1, exploration: 0.15 },
-    ambiguityTolerance: 0.3,
-    confidenceModifier: 0.1,
-    escalationThreshold: 0.4,
-    languageMarkers: ['api', 'function', 'error', 'debug', 'implement', 'code', 'syntax', 'parameter', 'config', 'module'],
-    sentimentRange: { min: -0.2, max: 0.2 },
+    description: 'Precise, developer-focused with code examples.',
+    traits: { directness: 0.9, formality: 0.7, verbosity: 0.5, technicality: 0.95 },
   },
   
-  frustrated: {
-    id: 'frustrated',
-    name: 'Frustrated',
-    description: 'User experiencing difficulty; prioritize feedback and support intent',
-    intentWeights: { query: -0.1, command: -0.1, feedback: 0.3, exploration: -0.2 },
-    ambiguityTolerance: 0.7,
-    confidenceModifier: -0.1,
-    escalationThreshold: 0.3,
-    languageMarkers: ['not working', 'broken', 'stuck', 'help', 'why', 'again', 'still', 'frustrated', 'annoying', 'impossible'],
-    sentimentRange: { min: -1, max: -0.2 },
+  concise: {
+    id: 'concise',
+    name: 'Concise',
+    description: 'Minimal responses. Maximum efficiency.',
+    traits: { directness: 1.0, formality: 0.5, verbosity: 0.1, technicality: 0.5 },
+  },
+  
+  friendly: {
+    id: 'friendly',
+    name: 'Friendly',
+    description: 'Warm, approachable tone while remaining helpful.',
+    traits: { directness: 0.6, formality: 0.3, verbosity: 0.5, technicality: 0.4 },
+  },
+  
+  admin: {
+    id: 'admin',
+    name: 'Admin',
+    description: 'Full technical detail, system administrator mode.',
+    traits: { directness: 1.0, formality: 0.8, verbosity: 0.7, technicality: 1.0 },
   },
   
   exploratory: {
     id: 'exploratory',
     name: 'Exploratory',
-    description: 'Curious, learning-oriented; favor discovery and explanation',
-    intentWeights: { query: 0.2, command: -0.1, feedback: 0, exploration: 0.3 },
-    ambiguityTolerance: 0.8,
-    confidenceModifier: 0,
-    escalationThreshold: 0.6,
-    languageMarkers: ['how', 'what', 'why', 'explain', 'curious', 'wonder', 'learn', 'understand', 'explore', 'possible'],
-    sentimentRange: { min: 0, max: 0.7 },
-  },
-  
-  adversarial: {
-    id: 'adversarial',
-    name: 'Adversarial',
-    description: 'Challenging, testing boundaries; maintain strict interpretation',
-    intentWeights: { query: -0.1, command: 0.2, feedback: 0.2, exploration: -0.2 },
-    ambiguityTolerance: 0.2,
-    confidenceModifier: -0.2,
-    escalationThreshold: 0.2,
-    languageMarkers: ['prove', 'wrong', 'bet', 'challenge', 'cannot', 'fail', 'break', 'hack', 'bypass', 'trick'],
-    sentimentRange: { min: -0.8, max: 0.1 },
-  },
-  
-  playful: {
-    id: 'playful',
-    name: 'Playful',
-    description: 'Lighthearted, creative; allow more interpretive latitude',
-    intentWeights: { query: 0.1, command: 0, feedback: 0, exploration: 0.2 },
-    ambiguityTolerance: 0.9,
-    confidenceModifier: 0.05,
-    escalationThreshold: 0.7,
-    languageMarkers: ['fun', 'cool', 'awesome', 'lol', 'haha', 'joke', 'play', 'game', 'creative', 'imagine'],
-    sentimentRange: { min: 0.2, max: 1 },
-  },
-  
-  urgent: {
-    id: 'urgent',
-    name: 'Urgent',
-    description: 'Time-sensitive, action-oriented; prioritize commands and fast resolution',
-    intentWeights: { query: -0.1, command: 0.3, feedback: 0.1, exploration: -0.3 },
-    ambiguityTolerance: 0.3,
-    confidenceModifier: -0.05,
-    escalationThreshold: 0.25,
-    languageMarkers: ['urgent', 'asap', 'now', 'immediately', 'critical', 'emergency', 'deadline', 'hurry', 'fast', 'quick'],
-    sentimentRange: { min: -0.5, max: 0.3 },
+    description: 'Discovery-focused. Suggests possibilities.',
+    traits: { directness: 0.5, formality: 0.4, verbosity: 0.6, technicality: 0.5 },
   },
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// PERSONALITY ENGINE CLIENT
+// PERSONALITY ENGINE CLIENT (v8.0.0 - Server-Synced)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const CONFIDENCE_THRESHOLD_FOR_AUTO_SWITCH = 0.6;
@@ -217,15 +162,59 @@ class PersonalityEngineClient {
     detectionConfidence: 0,
     sessionId: null,
     lastChanged: new Date().toISOString(),
+    serverSynced: false,
   };
 
-  private constructor() {}
+  private constructor() {
+    // Sync with server on initialization
+    this.syncFromServer();
+  }
 
   static getInstance(): PersonalityEngineClient {
     if (!PersonalityEngineClient.instance) {
       PersonalityEngineClient.instance = new PersonalityEngineClient();
     }
     return PersonalityEngineClient.instance;
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // SERVER SYNC (v8.0.0)
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  /**
+   * Sync personality state from server
+   */
+  async syncFromServer(): Promise<void> {
+    try {
+      const response = await substrate.decode.personality.get();
+      // Response from edge function has shape: { success, personality: { id, name, ... } }
+      const data = response.data as { personality?: { id?: string } } | undefined;
+      if (response.success && data?.personality?.id) {
+        const serverId = data.personality.id as PersonalityProfile;
+        if (PERSONALITY_PROFILES[serverId]) {
+          this.state.active = serverId;
+          this.state.serverSynced = true;
+          this.state.lastChanged = new Date().toISOString();
+        }
+      }
+    } catch {
+      // Server unavailable, use local state
+      this.state.serverSynced = false;
+    }
+  }
+
+  /**
+   * Sync personality change to server
+   */
+  private async syncToServer(profile: PersonalityProfile): Promise<boolean> {
+    try {
+      const response = await substrate.decode.personality.set(profile);
+      this.state.serverSynced = response.success;
+      return response.success;
+    } catch {
+      this.state.serverSynced = false;
+      return false;
+    }
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -250,16 +239,19 @@ class PersonalityEngineClient {
   }
 
   /**
-   * Set a specific personality profile
+   * Set a specific personality profile (syncs to server)
    */
-  set(profile: PersonalityProfile): { success: boolean; previous: PersonalityProfile; current: PersonalityProfile } {
+  async set(profile: PersonalityProfile): Promise<{ success: boolean; previous: PersonalityProfile; current: PersonalityProfile }> {
     if (!PERSONALITY_PROFILES[profile]) {
-      throw new Error(`Unknown personality profile: ${profile}`);
+      throw new Error(`Unknown personality profile: ${profile}. Available: ${Object.keys(PERSONALITY_PROFILES).join(', ')}`);
     }
 
     const previous = this.state.active;
     this.state.active = profile;
     this.state.lastChanged = new Date().toISOString();
+    
+    // Sync to server (async, don't block)
+    this.syncToServer(profile);
     
     return { success: true, previous, current: profile };
   }
@@ -290,9 +282,9 @@ class PersonalityEngineClient {
   }
 
   /**
-   * Reset to neutral profile and clear session state
+   * Reset to neutral profile and clear session state (syncs to server)
    */
-  reset(): { profile: PersonalityProfile; state: PersonalityState } {
+  async reset(): Promise<{ profile: PersonalityProfile; state: PersonalityState }> {
     this.state = {
       active: 'neutral',
       autoDetect: true,
@@ -301,13 +293,30 @@ class PersonalityEngineClient {
       detectionConfidence: 0,
       sessionId: null,
       lastChanged: new Date().toISOString(),
+      serverSynced: false,
     };
+    
+    // Sync reset to server
+    await this.syncToServer('neutral');
+    
     return { profile: 'neutral', state: { ...this.state } };
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // DETECTION
+  // DETECTION (v8.0.0 - Simplified, trait-based)
   // ═══════════════════════════════════════════════════════════════════════════
+
+  /**
+   * Language markers for personality detection
+   */
+  private static readonly LANGUAGE_MARKERS: Record<PersonalityProfile, string[]> = {
+    neutral: [],
+    technical: ['api', 'function', 'error', 'debug', 'implement', 'code', 'syntax', 'parameter', 'config', 'module'],
+    concise: ['quick', 'short', 'brief', 'tldr', 'summary'],
+    friendly: ['thanks', 'please', 'appreciate', 'wonderful', 'great'],
+    admin: ['admin', 'system', 'debug', 'diagnostics', 'internal', 'status', 'health'],
+    exploratory: ['how', 'what', 'why', 'explain', 'curious', 'wonder', 'learn', 'understand', 'explore', 'possible'],
+  };
 
   /**
    * Detect personality from input text
@@ -315,20 +324,19 @@ class PersonalityEngineClient {
   detect(input: string): PersonalityDetectionResult {
     const normalizedInput = input.toLowerCase();
     const scores: Record<PersonalityProfile, number> = {
-      neutral: 0.1, // Small baseline
+      neutral: 0.1,
       technical: 0,
-      frustrated: 0,
+      concise: 0,
+      friendly: 0,
+      admin: 0,
       exploratory: 0,
-      adversarial: 0,
-      playful: 0,
-      urgent: 0,
     };
 
     const detectedMarkers: string[] = [];
 
     // Score each profile based on language markers
-    for (const [profileId, config] of Object.entries(PERSONALITY_PROFILES)) {
-      for (const marker of config.languageMarkers) {
+    for (const [profileId, markers] of Object.entries(PersonalityEngineClient.LANGUAGE_MARKERS)) {
+      for (const marker of markers) {
         if (normalizedInput.includes(marker.toLowerCase())) {
           scores[profileId as PersonalityProfile] += 0.15;
           detectedMarkers.push(marker);
@@ -339,26 +347,20 @@ class PersonalityEngineClient {
     // Simple sentiment analysis
     const sentiment = this.analyzeSentiment(normalizedInput);
     
-    // Adjust scores based on sentiment ranges
-    for (const [profileId, config] of Object.entries(PERSONALITY_PROFILES)) {
-      if (sentiment >= config.sentimentRange.min && sentiment <= config.sentimentRange.max) {
-        scores[profileId as PersonalityProfile] += 0.1;
-      }
-    }
-
-    // Detect repetition (frustration indicator)
-    if (this.hasRepetition(normalizedInput)) {
-      scores.frustrated += 0.2;
-    }
+    // Boost friendly for positive sentiment
+    if (sentiment > 0.3) scores.friendly += 0.15;
+    
+    // Boost admin for system-related queries
+    if (/status|health|debug|system/i.test(normalizedInput)) scores.admin += 0.2;
 
     // Detect question patterns (exploratory indicator)
     if (/\?|^(what|how|why|when|where|who|which)/i.test(normalizedInput)) {
       scores.exploratory += 0.15;
     }
 
-    // Detect imperative patterns (urgent indicator)
-    if (/^(do|make|create|run|execute|fix|stop|start)/i.test(normalizedInput)) {
-      scores.urgent += 0.15;
+    // Detect brevity preference
+    if (/\b(quick|fast|short|brief|tldr)\b/i.test(normalizedInput)) {
+      scores.concise += 0.2;
     }
 
     // Find highest scoring profile
@@ -424,14 +426,14 @@ class PersonalityEngineClient {
   }
 
   /**
-   * Detect repetition patterns (indicates frustration)
+   * Detect repetition patterns
    */
   private hasRepetition(text: string): boolean {
     const words = text.split(/\s+/);
     const wordCounts: Record<string, number> = {};
     
     for (const word of words) {
-      if (word.length > 3) { // Ignore short words
+      if (word.length > 3) {
         wordCounts[word] = (wordCounts[word] || 0) + 1;
         if (wordCounts[word] >= 2) return true;
       }
@@ -441,7 +443,7 @@ class PersonalityEngineClient {
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // INTERPRETATION
+  // INTERPRETATION (v8.0.0 - Trait-based)
   // ═══════════════════════════════════════════════════════════════════════════
 
   /**
@@ -458,12 +460,15 @@ class PersonalityEngineClient {
     const profile = PERSONALITY_PROFILES[this.state.active];
     const normalizedInput = input.toLowerCase().trim();
 
-    // Classify primary intent
+    // Classify primary intent using traits for weighting
+    const techBoost = profile.traits.technicality * 0.1;
+    const directBoost = profile.traits.directness * 0.05;
+    
     const intentScores = {
-      query: this.scoreIntent(normalizedInput, 'query') + profile.intentWeights.query,
-      command: this.scoreIntent(normalizedInput, 'command') + profile.intentWeights.command,
-      feedback: this.scoreIntent(normalizedInput, 'feedback') + profile.intentWeights.feedback,
-      exploration: this.scoreIntent(normalizedInput, 'exploration') + profile.intentWeights.exploration,
+      query: this.scoreIntent(normalizedInput, 'query'),
+      command: this.scoreIntent(normalizedInput, 'command') + directBoost,
+      feedback: this.scoreIntent(normalizedInput, 'feedback'),
+      exploration: this.scoreIntent(normalizedInput, 'exploration') + techBoost,
     };
 
     // Sort intents by score
@@ -473,9 +478,9 @@ class PersonalityEngineClient {
     const primaryIntent = sortedIntents[0][0];
     const secondaryIntent = sortedIntents[1][1] > 0.2 ? sortedIntents[1][0] : null;
 
-    // Calculate confidence with personality modifier
+    // Calculate confidence based on traits
     let confidence = Math.max(0, Math.min(1, sortedIntents[0][1]));
-    confidence = Math.max(0, Math.min(1, confidence + profile.confidenceModifier));
+    confidence = Math.max(0, Math.min(1, confidence + (profile.traits.directness - 0.5) * 0.1));
 
     // Identify ambiguity flags
     const ambiguityFlags: string[] = [];
@@ -495,14 +500,15 @@ class PersonalityEngineClient {
       ambiguityFlags.push('single_term');
     }
 
-    // Adjust confidence for ambiguity (based on profile tolerance)
+    // Adjust confidence for ambiguity (based on directness trait)
     if (ambiguityFlags.length > 0) {
-      const ambiguityPenalty = (1 - profile.ambiguityTolerance) * 0.1 * ambiguityFlags.length;
+      const ambiguityPenalty = (1 - profile.traits.directness) * 0.1 * ambiguityFlags.length;
       confidence = Math.max(0.1, confidence - ambiguityPenalty);
     }
 
-    // Determine escalation
-    const shouldEscalate = confidence < profile.escalationThreshold;
+    // Determine escalation (lower directness = lower threshold = faster escalation)
+    const escalationThreshold = 0.3 + profile.traits.directness * 0.3;
+    const shouldEscalate = confidence < escalationThreshold;
 
     return {
       primaryIntent,
@@ -515,7 +521,7 @@ class PersonalityEngineClient {
       metadata: {
         processingTimeMs: Date.now() - startTime,
         profileUsed: this.state.active,
-        confidenceModified: profile.confidenceModifier !== 0,
+        confidenceModified: true,
       },
     };
   }
