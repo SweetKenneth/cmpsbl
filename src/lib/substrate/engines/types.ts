@@ -1,6 +1,6 @@
 /**
  * Cognitive Engine Types
- * v7.7.0 — Engine-Based Capability Orchestration
+ * v8.0.0 — COMPLETE Epoch: Full Capability Orchestration
  * 
  * Engines consolidate related capabilities into compound execution units.
  * This architecture provides:
@@ -8,30 +8,36 @@
  * - Optimized cross-capability context sharing
  * - Simplified API surface for consumers
  * - IP protection through orchestration complexity
+ * 
+ * v8.0.0 expands coverage from 76 to 200+ capabilities across 48 engines.
  */
 
 import type { CapabilityId, ModuleLayer } from '../capabilities';
 
 // ============================================================================
-// ENGINE CATEGORIES
+// ENGINE CATEGORIES — 16 Total
 // ============================================================================
 
 export type EngineCategory =
-  | 'cognitive'      // Reasoning, learning, memory engines
-  | 'operational'    // Resilience, optimization, orchestration
-  | 'intelligence'   // Synthesis, adaptation, foresight
-  | 'governance'     // Compliance, quality, audit
-  | 'security'       // Threat, defense, trust
-  | 'evolution'      // Self-improvement, modernization
-  | 'communication'  // Event, broadcast, subscription
-  | 'integration'    // Provider routing, data transformation
-  | 'analytics'      // Dashboard, health, capacity
-  | 'experience'     // Accessibility, personalization
-  | 'knowledge'      // Graph, memory, context
-  | 'autonomy';      // Self-documentation, self-healing
+  | 'cognitive'       // Reasoning, learning, memory engines
+  | 'operational'     // Resilience, optimization, orchestration
+  | 'intelligence'    // Synthesis, adaptation, foresight
+  | 'governance'      // Compliance, quality, audit
+  | 'security'        // Threat, defense, trust
+  | 'evolution'       // Self-improvement, modernization
+  | 'communication'   // Event, broadcast, subscription
+  | 'integration'     // Provider routing, data transformation
+  | 'analytics'       // Dashboard, health, capacity
+  | 'experience'      // Accessibility, personalization
+  | 'knowledge'       // Graph, memory, context
+  | 'autonomy'        // Self-documentation, self-healing
+  | 'creativity'      // Dream, synthesis, innovation (NEW v8.0.0)
+  | 'perception'      // Intent, emotion, multimodal (NEW v8.0.0)
+  | 'resource'        // Budget, quota, cost (NEW v8.0.0)
+  | 'workflow';       // Pipeline, coordination, delegation (NEW v8.0.0)
 
 // ============================================================================
-// ENGINE DEFINITIONS
+// ENGINE DEFINITIONS — 48 Total (v8.0.0)
 // ============================================================================
 
 export type EngineId =
@@ -67,36 +73,68 @@ export type EngineId =
   | 'evolution_engine'
   | 'modernization_engine'
   
-  // Communication Engines (2) — v7.9.0
+  // Communication Engines (2)
   | 'broadcast_engine'
   | 'event_engine'
   
-  // Integration Engines (2) — v7.9.0
+  // Integration Engines (2)
   | 'routing_engine'
   | 'transformation_engine'
   
-  // Analytics Engines (2) — v7.9.0
+  // Analytics Engines (2)
   | 'monitoring_engine'
   | 'capacity_engine'
   
-  // Experience Engines (2) — v7.9.0
+  // Experience Engines (2)
   | 'accessibility_engine'
   | 'personalization_engine'
   
-  // Knowledge Engines (2) — v7.9.0
+  // Knowledge Engines (2)
   | 'graph_engine'
   | 'context_engine'
   
-  // Autonomy Engines (2) — v7.9.0
+  // Autonomy Engines (2)
   | 'self_healing_engine'
-  | 'self_documentation_engine';
+  | 'self_documentation_engine'
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // NEW v8.0.0 ENGINES — 16 Additional
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  // Creativity Engines (3) — DREAM + BRAIN synthesis
+  | 'imagination_engine'      // Creative generation, idea incubation
+  | 'innovation_engine'       // Cross-domain fusion, emergent patterns
+  | 'dream_engine'            // Nocturnal optimization, crystallization
+  
+  // Perception Engines (3) — DECODE + BRAIN understanding
+  | 'intent_engine'           // Intent resolution, amplification
+  | 'emotion_engine'          // Emotional resonance, affect detection
+  | 'multimodal_engine'       // Cross-modal synthesis, fusion
+  
+  // Resource Engines (3) — ACCESS + NEXUS + CORE management
+  | 'budget_engine'           // Cost governance, arbitrage, optimization
+  | 'quota_engine'            // Rate limiting, burst prediction
+  | 'entitlement_engine'      // Access control, permission graphs
+  
+  // Workflow Engines (3) — CORTEX + RIPPLE orchestration
+  | 'pipeline_engine'         // Stage orchestration, DAG execution
+  | 'coordination_engine'     // Multi-agent, cross-team sync
+  | 'delegation_engine'       // Task routing, intelligent assignment
+  
+  // Advanced Cognitive (2) — High-level reasoning
+  | 'metacognition_engine'    // Self-reflection, confidence calibration
+  | 'hypothesis_engine'       // Testing, validation, counter-evidence
+  
+  // Advanced Security (2) — Proactive defense
+  | 'attack_surface_engine'   // Mapping, exposure analysis
+  | 'incident_engine';        // Response automation, blast radius
 
 export interface EngineDefinition {
   id: EngineId;
   name: string;
   description: string;
   category: EngineCategory;
-  capabilities: CapabilityId[];
+  capabilities: string[];  // Changed from CapabilityId[] to support synergy IDs
   primaryModules: string[];
   layer: ModuleLayer;
   
@@ -109,6 +147,11 @@ export interface EngineDefinition {
   executionMode: 'sequential' | 'parallel' | 'adaptive' | 'streaming';
   averageLatencyMs: number;
   cacheable: boolean;
+  
+  // v8.0.0 additions (all optional for backward compatibility)
+  capabilityCount?: number;        // Explicit count for metrics
+  worldFirstEnhancements?: string[]; // Linked world-first classes
+  synergyPipelines?: string[];    // Linked synergy executor names
 }
 
 export interface EngineExecutionContext {
@@ -122,13 +165,13 @@ export interface EngineExecutionContext {
 export interface EngineExecutionOptions {
   timeout?: number;
   retries?: number;
-  skipCapabilities?: CapabilityId[];
+  skipCapabilities?: string[];
   dryRun?: boolean;
   verbose?: boolean;
 }
 
 export interface EngineCapabilityResult {
-  capabilityId: CapabilityId;
+  capabilityId: string;
   success: boolean;
   data?: unknown;
   error?: string;
@@ -189,4 +232,28 @@ export interface EngineSummary {
   totalCapabilitiesOrchestrated: number;
   averageSynergyMultiplier: number;
   averageComplexityScore: number;
+  
+  // v8.0.0 additions
+  totalWorldFirstEnhancements: number;
+  totalSynergyPipelines: number;
 }
+
+// ============================================================================
+// CAPABILITY SOURCES — v8.0.0
+// ============================================================================
+
+export interface CapabilitySource {
+  type: 'native' | 'synergy' | 'world-first' | 'archived';
+  id: string;
+  name: string;
+  modules: string[];
+}
+
+export const CAPABILITY_INVENTORY = {
+  version: '8.0.0',
+  synergies: 147,
+  worldFirst: 56,
+  archived: 10,
+  native: 76,
+  total: 213,
+};

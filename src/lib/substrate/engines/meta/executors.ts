@@ -207,6 +207,12 @@ export const executeDataHighway: MetaEngineExecutor = (ctx) => executeMetaEngine
 export const executeKnowledgeNexus: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
 export const executeSelfGovernance: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
 
+// v8.0.0 additions
+export const executeCreativeForge: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
+export const executePerceptionMatrix: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
+export const executeResourceGovernor: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
+export const executeWorkflowOrchestrator: MetaEngineExecutor = (ctx) => executeMetaEngine(ctx);
+
 // ============================================================================
 // EXECUTOR REGISTRY
 // ============================================================================
@@ -225,6 +231,11 @@ export const META_ENGINE_EXECUTORS: Record<MetaEngineId, MetaEngineExecutor> = {
   data_highway: executeDataHighway,
   knowledge_nexus: executeKnowledgeNexus,
   self_governance: executeSelfGovernance,
+  // v8.0.0 additions
+  creative_forge: executeCreativeForge,
+  perception_matrix: executePerceptionMatrix,
+  resource_governor: executeResourceGovernor,
+  workflow_orchestrator: executeWorkflowOrchestrator,
 };
 
 // ============================================================================

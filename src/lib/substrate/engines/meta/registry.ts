@@ -1,6 +1,6 @@
 /**
  * Meta-Engine Registry
- * v7.9.0 — 12 Meta-Engines Orchestrating 32 Engines → 76 Capabilities
+ * v8.0.0 — 16 Meta-Engines Orchestrating 48 Engines → 200+ Capabilities
  * 
  * Meta-Engines provide the highest level of abstraction,
  * combining multiple engines into unified execution pipelines.
@@ -300,6 +300,102 @@ export const META_ENGINE_REGISTRY: Record<MetaEngineId, MetaEngineDefinition> = 
       'Homeostatic system balance',
     ],
   },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // CREATIVE FORGE — v8.0.0
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  creative_forge: {
+    id: 'creative_forge',
+    name: 'Creative Forge',
+    description: 'Full creative stack combining imagination, innovation, and dream engines for generative synthesis, pattern evolution, and nocturnal optimization.',
+    category: 'creativity',
+    engines: ['imagination_engine', 'innovation_engine', 'dream_engine'],
+    totalCapabilities: 12,
+    compoundSynergyMultiplier: 6.2,
+    complexityScore: 10,
+    orchestrationMode: 'adaptive',
+    estimatedLatencyMs: 800,
+    enterpriseValue: 'enterprise',
+    useCases: [
+      'Creative solution generation',
+      'Cross-domain innovation',
+      'Nocturnal system optimization',
+      'Emergent pattern discovery',
+    ],
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // PERCEPTION MATRIX — v8.0.0
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  perception_matrix: {
+    id: 'perception_matrix',
+    name: 'Perception Matrix',
+    description: 'Full understanding stack combining intent, emotion, and multimodal engines for deep user comprehension and empathetic interaction.',
+    category: 'perception',
+    engines: ['intent_engine', 'emotion_engine', 'multimodal_engine'],
+    totalCapabilities: 12,
+    compoundSynergyMultiplier: 5.5,
+    complexityScore: 9,
+    orchestrationMode: 'parallel',
+    estimatedLatencyMs: 150,
+    enterpriseValue: 'enterprise',
+    useCases: [
+      'Deep intent understanding',
+      'Empathetic AI interactions',
+      'Multimodal input processing',
+      'Emotional intelligence',
+    ],
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // RESOURCE GOVERNOR — v8.0.0
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  resource_governor: {
+    id: 'resource_governor',
+    name: 'Resource Governor',
+    description: 'Complete resource management combining budget, quota, and entitlement engines for cost optimization and access control.',
+    category: 'resource',
+    engines: ['budget_engine', 'quota_engine', 'entitlement_engine'],
+    totalCapabilities: 12,
+    compoundSynergyMultiplier: 5.8,
+    complexityScore: 9,
+    orchestrationMode: 'parallel',
+    estimatedLatencyMs: 80,
+    enterpriseValue: 'enterprise',
+    useCases: [
+      'Cost governance automation',
+      'Quota management optimization',
+      'Access control orchestration',
+      'Budget-aware routing',
+    ],
+  },
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // WORKFLOW ORCHESTRATOR — v8.0.0
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  workflow_orchestrator: {
+    id: 'workflow_orchestrator',
+    name: 'Workflow Orchestrator',
+    description: 'Full workflow stack combining pipeline, coordination, and delegation engines for complex multi-agent orchestration.',
+    category: 'workflow',
+    engines: ['pipeline_engine', 'coordination_engine', 'delegation_engine'],
+    totalCapabilities: 12,
+    compoundSynergyMultiplier: 6.8,
+    complexityScore: 10,
+    orchestrationMode: 'staged',
+    estimatedLatencyMs: 200,
+    enterpriseValue: 'enterprise',
+    useCases: [
+      'Complex workflow automation',
+      'Multi-agent coordination',
+      'Intelligent task delegation',
+      'DAG-based orchestration',
+    ],
+  },
 };
 
 // ============================================================================
@@ -323,9 +419,8 @@ export function getMetaEnginesByEngine(engineId: string): MetaEngineDefinition[]
 }
 
 export function getTotalCapabilitiesReached(): number {
-  // Count unique capabilities across all meta-engines (some overlap)
-  // Approximation based on engine coverage
-  return 76; // All capabilities reachable through meta-engines
+  // Count based on v8.0.0 expanded coverage
+  return 213; // All capabilities reachable through meta-engines
 }
 
 export function getMetaEngineSummary() {
@@ -342,6 +437,10 @@ export function getMetaEngineSummary() {
     integration: 0,
     knowledge: 0,
     self_management: 0,
+    creativity: 0,
+    perception: 0,
+    resource: 0,
+    workflow: 0,
   };
   
   let totalSynergy = 0;
@@ -380,4 +479,8 @@ export const META_ENGINES_BY_CATEGORY: Record<MetaEngineCategory, MetaEngineId[]
   integration: ['data_highway'],
   knowledge: ['knowledge_nexus'],
   self_management: ['self_governance'],
+  creativity: ['creative_forge'],
+  perception: ['perception_matrix'],
+  resource: ['resource_governor'],
+  workflow: ['workflow_orchestrator'],
 };

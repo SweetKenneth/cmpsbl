@@ -204,6 +204,38 @@ export const executeContextEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 export const executeSelfHealingEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 export const executeSelfDocumentationEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 
+// ═══════════════════════════════════════════════════════════════════════════
+// v8.0.0 NEW ENGINES — 16 Additional
+// ═══════════════════════════════════════════════════════════════════════════
+
+// Creativity Engines (v8.0.0)
+export const executeImaginationEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeInnovationEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeDreamEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+
+// Perception Engines (v8.0.0)
+export const executeIntentEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeEmotionEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeMultimodalEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+
+// Resource Engines (v8.0.0)
+export const executeBudgetEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeQuotaEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeEntitlementEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+
+// Workflow Engines (v8.0.0)
+export const executePipelineEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeCoordinationEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeDelegationEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+
+// Advanced Cognitive (v8.0.0)
+export const executeMetacognitionEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeHypothesisEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+
+// Advanced Security (v8.0.0)
+export const executeAttackSurfaceEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+export const executeIncidentEngine: EngineExecutor = (ctx) => executeEngine(ctx);
+
 // ============================================================================
 // EXECUTOR REGISTRY
 // ============================================================================
@@ -264,6 +296,38 @@ export const ENGINE_EXECUTORS: Record<EngineId, EngineExecutor> = {
   // Autonomy (v7.9.0)
   self_healing_engine: executeSelfHealingEngine,
   self_documentation_engine: executeSelfDocumentationEngine,
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // v8.0.0 NEW ENGINES
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  // Creativity
+  imagination_engine: executeImaginationEngine,
+  innovation_engine: executeInnovationEngine,
+  dream_engine: executeDreamEngine,
+  
+  // Perception
+  intent_engine: executeIntentEngine,
+  emotion_engine: executeEmotionEngine,
+  multimodal_engine: executeMultimodalEngine,
+  
+  // Resource
+  budget_engine: executeBudgetEngine,
+  quota_engine: executeQuotaEngine,
+  entitlement_engine: executeEntitlementEngine,
+  
+  // Workflow
+  pipeline_engine: executePipelineEngine,
+  coordination_engine: executeCoordinationEngine,
+  delegation_engine: executeDelegationEngine,
+  
+  // Advanced Cognitive
+  metacognition_engine: executeMetacognitionEngine,
+  hypothesis_engine: executeHypothesisEngine,
+  
+  // Advanced Security
+  attack_surface_engine: executeAttackSurfaceEngine,
+  incident_engine: executeIncidentEngine,
 };
 
 // ============================================================================
