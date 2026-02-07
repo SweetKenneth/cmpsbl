@@ -99,7 +99,7 @@ export default function CodeLab() {
 
       <PublicNav />
 
-      {/* Hero Section - Unique Dev Aesthetic */}
+      {/* Hero Section - Free Resources Hub */}
       <section className="relative overflow-hidden border-b border-border/50">
         {/* Terminal-style background pattern */}
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-cyan-500/5" />
@@ -107,8 +107,8 @@ export default function CodeLab() {
           backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 24px, hsl(var(--muted-foreground) / 0.05) 24px, hsl(var(--muted-foreground) / 0.05) 25px)`,
         }} />
         
-        <div className="container mx-auto px-4 py-12 md:py-16 relative">
-          <div className="max-w-4xl mx-auto text-center">
+        <div className="container mx-auto px-4 py-12 md:py-20 relative">
+          <div className="max-w-5xl mx-auto text-center">
             {/* Terminal prompt badge */}
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-muted/80 border border-border/50 mb-6 font-mono text-sm">
               <Terminal className="w-4 h-4 text-emerald-500" />
@@ -124,17 +124,59 @@ export default function CodeLab() {
               </span>
             </h1>
             
-            <p className="text-xl md:text-2xl text-muted-foreground mb-6">
-              Free Developer Playground for the Cognitive Substrate
+            <p className="text-xl md:text-2xl text-muted-foreground mb-4">
+              Everything Free. Build Intelligent Apps.
             </p>
             
             <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
-              {FREE_TEMPLATES.length}+ free templates, interactive SDK workbench, 
-              live module explorer, and full documentation — everything you need to build 
-              intelligent apps that remember, learn, and evolve.
+              {FREE_TEMPLATES.length}+ templates, 136+ capabilities, 147 pipelines, and persistent memory — 
+              all unlocked and ready to use.
             </p>
 
-            {/* Quick action buttons */}
+            {/* FREE Resources Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mb-8">
+              <Link 
+                to="/marketplace" 
+                className="group p-4 rounded-xl bg-card/50 border border-border/50 hover:border-cyan-500/30 transition-all"
+              >
+                <Package className="w-8 h-8 text-cyan-500 mx-auto mb-2" />
+                <div className="font-semibold">{FREE_TEMPLATES.length}+ Templates</div>
+                <div className="text-xs text-muted-foreground">With code snippets</div>
+                <Badge className="mt-2 text-[10px] bg-emerald-500/10 text-emerald-400 border-emerald-500/30">FREE</Badge>
+              </Link>
+              
+              <Link 
+                to="/capabilities" 
+                className="group p-4 rounded-xl bg-card/50 border border-border/50 hover:border-violet-500/30 transition-all"
+              >
+                <Zap className="w-8 h-8 text-violet-500 mx-auto mb-2" />
+                <div className="font-semibold">136+ Capabilities</div>
+                <div className="text-xs text-muted-foreground">All unlocked</div>
+                <Badge className="mt-2 text-[10px] bg-emerald-500/10 text-emerald-400 border-emerald-500/30">FREE</Badge>
+              </Link>
+              
+              <Link 
+                to="/synergies" 
+                className="group p-4 rounded-xl bg-card/50 border border-border/50 hover:border-amber-500/30 transition-all"
+              >
+                <Layers className="w-8 h-8 text-amber-500 mx-auto mb-2" />
+                <div className="font-semibold">147 Pipelines</div>
+                <div className="text-xs text-muted-foreground">Composable code</div>
+                <Badge className="mt-2 text-[10px] bg-emerald-500/10 text-emerald-400 border-emerald-500/30">FREE</Badge>
+              </Link>
+              
+              <Link 
+                to="/persistent-memory" 
+                className="group p-4 rounded-xl bg-card/50 border border-border/50 hover:border-primary/30 transition-all"
+              >
+                <Brain className="w-8 h-8 text-primary mx-auto mb-2" />
+                <div className="font-semibold">Persistent Memory</div>
+                <div className="text-xs text-muted-foreground">Drop-in SDK</div>
+                <Badge className="mt-2 text-[10px] bg-emerald-500/10 text-emerald-400 border-emerald-500/30">FREE</Badge>
+              </Link>
+            </div>
+
+            {/* Primary CTAs */}
             <div className="flex flex-wrap justify-center gap-3">
               <Button 
                 size="lg" 
@@ -154,9 +196,9 @@ export default function CodeLab() {
                 Try Live API
               </Button>
               <Button asChild size="lg" variant="ghost" className="gap-2">
-                <Link to="/library">
-                  <BookOpen className="w-5 h-5" />
-                  Documentation
+                <Link to="/engines">
+                  <Code className="w-5 h-5" />
+                  Engine Marketplace
                 </Link>
               </Button>
             </div>

@@ -1,7 +1,7 @@
 /**
  * Capability Depot — FREE Exploration Layer
- * Atomic, stateless building blocks for learning and exploration
- * v3.0.0 — Free tier, no pricing, no checkout
+ * Atomic, stateless building blocks — ALL UNLOCKED
+ * v4.0.0 — No pricing, no checkout, all capabilities free
  */
 
 import { useState, useMemo, lazy, Suspense } from 'react';
@@ -21,6 +21,8 @@ import {
   Layers,
   Info,
   ArrowRight,
+  Unlock,
+  Check,
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -34,7 +36,7 @@ import {
 } from '@/components/ui/select';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
-import { CapabilityCard } from '@/components/depot/CapabilityCard';
+import { CapabilityCardFree } from '@/components/depot/CapabilityCardFree';
 import { DepotSEO } from '@/components/depot/DepotSEO';
 import { CapabilityDetailModal } from '@/components/depot/CapabilityDetailModal';
 import {
@@ -110,28 +112,44 @@ export default function CapabilitiesDepotPage() {
         <section className="relative py-16 md:py-24 border-b border-border/50 bg-gradient-to-b from-emerald-500/5 to-background">
           <div className="container mx-auto px-4 text-center">
             <Badge className="mb-4 bg-emerald-500/10 text-emerald-500 border-emerald-500/30">
-              FREE
+              <Unlock className="w-3 h-3 mr-1" />
+              ALL UNLOCKED
             </Badge>
             <h1 className="text-3xl md:text-5xl font-bold mb-4">
               Capability Depot
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
-              Capabilities are atomic, stateless building blocks provided free for exploration.
-              No persistence, no shared orchestration state, no governance hooks.
+              All {totalCount}+ capabilities are <strong className="text-emerald-400">free and unlocked</strong>.
+              Atomic, stateless building blocks for exploration and integration.
             </p>
-            <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground mb-6">
-              <Info className="w-4 h-4" />
-              <span>Everything is free to explore. Engines are canon.</span>
+            
+            {/* Explainer */}
+            <div className="max-w-2xl mx-auto p-4 rounded-xl bg-muted/50 border border-border/50 mb-6">
+              <div className="flex items-start gap-3 text-left">
+                <Check className="w-5 h-5 text-emerald-500 mt-0.5 shrink-0" />
+                <div className="text-sm text-muted-foreground">
+                  <strong className="text-foreground">Capabilities are primitives.</strong> Use them freely in your apps.
+                  For saved, governed orchestration with persistence and versioning, explore our <Link to="/engines" className="text-primary hover:underline">Engine Marketplace</Link>.
+                </div>
+              </div>
             </div>
             
-            {/* Persistent Memory CTA */}
-            <Link to="/docs/persistent-memory">
-              <Button variant="outline" className="gap-2 border-primary/30 bg-primary/5 hover:bg-primary/10">
-                <Brain className="w-4 h-4" />
-                Add Persistent Memory (FREE)
-                <ArrowRight className="w-4 h-4" />
-              </Button>
-            </Link>
+            {/* CTAs */}
+            <div className="flex flex-wrap justify-center gap-3">
+              <Link to="/docs/persistent-memory">
+                <Button variant="outline" className="gap-2 border-primary/30 bg-primary/5 hover:bg-primary/10">
+                  <Brain className="w-4 h-4" />
+                  Add Persistent Memory
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </Link>
+              <Link to="/codelab">
+                <Button variant="ghost" className="gap-2">
+                  <Package className="w-4 h-4" />
+                  View in CodeLab
+                </Button>
+              </Link>
+            </div>
           </div>
         </section>
 
@@ -140,13 +158,16 @@ export default function CapabilitiesDepotPage() {
           <div className="container mx-auto px-4 py-6">
             <div className="flex flex-wrap items-center justify-center gap-6 md:gap-12">
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-black text-primary">{totalCount}+</div>
-                <div className="text-xs text-muted-foreground">Capabilities</div>
+                <div className="text-3xl md:text-4xl font-black text-emerald-400">{totalCount}+</div>
+                <div className="text-xs text-muted-foreground">Unlocked</div>
               </div>
               <div className="hidden md:block w-px h-10 bg-border/50" />
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-black text-emerald-400">FREE</div>
-                <div className="text-xs text-muted-foreground">Exploration</div>
+                <div className="flex items-center gap-2 text-2xl md:text-3xl font-black text-emerald-400">
+                  <Check className="w-6 h-6" />
+                  FREE
+                </div>
+                <div className="text-xs text-muted-foreground">No Purchase</div>
               </div>
               <div className="hidden md:block w-px h-10 bg-border/50" />
               <div className="text-center">
@@ -156,7 +177,7 @@ export default function CapabilitiesDepotPage() {
               <div className="hidden md:block w-px h-10 bg-border/50" />
               <div className="text-center">
                 <div className="text-3xl md:text-4xl font-black text-amber-400">Stateless</div>
-                <div className="text-xs text-muted-foreground">No Persistence</div>
+                <div className="text-xs text-muted-foreground">Atomic</div>
               </div>
             </div>
           </div>
@@ -248,11 +269,12 @@ export default function CapabilitiesDepotPage() {
             <>
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
                 <p className="text-sm text-muted-foreground">
-                  Showing <span className="font-semibold text-foreground">{capabilities.length}</span> capabilities
+                  Showing <span className="font-semibold text-foreground">{capabilities.length}</span> unlocked capabilities
                 </p>
                 <div className="flex items-center gap-2 flex-wrap">
                   <Badge variant="outline" className="bg-emerald-500/10 text-emerald-500 border-emerald-500/30">
-                    FREE
+                    <Check className="w-3 h-3 mr-1" />
+                    All Free
                   </Badge>
                   <button
                     onClick={() => setShowDisclaimer(true)}
@@ -267,7 +289,7 @@ export default function CapabilitiesDepotPage() {
               {/* Responsive grid: 1 col mobile, 2 tablet, 3 desktop */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                 {capabilities.map((capability) => (
-                  <CapabilityCard 
+                  <CapabilityCardFree 
                     key={capability.id} 
                     capability={capability} 
                     categoryConfig={CATEGORY_CONFIG}
@@ -279,11 +301,28 @@ export default function CapabilitiesDepotPage() {
           )}
         </section>
 
+        {/* Engine CTA */}
+        <section className="border-t border-border/50 bg-muted/30">
+          <div className="container mx-auto px-4 py-12 text-center">
+            <h2 className="text-2xl font-bold mb-4">Need Production Engines?</h2>
+            <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
+              Capabilities are free primitives. For saved, governed orchestration with persistence and versioning, explore our Engine Marketplace.
+            </p>
+            <Button asChild>
+              <Link to="/engines">
+                <Layers className="w-4 h-4 mr-2" />
+                View Engines
+              </Link>
+            </Button>
+          </div>
+        </section>
+
         {/* Philosophy Footer */}
         <section className="border-t border-border/30 bg-muted/30">
           <div className="container mx-auto px-4 py-8 text-center">
             <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
-              <strong>Capability</strong> = atomic, free, stateless. <strong>Synergy Pipeline</strong> = exploratory, free, non-durable. <strong>Engine</strong> = saved, governed, authoritative.
+              <strong>Capability</strong> = atomic, free, unlocked. <strong>Engine</strong> = saved, governed, monetized.
+              Everything free fuels adoption. Engines are the products.
             </p>
           </div>
         </section>
