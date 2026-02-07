@@ -11856,11 +11856,11 @@ async function handleModernizer(
         if (exactMatch) {
           plan = exactMatch;
         } else {
-          // Try prefix match (short ID)
+          // Try prefix match (short ID) - cast UUID to text for prefix matching
           const { data: prefixMatches } = await supabase
             .from('substrate_upgrade_plans')
             .select('*')
-            .ilike('id', `${cleanPlanId}%`)
+            .filter('id::text', 'ilike', `${cleanPlanId}%`)
             .limit(1);
           
           if (prefixMatches && prefixMatches.length > 0) {
@@ -11882,7 +11882,7 @@ async function handleModernizer(
             const { data: prefixEvolution } = await supabase
               .from('evolution_runs')
               .select('*')
-              .ilike('run_id', `${cleanPlanId}%`)
+              .filter('run_id::text', 'ilike', `${cleanPlanId}%`)
               .limit(1);
             
             if (prefixEvolution && prefixEvolution.length > 0) {
@@ -11902,7 +11902,7 @@ async function handleModernizer(
         }
         
         // Format improvements for display
-        const improvements = plan.improvements || plan.implementation_plan || plan.changes || [];
+        const improvements = plan.improvements || plan.implementation_plan || plan.changes || plan.metadata?.improvements || [];
         
         return jsonResponse({
           success: true,
@@ -11965,11 +11965,11 @@ async function handleModernizer(
         if (exactMatch) {
           plan = exactMatch;
         } else {
-          // Try prefix match (short ID)
+          // Try prefix match (short ID) - cast UUID to text for prefix matching
           const { data: prefixMatches } = await supabase
             .from('substrate_upgrade_plans')
             .select('*')
-            .ilike('id', `${cleanPlanId}%`)
+            .filter('id::text', 'ilike', `${cleanPlanId}%`)
             .limit(1);
           
           if (prefixMatches && prefixMatches.length > 0) {
@@ -12013,7 +12013,7 @@ async function handleModernizer(
           const { data: prefixEvolution } = await supabase
             .from('evolution_runs')
             .select('*')
-            .ilike('run_id', `${cleanPlanId}%`)
+            .filter('run_id::text', 'ilike', `${cleanPlanId}%`)
             .limit(1);
           
           if (prefixEvolution && prefixEvolution.length > 0) {
@@ -12050,7 +12050,7 @@ async function handleModernizer(
         }
         
         // Format substrate_upgrade_plans as diff
-        const improvements = plan.improvements || plan.implementation_plan || plan.changes || [];
+        const improvements = plan.improvements || plan.implementation_plan || plan.changes || plan.metadata?.improvements || [];
         
         return jsonResponse({
           success: true,
