@@ -20,7 +20,7 @@ const HUMANS_TXT_CONTENT = `/* HUMANS.TXT — Following humanstxt.org standard *
 Creator & Lead Architect: Kenneth E. Sweet Jr.
 ORCID: https://orcid.org/0009-0001-4237-1243
 Role: Founder, Architect, Chief Cognitive Engineer
-Location: Palm Springs, California, USA
+Location: Abilene, Texas, USA
 Contact: promptfluid@gmail.com
 Phone: (214) 548-0883
 Twitter: @promptfluid
