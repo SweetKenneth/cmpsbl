@@ -6,8 +6,11 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useEffect, lazy, Suspense, useState } from "react";
+import { MotionConfig } from "framer-motion";
 import { SEOProvider } from "@/contexts/SEOContext";
 import ToasterComponents from "@/components/app/ToasterComponents";
+import { debugMode } from "@/lib/debug-mode";
+import { isLovableEditorPreviewEnv } from "@/lib/system/isLovableEditorPreviewEnv";
 
 // Mobile crash diagnostics (opt-in via ?diag=1)
 import { installMobileWatchdog } from "@/lib/client/mobile-watchdog";
@@ -26,7 +29,7 @@ const ScrollToTop = () => {
   
   useEffect(() => {
     // Immediate scroll to top, no smooth behavior for page loads
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   }, [pathname]);
   
   return null;
@@ -157,17 +160,20 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 const App = () => {
+  const isPreviewEnv = isLovableEditorPreviewEnv();
+  const substrateAutoInit = !isPreviewEnv && debugMode.allowModulePolling();
+
   // Install mobile watchdog once on mount (diag mode only)
   useEffect(() => {
     const cleanup = installMobileWatchdog();
-    
+
     if (diagEnabled()) {
-      diagLog("log", "App mounted", { 
+      diagLog("log", "App mounted", {
         timestamp: new Date().toISOString(),
-        url: window.location.href.slice(0, 100)
+        url: window.location.href.slice(0, 100),
       });
     }
-    
+
     return cleanup;
   }, []);
 
@@ -176,13 +182,14 @@ const App = () => {
 
   return (
     <DiagErrorBoundary>
-      <QueryClientProvider client={queryClient}>
-        <SEOProvider>
-          <Suspense fallback={<PageLoader />}>
-            <SubstrateProvider autoInit={true}>
-              <TooltipProvider>
-                <ToasterComponents />
-                <BrowserRouter>
+      <MotionConfig reducedMotion={isPreviewEnv ? "always" : "user"}>
+        <QueryClientProvider client={queryClient}>
+          <SEOProvider>
+            <Suspense fallback={<PageLoader />}>
+              <SubstrateProvider autoInit={substrateAutoInit}>
+                <TooltipProvider>
+                  <ToasterComponents />
+                  <BrowserRouter>
                   <ScrollToTop />
                   <AuthProvider>
                     <Suspense fallback={<PageLoader />}>
@@ -376,10 +383,11 @@ const App = () => {
             </SubstrateProvider>
           </Suspense>
         </SEOProvider>
-      </QueryClientProvider>
-      
-      {/* Diagnostic panel - only renders when ?diag=1 is present */}
-      <DiagPanel />
+        </QueryClientProvider>
+
+        {/* Diagnostic panel - only renders when ?diag=1 is present */}
+        <DiagPanel />
+      </MotionConfig>
     </DiagErrorBoundary>
   );
 };
