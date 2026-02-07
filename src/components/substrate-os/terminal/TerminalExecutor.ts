@@ -1331,8 +1331,18 @@ ${identityLine}│  Mode: ${roleDisplay}
       let output = `
 ┌─ EVOLUTION CYCLE ────────────────────────────────────────────
 │
-│  ${phaseIcon} Phase: ${phaseDisplay}
-${cycleResult.plan_id ? `│  Plan ID: ${cycleResult.short_id} (${cycleResult.plan_id.substring(0, 20)}...)` : ''}
+│  ${phaseIcon} Phase: ${phaseDisplay}`;
+      
+      // Show BOTH short ID and full ID (mobile-friendly)
+      if (cycleResult.plan_id) {
+        output += `
+│
+│  Short ID: ${cycleResult.short_id}
+│  Full ID:
+│    ${cycleResult.plan_id}`;
+      }
+      
+      output += `
 │
 │  ${cycleResult.message}
 │`;
@@ -1362,19 +1372,24 @@ ${cycleResult.plan_id ? `│  Plan ID: ${cycleResult.short_id} (${cycleResult.pl
 │  └──────────────────────────────────────────────────────────`;
       }
       
-      // Add next steps
+      // Add next steps with full plan IDs
+      const planRef = cycleResult.plan_id || '<plan_id>';
       if (cycleResult.success && cycleResult.phase === 'planning') {
         output += `
 │
 │  Next steps:
-│    1. modernizer.evolve shadow    — Apply to shadow environment
-│    2. modernizer.evolve production — Promote to production
-│    3. modernizer.evolve verify    — Run verification tests`;
+│    modernizer.evolve shadow           — Apply to shadow
+│    modernizer.evolve production       — Promote to production
+│    modernizer.evolve verify           — Run verification
+│
+│  Or use full plan ID:
+│    modernizer.review ${planRef}`;
       } else if (cycleResult.phase === 'shadow_applied') {
         output += `
 │
 │  Next step:
-│    modernizer.evolve production   — Promote to production`;
+│    modernizer.evolve production       — Promote to production
+│    modernizer.evolve verify           — Verify changes`;
       }
       
       output += `
@@ -2741,33 +2756,41 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
           };
         }
         
-        let output = `╔══════════════════════════════════════════════════════════════╗
-║  📋 PENDING PROPOSALS                                         ║
-╠══════════════════════════════════════════════════════════════╣\n`;
+        let output = `╔═══════════════════════════════════════════════════════════════════╗
+║  📋 PENDING PROPOSALS                                              ║
+╠═══════════════════════════════════════════════════════════════════╣\n`;
         
         for (const p of pending.slice(0, 5)) {
           const shortId = p.id?.substring(0, 8) || 'unknown';
+          const fullId = p.id || 'unknown';
           const title = p.title || 'Untitled';
           const confidence = typeof p.confidence === 'number' ? (p.confidence * 100).toFixed(0) : 'N/A';
           const risk = (p.expected_impact as any)?.risk_level || 'low';
+          const execPhase = (p.expected_impact as any)?.execution_phase || 'pending';
           
-          output += `║                                                              ║
-║  Short ID: ${shortId.padEnd(48)}║
-║  Full ID:  ${(p.id || 'unknown').padEnd(48)}║
-║  Title:    ${title.substring(0, 47).padEnd(48)}║
-║  Status:   ${(p.status || 'pending').padEnd(48)}║
-║  Risk:     ${risk.padEnd(12)} | Confidence: ${confidence}%                   ║
-║                                                              ║
-║  Commands: seba.approve ${shortId} | seba.reject ${shortId}           ║
-╠──────────────────────────────────────────────────────────────╣\n`;
+          // Mobile-friendly: Full ID on separate line
+          output += `║                                                                   ║
+║  Short ID: ${shortId.padEnd(55)}║
+║  Full ID:                                                         ║
+║    ${fullId.padEnd(63)}║
+║                                                                   ║
+║  Title: ${title.substring(0, 58).padEnd(59)}║
+║  Status: ${(p.status || 'pending').padEnd(14)} | Phase: ${execPhase.padEnd(20)}       ║
+║  Risk: ${risk.padEnd(10)} | Confidence: ${confidence}%                            ║
+║                                                                   ║
+║  Commands:                                                        ║
+║    seba.approve ${fullId}                                         ║
+║    seba.reject ${fullId}                                          ║
+║    seba.execute ${fullId}                                         ║
+╠───────────────────────────────────────────────────────────────────╣\n`;
         }
         
         if (pending.length > 5) {
-          output += `║                                                              ║
-║  Showing 5 of ${pending.length} proposals.                                   ║\n`;
+          output += `║                                                                   ║
+║  Showing 5 of ${String(pending.length).padEnd(2)} proposals.                                       ║\n`;
         }
         
-        output += `╚══════════════════════════════════════════════════════════════╝`;
+        output += `╚═══════════════════════════════════════════════════════════════════╝`;
         
         return { success: true, output, data: { pending_count: pending.length, proposals: pending } };
       } catch (err) {
@@ -2799,13 +2822,30 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
       }
     } else if (base === 'seba.execute') {
       const proposalId = args[0];
+      const phase = args[1]; // Optional: 'shadow' or 'production'
       if (!proposalId) {
-        return { success: false, output: '▓ ERROR: Proposal ID required\n  Usage: seba.execute <proposal_id>' };
+        return { 
+          success: false, 
+          output: `▓ ERROR: Proposal ID required
+  Usage: seba.execute <proposal_id> [phase]
+  
+  Phases:
+    (default)  — Apply to shadow environment first
+    production — Apply to production (after shadow)
+  
+  Example:
+    seba.execute abc12345           — shadow first
+    seba.execute abc12345 production — then production` 
+        };
       }
       try {
         const { sebaAgent } = await import('@/lib/substrate/seba');
-        const result = await sebaAgent.handleCommand('execute', { proposal_id: proposalId });
-        return { success: result.success, output: result.success ? `◉ ${result.message}` : `▓ ${result.message}` };
+        const result = await sebaAgent.handleCommand('execute', { 
+          proposal_id: proposalId,
+          phase: phase || undefined,
+        });
+        // The agent returns a nicely formatted message, just display it
+        return { success: result.success, output: result.success ? `${result.message}` : `▓ ${result.message}` };
       } catch (err) {
         return { success: false, output: `▓ Execute error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }

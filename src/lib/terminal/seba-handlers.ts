@@ -106,15 +106,21 @@ function formatReviewOutput(proposals: any[]): string[] {
     const title = p.title || 'Untitled';
     const confidence = typeof p.confidence === 'number' ? (p.confidence * 100).toFixed(0) : 'N/A';
     const impact = (p.expected_impact as any)?.risk_level || 'low';
+    const phase = p.execution_phase || 'pending';
     
+    // Always show BOTH Short and Full IDs (mobile-friendly)
     lines.push(`Short ID: ${shortId}`);
-    lines.push(`Full ID:  ${fullId}`);
-    lines.push(`Title:    ${title}`);
-    lines.push(`Status:   ${p.status || 'pending'}`);
-    lines.push(`Risk:     ${impact} | Confidence: ${confidence}%`);
+    lines.push(`Full ID:`);
+    lines.push(`  ${fullId}`);
     lines.push('');
-    lines.push(`Commands: seba.approve ${shortId} | seba.reject ${shortId}`);
-    lines.push('─'.repeat(50));
+    lines.push(`Title: ${title}`);
+    lines.push(`Status: ${p.status || 'pending'} | Phase: ${phase}`);
+    lines.push(`Risk: ${impact} | Confidence: ${confidence}%`);
+    lines.push('');
+    lines.push(`Commands:`);
+    lines.push(`  seba.approve ${fullId}`);
+    lines.push(`  seba.reject ${fullId}`);
+    lines.push('─'.repeat(40));
     lines.push('');
   }
   
@@ -313,13 +319,20 @@ export function registerSEBAHandlers(): void {
       success: true,
       formatted: [
         '',
-        '  Usage: seba.execute <proposal_id>',
+        '  Usage: seba.execute <proposal_id> [phase]',
         '',
-        '  Executes an approved proposal.',
-        '  Proposal must be in "approved" status first.',
+        '  Executes an approved proposal with shadow→production flow.',
+        '',
+        '  Phases:',
+        '    (default)  — Apply to shadow environment',
+        '    production — Apply to production (after shadow)',
+        '',
+        '  Example:',
+        '    seba.execute abc12345           — shadow first',
+        '    seba.execute abc12345 production — then production',
         '',
       ],
-      data: { usage: 'seba.execute <proposal_id>' },
+      data: { usage: 'seba.execute <proposal_id> [phase]' },
     };
   });
 
@@ -644,19 +657,19 @@ export async function executeSEBACommand(
   }
 
   if (action === 'execute' && args.proposal_id) {
-    const result = await sebaAgent.handleCommand('execute', { proposal_id: args.proposal_id });
+    // Support phase argument: seba.execute <id> [shadow|production]
+    const phase = (args.phase as string) || undefined;
+    const result = await sebaAgent.handleCommand('execute', { 
+      proposal_id: args.proposal_id,
+      phase,
+    });
+    
+    // Use the formatted message from the agent
+    const lines = result.message?.split('\n') || [];
+    
     return {
       success: result.success,
-      formatted: [
-        '',
-        result.success 
-          ? `🚀 Executing proposal ${args.proposal_id}...`
-          : `❌ Failed to execute: ${result.message}`,
-        result.success 
-          ? `   Check seba.history for results.`
-          : '',
-        '',
-      ],
+      formatted: ['', ...lines, ''],
       data: result.data,
       error: result.success ? undefined : result.message,
     };
