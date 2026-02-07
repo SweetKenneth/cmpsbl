@@ -313,7 +313,7 @@ export default function EngineMarketplace() {
           </div>
         </section>
 
-        {/* Pricing Plans - Horizontal scroll on mobile, grid on desktop */}
+        {/* Pricing Plans - Stacked on mobile, grid on desktop */}
         <section className="border-y border-border/50 bg-gradient-to-b from-card/50 to-background">
           <div className="container mx-auto px-4 py-12">
             <motion.h2 
@@ -325,7 +325,8 @@ export default function EngineMarketplace() {
               Choose Your Access Level
             </motion.h2>
             
-            <div className="flex gap-4 overflow-x-auto pb-4 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-4 md:overflow-visible scrollbar-hide">
+            {/* Mobile: Vertical stack, Desktop: 4-column grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {Object.values(SUBSCRIPTION_PLANS).map((plan, index) => (
                 <motion.div
                   key={plan.id}
@@ -334,7 +335,7 @@ export default function EngineMarketplace() {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
                   className={cn(
-                    "relative min-w-[260px] md:min-w-0 p-6 rounded-2xl border transition-all flex-shrink-0",
+                    "relative p-5 sm:p-6 rounded-2xl border transition-all",
                     plan.id === 'pro' 
                       ? "border-primary bg-gradient-to-br from-primary/10 to-violet-500/10 ring-2 ring-primary/30 shadow-xl shadow-primary/10" 
                       : "border-border bg-card hover:border-primary/30"
@@ -349,24 +350,24 @@ export default function EngineMarketplace() {
                     </div>
                   )}
                   
-                  <div className="pt-2">
-                    <h3 className="font-bold text-xl mb-2">{plan.name}</h3>
+                  <div className={cn(plan.id === 'pro' ? "pt-3" : "pt-1")}>
+                    <h3 className="font-bold text-lg sm:text-xl mb-2">{plan.name}</h3>
                     <div className="flex items-baseline gap-1 mb-1">
-                      <span className="text-4xl font-black">
+                      <span className="text-3xl sm:text-4xl font-black">
                         {plan.monthlyPrice === 0 ? 'Free' : `$${plan.monthlyPrice}`}
                       </span>
                       {plan.monthlyPrice > 0 && (
-                        <span className="text-muted-foreground">/mo</span>
+                        <span className="text-muted-foreground text-sm">/mo</span>
                       )}
                     </div>
                     {plan.yearlyPrice > 0 && plan.monthlyPrice > 0 && (
-                      <p className="text-sm text-emerald-500 mb-4">
+                      <p className="text-sm text-emerald-500 mb-3">
                         ${plan.yearlyPrice}/yr (save ~17%)
                       </p>
                     )}
-                    <p className="text-sm text-muted-foreground mb-5">{plan.description}</p>
+                    <p className="text-sm text-muted-foreground mb-4">{plan.description}</p>
                     
-                    <ul className="space-y-2 mb-6">
+                    <ul className="space-y-2 mb-5">
                       {plan.features.slice(0, 5).map((feature, i) => (
                         <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
                           <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
@@ -378,7 +379,7 @@ export default function EngineMarketplace() {
                     <Button 
                       className="w-full" 
                       variant={plan.id === 'pro' ? 'default' : 'outline'}
-                      size="lg"
+                      size="default"
                     >
                       {plan.id === 'starter' ? 'Get Started Free' : plan.id === 'enterprise' ? 'Contact Sales' : 'Subscribe Now'}
                     </Button>
