@@ -170,8 +170,8 @@ export default function AISystemsThatDreamPressRelease() {
             <div className="space-y-2 text-muted-foreground">
               <p>Kenneth E Sweet Jr — Founder, PromptFluid</p>
               <p>
-                <a href="mailto:promptfluid@gmail.com" className="text-primary hover:underline">
-                  promptfluid@gmail.com
+                <a href="mailto:Dev@CMPSBL.com" className="text-primary hover:underline">
+                  Dev@CMPSBL.com
                 </a>
               </p>
               <p>

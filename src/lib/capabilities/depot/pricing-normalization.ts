@@ -136,7 +136,7 @@ Enterprise, autonomous, and system-wide capabilities are licensed separately.
 `.trim();
 
 // === License Request Email ===
-export const LICENSE_REQUEST_EMAIL = 'PromptFluid@gmail.com';
+export const LICENSE_REQUEST_EMAIL = 'Dev@CMPSBL.com';
 
 /**
  * Get license request subject line

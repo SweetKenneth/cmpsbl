@@ -549,8 +549,8 @@ export default function SubstrateDashboard() {
           </p>
           <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-4 text-xs md:text-sm">
             <span><strong>Founder:</strong> Kenneth E Sweet Jr</span>
-            <span><strong>Email:</strong> PromptFluid@gmail.com</span>
-            <span><strong>Phone:</strong> (214) 548-0883</span>
+            <span><strong>Email:</strong> Dev@CMPSBL.com</span>
+            <span><strong>Phone:</strong> (760) FLUID-AI</span>
           </div>
         </Card>
         </div>

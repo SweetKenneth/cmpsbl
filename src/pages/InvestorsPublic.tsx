@@ -214,7 +214,7 @@ export default function InvestorsPublic() {
             <Button 
               size="lg"
               variant="outline"
-              onClick={() => window.location.href = 'mailto:promptfluid@gmail.com'}
+              onClick={() => window.location.href = 'mailto:Dev@CMPSBL.com'}
             >
               Contact Team
             </Button>
@@ -376,7 +376,7 @@ export default function InvestorsPublic() {
             <Button 
               size="lg"
               variant="outline"
-              onClick={() => window.location.href = 'mailto:promptfluid@gmail.com'}
+              onClick={() => window.location.href = 'mailto:Dev@CMPSBL.com'}
             >
               Email Team
             </Button>

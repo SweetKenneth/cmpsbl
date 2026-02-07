@@ -22,7 +22,7 @@
 │  Organization:      PromptFluid®                                │
 ├─────────────────────────────────────────────────────────────────┤
 │  For licensing or acquisition inquiries:                        │
-│  Email: promptfluid@gmail.com | Phone: (214) 548-0883           │
+│  Email: Dev@CMPSBL.com | Phone: (760) FLUID-AI           │
 └─────────────────────────────────────────────────────────────────┘
 ```
 

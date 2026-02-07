@@ -23,7 +23,7 @@
 │  Organization:      PromptFluid®                                │
 ├─────────────────────────────────────────────────────────────────┤
 │  For licensing or acquisition inquiries:                        │
-│  Email: promptfluid@gmail.com | Phone: (214) 548-0883           │
+│  Email: Dev@CMPSBL.com | Phone: (760) FLUID-AI           │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -235,8 +235,8 @@ For research collaboration or early access inquiries:
 |---------|---------|
 | **Creator** | Kenneth E Sweet Jr |
 | **Organization** | PromptFluid® |
-| **Email** | promptfluid@gmail.com |
-| **Phone** | (214) 548-0883 |
+| **Email** | Dev@CMPSBL.com |
+| **Phone** | (760) FLUID-AI |
 
 ---
 

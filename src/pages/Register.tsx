@@ -46,7 +46,7 @@ export default function Register() {
       const body = encodeURIComponent(`New Observer Registration\n\nEmail: ${email}\nTimestamp: ${new Date().toISOString()}\n\nThis is an automated registration from the CMPSBL website observer intake form.`);
       
       // Open mail client
-      window.location.href = `mailto:promptfluid@gmail.com?subject=${subject}&body=${body}`;
+      window.location.href = `mailto:Dev@CMPSBL.com?subject=${subject}&body=${body}`;
       
       // Show success after brief delay
       setTimeout(() => {

@@ -93,7 +93,7 @@ const faqItems = [
   },
   {
     question: "Can the entire IP be acquired?",
-    answer: "Yes. For exclusive acquisition of the entire CMPSBL intellectual property, including all source code, patents pending, trademarks, and documentation, contact us directly at promptfluid@gmail.com or (214) 548-0883."
+    answer: "Yes. For exclusive acquisition of the entire CMPSBL intellectual property, including all source code, patents pending, trademarks, and documentation, contact us directly at Dev@CMPSBL.com or (760) FLUID-AI."
   },
   {
     question: "What technology stack is used?",
@@ -142,7 +142,7 @@ export default function SubstrateIntelligence() {
                   </Link>
                 </Button>
                 <Button size="lg" variant="outline" asChild className="gap-2">
-                  <a href="mailto:promptfluid@gmail.com">
+                  <a href="mailto:Dev@CMPSBL.com">
                     <Mail className="w-5 h-5" />
                     Acquire Exclusive IP Rights
                   </a>
@@ -346,7 +346,7 @@ Boot complete in 117ms`}
                     <div className="text-3xl font-bold">Contact Us</div>
                     <p className="text-sm text-muted-foreground"><strong className="text-foreground">Exclusive IP rights.</strong> All source code, patents pending, trademarks, documentation. First-to-market positioning.</p>
                     <Button variant="outline" asChild className="w-full">
-                      <a href="mailto:promptfluid@gmail.com">Email for Details</a>
+                      <a href="mailto:Dev@CMPSBL.com">Email for Details</a>
                     </Button>
                   </CardContent>
                 </Card>
@@ -375,15 +375,15 @@ Boot complete in 117ms`}
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
                 <Button size="lg" asChild className="gap-2">
-                  <a href="mailto:promptfluid@gmail.com">
+                  <a href="mailto:Dev@CMPSBL.com">
                     <Mail className="w-5 h-5" />
-                    promptfluid@gmail.com
+                    Dev@CMPSBL.com
                   </a>
                 </Button>
                 <Button size="lg" variant="outline" asChild className="gap-2">
-                  <a href="tel:+12145480883">
+                  <a href="tel:+17603584324">
                     <Phone className="w-5 h-5" />
-                    (214) 548-0883
+                    (760) FLUID-AI
                   </a>
                 </Button>
               </div>
