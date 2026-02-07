@@ -1,17 +1,9 @@
-import { Bell, Search, LogOut, Sun, Moon, Laptop, Menu, Map } from "lucide-react";
+import { Bell, Search, LogOut, Menu, Map } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
-import { useTheme } from "next-themes";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
   const { user, signOut } = useAuth();
-  const { theme, setTheme } = useTheme();
   
   return (
     <header className="h-14 lg:h-16 glass border-b border-border/50 px-4 lg:px-6 flex items-center justify-between">
@@ -53,31 +45,6 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
           Feature Map
         </Button>
         
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:bg-muted/50 transition-colors h-9 w-9"
-            >
-              {theme === 'light' ? <Sun className="w-5 h-5" /> : theme === 'dark' ? <Moon className="w-5 h-5" /> : <Laptop className="w-5 h-5" />}
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => setTheme('light')}>
-              <Sun className="w-4 h-4 mr-2" />
-              Light
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme('dark')}>
-              <Moon className="w-4 h-4 mr-2" />
-              Dark
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme('system')}>
-              <Laptop className="w-4 h-4 mr-2" />
-              System
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
 
         <Button
           variant="ghost"

@@ -11,7 +11,7 @@ import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { TEMPLATES, type Template } from "@/data/templates";
+import { TEMPLATES, ALL_TEMPLATES, type Template } from "@/data/templates";
 import { Input } from "@/components/ui/input";
 import { 
   Code, 
@@ -69,7 +69,7 @@ export default function TemplateAlley() {
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const filteredTemplates = useMemo(() => {
-    let results = TEMPLATES.filter((template) => {
+    let results = ALL_TEMPLATES.filter((template) => {
       if (searchQuery) {
         const query = searchQuery.toLowerCase();
         const matches = 
@@ -90,7 +90,7 @@ export default function TemplateAlley() {
 
   const categoryCounts = useMemo(() => {
     const counts: Record<string, number> = {};
-    TEMPLATES.forEach(t => { counts[t.category] = (counts[t.category] || 0) + 1; });
+    ALL_TEMPLATES.forEach(t => { counts[t.category] = (counts[t.category] || 0) + 1; });
     return counts;
   }, []);
 
@@ -106,8 +106,8 @@ export default function TemplateAlley() {
   return (
     <>
       <SEO
-        title={`Template Alley | ${TEMPLATES.length}+ Free Templates | CMPSBL`}
-        description={`Explore ${TEMPLATES.length}+ free templates for learning and remixing. All templates unlocked.`}
+        title={`Template Alley | ${ALL_TEMPLATES.length}+ Free Templates | CMPSBL`}
+        description={`Explore ${ALL_TEMPLATES.length}+ free templates for learning and remixing. All templates unlocked.`}
         keywords={["AI templates", "free templates", "cognitive templates", "code templates"]}
       />
       
@@ -123,7 +123,7 @@ export default function TemplateAlley() {
             </Badge>
             <h1 className="text-3xl md:text-5xl font-bold mb-4">Template Alley</h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
-              {TEMPLATES.length}+ free templates with copy-paste code.
+              {ALL_TEMPLATES.length}+ free templates with copy-paste code.
               Starting points for learning, remixing, and building.
             </p>
             
@@ -161,7 +161,7 @@ export default function TemplateAlley() {
           <div className="container mx-auto px-4 py-6">
             <div className="flex flex-wrap items-center justify-center gap-6 md:gap-12">
               <div className="text-center">
-                <div className="text-3xl font-black text-emerald-400">{TEMPLATES.length}+</div>
+                <div className="text-3xl font-black text-emerald-400">{ALL_TEMPLATES.length}+</div>
                 <div className="text-xs text-muted-foreground">Templates</div>
               </div>
               <div className="hidden md:block w-px h-10 bg-border/50" />
@@ -259,7 +259,7 @@ export default function TemplateAlley() {
 
         {/* Grid */}
         <main className="flex-1 container mx-auto px-4 py-8 pt-0">
-          <p className="text-sm text-muted-foreground mb-6">Showing {filteredTemplates.length} of {TEMPLATES.length} free templates</p>
+          <p className="text-sm text-muted-foreground mb-6">Showing {filteredTemplates.length} of {ALL_TEMPLATES.length} free templates</p>
           {filteredTemplates.length > 0 ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {filteredTemplates.map((template) => {
