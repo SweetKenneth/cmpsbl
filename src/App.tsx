@@ -18,6 +18,7 @@ import { useRenderLoopDetector } from "@/lib/client/render-loop-detector";
 import { diagLog, diagEnabled } from "@/lib/client/diag";
 import { DiagPanel } from "@/components/system/DiagPanel";
 import { DiagErrorBoundary } from "@/components/system/DiagErrorBoundary";
+import { MobilePreviewSafeMode } from "@/components/system/MobilePreviewSafeMode";
 
 const SubstrateProvider = lazy(() => import("./components/substrate/SubstrateProvider").then(m => ({ default: m.SubstrateProvider })));
 const AuthProvider = lazy(() => import("@/contexts/AuthContext").then(m => ({ default: m.AuthProvider })));
@@ -161,6 +162,27 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
 const App = () => {
   const isPreviewEnv = isLovableEditorPreviewEnv();
+
+  const previewParams = (() => {
+    try {
+      const url = new URL(window.location.href);
+      return {
+        previewFull: url.searchParams.get("previewFull") === "1",
+        previewSafe: url.searchParams.get("previewSafe") === "1",
+      };
+    } catch {
+      return { previewFull: false, previewSafe: false };
+    }
+  })();
+
+  const isMobileDevice =
+    typeof navigator !== "undefined" && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent || "");
+
+  // Default: Safe Mode in embedded (Lovable) mobile preview.
+  // Override with ?previewFull=1
+  const mobilePreviewSafeMode =
+    (previewParams.previewSafe || (isPreviewEnv && isMobileDevice)) && !previewParams.previewFull;
+
   const substrateAutoInit = !isPreviewEnv && debugMode.allowModulePolling();
 
   // Install mobile watchdog once on mount (diag mode only)
@@ -177,13 +199,31 @@ const App = () => {
     return cleanup;
   }, []);
 
+  // In Safe Mode, force-disable all background features (preview only).
+  useEffect(() => {
+    if (!mobilePreviewSafeMode) return;
+
+    try {
+      const key = "__pf_mobile_preview_safe_mode_applied__";
+      if (sessionStorage.getItem(key) === "1") return;
+      sessionStorage.setItem(key, "1");
+    } catch {
+      // ignore
+    }
+
+    debugMode.enable();
+  }, [mobilePreviewSafeMode]);
+
   // Track render rate of the App root (diag mode only)
   useRenderLoopDetector("App");
 
   return (
     <DiagErrorBoundary>
-      <MotionConfig reducedMotion={isPreviewEnv ? "always" : "user"}>
-        <QueryClientProvider client={queryClient}>
+      {mobilePreviewSafeMode ? (
+        <MobilePreviewSafeMode />
+      ) : (
+        <MotionConfig reducedMotion={isPreviewEnv ? "always" : "user"}>
+          <QueryClientProvider client={queryClient}>
           <SEOProvider>
             <Suspense fallback={<PageLoader />}>
               <SubstrateProvider autoInit={substrateAutoInit}>
@@ -384,10 +424,11 @@ const App = () => {
           </Suspense>
         </SEOProvider>
         </QueryClientProvider>
-
-        {/* Diagnostic panel - only renders when ?diag=1 is present */}
-        <DiagPanel />
       </MotionConfig>
+      )}
+
+      {/* Diagnostic panel - only renders when ?diag=1 is present */}
+      <DiagPanel />
     </DiagErrorBoundary>
   );
 };
