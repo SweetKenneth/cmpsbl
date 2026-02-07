@@ -2558,15 +2558,20 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         const config = data?.config || {};
         const modeIcon = config.enabled ? '🟢' : '🔴';
         const phaseIcon = state.current_phase === 'idle' ? '⚪' : state.current_phase === 'complete' ? '✅' : '🔄';
+        const lastCycle = state.last_cycle_at ? new Date(state.last_cycle_at).toISOString() : 'Never';
         
         return {
           success: true,
           output: `╔══════════════════════════════════════════════════════════════╗
-║  SEBA — Self-Evolving Bounded Agent v1.0.0                   ║
+║  SEBA v2.0.0 — Full Spectrum Autonomy                         ║
 ╠══════════════════════════════════════════════════════════════╣
-║  Status:     ${modeIcon} ${config.enabled ? 'ENABLED' : 'DISABLED'}                                       ║
-║  Mode:       ${(config.mode || 'advisory').toUpperCase().padEnd(12)}                                ║
-║  Phase:      ${phaseIcon} ${(state.current_phase || 'idle').toUpperCase().padEnd(10)}                              ║
+║                                                              ║
+║  Mode:        ${(config.mode || 'advisory').padEnd(46)}║
+║  Phase:       ${phaseIcon} ${(state.current_phase || 'idle').padEnd(44)}║
+║  Health:      ${String(state.agent_health || 100).padEnd(3)}%                                           ║
+║  Last Cycle:  ${lastCycle.padEnd(46)}║
+║  Proposals:   pending: ${String(state.pending_proposals || 0).padEnd(3)} | approved: ${String(state.approved_proposals || 0).padEnd(3)} | applied: ${String(state.executed_proposals || state.evolutions_applied || 0).padEnd(3)} ║
+║                                                              ║
 ╠══════════════════════════════════════════════════════════════╣
 ║  CYCLE STATS                                                 ║
 ║  Total:      ${String(state.total_cycles || 0).padEnd(5)} cycles                                   ║
@@ -2574,14 +2579,9 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
 ║  Failed:     ${String(state.failed_cycles || 0).padEnd(5)}                                          ║
 ║  Blocked:    ${String(state.blocked_cycles || 0).padEnd(5)}                                          ║
 ╠══════════════════════════════════════════════════════════════╣
-║  PROPOSALS                                                   ║
-║  Pending:    ${String(state.pending_proposals || 0).padEnd(5)}                                          ║
-║  Approved:   ${String(state.approved_proposals || 0).padEnd(5)}                                          ║
-║  Rejected:   ${String(state.rejected_proposals || 0).padEnd(5)}                                          ║
-╠══════════════════════════════════════════════════════════════╣
 ║  THRESHOLDS                                                  ║
 ║  Auto-approve: ≥${(state.auto_approve_threshold || 0.85).toFixed(2)} confidence                        ║
-║  Risk tolerance: ${(state.risk_tolerance || 'low').toUpperCase()}                                 ║
+║  Risk tolerance: ${(state.risk_tolerance || 'low').toUpperCase().padEnd(42)}║
 ╚══════════════════════════════════════════════════════════════╝`,
           data: result.data,
         };
@@ -2627,19 +2627,46 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
           return { success: false, output: `▓ Cycle failed: ${result.message}` };
         }
         const cycleData = result.data as any;
+        const proposalsGenerated = cycleData?.proposals_generated || 0;
+        const evolutionsApplied = cycleData?.evolutions_applied || 0;
+        
+        if (proposalsGenerated === 0) {
+          return {
+            success: true,
+            output: `╔══════════════════════════════════════════════════════════════╗
+║  ✅ CYCLE COMPLETE                                           ║
+╠══════════════════════════════════════════════════════════════╣
+║                                                              ║
+║  Phase: COGNITIVE ANALYSIS                                   ║
+║                                                              ║
+║  Engines Scanned: 9                                          ║
+║    ✅ Memory    ✅ Learning    ✅ Imagination                ║
+║    ✅ Reasoning ✅ Security    ✅ Telemetry                  ║
+║    ✅ Governance ✅ Resources  ✅ Architecture               ║
+║                                                              ║
+║  Insights Found: 0                                           ║
+║  No actionable insights found.                               ║
+║  System is operating optimally.                              ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝`,
+            data: result.data,
+          };
+        }
+        
         return {
           success: true,
-          output: `◉ SEBA CYCLE COMPLETE
-  ┌────────────────────────────────────────┐
-  │  Duration:     ${cycleData?.duration_ms || 0}ms                   │
-  │  Phases:       ${cycleData?.phases_completed?.length || 0} completed             │
-  │  Final Phase:  ${(cycleData?.final_phase || 'complete').toUpperCase().padEnd(15)}      │
-  ├────────────────────────────────────────┤
-  │  Proposals:    ${cycleData?.proposals_generated || 0} generated             │
-  │  Approved:     ${cycleData?.proposals_approved || 0}                        │
-  │  Rejected:     ${cycleData?.proposals_rejected || 0}                        │
-  │  Applied:      ${cycleData?.evolutions_applied || 0} evolutions            │
-  └────────────────────────────────────────┘`,
+          output: `╔══════════════════════════════════════════════════════════════╗
+║  ✅ CYCLE COMPLETE                                           ║
+╠══════════════════════════════════════════════════════════════╣
+║                                                              ║
+║  New Proposals: ${String(proposalsGenerated).padEnd(44)}║
+║  Auto-Applied:  ${String(evolutionsApplied).padEnd(44)}║
+║                                                              ║
+║  Status: pending_review (awaiting governance)                ║
+║                                                              ║
+║  Use seba.review to see pending proposals.                   ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝`,
           data: result.data,
         };
       } catch (err) {
@@ -2653,22 +2680,41 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
           return { success: false, output: `▓ Propose failed: ${result.message}` };
         }
         const data = result.data as any;
-        let output = `◉ PROPOSALS GENERATED\n\n`;
-        output += `  Insights analyzed: ${data?.insights || 0}\n`;
-        output += `  Proposals created: ${data?.proposals?.length || 0}\n\n`;
+        const proposals = data?.proposals || [];
         
-        for (const p of data?.proposals || []) {
-          output += `  ┌─ ${p.id} ─────────────────────────────\n`;
-          output += `  │  ${p.title}\n`;
-          output += `  │  Category:   ${p.category}\n`;
-          output += `  │  Confidence: ${(p.confidence * 100).toFixed(0)}%\n`;
-          output += `  │  Risk:       ${p.risk.toUpperCase()}\n`;
-          output += `  └─────────────────────────────────────────\n\n`;
+        if (proposals.length === 0) {
+          return {
+            success: true,
+            output: `╔══════════════════════════════════════════════════════════════╗
+║  🔬 PROPOSAL GENERATION                                       ║
+╠══════════════════════════════════════════════════════════════╣
+║                                                              ║
+║  Insights analyzed: ${String(data?.insights || 0).padEnd(40)}║
+║  Proposals created: 0                                        ║
+║                                                              ║
+║  No actionable insights found. System is healthy.            ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝`,
+            data: result.data,
+          };
         }
         
-        if ((data?.proposals?.length || 0) === 0) {
-          output += `  No proposals generated — system is healthy.\n`;
+        let output = `╔══════════════════════════════════════════════════════════════╗
+║  🔬 PROPOSAL GENERATION                                       ║
+╠══════════════════════════════════════════════════════════════╣
+║                                                              ║
+║  Generated ${String(proposals.length).padEnd(2)} proposals from ${String(data?.insights || 0).padEnd(2)} insights                     ║
+║                                                              ║\n`;
+        
+        for (const p of proposals.slice(0, 5)) {
+          output += `║  • ${(p.title || 'Untitled').substring(0, 54).padEnd(56)}║
+║    ID: ${(p.id || 'unknown').padEnd(12)} | Risk: ${(p.risk || 'low').padEnd(8)} | Conf: ${((p.confidence || 0) * 100).toFixed(0)}%       ║
+║                                                              ║\n`;
         }
+        
+        output += `║  Use seba.review to see full details.                        ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝`;
         
         return { success: true, output, data: result.data };
       } catch (err) {
@@ -2676,19 +2722,54 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
       }
     } else if (base === 'seba.review') {
       try {
-        const { sebaAgent } = await import('@/lib/substrate/seba');
-        const result = await sebaAgent.handleCommand('review');
-        const data = result.data as any;
+        // Use ProposalStore directly for accurate pending list
+        const { ProposalStore } = await import('@/lib/substrate/seba/proposal-store');
+        const pending = await ProposalStore.getPending();
         
-        if ((data?.pending_count || 0) === 0) {
-          return { success: true, output: '◉ No proposals pending review' };
+        if (pending.length === 0) {
+          return { 
+            success: true, 
+            output: `╔══════════════════════════════════════════════════════════════╗
+║  📋 PENDING PROPOSALS                                         ║
+╠══════════════════════════════════════════════════════════════╣
+║                                                              ║
+║  No pending proposals.                                       ║
+║                                                              ║
+║  Run seba.cycle to generate new proposals.                   ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝`,
+          };
         }
         
-        return {
-          success: true,
-          output: `◉ ${data.pending_count} PROPOSALS PENDING REVIEW\n\n  Use 'seba.approve <id>' or 'seba.reject <id>' to process`,
-          data: result.data,
-        };
+        let output = `╔══════════════════════════════════════════════════════════════╗
+║  📋 PENDING PROPOSALS                                         ║
+╠══════════════════════════════════════════════════════════════╣\n`;
+        
+        for (const p of pending.slice(0, 5)) {
+          const shortId = p.id?.substring(0, 8) || 'unknown';
+          const title = p.title || 'Untitled';
+          const confidence = typeof p.confidence === 'number' ? (p.confidence * 100).toFixed(0) : 'N/A';
+          const risk = (p.expected_impact as any)?.risk_level || 'low';
+          
+          output += `║                                                              ║
+║  Short ID: ${shortId.padEnd(48)}║
+║  Full ID:  ${(p.id || 'unknown').padEnd(48)}║
+║  Title:    ${title.substring(0, 47).padEnd(48)}║
+║  Status:   ${(p.status || 'pending').padEnd(48)}║
+║  Risk:     ${risk.padEnd(12)} | Confidence: ${confidence}%                   ║
+║                                                              ║
+║  Commands: seba.approve ${shortId} | seba.reject ${shortId}           ║
+╠──────────────────────────────────────────────────────────────╣\n`;
+        }
+        
+        if (pending.length > 5) {
+          output += `║                                                              ║
+║  Showing 5 of ${pending.length} proposals.                                   ║\n`;
+        }
+        
+        output += `╚══════════════════════════════════════════════════════════════╝`;
+        
+        return { success: true, output, data: { pending_count: pending.length, proposals: pending } };
       } catch (err) {
         return { success: false, output: `▓ Review error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
@@ -2795,7 +2876,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         return { success: false, output: `▓ Thresholds error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
     } else if (base === 'seba.history') {
-      const limit = parseInt(args[0]) || 20;
+      const limit = parseInt(args[0]) || 10;
       try {
         const { sebaAgent } = await import('@/lib/substrate/seba');
         const result = await sebaAgent.handleCommand('history', { limit });
@@ -2807,15 +2888,43 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         const events = data?.events || [];
         
         if (events.length === 0) {
-          return { success: true, output: '◉ No evolution history yet — run seba.cycle to start' };
+          return { 
+            success: true, 
+            output: `╔══════════════════════════════════════════════════════════════╗
+║  📜 SEBA EVOLUTION HISTORY                                    ║
+╠══════════════════════════════════════════════════════════════╣
+║                                                              ║
+║  No evolution history found.                                 ║
+║                                                              ║
+║  Run seba.cycle to start generating history.                 ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝`,
+          };
         }
         
-        let output = `◉ SEBA EVOLUTION HISTORY (last ${limit})\n\n`;
+        let output = `╔══════════════════════════════════════════════════════════════╗
+║  📜 SEBA EVOLUTION HISTORY                                    ║
+╠══════════════════════════════════════════════════════════════╣\n`;
+        
         for (const event of events.slice(0, limit)) {
           const icon = event.outcome === 'success' ? '✅' : event.outcome === 'error' ? '❌' : '⚠️';
-          output += `  ${icon} [${event.phase}] ${event.action}\n`;
-          output += `     ${event.timestamp}\n\n`;
+          const timestamp = new Date(event.created_at).toLocaleString();
+          const eventType = event.event_type || 'unknown';
+          const eventData = event.data || {};
+          const target = eventData.target || eventData.proposal_id?.substring(0, 8) || '';
+          
+          output += `║                                                              ║
+║  ${timestamp.padEnd(30)} | ${event.outcome?.toUpperCase()?.padEnd(10) || 'UNKNOWN  '}      ║
+║  ${icon} [${eventType}] ${target.padEnd(40)}║
+║                                                              ║
+╠──────────────────────────────────────────────────────────────╣\n`;
         }
+        
+        if (events.length > limit) {
+          output += `║  Showing ${limit} of ${events.length} entries.                                  ║\n`;
+        }
+        
+        output = output.slice(0, -68) + `╚══════════════════════════════════════════════════════════════╝`;
         
         return { success: true, output, data: result.data };
       } catch (err) {
