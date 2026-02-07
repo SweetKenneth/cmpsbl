@@ -61,7 +61,8 @@ serve(async (req) => {
     const checkoutMode = isSubscription ? 'subscription' : 'payment';
 
     // In payment mode, we can use a normalized tiered amount (this is what the cards advertise)
-    const ALLOWED_USD_TIERS = new Set([19, 49, 99, 149, 199, 299]);
+    // These are the public price tiers — any amount gets normalized to the nearest tier
+    const TIER_AMOUNTS = [19, 49, 99, 149, 199, 299];
 
     const parseUnitAmountUsd = (v: unknown): number | null => {
       if (typeof v !== 'number' || !Number.isFinite(v)) return null;
@@ -69,28 +70,23 @@ serve(async (req) => {
       return int;
     };
 
-    // Fallback normalization for legacy Stripe prices (keeps checkout <= $299 even if price_id is wrong/high)
+    // Normalize any USD amount to the nearest public tier (always <= $299)
     const normalizePriceUsd = (priceUsd: number): number => {
       if (priceUsd <= 19) return 19;
-      if (priceUsd <= 79) return 19;
-      if (priceUsd <= 149) return 49;
-      if (priceUsd <= 249) return 99;
-      if (priceUsd <= 399) return 149;
-      if (priceUsd <= 699) return 199;
+      if (priceUsd <= 49) return 49;
+      if (priceUsd <= 99) return 99;
+      if (priceUsd <= 149) return 149;
+      if (priceUsd <= 199) return 199;
       return 299;
     };
 
     const requestedUsd = parseUnitAmountUsd(unit_amount_usd);
 
     // If we are not in subscription mode, allow checkout to proceed with either:
-    // 1) a valid tiered amount (preferred), or
-    // 2) a Stripe price_id (legacy callers)
+    // 1) a unit_amount_usd value (will be normalized to nearest tier), or
+    // 2) a Stripe price_id (legacy callers — price will be fetched and normalized)
     if (!isSubscription) {
-      const hasTierAmount = requestedUsd !== null;
-      if (hasTierAmount && !ALLOWED_USD_TIERS.has(requestedUsd)) {
-        throw new Error('Invalid unit_amount_usd (must be one of the normalized tiers)');
-      }
-      if (!hasTierAmount && !price_id) {
+      if (requestedUsd === null && !price_id) {
         throw new Error('Missing required fields: price_id (or unit_amount_usd for payment mode)');
       }
     } else {
@@ -99,6 +95,9 @@ serve(async (req) => {
         throw new Error('Missing required field: price_id (subscription mode)');
       }
     }
+
+    // Normalize the requested amount if provided (ensures we charge the correct tier)
+    const normalizedUsd = requestedUsd !== null ? normalizePriceUsd(requestedUsd) : null;
 
     // Use email if available; otherwise Stripe will collect it in checkout
     const email = userEmail || customer_email;
@@ -120,9 +119,9 @@ serve(async (req) => {
     if (isSubscription) {
       // Subscriptions must reference a Stripe price
       lineItem = { price: price_id, quantity: 1 };
-    } else if (requestedUsd !== null) {
-      // Preferred: charge the advertised normalized tier amount
-      const unitAmount = requestedUsd * 100;
+    } else if (normalizedUsd !== null) {
+      // Preferred: charge the normalized tier amount (ensures consistent pricing)
+      const unitAmount = normalizedUsd * 100;
       // Real Stripe product IDs are formatted like 'prod_ABC123' (alphanumeric after prod_)
       // Placeholder IDs like 'prod_premium_cot' contain underscores/letters after prod_
       const isRealStripeProduct = typeof product_id === 'string' && /^prod_[A-Za-z0-9]{10,}$/.test(product_id);
@@ -188,6 +187,7 @@ serve(async (req) => {
         tier: isRecursive ? 'apex' : product_type === 'stier' ? 'crown' : product_type,
         // Helpful audit fields
         requested_unit_amount_usd: requestedUsd !== null ? String(requestedUsd) : '',
+        normalized_unit_amount_usd: normalizedUsd !== null ? String(normalizedUsd) : '',
         legacy_price_id: price_id || '',
       },
     };
