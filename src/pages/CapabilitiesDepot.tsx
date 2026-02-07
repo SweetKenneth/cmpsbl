@@ -4,8 +4,9 @@
  * v3.0.0 — Free tier, no pricing, no checkout
  */
 
-import { useState, useMemo, lazy, Suspense, useCallback } from 'react';
+import { useState, useMemo, lazy, Suspense } from 'react';
 import { AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { 
   Search, 
   Filter, 
@@ -19,9 +20,11 @@ import {
   TrendingUp,
   Layers,
   Info,
+  ArrowRight,
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { 
   Select,
   SelectContent,
@@ -116,10 +119,19 @@ export default function CapabilitiesDepotPage() {
               Capabilities are atomic, stateless building blocks provided free for exploration.
               No persistence, no shared orchestration state, no governance hooks.
             </p>
-            <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+            <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground mb-6">
               <Info className="w-4 h-4" />
               <span>Everything is free to explore. Engines are canon.</span>
             </div>
+            
+            {/* Persistent Memory CTA */}
+            <Link to="/docs/persistent-memory">
+              <Button variant="outline" className="gap-2 border-primary/30 bg-primary/5 hover:bg-primary/10">
+                <Brain className="w-4 h-4" />
+                Add Persistent Memory (FREE)
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </Link>
           </div>
         </section>
 

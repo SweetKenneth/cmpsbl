@@ -249,6 +249,17 @@ function HeroSection() {
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </Button>
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="gap-2 border-primary/30 bg-primary/5 hover:bg-primary/10"
+              asChild
+            >
+              <Link to="/docs/persistent-memory">
+                <Brain className="w-4 h-4" />
+                Add Persistent Memory (FREE)
+              </Link>
+            </Button>
           </div>
         </motion.div>
       </div>

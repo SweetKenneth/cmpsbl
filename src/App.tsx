@@ -85,6 +85,7 @@ const SystemIntelligenceFeed = lazy(() => import("./pages/SystemIntelligenceFeed
 const ClearCache = lazy(() => import("./pages/ClearCache"));
 const CheckoutRedirect = lazy(() => import("./pages/CheckoutRedirect"));
 const EngineMarketplace = lazy(() => import("./pages/EngineMarketplace"));
+const PersistentMemoryDocs = lazy(() => import("./pages/docs/PersistentMemoryDocs"));
 
 // Marketing / Info pages
 const About = lazy(() => import("./pages/About"));
@@ -260,6 +261,7 @@ const App = () => {
                         <Route path="/substrate/licensing/success" element={<SubstrateLicensingSuccess />} />
                         <Route path="/lab" element={<ExperimentationLab />} />
                         <Route path="/docs/substrate/capabilities" element={<SubstrateCapabilitiesDocs />} />
+                        <Route path="/docs/persistent-memory" element={<PersistentMemoryDocs />} />
                         <Route path="/capabilities" element={<CapabilitiesDepot />} />
                         <Route path="/synergies" element={<SynergyPipelines />} />
                         <Route path="/engines" element={<EngineMarketplace />} />
