@@ -1,25 +1,41 @@
 /**
  * Debug Mode Kill-Switch
- * v1.0.0 — Temporarily disable all background activity
- * 
- * This module provides a central toggle to disable:
- * - All polling intervals
- * - Realtime subscriptions
- * - Background writes (learning logs, metrics)
- * - Auto-refresh cycles
+ * v2.0.0 — Granular control over background activity
  * 
  * Usage:
- *   import { debugMode } from '@/lib/debug-mode';
- *   debugMode.enable();  // Disable all background activity
- *   debugMode.disable(); // Re-enable everything
- *   debugMode.isEnabled(); // Check current state
+ *   debugMode.enable();           // Disable ALL background activity
+ *   debugMode.disable();          // Re-enable ALL activity
+ *   debugMode.enableOnly(['polling-intervals']); // Enable ONLY polling
+ *   debugMode.disableFeature('realtime-subscriptions'); // Disable specific feature
+ *   debugMode.enableFeature('polling-intervals');  // Enable specific feature
  */
+
+type FeatureName = 
+  | 'polling-intervals'
+  | 'realtime-subscriptions'
+  | 'learning-collector'
+  | 'metrics-flush'
+  | 'background-writes'
+  | 'auto-refresh'
+  | 'telemetry-log'
+  | 'module-status-polling';
 
 interface DebugModeState {
   enabled: boolean;
   enabledAt: string | null;
-  disabledFeatures: string[];
+  disabledFeatures: FeatureName[];
 }
+
+const ALL_FEATURES: FeatureName[] = [
+  'polling-intervals',
+  'realtime-subscriptions', 
+  'learning-collector',
+  'metrics-flush',
+  'background-writes',
+  'auto-refresh',
+  'telemetry-log',
+  'module-status-polling',
+];
 
 const STORAGE_KEY = 'substrate_debug_mode';
 
@@ -39,6 +55,7 @@ function loadState(): void {
       state = JSON.parse(stored);
       if (state.enabled) {
         console.warn('[DebugMode] 🔴 DEBUG MODE ACTIVE — Background activity disabled');
+        console.warn('[DebugMode] Disabled:', state.disabledFeatures.join(', '));
       }
     }
   } catch {
@@ -62,20 +79,10 @@ function enable(): void {
   state = {
     enabled: true,
     enabledAt: new Date().toISOString(),
-    disabledFeatures: [
-      'polling-intervals',
-      'realtime-subscriptions',
-      'learning-collector',
-      'metrics-flush',
-      'background-writes',
-      'auto-refresh',
-      'telemetry-log',
-    ],
+    disabledFeatures: [...ALL_FEATURES],
   };
   saveState();
-  console.warn('[DebugMode] 🔴 DEBUG MODE ENABLED');
-  console.warn('[DebugMode] Disabled features:', state.disabledFeatures);
-  console.warn('[DebugMode] To re-enable: debugMode.disable() or localStorage.removeItem("substrate_debug_mode")');
+  console.warn('[DebugMode] 🔴 DEBUG MODE ENABLED — ALL features disabled');
 }
 
 /**
@@ -88,8 +95,49 @@ function disable(): void {
     disabledFeatures: [],
   };
   saveState();
-  console.log('[DebugMode] 🟢 DEBUG MODE DISABLED — Background activity restored');
+  console.log('[DebugMode] 🟢 DEBUG MODE DISABLED — All features restored');
   console.log('[DebugMode] Refresh the page to fully restore all features');
+}
+
+/**
+ * Enable ONLY specific features (keeps debug mode on, disables everything else)
+ */
+function enableOnly(features: FeatureName[]): void {
+  state = {
+    enabled: true,
+    enabledAt: state.enabledAt || new Date().toISOString(),
+    disabledFeatures: ALL_FEATURES.filter(f => !features.includes(f)),
+  };
+  saveState();
+  console.warn('[DebugMode] 🟡 PARTIAL MODE — Only enabled:', features.join(', '));
+  console.warn('[DebugMode] Still disabled:', state.disabledFeatures.join(', '));
+}
+
+/**
+ * Enable a specific feature (remove from disabled list)
+ */
+function enableFeature(feature: FeatureName): void {
+  state.disabledFeatures = state.disabledFeatures.filter(f => f !== feature);
+  if (state.disabledFeatures.length === 0) {
+    state.enabled = false;
+    state.enabledAt = null;
+  }
+  saveState();
+  console.log(`[DebugMode] ✅ Enabled: ${feature}`);
+  console.log('[DebugMode] Still disabled:', state.disabledFeatures.length ? state.disabledFeatures.join(', ') : 'none');
+}
+
+/**
+ * Disable a specific feature (add to disabled list)
+ */
+function disableFeature(feature: FeatureName): void {
+  if (!state.disabledFeatures.includes(feature)) {
+    state.disabledFeatures.push(feature);
+  }
+  state.enabled = true;
+  state.enabledAt = state.enabledAt || new Date().toISOString();
+  saveState();
+  console.warn(`[DebugMode] ❌ Disabled: ${feature}`);
 }
 
 /**
@@ -107,16 +155,22 @@ function getState(): DebugModeState {
 }
 
 /**
+ * Get list of all available features
+ */
+function getAllFeatures(): FeatureName[] {
+  return [...ALL_FEATURES];
+}
+
+/**
  * Check if a specific feature should be disabled
  */
 function shouldDisable(feature: string): boolean {
   if (!state.enabled) return false;
-  return state.disabledFeatures.includes(feature) || state.disabledFeatures.includes('all');
+  return state.disabledFeatures.includes(feature as FeatureName);
 }
 
 /**
- * Guard function - returns true if operation should proceed
- * Use this to wrap polling, subscriptions, and writes
+ * Guard functions - returns true if operation should proceed
  */
 function allowPolling(): boolean {
   return !shouldDisable('polling-intervals');
@@ -146,6 +200,10 @@ function allowTelemetry(): boolean {
   return !shouldDisable('telemetry-log');
 }
 
+function allowModulePolling(): boolean {
+  return !shouldDisable('module-status-polling');
+}
+
 // Initialize on load
 loadState();
 
@@ -153,8 +211,12 @@ loadState();
 export const debugMode = {
   enable,
   disable,
+  enableOnly,
+  enableFeature,
+  disableFeature,
   isEnabled,
   getState,
+  getAllFeatures,
   shouldDisable,
   // Convenience guards
   allowPolling,
@@ -164,6 +226,7 @@ export const debugMode = {
   allowMetrics,
   allowAutoRefresh,
   allowTelemetry,
+  allowModulePolling,
 };
 
 // Expose globally for console access

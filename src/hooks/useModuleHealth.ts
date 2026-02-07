@@ -1,10 +1,12 @@
 /**
  * Module Health Monitor Hook
  * Tracks health status of all 12 PromptFluid modules via substrate
+ * Respects debugMode — when enabled, auto-check is disabled
  */
 
 import { useState, useEffect } from 'react';
 import { substrate } from '@/lib/substrate';
+import { debugMode } from '@/lib/debug-mode';
 
 interface ModuleHealth {
   module: string;
@@ -27,6 +29,12 @@ export function useModuleHealth(autoCheck: boolean = true, intervalMs: number = 
   const [loading, setLoading] = useState(true);
 
   const checkHealth = async () => {
+    // Skip if debug mode disables module polling
+    if (!debugMode.allowModulePolling()) {
+      setLoading(false);
+      return;
+    }
+    
     try {
       // Use system.health from substrate instead of deprecated pf-health-check
       const response = await substrate.invoke({ module: 'system', action: 'health' });
@@ -62,6 +70,12 @@ export function useModuleHealth(autoCheck: boolean = true, intervalMs: number = 
   };
 
   useEffect(() => {
+    // Skip if debug mode disables module polling
+    if (!debugMode.allowModulePolling()) {
+      setLoading(false);
+      return;
+    }
+    
     if (autoCheck) {
       checkHealth();
       const interval = setInterval(checkHealth, intervalMs);

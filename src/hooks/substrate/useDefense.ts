@@ -1,10 +1,12 @@
 /**
  * useDefense Hook
- * v7.0.0 — Dedicated hook for DEFENSE module operations
+ * v7.1.0 — Dedicated hook for DEFENSE module operations
+ * Respects debugMode — when enabled, polling is disabled
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { substrate } from '@/lib/substrate';
+import { debugMode } from '@/lib/debug-mode';
 
 // Access defense module from substrate singleton
 const defense = substrate.defense;
@@ -27,31 +29,38 @@ export interface UseDefenseReturn {
 export function useDefense(): UseDefenseReturn {
   const queryClient = useQueryClient();
   
+  // Only poll if debug mode allows it
+  const pollingEnabled = debugMode.allowModulePolling();
+  
   const status = useQuery({
     queryKey: ['substrate', 'defense', 'status'],
     queryFn: () => defense.status(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 15000,
+    enabled: pollingEnabled,
   });
   
   const posture = useQuery({
     queryKey: ['substrate', 'defense', 'posture'],
     queryFn: () => defense.posture(),
-    refetchInterval: 60000,
+    refetchInterval: pollingEnabled ? 60000 : false,
     staleTime: 30000,
+    enabled: pollingEnabled,
   });
   
   const limits = useQuery({
     queryKey: ['substrate', 'defense', 'limits'],
     queryFn: () => defense.limits(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 15000,
+    enabled: pollingEnabled,
   });
   
   const rules = useQuery({
     queryKey: ['substrate', 'defense', 'rules'],
     queryFn: () => defense.rules(),
     staleTime: 60000,
+    enabled: pollingEnabled,
   });
   
   const analyze = useMutation({
