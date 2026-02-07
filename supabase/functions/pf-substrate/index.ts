@@ -11840,17 +11840,89 @@ async function handleModernizer(
       }
       
       try {
-        const { data: planResult, error } = await supabase.functions.invoke('pf-substrate-upgrade', {
-          body: { action: 'get_plan', plan_id }
-        });
+        // Sanitize plan_id (strip angle brackets, quotes)
+        const cleanPlanId = String(plan_id).replace(/[<>'"]/g, '').trim();
         
-        if (error) throw error;
+        // First try substrate_upgrade_plans table with prefix match
+        let plan: any = null;
+        
+        // Try exact match first
+        const { data: exactMatch } = await supabase
+          .from('substrate_upgrade_plans')
+          .select('*')
+          .eq('id', cleanPlanId)
+          .maybeSingle();
+        
+        if (exactMatch) {
+          plan = exactMatch;
+        } else {
+          // Try prefix match (short ID)
+          const { data: prefixMatches } = await supabase
+            .from('substrate_upgrade_plans')
+            .select('*')
+            .ilike('id', `${cleanPlanId}%`)
+            .limit(1);
+          
+          if (prefixMatches && prefixMatches.length > 0) {
+            plan = prefixMatches[0];
+          }
+        }
+        
+        // Fallback: check evolution_runs table
+        if (!plan) {
+          const { data: exactEvolution } = await supabase
+            .from('evolution_runs')
+            .select('*')
+            .eq('run_id', cleanPlanId)
+            .maybeSingle();
+          
+          if (exactEvolution) {
+            plan = exactEvolution;
+          } else {
+            const { data: prefixEvolution } = await supabase
+              .from('evolution_runs')
+              .select('*')
+              .ilike('run_id', `${cleanPlanId}%`)
+              .limit(1);
+            
+            if (prefixEvolution && prefixEvolution.length > 0) {
+              plan = prefixEvolution[0];
+            }
+          }
+        }
+        
+        if (!plan) {
+          return jsonResponse({
+            success: false,
+            module: 'modernizer',
+            action: 'review',
+            error: `Plan '${cleanPlanId}' not found`,
+            hint: "Use 'modernizer.plans' to list available plans.",
+          }, headers);
+        }
+        
+        // Format improvements for display
+        const improvements = plan.improvements || plan.implementation_plan || plan.changes || [];
         
         return jsonResponse({
           success: true,
           module: 'modernizer',
           action: 'review',
-          plan: planResult,
+          plan: {
+            id: plan.id || plan.run_id,
+            short_id: (plan.id || plan.run_id || '').substring(0, 8),
+            phase: plan.phase || plan.status || 'unknown',
+            status: plan.status || plan.phase || 'unknown',
+            created_at: plan.created_at,
+            updated_at: plan.updated_at,
+            risk_level: plan.risk_level || 'low',
+            description: plan.description || plan.title || 'Evolution plan',
+            improvements: improvements,
+            improvement_count: improvements.length,
+            health_before: plan.health_before || null,
+            health_after: plan.health_after || null,
+            predicted_impact: plan.predicted_impact || plan.impact_analysis || null,
+          },
         }, headers);
       } catch (error) {
         return jsonResponse({
@@ -11858,6 +11930,161 @@ async function handleModernizer(
           module: 'modernizer',
           action: 'review',
           error: error instanceof Error ? error.message : 'Failed to fetch plan',
+        }, headers);
+      }
+    }
+
+    // ═══ DIFF — Show detailed changes for a plan ═══
+    case "diff": {
+      const { plan_id } = data;
+      
+      if (!plan_id) {
+        return jsonResponse({
+          success: false,
+          module: 'modernizer',
+          action: 'diff',
+          error: 'plan_id is required',
+          usage: 'modernizer.diff <plan_id>',
+        }, headers);
+      }
+      
+      try {
+        // Sanitize plan_id
+        const cleanPlanId = String(plan_id).replace(/[<>'"]/g, '').trim();
+        
+        // Fetch plan from substrate_upgrade_plans with prefix match
+        let plan: any = null;
+        
+        // Try exact match first
+        const { data: exactMatch } = await supabase
+          .from('substrate_upgrade_plans')
+          .select('*')
+          .eq('id', cleanPlanId)
+          .maybeSingle();
+        
+        if (exactMatch) {
+          plan = exactMatch;
+        } else {
+          // Try prefix match (short ID)
+          const { data: prefixMatches } = await supabase
+            .from('substrate_upgrade_plans')
+            .select('*')
+            .ilike('id', `${cleanPlanId}%`)
+            .limit(1);
+          
+          if (prefixMatches && prefixMatches.length > 0) {
+            plan = prefixMatches[0];
+          }
+        }
+        
+        if (!plan) {
+          // Try evolution_runs - exact match
+          const { data: exactEvolution } = await supabase
+            .from('evolution_runs')
+            .select('*')
+            .eq('run_id', cleanPlanId)
+            .maybeSingle();
+          
+          if (exactEvolution) {
+            // Format evolution_run as diff
+            const changes = exactEvolution.changes || exactEvolution.improvements || [];
+            return jsonResponse({
+              success: true,
+              module: 'modernizer',
+              action: 'diff',
+              plan_id: exactEvolution.run_id,
+              short_id: exactEvolution.run_id.substring(0, 8),
+              phase: exactEvolution.phase,
+              diff: {
+                total_changes: changes.length,
+                changes: changes.map((c: any, idx: number) => ({
+                  index: idx + 1,
+                  area: c.area || c.target || 'substrate',
+                  description: c.description || c.action || c.title,
+                  priority: c.priority || 'medium',
+                  before: c.before || c.current_value || null,
+                  after: c.after || c.proposed_value || c.action || null,
+                })),
+              },
+            }, headers);
+          }
+          
+          // Try evolution_runs - prefix match
+          const { data: prefixEvolution } = await supabase
+            .from('evolution_runs')
+            .select('*')
+            .ilike('run_id', `${cleanPlanId}%`)
+            .limit(1);
+          
+          if (prefixEvolution && prefixEvolution.length > 0) {
+            const evolutionRun = prefixEvolution[0];
+            const changes = evolutionRun.changes || evolutionRun.improvements || [];
+            return jsonResponse({
+              success: true,
+              module: 'modernizer',
+              action: 'diff',
+              plan_id: evolutionRun.run_id,
+              short_id: evolutionRun.run_id.substring(0, 8),
+              phase: evolutionRun.phase,
+              diff: {
+                total_changes: changes.length,
+                changes: changes.map((c: any, idx: number) => ({
+                  index: idx + 1,
+                  area: c.area || c.target || 'substrate',
+                  description: c.description || c.action || c.title,
+                  priority: c.priority || 'medium',
+                  before: c.before || c.current_value || null,
+                  after: c.after || c.proposed_value || c.action || null,
+                })),
+              },
+            }, headers);
+          }
+          
+          return jsonResponse({
+            success: false,
+            module: 'modernizer',
+            action: 'diff',
+            error: `Plan '${cleanPlanId}' not found`,
+            hint: "Use 'modernizer.plans' to list available plans.",
+          }, headers);
+        }
+        
+        // Format substrate_upgrade_plans as diff
+        const improvements = plan.improvements || plan.implementation_plan || plan.changes || [];
+        
+        return jsonResponse({
+          success: true,
+          module: 'modernizer',
+          action: 'diff',
+          plan_id: plan.id,
+          short_id: plan.id.substring(0, 8),
+          phase: plan.status,
+          risk_level: plan.risk_level || 'low',
+          diff: {
+            total_changes: improvements.length,
+            changes: improvements.map((imp: any, idx: number) => ({
+              index: idx + 1,
+              area: imp.area || imp.target || 'substrate',
+              description: imp.description,
+              action: imp.action,
+              priority: imp.priority || 'medium',
+              estimated_impact: imp.estimated_impact || null,
+              evidence: imp.evidence || null,
+            })),
+            summary: {
+              critical: improvements.filter((i: any) => i.priority === 'critical').length,
+              high: improvements.filter((i: any) => i.priority === 'high').length,
+              medium: improvements.filter((i: any) => i.priority === 'medium').length,
+              low: improvements.filter((i: any) => i.priority === 'low').length,
+            },
+          },
+        }, headers);
+      } catch (error) {
+        return jsonResponse({
+          success: false,
+          module: 'modernizer',
+          action: 'diff',
+          error: error instanceof Error ? error.message : 'Failed to fetch diff',
         }, headers);
       }
     }

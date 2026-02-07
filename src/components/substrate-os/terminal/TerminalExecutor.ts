@@ -286,11 +286,19 @@ async function resolveShortPlanId(shortId: string): Promise<string | null> {
   }
 }
 
-// Parse command arguments
+// Parse command arguments and sanitize IDs
 function parseArgs(command: string): { base: string; args: string[] } {
   const parts = command.match(/(?:[^\s"]+|"[^"]*")+/g) || [];
   const base = parts[0]?.toLowerCase() || '';
-  const args = parts.slice(1).map(arg => arg.replace(/^"(.*)"$/, '$1'));
+  const args = parts.slice(1).map(arg => {
+    // Remove quotes first
+    let cleaned = arg.replace(/^"(.*)"$/, '$1');
+    // Remove angle brackets (common copy-paste issue from docs: <uuid>)
+    cleaned = cleaned.replace(/^<(.*)>$/, '$1');
+    // Also strip stray brackets if they appear
+    cleaned = cleaned.replace(/[<>]/g, '').trim();
+    return cleaned;
+  });
   return { base, args };
 }
 

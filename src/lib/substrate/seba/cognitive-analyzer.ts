@@ -1,10 +1,12 @@
 /**
  * SEBA Cognitive Analyzer
- * v2.0.0 — Full Spectrum Analysis Engine
+ * v2.1.0 — Full Spectrum Analysis Engine (Backend Stats Integration)
  * 
  * Runs 9 analysis engines to generate comprehensive insights:
  * - Memory, Learning, Imagination, Reasoning (Core 4)
  * - Security, Telemetry, Governance, Resources, Architecture (Extended 5)
+ * 
+ * v2.1.0: Uses backend stats (brain.status, modernizer.status) to bypass RLS
  */
 
 import { memoryCore, type MemoryEntry } from '../memory-core';
@@ -16,11 +18,88 @@ import { supabase } from '@/integrations/supabase/client';
 import type { CognitiveInsight, ImprovementCategory } from './types';
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// BACKEND STATS FETCHER — Bypasses RLS by using edge functions
+// ═══════════════════════════════════════════════════════════════════════════════
+
+interface BackendStats {
+  brain: {
+    healthy: boolean;
+    learning: boolean;
+    tiers: {
+      hot: { current: number; max: number; health: string };
+      warm: { current: number; max: number; health: string };
+      cold: { current: number; max: number; health: string };
+    };
+    metrics: {
+      events_24h: number;
+      total_memories: number;
+      learning_cycles_24h: number;
+      queued_actions: number;
+    };
+    needs_tiering: boolean;
+  } | null;
+  modernizer: {
+    system_health: { score: number; orchestrator: number };
+    plans: { pending: number; applied: number };
+    improvement_areas: string[];
+  } | null;
+}
+
+async function fetchBackendStats(): Promise<BackendStats> {
+  const stats: BackendStats = { brain: null, modernizer: null };
+  
+  try {
+    // Fetch brain status from backend (bypasses RLS)
+    const brainResponse = await supabase.functions.invoke('pf-brain-status', {});
+    if (brainResponse.data?.success && brainResponse.data?.status) {
+      const s = brainResponse.data.status;
+      stats.brain = {
+        healthy: s.healthy ?? false,
+        learning: s.learning ?? false,
+        tiers: s.tiers || {
+          hot: { current: 0, max: 500, health: 'unknown' },
+          warm: { current: 0, max: 2000, health: 'unknown' },
+          cold: { current: 0, max: 10000, health: 'unknown' },
+        },
+        metrics: s.metrics || {
+          events_24h: 0,
+          total_memories: 0,
+          learning_cycles_24h: 0,
+          queued_actions: 0,
+        },
+        needs_tiering: s.tier_summary?.needs_tiering ?? false,
+      };
+    }
+  } catch (e) {
+    console.warn('[SEBA] Failed to fetch brain stats from backend:', e);
+  }
+  
+  try {
+    // Fetch modernizer status from backend
+    const modResponse = await supabase.functions.invoke('pf-substrate', {
+      body: { module: 'modernizer', action: 'status' },
+    });
+    if (modResponse.data?.success) {
+      stats.modernizer = {
+        system_health: modResponse.data.system_health || { score: 100, orchestrator: 100 },
+        plans: modResponse.data.plans || { pending: 0, applied: 0 },
+        improvement_areas: modResponse.data.improvement_areas || [],
+      };
+    }
+  } catch (e) {
+    console.warn('[SEBA] Failed to fetch modernizer stats from backend:', e);
+  }
+  
+  return stats;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // COGNITIVE ANALYZER
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export class CognitiveAnalyzer {
   private correlationId: string;
+  private backendStats: BackendStats | null = null;
 
   constructor(correlationId?: string) {
     this.correlationId = correlationId || crypto.randomUUID();
@@ -29,6 +108,7 @@ export class CognitiveAnalyzer {
   /**
    * Run full cognitive analysis to discover improvement opportunities
    * Skips insights that have recently been addressed (cooldown period)
+   * v2.1.0: Fetches backend stats first to bypass RLS issues
    */
   async analyze(): Promise<CognitiveInsight[]> {
     const insights: CognitiveInsight[] = [];
@@ -39,6 +119,15 @@ export class CognitiveAnalyzer {
     }, this.correlationId);
 
     try {
+      // ═══ FETCH BACKEND STATS FIRST (v2.1.0 — bypasses RLS) ═══
+      this.backendStats = await fetchBackendStats();
+      console.log('[SEBA] Backend stats loaded:', {
+        brain_healthy: this.backendStats.brain?.healthy,
+        brain_memories: this.backendStats.brain?.metrics?.total_memories,
+        brain_hot: this.backendStats.brain?.tiers?.hot?.current,
+        modernizer_health: this.backendStats.modernizer?.system_health?.score,
+      });
+      
       // Load recently addressed insights for deduplication
       const recentlyAddressed = await this.getRecentlyAddressedInsights();
       
@@ -200,23 +289,41 @@ export class CognitiveAnalyzer {
 
   /**
    * Memory Analysis — Discover memory optimization opportunities
+   * v2.1.0: Uses backend stats from brain.status to bypass RLS
    */
   private async analyzeMemory(): Promise<CognitiveInsight[]> {
     const insights: CognitiveInsight[] = [];
 
     try {
-      // Get memory tier stats
-      const [hotResult, warmResult, coldResult] = await Promise.all([
-        supabase.from('brain_memory_hot').select('id', { count: 'exact', head: true }),
-        supabase.from('brain_memory_warm').select('id', { count: 'exact', head: true }),
-        supabase.from('brain_memory_cold').select('id', { count: 'exact', head: true }),
-      ]);
+      // Use backend stats if available (bypasses RLS)
+      const brainStats = this.backendStats?.brain;
+      
+      let hotCount = 0;
+      let warmCount = 0;
+      let coldCount = 0;
+      let needsTiering = false;
+      
+      if (brainStats) {
+        // Use backend stats (reliable, bypasses RLS)
+        hotCount = brainStats.tiers.hot.current;
+        warmCount = brainStats.tiers.warm.current;
+        coldCount = brainStats.tiers.cold.current;
+        needsTiering = brainStats.needs_tiering;
+        
+        console.log('[SEBA] Memory analysis using backend stats:', { hotCount, warmCount, coldCount, needsTiering });
+      } else {
+        // Fallback to direct DB queries (may fail with RLS)
+        const [hotResult, warmResult, coldResult] = await Promise.all([
+          supabase.from('brain_memory_hot').select('id', { count: 'exact', head: true }),
+          supabase.from('brain_memory_warm').select('id', { count: 'exact', head: true }),
+          supabase.from('brain_memory_cold').select('id', { count: 'exact', head: true }),
+        ]);
+        hotCount = hotResult.count || 0;
+        warmCount = warmResult.count || 0;
+        coldCount = coldResult.count || 0;
+      }
 
-      const hotCount = hotResult.count || 0;
-      const warmCount = warmResult.count || 0;
-      const coldCount = coldResult.count || 0;
-
-      // Check for hot tier overflow
+      // Check for hot tier overflow (>500 is overflow, >2000 is critical)
       if (hotCount > 500) {
         insights.push({
           id: crypto.randomUUID(),
@@ -232,53 +339,62 @@ export class CognitiveAnalyzer {
           created_at: new Date().toISOString(),
         });
       }
-
-      // Check for stale cold memories
-      const { data: staleCold } = await supabase
-        .from('brain_memory_cold')
-        .select('id')
-        .lt('value_score', 0.1)
-        .limit(100);
-
-      if (staleCold && staleCold.length > 50) {
+      
+      // Check for tier imbalance (needs tiering flag from backend)
+      if (needsTiering && !insights.some(i => i.title.includes('Memory Tier'))) {
         insights.push({
           id: crypto.randomUUID(),
           type: 'optimization',
           source_engine: 'memory',
-          title: 'Stale Cold Memories Detected',
-          description: `Found ${staleCold.length}+ cold memories with very low value scores. Consider pruning.`,
-          evidence: [`stale_count: ${staleCold.length}`, 'value_score < 0.1'],
-          confidence: 0.85,
-          actionability: 0.8,
-          urgency: 'low',
-          suggested_actions: ['Run brain.prune', 'Adjust decay rates'],
+          title: 'Memory Tier Rebalance Needed',
+          description: `Memory tiers are imbalanced. Hot: ${hotCount}, Warm: ${warmCount}, Cold: ${coldCount}.`,
+          evidence: [`needs_tiering: true`, `hot: ${hotCount}`, `warm: ${warmCount}`, `cold: ${coldCount}`],
+          confidence: 0.9,
+          actionability: 0.85,
+          urgency: 'medium',
+          suggested_actions: ['Run brain.tier', 'Enable auto-tiering'],
           created_at: new Date().toISOString(),
         });
       }
 
-      // Check for memory access patterns
-      const { data: recentAccess } = await supabase
-        .from('brain_memory_hot')
-        .select('access_count')
-        .order('access_count', { ascending: false })
-        .limit(10);
+      // Check for low memory density (not learning)
+      const totalMemories = hotCount + warmCount + coldCount;
+      if (totalMemories < 100) {
+        insights.push({
+          id: crypto.randomUUID(),
+          type: 'degradation',
+          source_engine: 'memory',
+          title: 'Low Memory Density',
+          description: `Only ${totalMemories} memories stored. Substrate inference quality is limited.`,
+          evidence: [`total_memories: ${totalMemories}`, 'recommended: 100+'],
+          confidence: 0.9,
+          actionability: 0.85,
+          urgency: 'medium',
+          suggested_actions: ['Run brain.learn with domain knowledge', 'Enable CLM continuous learning'],
+          created_at: new Date().toISOString(),
+        });
+      }
 
-      if (recentAccess && recentAccess.length > 0) {
-        const maxAccess = recentAccess[0]?.access_count || 0;
-        const avgAccess = recentAccess.reduce((a, m) => a + (m.access_count || 0), 0) / recentAccess.length;
+      // Check for stale cold memories (fallback to DB if needed)
+      if (!brainStats) {
+        const { data: staleCold } = await supabase
+          .from('brain_memory_cold')
+          .select('id')
+          .lt('value_score', 0.1)
+          .limit(100);
 
-        if (maxAccess > avgAccess * 10) {
+        if (staleCold && staleCold.length > 50) {
           insights.push({
             id: crypto.randomUUID(),
-            type: 'pattern',
+            type: 'optimization',
             source_engine: 'memory',
-            title: 'Hot Memory Access Concentration',
-            description: 'A small number of memories are accessed much more frequently than others.',
-            evidence: [`max_access: ${maxAccess}`, `avg_access: ${avgAccess.toFixed(1)}`],
-            confidence: 0.75,
-            actionability: 0.6,
+            title: 'Stale Cold Memories Detected',
+            description: `Found ${staleCold.length}+ cold memories with very low value scores. Consider pruning.`,
+            evidence: [`stale_count: ${staleCold.length}`, 'value_score < 0.1'],
+            confidence: 0.85,
+            actionability: 0.8,
             urgency: 'low',
-            suggested_actions: ['Consider caching hot paths', 'Analyze frequently accessed content'],
+            suggested_actions: ['Run brain.prune', 'Adjust decay rates'],
             created_at: new Date().toISOString(),
           });
         }
@@ -293,57 +409,97 @@ export class CognitiveAnalyzer {
 
   /**
    * Learning Analysis — Check learning efficiency
+   * v2.1.0: Uses backend stats from brain.status to check learning activity
    */
   private async analyzeLearning(): Promise<CognitiveInsight[]> {
     const insights: CognitiveInsight[] = [];
 
     try {
-      // Get recent learning events
-      const { data: learningEvents } = await supabase
-        .from('brain_events')
-        .select('*')
-        .eq('module', 'learning_engine')
-        .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
-        .order('created_at', { ascending: false })
-        .limit(50);
-
-      if (!learningEvents || learningEvents.length === 0) {
-        insights.push({
-          id: crypto.randomUUID(),
-          type: 'degradation',
-          source_engine: 'learning',
-          title: 'No Recent Learning Activity',
-          description: 'No learning events in the last 24 hours. The system may not be learning.',
-          evidence: ['learning_events_24h: 0'],
-          confidence: 0.9,
-          actionability: 0.8,
-          urgency: 'medium',
-          suggested_actions: ['Check CLM status', 'Run manual learning cycle'],
-          created_at: new Date().toISOString(),
-        });
-      } else {
-        // Check learning success rate
-        const successEvents = learningEvents.filter(e => e.outcome === 'success');
-        const successRate = successEvents.length / learningEvents.length;
-
-        if (successRate < 0.7) {
+      // Use backend stats for learning activity check
+      const brainStats = this.backendStats?.brain;
+      
+      // Check if learning is active from backend stats
+      if (brainStats) {
+        const learningCycles = brainStats.metrics.learning_cycles_24h;
+        const isLearning = brainStats.learning;
+        
+        if (!isLearning && learningCycles === 0) {
           insights.push({
             id: crypto.randomUUID(),
             type: 'degradation',
             source_engine: 'learning',
-            title: 'Low Learning Success Rate',
-            description: `Learning success rate is ${(successRate * 100).toFixed(1)}% (target: 70%+).`,
-            evidence: [
-              `success_count: ${successEvents.length}`,
-              `total_count: ${learningEvents.length}`,
-              `success_rate: ${(successRate * 100).toFixed(1)}%`,
-            ],
-            confidence: 0.85,
-            actionability: 0.7,
-            urgency: successRate < 0.5 ? 'high' : 'medium',
-            suggested_actions: ['Review failed learning attempts', 'Adjust learning thresholds'],
+            title: 'No Recent Learning Activity',
+            description: 'No learning cycles in the last 24 hours. The system may not be learning.',
+            evidence: ['learning_cycles_24h: 0', 'learning_active: false'],
+            confidence: 0.9,
+            actionability: 0.8,
+            urgency: 'medium',
+            suggested_actions: ['Check CLM status', 'Run manual learning cycle', 'Run brain.learn'],
             created_at: new Date().toISOString(),
           });
+        } else if (learningCycles < 5) {
+          insights.push({
+            id: crypto.randomUUID(),
+            type: 'optimization',
+            source_engine: 'learning',
+            title: 'Low Learning Frequency',
+            description: `Only ${learningCycles} learning cycles in 24 hours. Consider increasing frequency.`,
+            evidence: [`learning_cycles_24h: ${learningCycles}`, 'recommended: 5+'],
+            confidence: 0.8,
+            actionability: 0.7,
+            urgency: 'low',
+            suggested_actions: ['Enable CLM continuous learning', 'Increase learning cadence'],
+            created_at: new Date().toISOString(),
+          });
+        }
+      } else {
+        // Fallback: Get recent learning events from DB
+        const { data: learningEvents } = await supabase
+          .from('brain_events')
+          .select('*')
+          .eq('module', 'learning_engine')
+          .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
+          .order('created_at', { ascending: false })
+          .limit(50);
+
+        if (!learningEvents || learningEvents.length === 0) {
+          insights.push({
+            id: crypto.randomUUID(),
+            type: 'degradation',
+            source_engine: 'learning',
+            title: 'No Recent Learning Activity',
+            description: 'No learning events in the last 24 hours. The system may not be learning.',
+            evidence: ['learning_events_24h: 0'],
+            confidence: 0.9,
+            actionability: 0.8,
+            urgency: 'medium',
+            suggested_actions: ['Check CLM status', 'Run manual learning cycle'],
+            created_at: new Date().toISOString(),
+          });
+        } else {
+          // Check learning success rate
+          const successEvents = learningEvents.filter(e => e.outcome === 'success');
+          const successRate = successEvents.length / learningEvents.length;
+
+          if (successRate < 0.7) {
+            insights.push({
+              id: crypto.randomUUID(),
+              type: 'degradation',
+              source_engine: 'learning',
+              title: 'Low Learning Success Rate',
+              description: `Learning success rate is ${(successRate * 100).toFixed(1)}% (target: 70%+).`,
+              evidence: [
+                `success_count: ${successEvents.length}`,
+                `total_count: ${learningEvents.length}`,
+                `success_rate: ${(successRate * 100).toFixed(1)}%`,
+              ],
+              confidence: 0.85,
+              actionability: 0.7,
+              urgency: successRate < 0.5 ? 'high' : 'medium',
+              suggested_actions: ['Review failed learning attempts', 'Adjust learning thresholds'],
+              created_at: new Date().toISOString(),
+            });
+          }
         }
       }
 
