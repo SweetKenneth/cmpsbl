@@ -21,8 +21,9 @@ Creator & Lead Architect: Kenneth E. Sweet Jr.
 ORCID: https://orcid.org/0009-0001-4237-1243
 Role: Founder, Architect, Chief Cognitive Engineer
 Location: Palm Springs, California, USA
-Twitter: @promptfluid
 Contact: promptfluid@gmail.com
+Phone: (214) 548-0883
+Twitter: @promptfluid
 
 /* THANKS */
 
@@ -67,8 +68,9 @@ Dream: Memory consolidation engine
 
 /* COLOPHON */
 
-CMPSBL Substrate OS FNDTN v6.0.0
+CMPSBL Substrate OS v7.5.3 SYNERGY+ Epoch
 14 Core Modules • 260+ Terminal Commands
+147 Synergy Pipelines • 136+ Depot Capabilities
 WCAG 2.2 Accessibility via INCLUSIVE Module
 
 promptfluid® — AI That Flows.
@@ -179,7 +181,7 @@ export default function HumansTxt() {
         </div>
 
         {/* Philosophy Quote */}
-        <div className="mb-12 p-6 rounded-xl bg-gradient-to-br from-primary/5 to-violet-500/5 border border-primary/20 text-center">
+        <div className="mb-12 p-6 rounded-xl bg-gradient-to-br from-primary/5 to-accent/5 border border-primary/20 text-center">
           <Brain className="w-8 h-8 text-primary mx-auto mb-4" />
           <blockquote className="text-xl font-light italic mb-2">
             "Building the infrastructure layer for autonomous AI systems."
