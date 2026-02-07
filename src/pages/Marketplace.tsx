@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { openCheckoutRedirect } from "@/lib/checkout/checkoutRedirect";
 import { TEMPLATES, type Template } from "@/data/templates";
 import { MARKETPLACE_PRODUCTS, getTemplatePricing } from "@/config/marketplace-products";
 import { BUNDLES, TEMPLATE_STACKS, AGENCY_PACKS } from "@/config/marketplace-bundles";
@@ -160,11 +160,8 @@ export default function Marketplace() {
     trackPreview(template.id);
   };
 
-  const handleCheckout = async (type: 'os' | 'world_engine' | 'template' | 'bundle' | 'stack' | 'agency', template?: Template, itemId?: string, billingCycle?: 'monthly' | 'annual') => {
+  const handleCheckout = (type: 'os' | 'world_engine' | 'template' | 'bundle' | 'stack' | 'agency', template?: Template, itemId?: string, billingCycle?: 'monthly' | 'annual') => {
     setIsCheckingOut(true);
-
-    // Open the tab synchronously to avoid popup blockers
-    const checkoutWindow = window.open('about:blank', '_blank');
 
     try {
       let priceId: string;
@@ -183,7 +180,6 @@ export default function Marketplace() {
         productName = 'World Engine Complete';
         unitAmountUsd = Math.round(MARKETPLACE_PRODUCTS.world_engine.amount / 100);
       } else if (type === 'bundle' && itemId) {
-        // Find bundle by ID
         const bundle = BUNDLES.find(b => b.id === itemId);
         if (!bundle?.price_id || !bundle?.product_id) {
           throw new Error('Bundle pricing not configured');
@@ -193,7 +189,6 @@ export default function Marketplace() {
         productName = bundle.name;
         unitAmountUsd = bundle.bundlePrice ? Math.round(bundle.bundlePrice / 100) : undefined;
       } else if (type === 'stack' && itemId) {
-        // Find stack by ID
         const stack = TEMPLATE_STACKS.find(s => s.id === itemId);
         if (!stack?.price_id || !stack?.product_id) {
           throw new Error('Stack pricing not configured');
@@ -203,7 +198,6 @@ export default function Marketplace() {
         productName = stack.name;
         unitAmountUsd = stack.amount ? Math.round(stack.amount / 100) : undefined;
       } else if (type === 'agency' && itemId) {
-        // Find agency pack by ID — agency is subscription, no unit_amount_usd needed
         const pack = AGENCY_PACKS.find(p => p.id === itemId);
         if (!pack?.product_id) {
           throw new Error('Agency pack pricing not configured');
@@ -213,7 +207,6 @@ export default function Marketplace() {
           : pack.price_id_monthly!;
         productId = pack.product_id;
         productName = pack.name;
-        // Agency packs are subscriptions — don't pass unit_amount_usd
       } else if (template) {
         const pricing = getTemplatePricing(template.difficulty, template.id);
         priceId = pricing.price_id;
@@ -224,33 +217,21 @@ export default function Marketplace() {
         throw new Error("Invalid checkout parameters");
       }
 
-      const { data, error } = await supabase.functions.invoke('marketplace-checkout', {
+      openCheckoutRedirect({
+        fn: 'marketplace-checkout',
         body: {
           product_type: type,
           price_id: priceId,
           product_id: productId,
           template_name: productName,
           item_name: productName,
-          // Pass unit_amount_usd for one-time payments (enables price_data fallback)
           ...(unitAmountUsd && type !== 'agency' ? { unit_amount_usd: unitAmountUsd } : {}),
         },
       });
 
-      if (error) throw error;
-      if (!data?.url) throw new Error('No checkout URL returned');
-
-      if (checkoutWindow) {
-        checkoutWindow.opener = null;
-        checkoutWindow.location.href = data.url;
-      } else {
-        window.location.href = data.url;
-      }
-
-      toast.success('Opening Stripe Checkout...');
+      toast.success('Opening secure checkout…');
       setPreviewOpen(false);
     } catch (error) {
-      if (checkoutWindow) checkoutWindow.close();
-
       console.error('Checkout error:', error);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       toast.error(`Checkout failed: ${errorMessage}`);
