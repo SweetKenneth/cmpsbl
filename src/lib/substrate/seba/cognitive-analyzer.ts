@@ -132,8 +132,8 @@ export class CognitiveAnalyzer {
       const recentlyAddressed = await this.getRecentlyAddressedInsights();
 
       // ═══ MODERNIZER SCAN INSIGHTS (mobile-first, real backend proposals) ═══
-      const modernizerScanInsights = await this.analyzeModernizerScan();
-      insights.push(...modernizerScanInsights);
+      // NOTE: Modernizer scan insights are now generated via the core engines below.
+      // The previous analyzeModernizerScan() method was removed as redundant.
       
       // ═══ CORE ENGINES (Original 4) ═══
       // 1. Memory Analysis — Look for patterns in stored knowledge
