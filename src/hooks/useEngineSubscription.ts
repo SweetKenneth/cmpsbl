@@ -1,6 +1,7 @@
 /**
  * useEngineSubscription Hook
  * Manages engine subscription state and checkout
+ * v2.0.0 — Uses first-party redirect for reliable checkout
  */
 
 import { useState, useEffect, useCallback } from 'react';
@@ -81,6 +82,8 @@ export function useEngineSubscription() {
         return null;
       }
 
+      toast.info('Opening checkout...');
+
       const { data, error } = await supabase.functions.invoke('engine-checkout', {
         body: { tier, interval },
       });
@@ -88,8 +91,8 @@ export function useEngineSubscription() {
       if (error) throw error;
 
       if (data?.url) {
-        // Open checkout in new tab
-        window.open(data.url, '_blank');
+        // Navigate in same tab for reliable mobile experience
+        window.location.assign(data.url);
         return data.url;
       }
 

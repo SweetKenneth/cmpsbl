@@ -241,9 +241,10 @@ export default function TemplateAlley() {
                   onClick={() => openCheckoutRedirect({
                     fn: 'marketplace-checkout',
                     body: {
-                      item_type: 'template_generator',
-                      item_id: 'template-generator-v1',
-                      item_name: 'Template Generator',
+                      product_type: 'template_generator',
+                      price_id: 'price_1SyZufQ7FtTiAL4aN8eIsVXE',
+                      product_id: 'prod_TwSqj6y5PfMkPy',
+                      item_name: 'CMPSBL Template Generator',
                       unit_amount_usd: 19
                     }
                   })}
