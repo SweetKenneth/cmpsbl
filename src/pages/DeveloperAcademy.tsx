@@ -10,8 +10,10 @@ import { CertificationBadges } from '@/components/developer/CertificationBadges'
 import { AIToolsSuite } from '@/components/developer/AIToolsSuite';
 import { 
   BookOpen, TreeDeciduous, Box, Trophy, Sparkles, 
-  GraduationCap, Rocket
+  GraduationCap, Rocket, ArrowRight
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 
 const DeveloperAcademy = () => {
   return (
@@ -26,33 +28,33 @@ const DeveloperAcademy = () => {
         
         <main className="flex-grow">
           {/* Hero */}
-          <section className="relative py-16 border-b border-border/40 overflow-hidden">
+          <section className="relative py-12 md:py-16 border-b border-border/40 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5" />
             <div className="container mx-auto px-4 relative">
               <div className="max-w-3xl mx-auto text-center">
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm mb-6">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
                   <GraduationCap className="w-4 h-4" />
                   Interactive Learning Platform
                 </div>
-                <h1 className="text-4xl md:text-5xl font-bold mb-4">
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
                   Developer Academy
                 </h1>
-                <p className="text-xl text-muted-foreground mb-6">
+                <p className="text-lg md:text-xl text-muted-foreground mb-6">
                   Master the substrate through hands-on tutorials, earn certifications, 
                   and get AI-powered assistance while you build.
                 </p>
-                <div className="flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
+                <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-sm text-muted-foreground">
                   <div className="flex items-center gap-2">
                     <BookOpen className="w-4 h-4 text-primary" />
-                    5 Interactive Modules
+                    <span>5 Interactive Modules</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Trophy className="w-4 h-4 text-primary" />
-                    4 Certifications
+                    <span>4 Certifications</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Sparkles className="w-4 h-4 text-primary" />
-                    5 AI Tools
+                    <span>5 AI Tools</span>
                   </div>
                 </div>
               </div>
@@ -60,49 +62,49 @@ const DeveloperAcademy = () => {
           </section>
 
           {/* Main Content */}
-          <section className="py-12">
+          <section className="py-8 md:py-12">
             <div className="container mx-auto px-4">
-              <Tabs defaultValue="tutorial" className="space-y-8">
-                <TabsList className="grid w-full max-w-3xl mx-auto grid-cols-5 h-auto p-1">
-                  <TabsTrigger value="tutorial" className="flex flex-col gap-1 py-3">
+              <Tabs defaultValue="tutorial" className="space-y-6 md:space-y-8">
+                <TabsList className="grid w-full max-w-3xl mx-auto grid-cols-5 h-auto p-1.5 bg-muted/50">
+                  <TabsTrigger value="tutorial" className="flex flex-col gap-1 py-2.5 md:py-3 data-[state=active]:bg-background">
                     <BookOpen className="w-4 h-4" />
-                    <span className="text-xs">Tutorial</span>
+                    <span className="text-[10px] md:text-xs">Tutorial</span>
                   </TabsTrigger>
-                  <TabsTrigger value="skills" className="flex flex-col gap-1 py-3">
+                  <TabsTrigger value="skills" className="flex flex-col gap-1 py-2.5 md:py-3 data-[state=active]:bg-background">
                     <TreeDeciduous className="w-4 h-4" />
-                    <span className="text-xs">Skill Tree</span>
+                    <span className="text-[10px] md:text-xs">Skills</span>
                   </TabsTrigger>
-                  <TabsTrigger value="sandbox" className="flex flex-col gap-1 py-3">
+                  <TabsTrigger value="sandbox" className="flex flex-col gap-1 py-2.5 md:py-3 data-[state=active]:bg-background">
                     <Box className="w-4 h-4" />
-                    <span className="text-xs">Sandbox</span>
+                    <span className="text-[10px] md:text-xs">Sandbox</span>
                   </TabsTrigger>
-                  <TabsTrigger value="badges" className="flex flex-col gap-1 py-3">
+                  <TabsTrigger value="badges" className="flex flex-col gap-1 py-2.5 md:py-3 data-[state=active]:bg-background">
                     <Trophy className="w-4 h-4" />
-                    <span className="text-xs">Badges</span>
+                    <span className="text-[10px] md:text-xs">Badges</span>
                   </TabsTrigger>
-                  <TabsTrigger value="ai-tools" className="flex flex-col gap-1 py-3">
+                  <TabsTrigger value="ai-tools" className="flex flex-col gap-1 py-2.5 md:py-3 data-[state=active]:bg-background">
                     <Sparkles className="w-4 h-4" />
-                    <span className="text-xs">AI Tools</span>
+                    <span className="text-[10px] md:text-xs">AI Tools</span>
                   </TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="tutorial">
+                <TabsContent value="tutorial" className="mt-6">
                   <InteractiveTutorial />
                 </TabsContent>
 
-                <TabsContent value="skills">
+                <TabsContent value="skills" className="mt-6">
                   <SkillTreeProgress />
                 </TabsContent>
 
-                <TabsContent value="sandbox">
+                <TabsContent value="sandbox" className="mt-6">
                   <SandboxEnvironment />
                 </TabsContent>
 
-                <TabsContent value="badges">
+                <TabsContent value="badges" className="mt-6">
                   <CertificationBadges />
                 </TabsContent>
 
-                <TabsContent value="ai-tools">
+                <TabsContent value="ai-tools" className="mt-6">
                   <AIToolsSuite />
                 </TabsContent>
               </Tabs>
@@ -110,22 +112,29 @@ const DeveloperAcademy = () => {
           </section>
 
           {/* CTA */}
-          <section className="py-16 border-t border-border/40">
+          <section className="py-12 md:py-16 border-t border-border/40 bg-gradient-to-b from-background to-muted/20">
             <div className="container mx-auto px-4 text-center">
               <div className="max-w-2xl mx-auto">
-                <Rocket className="w-12 h-12 mx-auto mb-4 text-primary" />
-                <h2 className="text-2xl font-bold mb-4">Ready to Build?</h2>
-                <p className="text-muted-foreground mb-6">
+                <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-primary/10 flex items-center justify-center">
+                  <Rocket className="w-8 h-8 text-primary" />
+                </div>
+                <h2 className="text-2xl md:text-3xl font-bold mb-4">Ready to Build?</h2>
+                <p className="text-muted-foreground mb-8">
                   Complete the tutorials, earn your first certification, 
                   and start building production-ready agents.
                 </p>
-                <div className="flex flex-wrap justify-center gap-4">
-                  <a href="/devtools" className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors">
-                    Get API Key
-                  </a>
-                  <a href="/docs" className="inline-flex items-center gap-2 px-6 py-3 border border-border rounded-lg font-medium hover:bg-muted/50 transition-colors">
-                    Read Documentation
-                  </a>
+                <div className="flex flex-col sm:flex-row justify-center gap-3">
+                  <Button asChild size="lg">
+                    <Link to="/devtools">
+                      Get API Key
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Link>
+                  </Button>
+                  <Button asChild variant="outline" size="lg">
+                    <Link to="/docs">
+                      Read Documentation
+                    </Link>
+                  </Button>
                 </div>
               </div>
             </div>

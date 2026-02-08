@@ -3,10 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Textarea } from '@/components/ui/textarea';
-import { CheckCircle2, Play, ChevronRight, ChevronLeft, Code, BookOpen, Sparkles } from 'lucide-react';
+import { CheckCircle2, Play, ChevronRight, ChevronLeft, Code, BookOpen, Sparkles, Terminal, Copy, RotateCcw } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface TutorialStep {
   id: number;
@@ -131,17 +131,17 @@ export function InteractiveTutorial() {
 
   const runCode = async () => {
     setIsRunning(true);
-    setOutput('Running...\n');
+    setOutput('⏳ Executing...\n');
     
-    // Simulate code execution
-    await new Promise(r => setTimeout(r, 800));
+    // Simulate code execution with realistic delays
+    await new Promise(r => setTimeout(r, 800 + Math.random() * 400));
     
     const mockOutputs = [
-      'SDK initialized!\n✓ Connection verified',
-      'Memory stored: mem_a1b2c3d4\n✓ Indexed for retrieval',
-      '[0.92] User prefers dark mode\n[0.78] Last login: 2 days ago',
-      'Context tokens: 1,847\nMemories used: 12\n✓ Optimized for GPT-4',
-      '✓ Recall successful\nResults: 3 memories retrieved'
+      '✓ SDK initialized!\n✓ Connection verified\n✓ API key validated',
+      '✓ Memory stored: mem_a1b2c3d4\n✓ Indexed for semantic retrieval\n✓ Importance: 0.8 (high retention)',
+      '✓ Query executed in 23ms\n[0.92] User prefers dark mode\n[0.78] Last login: 2 days ago\n[0.65] Timezone: PST',
+      '✓ Context optimized for GPT-4\n  Tokens used: 1,847 / 2,000\n  Memories included: 12\n  Relevance threshold: 0.70',
+      '✓ Recall successful with retry logic\n  Attempts: 1\n  Results: 3 memories\n  Total time: 45ms'
     ];
     
     setOutput(mockOutputs[currentStep] || '✓ Code executed successfully');
@@ -163,22 +163,37 @@ export function InteractiveTutorial() {
           xp_amount: step.xpReward
         }
       });
-      toast.success(`+${step.xpReward} XP earned!`);
-    } catch (e) {
+      toast.success(`+${step.xpReward} XP earned!`, {
+        description: `Step ${currentStep + 1} completed`
+      });
+    } catch {
       // Continue even if tracking fails
+      toast.success(`+${step.xpReward} XP earned!`);
     }
 
     if (currentStep < TUTORIAL_STEPS.length - 1) {
-      setTimeout(() => setCurrentStep(prev => prev + 1), 500);
+      setTimeout(() => setCurrentStep(prev => prev + 1), 600);
     } else {
-      toast.success('🎉 Tutorial complete! You earned the SDK Basics badge.');
+      toast.success('🎉 Tutorial Complete!', {
+        description: 'You earned the SDK Fundamentals badge'
+      });
     }
+  };
+
+  const copyCode = () => {
+    navigator.clipboard.writeText(code);
+    toast.success('Code copied to clipboard');
+  };
+
+  const resetCode = () => {
+    setCode(step.starterCode);
+    setOutput('');
   };
 
   return (
     <div className="space-y-6">
       {/* Progress Header */}
-      <Card className="bg-gradient-to-r from-primary/10 to-accent/10 border-primary/20">
+      <Card className="bg-gradient-to-r from-primary/5 via-background to-accent/5 border-primary/20">
         <CardContent className="pt-6">
           <div className="flex items-center justify-between mb-4">
             <div>
@@ -190,64 +205,94 @@ export function InteractiveTutorial() {
                 Master the CMPSBL Substrate SDK in 5 interactive steps
               </p>
             </div>
-            <Badge variant="outline" className="text-lg px-4 py-2">
-              {completedSteps.size}/{TUTORIAL_STEPS.length} Complete
+            <Badge variant="outline" className="text-base px-4 py-2 border-primary/30">
+              <span className="text-primary font-bold">{completedSteps.size}</span>
+              <span className="text-muted-foreground">/{TUTORIAL_STEPS.length}</span>
             </Badge>
           </div>
-          <Progress value={progress} className="h-3" />
-          <div className="flex justify-between mt-2">
+          
+          <Progress value={progress} className="h-2 mb-4" />
+          
+          {/* Step indicators */}
+          <div className="flex justify-between gap-1">
             {TUTORIAL_STEPS.map((s, i) => (
               <button
                 key={s.id}
                 onClick={() => setCurrentStep(i)}
-                className={`flex items-center gap-1 text-xs transition-colors ${
-                  i === currentStep ? 'text-primary font-medium' : 
-                  completedSteps.has(i) ? 'text-green-500' : 'text-muted-foreground'
+                className={`flex-1 flex flex-col items-center gap-1.5 py-2 px-1 rounded-lg transition-all ${
+                  i === currentStep 
+                    ? 'bg-primary/10' 
+                    : completedSteps.has(i) 
+                      ? 'hover:bg-muted/50' 
+                      : 'hover:bg-muted/30 opacity-60'
                 }`}
               >
-                {completedSteps.has(i) ? (
-                  <CheckCircle2 className="w-4 h-4" />
-                ) : (
-                  <span className="w-4 h-4 rounded-full border flex items-center justify-center text-[10px]">
-                    {i + 1}
-                  </span>
-                )}
-                <span className="hidden sm:inline">{s.title}</span>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+                  completedSteps.has(i) 
+                    ? 'bg-primary text-primary-foreground' 
+                    : i === currentStep 
+                      ? 'bg-primary/20 text-primary border-2 border-primary' 
+                      : 'bg-muted text-muted-foreground'
+                }`}>
+                  {completedSteps.has(i) ? (
+                    <CheckCircle2 className="w-4 h-4" />
+                  ) : (
+                    <span className="text-sm font-semibold">{i + 1}</span>
+                  )}
+                </div>
+                <span className={`text-xs hidden sm:block truncate max-w-full ${
+                  i === currentStep ? 'text-primary font-medium' : 
+                  completedSteps.has(i) ? 'text-foreground' : 'text-muted-foreground'
+                }`}>
+                  {s.title}
+                </span>
               </button>
             ))}
           </div>
         </CardContent>
       </Card>
 
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid lg:grid-cols-2 gap-6">
         {/* Instructions Panel */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <span className="bg-primary text-primary-foreground w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">
+        <Card className="flex flex-col">
+          <CardHeader className="pb-4">
+            <div className="flex items-center gap-3">
+              <div className="bg-primary text-primary-foreground w-10 h-10 rounded-xl flex items-center justify-center text-lg font-bold shadow-lg">
                 {currentStep + 1}
-              </span>
-              {step.title}
-            </CardTitle>
+              </div>
+              <div>
+                <CardTitle className="text-lg">{step.title}</CardTitle>
+                <Badge variant="secondary" className="mt-1">+{step.xpReward} XP</Badge>
+              </div>
+            </div>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="flex-1 flex flex-col gap-4">
             <p className="text-muted-foreground">{step.description}</p>
             
-            <div className="bg-muted/50 p-4 rounded-lg">
-              <h4 className="font-medium text-sm mb-2">📋 Instructions</h4>
+            <div className="bg-muted/50 p-4 rounded-xl border border-border/50">
+              <h4 className="font-semibold text-sm mb-2 flex items-center gap-2">
+                <Terminal className="w-4 h-4 text-primary" />
+                Instructions
+              </h4>
               <p className="text-sm">{step.instruction}</p>
             </div>
 
-            <div className="bg-yellow-500/10 border border-yellow-500/20 p-4 rounded-lg">
-              <h4 className="font-medium text-sm mb-2 flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-yellow-500" />
+            <div className="bg-accent/30 p-4 rounded-xl border border-accent/50">
+              <h4 className="font-semibold text-sm mb-2 flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-accent-foreground" />
                 Hint
               </h4>
               <p className="text-sm text-muted-foreground">{step.hint}</p>
             </div>
 
-            <div className="flex items-center justify-between pt-4">
-              <Badge variant="secondary">+{step.xpReward} XP</Badge>
+            {step.expectedOutput && (
+              <div className="bg-muted/30 p-4 rounded-xl border border-border/50">
+                <h4 className="font-medium text-sm mb-2">Expected Output</h4>
+                <code className="text-xs text-primary font-mono">{step.expectedOutput}</code>
+              </div>
+            )}
+
+            <div className="flex items-center justify-between pt-2 mt-auto">
               <div className="flex gap-2">
                 <Button
                   variant="outline"
@@ -256,6 +301,7 @@ export function InteractiveTutorial() {
                   onClick={() => setCurrentStep(prev => prev - 1)}
                 >
                   <ChevronLeft className="w-4 h-4" />
+                  Previous
                 </Button>
                 <Button
                   variant="outline"
@@ -263,6 +309,7 @@ export function InteractiveTutorial() {
                   disabled={currentStep === TUTORIAL_STEPS.length - 1}
                   onClick={() => setCurrentStep(prev => prev + 1)}
                 >
+                  Next
                   <ChevronRight className="w-4 h-4" />
                 </Button>
               </div>
@@ -271,20 +318,33 @@ export function InteractiveTutorial() {
         </Card>
 
         {/* Code Editor Panel */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Code className="w-5 h-5" />
-              Code Editor
-            </CardTitle>
+        <Card className="flex flex-col">
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center gap-2">
+                <Code className="w-5 h-5 text-primary" />
+                Code Editor
+              </CardTitle>
+              <div className="flex gap-1">
+                <Button variant="ghost" size="icon" onClick={copyCode} className="h-8 w-8">
+                  <Copy className="w-4 h-4" />
+                </Button>
+                <Button variant="ghost" size="icon" onClick={resetCode} className="h-8 w-8">
+                  <RotateCcw className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <Textarea
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              className="font-mono text-sm min-h-[200px] bg-background"
-              placeholder="Write your code here..."
-            />
+          <CardContent className="flex-1 flex flex-col gap-4">
+            <div className="relative flex-1 min-h-[200px]">
+              <textarea
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                className="absolute inset-0 w-full h-full font-mono text-sm p-4 bg-muted/30 border border-border rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-primary/50"
+                placeholder="Write your code here..."
+                spellCheck={false}
+              />
+            </div>
 
             <div className="flex gap-2">
               <Button onClick={runCode} disabled={isRunning} className="flex-1">
@@ -308,12 +368,22 @@ export function InteractiveTutorial() {
               </Button>
             </div>
 
-            {output && (
-              <div className="bg-black/90 text-green-400 p-4 rounded-lg font-mono text-sm">
-                <div className="text-muted-foreground text-xs mb-2">// Output</div>
-                <pre className="whitespace-pre-wrap">{output}</pre>
-              </div>
-            )}
+            <AnimatePresence mode="wait">
+              {output && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="bg-card border border-border rounded-xl p-4 font-mono text-sm"
+                >
+                  <div className="text-xs text-muted-foreground mb-2 flex items-center gap-2">
+                    <Terminal className="w-3 h-3" />
+                    Console Output
+                  </div>
+                  <pre className="whitespace-pre-wrap text-primary">{output}</pre>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </CardContent>
         </Card>
       </div>
