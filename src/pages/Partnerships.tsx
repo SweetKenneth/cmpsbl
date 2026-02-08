@@ -26,10 +26,10 @@ export default function Partnerships() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Partnerships — PromptFluid Ecosystem & Integrations"
-        description="Strategic partnerships and integrations powering the PromptFluid ecosystem. Join our network of AI providers and infrastructure partners."
-        canonical="https://promptfluid.com/partnerships"
-        keywords={['PromptFluid partnerships', 'AI integrations', 'technology partners', 'ecosystem']}
+        title="Partnerships — CMPSBL Ecosystem & Integrations"
+        description="Strategic partnerships and integrations powering the CMPSBL cognitive infrastructure. Join our network of AI providers and infrastructure partners."
+        canonical="https://cmpsbl.com/partnerships"
+        keywords={['CMPSBL partnerships', 'AI integrations', 'technology partners', 'ecosystem']}
       />
 
       <PublicNav />

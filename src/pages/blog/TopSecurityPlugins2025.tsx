@@ -116,7 +116,7 @@ const TopSecurityPlugins2025 = () => {
           <section className="mb-16">
             <h2 className="text-3xl font-bold mb-6 flex items-center gap-3 text-foreground">
               <Zap className="h-8 w-8 text-primary" />
-              Upcoming: RCKBL (Rockable)
+              Upcoming: CMPSBL Defense Module
             </h2>
             
             <div className="bg-card border border-primary/30 rounded-lg p-8">
@@ -125,7 +125,7 @@ const TopSecurityPlugins2025 = () => {
                 <span className="font-medium">Pending WordPress.org Approval</span>
               </div>
               <p className="text-muted-foreground leading-relaxed mb-6">
-                RCKBL (Rockable) is our upcoming AI-powered WordPress security plugin focused on behavioral bot detection. 
+                The CMPSBL Defense Module is our AI-powered WordPress security plugin focused on behavioral bot detection. 
                 Currently pending WordPress.org review.
               </p>
               <ul className="space-y-2 text-muted-foreground mb-6">

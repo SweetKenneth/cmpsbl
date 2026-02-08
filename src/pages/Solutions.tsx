@@ -10,77 +10,77 @@ import securityImage from "@/assets/hero/neon-defense-shield.jpg";
 export default function Solutions() {
   const solutions = [
     {
-      icon: Shield,
-      name: "RCKBL Defense",
-      tagline: "Enterprise Website Security",
-      description: "Bot defense born from reverse-engineering stealth technology. Behavioral analysis and real-time threat blocking for WordPress and enterprise sites.",
-      features: ["AI-powered bot detection", "Behavioral fingerprinting", "Real-time threat blocking", "WordPress plugin ready", "Adaptive CAPTCHA system", "Device reputation scoring"],
-      metrics: ["Live", "WordPress Ready", "Enterprise Grade"],
-      link: "https://promptfluid.com/projects/defense"
-    },
-    {
-      icon: Globe,
-      name: "RNDRBL Browser",
-      tagline: "Accessibility-First Technology",
-      description: "Browser technology with integrated control panel. Enables users with disabilities to customize their experience in real-time.",
-      features: ["Real-time layover controls", "Disability-specific features", "Universal compatibility", "Browser extension", "Customizable interface", "Instant adjustments"],
-      metrics: ["Running", "Inclusive", "Universal"],
-      link: "https://RNDRBL.com"
-    },
-    {
-      icon: Globe,
-      name: "PTCHBL Accessibility",
-      tagline: "Free WCAG Scanner",
-      description: "Free WCAG scanner with AI-powered fixes. Detects and repairs 45 of 86 accessibility functions. Inclusion without paywalls.",
-      features: ["Free WCAG 2.2 scanning", "AI-powered auto-fixes", "45/86 compliance functions", "No signup required", "Instant results", "Developer-friendly reports"],
-      metrics: ["100% Free", "AI-Powered", "WCAG 2.2"],
-      link: "https://PTCHBL.com"
-    },
-    {
       icon: Brain,
-      name: "Cascade AI",
-      tagline: "Autonomous Dreaming AI",
-      description: "First documented autonomous AI with memory reflection cycles—dreaming. Published and verified on Zenodo and OSF.",
-      features: ["Memory reflection cycles", "Autonomous learning", "Internal simulation", "Pattern synthesis", "Self-improvement loops", "Documented & verified"],
-      metrics: ["World First", "Documented", "Deployed"],
-      link: "https://promptfluid.com/projects/brain"
+      name: "CMPSBL Substrate",
+      tagline: "Cognitive Infrastructure OS",
+      description: "The 14-module cognitive operating system. Persistent memory, self-learning, multi-provider routing, and self-evolution — all in one platform.",
+      features: ["14 integrated modules", "Persistent memory system", "Self-learning Dream Cycles", "Multi-provider AI routing", "Self-evolution capabilities", "160,000+ lines production code"],
+      metrics: ["v8.0.0 SYNERGY+", "Live", "Enterprise Ready"],
+      link: "/substrate"
+    },
+    {
+      icon: Shield,
+      name: "Defense Module",
+      tagline: "Enterprise Security Layer",
+      description: "AI-powered threat detection and bot defense. Behavioral analysis, real-time blocking, and adaptive protection for web applications.",
+      features: ["AI-powered bot detection", "Behavioral fingerprinting", "Real-time threat blocking", "WordPress integration", "Adaptive CAPTCHA system", "Device reputation scoring"],
+      metrics: ["Live", "WordPress Ready", "Enterprise Grade"],
+      link: "/projects/defense"
     },
     {
       icon: Zap,
-      name: "AI Nexus",
-      tagline: "Multi-Provider Gateway",
-      description: "Unified routing across 20+ LLM providers. Intelligent load balancing, automatic failover, and cost optimization.",
-      features: ["20+ AI providers", "Automatic fallbacks", "Cost optimization", "Smart routing", "Load balancing", "Zero-downtime switching"],
-      metrics: ["20+ Providers", "Running", "Optimized"],
-      link: "https://promptfluid.com/blog/ai-triad-intelligent-routing"
+      name: "Engine Marketplace",
+      tagline: "Production-Ready Orchestrations",
+      description: "62 engines and 20 meta-engines. Governed, versioned, enterprise-grade cognitive orchestrations with subscription access.",
+      features: ["62 production engines", "20 meta-engines", "Governed & versioned", "Enterprise support", "Real-time monitoring", "SLA guarantees"],
+      metrics: ["82 Total Engines", "OEM Licensed", "Production Ready"],
+      link: "/engines"
+    },
+    {
+      icon: Brain,
+      name: "Persistent Memory",
+      tagline: "AI Memory That Lasts",
+      description: "Add persistent memory to any agent in under an hour. No rewrites, no new frameworks — your AI just stops forgetting.",
+      features: ["Drop-in integration", "Multi-scope memory", "Automatic compression", "Cross-session context", "Developer-friendly API", "Free tier available"],
+      metrics: ["FREE", "1-Hour Setup", "Any Agent"],
+      link: "/persistent-memory"
+    },
+    {
+      icon: Globe,
+      name: "Multi-Provider Routing",
+      tagline: "Zero Vendor Lock-In",
+      description: "Intelligent routing across 6+ AI providers. Automatic failover, cost optimization, and quality-based selection.",
+      features: ["6+ AI providers", "Automatic failbacks", "Cost optimization", "Smart routing", "Load balancing", "Zero-downtime switching"],
+      metrics: ["6+ Providers", "Running", "Optimized"],
+      link: "/blog/ai-triad-intelligent-routing"
     },
     {
       icon: Code,
-      name: "SPLCBL Validator",
-      tagline: "WordPress Plugin Checker",
-      description: "Pre-submission validator for WordPress plugins. Scans against WordPress.org requirements before official review.",
-      features: ["Pre-submission scanning", "Common issue detection", "Compliance checking", "Free for developers", "Instant results", "Detailed reports"],
-      metrics: ["Free", "Developer Tool", "Pre-Launch"],
-      link: "https://SPLCBL.com"
+      name: "CodeLab",
+      tagline: "Interactive Development Environment",
+      description: "Execute and test capabilities in real-time. Live REPL, template remixing, and instant feedback for rapid development.",
+      features: ["Live code execution", "Template remixing", "Real-time preview", "API testing", "Export capabilities", "Free for all users"],
+      metrics: ["FREE", "Real-Time", "Developer Tool"],
+      link: "/codelab"
     },
     {
       icon: Lock,
-      name: "XCTBL Space",
-      tagline: "Lore-Wrapped SaaS Suite",
-      description: "Immersive SaaS with fictional world-building. Custom OAuth connecting real tools across narrative experiences.",
-      features: ["Custom OAuth system", "Interconnected tools", "Fictional interface", "Real functionality", "Multi-world navigation", "Entertainment layer"],
-      metrics: ["Live", "Experimental", "Functional"],
-      link: "https://XCTBL.com"
+      name: "Enterprise Substrate",
+      tagline: "Self-Hosted Control",
+      description: "Full enterprise deployment with governance, compliance, and dedicated support. Your infrastructure, our cognitive layer.",
+      features: ["Self-hosted option", "Full governance", "Compliance ready", "Dedicated support", "Custom SLAs", "White-label available"],
+      metrics: ["Enterprise", "Self-Hosted", "Compliant"],
+      link: "/substrate/licensing"
     }
   ];
 
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Solutions — CMPSBL Products & Services"
-        description="Explore CMPSBL's product suite: RCKBL security, PTCHBL accessibility, Cascade AI, AI Nexus, and more. Real systems that ship."
+        title="Solutions — CMPSBL Cognitive Infrastructure Products"
+        description="Explore CMPSBL's v8.0.0 product suite: Cognitive Substrate, Defense Module, Engine Marketplace, Persistent Memory, and Enterprise solutions."
         canonical="https://cmpsbl.com/solutions"
-        keywords={['AI solutions', 'WordPress security', 'accessibility tools', 'AI gateway', 'autonomous AI', 'CMPSBL']}
+        keywords={['cognitive infrastructure', 'AI memory', 'enterprise AI', 'engine marketplace', 'persistent memory', 'CMPSBL']}
       />
       
       <PublicNav />
@@ -141,21 +141,12 @@ export default function Solutions() {
                         </Badge>
                       ))}
                     </div>
-                    {solution.link.startsWith('http') ? (
-                      <a href={solution.link} target="_blank" rel="noopener noreferrer">
-                        <Button className="bg-primary hover:bg-primary/90">
-                          Visit Site
-                          <ArrowRight className="w-4 h-4 ml-2" />
-                        </Button>
-                      </a>
-                    ) : (
-                      <Link to={solution.link}>
-                        <Button className="bg-primary hover:bg-primary/90">
-                          Learn More
-                          <ArrowRight className="w-4 h-4 ml-2" />
-                        </Button>
-                      </Link>
-                    )}
+                    <Link to={solution.link}>
+                      <Button className="bg-primary hover:bg-primary/90">
+                        Learn More
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </Button>
+                    </Link>
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold mb-4 text-foreground">Key Features</h3>

@@ -48,10 +48,10 @@ export default function RCKBLHome() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="RCKBL Bot Sniper — AI-Powered WordPress Security"
+        title="Defense Module — AI-Powered Bot Protection | CMPSBL"
         description="Stop sophisticated bot attacks with AI-powered behavioral analysis. Credential stuffing, spam bots, and automated attacks blocked in real-time."
-        canonical="https://promptfluid.com/bot-sniper"
-        keywords={['WordPress security', 'bot detection', 'AI security', 'credential stuffing prevention']}
+        canonical="https://cmpsbl.com/bot-sniper"
+        keywords={['WordPress security', 'bot detection', 'AI security', 'CMPSBL Defense']}
       />
 
       <PublicNav />
@@ -176,7 +176,7 @@ export default function RCKBLHome() {
           
           <div className="grid md:grid-cols-2 gap-6">
             <Card className="p-8 bg-card border-border">
-              <h3 className="text-2xl font-bold mb-4 text-foreground">RCKBL Base</h3>
+              <h3 className="text-2xl font-bold mb-4 text-foreground">Defense Base</h3>
               <div className="flex items-baseline gap-2 mb-6">
                 <span className="text-4xl font-bold text-foreground">$9</span>
                 <span className="text-muted-foreground">/month</span>

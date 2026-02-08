@@ -11,9 +11,9 @@ export default function Verify() {
   return (
     <>
       <SEO
-        title="PromptFluid Verify — AI Plugin Certification & Automated Fixes"
+        title="CMPSBL Verify — AI Plugin Certification & Automated Fixes"
         description="Run real WordPress plugin scans in an isolated sandbox, receive AI fixes, and download patched builds instantly."
-        canonical="https://promptfluid.com/cluster/verify-worlds-first-ai-plugin-certification"
+        canonical="https://cmpsbl.com/cluster/verify-worlds-first-ai-plugin-certification"
         image={ogImage}
         type="article"
         keywords={[
@@ -37,7 +37,7 @@ export default function Verify() {
           "datePublished": "2025-11-04",
           "author": {
             "@type": "Organization",
-            "name": "PromptFluid"
+            "name": "CMPSBL"
           }
         })}
       </script>
