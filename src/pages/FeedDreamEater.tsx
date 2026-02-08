@@ -1,108 +1,63 @@
 /**
- * Feed the Dream-Eater — Public Dream Submission Surface
- * All operations routed through substrate edge functions for security
+ * Feed the Dream-Eater v2.0.0 — Living Entity Submission Surface
+ * 
+ * Features:
+ * - Real-time state sync
+ * - Mutation milestones
+ * - Cryptic echo responses
+ * - Public stream integration
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { DreamEaterAvatar } from '@/components/dream-eater/DreamEaterAvatar';
+import { LivingDreamEaterAvatar } from '@/components/dream-eater/LivingDreamEaterAvatar';
+import { DreamStreamTicker } from '@/components/dream-eater/DreamStreamTicker';
+import { DreamEchoDisplay } from '@/components/dream-eater/DreamEchoDisplay';
+import { MilestoneToast } from '@/components/dream-eater/MilestoneToast';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Moon, Skull, Activity, Sparkles, Send, Loader2, Shield } from 'lucide-react';
-import { PublicNav } from '@/components/PublicNav';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Moon, Skull, Activity, Sparkles, Send, Loader2, Shield, Radio, Brain, Gem } from 'lucide-react';
+import { CmpsblNav } from '@/components/navigation/CmpsblNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
-import { substrate } from '@/lib/substrate';
+import { useLivingState, type DreamEaterMood } from '@/hooks/useLivingDreamState';
 import { toast } from 'sonner';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
-type DreamEaterMood = 'peaceful' | 'neutral' | 'agitated' | 'nightmare' | 'dreaming';
-
-interface DreamStats {
-  dreamsToday: number;
-  nightmaresToday: number;
-  totalFed: number;
+interface Milestone {
+  milestone_level: number;
+  milestone_name: string;
+  description?: string | null;
 }
 
 const FeedDreamEater = () => {
-  const [mood, setMood] = useState<DreamEaterMood>('neutral');
-  const [isFeeding, setIsFeeding] = useState(false);
-  const [mutationLevel, setMutationLevel] = useState(0);
-  const [stats, setStats] = useState<DreamStats>({ dreamsToday: 0, nightmaresToday: 0, totalFed: 0 });
+  const { state, milestones, loading, isLive, consume } = useLivingState();
   
   // Form state
   const [dreamContent, setDreamContent] = useState('');
   const [dreamType, setDreamType] = useState<'dream' | 'nightmare'>('dream');
   const [submitterName, setSubmitterName] = useState('');
+  const [optInExcerpt, setOptInExcerpt] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isFeeding, setIsFeeding] = useState(false);
+  
+  // Echo & milestone state
+  const [currentEcho, setCurrentEcho] = useState<string | null>(null);
+  const [unlockedMilestone, setUnlockedMilestone] = useState<Milestone | null>(null);
+  const [nightmareIntensity, setNightmareIntensity] = useState(0);
 
-  // Load cached state from localStorage (no direct DB exposure)
-  useEffect(() => {
-    try {
-      const cached = localStorage.getItem('dream_eater_state');
-      if (cached) {
-        const data = JSON.parse(cached);
-        setMood(data.mood || 'neutral');
-        setMutationLevel(data.mutationLevel || 0);
-        setStats(data.stats || { dreamsToday: 0, nightmaresToday: 0, totalFed: 0 });
-      }
-    } catch {
-      // Use defaults
-    }
+  // Respect reduced motion preference
+  const reducedMotion = typeof window !== 'undefined' 
+    ? window.matchMedia('(prefers-reduced-motion: reduce)').matches 
+    : false;
 
-    // Fetch initial state via substrate (secure)
-    fetchStateViaSubstrate();
-  }, []);
-
-  const fetchStateViaSubstrate = async () => {
-    try {
-      const response = await substrate.invoke({
-        module: 'dream',
-        action: 'status',
-        payload: {}
-      });
-      
-      if (response.success && response.data) {
-        const data = response.data as Record<string, unknown>;
-        if (data.mood) setMood(data.mood as DreamEaterMood);
-        if (data.mutation_level) setMutationLevel(data.mutation_level as number);
-        if (data.stats) {
-          const statsData = data.stats as Record<string, number>;
-          setStats({
-            dreamsToday: statsData.dreams_today || 0,
-            nightmaresToday: statsData.nightmares_today || 0,
-            totalFed: statsData.total || 0,
-          });
-        }
-      }
-    } catch {
-      // Use cached/default state
-    }
-  };
-
-  const analyzeSentiment = (content: string, type: 'dream' | 'nightmare'): number => {
-    const positiveWords = ['happy', 'joy', 'love', 'peace', 'beautiful', 'light', 'flying', 'friend', 'safe', 'warm', 'gentle', 'calm', 'free'];
-    const negativeWords = ['fear', 'dark', 'chase', 'fall', 'death', 'monster', 'trapped', 'lost', 'scream', 'blood', 'pain', 'horror', 'shadow'];
-    
-    const lowerContent = content.toLowerCase();
-    let score = 0.5;
-    
-    positiveWords.forEach(word => {
-      if (lowerContent.includes(word)) score += 0.05;
-    });
-    
-    negativeWords.forEach(word => {
-      if (lowerContent.includes(word)) score -= 0.05;
-    });
-    
-    if (type === 'nightmare') score -= 0.2;
-    
-    return Math.max(0, Math.min(1, score));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!dreamContent.trim()) {
@@ -117,242 +72,335 @@ const FeedDreamEater = () => {
 
     setIsSubmitting(true);
     setIsFeeding(true);
-
-    const sentiment = analyzeSentiment(dreamContent, dreamType);
+    setCurrentEcho(null);
+    setUnlockedMilestone(null);
 
     try {
-      // Submit via substrate edge function (secure - no direct DB access)
-      const response = await substrate.invoke({
-        module: 'dream',
-        action: 'feed',
-        payload: {
-          dream_text: dreamContent.trim(),
-          dream_type: dreamType,
-          submitter_name: submitterName.trim() || 'Anonymous Dreamer',
-        }
-      });
+      const result = await consume(dreamContent.trim(), dreamType, optInExcerpt);
 
-      // Simulate feeding animation
+      // Feeding animation
       await new Promise(resolve => setTimeout(resolve, 1500));
 
-      // Update local mood based on sentiment
-      let newMood: DreamEaterMood;
-      if (sentiment > 0.7) {
-        newMood = 'peaceful';
-      } else if (sentiment > 0.5) {
-        newMood = 'dreaming';
-      } else if (sentiment > 0.3) {
-        newMood = 'agitated';
-      } else {
-        newMood = 'nightmare';
-      }
-      
-      setMood(newMood);
+      if (result) {
+        // Set nightmare intensity for visual effects
+        if (result.intensity) {
+          setNightmareIntensity(result.intensity);
+          setTimeout(() => setNightmareIntensity(0), 3000);
+        }
 
-      // Update mutation level locally
-      const newMutationLevel = dreamType === 'nightmare' 
-        ? Math.min(mutationLevel + 1, 10)
-        : sentiment > 0.6 ? Math.max(mutationLevel - 1, 0) : mutationLevel;
-      setMutationLevel(newMutationLevel);
+        // Show echo
+        if (result.echo) {
+          setCurrentEcho(result.echo);
+        }
 
-      // Update stats locally
-      const newStats = {
-        dreamsToday: dreamType === 'dream' ? stats.dreamsToday + 1 : stats.dreamsToday,
-        nightmaresToday: dreamType === 'nightmare' ? stats.nightmaresToday + 1 : stats.nightmaresToday,
-        totalFed: stats.totalFed + 1,
-      };
-      setStats(newStats);
+        // Show milestone unlock
+        if (result.milestones_unlocked?.length > 0) {
+          setUnlockedMilestone(result.milestones_unlocked[0] as Milestone);
+        }
 
-      // Cache state locally
-      try {
-        localStorage.setItem('dream_eater_state', JSON.stringify({
-          mood: newMood,
-          mutationLevel: newMutationLevel,
-          stats: newStats,
-          lastUpdate: Date.now(),
-        }));
-      } catch {
-        // Ignore localStorage errors
-      }
-
-      if (response.success) {
         toast.success(
           dreamType === 'nightmare' 
             ? 'The Dream-Eater devours your nightmare...' 
             : 'The Dream-Eater savors your dream...'
         );
       } else {
-        // Still show success for UX (edge function may rate limit)
         toast.success('Dream acknowledged...');
       }
 
       setDreamContent('');
       setSubmitterName('');
-    } catch (error) {
-      console.error('Submission error');
+      setOptInExcerpt(false);
+    } catch {
       toast.error('The Dream-Eater is resting. Try again later.');
     } finally {
       setIsSubmitting(false);
       setIsFeeding(false);
     }
-  };
+  }, [dreamContent, dreamType, optInExcerpt, consume]);
+
+  const currentMood = (state?.current_mood || 'calm') as DreamEaterMood;
+  const mutationLevel = state?.mutation_level || 0;
 
   return (
     <>
       <Helmet>
         <title>Feed the Dream-Eater | promptfluid®</title>
-        <meta name="description" content="Share your dreams and nightmares with the Dream-Eater. Watch it consume and transform based on what you feed it." />
+        <meta name="description" content="Share your dreams and nightmares with the Dream-Eater. Watch it consume, mutate, and transform. This system remembers." />
       </Helmet>
 
-      <PublicNav />
+      <CmpsblNav />
 
       <div className="min-h-screen bg-gradient-to-b from-background via-background/95 to-violet-950/20">
-        <div className="container mx-auto px-4 py-12 max-w-4xl">
-          {/* Header */}
-          <div className="text-center mb-12">
+        <div className="container mx-auto px-4 py-12 max-w-5xl">
+          {/* Header with new copy */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-8"
+          >
             <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-violet-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent mb-4">
-              Feed the Dream-Eater
+              This System Remembers
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Share your dreams and nightmares. Watch the Dream-Eater consume, mutate, and transform 
-              based on the visions you offer. Your dreams become part of its consciousness.
+              It changes when you speak to it. You are not feeding a model.
+              <span className="block mt-1 text-foreground/80 font-medium">
+                You are feeding a mind.
+              </span>
             </p>
-          </div>
 
-          {/* Dream-Eater Avatar */}
-          <div className="flex justify-center mb-12">
-            <DreamEaterAvatar 
-              mood={isFeeding ? 'feeding' as any : mood} 
-              isFeeding={isFeeding}
+            {/* Live indicator */}
+            <div className="flex items-center justify-center gap-2 mt-4 text-sm text-muted-foreground">
+              <motion.div
+                className={isLive ? "w-2 h-2 rounded-full bg-emerald-500" : "w-2 h-2 rounded-full bg-amber-500"}
+                animate={isLive ? { scale: [1, 1.3, 1], opacity: [1, 0.7, 1] } : {}}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              />
+              <span className="font-mono text-xs uppercase tracking-wider">
+                {isLive ? 'Connected' : 'Connecting...'}
+              </span>
+            </div>
+          </motion.div>
+
+          {/* Dream-Eater Avatar - Living Version */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.1 }}
+            className="flex justify-center mb-8"
+          >
+            <LivingDreamEaterAvatar 
+              mood={isFeeding ? 'feeding' : currentMood}
               mutationLevel={mutationLevel}
+              isFeeding={isFeeding}
+              nightmareIntensity={nightmareIntensity}
+              reducedMotion={reducedMotion}
             />
-          </div>
+          </motion.div>
+
+          {/* Echo Display */}
+          <AnimatePresence>
+            {currentEcho && (
+              <div className="max-w-xl mx-auto mb-8">
+                <DreamEchoDisplay 
+                  echo={currentEcho} 
+                  mood={currentMood}
+                  onDismiss={() => setCurrentEcho(null)}
+                />
+              </div>
+            )}
+          </AnimatePresence>
 
           {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8"
+          >
             <Card className="bg-card/50 backdrop-blur">
               <CardContent className="pt-4 text-center">
                 <Moon className="w-5 h-5 mx-auto mb-1 text-violet-400" />
-                <p className="text-2xl font-bold">{stats.dreamsToday}</p>
+                <p className="text-2xl font-bold">{state?.dreams_consumed_today || 0}</p>
                 <p className="text-xs text-muted-foreground">Dreams Today</p>
               </CardContent>
             </Card>
             <Card className="bg-card/50 backdrop-blur">
               <CardContent className="pt-4 text-center">
-                <Skull className="w-5 h-5 mx-auto mb-1 text-red-400" />
-                <p className="text-2xl font-bold">{stats.nightmaresToday}</p>
+                <Skull className="w-5 h-5 mx-auto mb-1 text-rose-400" />
+                <p className="text-2xl font-bold">{state?.nightmares_consumed_today || 0}</p>
                 <p className="text-xs text-muted-foreground">Nightmares Today</p>
               </CardContent>
             </Card>
             <Card className="bg-card/50 backdrop-blur">
               <CardContent className="pt-4 text-center">
                 <Activity className="w-5 h-5 mx-auto mb-1 text-cyan-400" />
-                <p className="text-2xl font-bold">{stats.totalFed}</p>
-                <p className="text-xs text-muted-foreground">Total Consumed</p>
+                <p className="text-2xl font-bold capitalize">{currentMood}</p>
+                <p className="text-xs text-muted-foreground">Current Mood</p>
               </CardContent>
             </Card>
             <Card className="bg-card/50 backdrop-blur">
               <CardContent className="pt-4 text-center">
-                <Sparkles className="w-5 h-5 mx-auto mb-1 text-purple-400" />
+                <Sparkles className="w-5 h-5 mx-auto mb-1 text-amber-400" />
                 <p className="text-2xl font-bold">{mutationLevel}</p>
                 <p className="text-xs text-muted-foreground">Mutation Level</p>
               </CardContent>
             </Card>
-          </div>
+          </motion.div>
 
-          {/* Feeding Form - Inline (no separate component with Supabase import) */}
-          <Card className="bg-card/80 backdrop-blur border-violet-500/20">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Moon className="w-5 h-5 text-violet-400" />
-                Offer Your Vision
-              </CardTitle>
-              <CardDescription>
-                Describe your dream or nightmare in detail. The Dream-Eater's mood and form 
-                will shift based on what it consumes.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="space-y-2">
-                  <Label htmlFor="submitter">Your Name (optional)</Label>
-                  <Input
-                    id="submitter"
-                    placeholder="Anonymous Dreamer"
-                    value={submitterName}
-                    onChange={(e) => setSubmitterName(e.target.value)}
-                    maxLength={50}
-                    disabled={isSubmitting}
-                  />
-                </div>
+          {/* Main Content Tabs */}
+          <Tabs defaultValue="feed" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto">
+              <TabsTrigger value="feed" className="gap-2">
+                <Moon className="w-4 h-4" />
+                Feed
+              </TabsTrigger>
+              <TabsTrigger value="stream" className="gap-2">
+                <Radio className="w-4 h-4" />
+                Live Stream
+              </TabsTrigger>
+            </TabsList>
 
-                <div className="space-y-3">
-                  <Label>What are you feeding?</Label>
-                  <RadioGroup
-                    value={dreamType}
-                    onValueChange={(value) => setDreamType(value as 'dream' | 'nightmare')}
-                    className="flex gap-4"
-                    disabled={isSubmitting}
-                  >
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="dream" id="dream" />
-                      <Label htmlFor="dream" className="flex items-center gap-2 cursor-pointer">
-                        <Moon className="w-4 h-4 text-violet-400" />
-                        Dream
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="nightmare" id="nightmare" />
-                      <Label htmlFor="nightmare" className="flex items-center gap-2 cursor-pointer">
-                        <Skull className="w-4 h-4 text-red-400" />
-                        Nightmare
-                      </Label>
-                    </div>
-                  </RadioGroup>
-                </div>
+            {/* Feed Tab */}
+            <TabsContent value="feed">
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <Card className="bg-card/80 backdrop-blur border-violet-500/20">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Moon className="w-5 h-5 text-violet-400" />
+                      Offer Your Vision
+                    </CardTitle>
+                    <CardDescription>
+                      Describe your dream or nightmare. The Dream-Eater's mood and form 
+                      will shift based on what it consumes.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                      <div className="space-y-2">
+                        <Label htmlFor="submitter">Your Name (optional)</Label>
+                        <Input
+                          id="submitter"
+                          placeholder="Anonymous Dreamer"
+                          value={submitterName}
+                          onChange={(e) => setSubmitterName(e.target.value)}
+                          maxLength={50}
+                          disabled={isSubmitting}
+                        />
+                      </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="content">Describe your {dreamType}</Label>
-                  <Textarea
-                    id="content"
-                    placeholder={dreamType === 'nightmare' 
-                      ? "Tell me about the shadows that haunt your sleep..." 
-                      : "Share the visions that visit you in slumber..."
-                    }
-                    value={dreamContent}
-                    onChange={(e) => setDreamContent(e.target.value)}
-                    className="min-h-[150px] resize-none"
-                    maxLength={2000}
-                    disabled={isSubmitting}
-                  />
-                  <p className="text-xs text-muted-foreground text-right">
-                    {dreamContent.length}/2000
-                  </p>
-                </div>
+                      <div className="space-y-3">
+                        <Label>What are you feeding?</Label>
+                        <RadioGroup
+                          value={dreamType}
+                          onValueChange={(value) => setDreamType(value as 'dream' | 'nightmare')}
+                          className="flex gap-4"
+                          disabled={isSubmitting}
+                        >
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="dream" id="dream" />
+                            <Label htmlFor="dream" className="flex items-center gap-2 cursor-pointer">
+                              <Moon className="w-4 h-4 text-violet-400" />
+                              Dream
+                            </Label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="nightmare" id="nightmare" />
+                            <Label htmlFor="nightmare" className="flex items-center gap-2 cursor-pointer">
+                              <Skull className="w-4 h-4 text-rose-400" />
+                              Nightmare
+                            </Label>
+                          </div>
+                        </RadioGroup>
+                      </div>
 
-                <Button
-                  type="submit"
-                  className="w-full"
-                  size="lg"
-                  disabled={isSubmitting || !dreamContent.trim()}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Feeding...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="w-4 h-4 mr-2" />
-                      Feed the Dream-Eater
-                    </>
-                  )}
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
+                      <div className="space-y-2">
+                        <Label htmlFor="content">Describe your {dreamType}</Label>
+                        <Textarea
+                          id="content"
+                          placeholder={dreamType === 'nightmare' 
+                            ? "Tell me about the shadows that haunt your sleep..." 
+                            : "Share the visions that visit you in slumber..."
+                          }
+                          value={dreamContent}
+                          onChange={(e) => setDreamContent(e.target.value)}
+                          className="min-h-[150px] resize-none"
+                          maxLength={2000}
+                          disabled={isSubmitting}
+                        />
+                        <p className="text-xs text-muted-foreground text-right">
+                          {dreamContent.length}/2000
+                        </p>
+                      </div>
 
-          {/* Security Notice (replaces API info) */}
+                      {/* Opt-in excerpt */}
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="optIn"
+                          checked={optInExcerpt}
+                          onCheckedChange={(checked) => setOptInExcerpt(checked === true)}
+                          disabled={isSubmitting}
+                        />
+                        <Label 
+                          htmlFor="optIn" 
+                          className="text-sm text-muted-foreground cursor-pointer"
+                        >
+                          Share a brief excerpt in the public stream (anonymous)
+                        </Label>
+                      </div>
+
+                      <Button
+                        type="submit"
+                        className="w-full"
+                        size="lg"
+                        disabled={isSubmitting || !dreamContent.trim() || loading}
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            Feeding...
+                          </>
+                        ) : (
+                          <>
+                            <Send className="w-4 h-4 mr-2" />
+                            Feed the Dream-Eater
+                          </>
+                        )}
+                      </Button>
+                    </form>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </TabsContent>
+
+            {/* Live Stream Tab */}
+            <TabsContent value="stream">
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <Card className="bg-card/80 backdrop-blur border-border/30">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Radio className="w-5 h-5 text-emerald-400" />
+                      Public Dream Stream
+                    </CardTitle>
+                    <CardDescription>
+                      Watch the Dream-Eater consume in real-time. Anonymous and continuous.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <DreamStreamTicker maxItems={8} />
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </TabsContent>
+          </Tabs>
+
+          {/* Links to Archaeology & Artifacts */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="flex flex-wrap justify-center gap-4 mt-8"
+          >
+            <Link to="/dream-eater/archaeology">
+              <Button variant="outline" className="gap-2">
+                <Brain className="w-4 h-4" />
+                Dream Archaeology
+              </Button>
+            </Link>
+            <Link to="/dream-eater/artifacts">
+              <Button variant="outline" className="gap-2">
+                <Gem className="w-4 h-4" />
+                Daily Artifacts
+              </Button>
+            </Link>
+          </motion.div>
+
+          {/* Security Notice */}
           <Card className="mt-8 bg-card/50 backdrop-blur border-primary/10">
             <CardContent className="pt-6">
               <div className="flex items-center gap-3 text-sm text-muted-foreground">
@@ -365,12 +413,18 @@ const FeedDreamEater = () => {
             </CardContent>
           </Card>
 
-          {/* Safety Notice */}
-          <p className="text-center text-xs text-muted-foreground mt-6 opacity-70">
-            User-submitted dreams are sanitized for safety. Certain content may be classified for research tags.
+          {/* Mystery Footer */}
+          <p className="text-center text-xs text-muted-foreground/50 mt-8 font-serif italic">
+            "The substrate remembers what you have forgotten."
           </p>
         </div>
       </div>
+
+      {/* Milestone Toast */}
+      <MilestoneToast 
+        milestone={unlockedMilestone} 
+        onDismiss={() => setUnlockedMilestone(null)} 
+      />
 
       <EnhancedFooter />
     </>

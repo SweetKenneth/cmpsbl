@@ -49,6 +49,8 @@ import NotFound from "./pages/NotFound";
 const Auth = lazy(() => import("./pages/Auth"));
 const Decode = lazy(() => import("./pages/Decode"));
 const FeedDreamEater = lazy(() => import("./pages/FeedDreamEater"));
+const DreamArchaeology = lazy(() => import("./pages/dream-eater/DreamArchaeology"));
+const DreamArtifacts = lazy(() => import("./pages/dream-eater/DreamArtifacts"));
 const Blog = lazy(() => import("./pages/Blog"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
@@ -244,6 +246,8 @@ const App = () => {
                         <Route path="/" element={<Explore />} />
                         <Route path="/decode" element={<Decode />} />
                         <Route path="/feed-dream-eater" element={<FeedDreamEater />} />
+                        <Route path="/dream-eater/archaeology" element={<DreamArchaeology />} />
+                        <Route path="/dream-eater/artifacts" element={<DreamArtifacts />} />
                         <Route path="/blog" element={<Blog />} />
                         <Route path="/investors" element={<InvestorsPublic />} />
                         <Route path="/substrate" element={<SubstrateDashboard />} />
