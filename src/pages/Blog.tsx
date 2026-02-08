@@ -144,7 +144,7 @@ export default function Blog() {
     },
     {
       title: "Top Security Plugins 2025",
-      excerpt: "Comprehensive comparison of WordPress security plugins, featuring RCKBL.",
+      excerpt: "Comprehensive comparison of WordPress security plugins and AI-powered defense.",
       href: "/blog/top-security-plugins-2025",
       category: "Security",
       date: "2025-01-10",
@@ -260,10 +260,10 @@ export default function Blog() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Blog — PromptFluid AI & Security Insights"
-        description="Research and insights on AI security, autonomous systems, WordPress protection, and intelligent orchestration."
-        canonical="https://promptfluid.com/blog"
-        keywords={['AI security blog', 'WordPress security', 'AI automation', 'cybersecurity research']}
+        title="Blog — CMPSBL Research & Insights"
+        description="Research and insights on cognitive infrastructure, AI memory, autonomous systems, and intelligent orchestration from the CMPSBL team."
+        canonical="https://cmpsbl.com/blog"
+        keywords={['AI research', 'cognitive infrastructure', 'AI memory', 'autonomous AI', 'CMPSBL']}
       />
       
       <PublicNav />

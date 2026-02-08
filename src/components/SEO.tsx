@@ -77,15 +77,15 @@ interface SEOProps {
 }
 
 export function SEO({
-  title = 'promptfluid® — Cognitive Orchestration Substrate',
-  description = 'promptfluid is a cognitive orchestration substrate that provides routing, memory, learning cycles, observability, defense, and execution coordination for AI systems. Model-agnostic. Provider-agnostic. Commodity cloud.',
-  canonical = 'https://promptfluid.com',
-  image = 'https://promptfluid.com/og-default.jpg',
+  title = 'CMPSBL® — Cognitive Infrastructure for AI',
+  description = 'CMPSBL is the cognitive infrastructure layer for AI applications. Persistent memory, self-learning, multi-provider routing, and self-evolution. 14 integrated modules, 269+ capabilities.',
+  canonical = 'https://cmpsbl.com',
+  image = 'https://cmpsbl.com/og-default.jpg',
   type = 'website',
   author = 'Kenneth E Sweet Jr',
   publishedTime,
   modifiedTime,
-  keywords = ['cognitive orchestration', 'AI substrate', 'AI routing', 'AI memory', 'learning cycles', 'observability', 'AI defense', 'model-agnostic', 'provider-agnostic'],
+  keywords = ['cognitive infrastructure', 'AI memory', 'AI substrate', 'persistent memory', 'self-learning AI', 'multi-provider routing', 'CMPSBL'],
   noindex = false,
   breadcrumbs,
   faq,
@@ -93,43 +93,43 @@ export function SEO({
   video,
   howTo
 }: SEOProps) {
-  const siteName = 'promptfluid';
-  const twitterHandle = '@promptfluid';
-  const fullTitle = title.includes('promptfluid') ? title : `${title} | ${siteName}`;
+  const siteName = 'CMPSBL';
+  const twitterHandle = '@cmpsbl';
+  const fullTitle = title.includes('CMPSBL') ? title : `${title} | ${siteName}`;
   const currentDate = new Date().toISOString();
 
   // Organization Schema
   const organizationSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    '@id': 'https://promptfluid.com/#organization',
-    name: 'promptfluid',
-    alternateName: ['promptfluid substrate', 'promptfluid®'],
-    url: 'https://promptfluid.com',
+    '@id': 'https://cmpsbl.com/#organization',
+    name: 'CMPSBL',
+    alternateName: ['CMPSBL Substrate', 'CMPSBL®', 'Composable'],
+    url: 'https://cmpsbl.com',
     logo: {
       '@type': 'ImageObject',
-      '@id': 'https://promptfluid.com/#logo',
-      url: 'https://promptfluid.com/logo.png',
-      contentUrl: 'https://promptfluid.com/logo.png',
+      '@id': 'https://cmpsbl.com/#logo',
+      url: 'https://cmpsbl.com/logo.png',
+      contentUrl: 'https://cmpsbl.com/logo.png',
       width: 512,
       height: 512,
-      caption: 'promptfluid logo'
+      caption: 'CMPSBL logo'
     },
     image: {
       '@type': 'ImageObject',
-      url: 'https://promptfluid.com/og-default.jpg',
+      url: 'https://cmpsbl.com/og-default.jpg',
       width: 1200,
       height: 630
     },
-    description: 'Cognitive orchestration substrate for AI systems. Model-agnostic. Provider-agnostic. Commodity cloud.',
+    description: 'Cognitive infrastructure layer for AI applications. Persistent memory, self-learning, multi-provider routing.',
     foundingDate: '2009',
-    slogan: 'Cognitive Orchestration Substrate',
+    slogan: 'Where Machines Learn To Think',
     founder: {
       '@type': 'Person',
       '@id': 'https://cmpsbl.com/#founder',
       name: 'Kenneth E Sweet Jr',
       jobTitle: 'Founder',
-      email: 'PromptFluid@gmail.com',
+      email: 'Dev@CMPSBL.com',
       url: 'https://cmpsbl.com/about'
     },
     address: {
@@ -140,30 +140,29 @@ export function SEO({
       addressCountry: 'US'
     },
     sameAs: [
-      'https://twitter.com/promptfluid',
-      'https://x.com/promptfluid',
-      'https://linkedin.com/company/promptfluid',
-      'https://github.com/promptfluid'
+      'https://twitter.com/cmpsbl',
+      'https://x.com/cmpsbl',
+      'https://linkedin.com/company/cmpsbl',
+      'https://github.com/cmpsbl'
     ],
     contactPoint: [
       {
         '@type': 'ContactPoint',
         contactType: 'general',
-        email: 'PromptFluid@gmail.com',
-        telephone: '+1-214-548-0883',
+        email: 'Dev@CMPSBL.com',
+        telephone: '+1-760-358-4324',
         availableLanguage: ['English'],
         areaServed: 'Worldwide'
       }
     ],
     knowsAbout: [
-      'Cognitive Orchestration',
-      'AI Routing',
+      'Cognitive Infrastructure',
       'AI Memory Systems',
-      'Learning Cycles',
-      'Observability',
-      'AI Defense',
-      'Model-Agnostic AI',
-      'Provider-Agnostic AI'
+      'Persistent Memory',
+      'Self-Learning AI',
+      'Multi-Provider Routing',
+      'AI Orchestration',
+      'Enterprise AI'
     ],
     areaServed: 'Worldwide'
   };
@@ -172,19 +171,19 @@ export function SEO({
   const websiteSchema = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    '@id': 'https://promptfluid.com/#website',
+    '@id': 'https://cmpsbl.com/#website',
     name: siteName,
-    alternateName: 'promptfluid substrate',
-    url: 'https://promptfluid.com',
+    alternateName: 'CMPSBL Substrate',
+    url: 'https://cmpsbl.com',
     description: description,
     inLanguage: 'en-US',
-    publisher: { '@id': 'https://promptfluid.com/#organization' },
+    publisher: { '@id': 'https://cmpsbl.com/#organization' },
     potentialAction: [
       {
         '@type': 'SearchAction',
         target: {
           '@type': 'EntryPoint',
-          urlTemplate: 'https://promptfluid.com/blog?q={search_term_string}'
+          urlTemplate: 'https://cmpsbl.com/blog?q={search_term_string}'
         },
         'query-input': 'required name=search_term_string'
       }
@@ -207,8 +206,8 @@ export function SEO({
       height: 630
     },
     inLanguage: 'en-US',
-    isPartOf: { '@id': 'https://promptfluid.com/#website' },
-    about: { '@id': 'https://promptfluid.com/#organization' },
+    isPartOf: { '@id': 'https://cmpsbl.com/#website' },
+    about: { '@id': 'https://cmpsbl.com/#organization' },
     primaryImageOfPage: {
       '@type': 'ImageObject',
       url: image
@@ -219,7 +218,7 @@ export function SEO({
       author: {
         '@type': 'Person',
         name: author,
-        url: 'https://promptfluid.com/about'
+        url: 'https://cmpsbl.com/about'
       }
     }),
     mainEntityOfPage: {
@@ -236,13 +235,13 @@ export function SEO({
   const softwareSchema = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
-    '@id': 'https://promptfluid.com/#software',
-    name: 'promptfluid substrate',
+    '@id': 'https://cmpsbl.com/#software',
+    name: 'CMPSBL Substrate',
     applicationCategory: 'DeveloperApplication',
-    applicationSubCategory: 'Cognitive Orchestration Substrate',
+    applicationSubCategory: 'Cognitive Infrastructure Layer',
     operatingSystem: 'Web Browser',
     browserRequirements: 'Requires JavaScript',
-    softwareVersion: 'v2026.01',
+    softwareVersion: 'v8.0.0',
     screenshot: image,
     offers: {
       '@type': 'Offer',
@@ -250,17 +249,17 @@ export function SEO({
       priceCurrency: 'USD',
       availability: 'https://schema.org/InStock'
     },
-    description: 'Cognitive orchestration substrate for AI systems with routing, memory, learning cycles, observability, and defense.',
+    description: 'Cognitive infrastructure layer for AI applications with persistent memory, self-learning, multi-provider routing, and self-evolution.',
     featureList: [
+      'Persistent memory system',
+      'Self-learning Dream Cycles',
       'Multi-provider AI routing',
-      'Dual-tier memory architecture',
-      'Autonomous learning cycles',
-      'Real-time observability',
-      'Behavioral threat detection',
-      'Model-agnostic design'
+      '14 integrated modules',
+      '269+ capabilities',
+      'Enterprise-ready'
     ],
-    author: { '@id': 'https://promptfluid.com/#organization' },
-    provider: { '@id': 'https://promptfluid.com/#organization' }
+    author: { '@id': 'https://cmpsbl.com/#organization' },
+    provider: { '@id': 'https://cmpsbl.com/#organization' }
   };
 
   // Breadcrumb Schema
@@ -296,13 +295,13 @@ export function SEO({
     name: product.name,
     description: description,
     image: image,
-    brand: { '@id': 'https://promptfluid.com/#organization' },
+    brand: { '@id': 'https://cmpsbl.com/#organization' },
     offers: {
       '@type': 'Offer',
       price: product.price || '0',
       priceCurrency: product.currency || 'USD',
       availability: `https://schema.org/${product.availability || 'InStock'}`,
-      seller: { '@id': 'https://promptfluid.com/#organization' }
+      seller: { '@id': 'https://cmpsbl.com/#organization' }
     },
     ...(product.rating && {
       aggregateRating: {
@@ -323,7 +322,7 @@ export function SEO({
     uploadDate: video.uploadDate,
     duration: video.duration,
     embedUrl: video.embedUrl,
-    publisher: { '@id': 'https://promptfluid.com/#organization' }
+    publisher: { '@id': 'https://cmpsbl.com/#organization' }
   } : null;
 
   // HowTo Schema
@@ -360,9 +359,9 @@ export function SEO({
     author: {
       '@type': 'Person',
       name: author,
-      url: 'https://promptfluid.com/about'
+      url: 'https://cmpsbl.com/about'
     },
-    publisher: { '@id': 'https://promptfluid.com/#organization' },
+    publisher: { '@id': 'https://cmpsbl.com/#organization' },
     mainEntityOfPage: {
       '@type': 'WebPage',
       '@id': canonical
@@ -379,14 +378,14 @@ export function SEO({
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords.join(', ')} />
       <meta name="author" content={author} />
-      <meta name="publisher" content="promptfluid" />
-      <meta name="copyright" content="© 2009-2026 promptfluid®" />
+      <meta name="publisher" content="CMPSBL" />
+      <meta name="copyright" content="© 2009-2026 CMPSBL®" />
       <link rel="canonical" href={canonical} />
       
       {/* Performance Hints */}
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      <link rel="dns-prefetch" href="https://promptfluid.com" />
+      <link rel="dns-prefetch" href="https://cmpsbl.com" />
       
       {/* Viewport & Mobile */}
       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
@@ -396,7 +395,7 @@ export function SEO({
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-      <meta name="apple-mobile-web-app-title" content="promptfluid" />
+      <meta name="apple-mobile-web-app-title" content="CMPSBL" />
       
       {/* Open Graph */}
       <meta property="og:type" content={type === 'article' ? 'article' : 'website'} />
@@ -422,7 +421,7 @@ export function SEO({
       <meta name="twitter:image:alt" content={fullTitle} />
       <meta name="twitter:site" content={twitterHandle} />
       <meta name="twitter:creator" content={twitterHandle} />
-      <meta name="twitter:domain" content="promptfluid.com" />
+      <meta name="twitter:domain" content="cmpsbl.com" />
       
       {/* Article-specific */}
       {type === 'article' && publishedTime && (
