@@ -55,6 +55,7 @@ export function EnhancedFooter() {
       title: "Standards",
       links: [
         { name: "Namespace", href: "/namespace" },
+        { name: "Foundations", href: "/foundations" },
         { name: "llms.txt", href: "/llms-txt" },
         { name: "humans.txt", href: "/humans-txt" },
         { name: "Changelog", href: "/changelog" },

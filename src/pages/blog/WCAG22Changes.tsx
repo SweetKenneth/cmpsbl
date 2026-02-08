@@ -1,5 +1,6 @@
 import { ArrowLeft, CheckCircle, AlertTriangle, Smartphone, Eye, Brain as BrainIcon, ExternalLink } from "lucide-react";
 import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { SEO } from "@/components/SEO";
 import { Link } from "react-router-dom";
 import heroImage from "@/assets/blog/wcag-2-2-wordpress-changes.jpg";
@@ -255,6 +256,8 @@ export default function WCAG22WordPressChanges() {
             </div>
           </div>
         </article>
+        
+        <EnhancedFooter />
       </div>
     </>
   );
