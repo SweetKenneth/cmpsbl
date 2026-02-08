@@ -1,12 +1,13 @@
 /**
  * Capability Depot — FREE Exploration Layer
  * Atomic, stateless building blocks — ALL UNLOCKED
- * v8.0.0 SYNERGY+ — No pricing, no checkout, all 269 capabilities free
+ * v8.0.0 SYNERGY+ — No pricing, no checkout, all capabilities free
  */
 
 import { useState, useMemo, lazy, Suspense } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { useMetric } from '@/stores/publicMetricsStore';
 import { 
   Search, 
   Filter, 
@@ -79,6 +80,9 @@ export default function CapabilitiesDepotPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showDisclaimer, setShowDisclaimer] = useState(false);
   const [selectedCapability, setSelectedCapability] = useState<CapabilityArtifact | null>(null);
+  
+  // Centralized metrics
+  const capabilitiesCount = useMetric('capabilitiesCount');
   
   // Memoize expensive calculations
   const categoryStats = useMemo(() => getCategoryStats(), []);

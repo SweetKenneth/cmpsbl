@@ -9,13 +9,14 @@ import heroImage from "@/assets/hero/neon-data-center.jpg";
 import earthWindowImage from "@/assets/hero/neon-dream-cosmos.jpg";
 import founderPhoto from "@/assets/founder-kenneth-sweet.png";
 export default function About() {
+  // v8.0.0 — Current CMPSBL product portfolio
   const products = [
-    { icon: Shield, name: "RCKBL", description: "Complete website defense against bots and threats" },
-    { icon: Eye, name: "RNDRBL", description: "Accessibility browser with layover controls" },
-    { icon: Accessibility, name: "PTCHBL", description: "Free WCAG scanner with AI-powered fixes" },
-    { icon: Wrench, name: "SPLCBL", description: "WordPress plugin compliance validator" },
-    { icon: Brain, name: "Cascade", description: "Autonomous AI with dreaming cycles" },
-    { icon: Server, name: "AI Nexus", description: "Multi-provider AI routing gateway" },
+    { icon: Brain, name: "CMPSBL Substrate", description: "14-module cognitive orchestration OS with persistent memory" },
+    { icon: Shield, name: "Defense Module", description: "Enterprise-grade threat detection and bot protection" },
+    { icon: Eye, name: "Vision Module", description: "Full observability and system introspection layer" },
+    { icon: Server, name: "Nexus Gateway", description: "Multi-provider AI routing with BYOK architecture" },
+    { icon: Accessibility, name: "Clarity Scanner", description: "WCAG accessibility scanning with AI remediation" },
+    { icon: Zap, name: "Engine Marketplace", description: "Production-ready cognitive orchestrations" },
   ];
 
   return (
@@ -128,9 +129,9 @@ export default function About() {
       {/* Shipped Products */}
       <section className="py-16 px-4">
         <div className="container mx-auto max-w-6xl">
-          <h2 className="text-3xl font-bold mb-4 text-foreground">Shipped Products</h2>
+          <h2 className="text-3xl font-bold mb-4 text-foreground">The Substrate</h2>
           <p className="text-muted-foreground mb-10 text-lg">
-            Six live systems. Real, operational, and independently verifiable.
+            14 integrated modules. 147 synergy pipelines. Production-ready cognitive infrastructure.
           </p>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -147,7 +148,7 @@ export default function About() {
 
           <div className="mt-12 bg-card border border-border rounded-lg p-6 md:p-8">
             <p className="text-lg text-foreground/90 leading-relaxed">
-              <span className="font-semibold">100+ projects shipped</span> over 15 years—sites, apps, web apps, and enterprise software. We design from concept to working software to polished enterprise-grade systems. <span className="text-muted-foreground">We ship real systems.</span>
+              <span className="font-semibold">v8.0.0 SYNERGY+ Epoch</span> — 160,000+ lines of production code. 269 capabilities, 125 custom executors, and a self-evolving architecture that improves itself overnight. <span className="text-muted-foreground">The substrate that thinks.</span>
             </p>
           </div>
         </div>
@@ -197,9 +198,9 @@ export default function About() {
           <div className="space-y-6">
             {[
               { year: "2009", event: "Started building software—sites, apps, and tools for clients" },
-              { year: "2024", event: "PromptFluid founded. Cascade development begins." },
-              { year: "2025", event: "Six products live: RCKBL, RNDRBL, PTCHBL, SPLCBL, Cascade, AI Nexus" },
-              { year: "Now", event: "Seeking seed investment to scale infrastructure" }
+              { year: "2024", event: "PromptFluid founded. CMPSBL substrate development begins." },
+              { year: "2025", event: "v8.0.0 SYNERGY+ Epoch — 14 modules, 147 pipelines, Engine Marketplace" },
+              { year: "Now", event: "Production infrastructure serving developers and enterprises" }
             ].map((milestone, index) => (
               <div key={index} className="flex items-start gap-4">
                 <div className="flex-shrink-0 w-20 text-primary font-bold text-lg">{milestone.year}</div>

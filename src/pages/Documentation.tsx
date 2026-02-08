@@ -1,3 +1,8 @@
+/**
+ * Documentation Hub — v8.0.0 SYNERGY+ Epoch
+ * Complete developer documentation for CMPSBL cognitive substrate
+ */
+
 import { Link } from "react-router-dom";
 import { BookOpen, Code, Zap, Shield, Database, FileText, ArrowRight, Key, Package, Globe, Bot, Sparkles, Plug } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -7,14 +12,19 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { SEO } from "@/components/SEO";
+import { useMetric } from "@/stores/publicMetricsStore";
 import heroImage from "@/assets/hero-substrate-neural.jpg";
 
 export default function Documentation() {
+  const version = useMetric('version');
+  const modulesCount = useMetric('modulesCount');
+  const capabilitiesCount = useMetric('capabilitiesCount');
+  
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Documentation — CMPSBL Substrate Developer Guides"
-        description="Complete developer documentation for the CMPSBL cognitive orchestration substrate. API references, BYOK architecture, integration guides, and technical resources."
+        title={`Documentation — CMPSBL Substrate v${version} Developer Guides`}
+        description={`Complete developer documentation for the CMPSBL cognitive orchestration substrate. ${modulesCount} modules, ${capabilitiesCount}+ capabilities, API references, and integration guides.`}
         canonical="https://cmpsbl.com/docs"
         keywords={['CMPSBL documentation', 'cognitive orchestration substrate', 'API reference', 'developer guides', 'AI integration', 'BYOK', 'bring your own keys']}
       />
@@ -49,7 +59,7 @@ export default function Documentation() {
             </h1>
             
             <p className="text-xl text-muted-foreground">
-              Complete guide to the CMPSBL substrate. Everything you need to integrate, build, and scale cognitive orchestration for AI systems.
+              Complete guide to the CMPSBL substrate v{version}. {modulesCount} integrated modules, {capabilitiesCount}+ capabilities, and everything you need to build cognitive AI systems.
               <span className="block mt-2 text-primary font-medium">100% BYOK — Zero compute costs for substrate operators.</span>
             </p>
           </div>
