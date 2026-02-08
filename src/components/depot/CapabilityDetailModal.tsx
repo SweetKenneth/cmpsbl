@@ -1,20 +1,18 @@
 /**
  * Capability Detail Modal
  * Shows detailed capability information
- * v1.2.0 — Fixed viewport centering on mobile using Drawer pattern
+ * v3.0.0 — All capabilities FREE, removed checkout/buy logic
  */
 
 import { 
-  X, 
   Download, 
   Clock, 
   Package, 
   Layers,
   Cpu,
-  Loader2,
   Zap,
   CheckCircle2,
-  ExternalLink,
+  Unlock,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -25,7 +23,6 @@ import {
   DrawerTitle,
   DrawerDescription,
   DrawerFooter,
-  DrawerClose,
 } from '@/components/ui/drawer';
 import {
   Dialog,
@@ -35,12 +32,10 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { 
-  formatPrice, 
   getTierConfig, 
   type CapabilityArtifact,
   type CapabilityCategory,
 } from '@/lib/capabilities/depot';
-import { useCapabilityCheckout } from '@/hooks/useCapabilityCheckout';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 
@@ -93,6 +88,12 @@ function ModalContent({ capability, categoryConfig }: { capability: CapabilityAr
         )}
         <Badge variant="outline" className={cn("text-xs", tierColors[capability.pricingTier])}>
           {getTierConfig(capability.pricingTier).badge}
+        </Badge>
+        
+        {/* FREE Badge */}
+        <Badge className="text-xs bg-emerald-500/10 text-emerald-400 border-emerald-500/30">
+          <Unlock className="w-2.5 h-2.5 mr-1" />
+          FREE
         </Badge>
       </div>
       
@@ -194,41 +195,19 @@ function ModalContent({ capability, categoryConfig }: { capability: CapabilityAr
   );
 }
 
-function ModalFooter({ capability, onClose }: { capability: CapabilityArtifact; onClose: () => void }) {
-  const { checkout, loading, isAvailable, getPrice, isOffMenu, isRecursive, isSTier } = useCapabilityCheckout();
-  const isSynergy = capability.id.startsWith('syn-');
-  const hasCheckout = isAvailable(capability.id);
-  const isOffMenuCapability = isOffMenu(capability.id);
-  const isRecursiveCapability = isRecursive(capability.id);
-  const isSTierCapability = isSTier(capability.id);
-  const isPremium = isRecursiveCapability || isSTierCapability;
-  
-  // Get normalized price from Stripe config (null for off-menu)
-  const displayPrice = getPrice(capability.id);
-  const priceLabel = isOffMenuCapability || displayPrice === null 
-    ? 'Licensed on request' 
-    : formatPrice(displayPrice);
-
-  const handleBuy = async () => {
-    if (hasCheckout) {
-      await checkout(capability.id, capability.name);
-    }
-  };
-
+function ModalFooter({ onClose }: { onClose: () => void }) {
   return (
     <div className="flex flex-col gap-4">
-      {/* Price */}
+      {/* Free Status */}
       <div className="flex items-center justify-between">
         <div>
-          <div className={cn(
-            "text-2xl font-black",
-            isOffMenuCapability ? "text-muted-foreground text-lg" : isPremium ? "text-primary" : "text-foreground"
-          )}>
-            {priceLabel}
+          <div className="text-2xl font-black text-emerald-400 flex items-center gap-2">
+            <Unlock className="w-5 h-5" />
+            FREE
           </div>
           <div className="flex items-center gap-1 text-xs text-muted-foreground">
-            <Download className="w-3 h-3" />
-            {isOffMenuCapability ? 'Enterprise' : 'Licensed Artifact'}
+            <CheckCircle2 className="w-3 h-3" />
+            Unlocked — Available by default
           </div>
         </div>
       </div>
@@ -237,44 +216,21 @@ function ModalFooter({ capability, onClose }: { capability: CapabilityArtifact; 
       <div className="flex items-center gap-3">
         <Button 
           variant="outline" 
-          asChild 
+          onClick={onClose}
           className="flex-1 h-12 text-base touch-manipulation"
         >
+          Close
+        </Button>
+        <Button 
+          size="lg"
+          asChild
+          className="flex-1 h-12 text-base touch-manipulation bg-emerald-600 hover:bg-emerald-500"
+        >
           <a href="/support">
-            Support
-            <ExternalLink className="w-3 h-3 ml-1" />
+            <Download className="w-4 h-4 mr-2" />
+            Get Support
           </a>
         </Button>
-        {isOffMenuCapability ? (
-          <Button 
-            size="lg"
-            onClick={handleBuy}
-            variant="secondary"
-            className="flex-1 h-12 text-base touch-manipulation"
-          >
-            <ExternalLink className="w-4 h-4 mr-2" />
-            Inquire
-          </Button>
-        ) : (
-          <Button 
-            size="lg"
-            onClick={handleBuy}
-            disabled={loading || !hasCheckout}
-            className={cn(
-              "flex-1 h-12 text-base touch-manipulation",
-              isRecursiveCapability && "bg-primary hover:bg-primary/90",
-              isSTierCapability && !isRecursiveCapability && "bg-cyan-600 hover:bg-cyan-500",
-              isSynergy && !isPremium && "bg-violet-600 hover:bg-violet-700"
-            )}
-          >
-            {loading ? (
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-            ) : (
-              <Package className="w-4 h-4 mr-2" />
-            )}
-            Buy Now
-          </Button>
-        )}
       </div>
     </div>
   );
@@ -302,7 +258,7 @@ export function CapabilityDetailModal({ capability, categoryConfig, onClose }: C
           </div>
           
           <DrawerFooter className="pt-2 border-t border-border/50">
-            <ModalFooter capability={capability} onClose={onClose} />
+            <ModalFooter onClose={onClose} />
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
@@ -327,7 +283,7 @@ export function CapabilityDetailModal({ capability, categoryConfig, onClose }: C
         </div>
         
         <div className="pt-4 mt-4 border-t border-border/50">
-          <ModalFooter capability={capability} onClose={onClose} />
+          <ModalFooter onClose={onClose} />
         </div>
       </DialogContent>
     </Dialog>
