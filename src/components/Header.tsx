@@ -39,10 +39,10 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
           variant="outline"
           size="sm"
           className="hidden lg:flex gap-2"
-          onClick={() => window.location.href = '/system-map'}
+          onClick={() => window.location.href = '/substrate'}
         >
           <Map className="w-4 h-4" />
-          Feature Map
+          Substrate Overview
         </Button>
         
 

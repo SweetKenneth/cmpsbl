@@ -31,6 +31,9 @@ export interface PublicMetrics {
   synergyExecutorsCount: number;
   stierPipelinesCount: number;
   
+  // Templates
+  templatesCount: number;
+  
   // Engine Metrics
   enginesCount: number;
   metaEnginesCount: number;
@@ -90,6 +93,9 @@ export const DEFAULT_METRICS: PublicMetrics = {
   synergyPipelinesCount: 147,
   synergyExecutorsCount: 125,
   stierPipelinesCount: 32,
+  
+  // Templates
+  templatesCount: 112,
   
   // Engine Metrics
   enginesCount: 62,

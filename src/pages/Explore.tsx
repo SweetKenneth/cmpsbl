@@ -182,7 +182,7 @@ function SectionDivider() {
 export default function Explore() {
   const containerRef = useRef<HTMLDivElement>(null);
   
-  // Core Modules - all 14 pillars (v7.0.0 SEBA kernel architecture)
+  // Core Modules - all 14 pillars (v8.0.0 SYNERGY+ kernel architecture)
   const coreModules = [
     {
       icon: Cpu,
@@ -298,13 +298,13 @@ export default function Explore() {
     },
   ];
 
-  // System Capabilities
+  // System Capabilities - aligned with public metrics store
   const capabilities = [
-    { icon: Layers, value: "260+", label: "Commands", color: "text-purple-500" },
-    { icon: Database, value: "70+", label: "Tables", color: "text-green-500" },
+    { icon: Layers, value: "310+", label: "Commands", color: "text-purple-500" },
+    { icon: Database, value: "147", label: "Pipelines", color: "text-green-500" },
     { icon: HeartPulse, value: "14", label: "Modules", color: "text-rose-500" },
     { icon: Clock, value: "<100ms", label: "Latency", color: "text-blue-500" },
-    { icon: Lock, value: "BYOK", label: "Architecture", color: "text-cyan-500" },
+    { icon: Lock, value: "269", label: "Capabilities", color: "text-cyan-500" },
     { icon: RefreshCw, value: "24/7", label: "Autonomous", color: "text-amber-500" },
   ];
 
@@ -320,10 +320,10 @@ export default function Explore() {
   return (
     <div ref={containerRef} className="min-h-screen bg-background overflow-x-hidden overflow-y-visible">
       <SEO 
-        title="CMPSBL™ Substrate OS v7.5.3 — 14-Module Cognitive Infrastructure"
-        description="The cognitive infrastructure standard: 14 modules, hosted API access for developers ($2,999/yr), self-hosted Enterprise ($49,999/yr). 136+ depot capabilities, 147 synergy pipelines, 260+ commands."
+        title="CMPSBL® Substrate OS v8.0.0 — 14-Module Cognitive Infrastructure"
+        description="The cognitive infrastructure standard: 14 modules, 5 layers, 147 synergy pipelines, 269 capabilities, 310+ terminal commands. Free exploration tier with premium Engine subscriptions."
         canonical="https://cmpsbl.com"
-        keywords={['CMPSBL', 'Substrate OS', 'v7.5.3', '14-module architecture', 'cognitive OS', 'AI governance', 'hosted API', 'enterprise self-hosted', 'persistent memory', 'dream cycles', '147 synergy pipelines']}
+        keywords={['CMPSBL', 'Substrate OS', 'v8.0.0', 'SYNERGY+', '14-module architecture', 'cognitive OS', 'AI governance', 'persistent memory', 'dream cycles', 'synergy pipelines', 'engine marketplace']}
       />
 
       <PublicNav />

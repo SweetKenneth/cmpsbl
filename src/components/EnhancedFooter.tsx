@@ -40,11 +40,13 @@ export function EnhancedFooter() {
     {
       title: "Build",
       links: [
-        { name: "Synergy Pipelines", href: "/synergies", highlight: true },
+        { name: "Engine Marketplace", href: "/engines", highlight: true },
+        { name: "Synergy Pipelines", href: "/synergies" },
         { name: "Capabilities Depot", href: "/capabilities" },
+        { name: "Persistent Memory", href: "/persistent-memory" },
         { name: "Developers", href: "/developers" },
         { name: "CodeLab", href: "/codelab" },
-        { name: "Marketplace", href: "/marketplace" },
+        { name: "Templates", href: "/marketplace" },
         { name: "Documentation", href: "/documentation" },
       ]
     },

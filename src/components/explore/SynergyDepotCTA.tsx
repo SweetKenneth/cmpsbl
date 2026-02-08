@@ -138,7 +138,7 @@ export function SynergyDepotCTA() {
                     Synergy Pipelines
                   </h3>
                   <p className="text-sm text-muted-foreground">
-                    120 discovered multi-module cognitive fusion pipelines. 
+                    147 multi-module cognitive fusion pipelines. 
                     S-tier intelligence for enterprise-grade autonomous systems.
                   </p>
                 </div>
@@ -149,9 +149,9 @@ export function SynergyDepotCTA() {
 
               {/* Stats Row */}
               <div className="flex justify-around py-4 mb-6 rounded-xl bg-violet-500/5 border border-violet-500/10">
-                <StatBadge value="120" label="Pipelines" />
-                <StatBadge value="22" label="S-Tier" />
-                <StatBadge value="98" label="Executors" />
+                <StatBadge value="147" label="Pipelines" />
+                <StatBadge value="32" label="S-Tier" />
+                <StatBadge value="125" label="Executors" />
               </div>
 
               {/* Feature Directory */}
