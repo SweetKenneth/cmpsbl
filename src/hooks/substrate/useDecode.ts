@@ -1,7 +1,7 @@
 /**
  * useDecode Hook
- * v7.1.0 — Dedicated hook for DECODE (Interpreter) module operations
- * Now respects debug mode kill-switch
+ * v8.0.0 — SYNERGY+ Epoch Dedicated hook for DECODE (Interpreter) module operations
+ * Respects debug mode kill-switch
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';

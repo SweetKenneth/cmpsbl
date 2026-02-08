@@ -24,7 +24,7 @@ import { setCapabilityEnabled, isCapabilityEnabled } from './state';
 // ARCHIVED CAPABILITIES CATALOG
 // ============================================================================
 // These are the 10 high-value archived functions integrated into the substrate
-// via archived-adapters.ts (v7.0.0)
+// via archived-adapters.ts (v8.0.0 SYNERGY+)
 
 export interface ArchivedCapabilityDef {
   id: string;

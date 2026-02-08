@@ -233,7 +233,7 @@ export {
 
 export { useCLM, type UseCLMReturn } from './clm/useCLM';
 
-// CLM Module Hooks v7.0.0
+// CLM Module Hooks v8.0.0 SYNERGY+
 export {
   registerModuleHooks,
   getRegisteredModules,
@@ -247,7 +247,7 @@ export {
   type ModuleLearningHook,
 } from './clm/module-hooks';
 
-// Module-Specific CLM v6.8.0
+// Module-Specific CLM v8.0.0 SYNERGY+
 export {
   moduleCLM,
   ModuleCLMClient,
@@ -260,7 +260,7 @@ export {
 
 export { useModuleCLM, type UseModuleCLMReturn } from './module-clm/useModuleCLM';
 
-// Self-Evolving Bounded Agent (SEBA) v1.0.0
+// Self-Evolving Bounded Agent (SEBA) v2.0.0 — Full Spectrum Autonomy
 export {
   sebaAgent,
   SEBAAgent,
@@ -288,7 +288,7 @@ export {
 
 export { useSEBA, type UseSEBAReturn } from './seba/useSEBA';
 
-// Cross-Module Capabilities v6.9.0
+// Cross-Module Capabilities v8.0.0 SYNERGY+
 export {
   capabilityEngine,
   CapabilityEngineClient,
@@ -302,7 +302,7 @@ export {
 
 export { useCapabilities, type UseCapabilitiesReturn } from './capabilities/useCapabilities';
 
-// Archived Edge Function Adapters v6.9.1
+// Archived Edge Function Adapters v8.0.0 SYNERGY+
 export {
   archivedAdapters,
   invokeHypothesisTest,
@@ -366,7 +366,7 @@ export {
 
 export { useSupportBot, type UseSupportBotReturn } from './support-bot/useSupportBot';
 
-// DECODE Personality Profiles v7.1.0
+// DECODE Personality Profiles v8.0.0 SYNERGY+
 export {
   personalityEngine,
   PersonalityEngineClient,
@@ -380,7 +380,7 @@ export {
 
 export { useDecodePersonality, type UseDecodePersonalityReturn } from './decode/useDecodePersonality';
 
-// Module Parity Enforcement v7.0.0
+// Module Parity Enforcement v8.0.0 SYNERGY+
 export {
   checkModuleParity,
   runParityCheck,
@@ -391,7 +391,7 @@ export {
   type ParityReport,
 } from './parity';
 
-// Event System v7.0.0
+// Event System v8.0.0 SYNERGY+
 export {
   emit,
   emitStarted,
@@ -412,7 +412,7 @@ export {
   type EventQueryOptions,
 } from './events';
 
-// Version Registry v7.7.0
+// Version Registry v8.0.0 SYNERGY+
 export {
   MODULE_VERSIONS,
   CONTROL_PLANE_VERSIONS,
@@ -424,7 +424,7 @@ export {
   isVersionCompatible,
 } from './versions';
 
-// Cognitive Engines v7.7.0 — 20 Engines orchestrating 76 capabilities
+// Cognitive Engines v8.0.0 SYNERGY+ — 62 Engines + 20 Meta-Engines orchestrating 269 capabilities
 export {
   // Types
   type EngineCategory,

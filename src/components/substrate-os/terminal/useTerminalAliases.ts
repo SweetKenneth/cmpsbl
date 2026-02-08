@@ -32,7 +32,7 @@ export const BUILTIN_ALIASES: AliasDefinition[] = [
   { alias: 'dc', expansion: 'dream.cycle', description: 'Dream cycle' },
   { alias: 'ds', expansion: 'dream.status', description: 'Dream status' },
   
-  // Modernizer shortcuts (v7.0.0 Evolution Cycle)
+  // Modernizer shortcuts (v8.0.0 SYNERGY+ Evolution Cycle)
   { alias: 'me', expansion: 'modernizer.evolve', description: 'Evolution Cycle' },
   { alias: 'ms', expansion: 'modernizer.evolve status', description: 'Evolution status' },
   { alias: 'ma', expansion: 'modernizer.evolve shadow', description: 'Apply shadow' },

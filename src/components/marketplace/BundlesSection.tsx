@@ -1,6 +1,6 @@
 /**
  * BundlesSection — Volume packs and stacks with discounts
- * v7.0.0 - Component for funnel phase F
+ * v8.0.0 SYNERGY+ — Component for funnel phase F
  */
 
 import { motion } from 'framer-motion';

@@ -143,7 +143,7 @@ export function SynergyDepotCTA() {
                   </p>
                 </div>
                 <Badge className="bg-violet-500/10 text-violet-500 border-violet-500/20">
-                  v7.5.0
+                  v8.0.0
                 </Badge>
               </div>
 

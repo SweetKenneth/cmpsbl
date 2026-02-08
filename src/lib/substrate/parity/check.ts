@@ -1,6 +1,6 @@
 /**
  * Module Parity Checker
- * v7.0.0 — Ensures every module meets the substrate standard
+ * v8.0.0 — SYNERGY+ Epoch Ensures every module meets the substrate standard
  * 
  * Validates: exports, hooks, terminal commands, event emission, documentation
  */

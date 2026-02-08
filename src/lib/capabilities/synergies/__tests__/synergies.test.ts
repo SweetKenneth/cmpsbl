@@ -1,6 +1,6 @@
 /**
  * Synergy System Tests
- * v7.4.0 — Cross-module pipeline validation (98 pipelines, 76 executors)
+ * v8.0.0 — SYNERGY+ Epoch Cross-module pipeline validation (147 pipelines, 125 executors)
  */
 
 import { describe, it, expect, vi, beforeAll } from 'vitest';

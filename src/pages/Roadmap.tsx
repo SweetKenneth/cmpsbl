@@ -15,8 +15,8 @@ export default function Roadmap() {
       items: [
         {
           icon: Brain,
-          title: "CMPSBL v7.0.0 — 14-Module Kernel",
-          description: "Production-ready cognitive OS with complete 14-module architecture: Core, Ripple, Access, Brain, Decode, Defense, Nexus, Vision, Dream, System, Modernizer, Integration, Cortex orchestrator, and Inclusive human-compatibility.",
+          title: "CMPSBL v8.0.0 — SYNERGY+ Epoch",
+          description: "Production-ready cognitive OS with complete 14-module architecture: Core, Ripple, Access, Brain, Decode, Defense, Nexus, Vision, Dream, System, Modernizer, Integration, Cortex orchestrator, and Inclusive human-compatibility. 269 capabilities, 147 synergy pipelines.",
           status: "Live",
           technologies: ["Supabase", "Edge Functions", "TypeScript", "React"]
         },

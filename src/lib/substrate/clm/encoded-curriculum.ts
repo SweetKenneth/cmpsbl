@@ -1,6 +1,6 @@
 /**
  * Encoded Code-Writing Curriculum
- * v7.5.3 — Exclusive curriculum for making Encoded the best code writer
+ * v8.0.0 — SYNERGY+ Epoch Exclusive curriculum for code-writing mastery
  * 
  * 24/7 learning focused ONLY on code-writing excellence.
  * Topics cover: patterns, anti-patterns, architecture, testing, refactoring,

@@ -1,6 +1,6 @@
 /**
  * Atlas Test Runner Adapter
- * v7.0.0 — System testing for Atlas control plane
+ * v8.0.0 — SYNERGY+ Epoch System testing for Atlas control plane
  */
 
 import { supabase } from '@/integrations/supabase/client';

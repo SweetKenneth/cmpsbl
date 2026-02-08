@@ -1,5 +1,5 @@
 /**
- * Advanced Cognitive Functions — v7.5.1
+ * Advanced Cognitive Functions — v8.0.0 SYNERGY+ Epoch
  * 14 high-value cognitive enhancement patterns
  */
 

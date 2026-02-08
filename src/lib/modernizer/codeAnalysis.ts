@@ -1,6 +1,6 @@
 /**
  * MODERNIZER Module — Code Analysis Engine
- * v7.5.0 — Complexity analysis, duplication detection, and quality metrics
+ * v8.0.0 — SYNERGY+ Epoch Complexity analysis, duplication detection, and quality metrics
  */
 
 // ============ Types ============

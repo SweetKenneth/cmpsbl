@@ -1,5 +1,5 @@
 /**
- * CMPSBL Unified Pricing Configuration v7.0.0
+ * CMPSBL Unified Pricing Configuration v8.0.0 SYNERGY+ Epoch
  * Market-aligned pricing based on competitor research (Jan 2026)
  * All products linked to Stripe for checkout
  * 
