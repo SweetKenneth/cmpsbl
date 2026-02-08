@@ -8,6 +8,7 @@
 
 import { useState, useMemo, useCallback } from "react";
 import { useEngineSubscription } from "@/hooks/useEngineSubscription";
+import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -140,13 +141,23 @@ export default function EngineMarketplace() {
   
   const handleSubscribe = useCallback(async (planId: SubscriptionPlan) => {
     if (planId === 'starter') {
-      toast.info('Starter tier is free. Sign up to get started!');
+      // Redirect to sign up for free tier
+      window.location.href = '/auth?redirect=/engines';
       return;
     }
     if (planId === 'enterprise') {
       window.location.href = 'mailto:enterprise@cmpsbl.ai?subject=Enterprise%20Engine%20Subscription';
       return;
     }
+    
+    // Check if user is authenticated before checkout
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      toast.info('Please sign in to subscribe');
+      window.location.href = `/auth?redirect=/engines&plan=${planId}&interval=${billingInterval}`;
+      return;
+    }
+    
     await startCheckout(planId as 'builder' | 'pro', billingInterval);
   }, [startCheckout, billingInterval]);
 
@@ -338,80 +349,122 @@ export default function EngineMarketplace() {
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              className="text-2xl md:text-3xl font-bold text-center mb-8"
+              className="text-2xl md:text-3xl font-bold text-center mb-4"
             >
               Choose Your Access Level
             </motion.h2>
             
-            {/* Mobile: Vertical stack, Desktop: 4-column grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {Object.values(SUBSCRIPTION_PLANS).map((plan, index) => (
-                <motion.div
-                  key={plan.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
+            {/* Billing interval toggle */}
+            <div className="flex justify-center mb-8">
+              <div className="inline-flex items-center gap-1 p-1 rounded-xl bg-muted/50 border border-border">
+                <button
+                  onClick={() => setBillingInterval('monthly')}
                   className={cn(
-                    "relative p-5 sm:p-6 rounded-2xl border transition-all",
-                    plan.id === 'pro' 
-                      ? "border-primary bg-gradient-to-br from-primary/10 to-violet-500/10 ring-2 ring-primary/30 shadow-xl shadow-primary/10" 
-                      : "border-border bg-card hover:border-primary/30"
+                    "px-4 py-2 rounded-lg text-sm font-medium transition-all",
+                    billingInterval === 'monthly'
+                      ? "bg-primary text-primary-foreground shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
                   )}
                 >
-                  {plan.id === 'pro' && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                      <Badge className="bg-primary text-primary-foreground shadow-lg">
-                        <Star className="w-3 h-3 mr-1" />
-                        Most Popular
-                      </Badge>
-                    </div>
+                  Monthly
+                </button>
+                <button
+                  onClick={() => setBillingInterval('annual')}
+                  className={cn(
+                    "px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2",
+                    billingInterval === 'annual'
+                      ? "bg-primary text-primary-foreground shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
                   )}
+                >
+                  Annual
+                  <Badge variant="secondary" className="bg-emerald-500/20 text-emerald-500 text-[10px] px-1.5 py-0">
+                    Save 17%
+                  </Badge>
+                </button>
+              </div>
+            </div>
+            
+            {/* Mobile: Extra top margin for badge, Desktop: 4-column grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 sm:pt-0">
+              {Object.values(SUBSCRIPTION_PLANS).map((plan, index) => {
+                const displayPrice = billingInterval === 'annual' 
+                  ? Math.round(plan.yearlyPrice / 12)
+                  : plan.monthlyPrice;
                   
-                  <div className={cn(plan.id === 'pro' ? "pt-3" : "pt-1")}>
-                    <h3 className="font-bold text-lg sm:text-xl mb-2">{plan.name}</h3>
-                    <div className="flex items-baseline gap-1 mb-1">
-                      <span className="text-3xl sm:text-4xl font-black">
-                        {plan.monthlyPrice === 0 ? 'Free' : `$${plan.monthlyPrice}`}
-                      </span>
-                      {plan.monthlyPrice > 0 && (
-                        <span className="text-muted-foreground text-sm">/mo</span>
-                      )}
-                    </div>
-                    {plan.yearlyPrice > 0 && plan.monthlyPrice > 0 && (
-                      <p className="text-sm text-emerald-500 mb-3">
-                        ${plan.yearlyPrice}/yr (save ~17%)
-                      </p>
+                return (
+                  <motion.div
+                    key={plan.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    className={cn(
+                      "relative p-5 sm:p-6 rounded-2xl border transition-all",
+                      plan.id === 'pro' 
+                        ? "border-primary bg-gradient-to-br from-primary/10 to-violet-500/10 ring-2 ring-primary/30 shadow-xl shadow-primary/10 mt-4 sm:mt-0" 
+                        : "border-border bg-card hover:border-primary/30"
                     )}
-                    <p className="text-sm text-muted-foreground mb-4">{plan.description}</p>
+                  >
+                    {plan.id === 'pro' && (
+                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
+                        <Badge className="bg-primary text-primary-foreground shadow-lg whitespace-nowrap">
+                          <Star className="w-3 h-3 mr-1" />
+                          Most Popular
+                        </Badge>
+                      </div>
+                    )}
                     
-                    <ul className="space-y-2 mb-5">
-                      {plan.features.slice(0, 5).map((feature, i) => (
-                        <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
-                          <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                    
-                    <Button 
-                      className="w-full" 
-                      variant={plan.id === 'pro' ? 'default' : 'outline'}
-                      size="default"
-                      disabled={currentTier === plan.id || subLoading}
-                      onClick={() => handleSubscribe(plan.id)}
-                    >
-                      {currentTier === plan.id 
-                        ? 'Current Plan' 
-                        : plan.id === 'starter' 
-                          ? 'Get Started Free' 
-                          : plan.id === 'enterprise' 
-                            ? 'Contact Sales' 
-                            : `Subscribe ${billingInterval === 'annual' ? '(Save ~17%)' : 'Now'}`}
-                    </Button>
-                  </div>
-                </motion.div>
-              ))}
+                    <div className={cn(plan.id === 'pro' ? "pt-3" : "pt-1")}>
+                      <h3 className="font-bold text-lg sm:text-xl mb-2">{plan.name}</h3>
+                      <div className="flex items-baseline gap-1 mb-1">
+                        <span className="text-3xl sm:text-4xl font-black">
+                          {displayPrice === 0 ? 'Free' : `$${displayPrice}`}
+                        </span>
+                        {displayPrice > 0 && (
+                          <span className="text-muted-foreground text-sm">/mo</span>
+                        )}
+                      </div>
+                      {billingInterval === 'annual' && plan.yearlyPrice > 0 && (
+                        <p className="text-sm text-emerald-500 mb-3">
+                          ${plan.yearlyPrice}/yr billed annually
+                        </p>
+                      )}
+                      {billingInterval === 'monthly' && plan.yearlyPrice > 0 && plan.monthlyPrice > 0 && (
+                        <p className="text-sm text-muted-foreground mb-3">
+                          or ${plan.yearlyPrice}/yr (save ~17%)
+                        </p>
+                      )}
+                      <p className="text-sm text-muted-foreground mb-4">{plan.description}</p>
+                      
+                      <ul className="space-y-2 mb-5">
+                        {plan.features.slice(0, 5).map((feature, i) => (
+                          <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                            <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
+                      
+                      <Button 
+                        className="w-full" 
+                        variant={plan.id === 'pro' ? 'default' : 'outline'}
+                        size="default"
+                        disabled={currentTier === plan.id || subLoading}
+                        onClick={() => handleSubscribe(plan.id)}
+                      >
+                        {currentTier === plan.id 
+                          ? 'Current Plan' 
+                          : plan.id === 'starter' 
+                            ? 'Get Started Free' 
+                            : plan.id === 'enterprise' 
+                              ? 'Contact Sales' 
+                              : 'Subscribe Now'}
+                      </Button>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </section>
