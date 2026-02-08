@@ -96,15 +96,15 @@ export default function Contact() {
                 <div className="space-y-4">
                   <div>
                     <p className="text-muted-foreground mb-2">Phone:</p>
-                    <a href="tel:2145480883" className="text-primary hover:underline text-lg font-medium block">
-                      (214) 548-0883
+                    <a href="tel:+17603584324" className="text-primary hover:underline text-lg font-medium block">
+                      (760) FLUID-AI
                     </a>
                   </div>
                   
                   <div>
                     <p className="text-muted-foreground mb-2">Email:</p>
-                    <a href="mailto:PromptFluid@gmail.com" className="text-primary hover:underline text-lg font-medium">
-                      PromptFluid@gmail.com
+                    <a href="mailto:Dev@CMPSBL.com" className="text-primary hover:underline text-lg font-medium">
+                      Dev@CMPSBL.com
                     </a>
                   </div>
                 </div>
