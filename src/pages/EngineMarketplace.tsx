@@ -207,9 +207,17 @@ export default function EngineMarketplace() {
   return (
     <>
       <SEO
-        title={`Engine Marketplace | ${summary.totalEngines} Engines | CMPSBL`}
-        description="Production-ready cognitive engines with subscription access. 62 engines, 20 meta-engines, real pricing."
-        keywords={["cognitive engines", "AI orchestration", "subscription", "enterprise AI"]}
+        title={`Cognitive Engine Marketplace | ${summary.totalEngines}+ Production AI Engines | CMPSBL®`}
+        description="Subscribe to production-ready cognitive engines for AI orchestration. 62+ engines, 20 meta-engines, enterprise pricing. Multi-provider routing, persistent memory, self-improvement."
+        canonical="https://cmpsbl.com/engines"
+        keywords={["cognitive engines", "AI orchestration", "subscription AI", "enterprise AI engines", "multi-provider routing", "AI marketplace", "production AI", "CMPSBL engines"]}
+        type="product"
+        product={{
+          name: "CMPSBL Engine Subscription",
+          price: "49",
+          currency: "USD",
+          availability: "InStock"
+        }}
       />
 
       <div className="min-h-screen bg-background flex flex-col">

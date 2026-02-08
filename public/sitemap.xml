@@ -1,295 +1,338 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- CMPSBL Substrate OS v6.0.0 Sitemap - 2026 SEO Optimized -->
-<!-- Last Updated: 2026-01-28 -->
+<!-- CMPSBL Substrate OS v8.0.0 SYNERGY+ Sitemap - 2026 SEO Optimized -->
+<!-- Last Updated: 2026-02-08 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <!-- HOMEPAGE - Highest Priority -->
   <url>
-    <loc>https://promptfluid.com/</loc>
-    <lastmod>2026-01-28</lastmod>
+    <loc>https://cmpsbl.com/</loc>
+    <lastmod>2026-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://promptfluid.com/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://promptfluid.com/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cmpsbl.com/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cmpsbl.com/" />
   </url>
   
-  <!-- STANDARDS SECTION - v6.0.0 Core -->
+  <!-- SUBSTRATE OS CORE - HIGH PRIORITY -->
   <url>
-    <loc>https://promptfluid.com/foundations</loc>
-    <lastmod>2026-01-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.95</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://promptfluid.com/foundations" />
-  </url>
-  
-  <url>
-    <loc>https://promptfluid.com/namespace</loc>
-    <lastmod>2026-01-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.95</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://promptfluid.com/namespace" />
-  </url>
-  
-  <url>
-    <loc>https://promptfluid.com/llms-txt</loc>
-    <lastmod>2026-01-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://promptfluid.com/llms-txt" />
-  </url>
-  
-  <url>
-    <loc>https://promptfluid.com/library</loc>
-    <lastmod>2026-01-28</lastmod>
+    <loc>https://cmpsbl.com/os</loc>
+    <lastmod>2026-02-08</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://promptfluid.com/library" />
+    <priority>0.98</priority>
   </url>
   
-  <!-- SUBSTRATE OS PAGES -->
   <url>
-    <loc>https://promptfluid.com/os</loc>
-    <lastmod>2026-01-28</lastmod>
+    <loc>https://cmpsbl.com/substrate</loc>
+    <lastmod>2026-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
   
   <url>
-    <loc>https://promptfluid.com/substrate</loc>
-    <lastmod>2026-01-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
-  <url>
-    <loc>https://promptfluid.com/demo</loc>
-    <lastmod>2026-01-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  
-  <url>
-    <loc>https://promptfluid.com/marketplace</loc>
-    <lastmod>2026-01-28</lastmod>
+    <loc>https://cmpsbl.com/intelligence</loc>
+    <lastmod>2026-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
-  </url>
-  
-  <!-- CAPABILITIES DEPOT - Cognitive Artifacts Marketplace -->
-  <url>
-    <loc>https://promptfluid.com/capabilities</loc>
-    <lastmod>2026-02-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://promptfluid.com/capabilities" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cmpsbl.com/intelligence" />
   </url>
   
   <url>
-    <loc>https://promptfluid.com/substrate/licensing</loc>
-    <lastmod>2026-01-28</lastmod>
+    <loc>https://cmpsbl.com/demo</loc>
+    <lastmod>2026-02-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   
-  <!-- DECODE - AI Interface -->
+  <!-- STANDARDS SECTION - v8.0.0 Core -->
   <url>
-    <loc>https://promptfluid.com/decode</loc>
-    <lastmod>2026-01-28</lastmod>
+    <loc>https://cmpsbl.com/foundations</loc>
+    <lastmod>2026-02-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  
+  <url>
+    <loc>https://cmpsbl.com/namespace</loc>
+    <lastmod>2026-02-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.92</priority>
+  </url>
+  
+  <url>
+    <loc>https://cmpsbl.com/llms-txt</loc>
+    <lastmod>2026-02-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <url>
+    <loc>https://cmpsbl.com/library</loc>
+    <lastmod>2026-02-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.92</priority>
+  </url>
+  
+  <!-- ENGINE MARKETPLACE - HIGH PRIORITY -->
+  <url>
+    <loc>https://cmpsbl.com/engines</loc>
+    <lastmod>2026-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://cmpsbl.com/engines" />
+  </url>
+  
+  <url>
+    <loc>https://cmpsbl.com/marketplace</loc>
+    <lastmod>2026-02-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.92</priority>
+  </url>
+  
+  <!-- CAPABILITIES DEPOT - Cognitive Artifacts -->
+  <url>
+    <loc>https://cmpsbl.com/capabilities</loc>
+    <lastmod>2026-02-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- DECODE - AI Conversation Interface -->
+  <url>
+    <loc>https://cmpsbl.com/decode</loc>
+    <lastmod>2026-02-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.92</priority>
   </url>
   
   <!-- COGNITIVE FORGE -->
   <url>
-    <loc>https://promptfluid.com/forge</loc>
-    <lastmod>2026-01-28</lastmod>
+    <loc>https://cmpsbl.com/forge</loc>
+    <lastmod>2026-02-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.88</priority>
+  </url>
+  
+  <url>
+    <loc>https://cmpsbl.com/forge/catalog</loc>
+    <lastmod>2026-02-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  
+  <!-- DEVELOPER RESOURCES -->
+  <url>
+    <loc>https://cmpsbl.com/documentation</loc>
+    <lastmod>2026-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   
   <url>
-    <loc>https://promptfluid.com/forge/catalog</loc>
-    <lastmod>2026-01-28</lastmod>
+    <loc>https://cmpsbl.com/dev-portal</loc>
+    <lastmod>2026-02-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.88</priority>
+  </url>
+  
+  <url>
+    <loc>https://cmpsbl.com/devtools</loc>
+    <lastmod>2026-02-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  
+  <url>
+    <loc>https://cmpsbl.com/academy</loc>
+    <lastmod>2026-02-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.88</priority>
+  </url>
+  
+  <url>
+    <loc>https://cmpsbl.com/changelog</loc>
+    <lastmod>2026-02-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.82</priority>
+  </url>
+  
+  <url>
+    <loc>https://cmpsbl.com/codelab</loc>
+    <lastmod>2026-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   
-  <!-- AGENCY -->
+  <!-- LICENSING & PRICING -->
   <url>
-    <loc>https://promptfluid.com/agency</loc>
-    <lastmod>2026-01-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  
-  <!-- ABOUT & INFO PAGES -->
-  <url>
-    <loc>https://promptfluid.com/about</loc>
-    <lastmod>2026-01-28</lastmod>
+    <loc>https://cmpsbl.com/substrate/licensing</loc>
+    <lastmod>2026-02-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   
+  <!-- ABOUT & COMPANY INFO -->
   <url>
-    <loc>https://promptfluid.com/solutions</loc>
-    <lastmod>2026-01-28</lastmod>
+    <loc>https://cmpsbl.com/about</loc>
+    <lastmod>2026-02-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.88</priority>
+  </url>
+  
+  <url>
+    <loc>https://cmpsbl.com/investors</loc>
+    <lastmod>2026-02-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   
   <url>
-    <loc>https://promptfluid.com/investors</loc>
-    <lastmod>2026-01-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  
-  <url>
-    <loc>https://promptfluid.com/contact</loc>
-    <lastmod>2026-01-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <url>
-    <loc>https://promptfluid.com/roadmap</loc>
-    <lastmod>2026-01-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>https://promptfluid.com/projects</loc>
-    <lastmod>2026-01-28</lastmod>
+    <loc>https://cmpsbl.com/contact</loc>
+    <lastmod>2026-02-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   
-  <!-- DOCUMENTATION -->
   <url>
-    <loc>https://promptfluid.com/documentation</loc>
-    <lastmod>2026-01-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
-  <url>
-    <loc>https://promptfluid.com/changelog</loc>
-    <lastmod>2026-01-28</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://cmpsbl.com/roadmap</loc>
+    <lastmod>2026-02-08</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://promptfluid.com/dev-portal</loc>
-    <lastmod>2026-01-28</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://cmpsbl.com/solutions</loc>
+    <lastmod>2026-02-08</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.85</priority>
-  </url>
-  
-  <url>
-    <loc>https://promptfluid.com/devtools</loc>
-    <lastmod>2026-01-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>https://promptfluid.com/developers</loc>
-    <lastmod>2026-01-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
   </url>
   
   <!-- USE CASES & VERTICALS -->
   <url>
-    <loc>https://promptfluid.com/use-cases</loc>
-    <lastmod>2026-01-28</lastmod>
+    <loc>https://cmpsbl.com/use-cases</loc>
+    <lastmod>2026-02-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   
   <url>
-    <loc>https://promptfluid.com/gaming</loc>
-    <lastmod>2026-01-28</lastmod>
+    <loc>https://cmpsbl.com/gaming</loc>
+    <lastmod>2026-02-08</lastmod>
     <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
+  </url>
+  
+  <!-- MODULE CLUSTERS -->
+  <url>
+    <loc>https://cmpsbl.com/cluster/inclusive-module-accessibility</loc>
+    <lastmod>2026-02-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.82</priority>
+  </url>
+  
+  <url>
+    <loc>https://cmpsbl.com/cluster/studio</loc>
+    <lastmod>2026-02-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://cmpsbl.com/cluster/verify</loc>
+    <lastmod>2026-02-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
+  </url>
+  
+  <!-- BLOG -->
+  <url>
+    <loc>https://cmpsbl.com/blog</loc>
+    <lastmod>2026-02-08</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <url>
+    <loc>https://cmpsbl.com/publication</loc>
+    <lastmod>2026-02-08</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
   
   <!-- INTERACTIVE FEATURES -->
   <url>
-    <loc>https://promptfluid.com/feed-dream-eater</loc>
-    <lastmod>2026-01-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <url>
-    <loc>https://promptfluid.com/proof</loc>
-    <lastmod>2026-01-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  
-  <url>
-    <loc>https://promptfluid.com/lab</loc>
-    <lastmod>2026-01-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <url>
-    <loc>https://promptfluid.com/intelligence</loc>
-    <lastmod>2026-01-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>https://promptfluid.com/insights</loc>
-    <lastmod>2026-01-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.75</priority>
-  </url>
-  
-  <!-- BLOG -->
-  <url>
-    <loc>https://promptfluid.com/blog</loc>
-    <lastmod>2026-01-28</lastmod>
+    <loc>https://cmpsbl.com/feed-dream-eater</loc>
+    <lastmod>2026-02-08</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.95</priority>
+    <priority>0.75</priority>
   </url>
   
   <url>
-    <loc>https://promptfluid.com/publication</loc>
-    <lastmod>2026-01-28</lastmod>
+    <loc>https://cmpsbl.com/proof</loc>
+    <lastmod>2026-02-08</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.78</priority>
+  </url>
+  
+  <url>
+    <loc>https://cmpsbl.com/lab</loc>
+    <lastmod>2026-02-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  
+  <url>
+    <loc>https://cmpsbl.com/insights</loc>
+    <lastmod>2026-02-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.78</priority>
+  </url>
+  
+  <!-- PERSISTENT MEMORY DOCS -->
+  <url>
+    <loc>https://cmpsbl.com/persistent-memory</loc>
+    <lastmod>2026-02-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.82</priority>
+  </url>
+  
+  <url>
+    <loc>https://cmpsbl.com/docs/persistent-memory</loc>
+    <lastmod>2026-02-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   
   <!-- LEGAL PAGES -->
   <url>
-    <loc>https://promptfluid.com/privacy</loc>
-    <lastmod>2026-01-28</lastmod>
+    <loc>https://cmpsbl.com/privacy</loc>
+    <lastmod>2026-02-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://promptfluid.com/terms</loc>
-    <lastmod>2026-01-28</lastmod>
+    <loc>https://cmpsbl.com/terms</loc>
+    <lastmod>2026-02-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <!-- MACHINE-READABLE FILES -->
   <url>
-    <loc>https://promptfluid.com/humans-txt</loc>
-    <lastmod>2026-01-28</lastmod>
+    <loc>https://cmpsbl.com/humans-txt</loc>
+    <lastmod>2026-02-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+  </url>
+  
+  <!-- AGENCY & ENTERPRISE -->
+  <url>
+    <loc>https://cmpsbl.com/agency</loc>
+    <lastmod>2026-02-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.78</priority>
   </url>
 
 </urlset>
