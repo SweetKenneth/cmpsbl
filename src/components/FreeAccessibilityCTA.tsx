@@ -8,10 +8,6 @@ interface FreeAccessibilityCTAProps {
 }
 
 export function FreeAccessibilityCTA({ variant = "full" }: FreeAccessibilityCTAProps) {
-  const openClarity = () => {
-    window.open("https://clarity.promptfluid.com", "_blank");
-  };
-
   if (variant === "compact") {
     return (
       <Card className="p-6 bg-gradient-to-r from-primary/10 to-accent/10 border-primary/20">
@@ -20,12 +16,14 @@ export function FreeAccessibilityCTA({ variant = "full" }: FreeAccessibilityCTAP
             <Accessibility className="w-8 h-8 text-primary" />
             <div>
               <h3 className="font-semibold">Free Accessibility Scanning & Fixes</h3>
-              <p className="text-sm text-muted-foreground">The way it should be.</p>
+              <p className="text-sm text-muted-foreground">Powered by the INCLUSIVE Module.</p>
             </div>
           </div>
-          <Button onClick={openClarity} className="shadow-glow whitespace-nowrap">
-            Scan Free
-            <ArrowRight className="w-4 h-4 ml-2" />
+          <Button asChild className="shadow-glow whitespace-nowrap">
+            <Link to="/scan">
+              Scan Free
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Link>
           </Button>
         </div>
       </Card>
@@ -55,13 +53,15 @@ export function FreeAccessibilityCTA({ variant = "full" }: FreeAccessibilityCTAP
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" onClick={openClarity} className="shadow-glow hover:shadow-glow-lg">
-              <Accessibility className="w-5 h-5 mr-2" />
-              Free Accessibility Scan
-              <ArrowRight className="w-4 h-4 ml-2" />
+            <Button size="lg" asChild className="shadow-glow hover:shadow-glow-lg">
+              <Link to="/scan">
+                <Accessibility className="w-5 h-5 mr-2" />
+                Free Accessibility Scan
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
             </Button>
             <Button size="lg" variant="outline" asChild>
-              <Link to="/blog/accessibility-free-for-all">
+              <Link to="/blog/inclusive-module-accessibility-mission">
                 Read Our Mission
               </Link>
             </Button>

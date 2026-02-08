@@ -93,8 +93,8 @@ export default function InvestorsPublic() {
     },
     {
       icon: Accessibility,
-      name: "Clarity Scanner",
-      subtitle: "Accessibility Testing",
+      name: "INCLUSIVE Module",
+      subtitle: "Human Compatibility",
       description: "WCAG compliance scanning with AI-powered remediation suggestions."
     },
     {

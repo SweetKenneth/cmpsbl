@@ -15,7 +15,7 @@ export default function About() {
     { icon: Shield, name: "Defense Module", description: "Enterprise-grade threat detection and bot protection" },
     { icon: Eye, name: "Vision Module", description: "Full observability and system introspection layer" },
     { icon: Server, name: "Nexus Gateway", description: "Multi-provider AI routing with BYOK architecture" },
-    { icon: Accessibility, name: "Clarity Scanner", description: "WCAG accessibility scanning with AI remediation" },
+    { icon: Accessibility, name: "INCLUSIVE Module", description: "Human compatibility pipeline with WCAG scanning & AI remediation" },
     { icon: Zap, name: "Engine Marketplace", description: "Production-ready cognitive orchestrations" },
   ];
 

@@ -6,9 +6,6 @@ import { Link } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 
 export default function AccessProduct() {
-  const openClarity = () => {
-    window.open("https://clarity.promptfluid.com", "_blank");
-  };
 
   const features = [
     {
@@ -107,11 +104,13 @@ export default function AccessProduct() {
                 <div className="flex flex-col sm:flex-row gap-4 mb-8">
                   <Button 
                     size="lg" 
-                    onClick={openClarity}
+                    asChild
                     className="group bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500 hover:shadow-glow-lg text-lg"
                   >
-                    <Accessibility className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform" />
-                    Free Accessibility Scan
+                    <Link to="/scan">
+                      <Accessibility className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform" />
+                      Free Accessibility Scan
+                    </Link>
                   </Button>
                   <Button 
                     size="lg" 
@@ -282,10 +281,12 @@ export default function AccessProduct() {
             Start making the web work for everyone. 
             It's free. It's fast. It's the right thing to do.
           </p>
-          <Button size="lg" onClick={openClarity} className="shadow-glow hover:shadow-glow-lg">
-            <Accessibility className="w-5 h-5 mr-2" />
-            Start Free Accessibility Scan
-            <ArrowRight className="w-4 h-4 ml-2" />
+          <Button size="lg" asChild className="shadow-glow hover:shadow-glow-lg">
+            <Link to="/scan">
+              <Accessibility className="w-5 h-5 mr-2" />
+              Start Free Accessibility Scan
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Link>
           </Button>
           <p className="text-sm text-muted-foreground mt-6">
             No signup required • Unlimited scans • AI-powered fixes included

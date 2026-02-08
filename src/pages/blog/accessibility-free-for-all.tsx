@@ -6,21 +6,18 @@ import { Heart, Accessibility, ArrowLeft, CheckCircle, Globe } from "lucide-reac
 import { Link } from "react-router-dom";
 
 export default function AccessibilityFreeForAll() {
-  const openClarity = () => {
-    window.open("https://clarity.promptfluid.com", "_blank");
-  };
-
   return (
     <div className="min-h-screen bg-background">
       <SEO
         title="We Made Accessibility Free For All | PromptFluid"
-        description="Accessibility should never be locked behind a paywall. PromptFluid is making WCAG scanning and fixing 100% free forever."
-        canonical="https://promptfluid.com/blog/accessibility-free-for-all"
+        description="Accessibility should never be locked behind a paywall. PromptFluid is making WCAG scanning and fixing 100% free forever through the INCLUSIVE Module."
+        canonical="https://cmpsbl.com/blog/accessibility-free-for-all"
         keywords={[
           "free accessibility scanner",
           "free WCAG compliance",
           "accessibility for all",
-          "free website accessibility"
+          "free website accessibility",
+          "INCLUSIVE module"
         ]}
       />
 
@@ -59,13 +56,13 @@ export default function AccessibilityFreeForAll() {
           <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
             No signups. No credit cards. No "freemium" limitations. Just real accessibility tools that work.
           </p>
-          <button 
-            onClick={openClarity}
+          <Link 
+            to="/scan"
             className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors"
           >
             <Accessibility className="w-5 h-5" />
-            Start Free Scan at PTCHBL
-          </button>
+            Start Free Scan
+          </Link>
         </div>
       </section>
 
@@ -148,8 +145,8 @@ export default function AccessibilityFreeForAll() {
             
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
-                At PromptFluid, we've built <strong className="text-foreground">PTCHBL (Patchable)</strong> — a completely free accessibility scanning and 
-                remediation platform.
+                At PromptFluid, we've built the <strong className="text-foreground">INCLUSIVE Module</strong> — a completely free accessibility scanning and 
+                remediation pipeline integrated into the CMPSBL substrate.
               </p>
 
               <ul className="space-y-4">
@@ -162,7 +159,7 @@ export default function AccessibilityFreeForAll() {
                 <li className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
                   <div>
-                    <strong className="text-foreground">AI-Powered Auto-Fix</strong> — Our Cascade AI automatically generates fixes for common issues
+                    <strong className="text-foreground">AI-Powered Auto-Fix</strong> — Our Brain module automatically generates fixes for common issues
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
@@ -189,7 +186,7 @@ export default function AccessibilityFreeForAll() {
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
                 People ask us: "If it's free, how do you make money?" The answer is simple: we don't make money 
-                on accessibility. We make money on other PromptFluid products — security, AI orchestration, 
+                on accessibility. We make money on other CMPSBL products — security, AI orchestration, 
                 enterprise solutions.
               </p>
 
@@ -207,18 +204,18 @@ export default function AccessibilityFreeForAll() {
               Start making the web work for everyone with a free accessibility scan.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button 
-                onClick={openClarity}
+              <Link 
+                to="/scan"
                 className="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors"
               >
                 <Accessibility className="w-5 h-5" />
                 Free Accessibility Scan
-              </button>
+              </Link>
               <Link 
-                to="/products/access"
+                to="/cluster/inclusive-module-accessibility"
                 className="inline-flex items-center justify-center gap-2 border border-border px-6 py-3 rounded-lg font-semibold hover:bg-accent transition-colors"
               >
-                Learn About PTCHBL
+                Learn About INCLUSIVE
               </Link>
             </div>
           </section>

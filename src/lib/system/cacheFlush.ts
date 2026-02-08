@@ -16,7 +16,7 @@ export async function flushSystemCache(): Promise<void> {
     'brain_cache',
     'defense_cache',
     'vision_cache',
-    'clarity_cache',
+    'inclusive_cache',
     'cascade_cache',
     'pf_system_state',
     'pf_health_check',

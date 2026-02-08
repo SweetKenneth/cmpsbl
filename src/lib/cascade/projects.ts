@@ -57,8 +57,8 @@ export const cascadeProjects: CascadeProject[] = [
     notes: 'Must follow WordPress coding standards. No npm dependencies in production.'
   },
   {
-    id: 'clarity-extension',
-    name: 'Clarity Browser Extension',
+    id: 'inclusive-extension',
+    name: 'INCLUSIVE Browser Extension',
     stack: 'Chrome Extension Manifest V3 + TypeScript + Tailwind CSS',
     description: 'Browser extension for real-time accessibility scanning and automated fixes.',
     notes: 'Must work in isolated extension context. No external CDN dependencies.'
@@ -67,7 +67,7 @@ export const cascadeProjects: CascadeProject[] = [
     id: 'cascade-standalone',
     name: 'Cascade Standalone',
     stack: 'Node.js + TypeScript + Supabase Edge Functions',
-    description: 'Portable Cascade AI orchestrator that can be deployed independently of PromptFluid.',
+    description: 'Portable Cascade AI orchestrator that can be deployed independently of CMPSBL.',
     notes: 'Design for minimal dependencies. Should be cloneable to any Supabase project.'
   },
   {
@@ -78,10 +78,10 @@ export const cascadeProjects: CascadeProject[] = [
     notes: 'Primary stack integration. Uses E2B for sandboxed execution.'
   },
   {
-    id: 'clarity-engine',
-    name: 'Clarity Accessibility Engine',
-    stack: 'TypeScript + Node.js + WCAG 2.1 AA/AAA + axe-core',
-    description: 'Core accessibility scanning and remediation engine powering Clarity products.',
+    id: 'inclusive-engine',
+    name: 'INCLUSIVE Accessibility Engine',
+    stack: 'TypeScript + Node.js + WCAG 2.2 AA/AAA + axe-core',
+    description: 'Core accessibility scanning and remediation engine powering the INCLUSIVE module.',
     notes: 'Must maintain WCAG compliance. Performance-critical scanning loops.'
   },
   {
