@@ -1,6 +1,6 @@
 /**
  * useRipple Hook
- * v7.0.0 — Dedicated hook for RIPPLE (Message Bus) module operations
+ * v8.0.0 SYNERGY+ — Dedicated hook for RIPPLE (Message Bus) module operations
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';

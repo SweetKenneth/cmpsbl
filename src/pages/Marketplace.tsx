@@ -1,7 +1,7 @@
 /**
  * Template Alley — FREE Template Library + Template Generator
- * Starting points for learning and remixing
- * v9.1.0 - All templates free, includes code snippets + paid generator
+ * v8.0.0 SYNERGY+ — Starting points for learning and remixing
+ * All templates free, includes code snippets + paid generator
  */
 
 import { useState, useMemo } from "react";

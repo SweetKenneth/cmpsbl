@@ -1,6 +1,6 @@
 /**
  * Capability Auto-Loader
- * v7.0.0 — Filesystem Scanner for Drop-In Capabilities
+ * v8.0.0 SYNERGY+ — Filesystem Scanner for Drop-In Capabilities
  */
 
 import type { 

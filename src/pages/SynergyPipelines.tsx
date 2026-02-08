@@ -1,6 +1,6 @@
 /**
  * Synergy Pipelines Discovery Page
- * v8.0.0 — Showcasing 147 cross-module pipelines with code snippets
+ * v8.0.0 SYNERGY+ Epoch — 147 cross-module pipelines with code snippets
  * 
  * FREE exploration layer with runnable code examples
  */
@@ -216,7 +216,7 @@ function HeroSection() {
             className="mb-6 px-4 py-2 text-sm border-emerald-500/30 bg-emerald-500/5"
           >
             <Combine className="w-4 h-4 mr-2" />
-            FREE — Synergy Pipelines v7.5.3
+            FREE — Synergy Pipelines v8.0.0
           </Badge>
           
           {/* Main title */}
@@ -414,7 +414,7 @@ function SynergyExplorer() {
             Pipeline Explorer
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Browse all 135 synergy pipelines including 22 S-tier + 15 v7.5.2 discoveries, filter by category, and discover how modules combine
+            Browse all 147 synergy pipelines including 32 S-tier discoveries, filter by category, and discover how modules combine
           </p>
         </div>
         

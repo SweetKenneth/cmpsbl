@@ -1,5 +1,6 @@
 /**
  * Persistent Memory Marketing Landing Page
+ * v8.0.0 SYNERGY+ Epoch
  * 
  * Hero-driven conversion page focusing on the value proposition
  * without mentioning substrate, OS, or internal architecture.

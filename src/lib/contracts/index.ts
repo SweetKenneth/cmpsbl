@@ -1,6 +1,6 @@
 /**
  * promptfluid® Decode Contract Exports
- * v2026.01 — Substrate Interpreter Primitive
+ * v8.0.0 SYNERGY+ — Substrate Interpreter Primitive
  */
 
 export * from './DecodeContractTypes';

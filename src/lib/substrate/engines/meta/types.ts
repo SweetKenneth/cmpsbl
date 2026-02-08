@@ -1,9 +1,9 @@
 /**
  * Meta-Engine Types
- * v8.0.0 — COMPLETE Epoch: Full Meta-Engine Orchestration
+ * v8.0.0 SYNERGY+ Epoch — 20 Meta-Engines orchestrating 62 base engines
  * 
  * Meta-Engines orchestrate multiple engines into unified execution pipelines.
- * This creates a 3-layer architecture: Capabilities (200+) → Engines (48) → Meta-Engines (16)
+ * 3-layer architecture: 269 Capabilities → 62 Engines → 20 Meta-Engines
  */
 
 import type { EngineId, EngineExecutionResult } from '../types';

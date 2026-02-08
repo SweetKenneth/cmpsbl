@@ -1,6 +1,6 @@
 /**
- * CMPSBL v7.x.x — Living Evolution Log
- * A continuous record of why the system evolved during the v7 series.
+ * CMPSBL v8.0.0 SYNERGY+ Epoch — Living Evolution Log
+ * A continuous record of why the system evolved during the SYNERGY+ era.
  * 
  * This is not a changelog. This is a living document that records
  * the pressures, responses, and emergent capabilities of an evolving substrate.
