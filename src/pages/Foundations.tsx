@@ -83,8 +83,8 @@ export default function Foundations() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
-        <title>FNDTN v7 — Foundations | CMPSBL</title>
-        <meta name="description" content="CMPSBL Substrate OS v7.0.0 (FNDTN) — Reference standard for the substrate class. Download documentation, browse the 14-module architecture, and access archival records." />
+        <title>FNDTN v8 — Foundations | CMPSBL®</title>
+        <meta name="description" content="CMPSBL Substrate OS v8.0.0 SYNERGY+ Epoch — Reference standard for the substrate class. Download documentation, browse the 14-module architecture, and access archival records." />
       </Helmet>
 
       <PublicNav />
@@ -94,13 +94,13 @@ export default function Foundations() {
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-6">
             <Layers className="w-4 h-4 text-primary" />
-            <span className="text-sm font-mono text-primary">FNDTN v7.0.0</span>
+            <span className="text-sm font-mono text-primary">v8.0.0 SYNERGY+ Epoch</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-light mb-4">
             Foundations
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
-            CMPSBL Substrate OS v7.0.0 is the reference implementation and proposed standard 
+            CMPSBL Substrate OS v8.0.0 is the reference implementation and proposed standard 
             for the <strong>substrate class</strong> of AI systems — persistent runtime, memory, 
             doctrine, and self-improvement.
           </p>
@@ -121,13 +121,13 @@ export default function Foundations() {
           </CardHeader>
           <CardContent className="prose prose-sm dark:prose-invert max-w-none">
             <p>
-              CMPSBL v7.0.0 (FNDTN) presents a unified cognitive infrastructure platform 
-              implementing a five-layer, 14-module kernel architecture. The system provides 
-              persistent runtime with 3-tier memory (Hot/Warm/Cold), adaptive learning cycles, 
-              multi-provider AI routing, real-time observability, and self-improvement pipelines.
+              CMPSBL v8.0.0 SYNERGY+ presents a unified cognitive infrastructure platform 
+              implementing a five-layer, 14-module kernel architecture with 147 synergy pipelines. 
+              The system provides persistent runtime with 3-tier memory (Hot/Warm/Cold), adaptive 
+              learning cycles, multi-provider AI routing, real-time observability, and self-improvement pipelines.
             </p>
             <p>
-              This release establishes three interconnected standards: <strong>FNDTN</strong> as the 
+              This release establishes three interconnected standards: <strong>SYNERGY+</strong> as the 
               substrate mechanics standard, the <strong>AI Governance Reference Namespace</strong> as 
               the governance semantics layer, and <strong>LLMS.txt</strong> as the machine-readable 
               context format for AI systems.
@@ -161,7 +161,7 @@ export default function Foundations() {
             <div className="grid md:grid-cols-3 gap-4">
               <Link to="/foundations" className="p-4 rounded-lg bg-primary/10 border border-primary/30">
                 <h4 className="font-medium text-primary mb-1">Substrate Standard</h4>
-                <p className="text-sm text-muted-foreground">CMPSBL FNDTN v7.0.0</p>
+                <p className="text-sm text-muted-foreground">CMPSBL v8.0.0 SYNERGY+</p>
               </Link>
               <Link to="/namespace" className="p-4 rounded-lg bg-muted border border-border hover:border-primary/30 transition-colors">
                 <h4 className="font-medium mb-1">Governance Standard</h4>
@@ -355,7 +355,7 @@ export default function Foundations() {
         {/* Author Attribution */}
         <div className="mt-12 p-6 rounded-lg bg-muted/30 text-center">
           <p className="text-sm text-muted-foreground">
-            FNDTN v7.0.0 by{" "}
+            v8.0.0 SYNERGY+ by{" "}
             <a 
               href="https://orcid.org/0009-0001-4237-1243" 
               target="_blank" 
@@ -364,7 +364,7 @@ export default function Foundations() {
             >
               Kenneth E. Sweet Jr.
             </a>
-            {" "}• PromptFluid • January 2026
+            {" "}• CMPSBL® • February 2026
           </p>
         </div>
       </main>

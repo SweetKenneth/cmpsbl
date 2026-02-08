@@ -30,7 +30,7 @@ export default function RippleProduct() {
     {
       icon: Globe,
       title: "Service Mesh Integration",
-      description: "Seamless connectivity between all PromptFluid products. Unified data flow and cross-service communication."
+      description: "Seamless connectivity between all CMPSBL substrate modules. Unified data flow and cross-service communication."
     },
     {
       icon: ShieldCheck,
@@ -171,9 +171,9 @@ export default function RippleProduct() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted/20">
       <SEO 
-        title="PromptFluid Ripple — Network Integration Hub | API Gateway & Service Mesh"
-        description="Unified platform where all PromptFluid tools communicate seamlessly. API orchestration, real-time webhooks, and intelligent routing. Connect everything."
-        canonical="https://promptfluid.com/projects/ripple"
+        title="CMPSBL Ripple — Network Integration Hub | API Gateway & Service Mesh"
+        description="Unified platform where all CMPSBL substrate modules communicate seamlessly. API orchestration, real-time webhooks, and intelligent routing. Connect everything."
+        canonical="https://cmpsbl.com/projects/ripple"
         keywords={[
           'API gateway',
           'service mesh',
@@ -189,7 +189,8 @@ export default function RippleProduct() {
           'webhook delivery',
           'cross-service communication',
           'distributed systems',
-          'API automation'
+          'API automation',
+          'CMPSBL'
         ]}
       />
 
@@ -213,7 +214,7 @@ export default function RippleProduct() {
 
                 <h1 className="text-5xl md:text-6xl font-bold mb-6">
                   <span className="bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 bg-clip-text text-transparent">
-                    PromptFluid Ripple
+                    CMPSBL Ripple
                   </span>
                 </h1>
 
@@ -222,7 +223,7 @@ export default function RippleProduct() {
                 </p>
 
                 <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-                  The connective tissue of the PromptFluid ecosystem. Intelligent API routing, real-time webhooks, and seamless data flow between all products and services.
+                  The connective tissue of the CMPSBL substrate. Intelligent API routing, real-time webhooks, and seamless data flow between all modules and services.
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 mb-8">

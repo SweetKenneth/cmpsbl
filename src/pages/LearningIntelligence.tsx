@@ -67,8 +67,8 @@ export default function LearningIntelligence() {
   return (
     <>
       <SEO 
-        title="Learning Intelligence | PromptFluid Vision"
-        description="View AI learning patterns, system heuristics, and adaptive recommendations from PromptFluid Brain."
+        title="Learning Intelligence | CMPSBL Vision"
+        description="View AI learning patterns, system heuristics, and adaptive recommendations from CMPSBL Brain module."
       />
       
       <div className="container mx-auto p-6 space-y-6">
@@ -184,7 +184,7 @@ export default function LearningIntelligence() {
                   </div>
                 ) : allPatterns.length === 0 ? (
                   <p className="text-sm text-muted-foreground text-center py-8">
-                    No patterns yet. System will learn as you use PromptFluid.
+                    No patterns yet. System will learn as you use the substrate.
                   </p>
                 ) : (
                   <div className="space-y-3">

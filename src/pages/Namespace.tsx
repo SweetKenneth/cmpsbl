@@ -117,9 +117,9 @@ export default function Namespace() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Helmet>
-        <title>AI Governance Reference Namespace — AIGVRN v1.0 | PromptFluid</title>
+        <title>AI Governance Reference Namespace — AIGVRN v1.0 | CMPSBL®</title>
         <meta name="description" content="AI Governance Reference Namespace (AIGVRN): A 12-Surface Lexicon for AI Governance Documentation. The first comprehensive AI governance domain portfolio and unified namespace solution." />
-        <meta name="keywords" content="AIGVRN, AI governance, AI Governance Lexicon, AISTNDRD, AICRTFY, AIVRFY, AIPLCY, AICMPLY, AISCRTY, AISFTY, AIRGLTN, AISVRGN, AIPRVCY, AICNTRL, AI governance namespace" />
+        <meta name="keywords" content="AIGVRN, AI governance, AI Governance Lexicon, AISTNDRD, AICRTFY, AIVRFY, AIPLCY, AICMPLY, AISCRTY, AISFTY, AIRGLTN, AISVRGN, AIPRVCY, AICNTRL, AI governance namespace, CMPSBL" />
       </Helmet>
 
       <PublicNav />
@@ -274,7 +274,7 @@ export default function Namespace() {
           </div>
           <h2 className="text-2xl font-semibold mb-6">Pioneering AI Governance Infrastructure</h2>
           <p className="text-muted-foreground mb-8">
-            <strong className="text-foreground">PromptFluid</strong> is the <strong className="text-foreground">first organization</strong> to 
+            <strong className="text-foreground">CMPSBL®</strong> is the <strong className="text-foreground">first organization</strong> to 
             register a comprehensive portfolio of AI governance domains and the <strong className="text-foreground">first to propose 
             a unified namespace solution</strong> for public use. The AI Governance Reference Namespace provides 
             canonical reference points for the emerging field of AI governance.
@@ -452,14 +452,14 @@ export default function Namespace() {
           <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">
             A Proposed Solution Presented By
           </p>
-          <p className="text-lg font-semibold mb-2">PromptFluid®</p>
+          <p className="text-lg font-semibold mb-2">CMPSBL®</p>
           <p className="text-sm text-muted-foreground mb-4">
             <a href="mailto:Dev@CMPSBL.com" className="hover:text-primary">Dev@CMPSBL.com</a>
             {" "}•{" "}
             <a href="tel:+17603584324" className="hover:text-primary">(760) FLUID-AI</a>
           </p>
           <p className="text-sm text-muted-foreground">
-            PromptFluid is the first organization to register a comprehensive AI governance domain 
+            CMPSBL is the first organization to register a comprehensive AI governance domain 
             portfolio and propose a unified namespace solution. Twelve surfaces under unified architecture.
           </p>
           <p className="text-xs text-muted-foreground mt-4">
