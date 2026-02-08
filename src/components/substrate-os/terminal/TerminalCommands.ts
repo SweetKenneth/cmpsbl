@@ -150,6 +150,8 @@ export const DREAM_COMMANDS: CommandDefinition[] = [
 export const SYSTEM_COMMANDS: CommandDefinition[] = [
   { command: 'system.status', description: 'Global system status', category: 'system', icon: Cpu, requiresOperator: false },
   { command: 'system.health', description: 'Full system health', category: 'system', icon: Activity, requiresOperator: false },
+  { command: 'system.doctor', description: 'Quick diagnostics (env, DB, routing, providers)', category: 'system', icon: CheckCircle, requiresOperator: false },
+  { command: 'system.verify', description: 'Non-destructive checks with pass/fail results', category: 'system', icon: CheckCircle, requiresOperator: false, args: '[--verbose]' },
   { command: 'system.resilience', description: 'Resilience snapshot (circuits, health, heals)', category: 'system', icon: Shield, requiresOperator: false, args: '[role]', example: 'system.resilience operator' },
   { command: 'system.version', description: 'Substrate version', category: 'system', icon: Cpu, requiresOperator: false },
   { command: 'system.config', description: 'View configuration', category: 'system', icon: Settings, requiresOperator: false, args: '[key]' },

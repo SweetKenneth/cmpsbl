@@ -384,8 +384,8 @@ export function HeroMetaSubstrate() {
               templates, pipelines, memory, CodeLab. 
               <span className="text-foreground font-semibold"> Subscribe to Engines</span> for 
               production-ready orchestration with 
-              <span className="text-foreground font-semibold"> 62 engines</span> and 
-              <span className="text-foreground font-semibold"> 20 meta-engines</span>.
+              <span className="text-foreground font-semibold"> 147 synergy pipelines</span> and 
+              <span className="text-foreground font-semibold"> 14 core modules</span>.
             </motion.p>
             
             {/* CTA Buttons - NOT full width on mobile */}
@@ -540,10 +540,10 @@ export function HeroMetaSubstrate() {
             {/* Inner glow */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
             
-            <AnimatedStat value={62} label="Engines" delay={0} />
-            <AnimatedStat value={20} label="Meta-Engines" delay={1} />
-            <AnimatedStat value={140} suffix="k+" label="Lines of Code" delay={2} />
-            <AnimatedStat value={269} label="Capabilities" delay={3} />
+            <AnimatedStat value={14} label="Modules" delay={0} />
+            <AnimatedStat value={147} label="Synergies" delay={1} />
+            <AnimatedStat value={160} suffix="k+" label="Lines of Code" delay={2} />
+            <AnimatedStat value={310} label="Commands" delay={3} />
           </div>
         </motion.div>
       </div>

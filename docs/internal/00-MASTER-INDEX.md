@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Internal Engineering Library
 
-**Version 7.9.0 | ENGINE+ Epoch (3-Layer Architecture) | CONFIDENTIAL**
+**Version 8.0.0 | SYNERGY+ Epoch | CONFIDENTIAL**
 
 ---
 
@@ -22,7 +22,7 @@
 | 06 | [Dream-Eater Cycles](./06-DREAM-EATER.md) | Autonomous learning, doctrine extraction, sleep cycles |
 | 07 | [Defense & Security](./07-DEFENSE-SECURITY.md) | Rate limiting, API key hashing, threat detection |
 | 08 | [AI Router (Nexus)](./08-NEXUS-ROUTER.md) | Provider fallback, cost optimization, model selection |
-| 09 | [Terminal Reference](./09-TERMINAL-REFERENCE.md) | All 300+ commands, module prefixes, output formats |
+| 09 | [Terminal Reference](./09-TERMINAL-REFERENCE.md) | All 310+ commands, module prefixes, output formats |
 | 10 | [Integration Layer](./10-INTEGRATION-LAYER.md) | External APIs, webhook handling, adapter patterns |
 | 11 | [Synergy Engine](./11-SYNERGY-ENGINE.md) | **147 cross-module pipelines, 125 executors, governance** |
 | 12 | [Capabilities Depot](./12-CAPABILITIES-DEPOT.md) | Downloadable artifacts, licensing, pricing tiers |
@@ -68,7 +68,7 @@ ADVANCED MODES (v7.0.0)
 └── SEBA ........... Self-Evolving Bounded Agent, genuine autonomy
 ```
 
-### 20 Cognitive Engines (v7.7.0)
+### Cognitive Engines (v8.0.0)
 
 ```
 COGNITIVE ENGINES (4)
@@ -119,7 +119,7 @@ EVOLUTION ENGINES (2)
 | **Capability Count** | Capability Registry | **76 total capabilities across 14 modules** |
 | **Engine Count** | Engine System | **20 engines orchestrating 76 capabilities** |
 
-### v7.7.0 — 20 Cognitive Engines
+### v8.0.0 — SYNERGY+ Epoch
 
 | Category | Engines | Capabilities Orchestrated | Avg Synergy Multiplier |
 |----------|---------|---------------------------|------------------------|
@@ -135,15 +135,12 @@ EVOLUTION ENGINES (2)
 
 | Version | Codename | Key Features |
 |---------|----------|--------------|
-| **7.7.0** | **ENGINE+** | **20 Cognitive Engines consolidating 76 capabilities, compound execution** |
-| 7.6.0 | SYNERGY+ | 76 capabilities (+56 new), INCLUSIVE auto-repair, updated docs |
-| 7.5.3 | SYNERGY+ | 147 synergy pipelines, 125 executors (+12 v7.5.3 discoveries) |
-| 7.5.2 | SYNERGY+ | 135 synergy pipelines, 113 executors (+15 v7.5.2 discoveries) |
-| 7.5.1 | SYNERGY+ | 112 world-first functions, 120 synergy pipelines, 98 executors |
+| **8.0.0** | **SYNERGY+** | **310+ terminal commands, 147 synergies, 269 capabilities** |
+| 7.7.0 | ENGINE+ | 20 Cognitive Engines consolidating 76 capabilities |
+| 7.6.0 | SYNERGY+ | 76 capabilities (+56 new), INCLUSIVE auto-repair |
+| 7.5.3 | SYNERGY+ | 147 synergy pipelines, 125 executors |
 | 7.5.0 | SYNERGY | 56 world-first functions across 14 modules |
-| 7.1.0 | SEBA+ | 44 synergy pipelines, 22 executors, 10 new high-value synergies |
-| 7.0.0 | SEBA | 34 synergy pipelines, 13 executors, SEBA bounded autonomy, 67 tests |
-| 6.3.1 | FNDTN | CLM integration, mobile terminal, 260+ commands |
+| 7.0.0 | SEBA | Bounded autonomy, 67 tests |
 | 6.0.0 | FNDTN | 14-module architecture, Evolution Cycle |
 
 ### Engine Value Proposition
@@ -158,5 +155,5 @@ EVOLUTION ENGINES (2)
 
 ---
 
-*CMPSBL OS Substrate v7.7.0 — ENGINE+ Epoch*
+*CMPSBL OS Substrate v8.0.0 — SYNERGY+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

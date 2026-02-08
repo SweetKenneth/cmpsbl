@@ -1,6 +1,6 @@
 # Getting Started
 
-**Quick Start Guide for CMPSBL®**
+**Quick Start Guide for CMPSBL® v8.0.0**
 
 ---
 

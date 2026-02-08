@@ -260,7 +260,7 @@ export default function SubstrateDashboard() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Substrate Dashboard — CMPSBL v7.0.0"
+        title="Substrate Dashboard — CMPSBL v8.0.0"
         description="Cognitive orchestration substrate control center. Monitor all 14 modules including brain, decode, defense, nexus, vision, dream, integration, inclusive, cortex, and more."
         canonical="https://cmpsbl.com/substrate"
         keywords={["cognitive orchestration", "AI substrate", "CMPSBL dashboard", "14 modules", "cortex"]}
@@ -281,12 +281,12 @@ export default function SubstrateDashboard() {
             </div>
             <div>
               <h1 className="text-2xl md:text-4xl font-bold">CMPSBL Substrate</h1>
-              <p className="text-sm md:text-base text-muted-foreground">v7.0.0 — Cognitive Orchestration Substrate</p>
+              <p className="text-sm md:text-base text-muted-foreground">v8.0.0 SYNERGY+ — Cognitive Orchestration Substrate</p>
             </div>
           </div>
           
           <p className="text-base md:text-lg text-muted-foreground max-w-3xl mb-6">
-            Unified control center for the AI orchestration substrate. All 14 modules organized in 5 layers, accessible through one endpoint.
+            Unified control center for the AI orchestration substrate. All 14 modules organized in 5 layers, 147 synergy pipelines, 310+ terminal commands.
           </p>
           
           <div className="flex gap-3">
