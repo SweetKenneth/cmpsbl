@@ -117,6 +117,12 @@ export interface CapabilityArtifact {
   
   /** Sales pitch tagline (S-tier) */
   salesPitch?: string;
+  
+  /** Code snippet for quick integration */
+  codeSnippet?: string;
+  
+  /** SDK import path */
+  sdkImport?: string;
 }
 
 // === Version History Entry ===

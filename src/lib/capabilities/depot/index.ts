@@ -171,6 +171,14 @@ export {
   getAllPremiumStripeConfigs,
 } from './stripe-premium';
 
+// === Code Snippets ===
+export {
+  getCodeSnippet,
+  getSDKImport,
+  getQuickStartSnippet,
+  getCodeLabUrl,
+} from './code-snippets';
+
 // === Constants ===
 export const DEPOT_VERSION = '2.1.0'; // Premium Expansion
 export const DEPOT_NAME = 'Capabilities Depot';
