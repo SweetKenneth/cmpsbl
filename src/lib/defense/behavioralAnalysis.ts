@@ -1,7 +1,7 @@
- /**
-  * DEFENSE Behavioral Analysis
-  * v7.5.0 — User and entity behavior analytics for threat detection
-  */
+/**
+ * DEFENSE Behavioral Analysis
+ * v8.0.0 SYNERGY+ — User and entity behavior analytics for threat detection
+ */
  
  import { supabase } from '@/integrations/supabase/client';
  

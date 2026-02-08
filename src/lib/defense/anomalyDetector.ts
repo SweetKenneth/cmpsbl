@@ -1,7 +1,7 @@
- /**
-  * DEFENSE Anomaly Detector v7.5.0
-  * Real-time behavioral anomaly detection and classification
-  */
+/**
+ * DEFENSE Anomaly Detector v8.0.0 SYNERGY+
+ * Real-time behavioral anomaly detection and classification
+ */
  
  export type AnomalyType = 
    | 'rate_spike'

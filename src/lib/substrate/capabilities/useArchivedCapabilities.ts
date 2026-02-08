@@ -1,6 +1,6 @@
 /**
  * useArchivedCapabilities Hook
- * v6.9.1 — React hook for accessing archived edge function capabilities
+ * v8.0.0 SYNERGY+ — React hook for accessing archived edge function capabilities
  */
 
 import { useState, useCallback } from 'react';
@@ -23,7 +23,7 @@ export interface UseArchivedCapabilitiesReturn {
   loading: boolean;
   error: string | null;
   
-  // Capability functions (v7.0.5 simplified signatures)
+  // Capability functions (v8.0.0 simplified signatures)
   testHypothesis: (claim: string, strategy?: string) => Promise<HypothesisTestResult | null>;
   analyzeSystem: (system: string, issue: string) => Promise<SystemsReasoningResult | null>;
   critiqueOutput: (output: string) => Promise<SelfCritiqueResult | null>;

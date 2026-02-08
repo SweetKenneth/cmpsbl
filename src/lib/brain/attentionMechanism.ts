@@ -1,7 +1,7 @@
- /**
-  * BRAIN Attention Mechanism v7.5.0
-  * Priority-weighted memory retrieval with decay and salience scoring
-  */
+/**
+ * BRAIN Attention Mechanism v8.0.0 SYNERGY+
+ * Priority-weighted memory retrieval with decay and salience scoring
+ */
  
  import { supabase } from '@/integrations/supabase/client';
  

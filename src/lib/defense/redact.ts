@@ -1,6 +1,6 @@
 /**
  * Secret Redaction System
- * v7.0.0 — Comprehensive secret masking for logs, UIs, and errors
+ * v8.0.0 SYNERGY+ — Comprehensive secret masking for logs, UIs, and errors
  */
 
 // Patterns that indicate sensitive keys

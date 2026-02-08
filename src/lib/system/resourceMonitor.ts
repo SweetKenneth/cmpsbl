@@ -1,7 +1,7 @@
- /**
-  * SYSTEM Resource Monitor
-  * v7.5.0 — Real-time resource tracking and alerts
-  */
+/**
+ * SYSTEM Resource Monitor
+ * v8.0.0 SYNERGY+ — Real-time resource tracking and alerts
+ */
  
  // Resource metrics
  export interface ResourceMetrics {

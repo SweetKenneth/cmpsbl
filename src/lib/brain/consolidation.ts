@@ -1,9 +1,9 @@
 /**
  * BRAIN Memory Consolidation Engine
- * v7.0.0 — Pattern Extraction & Deduplication
+ * v8.0.0 SYNERGY+ — Pattern Extraction & Deduplication
  * 
- * Missing capability: Memory consolidation and pattern extraction
- * during low-activity periods to improve recall efficiency.
+ * Memory consolidation and pattern extraction during low-activity
+ * periods to improve recall efficiency.
  */
 
 import { supabase } from '@/integrations/supabase/client';

@@ -1,7 +1,7 @@
- /**
-  * NEXUS Budget Governance Engine
-  * v7.5.0 — Real-time cost tracking and enforcement
-  */
+/**
+ * NEXUS Budget Governance Engine
+ * v8.0.0 SYNERGY+ — Real-time cost tracking and enforcement
+ */
  
  import { supabase } from '@/integrations/supabase/client';
  

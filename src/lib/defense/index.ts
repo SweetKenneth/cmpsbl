@@ -1,6 +1,6 @@
 /**
  * Defense Module Exports
- * v7.0.0 — Security, Rate Limiting, Circuit Breakers, and Secret Redaction
+ * v8.0.0 SYNERGY+ — Security, Rate Limiting, Circuit Breakers, and Secret Redaction
  */
 
 // Core threat detection and risk analysis

@@ -1,6 +1,6 @@
 /**
  * BRAIN Module — Cognitive Memory & Learning Engine
- * v7.0.0 — Substrate Memory Core
+ * v8.0.0 SYNERGY+ — Substrate Memory Core
  * 
  * Provides:
  * - Three-tier memory system (Hot → Warm → Cold)

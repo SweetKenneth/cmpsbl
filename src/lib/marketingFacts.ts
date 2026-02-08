@@ -26,7 +26,7 @@ export const LAYERS_COUNT = 5;
 
 /** 
  * Synergy pipelines defined in capabilities/synergies/registry.ts
- * 98 core + 22 S-tier + 15 v7.5.2 + 12 v7.5.3 = 147
+ * 98 core + 22 S-tier + 27 discovery synergies = 147
  */
 export const SYNERGY_PIPELINES_COUNT = 147;
 

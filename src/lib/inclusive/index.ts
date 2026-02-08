@@ -1,7 +1,7 @@
 /**
  * INCLUSIVE Module — Human Compatibility Pipeline
- * v7.0.0 — 14th Substrate Module
- * 
+ * v8.0.0 SYNERGY+ — 14th Substrate Module
+ *
  * @origin(cmptbl) + @origin(clarity) — Migrated from archived CMPTBL/Clarity utilities
  * 
  * Provides accessibility scanning, repair, validation, profiling, and reporting

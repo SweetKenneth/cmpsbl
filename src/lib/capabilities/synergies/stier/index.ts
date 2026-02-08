@@ -1,6 +1,6 @@
 /**
  * S-Tier Synergy Pipelines
- * v7.5.0 — 22 Premium Cross-Module Pipelines
+ * v8.0.0 SYNERGY+ — 32 Premium Cross-Module Pipelines
  * 
  * The highest-value pipelines for enterprise buyers
  * Stripe config now in depot/stripe-stier.ts

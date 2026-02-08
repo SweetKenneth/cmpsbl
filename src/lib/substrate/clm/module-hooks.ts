@@ -1,9 +1,9 @@
 /**
  * CLM Module Integration Hooks
- * v7.0.0 — Per-module learning hooks for CLM autonomous operation
+ * v8.0.0 SYNERGY+ — Per-module learning hooks for CLM autonomous operation
  * 
  * Each substrate module registers its own learning KPIs and reflection methods.
- * CLM calls these hooks during autonomous learning cycles.
+ * CLM calls these hooks during autonomous learning cycles within the 14-module architecture.
  */
 
 import { supabase } from '@/integrations/supabase/client';

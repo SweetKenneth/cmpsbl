@@ -1,5 +1,5 @@
 /**
- * promptfluid® Dream Module v7.0.0
+ * promptfluid® Dream Module v8.0.0 SYNERGY+
  * Nocturnal Processing & Autonomous Learning Synthesis
  * 
  * The unconscious layer for:
