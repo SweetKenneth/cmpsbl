@@ -315,8 +315,8 @@ const PersistentMemoryLanding = () => {
                 {[
                   {
                     step: "1",
-                    title: "Install the memory client",
-                    code: "npm install @cmpsbl/memory",
+                    title: "Import the memory SDK",
+                    code: "import { withPersistentMemory } from '@cmpsbl/memory';",
                     note: "No additional infrastructure required"
                   },
                   {
