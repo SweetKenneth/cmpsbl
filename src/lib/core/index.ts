@@ -1,6 +1,6 @@
 /**
  * CORE Module — Substrate Foundation Layer
- * v7.0.0 — Kernel Bootstrap & Base Utilities
+ * v8.0.0 — SYNERGY+ Epoch Kernel Bootstrap & Base Utilities
  * 
  * The foundational module that provides:
  * - Substrate boot sequence management
@@ -12,9 +12,9 @@
 
 // ============ Constants ============
 
-export const SUBSTRATE_VERSION = '7.0.0';
-export const SUBSTRATE_CODENAME = 'Olympus';
-export const CORE_VERSION = '7.0.0';
+export const SUBSTRATE_VERSION = '8.0.0';
+export const SUBSTRATE_CODENAME = 'SYNERGY+';
+export const CORE_VERSION = '8.0.0';
 export const CORE_CODENAME = 'Foundation';
 
 // All 14 substrate modules in canonical boot order

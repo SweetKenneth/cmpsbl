@@ -1,8 +1,8 @@
 /**
  * DEFENSE Threat Intelligence Engine
- * v7.0.0 — Attack Detection & IP Reputation
+ * v8.0.0 — SYNERGY+ Epoch Attack Detection & IP Reputation
  * 
- * Missing capability: Threat intelligence with IP reputation,
+ * Threat intelligence with IP reputation,
  * attack pattern detection, and proactive threat assessment.
  */
 

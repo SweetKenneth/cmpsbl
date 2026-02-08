@@ -1,5 +1,5 @@
 /**
- * SYSTEM Module Enhancements — v7.5.0 SYNERGY Epoch
+ * SYSTEM Module Enhancements — v8.0.0 SYNERGY+ Epoch
  * ResourceProfiler, DependencyGraph, SelfHealOrchestrator, BackupIntegrity
  */
 

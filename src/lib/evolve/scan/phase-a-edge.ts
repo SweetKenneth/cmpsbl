@@ -1,6 +1,6 @@
 /**
  * Phase A — Edge Function Introspection
- * v7.0.0 — Capability Auto-Adapt Integration
+ * v8.0.0 — SYNERGY+ Epoch Capability Auto-Adapt Integration
  * 
  * Scans deployed edge functions and cross-references against capability registry.
  * ⚠️ No source code exposed. Metadata only.

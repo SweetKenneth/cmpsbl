@@ -1,6 +1,6 @@
 /**
- * Marketplace Bundles & Stacks Configuration v7.0.0
- * Market-aligned pricing based on competitor research (Jan 2026)
+ * Marketplace Bundles & Stacks Configuration v8.0.0
+ * SYNERGY+ Epoch Market-aligned pricing based on competitor research (Feb 2026)
  * Volume packs and developer outcome recipes with 25-35% discounts
  */
 

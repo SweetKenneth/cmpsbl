@@ -1,6 +1,6 @@
 /**
  * Centralized Logging System
- * v7.0.0 — Production-safe logging with redaction and trace propagation
+ * v8.0.0 — SYNERGY+ Epoch Production-safe logging with redaction and trace propagation
  */
 
 import { redactSecrets } from '@/lib/defense/redact';

@@ -1,7 +1,7 @@
- /**
-  * VISION Predictive Alerts v7.5.0
-  * ML-based alert prediction before issues occur
-  */
+/**
+ * VISION Predictive Alerts v8.0.0
+ * SYNERGY+ Epoch ML-based alert prediction before issues occur
+ */
  
  export type AlertPredictionType = 
    | 'memory_pressure'

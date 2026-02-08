@@ -1,6 +1,6 @@
 /**
  * Substrate Daily Operations Integration
- * v7.5.0 — Integrates 120 synergy pipelines into substrate workflows
+ * v8.0.0 — SYNERGY+ Epoch Integrates 147 synergy pipelines into substrate workflows
  */
 
 import { executeSynergy, listSynergies, getRecommendedSynergies } from '../index';
