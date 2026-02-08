@@ -68,9 +68,9 @@ Dream: Memory consolidation engine
 
 /* COLOPHON */
 
-CMPSBL Substrate OS v7.5.3 SYNERGY+ Epoch
-14 Core Modules • 260+ Terminal Commands
-147 Synergy Pipelines • 136+ Depot Capabilities
+CMPSBL Substrate OS v8.0.0 SYNERGY+ Epoch
+14 Core Modules • 310+ Terminal Commands
+147 Synergy Pipelines • 269 Capabilities
 WCAG 2.2 Accessibility via INCLUSIVE Module
 
 promptfluid® — AI That Flows.
