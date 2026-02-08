@@ -1,5 +1,5 @@
 /**
- * DEFENSE Module Enhancements — v7.5.0 SYNERGY Epoch
+ * DEFENSE Module Enhancements — v8.0.0 SYNERGY+ Epoch
  * BehavioralFingerprint, ZeroTrustValidator, ThreatAnticipator, IPContainment
  */
 

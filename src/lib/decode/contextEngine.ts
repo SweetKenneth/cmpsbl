@@ -1,7 +1,7 @@
- /**
-  * DECODE Context Engine
-  * v7.5.0 — Multi-turn conversation context and memory
-  */
+/**
+ * DECODE Context Engine
+ * v8.0.0 — SYNERGY+ Epoch — Multi-turn conversation context and memory
+ */
  
  // Context window
  export interface ContextWindow {

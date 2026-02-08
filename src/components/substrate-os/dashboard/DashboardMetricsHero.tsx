@@ -5,6 +5,7 @@
 
 import { Activity, Cpu, Zap, Brain, Shield, Eye, Moon, Radio, Key, Sparkles, Plug, Settings, Layers, GitBranch, Accessibility, RefreshCw } from 'lucide-react';
 import { useSubstrateHealthScore } from '@/hooks/useSubstrateOS';
+import { useMetric } from '@/stores/publicMetricsStore';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -30,6 +31,7 @@ const MODULES_CONFIG = [
 
 export function DashboardMetricsHero() {
   const healthScore = useSubstrateHealthScore();
+  const version = useMetric('version');
   
   const circumference = 2 * Math.PI * 85;
   const progress = (healthScore.healthScore / 100) * circumference;
@@ -191,7 +193,7 @@ export function DashboardMetricsHero() {
               whileHover={{ y: -2 }}
             >
               <span className="text-[10px] text-amber-400 font-mono uppercase tracking-wider block mb-1">SUBSTRATE</span>
-              <span className="text-lg font-bold text-foreground font-mono">v8.0.0</span>
+              <span className="text-lg font-bold text-foreground font-mono">v{version}</span>
             </motion.div>
           </div>
 

@@ -44,7 +44,7 @@ export function CodeLabCTA() {
               </h2>
               
               <p className="text-muted-foreground text-sm sm:text-base md:text-lg mb-6 max-w-xl mx-auto lg:mx-0">
-                Free SDK, 92+ templates, 136+ capabilities, 147 pipelines — all unlocked.
+                Free SDK, 92+ templates, 269 capabilities, 147 pipelines — all unlocked.
               </p>
               
               <div className="flex flex-wrap gap-3 justify-center lg:justify-start">

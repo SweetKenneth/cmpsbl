@@ -22,8 +22,21 @@ import {
   Unlock,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { getPublicMetrics } from "@/stores/publicMetricsStore";
 
-// Free tool items
+// Free tool items - driven by public metrics store
+const getFreeTools = () => {
+  const metrics = getPublicMetrics();
+  return [
+    { name: "Templates", icon: Package, count: "112+", color: "text-cyan-500" },
+    { name: "Pipelines", icon: Layers, count: String(metrics.synergyPipelinesCount), color: "text-violet-500" },
+    { name: "Capabilities", icon: Zap, count: String(metrics.capabilitiesCount), color: "text-amber-500" },
+    { name: "Memory", icon: Brain, count: "∞", color: "text-rose-500" },
+    { name: "CodeLab", icon: Code, count: "Live", color: "text-emerald-500" },
+  ];
+};
+
+// Legacy static export for initial render
 const freeTools = [
   { name: "Templates", icon: Package, count: "112+", color: "text-cyan-500" },
   { name: "Pipelines", icon: Layers, count: "147", color: "text-violet-500" },
