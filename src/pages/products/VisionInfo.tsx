@@ -1,4 +1,6 @@
 import { SEO } from "@/components/SEO";
+import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Eye, Activity, BarChart3, Settings, Shield, Zap, ArrowRight, CheckCircle } from "lucide-react";
@@ -8,11 +10,11 @@ export default function VisionInfo() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <SEO 
-        title="Vision Dashboard — Real-Time AI System Monitoring & Analytics"
-        description="Centralized control panel for monitoring AI performance, system health, and security metrics in real-time. Track bot detections, deployment status, and accessibility compliance from one unified interface."
-        canonical="https://promptfluid.com/products/vision"
+        title="Vision Dashboard — Real-Time AI System Monitoring & Analytics | CMPSBL"
+        description="Centralized control panel for monitoring AI performance, system health, and security metrics in real-time. Part of CMPSBL's 14-module cognitive substrate."
+        canonical="https://cmpsbl.com/products/vision"
         keywords={[
           'real-time monitoring dashboard',
           'AI system analytics',
@@ -26,6 +28,8 @@ export default function VisionInfo() {
           'data visualization dashboard'
         ]}
       />
+
+      <PublicNav />
 
       {/* Hero */}
       <section className="container mx-auto px-4 py-20">
@@ -140,6 +144,8 @@ export default function VisionInfo() {
           </Button>
         </div>
       </section>
+
+      <EnhancedFooter />
     </div>
   );
 }

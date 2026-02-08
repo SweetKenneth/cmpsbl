@@ -1,4 +1,11 @@
+/**
+ * Defense Info — Security Module Product Page
+ * v8.0.0 SYNERGY+ Epoch — Part of 14-module substrate
+ */
+
 import { SEO } from "@/components/SEO";
+import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Shield, Scan, Brain, AlertTriangle, Lock, Target, ArrowRight, CheckCircle } from "lucide-react";
@@ -8,42 +15,44 @@ export default function DefenseInfo() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <SEO 
-        title="RCKBL (Rockable) — AI-Powered WordPress Security"
-        description="Enterprise WordPress security powered by AI. Stop bots, malware, brute force attacks, and unauthorized changes with adaptive intelligence that learns and evolves."
-        canonical="https://promptfluid.com/products/rckbl"
+        title="Defense Module — AI-Powered Threat Detection & Security | CMPSBL"
+        description="Enterprise security powered by AI behavioral analysis. Part of CMPSBL's 14-module cognitive substrate with real-time threat detection and adaptive learning."
+        canonical="https://cmpsbl.com/products/defense"
         keywords={[
-          'bot detection software',
-          'AI security monitoring',
-          'fraud prevention system',
-          'threat detection platform',
-          'behavioral analysis security',
-          'automated threat protection',
-          'bot traffic protection',
-          'cybersecurity AI',
-          'web application firewall',
-          'real-time threat intelligence'
+          'AI threat detection',
+          'behavioral security analysis',
+          'cognitive security module',
+          'CMPSBL Defense',
+          'enterprise AI security',
+          'adaptive threat protection',
+          'bot detection AI',
+          'real-time threat intelligence',
+          'security orchestration',
+          'AI cybersecurity platform'
         ]}
       />
+
+      <PublicNav />
 
       {/* Hero */}
       <section className="container mx-auto px-4 py-20">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-primary/20 mb-6">
             <Shield className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium">RCKBL (Rockable)</span>
+            <span className="text-sm font-medium">Defense Module</span>
           </div>
           <h1 className="text-5xl md:text-6xl font-bold mb-6">
-            Adaptive WordPress Security.
+            Adaptive Security.
             <br />
             <span className="bg-gradient-to-r from-primary via-primary-variant to-accent bg-clip-text text-transparent">
               Powered by AI.
             </span>
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Enterprise-grade WordPress protection that learns from every threat. Stop bots, malware, and attacks 
-            with behavioral intelligence that adapts in real-time — without slowing your site down.
+            Enterprise-grade protection that learns from every threat. Part of CMPSBL's 14-module cognitive 
+            substrate with behavioral intelligence that adapts in real-time.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" onClick={() => navigate('/auth')} className="group">
@@ -58,13 +67,13 @@ export default function DefenseInfo() {
       </section>
 
       {/* Features */}
-      <section className="container mx-auto px-4 py-20">
+      <section className="container mx-auto px-4 py-20 flex-1">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {[
             {
               icon: Scan,
               title: "Behavioral Analysis",
-              description: "Track mouse movements, scroll patterns, and interaction timing to distinguish real users from sophisticated bots."
+              description: "Track interaction patterns to distinguish real users from sophisticated bots using AI-powered analysis."
             },
             {
               icon: Brain,
@@ -88,8 +97,8 @@ export default function DefenseInfo() {
             },
             {
               icon: Shield,
-              title: "CAPTCHA Protection",
-              description: "Intelligent CAPTCHA deployment only when needed, keeping the user experience smooth."
+              title: "Intelligent CAPTCHA",
+              description: "Smart CAPTCHA deployment only when needed, keeping the user experience smooth."
             }
           ].map((feature, index) => (
             <Card key={index} className="p-6 hover:shadow-elegant transition-all duration-300">
@@ -156,9 +165,9 @@ export default function DefenseInfo() {
       {/* CTA */}
       <section className="container mx-auto px-4 py-20">
         <div className="max-w-3xl mx-auto text-center glass p-12 rounded-2xl">
-          <h2 className="text-3xl font-bold mb-4">Ready to Secure Your WordPress Site?</h2>
+          <h2 className="text-3xl font-bold mb-4">Ready to Secure Your Application?</h2>
           <p className="text-muted-foreground mb-6">
-            Protect your WordPress site with RCKBL (Rockable) today.
+            Protect your infrastructure with CMPSBL's Defense module today.
           </p>
           <Button size="lg" onClick={() => navigate('/auth')} className="group">
             Get Started Now
@@ -166,6 +175,8 @@ export default function DefenseInfo() {
           </Button>
         </div>
       </section>
+
+      <EnhancedFooter />
     </div>
   );
 }

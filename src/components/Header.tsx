@@ -1,9 +1,11 @@
 import { Bell, Search, LogOut, Menu, Map } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
+import { useMetric } from "@/stores/publicMetricsStore";
 
 export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
   const { user, signOut } = useAuth();
+  const version = useMetric('version');
   
   return (
     <header className="h-14 lg:h-16 glass border-b border-border/50 px-4 lg:px-6 flex items-center justify-between">
@@ -20,7 +22,7 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
       {/* CMPSBL text for mobile */}
       <div className="lg:hidden flex items-center gap-2">
         <span className="text-xl font-bold glow-text">CMPSBL</span>
-        <span className="text-[10px] font-mono text-muted-foreground hidden sm:inline">v8.0.0</span>
+        <span className="text-[10px] font-mono text-muted-foreground hidden sm:inline">v{version}</span>
       </div>
 
       <div className="hidden lg:flex items-center gap-4 flex-1">
