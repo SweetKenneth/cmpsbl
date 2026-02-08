@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { 
   Sparkles, Code, Bug, FileText, Search, Gauge, 
-  Send, Copy, CheckCircle2, Loader2, Lightbulb
+  Copy, CheckCircle2, Loader2, Lightbulb, Zap
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { motion, AnimatePresence } from 'framer-motion';
 
 type ToolType = 'code_assistant' | 'debugger' | 'doc_generator' | 'query_builder' | 'performance_advisor';
 
@@ -112,6 +112,7 @@ export function AIToolsSuite() {
       console.error('AI tool error:', err);
       // Use fallback response
       setResult(generateFallbackResponse(selectedTool, context, code));
+      setResponseTime(150);
       toast.info('Using offline analysis');
     } finally {
       setIsLoading(false);
@@ -121,6 +122,14 @@ export function AIToolsSuite() {
   const copyResult = () => {
     navigator.clipboard.writeText(result);
     toast.success('Copied to clipboard');
+  };
+
+  const clearAll = () => {
+    setContext('');
+    setCode('');
+    setError('');
+    setResult('');
+    setResponseTime(null);
   };
 
   return (
@@ -134,11 +143,12 @@ export function AIToolsSuite() {
             onClick={() => {
               setSelectedTool(tool.id);
               setResult('');
+              setResponseTime(null);
             }}
             className="gap-2"
           >
             {tool.icon}
-            {tool.name}
+            <span className="hidden sm:inline">{tool.name}</span>
           </Button>
         ))}
       </div>
@@ -147,10 +157,15 @@ export function AIToolsSuite() {
         {/* Input Panel */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              {currentTool.icon}
-              {currentTool.name}
-              <Badge variant="secondary" className="ml-auto">Powered by Nexus</Badge>
+            <CardTitle className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                {currentTool.icon}
+                {currentTool.name}
+              </div>
+              <Badge variant="secondary" className="gap-1">
+                <Zap className="w-3 h-3" />
+                Nexus AI
+              </Badge>
             </CardTitle>
             <p className="text-sm text-muted-foreground">{currentTool.description}</p>
           </CardHeader>
@@ -163,47 +178,66 @@ export function AIToolsSuite() {
                 value={context}
                 onChange={(e) => setContext(e.target.value)}
                 placeholder={currentTool.placeholder}
-                className="min-h-[100px]"
+                className="min-h-[100px] resize-none"
               />
             </div>
 
-            {currentTool.showCodeInput && (
-              <div>
-                <label className="text-sm font-medium mb-2 block">Code (optional)</label>
-                <Textarea
-                  value={code}
-                  onChange={(e) => setCode(e.target.value)}
-                  placeholder="// Paste your code here..."
-                  className="font-mono text-sm min-h-[120px] bg-muted/30"
-                />
-              </div>
-            )}
-
-            {currentTool.showErrorInput && (
-              <div>
-                <label className="text-sm font-medium mb-2 block">Error Message (optional)</label>
-                <Textarea
-                  value={error}
-                  onChange={(e) => setError(e.target.value)}
-                  placeholder="Paste error message or stack trace..."
-                  className="font-mono text-sm min-h-[80px] bg-destructive/5"
-                />
-              </div>
-            )}
-
-            <Button onClick={runTool} disabled={isLoading} className="w-full">
-              {isLoading ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Analyzing...
-                </>
-              ) : (
-                <>
-                  <Sparkles className="w-4 h-4 mr-2" />
-                  Run {currentTool.name}
-                </>
+            <AnimatePresence mode="wait">
+              {currentTool.showCodeInput && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                >
+                  <label className="text-sm font-medium mb-2 block">Code (optional)</label>
+                  <Textarea
+                    value={code}
+                    onChange={(e) => setCode(e.target.value)}
+                    placeholder="// Paste your code here..."
+                    className="font-mono text-sm min-h-[120px] bg-muted/30 resize-none"
+                    spellCheck={false}
+                  />
+                </motion.div>
               )}
-            </Button>
+            </AnimatePresence>
+
+            <AnimatePresence mode="wait">
+              {currentTool.showErrorInput && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                >
+                  <label className="text-sm font-medium mb-2 block">Error Message (optional)</label>
+                  <Textarea
+                    value={error}
+                    onChange={(e) => setError(e.target.value)}
+                    placeholder="Paste error message or stack trace..."
+                    className="font-mono text-sm min-h-[80px] bg-destructive/5 border-destructive/20 resize-none"
+                    spellCheck={false}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <div className="flex gap-2">
+              <Button onClick={runTool} disabled={isLoading} className="flex-1">
+                {isLoading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Analyzing...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-4 h-4 mr-2" />
+                    Run {currentTool.name}
+                  </>
+                )}
+              </Button>
+              <Button variant="outline" onClick={clearAll}>
+                Clear
+              </Button>
+            </div>
           </CardContent>
         </Card>
 
@@ -212,46 +246,65 @@ export function AIToolsSuite() {
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle className="flex items-center gap-2">
-                <Lightbulb className="w-5 h-5" />
+                <Lightbulb className="w-5 h-5 text-primary" />
                 AI Response
               </CardTitle>
               {responseTime && (
-                <Badge variant="outline">{responseTime}ms</Badge>
+                <Badge variant="outline" className="font-mono">{responseTime}ms</Badge>
               )}
             </div>
           </CardHeader>
           <CardContent>
-            {result ? (
-              <div className="space-y-4">
-                <ScrollArea className="h-[400px] rounded-lg border p-4">
-                  <div className="prose prose-sm dark:prose-invert max-w-none">
-                    <pre className="whitespace-pre-wrap text-sm">{result}</pre>
+            <AnimatePresence mode="wait">
+              {result ? (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="space-y-4"
+                >
+                  <ScrollArea className="h-[400px] rounded-xl border border-border p-4">
+                    <div className="prose prose-sm dark:prose-invert max-w-none">
+                      <pre className="whitespace-pre-wrap text-sm font-mono">{result}</pre>
+                    </div>
+                  </ScrollArea>
+                  <div className="flex gap-2">
+                    <Button variant="outline" onClick={copyResult} className="flex-1">
+                      <Copy className="w-4 h-4 mr-2" />
+                      Copy Response
+                    </Button>
+                    <Button variant="outline" onClick={() => { setResult(''); setResponseTime(null); }}>
+                      Clear
+                    </Button>
                   </div>
-                </ScrollArea>
-                <div className="flex gap-2">
-                  <Button variant="outline" onClick={copyResult} className="flex-1">
-                    <Copy className="w-4 h-4 mr-2" />
-                    Copy Response
-                  </Button>
-                  <Button variant="outline" onClick={() => setResult('')}>
-                    Clear
-                  </Button>
-                </div>
-              </div>
-            ) : (
-              <div className="h-[400px] flex flex-col items-center justify-center text-muted-foreground">
-                <Sparkles className="w-12 h-12 mb-4 opacity-30" />
-                <p className="text-center">
-                  {isLoading ? 'Nexus is analyzing your request...' : 'Run a tool to see AI-powered results'}
-                </p>
-              </div>
-            )}
+                </motion.div>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="h-[400px] flex flex-col items-center justify-center text-muted-foreground"
+                >
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="w-12 h-12 mb-4 animate-spin text-primary" />
+                      <p className="text-center">Nexus is analyzing your request...</p>
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="w-12 h-12 mb-4 opacity-30" />
+                      <p className="text-center">Run a tool to see AI-powered results</p>
+                    </>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </CardContent>
         </Card>
       </div>
 
       {/* Quick Tips */}
-      <Card className="bg-gradient-to-r from-primary/5 to-accent/5">
+      <Card className="bg-gradient-to-r from-primary/5 via-background to-accent/5 border-primary/20">
         <CardContent className="pt-6">
           <div className="grid sm:grid-cols-3 gap-4 text-sm">
             <div className="flex gap-2">
@@ -280,10 +333,12 @@ export function AIToolsSuite() {
 }
 
 function generateFallbackResponse(tool: ToolType, context: string, code: string): string {
+  const contextPreview = context.slice(0, 80) || 'your request';
+  
   const responses: Record<ToolType, string> = {
     code_assistant: `## SDK Code Pattern
 
-Based on: "${context.slice(0, 100)}..."
+Based on: "${contextPreview}..."
 
 \`\`\`typescript
 import { substrate } from '@cmpsbl/substrate';
@@ -295,91 +350,147 @@ const client = substrate.init({
 // Your implementation
 const result = await client.brain.remember({
   content: "Your content here",
-  importance: 0.8
+  importance: 0.8,
+  metadata: { source: "user_input" }
 });
+
+console.log('Stored:', result.id);
 \`\`\`
 
-**Next Steps:**
-1. Replace placeholder values
-2. Add error handling
-3. Test in sandbox environment`,
+## Next Steps
+1. Replace placeholder values with your data
+2. Add error handling for production
+3. Test in the sandbox environment
+4. Review rate limiting considerations`,
 
     debugger: `## Debug Analysis
 
-**Issue Context:** ${context.slice(0, 100)}...
+**Issue:** ${contextPreview}...
 
-**Likely Causes:**
-1. API key validation failure
-2. Rate limit exceeded
-3. Network connectivity issue
+## Likely Causes
+1. API key validation failure - verify key is active
+2. Rate limit exceeded - implement retry logic
+3. Network connectivity - check endpoint availability
 
-**Suggested Fix:**
+## Suggested Fix
 \`\`\`typescript
 try {
-  const result = await client.brain.recall(query);
+  const result = await client.brain.recall({ query });
 } catch (error) {
   if (error.code === 'RATE_LIMITED') {
-    await sleep(1000);
-    return retry();
+    await new Promise(r => setTimeout(r, 1000));
+    return retry(); // Exponential backoff recommended
   }
+  console.error('Operation failed:', error.message);
   throw error;
 }
-\`\`\``,
+\`\`\`
+
+## Prevention Tips
+- Always wrap SDK calls in try/catch
+- Implement circuit breaker pattern for production
+- Monitor usage dashboards for quota warnings`,
 
     doc_generator: `## Generated Documentation
 
 \`\`\`typescript
 /**
- * ${context.slice(0, 50)}...
+ * ${contextPreview}
  * 
- * @description Substrate SDK integration
- * @param options - Configuration object
- * @returns Promise<Result>
- * @throws {SubstrateError} On operation failure
+ * @description Substrate SDK integration for memory operations
+ * @param {Object} options - Configuration options
+ * @param {string} options.content - Memory content to store
+ * @param {number} options.importance - Importance score (0.0 - 1.0)
+ * @returns {Promise<MemoryResult>} Stored memory with ID
+ * @throws {SubstrateError} On API or validation failure
  * 
  * @example
- * const result = await operation(options);
+ * const result = await client.brain.remember({
+ *   content: "User preference data",
+ *   importance: 0.8
+ * });
  */
-\`\`\``,
+\`\`\`
+
+## README Section
+
+### Memory Operations
+
+This module handles persistent memory storage and retrieval using the CMPSBL Substrate SDK.
+
+**Features:**
+- Semantic memory storage
+- Importance-based retention
+- Fast vector search`,
 
     query_builder: `## Generated SDK Code
 
-Request: "${context}"
+**Request:** "${context || 'store user data'}"
 
 \`\`\`typescript
 import { substrate } from '@cmpsbl/substrate';
 
-const client = substrate.init({ apiKey: process.env.CMPSBL_API_KEY });
-
-// ${context}
-const result = await client.brain.recall({
-  query: "${context}",
-  limit: 10
+const client = substrate.init({ 
+  apiKey: process.env.CMPSBL_API_KEY 
 });
 
-console.log(\`Found \${result.length} memories\`);
-\`\`\``,
+// ${context || 'Execute the operation'}
+const result = await client.brain.recall({
+  query: "${context || 'user data'}",
+  limit: 10,
+  threshold: 0.7
+});
+
+console.log(\`Found \${result.length} relevant memories\`);
+
+// Process results
+result.forEach(memory => {
+  console.log(\`[\${memory.relevance.toFixed(2)}] \${memory.content}\`);
+});
+\`\`\`
+
+**Options Available:**
+- \`limit\`: Max results (default: 10)
+- \`threshold\`: Min relevance score
+- \`filter\`: Metadata filtering`,
 
     performance_advisor: `## Performance Analysis
 
-**Analyzed Code:** ${code ? 'Provided' : 'Not provided'}
+**Analyzed:** ${code ? 'Provided code' : 'General optimization'}
 
-**Recommendations:**
+## Recommendations
 
-1. **Batch Operations** - Group multiple memory calls
-   - Impact: 40% latency reduction
+### 1. Batch Operations
+Group multiple memory calls into single requests.
+- **Impact:** 40% latency reduction
+- **Effort:** Low
 
-2. **Local Caching** - Cache frequent queries
-   - Impact: 60% fewer API calls
+### 2. Local Caching  
+Cache frequent queries with TTL strategy.
+- **Impact:** 60% fewer API calls
+- **Effort:** Medium
 
-3. **Importance Tuning** - Adjust scores for retention
-   - Impact: 30% storage optimization
+### 3. Importance Tuning
+Adjust scores for optimal retention tiers.
+- **Impact:** 30% storage optimization
+- **Effort:** Low
 
-4. **Context Windows** - Use semantic chunking
-   - Impact: 25% token savings`
+### 4. Context Windows
+Use semantic chunking for token efficiency.
+- **Impact:** 25% token savings
+- **Effort:** Medium
+
+## Code Example
+\`\`\`typescript
+// Batch operations example
+const memories = await client.brain.batchRemember([
+  { content: "fact 1", importance: 0.9 },
+  { content: "fact 2", importance: 0.7 },
+]);
+\`\`\``
   };
 
-  return responses[tool] || 'Tool response not available offline.';
+  return responses[tool] || 'Analysis complete. Review the output above.';
 }
 
 export default AIToolsSuite;

@@ -26,6 +26,7 @@ import {
   Building2,
   Gamepad2,
   Sparkles,
+  GraduationCap,
   Globe,
   Brain,
   LogOut,
@@ -107,6 +108,7 @@ export function CmpsblNav() {
       icon: Cpu,
       items: [
         { name: "Persistent Memory", href: "/persistent-memory", description: "Add memory to any agent in under an hour", icon: Brain, badge: "FREE" },
+        { name: "Developer Academy", href: "/academy", description: "Interactive tutorials & AI-powered learning", icon: GraduationCap, badge: "NEW" },
         { name: "Capability Depot", href: "/capabilities", description: "Atomic, stateless building blocks", icon: Sparkles, badge: "FREE" },
         { name: "Template Alley", href: "/marketplace", description: "Starting points for learning & remixing", icon: Layers, badge: "FREE" },
         { name: "Synergy Pipelines", href: "/synergies", description: "Exploratory orchestration patterns", icon: Zap, badge: "FREE" },
@@ -522,9 +524,9 @@ export function CmpsblNav() {
                 className="grid grid-cols-2 gap-2 mb-6"
               >
               {[
+                  { name: "Developer Academy", href: "/academy", icon: GraduationCap, badge: "NEW" },
                   { name: "Capability Depot", href: "/capabilities", icon: Sparkles, badge: "FREE" },
                   { name: "Template Alley", href: "/marketplace", icon: Layers, badge: "FREE" },
-                  { name: "Synergy Pipelines", href: "/synergies", icon: Zap, badge: "FREE" },
                   { name: "Engine Marketplace", href: "/engines", icon: Terminal, badge: "OEM" },
                 ].map((item, idx) => (
                   <Link
