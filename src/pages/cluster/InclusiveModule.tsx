@@ -1,3 +1,8 @@
+/**
+ * INCLUSIVE Module — Human Compatibility Pipeline
+ * v8.0.0 SYNERGY+ — 14th Substrate Module
+ */
+
 import { Link } from "react-router-dom";
 import { Accessibility, ArrowRight, CheckCircle } from "lucide-react";
 import { PublicNav } from "@/components/PublicNav";
@@ -6,13 +11,13 @@ import { SEO } from "@/components/SEO";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import ogImage from "@/assets/og/clarity.jpg";
 
-export default function Clarity() {
+export default function InclusiveModule() {
   return (
     <>
       <SEO
-        title="CMPSBL Clarity — Automated WCAG Repair & Compliance"
-        description="AI that scans and fixes accessibility issues as it audits, delivering living WCAG 2.2 compliance."
-        canonical="https://cmpsbl.com/cluster/clarity-ai-accessibility-and-autofix"
+        title="INCLUSIVE Module — Human Compatibility Pipeline | CMPSBL"
+        description="AI that scans and fixes accessibility issues as it audits, delivering living WCAG 2.2 compliance. The 14th substrate module for human compatibility."
+        canonical="https://cmpsbl.com/cluster/inclusive-module-accessibility"
         image={ogImage}
         type="article"
         keywords={[
@@ -21,7 +26,9 @@ export default function Clarity() {
           'automated accessibility fixes',
           'web accessibility',
           'accessibility repair',
-          'WCAG 2.2'
+          'WCAG 2.2',
+          'INCLUSIVE module',
+          'human compatibility'
         ]}
       />
 
@@ -30,13 +37,13 @@ export default function Clarity() {
         {JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Article",
-          "headline": "Clarity: AI Accessibility That Repairs Code",
-          "description": "Clarity scans and repairs accessibility in real time—no overlays, no waiting.",
+          "headline": "INCLUSIVE: Human Compatibility Pipeline",
+          "description": "The INCLUSIVE module scans and repairs accessibility in real time—no overlays, no waiting.",
           "image": ogImage,
           "datePublished": "2025-11-04",
           "author": {
             "@type": "Organization",
-            "name": "CMPSBL"
+            "name": "PromptFluid"
           }
         })}
       </script>
@@ -49,7 +56,7 @@ export default function Clarity() {
             items={[
               { label: "Home", href: "/" },
               { label: "Modules", href: "/solutions" },
-              { label: "Clarity" }
+              { label: "INCLUSIVE" }
             ]}
             className="mb-8"
           />
@@ -60,23 +67,23 @@ export default function Clarity() {
             </div>
             <div>
               <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                Clarity Module
+                INCLUSIVE Module
               </h1>
-              <p className="text-xl text-muted-foreground">AI Accessibility That Repairs Code</p>
+              <p className="text-xl text-muted-foreground">Human Compatibility Pipeline — 14th Substrate Module</p>
             </div>
           </div>
 
           <div className="prose prose-lg dark:prose-invert max-w-none space-y-8">
             <section>
               <p className="text-xl text-muted-foreground leading-relaxed mb-6">
-                Clarity is an AI accessibility scanner that doesn't just audit—it repairs. 
-                No overlays, no band-aids. Real code fixes help your site stay 
-                WCAG 2.2 compliant without manual intervention.
+                INCLUSIVE is the substrate's human compatibility pipeline. It scans, repairs, and validates 
+                accessibility issues automatically—no overlays, no band-aids. Real code fixes help your 
+                outputs stay WCAG 2.2 compliant without manual intervention.
               </p>
             </section>
 
             <section>
-              <h2 className="text-3xl font-bold mb-4">What Clarity Fixes Automatically</h2>
+              <h2 className="text-3xl font-bold mb-4">What INCLUSIVE Fixes Automatically</h2>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
@@ -106,88 +113,75 @@ export default function Clarity() {
             </section>
 
             <section>
-              <h2 className="text-3xl font-bold mb-4">New: Automated Email Follow-Ups</h2>
+              <h2 className="text-3xl font-bold mb-4">Substrate Integration</h2>
               <p className="text-muted-foreground mb-4">
-                After every free scan, receive a personalized email summary with:
+                INCLUSIVE is the 14th module in the substrate boot sequence, positioned after SYSTEM and before DEFENSE:
               </p>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                  <span>Top 3 critical issues found on your site</span>
+                  <span><strong>SYSTEM</strong> — Audit aggregation and health surfaces</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                  <span>Count of auto-fixable issues with one-click repair</span>
+                  <span><strong>VISION</strong> — Metrics and observability integration</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                  <span>Direct upgrade options: $49/mo Pro or $199 one-time fix</span>
+                  <span><strong>DEFENSE</strong> — Severity escalation to risk pipeline</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                  <span>Rate-limited to 1 email per domain per 24 hours to prevent spam</span>
-                </li>
-              </ul>
-            </section>
-
-            <section>
-              <h2 className="text-3xl font-bold mb-4">Continuous Compliance</h2>
-              <ul className="space-y-3">
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                  <span><strong>Scheduled scans</strong> — Daily, weekly, or monthly automated audits</span>
+                  <span><strong>MODERNIZER</strong> — Regression-triggered proposals</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                  <span><strong>Email digests</strong> — Get compliance updates directly in your inbox</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                  <span><strong>PDF/CSV reporting</strong> — Download audit reports for legal compliance</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                  <span><strong>Team workflows</strong> — Assign issues, track fixes, collaborate in real time</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                  <span><strong>White-label options</strong> — Brand the scanner as your own for client work</span>
+                  <span><strong>TEMPLATES</strong> — Compliance gate for template approval</span>
                 </li>
               </ul>
             </section>
 
             <section>
-              <h2 className="text-3xl font-bold mb-4">Why It's Different</h2>
+              <h2 className="text-3xl font-bold mb-4">Capabilities</h2>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                  <span><strong>No overlays</strong> — Real code repair, not accessibility theater</span>
+                  <span><strong>inclusive.scan</strong> — Scan targets for accessibility issues</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                  <span><strong>Brain feedback loop</strong> — Fixes improve substrate ecosystem-wide behavior</span>
+                  <span><strong>inclusive.repair</strong> — Automatically repair detected issues</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                  <span><strong>Instant rollback</strong> — One-click restore if any repair breaks your design</span>
+                  <span><strong>inclusive.validate</strong> — Validate WCAG 2.2 compliance</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                  <span><strong>WordPress plugin</strong> — Native integration for WordPress sites</span>
+                  <span><strong>inclusive.profile</strong> — Create accessibility profiles</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
+                  <span><strong>inclusive.report</strong> — Generate compliance reports</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
+                  <span><strong>inclusive.selfScan</strong> — Scan substrate's own interfaces</span>
                 </li>
               </ul>
             </section>
 
             <section className="p-8 bg-gradient-to-r from-primary/10 to-accent/10 rounded-xl border border-primary/20">
-              <h3 className="text-2xl font-bold mb-4">Try It Free</h3>
+              <h3 className="text-2xl font-bold mb-4">Built by PromptFluid®</h3>
               <p className="text-muted-foreground mb-6">
-                Scan any website for free and get instant compliance scores. Upgrade to unlock auto-repair.
+                The INCLUSIVE module is part of the CMPSBL cognitive orchestration substrate, developed by PromptFluid®. 
+                Accessibility is a fundamental right—not a feature.
               </p>
               <Link 
-                to="/scan" 
+                to="/solutions" 
                 className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors"
               >
-                Start Free Scan
+                View All Modules
                 <ArrowRight className="w-5 h-5" />
               </Link>
             </section>

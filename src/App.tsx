@@ -91,6 +91,11 @@ const EngineMarketplace = lazy(() => import("./pages/EngineMarketplace"));
 const PersistentMemoryDocs = lazy(() => import("./pages/docs/PersistentMemoryDocs"));
 const PersistentMemoryLanding = lazy(() => import("./pages/PersistentMemoryLanding"));
 
+// Cluster pages (module deep-dives)
+const ClusterStudio = lazy(() => import("./pages/cluster/Studio"));
+const ClusterVerify = lazy(() => import("./pages/cluster/Verify"));
+const ClusterInclusive = lazy(() => import("./pages/cluster/InclusiveModule"));
+
 // Marketing / Info pages
 const About = lazy(() => import("./pages/About"));
 const Solutions = lazy(() => import("./pages/Solutions"));
@@ -113,7 +118,7 @@ const TopSecurityPlugins2025 = lazy(() => import("./pages/blog/TopSecurityPlugin
 const AICybersecurityEvolution2025 = lazy(() => import("./pages/blog/AICybersecurityEvolution2025"));
 const AIHackersUnderground2025 = lazy(() => import("./pages/blog/AIHackersUnderground2025"));
 const AIProductComparison2025 = lazy(() => import("./pages/blog/AIProductComparison2025"));
-const PTCHBLMission = lazy(() => import("./pages/blog/ClarityMission"));
+const InclusiveModuleMission = lazy(() => import("./pages/blog/InclusiveModuleMission"));
 const PromptFluidMarketDisruptor = lazy(() => import("./pages/blog/PromptFluidMarketDisruptor"));
 const ProductRoadmap2025 = lazy(() => import("./pages/blog/ProductRoadmap2025"));
 const AIAutomationTrends2025 = lazy(() => import("./pages/blog/AIAutomationTrends2025"));
@@ -300,6 +305,12 @@ const App = () => {
                         <Route path="/support" element={<Support />} />
                         <Route path="/explore" element={<Explore />} />
                         
+                        {/* Cluster pages - module deep-dives */}
+                        <Route path="/cluster/studio-autonomous-site-generator" element={<ClusterStudio />} />
+                        <Route path="/cluster/verify-worlds-first-ai-plugin-certification" element={<ClusterVerify />} />
+                        <Route path="/cluster/inclusive-module-accessibility" element={<ClusterInclusive />} />
+                        <Route path="/cluster/clarity-ai-accessibility-and-autofix" element={<Navigate to="/cluster/inclusive-module-accessibility" replace />} />
+                        
                         {/* Auth & Legal */}
                         <Route path="/auth" element={<Auth />} />
                         <Route path="/privacy" element={<Privacy />} />
@@ -311,7 +322,8 @@ const App = () => {
                         <Route path="/blog/ai-cybersecurity-evolution-2025" element={<AICybersecurityEvolution2025 />} />
                         <Route path="/blog/ai-hackers-underground-2025" element={<AIHackersUnderground2025 />} />
                         <Route path="/blog/ai-product-comparison-2025" element={<AIProductComparison2025 />} />
-                        <Route path="/blog/clarity-accessibility-mission" element={<PTCHBLMission />} />
+                        <Route path="/blog/inclusive-module-accessibility-mission" element={<InclusiveModuleMission />} />
+                        <Route path="/blog/clarity-accessibility-mission" element={<Navigate to="/blog/inclusive-module-accessibility-mission" replace />} />
                         <Route path="/blog/promptfluid-market-disruptor" element={<PromptFluidMarketDisruptor />} />
                         <Route path="/blog/product-roadmap-2025" element={<ProductRoadmap2025 />} />
                         <Route path="/blog/ai-automation-trends-2025" element={<AIAutomationTrends2025 />} />

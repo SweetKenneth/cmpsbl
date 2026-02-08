@@ -1209,10 +1209,10 @@ class SubstrateClient {
   };
 
   // ═══════════════════════════════════════════════════════════════
-  // INCLUSIVE MODULE v7.0.0 — Human Compatibility Pipeline
-  // @origin(cmptbl) + @origin(clarity) — Migrated from archived utilities
+  // INCLUSIVE MODULE v8.0.0 — Human Compatibility Pipeline
+  // @origin(cmptbl) — 14th Substrate Module
   // Position: Between SYSTEM and DEFENSE in lifecycle
-  // REAL IMPLEMENTATION — Actually fetches and scans URLs for WCAG compliance
+  // Developed by PromptFluid® as part of the CMPSBL cognitive orchestration substrate.
   // ═══════════════════════════════════════════════════════════════
   
   inclusive = {

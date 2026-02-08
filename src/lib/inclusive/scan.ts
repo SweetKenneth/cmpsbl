@@ -1,14 +1,15 @@
 /**
  * INCLUSIVE Scan Engine
- * @origin(clarity) — Core scanner migrated from pf-clarity-scan
+ * v8.0.0 SYNERGY+ — 14th Substrate Module
  * @origin(cmptbl) — WCAG criterion mappings from CMPTBL utilities
+ * 
+ * Developed by PromptFluid® as part of the CMPSBL cognitive orchestration substrate.
  */
 
 import type { InclusiveIssue, InclusiveScanResult, WCAGLevel, ScanDepth, IssueSeverity } from './types';
 
 /**
  * WCAG 2.2 Criterion Database
- * @origin(clarity) — Migrated from Clarity WCAG mapping
  */
 const WCAG_CRITERIA: Record<string, { title: string; level: WCAGLevel; severity: IssueSeverity }> = {
   '1.1.1': { title: 'Non-text Content', level: 'A', severity: 'critical' },
@@ -27,7 +28,6 @@ const WCAG_CRITERIA: Record<string, { title: string; level: WCAGLevel; severity:
 
 /**
  * Perform accessibility scan on HTML content
- * @origin(clarity) — Core logic from pf-clarity-scan performAccessibilityScan
  */
 export function scanHTML(html: string, wcagLevel: WCAGLevel = 'AA'): InclusiveIssue[] {
   const issues: InclusiveIssue[] = [];
@@ -64,14 +64,12 @@ export function scanHTML(html: string, wcagLevel: WCAGLevel = 'AA'): InclusiveIs
   };
 
   // === Check for missing alt text ===
-  // @origin(clarity) — From pf-clarity-scan
   const imgWithoutAlt = (html.match(/<img(?![^>]*alt=)/gi) || []).length;
   if (imgWithoutAlt > 0) {
     addIssue('missing-alt-text', '1.1.1', 'Images must have alt text for screen readers', imgWithoutAlt, '<img>', true);
   }
 
   // === Check for missing form labels ===
-  // @origin(clarity) — From pf-clarity-scan
   const inputs = html.match(/<input[^>]*>/gi) || [];
   const inputsWithoutLabels = inputs.filter(
     input => !input.includes('aria-label') && !input.includes('aria-labelledby')
@@ -81,13 +79,11 @@ export function scanHTML(html: string, wcagLevel: WCAGLevel = 'AA'): InclusiveIs
   }
 
   // === Check for missing language attribute ===
-  // @origin(clarity) — From pf-clarity-scan
   if (!html.match(/<html[^>]*lang=/i)) {
     addIssue('missing-lang', '3.1.1', 'HTML element must have a lang attribute', 1, '<html>', true);
   }
 
   // === Check for heading hierarchy ===
-  // @origin(clarity) — From pf-clarity-scan
   const h1Count = (html.match(/<h1/gi) || []).length;
   if (h1Count === 0) {
     addIssue('missing-h1', '2.4.6', 'Pages should have at least one H1 heading', 1, undefined, true);
@@ -102,7 +98,6 @@ export function scanHTML(html: string, wcagLevel: WCAGLevel = 'AA'): InclusiveIs
   }
 
   // === Check for potential contrast issues (heuristic) ===
-  // @origin(clarity) — Simplified from pf-clarity-scan
   const hasInlineStyles = html.includes('color:') && html.includes('background');
   if (hasInlineStyles) {
     addIssue('potential-contrast', '1.4.3', 'Inline styles may have contrast issues - manual review needed', undefined, undefined, false);
@@ -123,7 +118,6 @@ export function scanHTML(html: string, wcagLevel: WCAGLevel = 'AA'): InclusiveIs
 
 /**
  * Calculate compliance score from issues
- * @origin(clarity) — From pf-clarity-scan calculateComplianceScore
  */
 export function calculateScore(issues: InclusiveIssue[]): number {
   const weights: Record<IssueSeverity, number> = {
@@ -154,7 +148,6 @@ export function determineOverallSeverity(issues: InclusiveIssue[]): IssueSeverit
 
 /**
  * Get suggestion for WCAG criterion
- * @origin(clarity) — From pf-clarity-scan getSuggestionForIssue
  */
 function getSuggestionForCriterion(wcag: string): string {
   const suggestions: Record<string, string> = {

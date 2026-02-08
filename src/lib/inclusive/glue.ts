@@ -2,7 +2,8 @@
  * INCLUSIVE Glue Layer — Cross-Module Integration
  * v8.0.0 SYNERGY+ — Wires INCLUSIVE to SYSTEM, VISION, DEFENSE, MODERNIZER, TEMPLATES, MARKETPLACE
  *
- * @origin(cmptbl) + @origin(clarity) — Human Compatibility Pipeline
+ * @origin(cmptbl) — Human Compatibility Pipeline (14th Substrate Module)
+ * Developed by PromptFluid® as part of the CMPSBL cognitive orchestration substrate.
  *
  * Integration Points:
  * - SYSTEM: inclusive.selfScan → system.audit aggregation
