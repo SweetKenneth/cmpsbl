@@ -66,6 +66,7 @@ const CognitiveForge = lazy(() => import("./pages/CognitiveForge"));
 const ForgeCatalog = lazy(() => import("./pages/ForgeCatalog"));
 const AgencyMint = lazy(() => import("./pages/AgencyMint"));
 const DevTools = lazy(() => import("./pages/DevTools"));
+const DeveloperAcademy = lazy(() => import("./pages/DeveloperAcademy"));
 const Audit = lazy(() => import("./pages/Audit"));
 const GamingSubstrate = lazy(() => import("./pages/GamingSubstrate"));
 const DeveloperShowcase = lazy(() => import("./pages/DeveloperShowcase"));
@@ -258,6 +259,7 @@ const App = () => {
                         <Route path="/agency" element={<AgencyMint />} />
                         <Route path="/a/:slug" element={<AgencyPortal />} />
                         <Route path="/devtools" element={<DevTools />} />
+                        <Route path="/academy" element={<DeveloperAcademy />} />
                         <Route path="/audit" element={<Audit />} />
                         <Route path="/gaming" element={<GamingSubstrate />} />
                         <Route path="/developers" element={<DeveloperShowcase />} />

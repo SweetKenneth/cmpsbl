@@ -4083,6 +4083,235 @@ export type Database = {
         }
         Relationships: []
       }
+      developer_ai_tool_usage: {
+        Row: {
+          created_at: string | null
+          developer_id: string
+          id: string
+          input_context: string | null
+          output_result: string | null
+          response_time_ms: number | null
+          tokens_used: number | null
+          tool_type: string
+          was_helpful: boolean | null
+        }
+        Insert: {
+          created_at?: string | null
+          developer_id: string
+          id?: string
+          input_context?: string | null
+          output_result?: string | null
+          response_time_ms?: number | null
+          tokens_used?: number | null
+          tool_type: string
+          was_helpful?: boolean | null
+        }
+        Update: {
+          created_at?: string | null
+          developer_id?: string
+          id?: string
+          input_context?: string | null
+          output_result?: string | null
+          response_time_ms?: number | null
+          tokens_used?: number | null
+          tool_type?: string
+          was_helpful?: boolean | null
+        }
+        Relationships: []
+      }
+      developer_certifications: {
+        Row: {
+          badge_color: string | null
+          badge_icon: string | null
+          certification_key: string
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean | null
+          min_xp_total: number | null
+          name: string
+          required_skills: string[]
+        }
+        Insert: {
+          badge_color?: string | null
+          badge_icon?: string | null
+          certification_key: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          min_xp_total?: number | null
+          name: string
+          required_skills?: string[]
+        }
+        Update: {
+          badge_color?: string | null
+          badge_icon?: string | null
+          certification_key?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          min_xp_total?: number | null
+          name?: string
+          required_skills?: string[]
+        }
+        Relationships: []
+      }
+      developer_earned_badges: {
+        Row: {
+          certification_key: string
+          developer_id: string
+          earned_at: string
+          id: string
+          metadata: Json | null
+          verification_hash: string | null
+        }
+        Insert: {
+          certification_key: string
+          developer_id: string
+          earned_at?: string
+          id?: string
+          metadata?: Json | null
+          verification_hash?: string | null
+        }
+        Update: {
+          certification_key?: string
+          developer_id?: string
+          earned_at?: string
+          id?: string
+          metadata?: Json | null
+          verification_hash?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "developer_earned_badges_certification_key_fkey"
+            columns: ["certification_key"]
+            isOneToOne: false
+            referencedRelation: "developer_certifications"
+            referencedColumns: ["certification_key"]
+          },
+        ]
+      }
+      developer_progress: {
+        Row: {
+          completed_at: string | null
+          developer_id: string
+          id: string
+          is_completed: boolean | null
+          last_activity_at: string | null
+          skill_key: string
+          started_at: string | null
+          xp_earned: number
+        }
+        Insert: {
+          completed_at?: string | null
+          developer_id: string
+          id?: string
+          is_completed?: boolean | null
+          last_activity_at?: string | null
+          skill_key: string
+          started_at?: string | null
+          xp_earned?: number
+        }
+        Update: {
+          completed_at?: string | null
+          developer_id?: string
+          id?: string
+          is_completed?: boolean | null
+          last_activity_at?: string | null
+          skill_key?: string
+          started_at?: string | null
+          xp_earned?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "developer_progress_skill_key_fkey"
+            columns: ["skill_key"]
+            isOneToOne: false
+            referencedRelation: "developer_skill_tree"
+            referencedColumns: ["skill_key"]
+          },
+        ]
+      }
+      developer_sandbox_sessions: {
+        Row: {
+          code_state: Json | null
+          created_at: string | null
+          developer_id: string
+          id: string
+          is_active: boolean | null
+          memory_state: Json | null
+          session_name: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          code_state?: Json | null
+          created_at?: string | null
+          developer_id: string
+          id?: string
+          is_active?: boolean | null
+          memory_state?: Json | null
+          session_name?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          code_state?: Json | null
+          created_at?: string | null
+          developer_id?: string
+          id?: string
+          is_active?: boolean | null
+          memory_state?: Json | null
+          session_name?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      developer_skill_tree: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          prerequisites: string[] | null
+          skill_key: string
+          tier: number
+          unlocks: string[] | null
+          xp_required: number
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          prerequisites?: string[] | null
+          skill_key: string
+          tier?: number
+          unlocks?: string[] | null
+          xp_required?: number
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          prerequisites?: string[] | null
+          skill_key?: string
+          tier?: number
+          unlocks?: string[] | null
+          xp_required?: number
+        }
+        Relationships: []
+      }
       developer_templates: {
         Row: {
           category: string
@@ -4146,6 +4375,39 @@ export type Database = {
           slug?: string
           thumbnail_url?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      developer_tutorial_progress: {
+        Row: {
+          code_submissions: Json | null
+          completed_at: string | null
+          developer_id: string
+          id: string
+          is_completed: boolean | null
+          started_at: string | null
+          step_index: number
+          tutorial_id: string
+        }
+        Insert: {
+          code_submissions?: Json | null
+          completed_at?: string | null
+          developer_id: string
+          id?: string
+          is_completed?: boolean | null
+          started_at?: string | null
+          step_index?: number
+          tutorial_id: string
+        }
+        Update: {
+          code_submissions?: Json | null
+          completed_at?: string | null
+          developer_id?: string
+          id?: string
+          is_completed?: boolean | null
+          started_at?: string | null
+          step_index?: number
+          tutorial_id?: string
         }
         Relationships: []
       }
