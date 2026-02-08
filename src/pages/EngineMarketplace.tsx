@@ -6,7 +6,9 @@
  * UNIQUE DESIGN: Cinematic, premium, completely distinctive to CMPSBL
  */
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
+import { useEngineSubscription } from "@/hooks/useEngineSubscription";
+import { toast } from "sonner";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { SEO } from "@/components/SEO";
@@ -131,6 +133,22 @@ export default function EngineMarketplace() {
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const [visibilityFilter, setVisibilityFilter] = useState<EngineVisibility | 'all'>('all');
   const [activeTab, setActiveTab] = useState<'engines' | 'meta' | 'internal'>('engines');
+  const [billingInterval, setBillingInterval] = useState<'monthly' | 'annual'>('monthly');
+  
+  // Subscription management
+  const { tier: currentTier, subscribed, startCheckout, isLoading: subLoading } = useEngineSubscription();
+  
+  const handleSubscribe = useCallback(async (planId: SubscriptionPlan) => {
+    if (planId === 'starter') {
+      toast.info('Starter tier is free. Sign up to get started!');
+      return;
+    }
+    if (planId === 'enterprise') {
+      window.location.href = 'mailto:enterprise@cmpsbl.ai?subject=Enterprise%20Engine%20Subscription';
+      return;
+    }
+    await startCheckout(planId as 'builder' | 'pro', billingInterval);
+  }, [startCheckout, billingInterval]);
 
   // Load from real registries
   const publicEngines = useMemo(() => getPublicEngines(), []);
@@ -380,8 +398,16 @@ export default function EngineMarketplace() {
                       className="w-full" 
                       variant={plan.id === 'pro' ? 'default' : 'outline'}
                       size="default"
+                      disabled={currentTier === plan.id || subLoading}
+                      onClick={() => handleSubscribe(plan.id)}
                     >
-                      {plan.id === 'starter' ? 'Get Started Free' : plan.id === 'enterprise' ? 'Contact Sales' : 'Subscribe Now'}
+                      {currentTier === plan.id 
+                        ? 'Current Plan' 
+                        : plan.id === 'starter' 
+                          ? 'Get Started Free' 
+                          : plan.id === 'enterprise' 
+                            ? 'Contact Sales' 
+                            : `Subscribe ${billingInterval === 'annual' ? '(Save ~17%)' : 'Now'}`}
                     </Button>
                   </div>
                 </motion.div>

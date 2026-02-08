@@ -44,8 +44,8 @@ const starters: StarterOption[] = [
         description: "Initialize a new Next.js project with TypeScript and Tailwind"
       },
       {
-        title: "Install Supabase Client",
-        code: `cd my-substrate-app && npm install @supabase/supabase-js`,
+        title: "Import SDK",
+        code: `import { substrate } from '@cmpsbl/sdk';`,
         description: "Add Supabase for substrate communication"
       },
       {
@@ -84,9 +84,9 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key_here`,
     color: "text-green-500 bg-green-500/10",
     steps: [
       {
-        title: "Install Dependencies",
-        code: `npm install @supabase/supabase-js`,
-        description: "Install the Supabase client"
+        title: "Import SDK",
+        code: `import { substrate } from '@cmpsbl/sdk';`,
+        description: "Import the substrate SDK into your project"
       },
       {
         title: "Copy Substrate Client",

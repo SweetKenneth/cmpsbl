@@ -331,22 +331,22 @@ export default function CodeLab() {
                     </div>
                     <div>
                       <h2 className="text-xl font-bold">Get Started in Seconds</h2>
-                      <p className="text-sm text-muted-foreground">Install the SDK and start building</p>
+                      <p className="text-sm text-muted-foreground">Import the SDK and start building</p>
                     </div>
                   </div>
                   
                   <div className="space-y-3">
                     <div className="relative">
                       <pre className="bg-muted/80 p-4 rounded-lg font-mono text-sm overflow-x-auto border border-border/50">
-                        <code>npm install @supabase/supabase-js</code>
+                        <code>import {"{ substrate }"} from '@cmpsbl/sdk';</code>
                       </pre>
                       <Button
                         variant="ghost"
                         size="sm"
                         className="absolute top-2 right-2"
-                        onClick={() => copyCode("npm install @supabase/supabase-js", "npm")}
+                        onClick={() => copyCode("import { substrate } from '@cmpsbl/sdk';", "sdk")}
                       >
-                        {copiedId === "npm" ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                        {copiedId === "sdk" ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                       </Button>
                     </div>
                     <div className="flex flex-wrap gap-2">

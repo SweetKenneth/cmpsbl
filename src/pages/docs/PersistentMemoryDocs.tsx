@@ -103,9 +103,9 @@ const PersistentMemoryDocs = () => {
             <Card>
               <CardContent className="pt-6 space-y-4">
                 <p className="text-muted-foreground">
-                  Install the memory SDK using npm, yarn, or bun:
+                  Import the memory SDK directly from the substrate:
                 </p>
-                <CodeBlock code="npm install @cmpsbl/memory" />
+                <CodeBlock code="import { withPersistentMemory } from '@cmpsbl/memory';" />
                 <p className="text-sm text-muted-foreground flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-emerald-500" />
                   No additional infrastructure required. No vector database setup.
