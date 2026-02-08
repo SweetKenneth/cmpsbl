@@ -1,6 +1,6 @@
 /**
  * Request Tracing System
- * v7.0.0 — Distributed tracing for substrate operations
+ * v8.0.0 — SYNERGY+ Epoch Distributed tracing for substrate operations
  */
 
 // Trace ID format: pf-{timestamp_base36}-{random_hex}

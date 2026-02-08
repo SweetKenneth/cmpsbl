@@ -1,7 +1,7 @@
- /**
-  * INCLUSIVE Adaptive Interface
-  * v7.5.0 — Dynamic UI adaptation based on accessibility profiles
-  */
+/**
+ * INCLUSIVE Adaptive Interface
+ * v8.0.0 — SYNERGY+ Epoch Dynamic UI adaptation based on accessibility profiles
+ */
  
  // Adaptation profile
  export interface AdaptationProfile {

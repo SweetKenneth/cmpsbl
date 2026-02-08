@@ -1,6 +1,6 @@
 /**
  * Atlas Autonomy Panel
- * v7.1.0 — CLM + SEBA unified control with Lovable AI usage tracking
+ * v8.0.0 — SYNERGY+ Epoch CLM + SEBA unified control with Lovable AI usage tracking
  */
 
 import { useState, useEffect, useCallback } from 'react';

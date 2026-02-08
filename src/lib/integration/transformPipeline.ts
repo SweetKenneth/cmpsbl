@@ -1,7 +1,7 @@
- /**
-  * INTEGRATION Transform Pipeline
-  * v7.5.0 — Data transformation and mapping engine
-  */
+/**
+ * INTEGRATION Transform Pipeline
+ * v8.0.0 — SYNERGY+ Epoch Data transformation and mapping engine
+ */
  
  // Transform step
  export interface TransformStep {

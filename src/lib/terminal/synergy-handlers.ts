@@ -1,6 +1,6 @@
 /**
  * Synergy Terminal Handlers
- * v7.5.3 — Terminal commands for 147 synergy pipelines with 125 custom executors
+ * v8.0.0 — SYNERGY+ Epoch Terminal commands for 147 synergy pipelines with 125 custom executors
  */
 
 import { registerHandler } from './validate-registry';

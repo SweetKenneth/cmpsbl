@@ -1,6 +1,6 @@
 /**
  * Modernizer Scan — Cognitive Systems Scan
- * v7.5.0 — Always Produces Valid Plans + Mobile-First Output
+ * v8.0.0 — SYNERGY+ Epoch Always Produces Valid Plans + Mobile-First Output
  * 
  * SCAN = 3-SOURCE SYNTHESIS → NORMALIZE → PLAN (always valid)
  * 
