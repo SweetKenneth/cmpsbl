@@ -34,11 +34,19 @@ import wpAccessibilityImg from "@/assets/blog/wordpress-accessibility-guide.jpg"
 import wcag22Img from "@/assets/blog/wcag-2-2-wordpress-changes.jpg";
 import autoAccessibilityImg from "@/assets/blog/automated-accessibility-fixes.jpg";
 import earthWindowImage from "@/assets/hero/cognitive-pathways.jpg";
+import accessibilityFreeImg from "@/assets/blog/accessibility-free-for-all.jpg";
 
 // New v6.x.x pillar/cluster images
 import evolvingSoftwareImg from "@/assets/blog/evolving-software-v6-breakthrough.jpg";
 import llmsTxtImg from "@/assets/blog/llms-txt-protocol-standard.jpg";
 import aiGovernanceImg from "@/assets/blog/ai-governance-namespace-unified.jpg";
+
+// Developer adoption blog images
+import ragWithoutInfraImg from "@/assets/blog/rag-without-infrastructure.jpg";
+import agentMemoryAntiPatternsImg from "@/assets/blog/agent-memory-anti-patterns.jpg";
+import langchainMemoryImg from "@/assets/blog/langchain-memory-integration.jpg";
+import whyAgentsForgetImg from "@/assets/blog/why-agents-forget.jpg";
+import buildingAgentsLearnImg from "@/assets/blog/building-agents-that-learn.jpg";
 
 // AutoBlog images
 import autoblog1 from '@/assets/autoblog/autoblog-1.jpg';
@@ -241,10 +249,191 @@ export default function Blog() {
       readTime: "14 min",
       image: pfDefenseImg,
       imageAlt: "AI security defense system"
-    }
+    },
+    {
+      title: "Ripple Network Integration",
+      excerpt: "Distributed AI coordination and multi-agent communication patterns.",
+      href: "/blog/promptfluid-ripple-network-integration",
+      category: "Technology",
+      date: "2024-12-20",
+      readTime: "12 min",
+      image: pfRippleImg,
+      imageAlt: "Ripple network distributed AI"
+    },
+    {
+      title: "Access: Identity & Billing",
+      excerpt: "Enterprise-grade authentication, API metering, and subscription management.",
+      href: "/blog/promptfluid-access-identity-billing",
+      category: "Platform",
+      date: "2024-12-18",
+      readTime: "10 min",
+      image: pfAccessImg,
+      imageAlt: "Identity and billing platform"
+    },
+    {
+      title: "Nexus API Gateway",
+      excerpt: "Unified API orchestration layer connecting AI services and applications.",
+      href: "/blog/promptfluid-nexus-api-gateway",
+      category: "Technology",
+      date: "2024-12-15",
+      readTime: "11 min",
+      image: pfNexusImg,
+      imageAlt: "Nexus API gateway architecture"
+    },
+    {
+      title: "AI Product Comparison 2025",
+      excerpt: "How PromptFluid compares to OpenAI, Anthropic, and other AI platforms.",
+      href: "/blog/ai-product-comparison-2025",
+      category: "Research",
+      date: "2025-01-12",
+      readTime: "18 min",
+      image: aiComparisonImg,
+      imageAlt: "AI product comparison chart"
+    },
+    {
+      title: "PromptFluid Market Disruptor",
+      excerpt: "How cognitive infrastructure is reshaping the AI landscape.",
+      href: "/blog/promptfluid-market-disruptor",
+      category: "Research",
+      date: "2025-01-08",
+      readTime: "14 min",
+      image: marketDisruptorImg,
+      imageAlt: "Market disruption visualization"
+    },
+    {
+      title: "Product Roadmap 2025",
+      excerpt: "Our vision for the next year of cognitive infrastructure development.",
+      href: "/blog/product-roadmap-2025",
+      category: "Platform",
+      date: "2025-01-01",
+      readTime: "10 min",
+      image: roadmapImg,
+      imageAlt: "Product roadmap timeline"
+    },
+    {
+      title: "AI Automation Trends 2025",
+      excerpt: "Key trends shaping enterprise AI automation and orchestration.",
+      href: "/blog/ai-automation-trends-2025",
+      category: "Research",
+      date: "2025-01-06",
+      readTime: "12 min",
+      image: automationTrendsImg,
+      imageAlt: "AI automation trends visualization"
+    },
+    {
+      title: "AI Business Operations",
+      excerpt: "Transforming enterprise workflows with cognitive automation.",
+      href: "/blog/ai-business-operations-2025",
+      category: "Research",
+      date: "2025-01-04",
+      readTime: "11 min",
+      image: businessOpsImg,
+      imageAlt: "AI business operations dashboard"
+    },
+    {
+      title: "INCLUSIVE Module Mission",
+      excerpt: "Our commitment to making the web accessible through AI-powered automation.",
+      href: "/blog/inclusive-module-accessibility-mission",
+      category: "Accessibility",
+      date: "2025-01-20",
+      readTime: "8 min",
+      image: cmptblMissionImg,
+      imageAlt: "Accessibility mission statement"
+    },
+    {
+      title: "Accessibility for Everyone",
+      excerpt: "Why web accessibility matters and how AI can help achieve it at scale.",
+      href: "/blog/accessibility-free-for-all",
+      category: "Accessibility",
+      date: "2025-01-18",
+      readTime: "9 min",
+      image: accessibilityFreeImg,
+      imageAlt: "Universal accessibility network"
+    },
+    {
+      title: "WordPress Accessibility Guide",
+      excerpt: "Complete guide to making your WordPress site WCAG compliant.",
+      href: "/blog/wordpress-accessibility-guide",
+      category: "Accessibility",
+      date: "2025-01-15",
+      readTime: "16 min",
+      image: wpAccessibilityImg,
+      imageAlt: "WordPress accessibility checklist"
+    },
+    {
+      title: "WCAG 2.2 Changes for WordPress",
+      excerpt: "What the latest WCAG updates mean for WordPress developers.",
+      href: "/blog/wcag-2-2-wordpress-changes",
+      category: "Accessibility",
+      date: "2025-01-12",
+      readTime: "12 min",
+      image: wcag22Img,
+      imageAlt: "WCAG 2.2 standards visualization"
+    },
+    {
+      title: "Automated Accessibility Fixes",
+      excerpt: "AI-powered remediation for common WordPress accessibility issues.",
+      href: "/blog/automated-accessibility-fixes-wordpress",
+      category: "Accessibility",
+      date: "2025-01-10",
+      readTime: "10 min",
+      image: autoAccessibilityImg,
+      imageAlt: "Automated accessibility repair"
+    },
+    // Developer adoption series
+    {
+      title: "RAG Without Infrastructure",
+      excerpt: "Ship retrieval-augmented generation without managing vector databases.",
+      href: "/blog/rag-without-infrastructure",
+      category: "Development",
+      date: "2026-01-28",
+      readTime: "14 min",
+      image: ragWithoutInfraImg,
+      imageAlt: "RAG document network visualization"
+    },
+    {
+      title: "Agent Memory Anti-Patterns",
+      excerpt: "Common mistakes that cause AI agents to lose context and how to avoid them.",
+      href: "/blog/agent-memory-anti-patterns",
+      category: "Development",
+      date: "2026-01-26",
+      readTime: "12 min",
+      image: agentMemoryAntiPatternsImg,
+      imageAlt: "Memory anti-patterns warning visualization"
+    },
+    {
+      title: "LangChain Memory Integration",
+      excerpt: "Add persistent memory to your LangChain agents in under an hour.",
+      href: "/blog/langchain-memory-integration",
+      category: "Development",
+      date: "2026-01-24",
+      readTime: "15 min",
+      image: langchainMemoryImg,
+      imageAlt: "LangChain memory integration"
+    },
+    {
+      title: "Why Agents Forget",
+      excerpt: "The technical reasons behind context loss and memory degradation in AI systems.",
+      href: "/blog/why-agents-forget",
+      category: "Research",
+      date: "2026-01-22",
+      readTime: "11 min",
+      image: whyAgentsForgetImg,
+      imageAlt: "Agent memory fading visualization"
+    },
+    {
+      title: "Building Agents That Learn",
+      excerpt: "Architectural patterns for AI systems that improve through experience.",
+      href: "/blog/building-agents-that-learn",
+      category: "Development",
+      date: "2026-01-20",
+      readTime: "18 min",
+      image: buildingAgentsLearnImg,
+      imageAlt: "Agents learning and evolving"
+    },
   ];
 
-  const categories = ["All", "Security", "AI Technology", "Technology", "Platform", "Research", "Development"];
+  const categories = ["All", "Security", "AI Technology", "Technology", "Platform", "Research", "Development", "Accessibility"];
   const [selectedCategory, setSelectedCategory] = useState("All");
 
   const filteredPosts = blogPosts.filter(post => {
