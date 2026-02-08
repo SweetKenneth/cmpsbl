@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { useMetric } from "@/stores/publicMetricsStore";
 import { 
   Code, Terminal, Rocket, Download, BookOpen, Layers, Play, Copy, Check,
   Zap, Package, FileCode, ExternalLink, Sparkles, Brain, Shield, Moon,
@@ -67,6 +68,11 @@ export default function CodeLab() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [expandedTemplate, setExpandedTemplate] = useState<string | null>(null);
+  
+  // Centralized metrics
+  const capabilitiesCount = useMetric('capabilitiesCount');
+  const pipelinesCount = useMetric('synergyPipelinesCount');
+  const modulesCount = useMetric('modulesCount');
   
   // Display dialect state
   const { enabled: obsEnabled, dialect } = useObsMode();
@@ -129,7 +135,7 @@ export default function CodeLab() {
             </p>
             
             <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
-              {FREE_TEMPLATES.length}+ templates, 136+ capabilities, 147 pipelines, and persistent memory — 
+              {FREE_TEMPLATES.length}+ templates, {capabilitiesCount}+ capabilities, {pipelinesCount} pipelines, and persistent memory — 
               all unlocked and ready to use.
             </p>
 
@@ -150,7 +156,7 @@ export default function CodeLab() {
                 className="group p-4 rounded-xl bg-card/50 border border-border/50 hover:border-violet-500/30 transition-all"
               >
                 <Zap className="w-8 h-8 text-violet-500 mx-auto mb-2" />
-                <div className="font-semibold">136+ Capabilities</div>
+                <div className="font-semibold">{capabilitiesCount}+ Capabilities</div>
                 <div className="text-xs text-muted-foreground">All unlocked</div>
                 <Badge className="mt-2 text-[10px] bg-emerald-500/10 text-emerald-400 border-emerald-500/30">FREE</Badge>
               </Link>
@@ -160,7 +166,7 @@ export default function CodeLab() {
                 className="group p-4 rounded-xl bg-card/50 border border-border/50 hover:border-amber-500/30 transition-all"
               >
                 <Layers className="w-8 h-8 text-amber-500 mx-auto mb-2" />
-                <div className="font-semibold">147 Pipelines</div>
+                <div className="font-semibold">{pipelinesCount} Pipelines</div>
                 <div className="text-xs text-muted-foreground">Composable code</div>
                 <Badge className="mt-2 text-[10px] bg-emerald-500/10 text-emerald-400 border-emerald-500/30">FREE</Badge>
               </Link>
@@ -218,7 +224,7 @@ export default function CodeLab() {
               </div>
               <div className="flex items-center gap-2 shrink-0">
                 <Layers className="w-4 h-4 text-cyan-500" />
-                <span className="font-mono font-bold">14</span>
+                <span className="font-mono font-bold">{modulesCount}</span>
                 <span className="text-muted-foreground">Modules</span>
               </div>
               <div className="flex items-center gap-2 shrink-0">

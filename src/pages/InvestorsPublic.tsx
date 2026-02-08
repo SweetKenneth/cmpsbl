@@ -1,6 +1,6 @@
 /**
  * CMPSBL® — Investor Relations
- * v2026.01 — Seed Investment Opportunity
+ * v8.0.0 SYNERGY+ Epoch — Seed Investment Opportunity
  */
 
 import { TrendingUp, DollarSign, Users, Rocket, FileText, BarChart, Award, Target, Brain, Download, Loader2, Shield, Accessibility, Eye, Wrench, Server, ArrowLeft, Sparkles } from "lucide-react";
@@ -59,66 +59,67 @@ export default function InvestorsPublic() {
   };
 
   const metrics = [
-    { icon: Users, label: "Shipped Products", value: "6", color: "text-emerald-500" },
-    { icon: TrendingUp, label: "Stage", value: "Seed", color: "text-primary" },
-    { icon: Award, label: "Building Since", value: "2009", color: "text-amber-500" },
-    { icon: Target, label: "Projects Shipped", value: "100+", color: "text-muted-foreground" }
+    { icon: Users, label: "Integrated Modules", value: "14", color: "text-emerald-500" },
+    { icon: TrendingUp, label: "Synergy Pipelines", value: "147", color: "text-primary" },
+    { icon: Award, label: "Capabilities", value: "269+", color: "text-amber-500" },
+    { icon: Target, label: "Custom Executors", value: "125", color: "text-muted-foreground" }
   ];
 
+  // v8.0.0 — Current CMPSBL substrate modules
   const products = [
     {
-      icon: Shield,
-      name: "RCKBL",
-      subtitle: "Complete Website Defense",
-      description: "Stealth bot technology reverse-engineered into enterprise-grade security. WordPress plugin ready."
+      icon: Brain,
+      name: "Brain Module",
+      subtitle: "Persistent Memory",
+      description: "3-tier memory architecture with Dream Cycles for autonomous learning and pattern consolidation."
     },
     {
       icon: Eye,
-      name: "RNDRBL",
-      subtitle: "Accessibility Browser",
-      description: "Built-in layover control panel for users with disabilities to customize their browsing experience."
+      name: "Vision Module",
+      subtitle: "Full Observability",
+      description: "Real-time introspection, metrics collection, and system-wide transparency layer."
     },
     {
-      icon: Accessibility,
-      name: "PTCHBL",
-      subtitle: "Free WCAG Scanner",
-      description: "AI-powered accessibility fixes for 45 of 86 WCAG compliance functions. Always free."
-    },
-    {
-      icon: Wrench,
-      name: "SPLCBL",
-      subtitle: "WordPress Plugin Validator",
-      description: "Pre-submission compliance checker for WordPress.org plugin approval process."
-    },
-    {
-      icon: Brain,
-      name: "Decode",
-      subtitle: "Interpreter Primitive",
-      description: "Substrate interpreter for human-compatible cognitive translation. Non-agent, non-chatbot."
+      icon: Shield,
+      name: "Defense Module",
+      subtitle: "Enterprise Security",
+      description: "Bot protection, threat detection, and governance guardrails for production AI."
     },
     {
       icon: Server,
-      name: "AI Nexus",
-      subtitle: "Multi-Provider Gateway",
-      description: "Intelligent routing across 20+ LLMs and API providers with fallback chains."
+      name: "Nexus Gateway",
+      subtitle: "Multi-Provider Routing",
+      description: "Intelligent routing across 20+ LLMs with BYOK architecture and fallback chains."
+    },
+    {
+      icon: Accessibility,
+      name: "Clarity Scanner",
+      subtitle: "Accessibility Testing",
+      description: "WCAG compliance scanning with AI-powered remediation suggestions."
+    },
+    {
+      icon: Sparkles,
+      name: "Engine Marketplace",
+      subtitle: "Production Orchestrations",
+      description: "62+ engines and 20 meta-engines for governed, versioned cognitive workflows."
     }
   ];
 
   const highlights = [
     {
       icon: Rocket,
-      title: "Proven Track Record",
-      description: "100+ projects shipped over 15 years. From concept to enterprise-grade deployed systems."
+      title: "Production Infrastructure",
+      description: "14 integrated modules, 160,000+ lines of code, self-evolving architecture that improves overnight."
     },
     {
       icon: DollarSign,
       title: "Revenue Model",
-      description: "Freemium SaaS for security products. Accessibility tools remain free to build market presence."
+      description: "Engine Marketplace subscriptions + enterprise licensing. Free exploration layer drives adoption."
     },
     {
       icon: BarChart,
-      title: "Technical Foundation",
-      description: "Full-stack infrastructure with edge functions, database, and AI routing ready for scale."
+      title: "Technical Moat",
+      description: "SEBA architecture with Dream Cycles — the system literally learns while you sleep."
     },
     {
       icon: FileText,
@@ -265,9 +266,9 @@ export default function InvestorsPublic() {
 
       {/* Product Portfolio */}
       <section className={`relative z-10 container mx-auto px-6 py-16 transition-all duration-1000 delay-400 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-        <h2 className="text-3xl font-semibold mb-4 text-foreground">Live Products</h2>
+        <h2 className="text-3xl font-semibold mb-4 text-foreground">The Substrate</h2>
         <p className="text-muted-foreground mb-10 text-lg max-w-2xl">
-          Six shipped systems. Real, operational, and independently verifiable.
+          14 integrated modules. Production-ready cognitive infrastructure.
         </p>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">

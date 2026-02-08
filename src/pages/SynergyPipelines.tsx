@@ -1,15 +1,15 @@
 /**
  * Synergy Pipelines Discovery Page
- * v8.0.0 SYNERGY+ Epoch — 147 cross-module pipelines with code snippets
- * 
- * FREE exploration layer with runnable code examples
+ * v8.0.0 SYNERGY+ Epoch — FREE exploration layer with runnable code examples
  */
 
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
+import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { useMetric } from "@/stores/publicMetricsStore";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -139,6 +139,10 @@ console.log('Result:', output);`;
 }
 
 function HeroSection() {
+  const pipelinesCount = useMetric('synergyPipelinesCount');
+  const modulesCount = useMetric('modulesCount');
+  const executorsCount = useMetric('synergyExecutorsCount');
+  
   return (
     <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
       {/* Animated background */}
@@ -238,10 +242,10 @@ function HeroSection() {
           {/* Stats row */}
           <div className="flex flex-wrap justify-center gap-8 mb-10">
             {[
-              { value: "147", label: "Pipelines", icon: GitMerge },
-              { value: "14", label: "Modules", icon: Cpu },
+              { value: String(pipelinesCount), label: "Pipelines", icon: GitMerge },
+              { value: String(modulesCount), label: "Modules", icon: Cpu },
               { value: "7", label: "Categories", icon: Layers },
-              { value: "125", label: "Executors", icon: Workflow },
+              { value: String(executorsCount), label: "Executors", icon: Workflow },
             ].map((stat) => (
               <motion.div
                 key={stat.label}
