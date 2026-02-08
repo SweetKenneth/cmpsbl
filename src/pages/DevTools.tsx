@@ -1,10 +1,11 @@
 /**
- * DevTools — SDK Documentation & Developer Resources
- * Streamlined to SDK + Documentation tabs only
+ * DevTools — Enhanced SDK Documentation & Developer Resources
+ * Now includes interactive playground, signup, and more
  */
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
@@ -16,9 +17,16 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Code, Sparkles, Terminal, BookOpen, ExternalLink, Copy, Check, 
   Package, ArrowRight, Cpu, Brain, Shield, Zap, Eye, Moon, 
-  MessageSquare, Settings, Download, FileText
+  MessageSquare, Settings, Download, FileText, Play, Key, Calculator
 } from "lucide-react";
 import { toast } from "sonner";
+import { InteractivePlayground } from "@/components/developer/InteractivePlayground";
+import { DeveloperSignupForm } from "@/components/developer/DeveloperSignupForm";
+import { PricingCalculator } from "@/components/developer/PricingCalculator";
+import { DownloadableTemplates } from "@/components/developer/DownloadableTemplates";
+import { MockUsageDashboard } from "@/components/developer/MockUsageDashboard";
+import { LiveCodeExamples } from "@/components/developer/LiveCodeExamples";
+import { IntegrationBadges } from "@/components/home/IntegrationBadges";
 
 // SDK Installation - Current method via local import
 const SDK_INSTALL_LOCAL = `// Current installation — import from local SDK
@@ -68,44 +76,19 @@ const MODULES = [
   { id: 'system', name: 'System', icon: Settings, color: 'text-slate-400', desc: 'Configuration & backups' },
   { id: 'modernizer', name: 'Modernizer', icon: Sparkles, color: 'text-pink-400', desc: 'Self-improvement engine' },
   { id: 'inclusive', name: 'Inclusive', icon: Eye, color: 'text-indigo-400', desc: 'Accessibility scanning & WCAG enforcement' },
-  { id: 'cortex', name: 'Cortex', icon: Brain, color: 'text-rose-400', desc: 'Policy intent & PAAEL orchestration' },
-  { id: 'integration', name: 'Integration', icon: Cpu, color: 'text-emerald-400', desc: 'Enterprise adapters & webhooks' },
-];
-
-const DOWNLOADABLE_DOCS = [
-  { 
-    title: "Quick Start Guide", 
-    file: "QUICK-START.md", 
-    desc: "Get up and running in 5 minutes",
-    size: "12 KB"
-  },
-  { 
-    title: "API Reference", 
-    file: "API-REFERENCE.md", 
-    desc: "Complete SDK API documentation",
-    size: "45 KB"
-  },
-  { 
-    title: "Architecture Overview", 
-    file: "ARCHITECTURE.md", 
-    desc: "System design & module relationships",
-    size: "28 KB"
-  },
-  { 
-    title: "Migration Guide", 
-    file: "MIGRATION.md", 
-    desc: "Upgrading from previous versions",
-    size: "8 KB"
-  },
 ];
 
 const TABS = [
+  { id: "playground", label: "Try It", icon: Play },
+  { id: "signup", label: "Get API Key", icon: Key },
   { id: "sdk", label: "SDK", icon: Code },
-  { id: "docs", label: "Documentation", icon: BookOpen },
+  { id: "templates", label: "Templates", icon: Package },
+  { id: "calculator", label: "ROI", icon: Calculator },
+  { id: "docs", label: "Docs", icon: BookOpen },
 ];
 
 export default function DevTools() {
-  const [activeTab, setActiveTab] = useState("sdk");
+  const [activeTab, setActiveTab] = useState("playground");
   const [copied, setCopied] = useState<string | null>(null);
 
   const copyCode = (code: string, id: string) => {
@@ -115,68 +98,137 @@ export default function DevTools() {
     setTimeout(() => setCopied(null), 2000);
   };
 
-  const downloadDoc = (filename: string) => {
-    const link = document.createElement('a');
-    link.href = `/docs/${filename}`;
-    link.download = filename;
-    link.click();
-    toast.success(`Downloading ${filename}`);
-  };
-
   return (
     <>
       <SEO
-        title="Developer Tools | CMPSBL SDK & Documentation"
-        description="SDK documentation and downloadable resources for building on CMPSBL. SDK is 100% free."
+        title="Developer Tools | CMPSBL SDK, API & Documentation"
+        description="Interactive playground, API keys, starter templates, and SDK documentation for building on CMPSBL. Get started for free."
+        keywords={['CMPSBL SDK', 'AI memory API', 'developer tools', 'API documentation', 'starter templates']}
       />
       <div className="min-h-screen bg-background">
         <PublicNav />
 
         <main className="container mx-auto px-4 py-8 pt-24">
           {/* Header */}
-          <div className="mb-8">
+          <motion.div 
+            className="mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
             <div className="flex items-center gap-3 mb-4">
-              <div className="p-3 rounded-xl bg-primary/10">
+              <div className="p-3 rounded-xl bg-gradient-to-br from-primary/20 to-violet-500/20">
                 <Terminal className="h-8 w-8 text-primary" />
               </div>
               <div>
                 <h1 className="text-3xl md:text-4xl font-bold">Developer Tools</h1>
                 <p className="text-muted-foreground">
-                  SDK documentation and resources for CMPSBL
+                  Everything you need to build with persistent memory
                 </p>
               </div>
             </div>
             
+            {/* Integration badges */}
+            <IntegrationBadges className="mt-6" />
+            
             {/* Free SDK + Marketplace CTA */}
-            <div className="flex flex-wrap items-center gap-4 mt-4">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-system-green/10 border border-system-green/30 text-system-green text-sm">
+            <div className="flex flex-wrap items-center gap-4 mt-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-500 text-sm">
                 <Sparkles className="w-4 h-4" />
-                <span className="font-medium">SDK is 100% FREE</span>
+                <span className="font-medium">Free Tier Available</span>
               </div>
-              <Button asChild variant="outline" size="sm" className="gap-2">
-                <Link to="/marketplace">
-                  <Package className="w-4 h-4" />
-                  Browse Templates
-                  <ArrowRight className="w-3 h-3" />
-                </Link>
-              </Button>
+              <Badge variant="outline" className="px-3 py-1.5">
+                1,000 requests/day
+              </Badge>
+              <Badge variant="outline" className="px-3 py-1.5">
+                No credit card required
+              </Badge>
             </div>
-          </div>
+          </motion.div>
 
           {/* Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-            <TabsList className="flex h-auto gap-2 bg-muted/50 p-2 w-fit">
+            <TabsList className="flex flex-wrap h-auto gap-1 sm:gap-2 bg-muted/50 p-1.5 sm:p-2 w-full sm:w-fit overflow-x-auto">
               {TABS.map((tab) => (
                 <TabsTrigger
                   key={tab.id}
                   value={tab.id}
-                  className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                  className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
                 >
-                  <tab.icon className="h-4 w-4" />
-                  <span>{tab.label}</span>
+                  <tab.icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                  <span className="hidden sm:inline">{tab.label}</span>
                 </TabsTrigger>
               ))}
             </TabsList>
+
+            {/* Playground Tab */}
+            <TabsContent value="playground" className="space-y-6">
+              <div className="grid gap-6 lg:grid-cols-2">
+                <InteractivePlayground />
+                <div className="space-y-6">
+                  <DeveloperSignupForm />
+                  <Card className="border-border/50">
+                    <CardContent className="pt-6">
+                      <h3 className="font-semibold mb-3 flex items-center gap-2">
+                        <Zap className="w-4 h-4 text-primary" />
+                        Quick Start Commands
+                      </h3>
+                      <div className="space-y-2 font-mono text-xs">
+                        <div className="flex justify-between items-center p-2 bg-muted/50 rounded">
+                          <code>memory.store "Hello world"</code>
+                          <Badge variant="outline" className="text-[10px]">Store</Badge>
+                        </div>
+                        <div className="flex justify-between items-center p-2 bg-muted/50 rounded">
+                          <code>memory.recall "greeting"</code>
+                          <Badge variant="outline" className="text-[10px]">Recall</Badge>
+                        </div>
+                        <div className="flex justify-between items-center p-2 bg-muted/50 rounded">
+                          <code>memory.status</code>
+                          <Badge variant="outline" className="text-[10px]">Status</Badge>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+              
+              {/* Mock Usage Dashboard */}
+              <div className="mt-8">
+                <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                  <Eye className="w-5 h-5 text-primary" />
+                  Usage Dashboard Preview
+                </h2>
+                <MockUsageDashboard />
+              </div>
+            </TabsContent>
+
+            {/* Signup Tab */}
+            <TabsContent value="signup" className="space-y-6">
+              <div className="grid gap-8 lg:grid-cols-2">
+                <div className="space-y-6">
+                  <DeveloperSignupForm className="max-w-md" />
+                  <Card className="max-w-md">
+                    <CardContent className="pt-6 space-y-4">
+                      <h3 className="font-semibold">What you get:</h3>
+                      <ul className="space-y-2 text-sm">
+                        {[
+                          "1,000 API requests per day",
+                          "Persistent memory storage",
+                          "Hot/warm/cold memory tiers",
+                          "SDK access for all frameworks",
+                          "Real-time usage dashboard",
+                        ].map((item) => (
+                          <li key={item} className="flex items-center gap-2">
+                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </CardContent>
+                  </Card>
+                </div>
+                <LiveCodeExamples />
+              </div>
+            </TabsContent>
 
             {/* SDK Tab */}
             <TabsContent value="sdk" className="space-y-6">
@@ -220,7 +272,7 @@ export default function DevTools() {
                       <Badge variant="secondary" className="text-xs">Coming Soon</Badge>
                     </div>
                     <p className="text-xs text-muted-foreground">
-                      A public NPM package will be available in the future. Stay tuned for updates.
+                      A public NPM package (@cmpsbl/memory) will be available soon.
                     </p>
                   </div>
 
@@ -247,104 +299,111 @@ export default function DevTools() {
               </Card>
 
               {/* Module Overview */}
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {MODULES.map((mod) => {
-                  const Icon = mod.icon;
-                  return (
-                    <Card key={mod.id} className="hover:border-primary/50 transition-colors">
-                      <CardContent className="p-4">
-                        <div className="flex items-center gap-3 mb-2">
-                          <Icon className={`w-5 h-5 ${mod.color}`} />
-                          <span className="font-medium">{mod.name}</span>
-                        </div>
-                        <p className="text-xs text-muted-foreground">{mod.desc}</p>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
+              <div>
+                <h2 className="text-xl font-semibold mb-4">Available Modules</h2>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {MODULES.map((mod) => {
+                    const Icon = mod.icon;
+                    return (
+                      <Card key={mod.id} className="hover:border-primary/50 transition-colors">
+                        <CardContent className="p-4">
+                          <div className="flex items-center gap-3 mb-2">
+                            <Icon className={`w-5 h-5 ${mod.color}`} />
+                            <span className="font-medium">{mod.name}</span>
+                          </div>
+                          <p className="text-xs text-muted-foreground">{mod.desc}</p>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
               </div>
+            </TabsContent>
+
+            {/* Templates Tab */}
+            <TabsContent value="templates" className="space-y-6">
+              <div className="mb-6">
+                <h2 className="text-xl font-semibold mb-2">Starter Templates</h2>
+                <p className="text-muted-foreground">
+                  Download ready-to-use templates for your favorite framework
+                </p>
+              </div>
+              <DownloadableTemplates />
+              
+              <div className="mt-8">
+                <h2 className="text-xl font-semibold mb-4">Live Code Examples</h2>
+                <LiveCodeExamples />
+              </div>
+            </TabsContent>
+
+            {/* Calculator Tab */}
+            <TabsContent value="calculator" className="space-y-6">
+              <PricingCalculator className="max-w-4xl mx-auto" />
             </TabsContent>
 
             {/* Documentation Tab */}
             <TabsContent value="docs" className="space-y-6">
-              {/* Downloadable Docs */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Download className="w-5 h-5 text-primary" />
-                    Downloadable Documentation
-                  </CardTitle>
-                  <CardDescription>
-                    Download our complete documentation for offline reference
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    {DOWNLOADABLE_DOCS.map((doc) => (
-                      <Card key={doc.file} className="border-border/50 hover:border-primary/50 transition-colors">
-                        <CardContent className="p-4">
-                          <div className="flex items-start justify-between gap-4">
-                            <div className="flex items-start gap-3">
-                              <div className="p-2 rounded-lg bg-primary/10">
-                                <FileText className="w-5 h-5 text-primary" />
-                              </div>
-                              <div>
-                                <h4 className="font-medium">{doc.title}</h4>
-                                <p className="text-xs text-muted-foreground mt-1">{doc.desc}</p>
-                                <Badge variant="secondary" className="mt-2 text-xs">
-                                  {doc.size}
-                                </Badge>
-                              </div>
-                            </div>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => downloadDoc(doc.file)}
-                              className="shrink-0"
-                            >
-                              <Download className="w-4 h-4" />
-                            </Button>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
               {/* Online Documentation Links */}
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <BookOpen className="w-5 h-5" />
-                    Online Resources
+                    Documentation & Resources
                   </CardTitle>
                   <CardDescription>
-                    Additional documentation and community resources
+                    Complete guides and API reference
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {[
+                      { title: "Persistent Memory Guide", href: "/docs/persistent-memory", desc: "Complete memory SDK docs", badge: "Popular" },
                       { title: "Getting Started", href: "/documentation", desc: "Setup and configuration" },
                       { title: "API Reference", href: "/documentation#api", desc: "Full SDK API docs" },
-                      { title: "Examples", href: "/documentation#examples", desc: "Code samples" },
+                      { title: "Synergy Pipelines", href: "/synergies", desc: "Pre-built workflows" },
                       { title: "Templates", href: "/marketplace", desc: "Pre-built starters" },
-                      { title: "Evolution Log", href: "/changelog", desc: "System evolution" },
-                      { title: "GitHub", href: "https://github.com/promptfluid", desc: "Source code" },
+                      { title: "Changelog", href: "/changelog", desc: "System evolution" },
                     ].map((link) => (
                       <Link
                         key={link.title}
                         to={link.href}
-                        className="flex items-center justify-between p-3 rounded-lg border border-border/50 hover:border-primary/50 hover:bg-muted/50 transition-all group"
+                        className="flex items-center justify-between p-4 rounded-lg border border-border/50 hover:border-primary/50 hover:bg-muted/50 transition-all group"
                       >
                         <div>
-                          <p className="font-medium text-sm">{link.title}</p>
-                          <p className="text-xs text-muted-foreground">{link.desc}</p>
+                          <div className="flex items-center gap-2">
+                            <p className="font-medium text-sm">{link.title}</p>
+                            {link.badge && (
+                              <Badge variant="secondary" className="text-[10px]">{link.badge}</Badge>
+                            )}
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-1">{link.desc}</p>
                         </div>
-                        <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                        <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
                       </Link>
                     ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Module Quick Reference */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Module Quick Reference</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {MODULES.slice(0, 9).map((mod) => {
+                      const Icon = mod.icon;
+                      return (
+                        <div key={mod.id} className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
+                          <Icon className={`w-4 h-4 ${mod.color}`} />
+                          <div>
+                            <span className="text-sm font-medium">{mod.name}</span>
+                            <p className="text-[10px] text-muted-foreground">{mod.desc}</p>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </CardContent>
               </Card>

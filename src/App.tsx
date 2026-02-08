@@ -136,6 +136,13 @@ const EvolvingSoftwareV6Breakthrough = lazy(() => import("./pages/blog/evolving-
 const LLMsTxtProtocol = lazy(() => import("./pages/blog/llms-txt-protocol-ai-context"));
 const AIGovernanceNamespace = lazy(() => import("./pages/blog/ai-governance-namespace-unified-terminology"));
 
+// Developer adoption blog posts
+const RAGWithoutInfrastructure = lazy(() => import("./pages/blog/RAGWithoutInfrastructure"));
+const AgentMemoryAntiPatterns = lazy(() => import("./pages/blog/AgentMemoryAntiPatterns"));
+const LangChainMemoryIntegration = lazy(() => import("./pages/blog/LangChainMemoryIntegration"));
+const WhyAgentsForget = lazy(() => import("./pages/blog/WhyAgentsForget"));
+const BuildingAgentsThatLearn = lazy(() => import("./pages/blog/BuildingAgentsThatLearn"));
+
 // Dynamic AutoBlog post page
 const AutoBlogPost = lazy(() => import("./pages/blog/AutoBlogPost"));
 
@@ -324,6 +331,13 @@ const App = () => {
                         <Route path="/blog/evolving-software-v6-breakthrough" element={<EvolvingSoftwareV6Breakthrough />} />
                         <Route path="/blog/llms-txt-protocol-ai-context" element={<LLMsTxtProtocol />} />
                         <Route path="/blog/ai-governance-namespace-unified-terminology" element={<AIGovernanceNamespace />} />
+                        
+                        {/* Developer Adoption Posts */}
+                        <Route path="/blog/rag-without-infrastructure" element={<RAGWithoutInfrastructure />} />
+                        <Route path="/blog/agent-memory-anti-patterns" element={<AgentMemoryAntiPatterns />} />
+                        <Route path="/blog/langchain-memory-integration" element={<LangChainMemoryIntegration />} />
+                        <Route path="/blog/why-agents-forget" element={<WhyAgentsForget />} />
+                        <Route path="/blog/building-agents-that-learn" element={<BuildingAgentsThatLearn />} />
                         
                         {/* Dynamic AutoBlog Posts */}
                         <Route path="/blog/auto/:slug" element={<AutoBlogPost />} />

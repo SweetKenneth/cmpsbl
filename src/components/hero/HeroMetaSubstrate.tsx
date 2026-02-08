@@ -455,11 +455,44 @@ export function HeroMetaSubstrate() {
           </motion.div>
         </div>
         
+        {/* Integration badges - Shows compatibility with major AI providers */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.65 }}
+          className="mb-6 sm:mb-8"
+        >
+          <p className="text-xs text-muted-foreground text-center mb-3">Works with your stack</p>
+          <div className="flex flex-wrap justify-center gap-2">
+            {[
+              { name: 'OpenAI', color: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' },
+              { name: 'Anthropic', color: 'bg-orange-500/10 text-orange-500 border-orange-500/20' },
+              { name: 'Google AI', color: 'bg-blue-500/10 text-blue-500 border-blue-500/20' },
+              { name: 'LangChain', color: 'bg-teal-500/10 text-teal-500 border-teal-500/20' },
+              { name: 'Vercel AI', color: 'bg-foreground/10 text-foreground border-foreground/20' },
+            ].map((integration, index) => (
+              <motion.span
+                key={integration.name}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.7 + index * 0.05 }}
+                className={cn(
+                  "px-3 py-1 rounded-full text-[10px] sm:text-xs font-medium border",
+                  "backdrop-blur-sm transition-all duration-200 hover:scale-105",
+                  integration.color
+                )}
+              >
+                {integration.name}
+              </motion.span>
+            ))}
+          </div>
+        </motion.div>
+
         {/* Use case pills with enhanced styling */}
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
+          transition={{ delay: 0.75 }}
           className="flex justify-start sm:justify-center gap-2.5 sm:gap-4 mb-10 sm:mb-20 -mx-4 px-4 sm:mx-0 sm:px-0 overflow-x-auto scrollbar-hide pb-2 sm:pb-0"
         >
           {[
@@ -472,7 +505,7 @@ export function HeroMetaSubstrate() {
               key={item.label}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8 + index * 0.1 }}
+              transition={{ delay: 0.85 + index * 0.1 }}
             >
               <Link
                 to={item.href}
