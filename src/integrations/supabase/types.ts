@@ -4444,6 +4444,78 @@ export type Database = {
         }
         Relationships: []
       }
+      dream_archaeology: {
+        Row: {
+          created_at: string
+          id: string
+          insight: string | null
+          mood_distribution: Json | null
+          nightmare_ratio: number | null
+          period_end: string
+          period_start: string
+          theme_clusters: Json | null
+          total_consumed: number | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          insight?: string | null
+          mood_distribution?: Json | null
+          nightmare_ratio?: number | null
+          period_end: string
+          period_start: string
+          theme_clusters?: Json | null
+          total_consumed?: number | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          insight?: string | null
+          mood_distribution?: Json | null
+          nightmare_ratio?: number | null
+          period_end?: string
+          period_start?: string
+          theme_clusters?: Json | null
+          total_consumed?: number | null
+        }
+        Relationships: []
+      }
+      dream_artifacts: {
+        Row: {
+          artifact_date: string
+          created_at: string
+          dreams_compressed: number | null
+          id: string
+          is_immutable: boolean | null
+          mood: string
+          nightmares_compressed: number | null
+          sentence: string
+          visual_seed: string | null
+        }
+        Insert: {
+          artifact_date: string
+          created_at?: string
+          dreams_compressed?: number | null
+          id?: string
+          is_immutable?: boolean | null
+          mood: string
+          nightmares_compressed?: number | null
+          sentence: string
+          visual_seed?: string | null
+        }
+        Update: {
+          artifact_date?: string
+          created_at?: string
+          dreams_compressed?: number | null
+          id?: string
+          is_immutable?: boolean | null
+          mood?: string
+          nightmares_compressed?: number | null
+          sentence?: string
+          visual_seed?: string | null
+        }
+        Relationships: []
+      }
       dream_cycle_logs: {
         Row: {
           agency_id: string | null
@@ -4500,6 +4572,93 @@ export type Database = {
           },
         ]
       }
+      dream_eater_audit: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          mood_after: string | null
+          mood_before: string | null
+          mutation_delta: number | null
+          nightmare_intensity: number | null
+          session_hash: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          mood_after?: string | null
+          mood_before?: string | null
+          mutation_delta?: number | null
+          nightmare_intensity?: number | null
+          session_hash?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          mood_after?: string | null
+          mood_before?: string | null
+          mutation_delta?: number | null
+          nightmare_intensity?: number | null
+          session_hash?: string | null
+        }
+        Relationships: []
+      }
+      dream_eater_features: {
+        Row: {
+          enabled: boolean | null
+          feature_key: string
+          id: string
+          metadata: Json | null
+          updated_at: string
+        }
+        Insert: {
+          enabled?: boolean | null
+          feature_key: string
+          id?: string
+          metadata?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          enabled?: boolean | null
+          feature_key?: string
+          id?: string
+          metadata?: Json | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      dream_eater_milestones: {
+        Row: {
+          animation_triggered: boolean | null
+          created_at: string
+          description: string | null
+          id: string
+          milestone_level: number
+          milestone_name: string
+          unlocked_at: string | null
+        }
+        Insert: {
+          animation_triggered?: boolean | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          milestone_level: number
+          milestone_name: string
+          unlocked_at?: string | null
+        }
+        Update: {
+          animation_triggered?: boolean | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          milestone_level?: number
+          milestone_name?: string
+          unlocked_at?: string | null
+        }
+        Relationships: []
+      }
       dream_eater_state: {
         Row: {
           awaken_count: number | null
@@ -4507,8 +4666,10 @@ export type Database = {
           cycle_count_today: number | null
           dreams_consumed_today: number | null
           id: string
+          instability_score: number | null
           last_awaken_at: string | null
           last_cycle_at: string | null
+          last_daily_reset: string | null
           last_decay_at: string | null
           last_fed_at: string | null
           mood_score: number | null
@@ -4524,8 +4685,10 @@ export type Database = {
           cycle_count_today?: number | null
           dreams_consumed_today?: number | null
           id?: string
+          instability_score?: number | null
           last_awaken_at?: string | null
           last_cycle_at?: string | null
+          last_daily_reset?: string | null
           last_decay_at?: string | null
           last_fed_at?: string | null
           mood_score?: number | null
@@ -4541,8 +4704,10 @@ export type Database = {
           cycle_count_today?: number | null
           dreams_consumed_today?: number | null
           id?: string
+          instability_score?: number | null
           last_awaken_at?: string | null
           last_cycle_at?: string | null
+          last_daily_reset?: string | null
           last_decay_at?: string | null
           last_fed_at?: string | null
           mood_score?: number | null
@@ -4551,6 +4716,33 @@ export type Database = {
           nightmares_consumed_today?: number | null
           reset_reason?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      dream_echo_templates: {
+        Row: {
+          created_at: string
+          echo_type: string
+          id: string
+          mood_affinity: string[] | null
+          template: string
+          weight: number | null
+        }
+        Insert: {
+          created_at?: string
+          echo_type: string
+          id?: string
+          mood_affinity?: string[] | null
+          template: string
+          weight?: number | null
+        }
+        Update: {
+          created_at?: string
+          echo_type?: string
+          id?: string
+          mood_affinity?: string[] | null
+          template?: string
+          weight?: number | null
         }
         Relationships: []
       }
@@ -4802,6 +4994,36 @@ export type Database = {
           outputs_json?: Json | null
           seed_prompt?: string
           tags?: string[] | null
+        }
+        Relationships: []
+      }
+      dream_stream: {
+        Row: {
+          created_at: string
+          id: string
+          mood_after: string
+          mood_before: string
+          mutation_delta: number | null
+          opted_in_excerpt: string | null
+          stream_type: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          mood_after: string
+          mood_before: string
+          mutation_delta?: number | null
+          opted_in_excerpt?: string | null
+          stream_type: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          mood_after?: string
+          mood_before?: string
+          mutation_delta?: number | null
+          opted_in_excerpt?: string | null
+          stream_type?: string
         }
         Relationships: []
       }
@@ -10791,6 +11013,13 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
+      dream_eater_mood:
+        | "calm"
+        | "curious"
+        | "agitated"
+        | "fractured"
+        | "dormant"
+        | "feral"
       evolution_initiator: "system" | "human"
       evolution_phase:
         | "planning"
@@ -10935,6 +11164,14 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "moderator", "user"],
+      dream_eater_mood: [
+        "calm",
+        "curious",
+        "agitated",
+        "fractured",
+        "dormant",
+        "feral",
+      ],
       evolution_initiator: ["system", "human"],
       evolution_phase: [
         "planning",
