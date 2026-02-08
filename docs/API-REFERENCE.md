@@ -1,6 +1,6 @@
 # promptfluid® Substrate — API Reference
 
-**v6.0.0 | Complete 14-Module Cognitive OS API**
+**v8.0.0 SYNERGY+ | Complete 14-Module Cognitive OS API**
 
 ---
 

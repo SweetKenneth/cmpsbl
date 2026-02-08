@@ -1,5 +1,5 @@
 /**
- * Brain Intelligence Panel — Advanced cognitive controls
+ * Brain Intelligence Panel v8.0.0 SYNERGY+ — Advanced cognitive controls
  * Deep thinking, curiosity engine, learning patterns
  */
 

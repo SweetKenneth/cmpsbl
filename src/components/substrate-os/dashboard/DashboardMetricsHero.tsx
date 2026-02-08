@@ -1,6 +1,6 @@
 /**
- * Dashboard Metrics Hero v7.5.3 - Premium system overview
- * Large health ring with gradient accents - 14 Modules
+ * Dashboard Metrics Hero v8.0.0 SYNERGY+ - Premium system overview
+ * Large health ring with gradient accents - 14 Modules, 5 Layers
  */
 
 import { Activity, Cpu, Zap, Brain, Shield, Eye, Moon, Radio, Key, Sparkles, Plug, Settings, Layers, GitBranch, Accessibility, RefreshCw } from 'lucide-react';

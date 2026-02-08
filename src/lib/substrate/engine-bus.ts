@@ -1,13 +1,14 @@
 /**
  * promptfluid® Engine Bus
- * v6.5.0 — Canonical Routing Layer with Telemetry Integration
+ * v8.0.0 — SYNERGY+ Epoch: Canonical Routing Layer with Telemetry Integration
  * 
  * The Engine Bus is the single execution router for all substrate engines.
  * All engine execution must route through engine_bus.dispatch().
  * 
- * v6.5.0 Updates:
+ * Capabilities:
  * - Integrated with Telemetry Engine for observability
  * - Emits telemetry before/after execution and on failure
+ * - Chain execution support for linked operations
  * 
  * Responsibilities:
  * - Resolve command → engine mapping
