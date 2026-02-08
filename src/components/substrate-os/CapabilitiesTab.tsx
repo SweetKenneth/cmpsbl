@@ -1,6 +1,6 @@
 /**
  * Capabilities Control Panel
- * v7.0.0 — Dashboard tab for toggling capabilities on/off
+ * v8.0.0 SYNERGY+ — Dashboard tab for toggling 269 capabilities on/off
  */
 
 import { useState, useEffect } from 'react';
@@ -405,7 +405,7 @@ export function CapabilitiesTab() {
       
       {/* Footer note */}
       <div className="text-[10px] text-muted-foreground/60 text-center">
-        Capabilities v7.0.0 — Archived Edge Function Digestion System
+        Capabilities v8.0.0 — 269 Registered Capabilities • SYNERGY+ Epoch
       </div>
     </div>
   );

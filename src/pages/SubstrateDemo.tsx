@@ -1,6 +1,6 @@
 /**
  * Substrate Demo — Interactive AI OS Showcase
- * Completely rebuilt with centered layout and better visualization
+ * v8.0.0 SYNERGY+ Epoch — Rebuilt with centered layout and better visualization
  */
 
 import { useState, useEffect, useCallback } from 'react';

@@ -1,6 +1,6 @@
 /**
  * Substrate Integration Module
- * Memory bridge, dream pipeline, and global pooling
+ * v8.0.0 SYNERGY+ — Memory bridge, dream pipeline, and global pooling
  */
 
 export * from './memoryBridge';

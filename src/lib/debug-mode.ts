@@ -1,6 +1,6 @@
 /**
  * Debug Mode Kill-Switch
- * v2.0.0 — Granular control over background activity
+ * v8.0.0 SYNERGY+ — Granular control over background activity
  * 
  * Usage:
  *   debugMode.enable();           // Disable ALL background activity

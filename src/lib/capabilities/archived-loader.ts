@@ -1,6 +1,6 @@
 /**
  * Archived Edge Function Loader
- * v7.0.0 — Scans ONLY _archived edge functions for capability ingestion
+ * v8.0.0 SYNERGY+ — Scans ONLY _archived edge functions for capability ingestion
  * 
  * This loader explicitly ignores:
  * - /edge/ (live functions)

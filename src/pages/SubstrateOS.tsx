@@ -1,6 +1,6 @@
 /**
- * CMPSBL® substrate — OS Surface v8.0.0
- * PREMIUM EDITION — 14 modules, 310+ commands, full introspection
+ * CMPSBL® substrate — OS Surface v8.0.0 SYNERGY+ Epoch
+ * PREMIUM EDITION — 14 modules, 310+ commands, 147 synergy pipelines
  */
 
 import { Navigate, Link, useNavigate } from 'react-router-dom';
@@ -248,7 +248,7 @@ function SidebarNav({ groups, activeTab, onTabChange, collapsed = false, onClose
         {!collapsed && (
           <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-mono mt-3 pt-3 border-t border-border">
             <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span>CMPSBL v7.5.2</span>
+            <span>CMPSBL v8.0.0</span>
           </div>
         )}
       </div>

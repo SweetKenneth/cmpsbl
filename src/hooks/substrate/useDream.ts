@@ -1,6 +1,6 @@
 /**
  * useDream Hook
- * v7.1.0 — Dedicated hook for DREAM module operations
+ * v8.0.0 SYNERGY+ — Dedicated hook for DREAM module operations
  * Respects debugMode — when enabled, polling is disabled
  */
 

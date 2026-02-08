@@ -1,6 +1,6 @@
 /**
  * useDefense Hook
- * v7.1.0 — Dedicated hook for DEFENSE module operations
+ * v8.0.0 SYNERGY+ — Dedicated hook for DEFENSE module operations
  * Respects debugMode — when enabled, polling is disabled
  */
 

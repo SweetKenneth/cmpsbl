@@ -1,5 +1,6 @@
 /**
  * Terminal Command Registry
+ * v8.0.0 SYNERGY+ Epoch — 310+ commands across 14 modules
  * Complete list of all substrate commands organized by module
  */
 

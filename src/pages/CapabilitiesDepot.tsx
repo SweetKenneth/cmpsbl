@@ -1,7 +1,7 @@
 /**
  * Capability Depot — FREE Exploration Layer
  * Atomic, stateless building blocks — ALL UNLOCKED
- * v4.0.0 — No pricing, no checkout, all capabilities free
+ * v8.0.0 SYNERGY+ — No pricing, no checkout, all 269 capabilities free
  */
 
 import { useState, useMemo, lazy, Suspense } from 'react';

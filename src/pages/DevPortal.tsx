@@ -1,5 +1,7 @@
 /**
  * CMPSBL® Developer Portal
+ * v8.0.0 SYNERGY+ Epoch
+ * 
  * Public-facing page for developers and researchers to discover,
  * integrate, and build with the substrate.
  * 

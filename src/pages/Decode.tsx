@@ -1,6 +1,6 @@
 /**
  * promptfluid® Decode — The Interpreter Primitive
- * v2026.01 — Human-Compatible Cognitive Interface
+ * v8.0.0 SYNERGY+ — Human-Compatible Cognitive Interface
  * 
  * Mobile-first conversation interface
  */
