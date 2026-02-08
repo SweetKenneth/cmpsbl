@@ -10,7 +10,7 @@ export interface SystemStatus {
   brain: boolean;
   defense: boolean;
   vision: boolean;
-  clarity: boolean;
+  inclusive: boolean;
   cascade: boolean;
   database: boolean;
   details: Record<string, any>;
@@ -21,7 +21,7 @@ export async function verifyAllSystems(): Promise<SystemStatus> {
     brain: false,
     defense: false,
     vision: false,
-    clarity: false,
+    inclusive: false,
     cascade: false,
     database: false,
     details: {}
@@ -40,7 +40,7 @@ export async function verifyAllSystems(): Promise<SystemStatus> {
   try {
     const { data, error } = await supabase.functions.invoke('pf-core-status');
     status.vision = !error && data?.success;
-    status.clarity = !error && data?.success;
+    status.inclusive = !error && data?.success;
     status.details.core = data?.status || { error: error?.message };
   } catch (err) {
     status.details.core = { error: 'Core offline' };

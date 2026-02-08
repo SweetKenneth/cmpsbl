@@ -10,7 +10,7 @@ export default function WCAG22WordPressChanges() {
       <SEO
         title="WCAG 2.2 Changes: What WordPress Site Owners Need to Know (2025 Guide)"
         description="Complete breakdown of WCAG 2.2's nine new success criteria and their impact on WordPress accessibility. Learn what changed, why it matters, and how to achieve compliance for your WordPress site."
-        canonical="https://promptfluid.com/blog/wcag-2-2-wordpress-changes"
+        canonical="https://cmpsbl.com/blog/wcag-2-2-wordpress-changes"
         keywords={[
           'wcag 2.2 changes',
           'wcag 2.2 wordpress',
@@ -128,7 +128,7 @@ export default function WCAG22WordPressChanges() {
                 <div className="not-prose mb-6">
                   <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20">
                     <Eye className="w-4 h-4 text-purple-500" />
-                    <span className="text-xs font-medium text-purple-500">Visual Clarity</span>
+                    <span className="text-xs font-medium text-purple-500">Visual Enhancement</span>
                   </div>
                 </div>
                 <p>
@@ -240,11 +240,11 @@ export default function WCAG22WordPressChanges() {
             <div className="container mx-auto max-w-3xl text-center">
               <h2 className="text-3xl font-bold mb-6">Ready to Achieve WCAG 2.2 Compliance?</h2>
               <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
-                PromptFluid Clarity helps WordPress site owners automatically detect and fix WCAG 2.2 violations.
+                The INCLUSIVE Module helps WordPress site owners automatically detect and fix WCAG 2.2 violations.
               </p>
               <div className="flex flex-wrap gap-4 justify-center">
-                <Link to="/projects/clarity" className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium">
-                  Explore PromptFluid Clarity
+                <Link to="/cluster/inclusive-module-accessibility" className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium">
+                  Explore the INCLUSIVE Module
                   <ExternalLink className="w-4 h-4" />
                 </Link>
                 <Link to="/blog/wordpress-accessibility-guide" className="inline-flex items-center gap-2 px-6 py-3 border border-border rounded-lg hover:bg-muted transition-colors font-medium">

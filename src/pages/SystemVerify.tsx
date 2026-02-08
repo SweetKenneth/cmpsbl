@@ -111,8 +111,8 @@ export default function SystemVerify() {
                   <StatusIcon online={status.vision} />
                 </div>
                 <div className="flex items-center justify-between p-3 bg-muted/50 rounded">
-                  <span className="font-medium">💎 Clarity (Analytics)</span>
-                  <StatusIcon online={status.clarity} />
+                  <span className="font-medium">♿ INCLUSIVE (Human Compatibility)</span>
+                  <StatusIcon online={status.inclusive} />
                 </div>
                 <div className="flex items-center justify-between p-3 bg-muted/50 rounded">
                   <span className="font-medium">🌊 Cascade (Dream Engine)</span>

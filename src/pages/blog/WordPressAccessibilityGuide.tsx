@@ -5,13 +5,13 @@ import { SEO } from "@/components/SEO";
 import { Link } from "react-router-dom";
 import heroImage from "@/assets/blog/wordpress-accessibility-guide.jpg";
 
-export default function ClarityPillarPost() {
+export default function WordPressAccessibilityGuide() {
   return (
     <>
       <SEO
         title="Complete Guide to WordPress Accessibility: WCAG 2.2 Compliance with AI Automation"
-        description="Master WordPress accessibility with this comprehensive 2025 guide. Learn WCAG 2.2 compliance, automated fixes, testing tools, and how AI-powered solutions like PromptFluid Clarity revolutionize accessibility automation for WordPress sites."
-        canonical="https://promptfluid.com/blog/wordpress-accessibility-guide"
+        description="Master WordPress accessibility with this comprehensive 2025 guide. Learn WCAG 2.2 compliance, automated fixes, testing tools, and how AI-powered solutions revolutionize accessibility automation for WordPress sites."
+        canonical="https://cmpsbl.com/blog/wordpress-accessibility-guide"
         keywords={[
           'wordpress accessibility',
           'wcag 2.2 compliance',
@@ -166,7 +166,7 @@ export default function ClarityPillarPost() {
                 </p>
                 <ul className="space-y-3">
                   <li><strong className="text-foreground">Browser Extensions:</strong> axe DevTools, WAVE, Lighthouse in Chrome DevTools</li>
-                  <li><strong className="text-foreground">WordPress Plugins:</strong> PromptFluid Clarity (AI-powered), WP Accessibility Helper</li>
+                  <li><strong className="text-foreground">WordPress Plugins:</strong> The INCLUSIVE Module (AI-powered), WP Accessibility Helper</li>
                   <li><strong className="text-foreground">Online Tools:</strong> WebAIM's WAVE, Deque's axe Monitor, Siteimprove</li>
                 </ul>
 
@@ -178,7 +178,7 @@ export default function ClarityPillarPost() {
                   <li><strong className="text-foreground">Keyboard Navigation:</strong> Unplug your mouse and navigate your entire WordPress site using only Tab, Shift+Tab, Enter, and arrow keys</li>
                   <li><strong className="text-foreground">Screen Reader Testing:</strong> Test with NVDA (Windows), JAWS (Windows), or VoiceOver (Mac/iOS)</li>
                   <li><strong className="text-foreground">Mobile Testing:</strong> Check accessibility on actual mobile devices, not just browser emulation</li>
-                  <li><strong className="text-foreground">Content Review:</strong> Assess readability, language clarity, and alternative text quality</li>
+                  <li><strong className="text-foreground">Content Review:</strong> Assess readability, language precision, and alternative text quality</li>
                 </ul>
 
                 <h3 className="text-2xl mt-16 mb-6">Phase 3: User Testing</h3>
@@ -196,7 +196,7 @@ export default function ClarityPillarPost() {
                   <strong className="text-foreground">Manual fix:</strong> Edit each image in your WordPress media library and add descriptive alt text that conveys the image's purpose and content.
                 </p>
                 <p>
-                  <strong className="text-foreground">Automated fix:</strong> Tools like <Link to="/projects/clarity" className="text-primary hover:underline">PromptFluid Clarity</Link> use AI to automatically generate contextual, meaningful alt text.
+                  <strong className="text-foreground">Automated fix:</strong> Tools like the <Link to="/cluster/inclusive-module-accessibility" className="text-primary hover:underline">INCLUSIVE Module</Link> use AI to automatically generate contextual, meaningful alt text.
                 </p>
 
                 <h3 className="text-2xl mt-16 mb-6">Issue 2: Insufficient Color Contrast</h3>
@@ -236,12 +236,12 @@ export default function ClarityPillarPost() {
 
                 <h2 className="text-3xl mt-20 mb-8">AI-Powered WordPress Accessibility: The Future is Now</h2>
                 <p>
-                  Artificial intelligence is revolutionizing how we approach <strong className="text-foreground">WordPress accessibility automation</strong>. Traditional accessibility tools simply identify problems and leave fixes to developers. AI-powered solutions like PromptFluid Clarity take the next step: automatically remediating issues.
+                  Artificial intelligence is revolutionizing how we approach <strong className="text-foreground">WordPress accessibility automation</strong>. Traditional accessibility tools simply identify problems and leave fixes to developers. AI-powered solutions like the INCLUSIVE Module take the next step: automatically remediating issues.
                 </p>
 
                 <h3 className="text-2xl mt-16 mb-6">How AI Accessibility Automation Works</h3>
                 <p>
-                  PromptFluid Clarity uses the Cascade AI system to analyze your WordPress site, understand content context, and apply intelligent fixes:
+                  The INCLUSIVE Module uses the Brain to analyze your WordPress site, understand content context, and apply intelligent fixes:
                 </p>
                 <ul className="space-y-3">
                   <li><strong className="text-foreground">Context-Aware Alt Text:</strong> AI analyzes images within their page context to generate meaningful descriptions</li>
@@ -258,19 +258,19 @@ export default function ClarityPillarPost() {
             <div className="container mx-auto max-w-3xl text-center">
               <h2 className="text-3xl font-bold mb-6">Start Your Accessibility Journey Today</h2>
               <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
-                PromptFluid Clarity makes WCAG 2.2 compliance achievable for WordPress sites of any size.
+                The INCLUSIVE Module makes WCAG 2.2 compliance achievable for WordPress sites of any size.
               </p>
               <div className="flex flex-wrap gap-4 justify-center">
-                <Link to="/projects/clarity">
+                <Link to="/cluster/inclusive-module-accessibility">
                   <Button size="lg" className="gap-2">
                     <Shield className="w-5 h-5" />
-                    Explore PromptFluid Clarity
+                    Explore the INCLUSIVE Module
                   </Button>
                 </Link>
-                <Link to="/blog">
+                <Link to="/scan">
                   <Button size="lg" variant="outline" className="gap-2">
-                    <ArrowLeft className="w-4 h-4" />
-                    More Resources
+                    <Download className="w-5 h-5" />
+                    Free Scan
                   </Button>
                 </Link>
               </div>

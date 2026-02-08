@@ -1,6 +1,7 @@
 /**
  * INCLUSIVE Module Types
- * @origin(cmptbl) — Migrated from CMPTBL/Clarity schemas
+ * v8.0.0 SYNERGY+ Epoch — Human Compatibility Pipeline
+ * @origin(cmptbl) — Migrated from legacy CMPTBL utilities
  */
 
 export type WCAGLevel = 'A' | 'AA' | 'AAA';
