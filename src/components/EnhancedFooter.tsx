@@ -44,9 +44,9 @@ export function EnhancedFooter() {
       title: "Learn",
       links: [
         { name: "Developer Academy", href: "/academy" },
+        { name: "INCLUSIVE Module", href: "/cluster/inclusive-module-accessibility" },
         { name: "Library", href: "/library" },
         { name: "Use Cases", href: "/use-cases" },
-        { name: "Foundations", href: "/foundations" },
         { name: "Demo", href: "/demo" },
       ]
     },
