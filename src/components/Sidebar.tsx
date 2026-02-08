@@ -65,14 +65,14 @@ const navSections: NavSection[] = [
       { name: "Vision Control", href: "/admin/vision", icon: Brain },
       { name: "Defense Shield", href: "/admin/defense", icon: Shield },
       { name: "Projects", href: "/admin/projects", icon: Briefcase },
-      { name: "PTCHBL", href: "/admin/clarity", icon: Eye },
+      { name: "Clarity", href: "/admin/clarity", icon: Eye },
     ],
   },
   {
     title: "Brain Intelligence",
     items: [
       { name: "Brain Console", href: "/brain", icon: Brain },
-      { name: "Cascade Admin", href: "/cascade-admin", icon: Sparkles },
+      { name: "System Admin", href: "/cascade-admin", icon: Sparkles },
       { name: "Nexus Brain", href: "/nexus-brain", icon: Brain },
       { name: "Brain Memory", href: "/brain-memory", icon: Database },
       { name: "Brain Reports", href: "/brain-reports", icon: FileText },
@@ -96,7 +96,7 @@ const navSections: NavSection[] = [
       { name: "Threat Feed", href: "/threat-feed", icon: Zap },
       { name: "Security Rules", href: "/rules", icon: FileText },
       { name: "Red Team", href: "/red-team", icon: Microscope },
-      { name: "RCKBL Keys", href: "/admin/reflex-keys", icon: Key },
+      { name: "Defense Keys", href: "/admin/reflex-keys", icon: Key },
     ],
   },
   {
@@ -210,8 +210,8 @@ export function Sidebar({ isOpen, onToggle }: { isOpen?: boolean; onToggle?: () 
           </div>
           <div className="flex items-center gap-3">
             <div>
-              <h1 className="text-xl font-bold glow-text">PromptFluid</h1>
-              <p className="text-xs text-muted-foreground">AI that flows</p>
+              <h1 className="text-xl font-bold glow-text">CMPSBL</h1>
+              <p className="text-xs text-muted-foreground">Cognitive Infrastructure</p>
             </div>
           </div>
         </div>
@@ -298,7 +298,7 @@ export function Sidebar({ isOpen, onToggle }: { isOpen?: boolean; onToggle?: () 
         {/* Footer */}
         <div className="p-4 border-t border-border/50">
           <p className="text-xs text-muted-foreground text-center">
-            PromptFluid™ · AI That Flows
+            CMPSBL® · v8.0.0 SYNERGY+
           </p>
         </div>
       </aside>

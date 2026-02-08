@@ -10,9 +10,9 @@ const CascadeAIDeepDive = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Cascade AI: The Brain Behind Adaptive Intelligence | PromptFluid"
-        description="Deep dive into Cascade AI's learning mechanisms, memory systems, and autonomous capabilities that power PromptFluid's adaptive intelligence ecosystem."
-        keywords={["Cascade AI", "adaptive intelligence", "machine learning", "AI orchestration", "PromptFluid Brain"]}
+        title="Brain Module: The Heart of Adaptive Intelligence | CMPSBL®"
+        description="Deep dive into the Brain module's learning mechanisms, memory systems, and autonomous capabilities that power CMPSBL's adaptive intelligence substrate."
+        keywords={["Brain module", "adaptive intelligence", "machine learning", "AI orchestration", "CMPSBL Brain", "cognitive substrate"]}
       />
       
       <PublicNav />
@@ -26,11 +26,11 @@ const CascadeAIDeepDive = () => {
           </Link>
           
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground tracking-tight">
-            Cascade AI: The Brain Behind Adaptive Intelligence
+            Brain Module: The Heart of Adaptive Intelligence
           </h1>
           
           <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
-            Explore the learning mechanisms, memory systems, and autonomous capabilities that make Cascade AI the most advanced orchestration intelligence in the PromptFluid ecosystem.
+            Explore the learning mechanisms, memory systems, and autonomous capabilities that make the Brain module the most advanced orchestration intelligence in the CMPSBL substrate.
           </p>
 
           <AuthorBio publishDate="2025-08-01" readTime="12 min read" />
@@ -54,8 +54,8 @@ const CascadeAIDeepDive = () => {
           <section className="mb-16">
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
-                Cascade AI represents PromptFluid's exploration into adaptive AI systems that go beyond reactive responses. 
-                Operating through scheduled cycles, Cascade experiments with continuous learning, pattern recognition, and 
+                The Brain module represents CMPSBL's exploration into adaptive AI systems that go beyond reactive responses. 
+                Operating through scheduled cycles, the Brain experiments with continuous learning, pattern recognition, and 
                 autonomous improvement—investigating how AI systems can evolve and adapt over time.
               </p>
             </div>
@@ -145,7 +145,7 @@ const CascadeAIDeepDive = () => {
             
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
-                Cascade is designed to operate efficiently using free-tier AI providers where possible. The system 
+                The Brain module is designed to operate efficiently using free-tier AI providers where possible. The system 
                 intelligently allocates resources, using faster models for simple tasks and more capable models 
                 for complex reasoning.
               </p>
@@ -164,21 +164,21 @@ const CascadeAIDeepDive = () => {
             
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
-                Rather than relying solely on external API calls, Cascade builds an internal knowledge cache—studying 
+                Rather than relying solely on external API calls, the Brain builds an internal knowledge cache—studying 
                 how expert developers build applications, which architectural patterns succeed, and what code 
                 structures deliver best results.
               </p>
               
               <p>
-                This experimental approach means Cascade aims to understand <em>why</em> certain patterns work, 
+                This experimental approach means the Brain aims to understand <em>why</em> certain patterns work, 
                 <em>when</em> to apply specific techniques, and <em>how</em> to adapt solutions to novel contexts.
               </p>
             </div>
 
             <div className="bg-card border border-primary/30 rounded-lg p-4 mt-8">
               <p className="text-primary text-sm font-medium">
-                🧪 Note: Cascade is an experimental R&D project. Metrics and capabilities are continuously evolving 
-                as we explore the boundaries of autonomous AI learning.
+                🧪 Note: The Brain module is continuously evolving. Metrics and capabilities are updated 
+                as we explore the boundaries of autonomous AI learning within the CMPSBL substrate.
               </p>
             </div>
           </section>
@@ -205,9 +205,9 @@ const CascadeAIDeepDive = () => {
                 to="/blog/how-promptfluid-works-cascade-ai-ecosystem" 
                 className="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors"
               >
-                <h3 className="text-lg font-semibold mb-2 text-foreground">How PromptFluid Works</h3>
+                <h3 className="text-lg font-semibold mb-2 text-foreground">How CMPSBL Works</h3>
                 <p className="text-sm text-muted-foreground">
-                  Discover the complete PromptFluid ecosystem and how Cascade orchestrates intelligence across all products.
+                  Discover the complete CMPSBL substrate and how the Brain orchestrates intelligence across all modules.
                 </p>
               </Link>
 

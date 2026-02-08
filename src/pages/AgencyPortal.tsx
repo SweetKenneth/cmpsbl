@@ -351,8 +351,8 @@ export default function AgencyPortal() {
   return (
     <>
       <SEO
-        title={`${agency.name} — promptfluid®`}
-        description={`${agency.name} cognitive agency powered by promptfluid®`}
+        title={`${agency.name} — CMPSBL®`}
+        description={`${agency.name} cognitive agency powered by CMPSBL® substrate`}
       />
 
       <div className="min-h-screen bg-background">
