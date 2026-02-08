@@ -1,6 +1,6 @@
 /**
  * Event Query System
- * v7.0.0 — Query and subscribe to substrate events
+ * v8.0.0 SYNERGY+ — Query and subscribe to substrate events
  * 
  * Respects debugMode — when enabled, realtime subscriptions are skipped
  */

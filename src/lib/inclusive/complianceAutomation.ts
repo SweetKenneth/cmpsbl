@@ -1,6 +1,6 @@
 /**
  * INCLUSIVE Module — Compliance Automation
- * v7.5.0 — WCAG monitoring, automated remediation, and compliance reporting
+ * v8.0.0 SYNERGY+ — WCAG monitoring, automated remediation, and compliance reporting
  */
 
 import { supabase } from '@/integrations/supabase/client';

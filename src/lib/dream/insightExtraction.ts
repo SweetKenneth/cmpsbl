@@ -1,9 +1,9 @@
 /**
  * DREAM Insight Extraction Engine
- * v7.0.0 — Knowledge Synthesis & Recommendation Generation
+ * v8.0.0 SYNERGY+ — Knowledge Synthesis & Recommendation Generation
  * 
- * Missing capability: Extract actionable insights from dream cycles
- * and synthesize cross-domain knowledge.
+ * Extracts actionable insights from dream cycles and synthesizes
+ * cross-domain knowledge.
  */
 
 import { supabase } from '@/integrations/supabase/client';

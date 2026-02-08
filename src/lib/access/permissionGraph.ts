@@ -1,7 +1,7 @@
- /**
-  * ACCESS Permission Graph
-  * v7.5.0 — Hierarchical permission resolution with inheritance
-  */
+/**
+ * ACCESS Permission Graph
+ * v8.0.0 SYNERGY+ — Hierarchical permission resolution with inheritance
+ */
  
  import { supabase } from '@/integrations/supabase/client';
  

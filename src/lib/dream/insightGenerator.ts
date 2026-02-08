@@ -1,7 +1,7 @@
- /**
-  * DREAM Insight Generator v7.5.0
-  * Pattern-based insight generation from memories
-  */
+/**
+ * DREAM Insight Generator v8.0.0 SYNERGY+
+ * Pattern-based insight generation from memories
+ */
  
  import { supabase } from '@/integrations/supabase/client';
  

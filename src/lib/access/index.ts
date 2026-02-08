@@ -1,6 +1,6 @@
 /**
  * ACCESS Module — Authentication, Authorization & API Gateway
- * v7.0.0 — Substrate Security Perimeter
+ * v8.0.0 SYNERGY+ — Substrate Security Perimeter
  * 
  * Provides:
  * - API Key management (generation, validation, revocation)

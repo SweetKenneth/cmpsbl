@@ -1,6 +1,6 @@
 /**
  * Production Rate Limiting
- * v7.0.0 — Client-side rate limiting for sensitive operations
+ * v8.0.0 SYNERGY+ — Client-side rate limiting for sensitive operations
  */
 
 export interface RateLimitConfig {

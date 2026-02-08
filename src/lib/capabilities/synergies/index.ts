@@ -120,7 +120,7 @@ export {
   executeSelfDocumentingEvolution,
   executeIntelligentDeprecationManager,
   executeAutonomousOptimizationLoop,
-  // v7.5.3 discovery executors (12 NEW)
+  // Discovery executors (27 additional pipelines)
   executeMetaLearningOrchestrator,
   executeIntentAccessibilitySynthesis,
   executeThreatIntelligenceMesh,

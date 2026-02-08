@@ -1,6 +1,6 @@
 /**
  * RIPPLE Event Bus
- * v7.0.0 — Hybrid Push/Pull Event Orchestrator
+ * v8.0.0 SYNERGY+ — Hybrid Push/Pull Event Orchestrator
  * 
  * RIPPLE is the nervous system of the substrate:
  * - PUSH mode: Automatic event fan-out to subscribers

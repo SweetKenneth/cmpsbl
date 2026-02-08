@@ -1,6 +1,6 @@
 /**
  * Defense Circuit Breaker
- * v7.0.0 — Per-module failure isolation
+ * v8.0.0 SYNERGY+ — Per-module failure isolation
  * 
  * Implements the circuit breaker pattern to prevent cascading failures:
  * - CLOSED: Normal operation

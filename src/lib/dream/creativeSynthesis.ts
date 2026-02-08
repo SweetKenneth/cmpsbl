@@ -1,7 +1,7 @@
- /**
-  * DREAM Creative Synthesis
-  * v7.5.0 — Pattern mutation and novel insight generation
-  */
+/**
+ * DREAM Creative Synthesis
+ * v8.0.0 SYNERGY+ — Pattern mutation and novel insight generation
+ */
  
  import { supabase } from '@/integrations/supabase/client';
  

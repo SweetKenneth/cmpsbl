@@ -1,7 +1,7 @@
- /**
-  * NEXUS Load Balancer
-  * v7.5.0 — Intelligent request distribution across providers
-  */
+/**
+ * NEXUS Load Balancer
+ * v8.0.0 SYNERGY+ — Intelligent request distribution across 8 AI providers
+ */
  
  // Provider load state
  export interface ProviderLoad {

@@ -1,6 +1,6 @@
 /**
  * DREAM Nightmare Mode — Simulation-Only Artifact Generator
- * v7.0.0 FNDTN — Read-Only, No Feedback Loops
+ * v8.0.0 SYNERGY+ — Read-Only, No Feedback Loops
  * 
  * Nightmare Mode generates hypothetical threat scenarios for analysis.
  * These are ARTIFACTS ONLY — they do not trigger any system actions.
@@ -164,5 +164,5 @@ export function assertSimulationOnly(artifact: NightmareArtifact): asserts artif
 /**
  * Nightmare Mode version and status
  */
-export const NIGHTMARE_MODE_VERSION = '6.3.1' as const;
+export const NIGHTMARE_MODE_VERSION = '8.0.0' as const;
 export const NIGHTMARE_MODE_STATUS = 'simulation_only' as const;

@@ -1,5 +1,5 @@
 /**
- * DECODE Module Enhancements — v7.5.0 SYNERGY Epoch
+ * DECODE Module Enhancements — v8.0.0 SYNERGY+ Epoch
  * IntentAmplifier, ContextualParser, EmotionDetector, MultimodalFusion
  */
 

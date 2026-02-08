@@ -1,7 +1,7 @@
- /**
-  * VISION Alert Management
-  * v7.5.0 — Intelligent alerting with deduplication and escalation
-  */
+/**
+ * VISION Alert Management
+ * v8.0.0 SYNERGY+ — Intelligent alerting with deduplication and escalation
+ */
  
  import { supabase } from '@/integrations/supabase/client';
  

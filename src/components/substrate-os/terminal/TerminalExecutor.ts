@@ -149,7 +149,7 @@ function formatEvolutionLogForTerminal(): string {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// PERSONALITY FORMATTERS (v7.1.0)
+// PERSONALITY FORMATTERS (v8.0.0 SYNERGY+)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 function formatPersonalityList(profiles: Array<{ id: string; name: string; description: string }>): string {
@@ -449,10 +449,10 @@ function generateFullHelp(): string {
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
-┌─ SYNERGY ENGINE v7.0.0 (120 Pipelines) ─────────────────────┐
+┌─ SYNERGY ENGINE v8.0.0 (147 Pipelines) ─────────────────────┐
 │                                                             │
 │  cortex.synergy.status    Engine overview                   │
-│  cortex.synergy.list      List all 120 pipelines            │
+│  cortex.synergy.list      List all 147 pipelines            │
 │  cortex.synergy.get <id>  Get pipeline details              │
 │  cortex.synergy.execute   Execute a pipeline                │
 │  cortex.synergy.dry_run   Preview execution (no effects)    │
@@ -868,7 +868,7 @@ ${identityLine}│  Mode: ${roleDisplay}
     } else if (base === 'decode.learn') {
       result = await decode.learn(args[0] || '', args[1]);
     }
-    // DECODE Personality subsystem (v7.1.0)
+    // DECODE Personality subsystem (v8.0.0 SYNERGY+)
     else if (base === 'decode.personality.list') {
       const { personalityEngine } = await import('@/lib/substrate/decode');
       const profiles = personalityEngine.list();
@@ -1394,7 +1394,7 @@ ${allFeatures.map(f => {
     } else if (base === 'system.module') {
       result = await system.module(args[0] || '');
     }
-    // v7.0.0: Capability Auto-Adapt System
+    // v8.0.0: Capability Auto-Adapt System
     else if (base === 'system.scan_adapt') {
       const { runScanAdapt, getManifest, listCapabilities, getCapability } = await import('@/lib/capabilities');
       
@@ -2324,7 +2324,7 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
         payload: { eligible } 
       });
     }
-    // v7.4.0: Cross-Module Synergy Engine (98 Pipelines, 76 Executors)
+    // v8.0.0: Cross-Module Synergy Engine (147 Pipelines, 125 Executors)
     else if (base === 'cortex.synergy.status') {
       try {
         const { listSynergies } = await import('@/lib/capabilities/synergies');
@@ -2333,11 +2333,11 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
         return {
           success: true,
           output: `
-┌─ SYNERGY ENGINE v7.4.0 ──────────────────────────────────────
+┌─ SYNERGY ENGINE v8.0.0 ──────────────────────────────────────
 │
-│  Pipelines:  98 total
-│  Executors:  76 custom
-│  Categories: 7
+│  Pipelines:  147 total
+│  Executors:  125 custom
+│  Categories: 8
 │
 ├─ COMMANDS ──────────────────────────────────────────────────
 │  cortex.synergy.list      List all pipelines
