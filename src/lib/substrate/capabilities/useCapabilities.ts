@@ -1,6 +1,6 @@
 /**
  * React Hook for Substrate Capabilities
- * v6.9.0 — Access cross-module synergy capabilities
+ * v8.0.0 SYNERGY+ Epoch — Access 269 cross-module synergy capabilities
  */
 
 import { useState, useCallback, useMemo } from 'react';

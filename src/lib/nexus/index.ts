@@ -1,12 +1,12 @@
 /**
- * promptfluid® Nexus Module v7.5.3
- * Multi-Provider AI Routing & Health-Weighted Selection
+ * promptfluid® Nexus Module v8.0.0
+ * SYNERGY+ Epoch — Multi-Provider AI Routing & Health-Weighted Selection
  * 
  * The nervous system for all AI provider interactions:
- * - Health-weighted provider selection
- * - Multi-provider fallback chains
- * - Real-time performance tracking
- * - Budget governance integration
+ * - Health-weighted provider selection across 8 providers
+ * - Multi-provider fallback chains with circuit breakers
+ * - Real-time performance tracking and cost optimization
+ * - Budget governance integration with daily/monthly limits
  */
 
 // Core routing
@@ -107,8 +107,8 @@ export {
 export * from './circuitBreaker';
 
 // Version info
-export const NEXUS_VERSION = '7.5.3';
-export const NEXUS_CODENAME = 'Router';
+export const NEXUS_VERSION = '8.0.0';
+export const NEXUS_CODENAME = 'SYNERGY+ Router';
 
 // Provider registry
 export const SUPPORTED_PROVIDERS = [

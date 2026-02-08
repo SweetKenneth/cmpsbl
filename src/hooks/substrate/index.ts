@@ -1,6 +1,8 @@
 /**
  * Substrate Module Hooks - Barrel Export
- * v7.0.0 — Dedicated React hooks for all 14 substrate modules + SEBA
+ * v8.0.0 SYNERGY+ Epoch — Dedicated React hooks for all 14 substrate modules + SEBA
+ * 
+ * Unified caching, loading/error states, and automatic cache invalidation
  */
 
 // Kernel Layer

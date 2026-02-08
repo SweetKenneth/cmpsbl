@@ -1,5 +1,6 @@
 /**
  * ACCESS Identity & Billing Tab — API Keys, Usage, Quotas
+ * v8.0.0 SYNERGY+ Epoch — Identity and entitlement management
  */
 
 import { Key, Plus, Copy, Trash2, BarChart3, CreditCard, Users, Activity, Eye, EyeOff } from 'lucide-react';

@@ -1,9 +1,10 @@
 /**
  * Support Bot React Hook
- * v1.0.0 — Governed Evolving Support System
+ * v8.0.0 SYNERGY+ Epoch — Governed Evolving Support System
  * 
  * Provides React integration for the support bot engine.
- * Respects debugMode — when enabled, auto-refresh is disabled
+ * Respects debugMode — when enabled, auto-refresh is disabled.
+ * Integrated with the 14-module cognitive architecture.
  */
 
 import { useState, useCallback, useEffect } from 'react';

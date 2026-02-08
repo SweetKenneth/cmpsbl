@@ -1,6 +1,8 @@
 /**
  * PromptFluid Nexus Brain Core
- * Central AI orchestration and intelligence processing
+ * v8.0.0 SYNERGY+ Epoch — Central AI orchestration and intelligence processing
+ * 
+ * Integrates with 62 Engines and 20 Meta-Engines for cognitive operations
  */
 
 import { routeToBestModel } from './router';

@@ -1,6 +1,7 @@
 /**
  * Cognitives Panel — Operator Console for Cognitive Registry
- * Displays minted cognitives with status, metrics, and controls
+ * v8.0.0 SYNERGY+ Epoch — Displays minted cognitives with status, metrics, and controls
+ * Integrated with the 5-layer, 14-module architecture
  */
 
 import { useState } from 'react';

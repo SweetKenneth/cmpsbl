@@ -1,6 +1,8 @@
 /**
- * PromptFluid Nexus - Health-Weighted Provider Routing v7.0.0
- * Intelligent provider selection based on health scores and performance
+ * PromptFluid Nexus - Health-Weighted Provider Routing
+ * v8.0.0 SYNERGY+ Epoch — Intelligent provider selection based on health scores
+ * 
+ * Supports 8 providers with automatic failover and cost optimization
  */
 
 import { supabase } from '@/integrations/supabase/client';

@@ -1,17 +1,18 @@
 /**
  * Support Bot Engine
- * v1.1.0 — Governed Evolving Support System
+ * v8.0.0 SYNERGY+ Epoch — Governed Evolving Support System
  * 
  * A proof-of-concept for evolving software: learns from verified resolutions,
  * escalates uncertainty, and produces audit-safe responses.
  * 
- * Integrations:
+ * Integrations with 14-module architecture:
  * - BRAIN: Read-only recall + reinforcement for verified resolutions
  * - DECODE: Intent classification + sentiment detection
  * - VISION: Pain pattern detection across support history
  * - SYSTEM: Ticket state + escalation hooks
  * - GOVERNANCE: Safety checks on responses
  * - KNOWLEDGE BASE: Pre-trained FAQ data for immediate utility
+ * - NEXUS: Multi-provider AI routing for response generation
  */
 
 import { memoryCore, MemoryEntry } from '../memory-core';

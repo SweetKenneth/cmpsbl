@@ -1,9 +1,10 @@
 /**
  * Meta-Engine Executors
- * v8.0.0 — Compound Engine Orchestration
+ * v8.1.0 SYNERGY+ Epoch — Compound Engine Orchestration
  * 
- * Executors manage the orchestration of multiple engines
- * into unified execution pipelines with compound synergy.
+ * 20 Meta-Engines orchestrating 62 Engines across 269 Capabilities.
+ * Executors manage the orchestration of multiple engines into unified
+ * execution pipelines with compound synergy multipliers (4.6x - 8.2x).
  */
 
 import type {

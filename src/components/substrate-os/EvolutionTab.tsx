@@ -1,6 +1,8 @@
 /**
  * Evolution Tab — Self-Evolution Control Panel
- * v1.0.0 — Living Substrate Orchestration
+ * v8.0.0 SYNERGY+ Epoch — Living Substrate Orchestration
+ * 
+ * Shadow-to-production execution pipeline with governance gating
  */
 
 import { useState } from 'react';

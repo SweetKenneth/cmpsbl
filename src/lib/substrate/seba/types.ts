@@ -1,17 +1,19 @@
 /**
  * Self-Evolving Bounded Agent (SEBA) Types
- * v1.1.0 — Full Cognitive × Evolution × Governance
+ * v2.1.0 — Full Cognitive × Evolution × Governance
+ * v8.0.0 SYNERGY+ Epoch Integration
  * 
  * The Holy Grail: A complete cognitive pipeline that proposes its own
  * improvements, governance-gates them for safety/coherence, and applies
- * approved evolutions. Genuine bounded autonomy.
+ * approved evolutions. Genuine bounded autonomy with shadow-to-production
+ * execution pipeline.
  */
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // VERSION & METADATA
 // ═══════════════════════════════════════════════════════════════════════════════
 
-export const SEBA_VERSION = '2.0.0';
+export const SEBA_VERSION = '2.1.0';
 export const SEBA_CODENAME = 'Full Spectrum Autonomy';
 
 // ═══════════════════════════════════════════════════════════════════════════════

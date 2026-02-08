@@ -1,9 +1,11 @@
 /**
  * Engine Executors
- * v7.9.0 — 32 Engines Compound Capability Execution
+ * v8.0.0 SYNERGY+ Epoch — 62 Engines Compound Capability Execution
  * 
  * Each executor orchestrates multiple capabilities into a unified result.
  * Executors manage context sharing, error handling, and synergy calculations.
+ * 
+ * Architecture: 269 Capabilities → 62 Engines → 20 Meta-Engines
  */
 import type {
   EngineId,

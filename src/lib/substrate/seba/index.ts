@@ -1,10 +1,13 @@
 /**
  * SEBA Module Exports
- * v2.0.0 — Self-Evolving Bounded Agent (24/7 Autonomous Evolution)
+ * v2.1.0 — Self-Evolving Bounded Agent (Full Spectrum Autonomy)
+ * v8.0.0 SYNERGY+ Epoch Integration
  * 
  * SEBA runs continuously in the background, scanning for improvements,
  * generating proposals, and (when approved) applying changes with full
  * rollback capability and cryptographic audit trails.
+ * 
+ * Architecture: 9 Specialized Analysis Engines → Shadow-to-Production Pipeline
  */
 
 // Main Agent

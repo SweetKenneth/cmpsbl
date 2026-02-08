@@ -1,5 +1,6 @@
 /**
  * NexusTab — AI Routing Dashboard with Image Generation
+ * v8.0.0 SYNERGY+ Epoch — Multi-provider routing across 8 providers
  * Shows routing status, costs, health, and image generation UI
  */
 
