@@ -1,12 +1,12 @@
 /**
  * Module-Specific CLM (Constant Learning Mode)
- * v6.8.0 — Specialized self-learning for each substrate module
+ * v8.0.0 SYNERGY+ Epoch — Specialized self-learning for each of the 14 substrate modules
  * 
  * Each module learns about:
- * - Its own performance metrics
- * - How to improve its processing
- * - Patterns in its failures and successes
- * - Cross-module optimization opportunities
+ * - Its own performance metrics and 269 capability integrations
+ * - How to improve its processing via 62 compound engines
+ * - Patterns in its failures and successes across 147 synergy pipelines
+ * - Cross-module optimization opportunities via 20 meta-engines
  */
 
 import { supabase } from '@/integrations/supabase/client';

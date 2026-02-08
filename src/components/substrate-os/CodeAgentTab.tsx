@@ -1,7 +1,8 @@
 /**
  * Encoded Tab — Self-Evolution Coding Interface
- * v4.0.0 — Lov-baseline with guardrails, anchor checks, and change classification
+ * v8.0.0 SYNERGY+ Epoch — Lov-baseline with guardrails, anchor checks, and change classification
  * Provides chat interface to the Substrate Coder + Sandbox validation preview
+ * Part of the 14-module cognitive architecture
  */
 
 import { useState, useRef, useEffect, useCallback } from 'react';

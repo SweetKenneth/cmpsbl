@@ -1,6 +1,7 @@
 /**
  * Event Stream — Live system events feed
- * Real-time log viewer with filtering and LIVE indicator
+ * v8.0.0 SYNERGY+ Epoch — Real-time log viewer with filtering and LIVE indicator
+ * Streams events from all 14 modules across the substrate
  */
 
 import { useState, useEffect } from 'react';

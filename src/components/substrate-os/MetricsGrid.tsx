@@ -1,7 +1,7 @@
 /**
- * Metrics Grid v7.0.0 — Premium live system metrics with animations
+ * Metrics Grid v8.0.0 SYNERGY+ Epoch — Premium live system metrics with animations
  * Enhanced visual indicators, mini charts, and glassmorphic design
- * SEBA Era: Includes CLM and autonomous learning metrics
+ * SEBA Era: Includes CLM, 62 engines, and autonomous learning metrics
  */
 
 import { Activity, Brain, MessageSquare, Shield, Zap, Moon, TrendingUp, TrendingDown, Database, Cpu, Minus, Sparkles, GitBranch } from 'lucide-react';

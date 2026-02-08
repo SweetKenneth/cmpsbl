@@ -1,6 +1,7 @@
 /**
  * CORTEX Module Tab — Agency-class Orchestrator Dashboard
- * v6.0.0 — Policy Intent Layer + Evolution Sequencing
+ * v8.0.0 SYNERGY+ Epoch — Policy Intent Layer + Evolution Sequencing
+ * Orchestrates all 14 modules across 5 architectural layers
  */
 
 import { useState } from 'react';

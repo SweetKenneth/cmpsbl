@@ -1,15 +1,19 @@
 /**
  * Meta-Engine Registry
- * v8.0.0 SYNERGY+ Epoch — 20 Meta-Engines Orchestrating 62 Engines → 269 Capabilities
+ * v8.1.0 SYNERGY+ Epoch — 20 Meta-Engines Orchestrating 62 Engines → 269 Capabilities
  * 
  * Meta-Engines provide the highest level of abstraction,
  * combining multiple engines into unified execution pipelines.
+ * 
+ * Categories: cognitive, protection, autonomous, governance, intelligence,
+ * experience, performance, communication, integration, knowledge, self_management,
+ * creativity, perception, resource, workflow
  */
 
 import type { MetaEngineId, MetaEngineDefinition, MetaEngineCategory } from './types';
 
 // ============================================================================
-// META-ENGINE DEFINITIONS — 12 TOTAL
+// META-ENGINE DEFINITIONS — 20 TOTAL
 // ============================================================================
 
 export const META_ENGINE_REGISTRY: Record<MetaEngineId, MetaEngineDefinition> = {

@@ -1,9 +1,11 @@
 /**
  * promptfluid® DECODE Personality Engine
- * v8.0.0 — Dynamic Personality Profiles (Server-Synced)
+ * v8.0.0 SYNERGY+ Epoch — Dynamic Personality Profiles (Server-Synced)
  * 
  * Personality profiles now sync with the backend edge function.
  * Changes made via terminal commands persist to the database.
+ * 
+ * Integrates with 14-module architecture for personality-aware responses.
  * 
  * v8.0.0 Changes:
  *   - New direct/professional baseline (no more poetry/metaphors)

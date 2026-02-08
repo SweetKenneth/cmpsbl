@@ -1,6 +1,6 @@
 /**
  * useSEBA Hook (Deprecated)
- * v1.1.0 — Redirects to consolidated hook
+ * v2.1.0 — Redirects to consolidated hook
  * 
  * @deprecated Use `import { useSEBA } from '@/hooks/useSEBA'` instead
  */

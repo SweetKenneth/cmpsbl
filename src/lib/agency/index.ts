@@ -1,5 +1,6 @@
 /**
  * Agency Production — Unified exports for all production-ready agency features
+ * v8.0.0 SYNERGY+ Epoch — Cognitive Agent Infrastructure
  */
 
 // Core types

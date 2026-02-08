@@ -1,8 +1,8 @@
 /**
  * INCLUSIVE Module Tab — Human Compatibility Pipeline
- * v7.0.0 — WCAG Scanning, Repair, Validation, Profiling, Reporting
+ * v8.0.0 SYNERGY+ Epoch — WCAG Scanning, Repair, Validation, Profiling, Reporting
  * 
- * Full glue layer integration:
+ * Full glue layer integration across 14 modules:
  * - SYSTEM: self_scan → system.audit
  * - VISION: score → vision.health metrics  
  * - DEFENSE: severity → defense risk pipeline

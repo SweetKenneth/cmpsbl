@@ -1,6 +1,8 @@
 /**
  * Module Parity Exports
- * v7.0.0 — Cross-module standards enforcement
+ * v8.0.0 SYNERGY+ Epoch — Cross-module standards enforcement
+ * 
+ * Ensures all 14 modules adhere to the Module Parity Standard
  */
 
 export {

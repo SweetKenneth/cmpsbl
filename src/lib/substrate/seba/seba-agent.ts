@@ -1,13 +1,14 @@
 /**
  * Self-Evolving Bounded Agent (SEBA)
- * v2.0.0 — Full Spectrum Autonomous Evolution
+ * v2.1.0 — Full Spectrum Autonomous Evolution
+ * v8.0.0 SYNERGY+ Epoch Integration
  * 
  * Complete cognitive pipeline with 9 analysis engines:
  * 1. Core 4: Memory, Learning, Imagination, Reasoning
  * 2. Extended 5: Security, Telemetry, Governance, Resources, Architecture
  * 
  * Proposes improvements across all 10 categories with full governance
- * gating and rollback capability.
+ * gating and rollback capability. Uses shadow-to-production execution pipeline.
  */
 
 import { supabase } from '@/integrations/supabase/client';

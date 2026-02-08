@@ -1,6 +1,8 @@
 /**
  * PromptFluid Nexus Router
- * Intelligent model selection and request routing
+ * v8.0.0 SYNERGY+ Epoch — Intelligent model selection and request routing
+ * 
+ * Part of the multi-provider AI infrastructure supporting 8 providers
  */
 
 import type { AIRequest } from './core';

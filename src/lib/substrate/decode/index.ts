@@ -1,6 +1,8 @@
 /**
  * promptfluid® DECODE Module
- * v7.1.0 — Interpreter Primitive with Personality Profiles
+ * v8.0.0 SYNERGY+ Epoch — Interpreter Primitive with Personality Profiles
+ * 
+ * Part of the 5-layer, 14-module Cognitive Architecture
  */
 
 export {

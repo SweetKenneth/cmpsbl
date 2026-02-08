@@ -1,5 +1,6 @@
 /**
  * CORE Kernel Tab — Job Scheduler, System State, Lifecycle
+ * v8.0.0 SYNERGY+ Epoch — Part of the 5-layer, 14-module architecture
  */
 
 import { useState } from 'react';
