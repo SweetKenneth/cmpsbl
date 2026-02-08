@@ -1,14 +1,15 @@
 /**
  * INCLUSIVE Repair Engine
- * @origin(clarity) — Core repair logic from pf-clarity-fix
- * @origin(cmptbl) — Fix patterns from pf-access-fix
+ * v8.0.0 SYNERGY+ — 14th Substrate Module
+ * @origin(cmptbl) — Fix patterns from archived utilities
+ * 
+ * Developed by PromptFluid® as part of the CMPSBL cognitive orchestration substrate.
  */
 
 import type { InclusiveIssue, InclusiveRepair } from './types';
 
 /**
  * Auto-repair accessibility issues in HTML
- * @origin(clarity) — Migrated from pf-clarity-fix
  */
 export function repairHTML(html: string, issues: InclusiveIssue[]): { html: string; repairs: InclusiveRepair[] } {
   let repairedHtml = html;
@@ -44,7 +45,6 @@ interface RepairResult {
 
 /**
  * Apply single repair based on issue type
- * @origin(clarity) — Switch logic from pf-clarity-fix
  */
 function applyRepair(html: string, issue: InclusiveIssue): RepairResult {
   switch (issue.type) {
@@ -67,7 +67,6 @@ function applyRepair(html: string, issue: InclusiveIssue): RepairResult {
 
 /**
  * Add lang attribute to html element
- * @origin(clarity) — From pf-clarity-fix case "3.1.1"
  */
 function repairMissingLang(html: string): RepairResult {
   if (html.match(/<html[^>]*lang=/i)) {
@@ -116,7 +115,6 @@ function repairMissingH1(html: string): RepairResult {
 
 /**
  * Convert extra H1s to H2s
- * @origin(clarity) — From pf-clarity-fix case "2.4.6"
  */
 function repairMultipleH1(html: string): RepairResult {
   let h1Count = 0;

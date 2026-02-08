@@ -2,7 +2,8 @@
  * INCLUSIVE Module — Human Compatibility Pipeline
  * v8.0.0 SYNERGY+ — 14th Substrate Module
  *
- * @origin(cmptbl) + @origin(clarity) — Migrated from archived CMPTBL/Clarity utilities
+ * @origin(cmptbl) — Migrated from archived CMPTBL utilities
+ * Developed by PromptFluid® as part of the CMPSBL cognitive orchestration substrate.
  * 
  * Provides accessibility scanning, repair, validation, profiling, and reporting
  * for WCAG 2.2 compliance. Integrates with:

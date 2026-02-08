@@ -145,7 +145,7 @@ export default function TheFirsts() {
               We are <strong>PromptFluid</strong>. Not a company that built tools—<strong>a current that built its own intelligence</strong>. In 2025, we treat AI as water: adaptive, reflective, uncontainable. Conversation becomes creation. Orchestration becomes the mind.
             </p>
             <p className="text-lg leading-relaxed mb-6">
-              Start here, then follow the river into our products: <Link to="/cluster/clarity-ai-accessibility-and-autofix" className="text-primary hover:underline">PTCHBL: accessible web repair</Link>, <Link to="/cluster/verify-worlds-first-ai-plugin-certification" className="text-primary hover:underline">SPLCBL: plugin certification</Link>, <Link to="/cluster/studio-autonomous-site-generator" className="text-primary hover:underline">Studio: autonomous site generator</Link>, and <Link to="/" className="text-primary hover:underline">home</Link>.
+              Start here, then follow the river into our products: <Link to="/cluster/inclusive-module-accessibility" className="text-primary hover:underline">INCLUSIVE: human compatibility</Link>, <Link to="/cluster/verify-worlds-first-ai-plugin-certification" className="text-primary hover:underline">SPLCBL: plugin certification</Link>, <Link to="/cluster/studio-autonomous-site-generator" className="text-primary hover:underline">Studio: autonomous site generator</Link>, and <Link to="/" className="text-primary hover:underline">home</Link>.
             </p>
           </section>
 
@@ -339,8 +339,8 @@ export default function TheFirsts() {
                       <td className="border border-border p-3">Bot detection and plugin validation</td>
                     </tr>
                     <tr>
-                      <td className="border border-border p-3"><Link to="/cluster/clarity-ai-accessibility-and-autofix" className="text-primary hover:underline">PTCHBL (Patchable)</Link></td>
-                      <td className="border border-border p-3">Accessibility / Compliance</td>
+                      <td className="border border-border p-3"><Link to="/cluster/inclusive-module-accessibility" className="text-primary hover:underline">INCLUSIVE</Link></td>
+                      <td className="border border-border p-3">Accessibility / Human Compatibility</td>
                       <td className="border border-border p-3">$200K–$400K</td>
                       <td className="border border-border p-3">WCAG 2.2 scanning operational</td>
                     </tr>
@@ -379,11 +379,11 @@ export default function TheFirsts() {
               </div>
               <p className="mt-6"><strong>Seeking:</strong> <em>Seed investment (pre-revenue startup)</em></p>
               <p className="text-sm text-muted-foreground mt-2">
-                <strong>Key value drivers:</strong> RCKBL (Rockable) WordPress plugin, PTCHBL (Patchable) free accessibility scanner, 
+                <strong>Key value drivers:</strong> RCKBL (Rockable) WordPress plugin, INCLUSIVE free accessibility scanner, 
                 Dream Eater experimental AI system, and first-mover advantage in AI security space.
               </p>
               <p className="text-sm text-muted-foreground mt-4">
-                <strong>Products:</strong> RCKBL (pending WordPress.org), PTCHBL (live, 100% free), 
+                <strong>Products:</strong> RCKBL (pending WordPress.org), INCLUSIVE (live, 100% free), 
                 and Dream Eater (experimental R&D) - targeting WordPress security and accessibility markets.
               </p>
               <Button variant="link" onClick={() => scrollToSection('toc')} className="text-primary">
@@ -401,9 +401,9 @@ export default function TheFirsts() {
             <section className="mt-16 p-8 bg-muted/30 rounded-xl border border-border">
               <h3 className="text-2xl font-bold mb-6">Continue the Flow →</h3>
               <div className="grid md:grid-cols-3 gap-4">
-                <Link to="/cluster/clarity-ai-accessibility-and-autofix" className="p-4 bg-background rounded-lg border border-border hover:border-primary transition-colors">
-                  <h4 className="font-semibold mb-2">PTCHBL (Patchable)</h4>
-                  <p className="text-sm text-muted-foreground">AI Accessibility & Auto-Fix</p>
+                <Link to="/cluster/inclusive-module-accessibility" className="p-4 bg-background rounded-lg border border-border hover:border-primary transition-colors">
+                  <h4 className="font-semibold mb-2">INCLUSIVE</h4>
+                  <p className="text-sm text-muted-foreground">Human Compatibility Pipeline</p>
                 </Link>
                 <Link to="/cluster/verify-worlds-first-ai-plugin-certification" className="p-4 bg-background rounded-lg border border-border hover:border-primary transition-colors">
                   <h4 className="font-semibold mb-2">SPLCBL (Spliceable)</h4>

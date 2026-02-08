@@ -102,8 +102,8 @@ export default function Studio() {
                   <span className="font-semibold">The Firsts — Full Chronicle</span>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
-                <Link to="/cluster/clarity-ai-accessibility-and-autofix" className="flex items-center justify-between p-4 bg-background rounded-lg border border-border hover:border-primary transition-colors group">
-                  <span className="font-semibold">Clarity — AI Accessibility</span>
+                <Link to="/cluster/inclusive-module-accessibility" className="flex items-center justify-between p-4 bg-background rounded-lg border border-border hover:border-primary transition-colors group">
+                  <span className="font-semibold">INCLUSIVE — Human Compatibility</span>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <Link to="/cluster/verify-worlds-first-ai-plugin-certification" className="flex items-center justify-between p-4 bg-background rounded-lg border border-border hover:border-primary transition-colors group">
