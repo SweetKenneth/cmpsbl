@@ -1,6 +1,6 @@
 /**
  * Terminal Command Aliases
- * Provides shorthand aliases for common commands
+ * v8.0.0 — SYNERGY+ Epoch Shorthand aliases for 310+ commands
  */
 
 export interface AliasDefinition {

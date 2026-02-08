@@ -1,6 +1,6 @@
 /**
  * Synergy System Types
- * v7.3.0 — Cross-Module Pipeline Definitions
+ * v8.0.0 — SYNERGY+ Epoch Cross-Module Pipeline Definitions (147 pipelines)
  */
 
 export type SynergyCategory = 

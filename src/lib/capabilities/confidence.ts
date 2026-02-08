@@ -1,6 +1,6 @@
 /**
  * Capability Confidence Tracker
- * v7.0.0 — Feedback + Scoring System
+ * v8.0.0 — SYNERGY+ Epoch Feedback + Scoring System (269 capabilities)
  */
 
 interface ConfidenceRecord {

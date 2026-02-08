@@ -1,9 +1,9 @@
 /**
  * Terminal Command Executor
  * Handles parsing and execution of all substrate commands
- * v6.0.0 - Full-system audit completed 2026-01-27
+ * v8.0.0 — SYNERGY+ Epoch Full-system audit completed 2026-02-08
  * 
- * 14 modules (13 core + inclusive) | 260+ commands | All handlers verified
+ * 14 modules | 310+ commands | 147 synergy pipelines | All handlers verified
  */
 
 import { substrate, brain, decode, defense, nexus, vision, dream, system, modernizer, core, ripple, access, integration, cortex, inclusive } from '@/lib/substrate';
@@ -335,10 +335,10 @@ function generateFullHelp(): string {
   
   let output = `
 ┌─────────────────────────────────────────────────────────────┐
-│         SUBSTRATE OS v7.0.0 — COMMAND REFERENCE             │
+│         SUBSTRATE OS v8.0.0 — COMMAND REFERENCE             │
 ├─────────────────────────────────────────────────────────────┤
 │  Total commands: ${totalCommands.toString().padEnd(5)}    Modules: 15 + Synergies          │
-│  Architecture: 14-module + CLM + 120 Synergy Pipelines      │
+│  Architecture: 14-module + CLM + 147 Synergy Pipelines      │
 │                                                             │
 │  Quick navigation:                                          │
 │    help <module>   Show module commands                     │

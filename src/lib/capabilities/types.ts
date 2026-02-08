@@ -1,6 +1,6 @@
 /**
  * Capability System Types
- * v7.0.0 — Auto-Adapt Edge Function Ingestion
+ * v8.0.0 — SYNERGY+ Epoch Auto-Adapt Edge Function Ingestion (269 capabilities)
  */
 
 export type CapabilityRisk = 'low' | 'medium' | 'high';

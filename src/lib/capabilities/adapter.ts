@@ -1,6 +1,6 @@
 /**
  * Capability Adapter
- * v7.0.0 — Universal Invocation Wrapper
+ * v8.0.0 — SYNERGY+ Epoch Universal Invocation Wrapper
  */
 
 import { supabase } from '@/integrations/supabase/client';

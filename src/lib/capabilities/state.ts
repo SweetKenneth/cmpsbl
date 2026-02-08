@@ -1,8 +1,8 @@
 /**
  * Capability State Management
- * v7.0.0 — Enable/Disable State for Governed Capabilities
+ * v8.0.0 — SYNERGY+ Epoch Enable/Disable State for Governed Capabilities
  * 
- * Controls runtime availability of capabilities without code changes.
+ * Controls runtime availability of 269 capabilities without code changes.
  * Disabled capabilities remain registered but are inert (cannot be invoked).
  */
 
@@ -98,7 +98,7 @@ const useCapabilityStateStore = create<CapabilityStateStore>()(
       },
     }),
     {
-      name: 'capability-state-v7',
+      name: 'capability-state-v8',
       storage: {
         getItem: (name) => {
           const str = localStorage.getItem(name);
