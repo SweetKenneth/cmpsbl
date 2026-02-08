@@ -1,8 +1,8 @@
 # promptfluid® Substrate — Documentation Index
 
-**v4.0.0 — Cognitive Orchestration Substrate for AI Systems**
+**v8.0.0 — Cognitive Orchestration Substrate for AI Systems**
 
-*Last Updated: 2026-01-23*
+*Last Updated: 2026-02-08*
 
 ---
 
@@ -39,11 +39,11 @@ This directory contains all documentation required to understand, deploy, operat
 
 | Field | Value |
 |-------|-------|
-| Document Set | PF-DOCS-4.1.1 |
-| Version | v4.1.1 |
-| Last Updated | 2026-01-23 |
+| Document Set | PF-DOCS-8.0.0 |
+| Version | v8.0.0 |
+| Last Updated | 2026-02-08 |
 | Maintainer | Kenneth E Sweet Jr |
-| Contact | promptfluid@gmail.com |
+| Contact | Dev@CMPSBL.com |
 
 ---
 
@@ -51,8 +51,9 @@ This directory contains all documentation required to understand, deploy, operat
 
 | Substrate Version | Docs Version | Status |
 |-------------------|--------------|--------|
-| v4.0.0 (Kernel-Mediated OS) | v4.0.0 | **Current** |
-| v3.11.x (Hardened Edition) | v2026.01 | Archived |
+| v8.0.0 (SYNERGY+ Epoch) | v8.0.0 | **Current** |
+| v7.x.x (SYNERGY Era) | v7.0.0 | Archived |
+| v6.x.x (Human Compatibility) | v6.0.0 | Archived |
 
 ---
 
@@ -61,7 +62,7 @@ This directory contains all documentation required to understand, deploy, operat
 | Channel | Details |
 |---------|---------|
 | **Founder** | Kenneth E Sweet Jr |
-| **Email** | promptfluid@gmail.com |
+| **Email** | Dev@CMPSBL.com |
 | **Phone** | (760) FLUID-AI |
 | **Web** | https://promptfluid.com |
 

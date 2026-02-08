@@ -1,6 +1,6 @@
 /**
  * Meta-Engine Executors
- * v7.8.0 — Compound Engine Orchestration
+ * v8.0.0 — Compound Engine Orchestration
  * 
  * Executors manage the orchestration of multiple engines
  * into unified execution pipelines with compound synergy.

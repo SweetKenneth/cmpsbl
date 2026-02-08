@@ -1,6 +1,6 @@
 /**
  * Atlas Control Plane Tab
- * v7.0.0 — Single-source-of-truth substrate interface with CLM + SEBA integration
+ * v8.0.0 — Single-source-of-truth substrate interface with CLM + SEBA integration
  */
 
 import { useState, useEffect } from 'react';
@@ -149,7 +149,7 @@ export function AtlasTab() {
                 </Badge>
               )}
             </h2>
-            <p className="text-xs text-muted-foreground font-mono">v7.0.0 • autonomous operation control</p>
+            <p className="text-xs text-muted-foreground font-mono">v8.0.0 • autonomous operation control</p>
           </div>
         </div>
         <Button variant="outline" size="sm" onClick={loadData} disabled={loading}>

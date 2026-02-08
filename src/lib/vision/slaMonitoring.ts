@@ -1,6 +1,6 @@
 /**
  * VISION SLA Monitoring Engine
- * v7.0.0 — Service Level Agreement Tracking & Alerting
+ * v8.0.0 — Service Level Agreement Tracking & Alerting
  * 
  * Missing capability: SLA monitoring with availability tracking,
  * latency budgets, and error rate thresholds.

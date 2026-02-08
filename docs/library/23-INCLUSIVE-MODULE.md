@@ -1,6 +1,6 @@
 # INCLUSIVE Module — Human Compatibility Pipeline
 
-**Version 6.3.0 | 14th Substrate Module**
+**Version 8.0.0 | 14th Substrate Module**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Module ID** | INCLUSIVE |
 | **Layer** | Human Compatibility |
 | **Boot Order** | 14 (after System, before Defense) |
-| **Version** | v6.3.0 |
+| **Version** | v8.0.0 |
 | **Origin** | @origin(cmptbl) + @origin(clarity) |
 
 ---
@@ -188,5 +188,5 @@ inclusive.coverage
 
 ---
 
-*CMPSBL OS Substrate v6.0.0 — Human Compatibility Era*
+*CMPSBL OS Substrate v8.0.0 — ENGINE+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

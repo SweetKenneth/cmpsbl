@@ -1,6 +1,6 @@
 # promptfluid® Substrate — Overview
 
-**v4.2.0 — Cognitive Orchestration Substrate for AI Systems**
+**v8.0.0 — Cognitive Orchestration Substrate for AI Systems**
 
 ---
 
@@ -10,7 +10,7 @@ The promptfluid® substrate is a **cognitive orchestration layer** for AI system
 
 ---
 
-## The 12-Module Architecture (v4.2.0)
+## The 14-Module Architecture (v8.0.0)
 
 | Layer | Module | Purpose |
 |-------|--------|---------|
@@ -19,13 +19,15 @@ The promptfluid® substrate is a **cognitive orchestration layer** for AI system
 | **Kernel** | ACCESS | API keys, rate limiting, billing |
 | **Cognitive** | BRAIN | Memory, learning, knowledge |
 | **Cognitive** | DECODE | Human interface, intent parsing |
-| **Cognitive** | DREAM | Autonomous evolution, synthesis |
+| **Cognitive** | NEXUS | Multi-provider AI routing |
+| **Operational** | DREAM | Autonomous evolution, synthesis |
 | **Operational** | DEFENSE | Security, bot detection |
-| **Operational** | NEXUS | Multi-provider AI routing |
 | **Operational** | VISION | Observability, health monitoring |
 | **Operational** | INTEGRATION | Enterprise adapters, LLM governance |
 | **Administrative** | SYSTEM | Backup, restore, configuration |
 | **Administrative** | MODERNIZER | Self-improvement proposals |
+| **Administrative** | INCLUSIVE | Accessibility, human compatibility |
+| **Orchestrator** | CORTEX | Cross-module orchestration |
 
 ---
 
@@ -57,4 +59,4 @@ const health = await substrate.vision.health();
 
 ---
 
-**promptfluid® — The Cognitive Substrate OS v4.2.0**
+**promptfluid® — The Cognitive Substrate OS v8.0.0**

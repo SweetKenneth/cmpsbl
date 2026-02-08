@@ -1,6 +1,6 @@
 /**
  * Atlas Intelligence Adapter
- * v7.0.0 — CLM and learning intelligence summaries
+ * v8.0.0 — CLM and learning intelligence summaries
  */
 
 import { getCLMStatus } from '@/lib/substrate/clm';

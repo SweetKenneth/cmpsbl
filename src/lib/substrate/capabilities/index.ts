@@ -1,6 +1,6 @@
 /**
  * Cross-Module Capability Registry
- * v7.5.3 — Synergy-Powered Substrate Capabilities (76 Total)
+ * v8.0.0 — Synergy-Powered Substrate Capabilities (76 Total)
  * 
  * Implements 76 emergent capabilities from module intersections:
  * - 10 Core Synergies (original)

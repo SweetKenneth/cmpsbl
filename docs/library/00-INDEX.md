@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Documentation Library
 
-**PromptFluid® CMPSBL OS — v7.7.0 Library (ENGINE+ Epoch)**
+**PromptFluid® CMPSBL OS — v8.0.0 Library (ENGINE+ Epoch)**
 
 ---
 
@@ -9,7 +9,7 @@
 | Field | Value |
 |-------|-------|
 | **System Name** | CMPSBL OS Substrate |
-| **Version** | v7.7.0 (ENGINE+) |
+| **Version** | v8.0.0 (ENGINE+) |
 | **Classification** | Cognitive Orchestration Substrate |
 | **Status** | Production (Live System) |
 | **Publication Date** | February 2026 |
@@ -21,15 +21,15 @@
 
 ---
 
-## FNDTN v7 — Bounded Autonomy
+## FNDTN v8 — Bounded Autonomy
 
-This library is part of the **FNDTN v7** standards package, which presents:
+This library is part of the **FNDTN v8** standards package, which presents:
 
-1. **CMPSBL v7 (SEBA)** as a reference substrate standard with bounded autonomy.
+1. **CMPSBL v8 (SEBA)** as a reference substrate standard with bounded autonomy.
 2. **AI Governance Reference Namespace (AIGVRN)** as a governance standard for cognitive substrates.
 3. **LLMS.txt** as a machine-readable context standard we follow and recommend (designed by llmstxt.org).
 
-**→ [Read the FNDTN v6 Foundations Paper](../FNDTN-v6/fndtn-v6-foundations-paper.md)** ([HTML](../FNDTN-v6/fndtn-v6-foundations-paper.html))
+**→ [Read the FNDTN v8 Foundations Paper](../FNDTN-v8/fndtn-v8-foundations-paper.md)** ([HTML](../FNDTN-v8/fndtn-v8-foundations-paper.html))
 
 ---
 
@@ -43,7 +43,7 @@ This library is part of the **FNDTN v7** standards package, which presents:
 | v7.0.0 (SEBA) | 2026-02-01 | Bounded Autonomy Era |
 | v7.5.3 (SYNERGY+) | 2026-02-05 | SYNERGY+ Epoch |
 | v7.6.0 (SYNERGY+) | 2026-02-06 | 76 Capabilities, INCLUSIVE Auto-Repair |
-| **v7.7.0 (ENGINE+)** | 2026-02-06 | **20 Cognitive Engines, Compound Execution (Current)** |
+| **v8.0.0 (ENGINE+)** | 2026-02-08 | **20 Cognitive Engines, Compound Execution (Current)** |
 
 **AI Governance Reference Namespace:** [Zenodo Record](https://zenodo.org/records/18393018)
 
@@ -54,7 +54,7 @@ This library is part of the **FNDTN v7** standards package, which presents:
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                    CMPSBL OS SUBSTRATE                          │
-│                   v7.7.0 (ENGINE+)                              │
+│                   v8.0.0 (ENGINE+)                              │
 ├─────────────────────────────────────────────────────────────────┤
 │  Created By:        Kenneth E Sweet Jr                          │
 │  Organization:      PromptFluid®                                │
@@ -141,7 +141,7 @@ This library is part of the **FNDTN v7** standards package, which presents:
 | [76-EVOLUTION-AUTONOMY.md](./76-EVOLUTION-AUTONOMY.md) | Evolution Autonomy | Governed autonomy settings |
 | [77-SYNERGY-PIPELINES.md](./77-SYNERGY-PIPELINES.md) | **Synergy Pipelines** | 147 cross-module executable pipelines |
 | [78-CAPABILITIES.md](./78-CAPABILITIES.md) | **Synergy Capabilities** | **76 cross-module capabilities + 125 executors** |
-| [79-COGNITIVE-ENGINES.md](./79-COGNITIVE-ENGINES.md) | **Cognitive Engines** | **20 engines consolidating 76 capabilities (v7.7.0)** |
+| [79-COGNITIVE-ENGINES.md](./79-COGNITIVE-ENGINES.md) | **Cognitive Engines** | **20 engines consolidating 76 capabilities (v8.0.0)** |
 | [80-EVOLUTION-OBSERVABILITY.md](./80-EVOLUTION-OBSERVABILITY.md) | Evolution Observability | Investor-facing evolution visibility & stamps |
 
 ### Supplementary Materials
@@ -180,7 +180,7 @@ Read all documents in order.
   title        = {{CMPSBL OS Substrate: A Cognitive Orchestration 
                    System for Autonomous AI Operations}},
   year         = 2026,
-  version      = {v7.7.0},
+  version      = {v8.0.0},
   publisher    = {PromptFluid},
   url          = {https://promptfluid.com},
   note         = {Production system with 150,000+ lines of code, 20 cognitive engines}
@@ -189,5 +189,5 @@ Read all documents in order.
 
 ---
 
-*CMPSBL OS Substrate v7.7.0 — ENGINE+ Epoch*
+*CMPSBL OS Substrate v8.0.0 — ENGINE+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

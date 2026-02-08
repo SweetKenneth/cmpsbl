@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — Executive Summary
 
-**Version 6.3.0 | Scientific Publication**
+**Version 8.0.0 | Scientific Publication**
 
 ---
 
@@ -9,7 +9,7 @@
 | Field | Value |
 |-------|-------|
 | **Document ID** | CMPSBL-LIB-001 |
-| **Version** | v6.3.0 |
+| **Version** | v8.0.0 |
 | **Last Updated** | January 2026 |
 | **Classification** | Public Research Document |
 
@@ -251,5 +251,5 @@ For licensing, acquisition, or research collaboration inquiries:
 
 ---
 
-*CMPSBL OS Substrate v6.3.0 — FNDTN: Human Compatibility Era*
+*CMPSBL OS Substrate v8.0.0 — ENGINE+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

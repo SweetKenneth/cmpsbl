@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — NEXUS Module Deep Dive
 
-**Version 6.3.0 | Scientific Publication**
+**Version 8.0.0 | Scientific Publication**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-017 |
 | **Module** | NEXUS |
 | **Layer** | Operational |
-| **Version** | v6.3.0 |
+| **Version** | v8.0.0 |
 
 ---
 
@@ -200,5 +200,5 @@ Metrics are aggregated:
 
 ---
 
-*CMPSBL OS Substrate v6.0.0 — Human Compatibility Era*
+*CMPSBL OS Substrate v8.0.0 — ENGINE+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

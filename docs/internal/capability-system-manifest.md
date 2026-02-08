@@ -1,5 +1,5 @@
 # Capability System Manifest
-## v7.7.0 — ENGINE+ Epoch (76 Capabilities → 20 Engines)
+## v8.0.0 — ENGINE+ Epoch (76 Capabilities → 20 Engines)
 
 Generated: 2026-02-06
 
@@ -208,4 +208,4 @@ const summary = getEngineSummary();
 
 ---
 
-promptfluid® v7.7.0 — ENGINE+ Epoch Capability & Engine System
+promptfluid® v8.0.0 — ENGINE+ Epoch Capability & Engine System
