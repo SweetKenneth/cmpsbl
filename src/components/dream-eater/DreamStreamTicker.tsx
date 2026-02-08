@@ -87,6 +87,7 @@ export const DreamStreamTicker = ({ maxItems = 5, compact = false }: DreamStream
       fractured: '💔',
       dormant: '💤',
       feral: '🔥',
+      dreaming: '🌙',
     };
     return map[mood] || '◈';
   };

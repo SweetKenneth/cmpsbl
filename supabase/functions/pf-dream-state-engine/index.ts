@@ -13,10 +13,10 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
 
-type DreamEaterMood = 'calm' | 'curious' | 'agitated' | 'fractured' | 'dormant' | 'feral';
+type DreamEaterMood = 'calm' | 'curious' | 'agitated' | 'fractured' | 'dormant' | 'feral' | 'dreaming';
 
 const MOOD_TRANSITIONS: Record<DreamEaterMood, { dream: DreamEaterMood[]; nightmare: DreamEaterMood[] }> = {
   calm: { dream: ['calm', 'curious'], nightmare: ['curious', 'agitated'] },
@@ -25,6 +25,7 @@ const MOOD_TRANSITIONS: Record<DreamEaterMood, { dream: DreamEaterMood[]; nightm
   fractured: { dream: ['agitated', 'curious'], nightmare: ['feral', 'fractured'] },
   dormant: { dream: ['calm', 'curious'], nightmare: ['agitated'] },
   feral: { dream: ['fractured', 'agitated'], nightmare: ['feral', 'fractured'] },
+  dreaming: { dream: ['calm', 'curious'], nightmare: ['agitated', 'fractured'] },
 };
 
 function calculateNightmareIntensity(content: string): number {

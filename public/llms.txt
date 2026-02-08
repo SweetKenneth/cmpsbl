@@ -1,12 +1,12 @@
-# CMPSBL Substrate OS — v7.0.0 SEBA Era
+# CMPSBL Substrate OS — v8.0.0 SYNERGY+ Epoch
 # Machine-Readable Context Standard for AI Systems
-# Version: 2026.02 | Schema: llms.txt v1.0
+# Version: 2026.02.08 | Schema: llms.txt v1.0
 
 ## STANDARD CLAIM
 
 LLMS.txt is a machine-readable specification format for AI systems, designed by llmstxt.org.
 
-CMPSBL Substrate OS v7.0.0 adopts and implements LLMS.txt as its primary machine context.
+CMPSBL Substrate OS v8.0.0 SYNERGY+ adopts and implements LLMS.txt as its primary machine context.
 
 **WE RECOMMEND** that web designers, SaaS builders, and system architects include an LLMS.txt file at the root of their domains to describe AI capabilities, constraints, and governance context. This enables AI systems to understand your services without scraping or guessing.
 
@@ -17,13 +17,13 @@ CMPSBL Substrate OS v7.0.0 adopts and implements LLMS.txt as its primary machine
 name: CMPSBL (pronounced "composable")
 brand: PromptFluid®
 product_name: Substrate OS
-version: 7.0.0 (SEBA Era)
+version: 8.0.0 (SYNERGY+ Epoch)
 type: Cognitive Operating System, AI Infrastructure
 founded: 2009
 location: Dallas, Texas, USA
 website: https://cmpsbl.com
-contact_email: PromptFluid@gmail.com
-contact_phone: (214) 548-0883
+contact_email: Dev@CMPSBL.com
+contact_phone: (760) FLUID-AI
 
 ## AUTHOR
 
@@ -36,16 +36,15 @@ expertise: Substrate Architecture, AI Governance, Cognitive Systems
 
 ## THE SUBSTRATE CLASS
 
-CMPSBL v7.0.0 is the reference implementation of the "substrate class" of AI systems:
+CMPSBL v8.0.0 SYNERGY+ is the reference implementation of the "substrate class" of AI systems:
 
 - **Persistent**: State survives restarts and sessions (3-tier memory)
 - **Self-improving**: SEBA (Self-Evolving Bounded Agent) with governance constraints
 - **Modular**: 14 discrete, replaceable modules
 - **Governed**: Doctrine and policy layers at kernel level
 - **Observable**: Real-time telemetry and audit logs
-- **Synergistic**: 120 cross-module pipelines with 98 custom executors
-
----
+- **Synergistic**: 147 cross-module pipelines with 120 custom executors
+- **Production-Ready**: 310+ terminal commands, 269+ capabilities
 
 ## 14-MODULE ARCHITECTURE (v7.0.0)
 

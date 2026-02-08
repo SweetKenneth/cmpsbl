@@ -10975,6 +10975,10 @@ export type Database = {
         }
         Returns: undefined
       }
+      increment_dream_rate_limit: {
+        Args: { p_session_hash: string }
+        Returns: undefined
+      }
       increment_lovable_ai_usage: {
         Args: { p_calls?: number; p_category?: string; p_tokens?: number }
         Returns: undefined

@@ -12,7 +12,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export type DreamEaterMood = 'calm' | 'curious' | 'agitated' | 'fractured' | 'dormant' | 'feral' | 'feeding';
+export type DreamEaterMood = 'calm' | 'curious' | 'agitated' | 'fractured' | 'dormant' | 'feral' | 'feeding' | 'dreaming';
 
 interface LivingDreamEaterAvatarProps {
   mood: DreamEaterMood;
@@ -78,6 +78,13 @@ const MOOD_CONFIG: Record<DreamEaterMood, {
     eyes: 'bg-cyan-300',
     aura: 'bg-cyan-500/30',
     pulseSpeed: 0.3,
+  },
+  dreaming: {
+    body: 'from-indigo-900/80 to-purple-800/60',
+    glow: 'shadow-indigo-500/50',
+    eyes: 'bg-indigo-400',
+    aura: 'bg-indigo-500/25',
+    pulseSpeed: 5,
   },
 };
 
