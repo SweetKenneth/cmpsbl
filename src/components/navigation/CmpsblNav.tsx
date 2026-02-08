@@ -124,6 +124,7 @@ export function CmpsblNav() {
       items: [
         { name: "Developer Hub", href: "/developers", description: "SDKs, APIs, and integrations", icon: Code },
         { name: "Developer Academy", href: "/academy", description: "Interactive tutorials & AI-powered learning", icon: GraduationCap, badge: "NEW" },
+        { name: "Substrate Intelligence", href: "/intelligence", description: "Technology proof & acquisition info", icon: Brain },
         { name: "Documentation", href: "/documentation", description: "Complete API reference", icon: FileText },
         { name: "Persistent Memory Docs", href: "/docs/persistent-memory", description: "Quickstart integration guide", icon: Brain },
         { name: "Gaming AI", href: "/gaming", description: "NPC engines and game logic", icon: Gamepad2 },

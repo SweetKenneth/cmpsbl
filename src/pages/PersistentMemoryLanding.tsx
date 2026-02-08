@@ -26,6 +26,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { PublicNav } from '@/components/PublicNav';
+import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { SEO } from '@/components/SEO';
 
 const PersistentMemoryLanding = () => {
@@ -475,6 +476,8 @@ const prompt = userMessage + context.contextString;`,
           </div>
         </section>
       </main>
+      
+      <EnhancedFooter />
     </>
   );
 };

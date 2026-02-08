@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { PublicNav } from '@/components/PublicNav';
+import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { SEO } from '@/components/SEO';
 import { toast } from 'sonner';
 
@@ -449,6 +450,8 @@ interface MemoryContext {
           </section>
         </div>
       </div>
+      
+      <EnhancedFooter />
     </>
   );
 };

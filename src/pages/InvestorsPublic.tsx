@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { SEO } from "@/components/SEO";
+import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { supabase } from "@/integrations/supabase/client";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
@@ -137,49 +139,15 @@ export default function InvestorsPublic() {
         keywords={['AI startup investment', 'cognitive substrate', 'AI infrastructure funding', 'seed investment opportunity', 'CMPSBL']}
       />
       
+      
+      <PublicNav />
+      
       {/* Ambient Background */}
-      <div className="fixed inset-0 pointer-events-none">
+      <div className="fixed inset-0 pointer-events-none -z-10">
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-primary/5" />
         <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-primary/5 blur-[120px]" />
         <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full bg-violet-500/5 blur-[100px]" />
       </div>
-
-      {/* Header */}
-      <header className="relative z-20 container mx-auto px-6 py-8">
-        <div className="flex items-center justify-between">
-          <div className={`flex items-center gap-4 transition-all duration-700 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => navigate('/')}
-              className="text-muted-foreground hover:text-foreground"
-            >
-              <ArrowLeft className="w-4 h-4" />
-            </Button>
-            <div>
-              <span className="text-lg font-medium tracking-tight text-foreground">
-                prompt<span className="text-primary">fluid</span>
-              </span>
-              <sup className="text-[10px] text-muted-foreground ml-0.5">®</sup>
-            </div>
-          </div>
-          
-          <nav className={`flex items-center gap-4 transition-all duration-700 delay-100 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
-            <button 
-              onClick={() => navigate('/decode')}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Decode
-            </button>
-            <button 
-              onClick={() => navigate('/substrate')}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Substrate
-            </button>
-          </nav>
-        </div>
-      </header>
 
       {/* Hero */}
       <section className={`relative z-10 container mx-auto px-6 py-16 transition-all duration-1000 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
@@ -385,35 +353,7 @@ export default function InvestorsPublic() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className={`relative z-10 container mx-auto px-6 py-8 border-t border-border/30 transition-all duration-700 delay-700 ${showContent ? 'opacity-100' : 'opacity-0'}`}>
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground/70">
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-3 h-3 text-primary/50" />
-            <span>© 2026 promptfluid®</span>
-          </div>
-          <div className="flex items-center gap-6">
-            <button 
-              onClick={() => navigate('/documentation')}
-              className="hover:text-foreground transition-colors"
-            >
-              Docs
-            </button>
-            <button 
-              onClick={() => navigate('/privacy')}
-              className="hover:text-foreground transition-colors"
-            >
-              Privacy
-            </button>
-            <button 
-              onClick={() => navigate('/terms')}
-              className="hover:text-foreground transition-colors"
-            >
-              Terms
-            </button>
-          </div>
-        </div>
-      </footer>
+      <EnhancedFooter />
     </div>
   );
 }
