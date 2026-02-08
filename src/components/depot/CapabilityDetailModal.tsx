@@ -1,9 +1,11 @@
 /**
  * Capability Detail Modal
- * Shows detailed capability information
- * v3.0.0 — All capabilities FREE, removed checkout/buy logic
+ * Shows detailed capability information with code preview
+ * v4.0.0 — Code snippets + CodeLab integration
  */
 
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { 
   Download, 
   Clock, 
@@ -13,9 +15,15 @@ import {
   Zap,
   CheckCircle2,
   Unlock,
+  Code,
+  Copy,
+  Check,
+  ExternalLink,
+  Terminal,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Drawer,
   DrawerContent,
@@ -36,6 +44,7 @@ import {
   type CapabilityArtifact,
   type CapabilityCategory,
 } from '@/lib/capabilities/depot';
+import { getCodeSnippet, getSDKImport, getQuickStartSnippet } from '@/lib/capabilities/depot/code-snippets';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 
@@ -60,6 +69,9 @@ const difficultyColors: Record<string, string> = {
 };
 
 function ModalContent({ capability, categoryConfig }: { capability: CapabilityArtifact; categoryConfig: CapabilityDetailModalProps['categoryConfig'] }) {
+  const [copied, setCopied] = useState(false);
+  const [activeTab, setActiveTab] = useState<'overview' | 'code'>('code');
+  
   const config = categoryConfig[capability.category];
   const CategoryIcon = config?.icon;
   const isSynergy = capability.id.startsWith('syn-');
@@ -67,6 +79,16 @@ function ModalContent({ capability, categoryConfig }: { capability: CapabilityAr
   const lastUpdated = new Date(capability.lastUpdated);
   const daysAgo = Math.floor((Date.now() - lastUpdated.getTime()) / (1000 * 60 * 60 * 24));
   const updatedLabel = daysAgo === 0 ? 'Today' : daysAgo === 1 ? 'Yesterday' : `${daysAgo}d ago`;
+
+  const codeSnippet = getCodeSnippet(capability);
+  const sdkImport = getSDKImport(capability);
+  const quickStart = getQuickStartSnippet(capability);
+
+  const handleCopy = async (text: string) => {
+    await navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <div className="space-y-5">
@@ -107,90 +129,159 @@ function ModalContent({ capability, categoryConfig }: { capability: CapabilityAr
         </span>
       </div>
 
-      {/* Description */}
-      <div>
-        <h4 className="text-sm font-semibold text-foreground mb-2">Description</h4>
-        <p className="text-sm text-muted-foreground leading-relaxed">{capability.description}</p>
-      </div>
-      
-      {/* Features */}
-      {capability.features && capability.features.length > 0 && (
-        <div>
-          <h4 className="text-sm font-semibold text-foreground mb-3">Features</h4>
-          <ul className="space-y-2">
-            {capability.features.map((feature, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
-                <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                <span>{feature}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      
-      {/* Technical Details - 2x2 grid */}
-      <div className="grid grid-cols-2 gap-3">
-        <div className="p-3 rounded-lg border border-border/50 bg-muted/30">
-          <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground mb-1">
-            <Cpu className="w-3 h-3" />
-            Executor
+      {/* Tabs: Code (default) | Overview */}
+      <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as 'overview' | 'code')} className="w-full">
+        <TabsList className="w-full grid grid-cols-2">
+          <TabsTrigger value="code" className="gap-2">
+            <Code className="w-4 h-4" />
+            Code
+          </TabsTrigger>
+          <TabsTrigger value="overview" className="gap-2">
+            <Package className="w-4 h-4" />
+            Overview
+          </TabsTrigger>
+        </TabsList>
+
+        {/* CODE TAB */}
+        <TabsContent value="code" className="mt-4 space-y-4">
+          {/* Quick Import */}
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="text-sm font-semibold text-foreground flex items-center gap-2">
+                <Terminal className="w-4 h-4" />
+                SDK Import
+              </h4>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleCopy(sdkImport)}
+                className="h-7 px-2 text-xs"
+              >
+                {copied ? <Check className="w-3 h-3 mr-1" /> : <Copy className="w-3 h-3 mr-1" />}
+                {copied ? 'Copied!' : 'Copy'}
+              </Button>
+            </div>
+            <pre className="p-3 rounded-lg bg-muted/50 border border-border/50 text-xs font-mono overflow-x-auto">
+              <code className="text-primary">{sdkImport}</code>
+            </pre>
           </div>
-          <div className="text-sm font-medium text-foreground capitalize">
-            {capability.executorType}
+
+          {/* Full Code Snippet */}
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="text-sm font-semibold text-foreground">Full Example</h4>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleCopy(codeSnippet)}
+                className="h-7 px-2 text-xs"
+              >
+                {copied ? <Check className="w-3 h-3 mr-1" /> : <Copy className="w-3 h-3 mr-1" />}
+                {copied ? 'Copied!' : 'Copy'}
+              </Button>
+            </div>
+            <pre className="p-4 rounded-lg bg-muted/50 border border-border/50 text-xs font-mono overflow-x-auto max-h-64 overflow-y-auto">
+              <code className="text-muted-foreground whitespace-pre">{codeSnippet}</code>
+            </pre>
           </div>
-        </div>
-        
-        <div className="p-3 rounded-lg border border-border/50 bg-muted/30">
-          <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground mb-1">
-            <Package className="w-3 h-3" />
-            Format
+
+          {/* Open in CodeLab CTA */}
+          <Button asChild className="w-full" variant="outline">
+            <Link to={`/codelab?capability=${capability.id}`}>
+              <ExternalLink className="w-4 h-4 mr-2" />
+              Open in CodeLab
+            </Link>
+          </Button>
+        </TabsContent>
+
+        {/* OVERVIEW TAB */}
+        <TabsContent value="overview" className="mt-4 space-y-4">
+          {/* Description */}
+          <div>
+            <h4 className="text-sm font-semibold text-foreground mb-2">Description</h4>
+            <p className="text-sm text-muted-foreground leading-relaxed">{capability.description}</p>
           </div>
-          <div className="text-sm font-medium text-foreground uppercase">
-            {capability.artifactFormat}
+          
+          {/* Features */}
+          {capability.features && capability.features.length > 0 && (
+            <div>
+              <h4 className="text-sm font-semibold text-foreground mb-3">Features</h4>
+              <ul className="space-y-2">
+                {capability.features.map((feature, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                    <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          
+          {/* Technical Details - 2x2 grid */}
+          <div className="grid grid-cols-2 gap-3">
+            <div className="p-3 rounded-lg border border-border/50 bg-muted/30">
+              <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground mb-1">
+                <Cpu className="w-3 h-3" />
+                Executor
+              </div>
+              <div className="text-sm font-medium text-foreground capitalize">
+                {capability.executorType}
+              </div>
+            </div>
+            
+            <div className="p-3 rounded-lg border border-border/50 bg-muted/30">
+              <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground mb-1">
+                <Package className="w-3 h-3" />
+                Format
+              </div>
+              <div className="text-sm font-medium text-foreground uppercase">
+                {capability.artifactFormat}
+              </div>
+            </div>
+            
+            {capability.difficulty && (
+              <div className="p-3 rounded-lg border border-border/50 bg-muted/30">
+                <div className="text-[10px] text-muted-foreground mb-1">Difficulty</div>
+                <div className={cn("text-sm font-medium capitalize", difficultyColors[capability.difficulty])}>
+                  {capability.difficulty}
+                </div>
+              </div>
+            )}
+            
+            {capability.setupTimeMinutes && (
+              <div className="p-3 rounded-lg border border-border/50 bg-muted/30">
+                <div className="text-[10px] text-muted-foreground mb-1">Setup</div>
+                <div className="text-sm font-medium text-foreground">
+                  ~{capability.setupTimeMinutes}m
+                </div>
+              </div>
+            )}
           </div>
-        </div>
-        
-        {capability.difficulty && (
-          <div className="p-3 rounded-lg border border-border/50 bg-muted/30">
-            <div className="text-[10px] text-muted-foreground mb-1">Difficulty</div>
-            <div className={cn("text-sm font-medium capitalize", difficultyColors[capability.difficulty])}>
-              {capability.difficulty}
+          
+          {/* Required Modules */}
+          <div>
+            <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+              <Layers className="w-4 h-4" />
+              Required Modules
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              {capability.requiredModules.map((module) => (
+                <Badge key={module} variant="secondary" className="text-xs">
+                  {module}
+                </Badge>
+              ))}
             </div>
           </div>
-        )}
-        
-        {capability.setupTimeMinutes && (
-          <div className="p-3 rounded-lg border border-border/50 bg-muted/30">
-            <div className="text-[10px] text-muted-foreground mb-1">Setup</div>
-            <div className="text-sm font-medium text-foreground">
-              ~{capability.setupTimeMinutes}m
+          
+          {/* Downloads */}
+          {capability.downloads && (
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Download className="w-4 h-4" />
+              {capability.downloads.toLocaleString()} downloads
             </div>
-          </div>
-        )}
-      </div>
-      
-      {/* Required Modules */}
-      <div>
-        <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
-          <Layers className="w-4 h-4" />
-          Required Modules
-        </h4>
-        <div className="flex flex-wrap gap-2">
-          {capability.requiredModules.map((module) => (
-            <Badge key={module} variant="secondary" className="text-xs">
-              {module}
-            </Badge>
-          ))}
-        </div>
-      </div>
-      
-      {/* Downloads */}
-      {capability.downloads && (
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Download className="w-4 h-4" />
-          {capability.downloads.toLocaleString()} downloads
-        </div>
-      )}
+          )}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
