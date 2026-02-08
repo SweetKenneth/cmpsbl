@@ -102,54 +102,41 @@ export function CmpsblNav() {
     navigate('/');
   };
 
+  // Nav menu — Platform focus (dev tools), footer handles: substrate internals, standards, contact
   const navSections: NavSection[] = [
     {
       name: "Platform",
       icon: Cpu,
       items: [
         { name: "Persistent Memory", href: "/persistent-memory", description: "Add memory to any agent in under an hour", icon: Brain, badge: "FREE" },
-        { name: "Developer Academy", href: "/academy", description: "Interactive tutorials & AI-powered learning", icon: GraduationCap, badge: "NEW" },
         { name: "Capability Depot", href: "/capabilities", description: "Atomic, stateless building blocks", icon: Sparkles, badge: "FREE" },
         { name: "Template Alley", href: "/marketplace", description: "Starting points for learning & remixing", icon: Layers, badge: "FREE" },
         { name: "Synergy Pipelines", href: "/synergies", description: "Exploratory orchestration patterns", icon: Zap, badge: "FREE" },
         { name: "Engine Marketplace", href: "/engines", description: "First-party canonized orchestrations", icon: Terminal, badge: "OEM" },
         { name: "CodeLab", href: "/codelab", description: "Execute and test in real-time", icon: Terminal },
         { name: "DevTools", href: "/devtools", description: "Diagnostics and developer utilities", icon: Terminal },
-        { name: "Developer Hub", href: "/developers", description: "SDKs, APIs, and integrations", icon: Code },
-        { name: "Gaming AI", href: "/gaming", description: "NPC engines and game logic", icon: Gamepad2 },
         ...(user ? [{ name: "Dashboard", href: "/os", description: "Your command center", icon: Cpu }] : []),
       ]
     },
     {
-      name: "Substrate",
-      icon: Brain,
+      name: "Developers",
+      icon: Code,
       items: [
-        { name: "CMPSBL OS", href: "/substrate", description: "Core runtime architecture", icon: Cpu },
-        { name: "System Feed", href: "/system-feed", description: "Live intelligence stream", icon: Brain, badge: "Live" },
-        { name: "Decode Engine", href: "/decode", description: "Intent parsing & analysis", icon: MessageSquare },
-        { name: "Dream Feeder", href: "/feed-dream-eater", description: "Background processing", icon: Moon },
-        { name: "Proof Mode", href: "/proof", description: "Validate substrate claims", icon: Shield },
+        { name: "Developer Hub", href: "/developers", description: "SDKs, APIs, and integrations", icon: Code },
+        { name: "Developer Academy", href: "/academy", description: "Interactive tutorials & AI-powered learning", icon: GraduationCap, badge: "NEW" },
+        { name: "Documentation", href: "/documentation", description: "Complete API reference", icon: FileText },
+        { name: "Persistent Memory Docs", href: "/docs/persistent-memory", description: "Quickstart integration guide", icon: Brain },
+        { name: "Gaming AI", href: "/gaming", description: "NPC engines and game logic", icon: Gamepad2 },
       ]
     },
     {
       name: "Enterprise",
       icon: Building2,
       items: [
+        { name: "Solutions", href: "/solutions", description: "Enterprise solutions", icon: Building2 },
         { name: "Use Cases", href: "/use-cases", description: "Industry applications", icon: Sparkles },
+        { name: "Partnerships", href: "/partnerships", description: "Partner programs", icon: Users },
         { name: "Licensing", href: "/substrate/licensing", description: "Enterprise agreements", icon: FileText },
-        { name: "Investors", href: "/investors", description: "Investment information", icon: Zap },
-        { name: "Support", href: "/support", description: "Get help & resources", icon: Mail },
-      ]
-    },
-    {
-      name: "Resources",
-      icon: BookOpen,
-      items: [
-        { name: "Persistent Memory Docs", href: "/docs/persistent-memory", description: "Quickstart integration guide", icon: Brain },
-        { name: "Documentation", href: "/documentation", description: "Complete API reference", icon: FileText },
-        { name: "Library", href: "/library", description: "FNDTN v7 framework", icon: BookOpen },
-        { name: "Namespace", href: "/namespace", description: "Governance standards", icon: Globe },
-        { name: "LLMS.txt", href: "/llms-txt", description: "Machine context files", icon: Terminal },
       ]
     },
     {
@@ -158,8 +145,6 @@ export function CmpsblNav() {
       items: [
         { name: "About", href: "/about", description: "Our mission & team", icon: Info },
         { name: "Blog", href: "/blog", description: "Research & updates", icon: FileText },
-        { name: "Roadmap", href: "/roadmap", description: "Development timeline", icon: Rocket },
-        { name: "Contact", href: "/contact", description: "Get in touch", icon: Mail },
       ]
     },
   ];

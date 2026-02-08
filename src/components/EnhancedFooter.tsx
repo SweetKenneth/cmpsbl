@@ -26,48 +26,48 @@ export function EnhancedFooter() {
   const currentYear = new Date().getFullYear();
   const [evolutionOpen, setEvolutionOpen] = useState(false);
 
+  // Footer links — distinct from nav menu (no duplicates)
+  // Nav has: Platform (dev tools), Substrate, Enterprise, Resources, Company
+  // Footer has: Substrate internals, Learning, Standards, Contact & Legal
   const footerSections: FooterSection[] = [
     {
-      title: "Platform",
+      title: "Substrate",
       links: [
         { name: "CMPSBL OS", href: "/substrate" },
-        { name: "Decode", href: "/decode" },
+        { name: "System Feed", href: "/system-feed" },
+        { name: "Decode Engine", href: "/decode" },
         { name: "Dream Feeder", href: "/feed-dream-eater" },
         { name: "Proof Mode", href: "/proof" },
+      ]
+    },
+    {
+      title: "Learn",
+      links: [
+        { name: "Developer Academy", href: "/academy" },
+        { name: "Library", href: "/library" },
+        { name: "Use Cases", href: "/use-cases" },
+        { name: "Foundations", href: "/foundations" },
         { name: "Demo", href: "/demo" },
       ]
     },
     {
-      title: "Build",
+      title: "Standards",
       links: [
-        { name: "Engine Marketplace", href: "/engines", highlight: true },
-        { name: "Synergy Pipelines", href: "/synergies" },
-        { name: "Capabilities Depot", href: "/capabilities" },
-        { name: "Persistent Memory", href: "/persistent-memory" },
-        { name: "Developers", href: "/developers" },
-        { name: "CodeLab", href: "/codelab" },
-        { name: "Templates", href: "/marketplace" },
-        { name: "Documentation", href: "/documentation" },
-      ]
-    },
-    {
-      title: "Company",
-      links: [
-        { name: "Blog", href: "/blog" },
-        { name: "Changelog", href: "/changelog" },
-        { name: "Roadmap", href: "/roadmap" },
-        { name: "Investors", href: "/investors" },
-        { name: "Contact", href: "/contact" },
-      ]
-    },
-    {
-      title: "Legal",
-      links: [
-        { name: "Privacy", href: "/privacy" },
-        { name: "Terms", href: "/terms" },
-        { name: "Support", href: "/support" },
+        { name: "Namespace", href: "/namespace" },
         { name: "llms.txt", href: "/llms-txt" },
         { name: "humans.txt", href: "/humans-txt" },
+        { name: "Changelog", href: "/changelog" },
+        { name: "Roadmap", href: "/roadmap" },
+      ]
+    },
+    {
+      title: "Contact",
+      links: [
+        { name: "Support", href: "/support" },
+        { name: "Contact", href: "/contact" },
+        { name: "Privacy", href: "/privacy" },
+        { name: "Terms", href: "/terms" },
+        { name: "Investors", href: "/investors" },
       ]
     },
   ];
@@ -123,15 +123,15 @@ export function EnhancedFooter() {
                   {section.title}
                 </h3>
                 <ul className="space-y-2.5">
-                  {/* Add Evolution button to Platform section */}
-                  {section.title === "Platform" && (
+                  {/* Add Evolution button to Substrate section */}
+                  {section.title === "Substrate" && (
                     <li>
                       <button
                         onClick={() => setEvolutionOpen(true)}
                         className="group inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors"
                       >
                         <Sparkles className="w-3.5 h-3.5 group-hover:animate-pulse" />
-                        Evolution
+                        Evolution Video
                       </button>
                     </li>
                   )}
@@ -179,7 +179,7 @@ export function EnhancedFooter() {
             <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4">
               {/* Copyright */}
               <p className="text-[11px] sm:text-xs text-muted-foreground text-center sm:text-left">
-                © 2009-{currentYear} promptfluid® — All rights reserved
+                © 2009-{currentYear} CMPSBL® — All rights reserved
               </p>
               
               {/* Brand Line - Stack on very small screens */}
