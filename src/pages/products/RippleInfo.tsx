@@ -1,4 +1,11 @@
+/**
+ * Ripple Info — Communication Module Product Page
+ * v8.0.0 SYNERGY+ Epoch — Part of 14-module substrate
+ */
+
 import { SEO } from "@/components/SEO";
+import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Radio, Megaphone, TrendingUp, Target, BarChart, Share2, ArrowRight, CheckCircle } from "lucide-react";
@@ -8,31 +15,33 @@ export default function RippleInfo() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <SEO 
-        title="Ripple Studio — AI Marketing Automation & Campaign Management"
-        description="Generate multi-platform marketing campaigns instantly with AI. Create ads, social content, email campaigns, and SEO-optimized blog posts in minutes. Track performance in real-time."
-        canonical="https://promptfluid.com/products/ripple"
+        title="Ripple Module — AI Communication & Marketing Orchestration | CMPSBL"
+        description="Generate multi-platform campaigns instantly with AI. Part of CMPSBL's 14-module cognitive substrate for intelligent content creation and distribution."
+        canonical="https://cmpsbl.com/products/ripple"
         keywords={[
-          'AI marketing automation',
-          'campaign management software',
-          'social media automation tool',
+          'AI marketing orchestration',
+          'CMPSBL Ripple',
+          'cognitive communication module',
           'AI content generation',
-          'multi-channel marketing',
+          'multi-channel marketing AI',
           'marketing campaign creator',
-          'automated advertising platform',
-          'AI copywriting tool',
-          'marketing analytics dashboard',
+          'automated content platform',
+          'AI copywriting engine',
+          'marketing analytics AI',
           'campaign performance tracking'
         ]}
       />
+
+      <PublicNav />
 
       {/* Hero */}
       <section className="container mx-auto px-4 py-20">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-primary/20 mb-6">
             <Radio className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium">Ripple Studio</span>
+            <span className="text-sm font-medium">Ripple Module</span>
           </div>
           <h1 className="text-5xl md:text-6xl font-bold mb-6">
             Create Campaigns.
@@ -42,8 +51,8 @@ export default function RippleInfo() {
             </span>
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Generate complete marketing campaigns across all channels with AI. From social posts to email 
-            sequences to blog content—create everything you need in minutes, not weeks.
+            Generate complete marketing campaigns across all channels with AI. Part of CMPSBL's 14-module 
+            cognitive substrate for intelligent communication orchestration.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" onClick={() => navigate('/auth')} className="group">
@@ -58,7 +67,7 @@ export default function RippleInfo() {
       </section>
 
       {/* Features */}
-      <section className="container mx-auto px-4 py-20">
+      <section className="container mx-auto px-4 py-20 flex-1">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {[
             {
@@ -69,7 +78,7 @@ export default function RippleInfo() {
             {
               icon: Share2,
               title: "Multi-Platform Publishing",
-              description: "Publish to Facebook, Instagram, Twitter, LinkedIn, and email with one click—all formats optimized."
+              description: "Publish to all major platforms with one click—all formats automatically optimized."
             },
             {
               icon: Target,
@@ -111,30 +120,12 @@ export default function RippleInfo() {
           </h2>
           <div className="grid md:grid-cols-2 gap-6">
             {[
-              {
-                title: "Social Media Campaigns",
-                description: "Posts, stories, reels, and ads for all major platforms with optimal timing and hashtags."
-              },
-              {
-                title: "Email Marketing",
-                description: "Welcome sequences, newsletters, drip campaigns, and promotional emails with high open rates."
-              },
-              {
-                title: "Content Marketing",
-                description: "SEO-optimized blog posts, whitepapers, case studies, and educational content."
-              },
-              {
-                title: "Paid Advertising",
-                description: "Google Ads, Facebook Ads, LinkedIn Ads with optimized copy and targeting."
-              },
-              {
-                title: "Product Launches",
-                description: "Complete launch campaigns with teasers, announcements, and follow-up content."
-              },
-              {
-                title: "Seasonal Promotions",
-                description: "Holiday campaigns, sales events, and limited-time offers across all channels."
-              }
+              { title: "Social Media Campaigns", description: "Posts, stories, reels, and ads for all major platforms with optimal timing." },
+              { title: "Email Marketing", description: "Welcome sequences, newsletters, drip campaigns, and promotional emails." },
+              { title: "Content Marketing", description: "SEO-optimized blog posts, whitepapers, case studies, and educational content." },
+              { title: "Paid Advertising", description: "Google Ads, Facebook Ads, LinkedIn Ads with optimized copy and targeting." },
+              { title: "Product Launches", description: "Complete launch campaigns with teasers, announcements, and follow-up." },
+              { title: "Seasonal Promotions", description: "Holiday campaigns, sales events, and limited-time offers across all channels." }
             ].map((type, index) => (
               <Card key={index} className="p-6 hover:shadow-elegant transition-all duration-300">
                 <h3 className="text-lg font-semibold mb-2">{type.title}</h3>
@@ -157,15 +148,15 @@ export default function RippleInfo() {
             </div>
             <div>
               <div className="text-4xl font-bold bg-gradient-to-r from-primary-variant to-accent bg-clip-text text-transparent mb-2">
-                100%
-              </div>
-              <div className="text-muted-foreground">Zero AI Costs</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent mb-2">
                 6
               </div>
               <div className="text-muted-foreground">AI Providers Integrated</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent mb-2">
+                14
+              </div>
+              <div className="text-muted-foreground">Module Synergies</div>
             </div>
           </div>
         </div>
@@ -175,7 +166,7 @@ export default function RippleInfo() {
       <section className="container mx-auto px-4 py-20">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12">
-            Why Marketers Love Ripple Studio
+            Why Teams Love Ripple Module
           </h2>
           <div className="space-y-6">
             {[
@@ -184,7 +175,7 @@ export default function RippleInfo() {
               "Test multiple variations without additional effort",
               "Scale campaigns without hiring more team members",
               "Get data-driven insights to improve performance continuously",
-              "Integrate with all major marketing platforms seamlessly"
+              "Integrate seamlessly with all 14 CMPSBL modules"
             ].map((benefit, index) => (
               <div key={index} className="flex items-start gap-3 glass p-4 rounded-lg">
                 <CheckCircle className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
@@ -200,7 +191,7 @@ export default function RippleInfo() {
         <div className="max-w-3xl mx-auto text-center glass p-12 rounded-2xl">
           <h2 className="text-3xl font-bold mb-4">Ready to Transform Your Marketing?</h2>
           <p className="text-muted-foreground mb-6">
-            Start creating AI-powered campaigns with Ripple Studio today.
+            Start creating AI-powered campaigns with CMPSBL's Ripple module today.
           </p>
           <Button size="lg" onClick={() => navigate('/auth')} className="group">
             Start Creating Free
@@ -208,6 +199,8 @@ export default function RippleInfo() {
           </Button>
         </div>
       </section>
+
+      <EnhancedFooter />
     </div>
   );
 }

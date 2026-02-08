@@ -1,4 +1,11 @@
+/**
+ * Studio Info — Creative Module Product Page  
+ * v8.0.0 SYNERGY+ Epoch — Part of 14-module substrate
+ */
+
 import { SEO } from "@/components/SEO";
+import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Code2, Rocket, Sparkles, Zap, Globe, GitBranch, ArrowRight, CheckCircle } from "lucide-react";
@@ -8,31 +15,33 @@ export default function StudioInfo() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <SEO 
-        title="Studio Builder — AI Website Creation & Deployment Platform"
-        description="Build production-ready websites in minutes with AI. Generate designs, deploy instantly, and manage all your sites from one platform. No coding required."
-        canonical="https://promptfluid.com/products/studio"
+        title="Studio Module — AI Website Creation & Deployment | CMPSBL"
+        description="Build production-ready websites in minutes with AI. Part of CMPSBL's 14-module cognitive substrate for intelligent web development and deployment."
+        canonical="https://cmpsbl.com/products/studio"
         keywords={[
           'AI website builder',
+          'CMPSBL Studio',
+          'cognitive web development',
           'instant website deployment',
           'no-code website creation',
           'automated website design',
-          'website builder platform',
-          'AI web development',
+          'AI web development platform',
           'rapid website deployment',
-          'website generation tool',
-          'drag and drop website builder',
+          'website generation AI',
           'professional website creator'
         ]}
       />
+
+      <PublicNav />
 
       {/* Hero */}
       <section className="container mx-auto px-4 py-20">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-primary/20 mb-6">
             <Code2 className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium">Studio Builder</span>
+            <span className="text-sm font-medium">Studio Module</span>
           </div>
           <h1 className="text-5xl md:text-6xl font-bold mb-6">
             Build Websites.
@@ -42,8 +51,8 @@ export default function StudioInfo() {
             </span>
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Create production-ready websites in minutes with AI-powered design and development. 
-            No coding required—just describe what you want and watch it build.
+            Create production-ready websites in minutes with AI-powered design. Part of CMPSBL's 
+            14-module cognitive substrate for intelligent web development.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" onClick={() => navigate('/auth')} className="group">
@@ -58,7 +67,7 @@ export default function StudioInfo() {
       </section>
 
       {/* Features */}
-      <section className="container mx-auto px-4 py-20">
+      <section className="container mx-auto px-4 py-20 flex-1">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {[
             {
@@ -111,21 +120,9 @@ export default function StudioInfo() {
           </h2>
           <div className="space-y-8">
             {[
-              {
-                step: "1",
-                title: "Describe Your Vision",
-                description: "Tell the AI what kind of website you need—landing page, portfolio, e-commerce, or anything else."
-              },
-              {
-                step: "2",
-                title: "AI Generates Design",
-                description: "Watch as Studio creates a complete, responsive website with your branding, content, and features."
-              },
-              {
-                step: "3",
-                title: "Deploy & Launch",
-                description: "Review, customize if needed, and deploy to production with one click. Your site is live in seconds."
-              }
+              { step: "1", title: "Describe Your Vision", description: "Tell the AI what kind of website you need—landing page, portfolio, e-commerce, or anything else." },
+              { step: "2", title: "AI Generates Design", description: "Watch as Studio creates a complete, responsive website with your branding, content, and features." },
+              { step: "3", title: "Deploy & Launch", description: "Review, customize if needed, and deploy to production with one click. Your site is live in seconds." }
             ].map((item, index) => (
               <div key={index} className="flex gap-6 glass p-6 rounded-lg">
                 <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-primary to-primary-variant flex items-center justify-center font-bold text-primary-foreground">
@@ -153,13 +150,13 @@ export default function StudioInfo() {
             </div>
             <div>
               <div className="text-4xl font-bold bg-gradient-to-r from-primary-variant to-accent bg-clip-text text-transparent mb-2">
-                High
+                14
               </div>
-              <div className="text-muted-foreground">Performance Target</div>
+              <div className="text-muted-foreground">Module Synergies</div>
             </div>
             <div>
               <div className="text-4xl font-bold bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent mb-2">
-                0
+                $0
               </div>
               <div className="text-muted-foreground">Setup Fees</div>
             </div>
@@ -196,7 +193,7 @@ export default function StudioInfo() {
         <div className="max-w-3xl mx-auto text-center glass p-12 rounded-2xl">
           <h2 className="text-3xl font-bold mb-4">Ready to Build Your Website?</h2>
           <p className="text-muted-foreground mb-6">
-            Start creating professional websites with Studio today—no credit card required.
+            Start creating professional websites with CMPSBL's Studio module today—no credit card required.
           </p>
           <Button size="lg" onClick={() => navigate('/auth')} className="group">
             Start Building Free
@@ -204,6 +201,8 @@ export default function StudioInfo() {
           </Button>
         </div>
       </section>
+
+      <EnhancedFooter />
     </div>
   );
 }
