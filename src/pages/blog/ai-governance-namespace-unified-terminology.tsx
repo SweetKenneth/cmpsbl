@@ -29,9 +29,9 @@ export default function AIGovernanceNamespaceUnifiedTerminology() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="AI Governance Namespace: Unified Terminology for Cognitive Systems | PromptFluid"
-        description="How PromptFluid established a unified AI governance vocabulary through strategic domain registration—the first comprehensive AI governance domain portfolio and namespace solution."
-        canonical="https://promptfluid.com/blog/ai-governance-namespace-unified-terminology"
+        title="AI Governance Namespace: Unified Terminology for Cognitive Systems | CMPSBL"
+        description="How CMPSBL established a unified AI governance vocabulary through strategic domain registration—the first comprehensive AI governance domain portfolio and namespace solution."
+        canonical="https://cmpsbl.com/blog/ai-governance-namespace-unified-terminology"
         keywords={[
           'AI governance', 'AIGVRN', 'AI governance namespace', 'AI terminology',
           'unified vocabulary', 'AI standards', 'governance framework', 'cognitive systems',
@@ -98,7 +98,7 @@ export default function AIGovernanceNamespaceUnifiedTerminology() {
               <p className="text-xl text-muted-foreground leading-relaxed !mb-10">
                 Language shapes thought. In the emerging field of autonomous AI systems, inconsistent terminology 
                 creates real problems: miscommunication between teams, confusion in documentation, and ambiguity 
-                in governance policies. At PromptFluid, we've addressed this by establishing a unified governance 
+                in governance policies. At CMPSBL, we've addressed this by establishing a unified governance 
                 vocabulary—the <strong>AI Governance Reference Namespace (AIGVRN)</strong>—backed by strategic 
                 domain registrations to anchor these concepts in a persistent namespace.
               </p>
@@ -108,7 +108,7 @@ export default function AIGovernanceNamespaceUnifiedTerminology() {
                   <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30">FIRST OF ITS KIND</Badge>
                 </div>
                 <p className="text-muted-foreground text-sm">
-                  PromptFluid is the <strong className="text-foreground">first organization</strong> to register a 
+                  CMPSBL is the <strong className="text-foreground">first organization</strong> to register a 
                   comprehensive portfolio of AI governance domains and the <strong className="text-foreground">first 
                   to propose a unified namespace solution</strong> for public use.
                 </p>

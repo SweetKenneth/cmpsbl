@@ -1,5 +1,5 @@
 /**
- * promptfluid® Decode Contract Implementation
+ * CMPSBL® Decode Contract Implementation
  * v8.0.0 — SYNERGY+ Epoch Substrate Interpreter Primitive
  * 
  * This implements the Decode contract as defined in the RFC.

@@ -1,6 +1,7 @@
 /**
- * PromptFluid Brain Verification
+ * CMPSBL Brain Verification
  * Confirms all core systems are online and operational
+ * v8.0.0 SYNERGY+ Epoch
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -78,7 +79,7 @@ export async function verifyAllSystems(): Promise<SystemStatus> {
 
 export async function initializeBrain(): Promise<boolean> {
   try {
-    console.log('🧠 Initializing PromptFluid Brain...');
+    console.log('🧠 Initializing CMPSBL Brain...');
     
     const { data, error } = await supabase.functions.invoke('pf-brain-initialize');
     
