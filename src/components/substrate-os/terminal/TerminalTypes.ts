@@ -1,5 +1,6 @@
 /**
  * Terminal Type Definitions
+ * v8.0.0 — SYNERGY+ Epoch Terminal Configuration (310+ commands)
  */
 
 export interface CommandResult {
@@ -43,7 +44,7 @@ export const DEFAULT_CONFIG: TerminalConfig = {
 export const BOOT_MESSAGES = [
   '',
   '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
-  '  ▓  PROMPTFLUID® SUBSTRATE OS v7.5.3   ▓',
+  '  ▓  PROMPTFLUID® SUBSTRATE OS v8.0.0   ▓',
   '  ▓  SYNERGY+ Epoch Cognitive OS        ▓',
   '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
   '',
@@ -68,7 +69,7 @@ export const BOOT_MESSAGES = [
   '  └───────────────────────────────────────┘',
   '',
   '  ◉ 14 modules operational',
-  '  ◉ 280+ commands available',
+  '  ◉ 310+ commands available',
   '  ◉ 147 synergy pipelines | 125 executors',
   '  ◉ Health: 100%',
   '',

@@ -1,6 +1,6 @@
 /**
  * Smart Command Suggestions
- * Context-aware next-command suggestions based on previous execution
+ * v8.0.0 — SYNERGY+ Epoch context-aware next-command suggestions
  */
 
 import { ALL_COMMANDS, type CommandDefinition } from './TerminalCommands';

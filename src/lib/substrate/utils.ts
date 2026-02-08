@@ -1,8 +1,8 @@
 /**
  * Substrate Utilities
- * v6.6.0 — Helper Functions & Common Patterns
+ * v8.0.0 — SYNERGY+ Epoch Helper Functions & Common Patterns
  * 
- * Provides utility functions for common substrate operations.
+ * Provides utility functions for common substrate operations across the 14-module architecture.
  */
 
 import { substrate, type SubstrateModule, type SubstrateResponse } from '../substrate';

@@ -1,12 +1,14 @@
 /**
  * Orchestrator Engine
- * v6.6.0 — Unified Cognitive Pipeline
+ * v8.0.0 — SYNERGY+ Epoch Unified Cognitive Pipeline
  * 
  * The Orchestrator Engine chains all cognitive engines into unified workflows.
  * It provides high-level orchestration patterns for common cognitive tasks.
  * 
+ * Architecture: Capabilities (269) → Engines (62) → Meta-Engines (20)
+ * 
  * Capabilities:
- * - Chain engine execution in declarative pipelines
+ * - Chain engine execution in declarative pipelines (147 synergy pipelines)
  * - Run full cognitive loops (think → learn → imagine → reason → govern)
  * - Provide lifecycle hooks for monitoring
  * - Auto-healing and fallback strategies

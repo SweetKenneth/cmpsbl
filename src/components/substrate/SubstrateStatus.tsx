@@ -1,6 +1,6 @@
 /**
  * CMPSBL Substrate Status Widget
- * Compact status indicator for the substrate v8.0.0
+ * v8.0.0 — SYNERGY+ Epoch compact status indicator
  */
 
 import { Activity, CheckCircle2, AlertCircle } from 'lucide-react';
@@ -22,7 +22,7 @@ export function SubstrateStatus({ compact = false }: SubstrateStatusProps) {
     return (
       <Badge 
         variant="outline" 
-        className={`gap-1.5 ${isHealthy ? 'border-green-500/50 text-green-500' : 'border-amber-500/50 text-amber-500'}`}
+        className={`gap-1.5 ${isHealthy ? 'border-primary/50 text-primary' : 'border-destructive/50 text-destructive'}`}
       >
         <Activity className="h-3 w-3" />
         {activeCount}/{totalModules}
@@ -33,9 +33,9 @@ export function SubstrateStatus({ compact = false }: SubstrateStatusProps) {
   return (
     <div className="flex items-center gap-2 text-sm">
       {isHealthy ? (
-        <CheckCircle2 className="h-4 w-4 text-green-500" />
+        <CheckCircle2 className="h-4 w-4 text-primary" />
       ) : (
-        <AlertCircle className="h-4 w-4 text-amber-500" />
+        <AlertCircle className="h-4 w-4 text-destructive" />
       )}
       <span className="text-muted-foreground">
         CMPSBL substrate: {activeCount}/{totalModules} modules
