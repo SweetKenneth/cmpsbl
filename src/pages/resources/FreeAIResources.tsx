@@ -139,7 +139,7 @@ const FreeAIResources = () => {
           </CardHeader>
           <CardContent className="space-y-3 text-muted-foreground">
             <p>
-              By intelligently routing requests across multiple free-tier providers, PromptFluid's Cascade AI achieves enterprise-scale capacity without paid subscriptions. Each provider offers distinct advantages:
+              By intelligently routing requests across multiple free-tier providers, CMPSBL's Brain module achieves enterprise-scale capacity without paid subscriptions. Each provider offers distinct advantages:
             </p>
             <ul className="space-y-2 list-disc list-inside">
               <li><strong>Speed optimization:</strong> Groq and Cerebras for sub-second latency requirements</li>
@@ -148,7 +148,7 @@ const FreeAIResources = () => {
               <li><strong>Failover resilience:</strong> Multiple providers ensure high availability</li>
             </ul>
             <p className="pt-2 text-sm italic">
-              This approach enables Cascade to learn continuously while maintaining responsive chat functionality — a multi-provider orchestration strategy that maximizes free-tier value.
+              This approach enables the Brain to learn continuously while maintaining responsive chat functionality — a multi-provider orchestration strategy that maximizes free-tier value.
             </p>
           </CardContent>
         </Card>
@@ -226,7 +226,7 @@ const FreeAIResources = () => {
           </CardHeader>
           <CardContent className="space-y-3 text-sm text-muted-foreground">
             <p>
-              <strong className="text-foreground">PromptFluid's approach:</strong> Dynamic provider selection based on real-time usage metrics. The system tracks daily request counts and automatically routes to the provider with the most available capacity.
+              <strong className="text-foreground">CMPSBL's approach:</strong> Dynamic provider selection based on real-time usage metrics. The system tracks daily request counts and automatically routes to the provider with the most available capacity.
             </p>
             <div className="bg-muted/50 p-4 rounded-lg font-mono text-xs space-y-1">
               <p>// Intelligent routing algorithm</p>
@@ -235,7 +235,7 @@ const FreeAIResources = () => {
               <p className="pl-4">.sort((a, b) =&gt; a.count/a.limit - b.count/b.limit)[0];</p>
             </div>
             <p>
-              This ensures Cascade AI never hits rate limits during learning cycles while preserving capacity for user chat interactions. Average uptime: 99.9% with zero API costs.
+              This ensures the Brain module never hits rate limits during learning cycles while preserving capacity for user chat interactions. Average uptime: 99.9% with zero API costs.
             </p>
           </CardContent>
         </Card>

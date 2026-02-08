@@ -1,6 +1,7 @@
 /**
- * PromptFluid Nexus Metrics
+ * CMPSBL Nexus Metrics
  * Performance tracking and system health monitoring
+ * v8.0.0 SYNERGY+ Epoch
  * 
  * Respects debugMode — when enabled, metrics recording and flushing is skipped
  */

@@ -1,11 +1,11 @@
 /**
  * Capabilities Depot — Advanced SEO Component
  * Full SEO optimization for Google discovery
- * v1.0.0
+ * v3.0.0 — All capabilities FREE, updated branding to CMPSBL
  */
 
 import { Helmet } from 'react-helmet-async';
-import { getAllCapabilities, getCategoryStats, PRICING_TIERS } from '@/lib/capabilities/depot';
+import { getAllCapabilities, getCategoryStats } from '@/lib/capabilities/depot';
 
 interface DepotSEOProps {
   totalCount: number;
@@ -16,7 +16,7 @@ export function DepotSEO({ totalCount }: DepotSEOProps) {
   const categoryStats = getCategoryStats();
 
   // Helmet requires <title> to be a plain string child (not mixed nodes)
-  const pageTitle = `Capabilities Depot — ${totalCount}+ Cognitive AI Artifacts | PromptFluid`;
+  const pageTitle = `Capabilities Depot — ${totalCount}+ FREE Cognitive AI Artifacts | CMPSBL`;
   
   // Generate structured product list for SEO
   const topCapabilities = capabilities
@@ -25,37 +25,32 @@ export function DepotSEO({ totalCount }: DepotSEOProps) {
 
   // Calculate aggregate data
   const totalDownloads = capabilities.reduce((sum, c) => sum + (c.downloads || 0), 0);
-  const avgPrice = Math.round(capabilities.reduce((sum, c) => sum + c.priceUsd, 0) / capabilities.length);
-  const priceRange = {
-    low: Math.min(...capabilities.map(c => c.priceUsd)),
-    high: Math.max(...capabilities.map(c => c.priceUsd)),
-  };
 
   // JSON-LD Structured Data
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "PromptFluid",
-    "url": "https://promptfluid.com",
-    "logo": "https://promptfluid.com/logo.png",
+    "name": "CMPSBL",
+    "url": "https://cmpsbl.com",
+    "logo": "https://cmpsbl.com/logo.png",
     "description": "Cognitive infrastructure and AI capabilities for enterprise systems",
     "sameAs": [
-      "https://twitter.com/promptfluid",
-      "https://github.com/promptfluid",
-      "https://linkedin.com/company/promptfluid"
+      "https://twitter.com/cmpsbl",
+      "https://github.com/cmpsbl",
+      "https://linkedin.com/company/cmpsbl"
     ]
   };
 
   const webPageSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "name": "Capabilities Depot — Cognitive AI Artifacts Marketplace",
-    "description": `Download ${totalCount}+ licensed cognitive capabilities for local execution. Intelligence, optimization, security, resilience, and accessibility artifacts for enterprise AI systems.`,
-    "url": "https://promptfluid.com/capabilities",
+    "name": "Capabilities Depot — FREE Cognitive AI Artifacts Library",
+    "description": `Download ${totalCount}+ FREE cognitive capabilities for local execution. Intelligence, optimization, security, resilience, and accessibility artifacts for enterprise AI systems.`,
+    "url": "https://cmpsbl.com/capabilities",
     "isPartOf": {
       "@type": "WebSite",
-      "name": "PromptFluid Substrate",
-      "url": "https://promptfluid.com"
+      "name": "CMPSBL Substrate",
+      "url": "https://cmpsbl.com"
     },
     "breadcrumb": {
       "@type": "BreadcrumbList",
@@ -64,13 +59,13 @@ export function DepotSEO({ totalCount }: DepotSEOProps) {
           "@type": "ListItem",
           "position": 1,
           "name": "Home",
-          "item": "https://promptfluid.com"
+          "item": "https://cmpsbl.com"
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": "Capabilities Depot",
-          "item": "https://promptfluid.com/capabilities"
+          "item": "https://cmpsbl.com/capabilities"
         }
       ]
     }
@@ -80,7 +75,7 @@ export function DepotSEO({ totalCount }: DepotSEOProps) {
     "@context": "https://schema.org",
     "@type": "ItemList",
     "name": "Cognitive Capabilities Catalog",
-    "description": "Licensed cognitive AI capabilities for download and local execution",
+    "description": "FREE cognitive AI capabilities for download and local execution",
     "numberOfItems": totalCount,
     "itemListElement": topCapabilities.map((cap, index) => ({
       "@type": "ListItem",
@@ -93,7 +88,7 @@ export function DepotSEO({ totalCount }: DepotSEOProps) {
         "operatingSystem": "Cross-platform",
         "offers": {
           "@type": "Offer",
-          "price": cap.priceUsd,
+          "price": 0,
           "priceCurrency": "USD",
           "availability": "https://schema.org/InStock"
         },
@@ -116,13 +111,11 @@ export function DepotSEO({ totalCount }: DepotSEOProps) {
     "name": "CMPSBL Capabilities Depot",
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "Cross-platform",
-    "description": `Marketplace for ${totalCount}+ cognitive AI capabilities. Download licensed artifacts for intelligence, optimization, security, resilience, and accessibility.`,
+    "description": `FREE library of ${totalCount}+ cognitive AI capabilities. Download artifacts for intelligence, optimization, security, resilience, and accessibility.`,
     "offers": {
-      "@type": "AggregateOffer",
-      "lowPrice": priceRange.low,
-      "highPrice": priceRange.high,
-      "priceCurrency": "USD",
-      "offerCount": totalCount
+      "@type": "Offer",
+      "price": 0,
+      "priceCurrency": "USD"
     },
     "aggregateRating": {
       "@type": "AggregateRating",
@@ -133,8 +126,8 @@ export function DepotSEO({ totalCount }: DepotSEOProps) {
     },
     "author": {
       "@type": "Organization",
-      "name": "PromptFluid",
-      "url": "https://promptfluid.com"
+      "name": "CMPSBL",
+      "url": "https://cmpsbl.com"
     }
   };
 
@@ -152,10 +145,10 @@ export function DepotSEO({ totalCount }: DepotSEOProps) {
       },
       {
         "@type": "Question",
-        "name": "How do I download capabilities?",
+        "name": "Are capabilities free?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Purchase a capability license through Stripe checkout. Once licensed, you can download the artifact (zip, wasm, or container) and integrate it into your local environment."
+          "text": "Yes! All 269+ capabilities are completely free to download and use. Simply browse the catalog, view details, and integrate into your local environment."
         }
       },
       {
@@ -163,15 +156,7 @@ export function DepotSEO({ totalCount }: DepotSEOProps) {
         "name": "Are capabilities supported?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "All capabilities are sold as-is without support, hosting, or SLA. Execution, integration, and maintenance are the responsibility of the licensee. Documentation is included with each artifact."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What pricing tiers are available?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": `Four pricing tiers: Utility ($${PRICING_TIERS.utility.minPrice}-$${PRICING_TIERS.utility.maxPrice}), Advanced ($${PRICING_TIERS.advanced.minPrice}-$${PRICING_TIERS.advanced.maxPrice}), System ($${PRICING_TIERS.system.minPrice}-$${PRICING_TIERS.system.maxPrice}), and Flagship ($${PRICING_TIERS.flagship.minPrice}-$${PRICING_TIERS.flagship.maxPrice}).`
+          "text": "All capabilities are provided as-is without hosting or SLA. Execution, integration, and maintenance are the responsibility of the user. Documentation is included with each artifact. Visit our Support page for assistance."
         }
       },
       {
@@ -186,7 +171,7 @@ export function DepotSEO({ totalCount }: DepotSEOProps) {
   };
 
   // Generate keyword-rich description
-  const metaDescription = `Download ${totalCount}+ licensed cognitive AI capabilities: causal inference, threat detection, compliance automation, WCAG auditing, and more. Local execution, no cloud dependencies. Prices from $${priceRange.low} to $${priceRange.high}.`;
+  const metaDescription = `Download ${totalCount}+ FREE cognitive AI capabilities: causal inference, threat detection, compliance automation, WCAG auditing, and more. Local execution, no cloud dependencies. All capabilities unlocked.`;
   
   // Generate keywords from capabilities
   const allTags = [...new Set(capabilities.flatMap(c => c.tags || []))];
@@ -202,6 +187,7 @@ export function DepotSEO({ totalCount }: DepotSEOProps) {
     'WCAG auditing',
     'circuit breaker',
     'rate limiting',
+    'free AI tools',
     ...allTags.slice(0, 20)
   ].join(', ');
 
@@ -212,44 +198,38 @@ export function DepotSEO({ totalCount }: DepotSEOProps) {
       <meta name="title" content={pageTitle} />
       <meta name="description" content={metaDescription} />
       <meta name="keywords" content={keywords} />
-      <meta name="author" content="PromptFluid" />
+      <meta name="author" content="CMPSBL" />
       <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
       <meta name="googlebot" content="index, follow" />
-      <link rel="canonical" href="https://promptfluid.com/capabilities" />
+      <link rel="canonical" href="https://cmpsbl.com/capabilities" />
       
       {/* Open Graph / Facebook */}
       <meta property="og:type" content="website" />
-      <meta property="og:url" content="https://promptfluid.com/capabilities" />
-      <meta property="og:title" content={`Capabilities Depot — ${totalCount}+ Cognitive AI Artifacts`} />
+      <meta property="og:url" content="https://cmpsbl.com/capabilities" />
+      <meta property="og:title" content={`Capabilities Depot — ${totalCount}+ FREE Cognitive AI Artifacts`} />
       <meta property="og:description" content={metaDescription} />
-      <meta property="og:image" content="https://promptfluid.com/og-capabilities-depot.png" />
+      <meta property="og:image" content="https://cmpsbl.com/og-capabilities-depot.png" />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
-      <meta property="og:image:alt" content="PromptFluid Capabilities Depot - Cognitive AI Marketplace" />
-      <meta property="og:site_name" content="PromptFluid Substrate" />
+      <meta property="og:image:alt" content="CMPSBL Capabilities Depot - Free Cognitive AI Library" />
+      <meta property="og:site_name" content="CMPSBL Substrate" />
       <meta property="og:locale" content="en_US" />
       
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:url" content="https://promptfluid.com/capabilities" />
-      <meta name="twitter:title" content={`Capabilities Depot — ${totalCount}+ Cognitive AI Artifacts`} />
+      <meta name="twitter:url" content="https://cmpsbl.com/capabilities" />
+      <meta name="twitter:title" content={`Capabilities Depot — ${totalCount}+ FREE Cognitive AI Artifacts`} />
       <meta name="twitter:description" content={metaDescription} />
-      <meta name="twitter:image" content="https://promptfluid.com/og-capabilities-depot.png" />
-      <meta name="twitter:creator" content="@promptfluid" />
-      <meta name="twitter:site" content="@promptfluid" />
+      <meta name="twitter:image" content="https://cmpsbl.com/og-capabilities-depot.png" />
+      <meta name="twitter:creator" content="@cmpsbl" />
+      <meta name="twitter:site" content="@cmpsbl" />
       
       {/* Additional SEO Tags */}
-      <meta name="application-name" content="PromptFluid Capabilities Depot" />
+      <meta name="application-name" content="CMPSBL Capabilities Depot" />
       <meta name="apple-mobile-web-app-title" content="Capabilities Depot" />
       <meta name="theme-color" content="#0ea5e9" />
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="format-detection" content="telephone=no" />
-      
-      {/* Pricing/Commerce Tags */}
-      <meta name="product:price:amount" content={String(avgPrice)} />
-      <meta name="product:price:currency" content="USD" />
-      <meta name="product:availability" content="in stock" />
-      <meta name="product:category" content="Software > Developer Tools" />
       
       {/* Structured Data */}
       <script type="application/ld+json">

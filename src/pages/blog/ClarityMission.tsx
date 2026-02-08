@@ -6,20 +6,20 @@ import { ArrowLeft, Heart, Users, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 import heroImage from "@/assets/blog/cmptbl-mission-accessibility.jpg";
 
-const PTCHBLMission = () => {
+const ClarityMission = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="PTCHBL (Patchable): Making the Digital World Accessible for Everyone | PromptFluid"
-        description="Discover PTCHBL's mission to eliminate digital barriers through AI-powered accessibility. Learn how PromptFluid is revolutionizing WCAG compliance and creating inclusive web experiences."
-        canonical="https://www.promptfluid.com/blog/clarity-accessibility-mission"
+        title="Clarity Module: Making the Digital World Accessible for Everyone | CMPSBL"
+        description="Discover the Clarity module's mission to eliminate digital barriers through AI-powered accessibility. Learn how CMPSBL is revolutionizing WCAG compliance and creating inclusive web experiences."
+        canonical="https://cmpsbl.com/blog/clarity-accessibility-mission"
         keywords={[
           "web accessibility",
           "WCAG compliance",
           "AI accessibility tools",
           "digital inclusion",
           "accessible web design",
-          "PTCHBL Patchable",
+          "Clarity module",
           "ADA compliance software",
           "automated accessibility testing"
         ]}
@@ -46,10 +46,10 @@ const PTCHBLMission = () => {
           </div>
           
           <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent">
-            PTCHBL (Patchable): The Mission to Make Every Digital Experience Accessible
+            Clarity: The Mission to Make Every Digital Experience Accessible
           </h1>
           <p className="text-xl text-muted-foreground">
-            How PromptFluid's PTCHBL module is using AI to eliminate digital barriers and create truly inclusive web experiences for everyone
+            How CMPSBL's Clarity module is using AI to eliminate digital barriers and create truly inclusive web experiences for everyone
           </p>
           
           <AuthorBio publishDate="2025-10-16" readTime="12 min read" />
@@ -57,7 +57,7 @@ const PTCHBLMission = () => {
 
         <section className="prose prose-lg max-w-none mb-12">
           <p className="lead text-xl mb-8">
-            Over 1 billion people worldwide live with some form of disability. Yet the digital world remains frustratingly inaccessible to millions. PTCHBL exists to change that reality through adaptive AI that makes accessibility automatic, comprehensive, and sustainable.
+            Over 1 billion people worldwide live with some form of disability. Yet the digital world remains frustratingly inaccessible to millions. Clarity exists to change that reality through adaptive AI that makes accessibility automatic, comprehensive, and sustainable.
           </p>
 
           <h2 className="text-3xl font-bold mt-12 mb-6">The Accessibility Crisis Nobody Talks About</h2>
@@ -199,14 +199,14 @@ const PTCHBLMission = () => {
             Sites with strong accessibility tend to have better crawlability, clearer content organization, and improved mobile experiences. These factors directly impact search visibility and organic traffic growth.
           </p>
 
-          <h2 className="text-3xl font-bold mt-12 mb-6">Clarity Integration with PromptFluid Ecosystem</h2>
+          <h2 className="text-3xl font-bold mt-12 mb-6">Clarity Integration with CMPSBL Ecosystem</h2>
           <p className="mb-6">
-            Clarity doesn't operate in isolation. As part of the <Link to="/solutions" className="text-primary hover:underline">PromptFluid ecosystem</Link>, it benefits from and contributes to the broader adaptive intelligence platform.
+            Clarity doesn't operate in isolation. As part of the <Link to="/solutions" className="text-primary hover:underline">CMPSBL ecosystem</Link>, it benefits from and contributes to the broader adaptive intelligence platform.
           </p>
 
           <h3 className="text-2xl font-semibold mt-8 mb-4">Studio Integration: Accessible by Default</h3>
           <p className="mb-4">
-            PromptFluid Studio automatically incorporates Clarity recommendations when building new sites and applications. Every generated component includes proper semantic structure, ARIA attributes, and keyboard navigation support from the start.
+            CMPSBL Studio automatically incorporates Clarity recommendations when building new sites and applications. Every generated component includes proper semantic structure, ARIA attributes, and keyboard navigation support from the start.
           </p>
           <p className="mb-6">
             This "accessible by default" approach eliminates the need for expensive remediation later. Developers can customize and extend without breaking accessibility because the foundation is solid.
@@ -214,7 +214,7 @@ const PTCHBLMission = () => {
 
           <h3 className="text-2xl font-semibold mt-8 mb-4">Brain Learning: Improving Over Time</h3>
           <p className="mb-4">
-            The PromptFluid Brain learns from every accessibility scan and remediation. It identifies patterns specific to your industry, content types, and design approaches. Over time, recommendations become increasingly tailored and accurate.
+            The CMPSBL Brain learns from every accessibility scan and remediation. It identifies patterns specific to your industry, content types, and design approaches. Over time, recommendations become increasingly tailored and accurate.
           </p>
           <p className="mb-6">
             When developers accept or modify Clarity suggestions, the system learns these preferences and applies them to future recommendations. This creates a continuously improving accessibility intelligence that becomes more valuable with use.
@@ -222,7 +222,7 @@ const PTCHBLMission = () => {
 
           <h3 className="text-2xl font-semibold mt-8 mb-4">Vision Dashboard: Accessibility Insights</h3>
           <p className="mb-4">
-            PromptFluid Vision provides centralized accessibility monitoring across all your properties. Track compliance scores, identify trends, and prioritize remediation efforts based on impact and severity.
+            CMPSBL Vision provides centralized accessibility monitoring across all your properties. Track compliance scores, identify trends, and prioritize remediation efforts based on impact and severity.
           </p>
           <p className="mb-6">
             Executives gain visibility into accessibility posture without needing technical expertise. Developers get actionable task lists integrated into their existing workflows. Accessibility specialists can review automated suggestions and override when necessary.
@@ -295,7 +295,7 @@ const PTCHBLMission = () => {
 
           <h2 className="text-3xl font-bold mt-12 mb-6">Getting Started with Clarity</h2>
           <p className="mb-6">
-            Clarity is currently in active development as part of the PromptFluid platform. Organizations interested in early access can contact us to help shape the future of automated accessibility.
+            Clarity is currently in active development as part of the CMPSBL platform. Organizations interested in early access can contact us to help shape the future of automated accessibility.
           </p>
 
           <div className="grid md:grid-cols-2 gap-6 mt-8">
@@ -311,7 +311,7 @@ const PTCHBLMission = () => {
             <Card className="p-6 bg-card/50">
               <h3 className="text-xl font-semibold mb-4">For New Projects</h3>
               <p className="mb-4">
-                Build with PromptFluid Studio to ensure accessibility from the ground up with zero additional effort.
+                Build with CMPSBL Studio to ensure accessibility from the ground up with zero additional effort.
               </p>
               <Link to="/solutions">
                 <Button variant="outline" className="w-full">Explore Studio</Button>
@@ -326,13 +326,13 @@ const PTCHBLMission = () => {
               <h4 className="font-semibold mb-4">Related Articles</h4>
               <ul className="space-y-2">
                 <li>
-                  <Link to="/blog/promptfluid-market-disruptor" className="text-primary hover:underline">
-                    Why PromptFluid is Disrupting the Market
+                  <Link to="/blog" className="text-primary hover:underline">
+                    View All Blog Posts
                   </Link>
                 </li>
                 <li>
-                  <Link to="/blog/product-roadmap-2025" className="text-primary hover:underline">
-                    PromptFluid Product Roadmap 2025-2026
+                  <Link to="/solutions" className="text-primary hover:underline">
+                    CMPSBL Modules
                   </Link>
                 </li>
               </ul>
@@ -347,7 +347,7 @@ const PTCHBLMission = () => {
                 </li>
                 <li>
                   <Link to="/about" className="text-primary hover:underline">
-                    About PromptFluid
+                    About CMPSBL
                   </Link>
                 </li>
               </ul>
@@ -374,4 +374,4 @@ const PTCHBLMission = () => {
   );
 };
 
-export default PTCHBLMission;
+export default ClarityMission;
