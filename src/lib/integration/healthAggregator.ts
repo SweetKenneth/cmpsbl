@@ -1,5 +1,5 @@
  /**
-  * INTEGRATION Health Aggregator v7.5.0
+  * INTEGRATION Health Aggregator v8.0.0 SYNERGY+ Epoch
   * Cross-integration health monitoring and aggregation
   */
  

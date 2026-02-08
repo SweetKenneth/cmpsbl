@@ -1,6 +1,6 @@
 /**
  * INTEGRATION Module — Data Synchronization
- * v7.5.0 — Bi-directional sync, conflict resolution, and change tracking
+ * v8.0.0 — SYNERGY+ Epoch Bi-directional sync, conflict resolution, and change tracking
  */
 
 import { supabase } from '@/integrations/supabase/client';

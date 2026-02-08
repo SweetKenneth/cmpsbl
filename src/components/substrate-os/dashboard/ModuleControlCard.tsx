@@ -1,5 +1,5 @@
 /**
- * Module Control Card v7.0.0 - Individual module powerhouse control
+ * Module Control Card v8.0.0 SYNERGY+ — Individual module powerhouse control
  * Gradient accents, real-time status, action buttons with Substrate Voice
  */
 

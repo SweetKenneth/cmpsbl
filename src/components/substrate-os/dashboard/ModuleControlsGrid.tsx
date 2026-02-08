@@ -1,5 +1,5 @@
 /**
- * Module Controls Grid v7.5.3 - Power house of module control panels
+ * Module Controls Grid v8.0.0 SYNERGY+ — Power house of module control panels
  * All 14 modules with real-time status and actions
  */
 

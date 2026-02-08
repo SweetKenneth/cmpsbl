@@ -1,9 +1,9 @@
 /**
  * Synergy Executors
- * v7.5.3 — Real Module Integration for Cross-Module Pipelines
+ * v8.0.0 — SYNERGY+ Epoch Real Module Integration for Cross-Module Pipelines
  * 
  * 125 custom executors that implement actual synergy logic
- * (76 core + 15 v7.5.2 + 12 v7.5.3 discoveries + 22 S-tier)
+ * (76 core + 22 S-tier + 27 discovery pipelines)
  */
 
 import type { SynergyExecutionContext, SynergyResult, SynergyStepResult } from './types';

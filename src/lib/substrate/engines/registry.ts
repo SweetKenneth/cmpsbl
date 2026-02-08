@@ -472,7 +472,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // COMMUNICATION ENGINES (2) — v7.9.0
+  // COMMUNICATION ENGINES (2) — v8.0.0 SYNERGY+
   // ═══════════════════════════════════════════════════════════════════════════
   
   broadcast_engine: {
@@ -517,7 +517,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // INTEGRATION ENGINES (2) — v7.9.0
+  // INTEGRATION ENGINES (2) — v8.0.0 SYNERGY+
   // ═══════════════════════════════════════════════════════════════════════════
   
   routing_engine: {
@@ -563,7 +563,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // ANALYTICS ENGINES (2) — v7.9.0
+  // ANALYTICS ENGINES (2) — v8.0.0 SYNERGY+
   // ═══════════════════════════════════════════════════════════════════════════
   
   monitoring_engine: {
@@ -609,7 +609,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // EXPERIENCE ENGINES (2) — v7.9.0
+  // EXPERIENCE ENGINES (2) — v8.0.0 SYNERGY+
   // ═══════════════════════════════════════════════════════════════════════════
   
   accessibility_engine: {
@@ -655,7 +655,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // KNOWLEDGE ENGINES (2) — v7.9.0
+  // KNOWLEDGE ENGINES (2) — v8.0.0 SYNERGY+
   // ═══════════════════════════════════════════════════════════════════════════
   
   graph_engine: {
@@ -701,7 +701,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // AUTONOMY ENGINES (2) — v7.9.0
+  // AUTONOMY ENGINES (2) — v8.0.0 SYNERGY+
   // ═══════════════════════════════════════════════════════════════════════════
   
   self_healing_engine: {

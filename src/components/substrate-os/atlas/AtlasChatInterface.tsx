@@ -1,6 +1,6 @@
 /**
  * Atlas Chat Interface
- * v7.2.0 — Conversational control for the substrate
+ * v8.0.0 — SYNERGY+ Epoch Conversational control for the substrate
  * 
  * Natural language interface for controlling SEBA, viewing logs,
  * running cycles, and managing the entire substrate.

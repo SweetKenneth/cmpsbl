@@ -1,6 +1,6 @@
 /**
  * Atlas Module Registry
- * v7.0.0 — Single source of truth for substrate modules and actions
+ * v8.0.0 — SYNERGY+ Epoch Single source of truth for substrate modules and actions
  */
 
 import type { ModuleRegistryEntry, ModuleAction } from './types';

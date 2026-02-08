@@ -1,7 +1,7 @@
 /**
  * Substrate OS Dashboard Hooks
- * v7.1.0 — Real-time telemetry and control hooks for the OS surface
- * Now respects debug mode kill-switch
+ * v8.0.0 — SYNERGY+ Epoch Real-time telemetry and control hooks for the OS surface
+ * Respects debug mode kill-switch
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';

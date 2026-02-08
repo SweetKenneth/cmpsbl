@@ -437,7 +437,7 @@ export default function Auth() {
               </a>
             </div>
             <p className="text-center text-[10px] text-muted-foreground font-mono">
-              CMPSBL substrate • observer layer v7.0.0
+              CMPSBL substrate • observer layer v8.0.0
             </p>
           </div>
         </motion.div>

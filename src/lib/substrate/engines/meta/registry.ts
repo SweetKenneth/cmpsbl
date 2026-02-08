@@ -210,7 +210,7 @@ export const META_ENGINE_REGISTRY: Record<MetaEngineId, MetaEngineDefinition> = 
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // EVENT FABRIC — v7.9.0
+  // EVENT FABRIC — v8.0.0 SYNERGY+
   // ═══════════════════════════════════════════════════════════════════════════
   
   event_fabric: {
@@ -234,7 +234,7 @@ export const META_ENGINE_REGISTRY: Record<MetaEngineId, MetaEngineDefinition> = 
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // DATA HIGHWAY — v7.9.0
+  // DATA HIGHWAY — v8.0.0 SYNERGY+
   // ═══════════════════════════════════════════════════════════════════════════
   
   data_highway: {
@@ -258,7 +258,7 @@ export const META_ENGINE_REGISTRY: Record<MetaEngineId, MetaEngineDefinition> = 
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // KNOWLEDGE NEXUS — v7.9.0
+  // KNOWLEDGE NEXUS — v8.0.0 SYNERGY+
   // ═══════════════════════════════════════════════════════════════════════════
   
   knowledge_nexus: {
@@ -282,7 +282,7 @@ export const META_ENGINE_REGISTRY: Record<MetaEngineId, MetaEngineDefinition> = 
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // SELF GOVERNANCE — v7.9.0
+  // SELF GOVERNANCE — v8.0.0 SYNERGY+
   // ═══════════════════════════════════════════════════════════════════════════
   
   self_governance: {
