@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — System Architecture
 
-**Version 6.3.0 | Scientific Publication**
+**Version 8.0.0 | Scientific Publication**
 
 ---
 
@@ -9,7 +9,7 @@
 | Field | Value |
 |-------|-------|
 | **Document ID** | CMPSBL-LIB-002 |
-| **Version** | v6.3.0 |
+| **Version** | v8.0.0 |
 | **Last Updated** | January 2026 |
 | **Classification** | Public Research Document |
 
@@ -631,10 +631,10 @@ The CMPSBL OS Substrate implements a sophisticated multi-layer architecture desi
 |---------|---------|
 | **Creator** | Kenneth E Sweet Jr |
 | **Organization** | PromptFluid® |
-| **Email** | promptfluid@gmail.com |
-| **Phone** | (214) 548-0883 |
+| **Email** | Dev@CMPSBL.com |
+| **Phone** | (760) FLUID-AI |
 
 ---
 
-*CMPSBL OS Substrate v6.0.0 — Human Compatibility Era*
+*CMPSBL OS Substrate v8.0.0 — ENGINE+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

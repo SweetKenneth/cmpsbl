@@ -1,6 +1,6 @@
 /**
  * CMPSBL Substrate Status Widget
- * Compact status indicator for the substrate v7.0.0
+ * Compact status indicator for the substrate v8.0.0
  */
 
 import { Activity, CheckCircle2, AlertCircle } from 'lucide-react';
@@ -15,7 +15,7 @@ export function SubstrateStatus({ compact = false }: SubstrateStatusProps) {
   const { initialized, overallHealth, modules } = useSubstrateContext();
 
   const activeCount = Object.values(modules).filter(m => m.active).length;
-  const totalModules = 14; // v7.0.0: All 14 modules
+  const totalModules = 14; // v8.0.0: All 14 modules
   const isHealthy = overallHealth >= 80;
 
   if (compact) {
@@ -41,7 +41,7 @@ export function SubstrateStatus({ compact = false }: SubstrateStatusProps) {
         CMPSBL substrate: {activeCount}/{totalModules} modules
       </span>
       <Badge variant="outline" className="text-xs">
-        v7.0.0
+        v8.0.0
       </Badge>
     </div>
   );

@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — CORTEX Module Deep Dive
 
-**Version 7.6.0 (SYNERGY+ Epoch) | Production Ready**
+**Version 8.0.0 (ENGINE+ Epoch) | Production Ready**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-022 |
 | **Module** | CORTEX |
 | **Layer** | Orchestrator |
-| **Version** | v7.6.0 |
+| **Version** | v8.0.0 |
 | **Capabilities** | 7 |
 
 ---
@@ -169,5 +169,5 @@ CORTEX implements the PEARL autonomous loop:
 
 ---
 
-*CMPSBL OS Substrate v7.6.0 — SYNERGY+ Epoch*
+*CMPSBL OS Substrate v8.0.0 — ENGINE+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

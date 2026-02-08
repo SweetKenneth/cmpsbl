@@ -1,6 +1,6 @@
 /**
  * Terminal Module Exports
- * v7.5.4 — Command execution, validation, governance, synergy, SEBA, and encoded commands (310+ commands)
+ * v8.0.0 — Command execution, validation, governance, synergy, SEBA, and encoded commands (310+ commands)
  */
 
 // Command execution with governance

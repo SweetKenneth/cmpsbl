@@ -1,6 +1,6 @@
 /**
- * Module Status Bar v7.0.0 — Premium 14-module indicators with animated states
- * Visual representation of all 14 substrate modules (SEBA Era architecture)
+ * Module Status Bar v8.0.0 — Premium 14-module indicators with animated states
+ * Visual representation of all 14 substrate modules (ENGINE+ Epoch architecture)
  */
 
 import { useState, useEffect } from 'react';

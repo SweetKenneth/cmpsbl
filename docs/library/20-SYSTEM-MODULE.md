@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — SYSTEM Module Deep Dive
 
-**Version 6.3.0 | Scientific Publication**
+**Version 8.0.0 | Scientific Publication**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-020 |
 | **Module** | SYSTEM |
 | **Layer** | Administrative / Orchestrator |
-| **Version** | v6.3.0 |
+| **Version** | v8.0.0 |
 
 ---
 
@@ -198,5 +198,5 @@ SYSTEM is aware of and coordinates all 14 modules:
 
 ---
 
-*CMPSBL OS Substrate v6.0.0 — Human Compatibility Era*
+*CMPSBL OS Substrate v8.0.0 — ENGINE+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

@@ -1,6 +1,6 @@
 /**
  * S-Tier Synergy Pipelines — Depot Registry
- * v7.5.0 — 22 Premium Capabilities for Sale
+ * v8.0.0 — 22 Premium Capabilities for Sale
  */
 
 import type { CapabilityArtifact } from '../../depot/types';

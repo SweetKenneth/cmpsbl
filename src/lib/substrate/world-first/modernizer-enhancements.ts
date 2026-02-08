@@ -1,5 +1,5 @@
 /**
- * MODERNIZER Module Enhancements — v7.5.0 SYNERGY Epoch
+ * MODERNIZER Module Enhancements — v8.0.0 ENGINE+ Epoch
  * EvolutionPredictor, RollbackAuthority, ImpactAnalyzer, ProposalRanker
  */
 

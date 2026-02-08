@@ -1,6 +1,6 @@
 /**
  * Capability System
- * v7.5.3 — SYNERGY+ Epoch: Auto-Adapt Edge Function Ingestion + Cross-Module Synergies
+ * v8.0.0 — ENGINE+ Epoch: Auto-Adapt Edge Function Ingestion + Cross-Module Synergies
  * 
  * This module provides:
  * - Registry: Single source of truth for capabilities

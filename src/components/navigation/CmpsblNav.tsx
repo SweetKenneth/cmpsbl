@@ -509,7 +509,7 @@ export function CmpsblNav() {
                   <CmpsblLogo size="md" />
                   <div>
                     <div className="text-xl font-bold tracking-tight">CMPSBL</div>
-                    <div className="text-xs text-muted-foreground font-medium">Substrate OS v7.0</div>
+                    <div className="text-xs text-muted-foreground font-medium">Substrate OS v8.0</div>
                   </div>
                 </motion.div>
               </div>
@@ -707,7 +707,7 @@ export function CmpsblNav() {
                 className="mt-8 flex items-center justify-center gap-2 text-xs text-muted-foreground"
               >
                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                <span className="font-mono">v7.0.0</span>
+                <span className="font-mono">v8.0.0</span>
                 <span>•</span>
                 <span>All Systems Operational</span>
               </motion.div>
