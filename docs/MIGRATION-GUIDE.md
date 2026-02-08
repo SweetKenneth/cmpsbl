@@ -1,12 +1,12 @@
 # promptfluid® Substrate — Migration Guide
 
-**Migrating from Legacy Functions to Unified Substrate**
+**v8.0.0 SYNERGY+ | Migrating from Legacy Functions to Unified Substrate**
 
 ---
 
 ## Overview
 
-All 200+ legacy edge functions have been consolidated into a single `pf-substrate` endpoint with 11 modules. Legacy endpoints now return `410 Gone` with migration instructions.
+All 200+ legacy edge functions have been consolidated into a single `pf-substrate` endpoint with 14 modules across 5 layers. Legacy endpoints now return `410 Gone` with migration instructions.
 
 ---
 

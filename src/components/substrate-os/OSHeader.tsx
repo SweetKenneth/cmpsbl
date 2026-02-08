@@ -1,5 +1,5 @@
 /**
- * OS Header v7.0.0 — SEBA Era Substrate identity with animated status indicators
+ * OS Header v8.0.0 SYNERGY+ — Substrate identity with animated status indicators
  * Glassmorphic design with live telemetry, gradient accents, and audio controls
  */
 

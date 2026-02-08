@@ -1,10 +1,8 @@
 /**
  * Evolution Cycle Engine
- * v6.5.1 — Unified on evolution_runs (Single Source of Truth)
+ * v8.0.0 — SYNERGY+ Epoch: Unified on evolution_runs (Single Source of Truth)
  * 
- * CRITICAL FIX: Now reads/writes from evolution_runs table (same as modernizer.scan)
- * This eliminates the "disappearing plan" bug where scan created a run in one table
- * but evolve tried to read from a different table.
+ * Unified evolution engine that reads/writes from evolution_runs table.
  * 
  * Consolidates: scan, plans, review, verify, analyze into single authoritative engine
  * Enforces: ONE canonical plan_id at any time via evolution_runs

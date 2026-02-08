@@ -2,7 +2,7 @@
 
 **Get started with the Cognitive OS in 5 minutes**
 
-*Version 4.1.1 — Updated 2026-01-23*
+*Version 8.0.0 SYNERGY+ — Updated 2026-02-08*
 
 ---
 
@@ -95,9 +95,9 @@ await substrate.call({
 
 ---
 
-## 4. Module Cheat Sheet
+## 4. Module Cheat Sheet (14 Modules, 5 Layers)
 
-### Kernel Layer (How the OS Works)
+### Kernel Layer
 
 | Module | Purpose | Top Actions |
 |--------|---------|-------------|
@@ -105,23 +105,36 @@ await substrate.call({
 | **ripple** | Message Bus | enqueue, publish, subscribe, status |
 | **access** | Identity | create_key, validate_key, get_usage |
 
-### Cognitive Layer (What the OS Thinks)
+### Cognitive Layer
 
 | Module | Purpose | Top Actions |
 |--------|---------|-------------|
 | **brain** | Memory | query, remember, reflect, dream |
 | **decode** | Intent | chat, intent, learn |
 | **nexus** | AI Router | route, providers, routeStats |
-| **dream** | Evolution | cycle, feed, awaken |
 
-### Operational Layer (How the OS Runs)
+### Operational Layer
 
 | Module | Purpose | Top Actions |
 |--------|---------|-------------|
+| **dream** | Evolution | cycle, feed, awaken |
 | **defense** | Security | analyze, reputation, posture |
 | **vision** | Observability | dashboard, health_snapshot, pulse |
+| **integration** | Adapters | connect, discover, execute |
+
+### Administrative Layer
+
+| Module | Purpose | Top Actions |
+|--------|---------|-------------|
 | **system** | Admin | backup, restore, heal, diagnostics |
 | **modernizer** | Self-Upgrade | scan, propose, apply |
+| **inclusive** | Accessibility | scan_issues, fix_auto, coverage |
+
+### Orchestrator Layer
+
+| Module | Purpose | Top Actions |
+|--------|---------|-------------|
+| **cortex** | Agencies | create, deploy, cognitives |
 
 ---
 
@@ -130,9 +143,19 @@ await substrate.call({
 Every module supports a `pulse` action for heartbeat checks:
 
 ```typescript
-// Check all modules
-const modules = ['core', 'brain', 'decode', 'defense', 'nexus', 
-                 'vision', 'dream', 'ripple', 'access', 'system', 'modernizer'];
+// Check all modules (14 total)
+const modules = [
+  // Kernel
+  'core', 'ripple', 'access',
+  // Cognitive
+  'brain', 'decode', 'nexus',
+  // Operational
+  'dream', 'defense', 'vision', 'integration',
+  // Administrative
+  'system', 'modernizer', 'inclusive',
+  // Orchestrator
+  'cortex'
+];
 
 const health = await Promise.all(
   modules.map(module => 

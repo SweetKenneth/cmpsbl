@@ -1,6 +1,6 @@
 # promptfluid® Substrate — Architecture
 
-**v2026.10 | Complete Cognitive Operating System**
+**v8.0.0 SYNERGY+ | Complete 14-Module Cognitive Operating System**
 
 ---
 

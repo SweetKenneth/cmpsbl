@@ -1,5 +1,5 @@
 /**
- * System Health Panel v7.0.0 — Live health diagnostics and auto-heal
+ * System Health Panel v8.0.0 SYNERGY+ — Live health diagnostics and auto-heal
  * Real-time system status with healing controls for 14-module architecture
  */
 

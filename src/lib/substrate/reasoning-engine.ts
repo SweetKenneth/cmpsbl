@@ -1,6 +1,6 @@
 /**
  * Reasoning Engine — Unified Higher-Order Reasoning
- * v6.3.0 — Phase 3: Reasoning Compression
+ * v8.0.0 — SYNERGY+ Epoch: Reasoning Compression
  * 
  * Merges:
  * - brain.causal → causal_mapping

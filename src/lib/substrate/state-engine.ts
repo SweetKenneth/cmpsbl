@@ -1,6 +1,6 @@
 /**
  * promptfluid® State Engine
- * v7.0.0 — Canonical State Contract Layer
+ * v8.0.0 — SYNERGY+ Epoch: Canonical State Contract Layer
  * 
  * The State Engine enforces shared state schemas and contracts across all engines.
  * All state reads and writes must route through state_engine.get() and state_engine.set().
