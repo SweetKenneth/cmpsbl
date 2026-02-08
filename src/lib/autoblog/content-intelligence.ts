@@ -161,6 +161,36 @@ export const DEEP_TOPICS = {
         'Error handling: graceful degradation in AI systems',
         'Versioning strategies for evolving capabilities'
       ]
+    },
+    {
+      topic: 'Adding Persistent Memory to Your Agent in Under an Hour',
+      hook: 'Your agent forgets everything between sessions. Here\'s how to fix that with three lines of code.',
+      keyPoints: [
+        'The withPersistentMemory wrapper pattern',
+        'Automatic context recall without manual retrieval',
+        'Memory tiering: hot, warm, and cold storage',
+        'Works with LangChain, CrewAI, or custom agents'
+      ]
+    },
+    {
+      topic: 'LangChain Integration: Memory That Actually Persists',
+      hook: 'LangChain\'s built-in memory resets on restart. Here\'s the drop-in replacement.',
+      keyPoints: [
+        'Drop-in LangChainMemory class replacement',
+        'Semantic search across conversation history',
+        'Cross-session continuity without infrastructure',
+        'Production-ready with rate limiting and caching'
+      ]
+    },
+    {
+      topic: 'RAG Without the Infrastructure Pain',
+      hook: 'Vector databases, embeddings, chunking... or just use an API.',
+      keyPoints: [
+        'Why most RAG implementations are over-engineered',
+        'Semantic retrieval without managing Pinecone/Weaviate',
+        'Automatic importance scoring and decay',
+        'From prototype to production in one day'
+      ]
     }
   ]
 };
