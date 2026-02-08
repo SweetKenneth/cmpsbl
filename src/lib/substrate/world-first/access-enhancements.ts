@@ -1,5 +1,5 @@
 /**
- * ACCESS Module Enhancements — v7.5.0 SYNERGY Epoch
+ * ACCESS Module Enhancements — v8.0.0 SYNERGY+ Epoch
  * EntitlementGraph, QuotaPredictor, AuditTrail
  */
 

@@ -1,5 +1,5 @@
 /**
- * VISION Module Enhancements — v7.5.0 SYNERGY Epoch
+ * VISION Module Enhancements — v8.0.0 SYNERGY+ Epoch
  * PredictiveSLA, AnomalyForecaster, PerformanceInsight, CapacityPlanner
  */
 

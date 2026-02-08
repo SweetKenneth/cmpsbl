@@ -48,6 +48,7 @@ import { NexusTab } from '@/components/substrate-os/NexusTab';
 import { CapabilitiesTab } from '@/components/substrate-os/CapabilitiesTab';
 import { AtlasTab } from '@/components/substrate-os/AtlasTab';
 import { EnginesTab } from '@/components/substrate-os/EnginesTab';
+import { PublicMetricsTab } from '@/components/substrate-os/PublicMetricsTab';
 import { DashboardMetricsHero, QuickActionsPanel, ModuleControlsGrid, CapacityMonitor } from '@/components/substrate-os/dashboard';
 import { cn } from '@/lib/utils';
 
@@ -113,6 +114,7 @@ function getTabGroups(isOperator: boolean, isGovernor: boolean, hasAgency: boole
     ] : []),
     ...(isGovernor ? [
       { id: 'evolution', label: 'Evolution', icon: Dna, color: 'purple', description: 'System evolution', minRole: 'governor' as const },
+      { id: 'metrics', label: 'Metrics', icon: Gauge, color: 'cyan', description: 'Public metrics control', minRole: 'governor' as const },
     ] : []),
     ...(isOperator ? [
       { id: 'backups', label: 'Backups', icon: HardDrive, color: 'blue', description: 'Backup & restore', minRole: 'operator' as const },
@@ -808,6 +810,9 @@ export default function SubstrateOS() {
                 <EvolutionTab />
               </motion.main>
             )}
+
+            {/* Public Metrics */}
+            {activeTab === 'metrics' && isGovernor && <PublicMetricsTab />}
 
             {/* Mint */}
             {activeTab === 'mint' && isGovernor && (

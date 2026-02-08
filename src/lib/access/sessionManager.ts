@@ -1,7 +1,7 @@
- /**
-  * ACCESS Session Manager
-  * v7.5.0 — Secure session lifecycle and tracking
-  */
+/**
+ * ACCESS Session Manager
+ * v8.0.0 — SYNERGY+ Epoch — Secure session lifecycle and tracking
+ */
  
  import { supabase } from '@/integrations/supabase/client';
  

@@ -32,7 +32,7 @@ export async function invokeCapability<T = unknown>(
     };
   }
   
-  // Check if capability is enabled (v7.0.0 toggle state)
+  // Check if capability is enabled (v8.0.0 toggle state)
   if (!isCapabilityEnabled(capabilityId)) {
     return {
       success: false,

@@ -1,0 +1,206 @@
+/**
+ * Public Metrics Store
+ * v8.0.0 SYNERGY+ Epoch — Single Source of Truth for all public-facing metrics
+ * 
+ * This Zustand store serves as the canonical source for all marketing numbers,
+ * version info, and capability counts across the entire substrate.
+ * 
+ * Update values here OR via the OS Dashboard "Public Metrics" tab to sync site-wide.
+ */
+
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+
+// =============================================================================
+// TYPES
+// =============================================================================
+
+export interface PublicMetrics {
+  // Version Information
+  version: string;
+  codename: string;
+  epoch: string;
+  buildDate: string;
+  
+  // Architecture Counts
+  modulesCount: number;
+  layersCount: number;
+  
+  // Synergy Metrics
+  synergyPipelinesCount: number;
+  synergyExecutorsCount: number;
+  stierPipelinesCount: number;
+  
+  // Engine Metrics
+  enginesCount: number;
+  metaEnginesCount: number;
+  
+  // Capability Metrics
+  capabilitiesCount: number;
+  archivedCapabilitiesCount: number;
+  
+  // Terminal & Commands
+  terminalCommandsCount: number;
+  
+  // Integration
+  integrationAdaptersCount: number;
+  
+  // Codebase
+  linesOfCode: number;
+  linesOfCodeDisplay: string;
+  
+  // Performance Claims
+  routingLatencyClaim: string;
+  
+  // Accessibility
+  wcagLevel: string;
+  
+  // Providers
+  providersCount: number;
+  byokSupported: boolean;
+}
+
+export interface PublicMetricsStore {
+  metrics: PublicMetrics;
+  lastUpdated: string;
+  
+  // Actions
+  updateMetric: <K extends keyof PublicMetrics>(key: K, value: PublicMetrics[K]) => void;
+  updateMetrics: (updates: Partial<PublicMetrics>) => void;
+  resetToDefaults: () => void;
+  getMetric: <K extends keyof PublicMetrics>(key: K) => PublicMetrics[K];
+}
+
+// =============================================================================
+// DEFAULT VALUES (SYNERGY+ Epoch verified counts)
+// =============================================================================
+
+export const DEFAULT_METRICS: PublicMetrics = {
+  // Version Information
+  version: '8.0.0',
+  codename: 'SYNERGY+',
+  epoch: 'SYNERGY+',
+  buildDate: new Date().toISOString().split('T')[0],
+  
+  // Architecture Counts
+  modulesCount: 14,
+  layersCount: 5,
+  
+  // Synergy Metrics (98 core + 22 S-tier + 27 discovery = 147)
+  synergyPipelinesCount: 147,
+  synergyExecutorsCount: 125,
+  stierPipelinesCount: 32,
+  
+  // Engine Metrics
+  enginesCount: 62,
+  metaEnginesCount: 20,
+  
+  // Capability Metrics
+  capabilitiesCount: 269,
+  archivedCapabilitiesCount: 136,
+  
+  // Terminal & Commands
+  terminalCommandsCount: 310,
+  
+  // Integration
+  integrationAdaptersCount: 35,
+  
+  // Codebase
+  linesOfCode: 160000,
+  linesOfCodeDisplay: '160k+',
+  
+  // Performance Claims
+  routingLatencyClaim: '<100ms',
+  
+  // Accessibility
+  wcagLevel: 'WCAG 2.2 AA',
+  
+  // Providers
+  providersCount: 6,
+  byokSupported: true,
+};
+
+// =============================================================================
+// STORE IMPLEMENTATION
+// =============================================================================
+
+export const usePublicMetricsStore = create<PublicMetricsStore>()(
+  persist(
+    (set, get) => ({
+      metrics: { ...DEFAULT_METRICS },
+      lastUpdated: new Date().toISOString(),
+      
+      updateMetric: (key, value) => {
+        set((state) => ({
+          metrics: { ...state.metrics, [key]: value },
+          lastUpdated: new Date().toISOString(),
+        }));
+      },
+      
+      updateMetrics: (updates) => {
+        set((state) => ({
+          metrics: { ...state.metrics, ...updates },
+          lastUpdated: new Date().toISOString(),
+        }));
+      },
+      
+      resetToDefaults: () => {
+        set({
+          metrics: { ...DEFAULT_METRICS },
+          lastUpdated: new Date().toISOString(),
+        });
+      },
+      
+      getMetric: (key) => get().metrics[key],
+    }),
+    {
+      name: 'substrate-public-metrics',
+      version: 1,
+    }
+  )
+);
+
+// =============================================================================
+// CONVENIENCE HOOKS
+// =============================================================================
+
+/** Get a single metric value reactively */
+export function useMetric<K extends keyof PublicMetrics>(key: K): PublicMetrics[K] {
+  return usePublicMetricsStore((state) => state.metrics[key]);
+}
+
+/** Get the full version string (e.g., "8.0.0 SYNERGY+") */
+export function useVersionString(): string {
+  return usePublicMetricsStore((state) => 
+    `${state.metrics.version} ${state.metrics.codename}`
+  );
+}
+
+/** Get total engine ecosystem count */
+export function useTotalEngineCount(): number {
+  return usePublicMetricsStore((state) => 
+    state.metrics.enginesCount + state.metrics.metaEnginesCount
+  );
+}
+
+// =============================================================================
+// NON-REACTIVE GETTERS (for non-component code)
+// =============================================================================
+
+/** Get metrics synchronously (for use outside React components) */
+export function getPublicMetrics(): PublicMetrics {
+  return usePublicMetricsStore.getState().metrics;
+}
+
+/** Get a single metric synchronously */
+export function getMetric<K extends keyof PublicMetrics>(key: K): PublicMetrics[K] {
+  return usePublicMetricsStore.getState().metrics[key];
+}
+
+/** Get full version string synchronously */
+export function getVersionString(): string {
+  const { version, codename } = usePublicMetricsStore.getState().metrics;
+  return `${version} ${codename}`;
+}
+
+export default usePublicMetricsStore;
