@@ -46,13 +46,16 @@ These constraints are enforced at three levels:
   Status          + Signed                          + Logged
 ```
 
-### 2.1 Author Phase (CMPSBL Admin)
-1. Admin creates a patch via `/admin/patches`
-2. Selects engines and capabilities to unlock
+### 2.1 Author Phase (CMPSBL Governor)
+1. Governor opens the **OS Dashboard** (`/os`) and navigates to the **Patches** tab (under Evolve)
+2. Uses the checkbox UI to select engines (grouped by category) and capabilities to unlock
 3. Sets the required license tier (free, builder, pro)
-4. Writes a changelog entry
-5. System generates a signed JSON manifest
+4. Enters a version number and changelog description
+5. System generates a signed JSON manifest with SHA-256 signature
 6. Patch is saved as `draft`
+
+> **Note:** The Patches tab is CMPSBL-exclusive and must NEVER be included in LNCHBL patches.
+> An older `/admin/patches` page exists but is deprecated in favor of the embedded OS tab.
 
 ### 2.2 Publish Phase (CMPSBL Admin)
 1. Admin reviews the draft manifest
@@ -264,9 +267,11 @@ POST /cmpsbl-patch-download
 | Patch Authoring Core | `src/lib/patches/author.ts` |
 | Manifest Endpoint | `supabase/functions/cmpsbl-patch-manifest/index.ts` |
 | Download Endpoint | `supabase/functions/cmpsbl-patch-download/index.ts` |
-| Admin UI | `src/pages/AdminPatches.tsx` |
+| OS Patches Tab (primary) | `src/components/substrate-os/PatchAuthoringTab.tsx` |
+| Admin Patches Page (deprecated) | `src/pages/AdminPatches.tsx` |
 | Database Table | `cmpsbl_patches` (with RLS) |
 | Download Audit | `cmpsbl_patch_downloads` |
+| LNCHBL Integration Spec | `docs/LNCHBL_PATCH_CLIENT.md` |
 | This Document | `docs/PATCH_PROTOCOL.md` |
 
 ---
