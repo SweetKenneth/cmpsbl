@@ -90,6 +90,7 @@ const CheckoutRedirect = lazy(() => import("./pages/CheckoutRedirect"));
 const EngineMarketplace = lazy(() => import("./pages/EngineMarketplace"));
 const PersistentMemoryDocs = lazy(() => import("./pages/docs/PersistentMemoryDocs"));
 const PersistentMemoryLanding = lazy(() => import("./pages/PersistentMemoryLanding"));
+const AdminPatches = lazy(() => import("./pages/AdminPatches"));
 
 // Cluster pages (module deep-dives)
 const ClusterStudio = lazy(() => import("./pages/cluster/Studio"));
@@ -365,6 +366,7 @@ const App = () => {
                         {/* Redirecting to home to prevent outdated content access */}
                         
                         {/* Admin routes */}
+                        <Route path="/admin/patches" element={<AdminPatches />} />
                         <Route path="/admin/*" element={<Navigate to="/" replace />} />
                         <Route path="/dashboard" element={<Navigate to="/" replace />} />
                         
