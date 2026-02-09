@@ -1,17 +1,15 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-distribution-id',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-distribution-id, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
 
-serve(async (req) => {
+Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
-  // Only accept GET requests
   if (req.method !== 'GET') {
     return new Response(
       JSON.stringify({ error: 'Method not allowed. GET only.' }),
@@ -23,9 +21,7 @@ serve(async (req) => {
     const url = new URL(req.url);
     const distributionId = url.searchParams.get('distribution_id') || req.headers.get('x-distribution-id');
 
-    // SECURITY: Only LNCHBL may request the manifest
     if (distributionId !== 'LNCHBL') {
-      console.warn(`Manifest request rejected: distribution_id="${distributionId}"`);
       return new Response(
         JSON.stringify({ error: 'Unauthorized distribution. Only LNCHBL may request patch manifests.' }),
         { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -43,7 +39,6 @@ serve(async (req) => {
 
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Fetch published patches
     const { data: patches, error } = await supabase
       .from('cmpsbl_patches')
       .select('id, version, required_tier, engines_unlocked, capabilities_unlocked, changelog, status, published_at')
@@ -70,7 +65,6 @@ serve(async (req) => {
       publishedAt: p.published_at,
     }));
 
-    // Build manifest
     const manifest = {
       distributionId: 'CMPSBL',
       generatedAt: new Date().toISOString(),
@@ -79,7 +73,6 @@ serve(async (req) => {
       critical: patchEntries.some((p: any) => p.changelog?.toLowerCase().includes('[critical]')),
     };
 
-    // Sign manifest
     const encoder = new TextEncoder();
     const data = encoder.encode(JSON.stringify(manifest));
     const hashBuffer = await crypto.subtle.digest('SHA-256', data);
