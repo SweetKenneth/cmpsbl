@@ -139,24 +139,23 @@ export function SandboxEnvironment() {
   };
 
   return (
-    <div className="grid lg:grid-cols-3 gap-6">
-      {/* Code Editor */}
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
       <div className="lg:col-span-2 space-y-4">
         <Card>
           <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <CardTitle className="flex items-center gap-2">
                 <Terminal className="w-5 h-5 text-primary" />
                 Sandbox Code Editor
               </CardTitle>
-              <div className="flex gap-1">
+              <div className="flex flex-wrap gap-1">
                 {Object.entries(SAMPLE_TEMPLATES).map(([key]) => (
                   <Button
                     key={key}
                     variant="ghost"
                     size="sm"
                     onClick={() => setCode(SAMPLE_TEMPLATES[key as keyof typeof SAMPLE_TEMPLATES])}
-                    className="text-xs h-8 px-3 capitalize"
+                    className="text-xs h-7 px-2 capitalize"
                   >
                     {key}
                   </Button>
@@ -169,7 +168,7 @@ export function SandboxEnvironment() {
               <textarea
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
-                className="w-full font-mono text-sm min-h-[200px] p-4 bg-muted/30 border border-border rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-primary/50"
+                className="w-full font-mono text-xs sm:text-sm min-h-[160px] sm:min-h-[200px] p-3 sm:p-4 bg-muted/30 border border-border rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-primary/50"
                 placeholder="// Write your substrate SDK code here..."
                 spellCheck={false}
               />
@@ -184,7 +183,7 @@ export function SandboxEnvironment() {
             </div>
             
             <div className="flex gap-2">
-              <Button onClick={runCode} disabled={isRunning} className="flex-1">
+              <Button onClick={runCode} disabled={isRunning} className="flex-1 text-sm">
                 <Play className="w-4 h-4 mr-2" />
                 {isRunning ? 'Running...' : 'Run Code'}
               </Button>
@@ -196,7 +195,7 @@ export function SandboxEnvironment() {
         </Card>
 
         {/* Console Output */}
-        <Card>
+        <Card className="block lg:hidden xl:block">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
               <CardTitle className="text-sm flex items-center gap-2">
@@ -209,8 +208,8 @@ export function SandboxEnvironment() {
             </div>
           </CardHeader>
           <CardContent>
-            <ScrollArea className="h-[150px] bg-card border border-border rounded-xl p-4">
-              <div className="font-mono text-sm space-y-1">
+            <ScrollArea className="h-[120px] sm:h-[150px] bg-card border border-border rounded-xl p-3 sm:p-4">
+              <div className="font-mono text-xs sm:text-sm space-y-1">
                 <AnimatePresence mode="popLayout">
                   {logs.map((log, i) => (
                     <motion.div

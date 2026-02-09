@@ -132,13 +132,13 @@ export default function Contact() {
               <div className="bg-card border border-border rounded-lg p-8">
                 <h3 className="text-xl font-bold mb-4 text-foreground">Connect With Us</h3>
                 <div className="space-y-2">
-                  <a href="https://twitter.com/cmpsbl" target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">
+                  <a href="https://x.com/kennethesweetjr?s=21" target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">
                     Twitter/X
                   </a>
-                  <a href="https://linkedin.com/company/cmpsbl" target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">
+                  <a href="https://www.linkedin.com/in/kennethesweetjr?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">
                     LinkedIn
                   </a>
-                  <a href="https://github.com/cmpsbl" target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">
+                  <a href="https://github.com/SweetKenneth" target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">
                     GitHub
                   </a>
                 </div>

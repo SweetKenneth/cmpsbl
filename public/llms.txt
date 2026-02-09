@@ -208,9 +208,9 @@ DOI: 10.5281/zenodo.18209222
 
 - Website: https://cmpsbl.com
 - Documentation: https://cmpsbl.com/docs
-- FNDTN Paper: https://cmpsbl.com/docs/FNDTN-v6/
-- Email: PromptFluid@gmail.com
-- Phone: (214) 548-0883
+- FNDTN Paper: https://cmpsbl.com/docs/FNDTN-v8/
+- Email: Dev@CMPSBL.com
+- Phone: (760) FLUID-AI
 
 ---
 

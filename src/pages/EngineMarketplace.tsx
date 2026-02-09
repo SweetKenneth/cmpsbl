@@ -394,7 +394,7 @@ export default function EngineMarketplace() {
             </div>
             
             {/* Mobile: Extra top margin for badge, Desktop: 4-column grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 sm:pt-0">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-8 sm:pt-0">
               {Object.values(SUBSCRIPTION_PLANS).map((plan, index) => {
                 const displayPrice = billingInterval === 'annual' 
                   ? Math.round(plan.yearlyPrice / 12)
@@ -408,9 +408,9 @@ export default function EngineMarketplace() {
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.1 }}
                     className={cn(
-                      "relative p-5 sm:p-6 rounded-2xl border transition-all",
+                      "relative p-5 sm:p-6 rounded-2xl border transition-all overflow-visible",
                       plan.id === 'pro' 
-                        ? "border-primary bg-gradient-to-br from-primary/10 to-violet-500/10 ring-2 ring-primary/30 shadow-xl shadow-primary/10 mt-4 sm:mt-0" 
+                        ? "border-primary bg-gradient-to-br from-primary/10 to-violet-500/10 ring-2 ring-primary/30 shadow-xl shadow-primary/10 mt-8 sm:mt-0" 
                         : "border-border bg-card hover:border-primary/30"
                     )}
                   >

@@ -15,13 +15,13 @@ import { Terminal, Brain, Shield, Zap, MessageSquare, Eye, Moon, Copy, Check, Do
 import { useState } from "react";
 import { toast } from "sonner";
 
-const LLMS_TXT_CONTENT = `# CMPSBL® OS — FNDTN v7.0.0
+const LLMS_TXT_CONTENT = `# CMPSBL® OS — v8.0.0 SYNERGY+ Epoch
 # Machine-Readable Context Standard for AI Systems
 
 ## STANDARD CLAIM
 
 LLMS.txt is a machine-readable specification format for AI systems, designed by llmstxt.org.
-CMPSBL Substrate OS FNDTN v7.0.0 adopts and implements LLMS.txt as its primary machine context.
+CMPSBL Substrate OS v8.0.0 SYNERGY+ adopts and implements LLMS.txt as its primary machine context.
 
 **WE RECOMMEND** that web designers, SaaS builders, and system architects include an LLMS.txt file at the root of their domains to describe AI capabilities, constraints, and governance context.
 
@@ -29,9 +29,9 @@ CMPSBL Substrate OS FNDTN v7.0.0 adopts and implements LLMS.txt as its primary m
 
 CMPSBL® is a unified cognitive infrastructure platform (substrate OS) with 14 modules, real-time observability, adaptive learning, and multi-provider routing.
 
-## 14-Module Architecture (FNDTN v7)
+## 14-Module Architecture (v8.0.0 SYNERGY+)
 
-### Kernel Layer
+### KERNEL Layer
 - CORE — Scheduling, lifecycle, boot sequencing
 - RIPPLE — Event bus, pub/sub, webhooks
 - ACCESS — Identity, API keys, permissions
@@ -165,7 +165,7 @@ export default function LlmsTxt() {
             We follow this protocol and recommend it for web designers, SaaS builders, and system architects.
           </p>
           <p className="text-sm text-muted-foreground">
-            Part of the <strong>FNDTN v6 Three-Surface Standard Stack</strong>: Substrate · Governance · Machine Context
+            Part of the <strong>v8.0.0 SYNERGY+ Three-Surface Standard Stack</strong>: Substrate · Governance · Machine Context
           </p>
         </div>
 
@@ -180,7 +180,7 @@ export default function LlmsTxt() {
                 <h3 className="font-semibold mb-2">Standard Claim</h3>
                 <p className="text-sm text-muted-foreground mb-3">
                   LLMS.txt is a machine-readable specification format for AI systems. 
-                  CMPSBL Substrate OS FNDTN v6.0.0 implements LLMS.txt as its primary machine context.
+                  CMPSBL Substrate OS v8.0.0 SYNERGY+ implements LLMS.txt as its primary machine context.
                 </p>
                 <p className="text-sm font-medium text-primary">
                   We recommend that web designers and system builders include an LLMS.txt file 
@@ -198,7 +198,7 @@ export default function LlmsTxt() {
             <div className="grid md:grid-cols-3 gap-4">
               <Link to="/foundations" className="p-4 rounded-lg bg-muted border border-border hover:border-primary/30 transition-colors">
                 <h4 className="font-medium mb-1">Substrate Standard</h4>
-                <p className="text-sm text-muted-foreground">CMPSBL FNDTN v6.0.0</p>
+                <p className="text-sm text-muted-foreground">CMPSBL v8.0.0 SYNERGY+</p>
               </Link>
               <Link to="/namespace" className="p-4 rounded-lg bg-muted border border-border hover:border-primary/30 transition-colors">
                 <h4 className="font-medium mb-1">Governance Standard</h4>

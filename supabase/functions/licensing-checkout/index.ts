@@ -15,13 +15,13 @@ const corsHeaders = {
 // Developer License pricing configuration
 const DEV_LICENSE_PRICES = {
   monthly: {
-    price_id: 'price_1Sx9F1Q7FtTiAL4aPvHMDh9r',
-    product_id: 'prod_TuzDdndKiASplG',
+    price_id: 'price_1SyiOSQ7FtTiAL4a0nLYNaww',
+    product_id: 'prod_TwbbSoGvPk62xt',
     amount: 3900, // $39/month
   },
   annual: {
-    price_id: 'price_1Sx9F2Q7FtTiAL4a6vQtPPLe',
-    product_id: 'prod_TuzDyllhVhku0B',
+    price_id: 'price_1SyiOTQ7FtTiAL4ahfSITWgg',
+    product_id: 'prod_TwbbkEwx63DMli',
     amount: 29900, // $299/year
   },
 };
