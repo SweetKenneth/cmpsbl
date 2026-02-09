@@ -3361,6 +3361,98 @@ export type Database = {
         }
         Relationships: []
       }
+      cmpsbl_patch_downloads: {
+        Row: {
+          created_at: string
+          distribution_id: string
+          id: string
+          ip_address: string | null
+          license_key_hash: string | null
+          license_tier: string | null
+          patch_id: string
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string
+          distribution_id?: string
+          id?: string
+          ip_address?: string | null
+          license_key_hash?: string | null
+          license_tier?: string | null
+          patch_id: string
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string
+          distribution_id?: string
+          id?: string
+          ip_address?: string | null
+          license_key_hash?: string | null
+          license_tier?: string | null
+          patch_id?: string
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cmpsbl_patch_downloads_patch_id_fkey"
+            columns: ["patch_id"]
+            isOneToOne: false
+            referencedRelation: "cmpsbl_patches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cmpsbl_patches: {
+        Row: {
+          capabilities_unlocked: string[] | null
+          changelog: string | null
+          created_at: string
+          created_by: string | null
+          engines_unlocked: string[] | null
+          id: string
+          manifest_json: Json | null
+          published_at: string | null
+          required_tier: string
+          signature: string | null
+          status: string
+          target_distribution: string
+          updated_at: string
+          version: string
+        }
+        Insert: {
+          capabilities_unlocked?: string[] | null
+          changelog?: string | null
+          created_at?: string
+          created_by?: string | null
+          engines_unlocked?: string[] | null
+          id?: string
+          manifest_json?: Json | null
+          published_at?: string | null
+          required_tier?: string
+          signature?: string | null
+          status?: string
+          target_distribution?: string
+          updated_at?: string
+          version: string
+        }
+        Update: {
+          capabilities_unlocked?: string[] | null
+          changelog?: string | null
+          created_at?: string
+          created_by?: string | null
+          engines_unlocked?: string[] | null
+          id?: string
+          manifest_json?: Json | null
+          published_at?: string | null
+          required_tier?: string
+          signature?: string | null
+          status?: string
+          target_distribution?: string
+          updated_at?: string
+          version?: string
+        }
+        Relationships: []
+      }
       cognitive_registry: {
         Row: {
           api_url: string | null
