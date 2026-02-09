@@ -49,6 +49,7 @@ import { CapabilitiesTab } from '@/components/substrate-os/CapabilitiesTab';
 import { AtlasTab } from '@/components/substrate-os/AtlasTab';
 import { EnginesTab } from '@/components/substrate-os/EnginesTab';
 import { PublicMetricsTab } from '@/components/substrate-os/PublicMetricsTab';
+import { PatchAuthoringTab } from '@/components/substrate-os/PatchAuthoringTab';
 import { DashboardMetricsHero, QuickActionsPanel, ModuleControlsGrid, CapacityMonitor } from '@/components/substrate-os/dashboard';
 import { cn } from '@/lib/utils';
 
