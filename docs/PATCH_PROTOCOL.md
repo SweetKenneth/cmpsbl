@@ -267,9 +267,11 @@ POST /cmpsbl-patch-download
 | Patch Authoring Core | `src/lib/patches/author.ts` |
 | Manifest Endpoint | `supabase/functions/cmpsbl-patch-manifest/index.ts` |
 | Download Endpoint | `supabase/functions/cmpsbl-patch-download/index.ts` |
-| Admin UI | `src/pages/AdminPatches.tsx` |
+| OS Patches Tab (primary) | `src/components/substrate-os/PatchAuthoringTab.tsx` |
+| Admin Patches Page (deprecated) | `src/pages/AdminPatches.tsx` |
 | Database Table | `cmpsbl_patches` (with RLS) |
 | Download Audit | `cmpsbl_patch_downloads` |
+| LNCHBL Integration Spec | `docs/LNCHBL_PATCH_CLIENT.md` |
 | This Document | `docs/PATCH_PROTOCOL.md` |
 
 ---
