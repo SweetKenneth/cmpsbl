@@ -366,6 +366,7 @@ const App = () => {
                         {/* Redirecting to home to prevent outdated content access */}
                         
                         {/* Admin routes */}
+                        <Route path="/admin/patches" element={<AdminPatches />} />
                         <Route path="/admin/*" element={<Navigate to="/" replace />} />
                         <Route path="/dashboard" element={<Navigate to="/" replace />} />
                         

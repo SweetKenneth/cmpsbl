@@ -92,3 +92,9 @@ verify_jwt = false
 
 [functions.pf-module-clm-scheduler]
 verify_jwt = false
+
+[functions.cmpsbl-patch-manifest]
+verify_jwt = false
+
+[functions.cmpsbl-patch-download]
+verify_jwt = false
