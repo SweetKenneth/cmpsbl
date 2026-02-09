@@ -21,9 +21,127 @@ interface EvolutionEntry {
   capabilities: string[];
 }
 
-// Living Evolution Log — v7.x.x Series (SEBA Era)
+// Living Evolution Log — v8.x.x Series (SYNERGY+ Epoch)
 // Each entry documents WHY the system changed, never HOW
-const evolutionLog: EvolutionEntry[] = [
+const evolutionLogV8: EvolutionEntry[] = [
+  {
+    id: "v8-evolution-005",
+    date: "2026-02-09",
+    pressures: [
+      "Module names inconsistently cased across documentation and UI",
+      "Navigation and footer required unified structure across all pages",
+      "Developer licensing checkout flow was non-functional"
+    ],
+    responses: [
+      "Enforced ALL CAPS naming convention for all 14 modules substrate-wide",
+      "Standardized PublicNav and EnhancedFooter across all public pages",
+      "Restored Stripe checkout with proper product/price configuration"
+    ],
+    capabilities: [
+      "CORE, RIPPLE, ACCESS, BRAIN, DECODE, NEXUS, DREAM, DEFENSE, VISION, INTEGRATION, SYSTEM, MODERNIZER, INCLUSIVE, CORTEX — all caps everywhere",
+      "Zero navigation deviation across public-facing surfaces",
+      "Developer licensing ($39/mo or $299/yr) fully operational"
+    ]
+  },
+  {
+    id: "v8-evolution-004",
+    date: "2026-02-08",
+    pressures: [
+      "Feed the Dream Eater page had broken rate limiting",
+      "SEO coverage was incomplete across public pages",
+      "sitemap.xml and robots.txt needed 2026 crawler updates"
+    ],
+    responses: [
+      "Created increment_dream_rate_limit RPC function for session-based limiting",
+      "Comprehensive SEO overhaul with Open Graph, Twitter Cards, and JSON-LD",
+      "Updated sitemap-index.xml, robots.txt, and llms.txt for modern crawlers"
+    ],
+    capabilities: [
+      "Dream Eater operates with proper rate limiting and mood synchronization",
+      "All major pages optimized for Google and LLM-based discovery",
+      "GPTBot, ClaudeBot, PerplexityBot properly configured in robots.txt"
+    ]
+  },
+  {
+    id: "v8-evolution-003",
+    date: "2026-02-07",
+    pressures: [
+      "Substrate Intelligence page needed completion for investors",
+      "Engine Marketplace required mobile responsiveness fixes",
+      "Developer Academy Sandbox was desktop-only"
+    ],
+    responses: [
+      "Built comprehensive Substrate Intelligence page with proof architecture",
+      "Fixed mobile layouts across marketplace and academy",
+      "Responsive grid system implemented for Sandbox environment"
+    ],
+    capabilities: [
+      "Investors can access full substrate proof and acquisition information",
+      "Mobile users can browse engines and interact with academy",
+      "Sandbox accessible on all device sizes"
+    ]
+  },
+  {
+    id: "v8-evolution-002",
+    date: "2026-02-05",
+    pressures: [
+      "SYNERGY+ architecture required unified version registry",
+      "14-module ecosystem needed single source of truth for versions",
+      "Control plane versions were scattered across codebase"
+    ],
+    responses: [
+      "Created src/lib/substrate/versions.ts as canonical version registry",
+      "All 14 modules + 4 control planes unified under v8.0.0",
+      "Synergy Engine metrics consolidated (147 pipelines, 125 executors)"
+    ],
+    capabilities: [
+      "Single import for all version information substrate-wide",
+      "Version compatibility utilities available for dependency checking",
+      "Layer-based module grouping for architectural queries"
+    ]
+  },
+  {
+    id: "v8-evolution-001",
+    date: "2026-02-04",
+    pressures: [
+      "SEBA v2.0.0 achieved full spectrum autonomous evolution",
+      "Synergy pipelines reached 147 production configurations",
+      "Documentation library required v8 alignment"
+    ],
+    responses: [
+      "SYNERGY+ epoch declared as v8.0.0 release milestone",
+      "All 14 modules promoted to v8.0.0 simultaneously",
+      "SEBA 2.0.0 codename changed to 'Full Spectrum Autonomy'"
+    ],
+    capabilities: [
+      "SYNERGY+ Epoch represents the most connected substrate state",
+      "9 SEBA analysis engines for full-spectrum evolution",
+      "Complete cognitive-evolution pipeline with 10 improvement categories"
+    ]
+  },
+  {
+    id: "v8-foundation",
+    date: "2026-02-03",
+    pressures: [
+      "v7 bounded autonomy proved stable but scope-limited",
+      "Synergy pipelines outgrew original v7 architecture",
+      "Investor and developer onboarding needed acceleration"
+    ],
+    responses: [
+      "SYNERGY+ epoch established with enhanced pipeline architecture",
+      "32 S-tier pipelines identified for premium operations",
+      "Public-facing documentation restructured for clarity"
+    ],
+    capabilities: [
+      "v8.0.0 SYNERGY+ Epoch launched with 147 production pipelines",
+      "125 specialized executors across all cognitive layers",
+      "The age of full-spectrum autonomous evolution began"
+    ]
+  }
+];
+
+// Living Evolution Log — v7.x.x Series (SEBA Era)
+const evolutionLogV7: EvolutionEntry[] = [
   {
     id: "v7-evolution-003",
     date: "2026-02-01",
@@ -105,6 +223,12 @@ const evolutionLog: EvolutionEntry[] = [
 // Archived major versions (frozen historical records)
 const archivedVersions = [
   {
+    version: "v7.x.x",
+    era: "SEBA Era — Bounded Autonomy",
+    period: "2026-01-30 to 2026-02-03",
+    summary: "SEBA v1.0.0 emerged as the Self-Evolving Bounded Agent. 5-phase cognitive-evolution pipeline with governance gates. Advisory, Governed, and Autonomous modes crystallized. Full audit trail from cognitive insight to executed evolution. The foundation for SYNERGY+ was laid."
+  },
+  {
     version: "v6.x.x",
     era: "Human Compatibility Era",
     period: "2026-01-25 to 2026-01-30",
@@ -120,7 +244,7 @@ const archivedVersions = [
     version: "v4.x.x",
     era: "Kernel Architecture",
     period: "2026-01-20 to 2026-01-23",
-    summary: "The four-layer kernel model emerged. Core, Ripple, and Access modules crystallized. 200+ legacy functions consolidated into a unified substrate. Memory tiering introduced. The system began to see itself."
+    summary: "The four-layer kernel model emerged. CORE, RIPPLE, and ACCESS modules crystallized. 200+ legacy functions consolidated into a unified substrate. Memory tiering introduced. The system began to see itself."
   },
   {
     version: "v3.x.x",
@@ -140,9 +264,10 @@ export default function Changelog() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SEO
-        title="Evolution Log | CMPSBL v7.x.x"
-        description="A continuous record of why the CMPSBL substrate evolved during the v7 series. The age of bounded autonomy and self-evolution."
+        title="Evolution Log | CMPSBL v8.x.x SYNERGY+ Epoch"
+        description="A continuous record of why the CMPSBL substrate evolved during the v8 SYNERGY+ Epoch. The age of full-spectrum autonomous evolution."
         canonical="https://cmpsbl.com/changelog"
+        keywords={["CMPSBL changelog", "substrate evolution", "SYNERGY+ epoch", "v8 release", "AI evolution log", "cognitive substrate updates"]}
       />
       <PublicNav />
 
@@ -150,13 +275,13 @@ export default function Changelog() {
         {/* Header */}
         <header className="text-center mb-12">
           <Badge variant="outline" className="mb-4 text-primary border-primary">
-            v7.x.x — SEBA Era
+            v8.x.x — SYNERGY+ Epoch
           </Badge>
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            CMPSBL v7.x.x — Living Evolution Log
+            CMPSBL v8.x.x — Living Evolution Log
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
-            A continuous record of why the system evolved during the v7 series
+            A continuous record of why the system evolved during the SYNERGY+ Epoch
           </p>
           
           {/* Explanatory Note */}
@@ -169,15 +294,15 @@ export default function Changelog() {
           </Card>
         </header>
 
-        {/* Living Evolution Log */}
+        {/* v8 Living Evolution Log */}
         <section className="mb-16">
           <h2 className="text-2xl font-bold mb-8 flex items-center gap-3">
             <span className="text-3xl">◆</span>
-            v7.x.x — Bounded Autonomy Era
+            v8.x.x — SYNERGY+ Epoch
           </h2>
           
           <div className="space-y-8">
-            {evolutionLog.map((entry) => (
+            {evolutionLogV8.map((entry) => (
               <Card key={entry.id} className="border-l-4 border-l-primary">
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
@@ -232,6 +357,65 @@ export default function Changelog() {
 
         <Separator className="my-12" />
 
+        {/* v7 Living Evolution Log */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold mb-8 flex items-center gap-3">
+            <span className="text-3xl opacity-70">◆</span>
+            v7.x.x — Bounded Autonomy Era
+            <Badge variant="secondary" className="ml-2 text-xs">Previous</Badge>
+          </h2>
+          
+          <div className="space-y-8">
+            {evolutionLogV7.map((entry) => (
+              <Card key={entry.id} className="border-l-4 border-l-muted-foreground/50">
+                <CardHeader className="pb-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-mono text-muted-foreground">{entry.id}</span>
+                    <span className="text-sm text-muted-foreground">{entry.date}</span>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <h4 className="text-sm font-semibold text-amber-500/70 mb-2">Observed Pressures</h4>
+                    <ul className="space-y-1">
+                      {entry.pressures.map((pressure, i) => (
+                        <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
+                          <span className="text-amber-500/40 mt-0.5">▸</span>
+                          {pressure}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-semibold text-blue-500/70 mb-2">Learned Responses</h4>
+                    <ul className="space-y-1">
+                      {entry.responses.map((response, i) => (
+                        <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
+                          <span className="text-blue-500/40 mt-0.5">▸</span>
+                          {response}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-semibold text-emerald-500/70 mb-2">Resulting Capabilities</h4>
+                    <ul className="space-y-1">
+                      {entry.capabilities.map((capability, i) => (
+                        <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
+                          <span className="text-emerald-500/40 mt-0.5">▸</span>
+                          {capability}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        <Separator className="my-12" />
+
         {/* Archived Versions */}
         <section>
           <h2 className="text-2xl font-bold mb-8 flex items-center gap-3">
@@ -244,7 +428,7 @@ export default function Changelog() {
             {archivedVersions.map((archive) => (
               <Card key={archive.version} className="bg-muted/20 border-muted">
                 <CardContent className="py-4">
-                  <div className="flex items-start justify-between mb-2">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-2 gap-1">
                     <div>
                       <span className="font-mono font-bold">{archive.version}</span>
                       <span className="text-muted-foreground mx-2">—</span>
@@ -265,6 +449,9 @@ export default function Changelog() {
             This evolution log documents behavioral changes, not implementation details.
             <br />
             Internal versioning, algorithms, and mechanics remain proprietary.
+          </p>
+          <p className="mt-4 text-xs">
+            Contact: dev@cmpsbl.com | (760) FLUID-AI
           </p>
         </div>
       </main>

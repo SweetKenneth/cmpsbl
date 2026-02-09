@@ -1,6 +1,6 @@
-# CMPSBL OS Substrate — Evolution Autonomy v0.7.8
+# CMPSBL OS Substrate — Evolution Autonomy v8.0.0
 
-**Version 6.3.1 (Modernizer 0.7.8) | Scientific Publication**
+**Version 8.0.0 (MODERNIZER) | Scientific Publication**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-076 |
 | **Module** | MODERNIZER |
 | **Layer** | Administrative |
-| **Version** | v6.3.1 (Modernizer 0.7.8) |
+| **Version** | v8.0.0 (SYNERGY+ Epoch) |
 
 ---
 
@@ -202,5 +202,5 @@ Receipts are **facts**, not **methods**.
 
 ---
 
-*CMPSBL OS Substrate v0.7.8 — Scan Normalization Era*
+*CMPSBL OS Substrate v8.0.0 — SYNERGY+ Epoch*
 *© 2025-2026 PromptFluid®. All rights reserved.*

@@ -250,7 +250,7 @@ export default function LlmsTxt() {
                   Canonical llms.txt
                 </CardTitle>
                 <CardDescription>
-                  CMPSBL FNDTN v6.0.0 implementation
+                  CMPSBL v8.0.0 SYNERGY+ Epoch implementation
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -382,7 +382,7 @@ export default function LlmsTxt() {
                 <Layers className="w-8 h-8 mx-auto mb-3 text-primary" />
                 <h3 className="font-medium mb-2">Substrate Implementers</h3>
                 <p className="text-sm text-muted-foreground">
-                  Align with the FNDTN v6 standard for substrate-class systems.
+                  Align with the v8.0.0 SYNERGY+ standard for substrate-class systems.
                 </p>
               </CardContent>
             </Card>
