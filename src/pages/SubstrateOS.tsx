@@ -114,6 +114,7 @@ function getTabGroups(isOperator: boolean, isGovernor: boolean, hasAgency: boole
     ] : []),
     ...(isGovernor ? [
       { id: 'evolution', label: 'Evolution', icon: Dna, color: 'purple', description: 'System evolution', minRole: 'governor' as const },
+      { id: 'patches', label: 'Patches', icon: Shield, color: 'blue', description: 'Author LNCHBL patches', minRole: 'governor' as const },
       { id: 'metrics', label: 'Metrics', icon: Gauge, color: 'cyan', description: 'Public metrics control', minRole: 'governor' as const },
     ] : []),
     ...(isOperator ? [
