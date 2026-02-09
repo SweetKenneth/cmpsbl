@@ -145,12 +145,12 @@ export default function Investors() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
               {[
-                { icon: Layers, title: "Complete Substrate", desc: "All five modules with unified architecture" },
-                { icon: Brain, title: "Brain Module", desc: "Memory, learning, and dream-state reflection" },
+                { icon: Layers, title: "Complete Substrate", desc: "All 14 modules with unified architecture" },
+                { icon: Brain, title: "BRAIN Module", desc: "Memory, learning, and DREAM-state reflection" },
                 { icon: Sparkles, title: "Cascade Interface", desc: "Natural language user interface layer" },
-                { icon: Shield, title: "Defense System", desc: "Bot detection and threat neutralization" },
-                { icon: Network, title: "Nexus Router", desc: "Multi-provider AI gateway (20+ providers)" },
-                { icon: Eye, title: "Vision Observability", desc: "Metrics, monitoring, and anomaly detection" },
+                { icon: Shield, title: "DEFENSE Module", desc: "Bot detection and threat neutralization" },
+                { icon: Network, title: "NEXUS Router", desc: "Multi-provider AI gateway (20+ providers)" },
+                { icon: Eye, title: "VISION Module", desc: "Metrics, monitoring, and anomaly detection" },
                 { icon: FileText, title: "Full Documentation", desc: "Technical architecture and API docs" },
                 { icon: Building2, title: "IP & Trademarks", desc: "All intellectual property and brand assets" },
                 { icon: CheckCircle2, title: "Live Infrastructure", desc: "Running production systems" },

@@ -1,6 +1,6 @@
 # CMPSBL OS Substrate — SEBA Safety & Governance v2.0.0
 
-**Version 7.5.3 (SEBA 2.0.0) | Full Spectrum Autonomous Evolution**
+**Version 8.0.0 (SEBA 2.0.0) | Full Spectrum Autonomous Evolution**
 
 ---
 
@@ -11,7 +11,7 @@
 | **Document ID** | CMPSBL-LIB-076 |
 | **Module** | SEBA |
 | **Layer** | Administrative |
-| **Version** | v7.5.3 (SEBA 2.0.0) |
+| **Version** | v8.0.0 (SEBA 2.0.0) |
 | **Status** | ACTIVE - Safety Controls Enforced |
 
 ---
@@ -215,5 +215,5 @@ seba.rollback <proposal_id>
 
 ---
 
-*CMPSBL OS Substrate v7.5.3 — Full Spectrum Autonomous Evolution*
+*CMPSBL OS Substrate v8.0.0 — Full Spectrum Autonomous Evolution*
 *© 2025-2026 PromptFluid®. All rights reserved.*

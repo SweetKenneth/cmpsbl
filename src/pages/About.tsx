@@ -12,9 +12,9 @@ export default function About() {
   // v8.0.0 — Current CMPSBL product portfolio
   const products = [
     { icon: Brain, name: "CMPSBL Substrate", description: "14-module cognitive orchestration OS with persistent memory" },
-    { icon: Shield, name: "Defense Module", description: "Enterprise-grade threat detection and bot protection" },
-    { icon: Eye, name: "Vision Module", description: "Full observability and system introspection layer" },
-    { icon: Server, name: "Nexus Gateway", description: "Multi-provider AI routing with BYOK architecture" },
+    { icon: Shield, name: "DEFENSE Module", description: "Enterprise-grade threat detection and bot protection" },
+    { icon: Eye, name: "VISION Module", description: "Full observability and system introspection layer" },
+    { icon: Server, name: "NEXUS Gateway", description: "Multi-provider AI routing with BYOK architecture" },
     { icon: Accessibility, name: "INCLUSIVE Module", description: "Human compatibility pipeline with WCAG scanning & AI remediation" },
     { icon: Zap, name: "Engine Marketplace", description: "Production-ready cognitive orchestrations" },
   ];

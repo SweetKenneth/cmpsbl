@@ -10,9 +10,9 @@ const CascadeAIDeepDive = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Brain Module: The Heart of Adaptive Intelligence | CMPSBL®"
-        description="Deep dive into the Brain module's learning mechanisms, memory systems, and autonomous capabilities that power CMPSBL's adaptive intelligence substrate."
-        keywords={["Brain module", "adaptive intelligence", "machine learning", "AI orchestration", "CMPSBL Brain", "cognitive substrate"]}
+        title="BRAIN Module: The Heart of Adaptive Intelligence | CMPSBL®"
+        description="Deep dive into the BRAIN module's learning mechanisms, memory systems, and autonomous capabilities that power CMPSBL's adaptive intelligence substrate."
+        keywords={["BRAIN module", "adaptive intelligence", "machine learning", "AI orchestration", "CMPSBL BRAIN", "cognitive substrate"]}
       />
       
       <PublicNav />
@@ -26,7 +26,7 @@ const CascadeAIDeepDive = () => {
           </Link>
           
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground tracking-tight">
-            Brain Module: The Heart of Adaptive Intelligence
+            BRAIN Module: The Heart of Adaptive Intelligence
           </h1>
           
           <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">

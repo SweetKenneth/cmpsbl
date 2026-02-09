@@ -71,25 +71,25 @@ export default function InvestorsPublic() {
   const products = [
     {
       icon: Brain,
-      name: "Brain Module",
+      name: "BRAIN Module",
       subtitle: "Persistent Memory",
-      description: "3-tier memory architecture with Dream Cycles for autonomous learning and pattern consolidation."
+      description: "3-tier memory architecture with DREAM Cycles for autonomous learning and pattern consolidation."
     },
     {
       icon: Eye,
-      name: "Vision Module",
+      name: "VISION Module",
       subtitle: "Full Observability",
       description: "Real-time introspection, metrics collection, and system-wide transparency layer."
     },
     {
       icon: Shield,
-      name: "Defense Module",
+      name: "DEFENSE Module",
       subtitle: "Enterprise Security",
       description: "Bot protection, threat detection, and governance guardrails for production AI."
     },
     {
       icon: Server,
-      name: "Nexus Gateway",
+      name: "NEXUS Gateway",
       subtitle: "Multi-Provider Routing",
       description: "Intelligent routing across 20+ LLMs with BYOK architecture and fallback chains."
     },
