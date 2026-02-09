@@ -23,7 +23,7 @@ The AI infrastructure market includes several categories:
 | Factor | Build In-House | CMPSBL® |
 |--------|----------------|---------|
 | **Time to Market** | 6-18 months | Days to weeks |
-| **Engineering Cost** | $500K-$2M+ | $15K-$180K/year |
+| **Engineering Cost** | $500K-$2M+ | $39/mo - $299/yr (Developer) |
 | **Maintenance** | Ongoing team needed | Included |
 | **Expertise Required** | Deep ML/AI knowledge | Basic integration |
 | **Risk** | High (unknown unknowns) | Low (proven system) |
@@ -59,7 +59,7 @@ LangChain is a popular open-source library for building LLM applications. CMPSBL
 | **Learning** | None built-in | Autonomous dream cycles |
 | **Security** | You implement | Enterprise-grade, built-in |
 | **Multi-Provider** | Manual setup | Intelligent routing |
-| **Self-Evolution** | None | Core feature |
+| **Self-Evolution** | None | CORE feature |
 | **Observability** | Third-party needed | Integrated |
 | **Production Ready** | Requires work | Out of the box |
 
@@ -93,7 +93,7 @@ Mem0 focuses specifically on memory for AI applications. CMPSBL includes memory 
 | **Memory Compression** | Basic | Advanced (temporal, semantic) |
 | **Memory Scoring** | Limited | Recency, frequency, confidence |
 | **AI Routing** | ✗ No | ✓ Multi-provider |
-| **Learning** | ✗ No | ✓ Dream cycles |
+| **Learning** | ✗ No | ✓ DREAM cycles |
 | **Security** | Basic | Enterprise-grade |
 | **Self-Evolution** | ✗ No | ✓ MODERNIZER |
 | **Observability** | Limited | ✓ Full VISION |
@@ -197,12 +197,17 @@ Using AI providers directly gives you model access. CMPSBL sits between your app
 | Cost Factor | Build In-House | CMPSBL Enterprise |
 |-------------|----------------|-------------------|
 | **Year 1 Development** | $1,200,000 | $0 |
-| **Year 1 License** | $0 | $180,000 |
+| **Year 1 License** | $0 | Contact Sales |
 | **Year 2-3 Maintenance** | $480,000 | Included |
-| **Year 2-3 License** | $0 | $360,000 |
+| **Year 2-3 License** | $0 | Contact Sales |
 | **Opportunity Cost** | High | Low |
-| **3-Year Total** | **$1,680,000+** | **$540,000** |
 | **Time to Production** | 12-18 months | 1-4 weeks |
+
+### Developer License
+
+For individual developers and small teams:
+- **Monthly:** $39/month
+- **Annual:** $299/year (save ~36%)
 
 ---
 
@@ -220,11 +225,19 @@ Using AI providers directly gives you model access. CMPSBL sits between your app
 
 | Tier | Best For |
 |------|----------|
-| **Developer ($15K)** | Startups, small teams |
-| **Research ($80K)** | Academic, R&D |
-| **Enterprise ($180K)** | Production, enterprise |
+| **Developer ($39/mo or $299/yr)** | Individual devs, small teams |
+| **Team** | Teams up to 10 seats (Contact sales) |
+| **Research** | Academic, R&D (Contact sales) |
+| **Enterprise** | Production, enterprise (Contact sales) |
 
 [Get Started →](./06-GETTING-STARTED.md)
+
+---
+
+## Contact
+
+- **Email:** Dev@CMPSBL.com
+- **Phone:** (760) FLUID-AI
 
 ---
 

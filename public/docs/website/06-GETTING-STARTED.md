@@ -20,17 +20,15 @@
 
 Add persistent memory to any existing agent or React app in under an hour. No rewrites. No new framework.
 
-### Step 1: Install
+### Step 1: Import the SDK
 
-```bash
-npm install @cmpsbl/memory
+```typescript
+import { withPersistentMemory } from '@cmpsbl/memory';
 ```
 
 ### Step 2: Wrap Your Agent
 
 ```typescript
-import { withPersistentMemory } from '@cmpsbl/memory';
-
 const agent = withPersistentMemory({
   agentId: 'my-support-agent',
   scope: 'project'  // or 'session'
@@ -76,17 +74,15 @@ For production deployments using the complete substrate.
 - API keys for at least one AI provider (OpenAI, Anthropic, etc.)
 - CMPSBL license (Developer tier or higher)
 
-### Installation
+### Import the SDK
 
-```bash
-npm install @cmpsbl/sdk
+```typescript
+import { Substrate } from '@cmpsbl/sdk';
 ```
 
 ### Initialize the Client
 
 ```typescript
-import { Substrate } from '@cmpsbl/sdk';
-
 const substrate = new Substrate({
   apiKey: process.env.CMPSBL_API_KEY,
   providers: {
@@ -182,7 +178,7 @@ When you need governed, reliable orchestration, upgrade to Engines:
 
 ## API Reference
 
-### Brain Module
+### BRAIN Module
 
 | Method | Description |
 |--------|-------------|
@@ -191,7 +187,7 @@ When you need governed, reliable orchestration, upgrade to Engines:
 | `forget(id)` | Remove a memory |
 | `compress()` | Trigger memory compression |
 
-### Nexus Module
+### NEXUS Module
 
 | Method | Description |
 |--------|-------------|
@@ -199,7 +195,7 @@ When you need governed, reliable orchestration, upgrade to Engines:
 | `providers()` | List configured providers |
 | `status()` | Check provider availability |
 
-### Vision Module
+### VISION Module
 
 | Method | Description |
 |--------|-------------|
@@ -262,7 +258,8 @@ CMPSBL_MEMORY_TIER=hot
 ## Support
 
 - **Documentation:** https://cmpsbl.com/docs
-- **Email:** PromptFluid@gmail.com
+- **Email:** Dev@CMPSBL.com
+- **Phone:** (760) FLUID-AI
 
 ---
 

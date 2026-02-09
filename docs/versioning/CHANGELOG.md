@@ -1,7 +1,7 @@
 # CMPSBL Substrate — Living Evolution Log
 
-**Version Lock:** Public versions are major-only (v6.x.x, v7.x.x)  
-**Status:** Living Document (v6.x.x)  
+**Version Lock:** Public versions are major-only (v6.x.x, v7.x.x, v8.x.x)  
+**Status:** Living Document (v8.x.x)  
 
 ---
 
@@ -27,13 +27,91 @@ CMPSBL publishes one living evolution log per major version. Internal patch rele
 
 ## Versioning Rules
 
-- **Public versions:** Major only (v6.x.x, v7.x.x)
+- **Public versions:** Major only (v6.x.x, v7.x.x, v8.x.x)
 - **Internal versions:** Continuous patch releases (abstracted from public)
 - **Rationale:** Clarity, stability, and narrative coherence
 
 ---
 
-## v6.x.x — Human Compatibility Era (Living)
+## v8.x.x — SYNERGY+ Epoch (Living)
+
+### Evolution 018 — 2026-02-09
+
+**Observed Pressures**
+- Documentation inconsistencies required standardization
+- Social discovery channels were fragmented
+- Module naming varied between sentence-case and proper-case
+
+**Learned Responses**
+- All 14 modules now referenced in ALL CAPS consistently (BRAIN, VISION, etc.)
+- Social links unified across all surfaces
+- Contact information standardized to canonical endpoints
+
+**Resulting Capabilities**
+- Consistent brand presentation across documentation and UI
+- Discoverable social presence on LinkedIn, X, and GitHub
+- Single source of truth for contact: Dev@CMPSBL.com, (760) FLUID-AI
+
+---
+
+### Evolution 017 — 2026-02-08
+
+**Observed Pressures**
+- SEO signals required optimization for 2026 AI crawler standards
+- LLM discoverability needed structured machine context
+- Production deployments required comprehensive sitemap coverage
+
+**Learned Responses**
+- Sitemap indices expanded with blog and product subsitemaps
+- LLMs.txt upgraded to v8.0.0 SYNERGY+ specification
+- robots.txt optimized for GPTBot, ClaudeBot, PerplexityBot
+
+**Resulting Capabilities**
+- The substrate is optimized for AI-driven discovery
+- Production-ready SEO with 90+ performance scores
+- Machine-readable context for all major AI crawlers
+
+---
+
+### Evolution 016 — 2026-02-05
+
+**Observed Pressures**
+- Synergy pipelines needed stronger observability primitives
+- Cross-module orchestration required explicit executor contracts
+- Engine marketplace needed subscription commerce
+
+**Learned Responses**
+- 147 synergy pipelines with 120 custom executors emerged
+- Engine tiers crystallized (Starter, Builder, Pro, Enterprise)
+- Commerce redirect architecture replaced popup flows
+
+**Resulting Capabilities**
+- Production-grade subscription checkout for engines
+- Observable synergy execution with executor telemetry
+- Mobile-reliable commerce flows via redirect pattern
+
+---
+
+## v7.x.x — SEBA Era (Frozen)
+
+**Period:** 2026-02-01 to 2026-02-05
+
+### Summary
+
+The SEBA (Self-Evolving Bounded Agent) Era introduced:
+- Constant Learning Mode (CLM) with budget governance
+- Bounded autonomy with human-in-the-loop approval queues
+- Evolution proposals with rollback semantics
+- Governance Guard for ethical constraint enforcement
+- 120 synergy pipelines and 98 custom executors
+
+Key evolutions included the emergence of the CORTEX orchestrator layer, the crystallization of the 14-module architecture, and the formalization of the Three-Surface Standard Stack (Substrate · Governance · Machine Context).
+
+---
+
+## v6.x.x — Human Compatibility Era (Frozen)
+
+**Period:** 2026-01-25 to 2026-02-01
 
 ### Evolution 015 — 2026-01-30
 
@@ -119,7 +197,7 @@ CMPSBL publishes one living evolution log per major version. Internal patch rele
 - No unified pipeline existed for compatibility validation
 
 **Learned Responses**
-- A dedicated compatibility layer emerged
+- A dedicated compatibility layer emerged (INCLUSIVE module)
 - All output surfaces became scannable and repairable
 - Validation gates integrated into the template pipeline
 

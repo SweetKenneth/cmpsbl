@@ -12,14 +12,14 @@
 export const LICENSING_PRODUCTS = {
   developer: {
     monthly: {
-      product_id: 'prod_TuzDdndKiASplG',
-      price_id: 'price_1Sx9F1Q7FtTiAL4aPvHMDh9r',
+      product_id: 'prod_TwbbSoGvPk62xt',
+      price_id: 'price_1SyiOSQ7FtTiAL4a0nLYNaww',
       amount: 3900, // $39/month
       interval: 'month' as const,
     },
     annual: {
-      product_id: 'prod_TuzDyllhVhku0B',
-      price_id: 'price_1Sx9F2Q7FtTiAL4a6vQtPPLe',
+      product_id: 'prod_TwbbkEwx63DMli',
+      price_id: 'price_1SyiOTQ7FtTiAL4ahfSITWgg',
       amount: 29900, // $299/year
       interval: 'year' as const,
     },

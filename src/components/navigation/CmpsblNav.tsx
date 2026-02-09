@@ -136,7 +136,6 @@ export function CmpsblNav() {
       items: [
         { name: "Solutions", href: "/solutions", description: "Enterprise solutions", icon: Building2 },
         { name: "Use Cases", href: "/use-cases", description: "Industry applications", icon: Sparkles },
-        { name: "Partnerships", href: "/partnerships", description: "Partner programs", icon: Users },
         { name: "Licensing", href: "/substrate/licensing", description: "Enterprise agreements", icon: FileText },
       ]
     },
@@ -146,6 +145,7 @@ export function CmpsblNav() {
       items: [
         { name: "About", href: "/about", description: "Our mission & team", icon: Info },
         { name: "Blog", href: "/blog", description: "Research & updates", icon: FileText },
+        { name: "Library", href: "/library", description: "Documentation library", icon: BookOpen },
       ]
     },
   ];

@@ -33,11 +33,11 @@ export function EnhancedFooter() {
     {
       title: "Substrate",
       links: [
-        { name: "CMPSBL OS", href: "/substrate" },
         { name: "System Feed", href: "/system-feed" },
         { name: "Decode Engine", href: "/decode" },
         { name: "Dream Feeder", href: "/feed-dream-eater" },
         { name: "Proof Mode", href: "/proof" },
+        { name: "CodeLab", href: "/lab" },
       ]
     },
     {
@@ -67,6 +67,7 @@ export function EnhancedFooter() {
       links: [
         { name: "Support", href: "/support" },
         { name: "Contact", href: "/contact" },
+        { name: "CMPSBL OS", href: "/substrate" },
         { name: "Privacy", href: "/privacy" },
         { name: "Terms", href: "/terms" },
         { name: "Investors", href: "/investors" },
@@ -75,9 +76,9 @@ export function EnhancedFooter() {
   ];
 
   const socialLinks = [
-    { name: "GitHub", icon: Github, href: "https://github.com/cmpsbl" },
-    { name: "Twitter", icon: Twitter, href: "https://twitter.com/cmpsbl" },
-    { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com/company/cmpsbl" },
+    { name: "GitHub", icon: Github, href: "https://github.com/SweetKenneth" },
+    { name: "Twitter", icon: Twitter, href: "https://x.com/kennethesweetjr?s=21" },
+    { name: "LinkedIn", icon: Linkedin, href: "https://www.linkedin.com/in/kennethesweetjr?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" },
   ];
 
   return (
