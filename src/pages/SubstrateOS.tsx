@@ -816,6 +816,9 @@ export default function SubstrateOS() {
             {/* Public Metrics */}
             {activeTab === 'metrics' && isGovernor && <PublicMetricsTab />}
 
+            {/* Patch Authoring */}
+            {activeTab === 'patches' && isGovernor && <PatchAuthoringTab />}
+
             {/* Mint */}
             {activeTab === 'mint' && isGovernor && (
               <motion.main 
