@@ -654,8 +654,8 @@ const PROVIDERS: Record<string, ProviderAdapter> = {
   }
 };
 
-// Provider routing order (fallback chain) — Lovable AI Gateway is primary
-const PROVIDER_ORDER = ["lovable", "groq", "cerebras", "together", "deepseek", "gemini", "openai", "anthropic", "local"];
+// Provider routing order (fallback chain) — Nexus free-tier providers first
+const PROVIDER_ORDER = ["groq", "cerebras", "together", "deepseek", "gemini", "openai", "anthropic", "local"];
 
 // ═══════════════════════════════════════════════════════════════
 // NEXUS ANALYTICS ACCUMULATOR

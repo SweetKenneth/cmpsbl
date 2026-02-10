@@ -188,10 +188,10 @@ class PersonalityEngineClient {
    */
   async syncFromServer(): Promise<void> {
     try {
-      const response = await substrate.decode.personality.get();
-      // Response from edge function has shape: { success, personality: { id, name, ... } }
-      const data = response.data as { personality?: { id?: string } } | undefined;
-      if (response.success && data?.personality?.id) {
+      const { data, error } = await supabase.functions.invoke('pf-substrate', {
+        body: { module: 'decode', action: 'personality.get' },
+      });
+      if (!error && data?.personality?.id) {
         const serverId = data.personality.id as PersonalityProfile;
         if (PERSONALITY_PROFILES[serverId]) {
           this.state.active = serverId;
@@ -210,9 +210,11 @@ class PersonalityEngineClient {
    */
   private async syncToServer(profile: PersonalityProfile): Promise<boolean> {
     try {
-      const response = await substrate.decode.personality.set(profile);
-      this.state.serverSynced = response.success;
-      return response.success;
+      const { data, error } = await supabase.functions.invoke('pf-substrate', {
+        body: { module: 'decode', action: 'personality.set', payload: { profile } },
+      });
+      this.state.serverSynced = !error && data?.success;
+      return this.state.serverSynced;
     } catch {
       this.state.serverSynced = false;
       return false;
