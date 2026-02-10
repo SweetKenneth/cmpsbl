@@ -72,7 +72,7 @@ async function probeModule(module: string, timeout: number): Promise<ModuleDisco
         .from('brain_events')
         .select('id')
         .eq('module', module.toLowerCase())
-        .eq('action', op)
+        .eq('event_type', op)
         .eq('outcome', 'success')
         .order('created_at', { ascending: false })
         .limit(1);
