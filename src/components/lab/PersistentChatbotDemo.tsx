@@ -110,7 +110,7 @@ export function PersistentChatbotDemo() {
         role: 'assistant',
         content: data?.reply || data?.response || "I've processed your message and stored it in my memory!",
         timestamp: new Date(),
-        memoryUsed: data?.memory_context?.length > 0 || Math.random() > 0.5
+        memoryUsed: data?.memory_used === true || (data?.memory_context?.length > 0)
       };
 
       setMessages(prev => prev.filter(m => m.id !== 'typing').concat(assistantMessage));
@@ -118,12 +118,11 @@ export function PersistentChatbotDemo() {
       await supabase.functions.invoke('pf-substrate', {
         body: {
           module: 'brain',
-          action: 'learn',
-          payload: {
-            content: `User: ${userMessage.content}\nAssistant: ${assistantMessage.content}`,
-            memory_type: 'conversation',
-            context: { session: sessionId, demo: 'experimentation-lab' }
-          }
+          action: 'remember',
+          content: `User: ${userMessage.content}\nAssistant: ${assistantMessage.content}`,
+          memory_type: 'conversation',
+          confidence: 0.75,
+          metadata: { session: sessionId, demo: 'experimentation-lab' }
         }
       });
 
