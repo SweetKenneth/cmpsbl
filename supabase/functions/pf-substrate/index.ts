@@ -5273,11 +5273,68 @@ async function handleDecode(
     }
 
     case "chat": {
-      const { message, conversationHistory = [], sessionId } = data;
+      const { message, conversationHistory = [], sessionId, include_memory = false, session_id } = data;
+      const effectiveSessionId = (sessionId || session_id || `session_${Date.now()}`) as string;
       
       // Get active personality (v8.0.0 - dynamic, no more hardcoded poetry)
       const personality = await getActivePersonality(supabase);
-      const systemPrompt = personality.systemPrompt;
+      let systemPrompt = personality.systemPrompt;
+      
+      // ═══ PERSISTENT MEMORY RECALL (v7.1.0) ═══
+      // Recall relevant memories to inject context into the conversation
+      let memoryContext: any[] = [];
+      try {
+        const searchTerm = String(message || '').trim();
+        
+        // Search brain_memories for relevant context
+        const [
+          { data: ftsResults },
+          { data: hotResults },
+          { data: sessionHistory },
+        ] = await Promise.all([
+          supabase
+            .from("brain_memories")
+            .select("content, memory_type, confidence, created_at")
+            .or(`content.ilike.%${searchTerm.split(' ').slice(0, 3).join('%')}%`)
+            .order("confidence", { ascending: false })
+            .limit(5),
+          supabase
+            .from("brain_memory_hot")
+            .select("content, context, priority")
+            .ilike("content", `%${searchTerm.split(' ')[0]}%`)
+            .order("priority", { ascending: false })
+            .limit(3),
+          supabase
+            .from("cascade_conversations")
+            .select("message, reply")
+            .eq("session_id", effectiveSessionId)
+            .order("created_at", { ascending: false })
+            .limit(5),
+        ]);
+        
+        if (ftsResults?.length) {
+          memoryContext.push(...ftsResults.map((m: any) => m.content));
+        }
+        if (hotResults?.length) {
+          memoryContext.push(...hotResults.map((m: any) => m.content));
+        }
+        
+        // Deduplicate and limit context
+        memoryContext = [...new Set(memoryContext)].slice(0, 8);
+        
+        // Inject memory context into system prompt
+        if (memoryContext.length > 0) {
+          systemPrompt += `\n\n[Recalled Memories — use these to inform your response]\n${memoryContext.map((m, i) => `${i + 1}. ${String(m).substring(0, 300)}`).join('\n')}`;
+        }
+        
+        // Inject recent session history as conversation context
+        if (sessionHistory?.length) {
+          const historyContext = sessionHistory.reverse().map((h: any) => `User: ${h.message}\nYou: ${h.reply}`).join('\n\n');
+          systemPrompt += `\n\n[Recent conversation in this session]\n${historyContext}`;
+        }
+      } catch (memErr) {
+        console.warn('Memory recall failed gracefully:', memErr);
+      }
       
       // Route through Nexus
       const result = await routeToProvider(message as string, systemPrompt, conversationHistory as Array<{role: string; content: string}>);
@@ -5286,9 +5343,20 @@ async function handleDecode(
       await supabase.from("cascade_conversations").insert({
         message: message as string,
         reply: result.content,
-        session_id: sessionId as string || `session_${Date.now()}`,
-        metadata: { provider: result.provider, model: result.model, personality: personality.id },
+        session_id: effectiveSessionId,
+        metadata: { provider: result.provider, model: result.model, personality: personality.id, memory_context_count: memoryContext.length },
       });
+      
+      // Auto-store conversation as memory for future recall
+      try {
+        await supabase.from("brain_memories").insert({
+          content: `User asked: ${String(message).substring(0, 200)}\nResponse: ${result.content.substring(0, 300)}`,
+          memory_type: 'conversation',
+          source: 'decode_chat',
+          confidence: 0.7,
+          metadata: { session_id: effectiveSessionId, personality: personality.id },
+        });
+      } catch { /* memory storage is enhancement, not requirement */ }
 
       return jsonResponse({
         success: true,
@@ -5296,6 +5364,8 @@ async function handleDecode(
         provider: result.provider,
         model: result.model,
         personality: personality.id,
+        memory_context: memoryContext,
+        memory_used: memoryContext.length > 0,
       }, headers);
     }
 
