@@ -82,3 +82,30 @@ export {
   type AgentStatusDisplay,
   type EncodedResponse,
 } from './communication';
+
+// Expert Patterns (v3.0.0)
+export {
+  EXPERT_PATTERNS,
+  getPatternsByCategory,
+  getPatternsByTier,
+  getPatternById,
+  searchPatterns,
+  getPatternSummary,
+  getRelevantPatterns,
+  type ExpertPattern,
+  type PatternCategory,
+  type PatternTier,
+} from './expert-patterns';
+
+// Knowledge Transfer Pipeline (v3.0.0)
+export {
+  extractCodePatterns,
+  transferToEncoded,
+  ingestExpertPatterns,
+  runTransferCycle,
+  getAccelerationStrategies,
+  DEFAULT_ACCELERATION_CONFIG,
+  type LearnedPattern,
+  type TransferResult,
+  type TrainingAccelerationConfig,
+} from './knowledge-transfer';
