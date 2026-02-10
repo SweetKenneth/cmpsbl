@@ -60,7 +60,7 @@ export async function reconstructTimeline(
   // Fetch events in the time window
   let query = supabase
     .from('brain_events')
-    .select('id, module, action, outcome, metadata, created_at')
+    .select('id, module, event_type, outcome, data, created_at')
     .gte('created_at', windowStart.toISOString())
     .order('created_at', { ascending: true })
     .limit(cfg.maxEvents);
