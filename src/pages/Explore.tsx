@@ -110,7 +110,7 @@ export default function Explore() {
           transition={{ duration: 0.8 }}
           className="max-w-5xl mx-auto"
         >
-          <div className="relative rounded-[2rem] overflow-hidden">
+          <div className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden">
             {/* Deep gradient background */}
             <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-violet-600" />
             
