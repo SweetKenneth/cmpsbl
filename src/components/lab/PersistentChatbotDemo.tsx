@@ -118,12 +118,11 @@ export function PersistentChatbotDemo() {
       await supabase.functions.invoke('pf-substrate', {
         body: {
           module: 'brain',
-          action: 'learn',
-          payload: {
-            content: `User: ${userMessage.content}\nAssistant: ${assistantMessage.content}`,
-            memory_type: 'conversation',
-            context: { session: sessionId, demo: 'experimentation-lab' }
-          }
+          action: 'remember',
+          content: `User: ${userMessage.content}\nAssistant: ${assistantMessage.content}`,
+          memory_type: 'conversation',
+          confidence: 0.75,
+          metadata: { session: sessionId, demo: 'experimentation-lab' }
         }
       });
 
