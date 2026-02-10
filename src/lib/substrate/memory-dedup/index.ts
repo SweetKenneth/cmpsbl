@@ -80,7 +80,9 @@ export async function scanDuplicates(
 
   // Build n-gram index
   const indexed = memories.map(m => ({
-    ...m,
+    id: m.id,
+    content: m.content || '',
+    confidence: m.confidence ?? 0,
     grams: ngrams(m.content || '', 3),
   }));
 
