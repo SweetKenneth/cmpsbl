@@ -691,7 +691,7 @@ const PROVIDERS: Record<string, ProviderAdapter> = {
 };
 
 // Provider routing order (fallback chain) — Nexus free-tier providers first
-const PROVIDER_ORDER = ["groq", "cerebras", "together", "deepseek", "gemini", "openai", "anthropic", "local"];
+const PROVIDER_ORDER = ["groq", "groq-scout", "groq-qwen", "groq-70b", "cerebras", "together", "deepseek", "gemini", "openai", "anthropic", "local"];
 
 // ═══════════════════════════════════════════════════════════════
 // NEXUS ANALYTICS ACCUMULATOR

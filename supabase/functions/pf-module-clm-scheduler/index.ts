@@ -115,9 +115,9 @@ Deno.serve(async (req) => {
       }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
-    // Pick 2 random modules per cycle (reduced from 3) to further free capacity
+    // Pick 3 modules per cycle — we can afford it with 14.4K RPD
     const shuffled = MODULE_IDS.sort(() => Math.random() - 0.5);
-    const selectedModules = shuffled.slice(0, 2);
+    const selectedModules = shuffled.slice(0, 3);
     const results: any[] = [];
 
     for (const moduleId of selectedModules) {
