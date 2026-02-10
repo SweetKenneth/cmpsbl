@@ -533,7 +533,7 @@ export function HeroMetaSubstrate() {
           <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-violet-500/10 blur-3xl" />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent blur-2xl" />
           
-          <div className="relative grid grid-cols-2 md:grid-cols-4 gap-1 sm:gap-4 p-4 sm:p-8 rounded-3xl border border-border/50 bg-gradient-to-br from-card/70 via-card/50 to-card/70 backdrop-blur-xl shadow-2xl shadow-black/10 overflow-hidden">
+          <div className="relative grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 p-3 sm:p-8 rounded-2xl sm:rounded-3xl border border-border/50 bg-gradient-to-br from-card/70 via-card/50 to-card/70 backdrop-blur-xl shadow-2xl shadow-black/10 overflow-hidden">
             {/* Animated border gradient */}
             <div className="absolute inset-0 rounded-3xl p-px bg-gradient-to-br from-primary/30 via-transparent to-violet-500/30 pointer-events-none" style={{ mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)", maskComposite: "xor" }} />
             
