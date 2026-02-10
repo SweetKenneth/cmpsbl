@@ -126,87 +126,93 @@ function DesktopAudioControls({ className }: { className?: string }) {
           <Settings2 className="w-4 h-4" />
         </Button>
         
-        {/* Settings panel */}
-        <AnimatePresence>
-          {showSettings && (
-            <motion.div
-              initial={{ opacity: 0, y: 10, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 10, scale: 0.95 }}
-              className={cn(
-                "fixed z-[10000] top-12 right-4",
-                "w-64 p-4 rounded-xl",
-                "bg-card/95 backdrop-blur-xl border border-border/50",
-                "shadow-xl shadow-black/20"
-              )}
-            >
-              <h4 className="text-sm font-semibold mb-3">Audio Settings</h4>
-              
-              <div className="space-y-3">
-                {/* Master Toggle */}
-                <div className="flex items-center justify-between p-2 rounded-lg bg-muted/30">
-                  <span className="text-xs">Sound Effects</span>
-                  <Button
-                    variant={settings.enabled ? "default" : "outline"}
-                    size="sm"
-                    onClick={toggleEnabled}
-                    className="h-6 text-xs"
-                  >
-                    {settings.enabled ? 'ON' : 'OFF'}
-                  </Button>
-                </div>
-                
-                {/* Category Toggles */}
-                <div className="space-y-2">
-                  <label className="flex items-center justify-between p-2 rounded-lg hover:bg-muted/20 cursor-pointer">
-                    <span className="text-xs">Task Sounds</span>
-                    <input
-                      type="checkbox"
-                      checked={settings.taskSounds}
-                      onChange={(e) => updateSettings({ taskSounds: e.target.checked })}
-                      className="rounded border-border"
-                    />
-                  </label>
+        {createPortal(
+          <AnimatePresence>
+            {showSettings && (
+              <>
+                {/* Click-away backdrop */}
+                <div className="fixed inset-0 z-[9998]" onClick={() => setShowSettings(false)} />
+                <motion.div
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                  className={cn(
+                    "fixed z-[10000] top-12 right-4",
+                    "w-64 p-4 rounded-xl",
+                    "bg-card backdrop-blur-xl border border-border/50",
+                    "shadow-xl shadow-black/20"
+                  )}
+                >
+                  <h4 className="text-sm font-semibold mb-3">Audio Settings</h4>
                   
-                  <label className="flex items-center justify-between p-2 rounded-lg hover:bg-muted/20 cursor-pointer">
-                    <span className="text-xs">Message Sounds</span>
-                    <input
-                      type="checkbox"
-                      checked={settings.messageSounds}
-                      onChange={(e) => updateSettings({ messageSounds: e.target.checked })}
-                      className="rounded border-border"
-                    />
-                  </label>
-                  
-                  <label className="flex items-center justify-between p-2 rounded-lg hover:bg-muted/20 cursor-pointer">
-                    <span className="text-xs">Achievement Sounds</span>
-                    <input
-                      type="checkbox"
-                      checked={settings.achievementSounds}
-                      onChange={(e) => updateSettings({ achievementSounds: e.target.checked })}
-                      className="rounded border-border"
-                    />
-                  </label>
-                </div>
-                
-                {/* Status */}
-                <div className="pt-2 border-t border-border/30">
-                  <Badge 
-                    variant="outline" 
-                    className={cn(
-                      "text-[9px]",
-                      settings.enabled 
-                        ? "border-emerald-500/50 text-emerald-400"
-                        : "border-muted-foreground/30 text-muted-foreground"
-                    )}
-                  >
-                    {settings.enabled ? 'AUDIO ACTIVE' : 'AUDIO MUTED'}
-                  </Badge>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                  <div className="space-y-3">
+                    {/* Master Toggle */}
+                    <div className="flex items-center justify-between p-2 rounded-lg bg-muted/30">
+                      <span className="text-xs">Sound Effects</span>
+                      <Button
+                        variant={settings.enabled ? "default" : "outline"}
+                        size="sm"
+                        onClick={toggleEnabled}
+                        className="h-6 text-xs"
+                      >
+                        {settings.enabled ? 'ON' : 'OFF'}
+                      </Button>
+                    </div>
+                    
+                    {/* Category Toggles */}
+                    <div className="space-y-2">
+                      <label className="flex items-center justify-between p-2 rounded-lg hover:bg-muted/20 cursor-pointer">
+                        <span className="text-xs">Task Sounds</span>
+                        <input
+                          type="checkbox"
+                          checked={settings.taskSounds}
+                          onChange={(e) => updateSettings({ taskSounds: e.target.checked })}
+                          className="rounded border-border"
+                        />
+                      </label>
+                      
+                      <label className="flex items-center justify-between p-2 rounded-lg hover:bg-muted/20 cursor-pointer">
+                        <span className="text-xs">Message Sounds</span>
+                        <input
+                          type="checkbox"
+                          checked={settings.messageSounds}
+                          onChange={(e) => updateSettings({ messageSounds: e.target.checked })}
+                          className="rounded border-border"
+                        />
+                      </label>
+                      
+                      <label className="flex items-center justify-between p-2 rounded-lg hover:bg-muted/20 cursor-pointer">
+                        <span className="text-xs">Achievement Sounds</span>
+                        <input
+                          type="checkbox"
+                          checked={settings.achievementSounds}
+                          onChange={(e) => updateSettings({ achievementSounds: e.target.checked })}
+                          className="rounded border-border"
+                        />
+                      </label>
+                    </div>
+                    
+                    {/* Status */}
+                    <div className="pt-2 border-t border-border/30">
+                      <Badge 
+                        variant="outline" 
+                        className={cn(
+                          "text-[9px]",
+                          settings.enabled 
+                            ? "border-emerald-500/50 text-emerald-400"
+                            : "border-muted-foreground/30 text-muted-foreground"
+                        )}
+                      >
+                        {settings.enabled ? 'AUDIO ACTIVE' : 'AUDIO MUTED'}
+                      </Badge>
+                    </div>
+                  </div>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>,
+          document.body
+        )}
       </div>
     </div>
   );

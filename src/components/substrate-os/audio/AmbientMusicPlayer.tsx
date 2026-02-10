@@ -166,109 +166,116 @@ export function AmbientMusicPlayer({ className }: { className?: string }) {
       </Button>
       
       {/* Expanded panel - positioned in viewport on mobile */}
-      <AnimatePresence>
-        {isExpanded && (
-          <motion.div
-            initial={{ opacity: 0, y: 10, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.95 }}
-            className={cn(
-              "fixed z-[10000]",
-              // Mobile: center in viewport
-              "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
-              // Desktop: top-right below header
-              "sm:left-auto sm:top-12 sm:right-4 sm:translate-x-0 sm:translate-y-0",
-              "w-72 max-w-[calc(100vw-2rem)] p-4 rounded-xl",
-              "bg-card/95 backdrop-blur-xl border border-border/50",
-              "shadow-xl shadow-black/20"
-            )}
-          >
-            {/* Header */}
-            <div className="flex items-center gap-3 mb-4">
-              <div className={cn(
-                "w-10 h-10 rounded-lg flex items-center justify-center",
-                "bg-gradient-to-br from-fuchsia-500/20 to-purple-600/20",
-                "border border-fuchsia-500/30"
-              )}>
-                <Music className="w-5 h-5 text-fuchsia-400" />
-              </div>
-              <div>
-                <h4 className="text-sm font-semibold">Ambient Audio</h4>
-                <p className="text-[10px] text-muted-foreground">Operator relaxation mode</p>
-              </div>
-            </div>
-            
-            {/* Current Track */}
-            <div className="p-3 rounded-lg bg-muted/30 border border-border/30 mb-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-medium">{currentTrack.name}</span>
-                <span className="text-[10px] text-muted-foreground">
-                  {currentTrack.description}
-                </span>
-              </div>
-              
-              {/* Visualizer bars */}
-              <div className="flex items-end justify-center gap-0.5 h-6">
-                {Array.from({ length: 20 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className={cn(
-                      "w-1 bg-gradient-to-t from-fuchsia-500 to-purple-400 rounded-full transition-all",
-                      settings.enabled ? "opacity-100" : "opacity-30"
-                    )}
-                    style={{
-                      height: settings.enabled ? `${Math.random() * 100}%` : '20%',
-                      animation: settings.enabled ? `visualizer 0.3s ease infinite` : 'none',
-                      animationDelay: `${i * 0.05}s`,
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
-            
-            {/* Controls */}
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={togglePlay}
-                disabled={isLoading}
-                className="h-10 w-10 rounded-full"
-              >
-                {isLoading ? (
-                  <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-                ) : settings.enabled ? (
-                  <Pause className="w-4 h-4" />
-                ) : (
-                  <Play className="w-4 h-4" />
+      {createPortal(
+        <AnimatePresence>
+          {isExpanded && (
+            <>
+              {/* Click-away backdrop */}
+              <div className="fixed inset-0 z-[9998]" onClick={() => setIsExpanded(false)} />
+              <motion.div
+                initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                className={cn(
+                  "fixed z-[10000]",
+                  // Mobile: center in viewport
+                  "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
+                  // Desktop: top-right below header
+                  "sm:left-auto sm:top-12 sm:right-4 sm:translate-x-0 sm:translate-y-0",
+                  "w-72 max-w-[calc(100vw-2rem)] p-4 rounded-xl",
+                  "bg-card backdrop-blur-xl border border-border/50",
+                  "shadow-xl shadow-black/20"
                 )}
-              </Button>
-              
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={nextTrack}
-                className="h-8 w-8"
               >
-                <SkipForward className="w-4 h-4" />
-              </Button>
-            </div>
-            
-            {/* Volume */}
-            <div className="flex items-center gap-3">
-              <VolumeX className="w-4 h-4 text-muted-foreground" />
-              <Slider
-                value={[settings.volume * 100]}
-                max={100}
-                step={1}
-                onValueChange={([v]) => updateSettings({ volume: v / 100 })}
-                className="flex-1"
-              />
-              <Volume2 className="w-4 h-4 text-muted-foreground" />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                {/* Header */}
+                <div className="flex items-center gap-3 mb-4">
+                  <div className={cn(
+                    "w-10 h-10 rounded-lg flex items-center justify-center",
+                    "bg-gradient-to-br from-fuchsia-500/20 to-purple-600/20",
+                    "border border-fuchsia-500/30"
+                  )}>
+                    <Music className="w-5 h-5 text-fuchsia-400" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-semibold">Ambient Audio</h4>
+                    <p className="text-[10px] text-muted-foreground">Operator relaxation mode</p>
+                  </div>
+                </div>
+                
+                {/* Current Track */}
+                <div className="p-3 rounded-lg bg-muted/30 border border-border/30 mb-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-medium">{currentTrack.name}</span>
+                    <span className="text-[10px] text-muted-foreground">
+                      {currentTrack.description}
+                    </span>
+                  </div>
+                  
+                  {/* Visualizer bars */}
+                  <div className="flex items-end justify-center gap-0.5 h-6">
+                    {Array.from({ length: 20 }).map((_, i) => (
+                      <div
+                        key={i}
+                        className={cn(
+                          "w-1 bg-gradient-to-t from-fuchsia-500 to-purple-400 rounded-full transition-all",
+                          settings.enabled ? "opacity-100" : "opacity-30"
+                        )}
+                        style={{
+                          height: settings.enabled ? `${Math.random() * 100}%` : '20%',
+                          animation: settings.enabled ? `visualizer 0.3s ease infinite` : 'none',
+                          animationDelay: `${i * 0.05}s`,
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Controls */}
+                <div className="flex items-center justify-center gap-2 mb-4">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={togglePlay}
+                    disabled={isLoading}
+                    className="h-10 w-10 rounded-full"
+                  >
+                    {isLoading ? (
+                      <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                    ) : settings.enabled ? (
+                      <Pause className="w-4 h-4" />
+                    ) : (
+                      <Play className="w-4 h-4" />
+                    )}
+                  </Button>
+                  
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={nextTrack}
+                    className="h-8 w-8"
+                  >
+                    <SkipForward className="w-4 h-4" />
+                  </Button>
+                </div>
+                
+                {/* Volume */}
+                <div className="flex items-center gap-3">
+                  <VolumeX className="w-4 h-4 text-muted-foreground" />
+                  <Slider
+                    value={[settings.volume * 100]}
+                    max={100}
+                    step={1}
+                    onValueChange={([v]) => updateSettings({ volume: v / 100 })}
+                    className="flex-1"
+                  />
+                  <Volume2 className="w-4 h-4 text-muted-foreground" />
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </div>
   );
 }
