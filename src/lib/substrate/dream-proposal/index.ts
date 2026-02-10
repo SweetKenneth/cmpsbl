@@ -124,7 +124,7 @@ async function checkNovelty(content: string): Promise<{ isNovel: boolean; simila
     const contentWords = contentLower.split(/\s+/).filter(w => w.length > 3);
 
     for (const proposal of existing) {
-      const proposalText = `${proposal.title} ${proposal.description || ''}`.toLowerCase();
+      const proposalText = `${proposal.title} ${proposal.summary || ''}`.toLowerCase();
       const matchingWords = contentWords.filter(w => proposalText.includes(w));
       const overlap = contentWords.length > 0 ? matchingWords.length / contentWords.length : 0;
 
