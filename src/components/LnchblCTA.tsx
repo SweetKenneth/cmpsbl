@@ -92,7 +92,7 @@ export function LnchblCTA() {
                 size="lg"
                 variant="outline"
                 asChild
-                className="text-lg px-8 py-6"
+                className="text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14"
               >
                 <a href="https://LNCHBL.com" target="_blank" rel="noopener noreferrer">
                   View Setup Guide
