@@ -49,7 +49,7 @@ export async function captureBaseline(
 ): Promise<ReplayScenario[]> {
   const { data: events } = await supabase
     .from('brain_events')
-    .select('id, module, action, outcome, metadata, created_at')
+    .select('id, module, event_type, outcome, data, created_at')
     .eq('module', module.toLowerCase())
     .eq('outcome', 'success')
     .order('created_at', { ascending: false })
@@ -58,11 +58,11 @@ export async function captureBaseline(
   if (!events) return [];
 
   return events.map(e => {
-    const meta = (typeof e.metadata === 'object' && e.metadata !== null ? e.metadata : {}) as Record<string, unknown>;
+    const meta = (typeof e.data === 'object' && e.data !== null ? e.data : {}) as Record<string, unknown>;
     return {
       id: e.id,
       module: e.module,
-      action: e.action,
+      action: e.event_type,
       inputSnapshot: meta,
       expectedOutcome: 'success',
       baselineMetrics: {
