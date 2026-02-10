@@ -185,12 +185,13 @@ export async function convertDreamToProposal(
       .from('evolution_proposals')
       .insert({
         title,
-        description: insight.content,
-        category: classification.category,
-        priority_score: classification.priority,
+        summary: insight.content,
+        target_system: classification.category,
+        confidence: insight.confidence,
         status: 'pending_review',
-        source_module: 'dream',
+        created_by: 'dream_pipeline',
         expected_impact: predictedImpact,
+        suggested_change: { source: 'dream', priority: classification.priority },
       })
       .select('id')
       .single();
