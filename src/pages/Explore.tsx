@@ -53,6 +53,7 @@ import { BuiltForSection } from "@/components/home/BuiltForSection";
 import { TechShowcase } from "@/components/home/TechShowcase";
 import { CodeLabCTA } from "@/components/codelab/CodeLabCTA";
 import { SynergyDepotCTA } from "@/components/explore/SynergyDepotCTA";
+import { LnchblCTA } from "@/components/LnchblCTA";
 
 // Animated gradient orb
 function GradientOrb({ className, delay = 0 }: { className?: string; delay?: number }) {
@@ -337,6 +338,9 @@ export default function Explore() {
 
       {/* Hero Section */}
       <HeroMetaSubstrate />
+
+      {/* LNCHBL Free Download CTA - right under hero */}
+      <LnchblCTA />
 
       {/* Synergy Pipelines & Capabilities Depot CTA */}
       <SynergyDepotCTA />
