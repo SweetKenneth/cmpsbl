@@ -749,7 +749,7 @@ export async function getModuleKnowledgeReport(module: TransferModule): Promise<
   const { count: hotCount } = await supabase
     .from('brain_memory_hot')
     .select('id', { count: 'exact', head: true })
-    .ilike('category', `${config.hotCategoryPrefix}%`);
+    .ilike('context', `${config.hotCategoryPrefix}%`);
 
   const { data: memories } = await supabase
     .from('brain_memories')
