@@ -175,8 +175,8 @@ export function AmbientMusicPlayer({ className }: { className?: string }) {
               "fixed z-[10000]",
               // Mobile: center in viewport
               "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
-              // Desktop: position below button via JS
-              "sm:left-auto sm:top-auto sm:right-4 sm:translate-x-0 sm:translate-y-0",
+              // Desktop: top-right below header
+              "sm:left-auto sm:top-12 sm:right-4 sm:translate-x-0 sm:translate-y-0",
               "w-72 max-w-[calc(100vw-2rem)] p-4 rounded-xl",
               "bg-card/95 backdrop-blur-xl border border-border/50",
               "shadow-xl shadow-black/20"
