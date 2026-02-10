@@ -214,12 +214,12 @@ export async function transferKnowledge(module: TransferModule): Promise<Transfe
     // 3. Transfer each relevant memory to hot cache
     for (const memory of relevant) {
       try {
-        const { data: existing } = await supabase
+        const { data: existing } = await (supabase
           .from('brain_memory_hot')
           .select('id, access_count')
           .eq('category', `${config.hotCategoryPrefix}:${memory.memory_type}`)
           .ilike('content', `%${memory.content.slice(0, 40)}%`)
-          .limit(1);
+          .limit(1) as any);
 
         if (existing && existing.length > 0) {
           await supabase.from('brain_memory_hot').update({
