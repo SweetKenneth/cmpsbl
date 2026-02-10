@@ -248,7 +248,34 @@ const DEGRADATION_TIERS = {
 const PROVIDER_CONFIGS = {
   groq: {
     url: 'https://api.groq.com/openai/v1/chat/completions',
-    model: 'llama-3.3-70b-versatile',
+    model: 'llama-3.1-8b-instant',  // 14.4K RPD — primary workhorse for CLM
+    keyEnv: 'GROQ_API_KEY',
+    headers: (key: string) => ({ 
+      'Authorization': `Bearer ${key}`, 
+      'Content-Type': 'application/json' 
+    })
+  },
+  'groq-70b': {
+    url: 'https://api.groq.com/openai/v1/chat/completions',
+    model: 'llama-3.3-70b-versatile',  // 1K RPD — reserved for user chat/reasoning
+    keyEnv: 'GROQ_API_KEY',
+    headers: (key: string) => ({ 
+      'Authorization': `Bearer ${key}`, 
+      'Content-Type': 'application/json' 
+    })
+  },
+  'groq-scout': {
+    url: 'https://api.groq.com/openai/v1/chat/completions',
+    model: 'meta-llama/llama-4-scout-17b-16e-instruct',  // 30K TPM — highest throughput
+    keyEnv: 'GROQ_API_KEY',
+    headers: (key: string) => ({ 
+      'Authorization': `Bearer ${key}`, 
+      'Content-Type': 'application/json' 
+    })
+  },
+  'groq-qwen': {
+    url: 'https://api.groq.com/openai/v1/chat/completions',
+    model: 'qwen/qwen3-32b',  // 60 RPM — double rate for burst learning
     keyEnv: 'GROQ_API_KEY',
     headers: (key: string) => ({ 
       'Authorization': `Bearer ${key}`, 
