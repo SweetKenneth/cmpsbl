@@ -81,6 +81,7 @@ export function DashboardAudio({ className }: DashboardAudioProps) {
 // Desktop version with dropdown panels
 import { Badge } from '@/components/ui/badge';
 import { motion, AnimatePresence } from 'framer-motion';
+import { createPortal } from 'react-dom';
 import { AmbientMusicPlayer } from './AmbientMusicPlayer';
 
 function DesktopAudioControls({ className }: { className?: string }) {
