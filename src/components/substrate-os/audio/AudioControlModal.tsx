@@ -4,6 +4,7 @@
  */
 
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { Music, Volume2, VolumeX, Play, Pause, SkipForward, Settings2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
@@ -148,7 +149,7 @@ export function AudioControlModal({ isOpen, onClose }: AudioControlModalProps) {
     updateAmbientSettings({ trackIndex: nextIndex });
   };
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
         <>
@@ -370,6 +371,7 @@ export function AudioControlModal({ isOpen, onClose }: AudioControlModalProps) {
           </div>
         </>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }
