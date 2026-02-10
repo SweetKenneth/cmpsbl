@@ -9,36 +9,10 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { 
   ArrowRight, 
-  Brain, 
-  Shield, 
-  Zap, 
-  Eye, 
-  Moon, 
   Terminal, 
-  MessageSquare,
-  Cpu,
-  Database,
-  Layers,
-  Code,
-  Network,
-  RefreshCw,
-  Lock,
-  Clock,
-  HeartPulse,
-  Workflow,
-  Globe,
-  Webhook,
-  CheckCircle2,
-  Settings,
-  Fingerprint,
   BookOpen,
-  ChevronDown,
-  Plug,
-  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
 import { SEO } from "@/components/SEO";
 import { cn } from "@/lib/utils";
 
@@ -46,8 +20,6 @@ import { cn } from "@/lib/utils";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { HeroMetaSubstrate } from "@/components/hero/HeroMetaSubstrate";
-import { UseCaseShowcase } from "@/components/home/UseCaseShowcase";
-import { IndustryShowcase } from "@/components/home/IndustryShowcase";
 import { WhySubstrate } from "@/components/home/WhySubstrate";
 import { BuiltForSection } from "@/components/home/BuiltForSection";
 import { TechShowcase } from "@/components/home/TechShowcase";
