@@ -230,7 +230,7 @@ function ScrollIndicator() {
 
 export function HeroMetaSubstrate() {
   return (
-    <section className="relative min-h-[100dvh] flex flex-col items-center justify-center px-4 sm:px-6 pt-4 sm:pt-8 pb-8 sm:pb-10 overflow-visible safe-area-inset">
+    <section className="relative min-h-[100dvh] flex flex-col items-center justify-center px-4 sm:px-6 pt-2 sm:pt-8 pb-6 sm:pb-10 overflow-visible safe-area-inset">
       {/* Multi-layer animated background */}
       <div className="absolute inset-0 bg-background overflow-hidden">
         {/* Animated gradient orbs */}
@@ -294,7 +294,7 @@ export function HeroMetaSubstrate() {
 
       <div className="relative z-10 w-full max-w-7xl mx-auto">
         {/* Top section: Text + Visualization side by side */}
-        <div className="grid lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-16 items-center mb-10 sm:mb-20">
+        <div className="grid lg:grid-cols-2 gap-6 sm:gap-10 lg:gap-16 items-center mb-8 sm:mb-20">
           {/* Left: Headlines and CTAs */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
@@ -493,7 +493,7 @@ export function HeroMetaSubstrate() {
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.75 }}
-          className="flex justify-start sm:justify-center gap-2.5 sm:gap-4 mb-10 sm:mb-20 -mx-4 px-4 sm:mx-0 sm:px-0 overflow-x-auto scrollbar-hide pb-2 sm:pb-0"
+          className="flex justify-start sm:justify-center gap-2 sm:gap-4 mb-8 sm:mb-20 -mx-4 px-4 pr-8 sm:mx-0 sm:px-0 sm:pr-0 overflow-x-auto scrollbar-hide pb-2 sm:pb-0"
         >
           {[
             { icon: Brain, label: "Persistent Memory (FREE)", href: "/persistent-memory", hoverColor: "hover:border-emerald-500/50 hover:bg-emerald-500/10 hover:shadow-emerald-500/10" },
@@ -533,7 +533,7 @@ export function HeroMetaSubstrate() {
           <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-violet-500/10 blur-3xl" />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent blur-2xl" />
           
-          <div className="relative grid grid-cols-2 md:grid-cols-4 gap-1 sm:gap-4 p-4 sm:p-8 rounded-3xl border border-border/50 bg-gradient-to-br from-card/70 via-card/50 to-card/70 backdrop-blur-xl shadow-2xl shadow-black/10 overflow-hidden">
+          <div className="relative grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 p-3 sm:p-8 rounded-2xl sm:rounded-3xl border border-border/50 bg-gradient-to-br from-card/70 via-card/50 to-card/70 backdrop-blur-xl shadow-2xl shadow-black/10 overflow-hidden">
             {/* Animated border gradient */}
             <div className="absolute inset-0 rounded-3xl p-px bg-gradient-to-br from-primary/30 via-transparent to-violet-500/30 pointer-events-none" style={{ mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)", maskComposite: "xor" }} />
             

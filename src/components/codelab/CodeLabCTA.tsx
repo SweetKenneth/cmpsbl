@@ -19,7 +19,7 @@ const tools = [
 
 export function CodeLabCTA() {
   return (
-    <section className="relative z-10 px-4 py-16 md:py-24">
+    <section className="relative z-10 px-4 py-12 md:py-24">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -44,7 +44,7 @@ export function CodeLabCTA() {
           <div className="absolute -top-32 -right-32 w-64 h-64 rounded-full bg-primary/15 blur-[100px]" />
           <div className="absolute -bottom-32 -left-32 w-64 h-64 rounded-full bg-violet-500/15 blur-[100px]" />
           
-          <div className="relative p-8 sm:p-10 md:p-14 lg:p-16">
+          <div className="relative p-5 sm:p-10 md:p-14 lg:p-16">
             <div className="grid lg:grid-cols-[1fr,auto] gap-10 items-center">
               {/* Left content */}
               <div className="text-center lg:text-left">

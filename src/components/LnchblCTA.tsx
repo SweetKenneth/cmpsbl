@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 export function LnchblCTA() {
   return (
-    <section className="relative z-10 px-4 py-12 sm:py-16">
+    <section className="relative z-10 px-4 py-8 sm:py-16">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -28,7 +28,7 @@ export function LnchblCTA() {
           <div className="absolute -top-24 -right-24 w-48 h-48 rounded-full bg-primary/10 blur-[80px] pointer-events-none" />
           <div className="absolute -bottom-24 -left-24 w-48 h-48 rounded-full bg-violet-500/10 blur-[80px] pointer-events-none" />
           
-          <div className="relative p-8 sm:p-10 md:p-12">
+          <div className="relative p-5 sm:p-10 md:p-12">
             {/* Badge */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
@@ -80,7 +80,7 @@ export function LnchblCTA() {
               <Button
                 size="lg"
                 asChild
-                className="group text-lg px-8 py-6 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] transition-all"
+                className="group text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] transition-all"
               >
                 <a href="https://LNCHBL.com" target="_blank" rel="noopener noreferrer">
                   <Download className="w-5 h-5 mr-2" />
@@ -92,7 +92,7 @@ export function LnchblCTA() {
                 size="lg"
                 variant="outline"
                 asChild
-                className="text-lg px-8 py-6"
+                className="text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14"
               >
                 <a href="https://LNCHBL.com" target="_blank" rel="noopener noreferrer">
                   View Setup Guide

@@ -439,7 +439,7 @@ export function TechShowcase() {
   };
   
   return (
-    <section className="relative py-20 sm:py-32 px-4 overflow-hidden">
+    <section className="relative py-14 sm:py-32 px-4 overflow-hidden">
       {/* Enhanced Background */}
       <div className="absolute inset-0 bg-muted/30" />
       <div className="absolute inset-0 pointer-events-none">
@@ -596,7 +596,7 @@ export function TechShowcase() {
             {/* Code content with line numbers - NO animation to prevent overlap */}
             <div
               key={activeTab}
-              className="p-6 overflow-x-auto"
+              className="p-3 sm:p-6 overflow-x-auto"
             >
               <div className="flex">
                 {/* Line numbers */}

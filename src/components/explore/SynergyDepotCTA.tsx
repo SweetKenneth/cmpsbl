@@ -32,7 +32,7 @@ function StatBadge({ value, label }: { value: string; label: string }) {
 
 export function SynergyDepotCTA() {
   return (
-    <section className="relative z-10 px-4 py-16 sm:py-24">
+    <section className="relative z-10 px-4 py-12 sm:py-24">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <motion.div
@@ -83,7 +83,7 @@ export function SynergyDepotCTA() {
               {/* Gradient accent bar */}
               <div className="h-1.5 w-full bg-gradient-to-r from-violet-500 via-purple-500 to-fuchsia-500" />
               
-              <div className="p-6 sm:p-8">
+              <div className="p-5 sm:p-8">
                 {/* Icon + Title */}
                 <div className="flex items-start gap-4 mb-6">
                   <motion.div 
@@ -156,7 +156,7 @@ export function SynergyDepotCTA() {
               {/* Gradient accent bar */}
               <div className="h-1.5 w-full bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500" />
               
-              <div className="p-6 sm:p-8">
+              <div className="p-5 sm:p-8">
                 {/* Icon + Title */}
                 <div className="flex items-start gap-4 mb-6">
                   <motion.div 

@@ -30,7 +30,7 @@ import { LnchblCTA } from "@/components/LnchblCTA";
 // Section divider with animated gradient
 function SectionDivider() {
   return (
-    <div className="relative py-10 sm:py-14">
+    <div className="relative py-6 sm:py-14">
       <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
       <motion.div 
         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-primary/40"
@@ -102,7 +102,7 @@ export default function Explore() {
       <CodeLabCTA />
 
       {/* Final CTA — Cinematic closing */}
-      <section className="relative z-10 px-4 py-20 sm:py-32">
+      <section className="relative z-10 px-4 py-14 sm:py-32">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -110,7 +110,7 @@ export default function Explore() {
           transition={{ duration: 0.8 }}
           className="max-w-5xl mx-auto"
         >
-          <div className="relative rounded-[2rem] overflow-hidden">
+          <div className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden">
             {/* Deep gradient background */}
             <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-violet-600" />
             
@@ -138,7 +138,7 @@ export default function Explore() {
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
             />
             
-            <div className="relative p-10 sm:p-14 md:p-20 text-center">
+            <div className="relative p-6 sm:p-14 md:p-20 text-center">
               {/* Floating badge */}
               <motion.div
                 initial={{ opacity: 0, y: -10 }}

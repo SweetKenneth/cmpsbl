@@ -263,7 +263,7 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
 
 export function BuiltForSection() {
   return (
-    <section className="relative py-20 sm:py-32 px-4 overflow-hidden">
+    <section className="relative py-14 sm:py-32 px-4 overflow-hidden">
       {/* Enhanced Background */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-muted/30" />
@@ -286,7 +286,7 @@ export function BuiltForSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12 sm:mb-20"
+          className="text-center mb-8 sm:mb-20"
         >
           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
             <Sparkles className="w-3 h-3 text-primary" />
