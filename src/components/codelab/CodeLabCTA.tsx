@@ -19,7 +19,7 @@ const tools = [
 
 export function CodeLabCTA() {
   return (
-    <section className="relative z-10 px-4 py-16 md:py-24">
+    <section className="relative z-10 px-4 py-12 md:py-24">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
