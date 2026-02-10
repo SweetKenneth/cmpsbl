@@ -38,7 +38,8 @@ export function LnchblCTA() {
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/15 border border-primary/25 mb-6"
             >
               <Rocket className="w-4 h-4 text-primary" />
-              <span className="text-sm font-bold tracking-wide text-primary">100% FREE — No Strings Attached</span>
+              <span className="text-sm font-bold tracking-wide text-primary">100% FREE</span>
+              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-500 border border-emerald-500/25">v1.4.0 • Memory Fix Live</span>
             </motion.div>
 
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 leading-tight tracking-tight">
