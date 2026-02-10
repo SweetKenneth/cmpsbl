@@ -1,11 +1,14 @@
 /**
  * LNCHBL Distribution — Tiered Capability Map
- * v2.0.0 — Maps all substrate systems to subscription tiers
+ * v3.0.0 — Maps all substrate systems to subscription tiers
+ * 
+ * SELF-IMPROVEMENT IS ENTERPRISE-ONLY.
+ * No evolution, self-modification, or autonomous improvement at lower tiers.
  * 
  * FREE (Starter):  Core cognitive loop + basic memory
  * Builder ($49/mo): Infrastructure hardening + observability  
- * Pro ($149/mo):    Full autonomy + evolution + intelligence
- * Enterprise ($499/mo): Complete platform + custom + SLA
+ * Pro ($149/mo):    Advanced intelligence + operations + multi-tenant
+ * Enterprise ($499/mo): Self-improvement + evolution + full platform + SLA
  */
 
 export type DistributionTier = 'free' | 'builder' | 'pro' | 'enterprise';
@@ -20,7 +23,8 @@ export interface TieredCapability {
 
 /**
  * FREE TIER — Core cognitive substrate
- * Everything needed to get started with persistent memory and basic AI
+ * Everything needed to get started with persistent memory and basic AI.
+ * NO self-improvement, NO evolution, NO autonomous modification.
  */
 export const FREE_CAPABILITIES: TieredCapability[] = [
   // Core Engines
@@ -41,19 +45,21 @@ export const FREE_CAPABILITIES: TieredCapability[] = [
 
 /**
  * BUILDER TIER — Infrastructure hardening + observability
- * For developers building production-grade cognitive applications
+ * For developers building production-grade cognitive applications.
+ * NO self-improvement, NO evolution, NO autonomous modification.
  */
 export const BUILDER_CAPABILITIES: TieredCapability[] = [
   // Reliability
   { id: 'circuit_breaker', name: 'Circuit Breaker', tier: 'builder', category: 'reliability', description: 'Formalized open/half-open/closed module protection' },
   { id: 'boot_gates', name: 'Boot Health Gates', tier: 'builder', category: 'reliability', description: 'Dependency-aware module activation verification' },
   { id: 'regression_testing', name: 'Regression Testing', tier: 'builder', category: 'reliability', description: 'Automated smoke tests for system integrity' },
-  { id: 'regression_trigger', name: 'Auto Regression Trigger', tier: 'builder', category: 'reliability', description: 'Fire tests automatically after evolution events' },
+  { id: 'regression_trigger', name: 'Auto Regression Trigger', tier: 'builder', category: 'reliability', description: 'Fire tests automatically after events' },
   // Observability
   { id: 'telemetry_engine', name: 'Telemetry Engine', tier: 'builder', category: 'observability', description: 'Full event tracing and performance metrics' },
   { id: 'cost_attribution', name: 'Cost Attribution', tier: 'builder', category: 'observability', description: 'Per-module token and budget tracking' },
   { id: 'self_benchmark', name: 'Self-Benchmark', tier: 'builder', category: 'observability', description: 'Composite health scoring (0-100)' },
   { id: 'health_api', name: 'Health Dashboard API', tier: 'builder', category: 'observability', description: 'Unified JSON endpoint for real-time system status' },
+  { id: 'correlation_id', name: 'Correlation ID Propagation', tier: 'builder', category: 'observability', description: 'End-to-end request tracing across module boundaries' },
   // Memory Management
   { id: 'memory_gc', name: 'Memory GC', tier: 'builder', category: 'memory', description: 'Garbage collection and capacity enforcement' },
   { id: 'gc_scheduler', name: 'GC Scheduler', tier: 'builder', category: 'memory', description: 'Automated 6-hour memory maintenance cycles' },
@@ -61,51 +67,69 @@ export const BUILDER_CAPABILITIES: TieredCapability[] = [
   // Communication
   { id: 'module_bus', name: 'Module Communication Bus', tier: 'builder', category: 'communication', description: 'Real-time pub/sub inter-module signals' },
   { id: 'realtime_bridge', name: 'Realtime Bridge', tier: 'builder', category: 'communication', description: 'Cross-tab/session signal propagation' },
-  // Transfer
+  // Transfer (read-only intelligence, NOT self-improvement)
   { id: 'brain_transfer', name: 'Brain Transfer Pipeline', tier: 'builder', category: 'intelligence', description: 'Distill memories into module heuristics' },
   { id: 'pattern_scoring', name: 'Pattern Effectiveness Scoring', tier: 'builder', category: 'intelligence', description: 'Track ROI of transferred knowledge patterns' },
   { id: 'pattern_versioning', name: 'Pattern Versioning', tier: 'builder', category: 'intelligence', description: 'Schema versions for expert patterns with migration' },
+  // Rate Limiting
+  { id: 'adaptive_rate_limit', name: 'Adaptive Rate Limiting', tier: 'builder', category: 'reliability', description: 'Dynamic rate limits based on system health and reputation' },
 ];
 
 /**
- * PRO TIER — Full autonomy + evolution + intelligence
- * For teams building self-improving cognitive systems
+ * PRO TIER — Advanced intelligence + operations + multi-tenant
+ * For teams building sophisticated cognitive systems.
+ * NO self-improvement, NO evolution, NO autonomous modification.
+ * Includes operational intelligence but NOT self-modifying capabilities.
  */
 export const PRO_CAPABILITIES: TieredCapability[] = [
-  // Evolution
-  { id: 'seba_engine', name: 'SEBA Evolution Engine', tier: 'pro', category: 'evolution', description: 'Self-Evolving Bounded Agent with 9 cognitive analyzers' },
-  { id: 'modernizer', name: 'Modernizer (Omega Observer)', tier: 'pro', category: 'evolution', description: 'Shadow-to-production upgrade pipeline' },
-  { id: 'evolution_ab', name: 'Evolution A/B Testing', tier: 'pro', category: 'evolution', description: 'Shadow two proposal variants, select better performer' },
-  { id: 'evolution_rollback', name: 'Evolution Rollback', tier: 'pro', category: 'evolution', description: 'Auto-revert on regression test failures' },
-  { id: 'impact_replay', name: 'Impact Replay', tier: 'pro', category: 'evolution', description: 'Replay queries against new states to verify impact' },
-  // Autonomy
-  { id: 'cortex_engine', name: 'Cortex Agency Engine', tier: 'pro', category: 'autonomy', description: 'PROPOSE → EVALUATE → APPLY → AUDIT → LEARN loop' },
-  { id: 'dream_proposal', name: 'Dream → Proposal Pipeline', tier: 'pro', category: 'autonomy', description: 'Convert cognitive insights into evolution proposals' },
-  { id: 'dream_chains', name: 'Multi-Step Dream Chains', tier: 'pro', category: 'autonomy', description: 'Sequences of dependent evolution proposals' },
-  { id: 'knowledge_autofill', name: 'Knowledge Auto-Fill', tier: 'pro', category: 'autonomy', description: 'Auto-schedule CLM sessions for expertise gaps' },
-  // Intelligence
+  // Intelligence (read-only analysis, NOT self-improvement)
   { id: 'reasoning_engine', name: 'Reasoning Engine', tier: 'pro', category: 'intelligence', description: 'Causal reasoning and hypothesis testing' },
   { id: 'imagination_engine', name: 'Imagination Engine', tier: 'pro', category: 'intelligence', description: 'Generative synthesis and pattern fusion' },
   { id: 'knowledge_map', name: 'Knowledge Map', tier: 'pro', category: 'intelligence', description: 'Expertise scoring and coverage gap analysis' },
   { id: 'anomaly_correlation', name: 'Anomaly Correlation', tier: 'pro', category: 'intelligence', description: 'Cross-module anomaly detection and correlation' },
   { id: 'incident_timeline', name: 'Incident Timeline', tier: 'pro', category: 'intelligence', description: 'Causal chain reconstruction for root-cause analysis' },
+  { id: 'predictive_failure', name: 'Predictive Failure Detection', tier: 'pro', category: 'intelligence', description: 'Metric trend analysis to predict impending failures' },
   // Advanced Ops
   { id: 'adaptive_budget', name: 'Adaptive Budget Allocation', tier: 'pro', category: 'operations', description: 'Dynamic token shifting based on module value' },
   { id: 'cost_forecast', name: 'Cost Forecasting', tier: 'pro', category: 'operations', description: 'EMA-based spend prediction and budget alerts' },
   { id: 'load_shedding', name: 'Load Shedding', tier: 'pro', category: 'operations', description: 'Autonomous module deprioritization under pressure' },
   { id: 'governance_guard', name: 'Governance Guard', tier: 'pro', category: 'governance', description: 'Ethical and coherence constraint enforcement' },
+  // Multi-Tenant & Isolation
+  { id: 'multi_tenant', name: 'Multi-Tenant Isolation', tier: 'pro', category: 'platform', description: 'Tenant-scoped resource isolation for shared instances' },
+  { id: 'capability_gate', name: 'Capability Gate Middleware', tier: 'pro', category: 'platform', description: 'Tier-based access control enforcement at runtime' },
+  // Dynamic Composition
+  { id: 'dynamic_pipeline', name: 'Dynamic Pipeline Composition', tier: 'pro', category: 'operations', description: 'Runtime-composable execution pipelines from registered stages' },
+  // Federation (memory sharing, NOT self-improvement)
+  { id: 'federated_memory', name: 'Federated Memory Sync', tier: 'pro', category: 'memory', description: 'Cross-instance memory synchronization with privacy controls' },
 ];
 
 /**
- * ENTERPRISE TIER — Complete platform + custom + SLA
- * Full substrate access with enterprise-grade guarantees
+ * ENTERPRISE TIER — Self-improvement + evolution + full platform + SLA
+ * 
+ * ⚠️  SELF-IMPROVEMENT IS EXCLUSIVELY ENTERPRISE.
+ * This is the ONLY tier that includes evolution engines, autonomous
+ * modification, self-repair, proposal generation, and any capability
+ * where the system modifies its own behavior, code, or architecture.
  */
 export const ENTERPRISE_CAPABILITIES: TieredCapability[] = [
+  // === SELF-IMPROVEMENT & EVOLUTION (Enterprise-Only) ===
+  { id: 'seba_engine', name: 'SEBA Evolution Engine', tier: 'enterprise', category: 'self-improvement', description: 'Self-Evolving Bounded Agent with 9 cognitive analyzers' },
+  { id: 'modernizer', name: 'Modernizer (Omega Observer)', tier: 'enterprise', category: 'self-improvement', description: 'Shadow-to-production upgrade pipeline' },
+  { id: 'cortex_engine', name: 'Cortex Agency Engine', tier: 'enterprise', category: 'self-improvement', description: 'PROPOSE → EVALUATE → APPLY → AUDIT → LEARN loop' },
+  { id: 'evolution_ab', name: 'Evolution A/B Testing', tier: 'enterprise', category: 'self-improvement', description: 'Shadow two proposal variants, select better performer' },
+  { id: 'evolution_rollback', name: 'Evolution Rollback', tier: 'enterprise', category: 'self-improvement', description: 'Auto-revert on regression test failures' },
+  { id: 'impact_replay', name: 'Impact Replay', tier: 'enterprise', category: 'self-improvement', description: 'Replay queries against new states to verify impact' },
+  { id: 'dream_proposal', name: 'Dream → Proposal Pipeline', tier: 'enterprise', category: 'self-improvement', description: 'Convert cognitive insights into evolution proposals' },
+  { id: 'dream_chains', name: 'Multi-Step Dream Chains', tier: 'enterprise', category: 'self-improvement', description: 'Sequences of dependent evolution proposals' },
+  { id: 'knowledge_autofill', name: 'Knowledge Auto-Fill', tier: 'enterprise', category: 'self-improvement', description: 'Auto-schedule CLM sessions for expertise gaps' },
+  { id: 'hot_swap', name: 'Hot-Swap Engine Deployment', tier: 'enterprise', category: 'self-improvement', description: 'Zero-downtime engine replacement at runtime' },
+  { id: 'deprecation_lifecycle', name: 'Deprecation Lifecycle', tier: 'enterprise', category: 'self-improvement', description: 'Managed sunset for capabilities: announced → removed' },
   // Full Platform
   { id: 'capability_discovery', name: 'Module Capability Discovery', tier: 'enterprise', category: 'platform', description: 'Auto-detect module functionality via endpoint probing' },
   { id: 'orchestrator_engine', name: 'Orchestrator Engine', tier: 'enterprise', category: 'platform', description: 'Unified cognitive pipeline with preset modes' },
   { id: 'support_bot', name: 'Support Bot Engine', tier: 'enterprise', category: 'platform', description: 'Governed evolving support with memory-backed resolution' },
   { id: 'code_validation', name: 'Encoded Code Validation', tier: 'enterprise', category: 'platform', description: 'Pre-proposal syntax and safety checks' },
+  { id: 'plugin_sdk', name: 'Plugin SDK', tier: 'enterprise', category: 'platform', description: 'Extension framework for third-party substrate plugins' },
   // World-First Enhancements
   { id: 'world_first_cognitive', name: 'World-First: Cognitive', tier: 'enterprise', category: 'world-first', description: '14 cognitive enhancement orchestrations' },
   { id: 'world_first_operational', name: 'World-First: Operational', tier: 'enterprise', category: 'world-first', description: '14 operational enhancement orchestrations' },
@@ -160,4 +184,10 @@ export function getTierSummary() {
 /** Get capability IDs for a tier (for patch manifests) */
 export function getTierCapabilityIds(tier: DistributionTier): string[] {
   return getCapabilitiesForTier(tier).map(c => c.id);
+}
+
+/** Check if a capability involves self-improvement */
+export function isSelfImprovement(capabilityId: string): boolean {
+  const cap = ALL_CAPABILITIES.find(c => c.id === capabilityId);
+  return cap?.category === 'self-improvement';
 }

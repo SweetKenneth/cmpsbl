@@ -143,6 +143,7 @@ This library is part of the **FNDTN v8** standards package, which presents:
 | [78-CAPABILITIES.md](./78-CAPABILITIES.md) | **Synergy Capabilities** | **76 cross-module capabilities + 125 executors** |
 | [79-COGNITIVE-ENGINES.md](./79-COGNITIVE-ENGINES.md) | **Cognitive Engines** | **20 engines consolidating 76 capabilities (v8.0.0)** |
 | [80-EVOLUTION-OBSERVABILITY.md](./80-EVOLUTION-OBSERVABILITY.md) | Evolution Observability | Investor-facing evolution visibility & stamps |
+| [85-LNCHBL-DISTRIBUTION.md](./85-LNCHBL-DISTRIBUTION.md) | **LNCHBL Distribution** | **68 tiered capabilities, self-improvement Enterprise-only** |
 
 ### Supplementary Materials
 
