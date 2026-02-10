@@ -669,8 +669,8 @@ export async function ingestModulePatterns(module: TransferModule): Promise<{
     try {
       await supabase.from('brain_memory_hot').insert({
         content: `[${module.toUpperCase()}_EXPERT] ${pattern.title}: ${pattern.content}`,
-        category: `${config.hotCategoryPrefix}:expert`,
-        priority: pattern.priority,
+        context: `${config.hotCategoryPrefix}:expert`,
+        priority: clampPriority(pattern.priority / 10),
         access_count: 0,
         metadata: { module, title: pattern.title },
       });
