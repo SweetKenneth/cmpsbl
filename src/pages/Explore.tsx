@@ -138,7 +138,7 @@ export default function Explore() {
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
             />
             
-            <div className="relative p-10 sm:p-14 md:p-20 text-center">
+            <div className="relative p-6 sm:p-14 md:p-20 text-center">
               {/* Floating badge */}
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
