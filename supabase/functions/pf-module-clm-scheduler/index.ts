@@ -92,8 +92,8 @@ Deno.serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
     );
 
-    // Check daily budget - don't exceed 30% of daily Nexus budget for CLM
-    // v1.4.0: Reduced from 70% to 50% threshold to reserve capacity for chatbots
+    // Check daily budget — with 14.4K RPD on groq (llama-3.1-8b-instant), we can be much more aggressive
+    // v1.5.0: Raised threshold to 80% since we now have 14.4K+ RPD capacity
     const { data: quotaData } = await supabase
       .from('ai_daily_quota')
       .select('calls_used, calls_budget')
@@ -102,15 +102,15 @@ Deno.serve(async (req) => {
       .single();
 
     const usedPercent = quotaData 
-      ? (quotaData.calls_used / (quotaData.calls_budget || 100)) * 100 
+      ? (quotaData.calls_used / (quotaData.calls_budget || 14400)) * 100 
       : 0;
 
-    if (usedPercent > 50) {
-      console.log('[ModuleCLM] Budget exceeded 50%, skipping cycle to reserve capacity for bots');
+    if (usedPercent > 80) {
+      console.log('[ModuleCLM] Budget exceeded 80%, skipping cycle');
       return new Response(JSON.stringify({ 
         success: true, 
         skipped: true, 
-        reason: 'budget_limit_reserved_for_bots',
+        reason: 'budget_limit',
         usedPercent 
       }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
