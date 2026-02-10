@@ -110,7 +110,7 @@ export function PersistentChatbotDemo() {
         role: 'assistant',
         content: data?.reply || data?.response || "I've processed your message and stored it in my memory!",
         timestamp: new Date(),
-        memoryUsed: data?.memory_context?.length > 0 || Math.random() > 0.5
+        memoryUsed: data?.memory_used === true || (data?.memory_context?.length > 0)
       };
 
       setMessages(prev => prev.filter(m => m.id !== 'typing').concat(assistantMessage));
