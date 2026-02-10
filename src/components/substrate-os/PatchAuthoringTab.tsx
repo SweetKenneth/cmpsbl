@@ -41,7 +41,7 @@ const ENGINE_GROUPS = [
   { label: 'Communication', ids: ['broadcast_engine', 'event_engine'] },
   { label: 'Integration', ids: ['routing_engine', 'transformation_engine'] },
   { label: 'Analytics', ids: ['monitoring_engine', 'capacity_engine'] },
-  { label: 'Experience', ids: ['accessibility_engine', 'personalization_engine'] },
+  { label: 'Experience & UI', ids: ['accessibility_engine', 'personalization_engine', 'audio_experience_engine', 'ui_theming_engine'] },
   { label: 'Knowledge', ids: ['graph_engine', 'context_engine'] },
   { label: 'Autonomy', ids: ['self_healing_engine', 'self_documentation_engine'] },
 ];
