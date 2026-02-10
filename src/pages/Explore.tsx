@@ -102,7 +102,7 @@ export default function Explore() {
       <CodeLabCTA />
 
       {/* Final CTA — Cinematic closing */}
-      <section className="relative z-10 px-4 py-20 sm:py-32">
+      <section className="relative z-10 px-4 py-14 sm:py-32">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
