@@ -108,12 +108,34 @@ const SAFETY_MARGIN = 0.95; // Use 95% of max limits for maximum throughput
 // VERIFIED from official documentation (Jan 2026)
 // All limits calculated as: OFFICIAL_LIMIT * 0.95
 export const RATE_LIMITS: Record<string, RateLimitConfig> = {
-  // Groq - console.groq.com/docs/rate-limits
-  // llama-3.3-70b-versatile: 30 RPM, 1,000 RPD, 12K TPM (VERIFIED Jan 2026)
+  // Groq - console.groq.com/docs/rate-limits (VERIFIED Feb 2026)
+  // llama-3.1-8b-instant: 30 RPM, 14,400 RPD, 6K TPM, 500K TPD — PRIMARY for CLM/learning
   groq: { 
+    perMin: Math.floor(30 * SAFETY_MARGIN),           // 28 RPM
+    perDay: Math.floor(14400 * SAFETY_MARGIN),        // 13,680 RPD ← was 950!
+    perMinTokens: Math.floor(6000 * SAFETY_MARGIN),   // 5,700 TPM
+    bufferSeconds: 3 
+  },
+  // Groq 70b - reserved for user-facing complex reasoning
+  // llama-3.3-70b-versatile: 30 RPM, 1,000 RPD, 12K TPM
+  'groq-70b': { 
     perMin: Math.floor(30 * SAFETY_MARGIN),           // 28 RPM
     perDay: Math.floor(1000 * SAFETY_MARGIN),         // 950 RPD
     perMinTokens: Math.floor(12000 * SAFETY_MARGIN),  // 11,400 TPM
+    bufferSeconds: 3 
+  },
+  // Groq Scout - llama-4-scout: 30 RPM, 1K RPD, 30K TPM, 500K TPD
+  'groq-scout': { 
+    perMin: Math.floor(30 * SAFETY_MARGIN),           // 28 RPM
+    perDay: Math.floor(1000 * SAFETY_MARGIN),         // 950 RPD
+    perMinTokens: Math.floor(30000 * SAFETY_MARGIN),  // 28,500 TPM — highest!
+    bufferSeconds: 3 
+  },
+  // Groq Qwen - qwen3-32b: 60 RPM, 1K RPD, 6K TPM — double RPM!
+  'groq-qwen': { 
+    perMin: Math.floor(60 * SAFETY_MARGIN),           // 57 RPM
+    perDay: Math.floor(1000 * SAFETY_MARGIN),         // 950 RPD
+    perMinTokens: Math.floor(6000 * SAFETY_MARGIN),   // 5,700 TPM
     bufferSeconds: 3 
   },
   // Cerebras - inference-docs.cerebras.ai/support/rate-limits
