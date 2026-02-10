@@ -5,7 +5,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import { moduleBus } from '../module-bus';
+import { subscribe, publish, type ModuleName } from '../module-bus';
 
 export interface CorrelatedAnomaly {
   primary: AnomalySignal;
@@ -22,7 +22,6 @@ interface AnomalySignal {
   timestamp: string;
 }
 
-// Module correlation groups — anomalies in one should check the others
 const CORRELATION_GROUPS: Record<string, string[]> = {
   defense: ['access', 'system', 'nexus'],
   nexus: ['brain', 'decode', 'cortex'],
@@ -43,11 +42,10 @@ export async function correlateAnomaly(
   detail: string
 ): Promise<CorrelatedAnomaly> {
   const now = new Date();
-  const windowStart = new Date(now.getTime() - 30 * 60 * 1000); // 30-min window
+  const windowStart = new Date(now.getTime() - 30 * 60 * 1000);
   
   const relatedModules = CORRELATION_GROUPS[sourceModule] || [];
   
-  // Fetch recent failure/warning events from related modules
   const { data: relatedEvents } = await supabase
     .from('brain_events')
     .select('*')
@@ -64,7 +62,6 @@ export async function correlateAnomaly(
     timestamp: e.created_at,
   }));
   
-  // Determine severity based on correlation density
   const uniqueModules = new Set(correlations.map(c => c.module));
   let severity: CorrelatedAnomaly['severity'] = 'low';
   if (uniqueModules.size >= 3) severity = 'critical';
@@ -73,7 +70,6 @@ export async function correlateAnomaly(
   
   const systemic = uniqueModules.size >= 2;
   
-  // Generate recommendation
   let recommendation = 'Monitor — isolated anomaly.';
   if (systemic) {
     const affected = Array.from(uniqueModules).join(', ');
@@ -83,19 +79,13 @@ export async function correlateAnomaly(
   }
   
   const result: CorrelatedAnomaly = {
-    primary: {
-      module: sourceModule,
-      type: anomalyType,
-      detail,
-      timestamp: now.toISOString(),
-    },
+    primary: { module: sourceModule, type: anomalyType, detail, timestamp: now.toISOString() },
     correlations,
     severity,
     systemic,
     recommendation,
   };
   
-  // Log correlation result
   await supabase.from('brain_events').insert({
     module: sourceModule,
     event_type: 'anomaly_correlated',
@@ -109,9 +99,8 @@ export async function correlateAnomaly(
     outcome: systemic ? 'failure' : 'success',
   });
   
-  // Broadcast if systemic
   if (systemic) {
-    moduleBus.emit('ANOMALY_DETECTED', {
+    publish(sourceModule as ModuleName, 'anomaly.detected', {
       source: sourceModule,
       severity,
       affectedModules: Array.from(uniqueModules),
@@ -126,16 +115,16 @@ export async function correlateAnomaly(
  * Enable automatic anomaly correlation on bus signals
  */
 export function enableAutoCorrelation(): void {
-  moduleBus.on('THREAT_DETECTED', (data: any) => {
-    correlateAnomaly('defense', 'threat', JSON.stringify(data).slice(0, 300));
+  subscribe('defense' as ModuleName, 'threat.detected', (signal) => {
+    correlateAnomaly('defense', 'threat', JSON.stringify(signal.payload).slice(0, 300));
   });
   
-  moduleBus.on('PROVIDER_DOWN', (data: any) => {
-    correlateAnomaly('nexus', 'provider_failure', JSON.stringify(data).slice(0, 300));
+  subscribe('nexus' as ModuleName, 'health.degraded', (signal) => {
+    correlateAnomaly('nexus', 'provider_failure', JSON.stringify(signal.payload).slice(0, 300));
   });
   
-  moduleBus.on('MODULE_DEGRADED', (data: any) => {
-    correlateAnomaly(data?.module || 'system', 'degradation', JSON.stringify(data).slice(0, 300));
+  subscribe('system' as ModuleName, 'health.degraded', (signal) => {
+    correlateAnomaly(signal.from || 'system', 'degradation', JSON.stringify(signal.payload).slice(0, 300));
   });
   
   console.log('[Anomaly-Correlation] Auto-correlation enabled on bus signals');

@@ -4,7 +4,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import { moduleBus } from '../module-bus';
+import { subscribe, publish, type ModuleName } from '../module-bus';
 
 export interface RollbackRecord {
   evolutionId: string;
@@ -22,22 +22,19 @@ let rollbackEnabled = false;
 export function enableAutoRollback(): void {
   if (rollbackEnabled) return;
   
-  moduleBus.on('ROLLBACK_TRIGGERED', async (data: any) => {
-    const { evolution_id, reason, pass_rate } = data || {};
-    
+  subscribe('system' as ModuleName, 'rollback.triggered', async (signal) => {
+    const { evolution_id, reason, pass_rate } = signal.payload || {};
     console.warn(`[Rollback] Triggered for evolution ${evolution_id}: ${reason}`);
-    
     await executeRollback(evolution_id, reason, pass_rate);
   });
   
-  // Also listen for regression failures directly
-  moduleBus.on('REGRESSION_FAILED', async (data: any) => {
-    if (data?.passRate !== undefined && data.passRate < 0.5) {
+  subscribe('system' as ModuleName, 'regression.failed', async (signal) => {
+    if (signal.payload?.passRate !== undefined && signal.payload.passRate < 0.5) {
       console.warn('[Rollback] Critical regression failure, auto-rolling back');
       await executeRollback(
-        data.trigger,
-        `Critical regression: ${(data.passRate * 100).toFixed(0)}% pass rate`,
-        data.passRate
+        signal.payload.trigger,
+        `Critical regression: ${(signal.payload.passRate * 100).toFixed(0)}% pass rate`,
+        signal.payload.passRate
       );
     }
   });
@@ -63,26 +60,14 @@ async function executeRollback(
   };
   
   try {
-    // Mark evolution run as rolled back if we have an ID
     if (evolutionId) {
-      // Try evolution_proposals first
       await supabase
         .from('evolution_proposals')
         .update({ status: 'rolled_back' })
         .eq('id', evolutionId);
-      
-      // Try evolution_runs
-      await supabase
-        .from('evolution_runs')
-        .update({
-          status: 'rolled_back',
-          completed_at: new Date().toISOString(),
-        })
-        .eq('id', evolutionId);
     }
     
-    // Restore any hot memory entries that were modified in this evolution
-    // by bumping their priority back to baseline
+    // Reset recently boosted hot memory entries
     const { data: recentHot } = await supabase
       .from('brain_memory_hot')
       .select('id, priority')
@@ -90,9 +75,8 @@ async function executeRollback(
       .limit(20);
     
     if (recentHot?.length) {
-      // Reset recently modified entries to neutral priority
       for (const entry of recentHot) {
-        if (entry.priority > 7) {
+        if ((entry.priority ?? 0) > 7) {
           await supabase
             .from('brain_memory_hot')
             .update({ priority: 5 })
@@ -104,7 +88,6 @@ async function executeRollback(
     
     record.success = true;
     
-    // Log rollback event
     await supabase.from('brain_events').insert({
       module: 'modernizer',
       event_type: 'evolution_rollback',
@@ -117,7 +100,7 @@ async function executeRollback(
       outcome: 'success',
     });
     
-    moduleBus.emit('EVOLUTION_ROLLED_BACK', {
+    publish('modernizer' as ModuleName, 'evolution.rolled_back', {
       evolutionId,
       reason,
     });
@@ -125,7 +108,6 @@ async function executeRollback(
     console.log('[Rollback] Complete:', record);
   } catch (err) {
     console.error('[Rollback] Failed:', err);
-    
     await supabase.from('brain_events').insert({
       module: 'modernizer',
       event_type: 'evolution_rollback',

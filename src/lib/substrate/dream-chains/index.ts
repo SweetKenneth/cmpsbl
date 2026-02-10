@@ -18,7 +18,7 @@ export interface DreamChainStep {
   order: number;
   insight: string;
   targetModule: string;
-  dependsOn: number[]; // indices of steps this depends on
+  dependsOn: number[];
   proposalId?: string;
   status: 'pending' | 'proposed' | 'approved' | 'applied' | 'failed';
 }
@@ -49,7 +49,6 @@ export async function createDreamChain(
       createdAt: new Date().toISOString(),
     };
     
-    // Store chain in brain_events for persistence
     await supabase.from('brain_events').insert({
       module: 'dream',
       event_type: 'dream_chain_created',
@@ -72,7 +71,6 @@ export async function proposeDreamChain(chain: DreamChain): Promise<string[]> {
   const proposalIds: string[] = [];
   
   for (const step of chain.steps) {
-    // Check dependencies are met
     const depsReady = step.dependsOn.every(depIdx => {
       const dep = chain.steps[depIdx];
       return dep && ['approved', 'applied'].includes(dep.status);
@@ -83,19 +81,20 @@ export async function proposeDreamChain(chain: DreamChain): Promise<string[]> {
       continue;
     }
     
-    // Create evolution proposal
     const { data: proposal, error } = await supabase
       .from('evolution_proposals')
       .insert({
         title: `[Dream Chain] ${chain.title} — Step ${step.order + 1}`,
         summary: step.insight,
-        category: 'dream_chain',
-        source_module: step.targetModule,
-        priority_score: 7,
-        predicted_impact: {
+        target_system: step.targetModule,
+        confidence: 0.7,
+        suggested_change: {
           type: 'dream_chain',
           chain_id: chain.id,
           step_order: step.order,
+        } as any,
+        expected_impact: {
+          type: 'dream_chain',
           total_steps: chain.steps.length,
         } as any,
         status: 'pending',
@@ -110,7 +109,6 @@ export async function proposeDreamChain(chain: DreamChain): Promise<string[]> {
     }
   }
   
-  // Update chain status
   chain.status = 'proposed';
   
   await supabase.from('brain_events').insert({

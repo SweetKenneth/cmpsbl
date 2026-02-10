@@ -5,13 +5,13 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import { runRegressionSuite } from '../regression-testing';
-import { moduleBus } from '../module-bus';
+import { runRegressionSuite, type RegressionSuiteResult } from '../regression-testing';
+import { subscribe, publish, type ModuleName } from '../module-bus';
 
 interface TriggerConfig {
   enabled: boolean;
   autoRollbackOnFailure: boolean;
-  minPassRate: number; // 0-1, default 0.75
+  minPassRate: number;
 }
 
 const DEFAULT_CONFIG: TriggerConfig = {
@@ -30,21 +30,16 @@ export function enableRegressionTrigger(config: Partial<TriggerConfig> = {}): vo
   
   if (triggerActive || !cfg.enabled) return;
   
-  // Listen for evolution completion signals
-  const signals = ['EVOLUTION_APPLIED', 'SEBA_EXECUTED', 'MODERNIZER_EVOLVED'];
+  // Listen for evolution completion signals via module bus
+  const signals = ['evolution.applied', 'seba.executed', 'modernizer.evolved'];
   
   for (const signal of signals) {
-    moduleBus.on(signal, async (data: any) => {
+    subscribe('system' as ModuleName, signal, async (busSignal) => {
       console.log(`[Regression-Trigger] Evolution event detected: ${signal}`);
       
-      const startTime = Date.now();
-      const results = await runRegressionSuite();
-      const duration = Date.now() - startTime;
+      const result: RegressionSuiteResult = await runRegressionSuite(signal);
       
-      const passed = results.filter(r => r.passed).length;
-      const total = results.length;
-      const passRate = total > 0 ? passed / total : 1;
-      
+      const passRate = result.total > 0 ? result.passed / result.total : 1;
       const outcome = passRate >= cfg.minPassRate ? 'success' : 'failure';
       
       // Log to brain_events
@@ -53,12 +48,13 @@ export function enableRegressionTrigger(config: Partial<TriggerConfig> = {}): vo
         event_type: 'regression_auto_run',
         data: {
           trigger: signal,
-          evolution_id: data?.proposalId || data?.runId || null,
-          passed,
-          total,
+          evolution_id: busSignal.payload?.proposalId || busSignal.payload?.runId || null,
+          passed: result.passed,
+          total: result.total,
           pass_rate: passRate,
-          duration_ms: duration,
-          failed_tests: results.filter(r => !r.passed).map(r => r.name),
+          duration_ms: result.duration_ms,
+          verdict: result.verdict,
+          failed_tests: result.results.filter(r => r.status === 'failed').map(r => r.test_name),
         } as any,
         outcome,
       });
@@ -66,21 +62,21 @@ export function enableRegressionTrigger(config: Partial<TriggerConfig> = {}): vo
       if (outcome === 'failure') {
         console.warn(`[Regression-Trigger] ⚠️ Pass rate ${(passRate * 100).toFixed(0)}% below threshold`);
         
-        moduleBus.emit('REGRESSION_FAILED', {
+        publish('system' as ModuleName, 'regression.failed', {
           trigger: signal,
           passRate,
-          failedTests: results.filter(r => !r.passed).map(r => r.name),
+          failedTests: result.results.filter(r => r.status === 'failed').map(r => r.test_name),
         });
         
         if (cfg.autoRollbackOnFailure) {
-          moduleBus.emit('ROLLBACK_TRIGGERED', {
+          publish('system' as ModuleName, 'rollback.triggered', {
             reason: 'regression_failure',
-            evolution_id: data?.proposalId || data?.runId,
+            evolution_id: busSignal.payload?.proposalId || busSignal.payload?.runId,
             pass_rate: passRate,
           });
         }
       } else {
-        console.log(`[Regression-Trigger] ✅ All clear: ${passed}/${total} passed`);
+        console.log(`[Regression-Trigger] ✅ All clear: ${result.passed}/${result.total} passed`);
       }
     });
   }

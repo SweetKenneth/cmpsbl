@@ -5,7 +5,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import { moduleBus } from '../module-bus';
+import { subscribe, publish, type ModuleName } from '../module-bus';
 import type { RealtimeChannel } from '@supabase/supabase-js';
 
 interface BridgeConfig {
@@ -17,14 +17,12 @@ interface BridgeConfig {
 const DEFAULT_CONFIG: BridgeConfig = {
   channelPrefix: 'substrate',
   bridgedSignals: [
-    'THREAT_DETECTED',
-    'PROVIDER_DOWN',
-    'EVOLUTION_APPLIED',
-    'MEMORY_PRESSURE',
-    'MODULE_DEGRADED',
-    'COST_ALERT',
-    'ANOMALY_DETECTED',
-    'ROLLBACK_TRIGGERED',
+    'threat.detected',
+    'health.degraded',
+    'evolution.applied',
+    'resource.pressure',
+    'anomaly.detected',
+    'rollback.triggered',
   ],
   enabled: true,
 };
@@ -47,27 +45,25 @@ export function startRealtimeBridge(config: Partial<BridgeConfig> = {}): void {
     .channel(channelName)
     .on('broadcast', { event: 'bus_signal' }, (payload) => {
       const { signal, data, source } = payload.payload as any;
-      // Avoid echo — don't re-emit signals that originated locally
       if (source === 'local') return;
       
       console.log(`[Realtime-Bridge] Received remote signal: ${signal}`);
-      moduleBus.emit(signal, { ...data, _remote: true });
+      // Re-publish into local bus from 'system' as relay
+      publish('system' as ModuleName, signal, data || {});
     })
     .subscribe();
   
-  // Subscribe to all bridged signals on the local bus
-  for (const signal of cfg.bridgedSignals) {
-    moduleBus.on(signal, (data: any) => {
-      // Don't re-broadcast remote signals
-      if (data?._remote) return;
-      
-      bridgeChannel?.send({
-        type: 'broadcast',
-        event: 'bus_signal',
-        payload: { signal, data, source: 'local' },
-      });
+  // Subscribe to all bridged signals on the local bus via wildcard
+  subscribe('system' as ModuleName, '*', (signal) => {
+    if (!cfg.bridgedSignals.includes(signal.type)) return;
+    if ((signal.payload as any)?._remote) return;
+    
+    bridgeChannel?.send({
+      type: 'broadcast',
+      event: 'bus_signal',
+      payload: { signal: signal.type, data: signal.payload, source: 'local' },
     });
-  }
+  });
   
   bridgeActive = true;
   console.log(`[Realtime-Bridge] Active, bridging ${cfg.bridgedSignals.length} signals`);
