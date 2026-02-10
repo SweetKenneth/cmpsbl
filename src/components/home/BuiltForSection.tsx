@@ -76,7 +76,6 @@ const audiences = [
       { icon: Eye, text: "Audit everything" },
     ],
     stats: { value: "100%", label: "Your Data" },
-    testimonial: "Enterprise-grade from day one.",
     cta: "Enterprise Solutions",
     href: "/use-cases",
     gradient: "from-amber-500 via-orange-500 to-red-500",
