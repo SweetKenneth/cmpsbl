@@ -14,7 +14,7 @@
  *   - New profiles: neutral, technical, concise, friendly, admin, exploratory
  */
 
-import { substrate } from '@/lib/substrate';
+import { supabase } from '@/integrations/supabase/client';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // TYPES
