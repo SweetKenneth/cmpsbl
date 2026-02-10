@@ -5297,52 +5297,85 @@ async function handleDecode(
       let memoryContext: any[] = [];
       try {
         const searchTerm = String(message || '').trim();
+        const searchWords = searchTerm.split(/\s+/).filter(w => w.length > 2).slice(0, 5);
         
-        // Search brain_memories for relevant context
-        const [
-          { data: ftsResults },
-          { data: hotResults },
-          { data: sessionHistory },
-        ] = await Promise.all([
+        // Build flexible search: try FTS first, then ILIKE with key words
+        const searchPromises: Promise<any>[] = [];
+        
+        // Strategy 1: Full-text search on brain_memories
+        searchPromises.push(
           supabase
             .from("brain_memories")
-            .select("content, memory_type, confidence, created_at")
-            .or(`content.ilike.%${searchTerm.split(' ').slice(0, 3).join('%')}%`)
+            .select("content, memory_type, confidence")
+            .textSearch("content", searchTerm, { type: 'websearch' })
             .order("confidence", { ascending: false })
-            .limit(5),
+            .limit(5)
+            .then((r: any) => ({ source: 'fts', data: r.data }))
+            .catch(() => ({ source: 'fts', data: [] }))
+        );
+        
+        // Strategy 2: ILIKE fallback with first meaningful word
+        if (searchWords.length > 0) {
+          searchPromises.push(
+            supabase
+              .from("brain_memories")
+              .select("content, memory_type, confidence")
+              .ilike("content", `%${searchWords[0]}%`)
+              .order("confidence", { ascending: false })
+              .limit(5)
+              .then((r: any) => ({ source: 'ilike', data: r.data }))
+              .catch(() => ({ source: 'ilike', data: [] }))
+          );
+        }
+        
+        // Strategy 3: Hot memories (recent/high-priority)
+        searchPromises.push(
           supabase
             .from("brain_memory_hot")
             .select("content, context, priority")
-            .ilike("content", `%${searchTerm.split(' ')[0]}%`)
             .order("priority", { ascending: false })
-            .limit(3),
+            .limit(5)
+            .then((r: any) => ({ source: 'hot', data: r.data }))
+            .catch(() => ({ source: 'hot', data: [] }))
+        );
+        
+        // Strategy 4: Session history for continuity
+        searchPromises.push(
           supabase
             .from("cascade_conversations")
             .select("message, reply")
             .eq("session_id", effectiveSessionId)
             .order("created_at", { ascending: false })
-            .limit(5),
-        ]);
+            .limit(8)
+            .then((r: any) => ({ source: 'session', data: r.data }))
+            .catch(() => ({ source: 'session', data: [] }))
+        );
         
-        if (ftsResults?.length) {
-          memoryContext.push(...ftsResults.map((m: any) => m.content));
-        }
-        if (hotResults?.length) {
-          memoryContext.push(...hotResults.map((m: any) => m.content));
+        const results = await Promise.all(searchPromises);
+        
+        // Collect memory content from all sources
+        let sessionHistory: any[] = [];
+        for (const result of results) {
+          if (!result.data?.length) continue;
+          if (result.source === 'session') {
+            sessionHistory = result.data;
+          } else {
+            memoryContext.push(...result.data.map((m: any) => m.content).filter(Boolean));
+          }
         }
         
-        // Deduplicate and limit context
-        memoryContext = [...new Set(memoryContext)].slice(0, 8);
+        // Deduplicate and limit
+        memoryContext = [...new Set(memoryContext)].slice(0, 10);
         
         // Inject memory context into system prompt
         if (memoryContext.length > 0) {
-          systemPrompt += `\n\n[Recalled Memories — use these to inform your response]\n${memoryContext.map((m, i) => `${i + 1}. ${String(m).substring(0, 300)}`).join('\n')}`;
+          systemPrompt += `\n\n[Recalled Memories — use these to personalize your response and reference past interactions]\n${memoryContext.map((m: string, i: number) => `${i + 1}. ${String(m).substring(0, 300)}`).join('\n')}`;
         }
         
-        // Inject recent session history as conversation context
-        if (sessionHistory?.length) {
-          const historyContext = sessionHistory.reverse().map((h: any) => `User: ${h.message}\nYou: ${h.reply}`).join('\n\n');
-          systemPrompt += `\n\n[Recent conversation in this session]\n${historyContext}`;
+        // Inject session history for conversation continuity
+        if (sessionHistory.length > 0) {
+          const historyContext = sessionHistory.reverse().map((h: any) => `User: ${h.message}\nAssistant: ${h.reply}`).join('\n\n');
+          systemPrompt += `\n\n[Recent conversation in this session — maintain continuity]\n${historyContext}`;
         }
       } catch (memErr) {
         console.warn('Memory recall failed gracefully:', memErr);
