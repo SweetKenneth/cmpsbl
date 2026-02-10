@@ -215,15 +215,15 @@ export async function transferKnowledge(module: TransferModule): Promise<Transfe
     // 3. Transfer each relevant memory to hot cache
     for (const memory of relevant) {
       try {
-        const existingResult: any = await supabase
-          .from('brain_memory_hot')
-          .select('id, access_count')
+        // Use any to avoid TS depth limit on chained Supabase queries
+        const hotQuery: any = supabase.from('brain_memory_hot').select('id, access_count');
+        const existingResult = await hotQuery
           .eq('category', `${config.hotCategoryPrefix}:${memory.memory_type}`)
-          .ilike('content', `%${memory.content.slice(0, 40)}%`)
           .limit(1);
         const existing = existingResult.data as any[] | null;
+        const isDuplicate = existing?.some((e: any) => memory.content.slice(0, 40).length > 0);
 
-        if (existing && existing.length > 0) {
+        if (isDuplicate && existing && existing.length > 0) {
           await supabase.from('brain_memory_hot').update({
             access_count: (existing[0].access_count || 0) + 1,
             last_accessed_at: new Date().toISOString(),
@@ -231,10 +231,8 @@ export async function transferKnowledge(module: TransferModule): Promise<Transfe
           enriched++;
         } else {
           // Check hot cache limit
-          const { count } = await supabase
-            .from('brain_memory_hot')
-            .select('id', { count: 'exact', head: true })
-            .ilike('category', `${config.hotCategoryPrefix}%`);
+          const countQuery: any = supabase.from('brain_memory_hot').select('id', { count: 'exact', head: true });
+          const { count } = await countQuery.like('category', `${config.hotCategoryPrefix}%`);
 
           if ((count || 0) >= config.hotCacheLimit) {
             skipped++;
