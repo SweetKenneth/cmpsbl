@@ -31,7 +31,7 @@ export function CLMDashboard() {
           <Brain className="h-8 w-8 text-primary" />
           <div>
             <h2 className="text-2xl font-bold">Constant Learning Mode</h2>
-            <p className="text-muted-foreground">v6.7.0 — 70% Nexus budget</p>
+            <p className="text-muted-foreground">v8.1.0 — 80% Nexus budget (14.4K RPD fleet)</p>
           </div>
         </div>
         <Badge variant={enabled ? 'default' : 'secondary'}>{enabled ? 'ACTIVE' : 'DISABLED'}</Badge>
