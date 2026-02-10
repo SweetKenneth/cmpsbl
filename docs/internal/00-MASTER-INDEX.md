@@ -31,6 +31,7 @@
 | 15 | [Capability Registry](./15-CAPABILITY-REGISTRY.md) | **269 cross-module capabilities, risk levels, execution modes** |
 | **16** | **[Cognitive Engine System](./16-COGNITIVE-ENGINE-SYSTEM.md)** | **62 engines consolidating 269 capabilities into compound units** |
 | **17** | **[Meta-Engine System](./17-META-ENGINE-SYSTEM.md)** | **20 meta-engines orchestrating 62 engines** |
+| **18** | **[LNCHBL Tiers & Infrastructure](./18-LNCHBL-TIERS-AND-INFRASTRUCTURE.md)** | **68 tiered capabilities, self-improvement Enterprise-only, 10 new infra systems** |
 
 ---
 
