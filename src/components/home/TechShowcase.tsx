@@ -596,7 +596,7 @@ export function TechShowcase() {
             {/* Code content with line numbers - NO animation to prevent overlap */}
             <div
               key={activeTab}
-              className="p-6 overflow-x-auto"
+              className="p-3 sm:p-6 overflow-x-auto"
             >
               <div className="flex">
                 {/* Line numbers */}
