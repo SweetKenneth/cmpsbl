@@ -69,15 +69,25 @@ const MODULE_CONFIGS: Record<string, { displayName: string; selfReflectionPrompt
   },
   encoded: {
     displayName: 'ENCODED',
-    selfReflectionPrompt: `As the ENCODED code writer module, analyze my code generation capabilities for the substrate codebase:
-- What TypeScript patterns do I use correctly vs incorrectly?
-- Which substrate modules (BRAIN, DECODE, NEXUS, etc.) do I understand well vs struggle with?
-- What common coding errors do I make that I should learn to avoid?
-- How can I write cleaner, more maintainable React components and hooks?
-- What Supabase edge function patterns should I master?
-- How can I better understand the 14-module substrate architecture to make precise, minimal edits?
-- What testing and type-safety patterns would make my code more reliable?
-Provide specific examples of patterns I should learn and anti-patterns to avoid for making small, surgical edits to the substrate codebase.`,
+    selfReflectionPrompt: `As the ENCODED implementation agent, analyze my code generation mastery using expert pattern categories:
+
+EXPERT PATTERNS I MUST MASTER:
+- TypeScript: Discriminated unions, branded types, type-safe builders, exhaustive guards, mapped/conditional types
+- React: Compound components, hook+render separation, optimistic updates, error boundaries, suspense data fetching, RHF+Zod forms
+- Edge Functions: Structured handlers (CORS→Auth→Validate→Execute), action routers, rate limiting
+- Error Handling: Domain error hierarchies, retry with exponential backoff
+- Security: Schema-first validation (Zod), RLS policies, safe error responses
+- Performance: Memoized selectors, virtualized lists, debounced search with AbortController
+- State: Zustand slices, TanStack Query as server state (never copy server data to useState)
+- Database: Atomic upserts, multi-table transactions via RPC, cursor-based pagination
+- Testing: AAA structure, Supabase mocking
+- Refactoring: Extract hooks (3+ useState = extract), early return guard clauses
+
+Self-assess: Which patterns do I consistently apply well? Which do I struggle with? 
+What anti-patterns do I still fall into? Rate my mastery per category (0-100).
+Provide 3 specific code examples showing patterns I should practice.
+
+Format as JSON: { title, masteryScores: Record<string, number>, weaknesses: string[], practiceExamples: string[], overallMastery: number, confidence: number }`,
   },
 };
 
@@ -115,9 +125,11 @@ Deno.serve(async (req) => {
       }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
-    // Pick 3 modules per cycle — we can afford it with 14.4K RPD
-    const shuffled = MODULE_IDS.sort(() => Math.random() - 0.5);
-    const selectedModules = shuffled.slice(0, 3);
+    // v3.0.0: Pick 4 modules per cycle — parallel curriculum strategy
+    // Ensure Encoded + Brain always get a slot for knowledge transfer
+    const priorityModules = ['encoded', 'brain'];
+    const otherModules = MODULE_IDS.filter(m => !priorityModules.includes(m)).sort(() => Math.random() - 0.5);
+    const selectedModules = [...priorityModules, ...otherModules.slice(0, 2)];
     const results: any[] = [];
 
     for (const moduleId of selectedModules) {
