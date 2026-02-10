@@ -111,14 +111,30 @@ function TierBadge({ tier }: { tier: string }) {
   return <Badge variant="outline" className={cls[tier] || cls.free}>{tier}</Badge>;
 }
 
+// ─── Persistence Keys ────────────────────────────────────────────────────────
+const PATCH_ENGINES_KEY = 'cmpsbl_patch_selected_engines';
+const PATCH_CAPS_KEY = 'cmpsbl_patch_selected_caps';
+
+function loadPersistedSet(key: string): Set<string> {
+  try {
+    const stored = localStorage.getItem(key);
+    if (stored) return new Set(JSON.parse(stored));
+  } catch {}
+  return new Set();
+}
+
+function persistSet(key: string, set: Set<string>) {
+  localStorage.setItem(key, JSON.stringify(Array.from(set)));
+}
+
 // ─── Create Patch Form ───────────────────────────────────────────────────────
 
 function CreatePatchForm({ onSuccess }: { onSuccess: () => void }) {
   const queryClient = useQueryClient();
   const [version, setVersion] = useState('');
   const [tier, setTier] = useState<PatchTier>('free');
-  const [selectedEngines, setSelectedEngines] = useState<Set<string>>(new Set());
-  const [selectedCaps, setSelectedCaps] = useState<Set<string>>(new Set());
+  const [selectedEngines, setSelectedEngines] = useState<Set<string>>(() => loadPersistedSet(PATCH_ENGINES_KEY));
+  const [selectedCaps, setSelectedCaps] = useState<Set<string>>(() => loadPersistedSet(PATCH_CAPS_KEY));
   const [changelog, setChangelog] = useState('');
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
 
@@ -126,6 +142,7 @@ function CreatePatchForm({ onSuccess }: { onSuccess: () => void }) {
     setSelectedEngines(prev => {
       const next = new Set(prev);
       next.has(id) ? next.delete(id) : next.add(id);
+      persistSet(PATCH_ENGINES_KEY, next);
       return next;
     });
   };
@@ -134,6 +151,7 @@ function CreatePatchForm({ onSuccess }: { onSuccess: () => void }) {
     setSelectedCaps(prev => {
       const next = new Set(prev);
       next.has(id) ? next.delete(id) : next.add(id);
+      persistSet(PATCH_CAPS_KEY, next);
       return next;
     });
   };
