@@ -799,3 +799,209 @@ export async function getAllModuleKnowledgeReports(): Promise<ModuleKnowledgeRep
   }
   return reports;
 }
+
+// ═══════════════════════════════════════════════════════════════
+// GAP #1: LEARNING FEEDBACK LOOPS
+// ═══════════════════════════════════════════════════════════════
+
+export interface TransferFeedback {
+  module: TransferModule;
+  pattern_title: string;
+  was_helpful: boolean;
+  context?: string;
+}
+
+/**
+ * Report whether a transferred pattern was helpful.
+ * Positive feedback → boost priority. Negative → decay or prune.
+ */
+export async function reportTransferFeedback(feedback: TransferFeedback): Promise<void> {
+  const config = MODULE_CONFIGS[feedback.module];
+  
+  // Find the hot memory entry for this pattern
+  const { data: entries } = await supabase
+    .from('brain_memory_hot')
+    .select('id, priority, access_count, metadata')
+    .eq('context', `${config.hotCategoryPrefix}:expert`)
+    .ilike('content', `%${feedback.pattern_title.slice(0, 30)}%`)
+    .limit(1);
+
+  if (entries && entries.length > 0) {
+    const entry = entries[0];
+    const currentPriority = entry.priority || 5;
+    
+    if (feedback.was_helpful) {
+      // Boost: increase priority (max 10), increment access
+      await supabase.from('brain_memory_hot').update({
+        priority: clampPriority(currentPriority + 1),
+        access_count: (entry.access_count || 0) + 1,
+        metadata: {
+          ...(entry.metadata as any || {}),
+          last_positive_feedback: new Date().toISOString(),
+          positive_count: ((entry.metadata as any)?.positive_count || 0) + 1,
+        },
+      }).eq('id', entry.id);
+    } else {
+      // Decay: decrease priority (min 1)
+      const newPriority = clampPriority(currentPriority - 1);
+      const negativeCount = ((entry.metadata as any)?.negative_count || 0) + 1;
+      
+      if (negativeCount >= 3 && newPriority <= 2) {
+        // Prune: too many negatives at low priority
+        await supabase.from('brain_memory_hot').delete().eq('id', entry.id);
+      } else {
+        await supabase.from('brain_memory_hot').update({
+          priority: newPriority,
+          metadata: {
+            ...(entry.metadata as any || {}),
+            last_negative_feedback: new Date().toISOString(),
+            negative_count: negativeCount,
+          },
+        }).eq('id', entry.id);
+      }
+    }
+  }
+
+  // Log feedback event
+  await supabase.from('brain_events').insert([{
+    module: 'brain',
+    event_type: 'transfer_feedback',
+    data: feedback as any,
+    outcome: feedback.was_helpful ? 'success' : 'failed',
+  }]);
+}
+
+/**
+ * Auto-prune low-performing patterns across all modules.
+ * Removes hot entries with priority ≤2 and 3+ negative feedbacks.
+ */
+export async function pruneUnhelpfulPatterns(): Promise<{ pruned: number }> {
+  const ALL_MODULES: TransferModule[] = [
+    'core', 'ripple', 'access', 'decode', 'nexus', 'dream',
+    'defense', 'vision', 'integration', 'system', 'modernizer',
+    'inclusive', 'cortex',
+  ];
+
+  let totalPruned = 0;
+
+  for (const module of ALL_MODULES) {
+    const config = MODULE_CONFIGS[module];
+    const { data: entries } = await supabase
+      .from('brain_memory_hot')
+      .select('id, priority, metadata')
+      .ilike('context', `${config.hotCategoryPrefix}%`)
+      .lte('priority', 2);
+
+    if (entries) {
+      for (const entry of entries) {
+        const negCount = (entry.metadata as any)?.negative_count || 0;
+        if (negCount >= 3) {
+          await supabase.from('brain_memory_hot').delete().eq('id', entry.id);
+          totalPruned++;
+        }
+      }
+    }
+  }
+
+  await supabase.from('brain_events').insert([{
+    module: 'brain',
+    event_type: 'transfer_auto_prune',
+    data: { pruned: totalPruned } as any,
+    outcome: 'success',
+  }]);
+
+  return { pruned: totalPruned };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// GAP #3: MODULE DEPENDENCY HEALTH TRACKING
+// ═══════════════════════════════════════════════════════════════
+
+/** Which modules each module depends on to function */
+const MODULE_DEPENDENCIES: Record<TransferModule, TransferModule[]> = {
+  core:         [],
+  ripple:       ['core'],
+  access:       ['core'],
+  decode:       ['core', 'nexus'],
+  nexus:        ['core'],
+  dream:        ['core', 'nexus'],
+  defense:      ['core', 'ripple'],
+  vision:       ['core', 'ripple'],
+  integration:  ['core', 'ripple', 'access'],
+  system:       ['core', 'vision'],
+  modernizer:   ['core', 'system', 'vision'],
+  inclusive:    ['core', 'system'],
+  cortex:       ['core', 'nexus', 'system', 'vision'],
+};
+
+export interface DependencyHealth {
+  module: TransferModule;
+  dependencies: Array<{
+    module: TransferModule;
+    healthy: boolean;
+    last_event_outcome: string | null;
+    events_24h: number;
+    success_rate: number;
+  }>;
+  all_healthy: boolean;
+  degraded_deps: TransferModule[];
+}
+
+/**
+ * Check if all dependencies for a module are healthy before it operates.
+ */
+export async function checkDependencyHealth(module: TransferModule): Promise<DependencyHealth> {
+  const deps = MODULE_DEPENDENCIES[module] || [];
+  const depResults: DependencyHealth['dependencies'] = [];
+  const degraded: TransferModule[] = [];
+
+  for (const dep of deps) {
+    const { data: events } = await supabase
+      .from('brain_events')
+      .select('outcome')
+      .eq('module', dep)
+      .gte('created_at', new Date(Date.now() - 24 * 3600000).toISOString())
+      .order('created_at', { ascending: false })
+      .limit(50);
+
+    const total = events?.length || 0;
+    const successes = events?.filter(e => e.outcome === 'success').length || 0;
+    const successRate = total > 0 ? successes / total : 1; // no events = assume healthy
+    const lastOutcome = events?.[0]?.outcome || null;
+    const healthy = successRate >= 0.5; // >50% success = healthy
+
+    if (!healthy) degraded.push(dep);
+
+    depResults.push({
+      module: dep,
+      healthy,
+      last_event_outcome: lastOutcome,
+      events_24h: total,
+      success_rate: successRate,
+    });
+  }
+
+  return {
+    module,
+    dependencies: depResults,
+    all_healthy: degraded.length === 0,
+    degraded_deps: degraded,
+  };
+}
+
+/**
+ * Get dependency health for all modules
+ */
+export async function getAllDependencyHealth(): Promise<DependencyHealth[]> {
+  const ALL_MODULES: TransferModule[] = [
+    'core', 'ripple', 'access', 'decode', 'nexus', 'dream',
+    'defense', 'vision', 'integration', 'system', 'modernizer',
+    'inclusive', 'cortex',
+  ];
+
+  const results: DependencyHealth[] = [];
+  for (const module of ALL_MODULES) {
+    results.push(await checkDependencyHealth(module));
+  }
+  return results;
+}

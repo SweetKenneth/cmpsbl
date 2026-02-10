@@ -242,13 +242,122 @@ Format as JSON: { title, content, requests, priority, confidence }`,
       await new Promise(resolve => setTimeout(resolve, 500));
     }
 
-    console.log(`[ModuleCLM] Scheduled cycle complete: ${results.length} analyses generated`);
+    // ════════════════════════════════════════════════════════════
+    // GAP #2: Automated Knowledge Transfer — runs every CLM cycle
+    // ════════════════════════════════════════════════════════════
+    let transferResults: any[] = [];
+    try {
+      const ALL_TRANSFER_MODULES = [
+        'core', 'ripple', 'access', 'decode', 'nexus', 'dream',
+        'defense', 'vision', 'integration', 'system', 'modernizer',
+        'inclusive', 'cortex',
+      ];
+      // Pick 3 random modules per cycle for transfer (spread load)
+      const shuffled = ALL_TRANSFER_MODULES.sort(() => Math.random() - 0.5);
+      const transferModules = shuffled.slice(0, 3);
+
+      for (const mod of transferModules) {
+        // Find relevant brain_memories and copy to hot cache
+        const { data: memories } = await supabase
+          .from('brain_memories')
+          .select('id, content, memory_type, confidence')
+          .gte('confidence', 0.6)
+          .order('confidence', { ascending: false })
+          .limit(20);
+
+        if (!memories || memories.length === 0) continue;
+
+        // Simple relevance filter per module using keyword matching
+        const moduleSignals: Record<string, string[]> = {
+          core: ['memory', 'cache', 'storage', 'query', 'index'],
+          ripple: ['event', 'propagation', 'broadcast', 'listener'],
+          access: ['permission', 'role', 'auth', 'token', 'quota'],
+          decode: ['response', 'conversation', 'personality', 'tone'],
+          nexus: ['routing', 'provider', 'model', 'fallback', 'latency'],
+          dream: ['synthesis', 'creative', 'insight', 'pattern'],
+          defense: ['security', 'threat', 'attack', 'anomaly'],
+          vision: ['trace', 'diagnostic', 'metric', 'health'],
+          integration: ['webhook', 'api', 'transform', 'sync'],
+          system: ['health', 'audit', 'configuration', 'capability'],
+          modernizer: ['upgrade', 'evolution', 'refactor', 'shadow'],
+          inclusive: ['accessibility', 'wcag', 'aria', 'keyboard'],
+          cortex: ['architecture', 'design', 'proposal', 'orchestration'],
+        };
+
+        const signals = moduleSignals[mod] || [];
+        const relevant = memories.filter(m => {
+          const lower = (m.content || '').toLowerCase();
+          return signals.some(s => lower.includes(s));
+        }).slice(0, 5);
+
+        let transferred = 0;
+        for (const memory of relevant) {
+          try {
+            await supabase.from('brain_memory_hot').insert({
+              content: `[${mod.toUpperCase()}_AUTO_TRANSFER] ${memory.content}`,
+              context: `${mod}_transfer:auto`,
+              priority: Math.max(1, Math.min(10, Math.round((memory.confidence || 0.5) * 10))),
+              access_count: 0,
+              metadata: { source_memory_id: memory.id, module: mod, auto_transferred: true },
+            });
+            transferred++;
+          } catch {
+            // Duplicate or constraint violation — skip
+          }
+        }
+
+        if (transferred > 0) {
+          transferResults.push({ module: mod, transferred });
+        }
+      }
+
+      if (transferResults.length > 0) {
+        await supabase.from('brain_events').insert([{
+          module: 'brain',
+          event_type: 'auto_knowledge_transfer',
+          data: { modules: transferResults, cycle: 'clm_scheduler' },
+          outcome: 'success',
+        }]);
+      }
+    } catch (transferError) {
+      console.error('[ModuleCLM] Auto-transfer error:', transferError);
+    }
+
+    // ════════════════════════════════════════════════════════════
+    // Auto-prune: Remove unhelpful patterns (negative feedback ≥3, priority ≤2)
+    // Runs once per cycle to keep hot cache clean
+    // ════════════════════════════════════════════════════════════
+    try {
+      const { data: lowPriority } = await supabase
+        .from('brain_memory_hot')
+        .select('id, priority, metadata')
+        .lte('priority', 2);
+
+      let pruned = 0;
+      if (lowPriority) {
+        for (const entry of lowPriority) {
+          const negCount = (entry.metadata as any)?.negative_count || 0;
+          if (negCount >= 3) {
+            await supabase.from('brain_memory_hot').delete().eq('id', entry.id);
+            pruned++;
+          }
+        }
+      }
+      if (pruned > 0) {
+        console.log(`[ModuleCLM] Auto-pruned ${pruned} unhelpful hot patterns`);
+      }
+    } catch {
+      // Non-fatal
+    }
+
+    console.log(`[ModuleCLM] Scheduled cycle complete: ${results.length} analyses, ${transferResults.length} transfers`);
 
     return new Response(JSON.stringify({ 
       success: true, 
       count: results.length,
       modules: results.map(r => r.moduleId),
-      results 
+      results,
+      transfers: transferResults,
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
