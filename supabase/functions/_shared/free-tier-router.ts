@@ -556,8 +556,8 @@ function isCircuitOpen(provider: string): boolean {
 // ═══════════════════════════════════════════════════════════════
 
 function selectOptimalProvider(): string | null {
-  // Priority order: Groq → Cerebras → SambaNova → Hyperbolic → DeepSeek → Together
-  const priorityOrder = ['groq', 'cerebras', 'sambanova', 'hyperbolic', 'deepseek', 'together'];
+  // Priority: groq (14.4K RPD 8b) → groq-scout (30K TPM) → groq-qwen (60 RPM) → groq-70b (1K RPD, quality) → cerebras → others
+  const priorityOrder = ['groq', 'groq-scout', 'groq-qwen', 'groq-70b', 'cerebras', 'openrouter', 'novita', 'sambanova', 'hyperbolic', 'deepseek', 'together'];
   
   // First pass: find healthy providers with available capacity
   for (const provider of priorityOrder) {
