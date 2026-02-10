@@ -28,7 +28,7 @@ export function LnchblCTA() {
           <div className="absolute -top-24 -right-24 w-48 h-48 rounded-full bg-primary/10 blur-[80px] pointer-events-none" />
           <div className="absolute -bottom-24 -left-24 w-48 h-48 rounded-full bg-violet-500/10 blur-[80px] pointer-events-none" />
           
-          <div className="relative p-8 sm:p-10 md:p-12">
+          <div className="relative p-5 sm:p-10 md:p-12">
             {/* Badge */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}

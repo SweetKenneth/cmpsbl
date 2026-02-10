@@ -30,7 +30,7 @@ import { LnchblCTA } from "@/components/LnchblCTA";
 // Section divider with animated gradient
 function SectionDivider() {
   return (
-    <div className="relative py-10 sm:py-14">
+    <div className="relative py-6 sm:py-14">
       <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
       <motion.div 
         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-primary/40"

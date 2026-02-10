@@ -378,7 +378,7 @@ export function WhySubstrate() {
     : differentiators;
   
   return (
-    <section className="relative py-20 sm:py-32 px-4 overflow-hidden">
+    <section className="relative py-14 sm:py-32 px-4 overflow-hidden">
       {/* Enhanced background decoration */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div 

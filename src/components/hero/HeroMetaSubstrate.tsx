@@ -230,7 +230,7 @@ function ScrollIndicator() {
 
 export function HeroMetaSubstrate() {
   return (
-    <section className="relative min-h-[100dvh] flex flex-col items-center justify-center px-4 sm:px-6 pt-4 sm:pt-8 pb-8 sm:pb-10 overflow-visible safe-area-inset">
+    <section className="relative min-h-[100dvh] flex flex-col items-center justify-center px-4 sm:px-6 pt-2 sm:pt-8 pb-6 sm:pb-10 overflow-visible safe-area-inset">
       {/* Multi-layer animated background */}
       <div className="absolute inset-0 bg-background overflow-hidden">
         {/* Animated gradient orbs */}

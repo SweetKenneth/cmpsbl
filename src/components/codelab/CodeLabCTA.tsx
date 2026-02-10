@@ -44,7 +44,7 @@ export function CodeLabCTA() {
           <div className="absolute -top-32 -right-32 w-64 h-64 rounded-full bg-primary/15 blur-[100px]" />
           <div className="absolute -bottom-32 -left-32 w-64 h-64 rounded-full bg-violet-500/15 blur-[100px]" />
           
-          <div className="relative p-8 sm:p-10 md:p-14 lg:p-16">
+          <div className="relative p-5 sm:p-10 md:p-14 lg:p-16">
             <div className="grid lg:grid-cols-[1fr,auto] gap-10 items-center">
               {/* Left content */}
               <div className="text-center lg:text-left">

@@ -286,7 +286,7 @@ export function BuiltForSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12 sm:mb-20"
+          className="text-center mb-8 sm:mb-20"
         >
           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
             <Sparkles className="w-3 h-3 text-primary" />
