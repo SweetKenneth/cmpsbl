@@ -237,15 +237,7 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
             ))}
           </div>
           
-          {/* Testimonial quote */}
-          <div className="mb-6 p-3 rounded-lg bg-muted/30 border border-border/30">
-            <div className="flex items-center gap-1 mb-1">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-3 h-3 fill-amber-400 text-amber-400" />
-              ))}
-            </div>
-            <p className="text-xs text-muted-foreground italic">"{audience.testimonial}"</p>
-          </div>
+          
           
           {/* CTA */}
           <Button asChild className={cn(
