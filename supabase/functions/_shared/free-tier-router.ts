@@ -408,7 +408,9 @@ function getProviderHealth(provider: string): ProviderHealth {
 }
 
 function hasProviderKey(provider: string): boolean {
-  const config = PROVIDER_CONFIGS[provider as keyof typeof PROVIDER_CONFIGS];
+  // Groq variants all share the same API key
+  const keyProvider = provider.startsWith('groq') ? 'groq' : provider;
+  const config = PROVIDER_CONFIGS[keyProvider as keyof typeof PROVIDER_CONFIGS] || PROVIDER_CONFIGS[provider as keyof typeof PROVIDER_CONFIGS];
   return config ? !!Deno.env.get(config.keyEnv) : false;
 }
 
