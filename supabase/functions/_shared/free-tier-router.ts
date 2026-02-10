@@ -108,12 +108,34 @@ const SAFETY_MARGIN = 0.95; // Use 95% of max limits for maximum throughput
 // VERIFIED from official documentation (Jan 2026)
 // All limits calculated as: OFFICIAL_LIMIT * 0.95
 export const RATE_LIMITS: Record<string, RateLimitConfig> = {
-  // Groq - console.groq.com/docs/rate-limits
-  // llama-3.3-70b-versatile: 30 RPM, 1,000 RPD, 12K TPM (VERIFIED Jan 2026)
+  // Groq - console.groq.com/docs/rate-limits (VERIFIED Feb 2026)
+  // llama-3.1-8b-instant: 30 RPM, 14,400 RPD, 6K TPM, 500K TPD — PRIMARY for CLM/learning
   groq: { 
+    perMin: Math.floor(30 * SAFETY_MARGIN),           // 28 RPM
+    perDay: Math.floor(14400 * SAFETY_MARGIN),        // 13,680 RPD ← was 950!
+    perMinTokens: Math.floor(6000 * SAFETY_MARGIN),   // 5,700 TPM
+    bufferSeconds: 3 
+  },
+  // Groq 70b - reserved for user-facing complex reasoning
+  // llama-3.3-70b-versatile: 30 RPM, 1,000 RPD, 12K TPM
+  'groq-70b': { 
     perMin: Math.floor(30 * SAFETY_MARGIN),           // 28 RPM
     perDay: Math.floor(1000 * SAFETY_MARGIN),         // 950 RPD
     perMinTokens: Math.floor(12000 * SAFETY_MARGIN),  // 11,400 TPM
+    bufferSeconds: 3 
+  },
+  // Groq Scout - llama-4-scout: 30 RPM, 1K RPD, 30K TPM, 500K TPD
+  'groq-scout': { 
+    perMin: Math.floor(30 * SAFETY_MARGIN),           // 28 RPM
+    perDay: Math.floor(1000 * SAFETY_MARGIN),         // 950 RPD
+    perMinTokens: Math.floor(30000 * SAFETY_MARGIN),  // 28,500 TPM — highest!
+    bufferSeconds: 3 
+  },
+  // Groq Qwen - qwen3-32b: 60 RPM, 1K RPD, 6K TPM — double RPM!
+  'groq-qwen': { 
+    perMin: Math.floor(60 * SAFETY_MARGIN),           // 57 RPM
+    perDay: Math.floor(1000 * SAFETY_MARGIN),         // 950 RPD
+    perMinTokens: Math.floor(6000 * SAFETY_MARGIN),   // 5,700 TPM
     bufferSeconds: 3 
   },
   // Cerebras - inference-docs.cerebras.ai/support/rate-limits
@@ -213,7 +235,7 @@ const BACKOFF = {
 // ═══════════════════════════════════════════════════════════════
 
 const DEGRADATION_TIERS = {
-  tier1: ['groq', 'cerebras', 'googleai'],       // Primary: fastest inference
+  tier1: ['groq', 'groq-70b', 'groq-scout', 'groq-qwen', 'cerebras', 'googleai'],  // Primary: Groq fleet + fast inference
   tier2: ['openrouter', 'novita', 'sambanova'],  // Secondary: reliable fallback  
   tier3: ['hyperbolic', 'deepseek', 'together'], // Tertiary: high capacity
   emergency: ['local_fallback']                   // Emergency: graceful message
@@ -226,7 +248,34 @@ const DEGRADATION_TIERS = {
 const PROVIDER_CONFIGS = {
   groq: {
     url: 'https://api.groq.com/openai/v1/chat/completions',
-    model: 'llama-3.3-70b-versatile',
+    model: 'llama-3.1-8b-instant',  // 14.4K RPD — primary workhorse for CLM
+    keyEnv: 'GROQ_API_KEY',
+    headers: (key: string) => ({ 
+      'Authorization': `Bearer ${key}`, 
+      'Content-Type': 'application/json' 
+    })
+  },
+  'groq-70b': {
+    url: 'https://api.groq.com/openai/v1/chat/completions',
+    model: 'llama-3.3-70b-versatile',  // 1K RPD — reserved for user chat/reasoning
+    keyEnv: 'GROQ_API_KEY',
+    headers: (key: string) => ({ 
+      'Authorization': `Bearer ${key}`, 
+      'Content-Type': 'application/json' 
+    })
+  },
+  'groq-scout': {
+    url: 'https://api.groq.com/openai/v1/chat/completions',
+    model: 'meta-llama/llama-4-scout-17b-16e-instruct',  // 30K TPM — highest throughput
+    keyEnv: 'GROQ_API_KEY',
+    headers: (key: string) => ({ 
+      'Authorization': `Bearer ${key}`, 
+      'Content-Type': 'application/json' 
+    })
+  },
+  'groq-qwen': {
+    url: 'https://api.groq.com/openai/v1/chat/completions',
+    model: 'qwen/qwen3-32b',  // 60 RPM — double rate for burst learning
     keyEnv: 'GROQ_API_KEY',
     headers: (key: string) => ({ 
       'Authorization': `Bearer ${key}`, 
@@ -359,7 +408,9 @@ function getProviderHealth(provider: string): ProviderHealth {
 }
 
 function hasProviderKey(provider: string): boolean {
-  const config = PROVIDER_CONFIGS[provider as keyof typeof PROVIDER_CONFIGS];
+  // Groq variants all share the same API key
+  const keyProvider = provider.startsWith('groq') ? 'groq' : provider;
+  const config = PROVIDER_CONFIGS[keyProvider as keyof typeof PROVIDER_CONFIGS] || PROVIDER_CONFIGS[provider as keyof typeof PROVIDER_CONFIGS];
   return config ? !!Deno.env.get(config.keyEnv) : false;
 }
 
@@ -505,8 +556,8 @@ function isCircuitOpen(provider: string): boolean {
 // ═══════════════════════════════════════════════════════════════
 
 function selectOptimalProvider(): string | null {
-  // Priority order: Groq → Cerebras → SambaNova → Hyperbolic → DeepSeek → Together
-  const priorityOrder = ['groq', 'cerebras', 'sambanova', 'hyperbolic', 'deepseek', 'together'];
+  // Priority: groq (14.4K RPD 8b) → groq-scout (30K TPM) → groq-qwen (60 RPM) → groq-70b (1K RPD, quality) → cerebras → others
+  const priorityOrder = ['groq', 'groq-scout', 'groq-qwen', 'groq-70b', 'cerebras', 'openrouter', 'novita', 'sambanova', 'hyperbolic', 'deepseek', 'together'];
   
   // First pass: find healthy providers with available capacity
   for (const provider of priorityOrder) {

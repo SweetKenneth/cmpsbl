@@ -558,15 +558,51 @@ const PROVIDERS: Record<string, ProviderAdapter> = {
   },
   groq: {
     id: 'groq',
-    name: 'Groq',
+    name: 'Groq (8b Fast)',
     type: 'openai-compatible',
     url: "https://api.groq.com/openai/v1/chat/completions",
-    model: "llama-3.3-70b-versatile",
+    model: "llama-3.1-8b-instant",  // 14.4K RPD — primary workhorse
     keyEnv: "GROQ_API_KEY",
     capabilities: { text: true, image: false, embedding: false, streaming: true },
     pricing: { inputPerMTok: 0, outputPerMTok: 0 },
     limits: { maxTokens: 8192, rpm: 30, rpd: 14400 },
     metadata: { tier: 'free', priority: 1 }
+  },
+  'groq-70b': {
+    id: 'groq-70b',
+    name: 'Groq (70b Quality)',
+    type: 'openai-compatible',
+    url: "https://api.groq.com/openai/v1/chat/completions",
+    model: "llama-3.3-70b-versatile",  // 1K RPD — user-facing reasoning
+    keyEnv: "GROQ_API_KEY",
+    capabilities: { text: true, image: false, embedding: false, streaming: true },
+    pricing: { inputPerMTok: 0, outputPerMTok: 0 },
+    limits: { maxTokens: 8192, rpm: 30, rpd: 1000 },
+    metadata: { tier: 'free', priority: 2 }
+  },
+  'groq-scout': {
+    id: 'groq-scout',
+    name: 'Groq (Scout)',
+    type: 'openai-compatible',
+    url: "https://api.groq.com/openai/v1/chat/completions",
+    model: "meta-llama/llama-4-scout-17b-16e-instruct",  // 30K TPM
+    keyEnv: "GROQ_API_KEY",
+    capabilities: { text: true, image: false, embedding: false, streaming: true },
+    pricing: { inputPerMTok: 0, outputPerMTok: 0 },
+    limits: { maxTokens: 8192, rpm: 30, rpd: 1000 },
+    metadata: { tier: 'free', priority: 3 }
+  },
+  'groq-qwen': {
+    id: 'groq-qwen',
+    name: 'Groq (Qwen 32b)',
+    type: 'openai-compatible',
+    url: "https://api.groq.com/openai/v1/chat/completions",
+    model: "qwen/qwen3-32b",  // 60 RPM — double burst rate
+    keyEnv: "GROQ_API_KEY",
+    capabilities: { text: true, image: false, embedding: false, streaming: true },
+    pricing: { inputPerMTok: 0, outputPerMTok: 0 },
+    limits: { maxTokens: 8192, rpm: 60, rpd: 1000 },
+    metadata: { tier: 'free', priority: 4 }
   },
   cerebras: {
     id: 'cerebras',
@@ -655,7 +691,7 @@ const PROVIDERS: Record<string, ProviderAdapter> = {
 };
 
 // Provider routing order (fallback chain) — Nexus free-tier providers first
-const PROVIDER_ORDER = ["groq", "cerebras", "together", "deepseek", "gemini", "openai", "anthropic", "local"];
+const PROVIDER_ORDER = ["groq", "groq-scout", "groq-qwen", "groq-70b", "cerebras", "together", "deepseek", "gemini", "openai", "anthropic", "local"];
 
 // ═══════════════════════════════════════════════════════════════
 // NEXUS ANALYTICS ACCUMULATOR
