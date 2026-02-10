@@ -57,7 +57,6 @@ const audiences = [
       { icon: Eye, text: "Full observability" },
     ],
     stats: { value: "70+", label: "Templates" },
-    testimonial: "The infrastructure I always wanted.",
     cta: "Start Coding",
     href: "/developers",
     gradient: "from-cyan-600 via-blue-600 to-indigo-600",
