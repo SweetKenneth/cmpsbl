@@ -93,6 +93,7 @@ Deno.serve(async (req) => {
     );
 
     // Check daily budget - don't exceed 30% of daily Nexus budget for CLM
+    // v1.4.0: Reduced from 70% to 50% threshold to reserve capacity for chatbots
     const { data: quotaData } = await supabase
       .from('ai_daily_quota')
       .select('calls_used, calls_budget')
@@ -104,19 +105,19 @@ Deno.serve(async (req) => {
       ? (quotaData.calls_used / (quotaData.calls_budget || 100)) * 100 
       : 0;
 
-    if (usedPercent > 70) {
-      console.log('[ModuleCLM] Budget exceeded 70%, skipping cycle');
+    if (usedPercent > 50) {
+      console.log('[ModuleCLM] Budget exceeded 50%, skipping cycle to reserve capacity for bots');
       return new Response(JSON.stringify({ 
         success: true, 
         skipped: true, 
-        reason: 'budget_limit',
+        reason: 'budget_limit_reserved_for_bots',
         usedPercent 
       }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
-    // Pick 2-3 random modules per cycle to spread load
+    // Pick 2 random modules per cycle (reduced from 3) to further free capacity
     const shuffled = MODULE_IDS.sort(() => Math.random() - 0.5);
-    const selectedModules = shuffled.slice(0, 3);
+    const selectedModules = shuffled.slice(0, 2);
     const results: any[] = [];
 
     for (const moduleId of selectedModules) {

@@ -152,14 +152,30 @@ export default function Explore() {
               </motion.div>
               
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-5 leading-[1.1] tracking-tight">
-                Build AI That Remembers,{" "}
+                Your AI Finally{" "}
                 <br className="hidden sm:block" />
-                Dreams, and Evolves
+                <span className="bg-gradient-to-r from-white via-white/90 to-cyan-200 bg-clip-text text-transparent">Remembers</span>
               </h2>
-              <p className="text-white/70 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
-                Start with production-ready templates, explore the SDK in CodeLab, 
-                or dive into the documentation. Your cognitive infrastructure journey starts here.
+              <p className="text-white/70 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
+                Persistent memory, self-evolving architecture, and an 8-provider AI fallback chain — 
+                running on 160k+ lines of production code. Start free today.
               </p>
+              
+              {/* Mini stats row */}
+              <div className="flex flex-wrap justify-center gap-6 sm:gap-10 mb-10">
+                {[
+                  { value: "14", label: "Modules" },
+                  { value: "62", label: "Engines" },
+                  { value: "8", label: "AI Providers" },
+                  { value: "99.9%", label: "Uptime" },
+                ].map((stat) => (
+                  <div key={stat.label} className="text-center">
+                    <div className="text-2xl sm:text-3xl font-black text-white">{stat.value}</div>
+                    <div className="text-[10px] sm:text-xs font-semibold text-white/50 uppercase tracking-wider">{stat.label}</div>
+                  </div>
+                ))}
+              </div>
+              
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild size="lg" className="px-8 h-14 text-base bg-white text-primary hover:bg-white/90 font-bold shadow-2xl shadow-black/20 hover:scale-[1.02] transition-all">
                   <Link to="/codelab">
