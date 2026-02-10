@@ -235,7 +235,7 @@ const BACKOFF = {
 // ═══════════════════════════════════════════════════════════════
 
 const DEGRADATION_TIERS = {
-  tier1: ['groq', 'cerebras', 'googleai'],       // Primary: fastest inference
+  tier1: ['groq', 'groq-70b', 'groq-scout', 'groq-qwen', 'cerebras', 'googleai'],  // Primary: Groq fleet + fast inference
   tier2: ['openrouter', 'novita', 'sambanova'],  // Secondary: reliable fallback  
   tier3: ['hyperbolic', 'deepseek', 'together'], // Tertiary: high capacity
   emergency: ['local_fallback']                   // Emergency: graceful message
