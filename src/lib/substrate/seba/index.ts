@@ -73,3 +73,15 @@ export {
 
 // React Hook (deprecated - use src/hooks/useSEBA.ts instead)
 export { useSEBA, type UseSEBAReturn } from './useSEBA';
+
+// Cross-Validator & Proposal Chaining (v3.1.0)
+export {
+  validateExecution,
+  createProposalChain,
+  executeChainStep,
+  completeChainStep,
+  type ValidationResult,
+  type Deviation,
+  type ProposalChain,
+  type ChainedProposal,
+} from './cross-validator';

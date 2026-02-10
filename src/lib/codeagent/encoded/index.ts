@@ -109,3 +109,16 @@ export {
   type TransferResult,
   type TrainingAccelerationConfig,
 } from './knowledge-transfer';
+
+// Feedback Loop & Graduated Autonomy (v3.1.0)
+export {
+  recordOutcome,
+  getMasteryScores,
+  getOverallMastery,
+  loadMasteryScores,
+  getGraduatedThresholds,
+  getMasterySummary,
+  type PatternOutcome,
+  type MasteryScore,
+  type GraduatedThresholds,
+} from './feedback-loop';
