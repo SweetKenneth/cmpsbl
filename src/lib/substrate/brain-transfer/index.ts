@@ -563,7 +563,7 @@ export async function transferKnowledge(module: TransferModule): Promise<Transfe
       try {
         const hotQuery: any = supabase.from('brain_memory_hot').select('id, access_count');
         const existingResult = await hotQuery
-          .eq('category', `${config.hotCategoryPrefix}:${memory.memory_type}`)
+          .eq('context', `${config.hotCategoryPrefix}:${memory.memory_type}`)
           .limit(1);
         const existing = existingResult.data as any[] | null;
         const isDuplicate = existing?.some((e: any) => memory.content.slice(0, 40).length > 0);
@@ -571,12 +571,11 @@ export async function transferKnowledge(module: TransferModule): Promise<Transfe
         if (isDuplicate && existing && existing.length > 0) {
           await supabase.from('brain_memory_hot').update({
             access_count: (existing[0].access_count || 0) + 1,
-            last_accessed_at: new Date().toISOString(),
           }).eq('id', existing[0].id);
           enriched++;
         } else {
           const countQuery: any = supabase.from('brain_memory_hot').select('id', { count: 'exact', head: true });
-          const { count } = await countQuery.like('category', `${config.hotCacheLimit}%`);
+          const { count } = await countQuery.like('context', `${config.hotCategoryPrefix}%`);
 
           if ((count || 0) >= config.hotCacheLimit) {
             skipped++;
@@ -585,8 +584,8 @@ export async function transferKnowledge(module: TransferModule): Promise<Transfe
 
           await supabase.from('brain_memory_hot').insert({
             content: `[${module.toUpperCase()}_KNOWLEDGE] ${memory.content}`,
-            category: `${config.hotCategoryPrefix}:${memory.memory_type}`,
-            priority: Math.round((memory.confidence || 0.5) * 100),
+            context: `${config.hotCategoryPrefix}:${memory.memory_type}`,
+            priority: clampPriority((memory.confidence || 0.5) * 10),
             access_count: 0,
             metadata: {
               source_memory_id: memory.id,
