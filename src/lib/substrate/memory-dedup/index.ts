@@ -70,7 +70,7 @@ export async function scanDuplicates(
 
   const { data: memories, error } = await supabase
     .from('brain_memories')
-    .select('id, content, category, importance, metadata')
+    .select('id, content, confidence, metadata')
     .order('created_at', { ascending: false })
     .limit(cfg.maxScanBatch);
 
