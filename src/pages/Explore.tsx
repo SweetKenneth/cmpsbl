@@ -339,6 +339,9 @@ export default function Explore() {
       {/* Hero Section */}
       <HeroMetaSubstrate />
 
+      {/* LNCHBL Free Download CTA - right under hero */}
+      <LnchblCTA />
+
       {/* Synergy Pipelines & Capabilities Depot CTA */}
       <SynergyDepotCTA />
 
