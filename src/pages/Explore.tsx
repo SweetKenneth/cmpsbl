@@ -1,7 +1,6 @@
 /**
  * Explore — The CMPSBL Gateway
- * Comprehensive showcase of cognitive infrastructure capabilities
- * Polished for maximum conversion across gaming, dev, and enterprise audiences
+ * Premium homepage with cinematic flow and bold visual identity
  */
 
 import { useRef } from "react";
@@ -11,6 +10,7 @@ import {
   ArrowRight, 
   Terminal, 
   BookOpen,
+  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SEO } from "@/components/SEO";
@@ -27,26 +27,16 @@ import { CodeLabCTA } from "@/components/codelab/CodeLabCTA";
 import { SynergyDepotCTA } from "@/components/explore/SynergyDepotCTA";
 import { LnchblCTA } from "@/components/LnchblCTA";
 
-// Animated gradient orb
-function GradientOrb({ className, delay = 0 }: { className?: string; delay?: number }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 1.5, delay, ease: "easeOut" }}
-      className={cn(
-        "absolute rounded-full blur-[100px] pointer-events-none",
-        className
-      )}
-    />
-  );
-}
-
-// Section divider
+// Section divider with animated gradient
 function SectionDivider() {
   return (
-    <div className="relative py-12 sm:py-16">
-      <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+    <div className="relative py-10 sm:py-14">
+      <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+      <motion.div 
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-primary/40"
+        animate={{ scale: [1, 1.5, 1], opacity: [0.4, 0.8, 0.4] }}
+        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+      />
     </div>
   );
 }
@@ -65,11 +55,21 @@ export default function Explore() {
 
       <PublicNav />
 
-      {/* Ambient Background */}
+      {/* Ambient animated mesh background */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <GradientOrb className="w-[600px] h-[600px] -top-48 -left-48 bg-primary/10" delay={0} />
-        <GradientOrb className="w-[500px] h-[500px] top-1/4 -right-48 bg-primary/8" delay={0.2} />
-        <GradientOrb className="w-[400px] h-[400px] bottom-0 left-1/4 bg-primary/6" delay={0.4} />
+        <div className="absolute inset-0 gradient-mesh opacity-80" />
+        <motion.div
+          className="absolute top-0 left-0 w-[800px] h-[800px] rounded-full"
+          style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.06) 0%, transparent 60%)" }}
+          animate={{ x: [-100, 100, -100], y: [-50, 50, -50] }}
+          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute bottom-0 right-0 w-[600px] h-[600px] rounded-full"
+          style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.05) 0%, transparent 60%)" }}
+          animate={{ x: [100, -100, 100], y: [50, -50, 50] }}
+          transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
+        />
       </div>
 
       {/* Hero Section */}
@@ -101,37 +101,76 @@ export default function Explore() {
       {/* CodeLab CTA */}
       <CodeLabCTA />
 
-      {/* Final CTA */}
-      <section className="relative z-10 px-4 py-16 sm:py-24">
+      {/* Final CTA — Cinematic closing */}
+      <section className="relative z-10 px-4 py-20 sm:py-32">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="max-w-4xl mx-auto"
+          transition={{ duration: 0.8 }}
+          className="max-w-5xl mx-auto"
         >
-          <div className="relative p-8 sm:p-12 md:p-16 rounded-3xl overflow-hidden text-center">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/80 to-primary/60" />
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] opacity-30" />
+          <div className="relative rounded-[2rem] overflow-hidden">
+            {/* Deep gradient background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-violet-600" />
             
-            <div className="relative">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary-foreground mb-3 sm:mb-4">
-                Build AI That Remembers, Dreams, and Evolves
+            {/* Animated grid overlay */}
+            <div 
+              className="absolute inset-0 opacity-10"
+              style={{
+                backgroundImage: `
+                  linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px), 
+                  linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px)
+                `,
+                backgroundSize: "60px 60px",
+              }}
+            />
+            
+            {/* Glow orbs */}
+            <motion.div 
+              className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-white/10 blur-[80px]"
+              animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.6, 0.3] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.div 
+              className="absolute -bottom-20 -left-20 w-48 h-48 rounded-full bg-white/10 blur-[60px]"
+              animate={{ scale: [1.3, 1, 1.3], opacity: [0.6, 0.3, 0.6] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            />
+            
+            <div className="relative p-10 sm:p-14 md:p-20 text-center">
+              {/* Floating badge */}
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3 }}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 border border-white/20 backdrop-blur-sm mb-8"
+              >
+                <Sparkles className="w-4 h-4 text-white" />
+                <span className="text-sm font-semibold text-white/90">The Future is Cognitive</span>
+              </motion.div>
+              
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-5 leading-[1.1] tracking-tight">
+                Build AI That Remembers,{" "}
+                <br className="hidden sm:block" />
+                Dreams, and Evolves
               </h2>
-              <p className="text-primary-foreground/80 text-sm sm:text-base md:text-lg max-w-xl mx-auto mb-6 sm:mb-8">
-                Start with production-ready templates, dive into comprehensive documentation, 
-                or see the substrate orchestrating autonomous workflows in real-time.
+              <p className="text-white/70 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
+                Start with production-ready templates, explore the SDK in CodeLab, 
+                or dive into the documentation. Your cognitive infrastructure journey starts here.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-                <Button asChild size="lg" className="px-6 sm:px-8 bg-background text-foreground hover:bg-background/90 font-semibold">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button asChild size="lg" className="px-8 h-14 text-base bg-white text-primary hover:bg-white/90 font-bold shadow-2xl shadow-black/20 hover:scale-[1.02] transition-all">
                   <Link to="/codelab">
-                    <Terminal className="w-4 h-4 mr-2" />
+                    <Terminal className="w-5 h-5 mr-2" />
                     Start in CodeLab
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>
-                <Button asChild size="lg" variant="outline" className="px-6 sm:px-8 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10">
+                <Button asChild size="lg" variant="outline" className="px-8 h-14 text-base border-white/30 text-white hover:bg-white/10 font-semibold backdrop-blur-sm">
                   <Link to="/documentation">
-                    <BookOpen className="w-4 h-4 mr-2" />
+                    <BookOpen className="w-5 h-5 mr-2" />
                     Read Docs
                   </Link>
                 </Button>

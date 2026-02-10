@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Download, Clock, Sparkles, ArrowRight, Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export function LnchblCTA() {
   return (
@@ -10,11 +11,22 @@ export function LnchblCTA() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="max-w-4xl mx-auto"
+        className="max-w-5xl mx-auto"
       >
-        <div className="relative overflow-hidden rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/10 via-card/80 to-violet-500/10 backdrop-blur-sm shadow-xl shadow-primary/5">
-          {/* Animated glow border */}
-          <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary/20 via-transparent to-violet-500/20 opacity-50 animate-pulse pointer-events-none" />
+        <div className="relative overflow-hidden rounded-3xl border border-primary/20 bg-card/50 backdrop-blur-sm shadow-2xl shadow-primary/5">
+          {/* Animated gradient border glow */}
+          <div className="absolute inset-0 rounded-3xl opacity-60 pointer-events-none"
+            style={{
+              background: "linear-gradient(135deg, hsl(var(--primary) / 0.1), transparent 40%, hsl(var(--neon-purple) / 0.1) 60%, transparent)",
+            }}
+          />
+          
+          {/* Top accent bar */}
+          <div className="h-1 w-full bg-gradient-to-r from-primary via-violet-500 to-primary" />
+          
+          {/* Glow orbs */}
+          <div className="absolute -top-24 -right-24 w-48 h-48 rounded-full bg-primary/10 blur-[80px] pointer-events-none" />
+          <div className="absolute -bottom-24 -left-24 w-48 h-48 rounded-full bg-violet-500/10 blur-[80px] pointer-events-none" />
           
           <div className="relative p-8 sm:p-10 md:p-12">
             {/* Badge */}
@@ -23,38 +35,44 @@ export function LnchblCTA() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/20 border border-primary/30 mb-6"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/15 border border-primary/25 mb-6"
             >
               <Rocket className="w-4 h-4 text-primary" />
               <span className="text-sm font-bold tracking-wide text-primary">100% FREE — No Strings Attached</span>
             </motion.div>
 
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 leading-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 leading-tight tracking-tight">
               <span className="text-foreground">Download the World's First </span>
-              <span className="bg-gradient-to-r from-primary via-violet-400 to-primary bg-clip-text text-transparent">
+              <span 
+                style={{
+                  background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-purple)), hsl(var(--primary)))",
+                  backgroundSize: "200% 200%",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  animation: "gradientShift 4s ease-in-out infinite",
+                }}
+              >
                 Public Cognitive Substrate
               </span>
             </h2>
 
-            <p className="text-lg sm:text-xl text-muted-foreground mb-6 max-w-2xl leading-relaxed">
+            <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-2xl leading-relaxed">
               Get your own copy of the full CMPSBL substrate — the same 14-module, self-evolving AI operating system 
               you see here — completely free from our companion site.
             </p>
 
             {/* Feature pills */}
             <div className="flex flex-wrap gap-3 mb-8">
-              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-muted/40 border border-border/50">
-                <Download className="w-4 h-4 text-primary" />
-                <span className="text-sm font-medium text-foreground">Free Download</span>
-              </div>
-              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-muted/40 border border-border/50">
-                <Clock className="w-4 h-4 text-green-500" />
-                <span className="text-sm font-medium text-foreground">Add Memory in 10 Minutes</span>
-              </div>
-              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-muted/40 border border-border/50">
-                <Sparkles className="w-4 h-4 text-violet-500" />
-                <span className="text-sm font-medium text-foreground">Persistent Memory Guide Included</span>
-              </div>
+              {[
+                { icon: Download, text: "Free Download", color: "text-primary" },
+                { icon: Clock, text: "Memory in 10 Minutes", color: "text-emerald-500" },
+                { icon: Sparkles, text: "Persistent Memory Guide", color: "text-violet-500" },
+              ].map((pill) => (
+                <div key={pill.text} className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-muted/40 border border-border/50">
+                  <pill.icon className={cn("w-4 h-4", pill.color)} />
+                  <span className="text-sm font-medium text-foreground">{pill.text}</span>
+                </div>
+              ))}
             </div>
 
             {/* CTA Buttons */}
@@ -62,7 +80,7 @@ export function LnchblCTA() {
               <Button
                 size="lg"
                 asChild
-                className="group text-lg px-8 py-6 shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all"
+                className="group text-lg px-8 py-6 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] transition-all"
               >
                 <a href="https://LNCHBL.com" target="_blank" rel="noopener noreferrer">
                   <Download className="w-5 h-5 mr-2" />

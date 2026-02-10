@@ -18,8 +18,6 @@ import {
   MessageSquare,
   Eye,
   Sparkles,
-  CheckCircle2,
-  Star,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -38,7 +36,6 @@ const audiences = [
       { icon: MessageSquare, text: "Context-aware dialogue" },
     ],
     stats: { value: "∞", label: "Memory Depth" },
-    testimonial: "Finally, NPCs that remember me.",
     cta: "Build Game AI",
     href: "/gaming",
     gradient: "from-purple-600 via-violet-600 to-fuchsia-600",
@@ -58,7 +55,6 @@ const audiences = [
       { icon: Eye, text: "Full observability" },
     ],
     stats: { value: "70+", label: "Templates" },
-    testimonial: "The infrastructure I always wanted.",
     cta: "Start Coding",
     href: "/developers",
     gradient: "from-cyan-600 via-blue-600 to-indigo-600",
@@ -78,7 +74,6 @@ const audiences = [
       { icon: Eye, text: "Audit everything" },
     ],
     stats: { value: "100%", label: "Your Data" },
-    testimonial: "Enterprise-grade from day one.",
     cta: "Enterprise Solutions",
     href: "/use-cases",
     gradient: "from-amber-500 via-orange-500 to-red-500",
@@ -240,15 +235,7 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
             ))}
           </div>
           
-          {/* Testimonial quote */}
-          <div className="mb-6 p-3 rounded-lg bg-muted/30 border border-border/30">
-            <div className="flex items-center gap-1 mb-1">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-3 h-3 fill-amber-400 text-amber-400" />
-              ))}
-            </div>
-            <p className="text-xs text-muted-foreground italic">"{audience.testimonial}"</p>
-          </div>
+          
           
           {/* CTA */}
           <Button asChild className={cn(
