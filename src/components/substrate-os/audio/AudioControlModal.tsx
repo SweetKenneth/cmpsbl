@@ -371,6 +371,7 @@ export function AudioControlModal({ isOpen, onClose }: AudioControlModalProps) {
           </div>
         </>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }
