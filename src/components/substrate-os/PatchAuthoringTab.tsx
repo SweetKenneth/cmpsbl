@@ -169,6 +169,7 @@ function CreatePatchForm({ onSuccess }: { onSuccess: () => void }) {
       const next = new Set(prev);
       const allSelected = ids.every(id => next.has(id));
       ids.forEach(id => allSelected ? next.delete(id) : next.add(id));
+      persistSet(PATCH_ENGINES_KEY, next);
       return next;
     });
   };
