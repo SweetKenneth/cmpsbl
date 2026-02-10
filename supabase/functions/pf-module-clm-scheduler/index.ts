@@ -115,9 +115,11 @@ Deno.serve(async (req) => {
       }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
-    // Pick 3 modules per cycle — we can afford it with 14.4K RPD
-    const shuffled = MODULE_IDS.sort(() => Math.random() - 0.5);
-    const selectedModules = shuffled.slice(0, 3);
+    // v3.0.0: Pick 4 modules per cycle — parallel curriculum strategy
+    // Ensure Encoded + Brain always get a slot for knowledge transfer
+    const priorityModules = ['encoded', 'brain'];
+    const otherModules = MODULE_IDS.filter(m => !priorityModules.includes(m)).sort(() => Math.random() - 0.5);
+    const selectedModules = [...priorityModules, ...otherModules.slice(0, 2)];
     const results: any[] = [];
 
     for (const moduleId of selectedModules) {
