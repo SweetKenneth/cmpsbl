@@ -422,8 +422,8 @@ export async function broadcastInsight(insight: CrossModuleInsight): Promise<{
 
       await supabase.from('brain_memory_hot').insert({
         content: `[CROSS_MODULE:${insight.source_module.toUpperCase()}→${target.toUpperCase()}] ${insight.insight}`,
-        category: `${config.hotCategoryPrefix}:cross_module`,
-        priority: Math.round(insight.confidence * 100),
+        context: `${config.hotCategoryPrefix}:cross_module`,
+        priority: clampPriority(insight.confidence * 100),
         access_count: 0,
         metadata: {
           source_module: insight.source_module,
