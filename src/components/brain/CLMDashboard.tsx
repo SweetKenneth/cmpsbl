@@ -43,7 +43,7 @@ export function CLMDashboard() {
             <CardTitle className="text-sm font-medium flex items-center gap-2"><Zap className="h-4 w-4" />Daily Budget</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">70%</div>
+            <div className="text-2xl font-bold">80%</div>
             <Progress value={usedPercent} className="mt-2" />
             <p className="text-xs text-muted-foreground mt-1">{budget.usedUnits} used / {budget.remainingUnits} remaining</p>
           </CardContent>
