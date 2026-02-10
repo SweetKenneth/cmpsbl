@@ -13,6 +13,11 @@
 
 import { supabase } from '@/integrations/supabase/client';
 
+/** Clamp priority to brain_memory_hot's 1-10 constraint */
+function clampPriority(value: number): number {
+  return Math.max(1, Math.min(10, Math.round(value)));
+}
+
 // ═══════════════════════════════════════════════════════════════
 // TYPES
 // ═══════════════════════════════════════════════════════════════
