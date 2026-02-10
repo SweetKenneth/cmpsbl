@@ -149,7 +149,7 @@ export function AudioControlModal({ isOpen, onClose }: AudioControlModalProps) {
     updateAmbientSettings({ trackIndex: nextIndex });
   };
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
         <>
