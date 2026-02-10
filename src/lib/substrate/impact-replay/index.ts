@@ -86,9 +86,9 @@ export async function replayScenarios(
     const start = Date.now();
     const { data: recent } = await supabase
       .from('brain_events')
-      .select('outcome, metadata')
+      .select('outcome, data')
       .eq('module', scenario.module)
-      .eq('action', scenario.action)
+      .eq('event_type', scenario.action)
       .order('created_at', { ascending: false })
       .limit(5);
 

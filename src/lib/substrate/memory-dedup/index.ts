@@ -97,8 +97,8 @@ export async function scanDuplicates(
 
       const sim = similarity(indexed[i].grams, indexed[j].grams);
       if (sim >= cfg.similarityThreshold) {
-        // Keep the one with higher importance
-        const keepI = (indexed[i].importance ?? 0) >= (indexed[j].importance ?? 0);
+        // Keep the one with higher confidence
+        const keepI = indexed[i].confidence >= indexed[j].confidence;
         const survivorId = keepI ? indexed[i].id : indexed[j].id;
         const victimId = keepI ? indexed[j].id : indexed[i].id;
 

@@ -82,10 +82,10 @@ export async function reconstructTimeline(
     id: e.id,
     timestamp: e.created_at,
     module: e.module,
-    action: e.action,
+    action: e.event_type,
     outcome: e.outcome || 'unknown',
-    detail: typeof e.metadata === 'object' && e.metadata !== null
-      ? (e.metadata as Record<string, unknown>).detail as string || ''
+    detail: typeof e.data === 'object' && e.data !== null
+      ? (e.data as Record<string, unknown>).detail as string || ''
       : '',
     severity: classifySeverity(e.outcome || ''),
     causalLinks: [],
