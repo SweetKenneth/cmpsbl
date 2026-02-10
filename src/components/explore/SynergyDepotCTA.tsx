@@ -32,7 +32,7 @@ function StatBadge({ value, label }: { value: string; label: string }) {
 
 export function SynergyDepotCTA() {
   return (
-    <section className="relative z-10 px-4 py-16 sm:py-24">
+    <section className="relative z-10 px-4 py-12 sm:py-24">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <motion.div
