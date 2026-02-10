@@ -340,12 +340,12 @@ export async function ingestModulePatterns(module: TransferModule): Promise<{
     }
   }
 
-  await supabase.from('brain_events').insert({
+  await supabase.from('brain_events').insert([{
     module: 'brain',
     event_type: `expert_patterns_ingested_${module}`,
-    data: { module, ingested, errors: patternErrors, total: patterns.length },
+    data: { module, ingested, errors: patternErrors, total: patterns.length } as any,
     outcome: 'success',
-  });
+  }]);
 
   return { ingested, errors: patternErrors };
 }
