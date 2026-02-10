@@ -271,12 +271,12 @@ export async function transferKnowledge(module: TransferModule): Promise<Transfe
   };
 
   // Log the transfer
-  await supabase.from('brain_events').insert({
+  await supabase.from('brain_events').insert([{
     module: 'brain',
     event_type: `knowledge_transfer_${module}`,
-    data: batch,
+    data: batch as any,
     outcome: errors > 0 ? 'partial' : 'success',
-  });
+  }]);
 
   return batch;
 }
