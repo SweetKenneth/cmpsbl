@@ -294,7 +294,7 @@ export function HeroMetaSubstrate() {
 
       <div className="relative z-10 w-full max-w-7xl mx-auto">
         {/* Top section: Text + Visualization side by side */}
-        <div className="grid lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-16 items-center mb-10 sm:mb-20">
+        <div className="grid lg:grid-cols-2 gap-6 sm:gap-10 lg:gap-16 items-center mb-8 sm:mb-20">
           {/* Left: Headlines and CTAs */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
