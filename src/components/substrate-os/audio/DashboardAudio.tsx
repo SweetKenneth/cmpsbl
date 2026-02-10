@@ -133,7 +133,7 @@ function DesktopAudioControls({ className }: { className?: string }) {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 10, scale: 0.95 }}
               className={cn(
-                "absolute z-[9999] top-full right-0 mt-2",
+                "fixed z-[10000] right-4",
                 "w-64 p-4 rounded-xl",
                 "bg-card/95 backdrop-blur-xl border border-border/50",
                 "shadow-xl shadow-black/20"
