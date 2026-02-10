@@ -113,7 +113,7 @@ async function checkNovelty(content: string): Promise<{ isNovel: boolean; simila
     // Check existing pending/approved proposals
     const { data: existing } = await supabase
       .from('evolution_proposals')
-      .select('id, title, description')
+      .select('id, title, summary')
       .in('status', ['pending_review', 'approved', 'executing'])
       .order('created_at', { ascending: false })
       .limit(50);
