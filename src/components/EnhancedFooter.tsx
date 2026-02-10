@@ -37,7 +37,7 @@ export function EnhancedFooter() {
         { name: "Decode Engine", href: "/decode" },
         { name: "Dream Feeder", href: "/feed-dream-eater" },
         { name: "Proof Mode", href: "/proof" },
-        { name: "CodeLab", href: "/lab" },
+        { name: "Experimental Lab", href: "/lab" },
       ]
     },
     {
