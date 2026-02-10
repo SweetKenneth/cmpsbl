@@ -38,7 +38,6 @@ const audiences = [
       { icon: MessageSquare, text: "Context-aware dialogue" },
     ],
     stats: { value: "∞", label: "Memory Depth" },
-    testimonial: "Finally, NPCs that remember me.",
     cta: "Build Game AI",
     href: "/gaming",
     gradient: "from-purple-600 via-violet-600 to-fuchsia-600",
