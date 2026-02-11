@@ -1,17 +1,36 @@
 /**
  * LNCHBL Distribution — Tiered Capability Map
- * v4.0.0 — Maps all 124 substrate capabilities to subscription tiers
+ * v4.1.0 — Maps all 124 substrate capabilities to subscription tiers
  * 
- * SELF-IMPROVEMENT IS ENTERPRISE-ONLY.
- * No evolution, self-modification, or autonomous improvement at lower tiers.
+ * CROWN JEWELS (recursive self-improvement) are CMPSBL-ONLY — not available at any LNCHBL tier.
+ * Remaining self-improvement (observational/planning) is Enterprise-only.
  * 
  * FREE (Starter):  Core cognitive loop + basic memory (16 capabilities)
  * Builder ($49/mo): Infrastructure hardening + observability (26 capabilities)
  * Pro ($149/mo):    Advanced intelligence + operations + multi-tenant (24 capabilities)
- * Enterprise ($499/mo): Self-improvement + evolution + full platform + SLA (58 capabilities)
+ * Enterprise ($499/mo): Self-improvement (non-recursive) + evolution + full platform + SLA (48 capabilities)
+ * CMPSBL-Only:     10 Crown Jewel recursive self-improvement capabilities (never distributed)
  */
 
 export type DistributionTier = 'free' | 'builder' | 'pro' | 'enterprise';
+
+/**
+ * CROWN JEWELS — CMPSBL-Only (10 capabilities)
+ * Recursive self-improvement where software builds/modifies its own code.
+ * These are NEVER distributed to LNCHBL at any tier.
+ */
+export const CROWN_JEWEL_IDS: readonly string[] = [
+  'cortex_engine',                // Autonomous PROPOSE→APPLY→LEARN loop
+  'seba_engine',                  // Self-Evolving Bounded Agent
+  'modernizer',                   // Shadow-to-production code diffs
+  'evolution_ab',                 // Parallel evolution variant testing
+  'evolution_rollback',           // Auto-revert of failed evolution
+  'evolution_sandbox',            // Isolated evolution testing
+  'dream_pool_federation',        // Cross-agency dream sharing
+  'self_repair_engine',           // Autonomous degradation repair
+  'autonomous_workflow_composer', // Self-assembling workflows
+  'dream_lucidity_control',       // Directed dream cycle exploration
+] as const;
 
 export interface TieredCapability {
   id: string;
@@ -121,12 +140,9 @@ export const PRO_CAPABILITIES: TieredCapability[] = [
  * ⚠️  SELF-IMPROVEMENT IS EXCLUSIVELY ENTERPRISE.
  */
 export const ENTERPRISE_CAPABILITIES: TieredCapability[] = [
-  // === SELF-IMPROVEMENT & EVOLUTION (Enterprise-Only) ===
-  { id: 'seba_engine', name: 'SEBA Evolution Engine', tier: 'enterprise', category: 'self-improvement', description: 'Self-Evolving Bounded Agent with 9 cognitive analyzers' },
-  { id: 'modernizer', name: 'Modernizer (Omega Observer)', tier: 'enterprise', category: 'self-improvement', description: 'Shadow-to-production upgrade pipeline' },
-  { id: 'cortex_engine', name: 'Cortex Agency Engine', tier: 'enterprise', category: 'self-improvement', description: 'PROPOSE → EVALUATE → APPLY → AUDIT → LEARN loop' },
-  { id: 'evolution_ab', name: 'Evolution A/B Testing', tier: 'enterprise', category: 'self-improvement', description: 'Shadow two proposal variants, select better performer' },
-  { id: 'evolution_rollback', name: 'Evolution Rollback', tier: 'enterprise', category: 'self-improvement', description: 'Auto-revert on regression test failures' },
+  // === SELF-IMPROVEMENT (Non-Recursive — Enterprise-Only) ===
+  // Crown Jewels (SEBA, Modernizer, Cortex, Evolution A/B, Rollback, Sandbox, Dream Pool,
+  // Self-Repair, Autonomous Workflow Composer, Dream Lucidity) are CMPSBL-ONLY — not listed here.
   { id: 'impact_replay', name: 'Impact Replay', tier: 'enterprise', category: 'self-improvement', description: 'Replay queries against new states to verify impact' },
   { id: 'dream_proposal', name: 'Dream → Proposal Pipeline', tier: 'enterprise', category: 'self-improvement', description: 'Convert cognitive insights into evolution proposals' },
   { id: 'dream_chains', name: 'Multi-Step Dream Chains', tier: 'enterprise', category: 'self-improvement', description: 'Sequences of dependent evolution proposals' },
@@ -147,12 +163,9 @@ export const ENTERPRISE_CAPABILITIES: TieredCapability[] = [
   { id: 'full_clm', name: 'CLM (Full Spectrum)', tier: 'enterprise', category: 'enterprise', description: 'All tiers of Constant Learning Mode including research' },
   { id: 'archived_adapters', name: 'Archived Capability Adapters', tier: 'enterprise', category: 'enterprise', description: 'Legacy function adapters for backward compatibility' },
   { id: 'custom_engines', name: 'Custom Engine Registration', tier: 'enterprise', category: 'enterprise', description: 'Register and deploy custom engines to the bus' },
-  // v8.5.0 HIGH-VALUE additions (34)
-  // Self-Improvement enhancements
-  { id: 'autonomous_workflow_composer', name: 'Autonomous Workflow Composer', tier: 'enterprise', category: 'self-improvement', description: 'Self-assembling multi-step cognitive workflows' },
+  // v8.5.0 HIGH-VALUE additions (24 — Crown Jewels excluded)
+  // Self-Improvement enhancements (non-recursive only)
   { id: 'evolution_impact_forecast', name: 'Evolution Impact Forecast', tier: 'enterprise', category: 'self-improvement', description: 'Predicted outcome modeling before evolution commits' },
-  { id: 'dream_lucidity_control', name: 'Dream Lucidity Control', tier: 'enterprise', category: 'self-improvement', description: 'Directed dream cycles with constrained exploration' },
-  { id: 'self_repair_engine', name: 'Self-Repair Engine', tier: 'enterprise', category: 'self-improvement', description: 'Autonomous detection and repair of degraded subsystems' },
   { id: 'evolution_lineage_tracker', name: 'Evolution Lineage Tracker', tier: 'enterprise', category: 'self-improvement', description: 'Full ancestry tracking for all evolution proposals' },
   { id: 'cognitive_debt_analyzer', name: 'Cognitive Debt Analyzer', tier: 'enterprise', category: 'self-improvement', description: 'Identify and prioritize cognitive technical debt' },
   // New engine capabilities
@@ -178,8 +191,7 @@ export const ENTERPRISE_CAPABILITIES: TieredCapability[] = [
   { id: 'cost_anomaly_detector', name: 'Cost Anomaly Detector', tier: 'enterprise', category: 'operations', description: 'ML-based cost spike detection and root cause analysis' },
   { id: 'cognitive_replay_debugger', name: 'Cognitive Replay Debugger', tier: 'enterprise', category: 'intelligence', description: 'Step-through replay of cognitive execution chains' },
   { id: 'zero_trust_mesh', name: 'Zero Trust Mesh', tier: 'enterprise', category: 'security', description: 'Service mesh with mutual TLS and identity verification' },
-  { id: 'evolution_sandbox', name: 'Evolution Sandbox', tier: 'enterprise', category: 'self-improvement', description: 'Isolated environment for testing evolution proposals' },
-  { id: 'dream_pool_federation', name: 'Dream Pool Federation', tier: 'enterprise', category: 'self-improvement', description: 'Cross-agency dream insight sharing with privacy controls' },
+  // evolution_sandbox and dream_pool_federation are Crown Jewels — CMPSBL-only
   { id: 'runtime_schema_migration', name: 'Runtime Schema Migration', tier: 'enterprise', category: 'platform', description: 'Live schema evolution without downtime' },
   { id: 'capability_health_score', name: 'Capability Health Score', tier: 'enterprise', category: 'observability', description: 'Per-capability health scoring with degradation alerts' },
   { id: 'cross_tenant_analytics', name: 'Cross-Tenant Analytics', tier: 'enterprise', category: 'operations', description: 'Anonymized aggregate analytics across tenant boundaries' },
@@ -210,6 +222,8 @@ export function getNewCapabilitiesAtTier(tier: DistributionTier): TieredCapabili
 
 /** Check if a capability is available at a given tier */
 export function isCapabilityAvailable(capabilityId: string, userTier: DistributionTier): boolean {
+  // Crown Jewels are NEVER available in LNCHBL — any tier
+  if (CROWN_JEWEL_IDS.includes(capabilityId)) return false;
   const cap = ALL_CAPABILITIES.find(c => c.id === capabilityId);
   if (!cap) return false;
   const tierOrder: DistributionTier[] = ['free', 'builder', 'pro', 'enterprise'];
@@ -236,4 +250,9 @@ export function getTierCapabilityIds(tier: DistributionTier): string[] {
 export function isSelfImprovement(capabilityId: string): boolean {
   const cap = ALL_CAPABILITIES.find(c => c.id === capabilityId);
   return cap?.category === 'self-improvement';
+}
+
+/** Check if a capability is a Crown Jewel (CMPSBL-only, never distributed) */
+export function isCrownJewel(capabilityId: string): boolean {
+  return CROWN_JEWEL_IDS.includes(capabilityId);
 }
