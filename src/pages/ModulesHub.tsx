@@ -40,7 +40,7 @@ export default function ModulesHub() {
 
       <main className="min-h-screen bg-background">
         {/* Hero */}
-        <section className="relative py-20 sm:py-28 overflow-hidden">
+        <section className="relative py-14 sm:py-20 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
           <div className="container mx-auto max-w-5xl px-4 relative">
             <motion.div
@@ -49,16 +49,16 @@ export default function ModulesHub() {
               transition={{ duration: 0.5 }}
               className="text-center"
             >
-              <span className="inline-block text-xs font-bold tracking-widest uppercase text-primary mb-4">
+              <span className="inline-block text-xs font-bold tracking-widest uppercase text-primary mb-3">
                 Substrate Architecture
               </span>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4">
                 14 Modules. 5 Layers.{" "}
                 <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                   One Intelligence.
                 </span>
               </h1>
-              <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
                 Each module is a specialized AI subsystem. Together, they form a cognitive operating system 
                 that learns, adapts, and evolves — autonomously.
               </p>
