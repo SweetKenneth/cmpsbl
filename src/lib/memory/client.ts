@@ -131,14 +131,17 @@ export class MemoryClient {
    */
   async recall(query: string, limit: number = 5): Promise<RecallResult> {
     try {
+      // Search ALL memory types — user_fact, persistent_memory, workload, conversation_with_facts
+      // Prioritize user_facts (exact stored facts) over conversation context
       const response = await supabase.functions.invoke('pf-substrate', {
         body: {
           module: 'brain',
           action: 'query',
           query_text: query,
           limit,
+          recall_strategy: 'fidelity_first',
           filters: {
-            memory_type: 'persistent_memory',
+            memory_types: ['user_fact', 'persistent_memory', 'workload_outcome', 'conversation_with_facts'],
             'metadata.agentId': this.agentId,
             ...(this.scope === 'session' ? { 'metadata.sessionId': this.sessionId } : {})
           }
@@ -156,12 +159,41 @@ export class MemoryClient {
         relevance: m.relevance_score
       }));
       
+      // user_facts get higher confidence since they are exact extractions
+      const hasUserFacts = (response.data.memories || []).some((m: any) => m.memory_type === 'user_fact');
+      
       return {
         memories,
-        confidence: memories.length > 0 ? 0.8 : 0
+        confidence: hasUserFacts ? 0.95 : (memories.length > 0 ? 0.7 : 0)
       };
     } catch (error) {
       return { memories: [], confidence: 0 };
+    }
+  }
+  
+  /**
+   * Store workload outcomes — what the agent worked on and learned
+   * Called automatically after task completion
+   */
+  async storeWorkload(summary: string, metadata?: Record<string, unknown>): Promise<void> {
+    try {
+      await supabase.functions.invoke('pf-substrate', {
+        body: {
+          module: 'brain',
+          action: 'remember',
+          content: summary,
+          memory_type: 'workload_outcome',
+          confidence: 0.9,
+          metadata: {
+            agentId: this.agentId,
+            scope: this.scope,
+            source: 'memory_sdk_workload',
+            ...metadata
+          }
+        }
+      });
+    } catch (error) {
+      console.warn('[Memory] Workload store failed gracefully');
     }
   }
   
