@@ -3406,11 +3406,14 @@ export type Database = {
         Row: {
           capabilities_unlocked: string[] | null
           changelog: string | null
+          config_overrides: Json | null
           created_at: string
           created_by: string | null
+          edge_function_code: Json | null
           engines_unlocked: string[] | null
           id: string
           manifest_json: Json | null
+          meta_engines_unlocked: string[] | null
           published_at: string | null
           required_tier: string
           signature: string | null
@@ -3422,11 +3425,14 @@ export type Database = {
         Insert: {
           capabilities_unlocked?: string[] | null
           changelog?: string | null
+          config_overrides?: Json | null
           created_at?: string
           created_by?: string | null
+          edge_function_code?: Json | null
           engines_unlocked?: string[] | null
           id?: string
           manifest_json?: Json | null
+          meta_engines_unlocked?: string[] | null
           published_at?: string | null
           required_tier?: string
           signature?: string | null
@@ -3438,11 +3444,14 @@ export type Database = {
         Update: {
           capabilities_unlocked?: string[] | null
           changelog?: string | null
+          config_overrides?: Json | null
           created_at?: string
           created_by?: string | null
+          edge_function_code?: Json | null
           engines_unlocked?: string[] | null
           id?: string
           manifest_json?: Json | null
+          meta_engines_unlocked?: string[] | null
           published_at?: string | null
           required_tier?: string
           signature?: string | null
